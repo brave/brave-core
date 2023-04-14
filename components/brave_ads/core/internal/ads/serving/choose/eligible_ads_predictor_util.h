@@ -18,6 +18,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/choose/ad_predictor_info.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_alias.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_features_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/top_segments.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
@@ -114,35 +115,42 @@ AdPredictorInfo<T> ComputePredictorFeatures(
 
 template <typename T>
 double ComputePredictorScore(const AdPredictorInfo<T>& ad_predictor) {
-  const AdPredictorWeightList weights = features::GetAdPredictorWeights();
+  AdPredictorWeightList ad_predictor_weights =
+      ToAdPredictorWeights(kAdPredictorWeights.Get());
+  if (ad_predictor_weights.empty()) {
+    ad_predictor_weights =
+        ToAdPredictorWeights(kAdPredictorWeights.default_value);
+  }
+
   double score = 0.0;
 
   if (ad_predictor.does_match_intent_child_segments) {
-    score += weights.at(kDoesMatchIntentChildSegmentsIndex);
+    score += ad_predictor_weights.at(kDoesMatchIntentChildSegmentsIndex);
   } else if (ad_predictor.does_match_intent_parent_segments) {
-    score += weights.at(kDoesMatchIntentParentSegmentsIndex);
+    score += ad_predictor_weights.at(kDoesMatchIntentParentSegmentsIndex);
   }
 
   if (ad_predictor.does_match_interest_child_segments) {
-    score += weights.at(kDoesMatchInterestChildSegmentsIndex);
+    score += ad_predictor_weights.at(kDoesMatchInterestChildSegmentsIndex);
   } else if (ad_predictor.does_match_interest_parent_segments) {
-    score += weights.at(kDoesMatchInterestParentSegmentsIndex);
+    score += ad_predictor_weights.at(kDoesMatchInterestParentSegmentsIndex);
   }
 
   if (ad_predictor.ad_last_seen_hours_ago <= base::Time::kHoursPerDay) {
-    score += weights.at(kAdLastSeenHoursAgoIndex) *
+    score += ad_predictor_weights.at(kAdLastSeenHoursAgoIndex) *
              ad_predictor.ad_last_seen_hours_ago /
              double{base::Time::kHoursPerDay};
   }
 
   if (ad_predictor.advertiser_last_seen_hours_ago <= base::Time::kHoursPerDay) {
-    score += weights.at(kAdvertiserLastSeenHoursAgoIndex) *
+    score += ad_predictor_weights.at(kAdvertiserLastSeenHoursAgoIndex) *
              ad_predictor.advertiser_last_seen_hours_ago /
              double{base::Time::kHoursPerDay};
   }
 
   if (ad_predictor.creative_ad.priority > 0) {
-    score += weights.at(kPriorityIndex) / ad_predictor.creative_ad.priority;
+    score += ad_predictor_weights.at(kPriorityIndex) /
+             ad_predictor.creative_ad.priority;
   }
 
   return score;

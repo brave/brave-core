@@ -305,7 +305,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   const mojom::SearchResultAdInfoPtr ad_mojom =
       BuildSearchResultAd(/*should_use_random_guids*/ false);
 
-  const int ads_per_hour = features::GetMaximumAdsPerHour();
+  const int ads_per_hour = kMaximumAdsPerHour.Get();
 
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
   const AdEventInfo served_ad_event = BuildAdEvent(
@@ -341,7 +341,8 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   const AdEventInfo ad_event = BuildAdEvent(ad, AdType::kSearchResultAd,
                                             ConfirmationType::kServed, Now());
 
-  const int ads_per_hour = features::GetMaximumAdsPerHour();
+  const int ads_per_hour = kMaximumAdsPerHour.Get();
+
   FireAdEvents(ad_event, ads_per_hour);
 
   // Act
@@ -361,7 +362,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   const mojom::SearchResultAdInfoPtr ad_mojom =
       BuildSearchResultAd(/*should_use_random_guids*/ false);
 
-  const int ads_per_day = features::GetMaximumAdsPerDay();
+  const int ads_per_day = kMaximumAdsPerDay.Get();
 
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
   const AdEventInfo served_ad_event = BuildAdEvent(
@@ -399,7 +400,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   const AdEventInfo ad_event = BuildAdEvent(ad, AdType::kSearchResultAd,
                                             ConfirmationType::kServed, Now());
 
-  const int ads_per_day = features::GetMaximumAdsPerDay();
+  const int ads_per_day = kMaximumAdsPerDay.Get();
 
   FireAdEvents(ad_event, ads_per_day);
 

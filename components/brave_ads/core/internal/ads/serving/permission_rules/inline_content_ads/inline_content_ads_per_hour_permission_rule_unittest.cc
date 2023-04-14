@@ -46,8 +46,8 @@ TEST_F(BatAdsInlineContentAdsPerHourPermissionRuleTest,
 TEST_F(BatAdsInlineContentAdsPerHourPermissionRuleTest,
        AllowAdIfDoesNotExceedCap) {
   // Arrange
-  const int count = features::GetMaximumAdsPerHour() - 1;
-  RecordAdEvents(AdType::kInlineContentAd, ConfirmationType::kServed, count);
+  RecordAdEvents(AdType::kInlineContentAd, ConfirmationType::kServed,
+                 /*count*/ kMaximumAdsPerHour.Get() - 1);
 
   // Act
   AdsPerHourPermissionRule permission_rule;
@@ -60,8 +60,8 @@ TEST_F(BatAdsInlineContentAdsPerHourPermissionRuleTest,
 TEST_F(BatAdsInlineContentAdsPerHourPermissionRuleTest,
        AllowAdIfDoesNotExceedCapAfter1Hour) {
   // Arrange
-  const int count = features::GetMaximumAdsPerHour();
-  RecordAdEvents(AdType::kInlineContentAd, ConfirmationType::kServed, count);
+  RecordAdEvents(AdType::kInlineContentAd, ConfirmationType::kServed,
+                 /*count*/ kMaximumAdsPerHour.Get());
 
   AdvanceClockBy(base::Hours(1));
 
@@ -76,8 +76,8 @@ TEST_F(BatAdsInlineContentAdsPerHourPermissionRuleTest,
 TEST_F(BatAdsInlineContentAdsPerHourPermissionRuleTest,
        DoNotAllowAdIfExceedsCapWithin1Hour) {
   // Arrange
-  const int count = features::GetMaximumAdsPerHour();
-  RecordAdEvents(AdType::kInlineContentAd, ConfirmationType::kServed, count);
+  RecordAdEvents(AdType::kInlineContentAd, ConfirmationType::kServed,
+                 /*count*/ kMaximumAdsPerHour.Get());
 
   AdvanceClockBy(base::Hours(1) - base::Seconds(1));
 

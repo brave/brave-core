@@ -7,15 +7,17 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_TARGETING_BEHAVIORAL_MULTI_ARMED_BANDITS_EPSILON_GREEDY_BANDIT_FEATURES_H_
 
 #include "base/feature_list.h"
+#include "base/metrics/field_trial_params.h"
 
-namespace brave_ads::targeting::features {
+namespace brave_ads::targeting {
 
-BASE_DECLARE_FEATURE(kEpsilonGreedyBandit);
+BASE_DECLARE_FEATURE(kEpsilonGreedyBanditFeatures);
 
 bool IsEpsilonGreedyBanditEnabled();
 
-double GetEpsilonGreedyBanditEpsilonValue();
+constexpr base::FeatureParam<double> kEpsilonGreedyBanditEpsilonValue{
+    &kEpsilonGreedyBanditFeatures, "epsilon_value", 0.25};
 
-}  // namespace brave_ads::targeting::features
+}  // namespace brave_ads::targeting
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_TARGETING_BEHAVIORAL_MULTI_ARMED_BANDITS_EPSILON_GREEDY_BANDIT_FEATURES_H_

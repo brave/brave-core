@@ -12,22 +12,13 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace brave_ads::targeting::features {
+namespace brave_ads::targeting {
 
-TEST(BatAdsTextEmbeddingFeaturesTest, IsTextEmbeddingDisabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  EXPECT_FALSE(IsTextEmbeddingEnabled());
-}
-
-TEST(BatAdsTextEmbeddingFeaturesTest, IsTextEmbeddingEnabled) {
+TEST(BatAdsTextEmbeddingFeaturesTest, IsEnabled) {
   // Arrange
   base::FieldTrialParams params;
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kTextEmbedding, params);
+  enabled_features.emplace_back(kTextEmbeddingFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -41,12 +32,21 @@ TEST(BatAdsTextEmbeddingFeaturesTest, IsTextEmbeddingEnabled) {
   EXPECT_TRUE(IsTextEmbeddingEnabled());
 }
 
+TEST(BatAdsTextEmbeddingFeaturesTest, IsDisabled) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(IsTextEmbeddingEnabled());
+}
+
 TEST(BatAdsTextEmbeddingFeaturesTest, GetTextEmbeddingResourceVersion) {
   // Arrange
   base::FieldTrialParams params;
   params["resource_version"] = "0";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kTextEmbedding, params);
+  enabled_features.emplace_back(kTextEmbeddingFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -57,7 +57,7 @@ TEST(BatAdsTextEmbeddingFeaturesTest, GetTextEmbeddingResourceVersion) {
   // Act
 
   // Assert
-  EXPECT_EQ(0, GetTextEmbeddingResourceVersion());
+  EXPECT_EQ(0, kTextEmbeddingResourceVersion.Get());
 }
 
 TEST(BatAdsTextEmbeddingFeaturesTest, DefaultTextEmbeddingResourceVersion) {
@@ -66,7 +66,7 @@ TEST(BatAdsTextEmbeddingFeaturesTest, DefaultTextEmbeddingResourceVersion) {
   // Act
 
   // Assert
-  EXPECT_EQ(1, GetTextEmbeddingResourceVersion());
+  EXPECT_EQ(1, kTextEmbeddingResourceVersion.Get());
 }
 
 TEST(BatAdsTextEmbeddingFeaturesTest,
@@ -75,7 +75,7 @@ TEST(BatAdsTextEmbeddingFeaturesTest,
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kTextEmbedding);
+  disabled_features.emplace_back(kTextEmbeddingFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -84,7 +84,7 @@ TEST(BatAdsTextEmbeddingFeaturesTest,
   // Act
 
   // Assert
-  EXPECT_EQ(1, GetTextEmbeddingResourceVersion());
+  EXPECT_EQ(1, kTextEmbeddingResourceVersion.Get());
 }
 
 TEST(BatAdsTextEmbeddingFeaturesTest, GetTextEmbeddingsHistorySize) {
@@ -92,7 +92,7 @@ TEST(BatAdsTextEmbeddingFeaturesTest, GetTextEmbeddingsHistorySize) {
   base::FieldTrialParams params;
   params["history_size"] = "42";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kTextEmbedding, params);
+  enabled_features.emplace_back(kTextEmbeddingFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -103,7 +103,7 @@ TEST(BatAdsTextEmbeddingFeaturesTest, GetTextEmbeddingsHistorySize) {
   // Act
 
   // Assert
-  EXPECT_EQ(42, GetTextEmbeddingsHistorySize());
+  EXPECT_EQ(42, kTextEmbeddingHistorySize.Get());
 }
 
 TEST(BatAdsTextEmbeddingFeaturesTest, DefaultTextEmbeddingsHistorySize) {
@@ -112,7 +112,7 @@ TEST(BatAdsTextEmbeddingFeaturesTest, DefaultTextEmbeddingsHistorySize) {
   // Act
 
   // Assert
-  EXPECT_EQ(10, GetTextEmbeddingsHistorySize());
+  EXPECT_EQ(10, kTextEmbeddingHistorySize.Get());
 }
 
 TEST(BatAdsTextClassificationFeaturesTest,
@@ -121,7 +121,7 @@ TEST(BatAdsTextClassificationFeaturesTest,
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kTextEmbedding);
+  disabled_features.emplace_back(kTextEmbeddingFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -130,7 +130,7 @@ TEST(BatAdsTextClassificationFeaturesTest,
   // Act
 
   // Assert
-  EXPECT_EQ(10, GetTextEmbeddingsHistorySize());
+  EXPECT_EQ(10, kTextEmbeddingHistorySize.Get());
 }
 
-}  // namespace brave_ads::targeting::features
+}  // namespace brave_ads::targeting

@@ -12,7 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace brave_ads::features {
+namespace brave_ads {
 
 TEST(BatAdsReminderFeaturesTest, IsEnabled) {
   // Arrange
@@ -20,14 +20,14 @@ TEST(BatAdsReminderFeaturesTest, IsEnabled) {
   // Act
 
   // Assert
-  EXPECT_TRUE(IsEnabled());
+  EXPECT_TRUE(IsReminderEnabled());
 }
 TEST(BatAdsReminderFeaturesTest, IsDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kReminder);
+  disabled_features.emplace_back(kReminderFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -36,7 +36,7 @@ TEST(BatAdsReminderFeaturesTest, IsDisabled) {
   // Act
 
   // Assert
-  EXPECT_FALSE(IsEnabled());
+  EXPECT_FALSE(IsReminderEnabled());
 }
 
 TEST(BatAdsReminderFeaturesTest, RemindUserIfClickingTheSameAdAfter) {
@@ -44,7 +44,7 @@ TEST(BatAdsReminderFeaturesTest, RemindUserIfClickingTheSameAdAfter) {
   base::FieldTrialParams params;
   params["remind_user_if_clicking_the_same_ad_after"] = "1";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kReminder, params);
+  enabled_features.emplace_back(kReminderFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -55,7 +55,7 @@ TEST(BatAdsReminderFeaturesTest, RemindUserIfClickingTheSameAdAfter) {
   // Act
 
   // Assert
-  EXPECT_EQ(1U, GetRemindUserIfClickingTheSameAdAfter());
+  EXPECT_EQ(1, kRemindUserIfClickingTheSameAdAfter.Get());
 }
 
 TEST(BatAdsReminderFeaturesTest, DefaultRemindUserIfClickingTheSameAdAfter) {
@@ -64,7 +64,7 @@ TEST(BatAdsReminderFeaturesTest, DefaultRemindUserIfClickingTheSameAdAfter) {
   // Act
 
   // Assert
-  EXPECT_EQ(3U, GetRemindUserIfClickingTheSameAdAfter());
+  EXPECT_EQ(3, kRemindUserIfClickingTheSameAdAfter.Get());
 }
 
 TEST(BatAdsReminderFeaturesTest,
@@ -73,7 +73,7 @@ TEST(BatAdsReminderFeaturesTest,
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kReminder);
+  disabled_features.emplace_back(kReminderFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -82,7 +82,7 @@ TEST(BatAdsReminderFeaturesTest,
   // Act
 
   // Assert
-  EXPECT_EQ(3U, GetRemindUserIfClickingTheSameAdAfter());
+  EXPECT_EQ(3, kRemindUserIfClickingTheSameAdAfter.Get());
 }
 
-}  // namespace brave_ads::features
+}  // namespace brave_ads

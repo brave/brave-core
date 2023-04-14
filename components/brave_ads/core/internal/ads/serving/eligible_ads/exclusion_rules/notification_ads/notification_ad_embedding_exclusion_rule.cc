@@ -18,8 +18,7 @@ namespace {
 constexpr int kCompatibleServingVersion = 3;
 
 bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
-  if (notification_ads::features::GetServingVersion() !=
-      kCompatibleServingVersion) {
+  if (notification_ads::kServingVersion.Get() != kCompatibleServingVersion) {
     return true;
   }
 

@@ -12,9 +12,9 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace brave_ads::features {
+namespace brave_ads {
 
-TEST(BatAdsAccountFeaturesTest, IsAccountEnabled) {
+TEST(BatAdsAccountFeaturesTest, IsEnabled) {
   // Arrange
 
   // Act
@@ -23,12 +23,12 @@ TEST(BatAdsAccountFeaturesTest, IsAccountEnabled) {
   EXPECT_TRUE(IsAccountEnabled());
 }
 
-TEST(BatAdsAccountFeaturesTest, IsAccountDisabled) {
+TEST(BatAdsAccountFeaturesTest, IsDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kAccount);
+  disabled_features.emplace_back(kAccountFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -45,7 +45,7 @@ TEST(BatAdsAccountFeaturesTest, GetNextPaymentDay) {
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
   params["next_payment_day"] = "5";
-  enabled_features.emplace_back(kAccount, params);
+  enabled_features.emplace_back(kAccountFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -56,7 +56,7 @@ TEST(BatAdsAccountFeaturesTest, GetNextPaymentDay) {
   // Act
 
   // Assert
-  EXPECT_EQ(5, GetNextPaymentDay());
+  EXPECT_EQ(5, kNextPaymentDay.Get());
 }
 
 TEST(BatAdsAccountFeaturesTest, DefaultNextPaymentDay) {
@@ -65,7 +65,7 @@ TEST(BatAdsAccountFeaturesTest, DefaultNextPaymentDay) {
   // Act
 
   // Assert
-  EXPECT_EQ(7, GetNextPaymentDay());
+  EXPECT_EQ(7, kNextPaymentDay.Get());
 }
 
 TEST(BatAdsAccountFeaturesTest, DefaultNextPaymentDayWhenDisabled) {
@@ -73,7 +73,7 @@ TEST(BatAdsAccountFeaturesTest, DefaultNextPaymentDayWhenDisabled) {
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kAccount);
+  disabled_features.emplace_back(kAccountFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -82,7 +82,7 @@ TEST(BatAdsAccountFeaturesTest, DefaultNextPaymentDayWhenDisabled) {
   // Act
 
   // Assert
-  EXPECT_EQ(7, GetNextPaymentDay());
+  EXPECT_EQ(7, kNextPaymentDay.Get());
 }
 
-}  // namespace brave_ads::features
+}  // namespace brave_ads

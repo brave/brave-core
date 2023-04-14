@@ -181,21 +181,21 @@ TEST_P(BatAdsTopSegmentsTest, GetSegments) {
     base::FieldTrialParams params;
     params["epsilon_value"] =
         "0.0";  // Set bandit to always exploit for deterministic execution
-    enabled_features.emplace_back(features::kEpsilonGreedyBandit, params);
+    enabled_features.emplace_back(kEpsilonGreedyBanditFeatures, params);
   } else {
-    disabled_features.emplace_back(features::kEpsilonGreedyBandit);
+    disabled_features.emplace_back(kEpsilonGreedyBanditFeatures);
   }
 
   if (param.purchase_intent_enabled) {
-    enabled_features.push_back({features::kPurchaseIntent, {}});
+    enabled_features.push_back({kPurchaseIntentFeature, {}});
   } else {
-    disabled_features.emplace_back(features::kPurchaseIntent);
+    disabled_features.emplace_back(kPurchaseIntentFeature);
   }
 
   if (param.text_classification_enabled) {
-    enabled_features.push_back({features::kTextClassification, {}});
+    enabled_features.push_back({kTextClassificationFeature, {}});
   } else {
-    disabled_features.emplace_back(features::kTextClassification);
+    disabled_features.emplace_back(kTextClassificationFeature);
   }
 
   base::test::ScopedFeatureList scoped_feature_list;
@@ -259,9 +259,9 @@ TEST_F(BatAdsTopSegmentsTest, GetSegmentsForAllModelsIfPreviouslyProcessed) {
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(
-      {{features::kPurchaseIntent, /*default params*/ {}},
-       {features::kEpsilonGreedyBandit, params},
-       {features::kTextClassification, /*default params*/ {}}},
+      {{kPurchaseIntentFeature, /*default params*/ {}},
+       {kEpsilonGreedyBanditFeatures, params},
+       {kTextClassificationFeature, /*default params*/ {}}},
       {});
 
   // Act

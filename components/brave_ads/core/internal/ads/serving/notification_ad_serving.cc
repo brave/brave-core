@@ -36,9 +36,8 @@ constexpr base::TimeDelta kRetryServingAdAfterDelay = base::Minutes(2);
 
 Serving::Serving(const geographic::SubdivisionTargeting& subdivision_targeting,
                  const resource::AntiTargeting& anti_targeting_resource) {
-  const int version = features::GetServingVersion();
-  eligible_ads_ = EligibleAdsFactory::Build(version, subdivision_targeting,
-                                            anti_targeting_resource);
+  eligible_ads_ = EligibleAdsFactory::Build(
+      kServingVersion.Get(), subdivision_targeting, anti_targeting_resource);
 
   AdsClientHelper::AddObserver(this);
 }
@@ -88,7 +87,7 @@ void Serving::MaybeServeAd() {
 
   is_serving_ = true;
 
-  if (!features::IsServingEnabled()) {
+  if (!IsServingEnabled()) {
     BLOG(1, "Notification ad not served: Feature is disabled");
     FailedToServeAd();
     return;

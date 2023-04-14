@@ -26,7 +26,8 @@ uint16_t CalculateScoreForHistory(
     const PurchaseIntentSignalHistoryList& history) {
   uint16_t score = 0;
 
-  const base::TimeDelta time_window = features::GetPurchaseIntentTimeWindow();
+  const base::TimeDelta time_window = kPurchaseIntentTimeWindow.Get();
+
   for (const auto& signal_segment : history) {
     const base::Time signal_decayed_time =
         signal_segment.created_at + time_window;
@@ -59,7 +60,8 @@ SegmentList PurchaseIntent::GetSegments() const {
     scores.insert(std::make_pair(score, segment));
   }
 
-  const uint16_t threshold = features::GetPurchaseIntentThreshold();
+  const uint16_t threshold = kPurchaseIntentThreshold.Get();
+
   for (const auto& [score, segment] : base::Reversed(scores)) {
     if (score >= threshold) {
       segments.push_back(segment);

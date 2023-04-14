@@ -63,7 +63,7 @@ constexpr char kFieldTrialParameterShouldSupportMultipleDisplays[] =
 constexpr bool kDefaultShouldSupportMultipleDisplays = false;
 
 constexpr char kFieldTrialParameterShouldAttachNotificationAdToBrowserWindow[] =
-    "should_attached_ad_notification_to_browser_window";
+    "should_attach_ad_notification_to_browser_window";
 constexpr bool kDefaultShouldAttachNotificationAdToBrowserWindow = false;
 
 // Ad notification normalized display coordinate for the x component should be

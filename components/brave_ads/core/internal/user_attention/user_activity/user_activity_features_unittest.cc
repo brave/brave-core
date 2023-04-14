@@ -12,7 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace brave_ads::user_activity::features {
+namespace brave_ads {
 
 TEST(BatAdsUserActivityFeaturesTest, IsEnabled) {
   // Arrange
@@ -20,7 +20,7 @@ TEST(BatAdsUserActivityFeaturesTest, IsEnabled) {
   // Act
 
   // Assert
-  EXPECT_TRUE(IsEnabled());
+  EXPECT_TRUE(IsUserActivityEnabled());
 }
 
 TEST(BatAdsUserActivityFeaturesTest, IsDisabled) {
@@ -28,7 +28,7 @@ TEST(BatAdsUserActivityFeaturesTest, IsDisabled) {
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kFeature);
+  disabled_features.emplace_back(kUserActivityFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -37,7 +37,7 @@ TEST(BatAdsUserActivityFeaturesTest, IsDisabled) {
   // Act
 
   // Assert
-  EXPECT_FALSE(IsEnabled());
+  EXPECT_FALSE(IsUserActivityEnabled());
 }
 
 TEST(BatAdsUserActivityFeaturesTest, GetTriggers) {
@@ -45,7 +45,7 @@ TEST(BatAdsUserActivityFeaturesTest, GetTriggers) {
   base::FieldTrialParams params;
   params["triggers"] = "01=0.5;010203=1.0;0203=0.75";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kFeature, params);
+  enabled_features.emplace_back(kUserActivityFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -56,7 +56,7 @@ TEST(BatAdsUserActivityFeaturesTest, GetTriggers) {
   // Act
 
   // Assert
-  EXPECT_EQ("01=0.5;010203=1.0;0203=0.75", GetTriggers());
+  EXPECT_EQ("01=0.5;010203=1.0;0203=0.75", kUserActivityTriggers.Get());
 }
 
 TEST(BatAdsUserActivityFeaturesTest, DefaultTriggers) {
@@ -67,7 +67,7 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultTriggers) {
   // Assert
   EXPECT_EQ(
       "0D0B14110D0B14110D0B14110D0B1411=-1.0;0D0B1411070707=-1.0;07070707=-1.0",
-      GetTriggers());
+      kUserActivityTriggers.Get());
 }
 
 TEST(BatAdsUserActivityFeaturesTest, DefaultTriggersWhenDisabled) {
@@ -75,7 +75,7 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultTriggersWhenDisabled) {
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kFeature);
+  disabled_features.emplace_back(kUserActivityFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -86,7 +86,7 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultTriggersWhenDisabled) {
   // Assert
   EXPECT_EQ(
       "0D0B14110D0B14110D0B14110D0B1411=-1.0;0D0B1411070707=-1.0;07070707=-1.0",
-      GetTriggers());
+      kUserActivityTriggers.Get());
 }
 
 TEST(BatAdsUserActivityFeaturesTest, GetTimeWindow) {
@@ -94,7 +94,7 @@ TEST(BatAdsUserActivityFeaturesTest, GetTimeWindow) {
   base::FieldTrialParams params;
   params["time_window"] = "2h";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kFeature, params);
+  enabled_features.emplace_back(kUserActivityFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -105,7 +105,7 @@ TEST(BatAdsUserActivityFeaturesTest, GetTimeWindow) {
   // Act
 
   // Assert
-  EXPECT_EQ(base::Hours(2), GetTimeWindow());
+  EXPECT_EQ(base::Hours(2), kUserActivityTimeWindow.Get());
 }
 
 TEST(BatAdsUserActivityFeaturesTest, DefaultTimeWindow) {
@@ -114,7 +114,7 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultTimeWindow) {
   // Act
 
   // Assert
-  EXPECT_EQ(base::Minutes(15), GetTimeWindow());
+  EXPECT_EQ(base::Minutes(15), kUserActivityTimeWindow.Get());
 }
 
 TEST(BatAdsUserActivityFeaturesTest, DefaultTimeWindowWhenDisabled) {
@@ -122,7 +122,7 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultTimeWindowWhenDisabled) {
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kFeature);
+  disabled_features.emplace_back(kUserActivityFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -131,7 +131,7 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultTimeWindowWhenDisabled) {
   // Act
 
   // Assert
-  EXPECT_EQ(base::Minutes(15), GetTimeWindow());
+  EXPECT_EQ(base::Minutes(15), kUserActivityTimeWindow.Get());
 }
 
 TEST(BatAdsUserActivityFeaturesTest, GetThreshold) {
@@ -139,7 +139,7 @@ TEST(BatAdsUserActivityFeaturesTest, GetThreshold) {
   base::FieldTrialParams params;
   params["threshold"] = "7.0";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kFeature, params);
+  enabled_features.emplace_back(kUserActivityFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -150,7 +150,7 @@ TEST(BatAdsUserActivityFeaturesTest, GetThreshold) {
   // Act
 
   // Assert
-  EXPECT_EQ(7.0, GetThreshold());
+  EXPECT_EQ(7.0, kUserActivityThreshold.Get());
 }
 
 TEST(BatAdsUserActivityFeaturesTest, DefaultThreshold) {
@@ -159,7 +159,7 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultThreshold) {
   // Act
 
   // Assert
-  EXPECT_EQ(0.0, GetThreshold());
+  EXPECT_EQ(0.0, kUserActivityThreshold.Get());
 }
 
 TEST(BatAdsUserActivityFeaturesTest, DefaultThresholdWhenDisabled) {
@@ -167,7 +167,7 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultThresholdWhenDisabled) {
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kFeature);
+  disabled_features.emplace_back(kUserActivityFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -176,7 +176,7 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultThresholdWhenDisabled) {
   // Act
 
   // Assert
-  EXPECT_EQ(0.0, GetThreshold());
+  EXPECT_EQ(0.0, kUserActivityThreshold.Get());
 }
 
-}  // namespace brave_ads::user_activity::features
+}  // namespace brave_ads

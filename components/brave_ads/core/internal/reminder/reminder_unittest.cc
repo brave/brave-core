@@ -53,7 +53,7 @@ TEST_F(BatAdsReminderTest, ShowReminderWhenUserClicksTheSameAdMultipleTimes) {
               ShowReminder(mojom::ReminderType::kClickedSameAdMultipleTimes));
 
   // Act
-  AddHistory(/*count*/ features::GetRemindUserIfClickingTheSameAdAfter());
+  AddHistory(/*count*/ kRemindUserIfClickingTheSameAdAfter.Get());
 
   // Assert
 }
@@ -64,7 +64,7 @@ TEST_F(BatAdsReminderTest,
   EXPECT_CALL(*ads_client_mock_, ShowReminder(_)).Times(0);
 
   // Act
-  AddHistory(/*count*/ features::GetRemindUserIfClickingTheSameAdAfter() - 1);
+  AddHistory(/*count*/ kRemindUserIfClickingTheSameAdAfter.Get() - 1);
 
   // Assert
 }
@@ -75,7 +75,7 @@ TEST_F(BatAdsReminderTest,
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(features::kReminder);
+  disabled_features.emplace_back(kReminderFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -84,7 +84,7 @@ TEST_F(BatAdsReminderTest,
   EXPECT_CALL(*ads_client_mock_, ShowReminder(_)).Times(0);
 
   // Act
-  AddHistory(/*count*/ features::GetRemindUserIfClickingTheSameAdAfter());
+  AddHistory(/*count*/ kRemindUserIfClickingTheSameAdAfter.Get());
 
   // Assert
 }

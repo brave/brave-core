@@ -25,7 +25,7 @@ base::expected<ConversionsInfo, std::string> ConversionsInfo::CreateFromValue(
   ConversionsInfo conversion;
 
   if (absl::optional<int> version = dict.FindInt("version")) {
-    if (features::GetConversionsResourceVersion() != *version) {
+    if (kConversionsResourceVersion.Get() != *version) {
       return base::unexpected("Failed to load from JSON, version missing");
     }
     conversion.version = *version;

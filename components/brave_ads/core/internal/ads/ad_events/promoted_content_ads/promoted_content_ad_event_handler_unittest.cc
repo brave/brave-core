@@ -291,7 +291,7 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
                    ConfirmationType::kServed, Now());
 
-  const int ads_per_hour = features::GetMaximumAdsPerHour();
+  const int ads_per_hour = kMaximumAdsPerHour.Get();
 
   FireAdEvents(ad_event, ads_per_hour - 1);
 
@@ -317,7 +317,8 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
                    ConfirmationType::kServed, Now());
 
-  const int ads_per_hour = features::GetMaximumAdsPerHour();
+  const int ads_per_hour = kMaximumAdsPerHour.Get();
+
   FireAdEvents(ad_event, ads_per_hour);
 
   const std::string placement_id =
@@ -342,7 +343,7 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
                    ConfirmationType::kServed, Now());
 
-  const int ads_per_day = features::GetMaximumAdsPerDay();
+  const int ads_per_day = kMaximumAdsPerDay.Get();
 
   FireAdEvents(ad_event, ads_per_day - 1);
 
@@ -370,7 +371,7 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
                    ConfirmationType::kServed, Now());
 
-  const int ads_per_day = features::GetMaximumAdsPerDay();
+  const int ads_per_day = kMaximumAdsPerDay.Get();
 
   FireAdEvents(ad_event, ads_per_day);
 

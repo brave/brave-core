@@ -25,7 +25,7 @@ class BatAdsUserActivityPermissionRuleTest : public UnitTestBase {
     params["time_window"] = "1h";
     params["threshold"] = "2.0";
     std::vector<base::test::FeatureRefAndParams> enabled_features;
-    enabled_features.emplace_back(user_activity::features::kFeature, params);
+    enabled_features.emplace_back(kUserActivityFeature, params);
 
     const std::vector<base::test::FeatureRef> disabled_features;
 

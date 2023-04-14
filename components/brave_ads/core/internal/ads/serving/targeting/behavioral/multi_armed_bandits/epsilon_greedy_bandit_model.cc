@@ -161,7 +161,7 @@ SegmentList GetSegmentsForArms(const EpsilonGreedyBanditArmMap& arms) {
 
   const EpsilonGreedyBanditArmMap eligible_arms = GetEligibleArms(arms);
 
-  if (base::RandDouble() < features::GetEpsilonGreedyBanditEpsilonValue()) {
+  if (base::RandDouble() < kEpsilonGreedyBanditEpsilonValue.Get()) {
     segments = ExploreSegments(eligible_arms);
   } else {
     segments = ExploitSegments(eligible_arms);

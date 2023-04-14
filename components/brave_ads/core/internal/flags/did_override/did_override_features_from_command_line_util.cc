@@ -36,22 +36,22 @@ namespace brave_ads {
 namespace {
 
 const base::Feature* const kFeatures[] = {
-    &exclusion_rules::features::kFeature,
-    &features::kAccount,
-    &features::kConversions,
-    &features::kEligibleAds,
     &features::kShouldTriggerSearchResultAdEvents,
-    &inline_content_ads::features::kFeature,
-    &new_tab_page_ads::features::kFeature,
-    &notification_ads::features::kFeature,
-    &permission_rules::features::kFeature,
-    &promoted_content_ads::features::kFeature,
-    &resource::features::kAntiTargeting,
-    &search_result_ads::features::kFeature,
-    &targeting::features::kEpsilonGreedyBandit,
-    &targeting::features::kPurchaseIntent,
-    &targeting::features::kTextClassification,
-    &user_activity::features::kFeature};
+    &inline_content_ads::kAdsFeature,
+    &kAccountFeature,
+    &kAntiTargetingFeature,
+    &kConversionsFeature,
+    &kEligibleAdsFeature,
+    &kExclusionRulesFeature,
+    &kPermissionRulesFeature,
+    &kUserActivityFeature,
+    &new_tab_page_ads::kAdsFeature,
+    &notification_ads::kAdsFeature,
+    &promoted_content_ads::kAdsFeature,
+    &search_result_ads::kAdsFeature,
+    &targeting::kEpsilonGreedyBanditFeatures,
+    &targeting::kPurchaseIntentFeature,
+    &targeting::kTextClassificationFeature};
 
 constexpr char kFeaturesSeparators[] = ",:<";
 

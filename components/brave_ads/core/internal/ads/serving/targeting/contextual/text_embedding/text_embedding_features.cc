@@ -5,38 +5,14 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_embedding/text_embedding_features.h"
 
-#include "base/metrics/field_trial_params.h"
+namespace brave_ads::targeting {
 
-namespace brave_ads::targeting::features {
-
-namespace {
-
-constexpr char kResourceVersionFieldTrialParamName[] = "resource_version";
-constexpr int kResourceVersionDefaultValue = 1;
-
-constexpr char kHistorySizeFieldTrialParamName[] = "history_size";
-constexpr int kHistorySizeDefaultValue = 10;
-
-}  // namespace
-
-BASE_FEATURE(kTextEmbedding,
+BASE_FEATURE(kTextEmbeddingFeature,
              "TextEmbedding",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsTextEmbeddingEnabled() {
-  return base::FeatureList::IsEnabled(kTextEmbedding);
+  return base::FeatureList::IsEnabled(kTextEmbeddingFeature);
 }
 
-int GetTextEmbeddingResourceVersion() {
-  return GetFieldTrialParamByFeatureAsInt(kTextEmbedding,
-                                          kResourceVersionFieldTrialParamName,
-                                          kResourceVersionDefaultValue);
-}
-
-int GetTextEmbeddingsHistorySize() {
-  return GetFieldTrialParamByFeatureAsInt(kTextEmbedding,
-                                          kHistorySizeFieldTrialParamName,
-                                          kHistorySizeDefaultValue);
-}
-
-}  // namespace brave_ads::targeting::features
+}  // namespace brave_ads::targeting

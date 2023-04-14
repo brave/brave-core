@@ -561,8 +561,6 @@ source_set("internal") {
     "common/locale/subdivision_code_util.h",
     "common/logging_util.cc",
     "common/logging_util.h",
-    "common/metrics/field_trial_params_util.cc",
-    "common/metrics/field_trial_params_util.h",
     "common/net/http/http_status_code.h",
     "common/numbers/number_util.cc",
     "common/numbers/number_util.h",

@@ -5,36 +5,12 @@
 
 #include "brave/components/brave_ads/core/internal/ads/search_result_ad_features.h"
 
-#include "base/metrics/field_trial_params.h"
+namespace brave_ads::search_result_ads {
 
-namespace brave_ads::search_result_ads::features {
-
-namespace {
-
-constexpr char kMaximumAdsPerHourFieldTrialParamName[] = "maximum_ads_per_hour";
-constexpr int kMaximumAdsPerHourDefaultValue = 10;
-
-constexpr char kMaximumAdsPerDayFieldTrialParamName[] = "maximum_ads_per_day";
-constexpr int kMaximumAdsPerDayDefaultValue = 40;
-
-}  // namespace
-
-BASE_FEATURE(kFeature, "SearchResultAds", base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kAdsFeature, "SearchResultAds", base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsEnabled() {
-  return base::FeatureList::IsEnabled(kFeature);
+  return base::FeatureList::IsEnabled(kAdsFeature);
 }
 
-int GetMaximumAdsPerHour() {
-  return GetFieldTrialParamByFeatureAsInt(kFeature,
-                                          kMaximumAdsPerHourFieldTrialParamName,
-                                          kMaximumAdsPerHourDefaultValue);
-}
-
-int GetMaximumAdsPerDay() {
-  return GetFieldTrialParamByFeatureAsInt(kFeature,
-                                          kMaximumAdsPerDayFieldTrialParamName,
-                                          kMaximumAdsPerDayDefaultValue);
-}
-
-}  // namespace brave_ads::search_result_ads::features
+}  // namespace brave_ads::search_result_ads

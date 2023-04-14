@@ -26,7 +26,7 @@ class BatAdsUserActivityScoringUtilTest : public UnitTestBase {
     params["time_window"] = "1h";
     params["threshold"] = "2.0";
     std::vector<base::test::FeatureRefAndParams> enabled_features;
-    enabled_features.emplace_back(user_activity::features::kFeature, params);
+    enabled_features.emplace_back(kUserActivityFeature, params);
 
     const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -82,7 +82,7 @@ TEST_F(BatAdsUserActivityScoringUtilTest,
       UserActivityEventType::kClosedTab);
 
   const base::TimeDelta elapsed_time_window =
-      user_activity::features::GetTimeWindow() + base::Seconds(1);
+      kUserActivityTimeWindow.Get() + base::Seconds(1);
   AdvanceClockBy(elapsed_time_window);
 
   // Act

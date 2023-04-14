@@ -12,9 +12,9 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace brave_ads::resource::features {
+namespace brave_ads {
 
-TEST(BatAdsAntiTargetingFeaturesTest, IsAntiTargetingEnabled) {
+TEST(BatAdsAntiTargetingFeaturesTest, IsEnabled) {
   // Arrange
 
   // Act
@@ -23,12 +23,12 @@ TEST(BatAdsAntiTargetingFeaturesTest, IsAntiTargetingEnabled) {
   EXPECT_TRUE(IsAntiTargetingEnabled());
 }
 
-TEST(BatAdsUserActivityFeaturesTest, IsAntiTargetingDisabled) {
+TEST(BatAdsAntiTargetingFeaturesTest, IsDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kAntiTargeting);
+  disabled_features.emplace_back(kAntiTargetingFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -45,7 +45,7 @@ TEST(BatAdsAntiTargetingFeaturesTest, GetAntiTargetingResourceVersion) {
   base::FieldTrialParams params;
   params["resource_version"] = "0";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kAntiTargeting, params);
+  enabled_features.emplace_back(kAntiTargetingFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -56,7 +56,7 @@ TEST(BatAdsAntiTargetingFeaturesTest, GetAntiTargetingResourceVersion) {
   // Act
 
   // Assert
-  EXPECT_EQ(0, GetAntiTargetingResourceVersion());
+  EXPECT_EQ(0, kAntiTargetingResourceVersion.Get());
 }
 
 TEST(BatAdsAntiTargetingFeaturesTest, DefaultAntiTargetingResourceVersion) {
@@ -65,7 +65,7 @@ TEST(BatAdsAntiTargetingFeaturesTest, DefaultAntiTargetingResourceVersion) {
   // Act
 
   // Assert
-  EXPECT_EQ(1, GetAntiTargetingResourceVersion());
+  EXPECT_EQ(1, kAntiTargetingResourceVersion.Get());
 }
 
 TEST(BatAdsIdleDetectionFeaturesTest,
@@ -74,7 +74,7 @@ TEST(BatAdsIdleDetectionFeaturesTest,
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kAntiTargeting);
+  disabled_features.emplace_back(kAntiTargetingFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -83,7 +83,7 @@ TEST(BatAdsIdleDetectionFeaturesTest,
   // Act
 
   // Assert
-  EXPECT_EQ(1, GetAntiTargetingResourceVersion());
+  EXPECT_EQ(1, kAntiTargetingResourceVersion.Get());
 }
 
-}  // namespace brave_ads::resource::features
+}  // namespace brave_ads

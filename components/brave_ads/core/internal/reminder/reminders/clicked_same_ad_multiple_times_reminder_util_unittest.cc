@@ -56,7 +56,7 @@ TEST_F(BatAdsClickedSameAdMultipleTimesReminderUtilTest,
        RemindUserOnDesktopOperatingSystems) {
   // Arrange
   const HistoryItemInfo history_item =
-      AddHistory(/*count*/ features::GetRemindUserIfClickingTheSameAdAfter(),
+      AddHistory(/*count*/ kRemindUserIfClickingTheSameAdAfter.Get(),
                  /*should_use_random_creative_instance_guid*/ false);
 
   // Assert
@@ -82,7 +82,7 @@ TEST_F(BatAdsClickedSameAdMultipleTimesReminderUtilTest,
        RemindUserAfterClickingTheSameAdMultipleTimes) {
   // Arrange
   const HistoryItemInfo history_item =
-      AddHistory(/*count*/ features::GetRemindUserIfClickingTheSameAdAfter(),
+      AddHistory(/*count*/ kRemindUserIfClickingTheSameAdAfter.Get(),
                  /*should_use_random_creative_instance_guid*/ false);
 
   // Act
@@ -95,7 +95,7 @@ TEST_F(BatAdsClickedSameAdMultipleTimesReminderUtilTest,
        DoNotRemindUserIfTheyDidNotClickTheSameAdMultipleTimes) {
   // Arrange
   const HistoryItemInfo history_item = AddHistory(
-      /*count*/ features::GetRemindUserIfClickingTheSameAdAfter() - 1,
+      /*count*/ kRemindUserIfClickingTheSameAdAfter.Get() - 1,
       /*should_use_random_creative_instance_guid*/ false);
 
   // Act
@@ -108,7 +108,7 @@ TEST_F(BatAdsClickedSameAdMultipleTimesReminderUtilTest,
        RemindUserAfterOnceAgainClickingTheSameAdMultipleTimes) {
   // Arrange
   const HistoryItemInfo history_item = AddHistory(
-      /*count*/ features::GetRemindUserIfClickingTheSameAdAfter() * 2,
+      /*count*/ kRemindUserIfClickingTheSameAdAfter.Get() * 2,
       /*should_use_random_creative_instance_guid*/ false);
 
   // Act
@@ -121,7 +121,7 @@ TEST_F(BatAdsClickedSameAdMultipleTimesReminderUtilTest,
        DoNotRemindUserIfTheyDidNotOnceAgainClickTheSameAdMultipleTimes) {
   // Arrange
   const HistoryItemInfo history_item = AddHistory(
-      /*count*/ (features::GetRemindUserIfClickingTheSameAdAfter() * 2) - 1,
+      /*count*/ (kRemindUserIfClickingTheSameAdAfter.Get() * 2) - 1,
       /*should_use_random_creative_instance_guid*/ false);
 
   // Act
@@ -155,7 +155,7 @@ TEST_F(
     DoNotRemindUserIfTheyDidNotClickTheSameAdMultipleTimesAfterTheHistoryHasExpired) {
   // Arrange
   AddHistory(
-      /*count*/ features::GetRemindUserIfClickingTheSameAdAfter() - 1,
+      /*count*/ kRemindUserIfClickingTheSameAdAfter.Get() - 1,
       /*should_use_random_creative_instance_guid*/ false);
 
   AdvanceClockBy(kHistoryTimeWindow);
@@ -172,7 +172,7 @@ TEST_F(BatAdsClickedSameAdMultipleTimesReminderUtilTest,
        DoNotRemindTheUserAfterClickingDifferentAds) {
   // Arrange
   const HistoryItemInfo history_item = AddHistory(
-      /*count*/ features::GetRemindUserIfClickingTheSameAdAfter(),
+      /*count*/ kRemindUserIfClickingTheSameAdAfter.Get(),
       /*should_use_random_creative_instance_guid*/ true);
 
   // Act

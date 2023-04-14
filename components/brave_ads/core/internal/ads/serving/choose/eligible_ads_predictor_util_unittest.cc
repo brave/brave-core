@@ -80,7 +80,7 @@ TEST(BatAdsEligibleAdsPredictorUtilTest,
   params["ad_predictor_weights"] = "0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0";
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(
-      {{features::kEligibleAds, params}}, {});
+      {{kEligibleAdsFeature, params}}, {});
 
   CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);

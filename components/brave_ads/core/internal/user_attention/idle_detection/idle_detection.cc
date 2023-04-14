@@ -14,7 +14,7 @@
 namespace brave_ads {
 
 IdleDetection::IdleDetection() {
-  idle_detection::MaybeUpdateIdleTimeThreshold();
+  MaybeUpdateIdleTimeThreshold();
 
   AdsClientHelper::AddObserver(this);
 }
@@ -32,7 +32,7 @@ void IdleDetection::OnNotifyUserDidBecomeActive(const base::TimeDelta idle_time,
     BLOG(1, "Screen was locked before the user become active");
   }
 
-  idle_detection::MaybeUpdateIdleTimeThreshold();
+  MaybeUpdateIdleTimeThreshold();
 
   SetLastUnIdleTimeDiagnosticEntry(base::Time::Now());
 }

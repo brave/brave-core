@@ -52,7 +52,7 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, EligableSegmentsAreEmpty) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
-      features::kEpsilonGreedyBandit, {{"epsilon_value", "0.5"}});
+      kEpsilonGreedyBanditFeatures, {{"epsilon_value", "0.5"}});
 
   const processor::EpsilonGreedyBandit processor;
 
@@ -70,7 +70,7 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsIfNeverProcessed) {
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
-      features::kEpsilonGreedyBandit, {{"epsilon_value", "0.25"}});
+      kEpsilonGreedyBanditFeatures, {{"epsilon_value", "0.25"}});
 
   const processor::EpsilonGreedyBandit processor;
 
@@ -88,7 +88,7 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploration) {
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
-      features::kEpsilonGreedyBandit, {{"epsilon_value", "1.0"}});
+      kEpsilonGreedyBanditFeatures, {{"epsilon_value", "1.0"}});
 
   const processor::EpsilonGreedyBandit processor;
 
@@ -114,7 +114,7 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploitation) {
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
-      features::kEpsilonGreedyBandit, {{"epsilon_value", "0.0"}});
+      kEpsilonGreedyBanditFeatures, {{"epsilon_value", "0.0"}});
 
   // Set all values to zero by choosing a zero-reward action due to
   // optimistic initial values for arms
@@ -168,7 +168,7 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForEligibleSegments) {
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
-      features::kEpsilonGreedyBandit, {{"epsilon_value", "0.0"}});
+      kEpsilonGreedyBanditFeatures, {{"epsilon_value", "0.0"}});
 
   // Set all values to zero by choosing a zero-reward action due to
   // optimistic initial values for arms

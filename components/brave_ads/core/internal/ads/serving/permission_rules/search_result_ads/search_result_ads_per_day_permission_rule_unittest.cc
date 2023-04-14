@@ -46,8 +46,8 @@ TEST_F(BatAdsSearchResultAdsPerDayPermissionRuleTest,
 TEST_F(BatAdsSearchResultAdsPerDayPermissionRuleTest,
        AllowAdIfDoesNotExceedCap) {
   // Arrange
-  const int count = features::GetMaximumAdsPerDay() - 1;
-  RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed, count);
+  RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed,
+                 /*count*/ kMaximumAdsPerDay.Get() - 1);
 
   // Act
   AdsPerDayPermissionRule permission_rule;
@@ -60,8 +60,8 @@ TEST_F(BatAdsSearchResultAdsPerDayPermissionRuleTest,
 TEST_F(BatAdsSearchResultAdsPerDayPermissionRuleTest,
        AllowAdIfDoesNotExceedCapAfter1Day) {
   // Arrange
-  const int count = features::GetMaximumAdsPerDay();
-  RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed, count);
+  RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed,
+                 /*count*/ kMaximumAdsPerDay.Get());
 
   AdvanceClockBy(base::Days(1));
 
@@ -76,8 +76,8 @@ TEST_F(BatAdsSearchResultAdsPerDayPermissionRuleTest,
 TEST_F(BatAdsSearchResultAdsPerDayPermissionRuleTest,
        DoNotAllowAdIfExceedsCapWithin1Day) {
   // Arrange
-  const int count = features::GetMaximumAdsPerDay();
-  RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed, count);
+  RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed,
+                 /*count*/ kMaximumAdsPerDay.Get());
 
   AdvanceClockBy(base::Days(1) - base::Seconds(1));
 

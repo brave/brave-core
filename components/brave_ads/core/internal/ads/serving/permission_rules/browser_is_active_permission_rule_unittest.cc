@@ -66,7 +66,7 @@ TEST_F(BatAdsBrowserIsActivePermissionRuleTest,
   base::FieldTrialParams params;
   params["should_only_serve_ads_if_browser_is_active"] = "false";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(permission_rules::features::kFeature, params);
+  enabled_features.emplace_back(kPermissionRulesFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 

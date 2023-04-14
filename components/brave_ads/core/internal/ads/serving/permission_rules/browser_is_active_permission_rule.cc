@@ -24,7 +24,7 @@ bool DoesRespectCap() {
 }  // namespace
 
 bool BrowserIsActivePermissionRule::ShouldAllow() {
-  if (!permission_rules::features::ShouldOnlyServeAdsIfBrowserIsActive()) {
+  if (!kShouldOnlyServeAdsIfBrowserIsActive.Get()) {
     return true;
   }
 

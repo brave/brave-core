@@ -28,7 +28,7 @@ class BatAdsNotificationAdServingTest : public ServingObserver,
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    features::ForceServingVersion(1);
+    ForceServingVersion(1);
 
     subdivision_targeting_ =
         std::make_unique<geographic::SubdivisionTargeting>();
@@ -68,7 +68,7 @@ class BatAdsNotificationAdServingTest : public ServingObserver,
 
 TEST_F(BatAdsNotificationAdServingTest, DoNotServeAdForUnsupportedVersion) {
   // Arrange
-  features::ForceServingVersion(0);
+  ForceServingVersion(0);
 
   // Act
   serving_->MaybeServeAd();

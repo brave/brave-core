@@ -5,28 +5,14 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_features.h"
 
-#include "base/metrics/field_trial_params.h"
+namespace brave_ads::inline_content_ads {
 
-namespace brave_ads::inline_content_ads::features {
-
-namespace {
-
-constexpr char kVersionFieldTrialParamName[] = "version";
-constexpr int kVersionDefaultValue = 2;
-
-}  // namespace
-
-BASE_FEATURE(kServing,
+BASE_FEATURE(kServingFeature,
              "InlineContentAdServing",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsServingEnabled() {
-  return base::FeatureList::IsEnabled(kServing);
+  return base::FeatureList::IsEnabled(kServingFeature);
 }
 
-int GetServingVersion() {
-  return GetFieldTrialParamByFeatureAsInt(kServing, kVersionFieldTrialParamName,
-                                          kVersionDefaultValue);
-}
-
-}  // namespace brave_ads::inline_content_ads::features
+}  // namespace brave_ads::inline_content_ads

@@ -72,8 +72,7 @@ void EligibleAdsV1::GetBrowsingHistory(
     const AdEventList& ad_events,
     GetEligibleAdsCallback<CreativeInlineContentAdList> callback) {
   AdsClientHelper::GetInstance()->GetBrowsingHistory(
-      features::GetBrowsingHistoryMaxCount(),
-      features::GetBrowsingHistoryDaysAgo(),
+      kBrowsingHistoryMaxCount.Get(), kBrowsingHistoryDaysAgo.Get(),
       base::BindOnce(&EligibleAdsV1::GetEligibleAds, weak_factory_.GetWeakPtr(),
                      std::move(user_model), dimensions, ad_events,
                      std::move(callback)));

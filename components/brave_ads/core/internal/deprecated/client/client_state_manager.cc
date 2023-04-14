@@ -493,7 +493,7 @@ void ClientStateManager::AppendTextClassificationProbabilitiesToHistory(
   client_->text_classification_probabilities.push_front(probabilities);
 
   const size_t maximum_entries =
-      targeting::features::GetTextClassificationProbabilitiesHistorySize();
+      targeting::kTextClassificationPageProbabilitiesHistorySize.Get();
   if (client_->text_classification_probabilities.size() > maximum_entries) {
     client_->text_classification_probabilities.resize(maximum_entries);
   }

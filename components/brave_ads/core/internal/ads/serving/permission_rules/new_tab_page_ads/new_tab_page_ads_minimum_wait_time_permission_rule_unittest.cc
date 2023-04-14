@@ -33,7 +33,7 @@ TEST_F(BatAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
   // Arrange
   RecordAdEvent(AdType::kNewTabPageAd, ConfirmationType::kServed);
 
-  AdvanceClockBy(features::GetMinimumWaitTime());
+  AdvanceClockBy(kMinimumWaitTime.Get());
 
   // Act
   MinimumWaitTimePermissionRule permission_rule;
@@ -48,7 +48,7 @@ TEST_F(BatAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
   // Arrange
   RecordAdEvent(AdType::kNewTabPageAd, ConfirmationType::kServed);
 
-  AdvanceClockBy(features::GetMinimumWaitTime() - base::Seconds(1));
+  AdvanceClockBy(kMinimumWaitTime.Get() - base::Seconds(1));
 
   // Act
   MinimumWaitTimePermissionRule permission_rule;

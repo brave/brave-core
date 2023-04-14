@@ -21,8 +21,8 @@ namespace {
 constexpr base::TimeDelta kTimeConstraint = base::Hours(1);
 
 bool DoesRespectCap(const std::vector<base::Time>& history) {
-  return DoesHistoryRespectRollingTimeConstraint(
-      history, kTimeConstraint, features::GetMaximumAdsPerHour());
+  return DoesHistoryRespectRollingTimeConstraint(history, kTimeConstraint,
+                                                 kMaximumAdsPerHour.Get());
 }
 
 }  // namespace

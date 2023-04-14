@@ -24,7 +24,7 @@ Conversions::Conversions() = default;
 Conversions::~Conversions() = default;
 
 void Conversions::Load() {
-  LoadAndParseResource(kResourceId, features::GetConversionsResourceVersion(),
+  LoadAndParseResource(kResourceId, kConversionsResourceVersion.Get(),
                        base::BindOnce(&Conversions::OnLoadAndParseResource,
                                       weak_factory_.GetWeakPtr()));
 }

@@ -29,7 +29,7 @@ TEST_F(EmbeddingExclusionRuleTest, AllowIfNoEmbeddingV2) {
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
   params["version"] = "2";
-  enabled_features.emplace_back(notification_ads::features::kServing, params);
+  enabled_features.emplace_back(notification_ads::kServingFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -54,7 +54,7 @@ TEST_F(EmbeddingExclusionRuleTest, AllowIfEmbeddingV2) {
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
   params["version"] = "2";
-  enabled_features.emplace_back(notification_ads::features::kServing, params);
+  enabled_features.emplace_back(notification_ads::kServingFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -78,7 +78,7 @@ TEST_F(EmbeddingExclusionRuleTest, DisallowIfNoEmbeddingV3) {
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
   params["version"] = "3";
-  enabled_features.emplace_back(notification_ads::features::kServing, params);
+  enabled_features.emplace_back(notification_ads::kServingFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -103,7 +103,7 @@ TEST_F(EmbeddingExclusionRuleTest, DisallowIfEmptyEmbeddingV3) {
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
   params["version"] = "3";
-  enabled_features.emplace_back(notification_ads::features::kServing, params);
+  enabled_features.emplace_back(notification_ads::kServingFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -128,7 +128,7 @@ TEST_F(EmbeddingExclusionRuleTest, AllowIfEmbeddingV3) {
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
   params["version"] = "3";
-  enabled_features.emplace_back(notification_ads::features::kServing, params);
+  enabled_features.emplace_back(notification_ads::kServingFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 

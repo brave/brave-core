@@ -159,7 +159,7 @@ void TextEmbeddingHtmlEvents::GetAll(
 
 void TextEmbeddingHtmlEvents::PurgeStale(ResultCallback callback) const {
   const std::string limit =
-      base::NumberToString(targeting::features::GetTextEmbeddingsHistorySize());
+      base::NumberToString(targeting::kTextEmbeddingHistorySize.Get());
   const std::string& query = base::StringPrintf(
       "DELETE FROM %s "
       "WHERE id NOT IN "

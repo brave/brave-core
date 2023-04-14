@@ -28,9 +28,8 @@ namespace brave_ads::new_tab_page_ads {
 
 Serving::Serving(const geographic::SubdivisionTargeting& subdivision_targeting,
                  const resource::AntiTargeting& anti_targeting_resource) {
-  const int version = features::GetServingVersion();
-  eligible_ads_ = EligibleAdsFactory::Build(version, subdivision_targeting,
-                                            anti_targeting_resource);
+  eligible_ads_ = EligibleAdsFactory::Build(
+      kServingVersion.Get(), subdivision_targeting, anti_targeting_resource);
 }
 
 Serving::~Serving() = default;
@@ -46,7 +45,7 @@ void Serving::RemoveObserver(ServingObserver* observer) {
 }
 
 void Serving::MaybeServeAd(MaybeServeNewTabPageAdCallback callback) {
-  if (!features::IsServingEnabled()) {
+  if (!IsServingEnabled()) {
     BLOG(1, "New tab page ad not served: Feature is disabled");
     return FailedToServeAd(std::move(callback));
   }

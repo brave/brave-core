@@ -15,16 +15,17 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace brave_ads::notification_ads::features {
+namespace brave_ads::notification_ads {
 
 void ForceServingVersion(const int version) {
   std::map<std::string, std::string> params;
   params["version"] = base::NumberToString(version);
 
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters({{kServing, params}}, {});
+  scoped_feature_list.InitWithFeaturesAndParameters({{kServingFeature, params}},
+                                                    {});
 
-  CHECK_EQ(version, GetServingVersion());
+  CHECK_EQ(version, kServingVersion.Get());
 }
 
-}  // namespace brave_ads::notification_ads::features
+}  // namespace brave_ads::notification_ads

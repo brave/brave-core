@@ -10,6 +10,7 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_alias.h"
 #include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
 
 namespace brave_ads {

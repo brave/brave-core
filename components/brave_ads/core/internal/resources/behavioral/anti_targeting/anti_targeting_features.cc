@@ -5,27 +5,14 @@
 
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_features.h"
 
-#include "base/metrics/field_trial_params.h"
+namespace brave_ads {
 
-namespace brave_ads::resource::features {
-
-namespace {
-
-constexpr char kResourceVersionFieldTrialParamName[] = "resource_version";
-constexpr int kResourceVersionDefaultValue = 1;
-
-}  // namespace
-
-BASE_FEATURE(kAntiTargeting, "AntiTargeting", base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kAntiTargetingFeature,
+             "AntiTargeting",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsAntiTargetingEnabled() {
-  return base::FeatureList::IsEnabled(kAntiTargeting);
+  return base::FeatureList::IsEnabled(kAntiTargetingFeature);
 }
 
-int GetAntiTargetingResourceVersion() {
-  return GetFieldTrialParamByFeatureAsInt(kAntiTargeting,
-                                          kResourceVersionFieldTrialParamName,
-                                          kResourceVersionDefaultValue);
-}
-
-}  // namespace brave_ads::resource::features
+}  // namespace brave_ads

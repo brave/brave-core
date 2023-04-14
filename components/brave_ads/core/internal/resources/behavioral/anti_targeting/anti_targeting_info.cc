@@ -27,7 +27,7 @@ AntiTargetingInfo::CreateFromValue(const base::Value::Dict dict) {
   AntiTargetingInfo anti_targeting;
 
   if (absl::optional<int> version = dict.FindInt("version")) {
-    if (features::GetAntiTargetingResourceVersion() != *version) {
+    if (kAntiTargetingResourceVersion.Get() != *version) {
       return base::unexpected("Failed to load from JSON, version missing");
     }
 

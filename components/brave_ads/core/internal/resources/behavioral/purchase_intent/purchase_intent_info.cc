@@ -29,7 +29,7 @@ PurchaseIntentInfo::CreateFromValue(const base::Value::Dict dict) {
   PurchaseIntentInfo purchase_intent;
 
   if (absl::optional<int> version = dict.FindInt("version")) {
-    if (features::GetPurchaseIntentResourceVersion() != *version) {
+    if (kPurchaseIntentResourceVersion.Get() != *version) {
       return base::unexpected("Failed to load from JSON, version missing");
     }
 

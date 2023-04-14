@@ -45,8 +45,8 @@ TEST_F(BatAdsNewTabPageAdsPerDayPermissionRuleTest,
 
 TEST_F(BatAdsNewTabPageAdsPerDayPermissionRuleTest, AllowAdIfDoesNotExceedCap) {
   // Arrange
-  const int count = features::GetMaximumAdsPerDay() - 1;
-  RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed, count);
+  RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed,
+                 /*count*/ kMaximumAdsPerDay.Get() - 1);
 
   // Act
   AdsPerDayPermissionRule permission_rule;
@@ -59,8 +59,8 @@ TEST_F(BatAdsNewTabPageAdsPerDayPermissionRuleTest, AllowAdIfDoesNotExceedCap) {
 TEST_F(BatAdsNewTabPageAdsPerDayPermissionRuleTest,
        AllowAdIfDoesNotExceedCapAfter1Day) {
   // Arrange
-  const int count = features::GetMaximumAdsPerDay();
-  RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed, count);
+  RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed,
+                 /*count*/ kMaximumAdsPerDay.Get());
 
   AdvanceClockBy(base::Days(1));
 
@@ -75,8 +75,8 @@ TEST_F(BatAdsNewTabPageAdsPerDayPermissionRuleTest,
 TEST_F(BatAdsNewTabPageAdsPerDayPermissionRuleTest,
        DoNotAllowAdIfExceedsCapWithin1Day) {
   // Arrange
-  const int count = features::GetMaximumAdsPerDay();
-  RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed, count);
+  RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed,
+                 /*count*/ kMaximumAdsPerDay.Get());
 
   AdvanceClockBy(base::Days(1) - base::Seconds(1));
 

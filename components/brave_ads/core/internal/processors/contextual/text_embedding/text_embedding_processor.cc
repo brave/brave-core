@@ -26,7 +26,7 @@ namespace brave_ads::processor {
 namespace {
 
 bool IsEnabled() {
-  return targeting::features::IsTextEmbeddingEnabled();
+  return targeting::IsTextEmbeddingEnabled();
 }
 
 }  // namespace

@@ -28,7 +28,7 @@ bool TextClassification::IsInitialized() const {
 
 void TextClassification::Load() {
   LoadAndParseResource(
-      kResourceId, targeting::features::GetTextClassificationResourceVersion(),
+      kResourceId, targeting::kTextClassificationResourceVersion.Get(),
       base::BindOnce(&TextClassification::OnLoadAndParseResource,
                      weak_factory_.GetWeakPtr()));
 }
