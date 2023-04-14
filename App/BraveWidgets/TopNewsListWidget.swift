@@ -88,6 +88,7 @@ private struct TopNewsListView: View {
     }
     .padding(.horizontal)
     .padding(.vertical, widgetFamily == .systemLarge ? 12 : 8)
+    .unredacted()
   }
   
   var body: some View {

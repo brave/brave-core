@@ -131,6 +131,7 @@ private struct LockScreenTopNewsView: View {
             .foregroundColor(.orange)
             .font(.system(size: 12))
             .padding(.trailing, -1)
+            .unredacted()
           Divider()
             .frame(height: 11)
           Text("\(topic.publisherName)")
