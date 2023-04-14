@@ -266,7 +266,7 @@ public class SendTokenStore: ObservableObject {
         await validateEthereumSendAddress(fromAddress: sendFromAddress)
       case .sol:
         await validateSolanaSendAddress(fromAddress: sendFromAddress)
-      case .fil:
+      case .fil, .btc:
         break
       @unknown default:
         break

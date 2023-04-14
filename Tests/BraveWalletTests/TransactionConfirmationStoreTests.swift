@@ -148,7 +148,7 @@ import BraveCore
       }
       .store(in: &cancellables)
 
-    wait(for: [prepareExpectation], timeout: 1)
+    await fulfillment(of: [prepareExpectation], timeout: 1)
   }
   
   /// Test `prepare()`  update `state` data for symbol, value, isUnlimitedApprovalRequested.
@@ -208,7 +208,7 @@ import BraveCore
       }
       .store(in: &cancellables)
     
-    wait(for: [prepareExpectation], timeout: 1)
+    await fulfillment(of: [prepareExpectation], timeout: 1)
   }
   
   /// Test `prepare()`  update `state` data for symbol, value, isUnlimitedApprovalRequested.
@@ -269,7 +269,7 @@ import BraveCore
       }
       .store(in: &cancellables)
     
-    wait(for: [prepareExpectation], timeout: 1)
+    await fulfillment(of: [prepareExpectation], timeout: 1)
   }
   
   /// Test `editAllowance(txMetaId:spenderAddress:amount:completion)` will return false if we fail to make ERC20 approve data with `BraveWalletEthTxManagerProxy`
@@ -297,9 +297,7 @@ import BraveCore
         XCTAssertEqual(id, mockTransaction.id)
       }
       .store(in: &cancellables)
-    waitForExpectations(timeout: 1) { error in
-      XCTAssertNil(error)
-    }
+    await fulfillment(of: [prepareExpectation], timeout: 1)
     
     let editExpectation = expectation(description: "edit allowance")
     store.editAllowance(
@@ -312,9 +310,7 @@ import BraveCore
         }
       }
     )
-    waitForExpectations(timeout: 1) { error in
-      XCTAssertNil(error)
-    }
+    await fulfillment(of: [editExpectation], timeout: 1)
   }
   
   /// Test `editAllowance(txMetaId:spenderAddress:amount:completion)` will return false if we fail to set new ERC20 Approve data with `BraveWalletEthTxManagerProxy`
@@ -343,9 +339,7 @@ import BraveCore
         XCTAssertEqual(id, mockTransaction.id)
       }
       .store(in: &cancellables)
-    waitForExpectations(timeout: 1) { error in
-      XCTAssertNil(error)
-    }
+    await fulfillment(of: [prepareExpectation], timeout: 1)
     
     let editExpectation = expectation(description: "edit allowance")
     store.editAllowance(
@@ -358,9 +352,7 @@ import BraveCore
         }
       }
     )
-    waitForExpectations(timeout: 1) { error in
-      XCTAssertNil(error)
-    }
+    await fulfillment(of: [editExpectation], timeout: 1)
   }
   
   /// Test `editAllowance(txMetaId:spenderAddress:amount:completion)` will return true if we suceed in creating and setting ERC20 Approve data with `BraveWalletEthTxManagerProxy`
@@ -389,9 +381,7 @@ import BraveCore
         XCTAssertEqual(id, mockTransaction.id)
       }
       .store(in: &cancellables)
-    waitForExpectations(timeout: 1) { error in
-      XCTAssertNil(error)
-    }
+    await fulfillment(of: [prepareExpectation], timeout: 1)
     
     let editExpectation = expectation(description: "edit allowance")
     store.editAllowance(
@@ -404,9 +394,7 @@ import BraveCore
         }
       }
     )
-    waitForExpectations(timeout: 1) { error in
-      XCTAssertNil(error)
-    }
+    await fulfillment(of: [editExpectation], timeout: 1)
   }
 }
 
@@ -429,4 +417,21 @@ private extension BraveWallet.BlockchainToken {
     chainId: "",
     coin: .eth
   )
+}
+
+extension XCTestCase {
+  @MainActor func fulfillment(of expectations: [XCTestExpectation], timeout: TimeInterval) async {
+    #if compiler(>=5.8)
+    await fulfillment(of: expectations, timeout: timeout, enforceOrder: false)
+    #else
+    await withCheckedContinuation { continuation in
+      waitForExpectations(timeout: timeout) { error in
+        // `fulfillment(of:timeout:enforceOrder:) timeout will fail on the function
+        // Verify we did not timeout here
+        XCTAssertNil(error)
+        continuation.resume()
+      }
+    }
+    #endif
+  }
 }

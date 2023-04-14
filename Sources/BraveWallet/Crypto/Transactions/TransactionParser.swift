@@ -50,7 +50,7 @@ enum TransactionParser {
           gasFee = .init(fee: value, fiat: "$0.00")
         }
       }
-    case .fil:
+    case .fil, .btc:
       break
     @unknown default:
       break

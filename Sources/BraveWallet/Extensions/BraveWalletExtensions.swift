@@ -101,6 +101,8 @@ extension BraveWallet.CoinType {
       return BraveWallet.SolanaKeyringId
     case .fil:
       return BraveWallet.FilecoinKeyringId
+    case .btc:
+      return BraveWallet.BitcoinKeyringId
     @unknown default:
       return BraveWallet.DefaultKeyringId
     }
@@ -114,6 +116,8 @@ extension BraveWallet.CoinType {
       return Strings.Wallet.coinTypeSolana
     case .fil:
       return Strings.Wallet.coinTypeFilecoin
+    case .btc:
+      fallthrough
     @unknown default:
       return Strings.Wallet.coinTypeUnknown
     }
@@ -127,6 +131,8 @@ extension BraveWallet.CoinType {
       return Strings.Wallet.coinTypeSolanaDescription
     case .fil:
       return Strings.Wallet.coinTypeFilecoinDescription
+    case .btc:
+      fallthrough
     @unknown default:
       return Strings.Wallet.coinTypeUnknown
     }
@@ -140,6 +146,8 @@ extension BraveWallet.CoinType {
       return "sol-asset-icon"
     case .fil:
       return "filecoin-asset-icon"
+    case .btc:
+      fallthrough
     @unknown default:
       return ""
     }
@@ -153,6 +161,8 @@ extension BraveWallet.CoinType {
       return Strings.Wallet.defaultSolAccountName
     case .fil:
       return Strings.Wallet.defaultFilAccountName
+    case .btc:
+      fallthrough
     @unknown default:
       return ""
     }
@@ -166,6 +176,8 @@ extension BraveWallet.CoinType {
       return Strings.Wallet.defaultSecondarySolAccountName
     case .fil:
       return Strings.Wallet.defaultSecondaryFilAccountName
+    case .btc:
+      fallthrough
     @unknown default:
       return ""
     }
@@ -180,6 +192,8 @@ extension BraveWallet.CoinType {
       return 2
     case .fil:
       return 3
+    case .btc:
+      fallthrough
     @unknown default:
       return 10
     }
