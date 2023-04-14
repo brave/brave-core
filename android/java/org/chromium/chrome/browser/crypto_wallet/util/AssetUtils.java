@@ -84,10 +84,6 @@ public class AssetUtils {
         public static boolean isSameNFT(BlockchainToken token1, BlockchainToken token2) {
             return isSameNFT(token1, token2.tokenId, token2.contractAddress);
         }
-
-        public static boolean isNFT(BlockchainToken token) {
-            return token.isErc721 || token.isNft || token.isErc1155;
-        }
     }
 
     public static boolean isAuroraAddress(String contractAddress, String chainId) {

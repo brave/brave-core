@@ -76,7 +76,7 @@ public class TokenUtils {
             boolean typeFilter;
             switch (tokenType) {
                 case NFTS:
-                    typeFilter = !t.isErc721 && !t.isNft && !t.isErc1155;
+                    typeFilter = !t.isNft;
                     break;
                 case ERC20:
                     typeFilter = !t.isErc20;
@@ -88,7 +88,7 @@ public class TokenUtils {
                     typeFilter = t.coin != CoinType.SOL;
                     break;
                 case NON_NFTS:
-                    typeFilter = t.isErc721 || t.isNft || t.isErc1155;
+                    typeFilter = t.isNft;
                     break;
                 case ALL:
                     typeFilter = false;
