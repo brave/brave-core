@@ -5,11 +5,14 @@
 
 import SwiftUI
 
-struct SectionFooterErrorView: View {
+public struct SectionFooterErrorView: View {
+  private let errorMessage: String?
   
-  var errorMessage: String?
+  public init(errorMessage: String?) {
+    self.errorMessage = errorMessage
+  }
   
-  var body: some View {
+  public var body: some View {
     if let errorMessage {
       HStack(alignment: .firstTextBaseline, spacing: 4) {
         Image(systemName: "exclamationmark.circle.fill")

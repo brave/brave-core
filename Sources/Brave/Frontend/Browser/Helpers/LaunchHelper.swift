@@ -37,7 +37,8 @@ public actor LaunchHelper {
       // This is done first because compileResources need their results
       async let filterListCache: Void = FilterListResourceDownloader.shared.loadCachedData()
       async let adblockResourceCache: Void = AdblockResourceDownloader.shared.loadCachedAndBundledDataIfNeeded()
-      _ = await (filterListCache, adblockResourceCache)
+      async let filterListURLCache: Void = FilterListCustomURLDownloader.shared.loadCachedFilterLists()
+      _ = await (filterListCache, adblockResourceCache, filterListURLCache)
       Self.signpost.emitEvent("loadedCachedData", id: signpostID, "Loaded cached data")
       
       // Compile some engines
@@ -88,6 +89,10 @@ public actor LaunchHelper {
       // All generic types
       .union(
         ContentBlockerManager.GenericBlocklistType.allCases.map { .generic($0) }
+      )
+      // All custom filter list urls
+      .union(
+        CustomFilterListStorage.shared.filterListsURLs.map { .customFilterList(uuid: $0.setting.uuid) }
       )
   }
 }

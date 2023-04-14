@@ -46,7 +46,7 @@ actor ContentBlockerManager {
   public enum BlocklistType: Hashable {
     fileprivate static let genericPrifix = "stored-type"
     fileprivate static let filterListPrefix = "filter-list"
-    fileprivate static let customFilterListPrefix = "custom-filter-list"
+    fileprivate static let filterListURLPrefix = "filter-list-url"
     
     case generic(GenericBlocklistType)
     case filterList(uuid: String)
@@ -59,7 +59,7 @@ actor ContentBlockerManager {
       case .filterList(let uuid):
         return [Self.filterListPrefix, uuid].joined(separator: "-")
       case .customFilterList(let uuid):
-        return [Self.customFilterListPrefix, uuid].joined(separator: "-")
+        return [Self.filterListURLPrefix, uuid].joined(separator: "-")
       }
     }
   }
@@ -85,7 +85,7 @@ actor ContentBlockerManager {
       guard !validTypes.contains(where: { $0.identifier == identifier }) else { return }
       
       // Only allow certain prefixed identifiers to be removed so as not to remove something apple adds
-      let prefixes = [BlocklistType.genericPrifix, BlocklistType.filterListPrefix, BlocklistType.customFilterListPrefix]
+      let prefixes = [BlocklistType.genericPrifix, BlocklistType.filterListPrefix, BlocklistType.filterListURLPrefix]
       guard prefixes.contains(where: { identifier.hasPrefix($0) }) else { return }
       
       do {
@@ -200,7 +200,14 @@ actor ContentBlockerManager {
       return .filterList(uuid: filterList.uuid)
     }
     
-    return Set(genericRuleLists).union(additionalRuleLists)
+    // Get rule lists for custom filter lists
+    let customFilterLists = CustomFilterListStorage.shared.filterListsURLs
+    let customRuleLists = customFilterLists.compactMap { customURL -> BlocklistType? in
+      guard customURL.setting.isEnabled else { return nil }
+      return .customFilterList(uuid: customURL.setting.uuid)
+    }
+    
+    return Set(genericRuleLists).union(additionalRuleLists).union(customRuleLists)
   }
   
   /// Return the enabled rule types for this domain and the enabled settings.

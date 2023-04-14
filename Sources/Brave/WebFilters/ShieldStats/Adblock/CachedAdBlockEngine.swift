@@ -136,7 +136,7 @@ public class CachedAdBlockEngine {
   /// This is determined by checking the source of the engine and checking the appropriate shields.
   @MainActor func isEnabled(for domain: Domain) -> Bool {
     switch source {
-    case .adBlock, .filterList:
+    case .adBlock, .filterList, .filterListURL:
       // This engine source type is enabled only if shields are enabled
       // for the given domain
       return domain.isShieldExpected(.AdblockAndTp, considerAllShieldsOption: true)

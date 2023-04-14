@@ -43,6 +43,13 @@ class AdblockDebugMenuTableViewController: TableViewController {
           resources: FilterListResourceDownloader.shared.filterLists.map({ filterList in
             return filterList.makeResource(componentId: filterList.entry.componentId)
           })
+        ),
+        self.downloadedResourcesSection(
+          header: "Filter list custom URLs",
+          footer: "Files downloaded using the FilterListURLResourceDownloader",
+          resources: CustomFilterListStorage.shared.filterListsURLs.map({ filterListURL in
+            return filterListURL.setting.resource
+          })
         )
       ]
     }
