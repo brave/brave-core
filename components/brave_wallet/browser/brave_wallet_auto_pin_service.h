@@ -49,6 +49,8 @@ class BraveWalletAutoPinService
 
   void SetAutoPinEnabled(bool enabled) override;
   void IsAutoPinEnabled(IsAutoPinEnabledCallback callback) override;
+  void AddObserver(::mojo::PendingRemote<mojom::WalletAutoPinServiceObserver>
+                       observer) override;
 
   // BraveWalletServiceTokenObserver
   void OnTokenAdded(mojom::BlockchainTokenPtr token) override;
@@ -62,6 +64,8 @@ class BraveWalletAutoPinService
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveWalletAutoPinServiceTest,
                            QueueCleared_WhenAutoPinDisabled);
+  FRIEND_TEST_ALL_PREFIXES(BraveWalletAutoPinServiceTest, RemoveQueuedTokens);
+  FRIEND_TEST_ALL_PREFIXES(BraveWalletAutoPinServiceTest, AddQueuedTokens);
   enum Operation { kAdd = 0, kDelete = 1, kValidate = 2 };
 
   struct IntentData {
@@ -69,17 +73,19 @@ class BraveWalletAutoPinService
     Operation operation;
     absl::optional<std::string> service;
     size_t attempt = 0;
+
     IntentData(const BlockchainTokenPtr& token,
                Operation operation,
                absl::optional<std::string> service);
     ~IntentData();
+
+    bool Equals(
+        const std::unique_ptr<BraveWalletAutoPinService::IntentData>& other);
   };
 
   void OnAutoPinStatusChanged();
 
-  void PostPinToken(BlockchainTokenPtr token);
-  void PostUnpinToken(BlockchainTokenPtr token);
-
+  void ResetLocalState();
   // Iterates through user tokens and manages their pin statuses.
   void Restore();
   void OnTokenListResolved(std::vector<BlockchainTokenPtr>);
@@ -108,12 +114,16 @@ class BraveWalletAutoPinService
   raw_ptr<BraveWalletService> brave_wallet_service_;
   raw_ptr<BraveWalletPinService> brave_wallet_pin_service_;
 
+  // List of all known tokens, GetTokenPrefPath representation is used
+  std::set<std::string> tokens_;
   std::unique_ptr<IntentData> current_;
   std::deque<std::unique_ptr<IntentData>> queue_;
 
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
+  mojo::RemoteSet<mojom::WalletAutoPinServiceObserver> observers_;
 
   base::WeakPtrFactory<BraveWalletAutoPinService> weak_ptr_factory_{this};
+  base::WeakPtrFactory<BraveWalletAutoPinService> tasks_weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet

@@ -305,8 +305,14 @@ interface WalletPinService {
   IsTokenSupported(BlockchainToken token) => (bool result);
 };
 
+interface WalletAutoPinServiceObserver {
+  OnAutoPinStatusChanged(bool enabled);
+};
+
 // Listens for added user tokens and automatically pins them.
 interface WalletAutoPinService {
+  AddObserver(pending_remote<WalletAutoPinServiceObserver> observer);
+
   // Enables autopinning, so old and new user tokens may be pinned.
   SetAutoPinEnabled(bool enabled);
   IsAutoPinEnabled() => (bool enabled);
