@@ -83,7 +83,7 @@ extension BraveWalletJsonRpcService {
           }
         }
       }
-    case .fil:
+    case .fil, .btc:
       completion(nil)
     @unknown default:
       completion(nil)
@@ -181,7 +181,7 @@ extension BraveWalletJsonRpcService {
           }
         }
       }
-    case .fil:
+    case .fil, .btc:
       completion(nil)
     @unknown default:
       completion(nil)

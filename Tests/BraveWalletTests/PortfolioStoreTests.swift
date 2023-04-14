@@ -91,6 +91,8 @@ class PortfolioStoreTests: XCTestCase {
         completion([solNetwork])
       case .fil:
         XCTFail("Should not fetch filecoin network")
+      case .btc:
+        XCTFail("Should not fetch bitcoin network")
       @unknown default:
         XCTFail("Should not fetch unknown network")
       }
@@ -136,6 +138,8 @@ class PortfolioStoreTests: XCTestCase {
         completion(mockSolUserAssets)
       case .fil:
         XCTFail("Should not fetch filecoin assets")
+      case .btc:
+        XCTFail("Should not fetch bitcoin network")
       @unknown default:
         XCTFail("Should not fetch unknown assets")
       }
