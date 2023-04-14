@@ -550,8 +550,12 @@ public class ParsedTransaction extends ParsedTransactionFees {
         } else if (this.isSwap) {
             action = String.format(context.getResources().getString(R.string.wallet_tx_info_swap),
                     this.senderLabel, strDate);
-            detailInfo = String.format(Locale.getDefault(), "%.4f", this.value) + " ETH -> "
-                    + "0x Exchange Proxy";
+            detailInfo = String.format(Locale.getDefault(), "%.4f", this.value);
+            if (this.type == TransactionType.SOLANA_SWAP) {
+                detailInfo += " SOL -> " + this.recipientLabel;
+            } else {
+                detailInfo += " ETH -> 0x Exchange Proxy";
+            }
         } else {
             action = String.format(context.getResources().getString(R.string.wallet_tx_info_sent),
                     this.senderLabel, this.formatValueToDisplay(), this.symbol, actionFiatValue,
