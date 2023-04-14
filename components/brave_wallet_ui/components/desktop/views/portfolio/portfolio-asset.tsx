@@ -162,6 +162,7 @@ export const PortfolioAsset = (props: Props) => {
   const selectedCoinMarket = useUnsafePageSelector(PageSelectors.selectedCoinMarket)
   const nftMetadataError = useSafePageSelector(PageSelectors.nftMetadataError)
   const nftPinningStatus = useUnsafePageSelector(PageSelectors.nftsPinningStatus)
+  const isAutoPinEnabled = useSafePageSelector(PageSelectors.isAutoPinEnabled)
 
   // custom hooks
   const { allAssetOptions, isReduxSelectedAssetBuySupported, getAllBuyOptionsAllChains } = useMultiChainBuyAssets()
@@ -405,11 +406,14 @@ export const PortfolioAsset = (props: Props) => {
   }, [nftMetadata])
 
   const currentNftPinningStatus = React.useMemo(() => {
+    if (!isAutoPinEnabled) {
+      return undefined
+    }
     if (isNftAsset && selectedAsset && nftPinnable) {
       return getNftPinningStatus(selectedAsset)
     }
     return undefined
-  }, [nftPinnable, isNftAsset, selectedAsset, nftPinningStatus])
+  }, [nftPinnable, isNftAsset, selectedAsset, nftPinningStatus, isAutoPinEnabled])
 
   // methods
   const onClickAddAccount = React.useCallback((tabId: AddAccountNavTypes) => () => {
@@ -609,7 +613,7 @@ export const PortfolioAsset = (props: Props) => {
       sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
     }
 
-    if (currentNftPinningStatus && nftDetailsRef?.current) {
+    if (nftDetailsRef?.current) {
       const command: UpdateNftPinningStatus = {
         command: NftUiCommand.UpdateNftPinningStatus,
         payload: {

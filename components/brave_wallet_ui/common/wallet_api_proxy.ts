@@ -150,6 +150,17 @@ export class WalletApiProxy {
     })
     this.braveWalletPinService.addObserver(braveWalletServiceObserverReceiver.$.bindNewPipeAndPassRemote())
   }
+
+  addBraveWalletAutoPinServiceObserver (store: Store) {
+    const braveWalletAutoPinServiceObserverReceiver = new BraveWallet.WalletAutoPinServiceObserverReceiver({
+      onAutoPinStatusChanged: function (enabled) {
+        store.dispatch(WalletPageActions.updateAutoPinEnabled(
+          enabled
+        ))
+      }
+    })
+    this.braveWalletAutoPinService.addObserver(braveWalletAutoPinServiceObserverReceiver.$.bindNewPipeAndPassRemote())
+  }
 }
 
 export default WalletApiProxy
