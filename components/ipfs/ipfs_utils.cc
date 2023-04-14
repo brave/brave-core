@@ -341,20 +341,22 @@ GURL GetDefaultIPFSLocalGateway(version_info::Channel channel) {
   return AppendLocalPort(GetGatewayPort(channel));
 }
 
-void SetDefaultNFTIPFSGateway(PrefService* prefs, const GURL& url) {
+bool SetDefaultNFTIPFSGateway(PrefService* prefs, const GURL& url) {
   if (!url.is_valid()) {
-    return;
+    return false;
   }
   DCHECK(prefs);
   prefs->SetString(kIPFSPublicNFTGatewayAddress, url.spec());
+  return true;
 }
 
-void SetDefaultIPFSGateway(PrefService* prefs, const GURL& url) {
+bool SetDefaultIPFSGateway(PrefService* prefs, const GURL& url) {
   if (!url.is_valid()) {
-    return;
+    return false;
   }
   DCHECK(prefs);
   prefs->SetString(kIPFSPublicGatewayAddress, url.spec());
+  return true;
 }
 
 GURL GetDefaultNFTIPFSGateway(PrefService* prefs) {

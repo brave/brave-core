@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_IPFS_SERVICE_H_
 
 #include <string>
+#include <vector>
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
@@ -32,9 +33,21 @@ class BraveWalletIpfsService : public KeyedService, public mojom::IpfsService {
   void TranslateToNFTGatewayURL(
       const std::string& url,
       TranslateToNFTGatewayURLCallback callback) override;
+  void TranslateToGatewayURL(const std::string& url,
+                             TranslateToGatewayURLCallback callback) override;
   void ExtractIPFSUrlFromGatewayLikeUrl(
       const std::string& url,
       ExtractIPFSUrlFromGatewayLikeUrlCallback callback) override;
+
+  void GetNFTGatewayURL(GetNFTGatewayURLCallback override) override;
+  void GetGatewayURL(GetGatewayURLCallback callback) override;
+
+  void SetGateway(const std::string& url, SetGatewayCallback callback) override;
+  void SetNFTGateway(const std::string& url,
+                     SetNFTGatewayCallback callback) override;
+
+  void ContentHashToCIDv1URL(const std::vector<uint8_t>& content_hash,
+                             ContentHashToCIDv1URLCallback callback) override;
 
  private:
   mojo::ReceiverSet<mojom::IpfsService> receivers_;
