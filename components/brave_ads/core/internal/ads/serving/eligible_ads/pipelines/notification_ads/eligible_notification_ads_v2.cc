@@ -53,7 +53,8 @@ void EligibleAdsV2::OnGetForUserModel(
     const AdEventList& ad_events) {
   if (!success) {
     BLOG(1, "Failed to get ad events");
-    return std::move(callback).Run(/*had_opportunity*/ false, {});
+    return std::move(callback).Run(/*had_opportunity*/ false,
+                                   /*eligible_ads*/ {});
   }
 
   GetBrowsingHistory(std::move(user_model), ad_events, std::move(callback));
@@ -90,26 +91,30 @@ void EligibleAdsV2::OnGetEligibleAds(
     const CreativeNotificationAdList& creative_ads) {
   if (!success) {
     BLOG(1, "Failed to get ads");
-    return std::move(callback).Run(/*had_opportunity*/ false, {});
+    return std::move(callback).Run(/*had_opportunity*/ false,
+                                   /*eligible_ads*/ {});
   }
 
   if (creative_ads.empty()) {
     BLOG(1, "No eligible ads");
-    return std::move(callback).Run(/*had_opportunity*/ false, {});
+    return std::move(callback).Run(/*had_opportunity*/ false,
+                                   /*eligible_ads*/ {});
   }
 
   const CreativeNotificationAdList eligible_creative_ads =
       FilterCreativeAds(creative_ads, ad_events, browsing_history);
   if (eligible_creative_ads.empty()) {
     BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
-    return std::move(callback).Run(/*had_opportunity*/ true, {});
+    return std::move(callback).Run(/*had_opportunity*/ true,
+                                   /*eligible_ads*/ {});
   }
 
   const absl::optional<CreativeNotificationAdInfo> creative_ad =
       PredictAd(user_model, ad_events, eligible_creative_ads);
   if (!creative_ad) {
     BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
-    return std::move(callback).Run(/*had_opportunity*/ true, {});
+    return std::move(callback).Run(/*had_opportunity*/ true,
+                                   /*eligible_ads*/ {});
   }
 
   BLOG(1, eligible_creative_ads.size()

@@ -68,7 +68,8 @@ void OnGetConversions(GetConversionsCallback callback,
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative conversions");
-    return std::move(callback).Run(/*success*/ false, {});
+    return std::move(callback).Run(/*success*/ false,
+                                   /*conversion_queue_items*/ {});
   }
 
   ConversionList conversions;

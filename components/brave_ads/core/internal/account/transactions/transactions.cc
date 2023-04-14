@@ -44,7 +44,8 @@ TransactionInfo AddTransaction(const std::string& creative_instance_id,
           [](AddTransactionCallback callback,
              const TransactionInfo& transaction, const bool success) {
             if (!success) {
-              return std::move(callback).Run(/*success*/ false, {});
+              return std::move(callback).Run(/*success*/ false,
+                                             /*transaction*/ {});
             }
 
             std::move(callback).Run(/*success*/ true, transaction);
@@ -64,7 +65,8 @@ void GetTransactionsForDateRange(const base::Time from_time,
           [](GetTransactionsCallback callback, const bool success,
              const TransactionList& transactions) {
             if (!success) {
-              return std::move(callback).Run(/*success*/ false, {});
+              return std::move(callback).Run(/*success*/ false,
+                                             /*transactions*/ {});
             }
 
             std::move(callback).Run(/*success*/ true, transactions);

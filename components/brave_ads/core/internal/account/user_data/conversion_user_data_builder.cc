@@ -32,11 +32,11 @@ void BuildConversion(const std::string& creative_instance_id,
              const std::string& /*creative_instance_id*/,
              const ConversionQueueItemList& conversion_queue_items) {
             if (!success) {
-              return std::move(callback).Run({});
+              return std::move(callback).Run(/*user_data*/ {});
             }
 
             if (conversion_queue_items.empty()) {
-              return std::move(callback).Run({});
+              return std::move(callback).Run(/*user_data*/ {});
             }
 
             const ConversionQueueItemInfo& conversion_queue_item =
@@ -45,7 +45,7 @@ void BuildConversion(const std::string& creative_instance_id,
                 verifiable_conversion_envelope =
                     GetEnvelope(conversion_queue_item);
             if (!verifiable_conversion_envelope) {
-              return std::move(callback).Run({});
+              return std::move(callback).Run(/*user_data*/ {});
             }
 
             base::Value::Dict dict;

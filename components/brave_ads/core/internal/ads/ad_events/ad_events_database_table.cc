@@ -70,7 +70,7 @@ void OnGetAdEvents(GetAdEventsCallback callback,
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get ad events");
-    std::move(callback).Run(/*success*/ false, {});
+    std::move(callback).Run(/*success*/ false, /*ad_events*/ {});
     return;
   }
 
