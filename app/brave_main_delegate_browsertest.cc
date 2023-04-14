@@ -229,7 +229,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
     &performance_manager::features::kBatterySaverModeAvailable,
     &performance_manager::features::kHeuristicMemorySaver,
-    &performance_manager::features::kHighEfficiencyModeAvailable,
     &safe_browsing::kDownloadBubble,
     &safe_browsing::kDownloadBubbleV2,
     &sharing_hub::kDesktopScreenshots,

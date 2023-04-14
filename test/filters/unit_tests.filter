@@ -220,8 +220,7 @@
 
 # These tests are disabled because of turning the performance features on.
 # Re-enable when performance features are enabled by default from upstream.
-# performance_manager::features::kBatterySaverModeAvailable,
-# performance_manager::features::kHighEfficiencyModeAvailable
+# performance_manager::features::kBatterySaverModeAvailable
 -AppMenuModelTest.DisabledPerformanceItem
 -CLSUkmPageLoadMetricsObserverTest.BeforeInputOrScroll*
 -DownloadBubbleRowViewTest.UpdateTimeFromCompletedDownload
