@@ -187,8 +187,16 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
       "This month, you've visited 1 creator supported by Brave Rewards");
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/29480): Test flaky on
+// master for the mac build.
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_AutoContributionUnconnectedJapan \
+  DISABLED_AutoContributionUnconnectedJapan
+#else
+#define MAYBE_AutoContributionUnconnectedJapan AutoContributionUnconnectedJapan
+#endif  // BUILDFLAG(IS_MAC)
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
-                       AutoContributionUnconnectedJapan) {
+                       MAYBE_AutoContributionUnconnectedJapan) {
   // Set kEnabled to false before calling CreateRewardsWallet to ensure that
   // prefs are configured to reflect an unconnected user
   auto* pref_service = browser()->profile()->GetPrefs();
