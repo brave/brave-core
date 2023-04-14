@@ -14,7 +14,6 @@
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_manager.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/predictors_manager.h"
-#include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state_holder.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
@@ -34,7 +33,6 @@ GlobalState::GlobalState(AdsClient* ads_client)
   predictors_manager_ = std::make_unique<PredictorsManager>();
   database_manager_ = std::make_unique<DatabaseManager>();
   diagnostic_manager_ = std::make_unique<DiagnosticManager>();
-  flag_manager_ = std::make_unique<FlagManager>();
   history_manager_ = std::make_unique<HistoryManager>();
   idle_detection_ = std::make_unique<IdleDetection>();
   notification_ad_manager_ = std::make_unique<NotificationAdManager>();
@@ -80,10 +78,6 @@ DiagnosticManager* GlobalState::GetDiagnosticManager() {
   return diagnostic_manager_.get();
 }
 
-FlagManager* GlobalState::GetFlagManager() {
-  return flag_manager_.get();
-}
-
 HistoryManager* GlobalState::GetHistoryManager() {
   return history_manager_.get();
 }
@@ -104,12 +98,16 @@ UserActivityManager* GlobalState::GetUserActivityManager() {
   return user_activity_manager_.get();
 }
 
+mojom::SysInfo& GlobalState::SysInfo() {
+  return sys_info_;
+}
+
 mojom::BuildChannelInfo& GlobalState::BuildChannel() {
   return build_channel_;
 }
 
-mojom::SysInfo& GlobalState::SysInfo() {
-  return sys_info_;
+mojom::Flags& GlobalState::Flags() {
+  return flags_;
 }
 
 }  // namespace brave_ads

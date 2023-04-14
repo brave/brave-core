@@ -20,7 +20,6 @@ class ClientStateManager;
 class ConfirmationStateManager;
 class DatabaseManager;
 class DiagnosticManager;
-class FlagManager;
 class HistoryManager;
 class IdleDetection;
 class NotificationAdManager;
@@ -56,8 +55,6 @@ class GlobalState final {
 
   DiagnosticManager* GetDiagnosticManager();
 
-  FlagManager* GetFlagManager();
-
   HistoryManager* GetHistoryManager();
 
   NotificationAdManager* GetNotificationAdManager();
@@ -68,9 +65,11 @@ class GlobalState final {
 
   UserActivityManager* GetUserActivityManager();
 
+  mojom::SysInfo& SysInfo();
+
   mojom::BuildChannelInfo& BuildChannel();
 
-  mojom::SysInfo& SysInfo();
+  mojom::Flags& Flags();
 
  private:
   raw_ptr<AdsClient> ads_client_ = nullptr;
@@ -82,7 +81,6 @@ class GlobalState final {
   std::unique_ptr<ConfirmationStateManager> confirmation_state_manager_;
   std::unique_ptr<DatabaseManager> database_manager_;
   std::unique_ptr<DiagnosticManager> diagnostic_manager_;
-  std::unique_ptr<FlagManager> flag_manager_;
   std::unique_ptr<HistoryManager> history_manager_;
   std::unique_ptr<IdleDetection> idle_detection_;
   std::unique_ptr<NotificationAdManager> notification_ad_manager_;
@@ -90,8 +88,9 @@ class GlobalState final {
   std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<UserActivityManager> user_activity_manager_;
 
-  mojom::BuildChannelInfo build_channel_;
   mojom::SysInfo sys_info_;
+  mojom::BuildChannelInfo build_channel_;
+  mojom::Flags flags_;
 };
 
 }  // namespace brave_ads

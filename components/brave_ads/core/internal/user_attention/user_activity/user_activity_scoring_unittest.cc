@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_scoring.h"
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_trigger_info.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_util.h"
 

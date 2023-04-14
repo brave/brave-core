@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/command_line_switch_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
-#include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -52,7 +52,7 @@ TEST_P(BatAdsDebugCommandLineSwitchParserUtilTest,
 
   // Assert
   EXPECT_EQ(GetParam().expected_should_debug,
-            FlagManager::GetInstance()->ShouldDebug());
+            GlobalState::GetInstance()->Flags().should_debug);
 }
 
 std::string TestParamToString(

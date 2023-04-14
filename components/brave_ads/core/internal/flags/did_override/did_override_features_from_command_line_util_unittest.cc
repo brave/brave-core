@@ -15,7 +15,6 @@
 #include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/common/features.h"
-#include "brave/components/brave_ads/core/ad_switches.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/internal/account/account_features.h"
 #include "brave/components/brave_ads/core/internal/ads/inline_content_ad_features.h"
 #include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_features.h"
@@ -190,13 +189,6 @@ class BatAdsDidOverrideFeaturesFromCommandLineUtilTest
     const ParamInfo param = GetParam();
 
     AppendCommandLineSwitches({param.command_line_switch});
-
-    if (param.command_line_switch.key == ::switches::kEnableFeatures) {
-      CommandLineSwitchInfo command_line_switch;
-      command_line_switch.key = switches::kFeaturesSwitch;
-      command_line_switch.value = param.command_line_switch.value;
-      AppendCommandLineSwitches({command_line_switch});
-    }
 
     std::unique_ptr<base::FeatureList> feature_list =
         std::make_unique<base::FeatureList>();

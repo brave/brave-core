@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/base64.h"
-#include "base/base_switches.h"
 #include "base/check.h"
 #include "base/containers/circular_deque.h"
 #include "base/containers/flat_map.h"
@@ -24,7 +23,6 @@
 #include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
-#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
@@ -46,9 +44,9 @@
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/ad_constants.h"
-#include "brave/components/brave_ads/core/ad_switches.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/ads_util.h"
 #include "brave/components/brave_ads/core/database.h"
+#include "brave/components/brave_ads/core/flags_util.h"
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/new_tab_page_ad_value_util.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
@@ -60,7 +58,6 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/mojom/ledger.mojom.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
-#include "brave/components/brave_rewards/common/rewards_flags.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
@@ -110,10 +107,6 @@ constexpr unsigned int kMaximumNumberOfTimesToRetryNetworkRequests = 1;
 constexpr int kHttpUpgradeRequiredStatusResponseCode = 426;
 
 constexpr char kNotificationAdUrlPrefix[] = "https://www.brave.com/ads/?";
-
-constexpr char kFeaturesValueSeparator[] = ",";
-
-constexpr char kSwitchValueSeparator[] = "=";
 
 BASE_FEATURE(kFeature, "NotificationAds", base::FEATURE_ENABLED_BY_DEFAULT);
 
@@ -283,32 +276,6 @@ void OnURLResponseStarted(
   }
 }
 
-std::vector<std::string> ExtraCommandLineSwitches() {
-  std::vector<std::string> command_line_switches;
-
-  const std::string& rewards_command_line_switch =
-      brave_rewards::RewardsFlags::GetCommandLineSwitchASCII();
-  if (!rewards_command_line_switch.empty()) {
-    command_line_switches.push_back(rewards_command_line_switch);
-  }
-
-  const base::CommandLine* command_line =
-      base::CommandLine::ForCurrentProcess();
-  const std::string enabled_features =
-      command_line->GetSwitchValueASCII(::switches::kEnableFeatures);
-  const std::string disabled_features =
-      command_line->GetSwitchValueASCII(::switches::kDisableFeatures);
-
-  if (!enabled_features.empty() || !disabled_features.empty()) {
-    const std::string affected_features = base::StrCat(
-        {enabled_features, kFeaturesValueSeparator, disabled_features});
-    command_line_switches.push_back(base::StrCat(
-        {switches::kFeaturesSwitch, kSwitchValueSeparator, enabled_features}));
-  }
-
-  return command_line_switches;
-}
-
 void OnResetState(const bool success) {
   if (!success) {
     VLOG(1) << "Failed to reset ads state";
@@ -445,7 +412,6 @@ void AdsServiceImpl::StartBatAdsService() {
       bat_ads_service_.BindNewPipeAndPassReceiver(),
       content::ServiceProcessHost::Options()
           .WithDisplayName(IDS_SERVICE_BAT_ADS)
-          .WithExtraCommandLineSwitches(ExtraCommandLineSwitches())
           .Pass());
 
   bat_ads_service_.set_disconnect_handler(base::BindOnce(
@@ -482,6 +448,8 @@ void AdsServiceImpl::OnBatAdsServiceCreated() {
   SetSysInfo();
 
   SetBuildChannel();
+
+  SetFlags();
 
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
@@ -596,6 +564,23 @@ void AdsServiceImpl::SetBuildChannel() {
   build_channel->is_release = build_channel->name == "release";
 
   bat_ads_->SetBuildChannel(std::move(build_channel));
+}
+
+void AdsServiceImpl::SetFlags() {
+  if (!bat_ads_.is_bound()) {
+    return;
+  }
+
+  mojom::FlagsPtr flags = BuildFlags();
+  DCHECK(flags);
+#if BUILDFLAG(IS_ANDROID)
+  if (GetPrefService()->GetBoolean(
+          brave_rewards::prefs::kUseRewardsStagingServer)) {
+    flags->environment_type = mojom::EnvironmentType::kStaging;
+  }
+#endif  // BUILDFLAG(IS_ANDROID)
+
+  bat_ads_->SetFlags(std::move(flags));
 }
 
 void AdsServiceImpl::CleanUpOnFirstRun() {

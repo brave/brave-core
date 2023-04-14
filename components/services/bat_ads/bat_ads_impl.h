@@ -43,6 +43,7 @@ class BatAdsImpl : public mojom::BatAds {
   void SetSysInfo(brave_ads::mojom::SysInfoPtr sys_info) override;
   void SetBuildChannel(
       brave_ads::mojom::BuildChannelInfoPtr build_channel) override;
+  void SetFlags(brave_ads::mojom::FlagsPtr flags) override;
 
   void Initialize(InitializeCallback callback) override;
   void Shutdown(ShutdownCallback callback) override;

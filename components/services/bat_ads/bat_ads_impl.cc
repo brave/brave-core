@@ -55,6 +55,10 @@ void BatAdsImpl::SetBuildChannel(
   ads_->SetBuildChannel(std::move(build_channel));
 }
 
+void BatAdsImpl::SetFlags(brave_ads::mojom::FlagsPtr flags) {
+  ads_->SetFlags(std::move(flags));
+}
+
 void BatAdsImpl::Initialize(InitializeCallback callback) {
   ads_->Initialize(std::move(callback));
 }

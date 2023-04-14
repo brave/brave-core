@@ -6,12 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_FLAGS_ENVIRONMENT_ENVIRONMENT_COMMAND_LINE_SWITCH_PARSER_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_FLAGS_ENVIRONMENT_ENVIRONMENT_COMMAND_LINE_SWITCH_PARSER_UTIL_H_
 
-#include "brave/components/brave_ads/core/internal/flags/environment/environment_types.h"
+#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
-absl::optional<EnvironmentType> ParseEnvironmentCommandLineSwitch();
+absl::optional<mojom::EnvironmentType> ParseEnvironmentCommandLineSwitch();
 
 }  // namespace brave_ads
 

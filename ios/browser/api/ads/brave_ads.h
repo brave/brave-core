@@ -54,18 +54,12 @@ OBJC_EXPORT
 /// Whether or not the users current region is supported
 + (BOOL)isSupportedRegion;
 
-#pragma mark - SysInfo / BuildChannelInfo
-
-/// System info
-@property(nonatomic) BraveAdsSysInfo* sysInfo;
-
-/// The build channel info that ads is configured for
-@property(nonatomic) BraveAdsBuildChannelInfo* buildChannelInfo;
-
 #pragma mark - Initialization / Shutdown
 
 /// Initializes the ads service
-- (void)initialize:(void (^)(bool success))completion;
+- (void)initializeWithSysInfo:(BraveAdsSysInfo*)sysInfo
+             buildChannelInfo:(BraveAdsBuildChannelInfo*)buildChannelInfo
+                   completion:(void (^)(bool))completion;
 
 /// Shuts down the ads service if its running
 - (void)shutdown:(nullable void (^)())completion;

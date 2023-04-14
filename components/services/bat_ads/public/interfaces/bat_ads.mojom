@@ -150,6 +150,8 @@ interface BatAds {
 
   SetBuildChannel(brave_ads.mojom.BuildChannelInfo build_channel);
 
+  SetFlags(brave_ads.mojom.Flags flags);
+
   Initialize() => (bool success);
   Shutdown() => (bool success);
 

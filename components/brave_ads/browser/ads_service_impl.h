@@ -121,8 +121,8 @@ class AdsServiceImpl : public AdsService,
   void ShutdownAndResetState();
 
   void SetSysInfo();
-
   void SetBuildChannel();
+  void SetFlags();
 
   void CleanUpOnFirstRun();
   void RemoveDeprecatedFiles() const;

@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -19,8 +19,8 @@ class BatAdsGetSignedTokensUrlRequestBuilderTest : public UnitTestBase {};
 
 TEST_F(BatAdsGetSignedTokensUrlRequestBuilderTest, BuildUrl) {
   // Arrange
-  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
-      EnvironmentType::kStaging);
+  GlobalState::GetInstance()->Flags().environment_type =
+      mojom::EnvironmentType::kStaging;
 
   const std::string nonce = "716c3381-66e6-46e4-962f-15d01455b5b9";
 

@@ -47,6 +47,8 @@ class ADS_EXPORT Ads {
 
   virtual void SetBuildChannel(mojom::BuildChannelInfoPtr build_channel) = 0;
 
+  virtual void SetFlags(mojom::FlagsPtr flags) = 0;
+
   // Called to initialize ads. The callback takes one argument - |bool| is set
   // to |true| if successful otherwise |false|.
   virtual void Initialize(InitializeCallback callback) = 0;

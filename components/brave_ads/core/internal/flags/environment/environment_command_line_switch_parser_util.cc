@@ -12,7 +12,7 @@
 
 namespace brave_ads {
 
-absl::optional<EnvironmentType> ParseEnvironmentCommandLineSwitch() {
+absl::optional<mojom::EnvironmentType> ParseEnvironmentCommandLineSwitch() {
   const brave_rewards::RewardsFlags& flags =
       brave_rewards::RewardsFlags::ForCurrentProcess();
   if (!flags.environment) {
@@ -22,11 +22,11 @@ absl::optional<EnvironmentType> ParseEnvironmentCommandLineSwitch() {
   switch (*flags.environment) {
     case brave_rewards::RewardsFlags::Environment::kDevelopment:
     case brave_rewards::RewardsFlags::Environment::kStaging: {
-      return EnvironmentType::kStaging;
+      return mojom::EnvironmentType::kStaging;
     }
 
     case brave_rewards::RewardsFlags::Environment::kProduction: {
-      return EnvironmentType::kProduction;
+      return mojom::EnvironmentType::kProduction;
     }
   }
 

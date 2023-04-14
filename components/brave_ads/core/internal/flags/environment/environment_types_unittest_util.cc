@@ -20,13 +20,13 @@ constexpr char kUnknownEnvironment[] = "Unknown";
 }  // namespace
 
 std::string EnvironmentTypeEnumToString(
-    const EnvironmentType environment_type) {
+    const mojom::EnvironmentType environment_type) {
   switch (environment_type) {
-    case EnvironmentType::kProduction: {
+    case mojom::EnvironmentType::kProduction: {
       return kProductionEnvironment;
     }
 
-    case EnvironmentType::kStaging: {
+    case mojom::EnvironmentType::kStaging: {
       return kStagingEnvironment;
     }
   }

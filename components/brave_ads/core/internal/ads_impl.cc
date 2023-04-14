@@ -140,6 +140,14 @@ void AdsImpl::SetBuildChannel(mojom::BuildChannelInfoPtr build_channel) {
   build_channel_state.name = build_channel->name;
 }
 
+void AdsImpl::SetFlags(mojom::FlagsPtr flags) {
+  auto& flags_state = GlobalState::GetInstance()->Flags();
+  flags_state.should_debug = flags->should_debug;
+  flags_state.did_override_from_command_line =
+      flags->did_override_from_command_line;
+  flags_state.environment_type = flags->environment_type;
+}
+
 void AdsImpl::Initialize(InitializeCallback callback) {
   BLOG(1, "Initializing ads");
 

@@ -7,11 +7,10 @@
 
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_build_channel_types.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
-#include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -35,8 +34,8 @@ TEST_F(BatAdsCreateOptedOutConfirmationUrlRequestBuilderTest, BuildUrl) {
   // Arrange
   ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
 
-  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
-      EnvironmentType::kStaging);
+  GlobalState::GetInstance()->Flags().environment_type =
+      mojom::EnvironmentType::kStaging;
 
   MockBuildChannel(BuildChannelType::kRelease);
 

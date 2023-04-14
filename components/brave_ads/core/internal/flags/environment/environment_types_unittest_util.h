@@ -8,11 +8,12 @@
 
 #include <string>
 
-#include "brave/components/brave_ads/core/internal/flags/environment/environment_types.h"
+#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 
 namespace brave_ads {
 
-std::string EnvironmentTypeEnumToString(EnvironmentType environment_type);
+std::string EnvironmentTypeEnumToString(
+    mojom::EnvironmentType environment_type);
 
 }  // namespace brave_ads
 

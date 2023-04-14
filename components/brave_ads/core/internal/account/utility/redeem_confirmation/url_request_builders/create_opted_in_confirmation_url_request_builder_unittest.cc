@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_build_channel_types.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
-#include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "url/gurl.h"
@@ -38,8 +38,8 @@ class BatAdsCreateOptedInConfirmationUrlRequestBuilderTest
 TEST_F(BatAdsCreateOptedInConfirmationUrlRequestBuilderTest,
        BuildUrlForLargeAnonmityCountry) {
   // Arrange
-  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
-      EnvironmentType::kStaging);
+  GlobalState::GetInstance()->Flags().environment_type =
+      mojom::EnvironmentType::kStaging;
 
   privacy::SetUnblindedTokens(/*count*/ 1);
 
@@ -66,8 +66,8 @@ TEST_F(BatAdsCreateOptedInConfirmationUrlRequestBuilderTest,
 TEST_F(BatAdsCreateOptedInConfirmationUrlRequestBuilderTest,
        BuildUrlForAnonymousCountry) {
   // Arrange
-  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
-      EnvironmentType::kStaging);
+  GlobalState::GetInstance()->Flags().environment_type =
+      mojom::EnvironmentType::kStaging;
 
   privacy::SetUnblindedTokens(/*count*/ 1);
 
@@ -96,8 +96,8 @@ TEST_F(BatAdsCreateOptedInConfirmationUrlRequestBuilderTest,
 TEST_F(BatAdsCreateOptedInConfirmationUrlRequestBuilderTest,
        BuildUrlForOtherCountry) {
   // Arrange
-  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
-      EnvironmentType::kStaging);
+  GlobalState::GetInstance()->Flags().environment_type =
+      mojom::EnvironmentType::kStaging;
 
   privacy::SetUnblindedTokens(/*count*/ 1);
 
@@ -126,8 +126,8 @@ TEST_F(BatAdsCreateOptedInConfirmationUrlRequestBuilderTest,
 TEST_F(BatAdsCreateOptedInConfirmationUrlRequestBuilderTest,
        BuildUrlForLargeAnonmityCountryAndNonReleaseBuildChannel) {
   // Arrange
-  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
-      EnvironmentType::kStaging);
+  GlobalState::GetInstance()->Flags().environment_type =
+      mojom::EnvironmentType::kStaging;
 
   privacy::SetUnblindedTokens(/*count*/ 1);
 
@@ -154,8 +154,8 @@ TEST_F(BatAdsCreateOptedInConfirmationUrlRequestBuilderTest,
 TEST_F(BatAdsCreateOptedInConfirmationUrlRequestBuilderTest,
        BuildUrlForAnonymousCountryAndNonReleaseBuildChannel) {
   // Arrange
-  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
-      EnvironmentType::kStaging);
+  GlobalState::GetInstance()->Flags().environment_type =
+      mojom::EnvironmentType::kStaging;
 
   privacy::SetUnblindedTokens(/*count*/ 1);
 
@@ -184,8 +184,8 @@ TEST_F(BatAdsCreateOptedInConfirmationUrlRequestBuilderTest,
 TEST_F(BatAdsCreateOptedInConfirmationUrlRequestBuilderTest,
        BuildUrlForOtherCountryAndNonReleaseBuildChannel) {
   // Arrange
-  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
-      EnvironmentType::kStaging);
+  GlobalState::GetInstance()->Flags().environment_type =
+      mojom::EnvironmentType::kStaging;
 
   privacy::SetUnblindedTokens(/*count*/ 1);
 
