@@ -12,6 +12,7 @@
 #include "base/check.h"
 #include "base/containers/contains.h"
 #include "base/no_destructor.h"
+#include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -117,11 +118,22 @@ std::vector<std::string> GetModifierNames(ui::KeyEventFlags flags) {
 ui::KeyEventFlags GetModifierFromKeys(
     const std::vector<std::string>& modifiers) {
   ui::KeyEventFlags result = ui::EF_NONE;
-  for (const auto& [modifier, name] : GetAllModifierNames()) {
-    if (base::Contains(modifiers, name)) {
-      result |= modifier;
+  const auto& modifier_names = GetAllModifierNames();
+  for (const auto& modifier : modifiers) {
+    auto iter = base::ranges::find_if(modifier_names,
+                                      [&modifier](const auto& modifier_name) {
+                                        return modifier_name.name == modifier;
+                                      });
+
+#if DCHECK_IS_ON()
+    if (iter == modifier_names.end()) {
+      NOTREACHED() << "Unknown modifier name was given: " << modifier;
     }
+#endif
+
+    result |= iter->modifier;
   }
+
   return result;
 }
 }  // namespace

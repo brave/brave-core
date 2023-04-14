@@ -6,12 +6,18 @@
 #include "brave/components/commands/browser/accelerator_pref_manager.h"
 
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/check.h"
+#include "base/check_is_test.h"
+#include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
+#include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/commands/common/accelerator_parsing.h"
 #include "components/prefs/pref_service.h"
@@ -60,6 +66,10 @@ void AcceleratorPrefManager::RegisterProfilePrefs(
 AcceleratorPrefManager::AcceleratorPrefManager(PrefService* prefs)
     : prefs_(prefs) {
   DCHECK(prefs_);
+
+#if BUILDFLAG(IS_MAC)
+  MigrateMetaKeyToCommandKey();
+#endif
 }
 
 AcceleratorPrefManager::~AcceleratorPrefManager() = default;
@@ -112,5 +122,57 @@ void AcceleratorPrefManager::SetDefaultAccelerators(
     }
   }
 }
+
+#if BUILDFLAG(IS_MAC)
+void AcceleratorPrefManager::MigrateMetaKeyToCommandKey() {
+  for (const auto* pref_key : {kAcceleratorsPrefs, kDefaultAcceleratorsPrefs}) {
+    if (!prefs_->FindPreference(pref_key)) {
+      CHECK_IS_TEST();
+      continue;
+    }
+
+    ScopedDictPrefUpdate pref_update(prefs_, pref_key);
+
+    base::ranges::for_each(
+        *pref_update, [&pref_update](const auto& id_and_list_value) {
+          std::string command_id;
+          std::tie(command_id, std::ignore) = id_and_list_value;
+
+          auto* accelerators = pref_update->EnsureList(command_id);
+          DCHECK(accelerators);
+          base::ranges::for_each(*accelerators, [](auto& accelerator_value) {
+            const auto& encoded_accelerator = accelerator_value.GetString();
+            if (!base::Contains(encoded_accelerator, "Meta")) {
+              return;
+            }
+
+            DVLOG(2) << "Found 'Meta' key from the pref. As there's no Meta "
+                        "key on Mac, we will migrate it to 'Command' key: "
+                     << encoded_accelerator;
+
+            // Find 'Meta'
+            std::vector<std::string> parts =
+                base::SplitString(encoded_accelerator, "+",
+                                  base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
+            auto iter = base::ranges::find(parts, "Meta");
+            DCHECK(iter != parts.end());
+
+            // Replace it with 'Command'
+            *iter = "Command";
+
+            // Replace the pref value
+            auto new_value = base::Value(base::JoinString(parts, "+"));
+            std::swap(accelerator_value, new_value);
+
+#if DCHECK_IS_ON()
+            // Post invariant check
+            DCHECK(base::Contains(new_value.GetString(), "Meta"));
+            DCHECK(!base::Contains(accelerator_value.GetString(), "Meta"));
+#endif
+          });
+        });
+  }
+}
+#endif
 
 }  // namespace commands

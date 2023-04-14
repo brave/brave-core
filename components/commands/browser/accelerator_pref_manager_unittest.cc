@@ -37,7 +37,12 @@ TEST_F(AcceleratorPrefManagerTest, CanAddAccelerators) {
   ASSERT_EQ(1u, accelerators[1].size());
   EXPECT_EQ(accelerator1, accelerators[1][0]);
 
-  ui::Accelerator accelerator2 = commands::FromCodesString("Ctrl+Cmd+KeyH");
+#if BUILDFLAG(IS_MAC)
+  ui::Accelerator accelerator2 =
+      commands::FromCodesString("Control+Command+KeyH");
+#else
+  ui::Accelerator accelerator2 = commands::FromCodesString("Control+Meta+KeyH");
+#endif
   manager().AddAccelerator(1, accelerator2);
 
   accelerators = manager().GetAccelerators();
@@ -47,7 +52,7 @@ TEST_F(AcceleratorPrefManagerTest, CanAddAccelerators) {
   EXPECT_EQ(accelerator1, accelerators[1][0]);
   EXPECT_EQ(accelerator2, accelerators[1][1]);
 
-  ui::Accelerator accelerator3 = commands::FromCodesString("Ctrl+KeyM");
+  ui::Accelerator accelerator3 = commands::FromCodesString("Control+KeyM");
   manager().AddAccelerator(100, accelerator3);
 
   accelerators = manager().GetAccelerators();
@@ -63,8 +68,13 @@ TEST_F(AcceleratorPrefManagerTest, CanAddAccelerators) {
 
 TEST_F(AcceleratorPrefManagerTest, CanRemoveAccelerators) {
   ui::Accelerator accelerator1 = commands::FromCodesString("Shift+Alt+KeyC");
-  ui::Accelerator accelerator2 = commands::FromCodesString("Ctrl+Cmd+KeyH");
-  ui::Accelerator accelerator3 = commands::FromCodesString("Ctrl+KeyM");
+#if BUILDFLAG(IS_MAC)
+  ui::Accelerator accelerator2 =
+      commands::FromCodesString("Control+Command+KeyH");
+#else
+  ui::Accelerator accelerator2 = commands::FromCodesString("Control+Meta+KeyH");
+#endif
+  ui::Accelerator accelerator3 = commands::FromCodesString("Control+KeyM");
   manager().AddAccelerator(1, accelerator1);
   manager().AddAccelerator(1, accelerator2);
   manager().AddAccelerator(100, accelerator3);

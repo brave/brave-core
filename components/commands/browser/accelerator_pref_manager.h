@@ -37,6 +37,11 @@ class COMPONENT_EXPORT(COMMANDS_BROWSER) AcceleratorPrefManager {
   void SetDefaultAccelerators(const Accelerators& default_accelerators);
 
  private:
+#if BUILDFLAG(IS_MAC)
+  // https://github.com/brave/brave-core/pull/17872/files#r1166176986
+  void MigrateMetaKeyToCommandKey();
+#endif
+
   raw_ptr<PrefService> prefs_;
 };
 
