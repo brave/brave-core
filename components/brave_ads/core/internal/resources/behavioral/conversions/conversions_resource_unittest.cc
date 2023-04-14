@@ -5,18 +5,30 @@
 
 #include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversions_resource.h"
 
+#include <string>
+#include <utility>
+
+#include "base/files/file.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversions_info.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
+#include "brave/components/brave_ads/core/internal/resources/resources_unittest_constants.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace brave_ads::resource {
+namespace brave_ads {
+
+using testing::_;
+using testing::Invoke;
+
+namespace {
+constexpr char kResourceId[] = "nnqccijfhvzwyrxpxwjrpmynaiazctqb";
+}  // namespace
 
 class BatAdsConversionsResourceTest : public UnitTestBase {};
 
-TEST_F(BatAdsConversionsResourceTest, Load) {
+TEST_F(BatAdsConversionsResourceTest, LoadResource) {
   // Arrange
-  Conversions resource;
+  resource::Conversions resource;
 
   // Act
   resource.Load();
@@ -26,18 +38,51 @@ TEST_F(BatAdsConversionsResourceTest, Load) {
   EXPECT_TRUE(resource.IsInitialized());
 }
 
-TEST_F(BatAdsConversionsResourceTest, Get) {
+TEST_F(BatAdsConversionsResourceTest, DoNotLoadInvalidResource) {
   // Arrange
-  Conversions resource;
+  CopyFileFromTestPathToTempPath(kInvalidResourceId, kResourceId);
+
+  resource::Conversions resource;
   resource.Load();
   task_environment_.RunUntilIdle();
 
   // Act
-  const ConversionIdPatternMap conversion_id_patterns =
-      resource.get()->id_patterns;
 
   // Assert
-  EXPECT_EQ(2U, conversion_id_patterns.size());
+  EXPECT_FALSE(resource.IsInitialized());
 }
 
-}  // namespace brave_ads::resource
+TEST_F(BatAdsConversionsResourceTest, DoNotLoadMissingResource) {
+  // Arrange
+  EXPECT_CALL(*ads_client_mock_, LoadFileResource(kResourceId, _, _))
+      .WillOnce(Invoke([](const std::string& /*id*/, const int /*version*/,
+                          LoadFileCallback callback) {
+        const base::FilePath path =
+            GetFileResourcePath().AppendASCII(kMissingResourceId);
+
+        base::File file(
+            path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
+        std::move(callback).Run(std::move(file));
+      }));
+
+  resource::Conversions resource;
+  resource.Load();
+  task_environment_.RunUntilIdle();
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(resource.IsInitialized());
+}
+
+TEST_F(BatAdsConversionsResourceTest, IsNotInitialized) {
+  // Arrange
+  resource::Conversions resource;
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(resource.IsInitialized());
+}
+
+}  // namespace brave_ads

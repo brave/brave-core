@@ -14,7 +14,10 @@
 
 namespace brave_ads {
 
-class BatAdsMarkedAsInappropriateExclusionRuleTest : public UnitTestBase {};
+class BatAdsMarkedAsInappropriateExclusionRuleTest : public UnitTestBase {
+ protected:
+  MarkedAsInappropriateExclusionRule exclusion_rule_;
+};
 
 TEST_F(BatAdsMarkedAsInappropriateExclusionRuleTest, AllowAd) {
   // Arrange
@@ -23,11 +26,9 @@ TEST_F(BatAdsMarkedAsInappropriateExclusionRuleTest, AllowAd) {
   creative_ad.creative_set_id = kCreativeSetId;
 
   // Act
-  MarkedAsInappropriateExclusionRule exclusion_rule;
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsMarkedAsInappropriateExclusionRuleTest, DoNotAllowAd) {
@@ -39,15 +40,12 @@ TEST_F(BatAdsMarkedAsInappropriateExclusionRuleTest, DoNotAllowAd) {
   AdContentInfo ad_content;
   ad_content.creative_set_id = kCreativeSetId;
   ad_content.is_flagged = false;
-
   ClientStateManager::GetInstance()->ToggleMarkAdAsInappropriate(ad_content);
 
   // Act
-  MarkedAsInappropriateExclusionRule exclusion_rule;
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_TRUE(should_exclude);
+  EXPECT_TRUE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
 }  // namespace brave_ads

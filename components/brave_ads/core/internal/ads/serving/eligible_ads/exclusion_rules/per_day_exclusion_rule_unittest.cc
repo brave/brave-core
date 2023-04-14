@@ -22,14 +22,12 @@ TEST_F(BatAdsPerDayExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.per_day = 2;
 
-  const AdEventList ad_events;
+  PerDayExclusionRule exclusion_rule({});
 
   // Act
-  PerDayExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsPerDayExclusionRuleTest, AllowAdIfZero) {
@@ -38,14 +36,12 @@ TEST_F(BatAdsPerDayExclusionRuleTest, AllowAdIfZero) {
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.per_day = 0;
 
-  const AdEventList ad_events;
+  PerDayExclusionRule exclusion_rule({});
 
   // Act
-  PerDayExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsPerDayExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
@@ -61,12 +57,12 @@ TEST_F(BatAdsPerDayExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
 
   ad_events.push_back(ad_event);
 
-  // Act
   PerDayExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
+
+  // Act
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsPerDayExclusionRuleTest, AllowAdIfDoesNotExceedCapAfter1Day) {
@@ -83,14 +79,14 @@ TEST_F(BatAdsPerDayExclusionRuleTest, AllowAdIfDoesNotExceedCapAfter1Day) {
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
+  PerDayExclusionRule exclusion_rule(ad_events);
+
   AdvanceClockBy(base::Days(1));
 
   // Act
-  PerDayExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsPerDayExclusionRuleTest, DoNotAllowAdIfExceedsCapWithin1Day) {
@@ -107,14 +103,14 @@ TEST_F(BatAdsPerDayExclusionRuleTest, DoNotAllowAdIfExceedsCapWithin1Day) {
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
+  PerDayExclusionRule exclusion_rule(ad_events);
+
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
   // Act
-  PerDayExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_TRUE(should_exclude);
+  EXPECT_TRUE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsPerDayExclusionRuleTest, DoNotAllowAdIfExceedsCap) {
@@ -131,12 +127,12 @@ TEST_F(BatAdsPerDayExclusionRuleTest, DoNotAllowAdIfExceedsCap) {
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
-  // Act
   PerDayExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
+
+  // Act
 
   // Assert
-  EXPECT_TRUE(should_exclude);
+  EXPECT_TRUE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 }  // namespace brave_ads

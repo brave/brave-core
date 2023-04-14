@@ -40,10 +40,11 @@ using ::testing::_;
 using ::testing::Invoke;
 using ::testing::Return;
 
-using AdEventHistoryMap = base::flat_map<std::string, std::vector<base::Time>>;
-using AdEventMap = base::flat_map<std::string, AdEventHistoryMap>;
+using AdEventHistoryMap =
+    base::flat_map</*type_id*/ std::string, std::vector<base::Time>>;
+using AdEventMap = base::flat_map</*uuid*/ std::string, AdEventHistoryMap>;
 
-using PrefMap = base::flat_map<std::string, std::string>;
+using PrefMap = base::flat_map</*uuid*/ std::string, /*value*/ std::string>;
 
 namespace {
 

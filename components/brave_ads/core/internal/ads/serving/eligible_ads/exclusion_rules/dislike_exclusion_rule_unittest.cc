@@ -14,7 +14,10 @@
 
 namespace brave_ads {
 
-class BatAdsDislikeExclusionRuleTest : public UnitTestBase {};
+class BatAdsDislikeExclusionRuleTest : public UnitTestBase {
+ protected:
+  DislikeExclusionRule exclusion_rule_;
+};
 
 TEST_F(BatAdsDislikeExclusionRuleTest, AllowAd) {
   // Arrange
@@ -22,11 +25,9 @@ TEST_F(BatAdsDislikeExclusionRuleTest, AllowAd) {
   creative_ad.advertiser_id = kAdvertiserId;
 
   // Act
-  DislikeExclusionRule exclusion_rule;
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsDislikeExclusionRuleTest, DoNotAllowAd) {
@@ -40,11 +41,9 @@ TEST_F(BatAdsDislikeExclusionRuleTest, DoNotAllowAd) {
   ClientStateManager::GetInstance()->ToggleDislikeAd(ad_content);
 
   // Act
-  DislikeExclusionRule exclusion_rule;
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_TRUE(should_exclude);
+  EXPECT_TRUE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
 }  // namespace brave_ads

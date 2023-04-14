@@ -20,6 +20,7 @@ constexpr char kResourceId[] = "wtpwsrqtjxmfdwaymauprezkunxprysm";
 }  // namespace
 
 TextEmbedding::TextEmbedding() = default;
+
 TextEmbedding::~TextEmbedding() = default;
 
 bool TextEmbedding::IsInitialized() const {

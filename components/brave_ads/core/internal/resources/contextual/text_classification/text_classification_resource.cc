@@ -20,6 +20,7 @@ constexpr char kResourceId[] = "feibnmjhecfbjpeciancnchbmlobenjn";
 }  // namespace
 
 TextClassification::TextClassification() = default;
+
 TextClassification::~TextClassification() = default;
 
 bool TextClassification::IsInitialized() const {

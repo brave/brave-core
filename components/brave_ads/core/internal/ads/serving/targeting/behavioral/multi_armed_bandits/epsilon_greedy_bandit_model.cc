@@ -25,9 +25,9 @@ namespace {
 constexpr size_t kTopArmCount = 3;
 
 using ArmBucketMap =
-    base::flat_map<double, std::vector<EpsilonGreedyBanditArmInfo>>;
+    base::flat_map</*value*/ double, std::vector<EpsilonGreedyBanditArmInfo>>;
 using ArmList = std::vector<EpsilonGreedyBanditArmInfo>;
-using ArmBucketPair = std::pair<double, ArmList>;
+using ArmBucketPair = std::pair</*value*/ double, ArmList>;
 using ArmBucketList = std::vector<ArmBucketPair>;
 
 SegmentList ToSegmentList(const ArmList& arms) {

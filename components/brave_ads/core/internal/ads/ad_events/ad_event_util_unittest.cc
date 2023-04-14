@@ -20,17 +20,13 @@ namespace brave_ads {
 
 TEST(BatAdsAdEventUtilTest, GetLastSeenAdTimeForEmptyAdEvents) {
   // Arrange
-  const AdEventList ad_events;
-
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
 
   // Act
-  const absl::optional<base::Time> last_seen_ad_time =
-      GetLastSeenAdTime(ad_events, creative_ad);
 
   // Assert
-  EXPECT_FALSE(last_seen_ad_time);
+  EXPECT_FALSE(GetLastSeenAdTime(/*ad_events*/ {}, creative_ad));
 }
 
 TEST(BatAdsAdEventUtilTest, GetLastSeenAdTimeForUnseenAd) {
@@ -46,14 +42,13 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdTimeForUnseenAd) {
                    ConfirmationType::kViewed, event_time);
   ad_events.push_back(ad_event);
 
-  // Act
   const CreativeNotificationAdInfo creative_ad_2 =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
-  const absl::optional<base::Time> last_seen_ad_time =
-      GetLastSeenAdTime(ad_events, creative_ad_2);
+
+  // Act
 
   // Assert
-  EXPECT_FALSE(last_seen_ad_time);
+  EXPECT_FALSE(GetLastSeenAdTime(ad_events, creative_ad_2));
 }
 
 TEST(BatAdsAdEventUtilTest, GetLastSeenAdTime) {
@@ -91,25 +86,21 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdTime) {
   // Act
   const absl::optional<base::Time> last_seen_ad_time =
       GetLastSeenAdTime(ad_events, creative_ad_1);
+  ASSERT_TRUE(last_seen_ad_time);
 
   // Assert
-  const base::Time expected_last_seen_ad_time = now - base::Hours(6);
-  EXPECT_EQ(expected_last_seen_ad_time, *last_seen_ad_time);
+  EXPECT_EQ(now - base::Hours(6), *last_seen_ad_time);
 }
 
 TEST(BatAdsAdEventUtilTest, GetLastSeenAdvertiserTimeForEmptyAdEvents) {
   // Arrange
-  const AdEventList ad_events;
-
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
 
   // Act
-  const absl::optional<base::Time> last_seen_advertiser_time =
-      GetLastSeenAdvertiserTime(ad_events, creative_ad);
 
   // Assert
-  EXPECT_FALSE(last_seen_advertiser_time);
+  EXPECT_FALSE(GetLastSeenAdvertiserTime(/*ad_events*/ {}, creative_ad));
 }
 
 TEST(BatAdsAdEventUtilTest, GetLastSeenAdvertiserTimeForUnseenAdvertiser) {
@@ -124,34 +115,33 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdvertiserTimeForUnseenAdvertiser) {
                    ConfirmationType::kViewed, Now() - base::Hours(12));
   ad_events.push_back(ad_event);
 
-  // Act
   const CreativeNotificationAdInfo creative_ad_2 =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
-  const absl::optional<base::Time> last_seen_advertiser_time =
-      GetLastSeenAdvertiserTime(ad_events, creative_ad_2);
+
+  // Act
 
   // Assert
-  EXPECT_FALSE(last_seen_advertiser_time);
+  EXPECT_FALSE(GetLastSeenAdvertiserTime(ad_events, creative_ad_2));
 }
 
 TEST(BatAdsAdEventUtilTest, GetLastSeenAdvertiserTime) {
   // Arrange
-  const std::string advertiser_1 =
+  const std::string advertiser_id_1 =
       base::GUID::GenerateRandomV4().AsLowercaseString();
-  const std::string advertiser_2 =
+  const std::string advertiser_id_2 =
       base::GUID::GenerateRandomV4().AsLowercaseString();
 
   CreativeNotificationAdInfo creative_ad_1 =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
-  creative_ad_1.advertiser_id = advertiser_1;
+  creative_ad_1.advertiser_id = advertiser_id_1;
 
   CreativeNotificationAdInfo creative_ad_2 =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
-  creative_ad_2.advertiser_id = advertiser_2;
+  creative_ad_2.advertiser_id = advertiser_id_2;
 
   CreativeNotificationAdInfo creative_ad_3 =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
-  creative_ad_3.advertiser_id = advertiser_1;
+  creative_ad_3.advertiser_id = advertiser_id_1;
 
   AdEventList ad_events;
 
@@ -180,10 +170,10 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdvertiserTime) {
   // Act
   const absl::optional<base::Time> last_seen_advertiser_time =
       GetLastSeenAdvertiserTime(ad_events, creative_ad_3);
+  ASSERT_TRUE(last_seen_advertiser_time);
 
   // Assert
-  const base::Time expected_last_seen_advertiser_time = now - base::Hours(3);
-  EXPECT_EQ(expected_last_seen_advertiser_time, *last_seen_advertiser_time);
+  EXPECT_EQ(now - base::Hours(3), *last_seen_advertiser_time);
 }
 
 }  // namespace brave_ads

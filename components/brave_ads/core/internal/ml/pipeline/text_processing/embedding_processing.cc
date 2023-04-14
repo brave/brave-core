@@ -33,10 +33,13 @@ EmbeddingProcessing::CreateFromValue(base::Value::Dict dict) {
 }
 
 EmbeddingProcessing::EmbeddingProcessing() = default;
+
 EmbeddingProcessing::EmbeddingProcessing(EmbeddingProcessing&& other) noexcept =
     default;
+
 EmbeddingProcessing& EmbeddingProcessing::operator=(
     EmbeddingProcessing&& other) noexcept = default;
+
 EmbeddingProcessing::~EmbeddingProcessing() = default;
 
 bool EmbeddingProcessing::SetEmbeddingPipeline(base::Value::Dict dict) {

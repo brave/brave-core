@@ -27,10 +27,9 @@ TEST_F(BatAdsAccountUtilTest, ShouldRewardUser) {
   // Arrange
 
   // Act
-  const bool should_reward_user = ShouldRewardUser();
 
   // Assert
-  EXPECT_TRUE(should_reward_user);
+  EXPECT_TRUE(ShouldRewardUser());
 }
 
 TEST_F(BatAdsAccountUtilTest, ShouldNotRewardUser) {
@@ -38,10 +37,9 @@ TEST_F(BatAdsAccountUtilTest, ShouldNotRewardUser) {
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
   // Act
-  const bool should_reward_user = ShouldRewardUser();
 
   // Assert
-  EXPECT_FALSE(should_reward_user);
+  EXPECT_FALSE(ShouldRewardUser());
 }
 
 TEST_F(BatAdsAccountUtilTest, ResetRewards) {

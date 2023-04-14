@@ -52,7 +52,7 @@ std::vector<privacy::cbr::Token> GetTokens() {
 URLResponseMap GetValidUrlResonses() {
   return {{// Request signed tokens
            "/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7",
-           {{net::HTTP_CREATED, R"(
+           {{net::HTTP_CREATED, /*response_body*/ R"(
               {
                 "nonce": "2f0e2891-e7a5-4262-835b-550b13e58e5c"
               }
@@ -61,7 +61,7 @@ URLResponseMap GetValidUrlResonses() {
            "/v3/confirmation/token/"
            "27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-"
            "550b13e58e5c",
-           {{net::HTTP_OK, R"(
+           {{net::HTTP_OK, /*response_body*/ R"(
               {
                 "batchProof": "BnqmsPk3PsQXVhcCE8YALSE8O+LVqOWabzCuyCTSgQjwAb3iAKrqDV3/zWKdU5TRoqzr32pyPyaS3xFI2iVmAw==",
                 "signedTokens": [
@@ -128,19 +128,15 @@ class BatAdsRefillUnblindedTokensTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    token_generator_mock_ =
-        std::make_unique<NiceMock<privacy::TokenGeneratorMock>>();
     refill_unblinded_tokens_ =
-        std::make_unique<RefillUnblindedTokens>(token_generator_mock_.get());
-    refill_unblinded_tokens_delegate_mock_ =
-        std::make_unique<NiceMock<RefillUnblindedTokensDelegateMock>>();
+        std::make_unique<RefillUnblindedTokens>(&token_generator_mock_);
     refill_unblinded_tokens_->SetDelegate(
-        refill_unblinded_tokens_delegate_mock_.get());
+        &refill_unblinded_tokens_delegate_mock_);
   }
 
-  std::unique_ptr<privacy::TokenGeneratorMock> token_generator_mock_;
+  NiceMock<privacy::TokenGeneratorMock> token_generator_mock_;
   std::unique_ptr<RefillUnblindedTokens> refill_unblinded_tokens_;
-  std::unique_ptr<RefillUnblindedTokensDelegateMock>
+  NiceMock<RefillUnblindedTokensDelegateMock>
       refill_unblinded_tokens_delegate_mock_;
 };
 
@@ -150,23 +146,23 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokens) {
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
-  ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
+  ON_CALL(token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   BuildAndSetIssuers();
 
   // Act
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRefillUnblindedTokens());
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnFailedToRefillUnblindedTokens())
       .Times(0);
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnWillRetryRefillingUnblindedTokens(_))
       .Times(0);
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
 
@@ -182,7 +178,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokensCaptchaRequired) {
   const URLResponseMap url_responses = {
       {// Request signed tokens
        "/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7",
-       {{net::HTTP_CREATED, R"(
+       {{net::HTTP_CREATED, /*response_body*/ R"(
               {
                 "nonce": "2f0e2891-e7a5-4262-835b-550b13e58e5c"
               }
@@ -191,7 +187,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokensCaptchaRequired) {
        "/v3/confirmation/token/"
        "27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-"
        "550b13e58e5c",
-       {{net::HTTP_UNAUTHORIZED, R"(
+       {{net::HTTP_UNAUTHORIZED, /*response_body*/ R"(
               {
                 "captcha_id": "captcha-id"
               }
@@ -199,28 +195,28 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokensCaptchaRequired) {
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
-  ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
+  ON_CALL(token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   BuildAndSetIssuers();
 
   // Act
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRefillUnblindedTokens())
       .Times(0);
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnFailedToRefillUnblindedTokens())
       .Times(0);
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnWillRetryRefillingUnblindedTokens(_))
       .Times(0);
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnCaptchaRequiredToRefillUnblindedTokens("captcha-id"));
 
   const WalletInfo wallet = GetWalletForTesting();
@@ -236,7 +232,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, IssuersPublicKeyMismatch) {
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
-  ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
+  ON_CALL(token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   const IssuersInfo issuers =
       BuildIssuers(7'200'000,
@@ -248,18 +244,18 @@ TEST_F(BatAdsRefillUnblindedTokensTest, IssuersPublicKeyMismatch) {
   SetIssuers(issuers);
 
   // Act
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRefillUnblindedTokens())
       .Times(0);
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnFailedToRefillUnblindedTokens());
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnWillRetryRefillingUnblindedTokens(_))
       .Times(0);
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
 
@@ -274,18 +270,18 @@ TEST_F(BatAdsRefillUnblindedTokensTest, InvalidIssuersFormat) {
   // Arrange
 
   // Act
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRefillUnblindedTokens())
       .Times(0);
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnFailedToRefillUnblindedTokens());
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnWillRetryRefillingUnblindedTokens(_))
       .Times(0);
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
 
@@ -300,18 +296,18 @@ TEST_F(BatAdsRefillUnblindedTokensTest, InvalidWallet) {
   // Arrange
 
   // Act
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRefillUnblindedTokens())
       .Times(0);
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnFailedToRefillUnblindedTokens());
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnWillRetryRefillingUnblindedTokens(_))
       .Times(0);
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
 
@@ -327,7 +323,8 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
   const URLResponseMap url_responses = {
       {// Request signed tokens
        "/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7",
-       {{net::HTTP_INTERNAL_SERVER_ERROR, {}}, {net::HTTP_CREATED, R"(
+       {{net::HTTP_INTERNAL_SERVER_ERROR, /*response_body*/ {}},
+        {net::HTTP_CREATED, /*response_body*/ R"(
             {
               "nonce": "2f0e2891-e7a5-4262-835b-550b13e58e5c"
             }
@@ -336,7 +333,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
        "/v3/confirmation/token/"
        "27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-"
        "550b13e58e5c",
-       {{net::HTTP_OK, R"(
+       {{net::HTTP_OK, /*response_body*/ R"(
             {
               "batchProof": "BnqmsPk3PsQXVhcCE8YALSE8O+LVqOWabzCuyCTSgQjwAb3iAKrqDV3/zWKdU5TRoqzr32pyPyaS3xFI2iVmAw==",
               "signedTokens": [
@@ -397,23 +394,23 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
-  ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
+  ON_CALL(token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   BuildAndSetIssuers();
 
   // Act
   const InSequence seq;
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnFailedToRefillUnblindedTokens());
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnWillRetryRefillingUnblindedTokens(_));
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens());
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRefillUnblindedTokens());
 
   const WalletInfo wallet = GetWalletForTesting();
@@ -429,27 +426,27 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RequestSignedTokensMissingNonce) {
   // Arrange
   const URLResponseMap url_responses = {
       {"/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7",
-       {{net::HTTP_CREATED, {}}}}};
+       {{net::HTTP_CREATED, /*response_body*/ {}}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
-  ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
+  ON_CALL(token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   BuildAndSetIssuers();
 
   // Act
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRefillUnblindedTokens())
       .Times(0);
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnFailedToRefillUnblindedTokens());
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnWillRetryRefillingUnblindedTokens(_))
       .Times(0);
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
 
@@ -466,12 +463,12 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
   const URLResponseMap url_responses = {
       {// Request signed tokens
        "/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7",
-       {{net::HTTP_CREATED, R"(
+       {{net::HTTP_CREATED, /*response_body*/ R"(
             {
               "nonce": "2f0e2891-e7a5-4262-835b-550b13e58e5c"
             }
           )"},
-        {net::HTTP_CREATED, R"(
+        {net::HTTP_CREATED, /*response_body*/ R"(
             {
               "nonce": "2f0e2891-e7a5-4262-835b-550b13e58e5c"
             }
@@ -480,7 +477,8 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
        "/v3/confirmation/token/"
        "27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-"
        "550b13e58e5c",
-       {{net::HTTP_INTERNAL_SERVER_ERROR, {}}, {net::HTTP_OK, R"(
+       {{net::HTTP_INTERNAL_SERVER_ERROR, /*response_body*/ {}},
+        {net::HTTP_OK, /*response_body*/ R"(
             {
               "batchProof": "BnqmsPk3PsQXVhcCE8YALSE8O+LVqOWabzCuyCTSgQjwAb3iAKrqDV3/zWKdU5TRoqzr32pyPyaS3xFI2iVmAw==",
               "signedTokens": [
@@ -541,23 +539,23 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
-  ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
+  ON_CALL(token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   BuildAndSetIssuers();
 
   // Act
   const InSequence seq;
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnFailedToRefillUnblindedTokens());
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnWillRetryRefillingUnblindedTokens(_));
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens());
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRefillUnblindedTokens());
 
   const WalletInfo wallet = GetWalletForTesting();
@@ -574,7 +572,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensInvalidResponse) {
   const URLResponseMap url_responses = {
       {// Request signed tokens
        "/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7",
-       {{net::HTTP_CREATED, R"(
+       {{net::HTTP_CREATED, /*response_body*/ R"(
             {
               "nonce": "2f0e2891-e7a5-4262-835b-550b13e58e5c"
             }
@@ -583,27 +581,27 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensInvalidResponse) {
        "/v3/confirmation/token/"
        "27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-"
        "550b13e58e5c",
-       {{net::HTTP_OK, "invalid_json"}}}};
+       {{net::HTTP_OK, /*response_body*/ "invalid_json"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
-  ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
+  ON_CALL(token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   BuildAndSetIssuers();
 
   // Act
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRefillUnblindedTokens())
       .Times(0);
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnFailedToRefillUnblindedTokens());
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnWillRetryRefillingUnblindedTokens(_))
       .Times(0);
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
 
@@ -619,7 +617,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingPublicKey) {
   const URLResponseMap url_responses = {
       {// Request signed tokens
        "/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7",
-       {{net::HTTP_CREATED, R"(
+       {{net::HTTP_CREATED, /*response_body*/ R"(
             {
               "nonce": "2f0e2891-e7a5-4262-835b-550b13e58e5c"
             }
@@ -628,7 +626,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingPublicKey) {
        "/v3/confirmation/token/"
        "27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-"
        "550b13e58e5c",
-       {{net::HTTP_OK, R"(
+       {{net::HTTP_OK, /*response_body*/ R"(
             {
               "batchProof": "BnqmsPk3PsQXVhcCE8YALSE8O+LVqOWabzCuyCTSgQjwAb3iAKrqDV3/zWKdU5TRoqzr32pyPyaS3xFI2iVmAw==",
               "signedTokens": [
@@ -688,23 +686,23 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingPublicKey) {
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
-  ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
+  ON_CALL(token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   BuildAndSetIssuers();
 
   // Act
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRefillUnblindedTokens())
       .Times(0);
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnFailedToRefillUnblindedTokens());
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnWillRetryRefillingUnblindedTokens(_))
       .Times(0);
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
 
@@ -720,7 +718,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingBatchProofDleq) {
   const URLResponseMap url_responses = {
       {// Request signed tokens
        "/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7",
-       {{net::HTTP_CREATED, R"(
+       {{net::HTTP_CREATED, /*response_body*/ R"(
             {
               "nonce": "2f0e2891-e7a5-4262-835b-550b13e58e5c"
             }
@@ -729,7 +727,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingBatchProofDleq) {
        "/v3/confirmation/token/"
        "27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-"
        "550b13e58e5c",
-       {{net::HTTP_OK, R"(
+       {{net::HTTP_OK, /*response_body*/ R"(
             {
               "signedTokens": [
                 "fD5YfqudgGrfn+oHpwPsF7COcPrCTLsYX70wa+EE+gg=",
@@ -789,23 +787,23 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingBatchProofDleq) {
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
-  ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
+  ON_CALL(token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   BuildAndSetIssuers();
 
   // Act
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRefillUnblindedTokens())
       .Times(0);
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnFailedToRefillUnblindedTokens());
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnWillRetryRefillingUnblindedTokens(_))
       .Times(0);
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
 
@@ -821,7 +819,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingSignedTokens) {
   const URLResponseMap url_responses = {
       {// Request signed tokens
        "/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7",
-       {{net::HTTP_CREATED, R"(
+       {{net::HTTP_CREATED, /*response_body*/ R"(
             {
               "nonce": "2f0e2891-e7a5-4262-835b-550b13e58e5c"
             }
@@ -830,7 +828,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingSignedTokens) {
        "/v3/confirmation/token/"
        "27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-"
        "550b13e58e5c",
-       {{net::HTTP_OK, R"(
+       {{net::HTTP_OK, /*response_body*/ R"(
             {
               "batchProof": "BnqmsPk3PsQXVhcCE8YALSE8O+LVqOWabzCuyCTSgQjwAb3iAKrqDV3/zWKdU5TRoqzr32pyPyaS3xFI2iVmAw==",
               "publicKey": "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw="
@@ -839,23 +837,23 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingSignedTokens) {
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
-  ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
+  ON_CALL(token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   BuildAndSetIssuers();
 
   // Act
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRefillUnblindedTokens())
       .Times(0);
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnFailedToRefillUnblindedTokens());
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnWillRetryRefillingUnblindedTokens(_))
       .Times(0);
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
 
@@ -871,7 +869,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetInvalidSignedTokens) {
   const URLResponseMap url_responses = {
       {// Request signed tokens
        "/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7",
-       {{net::HTTP_CREATED, R"(
+       {{net::HTTP_CREATED, /*response_body*/ R"(
             {
               "nonce": "2f0e2891-e7a5-4262-835b-550b13e58e5c"
             }
@@ -880,7 +878,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetInvalidSignedTokens) {
        "/v3/confirmation/token/"
        "27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-"
        "550b13e58e5c",
-       {{net::HTTP_OK, R"(
+       {{net::HTTP_OK, /*response_body*/ R"(
             {
               "batchProof": "BnqmsPk3PsQXVhcCE8YALSE8O+LVqOWabzCuyCTSgQjwAb3iAKrqDV3/zWKdU5TRoqzr32pyPyaS3xFI2iVmAw==",
               "signedTokens": [
@@ -941,23 +939,23 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetInvalidSignedTokens) {
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
-  ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
+  ON_CALL(token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
   BuildAndSetIssuers();
 
   // Act
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRefillUnblindedTokens())
       .Times(0);
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnFailedToRefillUnblindedTokens());
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnWillRetryRefillingUnblindedTokens(_))
       .Times(0);
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
 
@@ -975,19 +973,19 @@ TEST_F(BatAdsRefillUnblindedTokensTest, DoNotRefillIfAboveTheMinimumThreshold) {
   BuildAndSetIssuers();
 
   // Act
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRefillUnblindedTokens())
       .Times(0);
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnFailedToRefillUnblindedTokens())
       .Times(0);
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnWillRetryRefillingUnblindedTokens(_))
       .Times(0);
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
 
@@ -1005,7 +1003,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillIfBelowTheMinimumThreshold) {
   const URLResponseMap url_responses = {
       {// Request signed tokens
        "/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7",
-       {{net::HTTP_CREATED, R"(
+       {{net::HTTP_CREATED, /*response_body*/ R"(
             {
               "nonce": "abcb67a5-0a73-43ec-bbf9-51288ba76bb7"
             }
@@ -1014,7 +1012,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillIfBelowTheMinimumThreshold) {
        "/v3/confirmation/token/"
        "27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=abcb67a5-0a73-43ec-bbf9-"
        "51288ba76bb7",
-       {{net::HTTP_OK, R"(
+       {{net::HTTP_OK, /*response_body*/ R"(
             {
               "batchProof": "WQ3ijykF8smhAs+boORkMqgBN0gtn5Bd9bm47rAWtA60kJZtR/JfCSmTsMGjO110pDkaklRrnjYj5CrEH9DbDA==",
               "signedTokens": [
@@ -1055,24 +1053,24 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillIfBelowTheMinimumThreshold) {
           )"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  ON_CALL(*token_generator_mock_, Generate(_))
+  ON_CALL(token_generator_mock_, Generate(_))
       .WillByDefault(Return(privacy::GetTokens(/*count*/ 31)));
 
   BuildAndSetIssuers();
 
   // Act
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRefillUnblindedTokens());
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnFailedToRefillUnblindedTokens())
       .Times(0);
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnWillRetryRefillingUnblindedTokens(_))
       .Times(0);
 
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+  EXPECT_CALL(refill_unblinded_tokens_delegate_mock_,
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
 

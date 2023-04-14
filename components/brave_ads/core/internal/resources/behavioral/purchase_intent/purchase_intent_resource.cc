@@ -20,6 +20,7 @@ constexpr char kResourceId[] = "bejenkminijgplakmkmcgkhjjnkelbld";
 }  // namespace
 
 PurchaseIntent::PurchaseIntent() = default;
+
 PurchaseIntent::~PurchaseIntent() = default;
 
 void PurchaseIntent::Load() {

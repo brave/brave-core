@@ -31,17 +31,14 @@ class BatAdsRedeemUnblindedPaymentTokensTest : public UnitTestBase {
  protected:
   BatAdsRedeemUnblindedPaymentTokensTest()
       : redeem_unblinded_payment_tokens_(
-            std::make_unique<RedeemUnblindedPaymentTokens>()),
-        redeem_unblinded_payment_tokens_delegate_mock_(
-            std::make_unique<
-                NiceMock<RedeemUnblindedPaymentTokensDelegateMock>>()) {
+            std::make_unique<RedeemUnblindedPaymentTokens>()) {
     redeem_unblinded_payment_tokens_->SetDelegate(
-        redeem_unblinded_payment_tokens_delegate_mock_.get());
+        &redeem_unblinded_payment_tokens_delegate_mock_);
   }
 
   std::unique_ptr<RedeemUnblindedPaymentTokens>
       redeem_unblinded_payment_tokens_;
-  std::unique_ptr<RedeemUnblindedPaymentTokensDelegateMock>
+  NiceMock<RedeemUnblindedPaymentTokensDelegateMock>
       redeem_unblinded_payment_tokens_delegate_mock_;
 };
 
@@ -49,7 +46,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, RedeemUnblindedPaymentTokens) {
   // Arrange
   const URLResponseMap url_responses = {
       {"/v3/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7",
-       {{net::HTTP_OK, R"(
+       {{net::HTTP_OK, /*response_body*/ R"(
             {
               "payload": "{"paymentId":"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7"}",
               "paymentCredentials": [
@@ -73,21 +70,21 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, RedeemUnblindedPaymentTokens) {
   privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
 
   // Act
-  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnDidRedeemUnblindedPaymentTokens(_));
 
-  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnFailedToRedeemUnblindedPaymentTokens())
       .Times(0);
 
-  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnDidScheduleNextUnblindedPaymentTokensRedemption(_));
 
-  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnWillRetryRedeemingUnblindedPaymentTokens(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnDidRetryRedeemingUnblindedPaymentTokens())
       .Times(0);
 
@@ -105,7 +102,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest,
   // Arrange
   const URLResponseMap url_responses = {
       {"/v3/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7",
-       {{net::HTTP_OK, R"(
+       {{net::HTTP_OK, /*response_body*/ R"(
             {
               "payload": "{"paymentId":"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7"}",
               "paymentCredentials": [
@@ -119,7 +116,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest,
               ]
             }
           )"},
-        {net::HTTP_OK, R"(
+        {net::HTTP_OK, /*response_body*/ R"(
             {
               "payload": "{"paymentId":"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7"}",
               "paymentCredentials": [
@@ -143,23 +140,23 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest,
   privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
 
   // Act
-  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnDidRedeemUnblindedPaymentTokens(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnFailedToRedeemUnblindedPaymentTokens())
       .Times(0);
 
-  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnDidScheduleNextUnblindedPaymentTokensRedemption(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnWillRetryRedeemingUnblindedPaymentTokens(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnDidRetryRedeemingUnblindedPaymentTokens())
       .Times(0);
 
@@ -175,7 +172,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
   // Arrange
   const URLResponseMap url_responses = {
       {"/v3/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7",
-       {{net::HTTP_OK, R"(
+       {{net::HTTP_OK, /*response_body*/ R"(
             {
               "payload": "{"paymentId":"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7"}",
               "paymentCredentials": [
@@ -199,21 +196,21 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
   privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
 
   // Act
-  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnDidRedeemUnblindedPaymentTokens(_));
 
-  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnFailedToRedeemUnblindedPaymentTokens())
       .Times(0);
 
-  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnDidScheduleNextUnblindedPaymentTokensRedemption(_));
 
-  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnWillRetryRedeemingUnblindedPaymentTokens(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnDidRetryRedeemingUnblindedPaymentTokens())
       .Times(0);
 
@@ -230,7 +227,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
   // Arrange
   const URLResponseMap url_responses = {
       {"/v3/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7",
-       {{net::HTTP_OK, R"(
+       {{net::HTTP_OK, /*response_body*/ R"(
             {
               "payload": "{"paymentId":"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7"}",
               "paymentCredentials": [
@@ -256,22 +253,22 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
   // Act
   const InSequence seq;
 
-  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnFailedToRedeemUnblindedPaymentTokens());
 
-  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnWillRetryRedeemingUnblindedPaymentTokens(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnDidRetryRedeemingUnblindedPaymentTokens())
       .Times(0);
 
-  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnDidRedeemUnblindedPaymentTokens(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnDidScheduleNextUnblindedPaymentTokensRedemption(_))
       .Times(0);
 
@@ -285,7 +282,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
   // Arrange
   const URLResponseMap url_responses = {
       {"/v3/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7",
-       {{net::HTTP_OK, R"(
+       {{net::HTTP_OK, /*response_body*/ R"(
             {
               "payload": "{"paymentId":"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7"}",
               "paymentCredentials": [
@@ -305,22 +302,22 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
                                               Now());
 
   // Act
-  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnDidRedeemUnblindedPaymentTokens(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnFailedToRedeemUnblindedPaymentTokens())
       .Times(0);
 
-  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnDidScheduleNextUnblindedPaymentTokensRedemption(_));
 
-  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnWillRetryRedeemingUnblindedPaymentTokens(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnDidRetryRedeemingUnblindedPaymentTokens())
       .Times(0);
 
@@ -337,7 +334,8 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, Retry) {
   // Arrange
   const URLResponseMap url_responses = {
       {"/v3/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7",
-       {{net::HTTP_NOT_FOUND, {}}, {net::HTTP_OK, R"(
+       {{net::HTTP_NOT_FOUND, /*response_body*/ {}},
+        {net::HTTP_OK, /*response_body*/ R"(
             {
               "payload": "{"paymentId":"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7"}",
               "paymentCredentials": [
@@ -363,19 +361,19 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, Retry) {
   // Act
   const InSequence seq;
 
-  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnFailedToRedeemUnblindedPaymentTokens());
 
-  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnWillRetryRedeemingUnblindedPaymentTokens(_));
 
-  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnDidRetryRedeemingUnblindedPaymentTokens());
 
-  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnDidRedeemUnblindedPaymentTokens(_));
 
-  EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
+  EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnDidScheduleNextUnblindedPaymentTokensRedemption(_));
 
   const WalletInfo wallet = GetWalletForTesting();

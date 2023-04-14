@@ -30,7 +30,7 @@ bool operator!=(const PurchaseIntentSignalHistoryInfo&,
 using PurchaseIntentSignalHistoryList =
     std::vector<PurchaseIntentSignalHistoryInfo>;
 using PurchaseIntentSignalHistoryMap =
-    std::map<std::string, PurchaseIntentSignalHistoryList>;
+    std::map</*segment*/ std::string, PurchaseIntentSignalHistoryList>;
 
 }  // namespace brave_ads::targeting
 

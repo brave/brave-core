@@ -26,11 +26,9 @@ TEST_F(BatAdsReconciledTransactionsUtilTest,
   transactions.push_back(transaction);
 
   // Act
-  const bool did_reconcile_transactions =
-      DidReconcileTransactionsThisMonth(transactions);
 
   // Assert
-  EXPECT_TRUE(did_reconcile_transactions);
+  EXPECT_TRUE(DidReconcileTransactionsThisMonth(transactions));
 }
 
 TEST_F(BatAdsReconciledTransactionsUtilTest,
@@ -46,11 +44,9 @@ TEST_F(BatAdsReconciledTransactionsUtilTest,
   AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
   // Act
-  const bool did_reconcile_transactions =
-      DidReconcileTransactionsThisMonth(transactions);
 
   // Assert
-  EXPECT_FALSE(did_reconcile_transactions);
+  EXPECT_FALSE(DidReconcileTransactionsThisMonth(transactions));
 }
 
 TEST_F(BatAdsReconciledTransactionsUtilTest,
@@ -66,11 +62,9 @@ TEST_F(BatAdsReconciledTransactionsUtilTest,
   AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
   // Act
-  const bool did_reconcile_transactions =
-      DidReconcileTransactionsLastMonth(transactions);
 
   // Assert
-  EXPECT_TRUE(did_reconcile_transactions);
+  EXPECT_TRUE(DidReconcileTransactionsLastMonth(transactions));
 }
 
 TEST_F(BatAdsReconciledTransactionsUtilTest,
@@ -84,11 +78,9 @@ TEST_F(BatAdsReconciledTransactionsUtilTest,
   transactions.push_back(transaction);
 
   // Act
-  const bool did_reconcile_transactions =
-      DidReconcileTransactionsLastMonth(transactions);
 
   // Assert
-  EXPECT_FALSE(did_reconcile_transactions);
+  EXPECT_FALSE(DidReconcileTransactionsLastMonth(transactions));
 }
 
 TEST_F(BatAdsReconciledTransactionsUtilTest, DidReconcileTransaction) {
@@ -99,10 +91,9 @@ TEST_F(BatAdsReconciledTransactionsUtilTest, DidReconcileTransaction) {
       BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
 
   // Act
-  const bool did_reconcile_transaction = DidReconcileTransaction(transaction);
 
   // Assert
-  EXPECT_TRUE(did_reconcile_transaction);
+  EXPECT_TRUE(DidReconcileTransaction(transaction));
 }
 
 TEST_F(BatAdsReconciledTransactionsUtilTest, WasTransactionNotReconciled) {
@@ -113,10 +104,9 @@ TEST_F(BatAdsReconciledTransactionsUtilTest, WasTransactionNotReconciled) {
       BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
 
   // Act
-  const bool did_reconcile_transaction = DidReconcileTransaction(transaction);
 
   // Assert
-  EXPECT_FALSE(did_reconcile_transaction);
+  EXPECT_FALSE(DidReconcileTransaction(transaction));
 }
 
 TEST_F(BatAdsReconciledTransactionsUtilTest,
@@ -128,11 +118,10 @@ TEST_F(BatAdsReconciledTransactionsUtilTest,
       BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
 
   // Act
-  const bool did_reconcile_transaction =
-      DidReconcileTransactionWithinDateRange(transaction, DistantPast(), Now());
 
   // Assert
-  EXPECT_TRUE(did_reconcile_transaction);
+  EXPECT_TRUE(DidReconcileTransactionWithinDateRange(transaction, DistantPast(),
+                                                     Now()));
 }
 
 TEST_F(BatAdsReconciledTransactionsUtilTest,
@@ -144,11 +133,10 @@ TEST_F(BatAdsReconciledTransactionsUtilTest,
       BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
 
   // Act
-  const bool did_reconcile_transaction = DidReconcileTransactionWithinDateRange(
-      transaction, Now() + base::Milliseconds(1), DistantFuture());
 
   // Assert
-  EXPECT_FALSE(did_reconcile_transaction);
+  EXPECT_FALSE(DidReconcileTransactionWithinDateRange(
+      transaction, Now() + base::Milliseconds(1), DistantFuture()));
 }
 
 }  // namespace brave_ads

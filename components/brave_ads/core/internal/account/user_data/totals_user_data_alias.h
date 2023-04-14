@@ -12,8 +12,10 @@
 
 namespace brave_ads::user_data {
 
-using ConfirmationTypeBucketMap = base::flat_map<std::string, int>;
-using AdTypeBucketMap = base::flat_map<std::string, ConfirmationTypeBucketMap>;
+using ConfirmationTypeBucketMap =
+    base::flat_map</*confirmation_type*/ std::string, /*count*/ int>;
+using AdTypeBucketMap =
+    base::flat_map</*ad_type*/ std::string, ConfirmationTypeBucketMap>;
 
 }  // namespace brave_ads::user_data
 

@@ -31,9 +31,12 @@ base::expected<TextProcessing, std::string> TextProcessing::CreateFromValue(
 }
 
 TextProcessing::TextProcessing() = default;
+
 TextProcessing::TextProcessing(TextProcessing&& other) noexcept = default;
+
 TextProcessing& TextProcessing::operator=(TextProcessing&& other) noexcept =
     default;
+
 TextProcessing::~TextProcessing() = default;
 
 TextProcessing::TextProcessing(TransformationVector transformations,

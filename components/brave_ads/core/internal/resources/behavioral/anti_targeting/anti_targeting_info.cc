@@ -15,10 +15,13 @@
 namespace brave_ads::resource {
 
 AntiTargetingInfo::AntiTargetingInfo() = default;
+
 AntiTargetingInfo::AntiTargetingInfo(AntiTargetingInfo&& other) noexcept =
     default;
+
 AntiTargetingInfo& AntiTargetingInfo::operator=(
     AntiTargetingInfo&& other) noexcept = default;
+
 AntiTargetingInfo::~AntiTargetingInfo() = default;
 
 // static

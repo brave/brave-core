@@ -125,7 +125,7 @@ TEST_F(BatAdsNewTabPageAdServingTest, DoNotServeAdIfMissingWallpapers) {
 
   CreativeNewTabPageAdInfo creative_ad =
       BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
-  creative_ad.wallpapers = {};
+  creative_ad.wallpapers.clear();
   SaveCreativeAds({creative_ad});
 
   // Act

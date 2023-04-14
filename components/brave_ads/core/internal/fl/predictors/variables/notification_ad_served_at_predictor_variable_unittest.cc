@@ -18,7 +18,7 @@ class BatAdsNotificationAdServedAtPredictorVariableTest : public UnitTestBase {
 };
 
 TEST_F(BatAdsNotificationAdServedAtPredictorVariableTest, GetDataType) {
-  std::unique_ptr<NotificationAdServedAtPredictorVariable> predictor_variable =
+  std::unique_ptr<PredictorVariableInterface> predictor_variable =
       std::make_unique<NotificationAdServedAtPredictorVariable>(
           base::Time::Now());
 

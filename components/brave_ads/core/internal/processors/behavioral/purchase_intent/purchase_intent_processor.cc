@@ -27,7 +27,7 @@
 
 namespace brave_ads::processor {
 
-using KeywordList = std::vector<std::string>;
+using KeywordList = std::vector</*keyword*/ std::string>;
 
 namespace {
 

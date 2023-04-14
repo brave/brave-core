@@ -16,7 +16,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace brave_ads::resource {
+namespace brave_ads {
 
 namespace {
 constexpr char kCatalog[] = "catalog.json";
@@ -38,7 +38,7 @@ TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
   ASSERT_TRUE(catalog_info);
 
   // Act
-  EpsilonGreedyBandit resource(&catalog);
+  resource::EpsilonGreedyBandit resource(&catalog);
   resource.LoadFromCatalog(*catalog_info);
 
   // Assert
@@ -51,7 +51,7 @@ TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
   Catalog catalog;
 
   // Act
-  EpsilonGreedyBandit resource(&catalog);
+  resource::EpsilonGreedyBandit resource(&catalog);
   resource.LoadFromCatalog(/*catalog*/ {});
 
   // Assert
@@ -64,10 +64,10 @@ TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
   Catalog catalog;
 
   // Act
-  const EpsilonGreedyBandit resource(&catalog);
+  const resource::EpsilonGreedyBandit resource(&catalog);
 
   // Assert
   EXPECT_FALSE(resource.IsInitialized());
 }
 
-}  // namespace brave_ads::resource
+}  // namespace brave_ads

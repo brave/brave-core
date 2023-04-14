@@ -15,7 +15,7 @@
 namespace brave_ads::geographic {
 
 using SupportedSubdivisionCodesMap =
-    base::flat_map<base::StringPiece, SupportedSubdivisions>;
+    base::flat_map</*country_code*/ base::StringPiece, SupportedSubdivisions>;
 
 const SupportedSubdivisionCodesMap& GetSupportedSubdivisionCodes();
 

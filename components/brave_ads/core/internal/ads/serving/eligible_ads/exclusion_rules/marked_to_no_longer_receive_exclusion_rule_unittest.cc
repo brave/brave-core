@@ -13,7 +13,10 @@
 
 namespace brave_ads {
 
-class BatAdsMarkedToNoLongerReceiveExclusionRuleTest : public UnitTestBase {};
+class BatAdsMarkedToNoLongerReceiveExclusionRuleTest : public UnitTestBase {
+ protected:
+  MarkedToNoLongerReceiveExclusionRule exclusion_rule_;
+};
 
 TEST_F(BatAdsMarkedToNoLongerReceiveExclusionRuleTest, AllowAd) {
   // Arrange
@@ -21,11 +24,9 @@ TEST_F(BatAdsMarkedToNoLongerReceiveExclusionRuleTest, AllowAd) {
   creative_ad.segment = kSegment;
 
   // Act
-  MarkedToNoLongerReceiveExclusionRule exclusion_rule;
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsMarkedToNoLongerReceiveExclusionRuleTest, DoNotAllowAd) {
@@ -37,11 +38,9 @@ TEST_F(BatAdsMarkedToNoLongerReceiveExclusionRuleTest, DoNotAllowAd) {
       creative_ad.segment, CategoryContentOptActionType::kNone);
 
   // Act
-  MarkedToNoLongerReceiveExclusionRule exclusion_rule;
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_TRUE(should_exclude);
+  EXPECT_TRUE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
 }  // namespace brave_ads

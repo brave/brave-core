@@ -51,6 +51,7 @@ class BatAdsInlineContentAdServingObserver : public ServingObserver {
   bool did_serve_ad_ = false;
   bool failed_to_serve_ad_ = false;
 };
+
 class BatAdsInlineContentAdServingTest : public UnitTestBase {
  protected:
   void SetUp() override {

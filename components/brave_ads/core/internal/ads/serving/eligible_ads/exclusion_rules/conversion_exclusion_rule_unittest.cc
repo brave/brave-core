@@ -33,14 +33,12 @@ TEST_F(BatAdsConversionExclusionRuleTest, AllowAdIfThereIsNoConversionHistory) {
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
 
-  const AdEventList ad_events;
+  ConversionExclusionRule exclusion_rule({});
 
   // Act
-  ConversionExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsConversionExclusionRuleTest, DoNotAllowAdIfAlreadyConverted) {
@@ -56,12 +54,12 @@ TEST_F(BatAdsConversionExclusionRuleTest, DoNotAllowAdIfAlreadyConverted) {
 
   ad_events.push_back(ad_event);
 
-  // Act
   ConversionExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
+
+  // Act
 
   // Assert
-  EXPECT_TRUE(should_exclude);
+  EXPECT_TRUE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsConversionExclusionRuleTest,
@@ -89,12 +87,12 @@ TEST_F(BatAdsConversionExclusionRuleTest,
 
   ad_events.push_back(ad_event);
 
-  // Act
   ConversionExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
+
+  // Act
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsConversionExclusionRuleTest, AllowAdIfNotAlreadyConverted) {
@@ -113,12 +111,12 @@ TEST_F(BatAdsConversionExclusionRuleTest, AllowAdIfNotAlreadyConverted) {
 
   ad_events.push_back(ad_event);
 
-  // Act
   ConversionExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad_1);
+
+  // Act
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad_1));
 }
 
 }  // namespace brave_ads

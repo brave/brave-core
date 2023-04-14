@@ -29,12 +29,11 @@ class BatAdsIssuersTest : public UnitTestBase {
     UnitTestBase::SetUp();
 
     issuers_ = std::make_unique<Issuers>();
-    issuers_delegate_mock_ = std::make_unique<NiceMock<IssuersDelegateMock>>();
-    issuers_->SetDelegate(issuers_delegate_mock_.get());
+    issuers_->SetDelegate(&issuers_delegate_mock_);
   }
 
   std::unique_ptr<Issuers> issuers_;
-  std::unique_ptr<IssuersDelegateMock> issuers_delegate_mock_;
+  NiceMock<IssuersDelegateMock> issuers_delegate_mock_;
 };
 
 TEST_F(BatAdsIssuersTest, FetchIssuers) {
@@ -48,10 +47,10 @@ TEST_F(BatAdsIssuersTest, FetchIssuers) {
                    {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
                     {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
 
-  EXPECT_CALL(*issuers_delegate_mock_, OnDidFetchIssuers(expected_issuers));
-  EXPECT_CALL(*issuers_delegate_mock_, OnFailedToFetchIssuers()).Times(0);
-  EXPECT_CALL(*issuers_delegate_mock_, OnWillRetryFetchingIssuers(_)).Times(0);
-  EXPECT_CALL(*issuers_delegate_mock_, OnDidRetryFetchingIssuers()).Times(0);
+  EXPECT_CALL(issuers_delegate_mock_, OnDidFetchIssuers(expected_issuers));
+  EXPECT_CALL(issuers_delegate_mock_, OnFailedToFetchIssuers()).Times(0);
+  EXPECT_CALL(issuers_delegate_mock_, OnWillRetryFetchingIssuers(_)).Times(0);
+  EXPECT_CALL(issuers_delegate_mock_, OnDidRetryFetchingIssuers()).Times(0);
 
   // Act
   issuers_->MaybeFetch();
@@ -61,15 +60,16 @@ TEST_F(BatAdsIssuersTest, FetchIssuers) {
 
 TEST_F(BatAdsIssuersTest, FetchIssuersInvalidJsonResponse) {
   // Arrange
-  const URLResponseMap url_responses = {{// Issuers request
-                                         "/v3/issuers/",
-                                         {{net::HTTP_OK, "INVALID"}}}};
+  const URLResponseMap url_responses = {
+      {// Issuers request
+       "/v3/issuers/",
+       {{net::HTTP_OK, /*response_body*/ "INVALID"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  EXPECT_CALL(*issuers_delegate_mock_, OnDidFetchIssuers(_)).Times(0);
-  EXPECT_CALL(*issuers_delegate_mock_, OnFailedToFetchIssuers()).Times(2);
-  EXPECT_CALL(*issuers_delegate_mock_, OnWillRetryFetchingIssuers(_)).Times(2);
-  EXPECT_CALL(*issuers_delegate_mock_, OnDidRetryFetchingIssuers());
+  EXPECT_CALL(issuers_delegate_mock_, OnDidFetchIssuers(_)).Times(0);
+  EXPECT_CALL(issuers_delegate_mock_, OnFailedToFetchIssuers()).Times(2);
+  EXPECT_CALL(issuers_delegate_mock_, OnWillRetryFetchingIssuers(_)).Times(2);
+  EXPECT_CALL(issuers_delegate_mock_, OnDidRetryFetchingIssuers());
 
   // Act
   issuers_->MaybeFetch();
@@ -86,15 +86,16 @@ TEST_F(BatAdsIssuersTest, FetchIssuersInvalidJsonResponse) {
 
 TEST_F(BatAdsIssuersTest, FetchIssuersNonHttpOkResponse) {
   // Arrange
-  const URLResponseMap url_responses = {{// Issuers request
-                                         "/v3/issuers/",
-                                         {{net::HTTP_NOT_FOUND, {}}}}};
+  const URLResponseMap url_responses = {
+      {// Issuers request
+       "/v3/issuers/",
+       {{net::HTTP_NOT_FOUND, /*response_body*/ {}}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  EXPECT_CALL(*issuers_delegate_mock_, OnDidFetchIssuers(_)).Times(0);
-  EXPECT_CALL(*issuers_delegate_mock_, OnFailedToFetchIssuers()).Times(2);
-  EXPECT_CALL(*issuers_delegate_mock_, OnWillRetryFetchingIssuers(_)).Times(2);
-  EXPECT_CALL(*issuers_delegate_mock_, OnDidRetryFetchingIssuers());
+  EXPECT_CALL(issuers_delegate_mock_, OnDidFetchIssuers(_)).Times(0);
+  EXPECT_CALL(issuers_delegate_mock_, OnFailedToFetchIssuers()).Times(2);
+  EXPECT_CALL(issuers_delegate_mock_, OnWillRetryFetchingIssuers(_)).Times(2);
+  EXPECT_CALL(issuers_delegate_mock_, OnDidRetryFetchingIssuers());
 
   // Act
   issuers_->MaybeFetch();

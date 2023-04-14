@@ -44,9 +44,7 @@ class BatAdsAccountTest : public AccountObserver, public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    token_generator_mock_ =
-        std::make_unique<NiceMock<privacy::TokenGeneratorMock>>();
-    account_ = std::make_unique<Account>(token_generator_mock_.get());
+    account_ = std::make_unique<Account>(&token_generator_mock_);
     account_->AddObserver(this);
   }
 
@@ -86,7 +84,7 @@ class BatAdsAccountTest : public AccountObserver, public UnitTestBase {
     statement_of_accounts_did_change_ = true;
   }
 
-  std::unique_ptr<privacy::TokenGeneratorMock> token_generator_mock_;
+  NiceMock<privacy::TokenGeneratorMock> token_generator_mock_;
   std::unique_ptr<Account> account_;
 
   bool wallet_was_created_ = false;
@@ -285,7 +283,7 @@ TEST_F(BatAdsAccountTest, DoNotGetMissingIssuers) {
   // Arrange
   const URLResponseMap url_responses = {{// Get issuers request
                                          "/v3/issuers/",
-                                         {{net::HTTP_OK, R"(
+                                         {{net::HTTP_OK, /*response_body*/ R"(
                                           {
                                             "ping": 7200000,
                                             "issuers": []
@@ -306,9 +304,10 @@ TEST_F(BatAdsAccountTest, DoNotGetMissingIssuers) {
 
 TEST_F(BatAdsAccountTest, DoNotGetIssuersFromInvalidResponse) {
   // Arrange
-  const URLResponseMap url_responses = {{// Get issuers request
-                                         "/v3/issuers/",
-                                         {{net::HTTP_OK, "INVALID"}}}};
+  const URLResponseMap url_responses = {
+      {// Get issuers request
+       "/v3/issuers/",
+       {{net::HTTP_OK, /*response_body*/ "INVALID"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   account_->Process();
@@ -336,7 +335,7 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
        "JmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TW"
        "GpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3"
        "Zz09In0=",
-       {{net::HTTP_CREATED, R"(
+       {{net::HTTP_CREATED, /*response_body*/ R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
@@ -347,7 +346,7 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
           )"}}},
       {// Fetch payment token request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken",
-       {{net::HTTP_OK, R"(
+       {{net::HTTP_OK, /*response_body*/ R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
@@ -367,7 +366,7 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
 
   BuildAndSetIssuers();
 
-  ON_CALL(*token_generator_mock_, Generate(_))
+  ON_CALL(token_generator_mock_, Generate(_))
       .WillByDefault(Return(privacy::GetTokens(/*count*/ 1)));
 
   privacy::SetUnblindedTokens(/*count*/ 1);
@@ -409,7 +408,7 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
 
 TEST_F(BatAdsAccountTest, DepositForNonCash) {
   // Arrange
-  ON_CALL(*token_generator_mock_, Generate(_))
+  ON_CALL(token_generator_mock_, Generate(_))
       .WillByDefault(Return(privacy::GetTokens(/*count*/ 1)));
 
   privacy::SetUnblindedTokens(/*count*/ 1);
@@ -447,7 +446,7 @@ TEST_F(BatAdsAccountTest, DepositForNonCash) {
 
 TEST_F(BatAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
   // Arrange
-  ON_CALL(*token_generator_mock_, Generate(_))
+  ON_CALL(token_generator_mock_, Generate(_))
       .WillByDefault(Return(privacy::GetTokens(/*count*/ 1)));
 
   const CreativeNotificationAdInfo creative_ad =

@@ -36,7 +36,7 @@
 namespace brave_ads::database::table {
 
 using CreativeNotificationAdMap =
-    std::map<std::string, CreativeNotificationAdInfo>;
+    std::map</*creative_instance_id*/ std::string, CreativeNotificationAdInfo>;
 
 namespace {
 

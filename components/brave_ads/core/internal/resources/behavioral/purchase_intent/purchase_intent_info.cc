@@ -15,10 +15,13 @@
 namespace brave_ads::targeting {
 
 PurchaseIntentInfo::PurchaseIntentInfo() = default;
+
 PurchaseIntentInfo::PurchaseIntentInfo(PurchaseIntentInfo&& other) noexcept =
     default;
+
 PurchaseIntentInfo& PurchaseIntentInfo::operator=(
     PurchaseIntentInfo&& other) noexcept = default;
+
 PurchaseIntentInfo::~PurchaseIntentInfo() = default;
 
 // static

@@ -35,7 +35,8 @@
 
 namespace brave_ads::database::table {
 
-using CreativeNewTabPageAdMap = std::map<std::string, CreativeNewTabPageAdInfo>;
+using CreativeNewTabPageAdMap =
+    std::map</*creative_instance_id*/ std::string, CreativeNewTabPageAdInfo>;
 
 namespace {
 

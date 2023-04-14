@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_opted_out_confirmation.h"
 
-#include <memory>
-
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_unittest_util.h"
@@ -31,12 +29,10 @@ class BatAdsRedeemOptedOutConfirmationTest : public UnitTestBase {
     AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
   }
 
-  std::unique_ptr<RedeemConfirmationDelegateMock>
-      redeem_confirmation_delegate_mock_ =
-          std::make_unique<NiceMock<RedeemConfirmationDelegateMock>>();
+  NiceMock<RedeemConfirmationDelegateMock> redeem_confirmation_delegate_mock_;
+
   base::WeakPtrFactory<RedeemConfirmationDelegateMock>
-      confirmation_delegate_weak_factory_{
-          redeem_confirmation_delegate_mock_.get()};
+      confirmation_delegate_weak_factory_{&redeem_confirmation_delegate_mock_};
 };
 
 TEST_F(BatAdsRedeemOptedOutConfirmationTest, Redeem) {
@@ -44,7 +40,7 @@ TEST_F(BatAdsRedeemOptedOutConfirmationTest, Redeem) {
   const URLResponseMap url_responses = {
       {// Create confirmation request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a",
-       {{net::kHttpImATeapot, R"(
+       {{net::kHttpImATeapot, /*response_body*/ R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
@@ -59,14 +55,14 @@ TEST_F(BatAdsRedeemOptedOutConfirmationTest, Redeem) {
   ASSERT_TRUE(confirmation);
 
   // Act
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedInConfirmation(_, _))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedOutConfirmation(*confirmation));
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnFailedToRedeemConfirmation(_, _, _))
       .Times(0);
 
@@ -82,23 +78,23 @@ TEST_F(BatAdsRedeemOptedOutConfirmationTest,
   const URLResponseMap url_responses = {
       {// Create confirmation request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a",
-       {{net::HTTP_BAD_REQUEST, {}}}}};
+       {{net::HTTP_BAD_REQUEST, /*response_body*/ {}}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
 
   // Act
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedInConfirmation(_, _))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedOutConfirmation(_))
       .Times(0);
 
   EXPECT_CALL(
-      *redeem_confirmation_delegate_mock_,
+      redeem_confirmation_delegate_mock_,
       OnFailedToRedeemConfirmation(*confirmation, /*should_retry*/ false,
                                    /*should_backoff*/ false));
 
@@ -114,23 +110,23 @@ TEST_F(BatAdsRedeemOptedOutConfirmationTest,
   const URLResponseMap url_responses = {
       {// Create confirmation request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a",
-       {{net::HTTP_CONFLICT, {}}}}};
+       {{net::HTTP_CONFLICT, /*response_body*/ {}}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
 
   // Act
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedInConfirmation(_, _))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedOutConfirmation(_))
       .Times(0);
 
   EXPECT_CALL(
-      *redeem_confirmation_delegate_mock_,
+      redeem_confirmation_delegate_mock_,
       OnFailedToRedeemConfirmation(*confirmation, /*should_retry*/ false,
                                    /*should_backoff*/ false));
 
@@ -146,23 +142,23 @@ TEST_F(BatAdsRedeemOptedOutConfirmationTest,
   const URLResponseMap url_responses = {
       {// Create confirmation request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a",
-       {{net::HTTP_CREATED, {}}}}};
+       {{net::HTTP_CREATED, /*response_body*/ {}}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
 
   // Act
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedInConfirmation(_, _))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedOutConfirmation(_))
       .Times(0);
 
   EXPECT_CALL(
-      *redeem_confirmation_delegate_mock_,
+      redeem_confirmation_delegate_mock_,
       OnFailedToRedeemConfirmation(*confirmation, /*should_retry*/ false,
                                    /*should_backoff*/ false));
 
@@ -177,22 +173,22 @@ TEST_F(BatAdsRedeemOptedOutConfirmationTest, RetryRedeeming) {
   const URLResponseMap url_responses = {
       {// Create confirmation request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a",
-       {{net::HTTP_INTERNAL_SERVER_ERROR, {}}}}};
+       {{net::HTTP_INTERNAL_SERVER_ERROR, /*response_body*/ {}}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
 
   // Act
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedInConfirmation(_, _))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedOutConfirmation(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnFailedToRedeemConfirmation(*confirmation, /*should_retry*/ true,
                                            /*should_backoff*/ true));
 

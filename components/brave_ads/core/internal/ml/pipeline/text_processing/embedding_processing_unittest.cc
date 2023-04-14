@@ -15,23 +15,12 @@
 
 namespace brave_ads {
 
-namespace {
-
-constexpr char kResourceFile[] = "wtpwsrqtjxmfdwaymauprezkunxprysm";
-constexpr char kSimpleResourceFile[] =
-    "resources/wtpwsrqtjxmfdwaymauprezkunxprysm_simple";
-
-}  // namespace
-
 class BatAdsEmbeddingProcessingTest : public UnitTestBase {};
 
 TEST_F(BatAdsEmbeddingProcessingTest, EmbedText) {
   // Arrange
-  CopyFileFromTestPathToTempPath(kSimpleResourceFile, kResourceFile);
-
   resource::TextEmbedding resource;
   resource.Load();
-
   task_environment_.RunUntilIdle();
   ASSERT_TRUE(resource.IsInitialized());
 
