@@ -531,6 +531,9 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
             itemModel.setIsUserSelected(selectedTokensSymbols.contains(Utils.tokenToString(token)));
             walletListItemModelList.add(itemModel);
         }
+        walletListItemModelList.sort(
+                (item1, item2)
+                        -> Boolean.compare(item2.getIsUserSelected(), item1.getIsUserSelected()));
         walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
         walletCoinAdapter.setOnWalletListItemClick(this);
         walletCoinAdapter.setWalletListItemType(Utils.ASSET_ITEM);
