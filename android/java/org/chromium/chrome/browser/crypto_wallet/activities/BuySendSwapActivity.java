@@ -1643,7 +1643,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         } else {
             Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, null, token.contractAddress,
                     token.symbol, getResources().getDisplayMetrics().density, assetText, this, true,
-                    (float) 0.5);
+                    (float) 0.5, true);
         }
         if (buySend && (token.isErc721 || token.isNft)) {
             mFromValueBlock.setVisibility(View.GONE);
@@ -1751,7 +1751,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                             getString(R.string.market_price_in), mSelectedNetwork.symbol));
                     Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, null, "",
                             mSelectedNetwork.symbol, getResources().getDisplayMetrics().density,
-                            mFromAssetText, this, true, (float) 0.5);
+                            mFromAssetText, this, true, (float) 0.5, true);
 
                     // Before updating, make sure we are on a network with the same coin type
                     if (mSelectedAccount != null

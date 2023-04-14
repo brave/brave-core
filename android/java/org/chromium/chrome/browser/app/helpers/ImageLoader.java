@@ -5,18 +5,23 @@
 
 package org.chromium.chrome.browser.app.helpers;
 
+import static org.chromium.ui.base.ViewUtils.dpToPx;
+
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.webkit.URLUtil;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
+import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
@@ -34,7 +39,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 import org.xmlpull.v1.XmlSerializer;
 
-import org.chromium.base.Log;
+import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.WebContentsFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
@@ -72,19 +77,23 @@ public class ImageLoader {
     /**
      * Downloads an image from a given URL, including support for GIF and SVG image types.
      * @param url URL of the image to download.
-     * @param context Android context used by Glide for applying transformations.
+     * @param RequestManager Glide request manager for applying transformations.
      * @param isCircular When {@code true}, a circular transformation will be applied.
+     * @param roundedCorners Radius of the circle used to round the corners in dip. Unused when
+     *         {@code isCircular} is {@code true}.
      * @param imageView ImageView where the downloaded image will be set.
      * @param callback Callback used to notify if the image has been set correctly. It can be {@code
      *         null}.
      */
-    public static void downloadImage(String url, final Context context, final boolean isCircular,
-            final ImageView imageView, final Callback callback) {
+    public static void downloadImage(String url, final RequestManager requestManager,
+            final boolean isCircular, final int roundedCorners, final ImageView imageView,
+            final Callback callback) {
         if (!isValidImgUrl(url)) {
             if (callback != null) callback.onLoadFailed();
             return;
         }
 
+        Resources resources = ContextUtils.getApplicationContext().getResources();
         Profile profile = Utils.getProfile(false);
         if (isSvg(url)) {
             final String validUrl;
@@ -134,10 +143,11 @@ public class ImageLoader {
                             imageFetcherFacade = null;
                         } else {
                             BitmapDrawable bitmapDrawable =
-                                    new BitmapDrawable(context.getResources(), bestBitmap);
+                                    new BitmapDrawable(resources, bestBitmap);
                             imageFetcherFacade = new ImageFetcherFacade(bitmapDrawable);
                         }
-                        loadImage(imageFetcherFacade, context, isCircular, imageView, callback);
+                        loadImage(imageFetcherFacade, requestManager, isCircular, roundedCorners,
+                                imageView, callback);
                     });
         } else {
             ImageFetcher imageFetcher = ImageFetcherFactory.createImageFetcher(
@@ -147,16 +157,17 @@ public class ImageLoader {
                         Params.create(new GURL(url), UNUSED_CLIENT_NAME), gifImage -> {
                             ImageFetcherFacade imageFetcherFacade =
                                     new ImageFetcherFacade(gifImage.getData());
-                            loadImage(imageFetcherFacade, context, isCircular, imageView, callback);
+                            loadImage(imageFetcherFacade, requestManager, isCircular,
+                                    roundedCorners, imageView, callback);
                         });
             } else {
                 imageFetcher.fetchImage(
                         Params.create(new GURL(url), UNUSED_CLIENT_NAME), bitmap -> {
-                            BitmapDrawable bitmapDrawable =
-                                    new BitmapDrawable(context.getResources(), bitmap);
+                            BitmapDrawable bitmapDrawable = new BitmapDrawable(resources, bitmap);
                             ImageFetcherFacade imageFetcherFacade =
                                     new ImageFetcherFacade(bitmapDrawable);
-                            loadImage(imageFetcherFacade, context, isCircular, imageView, callback);
+                            loadImage(imageFetcherFacade, requestManager, isCircular,
+                                    roundedCorners, imageView, callback);
                         });
             }
         }
@@ -268,47 +279,47 @@ public class ImageLoader {
         }
     }
 
-    private static void loadImage(ImageFetcherFacade imageFetcherFacade, Context context,
-            boolean isCircular, ImageView imageView, Callback callback) {
+    private static void loadImage(ImageFetcherFacade imageFetcherFacade,
+            RequestManager requestManager, boolean isCircular, final int roundedCorners,
+            ImageView imageView, Callback callback) {
         if (imageFetcherFacade == null
                 || (imageFetcherFacade.data == null && imageFetcherFacade.drawable == null)) {
             if (callback != null) callback.onLoadFailed();
             return;
         }
-        try {
-            Glide.with(context)
-                    .load(imageFetcherFacade.data != null ? imageFetcherFacade.data
-                                                          : imageFetcherFacade.drawable)
-                    .transform(getTransformations(isCircular))
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .priority(Priority.IMMEDIATE)
-                    .listener(new RequestListener<Drawable>() {
-                        @Override
-                        public boolean onLoadFailed(GlideException glideException, Object model,
-                                Target<Drawable> target, boolean isFirstResource) {
-                            return callback != null && callback.onLoadFailed();
-                        }
+        requestManager
+                .load(imageFetcherFacade.data != null ? imageFetcherFacade.data
+                                                      : imageFetcherFacade.drawable)
+                .transform(getTransformations(isCircular, roundedCorners))
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .priority(Priority.IMMEDIATE)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(GlideException glideException, Object model,
+                            Target<Drawable> target, boolean isFirstResource) {
+                        return callback != null && callback.onLoadFailed();
+                    }
 
-                        @Override
-                        public boolean onResourceReady(Drawable resource, Object model,
-                                Target<Drawable> target, DataSource dataSource,
-                                boolean isFirstResource) {
-                            return callback != null && callback.onResourceReady(resource, target);
-                        }
-                    })
-                    .into(imageView);
-        } catch (IllegalArgumentException e) {
-            Log.e(TAG, "loadImage error: " + e.getMessage());
-            if (callback != null) callback.onLoadFailed();
-        }
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model,
+                            Target<Drawable> target, DataSource dataSource,
+                            boolean isFirstResource) {
+                        return callback != null && callback.onResourceReady(resource, target);
+                    }
+                })
+                .into(imageView);
     }
 
-    private static BitmapTransformation[] getTransformations(boolean isCircular) {
+    private static BitmapTransformation[] getTransformations(
+            boolean isCircular, final int roundedCorners) {
         if (isCircular) {
-            return new BitmapTransformation[] {
-                    new FitCenter(), new RoundedCorners(32), new CircleCrop()};
+            return new BitmapTransformation[] {new FitCenter(), new CircleCrop()};
         }
-        return new BitmapTransformation[] {new FitCenter(), new RoundedCorners(32)};
+
+        DisplayMetrics displayMetrics =
+                ContextUtils.getApplicationContext().getResources().getDisplayMetrics();
+        return new BitmapTransformation[] {
+                new FitCenter(), new RoundedCorners(dpToPx(displayMetrics, roundedCorners))};
     }
 
     /**
@@ -341,7 +352,7 @@ public class ImageLoader {
         if (!isValidImgUrl(url)) return false;
         // Converts the URL to lowercase to make the matching case-insensitive.
         url = url.toLowerCase(Locale.ENGLISH);
-        return url.endsWith(".gif");
+        return url.endsWith(".gif") || url.endsWith("=gif");
     }
 
     private static boolean isValidImgUrl(String url) {
@@ -401,7 +412,7 @@ public class ImageLoader {
 
     /**
      * Callback used to notify if the image has been downloaded successfully.
-     * @see #downloadImage(String, Context, boolean, ImageView, Callback) /
+     * @see #downloadImage(String, RequestManager, boolean, int, ImageView, Callback)
      */
     public interface Callback {
         boolean onLoadFailed();

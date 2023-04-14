@@ -766,8 +766,8 @@ public class Utils {
             return;
         }
         executor.execute(() -> {
-            Bitmap bitmap1 = Blockies.createIcon(addresses[0], true);
-            Bitmap bitmap2 = scaleDown(Blockies.createIcon(addresses[1], true), (float) 0.6);
+            Bitmap bitmap1 = Blockies.createIcon(addresses[0], true, true);
+            Bitmap bitmap2 = scaleDown(Blockies.createIcon(addresses[1], true, true), (float) 0.6);
             final Bitmap bitmap = overlayBitmapToCenter(bitmap1, bitmap2);
             handler.post(() -> {
                 if (iconImg != null) {
@@ -802,11 +802,11 @@ public class Utils {
 
     public static void setBlockiesBitmapCustomAsset(ExecutorService executor, Handler handler,
             ImageView iconImg, String source, String symbol, float scale, TextView textView,
-            Context context, boolean drawCaratDown, float scaleDown) {
+            Context context, boolean drawCaratDown, float scaleDown, boolean circular) {
         executor.execute(() -> {
-            final Bitmap bitmap =
-                    drawTextToBitmap(scaleDown(Blockies.createIcon(source, true), scaleDown),
-                            symbol.isEmpty() ? "" : symbol.substring(0, 1), scale, scaleDown);
+            final Bitmap bitmap = drawTextToBitmap(
+                    scaleDown(Blockies.createIcon(source, true, circular), scaleDown),
+                    symbol.isEmpty() ? "" : symbol.substring(0, 1), scale, scaleDown);
             handler.post(() -> {
                 if (iconImg != null) {
                     iconImg.setImageBitmap(bitmap);
@@ -831,9 +831,9 @@ public class Utils {
 
         Rect bounds = new Rect();
         paint.getTextBounds(text, 0, text.length(), bounds);
-        int x = (bitmap.getWidth() - bounds.width()) / 2;
-        int y = (bitmap.getHeight() + bounds.height()) / 2;
-        canvas.drawText(text, x, y, paint);
+        float x = (bitmap.getWidth() - bounds.width()) / 2f;
+        float y = (bitmap.getHeight() + bounds.height()) / 2f;
+        canvas.drawText(text, x - bounds.left, y - bounds.bottom, paint);
 
         return bitmap;
     }
@@ -841,7 +841,7 @@ public class Utils {
     public static void setBlockiesBitmapResource(ExecutorService executor, Handler handler,
             ImageView iconImg, String source, boolean makeLowerCase) {
         executor.execute(() -> {
-            final Bitmap bitmap = Blockies.createIcon(source, makeLowerCase);
+            final Bitmap bitmap = Blockies.createIcon(source, makeLowerCase, true);
             handler.post(() -> {
                 if (iconImg != null) {
                     iconImg.setImageBitmap(bitmap);
@@ -1568,10 +1568,30 @@ public class Utils {
                 "#", symbolLowerCase, contractAddress, token.tokenId, token.chainId);
     }
 
-    // Please only use this function when you need all the info (tokens, prices and balances) at the
-    // same time!
+    /**
+     * Gets tokens, prices and balances, all at the same time for a given token type.
+     * See {@link TokenUtils.TokenType}.
+     *
+     * @param activityRef Weak reference to Brave Wallet base a ctivity.
+     * @param tokenType Token type used for filtering (e.g. {@code TokenType.NON_NFTS}).
+     * @param allNetworks List of all networks, used to log P3A records.
+     * @param selectedNetwork Currently selected network.
+     * @param accountInfos Array of account info.
+     * @param filterByTokens Tokens used for fetching prices and balances.
+     *                       It may be {@code null} for fetching all tokens of a given token type.
+     *                       When {@code userAssetsOnly} is {@code true}, it should be set as
+     *                       {@code null}.
+     * @param userAssetsOnly {@code true} for fetching only user assets. It should be used with
+     *         {@code filterByTokens} set as {@code null}.
+     * @param callback Callback containing four parameters: asset prices, token list, assets
+     *         balances, blockchain token balances.
+     *
+     * <b>Note:</b>: Use this method wisely, and only if tokens, prices and balances are needed
+     * at the same time.
+     */
     public static void getTxExtraInfo(WeakReference<BraveWalletBaseActivity> activityRef,
-            List<NetworkInfo> allNetworks, NetworkInfo selectedNetwork, AccountInfo[] accountInfos,
+            TokenUtils.TokenType tokenType, List<NetworkInfo> allNetworks,
+            NetworkInfo selectedNetwork, AccountInfo[] accountInfos,
             BlockchainToken[] filterByTokens, boolean userAssetsOnly,
             Callbacks.Callback4<HashMap<String, Double>, BlockchainToken[], HashMap<String, Double>,
                     HashMap<String, HashMap<String, Double>>> callback) {
@@ -1591,8 +1611,7 @@ public class Utils {
         AsyncUtils.MultiResponseHandler multiResponse = new AsyncUtils.MultiResponseHandler(3);
 
         TokenUtils.getUserOrAllTokensFiltered(braveWalletService, blockchainRegistry,
-                selectedNetwork, selectedNetwork.coin, TokenUtils.TokenType.ALL, userAssetsOnly,
-                tokens -> {
+                selectedNetwork, selectedNetwork.coin, tokenType, userAssetsOnly, tokens -> {
                     final BlockchainToken[] fullTokenList = tokens;
                     if (filterByTokens != null) {
                         if (userAssetsOnly)

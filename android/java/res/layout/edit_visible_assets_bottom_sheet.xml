@@ -28,7 +28,6 @@
             style="@style/BraveWalletTextView"
             android:layout_width="0dp"
             android:paddingVertical="8dp"
-            android:text="@string/wallet_add_custom_asset"
             android:textColor="@color/brave_action_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/edit_visible_tv_network"

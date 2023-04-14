@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
@@ -38,6 +39,7 @@ import org.chromium.chrome.browser.app.helpers.ImageLoader;
 import org.chromium.chrome.browser.crypto_wallet.util.AddressUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
@@ -56,6 +58,7 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
     private static final String CHAIN_ID = "chainId";
     private static final String ASSET_NAME = "assetName";
     private static final String ASSET_CONTRACT_ADDRESS = "assetContractAddress";
+    private static final String ASSET_SYMBOL = "assetSymbol";
     private static final String NFT_TOKEN_ID_HEX = "nftTokenIdHex";
     private static final String NFT_META_DATA = "nftMetadata";
     private static final String NFT_IS_ERC_721 = "nftIsErc721";
@@ -64,6 +67,7 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
     private String mNftName;
     private String mChainId;
     private String mContractAddress;
+    private String mSymbol;
     private String mNftTokenId;
     private String mNftTokenHex;
 
@@ -97,6 +101,7 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
             mChainId = intent.getStringExtra(CHAIN_ID);
             mNftName = intent.getStringExtra(ASSET_NAME);
             mContractAddress = intent.getStringExtra(ASSET_CONTRACT_ADDRESS);
+            mSymbol = intent.getStringExtra(ASSET_SYMBOL);
             mNftTokenHex = intent.getStringExtra(NFT_TOKEN_ID_HEX);
             mNftTokenId = Utils.hexToIntString(mNftTokenHex);
             mNftMetadata = (PortfolioModel.NftMetadata) intent.getSerializableExtra(NFT_META_DATA);
@@ -129,7 +134,7 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
         mNftDetailTitleView.setText(Utils.formatErc721TokenTitle(mNftName, mNftTokenId));
 
         mNftNameView = findViewById(R.id.nft_name);
-        mNftNameView.setText(mNftName);
+        mNftNameView.setText(mSymbol);
 
         mNetworkNameView = findViewById(R.id.blockchain_content);
         mNftTokenStandardLayout = findViewById(R.id.nft_token_standard);
@@ -240,18 +245,20 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
     }
 
     private void loadNftImage(String imageUrl) {
-        ImageLoader.downloadImage(imageUrl, this, false, mNftImageView, new ImageLoader.Callback() {
-            @Override
-            public boolean onLoadFailed() {
-                setNftImageAsNotAvailable();
-                return false;
-            }
-            @Override
-            public boolean onResourceReady(Drawable resource, Target<Drawable> target) {
-                target.onResourceReady(resource, new DrawableCrossFadeTransition(250, true));
-                return true;
-            }
-        });
+        ImageLoader.downloadImage(imageUrl, Glide.with(this), false,
+                WalletConstants.RECT_ROUNDED_CORNERS_DP, mNftImageView, new ImageLoader.Callback() {
+                    @Override
+                    public boolean onLoadFailed() {
+                        setNftImageAsNotAvailable();
+                        return false;
+                    }
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Target<Drawable> target) {
+                        target.onResourceReady(
+                                resource, new DrawableCrossFadeTransition(250, true));
+                        return true;
+                    }
+                });
     }
 
     private void setNftImageAsNotAvailable() {
@@ -265,6 +272,7 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
         intent.putExtra(CHAIN_ID, chainId);
         intent.putExtra(ASSET_NAME, asset.name);
         intent.putExtra(ASSET_CONTRACT_ADDRESS, asset.contractAddress);
+        intent.putExtra(ASSET_SYMBOL, asset.symbol);
         intent.putExtra(NFT_TOKEN_ID_HEX, asset.tokenId);
         intent.putExtra(NFT_META_DATA, nftDataModel.nftMetadata);
         intent.putExtra(NFT_IS_ERC_721, nftDataModel.token.isErc721);

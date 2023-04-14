@@ -318,7 +318,8 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                                                             new WeakReference<>(
                                                                     (BraveWalletBaseActivity)
                                                                             getActivity()),
-                                                            allNetworks, selectedNetwork, accounts,
+                                                            TokenUtils.TokenType.ALL, allNetworks,
+                                                            selectedNetwork, accounts,
                                                             filterByTokens, false,
                                                             (assetPrices, fullTokenList,
                                                                     nativeAssetsBalances,

@@ -35,6 +35,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.PortfolioHelper;
+import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.mojo.bindings.Callbacks;
@@ -79,9 +80,9 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
         mBraveWalletService = braveWalletService;
         mAssetRatioService = assetRatioService;
         mSharedData = sharedData;
-        _mNftModels = new MutableLiveData<>(Collections.emptyList());
+        _mNftModels = new MutableLiveData<>();
         mNftModels = _mNftModels;
-        _mIsDiscoveringUserAssets = new MutableLiveData<>(false);
+        _mIsDiscoveringUserAssets = new MutableLiveData<>();
         mIsDiscoveringUserAssets = _mIsDiscoveringUserAssets;
         addServiceObservers();
     }
@@ -142,11 +143,10 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
         mBraveWalletService.discoverAssetsOnAllSupportedChains();
     }
 
-    public void fetchAssets(NetworkInfo selectedNetwork,
+    public void fetchAssetsByType(TokenUtils.TokenType type, NetworkInfo selectedNetwork,
             BraveWalletBaseActivity braveWalletBaseActivity,
             Callbacks.Callback1<PortfolioHelper> callback) {
         synchronized (mLock) {
-            clear();
             if (mJsonRpcService == null) {
                 return;
             }
@@ -166,7 +166,7 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
                                                         mAllNetworkInfos, accountInfos);
                                         mPortfolioHelper.setSelectedNetworks(
                                                 NetworkUtils.nonTestNetwork(mAllNetworkInfos));
-                                        mPortfolioHelper.fetchAllAssetsAndDetails(callback);
+                                        mPortfolioHelper.fetchAssetsAndDetails(type, callback);
                                     });
                         } else {
                             mKeyringService.getKeyringInfo(
@@ -177,7 +177,7 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
                                                         mAllNetworkInfos, keyringInfo.accountInfos);
                                         mPortfolioHelper.setSelectedNetworks(
                                                 Arrays.asList(selectedNetwork));
-                                        mPortfolioHelper.fetchAllAssetsAndDetails(callback);
+                                        mPortfolioHelper.fetchAssetsAndDetails(type, callback);
                                     });
                         }
                     });
@@ -189,8 +189,7 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
         _mIsDiscoveringUserAssets.postValue(false);
     }
 
-    // Clear state
-    public void clear() {
+    public void clearNftModels() {
         _mNftModels.postValue(Collections.emptyList());
     }
 
