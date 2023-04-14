@@ -124,4 +124,7 @@ public final class WalletConstants {
             TransactionType.ETH_SEND, TransactionType.ERC20_TRANSFER,
             TransactionType.SOLANA_SYSTEM_TRANSFER, TransactionType.SOLANA_SPL_TOKEN_TRANSFER,
             TransactionType.SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION);
+
+    public static final List<String> UNSUPPORTED_NETWORKS = Arrays.asList(
+            BraveWalletConstants.FILECOIN_MAINNET, BraveWalletConstants.FILECOIN_TESTNET);
 }

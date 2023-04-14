@@ -18,6 +18,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,6 +59,15 @@ public class UserAssetModel {
                         if (mType == WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
                             if (NetworkUtils.isAllNetwork(mSelectedNetwork)) {
                                 mBraveWalletService.getAllUserAssets(userAssets -> {
+                                    var supportedNetworkAssets =
+                                            Arrays.stream(userAssets)
+                                                    .filter(token
+                                                            -> !WalletConstants.UNSUPPORTED_NETWORKS
+                                                                            .contains(token.chainId)
+                                                                    && nftsOnly
+                                                                            == AssetUtils.Filters
+                                                                                       .isNFT(token))
+                                                    .toArray(BlockchainToken[] ::new);
                                     TokenUtils.getAllTokensFiltered(mBlockchainRegistry,
                                             mCryptoNetworks,
                                             nftsOnly ? TokenUtils.TokenType.NFTS
@@ -65,10 +75,10 @@ public class UserAssetModel {
                                             tokens -> {
                                                 var filteredTokens =
                                                         TokenUtils.distinctiveConcatenatedArrays(
-                                                                tokens, userAssets);
+                                                                tokens, supportedNetworkAssets);
                                                 _mAssetsResult.postValue(new AssetsResult(
                                                         Arrays.asList(filteredTokens),
-                                                        Arrays.asList(userAssets)));
+                                                        Arrays.asList(supportedNetworkAssets)));
                                             });
                                 });
                             } else {
