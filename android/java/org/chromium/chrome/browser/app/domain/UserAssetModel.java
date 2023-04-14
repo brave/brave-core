@@ -63,10 +63,11 @@ public class UserAssetModel {
                                             Arrays.stream(userAssets)
                                                     .filter(token
                                                             -> !WalletConstants.UNSUPPORTED_NETWORKS
-                                                                            .contains(token.chainId)
-                                                                    && nftsOnly
-                                                                            == AssetUtils.Filters
-                                                                                       .isNFT(token))
+                                                                        .contains(token.chainId))
+                                                    .filter(token
+                                                            -> nftsOnly
+                                                                    == AssetUtils.Filters.isNFT(
+                                                                            token))
                                                     .toArray(BlockchainToken[] ::new);
                                     TokenUtils.getAllTokensFiltered(mBlockchainRegistry,
                                             mCryptoNetworks,
