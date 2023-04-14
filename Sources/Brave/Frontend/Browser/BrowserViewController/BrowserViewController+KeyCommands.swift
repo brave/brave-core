@@ -266,15 +266,18 @@ extension BrowserViewController {
       UIKeyCommand(title: Strings.Hotkey.findInPageTitle, action: #selector(findInPageKeyCommand), input: "f", modifierFlags: .command)
     ]
 
-    let findTextUtilitiesCommands = [
-      UIKeyCommand(title: Strings.Hotkey.findNextTitle, action: #selector(findNextCommand), input: "g", modifierFlags: [.command]),
-      UIKeyCommand(title: Strings.Hotkey.findPreviousTitle, action: #selector(findPreviousCommand), input: "g", modifierFlags: [.command, .shift]),
-    ]
-
-    let isFindingText = !(findInPageBar?.text?.isEmpty ?? true)
-
-    if isFindingText {
-      findTextCommands.append(contentsOf: findTextUtilitiesCommands)
+    // These are automatically handled in iOS 16's UIFindInteraction
+    if #unavailable(iOS 16.0) {
+      let findTextUtilitiesCommands = [
+        UIKeyCommand(title: Strings.Hotkey.findNextTitle, action: #selector(findNextCommand), input: "g", modifierFlags: [.command]),
+        UIKeyCommand(title: Strings.Hotkey.findPreviousTitle, action: #selector(findPreviousCommand), input: "g", modifierFlags: [.command, .shift]),
+      ]
+      
+      let isFindingText = !(findInPageBar?.text?.isEmpty ?? true)
+      
+      if isFindingText {
+        findTextCommands.append(contentsOf: findTextUtilitiesCommands)
+      }
     }
 
     // Share With Key Command

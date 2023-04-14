@@ -22,7 +22,9 @@ extension BrowserViewController: TopToolbarDelegate {
     if tabManager.tabsForCurrentMode.isEmpty {
       return
     }
-    updateFindInPageVisibility(visible: false)
+    if #unavailable(iOS 16.0) {
+      updateFindInPageVisibility(visible: false)
+    }
     displayPageZoom(visible: false)
 
     if tabManager.selectedTab == nil {
@@ -97,6 +99,10 @@ extension BrowserViewController: TopToolbarDelegate {
         }
         
         await MainActor.run { [errorDescription] in
+          if #available(iOS 16.0, *) {
+            // System components sit on top so we want to dismiss it
+            webView.findInteraction?.dismissFindNavigator()
+          }
           let certificateViewController = CertificateViewController(certificate: certificate, evaluationError: errorDescription)
           let popover = PopoverController(contentController: certificateViewController, contentSizeBehavior: .preferredContentSize)
           popover.addsConvenientDismissalMargins = true
@@ -393,6 +399,11 @@ extension BrowserViewController: TopToolbarDelegate {
       return
     }
 
+    if #available(iOS 16.0, *) {
+      // System components sit on top so we want to dismiss it
+      selectedTab.webView?.findInteraction?.dismissFindNavigator()
+    }
+    
     let shields = ShieldsViewController(tab: selectedTab)
     shields.shieldsSettingsChanged = { [unowned self] _, shield in
       // Update the shields status immediately
@@ -462,6 +473,10 @@ extension BrowserViewController: TopToolbarDelegate {
   func topToolbarDidTapWalletButton(_ urlBar: TopToolbarView) {
     guard let selectedTab = tabManager.selectedTab else {
       return
+    }
+    if #available(iOS 16.0, *) {
+      // System components sit on top so we want to dismiss it
+      selectedTab.webView?.findInteraction?.dismissFindNavigator()
     }
     presentWalletPanel(from: selectedTab.getOrigin(), with: selectedTab.tabDappStore)
   }
