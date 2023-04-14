@@ -93,8 +93,8 @@ class LocalhostAccessBrowserTest : public InProcessBrowserTest {
   }
 
   void WaitForAdBlockServiceThreads() {
-    scoped_refptr<base::ThreadTestHelper> tr_helper(new base::ThreadTestHelper(
-        g_brave_browser_process->local_data_files_service()->GetTaskRunner()));
+    auto tr_helper = base::MakeRefCounted<base::ThreadTestHelper>(
+        g_brave_browser_process->local_data_files_service()->GetTaskRunner());
     ASSERT_TRUE(tr_helper->Run());
   }
 
