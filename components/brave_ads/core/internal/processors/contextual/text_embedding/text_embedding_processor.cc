@@ -23,14 +23,6 @@
 
 namespace brave_ads::processor {
 
-namespace {
-
-bool IsEnabled() {
-  return targeting::IsTextEmbeddingEnabled();
-}
-
-}  // namespace
-
 TextEmbedding::TextEmbedding(resource::TextEmbedding* resource)
     : resource_(resource) {
   DCHECK(resource_);
@@ -109,7 +101,7 @@ void TextEmbedding::OnNotifyDidUpdateResourceComponent(const std::string& id) {
 void TextEmbedding::OnHtmlContentDidChange(
     const int32_t /*tab_id*/,
     const std::vector<GURL>& redirect_chain,
-    const std::string& html) {
+    const std::string& content) {
   if (redirect_chain.empty()) {
     return;
   }
@@ -130,11 +122,11 @@ void TextEmbedding::OnHtmlContentDidChange(
     return;
   }
 
-  if (!IsEnabled()) {
+  if (!targeting::IsTextEmbeddingEnabled()) {
     return;
   }
 
-  Process(html);
+  Process(content);
 }
 
 }  // namespace brave_ads::processor
