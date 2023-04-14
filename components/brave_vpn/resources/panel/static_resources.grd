@@ -11,6 +11,7 @@
   <release seq="1">
     <includes>
       <include name="IDR_BRAVE_VPN_COUNTRY_FLAG_AU_SVG" file="assets/country-flags/AU.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_VPN_COUNTRY_FLAG_BR_SVG" file="assets/country-flags/BR.svg" type="BINDATA" />
       <include name="IDR_BRAVE_VPN_COUNTRY_FLAG_CA_SVG" file="assets/country-flags/CA.svg" type="BINDATA" />
       <include name="IDR_BRAVE_VPN_COUNTRY_FLAG_CH_SVG" file="assets/country-flags/CH.svg" type="BINDATA" />
       <include name="IDR_BRAVE_VPN_COUNTRY_FLAG_DE_SVG" file="assets/country-flags/DE.svg" type="BINDATA" />
