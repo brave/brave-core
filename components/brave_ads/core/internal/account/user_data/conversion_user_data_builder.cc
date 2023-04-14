@@ -18,7 +18,7 @@
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_envelope_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_ads::user_data::builder {
+namespace brave_ads::user_data {
 
 void BuildConversion(const std::string& creative_instance_id,
                      BuildConversionCallback callback) {
@@ -66,4 +66,4 @@ void BuildConversion(const std::string& creative_instance_id,
           std::move(callback)));
 }
 
-}  // namespace brave_ads::user_data::builder
+}  // namespace brave_ads::user_data

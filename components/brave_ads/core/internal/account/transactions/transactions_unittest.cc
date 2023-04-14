@@ -23,18 +23,18 @@ TEST_F(BatAdsTransactionsTest, Add) {
   // Arrange
 
   // Act
-  const TransactionInfo transaction = transactions::Add(
-      "42a33833-0a08-4cbb-ab3e-458e020221ab", "segment", 0.01,
-      AdType::kNotificationAd, ConfirmationType::kViewed,
-      base::BindOnce(
-          [](const bool success, const TransactionInfo& /*transaction*/) {
-            ASSERT_TRUE(success);
-          }));
+  const TransactionInfo transaction =
+      AddTransaction("42a33833-0a08-4cbb-ab3e-458e020221ab", "segment", 0.01,
+                     AdType::kNotificationAd, ConfirmationType::kViewed,
+                     base::BindOnce([](const bool success,
+                                       const TransactionInfo& /*transaction*/) {
+                       ASSERT_TRUE(success);
+                     }));
 
   // Assert
   TransactionList expected_transactions = {transaction};
 
-  transactions::GetForDateRange(
+  GetTransactionsForDateRange(
       DistantPast(), DistantFuture(),
       base::BindOnce(
           [](const TransactionList& expected_transactions, const bool success,
@@ -70,7 +70,7 @@ TEST_F(BatAdsTransactionsTest, GetForDateRange) {
   // Act
   TransactionList expected_transactions = {transaction_2, transaction_3};
 
-  transactions::GetForDateRange(
+  GetTransactionsForDateRange(
       Now(), DistantFuture(),
       base::BindOnce(
           [](const TransactionList& expected_transactions, const bool success,
@@ -98,11 +98,11 @@ TEST_F(BatAdsTransactionsTest, RemoveAll) {
   SaveTransactions(transactions);
 
   // Act
-  transactions::RemoveAll(
+  RemoveAllTransactions(
       base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
   // Assert
-  transactions::GetForDateRange(
+  GetTransactionsForDateRange(
       DistantPast(), DistantFuture(),
       base::BindOnce(
           [](const bool success, const TransactionList& transactions) {

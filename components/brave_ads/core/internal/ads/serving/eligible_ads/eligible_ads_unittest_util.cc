@@ -8,7 +8,7 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/ad_type.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 
 namespace brave_ads {
@@ -18,8 +18,7 @@ void ResetEligibleAds(const AdType& type) {
 
   ClientStateManager::GetInstance()->ResetAllSeenAdvertisersForType(type);
 
-  database::table::ad_events::Reset(
-      base::BindOnce([](const bool success) { CHECK(success); }));
+  ResetAdEvents(base::BindOnce([](const bool success) { CHECK(success); }));
 }
 
 }  // namespace brave_ads

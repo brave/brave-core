@@ -396,7 +396,7 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
   expected_transaction.confirmation_type = ConfirmationType::kViewed;
   expected_transactions.push_back(expected_transaction);
 
-  transactions::GetForDateRange(
+  GetTransactionsForDateRange(
       DistantPast(), DistantFuture(),
       base::BindOnce(
           [](const TransactionList& expected_transactions, const bool success,
@@ -434,7 +434,7 @@ TEST_F(BatAdsAccountTest, DepositForNonCash) {
   expected_transaction.confirmation_type = ConfirmationType::kClicked;
   expected_transactions.push_back(expected_transaction);
 
-  transactions::GetForDateRange(
+  GetTransactionsForDateRange(
       DistantPast(), DistantFuture(),
       base::BindOnce(
           [](const TransactionList& expected_transactions, const bool success,
@@ -463,7 +463,7 @@ TEST_F(BatAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
   EXPECT_TRUE(failed_to_process_deposit_);
   EXPECT_FALSE(statement_of_accounts_did_change_);
 
-  transactions::GetForDateRange(
+  GetTransactionsForDateRange(
       DistantPast(), DistantFuture(),
       base::BindOnce(
           [](const bool success, const TransactionList& transactions) {

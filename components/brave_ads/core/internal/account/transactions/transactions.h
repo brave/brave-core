@@ -20,30 +20,27 @@ namespace brave_ads {
 class AdType;
 class ConfirmationType;
 
-namespace transactions {
-
-using AddCallback =
+using AddTransactionCallback =
     base::OnceCallback<void(bool success, const TransactionInfo& transaction)>;
 
-using GetCallback =
+using GetTransactionsCallback =
     base::OnceCallback<void(bool success, const TransactionList& transactions)>;
 
-using RemoveAllCallback = base::OnceCallback<void(bool success)>;
+using RemoveAllTransactionsCallback = base::OnceCallback<void(bool success)>;
 
-TransactionInfo Add(const std::string& creative_instance_id,
-                    const std::string& segment,
-                    double value,
-                    const AdType& ad_type,
-                    const ConfirmationType& confirmation_type,
-                    AddCallback callback);
+TransactionInfo AddTransaction(const std::string& creative_instance_id,
+                               const std::string& segment,
+                               double value,
+                               const AdType& ad_type,
+                               const ConfirmationType& confirmation_type,
+                               AddTransactionCallback callback);
 
-void GetForDateRange(base::Time from_time,
-                     base::Time to_time,
-                     GetCallback callback);
+void GetTransactionsForDateRange(base::Time from_time,
+                                 base::Time to_time,
+                                 GetTransactionsCallback callback);
 
-void RemoveAll(RemoveAllCallback callback);
+void RemoveAllTransactions(RemoveAllTransactionsCallback callback);
 
-}  // namespace transactions
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_H_

@@ -22,7 +22,7 @@ void BuildStatement(BuildStatementCallback callback) {
   const base::Time from_time = GetTimeInDistantPast();
   const base::Time to_time = GetLocalTimeAtEndOfThisMonth();
 
-  transactions::GetForDateRange(
+  GetTransactionsForDateRange(
       from_time, to_time,
       base::BindOnce(
           [](BuildStatementCallback callback, const bool success,

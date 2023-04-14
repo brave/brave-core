@@ -11,7 +11,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/values.h"
 
-namespace brave_ads::user_data::builder {
+namespace brave_ads::user_data {
 
 using BuildConversionCallback =
     base::OnceCallback<void(base::Value::Dict user_data)>;
@@ -19,6 +19,6 @@ using BuildConversionCallback =
 void BuildConversion(const std::string& creative_instance_id,
                      BuildConversionCallback callback);
 
-}  // namespace brave_ads::user_data::builder
+}  // namespace brave_ads::user_data
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_DATA_CONVERSION_USER_DATA_BUILDER_H_

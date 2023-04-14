@@ -16,7 +16,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace brave_ads::user_data::builder {
+namespace brave_ads::user_data {
 
 class BatAdsConversionUserDataBuilderTest : public UnitTestBase {};
 
@@ -85,4 +85,4 @@ TEST_F(BatAdsConversionUserDataBuilderTest,
       }));
 }
 
-}  // namespace brave_ads::user_data::builder
+}  // namespace brave_ads::user_data

@@ -22,7 +22,7 @@ bool ShouldRewardUser() {
 }
 
 void ResetRewards(ResetRewardsCallback callback) {
-  transactions::RemoveAll(base::BindOnce(
+  RemoveAllTransactions(base::BindOnce(
       [](ResetRewardsCallback callback, const bool success) {
         if (!success) {
           BLOG(0, "Failed to remove transactions");

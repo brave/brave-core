@@ -12,7 +12,8 @@
 
 namespace brave_ads {
 
-using TextEmbeddingHtmlEventCallback = base::OnceCallback<void(bool success)>;
+using LogTextEmbeddingHtmlEventCallback =
+    base::OnceCallback<void(bool success)>;
 
 struct TextEmbeddingHtmlEventInfo;
 
@@ -21,9 +22,10 @@ TextEmbeddingHtmlEventInfo BuildTextEmbeddingHtmlEvent(
 
 void LogTextEmbeddingHtmlEvent(
     const TextEmbeddingHtmlEventInfo& text_embedding_html_event,
-    TextEmbeddingHtmlEventCallback callback);
+    LogTextEmbeddingHtmlEventCallback callback);
 
-void PurgeStaleTextEmbeddingHtmlEvents(TextEmbeddingHtmlEventCallback callback);
+void PurgeStaleTextEmbeddingHtmlEvents(
+    LogTextEmbeddingHtmlEventCallback callback);
 
 void GetTextEmbeddingHtmlEventsFromDatabase(
     database::table::GetTextEmbeddingHtmlEventsCallback callback);
