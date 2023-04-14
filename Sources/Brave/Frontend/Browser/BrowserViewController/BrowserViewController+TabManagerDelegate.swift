@@ -107,7 +107,9 @@ extension BrowserViewController: TabManagerDelegate {
       }
     }
 
-    updateFindInPageVisibility(visible: false, tab: previous)
+    if #unavailable(iOS 16.0) {
+      updateFindInPageVisibility(visible: false, tab: previous)
+    }
     displayPageZoom(visible: false)
     updateTabsBarVisibility()
     selected?.updatePullToRefreshVisibility()

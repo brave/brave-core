@@ -35,6 +35,10 @@ class BraveWebView: WKWebView {
 
     super.init(frame: frame, configuration: configuration)
 
+    if #available(iOS 16.0, *) {
+      isFindInteractionEnabled = true
+    }
+    
     customUserAgent = UserAgent.userAgentForDesktopMode
 #if compiler(>=5.8)
     if #available(iOS 16.4, *) {

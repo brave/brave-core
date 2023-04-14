@@ -66,7 +66,9 @@ extension BrowserViewController: WKNavigationDelegate {
       }
     }
 
-    updateFindInPageVisibility(visible: false)
+    if #unavailable(iOS 16.0) {
+      updateFindInPageVisibility(visible: false)
+    }
     displayPageZoom(visible: false)
 
     // If we are going to navigate to a new page, hide the reader mode button. Unless we

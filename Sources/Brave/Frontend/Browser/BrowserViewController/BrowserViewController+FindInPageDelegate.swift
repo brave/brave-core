@@ -10,6 +10,7 @@ import os.log
 
 /// List of Find Options used by WebKit to `Find-In-Page`
 /// Typically we use `caseInsensitive`, `wrapAround`, `backwards`, `showHighlight`
+@available(iOS, obsoleted: 16.0, message: "Replaced by UIFindInteraction")
 private struct WKFindOptions: OptionSet {
   let rawValue: UInt
 
@@ -38,6 +39,7 @@ private struct WKFindOptions: OptionSet {
 
 /// A Delegate used to invoke `Find-In-Page` internally in WebKit
 /// This is used to allow WebKit to do Find-In-Page on PDFs and all Web-Content
+@available(iOS, obsoleted: 16.0, message: "Replaced by UIFindInteraction")
 @objc
 class WKWebViewFindStringFindDelegate: NSObject {
   /// Set to true when the constructor hasn't failed
@@ -183,6 +185,7 @@ class WKWebViewFindStringFindDelegate: NSObject {
 
 // MARK: FindInPageBarDelegate - FindInPageScriptHandlerDelegate
 
+@available(iOS, obsoleted: 16.0, message: "Replaced by UIFindInteraction")
 extension BrowserViewController: FindInPageBarDelegate, FindInPageScriptHandlerDelegate {
   
   enum TextSearchDirection: String {

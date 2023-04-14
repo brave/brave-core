@@ -58,7 +58,12 @@ extension BrowserViewController {
     updateRewardsButtonState()
 
     guard let tab = tabManager.selectedTab else { return }
-
+    
+    if #available(iOS 16.0, *) {
+      // System components sit on top so we want to dismiss it
+      tab.webView?.findInteraction?.dismissFindNavigator()
+    }
+    
     let braveRewardsPanel = BraveRewardsViewController(
       tab: tab,
       rewards: rewards,

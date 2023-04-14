@@ -5,6 +5,7 @@
 import UIKit
 import Shared
 
+@available(iOS, obsoleted: 16.0, message: "Replaced by UIFindInteraction")
 protocol FindInPageBarDelegate: AnyObject {
   func findInPage(_ findInPage: FindInPageBar, didTextChange text: String)
   func findInPage(_ findInPage: FindInPageBar, didFindPreviousWithText text: String)
@@ -12,11 +13,13 @@ protocol FindInPageBarDelegate: AnyObject {
   func findInPageDidPressClose(_ findInPage: FindInPageBar)
 }
 
+@available(iOS, obsoleted: 16.0, message: "Replaced by UIFindInteraction")
 private struct FindInPageUX {
   static let matchCountFont = UIConstants.defaultChromeFont
   static let searchTextFont = UIConstants.defaultChromeFont
 }
 
+@available(iOS, obsoleted: 16.0, message: "Replaced by UIFindInteraction")
 class FindInPageBar: UIView {
   weak var delegate: FindInPageBarDelegate?
   fileprivate let searchText = UITextField()

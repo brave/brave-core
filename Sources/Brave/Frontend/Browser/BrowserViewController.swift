@@ -2010,7 +2010,12 @@ public class BrowserViewController: UIViewController {
     }
     
     let findInPageActivity = FindInPageActivity() { [unowned self] in
-      self.updateFindInPageVisibility(visible: true)
+      if #available(iOS 16.0, *), let findInteraction = self.tabManager.selectedTab?.webView?.findInteraction {
+        findInteraction.searchText = ""
+        findInteraction.presentFindNavigator(showingReplace: false)
+      } else {
+        self.updateFindInPageVisibility(visible: true)
+      }
     }
     
     let pageZoomActivity = PageZoomActivity() { [unowned self] in
@@ -2204,12 +2209,14 @@ public class BrowserViewController: UIViewController {
       self.pageZoomBar = nil
     }
     
-    if let findInPageBar = findInPageBar {
-      updateFindInPageVisibility(visible: false)
-      findInPageBar.endEditing(true)
-      findInPageBar.removeFromSuperview()
-      self.findInPageBar = nil
-      updateViewConstraints()
+    if #unavailable(iOS 16.0) {
+      if let findInPageBar = findInPageBar {
+        updateFindInPageVisibility(visible: false)
+        findInPageBar.endEditing(true)
+        findInPageBar.removeFromSuperview()
+        self.findInPageBar = nil
+        updateViewConstraints()
+      }
     }
     
     alertStackView.arrangedSubviews.forEach({
@@ -2445,7 +2452,9 @@ extension BrowserViewController: TabsBarViewControllerDelegate {
   func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: Tab) {
     if tab == tabManager.selectedTab { return }
     topToolbar.leaveOverlayMode(didCancel: true)
-    updateFindInPageVisibility(visible: false)
+    if #unavailable(iOS 16.0) {
+      updateFindInPageVisibility(visible: false)
+    }
     
     tabManager.selectTab(tab)
   }
@@ -2482,7 +2491,6 @@ extension BrowserViewController: TabDelegate {
       ReaderModeScriptHandler(tab: tab),
       ErrorPageHelper(certStore: profile.certStore),
       SessionRestoreScriptHandler(tab: tab),
-      FindInPageScriptHandler(tab: tab),
       PrintScriptHandler(browserController: self, tab: tab),
       CustomSearchScriptHandler(tab: tab),
       NightModeScriptHandler(tab: tab),
@@ -2507,6 +2515,10 @@ extension BrowserViewController: TabDelegate {
       tab.contentBlocker,
       tab.requestBlockingContentHelper,
     ]
+    
+    if #unavailable(iOS 16.0) {
+      injectedScripts.append(FindInPageScriptHandler(tab: tab))
+    }
     
 #if canImport(BraveTalk)
     injectedScripts.append(BraveTalkScriptHandler(tab: tab, rewards: rewards, launchNativeBraveTalk: { [weak self] tab, room, token in
@@ -2537,7 +2549,9 @@ extension BrowserViewController: TabDelegate {
     
     (tab.getContentScript(name: ReaderModeScriptHandler.scriptName) as? ReaderModeScriptHandler)?.delegate = self
     (tab.getContentScript(name: SessionRestoreScriptHandler.scriptName) as? SessionRestoreScriptHandler)?.delegate = self
-    (tab.getContentScript(name: FindInPageScriptHandler.scriptName) as? FindInPageScriptHandler)?.delegate = self
+    if #unavailable(iOS 16.0) {
+      (tab.getContentScript(name: FindInPageScriptHandler.scriptName) as? FindInPageScriptHandler)?.delegate = self
+    }
     (tab.getContentScript(name: PlaylistScriptHandler.scriptName) as? PlaylistScriptHandler)?.delegate = self
     (tab.getContentScript(name: PlaylistFolderSharingScriptHandler.scriptName) as? PlaylistFolderSharingScriptHandler)?.delegate = self
     (tab.getContentScript(name: Web3NameServiceScriptHandler.scriptName) as? Web3NameServiceScriptHandler)?.delegate = self
@@ -2584,8 +2598,13 @@ extension BrowserViewController: TabDelegate {
 
   /// Triggered when "Find in Page" is selected on selected text
   func tab(_ tab: Tab, didSelectFindInPageFor selectedText: String) {
-    updateFindInPageVisibility(visible: true)
-    findInPageBar?.text = selectedText
+    if #available(iOS 16.0, *), let findInteraction = tab.webView?.findInteraction {
+      findInteraction.searchText = selectedText
+      findInteraction.presentFindNavigator(showingReplace: false)
+    } else {
+      updateFindInPageVisibility(visible: true)
+      findInPageBar?.text = selectedText
+    }
   }
 
   /// Triggered when "Search with Brave" is selected on selected web text
@@ -2739,9 +2758,13 @@ extension BrowserViewController: SearchViewControllerDelegate {
 
   func searchViewController(_ searchViewController: SearchViewController, shouldFindInPage query: String) {
     topToolbar.leaveOverlayMode()
-    updateFindInPageVisibility(visible: true)
-    findInPageBar?.text = query
-
+    if #available(iOS 16.0, *), let findInteraction = tabManager.selectedTab?.webView?.findInteraction {
+      findInteraction.searchText = query
+      findInteraction.presentFindNavigator(showingReplace: false)
+    } else {
+      updateFindInPageVisibility(visible: true)
+      findInPageBar?.text = query
+    }
   }
 
   func searchViewControllerAllowFindInPage() -> Bool {
