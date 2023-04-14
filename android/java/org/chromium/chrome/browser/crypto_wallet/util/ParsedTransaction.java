@@ -291,6 +291,10 @@ public class ParsedTransaction extends ParsedTransactionFees {
             parsedTransaction.isSwap = txType == TransactionType.SOLANA_SWAP;
             parsedTransaction.contractAddressError = checkForContractAddressError(fullTokenList,
                     solTxData.toWalletAddress != null ? solTxData.toWalletAddress : to);
+            if (parsedTransaction.isSwap) {
+                parsedTransaction.sellToken = nativeAsset;
+                parsedTransaction.buyToken = nativeAsset;
+            }
         } else if (txInfo.txType == TransactionType.ERC20_TRANSFER && txInfo.txArgs.length > 1) {
             final String address = txInfo.txArgs[0];
             final String amount = txInfo.txArgs[1];
