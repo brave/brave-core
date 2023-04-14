@@ -34,8 +34,8 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableIntegrationTest,
   // Act
 
   // Assert
-  const database::table::CreativeNotificationAds creative_ads;
-  creative_ads.GetForSegments(
+  const database::table::CreativeNotificationAds database_table;
+  database_table.GetForSegments(
       /*segments*/ {"technology & computing"},
       base::BindOnce([](const bool success, const SegmentList& /*segments*/,
                         const CreativeNotificationAdList& creative_ads) {

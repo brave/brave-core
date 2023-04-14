@@ -37,8 +37,8 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableIntegrationTest,
   // Act
 
   // Assert
-  const database::table::CreativeInlineContentAds creative_ads;
-  creative_ads.GetForSegmentsAndDimensions(
+  const database::table::CreativeInlineContentAds database_table;
+  database_table.GetForSegmentsAndDimensions(
       /*segments*/ {"technology & computing"}, /*dimensions*/ "200x100",
       base::BindOnce([](const bool success, const SegmentList& /*segments*/,
                         const CreativeInlineContentAdList& creative_ads) {
@@ -54,8 +54,8 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableIntegrationTest,
   // Act
 
   // Assert
-  const database::table::CreativeInlineContentAds creative_ads;
-  creative_ads.GetForDimensions(
+  const database::table::CreativeInlineContentAds database_table;
+  database_table.GetForDimensions(
       "200x100",
       base::BindOnce([](const bool success,
                         const CreativeInlineContentAdList& creative_ads) {
