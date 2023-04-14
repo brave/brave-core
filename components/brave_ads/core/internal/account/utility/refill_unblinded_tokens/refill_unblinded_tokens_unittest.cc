@@ -1056,7 +1056,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillIfBelowTheMinimumThreshold) {
   MockUrlResponses(ads_client_mock_, url_responses);
 
   ON_CALL(*token_generator_mock_, Generate(_))
-      .WillByDefault(Return(privacy::GetTokens(31)));
+      .WillByDefault(Return(privacy::GetTokens(/*count*/ 31)));
 
   BuildAndSetIssuers();
 

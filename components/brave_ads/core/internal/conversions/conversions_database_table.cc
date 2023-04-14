@@ -218,7 +218,7 @@ std::string Conversions::BuildInsertOrUpdateQuery(
     const ConversionList& conversions) const {
   DCHECK(command);
 
-  const int count = BindParameters(command, conversions);
+  const int binded_parameters_count = BindParameters(command, conversions);
 
   return base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
@@ -229,7 +229,9 @@ std::string Conversions::BuildInsertOrUpdateQuery(
       "observation_window, "
       "expiry_timestamp) VALUES %s",
       GetTableName().c_str(),
-      BuildBindingParameterPlaceholders(6, count).c_str());
+      BuildBindingParameterPlaceholders(/*parameters_count*/ 6,
+                                        binded_parameters_count)
+          .c_str());
 }
 
 }  // namespace brave_ads::database::table

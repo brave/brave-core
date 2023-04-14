@@ -552,7 +552,8 @@ std::string ConversionQueue::BuildInsertOrUpdateQuery(
     const ConversionQueueItemList& conversion_queue_items) const {
   DCHECK(command);
 
-  const int count = BindParameters(command, conversion_queue_items);
+  const int binded_parameters_count =
+      BindParameters(command, conversion_queue_items);
 
   return base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
@@ -567,7 +568,9 @@ std::string ConversionQueue::BuildInsertOrUpdateQuery(
       "timestamp, "
       "was_processed) VALUES %s",
       GetTableName().c_str(),
-      BuildBindingParameterPlaceholders(10, count).c_str());
+      BuildBindingParameterPlaceholders(/*parameters_count*/ 10,
+                                        binded_parameters_count)
+          .c_str());
 }
 
 }  // namespace brave_ads::database::table

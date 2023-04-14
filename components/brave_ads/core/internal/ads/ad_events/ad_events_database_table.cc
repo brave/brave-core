@@ -359,7 +359,7 @@ std::string AdEvents::BuildInsertOrUpdateQuery(
     const AdEventList& ad_events) const {
   DCHECK(command);
 
-  const int count = BindParameters(command, ad_events);
+  const int binded_parameters_count = BindParameters(command, ad_events);
 
   return base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
@@ -372,7 +372,9 @@ std::string AdEvents::BuildInsertOrUpdateQuery(
       "advertiser_id, "
       "timestamp) VALUES %s",
       GetTableName().c_str(),
-      BuildBindingParameterPlaceholders(8, count).c_str());
+      BuildBindingParameterPlaceholders(/*parameters_count*/ 8,
+                                        binded_parameters_count)
+          .c_str());
 }
 
 }  // namespace brave_ads::database::table

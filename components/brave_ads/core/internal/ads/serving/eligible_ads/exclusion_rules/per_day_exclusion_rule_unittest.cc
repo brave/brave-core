@@ -107,7 +107,7 @@ TEST_F(BatAdsPerDayExclusionRuleTest, DoNotAllowAdIfExceedsCapWithin1Day) {
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
-  AdvanceClockBy(base::Hours(24) - base::Milliseconds(1));
+  AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
   // Act
   PerDayExclusionRule exclusion_rule(ad_events);

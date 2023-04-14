@@ -342,7 +342,7 @@ std::string Transactions::BuildInsertOrUpdateQuery(
     const TransactionList& transactions) const {
   DCHECK(command);
 
-  const int count = BindParameters(command, transactions);
+  const int binded_parameters_count = BindParameters(command, transactions);
 
   return base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
@@ -355,7 +355,9 @@ std::string Transactions::BuildInsertOrUpdateQuery(
       "confirmation_type, "
       "reconciled_at) VALUES %s",
       GetTableName().c_str(),
-      BuildBindingParameterPlaceholders(8, count).c_str());
+      BuildBindingParameterPlaceholders(/*parameters_count*/ 8,
+                                        binded_parameters_count)
+          .c_str());
 }
 
 }  // namespace brave_ads::database::table

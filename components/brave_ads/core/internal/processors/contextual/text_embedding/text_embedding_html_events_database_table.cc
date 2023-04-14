@@ -222,7 +222,8 @@ std::string TextEmbeddingHtmlEvents::BuildInsertOrUpdateQuery(
     const TextEmbeddingHtmlEventList& text_embedding_html_events) const {
   DCHECK(command);
 
-  const int count = BindParameters(command, text_embedding_html_events);
+  const int binded_parameters_count =
+      BindParameters(command, text_embedding_html_events);
 
   return base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
@@ -231,7 +232,9 @@ std::string TextEmbeddingHtmlEvents::BuildInsertOrUpdateQuery(
       "hashed_text_base64, "
       "embedding) VALUES %s",
       GetTableName().c_str(),
-      BuildBindingParameterPlaceholders(4, count).c_str());
+      BuildBindingParameterPlaceholders(/*parameters_count*/ 4,
+                                        binded_parameters_count)
+          .c_str());
 }
 
 }  // namespace brave_ads::database::table

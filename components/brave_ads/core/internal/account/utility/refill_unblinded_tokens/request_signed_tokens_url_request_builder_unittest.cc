@@ -55,7 +55,7 @@ TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrl) {
   FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
       EnvironmentType::kStaging);
 
-  const std::vector<privacy::cbr::Token> tokens = GetTokens(3);
+  const std::vector<privacy::cbr::Token> tokens = GetTokens(/*count*/ 3);
   const std::vector<privacy::cbr::BlindedToken> blinded_tokens =
       privacy::cbr::BlindTokens(tokens);
 

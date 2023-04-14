@@ -98,7 +98,7 @@ AdEventInfo BuildAdEvent(const std::string& creative_set_id,
 
 void RecordAdEvent(const AdType& type,
                    const ConfirmationType& confirmation_type) {
-  RecordAdEvents(type, confirmation_type, 1);
+  RecordAdEvents(type, confirmation_type, /*count*/ 1);
 }
 
 void RecordAdEvents(const AdType& type,

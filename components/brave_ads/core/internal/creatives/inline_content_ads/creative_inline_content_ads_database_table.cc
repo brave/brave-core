@@ -744,7 +744,7 @@ std::string CreativeInlineContentAds::BuildInsertOrUpdateQuery(
     const CreativeInlineContentAdList& creative_ads) const {
   DCHECK(command);
 
-  const int count = BindParameters(command, creative_ads);
+  const int binded_parameters_count = BindParameters(command, creative_ads);
 
   return base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
@@ -757,7 +757,9 @@ std::string CreativeInlineContentAds::BuildInsertOrUpdateQuery(
       "dimensions, "
       "cta_text) VALUES %s",
       GetTableName().c_str(),
-      BuildBindingParameterPlaceholders(8, count).c_str());
+      BuildBindingParameterPlaceholders(/*parameters_count*/ 8,
+                                        binded_parameters_count)
+          .c_str());
 }
 
 }  // namespace brave_ads::database::table
