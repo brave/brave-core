@@ -150,8 +150,15 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, AutoContribution) {
       contents(), "[data-test-id=rewards-summary-ac]", "-20.00 BAT");
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/29632): Test flaky on
+// master for the mac build.
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_AutoContributionUnconnected DISABLED_AutoContributionUnconnected
+#else
+#define MAYBE_AutoContributionUnconnected AutoContributionUnconnected
+#endif  // BUILDFLAG(IS_MAC)
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
-                       AutoContributionUnconnected) {
+                       MAYBE_AutoContributionUnconnected) {
   // Set kEnabled to false before calling CreateRewardsWallet to ensure that
   // prefs are configured to reflect an unconnected user
   auto* pref_service = browser()->profile()->GetPrefs();
