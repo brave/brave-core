@@ -164,27 +164,8 @@ class BraveVpnService :
 
   // BraveVPNOSConnectionAPI::Observer overrides:
   void OnConnectionStateChanged(mojom::ConnectionState state) override;
-  void OnRegionDataReady() override;
-
-  void LoadCachedRegionData();
-  void FetchRegionData(bool background_fetch);
-  void OnFetchRegionList(bool background_fetch,
-                         const std::string& region_list,
-                         bool success);
-  bool ParseAndCacheRegionList(const base::Value::List& region_value,
-                               bool save_to_prefs = false);
-  void OnFetchTimezones(const std::string& timezones_list, bool success);
-  void SetDeviceRegionWithTimezone(const base::Value::List& timezons_value);
-  void SetDeviceRegion(const std::string& name);
-  void SetSelectedRegion(const std::string& name);
-  std::string GetDeviceRegion() const;
-  std::string GetSelectedRegion() const;
-  void SetFallbackDeviceRegion();
-  void SetRegionListToPrefs();
-
-  std::string GetCurrentTimeZone();
-  void ScheduleBackgroundRegionDataFetch();
-  void ScheduleFetchRegionDataIfNeeded();
+  void OnRegionDataReady(bool success) override;
+  void OnSelectedRegionChanged(const std::string& region_name) override;
 
   void OnCreateSupportTicket(CreateSupportTicketCallback callback,
                              const std::string& ticket,
@@ -193,8 +174,6 @@ class BraveVpnService :
   void OnPreferenceChanged(const std::string& pref_name);
 
   void UpdatePurchasedStateForSessionExpired(const std::string& env);
-
-  BraveVPNOSConnectionAPI* GetBraveVPNConnectionAPI() const;
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   // KeyedService overrides:
@@ -223,17 +202,12 @@ class BraveVpnService :
   void CheckInitialState();
 
 #if !BUILDFLAG(IS_ANDROID)
-  std::vector<mojom::Region> regions_;
   base::ScopedObservation<BraveVPNOSConnectionAPI,
                           BraveVPNOSConnectionAPI::Observer>
       observed_{this};
-  base::RepeatingTimer region_data_update_timer_;
-
-  // Only for testing.
-  std::string test_timezone_;
+  bool wait_region_data_ready_ = false;
   raw_ptr<BraveVPNOSConnectionAPI> connection_api_ = nullptr;
 
-  PrefChangeRegistrar pref_change_registrar_;
   PrefChangeRegistrar policy_pref_change_registrar_;
 #endif  // !BUILDFLAG(IS_ANDROID)
 
