@@ -146,7 +146,7 @@ struct NewsTopic: Decodable, Comparable, Identifiable, Hashable {
   }
   
   static func < (lhs: Self, rhs: Self) -> Bool {
-    return lhs.score < rhs.score
+    return lhs.date < rhs.date
   }
   
   var id: String {
