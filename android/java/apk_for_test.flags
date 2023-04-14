@@ -719,3 +719,11 @@
 -keep class org.chromium.chrome.browser.feedback.HelpAndFeedbackLauncherImpl {
     private <init>(...);
 }
+
+-keep class org.chromium.components.external_intents.ExternalNavigationHandler {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.externalnav.BraveExternalNavigationHandler {
+    public <init>(...);
+}
