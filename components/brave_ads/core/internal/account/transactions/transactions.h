@@ -23,12 +23,12 @@ class ConfirmationType;
 namespace transactions {
 
 using AddCallback =
-    base::OnceCallback<void(const bool, const TransactionInfo& transaction)>;
+    base::OnceCallback<void(bool success, const TransactionInfo& transaction)>;
 
 using GetCallback =
-    base::OnceCallback<void(const bool, const TransactionList&)>;
+    base::OnceCallback<void(bool success, const TransactionList& transactions)>;
 
-using RemoveAllCallback = base::OnceCallback<void(const bool)>;
+using RemoveAllCallback = base::OnceCallback<void(bool success)>;
 
 TransactionInfo Add(const std::string& creative_instance_id,
                     const std::string& segment,

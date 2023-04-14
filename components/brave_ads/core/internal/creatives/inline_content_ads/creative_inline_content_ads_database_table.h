@@ -27,17 +27,17 @@ class GeoTargets;
 class Segments;
 
 using GetCreativeInlineContentAdCallback =
-    base::OnceCallback<void(const bool success,
+    base::OnceCallback<void(bool success,
                             const std::string& creative_instance_id,
                             const CreativeInlineContentAdInfo& creative_ad)>;
 
 using GetCreativeInlineContentAdsCallback =
-    base::OnceCallback<void(const bool success,
+    base::OnceCallback<void(bool success,
                             const SegmentList& segments,
                             const CreativeInlineContentAdList& creative_ads)>;
 
 using GetCreativeInlineContentAdsForDimensionsCallback =
-    base::OnceCallback<void(const bool success,
+    base::OnceCallback<void(bool success,
                             const CreativeInlineContentAdList& creative_ads)>;
 
 class CreativeInlineContentAds final : public TableInterface {

@@ -338,17 +338,18 @@ void MockRunDBTransaction(const std::unique_ptr<AdsClientMock>& mock,
                                         RunDBTransactionCallback callback) {
         CHECK(transaction);
 
-        mojom::DBCommandResponseInfoPtr response =
+        mojom::DBCommandResponseInfoPtr command_response =
             mojom::DBCommandResponseInfo::New();
 
         if (!database) {
-          response->status =
+          command_response->status =
               mojom::DBCommandResponseInfo::StatusType::RESPONSE_ERROR;
         } else {
-          database->RunTransaction(std::move(transaction), response.get());
+          database->RunTransaction(std::move(transaction),
+                                   command_response.get());
         }
 
-        std::move(callback).Run(std::move(response));
+        std::move(callback).Run(std::move(command_response));
       }));
 }
 

@@ -12,7 +12,7 @@
 
 namespace brave_ads {
 
-using DeviceIdCallback = base::OnceCallback<void(std::string)>;
+using DeviceIdCallback = base::OnceCallback<void(std::string device_id)>;
 
 class DeviceId {
  public:

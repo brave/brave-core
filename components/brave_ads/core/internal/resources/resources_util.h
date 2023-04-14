@@ -13,6 +13,7 @@
 
 namespace brave_ads::resource {
 
+// TODO(tmancey):
 template <typename T>
 using LoadAndParseResourceCallback =
     base::OnceCallback<void(ParsingErrorOr<T>)>;

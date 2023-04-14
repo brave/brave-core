@@ -12,7 +12,7 @@
 
 namespace brave_ads {
 
-using TextEmbeddingHtmlEventCallback = base::OnceCallback<void(const bool)>;
+using TextEmbeddingHtmlEventCallback = base::OnceCallback<void(bool success)>;
 
 struct TextEmbeddingHtmlEventInfo;
 

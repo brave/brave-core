@@ -11,6 +11,7 @@
 
 namespace brave_ads {
 
+// TODO(tmancey)
 using UserDataBuilderCallback = base::OnceCallback<void(base::Value::Dict)>;
 
 class UserDataBuilderInterface {

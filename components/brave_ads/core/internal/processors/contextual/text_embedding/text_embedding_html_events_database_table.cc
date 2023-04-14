@@ -66,10 +66,12 @@ TextEmbeddingHtmlEventInfo GetFromRecord(mojom::DBRecordInfo* record) {
   return text_embedding_html_event;
 }
 
-void OnGetTextEmbeddingHtmlEvents(GetTextEmbeddingHtmlEventsCallback callback,
-                                  mojom::DBCommandResponseInfoPtr response) {
-  if (!response || response->status !=
-                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+void OnGetTextEmbeddingHtmlEvents(
+    GetTextEmbeddingHtmlEventsCallback callback,
+    mojom::DBCommandResponseInfoPtr command_response) {
+  if (!command_response ||
+      command_response->status !=
+          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get embeddings");
     return std::move(callback).Run(/* success */ false,
                                    /* text_embedding_html_events */ {});
@@ -77,7 +79,7 @@ void OnGetTextEmbeddingHtmlEvents(GetTextEmbeddingHtmlEventsCallback callback,
 
   TextEmbeddingHtmlEventList text_embedding_html_events;
 
-  for (const auto& record : response->result->get_records()) {
+  for (const auto& record : command_response->result->get_records()) {
     const TextEmbeddingHtmlEventInfo& text_embedding_html_event =
         GetFromRecord(record.get());
     text_embedding_html_events.push_back(text_embedding_html_event);

@@ -17,7 +17,7 @@
 namespace brave_ads::database::table {
 
 using GetAdEventsCallback =
-    base::OnceCallback<void(const bool, const AdEventList&)>;
+    base::OnceCallback<void(bool success, const AdEventList& ad_events)>;
 
 class AdEvents final : public TableInterface {
  public:

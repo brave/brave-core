@@ -16,29 +16,32 @@
 namespace brave_ads {
 
 using GetDiagnosticsCallback =
-    base::OnceCallback<void(absl::optional<base::Value::List>)>;
+    base::OnceCallback<void(absl::optional<base::Value::List> diagnostics)>;
 
 using GetStatementOfAccountsCallback =
-    base::OnceCallback<void(mojom::StatementInfoPtr)>;
+    base::OnceCallback<void(mojom::StatementInfoPtr statement)>;
 
 using MaybeServeInlineContentAdAsDictCallback =
-    base::OnceCallback<void(const std::string&,
-                            absl::optional<base::Value::Dict>)>;
+    base::OnceCallback<void(const std::string& dimensions,
+                            absl::optional<base::Value::Dict> ads)>;
 
 using PurgeOrphanedAdEventsForTypeCallback =
-    base::OnceCallback<void(const bool)>;
+    base::OnceCallback<void(bool success)>;
 
-using GetHistoryCallback = base::OnceCallback<void(base::Value::List)>;
+using GetHistoryCallback = base::OnceCallback<void(base::Value::List history)>;
 
-using ToggleLikeAdCallback = base::OnceCallback<void(base::Value::Dict)>;
-using ToggleDislikeAdCallback = base::OnceCallback<void(base::Value::Dict)>;
+using ToggleLikeAdCallback =
+    base::OnceCallback<void(base::Value::Dict ad_content)>;
+using ToggleDislikeAdCallback =
+    base::OnceCallback<void(base::Value::Dict ad_content)>;
 using ToggleMarkToReceiveAdsForCategoryCallback =
-    base::OnceCallback<void(const std::string&, int)>;
+    base::OnceCallback<void(const std::string& category, int action)>;
 using ToggleMarkToNoLongerReceiveAdsForCategoryCallback =
-    base::OnceCallback<void(const std::string&, int)>;
-using ToggleSaveAdCallback = base::OnceCallback<void(base::Value::Dict)>;
+    base::OnceCallback<void(const std::string& category, int action)>;
+using ToggleSaveAdCallback =
+    base::OnceCallback<void(base::Value::Dict ad_content)>;
 using ToggleMarkAdAsInappropriateCallback =
-    base::OnceCallback<void(base::Value::Dict)>;
+    base::OnceCallback<void(base::Value::Dict ad_content)>;
 
 }  // namespace brave_ads
 

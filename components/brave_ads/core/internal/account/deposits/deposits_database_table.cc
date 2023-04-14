@@ -62,21 +62,23 @@ DepositInfo GetFromRecord(mojom::DBRecordInfo* record) {
   return deposit;
 }
 
-void OnGetForCreativeInstanceId(const std::string& /*creative_instance_id*/,
-                                GetDepositsCallback callback,
-                                mojom::DBCommandResponseInfoPtr response) {
-  if (!response || response->status !=
-                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+void OnGetForCreativeInstanceId(
+    const std::string& /*creative_instance_id*/,
+    GetDepositsCallback callback,
+    mojom::DBCommandResponseInfoPtr command_response) {
+  if (!command_response ||
+      command_response->status !=
+          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get deposit value");
     return std::move(callback).Run(/*success*/ false, absl::nullopt);
   }
 
-  if (response->result->get_records().empty()) {
+  if (command_response->result->get_records().empty()) {
     return std::move(callback).Run(/*success*/ true, absl::nullopt);
   }
 
   const mojom::DBRecordInfoPtr record =
-      std::move(response->result->get_records().front());
+      std::move(command_response->result->get_records().front());
   DepositInfo deposit = GetFromRecord(record.get());
 
   std::move(callback).Run(/*success*/ true, std::move(deposit));

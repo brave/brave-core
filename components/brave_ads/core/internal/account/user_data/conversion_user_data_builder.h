@@ -13,7 +13,8 @@
 
 namespace brave_ads::user_data::builder {
 
-using BuildConversionCallback = base::OnceCallback<void(base::Value::Dict)>;
+using BuildConversionCallback =
+    base::OnceCallback<void(base::Value::Dict user_data)>;
 
 void BuildConversion(const std::string& creative_instance_id,
                      BuildConversionCallback callback);

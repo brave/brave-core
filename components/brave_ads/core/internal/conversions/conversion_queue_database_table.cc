@@ -74,16 +74,17 @@ ConversionQueueItemInfo GetFromRecord(mojom::DBRecordInfo* record) {
 }
 
 void OnGetAll(GetConversionQueueCallback callback,
-              mojom::DBCommandResponseInfoPtr response) {
-  if (!response || response->status !=
-                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+              mojom::DBCommandResponseInfoPtr command_response) {
+  if (!command_response ||
+      command_response->status !=
+          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get conversion queue");
     return std::move(callback).Run(/*success*/ false, {});
   }
 
   ConversionQueueItemList conversion_queue_items;
 
-  for (const auto& record : response->result->get_records()) {
+  for (const auto& record : command_response->result->get_records()) {
     const ConversionQueueItemInfo conversion_queue_item =
         GetFromRecord(record.get());
     conversion_queue_items.push_back(conversion_queue_item);
@@ -95,16 +96,17 @@ void OnGetAll(GetConversionQueueCallback callback,
 void OnGetForCreativeInstanceId(
     const std::string& creative_instance_id,
     GetConversionQueueForCreativeInstanceIdCallback callback,
-    mojom::DBCommandResponseInfoPtr response) {
-  if (!response || response->status !=
-                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+    mojom::DBCommandResponseInfoPtr command_response) {
+  if (!command_response ||
+      command_response->status !=
+          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get conversion queue");
     return std::move(callback).Run(/*success*/ false, creative_instance_id, {});
   }
 
   ConversionQueueItemList conversion_queue_items;
 
-  for (const auto& record : response->result->get_records()) {
+  for (const auto& record : command_response->result->get_records()) {
     const ConversionQueueItemInfo conversion_queue_item =
         GetFromRecord(record.get());
     conversion_queue_items.push_back(conversion_queue_item);

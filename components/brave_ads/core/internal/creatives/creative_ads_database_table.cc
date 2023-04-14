@@ -72,12 +72,12 @@ CreativeAdInfo GetFromRecord(mojom::DBRecordInfo* record) {
 }
 
 CreativeAdMap GroupCreativeAdsFromResponse(
-    mojom::DBCommandResponseInfoPtr response) {
-  DCHECK(response);
+    mojom::DBCommandResponseInfoPtr command_response) {
+  DCHECK(command_response);
 
   CreativeAdMap creative_ads;
 
-  for (const auto& record : response->result->get_records()) {
+  for (const auto& record : command_response->result->get_records()) {
     const CreativeAdInfo creative_ad = GetFromRecord(record.get());
 
     const auto iter = creative_ads.find(creative_ad.creative_instance_id);
@@ -106,11 +106,11 @@ CreativeAdMap GroupCreativeAdsFromResponse(
 }
 
 CreativeAdList GetCreativeAdsFromResponse(
-    mojom::DBCommandResponseInfoPtr response) {
-  DCHECK(response);
+    mojom::DBCommandResponseInfoPtr command_response) {
+  DCHECK(command_response);
 
   const CreativeAdMap grouped_creative_ads =
-      GroupCreativeAdsFromResponse(std::move(response));
+      GroupCreativeAdsFromResponse(std::move(command_response));
 
   CreativeAdList creative_ads;
   for (const auto& [creative_instance_id, creative_ad] : grouped_creative_ads) {
@@ -120,17 +120,19 @@ CreativeAdList GetCreativeAdsFromResponse(
   return creative_ads;
 }
 
-void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
-                                GetCreativeAdCallback callback,
-                                mojom::DBCommandResponseInfoPtr response) {
-  if (!response || response->status !=
-                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+void OnGetForCreativeInstanceId(
+    const std::string& creative_instance_id,
+    GetCreativeAdCallback callback,
+    mojom::DBCommandResponseInfoPtr command_response) {
+  if (!command_response ||
+      command_response->status !=
+          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative ad");
     return std::move(callback).Run(/*success*/ false, creative_instance_id, {});
   }
 
   const CreativeAdList creative_ads =
-      GetCreativeAdsFromResponse(std::move(response));
+      GetCreativeAdsFromResponse(std::move(command_response));
 
   if (creative_ads.size() != 1) {
     BLOG(0, "Failed to get creative ad");

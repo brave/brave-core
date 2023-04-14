@@ -22,8 +22,10 @@ struct SearchResultAdInfo;
 
 namespace search_result_ads {
 
-using FireAdEventHandlerCallback = base::OnceCallback<
-    void(const bool, const std::string&, const mojom::SearchResultAdEventType)>;
+using FireAdEventHandlerCallback =
+    base::OnceCallback<void(bool success,
+                            const std::string& placement_id,
+                            const mojom::SearchResultAdEventType event_type)>;
 
 class EventHandler final : public EventHandlerObserver {
  public:

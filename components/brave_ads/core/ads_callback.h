@@ -17,26 +17,26 @@
 
 namespace brave_ads {
 
-using InitializeCallback = base::OnceCallback<void(const bool)>;
-using ShutdownCallback = base::OnceCallback<void(const bool)>;
+using InitializeCallback = base::OnceCallback<void(bool success)>;
+using ShutdownCallback = base::OnceCallback<void(bool success)>;
 
-using RemoveAllHistoryCallback = base::OnceCallback<void(const bool)>;
+using RemoveAllHistoryCallback = base::OnceCallback<void(bool success)>;
 
 using MaybeServeNewTabPageAdCallback =
-    base::OnceCallback<void(const absl::optional<NewTabPageAdInfo>&)>;
+    base::OnceCallback<void(const absl::optional<NewTabPageAdInfo>& ad)>;
 
 using MaybeServeInlineContentAdCallback =
-    base::OnceCallback<void(const std::string&,
-                            const absl::optional<InlineContentAdInfo>&)>;
+    base::OnceCallback<void(const std::string& dimensions,
+                            const absl::optional<InlineContentAdInfo>& ad)>;
 
 using GetStatementOfAccountsCallback =
     base::OnceCallback<void(mojom::StatementInfoPtr statement)>;
 
 using GetDiagnosticsCallback =
-    base::OnceCallback<void(absl::optional<base::Value::List> value)>;
+    base::OnceCallback<void(absl::optional<base::Value::List> diagnostics)>;
 
 using PurgeOrphanedAdEventsForTypeCallback =
-    base::OnceCallback<void(const bool)>;
+    base::OnceCallback<void(bool success)>;
 
 }  // namespace brave_ads
 

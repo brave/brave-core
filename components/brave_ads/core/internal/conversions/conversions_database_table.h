@@ -17,7 +17,7 @@
 namespace brave_ads::database::table {
 
 using GetConversionsCallback =
-    base::OnceCallback<void(const bool, const ConversionList&)>;
+    base::OnceCallback<void(bool success, const ConversionList& conversions)>;
 
 class Conversions final : public TableInterface {
  public:

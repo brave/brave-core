@@ -63,16 +63,17 @@ ConversionInfo GetFromRecord(mojom::DBRecordInfo* record) {
 }
 
 void OnGetConversions(GetConversionsCallback callback,
-                      mojom::DBCommandResponseInfoPtr response) {
-  if (!response || response->status !=
-                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+                      mojom::DBCommandResponseInfoPtr command_response) {
+  if (!command_response ||
+      command_response->status !=
+          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative conversions");
     return std::move(callback).Run(/*success*/ false, {});
   }
 
   ConversionList conversions;
 
-  for (const auto& record : response->result->get_records()) {
+  for (const auto& record : command_response->result->get_records()) {
     const ConversionInfo conversion = GetFromRecord(record.get());
     conversions.push_back(conversion);
   }

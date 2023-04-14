@@ -28,7 +28,7 @@ using testing::Mock;
 using testing::Return;
 
 using OnRetrieveSearchResultAdCallback =
-    base::OnceCallback<void(std::vector<std::string>)>;
+    base::OnceCallback<void(std::vector<std::string> placement_ids)>;
 
 constexpr char kAllowedDomain[] = "https://search.brave.com";
 constexpr char kNotAllowedDomain[] = "https://brave.com";
