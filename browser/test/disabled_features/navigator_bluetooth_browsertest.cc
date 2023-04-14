@@ -35,9 +35,5 @@ IN_PROC_BROWSER_TEST_F(NavigatorBluetoothDisabledTest, IsDisabled) {
   ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
 
-  bool bluetoothBlocked;
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents, "window.domAutomationController.send(bluetoothBlocked())",
-      &bluetoothBlocked));
-  EXPECT_TRUE(bluetoothBlocked);
+  EXPECT_EQ(true, content::EvalJs(contents, "bluetoothBlocked()"));
 }

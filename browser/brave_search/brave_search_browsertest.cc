@@ -50,20 +50,21 @@ const char kAdsStatusHeaderName[] = "X-Brave-Ads-Enabled";
 const char kAdsStatusHeaderValue[] = "1";
 const char kBackupSearchContent[] = "<html><body>results</body></html>";
 const char kScriptDefaultAPIExists[] =
-    "window.domAutomationController.send("
-    "  !!(window.brave && window.brave.getCanSetDefaultSearchProvider)"
-    ")";
-const char kScriptDefaultAPIGetValue[] =
-    // Use setTimeout to allow opensearch xml to be fetched
-    // and template url created.
-    // If this is flakey, consider making TemplateURL manually,
-    // or observing the TemplateURLService for changes.
-    "setTimeout(function () {"
-    "  brave.getCanSetDefaultSearchProvider()"
-    "  .then(function (canSet) {"
-    "    window.domAutomationController.send(canSet)"
-    "  })"
-    "}, 1200)";
+    "!!(window.brave && window.brave.getCanSetDefaultSearchProvider)";
+// Use setTimeout to allow opensearch xml to be fetched
+// and template url created.
+// If this is flakey, consider making TemplateURL manually,
+// or observing the TemplateURLService for changes.
+const char kScriptDefaultAPIGetValue[] = R"(
+  new Promise(resolve => {
+    setTimeout(function () {
+    brave.getCanSetDefaultSearchProvider()
+    .then((canSet) => {
+      resolve(canSet)
+    })
+    }, 1200)
+  });
+)";
 
 std::string GetChromeFetchBackupResultsAvailScript() {
   return base::StringPrintf(R"(function waitForFunction() {
@@ -234,14 +235,8 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTestEnabled, DefaultAPIVisibleKnownHost) {
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
   EXPECT_EQ(url, contents->GetURL());
-  bool has_api;
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractBool(contents, kScriptDefaultAPIExists, &has_api));
-  EXPECT_TRUE(has_api);
-  bool can_set;
-  EXPECT_TRUE(ExecuteScriptAndExtractBool(contents, kScriptDefaultAPIGetValue,
-                                          &can_set));
-  EXPECT_TRUE(can_set);
+  EXPECT_EQ(true, content::EvalJs(contents, kScriptDefaultAPIExists));
+  EXPECT_EQ(true, content::EvalJs(contents, kScriptDefaultAPIGetValue));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSearchTestEnabled, DefaultAPIHiddenUnknownHost) {
@@ -255,10 +250,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTestEnabled, DefaultAPIHiddenUnknownHost) {
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
   EXPECT_EQ(url, contents->GetURL());
-  bool has_api;
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractBool(contents, kScriptDefaultAPIExists, &has_api));
-  EXPECT_FALSE(has_api);
+  EXPECT_EQ(false, content::EvalJs(contents, kScriptDefaultAPIExists));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSearchTestEnabled,
@@ -273,14 +265,8 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTestEnabled,
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
   EXPECT_EQ(url, contents->GetURL());
-  bool has_api;
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractBool(contents, kScriptDefaultAPIExists, &has_api));
-  EXPECT_TRUE(has_api);
-  bool can_set;
-  EXPECT_TRUE(ExecuteScriptAndExtractBool(contents, kScriptDefaultAPIGetValue,
-                                          &can_set));
-  EXPECT_FALSE(can_set);
+  EXPECT_EQ(true, content::EvalJs(contents, kScriptDefaultAPIExists));
+  EXPECT_EQ(false, content::EvalJs(contents, kScriptDefaultAPIGetValue));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSearchTestEnabled, DefaultAPIFalsePrivateWindow) {
@@ -295,14 +281,8 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTestEnabled, DefaultAPIFalsePrivateWindow) {
       private_browser->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
   EXPECT_EQ(url, contents->GetURL());
-  bool has_api;
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractBool(contents, kScriptDefaultAPIExists, &has_api));
-  EXPECT_TRUE(has_api);
-  bool can_set;
-  EXPECT_TRUE(ExecuteScriptAndExtractBool(contents, kScriptDefaultAPIGetValue,
-                                          &can_set));
-  EXPECT_FALSE(can_set);
+  EXPECT_EQ(true, content::EvalJs(contents, kScriptDefaultAPIExists));
+  EXPECT_EQ(false, content::EvalJs(contents, kScriptDefaultAPIGetValue));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSearchTestDisabled, DefaultAPIInvisibleKnownHost) {
@@ -316,10 +296,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTestDisabled, DefaultAPIInvisibleKnownHost) {
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
   EXPECT_EQ(url, contents->GetURL());
-  bool has_api;
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractBool(contents, kScriptDefaultAPIExists, &has_api));
-  EXPECT_FALSE(has_api);
+  EXPECT_EQ(false, content::EvalJs(contents, kScriptDefaultAPIExists));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeader) {
