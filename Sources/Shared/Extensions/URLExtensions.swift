@@ -372,7 +372,7 @@ extension URL {
                          "imdb"]
     
     let searchSiteList = ["search.brave", "google", "qwant",
-                          "startpage", "duckduckgo"]
+                          "startpage", "duckduckgo", "presearch"]
     
     let devSiteList = ["macrumors", "9to5mac", "developer.apple"]
                     
