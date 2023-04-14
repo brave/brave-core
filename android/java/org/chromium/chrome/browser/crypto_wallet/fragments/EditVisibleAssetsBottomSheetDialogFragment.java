@@ -266,12 +266,6 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
             if (NetworkUtils.isAllNetwork(mSelectedNetwork)) {
                 AndroidUtils.gone(addCustomAsset);
             } else {
-                saveAssets.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View clickView) {
-                        dismiss();
-                    }
-                });
                 addCustomAsset.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View clickView) {
@@ -279,6 +273,12 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                     }
                 });
             }
+            saveAssets.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View clickView) {
+                    dismiss();
+                }
+            });
         } else {
             saveAssets.setVisibility(View.GONE);
             addCustomAsset.setVisibility(View.GONE);
@@ -525,7 +525,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
             WalletListItemModel itemModel = new WalletListItemModel(
                     Utils.getCoinIcon(token.coin), token.name, subtitle, token.tokenId, "", "");
             itemModel.setBlockchainToken(token);
-            itemModel.setAssetNetwork(NetworkUtils.findNetwork(mCryptoNetworks, token.chainId));
+            itemModel.setAssetNetwork(assetNetwork);
             itemModel.setBrowserResourcePath(tokensPath);
             itemModel.setIconPath("file://" + tokensPath + "/" + token.logo);
             itemModel.setIsUserSelected(selectedTokensSymbols.contains(Utils.tokenToString(token)));
@@ -633,57 +633,54 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         if (jsonRpcService == null) return;
 
         BlockchainToken thisToken = walletListItemModel.getBlockchainToken();
-        jsonRpcService.getNetwork(thisToken.coin, selectedNetwork -> {
-            TokenUtils.isCustomToken(getBlockchainRegistry(), selectedNetwork, selectedNetwork.coin,
-                    thisToken, isCustom -> {
-                        // Only show add asset dialog on click when:
-                        //    1. It is an ERC721 token
-                        //    2. It is a token listed in Registry
-                        //    3. It is not user added (i.e. doesn't have a token id)
-                        if (thisToken.isErc721 && !isCustom
-                                && (thisToken.tokenId == null
-                                        || thisToken.tokenId.trim().isEmpty())) {
-                            showAddAssetDialog();
-                            walletListItemModel.setIsUserSelected(
-                                    false); // The added token is different from the listed one
-                            itemCheckboxConsistency(walletListItemModel, assetCheck, isChecked);
-                        } else {
-                            BraveWalletService braveWalletService = getBraveWalletService();
-                            // TODO: all the asserts need to be removed. Shall do proper
-                            // error handling instead.
-                            assert braveWalletService != null;
-                            if (!isCustom) {
-                                if (isChecked) {
-                                    braveWalletService.addUserAsset(thisToken, (success) -> {
-                                        if (success) {
-                                            walletListItemModel.setIsUserSelected(true);
-                                        }
-                                        itemCheckboxConsistency(
-                                                walletListItemModel, assetCheck, isChecked);
-                                    });
-                                } else {
-                                    braveWalletService.removeUserAsset(thisToken, (success) -> {
-                                        if (success) {
-                                            walletListItemModel.setIsUserSelected(false);
-                                        }
-                                        itemCheckboxConsistency(
-                                                walletListItemModel, assetCheck, isChecked);
-                                    });
-                                }
+        TokenUtils.isCustomToken(getBlockchainRegistry(), walletListItemModel.getAssetNetwork(),
+                walletListItemModel.getAssetNetwork().coin, thisToken, isCustom -> {
+                    // Only show add asset dialog on click when:
+                    //    1. It is an ERC721 token
+                    //    2. It is a token listed in Registry
+                    //    3. It is not user added (i.e. doesn't have a token id)
+                    if (thisToken.isErc721 && !isCustom
+                            && (thisToken.tokenId == null || thisToken.tokenId.trim().isEmpty())) {
+                        showAddAssetDialog();
+                        walletListItemModel.setIsUserSelected(
+                                false); // The added token is different from the listed one
+                        itemCheckboxConsistency(walletListItemModel, assetCheck, isChecked);
+                    } else {
+                        BraveWalletService braveWalletService = getBraveWalletService();
+                        // TODO: all the asserts need to be removed. Shall do proper
+                        // error handling instead.
+                        assert braveWalletService != null;
+                        if (!isCustom) {
+                            if (isChecked) {
+                                braveWalletService.addUserAsset(thisToken, (success) -> {
+                                    if (success) {
+                                        walletListItemModel.setIsUserSelected(true);
+                                    }
+                                    itemCheckboxConsistency(
+                                            walletListItemModel, assetCheck, isChecked);
+                                });
                             } else {
-                                braveWalletService.setUserAssetVisible(
-                                        thisToken, isChecked, success -> {
-                                            if (success) {
-                                                walletListItemModel.setIsUserSelected(isChecked);
-                                            }
-                                            itemCheckboxConsistency(
-                                                    walletListItemModel, assetCheck, isChecked);
-                                        });
+                                braveWalletService.removeUserAsset(thisToken, (success) -> {
+                                    if (success) {
+                                        walletListItemModel.setIsUserSelected(false);
+                                    }
+                                    itemCheckboxConsistency(
+                                            walletListItemModel, assetCheck, isChecked);
+                                });
                             }
-                            mIsAssetsListChanged = true;
+                        } else {
+                            braveWalletService.setUserAssetVisible(
+                                    thisToken, isChecked, success -> {
+                                        if (success) {
+                                            walletListItemModel.setIsUserSelected(isChecked);
+                                        }
+                                        itemCheckboxConsistency(
+                                                walletListItemModel, assetCheck, isChecked);
+                                    });
                         }
-                    });
-        });
+                        mIsAssetsListChanged = true;
+                    }
+                });
     }
 
     private void itemCheckboxConsistency(
