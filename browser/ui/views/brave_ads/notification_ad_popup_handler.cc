@@ -60,18 +60,4 @@ void NotificationAdPopupHandler::Close(const std::string& notification_id,
   popup->ClosePopup();
 }
 
-// static
-void NotificationAdPopupHandler::Move(const std::string& notification_id,
-                                      const gfx::Vector2d& distance) {
-  DCHECK(!notification_id.empty());
-
-  NotificationAdPopup* popup =
-      NotificationAdPopupCollection::Get(notification_id);
-  if (!popup) {
-    return;
-  }
-
-  popup->MovePopup(distance);
-}
-
 }  // namespace brave_ads

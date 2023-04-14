@@ -8,7 +8,7 @@
 #include <string>
 
 #include "base/time/time.h"
-#include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/ui/brave_ads/notification_ad_delegate.h"
 #include "brave/browser/ui/views/brave_ads/bounds_util.h"
 #include "brave/browser/ui/views/brave_ads/color_util.h"
 #include "brave/browser/ui/views/brave_ads/notification_ad_popup_collection.h"
@@ -19,6 +19,7 @@
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "ui/accessibility/ax_enums.mojom.h"
 #include "ui/accessibility/ax_node_data.h"
@@ -80,21 +81,6 @@ SkColor GetDarkModeBackgroundColor() {
   return bg_color;
 }
 
-void AdjustBoundsAndSnapToFitWorkAreaForWidget(views::Widget* widget,
-                                               const gfx::Rect& bounds) {
-  DCHECK(widget);
-
-  gfx::Rect fit_bounds = bounds;
-  const gfx::NativeView native_view = widget->GetNativeView();
-  const bool should_support_multiple_displays =
-      features::ShouldSupportMultipleDisplays();
-
-  AdjustBoundsAndSnapToFitWorkAreaForNativeView(
-      native_view, &fit_bounds, should_support_multiple_displays);
-
-  widget->SetBounds(fit_bounds);
-}
-
 }  // namespace
 
 NotificationAdPopup::NotificationAdPopup(
@@ -129,6 +115,23 @@ NotificationAdPopup::~NotificationAdPopup() {
 // static
 void NotificationAdPopup::SetDisableFadeInAnimationForTesting(bool disable) {
   g_disable_fade_in_animation_for_testing = disable;
+}
+
+void NotificationAdPopup::AdjustBoundsAndSnapToFitWorkAreaForWidget(
+    views::Widget* widget,
+    const gfx::Rect& bounds) {
+  DCHECK(widget);
+
+  gfx::Rect fit_bounds = bounds;
+  AdjustBoundsAndSnapToFitWorkAreaForNativeView(widget, &fit_bounds);
+
+  base::AutoReset<bool> bounds_adjust_scope(&inside_adjust_bounds_, true);
+  widget->SetBounds(fit_bounds);
+}
+
+void NotificationAdPopup::OnDisplayAdded(const display::Display& new_display) {
+  // Called when |new_display| has been added
+  RecomputeAlignment();
 }
 
 void NotificationAdPopup::OnDisplayRemoved(
@@ -195,6 +198,48 @@ void NotificationAdPopup::OnThemeChanged() {
   SchedulePaint();
 }
 
+bool NotificationAdPopup::OnMousePressed(const ui::MouseEvent& event) {
+  initial_mouse_pressed_location_ = event.location();
+
+  return true;
+}
+
+bool NotificationAdPopup::OnMouseDragged(const ui::MouseEvent& event) {
+  const gfx::Vector2d movement =
+      event.location() - initial_mouse_pressed_location_;
+
+  if (!is_dragging_ && ExceededDragThreshold(movement)) {
+    is_dragging_ = true;
+  }
+
+  if (!is_dragging_) {
+    return false;
+  }
+
+  MovePopup(movement);
+
+  return true;
+}
+
+void NotificationAdPopup::OnMouseReleased(const ui::MouseEvent& event) {
+  WidgetDelegateView::OnMouseReleased(event);
+
+  if (is_dragging_) {
+    is_dragging_ = false;
+    return;
+  }
+
+  if (!event.IsOnlyLeftMouseButton()) {
+    return;
+  }
+
+  NotificationAdDelegate* delegate = notification_ad_.delegate();
+  if (delegate) {
+    // This call will eventually lead to NotificationAdPopupHandler::Close call.
+    delegate->OnClick();
+  }
+}
+
 void NotificationAdPopup::OnWidgetDestroyed(views::Widget* widget) {
   DCHECK(widget);
 
@@ -208,6 +253,9 @@ void NotificationAdPopup::OnWidgetDestroyed(views::Widget* widget) {
 void NotificationAdPopup::OnWidgetBoundsChanged(views::Widget* widget,
                                                 const gfx::Rect& new_bounds) {
   DCHECK(widget);
+  if (!inside_adjust_bounds_) {
+    return AdjustBoundsAndSnapToFitWorkAreaForWidget(widget, CalculateBounds());
+  }
 
   const gfx::Point origin = new_bounds.origin();
   SaveOrigin(origin);

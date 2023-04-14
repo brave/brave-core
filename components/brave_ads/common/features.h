@@ -15,7 +15,6 @@ namespace brave_ads::features {
 
 BASE_DECLARE_FEATURE(kNotificationAds);
 bool IsNotificationAdsEnabled();
-bool ShouldSupportMultipleDisplays();
 bool CanFallbackToCustomNotificationAds();
 bool AllowedToFallbackToCustomNotificationAds();
 int NotificationAdTimeout();
@@ -26,6 +25,7 @@ bool IsCustomNotificationAdsEnabled();
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 int NotificationAdFadeDuration();
 std::string NotificationAdDarkModeBackgroundColor();
+bool ShouldSupportMultipleDisplays();
 bool ShouldAttachNotificationAdToBrowserWindow();
 double NotificationAdNormalizedDisplayCoordinateX();
 int NotificationAdInsetX();

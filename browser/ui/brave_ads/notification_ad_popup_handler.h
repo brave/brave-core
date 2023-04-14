@@ -45,11 +45,6 @@ class NotificationAdPopupHandler final {
   // |by_user| is true if the notification popup was closed by the user,
   // otherwise false.
   static void Close(const std::string& notification_id, bool by_user);
-
-  // Move the notification popup view for the given |notification_id| by a
-  // distance.
-  static void Move(const std::string& notification_id,
-                   const gfx::Vector2d& distance);
 };
 
 }  // namespace brave_ads
