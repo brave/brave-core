@@ -395,7 +395,7 @@ public class FeedDataSource: ObservableObject {
     return sources.compactMap(\.wrappedValue)
   }
 
-  private func loadFeed(for localeIdentifier: String) async throws -> [FeedItem.Content] {
+  private func loadFeed(for localeIdentifier: String) async -> [FeedItem.Content] {
     do {
       let items = try await loadResource(.feed, localeIdentifier: localeIdentifier, decodedTo: [FailableDecodable<FeedItem.Content>].self)
       if items.isEmpty {
@@ -408,7 +408,7 @@ public class FeedDataSource: ObservableObject {
     }
   }
   
-  private func loadSourceSuggestions(for localeIdentifier: String) async throws -> [String: [FeedItem.SourceSimilarity]] {
+  private func loadSourceSuggestions(for localeIdentifier: String) async -> [String: [FeedItem.SourceSimilarity]] {
     do {
       let items = try await loadResource(.sourceSuggestions, localeIdentifier: localeIdentifier, decodedTo: [String: [FailableDecodable<FeedItem.SourceSimilarity>]].self)
       if items.isEmpty {
@@ -603,7 +603,7 @@ public class FeedDataSource: ObservableObject {
         for locale in followedLocales {
           async let suggestions = loadSourceSuggestions(for: locale)
           async let items = loadFeed(for: locale)
-          let (localeSpecificItems, localeSpecificSuggestions) = try await (items, suggestions)
+          let (localeSpecificItems, localeSpecificSuggestions) = await (items, suggestions)
           self.items.append(contentsOf: localeSpecificItems)
           self.sourceSuggestions.merge(with: localeSpecificSuggestions)
         }

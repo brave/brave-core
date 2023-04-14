@@ -107,6 +107,11 @@ public struct BraveNewsDebugSettingsView: View {
             Text("\(cards.count)")
               .foregroundColor(.secondary)
           }
+        case .failure(let error as FeedDataSource.BraveNewsError):
+          // Needed to get actual localized description defined in BraveNewsError
+          // otherwise will show the generic error string
+          Text(error.localizedDescription)
+            .foregroundColor(.secondary)
         case .failure(let error):
           Text(error.localizedDescription)
             .foregroundColor(.secondary)
