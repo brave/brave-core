@@ -60,8 +60,8 @@ PurchaseIntentInfo::CreateFromValue(const base::Value::Dict dict) {
   }
 
   for (const auto [keywords, indexes] : *incoming_segment_keywords) {
-    PurchaseIntentSegmentKeywordInfo info;
-    info.keywords = keywords;
+    PurchaseIntentSegmentKeywordInfo purchase_intent_segment_keyword;
+    purchase_intent_segment_keyword.keywords = keywords;
 
     for (const auto& index : indexes.GetList()) {
       DCHECK(index.is_int());
@@ -69,10 +69,12 @@ PurchaseIntentInfo::CreateFromValue(const base::Value::Dict dict) {
         return base::unexpected(
             "Failed to load from JSON, segment keywords are ill-formed");
       }
-      info.segments.push_back(segments.at(index.GetInt()));
+      purchase_intent_segment_keyword.segments.push_back(
+          segments.at(index.GetInt()));
     }
 
-    purchase_intent.segment_keywords.push_back(std::move(info));
+    purchase_intent.segment_keywords.push_back(
+        std::move(purchase_intent_segment_keyword));
   }
 
   // Parsing field: "funnel_keywords"
@@ -84,10 +86,11 @@ PurchaseIntentInfo::CreateFromValue(const base::Value::Dict dict) {
   }
 
   for (const auto [keywords, weight] : *incoming_funnel_keywords) {
-    PurchaseIntentFunnelKeywordInfo info;
-    info.keywords = keywords;
-    info.weight = weight.GetInt();
-    purchase_intent.funnel_keywords.push_back(std::move(info));
+    PurchaseIntentFunnelKeywordInfo purchase_intent_funnel_keyword;
+    purchase_intent_funnel_keyword.keywords = keywords;
+    purchase_intent_funnel_keyword.weight = weight.GetInt();
+    purchase_intent.funnel_keywords.push_back(
+        std::move(purchase_intent_funnel_keyword));
   }
 
   // Parsing field: "funnel_sites"
@@ -127,12 +130,12 @@ PurchaseIntentInfo::CreateFromValue(const base::Value::Dict dict) {
 
     for (const auto& site : *site_list) {
       DCHECK(site.is_string());
-      PurchaseIntentSiteInfo info;
-      info.segments = site_segments;
-      info.url_netloc = GURL(site.GetString());
-      info.weight = 1;
+      PurchaseIntentSiteInfo purchase_intent_site;
+      purchase_intent_site.segments = site_segments;
+      purchase_intent_site.url_netloc = GURL(site.GetString());
+      purchase_intent_site.weight = 1;
 
-      purchase_intent.sites.push_back(std::move(info));
+      purchase_intent.sites.push_back(std::move(purchase_intent_site));
     }
   }
 

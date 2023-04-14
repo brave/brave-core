@@ -28,14 +28,14 @@ class Conversions final {
 
   void Load();
 
-  const ConversionsInfo* get() const { return &conversions_info_; }
+  const ConversionsInfo* get() const { return &conversions_; }
 
  private:
   void OnLoadAndParseResource(ParsingErrorOr<ConversionsInfo> result);
 
   bool is_initialized_ = false;
 
-  ConversionsInfo conversions_info_;
+  ConversionsInfo conversions_;
 
   base::WeakPtrFactory<Conversions> weak_factory_{this};
 };

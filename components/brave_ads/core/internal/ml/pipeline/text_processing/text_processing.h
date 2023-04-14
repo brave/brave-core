@@ -38,7 +38,7 @@ class TextProcessing final {
 
   bool IsInitialized() const { return is_initialized_; }
 
-  void SetPipeline(PipelineInfo info);
+  void SetPipeline(PipelineInfo pipeline);
   bool SetPipeline(base::Value::Dict dict);
 
   PredictionMap Apply(const std::unique_ptr<Data>& input_data) const;

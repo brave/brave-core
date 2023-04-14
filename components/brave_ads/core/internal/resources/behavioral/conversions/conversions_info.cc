@@ -56,12 +56,12 @@ base::expected<ConversionsInfo, std::string> ConversionsInfo::CreateFromValue(
           "Failed to load from JSON, pattern search_in missing");
     }
 
-    ConversionIdPatternInfo info;
-    info.id_pattern = *id_pattern;
-    info.search_in = *search_in;
-    info.url_pattern = key;
+    ConversionIdPatternInfo conversion_id_pattern;
+    conversion_id_pattern.id_pattern = *id_pattern;
+    conversion_id_pattern.search_in = *search_in;
+    conversion_id_pattern.url_pattern = key;
 
-    conversion.id_patterns[key] = std::move(info);
+    conversion.id_patterns[key] = std::move(conversion_id_pattern);
   }
 
   return conversion;

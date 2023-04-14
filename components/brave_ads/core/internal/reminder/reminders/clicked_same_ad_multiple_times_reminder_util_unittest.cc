@@ -29,14 +29,14 @@ HistoryItemInfo AddHistory(const AdInfo& ad,
 }
 
 HistoryItemInfo AddHistory(
-    const size_t count,
+    const int count,
     const bool should_use_random_creative_instance_guid) {
-  CHECK_GT(count, 0U);
+  CHECK_GT(count, 0);
 
   HistoryItemInfo history_item;
 
   AdInfo ad;
-  for (size_t i = 0; i < count; i++) {
+  for (int i = 0; i < count; i++) {
     if (i == 0 || should_use_random_creative_instance_guid) {
       ad = BuildAd(AdType::kNotificationAd, /*should_use_random_guids*/ true);
       CHECK(ad.IsValid());
