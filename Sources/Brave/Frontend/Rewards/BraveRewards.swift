@@ -28,7 +28,7 @@ public class BraveRewards: NSObject {
 
   private let configuration: Configuration
 
-  init(configuration: Configuration, buildChannel: Ads.BuildChannelInfo?) {
+  init(configuration: Configuration, buildChannel: BraveAds.BuildChannelInfo?) {
     self.configuration = configuration
 
     if let channel = buildChannel {
@@ -306,7 +306,7 @@ extension BraveRewards {
 
     var storageURL: URL
     public var environment: Environment
-    public var adsBuildChannel: Ads.BuildChannelInfo = .init()
+    public var adsBuildChannel: BraveAds.BuildChannelInfo = .init()
     public var isDebug: Bool?
     public var overridenNumberOfSecondsBetweenReconcile: Int?
     public var retryInterval: Int?

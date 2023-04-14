@@ -15,6 +15,7 @@ extension BraveWallet.BlockchainToken {
     logo: "",
     isErc20: false,
     isErc721: false,
+    isErc1155: false,
     isNft: false,
     symbol: "ETH",
     decimals: 18,
@@ -31,6 +32,7 @@ extension BraveWallet.BlockchainToken {
     logo: "",
     isErc20: true,
     isErc721: false,
+    isErc1155: false,
     isNft: false,
     symbol: "DAI",
     decimals: 18,
@@ -47,6 +49,7 @@ extension BraveWallet.BlockchainToken {
     logo: "",
     isErc20: true,
     isErc721: false,
+    isErc1155: false,
     isNft: false,
     symbol: "USDC",
     decimals: 6,
@@ -63,6 +66,7 @@ extension BraveWallet.BlockchainToken {
     logo: "",
     isErc20: false,
     isErc721: false,
+    isErc1155: false,
     isNft: false,
     symbol: "SOL",
     decimals: 9,
@@ -79,6 +83,7 @@ extension BraveWallet.BlockchainToken {
     logo: "",
     isErc20: false,
     isErc721: false,
+    isErc1155: false,
     isNft: false,
     symbol: "SPD",
     decimals: 6,
@@ -95,6 +100,7 @@ extension BraveWallet.BlockchainToken {
     logo: "",
     isErc20: false,
     isErc721: true,
+    isErc1155: false,
     isNft: true,
     symbol: "XENFT",
     decimals: 0,
@@ -111,6 +117,7 @@ extension BraveWallet.BlockchainToken {
     logo: "",
     isErc20: false,
     isErc721: false,
+    isErc1155: false,
     isNft: true,
     symbol: "SOLNFT",
     decimals: 0,
@@ -163,7 +170,8 @@ extension BraveWallet.TransactionInfo {
       submittedTime: Date(timeIntervalSince1970: 1636399673),
       confirmedTime: Date(timeIntervalSince1970: 1636402508),
       originInfo: .init(),
-      groupId: nil
+      groupId: nil,
+      chainId: ""
     )
   }
   static var previewConfirmedSwap: BraveWallet.TransactionInfo {
@@ -200,7 +208,8 @@ extension BraveWallet.TransactionInfo {
       submittedTime: Date(timeIntervalSince1970: 1636399673),
       confirmedTime: Date(timeIntervalSince1970: 1636402508),
       originInfo: .init(),
-      groupId: nil
+      groupId: nil,
+      chainId: ""
     )
   }
   /// Approved Unlimited DAI
@@ -235,7 +244,8 @@ extension BraveWallet.TransactionInfo {
       submittedTime: Date(timeIntervalSince1970: 1636399673),
       confirmedTime: Date(timeIntervalSince1970: 1636402508),
       originInfo: .init(),
-      groupId: nil
+      groupId: nil,
+      chainId: ""
     )
   }
   /// Solana System Transfer
@@ -267,7 +277,8 @@ extension BraveWallet.TransactionInfo {
       submittedTime: Date(timeIntervalSince1970: 1636399673),
       confirmedTime: Date(timeIntervalSince1970: 1636402508),
       originInfo: .init(),
-      groupId: nil
+      groupId: nil,
+      chainId: ""
     )
   }
   /// Solana Token Transfer
@@ -299,7 +310,8 @@ extension BraveWallet.TransactionInfo {
       submittedTime: Date(timeIntervalSince1970: 1636399673),
       confirmedTime: Date(timeIntervalSince1970: 1636402508),
       originInfo: .init(),
-      groupId: nil
+      groupId: nil,
+      chainId: ""
     )
   }
   static private func _transactionBase64ToData(_ base64String: String) -> [NSNumber] {

@@ -435,4 +435,7 @@ extension PortfolioStore: BraveWalletBraveWalletServiceObserver {
       update()
     }
   }
+  
+  public func onResetWallet() {
+  }
 }

@@ -106,13 +106,13 @@ mc_framework_args=""
 
 if [ "$build_simulator" = 1 ]; then
   npm run build -- $release_flag --target_os=ios --target_arch=$target_architecture --target_environment=simulator $other_flags
-  bc_framework_args="-framework $sim_dir/BraveCore.framework -debug-symbols $(pwd)/$sim_dir/BraveCore.dSYM"
+  bc_framework_args="-framework $sim_dir/BraveCore.framework"
   mc_framework_args="-framework $sim_dir/MaterialComponents.framework"
 fi
 
 if [ "$build_device" = 1 ]; then
   npm run build -- $release_flag --target_os=ios --target_arch=arm64 $other_flags
-  bc_framework_args="$bc_framework_args -framework $device_dir/BraveCore.framework -debug-symbols $(pwd)/$device_dir/BraveCore.dSYM"
+  bc_framework_args="$bc_framework_args -framework $device_dir/BraveCore.framework"
   mc_framework_args="$mc_framework_args -framework $device_dir/MaterialComponents.framework"
 fi
 

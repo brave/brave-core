@@ -712,4 +712,7 @@ extension TransactionConfirmationStore: BraveWalletBraveWalletServiceObserver {
   
   public func onDiscoverAssetsCompleted(_ discoveredAssets: [BraveWallet.BlockchainToken]) {
   }
+  
+  public func onResetWallet() {
+  }
 }

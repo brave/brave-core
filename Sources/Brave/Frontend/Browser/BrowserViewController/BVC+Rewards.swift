@@ -170,7 +170,6 @@ extension BrowserViewController {
     ledger.minimumVisitDuration = 8
     ledger.minimumNumberOfVisits = 1
     ledger.allowUnverifiedPublishers = false
-    ledger.allowVideoContributions = true
     ledger.contributionAmount = Double.greatestFiniteMagnitude
 
     // Create ledger observer

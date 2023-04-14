@@ -279,7 +279,7 @@ public class BrowserViewController: UIViewController {
     
     let configuration: BraveRewards.Configuration = .current()
 
-    let buildChannel = Ads.BuildChannelInfo().then {
+    let buildChannel = BraveAds.BuildChannelInfo().then {
       $0.name = AppConstants.buildChannel.rawValue
       $0.isRelease = AppConstants.buildChannel == .release
     }

@@ -60,15 +60,15 @@ class SendTokenStoreTests: XCTestCase {
       """
       completion("", metadata, .success, "")
     }
-    rpcService._solTokenMetadata = { _, completion in
-      completion(
-      """
+    rpcService._solTokenMetadata = { _, _, completion in
+      let metaData = """
       {
         "image": "sol.mock.image.url",
         "name": "sol mock nft name",
         "description": "sol mock nft description"
       }
-      """, .success, "")
+      """
+      completion("", metaData, .success, "")
     }
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._selectedCoin = { $0(selectedCoin) }
@@ -284,7 +284,7 @@ class SendTokenStoreTests: XCTestCase {
       prefilledToken: nil,
       ipfsApi: TestIpfsAPI()
     )
-    let token: BraveWallet.BlockchainToken = .init(contractAddress: "0x0d8775f648430679a709e98d2b0cb6250d2887ef", name: "Basic Attention Token", logo: "", isErc20: true, isErc721: false, isNft: false, symbol: batSymbol, decimals: 18, visible: true, tokenId: "", coingeckoId: "", chainId: "", coin: .eth)
+    let token: BraveWallet.BlockchainToken = .init(contractAddress: "0x0d8775f648430679a709e98d2b0cb6250d2887ef", name: "Basic Attention Token", logo: "", isErc20: true, isErc721: false, isErc1155: false, isNft: false, symbol: batSymbol, decimals: 18, visible: true, tokenId: "", coingeckoId: "", chainId: "", coin: .eth)
     store.selectedSendToken = token
 
     let ex = expectation(description: "send-bat-eip1559-transaction")
