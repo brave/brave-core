@@ -1019,7 +1019,13 @@ void EthereumProviderImpl::OnAddEthereumChainRequestCompleted(
 
 void EthereumProviderImpl::Request(base::Value input,
                                    RequestCallback callback) {
-  CommonRequestOrSendAsync(input, std::move(callback));
+  CommonRequestOrSendAsync(input, std::move(callback), false);
+  delegate_->WalletInteractionDetected();
+}
+
+void EthereumProviderImpl::SendAsync(base::Value input,
+                                     SendAsyncCallback callback) {
+  CommonRequestOrSendAsync(input, std::move(callback), true);
   delegate_->WalletInteractionDetected();
 }
 
@@ -1033,8 +1039,14 @@ void EthereumProviderImpl::SendErrorOnRequest(const mojom::ProviderError& error,
                           false);
 }
 
-void EthereumProviderImpl::CommonRequestOrSendAsync(base::ValueView input_value,
-                                                    RequestCallback callback) {
+void EthereumProviderImpl::CommonRequestOrSendAsync(
+    base::ValueView input_value,
+    RequestCallback request_callback,
+    bool format_json_rpc_response) {
+  auto callback = base::BindOnce(
+      &EthereumProviderImpl::OnResponse, weak_factory_.GetWeakPtr(),
+      format_json_rpc_response, std::move(request_callback));
+
   mojom::ProviderError error = mojom::ProviderError::kUnsupportedMethod;
   std::string error_message =
       l10n_util::GetStringUTF8(IDS_WALLET_REQUEST_PROCESSING_ERROR);
@@ -1267,7 +1279,7 @@ void EthereumProviderImpl::Send(const std::string& method,
                                 base::Value params,
                                 SendCallback callback) {
   CommonRequestOrSendAsync(GetJsonRpcRequest(method, std::move(params)),
-                           std::move(callback));
+                           std::move(callback), true);
   delegate_->WalletInteractionDetected();
 }
 
@@ -1727,6 +1739,24 @@ void EthereumProviderImpl::OnLogsReceived(const std::string& subscription,
   for (auto& results_item : *results) {
     events_listener_->MessageEvent(subscription, results_item.Clone());
   }
+}
+
+void EthereumProviderImpl::OnResponse(bool format_json_rpc_response,
+                                      RequestCallback callback,
+                                      base::Value id,
+                                      base::Value formed_response,
+                                      const bool reject,
+                                      const std::string& first_allowed_account,
+                                      const bool update_bind_js_properties) {
+  if (format_json_rpc_response) {
+    auto json_rpc_formed_response =
+        ToProviderResponse(id.Clone(), reject ? nullptr : &formed_response,
+                           reject ? &formed_response : nullptr);
+    formed_response = std::move(json_rpc_formed_response);
+  }
+
+  std::move(callback).Run(std::move(id), std::move(formed_response), reject,
+                          first_allowed_account, update_bind_js_properties);
 }
 
 }  // namespace brave_wallet
