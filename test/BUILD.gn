@@ -1235,6 +1235,7 @@ if (is_android) {
       "//components/browser_ui/site_settings/android:java",
       "//components/browser_ui/widget/android:java",
       "//components/embedder_support/android:browser_context_java",
+      "//components/external_intents/android:java",
       "//components/favicon/android:java",
       "//components/omnibox/browser:browser_java",
       "//components/password_manager/core/browser:password_manager_java_enums",

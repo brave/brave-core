@@ -126,6 +126,7 @@ import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectableListLayout;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectableListToolbar.SearchDelegate;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectionDelegate;
+import org.chromium.components.external_intents.ExternalNavigationDelegate;
 import org.chromium.components.favicon.LargeIconBridge;
 import org.chromium.components.omnibox.AutocompleteMatch;
 import org.chromium.components.omnibox.AutocompleteResult;
@@ -347,6 +348,10 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/feedback/BraveHelpAndFeedbackLauncherImpl"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/feedback/HelpAndFeedbackLauncherImpl"));
+        Assert.assertTrue(
+                classExists("org/chromium/components/external_intents/ExternalNavigationHandler"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/externalnav/BraveExternalNavigationHandler"));
     }
 
     @Test
@@ -825,6 +830,10 @@ public class BytecodeTest {
                 Profile.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/firstrun/FreIntentCreator",
                 "org/chromium/chrome/browser/firstrun/BraveFreIntentCreator"));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/components/external_intents/ExternalNavigationHandler",
+                "org/chromium/chrome/browser/externalnav/BraveExternalNavigationHandler",
+                ExternalNavigationDelegate.class));
     }
 
     @Test
