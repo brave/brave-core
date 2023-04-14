@@ -201,6 +201,9 @@ extension SettingsStore: BraveWalletBraveWalletServiceObserver {
   
   public func onDiscoverAssetsCompleted(_ discoveredAssets: [BraveWallet.BlockchainToken]) {
   }
+  
+  public func onResetWallet() {
+  }
 }
 
 struct CurrencyCode: Hashable, Identifiable {

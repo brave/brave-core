@@ -83,7 +83,8 @@ class TransactionParserTests: XCTestCase {
       submittedTime: Date(),
       confirmedTime: Date(),
       originInfo: nil,
-      groupId: nil
+      groupId: nil,
+      chainId: BraveWallet.MainnetChainId
     )
     
     let expectedParsedTransaction = ParsedTransaction(
@@ -176,7 +177,8 @@ class TransactionParserTests: XCTestCase {
       submittedTime: Date(),
       confirmedTime: Date(),
       originInfo: nil,
-      groupId: nil
+      groupId: nil,
+      chainId: BraveWallet.MainnetChainId
     )
     
     let expectedParsedTransaction = ParsedTransaction(
@@ -260,7 +262,8 @@ class TransactionParserTests: XCTestCase {
       submittedTime: Date(),
       confirmedTime: Date(),
       originInfo: nil,
-      groupId: nil
+      groupId: nil,
+      chainId: BraveWallet.MainnetChainId
     )
     
     let expectedParsedTransaction = ParsedTransaction(
@@ -348,7 +351,8 @@ class TransactionParserTests: XCTestCase {
       submittedTime: Date(),
       confirmedTime: Date(),
       originInfo: nil,
-      groupId: nil
+      groupId: nil,
+      chainId: BraveWallet.MainnetChainId
     )
     
     let expectedParsedTransaction = ParsedTransaction(
@@ -432,7 +436,8 @@ class TransactionParserTests: XCTestCase {
       submittedTime: Date(),
       confirmedTime: Date(),
       originInfo: nil,
-      groupId: nil
+      groupId: nil,
+      chainId: BraveWallet.MainnetChainId
     )
     
     let expectedParsedTransaction = ParsedTransaction(
@@ -514,7 +519,8 @@ class TransactionParserTests: XCTestCase {
       submittedTime: Date(),
       confirmedTime: Date(),
       originInfo: nil,
-      groupId: nil
+      groupId: nil,
+      chainId: BraveWallet.MainnetChainId
     )
     
     let expectedParsedTransaction = ParsedTransaction(
@@ -600,7 +606,8 @@ class TransactionParserTests: XCTestCase {
       submittedTime: Date(),
       confirmedTime: Date(),
       originInfo: nil,
-      groupId: nil
+      groupId: nil,
+      chainId: BraveWallet.MainnetChainId
     )
     
     let expectedParsedTransaction = ParsedTransaction(
@@ -677,7 +684,8 @@ class TransactionParserTests: XCTestCase {
       submittedTime: Date(),
       confirmedTime: Date(),
       originInfo: nil,
-      groupId: nil
+      groupId: nil,
+      chainId: BraveWallet.MainnetChainId
     )
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
@@ -766,7 +774,8 @@ class TransactionParserTests: XCTestCase {
       submittedTime: Date(),
       confirmedTime: Date(),
       originInfo: nil,
-      groupId: nil
+      groupId: nil,
+      chainId: BraveWallet.MainnetChainId
     )
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
@@ -842,7 +851,8 @@ class TransactionParserTests: XCTestCase {
       submittedTime: Date(),
       confirmedTime: Date(),
       originInfo: nil,
-      groupId: nil
+      groupId: nil,
+      chainId: BraveWallet.MainnetChainId
     )
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,

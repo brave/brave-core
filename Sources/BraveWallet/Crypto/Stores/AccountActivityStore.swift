@@ -353,4 +353,7 @@ extension AccountActivityStore: BraveWalletBraveWalletServiceObserver {
   
   func onDiscoverAssetsCompleted(_ discoveredAssets: [BraveWallet.BlockchainToken]) {
   }
+  
+  func onResetWallet() {
+  }
 }

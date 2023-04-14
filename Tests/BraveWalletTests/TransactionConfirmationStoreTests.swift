@@ -419,6 +419,7 @@ private extension BraveWallet.BlockchainToken {
     logo: "",
     isErc20: true,
     isErc721: false,
+    isErc1155: false,
     isNft: false,
     symbol: "DAI",
     decimals: 18,

@@ -36,6 +36,7 @@ extension BraveWallet.NetworkInfo: Identifiable {
       logo: nativeTokenLogo ?? "",
       isErc20: false,
       isErc721: false,
+      isErc1155: false,
       isNft: false,
       symbol: symbol,
       decimals: decimals,

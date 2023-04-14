@@ -86,15 +86,15 @@ class AccountActivityStoreTests: XCTestCase {
       """
       completion( "", metadata, .success, "")
     }
-    rpcService._solTokenMetadata = { _, completion in
-      completion(
-      """
+    rpcService._solTokenMetadata = { _, _, completion in
+      let metaData = """
       {
         "image": "sol.mock.image.url",
         "name": "sol mock nft name",
         "description": "sol mock nft description"
       }
-      """, .success, "")
+      """
+      completion("", metaData, .success, "")
     }
     
     let walletService = BraveWallet.TestBraveWalletService()

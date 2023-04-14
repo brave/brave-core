@@ -219,5 +219,11 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   
   func discoverAssetsOnAllSupportedChains() {
   }
+  
+  func nftDiscoveryEnabled(_ completion: @escaping (Bool) -> Void) {
+  }
+  
+  func setNftDiscoveryEnabled(_ enabled: Bool) {
+  }
 }
 #endif

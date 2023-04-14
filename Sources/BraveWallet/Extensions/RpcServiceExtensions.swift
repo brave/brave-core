@@ -288,7 +288,7 @@ extension BraveWalletJsonRpcService {
       }
       metaDataString = metaData
     } else {
-      let (metaData, result, errMsg) = await self.solTokenMetadata(token.contractAddress)
+      let (_, metaData, result, errMsg) = await self.solTokenMetadata(token.chainId, tokenMintAddress: token.contractAddress)
       if result != .success {
         Logger.module.debug("Failed to load Solana NFT metadata: \(errMsg)")
       }
@@ -316,7 +316,7 @@ extension BraveWalletJsonRpcService {
             }
             metaDataString = metaData
           } else {
-            let (metaData, result, errMsg) = await self.solTokenMetadata(token.contractAddress)
+            let (_, metaData, result, errMsg) = await self.solTokenMetadata(token.chainId, tokenMintAddress: token.contractAddress)
             if result != .success {
               Logger.module.debug("Failed to load Solana NFT metadata: \(errMsg)")
             }

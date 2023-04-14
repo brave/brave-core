@@ -105,6 +105,7 @@ struct AssetIconView_Previews: PreviewProvider {
         logo: "",
         isErc20: true,
         isErc721: false,
+        isErc1155: false,
         isNft: false,
         symbol: "XYO",
         decimals: 18,

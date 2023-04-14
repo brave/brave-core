@@ -71,7 +71,6 @@ extension BraveLedger {
 
       self.minimumVisitDuration = 8
       self.minimumNumberOfVisits = 1
-      self.allowVideoContributions = true
       self.allowUnverifiedPublishers = false
       self.contributionAmount = Double.greatestFiniteMagnitude
 
