@@ -18,6 +18,7 @@ public actor AdBlockEngineManager: Sendable {
     case adBlock
     case cosmeticFilters
     case filterList(uuid: String)
+    case filterListURL(uuid: String)
     
     /// The order of this source relative to other sources.
     ///
@@ -27,6 +28,7 @@ public actor AdBlockEngineManager: Sendable {
       case .adBlock: return 0
       case .cosmeticFilters: return 3
       case .filterList: return 100
+      case .filterListURL: return 200
       }
     }
   }
@@ -224,6 +226,7 @@ extension AdBlockEngineManager.Source: CustomDebugStringConvertible {
   public var debugDescription: String {
     switch self {
     case .filterList(let uuid): return "filterList(\(uuid))"
+    case .filterListURL(let uuid): return "filterListURL(\(uuid))"
     case .adBlock: return "adBlock"
     case .cosmeticFilters: return "cosmeticFilters"
     }

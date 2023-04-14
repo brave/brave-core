@@ -7,6 +7,7 @@ import SwiftUI
 import Strings
 import DesignSystem
 import BigNumber
+import BraveUI
 
 struct SendTokenView: View {
   @ObservedObject var keyringStore: KeyringStore

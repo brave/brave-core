@@ -45,18 +45,20 @@ public class FilterListResourceDownloader: ObservableObject {
     /// Otherwise it will create a new setting with the specified properties
     ///
     /// - Warning: Do not call this before we load core data
-    @MainActor public func upsertSetting(uuid: String, componentId: String?, isEnabled: Bool, allowCreation: Bool) {
+    @MainActor public func upsertSetting(uuid: String, componentId: String?, isEnabled: Bool, order: Int, allowCreation: Bool) {
       if allFilterListSettings.contains(where: { $0.uuid == uuid }) {
         updateSetting(
           uuid: uuid,
           componentId: componentId,
-          isEnabled: isEnabled
+          isEnabled: isEnabled,
+          order: order
         )
       } else if allowCreation {
         create(
           uuid: uuid,
           componentId: componentId,
-          isEnabled: isEnabled
+          isEnabled: isEnabled,
+          order: order
         )
       }
     }
@@ -74,12 +76,12 @@ public class FilterListResourceDownloader: ObservableObject {
       FilterListSetting.save(inMemory: inMemory)
     }
     
-    @MainActor private func updateSetting(uuid: String, componentId: String?, isEnabled: Bool) {
+    @MainActor private func updateSetting(uuid: String, componentId: String?, isEnabled: Bool, order: Int) {
       guard let index = allFilterListSettings.firstIndex(where: { $0.uuid == uuid }) else {
         return
       }
       
-      guard allFilterListSettings[index].isEnabled != isEnabled || allFilterListSettings[index].componentId != componentId else {
+      guard allFilterListSettings[index].isEnabled != isEnabled || allFilterListSettings[index].componentId != componentId || allFilterListSettings[index].order?.intValue != order else {
         // Ensure we stop if this is already in sync in order to avoid an event loop
         // And things hanging for too long.
         // This happens because we care about UI changes but not when our downloads finish
@@ -88,12 +90,13 @@ public class FilterListResourceDownloader: ObservableObject {
         
       allFilterListSettings[index].isEnabled = isEnabled
       allFilterListSettings[index].componentId = componentId
+      allFilterListSettings[index].order = NSNumber(value: order)
       FilterListSetting.save(inMemory: inMemory)
     }
     
     /// Create a filter list setting for the given UUID and enabled status
-    @MainActor private func create(uuid: String, componentId: String?, isEnabled: Bool) {
-      let setting = FilterListSetting.create(uuid: uuid, componentId: componentId, isEnabled: isEnabled, inMemory: inMemory)
+    @MainActor private func create(uuid: String, componentId: String?, isEnabled: Bool, order: Int) {
+      let setting = FilterListSetting.create(uuid: uuid, componentId: componentId, isEnabled: isEnabled, order: order, inMemory: inMemory)
       allFilterListSettings.append(setting)
     }
   }
@@ -155,7 +158,8 @@ public class FilterListResourceDownloader: ObservableObject {
       // Try to load the filter list folder. We always have to compile this at start
       if let folderURL = setting.folderURL, FileManager.default.fileExists(atPath: folderURL.path) {
         await self.addEngineResources(
-          forFilterListUUID: setting.uuid, downloadedFolderURL: folderURL, relativeOrder: 0
+          forFilterListUUID: setting.uuid, downloadedFolderURL: folderURL,
+          relativeOrder: setting.order?.intValue ?? 0
         )
       }
     }
@@ -204,6 +208,7 @@ public class FilterListResourceDownloader: ObservableObject {
       
       settingsManager.upsertSetting(
         uuid: uuid, componentId: componentID, isEnabled: isEnabled,
+        order: 0,
         allowCreation: defaultToggle != isEnabled
       )
     } else {
@@ -299,6 +304,7 @@ public class FilterListResourceDownloader: ObservableObject {
       uuid: filterList.uuid,
       componentId: filterList.entry.componentId,
       isEnabled: filterList.isEnabled,
+      order: filterLists.firstIndex(where: { $0.id == filterList.id }) ?? 0,
       allowCreation: filterList.entry.defaultToggle != filterList.isEnabled || filterList.isEnabled
     )
     
