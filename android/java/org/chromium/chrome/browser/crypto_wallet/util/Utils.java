@@ -1227,8 +1227,9 @@ public class Utils {
     private static WalletListItemModel makeWalletItem(Context context, TransactionInfo txInfo,
             NetworkInfo selectedNetwork, ParsedTransaction parsedTx) {
         Pair<String, String> itemTitles = parsedTx.makeTxListItemTitles(context);
-        WalletListItemModel itemModel = new WalletListItemModel(
-                R.drawable.ic_eth, itemTitles.first, itemTitles.second, "", null, null);
+        WalletListItemModel itemModel =
+                new WalletListItemModel(Utils.getCoinIcon(selectedNetwork.coin), itemTitles.first,
+                        itemTitles.second, "", null, null);
         updateWalletCoinTransactionStatus(itemModel, context, txInfo);
 
         itemModel.setChainSymbol(selectedNetwork.symbol);
