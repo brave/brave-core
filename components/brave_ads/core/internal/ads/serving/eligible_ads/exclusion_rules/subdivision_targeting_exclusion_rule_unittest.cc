@@ -98,10 +98,9 @@ TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
   creative_ad.geo_targets = {GetSubdivisionParam()};
 
   // Act
-  const bool should_exclude = exclusion_rule_->ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule_->ShouldExclude(creative_ad));
 }
 
 TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
@@ -119,10 +118,9 @@ TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
                              GetAdditionalSubdivisionParam()};
 
   // Act
-  const bool should_exclude = exclusion_rule_->ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule_->ShouldExclude(creative_ad));
 }
 
 TEST_P(
@@ -140,10 +138,9 @@ TEST_P(
   creative_ad.geo_targets = {GetCountryParam()};
 
   // Act
-  const bool should_exclude = exclusion_rule_->ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule_->ShouldExclude(creative_ad));
 }
 
 TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
@@ -160,10 +157,9 @@ TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
   creative_ad.geo_targets = {GetSubdivisionParam()};
 
   // Act
-  const bool should_exclude = exclusion_rule_->ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule_->ShouldExclude(creative_ad));
 }
 
 TEST_P(
@@ -181,10 +177,9 @@ TEST_P(
   creative_ad.geo_targets = {GetCountryParam()};
 
   // Act
-  const bool should_exclude = exclusion_rule_->ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule_->ShouldExclude(creative_ad));
 }
 
 TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
@@ -195,10 +190,9 @@ TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
   creative_ad.geo_targets = {GetSubdivisionParam()};
 
   // Act
-  const bool should_exclude = exclusion_rule_->ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_TRUE(should_exclude);
+  EXPECT_TRUE(exclusion_rule_->ShouldExclude(creative_ad));
 }
 
 TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
@@ -215,10 +209,9 @@ TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
   creative_ad.geo_targets = {GetUnsupportedSubdivisionParam()};
 
   // Act
-  const bool should_exclude = exclusion_rule_->ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_TRUE(should_exclude);
+  EXPECT_TRUE(exclusion_rule_->ShouldExclude(creative_ad));
 }
 
 TEST_P(
@@ -236,16 +229,16 @@ TEST_P(
   creative_ad.geo_targets = {"GB-DEV"};
 
   // Act
-  const bool should_exclude = exclusion_rule_->ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_TRUE(should_exclude);
+  EXPECT_TRUE(exclusion_rule_->ShouldExclude(creative_ad));
 }
 
 TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
        AllowAdIfSubdivisionTargetingIsNotSupportedForNonSubdivisionGeoTarget) {
   // Arrange
-  const URLResponseMap url_responses = {{"/v1/getstate", {{net::HTTP_OK, R"(
+  const URLResponseMap url_responses = {
+      {"/v1/getstate", {{net::HTTP_OK, /*response_body*/ R"(
             {"country":"XX", "region":"NO REGION"}
           )"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
@@ -257,10 +250,9 @@ TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
   creative_ad.geo_targets = {"XX"};
 
   // Act
-  const bool should_exclude = exclusion_rule_->ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule_->ShouldExclude(creative_ad));
 }
 
 TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
@@ -280,10 +272,9 @@ TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
   creative_ad.geo_targets = {GetSubdivisionParam()};
 
   // Act
-  const bool should_exclude = exclusion_rule_->ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_TRUE(should_exclude);
+  EXPECT_TRUE(exclusion_rule_->ShouldExclude(creative_ad));
 }
 
 TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
@@ -303,10 +294,9 @@ TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
   creative_ad.geo_targets = {GetCountryParam()};
 
   // Act
-  const bool should_exclude = exclusion_rule_->ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule_->ShouldExclude(creative_ad));
 }
 
 constexpr SubdivisionTargetingExclusionRuleTestParam kTests[] = {

@@ -13,10 +13,10 @@
 namespace brave_ads::database {
 
 void OnResultCallback(ResultCallback callback,
-                      mojom::DBCommandResponseInfoPtr response) {
-  DCHECK(response);
+                      mojom::DBCommandResponseInfoPtr command_response) {
+  DCHECK(command_response);
 
-  if (response->status !=
+  if (command_response->status !=
       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     return std::move(callback).Run(/*success*/ false);
   }

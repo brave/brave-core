@@ -63,16 +63,18 @@ ConversionInfo GetFromRecord(mojom::DBRecordInfo* record) {
 }
 
 void OnGetConversions(GetConversionsCallback callback,
-                      mojom::DBCommandResponseInfoPtr response) {
-  if (!response || response->status !=
-                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+                      mojom::DBCommandResponseInfoPtr command_response) {
+  if (!command_response ||
+      command_response->status !=
+          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative conversions");
-    return std::move(callback).Run(/*success*/ false, {});
+    return std::move(callback).Run(/*success*/ false,
+                                   /*conversion_queue_items*/ {});
   }
 
   ConversionList conversions;
 
-  for (const auto& record : response->result->get_records()) {
+  for (const auto& record : command_response->result->get_records()) {
     const ConversionInfo conversion = GetFromRecord(record.get());
     conversions.push_back(conversion);
   }
@@ -216,7 +218,7 @@ std::string Conversions::BuildInsertOrUpdateQuery(
     const ConversionList& conversions) const {
   DCHECK(command);
 
-  const int count = BindParameters(command, conversions);
+  const int binded_parameters_count = BindParameters(command, conversions);
 
   return base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
@@ -227,7 +229,9 @@ std::string Conversions::BuildInsertOrUpdateQuery(
       "observation_window, "
       "expiry_timestamp) VALUES %s",
       GetTableName().c_str(),
-      BuildBindingParameterPlaceholders(6, count).c_str());
+      BuildBindingParameterPlaceholders(/*parameters_count*/ 6,
+                                        binded_parameters_count)
+          .c_str());
 }
 
 }  // namespace brave_ads::database::table

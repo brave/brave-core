@@ -33,23 +33,21 @@ TEST_F(BatAdsDismissedExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   creative_ad.creative_instance_id = kCreativeInstanceId;
   creative_ad.campaign_id = kCampaignIds[0];
 
-  const AdEventList ad_events;
+  DismissedExclusionRule exclusion_rule({});
 
   // Act
-  DismissedExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsDismissedExclusionRuleTest,
-       AllowAdWithSameCampaignIdWithin48HoursIfDismissed) {
+       AllowAdWithSameCampaignIdWithin2DaysIfDismissed) {
   // Arrange
   base::FieldTrialParams params;
-  params["exclude_ad_if_dismissed_within_time_window"] = "48h";
+  params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(exclusion_rules::features::kFeature, params);
+  enabled_features.emplace_back(kExclusionRulesFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -76,25 +74,25 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
     AdvanceClockBy(base::Minutes(5));
   }
 
-  AdvanceClockBy(base::Hours(48) -
+  DismissedExclusionRule exclusion_rule(ad_events);
+
+  AdvanceClockBy(base::Days(2) -
                  (base::Minutes(5) * confirmation_types.size()) -
-                 base::Seconds(1));
+                 base::Milliseconds(1));
 
   // Act
-  DismissedExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsDismissedExclusionRuleTest,
-       AllowAdWithSameCampaignIdWithin48HoursIfDismissedForMultipleTypes) {
+       AllowAdWithSameCampaignIdWithin2DaysIfDismissedForMultipleTypes) {
   // Arrange
   base::FieldTrialParams params;
-  params["exclude_ad_if_dismissed_within_time_window"] = "48h";
+  params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(exclusion_rules::features::kFeature, params);
+  enabled_features.emplace_back(kExclusionRulesFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -127,21 +125,21 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
                    ConfirmationType::kDismissed, Now());
   ad_events.push_back(ad_event_4);
 
-  // Act
   DismissedExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
+
+  // Act
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsDismissedExclusionRuleTest,
-       AllowAdWithSameCampaignIdWithin48HoursIfDismissedThenClicked) {
+       AllowAdWithSameCampaignIdWithin2DaysIfDismissedThenClicked) {
   // Arrange
   base::FieldTrialParams params;
-  params["exclude_ad_if_dismissed_within_time_window"] = "48h";
+  params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(exclusion_rules::features::kFeature, params);
+  enabled_features.emplace_back(kExclusionRulesFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -167,25 +165,25 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
     AdvanceClockBy(base::Minutes(5));
   }
 
-  AdvanceClockBy(base::Hours(48) -
+  DismissedExclusionRule exclusion_rule(ad_events);
+
+  AdvanceClockBy(base::Days(2) -
                  (base::Minutes(5) * confirmation_types.size()) -
-                 base::Seconds(1));
+                 base::Milliseconds(1));
 
   // Act
-  DismissedExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsDismissedExclusionRuleTest,
-       AllowAdWithSameCampaignIdAfter48HoursIfDismissedThenClicked) {
+       AllowAdWithSameCampaignIdAfter2DaysIfDismissedThenClicked) {
   // Arrange
   base::FieldTrialParams params;
-  params["exclude_ad_if_dismissed_within_time_window"] = "48h";
+  params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(exclusion_rules::features::kFeature, params);
+  enabled_features.emplace_back(kExclusionRulesFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -211,24 +209,24 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
     AdvanceClockBy(base::Minutes(5));
   }
 
-  AdvanceClockBy(base::Hours(48) -
+  DismissedExclusionRule exclusion_rule(ad_events);
+
+  AdvanceClockBy(base::Days(2) -
                  (base::Minutes(5) * confirmation_types.size()));
 
   // Act
-  DismissedExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsDismissedExclusionRuleTest,
-       AllowAdWithSameCampaignIdWithin48HoursIfClickedThenDismissed) {
+       AllowAdWithSameCampaignIdWithin2DaysIfClickedThenDismissed) {
   // Arrange
   base::FieldTrialParams params;
-  params["exclude_ad_if_dismissed_within_time_window"] = "48h";
+  params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(exclusion_rules::features::kFeature, params);
+  enabled_features.emplace_back(kExclusionRulesFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -254,25 +252,25 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
     AdvanceClockBy(base::Minutes(5));
   }
 
-  AdvanceClockBy(base::Hours(48) -
+  DismissedExclusionRule exclusion_rule(ad_events);
+
+  AdvanceClockBy(base::Days(2) -
                  (base::Minutes(5) * confirmation_types.size()) -
-                 base::Seconds(1));
+                 base::Milliseconds(1));
 
   // Act
-  DismissedExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsDismissedExclusionRuleTest,
-       AllowAdWithSameCampaignIdAfter48HoursIfClickedThenDismissed) {
+       AllowAdWithSameCampaignIdAfter2DaysIfClickedThenDismissed) {
   // Arrange
   base::FieldTrialParams params;
-  params["exclude_ad_if_dismissed_within_time_window"] = "48h";
+  params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(exclusion_rules::features::kFeature, params);
+  enabled_features.emplace_back(kExclusionRulesFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -298,24 +296,24 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
     AdvanceClockBy(base::Minutes(5));
   }
 
-  AdvanceClockBy(base::Hours(48) -
+  DismissedExclusionRule exclusion_rule(ad_events);
+
+  AdvanceClockBy(base::Days(2) -
                  (base::Minutes(5) * confirmation_types.size()));
 
   // Act
-  DismissedExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsDismissedExclusionRuleTest,
-       AllowAdWithSameCampaignIdAfter48HoursIfClickedThenDismissedTwice) {
+       AllowAdWithSameCampaignIdAfter2DaysIfClickedThenDismissedTwice) {
   // Arrange
   base::FieldTrialParams params;
-  params["exclude_ad_if_dismissed_within_time_window"] = "48h";
+  params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(exclusion_rules::features::kFeature, params);
+  enabled_features.emplace_back(kExclusionRulesFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -342,23 +340,23 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
     AdvanceClockBy(base::Minutes(5));
   }
 
-  AdvanceClockBy(base::Hours(48));
+  DismissedExclusionRule exclusion_rule(ad_events);
+
+  AdvanceClockBy(base::Days(2));
 
   // Act
-  DismissedExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsDismissedExclusionRuleTest,
-       DoNotAllowAdWithSameCampaignIdWithin48HoursIfClickedThenDismissedTwice) {
+       DoNotAllowAdWithSameCampaignIdWithin2DaysIfClickedThenDismissedTwice) {
   // Arrange
   base::FieldTrialParams params;
-  params["exclude_ad_if_dismissed_within_time_window"] = "48h";
+  params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(exclusion_rules::features::kFeature, params);
+  enabled_features.emplace_back(kExclusionRulesFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -385,25 +383,25 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
     AdvanceClockBy(base::Minutes(5));
   }
 
-  AdvanceClockBy(base::Hours(48) -
+  DismissedExclusionRule exclusion_rule(ad_events);
+
+  AdvanceClockBy(base::Days(2) -
                  (base::Minutes(5) * confirmation_types.size()) -
-                 base::Seconds(1));
+                 base::Milliseconds(1));
 
   // Act
-  DismissedExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_TRUE(should_exclude);
+  EXPECT_TRUE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsDismissedExclusionRuleTest,
        AllowAdWithSameCampaignIdIfClickedThenDismissedTwiceWithin0Seconds) {
   // Arrange
   base::FieldTrialParams params;
-  params["exclude_ad_if_dismissed_within_time_window"] = "0s";
+  params["should_exclude_ad_if_dismissed_within_time_window"] = "0s";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(exclusion_rules::features::kFeature, params);
+  enabled_features.emplace_back(kExclusionRulesFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -428,21 +426,21 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
     ad_events.push_back(ad_event);
   }
 
-  // Act
   DismissedExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
+
+  // Act
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsDismissedExclusionRuleTest,
-       AllowAdWithDifferentCampaignIdWithin48Hours) {
+       AllowAdWithDifferentCampaignIdWithin2Days) {
   // Arrange
   base::FieldTrialParams params;
-  params["exclude_ad_if_dismissed_within_time_window"] = "48h";
+  params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(exclusion_rules::features::kFeature, params);
+  enabled_features.emplace_back(kExclusionRulesFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -472,20 +470,20 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
     AdvanceClockBy(base::Minutes(5));
   }
 
-  AdvanceClockBy(base::Hours(48) -
+  DismissedExclusionRule exclusion_rule(ad_events);
+
+  AdvanceClockBy(base::Days(2) -
                  (base::Minutes(5) * confirmation_types.size()) -
-                 base::Seconds(1));
+                 base::Milliseconds(1));
 
   // Act
-  DismissedExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad_1);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad_1));
 }
 
 TEST_F(BatAdsDismissedExclusionRuleTest,
-       AllowAdWithDifferentCampaignIdAfter48Hours) {
+       AllowAdWithDifferentCampaignIdAfter2Days) {
   // Arrange
   CreativeAdInfo creative_ad_1;
   creative_ad_1.creative_instance_id = kCreativeInstanceId;
@@ -509,15 +507,15 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
     AdvanceClockBy(base::Minutes(5));
   }
 
-  AdvanceClockBy(base::Hours(48) -
+  DismissedExclusionRule exclusion_rule(ad_events);
+
+  AdvanceClockBy(base::Days(2) -
                  (base::Minutes(5) * confirmation_types.size()));
 
   // Act
-  DismissedExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad_1);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad_1));
 }
 
 }  // namespace brave_ads::notification_ads

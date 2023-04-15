@@ -291,7 +291,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   SaveCreativeAds(creative_ads);
 
   // Act
-  AdvanceClockBy(base::Seconds(1));
+  AdvanceClockBy(base::Milliseconds(1));
 
   // Assert
   CreativeNewTabPageAdList expected_creative_ads = {creative_ad_2};

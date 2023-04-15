@@ -20,7 +20,7 @@ namespace {
 
 bool CanRemind(const HistoryItemInfo& history_item) {
   return !PlatformHelper::GetInstance()->IsMobile() &&
-         features::GetRemindUserIfClickingTheSameAdAfter() > 0 &&
+         kRemindUserIfClickingTheSameAdAfter.Get() > 0 &&
          history_item.ad_content.type == AdType::kNotificationAd &&
          history_item.ad_content.confirmation_type ==
              ConfirmationType::kClicked;
@@ -46,7 +46,7 @@ bool DidUserClickTheSameAdMultipleTimes(const HistoryItemInfo& history_item) {
   }
 
   const size_t remind_user_if_clicking_the_same_ad_after =
-      features::GetRemindUserIfClickingTheSameAdAfter();
+      kRemindUserIfClickingTheSameAdAfter.Get();
   DCHECK_GT(remind_user_if_clicking_the_same_ad_after, 0U);
 
   return (count - 1) % remind_user_if_clicking_the_same_ad_after ==

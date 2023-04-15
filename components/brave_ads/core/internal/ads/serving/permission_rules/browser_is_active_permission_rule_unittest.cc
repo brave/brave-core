@@ -16,7 +16,10 @@
 
 namespace brave_ads {
 
-class BatAdsBrowserIsActivePermissionRuleTest : public UnitTestBase {};
+class BatAdsBrowserIsActivePermissionRuleTest : public UnitTestBase {
+ protected:
+  BrowserIsActivePermissionRule permission_rule_;
+};
 
 TEST_F(BatAdsBrowserIsActivePermissionRuleTest, AllowAd) {
   // Arrange
@@ -27,9 +30,7 @@ TEST_F(BatAdsBrowserIsActivePermissionRuleTest, AllowAd) {
   NotifyBrowserDidEnterForeground();
 
   // Assert
-  BrowserIsActivePermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsBrowserIsActivePermissionRuleTest, AlwaysAllowAdForAndroid) {
@@ -41,9 +42,7 @@ TEST_F(BatAdsBrowserIsActivePermissionRuleTest, AlwaysAllowAdForAndroid) {
   NotifyBrowserDidEnterBackground();
 
   // Assert
-  BrowserIsActivePermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsBrowserIsActivePermissionRuleTest, DoNotAllowAd) {
@@ -55,9 +54,7 @@ TEST_F(BatAdsBrowserIsActivePermissionRuleTest, DoNotAllowAd) {
   NotifyBrowserDidEnterBackground();
 
   // Assert
-  BrowserIsActivePermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
-  EXPECT_FALSE(is_allowed);
+  EXPECT_FALSE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsBrowserIsActivePermissionRuleTest,
@@ -66,7 +63,7 @@ TEST_F(BatAdsBrowserIsActivePermissionRuleTest,
   base::FieldTrialParams params;
   params["should_only_serve_ads_if_browser_is_active"] = "false";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(permission_rules::features::kFeature, params);
+  enabled_features.emplace_back(kPermissionRulesFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -81,9 +78,7 @@ TEST_F(BatAdsBrowserIsActivePermissionRuleTest,
   NotifyBrowserDidEnterBackground();
 
   // Assert
-  BrowserIsActivePermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsBrowserIsActivePermissionRuleTest,
@@ -96,9 +91,7 @@ TEST_F(BatAdsBrowserIsActivePermissionRuleTest,
   NotifyBrowserDidEnterBackground();
 
   // Assert
-  BrowserIsActivePermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
-  EXPECT_FALSE(is_allowed);
+  EXPECT_FALSE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsBrowserIsActivePermissionRuleTest,
@@ -111,9 +104,7 @@ TEST_F(BatAdsBrowserIsActivePermissionRuleTest,
   NotifyBrowserDidEnterForeground();
 
   // Assert
-  BrowserIsActivePermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
-  EXPECT_FALSE(is_allowed);
+  EXPECT_FALSE(permission_rule_.ShouldAllow());
 }
 
 }  // namespace brave_ads

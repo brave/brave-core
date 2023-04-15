@@ -28,14 +28,14 @@ class GeoTargets;
 class Segments;
 
 using GetCreativePromotedContentAdCallback =
-    base::OnceCallback<void(const bool,
+    base::OnceCallback<void(bool success,
                             const std::string& creative_instance_id,
-                            const CreativePromotedContentAdInfo&)>;
+                            const CreativePromotedContentAdInfo& creative_ad)>;
 
 using GetCreativePromotedContentAdsCallback =
-    base::OnceCallback<void(const bool,
-                            const std::vector<std::string>&,
-                            const CreativePromotedContentAdList&)>;
+    base::OnceCallback<void(bool success,
+                            const std::vector<std::string>& segments,
+                            const CreativePromotedContentAdList& creative_ads)>;
 
 class CreativePromotedContentAds final : public TableInterface {
  public:

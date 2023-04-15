@@ -117,7 +117,7 @@ TEST_F(BatAdsEligibleNotificationAdsV3Test,
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
   params["version"] = "3";
-  enabled_features.emplace_back(notification_ads::features::kServing, params);
+  enabled_features.emplace_back(notification_ads::kServingFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 

@@ -22,7 +22,7 @@ class ConfirmationType;
 struct AdEventInfo;
 struct AdInfo;
 
-using AdEventCallback = base::OnceCallback<void(const bool)>;
+using AdEventCallback = base::OnceCallback<void(bool success)>;
 
 void LogAdEvent(const AdInfo& ad,
                 const ConfirmationType& confirmation_type,

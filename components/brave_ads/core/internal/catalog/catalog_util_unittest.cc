@@ -96,7 +96,7 @@ TEST_F(BatAdsCatalogUtilTest, CatalogHasNotExpired) {
   SetCatalogLastUpdated(Now());
 
   // Act
-  AdvanceClockBy(base::Days(1) - base::Seconds(1));
+  AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
   // Assert
   const bool has_expired = HasCatalogExpired();

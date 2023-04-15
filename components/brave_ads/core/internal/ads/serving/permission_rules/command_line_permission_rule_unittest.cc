@@ -13,7 +13,10 @@
 
 namespace brave_ads {
 
-class BatAdsCommandLinePermissionRuleTest : public UnitTestBase {};
+class BatAdsCommandLinePermissionRuleTest : public UnitTestBase {
+ protected:
+  CommandLinePermissionRule permission_rule_;
+};
 
 TEST_F(BatAdsCommandLinePermissionRuleTest,
        AllowAdIfDidNotOverrideCommandLineSwitchesForProduction) {
@@ -24,11 +27,9 @@ TEST_F(BatAdsCommandLinePermissionRuleTest,
   FlagManager::GetInstance()->SetDidOverrideFromCommandLineForTesting(false);
 
   // Act
-  CommandLinePermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsCommandLinePermissionRuleTest,
@@ -40,11 +41,9 @@ TEST_F(BatAdsCommandLinePermissionRuleTest,
   FlagManager::GetInstance()->SetDidOverrideFromCommandLineForTesting(false);
 
   // Act
-  CommandLinePermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsCommandLinePermissionRuleTest,
@@ -56,11 +55,9 @@ TEST_F(BatAdsCommandLinePermissionRuleTest,
   FlagManager::GetInstance()->SetDidOverrideFromCommandLineForTesting(true);
 
   // Act
-  CommandLinePermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_FALSE(is_allowed);
+  EXPECT_FALSE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsCommandLinePermissionRuleTest,
@@ -72,11 +69,9 @@ TEST_F(BatAdsCommandLinePermissionRuleTest,
   FlagManager::GetInstance()->SetDidOverrideFromCommandLineForTesting(true);
 
   // Act
-  CommandLinePermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 }  // namespace brave_ads

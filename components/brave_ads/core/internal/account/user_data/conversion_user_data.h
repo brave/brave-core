@@ -16,7 +16,8 @@ class ConfirmationType;
 
 namespace user_data {
 
-using ConversionCallback = base::OnceCallback<void(base::Value::Dict)>;
+using ConversionCallback =
+    base::OnceCallback<void(base::Value::Dict user_data)>;
 
 void GetConversion(const std::string& creative_instance_id,
                    const ConfirmationType& confirmation_type,

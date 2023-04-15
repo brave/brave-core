@@ -6,23 +6,28 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_TARGETING_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_FEATURES_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_TARGETING_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_FEATURES_H_
 
-#include <cstdint>
-
 #include "base/feature_list.h"
+#include "base/metrics/field_trial_params.h"
 
 namespace base {
 class TimeDelta;
 }  // namespace base
 
-namespace brave_ads::targeting::features {
+namespace brave_ads::targeting {
 
-BASE_DECLARE_FEATURE(kPurchaseIntent);
+BASE_DECLARE_FEATURE(kPurchaseIntentFeature);
 
 bool IsPurchaseIntentEnabled();
-int GetPurchaseIntentResourceVersion();
-uint16_t GetPurchaseIntentThreshold();
-base::TimeDelta GetPurchaseIntentTimeWindow();
 
-}  // namespace brave_ads::targeting::features
+constexpr base::FeatureParam<int> kPurchaseIntentResourceVersion{
+    &kPurchaseIntentFeature, "resource_version", 1};
+
+constexpr base::FeatureParam<int> kPurchaseIntentThreshold{
+    &kPurchaseIntentFeature, "threshold", 3};
+
+constexpr base::FeatureParam<base::TimeDelta> kPurchaseIntentTimeWindow{
+    &kPurchaseIntentFeature, "time_window", base::Days(7)};
+
+}  // namespace brave_ads::targeting
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_TARGETING_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_FEATURES_H_

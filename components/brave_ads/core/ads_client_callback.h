@@ -16,25 +16,26 @@
 
 namespace brave_ads {
 
-using ResultCallback = base::OnceCallback<void(const bool)>;
+using ResultCallback = base::OnceCallback<void(bool success)>;
 
-using SaveCallback = base::OnceCallback<void(const bool)>;
+using SaveCallback = base::OnceCallback<void(bool success)>;
 
-using LoadCallback = base::OnceCallback<void(const bool, const std::string&)>;
+using LoadCallback =
+    base::OnceCallback<void(bool success, const std::string& value)>;
 
-using LoadFileCallback = base::OnceCallback<void(base::File)>;
+using LoadFileCallback = base::OnceCallback<void(base::File file)>;
 
 using UrlRequestCallback =
-    base::OnceCallback<void(const mojom::UrlResponseInfo&)>;
+    base::OnceCallback<void(const mojom::UrlResponseInfo& url_response)>;
 
 using RunDBTransactionCallback =
-    base::OnceCallback<void(mojom::DBCommandResponseInfoPtr)>;
+    base::OnceCallback<void(mojom::DBCommandResponseInfoPtr command_response)>;
 
 using GetBrowsingHistoryCallback =
-    base::OnceCallback<void(const std::vector<GURL>&)>;
+    base::OnceCallback<void(const std::vector<GURL>& browsing_history)>;
 
 using GetScheduledCaptchaCallback =
-    base::OnceCallback<void(const std::string&)>;
+    base::OnceCallback<void(const std::string& captcha_id)>;
 
 }  // namespace brave_ads
 

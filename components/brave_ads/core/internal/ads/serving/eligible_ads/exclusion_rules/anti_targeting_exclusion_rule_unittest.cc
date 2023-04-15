@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/anti_targeting_exclusion_rule.h"
 
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "url/gurl.h"
@@ -13,21 +14,12 @@
 
 namespace brave_ads {
 
-namespace {
-
-constexpr char kCreativeSetIdOnAntiTargetingList[] =
-    "5bdeab83-048f-48a7-9602-a1092ded123c";
-constexpr char kCreativeSetIdNotOnAntiTargetingList[] =
-    "d175cdfd-57bf-46c3-9b00-89eed71c6ae5";
-
-}  // namespace
-
 class BatAdsAntiTargetingExclusionRuleTest : public UnitTestBase {};
 
-TEST_F(BatAdsAntiTargetingExclusionRuleTest, AllowIfResourceDidNotLoad) {
+TEST_F(BatAdsAntiTargetingExclusionRuleTest, AllowIfResourceIsNotInitialized) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetIdOnAntiTargetingList;
+  creative_ad.creative_set_id = kCreativeSetId;
 
   resource::AntiTargeting resource;
 
@@ -35,18 +27,18 @@ TEST_F(BatAdsAntiTargetingExclusionRuleTest, AllowIfResourceDidNotLoad) {
                                        GURL("https://www.brave.com"),
                                        GURL("https://www.foo2.org")};
 
-  // Act
   AntiTargetingExclusionRule exclusion_rule(resource, history);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
+
+  // Act
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsAntiTargetingExclusionRuleTest, AllowIfCreativeSetDoesNotMatch) {
+TEST_F(BatAdsAntiTargetingExclusionRuleTest, AllowIfCreativeSetDoesNotExist) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetIdNotOnAntiTargetingList;
+  creative_ad.creative_set_id = kMissingCreativeSetId;
 
   resource::AntiTargeting resource;
   resource.Load();
@@ -56,18 +48,18 @@ TEST_F(BatAdsAntiTargetingExclusionRuleTest, AllowIfCreativeSetDoesNotMatch) {
                                        GURL("https://www.brave.com"),
                                        GURL("https://www.foo2.org")};
 
-  // Act
   AntiTargetingExclusionRule exclusion_rule(resource, history);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
+
+  // Act
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsAntiTargetingExclusionRuleTest, AllowIfSiteDoesNotMatch) {
+TEST_F(BatAdsAntiTargetingExclusionRuleTest, AllowIfSiteDoesNotExist) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetIdOnAntiTargetingList;
+  creative_ad.creative_set_id = kCreativeSetId;
 
   resource::AntiTargeting resource;
   resource.Load();
@@ -76,19 +68,19 @@ TEST_F(BatAdsAntiTargetingExclusionRuleTest, AllowIfSiteDoesNotMatch) {
   const BrowsingHistoryList history = {GURL("https://www.foo1.org"),
                                        GURL("https://www.foo2.org")};
 
-  // Act
   AntiTargetingExclusionRule exclusion_rule(resource, history);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
+
+  // Act
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsAntiTargetingExclusionRuleTest,
-       DoNotAllowIfCreativeSetAndSiteDoesMatch) {
+       DoNotAllowIfCreativeSetAndSiteMatch) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetIdOnAntiTargetingList;
+  creative_ad.creative_set_id = kCreativeSetId;
 
   resource::AntiTargeting resource;
   resource.Load();
@@ -97,12 +89,12 @@ TEST_F(BatAdsAntiTargetingExclusionRuleTest,
   const BrowsingHistoryList history = {GURL("https://www.foo1.org"),
                                        GURL("https://www.brave.com")};
 
-  // Act
   AntiTargetingExclusionRule exclusion_rule(resource, history);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
+
+  // Act
 
   // Assert
-  EXPECT_TRUE(should_exclude);
+  EXPECT_TRUE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 }  // namespace brave_ads

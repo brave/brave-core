@@ -24,18 +24,20 @@ std::string BuildBindingParameterPlaceholder(const size_t parameters_count) {
                             base::JoinString(placeholders, ", ").c_str());
 }
 
-std::string BuildBindingParameterPlaceholders(const size_t parameters_count,
-                                              const size_t values_count) {
-  DCHECK_NE(0U, values_count);
+std::string BuildBindingParameterPlaceholders(
+    const size_t parameters_count,
+    const size_t binded_parameters_count) {
+  DCHECK_NE(0U, binded_parameters_count);
 
-  std::string value = BuildBindingParameterPlaceholder(parameters_count);
-  if (values_count == 1) {
-    return value;
+  std::string placeholder = BuildBindingParameterPlaceholder(parameters_count);
+  if (binded_parameters_count == 1) {
+    return placeholder;
   }
 
-  const std::vector<std::string> values(values_count, value);
+  const std::vector<std::string> placeholders(binded_parameters_count,
+                                              placeholder);
 
-  return base::JoinString(values, ", ");
+  return base::JoinString(placeholders, ", ");
 }
 
 void Bind(sql::Statement* statement,

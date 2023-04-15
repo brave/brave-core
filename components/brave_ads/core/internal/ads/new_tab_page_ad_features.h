@@ -7,20 +7,27 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_NEW_TAB_PAGE_AD_FEATURES_H_
 
 #include "base/feature_list.h"
+#include "base/metrics/field_trial_params.h"
 
 namespace base {
 class TimeDelta;
 }  // namespace base
 
-namespace brave_ads::new_tab_page_ads::features {
+namespace brave_ads::new_tab_page_ads {
 
-BASE_DECLARE_FEATURE(kFeature);
+BASE_DECLARE_FEATURE(kAdsFeature);
 
 bool IsEnabled();
-int GetMaximumAdsPerHour();
-int GetMaximumAdsPerDay();
-base::TimeDelta GetMinimumWaitTime();
 
-}  // namespace brave_ads::new_tab_page_ads::features
+constexpr base::FeatureParam<int> kMaximumAdsPerHour{&kAdsFeature,
+                                                     "maximum_ads_per_hour", 4};
+
+constexpr base::FeatureParam<int> kMaximumAdsPerDay{&kAdsFeature,
+                                                    "maximum_ads_per_day", 20};
+
+constexpr base::FeatureParam<base::TimeDelta> kMinimumWaitTime{
+    &kAdsFeature, "minimum_wait_time", base::Minutes(5)};
+
+}  // namespace brave_ads::new_tab_page_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_NEW_TAB_PAGE_AD_FEATURES_H_

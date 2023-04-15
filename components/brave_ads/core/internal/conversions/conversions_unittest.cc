@@ -42,18 +42,12 @@ class BatAdsConversionsTest : public UnitTestBase {
     UnitTestBase::SetUp();
 
     conversions_ = std::make_unique<Conversions>();
-    ad_events_database_table_ = std::make_unique<database::table::AdEvents>();
-    conversion_queue_database_table_ =
-        std::make_unique<database::table::ConversionQueue>();
-    conversions_database_table_ =
-        std::make_unique<database::table::Conversions>();
   }
 
   std::unique_ptr<Conversions> conversions_;
-  std::unique_ptr<database::table::AdEvents> ad_events_database_table_;
-  std::unique_ptr<database::table::ConversionQueue>
-      conversion_queue_database_table_;
-  std::unique_ptr<database::table::Conversions> conversions_database_table_;
+  database::table::AdEvents ad_events_database_table_;
+  database::table::ConversionQueue conversion_queue_database_table_;
+  database::table::Conversions conversions_database_table_;
 };
 
 TEST_F(BatAdsConversionsTest,
@@ -78,14 +72,16 @@ TEST_F(BatAdsConversionsTest,
   database::SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://www.foo.com/bar")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition,
       base::BindOnce([](const bool success, const AdEventList& ad_events) {
         ASSERT_TRUE(success);
@@ -115,14 +111,16 @@ TEST_F(BatAdsConversionsTest, ConvertViewedNotificationAdWhenAdsAreEnabled) {
   database::SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://www.foo.com/bar")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition, base::BindOnce(
                      [](const ConversionInfo& conversion, const bool success,
                         const AdEventList& ad_events) {
@@ -162,14 +160,16 @@ TEST_F(BatAdsConversionsTest,
   database::SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://www.foo.com/bar")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition,
       base::BindOnce([](const bool success, const AdEventList& ad_events) {
         ASSERT_TRUE(success);
@@ -202,14 +202,16 @@ TEST_F(BatAdsConversionsTest, ConvertClickedNotificationAdWhenAdsAreEnabled) {
   database::SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://www.foo.com/bar")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition, base::BindOnce(
                      [](const ConversionInfo& conversion, const bool success,
                         const AdEventList& ad_events) {
@@ -246,14 +248,16 @@ TEST_F(BatAdsConversionsTest,
   database::SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://www.foo.com/bar")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition,
       base::BindOnce([](const bool success, const AdEventList& ad_events) {
         ASSERT_TRUE(success);
@@ -283,14 +287,16 @@ TEST_F(BatAdsConversionsTest, ConvertViewedNewTabPageAdWhenAdsAreEnabled) {
   database::SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://www.foo.com/bar")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition, base::BindOnce(
                      [](const ConversionInfo& conversion, const bool success,
                         const AdEventList& ad_events) {
@@ -330,14 +336,16 @@ TEST_F(BatAdsConversionsTest,
   database::SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://www.foo.com/bar")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition,
       base::BindOnce([](const bool success, const AdEventList& ad_events) {
         ASSERT_TRUE(success);
@@ -370,14 +378,16 @@ TEST_F(BatAdsConversionsTest, ConvertClickedNewTabPageAdWhenAdsAreEnabled) {
   database::SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://www.foo.com/bar")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition, base::BindOnce(
                      [](const ConversionInfo& conversion, const bool success,
                         const AdEventList& ad_events) {
@@ -415,14 +425,16 @@ TEST_F(BatAdsConversionsTest,
   database::SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://www.foo.com/bar")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition,
       base::BindOnce([](const bool success, const AdEventList& ad_events) {
         ASSERT_TRUE(success);
@@ -453,14 +465,16 @@ TEST_F(BatAdsConversionsTest, ConvertViewedPromotedContentAdWhenAdsAreEnabled) {
   database::SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://www.foo.com/bar")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition, base::BindOnce(
                      [](const ConversionInfo& conversion, const bool success,
                         const AdEventList& ad_events) {
@@ -502,14 +516,16 @@ TEST_F(BatAdsConversionsTest,
   database::SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://www.foo.com/bar")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition,
       base::BindOnce([](const bool success, const AdEventList& ad_events) {
         ASSERT_TRUE(success);
@@ -545,14 +561,16 @@ TEST_F(BatAdsConversionsTest,
   database::SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://www.foo.com/bar")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition, base::BindOnce(
                      [](const ConversionInfo& conversion, const bool success,
                         const AdEventList& ad_events) {
@@ -589,14 +607,16 @@ TEST_F(BatAdsConversionsTest,
   database::SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://www.foo.com/bar")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition,
       base::BindOnce([](const bool success, const AdEventList& ad_events) {
         ASSERT_TRUE(success);
@@ -627,14 +647,16 @@ TEST_F(BatAdsConversionsTest,
   database::SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://www.foo.com/bar")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition,
       base::BindOnce([](const bool success, const AdEventList& ad_events) {
         ASSERT_TRUE(success);
@@ -667,14 +689,16 @@ TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreDisabled) {
   database::SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({GURL("https://www.foo.com/bar/baz")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://www.foo.com/bar/baz")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition, base::BindOnce(
                      [](const ConversionInfo& conversion, const bool success,
                         const AdEventList& ad_events) {
@@ -713,14 +737,16 @@ TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreEnabled) {
   database::SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({GURL("https://www.foo.com/bar/baz")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://www.foo.com/bar/baz")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition, base::BindOnce(
                      [](const ConversionInfo& conversion, const bool success,
                         const AdEventList& ad_events) {
@@ -757,14 +783,16 @@ TEST_F(BatAdsConversionsTest,
   database::SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://www.foo.com/bar")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition,
       base::BindOnce([](const bool success, const AdEventList& ad_events) {
         ASSERT_TRUE(success);
@@ -794,14 +822,16 @@ TEST_F(BatAdsConversionsTest, ConvertViewedSearchResultAdWhenAdsAreEnabled) {
   database::SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://www.foo.com/bar")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition, base::BindOnce(
                      [](const ConversionInfo& conversion, const bool success,
                         const AdEventList& ad_events) {
@@ -841,14 +871,16 @@ TEST_F(BatAdsConversionsTest,
   database::SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://www.foo.com/bar")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition,
       base::BindOnce([](const bool success, const AdEventList& ad_events) {
         ASSERT_TRUE(success);
@@ -881,14 +913,16 @@ TEST_F(BatAdsConversionsTest, ConvertClickedSearchResultAdWhenAdsAreEnabled) {
   database::SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://www.foo.com/bar")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition, base::BindOnce(
                      [](const ConversionInfo& conversion, const bool success,
                         const AdEventList& ad_events) {
@@ -928,25 +962,29 @@ TEST_F(BatAdsConversionsTest, ConvertMultipleAds) {
   database::SaveConversions(conversions);
 
   const AdEventInfo ad_event_1 =
-      BuildAdEvent("7ee858e8-6306-4317-88c3-9e7d58afad26",
+      BuildAdEvent(/*placement_id*/ "7ee858e8-6306-4317-88c3-9e7d58afad26",
                    conversion_1.creative_set_id, ConfirmationType::kViewed);
   FireAdEvent(ad_event_1);
 
   AdvanceClockBy(base::Minutes(1));
 
   const AdEventInfo ad_event_2 =
-      BuildAdEvent("da2d3397-bc97-46d1-a323-d8723c0a6b33",
+      BuildAdEvent(/*placement_id*/ "da2d3397-bc97-46d1-a323-d8723c0a6b33",
                    conversion_2.creative_set_id, ConfirmationType::kViewed);
   FireAdEvent(ad_event_2);
   const AdEventInfo ad_event_3 =
-      BuildAdEvent("da2d3397-bc97-46d1-a323-d8723c0a6b33",
+      BuildAdEvent(/*placement_id*/ "da2d3397-bc97-46d1-a323-d8723c0a6b33",
                    conversion_2.creative_set_id, ConfirmationType::kClicked);
   FireAdEvent(ad_event_3);
 
   // Act
-  conversions_->MaybeConvert({GURL("https://www.foo.com/qux")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://www.foo.com/qux")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
-  conversions_->MaybeConvert({GURL("https://www.foo.com/bar/baz")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://www.foo.com/bar/baz")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
@@ -955,7 +993,7 @@ TEST_F(BatAdsConversionsTest, ConvertMultipleAds) {
       conversion_1.creative_set_id.c_str(),
       conversion_2.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition,
       base::BindOnce(
           [](const ConversionList& conversions, const bool success,
@@ -997,14 +1035,16 @@ TEST_F(BatAdsConversionsTest, ConvertViewedAdWhenAdWasDismissed) {
   FireAdEvent(ad_event_2);
 
   // Act
-  conversions_->MaybeConvert({GURL("https://www.foo.com/quxbarbaz")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://www.foo.com/quxbarbaz")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition, base::BindOnce(
                      [](const ConversionInfo& conversion, const bool success,
                         const AdEventList& ad_events) {
@@ -1056,14 +1096,16 @@ TEST_F(BatAdsConversionsTest, DoNotConvertNonViewedOrClickedAds) {
   FireAdEvent(ad_event_7);
 
   // Act
-  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://www.foo.com/bar")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition,
       base::BindOnce([](const bool success, const AdEventList& ad_events) {
         ASSERT_TRUE(success);
@@ -1091,14 +1133,16 @@ TEST_F(BatAdsConversionsTest, DoNotConvertViewedAdForPostClick) {
   FireAdEvent(ad_event);
 
   // Act
-  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://www.foo.com/bar")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition,
       base::BindOnce([](const bool success, const AdEventList& ad_events) {
         ASSERT_TRUE(success);
@@ -1116,14 +1160,16 @@ TEST_F(BatAdsConversionsTest, DoNotConvertAdIfConversionDoesNotExist) {
   FireAdEvent(ad_event);
 
   // Act
-  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://www.foo.com/bar")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition =
       "creative_set_id = 'foobar' AND "
       "confirmation_type = 'conversion'";
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition,
       base::BindOnce([](const bool success, const AdEventList& ad_events) {
         ASSERT_TRUE(success);
@@ -1151,17 +1197,21 @@ TEST_F(BatAdsConversionsTest,
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
   FireAdEvent(ad_event);
 
-  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://www.foo.com/bar")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
   // Act
-  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://www.foo.com/bar")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition, base::BindOnce(
                      [](const ConversionInfo& conversion, const bool success,
                         const AdEventList& ad_events) {
@@ -1196,14 +1246,16 @@ TEST_F(BatAdsConversionsTest,
   FireAdEvent(ad_event);
 
   // Act
-  conversions_->MaybeConvert({GURL("https://www.foo.com/qux")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://www.foo.com/qux")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition,
       base::BindOnce([](const bool success, const AdEventList& ad_events) {
         ASSERT_TRUE(success);
@@ -1230,17 +1282,19 @@ TEST_F(BatAdsConversionsTest, ConvertAdWhenTheConversionIsOnTheCuspOfExpiring) {
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
   FireAdEvent(ad_event);
 
-  AdvanceClockBy(base::Days(3) - base::Seconds(1));
+  AdvanceClockBy(base::Days(3) - base::Milliseconds(1));
 
   // Act
-  conversions_->MaybeConvert({GURL("https://foo.bar.com/qux")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://foo.bar.com/qux")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition, base::BindOnce(
                      [](const ConversionInfo& conversion, const bool success,
                         const AdEventList& ad_events) {
@@ -1276,14 +1330,16 @@ TEST_F(BatAdsConversionsTest, DoNotConvertAdWhenTheConversionHasExpired) {
   AdvanceClockBy(base::Days(3));
 
   // Act
-  conversions_->MaybeConvert({GURL("https://www.foo.com/bar/qux")}, {}, {});
+  conversions_->MaybeConvert(
+      /*redirect_chain*/ {GURL("https://www.foo.com/bar/qux")}, /*html*/ {},
+      /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition,
       base::BindOnce([](const bool success, const AdEventList& ad_events) {
         ASSERT_TRUE(success);
@@ -1312,16 +1368,17 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainIntermediateUrl) {
 
   // Act
   conversions_->MaybeConvert(
-      {GURL("https://foo.com/bar"), GURL("https://foo.com/baz"),
-       GURL("https://foo.com/qux")},
-      {}, {});
+      /*redirect_chain*/ {GURL("https://foo.com/bar"),
+                          GURL("https://foo.com/baz"),
+                          GURL("https://foo.com/qux")},
+      /*html*/ {}, /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition, base::BindOnce(
                      [](const ConversionInfo& conversion, const bool success,
                         const AdEventList& ad_events) {
@@ -1356,16 +1413,17 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainOriginalUrl) {
 
   // Act
   conversions_->MaybeConvert(
-      {GURL("https://foo.com/bar"), GURL("https://foo.com/baz"),
-       GURL("https://foo.com/qux")},
-      {}, {});
+      /*redirect_chain*/ {GURL("https://foo.com/bar"),
+                          GURL("https://foo.com/baz"),
+                          GURL("https://foo.com/qux")},
+      /*html*/ {}, /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition, base::BindOnce(
                      [](const ConversionInfo& conversion, const bool success,
                         const AdEventList& ad_events) {
@@ -1400,16 +1458,17 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainUrl) {
 
   // Act
   conversions_->MaybeConvert(
-      {GURL("https://foo.com/bar"), GURL("https://foo.com/baz"),
-       GURL("https://foo.com/qux")},
-      {}, {});
+      /*redirect_chain*/ {GURL("https://foo.com/bar"),
+                          GURL("https://foo.com/baz"),
+                          GURL("https://foo.com/qux")},
+      /*html*/ {}, /*conversion_id_patterns*/ {});
 
   // Assert
   const std::string condition = base::StringPrintf(
       "creative_set_id = '%s' AND confirmation_type = 'conversion'",
       conversion.creative_set_id.c_str());
 
-  ad_events_database_table_->GetIf(
+  ad_events_database_table_.GetIf(
       condition, base::BindOnce(
                      [](const ConversionInfo& conversion, const bool success,
                         const AdEventList& ad_events) {
@@ -1454,7 +1513,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionId) {
       resource.get()->id_patterns);
 
   // Assert
-  conversion_queue_database_table_->GetAll(base::BindOnce(
+  conversion_queue_database_table_.GetAll(base::BindOnce(
       [](const ConversionInfo& conversion, const bool success,
          const ConversionQueueItemList& conversion_queue_items) {
         ASSERT_TRUE(success);
@@ -1505,7 +1564,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromHtml) {
       resource.get()->id_patterns);
 
   // Assert
-  conversion_queue_database_table_->GetAll(base::BindOnce(
+  conversion_queue_database_table_.GetAll(base::BindOnce(
       [](const ConversionInfo& conversion, const bool success,
          const ConversionQueueItemList& conversion_queue_items) {
         ASSERT_TRUE(success);
@@ -1557,7 +1616,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromUrl) {
       resource.get()->id_patterns);
 
   // Assert
-  conversion_queue_database_table_->GetAll(base::BindOnce(
+  conversion_queue_database_table_.GetAll(base::BindOnce(
       [](const ConversionInfo& conversion, const bool success,
          const ConversionQueueItemList& conversion_queue_items) {
         ASSERT_TRUE(success);

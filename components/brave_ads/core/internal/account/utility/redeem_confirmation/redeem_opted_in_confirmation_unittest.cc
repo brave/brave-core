@@ -32,12 +32,9 @@ class BatAdsRedeemOptedInConfirmationTest : public UnitTestBase {
     AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
   }
 
-  std::unique_ptr<RedeemConfirmationDelegateMock>
-      redeem_confirmation_delegate_mock_ =
-          std::make_unique<NiceMock<RedeemConfirmationDelegateMock>>();
+  NiceMock<RedeemConfirmationDelegateMock> redeem_confirmation_delegate_mock_;
   base::WeakPtrFactory<RedeemConfirmationDelegateMock>
-      confirmation_delegate_weak_factory_{
-          redeem_confirmation_delegate_mock_.get()};
+      confirmation_delegate_weak_factory_{&redeem_confirmation_delegate_mock_};
 };
 
 TEST_F(BatAdsRedeemOptedInConfirmationTest, Redeem) {
@@ -54,7 +51,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest, Redeem) {
        "JmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TW"
        "GpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3"
        "Zz09In0=",
-       {{net::HTTP_CREATED, R"(
+       {{net::HTTP_CREATED, /*response_body*/ R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
@@ -65,7 +62,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest, Redeem) {
           )"}}},
       {// Fetch payment token request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken",
-       {{net::HTTP_OK, R"(
+       {{net::HTTP_OK, /*response_body*/ R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
@@ -85,7 +82,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest, Redeem) {
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -94,14 +91,14 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest, Redeem) {
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedInConfirmation(expected_confirmation, _));
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedOutConfirmation(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnFailedToRedeemConfirmation(_, _, _))
       .Times(0);
 
@@ -113,21 +110,21 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest, Redeem) {
 
 TEST_F(BatAdsRedeemOptedInConfirmationTest, RetryRedeemingIfNoIssuers) {
   // Arrange
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
 
   // Act
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedInConfirmation(_, _))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedOutConfirmation(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnFailedToRedeemConfirmation(*confirmation,
                                            /*should_retry*/ true,
                                            /*should_backoff*/ true));
@@ -144,7 +141,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   const URLResponseMap url_responses = {
       {// Fetch payment token request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken",
-       {{net::HTTP_OK, R"(
+       {{net::HTTP_OK, /*response_body*/ R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
@@ -164,7 +161,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -174,14 +171,14 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   expected_confirmation.was_created = true;
 
   // Act
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedInConfirmation(expected_confirmation, _));
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedOutConfirmation(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnFailedToRedeemConfirmation(_, _, _))
       .Times(0);
 
@@ -206,29 +203,29 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
        "JmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TW"
        "GpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3"
        "Zz09In0=",
-       {{net::HTTP_OK, {}}}},
+       {{net::HTTP_OK, /*response_body*/ {}}}},
       {// Fetch payment token request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken",
-       {{net::HTTP_NOT_FOUND, {}}}}};
+       {{net::HTTP_NOT_FOUND, /*response_body*/ {}}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
 
   // Act
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedInConfirmation(_, _))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedOutConfirmation(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnFailedToRedeemConfirmation(*confirmation,
                                            /*should_retry*/ true,
                                            /*should_backoff*/ false));
@@ -254,15 +251,15 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
        "JmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TW"
        "GpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3"
        "Zz09In0=",
-       {{net::HTTP_OK, {}}}},
+       {{net::HTTP_OK, /*response_body*/ {}}}},
       {// Fetch payment token request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken",
-       {{net::HTTP_BAD_REQUEST, {}}}}};
+       {{net::HTTP_BAD_REQUEST, /*response_body*/ {}}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -271,15 +268,15 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedInConfirmation(_, _))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedOutConfirmation(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false,
                                            /*should_backoff*/ false));
@@ -305,15 +302,15 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
        "JmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TW"
        "GpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3"
        "Zz09In0=",
-       {{net::HTTP_OK, {}}}},
+       {{net::HTTP_OK, /*response_body*/ {}}}},
       {// Fetch payment token request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken",
-       {{net::HTTP_ACCEPTED, {}}}}};
+       {{net::HTTP_ACCEPTED, /*response_body*/ {}}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -322,15 +319,15 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedInConfirmation(_, _))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedOutConfirmation(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ true,
                                            /*should_backoff*/ false));
@@ -356,15 +353,15 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
        "JmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TW"
        "GpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3"
        "Zz09In0=",
-       {{net::HTTP_OK, {}}}},
+       {{net::HTTP_OK, /*response_body*/ {}}}},
       {// Fetch payment token request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken",
-       {{net::HTTP_INTERNAL_SERVER_ERROR, {}}}}};
+       {{net::HTTP_INTERNAL_SERVER_ERROR, /*response_body*/ {}}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -373,15 +370,15 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedInConfirmation(_, _))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedOutConfirmation(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ true,
                                            /*should_backoff*/ true));
@@ -407,7 +404,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
        "JmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TW"
        "GpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3"
        "Zz09In0=",
-       {{net::HTTP_CREATED, R"(
+       {{net::HTTP_CREATED, /*response_body*/ R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
@@ -418,26 +415,26 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
           )"}}},
       {// Fetch payment token request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken",
-       {{net::HTTP_OK, "INVALID_JSON"}}}};
+       {{net::HTTP_OK, /*response_body*/ "INVALID_JSON"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
 
   // Act
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedInConfirmation(_, _))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedOutConfirmation(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnFailedToRedeemConfirmation(_,
                                            /*should_retry*/ true,
                                            /*should_backoff*/ true));
@@ -463,7 +460,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
        "JmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TW"
        "GpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3"
        "Zz09In0=",
-       {{net::HTTP_CREATED, R"(
+       {{net::HTTP_CREATED, /*response_body*/ R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
@@ -474,7 +471,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
           )"}}},
       {// Fetch payment token request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken",
-       {{net::HTTP_OK, R"(
+       {{net::HTTP_OK, /*response_body*/ R"(
             {
               "createdAt" : "2020-04-20T10:27:11.717Z",
               "type" : "view",
@@ -493,7 +490,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -502,15 +499,15 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedInConfirmation(_, _))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedOutConfirmation(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false,
                                            /*should_backoff*/ false));
@@ -536,7 +533,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
        "JmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TW"
        "GpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3"
        "Zz09In0=",
-       {{net::HTTP_CREATED, R"(
+       {{net::HTTP_CREATED, /*response_body*/ R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
@@ -547,7 +544,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
           )"}}},
       {// Fetch payment token request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken",
-       {{net::HTTP_OK, R"(
+       {{net::HTTP_OK, /*response_body*/ R"(
             {
               "id" : "393abadc-e9ae-4aac-a321-3307e0d527c6",
               "createdAt" : "2020-04-20T10:27:11.717Z",
@@ -567,7 +564,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -576,15 +573,15 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedInConfirmation(_, _))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedOutConfirmation(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false,
                                            /*should_backoff*/ false));
@@ -610,7 +607,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
        "JmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TW"
        "GpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3"
        "Zz09In0=",
-       {{net::HTTP_CREATED, R"(
+       {{net::HTTP_CREATED, /*response_body*/ R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
@@ -621,7 +618,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
           )"}}},
       {// Fetch payment token request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken",
-       {{net::HTTP_OK, R"(
+       {{net::HTTP_OK, /*response_body*/ R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
@@ -634,7 +631,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -643,15 +640,15 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedInConfirmation(_, _))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedOutConfirmation(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false,
                                            /*should_backoff*/ false));
@@ -677,7 +674,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
        "JmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TW"
        "GpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3"
        "Zz09In0=",
-       {{net::HTTP_CREATED, R"(
+       {{net::HTTP_CREATED, /*response_body*/ R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
@@ -688,7 +685,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
           )"}}},
       {// Fetch payment token request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken",
-       {{net::HTTP_OK, R"(
+       {{net::HTTP_OK, /*response_body*/ R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
@@ -707,7 +704,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -716,15 +713,15 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedInConfirmation(_, _))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedOutConfirmation(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false,
                                            /*should_backoff*/ false));
@@ -750,7 +747,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
        "JmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TW"
        "GpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3"
        "Zz09In0=",
-       {{net::HTTP_CREATED, R"(
+       {{net::HTTP_CREATED, /*response_body*/ R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
@@ -761,7 +758,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
           )"}}},
       {// Fetch payment token request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken",
-       {{net::HTTP_OK, R"(
+       {{net::HTTP_OK, /*response_body*/ R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
@@ -781,7 +778,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -790,15 +787,15 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedInConfirmation(_, _))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedOutConfirmation(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false,
                                            /*should_backoff*/ false));
@@ -824,7 +821,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
        "JmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TW"
        "GpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3"
        "Zz09In0=",
-       {{net::HTTP_CREATED, R"(
+       {{net::HTTP_CREATED, /*response_body*/ R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
@@ -835,7 +832,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
           )"}}},
       {// Fetch payment token request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken",
-       {{net::HTTP_OK, R"(
+       {{net::HTTP_OK, /*response_body*/ R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
@@ -854,7 +851,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -863,15 +860,15 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedInConfirmation(_, _))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedOutConfirmation(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ true,
                                            /*should_backoff*/ true));
@@ -897,7 +894,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
        "JmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TW"
        "GpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3"
        "Zz09In0=",
-       {{net::HTTP_CREATED, R"(
+       {{net::HTTP_CREATED, /*response_body*/ R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
@@ -908,7 +905,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
           )"}}},
       {// Fetch payment token request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken",
-       {{net::HTTP_OK, R"(
+       {{net::HTTP_OK, /*response_body*/ R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
@@ -927,7 +924,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -936,15 +933,15 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedInConfirmation(_, _))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedOutConfirmation(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false,
                                            /*should_backoff*/ false));
@@ -970,7 +967,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
        "JmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TW"
        "GpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3"
        "Zz09In0=",
-       {{net::HTTP_CREATED, R"(
+       {{net::HTTP_CREATED, /*response_body*/ R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
@@ -981,7 +978,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
           )"}}},
       {// Fetch payment token request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken",
-       {{net::HTTP_OK, R"(
+       {{net::HTTP_OK, /*response_body*/ R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
@@ -1001,7 +998,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -1010,15 +1007,15 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedInConfirmation(_, _))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedOutConfirmation(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false,
                                            /*should_backoff*/ false));
@@ -1044,7 +1041,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
        "JmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TW"
        "GpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3"
        "Zz09In0=",
-       {{net::HTTP_CREATED, R"(
+       {{net::HTTP_CREATED, /*response_body*/ R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
@@ -1055,7 +1052,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
           )"}}},
       {// Fetch payment token request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken",
-       {{net::HTTP_OK, R"(
+       {{net::HTTP_OK, /*response_body*/ R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
@@ -1072,7 +1069,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -1081,15 +1078,15 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedInConfirmation(_, _))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedOutConfirmation(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false,
                                            /*should_backoff*/ false));
@@ -1115,7 +1112,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
        "JmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TW"
        "GpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3"
        "Zz09In0=",
-       {{net::HTTP_CREATED, R"(
+       {{net::HTTP_CREATED, /*response_body*/ R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
@@ -1126,7 +1123,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
           )"}}},
       {// Fetch payment token request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken",
-       {{net::HTTP_OK, R"(
+       {{net::HTTP_OK, /*response_body*/ R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
@@ -1143,7 +1140,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -1152,15 +1149,15 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedInConfirmation(_, _))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedOutConfirmation(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false,
                                            /*should_backoff*/ false));
@@ -1197,7 +1194,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
           )"}}},
       {// Fetch payment token request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken",
-       {{net::HTTP_OK, R"(
+       {{net::HTTP_OK, /*response_body*/ R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
@@ -1217,7 +1214,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -1226,15 +1223,15 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedInConfirmation(_, _))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnDidRedeemOptedOutConfirmation(_))
       .Times(0);
 
-  EXPECT_CALL(*redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(redeem_confirmation_delegate_mock_,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false,
                                            /*should_backoff*/ false));

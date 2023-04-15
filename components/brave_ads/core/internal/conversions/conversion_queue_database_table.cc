@@ -74,16 +74,18 @@ ConversionQueueItemInfo GetFromRecord(mojom::DBRecordInfo* record) {
 }
 
 void OnGetAll(GetConversionQueueCallback callback,
-              mojom::DBCommandResponseInfoPtr response) {
-  if (!response || response->status !=
-                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+              mojom::DBCommandResponseInfoPtr command_response) {
+  if (!command_response ||
+      command_response->status !=
+          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get conversion queue");
-    return std::move(callback).Run(/*success*/ false, {});
+    return std::move(callback).Run(/*success*/ false,
+                                   /*conversions_queue_items*/ {});
   }
 
   ConversionQueueItemList conversion_queue_items;
 
-  for (const auto& record : response->result->get_records()) {
+  for (const auto& record : command_response->result->get_records()) {
     const ConversionQueueItemInfo conversion_queue_item =
         GetFromRecord(record.get());
     conversion_queue_items.push_back(conversion_queue_item);
@@ -95,16 +97,18 @@ void OnGetAll(GetConversionQueueCallback callback,
 void OnGetForCreativeInstanceId(
     const std::string& creative_instance_id,
     GetConversionQueueForCreativeInstanceIdCallback callback,
-    mojom::DBCommandResponseInfoPtr response) {
-  if (!response || response->status !=
-                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+    mojom::DBCommandResponseInfoPtr command_response) {
+  if (!command_response ||
+      command_response->status !=
+          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get conversion queue");
-    return std::move(callback).Run(/*success*/ false, creative_instance_id, {});
+    return std::move(callback).Run(/*success*/ false, creative_instance_id,
+                                   /*conversion_queue_items*/ {});
   }
 
   ConversionQueueItemList conversion_queue_items;
 
-  for (const auto& record : response->result->get_records()) {
+  for (const auto& record : command_response->result->get_records()) {
     const ConversionQueueItemInfo conversion_queue_item =
         GetFromRecord(record.get());
     conversion_queue_items.push_back(conversion_queue_item);
@@ -435,7 +439,8 @@ void ConversionQueue::GetForCreativeInstanceId(
     const std::string& creative_instance_id,
     GetConversionQueueForCreativeInstanceIdCallback callback) const {
   if (creative_instance_id.empty()) {
-    return std::move(callback).Run(/*success*/ false, creative_instance_id, {});
+    return std::move(callback).Run(/*success*/ false, creative_instance_id,
+                                   /*conversion_queue_items*/ {});
   }
 
   const std::string query = base::StringPrintf(
@@ -547,7 +552,8 @@ std::string ConversionQueue::BuildInsertOrUpdateQuery(
     const ConversionQueueItemList& conversion_queue_items) const {
   DCHECK(command);
 
-  const int count = BindParameters(command, conversion_queue_items);
+  const int binded_parameters_count =
+      BindParameters(command, conversion_queue_items);
 
   return base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
@@ -562,7 +568,9 @@ std::string ConversionQueue::BuildInsertOrUpdateQuery(
       "timestamp, "
       "was_processed) VALUES %s",
       GetTableName().c_str(),
-      BuildBindingParameterPlaceholders(10, count).c_str());
+      BuildBindingParameterPlaceholders(/*parameters_count*/ 10,
+                                        binded_parameters_count)
+          .c_str());
 }
 
 }  // namespace brave_ads::database::table

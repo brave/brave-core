@@ -15,10 +15,9 @@ TEST(BatAdsPageTransitionUtilTest, IsNewNavigation) {
   // Arrange
 
   // Act
-  const bool did_transition_page = IsNewNavigation(kPageTransitionTyped);
 
   // Assert
-  EXPECT_TRUE(did_transition_page);
+  EXPECT_TRUE(IsNewNavigation(kPageTransitionTyped));
 }
 
 TEST(BatAdsPageTransitionUtilTest,
@@ -26,77 +25,68 @@ TEST(BatAdsPageTransitionUtilTest,
   // Arrange
 
   // Act
-  const bool did_transition_page =
-      DidUseBackOrFowardButtonToTriggerNavigation(kPageTransitionForwardBack);
 
   // Assert
-  EXPECT_TRUE(did_transition_page);
+  EXPECT_TRUE(
+      DidUseBackOrFowardButtonToTriggerNavigation(kPageTransitionForwardBack));
 }
 
 TEST(BatAdsPageTransitionUtilTest, DidUseAddressBarToTriggerNavigation) {
   // Arrange
 
   // Act
-  const bool did_transition_page =
-      DidUseAddressBarToTriggerNavigation(kPageTransitionFromAddressBar);
 
   // Assert
-  EXPECT_TRUE(did_transition_page);
+  EXPECT_TRUE(
+      DidUseAddressBarToTriggerNavigation(kPageTransitionFromAddressBar));
 }
 
 TEST(BatAdsPageTransitionUtilTest, DidNavigateToHomePage) {
   // Arrange
 
   // Act
-  const bool did_transition_page =
-      DidNavigateToHomePage(kPageTransitionHomePage);
 
   // Assert
-  EXPECT_TRUE(did_transition_page);
+  EXPECT_TRUE(DidNavigateToHomePage(kPageTransitionHomePage));
 }
 
 TEST(BatAdsPageTransitionUtilTest, DidTransitionFromExternalApplication) {
   // Arrange
 
   // Act
-  const bool did_transition_page =
-      DidTransitionFromExternalApplication(kPageTransitionFromAPI);
 
   // Assert
-  EXPECT_TRUE(did_transition_page);
+  EXPECT_TRUE(DidTransitionFromExternalApplication(kPageTransitionFromAPI));
 }
 
 TEST(BatAdsPageTransitionUtilTest, ToUserActivityClickedLinkEventType) {
   // Arrange
 
   // Act
-  const absl::optional<UserActivityEventType> event_type =
-      ToUserActivityEventType(kPageTransitionLink);
 
   // Assert
-  EXPECT_EQ(UserActivityEventType::kClickedLink, event_type);
+  EXPECT_EQ(UserActivityEventType::kClickedLink,
+            ToUserActivityEventType(kPageTransitionLink));
 }
 
 TEST(BatAdsPageTransitionUtilTest, ToUserActivityTypedUrlEventType) {
   // Arrange
 
   // Act
-  const absl::optional<UserActivityEventType> event_type =
-      ToUserActivityEventType(kPageTransitionTyped);
 
   // Assert
-  EXPECT_EQ(UserActivityEventType::kTypedUrl, event_type);
+  EXPECT_EQ(UserActivityEventType::kTypedUrl,
+            ToUserActivityEventType(kPageTransitionTyped));
 }
 
 TEST(BatAdsPageTransitionUtilTest, ToUserActivityClickedBookmarkEventType) {
   // Arrange
 
   // Act
-  const absl::optional<UserActivityEventType> event_type =
-      ToUserActivityEventType(kPageTransitionAutoBookmark);
 
   // Assert
-  EXPECT_EQ(UserActivityEventType::kClickedBookmark, event_type);
+  EXPECT_EQ(UserActivityEventType::kClickedBookmark,
+            ToUserActivityEventType(kPageTransitionAutoBookmark));
 }
 
 TEST(BatAdsPageTransitionUtilTest,
@@ -104,33 +94,30 @@ TEST(BatAdsPageTransitionUtilTest,
   // Arrange
 
   // Act
-  const absl::optional<UserActivityEventType> event_type =
-      ToUserActivityEventType(kPageTransitionGenerated);
 
   // Assert
-  EXPECT_EQ(UserActivityEventType::kTypedAndSelectedNonUrl, event_type);
+  EXPECT_EQ(UserActivityEventType::kTypedAndSelectedNonUrl,
+            ToUserActivityEventType(kPageTransitionGenerated));
 }
 
 TEST(BatAdsPageTransitionUtilTest, ToUserActivitySubmittedFormEventType) {
   // Arrange
 
   // Act
-  const absl::optional<UserActivityEventType> event_type =
-      ToUserActivityEventType(kPageTransitionFormSubmit);
 
   // Assert
-  EXPECT_EQ(UserActivityEventType::kSubmittedForm, event_type);
+  EXPECT_EQ(UserActivityEventType::kSubmittedForm,
+            ToUserActivityEventType(kPageTransitionFormSubmit));
 }
 
 TEST(BatAdsPageTransitionUtilTest, ToUserActivityClickedReloadButtonEventType) {
   // Arrange
 
   // Act
-  const absl::optional<UserActivityEventType> event_type =
-      ToUserActivityEventType(kPageTransitionReload);
 
   // Assert
-  EXPECT_EQ(UserActivityEventType::kClickedReloadButton, event_type);
+  EXPECT_EQ(UserActivityEventType::kClickedReloadButton,
+            ToUserActivityEventType(kPageTransitionReload));
 }
 
 TEST(BatAdsPageTransitionUtilTest,
@@ -138,23 +125,20 @@ TEST(BatAdsPageTransitionUtilTest,
   // Arrange
 
   // Act
-  const absl::optional<UserActivityEventType> event_type =
-      ToUserActivityEventType(kPageTransitionKeyword);
 
   // Assert
   EXPECT_EQ(UserActivityEventType::kTypedKeywordOtherThanDefaultSearchProvider,
-            event_type);
+            ToUserActivityEventType(kPageTransitionKeyword));
 }
 
 TEST(BatAdsPageTransitionUtilTest, ToUserActivityGeneratedKeywordEventType) {
   // Arrange
 
   // Act
-  const absl::optional<UserActivityEventType> event_type =
-      ToUserActivityEventType(kPageTransitionKeywordGenerated);
 
   // Assert
-  EXPECT_EQ(UserActivityEventType::kGeneratedKeyword, event_type);
+  EXPECT_EQ(UserActivityEventType::kGeneratedKeyword,
+            ToUserActivityEventType(kPageTransitionKeywordGenerated));
 }
 
 }  // namespace brave_ads

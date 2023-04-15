@@ -12,13 +12,13 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace brave_ads::targeting::features {
+namespace brave_ads::targeting {
 
-TEST(BatAdsEpsilonGreedyBanditFeaturesTest, IsEpsilonGreedyBanditEnabled) {
+TEST(BatAdsEpsilonGreedyBanditFeaturesTest, IsEnabled) {
   // Arrange
   base::FieldTrialParams params;
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kEpsilonGreedyBandit, params);
+  enabled_features.emplace_back(kEpsilonGreedyBanditFeatures, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -32,7 +32,7 @@ TEST(BatAdsEpsilonGreedyBanditFeaturesTest, IsEpsilonGreedyBanditEnabled) {
   EXPECT_TRUE(IsEpsilonGreedyBanditEnabled());
 }
 
-TEST(BatAdsEpsilonGreedyBanditFeaturesTest, IsEpsilonGreedyBanditDisabled) {
+TEST(BatAdsEpsilonGreedyBanditFeaturesTest, IsDisabled) {
   // Arrange
 
   // Act
@@ -47,7 +47,7 @@ TEST(BatAdsEpsilonGreedyBanditFeaturesTest,
   base::FieldTrialParams params;
   params["epsilon_value"] = "0.33";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kEpsilonGreedyBandit, params);
+  enabled_features.emplace_back(kEpsilonGreedyBanditFeatures, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -58,7 +58,7 @@ TEST(BatAdsEpsilonGreedyBanditFeaturesTest,
   // Act
 
   // Assert
-  EXPECT_EQ(0.33, GetEpsilonGreedyBanditEpsilonValue());
+  EXPECT_EQ(0.33, kEpsilonGreedyBanditEpsilonValue.Get());
 }
 
 TEST(BatAdsEpsilonGreedyBanditFeaturesTest,
@@ -68,7 +68,7 @@ TEST(BatAdsEpsilonGreedyBanditFeaturesTest,
   // Act
 
   // Assert
-  EXPECT_EQ(0.25, GetEpsilonGreedyBanditEpsilonValue());
+  EXPECT_EQ(0.25, kEpsilonGreedyBanditEpsilonValue.Get());
 }
 
 TEST(BatAdsEpsilonGreedyBanditFeaturesTest,
@@ -77,7 +77,7 @@ TEST(BatAdsEpsilonGreedyBanditFeaturesTest,
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kEpsilonGreedyBandit);
+  disabled_features.emplace_back(kEpsilonGreedyBanditFeatures);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -86,7 +86,7 @@ TEST(BatAdsEpsilonGreedyBanditFeaturesTest,
   // Act
 
   // Assert
-  EXPECT_EQ(0.25, GetEpsilonGreedyBanditEpsilonValue());
+  EXPECT_EQ(0.25, kEpsilonGreedyBanditEpsilonValue.Get());
 }
 
-}  // namespace brave_ads::targeting::features
+}  // namespace brave_ads::targeting

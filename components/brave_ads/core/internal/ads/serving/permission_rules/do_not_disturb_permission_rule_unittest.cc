@@ -31,8 +31,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest,
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    const bool is_allowed = permission_rule.ShouldAllow();
-    EXPECT_FALSE(is_allowed);
+    EXPECT_FALSE(permission_rule.ShouldAllow());
   }
 
   {
@@ -41,8 +40,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest,
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    const bool is_allowed = permission_rule.ShouldAllow();
-    EXPECT_TRUE(is_allowed);
+    EXPECT_TRUE(permission_rule.ShouldAllow());
   }
 
   {
@@ -51,8 +49,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest,
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    const bool is_allowed = permission_rule.ShouldAllow();
-    EXPECT_TRUE(is_allowed);
+    EXPECT_TRUE(permission_rule.ShouldAllow());
   }
 
   {
@@ -61,8 +58,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest,
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    const bool is_allowed = permission_rule.ShouldAllow();
-    EXPECT_FALSE(is_allowed);
+    EXPECT_FALSE(permission_rule.ShouldAllow());
   }
 }
 
@@ -83,8 +79,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest,
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    const bool is_allowed = permission_rule.ShouldAllow();
-    EXPECT_TRUE(is_allowed);
+    EXPECT_TRUE(permission_rule.ShouldAllow());
   }
 
   {
@@ -93,8 +88,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest,
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    const bool is_allowed = permission_rule.ShouldAllow();
-    EXPECT_TRUE(is_allowed);
+    EXPECT_TRUE(permission_rule.ShouldAllow());
   }
 
   {
@@ -103,8 +97,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest,
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    const bool is_allowed = permission_rule.ShouldAllow();
-    EXPECT_TRUE(is_allowed);
+    EXPECT_TRUE(permission_rule.ShouldAllow());
   }
 
   {
@@ -113,8 +106,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest,
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    const bool is_allowed = permission_rule.ShouldAllow();
-    EXPECT_TRUE(is_allowed);
+    EXPECT_TRUE(permission_rule.ShouldAllow());
   }
 }
 
@@ -133,8 +125,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForIOS) {
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    const bool is_allowed = permission_rule.ShouldAllow();
-    EXPECT_TRUE(is_allowed);
+    EXPECT_TRUE(permission_rule.ShouldAllow());
   }
 
   {
@@ -143,8 +134,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForIOS) {
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    const bool is_allowed = permission_rule.ShouldAllow();
-    EXPECT_TRUE(is_allowed);
+    EXPECT_TRUE(permission_rule.ShouldAllow());
   }
 }
 
@@ -163,8 +153,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForMacOS) {
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    const bool is_allowed = permission_rule.ShouldAllow();
-    EXPECT_TRUE(is_allowed);
+    EXPECT_TRUE(permission_rule.ShouldAllow());
   }
 
   {
@@ -173,8 +162,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForMacOS) {
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    const bool is_allowed = permission_rule.ShouldAllow();
-    EXPECT_TRUE(is_allowed);
+    EXPECT_TRUE(permission_rule.ShouldAllow());
   }
 }
 
@@ -193,8 +181,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForWindows) {
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    const bool is_allowed = permission_rule.ShouldAllow();
-    EXPECT_TRUE(is_allowed);
+    EXPECT_TRUE(permission_rule.ShouldAllow());
   }
 
   {
@@ -203,8 +190,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForWindows) {
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    const bool is_allowed = permission_rule.ShouldAllow();
-    EXPECT_TRUE(is_allowed);
+    EXPECT_TRUE(permission_rule.ShouldAllow());
   }
 }
 
@@ -223,8 +209,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForLinux) {
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    const bool is_allowed = permission_rule.ShouldAllow();
-    EXPECT_TRUE(is_allowed);
+    EXPECT_TRUE(permission_rule.ShouldAllow());
   }
 
   {
@@ -233,8 +218,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForLinux) {
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    const bool is_allowed = permission_rule.ShouldAllow();
-    EXPECT_TRUE(is_allowed);
+    EXPECT_TRUE(permission_rule.ShouldAllow());
   }
 }
 

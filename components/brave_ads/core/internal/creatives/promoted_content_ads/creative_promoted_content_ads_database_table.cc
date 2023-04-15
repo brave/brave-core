@@ -35,7 +35,8 @@
 namespace brave_ads::database::table {
 
 using CreativePromotedContentAdMap =
-    std::map<std::string, CreativePromotedContentAdInfo>;
+    std::map</*creative_instance_id*/ std::string,
+             CreativePromotedContentAdInfo>;
 
 namespace {
 
@@ -99,12 +100,12 @@ CreativePromotedContentAdInfo GetFromRecord(mojom::DBRecordInfo* record) {
 }
 
 CreativePromotedContentAdMap GroupCreativeAdsFromResponse(
-    mojom::DBCommandResponseInfoPtr response) {
-  DCHECK(response);
+    mojom::DBCommandResponseInfoPtr command_response) {
+  DCHECK(command_response);
 
   CreativePromotedContentAdMap creative_ads;
 
-  for (const auto& record : response->result->get_records()) {
+  for (const auto& record : command_response->result->get_records()) {
     const CreativePromotedContentAdInfo creative_ad =
         GetFromRecord(record.get());
 
@@ -133,11 +134,11 @@ CreativePromotedContentAdMap GroupCreativeAdsFromResponse(
 }
 
 CreativePromotedContentAdList GetCreativeAdsFromResponse(
-    mojom::DBCommandResponseInfoPtr response) {
-  DCHECK(response);
+    mojom::DBCommandResponseInfoPtr command_response) {
+  DCHECK(command_response);
 
   const CreativePromotedContentAdMap grouped_creative_ads =
-      GroupCreativeAdsFromResponse(std::move(response));
+      GroupCreativeAdsFromResponse(std::move(command_response));
 
   CreativePromotedContentAdList creative_ads;
   for (const auto& [creative_instance_id, creative_ad] : grouped_creative_ads) {
@@ -147,21 +148,25 @@ CreativePromotedContentAdList GetCreativeAdsFromResponse(
   return creative_ads;
 }
 
-void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
-                                GetCreativePromotedContentAdCallback callback,
-                                mojom::DBCommandResponseInfoPtr response) {
-  if (!response || response->status !=
-                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+void OnGetForCreativeInstanceId(
+    const std::string& creative_instance_id,
+    GetCreativePromotedContentAdCallback callback,
+    mojom::DBCommandResponseInfoPtr command_response) {
+  if (!command_response ||
+      command_response->status !=
+          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative promoted content ad");
-    return std::move(callback).Run(/*success*/ false, creative_instance_id, {});
+    return std::move(callback).Run(/*success*/ false, creative_instance_id,
+                                   /*creative_ads*/ {});
   }
 
   const CreativePromotedContentAdList creative_ads =
-      GetCreativeAdsFromResponse(std::move(response));
+      GetCreativeAdsFromResponse(std::move(command_response));
 
   if (creative_ads.size() != 1) {
     BLOG(0, "Failed to get creative promoted content ad");
-    return std::move(callback).Run(/*success*/ false, creative_instance_id, {});
+    return std::move(callback).Run(/*success*/ false, creative_instance_id,
+                                   /*creative_ads*/ {});
   }
 
   const CreativePromotedContentAdInfo& creative_ad = creative_ads.front();
@@ -171,29 +176,33 @@ void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
 
 void OnGetForSegments(const SegmentList& segments,
                       GetCreativePromotedContentAdsCallback callback,
-                      mojom::DBCommandResponseInfoPtr response) {
-  if (!response || response->status !=
-                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+                      mojom::DBCommandResponseInfoPtr command_response) {
+  if (!command_response ||
+      command_response->status !=
+          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative promoted content ads");
-    return std::move(callback).Run(/*success*/ false, segments, {});
+    return std::move(callback).Run(/*success*/ false, segments,
+                                   /*creative_ads*/ {});
   }
 
   const CreativePromotedContentAdList creative_ads =
-      GetCreativeAdsFromResponse(std::move(response));
+      GetCreativeAdsFromResponse(std::move(command_response));
 
   std::move(callback).Run(/*success*/ true, segments, creative_ads);
 }
 
 void OnGetAll(GetCreativePromotedContentAdsCallback callback,
-              mojom::DBCommandResponseInfoPtr response) {
-  if (!response || response->status !=
-                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+              mojom::DBCommandResponseInfoPtr command_response) {
+  if (!command_response ||
+      command_response->status !=
+          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get all creative new tab page ads");
-    return std::move(callback).Run(/*success*/ false, {}, {});
+    return std::move(callback).Run(/*success*/ false, /*segments*/ {},
+                                   /*creative_ads*/ {});
   }
 
   const CreativePromotedContentAdList creative_ads =
-      GetCreativeAdsFromResponse(std::move(response));
+      GetCreativeAdsFromResponse(std::move(command_response));
 
   const SegmentList segments = GetSegments(creative_ads);
 
@@ -283,7 +292,8 @@ void CreativePromotedContentAds::GetForCreativeInstanceId(
     GetCreativePromotedContentAdCallback callback) const {
   if (creative_instance_id.empty()) {
     DCHECK(false) << "FOOBAR";
-    return std::move(callback).Run(/*success*/ false, creative_instance_id, {});
+    return std::move(callback).Run(/*success*/ false, creative_instance_id,
+                                   /*creative_ads*/ {});
   }
 
   const std::string query = base::StringPrintf(
@@ -370,7 +380,8 @@ void CreativePromotedContentAds::GetForSegments(
     const SegmentList& segments,
     GetCreativePromotedContentAdsCallback callback) const {
   if (segments.empty()) {
-    return std::move(callback).Run(/*success*/ true, segments, {});
+    return std::move(callback).Run(/*success*/ true, segments,
+                                   /*creative_ads*/ {});
   }
 
   const std::string query = base::StringPrintf(
@@ -584,7 +595,7 @@ std::string CreativePromotedContentAds::BuildInsertOrUpdateQuery(
     const CreativePromotedContentAdList& creative_ads) const {
   DCHECK(command);
 
-  const int count = BindParameters(command, creative_ads);
+  const int binded_parameters_count = BindParameters(command, creative_ads);
 
   return base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
@@ -594,7 +605,9 @@ std::string CreativePromotedContentAds::BuildInsertOrUpdateQuery(
       "title, "
       "description) VALUES %s",
       GetTableName().c_str(),
-      BuildBindingParameterPlaceholders(5, count).c_str());
+      BuildBindingParameterPlaceholders(/*parameters_count*/ 5,
+                                        binded_parameters_count)
+          .c_str());
 }
 
 }  // namespace brave_ads::database::table

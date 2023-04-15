@@ -8,31 +8,27 @@
 #include <string>
 #include <utility>
 
+#include "base/files/file.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
+#include "brave/components/brave_ads/core/internal/resources/resources_unittest_constants.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace brave_ads::resource {
-
-namespace {
-
-constexpr char kResourceFile[] = "wtpwsrqtjxmfdwaymauprezkunxprysm";
-constexpr char kInvalidJsonResourceFile[] =
-    "resources/wtpwsrqtjxmfdwaymauprezkunxprysm_invalid_json";
-constexpr char kNotExistantResourceFile[] =
-    "resources/wtpwsrqtjxmfdwaymauprezkunxprysm_not_existant";
-
-}  // namespace
+namespace brave_ads {
 
 using testing::_;
 using testing::Invoke;
 
+namespace {
+constexpr char kResourceId[] = "wtpwsrqtjxmfdwaymauprezkunxprysm";
+}  // namespace
+
 class BatAdsTextEmbeddingResourceTest : public UnitTestBase {};
 
-TEST_F(BatAdsTextEmbeddingResourceTest, Load) {
+TEST_F(BatAdsTextEmbeddingResourceTest, LoadResource) {
   // Arrange
-  TextEmbedding resource;
+  resource::TextEmbedding resource;
 
   // Act
   resource.Load();
@@ -42,47 +38,49 @@ TEST_F(BatAdsTextEmbeddingResourceTest, Load) {
   EXPECT_TRUE(resource.IsInitialized());
 }
 
-TEST_F(BatAdsTextEmbeddingResourceTest, LoadInvalidJsonResource) {
+TEST_F(BatAdsTextEmbeddingResourceTest, DoNotLoadInvalidResource) {
   // Arrange
-  CopyFileFromTestPathToTempPath(kInvalidJsonResourceFile, kResourceFile);
+  CopyFileFromTestPathToTempPath(kInvalidResourceId, kResourceId);
 
-  TextEmbedding resource;
+  resource::TextEmbedding resource;
   resource.Load();
-
   task_environment_.RunUntilIdle();
+
+  // Act
 
   // Assert
   EXPECT_FALSE(resource.IsInitialized());
 }
 
-TEST_F(BatAdsTextEmbeddingResourceTest, LoadNotExistantJsonResource) {
+TEST_F(BatAdsTextEmbeddingResourceTest, DoNotLoadMissingResource) {
   // Arrange
-  TextEmbedding resource;
-  EXPECT_CALL(*ads_client_mock_, LoadFileResource(_, _, _))
+  EXPECT_CALL(*ads_client_mock_, LoadFileResource(kResourceId, _, _))
       .WillOnce(Invoke([](const std::string& /*id*/, const int /*version*/,
                           LoadFileCallback callback) {
         const base::FilePath path =
-            GetFileResourcePath().AppendASCII(kNotExistantResourceFile);
+            GetFileResourcePath().AppendASCII(kMissingResourceId);
 
         base::File file(
             path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
         std::move(callback).Run(std::move(file));
       }));
 
-  // Act
+  resource::TextEmbedding resource;
   resource.Load();
   task_environment_.RunUntilIdle();
 
+  // Act
+
   // Assert
   EXPECT_FALSE(resource.IsInitialized());
 }
 
-TEST_F(BatAdsTextEmbeddingResourceTest, LoadNotInitializedFile) {
+TEST_F(BatAdsTextEmbeddingResourceTest, IsNotInitialized) {
   // Arrange
-  const TextEmbedding resource;
+  const resource::TextEmbedding resource;
 
   // Assert
   EXPECT_FALSE(resource.IsInitialized());
 }
 
-}  // namespace brave_ads::resource
+}  // namespace brave_ads

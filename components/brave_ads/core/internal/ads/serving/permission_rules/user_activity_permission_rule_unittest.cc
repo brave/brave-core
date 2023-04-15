@@ -25,7 +25,7 @@ class BatAdsUserActivityPermissionRuleTest : public UnitTestBase {
     params["time_window"] = "1h";
     params["threshold"] = "2.0";
     std::vector<base::test::FeatureRefAndParams> enabled_features;
-    enabled_features.emplace_back(user_activity::features::kFeature, params);
+    enabled_features.emplace_back(kUserActivityFeature, params);
 
     const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -34,27 +34,29 @@ class BatAdsUserActivityPermissionRuleTest : public UnitTestBase {
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;
+
+  UserActivityPermissionRule permission_rule_;
 };
 
 TEST_F(BatAdsUserActivityPermissionRuleTest,
        AllowAdIfUserActivityScoreIsEqualToTheThreshold) {
   // Arrange
+
+  // Act
   UserActivityManager::GetInstance()->RecordEvent(
       UserActivityEventType::kOpenedNewTab);
   UserActivityManager::GetInstance()->RecordEvent(
       UserActivityEventType::kClosedTab);
 
-  // Act
-  UserActivityPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
-
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsUserActivityPermissionRuleTest,
        AllowAdIfUserActivityScoreIsGreaterThanTheThreshold) {
   // Arrange
+
+  // Act
   UserActivityManager::GetInstance()->RecordEvent(
       UserActivityEventType::kOpenedNewTab);
   UserActivityManager::GetInstance()->RecordEvent(
@@ -62,26 +64,20 @@ TEST_F(BatAdsUserActivityPermissionRuleTest,
   UserActivityManager::GetInstance()->RecordEvent(
       UserActivityEventType::kClosedTab);
 
-  // Act
-  UserActivityPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
-
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsUserActivityPermissionRuleTest,
        DoNotAllowAdIfUserActivityScoreIsLessThanTheThreshold) {
   // Arrange
+
+  // Act
   UserActivityManager::GetInstance()->RecordEvent(
       UserActivityEventType::kOpenedNewTab);
 
-  // Act
-  UserActivityPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
-
   // Assert
-  EXPECT_FALSE(is_allowed);
+  EXPECT_FALSE(permission_rule_.ShouldAllow());
 }
 
 }  // namespace brave_ads

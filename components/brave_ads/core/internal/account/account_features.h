@@ -7,15 +7,17 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ACCOUNT_FEATURES_H_
 
 #include "base/feature_list.h"
+#include "base/metrics/field_trial_params.h"
 
-namespace brave_ads::features {
+namespace brave_ads {
 
-BASE_DECLARE_FEATURE(kAccount);
+BASE_DECLARE_FEATURE(kAccountFeature);
 
 bool IsAccountEnabled();
 
-int GetNextPaymentDay();
+constexpr base::FeatureParam<int> kNextPaymentDay{&kAccountFeature,
+                                                  "next_payment_day", 7};
 
-}  // namespace brave_ads::features
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ACCOUNT_FEATURES_H_

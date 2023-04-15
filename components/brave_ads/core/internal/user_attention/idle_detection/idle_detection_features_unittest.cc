@@ -12,7 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace brave_ads::idle_detection::features {
+namespace brave_ads {
 
 TEST(BatAdsIdleDetectionFeaturesTest, IsEnabled) {
   // Arrange
@@ -20,7 +20,7 @@ TEST(BatAdsIdleDetectionFeaturesTest, IsEnabled) {
   // Act
 
   // Assert
-  EXPECT_TRUE(IsEnabled());
+  EXPECT_TRUE(IsIdleDetectionEnabled());
 }
 
 TEST(BatAdsIdleDetectionFeaturesTest, IsDisabled) {
@@ -28,7 +28,7 @@ TEST(BatAdsIdleDetectionFeaturesTest, IsDisabled) {
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kIdleDetection);
+  disabled_features.emplace_back(kIdleDetectionFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -37,7 +37,7 @@ TEST(BatAdsIdleDetectionFeaturesTest, IsDisabled) {
   // Act
 
   // Assert
-  EXPECT_FALSE(IsEnabled());
+  EXPECT_FALSE(IsIdleDetectionEnabled());
 }
 
 TEST(BatAdsIdleDetectionFeaturesTest, GetIdleTimeThreshold) {
@@ -45,7 +45,7 @@ TEST(BatAdsIdleDetectionFeaturesTest, GetIdleTimeThreshold) {
   base::FieldTrialParams params;
   params["idle_time_threshold"] = "7s";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kIdleDetection, params);
+  enabled_features.emplace_back(kIdleDetectionFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -56,7 +56,7 @@ TEST(BatAdsIdleDetectionFeaturesTest, GetIdleTimeThreshold) {
   // Act
 
   // Assert
-  EXPECT_EQ(base::Seconds(7), GetIdleTimeThreshold());
+  EXPECT_EQ(base::Seconds(7), kIdleTimeThreshold.Get());
 }
 
 TEST(BatAdsIdleDetectionFeaturesTest, DefaultIdleTimeThreshold) {
@@ -65,7 +65,7 @@ TEST(BatAdsIdleDetectionFeaturesTest, DefaultIdleTimeThreshold) {
   // Act
 
   // Assert
-  EXPECT_EQ(base::Seconds(5), GetIdleTimeThreshold());
+  EXPECT_EQ(base::Seconds(5), kIdleTimeThreshold.Get());
 }
 
 TEST(BatAdsIdleDetectionFeaturesTest, DefaultIdleTimeThresholdWhenDisabled) {
@@ -73,7 +73,7 @@ TEST(BatAdsIdleDetectionFeaturesTest, DefaultIdleTimeThresholdWhenDisabled) {
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kIdleDetection);
+  disabled_features.emplace_back(kIdleDetectionFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -82,7 +82,7 @@ TEST(BatAdsIdleDetectionFeaturesTest, DefaultIdleTimeThresholdWhenDisabled) {
   // Act
 
   // Assert
-  EXPECT_EQ(base::Seconds(5), GetIdleTimeThreshold());
+  EXPECT_EQ(base::Seconds(5), kIdleTimeThreshold.Get());
 }
 
 TEST(BatAdsIdleDetectionFeaturesTest, GetMaximumIdleTime) {
@@ -90,7 +90,7 @@ TEST(BatAdsIdleDetectionFeaturesTest, GetMaximumIdleTime) {
   base::FieldTrialParams params;
   params["maximum_idle_time"] = "30m";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kIdleDetection, params);
+  enabled_features.emplace_back(kIdleDetectionFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -101,7 +101,7 @@ TEST(BatAdsIdleDetectionFeaturesTest, GetMaximumIdleTime) {
   // Act
 
   // Assert
-  EXPECT_EQ(base::Minutes(30), GetMaximumIdleTime());
+  EXPECT_EQ(base::Minutes(30), kMaximumIdleTime.Get());
 }
 
 TEST(BatAdsIdleDetectionFeaturesTest, DefaultMaximumIdleTime) {
@@ -110,7 +110,7 @@ TEST(BatAdsIdleDetectionFeaturesTest, DefaultMaximumIdleTime) {
   // Act
 
   // Assert
-  EXPECT_EQ(base::Seconds(0), GetMaximumIdleTime());
+  EXPECT_EQ(base::Seconds(0), kMaximumIdleTime.Get());
 }
 
 TEST(BatAdsIdleDetectionFeaturesTest, DefaultMaximumIdleTimeWhenDisabled) {
@@ -118,7 +118,7 @@ TEST(BatAdsIdleDetectionFeaturesTest, DefaultMaximumIdleTimeWhenDisabled) {
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kIdleDetection);
+  disabled_features.emplace_back(kIdleDetectionFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -127,7 +127,7 @@ TEST(BatAdsIdleDetectionFeaturesTest, DefaultMaximumIdleTimeWhenDisabled) {
   // Act
 
   // Assert
-  EXPECT_EQ(base::Seconds(0), GetMaximumIdleTime());
+  EXPECT_EQ(base::Seconds(0), kMaximumIdleTime.Get());
 }
 
 TEST(BatAdsIdleDetectionFeaturesTest, ShouldDetectScreenWasLocked) {
@@ -135,7 +135,7 @@ TEST(BatAdsIdleDetectionFeaturesTest, ShouldDetectScreenWasLocked) {
   base::FieldTrialParams params;
   params["should_detect_screen_was_locked"] = "true";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kIdleDetection, params);
+  enabled_features.emplace_back(kIdleDetectionFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -146,7 +146,7 @@ TEST(BatAdsIdleDetectionFeaturesTest, ShouldDetectScreenWasLocked) {
   // Act
 
   // Assert
-  EXPECT_TRUE(ShouldDetectScreenWasLocked());
+  EXPECT_TRUE(kShouldDetectScreenWasLocked.Get());
 }
 
 TEST(BatAdsIdleDetectionFeaturesTest, DefaultShouldDetectScreenWasLocked) {
@@ -155,7 +155,7 @@ TEST(BatAdsIdleDetectionFeaturesTest, DefaultShouldDetectScreenWasLocked) {
   // Act
 
   // Assert
-  EXPECT_FALSE(ShouldDetectScreenWasLocked());
+  EXPECT_FALSE(kShouldDetectScreenWasLocked.Get());
 }
 
 TEST(BatAdsIdleDetectionFeaturesTest, ShouldDetectScreenWasLockedWhenDisabled) {
@@ -163,7 +163,7 @@ TEST(BatAdsIdleDetectionFeaturesTest, ShouldDetectScreenWasLockedWhenDisabled) {
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kIdleDetection);
+  disabled_features.emplace_back(kIdleDetectionFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -172,7 +172,7 @@ TEST(BatAdsIdleDetectionFeaturesTest, ShouldDetectScreenWasLockedWhenDisabled) {
   // Act
 
   // Assert
-  EXPECT_FALSE(ShouldDetectScreenWasLocked());
+  EXPECT_FALSE(kShouldDetectScreenWasLocked.Get());
 }
 
-}  // namespace brave_ads::idle_detection::features
+}  // namespace brave_ads

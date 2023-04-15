@@ -8,11 +8,15 @@
 
 #include <string>
 
+#include "base/functional/callback.h"
+
 namespace base {
 class Time;
 }  // namespace base
 
 namespace brave_ads {
+
+using ResultAdEventsCallback = base::OnceCallback<void(bool success)>;
 
 class AdType;
 class ConfirmationType;
@@ -24,12 +28,10 @@ AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
                          const AdType& ad_type,
                          const ConfirmationType& confirmation_type,
                          base::Time created_at);
-
 AdEventInfo BuildAdEvent(const AdInfo& ad,
                          const AdType& ad_type,
                          const ConfirmationType& confirmation_type,
                          base::Time created_at);
-
 AdEventInfo BuildAdEvent(const std::string& placement_id,
                          const std::string& creative_set_id,
                          const ConfirmationType& confirmation_type);
@@ -47,6 +49,8 @@ void FireAdEvents(const AdEventInfo& ad_event, int count);
 
 int GetAdEventCount(const AdType& ad_type,
                     const ConfirmationType& confirmation_type);
+
+void ResetAdEvents(ResultAdEventsCallback callback);
 
 }  // namespace brave_ads
 

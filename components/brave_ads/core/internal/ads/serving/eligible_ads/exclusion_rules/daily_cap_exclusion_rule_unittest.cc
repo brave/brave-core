@@ -30,14 +30,12 @@ TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   creative_ad.campaign_id = kCampaignIds[0];
   creative_ad.daily_cap = 2;
 
-  const AdEventList ad_events;
+  DailyCapExclusionRule exclusion_rule({});
 
   // Act
-  DailyCapExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
@@ -53,12 +51,12 @@ TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
 
   ad_events.push_back(ad_event);
 
-  // Act
   DailyCapExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
+
+  // Act
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsDailyCapExclusionRuleTest,
@@ -78,12 +76,12 @@ TEST_F(BatAdsDailyCapExclusionRuleTest,
 
   ad_events.push_back(ad_event);
 
-  // Act
   DailyCapExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad_1);
+
+  // Act
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad_1));
 }
 
 TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCapWithin1Day) {
@@ -99,14 +97,14 @@ TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCapWithin1Day) {
 
   ad_events.push_back(ad_event);
 
-  AdvanceClockBy(base::Days(1) - base::Seconds(1));
+  DailyCapExclusionRule exclusion_rule(ad_events);
+
+  AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
   // Act
-  DailyCapExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCapAfter1Day) {
@@ -122,14 +120,14 @@ TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCapAfter1Day) {
 
   ad_events.push_back(ad_event);
 
+  DailyCapExclusionRule exclusion_rule(ad_events);
+
   AdvanceClockBy(base::Days(1));
 
   // Act
-  DailyCapExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsDailyCapExclusionRuleTest, DoNotAllowAdIfExceedsCap) {
@@ -146,12 +144,12 @@ TEST_F(BatAdsDailyCapExclusionRuleTest, DoNotAllowAdIfExceedsCap) {
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
-  // Act
   DailyCapExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
+
+  // Act
 
   // Assert
-  EXPECT_TRUE(should_exclude);
+  EXPECT_TRUE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 }  // namespace brave_ads

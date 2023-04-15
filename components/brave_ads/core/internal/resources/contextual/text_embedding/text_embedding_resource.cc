@@ -20,6 +20,7 @@ constexpr char kResourceId[] = "wtpwsrqtjxmfdwaymauprezkunxprysm";
 }  // namespace
 
 TextEmbedding::TextEmbedding() = default;
+
 TextEmbedding::~TextEmbedding() = default;
 
 bool TextEmbedding::IsInitialized() const {
@@ -28,7 +29,7 @@ bool TextEmbedding::IsInitialized() const {
 
 void TextEmbedding::Load() {
   LoadAndParseResource(kResourceId,
-                       targeting::features::GetTextEmbeddingResourceVersion(),
+                       targeting::kTextEmbeddingResourceVersion.Get(),
                        base::BindOnce(&TextEmbedding::OnLoadAndParseResource,
                                       weak_factory_.GetWeakPtr()));
 }

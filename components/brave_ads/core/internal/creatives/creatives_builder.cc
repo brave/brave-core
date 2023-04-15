@@ -51,12 +51,12 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
     // Dayparts
     CreativeDaypartList creative_dayparts;
     for (const auto& daypart : campaign.dayparts) {
-      CreativeDaypartInfo creative_daypart_info;
-      creative_daypart_info.dow = daypart.dow;
-      creative_daypart_info.start_minute = daypart.start_minute;
-      creative_daypart_info.end_minute = daypart.end_minute;
+      CreativeDaypartInfo creative_daypart;
+      creative_daypart.dow = daypart.dow;
+      creative_daypart.start_minute = daypart.start_minute;
+      creative_daypart.end_minute = daypart.end_minute;
 
-      creative_dayparts.push_back(creative_daypart_info);
+      creative_dayparts.push_back(creative_daypart);
     }
 
     // Creative Sets
@@ -76,35 +76,36 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
 
       // Notification ad creatives
       for (const auto& creative : creative_set.creative_notification_ads) {
-        CreativeNotificationAdInfo info;
-        info.creative_instance_id = creative.creative_instance_id;
-        info.creative_set_id = creative_set.creative_set_id;
-        info.campaign_id = campaign.campaign_id;
-        info.advertiser_id = campaign.advertiser_id;
+        CreativeNotificationAdInfo creative_ad;
+        creative_ad.creative_instance_id = creative.creative_instance_id;
+        creative_ad.creative_set_id = creative_set.creative_set_id;
+        creative_ad.campaign_id = campaign.campaign_id;
+        creative_ad.advertiser_id = campaign.advertiser_id;
         if (!base::Time::FromUTCString(campaign.start_at.c_str(),
-                                       &info.start_at)) {
-          info.start_at = base::Time();
+                                       &creative_ad.start_at)) {
+          creative_ad.start_at = base::Time();
         }
-        if (!base::Time::FromUTCString(campaign.end_at.c_str(), &info.end_at)) {
-          info.end_at = base::Time();
+        if (!base::Time::FromUTCString(campaign.end_at.c_str(),
+                                       &creative_ad.end_at)) {
+          creative_ad.end_at = base::Time();
         }
-        info.daily_cap = campaign.daily_cap;
-        info.priority = campaign.priority;
-        info.ptr = campaign.ptr;
-        info.conversion = !creative_set.conversions.empty();
-        info.per_day = creative_set.per_day;
-        info.per_week = creative_set.per_week;
-        info.per_month = creative_set.per_month;
-        info.total_max = creative_set.total_max;
-        info.value = creative_set.value;
-        info.embedding = creative_set.embedding;
-        info.split_test_group = creative_set.split_test_group;
-        info.dayparts = creative_dayparts;
-        info.geo_targets = geo_targets;
-        info.target_url = creative.payload.target_url;
+        creative_ad.daily_cap = campaign.daily_cap;
+        creative_ad.priority = campaign.priority;
+        creative_ad.ptr = campaign.ptr;
+        creative_ad.conversion = !creative_set.conversions.empty();
+        creative_ad.per_day = creative_set.per_day;
+        creative_ad.per_week = creative_set.per_week;
+        creative_ad.per_month = creative_set.per_month;
+        creative_ad.total_max = creative_set.total_max;
+        creative_ad.value = creative_set.value;
+        creative_ad.embedding = creative_set.embedding;
+        creative_ad.split_test_group = creative_set.split_test_group;
+        creative_ad.dayparts = creative_dayparts;
+        creative_ad.geo_targets = geo_targets;
+        creative_ad.target_url = creative.payload.target_url;
 
-        info.title = creative.payload.title;
-        info.body = creative.payload.body;
+        creative_ad.title = creative.payload.title;
+        creative_ad.body = creative.payload.body;
 
         // Segments
         for (const auto& segment : creative_set.segments) {
@@ -122,8 +123,8 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
             continue;
           }
 
-          info.segment = segment_name;
-          creatives.notification_ads.push_back(info);
+          creative_ad.segment = segment_name;
+          creatives.notification_ads.push_back(creative_ad);
           entries++;
 
           const std::string top_level_segment_name =
@@ -131,8 +132,8 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
           DCHECK(!top_level_segment_name.empty());
 
           if (top_level_segment_name != segment_name) {
-            info.segment = top_level_segment_name;
-            creatives.notification_ads.push_back(info);
+            creative_ad.segment = top_level_segment_name;
+            creatives.notification_ads.push_back(creative_ad);
             entries++;
           }
         }
@@ -140,37 +141,38 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
 
       // inline content ad creatives
       for (const auto& creative : creative_set.creative_inline_content_ads) {
-        CreativeInlineContentAdInfo info;
-        info.creative_instance_id = creative.creative_instance_id;
-        info.creative_set_id = creative_set.creative_set_id;
-        info.campaign_id = campaign.campaign_id;
-        info.advertiser_id = campaign.advertiser_id;
+        CreativeInlineContentAdInfo creative_ad;
+        creative_ad.creative_instance_id = creative.creative_instance_id;
+        creative_ad.creative_set_id = creative_set.creative_set_id;
+        creative_ad.campaign_id = campaign.campaign_id;
+        creative_ad.advertiser_id = campaign.advertiser_id;
         if (!base::Time::FromUTCString(campaign.start_at.c_str(),
-                                       &info.start_at)) {
-          info.start_at = base::Time();
+                                       &creative_ad.start_at)) {
+          creative_ad.start_at = base::Time();
         }
-        if (!base::Time::FromUTCString(campaign.end_at.c_str(), &info.end_at)) {
-          info.end_at = base::Time();
+        if (!base::Time::FromUTCString(campaign.end_at.c_str(),
+                                       &creative_ad.end_at)) {
+          creative_ad.end_at = base::Time();
         }
-        info.daily_cap = campaign.daily_cap;
-        info.priority = campaign.priority;
-        info.ptr = campaign.ptr;
-        info.conversion = !creative_set.conversions.empty();
-        info.per_day = creative_set.per_day;
-        info.per_week = creative_set.per_week;
-        info.per_month = creative_set.per_month;
-        info.total_max = creative_set.total_max;
-        info.value = creative_set.value;
-        info.split_test_group = creative_set.split_test_group;
-        info.dayparts = creative_dayparts;
-        info.geo_targets = geo_targets;
-        info.target_url = creative.payload.target_url;
+        creative_ad.daily_cap = campaign.daily_cap;
+        creative_ad.priority = campaign.priority;
+        creative_ad.ptr = campaign.ptr;
+        creative_ad.conversion = !creative_set.conversions.empty();
+        creative_ad.per_day = creative_set.per_day;
+        creative_ad.per_week = creative_set.per_week;
+        creative_ad.per_month = creative_set.per_month;
+        creative_ad.total_max = creative_set.total_max;
+        creative_ad.value = creative_set.value;
+        creative_ad.split_test_group = creative_set.split_test_group;
+        creative_ad.dayparts = creative_dayparts;
+        creative_ad.geo_targets = geo_targets;
+        creative_ad.target_url = creative.payload.target_url;
 
-        info.title = creative.payload.title;
-        info.description = creative.payload.description;
-        info.image_url = creative.payload.image_url;
-        info.dimensions = creative.payload.dimensions;
-        info.cta_text = creative.payload.cta_text;
+        creative_ad.title = creative.payload.title;
+        creative_ad.description = creative.payload.description;
+        creative_ad.image_url = creative.payload.image_url;
+        creative_ad.dimensions = creative.payload.dimensions;
+        creative_ad.cta_text = creative.payload.cta_text;
 
         // Segments
         for (const auto& segment : creative_set.segments) {
@@ -188,8 +190,8 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
             continue;
           }
 
-          info.segment = segment_name;
-          creatives.inline_content_ads.push_back(info);
+          creative_ad.segment = segment_name;
+          creatives.inline_content_ads.push_back(creative_ad);
           entries++;
 
           const std::string top_level_segment_name =
@@ -197,8 +199,8 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
           DCHECK(!top_level_segment_name.empty());
 
           if (top_level_segment_name != segment_name) {
-            info.segment = top_level_segment_name;
-            creatives.inline_content_ads.push_back(info);
+            creative_ad.segment = top_level_segment_name;
+            creatives.inline_content_ads.push_back(creative_ad);
             entries++;
           }
         }

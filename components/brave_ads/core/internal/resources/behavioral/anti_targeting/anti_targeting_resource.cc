@@ -29,7 +29,7 @@ AntiTargeting::~AntiTargeting() {
 }
 
 void AntiTargeting::Load() {
-  LoadAndParseResource(kResourceId, features::GetAntiTargetingResourceVersion(),
+  LoadAndParseResource(kResourceId, kAntiTargetingResourceVersion.Get(),
                        base::BindOnce(&AntiTargeting::OnLoadAndParseResource,
                                       weak_factory_.GetWeakPtr()));
 }

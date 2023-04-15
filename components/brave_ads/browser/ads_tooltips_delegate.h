@@ -13,7 +13,8 @@
 namespace brave_ads {
 
 using ShowScheduledCaptchaCallback =
-    base::OnceCallback<void(const std::string&, const std::string&)>;
+    base::OnceCallback<void(const std::string& payment_id,
+                            const std::string& captcha_id)>;
 using SnoozeScheduledCaptchaCallback = base::OnceCallback<void()>;
 
 class AdsTooltipsDelegate {

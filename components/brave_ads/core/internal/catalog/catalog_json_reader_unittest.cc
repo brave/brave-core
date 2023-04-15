@@ -375,7 +375,6 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
   conversion.type = "postclick";
   conversion.url_pattern = "https://www.brave.com/2/*";
   conversion.observation_window = 7;
-  conversion.advertiser_public_key = {};
   conversion.expire_at =
       DistantFuture() + base::Days(conversion.observation_window);
   conversions.push_back(conversion);

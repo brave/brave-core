@@ -29,6 +29,8 @@ class BatAdsNotificationAdsPerDayPermissionRuleTest : public UnitTestBase {
     scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                       disabled_features);
   }
+
+  AdsPerDayPermissionRule permission_rule_;
 };
 
 TEST_F(BatAdsNotificationAdsPerDayPermissionRuleTest,
@@ -36,57 +38,47 @@ TEST_F(BatAdsNotificationAdsPerDayPermissionRuleTest,
   // Arrange
 
   // Act
-  AdsPerDayPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsNotificationAdsPerDayPermissionRuleTest,
        AllowAdIfDoesNotExceedCap) {
   // Arrange
-  const size_t count = features::GetMaximumAdsPerDay() - 1;
-  RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed, count);
+  RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
+                 /*count*/ kMaximumAdsPerDay.Get() - 1);
 
   // Act
-  AdsPerDayPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsNotificationAdsPerDayPermissionRuleTest,
        AllowAdIfDoesNotExceedCapAfter1Day) {
   // Arrange
-  const size_t count = features::GetMaximumAdsPerDay();
-  RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed, count);
-
-  AdvanceClockBy(base::Days(1));
+  RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
+                 /*count*/ kMaximumAdsPerDay.Get());
 
   // Act
-  AdsPerDayPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
+  AdvanceClockBy(base::Days(1));
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsNotificationAdsPerDayPermissionRuleTest,
        DoNotAllowAdIfExceedsCapWithin1Day) {
   // Arrange
-  const size_t count = features::GetMaximumAdsPerDay();
-  RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed, count);
-
-  AdvanceClockBy(base::Days(1) - base::Seconds(1));
+  RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
+                 /*count*/ kMaximumAdsPerDay.Get());
 
   // Act
-  AdsPerDayPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
+  AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
   // Assert
-  EXPECT_FALSE(is_allowed);
+  EXPECT_FALSE(permission_rule_.ShouldAllow());
 }
 
 }  // namespace brave_ads::notification_ads

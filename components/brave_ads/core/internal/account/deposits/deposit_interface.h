@@ -12,7 +12,7 @@
 
 namespace brave_ads {
 
-using GetDepositCallback = base::OnceCallback<void(const bool, const double)>;
+using GetDepositCallback = base::OnceCallback<void(bool success, double value)>;
 
 class DepositInterface {
  public:

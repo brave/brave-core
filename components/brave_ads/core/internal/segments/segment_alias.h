@@ -11,7 +11,7 @@
 
 namespace brave_ads {
 
-using SegmentList = std::vector<std::string>;
+using SegmentList = std::vector</*segment*/ std::string>;
 
 }  // namespace brave_ads
 

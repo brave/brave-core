@@ -66,18 +66,20 @@ TextEmbeddingHtmlEventInfo GetFromRecord(mojom::DBRecordInfo* record) {
   return text_embedding_html_event;
 }
 
-void OnGetTextEmbeddingHtmlEvents(GetTextEmbeddingHtmlEventsCallback callback,
-                                  mojom::DBCommandResponseInfoPtr response) {
-  if (!response || response->status !=
-                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+void OnGetTextEmbeddingHtmlEvents(
+    GetTextEmbeddingHtmlEventsCallback callback,
+    mojom::DBCommandResponseInfoPtr command_response) {
+  if (!command_response ||
+      command_response->status !=
+          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get embeddings");
-    return std::move(callback).Run(/* success */ false,
-                                   /* text_embedding_html_events */ {});
+    return std::move(callback).Run(/*success*/ false,
+                                   /*text_embedding_html_events*/ {});
   }
 
   TextEmbeddingHtmlEventList text_embedding_html_events;
 
-  for (const auto& record : response->result->get_records()) {
+  for (const auto& record : command_response->result->get_records()) {
     const TextEmbeddingHtmlEventInfo& text_embedding_html_event =
         GetFromRecord(record.get());
     text_embedding_html_events.push_back(text_embedding_html_event);
@@ -157,7 +159,7 @@ void TextEmbeddingHtmlEvents::GetAll(
 
 void TextEmbeddingHtmlEvents::PurgeStale(ResultCallback callback) const {
   const std::string limit =
-      base::NumberToString(targeting::features::GetTextEmbeddingsHistorySize());
+      base::NumberToString(targeting::kTextEmbeddingHistorySize.Get());
   const std::string& query = base::StringPrintf(
       "DELETE FROM %s "
       "WHERE id NOT IN "
@@ -220,7 +222,8 @@ std::string TextEmbeddingHtmlEvents::BuildInsertOrUpdateQuery(
     const TextEmbeddingHtmlEventList& text_embedding_html_events) const {
   DCHECK(command);
 
-  const int count = BindParameters(command, text_embedding_html_events);
+  const int binded_parameters_count =
+      BindParameters(command, text_embedding_html_events);
 
   return base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
@@ -229,7 +232,9 @@ std::string TextEmbeddingHtmlEvents::BuildInsertOrUpdateQuery(
       "hashed_text_base64, "
       "embedding) VALUES %s",
       GetTableName().c_str(),
-      BuildBindingParameterPlaceholders(4, count).c_str());
+      BuildBindingParameterPlaceholders(/*parameters_count*/ 4,
+                                        binded_parameters_count)
+          .c_str());
 }
 
 }  // namespace brave_ads::database::table

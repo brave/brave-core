@@ -113,14 +113,16 @@ std::string GeoTargets::BuildInsertOrUpdateQuery(
     const CreativeAdList& creative_ads) const {
   DCHECK(command);
 
-  const int count = BindParameters(command, creative_ads);
+  const int binded_parameters_count = BindParameters(command, creative_ads);
 
   return base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
       "(campaign_id, "
       "geo_target) VALUES %s",
       GetTableName().c_str(),
-      BuildBindingParameterPlaceholders(2, count).c_str());
+      BuildBindingParameterPlaceholders(/*parameters_count*/ 2,
+                                        binded_parameters_count)
+          .c_str());
 }
 
 }  // namespace brave_ads::database::table

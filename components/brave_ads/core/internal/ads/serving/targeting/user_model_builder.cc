@@ -45,23 +45,23 @@ void OnGetTextEmbeddingHtmlEvents(
 void BuildUserModel(BuildUserModelCallback callback) {
   UserModelInfo user_model;
 
-  if (features::IsTextClassificationEnabled()) {
+  if (IsTextClassificationEnabled()) {
     const model::TextClassification text_classification_model;
     user_model.interest_segments = text_classification_model.GetSegments();
   }
 
-  if (features::IsEpsilonGreedyBanditEnabled()) {
+  if (IsEpsilonGreedyBanditEnabled()) {
     const model::EpsilonGreedyBandit epsilon_greedy_bandit_model;
     user_model.latent_interest_segments =
         epsilon_greedy_bandit_model.GetSegments();
   }
 
-  if (features::IsPurchaseIntentEnabled()) {
+  if (IsPurchaseIntentEnabled()) {
     const model::PurchaseIntent purchase_intent_model;
     user_model.purchase_intent_segments = purchase_intent_model.GetSegments();
   }
 
-  if (features::IsTextEmbeddingEnabled()) {
+  if (IsTextEmbeddingEnabled()) {
     GetTextEmbeddingHtmlEventsFromDatabase(base::BindOnce(
         &OnGetTextEmbeddingHtmlEvents, user_model, std::move(callback)));
   } else {

@@ -20,6 +20,7 @@ constexpr char kResourceId[] = "feibnmjhecfbjpeciancnchbmlobenjn";
 }  // namespace
 
 TextClassification::TextClassification() = default;
+
 TextClassification::~TextClassification() = default;
 
 bool TextClassification::IsInitialized() const {
@@ -28,7 +29,7 @@ bool TextClassification::IsInitialized() const {
 
 void TextClassification::Load() {
   LoadAndParseResource(
-      kResourceId, targeting::features::GetTextClassificationResourceVersion(),
+      kResourceId, targeting::kTextClassificationResourceVersion.Get(),
       base::BindOnce(&TextClassification::OnLoadAndParseResource,
                      weak_factory_.GetWeakPtr()));
 }

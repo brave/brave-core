@@ -27,10 +27,9 @@ TEST_F(BatAdsAccountUtilTest, ShouldRewardUser) {
   // Arrange
 
   // Act
-  const bool should_reward_user = ShouldRewardUser();
 
   // Assert
-  EXPECT_TRUE(should_reward_user);
+  EXPECT_TRUE(ShouldRewardUser());
 }
 
 TEST_F(BatAdsAccountUtilTest, ShouldNotRewardUser) {
@@ -38,10 +37,9 @@ TEST_F(BatAdsAccountUtilTest, ShouldNotRewardUser) {
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
   // Act
-  const bool should_reward_user = ShouldRewardUser();
 
   // Assert
-  EXPECT_FALSE(should_reward_user);
+  EXPECT_FALSE(ShouldRewardUser());
 }
 
 TEST_F(BatAdsAccountUtilTest, ResetRewards) {
@@ -52,7 +50,7 @@ TEST_F(BatAdsAccountUtilTest, ResetRewards) {
   transactions.push_back(transaction);
   SaveTransactions(transactions);
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -60,7 +58,7 @@ TEST_F(BatAdsAccountUtilTest, ResetRewards) {
       *confirmation);
 
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
-      privacy::GetUnblindedPaymentTokens(1);
+      privacy::GetUnblindedPaymentTokens(/*count*/ 1);
   privacy::GetUnblindedPaymentTokens()->AddTokens(unblinded_payment_tokens);
 
   // Act

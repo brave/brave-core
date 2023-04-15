@@ -98,7 +98,7 @@ TEST_F(BatAdsAdEventHistoryTest, PurgeHistoryOlderThan) {
   // Arrange
   RecordAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
 
-  AdvanceClockBy(base::Days(1) + base::Seconds(1));
+  AdvanceClockBy(base::Days(1) + base::Milliseconds(1));
 
   RecordAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
 

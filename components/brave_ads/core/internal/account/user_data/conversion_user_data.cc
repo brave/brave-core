@@ -24,7 +24,7 @@ void GetConversion(const std::string& creative_instance_id,
     return std::move(callback).Run(base::Value::Dict());
   }
 
-  builder::BuildConversion(
+  BuildConversion(
       creative_instance_id,
       base::BindOnce(
           [](ConversionCallback callback, base::Value::Dict user_data) {

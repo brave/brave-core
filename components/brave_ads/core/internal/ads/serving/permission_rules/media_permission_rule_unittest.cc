@@ -16,17 +16,18 @@
 
 namespace brave_ads {
 
-class BatAdsMediaPermissionRuleTest : public UnitTestBase {};
+class BatAdsMediaPermissionRuleTest : public UnitTestBase {
+ protected:
+  MediaPermissionRule permission_rule_;
+};
 
 TEST_F(BatAdsMediaPermissionRuleTest, AllowAdIfMediaIsNotPlaying) {
   // Arrange
 
   // Act
-  MediaPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsMediaPermissionRuleTest, AllowAdIfMediaIsStoppedForSingleTab) {
@@ -37,14 +38,12 @@ TEST_F(BatAdsMediaPermissionRuleTest, AllowAdIfMediaIsStoppedForSingleTab) {
       /*is_incognito*/ false);
 
   NotifyTabDidStartPlayingMedia(/*id*/ 1);
-  NotifyTabDidStopPlayingMedia(/*id*/ 1);
 
   // Act
-  MediaPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
+  NotifyTabDidStopPlayingMedia(/*id*/ 1);
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsMediaPermissionRuleTest, AllowAdIfMediaIsStoppedOnMultipleTabs) {
@@ -56,15 +55,13 @@ TEST_F(BatAdsMediaPermissionRuleTest, AllowAdIfMediaIsStoppedOnMultipleTabs) {
 
   NotifyTabDidStartPlayingMedia(/*id*/ 1);
   NotifyTabDidStartPlayingMedia(/*id*/ 2);
+
+  // Act
   NotifyTabDidStopPlayingMedia(/*id*/ 1);
   NotifyTabDidStopPlayingMedia(/*id*/ 2);
 
-  // Act
-  MediaPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
-
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsMediaPermissionRuleTest,
@@ -77,14 +74,12 @@ TEST_F(BatAdsMediaPermissionRuleTest,
 
   NotifyTabDidStartPlayingMedia(/*id*/ 1);
   NotifyTabDidStartPlayingMedia(/*id*/ 2);
-  NotifyTabDidStopPlayingMedia(/*id*/ 1);
 
   // Act
-  MediaPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
+  NotifyTabDidStopPlayingMedia(/*id*/ 1);
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsMediaPermissionRuleTest,
@@ -95,14 +90,11 @@ TEST_F(BatAdsMediaPermissionRuleTest,
       /*is_active*/ true,
       /*is_incognito*/ false);
 
+  // Act
   NotifyTabDidStartPlayingMedia(/*id*/ 1);
 
-  // Act
-  MediaPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
-
   // Assert
-  EXPECT_FALSE(is_allowed);
+  EXPECT_FALSE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsMediaPermissionRuleTest,
@@ -111,7 +103,7 @@ TEST_F(BatAdsMediaPermissionRuleTest,
   base::FieldTrialParams params;
   params["should_only_serve_ads_if_media_is_not_playing"] = "false";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(permission_rules::features::kFeature, params);
+  enabled_features.emplace_back(kPermissionRulesFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -127,11 +119,9 @@ TEST_F(BatAdsMediaPermissionRuleTest,
   NotifyTabDidStartPlayingMedia(/*id*/ 1);
 
   // Act
-  MediaPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsMediaPermissionRuleTest,
@@ -142,15 +132,12 @@ TEST_F(BatAdsMediaPermissionRuleTest,
       /*is_active*/ true,
       /*is_incognito*/ false);
 
+  // Act
   NotifyTabDidStartPlayingMedia(/*id*/ 1);
   NotifyTabDidStartPlayingMedia(/*id*/ 2);
 
-  // Act
-  MediaPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
-
   // Assert
-  EXPECT_FALSE(is_allowed);
+  EXPECT_FALSE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsMediaPermissionRuleTest,
@@ -163,14 +150,12 @@ TEST_F(BatAdsMediaPermissionRuleTest,
 
   NotifyTabDidStartPlayingMedia(/*id*/ 1);
   NotifyTabDidStartPlayingMedia(/*id*/ 2);
-  NotifyTabDidStopPlayingMedia(/*id*/ 2);
 
   // Act
-  MediaPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
+  NotifyTabDidStopPlayingMedia(/*id*/ 2);
 
   // Assert
-  EXPECT_FALSE(is_allowed);
+  EXPECT_FALSE(permission_rule_.ShouldAllow());
 }
 
 }  // namespace brave_ads

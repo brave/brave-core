@@ -12,9 +12,9 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace brave_ads::features {
+namespace brave_ads {
 
-TEST(BatAdsConversionsFeaturesTest, IsConversionsEnabled) {
+TEST(BatAdsConversionsFeaturesTest, IsEnabled) {
   // Arrange
 
   // Act
@@ -23,12 +23,12 @@ TEST(BatAdsConversionsFeaturesTest, IsConversionsEnabled) {
   EXPECT_TRUE(IsConversionsEnabled());
 }
 
-TEST(BatAdsConversionsFeaturesTest, IsConversionsDisabled) {
+TEST(BatAdsConversionsFeaturesTest, IsDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kConversions);
+  disabled_features.emplace_back(kConversionsFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -45,7 +45,7 @@ TEST(BatAdsConversionsFeaturesTest, GetConversionsResourceVersion) {
   base::FieldTrialParams params;
   params["resource_version"] = "0";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kConversions, params);
+  enabled_features.emplace_back(kConversionsFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -56,7 +56,7 @@ TEST(BatAdsConversionsFeaturesTest, GetConversionsResourceVersion) {
   // Act
 
   // Assert
-  EXPECT_EQ(0, GetConversionsResourceVersion());
+  EXPECT_EQ(0, kConversionsResourceVersion.Get());
 }
 
 TEST(BatAdsConversionsFeaturesTest, DefaultConversionsResourceVersion) {
@@ -65,7 +65,7 @@ TEST(BatAdsConversionsFeaturesTest, DefaultConversionsResourceVersion) {
   // Act
 
   // Assert
-  EXPECT_EQ(1, GetConversionsResourceVersion());
+  EXPECT_EQ(1, kConversionsResourceVersion.Get());
 }
 
 TEST(BatAdsConversionsFeaturesTest,
@@ -74,7 +74,7 @@ TEST(BatAdsConversionsFeaturesTest,
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kConversions);
+  disabled_features.emplace_back(kConversionsFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -83,7 +83,7 @@ TEST(BatAdsConversionsFeaturesTest,
   // Act
 
   // Assert
-  EXPECT_EQ(1, GetConversionsResourceVersion());
+  EXPECT_EQ(1, kConversionsResourceVersion.Get());
 }
 
 TEST(BatAdsConversionsFeaturesTest, GetConversionIdPattern) {
@@ -91,7 +91,7 @@ TEST(BatAdsConversionsFeaturesTest, GetConversionIdPattern) {
   base::FieldTrialParams params;
   params["conversion_id_pattern"] = "*";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kConversions, params);
+  enabled_features.emplace_back(kConversionsFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -102,7 +102,7 @@ TEST(BatAdsConversionsFeaturesTest, GetConversionIdPattern) {
   // Act
 
   // Assert
-  EXPECT_EQ("*", GetConversionIdPattern());
+  EXPECT_EQ("*", kConversionsIdPattern.Get());
 }
 
 TEST(BatAdsConversionsFeaturesTest, DefaultConversionIdPattern) {
@@ -113,7 +113,7 @@ TEST(BatAdsConversionsFeaturesTest, DefaultConversionIdPattern) {
   // Assert
   const std::string expected_pattern =
       R"~(<meta.*name="ad-conversion-id".*content="([-a-zA-Z0-9]*)".*>)~";
-  EXPECT_EQ(expected_pattern, GetConversionIdPattern());
+  EXPECT_EQ(expected_pattern, kConversionsIdPattern.Get());
 }
 
 TEST(BatAdsConversionsFeaturesTest, DefaultConversionIdPatternWhenDisabled) {
@@ -121,7 +121,7 @@ TEST(BatAdsConversionsFeaturesTest, DefaultConversionIdPatternWhenDisabled) {
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kConversions);
+  disabled_features.emplace_back(kConversionsFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -132,7 +132,7 @@ TEST(BatAdsConversionsFeaturesTest, DefaultConversionIdPatternWhenDisabled) {
   // Assert
   const std::string expected_pattern =
       R"~(<meta.*name="ad-conversion-id".*content="([-a-zA-Z0-9]*)".*>)~";
-  EXPECT_EQ(expected_pattern, GetConversionIdPattern());
+  EXPECT_EQ(expected_pattern, kConversionsIdPattern.Get());
 }
 
-}  // namespace brave_ads::features
+}  // namespace brave_ads

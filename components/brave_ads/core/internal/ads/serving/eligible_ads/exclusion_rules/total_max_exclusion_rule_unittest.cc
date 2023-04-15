@@ -31,14 +31,12 @@ TEST_F(BatAdsTotalMaxExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   creative_ad.creative_set_id = kCreativeSetIds[0];
   creative_ad.total_max = 2;
 
-  const AdEventList ad_events;
+  TotalMaxExclusionRule exclusion_rule({});
 
   // Act
-  TotalMaxExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsTotalMaxExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
@@ -54,12 +52,12 @@ TEST_F(BatAdsTotalMaxExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
 
   ad_events.push_back(ad_event);
 
-  // Act
   TotalMaxExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
+
+  // Act
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsTotalMaxExclusionRuleTest,
@@ -80,12 +78,12 @@ TEST_F(BatAdsTotalMaxExclusionRuleTest,
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
-  // Act
   TotalMaxExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad_1);
+
+  // Act
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad_1));
 }
 
 TEST_F(BatAdsTotalMaxExclusionRuleTest, DoNotAllowAdIfExceedsZeroCap) {
@@ -94,14 +92,12 @@ TEST_F(BatAdsTotalMaxExclusionRuleTest, DoNotAllowAdIfExceedsZeroCap) {
   creative_ad.creative_set_id = kCreativeSetIds[0];
   creative_ad.total_max = 0;
 
-  const AdEventList ad_events;
+  TotalMaxExclusionRule exclusion_rule({});
 
   // Act
-  TotalMaxExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_TRUE(should_exclude);
+  EXPECT_TRUE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsTotalMaxExclusionRuleTest, DoNotAllowAdIfExceedsCap) {
@@ -118,12 +114,12 @@ TEST_F(BatAdsTotalMaxExclusionRuleTest, DoNotAllowAdIfExceedsCap) {
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
-  // Act
   TotalMaxExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
+
+  // Act
 
   // Assert
-  EXPECT_TRUE(should_exclude);
+  EXPECT_TRUE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 }  // namespace brave_ads

@@ -36,11 +36,8 @@ TEST(BatAdsVerificationKeyTest, Verify) {
   VerificationKey verification_key = GetVerificationKey();
 
   // Act
-  const bool is_valid =
-      verification_key.Verify(GetVerificationSignature(), kMessage);
-
   // Assert
-  EXPECT_TRUE(is_valid);
+  EXPECT_TRUE(verification_key.Verify(GetVerificationSignature(), kMessage));
 }
 
 TEST(BatAdsVerificationKeyTest, FailToVerifyWithInvalidVerificationSignature) {
@@ -48,11 +45,10 @@ TEST(BatAdsVerificationKeyTest, FailToVerifyWithInvalidVerificationSignature) {
   VerificationKey verification_key = GetVerificationKey();
 
   // Act
-  const bool is_valid =
-      verification_key.Verify(GetInvalidVerificationSignature(), kMessage);
 
   // Assert
-  EXPECT_FALSE(is_valid);
+  EXPECT_FALSE(
+      verification_key.Verify(GetInvalidVerificationSignature(), kMessage));
 }
 
 }  // namespace brave_ads::privacy::cbr

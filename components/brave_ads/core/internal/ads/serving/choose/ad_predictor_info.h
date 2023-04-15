@@ -27,7 +27,8 @@ struct AdPredictorInfo final {
 };
 
 template <typename T>
-using CreativeAdPredictorMap = std::map<std::string, AdPredictorInfo<T>>;
+using CreativeAdPredictorMap = std::map</*creative_instance_id*/ std::string,
+                                        /*creative_ad*/ AdPredictorInfo<T>>;
 
 }  // namespace brave_ads
 

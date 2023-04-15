@@ -19,8 +19,7 @@ bool DoesRespectCap() {
 }  // namespace
 
 bool NetworkConnectionPermissionRule::ShouldAllow() {
-  if (!permission_rules::features::
-          ShouldOnlyServeAdsWithValidInternetConnection()) {
+  if (!kShouldOnlyServeAdsWithValidInternetConnection.Get()) {
     return true;
   }
 

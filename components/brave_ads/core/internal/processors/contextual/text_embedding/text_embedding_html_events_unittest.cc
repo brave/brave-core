@@ -58,8 +58,7 @@ TEST_F(BatAdsTextEmbeddingHtmlEventsTest, LogEvent) {
 
 TEST_F(BatAdsTextEmbeddingHtmlEventsTest, PurgeEvents) {
   // Arrange
-  for (int i = 0; i < targeting::features::GetTextEmbeddingsHistorySize() + 4;
-       i++) {
+  for (int i = 0; i < targeting::kTextEmbeddingHistorySize.Get() + 4; i++) {
     const ml::pipeline::TextEmbeddingInfo text_embedding = BuildTextEmbedding();
     LogTextEmbeddingHtmlEvent(
         BuildTextEmbeddingHtmlEvent(text_embedding),
@@ -78,9 +77,9 @@ TEST_F(BatAdsTextEmbeddingHtmlEventsTest, PurgeEvents) {
 
         const size_t text_embedding_html_event_count =
             text_embedding_html_events.size();
-        EXPECT_LE(text_embedding_html_event_count,
-                  static_cast<size_t>(
-                      targeting::features::GetTextEmbeddingsHistorySize()));
+        EXPECT_LE(
+            text_embedding_html_event_count,
+            static_cast<size_t>(targeting::kTextEmbeddingHistorySize.Get()));
       }));
 }
 

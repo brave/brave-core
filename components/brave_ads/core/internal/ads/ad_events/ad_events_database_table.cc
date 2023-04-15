@@ -65,17 +65,18 @@ AdEventInfo GetFromRecord(mojom::DBRecordInfo* record) {
 }
 
 void OnGetAdEvents(GetAdEventsCallback callback,
-                   mojom::DBCommandResponseInfoPtr response) {
-  if (!response || response->status !=
-                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+                   mojom::DBCommandResponseInfoPtr command_response) {
+  if (!command_response ||
+      command_response->status !=
+          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get ad events");
-    std::move(callback).Run(/*success*/ false, {});
+    std::move(callback).Run(/*success*/ false, /*ad_events*/ {});
     return;
   }
 
   AdEventList ad_events;
 
-  for (const auto& record : response->result->get_records()) {
+  for (const auto& record : command_response->result->get_records()) {
     const AdEventInfo ad_event = GetFromRecord(record.get());
     ad_events.push_back(ad_event);
   }
@@ -358,7 +359,7 @@ std::string AdEvents::BuildInsertOrUpdateQuery(
     const AdEventList& ad_events) const {
   DCHECK(command);
 
-  const int count = BindParameters(command, ad_events);
+  const int binded_parameters_count = BindParameters(command, ad_events);
 
   return base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
@@ -371,7 +372,9 @@ std::string AdEvents::BuildInsertOrUpdateQuery(
       "advertiser_id, "
       "timestamp) VALUES %s",
       GetTableName().c_str(),
-      BuildBindingParameterPlaceholders(8, count).c_str());
+      BuildBindingParameterPlaceholders(/*parameters_count*/ 8,
+                                        binded_parameters_count)
+          .c_str());
 }
 
 }  // namespace brave_ads::database::table

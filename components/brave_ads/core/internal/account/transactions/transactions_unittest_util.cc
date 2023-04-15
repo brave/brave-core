@@ -49,7 +49,7 @@ TransactionInfo BuildTransaction(const double value,
 int GetTransactionCount() {
   int count = 0;
 
-  transactions::GetForDateRange(
+  GetTransactionsForDateRange(
       DistantPast(), DistantFuture(),
       base::BindOnce(
           [](int* count, const bool success,

@@ -70,16 +70,17 @@ TransactionInfo GetFromRecord(mojom::DBRecordInfo* record) {
 }
 
 void OnGetTransactions(GetTransactionsCallback callback,
-                       mojom::DBCommandResponseInfoPtr response) {
-  if (!response || response->status !=
-                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+                       mojom::DBCommandResponseInfoPtr command_response) {
+  if (!command_response ||
+      command_response->status !=
+          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get transactions");
     return std::move(callback).Run(/*success*/ false, /*transactions*/ {});
   }
 
   TransactionList transactions;
 
-  for (const auto& record : response->result->get_records()) {
+  for (const auto& record : command_response->result->get_records()) {
     const TransactionInfo transaction = GetFromRecord(record.get());
     transactions.push_back(transaction);
   }
@@ -341,7 +342,7 @@ std::string Transactions::BuildInsertOrUpdateQuery(
     const TransactionList& transactions) const {
   DCHECK(command);
 
-  const int count = BindParameters(command, transactions);
+  const int binded_parameters_count = BindParameters(command, transactions);
 
   return base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
@@ -354,7 +355,9 @@ std::string Transactions::BuildInsertOrUpdateQuery(
       "confirmation_type, "
       "reconciled_at) VALUES %s",
       GetTableName().c_str(),
-      BuildBindingParameterPlaceholders(8, count).c_str());
+      BuildBindingParameterPlaceholders(/*parameters_count*/ 8,
+                                        binded_parameters_count)
+          .c_str());
 }
 
 }  // namespace brave_ads::database::table

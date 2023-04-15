@@ -177,10 +177,9 @@ TEST(BatAdsSearchEngineUtilTest, IsNotSearchEngine) {
   const GURL url = GURL("https://foobar.com/");
 
   // Act
-  const bool is_search_engine = IsSearchEngine(url);
 
   // Assert
-  EXPECT_FALSE(is_search_engine);
+  EXPECT_FALSE(IsSearchEngine(url));
 }
 
 TEST(BatAdsSearchEngineUtilTest, IsNotSearchEngineWithInvalidUrl) {
@@ -188,10 +187,9 @@ TEST(BatAdsSearchEngineUtilTest, IsNotSearchEngineWithInvalidUrl) {
   const GURL url = GURL("INVALID_URL");
 
   // Act
-  const bool is_search_engine = IsSearchEngine(url);
 
   // Assert
-  EXPECT_FALSE(is_search_engine);
+  EXPECT_FALSE(IsSearchEngine(url));
 }
 
 }  // namespace brave_ads

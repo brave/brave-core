@@ -16,14 +16,14 @@
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 
-namespace brave_ads::transactions {
+namespace brave_ads {
 
-TransactionInfo Add(const std::string& creative_instance_id,
-                    const std::string& segment,
-                    const double value,
-                    const AdType& ad_type,
-                    const ConfirmationType& confirmation_type,
-                    AddCallback callback) {
+TransactionInfo AddTransaction(const std::string& creative_instance_id,
+                               const std::string& segment,
+                               const double value,
+                               const AdType& ad_type,
+                               const ConfirmationType& confirmation_type,
+                               AddTransactionCallback callback) {
   DCHECK(!creative_instance_id.empty());
   DCHECK_NE(AdType::kUndefined, ad_type);
   DCHECK_NE(ConfirmationType::kUndefined, confirmation_type);
@@ -41,10 +41,11 @@ TransactionInfo Add(const std::string& creative_instance_id,
   database_table.Save(
       {transaction},
       base::BindOnce(
-          [](AddCallback callback, const TransactionInfo& transaction,
-             const bool success) {
+          [](AddTransactionCallback callback,
+             const TransactionInfo& transaction, const bool success) {
             if (!success) {
-              return std::move(callback).Run(/*success*/ false, {});
+              return std::move(callback).Run(/*success*/ false,
+                                             /*transaction*/ {});
             }
 
             std::move(callback).Run(/*success*/ true, transaction);
@@ -54,17 +55,18 @@ TransactionInfo Add(const std::string& creative_instance_id,
   return transaction;
 }
 
-void GetForDateRange(const base::Time from_time,
-                     const base::Time to_time,
-                     GetCallback callback) {
+void GetTransactionsForDateRange(const base::Time from_time,
+                                 const base::Time to_time,
+                                 GetTransactionsCallback callback) {
   const database::table::Transactions database_table;
   database_table.GetForDateRange(
       from_time, to_time,
       base::BindOnce(
-          [](GetCallback callback, const bool success,
+          [](GetTransactionsCallback callback, const bool success,
              const TransactionList& transactions) {
             if (!success) {
-              return std::move(callback).Run(/*success*/ false, {});
+              return std::move(callback).Run(/*success*/ false,
+                                             /*transactions*/ {});
             }
 
             std::move(callback).Run(/*success*/ true, transactions);
@@ -72,10 +74,10 @@ void GetForDateRange(const base::Time from_time,
           std::move(callback)));
 }
 
-void RemoveAll(RemoveAllCallback callback) {
+void RemoveAllTransactions(RemoveAllTransactionsCallback callback) {
   const database::table::Transactions database_table;
   database_table.Delete(base::BindOnce(
-      [](RemoveAllCallback callback, const bool success) {
+      [](RemoveAllTransactionsCallback callback, const bool success) {
         if (!success) {
           return std::move(callback).Run(/*success*/ false);
         }
@@ -85,4 +87,4 @@ void RemoveAll(RemoveAllCallback callback) {
       std::move(callback)));
 }
 
-}  // namespace brave_ads::transactions
+}  // namespace brave_ads

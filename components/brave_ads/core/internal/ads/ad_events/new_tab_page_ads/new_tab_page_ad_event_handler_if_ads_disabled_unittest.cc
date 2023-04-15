@@ -257,7 +257,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
   const std::string placement_id =
       base::GUID::GenerateRandomV4().AsLowercaseString();
 
-  const int ads_per_hour = features::GetMaximumAdsPerHour();
+  const int ads_per_hour = kMaximumAdsPerHour.Get();
 
   const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo served_ad_event = BuildAdEvent(
@@ -267,7 +267,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
       creative_ad, AdType::kNewTabPageAd, ConfirmationType::kViewed, Now());
   FireAdEvents(viewed_ad_event, ads_per_hour - 1);
 
-  AdvanceClockBy(features::GetMinimumWaitTime());
+  AdvanceClockBy(kMinimumWaitTime.Get());
 
   event_handler_->FireEvent(placement_id, creative_ad.creative_instance_id,
                             mojom::NewTabPageAdEventType::kServed);
@@ -288,7 +288,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
   // Arrange
   ForcePermissionRulesForTesting();
 
-  const int ads_per_hour = features::GetMaximumAdsPerHour();
+  const int ads_per_hour = kMaximumAdsPerHour.Get();
 
   const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo served_ad_event = BuildAdEvent(
@@ -317,7 +317,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
   // Arrange
   ForcePermissionRulesForTesting();
 
-  const int ads_per_day = features::GetMaximumAdsPerDay();
+  const int ads_per_day = kMaximumAdsPerDay.Get();
 
   const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo served_ad_event = BuildAdEvent(
@@ -327,7 +327,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
       creative_ad, AdType::kNewTabPageAd, ConfirmationType::kViewed, Now());
   FireAdEvents(viewed_ad_event, ads_per_day - 1);
 
-  AdvanceClockBy(base::Days(1) - base::Seconds(1));
+  AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
   const std::string placement_id =
       base::GUID::GenerateRandomV4().AsLowercaseString();
@@ -351,7 +351,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
   // Arrange
   ForcePermissionRulesForTesting();
 
-  const int ads_per_day = features::GetMaximumAdsPerDay();
+  const int ads_per_day = kMaximumAdsPerDay.Get();
 
   const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo served_ad_event = BuildAdEvent(
@@ -361,7 +361,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
       creative_ad, AdType::kNewTabPageAd, ConfirmationType::kViewed, Now());
   FireAdEvents(viewed_ad_event, ads_per_day);
 
-  AdvanceClockBy(base::Days(1) - base::Seconds(1));
+  AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
   const std::string placement_id =
       base::GUID::GenerateRandomV4().AsLowercaseString();

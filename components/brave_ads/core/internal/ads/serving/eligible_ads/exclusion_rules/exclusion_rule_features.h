@@ -7,21 +7,31 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_EXCLUSION_RULES_EXCLUSION_RULE_FEATURES_H_
 
 #include "base/feature_list.h"
+#include "base/metrics/field_trial_params.h"
 
 namespace base {
 class TimeDelta;
 }  // namespace base
 
-namespace brave_ads::exclusion_rules::features {
+namespace brave_ads {
 
-BASE_DECLARE_FEATURE(kFeature);
+BASE_DECLARE_FEATURE(kExclusionRulesFeature);
 
-bool IsEnabled();
+bool IsExclusionRulesEnabled();
 
-bool ShouldExcludeAdIfConverted();
-base::TimeDelta GetExcludeAdIfDismissedWithinTimeWindow();
-base::TimeDelta GetExcludeAdIfTransferredWithinTimeWindow();
+constexpr base::FeatureParam<bool> kShouldExcludeAdIfConverted{
+    &kExclusionRulesFeature, "should_exclude_ad_if_converted", true};
 
-}  // namespace brave_ads::exclusion_rules::features
+constexpr base::FeatureParam<base::TimeDelta>
+    kShouldExcludeAdIfDismissedWithinTimeWindow{
+        &kExclusionRulesFeature,
+        "should_exclude_ad_if_dismissed_within_time_window", base::Hours(0)};
+
+constexpr base::FeatureParam<base::TimeDelta>
+    kShouldExcludeAdIfTransferredWithinTimeWindow{
+        &kExclusionRulesFeature,
+        "should_exclude_ad_if_transferred_within_time_window", base::Hours(0)};
+
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_EXCLUSION_RULES_EXCLUSION_RULE_FEATURES_H_

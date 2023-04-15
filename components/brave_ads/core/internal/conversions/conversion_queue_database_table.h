@@ -17,13 +17,13 @@
 
 namespace brave_ads::database::table {
 
-using GetConversionQueueCallback =
-    base::OnceCallback<void(const bool, const ConversionQueueItemList&)>;
+using GetConversionQueueCallback = base::OnceCallback<
+    void(bool success, const ConversionQueueItemList& conversion_queue_items)>;
 
-using GetConversionQueueForCreativeInstanceIdCallback =
-    base::OnceCallback<void(const bool,
-                            const std::string& creative_instance_id,
-                            const ConversionQueueItemList&)>;
+using GetConversionQueueForCreativeInstanceIdCallback = base::OnceCallback<void(
+    bool success,
+    const std::string& creative_instance_id,
+    const ConversionQueueItemList& conversion_queue_items)>;
 
 class ConversionQueue final : public TableInterface {
  public:

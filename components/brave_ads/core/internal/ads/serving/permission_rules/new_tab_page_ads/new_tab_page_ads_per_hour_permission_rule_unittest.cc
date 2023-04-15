@@ -29,6 +29,8 @@ class BatAdsNewTabPageAdsPerHourPermissionRuleTest : public UnitTestBase {
     scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                       disabled_features);
   }
+
+  AdsPerHourPermissionRule permission_rule_;
 };
 
 TEST_F(BatAdsNewTabPageAdsPerHourPermissionRuleTest,
@@ -36,57 +38,47 @@ TEST_F(BatAdsNewTabPageAdsPerHourPermissionRuleTest,
   // Arrange
 
   // Act
-  AdsPerHourPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsNewTabPageAdsPerHourPermissionRuleTest,
        AllowAdIfDoesNotExceedCap) {
   // Arrange
-  const int count = features::GetMaximumAdsPerHour() - 1;
-  RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed, count);
+  RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed,
+                 /*count*/ kMaximumAdsPerHour.Get() - 1);
 
   // Act
-  AdsPerHourPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsNewTabPageAdsPerHourPermissionRuleTest,
        AllowAdIfDoesNotExceedCapAfter1Hour) {
   // Arrange
-  const int count = features::GetMaximumAdsPerHour();
-  RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed, count);
-
-  AdvanceClockBy(base::Hours(1));
+  RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed,
+                 /*count*/ kMaximumAdsPerHour.Get());
 
   // Act
-  AdsPerHourPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
+  AdvanceClockBy(base::Hours(1));
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsNewTabPageAdsPerHourPermissionRuleTest,
        DoNotAllowAdIfExceedsCapWithin1Hour) {
   // Arrange
-  const int count = features::GetMaximumAdsPerHour();
-  RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed, count);
-
-  AdvanceClockBy(base::Hours(1) - base::Seconds(1));
+  RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed,
+                 /*count*/ kMaximumAdsPerHour.Get());
 
   // Act
-  AdsPerHourPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
+  AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
   // Assert
-  EXPECT_FALSE(is_allowed);
+  EXPECT_FALSE(permission_rule_.ShouldAllow());
 }
 
 }  // namespace brave_ads::new_tab_page_ads

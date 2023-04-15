@@ -32,22 +32,16 @@ UserActivityManager* g_user_activity_manager_instance = nullptr;
 
 void LogEvent(const UserActivityEventType event_type) {
   const UserActivityTriggerList triggers =
-      ToUserActivityTriggers(user_activity::features::GetTriggers());
+      ToUserActivityTriggers(kUserActivityTriggers.Get());
 
-  const base::TimeDelta time_window = user_activity::features::GetTimeWindow();
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(time_window);
+      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+          kUserActivityTimeWindow.Get());
 
-  const double score = GetUserActivityScore(triggers, events);
-
-  const double threshold = user_activity::features::GetThreshold();
-
-  const std::string encoded_event_type =
-      base::HexEncode(&event_type, sizeof(int8_t));
-
-  BLOG(6, "Triggered event: "
-              << encoded_event_type << " (" << score << ":" << threshold << ":"
-              << user_activity::features::GetTimeWindow() << ")");
+  BLOG(6, "Triggered event: " << base::HexEncode(&event_type, sizeof(int8_t))
+                              << " (" << GetUserActivityScore(triggers, events)
+                              << ":" << kUserActivityThreshold.Get() << ":"
+                              << kUserActivityTimeWindow.Get() << ")");
 }
 
 }  // namespace

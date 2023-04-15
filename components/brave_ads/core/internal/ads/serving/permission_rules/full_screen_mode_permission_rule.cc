@@ -24,7 +24,7 @@ bool DoesRespectCap() {
 }  // namespace
 
 bool FullScreenModePermissionRule::ShouldAllow() {
-  if (!permission_rules::features::ShouldOnlyServeAdsInWindowedMode()) {
+  if (!kShouldOnlyServeAdsInWindowedMode.Get()) {
     return true;
   }
 

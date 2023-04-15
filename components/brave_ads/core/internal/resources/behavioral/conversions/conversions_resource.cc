@@ -24,7 +24,7 @@ Conversions::Conversions() = default;
 Conversions::~Conversions() = default;
 
 void Conversions::Load() {
-  LoadAndParseResource(kResourceId, features::GetConversionsResourceVersion(),
+  LoadAndParseResource(kResourceId, kConversionsResourceVersion.Get(),
                        base::BindOnce(&Conversions::OnLoadAndParseResource,
                                       weak_factory_.GetWeakPtr()));
 }
@@ -39,9 +39,9 @@ void Conversions::OnLoadAndParseResource(
   }
 
   BLOG(1, "Successfully loaded " << kResourceId << " conversions resource");
-  conversions_info_ = std::move(result).value();
+  conversions_ = std::move(result).value();
 
-  BLOG(1, "Parsed conversions resource version " << conversions_info_.version);
+  BLOG(1, "Parsed conversions resource version " << conversions_.version);
 
   is_initialized_ = true;
 

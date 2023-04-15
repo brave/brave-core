@@ -12,7 +12,7 @@
 namespace brave_ads {
 
 using BuildStatementCallback =
-    base::OnceCallback<void(mojom::StatementInfoPtr)>;
+    base::OnceCallback<void(mojom::StatementInfoPtr statement)>;
 
 void BuildStatement(BuildStatementCallback callback);
 

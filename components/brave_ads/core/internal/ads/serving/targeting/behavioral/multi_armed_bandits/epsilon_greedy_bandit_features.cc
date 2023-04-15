@@ -5,29 +5,14 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_features.h"
 
-#include "base/metrics/field_trial_params.h"
+namespace brave_ads::targeting {
 
-namespace brave_ads::targeting::features {
-
-namespace {
-
-constexpr char kEpsilonValueFieldTrialParamName[] = "epsilon_value";
-constexpr double kEpsilonValueDefaultValue = 0.25;
-
-}  // namespace
-
-BASE_FEATURE(kEpsilonGreedyBandit,
+BASE_FEATURE(kEpsilonGreedyBanditFeatures,
              "EpsilonGreedyBandit",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsEpsilonGreedyBanditEnabled() {
-  return base::FeatureList::IsEnabled(kEpsilonGreedyBandit);
+  return base::FeatureList::IsEnabled(kEpsilonGreedyBanditFeatures);
 }
 
-double GetEpsilonGreedyBanditEpsilonValue() {
-  return GetFieldTrialParamByFeatureAsDouble(kEpsilonGreedyBandit,
-                                             kEpsilonValueFieldTrialParamName,
-                                             kEpsilonValueDefaultValue);
-}
-
-}  // namespace brave_ads::targeting::features
+}  // namespace brave_ads::targeting

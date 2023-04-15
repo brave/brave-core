@@ -32,10 +32,9 @@ TEST(BatAdsSearchEngineResultsPageUtilTest, IsNotSearchEngineResultsPage) {
   const GURL url = GURL("https://brave.com/");
 
   // Act
-  const bool is_search_engine_result_page = IsSearchEngineResultsPage(url);
 
   // Assert
-  EXPECT_FALSE(is_search_engine_result_page);
+  EXPECT_FALSE(IsSearchEngineResultsPage(url));
 }
 
 TEST(BatAdsSearchEngineResultsPageUtilTest,
@@ -44,10 +43,9 @@ TEST(BatAdsSearchEngineResultsPageUtilTest,
   const GURL url = GURL("INVALID_URL");
 
   // Act
-  const bool is_search_engine_result_page = IsSearchEngineResultsPage(url);
 
   // Assert
-  EXPECT_FALSE(is_search_engine_result_page);
+  EXPECT_FALSE(IsSearchEngineResultsPage(url));
 }
 
 TEST(BatAdsSearchEngineResultsPageUtilTest, ExtractSearchTermQueryValue) {

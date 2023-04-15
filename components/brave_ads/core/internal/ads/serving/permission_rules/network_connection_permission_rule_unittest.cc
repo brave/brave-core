@@ -16,18 +16,19 @@
 
 namespace brave_ads {
 
-class BatAdsNetworkConnectionPermissionRuleTest : public UnitTestBase {};
+class BatAdsNetworkConnectionPermissionRuleTest : public UnitTestBase {
+ protected:
+  NetworkConnectionPermissionRule permission_rule_;
+};
 
 TEST_F(BatAdsNetworkConnectionPermissionRuleTest, AllowAd) {
   // Arrange
   MockIsNetworkConnectionAvailable(ads_client_mock_, true);
 
   // Act
-  NetworkConnectionPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsNetworkConnectionPermissionRuleTest, DoNotAllowAd) {
@@ -35,11 +36,9 @@ TEST_F(BatAdsNetworkConnectionPermissionRuleTest, DoNotAllowAd) {
   MockIsNetworkConnectionAvailable(ads_client_mock_, false);
 
   // Act
-  NetworkConnectionPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_FALSE(is_allowed);
+  EXPECT_FALSE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsNetworkConnectionPermissionRuleTest,
@@ -48,7 +47,7 @@ TEST_F(BatAdsNetworkConnectionPermissionRuleTest,
   base::FieldTrialParams params;
   params["should_only_serve_ads_with_valid_internet_connection"] = "false";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(permission_rules::features::kFeature, params);
+  enabled_features.emplace_back(kPermissionRulesFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -59,11 +58,9 @@ TEST_F(BatAdsNetworkConnectionPermissionRuleTest,
   MockIsNetworkConnectionAvailable(ads_client_mock_, false);
 
   // Act
-  NetworkConnectionPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 }  // namespace brave_ads

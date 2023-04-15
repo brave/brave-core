@@ -22,7 +22,7 @@ class BatAdsCreativeNotificationAdsDatabaseTableIntegrationTest
 
   void SetUpMocks() override {
     const URLResponseMap url_responses = {
-        {"/v9/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
+        {"/v9/catalog", {{net::HTTP_OK, /*response_body*/ "/catalog.json"}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
   }
 };
@@ -34,8 +34,8 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableIntegrationTest,
   // Act
 
   // Assert
-  const database::table::CreativeNotificationAds creative_ads;
-  creative_ads.GetForSegments(
+  const database::table::CreativeNotificationAds database_table;
+  database_table.GetForSegments(
       /*segments*/ {"technology & computing"},
       base::BindOnce([](const bool success, const SegmentList& /*segments*/,
                         const CreativeNotificationAdList& creative_ads) {

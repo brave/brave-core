@@ -246,7 +246,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerTest,
   // Arrange
   ForcePermissionRulesForTesting();
 
-  const int ads_per_hour = features::GetMaximumAdsPerHour();
+  const int ads_per_hour = kMaximumAdsPerHour.Get();
 
   const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo served_ad_event = BuildAdEvent(
@@ -256,7 +256,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerTest,
       creative_ad, AdType::kNewTabPageAd, ConfirmationType::kViewed, Now());
   FireAdEvents(viewed_ad_event, ads_per_hour - 1);
 
-  AdvanceClockBy(features::GetMinimumWaitTime());
+  AdvanceClockBy(kMinimumWaitTime.Get());
 
   const std::string placement_id =
       base::GUID::GenerateRandomV4().AsLowercaseString();

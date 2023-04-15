@@ -42,7 +42,7 @@ std::string ConversionExclusionRule::GetUuid(
 }
 
 bool ConversionExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
-  if (!exclusion_rules::features::ShouldExcludeAdIfConverted()) {
+  if (!kShouldExcludeAdIfConverted.Get()) {
     return false;
   }
 

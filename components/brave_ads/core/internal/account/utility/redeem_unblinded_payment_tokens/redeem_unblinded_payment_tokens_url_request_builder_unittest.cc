@@ -81,7 +81,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensUrlRequestBuilderTest, BuildUrl) {
       EnvironmentType::kStaging);
 
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
-      GetUnblindedPaymentTokens(7);
+      GetUnblindedPaymentTokens(/*count*/ 7);
 
   const RedeemUnblindedPaymentTokensUserDataBuilder user_data_builder(
       unblinded_payment_tokens);

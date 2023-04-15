@@ -52,7 +52,7 @@ SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
 
 void SearchResultAdHandler::MaybeRetrieveSearchResultAd(
     content::RenderFrameHost* render_frame_host,
-    base::OnceCallback<void(std::vector<std::string>)> callback) {
+    base::OnceCallback<void(std::vector<std::string> placement_ids)> callback) {
   DCHECK(render_frame_host);
   DCHECK(ads_service_);
 
@@ -103,7 +103,7 @@ void SearchResultAdHandler::MaybeTriggerSearchResultAdClickedEvent(
 
 void SearchResultAdHandler::OnRetrieveSearchResultAdEntities(
     mojo::Remote<blink::mojom::DocumentMetadata> /*document_metadata*/,
-    base::OnceCallback<void(std::vector<std::string>)> callback,
+    base::OnceCallback<void(std::vector<std::string> placement_ids)> callback,
     blink::mojom::WebPagePtr web_page) {
   DCHECK(ads_service_);
 

@@ -12,7 +12,7 @@
 namespace brave_ads::database {
 
 void OnResultCallback(ResultCallback callback,
-                      mojom::DBCommandResponseInfoPtr response);
+                      mojom::DBCommandResponseInfoPtr command_response);
 
 }  // namespace brave_ads::database
 

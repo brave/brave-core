@@ -31,9 +31,12 @@ base::expected<TextProcessing, std::string> TextProcessing::CreateFromValue(
 }
 
 TextProcessing::TextProcessing() = default;
+
 TextProcessing::TextProcessing(TextProcessing&& other) noexcept = default;
+
 TextProcessing& TextProcessing::operator=(TextProcessing&& other) noexcept =
     default;
+
 TextProcessing::~TextProcessing() = default;
 
 TextProcessing::TextProcessing(TransformationVector transformations,
@@ -43,12 +46,12 @@ TextProcessing::TextProcessing(TransformationVector transformations,
   transformations_ = std::move(transformations);
 }
 
-void TextProcessing::SetPipeline(PipelineInfo info) {
-  version_ = info.version;
-  timestamp_ = info.timestamp;
-  locale_ = info.locale;
-  linear_model_ = std::move(info.linear_model);
-  transformations_ = std::move(info.transformations);
+void TextProcessing::SetPipeline(PipelineInfo pipeline) {
+  version_ = pipeline.version;
+  timestamp_ = pipeline.timestamp;
+  locale_ = pipeline.locale;
+  linear_model_ = std::move(pipeline.linear_model);
+  transformations_ = std::move(pipeline.transformations);
 }
 
 bool TextProcessing::SetPipeline(base::Value::Dict dict) {

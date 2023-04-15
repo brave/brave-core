@@ -16,16 +16,13 @@ namespace brave_ads {
 
 bool WasUserActive() {
   const UserActivityTriggerList triggers =
-      ToUserActivityTriggers(user_activity::features::GetTriggers());
+      ToUserActivityTriggers(kUserActivityTriggers.Get());
 
-  const base::TimeDelta time_window = user_activity::features::GetTimeWindow();
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(time_window);
+      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+          kUserActivityTimeWindow.Get());
 
-  const double score = GetUserActivityScore(triggers, events);
-
-  const double threshold = user_activity::features::GetThreshold();
-  return score >= threshold;
+  return GetUserActivityScore(triggers, events) >= kUserActivityThreshold.Get();
 }
 
 }  // namespace brave_ads

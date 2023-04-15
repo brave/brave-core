@@ -12,9 +12,9 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace brave_ads::targeting::features {
+namespace brave_ads::targeting {
 
-TEST(BatAdsTextClassificationFeaturesTest, IsTextClassificationEnabled) {
+TEST(BatAdsTextClassificationFeaturesTest, IsEnabled) {
   // Arrange
 
   // Act
@@ -23,12 +23,12 @@ TEST(BatAdsTextClassificationFeaturesTest, IsTextClassificationEnabled) {
   EXPECT_TRUE(IsTextClassificationEnabled());
 }
 
-TEST(BatAdsTextClassificationFeaturesTest, IsTextClassificationDisabled) {
+TEST(BatAdsTextClassificationFeaturesTest, IsDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kTextClassification);
+  disabled_features.emplace_back(kTextClassificationFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -46,7 +46,7 @@ TEST(BatAdsTextClassificationFeaturesTest,
   base::FieldTrialParams params;
   params["resource_version"] = "0";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kTextClassification, params);
+  enabled_features.emplace_back(kTextClassificationFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -57,7 +57,7 @@ TEST(BatAdsTextClassificationFeaturesTest,
   // Act
 
   // Assert
-  EXPECT_EQ(0, GetTextClassificationResourceVersion());
+  EXPECT_EQ(0, kTextClassificationResourceVersion.Get());
 }
 
 TEST(BatAdsTextClassificationFeaturesTest,
@@ -67,7 +67,7 @@ TEST(BatAdsTextClassificationFeaturesTest,
   // Act
 
   // Assert
-  EXPECT_EQ(1, GetTextClassificationResourceVersion());
+  EXPECT_EQ(1, kTextClassificationResourceVersion.Get());
 }
 
 TEST(BatAdsTextClassificationFeaturesTest,
@@ -76,7 +76,7 @@ TEST(BatAdsTextClassificationFeaturesTest,
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kTextClassification);
+  disabled_features.emplace_back(kTextClassificationFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -85,7 +85,7 @@ TEST(BatAdsTextClassificationFeaturesTest,
   // Act
 
   // Assert
-  EXPECT_EQ(1, GetTextClassificationResourceVersion());
+  EXPECT_EQ(1, kTextClassificationResourceVersion.Get());
 }
 
 TEST(BatAdsTextClassificationFeaturesTest,
@@ -94,7 +94,7 @@ TEST(BatAdsTextClassificationFeaturesTest,
   base::FieldTrialParams params;
   params["page_probabilities_history_size"] = "3";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kTextClassification, params);
+  enabled_features.emplace_back(kTextClassificationFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -105,7 +105,7 @@ TEST(BatAdsTextClassificationFeaturesTest,
   // Act
 
   // Assert
-  EXPECT_EQ(3, GetTextClassificationProbabilitiesHistorySize());
+  EXPECT_EQ(3, kTextClassificationPageProbabilitiesHistorySize.Get());
 }
 
 TEST(BatAdsTextClassificationFeaturesTest,
@@ -115,7 +115,7 @@ TEST(BatAdsTextClassificationFeaturesTest,
   // Act
 
   // Assert
-  EXPECT_EQ(5, GetTextClassificationProbabilitiesHistorySize());
+  EXPECT_EQ(5, kTextClassificationPageProbabilitiesHistorySize.Get());
 }
 
 TEST(BatAdsTextClassificationFeaturesTest,
@@ -124,7 +124,7 @@ TEST(BatAdsTextClassificationFeaturesTest,
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kTextClassification);
+  disabled_features.emplace_back(kTextClassificationFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -133,7 +133,7 @@ TEST(BatAdsTextClassificationFeaturesTest,
   // Act
 
   // Assert
-  EXPECT_EQ(5, GetTextClassificationProbabilitiesHistorySize());
+  EXPECT_EQ(5, kTextClassificationPageProbabilitiesHistorySize.Get());
 }
 
-}  // namespace brave_ads::targeting::features
+}  // namespace brave_ads::targeting

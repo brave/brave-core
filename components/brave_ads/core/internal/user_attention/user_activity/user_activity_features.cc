@@ -5,45 +5,14 @@
 
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_features.h"
 
-#include "base/metrics/field_trial_params.h"
-#include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/common/metrics/field_trial_params_util.h"
+namespace brave_ads {
 
-namespace brave_ads::user_activity::features {
+BASE_FEATURE(kUserActivityFeature,
+             "UserActivity",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
-namespace {
-
-constexpr char kTriggersFieldTrialParamName[] = "triggers";
-constexpr char kTriggersDefaultValue[] =
-    "0D0B14110D0B14110D0B14110D0B1411=-1.0;0D0B1411070707=-1.0;07070707=-1.0";
-
-constexpr char kTimeWindowFieldTrialParamName[] = "time_window";
-constexpr base::TimeDelta kTimeWindowDefaultValue = base::Minutes(15);
-
-constexpr char kThresholdFieldTrialParamName[] = "threshold";
-constexpr double kTresholdDefaultValue = 0.0;
-
-}  // namespace
-
-BASE_FEATURE(kFeature, "UserActivity", base::FEATURE_ENABLED_BY_DEFAULT);
-
-bool IsEnabled() {
-  return base::FeatureList::IsEnabled(kFeature);
+bool IsUserActivityEnabled() {
+  return base::FeatureList::IsEnabled(kUserActivityFeature);
 }
 
-std::string GetTriggers() {
-  return GetFieldTrialParamByFeatureAsString(
-      kFeature, kTriggersFieldTrialParamName, kTriggersDefaultValue);
-}
-
-base::TimeDelta GetTimeWindow() {
-  return GetFieldTrialParamByFeatureAsTimeDelta(
-      kFeature, kTimeWindowFieldTrialParamName, kTimeWindowDefaultValue);
-}
-
-double GetThreshold() {
-  return GetFieldTrialParamByFeatureAsDouble(
-      kFeature, kThresholdFieldTrialParamName, kTresholdDefaultValue);
-}
-
-}  // namespace brave_ads::user_activity::features
+}  // namespace brave_ads
