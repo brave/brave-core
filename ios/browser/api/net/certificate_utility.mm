@@ -169,14 +169,13 @@ namespace {
 
   // Validate the chain of Trust
   net::CertVerifyResult verify_result;
-  scoped_refptr<net::CRLSet> crl_set = net::CRLSet::BuiltinCRLSet();
   scoped_refptr<net::CertVerifyProc> verifier =
-      base::MakeRefCounted<net::CertVerifyProcIOS>();
+      base::MakeRefCounted<net::CertVerifyProcIOS>(
+          net::CRLSet::BuiltinCRLSet());
   verifier->Verify(cert.get(), base::SysNSStringToUTF8(host),
                    /*ocsp_response=*/std::string(),
                    /*sct_list=*/std::string(),
                    /*flags=*/0,
-                   /*crl_set=*/crl_set.get(),
                    /*additional_trust_anchors=*/net::CertificateList(),
                    &verify_result, net::NetLogWithSource());
 
