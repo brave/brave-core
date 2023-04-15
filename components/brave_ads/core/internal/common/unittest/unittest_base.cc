@@ -13,6 +13,7 @@
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/database.h"
+#include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_constants.h"
@@ -333,8 +334,7 @@ void UnitTestBase::SetUpIntegrationTest() {
 
   ads_ = std::make_unique<AdsImpl>(ads_client_mock_.get());
 
-  ads_->OnRewardsWalletDidChange(GetWalletPaymentIdForTesting(),      // IN-TEST
-                                 GetWalletRecoverySeedForTesting());  // IN-TEST
+  ads_->OnRewardsWalletDidChange(kWalletPaymentId, kWalletRecoverySeed);
 
   ads_->Initialize(
       base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));

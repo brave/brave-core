@@ -52,19 +52,19 @@ LedgerImpl::LedgerImpl(
   set_ledger_client_for_logging(ledger_client_.get());
 }
 
-LedgerImpl::~LedgerImpl() = default;
+LedgerImpl::~LedgerImpl() {
+  set_ledger_client_for_logging(nullptr);
+}
 
 // mojom::Ledger implementation begin (in the order of appearance in Mojom)
-void LedgerImpl::Initialize(bool execute_create_script,
-                            InitializeCallback callback) {
+void LedgerImpl::Initialize(InitializeCallback callback) {
   if (ready_state_ != ReadyState::kUninitialized) {
     BLOG(0, "Ledger already initializing");
     return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
   }
 
   ready_state_ = ReadyState::kInitializing;
-  InitializeDatabase(execute_create_script,
-                     ToLegacyCallback(std::move(callback)));
+  InitializeDatabase(ToLegacyCallback(std::move(callback)));
 }
 
 void LedgerImpl::SetEnvironment(mojom::Environment environment) {
@@ -789,12 +789,6 @@ void LedgerImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {
 // mojom::Ledger implementation end
 
 // mojom::LedgerClient helpers begin (in the order of appearance in Mojom)
-std::string LedgerImpl::URIEncode(const std::string& value) {
-  std::string encoded_value;
-  ledger_client_->URIEncode(value, &encoded_value);
-  return encoded_value;
-}
-
 std::string LedgerImpl::GetLegacyWallet() {
   std::string wallet;
   ledger_client_->GetLegacyWallet(&wallet);
@@ -886,8 +880,7 @@ bool LedgerImpl::IsReady() const {
   return ready_state_ == ReadyState::kReady;
 }
 
-void LedgerImpl::InitializeDatabase(bool execute_create_script,
-                                    LegacyResultCallback callback) {
+void LedgerImpl::InitializeDatabase(LegacyResultCallback callback) {
   DCHECK(ready_state_ == ReadyState::kInitializing);
 
   LegacyResultCallback finish_callback =
@@ -895,7 +888,7 @@ void LedgerImpl::InitializeDatabase(bool execute_create_script,
 
   auto database_callback =
       std::bind(&LedgerImpl::OnDatabaseInitialized, this, _1, finish_callback);
-  database()->Initialize(execute_create_script, database_callback);
+  database()->Initialize(database_callback);
 }
 
 void LedgerImpl::OnDatabaseInitialized(mojom::Result result,

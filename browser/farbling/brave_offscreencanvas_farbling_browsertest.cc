@@ -29,7 +29,7 @@
 using brave_shields::ControlType;
 
 const char kEmbeddedTestServerDirectory[] = "canvas";
-const char kTitleScript[] = "domAutomationController.send(document.title);";
+const char kTitleScript[] = "document.title;";
 const char kExpectedImageDataHashFarblingBalanced[] = "204";
 const char kExpectedImageDataHashFarblingOff[] = "0";
 const char kExpectedImageDataHashFarblingMaximum[] = "204";
@@ -82,13 +82,6 @@ class BraveOffscreenCanvasFarblingBrowserTest : public InProcessBrowserTest {
         content_settings(), ControlType::DEFAULT, top_level_page_url_);
   }
 
-  template <typename T>
-  std::string ExecScriptGetStr(const std::string& script, T* frame) {
-    std::string value;
-    EXPECT_TRUE(ExecuteScriptAndExtractString(frame, script, &value));
-    return value;
-  }
-
   content::WebContents* contents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
@@ -112,21 +105,21 @@ IN_PROC_BROWSER_TEST_F(BraveOffscreenCanvasFarblingBrowserTest,
   // code (which is what this test is really testing), then this will never
   // unblock and the entire browser test will eventually time out. Timing
   // out indicates a fatal error.
-  while (ExecScriptGetStr(kTitleScript, contents()) == "") {
+  while (content::EvalJs(contents(), kTitleScript).ExtractString() == "") {
   }
-  EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()), "pass");
+  EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "pass");
 
   BlockFingerprinting();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  while (ExecScriptGetStr(kTitleScript, contents()) == "") {
+  while (content::EvalJs(contents(), kTitleScript).ExtractString() == "") {
   }
-  EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()), "pass");
+  EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "pass");
 
   SetFingerprintingDefault();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  while (ExecScriptGetStr(kTitleScript, contents()) == "") {
+  while (content::EvalJs(contents(), kTitleScript).ExtractString() == "") {
   }
-  EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()), "pass");
+  EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "pass");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveOffscreenCanvasFarblingBrowserTest,
@@ -137,23 +130,23 @@ IN_PROC_BROWSER_TEST_F(BraveOffscreenCanvasFarblingBrowserTest,
   AllowFingerprinting();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   // wait for worker thread to complete
-  while (ExecScriptGetStr(kTitleScript, contents()) == "") {
+  while (content::EvalJs(contents(), kTitleScript).ExtractString() == "") {
   }
-  EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()),
+  EXPECT_EQ(content::EvalJs(contents(), kTitleScript),
             kExpectedImageDataHashFarblingOff);
 
   BlockFingerprinting();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  while (ExecScriptGetStr(kTitleScript, contents()) == "") {
+  while (content::EvalJs(contents(), kTitleScript).ExtractString() == "") {
   }
-  EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()),
+  EXPECT_EQ(content::EvalJs(contents(), kTitleScript),
             kExpectedImageDataHashFarblingMaximum);
 
   SetFingerprintingDefault();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  while (ExecScriptGetStr(kTitleScript, contents()) == "") {
+  while (content::EvalJs(contents(), kTitleScript).ExtractString() == "") {
   }
-  EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()),
+  EXPECT_EQ(content::EvalJs(contents(), kTitleScript),
             kExpectedImageDataHashFarblingBalanced);
 
   // Turn off shields to test that the worker content settings agent
@@ -161,8 +154,8 @@ IN_PROC_BROWSER_TEST_F(BraveOffscreenCanvasFarblingBrowserTest,
   // setting.
   brave_shields::SetBraveShieldsEnabled(content_settings(), false, url);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  while (ExecScriptGetStr(kTitleScript, contents()) == "") {
+  while (content::EvalJs(contents(), kTitleScript).ExtractString() == "") {
   }
-  EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()),
+  EXPECT_EQ(content::EvalJs(contents(), kTitleScript),
             kExpectedImageDataHashFarblingOff);
 }

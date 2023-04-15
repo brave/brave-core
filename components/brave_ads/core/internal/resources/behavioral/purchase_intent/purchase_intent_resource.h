@@ -6,28 +6,21 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_RESOURCE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_RESOURCE_H_
 
-#include <memory>
-
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/core/internal/resources/parsing_result.h"
+#include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_info.h"
+#include "brave/components/brave_ads/core/internal/resources/parsing_error_or.h"
 
-namespace brave_ads {
-
-namespace targeting {
-struct PurchaseIntentInfo;
-}  // namespace targeting
-
-namespace resource {
+namespace brave_ads::resource {
 
 class PurchaseIntent final {
  public:
   PurchaseIntent();
 
-  PurchaseIntent(const PurchaseIntent& other) = delete;
-  PurchaseIntent& operator=(const PurchaseIntent& other) = delete;
+  PurchaseIntent(const PurchaseIntent&) = delete;
+  PurchaseIntent& operator=(const PurchaseIntent&) = delete;
 
-  PurchaseIntent(PurchaseIntent&& other) noexcept = delete;
-  PurchaseIntent& operator=(PurchaseIntent&& other) noexcept = delete;
+  PurchaseIntent(PurchaseIntent&&) noexcept = delete;
+  PurchaseIntent& operator=(PurchaseIntent&&) noexcept = delete;
 
   ~PurchaseIntent();
 
@@ -39,16 +32,15 @@ class PurchaseIntent final {
 
  private:
   void OnLoadAndParseResource(
-      ParsingResultPtr<targeting::PurchaseIntentInfo> result);
+      ParsingErrorOr<targeting::PurchaseIntentInfo> result);
 
   bool is_initialized_ = false;
 
-  std::unique_ptr<targeting::PurchaseIntentInfo> purchase_intent_;
+  targeting::PurchaseIntentInfo purchase_intent_;
 
   base::WeakPtrFactory<PurchaseIntent> weak_factory_{this};
 };
 
-}  // namespace resource
-}  // namespace brave_ads
+}  // namespace brave_ads::resource
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_RESOURCE_H_

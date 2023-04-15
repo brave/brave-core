@@ -550,9 +550,17 @@ TEST_F(IpfsLocalPinServiceTest, ResetTest) {
             std::move(callback).Run(true);
           }));
   absl::optional<bool> reset_result;
+  service()->AddPins("123", {"ipfs://bafy1", "ipfs://bafy2"},
+                     base::DoNothing());
+  service()->AddPins("345", {"ipfs://bafy1", "ipfs://bafy2"},
+                     base::DoNothing());
+  service()->AddPins("567", {"ipfs://bafy1", "ipfs://bafy2"},
+                     base::DoNothing());
+
   service()->Reset(base::BindLambdaForTesting(
       [&reset_result](bool result) { reset_result = result; }));
   EXPECT_EQ(0u, GetPrefs()->GetDict(kIPFSPinnedCids).size());
+  EXPECT_FALSE(service()->HasJobs());
   ASSERT_TRUE(reset_result.value());
 }
 

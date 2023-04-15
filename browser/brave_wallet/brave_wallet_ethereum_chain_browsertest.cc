@@ -548,13 +548,8 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, CheckIncognitoTab) {
   WaitForLoadStop(contents);
   EXPECT_EQ(url, contents->GetURL());
   base::RunLoop().RunUntilIdle();
-  std::string title;
-  ASSERT_TRUE(
-      ExecuteScriptAndExtractString(contents,
-                                    "window.domAutomationController.send("
-                                    "document.title)",
-                                    &title));
-  EXPECT_EQ(title, "PAGE_SCRIPT_STARTED");
+  EXPECT_EQ(content::EvalJs(contents, "document.title;"),
+            "PAGE_SCRIPT_STARTED");
   auto result_first = EvalJs(contents,
                              "window.domAutomationController.send("
                              "window.ethereum != null)",

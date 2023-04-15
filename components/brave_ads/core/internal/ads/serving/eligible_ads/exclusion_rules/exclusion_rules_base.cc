@@ -29,12 +29,9 @@ namespace brave_ads {
 
 ExclusionRulesBase::ExclusionRulesBase(
     const AdEventList& ad_events,
-    geographic::SubdivisionTargeting* subdivision_targeting,
-    resource::AntiTargeting* anti_targeting_resource,
+    const geographic::SubdivisionTargeting& subdivision_targeting,
+    const resource::AntiTargeting& anti_targeting_resource,
     const BrowsingHistoryList& browsing_history) {
-  DCHECK(subdivision_targeting);
-  DCHECK(anti_targeting_resource);
-
   split_test_exclusion_rule_ = std::make_unique<SplitTestExclusionRule>();
   exclusion_rules_.push_back(split_test_exclusion_rule_.get());
 

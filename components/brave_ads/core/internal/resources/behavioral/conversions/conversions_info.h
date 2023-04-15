@@ -6,31 +6,27 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_CONVERSIONS_CONVERSIONS_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_CONVERSIONS_CONVERSIONS_INFO_H_
 
-#include <memory>
 #include <string>
 
+#include "base/types/expected.h"
+#include "base/values.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversion_id_pattern_info.h"
-
-namespace base {
-class Value;
-}  // namespace base
 
 namespace brave_ads::resource {
 
 struct ConversionsInfo final {
   ConversionsInfo();
 
-  ConversionsInfo(const ConversionsInfo& other);
-  ConversionsInfo& operator=(const ConversionsInfo& other);
+  ConversionsInfo(const ConversionsInfo&) = delete;
+  ConversionsInfo& operator=(const ConversionsInfo&) = delete;
 
   ConversionsInfo(ConversionsInfo&& other) noexcept;
   ConversionsInfo& operator=(ConversionsInfo&& other) noexcept;
 
   ~ConversionsInfo();
 
-  static std::unique_ptr<ConversionsInfo> CreateFromValue(
-      base::Value resource_value,
-      std::string* error_message);
+  static base::expected<ConversionsInfo, std::string> CreateFromValue(
+      base::Value::Dict dict);
 
   int version = 0;
   ConversionIdPatternMap id_patterns;

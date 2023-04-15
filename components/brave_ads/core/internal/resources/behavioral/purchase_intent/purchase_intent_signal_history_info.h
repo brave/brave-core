@@ -22,10 +22,10 @@ struct PurchaseIntentSignalHistoryInfo final {
   uint16_t weight = 0;
 };
 
-bool operator==(const PurchaseIntentSignalHistoryInfo& lhs,
-                const PurchaseIntentSignalHistoryInfo& rhs);
-bool operator!=(const PurchaseIntentSignalHistoryInfo& lhs,
-                const PurchaseIntentSignalHistoryInfo& rhs);
+bool operator==(const PurchaseIntentSignalHistoryInfo&,
+                const PurchaseIntentSignalHistoryInfo&);
+bool operator!=(const PurchaseIntentSignalHistoryInfo&,
+                const PurchaseIntentSignalHistoryInfo&);
 
 using PurchaseIntentSignalHistoryList =
     std::vector<PurchaseIntentSignalHistoryInfo>;

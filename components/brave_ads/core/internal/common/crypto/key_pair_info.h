@@ -14,16 +14,16 @@ namespace brave_ads::crypto {
 struct KeyPairInfo final {
   KeyPairInfo();
 
-  KeyPairInfo(const KeyPairInfo& other);
-  KeyPairInfo& operator=(const KeyPairInfo& other);
+  KeyPairInfo(const KeyPairInfo&);
+  KeyPairInfo& operator=(const KeyPairInfo&);
 
-  KeyPairInfo(KeyPairInfo&& other) noexcept;
-  KeyPairInfo& operator=(KeyPairInfo&& other) noexcept;
+  KeyPairInfo(KeyPairInfo&&) noexcept;
+  KeyPairInfo& operator=(KeyPairInfo&&) noexcept;
 
   ~KeyPairInfo();
 
-  bool operator==(const KeyPairInfo& other) const;
-  bool operator!=(const KeyPairInfo& other) const;
+  bool operator==(const KeyPairInfo&) const;
+  bool operator!=(const KeyPairInfo&) const;
 
   bool IsValid() const;
 

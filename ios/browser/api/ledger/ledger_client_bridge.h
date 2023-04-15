@@ -31,8 +31,6 @@ NS_ASSUME_NONNULL_BEGIN
                 (ledger::mojom::LedgerClient::FetchFavIconCallback)callback;
 - (void)loadUrl:(ledger::mojom::UrlRequestPtr)request
        callback:(ledger::mojom::LedgerClient::LoadURLCallback)callback;
-- (void)uriEncode:(const std::string&)value
-         callback:(ledger::mojom::LedgerClient::URIEncodeCallback)callback;
 - (void)publisherListNormalized:
     (std::vector<ledger::mojom::PublisherInfoPtr>)list;
 - (void)onPublisherRegistryUpdated;
@@ -125,8 +123,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)runDbTransaction:(ledger::mojom::DBTransactionPtr)transaction
                 callback:(ledger::mojom::LedgerClient::RunDBTransactionCallback)
                              callback;
-- (void)createScript:
-    (ledger::mojom::LedgerClient::GetCreateScriptCallback)callback;
 - (void)pendingContributionSaved:(ledger::mojom::Result)result;
 - (void)log:(const std::string&)file
             line:(int32_t)line

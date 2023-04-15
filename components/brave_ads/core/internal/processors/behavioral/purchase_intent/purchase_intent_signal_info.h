@@ -16,12 +16,11 @@ namespace brave_ads::targeting {
 struct PurchaseIntentSignalInfo final {
   PurchaseIntentSignalInfo();
 
-  PurchaseIntentSignalInfo(const PurchaseIntentSignalInfo& other);
-  PurchaseIntentSignalInfo& operator=(const PurchaseIntentSignalInfo& other);
+  PurchaseIntentSignalInfo(const PurchaseIntentSignalInfo&);
+  PurchaseIntentSignalInfo& operator=(const PurchaseIntentSignalInfo&);
 
-  PurchaseIntentSignalInfo(PurchaseIntentSignalInfo&& other) noexcept;
-  PurchaseIntentSignalInfo& operator=(
-      PurchaseIntentSignalInfo&& other) noexcept;
+  PurchaseIntentSignalInfo(PurchaseIntentSignalInfo&&) noexcept;
+  PurchaseIntentSignalInfo& operator=(PurchaseIntentSignalInfo&&) noexcept;
 
   ~PurchaseIntentSignalInfo();
 

@@ -16,11 +16,9 @@ TEST(BatAdsSegmentsDatabaseTableTest, TableName) {
   const Segments database_table;
 
   // Act
-  const std::string table_name = database_table.GetTableName();
 
   // Assert
-  const std::string expected_table_name = "segments";
-  EXPECT_EQ(expected_table_name, table_name);
+  EXPECT_EQ("segments", database_table.GetTableName());
 }
 
 }  // namespace brave_ads::database::table

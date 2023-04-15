@@ -6,16 +6,13 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/dislike_exclusion_rule.h"
 
 #include "brave/components/brave_ads/core/ad_content_info.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace brave_ads {
-
-namespace {
-constexpr char kAdvertiserId[] = "1d3349f6-6713-4324-a135-b377237450a4";
-}  // namespace
 
 class BatAdsDislikeExclusionRuleTest : public UnitTestBase {};
 

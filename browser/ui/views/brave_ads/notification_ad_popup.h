@@ -56,15 +56,19 @@ class NotificationAdPopup : public views::WidgetDelegateView,
   NotificationAdPopup(const NotificationAdPopup&) = delete;
   NotificationAdPopup& operator=(const NotificationAdPopup&) = delete;
 
-  NotificationAdPopup(NotificationAdPopup&& other) noexcept = delete;
-  NotificationAdPopup& operator=(NotificationAdPopup&& other) noexcept = delete;
+  NotificationAdPopup(NotificationAdPopup&&) noexcept = delete;
+  NotificationAdPopup& operator=(NotificationAdPopup&&) noexcept = delete;
 
   ~NotificationAdPopup() override;
 
   // Disables fade in animation for snapshot tests.
   static void SetDisableFadeInAnimationForTesting(bool disable);
 
+  void AdjustBoundsAndSnapToFitWorkAreaForWidget(views::Widget* widget,
+                                                 const gfx::Rect& bounds);
+
   // display::DisplayObserver:
+  void OnDisplayAdded(const display::Display& new_display) override;
   void OnDisplayRemoved(const display::Display& old_display) override;
   void OnDisplayMetricsChanged(const display::Display& display,
                                uint32_t changed_metrics) override;
@@ -75,6 +79,9 @@ class NotificationAdPopup : public views::WidgetDelegateView,
   void OnWorkAreaChanged() override;
   void OnPaintBackground(gfx::Canvas* canvas) override;
   void OnThemeChanged() override;
+  bool OnMousePressed(const ui::MouseEvent& event) override;
+  bool OnMouseDragged(const ui::MouseEvent& event) override;
+  void OnMouseReleased(const ui::MouseEvent& event) override;
 
   // views::WidgetObserver:
   void OnWidgetDestroyed(views::Widget* widget) override;
@@ -136,6 +143,11 @@ class NotificationAdPopup : public views::WidgetDelegateView,
   void UpdateAnimation();
 
   bool IsWidgetValid() const;
+
+  gfx::Point initial_mouse_pressed_location_;
+  bool is_dragging_ = false;
+
+  bool inside_adjust_bounds_ = false;
 
   base::ScopedObservation<views::Widget, views::WidgetObserver>
       widget_observation_{this};

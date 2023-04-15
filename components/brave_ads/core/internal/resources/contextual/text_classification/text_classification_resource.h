@@ -6,28 +6,21 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_CONTEXTUAL_TEXT_CLASSIFICATION_TEXT_CLASSIFICATION_RESOURCE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_CONTEXTUAL_TEXT_CLASSIFICATION_TEXT_CLASSIFICATION_RESOURCE_H_
 
-#include <memory>
-
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/core/internal/resources/parsing_result.h"
+#include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
+#include "brave/components/brave_ads/core/internal/resources/parsing_error_or.h"
 
-namespace brave_ads {
-
-namespace ml::pipeline {
-class TextProcessing;
-}  // namespace ml::pipeline
-
-namespace resource {
+namespace brave_ads::resource {
 
 class TextClassification final {
  public:
   TextClassification();
 
-  TextClassification(const TextClassification& other) = delete;
-  TextClassification& operator=(const TextClassification& other) = delete;
+  TextClassification(const TextClassification&) = delete;
+  TextClassification& operator=(const TextClassification&) = delete;
 
-  TextClassification(TextClassification&& other) noexcept = delete;
-  TextClassification& operator=(TextClassification&& other) noexcept = delete;
+  TextClassification(TextClassification&&) noexcept = delete;
+  TextClassification& operator=(TextClassification&&) noexcept = delete;
 
   ~TextClassification();
 
@@ -35,18 +28,17 @@ class TextClassification final {
 
   void Load();
 
-  ml::pipeline::TextProcessing* Get() const;
+  const ml::pipeline::TextProcessing* Get() const;
 
  private:
   void OnLoadAndParseResource(
-      ParsingResultPtr<ml::pipeline::TextProcessing> result);
+      ParsingErrorOr<ml::pipeline::TextProcessing> result);
 
-  std::unique_ptr<ml::pipeline::TextProcessing> text_processing_pipeline_;
+  ml::pipeline::TextProcessing text_processing_pipeline_;
 
   base::WeakPtrFactory<TextClassification> weak_factory_{this};
 };
 
-}  // namespace resource
-}  // namespace brave_ads
+}  // namespace brave_ads::resource
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_CONTEXTUAL_TEXT_CLASSIFICATION_TEXT_CLASSIFICATION_RESOURCE_H_

@@ -81,9 +81,7 @@ TEST(BatConversionsSortTest, DescendingSortOrderForEmptyList) {
   conversions = sort->Apply(conversions);
 
   // Assert
-  const ConversionList expected_conversions;
-
-  EXPECT_EQ(expected_conversions, conversions);
+  EXPECT_TRUE(conversions.empty());
 }
 
 TEST(BatConversionsSortTest, AscendingSortOrder) {

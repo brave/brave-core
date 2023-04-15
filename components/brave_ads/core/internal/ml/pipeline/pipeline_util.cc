@@ -179,13 +179,7 @@ absl::optional<model::Linear> ParsePipelineClassifier(
 
 }  // namespace
 
-absl::optional<PipelineInfo> ParsePipelineValue(base::Value value) {
-  if (!value.is_dict()) {
-    return absl::nullopt;
-  }
-
-  base::Value::Dict& dict = value.GetDict();
-
+absl::optional<PipelineInfo> ParsePipelineValue(base::Value::Dict dict) {
   const absl::optional<int> version = dict.FindInt("version");
   if (!version) {
     return absl::nullopt;

@@ -158,8 +158,7 @@ TEST_F(BatAdsUserActivityUtilTest, GetTimeSinceLastUserActivityEvent) {
       events, UserActivityEventType::kTabStartedPlayingMedia);
 
   // Assert
-  const int64_t expected_time = 6 * base::Time::kSecondsPerMinute;
-  EXPECT_EQ(expected_time, time);
+  EXPECT_EQ(6 * base::Time::kSecondsPerMinute, time);
 }
 
 TEST_F(BatAdsUserActivityUtilTest,

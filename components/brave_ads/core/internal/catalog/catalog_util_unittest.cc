@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 
 #include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
@@ -57,7 +58,7 @@ TEST_F(BatAdsCatalogUtilTest, CatalogDoesNotExist) {
 
 TEST_F(BatAdsCatalogUtilTest, CatalogHasChanged) {
   // Arrange
-  SetCatalogId("29e5c8bc0ba319069980bb390d8e8f9b58c05a20");
+  SetCatalogId(kCatalogId);
 
   // Act
 
@@ -69,13 +70,12 @@ TEST_F(BatAdsCatalogUtilTest, CatalogHasChanged) {
 
 TEST_F(BatAdsCatalogUtilTest, CatalogHasNotChanged) {
   // Arrange
-  SetCatalogId("29e5c8bc0ba319069980bb390d8e8f9b58c05a20");
+  SetCatalogId(kCatalogId);
 
   // Act
 
   // Assert
-  const bool has_changed =
-      HasCatalogChanged("29e5c8bc0ba319069980bb390d8e8f9b58c05a20");
+  const bool has_changed = HasCatalogChanged(kCatalogId);
   EXPECT_FALSE(has_changed);
 }
 

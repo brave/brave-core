@@ -224,9 +224,6 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, NotVerifiedWallet) {
       contents(), "[data-test-id=verify-rewards-button]");
 
   rewards_browsertest_util::WaitForElementThenClick(
-      contents(), "[data-test-id=connect-continue-button]");
-
-  rewards_browsertest_util::WaitForElementThenClick(
       contents(), "[data-test-id=connect-provider-button]");
 
   // Check if we are redirected to uphold

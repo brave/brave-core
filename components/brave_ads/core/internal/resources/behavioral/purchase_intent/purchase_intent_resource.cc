@@ -19,9 +19,7 @@ namespace {
 constexpr char kResourceId[] = "bejenkminijgplakmkmcgkhjjnkelbld";
 }  // namespace
 
-PurchaseIntent::PurchaseIntent()
-    : purchase_intent_(std::make_unique<targeting::PurchaseIntentInfo>()) {}
-
+PurchaseIntent::PurchaseIntent() = default;
 PurchaseIntent::~PurchaseIntent() = default;
 
 void PurchaseIntent::Load() {
@@ -32,27 +30,20 @@ void PurchaseIntent::Load() {
 }
 
 void PurchaseIntent::OnLoadAndParseResource(
-    ParsingResultPtr<targeting::PurchaseIntentInfo> result) {
-  if (!result) {
-    BLOG(1, "Failed to load " << kResourceId << " purchase intent resource");
-    is_initialized_ = false;
-    return;
-  }
-
-  BLOG(1, "Successfully loaded " << kResourceId << " purchase intent resource");
-
-  if (!result->resource) {
-    BLOG(1, result->error_message);
+    ParsingErrorOr<targeting::PurchaseIntentInfo> result) {
+  if (!result.has_value()) {
+    BLOG(1, result.error());
     BLOG(1,
          "Failed to initialize " << kResourceId << " purchase intent resource");
     is_initialized_ = false;
     return;
   }
 
-  purchase_intent_ = std::move(result->resource);
+  BLOG(1, "Successfully loaded " << kResourceId << " purchase intent resource");
+  purchase_intent_ = std::move(result).value();
 
   BLOG(1,
-       "Parsed purchase intent resource version " << purchase_intent_->version);
+       "Parsed purchase intent resource version " << purchase_intent_.version);
 
   is_initialized_ = true;
 
@@ -61,7 +52,7 @@ void PurchaseIntent::OnLoadAndParseResource(
 }
 
 const targeting::PurchaseIntentInfo* PurchaseIntent::Get() const {
-  return purchase_intent_.get();
+  return &purchase_intent_;
 }
 
 }  // namespace brave_ads::resource

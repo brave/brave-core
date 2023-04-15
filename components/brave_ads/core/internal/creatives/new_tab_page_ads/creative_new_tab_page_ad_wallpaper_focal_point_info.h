@@ -13,10 +13,10 @@ struct CreativeNewTabPageAdWallpaperFocalPointInfo final {
   int y = 0;
 };
 
-bool operator==(const CreativeNewTabPageAdWallpaperFocalPointInfo& lhs,
-                const CreativeNewTabPageAdWallpaperFocalPointInfo& rhs);
-bool operator!=(const CreativeNewTabPageAdWallpaperFocalPointInfo& lhs,
-                const CreativeNewTabPageAdWallpaperFocalPointInfo& rhs);
+bool operator==(const CreativeNewTabPageAdWallpaperFocalPointInfo&,
+                const CreativeNewTabPageAdWallpaperFocalPointInfo&);
+bool operator!=(const CreativeNewTabPageAdWallpaperFocalPointInfo&,
+                const CreativeNewTabPageAdWallpaperFocalPointInfo&);
 
 }  // namespace brave_ads
 

@@ -8,9 +8,9 @@
 
 #include <string>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_alias.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_interface.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_info.h"
 
 namespace brave_ads {
 
@@ -23,17 +23,17 @@ struct CreativeAdInfo;
 class AntiTargetingExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
-  AntiTargetingExclusionRule(resource::AntiTargeting* anti_targeting_resource,
-                             BrowsingHistoryList browsing_history);
+  AntiTargetingExclusionRule(
+      const resource::AntiTargeting& anti_targeting_resource,
+      BrowsingHistoryList browsing_history);
 
-  AntiTargetingExclusionRule(const AntiTargetingExclusionRule& other) = delete;
+  AntiTargetingExclusionRule(const AntiTargetingExclusionRule&) = delete;
   AntiTargetingExclusionRule& operator=(const AntiTargetingExclusionRule&) =
       delete;
 
-  AntiTargetingExclusionRule(AntiTargetingExclusionRule&& other) noexcept =
+  AntiTargetingExclusionRule(AntiTargetingExclusionRule&&) noexcept = delete;
+  AntiTargetingExclusionRule& operator=(AntiTargetingExclusionRule&&) noexcept =
       delete;
-  AntiTargetingExclusionRule& operator=(
-      AntiTargetingExclusionRule&& other) noexcept = delete;
 
   ~AntiTargetingExclusionRule() override;
 
@@ -46,7 +46,7 @@ class AntiTargetingExclusionRule final
  private:
   bool DoesRespectCap(const CreativeAdInfo& creative_ad) const;
 
-  resource::AntiTargetingInfo anti_targeting_;
+  const base::raw_ref<const resource::AntiTargeting> anti_targeting_resource_;
 
   BrowsingHistoryList browsing_history_;
 

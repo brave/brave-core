@@ -11,8 +11,8 @@
 namespace brave_ads::targeting {
 
 struct EpsilonGreedyBanditArmInfo final {
-  bool operator==(const EpsilonGreedyBanditArmInfo& other) const;
-  bool operator!=(const EpsilonGreedyBanditArmInfo& other) const;
+  bool operator==(const EpsilonGreedyBanditArmInfo&) const;
+  bool operator!=(const EpsilonGreedyBanditArmInfo&) const;
 
   bool IsValid() const;
 

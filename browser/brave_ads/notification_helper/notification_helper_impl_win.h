@@ -22,10 +22,9 @@ class NotificationHelperImplWin
   NotificationHelperImplWin& operator=(const NotificationHelperImplWin&) =
       delete;
 
-  NotificationHelperImplWin(NotificationHelperImplWin&& other) noexcept =
+  NotificationHelperImplWin(NotificationHelperImplWin&&) noexcept = delete;
+  NotificationHelperImplWin& operator=(NotificationHelperImplWin&&) noexcept =
       delete;
-  NotificationHelperImplWin& operator=(
-      NotificationHelperImplWin&& other) noexcept = delete;
 
   ~NotificationHelperImplWin() override;
 

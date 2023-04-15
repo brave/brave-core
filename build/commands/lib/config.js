@@ -122,6 +122,7 @@ const Config = function () {
   this.googleDefaultClientSecret = getNPMConfig(['google_default_client_secret']) || ''
   this.braveServicesKey = getNPMConfig(['brave_services_key']) || ''
   this.infuraProjectId = getNPMConfig(['brave_infura_project_id']) || ''
+  this.braveZeroExApiKey = getNPMConfig(['brave_zero_ex_api_key']) || ''
   this.bitflyerClientId = getNPMConfig(['bitflyer_client_id']) || ''
   this.bitflyerClientSecret = getNPMConfig(['bitflyer_client_secret']) || ''
   this.bitflyerStagingClientId = getNPMConfig(['bitflyer_staging_client_id']) || ''
@@ -291,6 +292,7 @@ Config.prototype.buildArgs = function () {
     google_default_client_id: this.googleDefaultClientId,
     google_default_client_secret: this.googleDefaultClientSecret,
     brave_infura_project_id: this.infuraProjectId,
+    brave_zero_ex_api_key: this.braveZeroExApiKey,
     bitflyer_client_id: this.bitflyerClientId,
     bitflyer_client_secret: this.bitflyerClientSecret,
     bitflyer_staging_client_id: this.bitflyerStagingClientId,
@@ -539,6 +541,16 @@ Config.prototype.buildArgs = function () {
     // https://github.com/brave/brave-browser/issues/10334
     args.dcheck_always_on = this.isComponentBuild()
 
+    if (!args.is_official_build) {
+      // When building locally iOS needs dSYMs in order for Xcode to map source
+      // files correctly since we are using a framework build
+      args.enable_dsyms = true
+      if (args.use_goma) {
+        // Goma expects relative paths in dSYMs
+        args.strip_absolute_paths_from_debug_symbols = true
+      }
+    }
+
     args.ios_enable_content_widget_extension = false
     args.ios_enable_search_widget_extension = false
     args.ios_enable_share_extension = false
@@ -753,7 +765,11 @@ Config.prototype.update = function (options) {
   }
 
   if (options.brave_infura_project_id) {
-    this.infuraProjectId = options.infura_project_id
+    this.infuraProjectId = options.brave_infura_project_id
+  }
+
+  if (options.brave_zero_ex_api_key) {
+    this.braveZeroExApiKey = options.brave_zero_ex_api_key
   }
 
   if (options.bitflyer_client_id) {

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
-index 04a1506295005bed19a905232b07f87fba858c13..6a56517c5b1c05bc921709f11dc24f0fe6e010a8 100644
+index 120ed70af8385cda741cd1f34d21751c0873d0fd..e42b8a0542f2792a15d530ca86db0a280295a3de 100644
 --- a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
 +++ b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
 @@ -192,6 +192,7 @@ ExtensionFunction::ResponseAction IdentityGetAuthTokenFunction::Run() {
@@ -23,4 +23,3 @@ index 04a1506295005bed19a905232b07f87fba858c13..6a56517c5b1c05bc921709f11dc24f0f
  #endif
    TRACE_EVENT_NESTABLE_ASYNC_BEGIN1("identity", "MintTokenFlow", this, "type",
                                      type);
-

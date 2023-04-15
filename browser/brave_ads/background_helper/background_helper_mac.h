@@ -17,8 +17,8 @@ class BackgroundHelperMac : public BackgroundHelper {
   BackgroundHelperMac(const BackgroundHelperMac&) = delete;
   BackgroundHelperMac& operator=(const BackgroundHelperMac&) = delete;
 
-  BackgroundHelperMac(BackgroundHelperMac&& other) noexcept = delete;
-  BackgroundHelperMac& operator=(BackgroundHelperMac&& other) noexcept = delete;
+  BackgroundHelperMac(BackgroundHelperMac&&) noexcept = delete;
+  BackgroundHelperMac& operator=(BackgroundHelperMac&&) noexcept = delete;
 
   ~BackgroundHelperMac() override;
 

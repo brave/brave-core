@@ -64,7 +64,7 @@ public class BravePermissionUtils {
                     notificationManager.getNotificationChannelGroup(channelGroupName);
             return notificationChannelGroup != null ? notificationChannelGroup.isBlocked() : false;
         } else {
-            return NotificationManagerCompat.from(context).areNotificationsEnabled();
+            return !NotificationManagerCompat.from(context).areNotificationsEnabled();
         }
     }
 

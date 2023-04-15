@@ -27,13 +27,12 @@ class ConfirmationStateManager final {
  public:
   ConfirmationStateManager();
 
-  ConfirmationStateManager(const ConfirmationStateManager& other) = delete;
-  ConfirmationStateManager& operator=(const ConfirmationStateManager& other) =
-      delete;
+  ConfirmationStateManager(const ConfirmationStateManager&) = delete;
+  ConfirmationStateManager& operator=(const ConfirmationStateManager&) = delete;
 
-  ConfirmationStateManager(ConfirmationStateManager&& other) noexcept = delete;
-  ConfirmationStateManager& operator=(
-      ConfirmationStateManager&& other) noexcept = delete;
+  ConfirmationStateManager(ConfirmationStateManager&&) noexcept = delete;
+  ConfirmationStateManager& operator=(ConfirmationStateManager&&) noexcept =
+      delete;
 
   ~ConfirmationStateManager();
 

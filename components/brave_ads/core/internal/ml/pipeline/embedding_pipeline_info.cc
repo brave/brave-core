@@ -10,12 +10,6 @@ namespace brave_ads::ml::pipeline {
 EmbeddingPipelineInfo::EmbeddingPipelineInfo() = default;
 
 EmbeddingPipelineInfo::EmbeddingPipelineInfo(
-    const EmbeddingPipelineInfo& other) = default;
-
-EmbeddingPipelineInfo& EmbeddingPipelineInfo::operator=(
-    const EmbeddingPipelineInfo& other) = default;
-
-EmbeddingPipelineInfo::EmbeddingPipelineInfo(
     EmbeddingPipelineInfo&& other) noexcept = default;
 
 EmbeddingPipelineInfo& EmbeddingPipelineInfo::operator=(

@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_interface.h"
 
 namespace brave_ads {
@@ -23,17 +23,17 @@ class SubdivisionTargetingExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
   explicit SubdivisionTargetingExclusionRule(
-      geographic::SubdivisionTargeting* subdivision_targeting);
+      const geographic::SubdivisionTargeting& subdivision_targeting);
 
   SubdivisionTargetingExclusionRule(const SubdivisionTargetingExclusionRule&) =
       delete;
   SubdivisionTargetingExclusionRule& operator=(
-      const SubdivisionTargetingExclusionRule& other) = delete;
+      const SubdivisionTargetingExclusionRule&) = delete;
 
   SubdivisionTargetingExclusionRule(
-      SubdivisionTargetingExclusionRule&& other) noexcept = delete;
+      SubdivisionTargetingExclusionRule&&) noexcept = delete;
   SubdivisionTargetingExclusionRule& operator=(
-      SubdivisionTargetingExclusionRule&& other) noexcept = delete;
+      SubdivisionTargetingExclusionRule&&) noexcept = delete;
 
   ~SubdivisionTargetingExclusionRule() override;
 
@@ -46,8 +46,8 @@ class SubdivisionTargetingExclusionRule final
  private:
   bool DoesRespectCap(const CreativeAdInfo& creative_ad);
 
-  const raw_ptr<geographic::SubdivisionTargeting> subdivision_targeting_ =
-      nullptr;  // NOT OWNED
+  const base::raw_ref<const geographic::SubdivisionTargeting>
+      subdivision_targeting_;
 
   std::string last_message_;
 };

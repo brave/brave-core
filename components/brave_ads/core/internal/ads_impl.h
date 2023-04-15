@@ -70,6 +70,7 @@ class NotificationAdHandler;
 class NotificationAdManager;
 class PredictorsManager;
 class PromotedContentAd;
+class Reminder;
 class SearchResultAd;
 class TabManager;
 class Transfer;
@@ -86,11 +87,11 @@ class AdsImpl final : public Ads,
  public:
   explicit AdsImpl(AdsClient* ads_client);
 
-  AdsImpl(const AdsImpl& other) = delete;
-  AdsImpl& operator=(const AdsImpl& other) = delete;
+  AdsImpl(const AdsImpl&) = delete;
+  AdsImpl& operator=(const AdsImpl&) = delete;
 
-  AdsImpl(AdsImpl&& other) noexcept = delete;
-  AdsImpl& operator=(AdsImpl&& other) noexcept = delete;
+  AdsImpl(AdsImpl&&) noexcept = delete;
+  AdsImpl& operator=(AdsImpl&&) noexcept = delete;
 
   ~AdsImpl() override;
 
@@ -228,6 +229,8 @@ class AdsImpl final : public Ads,
   std::unique_ptr<NotificationAdHandler> notification_ad_handler_;
   std::unique_ptr<PromotedContentAd> promoted_content_ad_handler_;
   std::unique_ptr<SearchResultAd> search_result_ad_handler_;
+
+  std::unique_ptr<Reminder> reminder_;
 
   std::unique_ptr<UserReactions> user_reactions_;
 

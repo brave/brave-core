@@ -37,39 +37,40 @@ TEST_F(BatAdsTextClassificationModelTest,
   processor::TextClassification processor(&uninitialized_resource);
   processor.Process(text);
 
-  // Act
   const TextClassification model;
+
+  // Act
   const SegmentList segments = model.GetSegments();
 
   // Assert
-  const SegmentList expected_segments;
-
-  EXPECT_EQ(expected_segments, segments);
+  EXPECT_TRUE(segments.empty());
 }
 
 TEST_F(BatAdsTextClassificationModelTest, DoNotGetSegmentsForEmptyText) {
+  // Arrange
   const std::string text;
   processor::TextClassification processor(&resource_);
   processor.Process(text);
 
-  // Act
   const TextClassification model;
+
+  // Act
   const SegmentList segments = model.GetSegments();
 
   // Assert
-  const SegmentList expected_segments;
-
-  EXPECT_EQ(expected_segments, segments);
+  EXPECT_TRUE(segments.empty());
 }
 
 TEST_F(BatAdsTextClassificationModelTest,
        GetSegmentsForPreviouslyClassifiedText) {
+  // Arrange
   const std::string text = "Some content about technology & computing";
   processor::TextClassification processor(&resource_);
   processor.Process(text);
 
-  // Act
   const TextClassification model;
+
+  // Act
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -136,6 +137,7 @@ TEST_F(BatAdsTextClassificationModelTest,
 
 TEST_F(BatAdsTextClassificationModelTest,
        GetSegmentsForPreviouslyClassifiedTexts) {
+  // Arrange
   const std::vector<std::string> texts = {
       "Some content about cooking food", "Some content about finance & banking",
       "Some content about technology & computing"};
@@ -145,8 +147,9 @@ TEST_F(BatAdsTextClassificationModelTest,
     processor.Process(text);
   }
 
-  // Act
   const TextClassification model;
+
+  // Act
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -253,14 +256,14 @@ TEST_F(BatAdsTextClassificationModelTest,
 }
 
 TEST_F(BatAdsTextClassificationModelTest, DoNotGetSegmentsIfNeverProcessed) {
-  // Act
+  // Arrange
   const TextClassification model;
+
+  // Act
   const SegmentList segments = model.GetSegments();
 
   // Assert
-  const SegmentList expected_segments;
-
-  EXPECT_EQ(expected_segments, segments);
+  EXPECT_TRUE(segments.empty());
 }
 
 }  // namespace brave_ads::targeting::model

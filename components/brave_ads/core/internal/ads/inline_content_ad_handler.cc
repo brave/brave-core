@@ -27,8 +27,8 @@ namespace brave_ads {
 InlineContentAdHandler::InlineContentAdHandler(
     Account* account,
     Transfer* transfer,
-    geographic::SubdivisionTargeting* subdivision_targeting,
-    resource::AntiTargeting* anti_targeting_resource)
+    const geographic::SubdivisionTargeting& subdivision_targeting,
+    const resource::AntiTargeting& anti_targeting_resource)
     : account_(account), transfer_(transfer) {
   DCHECK(account_);
   DCHECK(transfer_);

@@ -49,7 +49,6 @@ class LedgerClientIOS : public ledger::mojom::LedgerClient {
       ledger::mojom::ContributionInfoPtr contribution) override;
   void PublisherListNormalized(
       std::vector<ledger::mojom::PublisherInfoPtr> list) override;
-  void URIEncode(const std::string& value, URIEncodeCallback callback) override;
   void OnContributeUnverifiedPublishers(
       ledger::mojom::Result result,
       const std::string& publisher_key,
@@ -117,7 +116,6 @@ class LedgerClientIOS : public ledger::mojom::LedgerClient {
   void ReconcileStampReset() override;
   void RunDBTransaction(ledger::mojom::DBTransactionPtr transaction,
                         RunDBTransactionCallback callback) override;
-  void GetCreateScript(GetCreateScriptCallback callback) override;
   void PendingContributionSaved(const ledger::mojom::Result result) override;
   void ClearAllNotifications() override;
   void ExternalWalletConnected() override;

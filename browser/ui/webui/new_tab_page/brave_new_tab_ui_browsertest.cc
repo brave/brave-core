@@ -79,12 +79,9 @@ IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, BraveNewTabIsDefault) {
   GURL new_tab_url(chrome::kChromeUINewTabURL);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), new_tab_url));
   WaitForLoadStop(contents);
-  bool is_brave_new_tab = false;
-  ASSERT_TRUE(content::ExecuteScriptAndExtractBool(
-      contents,
-      "window.domAutomationController.send(!!document.querySelector(`html[data-test-id='brave-new-tab-page']`))",  // NOLINT
-      &is_brave_new_tab));
-  ASSERT_TRUE(is_brave_new_tab);
+  EXPECT_EQ(true, content::EvalJs(contents,
+                                  "!!document.querySelector(`html[data-test-id="
+                                  "'brave-new-tab-page']`)"));
 }
 
 // This test simply loads an extension that sets a newtab override.
@@ -101,9 +98,6 @@ IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, NewTabPageLocationOverride) {
   WaitForLoadStop(contents);
 
   std::string inner_text;
-  ASSERT_TRUE(content::ExecuteScriptAndExtractString(
-      contents,
-      "window.domAutomationController.send(document.body.innerText)",
-      &inner_text));
-  ASSERT_EQ("New tab override!", inner_text);
+  ASSERT_EQ("New tab override!",
+            content::EvalJs(contents, "document.body.innerText;"));
 }

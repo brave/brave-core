@@ -17,6 +17,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.domain.PortfolioModel;
@@ -24,6 +26,7 @@ import org.chromium.chrome.browser.app.helpers.ImageLoader;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +39,6 @@ public class WalletNftAdapter extends RecyclerView.Adapter<WalletNftAdapter.View
     private OnWalletListItemClick onWalletListItemClick;
     private ExecutorService mExecutor;
     private Handler mHandler;
-    private int previousSelectedPos;
 
     public WalletNftAdapter() {
         mExecutor = Executors.newSingleThreadExecutor();
@@ -62,11 +64,14 @@ public class WalletNftAdapter extends RecyclerView.Adapter<WalletNftAdapter.View
         holder.titleText.setText(walletListItemModel.getTitle());
 
         PortfolioModel.NftDataModel nftDataModel = walletListItemModel.getNftDataModel();
-        holder.subTitleText.setText(nftDataModel.token.name);
+        holder.subTitleText.setText(nftDataModel.token.symbol);
 
         holder.itemView.setOnClickListener(v -> {
             onWalletListItemClick.onAssetClick(walletListItemModel.getBlockchainToken());
         });
+
+        Utils.setBitmapResource(mExecutor, mHandler, context, walletListItemModel.getNetworkIcon(),
+                walletListItemModel.getIcon(), holder.networkIconImage, null, true);
 
         if (walletListItemModel.getBlockchainToken() == null
                 || !walletListItemModel.getBlockchainToken().logo.isEmpty()) {
@@ -76,13 +81,14 @@ public class WalletNftAdapter extends RecyclerView.Adapter<WalletNftAdapter.View
             if (walletListItemModel.hasNftImageLink()
                     && ImageLoader.isSupported(nftDataModel.nftMetadata.mImageUrl)) {
                 String url = nftDataModel.nftMetadata.mImageUrl;
-                ImageLoader.downloadImage(url, context, false, holder.iconImg, null);
+                ImageLoader.downloadImage(url, Glide.with(context), false,
+                        WalletConstants.RECT_SHARP_ROUNDED_CORNERS_DP, holder.iconImg, null);
             } else {
                 Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, holder.iconImg,
                         walletListItemModel.getBlockchainToken().contractAddress,
                         walletListItemModel.getBlockchainToken().symbol,
                         context.getResources().getDisplayMetrics().density, null, context, false,
-                        (float) 0.9);
+                        (float) 0.9, false);
             }
         }
     }
@@ -121,12 +127,14 @@ public class WalletNftAdapter extends RecyclerView.Adapter<WalletNftAdapter.View
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         public final ImageView iconImg;
+        public final ImageView networkIconImage;
         public final TextView titleText;
         public final TextView subTitleText;
 
         public ViewHolder(View itemView) {
             super(itemView);
             iconImg = itemView.findViewById(R.id.icon);
+            networkIconImage = itemView.findViewById(R.id.network_icon);
             titleText = itemView.findViewById(R.id.title);
             subTitleText = itemView.findViewById(R.id.sub_title);
         }

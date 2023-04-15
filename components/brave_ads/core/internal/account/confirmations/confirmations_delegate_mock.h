@@ -17,14 +17,13 @@ class ConfirmationsDelegateMock : public ConfirmationsDelegate {
  public:
   ConfirmationsDelegateMock();
 
-  ConfirmationsDelegateMock(const ConfirmationsDelegateMock& other) = delete;
+  ConfirmationsDelegateMock(const ConfirmationsDelegateMock&) = delete;
   ConfirmationsDelegateMock& operator=(const ConfirmationsDelegateMock&) =
       delete;
 
-  ConfirmationsDelegateMock(ConfirmationsDelegateMock&& other) noexcept =
+  ConfirmationsDelegateMock(ConfirmationsDelegateMock&&) noexcept = delete;
+  ConfirmationsDelegateMock& operator=(ConfirmationsDelegateMock&&) noexcept =
       delete;
-  ConfirmationsDelegateMock& operator=(
-      ConfirmationsDelegateMock&& other) noexcept = delete;
 
   ~ConfirmationsDelegateMock() override;
 

@@ -8,58 +8,43 @@
 #include <string>
 #include <utility>
 
+#include "brave/components/brave_ads/core/new_tab_page_ad_constants.h"
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
 
 namespace brave_ads {
 
 namespace {
-
 constexpr char kTypeKey[] = "type";
-constexpr char kPlacementIdKey[] = "placement_id";
-constexpr char kCreativeInstanceIdKey[] = "creative_instance_id";
-constexpr char kCreativeSetIdKey[] = "creative_set_id";
-constexpr char kCampaignIdKey[] = "campaign_id";
-constexpr char kAdvertiserIdKey[] = "advertiser_id";
-constexpr char kSegmentKey[] = "segment";
-constexpr char kCompanyNameKey[] = "company_name";
-constexpr char kAltKey[] = "alt";
-constexpr char kImageUrlKey[] = "image_url";
-constexpr char kFocalPointKey[] = "focal_point";
-constexpr char kFocalPointXKey[] = "x";
-constexpr char kFocalPointYKey[] = "y";
-constexpr char kWallpapersKey[] = "wallpapers";
-constexpr char kTargetUrlKey[] = "target_url";
-
 }  // namespace
 
 base::Value::Dict NewTabPageAdToValue(const NewTabPageAdInfo& ad) {
   base::Value::Dict dict;
 
   dict.Set(kTypeKey, ad.type.ToString());
-  dict.Set(kPlacementIdKey, ad.placement_id);
-  dict.Set(kCreativeInstanceIdKey, ad.creative_instance_id);
-  dict.Set(kCreativeSetIdKey, ad.creative_set_id);
-  dict.Set(kCampaignIdKey, ad.campaign_id);
-  dict.Set(kAdvertiserIdKey, ad.advertiser_id);
-  dict.Set(kSegmentKey, ad.segment);
-  dict.Set(kCompanyNameKey, ad.company_name);
-  dict.Set(kImageUrlKey, ad.image_url.spec());
-  dict.Set(kAltKey, ad.alt);
-  dict.Set(kTargetUrlKey, ad.target_url.spec());
+  dict.Set(kNewTabPageAdPlacementIdKey, ad.placement_id);
+  dict.Set(kNewTabPageAdCreativeInstanceIdKey, ad.creative_instance_id);
+  dict.Set(kNewTabPageAdCreativeSetIdKey, ad.creative_set_id);
+  dict.Set(kNewTabPageAdCampaignIdKey, ad.campaign_id);
+  dict.Set(kNewTabPageAdAdvertiserIdKey, ad.advertiser_id);
+  dict.Set(kNewTabPageAdSegmentKey, ad.segment);
+  dict.Set(kNewTabPageAdCompanyNameKey, ad.company_name);
+  dict.Set(kNewTabPageAdImageUrlKey, ad.image_url.spec());
+  dict.Set(kNewTabPageAdAltKey, ad.alt);
+  dict.Set(kNewTabPageAdTargetUrlKey, ad.target_url.spec());
 
   base::Value::List wallpapers;
   for (const NewTabPageAdWallpaperInfo& wallpaper : ad.wallpapers) {
     base::Value::Dict wallpaper_dict;
-    wallpaper_dict.Set(kImageUrlKey, wallpaper.image_url.spec());
+    wallpaper_dict.Set(kNewTabPageAdImageUrlKey, wallpaper.image_url.spec());
 
     base::Value::Dict focal_point;
-    focal_point.Set(kFocalPointXKey, wallpaper.focal_point.x);
-    focal_point.Set(kFocalPointYKey, wallpaper.focal_point.y);
-    wallpaper_dict.Set(kFocalPointKey, std::move(focal_point));
+    focal_point.Set(kNewTabPageAdFocalPointXKey, wallpaper.focal_point.x);
+    focal_point.Set(kNewTabPageAdFocalPointYKey, wallpaper.focal_point.y);
+    wallpaper_dict.Set(kNewTabPageAdFocalPointKey, std::move(focal_point));
 
     wallpapers.Append(std::move(wallpaper_dict));
   }
-  dict.Set(kWallpapersKey, std::move(wallpapers));
+  dict.Set(kNewTabPageAdWallpapersKey, std::move(wallpapers));
 
   return dict;
 }
@@ -71,58 +56,61 @@ NewTabPageAdInfo NewTabPageAdFromValue(const base::Value::Dict& root) {
     ad.type = AdType(*value);
   }
 
-  if (const auto* value = root.FindString(kPlacementIdKey)) {
+  if (const auto* value = root.FindString(kNewTabPageAdPlacementIdKey)) {
     ad.placement_id = *value;
   }
 
-  if (const auto* value = root.FindString(kCreativeInstanceIdKey)) {
+  if (const auto* value = root.FindString(kNewTabPageAdCreativeInstanceIdKey)) {
     ad.creative_instance_id = *value;
   }
 
-  if (const auto* value = root.FindString(kCreativeSetIdKey)) {
+  if (const auto* value = root.FindString(kNewTabPageAdCreativeSetIdKey)) {
     ad.creative_set_id = *value;
   }
 
-  if (const auto* value = root.FindString(kCampaignIdKey)) {
+  if (const auto* value = root.FindString(kNewTabPageAdCampaignIdKey)) {
     ad.campaign_id = *value;
   }
 
-  if (const auto* value = root.FindString(kAdvertiserIdKey)) {
+  if (const auto* value = root.FindString(kNewTabPageAdAdvertiserIdKey)) {
     ad.advertiser_id = *value;
   }
 
-  if (const auto* value = root.FindString(kSegmentKey)) {
+  if (const auto* value = root.FindString(kNewTabPageAdSegmentKey)) {
     ad.segment = *value;
   }
 
-  if (const auto* value = root.FindString(kCompanyNameKey)) {
+  if (const auto* value = root.FindString(kNewTabPageAdCompanyNameKey)) {
     ad.company_name = *value;
   }
 
-  if (const auto* value = root.FindString(kImageUrlKey)) {
+  if (const auto* value = root.FindString(kNewTabPageAdImageUrlKey)) {
     ad.image_url = GURL(*value);
   }
 
-  if (const auto* value = root.FindString(kAltKey)) {
+  if (const auto* value = root.FindString(kNewTabPageAdAltKey)) {
     ad.alt = *value;
   }
 
-  if (const auto* wallpapers = root.FindList(kWallpapersKey)) {
+  if (const auto* wallpapers = root.FindList(kNewTabPageAdWallpapersKey)) {
     for (const auto& value : *wallpapers) {
       const base::Value::Dict* const dict = value.GetIfDict();
       if (!dict) {
         continue;
       }
 
-      const std::string* const image_url = dict->FindString(kImageUrlKey);
+      const std::string* const image_url =
+          dict->FindString(kNewTabPageAdImageUrlKey);
       const base::Value::Dict* const focal_point =
-          dict->FindDict(kFocalPointKey);
+          dict->FindDict(kNewTabPageAdFocalPointKey);
       if (!image_url || !focal_point) {
         continue;
       }
 
-      const absl::optional<int> x = focal_point->FindInt(kFocalPointXKey);
-      const absl::optional<int> y = focal_point->FindInt(kFocalPointYKey);
+      const absl::optional<int> x =
+          focal_point->FindInt(kNewTabPageAdFocalPointXKey);
+      const absl::optional<int> y =
+          focal_point->FindInt(kNewTabPageAdFocalPointYKey);
       if (!x || !y) {
         continue;
       }
@@ -136,7 +124,7 @@ NewTabPageAdInfo NewTabPageAdFromValue(const base::Value::Dict& root) {
     }
   }
 
-  if (const auto* value = root.FindString(kTargetUrlKey)) {
+  if (const auto* value = root.FindString(kNewTabPageAdTargetUrlKey)) {
     ad.target_url = GURL(*value);
   }
 

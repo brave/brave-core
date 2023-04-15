@@ -23,7 +23,8 @@ class BatAdsHistoryUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsHistoryUtilTest, AddHistory) {
   // Arrange
-  const CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
+  const CreativeNotificationAdInfo creative_ad =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   // Act
@@ -42,7 +43,7 @@ TEST_F(BatAdsHistoryUtilTest, AddHistory) {
 TEST_F(BatAdsHistoryUtilTest, PurgeHistoryOlderThanTimeWindow) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAd();
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   const NotificationAdInfo ad_1 = BuildNotificationAd(creative_ad_1);
   HistoryManager::GetInstance()->Add(ad_1, ConfirmationType::kViewed);
 
@@ -50,7 +51,7 @@ TEST_F(BatAdsHistoryUtilTest, PurgeHistoryOlderThanTimeWindow) {
 
   // Act
   const CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAd();
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   const NotificationAdInfo ad_2 = BuildNotificationAd(creative_ad_2);
   const HistoryItemInfo history_item_2 =
       HistoryManager::GetInstance()->Add(ad_2, ConfirmationType::kViewed);
@@ -67,7 +68,7 @@ TEST_F(BatAdsHistoryUtilTest, PurgeHistoryOlderThanTimeWindow) {
 TEST_F(BatAdsHistoryUtilTest, DoNotPurgeHistoryWithinTimeWindow) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAd();
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   const NotificationAdInfo ad_1 = BuildNotificationAd(creative_ad_1);
   const HistoryItemInfo history_item_1 =
       HistoryManager::GetInstance()->Add(ad_1, ConfirmationType::kViewed);
@@ -76,7 +77,7 @@ TEST_F(BatAdsHistoryUtilTest, DoNotPurgeHistoryWithinTimeWindow) {
 
   // Act
   const CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAd();
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   const NotificationAdInfo ad_2 = BuildNotificationAd(creative_ad_2);
   const HistoryItemInfo history_item_2 =
       HistoryManager::GetInstance()->Add(ad_2, ConfirmationType::kViewed);

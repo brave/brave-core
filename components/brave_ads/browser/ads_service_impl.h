@@ -83,8 +83,8 @@ class AdsServiceImpl : public AdsService,
   AdsServiceImpl(const AdsServiceImpl&) = delete;
   AdsServiceImpl& operator=(const AdsServiceImpl&) = delete;
 
-  AdsServiceImpl(AdsServiceImpl&& other) noexcept = delete;
-  AdsServiceImpl& operator=(AdsServiceImpl&& other) noexcept = delete;
+  AdsServiceImpl(AdsServiceImpl&&) noexcept = delete;
+  AdsServiceImpl& operator=(AdsServiceImpl&&) noexcept = delete;
 
   ~AdsServiceImpl() override;
 
@@ -319,6 +319,8 @@ class AdsServiceImpl : public AdsService,
       override;
   void ShowNotificationAd(base::Value::Dict dict) override;
   void CloseNotificationAd(const std::string& placement_id) override;
+
+  void ShowReminder(mojom::ReminderType type) override;
 
   void UpdateAdRewards() override;
 

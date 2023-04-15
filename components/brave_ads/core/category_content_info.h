@@ -19,8 +19,8 @@ struct ADS_EXPORT CategoryContentInfo final {
       CategoryContentOptActionType::kNone;
 };
 
-bool operator==(const CategoryContentInfo& lhs, const CategoryContentInfo& rhs);
-bool operator!=(const CategoryContentInfo& lhs, const CategoryContentInfo& rhs);
+bool operator==(const CategoryContentInfo&, const CategoryContentInfo&);
+bool operator!=(const CategoryContentInfo&, const CategoryContentInfo&);
 
 }  // namespace brave_ads
 

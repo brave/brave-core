@@ -10,41 +10,42 @@
 
 #include "base/base64.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
+#include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_envelope_constants.h"
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_envelope_info.h"
 #include "tweetnacl.h"  // NOLINT
 
 namespace brave_ads::security {
 
-namespace {
-constexpr size_t kCryptoBoxZeroBytes = crypto_box_BOXZEROBYTES;
-}  // namespace
-
 absl::optional<VerifiableConversionEnvelopeInfo>
 GetVerifiableConversionEnvelopeForUserData(const base::Value::Dict& user_data) {
   const base::Value::Dict* const value =
-      user_data.FindDict("conversionEnvelope");
+      user_data.FindDict(kVerifiableConversionEnvelopeKey);
   if (!value) {
     return absl::nullopt;
   }
 
   VerifiableConversionEnvelopeInfo verifiable_conversion_envelope;
 
-  const std::string* const algorithm = value->FindString("alg");
+  const std::string* const algorithm =
+      value->FindString(kVerifiableConversionEnvelopeAlgorithmKey);
   if (algorithm) {
     verifiable_conversion_envelope.algorithm = *algorithm;
   }
 
-  const std::string* const ciphertext = value->FindString("ciphertext");
+  const std::string* const ciphertext =
+      value->FindString(kVerifiableConversionEnvelopeCipherTextKey);
   if (ciphertext) {
     verifiable_conversion_envelope.ciphertext = *ciphertext;
   }
 
-  const std::string* const ephemeral_public_key = value->FindString("epk");
+  const std::string* const ephemeral_public_key =
+      value->FindString(kVerifiableConversionEnvelopeEphemeralPublicKeyKey);
   if (ephemeral_public_key) {
     verifiable_conversion_envelope.ephemeral_public_key = *ephemeral_public_key;
   }
 
-  const std::string* const nonce = value->FindString("nonce");
+  const std::string* const nonce =
+      value->FindString(kVerifiableConversionEnvelopeNonceKey);
   if (nonce) {
     verifiable_conversion_envelope.nonce = *nonce;
   }
@@ -72,7 +73,7 @@ absl::optional<std::string> OpenEnvelope(
   }
 
   // API requires 16 leading zero-padding bytes
-  ciphertext->insert(ciphertext->cbegin(), kCryptoBoxZeroBytes, 0);
+  ciphertext->insert(ciphertext->cbegin(), crypto_box_BOXZEROBYTES, 0);
 
   const absl::optional<std::vector<uint8_t>> nonce =
       base::Base64Decode(verifiable_conversion_envelope.nonce);

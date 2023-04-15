@@ -48,23 +48,26 @@ IN_PROC_BROWSER_TEST_F(NavigatorGetBraveDetectedTest,
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   std::string result;
-  EXPECT_TRUE(content::ExecuteScriptAndExtractString(contents, R"(
-        navigator.serviceWorker.addEventListener('message', msg => {
-          window.domAutomationController.send(msg.data);
-        });
-        navigator.serviceWorker.register('./detect_brave_service_worker.js')
-          .then(registration => {
-            if (registration.active) {
-              registration.active.postMessage('isBrave');
-            } else if (registration.installing) {
-              registration.installing.addEventListener('statechange', () => {
+  EXPECT_EQ(content::EvalJs(contents, R"(
+        (() => {
+          return new Promise(resolve => {
+            navigator.serviceWorker.addEventListener('message', msg => {
+              resolve(msg.data);
+            });
+            navigator.serviceWorker.register('./detect_brave_service_worker.js')
+              .then(registration => {
                 if (registration.active) {
                   registration.active.postMessage('isBrave');
+                } else if (registration.installing) {
+                  registration.installing.addEventListener('statechange', () => {
+                    if (registration.active) {
+                      registration.active.postMessage('isBrave');
+                    }
+                  });
                 }
-              });
-            }
+              })
           })
-      )",
-                                                     &result));
-  EXPECT_EQ(result, "BRAVE");
+        })();
+      )"),
+            "BRAVE");
 }

@@ -35,9 +35,5 @@ IN_PROC_BROWSER_TEST_F(NavigatorGetBatteryDisabledTest, IsDisabled) {
   ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
 
-  bool getBatteryBlocked;
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents, "window.domAutomationController.send(getBatteryBlocked())",
-      &getBatteryBlocked));
-  EXPECT_TRUE(getBatteryBlocked);
+  EXPECT_EQ(true, content::EvalJs(contents, "getBatteryBlocked();"));
 }

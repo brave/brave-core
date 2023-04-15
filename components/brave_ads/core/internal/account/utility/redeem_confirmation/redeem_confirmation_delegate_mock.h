@@ -18,12 +18,12 @@ class RedeemConfirmationDelegateMock : public RedeemConfirmationDelegate {
   RedeemConfirmationDelegateMock(const RedeemConfirmationDelegateMock&) =
       delete;
   RedeemConfirmationDelegateMock& operator=(
-      const RedeemConfirmationDelegateMock& other) = delete;
+      const RedeemConfirmationDelegateMock&) = delete;
 
-  RedeemConfirmationDelegateMock(
-      RedeemConfirmationDelegateMock&& other) noexcept = delete;
+  RedeemConfirmationDelegateMock(RedeemConfirmationDelegateMock&&) noexcept =
+      delete;
   RedeemConfirmationDelegateMock& operator=(
-      RedeemConfirmationDelegateMock&& other) noexcept = delete;
+      RedeemConfirmationDelegateMock&&) noexcept = delete;
 
   ~RedeemConfirmationDelegateMock() override;
 

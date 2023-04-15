@@ -1057,29 +1057,33 @@ public class BraveRewardsPanel
 
     @Override
     public void onBalance(boolean success) {
-        mWalletBalanceLayout.setAlpha(1.0f);
-        mWalletBalanceProgress.setVisibility(View.GONE);
-        if (success) {
-            if (mBraveRewardsNativeWorker != null) {
-                BraveRewardsBalance walletBalanceObject =
-                        mBraveRewardsNativeWorker.GetWalletBalance();
-                double walletBalance = 0;
-                if (walletBalanceObject != null) {
-                    walletBalance = walletBalanceObject.getTotal();
-                }
+        try {
+            if (success) {
+                mWalletBalanceLayout.setAlpha(1.0f);
+                mWalletBalanceProgress.setVisibility(View.GONE);
+                if (mBraveRewardsNativeWorker != null) {
+                    BraveRewardsBalance walletBalanceObject =
+                            mBraveRewardsNativeWorker.GetWalletBalance();
+                    double walletBalance = 0;
+                    if (walletBalanceObject != null) {
+                        walletBalance = walletBalanceObject.getTotal();
+                    }
 
-                DecimalFormat df = new DecimalFormat("#.###");
-                df.setRoundingMode(RoundingMode.FLOOR);
-                df.setMinimumFractionDigits(3);
-                TextView batBalanceText = mPopupView.findViewById(R.id.bat_balance_text);
-                batBalanceText.setText(df.format(walletBalance));
-                double usdValue = walletBalance * mBraveRewardsNativeWorker.GetWalletRate();
-                String usdText =
-                        String.format(mPopupView.getResources().getString(R.string.brave_ui_usd),
-                                String.format(Locale.getDefault(), "%.2f", usdValue));
-                TextView usdBalanceText = mPopupView.findViewById(R.id.usd_balance_text);
-                usdBalanceText.setText(usdText);
+                    DecimalFormat df = new DecimalFormat("#.###");
+                    df.setRoundingMode(RoundingMode.FLOOR);
+                    df.setMinimumFractionDigits(3);
+                    TextView batBalanceText = mPopupView.findViewById(R.id.bat_balance_text);
+                    batBalanceText.setText(df.format(walletBalance));
+                    double usdValue = walletBalance * mBraveRewardsNativeWorker.GetWalletRate();
+                    String usdText = String.format(
+                            mPopupView.getResources().getString(R.string.brave_ui_usd),
+                            String.format(Locale.getDefault(), "%.2f", usdValue));
+                    TextView usdBalanceText = mPopupView.findViewById(R.id.usd_balance_text);
+                    usdBalanceText.setText(usdText);
+                }
             }
+        } catch (NullPointerException e) {
+            Log.e(TAG, "BraveRewardsPanel onBalance " + e);
         }
     }
 

@@ -5,8 +5,6 @@
 import styled from 'styled-components'
 
 import greenCheckIcon from '../assets/green_check.svg'
-import connectWalletImage from '../assets/connect_wallet.svg'
-import connectWalletNarrowImage from '../assets/connect_wallet_narrow.svg'
 
 export const root = styled.div`
   position: relative;
@@ -48,7 +46,7 @@ export const close = styled.div`
 
 export const leftPanel = styled.div`
   flex: 0 1 448px;
-  padding: 64px;
+  padding: 94px 64px;
 
   .layout-narrow & {
     padding: 40px 24px 24px;
@@ -65,6 +63,7 @@ export const rightPanel = styled.div`
 `
 
 export const panelHeader = styled.div`
+  flex: 1;
   font-weight: 600;
   font-size: 20px;
   line-height: 30px;
@@ -77,15 +76,14 @@ export const panelHeader = styled.div`
 `
 
 export const panelText = styled.div`
+  flex: 1;
   margin-top: 8px;
   font-size: 14px;
   line-height: 20px;
   color: var(--brave-palette-neutral700);
 `
 
-export const infoPanel = styled.div``
-
-export const infoListItem = styled.div`
+export const panelListItem = styled.div`
   margin-top: 24px;
   color: var(--brave-palette-black);
   font-weight: 600;
@@ -95,76 +93,17 @@ export const infoListItem = styled.div`
   padding-left: 23px;
 `
 
-export const continueButton = styled.div`
-  margin-top: 33px;
-
-  button {
-    font-weight: 600;
-    font-size: 13px;
-    line-height: 20px;
-    cursor: pointer;
-    border: none;
-    outline-style: none;
-
-    color: var(--brave-palette-white);
-    background: var(--brave-color-brandBat);
-    padding: 10px 22px;
-    border-radius: 48px;
-
-    .icon {
-      height: 15px;
-      width: auto;
-      vertical-align: middle;
-      margin-top: -1px;
-      margin-left: 9px;
-    }
-
-    &:focus-visible {
-      outline-style: auto;
-    }
-
-    &:active {
-      background: var(--brave-color-brandBatActive);
-    }
-
-    .layout-narrow & {
-      width: 100%;
-    }
-  }
-`
-
-export const infoNote = styled.div`
-  color: var(--brave-palette-neutral600);
-  font-size: 12px;
-  line-height: 18px;
-  margin-top: 16px;
-`
-
-export const connectGraphic = styled.div`
-  text-align: center;
-  margin-top: 65px;
-  height: 419px;
-  background: center no-repeat url(/${connectWalletImage});
-  background-size: cover;
-
-  .layout-narrow & {
-    margin-top: 24px;
-    height: 170px;
-    background-image: url(/${connectWalletNarrowImage});
-  }
-`
-
-export const selectWalletLeftPanel = styled.div`
+export const connectWalletLeftPanel = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
 `
 
-export const selectWalletContent = styled.div`
+export const connectWalletContent = styled.div`
   flex: 1 0 auto;
 `
 
-export const selectWalletNote = styled.div`
+export const connectWalletDisclaimer = styled.div`
   font-size: 12px;
   line-height: 18px;
   color: var(--brave-palette-neutral600);

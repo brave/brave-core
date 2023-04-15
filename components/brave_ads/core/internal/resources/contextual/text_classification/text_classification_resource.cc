@@ -19,15 +19,11 @@ namespace {
 constexpr char kResourceId[] = "feibnmjhecfbjpeciancnchbmlobenjn";
 }  // namespace
 
-TextClassification::TextClassification()
-    : text_processing_pipeline_(
-          std::make_unique<ml::pipeline::TextProcessing>()) {}
-
+TextClassification::TextClassification() = default;
 TextClassification::~TextClassification() = default;
 
 bool TextClassification::IsInitialized() const {
-  return text_processing_pipeline_ &&
-         text_processing_pipeline_->IsInitialized();
+  return text_processing_pipeline_.IsInitialized();
 }
 
 void TextClassification::Load() {
@@ -38,31 +34,23 @@ void TextClassification::Load() {
 }
 
 void TextClassification::OnLoadAndParseResource(
-    ParsingResultPtr<ml::pipeline::TextProcessing> result) {
-  if (!result) {
-    BLOG(1,
-         "Failed to load " << kResourceId << " text classification resource");
-    return;
-  }
-
-  BLOG(1, "Successfully loaded " << kResourceId
-                                 << " text classification resource");
-
-  if (!result->resource) {
-    BLOG(1, result->error_message);
+    ParsingErrorOr<ml::pipeline::TextProcessing> result) {
+  if (!result.has_value()) {
+    BLOG(1, result.error());
     BLOG(1, "Failed to initialize " << kResourceId
                                     << " text classification resource");
     return;
   }
-
-  text_processing_pipeline_ = std::move(result->resource);
+  BLOG(1, "Successfully loaded " << kResourceId
+                                 << " text classification resource");
+  text_processing_pipeline_ = std::move(result).value();
 
   BLOG(1, "Successfully initialized " << kResourceId
                                       << " text classification resource");
 }
 
-ml::pipeline::TextProcessing* TextClassification::Get() const {
-  return text_processing_pipeline_.get();
+const ml::pipeline::TextProcessing* TextClassification::Get() const {
+  return &text_processing_pipeline_;
 }
 
 }  // namespace brave_ads::resource

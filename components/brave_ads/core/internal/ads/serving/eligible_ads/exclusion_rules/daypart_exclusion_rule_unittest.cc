@@ -7,16 +7,13 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace brave_ads {
-
-namespace {
-constexpr char kCreativeSetId[] = "654f10df-fbc4-4a92-8d43-2edf73734a60";
-}  // namespace
 
 class BatAdsDaypartExclusionRuleTest : public UnitTestBase {};
 
@@ -43,11 +40,11 @@ TEST_F(BatAdsDaypartExclusionRuleTest, AllowIfRightDayAndHours) {
   const int current_time =
       base::Time::kMinutesPerHour * exploded.hour + exploded.minute;
 
-  CreativeDaypartInfo daypart_info;
-  daypart_info.dow = base::NumberToString(exploded.day_of_week);
-  daypart_info.start_minute = current_time - base::Time::kMinutesPerHour;
-  daypart_info.end_minute = current_time + base::Time::kMinutesPerHour;
-  creative_ad.dayparts.push_back(daypart_info);
+  CreativeDaypartInfo daypart_1;
+  daypart_1.dow = base::NumberToString(exploded.day_of_week);
+  daypart_1.start_minute = current_time - base::Time::kMinutesPerHour;
+  daypart_1.end_minute = current_time + base::Time::kMinutesPerHour;
+  creative_ad.dayparts.push_back(daypart_1);
 
   // Act
   DaypartExclusionRule exclusion_rule;
@@ -67,10 +64,10 @@ TEST_F(BatAdsDaypartExclusionRuleTest, AllowForMultipleDays) {
   const int current_time =
       base::Time::kMinutesPerHour * exploded.hour + exploded.minute;
 
-  CreativeDaypartInfo daypart_info;
-  daypart_info.start_minute = current_time - base::Time::kMinutesPerHour;
-  daypart_info.end_minute = current_time + base::Time::kMinutesPerHour;
-  creative_ad.dayparts.push_back(daypart_info);
+  CreativeDaypartInfo daypart_1;
+  daypart_1.start_minute = current_time - base::Time::kMinutesPerHour;
+  daypart_1.end_minute = current_time + base::Time::kMinutesPerHour;
+  creative_ad.dayparts.push_back(daypart_1);
 
   // Act
   DaypartExclusionRule exclusion_rule;
@@ -93,23 +90,23 @@ TEST_F(BatAdsDaypartExclusionRuleTest, AllowIfOneMatchExists) {
       base::NumberToString((exploded.day_of_week + 1) % 7);
   const std::string current_dow = base::NumberToString(exploded.day_of_week);
 
-  CreativeDaypartInfo daypart_info;
-  daypart_info.dow = tomorrow_dow;
-  daypart_info.start_minute = current_time - 2 * base::Time::kMinutesPerHour;
-  daypart_info.end_minute = current_time - base::Time::kMinutesPerHour;
-  creative_ad.dayparts.push_back(daypart_info);
+  CreativeDaypartInfo daypart_1;
+  daypart_1.dow = tomorrow_dow;
+  daypart_1.start_minute = current_time - 2 * base::Time::kMinutesPerHour;
+  daypart_1.end_minute = current_time - base::Time::kMinutesPerHour;
+  creative_ad.dayparts.push_back(daypart_1);
 
-  CreativeDaypartInfo daypart_info_2;
-  daypart_info_2.dow = tomorrow_dow;
-  daypart_info_2.start_minute = current_time + 2 * base::Time::kMinutesPerHour;
-  daypart_info_2.end_minute = current_time + 3 * base::Time::kMinutesPerHour;
-  creative_ad.dayparts.push_back(daypart_info_2);
+  CreativeDaypartInfo daypart_2;
+  daypart_2.dow = tomorrow_dow;
+  daypart_2.start_minute = current_time + 2 * base::Time::kMinutesPerHour;
+  daypart_2.end_minute = current_time + 3 * base::Time::kMinutesPerHour;
+  creative_ad.dayparts.push_back(daypart_2);
 
-  CreativeDaypartInfo daypart_info_3;
-  daypart_info_3.dow = current_dow;
-  daypart_info_3.start_minute = current_time - base::Time::kMinutesPerHour;
-  daypart_info_3.end_minute = current_time + base::Time::kMinutesPerHour;
-  creative_ad.dayparts.push_back(daypart_info_3);
+  CreativeDaypartInfo daypart_3;
+  daypart_3.dow = current_dow;
+  daypart_3.start_minute = current_time - base::Time::kMinutesPerHour;
+  daypart_3.end_minute = current_time + base::Time::kMinutesPerHour;
+  creative_ad.dayparts.push_back(daypart_3);
 
   // Act
   DaypartExclusionRule exclusion_rule;
@@ -132,23 +129,23 @@ TEST_F(BatAdsDaypartExclusionRuleTest, DisallowIfNoMatches) {
       base::NumberToString((exploded.day_of_week + 1) % 7);
   const std::string current_dow = base::NumberToString(exploded.day_of_week);
 
-  CreativeDaypartInfo daypart_info;
-  daypart_info.dow = tomorrow_dow;
-  daypart_info.start_minute = current_time - 2 * base::Time::kMinutesPerHour;
-  daypart_info.end_minute = current_time - base::Time::kMinutesPerHour;
-  creative_ad.dayparts.push_back(daypart_info);
+  CreativeDaypartInfo daypart_1;
+  daypart_1.dow = tomorrow_dow;
+  daypart_1.start_minute = current_time - 2 * base::Time::kMinutesPerHour;
+  daypart_1.end_minute = current_time - base::Time::kMinutesPerHour;
+  creative_ad.dayparts.push_back(daypart_1);
 
-  CreativeDaypartInfo daypart_info_2;
-  daypart_info_2.dow = tomorrow_dow;
-  daypart_info_2.start_minute = current_time + 2 * base::Time::kMinutesPerHour;
-  daypart_info_2.end_minute = current_time + 3 * base::Time::kMinutesPerHour;
-  creative_ad.dayparts.push_back(daypart_info_2);
+  CreativeDaypartInfo daypart_2;
+  daypart_2.dow = tomorrow_dow;
+  daypart_2.start_minute = current_time + 2 * base::Time::kMinutesPerHour;
+  daypart_2.end_minute = current_time + 3 * base::Time::kMinutesPerHour;
+  creative_ad.dayparts.push_back(daypart_2);
 
-  CreativeDaypartInfo daypart_info_3;
-  daypart_info_3.dow = current_dow;
-  daypart_info_3.start_minute = current_time + base::Time::kMinutesPerHour;
-  daypart_info_3.end_minute = current_time + 2 * base::Time::kMinutesPerHour;
-  creative_ad.dayparts.push_back(daypart_info_3);
+  CreativeDaypartInfo daypart_3;
+  daypart_3.dow = current_dow;
+  daypart_3.start_minute = current_time + base::Time::kMinutesPerHour;
+  daypart_3.end_minute = current_time + 2 * base::Time::kMinutesPerHour;
+  creative_ad.dayparts.push_back(daypart_3);
 
   // Act
   DaypartExclusionRule exclusion_rule;
@@ -170,11 +167,11 @@ TEST_F(BatAdsDaypartExclusionRuleTest, DisallowIfWrongDay) {
   const std::string tomorrow_dow =
       base::NumberToString((exploded.day_of_week + 1) % 7);
 
-  CreativeDaypartInfo daypart_info;
-  daypart_info.dow = tomorrow_dow;
-  daypart_info.start_minute = current_time - 2 * base::Time::kMinutesPerHour;
-  daypart_info.end_minute = current_time - base::Time::kMinutesPerHour;
-  creative_ad.dayparts.push_back(daypart_info);
+  CreativeDaypartInfo daypart_1;
+  daypart_1.dow = tomorrow_dow;
+  daypart_1.start_minute = current_time - 2 * base::Time::kMinutesPerHour;
+  daypart_1.end_minute = current_time - base::Time::kMinutesPerHour;
+  creative_ad.dayparts.push_back(daypart_1);
 
   // Act
   DaypartExclusionRule exclusion_rule;
@@ -195,11 +192,11 @@ TEST_F(BatAdsDaypartExclusionRuleTest, DisallowIfWrongHours) {
       base::Time::kMinutesPerHour * exploded.hour + exploded.minute;
   const std::string current_dow = base::NumberToString(exploded.day_of_week);
 
-  CreativeDaypartInfo daypart_info;
-  daypart_info.dow = current_dow;
-  daypart_info.start_minute = current_time - base::Time::kMinutesPerHour;
-  daypart_info.end_minute = current_time - base::Time::kMinutesPerHour;
-  creative_ad.dayparts.push_back(daypart_info);
+  CreativeDaypartInfo daypart_1;
+  daypart_1.dow = current_dow;
+  daypart_1.start_minute = current_time - base::Time::kMinutesPerHour;
+  daypart_1.end_minute = current_time - base::Time::kMinutesPerHour;
+  creative_ad.dayparts.push_back(daypart_1);
 
   // Act
   DaypartExclusionRule exclusion_rule;

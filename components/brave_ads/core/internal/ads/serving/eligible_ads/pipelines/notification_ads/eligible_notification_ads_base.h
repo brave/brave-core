@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_PIPELINES_NOTIFICATION_ADS_ELIGIBLE_NOTIFICATION_ADS_BASE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_PIPELINES_NOTIFICATION_ADS_ELIGIBLE_NOTIFICATION_ADS_BASE_H_
 
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_ads/core/ad_info.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_callback.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
@@ -29,11 +29,11 @@ namespace notification_ads {
 
 class EligibleAdsBase {
  public:
-  EligibleAdsBase(const EligibleAdsBase& other) = delete;
-  EligibleAdsBase& operator=(const EligibleAdsBase& other) = delete;
+  EligibleAdsBase(const EligibleAdsBase&) = delete;
+  EligibleAdsBase& operator=(const EligibleAdsBase&) = delete;
 
-  EligibleAdsBase(EligibleAdsBase&& other) noexcept = delete;
-  EligibleAdsBase& operator=(EligibleAdsBase&& other) noexcept = delete;
+  EligibleAdsBase(EligibleAdsBase&&) noexcept = delete;
+  EligibleAdsBase& operator=(EligibleAdsBase&&) noexcept = delete;
 
   virtual ~EligibleAdsBase();
 
@@ -44,14 +44,12 @@ class EligibleAdsBase {
   void SetLastServedAd(const AdInfo& ad) { last_served_ad_ = ad; }
 
  protected:
-  EligibleAdsBase(geographic::SubdivisionTargeting* subdivision_targeting,
-                  resource::AntiTargeting* anti_targeting_resource);
+  EligibleAdsBase(const geographic::SubdivisionTargeting& subdivision_targeting,
+                  const resource::AntiTargeting& anti_targeting_resource);
 
-  const raw_ptr<geographic::SubdivisionTargeting> subdivision_targeting_ =
-      nullptr;  // NOT OWNED
-
-  const raw_ptr<resource::AntiTargeting> anti_targeting_resource_ =
-      nullptr;  // NOT OWNED
+  const base::raw_ref<const geographic::SubdivisionTargeting>
+      subdivision_targeting_;
+  const base::raw_ref<const resource::AntiTargeting> anti_targeting_resource_;
 
   AdInfo last_served_ad_;
 };

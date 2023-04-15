@@ -9,6 +9,8 @@
 
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
@@ -49,7 +51,10 @@ TEST_F(BatAdsAverageClickthroughRatePredictorVariableTest,
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
       std::make_unique<AverageClickthroughRatePredictorVariable>(base::Days(1));
 
-  const NotificationAdInfo ad;
+  const CreativeNotificationAdInfo creative_ad =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ false);
+  const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
+
   HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
   HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
   HistoryManager::GetInstance()->Add(ad, ConfirmationType::kClicked);
@@ -68,7 +73,10 @@ TEST_F(BatAdsAverageClickthroughRatePredictorVariableTest,
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
       std::make_unique<AverageClickthroughRatePredictorVariable>(base::Days(1));
 
-  const NotificationAdInfo ad;
+  const CreativeNotificationAdInfo creative_ad =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ false);
+  const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
+
   HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
 
   // Act
@@ -83,7 +91,10 @@ TEST_F(BatAdsAverageClickthroughRatePredictorVariableTest,
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
       std::make_unique<AverageClickthroughRatePredictorVariable>(base::Days(1));
 
-  const NotificationAdInfo ad;
+  const CreativeNotificationAdInfo creative_ad =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ false);
+  const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
+
   HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
   HistoryManager::GetInstance()->Add(ad, ConfirmationType::kClicked);
 
@@ -99,7 +110,10 @@ TEST_F(BatAdsAverageClickthroughRatePredictorVariableTest,
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
       std::make_unique<AverageClickthroughRatePredictorVariable>(base::Days(1));
 
-  const NotificationAdInfo ad;
+  const CreativeNotificationAdInfo creative_ad =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ false);
+  const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
+
   HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
   HistoryManager::GetInstance()->Add(ad, ConfirmationType::kClicked);
   HistoryManager::GetInstance()->Add(ad, ConfirmationType::kClicked);
@@ -115,7 +129,10 @@ TEST_F(BatAdsAverageClickthroughRatePredictorVariableTest, GetValue) {
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
       std::make_unique<AverageClickthroughRatePredictorVariable>(base::Days(1));
 
-  const NotificationAdInfo ad;
+  const CreativeNotificationAdInfo creative_ad =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ false);
+  const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
+
   HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
   HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
   HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);

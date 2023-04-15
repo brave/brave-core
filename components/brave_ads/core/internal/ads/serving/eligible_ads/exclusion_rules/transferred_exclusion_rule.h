@@ -20,13 +20,12 @@ class TransferredExclusionRule final
  public:
   explicit TransferredExclusionRule(AdEventList ad_events);
 
-  TransferredExclusionRule(const TransferredExclusionRule& other) = delete;
-  TransferredExclusionRule& operator=(const TransferredExclusionRule& other) =
-      delete;
+  TransferredExclusionRule(const TransferredExclusionRule&) = delete;
+  TransferredExclusionRule& operator=(const TransferredExclusionRule&) = delete;
 
-  TransferredExclusionRule(TransferredExclusionRule&& other) noexcept = delete;
-  TransferredExclusionRule& operator=(
-      TransferredExclusionRule&& other) noexcept = delete;
+  TransferredExclusionRule(TransferredExclusionRule&&) noexcept = delete;
+  TransferredExclusionRule& operator=(TransferredExclusionRule&&) noexcept =
+      delete;
 
   ~TransferredExclusionRule() override;
 

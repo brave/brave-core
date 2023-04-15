@@ -20,9 +20,8 @@ class BackgroundHelperLinux
   BackgroundHelperLinux(const BackgroundHelperLinux&) = delete;
   BackgroundHelperLinux& operator=(const BackgroundHelperLinux&) = delete;
 
-  BackgroundHelperLinux(BackgroundHelperLinux&& other) noexcept = delete;
-  BackgroundHelperLinux& operator=(BackgroundHelperLinux&& other) noexcept =
-      delete;
+  BackgroundHelperLinux(BackgroundHelperLinux&&) noexcept = delete;
+  BackgroundHelperLinux& operator=(BackgroundHelperLinux&&) noexcept = delete;
 
   ~BackgroundHelperLinux() override;
 

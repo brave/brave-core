@@ -29,11 +29,11 @@ class TextEmbedding final : public AdsClientNotifierObserver,
  public:
   explicit TextEmbedding(resource::TextEmbedding* resource);
 
-  TextEmbedding(const TextEmbedding& other) = delete;
-  TextEmbedding& operator=(const TextEmbedding& other) = delete;
+  TextEmbedding(const TextEmbedding&) = delete;
+  TextEmbedding& operator=(const TextEmbedding&) = delete;
 
-  TextEmbedding(TextEmbedding&& other) noexcept = delete;
-  TextEmbedding& operator=(TextEmbedding&& other) noexcept = delete;
+  TextEmbedding(TextEmbedding&&) noexcept = delete;
+  TextEmbedding& operator=(TextEmbedding&&) noexcept = delete;
 
   ~TextEmbedding() override;
 

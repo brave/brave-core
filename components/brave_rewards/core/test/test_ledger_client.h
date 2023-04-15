@@ -73,8 +73,6 @@ class TestLedgerClient : public mojom::LedgerClient {
 
   void LoadURL(mojom::UrlRequestPtr request, LoadURLCallback callback) override;
 
-  void URIEncode(const std::string& value, URIEncodeCallback callback) override;
-
   void PublisherListNormalized(
       std::vector<mojom::PublisherInfoPtr> list) override;
 
@@ -178,8 +176,6 @@ class TestLedgerClient : public mojom::LedgerClient {
 
   void RunDBTransaction(mojom::DBTransactionPtr transaction,
                         RunDBTransactionCallback callback) override;
-
-  void GetCreateScript(GetCreateScriptCallback callback) override;
 
   void PendingContributionSaved(mojom::Result result) override;
 

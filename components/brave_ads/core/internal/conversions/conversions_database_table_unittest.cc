@@ -26,24 +26,50 @@ base::Time CalculateExpireAtTime(const int observation_window) {
 
 class BatAdsConversionsDatabaseTableTest : public UnitTestBase {
  protected:
-  void SetUp() override {
-    UnitTestBase::SetUp();
-
-    database_table_ = std::make_unique<Conversions>();
-  }
-
-  std::unique_ptr<Conversions> database_table_;
+  Conversions database_table_;
 };
 
 TEST_F(BatAdsConversionsDatabaseTableTest, EmptySave) {
   // Arrange
-  const ConversionList conversions;
+
+  // Act
+  SaveConversions({});
+
+  // Assert
+  database_table_.GetAll(
+      base::BindOnce([](const bool success, const ConversionList& conversions) {
+        ASSERT_TRUE(success);
+        EXPECT_TRUE(conversions.empty());
+      }));
+}
+
+TEST_F(BatAdsConversionsDatabaseTableTest, SaveConversions) {
+  // Arrange
+  ConversionList conversions;
+
+  ConversionInfo conversion_1;
+  conversion_1.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
+  conversion_1.type = "postview";
+  conversion_1.url_pattern = "https://www.brave.com/*";
+  conversion_1.observation_window = 3;
+  conversion_1.expire_at =
+      CalculateExpireAtTime(conversion_1.observation_window);
+  conversions.push_back(conversion_1);
+
+  ConversionInfo conversion_2;
+  conversion_2.creative_set_id = "eaa6224a-46a4-4c48-9c2b-c264c0067f04";
+  conversion_2.type = "postclick";
+  conversion_2.url_pattern = "https://www.brave.com/signup/*";
+  conversion_2.observation_window = 30;
+  conversion_2.expire_at =
+      CalculateExpireAtTime(conversion_2.observation_window);
+  conversions.push_back(conversion_2);
 
   // Act
   SaveConversions(conversions);
 
   // Assert
-  database_table_->GetAll(base::BindOnce(
+  database_table_.GetAll(base::BindOnce(
       [](const ConversionList& expected_conversions, const bool success,
          const ConversionList& conversions) {
         ASSERT_TRUE(success);
@@ -52,52 +78,17 @@ TEST_F(BatAdsConversionsDatabaseTableTest, EmptySave) {
       conversions));
 }
 
-TEST_F(BatAdsConversionsDatabaseTableTest, SaveConversions) {
-  // Arrange
-  ConversionList conversions;
-
-  ConversionInfo info_1;
-  info_1.creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
-  info_1.type = "postview";
-  info_1.url_pattern = "https://www.brave.com/*";
-  info_1.observation_window = 3;
-  info_1.expire_at = CalculateExpireAtTime(info_1.observation_window);
-  conversions.push_back(info_1);
-
-  ConversionInfo info_2;
-  info_2.creative_set_id = "eaa6224a-46a4-4c48-9c2b-c264c0067f04";
-  info_2.type = "postclick";
-  info_2.url_pattern = "https://www.brave.com/signup/*";
-  info_2.observation_window = 30;
-  info_2.expire_at = CalculateExpireAtTime(info_2.observation_window);
-  conversions.push_back(info_2);
-
-  // Act
-  SaveConversions(conversions);
-
-  // Assert
-  const ConversionList expected_conversions = conversions;
-
-  database_table_->GetAll(base::BindOnce(
-      [](const ConversionList& expected_conversions, const bool success,
-         const ConversionList& conversions) {
-        ASSERT_TRUE(success);
-        EXPECT_TRUE(ContainersEq(expected_conversions, conversions));
-      },
-      expected_conversions));
-}
-
 TEST_F(BatAdsConversionsDatabaseTableTest, DoNotSaveDuplicateConversion) {
   // Arrange
   ConversionList conversions;
 
-  ConversionInfo info;
-  info.creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
-  info.type = "postview";
-  info.url_pattern = "https://www.brave.com/*";
-  info.observation_window = 3;
-  info.expire_at = CalculateExpireAtTime(info.observation_window);
-  conversions.push_back(info);
+  ConversionInfo conversion;
+  conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
+  conversion.type = "postview";
+  conversion.url_pattern = "https://www.brave.com/*";
+  conversion.observation_window = 3;
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversions.push_back(conversion);
 
   SaveConversions(conversions);
 
@@ -105,44 +96,45 @@ TEST_F(BatAdsConversionsDatabaseTableTest, DoNotSaveDuplicateConversion) {
   SaveConversions(conversions);
 
   // Assert
-  const ConversionList expected_conversions = conversions;
-
-  database_table_->GetAll(base::BindOnce(
+  database_table_.GetAll(base::BindOnce(
       [](const ConversionList& expected_conversions, const bool success,
          const ConversionList& conversions) {
         ASSERT_TRUE(success);
-        EXPECT_TRUE(ContainersEq(expected_conversions, conversions));
+        EXPECT_EQ(expected_conversions, conversions);
       },
-      expected_conversions));
+      conversions));
 }
 
 TEST_F(BatAdsConversionsDatabaseTableTest, PurgeExpiredConversions) {
   // Arrange
   ConversionList conversions;
 
-  ConversionInfo info_1;
-  info_1.creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
-  info_1.type = "postview";
-  info_1.url_pattern = "https://www.brave.com/*";
-  info_1.observation_window = 7;
-  info_1.expire_at = CalculateExpireAtTime(info_1.observation_window);
-  conversions.push_back(info_1);
+  ConversionInfo conversion_1;
+  conversion_1.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
+  conversion_1.type = "postview";
+  conversion_1.url_pattern = "https://www.brave.com/*";
+  conversion_1.observation_window = 7;
+  conversion_1.expire_at =
+      CalculateExpireAtTime(conversion_1.observation_window);
+  conversions.push_back(conversion_1);
 
-  ConversionInfo info_2;  // Should be purged
-  info_2.creative_set_id = "eaa6224a-46a4-4c48-9c2b-c264c0067f04";
-  info_2.type = "postclick";
-  info_2.url_pattern = "https://www.brave.com/signup/*";
-  info_2.observation_window = 3;
-  info_2.expire_at = CalculateExpireAtTime(info_2.observation_window);
-  conversions.push_back(info_2);
+  ConversionInfo conversion_2;  // Should be purged
+  conversion_2.creative_set_id = "eaa6224a-46a4-4c48-9c2b-c264c0067f04";
+  conversion_2.type = "postclick";
+  conversion_2.url_pattern = "https://www.brave.com/signup/*";
+  conversion_2.observation_window = 3;
+  conversion_2.expire_at =
+      CalculateExpireAtTime(conversion_2.observation_window);
+  conversions.push_back(conversion_2);
 
-  ConversionInfo info_3;
-  info_3.creative_set_id = "8e9f0c2f-1640-463c-902d-ca711789287f";
-  info_3.type = "postview";
-  info_3.url_pattern = "https://www.brave.com/*";
-  info_3.observation_window = 30;
-  info_3.expire_at = CalculateExpireAtTime(info_3.observation_window);
-  conversions.push_back(info_3);
+  ConversionInfo conversion_3;
+  conversion_3.creative_set_id = "8e9f0c2f-1640-463c-902d-ca711789287f";
+  conversion_3.type = "postview";
+  conversion_3.url_pattern = "https://www.brave.com/*";
+  conversion_3.observation_window = 30;
+  conversion_3.expire_at =
+      CalculateExpireAtTime(conversion_3.observation_window);
+  conversions.push_back(conversion_3);
 
   SaveConversions(conversions);
 
@@ -152,11 +144,9 @@ TEST_F(BatAdsConversionsDatabaseTableTest, PurgeExpiredConversions) {
   PurgeExpiredConversions();
 
   // Assert
-  ConversionList expected_conversions;
-  expected_conversions.push_back(info_1);
-  expected_conversions.push_back(info_3);
+  const ConversionList expected_conversions = {conversion_1, conversion_3};
 
-  database_table_->GetAll(base::BindOnce(
+  database_table_.GetAll(base::BindOnce(
       [](const ConversionList& expected_conversions, const bool success,
          const ConversionList& conversions) {
         ASSERT_TRUE(success);
@@ -170,36 +160,37 @@ TEST_F(BatAdsConversionsDatabaseTableTest,
   // Arrange
   ConversionList conversions;
 
-  ConversionInfo info_1;
-  info_1.creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
-  info_1.type = "postview";
-  info_1.url_pattern = "https://www.brave.com/1";
-  info_1.observation_window = 3;
-  info_1.expire_at = CalculateExpireAtTime(info_1.observation_window);
-  conversions.push_back(info_1);
+  ConversionInfo conversion_1;
+  conversion_1.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
+  conversion_1.type = "postview";
+  conversion_1.url_pattern = "https://www.brave.com/1";
+  conversion_1.observation_window = 3;
+  conversion_1.expire_at =
+      CalculateExpireAtTime(conversion_1.observation_window);
+  conversions.push_back(conversion_1);
 
   SaveConversions(conversions);
 
   // Act
-  ConversionInfo info_2;  // Should supersede info_1
-  info_2.creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
-  info_2.type = "postview";
-  info_2.url_pattern = "https://www.brave.com/2";
-  info_2.observation_window = 30;
-  info_2.expire_at = CalculateExpireAtTime(info_2.observation_window);
-  conversions.push_back(info_2);
+  ConversionInfo conversion_2;  // Should supersede conversion_1
+  conversion_2.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
+  conversion_2.type = "postview";
+  conversion_2.url_pattern = "https://www.brave.com/2";
+  conversion_2.observation_window = 30;
+  conversion_2.expire_at =
+      CalculateExpireAtTime(conversion_2.observation_window);
+  conversions.push_back(conversion_2);
 
   SaveConversions(conversions);
 
   // Assert
-  ConversionList expected_conversions;
-  expected_conversions.push_back(info_2);
+  const ConversionList expected_conversions = {conversion_2};
 
-  database_table_->GetAll(base::BindOnce(
+  database_table_.GetAll(base::BindOnce(
       [](const ConversionList& expected_conversions, const bool success,
          const ConversionList& conversions) {
         ASSERT_TRUE(success);
-        EXPECT_TRUE(ContainersEq(expected_conversions, conversions));
+        EXPECT_EQ(expected_conversions, conversions);
       },
       expected_conversions));
 }
@@ -208,11 +199,9 @@ TEST_F(BatAdsConversionsDatabaseTableTest, TableName) {
   // Arrange
 
   // Act
-  const std::string table_name = database_table_->GetTableName();
 
   // Assert
-  const std::string expected_table_name = "creative_ad_conversions";
-  EXPECT_EQ(expected_table_name, table_name);
+  EXPECT_EQ("creative_ad_conversions", database_table_.GetTableName());
 }
 
 }  // namespace brave_ads::database::table

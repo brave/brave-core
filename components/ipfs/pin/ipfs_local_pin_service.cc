@@ -326,6 +326,8 @@ IpfsLocalPinService::IpfsLocalPinService(PrefService* prefs_service,
 
 void IpfsLocalPinService::Reset(base::OnceCallback<void(bool)> callback) {
   weak_ptr_factory_.InvalidateWeakPtrs();
+  ipfs_base_pin_service_ = std::make_unique<IpfsBasePinService>(ipfs_service_);
+  gc_task_posted_ = false;
   ipfs_service_->LsPinCli(base::BindOnce(&IpfsLocalPinService::OnLsPinCliResult,
                                          weak_ptr_factory_.GetWeakPtr(),
                                          std::move(callback)));
@@ -456,6 +458,10 @@ void IpfsLocalPinService::AddGcTask() {
 void IpfsLocalPinService::OnGcFinishedCallback(bool status) {
   gc_task_posted_ = false;
   ipfs_base_pin_service_->OnJobDone(status);
+}
+
+bool IpfsLocalPinService::HasJobs() {
+  return ipfs_base_pin_service_->HasJobs();
 }
 
 }  // namespace ipfs

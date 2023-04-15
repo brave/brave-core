@@ -10,12 +10,10 @@
 #include <memory>
 #include <string>
 
+#include "base/types/expected.h"
+#include "base/values.h"
 #include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
 #include "brave/components/brave_ads/core/internal/ml/model/linear/linear.h"
-
-namespace base {
-class Value;
-}  // namespace base
 
 namespace brave_ads::ml::pipeline {
 
@@ -23,26 +21,25 @@ struct PipelineInfo;
 
 class TextProcessing final {
  public:
-  static std::unique_ptr<TextProcessing> CreateFromValue(
-      base::Value resource_value,
-      std::string* error_message);
+  static base::expected<TextProcessing, std::string> CreateFromValue(
+      base::Value::Dict dict);
 
   TextProcessing();
   TextProcessing(TransformationVector transformations,
                  model::Linear linear_model);
 
-  TextProcessing(const TextProcessing& pipeline) = delete;
-  TextProcessing& operator=(const TextProcessing& pipeline) = delete;
+  TextProcessing(const TextProcessing&) = delete;
+  TextProcessing& operator=(const TextProcessing&) = delete;
 
-  TextProcessing(TextProcessing&& other) noexcept = delete;
-  TextProcessing& operator=(TextProcessing&& other) noexcept = delete;
+  TextProcessing(TextProcessing&&) noexcept;
+  TextProcessing& operator=(TextProcessing&&) noexcept;
 
   ~TextProcessing();
 
   bool IsInitialized() const { return is_initialized_; }
 
   void SetPipeline(PipelineInfo info);
-  bool SetPipeline(base::Value resource_value);
+  bool SetPipeline(base::Value::Dict dict);
 
   PredictionMap Apply(const std::unique_ptr<Data>& input_data) const;
 

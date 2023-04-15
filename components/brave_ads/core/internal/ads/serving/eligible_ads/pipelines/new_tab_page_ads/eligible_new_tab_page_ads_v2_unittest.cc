@@ -27,8 +27,8 @@ class BatAdsEligibleNewTabPageAdsV2Test : public UnitTestBase {
     subdivision_targeting_ =
         std::make_unique<geographic::SubdivisionTargeting>();
     anti_targeting_resource_ = std::make_unique<resource::AntiTargeting>();
-    eligible_ads_ = std::make_unique<EligibleAdsV2>(
-        subdivision_targeting_.get(), anti_targeting_resource_.get());
+    eligible_ads_ = std::make_unique<EligibleAdsV2>(*subdivision_targeting_,
+                                                    *anti_targeting_resource_);
   }
 
   std::unique_ptr<geographic::SubdivisionTargeting> subdivision_targeting_;
@@ -40,11 +40,13 @@ TEST_F(BatAdsEligibleNewTabPageAdsV2Test, GetAds) {
   // Arrange
   CreativeNewTabPageAdList creative_ads;
 
-  CreativeNewTabPageAdInfo creative_ad_1 = BuildCreativeNewTabPageAd();
+  CreativeNewTabPageAdInfo creative_ad_1 =
+      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
   creative_ad_1.segment = "foo-bar1";
   creative_ads.push_back(creative_ad_1);
 
-  CreativeNewTabPageAdInfo creative_ad_2 = BuildCreativeNewTabPageAd();
+  CreativeNewTabPageAdInfo creative_ad_2 =
+      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
   creative_ad_2.segment = "foo-bar3";
   creative_ads.push_back(creative_ad_2);
 
@@ -52,7 +54,8 @@ TEST_F(BatAdsEligibleNewTabPageAdsV2Test, GetAds) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"foo-bar3"}, /*latent_interest_segments*/ {},
+      targeting::BuildUserModel({/*interest_segments*/ "foo-bar3"},
+                                /*latent_interest_segments*/ {},
                                 {"foo-bar1", "foo-bar2"},
                                 /*text_embedding_html_events*/ {}),
       base::BindOnce([](const bool had_opportunity,
@@ -67,11 +70,13 @@ TEST_F(BatAdsEligibleNewTabPageAdsV2Test, GetAdsForNoSegments) {
   // Arrange
   CreativeNewTabPageAdList creative_ads;
 
-  CreativeNewTabPageAdInfo creative_ad_1 = BuildCreativeNewTabPageAd();
+  CreativeNewTabPageAdInfo creative_ad_1 =
+      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
   creative_ad_1.segment = "foo";
   creative_ads.push_back(creative_ad_1);
 
-  CreativeNewTabPageAdInfo creative_ad_2 = BuildCreativeNewTabPageAd();
+  CreativeNewTabPageAdInfo creative_ad_2 =
+      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
   creative_ad_2.segment = "foo-bar";
   creative_ads.push_back(creative_ad_2);
 
@@ -96,10 +101,10 @@ TEST_F(BatAdsEligibleNewTabPageAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"interest-foo", "interest-bar"},
-                                /*latent_interest_segments*/ {},
-                                {"intent-foo", "intent-bar"},
-                                /*text_embedding_html_events*/ {}),
+      targeting::BuildUserModel(
+          {/*interest_segments*/ "interest-foo", "interest-bar"},
+          /*latent_interest_segments*/ {}, {"intent-foo", "intent-bar"},
+          /*text_embedding_html_events*/ {}),
       base::BindOnce([](const bool had_opportunity,
                         const CreativeNewTabPageAdList& creative_ads) {
         // Assert

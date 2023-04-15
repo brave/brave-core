@@ -20,12 +20,12 @@ class RefillUnblindedTokensDelegateMock : public RefillUnblindedTokensDelegate {
   RefillUnblindedTokensDelegateMock(const RefillUnblindedTokensDelegateMock&) =
       delete;
   RefillUnblindedTokensDelegateMock& operator=(
-      const RefillUnblindedTokensDelegateMock& other) = delete;
+      const RefillUnblindedTokensDelegateMock&) = delete;
 
   RefillUnblindedTokensDelegateMock(
-      RefillUnblindedTokensDelegateMock&& other) noexcept = delete;
+      RefillUnblindedTokensDelegateMock&&) noexcept = delete;
   RefillUnblindedTokensDelegateMock& operator=(
-      RefillUnblindedTokensDelegateMock&& other) noexcept = delete;
+      RefillUnblindedTokensDelegateMock&&) noexcept = delete;
 
   ~RefillUnblindedTokensDelegateMock() override;
 

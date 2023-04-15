@@ -6,28 +6,21 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_CONTEXTUAL_TEXT_EMBEDDING_TEXT_EMBEDDING_RESOURCE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_CONTEXTUAL_TEXT_EMBEDDING_TEXT_EMBEDDING_RESOURCE_H_
 
-#include <memory>
-
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/core/internal/resources/parsing_result.h"
+#include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_processing.h"
+#include "brave/components/brave_ads/core/internal/resources/parsing_error_or.h"
 
-namespace brave_ads {
-
-namespace ml::pipeline {
-class EmbeddingProcessing;
-}  // namespace ml::pipeline
-
-namespace resource {
+namespace brave_ads::resource {
 
 class TextEmbedding final {
  public:
   TextEmbedding();
 
-  TextEmbedding(const TextEmbedding& other) = delete;
-  TextEmbedding& operator=(const TextEmbedding& other) = delete;
+  TextEmbedding(const TextEmbedding&) = delete;
+  TextEmbedding& operator=(const TextEmbedding&) = delete;
 
-  TextEmbedding(TextEmbedding&& other) noexcept = delete;
-  TextEmbedding& operator=(TextEmbedding&& other) noexcept = delete;
+  TextEmbedding(TextEmbedding&&) noexcept = delete;
+  TextEmbedding& operator=(TextEmbedding&&) noexcept = delete;
 
   ~TextEmbedding();
 
@@ -35,18 +28,17 @@ class TextEmbedding final {
 
   void Load();
 
-  ml::pipeline::EmbeddingProcessing* Get() const;
+  const ml::pipeline::EmbeddingProcessing* Get() const;
 
  private:
   void OnLoadAndParseResource(
-      ParsingResultPtr<ml::pipeline::EmbeddingProcessing> result);
+      ParsingErrorOr<ml::pipeline::EmbeddingProcessing> result);
 
-  std::unique_ptr<ml::pipeline::EmbeddingProcessing> embedding_processing_;
+  ml::pipeline::EmbeddingProcessing embedding_processing_;
 
   base::WeakPtrFactory<TextEmbedding> weak_factory_{this};
 };
 
-}  // namespace resource
-}  // namespace brave_ads
+}  // namespace brave_ads::resource
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_CONTEXTUAL_TEXT_EMBEDDING_TEXT_EMBEDDING_RESOURCE_H_

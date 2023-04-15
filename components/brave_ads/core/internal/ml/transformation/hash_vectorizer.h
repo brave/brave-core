@@ -18,11 +18,11 @@ class HashVectorizer final {
   HashVectorizer();
   HashVectorizer(int bucket_count, const std::vector<int>& subgrams);
 
-  HashVectorizer(const HashVectorizer& other) = delete;
-  HashVectorizer& operator=(const HashVectorizer& other) = delete;
+  HashVectorizer(const HashVectorizer&) = delete;
+  HashVectorizer& operator=(const HashVectorizer&) = delete;
 
-  HashVectorizer(HashVectorizer&& other) noexcept = delete;
-  HashVectorizer& operator=(HashVectorizer&& other) noexcept = delete;
+  HashVectorizer(HashVectorizer&&) noexcept = delete;
+  HashVectorizer& operator=(HashVectorizer&&) noexcept = delete;
 
   ~HashVectorizer();
 

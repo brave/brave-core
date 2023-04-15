@@ -25,11 +25,11 @@ class PredictorsManager final {
  public:
   PredictorsManager();
 
-  PredictorsManager(const PredictorsManager& other) = delete;
-  PredictorsManager& operator=(const PredictorsManager& other) = delete;
+  PredictorsManager(const PredictorsManager&) = delete;
+  PredictorsManager& operator=(const PredictorsManager&) = delete;
 
-  PredictorsManager(PredictorsManager&& other) noexcept = delete;
-  PredictorsManager& operator=(PredictorsManager&& other) noexcept = delete;
+  PredictorsManager(PredictorsManager&&) noexcept = delete;
+  PredictorsManager& operator=(PredictorsManager&&) noexcept = delete;
 
   ~PredictorsManager();
 

@@ -480,7 +480,6 @@ void RewardsServiceImpl::OnLedgerCreated() {
   PrepareLedgerEnvForTesting();
 
   ledger_->Initialize(
-      false,
       base::BindOnce(&RewardsServiceImpl::OnLedgerInitialized, AsWeakPtr()));
 }
 
@@ -611,10 +610,12 @@ void RewardsServiceImpl::GetUserType(
 }
 
 std::string RewardsServiceImpl::GetCountryCode() const {
-  std::string declared_geo =
-      profile_->GetPrefs()->GetString(prefs::kDeclaredGeo);
-  return !declared_geo.empty() ? declared_geo
-                               : country_codes::GetCurrentCountryCode();
+  auto* prefs = profile_->GetPrefs();
+  std::string declared_geo = prefs->GetString(prefs::kDeclaredGeo);
+  return !declared_geo.empty()
+             ? declared_geo
+             : country_codes::CountryIDToCountryString(
+                   country_codes::GetCountryIDFromPrefs(prefs));
 }
 
 void RewardsServiceImpl::GetAvailableCountries(
@@ -813,11 +814,6 @@ void RewardsServiceImpl::RestorePublishers() {
 
   ledger_->RestorePublishers(
       base::BindOnce(&RewardsServiceImpl::OnRestorePublishers, AsWeakPtr()));
-}
-
-void RewardsServiceImpl::URIEncode(const std::string& value,
-                                   URIEncodeCallback callback) {
-  std::move(callback).Run(base::EscapeQueryParamValue(value, false));
 }
 
 void RewardsServiceImpl::Shutdown() {
@@ -2730,10 +2726,6 @@ void RewardsServiceImpl::OnRunDBTransaction(
     ledger::mojom::DBCommandResponsePtr response) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   std::move(callback).Run(std::move(response));
-}
-
-void RewardsServiceImpl::GetCreateScript(GetCreateScriptCallback callback) {
-  std::move(callback).Run("", 0);
 }
 
 void RewardsServiceImpl::PendingContributionSaved(

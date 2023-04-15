@@ -20,11 +20,11 @@ class AdsClientMock : public AdsClient {
  public:
   AdsClientMock();
 
-  AdsClientMock(const AdsClientMock& other) = delete;
-  AdsClientMock& operator=(const AdsClientMock& other) = delete;
+  AdsClientMock(const AdsClientMock&) = delete;
+  AdsClientMock& operator=(const AdsClientMock&) = delete;
 
-  AdsClientMock(AdsClientMock&& other) noexcept = delete;
-  AdsClientMock& operator=(AdsClientMock&& other) noexcept = delete;
+  AdsClientMock(AdsClientMock&&) noexcept = delete;
+  AdsClientMock& operator=(AdsClientMock&&) noexcept = delete;
 
   ~AdsClientMock() override;
 
@@ -41,6 +41,8 @@ class AdsClientMock : public AdsClient {
   MOCK_CONST_METHOD0(CanShowNotificationAdsWhileBrowserIsBackgrounded, bool());
   MOCK_METHOD1(ShowNotificationAd, void(const NotificationAdInfo& ad));
   MOCK_METHOD1(CloseNotificationAd, void(const std::string& placement_id));
+
+  MOCK_METHOD1(ShowReminder, void(const mojom::ReminderType type));
 
   MOCK_METHOD0(UpdateAdRewards, void());
 

@@ -48,13 +48,9 @@ void ExecuteScriptToOpenPopup(content::WebContents* web_contents,
                               const GURL& url) {
   content::TestNavigationObserver popup_waiter(nullptr, 1);
   popup_waiter.StartWatchingNewWebContents();
-  bool result = false;
-  CHECK(content::ExecuteScriptAndExtractBool(
-      web_contents,
-      content::JsReplace(
-          "window.domAutomationController.send(!!window.open($1));", url),
-      &result));
-  ASSERT_TRUE(result);
+  ASSERT_EQ(true,
+            content::EvalJs(web_contents,
+                            content::JsReplace("!!window.open($1);", url)));
   popup_waiter.Wait();
 }
 

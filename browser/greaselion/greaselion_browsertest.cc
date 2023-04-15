@@ -280,7 +280,6 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjection) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(url, contents->GetURL());
-  std::string title;
   EXPECT_EQ(content::EvalJs(contents, kWaitForTitleChangeScript), "Altered");
 }
 
@@ -291,13 +290,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionDocumentStart) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(url, contents->GetURL());
-  std::string title;
-  ASSERT_TRUE(
-      ExecuteScriptAndExtractString(contents,
-                                    "window.domAutomationController.send("
-                                    "document.title)",
-                                    &title));
-  EXPECT_EQ(title, "SCRIPT_FIRST");
+  EXPECT_EQ(content::EvalJs(contents, "document.title;"), "SCRIPT_FIRST");
 }
 
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionDocumentEnd) {
@@ -307,13 +300,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionDocumentEnd) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(url, contents->GetURL());
-  std::string title;
-  ASSERT_TRUE(
-      ExecuteScriptAndExtractString(contents,
-                                    "window.domAutomationController.send("
-                                    "document.title)",
-                                    &title));
-  EXPECT_EQ(title, "PAGE_FIRST");
+  EXPECT_EQ(content::EvalJs(contents, "document.title;"), "PAGE_FIRST");
 }
 
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionRunAtDefault) {
@@ -323,13 +310,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionRunAtDefault) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(url, contents->GetURL());
-  std::string title;
-  ASSERT_TRUE(
-      ExecuteScriptAndExtractString(contents,
-                                    "window.domAutomationController.send("
-                                    "document.title)",
-                                    &title));
-  EXPECT_EQ(title, "PAGE_FIRST");
+  EXPECT_EQ(content::EvalJs(contents, "document.title;"), "PAGE_FIRST");
 }
 
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
@@ -341,15 +322,9 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(url, contents->GetURL());
-  std::string title;
-  ASSERT_TRUE(
-      ExecuteScriptAndExtractString(contents,
-                                    "window.domAutomationController.send("
-                                    "document.title)",
-                                    &title));
   // should be unaltered because precondition did not match, so no Greaselion
   // rules are active
-  EXPECT_EQ(title, "OK");
+  EXPECT_EQ(content::EvalJs(contents, "document.title;"), "OK");
 
   StartRewards();
 

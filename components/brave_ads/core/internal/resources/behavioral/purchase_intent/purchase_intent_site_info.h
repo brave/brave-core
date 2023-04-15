@@ -19,16 +19,16 @@ struct PurchaseIntentSiteInfo final {
                          GURL url_netloc,
                          uint16_t weight);
 
-  PurchaseIntentSiteInfo(const PurchaseIntentSiteInfo& other);
-  PurchaseIntentSiteInfo& operator=(const PurchaseIntentSiteInfo& other);
+  PurchaseIntentSiteInfo(const PurchaseIntentSiteInfo&);
+  PurchaseIntentSiteInfo& operator=(const PurchaseIntentSiteInfo&);
 
-  PurchaseIntentSiteInfo(PurchaseIntentSiteInfo&& other) noexcept;
-  PurchaseIntentSiteInfo& operator=(PurchaseIntentSiteInfo&& other) noexcept;
+  PurchaseIntentSiteInfo(PurchaseIntentSiteInfo&&) noexcept;
+  PurchaseIntentSiteInfo& operator=(PurchaseIntentSiteInfo&&) noexcept;
 
   ~PurchaseIntentSiteInfo();
 
-  bool operator==(const PurchaseIntentSiteInfo& other) const;
-  bool operator!=(const PurchaseIntentSiteInfo& other) const;
+  bool operator==(const PurchaseIntentSiteInfo&) const;
+  bool operator!=(const PurchaseIntentSiteInfo&) const;
 
   SegmentList segments;
   GURL url_netloc;

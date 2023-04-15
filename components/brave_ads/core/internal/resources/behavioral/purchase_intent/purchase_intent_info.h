@@ -7,34 +7,30 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_INFO_H_
 
 #include <cstdint>
-#include <memory>
 #include <string>
 #include <vector>
 
+#include "base/types/expected.h"
+#include "base/values.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_funnel_keyword_info.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_segment_keyword_info.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_site_info.h"
-
-namespace base {
-class Value;
-}  // namespace base
 
 namespace brave_ads::targeting {
 
 struct PurchaseIntentInfo final {
   PurchaseIntentInfo();
 
-  PurchaseIntentInfo(const PurchaseIntentInfo& other) = delete;
-  PurchaseIntentInfo& operator=(const PurchaseIntentInfo& other) = delete;
+  PurchaseIntentInfo(const PurchaseIntentInfo&) = delete;
+  PurchaseIntentInfo& operator=(const PurchaseIntentInfo&) = delete;
 
-  PurchaseIntentInfo(PurchaseIntentInfo&& other) noexcept = delete;
-  PurchaseIntentInfo& operator=(PurchaseIntentInfo&& other) noexcept = delete;
+  PurchaseIntentInfo(PurchaseIntentInfo&&) noexcept;
+  PurchaseIntentInfo& operator=(PurchaseIntentInfo&&) noexcept;
 
   ~PurchaseIntentInfo();
 
-  static std::unique_ptr<PurchaseIntentInfo> CreateFromValue(
-      base::Value resource_value,
-      std::string* error_message);
+  static base::expected<PurchaseIntentInfo, std::string> CreateFromValue(
+      base::Value::Dict dict);
 
   uint16_t version = 0;
   std::vector<PurchaseIntentSiteInfo> sites;

@@ -23,9 +23,8 @@ class FrequencyCappingHelper {
   FrequencyCappingHelper(const FrequencyCappingHelper&) = delete;
   FrequencyCappingHelper& operator=(const FrequencyCappingHelper&) = delete;
 
-  FrequencyCappingHelper(FrequencyCappingHelper&& other) noexcept = delete;
-  FrequencyCappingHelper& operator=(FrequencyCappingHelper&& other) noexcept =
-      delete;
+  FrequencyCappingHelper(FrequencyCappingHelper&&) noexcept = delete;
+  FrequencyCappingHelper& operator=(FrequencyCappingHelper&&) noexcept = delete;
 
   static FrequencyCappingHelper* GetInstance();
 

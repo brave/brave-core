@@ -30,15 +30,15 @@ class EmbeddingExclusionRule;
 class ExclusionRules final : public ExclusionRulesBase {
  public:
   ExclusionRules(const AdEventList& ad_events,
-                 geographic::SubdivisionTargeting* subdivision_targeting,
-                 resource::AntiTargeting* anti_targeting_resource,
+                 const geographic::SubdivisionTargeting& subdivision_targeting,
+                 const resource::AntiTargeting& anti_targeting_resource,
                  const BrowsingHistoryList& browsing_history);
 
-  ExclusionRules(const ExclusionRules& other) = delete;
-  ExclusionRules& operator=(const ExclusionRules& other) = delete;
+  ExclusionRules(const ExclusionRules&) = delete;
+  ExclusionRules& operator=(const ExclusionRules&) = delete;
 
-  ExclusionRules(ExclusionRules&& other) noexcept = delete;
-  ExclusionRules& operator=(ExclusionRules&& other) noexcept = delete;
+  ExclusionRules(ExclusionRules&&) noexcept = delete;
+  ExclusionRules& operator=(ExclusionRules&&) noexcept = delete;
 
   ~ExclusionRules() override;
 

@@ -30,8 +30,7 @@ using brave_shields::features::kBraveDarkModeBlock;
 
 const char kEmbeddedTestServerDirectory[] = "dark_mode_block";
 const char kMatchDarkModeFormatString[] =
-    "window.domAutomationController.send(window."
-    "matchMedia('(prefers-color-scheme: %s)').matches)";
+    "window.matchMedia('(prefers-color-scheme: %s)').matches;";
 
 class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
  public:
@@ -100,19 +99,17 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
   }
 
   bool IsReportingDarkMode() {
-    bool light_mode_result = false;
-    EXPECT_TRUE(content::ExecuteScriptAndExtractBool(
-        contents(), base::StringPrintf(kMatchDarkModeFormatString, "light"),
-        &light_mode_result));
+    bool light_mode_result =
+        content::EvalJs(contents(),
+                        base::StringPrintf(kMatchDarkModeFormatString, "light"))
+            .ExtractBool();
 
     if (!light_mode_result) {
       // Sanity check to make sure that 'dark' is reported for
       // prefers-color-scheme when 'light' was not found before.
-      bool dark_mode_result = false;
-      EXPECT_TRUE(content::ExecuteScriptAndExtractBool(
-          contents(), base::StringPrintf(kMatchDarkModeFormatString, "dark"),
-          &dark_mode_result));
-      EXPECT_TRUE(dark_mode_result);
+      EXPECT_EQ(true, content::EvalJs(contents(),
+                                      base::StringPrintf(
+                                          kMatchDarkModeFormatString, "dark")));
 
       // Report dark mode.
       return true;

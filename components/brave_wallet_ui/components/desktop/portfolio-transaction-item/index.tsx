@@ -67,7 +67,9 @@ import {
   TransactionFeeTooltipBody,
   TransactionFeeTooltipTitle,
   StatusBalanceAndMoreContainer,
-  OrbWrapper
+  OrbWrapper,
+  BalanceAndMoreRow,
+  CoinsButtonSpacer
 } from './style'
 import { StatusBubble } from '../../shared/style'
 import TransactionFeesTooltip from '../transaction-fees-tooltip'
@@ -517,7 +519,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
         </StatusRow>
 
         {/* Balance & more */}
-        <DetailRow>
+        <BalanceAndMoreRow>
           <BalanceColumn>
             {transaction.txType !==
               BraveWallet.TransactionType.ERC20Approve && (
@@ -539,7 +541,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
           </BalanceColumn>
 
           {/* Will remove this conditional for solana once https://github.com/brave/brave-browser/issues/22040 is implemented. */}
-          {!isSolanaTransaction && !!txNetwork && (
+          {(!isSolanaTransaction && !!txNetwork) ? (
             <TransactionFeesTooltip
               text={
                 <>
@@ -570,7 +572,9 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                 <CoinsIcon />
               </CoinsButton>
             </TransactionFeesTooltip>
-          )}
+          ):
+            <CoinsButtonSpacer />
+          }
 
           {wasTxRejected ? (
             <MoreButton onClick={onShowTransactionPopup}>
@@ -628,7 +632,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                 )}
             </TransactionPopup>
           )}
-        </DetailRow>
+        </BalanceAndMoreRow>
       </StatusBalanceAndMoreContainer>
     </PortfolioTransactionItemWrapper>
   )

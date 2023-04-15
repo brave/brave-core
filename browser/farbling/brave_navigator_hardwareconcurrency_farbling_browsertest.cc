@@ -30,9 +30,8 @@
 
 using brave_shields::ControlType;
 
-const char kHardwareConcurrencyScript[] =
-    "domAutomationController.send(navigator.hardwareConcurrency);";
-const char kTitleScript[] = "domAutomationController.send(document.title);";
+const char kHardwareConcurrencyScript[] = "navigator.hardwareConcurrency;";
+const char kTitleScript[] = "document.title;";
 
 class BraveNavigatorHardwareConcurrencyFarblingBrowserTest
     : public InProcessBrowserTest {
@@ -85,20 +84,6 @@ class BraveNavigatorHardwareConcurrencyFarblingBrowserTest
         content_settings(), ControlType::DEFAULT, top_level_page_url_);
   }
 
-  template <typename T>
-  int ExecScriptGetInt(const std::string& script, T* frame) {
-    int value;
-    EXPECT_TRUE(ExecuteScriptAndExtractInt(frame, script, &value));
-    return value;
-  }
-
-  template <typename T>
-  std::string ExecScriptGetStr(const std::string& script, T* frame) {
-    std::string value;
-    EXPECT_TRUE(ExecuteScriptAndExtractString(frame, script, &value));
-    return value;
-  }
-
   content::WebContents* contents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
@@ -117,7 +102,8 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
   // get real navigator.hardwareConcurrency
   AllowFingerprinting();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
-  int real_value = ExecScriptGetInt(kHardwareConcurrencyScript, contents());
+  int real_value =
+      content::EvalJs(contents(), kHardwareConcurrencyScript).ExtractInt();
   ASSERT_GE(real_value, 2);
 
   // Farbling level: balanced (default)
@@ -125,7 +111,8 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
   // and less than or equal to the real value
   SetFingerprintingDefault();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
-  int fake_value = ExecScriptGetInt(kHardwareConcurrencyScript, contents());
+  int fake_value =
+      content::EvalJs(contents(), kHardwareConcurrencyScript).ExtractInt();
   EXPECT_GE(fake_value, 2);
   EXPECT_LE(fake_value, real_value);
 
@@ -135,7 +122,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
   BlockFingerprinting();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   int completely_fake_value =
-      ExecScriptGetInt(kHardwareConcurrencyScript, contents());
+      content::EvalJs(contents(), kHardwareConcurrencyScript).ExtractInt();
   // For this domain (a.com) + the random seed (constant for browser tests),
   // the value will always be the same.
   EXPECT_EQ(completely_fake_value, 5);
@@ -156,27 +143,29 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
   // the Worker code (which is what this test is really testing), then this will
   // never unblock and the entire browser test will eventually time out. Timing
   // out indicates a fatal error.
-  while (ExecScriptGetStr(kTitleScript, contents()) == "") {
+  while (content::EvalJs(contents(), kTitleScript).ExtractString() == "") {
   }
   int real_value;
-  base::StringToInt(ExecScriptGetStr(kTitleScript, contents()), &real_value);
+  base::StringToInt(content::EvalJs(contents(), kTitleScript).ExtractString(),
+                    &real_value);
   ASSERT_GE(real_value, 2);
 
   SetFingerprintingDefault();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  while (ExecScriptGetStr(kTitleScript, contents()) == "") {
+  while (content::EvalJs(contents(), kTitleScript).ExtractString() == "") {
   }
   int fake_value;
-  base::StringToInt(ExecScriptGetStr(kTitleScript, contents()), &fake_value);
+  base::StringToInt(content::EvalJs(contents(), kTitleScript).ExtractString(),
+                    &fake_value);
   EXPECT_GE(fake_value, 2);
   EXPECT_LE(fake_value, real_value);
 
   BlockFingerprinting();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  while (ExecScriptGetStr(kTitleScript, contents()) == "") {
+  while (content::EvalJs(contents(), kTitleScript).ExtractString() == "") {
   }
   int completely_fake_value;
-  base::StringToInt(ExecScriptGetStr(kTitleScript, contents()),
+  base::StringToInt(content::EvalJs(contents(), kTitleScript).ExtractString(),
                     &completely_fake_value);
   // For this domain (a.com) + the random seed (constant for browser tests),
   // the value will always be the same.

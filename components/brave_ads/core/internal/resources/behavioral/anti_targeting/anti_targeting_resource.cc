@@ -20,8 +20,7 @@ namespace {
 constexpr char kResourceId[] = "mkdhnfmjhklfnamlheoliekgeohamoig";
 }  // namespace
 
-AntiTargeting::AntiTargeting()
-    : anti_targeting_(std::make_unique<AntiTargetingInfo>()) {
+AntiTargeting::AntiTargeting() {
   AdsClientHelper::AddObserver(this);
 }
 
@@ -38,27 +37,19 @@ void AntiTargeting::Load() {
 ///////////////////////////////////////////////////////////////////////////////
 
 void AntiTargeting::OnLoadAndParseResource(
-    ParsingResultPtr<AntiTargetingInfo> result) {
-  if (!result) {
-    BLOG(1, "Failed to load " << kResourceId << " anti-targeting resource");
-    is_initialized_ = false;
-    return;
-  }
-
-  BLOG(1, "Successfully loaded " << kResourceId << " anti-targeting resource");
-
-  if (!result->resource) {
-    BLOG(1, result->error_message);
+    ParsingErrorOr<AntiTargetingInfo> result) {
+  if (!result.has_value()) {
+    BLOG(1, result.error());
     BLOG(1,
          "Failed to initialize " << kResourceId << " anti-targeting resource");
     is_initialized_ = false;
     return;
   }
 
-  anti_targeting_ = std::move(result->resource);
+  BLOG(1, "Successfully loaded " << kResourceId << " anti-targeting resource");
+  anti_targeting_ = std::move(result).value();
 
-  BLOG(1,
-       "Parsed anti-targeting resource version " << anti_targeting_->version);
+  BLOG(1, "Parsed anti-targeting resource version " << anti_targeting_.version);
 
   is_initialized_ = true;
 

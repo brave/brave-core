@@ -28,11 +28,10 @@ bool HasVisitedSiteOnAntiTargetingList(
 }  // namespace
 
 AntiTargetingExclusionRule::AntiTargetingExclusionRule(
-    resource::AntiTargeting* anti_targeting_resource,
+    const resource::AntiTargeting& anti_targeting_resource,
     BrowsingHistoryList browsing_history)
-    : browsing_history_(std::move(browsing_history)) {
-  anti_targeting_ = anti_targeting_resource->get();
-}
+    : anti_targeting_resource_(anti_targeting_resource),
+      browsing_history_(std::move(browsing_history)) {}
 
 AntiTargetingExclusionRule::~AntiTargetingExclusionRule() = default;
 
@@ -64,8 +63,9 @@ bool AntiTargetingExclusionRule::DoesRespectCap(
     return true;
   }
 
-  const auto iter = anti_targeting_.sites.find(creative_ad.creative_set_id);
-  if (iter == anti_targeting_.sites.cend()) {
+  const auto iter =
+      anti_targeting_resource_->get().sites.find(creative_ad.creative_set_id);
+  if (iter == anti_targeting_resource_->get().sites.cend()) {
     // Always respect if creative set has no anti-targeting sites
     return true;
   }

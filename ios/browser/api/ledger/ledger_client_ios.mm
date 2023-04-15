@@ -72,10 +72,6 @@ void LedgerClientIOS::PublisherListNormalized(
     std::vector<ledger::mojom::PublisherInfoPtr> list) {
   [bridge_ publisherListNormalized:std::move(list)];
 }
-void LedgerClientIOS::URIEncode(const std::string& value,
-                                URIEncodeCallback callback) {
-  [bridge_ uriEncode:value callback:std::move(callback)];
-}
 void LedgerClientIOS::OnContributeUnverifiedPublishers(
     ledger::mojom::Result result,
     const std::string& publisher_key,
@@ -208,9 +204,6 @@ void LedgerClientIOS::RunDBTransaction(
     RunDBTransactionCallback callback) {
   [bridge_ runDbTransaction:std::move(transaction)
                    callback:std::move(callback)];
-}
-void LedgerClientIOS::GetCreateScript(GetCreateScriptCallback callback) {
-  [bridge_ createScript:std::move(callback)];
 }
 void LedgerClientIOS::PendingContributionSaved(
     const ledger::mojom::Result result) {

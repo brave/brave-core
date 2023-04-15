@@ -12,6 +12,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/conversions/conversions_unittest_constants.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -19,13 +20,7 @@ namespace brave_ads::database::table {
 
 class BatAdsConversionQueueDatabaseTableTest : public UnitTestBase {
  protected:
-  void SetUp() override {
-    UnitTestBase::SetUp();
-
-    database_table_ = std::make_unique<ConversionQueue>();
-  }
-
-  std::unique_ptr<ConversionQueue> database_table_;
+  ConversionQueue database_table_;
 };
 
 TEST_F(BatAdsConversionQueueDatabaseTableTest, SaveEmptyConversionQueue) {
@@ -40,41 +35,23 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest, SaveEmptyConversionQueue) {
 
 TEST_F(BatAdsConversionQueueDatabaseTableTest, SaveConversionQueue) {
   // Arrange
-  ConversionQueueItemList conversion_queue_items;
-
-  ConversionQueueItemInfo info_1;
-  info_1.ad_type = AdType::kNotificationAd;
-  info_1.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
-  info_1.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
-  info_1.campaign_id = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
-  info_1.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
-  info_1.process_at = DistantPast();
-  conversion_queue_items.push_back(info_1);
-
-  ConversionQueueItemInfo info_2;
-  info_2.ad_type = AdType::kNotificationAd;
-  info_2.creative_instance_id = "eaa6224a-876d-4ef8-a384-9ac34f238631";
-  info_2.creative_set_id = "184d1fdd-8e18-4baa-909c-9a3cb62cc7b1";
-  info_2.campaign_id = "d1d4a649-502d-4e06-b4b8-dae11c382d26";
-  info_2.advertiser_id = "8e3fac86-ce50-4409-ae29-9aa5636aa9a2";
-  info_2.process_at = Now();
-  conversion_queue_items.push_back(info_2);
 
   // Act
-  SaveConversionQueueItems(conversion_queue_items);
+  const ConversionQueueItemList conversion_queue_items =
+      BuildAndSaveConversionQueueItems(AdType::kNotificationAd, kConversionId,
+                                       kConversionAdvertiserPublicKey,
+                                       /*should_use_random_guids*/ false,
+                                       /*count*/ 2);
 
   // Assert
-  const ConversionQueueItemList expected_conversion_queue_items =
-      conversion_queue_items;
-
-  database_table_->GetAll(base::BindOnce(
+  database_table_.GetAll(base::BindOnce(
       [](const ConversionQueueItemList& expected_conversion_queue_items,
          const bool success,
          const ConversionQueueItemList& conversion_queue_items) {
         ASSERT_TRUE(success);
         EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
       },
-      expected_conversion_queue_items));
+      conversion_queue_items));
 }
 
 TEST_F(BatAdsConversionQueueDatabaseTableTest,
@@ -82,14 +59,11 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
   // Arrange
   ConversionQueueItemList conversion_queue_items;
 
-  ConversionQueueItemInfo info;
-  info.ad_type = AdType::kNotificationAd;
-  info.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
-  info.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
-  info.campaign_id = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
-  info.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
-  info.process_at = Now();
-  conversion_queue_items.push_back(info);
+  const ConversionQueueItemInfo conversion_queue_item =
+      BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
+                               kConversionAdvertiserPublicKey,
+                               /*should_use_random_guids*/ true);
+  conversion_queue_items.push_back(conversion_queue_item);
 
   SaveConversionQueueItems(conversion_queue_items);
 
@@ -97,9 +71,10 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
   SaveConversionQueueItems(conversion_queue_items);
 
   // Assert
-  const ConversionQueueItemList expected_conversion_queue_items = {info, info};
+  const ConversionQueueItemList expected_conversion_queue_items = {
+      conversion_queue_item, conversion_queue_item};
 
-  database_table_->GetAll(base::BindOnce(
+  database_table_.GetAll(base::BindOnce(
       [](const ConversionQueueItemList& expected_conversion_queue_items,
          const bool success,
          const ConversionQueueItemList& conversion_queue_items) {
@@ -112,52 +87,24 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
 TEST_F(BatAdsConversionQueueDatabaseTableTest,
        SaveConversionQueueItemsInBatches) {
   // Arrange
-  database_table_->SetBatchSize(2);
-
-  ConversionQueueItemList conversion_queue_items;
-
-  ConversionQueueItemInfo info_1;
-  info_1.ad_type = AdType::kNotificationAd;
-  info_1.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
-  info_1.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
-  info_1.campaign_id = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
-  info_1.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
-  info_1.process_at = DistantPast();
-  conversion_queue_items.push_back(info_1);
-
-  ConversionQueueItemInfo info_2;
-  info_2.ad_type = AdType::kNotificationAd;
-  info_2.creative_instance_id = "eaa6224a-876d-4ef8-a384-9ac34f238631";
-  info_2.creative_set_id = "184d1fdd-8e18-4baa-909c-9a3cb62cc7b1";
-  info_2.campaign_id = "d1d4a649-502d-4e06-b4b8-dae11c382d26";
-  info_2.advertiser_id = "8e3fac86-ce50-4409-ae29-9aa5636aa9a2";
-  info_2.process_at = Now();
-  conversion_queue_items.push_back(info_2);
-
-  ConversionQueueItemInfo info_3;
-  info_3.ad_type = AdType::kNotificationAd;
-  info_3.creative_instance_id = "a1ac44c2-675f-43e6-ab6d-500614cafe63";
-  info_3.creative_set_id = "5800049f-cee5-4bcb-90c7-85246d5f5e7c";
-  info_3.campaign_id = "3d62eca2-324a-4161-a0c5-7d9f29d10ab0";
-  info_3.advertiser_id = "9a11b60f-e29d-4446-8d1f-318311e36e0a";
-  info_3.process_at = DistantFuture();
-  conversion_queue_items.push_back(info_3);
+  database_table_.SetBatchSize(2);
 
   // Act
-  SaveConversionQueueItems(conversion_queue_items);
+  const ConversionQueueItemList conversion_queue_items =
+      BuildAndSaveConversionQueueItems(AdType::kNotificationAd, kConversionId,
+                                       kConversionAdvertiserPublicKey,
+                                       /*should_use_random_guids*/ true,
+                                       /*count*/ 3);
 
   // Assert
-  const ConversionQueueItemList expected_conversion_queue_items =
-      conversion_queue_items;
-
-  database_table_->GetAll(base::BindOnce(
+  database_table_.GetAll(base::BindOnce(
       [](const ConversionQueueItemList& expected_conversion_queue_items,
          const bool success,
          const ConversionQueueItemList& conversion_queue_items) {
         ASSERT_TRUE(success);
         EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
       },
-      expected_conversion_queue_items));
+      conversion_queue_items));
 }
 
 TEST_F(BatAdsConversionQueueDatabaseTableTest,
@@ -165,36 +112,28 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
   // Arrange
   ConversionQueueItemList conversion_queue_items;
 
-  ConversionQueueItemInfo info_1;
-  info_1.ad_type = AdType::kNotificationAd;
-  info_1.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
-  info_1.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
-  info_1.campaign_id = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
-  info_1.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
-  info_1.process_at = DistantPast();
-  conversion_queue_items.push_back(info_1);
+  const ConversionQueueItemInfo conversion_queue_item_1 =
+      BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
+                               kConversionAdvertiserPublicKey,
+                               /*should_use_random_guids*/ true);
+  conversion_queue_items.push_back(conversion_queue_item_1);
 
-  ConversionQueueItemInfo info_2;
-  info_2.ad_type = AdType::kNotificationAd;
-  info_2.creative_instance_id = "eaa6224a-876d-4ef8-a384-9ac34f238631";
-  info_2.creative_set_id = "184d1fdd-8e18-4baa-909c-9a3cb62cc7b1";
-  info_2.campaign_id = "d1d4a649-502d-4e06-b4b8-dae11c382d26";
-  info_2.advertiser_id = "8e3fac86-ce50-4409-ae29-9aa5636aa9a2";
-  info_2.process_at = Now();
-  conversion_queue_items.push_back(info_2);
+  const ConversionQueueItemInfo conversion_queue_item_2 =
+      BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
+                               kConversionAdvertiserPublicKey,
+                               /*should_use_random_guids*/ true);
+  conversion_queue_items.push_back(conversion_queue_item_2);
 
   SaveConversionQueueItems(conversion_queue_items);
 
   // Act
 
   // Assert
-  const ConversionQueueItemList expected_conversion_queue_items = {info_2};
+  const ConversionQueueItemList expected_conversion_queue_items = {
+      conversion_queue_item_2};
 
-  const std::string creative_instance_id =
-      "eaa6224a-876d-4ef8-a384-9ac34f238631";
-
-  database_table_->GetForCreativeInstanceId(
-      creative_instance_id,
+  database_table_.GetForCreativeInstanceId(
+      conversion_queue_item_2.creative_instance_id,
       base::BindOnce(
           [](const ConversionQueueItemList& expected_conversion_queue_items,
              const bool success, const std::string& /*creative_instance_id*/,
@@ -210,33 +149,28 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
   // Arrange
   ConversionQueueItemList conversion_queue_items;
 
-  ConversionQueueItemInfo info_1;
-  info_1.ad_type = AdType::kNotificationAd;
-  info_1.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
-  info_1.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
-  info_1.campaign_id = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
-  info_1.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
-  info_1.process_at = DistantPast();
-  info_1.was_processed = true;
-  conversion_queue_items.push_back(info_1);
+  ConversionQueueItemInfo conversion_queue_item_1 = BuildConversionQueueItem(
+      AdType::kNotificationAd, kConversionId, kConversionAdvertiserPublicKey,
+      /*should_use_random_guids*/ true);
+  conversion_queue_item_1.process_at = DistantPast();
+  conversion_queue_item_1.was_processed = true;
+  conversion_queue_items.push_back(conversion_queue_item_1);
 
-  ConversionQueueItemInfo info_2;
-  info_2.ad_type = AdType::kNotificationAd;
-  info_2.creative_instance_id = "eaa6224a-876d-4ef8-a384-9ac34f238631";
-  info_2.creative_set_id = "184d1fdd-8e18-4baa-909c-9a3cb62cc7b1";
-  info_2.campaign_id = "d1d4a649-502d-4e06-b4b8-dae11c382d26";
-  info_2.advertiser_id = "8e3fac86-ce50-4409-ae29-9aa5636aa9a2";
-  info_2.process_at = Now();
-  conversion_queue_items.push_back(info_2);
+  const ConversionQueueItemInfo conversion_queue_item_2 =
+      BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
+                               kConversionAdvertiserPublicKey,
+                               /*should_use_random_guids*/ true);
+  conversion_queue_items.push_back(conversion_queue_item_2);
 
   SaveConversionQueueItems(conversion_queue_items);
 
   // Act
 
   // Assert
-  const ConversionQueueItemList expected_conversion_queue_items = {info_2};
+  const ConversionQueueItemList expected_conversion_queue_items = {
+      conversion_queue_item_2};
 
-  database_table_->GetUnprocessed(base::BindOnce(
+  database_table_.GetUnprocessed(base::BindOnce(
       [](const ConversionQueueItemList& expected_conversion_queue_items,
          const bool success,
          const ConversionQueueItemList& conversion_queue_items) {
@@ -251,32 +185,23 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
   // Arrange
   ConversionQueueItemList conversion_queue_items;
 
-  ConversionQueueItemInfo info_1;
-  info_1.ad_type = AdType::kNotificationAd;
-  info_1.campaign_id = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
-  info_1.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
-  info_1.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
-  info_1.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
-  info_1.process_at = DistantFuture();
-  conversion_queue_items.push_back(info_1);
+  ConversionQueueItemInfo conversion_queue_item_1 = BuildConversionQueueItem(
+      AdType::kNotificationAd, kConversionId, kConversionAdvertiserPublicKey,
+      /*should_use_random_guids*/ true);
+  conversion_queue_item_1.process_at = DistantFuture();
+  conversion_queue_items.push_back(conversion_queue_item_1);
 
-  ConversionQueueItemInfo info_2;
-  info_2.ad_type = AdType::kNotificationAd;
-  info_2.creative_instance_id = "eaa6224a-876d-4ef8-a384-9ac34f238631";
-  info_2.creative_set_id = "184d1fdd-8e18-4baa-909c-9a3cb62cc7b1";
-  info_2.campaign_id = "d1d4a649-502d-4e06-b4b8-dae11c382d26";
-  info_2.advertiser_id = "8e3fac86-ce50-4409-ae29-9aa5636aa9a2";
-  info_2.process_at = DistantPast();
-  conversion_queue_items.push_back(info_2);
+  ConversionQueueItemInfo conversion_queue_item_2 = BuildConversionQueueItem(
+      AdType::kNotificationAd, kConversionId, kConversionAdvertiserPublicKey,
+      /*should_use_random_guids*/ true);
+  conversion_queue_item_2.process_at = DistantPast();
+  conversion_queue_items.push_back(conversion_queue_item_2);
 
-  ConversionQueueItemInfo info_3;
-  info_3.ad_type = AdType::kNotificationAd;
-  info_3.creative_instance_id = "a1ac44c2-675f-43e6-ab6d-500614cafe63";
-  info_3.creative_set_id = "5800049f-cee5-4bcb-90c7-85246d5f5e7c";
-  info_3.campaign_id = "3d62eca2-324a-4161-a0c5-7d9f29d10ab0";
-  info_3.advertiser_id = "9a11b60f-e29d-4446-8d1f-318311e36e0a";
-  info_3.process_at = Now();
-  conversion_queue_items.push_back(info_3);
+  ConversionQueueItemInfo conversion_queue_item_3 = BuildConversionQueueItem(
+      AdType::kNotificationAd, kConversionId, kConversionAdvertiserPublicKey,
+      /*should_use_random_guids*/ true);
+  conversion_queue_item_3.process_at = Now();
+  conversion_queue_items.push_back(conversion_queue_item_3);
 
   SaveConversionQueueItems(conversion_queue_items);
 
@@ -284,9 +209,10 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
 
   // Assert
   const ConversionQueueItemList expected_conversion_queue_items = {
-      info_2, info_3, info_1};
+      conversion_queue_item_2, conversion_queue_item_3,
+      conversion_queue_item_1};
 
-  database_table_->GetAll(base::BindOnce(
+  database_table_.GetAll(base::BindOnce(
       [](const ConversionQueueItemList& expected_conversion_queue_items,
          const bool success,
          const ConversionQueueItemList& conversion_queue_items) {
@@ -300,34 +226,30 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest, DeleteConversionQueueItem) {
   // Arrange
   ConversionQueueItemList conversion_queue_items;
 
-  ConversionQueueItemInfo info_1;
-  info_1.ad_type = AdType::kNotificationAd;
-  info_1.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
-  info_1.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
-  info_1.campaign_id = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
-  info_1.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
-  info_1.process_at = DistantPast();
-  conversion_queue_items.push_back(info_1);
+  ConversionQueueItemInfo conversion_queue_item_1 = BuildConversionQueueItem(
+      AdType::kNotificationAd, kConversionId, kConversionAdvertiserPublicKey,
+      /*should_use_random_guids*/ true);
+  conversion_queue_item_1.process_at = DistantPast();
+  conversion_queue_items.push_back(conversion_queue_item_1);
 
-  ConversionQueueItemInfo info_2;
-  info_2.ad_type = AdType::kNotificationAd;
-  info_2.creative_instance_id = "eaa6224a-876d-4ef8-a384-9ac34f238631";
-  info_2.creative_set_id = "184d1fdd-8e18-4baa-909c-9a3cb62cc7b1";
-  info_2.campaign_id = "d1d4a649-502d-4e06-b4b8-dae11c382d26";
-  info_2.advertiser_id = "8e3fac86-ce50-4409-ae29-9aa5636aa9a2";
-  info_2.process_at = Now();
-  conversion_queue_items.push_back(info_2);
+  ConversionQueueItemInfo conversion_queue_item_2 = BuildConversionQueueItem(
+      AdType::kNotificationAd, kConversionId, kConversionAdvertiserPublicKey,
+      /*should_use_random_guids*/ true);
+  conversion_queue_item_2.process_at = Now();
+  conversion_queue_items.push_back(conversion_queue_item_2);
 
   SaveConversionQueueItems(conversion_queue_items);
 
   // Act
-  database_table_->Delete(
-      info_1, base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
+  database_table_.Delete(
+      conversion_queue_item_1,
+      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
   // Assert
-  const ConversionQueueItemList expected_conversion_queue_items = {info_2};
+  const ConversionQueueItemList expected_conversion_queue_items = {
+      conversion_queue_item_2};
 
-  database_table_->GetAll(base::BindOnce(
+  database_table_.GetAll(base::BindOnce(
       [](const ConversionQueueItemList& expected_conversion_queue_items,
          const bool success,
          const ConversionQueueItemList& conversion_queue_items) {
@@ -342,88 +264,69 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
   // Arrange
   ConversionQueueItemList conversion_queue_items;
 
-  ConversionQueueItemInfo info_1;
-  info_1.ad_type = AdType::kNotificationAd;
-  info_1.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
-  info_1.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
-  info_1.campaign_id = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
-  info_1.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
-  info_1.process_at = DistantPast();
-  conversion_queue_items.push_back(info_1);
+  const ConversionQueueItemInfo conversion_queue_item_1 =
+      BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
+                               kConversionAdvertiserPublicKey,
+                               /*should_use_random_guids*/ true);
+  conversion_queue_items.push_back(conversion_queue_item_1);
 
-  ConversionQueueItemInfo info_2;
-  info_2.ad_type = AdType::kNotificationAd;
-  info_2.creative_instance_id = "eaa6224a-876d-4ef8-a384-9ac34f238631";
-  info_2.creative_set_id = "184d1fdd-8e18-4baa-909c-9a3cb62cc7b1";
-  info_2.campaign_id = "d1d4a649-502d-4e06-b4b8-dae11c382d26";
-  info_2.advertiser_id = "8e3fac86-ce50-4409-ae29-9aa5636aa9a2";
-  info_2.process_at = Now();
-  conversion_queue_items.push_back(info_2);
+  const ConversionQueueItemInfo conversion_queue_item_2 =
+      BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
+                               kConversionAdvertiserPublicKey,
+                               /*should_use_random_guids*/ true);
+  conversion_queue_items.push_back(conversion_queue_item_2);
 
   SaveConversionQueueItems(conversion_queue_items);
 
   // Act
-  ConversionQueueItemInfo invalid_conversion_queue_item;
-  invalid_conversion_queue_item.creative_instance_id =
-      "a1ac44c2-675f-43e6-ab6d-500614cafe63";
-  invalid_conversion_queue_item.creative_set_id =
-      "5800049f-cee5-4bcb-90c7-85246d5f5e7c";
-  invalid_conversion_queue_item.campaign_id =
-      "3d62eca2-324a-4161-a0c5-7d9f29d10ab0";
-  invalid_conversion_queue_item.advertiser_id =
-      "9a11b60f-e29d-4446-8d1f-318311e36e0a";
-  invalid_conversion_queue_item.process_at = Now();
+  const ConversionQueueItemInfo invalid_conversion_queue_item =
+      BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
+                               kConversionAdvertiserPublicKey,
+                               /*should_use_random_guids*/ true);
 
-  database_table_->Delete(
+  database_table_.Delete(
       invalid_conversion_queue_item,
       base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
   // Assert
-  const ConversionQueueItemList expected_conversion_queue_items =
-      conversion_queue_items;
-
-  database_table_->GetAll(base::BindOnce(
+  database_table_.GetAll(base::BindOnce(
       [](const ConversionQueueItemList& expected_conversion_queue_items,
          const bool success,
          const ConversionQueueItemList& conversion_queue_items) {
         ASSERT_TRUE(success);
         EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
       },
-      expected_conversion_queue_items));
+      conversion_queue_items));
 }
 
 TEST_F(BatAdsConversionQueueDatabaseTableTest, UpdateConversionQueueItem) {
   // Arrange
   ConversionQueueItemList conversion_queue_items;
 
-  ConversionQueueItemInfo info_1;
-  info_1.ad_type = AdType::kNotificationAd;
-  info_1.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
-  info_1.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
-  info_1.campaign_id = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
-  info_1.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
-  info_1.process_at = DistantPast();
-  conversion_queue_items.push_back(info_1);
+  const ConversionQueueItemInfo conversion_queue_item_1 =
+      BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
+                               kConversionAdvertiserPublicKey,
+                               /*should_use_random_guids*/ true);
+  conversion_queue_items.push_back(conversion_queue_item_1);
 
-  ConversionQueueItemInfo info_2;
-  info_2.ad_type = AdType::kNotificationAd;
-  info_2.creative_instance_id = "eaa6224a-876d-4ef8-a384-9ac34f238631";
-  info_2.creative_set_id = "184d1fdd-8e18-4baa-909c-9a3cb62cc7b1";
-  info_2.campaign_id = "d1d4a649-502d-4e06-b4b8-dae11c382d26";
-  info_2.advertiser_id = "8e3fac86-ce50-4409-ae29-9aa5636aa9a2";
-  info_2.process_at = Now();
-  conversion_queue_items.push_back(info_2);
+  const ConversionQueueItemInfo conversion_queue_item_2 =
+      BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
+                               kConversionAdvertiserPublicKey,
+                               /*should_use_random_guids*/ true);
+  conversion_queue_items.push_back(conversion_queue_item_2);
 
   SaveConversionQueueItems(conversion_queue_items);
 
   // Act
-  database_table_->Update(
-      info_1, base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
+  database_table_.Update(
+      conversion_queue_item_1,
+      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
   // Assert
-  const ConversionQueueItemList expected_conversion_queue_items = {info_2};
+  const ConversionQueueItemList expected_conversion_queue_items = {
+      conversion_queue_item_2};
 
-  database_table_->GetUnprocessed(base::BindOnce(
+  database_table_.GetUnprocessed(base::BindOnce(
       [](const ConversionQueueItemList& expected_conversion_queue_items,
          const bool success,
          const ConversionQueueItemList& conversion_queue_items) {
@@ -438,65 +341,48 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
   // Arrange
   ConversionQueueItemList conversion_queue_items;
 
-  ConversionQueueItemInfo info_1;
-  info_1.ad_type = AdType::kNotificationAd;
-  info_1.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
-  info_1.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
-  info_1.campaign_id = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
-  info_1.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
-  info_1.process_at = DistantPast();
-  conversion_queue_items.push_back(info_1);
+  const ConversionQueueItemInfo conversion_queue_item_1 =
+      BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
+                               kConversionAdvertiserPublicKey,
+                               /*should_use_random_guids*/ true);
+  conversion_queue_items.push_back(conversion_queue_item_1);
 
-  ConversionQueueItemInfo info_2;
-  info_2.ad_type = AdType::kNotificationAd;
-  info_2.creative_instance_id = "eaa6224a-876d-4ef8-a384-9ac34f238631";
-  info_2.creative_set_id = "184d1fdd-8e18-4baa-909c-9a3cb62cc7b1";
-  info_2.campaign_id = "d1d4a649-502d-4e06-b4b8-dae11c382d26";
-  info_2.advertiser_id = "8e3fac86-ce50-4409-ae29-9aa5636aa9a2";
-  info_2.process_at = Now();
-  conversion_queue_items.push_back(info_2);
+  const ConversionQueueItemInfo conversion_queue_item_2 =
+      BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
+                               kConversionAdvertiserPublicKey,
+                               /*should_use_random_guids*/ true);
+  conversion_queue_items.push_back(conversion_queue_item_2);
 
   SaveConversionQueueItems(conversion_queue_items);
 
   // Act
-  ConversionQueueItemInfo invalid_conversion_queue_item;
-  invalid_conversion_queue_item.creative_instance_id =
-      "a1ac44c2-675f-43e6-ab6d-500614cafe63";
-  invalid_conversion_queue_item.creative_set_id =
-      "5800049f-cee5-4bcb-90c7-85246d5f5e7c";
-  invalid_conversion_queue_item.campaign_id =
-      "3d62eca2-324a-4161-a0c5-7d9f29d10ab0";
-  invalid_conversion_queue_item.advertiser_id =
-      "9a11b60f-e29d-4446-8d1f-318311e36e0a";
-  invalid_conversion_queue_item.process_at = Now();
+  const ConversionQueueItemInfo invalid_conversion_queue_item =
+      BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
+                               kConversionAdvertiserPublicKey,
+                               /*should_use_random_guids*/ true);
 
-  database_table_->Update(
+  database_table_.Update(
       invalid_conversion_queue_item,
       base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
   // Assert
-  const ConversionQueueItemList expected_conversion_queue_items =
-      conversion_queue_items;
-
-  database_table_->GetAll(base::BindOnce(
+  database_table_.GetAll(base::BindOnce(
       [](const ConversionQueueItemList& expected_conversion_queue_items,
          const bool success,
          const ConversionQueueItemList& conversion_queue_items) {
         ASSERT_TRUE(success);
         EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
       },
-      expected_conversion_queue_items));
+      conversion_queue_items));
 }
 
 TEST_F(BatAdsConversionQueueDatabaseTableTest, TableName) {
   // Arrange
 
   // Act
-  const std::string table_name = database_table_->GetTableName();
 
   // Assert
-  const std::string expected_table_name = "conversion_queue";
-  EXPECT_EQ(expected_table_name, table_name);
+  EXPECT_EQ("conversion_queue", database_table_.GetTableName());
 }
 
 }  // namespace brave_ads::database::table

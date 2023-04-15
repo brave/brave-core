@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
 
 #include <map>
+#include <memory>
 #include <utility>
 #include <vector>
 
@@ -45,7 +46,6 @@ class BatAdsTextProcessingTest : public UnitTestBase {};
 TEST_F(BatAdsTextProcessingTest, BuildSimplePipeline) {
   // Arrange
   constexpr double kTolerance = 1e-6;
-  constexpr unsigned kExpectedLen = 3;
   constexpr char kTestString[] = "Test String";
 
   TransformationVector transformations;
@@ -70,16 +70,17 @@ TEST_F(BatAdsTextProcessingTest, BuildSimplePipeline) {
   model::Linear linear_model(weights, biases);
   const PredictionMap data_point_3_predictions =
       linear_model.Predict(data_point_3);
+  ASSERT_EQ(3U, data_point_3_predictions.size());
 
   const pipeline::TextProcessing pipeline = pipeline::TextProcessing(
       std::move(transformations), std::move(linear_model));
 
   // Act
   const PredictionMap predictions = pipeline.GetTopPredictions(kTestString);
+  ASSERT_TRUE(!predictions.empty());
+  ASSERT_LE(predictions.size(), 3U);
 
   // Assert
-  ASSERT_EQ(kExpectedLen, data_point_3_predictions.size());
-  ASSERT_TRUE(!predictions.empty() && predictions.size() <= kExpectedLen);
   for (const auto& prediction : predictions) {
     EXPECT_TRUE(prediction.second > -kTolerance &&
                 prediction.second < 1.0 + kTolerance);
@@ -99,7 +100,7 @@ TEST_F(BatAdsTextProcessingTest, TestLoadFromValue) {
       ReadFileFromTestPathToString(kValidSpamClassificationPipeline);
   ASSERT_TRUE(json);
 
-  base::Value value = base::test::ParseJson(*json);
+  base::Value::Dict value = base::test::ParseJsonDict(*json);
 
   // Act
   pipeline::TextProcessing text_processing_pipeline;
@@ -130,7 +131,7 @@ TEST_F(BatAdsTextProcessingTest, InitValidModelTest) {
       ReadFileFromTestPathToString(kValidSegmentClassificationPipeline);
   ASSERT_TRUE(json);
 
-  base::Value value = base::test::ParseJson(*json);
+  base::Value::Dict value = base::test::ParseJsonDict(*json);
 
   // Act
   pipeline::TextProcessing text_processing_pipeline;
@@ -146,7 +147,7 @@ TEST_F(BatAdsTextProcessingTest, EmptySegmentModelTest) {
       ReadFileFromTestPathToString(kEmptySegmentClassificationPipeline);
   ASSERT_TRUE(json);
 
-  base::Value value = base::test::ParseJson(*json);
+  base::Value::Dict value = base::test::ParseJsonDict(*json);
 
   // Act
   pipeline::TextProcessing text_processing_pipeline;
@@ -158,24 +159,10 @@ TEST_F(BatAdsTextProcessingTest, EmptySegmentModelTest) {
 
 TEST_F(BatAdsTextProcessingTest, EmptyModelTest) {
   // Arrange
-  const std::string json = "{}";
-
-  base::Value value = base::test::ParseJson(json);
-
   // Act
   pipeline::TextProcessing text_processing_pipeline;
-  const bool success = text_processing_pipeline.SetPipeline(std::move(value));
-
-  // Assert
-  EXPECT_FALSE(success);
-}
-
-TEST_F(BatAdsTextProcessingTest, MissingModelTest) {
-  // Arrange
-
-  // Act
-  pipeline::TextProcessing text_processing_pipeline;
-  const bool success = text_processing_pipeline.SetPipeline(base::Value());
+  const bool success =
+      text_processing_pipeline.SetPipeline(base::Value::Dict());
 
   // Assert
   EXPECT_FALSE(success);
@@ -190,7 +177,7 @@ TEST_F(BatAdsTextProcessingTest, TopPredUnitTest) {
       ReadFileFromTestPathToString(kValidSegmentClassificationPipeline);
   ASSERT_TRUE(json);
 
-  base::Value value = base::test::ParseJson(*json);
+  base::Value::Dict value = base::test::ParseJsonDict(*json);
 
   pipeline::TextProcessing text_processing_pipeline;
   ASSERT_TRUE(text_processing_pipeline.SetPipeline(std::move(value)));
@@ -217,7 +204,7 @@ TEST_F(BatAdsTextProcessingTest, TextCMCCrashTest) {
       ReadFileFromTestPathToString(kValidSegmentClassificationPipeline);
   ASSERT_TRUE(json);
 
-  base::Value value = base::test::ParseJson(*json);
+  base::Value::Dict value = base::test::ParseJsonDict(*json);
 
   pipeline::TextProcessing text_processing_pipeline;
   ASSERT_TRUE(text_processing_pipeline.SetPipeline(std::move(value)));

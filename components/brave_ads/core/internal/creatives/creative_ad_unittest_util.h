@@ -10,7 +10,7 @@ namespace brave_ads {
 
 struct CreativeAdInfo;
 
-CreativeAdInfo BuildCreativeAd(bool should_use_random_guids = true);
+CreativeAdInfo BuildCreativeAd(bool should_use_random_guids);
 
 }  // namespace brave_ads
 

@@ -21,7 +21,7 @@ TEST(BatAdsTokenGeneratorTest, Generate) {
 
   // Assert
   const size_t count = tokens.size();
-  EXPECT_EQ(5UL, count);
+  EXPECT_EQ(5U, count);
 }
 
 TEST(BatAdsTokenGeneratorTest, GenerateZero) {

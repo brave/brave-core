@@ -18,11 +18,11 @@ class IdleDetection : public AdsClientNotifierObserver {
  public:
   IdleDetection();
 
-  IdleDetection(const IdleDetection& other) = delete;
-  IdleDetection& operator=(const IdleDetection& other) = delete;
+  IdleDetection(const IdleDetection&) = delete;
+  IdleDetection& operator=(const IdleDetection&) = delete;
 
-  IdleDetection(IdleDetection&& other) noexcept = delete;
-  IdleDetection& operator=(IdleDetection&& other) noexcept = delete;
+  IdleDetection(IdleDetection&&) noexcept = delete;
+  IdleDetection& operator=(IdleDetection&&) noexcept = delete;
 
   ~IdleDetection() override;
 

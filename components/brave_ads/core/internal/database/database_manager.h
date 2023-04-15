@@ -17,11 +17,11 @@ class DatabaseManager final {
  public:
   DatabaseManager();
 
-  DatabaseManager(const DatabaseManager& other) = delete;
-  DatabaseManager& operator=(const DatabaseManager& other) = delete;
+  DatabaseManager(const DatabaseManager&) = delete;
+  DatabaseManager& operator=(const DatabaseManager&) = delete;
 
-  DatabaseManager(DatabaseManager&& other) noexcept = delete;
-  DatabaseManager& operator=(DatabaseManager&& other) noexcept = delete;
+  DatabaseManager(DatabaseManager&&) noexcept = delete;
+  DatabaseManager& operator=(DatabaseManager&&) noexcept = delete;
 
   ~DatabaseManager();
 

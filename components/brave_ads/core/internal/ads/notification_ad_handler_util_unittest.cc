@@ -21,7 +21,8 @@ namespace brave_ads {
 namespace {
 
 void BuildAndShowNotificationAd() {
-  const CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
+  const CreativeNotificationAdInfo creative_ad =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
   ShowNotificationAd(ad);
 }

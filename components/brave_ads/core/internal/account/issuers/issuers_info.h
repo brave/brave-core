@@ -13,16 +13,16 @@ namespace brave_ads {
 struct IssuersInfo final {
   IssuersInfo();
 
-  IssuersInfo(const IssuersInfo& other);
-  IssuersInfo& operator=(const IssuersInfo& other);
+  IssuersInfo(const IssuersInfo&);
+  IssuersInfo& operator=(const IssuersInfo&);
 
-  IssuersInfo(IssuersInfo&& other) noexcept;
-  IssuersInfo& operator=(IssuersInfo&& other) noexcept;
+  IssuersInfo(IssuersInfo&&) noexcept;
+  IssuersInfo& operator=(IssuersInfo&&) noexcept;
 
   ~IssuersInfo();
 
-  bool operator==(const IssuersInfo& other) const;
-  bool operator!=(const IssuersInfo& other) const;
+  bool operator==(const IssuersInfo&) const;
+  bool operator!=(const IssuersInfo&) const;
 
   int ping = 0;
   IssuerList issuers;

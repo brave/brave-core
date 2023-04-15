@@ -28,12 +28,6 @@ BASE_FEATURE(kShouldTriggerSearchResultAdEvents,
 
 namespace {
 
-// Set to true to support multiple displays or false to only support the primary
-// display
-constexpr char kFieldTrialParameterShouldSupportMultipleDisplays[] =
-    "should_support_multiple_displays";
-constexpr bool kDefaultShouldSupportMultipleDisplays = false;
-
 // Set to true to fallback to custom notification ads if native notifications
 // are disabled or false to never fallback
 constexpr char kFieldTrialParameterCanFallbackToCustomNotificationAds[] =
@@ -61,6 +55,12 @@ constexpr char kFieldTrialParameterNotificationAdDarkModeBackgroundColor[] =
     "ad_notification_dark_mode_background_color";
 // Default color value is SkColorSetRGB(0x20, 0x23, 0x27);
 constexpr char kDefaultNotificationAdDarkModeBackgroundColor[] = "202327";
+
+// Set to true to support multiple displays or false to only support the primary
+// display
+constexpr char kFieldTrialParameterShouldSupportMultipleDisplays[] =
+    "should_support_multiple_displays";
+constexpr bool kDefaultShouldSupportMultipleDisplays = false;
 
 constexpr char kFieldTrialParameterShouldAttachNotificationAdToBrowserWindow[] =
     "should_attached_ad_notification_to_browser_window";
@@ -127,12 +127,6 @@ bool IsNotificationAdsEnabled() {
   return base::FeatureList::IsEnabled(kNotificationAds);
 }
 
-bool ShouldSupportMultipleDisplays() {
-  return GetFieldTrialParamByFeatureAsBool(
-      kNotificationAds, kFieldTrialParameterShouldSupportMultipleDisplays,
-      kDefaultShouldSupportMultipleDisplays);
-}
-
 bool CanFallbackToCustomNotificationAds() {
   return GetFieldTrialParamByFeatureAsBool(
       kNotificationAds, kFieldTrialParameterCanFallbackToCustomNotificationAds,
@@ -167,6 +161,12 @@ std::string NotificationAdDarkModeBackgroundColor() {
   }
 
   return param_value;
+}
+
+bool ShouldSupportMultipleDisplays() {
+  return GetFieldTrialParamByFeatureAsBool(
+      kCustomNotificationAds, kFieldTrialParameterShouldSupportMultipleDisplays,
+      kDefaultShouldSupportMultipleDisplays);
 }
 
 bool ShouldAttachNotificationAdToBrowserWindow() {

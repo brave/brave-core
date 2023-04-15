@@ -38,24 +38,23 @@ constexpr char kSampleAdPreferencesInfoJson[] = R"(
 
 void ParseJsonAndCompareWithSampleAdPreferencesInfo(const std::string& json) {
   // Arrange
-  AdPreferencesInfo ad_preferences_info;
+  AdPreferencesInfo ad_preferences;
 
   // Act
-  EXPECT_TRUE(ad_preferences_info.FromJson(json));
+  EXPECT_TRUE(ad_preferences.FromJson(json));
 
   // Assert
-  ASSERT_EQ(1U, ad_preferences_info.filtered_advertisers.size());
+  ASSERT_EQ(1U, ad_preferences.filtered_advertisers.size());
   EXPECT_EQ("filtered_advertiser_id",
-            ad_preferences_info.filtered_advertisers[0].id);
-  ASSERT_EQ(1U, ad_preferences_info.filtered_categories.size());
+            ad_preferences.filtered_advertisers[0].id);
+  ASSERT_EQ(1U, ad_preferences.filtered_categories.size());
   EXPECT_EQ("filtered_category_name",
-            ad_preferences_info.filtered_categories[0].name);
-  ASSERT_EQ(1U, ad_preferences_info.saved_ads.size());
+            ad_preferences.filtered_categories[0].name);
+  ASSERT_EQ(1U, ad_preferences.saved_ads.size());
   EXPECT_EQ("creative_instance_id",
-            ad_preferences_info.saved_ads[0].creative_instance_id);
-  ASSERT_EQ(1U, ad_preferences_info.flagged_ads.size());
-  EXPECT_EQ("creative_set_id",
-            ad_preferences_info.flagged_ads[0].creative_set_id);
+            ad_preferences.saved_ads[0].creative_instance_id);
+  ASSERT_EQ(1U, ad_preferences.flagged_ads.size());
+  EXPECT_EQ("creative_set_id", ad_preferences.flagged_ads[0].creative_set_id);
 }
 
 }  // namespace
@@ -64,57 +63,57 @@ class BatAdsAdPreferencesInfoTest : public UnitTestBase {};
 
 TEST_F(BatAdsAdPreferencesInfoTest, SerializeSampleAdPreferencesInfo) {
   // Arrange
-  AdPreferencesInfo ad_preferences_info;
+  AdPreferencesInfo ad_preferences;
 
   FilteredAdvertiserInfo filtered_advertiser;
   filtered_advertiser.id = "filtered_advertiser_id";
-  ad_preferences_info.filtered_advertisers.push_back(filtered_advertiser);
+  ad_preferences.filtered_advertisers.push_back(filtered_advertiser);
 
   FilteredCategoryInfo filtered_category;
   filtered_category.name = "filtered_category_name";
-  ad_preferences_info.filtered_categories.push_back(filtered_category);
+  ad_preferences.filtered_categories.push_back(filtered_category);
 
   SavedAdInfo saved_ad;
   saved_ad.creative_instance_id = "creative_instance_id";
-  ad_preferences_info.saved_ads.push_back(saved_ad);
+  ad_preferences.saved_ads.push_back(saved_ad);
 
   FlaggedAdInfo flagged_ad;
   flagged_ad.creative_set_id = "creative_set_id";
-  ad_preferences_info.flagged_ads.push_back(flagged_ad);
+  ad_preferences.flagged_ads.push_back(flagged_ad);
 
   // Act
-  const std::string json = ad_preferences_info.ToJson();
+  const std::string json = ad_preferences.ToJson();
 
   // Assert
   ParseJsonAndCompareWithSampleAdPreferencesInfo(json);
 }
 
 TEST_F(BatAdsAdPreferencesInfoTest, ParseSampleAdPreferencesInfoJson) {
-  const AdPreferencesInfo ad_preferences_info;
+  const AdPreferencesInfo ad_preferences;
   ParseJsonAndCompareWithSampleAdPreferencesInfo(kSampleAdPreferencesInfoJson);
 }
 
 TEST_F(BatAdsAdPreferencesInfoTest, ParseEmptyJson) {
   // Arrange
-  AdPreferencesInfo ad_preferences_info;
+  AdPreferencesInfo ad_preferences;
 
   // Act
-  EXPECT_TRUE(ad_preferences_info.FromJson("{}"));
+  EXPECT_TRUE(ad_preferences.FromJson("{}"));
 
   // Assert
-  EXPECT_EQ(0U, ad_preferences_info.filtered_advertisers.size());
-  EXPECT_EQ(0U, ad_preferences_info.filtered_categories.size());
-  EXPECT_EQ(0U, ad_preferences_info.saved_ads.size());
-  EXPECT_EQ(0U, ad_preferences_info.flagged_ads.size());
+  EXPECT_EQ(0U, ad_preferences.filtered_advertisers.size());
+  EXPECT_EQ(0U, ad_preferences.filtered_categories.size());
+  EXPECT_EQ(0U, ad_preferences.saved_ads.size());
+  EXPECT_EQ(0U, ad_preferences.flagged_ads.size());
 }
 
 TEST_F(BatAdsAdPreferencesInfoTest, ParsePreferencesWithNotValidMembers) {
   // Arrange
-  AdPreferencesInfo ad_preferences_info;
+  AdPreferencesInfo ad_preferences;
 
   // Act & Assert
   // filtered_advertisers
-  EXPECT_FALSE(ad_preferences_info.FromJson(R"({
+  EXPECT_FALSE(ad_preferences.FromJson(R"({
     {
       "filtered_advertisers": [
         {
@@ -122,7 +121,7 @@ TEST_F(BatAdsAdPreferencesInfoTest, ParsePreferencesWithNotValidMembers) {
         }
       ]
   })"));
-  EXPECT_FALSE(ad_preferences_info.FromJson(R"({
+  EXPECT_FALSE(ad_preferences.FromJson(R"({
     {
       "filtered_advertisers": [
         {
@@ -132,7 +131,7 @@ TEST_F(BatAdsAdPreferencesInfoTest, ParsePreferencesWithNotValidMembers) {
   })"));
 
   // filtered_categories
-  EXPECT_FALSE(ad_preferences_info.FromJson(R"({
+  EXPECT_FALSE(ad_preferences.FromJson(R"({
     {
       "filtered_categories": [
         {
@@ -140,7 +139,7 @@ TEST_F(BatAdsAdPreferencesInfoTest, ParsePreferencesWithNotValidMembers) {
         }
       ]
   })"));
-  EXPECT_FALSE(ad_preferences_info.FromJson(R"({
+  EXPECT_FALSE(ad_preferences.FromJson(R"({
     {
       "filtered_categories": [
         {
@@ -150,7 +149,7 @@ TEST_F(BatAdsAdPreferencesInfoTest, ParsePreferencesWithNotValidMembers) {
   })"));
 
   // saved_ads
-  EXPECT_FALSE(ad_preferences_info.FromJson(R"({
+  EXPECT_FALSE(ad_preferences.FromJson(R"({
     {
       "saved_ads": [
         {
@@ -158,7 +157,7 @@ TEST_F(BatAdsAdPreferencesInfoTest, ParsePreferencesWithNotValidMembers) {
         }
       ]
   })"));
-  EXPECT_FALSE(ad_preferences_info.FromJson(R"({
+  EXPECT_FALSE(ad_preferences.FromJson(R"({
     {
       "saved_ads": [
         {
@@ -168,7 +167,7 @@ TEST_F(BatAdsAdPreferencesInfoTest, ParsePreferencesWithNotValidMembers) {
   })"));
 
   // flagged_ads
-  EXPECT_FALSE(ad_preferences_info.FromJson(R"({
+  EXPECT_FALSE(ad_preferences.FromJson(R"({
     {
       "flagged_ads": [
         {
@@ -176,7 +175,7 @@ TEST_F(BatAdsAdPreferencesInfoTest, ParsePreferencesWithNotValidMembers) {
         }
       ]
   })"));
-  EXPECT_FALSE(ad_preferences_info.FromJson(R"({
+  EXPECT_FALSE(ad_preferences.FromJson(R"({
     {
       "flagged_ads": [
         {

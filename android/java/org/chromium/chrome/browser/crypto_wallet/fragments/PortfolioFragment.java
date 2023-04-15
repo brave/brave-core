@@ -61,6 +61,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.PortfolioHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
+import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.TransactionUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
@@ -177,14 +178,6 @@ public class PortfolioFragment
         });
         if (mWalletModel != null) setUpObservers();
         return view;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (mPortfolioModel != null) {
-            mPortfolioModel.clear();
-        }
     }
 
     private void setUpObservers() {
@@ -401,8 +394,8 @@ public class PortfolioFragment
 
         Activity activity = getActivity();
         if (!(activity instanceof BraveWalletActivity)) return;
-        mPortfolioModel.fetchAssets(
-                selectedNetwork, (BraveWalletBaseActivity) activity, (portfolioHelper) -> {
+        mPortfolioModel.fetchAssetsByType(TokenUtils.TokenType.NON_NFTS, selectedNetwork,
+                (BraveWalletBaseActivity) activity, (portfolioHelper) -> {
                     if (!AndroidUtils.canUpdateFragmentUi(this)) return;
                     mPortfolioHelper = portfolioHelper;
 
@@ -413,19 +406,11 @@ public class PortfolioFragment
                     mBalance.setText(mFiatSumString);
                     mBalance.invalidate();
 
-                    List<BlockchainToken> tokens = new ArrayList<>();
-
-                    for (BlockchainToken token : mPortfolioHelper.getUserAssets()) {
-                        if (!token.isErc721 && !token.isNft) {
-                            // Add only coins and not NFTs.
-                            tokens.add(token);
-                        }
-                    }
-
                     LiveDataUtil.observeOnce(
                             mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks,
                             networkInfos -> {
-                                setUpCoinList(tokens, mPortfolioHelper.getPerTokenCryptoSum(),
+                                setUpCoinList(mPortfolioHelper.getUserAssets(),
+                                        mPortfolioHelper.getPerTokenCryptoSum(),
                                         mPortfolioHelper.getPerTokenFiatSum(), networkInfos);
                             });
                     updatePortfolioGraph();
@@ -466,18 +451,18 @@ public class PortfolioFragment
         // TODO(pav): Remove this workaround once all network option is supported by
         // EditVisibleAssetsBottomSheetDialogFragment. This workaround is to show default network
         // assets in EditVisibleAssetsBottomSheetDialogFragment when "All Networks" option is
-        // selected
+        // selected. Check also NftGridFragment#onEditVisibleAssetsClick().
         if (selectedNetwork.chainId.equals(
                     NetworkUtils.getAllNetworkOption(getContext()).chainId)) {
             LiveDataUtil.observeOnce(
                     mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork,
-                    defaultNetwork -> { showEditVisibleDialog(defaultNetwork); });
+                    defaultNetwork -> { showEditVisibleAssetsDialog(defaultNetwork); });
             return;
         }
-        showEditVisibleDialog(selectedNetwork);
+        showEditVisibleAssetsDialog(selectedNetwork);
     }
 
-    private void showEditVisibleDialog(NetworkInfo selectedNetwork) {
+    private void showEditVisibleAssetsDialog(NetworkInfo selectedNetwork) {
         EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
                 EditVisibleAssetsBottomSheetDialogFragment.newInstance(
                         WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST, false);
@@ -486,8 +471,8 @@ public class PortfolioFragment
         bottomSheetDialogFragment.setDismissListener(
                 new EditVisibleAssetsBottomSheetDialogFragment.DismissListener() {
                     @Override
-                    public void onDismiss(Boolean isAssetsListChanged) {
-                        if (isAssetsListChanged != null && isAssetsListChanged) {
+                    public void onDismiss(boolean isAssetsListChanged) {
+                        if (isAssetsListChanged) {
                             updatePortfolioGetPendingTx();
                         }
                     }

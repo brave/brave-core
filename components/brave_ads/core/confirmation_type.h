@@ -44,8 +44,8 @@ class ConfirmationType final {
   Value value_ = kUndefined;
 };
 
-bool operator==(const ConfirmationType& lhs, const ConfirmationType& rhs);
-bool operator!=(const ConfirmationType& lhs, const ConfirmationType& rhs);
+bool operator==(const ConfirmationType&, const ConfirmationType&);
+bool operator!=(const ConfirmationType&, const ConfirmationType&);
 
 std::ostream& operator<<(std::ostream& os, const ConfirmationType& type);
 

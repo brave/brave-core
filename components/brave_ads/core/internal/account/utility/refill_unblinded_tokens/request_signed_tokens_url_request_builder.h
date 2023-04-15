@@ -26,14 +26,14 @@ class RequestSignedTokensUrlRequestBuilder final
       std::vector<privacy::cbr::BlindedToken> tokens);
 
   RequestSignedTokensUrlRequestBuilder(
-      const RequestSignedTokensUrlRequestBuilder& other) = delete;
+      const RequestSignedTokensUrlRequestBuilder&) = delete;
   RequestSignedTokensUrlRequestBuilder& operator=(
-      const RequestSignedTokensUrlRequestBuilder& other) = delete;
+      const RequestSignedTokensUrlRequestBuilder&) = delete;
 
   RequestSignedTokensUrlRequestBuilder(
-      RequestSignedTokensUrlRequestBuilder&& other) noexcept = delete;
+      RequestSignedTokensUrlRequestBuilder&&) noexcept = delete;
   RequestSignedTokensUrlRequestBuilder& operator=(
-      RequestSignedTokensUrlRequestBuilder&& other) noexcept = delete;
+      RequestSignedTokensUrlRequestBuilder&&) noexcept = delete;
 
   ~RequestSignedTokensUrlRequestBuilder() override;
 

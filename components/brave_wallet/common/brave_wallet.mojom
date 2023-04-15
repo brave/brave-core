@@ -139,6 +139,7 @@ interface EthereumProvider {
   // Corresponds to window.ethereum.enable and eth_requestAccounts
   Enable() => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,bool reject, string first_allowed_account, bool update_bind_js_properties);
   Send(string method, mojo_base.mojom.Value params) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,bool reject, string first_allowed_account, bool update_bind_js_properties);
+  SendAsync(mojo_base.mojom.Value input) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response, bool reject, string first_allowed_account, bool update_bind_js_properties);
 
   // Used for the connect event
   GetChainId() => (string chain_id);
@@ -305,8 +306,14 @@ interface WalletPinService {
   IsTokenSupported(BlockchainToken token) => (bool result);
 };
 
+interface WalletAutoPinServiceObserver {
+  OnAutoPinStatusChanged(bool enabled);
+};
+
 // Listens for added user tokens and automatically pins them.
 interface WalletAutoPinService {
+  AddObserver(pending_remote<WalletAutoPinServiceObserver> observer);
+
   // Enables autopinning, so old and new user tokens may be pinned.
   SetAutoPinEnabled(bool enabled);
   IsAutoPinEnabled() => (bool enabled);

@@ -19,7 +19,7 @@ class BatAdsInlineContentAdInfoTest : public UnitTestBase {};
 TEST_F(BatAdsInlineContentAdInfoTest, IsValid) {
   // Arrange
   const CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAd();
+      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   const InlineContentAdInfo ad = BuildInlineContentAd(creative_ad);
 
   // Act

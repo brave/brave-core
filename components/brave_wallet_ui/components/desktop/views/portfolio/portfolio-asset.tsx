@@ -93,8 +93,6 @@ import {
   PriceText,
   StyledWrapper,
   TopRow,
-  SubDivider,
-  NotSupportedText,
   MoreButton,
   ButtonRow
 } from './style'
@@ -127,7 +125,6 @@ export const PortfolioAsset = (props: Props) => {
   // state
   const [showBridgeToAuroraModal, setShowBridgeToAuroraModal] = React.useState<boolean>(false)
   const [dontShowAuroraWarning, setDontShowAuroraWarning] = React.useState<boolean>(false)
-  const [isTokenSupported, setIsTokenSupported] = React.useState<boolean>()
   const [showMore, setShowMore] = React.useState<boolean>(false)
   const [showTokenDetailsModal, setShowTokenDetailsModal] = React.useState<boolean>(false)
   const [showHideTokenModel, setShowHideTokenModal] = React.useState<boolean>(false)
@@ -164,6 +161,7 @@ export const PortfolioAsset = (props: Props) => {
   const selectedCoinMarket = useUnsafePageSelector(PageSelectors.selectedCoinMarket)
   const nftMetadataError = useSafePageSelector(PageSelectors.nftMetadataError)
   const nftPinningStatus = useUnsafePageSelector(PageSelectors.nftsPinningStatus)
+  const isAutoPinEnabled = useSafePageSelector(PageSelectors.isAutoPinEnabled)
 
   // queries
   const { data: assetsNetwork } = useGetNetworkQuery(selectedAsset, {
@@ -196,10 +194,6 @@ export const PortfolioAsset = (props: Props) => {
         : ''
     })
   }, [accounts])
-
-  const tokensWithCoingeckoId = React.useMemo(() => {
-    return fullTokenList.filter(token => token.coingeckoId !== '')
-  }, [fullTokenList])
 
   // This looks at the users asset list and returns the full balance for each asset
   const userAssetList = React.useMemo(() => {
@@ -262,8 +256,6 @@ export const PortfolioAsset = (props: Props) => {
         token.symbol = coinMarket.symbol.toUpperCase()
         token.logo = coinMarket.image
       }
-      const foundToken = tokensWithCoingeckoId?.find(token => token.coingeckoId.toLowerCase() === coinMarket?.id?.toLowerCase())
-      setIsTokenSupported(foundToken !== undefined)
       return token
     }
     if (!contractOrSymbol) {
@@ -274,7 +266,6 @@ export const PortfolioAsset = (props: Props) => {
         ? token.tokenId === tokenId && token.contractAddress.toLowerCase() === contractOrSymbol.toLowerCase() && token.chainId === chainIdOrMarketSymbol
         : token.contractAddress.toLowerCase() === contractOrSymbol.toLowerCase() && token.chainId === chainIdOrMarketSymbol ||
         token.symbol.toLowerCase() === contractOrSymbol.toLowerCase() && token.chainId === chainIdOrMarketSymbol && token.contractAddress === '')
-    setIsTokenSupported(userToken !== undefined)
     return userToken
   }, [userVisibleTokensInfo, selectedTimeline, chainIdOrMarketSymbol, contractOrSymbol, tokenId, isShowingMarketData])
 
@@ -413,9 +404,11 @@ export const PortfolioAsset = (props: Props) => {
       : false
 
   const networkDescription =
-    getLocale('braveWalletPortfolioAssetNetworkDescription')
-      .replace('$1', selectedAssetFromParams?.symbol ?? '')
-      .replace('$2', selectedAssetsNetwork?.chainName ?? '')
+    isShowingMarketData
+      ? selectedAssetFromParams?.symbol ?? ''
+      : getLocale('braveWalletPortfolioAssetNetworkDescription')
+        .replace('$1', selectedAssetFromParams?.symbol ?? '')
+        .replace('$2', selectedAssetsNetwork?.chainName ?? '')
 
 
   const [ipfsImageUrl, setIpfsImageUrl] = React.useState<string>()
@@ -435,11 +428,14 @@ export const PortfolioAsset = (props: Props) => {
   }, [nftMetadata])
 
   const currentNftPinningStatus = React.useMemo(() => {
+    if (!isAutoPinEnabled) {
+      return undefined
+    }
     if (isNftAsset && selectedAsset && nftPinnable) {
       return getNftPinningStatus(selectedAsset)
     }
     return undefined
-  }, [nftPinnable, isNftAsset, selectedAsset, nftPinningStatus])
+  }, [nftPinnable, isNftAsset, selectedAsset, nftPinningStatus, isAutoPinEnabled])
 
   // methods
   const onClickAddAccount = React.useCallback((tabId: AddAccountNavTypes) => () => {
@@ -633,7 +629,7 @@ export const PortfolioAsset = (props: Props) => {
       sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
     }
 
-    if (currentNftPinningStatus && nftDetailsRef?.current) {
+    if (nftDetailsRef?.current) {
       const command: UpdateNftPinningStatus = {
         command: NftUiCommand.UpdateNftPinningStatus,
         payload: {
@@ -896,20 +892,14 @@ export const PortfolioAsset = (props: Props) => {
           />
         }
 
-        {isTokenSupported
-          ? <AccountsAndTransactionsList
+        {!isShowingMarketData &&
+          <AccountsAndTransactionsList
             formattedFullAssetBalance={formattedFullAssetBalance}
             fullAssetFiatBalance={fullAssetFiatBalance}
             selectedAsset={selectedAsset}
             selectedAssetTransactions={selectedAssetTransactions}
             onClickAddAccount={onClickAddAccount}
           />
-          : <>
-            <SubDivider />
-            <NotSupportedText>
-              {getLocale('braveWalletMarketDataCoinNotSupported')}
-            </NotSupportedText>
-          </>
         }
 
         {isShowingMarketData && selectedCoinMarket &&

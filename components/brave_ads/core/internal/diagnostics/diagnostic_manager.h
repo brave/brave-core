@@ -17,11 +17,11 @@ class DiagnosticManager final {
  public:
   DiagnosticManager();
 
-  DiagnosticManager(const DiagnosticManager& other) = delete;
-  DiagnosticManager& operator=(const DiagnosticManager& other) = delete;
+  DiagnosticManager(const DiagnosticManager&) = delete;
+  DiagnosticManager& operator=(const DiagnosticManager&) = delete;
 
-  DiagnosticManager(DiagnosticManager&& other) noexcept = delete;
-  DiagnosticManager& operator=(DiagnosticManager&& other) noexcept = delete;
+  DiagnosticManager(DiagnosticManager&&) noexcept = delete;
+  DiagnosticManager& operator=(DiagnosticManager&&) noexcept = delete;
 
   ~DiagnosticManager();
 

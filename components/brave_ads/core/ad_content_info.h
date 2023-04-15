@@ -19,11 +19,11 @@ namespace brave_ads {
 struct ADS_EXPORT AdContentInfo final {
   AdContentInfo();
 
-  AdContentInfo(const AdContentInfo& other);
-  AdContentInfo& operator=(const AdContentInfo& other);
+  AdContentInfo(const AdContentInfo&);
+  AdContentInfo& operator=(const AdContentInfo&);
 
-  AdContentInfo(AdContentInfo&& other) noexcept;
-  AdContentInfo& operator=(AdContentInfo&& other) noexcept;
+  AdContentInfo(AdContentInfo&&) noexcept;
+  AdContentInfo& operator=(AdContentInfo&&) noexcept;
 
   ~AdContentInfo();
 
@@ -47,8 +47,8 @@ struct ADS_EXPORT AdContentInfo final {
   bool is_flagged = false;
 };
 
-bool operator==(const AdContentInfo& lhs, const AdContentInfo& rhs);
-bool operator!=(const AdContentInfo& lhs, const AdContentInfo& rhs);
+bool operator==(const AdContentInfo&, const AdContentInfo&);
+bool operator!=(const AdContentInfo&, const AdContentInfo&);
 
 }  // namespace brave_ads
 

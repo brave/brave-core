@@ -61,8 +61,8 @@ class BatAdsInlineContentAdServingTest : public UnitTestBase {
     subdivision_targeting_ =
         std::make_unique<geographic::SubdivisionTargeting>();
     anti_targeting_resource_ = std::make_unique<resource::AntiTargeting>();
-    serving_ = std::make_unique<Serving>(subdivision_targeting_.get(),
-                                         anti_targeting_resource_.get());
+    serving_ = std::make_unique<Serving>(*subdivision_targeting_,
+                                         *anti_targeting_resource_);
     serving_->AddObserver(&serving_observer_);
   }
 
@@ -102,11 +102,9 @@ TEST_F(BatAdsInlineContentAdServingTest, ServeAd) {
   // Arrange
   ForcePermissionRulesForTesting();
 
-  CreativeInlineContentAdList creative_ads;
   const CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAd();
-  creative_ads.push_back(creative_ad);
-  SaveCreativeAds(creative_ads);
+      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
+  SaveCreativeAds({creative_ad});
 
   // Act
   serving_->MaybeServeAd(
@@ -128,11 +126,9 @@ TEST_F(BatAdsInlineContentAdServingTest, DoNotServeAdForNonExistentDimensions) {
   // Arrange
   ForcePermissionRulesForTesting();
 
-  CreativeInlineContentAdList creative_ads;
   const CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAd();
-  creative_ads.push_back(creative_ad);
-  SaveCreativeAds(creative_ads);
+      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
+  SaveCreativeAds({creative_ad});
 
   // Act
   serving_->MaybeServeAd(
@@ -154,11 +150,9 @@ TEST_F(BatAdsInlineContentAdServingTest, DoNotServeAdForNonExistentDimensions) {
 TEST_F(BatAdsInlineContentAdServingTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
-  CreativeInlineContentAdList creative_ads;
   const CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAd();
-  creative_ads.push_back(creative_ad);
-  SaveCreativeAds(creative_ads);
+      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
+  SaveCreativeAds({creative_ad});
 
   // Act
   serving_->MaybeServeAd(

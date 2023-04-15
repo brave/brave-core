@@ -27,8 +27,8 @@ class BatAdsEligibleInlineContentAdsV2Test : public UnitTestBase {
     subdivision_targeting_ =
         std::make_unique<geographic::SubdivisionTargeting>();
     anti_targeting_resource_ = std::make_unique<resource::AntiTargeting>();
-    eligible_ads_ = std::make_unique<EligibleAdsV2>(
-        subdivision_targeting_.get(), anti_targeting_resource_.get());
+    eligible_ads_ = std::make_unique<EligibleAdsV2>(*subdivision_targeting_,
+                                                    *anti_targeting_resource_);
   }
 
   std::unique_ptr<geographic::SubdivisionTargeting> subdivision_targeting_;
@@ -40,11 +40,13 @@ TEST_F(BatAdsEligibleInlineContentAdsV2Test, GetAds) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
 
-  CreativeInlineContentAdInfo creative_ad_1 = BuildCreativeInlineContentAd();
+  CreativeInlineContentAdInfo creative_ad_1 =
+      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   creative_ad_1.segment = "foo-bar1";
   creative_ads.push_back(creative_ad_1);
 
-  CreativeInlineContentAdInfo creative_ad_2 = BuildCreativeInlineContentAd();
+  CreativeInlineContentAdInfo creative_ad_2 =
+      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   creative_ad_2.segment = "foo-bar3";
   creative_ads.push_back(creative_ad_2);
 
@@ -52,10 +54,11 @@ TEST_F(BatAdsEligibleInlineContentAdsV2Test, GetAds) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"foo-bar3"}, /*latent_interest_segments*/ {},
+      targeting::BuildUserModel({/*interest_segments*/ "foo-bar3"},
+                                /*latent_interest_segments*/ {},
                                 {"foo-bar1", "foo-bar2"},
                                 /*text_embedding_html_events*/ {}),
-      "200x100",
+      /*dimensions*/ "200x100",
       base::BindOnce([](const bool had_opportunity,
                         const CreativeInlineContentAdList& creative_ads) {
         // Assert
@@ -68,11 +71,13 @@ TEST_F(BatAdsEligibleInlineContentAdsV2Test, GetAdsForNoSegments) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
 
-  CreativeInlineContentAdInfo creative_ad_1 = BuildCreativeInlineContentAd();
+  CreativeInlineContentAdInfo creative_ad_1 =
+      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   creative_ad_1.segment = "foo";
   creative_ads.push_back(creative_ad_1);
 
-  CreativeInlineContentAdInfo creative_ad_2 = BuildCreativeInlineContentAd();
+  CreativeInlineContentAdInfo creative_ad_2 =
+      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   creative_ad_2.segment = "foo-bar";
   creative_ads.push_back(creative_ad_2);
 
@@ -84,7 +89,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV2Test, GetAdsForNoSegments) {
                                 /*latent_interest_segments*/ {},
                                 /*purchase_intent_segments*/ {},
                                 /*text_embedding_html_events*/ {}),
-      "200x100",
+      /*dimensions*/ "200x100",
       base::BindOnce([](const bool had_opportunity,
                         const CreativeInlineContentAdList& creative_ads) {
         // Assert
@@ -99,11 +104,11 @@ TEST_F(BatAdsEligibleInlineContentAdsV2Test,
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"interest-foo", "interest-bar"},
-                                /*latent_interest_segments*/ {},
-                                {"intent-foo", "intent-bar"},
-                                /*text_embedding_html_events*/ {}),
-      "?x?",
+      targeting::BuildUserModel(
+          {/*interest_segments*/ "interest-foo", "interest-bar"},
+          /*latent_interest_segments*/ {}, {"intent-foo", "intent-bar"},
+          /*text_embedding_html_events*/ {}),
+      /*dimensions*/ "?x?",
       base::BindOnce([](const bool had_opportunity,
                         const CreativeInlineContentAdList& creative_ads) {
         // Assert
@@ -117,11 +122,11 @@ TEST_F(BatAdsEligibleInlineContentAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"interest-foo", "interest-bar"},
-                                /*latent_interest_segments*/ {},
-                                {"intent-foo", "intent-bar"},
-                                /*text_embedding_html_events*/ {}),
-      "200x100",
+      targeting::BuildUserModel(
+          {/*interest_segments*/ "interest-foo", "interest-bar"},
+          /*latent_interest_segments*/ {}, {"intent-foo", "intent-bar"},
+          /*text_embedding_html_events*/ {}),
+      /*dimensions*/ "200x100",
       base::BindOnce([](const bool had_opportunity,
                         const CreativeInlineContentAdList& creative_ads) {
         // Assert

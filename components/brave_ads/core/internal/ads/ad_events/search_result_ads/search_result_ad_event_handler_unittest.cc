@@ -14,6 +14,7 @@
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/ads/search_result_ad_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -22,54 +23,14 @@
 #include "brave/components/brave_ads/core/internal/conversions/conversions_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_unittest_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
-#include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace brave_ads::search_result_ads {
 
 namespace {
-
-constexpr char kPlacementId[] = "d2ef9bb0-a0dc-472c-bc49-62105bb6da68";
-constexpr char kInvalidPlacementId[] = "";
-
-constexpr char kCreativeInstanceId[] = "1547f94f-9086-4db9-a441-efb2f0365269";
-constexpr char kInvalidCreativeInstanceId[] = "";
-
-mojom::SearchResultAdInfoPtr BuildAd(const std::string& placement_id,
-                                     const std::string& creative_instance_id) {
-  mojom::SearchResultAdInfoPtr ad_mojom = mojom::SearchResultAdInfo::New();
-
-  ad_mojom->creative_instance_id = creative_instance_id;
-  ad_mojom->placement_id = placement_id;
-  ad_mojom->creative_set_id = "7a41297b-ff7f-4ca8-9787-b4c9c1105f01";
-  ad_mojom->campaign_id = "be5d25ca-93e4-4a16-8f8b-4714abca31ed";
-  ad_mojom->advertiser_id = "f82389c6-c6ca-4db5-99f9-724f038efddf";
-  ad_mojom->target_url = GURL("https://brave.com");
-  ad_mojom->headline_text = "headline";
-  ad_mojom->description = "description";
-  ad_mojom->value = 1.0;
-  ad_mojom->conversion = mojom::ConversionInfo::New();
-
-  return ad_mojom;
-}
-
-mojom::SearchResultAdInfoPtr BuildAdWithConversion(
-    const std::string& placement_id,
-    const std::string& creative_instance_id) {
-  mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildAd(placement_id, creative_instance_id);
-
-  ad_mojom->conversion->type = "postview";
-  ad_mojom->conversion->url_pattern = "https://brave.com/*";
-  ad_mojom->conversion->advertiser_public_key =
-      "ofIveUY/bM7qlL9eIkAv/xbjDItFs1xRTTYKRZZsPHI=";
-  ad_mojom->conversion->observation_window = 3;
-  ad_mojom->conversion->expire_at = DistantFuture();
-
-  return ad_mojom;
-}
 
 void ExpectDepositExistsForCreativeInstanceId(
     const std::string& creative_instance_id) {
@@ -90,7 +51,6 @@ void ExpectConversionCountEquals(const size_t expected_count) {
       [](const size_t expected_count, const bool success,
          const ConversionList& conversions) {
         ASSERT_TRUE(success);
-
         EXPECT_EQ(expected_count, conversions.size());
       },
       expected_count));
@@ -157,7 +117,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest, FireViewedEvent) {
   ForcePermissionRulesForTesting();
 
   const mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildAd(kPlacementId, kCreativeInstanceId);
+      BuildSearchResultAd(/*should_use_random_guids*/ false);
 
   // Act
   FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kServed);
@@ -168,13 +128,12 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest, FireViewedEvent) {
   EXPECT_TRUE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
-  const SearchResultAdInfo expected_ad = BuildSearchResultAd(ad_mojom);
-  EXPECT_EQ(expected_ad, ad_);
+  EXPECT_EQ(BuildSearchResultAd(ad_mojom), ad_);
   EXPECT_EQ(
       1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
   EXPECT_EQ(
       1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
-  ExpectDepositExistsForCreativeInstanceId(kCreativeInstanceId);
+  ExpectDepositExistsForCreativeInstanceId(ad_mojom->creative_instance_id);
   ExpectConversionCountEquals(0);
 }
 
@@ -183,7 +142,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest, FireViewedEventWithConversion) {
   ForcePermissionRulesForTesting();
 
   const mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildAdWithConversion(kPlacementId, kCreativeInstanceId);
+      BuildSearchResultAdWithConversion(/*should_use_random_guids*/ false);
 
   FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kServed);
 
@@ -195,13 +154,12 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest, FireViewedEventWithConversion) {
   EXPECT_TRUE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
-  const SearchResultAdInfo expected_ad = BuildSearchResultAd(ad_mojom);
-  EXPECT_EQ(expected_ad, ad_);
+  EXPECT_EQ(BuildSearchResultAd(ad_mojom), ad_);
   EXPECT_EQ(
       1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
   EXPECT_EQ(
       1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
-  ExpectDepositExistsForCreativeInstanceId(kCreativeInstanceId);
+  ExpectDepositExistsForCreativeInstanceId(ad_mojom->creative_instance_id);
   ExpectConversionCountEquals(1);
 }
 
@@ -211,7 +169,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   ForcePermissionRulesForTesting();
 
   const mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildAd(kPlacementId, kCreativeInstanceId);
+      BuildSearchResultAd(/*should_use_random_guids*/ false);
 
   FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kServed);
   FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kViewed);
@@ -224,7 +182,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
       1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
   EXPECT_EQ(
       1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
-  ExpectDepositExistsForCreativeInstanceId(kCreativeInstanceId);
+  ExpectDepositExistsForCreativeInstanceId(ad_mojom->creative_instance_id);
   ExpectConversionCountEquals(0);
 }
 
@@ -233,7 +191,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest, FireClickedEvent) {
   ForcePermissionRulesForTesting();
 
   const mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildAd(kPlacementId, kCreativeInstanceId);
+      BuildSearchResultAd(/*should_use_random_guids*/ false);
 
   FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kServed);
   FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kViewed);
@@ -246,14 +204,14 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest, FireClickedEvent) {
   EXPECT_TRUE(did_view_ad_);
   EXPECT_TRUE(did_click_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
-  const SearchResultAdInfo expected_ad = BuildSearchResultAd(ad_mojom);
-  EXPECT_EQ(expected_ad, ad_);
+  EXPECT_EQ(BuildSearchResultAd(ad_mojom), ad_);
   EXPECT_EQ(
       1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
   EXPECT_EQ(
       1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
   EXPECT_EQ(
       1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kClicked));
+  ExpectConversionCountEquals(0);
 }
 
 TEST_F(BatAdsSearchResultAdEventHandlerTest,
@@ -262,7 +220,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   ForcePermissionRulesForTesting();
 
   const mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildAd(kPlacementId, kCreativeInstanceId);
+      BuildSearchResultAd(/*should_use_random_guids*/ false);
 
   FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kServed);
   FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kViewed);
@@ -278,13 +236,15 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
       1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
   EXPECT_EQ(
       1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kClicked));
+  ExpectConversionCountEquals(0);
 }
 
 TEST_F(BatAdsSearchResultAdEventHandlerTest,
        DoNotFireEventWithInvalidPlacementId) {
   // Arrange
   mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildAd(kInvalidPlacementId, kCreativeInstanceId);
+      BuildSearchResultAd(/*should_use_random_guids*/ false);
+  ad_mojom->placement_id = kInvalidPlacementId;
 
   // Act
   FireEvent(std::move(ad_mojom), mojom::SearchResultAdEventType::kServed);
@@ -296,13 +256,15 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   EXPECT_TRUE(did_fail_to_fire_event_);
   EXPECT_EQ(
       0, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
+  ExpectConversionCountEquals(0);
 }
 
 TEST_F(BatAdsSearchResultAdEventHandlerTest,
        DoNotFireEventWithInvalidCreativeInstanceId) {
   // Arrange
   mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildAd(kPlacementId, kInvalidCreativeInstanceId);
+      BuildSearchResultAd(/*should_use_random_guids*/ false);
+  ad_mojom->creative_instance_id = kInvalidCreativeInstanceId;
 
   // Act
   FireEvent(std::move(ad_mojom), mojom::SearchResultAdEventType::kViewed);
@@ -314,12 +276,13 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   EXPECT_TRUE(did_fail_to_fire_event_);
   EXPECT_EQ(
       0, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
+  ExpectConversionCountEquals(0);
 }
 
 TEST_F(BatAdsSearchResultAdEventHandlerTest, DoNotFireEventWhenNotPermitted) {
   // Arrange
   mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildAd(kPlacementId, kCreativeInstanceId);
+      BuildSearchResultAd(/*should_use_random_guids*/ false);
 
   // Act
   FireEvent(std::move(ad_mojom), mojom::SearchResultAdEventType::kViewed);
@@ -331,6 +294,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest, DoNotFireEventWhenNotPermitted) {
   EXPECT_TRUE(did_fail_to_fire_event_);
   EXPECT_EQ(
       0, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
+  ExpectConversionCountEquals(0);
 }
 
 TEST_F(BatAdsSearchResultAdEventHandlerTest,
@@ -338,8 +302,8 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   // Arrange
   ForcePermissionRulesForTesting();
 
-  mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildAd(kPlacementId, kCreativeInstanceId);
+  const mojom::SearchResultAdInfoPtr ad_mojom =
+      BuildSearchResultAd(/*should_use_random_guids*/ false);
 
   const int ads_per_hour = features::GetMaximumAdsPerHour();
 
@@ -361,7 +325,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
                                           ConfirmationType::kServed));
   EXPECT_EQ(ads_per_hour, GetAdEventCount(AdType::kSearchResultAd,
                                           ConfirmationType::kViewed));
-  ExpectDepositExistsForCreativeInstanceId(kCreativeInstanceId);
+  ExpectDepositExistsForCreativeInstanceId(ad.creative_instance_id);
   ExpectConversionCountEquals(0);
 }
 
@@ -371,7 +335,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   ForcePermissionRulesForTesting();
 
   mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildAd(kPlacementId, kCreativeInstanceId);
+      BuildSearchResultAd(/*should_use_random_guids*/ false);
 
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
   const AdEventInfo ad_event = BuildAdEvent(ad, AdType::kSearchResultAd,
@@ -386,6 +350,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   // Assert
   EXPECT_EQ(ads_per_hour, GetAdEventCount(AdType::kSearchResultAd,
                                           ConfirmationType::kServed));
+  ExpectConversionCountEquals(0);
 }
 
 TEST_F(BatAdsSearchResultAdEventHandlerTest,
@@ -393,8 +358,8 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   // Arrange
   ForcePermissionRulesForTesting();
 
-  mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildAd(kPlacementId, kCreativeInstanceId);
+  const mojom::SearchResultAdInfoPtr ad_mojom =
+      BuildSearchResultAd(/*should_use_random_guids*/ false);
 
   const int ads_per_day = features::GetMaximumAdsPerDay();
 
@@ -418,7 +383,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
                                          ConfirmationType::kServed));
   EXPECT_EQ(ads_per_day, GetAdEventCount(AdType::kSearchResultAd,
                                          ConfirmationType::kViewed));
-  ExpectDepositExistsForCreativeInstanceId(kCreativeInstanceId);
+  ExpectDepositExistsForCreativeInstanceId(ad.creative_instance_id);
   ExpectConversionCountEquals(0);
 }
 
@@ -428,7 +393,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   ForcePermissionRulesForTesting();
 
   mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildAd(kPlacementId, kCreativeInstanceId);
+      BuildSearchResultAd(/*should_use_random_guids*/ false);
 
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
   const AdEventInfo ad_event = BuildAdEvent(ad, AdType::kSearchResultAd,
@@ -446,6 +411,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   // Assert
   EXPECT_EQ(ads_per_day, GetAdEventCount(AdType::kSearchResultAd,
                                          ConfirmationType::kServed));
+  ExpectConversionCountEquals(0);
 }
 
 }  // namespace brave_ads::search_result_ads

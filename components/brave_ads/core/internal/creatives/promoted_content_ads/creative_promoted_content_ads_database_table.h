@@ -41,14 +41,13 @@ class CreativePromotedContentAds final : public TableInterface {
  public:
   CreativePromotedContentAds();
 
-  CreativePromotedContentAds(const CreativePromotedContentAds& other) = delete;
+  CreativePromotedContentAds(const CreativePromotedContentAds&) = delete;
   CreativePromotedContentAds& operator=(const CreativePromotedContentAds&) =
       delete;
 
-  CreativePromotedContentAds(CreativePromotedContentAds&& other) noexcept =
+  CreativePromotedContentAds(CreativePromotedContentAds&&) noexcept = delete;
+  CreativePromotedContentAds& operator=(CreativePromotedContentAds&&) noexcept =
       delete;
-  CreativePromotedContentAds& operator=(
-      CreativePromotedContentAds&& other) noexcept = delete;
 
   ~CreativePromotedContentAds() override;
 

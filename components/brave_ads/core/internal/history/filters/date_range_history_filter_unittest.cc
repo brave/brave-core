@@ -77,9 +77,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   history = filter.Apply(history);
 
   // Assert
-  const HistoryItemList expected_history;
-
-  EXPECT_TRUE(base::ranges::equal(expected_history, history));
+  EXPECT_TRUE(history.empty());
 }
 
 TEST(BatAdsDateRangeHistoryFilterTest,
@@ -120,9 +118,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   history = filter.Apply(history);
 
   // Assert
-  const HistoryItemList expected_history;
-
-  EXPECT_TRUE(base::ranges::equal(expected_history, history));
+  EXPECT_TRUE(history.empty());
 }
 
 TEST(BatAdsDateRangeHistoryFilterTest,
@@ -167,9 +163,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   history = filter.Apply(history);
 
   // Assert
-  const HistoryItemList expected_history;
-
-  EXPECT_TRUE(base::ranges::equal(expected_history, history));
+  EXPECT_TRUE(history.empty());
 }
 
 TEST(BatAdsDateRangeHistoryFilterTest, FilterEmptyHistory) {
@@ -184,9 +178,7 @@ TEST(BatAdsDateRangeHistoryFilterTest, FilterEmptyHistory) {
   history = filter.Apply(history);
 
   // Assert
-  const HistoryItemList expected_history;
-
-  EXPECT_TRUE(base::ranges::equal(expected_history, history));
+  EXPECT_TRUE(history.empty());
 }
 
 }  // namespace brave_ads

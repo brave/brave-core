@@ -35,8 +35,8 @@ class BatAdsEligibleNotificationAdsV3Test : public UnitTestBase {
     subdivision_targeting_ =
         std::make_unique<geographic::SubdivisionTargeting>();
     anti_targeting_resource_ = std::make_unique<resource::AntiTargeting>();
-    eligible_ads_ = std::make_unique<EligibleAdsV3>(
-        subdivision_targeting_.get(), anti_targeting_resource_.get());
+    eligible_ads_ = std::make_unique<EligibleAdsV3>(*subdivision_targeting_,
+                                                    *anti_targeting_resource_);
   }
 
   std::unique_ptr<geographic::SubdivisionTargeting> subdivision_targeting_;
@@ -48,11 +48,13 @@ TEST_F(BatAdsEligibleNotificationAdsV3Test, GetAds) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
-  CreativeNotificationAdInfo creative_ad_1 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_1 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_1.embedding = {0.1, 0.2, 0.3};
   creative_ads.push_back(creative_ad_1);
 
-  CreativeNotificationAdInfo creative_ad_2 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_2 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_2.embedding = {-0.3, 0.0, -0.2};
   creative_ads.push_back(creative_ad_2);
 
@@ -83,11 +85,13 @@ TEST_F(BatAdsEligibleNotificationAdsV3Test, GetAdsForNoStoredTextEmbeddings) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
-  CreativeNotificationAdInfo creative_ad_1 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_1 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_1.embedding = {0.1, 0.2, 0.3, 0.4, 0.5};
   creative_ads.push_back(creative_ad_1);
 
-  CreativeNotificationAdInfo creative_ad_2 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_2 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_2.embedding = {-0.3, 0.0, -0.2, 0.6, 0.8};
   creative_ads.push_back(creative_ad_2);
 
@@ -121,16 +125,8 @@ TEST_F(BatAdsEligibleNotificationAdsV3Test,
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  CreativeNotificationAdList creative_ads;
-
-  const CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAd();
-  creative_ads.push_back(creative_ad_1);
-
-  const CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAd();
-  creative_ads.push_back(creative_ad_2);
-
+  const CreativeNotificationAdList creative_ads =
+      BuildCreativeNotificationAds(/*count*/ 2);
   SaveCreativeAds(creative_ads);
 
   const TextEmbeddingHtmlEventInfo text_embedding_event =

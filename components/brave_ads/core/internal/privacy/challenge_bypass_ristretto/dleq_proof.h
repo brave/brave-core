@@ -31,16 +31,16 @@ class DLEQProof {
             const SignedToken& signed_token,
             const SigningKey& signing_key);
 
-  DLEQProof(const DLEQProof& other) = delete;
-  DLEQProof& operator=(const DLEQProof& other) = delete;
+  DLEQProof(const DLEQProof&) = delete;
+  DLEQProof& operator=(const DLEQProof&) = delete;
 
-  DLEQProof(DLEQProof&& other) noexcept = delete;
-  DLEQProof& operator=(DLEQProof&& other) noexcept = delete;
+  DLEQProof(DLEQProof&&) noexcept = delete;
+  DLEQProof& operator=(DLEQProof&&) noexcept = delete;
 
   ~DLEQProof();
 
-  bool operator==(const DLEQProof& other) const;
-  bool operator!=(const DLEQProof& other) const;
+  bool operator==(const DLEQProof&) const;
+  bool operator!=(const DLEQProof&) const;
 
   bool has_value() const { return dleq_proof_.has_value(); }
 

@@ -66,6 +66,7 @@ TEST_F(BatAdsStringHtmlParserUtilTest, ParseHtmlTagAttributeSimple) {
     // Act
     const std::string html_tag_attribute =
         ParseHtmlTagAttribute(html, tag_substr, tag_attribute);
+
     // Assert
     EXPECT_EQ(expected_html_tag_attribute, html_tag_attribute);
   }

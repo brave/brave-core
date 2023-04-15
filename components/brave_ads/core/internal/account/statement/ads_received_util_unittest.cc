@@ -46,12 +46,9 @@ TEST_F(BatAdsAdsReceivedUtilTest, GetAdsReceivedForDateRange) {
   const base::Time to_time = DistantFuture();
 
   // Act
-  const int ads_received =
-      GetAdsReceivedForDateRange(transactions, from_time, to_time);
 
   // Assert
-  constexpr int kExpectedAdsReceived = 2;
-  EXPECT_EQ(kExpectedAdsReceived, ads_received);
+  EXPECT_EQ(2, GetAdsReceivedForDateRange(transactions, from_time, to_time));
 }
 
 TEST_F(BatAdsAdsReceivedUtilTest, DoNotGetAdsReceivedForDateRange) {
@@ -74,12 +71,9 @@ TEST_F(BatAdsAdsReceivedUtilTest, DoNotGetAdsReceivedForDateRange) {
   const base::Time to_time = DistantFuture();
 
   // Act
-  const int ads_received =
-      GetAdsReceivedForDateRange(transactions, from_time, to_time);
 
   // Assert
-  constexpr int kExpectedAdsReceived = 0;
-  EXPECT_EQ(kExpectedAdsReceived, ads_received);
+  EXPECT_EQ(0, GetAdsReceivedForDateRange(transactions, from_time, to_time));
 }
 
 TEST_F(BatAdsAdsReceivedUtilTest, GetAdsReceivedForNoTransactions) {
@@ -90,12 +84,9 @@ TEST_F(BatAdsAdsReceivedUtilTest, GetAdsReceivedForNoTransactions) {
   const base::Time to_time = DistantFuture();
 
   // Act
-  const int ads_received =
-      GetAdsReceivedForDateRange(transactions, from_time, to_time);
 
   // Assert
-  constexpr int kExpectedAdsReceived = 0;
-  EXPECT_EQ(kExpectedAdsReceived, ads_received);
+  EXPECT_EQ(0, GetAdsReceivedForDateRange(transactions, from_time, to_time));
 }
 
 }  // namespace brave_ads

@@ -19,7 +19,7 @@ bool SchemeIsSupported(const GURL& url);
 
 bool MatchUrlPattern(const GURL& url, const std::string& pattern);
 
-bool SameDomainOrHost(const GURL& lhs, const GURL& rhs);
+bool SameDomainOrHost(const GURL&, const GURL&);
 bool DomainOrHostExists(const std::vector<GURL>& urls, const GURL& url);
 
 }  // namespace brave_ads

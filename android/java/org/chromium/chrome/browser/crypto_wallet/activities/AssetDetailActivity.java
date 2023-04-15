@@ -144,7 +144,7 @@ public class AssetDetailActivity
         } else {
             Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, null, mContractAddress,
                     mAssetSymbol, getResources().getDisplayMetrics().density, assetTitleText, this,
-                    false, (float) 0.5);
+                    false, (float) 0.5, true);
         }
 
         TextView assetPriceText = findViewById(R.id.asset_price_text);
@@ -325,9 +325,9 @@ public class AssetDetailActivity
                             R.drawable.ic_eth, mAsset.name, mAsset.symbol, mAsset.tokenId, "", "");
                     LiveDataUtil.observeOnce(
                             mWalletModel.getNetworkModel().mCryptoNetworks, allNetworks -> {
-                                Utils.getTxExtraInfo(new WeakReference<>(this), allNetworks,
-                                        mAssetNetwork, accountInfos, new BlockchainToken[] {mAsset},
-                                        false,
+                                Utils.getTxExtraInfo(new WeakReference<>(this),
+                                        TokenUtils.TokenType.ALL, allNetworks, mAssetNetwork,
+                                        accountInfos, new BlockchainToken[] {mAsset}, false,
                                         (assetPrices, fullTokenList, nativeAssetsBalances,
                                                 blockchainTokensBalances) -> {
                                             thisAssetItemModel.setBlockchainToken(mAsset);
@@ -449,10 +449,6 @@ public class AssetDetailActivity
                     String.format(Locale.ENGLISH, "$%,.2f", assetPrice * thisAccountBalance);
             final String cryptoBalanceString =
                     String.format(Locale.ENGLISH, "%.4f %s", thisAccountBalance, mAsset.symbol);
-
-            // If NFT, only show the account that owns
-            // it (i.e. balance = 1)
-            if (mAsset.isNft && thisAccountBalance != 1.) continue;
 
             WalletListItemModel model = new WalletListItemModel(R.drawable.ic_eth, accountInfo.name,
                     accountInfo.address, fiatBalanceString, cryptoBalanceString,

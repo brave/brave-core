@@ -33,8 +33,8 @@ class BatAdsNotificationAdServingTest : public ServingObserver,
     subdivision_targeting_ =
         std::make_unique<geographic::SubdivisionTargeting>();
     anti_targeting_resource_ = std::make_unique<resource::AntiTargeting>();
-    serving_ = std::make_unique<Serving>(subdivision_targeting_.get(),
-                                         anti_targeting_resource_.get());
+    serving_ = std::make_unique<Serving>(*subdivision_targeting_,
+                                         *anti_targeting_resource_);
     serving_->AddObserver(this);
   }
 
@@ -83,10 +83,9 @@ TEST_F(BatAdsNotificationAdServingTest, ServeAd) {
   // Arrange
   ForcePermissionRulesForTesting();
 
-  CreativeNotificationAdList creative_ads;
-  const CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
-  creative_ads.push_back(creative_ad);
-  SaveCreativeAds(creative_ads);
+  const CreativeNotificationAdInfo creative_ad =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+  SaveCreativeAds({creative_ad});
 
   // Act
   serving_->MaybeServeAd();
@@ -117,10 +116,9 @@ TEST_F(BatAdsNotificationAdServingTest, DoNotServeAdIfNoEligibleAdsFound) {
 TEST_F(BatAdsNotificationAdServingTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
-  CreativeNotificationAdList creative_ads;
-  const CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
-  creative_ads.push_back(creative_ad);
-  SaveCreativeAds(creative_ads);
+  const CreativeNotificationAdInfo creative_ad =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+  SaveCreativeAds({creative_ad});
 
   // Act
   serving_->MaybeServeAd();

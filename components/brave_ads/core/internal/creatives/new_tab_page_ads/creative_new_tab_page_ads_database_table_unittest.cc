@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_container_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -35,14 +36,13 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
        SaveCreativeNewTabPageAds) {
   // Arrange
-  const CreativeNewTabPageAdList creative_ads = BuildCreativeNewTabPageAds(2);
+  const CreativeNewTabPageAdList creative_ads =
+      BuildCreativeNewTabPageAds(/*count*/ 2);
 
   // Act
   SaveCreativeAds(creative_ads);
 
   // Assert
-  CreativeNewTabPageAdList expected_creative_ads = creative_ads;
-
   database_table_.GetAll(base::BindOnce(
       [](const CreativeNewTabPageAdList& expected_creative_ads,
          const bool success, const SegmentList& /*segments*/,
@@ -50,7 +50,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
         ASSERT_TRUE(success);
         EXPECT_TRUE(ContainersEq(expected_creative_ads, creative_ads));
       },
-      std::move(expected_creative_ads)));
+      creative_ads));
 }
 
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
@@ -58,14 +58,13 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   // Arrange
   database_table_.SetBatchSize(2);
 
-  const CreativeNewTabPageAdList creative_ads = BuildCreativeNewTabPageAds(3);
+  const CreativeNewTabPageAdList creative_ads =
+      BuildCreativeNewTabPageAds(/*count*/ 3);
 
   // Act
   SaveCreativeAds(creative_ads);
 
   // Assert
-  CreativeNewTabPageAdList expected_creative_ads = creative_ads;
-
   database_table_.GetAll(base::BindOnce(
       [](const CreativeNewTabPageAdList& expected_creative_ads,
          const bool success, const SegmentList& /*segments*/,
@@ -73,7 +72,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
         ASSERT_TRUE(success);
         EXPECT_TRUE(ContainersEq(expected_creative_ads, creative_ads));
       },
-      std::move(expected_creative_ads)));
+      creative_ads));
 }
 
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
@@ -81,7 +80,8 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   // Arrange
   CreativeNewTabPageAdList creative_ads;
 
-  const CreativeNewTabPageAdInfo creative_ad = BuildCreativeNewTabPageAd();
+  const CreativeNewTabPageAdInfo creative_ad =
+      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
   creative_ads.push_back(creative_ad);
 
   SaveCreativeAds(creative_ads);
@@ -90,9 +90,6 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   SaveCreativeAds(creative_ads);
 
   // Assert
-  CreativeNewTabPageAdList expected_creative_ads;
-  expected_creative_ads.push_back(creative_ad);
-
   database_table_.GetAll(base::BindOnce(
       [](const CreativeNewTabPageAdList& expected_creative_ads,
          const bool success, const SegmentList& /*segments*/,
@@ -100,22 +97,25 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
         ASSERT_TRUE(success);
         EXPECT_EQ(expected_creative_ads, creative_ads);
       },
-      std::move(expected_creative_ads)));
+      creative_ads));
 }
 
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest, GetForSegments) {
   // Arrange
   CreativeNewTabPageAdList creative_ads;
 
-  CreativeNewTabPageAdInfo creative_ad_1 = BuildCreativeNewTabPageAd();
+  CreativeNewTabPageAdInfo creative_ad_1 =
+      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
   creative_ad_1.segment = "food & drink";
   creative_ads.push_back(creative_ad_1);
 
-  CreativeNewTabPageAdInfo creative_ad_2 = BuildCreativeNewTabPageAd();
+  CreativeNewTabPageAdInfo creative_ad_2 =
+      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
   creative_ad_2.segment = "technology & computing-software";
   creative_ads.push_back(creative_ad_2);
 
-  CreativeNewTabPageAdInfo creative_ad_3 = BuildCreativeNewTabPageAd();
+  CreativeNewTabPageAdInfo creative_ad_3 =
+      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
   creative_ad_3.segment = "food & drink";
   creative_ads.push_back(creative_ad_3);
 
@@ -124,14 +124,11 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest, GetForSegments) {
   // Act
 
   // Assert
-  CreativeNewTabPageAdList expected_creative_ads;
-  expected_creative_ads.push_back(creative_ad_1);
-  expected_creative_ads.push_back(creative_ad_3);
-
-  const SegmentList segments = {"food & drink"};
+  CreativeNewTabPageAdList expected_creative_ads = {creative_ad_1,
+                                                    creative_ad_3};
 
   database_table_.GetForSegments(
-      segments,
+      /*segments*/ {"food & drink"},
       base::BindOnce(
           [](const CreativeNewTabPageAdList& expected_creative_ads,
              const bool success, const SegmentList& /*segments*/,
@@ -147,10 +144,12 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   // Arrange
   CreativeNewTabPageAdList creative_ads;
 
-  const CreativeNewTabPageAdInfo creative_ad_1 = BuildCreativeNewTabPageAd();
+  const CreativeNewTabPageAdInfo creative_ad_1 =
+      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
   creative_ads.push_back(creative_ad_1);
 
-  const CreativeNewTabPageAdInfo creative_ad_2 = BuildCreativeNewTabPageAd();
+  const CreativeNewTabPageAdInfo creative_ad_2 =
+      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
   creative_ads.push_back(creative_ad_2);
 
   SaveCreativeAds(creative_ads);
@@ -158,7 +157,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   // Act
 
   // Assert
-  CreativeNewTabPageAdInfo expected_creative_ad = creative_ad_1;
+  const CreativeNewTabPageAdInfo expected_creative_ad = creative_ad_1;
 
   database_table_.GetForCreativeInstanceId(
       expected_creative_ad.creative_instance_id,
@@ -175,7 +174,8 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
        GetCreativeNewTabPageAdsForNonExistentCreativeInstanceId) {
   // Arrange
-  const CreativeNewTabPageAdList creative_ads = BuildCreativeNewTabPageAds(1);
+  const CreativeNewTabPageAdList creative_ads =
+      BuildCreativeNewTabPageAds(/*count*/ 1);
 
   SaveCreativeAds(creative_ads);
 
@@ -183,7 +183,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
 
   // Assert
   database_table_.GetForCreativeInstanceId(
-      "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      kMissingCreativeInstanceId,
       base::BindOnce([](const bool success,
                         const std::string& /*creative_instance_id*/,
                         const CreativeNewTabPageAdInfo& /*creative_ad*/) {
@@ -194,17 +194,16 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
        GetCreativeNewTabPageAdsForEmptySegments) {
   // Arrange
-  const CreativeNewTabPageAdList creative_ads = BuildCreativeNewTabPageAds(1);
+  const CreativeNewTabPageAdList creative_ads =
+      BuildCreativeNewTabPageAds(/*count*/ 1);
 
   SaveCreativeAds(creative_ads);
 
   // Act
 
   // Assert
-  const SegmentList segments = {""};
-
   database_table_.GetForSegments(
-      segments,
+      /*segments*/ {},
       base::BindOnce([](const bool success, const SegmentList& /*segments*/,
                         const CreativeNewTabPageAdList& creative_ads) {
         ASSERT_TRUE(success);
@@ -215,17 +214,16 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
        GetCreativeNewTabPageAdsForNonExistentSegment) {
   // Arrange
-  const CreativeNewTabPageAdList creative_ads = BuildCreativeNewTabPageAds(1);
+  const CreativeNewTabPageAdList creative_ads =
+      BuildCreativeNewTabPageAds(/*count*/ 1);
 
   SaveCreativeAds(creative_ads);
 
   // Act
 
   // Assert
-  const SegmentList segments = {"FOOBAR"};
-
   database_table_.GetForSegments(
-      segments,
+      /*segments*/ {"FOOBAR"},
       base::BindOnce([](const bool success, const SegmentList& /*segments*/,
                         const CreativeNewTabPageAdList& creative_ads) {
         ASSERT_TRUE(success);
@@ -238,15 +236,18 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   // Arrange
   CreativeNewTabPageAdList creative_ads;
 
-  CreativeNewTabPageAdInfo creative_ad_1 = BuildCreativeNewTabPageAd();
+  CreativeNewTabPageAdInfo creative_ad_1 =
+      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
   creative_ad_1.segment = "technology & computing-software";
   creative_ads.push_back(creative_ad_1);
 
-  CreativeNewTabPageAdInfo creative_ad_2 = BuildCreativeNewTabPageAd();
+  CreativeNewTabPageAdInfo creative_ad_2 =
+      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
   creative_ad_2.segment = "food & drink";
   creative_ads.push_back(creative_ad_2);
 
-  CreativeNewTabPageAdInfo creative_ad_3 = BuildCreativeNewTabPageAd();
+  CreativeNewTabPageAdInfo creative_ad_3 =
+      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
   creative_ad_3.segment = "automobiles";
   creative_ads.push_back(creative_ad_3);
 
@@ -255,14 +256,11 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   // Act
 
   // Assert
-  CreativeNewTabPageAdList expected_creative_ads;
-  expected_creative_ads.push_back(creative_ad_1);
-  expected_creative_ads.push_back(creative_ad_2);
-
-  const SegmentList segments = {creative_ad_1.segment, creative_ad_2.segment};
+  CreativeNewTabPageAdList expected_creative_ads = {creative_ad_1,
+                                                    creative_ad_2};
 
   database_table_.GetForSegments(
-      segments,
+      /*segments*/ {creative_ad_1.segment, creative_ad_2.segment},
       base::BindOnce(
           [](const CreativeNewTabPageAdList& expected_creative_ads,
              const bool success, const SegmentList& /*segments*/,
@@ -278,12 +276,14 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   // Arrange
   CreativeNewTabPageAdList creative_ads;
 
-  CreativeNewTabPageAdInfo creative_ad_1 = BuildCreativeNewTabPageAd();
+  CreativeNewTabPageAdInfo creative_ad_1 =
+      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
   creative_ad_1.start_at = DistantPast();
   creative_ad_1.end_at = Now();
   creative_ads.push_back(creative_ad_1);
 
-  CreativeNewTabPageAdInfo creative_ad_2 = BuildCreativeNewTabPageAd();
+  CreativeNewTabPageAdInfo creative_ad_2 =
+      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
   creative_ad_2.start_at = DistantPast();
   creative_ad_2.end_at = DistantFuture();
   creative_ads.push_back(creative_ad_2);
@@ -294,8 +294,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   AdvanceClockBy(base::Seconds(1));
 
   // Assert
-  CreativeNewTabPageAdList expected_creative_ads;
-  expected_creative_ads.push_back(creative_ad_2);
+  CreativeNewTabPageAdList expected_creative_ads = {creative_ad_2};
 
   database_table_.GetAll(base::BindOnce(
       [](const CreativeNewTabPageAdList& expected_creative_ads,
@@ -312,11 +311,13 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   // Arrange
   CreativeNewTabPageAdList creative_ads;
 
-  CreativeNewTabPageAdInfo creative_ad_1 = BuildCreativeNewTabPageAd();
+  CreativeNewTabPageAdInfo creative_ad_1 =
+      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
   creative_ad_1.segment = "technology & computing-software";
   creative_ads.push_back(creative_ad_1);
 
-  CreativeNewTabPageAdInfo creative_ad_2 = BuildCreativeNewTabPageAd();
+  CreativeNewTabPageAdInfo creative_ad_2 =
+      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
   creative_ad_2.segment = "food & drink";
   creative_ads.push_back(creative_ad_2);
 
@@ -325,31 +326,27 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   // Act
 
   // Assert
-  CreativeNewTabPageAdList expected_creative_ads;
-  expected_creative_ads.push_back(creative_ad_2);
-
-  const SegmentList segments = {"FoOd & DrInK"};
+  CreativeNewTabPageAdList expected_creative_ads = {creative_ad_2};
 
   database_table_.GetForSegments(
-      segments, base::BindOnce(
-                    [](const CreativeNewTabPageAdList& expected_creative_ads,
-                       const bool success, const SegmentList& /*segments*/,
-                       const CreativeNewTabPageAdList& creative_ads) {
-                      ASSERT_TRUE(success);
-                      EXPECT_EQ(expected_creative_ads, creative_ads);
-                    },
-                    std::move(expected_creative_ads)));
+      /*segments*/ {"FoOd & DrInK"},
+      base::BindOnce(
+          [](const CreativeNewTabPageAdList& expected_creative_ads,
+             const bool success, const SegmentList& /*segments*/,
+             const CreativeNewTabPageAdList& creative_ads) {
+            ASSERT_TRUE(success);
+            EXPECT_EQ(expected_creative_ads, creative_ads);
+          },
+          std::move(expected_creative_ads)));
 }
 
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest, TableName) {
   // Arrange
 
   // Act
-  const std::string table_name = database_table_.GetTableName();
 
   // Assert
-  const std::string expected_table_name = "creative_new_tab_page_ads";
-  EXPECT_EQ(expected_table_name, table_name);
+  EXPECT_EQ("creative_new_tab_page_ads", database_table_.GetTableName());
 }
 
 }  // namespace brave_ads::database::table

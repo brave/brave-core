@@ -25,7 +25,11 @@ IpfsBasePinService::IpfsBasePinService(IpfsService* ipfs_service)
 
 IpfsBasePinService::IpfsBasePinService() = default;
 
-IpfsBasePinService::~IpfsBasePinService() = default;
+IpfsBasePinService::~IpfsBasePinService() {
+  if (ipfs_service_) {
+    ipfs_service_->RemoveObserver(this);
+  }
+}
 
 void IpfsBasePinService::OnIpfsShutdown() {
   daemon_ready_ = false;
@@ -124,6 +128,10 @@ void IpfsBasePinService::GetConnectedPeers(size_t attempt) {
       base::BindOnce(&IpfsBasePinService::OnGetConnectedPeersResult,
                      weak_ptr_factory_.GetWeakPtr(), attempt),
       absl::nullopt);
+}
+
+bool IpfsBasePinService::HasJobs() {
+  return current_job_ || !jobs_.empty();
 }
 
 }  // namespace ipfs

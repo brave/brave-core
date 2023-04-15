@@ -6,6 +6,7 @@
 #include "brave/browser/ui/commander/ranker.h"
 
 #include <algorithm>
+#include <cstdlib>
 #include <iterator>
 #include <memory>
 #include <string>
@@ -20,6 +21,10 @@
 #include "components/prefs/scoped_user_pref_update.h"
 
 namespace commander {
+
+namespace {
+constexpr double kDoubleComparisonSlop = 0.001;
+}
 
 Ranker::Ranker(PrefService* prefs) : prefs_(prefs) {}
 Ranker::~Ranker() = default;
@@ -48,7 +53,9 @@ void Ranker::Rank(std::vector<std::unique_ptr<CommandItem>>& items,
              const std::unique_ptr<CommandItem>& right) {
         auto l_rank = (0.5 + this->GetRank(*left.get())) * left->score;
         auto r_rank = (0.5 + this->GetRank(*right.get())) * right->score;
-        return l_rank == r_rank ? left->title < right->title : l_rank > r_rank;
+        return abs(l_rank - r_rank) < kDoubleComparisonSlop
+                   ? left->title < right->title
+                   : l_rank > r_rank;
       });
 }
 

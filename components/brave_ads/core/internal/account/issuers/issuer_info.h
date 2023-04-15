@@ -16,16 +16,16 @@ namespace brave_ads {
 struct IssuerInfo final {
   IssuerInfo();
 
-  IssuerInfo(const IssuerInfo& other);
-  IssuerInfo& operator=(const IssuerInfo& other);
+  IssuerInfo(const IssuerInfo&);
+  IssuerInfo& operator=(const IssuerInfo&);
 
-  IssuerInfo(IssuerInfo&& other) noexcept;
-  IssuerInfo& operator=(IssuerInfo&& other) noexcept;
+  IssuerInfo(IssuerInfo&&) noexcept;
+  IssuerInfo& operator=(IssuerInfo&&) noexcept;
 
   ~IssuerInfo();
 
-  bool operator==(const IssuerInfo& other) const;
-  bool operator!=(const IssuerInfo& other) const;
+  bool operator==(const IssuerInfo&) const;
+  bool operator!=(const IssuerInfo&) const;
 
   IssuerType type = IssuerType::kUndefined;
   PublicKeyMap public_keys;

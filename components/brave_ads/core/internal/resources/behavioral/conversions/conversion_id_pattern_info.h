@@ -17,10 +17,8 @@ struct ConversionIdPatternInfo final {
   std::string search_in;
 };
 
-bool operator==(const ConversionIdPatternInfo& lhs,
-                const ConversionIdPatternInfo& rhs);
-bool operator!=(const ConversionIdPatternInfo& lhs,
-                const ConversionIdPatternInfo& rhs);
+bool operator==(const ConversionIdPatternInfo&, const ConversionIdPatternInfo&);
+bool operator!=(const ConversionIdPatternInfo&, const ConversionIdPatternInfo&);
 
 using ConversionIdPatternMap = std::map<std::string, ConversionIdPatternInfo>;
 

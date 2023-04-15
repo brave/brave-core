@@ -45,8 +45,6 @@ class MockLedgerClient : public mojom::LedgerClient {
 
   MOCK_METHOD2(LoadURL, void(mojom::UrlRequestPtr, LoadURLCallback));
 
-  MOCK_METHOD2(URIEncode, void(const std::string&, URIEncodeCallback));
-
   MOCK_METHOD1(PublisherListNormalized,
                void(std::vector<mojom::PublisherInfoPtr>));
 
@@ -139,8 +137,6 @@ class MockLedgerClient : public mojom::LedgerClient {
 
   MOCK_METHOD2(RunDBTransaction,
                void(mojom::DBTransactionPtr, RunDBTransactionCallback));
-
-  MOCK_METHOD1(GetCreateScript, void(GetCreateScriptCallback));
 
   MOCK_METHOD1(PendingContributionSaved, void(mojom::Result));
 

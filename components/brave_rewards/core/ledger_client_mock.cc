@@ -37,11 +37,6 @@ MockLedgerClient::MockLedgerClient() {
         std::move(callback).Run(nullptr);
       });
 
-  ON_CALL(*this, URIEncode(_, _))
-      .WillByDefault([](const std::string&, auto callback) {
-        std::move(callback).Run("");
-      });
-
   ON_CALL(*this, GetBooleanState(_, _))
       .WillByDefault([](const std::string&, auto callback) {
         std::move(callback).Run(false);
@@ -174,10 +169,6 @@ MockLedgerClient::MockLedgerClient() {
       .WillByDefault([](mojom::DBTransactionPtr, auto callback) {
         std::move(callback).Run(nullptr);
       });
-
-  ON_CALL(*this, GetCreateScript(_)).WillByDefault([](auto callback) {
-    std::move(callback).Run("", 0);
-  });
 
   ON_CALL(*this, DeleteLog(_)).WillByDefault([](auto callback) {
     std::move(callback).Run(mojom::Result::LEDGER_ERROR);

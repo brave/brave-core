@@ -9,13 +9,13 @@
 #include <string>
 
 #include "base/functional/callback.h"
-#include "brave/components/brave_ads/core/internal/resources/parsing_result.h"
+#include "brave/components/brave_ads/core/internal/resources/parsing_error_or.h"
 
 namespace brave_ads::resource {
 
 template <typename T>
 using LoadAndParseResourceCallback =
-    base::OnceCallback<void(ParsingResultPtr<T>)>;
+    base::OnceCallback<void(ParsingErrorOr<T>)>;
 
 template <typename T>
 void LoadAndParseResource(const std::string& id,

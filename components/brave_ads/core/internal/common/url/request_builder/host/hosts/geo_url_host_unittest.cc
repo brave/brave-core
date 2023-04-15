@@ -20,11 +20,9 @@ TEST_F(BatAdsGeoUrlHostTest, GetProductionUrlHost) {
       EnvironmentType::kProduction);
 
   // Act
-  const std::string url_host = GetGeoUrlHost();
 
   // Assert
-  const std::string expected_url_host = "https://geo.ads.brave.com";
-  EXPECT_EQ(expected_url_host, url_host);
+  EXPECT_EQ("https://geo.ads.brave.com", GetGeoUrlHost());
 }
 
 TEST_F(BatAdsGeoUrlHostTest, GetStagingUrlHost) {
@@ -33,11 +31,9 @@ TEST_F(BatAdsGeoUrlHostTest, GetStagingUrlHost) {
       EnvironmentType::kStaging);
 
   // Act
-  const std::string url_host = GetGeoUrlHost();
 
   // Assert
-  const std::string expected_url_host = "https://geo.ads.bravesoftware.com";
-  EXPECT_EQ(expected_url_host, url_host);
+  EXPECT_EQ("https://geo.ads.bravesoftware.com", GetGeoUrlHost());
 }
 
 }  // namespace brave_ads

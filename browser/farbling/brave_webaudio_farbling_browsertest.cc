@@ -29,7 +29,7 @@
 using brave_shields::ControlType;
 
 const char kEmbeddedTestServerDirectory[] = "webaudio";
-const char kTitleScript[] = "domAutomationController.send(document.title);";
+const char kTitleScript[] = "document.title;";
 
 class BraveWebAudioFarblingBrowserTest : public InProcessBrowserTest {
  public:
@@ -86,13 +86,6 @@ class BraveWebAudioFarblingBrowserTest : public InProcessBrowserTest {
         content_settings(), ControlType::DEFAULT, top_level_page_url_);
   }
 
-  template <typename T>
-  std::string ExecScriptGetStr(const std::string& script, T* frame) {
-    std::string value;
-    EXPECT_TRUE(ExecuteScriptAndExtractString(frame, script, &value));
-    return value;
-  }
-
   content::WebContents* contents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
@@ -119,21 +112,21 @@ IN_PROC_BROWSER_TEST_F(BraveWebAudioFarblingBrowserTest, FarbleWebAudio) {
   // web audio: pseudo-random data with no relation to underlying audio channel
   BlockFingerprinting();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
-  EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()), "405");
+  EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "405");
   // second time, same as the first (tests that the PRNG properly resets itself
   // at the beginning of each calculation)
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
-  EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()), "405");
+  EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "405");
 
   // Farbling level: balanced (default)
   // web audio: farbled audio data
   SetFingerprintingDefault();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
-  EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()), "7968");
+  EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "7968");
 
   // Farbling level: off
   // web audio: original audio data
   AllowFingerprinting();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
-  EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()), "8000");
+  EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "8000");
 }

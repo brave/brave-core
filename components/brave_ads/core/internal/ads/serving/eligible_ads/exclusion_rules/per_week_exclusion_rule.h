@@ -20,12 +20,11 @@ class PerWeekExclusionRule final
  public:
   explicit PerWeekExclusionRule(AdEventList ad_events);
 
-  PerWeekExclusionRule(const PerWeekExclusionRule& other) = delete;
-  PerWeekExclusionRule& operator=(const PerWeekExclusionRule& other) = delete;
+  PerWeekExclusionRule(const PerWeekExclusionRule&) = delete;
+  PerWeekExclusionRule& operator=(const PerWeekExclusionRule&) = delete;
 
-  PerWeekExclusionRule(PerWeekExclusionRule&& other) noexcept = delete;
-  PerWeekExclusionRule& operator=(PerWeekExclusionRule&& other) noexcept =
-      delete;
+  PerWeekExclusionRule(PerWeekExclusionRule&&) noexcept = delete;
+  PerWeekExclusionRule& operator=(PerWeekExclusionRule&&) noexcept = delete;
 
   ~PerWeekExclusionRule() override;
 

@@ -46,7 +46,8 @@ class BatAdsTransferTest : public TransferObserver, public UnitTestBase {
 
 TEST_F(BatAdsTransferTest, DoNotTransferAdIfUrlIsMissingHTTPOrHTTPSScheme) {
   // Arrange
-  const AdInfo ad = BuildAd();
+  const AdInfo ad =
+      BuildAd(AdType::kNotificationAd, /*should_use_random_guids*/ false);
 
   transfer_->SetLastClickedAd(ad);
 
@@ -66,7 +67,8 @@ TEST_F(BatAdsTransferTest, DoNotTransferAdIfUrlIsMissingHTTPOrHTTPSScheme) {
 TEST_F(BatAdsTransferTest,
        DoNotTransferAdIfTheUrlDoesNotMatchTheLastClickedAd) {
   // Arrange
-  const AdInfo ad = BuildAd();
+  const AdInfo ad =
+      BuildAd(AdType::kNotificationAd, /*should_use_random_guids*/ false);
 
   transfer_->SetLastClickedAd(ad);
 
@@ -85,7 +87,8 @@ TEST_F(BatAdsTransferTest,
 
 TEST_F(BatAdsTransferTest, DoNotTransferAdIfTheSameAdIsAlreadyTransferring) {
   // Arrange
-  const AdInfo ad = BuildAd();
+  const AdInfo ad =
+      BuildAd(AdType::kNotificationAd, /*should_use_random_guids*/ false);
 
   transfer_->SetLastClickedAd(ad);
 
@@ -107,7 +110,8 @@ TEST_F(BatAdsTransferTest, DoNotTransferAdIfTheSameAdIsAlreadyTransferring) {
 
 TEST_F(BatAdsTransferTest, TransferAdIfAnotherAdIsAlreadyTransferring) {
   // Arrange
-  const AdInfo ad = BuildAd();
+  const AdInfo ad =
+      BuildAd(AdType::kNotificationAd, /*should_use_random_guids*/ false);
 
   transfer_->SetLastClickedAd(ad);
 
@@ -140,7 +144,8 @@ TEST_F(BatAdsTransferTest, TransferAdIfAnotherAdIsAlreadyTransferring) {
 TEST_F(BatAdsTransferTest,
        TransferAdIfTheTabIsVisibleAndTheUrlIsTheSameAsTheDomainOrHost) {
   // Arrange
-  const AdInfo ad = BuildAd();
+  const AdInfo ad =
+      BuildAd(AdType::kNotificationAd, /*should_use_random_guids*/ false);
 
   transfer_->SetLastClickedAd(ad);
 
@@ -160,7 +165,8 @@ TEST_F(BatAdsTransferTest,
 
 TEST_F(BatAdsTransferTest, FailToTransferAdIfNotVisible) {
   // Arrange
-  const AdInfo ad = BuildAd();
+  const AdInfo ad =
+      BuildAd(AdType::kNotificationAd, /*should_use_random_guids*/ false);
 
   transfer_->SetLastClickedAd(ad);
 
@@ -181,7 +187,8 @@ TEST_F(BatAdsTransferTest, FailToTransferAdIfNotVisible) {
 TEST_F(BatAdsTransferTest,
        FailToTransferAdIfTheTabUrlIsNotTheSameAsTheDomainOrHost) {
   // Arrange
-  const AdInfo ad = BuildAd();
+  const AdInfo ad =
+      BuildAd(AdType::kNotificationAd, /*should_use_random_guids*/ false);
 
   transfer_->SetLastClickedAd(ad);
 

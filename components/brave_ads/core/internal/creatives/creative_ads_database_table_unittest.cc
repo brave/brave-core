@@ -16,11 +16,9 @@ TEST(BatAdsCreativeAdsDatabaseTableTest, TableName) {
   const CreativeAds database_table;
 
   // Act
-  const std::string table_name = database_table.GetTableName();
 
   // Assert
-  const std::string expected_table_name = "creative_ads";
-  EXPECT_EQ(expected_table_name, table_name);
+  EXPECT_EQ("creative_ads", database_table.GetTableName());
 }
 
 }  // namespace brave_ads::database::table

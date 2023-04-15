@@ -22,8 +22,8 @@ class AdsTooltipsDelegateImpl : public AdsTooltipsDelegate {
   AdsTooltipsDelegateImpl(const AdsTooltipsDelegateImpl&) = delete;
   AdsTooltipsDelegateImpl& operator=(const AdsTooltipsDelegateImpl&) = delete;
 
-  AdsTooltipsDelegateImpl(AdsTooltipsDelegateImpl&& other) noexcept = delete;
-  AdsTooltipsDelegateImpl& operator=(AdsTooltipsDelegateImpl&& other) noexcept =
+  AdsTooltipsDelegateImpl(AdsTooltipsDelegateImpl&&) noexcept = delete;
+  AdsTooltipsDelegateImpl& operator=(AdsTooltipsDelegateImpl&&) noexcept =
       delete;
 
   ~AdsTooltipsDelegateImpl() override = default;

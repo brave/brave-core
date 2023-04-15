@@ -37,16 +37,17 @@ struct NewTabPageAdInfo;
 class NewTabPageAdHandler final : public new_tab_page_ads::EventHandlerObserver,
                                   public new_tab_page_ads::ServingObserver {
  public:
-  NewTabPageAdHandler(Account* account,
-                      Transfer* transfer,
-                      geographic::SubdivisionTargeting* subdivision_targeting,
-                      resource::AntiTargeting* anti_targeting_resource);
+  NewTabPageAdHandler(
+      Account* account,
+      Transfer* transfer,
+      const geographic::SubdivisionTargeting& subdivision_targeting,
+      const resource::AntiTargeting& anti_targeting_resource);
 
-  NewTabPageAdHandler(const NewTabPageAdHandler& other) = delete;
-  NewTabPageAdHandler& operator=(const NewTabPageAdHandler& other) = delete;
+  NewTabPageAdHandler(const NewTabPageAdHandler&) = delete;
+  NewTabPageAdHandler& operator=(const NewTabPageAdHandler&) = delete;
 
-  NewTabPageAdHandler(NewTabPageAdHandler&& other) noexcept = delete;
-  NewTabPageAdHandler& operator=(NewTabPageAdHandler&& other) noexcept = delete;
+  NewTabPageAdHandler(NewTabPageAdHandler&&) noexcept = delete;
+  NewTabPageAdHandler& operator=(NewTabPageAdHandler&&) noexcept = delete;
 
   ~NewTabPageAdHandler() override;
 

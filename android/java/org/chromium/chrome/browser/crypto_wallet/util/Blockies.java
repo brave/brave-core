@@ -27,12 +27,12 @@ public class Blockies {
             "#67D4B4", "#AFCE57", "#F0CB44", "#F28A29", "#FC798F", "#C1226E", "#FAB5EE", "#9677EE",
             "#5433B0"};
 
-    public static Bitmap createIcon(String address, boolean lowerCase) {
+    public static Bitmap createIcon(String address, boolean lowerCase, boolean circular) {
         if (lowerCase) {
-            return createIcon(address.toLowerCase(Locale.getDefault()));
+            return createIcon(address.toLowerCase(Locale.ENGLISH), circular);
         }
 
-        return createIcon(address);
+        return createIcon(address, circular);
     }
 
     public static Drawable createBackground(String address, boolean lowerCase) {
@@ -50,7 +50,7 @@ public class Blockies {
         return gd;
     }
 
-    private static Bitmap createIcon(String address) {
+    private static Bitmap createIcon(String address, boolean circular) {
         seedrand(address);
 
         String color = createColor();
@@ -59,11 +59,11 @@ public class Blockies {
 
         double[] imgdata = createImageData();
 
-        return createCanvas(imgdata, color, bgColor, spotColor, SCALE);
+        return createCanvas(imgdata, color, bgColor, spotColor, SCALE, circular);
     }
 
-    private static Bitmap createCanvas(
-            double[] imgData, String color, String bgcolor, String spotcolor, int scale) {
+    private static Bitmap createCanvas(double[] imgData, String color, String bgcolor,
+            String spotcolor, int scale, boolean circular) {
         int width = (int) Math.sqrt(imgData.length);
 
         int w = width * scale;
@@ -96,7 +96,7 @@ public class Blockies {
             }
         }
 
-        return blur(getCroppedBitmap(bmp), 1f, 40);
+        return blur(getCroppedBitmap(bmp, circular), 1f, 40);
     }
 
     private static double rand() {
@@ -183,7 +183,7 @@ public class Blockies {
         }
     }
 
-    public static Bitmap getCroppedBitmap(Bitmap bitmap) {
+    public static Bitmap getCroppedBitmap(Bitmap bitmap, boolean circular) {
         Bitmap output =
                 Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(output);
@@ -196,8 +196,14 @@ public class Blockies {
         paint.setFilterBitmap(true);
         canvas.drawARGB(0, 0, 0, 0);
         paint.setColor(color);
-        canvas.drawCircle(
-                bitmap.getWidth() / 2, bitmap.getHeight() / 2, bitmap.getWidth() / 2, paint);
+        if (circular) {
+            canvas.drawCircle(
+                    bitmap.getWidth() / 2, bitmap.getHeight() / 2, bitmap.getWidth() / 2, paint);
+        } else {
+            canvas.drawRoundRect(0, 0, bitmap.getWidth(), bitmap.getHeight(),
+                    WalletConstants.RECT_SHARP_ROUNDED_CORNERS_DP,
+                    WalletConstants.RECT_SHARP_ROUNDED_CORNERS_DP, paint);
+        }
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(bitmap, rect, rect, paint);
 

@@ -124,11 +124,6 @@ void TestLedgerClient::LoadURL(mojom::UrlRequestPtr request,
   std::move(callback).Run(std::move(response));
 }
 
-void TestLedgerClient::URIEncode(const std::string& value,
-                                 URIEncodeCallback callback) {
-  std::move(callback).Run(base::EscapeQueryParamValue(value, false));
-}
-
 void TestLedgerClient::PublisherListNormalized(
     std::vector<mojom::PublisherInfoPtr> list) {}
 
@@ -336,10 +331,6 @@ void TestLedgerClient::RunDBTransaction(mojom::DBTransactionPtr transaction,
                                         RunDBTransactionCallback callback) {
   auto response = ledger_database_.RunTransaction(std::move(transaction));
   std::move(callback).Run(std::move(response));
-}
-
-void TestLedgerClient::GetCreateScript(GetCreateScriptCallback callback) {
-  std::move(callback).Run("", 0);
 }
 
 void TestLedgerClient::PendingContributionSaved(mojom::Result result) {}

@@ -21,44 +21,37 @@ class BatAdsTransactionsDatabaseTableTest : public UnitTestBase {};
 
 TEST_F(BatAdsTransactionsDatabaseTableTest, SaveEmptyTransactions) {
   // Arrange
-  const TransactionList transactions;
 
   // Act
-  SaveTransactions(transactions);
+  SaveTransactions({});
 
   // Assert
-  TransactionList expected_transactions = transactions;
-
   const Transactions database_table;
   database_table.GetAll(base::BindOnce(
-      [](const TransactionList& expected_transactions, const bool success,
-         const TransactionList& transactions) {
+      [](const bool success, const TransactionList& transactions) {
         ASSERT_TRUE(success);
-        EXPECT_TRUE(ContainersEq(expected_transactions, transactions));
-      },
-      std::move(expected_transactions)));
+        EXPECT_TRUE(transactions.empty());
+      }));
 }
 
 TEST_F(BatAdsTransactionsDatabaseTableTest, SaveTransactions) {
   // Arrange
   TransactionList transactions;
 
-  const TransactionInfo info_1 = BuildTransaction(
+  const TransactionInfo transaction_1 = BuildTransaction(
       /*value*/ 0.01, ConfirmationType::kViewed, DistantFuture());
-  transactions.push_back(info_1);
+  transactions.push_back(transaction_1);
 
   AdvanceClockBy(base::Days(5));
 
-  const TransactionInfo info_2 =
+  const TransactionInfo transaction_2 =
       BuildTransaction(/*value*/ 0.03, ConfirmationType::kClicked);
-  transactions.push_back(info_2);
+  transactions.push_back(transaction_2);
 
   // Act
   SaveTransactions(transactions);
 
   // Assert
-  TransactionList expected_transactions = transactions;
-
   const Transactions database_table;
   database_table.GetAll(base::BindOnce(
       [](const TransactionList& expected_transactions, const bool success,
@@ -66,16 +59,16 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, SaveTransactions) {
         ASSERT_TRUE(success);
         EXPECT_TRUE(ContainersEq(expected_transactions, transactions));
       },
-      std::move(expected_transactions)));
+      std::move(transactions)));
 }
 
 TEST_F(BatAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
   // Arrange
   TransactionList transactions;
 
-  const TransactionInfo info =
+  const TransactionInfo transaction =
       BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
-  transactions.push_back(info);
+  transactions.push_back(transaction);
 
   SaveTransactions(transactions);
 
@@ -83,8 +76,6 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
   SaveTransactions(transactions);
 
   // Assert
-  TransactionList expected_transactions = transactions;
-
   const Transactions database_table;
   database_table.GetAll(base::BindOnce(
       [](const TransactionList& expected_transactions, const bool success,
@@ -92,27 +83,27 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
         ASSERT_TRUE(success);
         EXPECT_TRUE(ContainersEq(expected_transactions, transactions));
       },
-      std::move(expected_transactions)));
+      std::move(transactions)));
 }
 
 TEST_F(BatAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
   // Arrange
   TransactionList transactions;
 
-  const TransactionInfo info_1 = BuildTransaction(
+  const TransactionInfo transaction_1 = BuildTransaction(
       /*value*/ 0.01, ConfirmationType::kViewed, DistantFuture());
-  transactions.push_back(info_1);
+  transactions.push_back(transaction_1);
 
   AdvanceClockBy(base::Days(5));
 
-  const TransactionInfo info_2 =
+  const TransactionInfo transaction_2 =
       BuildTransaction(/*value*/ 0.03, ConfirmationType::kClicked);
-  transactions.push_back(info_2);
+  transactions.push_back(transaction_2);
 
   SaveTransactions(transactions);
 
   // Act
-  TransactionList expected_transactions = {info_2};
+  TransactionList expected_transactions = {transaction_2};
 
   const Transactions database_table;
   database_table.GetForDateRange(
@@ -121,7 +112,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
           [](const TransactionList& expected_transactions, const bool success,
              const TransactionList& transactions) {
             ASSERT_TRUE(success);
-            EXPECT_TRUE(ContainersEq(expected_transactions, transactions));
+            EXPECT_EQ(expected_transactions, transactions);
           },
           std::move(expected_transactions)));
 
@@ -132,19 +123,19 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, UpdateTransactions) {
   // Arrange
   TransactionList transactions;
 
-  const TransactionInfo info_1 = BuildTransaction(
+  const TransactionInfo transaction_1 = BuildTransaction(
       /*value*/ 0.01, ConfirmationType::kViewed, DistantFuture());
-  transactions.push_back(info_1);
+  transactions.push_back(transaction_1);
 
-  TransactionInfo info_2 =
+  TransactionInfo transaction_2 =
       BuildTransaction(/*value*/ 0.03, ConfirmationType::kClicked);
-  transactions.push_back(info_2);
+  transactions.push_back(transaction_2);
 
   SaveTransactions(transactions);
 
   privacy::UnblindedPaymentTokenList unblinded_payment_tokens;
   privacy::UnblindedPaymentTokenInfo unblinded_payment_token;
-  unblinded_payment_token.transaction_id = info_2.id;
+  unblinded_payment_token.transaction_id = transaction_2.id;
   unblinded_payment_tokens.push_back(unblinded_payment_token);
 
   // Act
@@ -153,9 +144,10 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, UpdateTransactions) {
       unblinded_payment_tokens,
       base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
+  transaction_2.reconciled_at = Now();
+
   // Assert
-  info_2.reconciled_at = Now();
-  TransactionList expected_transactions = {info_1, info_2};
+  TransactionList expected_transactions = {transaction_1, transaction_2};
 
   database_table.GetAll(base::BindOnce(
       [](const TransactionList& expected_transactions, const bool success,
@@ -170,13 +162,13 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, DeleteTransactions) {
   // Arrange
   TransactionList transactions;
 
-  const TransactionInfo info_1 = BuildTransaction(
+  const TransactionInfo transaction_1 = BuildTransaction(
       /*value*/ 0.01, ConfirmationType::kViewed, DistantFuture());
-  transactions.push_back(info_1);
+  transactions.push_back(transaction_1);
 
-  const TransactionInfo info_2 =
+  const TransactionInfo transaction_2 =
       BuildTransaction(/*value*/ 0.03, ConfirmationType::kClicked);
-  transactions.push_back(info_2);
+  transactions.push_back(transaction_2);
 
   SaveTransactions(transactions);
 
@@ -199,11 +191,9 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, TableName) {
   const Transactions database_table;
 
   // Act
-  const std::string table_name = database_table.GetTableName();
 
   // Assert
-  const std::string expected_table_name = "transactions";
-  EXPECT_EQ(expected_table_name, table_name);
+  EXPECT_EQ("transactions", database_table.GetTableName());
 }
 
 }  // namespace brave_ads::database::table

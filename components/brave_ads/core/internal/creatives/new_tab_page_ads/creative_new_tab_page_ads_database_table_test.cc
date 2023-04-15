@@ -35,15 +35,13 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableIntegrationTest,
   // Act
 
   // Assert
-  const SegmentList segments = {"technology & computing"};
-
   const database::table::CreativeNewTabPageAds database_table;
   database_table.GetForSegments(
-      segments,
+      /*segments*/ {"technology & computing"},
       base::BindOnce([](const bool success, const SegmentList& /*segments*/,
                         const CreativeNewTabPageAdList& creative_ads) {
         EXPECT_TRUE(success);
-        EXPECT_EQ(1UL, creative_ads.size());
+        EXPECT_EQ(1U, creative_ads.size());
       }));
 }
 

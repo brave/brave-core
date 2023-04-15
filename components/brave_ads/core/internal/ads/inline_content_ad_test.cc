@@ -9,6 +9,7 @@
 #include "brave/components/brave_ads/core/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
@@ -24,11 +25,7 @@ namespace brave_ads {
 using ::testing::_;
 
 namespace {
-
 constexpr char kDimensions[] = "200x100";
-constexpr char kPlacementId[] = "f0948316-df6f-4e31-814d-d0b5f2a1f28c";
-constexpr char kCreativeInstanceIdId[] = "30db5f7b-dba3-48a3-b299-c9bd9c67da65";
-
 }  // namespace
 
 class BatAdsInlineContentAdIntegrationTest : public UnitTestBase {
@@ -69,7 +66,7 @@ TEST_F(BatAdsInlineContentAdIntegrationTest, TriggerServedEvent) {
 
   // Act
   GetAds()->TriggerInlineContentAdEvent(
-      kPlacementId, kCreativeInstanceIdId,
+      kPlacementId, kCreativeInstanceId,
       mojom::InlineContentAdEventType::kServed);
 
   // Assert
@@ -86,12 +83,12 @@ TEST_F(BatAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
   EXPECT_CALL(*ads_client_mock_, RecordP2AEvent(name, _));
 
   GetAds()->TriggerInlineContentAdEvent(
-      kPlacementId, kCreativeInstanceIdId,
+      kPlacementId, kCreativeInstanceId,
       mojom::InlineContentAdEventType::kServed);
 
   // Act
   GetAds()->TriggerInlineContentAdEvent(
-      kPlacementId, kCreativeInstanceIdId,
+      kPlacementId, kCreativeInstanceId,
       mojom::InlineContentAdEventType::kViewed);
 
   // Assert
@@ -104,15 +101,15 @@ TEST_F(BatAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
 TEST_F(BatAdsInlineContentAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
   GetAds()->TriggerInlineContentAdEvent(
-      kPlacementId, kCreativeInstanceIdId,
+      kPlacementId, kCreativeInstanceId,
       mojom::InlineContentAdEventType::kServed);
   GetAds()->TriggerInlineContentAdEvent(
-      kPlacementId, kCreativeInstanceIdId,
+      kPlacementId, kCreativeInstanceId,
       mojom::InlineContentAdEventType::kViewed);
 
   // Act
   GetAds()->TriggerInlineContentAdEvent(
-      kPlacementId, kCreativeInstanceIdId,
+      kPlacementId, kCreativeInstanceId,
       mojom::InlineContentAdEventType::kClicked);
 
   // Assert
