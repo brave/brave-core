@@ -22,7 +22,9 @@ class BatAdsConversionsDatabaseTableIntegrationTest : public UnitTestBase {
 
   void SetUpMocks() override {
     const URLResponseMap url_responses = {
-        {"/v9/catalog", {{net::HTTP_OK, /*response_body*/ "/catalog.json"}}}};
+        {// Fetch catalog request
+         "/v9/catalog",
+         {{net::HTTP_OK, /*response_body*/ "/catalog.json"}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
   }
 };

@@ -37,7 +37,8 @@ class BatAdsNotificationAdForMobileIntegrationTest : public UnitTestBase {
     MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
     const URLResponseMap url_responses = {
-        {"/v9/catalog",
+        {// Fetch catalog request
+         "/v9/catalog",
          {{net::HTTP_OK,
            /*response_body*/ "/catalog_with_notification_ad.json"}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
