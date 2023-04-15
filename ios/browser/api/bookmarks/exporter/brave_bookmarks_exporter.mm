@@ -179,14 +179,14 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
 - (std::unique_ptr<bookmarks::BookmarkNode>)getRootNode {
   return std::make_unique<bookmarks::BookmarkNode>(
       /*id=*/0,
-      base::GUID::ParseLowercase(bookmarks::BookmarkNode::kRootNodeGuid),
+      base::GUID::ParseLowercase(bookmarks::BookmarkNode::kRootNodeUuid),
       GURL());
 }
 
 - (std::unique_ptr<bookmarks::BookmarkNode>)getBookmarksBarNode {
   auto node = std::make_unique<bookmarks::BookmarkNode>(
       /*id=*/1,
-      base::GUID::ParseLowercase(bookmarks::BookmarkNode::kBookmarkBarNodeGuid),
+      base::GUID::ParseLowercase(bookmarks::BookmarkNode::kBookmarkBarNodeUuid),
       GURL());
   node->SetTitle(brave_l10n::GetLocalizedResourceUTF16String(
       IDS_BOOKMARK_BAR_FOLDER_NAME));
@@ -197,7 +197,7 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
   auto node = std::make_unique<bookmarks::BookmarkNode>(
       /*id=*/2,
       base::GUID::ParseLowercase(
-          bookmarks::BookmarkNode::kOtherBookmarksNodeGuid),
+          bookmarks::BookmarkNode::kOtherBookmarksNodeUuid),
       GURL());
   node->SetTitle(brave_l10n::GetLocalizedResourceUTF16String(
       IDS_BOOKMARK_BAR_OTHER_FOLDER_NAME));
@@ -208,7 +208,7 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
   auto node = std::make_unique<bookmarks::BookmarkNode>(
       /*id=*/3,
       base::GUID::ParseLowercase(
-          bookmarks::BookmarkNode::kMobileBookmarksNodeGuid),
+          bookmarks::BookmarkNode::kMobileBookmarksNodeUuid),
       GURL());
   node->SetTitle(brave_l10n::GetLocalizedResourceUTF16String(
       IDS_BOOKMARK_BAR_MOBILE_FOLDER_NAME));

@@ -130,25 +130,25 @@
 }
 
 + (NSString*)rootNodeGuid {
-  return base::SysUTF8ToNSString(bookmarks::BookmarkNode::kRootNodeGuid);
+  return base::SysUTF8ToNSString(bookmarks::BookmarkNode::kRootNodeUuid);
 }
 
 + (NSString*)bookmarkBarNodeGuid {
-  return base::SysUTF8ToNSString(bookmarks::BookmarkNode::kBookmarkBarNodeGuid);
+  return base::SysUTF8ToNSString(bookmarks::BookmarkNode::kBookmarkBarNodeUuid);
 }
 
 + (NSString*)otherBookmarksNodeGuid {
   return base::SysUTF8ToNSString(
-      bookmarks::BookmarkNode::kOtherBookmarksNodeGuid);
+      bookmarks::BookmarkNode::kOtherBookmarksNodeUuid);
 }
 
 + (NSString*)mobileBookmarksNodeGuid {
   return base::SysUTF8ToNSString(
-      bookmarks::BookmarkNode::kMobileBookmarksNodeGuid);
+      bookmarks::BookmarkNode::kMobileBookmarksNodeUuid);
 }
 
 + (NSString*)managedNodeGuid {
-  return base::SysUTF8ToNSString(bookmarks::BookmarkNode::kManagedNodeGuid);
+  return base::SysUTF8ToNSString(bookmarks::BookmarkNode::kManagedNodeUuid);
 }
 
 - (bool)isPermanentNode {
@@ -170,7 +170,7 @@
 
 - (NSString*)guid {
   DCHECK(node_);
-  return base::SysUTF8ToNSString(node_->guid().AsLowercaseString());
+  return base::SysUTF8ToNSString(node_->uuid().AsLowercaseString());
 }
 
 - (NSURL*)url {
