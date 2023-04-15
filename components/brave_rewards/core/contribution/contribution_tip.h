@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/functional/callback_forward.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -20,7 +21,7 @@ namespace contribution {
 
 class ContributionTip {
  public:
-  explicit ContributionTip(LedgerImpl* ledger);
+  explicit ContributionTip(LedgerImpl& ledger);
 
   ~ContributionTip();
 
@@ -40,7 +41,9 @@ class ContributionTip {
                     ProcessCallback callback,
                     mojom::Result result);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  void OnPendingTipSaved(mojom::Result result);
+
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace contribution

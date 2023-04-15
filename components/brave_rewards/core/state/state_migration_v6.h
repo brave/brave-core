@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_MIGRATION_V6_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_MIGRATION_V6_H_
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 namespace ledger {
@@ -15,13 +16,13 @@ namespace state {
 
 class StateMigrationV6 {
  public:
-  explicit StateMigrationV6(LedgerImpl* ledger);
+  explicit StateMigrationV6(LedgerImpl& ledger);
   ~StateMigrationV6();
 
   void Migrate(ledger::LegacyResultCallback callback);
 
  private:
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace state

@@ -10,7 +10,7 @@
 namespace ledger {
 namespace api {
 
-API::API(LedgerImpl* ledger)
+API::API(LedgerImpl& ledger)
     : parameters_(std::make_unique<APIParameters>(ledger)) {
   DCHECK(parameters_);
 }

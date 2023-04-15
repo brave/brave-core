@@ -20,9 +20,7 @@ namespace ledger {
 namespace endpoint {
 namespace gemini {
 
-PostBalance::PostBalance(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+PostBalance::PostBalance(LedgerImpl& ledger) : ledger_(ledger) {}
 
 PostBalance::~PostBalance() = default;
 

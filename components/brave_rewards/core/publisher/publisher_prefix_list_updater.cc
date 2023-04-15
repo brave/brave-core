@@ -29,7 +29,7 @@ constexpr int64_t kMaxRetryAfterFailureDelay = 4 * base::Time::kSecondsPerHour;
 namespace ledger {
 namespace publisher {
 
-PublisherPrefixListUpdater::PublisherPrefixListUpdater(LedgerImpl* ledger)
+PublisherPrefixListUpdater::PublisherPrefixListUpdater(LedgerImpl& ledger)
     : ledger_(ledger),
       rewards_server_(std::make_unique<endpoint::RewardsServer>(ledger)) {}
 

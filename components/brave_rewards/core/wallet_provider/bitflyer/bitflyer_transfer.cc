@@ -37,7 +37,7 @@ void BitFlyerTransfer::CommitTransaction(
       base::BindOnce(&BitFlyerTransfer::OnCommitTransaction,
                      base::Unretained(this), std::move(callback));
 
-  RequestFor<PostCommitTransactionBitFlyer>(ledger_, std::move(wallet->token),
+  RequestFor<PostCommitTransactionBitFlyer>(*ledger_, std::move(wallet->token),
                                             std::move(wallet->address),
                                             std::move(transaction))
       .Send(std::move(on_commit_transaction));

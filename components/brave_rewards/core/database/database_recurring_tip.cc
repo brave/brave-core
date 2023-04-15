@@ -35,7 +35,7 @@ void MapDatabaseResultToSuccess(base::OnceCallback<void(bool)> callback,
 
 }  // namespace
 
-DatabaseRecurringTip::DatabaseRecurringTip(LedgerImpl* ledger)
+DatabaseRecurringTip::DatabaseRecurringTip(LedgerImpl& ledger)
     : DatabaseTable(ledger) {}
 
 DatabaseRecurringTip::~DatabaseRecurringTip() = default;

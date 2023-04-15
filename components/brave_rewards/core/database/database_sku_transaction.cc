@@ -22,7 +22,7 @@ const char kTableName[] = "sku_transaction";
 
 }  // namespace
 
-DatabaseSKUTransaction::DatabaseSKUTransaction(LedgerImpl* ledger)
+DatabaseSKUTransaction::DatabaseSKUTransaction(LedgerImpl& ledger)
     : DatabaseTable(ledger) {}
 
 DatabaseSKUTransaction::~DatabaseSKUTransaction() = default;

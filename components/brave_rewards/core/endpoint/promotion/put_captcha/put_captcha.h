@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // PUT /v1/captchas/{captcha_id}
@@ -47,7 +48,7 @@ using PutCaptchaCallback = base::OnceCallback<void(mojom::Result)>;
 
 class PutCaptcha {
  public:
-  explicit PutCaptcha(LedgerImpl* ledger);
+  explicit PutCaptcha(LedgerImpl& ledger);
   ~PutCaptcha();
 
   void Request(const int x,
@@ -64,7 +65,7 @@ class PutCaptcha {
 
   void OnRequest(PutCaptchaCallback callback, mojom::UrlResponsePtr response);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace promotion

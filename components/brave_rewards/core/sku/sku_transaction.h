@@ -10,6 +10,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ref.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_rewards/core/database/database_external_transactions.h"
 #include "brave/components/brave_rewards/core/database/database_sku_transaction.h"
@@ -23,7 +24,7 @@ namespace sku {
 
 class SKUTransaction {
  public:
-  explicit SKUTransaction(LedgerImpl* ledger);
+  explicit SKUTransaction(LedgerImpl& ledger);
   ~SKUTransaction();
 
   void Run(mojom::SKUOrderPtr order,
@@ -77,7 +78,7 @@ class SKUTransaction {
   void OnSendExternalTransaction(mojom::Result result,
                                  ledger::LegacyResultCallback callback);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
   std::unique_ptr<endpoint::PaymentServer> payment_server_;
 };
 

@@ -119,7 +119,7 @@ class GetTransactionStatusUphold final
  public:
   static Result ProcessResponse(const mojom::UrlResponse&);
 
-  GetTransactionStatusUphold(LedgerImpl*,
+  GetTransactionStatusUphold(LedgerImpl& ledger,
                              std::string&& token,
                              std::string&& transaction_id);
   ~GetTransactionStatusUphold() override;

@@ -12,7 +12,7 @@
 
 namespace ledger::endpoints {
 
-PostConnectBitflyer::PostConnectBitflyer(LedgerImpl* ledger,
+PostConnectBitflyer::PostConnectBitflyer(LedgerImpl& ledger,
                                          std::string&& linking_info)
     : PostConnect(ledger), linking_info_(std::move(linking_info)) {}
 

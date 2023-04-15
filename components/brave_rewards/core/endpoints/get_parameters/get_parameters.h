@@ -74,7 +74,7 @@ class GetParameters final : public RequestBuilder,
  public:
   static Result ProcessResponse(const mojom::UrlResponse&);
 
-  explicit GetParameters(LedgerImpl*);
+  explicit GetParameters(LedgerImpl& ledger);
   ~GetParameters() override;
 
  private:

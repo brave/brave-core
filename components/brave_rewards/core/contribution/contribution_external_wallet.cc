@@ -24,10 +24,8 @@ using std::placeholders::_2;
 namespace ledger {
 namespace contribution {
 
-ContributionExternalWallet::ContributionExternalWallet(LedgerImpl* ledger)
-    : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+ContributionExternalWallet::ContributionExternalWallet(LedgerImpl& ledger)
+    : ledger_(ledger) {}
 
 ContributionExternalWallet::~ContributionExternalWallet() = default;
 

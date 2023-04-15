@@ -36,7 +36,7 @@ void UpholdTransfer::CreateTransaction(
       &UpholdTransfer::OnCreateTransaction, base::Unretained(this),
       std::move(callback), transaction->Clone());
 
-  RequestFor<PostCreateTransactionUphold>(ledger_, std::move(wallet->token),
+  RequestFor<PostCreateTransactionUphold>(*ledger_, std::move(wallet->token),
                                           std::move(wallet->address),
                                           std::move(transaction))
       .Send(std::move(on_create_transaction));
@@ -88,7 +88,7 @@ void UpholdTransfer::CommitTransaction(
       &UpholdTransfer::OnCommitTransaction, base::Unretained(this),
       std::move(callback), transaction->transaction_id);
 
-  RequestFor<PostCommitTransactionUphold>(ledger_, std::move(wallet->token),
+  RequestFor<PostCommitTransactionUphold>(*ledger_, std::move(wallet->token),
                                           std::move(wallet->address),
                                           std::move(transaction))
       .Send(std::move(on_commit_transaction));
@@ -121,7 +121,7 @@ void UpholdTransfer::OnCommitTransaction(
       return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
   }
 
-  RequestFor<GetTransactionStatusUphold>(ledger_, std::move(wallet->token),
+  RequestFor<GetTransactionStatusUphold>(*ledger_, std::move(wallet->token),
                                          std::move(transaction_id))
       .Send(base::BindOnce(&UpholdTransfer::OnGetTransactionStatus,
                            base::Unretained(this), std::move(callback)));

@@ -15,7 +15,7 @@ namespace ledger::database {
 
 constexpr char kTableName[] = "external_transactions";
 
-DatabaseExternalTransactions::DatabaseExternalTransactions(LedgerImpl* ledger)
+DatabaseExternalTransactions::DatabaseExternalTransactions(LedgerImpl& ledger)
     : DatabaseTable(ledger) {}
 
 DatabaseExternalTransactions::~DatabaseExternalTransactions() = default;

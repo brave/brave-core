@@ -16,13 +16,13 @@ using std::placeholders::_1;
 namespace ledger {
 namespace state {
 
-StateMigrationV1::StateMigrationV1(LedgerImpl* ledger) : ledger_(ledger) {}
+StateMigrationV1::StateMigrationV1(LedgerImpl& ledger) : ledger_(ledger) {}
 
 StateMigrationV1::~StateMigrationV1() = default;
 
 void StateMigrationV1::Migrate(ledger::LegacyResultCallback callback) {
   legacy_publisher_ =
-      std::make_unique<publisher::LegacyPublisherState>(ledger_);
+      std::make_unique<publisher::LegacyPublisherState>(*ledger_);
 
   auto load_callback =
       std::bind(&StateMigrationV1::OnLoadState, this, _1, callback);

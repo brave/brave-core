@@ -10,7 +10,7 @@
 namespace ledger {
 namespace endpoint {
 
-BitflyerServer::BitflyerServer(LedgerImpl* ledger)
+BitflyerServer::BitflyerServer(LedgerImpl& ledger)
     : get_balance_(std::make_unique<bitflyer::GetBalance>(ledger)),
       post_oauth_(std::make_unique<bitflyer::PostOauth>(ledger)) {}
 

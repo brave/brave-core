@@ -28,7 +28,7 @@ class GetCaptchaTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
-  GetCaptcha captcha_{&mock_ledger_impl_};
+  GetCaptcha captcha_{mock_ledger_impl_};
 };
 
 TEST_F(GetCaptchaTest, ServerOK) {

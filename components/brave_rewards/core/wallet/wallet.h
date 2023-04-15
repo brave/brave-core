@@ -12,6 +12,7 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotion_server.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_balance.h"
@@ -25,7 +26,7 @@ namespace wallet {
 
 class Wallet {
  public:
-  explicit Wallet(LedgerImpl* ledger);
+  explicit Wallet(LedgerImpl& ledger);
   ~Wallet();
 
   void CreateWalletIfNecessary(absl::optional<std::string>&& geo_country,
@@ -39,7 +40,7 @@ class Wallet {
   bool SetWallet(mojom::RewardsWalletPtr wallet);
 
  private:
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
   std::unique_ptr<WalletCreate> create_;
   std::unique_ptr<WalletBalance> balance_;
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;

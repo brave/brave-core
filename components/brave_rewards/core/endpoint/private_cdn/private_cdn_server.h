@@ -18,7 +18,7 @@ namespace endpoint {
 
 class PrivateCDNServer {
  public:
-  explicit PrivateCDNServer(LedgerImpl* ledger);
+  explicit PrivateCDNServer(LedgerImpl& ledger);
   ~PrivateCDNServer();
 
   private_cdn::GetPublisher* get_publisher() const;

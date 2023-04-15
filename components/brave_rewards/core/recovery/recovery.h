@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/recovery/recovery_empty_balance.h"
 
 namespace ledger {
@@ -17,13 +18,13 @@ namespace recovery {
 
 class Recovery {
  public:
-  explicit Recovery(LedgerImpl* ledger);
+  explicit Recovery(LedgerImpl& ledger);
   ~Recovery();
 
   void Check();
 
  private:
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
   std::unique_ptr<EmptyBalance> empty_balance_;
 };
 

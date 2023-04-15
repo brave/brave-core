@@ -21,7 +21,7 @@ const int kCurrentVersionNumber = 13;
 namespace ledger {
 namespace state {
 
-StateMigration::StateMigration(LedgerImpl* ledger)
+StateMigration::StateMigration(LedgerImpl& ledger)
     : v1_(std::make_unique<StateMigrationV1>(ledger)),
       v2_(std::make_unique<StateMigrationV2>(ledger)),
       v3_(std::make_unique<StateMigrationV3>()),

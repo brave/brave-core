@@ -20,9 +20,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-PostDevicecheck::PostDevicecheck(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+PostDevicecheck::PostDevicecheck(LedgerImpl& ledger) : ledger_(ledger) {}
 
 PostDevicecheck::~PostDevicecheck() = default;
 

@@ -17,7 +17,7 @@ namespace endpoints {
 
 class PostCommitTransaction : public RequestBuilder {
  public:
-  PostCommitTransaction(LedgerImpl*,
+  PostCommitTransaction(LedgerImpl& ledger,
                         std::string&& token,
                         std::string&& address,
                         mojom::ExternalTransactionPtr);

@@ -58,7 +58,7 @@ TEST_P(GetRecipientIDGemini, Paths) {
   base::MockCallback<base::OnceCallback<void(Result&&)>> callback;
   EXPECT_CALL(callback, Run(Result(expected_result))).Times(1);
 
-  RequestFor<endpoints::GetRecipientIDGemini>(&mock_ledger_impl_, "token")
+  RequestFor<endpoints::GetRecipientIDGemini>(mock_ledger_impl_, "token")
       .Send(callback.Get());
 
   task_environment_.RunUntilIdle();

@@ -11,7 +11,7 @@ using ledger::wallet_provider::GetExternalWallet;
 
 namespace ledger::bitflyer {
 
-GetBitFlyerWallet::GetBitFlyerWallet(LedgerImpl* ledger)
+GetBitFlyerWallet::GetBitFlyerWallet(LedgerImpl& ledger)
     : GetExternalWallet(ledger) {}
 
 GetBitFlyerWallet::~GetBitFlyerWallet() = default;

@@ -15,9 +15,7 @@
 
 namespace ledger::endpoint::uphold {
 
-PatchCard::PatchCard(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+PatchCard::PatchCard(LedgerImpl& ledger) : ledger_(ledger) {}
 
 PatchCard::~PatchCard() = default;
 

@@ -19,11 +19,11 @@ using std::placeholders::_1;
 namespace ledger {
 namespace credential {
 
-CredentialsPromotion::CredentialsPromotion(LedgerImpl* ledger)
+CredentialsPromotion::CredentialsPromotion(LedgerImpl& ledger)
     : ledger_(ledger),
       common_(std::make_unique<CredentialsCommon>(ledger)),
       promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)) {
-  DCHECK(ledger_ && common_);
+  DCHECK(common_);
 }
 
 CredentialsPromotion::~CredentialsPromotion() = default;

@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/memory/raw_ref.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ledger {
@@ -22,7 +23,7 @@ class StateMigration;
 
 class State {
  public:
-  explicit State(LedgerImpl* ledger);
+  explicit State(LedgerImpl& ledger);
   ~State();
 
   void Initialize(ResultCallback callback);
@@ -115,7 +116,7 @@ class State {
   bool SetEncryptedString(const std::string& key, const std::string& value);
 
  private:
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
   std::unique_ptr<StateMigration> migration_;
 };
 

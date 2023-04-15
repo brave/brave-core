@@ -129,7 +129,7 @@ void GenerateActivityFilterBind(ledger::mojom::DBCommand* command,
 namespace ledger {
 namespace database {
 
-DatabaseActivityInfo::DatabaseActivityInfo(LedgerImpl* ledger)
+DatabaseActivityInfo::DatabaseActivityInfo(LedgerImpl& ledger)
     : DatabaseTable(ledger) {}
 
 DatabaseActivityInfo::~DatabaseActivityInfo() = default;

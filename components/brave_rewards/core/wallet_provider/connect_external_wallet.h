@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
+#include "base/memory/raw_ref.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_rewards/core/endpoints/post_connect/post_connect.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
@@ -20,7 +21,7 @@ namespace wallet_provider {
 
 class ConnectExternalWallet {
  public:
-  explicit ConnectExternalWallet(LedgerImpl*);
+  explicit ConnectExternalWallet(LedgerImpl& ledger);
 
   virtual ~ConnectExternalWallet();
 
@@ -42,7 +43,7 @@ class ConnectExternalWallet {
                  std::string&& address,
                  endpoints::PostConnect::Result&&) const;
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 
  private:
   absl::optional<OAuthInfo> ExchangeOAuthInfo(

@@ -28,7 +28,7 @@ using ledger::wallet_provider::ConnectExternalWallet;
 
 namespace ledger::gemini {
 
-ConnectGeminiWallet::ConnectGeminiWallet(LedgerImpl* ledger)
+ConnectGeminiWallet::ConnectGeminiWallet(LedgerImpl& ledger)
     : ConnectExternalWallet(ledger),
       gemini_server_(std::make_unique<endpoint::GeminiServer>(ledger)) {}
 
@@ -87,7 +87,7 @@ void ConnectGeminiWallet::OnAuthorize(
       base::BindOnce(&ConnectGeminiWallet::OnGetRecipientID,
                      base::Unretained(this), std::move(callback), token);
 
-  RequestFor<GetRecipientIDGemini>(ledger_, std::move(token))
+  RequestFor<GetRecipientIDGemini>(*ledger_, std::move(token))
       .Send(std::move(on_get_recipient_id));
 }
 
@@ -200,7 +200,7 @@ void ConnectGeminiWallet::OnPostAccount(
       base::BindOnce(&ConnectGeminiWallet::OnConnect, base::Unretained(this),
                      std::move(callback), std::move(token), recipient_id);
 
-  RequestFor<PostConnectGemini>(ledger_, std::move(linking_info),
+  RequestFor<PostConnectGemini>(*ledger_, std::move(linking_info),
                                 std::move(recipient_id))
       .Send(std::move(on_connect));
 }

@@ -47,7 +47,7 @@ namespace endpoints {
 
 class PostConnectUphold final : public PostConnect {
  public:
-  PostConnectUphold(LedgerImpl*, std::string&& address);
+  PostConnectUphold(LedgerImpl& ledger, std::string&& address);
   ~PostConnectUphold() override;
 
  private:

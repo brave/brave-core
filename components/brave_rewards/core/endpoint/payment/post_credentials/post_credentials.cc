@@ -17,9 +17,7 @@ namespace ledger {
 namespace endpoint {
 namespace payment {
 
-PostCredentials::PostCredentials(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+PostCredentials::PostCredentials(LedgerImpl& ledger) : ledger_(ledger) {}
 
 PostCredentials::~PostCredentials() = default;
 

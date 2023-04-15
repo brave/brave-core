@@ -80,7 +80,7 @@ Result PatchWallets::ProcessResponse(const mojom::UrlResponse& response) {
   }
 }
 
-PatchWallets::PatchWallets(LedgerImpl* ledger, std::string&& geo_country)
+PatchWallets::PatchWallets(LedgerImpl& ledger, std::string&& geo_country)
     : RequestBuilder(ledger), geo_country_(std::move(geo_country)) {}
 
 PatchWallets::~PatchWallets() = default;

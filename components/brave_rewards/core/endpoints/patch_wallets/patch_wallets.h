@@ -43,7 +43,7 @@ class PatchWallets final : public RequestBuilder,
  public:
   static Result ProcessResponse(const mojom::UrlResponse&);
 
-  PatchWallets(LedgerImpl*, std::string&& geo_country);
+  PatchWallets(LedgerImpl& ledger, std::string&& geo_country);
   ~PatchWallets() override;
 
  private:

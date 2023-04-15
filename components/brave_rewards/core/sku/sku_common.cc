@@ -15,12 +15,10 @@ using std::placeholders::_1;
 namespace ledger {
 namespace sku {
 
-SKUCommon::SKUCommon(LedgerImpl* ledger)
+SKUCommon::SKUCommon(LedgerImpl& ledger)
     : ledger_(ledger),
       order_(std::make_unique<SKUOrder>(ledger)),
-      transaction_(std::make_unique<SKUTransaction>(ledger)) {
-  DCHECK(ledger_);
-}
+      transaction_(std::make_unique<SKUTransaction>(ledger)) {}
 
 SKUCommon::~SKUCommon() = default;
 

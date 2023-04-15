@@ -57,7 +57,7 @@ class PostSuggestionsClaimTest : public testing::Test {
 
   base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
-  PostSuggestionsClaim claim_{&mock_ledger_impl_};
+  PostSuggestionsClaim claim_{mock_ledger_impl_};
   credential::CredentialsRedeem redeem_;
 };
 

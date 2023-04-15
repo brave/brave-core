@@ -38,12 +38,10 @@ int64_t GetCacheExpiryInSeconds() {
 namespace ledger {
 namespace publisher {
 
-ServerPublisherFetcher::ServerPublisherFetcher(LedgerImpl* ledger)
+ServerPublisherFetcher::ServerPublisherFetcher(LedgerImpl& ledger)
     : ledger_(ledger),
       private_cdn_server_(
-          std::make_unique<endpoint::PrivateCDNServer>(ledger)) {
-  DCHECK(ledger);
-}
+          std::make_unique<endpoint::PrivateCDNServer>(ledger)) {}
 
 ServerPublisherFetcher::~ServerPublisherFetcher() = default;
 

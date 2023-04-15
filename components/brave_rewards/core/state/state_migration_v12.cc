@@ -16,9 +16,7 @@
 
 namespace ledger::state {
 
-StateMigrationV12::StateMigrationV12(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+StateMigrationV12::StateMigrationV12(LedgerImpl& ledger) : ledger_(ledger) {}
 
 StateMigrationV12::~StateMigrationV12() = default;
 
@@ -40,13 +38,7 @@ StateMigrationV12::~StateMigrationV12() = default;
 // };
 
 bool StateMigrationV12::MigrateExternalWallet(const std::string& wallet_type) {
-  DCHECK(ledger_);
-  if (!ledger_) {
-    BLOG(0, "ledger_ is null!");
-    return false;
-  }
-
-  auto wallet = wallet::GetWallet(ledger_, wallet_type);
+  auto wallet = wallet::GetWallet(*ledger_, wallet_type);
   if (!wallet) {
     BLOG(1, "User doesn't have a(n) " << wallet_type << " wallet.");
     return true;
@@ -97,7 +89,7 @@ bool StateMigrationV12::MigrateExternalWallet(const std::string& wallet_type) {
     return false;
   }
 
-  if (!wallet::SetWallet(ledger_, std::move(wallet))) {
+  if (!wallet::SetWallet(*ledger_, std::move(wallet))) {
     BLOG(0, "Failed to set " << wallet_type << " wallet!");
     return false;
   }

@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // POST /v1/devicecheck/attestations
@@ -41,7 +42,7 @@ using PostDevicecheckCallback =
 
 class PostDevicecheck {
  public:
-  explicit PostDevicecheck(LedgerImpl* ledger);
+  explicit PostDevicecheck(LedgerImpl& ledger);
   ~PostDevicecheck();
 
   void Request(const std::string& key, PostDevicecheckCallback callback);
@@ -58,7 +59,7 @@ class PostDevicecheck {
   void OnRequest(PostDevicecheckCallback callback,
                  mojom::UrlResponsePtr response);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace promotion

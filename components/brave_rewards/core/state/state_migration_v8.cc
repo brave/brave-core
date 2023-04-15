@@ -12,7 +12,7 @@
 namespace ledger {
 namespace state {
 
-StateMigrationV8::StateMigrationV8(LedgerImpl* ledger) : ledger_(ledger) {}
+StateMigrationV8::StateMigrationV8(LedgerImpl& ledger) : ledger_(ledger) {}
 
 StateMigrationV8::~StateMigrationV8() = default;
 

@@ -11,6 +11,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ref.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/endpoint/rewards/rewards_server.h"
@@ -27,7 +28,7 @@ using PublisherPrefixListUpdatedCallback = std::function<void()>;
 // intervals.
 class PublisherPrefixListUpdater {
  public:
-  explicit PublisherPrefixListUpdater(LedgerImpl* ledger);
+  explicit PublisherPrefixListUpdater(LedgerImpl& ledger);
 
   PublisherPrefixListUpdater(const PublisherPrefixListUpdater&) = delete;
   PublisherPrefixListUpdater& operator=(const PublisherPrefixListUpdater&) =
@@ -52,7 +53,7 @@ class PublisherPrefixListUpdater {
   base::TimeDelta GetAutoUpdateDelay();
   base::TimeDelta GetRetryAfterFailureDelay();
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
   base::OneShotTimer timer_;
   bool auto_update_ = false;
   int retry_count_ = 0;

@@ -57,7 +57,7 @@ TEST_P(GetTransactionStatusUphold, Paths) {
   base::MockCallback<base::OnceCallback<void(Result&&)>> callback;
   EXPECT_CALL(callback, Run(Result(expected_result))).Times(1);
 
-  RequestFor<endpoints::GetTransactionStatusUphold>(&mock_ledger_impl_, "token",
+  RequestFor<endpoints::GetTransactionStatusUphold>(mock_ledger_impl_, "token",
                                                     "transaction_id")
       .Send(callback.Get());
 

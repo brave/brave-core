@@ -16,9 +16,7 @@
 
 namespace ledger::endpoint::uphold {
 
-GetCards::GetCards(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+GetCards::GetCards(LedgerImpl& ledger) : ledger_(ledger) {}
 
 GetCards::~GetCards() = default;
 

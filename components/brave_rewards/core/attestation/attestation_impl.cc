@@ -17,7 +17,7 @@
 namespace ledger {
 namespace attestation {
 
-AttestationImpl::AttestationImpl(LedgerImpl* ledger) : Attestation(ledger) {
+AttestationImpl::AttestationImpl(LedgerImpl& ledger) : Attestation(ledger) {
 #if BUILDFLAG(IS_IOS)
   platform_instance_ = std::make_unique<AttestationIOS>(ledger);
 #elif BUILDFLAG(IS_ANDROID)

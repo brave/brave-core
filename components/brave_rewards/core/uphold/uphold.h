@@ -15,6 +15,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/functional/callback_forward.h"
+#include "base/memory/raw_ref.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/endpoint/uphold/get_capabilities/get_capabilities.h"
 #include "brave/components/brave_rewards/core/endpoint/uphold/get_me/get_me.h"
@@ -43,7 +44,7 @@ using endpoint::uphold::GetMeCallback;
 
 class Uphold {
  public:
-  explicit Uphold(LedgerImpl*);
+  explicit Uphold(LedgerImpl& ledger);
 
   ~Uphold();
 
@@ -115,7 +116,7 @@ class Uphold {
   std::unique_ptr<wallet_provider::GetExternalWallet> get_wallet_;
   std::unique_ptr<wallet_provider::Transfer> transfer_;
   std::unique_ptr<endpoint::UpholdServer> uphold_server_;
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
   std::map<std::string, base::OneShotTimer> transfer_fee_timers_;
 };
 

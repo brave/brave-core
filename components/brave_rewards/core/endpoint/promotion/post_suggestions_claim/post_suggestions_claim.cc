@@ -21,10 +21,8 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-PostSuggestionsClaim::PostSuggestionsClaim(LedgerImpl* ledger)
-    : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+PostSuggestionsClaim::PostSuggestionsClaim(LedgerImpl& ledger)
+    : ledger_(ledger) {}
 
 PostSuggestionsClaim::~PostSuggestionsClaim() = default;
 

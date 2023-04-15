@@ -15,7 +15,7 @@ namespace uphold {
 
 class GetUpholdWallet : public wallet_provider::GetExternalWallet {
  public:
-  explicit GetUpholdWallet(LedgerImpl*);
+  explicit GetUpholdWallet(LedgerImpl& ledger);
 
   ~GetUpholdWallet() override;
 

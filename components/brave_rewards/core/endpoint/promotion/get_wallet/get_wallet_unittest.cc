@@ -46,7 +46,7 @@ struct GetWalletTest : TestWithParam<GetWalletParamType> {
  protected:
   base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
-  GetWallet get_wallet_{&mock_ledger_impl_};
+  GetWallet get_wallet_{mock_ledger_impl_};
 };
 
 INSTANTIATE_TEST_SUITE_P(

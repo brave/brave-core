@@ -19,7 +19,7 @@ namespace credential {
 class CredentialsFactory {
  public:
   static std::unique_ptr<Credentials> Create(
-      LedgerImpl* ledger,
+      LedgerImpl& ledger,
       const mojom::CredsBatchType trigger_type);
 };
 

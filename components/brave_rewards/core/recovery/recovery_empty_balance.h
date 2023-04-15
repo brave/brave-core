@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/database/database_promotion.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotion_server.h"
 
@@ -20,7 +21,7 @@ namespace recovery {
 
 class EmptyBalance {
  public:
-  explicit EmptyBalance(LedgerImpl* ledger);
+  explicit EmptyBalance(LedgerImpl& ledger);
   ~EmptyBalance();
 
   void Check();
@@ -48,7 +49,7 @@ class EmptyBalance {
 
   void Sent(const mojom::Result result);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;
 };
 

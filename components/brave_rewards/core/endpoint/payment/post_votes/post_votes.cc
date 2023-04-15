@@ -21,9 +21,7 @@ namespace ledger {
 namespace endpoint {
 namespace payment {
 
-PostVotes::PostVotes(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+PostVotes::PostVotes(LedgerImpl& ledger) : ledger_(ledger) {}
 
 PostVotes::~PostVotes() = default;
 

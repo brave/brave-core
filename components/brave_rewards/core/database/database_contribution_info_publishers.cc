@@ -23,7 +23,7 @@ const char kTableName[] = "contribution_info_publishers";
 }  // namespace
 
 DatabaseContributionInfoPublishers::DatabaseContributionInfoPublishers(
-    LedgerImpl* ledger)
+    LedgerImpl& ledger)
     : DatabaseTable(ledger) {}
 
 DatabaseContributionInfoPublishers::~DatabaseContributionInfoPublishers() =

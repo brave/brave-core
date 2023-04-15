@@ -24,7 +24,7 @@
 namespace ledger {
 namespace wallet {
 
-Wallet::Wallet(LedgerImpl* ledger)
+Wallet::Wallet(LedgerImpl& ledger)
     : ledger_(ledger),
       create_(std::make_unique<WalletCreate>(ledger)),
       balance_(std::make_unique<WalletBalance>(ledger)),

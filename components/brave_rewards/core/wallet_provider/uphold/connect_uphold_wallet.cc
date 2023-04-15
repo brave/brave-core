@@ -25,7 +25,7 @@ using ledger::wallet_provider::ConnectExternalWallet;
 
 namespace ledger::uphold {
 
-ConnectUpholdWallet::ConnectUpholdWallet(LedgerImpl* ledger)
+ConnectUpholdWallet::ConnectUpholdWallet(LedgerImpl& ledger)
     : ConnectExternalWallet(ledger) {
   eligibility_checker_.Start(FROM_HERE,
                              base::Minutes(ledger::is_testing ? 3 : 15), this,
@@ -43,7 +43,7 @@ void ConnectUpholdWallet::Authorize(
     ledger::ConnectExternalWalletCallback callback) const {
   DCHECK(!oauth_info.code.empty());
 
-  RequestFor<PostOAuthUphold>(ledger_, std::move(oauth_info.code))
+  RequestFor<PostOAuthUphold>(*ledger_, std::move(oauth_info.code))
       .Send(base::BindOnce(&ConnectUpholdWallet::OnAuthorize,
                            base::Unretained(this), std::move(callback)));
 }
@@ -198,7 +198,7 @@ void ConnectUpholdWallet::OnCreateCard(
       base::BindOnce(&ConnectUpholdWallet::OnConnect, base::Unretained(this),
                      std::move(callback), access_token, id);
 
-  RequestFor<PostConnectUphold>(ledger_, std::move(id))
+  RequestFor<PostConnectUphold>(*ledger_, std::move(id))
       .Send(std::move(on_connect));
 }
 

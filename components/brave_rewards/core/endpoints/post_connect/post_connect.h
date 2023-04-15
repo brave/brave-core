@@ -36,7 +36,7 @@ class PostConnect : public RequestBuilder, public ResponseHandler<PostConnect> {
   static ConnectExternalWalletResult ToConnectExternalWalletResult(
       const Result&);
 
-  explicit PostConnect(LedgerImpl*);
+  explicit PostConnect(LedgerImpl& ledger);
   ~PostConnect() override;
 
  protected:

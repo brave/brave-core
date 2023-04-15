@@ -10,6 +10,7 @@
 #include <string>
 #include <utility>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_capabilities.h"
 
@@ -176,7 +177,7 @@ using GetCapabilitiesCallback =
 
 class GetCapabilities {
  public:
-  explicit GetCapabilities(LedgerImpl* ledger);
+  explicit GetCapabilities(LedgerImpl& ledger);
   ~GetCapabilities();
 
   void Request(const std::string& token, GetCapabilitiesCallback callback);
@@ -197,7 +198,7 @@ class GetCapabilities {
 
   CapabilityMap ParseBody(const std::string& body);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace uphold

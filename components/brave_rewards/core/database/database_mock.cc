@@ -8,7 +8,7 @@
 namespace ledger {
 namespace database {
 
-MockDatabase::MockDatabase(LedgerImpl* ledger) : Database(ledger) {}
+MockDatabase::MockDatabase(LedgerImpl& ledger) : Database(ledger) {}
 
 MockDatabase::~MockDatabase() = default;
 

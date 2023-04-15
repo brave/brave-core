@@ -14,20 +14,12 @@
 
 namespace ledger::state {
 
-StateMigrationV13::StateMigrationV13(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+StateMigrationV13::StateMigrationV13(LedgerImpl& ledger) : ledger_(ledger) {}
 
 StateMigrationV13::~StateMigrationV13() = default;
 
 bool StateMigrationV13::MigrateExternalWallet(const std::string& wallet_type) {
-  DCHECK(ledger_);
-  if (!ledger_) {
-    BLOG(0, "ledger_ is null!");
-    return false;
-  }
-
-  if (!wallet::GetWalletIf(ledger_, wallet_type,
+  if (!wallet::GetWalletIf(*ledger_, wallet_type,
                            {mojom::WalletStatus::kConnected})) {
     BLOG(1, "User doesn't have a connected " << wallet_type << " wallet.");
   } else {

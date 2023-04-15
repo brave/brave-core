@@ -29,7 +29,7 @@ using Result = endpoints::PostConnect::Result;
 
 class ConnectTestWallet : public wallet_provider::ConnectExternalWallet {
  public:
-  explicit ConnectTestWallet(LedgerImpl* ledger, Result post_connect_result)
+  explicit ConnectTestWallet(LedgerImpl& ledger, Result post_connect_result)
       : ConnectExternalWallet(ledger),
         post_connect_result_(post_connect_result) {}
 
@@ -87,7 +87,7 @@ TEST_P(ConnectExternalWalletTest, Paths) {
   base::MockCallback<ConnectExternalWalletCallback> callback;
   EXPECT_CALL(callback, Run(expected_result)).Times(1);
 
-  ConnectTestWallet(&mock_ledger_impl_, post_connect_result)
+  ConnectTestWallet(mock_ledger_impl_, post_connect_result)
       .Run(query_parameters, callback.Get());
 
   task_environment_.RunUntilIdle();

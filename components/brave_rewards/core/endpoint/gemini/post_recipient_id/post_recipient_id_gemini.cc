@@ -17,9 +17,7 @@
 
 namespace ledger::endpoint::gemini {
 
-PostRecipientId::PostRecipientId(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+PostRecipientId::PostRecipientId(LedgerImpl& ledger) : ledger_(ledger) {}
 
 PostRecipientId::~PostRecipientId() = default;
 

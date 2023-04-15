@@ -58,7 +58,7 @@ TEST_P(PostCommitTransactionGemini, Paths) {
   EXPECT_CALL(callback, Run(Result(expected_result))).Times(1);
 
   RequestFor<endpoints::PostCommitTransactionGemini>(
-      &mock_ledger_impl_, "token", "address",
+      mock_ledger_impl_, "token", "address",
       mojom::ExternalTransaction::New("transaction_id", "contribution_id",
                                       "destination", "amount"))
       .Send(callback.Get());

@@ -53,7 +53,7 @@ class GetRecipientIDGemini final
  public:
   static Result ProcessResponse(const mojom::UrlResponse&);
 
-  GetRecipientIDGemini(LedgerImpl*, std::string&& token);
+  GetRecipientIDGemini(LedgerImpl& ledger, std::string&& token);
   ~GetRecipientIDGemini() override;
 
  private:

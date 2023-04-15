@@ -109,14 +109,13 @@ Contribution::ContributionRequest& Contribution::ContributionRequest::operator=(
 
 Contribution::ContributionRequest::~ContributionRequest() = default;
 
-Contribution::Contribution(LedgerImpl* ledger)
+Contribution::Contribution(LedgerImpl& ledger)
     : ledger_(ledger),
       unblinded_(std::make_unique<Unblinded>(ledger)),
       sku_(std::make_unique<ContributionSKU>(ledger)),
       monthly_(std::make_unique<ContributionMonthly>(ledger)),
       ac_(std::make_unique<ContributionAC>(ledger)),
       tip_(std::make_unique<ContributionTip>(ledger)) {
-  DCHECK(ledger_);
   external_wallet_ = std::make_unique<ContributionExternalWallet>(ledger);
 }
 
@@ -882,7 +881,7 @@ void Contribution::GetRecurringTips(ledger::GetRecurringTipsCallback callback) {
       [this, callback](std::vector<mojom::PublisherInfoPtr> list) {
         // The publisher status field may be expired. Attempt to refresh
         // expired publisher status values before executing callback.
-        publisher::RefreshPublisherStatus(ledger_, std::move(list), callback);
+        publisher::RefreshPublisherStatus(*ledger_, std::move(list), callback);
       });
 }
 

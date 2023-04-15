@@ -30,7 +30,7 @@ using Result = PostConnect::Result;
 
 class PostConnectMock final : public PostConnect {
  public:
-  explicit PostConnectMock(LedgerImpl* ledger) : PostConnect(ledger) {}
+  explicit PostConnectMock(LedgerImpl& ledger) : PostConnect(ledger) {}
   ~PostConnectMock() override = default;
 
  private:
@@ -80,7 +80,7 @@ TEST_P(PostConnect, Paths) {
   base::MockCallback<base::OnceCallback<void(Result&&)>> callback;
   EXPECT_CALL(callback, Run(Result(expected_result))).Times(1);
 
-  RequestFor<PostConnectMock>(&mock_ledger_impl_).Send(callback.Get());
+  RequestFor<PostConnectMock>(mock_ledger_impl_).Send(callback.Get());
 
   task_environment_.RunUntilIdle();
 }

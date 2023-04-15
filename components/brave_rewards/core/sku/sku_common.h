@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ref.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_rewards/core/database/database_sku_transaction.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
@@ -23,7 +24,7 @@ namespace sku {
 
 class SKUCommon {
  public:
-  explicit SKUCommon(LedgerImpl* ledger);
+  explicit SKUCommon(LedgerImpl& ledger);
   ~SKUCommon();
 
   void CreateOrder(const std::vector<mojom::SKUOrderItem>& items,
@@ -47,7 +48,7 @@ class SKUCommon {
           result,
       ledger::SKUOrderCallback callback);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
   std::unique_ptr<SKUOrder> order_;
   std::unique_ptr<SKUTransaction> transaction_;
 };

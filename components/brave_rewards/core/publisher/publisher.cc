@@ -31,7 +31,7 @@ using std::placeholders::_2;
 namespace ledger {
 namespace publisher {
 
-Publisher::Publisher(LedgerImpl* ledger)
+Publisher::Publisher(LedgerImpl& ledger)
     : ledger_(ledger),
       prefix_list_updater_(
           std::make_unique<PublisherPrefixListUpdater>(ledger)),

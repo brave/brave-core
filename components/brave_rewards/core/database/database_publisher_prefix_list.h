@@ -19,7 +19,7 @@ using SearchPublisherPrefixListCallback = std::function<void(bool)>;
 
 class DatabasePublisherPrefixList : public DatabaseTable {
  public:
-  explicit DatabasePublisherPrefixList(LedgerImpl* ledger);
+  explicit DatabasePublisherPrefixList(LedgerImpl& ledger);
   ~DatabasePublisherPrefixList() override;
 
   void Reset(std::unique_ptr<publisher::PrefixListReader> reader,

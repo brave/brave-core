@@ -24,7 +24,7 @@
 
 namespace ledger::gemini {
 
-Gemini::Gemini(LedgerImpl* ledger)
+Gemini::Gemini(LedgerImpl& ledger)
     : connect_wallet_(std::make_unique<ConnectGeminiWallet>(ledger)),
       get_wallet_(std::make_unique<GetGeminiWallet>(ledger)),
       transfer_(std::make_unique<GeminiTransfer>(ledger)),
@@ -211,21 +211,21 @@ void Gemini::OnTransferFeeTimerElapsed(const std::string& id,
 }
 
 mojom::ExternalWalletPtr Gemini::GetWallet() {
-  return ledger::wallet::GetWallet(ledger_, constant::kWalletGemini);
+  return ledger::wallet::GetWallet(*ledger_, constant::kWalletGemini);
 }
 
 mojom::ExternalWalletPtr Gemini::GetWalletIf(
     const std::set<mojom::WalletStatus>& statuses) {
-  return ledger::wallet::GetWalletIf(ledger_, constant::kWalletGemini,
+  return ledger::wallet::GetWalletIf(*ledger_, constant::kWalletGemini,
                                      statuses);
 }
 
 bool Gemini::SetWallet(mojom::ExternalWalletPtr wallet) {
-  return ledger::wallet::SetWallet(ledger_, std::move(wallet));
+  return ledger::wallet::SetWallet(*ledger_, std::move(wallet));
 }
 
 bool Gemini::LogOutWallet() {
-  return ledger::wallet::LogOutWallet(ledger_, constant::kWalletGemini);
+  return ledger::wallet::LogOutWallet(*ledger_, constant::kWalletGemini);
 }
 
 void Gemini::RemoveTransferFee(const std::string& contribution_id) {

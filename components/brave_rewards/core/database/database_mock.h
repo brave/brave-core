@@ -18,7 +18,7 @@ namespace database {
 
 class MockDatabase : public Database {
  public:
-  explicit MockDatabase(LedgerImpl* ledger);
+  explicit MockDatabase(LedgerImpl& ledger);
 
   ~MockDatabase() override;
 

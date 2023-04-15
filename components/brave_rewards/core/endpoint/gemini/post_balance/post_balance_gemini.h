@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/functional/callback_forward.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // GET https://gemini.jp/api/link/v1/account/inventory
@@ -52,7 +53,7 @@ using PostBalanceCallback = base::OnceCallback<void(const mojom::Result result,
 
 class PostBalance {
  public:
-  explicit PostBalance(LedgerImpl* ledger);
+  explicit PostBalance(LedgerImpl& ledger);
   ~PostBalance();
 
   void Request(const std::string& token, PostBalanceCallback callback);
@@ -64,7 +65,7 @@ class PostBalance {
 
   void OnRequest(PostBalanceCallback callback, mojom::UrlResponsePtr response);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace gemini

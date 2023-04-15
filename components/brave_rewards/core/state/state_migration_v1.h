@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/legacy/publisher_state.h"
 
@@ -20,7 +21,7 @@ namespace state {
 
 class StateMigrationV1 {
  public:
-  explicit StateMigrationV1(LedgerImpl* ledger);
+  explicit StateMigrationV1(LedgerImpl& ledger);
   ~StateMigrationV1();
 
   void Migrate(ledger::LegacyResultCallback callback);
@@ -34,7 +35,7 @@ class StateMigrationV1 {
                            ledger::LegacyResultCallback callback);
 
   std::unique_ptr<publisher::LegacyPublisherState> legacy_publisher_;
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
   bool legacy_data_migrated_ = false;
 };
 

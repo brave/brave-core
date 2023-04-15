@@ -24,12 +24,12 @@
 
 namespace ledger::bitflyer {
 
-Bitflyer::Bitflyer(LedgerImpl* ledger)
-    : connect_wallet_(std::make_unique<ConnectBitFlyerWallet>(ledger)),
+Bitflyer::Bitflyer(LedgerImpl& ledger)
+    : ledger_(ledger),
+      connect_wallet_(std::make_unique<ConnectBitFlyerWallet>(ledger)),
       get_wallet_(std::make_unique<GetBitFlyerWallet>(ledger)),
       transfer_(std::make_unique<BitFlyerTransfer>(ledger)),
-      bitflyer_server_(std::make_unique<endpoint::BitflyerServer>(ledger)),
-      ledger_(ledger) {}
+      bitflyer_server_(std::make_unique<endpoint::BitflyerServer>(ledger)) {}
 
 Bitflyer::~Bitflyer() = default;
 
@@ -213,21 +213,21 @@ void Bitflyer::OnTransferFeeTimerElapsed(const std::string& id,
 }
 
 mojom::ExternalWalletPtr Bitflyer::GetWallet() {
-  return ledger::wallet::GetWallet(ledger_, constant::kWalletBitflyer);
+  return ledger::wallet::GetWallet(*ledger_, constant::kWalletBitflyer);
 }
 
 mojom::ExternalWalletPtr Bitflyer::GetWalletIf(
     const std::set<mojom::WalletStatus>& statuses) {
-  return ledger::wallet::GetWalletIf(ledger_, constant::kWalletBitflyer,
+  return ledger::wallet::GetWalletIf(*ledger_, constant::kWalletBitflyer,
                                      statuses);
 }
 
 bool Bitflyer::SetWallet(mojom::ExternalWalletPtr wallet) {
-  return ledger::wallet::SetWallet(ledger_, std::move(wallet));
+  return ledger::wallet::SetWallet(*ledger_, std::move(wallet));
 }
 
 bool Bitflyer::LogOutWallet() {
-  return ledger::wallet::LogOutWallet(ledger_, constant::kWalletBitflyer);
+  return ledger::wallet::LogOutWallet(*ledger_, constant::kWalletBitflyer);
 }
 
 void Bitflyer::RemoveTransferFee(const std::string& contribution_id) {

@@ -23,7 +23,7 @@ const char kTableName[] = "contribution_queue";
 
 }  // namespace
 
-DatabaseContributionQueue::DatabaseContributionQueue(LedgerImpl* ledger)
+DatabaseContributionQueue::DatabaseContributionQueue(LedgerImpl& ledger)
     : DatabaseTable(ledger),
       publishers_(
           std::make_unique<DatabaseContributionQueuePublishers>(ledger)) {}

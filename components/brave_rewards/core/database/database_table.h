@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 namespace ledger {
@@ -38,11 +39,11 @@ using ContributionPublisherPairListCallback =
 
 class DatabaseTable {
  public:
-  explicit DatabaseTable(LedgerImpl* ledger);
+  explicit DatabaseTable(LedgerImpl& ledger);
   virtual ~DatabaseTable();
 
  protected:
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace database
