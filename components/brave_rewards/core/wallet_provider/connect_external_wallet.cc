@@ -27,7 +27,7 @@ ConnectExternalWallet::~ConnectExternalWallet() = default;
 
 void ConnectExternalWallet::Run(
     const base::flat_map<std::string, std::string>& query_parameters,
-    ledger::ConnectExternalWalletCallback callback) const {
+    ledger::ConnectExternalWalletCallback callback) {
   auto wallet = GetWalletIf(
       *ledger_, WalletType(),
       {mojom::WalletStatus::kNotConnected, mojom::WalletStatus::kLoggedOut});

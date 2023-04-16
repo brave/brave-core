@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_SERVER_PUBLISHER_FETCHER_H_
 
 #include <map>
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -58,7 +57,7 @@ class ServerPublisherFetcher {
 
   const raw_ref<LedgerImpl> ledger_;
   std::map<std::string, FetchCallbackVector> callback_map_;
-  std::unique_ptr<endpoint::PrivateCDNServer> private_cdn_server_;
+  endpoint::PrivateCDNServer private_cdn_server_;
 };
 
 }  // namespace publisher

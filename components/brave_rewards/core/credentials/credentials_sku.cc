@@ -6,6 +6,7 @@
 #include <stdint.h>
 
 #include <algorithm>
+#include <memory>
 #include <utility>
 
 #include "base/containers/contains.h"
@@ -71,11 +72,7 @@ namespace ledger {
 namespace credential {
 
 CredentialsSKU::CredentialsSKU(LedgerImpl& ledger)
-    : ledger_(ledger),
-      common_(std::make_unique<CredentialsCommon>(ledger)),
-      payment_server_(std::make_unique<endpoint::PaymentServer>(ledger)) {
-  DCHECK(common_);
-}
+    : ledger_(ledger), common_(ledger), payment_server_(ledger) {}
 
 CredentialsSKU::~CredentialsSKU() = default;
 
@@ -159,7 +156,7 @@ void CredentialsSKU::Blind(ledger::ResultCallback callback,
   auto blinded_callback =
       base::BindOnce(&CredentialsSKU::OnBlind, base::Unretained(this),
                      std::move(callback), trigger);
-  common_->GetBlindedCreds(trigger, std::move(blinded_callback));
+  common_.GetBlindedCreds(trigger, std::move(blinded_callback));
 }
 
 void CredentialsSKU::OnBlind(ledger::ResultCallback callback,
@@ -226,7 +223,7 @@ void CredentialsSKU::Claim(ledger::ResultCallback callback,
 
   DCHECK_EQ(trigger.data.size(), 2ul);
   DCHECK(blinded_creds.has_value());
-  payment_server_->post_credentials()->Request(
+  payment_server_.post_credentials().Request(
       trigger.id, trigger.data[0], ConvertItemTypeToString(trigger.data[1]),
       std::move(blinded_creds.value()), std::move(url_callback));
 }
@@ -269,8 +266,8 @@ void CredentialsSKU::FetchSignedCreds(ledger::ResultCallback callback,
       base::BindOnce(&CredentialsSKU::OnFetchSignedCreds,
                      base::Unretained(this), std::move(callback), trigger);
 
-  payment_server_->get_credentials()->Request(trigger.id, trigger.data[0],
-                                              std::move(url_callback));
+  payment_server_.get_credentials().Request(trigger.id, trigger.data[0],
+                                            std::move(url_callback));
 }
 
 void CredentialsSKU::OnFetchSignedCreds(ledger::ResultCallback callback,
@@ -352,9 +349,9 @@ void CredentialsSKU::Unblind(ledger::ResultCallback callback,
 
   const uint64_t expires_at = 0ul;
 
-  common_->SaveUnblindedCreds(expires_at, constant::kVotePrice, *creds,
-                              unblinded_encoded_creds, trigger,
-                              std::move(save_callback));
+  common_.SaveUnblindedCreds(expires_at, constant::kVotePrice, *creds,
+                             unblinded_encoded_creds, trigger,
+                             std::move(save_callback));
 }
 
 void CredentialsSKU::Completed(ledger::ResultCallback callback,
@@ -386,7 +383,7 @@ void CredentialsSKU::RedeemTokens(const CredentialsRedeem& redeem,
   auto url_callback = std::bind(&CredentialsSKU::OnRedeemTokens, this, _1,
                                 token_id_list, redeem, callback);
 
-  payment_server_->post_votes()->Request(redeem, url_callback);
+  payment_server_.post_votes().Request(redeem, url_callback);
 }
 
 void CredentialsSKU::OnRedeemTokens(

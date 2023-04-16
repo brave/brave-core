@@ -20,8 +20,7 @@ namespace ledger {
 namespace sku {
 
 SKUOrder::SKUOrder(LedgerImpl& ledger)
-    : ledger_(ledger),
-      payment_server_(std::make_unique<endpoint::PaymentServer>(ledger)) {}
+    : ledger_(ledger), payment_server_(ledger) {}
 
 SKUOrder::~SKUOrder() = default;
 
@@ -35,7 +34,7 @@ void SKUOrder::Create(const std::vector<mojom::SKUOrderItem>& items,
 
   auto url_callback = std::bind(&SKUOrder::OnCreate, this, _1, _2, callback);
 
-  payment_server_->post_order()->Request(items, url_callback);
+  payment_server_.post_order().Request(items, url_callback);
 }
 
 void SKUOrder::OnCreate(const mojom::Result result,

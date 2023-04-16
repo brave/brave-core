@@ -46,7 +46,7 @@ class DatabaseContributionQueue : public DatabaseTable {
       std::shared_ptr<mojom::ContributionQueuePtr> shared_queue,
       GetFirstContributionQueueCallback callback);
 
-  std::unique_ptr<DatabaseContributionQueuePublishers> publishers_;
+  DatabaseContributionQueuePublishers publishers_;
 };
 
 }  // namespace database

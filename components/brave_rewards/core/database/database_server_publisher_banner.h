@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_SERVER_PUBLISHER_BANNER_H_
 
 #include <map>
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -40,7 +39,7 @@ class DatabaseServerPublisherBanner : public DatabaseTable {
                         const mojom::PublisherBanner& banner,
                         ledger::GetPublisherBannerCallback callback);
 
-  std::unique_ptr<DatabaseServerPublisherLinks> links_;
+  DatabaseServerPublisherLinks links_;
 };
 
 }  // namespace database

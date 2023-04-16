@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_SKU_SKU_ORDER_H_
 
 #include <map>
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -38,7 +37,7 @@ class SKUOrder {
                     ledger::SKUOrderCallback callback);
 
   const raw_ref<LedgerImpl> ledger_;
-  std::unique_ptr<endpoint::PaymentServer> payment_server_;
+  endpoint::PaymentServer payment_server_;
 };
 
 }  // namespace sku

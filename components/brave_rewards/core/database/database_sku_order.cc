@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <memory>
 #include <utility>
 
 #include "base/strings/stringprintf.h"
@@ -22,8 +23,7 @@ const char kTableName[] = "sku_order";
 }  // namespace
 
 DatabaseSKUOrder::DatabaseSKUOrder(LedgerImpl& ledger)
-    : DatabaseTable(ledger),
-      items_(std::make_unique<DatabaseSKUOrderItems>(ledger)) {}
+    : DatabaseTable(ledger), items_(ledger) {}
 
 DatabaseSKUOrder::~DatabaseSKUOrder() = default;
 
@@ -57,7 +57,7 @@ void DatabaseSKUOrder::InsertOrUpdate(mojom::SKUOrderPtr order,
 
   transaction->commands.push_back(std::move(command));
 
-  items_->InsertOrUpdateList(transaction.get(), std::move(order->items));
+  items_.InsertOrUpdateList(transaction.get(), std::move(order->items));
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
@@ -158,7 +158,7 @@ void DatabaseSKUOrder::OnGetRecord(mojom::DBCommandResponsePtr response,
   auto items_callback =
       std::bind(&DatabaseSKUOrder::OnGetRecordItems, this, _1,
                 std::make_shared<mojom::SKUOrderPtr>(info->Clone()), callback);
-  items_->GetRecordsByOrderId(info->order_id, items_callback);
+  items_.GetRecordsByOrderId(info->order_id, items_callback);
 }
 
 void DatabaseSKUOrder::OnGetRecordItems(

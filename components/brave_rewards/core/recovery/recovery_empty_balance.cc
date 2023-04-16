@@ -27,8 +27,7 @@ namespace ledger {
 namespace recovery {
 
 EmptyBalance::EmptyBalance(LedgerImpl& ledger)
-    : ledger_(ledger),
-      promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)) {}
+    : ledger_(ledger), promotion_server_(ledger) {}
 
 EmptyBalance::~EmptyBalance() = default;
 
@@ -186,7 +185,7 @@ void EmptyBalance::ReportResults(std::vector<mojom::UnblindedTokenPtr> list,
 
   auto url_callback = std::bind(&EmptyBalance::Sent, this, _1);
 
-  promotion_server_->post_bat_loss()->Request(total, kVersion, url_callback);
+  promotion_server_.post_bat_loss().Request(total, kVersion, url_callback);
 }
 
 void EmptyBalance::Sent(const mojom::Result result) {

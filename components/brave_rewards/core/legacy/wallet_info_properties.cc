@@ -24,14 +24,10 @@ const char kKeyInfoSeedKey[] = "keyInfoSeed";
 }  // namespace
 
 WalletInfoProperties::WalletInfoProperties() = default;
-
-WalletInfoProperties::WalletInfoProperties(
-    const WalletInfoProperties& properties) {
-  payment_id = properties.payment_id;
-  address_card_id = properties.address_card_id;
-  key_info_seed = properties.key_info_seed;
-}
-
+WalletInfoProperties::WalletInfoProperties(WalletInfoProperties&& other) =
+    default;
+WalletInfoProperties& WalletInfoProperties::operator=(
+    WalletInfoProperties&& other) = default;
 WalletInfoProperties::~WalletInfoProperties() = default;
 
 bool WalletInfoProperties::operator==(const WalletInfoProperties& rhs) const {

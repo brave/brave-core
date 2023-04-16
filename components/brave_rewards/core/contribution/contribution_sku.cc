@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <memory>
 #include <utility>
 #include <vector>
 
@@ -75,13 +76,8 @@ void GetCredentialTrigger(ledger::mojom::SKUOrderPtr order,
 namespace ledger {
 namespace contribution {
 
-ContributionSKU::ContributionSKU(LedgerImpl& ledger) : ledger_(ledger) {
-  credentials_ = credential::CredentialsFactory::Create(
-      ledger, mojom::CredsBatchType::SKU);
-  DCHECK(credentials_);
-  sku_ = std::make_unique<sku::SKU>(ledger);
-  DCHECK(sku_);
-}
+ContributionSKU::ContributionSKU(LedgerImpl& ledger)
+    : ledger_(ledger), credentials_(ledger), sku_(ledger) {}
 
 ContributionSKU::~ContributionSKU() = default;
 
@@ -131,8 +127,8 @@ void ContributionSKU::GetContributionInfo(
   std::vector<mojom::SKUOrderItem> items;
   items.push_back(new_item);
 
-  sku_->Process(items, wallet_type, process_callback,
-                contribution->contribution_id);
+  sku_.Process(items, wallet_type, process_callback,
+               contribution->contribution_id);
 }
 
 void ContributionSKU::GetOrder(mojom::Result result,
@@ -163,7 +159,7 @@ void ContributionSKU::OnGetOrder(mojom::SKUOrderPtr order,
   credential::CredentialsTrigger trigger;
   GetCredentialTrigger(order->Clone(), &trigger);
 
-  credentials_->Start(
+  credentials_.Start(
       trigger, base::BindOnce([](ledger::LegacyResultCallback callback,
                                  mojom::Result result) { callback(result); },
                               std::move(callback)));
@@ -263,7 +259,7 @@ void ContributionSKU::GetOrderMerchant(
   auto creds_callback =
       std::bind(&ContributionSKU::OnRedeemTokens, this, _1, callback);
 
-  credentials_->RedeemTokens(new_redeem, creds_callback);
+  credentials_.RedeemTokens(new_redeem, creds_callback);
 }
 
 void ContributionSKU::OnRedeemTokens(mojom::Result result,
@@ -380,7 +376,7 @@ void ContributionSKU::RetryStartStep(mojom::ContributionInfoPtr contribution,
       std::bind(&ContributionSKU::GetOrder, this, _1, _2,
                 contribution->contribution_id, complete_callback);
 
-  sku_->Retry(order->order_id, wallet_type, retry_callback);
+  sku_.Retry(order->order_id, wallet_type, retry_callback);
 }
 
 }  // namespace contribution

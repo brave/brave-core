@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEDGER_IMPL_H_
 
 #include <map>
-#include <memory>
 #include <queue>
 #include <string>
 #include <utility>
@@ -15,8 +14,21 @@
 #include "base/containers/flat_map.h"
 #include "base/types/always_false.h"
 #include "brave/components/brave_rewards/common/mojom/bat_ledger.mojom.h"
+#include "brave/components/brave_rewards/core/api/api.h"
+#include "brave/components/brave_rewards/core/bitflyer/bitflyer.h"
+#include "brave/components/brave_rewards/core/contribution/contribution.h"
+#include "brave/components/brave_rewards/core/database/database.h"
+#include "brave/components/brave_rewards/core/gemini/gemini.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/legacy/media/media.h"
 #include "brave/components/brave_rewards/core/logging/logging.h"
+#include "brave/components/brave_rewards/core/promotion/promotion.h"
+#include "brave/components/brave_rewards/core/publisher/publisher.h"
+#include "brave/components/brave_rewards/core/recovery/recovery.h"
+#include "brave/components/brave_rewards/core/report/report.h"
+#include "brave/components/brave_rewards/core/state/state.h"
+#include "brave/components/brave_rewards/core/uphold/uphold.h"
+#include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
 
@@ -37,47 +49,7 @@ inline constexpr uint64_t kPublisherListRefreshInterval =
 #endif
 }  // namespace ledger
 
-namespace braveledger_media {
-class Media;
-}
-
 namespace ledger {
-namespace promotion {
-class Promotion;
-}
-namespace publisher {
-class Publisher;
-}
-namespace contribution {
-class Contribution;
-}
-namespace wallet {
-class Wallet;
-}
-namespace database {
-class Database;
-}
-namespace report {
-class Report;
-}
-namespace state {
-class State;
-}
-namespace api {
-class API;
-}
-namespace recovery {
-class Recovery;
-}
-namespace bitflyer {
-class Bitflyer;
-}
-namespace gemini {
-class Gemini;
-}
-namespace uphold {
-class Uphold;
-}
 
 class LedgerImpl : public mojom::Ledger {
  public:
@@ -418,31 +390,34 @@ class LedgerImpl : public mojom::Ledger {
 
   mojom::LedgerClient* client();
 
-  state::State* state();
+  promotion::Promotion* promotion() { return &promotion_; }
 
-  virtual promotion::Promotion* promotion();
+  publisher::Publisher* publisher() { return &publisher_; }
 
-  publisher::Publisher* publisher();
+  braveledger_media::Media* media() { return &media_; }
 
-  braveledger_media::Media* media();
+  contribution::Contribution* contribution() { return &contribution_; }
 
-  contribution::Contribution* contribution();
+  wallet::Wallet* wallet() { return &wallet_; }
 
-  wallet::Wallet* wallet();
+  report::Report* report() { return &report_; }
 
-  report::Report* report();
+  state::State* state() { return &state_; }
 
-  api::API* api();
+  api::API* api() { return &api_; }
 
-  virtual database::Database* database();
+  recovery::Recovery* recovery() { return &recovery_; }
 
-  bitflyer::Bitflyer* bitflyer();
+  bitflyer::Bitflyer* bitflyer() { return &bitflyer_; }
 
-  gemini::Gemini* gemini();
+  gemini::Gemini* gemini() { return &gemini_; }
 
-  uphold::Uphold* uphold();
+  uphold::Uphold* uphold() { return &uphold_; }
 
   bool IsShuttingDown() const;
+
+  // This method is virtualised for test-only purposes.
+  virtual database::Database* database();
 
  private:
   enum class ReadyState {
@@ -473,19 +448,21 @@ class LedgerImpl : public mojom::Ledger {
   void WhenReady(T callback);
 
   mojo::AssociatedRemote<mojom::LedgerClient> ledger_client_;
-  std::unique_ptr<promotion::Promotion> promotion_;
-  std::unique_ptr<publisher::Publisher> publisher_;
-  std::unique_ptr<braveledger_media::Media> media_;
-  std::unique_ptr<contribution::Contribution> contribution_;
-  std::unique_ptr<wallet::Wallet> wallet_;
-  std::unique_ptr<database::Database> database_;
-  std::unique_ptr<report::Report> report_;
-  std::unique_ptr<state::State> state_;
-  std::unique_ptr<api::API> api_;
-  std::unique_ptr<recovery::Recovery> recovery_;
-  std::unique_ptr<bitflyer::Bitflyer> bitflyer_;
-  std::unique_ptr<gemini::Gemini> gemini_;
-  std::unique_ptr<uphold::Uphold> uphold_;
+
+  promotion::Promotion promotion_;
+  publisher::Publisher publisher_;
+  braveledger_media::Media media_;
+  contribution::Contribution contribution_;
+  wallet::Wallet wallet_;
+  database::Database database_;
+  report::Report report_;
+  state::State state_;
+  api::API api_;
+  recovery::Recovery recovery_;
+  bitflyer::Bitflyer bitflyer_;
+  gemini::Gemini gemini_;
+  uphold::Uphold uphold_;
+
   std::map<uint32_t, mojom::VisitData> current_pages_;
   uint64_t last_tab_active_time_ = 0;
   uint32_t last_shown_tab_id_ = -1;

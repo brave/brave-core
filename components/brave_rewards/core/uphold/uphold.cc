@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/uphold/uphold.h"
+
 #include <utility>
 
 #include "base/guid.h"
@@ -15,7 +17,6 @@
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
-#include "brave/components/brave_rewards/core/uphold/uphold.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_card.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
@@ -27,12 +28,12 @@
 namespace ledger::uphold {
 
 Uphold::Uphold(LedgerImpl& ledger)
-    : card_(std::make_unique<UpholdCard>(ledger)),
-      connect_wallet_(std::make_unique<ConnectUpholdWallet>(ledger)),
-      get_wallet_(std::make_unique<GetUpholdWallet>(ledger)),
-      transfer_(std::make_unique<UpholdTransfer>(ledger)),
-      uphold_server_(std::make_unique<endpoint::UpholdServer>(ledger)),
-      ledger_(ledger) {}
+    : ledger_(ledger),
+      card_(ledger),
+      connect_wallet_(ledger),
+      get_wallet_(ledger),
+      transfer_(ledger),
+      uphold_server_(ledger) {}
 
 Uphold::~Uphold() = default;
 
@@ -58,10 +59,10 @@ void Uphold::StartContribution(const std::string& contribution_id,
 
   const double fee = amount * 0.05;
 
-  transfer_->Run(contribution_id, info->address, amount - fee,
-                 base::BindOnce(&Uphold::ContributionCompleted,
-                                base::Unretained(this), std::move(callback),
-                                contribution_id, fee, info->publisher_key));
+  transfer_.Run(contribution_id, info->address, amount - fee,
+                base::BindOnce(&Uphold::ContributionCompleted,
+                               base::Unretained(this), std::move(callback),
+                               contribution_id, fee, info->publisher_key));
 }
 
 void Uphold::ContributionCompleted(ledger::LegacyResultCallback callback,
@@ -91,8 +92,8 @@ void Uphold::FetchBalance(FetchBalanceCallback callback) {
   auto url_callback = base::BindOnce(
       &Uphold::OnFetchBalance, base::Unretained(this), std::move(callback));
 
-  uphold_server_->get_card()->Request(wallet->address, wallet->token,
-                                      std::move(url_callback));
+  uphold_server_.get_card().Request(wallet->address, wallet->token,
+                                    std::move(url_callback));
 }
 
 void Uphold::OnFetchBalance(FetchBalanceCallback callback,
@@ -124,34 +125,33 @@ void Uphold::TransferFunds(double amount,
                            const std::string& address,
                            const std::string& contribution_id,
                            LegacyResultCallback callback) {
-  transfer_->Run(contribution_id, address, amount,
-                 base::BindOnce([](LegacyResultCallback callback,
-                                   mojom::Result result) { callback(result); },
-                                std::move(callback)));
+  transfer_.Run(contribution_id, address, amount,
+                base::BindOnce([](LegacyResultCallback callback,
+                                  mojom::Result result) { callback(result); },
+                               std::move(callback)));
 }
 
 void Uphold::ConnectWallet(const base::flat_map<std::string, std::string>& args,
                            ledger::ConnectExternalWalletCallback callback) {
-  connect_wallet_->Run(args, std::move(callback));
+  connect_wallet_.Run(args, std::move(callback));
 }
 
 void Uphold::GetWallet(ledger::GetExternalWalletCallback callback) {
-  get_wallet_->Run(std::move(callback));
+  get_wallet_.Run(std::move(callback));
 }
 
 void Uphold::CreateCard(const std::string& access_token,
                         CreateCardCallback callback) {
-  card_->CreateBATCardIfNecessary(access_token, std::move(callback));
+  card_.CreateBATCardIfNecessary(access_token, std::move(callback));
 }
 
 void Uphold::GetUser(const std::string& access_token, GetMeCallback callback) {
-  uphold_server_->get_me()->Request(access_token, std::move(callback));
+  uphold_server_.get_me().Request(access_token, std::move(callback));
 }
 
 void Uphold::GetCapabilities(const std::string& access_token,
                              GetCapabilitiesCallback callback) {
-  uphold_server_->get_capabilities()->Request(access_token,
-                                              std::move(callback));
+  uphold_server_.get_capabilities().Request(access_token, std::move(callback));
 }
 
 void Uphold::SaveTransferFee(const std::string& contribution_id,
@@ -202,7 +202,7 @@ void Uphold::OnTransferFeeCompleted(const std::string& contribution_id,
 void Uphold::TransferFee(const std::string& contribution_id,
                          double amount,
                          int attempts) {
-  transfer_->Run(
+  transfer_.Run(
       contribution_id, GetFeeAddress(), amount,
       base::BindOnce(&Uphold::OnTransferFeeCompleted, base::Unretained(this),
                      contribution_id, attempts));

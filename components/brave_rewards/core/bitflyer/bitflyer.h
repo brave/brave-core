@@ -9,7 +9,6 @@
 #include <stdint.h>
 
 #include <map>
-#include <memory>
 #include <set>
 #include <string>
 
@@ -17,17 +16,14 @@
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ref.h"
 #include "base/timer/timer.h"
+#include "brave/components/brave_rewards/core/endpoint/bitflyer/bitflyer_server.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
-#include "brave/components/brave_rewards/core/wallet_provider/connect_external_wallet.h"
-#include "brave/components/brave_rewards/core/wallet_provider/get_external_wallet.h"
-#include "brave/components/brave_rewards/core/wallet_provider/transfer.h"
+#include "brave/components/brave_rewards/core/wallet_provider/bitflyer/bitflyer_transfer.h"
+#include "brave/components/brave_rewards/core/wallet_provider/bitflyer/connect_bitflyer_wallet.h"
+#include "brave/components/brave_rewards/core/wallet_provider/bitflyer/get_bitflyer_wallet.h"
 
 namespace ledger {
 class LedgerImpl;
-
-namespace endpoint {
-class BitflyerServer;
-}
 
 namespace bitflyer {
 
@@ -92,10 +88,10 @@ class Bitflyer {
   void RemoveTransferFee(const std::string& contribution_id);
 
   const raw_ref<LedgerImpl> ledger_;
-  std::unique_ptr<wallet_provider::ConnectExternalWallet> connect_wallet_;
-  std::unique_ptr<wallet_provider::GetExternalWallet> get_wallet_;
-  std::unique_ptr<wallet_provider::Transfer> transfer_;
-  std::unique_ptr<endpoint::BitflyerServer> bitflyer_server_;
+  ConnectBitFlyerWallet connect_wallet_;
+  GetBitFlyerWallet get_wallet_;
+  BitFlyerTransfer transfer_;
+  endpoint::BitflyerServer bitflyer_server_;
   std::map<std::string, base::OneShotTimer> transfer_fee_timers_;
 };
 

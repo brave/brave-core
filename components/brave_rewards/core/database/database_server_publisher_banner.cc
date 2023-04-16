@@ -22,8 +22,7 @@ namespace ledger {
 namespace database {
 
 DatabaseServerPublisherBanner::DatabaseServerPublisherBanner(LedgerImpl& ledger)
-    : DatabaseTable(ledger),
-      links_(std::make_unique<DatabaseServerPublisherLinks>(ledger)) {}
+    : DatabaseTable(ledger), links_(ledger) {}
 
 DatabaseServerPublisherBanner::~DatabaseServerPublisherBanner() = default;
 
@@ -58,7 +57,7 @@ void DatabaseServerPublisherBanner::InsertOrUpdate(
 
   transaction->commands.push_back(std::move(command));
 
-  links_->InsertOrUpdate(transaction, server_info);
+  links_.InsertOrUpdate(transaction, server_info);
 }
 
 void DatabaseServerPublisherBanner::DeleteRecords(
@@ -77,7 +76,7 @@ void DatabaseServerPublisherBanner::DeleteRecords(
 
   transaction->commands.push_back(std::move(command));
 
-  links_->DeleteRecords(transaction, publisher_key_list);
+  links_.DeleteRecords(transaction, publisher_key_list);
 }
 
 void DatabaseServerPublisherBanner::GetRecord(
@@ -152,7 +151,7 @@ void DatabaseServerPublisherBanner::OnGetRecord(
   auto links_callback =
       std::bind(&DatabaseServerPublisherBanner::OnGetRecordLinks, this, _1,
                 banner, callback);
-  links_->GetRecord(publisher_key, links_callback);
+  links_.GetRecord(publisher_key, links_callback);
 }
 
 void DatabaseServerPublisherBanner::OnGetRecordLinks(

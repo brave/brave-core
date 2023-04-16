@@ -26,7 +26,7 @@ class ConnectExternalWallet {
   virtual ~ConnectExternalWallet();
 
   void Run(const base::flat_map<std::string, std::string>& query_parameters,
-           ledger::ConnectExternalWalletCallback) const;
+           ledger::ConnectExternalWalletCallback);
 
  protected:
   virtual const char* WalletType() const = 0;
@@ -36,7 +36,7 @@ class ConnectExternalWallet {
   };
 
   virtual void Authorize(OAuthInfo&&,
-                         ledger::ConnectExternalWalletCallback) const = 0;
+                         ledger::ConnectExternalWalletCallback) = 0;
 
   void OnConnect(ledger::ConnectExternalWalletCallback,
                  std::string&& token,

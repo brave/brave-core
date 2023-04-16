@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/publisher/server_publisher_fetcher.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/big_endian.h"
@@ -39,9 +40,7 @@ namespace ledger {
 namespace publisher {
 
 ServerPublisherFetcher::ServerPublisherFetcher(LedgerImpl& ledger)
-    : ledger_(ledger),
-      private_cdn_server_(
-          std::make_unique<endpoint::PrivateCDNServer>(ledger)) {}
+    : ledger_(ledger), private_cdn_server_(ledger) {}
 
 ServerPublisherFetcher::~ServerPublisherFetcher() = default;
 
@@ -61,8 +60,8 @@ void ServerPublisherFetcher::Fetch(
   auto url_callback = std::bind(&ServerPublisherFetcher::OnFetchCompleted, this,
                                 _1, _2, publisher_key);
 
-  private_cdn_server_->get_publisher()->Request(publisher_key, hex_prefix,
-                                                url_callback);
+  private_cdn_server_.get_publisher().Request(publisher_key, hex_prefix,
+                                              url_callback);
 }
 
 void ServerPublisherFetcher::OnFetchCompleted(

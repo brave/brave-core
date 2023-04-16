@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEGACY_BAT_STATE_H_
 
 #include <map>
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -55,7 +54,7 @@ class LegacyBatState {
               const std::string& data);
 
   const raw_ref<ledger::LedgerImpl> ledger_;
-  std::unique_ptr<ledger::ClientProperties> state_;
+  ledger::ClientProperties state_;
 };
 
 }  // namespace braveledger_bat_state

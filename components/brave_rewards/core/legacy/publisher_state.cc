@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <memory>
 #include <utility>
 
 #include "brave/components/brave_rewards/core/ledger_impl.h"
@@ -17,20 +16,20 @@ namespace ledger {
 namespace publisher {
 
 LegacyPublisherState::LegacyPublisherState(ledger::LedgerImpl& ledger)
-    : ledger_(ledger), state_(new ledger::PublisherSettingsProperties) {}
+    : ledger_(ledger) {}
 
 LegacyPublisherState::~LegacyPublisherState() = default;
 
 uint64_t LegacyPublisherState::GetPublisherMinVisitTime() const {
-  return state_->min_page_time_before_logging_a_visit;
+  return state_.min_page_time_before_logging_a_visit;
 }
 
 unsigned int LegacyPublisherState::GetPublisherMinVisits() const {
-  return state_->min_visits_for_publisher_relevancy;
+  return state_.min_visits_for_publisher_relevancy;
 }
 
 bool LegacyPublisherState::GetPublisherAllowNonVerified() const {
-  return state_->allow_non_verified_sites_in_list;
+  return state_.allow_non_verified_sites_in_list;
 }
 
 void LegacyPublisherState::Load(LegacyResultCallback callback) {
@@ -53,20 +52,20 @@ void LegacyPublisherState::OnLoad(LegacyResultCallback callback,
     return;
   }
 
-  state_ = std::make_unique<ledger::PublisherSettingsProperties>(state);
+  state_ = std::move(state);
   callback(ledger::mojom::Result::LEDGER_OK);
 }
 
 std::vector<std::string> LegacyPublisherState::GetAlreadyProcessedPublishers()
     const {
-  return state_->processed_pending_publishers;
+  return state_.processed_pending_publishers;
 }
 
 void LegacyPublisherState::GetAllBalanceReports(
     std::vector<ledger::mojom::BalanceReportInfoPtr>* reports) {
   DCHECK(reports);
 
-  for (auto const& report : state_->monthly_balances) {
+  for (auto const& report : state_.monthly_balances) {
     auto report_ptr = ledger::mojom::BalanceReportInfo::New();
     report_ptr->id = report.first;
     report_ptr->grants = report.second.grants;

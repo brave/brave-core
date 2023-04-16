@@ -179,12 +179,12 @@ class Contribution {
                                         const std::string& contribution_id);
 
   const raw_ref<LedgerImpl> ledger_;
-  std::unique_ptr<Unblinded> unblinded_;
-  std::unique_ptr<ContributionSKU> sku_;
-  std::unique_ptr<ContributionMonthly> monthly_;
-  std::unique_ptr<ContributionAC> ac_;
-  std::unique_ptr<ContributionTip> tip_;
-  std::unique_ptr<ContributionExternalWallet> external_wallet_;
+  Unblinded unblinded_;
+  ContributionSKU sku_;
+  ContributionMonthly monthly_;
+  ContributionAC ac_;
+  ContributionTip tip_;
+  ContributionExternalWallet external_wallet_;
   std::map<std::string, ContributionRequest> requests_;
   base::OneShotTimer auto_contribute_timer_;
   base::OneShotTimer monthly_contribution_timer_;

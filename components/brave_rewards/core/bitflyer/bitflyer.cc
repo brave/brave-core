@@ -26,10 +26,10 @@ namespace ledger::bitflyer {
 
 Bitflyer::Bitflyer(LedgerImpl& ledger)
     : ledger_(ledger),
-      connect_wallet_(std::make_unique<ConnectBitFlyerWallet>(ledger)),
-      get_wallet_(std::make_unique<GetBitFlyerWallet>(ledger)),
-      transfer_(std::make_unique<BitFlyerTransfer>(ledger)),
-      bitflyer_server_(std::make_unique<endpoint::BitflyerServer>(ledger)) {}
+      connect_wallet_(ledger),
+      get_wallet_(ledger),
+      transfer_(ledger),
+      bitflyer_server_(ledger) {}
 
 Bitflyer::~Bitflyer() = default;
 
@@ -55,10 +55,10 @@ void Bitflyer::StartContribution(const std::string& contribution_id,
 
   const double fee = amount * 0.05;
 
-  transfer_->Run(contribution_id, info->address, amount - fee,
-                 base::BindOnce(&Bitflyer::ContributionCompleted,
-                                base::Unretained(this), std::move(callback),
-                                contribution_id, fee, info->publisher_key));
+  transfer_.Run(contribution_id, info->address, amount - fee,
+                base::BindOnce(&Bitflyer::ContributionCompleted,
+                               base::Unretained(this), std::move(callback),
+                               contribution_id, fee, info->publisher_key));
 }
 
 void Bitflyer::ContributionCompleted(ledger::LegacyResultCallback callback,
@@ -88,8 +88,8 @@ void Bitflyer::FetchBalance(FetchBalanceCallback callback) {
   auto url_callback = base::BindOnce(
       &Bitflyer::OnFetchBalance, base::Unretained(this), std::move(callback));
 
-  bitflyer_server_->get_balance()->Request(wallet->token,
-                                           std::move(url_callback));
+  bitflyer_server_.get_balance().Request(wallet->token,
+                                         std::move(url_callback));
 }
 
 void Bitflyer::OnFetchBalance(FetchBalanceCallback callback,
@@ -123,20 +123,20 @@ void Bitflyer::TransferFunds(double amount,
                              const std::string& address,
                              const std::string& contribution_id,
                              LegacyResultCallback callback) {
-  transfer_->Run(contribution_id, address, amount,
-                 base::BindOnce([](LegacyResultCallback callback,
-                                   mojom::Result result) { callback(result); },
-                                std::move(callback)));
+  transfer_.Run(contribution_id, address, amount,
+                base::BindOnce([](LegacyResultCallback callback,
+                                  mojom::Result result) { callback(result); },
+                               std::move(callback)));
 }
 
 void Bitflyer::ConnectWallet(
     const base::flat_map<std::string, std::string>& args,
     ledger::ConnectExternalWalletCallback callback) {
-  connect_wallet_->Run(args, std::move(callback));
+  connect_wallet_.Run(args, std::move(callback));
 }
 
 void Bitflyer::GetWallet(ledger::GetExternalWalletCallback callback) {
-  get_wallet_->Run(std::move(callback));
+  get_wallet_.Run(std::move(callback));
 }
 
 void Bitflyer::SaveTransferFee(const std::string& contribution_id,
@@ -188,7 +188,7 @@ void Bitflyer::OnTransferFeeCompleted(const std::string& contribution_id,
 void Bitflyer::TransferFee(const std::string& contribution_id,
                            double amount,
                            const int attempts) {
-  transfer_->Run(
+  transfer_.Run(
       contribution_id, GetFeeAddress(), amount,
       base::BindOnce(&Bitflyer::OnTransferFeeCompleted, base::Unretained(this),
                      contribution_id, attempts));

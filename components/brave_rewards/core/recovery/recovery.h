@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_RECOVERY_RECOVERY_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_RECOVERY_RECOVERY_H_
 
-#include <memory>
-
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/recovery/recovery_empty_balance.h"
 
@@ -25,7 +23,7 @@ class Recovery {
 
  private:
   const raw_ref<LedgerImpl> ledger_;
-  std::unique_ptr<EmptyBalance> empty_balance_;
+  EmptyBalance empty_balance_;
 };
 
 }  // namespace recovery

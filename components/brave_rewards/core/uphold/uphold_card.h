@@ -6,22 +6,21 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_UPHOLD_UPHOLD_CARD_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_UPHOLD_UPHOLD_CARD_H_
 
-#include <memory>
 #include <string>
 
+#include "base/functional/callback_forward.h"
 #include "brave/components/brave_rewards/common/mojom/ledger.mojom.h"
-#include "brave/components/brave_rewards/core/uphold/uphold.h"
+#include "brave/components/brave_rewards/core/endpoint/uphold/uphold_server.h"
 
 namespace ledger {
 class LedgerImpl;
 
-namespace endpoint {
-class UpholdServer;
-}
-
 namespace uphold {
 
 const char kCardName[] = "Brave Browser";
+
+using CreateCardCallback =
+    base::OnceCallback<void(mojom::Result, std::string&& id)>;
 
 class UpholdCard {
  public:
@@ -30,24 +29,24 @@ class UpholdCard {
   ~UpholdCard();
 
   void CreateBATCardIfNecessary(const std::string& access_token,
-                                CreateCardCallback) const;
+                                CreateCardCallback);
 
  private:
   void OnGetBATCardId(CreateCardCallback,
                       const std::string& access_token,
                       mojom::Result,
-                      std::string&& id) const;
+                      std::string&& id);
 
   void OnCreateBATCard(CreateCardCallback,
                        const std::string& access_token,
                        mojom::Result,
-                       std::string&& id) const;
+                       std::string&& id);
 
   void OnUpdateBATCardSettings(CreateCardCallback,
                                std::string&& id,
                                mojom::Result) const;
 
-  std::unique_ptr<endpoint::UpholdServer> uphold_server_;
+  endpoint::UpholdServer uphold_server_;
 };
 
 }  // namespace uphold

@@ -14,7 +14,8 @@
 #include <vector>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/credentials/credentials_factory.h"
+#include "brave/components/brave_rewards/core/credentials/credentials_promotion.h"
+#include "brave/components/brave_rewards/core/credentials/credentials_sku.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 namespace ledger {
@@ -134,8 +135,8 @@ class Unblinded {
           publisher_list);
 
   const raw_ref<LedgerImpl> ledger_;
-  std::unique_ptr<credential::Credentials> credentials_promotion_;
-  std::unique_ptr<credential::Credentials> credentials_sku_;
+  credential::CredentialsPromotion credentials_promotion_;
+  credential::CredentialsSKU credentials_sku_;
 };
 
 }  // namespace contribution

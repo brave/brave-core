@@ -12,14 +12,13 @@
 
 namespace ledger::uphold {
 
-UpholdCard::UpholdCard(LedgerImpl& ledger)
-    : uphold_server_(std::make_unique<endpoint::UpholdServer>(ledger)) {}
+UpholdCard::UpholdCard(LedgerImpl& ledger) : uphold_server_(ledger) {}
 
 UpholdCard::~UpholdCard() = default;
 
 void UpholdCard::CreateBATCardIfNecessary(const std::string& access_token,
-                                          CreateCardCallback callback) const {
-  uphold_server_->get_cards()->Request(
+                                          CreateCardCallback callback) {
+  uphold_server_.get_cards().Request(
       access_token,
       base::BindOnce(&UpholdCard::OnGetBATCardId, base::Unretained(this),
                      std::move(callback), access_token));
@@ -28,7 +27,7 @@ void UpholdCard::CreateBATCardIfNecessary(const std::string& access_token,
 void UpholdCard::OnGetBATCardId(CreateCardCallback callback,
                                 const std::string& access_token,
                                 mojom::Result result,
-                                std::string&& id) const {
+                                std::string&& id) {
   if (result == mojom::Result::EXPIRED_TOKEN) {
     return std::move(callback).Run(mojom::Result::EXPIRED_TOKEN, "");
   }
@@ -39,7 +38,7 @@ void UpholdCard::OnGetBATCardId(CreateCardCallback callback,
 
   BLOG(1, "Couldn't get BAT card ID!");
 
-  uphold_server_->post_cards()->Request(
+  uphold_server_.post_cards().Request(
       access_token,
       base::BindOnce(&UpholdCard::OnCreateBATCard, base::Unretained(this),
                      std::move(callback), access_token));
@@ -48,7 +47,7 @@ void UpholdCard::OnGetBATCardId(CreateCardCallback callback,
 void UpholdCard::OnCreateBATCard(CreateCardCallback callback,
                                  const std::string& access_token,
                                  mojom::Result result,
-                                 std::string&& id) const {
+                                 std::string&& id) {
   if (result == mojom::Result::EXPIRED_TOKEN) {
     return std::move(callback).Run(mojom::Result::EXPIRED_TOKEN, "");
   }
@@ -63,7 +62,7 @@ void UpholdCard::OnCreateBATCard(CreateCardCallback callback,
     return std::move(callback).Run(mojom::Result::LEDGER_ERROR, "");
   }
 
-  uphold_server_->patch_card()->Request(
+  uphold_server_.patch_card().Request(
       access_token, id,
       base::BindOnce(&UpholdCard::OnUpdateBATCardSettings,
                      base::Unretained(this), std::move(callback), id));

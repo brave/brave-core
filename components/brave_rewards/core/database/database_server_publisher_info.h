@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_SERVER_PUBLISHER_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_SERVER_PUBLISHER_INFO_H_
 
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -46,7 +45,7 @@ class DatabaseServerPublisherInfo : public DatabaseTable {
   void OnExpiredRecordsSelected(mojom::DBCommandResponsePtr response,
                                 ledger::LegacyResultCallback callback);
 
-  std::unique_ptr<DatabaseServerPublisherBanner> banner_;
+  DatabaseServerPublisherBanner banner_;
 };
 
 }  // namespace database

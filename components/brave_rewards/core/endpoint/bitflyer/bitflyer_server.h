@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_BITFLYER_BITFLYER_SERVER_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_BITFLYER_BITFLYER_SERVER_H_
 
-#include <memory>
-
 #include "brave/components/brave_rewards/core/endpoint/bitflyer/get_balance/get_balance_bitflyer.h"
 #include "brave/components/brave_rewards/core/endpoint/bitflyer/post_oauth/post_oauth_bitflyer.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
@@ -22,13 +20,13 @@ class BitflyerServer {
   explicit BitflyerServer(LedgerImpl& ledger);
   ~BitflyerServer();
 
-  bitflyer::GetBalance* get_balance() const;
+  bitflyer::GetBalance& get_balance() { return get_balance_; }
 
-  bitflyer::PostOauth* post_oauth() const;
+  bitflyer::PostOauth& post_oauth() { return post_oauth_; }
 
  private:
-  std::unique_ptr<bitflyer::GetBalance> get_balance_;
-  std::unique_ptr<bitflyer::PostOauth> post_oauth_;
+  bitflyer::GetBalance get_balance_;
+  bitflyer::PostOauth post_oauth_;
 };
 
 }  // namespace endpoint

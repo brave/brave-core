@@ -27,11 +27,10 @@ class ConnectUpholdWallet : public wallet_provider::ConnectExternalWallet {
  private:
   const char* WalletType() const override;
 
-  void Authorize(OAuthInfo&&,
-                 ledger::ConnectExternalWalletCallback) const override;
+  void Authorize(OAuthInfo&&, ledger::ConnectExternalWalletCallback) override;
 
   void OnAuthorize(ledger::ConnectExternalWalletCallback,
-                   endpoints::PostOAuthUphold::Result&&) const;
+                   endpoints::PostOAuthUphold::Result&&);
 
   void OnGetUser(ledger::ConnectExternalWalletCallback,
                  const std::string& access_token,

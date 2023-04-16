@@ -87,7 +87,7 @@ class DatabaseContributionInfo : public DatabaseTable {
           shared_contributions,
       ledger::ContributionInfoListCallback callback);
 
-  std::unique_ptr<DatabaseContributionInfoPublishers> publishers_;
+  DatabaseContributionInfoPublishers publishers_;
 };
 
 }  // namespace database
