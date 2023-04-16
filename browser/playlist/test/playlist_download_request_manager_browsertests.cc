@@ -30,6 +30,7 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
     std::string name;
     std::string thumbnail_source;
     std::string media_source;
+    std::string duration;
   };
 
   PlaylistDownloadRequestManagerBrowserTest() {
@@ -48,6 +49,7 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
     item->thumbnail_path = GURL(data.thumbnail_source);
     item->media_source = GURL(data.media_source);
     item->media_path = GURL(data.media_source);
+    item->duration = data.duration;
     return item;
   }
 
@@ -215,7 +217,10 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
           <video src="test.mp4"/>
         </body></html>
       )html",
-      {{.name = "", .thumbnail_source = "", .media_source = "/test.mp4"}});
+      {{.name = "",
+        .thumbnail_source = "",
+        .media_source = "/test.mp4",
+        .duration = ""}});
 }
 
 IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
@@ -229,8 +234,14 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
           </video>
         </body></html>
       )html",
-      {{.name = "", .thumbnail_source = "", .media_source = "/test1.mp4"},
-       {.name = "", .thumbnail_source = "", .media_source = "/test2.mp4"}});
+      {{.name = "",
+        .thumbnail_source = "",
+        .media_source = "/test1.mp4",
+        .duration = ""},
+       {.name = "",
+        .thumbnail_source = "",
+        .media_source = "/test2.mp4",
+        .duration = ""}});
 }
 
 IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
@@ -290,7 +301,8 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
       {
           {.name = "Dummy response",
            .thumbnail_source = "/thumbnail.jpg",
-           .media_source = "/test.mp4"},
+           .media_source = "/test.mp4",
+           .duration = "200.123"},
       },
       GURL("https://m.youtube.com/"));
 
@@ -335,7 +347,8 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
       {
           {.name = "",
            .thumbnail_source = "https://foo.com/img.jpg",
-           .media_source = "/test1.mp4"},
+           .media_source = "/test1.mp4",
+           .duration = ""},
       });
 }
 
@@ -354,6 +367,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
       {
           {.name = "",
            .thumbnail_source = "/img.jpg",
-           .media_source = "/test1.mp4"},
+           .media_source = "/test1.mp4",
+           .duration = ""},
       });
 }
