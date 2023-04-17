@@ -1183,7 +1183,7 @@ public class BrowserViewController: UIViewController {
       self.presentDefaultBrowserScreenCallout()
       self.presentBraveRewardsScreenCallout()
       self.presentCookieNotificationBlockingCalloutIfNeeded()
-      self.presentLinkReceiptCallout()
+      self.presentLinkReceiptCallout(skipSafeGuards: false)
     }
 
     screenshotHelper.viewIsVisible = true

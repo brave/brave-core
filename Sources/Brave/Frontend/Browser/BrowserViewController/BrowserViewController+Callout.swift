@@ -69,16 +69,45 @@ extension BrowserViewController {
     present(popup, animated: false)
   }
   
-  func presentLinkReceiptCallout() {
-    // Show this onboarding only if the VPN has been purchased
-    guard case .purchased = BraveVPN.vpnState else { return }
-    
-    guard shouldShowCallout(calloutType: .linkReceipt) else {
+  func presentVPNInAppEventCallout() {
+    // If the onboarding has not completed we do not show any promo screens.
+    // This will most likely be the case for users who have not installed the app yet.
+    if Preferences.Onboarding.basicOnboardingCompleted.value != OnboardingState.completed.rawValue {
       return
     }
     
-    if Preferences.Onboarding.basicOnboardingCompleted.value != OnboardingState.completed.rawValue {
-      return
+    switch BraveVPN.vpnState {
+    case .purchased:
+      presentLinkReceiptCallout(skipSafeGuards: true)
+    case .expired, .notPurchased:
+      if VPNProductInfo.isComplete {
+        presentCorrespondingVPNViewController()
+      } else {
+        // This is flaky. We fetch VPN prices from Apple asynchronously and it makes no sense to
+        // show anything if there's no price data. We try to wait one second and see if the price data is there.
+        // If not we do not show anything.
+        // This can happen if the app is not in memory and we have to fresh launch it upon tapping on the in app event.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
+          if VPNProductInfo.isComplete {
+            presentCorrespondingVPNViewController()
+          }
+        }
+      }
+    }
+  }
+  
+  func presentLinkReceiptCallout(skipSafeGuards: Bool) {
+    if !skipSafeGuards {
+      // Show this onboarding only if the VPN has been purchased
+      guard case .purchased = BraveVPN.vpnState else { return }
+      
+      guard shouldShowCallout(calloutType: .linkReceipt) else {
+        return
+      }
+      
+      if Preferences.Onboarding.basicOnboardingCompleted.value != OnboardingState.completed.rawValue {
+        return
+      }
     }
     
     var linkReceiptView = OnboardingLinkReceiptView()
