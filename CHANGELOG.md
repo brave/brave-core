@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.49.1](https://github.com/brave/brave-ios/releases/tag/v1.49.1)
+
+- Fixed issues with fingerprinting protection. [#7231](https://github.com/brave/brave-ios/issues/7231)
+- Fixed transaction confirmation view from auto-dismissing when presented in Brave Wallet. [#7200](https://github.com/brave/brave-ios/issues/7200)
+
 ## [1.49](https://github.com/brave/brave-ios/releases/tag/v1.49)
 
 ### Web3
