@@ -9,8 +9,6 @@ import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 
 // utils
-import { createWalletReducer } from '../../common/slices/wallet.slice'
-import { createPanelReducer } from '../../panel/reducers/panel_reducer'
 
 // actions
 import { WalletActions } from '../../common/actions'
@@ -23,48 +21,34 @@ import { LibContext } from '../../common/context/lib.context'
 
 // Mocks
 import * as Lib from '../../common/async/__mocks__/lib'
-import { mockWalletState } from '../mock-data/mock-wallet-state'
-import { mockPanelState } from '../mock-data/mock-panel-state'
 import { ApiProxyContext } from '../../common/context/api-proxy.context'
-import { getMockedAPIProxy } from '../../common/async/__mocks__/bridge'
-import { configureStore } from '@reduxjs/toolkit'
-import { createWalletApi } from '../../common/slices/api.slice'
-import { createPageReducer } from '../../page/reducers/page_reducer'
-import { mockPageState } from '../mock-data/mock-page-state'
+import {
+  getMockedAPIProxy,
+  WalletApiDataOverrides
+} from '../../common/async/__mocks__/bridge'
+import { createMockStore } from '../../utils/test-utils'
 
 const mockedProxy = getMockedAPIProxy()
 
 export interface WalletPanelStoryProps {
   walletStateOverride?: Partial<WalletState>
   panelStateOverride?: Partial<PanelState>
+  walletApiDataOverrides?: WalletApiDataOverrides
 }
 
 export const WalletPanelStory: React.FC<React.PropsWithChildren<WalletPanelStoryProps>> = ({
   children,
   panelStateOverride,
-  walletStateOverride
+  walletStateOverride,
+  walletApiDataOverrides
 }) => {
-  // api
-  const api = createWalletApi(getMockedAPIProxy)
   // redux
   const store = React.useMemo(() => {
-    return configureStore({
-      reducer: {
-        wallet: createWalletReducer({
-          ...mockWalletState,
-          ...(walletStateOverride || {})
-        }),
-        panel: createPanelReducer({
-          ...mockPanelState,
-          ...(panelStateOverride || {})
-        }),
-        page: createPageReducer(mockPageState),
-        [api.reducerPath]: api.reducer
-      },
-      devTools: true,
-      middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware)
-    })
-  }, [walletStateOverride, panelStateOverride])
+    return createMockStore({
+      walletStateOverride,
+      panelStateOverride
+    }, walletApiDataOverrides)
+  }, [walletStateOverride, panelStateOverride, walletApiDataOverrides])
 
   React.useEffect(() => {
     store && store.dispatch(WalletActions.initialize())
