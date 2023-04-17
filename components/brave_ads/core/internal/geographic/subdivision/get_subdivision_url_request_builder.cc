@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/get_subdivision_url_request_builder_constants.h"
 #include "url/gurl.h"
 
-namespace brave_ads::geographic {
+namespace brave_ads {
 
 namespace {
 
@@ -33,4 +33,4 @@ mojom::UrlRequestInfoPtr GetSubdivisionUrlRequestBuilder::Build() {
   return url_request;
 }
 
-}  // namespace brave_ads::geographic
+}  // namespace brave_ads

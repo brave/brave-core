@@ -29,10 +29,6 @@ class Time;
 
 namespace brave_ads {
 
-namespace geographic {
-class SubdivisionTargeting;
-}  // namespace geographic
-
 namespace privacy {
 class TokenGenerator;
 }  // namespace privacy
@@ -72,6 +68,7 @@ class PredictorsManager;
 class PromotedContentAd;
 class Reminder;
 class SearchResultAd;
+class SubdivisionTargeting;
 class TabManager;
 class Transfer;
 class UserActivityManager;
@@ -209,7 +206,7 @@ class AdsImpl final : public Ads,
 
   std::unique_ptr<Conversions> conversions_;
 
-  std::unique_ptr<geographic::SubdivisionTargeting> subdivision_targeting_;
+  std::unique_ptr<SubdivisionTargeting> subdivision_targeting_;
 
   std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
   std::unique_ptr<resource::EpsilonGreedyBandit>

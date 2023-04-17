@@ -11,7 +11,7 @@
 namespace brave_ads::inline_content_ads {
 
 EligibleAdsBase::EligibleAdsBase(
-    const geographic::SubdivisionTargeting& subdivision_targeting,
+    const SubdivisionTargeting& subdivision_targeting,
     const resource::AntiTargeting& anti_targeting_resource)
     : subdivision_targeting_(subdivision_targeting),
       anti_targeting_resource_(anti_targeting_resource) {}

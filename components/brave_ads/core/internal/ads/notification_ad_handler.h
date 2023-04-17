@@ -24,10 +24,6 @@ class TimeDelta;
 
 namespace brave_ads {
 
-namespace geographic {
-class SubdivisionTargeting;
-}  // namespace geographic
-
 namespace notification_ads {
 class EventHandler;
 class Serving;
@@ -42,6 +38,7 @@ class EpsilonGreedyBandit;
 }  // namespace processor
 
 class Account;
+class SubdivisionTargeting;
 class Transfer;
 struct NotificationAdInfo;
 struct WalletInfo;
@@ -57,7 +54,7 @@ class NotificationAdHandler final
       Account* account,
       Transfer* transfer,
       processor::EpsilonGreedyBandit* epsilon_greedy_bandit_processor,
-      const geographic::SubdivisionTargeting& subdivision_targeting,
+      const SubdivisionTargeting& subdivision_targeting,
       const resource::AntiTargeting& anti_targeting_resource);
 
   NotificationAdHandler(const NotificationAdHandler&) = delete;

@@ -45,7 +45,7 @@ bool DoesAdTargetSubdivision(const CreativeAdInfo& creative_ad) {
 }  // namespace
 
 SubdivisionTargetingExclusionRule::SubdivisionTargetingExclusionRule(
-    const geographic::SubdivisionTargeting& subdivision_targeting)
+    const SubdivisionTargeting& subdivision_targeting)
     : subdivision_targeting_(subdivision_targeting) {}
 
 SubdivisionTargetingExclusionRule::~SubdivisionTargetingExclusionRule() =
@@ -75,7 +75,7 @@ const std::string& SubdivisionTargetingExclusionRule::GetLastMessage() const {
 
 bool SubdivisionTargetingExclusionRule::DoesRespectCap(
     const CreativeAdInfo& creative_ad) {
-  if (!geographic::SubdivisionTargeting::ShouldAllow()) {
+  if (!SubdivisionTargeting::ShouldAllow()) {
     return !DoesAdTargetSubdivision(creative_ad);
   }
 

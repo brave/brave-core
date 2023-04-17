@@ -32,14 +32,13 @@ class BatAdsEligibleNotificationAdsV3Test : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    subdivision_targeting_ =
-        std::make_unique<geographic::SubdivisionTargeting>();
+    subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
     anti_targeting_resource_ = std::make_unique<resource::AntiTargeting>();
     eligible_ads_ = std::make_unique<EligibleAdsV3>(*subdivision_targeting_,
                                                     *anti_targeting_resource_);
   }
 
-  std::unique_ptr<geographic::SubdivisionTargeting> subdivision_targeting_;
+  std::unique_ptr<SubdivisionTargeting> subdivision_targeting_;
   std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
   std::unique_ptr<EligibleAdsV3> eligible_ads_;
 };

@@ -8,11 +8,11 @@
 
 #include <string>
 
-namespace brave_ads::geographic {
+namespace brave_ads {
 
 bool IsSupportedCountryCodeForSubdivisionTargeting(
     const std::string& country_code);
 
-}  // namespace brave_ads::geographic
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_GEOGRAPHIC_SUBDIVISION_SUBDIVISION_TARGETING_UTIL_H_

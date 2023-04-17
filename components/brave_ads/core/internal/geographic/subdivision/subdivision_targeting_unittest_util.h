@@ -11,22 +11,17 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_url_response_alias.h"
 #include "net/http/http_status_code.h"
 
-namespace brave_ads::geographic {
+namespace brave_ads {
 
-URLResponsePair BuildSubdivisionTargetingUrlResponseBody(
-    net::HttpStatusCode status_code,
+URLResponsePair BuildSubdivisionTargetingUrlResponse(
+    net::HttpStatusCode response_status_code,
     const std::string& country,
     const std::string& region);
 
-URLResponsePair BuildSubdivisionTargetingUrlResponseBody(
-    net::HttpStatusCode status_code,
+URLResponsePair BuildSubdivisionTargetingUrlResponse(
+    net::HttpStatusCode response_status_code,
     const std::string& response_body = "");
 
-URLResponseMap BuildValidSubdivisionTargetingUrlResponses(
-    net::HttpStatusCode status_code,
-    const std::string& country,
-    const std::string& region);
-
-}  // namespace brave_ads::geographic
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_GEOGRAPHIC_SUBDIVISION_SUBDIVISION_TARGETING_UNITTEST_UTIL_H_

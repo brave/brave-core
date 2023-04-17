@@ -97,7 +97,7 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
 
   conversions_ = std::make_unique<Conversions>();
 
-  subdivision_targeting_ = std::make_unique<geographic::SubdivisionTargeting>();
+  subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
 
   anti_targeting_resource_ = std::make_unique<resource::AntiTargeting>();
   epsilon_greedy_bandit_resource_ =

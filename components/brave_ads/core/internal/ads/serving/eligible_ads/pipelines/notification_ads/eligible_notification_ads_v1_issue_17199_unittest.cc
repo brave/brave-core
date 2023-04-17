@@ -35,7 +35,7 @@ TEST_F(BatAdsEligibleNotificationAdsV1Issue17199Test, GetEligibleAds) {
   AdvanceClockTo(TimeFromString("4 July 2021", /*is_local*/ false));
 
   // Act
-  geographic::SubdivisionTargeting subdivision_targeting;
+  SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
   EligibleAdsV1 eligible_ads(subdivision_targeting, anti_targeting_resource);
 

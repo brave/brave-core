@@ -239,6 +239,8 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/common/unittest/command_line_switch_info.h",
     "//brave/components/brave_ads/core/internal/common/unittest/unittest_base.cc",
     "//brave/components/brave_ads/core/internal/common/unittest/unittest_base.h",
+    "//brave/components/brave_ads/core/internal/common/unittest/unittest_base_util.cc",
+    "//brave/components/brave_ads/core/internal/common/unittest/unittest_base_util.h",
     "//brave/components/brave_ads/core/internal/common/unittest/unittest_build_channel_types.h",
     "//brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.cc",
     "//brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h",

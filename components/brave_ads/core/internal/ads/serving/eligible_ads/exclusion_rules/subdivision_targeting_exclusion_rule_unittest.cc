@@ -14,6 +14,7 @@
 #include "brave/components/brave_ads/core/internal/common/locale/subdivision_code_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision/get_subdivision_url_request_builder_constants.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting_unittest_util.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
@@ -72,8 +73,7 @@ class BatAdsSubdivisionTargetingExclusionRuleTest
         std::make_unique<brave_l10n::test::ScopedDefaultLocale>(
             base::StrCat({"en", "_", GetParam().country}));
 
-    subdivision_targeting_ =
-        std::make_unique<geographic::SubdivisionTargeting>();
+    subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
     exclusion_rule_ = std::make_unique<SubdivisionTargetingExclusionRule>(
         *subdivision_targeting_);
   }
@@ -87,25 +87,38 @@ class BatAdsSubdivisionTargetingExclusionRuleTest
 
     if (GetParam().country ==
         base::StringPiece("US") /*United States of America*/) {
-      region = "FL";  // Florida
-
-      if (GetParam().region == region) {
-        region = "AL";  // Alabama
+      if (GetParam().region == base::StringPiece("FL") /*Florida*/) {
+        region = "CA";  // Alabama
+      } else {
+        region = "FL";  // Florida
       }
     } else if (GetParam().country == base::StringPiece("CA") /*Canada*/) {
-      region = "QC";  // Quebec
-
-      if (GetParam().region == region) {
+      if (GetParam().region == base::StringPiece("QC") /*Quebec*/) {
         region = "AB";  // Alberta
+      } else {
+        region = "QC";  // Quebec
       }
     }
 
     return locale::BuildSubdivisionCode(GetParam().country, region);
   }
 
+  void MockUrlResponse(const std::string& country, const std::string& region) {
+    const URLResponseMap url_responses = {
+        {kSubdivisionTargetingUrlPath,
+         {BuildSubdivisionTargetingUrlResponse(net::HTTP_OK, country,
+                                               region)}}};
+
+    MockUrlResponses(ads_client_mock_, url_responses);
+  }
+
+  void MockUrlResponseForTestParam() {
+    MockUrlResponse(GetParam().country, GetParam().region);
+  }
+
   std::unique_ptr<brave_l10n::test::ScopedDefaultLocale> scoped_default_locale_;
 
-  std::unique_ptr<geographic::SubdivisionTargeting> subdivision_targeting_;
+  std::unique_ptr<SubdivisionTargeting> subdivision_targeting_;
   std::unique_ptr<SubdivisionTargetingExclusionRule> exclusion_rule_;
 };
 
@@ -144,10 +157,7 @@ TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
   ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
                                    true);
 
-  const URLResponseMap url_responses =
-      geographic::BuildValidSubdivisionTargetingUrlResponses(
-          net::HTTP_OK, GetParam().country, GetParam().region);
-  MockUrlResponses(ads_client_mock_, url_responses);
+  MockUrlResponseForTestParam();
 
   subdivision_targeting_->MaybeFetch();
 
@@ -168,10 +178,7 @@ TEST_P(
   ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
                                    true);
 
-  const URLResponseMap url_responses =
-      geographic::BuildValidSubdivisionTargetingUrlResponses(
-          net::HTTP_OK, GetParam().country, GetParam().region);
-  MockUrlResponses(ads_client_mock_, url_responses);
+  MockUrlResponseForTestParam();
 
   subdivision_targeting_->MaybeFetch();
 
@@ -193,10 +200,7 @@ TEST_P(
   ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
                                    true);
 
-  const URLResponseMap url_responses =
-      geographic::BuildValidSubdivisionTargetingUrlResponses(
-          net::HTTP_OK, GetParam().country, GetParam().region);
-  MockUrlResponses(ads_client_mock_, url_responses);
+  MockUrlResponseForTestParam();
 
   subdivision_targeting_->MaybeFetch();
 
@@ -220,10 +224,7 @@ TEST_P(
   ads_client_mock_->SetStringPref(prefs::kSubdivisionTargetingCode,
                                   BuildSubdivisionCode());
 
-  const URLResponseMap url_responses =
-      geographic::BuildValidSubdivisionTargetingUrlResponses(
-          net::HTTP_OK, GetParam().country, GetParam().region);
-  MockUrlResponses(ads_client_mock_, url_responses);
+  MockUrlResponseForTestParam();
 
   subdivision_targeting_->MaybeFetch();
 
@@ -247,10 +248,7 @@ TEST_P(
   ads_client_mock_->SetStringPref(prefs::kSubdivisionTargetingCode,
                                   BuildSubdivisionCode());
 
-  const URLResponseMap url_responses =
-      geographic::BuildValidSubdivisionTargetingUrlResponses(
-          net::HTTP_OK, GetParam().country, GetParam().region);
-  MockUrlResponses(ads_client_mock_, url_responses);
+  MockUrlResponseForTestParam();
 
   subdivision_targeting_->MaybeFetch();
 
@@ -275,10 +273,7 @@ TEST_P(
   ads_client_mock_->SetStringPref(prefs::kSubdivisionTargetingCode,
                                   BuildSubdivisionCode());
 
-  const URLResponseMap url_responses =
-      geographic::BuildValidSubdivisionTargetingUrlResponses(
-          net::HTTP_OK, GetParam().country, GetParam().region);
-  MockUrlResponses(ads_client_mock_, url_responses);
+  MockUrlResponseForTestParam();
 
   subdivision_targeting_->MaybeFetch();
 
@@ -298,10 +293,7 @@ TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
   ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
                                    true);
 
-  const URLResponseMap url_responses =
-      geographic::BuildValidSubdivisionTargetingUrlResponses(
-          net::HTTP_OK, GetParam().country, GetParam().region);
-  MockUrlResponses(ads_client_mock_, url_responses);
+  MockUrlResponseForTestParam();
 
   subdivision_targeting_->MaybeFetch();
 
@@ -321,10 +313,7 @@ TEST_P(
   ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
                                    true);
 
-  const URLResponseMap url_responses =
-      geographic::BuildValidSubdivisionTargetingUrlResponses(
-          net::HTTP_OK, GetParam().country, GetParam().region);
-  MockUrlResponses(ads_client_mock_, url_responses);
+  MockUrlResponseForTestParam();
 
   subdivision_targeting_->MaybeFetch();
 
@@ -345,11 +334,8 @@ TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
   ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
                                    true);
 
-  const URLResponseMap url_responses =
-      geographic::BuildValidSubdivisionTargetingUrlResponses(
-          net::HTTP_OK, /*country*/ "XX",
-          /*region*/ "NO REGION");
-  MockUrlResponses(ads_client_mock_, url_responses);
+  MockUrlResponse(/*country*/ "XX",
+                  /*region*/ "NO REGION");
 
   subdivision_targeting_->MaybeFetch();
 
@@ -371,10 +357,7 @@ TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
 
   ads_client_mock_->SetStringPref(prefs::kSubdivisionTargetingCode, "DISABLED");
 
-  const URLResponseMap url_responses =
-      geographic::BuildValidSubdivisionTargetingUrlResponses(
-          net::HTTP_OK, GetParam().country, GetParam().region);
-  MockUrlResponses(ads_client_mock_, url_responses);
+  MockUrlResponseForTestParam();
 
   subdivision_targeting_->MaybeFetch();
 
@@ -396,10 +379,7 @@ TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
 
   ads_client_mock_->SetStringPref(prefs::kSubdivisionTargetingCode, "DISABLED");
 
-  const URLResponseMap url_responses =
-      geographic::BuildValidSubdivisionTargetingUrlResponses(
-          net::HTTP_OK, GetParam().country, GetParam().region);
-  MockUrlResponses(ads_client_mock_, url_responses);
+  MockUrlResponseForTestParam();
 
   subdivision_targeting_->MaybeFetch();
 

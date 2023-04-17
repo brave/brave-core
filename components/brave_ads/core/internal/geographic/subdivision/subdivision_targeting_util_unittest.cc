@@ -9,7 +9,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace brave_ads::geographic {
+namespace brave_ads {
 
 TEST(BatAdsSubdivisionTargetingUtilTest,
      IsSupportedCountryCodeForSubdivisionTargeting) {
@@ -23,4 +23,4 @@ TEST(BatAdsSubdivisionTargetingUtilTest,
   EXPECT_FALSE(IsSupportedCountryCodeForSubdivisionTargeting("ES"));
 }
 
-}  // namespace brave_ads::geographic
+}  // namespace brave_ads

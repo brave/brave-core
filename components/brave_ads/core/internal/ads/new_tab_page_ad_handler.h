@@ -17,10 +17,6 @@
 
 namespace brave_ads {
 
-namespace geographic {
-class SubdivisionTargeting;
-}  // namespace geographic
-
 namespace new_tab_page_ads {
 class EventHandler;
 class Serving;
@@ -32,16 +28,16 @@ class AntiTargeting;
 
 class Account;
 class Transfer;
+class SubdivisionTargeting;
 struct NewTabPageAdInfo;
 
 class NewTabPageAdHandler final : public new_tab_page_ads::EventHandlerObserver,
                                   public new_tab_page_ads::ServingDelegate {
  public:
-  NewTabPageAdHandler(
-      Account* account,
-      Transfer* transfer,
-      const geographic::SubdivisionTargeting& subdivision_targeting,
-      const resource::AntiTargeting& anti_targeting_resource);
+  NewTabPageAdHandler(Account* account,
+                      Transfer* transfer,
+                      const SubdivisionTargeting& subdivision_targeting,
+                      const resource::AntiTargeting& anti_targeting_resource);
 
   NewTabPageAdHandler(const NewTabPageAdHandler&) = delete;
   NewTabPageAdHandler& operator=(const NewTabPageAdHandler&) = delete;

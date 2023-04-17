@@ -33,7 +33,7 @@ namespace {
 constexpr base::TimeDelta kRetryServingAdAfterDelay = base::Minutes(2);
 }  // namespace
 
-Serving::Serving(const geographic::SubdivisionTargeting& subdivision_targeting,
+Serving::Serving(const SubdivisionTargeting& subdivision_targeting,
                  const resource::AntiTargeting& anti_targeting_resource) {
   eligible_ads_ = EligibleAdsFactory::Build(
       kServingVersion.Get(), subdivision_targeting, anti_targeting_resource);

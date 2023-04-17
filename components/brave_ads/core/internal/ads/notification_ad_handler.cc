@@ -40,7 +40,7 @@ NotificationAdHandler::NotificationAdHandler(
     Account* account,
     Transfer* transfer,
     processor::EpsilonGreedyBandit* epsilon_greedy_bandit_processor,
-    const geographic::SubdivisionTargeting& subdivision_targeting,
+    const SubdivisionTargeting& subdivision_targeting,
     const resource::AntiTargeting& anti_targeting_resource)
     : account_(account),
       transfer_(transfer),

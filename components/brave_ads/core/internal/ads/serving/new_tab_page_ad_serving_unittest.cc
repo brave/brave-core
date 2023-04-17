@@ -61,15 +61,14 @@ class BatAdsNewTabPageAdServingTest : public UnitTestBase {
 
     ForceServingVersion(1);
 
-    subdivision_targeting_ =
-        std::make_unique<geographic::SubdivisionTargeting>();
+    subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
     anti_targeting_resource_ = std::make_unique<resource::AntiTargeting>();
     serving_ = std::make_unique<Serving>(*subdivision_targeting_,
                                          *anti_targeting_resource_);
     serving_->SetDelegate(&serving_delegate_);
   }
 
-  std::unique_ptr<geographic::SubdivisionTargeting> subdivision_targeting_;
+  std::unique_ptr<SubdivisionTargeting> subdivision_targeting_;
   std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
   std::unique_ptr<Serving> serving_;
 

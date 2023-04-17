@@ -17,10 +17,6 @@
 
 namespace brave_ads {
 
-namespace geographic {
-class SubdivisionTargeting;
-}  // namespace geographic
-
 namespace resource {
 class AntiTargeting;
 }  // namespace resource
@@ -29,6 +25,7 @@ namespace targeting {
 struct UserModelInfo;
 }  // namespace targeting
 
+class SubdivisionTargeting;
 struct NewTabPageAdInfo;
 
 namespace new_tab_page_ads {
@@ -37,7 +34,7 @@ class EligibleAdsBase;
 
 class Serving final {
  public:
-  Serving(const geographic::SubdivisionTargeting& subdivision_targeting,
+  Serving(const SubdivisionTargeting& subdivision_targeting,
           const resource::AntiTargeting& anti_targeting_resource);
 
   Serving(const Serving&) = delete;

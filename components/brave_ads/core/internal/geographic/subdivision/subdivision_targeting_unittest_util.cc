@@ -8,7 +8,7 @@
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/get_subdivision_url_request_builder_constants.h"
 
-namespace brave_ads::geographic {
+namespace brave_ads {
 
 namespace {
 
@@ -20,26 +20,17 @@ std::string BuildUrlResponseBody(const std::string& country,
 
 }  // namespace
 
-URLResponsePair BuildSubdivisionTargetingUrlResponseBody(
-    const net::HttpStatusCode status_code,
+URLResponsePair BuildSubdivisionTargetingUrlResponse(
+    const net::HttpStatusCode response_status_code,
     const std::string& country,
     const std::string& region) {
-  return {status_code, BuildUrlResponseBody(country, region)};
+  return {response_status_code, BuildUrlResponseBody(country, region)};
 }
 
-URLResponsePair BuildSubdivisionTargetingUrlResponseBody(
-    const net::HttpStatusCode status_code,
+URLResponsePair BuildSubdivisionTargetingUrlResponse(
+    const net::HttpStatusCode response_status_code,
     const std::string& response_body) {
-  return {status_code, response_body};
+  return {response_status_code, response_body};
 }
 
-URLResponseMap BuildValidSubdivisionTargetingUrlResponses(
-    const net::HttpStatusCode status_code,
-    const std::string& country,
-    const std::string& region) {
-  return {{kSubdivisionTargetingUrlPath,
-           {{{BuildSubdivisionTargetingUrlResponseBody(status_code, country,
-                                                       region)}}}}};
-}
-
-}  // namespace brave_ads::geographic
+}  // namespace brave_ads

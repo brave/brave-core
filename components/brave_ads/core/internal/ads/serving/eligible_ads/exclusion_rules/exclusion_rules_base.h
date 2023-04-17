@@ -17,10 +17,6 @@
 
 namespace brave_ads {
 
-namespace geographic {
-class SubdivisionTargeting;
-}  // namespace geographic
-
 namespace resource {
 class AntiTargeting;
 }  // namespace resource
@@ -36,6 +32,7 @@ class PerDayExclusionRule;
 class PerMonthExclusionRule;
 class PerWeekExclusionRule;
 class SplitTestExclusionRule;
+class SubdivisionTargeting;
 class SubdivisionTargetingExclusionRule;
 class TotalMaxExclusionRule;
 class TransferredExclusionRule;
@@ -54,11 +51,10 @@ class ExclusionRulesBase {
   virtual bool ShouldExcludeCreativeAd(const CreativeAdInfo& creative_ad);
 
  protected:
-  ExclusionRulesBase(
-      const AdEventList& ad_events,
-      const geographic::SubdivisionTargeting& subdivision_targeting,
-      const resource::AntiTargeting& anti_targeting_resource,
-      const BrowsingHistoryList& browsing_history);
+  ExclusionRulesBase(const AdEventList& ad_events,
+                     const SubdivisionTargeting& subdivision_targeting,
+                     const resource::AntiTargeting& anti_targeting_resource,
+                     const BrowsingHistoryList& browsing_history);
 
   std::vector<ExclusionRuleInterface<CreativeAdInfo>*> exclusion_rules_;
 

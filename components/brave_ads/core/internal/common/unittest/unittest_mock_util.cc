@@ -8,12 +8,10 @@
 #include <ostream>
 #include <string>
 #include <utility>
-#include <vector>
 
-#include "base/check.h"
+#include "base/check_op.h"
 #include "base/containers/flat_map.h"
 #include "base/notreached.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_ads/core/build_channel.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_url_response_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -130,20 +128,16 @@ void MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
       .WillByDefault(Return(can_show));
 }
 
-void MockGetBrowsingHistory(const std::unique_ptr<AdsClientMock>& mock) {
+void MockGetBrowsingHistory(const std::unique_ptr<AdsClientMock>& mock,
+                            const std::vector<GURL>& history) {
   ON_CALL(*mock, GetBrowsingHistory(_, _, _))
-      .WillByDefault(Invoke([](const int max_count, const int /*days_ago*/,
-                               GetBrowsingHistoryCallback callback) {
-        std::vector<GURL> history;
+      .WillByDefault(
+          Invoke([history](const size_t max_count, const size_t /*days_ago*/,
+                           GetBrowsingHistoryCallback callback) {
+            DCHECK_LE(history.size(), max_count);
 
-        for (int i = 0; i < max_count; i++) {
-          const std::string spec =
-              base::StringPrintf("https://www.brave.com/%d", i);
-          history.emplace_back(spec);
-        }
-
-        std::move(callback).Run(history);
-      }));
+            std::move(callback).Run(history);
+          }));
 }
 
 void MockUrlResponses(const std::unique_ptr<AdsClientMock>& mock,

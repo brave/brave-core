@@ -12,15 +12,12 @@
 
 namespace brave_ads {
 
-namespace geographic {
-class SubdivisionTargeting;
-}  // namespace geographic
-
 namespace resource {
 class AntiTargeting;
 }  // namespace resource
 
 class CreativeInstanceExclusionRule;
+class SubdivisionTargeting;
 
 namespace notification_ads {
 
@@ -30,7 +27,7 @@ class EmbeddingExclusionRule;
 class ExclusionRules final : public ExclusionRulesBase {
  public:
   ExclusionRules(const AdEventList& ad_events,
-                 const geographic::SubdivisionTargeting& subdivision_targeting,
+                 const SubdivisionTargeting& subdivision_targeting,
                  const resource::AntiTargeting& anti_targeting_resource,
                  const BrowsingHistoryList& browsing_history);
 
