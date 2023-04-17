@@ -23,6 +23,9 @@ void OnPermissionRequestStatus(
     content::WebContents* contents,
     const std::vector<blink::mojom::PermissionStatus>& permission_statuses) {
   DCHECK_EQ(1u, permission_statuses.size());
+  // Once permission status has been updated, reload the page.
+  // We do this so as to let the user know that they should retry
+  // an action. Also just makes state management easier.
   if (contents &&
       permission_statuses[0] == blink::mojom::PermissionStatus::GRANTED) {
     contents->GetController().Reload(content::ReloadType::NORMAL, true);
