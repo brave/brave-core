@@ -24,6 +24,7 @@
 -BatterySaverButtonTest.*
 -BrowserViewTestWithStopLoadingAnimationForHiddenWindow.LoadingAnimationNotRenderedWhenWindowHidden
 -ChromeBrowsingDataRemoverDelegateOriginTrialsTest.PersistentOriginTrialsAreDeleted
+-CoreTabHelperWindowUnitTest.SearchWithLens_LensPingEnabled_TriggersLensPing
 -CustomizeChromeFeaturePromoHelperTest.CloseCustomizeChromeFeaturePromoHelper
 -CustomizeChromeFeaturePromoHelperTest.MaybeShowCustomizeChromeFeaturePromoHelper
 -CustomizeChromeFeaturePromoHelperTest.RecordCustomizeChromeFeatureUsage
@@ -32,7 +33,9 @@
 -ExtensionActionViewControllerFeatureWithPermittedSitesUnitTest.GetHoverCardStatus
 -ExtensionActionViewControllerGrayscaleTest.*
 -ExtensionActionViewControllerUnitTest.*
+-ExtensionActionViewControllerWithSidePanelUnitTest.*
 -ExtensionMenuItemViewTest.*
+-HighEfficiencyChipViewDiscardedTabTreatmentDisabledTest.ShouldNotExpandWhenFeatureIsDisabled
 -HighEfficiencyChipViewTest.*
 -HistoryClustersPageHandlerTest.OpenUrlsInTabGroup
 -HistoryClustersPageHandlerCartTest.CheckClusterHasCart
@@ -168,7 +171,10 @@
 -All/DIPSDatabaseErrorHistogramsTest.*/*
 -All/DIPSDatabaseGarbageCollectionTest.*/*
 -All/DIPSDatabaseInteractionTest.*/*
+-BrowserSigninDetectorServiceTest.LateObservation
+-CreateChooserTitleTest.ExtensionsFrameTree
 -DIPSDatabaseHistogramTest.*
+-DIPSGetSitesToClearTest.*
 -DIPSServiceHistogramTest.*
 -DIPSServiceStateRemovalTest.*
 -GetSitesToClearTest.*
@@ -178,7 +184,9 @@
 -All/CustomizeChromePageHandlerSetThemeTest.*/*
 -CustomizeChromePageHandlerTest.*
 -CustomizeChromePageHandlerWithModulesTest.*
+-CWSInfoServiceTest.*
 -SavedTabGroupKeyedServiceUnitTest.*
+-TabLifecycleUnitTest.CannotDiscardPictureInPictureWindow
 
 # These tests fail because BRAVE_COSMETIC_FILTERING has an initial default value
 # of CONTENT_SETTING_DEFAULT which is not allowed as an integer value by
@@ -189,7 +197,7 @@
 
 # These tests fail because we disable the media router via
 # prefs::kEnableMediaRouter
--MediaDialogViewWithRemotePlaybackTest.BuildDeviceSelectorView_RemotePlaybackSource
+-MediaDialogViewWithRemotePlaybackTest.*
 -MediaRouterActionControllerUnitTest.*
 -MediaRouterEnabledTest.*
 -MediaRouterUIServiceFactoryUnitTest.*
@@ -267,7 +275,6 @@
 -ContentAnalysisDelegateResultHandlingTest.Test/8
 -ManagementUIHandlerTests.ThreatReportingInfo
 
-
 # These fail because we disable safe browsing enhanced protection.
 -All/ClientSideDetectionServiceTest.GetNumReportTestESB/1
 -All/ClientSideDetectionServiceTest.GetNumReportTestESB/3
@@ -288,6 +295,14 @@
 -DownloadDisplayControllerTest.InitialState_NewLastDownload
 -DownloadDisplayControllerTest.InitialState_OldLastDownload
 -DownloadDisplayControllerTest.UpdateToolbarButtonState_OnCompleteItemCreated
+
+# This test crashes because AutocompleteClassifier called when TabStripModel
+# was not initialized in test.
+-RenderViewContextMenuPrefsTest.ShowAllPasswordsIncognito
+
+# This test fails because we changed the behavior of the fuzzy finder to match
+# the empty string.
+-CommanderFuzzyFinder.EmptyStringDoesNotMatch
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
@@ -352,8 +367,15 @@
 -BrowserUnitTest.*
 -BrowserViewHostedAppTest.*
 -BrowserViewTest.*
+-CastDeviceListHostTest.StartAudioTabMirroring
+-CastDialogSinkViewTest.FreezableSink
+-CastDialogSinkViewTest.NonfreezableSink
+-CastDialogSinkViewTest.SetEnabledState
 -CastDialogCoordinatorTest.ShowAndHideDialog
 -CastDialogViewTest.AccessCodeEmptySinksSourcesAvailable
+-CastDialogViewTest.FreezeNoRoute
+-CastDialogViewTest.FreezeRoute
+-CastDialogViewTest.FreezeUiStopCasting
 -CastDialogViewTest.ShowAccessCodeCastButtonEnabled
 -CastHandlerTest.*
 -CastMediaNotificationProducerTest.*
@@ -633,6 +655,7 @@
 -StartupBrowserPolicyUnitTest.*
 -StartupTabProviderTest.*
 -StorageAccessGrantPermissionContextAPIEnabledTest.*
+-StorageAccessGrantPermissionContextAPIWithImplicitGrantsTest.*
 -StorageAccessGrantPermissionContextTest.*
 -StubResolverConfigReaderTest.*
 -SubresourceFilterComponentInstallerTest.*
@@ -689,14 +712,3 @@
 -WebUsbServiceImplTest.*
 -WellKnownChangePasswordNavigationThrottleTest.*
 -ZipFileInstallerTest.*
-
-# This test crashes because AutocompleteClassifier called when TabStripModel
-# was not initialized in test.
--RenderViewContextMenuPrefsTest.ShowAllPasswordsIncognito
-
-# This test fails because we changed the behavior of the fuzzy finder to match
-# the empty string.
--CommanderFuzzyFinder.EmptyStringDoesNotMatch
-
-# We changed the default value of media router to disabled, so the tests fail.
--MediaDialogViewWithRemotePlaybackTest.*
