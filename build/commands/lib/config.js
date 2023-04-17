@@ -1023,8 +1023,8 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
 
     if (this.use_goma) {
       // Vars used by autoninja to generate -j value, adjusted for Brave-specific setup.
-      env.NINJA_CORE_MULTIPLIER = 20
-      env.NINJA_CORE_LIMIT = 160
+      env.NINJA_CORE_MULTIPLIER = Math.min(20, env.NINJA_CORE_MULTIPLIER || 20)
+      env.NINJA_CORE_LIMIT = Math.min(160, env.NINJA_CORE_LIMIT || 160)
     }
 
     if (this.isCI) {
