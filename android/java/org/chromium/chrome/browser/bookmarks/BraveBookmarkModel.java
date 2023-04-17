@@ -10,7 +10,6 @@ package org.chromium.chrome.browser.bookmarks;
 import org.chromium.ui.base.WindowAndroid;
 
 public class BraveBookmarkModel extends BookmarkModel {
-
     BraveBookmarkModel(long nativeBookmarkBridge) {
         super(nativeBookmarkBridge);
     }

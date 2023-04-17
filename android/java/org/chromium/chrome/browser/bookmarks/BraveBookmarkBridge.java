@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.chromium.ui.base.WindowAndroid;
 
 class BraveBookmarkBridge extends BookmarkBridge {
-
     // Overridden Chromium's BookmarkBridge.mNativeBookmarkBridge
     private long mNativeBookmarkBridge;
     private WindowAndroid mWindowAndroid;

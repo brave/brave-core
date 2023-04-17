@@ -8,8 +8,7 @@ package org.brave.bytecode;
 import org.objectweb.asm.ClassVisitor;
 
 public class BraveBookmarkBridgeClassAdapter extends BraveClassVisitor {
-    static String sBookmarkBridgeClassName =
-            "org/chromium/chrome/browser/bookmarks/BookmarkBridge";
+    static String sBookmarkBridgeClassName = "org/chromium/chrome/browser/bookmarks/BookmarkBridge";
     static String sBraveBookmarkBridgeClassName =
             "org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge";
 

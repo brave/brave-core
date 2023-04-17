@@ -69,8 +69,6 @@ public class BraveBookmarkManager extends BookmarkManager implements BraveBookma
                             if (grantResults.length >= 1
                                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                                 doImportBookmarks();
-                            } else {
-                                Log.e("tapan", "ask permission dialog");
                             }
                         });
             }
