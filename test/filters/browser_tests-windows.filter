@@ -132,5 +132,8 @@
 -WebAppBrowserTest_FileHandler.RegKeysFileExtension
 -WebAppGlassBrowserFrameViewTest.*
 -WebAppIntegrationBrowserTestWin.*
+-WebAppTagWebAppTest.TabNavigatedAwayNotWebAppTask
+-WebAppTagWebAppTest.WebAppTaskCreatedForStandalone
+-WebAppTagWebAppTest.WebAppTaskCreatedForTab
 -WebSocketBrowserTestWithAllowFileAccessFromFiles.CheckFileOrigin
 -WebUIBubbleManagerBrowserTest.*
