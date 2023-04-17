@@ -48,7 +48,7 @@ class BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
+    ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
 
     event_handler_ = std::make_unique<EventHandler>();
     event_handler_->AddObserver(this);

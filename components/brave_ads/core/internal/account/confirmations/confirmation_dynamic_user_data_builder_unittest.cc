@@ -21,8 +21,8 @@ class BatAdsConfirmationDynamicUserDataBuilderTest : public UnitTestBase {};
 
 TEST_F(BatAdsConfirmationDynamicUserDataBuilderTest, Build) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetStringPref(
-      prefs::kDiagnosticId, "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2");
+  ads_client_mock_->SetStringPref(prefs::kDiagnosticId,
+                                  "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2");
 
   const base::Time time =
       TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false);

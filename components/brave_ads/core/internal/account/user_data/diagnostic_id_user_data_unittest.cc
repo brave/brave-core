@@ -17,8 +17,8 @@ class BatAdsDiagnosticIdUserDataTest : public UnitTestBase {};
 
 TEST_F(BatAdsDiagnosticIdUserDataTest, GetDiagnosticId) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetStringPref(
-      prefs::kDiagnosticId, "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2");
+  ads_client_mock_->SetStringPref(prefs::kDiagnosticId,
+                                  "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2");
 
   // Act
   const base::Value::Dict user_data = GetDiagnosticId();
@@ -33,8 +33,7 @@ TEST_F(BatAdsDiagnosticIdUserDataTest, GetDiagnosticId) {
 
 TEST_F(BatAdsDiagnosticIdUserDataTest, DoNotGetInvalidDiagnosticId) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetStringPref(prefs::kDiagnosticId,
-                                                "INVALID");
+  ads_client_mock_->SetStringPref(prefs::kDiagnosticId, "INVALID");
 
   // Act
   const base::Value::Dict user_data = GetDiagnosticId();
@@ -45,7 +44,7 @@ TEST_F(BatAdsDiagnosticIdUserDataTest, DoNotGetInvalidDiagnosticId) {
 
 TEST_F(BatAdsDiagnosticIdUserDataTest, DoNotGetEmptyDiagnosticId) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetStringPref(prefs::kDiagnosticId, "");
+  ads_client_mock_->SetStringPref(prefs::kDiagnosticId, "");
 
   // Act
   const base::Value::Dict user_data = GetDiagnosticId();

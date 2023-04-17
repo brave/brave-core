@@ -29,7 +29,7 @@ TEST_F(BatAdsEnabledDiagnosticEntryTest, IsEnabled) {
 
 TEST_F(BatAdsEnabledDiagnosticEntryTest, IsDisabled) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
 
   // Act
   const EnabledDiagnosticEntry diagnostic_entry;

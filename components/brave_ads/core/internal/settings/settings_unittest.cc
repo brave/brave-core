@@ -31,8 +31,7 @@ TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasChangedDefaultSetting) {
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  AdsClientHelper::GetInstance()->SetInt64Pref(
-      prefs::kMaximumNotificationAdsPerHour, 3);
+  ads_client_mock_->SetInt64Pref(prefs::kMaximumNotificationAdsPerHour, 3);
 
   // Act
   const int ads_per_hour = settings::GetMaximumNotificationAdsPerHour();

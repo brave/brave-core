@@ -100,7 +100,7 @@ class BatAdsFlagManagerTest : public UnitTestBase,
   void SetUpMocks() override {
     const ParamInfo param = GetParam();
 
-    AdsClientHelper::GetInstance()->SetBooleanPref(
+    ads_client_mock_->SetBooleanPref(
         brave_rewards::prefs::kUseRewardsStagingServer,
         param.should_force_staging_environment);
 

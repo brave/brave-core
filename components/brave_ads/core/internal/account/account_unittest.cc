@@ -247,7 +247,7 @@ TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
 
 TEST_F(BatAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
 
   MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
 
@@ -528,7 +528,7 @@ TEST_F(BatAdsAccountTest, GetStatement) {
 
 TEST_F(BatAdsAccountTest, DoNotGetStatementIfAdsAreDisabled) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
 
   // Act
   Account::GetStatement(base::BindOnce(

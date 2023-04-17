@@ -26,7 +26,7 @@ class BatAdsRedeemOptedOutConfirmationTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
+    ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
   }
 
   NiceMock<RedeemConfirmationDelegateMock> redeem_confirmation_delegate_mock_;

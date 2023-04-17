@@ -17,7 +17,7 @@ class BatAdsMutatedUserDataTest : public UnitTestBase {};
 
 TEST_F(BatAdsMutatedUserDataTest, GetMutatedConfirmations) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetUint64Pref(
+  ads_client_mock_->SetUint64Pref(
       prefs::kConfirmationsHash,
       /*data/test/confirmations.json has a hash of 3780921521*/ 1251290873);
 
@@ -34,7 +34,7 @@ TEST_F(BatAdsMutatedUserDataTest, GetMutatedConfirmations) {
 
 TEST_F(BatAdsMutatedUserDataTest, GetMutatedClient) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetUint64Pref(
+  ads_client_mock_->SetUint64Pref(
       prefs::kClientHash,
       /*data/test/client.json has a hash of 2810715844*/ 4485170182);
 

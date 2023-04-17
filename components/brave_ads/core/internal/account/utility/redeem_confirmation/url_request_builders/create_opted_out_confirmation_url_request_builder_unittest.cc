@@ -32,7 +32,7 @@ class BatAdsCreateOptedOutConfirmationUrlRequestBuilderTest
 
 TEST_F(BatAdsCreateOptedOutConfirmationUrlRequestBuilderTest, BuildUrl) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
 
   FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
       EnvironmentType::kStaging);

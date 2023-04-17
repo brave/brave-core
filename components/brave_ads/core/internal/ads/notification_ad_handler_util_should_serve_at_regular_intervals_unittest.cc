@@ -83,16 +83,15 @@ class BatAdsNotificationAdUtilShouldServeAtRegularIntervalsTest
   void SetUpMocks() override {
     const ParamInfo param = GetParam();
 
-    AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled,
-                                                   param.is_enabled);
+    ads_client_mock_->SetBooleanPref(prefs::kEnabled, param.is_enabled);
 
     MockIsBrowserActive(ads_client_mock_, param.is_browser_active);
 
     MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
         ads_client_mock_, param.can_show_while_browser_is_backgrounded);
 
-    AdsClientHelper::GetInstance()->SetInt64Pref(
-        prefs::kMaximumNotificationAdsPerHour, param.ads_per_hour);
+    ads_client_mock_->SetInt64Pref(prefs::kMaximumNotificationAdsPerHour,
+                                   param.ads_per_hour);
   }
 };
 
