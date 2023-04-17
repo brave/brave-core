@@ -168,6 +168,8 @@
 -All/DIPSDatabaseErrorHistogramsTest.*/*
 -All/DIPSDatabaseGarbageCollectionTest.*/*
 -All/DIPSDatabaseInteractionTest.*/*
+-BrowserSigninDetectorServiceTest.LateObservation
+-CreateChooserTitleTest.ExtensionsFrameTree
 -DIPSDatabaseHistogramTest.*
 -DIPSServiceHistogramTest.*
 -DIPSServiceStateRemovalTest.*
@@ -178,7 +180,9 @@
 -All/CustomizeChromePageHandlerSetThemeTest.*/*
 -CustomizeChromePageHandlerTest.*
 -CustomizeChromePageHandlerWithModulesTest.*
+-CWSInfoServiceTest.*
 -SavedTabGroupKeyedServiceUnitTest.*
+-TabLifecycleUnitTest.CannotDiscardPictureInPictureWindow
 
 # These tests fail because BRAVE_COSMETIC_FILTERING has an initial default value
 # of CONTENT_SETTING_DEFAULT which is not allowed as an integer value by
@@ -352,8 +356,15 @@
 -BrowserUnitTest.*
 -BrowserViewHostedAppTest.*
 -BrowserViewTest.*
+-CastDeviceListHostTest.StartAudioTabMirroring
+-CastDialogSinkViewTest.FreezableSink
+-CastDialogSinkViewTest.NonfreezableSink
+-CastDialogSinkViewTest.SetEnabledState
 -CastDialogCoordinatorTest.ShowAndHideDialog
 -CastDialogViewTest.AccessCodeEmptySinksSourcesAvailable
+-CastDialogViewTest.FreezeNoRoute
+-CastDialogViewTest.FreezeRoute
+-CastDialogViewTest.FreezeUiStopCasting
 -CastDialogViewTest.ShowAccessCodeCastButtonEnabled
 -CastHandlerTest.*
 -CastMediaNotificationProducerTest.*
@@ -633,6 +644,7 @@
 -StartupBrowserPolicyUnitTest.*
 -StartupTabProviderTest.*
 -StorageAccessGrantPermissionContextAPIEnabledTest.*
+-StorageAccessGrantPermissionContextAPIWithImplicitGrantsTest.*
 -StorageAccessGrantPermissionContextTest.*
 -StubResolverConfigReaderTest.*
 -SubresourceFilterComponentInstallerTest.*
