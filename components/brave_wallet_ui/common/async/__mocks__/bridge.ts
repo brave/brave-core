@@ -18,6 +18,8 @@ import { mockedMnemonic } from '../../../stories/mock-data/user-accounts'
 import { mockAccount, mockFilecoinMainnetNetwork, mockSolanaMainnetNetwork } from '../../constants/mocks'
 import { mockEthMainnet, mockNetworks } from '../../../stories/mock-data/mock-networks'
 import { mockAccountAssetOptions } from '../../../stories/mock-data/mock-asset-options'
+import { mockTransactionInfo } from '../../../stories/mock-data/mock-transaction-info'
+import { deserializeTransaction } from '../../../utils/model-serialization-utils'
 
 export const makeMockedStoreWithSpy = () => {
   const store = createStore(combineReducers({
@@ -324,6 +326,15 @@ export class MockedWalletApiProxy {
       }
     }
   }
+
+  txService: Partial<InstanceType<typeof BraveWallet.TxServiceInterface>> = {
+    getAllTransactionInfo: async (coinType, from) => {
+      return {
+        transactionInfos: [deserializeTransaction(mockTransactionInfo)]
+      }
+    },
+  }
+
 
   setMockedQuote (newQuote: typeof this.mockQuote) {
     this.mockQuote = newQuote
