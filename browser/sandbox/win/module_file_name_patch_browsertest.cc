@@ -54,12 +54,11 @@ class ModuleFileNameBrowserTest : public InProcessBrowserTest,
 INSTANTIATE_TEST_SUITE_P(, ModuleFileNameBrowserTest, ::testing::Bool());
 
 IN_PROC_BROWSER_TEST_P(ModuleFileNameBrowserTest, CheckPath) {
-  auto* gpu = content::GpuProcessHost::Get();
-
   std::string path;
   while (path.empty()) {
     NonBlockingDelay(base::Milliseconds(10));
-    path = gpu->executable_path();
+    ASSERT_NE(nullptr, content::GpuProcessHost::Get());
+    path = content::GpuProcessHost::Get()->executable_path();
   }
 
   SCOPED_TRACE(path);
@@ -69,11 +68,21 @@ IN_PROC_BROWSER_TEST_P(ModuleFileNameBrowserTest, CheckPath) {
   EXPECT_TRUE(base::EndsWith(main_path, L"brave_browser_tests.exe"))
       << main_path;
 
+  constexpr const size_t kInterceptedFunctions = 4u;
+#if !defined(ADDRESS_SANITIZER)
+  constexpr const size_t kExpectedReplacements = 4u;
+#else
+  constexpr const size_t kExpectedReplacements = 3u;
+#endif
+
   if (GetParam()) {
-    EXPECT_EQ(0u, GetSubStringsCount(path, "brave_browser_tests.exe"));
-    EXPECT_EQ(4u, GetSubStringsCount(path, "chrome_browser_tests.exe"));
+    EXPECT_EQ(kInterceptedFunctions - kExpectedReplacements,
+              GetSubStringsCount(path, "brave_browser_tests.exe"));
+    EXPECT_EQ(kExpectedReplacements,
+              GetSubStringsCount(path, "chrome_browser_tests.exe"));
   } else {
-    EXPECT_EQ(4u, GetSubStringsCount(path, "brave_browser_tests.exe"));
+    EXPECT_EQ(kInterceptedFunctions,
+              GetSubStringsCount(path, "brave_browser_tests.exe"));
     EXPECT_EQ(0u, GetSubStringsCount(path, "chrome_browser_tests.exe"));
   }
 }
