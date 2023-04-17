@@ -43,6 +43,15 @@ class RewardsPanelCoordinator
   // adaptive captcha for the user.
   bool ShowAdaptiveCaptcha();
 
+  // Provides a callback to set the deactivation policy for the panel.
+  void SetDeactivationCallback(
+      base::RepeatingCallback<void(bool)> deactivation_callback);
+
+  // Determines whether to close the panel when it loses focus (needed to
+  // prevent closing the panel during long-lived actions initiated via the
+  // context menu).
+  void CloseOnDeactivate(bool close);
+
   class Observer : public base::CheckedObserver {
    public:
     // Called when an application component requests that the Rewards panel be
@@ -67,6 +76,7 @@ class RewardsPanelCoordinator
 
   mojom::RewardsPanelArgs panel_args_;
   base::ObserverList<Observer> observers_;
+  base::RepeatingCallback<void(bool)> deactivation_callback_;
 
   BROWSER_USER_DATA_KEY_DECL();
 };

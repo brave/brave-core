@@ -274,6 +274,10 @@ export function createHost (): Host {
   }
 
   function addListeners () {
+    document.addEventListener('contextmenu', (event) => {
+      proxy.handler.showContextMenu(event.clientX, event.clientY)
+    })
+
     // If a Rewards panel request occurs when we are still open or cached,
     // reload data and re-render the app.
     proxy.callbackRouter.onRewardsPanelRequested.addListener(

@@ -46,6 +46,17 @@ bool RewardsPanelCoordinator::ShowAdaptiveCaptcha() {
       mojom::RewardsPanelArgs(mojom::RewardsPanelView::kAdaptiveCaptcha, ""));
 }
 
+void RewardsPanelCoordinator::SetDeactivationCallback(
+    base::RepeatingCallback<void(bool)> deactivation_callback) {
+  deactivation_callback_ = std::move(deactivation_callback);
+}
+
+void RewardsPanelCoordinator::CloseOnDeactivate(bool close) {
+  if (deactivation_callback_) {
+    deactivation_callback_.Run(close);
+  }
+}
+
 void RewardsPanelCoordinator::AddObserver(Observer* observer) {
   observers_.AddObserver(observer);
 }
