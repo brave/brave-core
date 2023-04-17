@@ -60,3 +60,8 @@ content::BrowserContext* EphemeralStorageServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
   return chrome::GetBrowserContextOwnInstanceInIncognito(context);
 }
+
+bool EphemeralStorageServiceFactory::ServiceIsCreatedWithBrowserContext()
+    const {
+  return true;
+}

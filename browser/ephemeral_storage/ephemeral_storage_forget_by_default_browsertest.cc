@@ -5,7 +5,9 @@
 
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
 
+#include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -18,6 +20,8 @@
 
 using content::RenderFrameHost;
 using content::WebContents;
+
+namespace ephemeral_storage {
 
 class EphemeralStorageForgetByDefaultBrowserTest
     : public EphemeralStorageBrowserTest {
@@ -46,6 +50,12 @@ class EphemeralStorageForgetByDefaultBrowserTest
     EXPECT_EQ(cookie_value, first_party_values.main_frame.cookies);
     EXPECT_EQ(cookie_value, first_party_values.iframe_1.cookies);
     EXPECT_EQ(cookie_value, first_party_values.iframe_2.cookies);
+  }
+
+  size_t FireCleanupTimersForTesting() {
+    return EphemeralStorageServiceFactory::GetInstance()
+        ->GetForContext(browser()->profile())
+        ->FireCleanupTimersForTesting();
   }
 
  protected:
@@ -290,7 +300,40 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
                        ForgetFirstPartyAfterRestart) {
+  EXPECT_EQ(1u, FireCleanupTimersForTesting());
   EXPECT_EQ(0u, GetAllCookies().size());
+}
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
+                       PRE_DontForgetFirstPartyIfSubDomainIsOpened) {
+  const GURL a_site_set_cookie_url(
+      "https://a.com/set-cookie?name=acom;path=/"
+      ";SameSite=None;Secure;Max-Age=600");
+  brave_shields::SetForgetFirstPartyStorageEnabled(content_settings(), true,
+                                                   a_site_set_cookie_url);
+
+  // Cookies should NOT exist for a.com.
+  EXPECT_EQ(0u, GetAllCookies().size());
+
+  EXPECT_TRUE(LoadURLInNewTab(a_site_set_cookie_url));
+
+  // Cookies SHOULD exist for a.com.
+  EXPECT_EQ(1u, GetAllCookies().size());
+
+  // Navigate to b.com to activate a deferred cleanup for a.com.
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_));
+
+  // Open sub.a.com in another tab to stop the deferred cleanup for a.com.
+  const GURL sub_a_site_ephemeral_storage_url =
+      https_server_.GetURL("sub.a.com", "/ephemeral_storage.html");
+  EXPECT_TRUE(LoadURLInNewTab(sub_a_site_ephemeral_storage_url));
+}
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
+                       DontForgetFirstPartyIfSubDomainIsOpened) {
+  EXPECT_EQ(0u, FireCleanupTimersForTesting());
+  EXPECT_EQ(1u, GetAllCookies().size());
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
@@ -339,7 +382,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
 }
 
 class EphemeralStorageForgetByDefaultIsDefaultBrowserTest
-    : public EphemeralStorageBrowserTest {
+    : public EphemeralStorageForgetByDefaultBrowserTest {
  public:
   EphemeralStorageForgetByDefaultIsDefaultBrowserTest() {
     scoped_feature_list_.InitAndEnableFeatureWithParameters(
@@ -376,6 +419,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultIsDefaultBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultIsDefaultBrowserTest,
                        ForgetFirstPartyAfterRestart) {
+  EXPECT_EQ(1u, FireCleanupTimersForTesting());
   EXPECT_EQ(0u, GetAllCookies().size());
 }
 
@@ -469,3 +513,5 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultDisabledBrowserTest,
 
   EXPECT_EQ(1u, GetAllCookies().size());
 }
+
+}  // namespace ephemeral_storage

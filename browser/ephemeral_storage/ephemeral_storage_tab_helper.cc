@@ -198,10 +198,10 @@ void EphemeralStorageTabHelper::CreateFirstPartyStorageLifetime(
     return;
   }
 
-  if (brave_shields::GetBraveShieldsEnabled(
-          HostContentSettingsMapFactory::GetForProfile(
-              GetWebContents().GetBrowserContext()),
-          new_url)) {
+  if (new_url.is_valid() && brave_shields::GetBraveShieldsEnabled(
+                                HostContentSettingsMapFactory::GetForProfile(
+                                    GetWebContents().GetBrowserContext()),
+                                new_url)) {
     const GURL key_url(base::StrCat({"https://", new_domain, "/"}));
     first_party_storage_lifetime_ = FirstPartyStorageLifetime::GetOrCreate(
         web_contents()->GetBrowserContext(), url::Origin::Create(key_url));
