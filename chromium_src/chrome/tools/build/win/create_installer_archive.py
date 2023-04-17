@@ -73,11 +73,6 @@ def CreateArchiveFile(original_function, options, staging_dir, current_version,
     # actually two-tuple build numbers y.z, not four-tuple version numbers
     # w.x.y.z.
     current_version_full = BuildVersion()
-    prev_version_full = GetPrevVersion(options.build_dir, staging_dir,
-                                       options.last_chrome_installer,
-                                       options.output_name)
-    CheckDeltaUpdatePrecondition(options.last_chrome_installer,
-                                 prev_version_full, current_version_full)
     SignAndCopyPreSignedBinaries(options.skip_signing, options.output_dir,
                                  staging_dir, current_version_full)
     return original_function(options, staging_dir, current_version,
@@ -106,17 +101,6 @@ def CopyExtensionLocalization(extension_name, locales_src_dir_path, config,
             candidate = os.path.join('.', 'resources', extension_name,
                                      '_locales', rel_file)
             g_archive_inputs.append(candidate)
-
-
-def CheckDeltaUpdatePrecondition(last_chrome_installer, prev_version,
-                                 curr_version):
-    if last_chrome_installer and prev_version == curr_version:
-        raise Exception("Cannot create delta update files between the same "
-                        "source and target version %s. Please increment the "
-                        "Chrome version (for instance by rebasing your changes "
-                        "against a later upstream version). Or pass files "
-                        "representing a lower version to "
-                        "--last_chrome_installer." % prev_version)
 
 
 def SignAndCopyPreSignedBinaries(skip_signing, output_dir, staging_dir,
