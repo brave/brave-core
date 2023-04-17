@@ -16,7 +16,9 @@ public class BraveCachedFlag extends CachedFlag {
     static {
         sFlags = new HashMap<String, Boolean>();
         sFlags.put(ChromeFeatureList.START_SURFACE_ANDROID, false);
-        sFlags.put(ChromeFeatureList.INCOGNITO_REAUTHENTICATION_FOR_ANDROID, true);
+        // Disable until we sort out UI issues
+        // https://github.com/brave/brave-browser/issues/29688
+        sFlags.put(ChromeFeatureList.INCOGNITO_REAUTHENTICATION_FOR_ANDROID, false);
     }
 
     private final boolean mDefaultValue;
