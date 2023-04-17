@@ -12,7 +12,8 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/ads_callback.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_handler_observer.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_handler.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_handler_delegate.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_delegate.h"
 
 namespace brave_ads {
@@ -22,7 +23,6 @@ class SubdivisionTargeting;
 }  // namespace geographic
 
 namespace inline_content_ads {
-class EventHandler;
 class Serving;
 }  // namespace inline_content_ads
 
@@ -35,7 +35,7 @@ class Transfer;
 struct InlineContentAdInfo;
 
 class InlineContentAdHandler final
-    : public inline_content_ads::EventHandlerObserver,
+    : public inline_content_ads::EventHandlerDelegate,
       public inline_content_ads::ServingDelegate {
  public:
   InlineContentAdHandler(
@@ -65,12 +65,12 @@ class InlineContentAdHandler final
       const SegmentList& segments) override;
   void OnDidServeInlineContentAd(const InlineContentAdInfo& ad) override;
 
-  // inline_content_ads::EventHandlerObserver:
+  // inline_content_ads::EventHandlerDelegate:
   void OnInlineContentAdServed(const InlineContentAdInfo& ad) override;
   void OnInlineContentAdViewed(const InlineContentAdInfo& ad) override;
   void OnInlineContentAdClicked(const InlineContentAdInfo& ad) override;
 
-  std::unique_ptr<inline_content_ads::EventHandler> event_handler_;
+  inline_content_ads::EventHandler event_handler_;
 
   std::unique_ptr<inline_content_ads::Serving> serving_;
 

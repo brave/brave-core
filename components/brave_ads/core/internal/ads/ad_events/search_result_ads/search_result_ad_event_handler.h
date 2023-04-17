@@ -8,13 +8,14 @@
 
 #include <string>
 
+#include "base/check_op.h"
 #include "base/functional/callback_forward.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/observer_list.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_events/search_result_ads/search_result_ad_event_handler_observer.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_events/search_result_ads/search_result_ad_event_handler_delegate.h"
 
 namespace brave_ads {
 
@@ -27,7 +28,7 @@ using FireAdEventHandlerCallback =
                             const std::string& placement_id,
                             const mojom::SearchResultAdEventType event_type)>;
 
-class EventHandler final : public EventHandlerObserver {
+class EventHandler final : public EventHandlerDelegate {
  public:
   EventHandler();
 
@@ -39,8 +40,10 @@ class EventHandler final : public EventHandlerObserver {
 
   ~EventHandler() override;
 
-  void AddObserver(EventHandlerObserver* observer);
-  void RemoveObserver(EventHandlerObserver* observer);
+  void SetDelegate(EventHandlerDelegate* delegate) {
+    DCHECK_EQ(delegate_, nullptr);
+    delegate_ = delegate;
+  }
 
   void FireEvent(mojom::SearchResultAdInfoPtr ad_mojom,
                  mojom::SearchResultAdEventType event_type,
@@ -72,22 +75,14 @@ class EventHandler final : public EventHandlerObserver {
       bool success,
       const AdEventList& ad_events) const;
 
+  void SuccessfullyFiredEvent(const SearchResultAdInfo& ad,
+                              mojom::SearchResultAdEventType event_type,
+                              FireAdEventHandlerCallback callback) const;
   void FailedToFireEvent(const SearchResultAdInfo& ad,
                          mojom::SearchResultAdEventType event_type,
                          FireAdEventHandlerCallback callback) const;
 
-  void NotifySearchResultAdEvent(const SearchResultAdInfo& ad,
-                                 mojom::SearchResultAdEventType event_type,
-                                 FireAdEventHandlerCallback callback) const;
-  void NotifySearchResultAdServed(const SearchResultAdInfo& ad) const;
-  void NotifySearchResultAdViewed(const SearchResultAdInfo& ad) const;
-  void NotifySearchResultAdClicked(const SearchResultAdInfo& ad) const;
-  void NotifySearchResultAdEventFailed(
-      const SearchResultAdInfo& ad,
-      mojom::SearchResultAdEventType event_type,
-      FireAdEventHandlerCallback callback) const;
-
-  base::ObserverList<EventHandlerObserver> observers_;
+  raw_ptr<EventHandlerDelegate> delegate_ = nullptr;
 
   base::WeakPtrFactory<EventHandler> weak_factory_{this};
 };

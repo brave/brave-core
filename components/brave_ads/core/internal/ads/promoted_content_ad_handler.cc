@@ -9,7 +9,6 @@
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_events/promoted_content_ads/promoted_content_ad_event_handler.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
 #include "brave/components/brave_ads/core/promoted_content_ad_info.h"
@@ -21,13 +20,10 @@ PromotedContentAd::PromotedContentAd(Account* account, Transfer* transfer)
   DCHECK(account_);
   DCHECK(transfer_);
 
-  event_handler_ = std::make_unique<promoted_content_ads::EventHandler>();
-  event_handler_->AddObserver(this);
+  event_handler_.SetDelegate(this);
 }
 
-PromotedContentAd::~PromotedContentAd() {
-  event_handler_->RemoveObserver(this);
-}
+PromotedContentAd::~PromotedContentAd() = default;
 
 void PromotedContentAd::TriggerEvent(
     const std::string& placement_id,
@@ -35,7 +31,7 @@ void PromotedContentAd::TriggerEvent(
     const mojom::PromotedContentAdEventType event_type) {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
-  event_handler_->FireEvent(placement_id, creative_instance_id, event_type);
+  event_handler_.FireEvent(placement_id, creative_instance_id, event_type);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

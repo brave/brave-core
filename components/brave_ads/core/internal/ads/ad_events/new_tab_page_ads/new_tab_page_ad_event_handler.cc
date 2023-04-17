@@ -76,16 +76,8 @@ bool ShouldDebounceAdEvent(const AdInfo& ad,
 
 EventHandler::EventHandler() = default;
 
-EventHandler::~EventHandler() = default;
-
-void EventHandler::AddObserver(EventHandlerObserver* observer) {
-  DCHECK(observer);
-  observers_.AddObserver(observer);
-}
-
-void EventHandler::RemoveObserver(EventHandlerObserver* observer) {
-  DCHECK(observer);
-  observers_.RemoveObserver(observer);
+EventHandler::~EventHandler() {
+  delegate_ = nullptr;
 }
 
 void EventHandler::FireEvent(const std::string& placement_id,
@@ -182,7 +174,34 @@ void EventHandler::OnGetAdEvents(const NewTabPageAdInfo& ad,
   const auto ad_event = AdEventFactory::Build(event_type);
   ad_event->FireEvent(ad);
 
-  NotifyNewTabPageAdEvent(ad, event_type);
+  SuccessfullyFiredEvent(ad, event_type);
+}
+
+void EventHandler::SuccessfullyFiredEvent(
+    const NewTabPageAdInfo& ad,
+    const mojom::NewTabPageAdEventType event_type) const {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
+  if (!delegate_) {
+    return;
+  }
+
+  switch (event_type) {
+    case mojom::NewTabPageAdEventType::kServed: {
+      delegate_->OnNewTabPageAdServed(ad);
+      break;
+    }
+
+    case mojom::NewTabPageAdEventType::kViewed: {
+      delegate_->OnNewTabPageAdViewed(ad);
+      break;
+    }
+
+    case mojom::NewTabPageAdEventType::kClicked: {
+      delegate_->OnNewTabPageAdClicked(ad);
+      break;
+    }
+  }
 }
 
 void EventHandler::FailedToFireEvent(
@@ -195,59 +214,9 @@ void EventHandler::FailedToFireEvent(
               << event_type << " event for placement id " << placement_id
               << " and creative instance id " << creative_instance_id);
 
-  NotifyNewTabPageAdEventFailed(placement_id, creative_instance_id, event_type);
-}
-
-void EventHandler::NotifyNewTabPageAdEvent(
-    const NewTabPageAdInfo& ad,
-    const mojom::NewTabPageAdEventType event_type) const {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
-
-  switch (event_type) {
-    case mojom::NewTabPageAdEventType::kServed: {
-      NotifyNewTabPageAdServed(ad);
-      break;
-    }
-
-    case mojom::NewTabPageAdEventType::kViewed: {
-      NotifyNewTabPageAdViewed(ad);
-      break;
-    }
-
-    case mojom::NewTabPageAdEventType::kClicked: {
-      NotifyNewTabPageAdClicked(ad);
-      break;
-    }
-  }
-}
-
-void EventHandler::NotifyNewTabPageAdServed(const NewTabPageAdInfo& ad) const {
-  for (EventHandlerObserver& observer : observers_) {
-    observer.OnNewTabPageAdServed(ad);
-  }
-}
-
-void EventHandler::NotifyNewTabPageAdViewed(const NewTabPageAdInfo& ad) const {
-  for (EventHandlerObserver& observer : observers_) {
-    observer.OnNewTabPageAdViewed(ad);
-  }
-}
-
-void EventHandler::NotifyNewTabPageAdClicked(const NewTabPageAdInfo& ad) const {
-  for (EventHandlerObserver& observer : observers_) {
-    observer.OnNewTabPageAdClicked(ad);
-  }
-}
-
-void EventHandler::NotifyNewTabPageAdEventFailed(
-    const std::string& placement_id,
-    const std::string& creative_instance_id,
-    const mojom::NewTabPageAdEventType event_type) const {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
-
-  for (EventHandlerObserver& observer : observers_) {
-    observer.OnNewTabPageAdEventFailed(placement_id, creative_instance_id,
-                                       event_type);
+  if (delegate_) {
+    delegate_->OnNewTabPageAdEventFailed(placement_id, creative_instance_id,
+                                         event_type);
   }
 }
 

@@ -5,13 +5,11 @@
 
 #include "brave/components/brave_ads/core/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_handler.h"
 
-#include <memory>
-
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_handler_observer.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_handler_delegate.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
@@ -35,20 +33,13 @@ CreativeInlineContentAdInfo BuildAndSaveCreativeAd() {
 
 }  // namespace
 
-class BatAdsInlineContentAdEventHandlerTest : public EventHandlerObserver,
+class BatAdsInlineContentAdEventHandlerTest : public EventHandlerDelegate,
                                               public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    event_handler_ = std::make_unique<EventHandler>();
-    event_handler_->AddObserver(this);
-  }
-
-  void TearDown() override {
-    event_handler_->RemoveObserver(this);
-
-    UnitTestBase::TearDown();
+    event_handler_.SetDelegate(this);
   }
 
   void OnInlineContentAdServed(const InlineContentAdInfo& ad) override {
@@ -73,7 +64,7 @@ class BatAdsInlineContentAdEventHandlerTest : public EventHandlerObserver,
     did_fail_to_fire_event_ = true;
   }
 
-  std::unique_ptr<EventHandler> event_handler_;
+  EventHandler event_handler_;
 
   InlineContentAdInfo ad_;
   bool did_serve_ad_ = false;
@@ -86,12 +77,12 @@ TEST_F(BatAdsInlineContentAdEventHandlerTest, FireViewedEvent) {
   // Arrange
   const CreativeInlineContentAdInfo creative_ad = BuildAndSaveCreativeAd();
 
-  event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                            mojom::InlineContentAdEventType::kServed);
+  event_handler_.FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                           mojom::InlineContentAdEventType::kServed);
 
   // Act
-  event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                            mojom::InlineContentAdEventType::kViewed);
+  event_handler_.FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                           mojom::InlineContentAdEventType::kViewed);
 
   // Assert
   EXPECT_TRUE(did_serve_ad_);
@@ -112,14 +103,14 @@ TEST_F(BatAdsInlineContentAdEventHandlerTest,
   // Arrange
   const CreativeInlineContentAdInfo creative_ad = BuildAndSaveCreativeAd();
 
-  event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                            mojom::InlineContentAdEventType::kServed);
-  event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                            mojom::InlineContentAdEventType::kViewed);
+  event_handler_.FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                           mojom::InlineContentAdEventType::kServed);
+  event_handler_.FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                           mojom::InlineContentAdEventType::kViewed);
 
   // Act
-  event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                            mojom::InlineContentAdEventType::kViewed);
+  event_handler_.FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                           mojom::InlineContentAdEventType::kViewed);
 
   // Assert
   EXPECT_EQ(
@@ -132,14 +123,14 @@ TEST_F(BatAdsInlineContentAdEventHandlerTest, FireClickedEvent) {
   // Arrange
   const CreativeInlineContentAdInfo creative_ad = BuildAndSaveCreativeAd();
 
-  event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                            mojom::InlineContentAdEventType::kServed);
-  event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                            mojom::InlineContentAdEventType::kViewed);
+  event_handler_.FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                           mojom::InlineContentAdEventType::kServed);
+  event_handler_.FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                           mojom::InlineContentAdEventType::kViewed);
 
   // Act
-  event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                            mojom::InlineContentAdEventType::kClicked);
+  event_handler_.FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                           mojom::InlineContentAdEventType::kClicked);
 
   // Assert
   EXPECT_TRUE(did_serve_ad_);
@@ -163,8 +154,8 @@ TEST_F(BatAdsInlineContentAdEventHandlerTest,
   const CreativeInlineContentAdInfo creative_ad = BuildAndSaveCreativeAd();
 
   // Act
-  event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                            mojom::InlineContentAdEventType::kClicked);
+  event_handler_.FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                           mojom::InlineContentAdEventType::kClicked);
 
   // Assert
   EXPECT_EQ(
@@ -176,16 +167,16 @@ TEST_F(BatAdsInlineContentAdEventHandlerTest,
   // Arrange
   const CreativeInlineContentAdInfo creative_ad = BuildAndSaveCreativeAd();
 
-  event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                            mojom::InlineContentAdEventType::kServed);
-  event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                            mojom::InlineContentAdEventType::kViewed);
-  event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                            mojom::InlineContentAdEventType::kClicked);
+  event_handler_.FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                           mojom::InlineContentAdEventType::kServed);
+  event_handler_.FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                           mojom::InlineContentAdEventType::kViewed);
+  event_handler_.FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                           mojom::InlineContentAdEventType::kClicked);
 
   // Act
-  event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                            mojom::InlineContentAdEventType::kClicked);
+  event_handler_.FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                           mojom::InlineContentAdEventType::kClicked);
 
   // Assert
   EXPECT_EQ(
@@ -201,8 +192,8 @@ TEST_F(BatAdsInlineContentAdEventHandlerTest,
   // Arrange
 
   // Act
-  event_handler_->FireEvent(kInvalidPlacementId, kCreativeInstanceId,
-                            mojom::InlineContentAdEventType::kServed);
+  event_handler_.FireEvent(kInvalidPlacementId, kCreativeInstanceId,
+                           mojom::InlineContentAdEventType::kServed);
 
   // Assert
   EXPECT_FALSE(did_serve_ad_);
@@ -218,8 +209,8 @@ TEST_F(BatAdsInlineContentAdEventHandlerTest,
   // Arrange
 
   // Act
-  event_handler_->FireEvent(kPlacementId, kInvalidCreativeInstanceId,
-                            mojom::InlineContentAdEventType::kServed);
+  event_handler_.FireEvent(kPlacementId, kInvalidCreativeInstanceId,
+                           mojom::InlineContentAdEventType::kServed);
 
   // Assert
   EXPECT_FALSE(did_serve_ad_);
@@ -235,8 +226,8 @@ TEST_F(BatAdsInlineContentAdEventHandlerTest,
   // Arrange
 
   // Act
-  event_handler_->FireEvent(kPlacementId, kCreativeInstanceId,
-                            mojom::InlineContentAdEventType::kServed);
+  event_handler_.FireEvent(kPlacementId, kCreativeInstanceId,
+                           mojom::InlineContentAdEventType::kServed);
 
   // Assert
   EXPECT_FALSE(did_serve_ad_);

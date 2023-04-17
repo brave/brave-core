@@ -14,7 +14,6 @@
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_events/search_result_ads/search_result_ad_event_handler.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_info.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
@@ -33,13 +32,10 @@ SearchResultAd::SearchResultAd(Account* account, Transfer* transfer)
   DCHECK(account_);
   DCHECK(transfer_);
 
-  event_handler_ = std::make_unique<search_result_ads::EventHandler>();
-  event_handler_->AddObserver(this);
+  event_handler_.SetDelegate(this);
 }
 
-SearchResultAd::~SearchResultAd() {
-  event_handler_->RemoveObserver(this);
-}
+SearchResultAd::~SearchResultAd() = default;
 
 void SearchResultAd::TriggerEvent(
     mojom::SearchResultAdInfoPtr ad_mojom,
@@ -51,7 +47,7 @@ void SearchResultAd::TriggerEvent(
     return MaybeTriggerAdViewedEventFromQueue();
   }
 
-  event_handler_->FireEvent(
+  event_handler_.FireEvent(
       std::move(ad_mojom), event_type,
       base::BindOnce([](const bool success, const std::string& placement_id,
                         const mojom::SearchResultAdEventType event_type) {
@@ -91,10 +87,10 @@ void SearchResultAd::MaybeTriggerAdViewedEventFromQueue() {
       std::move(ad_viewed_event_queue_.back());
   ad_viewed_event_queue_.pop_back();
 
-  event_handler_->FireEvent(std::move(ad_mojom),
-                            mojom::SearchResultAdEventType::kViewed,
-                            base::BindOnce(&SearchResultAd::OnFireAdViewedEvent,
-                                           weak_factory_.GetWeakPtr()));
+  event_handler_.FireEvent(std::move(ad_mojom),
+                           mojom::SearchResultAdEventType::kViewed,
+                           base::BindOnce(&SearchResultAd::OnFireAdViewedEvent,
+                                          weak_factory_.GetWeakPtr()));
 }
 
 void SearchResultAd::OnFireAdViewedEvent(
