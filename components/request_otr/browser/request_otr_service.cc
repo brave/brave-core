@@ -5,9 +5,7 @@
 
 #include "brave/components/request_otr/browser/request_otr_service.h"
 
-#include <memory>
-#include <string>
-#include <vector>
+#include <utility>
 
 #include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
@@ -21,24 +19,32 @@
 
 namespace request_otr {
 
-RequestOTRService::RequestOTRService(
-    RequestOTRComponentInstaller* component_installer)
-    : component_installer_(component_installer) {}
+RequestOTRService::RequestOTRService() {}
 
 RequestOTRService::~RequestOTRService() = default;
+
+void RequestOTRService::OnRulesReady(const std::string& json_content) {
+  auto parsed_rules = RequestOTRRule::ParseRules(json_content);
+  if (!parsed_rules.has_value()) {
+    LOG(WARNING) << parsed_rules.error();
+    return;
+  }
+  rules_.clear();
+  host_cache_.clear();
+  rules_ = std::move(parsed_rules.value().first);
+  host_cache_ = parsed_rules.value().second;
+  DVLOG(1) << host_cache_.size() << " unique hosts, " << rules_.size()
+           << " rules parsed from " << kRequestOTRConfigFile;
+}
 
 bool RequestOTRService::ShouldBlock(const GURL& url) const {
   // Check host cache
   const std::string etldp1 = RequestOTRRule::GetETLDForRequestOTR(url.host());
-  const base::flat_set<std::string>& host_cache =
-      component_installer_->host_cache();
-  if (!base::Contains(host_cache, etldp1)) {
+  if (!base::Contains(host_cache_, etldp1)) {
     return false;
   }
 
-  const std::vector<std::unique_ptr<RequestOTRRule>>& rules =
-      component_installer_->rules();
-  for (const std::unique_ptr<RequestOTRRule>& rule : rules) {
+  for (const std::unique_ptr<RequestOTRRule>& rule : rules_) {
     if (rule->ShouldBlock(url)) {
       return true;
     }

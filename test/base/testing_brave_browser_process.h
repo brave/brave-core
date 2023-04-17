@@ -47,8 +47,8 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
 #endif
   debounce::DebounceComponentInstaller* debounce_component_installer() override;
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
-  request_otr::RequestOTRComponentInstaller* request_otr_component_installer()
-      override;
+  request_otr::RequestOTRComponentInstallerPolicy*
+  request_otr_component_installer() override;
 #endif
   brave::URLSanitizerComponentInstaller* URLSanitizerComponentInstaller()
       override;

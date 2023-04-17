@@ -45,11 +45,8 @@
 <div hidden="[[!isRequestOTRFeatureEnabled_]]" class="settings-box">
     <div class="start" id="labelWrapper">
         <div class="label">$i18n{requestOTRLabel}</div>
-        <a id="learnMore" href="$i18n{requestOTRLearnMoreURL}" target="_blank">
-            $i18n{requestOTRSubLabel}
-        </a>
     </div>
-    <settings-dropdown-menu label="$i18n{requestOTRLearnMoreURL}"
+    <settings-dropdown-menu id="defaultRequestOTR"
                             pref="{{prefs.brave.request_otr.request_otr_action_option}}"
                             menu-options="[[requestOTRActions_]]">
     </settings-dropdown-menu>

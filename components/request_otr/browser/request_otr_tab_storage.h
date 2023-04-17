@@ -45,11 +45,10 @@ class RequestOTRTabStorage
   void SetRequestedOTR(bool otr) { otr_ = otr; }
   bool RequestedOTR() { return otr_; }
 
-  void Enable1PESForUrlIfPossible(
+  void MaybeEnable1PESForUrl(
       ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
       const GURL& url,
       base::OnceCallback<void()> on_ready);
-  void DropBlockedDomain1PESLifetime();
 
  private:
   explicit RequestOTRTabStorage(content::WebContents* contents);

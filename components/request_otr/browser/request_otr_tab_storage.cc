@@ -14,10 +14,6 @@
 
 namespace request_otr {
 
-// Arbitrary but unique key required for SupportsUserData.
-// Upstream does this too.
-const void* const kRequestOTRTabStorageKey = &kRequestOTRTabStorageKey;
-
 RequestOTRTabStorage::RequestOTRTabStorage(content::WebContents* contents)
     : content::WebContentsUserData<RequestOTRTabStorage>(*contents) {}
 
@@ -34,24 +30,15 @@ RequestOTRTabStorage* RequestOTRTabStorage::GetOrCreate(
   return storage;
 }
 
-void RequestOTRTabStorage::Enable1PESForUrlIfPossible(
+void RequestOTRTabStorage::MaybeEnable1PESForUrl(
     ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
     const GURL& url,
     base::OnceCallback<void()> on_ready) {
-  if (url.HostIsIPAddress()) {
-    std::move(on_ready).Run();
-    return;
-  }
-
   DCHECK(ephemeral_storage_service);
   blocked_domain_1pes_lifetime_ =
       BlockedDomain1PESLifetime::GetOrCreate(ephemeral_storage_service, url);
   blocked_domain_1pes_lifetime_->AddOnReadyCallback(std::move(on_ready));
-  LOG(ERROR) << "RequestOTRTabStorage::Enable1PESForUrlIfPossible successful!";
-}
-
-void RequestOTRTabStorage::DropBlockedDomain1PESLifetime() {
-  blocked_domain_1pes_lifetime_.reset();
+  DVLOG(1) << "RequestOTRTabStorage::MaybeEnable1PESForUrl successful!";
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(RequestOTRTabStorage);

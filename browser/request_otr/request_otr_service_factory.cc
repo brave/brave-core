@@ -45,14 +45,19 @@ KeyedService* RequestOTRServiceFactory::BuildServiceInstanceFor(
     return nullptr;
   }
 
-  request_otr::RequestOTRComponentInstaller* component_installer = nullptr;
+  RequestOTRService* service = new RequestOTRService();
+  request_otr::RequestOTRComponentInstallerPolicy* component_installer =
+      nullptr;
   // Brave browser process may be null if we are being created within a unit
   // test.
   if (g_brave_browser_process) {
     component_installer =
         g_brave_browser_process->request_otr_component_installer();
   }
-  return new RequestOTRService(component_installer);
+  if (component_installer) {
+    component_installer->AddObserver(service);
+  }
+  return service;
 }
 
 content::BrowserContext* RequestOTRServiceFactory::GetBrowserContextToUse(

@@ -42,7 +42,6 @@ source_set("browser") {
       "//components/security_interstitials/core:core",
       "//components/user_prefs:user_prefs",
       "//content/public/browser",
-      "//extensions/browser",
       "//ui/base",
       "//url",
     ]

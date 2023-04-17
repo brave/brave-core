@@ -64,7 +64,7 @@ TestingBraveBrowserProcess::debounce_component_installer() {
 }
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
-request_otr::RequestOTRComponentInstaller*
+request_otr::RequestOTRComponentInstallerPolicy*
 TestingBraveBrowserProcess::request_otr_component_installer() {
   NOTREACHED();
   return nullptr;

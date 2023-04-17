@@ -23,26 +23,27 @@ class SecurityInterstitialControllerClient;
 
 namespace request_otr {
 
-// RequestOTRPage is the interstitial page which will be shown when the
+// RequestOTRBlockingPage is the interstitial page which will be shown when the
 // browser blocks a top-level, first-party request. A proceed button is
-// provided in the page, along with a checkbox to remember the domain and
-// bypass this interstitial for this domain in the future.
-class RequestOTRPage : public security_interstitials::SecurityInterstitialPage {
+// provided in the page, along with a checkbox to bypass this interstitial in
+// the future.
+class RequestOTRBlockingPage
+    : public security_interstitials::SecurityInterstitialPage {
  public:
   // Interstitial type, used in tests.
   static const security_interstitials::SecurityInterstitialPage::TypeID
       kTypeForTesting;
 
-  RequestOTRPage(
+  RequestOTRBlockingPage(
       content::WebContents* web_contents,
       const GURL& request_url,
       std::unique_ptr<
           security_interstitials::SecurityInterstitialControllerClient>
           controller);
-  ~RequestOTRPage() override;
+  ~RequestOTRBlockingPage() override;
 
-  RequestOTRPage(const RequestOTRPage&) = delete;
-  RequestOTRPage& operator=(const RequestOTRPage&) = delete;
+  RequestOTRBlockingPage(const RequestOTRBlockingPage&) = delete;
+  RequestOTRBlockingPage& operator=(const RequestOTRBlockingPage&) = delete;
 
   // SecurityInterstitialPage:: overrides
   void OnInterstitialClosing() override {}

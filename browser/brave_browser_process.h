@@ -65,7 +65,7 @@ class MenuMetrics;
 
 namespace request_otr {
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
-class RequestOTRComponentInstaller;
+class RequestOTRComponentInstallerPolicy;
 #endif
 }  // namespace request_otr
 
@@ -93,7 +93,7 @@ class SpeedreaderRewriterService;
 namespace brave_ads {
 class BraveStatsHelper;
 class ResourceComponent;
-}
+}  // namespace brave_ads
 
 class BraveBrowserProcess {
  public:
@@ -110,7 +110,7 @@ class BraveBrowserProcess {
   virtual debounce::DebounceComponentInstaller*
   debounce_component_installer() = 0;
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
-  virtual request_otr::RequestOTRComponentInstaller*
+  virtual request_otr::RequestOTRComponentInstallerPolicy*
   request_otr_component_installer() = 0;
 #endif
   virtual brave::URLSanitizerComponentInstaller*

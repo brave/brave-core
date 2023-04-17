@@ -10,6 +10,7 @@
 
 #include "chrome/browser/history/history_tab_helper.h"
 
+// Include these here to avoid overriding "IsOffTheRecord" in them.
 #include "brave/components/request_otr/browser/request_otr_tab_storage.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"

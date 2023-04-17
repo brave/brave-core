@@ -21,9 +21,10 @@ namespace request_otr {
 
 // static
 const security_interstitials::SecurityInterstitialPage::TypeID
-    RequestOTRPage::kTypeForTesting = &RequestOTRPage::kTypeForTesting;
+    RequestOTRBlockingPage::kTypeForTesting =
+        &RequestOTRBlockingPage::kTypeForTesting;
 
-RequestOTRPage::RequestOTRPage(
+RequestOTRBlockingPage::RequestOTRBlockingPage(
     content::WebContents* web_contents,
     const GURL& request_url,
     std::unique_ptr<
@@ -33,9 +34,9 @@ RequestOTRPage::RequestOTRPage(
                                                        request_url,
                                                        std::move(controller)) {}
 
-RequestOTRPage::~RequestOTRPage() = default;
+RequestOTRBlockingPage::~RequestOTRBlockingPage() = default;
 
-void RequestOTRPage::CommandReceived(const std::string& command) {
+void RequestOTRBlockingPage::CommandReceived(const std::string& command) {
   if (command == "\"pageLoadComplete\"") {
     // content::WaitForRenderFrameReady sends this message when the page
     // load completes. Ignore it.
@@ -66,7 +67,7 @@ void RequestOTRPage::CommandReceived(const std::string& command) {
   }
 }
 
-void RequestOTRPage::PopulateInterstitialStrings(
+void RequestOTRBlockingPage::PopulateInterstitialStrings(
     base::Value::Dict& load_time_data) {
   load_time_data.Set("tabTitle", brave_l10n::GetLocalizedResourceUTF16String(
                                      IDS_REQUEST_OTR_TITLE));
@@ -100,13 +101,13 @@ void RequestOTRPage::PopulateInterstitialStrings(
                                         IDS_REQUEST_OTR_PROCEED_BUTTON));
 }
 
-int RequestOTRPage::GetHTMLTemplateId() {
+int RequestOTRBlockingPage::GetHTMLTemplateId() {
   return IDR_REQUEST_OTR_INTERSTITIAL_HTML;
 }
 
 security_interstitials::SecurityInterstitialPage::TypeID
-RequestOTRPage::GetTypeForTesting() {
-  return RequestOTRPage::kTypeForTesting;
+RequestOTRBlockingPage::GetTypeForTesting() {
+  return RequestOTRBlockingPage::kTypeForTesting;
 }
 
 }  // namespace request_otr

@@ -60,7 +60,7 @@ class MenuMetrics;
 
 namespace request_otr {
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
-class RequestOTRComponentInstaller;
+class RequestOTRComponentInstallerPolicy;
 #endif
 }  // namespace request_otr
 
@@ -115,8 +115,8 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #endif
   debounce::DebounceComponentInstaller* debounce_component_installer() override;
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
-  request_otr::RequestOTRComponentInstaller* request_otr_component_installer()
-      override;
+  request_otr::RequestOTRComponentInstallerPolicy*
+  request_otr_component_installer() override;
 #endif
   brave::URLSanitizerComponentInstaller* URLSanitizerComponentInstaller()
       override;
@@ -186,7 +186,7 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   std::unique_ptr<debounce::DebounceComponentInstaller>
       debounce_component_installer_;
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
-  std::unique_ptr<request_otr::RequestOTRComponentInstaller>
+  std::unique_ptr<request_otr::RequestOTRComponentInstallerPolicy>
       request_otr_component_installer_;
 #endif
   std::unique_ptr<brave::URLSanitizerComponentInstaller>

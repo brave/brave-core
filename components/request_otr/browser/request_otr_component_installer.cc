@@ -5,8 +5,7 @@
 
 #include "brave/components/request_otr/browser/request_otr_component_installer.h"
 
-#include <memory>
-#include <utility>
+#include <string>
 
 #include "base/base_paths.h"
 #include "base/command_line.h"
@@ -27,42 +26,40 @@ namespace request_otr {
 const char kRequestOTRConfigFile[] = "request-otr.json";
 const char kRequestOTRConfigFileVersion[] = "1";
 
-RequestOTRComponentInstaller::RequestOTRComponentInstaller(
+RequestOTRComponentInstallerPolicy::RequestOTRComponentInstallerPolicy(
     LocalDataFilesService* local_data_files_service)
     : LocalDataFilesObserver(local_data_files_service) {}
 
-RequestOTRComponentInstaller::~RequestOTRComponentInstaller() = default;
+RequestOTRComponentInstallerPolicy::~RequestOTRComponentInstallerPolicy() =
+    default;
 
-void RequestOTRComponentInstaller::LoadDirectlyFromResourcePath() {
+void RequestOTRComponentInstallerPolicy::LoadDirectlyFromResourcePath() {
   base::FilePath dat_file_path =
       resource_dir_.AppendASCII(kRequestOTRConfigFile);
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::GetDATFileAsString,
                      dat_file_path),
-      base::BindOnce(&RequestOTRComponentInstaller::OnDATFileDataReady,
+      base::BindOnce(&RequestOTRComponentInstallerPolicy::OnDATFileDataReady,
                      weak_factory_.GetWeakPtr()));
 }
 
-void RequestOTRComponentInstaller::OnDATFileDataReady(
+void RequestOTRComponentInstallerPolicy::AddObserver(Observer* observer) {
+  observers_.AddObserver(observer);
+}
+
+void RequestOTRComponentInstallerPolicy::RemoveObserver(Observer* observer) {
+  observers_.RemoveObserver(observer);
+}
+
+void RequestOTRComponentInstallerPolicy::OnDATFileDataReady(
     const std::string& contents) {
-  auto parsed_rules = RequestOTRRule::ParseRules(contents);
-  if (!parsed_rules.has_value()) {
-    LOG(WARNING) << parsed_rules.error();
-    return;
-  }
-  rules_.clear();
-  host_cache_.clear();
-  rules_ = std::move(parsed_rules.value().first);
-  host_cache_ = parsed_rules.value().second;
-  DVLOG(1) << host_cache_.size() << " unique hosts, " << rules_.size()
-           << " rules parsed from " << kRequestOTRConfigFile;
   for (Observer& observer : observers_) {
-    observer.OnRulesReady(this);
+    observer.OnRulesReady(contents);
   }
 }
 
-void RequestOTRComponentInstaller::OnComponentReady(
+void RequestOTRComponentInstallerPolicy::OnComponentReady(
     const std::string& component_id,
     const base::FilePath& install_dir,
     const std::string& manifest) {

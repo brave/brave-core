@@ -191,7 +191,7 @@ RequestOTRNavigationThrottle::MaybeShowInterstitial() {
   // including the URL of the page we're blocking. Once the user interacts with
   // the interstitial, this translates those actions into method calls on the
   // controller client.
-  auto blocked_page = std::make_unique<RequestOTRPage>(
+  auto blocked_page = std::make_unique<RequestOTRBlockingPage>(
       web_contents, request_url, std::move(controller_client));
 
   // Get the page content before giving up ownership of |blocked_page|.
@@ -217,7 +217,7 @@ void RequestOTRNavigationThrottle::Enable1PESAndResume() {
   RequestOTRTabStorage* tab_storage = RequestOTRTabStorage::FromWebContents(
       navigation_handle()->GetWebContents());
   if (tab_storage) {
-    tab_storage->Enable1PESForUrlIfPossible(
+    tab_storage->MaybeEnable1PESForUrl(
         ephemeral_storage_service_, navigation_handle()->GetURL(),
         base::BindOnce(&RequestOTRNavigationThrottle::Resume,
                        weak_ptr_factory_.GetWeakPtr()));

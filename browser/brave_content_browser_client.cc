@@ -1029,9 +1029,6 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
   std::vector<std::unique_ptr<content::NavigationThrottle>> throttles =
       ChromeContentBrowserClient::CreateThrottlesForNavigation(handle);
 
-  content::BrowserContext* context =
-      handle->GetWebContents()->GetBrowserContext();
-
 #if !BUILDFLAG(IS_ANDROID)
   std::unique_ptr<content::NavigationThrottle> ntp_shows_navigation_throttle =
       NewTabShowsNavigationThrottle::MaybeCreateThrottleFor(handle);
@@ -1044,6 +1041,9 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
   throttles.push_back(
       std::make_unique<extensions::BraveWebTorrentNavigationThrottle>(handle));
 #endif
+
+  content::BrowserContext* context =
+      handle->GetWebContents()->GetBrowserContext();
 
 #if BUILDFLAG(ENABLE_TOR)
   std::unique_ptr<content::NavigationThrottle> tor_navigation_throttle =
@@ -1118,7 +1118,7 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
               request_otr::RequestOTRServiceFactory::GetForBrowserContext(
                   context),
               EphemeralStorageServiceFactory::GetForContext(context),
-              user_prefs::UserPrefs::Get(context),
+              Profile::FromBrowserContext(context)->GetPrefs(),
               g_browser_process->GetApplicationLocale())) {
     throttles.push_back(std::move(request_otr_throttle));
   }

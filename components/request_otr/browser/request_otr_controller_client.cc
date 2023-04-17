@@ -15,12 +15,10 @@
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/referrer.h"
-#include "extensions/browser/permissions_manager.h"
 #include "ui/base/page_transition_types.h"
 #include "ui/base/window_open_disposition.h"
 
 using content::BrowserContext;
-using extensions::PermissionsManager;
 
 namespace request_otr {
 
@@ -73,14 +71,6 @@ void RequestOTRControllerClient::Proceed() {
 }
 
 void RequestOTRControllerClient::ProceedOTR() {
-  // Tell extensions permissions manager that no extensions are allowed on this
-  // site.
-  if (BrowserContext* browser_context = web_contents_->GetBrowserContext()) {
-    if (PermissionsManager* manager =
-            PermissionsManager::Get(browser_context)) {
-      manager->AddUserRestrictedSite(url::Origin::Create(request_url_));
-    }
-  }
   RequestOTRTabStorage* tab_storage =
       RequestOTRTabStorage::GetOrCreate(web_contents_);
   tab_storage->SetIsProceeding(true);
@@ -92,7 +82,7 @@ void RequestOTRControllerClient::ProceedOTR() {
           static_cast<int>(RequestOTRService::RequestOTRActionOption::kNever));
     }
   }
-  tab_storage->Enable1PESForUrlIfPossible(
+  tab_storage->MaybeEnable1PESForUrl(
       ephemeral_storage_service_, request_url_,
       base::BindOnce(&RequestOTRControllerClient::ReloadPage,
                      weak_ptr_factory_.GetWeakPtr()));

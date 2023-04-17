@@ -9,6 +9,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/time/time.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
@@ -16,9 +17,11 @@
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/request_otr/browser/request_otr_component_installer.h"
+#include "brave/components/request_otr/browser/request_otr_service.h"
 #include "brave/components/request_otr/common/features.h"
 #include "brave/components/request_otr/common/pref_names.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
+#include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/interstitials/security_interstitial_page_test_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -26,6 +29,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/history/core/browser/history_service.h"
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/infobar_manager.h"
 #include "components/security_interstitials/content/security_interstitial_tab_helper.h"
@@ -59,33 +63,32 @@ using request_otr::features::kBraveRequestOTR;
 
 namespace request_otr {
 
-class RequestOTRComponentInstallerWaiter
-    : public RequestOTRComponentInstaller::Observer {
+class RequestOTRComponentInstallerPolicyWaiter
+    : public RequestOTRComponentInstallerPolicy::Observer {
  public:
-  explicit RequestOTRComponentInstallerWaiter(
-      RequestOTRComponentInstaller* component_installer)
+  explicit RequestOTRComponentInstallerPolicyWaiter(
+      RequestOTRComponentInstallerPolicy* component_installer)
       : component_installer_(component_installer), scoped_observer_(this) {
     scoped_observer_.Observe(component_installer_);
   }
-  RequestOTRComponentInstallerWaiter(
-      const RequestOTRComponentInstallerWaiter&) = delete;
-  RequestOTRComponentInstallerWaiter& operator=(
-      const RequestOTRComponentInstallerWaiter&) = delete;
-  ~RequestOTRComponentInstallerWaiter() override = default;
+  RequestOTRComponentInstallerPolicyWaiter(
+      const RequestOTRComponentInstallerPolicyWaiter&) = delete;
+  RequestOTRComponentInstallerPolicyWaiter& operator=(
+      const RequestOTRComponentInstallerPolicyWaiter&) = delete;
+  ~RequestOTRComponentInstallerPolicyWaiter() override = default;
 
   void Wait() { run_loop_.Run(); }
 
  private:
-  // RequestOTRComponentInstaller::Observer:
-  void OnRulesReady(
-      RequestOTRComponentInstaller* component_installer) override {
+  // RequestOTRComponentInstallerPolicy::Observer:
+  void OnRulesReady(const std::string& json_content) override {
     run_loop_.QuitWhenIdle();
   }
 
-  RequestOTRComponentInstaller* const component_installer_;
+  RequestOTRComponentInstallerPolicy* const component_installer_;
   base::RunLoop run_loop_;
-  base::ScopedObservation<RequestOTRComponentInstaller,
-                          RequestOTRComponentInstaller::Observer>
+  base::ScopedObservation<RequestOTRComponentInstallerPolicy,
+                          RequestOTRComponentInstallerPolicy::Observer>
       scoped_observer_{this};
 };
 
@@ -101,9 +104,9 @@ class RequestOTRBrowserTestBase : public BaseLocalDataFilesBrowserTest {
   void WaitForService() override {
     // Wait for request-otr component installer to load and parse its
     // configuration file.
-    request_otr::RequestOTRComponentInstaller* component_installer =
+    request_otr::RequestOTRComponentInstallerPolicy* component_installer =
         g_brave_browser_process->request_otr_component_installer();
-    RequestOTRComponentInstallerWaiter(component_installer).Wait();
+    RequestOTRComponentInstallerPolicyWaiter(component_installer).Wait();
   }
 
   content::WebContents* web_contents() {
@@ -136,6 +139,27 @@ class RequestOTRBrowserTestBase : public BaseLocalDataFilesBrowserTest {
     content::TestNavigationObserver observer(web_contents());
     Click(id);
     observer.WaitForNavigationFinished();
+  }
+
+  int GetHistoryCount() {
+    history::HistoryService* history_service =
+        HistoryServiceFactory::GetForProfile(
+            browser()->profile(), ServiceAccessType::IMPLICIT_ACCESS);
+    CHECK(history_service);
+    int history_count = 0;
+    base::RunLoop loop;
+    base::CancelableTaskTracker task_tracker;
+    history_service->GetHistoryCount(
+        /*begin_time=*/base::Time::UnixEpoch(),
+        /*end_time=*/base::Time::Now(),
+        base::BindLambdaForTesting([&](history::HistoryCountResult result) {
+          ASSERT_TRUE(result.success);
+          history_count = result.count;
+          loop.Quit();
+        }),
+        &task_tracker);
+    loop.Run();
+    return history_count;
   }
 
  private:
@@ -275,6 +299,22 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, IncludeExclude) {
       embedded_test_server()->GetURL("notsensitive.b.com", "/simple.html");
   NavigateTo(url2);
   ASSERT_FALSE(IsShowingInterstitial());
+}
+
+IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, HistoryAfterStandardNavigation) {
+  ASSERT_EQ(GetHistoryCount(), 0);
+  NavigateTo(
+      embedded_test_server()->GetURL("notsensitive.b.com", "/simple.html"));
+  ASSERT_EQ(GetHistoryCount(), 1);
+}
+
+IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, HistoryAfterOTRNavigation) {
+  ASSERT_TRUE(InstallMockExtension());
+
+  ASSERT_EQ(GetHistoryCount(), 0);
+  SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kAlways);
+  NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
+  ASSERT_EQ(GetHistoryCount(), 0);
 }
 
 class RequestOTRDisabledBrowserTest : public RequestOTRBrowserTestBase {
