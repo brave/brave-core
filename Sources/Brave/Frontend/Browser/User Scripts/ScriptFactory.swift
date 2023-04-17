@@ -134,6 +134,8 @@ class ScriptFactory {
     case .engineScript(let configuration):
       let source = [
         "(function(){",
+        // This map is used by some of uBlock Origin's resources
+        "const scriptletGlobals = new Map();",
         // This boolean is used by a script injected by cosmetic filters and enables that script via this boolean
         // The script is found here: https://github.com/brave/adblock-resources/blob/master/resources/de-amp.js
         // - Note: This script is only a smaller part (1 of 3) of de-amping:
