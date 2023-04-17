@@ -5,7 +5,6 @@
 
 import styled from 'styled-components'
 
-import '@brave/leo/tokens/css/variables.css'
 import * as leo from '@brave/leo/tokens/css'
 
 import defaultBackgroundURL from '../assets/default_background.svg'

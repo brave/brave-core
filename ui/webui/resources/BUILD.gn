@@ -190,7 +190,7 @@ copy("leo_static_copy") {
   sources = rebase_path(leo_static_files,
                         ".",
                         "../../../node_modules/@brave/leo/tokens")
-  outputs = [ "$brave_resources_extra_grdps_path/css/{{source_file_part}}" ]
+  outputs = [ "$brave_resources_extra_grdps_path/leo/css/{{source_file_part}}" ]
 }
 
 # Static files should be put relative to //ui/webui/resources main resources GRD
