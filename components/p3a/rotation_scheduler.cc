@@ -105,6 +105,8 @@ RotationScheduler::RotationScheduler(
     json_rotation_timers_[log_type] = std::make_unique<base::WallClockTimer>();
     InitJsonTimer(log_type);
   }
+  last_constellation_rotation_time_ =
+      local_state_->GetTime(kLastConstellationRotationTimeStampPref);
 }
 
 RotationScheduler::~RotationScheduler() = default;
