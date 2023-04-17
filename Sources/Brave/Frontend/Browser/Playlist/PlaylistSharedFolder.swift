@@ -31,7 +31,17 @@ struct PlaylistSharedFolderModel: Decodable {
     _creatorLink = try container.decode(URLString.self, forKey: .creatorLink)
     updateAt = try container.decode(String.self, forKey: .updateAt)
     mediaItems = try container.decode([MediaItem].self, forKey: .mediaItems).map { item in
-      PlaylistInfo(name: item.title, src: item.url.absoluteString, pageSrc: item.url.absoluteString, pageTitle: item.title, mimeType: "video", duration: 0.0, detected: true, dateAdded: Date(), tagId: item.mediaItemId, order: Int32(item.order) ?? -1)
+      PlaylistInfo(name: item.title,
+                   src: item.url.absoluteString,
+                   pageSrc: item.url.absoluteString,
+                   pageTitle: item.title,
+                   mimeType: "video",
+                   duration: 0.0,
+                   lastPlayedOffset: 0.0,
+                   detected: true,
+                   dateAdded: Date(),
+                   tagId: item.mediaItemId,
+                   order: Int32(item.order) ?? -1)
     }.sorted(by: { $0.order < $1.order })
   }
   
@@ -159,6 +169,7 @@ struct PlaylistSharedFolderNetwork {
                                        pageTitle: item.pageTitle,
                                        mimeType: newItem.mimeType,
                                        duration: duration ?? newItem.duration,
+                                       lastPlayedOffset: 0.0,
                                        detected: newItem.detected,
                                        dateAdded: newItem.dateAdded,
                                        tagId: item.tagId,

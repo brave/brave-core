@@ -193,10 +193,9 @@ class PlaylistListViewController: UIViewController {
     
     // Store the last played item's time-offset
     if let playTime = delegate?.currentPlaylistItem?.currentTime(),
-      Preferences.Playlist.playbackLeftOff.value {
-      Preferences.Playlist.lastPlayedItemTime.value = playTime.seconds
-    } else {
-      Preferences.Playlist.lastPlayedItemTime.value = 0.0
+       let item = PlaylistCarplayManager.shared.currentPlaylistItem {
+      let lastPlayedTime = Preferences.Playlist.playbackLeftOff.value ? playTime.seconds : 0.0
+      PlaylistItem.updateLastPlayed(itemId: item.tagId, pageSrc: item.pageSrc, lastPlayedOffset: lastPlayedTime)
     }
 
     onCancelEditingItems()
@@ -272,19 +271,17 @@ class PlaylistListViewController: UIViewController {
     var lastPlayedItemTime: Double = 0.0
     
     let lastPlayedItemUrl = initialItem?.pageSrc ?? Preferences.Playlist.lastPlayedItemUrl.value
-    let lastPlayedItemId = PlaylistManager.shared.allItems.first(where: { $0.pageSrc == lastPlayedItemUrl })?.tagId
+    let lastPlayedItem = PlaylistManager.shared.allItems.first(where: { $0.pageSrc == lastPlayedItemUrl })
     
     // If the user is current viewing the same video as the last played item
     // then we choose whichever time offset is more recent
-    if let pageSrc = initialItem?.pageSrc,
-       let lastPlayedItem = Preferences.Playlist.lastPlayedItemUrl.value,
-       pageSrc == lastPlayedItem {
+    if let pageSrc = initialItem?.pageSrc, let lastPlayedItem = lastPlayedItem, pageSrc == lastPlayedItem.pageSrc {
       
       // User is current on the same page as the last played item]
-      lastPlayedItemTime = max(initialItemOffset, Preferences.Playlist.lastPlayedItemTime.value)
+      lastPlayedItemTime = max(initialItemOffset, lastPlayedItem.lastPlayedOffset)
     } else {
       // Otherwise we choose the last played item offset from the page and fallback to the preference if none exists
-      lastPlayedItemTime = initialItem != nil ? initialItemOffset : Preferences.Playlist.lastPlayedItemTime.value
+      lastPlayedItemTime = initialItem != nil ? initialItemOffset : lastPlayedItem?.lastPlayedOffset ?? 0.0
     }
     
     // Auto-play is based on loading state and preference only
@@ -301,7 +298,7 @@ class PlaylistListViewController: UIViewController {
 
     // If there is no last played item, then just select the first item in the playlist
     // which will play it if auto-play is enabled.
-    guard let lastPlayedItemId = lastPlayedItemId,
+    guard let lastPlayedItemId = lastPlayedItem?.tagId,
       let index = PlaylistManager.shared.index(of: lastPlayedItemId)
     else {
       tableView.delegate?.tableView?(tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
@@ -382,7 +379,7 @@ class PlaylistListViewController: UIViewController {
     }
   }
 
-  private func seekLastPlayedItem(at indexPath: IndexPath, lastPlayedItemId: String, lastPlayedTime: Double) {
+  func seekLastPlayedItem(at indexPath: IndexPath, lastPlayedItemId: String, lastPlayedTime: Double) {
     // The item can be deleted at any time,
     // so we need to guard against it and make sure the index path matches up correctly
     // If it does, we check the last played time

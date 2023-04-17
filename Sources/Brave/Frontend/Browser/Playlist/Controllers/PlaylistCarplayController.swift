@@ -207,8 +207,14 @@ class PlaylistCarplayController: NSObject {
     }.store(in: &playerStateObservers)
 
     player.publisher(for: .finishedPlaying).sink { [weak self] event in
+      guard let self = self else { return }
+      
       event.mediaPlayer.pause()
       event.mediaPlayer.seek(to: .zero)
+      
+      if let item = PlaylistCarplayManager.shared.currentPlaylistItem {
+        self.updateLastPlayedItem(item: item)
+      }
 
       var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
       nowPlayingInfo?[MPNowPlayingInfoPropertyPlaybackProgress] = 0.0
@@ -216,7 +222,7 @@ class PlaylistCarplayController: NSObject {
       nowPlayingInfo?[MPNowPlayingInfoPropertyPlaybackRate] = 0.0
       MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
 
-      self?.onNextTrack(isUserInitiated: false)
+      self.onNextTrack(isUserInitiated: false)
     }.store(in: &playerStateObservers)
   }
 
@@ -1012,14 +1018,12 @@ extension PlaylistCarplayController {
   }
 
   func updateLastPlayedItem(item: PlaylistInfo) {
-    Preferences.Playlist.lastPlayedItemUrl.value = item.pageSrc
-
-    if let playTime = player.currentItem?.currentTime(),
-      Preferences.Playlist.playbackLeftOff.value {
-      Preferences.Playlist.lastPlayedItemTime.value = playTime.seconds
-    } else {
-      Preferences.Playlist.lastPlayedItemTime.value = 0.0
+    guard let playTime = player.currentItem?.currentTime() else {
+      return
     }
+    
+    let lastPlayedTime = Preferences.Playlist.playbackLeftOff.value ? playTime.seconds : 0.0
+    PlaylistItem.updateLastPlayed(itemId: item.tagId, pageSrc: item.pageSrc, lastPlayedOffset: lastPlayedTime)
   }
 
   func displayExpiredResourceError(item: PlaylistInfo?) {

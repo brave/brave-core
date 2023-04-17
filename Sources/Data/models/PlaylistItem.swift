@@ -11,16 +11,48 @@ import os.log
 @objc(PlaylistItem)
 final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
   @NSManaged public var cachedData: Data?
-  @NSManaged public var dateAdded: Date?
+  @NSManaged public var dateAdded: Date
   @NSManaged public var duration: TimeInterval
-  @NSManaged public var mediaSrc: String?
-  @NSManaged public var mimeType: String?
-  @NSManaged public var name: String?
+  @NSManaged public var lastPlayedOffset: TimeInterval
+  @NSManaged public var mediaSrc: String
+  @NSManaged public var mimeType: String
+  @NSManaged public var name: String
   @NSManaged public var order: Int32
-  @NSManaged public var pageSrc: String?
+  @NSManaged public var pageSrc: String
   @NSManaged public var pageTitle: String?
   @NSManaged public var uuid: String?
   @NSManaged public var playlistFolder: PlaylistFolder?
+  
+  @available(*, unavailable)
+  public init() {
+    fatalError("No Such Initializer: init()")
+  }
+
+  @available(*, unavailable)
+  public init(context: NSManagedObjectContext) {
+    fatalError("No Such Initializer: init(context:)")
+  }
+
+  @objc
+  private override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
+    super.init(entity: entity, insertInto: context)
+  }
+  
+  public init(context: NSManagedObjectContext, name: String, pageTitle: String?, pageSrc: String, cachedData: Data, duration: TimeInterval, mimeType: String, mediaSrc: String) {
+    let entity = Self.entity(context)
+    super.init(entity: entity, insertInto: context)
+    self.name = name
+    self.pageTitle = pageTitle
+    self.pageSrc = pageSrc
+    self.dateAdded = Date()
+    self.cachedData = cachedData
+    self.duration = duration
+    self.lastPlayedOffset = 0.0
+    self.mimeType = mimeType
+    self.mediaSrc = mediaSrc
+    self.order = .min
+    self.uuid = UUID().uuidString
+  }
 
   public var id: String {
     objectID.uriRepresentation().absoluteString
@@ -79,15 +111,14 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
 
   public static func addItem(_ item: PlaylistInfo, cachedData: Data?, completion: (() -> Void)? = nil) {
     DataController.perform(context: .new(inMemory: false), save: false) { context in
-      let playlistItem = PlaylistItem(context: context)
-      playlistItem.name = item.name
-      playlistItem.pageTitle = item.pageTitle
-      playlistItem.pageSrc = item.pageSrc
-      playlistItem.dateAdded = Date()
-      playlistItem.cachedData = cachedData ?? Data()
-      playlistItem.duration = item.duration
-      playlistItem.mimeType = item.mimeType
-      playlistItem.mediaSrc = item.src
+      let playlistItem = PlaylistItem(context: context,
+                                      name: item.name,
+                                      pageTitle: item.pageTitle,
+                                      pageSrc: item.pageSrc,
+                                      cachedData: cachedData ?? Data(),
+                                      duration: item.duration,
+                                      mimeType: item.mimeType,
+                                      mediaSrc: item.src)
       playlistItem.order = item.order
       playlistItem.uuid = item.tagId
       playlistItem.playlistFolder = PlaylistFolder.getFolder(uuid: PlaylistFolder.savedFolderUUID, context: context)
@@ -107,15 +138,14 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
         let folder = PlaylistFolder.getFolder(uuid: folderUUID, context: context)
         
         items.forEach({ item in
-          let playlistItem = PlaylistItem(context: context)
-          playlistItem.name = item.name
-          playlistItem.pageTitle = item.pageTitle
-          playlistItem.pageSrc = item.pageSrc
-          playlistItem.dateAdded = Date()
-          playlistItem.cachedData = Data()
-          playlistItem.duration = item.duration
-          playlistItem.mimeType = item.mimeType
-          playlistItem.mediaSrc = item.src
+          let playlistItem = PlaylistItem(context: context,
+                                          name: item.name,
+                                          pageTitle: item.pageTitle,
+                                          pageSrc: item.pageSrc,
+                                          cachedData: Data(),
+                                          duration: item.duration,
+                                          mimeType: item.mimeType,
+                                          mediaSrc: item.src)
           playlistItem.order = item.order
           playlistItem.uuid = item.tagId
           playlistItem.playlistFolder = folder
@@ -136,16 +166,15 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
       let folder = PlaylistFolder.getFolder(uuid: folderUUID, context: context)
       
       items.forEach({ item in
-        let playlistItem = PlaylistItem(context: context)
-        playlistItem.cachedData = item.cachedData
-        playlistItem.dateAdded = item.dateAdded
-        playlistItem.duration = item.duration
-        playlistItem.mediaSrc = item.mediaSrc
-        playlistItem.mimeType = item.mimeType
-        playlistItem.name = item.name
+        let playlistItem = PlaylistItem(context: context,
+                                        name: item.name,
+                                        pageTitle: item.pageTitle,
+                                        pageSrc: item.pageSrc,
+                                        cachedData: item.cachedData ?? Data(),
+                                        duration: item.duration,
+                                        mimeType: item.mimeType,
+                                        mediaSrc: item.mediaSrc)
         playlistItem.order = item.order
-        playlistItem.pageSrc = item.pageSrc
-        playlistItem.pageTitle = item.pageTitle
         playlistItem.uuid = item.uuid
         playlistItem.playlistFolder = folder
       })
@@ -220,6 +249,18 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
       return false
     })
   }
+  
+  public static func updateLastPlayed(itemId: String, pageSrc: String, lastPlayedOffset: TimeInterval) {
+    if itemExists(pageSrc: pageSrc) || itemExists(uuid: itemId) {
+      DataController.perform(context: .new(inMemory: false), save: false) { context in
+        if let existingItem = PlaylistItem.first(where: NSPredicate(format: "pageSrc == %@ OR uuid == %@", pageSrc, itemId), context: context) {
+          existingItem.lastPlayedOffset = lastPlayedOffset
+        }
+
+        PlaylistItem.saveContext(context)
+      }
+    }
+  }
 
   public static func updateItem(_ item: PlaylistInfo, completion: (() -> Void)? = nil) {
     if itemExists(pageSrc: item.pageSrc) || itemExists(uuid: item.tagId) {
@@ -229,6 +270,7 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
           existingItem.pageTitle = item.pageTitle
           existingItem.pageSrc = item.pageSrc
           existingItem.duration = item.duration
+          existingItem.lastPlayedOffset = item.lastPlayedOffset
           existingItem.mimeType = item.mimeType
           existingItem.mediaSrc = item.src
           existingItem.uuid = item.tagId
@@ -265,18 +307,17 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
         }
       }
       
-      newItems.forEach {
-        let playlistItem = PlaylistItem(context: context)
-        playlistItem.name = $0.name
-        playlistItem.pageTitle = $0.pageTitle
-        playlistItem.pageSrc = $0.pageSrc
-        playlistItem.dateAdded = Date()
-        playlistItem.cachedData = Data()
-        playlistItem.duration = $0.duration
-        playlistItem.mimeType = $0.mimeType
-        playlistItem.mediaSrc = $0.src
-        playlistItem.order = $0.order
-        playlistItem.uuid = $0.tagId
+      newItems.forEach { item in
+        let playlistItem = PlaylistItem(context: context,
+                                        name: item.name,
+                                        pageTitle: item.pageTitle,
+                                        pageSrc: item.pageSrc,
+                                        cachedData: Data(),
+                                        duration: item.duration,
+                                        mimeType: item.mimeType,
+                                        mediaSrc: item.src)
+        playlistItem.order = item.order
+        playlistItem.uuid = item.tagId
         playlistItem.playlistFolder = PlaylistFolder.getFolder(uuid: folderUUID ?? PlaylistFolder.savedFolderUUID, context: context)
       }
       

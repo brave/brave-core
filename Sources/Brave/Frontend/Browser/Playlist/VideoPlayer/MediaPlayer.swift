@@ -347,6 +347,15 @@ class MediaPlayer: NSObject {
   func detachLayer() {
     playerLayer.player = nil
   }
+  
+  func addTimeObserver(interval: Int, onTick: @escaping (CMTime) -> Void) -> Any {
+    let interval = CMTimeMake(value: Int64(interval), timescale: 1000)
+    return player.addPeriodicTimeObserver(
+      forInterval: interval, queue: .main,
+      using: { time in
+        onTick(time)
+      })
+  }
 
   // MARK: - Private Variables
 
@@ -527,17 +536,14 @@ extension MediaPlayer {
             event: .finishedPlaying))
       }.store(in: &notificationObservers)
 
-    let interval = CMTimeMake(value: 25, timescale: 1000)
-    periodicTimeObserver = player.addPeriodicTimeObserver(
-      forInterval: interval, queue: .main,
-      using: { [weak self] time in
-        guard let self = self else { return }
+    periodicTimeObserver = addTimeObserver(interval: 25, onTick: { [weak self] _ in
+      guard let self = self else { return }
 
-        self.periodicTimeSubscriber.send(
-          EventNotification(
-            mediaPlayer: self,
-            event: .periodicPlayTimeChanged))
-      })
+      self.periodicTimeSubscriber.send(
+        EventNotification(
+          mediaPlayer: self,
+          event: .periodicPlayTimeChanged))
+    })
   }
 
   /// Registers playback controls notifications

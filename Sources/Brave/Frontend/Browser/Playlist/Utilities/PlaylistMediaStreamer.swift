@@ -137,6 +137,7 @@ class PlaylistMediaStreamer {
                                              pageTitle: newItem.pageTitle,
                                              mimeType: newItem.mimeType,
                                              duration: newItem.duration,
+                                             lastPlayedOffset: 0.0,
                                              detected: newItem.detected,
                                              dateAdded: item.dateAdded, // Keep the same dateAdded
                                              tagId: item.tagId,  // Keep the same tagId

@@ -56,6 +56,7 @@ class PlaylistViewController: UIViewController {
   private lazy var listController = PlaylistListViewController(playerView: playerView)
   private let detailController = PlaylistDetailViewController()
 
+  private var lastPlayedTimeObserver: Any?
   private var folderObserver: AnyCancellable?
   private var playerStateObservers = Set<AnyCancellable>()
   private var assetStateObservers = Set<AnyCancellable>()
@@ -93,11 +94,8 @@ class PlaylistViewController: UIViewController {
 
   deinit {
     // Store the last played item's time-offset
-    if let playTime = player.currentItem?.currentTime(),
-      Preferences.Playlist.playbackLeftOff.value {
-      Preferences.Playlist.lastPlayedItemTime.value = playTime.seconds
-    } else {
-      Preferences.Playlist.lastPlayedItemTime.value = 0.0
+    if let item = PlaylistCarplayManager.shared.currentPlaylistItem {
+      updateLastPlayedItem(item: item)
     }
 
     // Stop picture in picture
@@ -433,6 +431,10 @@ class PlaylistViewController: UIViewController {
 
         self.playerView.controlsView.trackBar.setTimeRange(currentTime: currentItem.currentTime(), endTime: endTime)
         event.mediaPlayer.seek(to: .zero)
+        
+        if let item = PlaylistCarplayManager.shared.currentPlaylistItem {
+          self.updateLastPlayedItem(item: item)
+        }
 
         self.playerView.controlsView.playPauseButton.isEnabled = true
         self.playerView.controlsView.playPauseButton.setImage(UIImage(named: "playlist_play", in: .module, compatibleWith: nil)!, for: .normal)
@@ -460,6 +462,12 @@ class PlaylistViewController: UIViewController {
       self.playerView.infoView.pictureInPictureButton.isEnabled =
         event.mediaPlayer.pictureInPictureController?.isPictureInPicturePossible == true
     }.store(in: &playerStateObservers)
+    
+    lastPlayedTimeObserver = self.player.addTimeObserver(interval: 5000, onTick: { [weak self] _ in
+      if let currentItem = PlaylistCarplayManager.shared.currentPlaylistItem {
+        self?.updateLastPlayedItem(item: currentItem)
+      }
+    })
   }
 
   private func observeFolderStates() {
@@ -595,13 +603,13 @@ extension PlaylistViewController: PlaylistViewControllerDelegate {
 
   func updateLastPlayedItem(item: PlaylistInfo) {
     Preferences.Playlist.lastPlayedItemUrl.value = item.pageSrc
-
-    if let playTime = player.currentItem?.currentTime(),
-      Preferences.Playlist.playbackLeftOff.value {
-      Preferences.Playlist.lastPlayedItemTime.value = playTime.seconds
-    } else {
-      Preferences.Playlist.lastPlayedItemTime.value = 0.0
+    
+    guard let playTime = player.currentItem?.currentTime() else {
+      return
     }
+    
+    let lastPlayedTime = Preferences.Playlist.playbackLeftOff.value ? playTime.seconds : 0.0
+    PlaylistItem.updateLastPlayed(itemId: item.tagId, pageSrc: item.pageSrc, lastPlayedOffset: lastPlayedTime)
   }
 
   func displayLoadingResourceError() {

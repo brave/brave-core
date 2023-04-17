@@ -440,8 +440,7 @@ public class PlaylistManager: NSObject {
               includingPropertiesForKeys: nil,
               options: [.skipsHiddenFiles])
             assets.forEach({
-              if let item = PlaylistItem.cachedItem(cacheURL: $0),
-                 let itemId = item.uuid {
+              if let item = PlaylistItem.cachedItem(cacheURL: $0), let itemId = item.uuid {
                 self.cancelDownload(itemId: itemId)
                 PlaylistItem.updateCache(uuid: itemId, cachedData: nil)
               }
@@ -708,6 +707,7 @@ extension PlaylistManager {
               pageTitle: item.pageTitle,
               mimeType: item.mimeType,
               duration: duration.seconds,
+              lastPlayedOffset: 0.0,
               detected: item.detected,
               dateAdded: item.dateAdded,
               tagId: item.tagId,
