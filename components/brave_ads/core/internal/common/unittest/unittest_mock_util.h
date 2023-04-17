@@ -8,15 +8,12 @@
 
 #include <memory>
 
-#include "base/files/scoped_temp_dir.h"
 #include "brave/components/brave_ads/core/internal/ads_client_mock.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper_mock.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_build_channel_types.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_url_response_alias.h"
 
 namespace brave_ads {
-
-class Database;
 
 void MockBuildChannel(BuildChannelType type);
 
@@ -37,48 +34,11 @@ void MockCanShowNotificationAds(const std::unique_ptr<AdsClientMock>& mock,
 void MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
     const std::unique_ptr<AdsClientMock>& mock,
     bool can_show);
-void MockShowNotificationAd(const std::unique_ptr<AdsClientMock>& mock);
-void MockCloseNotificationAd(const std::unique_ptr<AdsClientMock>& mock);
-
-void MockRecordAdEventForId(const std::unique_ptr<AdsClientMock>& mock);
-void MockGetAdEventHistory(const std::unique_ptr<AdsClientMock>& mock);
-void MockResetAdEventHistoryForId(const std::unique_ptr<AdsClientMock>& mock);
 
 void MockGetBrowsingHistory(const std::unique_ptr<AdsClientMock>& mock);
 
 void MockUrlResponses(const std::unique_ptr<AdsClientMock>& mock,
                       const URLResponseMap& url_responses);
-
-void MockSave(const std::unique_ptr<AdsClientMock>& mock);
-void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
-              const base::ScopedTempDir& temp_dir);
-void MockLoadFileResource(const std::unique_ptr<AdsClientMock>& mock,
-                          const base::ScopedTempDir& temp_dir);
-void MockLoadDataResource(const std::unique_ptr<AdsClientMock>& mock);
-
-void MockRunDBTransaction(const std::unique_ptr<AdsClientMock>& mock,
-                          const std::unique_ptr<Database>& database);
-
-void MockGetBooleanPref(const std::unique_ptr<AdsClientMock>& mock);
-void MockSetBooleanPref(const std::unique_ptr<AdsClientMock>& mock);
-void MockGetIntegerPref(const std::unique_ptr<AdsClientMock>& mock);
-void MockSetIntegerPref(const std::unique_ptr<AdsClientMock>& mock);
-void MockGetDoublePref(const std::unique_ptr<AdsClientMock>& mock);
-void MockSetDoublePref(const std::unique_ptr<AdsClientMock>& mock);
-void MockGetStringPref(const std::unique_ptr<AdsClientMock>& mock);
-void MockSetStringPref(const std::unique_ptr<AdsClientMock>& mock);
-void MockGetInt64Pref(const std::unique_ptr<AdsClientMock>& mock);
-void MockSetInt64Pref(const std::unique_ptr<AdsClientMock>& mock);
-void MockGetUint64Pref(const std::unique_ptr<AdsClientMock>& mock);
-void MockSetUint64Pref(const std::unique_ptr<AdsClientMock>& mock);
-void MockGetTimePref(const std::unique_ptr<AdsClientMock>& mock);
-void MockSetTimePref(const std::unique_ptr<AdsClientMock>& mock);
-void MockGetDictPref(const std::unique_ptr<AdsClientMock>& mock);
-void MockSetDictPref(const std::unique_ptr<AdsClientMock>& mock);
-void MockGetListPref(const std::unique_ptr<AdsClientMock>& mock);
-void MockSetListPref(const std::unique_ptr<AdsClientMock>& mock);
-void MockClearPref(const std::unique_ptr<AdsClientMock>& mock);
-void MockHasPrefPath(const std::unique_ptr<AdsClientMock>& mock);
 
 }  // namespace brave_ads
 

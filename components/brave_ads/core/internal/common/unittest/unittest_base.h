@@ -139,9 +139,19 @@ class UnitTestBase : public AdsClientNotifier, public testing::Test {
 
   void MockAdsClientAddObserver();
 
-  void SetDefaultMocks();
+  void MockDefaultAdsClient();
 
-  void SetDefaultPrefs();
+  void MockSetBooleanPref(const std::unique_ptr<AdsClientMock>& mock);
+  void MockSetIntegerPref(const std::unique_ptr<AdsClientMock>& mock);
+  void MockSetDoublePref(const std::unique_ptr<AdsClientMock>& mock);
+  void MockSetStringPref(const std::unique_ptr<AdsClientMock>& mock);
+  void MockSetInt64Pref(const std::unique_ptr<AdsClientMock>& mock);
+  void MockSetUint64Pref(const std::unique_ptr<AdsClientMock>& mock);
+  void MockSetTimePref(const std::unique_ptr<AdsClientMock>& mock);
+  void MockSetDictPref(const std::unique_ptr<AdsClientMock>& mock);
+  void MockSetListPref(const std::unique_ptr<AdsClientMock>& mock);
+
+  void MockDefaultPrefs();
 
   void SetUpIntegrationTest();
 
