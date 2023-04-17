@@ -33,11 +33,13 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
+namespace brave_rewards::internal {
+
 namespace {
 
-bool IsRevivedAC(const ledger::mojom::ContributionInfo& contribution) {
-  using ledger::mojom::ContributionProcessor;
-  using ledger::mojom::RewardsType;
+bool IsRevivedAC(const mojom::ContributionInfo& contribution) {
+  using mojom::ContributionProcessor;
+  using mojom::RewardsType;
 
   if (contribution.type != RewardsType::AUTO_CONTRIBUTE) {
     return false;
@@ -59,36 +61,35 @@ bool IsRevivedAC(const ledger::mojom::ContributionInfo& contribution) {
   return base::Time::Now() - created_at > base::Days(20);
 }
 
-ledger::mojom::ContributionStep ConvertResultIntoContributionStep(
-    const ledger::mojom::Result result) {
+mojom::ContributionStep ConvertResultIntoContributionStep(
+    const mojom::Result result) {
   switch (result) {
-    case ledger::mojom::Result::LEDGER_OK: {
-      return ledger::mojom::ContributionStep::STEP_COMPLETED;
+    case mojom::Result::LEDGER_OK: {
+      return mojom::ContributionStep::STEP_COMPLETED;
     }
-    case ledger::mojom::Result::AC_TABLE_EMPTY: {
-      return ledger::mojom::ContributionStep::STEP_AC_TABLE_EMPTY;
+    case mojom::Result::AC_TABLE_EMPTY: {
+      return mojom::ContributionStep::STEP_AC_TABLE_EMPTY;
     }
-    case ledger::mojom::Result::NOT_ENOUGH_FUNDS: {
-      return ledger::mojom::ContributionStep::STEP_NOT_ENOUGH_FUNDS;
+    case mojom::Result::NOT_ENOUGH_FUNDS: {
+      return mojom::ContributionStep::STEP_NOT_ENOUGH_FUNDS;
     }
-    case ledger::mojom::Result::REWARDS_OFF: {
-      return ledger::mojom::ContributionStep::STEP_REWARDS_OFF;
+    case mojom::Result::REWARDS_OFF: {
+      return mojom::ContributionStep::STEP_REWARDS_OFF;
     }
-    case ledger::mojom::Result::AC_OFF: {
-      return ledger::mojom::ContributionStep::STEP_AC_OFF;
+    case mojom::Result::AC_OFF: {
+      return mojom::ContributionStep::STEP_AC_OFF;
     }
-    case ledger::mojom::Result::TOO_MANY_RESULTS: {
-      return ledger::mojom::ContributionStep::STEP_RETRY_COUNT;
+    case mojom::Result::TOO_MANY_RESULTS: {
+      return mojom::ContributionStep::STEP_RETRY_COUNT;
     }
     default: {
-      return ledger::mojom::ContributionStep::STEP_FAILED;
+      return mojom::ContributionStep::STEP_FAILED;
     }
   }
 }
 
 }  // namespace
 
-namespace ledger {
 namespace contribution {
 
 Contribution::ContributionRequest::ContributionRequest(
@@ -130,7 +131,7 @@ void Contribution::Initialize() {
 }
 
 void Contribution::CheckContributionQueue() {
-  base::TimeDelta delay = ledger::is_testing
+  base::TimeDelta delay = is_testing
                               ? base::Seconds(1)
                               : util::GetRandomizedDelay(base::Seconds(15));
 
@@ -417,8 +418,8 @@ void Contribution::ContributionCompletedSaved(
 
 void Contribution::OneTimeTip(const std::string& publisher_key,
                               double amount,
-                              ledger::LegacyResultCallback callback) {
-  auto on_added = [](ledger::LegacyResultCallback callback,
+                              LegacyResultCallback callback) {
+  auto on_added = [](LegacyResultCallback callback,
                      absl::optional<std::string> queue_id) {
     callback(mojom::Result::LEDGER_OK);
   };
@@ -669,21 +670,21 @@ void Contribution::TransferFunds(const mojom::SKUTransaction& transaction,
 
 void Contribution::SKUAutoContribution(const std::string& contribution_id,
                                        const std::string& wallet_type,
-                                       ledger::LegacyResultCallback callback) {
+                                       LegacyResultCallback callback) {
   sku_.AutoContribution(contribution_id, wallet_type, callback);
 }
 
 void Contribution::StartUnblinded(
     const std::vector<mojom::CredsBatchType>& types,
     const std::string& contribution_id,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   unblinded_.Start(types, contribution_id, callback);
 }
 
 void Contribution::RetryUnblinded(
     const std::vector<mojom::CredsBatchType>& types,
     const std::string& contribution_id,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   auto get_callback = std::bind(&Contribution::RetryUnblindedContribution, this,
                                 _1, types, callback);
 
@@ -693,7 +694,7 @@ void Contribution::RetryUnblinded(
 void Contribution::RetryUnblindedContribution(
     mojom::ContributionInfoPtr contribution,
     const std::vector<mojom::CredsBatchType>& types,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   unblinded_.Retry(types, std::move(contribution), callback);
 }
 
@@ -762,7 +763,7 @@ void Contribution::SetRetryTimer(const std::string& contribution_id,
     return;
   }
 
-  if (ledger::retry_interval) {
+  if (retry_interval) {
     delay = base::Seconds(retry_interval);
   }
 
@@ -875,7 +876,7 @@ void Contribution::Retry(
   }
 }
 
-void Contribution::GetRecurringTips(ledger::GetRecurringTipsCallback callback) {
+void Contribution::GetRecurringTips(GetRecurringTipsCallback callback) {
   ledger_->database()->GetRecurringTips(
       [this, callback](std::vector<mojom::PublisherInfoPtr> list) {
         // The publisher status field may be expired. Attempt to refresh
@@ -885,4 +886,4 @@ void Contribution::GetRecurringTips(ledger::GetRecurringTipsCallback callback) {
 }
 
 }  // namespace contribution
-}  // namespace ledger
+}  // namespace brave_rewards::internal

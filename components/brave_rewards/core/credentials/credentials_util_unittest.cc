@@ -14,7 +14,7 @@
 
 // npm run test -- brave_unit_tests --filter=PromotionUtilTest.*
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace credential {
 
 class PromotionUtilTest : public testing::Test {
@@ -119,4 +119,4 @@ TEST_F(PromotionUtilTest, UnBlindCredsCredsNotCorrect) {
 }
 
 }  // namespace credential
-}  // namespace ledger
+}  // namespace brave_rewards::internal

@@ -12,7 +12,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace database {
 
 namespace {
@@ -27,7 +27,7 @@ DatabaseCredsBatch::DatabaseCredsBatch(LedgerImpl& ledger)
 DatabaseCredsBatch::~DatabaseCredsBatch() = default;
 
 void DatabaseCredsBatch::InsertOrUpdate(mojom::CredsBatchPtr creds,
-                                        ledger::LegacyResultCallback callback) {
+                                        LegacyResultCallback callback) {
   if (!creds) {
     BLOG(1, "Creds is null");
     callback(mojom::Result::LEDGER_ERROR);
@@ -136,9 +136,8 @@ void DatabaseCredsBatch::OnGetRecordByTrigger(
   callback(std::move(info));
 }
 
-void DatabaseCredsBatch::SaveSignedCreds(
-    mojom::CredsBatchPtr creds,
-    ledger::LegacyResultCallback callback) {
+void DatabaseCredsBatch::SaveSignedCreds(mojom::CredsBatchPtr creds,
+                                         LegacyResultCallback callback) {
   if (!creds) {
     BLOG(1, "Creds is null");
     callback(mojom::Result::LEDGER_ERROR);
@@ -235,7 +234,7 @@ void DatabaseCredsBatch::OnGetRecords(mojom::DBCommandResponsePtr response,
 void DatabaseCredsBatch::UpdateStatus(const std::string& trigger_id,
                                       mojom::CredsBatchType trigger_type,
                                       mojom::CredsBatchStatus status,
-                                      ledger::LegacyResultCallback callback) {
+                                      LegacyResultCallback callback) {
   if (trigger_id.empty()) {
     BLOG(0, "Trigger id is empty");
     callback(mojom::Result::LEDGER_ERROR);
@@ -267,7 +266,7 @@ void DatabaseCredsBatch::UpdateRecordsStatus(
     const std::vector<std::string>& trigger_ids,
     mojom::CredsBatchType trigger_type,
     mojom::CredsBatchStatus status,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (trigger_ids.empty()) {
     BLOG(0, "Trigger id is empty");
     callback(mojom::Result::LEDGER_ERROR);
@@ -328,4 +327,4 @@ void DatabaseCredsBatch::GetRecordsByTriggers(
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::internal

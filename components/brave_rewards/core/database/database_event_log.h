@@ -11,7 +11,7 @@
 
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace database {
 
 class DatabaseEventLog : public DatabaseTable {
@@ -22,17 +22,17 @@ class DatabaseEventLog : public DatabaseTable {
   void Insert(const std::string& key, const std::string& value);
 
   void InsertRecords(const std::map<std::string, std::string>& records,
-                     ledger::LegacyResultCallback callback);
+                     LegacyResultCallback callback);
 
   // returns last 2000 records
-  void GetLastRecords(ledger::GetEventLogsCallback callback);
+  void GetLastRecords(GetEventLogsCallback callback);
 
  private:
   void OnGetAllRecords(mojom::DBCommandResponsePtr response,
-                       ledger::GetEventLogsCallback callback);
+                       GetEventLogsCallback callback);
 };
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_EVENT_LOG_H_

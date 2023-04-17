@@ -15,7 +15,7 @@
 #include "brave/components/brave_rewards/core/endpoint/private_cdn/private_cdn_server.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace publisher {
@@ -61,6 +61,6 @@ class ServerPublisherFetcher {
 };
 
 }  // namespace publisher
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_SERVER_PUBLISHER_FETCHER_H_

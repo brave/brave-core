@@ -9,21 +9,21 @@
 #include "brave/components/brave_rewards/core/endpoints/bitflyer/post_commit_transaction/post_commit_transaction_bitflyer.h"
 #include "brave/components/brave_rewards/core/wallet_provider/transfer.h"
 
-namespace ledger::bitflyer {
+namespace brave_rewards::internal::bitflyer {
 
 class BitFlyerTransfer final : public wallet_provider::Transfer {
  public:
   using Transfer::Transfer;
 
  private:
-  void CommitTransaction(ledger::ResultCallback,
+  void CommitTransaction(ResultCallback,
                          mojom::ExternalTransactionPtr) const override;
 
   void OnCommitTransaction(
-      ledger::ResultCallback,
+      ResultCallback,
       endpoints::PostCommitTransactionBitFlyer::Result&&) const;
 };
 
-}  // namespace ledger::bitflyer
+}  // namespace brave_rewards::internal::bitflyer
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_PROVIDER_BITFLYER_BITFLYER_TRANSFER_H_

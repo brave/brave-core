@@ -13,7 +13,7 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 namespace promotion {
 
@@ -107,7 +107,7 @@ void GetSignedCreds::Request(const std::string& promotion_id,
 void GetSignedCreds::OnRequest(GetSignedCredsCallback callback,
                                mojom::UrlResponsePtr response) {
   DCHECK(response);
-  ledger::LogUrlResponse(__func__, *response);
+  LogUrlResponse(__func__, *response);
 
   mojom::Result result = CheckStatusCode(response->status_code);
 
@@ -123,4 +123,4 @@ void GetSignedCreds::OnRequest(GetSignedCredsCallback callback,
 
 }  // namespace promotion
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

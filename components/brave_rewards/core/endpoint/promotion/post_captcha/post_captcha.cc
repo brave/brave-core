@@ -14,7 +14,7 @@
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 namespace promotion {
 
@@ -101,7 +101,7 @@ void PostCaptcha::Request(PostCaptchaCallback callback) {
 void PostCaptcha::OnRequest(PostCaptchaCallback callback,
                             mojom::UrlResponsePtr response) {
   DCHECK(response);
-  ledger::LogUrlResponse(__func__, *response);
+  LogUrlResponse(__func__, *response);
 
   std::string hint;
   std::string captcha_id;
@@ -118,4 +118,4 @@ void PostCaptcha::OnRequest(PostCaptchaCallback callback,
 
 }  // namespace promotion
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

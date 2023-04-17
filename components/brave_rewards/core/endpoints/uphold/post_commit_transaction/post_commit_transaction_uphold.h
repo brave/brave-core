@@ -100,7 +100,7 @@
 //   "type": "transfer"
 // }
 
-namespace ledger::endpoints {
+namespace brave_rewards::internal::endpoints {
 
 class PostCommitTransactionUphold;
 
@@ -124,6 +124,6 @@ class PostCommitTransactionUphold final
       const std::string& content) const override;
 };
 
-}  // namespace ledger::endpoints
+}  // namespace brave_rewards::internal::endpoints
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_UPHOLD_POST_COMMIT_TRANSACTION_POST_COMMIT_TRANSACTION_UPHOLD_H_

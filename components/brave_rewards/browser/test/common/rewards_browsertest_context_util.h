@@ -15,7 +15,7 @@ namespace content {
 class WebContents;
 }  // namespace content
 
-namespace rewards_browsertest_util {
+namespace brave_rewards::test_util {
 
 void WaitForElementToAppear(
     content::WebContents* context,
@@ -59,6 +59,6 @@ std::vector<double> GetSiteBannerTipOptions(content::WebContents* site_banner);
 
 double GetRewardsPopupMonthlyTipValue(content::WebContents* context);
 
-}  // namespace rewards_browsertest_util
+}  // namespace brave_rewards::test_util
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_COMMON_REWARDS_BROWSERTEST_CONTEXT_UTIL_H_

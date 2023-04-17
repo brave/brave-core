@@ -13,7 +13,7 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-namespace ledger::endpoints {
+namespace brave_rewards::internal::endpoints {
 using Error = GetParameters::Error;
 using Result = GetParameters::Result;
 
@@ -152,4 +152,4 @@ mojom::UrlMethod GetParameters::Method() const {
   return mojom::UrlMethod::GET;
 }
 
-}  // namespace ledger::endpoints
+}  // namespace brave_rewards::internal::endpoints

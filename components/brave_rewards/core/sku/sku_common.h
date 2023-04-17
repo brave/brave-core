@@ -16,7 +16,7 @@
 #include "brave/components/brave_rewards/core/sku/sku_order.h"
 #include "brave/components/brave_rewards/core/sku/sku_transaction.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace sku {
@@ -27,25 +27,25 @@ class SKUCommon {
   ~SKUCommon();
 
   void CreateOrder(const std::vector<mojom::SKUOrderItem>& items,
-                   ledger::SKUOrderCallback callback);
+                   SKUOrderCallback callback);
 
   void CreateTransaction(mojom::SKUOrderPtr order,
                          const std::string& destination,
                          const std::string& wallet_type,
-                         ledger::SKUOrderCallback callback);
+                         SKUOrderCallback callback);
 
   void SendExternalTransaction(const std::string& order_id,
-                               ledger::SKUOrderCallback callback);
+                               SKUOrderCallback callback);
 
  private:
   void OnTransactionCompleted(const mojom::Result result,
                               const std::string& order_id,
-                              ledger::SKUOrderCallback callback);
+                              SKUOrderCallback callback);
 
   void GetSKUTransactionByOrderId(
       base::expected<mojom::SKUTransactionPtr, database::GetSKUTransactionError>
           result,
-      ledger::SKUOrderCallback callback);
+      SKUOrderCallback callback);
 
   const raw_ref<LedgerImpl> ledger_;
   SKUOrder order_;
@@ -53,6 +53,6 @@ class SKUCommon {
 };
 
 }  // namespace sku
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_SKU_SKU_COMMON_H_

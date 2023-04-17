@@ -114,7 +114,7 @@ class AdsServiceImpl : public AdsService,
 
   bool ShouldRewardUser() const;
   void InitializeRewardsWallet();
-  void OnInitializeRewardsWallet(ledger::mojom::RewardsWalletPtr wallet);
+  void OnInitializeRewardsWallet(brave_rewards::mojom::RewardsWalletPtr wallet);
   void InitializeBatAds();
   void OnInitializeBatAds(bool success);
 
@@ -140,7 +140,7 @@ class AdsServiceImpl : public AdsService,
   void NotifyPrefChanged(const std::string& path) const;
 
   void GetRewardsWallet();
-  void OnGetRewardsWallet(ledger::mojom::RewardsWalletPtr wallet);
+  void OnGetRewardsWallet(brave_rewards::mojom::RewardsWalletPtr wallet);
 
   // TODO(https://github.com/brave/brave-browser/issues/14666) Decouple idle
   // state business logic.

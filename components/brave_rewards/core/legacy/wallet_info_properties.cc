@@ -12,7 +12,7 @@
 #include "base/logging.h"
 #include "base/notreached.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 
 namespace {
 
@@ -116,4 +116,4 @@ bool WalletInfoProperties::FromJson(const std::string& json) {
   return FromValue(*root);
 }
 
-}  // namespace ledger
+}  // namespace brave_rewards::internal

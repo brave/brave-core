@@ -16,44 +16,44 @@
 
 // npm run test -- brave_unit_tests --filter=GeminiUtilsTest.*
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 namespace gemini {
 
 class GeminiUtilsTest : public testing::Test {};
 
 TEST_F(GeminiUtilsTest, GetApiServerUrlDevelopment) {
-  ledger::_environment = mojom::Environment::DEVELOPMENT;
+  _environment = mojom::Environment::DEVELOPMENT;
   const std::string url = GetApiServerUrl("/test");
   ASSERT_EQ(url, base::StrCat({BUILDFLAG(GEMINI_API_STAGING_URL), "/test"}));
 }
 
 TEST_F(GeminiUtilsTest, GetApiServerUrlStaging) {
-  ledger::_environment = mojom::Environment::STAGING;
+  _environment = mojom::Environment::STAGING;
   const std::string url = GetApiServerUrl("/test");
   ASSERT_EQ(url, base::StrCat({BUILDFLAG(GEMINI_API_STAGING_URL), "/test"}));
 }
 
 TEST_F(GeminiUtilsTest, GetApiServerUrlProduction) {
-  ledger::_environment = mojom::Environment::PRODUCTION;
+  _environment = mojom::Environment::PRODUCTION;
   const std::string url = GetApiServerUrl("/test");
   ASSERT_EQ(url, base::StrCat({BUILDFLAG(GEMINI_API_URL), "/test"}));
 }
 
 TEST_F(GeminiUtilsTest, GetOauthServerUrlDevelopment) {
-  ledger::_environment = mojom::Environment::DEVELOPMENT;
+  _environment = mojom::Environment::DEVELOPMENT;
   const std::string url = GetOauthServerUrl("/test");
   ASSERT_EQ(url, base::StrCat({BUILDFLAG(GEMINI_OAUTH_STAGING_URL), "/test"}));
 }
 
 TEST_F(GeminiUtilsTest, GetOauthServerUrlStaging) {
-  ledger::_environment = mojom::Environment::STAGING;
+  _environment = mojom::Environment::STAGING;
   const std::string url = GetOauthServerUrl("/test");
   ASSERT_EQ(url, base::StrCat({BUILDFLAG(GEMINI_OAUTH_STAGING_URL), "/test"}));
 }
 
 TEST_F(GeminiUtilsTest, GetOauthServerUrlProduction) {
-  ledger::_environment = mojom::Environment::PRODUCTION;
+  _environment = mojom::Environment::PRODUCTION;
   const std::string url = GetOauthServerUrl("/test");
   ASSERT_EQ(url, base::StrCat({BUILDFLAG(GEMINI_OAUTH_URL), "/test"}));
 }
@@ -70,4 +70,4 @@ TEST_F(GeminiUtilsTest, CheckStatusCodeTest) {
 
 }  // namespace gemini
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

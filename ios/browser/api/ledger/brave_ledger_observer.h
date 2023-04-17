@@ -28,25 +28,25 @@ NS_SWIFT_NAME(LedgerObserver)
 
 /// Executed when the wallet is first initialized
 @property(nonatomic, copy, nullable) void (^walletInitalized)
-    (LedgerResult result);
+    (BraveRewardsResult result);
 
 /// A publisher was fetched by its URL for a specific tab identified by tabId
 @property(nonatomic, copy, nullable) void (^fetchedPanelPublisher)
-    (LedgerPublisherInfo* info, uint64_t tabId);
+    (BraveRewardsPublisherInfo* info, uint64_t tabId);
 
 @property(nonatomic, copy, nullable) void (^publisherListUpdated)();
 
 ///
 @property(nonatomic, copy, nullable) void (^finishedPromotionsAdded)
-    (NSArray<LedgerPromotion*>* promotions);
+    (NSArray<BraveRewardsPromotion*>* promotions);
 
 /// Eligable grants were added to the wallet
 @property(nonatomic, copy, nullable) void (^promotionsAdded)
-    (NSArray<LedgerPromotion*>* promotions);
+    (NSArray<BraveRewardsPromotion*>* promotions);
 
 /// A grant was claimed
 @property(nonatomic, copy, nullable) void (^promotionClaimed)
-    (LedgerPromotion* promotion);
+    (BraveRewardsPromotion* promotion);
 
 @end
 

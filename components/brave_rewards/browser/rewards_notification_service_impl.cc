@@ -312,12 +312,12 @@ void RewardsNotificationServiceImpl::OnGetAllNotifications(
 }
 
 bool RewardsNotificationServiceImpl::IsAds(
-    const ledger::mojom::PromotionType promotion_type) {
-  return promotion_type == ledger::mojom::PromotionType::ADS;
+    const mojom::PromotionType promotion_type) {
+  return promotion_type == mojom::PromotionType::ADS;
 }
 
 std::string RewardsNotificationServiceImpl::GetPromotionIdPrefix(
-    const ledger::mojom::PromotionType promotion_type) {
+    const mojom::PromotionType promotion_type) {
   return IsAds(promotion_type)
       ? "rewards_notification_grant_ads_"
       : "rewards_notification_grant_";
@@ -325,15 +325,14 @@ std::string RewardsNotificationServiceImpl::GetPromotionIdPrefix(
 
 void RewardsNotificationServiceImpl::OnFetchPromotions(
     RewardsService* rewards_service,
-    const ledger::mojom::Result result,
-    const std::vector<ledger::mojom::PromotionPtr>& list) {
-  if (static_cast<ledger::mojom::Result>(result) !=
-      ledger::mojom::Result::LEDGER_OK) {
+    const mojom::Result result,
+    const std::vector<mojom::PromotionPtr>& list) {
+  if (static_cast<mojom::Result>(result) != mojom::Result::LEDGER_OK) {
     return;
   }
 
   for (const auto& item : list) {
-    if (item->status == ledger::mojom::PromotionStatus::FINISHED) {
+    if (item->status == mojom::PromotionStatus::FINISHED) {
       continue;
     }
 
@@ -362,8 +361,8 @@ void RewardsNotificationServiceImpl::OnFetchPromotions(
 
 void RewardsNotificationServiceImpl::OnPromotionFinished(
     RewardsService* rewards_service,
-    const ledger::mojom::Result result,
-    ledger::mojom::PromotionPtr promotion) {
+    const mojom::Result result,
+    mojom::PromotionPtr promotion) {
   std::string prefix = GetPromotionIdPrefix(promotion->type);
   DeleteNotification(prefix + promotion->id);
 
@@ -375,23 +374,22 @@ void RewardsNotificationServiceImpl::OnPromotionFinished(
 
 void RewardsNotificationServiceImpl::OnReconcileComplete(
     RewardsService* rewards_service,
-    const ledger::mojom::Result result,
+    const mojom::Result result,
     const std::string& contribution_id,
     const double amount,
-    const ledger::mojom::RewardsType type,
-    const ledger::mojom::ContributionProcessor processor) {
-  if (type == ledger::mojom::RewardsType::ONE_TIME_TIP) {
+    const mojom::RewardsType type,
+    const mojom::ContributionProcessor processor) {
+  if (type == mojom::RewardsType::ONE_TIME_TIP) {
     return;
   }
 
   const bool completed_auto_contribute =
-      result == ledger::mojom::Result::LEDGER_OK &&
-      type == ledger::mojom::RewardsType::AUTO_CONTRIBUTE;
+      result == mojom::Result::LEDGER_OK &&
+      type == mojom::RewardsType::AUTO_CONTRIBUTE;
 
-  if (completed_auto_contribute ||
-      result == ledger::mojom::Result::NOT_ENOUGH_FUNDS ||
-      result == ledger::mojom::Result::LEDGER_ERROR ||
-      result == ledger::mojom::Result::TIP_ERROR) {
+  if (completed_auto_contribute || result == mojom::Result::NOT_ENOUGH_FUNDS ||
+      result == mojom::Result::LEDGER_ERROR ||
+      result == mojom::Result::TIP_ERROR) {
     RewardsNotificationService::RewardsNotificationArgs args;
     args.push_back(contribution_id);
     args.push_back(base::NumberToString(static_cast<int>(result)));

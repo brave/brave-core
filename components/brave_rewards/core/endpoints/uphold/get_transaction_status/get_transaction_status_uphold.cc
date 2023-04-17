@@ -13,7 +13,7 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-namespace ledger::endpoints {
+namespace brave_rewards::internal::endpoints {
 using Error = GetTransactionStatusUphold::Error;
 using Result = GetTransactionStatusUphold::Result;
 
@@ -76,4 +76,4 @@ absl::optional<std::vector<std::string>> GetTransactionStatusUphold::Headers(
   return endpoint::uphold::RequestAuthorization(token_);
 }
 
-}  // namespace ledger::endpoints
+}  // namespace brave_rewards::internal::endpoints

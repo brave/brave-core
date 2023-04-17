@@ -29,7 +29,7 @@
 //   "tx_ref": "c40ccc6a-8579-6435-90be-66ea7ea96c1b"
 // }
 
-namespace ledger::endpoints {
+namespace brave_rewards::internal::endpoints {
 
 class PostCommitTransactionGemini;
 
@@ -54,6 +54,6 @@ class PostCommitTransactionGemini final
   std::string ContentType() const override;
 };
 
-}  // namespace ledger::endpoints
+}  // namespace brave_rewards::internal::endpoints
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_GEMINI_POST_COMMIT_TRANSACTION_POST_COMMIT_TRANSACTION_GEMINI_H_

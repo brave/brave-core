@@ -12,7 +12,7 @@
 
 #include "base/values.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 
 struct WalletInfoProperties {
   WalletInfoProperties();
@@ -35,6 +35,6 @@ struct WalletInfoProperties {
   std::vector<uint8_t> key_info_seed;
 };
 
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEGACY_WALLET_INFO_PROPERTIES_H_

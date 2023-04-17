@@ -20,7 +20,7 @@ namespace {
 const char contribution_id[] = "60770beb-3cfb-4550-a5db-deccafb5c790";
 }  // namespace
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace contribution {
 
 class UnblindedTest : public ::testing::Test {
@@ -70,7 +70,7 @@ TEST_F(UnblindedTest, NotEnoughFunds) {
 }
 
 TEST_F(UnblindedTest, GetStatisticalVotingWinner) {
-  std::vector<ledger::mojom::ContributionPublisherPtr> publisher_list;
+  std::vector<mojom::ContributionPublisherPtr> publisher_list;
 
   auto publisher1 = mojom::ContributionPublisher::New();
   publisher1->publisher_key = "publisher1";
@@ -118,4 +118,4 @@ TEST_F(UnblindedTest, GetStatisticalVotingWinner) {
 }
 
 }  // namespace contribution
-}  // namespace ledger
+}  // namespace brave_rewards::internal

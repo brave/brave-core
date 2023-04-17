@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-namespace braveledger_bat_helper {
+namespace brave_rewards::internal {
 
 bool getJSONValue(const std::string& field_name,
                   const std::string& json,
@@ -27,6 +27,6 @@ bool HasSameDomainAndPath(const std::string& url,
                           const std::string& to_match,
                           const std::string& path);
 
-}  // namespace braveledger_bat_helper
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEGACY_BAT_HELPER_H_

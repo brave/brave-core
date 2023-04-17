@@ -38,7 +38,7 @@
 //   "token_type": "Bearer"
 // }
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace endpoint::gemini {
@@ -69,6 +69,6 @@ class PostOauth {
 };
 
 }  // namespace endpoint::gemini
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_GEMINI_POST_OAUTH_POST_OAUTH_GEMINI_H_

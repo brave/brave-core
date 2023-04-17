@@ -32,7 +32,7 @@
 //   "nonce": "c4645786-052f-402f-8593-56af2f7a21ce"
 // }
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace endpoint {
@@ -65,6 +65,6 @@ class PostSafetynet {
 
 }  // namespace promotion
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PROMOTION_POST_SAFETYNET_POST_SAFETYNET_H_

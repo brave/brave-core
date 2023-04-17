@@ -15,7 +15,7 @@
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace contribution {
 
 ContributionMonthly::ContributionMonthly(LedgerImpl& ledger)
@@ -24,7 +24,7 @@ ContributionMonthly::ContributionMonthly(LedgerImpl& ledger)
 ContributionMonthly::~ContributionMonthly() = default;
 
 void ContributionMonthly::Process(absl::optional<base::Time> cutoff_time,
-                                  ledger::LegacyResultCallback callback) {
+                                  LegacyResultCallback callback) {
   ledger_->contribution()->GetRecurringTips(
       [this, cutoff_time,
        callback](std::vector<mojom::PublisherInfoPtr> publishers) {
@@ -34,7 +34,7 @@ void ContributionMonthly::Process(absl::optional<base::Time> cutoff_time,
 
 void ContributionMonthly::AdvanceContributionDates(
     absl::optional<base::Time> cutoff_time,
-    ledger::LegacyResultCallback callback,
+    LegacyResultCallback callback,
     std::vector<mojom::PublisherInfoPtr> publishers) {
   // Remove any contributions whose next contribution date is in the future.
   base::EraseIf(publishers,
@@ -61,7 +61,7 @@ void ContributionMonthly::AdvanceContributionDates(
 
 void ContributionMonthly::OnNextContributionDateAdvanced(
     std::vector<mojom::PublisherInfoPtr> publishers,
-    ledger::LegacyResultCallback callback,
+    LegacyResultCallback callback,
     bool success) {
   if (!success) {
     BLOG(0, "Unable to advance monthly contribution dates.");
@@ -99,4 +99,4 @@ void ContributionMonthly::OnNextContributionDateAdvanced(
 }
 
 }  // namespace contribution
-}  // namespace ledger
+}  // namespace brave_rewards::internal

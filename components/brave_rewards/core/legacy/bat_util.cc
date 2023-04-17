@@ -6,7 +6,7 @@
 #include "brave/components/brave_rewards/core/legacy/bat_util.h"
 #include "base/strings/string_split.h"
 
-namespace braveledger_bat_util {
+namespace brave_rewards::internal {
 
 std::string ConvertToProbi(const std::string& amount) {
   if (amount.empty()) {
@@ -40,4 +40,4 @@ double ProbiToDouble(const std::string& probi) {
   return std::stod(amount);
 }
 
-}  // namespace braveledger_bat_util
+}  // namespace brave_rewards::internal

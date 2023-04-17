@@ -11,7 +11,7 @@
 
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace database {
 
 using GetCredsBatchCallback = std::function<void(mojom::CredsBatchPtr)>;
@@ -24,26 +24,26 @@ class DatabaseCredsBatch : public DatabaseTable {
   ~DatabaseCredsBatch() override;
 
   void InsertOrUpdate(mojom::CredsBatchPtr creds,
-                      ledger::LegacyResultCallback callback);
+                      LegacyResultCallback callback);
 
   void GetRecordByTrigger(const std::string& trigger_id,
                           const mojom::CredsBatchType trigger_type,
                           GetCredsBatchCallback callback);
 
   void SaveSignedCreds(mojom::CredsBatchPtr creds,
-                       ledger::LegacyResultCallback callback);
+                       LegacyResultCallback callback);
 
   void GetAllRecords(GetCredsBatchListCallback callback);
 
   void UpdateStatus(const std::string& trigger_id,
                     mojom::CredsBatchType trigger_type,
                     mojom::CredsBatchStatus status,
-                    ledger::LegacyResultCallback callback);
+                    LegacyResultCallback callback);
 
   void UpdateRecordsStatus(const std::vector<std::string>& trigger_ids,
                            mojom::CredsBatchType trigger_type,
                            mojom::CredsBatchStatus status,
-                           ledger::LegacyResultCallback callback);
+                           LegacyResultCallback callback);
 
   void GetRecordsByTriggers(const std::vector<std::string>& trigger_ids,
                             GetCredsBatchListCallback callback);
@@ -57,6 +57,6 @@ class DatabaseCredsBatch : public DatabaseTable {
 };
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_CREDS_BATCH_H_

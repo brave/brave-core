@@ -21,7 +21,7 @@ using ::testing::_;
 using ::testing::IsFalse;
 using ::testing::MockFunction;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 namespace payment {
 
@@ -179,4 +179,4 @@ TEST_F(PostOrderTest, ServerErrorRandom) {
 
 }  // namespace payment
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

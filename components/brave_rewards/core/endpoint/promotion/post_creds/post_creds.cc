@@ -15,7 +15,7 @@
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 namespace promotion {
 
@@ -134,7 +134,7 @@ void PostCreds::Request(const std::string& promotion_id,
 void PostCreds::OnRequest(PostCredsCallback callback,
                           mojom::UrlResponsePtr response) {
   DCHECK(response);
-  ledger::LogUrlResponse(__func__, *response);
+  LogUrlResponse(__func__, *response);
 
   std::string claim_id;
   mojom::Result result = CheckStatusCode(response->status_code);
@@ -150,4 +150,4 @@ void PostCreds::OnRequest(PostCredsCallback callback,
 
 }  // namespace promotion
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

@@ -11,7 +11,7 @@
 
 using ::testing::_;
 
-namespace ledger {
+namespace brave_rewards::internal {
 
 MockLedgerClient::MockLedgerClient() {
   // If a mock function takes a response callback as its parameter,
@@ -161,4 +161,4 @@ void MockLedgerClient::DecryptString(const std::string& value,
   std::move(callback).Run(FakeEncryption::DecryptString(value));
 }
 
-}  // namespace ledger
+}  // namespace brave_rewards::internal

@@ -43,7 +43,7 @@
 //   "linking_info": "xxxxx"
 // }
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace endpoint::bitflyer {
@@ -83,6 +83,6 @@ class PostOauth {
 };
 
 }  // namespace endpoint::bitflyer
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_BITFLYER_POST_OAUTH_POST_OAUTH_BITFLYER_H_

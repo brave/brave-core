@@ -22,7 +22,7 @@
 //
 // Response body: -
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace endpoints {
@@ -44,6 +44,6 @@ class PostConnectGemini final : public PostConnect {
 };
 
 }  // namespace endpoints
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_POST_CONNECT_GEMINI_POST_CONNECT_GEMINI_H_

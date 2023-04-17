@@ -18,7 +18,7 @@ const int kCurrentVersionNumber = 13;
 
 }  // namespace
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace state {
 
 StateMigration::StateMigration(LedgerImpl& ledger)
@@ -55,8 +55,8 @@ void StateMigration::Migrate(ResultCallback callback) {
     current_version = 0;
   }
 
-  if (ledger::is_testing &&
-      current_version == ledger::state_migration_target_version_for_testing) {
+  if (is_testing &&
+      current_version == state_migration_target_version_for_testing) {
     return std::move(callback).Run(mojom::Result::LEDGER_OK);
   }
 
@@ -155,4 +155,4 @@ void StateMigration::OnMigration(ResultCallback callback,
 }
 
 }  // namespace state
-}  // namespace ledger
+}  // namespace brave_rewards::internal

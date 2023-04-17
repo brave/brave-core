@@ -6,7 +6,7 @@
 #include "brave/components/brave_rewards/core/test/bat_ledger_test.h"
 #include "brave/components/brave_rewards/common/mojom/bat_ledger.mojom-test-utils.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 
 BATLedgerTest::BATLedgerTest()
     : ledger_(client_receiver_.BindNewEndpointAndPassDedicatedRemote()) {}
@@ -30,4 +30,4 @@ void BATLedgerTest::SetLogCallbackForTesting(
   client_.SetLogCallbackForTesting(callback);
 }
 
-}  // namespace ledger
+}  // namespace brave_rewards::internal

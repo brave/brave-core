@@ -24,7 +24,7 @@
 #include "tweetnacl.h"  // NOLINT
 #include "url/gurl.h"
 
-namespace braveledger_bat_helper {
+namespace brave_rewards::internal {
 
 bool getJSONValue(const std::string& field_name,
                   const std::string& json,
@@ -101,4 +101,4 @@ bool HasSameDomainAndPath(const std::string& url_to_validate,
          gurl.path().substr(0, path_to_match.size()) == path_to_match;
 }
 
-}  // namespace braveledger_bat_helper
+}  // namespace brave_rewards::internal

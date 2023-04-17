@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_MIGRATION_MIGRATION_V36_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_MIGRATION_MIGRATION_V36_H_
 
-namespace ledger::database::migration {
+namespace brave_rewards::internal::database::migration {
 
 // Migration 36 converts all stored publisher status values of "CONNECTED" to
 // "NOT_VERIFIED".
@@ -14,6 +14,6 @@ const char v36[] = R"(
   UPDATE server_publisher_info SET status = 0 WHERE status = 1;
 )";
 
-}  // namespace ledger::database::migration
+}  // namespace brave_rewards::internal::database::migration
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_MIGRATION_MIGRATION_V36_H_

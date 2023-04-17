@@ -11,14 +11,14 @@
 #include "brave/components/brave_rewards/core/promotion/promotion.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
 
-namespace ledger::wallet_provider {
+namespace brave_rewards::internal::wallet_provider {
 
 GetExternalWallet::GetExternalWallet(LedgerImpl& ledger) : ledger_(ledger) {}
 
 GetExternalWallet::~GetExternalWallet() = default;
 
-void GetExternalWallet::Run(ledger::GetExternalWalletCallback callback) const {
-  auto wallet = ledger::wallet::MaybeCreateWallet(*ledger_, WalletType());
+void GetExternalWallet::Run(GetExternalWalletCallback callback) const {
+  auto wallet = wallet::MaybeCreateWallet(*ledger_, WalletType());
   if (!wallet) {
     return std::move(callback).Run(
         base::unexpected(mojom::GetExternalWalletError::kUnexpected));
@@ -34,15 +34,14 @@ void GetExternalWallet::Run(ledger::GetExternalWalletCallback callback) const {
   std::move(callback).Run(std::move(wallet));
 }
 
-void GetExternalWallet::OnTransferTokens(
-    ledger::GetExternalWalletCallback callback,
-    mojom::Result result,
-    std::string) const {
+void GetExternalWallet::OnTransferTokens(GetExternalWalletCallback callback,
+                                         mojom::Result result,
+                                         std::string) const {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Failed to transfer tokens!");
   }
 
-  auto wallet = ledger::wallet::GetWallet(*ledger_, WalletType());
+  auto wallet = wallet::GetWallet(*ledger_, WalletType());
   if (!wallet) {
     return std::move(callback).Run(
         base::unexpected(mojom::GetExternalWalletError::kUnexpected));
@@ -51,4 +50,4 @@ void GetExternalWallet::OnTransferTokens(
   std::move(callback).Run(std::move(wallet));
 }
 
-}  // namespace ledger::wallet_provider
+}  // namespace brave_rewards::internal::wallet_provider

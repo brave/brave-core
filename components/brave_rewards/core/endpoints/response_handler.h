@@ -14,7 +14,7 @@
 #include "brave/components/brave_rewards/core/logging/logging_util.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 
-namespace ledger::endpoints {
+namespace brave_rewards::internal::endpoints {
 
 template <typename Endpoint>
 class ResponseHandler {
@@ -25,9 +25,9 @@ class ResponseHandler {
 
  private:
   static void OnResponse(base::OnceCallback<void(Result&&)> callback,
-                         ledger::mojom::UrlResponsePtr response) {
+                         mojom::UrlResponsePtr response) {
     DCHECK(response);
-    ledger::LogUrlResponse(__func__, *response);
+    LogUrlResponse(__func__, *response);
     std::move(callback).Run(Endpoint::ProcessResponse(*response));
   }
 
@@ -40,6 +40,6 @@ class ResponseHandler {
   friend class RequestFor;
 };
 
-}  // namespace ledger::endpoints
+}  // namespace brave_rewards::internal::endpoints
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_RESPONSE_HANDLER_H_

@@ -5,14 +5,14 @@
 
 #include "brave/components/brave_rewards/core/state/state_migration_v9.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace state {
 
 StateMigrationV9::StateMigrationV9() = default;
 
 StateMigrationV9::~StateMigrationV9() = default;
 
-void StateMigrationV9::Migrate(ledger::LegacyResultCallback callback) {
+void StateMigrationV9::Migrate(LegacyResultCallback callback) {
   // In version 9, we attempted to set the "ac enabled" pref to false for users
   // in Japan as part of bitFlyer feature support. Later, it was determined
   // that Android users in Japan *should* be allowed to AC and this migration
@@ -21,4 +21,4 @@ void StateMigrationV9::Migrate(ledger::LegacyResultCallback callback) {
 }
 
 }  // namespace state
-}  // namespace ledger
+}  // namespace brave_rewards::internal

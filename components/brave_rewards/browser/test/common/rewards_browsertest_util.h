@@ -15,7 +15,7 @@
 #include "net/test/embedded_test_server/default_handlers.h"
 #include "url/gurl.h"
 
-namespace rewards_browsertest_util {
+namespace brave_rewards::test_util {
 
 void GetTestDataDir(base::FilePath* test_data_dir);
 
@@ -25,7 +25,7 @@ GURL GetRewardsInternalsUrl();
 
 GURL GetNewTabUrl();
 
-void StartProcess(brave_rewards::RewardsServiceImpl* rewards_service);
+void StartProcess(RewardsServiceImpl* rewards_service);
 
 GURL GetUrl(
     net::EmbeddedTestServer* https_server,
@@ -46,9 +46,9 @@ void NavigateToPublisherPage(
     const std::string& publisher_key,
     const std::string& path = "");
 
-void WaitForLedgerStop(brave_rewards::RewardsServiceImpl* rewards_service);
+void WaitForLedgerStop(RewardsServiceImpl* rewards_service);
 
-void CreateRewardsWallet(brave_rewards::RewardsServiceImpl* rewards_service,
+void CreateRewardsWallet(RewardsServiceImpl* rewards_service,
                          const std::string& country = "US");
 
 void SetOnboardingBypassed(Browser* browser, bool bypassed = true);
@@ -56,13 +56,13 @@ void SetOnboardingBypassed(Browser* browser, bool bypassed = true);
 // TODO(zenparsing): Remove these functions when browser tests that read or
 // write encrypted "state" are migrated to the bat ledger library.
 absl::optional<std::string> EncryptPrefString(
-    brave_rewards::RewardsServiceImpl* rewards_service,
+    RewardsServiceImpl* rewards_service,
     const std::string& value);
 
 absl::optional<std::string> DecryptPrefString(
-    brave_rewards::RewardsServiceImpl* rewards_service,
+    RewardsServiceImpl* rewards_service,
     const std::string& value);
 
-}  // namespace rewards_browsertest_util
+}  // namespace brave_rewards::test_util
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_COMMON_REWARDS_BROWSERTEST_UTIL_H_

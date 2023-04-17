@@ -14,7 +14,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace database {
 
 namespace {
@@ -33,7 +33,7 @@ DatabaseContributionQueuePublishers::~DatabaseContributionQueuePublishers() =
 void DatabaseContributionQueuePublishers::InsertOrUpdate(
     const std::string& id,
     std::vector<mojom::ContributionQueuePublisherPtr> list,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (id.empty() || list.empty()) {
     BLOG(1, "Empty data");
     callback(mojom::Result::LEDGER_ERROR);
@@ -123,4 +123,4 @@ void DatabaseContributionQueuePublishers::OnGetRecordsByQueueId(
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::internal

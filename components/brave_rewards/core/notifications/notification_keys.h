@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_NOTIFICATIONS_NOTIFICATION_KEYS_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_NOTIFICATIONS_NOTIFICATION_KEYS_H_
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace notifications {
 
 const char kUpholdBATNotAllowed[] = "uphold_bat_not_allowed";
@@ -15,6 +15,6 @@ const char kUpholdInsufficientCapabilities[] =
 const char kWalletDisconnected[] = "wallet_disconnected";
 
 }  // namespace notifications
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_NOTIFICATIONS_NOTIFICATION_KEYS_H_

@@ -27,11 +27,11 @@ std::string EncodeStringForPKCE(const std::string& data) {
 
 }  // namespace
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace util {
 
 std::string GenerateRandomHexString() {
-  if (ledger::is_testing) {
+  if (is_testing) {
     return "123456789";
   }
 
@@ -50,4 +50,4 @@ std::string GeneratePKCECodeChallenge(const std::string& code_verifier) {
 }
 
 }  // namespace util
-}  // namespace ledger
+}  // namespace brave_rewards::internal

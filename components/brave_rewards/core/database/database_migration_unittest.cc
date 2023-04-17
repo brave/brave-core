@@ -23,16 +23,16 @@
 
 // npm run test -- brave_unit_tests --filter=LedgerDatabaseMigrationTest.*
 
-namespace ledger {
+namespace brave_rewards::internal {
 using database::DatabaseMigration;
 
 class LedgerDatabaseMigrationTest : public BATLedgerTest {
  public:
-  LedgerDatabaseMigrationTest() { ledger::is_testing = true; }
+  LedgerDatabaseMigrationTest() { is_testing = true; }
 
   ~LedgerDatabaseMigrationTest() override {
     DatabaseMigration::SetTargetVersionForTesting(0);
-    ledger::is_testing = false;
+    is_testing = false;
   }
 
  protected:
@@ -96,8 +96,7 @@ class LedgerDatabaseMigrationTest : public BATLedgerTest {
 };
 
 TEST_F(LedgerDatabaseMigrationTest, SchemaCheck) {
-  DatabaseMigration::SetTargetVersionForTesting(
-      ledger::database::GetCurrentVersion());
+  DatabaseMigration::SetTargetVersionForTesting(database::GetCurrentVersion());
   InitializeLedger();
   std::string expected_schema = GetExpectedSchema();
   EXPECT_FALSE(expected_schema.empty());
@@ -828,4 +827,4 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_39) {
   EXPECT_TRUE(GetDB()->DoesColumnExist("server_publisher_banner", "web3_url"));
 }
 
-}  // namespace ledger
+}  // namespace brave_rewards::internal

@@ -9,7 +9,7 @@
 using ::testing::_;
 using ::testing::Return;
 
-namespace ledger {
+namespace brave_rewards::internal {
 
 AddMockLedgerClient::AddMockLedgerClient() = default;
 
@@ -38,4 +38,4 @@ database::MockDatabase* MockLedgerImpl::mock_database() {
   return &mock_database_;
 }
 
-}  // namespace ledger
+}  // namespace brave_rewards::internal

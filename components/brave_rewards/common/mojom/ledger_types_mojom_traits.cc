@@ -12,49 +12,57 @@
 namespace mojo {
 
 // static
-ledger::mojom::ConnectExternalWalletValuePtr
-UnionTraits<ledger::mojom::ConnectExternalWalletResultDataView,
-            base::expected<void, ledger::mojom::ConnectExternalWalletError>>::
-    value(const base::expected<void, ledger::mojom::ConnectExternalWalletError>&
-              result) {
+brave_rewards::mojom::ConnectExternalWalletValuePtr UnionTraits<
+    brave_rewards::mojom::ConnectExternalWalletResultDataView,
+    base::expected<void, brave_rewards::mojom::ConnectExternalWalletError>>::
+    value(
+        const base::expected<void,
+                             brave_rewards::mojom::ConnectExternalWalletError>&
+            result) {
   DCHECK(result.has_value());
-  return ledger::mojom::ConnectExternalWalletValue::New();
+  return brave_rewards::mojom::ConnectExternalWalletValue::New();
 }
 
 // static
-ledger::mojom::ConnectExternalWalletError
-UnionTraits<ledger::mojom::ConnectExternalWalletResultDataView,
-            base::expected<void, ledger::mojom::ConnectExternalWalletError>>::
-    error(const base::expected<void, ledger::mojom::ConnectExternalWalletError>&
-              result) {
+brave_rewards::mojom::ConnectExternalWalletError UnionTraits<
+    brave_rewards::mojom::ConnectExternalWalletResultDataView,
+    base::expected<void, brave_rewards::mojom::ConnectExternalWalletError>>::
+    error(
+        const base::expected<void,
+                             brave_rewards::mojom::ConnectExternalWalletError>&
+            result) {
   DCHECK(!result.has_value());
   return result.error();
 }
 
 // static
-ledger::mojom::ConnectExternalWalletResultDataView::Tag
-UnionTraits<ledger::mojom::ConnectExternalWalletResultDataView,
-            base::expected<void, ledger::mojom::ConnectExternalWalletError>>::
+brave_rewards::mojom::ConnectExternalWalletResultDataView::Tag UnionTraits<
+    brave_rewards::mojom::ConnectExternalWalletResultDataView,
+    base::expected<void, brave_rewards::mojom::ConnectExternalWalletError>>::
     GetTag(
-        const base::expected<void, ledger::mojom::ConnectExternalWalletError>&
+        const base::expected<void,
+                             brave_rewards::mojom::ConnectExternalWalletError>&
             result) {
   return result.has_value()
-             ? ledger::mojom::ConnectExternalWalletResultDataView::Tag::kValue
-             : ledger::mojom::ConnectExternalWalletResultDataView::Tag::kError;
+             ? brave_rewards::mojom::ConnectExternalWalletResultDataView::Tag::
+                   kValue
+             : brave_rewards::mojom::ConnectExternalWalletResultDataView::Tag::
+                   kError;
 }
 
 // static
 bool UnionTraits<
-    ledger::mojom::ConnectExternalWalletResultDataView,
-    base::expected<void, ledger::mojom::ConnectExternalWalletError>>::
-    Read(ledger::mojom::ConnectExternalWalletResultDataView data,
-         base::expected<void, ledger::mojom::ConnectExternalWalletError>* out) {
+    brave_rewards::mojom::ConnectExternalWalletResultDataView,
+    base::expected<void, brave_rewards::mojom::ConnectExternalWalletError>>::
+    Read(brave_rewards::mojom::ConnectExternalWalletResultDataView data,
+         base::expected<void, brave_rewards::mojom::ConnectExternalWalletError>*
+             out) {
   switch (data.tag()) {
-    case ledger::mojom::ConnectExternalWalletResultDataView::Tag::kValue:
+    case brave_rewards::mojom::ConnectExternalWalletResultDataView::Tag::kValue:
       *out = {};
       return true;
-    case ledger::mojom::ConnectExternalWalletResultDataView::Tag::kError:
-      ledger::mojom::ConnectExternalWalletError error;
+    case brave_rewards::mojom::ConnectExternalWalletResultDataView::Tag::kError:
+      brave_rewards::mojom::ConnectExternalWalletError error;
       if (data.ReadError(&error)) {
         *out = base::unexpected(error);
         return true;
@@ -67,49 +75,52 @@ bool UnionTraits<
 }
 
 // static
-ledger::mojom::FetchBalanceValuePtr
-UnionTraits<ledger::mojom::FetchBalanceResultDataView,
-            base::expected<ledger::mojom::BalancePtr,
-                           ledger::mojom::FetchBalanceError>>::
-    value(const base::expected<ledger::mojom::BalancePtr,
-                               ledger::mojom::FetchBalanceError>& result) {
+brave_rewards::mojom::FetchBalanceValuePtr
+UnionTraits<brave_rewards::mojom::FetchBalanceResultDataView,
+            base::expected<brave_rewards::mojom::BalancePtr,
+                           brave_rewards::mojom::FetchBalanceError>>::
+    value(
+        const base::expected<brave_rewards::mojom::BalancePtr,
+                             brave_rewards::mojom::FetchBalanceError>& result) {
   DCHECK(result.has_value());
-  return ledger::mojom::FetchBalanceValue::New(result.value()->Clone());
+  return brave_rewards::mojom::FetchBalanceValue::New(result.value()->Clone());
 }
 
 // static
-ledger::mojom::FetchBalanceError
-UnionTraits<ledger::mojom::FetchBalanceResultDataView,
-            base::expected<ledger::mojom::BalancePtr,
-                           ledger::mojom::FetchBalanceError>>::
-    error(const base::expected<ledger::mojom::BalancePtr,
-                               ledger::mojom::FetchBalanceError>& result) {
+brave_rewards::mojom::FetchBalanceError
+UnionTraits<brave_rewards::mojom::FetchBalanceResultDataView,
+            base::expected<brave_rewards::mojom::BalancePtr,
+                           brave_rewards::mojom::FetchBalanceError>>::
+    error(
+        const base::expected<brave_rewards::mojom::BalancePtr,
+                             brave_rewards::mojom::FetchBalanceError>& result) {
   DCHECK(!result.has_value());
   return result.error();
 }
 
 // static
-ledger::mojom::FetchBalanceResultDataView::Tag
-UnionTraits<ledger::mojom::FetchBalanceResultDataView,
-            base::expected<ledger::mojom::BalancePtr,
-                           ledger::mojom::FetchBalanceError>>::
-    GetTag(const base::expected<ledger::mojom::BalancePtr,
-                                ledger::mojom::FetchBalanceError>& result) {
+brave_rewards::mojom::FetchBalanceResultDataView::Tag
+UnionTraits<brave_rewards::mojom::FetchBalanceResultDataView,
+            base::expected<brave_rewards::mojom::BalancePtr,
+                           brave_rewards::mojom::FetchBalanceError>>::
+    GetTag(
+        const base::expected<brave_rewards::mojom::BalancePtr,
+                             brave_rewards::mojom::FetchBalanceError>& result) {
   return result.has_value()
-             ? ledger::mojom::FetchBalanceResultDataView::Tag::kValue
-             : ledger::mojom::FetchBalanceResultDataView::Tag::kError;
+             ? brave_rewards::mojom::FetchBalanceResultDataView::Tag::kValue
+             : brave_rewards::mojom::FetchBalanceResultDataView::Tag::kError;
 }
 
 // static
-bool UnionTraits<ledger::mojom::FetchBalanceResultDataView,
-                 base::expected<ledger::mojom::BalancePtr,
-                                ledger::mojom::FetchBalanceError>>::
-    Read(ledger::mojom::FetchBalanceResultDataView data,
-         base::expected<ledger::mojom::BalancePtr,
-                        ledger::mojom::FetchBalanceError>* out) {
+bool UnionTraits<brave_rewards::mojom::FetchBalanceResultDataView,
+                 base::expected<brave_rewards::mojom::BalancePtr,
+                                brave_rewards::mojom::FetchBalanceError>>::
+    Read(brave_rewards::mojom::FetchBalanceResultDataView data,
+         base::expected<brave_rewards::mojom::BalancePtr,
+                        brave_rewards::mojom::FetchBalanceError>* out) {
   switch (data.tag()) {
-    case ledger::mojom::FetchBalanceResultDataView::Tag::kValue: {
-      ledger::mojom::FetchBalanceValuePtr value;
+    case brave_rewards::mojom::FetchBalanceResultDataView::Tag::kValue: {
+      brave_rewards::mojom::FetchBalanceValuePtr value;
       if (data.ReadValue(&value)) {
         *out = std::move(value->balance);
         return true;
@@ -117,8 +128,8 @@ bool UnionTraits<ledger::mojom::FetchBalanceResultDataView,
 
       break;
     }
-    case ledger::mojom::FetchBalanceResultDataView::Tag::kError: {
-      ledger::mojom::FetchBalanceError error;
+    case brave_rewards::mojom::FetchBalanceResultDataView::Tag::kError: {
+      brave_rewards::mojom::FetchBalanceError error;
       if (data.ReadError(&error)) {
         *out = base::unexpected(error);
         return true;
@@ -132,50 +143,54 @@ bool UnionTraits<ledger::mojom::FetchBalanceResultDataView,
 }
 
 // static
-ledger::mojom::GetExternalWalletValuePtr
-UnionTraits<ledger::mojom::GetExternalWalletResultDataView,
-            base::expected<ledger::mojom::ExternalWalletPtr,
-                           ledger::mojom::GetExternalWalletError>>::
-    value(const base::expected<ledger::mojom::ExternalWalletPtr,
-                               ledger::mojom::GetExternalWalletError>& result) {
+brave_rewards::mojom::GetExternalWalletValuePtr
+UnionTraits<brave_rewards::mojom::GetExternalWalletResultDataView,
+            base::expected<brave_rewards::mojom::ExternalWalletPtr,
+                           brave_rewards::mojom::GetExternalWalletError>>::
+    value(const base::expected<brave_rewards::mojom::ExternalWalletPtr,
+                               brave_rewards::mojom::GetExternalWalletError>&
+              result) {
   DCHECK(result.has_value());
-  return ledger::mojom::GetExternalWalletValue::New(result.value()->Clone());
+  return brave_rewards::mojom::GetExternalWalletValue::New(
+      result.value()->Clone());
 }
 
 // static
-ledger::mojom::GetExternalWalletError
-UnionTraits<ledger::mojom::GetExternalWalletResultDataView,
-            base::expected<ledger::mojom::ExternalWalletPtr,
-                           ledger::mojom::GetExternalWalletError>>::
-    error(const base::expected<ledger::mojom::ExternalWalletPtr,
-                               ledger::mojom::GetExternalWalletError>& result) {
+brave_rewards::mojom::GetExternalWalletError
+UnionTraits<brave_rewards::mojom::GetExternalWalletResultDataView,
+            base::expected<brave_rewards::mojom::ExternalWalletPtr,
+                           brave_rewards::mojom::GetExternalWalletError>>::
+    error(const base::expected<brave_rewards::mojom::ExternalWalletPtr,
+                               brave_rewards::mojom::GetExternalWalletError>&
+              result) {
   DCHECK(!result.has_value());
   return result.error();
 }
 
 // static
-ledger::mojom::GetExternalWalletResultDataView::Tag
-UnionTraits<ledger::mojom::GetExternalWalletResultDataView,
-            base::expected<ledger::mojom::ExternalWalletPtr,
-                           ledger::mojom::GetExternalWalletError>>::
-    GetTag(
-        const base::expected<ledger::mojom::ExternalWalletPtr,
-                             ledger::mojom::GetExternalWalletError>& result) {
-  return result.has_value()
-             ? ledger::mojom::GetExternalWalletResultDataView::Tag::kValue
-             : ledger::mojom::GetExternalWalletResultDataView::Tag::kError;
+brave_rewards::mojom::GetExternalWalletResultDataView::Tag
+UnionTraits<brave_rewards::mojom::GetExternalWalletResultDataView,
+            base::expected<brave_rewards::mojom::ExternalWalletPtr,
+                           brave_rewards::mojom::GetExternalWalletError>>::
+    GetTag(const base::expected<brave_rewards::mojom::ExternalWalletPtr,
+                                brave_rewards::mojom::GetExternalWalletError>&
+               result) {
+  return result.has_value() ? brave_rewards::mojom::
+                                  GetExternalWalletResultDataView::Tag::kValue
+                            : brave_rewards::mojom::
+                                  GetExternalWalletResultDataView::Tag::kError;
 }
 
 // static
-bool UnionTraits<ledger::mojom::GetExternalWalletResultDataView,
-                 base::expected<ledger::mojom::ExternalWalletPtr,
-                                ledger::mojom::GetExternalWalletError>>::
-    Read(ledger::mojom::GetExternalWalletResultDataView data,
-         base::expected<ledger::mojom::ExternalWalletPtr,
-                        ledger::mojom::GetExternalWalletError>* out) {
+bool UnionTraits<brave_rewards::mojom::GetExternalWalletResultDataView,
+                 base::expected<brave_rewards::mojom::ExternalWalletPtr,
+                                brave_rewards::mojom::GetExternalWalletError>>::
+    Read(brave_rewards::mojom::GetExternalWalletResultDataView data,
+         base::expected<brave_rewards::mojom::ExternalWalletPtr,
+                        brave_rewards::mojom::GetExternalWalletError>* out) {
   switch (data.tag()) {
-    case ledger::mojom::GetExternalWalletResultDataView::Tag::kValue: {
-      ledger::mojom::GetExternalWalletValuePtr value;
+    case brave_rewards::mojom::GetExternalWalletResultDataView::Tag::kValue: {
+      brave_rewards::mojom::GetExternalWalletValuePtr value;
       if (data.ReadValue(&value)) {
         *out = std::move(value->wallet);
         return true;
@@ -183,8 +198,8 @@ bool UnionTraits<ledger::mojom::GetExternalWalletResultDataView,
 
       break;
     }
-    case ledger::mojom::GetExternalWalletResultDataView::Tag::kError: {
-      ledger::mojom::GetExternalWalletError error;
+    case brave_rewards::mojom::GetExternalWalletResultDataView::Tag::kError: {
+      brave_rewards::mojom::GetExternalWalletError error;
       if (data.ReadError(&error)) {
         *out = base::unexpected(error);
         return true;

@@ -496,7 +496,7 @@ void AdsServiceImpl::InitializeRewardsWallet() {
 }
 
 void AdsServiceImpl::OnInitializeRewardsWallet(
-    ledger::mojom::RewardsWalletPtr wallet) {
+    brave_rewards::mojom::RewardsWalletPtr wallet) {
   if (!bat_ads_.is_bound()) {
     return;
   }
@@ -688,7 +688,7 @@ void AdsServiceImpl::GetRewardsWallet() {
 }
 
 void AdsServiceImpl::OnGetRewardsWallet(
-    ledger::mojom::RewardsWalletPtr wallet) {
+    brave_rewards::mojom::RewardsWalletPtr wallet) {
   if (wallet && bat_ads_.is_bound()) {
     bat_ads_->OnRewardsWalletDidChange(
         wallet->payment_id, base::Base64Encode(wallet->recovery_seed));

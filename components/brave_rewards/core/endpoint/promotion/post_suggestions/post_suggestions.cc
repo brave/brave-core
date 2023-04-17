@@ -16,7 +16,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 namespace promotion {
 
@@ -92,10 +92,10 @@ void PostSuggestions::Request(const credential::CredentialsRedeem& redeem,
 void PostSuggestions::OnRequest(mojom::UrlResponsePtr response,
                                 PostSuggestionsCallback callback) {
   DCHECK(response);
-  ledger::LogUrlResponse(__func__, *response);
+  LogUrlResponse(__func__, *response);
   callback(CheckStatusCode(response->status_code));
 }
 
 }  // namespace promotion
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

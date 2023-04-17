@@ -15,7 +15,7 @@
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 
 // Base class for unit tests. |BATLedgerTest| provides a task environment and a
 // test implementation of |LedgerClient|.
@@ -51,6 +51,6 @@ class BATLedgerTest : public testing::Test {
   LedgerImpl ledger_;
 };
 
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_TEST_BAT_LEDGER_TEST_H_

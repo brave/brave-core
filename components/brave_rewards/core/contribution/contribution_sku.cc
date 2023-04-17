@@ -18,6 +18,8 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
+namespace brave_rewards::internal {
+
 namespace {
 
 const char kACSKUDev[] =
@@ -37,15 +39,15 @@ const char kACSKUProduction[] =
     "B0OfoiPn0NPVfI602J";  // NOLINT
 
 std::string GetACSKU() {
-  if (ledger::_environment == ledger::mojom::Environment::PRODUCTION) {
+  if (_environment == mojom::Environment::PRODUCTION) {
     return kACSKUProduction;
   }
 
-  if (ledger::_environment == ledger::mojom::Environment::STAGING) {
+  if (_environment == mojom::Environment::STAGING) {
     return kACSKUStaging;
   }
 
-  if (ledger::_environment == ledger::mojom::Environment::DEVELOPMENT) {
+  if (_environment == mojom::Environment::DEVELOPMENT) {
     return kACSKUDev;
   }
 
@@ -53,8 +55,8 @@ std::string GetACSKU() {
   return kACSKUDev;
 }
 
-void GetCredentialTrigger(ledger::mojom::SKUOrderPtr order,
-                          ledger::credential::CredentialsTrigger* trigger) {
+void GetCredentialTrigger(mojom::SKUOrderPtr order,
+                          credential::CredentialsTrigger* trigger) {
   DCHECK(trigger);
 
   if (!order || order->items.size() != 1) {
@@ -67,13 +69,12 @@ void GetCredentialTrigger(ledger::mojom::SKUOrderPtr order,
 
   trigger->id = order->order_id;
   trigger->size = order->items[0]->quantity;
-  trigger->type = ledger::mojom::CredsBatchType::SKU;
+  trigger->type = mojom::CredsBatchType::SKU;
   trigger->data = data;
 }
 
 }  // namespace
 
-namespace ledger {
 namespace contribution {
 
 ContributionSKU::ContributionSKU(LedgerImpl& ledger)
@@ -83,7 +84,7 @@ ContributionSKU::~ContributionSKU() = default;
 
 void ContributionSKU::AutoContribution(const std::string& contribution_id,
                                        const std::string& wallet_type,
-                                       ledger::LegacyResultCallback callback) {
+                                       LegacyResultCallback callback) {
   mojom::SKUOrderItem item;
   item.sku = GetACSKU();
 
@@ -93,7 +94,7 @@ void ContributionSKU::AutoContribution(const std::string& contribution_id,
 void ContributionSKU::Start(const std::string& contribution_id,
                             const mojom::SKUOrderItem& item,
                             const std::string& wallet_type,
-                            ledger::LegacyResultCallback callback) {
+                            LegacyResultCallback callback) {
   auto get_callback = std::bind(&ContributionSKU::GetContributionInfo, this, _1,
                                 item, wallet_type, callback);
 
@@ -104,14 +105,14 @@ void ContributionSKU::GetContributionInfo(
     mojom::ContributionInfoPtr contribution,
     const mojom::SKUOrderItem& item,
     const std::string& wallet_type,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution not found");
     callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  ledger::LegacyResultCallback complete_callback =
+  LegacyResultCallback complete_callback =
       std::bind(&ContributionSKU::Completed, this, _1,
                 contribution->contribution_id, contribution->type, callback);
 
@@ -134,7 +135,7 @@ void ContributionSKU::GetContributionInfo(
 void ContributionSKU::GetOrder(mojom::Result result,
                                const std::string& order_id,
                                const std::string& contribution_id,
-                               ledger::LegacyResultCallback callback) {
+                               LegacyResultCallback callback) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "SKU was not processed");
     callback(result);
@@ -148,7 +149,7 @@ void ContributionSKU::GetOrder(mojom::Result result,
 
 void ContributionSKU::OnGetOrder(mojom::SKUOrderPtr order,
                                  const std::string& contribution_id,
-                                 ledger::LegacyResultCallback callback) {
+                                 LegacyResultCallback callback) {
   if (!order) {
     BLOG(0, "Order was not found");
     callback(mojom::Result::LEDGER_ERROR);
@@ -160,7 +161,7 @@ void ContributionSKU::OnGetOrder(mojom::SKUOrderPtr order,
   GetCredentialTrigger(order->Clone(), &trigger);
 
   credentials_.Start(
-      trigger, base::BindOnce([](ledger::LegacyResultCallback callback,
+      trigger, base::BindOnce([](LegacyResultCallback callback,
                                  mojom::Result result) { callback(result); },
                               std::move(callback)));
 }
@@ -168,7 +169,7 @@ void ContributionSKU::OnGetOrder(mojom::SKUOrderPtr order,
 void ContributionSKU::Completed(mojom::Result result,
                                 const std::string& contribution_id,
                                 mojom::RewardsType type,
-                                ledger::LegacyResultCallback callback) {
+                                LegacyResultCallback callback) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Order not completed");
     callback(result);
@@ -184,7 +185,7 @@ void ContributionSKU::Completed(mojom::Result result,
 
 void ContributionSKU::CredsStepSaved(mojom::Result result,
                                      const std::string& contribution_id,
-                                     ledger::LegacyResultCallback callback) {
+                                     LegacyResultCallback callback) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Creds step not saved");
     callback(result);
@@ -274,7 +275,7 @@ void ContributionSKU::OnRedeemTokens(mojom::Result result,
 }
 
 void ContributionSKU::Retry(mojom::ContributionInfoPtr contribution,
-                            ledger::LegacyResultCallback callback) {
+                            LegacyResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution was not found");
     callback(mojom::Result::LEDGER_ERROR);
@@ -293,7 +294,7 @@ void ContributionSKU::Retry(mojom::ContributionInfoPtr contribution,
 void ContributionSKU::OnOrder(
     mojom::SKUOrderPtr order,
     std::shared_ptr<mojom::ContributionInfoPtr> shared_contribution,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   auto contribution = std::move(*shared_contribution);
   if (!contribution) {
     BLOG(0, "Contribution is null");
@@ -332,7 +333,7 @@ void ContributionSKU::OnOrder(
 
 void ContributionSKU::RetryStartStep(mojom::ContributionInfoPtr contribution,
                                      mojom::SKUOrderPtr order,
-                                     ledger::LegacyResultCallback callback) {
+                                     LegacyResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution is null");
     callback(mojom::Result::LEDGER_ERROR);
@@ -368,7 +369,7 @@ void ContributionSKU::RetryStartStep(mojom::ContributionInfoPtr contribution,
     return;
   }
 
-  ledger::LegacyResultCallback complete_callback =
+  LegacyResultCallback complete_callback =
       std::bind(&ContributionSKU::Completed, this, _1,
                 contribution->contribution_id, contribution->type, callback);
 
@@ -380,4 +381,4 @@ void ContributionSKU::RetryStartStep(mojom::ContributionInfoPtr contribution,
 }
 
 }  // namespace contribution
-}  // namespace ledger
+}  // namespace brave_rewards::internal

@@ -9,7 +9,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace util {
 
 mojom::ActivityMonth GetCurrentMonth();
@@ -29,6 +29,6 @@ base::TimeDelta GetRandomizedDelayWithBackoff(base::TimeDelta delay,
                                               int backoff_count);
 
 }  // namespace util
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_COMMON_TIME_UTIL_H_

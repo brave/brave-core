@@ -10,7 +10,7 @@
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace state {
 
 StateMigrationV11::StateMigrationV11(LedgerImpl& ledger) : ledger_(ledger) {}
@@ -32,4 +32,4 @@ void StateMigrationV11::Migrate(LegacyResultCallback callback) {
 }
 
 }  // namespace state
-}  // namespace ledger
+}  // namespace brave_rewards::internal

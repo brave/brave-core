@@ -8,7 +8,7 @@
 
 #include "brave/components/brave_rewards/core/wallet_provider/get_external_wallet.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace uphold {
@@ -24,6 +24,6 @@ class GetUpholdWallet : public wallet_provider::GetExternalWallet {
 };
 
 }  // namespace uphold
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_PROVIDER_UPHOLD_GET_UPHOLD_WALLET_H_

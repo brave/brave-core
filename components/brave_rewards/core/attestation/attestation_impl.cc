@@ -20,7 +20,7 @@
 #include "brave/components/brave_rewards/core/attestation/attestation_desktop.h"
 #endif
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace attestation {
 
 AttestationImpl::AttestationImpl(LedgerImpl& ledger) : Attestation(ledger) {
@@ -46,4 +46,4 @@ void AttestationImpl::Confirm(const std::string& solution,
 }
 
 }  // namespace attestation
-}  // namespace ledger
+}  // namespace brave_rewards::internal

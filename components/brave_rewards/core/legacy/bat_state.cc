@@ -15,30 +15,30 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace braveledger_bat_state {
+namespace brave_rewards::internal {
 
-LegacyBatState::LegacyBatState(ledger::LedgerImpl& ledger) : ledger_(ledger) {}
+LegacyBatState::LegacyBatState(LedgerImpl& ledger) : ledger_(ledger) {}
 
 LegacyBatState::~LegacyBatState() = default;
 
-void LegacyBatState::Load(ledger::LegacyResultCallback callback) {
+void LegacyBatState::Load(LegacyResultCallback callback) {
   ledger_->client()->LoadLedgerState(base::BindOnce(
       &LegacyBatState::OnLoad, base::Unretained(this), std::move(callback)));
 }
 
-void LegacyBatState::OnLoad(ledger::LegacyResultCallback callback,
-                            ledger::mojom::Result result,
+void LegacyBatState::OnLoad(LegacyResultCallback callback,
+                            mojom::Result result,
                             const std::string& data) {
-  if (result != ledger::mojom::Result::LEDGER_OK) {
+  if (result != mojom::Result::LEDGER_OK) {
     callback(result);
     return;
   }
 
-  ledger::ClientProperties state;
+  ClientProperties state;
   if (!state.FromJson(data)) {
     BLOG(0, "Failed to load client state");
     BLOG(6, "Client state contents: " << data);
-    callback(ledger::mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -54,7 +54,7 @@ void LegacyBatState::OnLoad(ledger::LegacyResultCallback callback,
     state_.boot_timestamp = state_.boot_timestamp / 1000;
   }
 
-  callback(ledger::mojom::Result::LEDGER_OK);
+  callback(mojom::Result::LEDGER_OK);
 }
 
 bool LegacyBatState::GetRewardsMainEnabled() const {
@@ -103,4 +103,4 @@ bool LegacyBatState::GetInlineTipSetting(const std::string& key) const {
   return tip->second;
 }
 
-}  // namespace braveledger_bat_state
+}  // namespace brave_rewards::internal

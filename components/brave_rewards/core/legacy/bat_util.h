@@ -8,12 +8,12 @@
 
 #include <string>
 
-namespace braveledger_bat_util {
+namespace brave_rewards::internal {
 
 std::string ConvertToProbi(const std::string& amount);
 
 double ProbiToDouble(const std::string& probi);
 
-}  // namespace braveledger_bat_util
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEGACY_BAT_UTIL_H_

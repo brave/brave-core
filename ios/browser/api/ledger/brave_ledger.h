@@ -55,10 +55,11 @@ OBJC_EXPORT
 @property(nonatomic, readonly, getter=isInitializing) BOOL initializing;
 
 /// The result when initializing the ledger service. Should be
-/// `LedgerResultLedgerOk` if `initialized` is `true`
+/// `BraveRewardsResultLedgerOk` if `initialized` is `true`
 ///
-/// If this is not `LedgerResultLedgerOk`, rewards is not usable for the user
-@property(nonatomic, readonly) LedgerResult initializationResult;
+/// If this is not `BraveRewardsResultLedgerOk`, rewards is not usable for the
+/// user
+@property(nonatomic, readonly) BraveRewardsResult initializationResult;
 
 /// Whether or not data migration failed when initializing and the user should
 /// be notified.
@@ -85,22 +86,23 @@ OBJC_EXPORT
 
 /// Get the brave wallet's payment ID and seed for ads confirmations
 - (void)currentWalletInfo:
-    (void (^)(LedgerRewardsWallet* _Nullable wallet))completion;
+    (void (^)(BraveRewardsRewardsWallet* _Nullable wallet))completion;
 
 /// Get parameters served from the server
 - (void)getRewardsParameters:
-    (nullable void (^)(LedgerRewardsParameters* _Nullable))completion;
+    (nullable void (^)(BraveRewardsRewardsParameters* _Nullable))completion;
 
 /// The parameters send from the server
 @property(nonatomic, readonly, nullable)
-    LedgerRewardsParameters* rewardsParameters;
+    BraveRewardsRewardsParameters* rewardsParameters;
 
 /// Fetch details about the users wallet (if they have one) and assigns it to
 /// `balance`
-- (void)fetchBalance:(nullable void (^)(LedgerBalance* _Nullable))completion;
+- (void)fetchBalance:
+    (nullable void (^)(BraveRewardsBalance* _Nullable))completion;
 
 /// The users current wallet balance and related info
-@property(nonatomic, readonly, nullable) LedgerBalance* balance;
+@property(nonatomic, readonly, nullable) BraveRewardsBalance* balance;
 
 #pragma mark - Publishers
 
@@ -115,9 +117,10 @@ OBJC_EXPORT
 /// @note `completion` callback is called synchronously
 - (void)listActivityInfoFromStart:(unsigned int)start
                             limit:(unsigned int)limit
-                           filter:(LedgerActivityInfoFilter*)filter
+                           filter:(BraveRewardsActivityInfoFilter*)filter
                        completion:
-                           (void (^)(NSArray<LedgerPublisherInfo*>*))completion;
+                           (void (^)(NSArray<BraveRewardsPublisherInfo*>*))
+                               completion;
 
 /// Start a fetch to get a publishers activity information given a URL
 ///
@@ -129,58 +132,64 @@ OBJC_EXPORT
 
 /// Refresh a publishers verification status
 - (void)refreshPublisherWithId:(NSString*)publisherId
-                    completion:
-                        (void (^)(LedgerPublisherStatus status))completion;
+                    completion:(void (^)(BraveRewardsPublisherStatus status))
+                                   completion;
 
 #pragma mark - Tips
 
 /// Get a list of publishers who the user has recurring tips on
 ///
 /// @note `completion` callback is called synchronously
-- (void)listRecurringTips:(void (^)(NSArray<LedgerPublisherInfo*>*))completion;
+- (void)listRecurringTips:
+    (void (^)(NSArray<BraveRewardsPublisherInfo*>*))completion;
 
 - (void)removeRecurringTipForPublisherWithId:(NSString*)publisherId
     NS_SWIFT_NAME(removeRecurringTip(publisherId:));
 
 #pragma mark - Promotions
 
-@property(nonatomic, readonly) NSArray<LedgerPromotion*>* pendingPromotions;
+@property(nonatomic, readonly)
+    NSArray<BraveRewardsPromotion*>* pendingPromotions;
 
-@property(nonatomic, readonly) NSArray<LedgerPromotion*>* finishedPromotions;
+@property(nonatomic, readonly)
+    NSArray<BraveRewardsPromotion*>* finishedPromotions;
 
 /// Updates `pendingPromotions` and `finishedPromotions` based on the database
 - (void)updatePendingAndFinishedPromotions:(nullable void (^)())completion;
 
 - (void)fetchPromotions:
-    (nullable void (^)(NSArray<LedgerPromotion*>* grants))completion;
+    (nullable void (^)(NSArray<BraveRewardsPromotion*>* grants))completion;
 
 - (void)claimPromotion:(NSString*)promotionId
              publicKey:(NSString*)deviceCheckPublicKey
-            completion:(void (^)(LedgerResult result,
+            completion:(void (^)(BraveRewardsResult result,
                                  NSString* _Nonnull nonce))completion;
 
 - (void)attestPromotion:(NSString*)promotionId
                solution:(PromotionSolution*)solution
-             completion:(nullable void (^)(
-                            LedgerResult result,
-                            LedgerPromotion* _Nullable promotion))completion;
+             completion:
+                 (nullable void (^)(BraveRewardsResult result,
+                                    BraveRewardsPromotion* _Nullable promotion))
+                     completion;
 
 #pragma mark - Pending Contributions
 
-- (void)removeAllPendingContributions:(void (^)(LedgerResult result))completion;
+- (void)removeAllPendingContributions:
+    (void (^)(BraveRewardsResult result))completion;
 
 #pragma mark - Misc
 
 - (void)rewardsInternalInfo:
-    (void (^)(LedgerRewardsInternalsInfo* _Nullable info))completion;
+    (void (^)(BraveRewardsRewardsInternalsInfo* _Nullable info))completion;
 
 - (void)allContributions:
-    (void (^)(NSArray<LedgerContributionInfo*>* contributions))completion;
+    (void (^)(NSArray<BraveRewardsContributionInfo*>* contributions))completion;
 
 @property(nonatomic, readonly, copy) NSString* rewardsDatabasePath;
 
 - (void)fetchAutoContributeProperties:
-    (void (^)(LedgerAutoContributeProperties* _Nullable properties))completion;
+    (void (^)(BraveRewardsAutoContributeProperties* _Nullable properties))
+        completion;
 
 #pragma mark - Reporting
 

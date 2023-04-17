@@ -77,7 +77,7 @@
 //   ]
 // }
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace endpoint::uphold {
@@ -107,6 +107,6 @@ class PostCards {
 };
 
 }  // namespace endpoint::uphold
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_UPHOLD_POST_CARDS_POST_CARDS_H_

@@ -14,7 +14,7 @@
 #include "brave/components/brave_rewards/core/credentials/credentials_common.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotion_server.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace credential {
 
 class CredentialsPromotion : public Credentials {
@@ -23,78 +23,77 @@ class CredentialsPromotion : public Credentials {
   ~CredentialsPromotion() override;
 
   void Start(const CredentialsTrigger& trigger,
-             ledger::ResultCallback callback) override;
+             ResultCallback callback) override;
 
   void RedeemTokens(const CredentialsRedeem& redeem,
-                    ledger::LegacyResultCallback callback) override;
+                    LegacyResultCallback callback) override;
 
   void DrainTokens(const CredentialsRedeem& redeem,
-                   ledger::PostSuggestionsClaimCallback callback);
+                   PostSuggestionsClaimCallback callback);
 
  private:
-  void OnStart(ledger::ResultCallback callback,
+  void OnStart(ResultCallback callback,
                const CredentialsTrigger& trigger,
                mojom::CredsBatchPtr creds);
 
-  void Blind(ledger::ResultCallback callback,
+  void Blind(ResultCallback callback,
              const CredentialsTrigger& trigger) override;
 
-  void OnBlind(ledger::ResultCallback callback,
+  void OnBlind(ResultCallback callback,
                const CredentialsTrigger& trigger,
                mojom::Result result);
 
-  void Claim(ledger::ResultCallback callback,
+  void Claim(ResultCallback callback,
              const CredentialsTrigger& trigger,
              mojom::CredsBatchPtr creds) override;
 
-  void OnClaim(ledger::ResultCallback callback,
+  void OnClaim(ResultCallback callback,
                const CredentialsTrigger& trigger,
                mojom::Result result,
                const std::string& claim_id);
 
-  void ClaimedSaved(ledger::ResultCallback callback,
+  void ClaimedSaved(ResultCallback callback,
                     const CredentialsTrigger& trigger,
                     mojom::Result result);
 
-  void ClaimStatusSaved(ledger::ResultCallback callback,
+  void ClaimStatusSaved(ResultCallback callback,
                         const CredentialsTrigger& trigger,
                         mojom::Result result);
 
-  void RetryPreviousStepSaved(ledger::ResultCallback callback,
-                              mojom::Result result);
+  void RetryPreviousStepSaved(ResultCallback callback, mojom::Result result);
 
-  void FetchSignedCreds(ledger::ResultCallback callback,
+  void FetchSignedCreds(ResultCallback callback,
                         const CredentialsTrigger& trigger,
                         mojom::PromotionPtr promotion);
 
-  void OnFetchSignedCreds(ledger::ResultCallback callback,
+  void OnFetchSignedCreds(ResultCallback callback,
                           const CredentialsTrigger& trigger,
                           mojom::Result result,
                           mojom::CredsBatchPtr batch);
 
-  void SignedCredsSaved(ledger::ResultCallback callback,
+  void SignedCredsSaved(ResultCallback callback,
                         const CredentialsTrigger& trigger,
                         mojom::Result result);
 
-  void Unblind(ledger::ResultCallback callback,
+  void Unblind(ResultCallback callback,
                const CredentialsTrigger& trigger,
                mojom::CredsBatchPtr creds) override;
 
-  void VerifyPublicKey(ledger::ResultCallback callback,
+  void VerifyPublicKey(ResultCallback callback,
                        const CredentialsTrigger& trigger,
                        const mojom::CredsBatch& creds,
                        mojom::PromotionPtr promotion);
 
-  void Completed(ledger::ResultCallback callback,
+  void Completed(ResultCallback callback,
                  const CredentialsTrigger& trigger,
                  mojom::Result result) override;
 
   void OnRedeemTokens(mojom::Result result,
                       const std::vector<std::string>& token_id_list,
                       const CredentialsRedeem& redeem,
-                      ledger::LegacyResultCallback callback);
+                      LegacyResultCallback callback);
 
-  void OnDrainTokens(ledger::PostSuggestionsClaimCallback callback,
+  void OnDrainTokens(PostSuggestionsClaimCallback callback,
                      const std::vector<std::string>& token_id_list,
                      const CredentialsRedeem& redeem,
                      mojom::Result result,
@@ -106,6 +105,6 @@ class CredentialsPromotion : public Credentials {
 };
 
 }  // namespace credential
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CREDENTIALS_CREDENTIALS_PROMOTION_H_

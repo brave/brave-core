@@ -18,7 +18,7 @@
 using ::testing::_;
 using ::testing::MockFunction;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace database {
 
 class DatabaseBalanceReportTest : public ::testing::Test {
@@ -133,4 +133,4 @@ TEST_F(DatabaseBalanceReportTest, DeleteAllRecordsOk) {
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::internal

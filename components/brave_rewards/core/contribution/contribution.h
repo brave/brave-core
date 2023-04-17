@@ -26,7 +26,7 @@
 #include "brave/components/brave_rewards/core/contribution/contribution_unblinded.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace contribution {
@@ -59,7 +59,7 @@ class Contribution {
 
   void OneTimeTip(const std::string& publisher_key,
                   double amount,
-                  ledger::LegacyResultCallback callback);
+                  LegacyResultCallback callback);
 
   void CheckContributionQueue();
 
@@ -71,17 +71,17 @@ class Contribution {
 
   void SKUAutoContribution(const std::string& contribution_id,
                            const std::string& wallet_type,
-                           ledger::LegacyResultCallback callback);
+                           LegacyResultCallback callback);
 
   void StartUnblinded(const std::vector<mojom::CredsBatchType>& types,
                       const std::string& contribution_id,
-                      ledger::LegacyResultCallback callback);
+                      LegacyResultCallback callback);
 
   void RetryUnblinded(const std::vector<mojom::CredsBatchType>& types,
                       const std::string& contribution_id,
-                      ledger::LegacyResultCallback callback);
+                      LegacyResultCallback callback);
 
-  void GetRecurringTips(ledger::GetRecurringTipsCallback callback);
+  void GetRecurringTips(GetRecurringTipsCallback callback);
 
  private:
   enum class MonthlyContributionOptions { kDefault, kSendAllContributions };
@@ -156,7 +156,7 @@ class Contribution {
   void RetryUnblindedContribution(
       mojom::ContributionInfoPtr contribution,
       const std::vector<mojom::CredsBatchType>& types,
-      ledger::LegacyResultCallback callback);
+      LegacyResultCallback callback);
 
   void Result(const mojom::Result result,
               const std::string& queue_id,
@@ -195,5 +195,5 @@ class Contribution {
 };
 
 }  // namespace contribution
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CONTRIBUTION_CONTRIBUTION_H_

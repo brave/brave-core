@@ -18,7 +18,7 @@
 #include "brave/components/brave_rewards/core/credentials/credentials_sku.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace contribution {
@@ -36,11 +36,11 @@ class Unblinded {
 
   void Start(const std::vector<mojom::CredsBatchType>& types,
              const std::string& contribution_id,
-             ledger::LegacyResultCallback callback);
+             LegacyResultCallback callback);
 
   void Retry(const std::vector<mojom::CredsBatchType>& types,
              mojom::ContributionInfoPtr contribution,
-             ledger::LegacyResultCallback callback);
+             LegacyResultCallback callback);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(UnblindedTest, GetStatisticalVotingWinner);
@@ -72,13 +72,13 @@ class Unblinded {
   void PrepareTokens(mojom::ContributionInfoPtr contribution,
                      const std::vector<mojom::UnblindedToken>& unblinded_tokens,
                      const std::vector<mojom::CredsBatchType>& types,
-                     ledger::LegacyResultCallback callback);
+                     LegacyResultCallback callback);
 
   void PreparePublishers(
       const std::vector<mojom::UnblindedToken>& unblinded_tokens,
       mojom::ContributionInfoPtr contribution,
       const std::vector<mojom::CredsBatchType>& types,
-      ledger::LegacyResultCallback callback);
+      LegacyResultCallback callback);
 
   std::vector<mojom::ContributionPublisherPtr> PrepareAutoContribution(
       const std::vector<mojom::UnblindedToken>& unblinded_tokens,
@@ -88,51 +88,50 @@ class Unblinded {
       mojom::Result result,
       const std::vector<mojom::CredsBatchType>& types,
       const std::string& contribution_id,
-      ledger::LegacyResultCallback callback);
+      LegacyResultCallback callback);
 
   void PrepareStepSaved(mojom::Result result,
                         const std::vector<mojom::CredsBatchType>& types,
                         const std::string& contribution_id,
-                        ledger::LegacyResultCallback callback);
+                        LegacyResultCallback callback);
 
   void ProcessTokens(const std::vector<mojom::CredsBatchType>& types,
                      const std::string& contribution_id,
-                     ledger::LegacyResultCallback callback);
+                     LegacyResultCallback callback);
 
   void OnProcessTokens(
       mojom::ContributionInfoPtr contribution,
       const std::vector<mojom::UnblindedToken>& unblinded_tokens,
-      ledger::LegacyResultCallback callback);
+      LegacyResultCallback callback);
 
   void TokenProcessed(mojom::Result result,
                       const std::string& contribution_id,
                       const std::string& publisher_key,
                       bool final_publisher,
-                      ledger::LegacyResultCallback callback);
+                      LegacyResultCallback callback);
 
   void ContributionAmountSaved(mojom::Result result,
                                const std::string& contribution_id,
                                bool final_publisher,
-                               ledger::LegacyResultCallback callback);
+                               LegacyResultCallback callback);
 
   void OnMarkUnblindedTokensAsReserved(
       mojom::Result result,
       const std::vector<mojom::UnblindedToken>& unblinded_tokens,
       std::shared_ptr<mojom::ContributionInfoPtr> shared_contribution,
       const std::vector<mojom::CredsBatchType>& types,
-      ledger::LegacyResultCallback callback);
+      LegacyResultCallback callback);
 
   void OnReservedUnblindedTokensForRetryAttempt(
       const std::vector<mojom::UnblindedTokenPtr>& unblinded_tokens,
       const std::vector<mojom::CredsBatchType>& types,
       std::shared_ptr<mojom::ContributionInfoPtr> shared_contribution,
-      ledger::LegacyResultCallback callback);
+      LegacyResultCallback callback);
 
   std::string GetStatisticalVotingWinnerForTesting(
       double dart,
       double amount,
-      const std::vector<ledger::mojom::ContributionPublisherPtr>&
-          publisher_list);
+      const std::vector<mojom::ContributionPublisherPtr>& publisher_list);
 
   const raw_ref<LedgerImpl> ledger_;
   credential::CredentialsPromotion credentials_promotion_;
@@ -140,5 +139,5 @@ class Unblinded {
 };
 
 }  // namespace contribution
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CONTRIBUTION_CONTRIBUTION_UNBLINDED_H_

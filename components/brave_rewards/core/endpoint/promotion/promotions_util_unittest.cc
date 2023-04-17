@@ -12,28 +12,28 @@
 
 // npm run test -- brave_unit_tests --filter=PromotionsUtilTest.*
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 namespace promotion {
 
 class PromotionsUtilTest : public testing::Test {};
 
 TEST(PromotionsUtilTest, GetServerUrlDevelopment) {
-  ledger::_environment = mojom::Environment::DEVELOPMENT;
+  _environment = mojom::Environment::DEVELOPMENT;
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url,
             base::StrCat({BUILDFLAG(REWARDS_GRANT_DEV_ENDPOINT), "/test"}));
 }
 
 TEST(PromotionsUtilTest, GetServerUrlStaging) {
-  ledger::_environment = mojom::Environment::STAGING;
+  _environment = mojom::Environment::STAGING;
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url,
             base::StrCat({BUILDFLAG(REWARDS_GRANT_STAGING_ENDPOINT), "/test"}));
 }
 
 TEST(PromotionsUtilTest, GetServerUrlProduction) {
-  ledger::_environment = mojom::Environment::PRODUCTION;
+  _environment = mojom::Environment::PRODUCTION;
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url,
             base::StrCat({BUILDFLAG(REWARDS_GRANT_PROD_ENDPOINT), "/test"}));
@@ -41,4 +41,4 @@ TEST(PromotionsUtilTest, GetServerUrlProduction) {
 
 }  // namespace promotion
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

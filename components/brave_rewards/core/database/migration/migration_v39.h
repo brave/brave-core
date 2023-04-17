@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_MIGRATION_MIGRATION_V39_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_MIGRATION_MIGRATION_V39_H_
 
-namespace ledger::database::migration {
+namespace brave_rewards::internal::database::migration {
 
 // Migration 39 adds a `web3_url` field to the publisher banner table in order
 // to support P2P creator contributions.
@@ -14,6 +14,6 @@ constexpr char v39[] = R"sql(
   ALTER TABLE server_publisher_banner ADD COLUMN web3_url TEXT;
 )sql";
 
-}  // namespace ledger::database::migration
+}  // namespace brave_rewards::internal::database::migration
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_MIGRATION_MIGRATION_V39_H_

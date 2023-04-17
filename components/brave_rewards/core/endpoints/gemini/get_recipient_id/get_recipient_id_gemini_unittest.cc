@@ -23,7 +23,7 @@ using ::testing::TestParamInfo;
 using ::testing::TestWithParam;
 using ::testing::Values;
 
-namespace ledger::endpoints::test {
+namespace brave_rewards::internal::endpoints::test {
 using Error = GetRecipientIDGemini::Error;
 using Result = GetRecipientIDGemini::Result;
 
@@ -129,4 +129,4 @@ INSTANTIATE_TEST_SUITE_P(
 );
 // clang-format on
 
-}  // namespace ledger::endpoints::test
+}  // namespace brave_rewards::internal::endpoints::test

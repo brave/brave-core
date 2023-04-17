@@ -143,9 +143,12 @@
       "components/cosmetic_filters/renderer/cosmetic_filters_js_handler\\.h",
       "components/speedreader/renderer/speedreader_js_handler\\.h",
     ],
-    // A temporary fix to silence a crashing presubmit check on a deleted file.
+    // A temporary fix to silence a failing presubmit check on a namespace
+    // change.
     "CheckStableMojomChanges": [
-      "components/services/bat_ads/public/interfaces/bat_ads\\.mojom",
+      "components/services/bat_ledger/public/interfaces/ledger_factory\\.mojom",
+      "components/brave_rewards/common/mojom/bat_ledger\\.mojom",
+      "components/brave_rewards/common/mojom/tip_panel\\.mojom",
     ],
     "CheckWebDevStyle": [
       "components/speedreader/resources/speedreader-desktop.css",

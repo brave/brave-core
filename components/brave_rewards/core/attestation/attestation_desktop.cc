@@ -10,7 +10,7 @@
 #include "brave/components/brave_rewards/core/attestation/attestation_desktop.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace attestation {
 
 AttestationDesktop::AttestationDesktop(LedgerImpl& ledger)
@@ -134,4 +134,4 @@ void AttestationDesktop::OnConfirm(ConfirmCallback callback,
 }
 
 }  // namespace attestation
-}  // namespace ledger
+}  // namespace brave_rewards::internal

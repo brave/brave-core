@@ -8,7 +8,7 @@
 
 #include <string>
 
-namespace braveledger_media {
+namespace brave_rewards::internal {
 
 std::string GetMediaKey(const std::string& mediaId, const std::string& type);
 
@@ -16,6 +16,6 @@ std::string ExtractData(const std::string& data,
                         const std::string& match_after,
                         const std::string& match_until);
 
-}  // namespace braveledger_media
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEGACY_MEDIA_HELPER_H_

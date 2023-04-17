@@ -27,7 +27,7 @@
 // Response body:
 // {Empty}
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace endpoint {
@@ -58,6 +58,6 @@ class PostBatLoss {
 
 }  // namespace promotion
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PROMOTION_POST_BAT_LOSS_POST_BAT_LOSS_H_

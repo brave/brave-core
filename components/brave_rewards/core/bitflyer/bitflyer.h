@@ -22,7 +22,7 @@
 #include "brave/components/brave_rewards/core/wallet_provider/bitflyer/connect_bitflyer_wallet.h"
 #include "brave/components/brave_rewards/core/wallet_provider/bitflyer/get_bitflyer_wallet.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace bitflyer {
@@ -40,7 +40,7 @@ class Bitflyer {
   void StartContribution(const std::string& contribution_id,
                          mojom::ServerPublisherInfoPtr info,
                          double amount,
-                         ledger::LegacyResultCallback callback);
+                         LegacyResultCallback callback);
 
   void FetchBalance(FetchBalanceCallback);
 
@@ -50,9 +50,9 @@ class Bitflyer {
                      LegacyResultCallback);
 
   void ConnectWallet(const base::flat_map<std::string, std::string>& args,
-                     ledger::ConnectExternalWalletCallback);
+                     ConnectExternalWalletCallback);
 
-  void GetWallet(ledger::GetExternalWalletCallback);
+  void GetWallet(GetExternalWalletCallback);
 
   mojom::ExternalWalletPtr GetWallet();
 
@@ -63,7 +63,7 @@ class Bitflyer {
   [[nodiscard]] bool LogOutWallet();
 
  private:
-  void ContributionCompleted(ledger::LegacyResultCallback,
+  void ContributionCompleted(LegacyResultCallback,
                              const std::string& contribution_id,
                              double fee,
                              const std::string& publisher_key,
@@ -96,6 +96,6 @@ class Bitflyer {
 };
 
 }  // namespace bitflyer
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_BITFLYER_BITFLYER_H_

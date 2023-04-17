@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_RESULT_FOR_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_RESULT_FOR_H_
 
-namespace ledger::endpoints {
+namespace brave_rewards::internal::endpoints {
 
 template <typename>
 inline constexpr bool dependent_false_v = false;
@@ -17,6 +17,6 @@ struct ResultFor {
                 "Please explicitly specialize ResultFor<> for your endpoint!");
 };
 
-}  // namespace ledger::endpoints
+}  // namespace brave_rewards::internal::endpoints
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_RESULT_FOR_H_

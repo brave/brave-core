@@ -17,7 +17,7 @@
 #include "brave/components/brave_rewards/core/logging/logging.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ledger::endpoints {
+namespace brave_rewards::internal::endpoints {
 
 template <typename, typename = void>
 inline constexpr bool enumerator_check = false;
@@ -66,9 +66,9 @@ class RequestFor {
 
  private:
   const raw_ref<LedgerImpl> ledger_;
-  absl::optional<ledger::mojom::UrlRequestPtr> request_;
+  absl::optional<mojom::UrlRequestPtr> request_;
 };
 
-}  // namespace ledger::endpoints
+}  // namespace brave_rewards::internal::endpoints
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_REQUEST_FOR_H_

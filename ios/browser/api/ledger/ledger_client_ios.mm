@@ -20,7 +20,7 @@ LedgerClientIOS::~LedgerClientIOS() {
   bridge_ = nil;
 }
 
-mojo::PendingAssociatedRemote<ledger::mojom::LedgerClient>
+mojo::PendingAssociatedRemote<brave_rewards::mojom::LedgerClient>
 LedgerClientIOS::MakeRemote() {
   return receiver_.BindNewEndpointAndPassDedicatedRemote();
 }
@@ -39,7 +39,7 @@ void LedgerClientIOS::LoadLedgerState(LoadLedgerStateCallback callback) {
 void LedgerClientIOS::LoadPublisherState(LoadPublisherStateCallback callback) {
   [bridge_ loadPublisherState:std::move(callback)];
 }
-void LedgerClientIOS::LoadURL(ledger::mojom::UrlRequestPtr request,
+void LedgerClientIOS::LoadURL(brave_rewards::mojom::UrlRequestPtr request,
                               LoadURLCallback callback) {
   [bridge_ loadUrl:std::move(request) callback:std::move(callback)];
 }
@@ -50,8 +50,8 @@ void LedgerClientIOS::Log(const std::string& file,
   [bridge_ log:file line:line verboseLevel:verbose_level message:message];
 }
 void LedgerClientIOS::OnPanelPublisherInfo(
-    ledger::mojom::Result result,
-    ledger::mojom::PublisherInfoPtr publisher_info,
+    brave_rewards::mojom::Result result,
+    brave_rewards::mojom::PublisherInfoPtr publisher_info,
     uint64_t windowId) {
   [bridge_ onPanelPublisherInfo:result
                   publisherInfo:std::move(publisher_info)
@@ -64,16 +64,16 @@ void LedgerClientIOS::OnPublisherUpdated(const std::string& publisher_id) {
   [bridge_ onPublisherUpdated:publisher_id];
 }
 void LedgerClientIOS::OnReconcileComplete(
-    ledger::mojom::Result result,
-    ledger::mojom::ContributionInfoPtr contribution) {
+    brave_rewards::mojom::Result result,
+    brave_rewards::mojom::ContributionInfoPtr contribution) {
   [bridge_ onReconcileComplete:result contribution:std::move(contribution)];
 }
 void LedgerClientIOS::PublisherListNormalized(
-    std::vector<ledger::mojom::PublisherInfoPtr> list) {
+    std::vector<brave_rewards::mojom::PublisherInfoPtr> list) {
   [bridge_ publisherListNormalized:std::move(list)];
 }
 void LedgerClientIOS::OnContributeUnverifiedPublishers(
-    ledger::mojom::Result result,
+    brave_rewards::mojom::Result result,
     const std::string& publisher_key,
     const std::string& publisher_name) {
   [bridge_ onContributeUnverifiedPublishers:result
@@ -179,13 +179,13 @@ void LedgerClientIOS::ReconcileStampReset() {
   [bridge_ reconcileStampReset];
 }
 void LedgerClientIOS::RunDBTransaction(
-    ledger::mojom::DBTransactionPtr transaction,
+    brave_rewards::mojom::DBTransactionPtr transaction,
     RunDBTransactionCallback callback) {
   [bridge_ runDbTransaction:std::move(transaction)
                    callback:std::move(callback)];
 }
 void LedgerClientIOS::PendingContributionSaved(
-    const ledger::mojom::Result result) {
+    const brave_rewards::mojom::Result result) {
   [bridge_ pendingContributionSaved:result];
 }
 void LedgerClientIOS::ClearAllNotifications() {

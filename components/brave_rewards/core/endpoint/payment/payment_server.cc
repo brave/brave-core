@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 
 PaymentServer::PaymentServer(LedgerImpl& ledger)
@@ -21,4 +21,4 @@ PaymentServer::PaymentServer(LedgerImpl& ledger)
 PaymentServer::~PaymentServer() = default;
 
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

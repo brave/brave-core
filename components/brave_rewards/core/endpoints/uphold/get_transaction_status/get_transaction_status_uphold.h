@@ -100,7 +100,7 @@
 //   "type": "transfer"
 // }
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace endpoints {
@@ -135,6 +135,6 @@ class GetTransactionStatusUphold final
 };
 
 }  // namespace endpoints
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_UPHOLD_GET_TRANSACTION_STATUS_GET_TRANSACTION_STATUS_UPHOLD_H_

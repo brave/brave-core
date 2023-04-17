@@ -10,7 +10,7 @@
 #include "base/json/json_writer.h"
 #include "brave/components/brave_rewards/core/logging/logging.h"
 
-namespace ledger::endpoints {
+namespace brave_rewards::internal::endpoints {
 
 PostConnectBitflyer::PostConnectBitflyer(LedgerImpl& ledger,
                                          std::string&& linking_info)
@@ -40,4 +40,4 @@ const char* PostConnectBitflyer::Path() const {
   return "/v3/wallet/bitflyer/%s/claim";
 }
 
-}  // namespace ledger::endpoints
+}  // namespace brave_rewards::internal::endpoints

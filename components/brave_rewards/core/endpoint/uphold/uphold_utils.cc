@@ -10,7 +10,7 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 namespace uphold {
 
@@ -18,11 +18,11 @@ const char kStaging[] = "https://api-sandbox.uphold.com";
 const char kProduction[] = "https://api.uphold.com";
 
 std::string GetClientId() {
-  return ::ledger::uphold::GetClientId();
+  return internal::uphold::GetClientId();
 }
 
 std::string GetClientSecret() {
-  return ::ledger::uphold::GetClientSecret();
+  return internal::uphold::GetClientSecret();
 }
 
 std::vector<std::string> RequestAuthorization(const std::string& token) {
@@ -49,7 +49,7 @@ std::string GetServerUrl(const std::string& path) {
   DCHECK(!path.empty());
 
   std::string url;
-  if (ledger::_environment == mojom::Environment::PRODUCTION) {
+  if (_environment == mojom::Environment::PRODUCTION) {
     url = kProduction;
   } else {
     url = kStaging;
@@ -60,4 +60,4 @@ std::string GetServerUrl(const std::string& path) {
 
 }  // namespace uphold
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal
