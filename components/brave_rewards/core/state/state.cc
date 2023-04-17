@@ -428,10 +428,6 @@ void State::SetPromotionLastFetchStamp(const uint64_t stamp) {
   ledger_->SetState(kPromotionLastFetchStamp, stamp);
 }
 
-void State::ResetWalletType() {
-  ledger_->SetState(kExternalWalletType, std::string());
-}
-
 uint64_t State::GetPromotionLastFetchStamp() {
   return ledger_->GetState<uint64_t>(kPromotionLastFetchStamp);
 }

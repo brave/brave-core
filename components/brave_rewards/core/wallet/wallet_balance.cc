@@ -18,6 +18,22 @@
 
 namespace ledger::wallet {
 
+namespace {
+std::string GetConnectedWalletType(LedgerImpl* ledger) {
+  DCHECK(ledger);
+  return GetWalletIf(ledger, constant::kWalletBitflyer,
+                     {mojom::WalletStatus::kConnected})
+             ? constant::kWalletBitflyer
+         : GetWalletIf(ledger, constant::kWalletGemini,
+                       {mojom::WalletStatus::kConnected})
+             ? constant::kWalletGemini
+         : GetWalletIf(ledger, constant::kWalletUphold,
+                       {mojom::WalletStatus::kConnected})
+             ? constant::kWalletUphold
+             : "";
+}
+}  // namespace
+
 WalletBalance::WalletBalance(LedgerImpl* ledger) : ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -49,11 +65,8 @@ void WalletBalance::OnGetUnblindedTokens(
   balance->total = total;
   balance->wallets.emplace(constant::kWalletUnBlinded, balance->total);
 
-  const auto wallet_type =
-      ledger_->GetState<std::string>(state::kExternalWalletType);
-  if (wallet_type.empty() ||
-      !wallet::GetWalletIf(ledger_, wallet_type,
-                           {mojom::WalletStatus::kConnected})) {
+  const auto wallet_type = GetConnectedWalletType(ledger_);
+  if (wallet_type.empty()) {
     return std::move(callback).Run(std::move(balance));
   }
 
