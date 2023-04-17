@@ -258,6 +258,11 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
     }
 
     if let url = URL(string: historyItem.url.absoluteString) {
+      // Donate Custom Intent Open Website
+      if url.isSecureWebPage(), !isPrivateBrowsing {
+        ActivityShortcutManager.shared.donateCustomIntent(for: .openHistory, with: url.absoluteString)
+      }
+      
       dismiss(animated: true) {
         self.toolbarUrlActionsDelegate?.select(url: url, visitType: .typed)
       }
