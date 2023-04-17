@@ -109,22 +109,22 @@ flower::Parameters GetParametersFromVectors(
 
 std::vector<float> GetVectorFromString(std::string string) {
   const int k_vector_size = string.size() / sizeof(double);
-  double parameters_array[k_vector_size];
-  std::memcpy(parameters_array, string.data(), string.size());
+  std::vector<float> parameters_vector;
 
-  std::vector<double> parameters_vector(parameters_array,
-                                        parameters_array + k_vector_size);
+  for (int i = 0; i < k_vector_size; i++) {
+    double value;
+    std::memcpy(&value, string.data() + i * sizeof(double), sizeof(double));
+    parameters_vector.push_back(value);
+  }
 
-  std::vector<float> parameters_vector_float(parameters_vector.begin(),
-                                             parameters_vector.end());
-  return parameters_vector_float;
+  return parameters_vector;
 }
 
 std::string GetStringFromVector(std::vector<float> vector) {
-  std::vector<double> double_vector(vector.begin(), vector.end());
-  std::ostringstream oss;
-  oss.write(reinterpret_cast<const char*>(double_vector.data()),
-            double_vector.size() * sizeof(double));
+  std::string string;
+  for (double const value : vector) {
+    string.append(reinterpret_cast<const char*>(&value), sizeof(double));
+  }
 
-  return oss.str();
+  return string;
 }
