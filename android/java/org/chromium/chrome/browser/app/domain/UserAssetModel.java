@@ -23,6 +23,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class UserAssetModel {
@@ -66,11 +67,13 @@ public class UserAssetModel {
                                                                         .contains(token.chainId))
                                                     .filter(token -> nftsOnly == token.isNft)
                                                     .toArray(BlockchainToken[] ::new);
+                                    sortByNetwork(supportedNetworkAssets);
                                     TokenUtils.getAllTokensFiltered(mBlockchainRegistry,
                                             mCryptoNetworks,
                                             nftsOnly ? TokenUtils.TokenType.NFTS
                                                      : TokenUtils.TokenType.NON_NFTS,
                                             tokens -> {
+                                                sortByNetwork(tokens);
                                                 var filteredTokens =
                                                         TokenUtils.distinctiveConcatenatedArrays(
                                                                 tokens, supportedNetworkAssets);
@@ -121,6 +124,11 @@ public class UserAssetModel {
                         }
                     });
         }
+    }
+
+    private void sortByNetwork(BlockchainToken[] tokens) {
+        var networkIndexMap = AssetUtils.toNetworkIndexMap(mCryptoNetworks);
+        Arrays.sort(tokens, Comparator.comparing(token -> networkIndexMap.get(token.chainId)));
     }
 
     public static class AssetsResult {
