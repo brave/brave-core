@@ -404,8 +404,6 @@ void BraveShieldsDataController::SetForgetFirstPartyStorageEnabled(
   brave_shields::SetForgetFirstPartyStorageEnabled(
       GetHostContentSettingsMap(web_contents()), is_enabled,
       GetCurrentSiteURL(), g_browser_process->local_state());
-
-  ReloadWebContents();
 }
 
 void BraveShieldsDataController::BlockAllowedScripts(
