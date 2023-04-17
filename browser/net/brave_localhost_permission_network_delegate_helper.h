@@ -7,10 +7,8 @@
 #define BRAVE_BROWSER_NET_BRAVE_LOCALHOST_PERMISSION_NETWORK_DELEGATE_HELPER_H_
 
 #include <memory>
-#include <string>
 
 #include "brave/browser/net/url_context.h"
-#include "url/gurl.h"
 
 struct BraveRequestInfo;
 

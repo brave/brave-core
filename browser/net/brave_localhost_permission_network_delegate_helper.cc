@@ -5,20 +5,15 @@
 
 #include "brave/browser/net/brave_localhost_permission_network_delegate_helper.h"
 
-#include <array>
-#include <string>
-#include <utility>
 #include <vector>
 
 #include "brave/browser/brave_browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
-#include "chrome/browser/profiles/profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/permission_controller_delegate.h"
 #include "content/public/browser/web_contents.h"
-#include "net/base/net_errors.h"
 #include "net/base/url_util.h"
 #include "third_party/blink/public/common/permissions/permission_utils.h"
 
