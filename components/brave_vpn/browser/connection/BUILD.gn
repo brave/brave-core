@@ -81,6 +81,7 @@ source_set("unit_tests") {
   deps = [
     ":api",
     ":sim",
+    "//brave/components/brave_vpn/browser",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/mojom",
     "//components/sync_preferences:test_support",

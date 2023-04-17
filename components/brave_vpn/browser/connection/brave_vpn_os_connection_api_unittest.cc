@@ -10,6 +10,7 @@
 
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
+#include "brave/components/brave_vpn/browser/brave_vpn_service_helper.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api_sim.h"
 #include "brave/components/brave_vpn/common/brave_vpn_data_types.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
@@ -76,15 +77,251 @@ class BraveVPNOSConnectionAPIUnitTest : public testing::Test {
             &url_loader_factory_),
         local_state());
   }
+
+  void OnFetchRegionList(const std::string& region_list, bool success) {
+    GetBraveVPNConnectionAPIBase()->OnFetchRegionList(region_list, success);
+  }
+
+  void OnFetchTimezones(const std::string& timezones_list, bool success) {
+    GetBraveVPNConnectionAPIBase()->OnFetchTimezones(timezones_list, success);
+  }
+
+  std::string GetTimeZonesData() {
+    return R"([
+        {
+          "name": "us-central",
+          "timezones": [
+            "America/Guatemala",
+            "America/Guayaquil",
+            "America/Guyana",
+            "America/Havana"
+          ]
+        },
+        {
+          "name": "eu-es",
+          "timezones": [
+            "Europe/Madrid",
+            "Europe/Gibraltar",
+            "Africa/Casablanca",
+            "Africa/Algiers"
+          ]
+        },
+        {
+          "name": "eu-ch",
+          "timezones": [
+            "Europe/Zurich"
+          ]
+        },
+        {
+          "name": "eu-nl",
+          "timezones": [
+            "Europe/Amsterdam",
+            "Europe/Brussels"
+          ]
+        },
+        {
+          "name": "asia-sg",
+          "timezones": [
+            "Asia/Aden",
+            "Asia/Almaty",
+            "Asia/Seoul"
+          ]
+        },
+        {
+          "name": "asia-jp",
+          "timezones": [
+            "Pacific/Guam",
+            "Pacific/Saipan",
+            "Asia/Tokyo"
+          ]
+        }
+      ])";
+  }
+
+  std::string GetRegionsData() {
+    // Give 11 region data.
+    return R"([
+        {
+          "continent": "europe",
+          "name": "eu-es",
+          "name-pretty": "Spain"
+        },
+        {
+          "continent": "south-america",
+          "name": "sa-br",
+          "name-pretty": "Brazil"
+        },
+        {
+          "continent": "europe",
+          "name": "eu-ch",
+          "name-pretty": "Switzerland"
+        },
+        {
+          "continent": "europe",
+          "name": "eu-de",
+          "name-pretty": "Germany"
+        },
+        {
+          "continent": "asia",
+          "name": "asia-sg",
+          "name-pretty": "Singapore"
+        },
+        {
+          "continent": "north-america",
+          "name": "ca-east",
+          "name-pretty": "Canada"
+        },
+        {
+          "continent": "asia",
+          "name": "asia-jp",
+          "name-pretty": "Japan"
+        },
+        {
+          "continent": "europe",
+          "name": "eu-en",
+          "name-pretty": "United Kingdom"
+        },
+        {
+          "continent": "europe",
+          "name": "eu-nl",
+          "name-pretty": "Netherlands"
+        },
+        {
+          "continent": "north-america",
+          "name": "us-west",
+          "name-pretty": "USA West"
+        },
+        {
+          "continent": "oceania",
+          "name": "au-au",
+          "name-pretty": "Australia"
+        }
+      ])";
+  }
+
+  BraveVPNOSConnectionAPIBase* GetBraveVPNConnectionAPIBase() const {
+    return static_cast<BraveVPNOSConnectionAPIBase*>(connection_api_.get());
+  }
+
+  void SetFallbackDeviceRegion() {
+    GetBraveVPNConnectionAPIBase()->SetFallbackDeviceRegion();
+  }
+
+  void SetTestTimezone(const std::string& timezone) {
+    GetBraveVPNConnectionAPIBase()->test_timezone_ = timezone;
+  }
+
+  void LoadCachedRegionData() {
+    GetBraveVPNConnectionAPIBase()->LoadCachedRegionData();
+  }
+
+  void ClearRegions() { GetBraveVPNConnectionAPIBase()->regions_.clear(); }
+
+  bool NeedToUpdateRegionData() {
+    return GetBraveVPNConnectionAPIBase()->NeedToUpdateRegionData();
+  }
+
+  mojom::Region device_region() {
+    if (auto region_ptr = GetRegionPtrWithNameFromRegionList(
+            GetBraveVPNConnectionAPIBase()->GetDeviceRegion(), regions())) {
+      return *region_ptr;
+    }
+    return mojom::Region();
+  }
+
+  const std::vector<mojom::Region>& regions() {
+    return GetConnectionAPI()->GetRegions();
+  }
+
   PrefService* local_state() { return &local_pref_service_; }
+
   BraveVPNOSConnectionAPI* GetConnectionAPI() { return connection_api_.get(); }
 
- private:
+ protected:
   TestingPrefServiceSimple local_pref_service_;
   network::TestURLLoaderFactory url_loader_factory_;
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<BraveVPNOSConnectionAPI> connection_api_;
 };
+
+TEST_F(BraveVPNOSConnectionAPIUnitTest, LoadRegionDataFromPrefsTest) {
+  // Initially, prefs doesn't have region data.
+  EXPECT_EQ(mojom::Region(), device_region());
+  EXPECT_TRUE(regions().empty());
+
+  // Set proper data to store them in prefs.
+  OnFetchRegionList(GetRegionsData(), true);
+  SetTestTimezone("Asia/Seoul");
+  OnFetchTimezones(GetTimeZonesData(), true);
+
+  // Check region data is set with above data.
+  EXPECT_FALSE(mojom::Region() == device_region());
+  EXPECT_FALSE(regions().empty());
+
+  // Clear region data from api instance.
+  ClearRegions();
+  EXPECT_TRUE(regions().empty());
+
+  // Check region data is loaded from prefs.
+  LoadCachedRegionData();
+  EXPECT_FALSE(regions().empty());
+}
+
+TEST_F(BraveVPNOSConnectionAPIUnitTest, RegionDataTest) {
+  // Initially, prefs doesn't have region data.
+  EXPECT_EQ(mojom::Region(), device_region());
+  EXPECT_TRUE(regions().empty());
+
+  // Test invalid region data.
+  OnFetchRegionList(std::string(), true);
+  EXPECT_TRUE(regions().empty());
+
+  // Test valid region data parsing.
+  OnFetchRegionList(GetRegionsData(), true);
+  const size_t kRegionCount = 11;
+  EXPECT_EQ(kRegionCount, regions().size());
+
+  // First region in region list is set as a device region when fetch is failed.
+  OnFetchTimezones(std::string(), false);
+  EXPECT_EQ(regions()[0], device_region());
+
+  // Test fallback region is replaced with proper device region
+  // when valid timezone is used.
+  // "asia-sg" region is used for "Asia/Seoul" tz.
+  SetFallbackDeviceRegion();
+  SetTestTimezone("Asia/Seoul");
+  OnFetchTimezones(GetTimeZonesData(), true);
+  EXPECT_EQ("asia-sg", device_region().name);
+
+  // Test device region is not changed when invalid timezone is set.
+  SetFallbackDeviceRegion();
+  SetTestTimezone("Invalid");
+  OnFetchTimezones(GetTimeZonesData(), true);
+  EXPECT_EQ(regions()[0], device_region());
+
+  // Test device region is not changed when invalid timezone is set.
+  SetFallbackDeviceRegion();
+  SetTestTimezone("Invalid");
+  OnFetchTimezones(GetTimeZonesData(), true);
+  EXPECT_EQ(regions()[0], device_region());
+}
+
+TEST_F(BraveVPNOSConnectionAPIUnitTest, NeedToUpdateRegionDataTest) {
+  // Initially, need to update region data.
+  EXPECT_TRUE(NeedToUpdateRegionData());
+
+  // Still need to update.
+  OnFetchRegionList(std::string(), true);
+  EXPECT_TRUE(NeedToUpdateRegionData());
+
+  // Don't need to update when got valid region data.
+  OnFetchRegionList(GetRegionsData(), true);
+  EXPECT_FALSE(NeedToUpdateRegionData());
+
+  // Need to update again after 5h passed.
+  task_environment_.AdvanceClock(base::Hours(5));
+  EXPECT_TRUE(NeedToUpdateRegionData());
+}
 
 // Create os vpn entry with cached connection_info when there is cached
 // connection info.
@@ -107,6 +344,9 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest,
 }
 
 TEST_F(BraveVPNOSConnectionAPIUnitTest, CreateOSVPNEntryWithInvalidInfoTest) {
+  // Prepare region data before asking connect.
+  OnFetchRegionList(GetRegionsData(), true);
+
   GetConnectionAPI()->CheckConnection();
   local_state()->SetString(prefs::kBraveVPNSelectedRegion, "region-a");
   // Prepare valid connection info.
@@ -124,6 +364,9 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest, CreateOSVPNEntryWithInvalidInfoTest) {
 }
 
 TEST_F(BraveVPNOSConnectionAPIUnitTest, NeedsConnectTest) {
+  // Prepare region data before asking connect.
+  OnFetchRegionList(GetRegionsData(), true);
+
   auto* test_api =
       static_cast<BraveVPNOSConnectionAPIBase*>(GetConnectionAPI());
 

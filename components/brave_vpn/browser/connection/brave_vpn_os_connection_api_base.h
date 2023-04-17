@@ -144,6 +144,7 @@ class BraveVPNOSConnectionAPIBase
   // Notify it's ready when |regions_| is not empty.
   void NotifyRegionDataReady() const;
   std::string GetCurrentTimeZone();
+  bool NeedToUpdateRegionData() const;
 
   // For testing only.
   std::string test_timezone_;

@@ -627,7 +627,7 @@ void BraveVPNOSConnectionAPIBase::SetDeviceRegionWithTimezone(
         VLOG(2) << "Found default region: " << *region_name;
         SetDeviceRegion(*region_name);
         // Use device region as a default selected region.
-        if (GetSelectedRegion().empty()) {
+        if (local_prefs_->GetString(prefs::kBraveVPNSelectedRegion).empty()) {
           SetSelectedRegion(*region_name);
         }
         return;
@@ -668,21 +668,33 @@ void BraveVPNOSConnectionAPIBase::LoadCachedRegionData() {
   VLOG(2) << __func__ << " : Failed to load cached region list";
 }
 
+bool BraveVPNOSConnectionAPIBase::NeedToUpdateRegionData() const {
+  if (!IsRegionDataReady()) {
+    return true;
+  }
+
+  // Skip checking region data update when we have cached one and its age is
+  // younger than 5h.
+  const auto last_fetched_date =
+      local_prefs_->GetTime(prefs::kBraveVPNRegionListFetchedDate);
+  constexpr int kRegionDataFetchIntervalInHours = 5;
+
+  if (last_fetched_date.is_null() ||
+      (base::Time::Now() - last_fetched_date).InHours() >=
+          kRegionDataFetchIntervalInHours) {
+    return true;
+  }
+
+  return false;
+}
+
 void BraveVPNOSConnectionAPIBase::FetchRegionDataIfNeeded() {
   if (region_data_api_request_) {
     VLOG(2) << __func__ << " : Region data fetching is in-progress";
     return;
   }
 
-  const auto last_fetched_date =
-      local_prefs_->GetTime(prefs::kBraveVPNRegionListFetchedDate);
-  constexpr int kRegionDataFetchIntervalInHours = 5;
-  // Skip checking region data update when we have cached one and its age is
-  // younger than 5h.
-  if (IsRegionDataReady() && !last_fetched_date.is_null() &&
-      (base::Time::Now() - last_fetched_date).InHours() <
-          kRegionDataFetchIntervalInHours) {
-    VLOG(2) << __func__ << " : Don't need to fetch. Current one is valid";
+  if (!NeedToUpdateRegionData()) {
     NotifyRegionDataReady();
     return;
   }
@@ -699,7 +711,9 @@ void BraveVPNOSConnectionAPIBase::FetchRegionDataIfNeeded() {
 void BraveVPNOSConnectionAPIBase::OnFetchRegionList(
     const std::string& region_list,
     bool success) {
-  DCHECK(region_data_api_request_);
+  if (!region_data_api_request_) {
+    CHECK_IS_TEST();
+  }
   region_data_api_request_.reset();
 
   absl::optional<base::Value> value = base::JSONReader::Read(region_list);

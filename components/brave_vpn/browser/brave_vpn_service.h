@@ -221,7 +221,7 @@ class BraveVpnService :
   mojo::Remote<skus::mojom::SkusService> skus_service_;
   absl::optional<mojom::PurchasedState> purchased_state_;
   mojo::RemoteSet<mojom::ServiceObserver> observers_;
-  BraveVpnAPIRequest api_request_;
+  std::unique_ptr<BraveVpnAPIRequest> api_request_;
   base::RepeatingTimer p3a_timer_;
   base::OneShotTimer subs_cred_refresh_timer_;
   base::WeakPtrFactory<BraveVpnService> weak_ptr_factory_{this};

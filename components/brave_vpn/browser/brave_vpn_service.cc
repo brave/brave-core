@@ -48,7 +48,7 @@ BraveVpnService::BraveVpnService(
     : local_prefs_(local_prefs),
       profile_prefs_(profile_prefs),
       skus_service_getter_(skus_service_getter),
-      api_request_(url_loader_factory) {
+      api_request_(new BraveVpnAPIRequest(url_loader_factory)) {
   DCHECK(IsBraveVPNFeatureEnabled());
 #if !BUILDFLAG(IS_ANDROID)
   DCHECK(connection_api);
@@ -259,7 +259,7 @@ void BraveVpnService::CreateSupportTicket(
   auto internal_callback =
       base::BindOnce(&BraveVpnService::OnCreateSupportTicket,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  api_request_.CreateSupportTicket(
+  api_request_->CreateSupportTicket(
       std::move(internal_callback), email, subject, body,
       ::brave_vpn::GetSubscriberCredential(local_prefs_));
 }
@@ -422,6 +422,7 @@ void BraveVpnService::LoadPurchasedState(const std::string& domain) {
     } else {
       VLOG(2) << __func__ << ": Wait till we get valid region data.";
       SetPurchasedState(requested_env, PurchasedState::LOADING);
+      // TODO(simonhong): Make purchases state independent from region data.
       wait_region_data_ready_ = true;
     }
     connection_api_->FetchRegionDataIfNeeded();
@@ -439,7 +440,7 @@ void BraveVpnService::LoadPurchasedState(const std::string& domain) {
       SetCurrentEnvironment(requested_env);
     }
 
-    api_request_.GetSubscriberCredentialV12(
+    api_request_->GetSubscriberCredentialV12(
         base::BindOnce(&BraveVpnService::OnGetSubscriberCredentialV12,
                        base::Unretained(this),
                        GetExpirationTimeForSkusCredential(local_prefs_)),
@@ -577,7 +578,7 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
     SetCurrentEnvironment(env);
   }
 
-  api_request_.GetSubscriberCredentialV12(
+  api_request_->GetSubscriberCredentialV12(
       base::BindOnce(&BraveVpnService::OnGetSubscriberCredentialV12,
                      base::Unretained(this), time),
       credential, GetBraveVPNPaymentsEnv(GetCurrentEnvironment()));
@@ -750,6 +751,9 @@ void BraveVpnService::Shutdown() {
 
   skus_service_.reset();
   observers_.Clear();
+  api_request_.reset();
+  p3a_timer_.Stop();
+  subs_cred_refresh_timer_.Stop();
 
 #if !BUILDFLAG(IS_ANDROID)
   observed_.Reset();
@@ -758,24 +762,24 @@ void BraveVpnService::Shutdown() {
 }
 
 void BraveVpnService::GetAllServerRegions(ResponseCallback callback) {
-  api_request_.GetAllServerRegions(std::move(callback));
+  api_request_->GetAllServerRegions(std::move(callback));
 }
 
 void BraveVpnService::GetTimezonesForRegions(ResponseCallback callback) {
-  api_request_.GetTimezonesForRegions(std::move(callback));
+  api_request_->GetTimezonesForRegions(std::move(callback));
 }
 
 void BraveVpnService::GetHostnamesForRegion(ResponseCallback callback,
                                             const std::string& region) {
-  api_request_.GetHostnamesForRegion(std::move(callback), region);
+  api_request_->GetHostnamesForRegion(std::move(callback), region);
 }
 
 void BraveVpnService::GetProfileCredentials(
     ResponseCallback callback,
     const std::string& subscriber_credential,
     const std::string& hostname) {
-  api_request_.GetProfileCredentials(std::move(callback), subscriber_credential,
-                                     hostname);
+  api_request_->GetProfileCredentials(std::move(callback),
+                                      subscriber_credential, hostname);
 }
 
 void BraveVpnService::GetWireguardProfileCredentials(
@@ -783,7 +787,7 @@ void BraveVpnService::GetWireguardProfileCredentials(
     const std::string& subscriber_credential,
     const std::string& public_key,
     const std::string& hostname) {
-  api_request_.GetWireguardProfileCredentials(
+  api_request_->GetWireguardProfileCredentials(
       std::move(callback), subscriber_credential, public_key, hostname);
 }
 
@@ -793,8 +797,8 @@ void BraveVpnService::VerifyCredentials(
     const std::string& client_id,
     const std::string& subscriber_credential,
     const std::string& api_auth_token) {
-  api_request_.VerifyCredentials(std::move(callback), hostname, client_id,
-                                 subscriber_credential, api_auth_token);
+  api_request_->VerifyCredentials(std::move(callback), hostname, client_id,
+                                  subscriber_credential, api_auth_token);
 }
 
 void BraveVpnService::InvalidateCredentials(
@@ -803,8 +807,8 @@ void BraveVpnService::InvalidateCredentials(
     const std::string& client_id,
     const std::string& subscriber_credential,
     const std::string& api_auth_token) {
-  api_request_.InvalidateCredentials(std::move(callback), hostname, client_id,
-                                     subscriber_credential, api_auth_token);
+  api_request_->InvalidateCredentials(std::move(callback), hostname, client_id,
+                                      subscriber_credential, api_auth_token);
 }
 
 void BraveVpnService::VerifyPurchaseToken(ResponseCallback callback,
@@ -812,8 +816,8 @@ void BraveVpnService::VerifyPurchaseToken(ResponseCallback callback,
                                           const std::string& product_id,
                                           const std::string& product_type,
                                           const std::string& bundle_id) {
-  api_request_.VerifyPurchaseToken(std::move(callback), purchase_token,
-                                   product_id, product_type, bundle_id);
+  api_request_->VerifyPurchaseToken(std::move(callback), purchase_token,
+                                    product_id, product_type, bundle_id);
 }
 
 void BraveVpnService::GetSubscriberCredential(
@@ -823,9 +827,9 @@ void BraveVpnService::GetSubscriberCredential(
     const std::string& validation_method,
     const std::string& purchase_token,
     const std::string& bundle_id) {
-  api_request_.GetSubscriberCredential(std::move(callback), product_type,
-                                       product_id, validation_method,
-                                       purchase_token, bundle_id);
+  api_request_->GetSubscriberCredential(std::move(callback), product_type,
+                                        product_id, validation_method,
+                                        purchase_token, bundle_id);
 }
 
 void BraveVpnService::GetSubscriberCredentialV12(ResponseCallback callback) {
