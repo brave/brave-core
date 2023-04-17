@@ -42,6 +42,8 @@
 		27FA21892837FB0100FA2C45 /* Shared in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA21882837FB0100FA2C45 /* Shared */; };
 		27FA218B2837FB0100FA2C45 /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA218A2837FB0100FA2C45 /* Storage */; };
 		27FA21A42838019000FA2C45 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 27FA21902838018E00FA2C45 /* InfoPlist.strings */; };
+		2F4A572429E608C8003454F8 /* BrowserIntents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 27D67621282DAD3700BCE16E /* BrowserIntents.intentdefinition */; settings = {ATTRIBUTES = (no_codegen, ); }; };
+		2F4A572529E608CC003454F8 /* BrowserIntents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 27D67621282DAD3700BCE16E /* BrowserIntents.intentdefinition */; settings = {ATTRIBUTES = (no_codegen, ); }; };
 		2F6931B7260CFB3700ECEB38 /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6931B6260CFB3700ECEB38 /* IntentHandler.swift */; };
 		2F6931BB260CFB3700ECEB38 /* BrowserIntents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 2F6931B4260CFB3700ECEB38 /* BrowserIntents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		2FD860C229C3D677005AADD1 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A1DF485244A2ECB00541FE4 /* NetworkExtension.framework */; };
@@ -467,7 +469,7 @@
 			path = ShareExtension;
 			sourceTree = "<group>";
 		};
-		2F6931B5260CFB3700ECEB38 /* BrowserIntents */ = {
+		2F4A572629E73D1C003454F8 /* Entitlements */ = {
 			isa = PBXGroup;
 			children = (
 				2F69320E260D056100ECEB38 /* BrowserIntentsBeta.entitlements */,
@@ -476,6 +478,14 @@
 				2F69320B260D032700ECEB38 /* BrowserIntentsEnterprise.entitlements */,
 				2F69320A260D021D00ECEB38 /* BrowserIntentsDebug.entitlements */,
 				2F6931CD260CFB5300ECEB38 /* BrowserIntents.entitlements */,
+			);
+			path = Entitlements;
+			sourceTree = "<group>";
+		};
+		2F6931B5260CFB3700ECEB38 /* BrowserIntents */ = {
+			isa = PBXGroup;
+			children = (
+				2F4A572629E73D1C003454F8 /* Entitlements */,
 				2F6931B6260CFB3700ECEB38 /* IntentHandler.swift */,
 				2F6931B8260CFB3700ECEB38 /* Info.plist */,
 			);
@@ -979,6 +989,7 @@
 				CA0391F8271E143F000EB13C /* ShortcutsWidget.swift in Sources */,
 				27DB270828BE9CB4005CB7AC /* LockScreenFavoriteWidget.swift in Sources */,
 				441A6360272445F9001492C3 /* StatDataModel.swift in Sources */,
+				2F4A572529E608CC003454F8 /* BrowserIntents.intentdefinition in Sources */,
 				CA0391B9271E1023000EB13C /* BraveWidgets.swift in Sources */,
 				CA0391E3271E1382000EB13C /* BraveWidgets.intentdefinition in Sources */,
 				272FC5AF2979EA700027C53D /* TopNewsWidget.swift in Sources */,
@@ -990,6 +1001,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2F4A572429E608C8003454F8 /* BrowserIntents.intentdefinition in Sources */,
 				F84B22041A0910F600AAB793 /* AppDelegate.swift in Sources */,
 				27BEDCCC28AD37CE0073425E /* BraveWidgets.intentdefinition in Sources */,
 				CAADEFE026E2707F0020DC4C /* SceneDelegate.swift in Sources */,
@@ -1430,7 +1442,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = BrowserIntents/BrowserIntentsDebug.entitlements;
+				CODE_SIGN_ENTITLEMENTS = BrowserIntents/Entitlements/BrowserIntentsDebug.entitlements;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_TESTABILITY = YES;
@@ -1910,7 +1922,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = BrowserIntents/BrowserIntentsDebug.entitlements;
+				CODE_SIGN_ENTITLEMENTS = BrowserIntents/Entitlements/BrowserIntentsDebug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
@@ -1945,7 +1957,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = BrowserIntents/BrowserIntents.entitlements;
+				CODE_SIGN_ENTITLEMENTS = BrowserIntents/Entitlements/BrowserIntents.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
@@ -1978,7 +1990,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = BrowserIntents/BrowserIntentsEnterprise.entitlements;
+				CODE_SIGN_ENTITLEMENTS = BrowserIntents/Entitlements/BrowserIntentsEnterprise.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
@@ -2012,7 +2024,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "BrowserIntents/BrowserIntentsRelease (AppStore).entitlements";
+				CODE_SIGN_ENTITLEMENTS = "BrowserIntents/Entitlements/BrowserIntentsRelease (AppStore).entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
@@ -2046,7 +2058,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = BrowserIntents/BrowserIntentsRelease.entitlements;
+				CODE_SIGN_ENTITLEMENTS = BrowserIntents/Entitlements/BrowserIntentsRelease.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
@@ -2080,7 +2092,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = BrowserIntents/BrowserIntentsBeta.entitlements;
+				CODE_SIGN_ENTITLEMENTS = BrowserIntents/Entitlements/BrowserIntentsBeta.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;

@@ -177,6 +177,8 @@ public class ActivityShortcutManager: NSObject {
         bvc.present(container, animated: true)
       }
     case .openPlayList:
+      bvc.popToBVC()
+      
       let tab = bvc.tabManager.selectedTab
       PlaylistCarplayManager.shared.getPlaylistController(tab: tab) { playlistController in
         playlistController.modalPresentationStyle = .fullScreen
