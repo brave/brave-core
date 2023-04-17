@@ -342,7 +342,7 @@ export class MockedWalletApiProxy {
       return {
         transactionInfos: [deserializeTransaction(mockTransactionInfo)]
       }
-    },
+    }
   }
 
 
