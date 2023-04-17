@@ -548,11 +548,23 @@
 -ProfileTypeChoiceUIPixelTest.InvokeUi_default/Default
 -ProfileTypeChoiceUIPixelTest.InvokeUi_default/TS
 
-# These tests fail because we disable HttpsFirstModeV2 feature. They should be
-# re-evaluated once https://github.com/brave/brave-browser/issues/28935 has
-# been addressed.
--HttpsUpgradesBrowserTest.*
+# These tests fail because we are modifying the HttpsUpgrades feature.
+-HttpsUpgradesBrowserTest.AllowlistEntryExpires/HttpsUpgradesOnly
+-HttpsUpgradesBrowserTest.EnterpriseAllowlistDisablesUpgrades/HttpsUpgradesOnly
+-HttpsUpgradesBrowserTest.HttpPageHttpPost_NotUpgraded/HttpsUpgradesOnly
+-HttpsUpgradesBrowserTest.HttpParentHttpSubframeNavigation_NotUpgraded/HttpsUpgradesOnly
+-HttpsUpgradesBrowserTest.HttpsToHttpRedirect_ShouldUpgrade/HttpsUpgradesOnly
+-HttpsUpgradesBrowserTest.HttpsUpgradeWithBrokenSSL_ShouldTriggerSSLInterstitial/HttpsUpgradesOnly
+-HttpsUpgradesBrowserTest.InterstitialBypassed_HttpFallbackLoaded/HttpsUpgradesOnly
+-HttpsUpgradesBrowserTest.Localhost_ShouldNotUpgrade/*
+-HttpsUpgradesBrowserTest.NetErrorOnUpgrade_ShouldInterstitial/HttpsUpgradesOnly
 -HttpsUpgradesBrowserTest.NonUniqueHost_RecordsMetrics/HttpsUpgradesOnly
+-HttpsUpgradesBrowserTest.PreferHstsOverHttpsFirstMode/*
+-HttpsUpgradesBrowserTest.RevisitingBumpsExpiration/HttpsUpgradesOnly
+-HttpsUpgradesBrowserTest.SlowHttps_ShouldInterstitial/HttpsUpgradesOnly
+-HttpsUpgradesBrowserTest.UrlWithHttpScheme_BrokenSSL_ShouldInterstitial/HttpsUpgradesOnly
+-HttpsUpgradesBrowserTest.UrlWithHttpScheme_ShouldUpgrade/*
+-HttpsUpgradesBrowserTest.UrlWithHttpsScheme_ShouldLoad/*
 
 # These tests crash because we disable 
 # enterprise_connectors::kLocalContentAnalysisEnabled feature
