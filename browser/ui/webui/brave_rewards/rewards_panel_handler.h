@@ -8,52 +8,50 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/browser/ui/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
-#include "brave/components/brave_rewards/common/mojom/brave_rewards_panel.mojom.h"
+#include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_panel.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "ui/webui/mojo_bubble_web_ui_controller.h"
 
-class Browser;
-
 namespace brave_rewards {
-class RewardsService;
-}
 
-class RewardsPanelHandler
-    : public brave_rewards::mojom::PanelHandler,
-      public brave_rewards::RewardsPanelCoordinator::Observer {
+class RewardsService;
+
+class RewardsPanelHandler : public mojom::PanelHandler,
+                            public RewardsPanelCoordinator::Observer {
  public:
   RewardsPanelHandler(
-      mojo::PendingRemote<brave_rewards::mojom::Panel> panel,
-      mojo::PendingReceiver<brave_rewards::mojom::PanelHandler> receiver,
+      mojo::PendingRemote<mojom::Panel> panel,
+      mojo::PendingReceiver<mojom::PanelHandler> receiver,
       base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder,
-      brave_rewards::RewardsService* rewards_service,
-      brave_rewards::RewardsPanelCoordinator* panel_coordinator);
+      RewardsService* rewards_service,
+      RewardsPanelCoordinator* panel_coordinator);
 
   RewardsPanelHandler(const RewardsPanelHandler&) = delete;
   RewardsPanelHandler& operator=(const RewardsPanelHandler&) = delete;
 
   ~RewardsPanelHandler() override;
 
-  // brave_rewards::mojom::PanelHandler:
+  // mojom::PanelHandler:
   void ShowUI() override;
   void CloseUI() override;
   void GetRewardsPanelArgs(GetRewardsPanelArgsCallback callback) override;
 
-  // brave_rewards::RewardsPanelCoordinator::Observer:
-  void OnRewardsPanelRequested(
-      const brave_rewards::mojom::RewardsPanelArgs& args) override;
+  // RewardsPanelCoordinator::Observer:
+  void OnRewardsPanelRequested(const mojom::RewardsPanelArgs& args) override;
 
  private:
-  mojo::Receiver<brave_rewards::mojom::PanelHandler> receiver_;
-  mojo::Remote<brave_rewards::mojom::Panel> panel_;
+  mojo::Receiver<mojom::PanelHandler> receiver_;
+  mojo::Remote<mojom::Panel> panel_;
   base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder_;
-  raw_ptr<brave_rewards::RewardsService> rewards_service_ = nullptr;
-  raw_ptr<brave_rewards::RewardsPanelCoordinator> panel_coordinator_ = nullptr;
-  brave_rewards::RewardsPanelCoordinator::Observation panel_observation_{this};
+  raw_ptr<RewardsService> rewards_service_ = nullptr;
+  raw_ptr<RewardsPanelCoordinator> panel_coordinator_ = nullptr;
+  RewardsPanelCoordinator::Observation panel_observation_{this};
 };
+
+}  // namespace brave_rewards
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_REWARDS_REWARDS_PANEL_HANDLER_H_

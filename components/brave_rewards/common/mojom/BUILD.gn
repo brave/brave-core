@@ -6,7 +6,15 @@
 import("//mojo/public/tools/bindings/mojom.gni")
 
 mojom("mojom") {
-  sources = [ "brave_rewards_panel.mojom" ]
+  sources = [
+    "rewards_panel.mojom",
+    "tip_panel.mojom",
+  ]
+
+  deps = [
+    ":ledger_interfaces",
+    ":ledger_types",
+  ]
 
   public_deps = [ "//mojo/public/mojom/base" ]
 }

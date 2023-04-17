@@ -6,7 +6,7 @@
 #include <string>
 
 #include "base/test/bind.h"
-#include "brave/browser/ui/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
+#include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
@@ -64,42 +64,15 @@ RewardsBrowserTestContextHelper::OpenRewardsPopup() {
 }
 
 base::WeakPtr<content::WebContents>
-RewardsBrowserTestContextHelper::OpenSiteBanner(
-    rewards_browsertest_util::TipAction tip_action) {
+RewardsBrowserTestContextHelper::OpenSiteBanner() {
   base::WeakPtr<content::WebContents> popup_contents = OpenRewardsPopup();
 
   // Construct an observer to wait for the site banner to load.
   content::CreateAndLoadWebContentsObserver site_banner_observer;
 
-  std::string button_selector;
-  bool open_tip_actions = false;
-
-  switch (tip_action) {
-    case rewards_browsertest_util::TipAction::OneTime:
-      button_selector = "[data-test-id=tip-button]";
-      break;
-    case rewards_browsertest_util::TipAction::SetMonthly:
-      button_selector = "[data-test-id=set-monthly-tip-button]";
-      break;
-    case rewards_browsertest_util::TipAction::ChangeMonthly:
-      button_selector = "[data-test-id=change-monthly-tip-button]";
-      open_tip_actions = true;
-      break;
-    case rewards_browsertest_util::TipAction::ClearMonthly:
-      button_selector = "[data-test-id=cancel-monthly-tip-button]";
-      open_tip_actions = true;
-      break;
-  }
-
-  // If necessary, show the monthly tip actions menu.
-  if (open_tip_actions) {
-    rewards_browsertest_util::WaitForElementThenClick(
-        popup_contents.get(), "[data-test-id=monthly-tip-actions-button]");
-  }
-
   // Click button to initiate sending a tip.
-  rewards_browsertest_util::WaitForElementThenClick(popup_contents.get(),
-                                                    button_selector);
+  rewards_browsertest_util::WaitForElementThenClick(
+      popup_contents.get(), "[data-test-id=tip-button]");
 
   // Wait for the site banner to load and retrieve the notification source
   base::WeakPtr<content::WebContents> banner =

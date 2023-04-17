@@ -227,16 +227,12 @@ class RewardsService : public KeyedService {
       GetAutoContributionAmountCallback callback) = 0;
   virtual void GetPublisherBanner(const std::string& publisher_id,
                                   GetPublisherBannerCallback callback) = 0;
+
+  // DEPRECATED: Use `SendContribution` instead.
   virtual void OnTip(const std::string& publisher_key,
                      double amount,
                      bool recurring,
                      OnTipCallback callback) = 0;
-
-  // Used in importer from muon days
-  virtual void OnTip(const std::string& publisher_key,
-                     double amount,
-                     const bool recurring,
-                     ledger::mojom::PublisherInfoPtr publisher) = 0;
 
   virtual void RemoveRecurringTip(const std::string& publisher_key) = 0;
 

@@ -18,10 +18,10 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
-#include "brave/browser/brave_rewards/tip_dialog.h"
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/ui/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
+#include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
+#include "brave/browser/ui/brave_rewards/tip_panel_coordinator.h"
 #include "brave/common/extensions/api/brave_rewards.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
@@ -48,6 +48,7 @@ using brave_rewards::RewardsPanelCoordinator;
 using brave_rewards::RewardsService;
 using brave_rewards::RewardsServiceFactory;
 using brave_rewards::RewardsTabHelper;
+using brave_rewards::TipPanelCoordinator;
 
 namespace {
 
@@ -88,6 +89,22 @@ RewardsPanelCoordinator* GetPanelCoordinator(ExtensionFunction* function) {
     return nullptr;
   }
   return GetPanelCoordinator(web_contents);
+}
+
+TipPanelCoordinator* GetTipPanelCoordinator(
+    int tab_id,
+    content::BrowserContext* browser_context) {
+  auto* contents = WebContentsFromBrowserContext(tab_id, browser_context);
+  if (!contents) {
+    return nullptr;
+  }
+
+  auto* browser = chrome::FindBrowserWithWebContents(contents);
+  if (!browser) {
+    return nullptr;
+  }
+
+  return ::brave_rewards::TipPanelCoordinator::FromBrowser(browser);
 }
 
 std::string StringifyResult(ledger::mojom::CreateRewardsWalletResult result) {
@@ -396,21 +413,13 @@ ExtensionFunction::ResponseAction BraveRewardsTipSiteFunction::Run() {
     return RespondNow(Error("Cannot tip to site in a private context"));
   }
 
-  // Get web contents for this tab
-  content::WebContents* contents =
-      WebContentsFromBrowserContext(params->tab_id, browser_context());
-  if (!contents) {
+  auto* coordinator = GetTipPanelCoordinator(params->tab_id, browser_context());
+  if (!coordinator) {
     return RespondNow(Error(tabs_constants::kTabNotFoundError,
                             base::NumberToString(params->tab_id)));
   }
 
-  base::Value::Dict params_dict;
-  params_dict.Set("publisherKey", params->publisher_key);
-  params_dict.Set("entryPoint", params->entry_point);
-  params_dict.Set(
-      "url", contents ? contents->GetLastCommittedURL().spec() : std::string());
-  ::brave_rewards::OpenTipDialog(contents, std::move(params_dict));
-
+  coordinator->ShowPanelForPublisher(params->publisher_key);
   return RespondNow(NoArguments());
 }
 
@@ -519,30 +528,13 @@ void BraveRewardsTipUserFunction::ShowTipDialog() {
     return;
   }
 
-  // Get web contents for this tab
-  content::WebContents* contents =
-      WebContentsFromBrowserContext(params->tab_id, browser_context());
-  if (!contents) {
+  auto* coordinator = GetTipPanelCoordinator(params->tab_id, browser_context());
+  if (!coordinator) {
     Release();
     return;
   }
 
-  base::Value::Dict media_meta_data_dict;
-  media_meta_data_dict.Set("mediaType", params->media_type);
-  media_meta_data_dict.Set("publisherKey", params->publisher_key);
-  media_meta_data_dict.Set("publisherName", params->publisher_name);
-  media_meta_data_dict.Set("publisherScreenName",
-                           params->publisher_screen_name);
-  media_meta_data_dict.Set("postId", params->post_id);
-  media_meta_data_dict.Set("postTimestamp", params->post_timestamp);
-  media_meta_data_dict.Set("postText", params->post_text);
-
-  base::Value::Dict params_dict;
-  params_dict.Set("publisherKey", params->publisher_key);
-  params_dict.Set("url", params->url);
-  params_dict.Set("mediaMetaData", std::move(media_meta_data_dict));
-
-  ::brave_rewards::OpenTipDialog(contents, std::move(params_dict));
+  coordinator->ShowPanelForPublisher(params->publisher_key);
 }
 
 BraveRewardsIncludeInAutoContributionFunction::

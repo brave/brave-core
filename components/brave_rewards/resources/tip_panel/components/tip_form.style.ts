@@ -5,6 +5,8 @@
 
 import styled from 'styled-components'
 
+import * as leo from '@brave/leo/tokens/css'
+
 import formBackgroundURL from '../assets/form_background.svg'
 import formBackgroundDarkURL from '../assets/form_background_dark.svg'
 
@@ -49,7 +51,8 @@ export const card = styled.div`
       var(--form-background-gradient-color-1) 88px,
       var(--form-background-gradient-color-2)  192px
     ),
-    no-repeat center bottom 88px / cover var(--form-background-url);
+    no-repeat center bottom 88px / cover var(--form-background-url),
+    ${leo.color.container.background};
 
   overflow: hidden;
   box-shadow: 0px 4px 16px -1px rgba(0, 0, 0, 0.07);
@@ -63,12 +66,12 @@ export const title = styled.div`
   font-weight: 500;
   font-size: 22px;
   line-height: 32px;
-  color: var(--leo-color-text-primary);
+  color: ${leo.color.text.primary};
 `
 
 export const inputPanel = styled.div`
   margin: 0 16px;
-  background: var(--leo-color-container-background);
+  background: ${leo.color.container.background};
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -110,12 +113,20 @@ export const terms = styled.div`
   font-weight: 400;
   font-size: 11px;
   line-height: 16px;
-  color: var(--leo-color-text-secondary);
+  color: ${leo.color.text.secondary};
 
   a {
-    color: var(--leo-color-text-primary);
+    color: ${leo.color.text.primary};
     text-decoration: none;
   }
+`
+
+export const successBackgroundPreloader = styled.div`
+  height: 0;
+  background:
+    no-repeat -9999px -9999px var(--success-background-1-url),
+    no-repeat -9999px -9999px var(--success-background-2-url),
+    no-repeat -9999px -9999px var(--success-background-3-url);
 `
 
 export const successCard = styled.div`
@@ -138,7 +149,7 @@ export const successTitle = styled.div`
   font-weight: 600;
   font-size: 14px;
   line-height: 24px;
-  color: var(--leo-color-systemfeedback-success-icon);
+  color: ${leo.color.systemfeedback.successIcon};
 `
 
 export const successText = styled.div`
@@ -146,5 +157,5 @@ export const successText = styled.div`
   font-weight: 600;
   font-size: 24px;
   line-height: 36px;
-  color: var(--leo-color-text-interactive);
+  color: ${leo.color.text.interactive};
 `

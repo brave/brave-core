@@ -5,6 +5,8 @@
 
 import styled from 'styled-components'
 
+import * as leo from '@brave/leo/tokens/css'
+
 export const root = styled.div`
   --self-width: var(--tooltip-width, 280px);
   --self-center: calc(50% - var(--self-width) / 2);
@@ -20,7 +22,7 @@ export const root = styled.div`
 
 export const content = styled.div`
   position: relative;
-  background: var(--leo-color-container-background);
+  background: ${leo.color.container.background};
   box-shadow: 0px 4px 13px -2px rgba(0, 0, 0, 0.08);
   border-radius: 8px;
   padding: 24px;
@@ -30,7 +32,7 @@ export const content = styled.div`
 `
 
 export const arrow = styled.div`
-  background: var(--leo-color-container-background);
+  background: ${leo.color.container.background};
   transform: rotate(45deg);
   width: 10px;
   height: 10px;

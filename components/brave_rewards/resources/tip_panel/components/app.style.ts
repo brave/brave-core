@@ -3,22 +3,30 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import '@brave/leo/tokens/css/variables.css'
-
 import styled from 'styled-components'
 
+import '@brave/leo/tokens/css/variables.css'
+import * as leo from '@brave/leo/tokens/css'
+
+import defaultBackgroundURL from '../assets/default_background.svg'
+
 export const root = styled.div`
-  font: var(--leo-font-primary-default-regular);
+  font-family: Poppins;
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
   position: relative;
   z-index: 1;
   padding: 0 24px;
+  overflow: hidden;
+  background: ${leo.color.container.background};
+
+  .narrow-view & {
+    flex-direction: column;
+  }
 
   /* Use :where to reduce selector specificity and allow overriding. */
   *:where(a) {
-    color: var(--leo-color-text-interactive);
+    color: ${leo.color.text.interactive};
     text-decoration: none;
 
     &:hover {
@@ -28,18 +36,19 @@ export const root = styled.div`
 `
 
 export const loading = styled.div`
-  min-height: 400px;
+  min-height: 500px;
   display: flex;
   align-items: center;
+  justify-content: center;
   padding-bottom: 20px;
-  color: var(--leo-color-text-interactive);
+  color: ${leo.color.text.interactive};
 
   .icon {
     height: 32px;
     width: auto;
 
     animation-name: fade-in;
-    animation-delay: 1s;
+    animation-delay: .5s;
     animation-duration: 1s;
     animation-fill-mode: both;
 
@@ -50,8 +59,25 @@ export const loading = styled.div`
   }
 `
 
+export const error = styled.div`
+  font-family: Poppins;
+  min-height: 500px;
+  width: 100%;
+  padding: 100px 70px;
+  background: url(/${defaultBackgroundURL});
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+`
+
+export const errorCode = styled.div`
+  padding-top: 12px;
+  font-family: monospace;
+  font-size: 11px;
+`
+
 export const creator = styled.div`
-  flex: 1 1 300px;
+  flex: 1 1 400px;
   margin: 120px 56px 32px;
 `
 

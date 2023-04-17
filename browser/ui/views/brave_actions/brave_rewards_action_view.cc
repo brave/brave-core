@@ -44,6 +44,7 @@ namespace {
 
 using brave_rewards::RewardsNotificationService;
 using brave_rewards::RewardsPanelCoordinator;
+using brave_rewards::RewardsPanelUI;
 using brave_rewards::RewardsServiceFactory;
 using brave_rewards::RewardsTabHelper;
 

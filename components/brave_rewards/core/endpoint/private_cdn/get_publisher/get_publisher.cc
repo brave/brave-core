@@ -54,6 +54,10 @@ ledger::mojom::PublisherBannerPtr GetPublisherBannerFromMessage(
     }
   }
 
+  if (!banner_details.web3_url().empty()) {
+    banner->web3_url = banner_details.web3_url();
+  }
+
   return banner;
 }
 
@@ -90,6 +94,10 @@ void GetPublisherStatusFromMessage(
         return;
       }
     }
+  }
+  if (!response.site_banner_details().web3_url().empty()) {
+    info->status = ledger::mojom::PublisherStatus::WEB3_ENABLED;
+    return;
   }
 }
 

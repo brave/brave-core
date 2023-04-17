@@ -46,29 +46,7 @@ void ContributionTip::OnPublisherDataRead(
     double amount,
     ProcessCallback callback,
     mojom::ServerPublisherInfoPtr server_info) {
-  auto status = mojom::PublisherStatus::NOT_VERIFIED;
-  if (server_info) {
-    status = server_info->status;
-  }
-
-  // If the publisher is not registered or is not verified, add an entry to the
-  // pending contribution table.
-  if (status == mojom::PublisherStatus::NOT_VERIFIED) {
-    BLOG(1, "Saving pending publisher " << publisher_id);
-
-    auto pending = mojom::PendingContribution::New();
-    pending->publisher_key = publisher_id;
-    pending->amount = amount;
-    pending->type = mojom::RewardsType::ONE_TIME_TIP;
-
-    std::vector<mojom::PendingContributionPtr> list;
-    list.push_back(std::move(pending));
-
-    ledger_->database()->SavePendingContribution(
-        std::move(list),
-        ToLegacyCallback(base::BindOnce(&ContributionTip::OnPendingTipSaved,
-                                        base::Unretained(this))));
-
+  if (!server_info || server_info->address.empty()) {
     std::move(callback).Run(absl::nullopt);
     return;
   }
@@ -104,14 +82,6 @@ void ContributionTip::OnQueueSaved(const std::string& queue_id,
   } else {
     BLOG(0, "Queue was not saved");
     std::move(callback).Run(absl::nullopt);
-  }
-}
-
-void ContributionTip::OnPendingTipSaved(mojom::Result result) {
-  if (result != mojom::Result::LEDGER_OK) {
-    BLOG(0, "Pending tip save failed");
-  } else {
-    ledger_->client()->PendingContributionSaved(result);
   }
 }
 

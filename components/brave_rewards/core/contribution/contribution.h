@@ -23,7 +23,6 @@
 #include "brave/components/brave_rewards/core/contribution/contribution_sku.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_tip.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_unblinded.h"
-#include "brave/components/brave_rewards/core/contribution/unverified.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 namespace ledger {
@@ -56,8 +55,6 @@ class Contribution {
                              mojom::ContributionInfoPtr contribution);
 
   void ResetReconcileStamp();
-
-  void ContributeUnverifiedPublishers();
 
   void OneTimeTip(const std::string& publisher_key,
                   double amount,
@@ -181,7 +178,6 @@ class Contribution {
                                         const std::string& contribution_id);
 
   LedgerImpl* ledger_;  // NOT OWNED
-  std::unique_ptr<Unverified> unverified_;
   std::unique_ptr<Unblinded> unblinded_;
   std::unique_ptr<ContributionSKU> sku_;
   std::unique_ptr<ContributionMonthly> monthly_;

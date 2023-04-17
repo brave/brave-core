@@ -90,15 +90,16 @@ function createHost (): Host {
     publisherInfo: {
       id: 'brave.com',
       name: 'brave.com',
+      verified: true,
       icon: 'https://brave.com/static-assets/images/brave-favicon.png',
       platform: null,
       attentionScore: 0.17,
       autoContributeEnabled: true,
       monthlyTip: 5,
-      supportedWalletProviders: []
+      supportedWalletProviders: ['uphold']
     },
     publisherRefreshing: false,
-    externalWallet: null && {
+    externalWallet: {
       provider: 'uphold',
       username: 'brave123',
       status: mojom.WalletStatus.kConnected,
@@ -121,7 +122,7 @@ function createHost (): Host {
     availableCountries: ['US'],
     defaultCountry: 'US',
     declaredCountry: 'US',
-    userType: 'unconnected',
+    userType: 'connected',
     publishersVisitedCount: 4
   })
 
@@ -182,26 +183,6 @@ function createHost (): Host {
 
     sendTip () {
       console.log('sendTip')
-    },
-
-    handleMonthlyTipAction (action) {
-      switch (action) {
-        case 'update': {
-          console.log('updateMonthlyTip')
-          break
-        }
-        case 'cancel': {
-          const { publisherInfo } = stateManager.getState()
-          if (publisherInfo) {
-            stateManager.update({
-              publisherInfo: {
-                ...publisherInfo,
-                monthlyTip: 0
-              }
-            })
-          }
-        }
-      }
     },
 
     handleExternalWalletAction (action) {
@@ -275,7 +256,7 @@ function createHost (): Host {
 export function MainPanel () {
   const [host] = React.useState(() => createHost())
   return (
-    <div className='brave-theme-light'>
+    <div className='brave-theme-dark'>
       <LocaleContext.Provider value={locale}>
         <App host={host} />
       </LocaleContext.Provider>

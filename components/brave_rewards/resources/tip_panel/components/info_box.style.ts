@@ -5,31 +5,33 @@
 
 import styled from 'styled-components'
 
+import * as leo from '@brave/leo/tokens/css'
+
 export const root = styled.div`
   display: flex;
   align-items: flex-start;
   gap: 18px;
-  background: var(--leo-color-systemfeedback-info-background);
+  background: ${leo.color.systemfeedback.infoBackground};
   border-radius: 8px;
   padding: 24px;
 
   .icon {
-    color: var(--leo-color-systemfeedback-info-icon);
+    color: ${leo.color.systemfeedback.infoIcon};
   }
 
   &.warn {
-    background: var(--leo-color-systemfeedback-warning-background);
+    background: ${leo.color.systemfeedback.warningBackground};
 
     .icon {
-      color: var(--leo-color-systemfeedback-warning-icon);
+      color: ${leo.color.systemfeedback.warningIcon};
     }
   }
 
   &.error {
-    background: var(--leo-color-systemfeedback-error-background);
+    background: ${leo.color.systemfeedback.errorBackground};
 
     .icon {
-      color: var(--leo-color-systemfeedback-error-icon);
+      color: ${leo.color.systemfeedback.errorIcon};
     }
   }
 `
@@ -50,13 +52,13 @@ export const title = styled.div`
   font-weight: 600;
   font-size: 14px;
   line-height: 24px;
-  color: var(--leo-color-text-primary);
+  color: ${leo.color.text.primary};
 `
 
 export const text = styled.div`
   font-size: 12px;
   line-height: 18px;
-  color: var(--leo-color-text-primary);
+  color: ${leo.color.text.primary};
 
   > div:not(:first-child) {
     margin-top: 1em;

@@ -5,29 +5,39 @@
 
 import * as React from 'react'
 
-import { ModelContext, useModelState } from '../lib/model_context'
+import { useModelState } from '../lib/model_context'
 
 import { LoadingIcon } from '../../shared/components/icons/loading_icon'
 import { CreatorView } from './creator_view'
 import { TipForm } from './tip_form'
+import { InfoBox } from './info_box'
+import { useLocaleContext } from '../lib/locale_strings'
 
 import * as style from './app.style'
 
 export function App () {
-  const model = React.useContext(ModelContext)
+  const { getString } = useLocaleContext()
   const loading = useModelState((state) => state.loading)
-
-  React.useEffect(() => {
-    if (!loading) {
-      model.onInitialRender()
-    }
-  }, [model, loading])
+  const error = useModelState((state) => state.error)
 
   if (loading) {
     return (
       <style.root>
         <style.loading><LoadingIcon /></style.loading>
       </style.root>
+    )
+  }
+
+  if (error) {
+    return (
+      <style.error>
+        <InfoBox style='error' title={getString('unexpectedErrorTitle')}>
+          {getString('unexpectedErrorText')}
+          <style.errorCode>
+            {error}
+          </style.errorCode>
+        </InfoBox>
+      </style.error>
     )
   }
 

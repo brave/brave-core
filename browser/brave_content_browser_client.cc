@@ -186,6 +186,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/new_tab/new_tab_shows_navigation_throttle.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
+#include "brave/browser/ui/webui/brave_rewards/tip_panel_ui.h"
 #include "brave/browser/ui/webui/brave_shields/cookie_list_opt_in_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
@@ -198,7 +199,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_private_new_tab_ui/common/brave_private_new_tab.mojom.h"
 #include "brave/components/brave_rewards/common/features.h"
-#include "brave/components/brave_rewards/common/mojom/brave_rewards_panel.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_panel.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/tip_panel.mojom.h"
 #include "brave/components/brave_shields/common/brave_shields_panel.mojom.h"
 #include "brave/components/brave_shields/common/cookie_list_opt_in.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"
@@ -630,7 +632,11 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         CookieListOptInUI>(map);
   }
   content::RegisterWebUIControllerInterfaceBinder<
-      brave_rewards::mojom::PanelHandlerFactory, RewardsPanelUI>(map);
+      brave_rewards::mojom::PanelHandlerFactory, brave_rewards::RewardsPanelUI>(
+      map);
+  content::RegisterWebUIControllerInterfaceBinder<
+      brave_rewards::mojom::TipPanelHandlerFactory, brave_rewards::TipPanelUI>(
+      map);
 #endif
 
 // Brave News

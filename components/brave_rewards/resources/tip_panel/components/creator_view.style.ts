@@ -5,6 +5,8 @@
 
 import styled from 'styled-components'
 
+import * as leo from '@brave/leo/tokens/css'
+
 import defaultBackgroundURL from '../assets/default_background.svg'
 
 export const root = styled.div`
@@ -32,17 +34,18 @@ export const name = styled.div`
   font-weight: 500;
   font-size: 28px;
   line-height: 40px;
-  color: var(--leo-color-text-primary);
+  color: ${leo.color.text.primary};
 `
 
 export const verifiedCheck = styled.div`
   position: relative;
   height: 20px;
   width: 20px;
-  color: var(--leo-color-icon-interactive);
+  color: ${leo.color.icon.interactive};
 
   .tooltip {
     visibility: hidden;
+    transition: visibility 0s linear 300ms;
   }
 
   &:hover {
@@ -56,29 +59,29 @@ export const text = styled.div`
   font-weight: 400;
   font-size: 14px;
   line-height: 24px;
-  color: var(--leo-color-text-secondary);
+  color: ${leo.color.text.secondary};
 `
 
 export const links = styled.div`
   display: flex;
   align-items: center;
   gap: 24px;
-  color: var(--leo-color-icon-default);
+  color: ${leo.color.icon.default};
 
   a {
     height: 18px;
     width: 18px;
-    color: var(--leo-color-icon-default);
+    color: ${leo.color.icon.default};
   }
 `
 
 export const linkDivider = styled.div`
   height: 18px;
   width: 1px;
-  background: var(--leo-color-divider-subtle);
+  background: ${leo.color.divider.subtle};
 
   @media (prefers-color-scheme: dark) {
-    background: var(--leo-color-divider-strong);
+    background: ${leo.color.divider.strong};
   }
 `
 
@@ -89,7 +92,9 @@ export const background = styled.div`
   right: 0;
   height: 264px;
   z-index: -1;
-  background: no-repeat top center/cover var(--creator-background-image-url);
+  background:
+    no-repeat top center/cover var(--creator-background-image-url),
+    ${leo.color.gray['10']};
 
   &::before {
     content: '';

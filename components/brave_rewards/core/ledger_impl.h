@@ -285,10 +285,6 @@ class LedgerImpl : public mojom::Ledger {
 
   void GetAllContributions(GetAllContributionsCallback callback) override;
 
-  void SavePublisherInfoForTip(
-      mojom::PublisherInfoPtr info,
-      SavePublisherInfoForTipCallback callback) override;
-
   void GetMonthlyReport(mojom::ActivityMonth month,
                         int year,
                         GetMonthlyReportCallback callback) override;

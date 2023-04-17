@@ -5,6 +5,8 @@
 
 import styled from 'styled-components'
 
+import * as leo from '@brave/leo/tokens/css'
+
 export const title = styled.div`
   display: flex;
   align-items: center;
@@ -12,18 +14,18 @@ export const title = styled.div`
   font-weight: 400;
   font-size: 14px;
   line-height: 24px;
-  color: var(--leo-color-text-primary);
+  color: ${leo.color.text.primary};
 `
 
 export const checkmark = styled.div`
   width: 15px;
   height: 18px;
-  color: var(--leo-color-icon-interactive);
+  color: ${leo.color.icon.interactive};
 `
 
 export const text = styled.div`
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
-  color: var(--leo-color-text-secondary);
+  color: ${leo.color.text.secondary};
 `

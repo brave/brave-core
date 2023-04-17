@@ -9,7 +9,7 @@
 #include <utility>
 
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/browser/ui/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
+#include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_handler.h"
 #include "brave/components/brave_adaptive_captcha/server_util.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_panel_generated_map.h"
@@ -28,6 +28,8 @@
 #include "content/public/browser/web_ui.h"
 #include "services/network/public/mojom/content_security_policy.mojom.h"
 
+namespace brave_rewards {
+
 namespace {
 
 static constexpr webui::LocalizedString kStrings[] = {
@@ -45,6 +47,10 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"changeAmount", IDS_REWARDS_PANEL_CHANGE_AMOUNT},
     {"connectAccountText", IDS_REWARDS_CONNECT_ACCOUNT_TEXT},
     {"connectAccountNoProviders", IDS_REWARDS_CONNECT_ACCOUNT_NO_PROVIDERS},
+    {"connectContributeHeader", IDS_REWARDS_CONNECT_CONTRIBUTE_HEADER},
+    {"connectContributeText", IDS_REWARDS_CONNECT_CONTRIBUTE_TEXT},
+    {"connectContributeNoProviders",
+     IDS_REWARDS_CONNECT_CONTRIBUTE_NO_PROVIDERS},
     {"grantCaptchaAmountAds", IDS_REWARDS_GRANT_CAPTCHA_AMOUNT_ADS},
     {"grantCaptchaAmountUGP", IDS_REWARDS_GRANT_CAPTCHA_AMOUNT_UGP},
     {"grantCaptchaErrorText", IDS_REWARDS_GRANT_CAPTCHA_ERROR_TEXT},
@@ -164,10 +170,6 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"onboardingTourSkip", IDS_BRAVE_REWARDS_ONBOARDING_TOUR_SKIP},
     {"onboardingTourSkipForNow",
      IDS_BRAVE_REWARDS_ONBOARDING_TOUR_SKIP_FOR_NOW},
-    {"pendingTipText", IDS_REWARDS_PANEL_PENDING_TIP_TEXT},
-    {"pendingTipTitle", IDS_REWARDS_PANEL_PENDING_TIP_TITLE},
-    {"pendingTipTitleRegistered",
-     IDS_REWARDS_PANEL_PENDING_TIP_TITLE_REGISTERED},
     {"platformPublisherTitle", IDS_REWARDS_PANEL_PLATFORM_PUBLISHER_TITLE},
     {"refreshStatus", IDS_REWARDS_PANEL_REFRESH_STATUS},
     {"rewardsConnectAccount", IDS_REWARDS_CONNECT_ACCOUNT},
@@ -187,7 +189,7 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"summary", IDS_REWARDS_PANEL_SUMMARY},
     {"tip", IDS_REWARDS_PANEL_TIP},
     {"unverifiedCreator", IDS_REWARDS_PANEL_UNVERIFIED_CREATOR},
-    {"unverifiedTextMore", IDS_BRAVE_UI_SITE_UNVERIFIED_TEXT_MORE},
+    {"unverifiedText", IDS_REWARDS_PANEL_UNVERIFIED_TEXT},
     {"verifiedCreator", IDS_REWARDS_PANEL_VERIFIED_CREATOR},
     {"walletAccountLink", IDS_REWARDS_WALLET_ACCOUNT_LINK},
     {"walletAutoContribute", IDS_REWARDS_WALLET_AUTO_CONTRIBUTE},
@@ -208,8 +210,7 @@ RewardsPanelUI::RewardsPanelUI(content::WebUI* web_ui)
     : MojoBubbleWebUIController(web_ui, true) {
   auto* profile = Profile::FromWebUI(web_ui);
   if (auto* browser = chrome::FindLastActiveWithProfile(profile)) {
-    panel_coordinator_ =
-        brave_rewards::RewardsPanelCoordinator::FromBrowser(browser);
+    panel_coordinator_ = RewardsPanelCoordinator::FromBrowser(browser);
   }
 
   auto plural_string_handler = std::make_unique<PluralStringHandler>();
@@ -254,14 +255,16 @@ void RewardsPanelUI::BindInterface(
 }
 
 void RewardsPanelUI::CreatePanelHandler(
-    mojo::PendingRemote<brave_rewards::mojom::Panel> panel,
-    mojo::PendingReceiver<brave_rewards::mojom::PanelHandler> receiver) {
+    mojo::PendingRemote<mojom::Panel> panel,
+    mojo::PendingReceiver<mojom::PanelHandler> receiver) {
   DCHECK(panel);
 
   auto* profile = Profile::FromWebUI(web_ui());
-  auto* rewards = brave_rewards::RewardsServiceFactory::GetForProfile(profile);
+  auto* rewards = RewardsServiceFactory::GetForProfile(profile);
 
   panel_handler_ = std::make_unique<RewardsPanelHandler>(
       std::move(panel), std::move(receiver), embedder(), rewards,
       panel_coordinator_);
 }
+
+}  // namespace brave_rewards

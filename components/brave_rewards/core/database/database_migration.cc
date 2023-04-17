@@ -43,6 +43,7 @@
 #include "brave/components/brave_rewards/core/database/migration/migration_v36.h"
 #include "brave/components/brave_rewards/core/database/migration/migration_v37.h"
 #include "brave/components/brave_rewards/core/database/migration/migration_v38.h"
+#include "brave/components/brave_rewards/core/database/migration/migration_v39.h"
 #include "brave/components/brave_rewards/core/database/migration/migration_v4.h"
 #include "brave/components/brave_rewards/core/database/migration/migration_v5.h"
 #include "brave/components/brave_rewards/core/database/migration/migration_v6.h"
@@ -138,7 +139,8 @@ void DatabaseMigration::Start(uint32_t table_version,
                                           migration::v35,
                                           migration::v36,
                                           migration::v37,
-                                          migration::v38};
+                                          migration::v38,
+                                          migration::v39};
 
   DCHECK_LE(target_version, mappings.size());
 

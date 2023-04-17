@@ -7,18 +7,14 @@ import { createStateManager } from '../../shared/lib/state_manager'
 import { optional } from '../../shared/lib/optional'
 import { Model, ModelState, defaultState } from '../lib/model'
 
-function actionLogger (name: string) {
-  return (...args: any[]) => {
-    console.log(name, ...args)
-  }
-}
-
 export function createModel (): Model {
   const stateManager = createStateManager<ModelState>({
     ...defaultState(),
     loading: false,
+    error: null,
     monthlyContributionSet: false,
     creatorBanner: {
+      name: 'brave.com',
       title: 'Brave Software',
       description:
         'Thanks for stopping by. Brave is on a mission to fix the web by ' +
@@ -33,26 +29,26 @@ export function createModel (): Model {
         youtube: 'https://www.youtube.com/bravesoftware',
         twitch: 'https://twitch.tv/bravesoftware'
       },
-      web3URL: 'https://creators.brave.com'
+      web3Url: 'https://creators.brave.com'
     },
-    creatorWallets: ['uphold'],
+    creatorVerified: true,
+    creatorWallets: ['gemini'],
     rewardsUser: {
       balance: optional(8.25),
       walletAuthorized: true,
-      walletProvider: 'uphold'
+      walletProvider: 'uphold',
+      reconnectUrl: ''
     }
   })
 
   return {
     getState: stateManager.getState,
     addListener: stateManager.addListener,
-    onInitialRender: actionLogger('onInitialRender'),
     async sendContribution (amount: number, monthly: boolean) {
       console.log('sendContribution', amount, monthly)
       await new Promise((resolve) => setTimeout(resolve, 3000))
       console.log('send complete')
-    },
-    reconnectWallet: actionLogger('reconnectWallet'),
-    shareContribution: actionLogger('shareContribution')
+      return true
+    }
   }
 }

@@ -5,6 +5,8 @@
 
 import styled from 'styled-components'
 
+import * as leo from '@brave/leo/tokens/css'
+
 export const root = styled.div`
   display: flex;
   align-items: center;
@@ -26,13 +28,13 @@ export const batIcon = styled.div`
 export const title = styled.div`
   font-size: 14px;
   line-height: 24px;
-  color: var(--leo-color-text-primary);
+  color: ${leo.color.text.primary};
   display: flex;
   gap: 8px;
 `
 
 export const provider = styled.div`
-  background: var(--leo-color-gray-10);
+  background: ${leo.color.gray['10']};
   border-radius: 4px;
   padding: 3px 6px;
 
@@ -41,7 +43,7 @@ export const provider = styled.div`
   line-height: 18px;
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: var(--leo-color-gray-50);
+  color: ${leo.color.gray['50']};
 
   .icon {
     height: 12px;
@@ -57,5 +59,5 @@ export const amount = styled.div`
   font-size: 16px;
   line-height: 28px;
   margin-top: -4px;
-  color: var(--leo-color-text-primary);
+  color: ${leo.color.text.primary};
 `

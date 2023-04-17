@@ -13,7 +13,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
-#include "brave/browser/ui/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
+#include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
@@ -26,11 +26,7 @@
 
 class Profile;
 class TabStripModel;
-
-template <typename T>
-class WebUIBubbleManagerT;
-
-class RewardsPanelUI;
+class WebUIBubbleManager;
 
 // A button that lives in the actions container and opens the Rewards panel. The
 // button has an associated context menu and can be hidden by user settings.
@@ -123,7 +119,7 @@ class BraveRewardsActionView
   raw_ptr<Browser> browser_ = nullptr;
   raw_ptr<brave_rewards::RewardsPanelCoordinator> panel_coordinator_ = nullptr;
   raw_ptr<brave_rewards::RewardsTabHelper> tab_helper_ = nullptr;
-  std::unique_ptr<WebUIBubbleManagerT<RewardsPanelUI>> bubble_manager_;
+  std::unique_ptr<WebUIBubbleManager> bubble_manager_;
   PrefChangeRegistrar pref_change_registrar_;
   std::pair<std::string, bool> publisher_registered_;
   brave_rewards::RewardsTabHelper::Observation tab_helper_observation_{this};

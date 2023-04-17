@@ -71,10 +71,7 @@ void StateMigrationV1::OnLoadState(mojom::Result result,
 
     ledger_->database()->SaveBalanceReportInfoList(std::move(reports),
                                                    save_callback);
-    return;
   }
-
-  SaveProcessedPublishers(callback);
 }
 
 void StateMigrationV1::BalanceReportsSaved(
@@ -85,28 +82,6 @@ void StateMigrationV1::BalanceReportsSaved(
     callback(result);
     return;
   }
-
-  SaveProcessedPublishers(callback);
-}
-
-void StateMigrationV1::SaveProcessedPublishers(
-    ledger::LegacyResultCallback callback) {
-  auto save_callback =
-      std::bind(&StateMigrationV1::ProcessedPublisherSaved, this, _1, callback);
-
-  ledger_->database()->SaveProcessedPublisherList(
-      legacy_publisher_->GetAlreadyProcessedPublishers(), save_callback);
-}
-
-void StateMigrationV1::ProcessedPublisherSaved(
-    mojom::Result result,
-    ledger::LegacyResultCallback callback) {
-  if (result != mojom::Result::LEDGER_OK) {
-    BLOG(0, "Processed publisher save failed");
-    callback(result);
-    return;
-  }
-
   callback(mojom::Result::LEDGER_OK);
 }
 

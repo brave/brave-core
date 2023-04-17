@@ -95,27 +95,33 @@ export function AmountInput (props: Props) {
     }
   }
 
-  function onCustomAmountChange (event: React.FormEvent<HTMLInputElement>) {
-    const textValue = event.currentTarget.value
+  function updateCustomAmount (textValue: string) {
     if (/[^\d\.]|(\..*\.)/.test(textValue)) {
-      return
+      return customAmount
     }
     setCustomAmountText(textValue)
-    let customAmount = parseFloat(textValue || '0')
+    let updatedAmount = parseFloat(textValue || '0')
     if (isNaN(customAmount)) {
-      return
+      return customAmount
     }
     if (exchangePrimary) {
-      customAmount /= props.exchangeRate
+      updatedAmount /= props.exchangeRate
     }
-    customAmount = Math.min(maximumAmount, customAmount)
-    setCustomAmount(customAmount)
+    updatedAmount = Math.min(maximumAmount, updatedAmount)
+    setCustomAmount(updatedAmount)
+    return updatedAmount
   }
 
-  function onCustomAmountBlur () {
+  function onCustomAmountChange (event: React.FormEvent<HTMLInputElement>) {
+    updateCustomAmount(event.currentTarget.value)
+  }
+
+  function onCustomAmountBlur (event: React.FormEvent<HTMLInputElement>) {
+    const amount = updateCustomAmount(event.currentTarget.value)
+
     let value = amountStep > 0
-      ? Math.round(customAmount / amountStep) * amountStep
-      : customAmount
+      ? Math.round(amount / amountStep) * amountStep
+      : amount
 
     if (value < minimumAmount) {
       value = minimumAmount
@@ -147,6 +153,9 @@ export function AmountInput (props: Props) {
 
   function renderPrimaryAmount () {
     if (!selectedOption.hasValue()) {
+      const onFocus = (event: React.FormEvent<HTMLInputElement>) => {
+        event.currentTarget.select()
+      }
       return (
         <style.customInput>
           <input
@@ -154,7 +163,9 @@ export function AmountInput (props: Props) {
             value={customAmountText}
             onChange={onCustomAmountChange}
             onBlur={onCustomAmountBlur}
+            onFocus={onFocus}
             autoFocus={true}
+            data-test-id='custom-amount-input'
           />
         </style.customInput>
       )
@@ -175,23 +186,18 @@ export function AmountInput (props: Props) {
   }
 
   function renderPrimary () {
-    if (exchangePrimary) {
-      return (
-        <style.primary>
-          <style.primarySymbol>
-            {currencySymbol(props.exchangeCurrency)}
-          </style.primarySymbol>
-          {renderPrimaryAmount()}
-          <style.primaryLabel>
-            {props.exchangeCurrency}
-          </style.primaryLabel>
-        </style.primary>
-      )
-    }
     return (
       <style.primary>
+        {
+          exchangePrimary &&
+            <style.primarySymbol>
+              {currencySymbol(props.exchangeCurrency)}
+            </style.primarySymbol>
+        }
         {renderPrimaryAmount()}
-        <style.primaryLabel>BAT</style.primaryLabel>
+        <style.primaryLabel>
+          {exchangePrimary ? props.exchangeCurrency : 'BAT'}
+        </style.primaryLabel>
       </style.primary>
     )
   }
@@ -216,22 +222,28 @@ export function AmountInput (props: Props) {
 
   return (
     <style.root>
-      <style.selector>
+      <style.selector data-test-id='tip-amount-options'>
         {
-          props.amountOptions.map((amount) => {
+          props.amountOptions.map((amount, index) => {
             const onClick = () => setSelectedOption(optional(amount))
             return (
               <button
                 key={amount}
                 onClick={onClick}
                 className={optionClassName(amount)}
+                data-option-index={index}
+                data-option-value={amount}
               >
                 {batAmountFormatter.format(amount)}
               </button>
             )
           })
         }
-        <button onClick={onCustomClick} className={optionClassName()}>
+        <button
+          onClick={onCustomClick}
+          className={optionClassName()}
+          data-test-id='custom-tip-button'
+        >
           {getString('customAmountLabel')}
         </button>
       </style.selector>

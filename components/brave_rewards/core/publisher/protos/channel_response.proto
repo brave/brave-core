@@ -22,6 +22,7 @@ message SiteBannerDetails {
   string logo_url = 4;
   repeated double donation_amounts = 5;
   SocialLinks social_links = 6;
+  string web3_url = 7;
 }
 
 enum UpholdWalletState {

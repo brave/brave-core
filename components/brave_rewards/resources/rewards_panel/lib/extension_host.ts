@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import * as mojom from 'gen/brave/components/brave_rewards/common/mojom/brave_rewards_panel.mojom.m.js'
+import * as mojom from 'gen/brave/components/brave_rewards/common/mojom/rewards_panel.mojom.m.js'
 
 import { Host, GrantCaptchaStatus } from './interfaces'
 import { GrantInfo } from '../../shared/lib/grant_info'
@@ -475,33 +475,6 @@ export function createHost (): Host {
           chrome.braveRewards.tipSite(tabInfo.id, publisherInfo.id, 'one-time')
           closePanel()
         }
-      }).catch(console.error)
-    },
-
-    handleMonthlyTipAction (action) {
-      getCurrentTabInfo().then((tabInfo) => {
-        if (!tabInfo) {
-          return
-        }
-
-        const { publisherInfo } = stateManager.getState()
-        if (!publisherInfo) {
-          return
-        }
-
-        const tabId = tabInfo.id
-        const publisherId = publisherInfo.id
-
-        switch (action) {
-          case 'update':
-            chrome.braveRewards.tipSite(tabId, publisherId, 'set-monthly')
-            break
-          case 'cancel':
-            chrome.braveRewards.tipSite(tabId, publisherId, 'clear-monthly')
-            break
-        }
-
-        closePanel()
       }).catch(console.error)
     },
 
