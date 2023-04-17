@@ -211,8 +211,10 @@ class BraveVPNServiceTest : public testing::Test {
     // Setup required for SKU (dependency of VPN)
     skus_service_ = std::make_unique<skus::SkusServiceImpl>(
         &local_pref_service_, url_loader_factory_.GetSafeWeakWrapper());
+#if !BUILDFLAG(IS_ANDROID)
     connection_api_ = std::make_unique<BraveVPNOSConnectionAPISim>(
         shared_url_loader_factory_, &local_pref_service_);
+#endif
     ResetVpnService();
   }
 
@@ -256,8 +258,6 @@ class BraveVPNServiceTest : public testing::Test {
     service_->AddObserver(std::move(observer));
   }
 
-  bool& wait_region_data_ready() { return service_->wait_region_data_ready_; }
-
   void SetPurchasedState(const std::string& env, PurchasedState state) {
     service_->SetPurchasedState(env, state);
   }
@@ -278,6 +278,8 @@ class BraveVPNServiceTest : public testing::Test {
   }
 
 #if !BUILDFLAG(IS_ANDROID)
+  bool& wait_region_data_ready() { return service_->wait_region_data_ready_; }
+
   mojom::Region device_region() const {
     if (auto region_ptr = GetRegionPtrWithNameFromRegionList(
             GetBraveVPNConnectionAPI()->GetDeviceRegion(), regions())) {

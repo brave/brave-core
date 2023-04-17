@@ -695,6 +695,9 @@ void BraveVPNOSConnectionAPIBase::FetchRegionDataIfNeeded() {
   }
 
   if (!NeedToUpdateRegionData()) {
+    VLOG(2)
+        << __func__
+        << " : Don't need to check as it's not passed 5h since the last check.";
     NotifyRegionDataReady();
     return;
   }
