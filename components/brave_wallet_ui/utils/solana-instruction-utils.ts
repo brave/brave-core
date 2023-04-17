@@ -72,7 +72,7 @@ export const getSolanaTransactionInstructionParamsAndType = ({
     data
   }
 
-  if (decodedData === undefined) {
+  if (!decodedData) {
     // return early if nothing to decode
     return typedInstruction
   }
