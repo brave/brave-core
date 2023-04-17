@@ -59,29 +59,7 @@ public class UserAssetModel {
                         mCryptoNetworks = new ArrayList<>(allNetworks);
                         if (mType == WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
                             if (NetworkUtils.isAllNetwork(mSelectedNetwork)) {
-                                mBraveWalletService.getAllUserAssets(userAssets -> {
-                                    var supportedNetworkAssets =
-                                            Arrays.stream(userAssets)
-                                                    .filter(token
-                                                            -> !WalletConstants.UNSUPPORTED_NETWORKS
-                                                                        .contains(token.chainId))
-                                                    .filter(token -> nftsOnly == token.isNft)
-                                                    .toArray(BlockchainToken[] ::new);
-                                    sortByNetwork(supportedNetworkAssets);
-                                    TokenUtils.getAllTokensFiltered(mBlockchainRegistry,
-                                            mCryptoNetworks,
-                                            nftsOnly ? TokenUtils.TokenType.NFTS
-                                                     : TokenUtils.TokenType.NON_NFTS,
-                                            tokens -> {
-                                                sortByNetwork(tokens);
-                                                var filteredTokens =
-                                                        TokenUtils.distinctiveConcatenatedArrays(
-                                                                tokens, supportedNetworkAssets);
-                                                _mAssetsResult.postValue(new AssetsResult(
-                                                        Arrays.asList(filteredTokens),
-                                                        Arrays.asList(supportedNetworkAssets)));
-                                            });
-                                });
+                                fetAllNetworksAssets(nftsOnly);
                             } else {
                                 TokenUtils.getUserAssetsFiltered(mBraveWalletService,
                                         mSelectedNetwork, mSelectedNetwork.coin,
@@ -124,6 +102,28 @@ public class UserAssetModel {
                         }
                     });
         }
+    }
+
+    private void fetAllNetworksAssets(boolean nftsOnly) {
+        mBraveWalletService.getAllUserAssets(userAssets -> {
+            var supportedNetworkAssets =
+                    Arrays.stream(userAssets)
+                            .filter(token
+                                    -> !WalletConstants.UNSUPPORTED_NETWORKS.contains(
+                                            token.chainId))
+                            .filter(token -> nftsOnly == token.isNft)
+                            .toArray(BlockchainToken[] ::new);
+
+            TokenUtils.getAllTokensFiltered(mBlockchainRegistry, mCryptoNetworks,
+                    nftsOnly ? TokenUtils.TokenType.NFTS : TokenUtils.TokenType.NON_NFTS,
+                    tokens -> {
+                        sortByNetwork(tokens);
+                        var filteredTokens = TokenUtils.distinctiveConcatenatedArrays(
+                                tokens, supportedNetworkAssets);
+                        _mAssetsResult.postValue(new AssetsResult(Arrays.asList(filteredTokens),
+                                Arrays.asList(supportedNetworkAssets)));
+                    });
+        });
     }
 
     private void sortByNetwork(BlockchainToken[] tokens) {
