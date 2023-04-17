@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.chromium.base.Callback;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
-import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.browser.IntentHandler;
 import org.chromium.chrome.browser.app.bookmarks.BraveBookmarkActivity;
 import org.chromium.chrome.browser.bookmarks.BookmarkUtils;
@@ -70,10 +69,8 @@ public class BraveBookmarkUtils extends BookmarkUtils {
         }
     }
 
-    @CalledByNative
     public static void showBookmarkImportExportDialog(
             AppCompatActivity appCompatActivity, boolean isImport, boolean isSuccess) {
-        Log.e("tapan", "showBookmarkImportExportDialog:");
         try {
             BraveBookmarkImportExportDialogFragment dialogFragment =
                     BraveBookmarkImportExportDialogFragment.newInstance(isImport, isSuccess);
