@@ -110,7 +110,11 @@ import {
   transactionHasSameAddressError
 } from '../../utils/tx-utils'
 import { getLocale } from '../../../common/locale'
-import { makeSerializableOriginInfo, makeSerializableTimeDelta } from '../../utils/model-serialization-utils'
+import {
+  makeSerializableOriginInfo,
+  makeSerializableTimeDelta,
+  makeSerializableTransaction
+} from '../../utils/model-serialization-utils'
 import { SwapExchangeProxy } from '../constants/registry'
 import {
   getTypedSolanaTxInstructions,
@@ -404,6 +408,7 @@ export function createWalletApi (
       'PendingTransactions',
       'TokenSpotPrice',
       'TransactionsForAccount',
+      'TransactionInfosForAccount',
       'UserBlockchainTokens',
       'WalletInfo'
     ],
@@ -1691,6 +1696,54 @@ export function createWalletApi (
                 }
               ]
       }),
+      getAllTransactionInfosForAddressCoinType: query<
+        SerializableTransactionInfo[],
+        GetAllTransactionsForAddressCoinTypeArg
+      >({
+        queryFn: async (
+          { address, coinType },
+          { dispatch },
+          extraOptions,
+          baseQuery
+        ) => {
+          try {
+            const {
+              data: { txService }
+            } = baseQuery(undefined)
+
+            // TODO: Core should allow fetching by chain Id + cointype
+            const { transactionInfos } = await txService.getAllTransactionInfo(
+              coinType,
+              address
+            )
+
+            const nonRejectedTransactionInfos = transactionInfos
+              // hide rejected txs
+              .filter(
+                (tx) => tx.txStatus !== BraveWallet.TransactionStatus.Rejected
+              )
+              .map(makeSerializableTransaction)
+
+            return {
+              data: nonRejectedTransactionInfos
+            }
+          } catch (error) {
+            return {
+              error: `Unable to fetch txs for address: ${address} (${coinType})
+              error: ${error?.message ?? error}`
+            }
+          }
+        },
+        providesTags: (res, err, arg) =>
+          err
+            ? ['UNKNOWN_ERROR']
+            : [
+                {
+                  type: 'TransactionInfosForAccount',
+                  id: `${arg.address}-${arg.coinType}`
+                }
+              ]
+      }),
       sendEthTransaction: mutation<
         { success: boolean },
         SendEthTransactionParams
@@ -2828,6 +2881,7 @@ export const {
   useGetAccountTokenCurrentBalanceQuery,
   useGetAddressByteCodeQuery,
   useGetAllPendingTransactionsQuery,
+  useGetAllTransactionInfosForAddressCoinTypeQuery,
   useGetAllTransactionsForAddressCoinTypeQuery,
   useGetCombinedTokenBalanceForAllAccountsQuery,
   useGetDefaultAccountAddressesQuery,
@@ -2851,6 +2905,7 @@ export const {
   useLazyGetAccountTokenCurrentBalanceQuery,
   useLazyGetAddressByteCodeQuery,
   useLazyGetAllPendingTransactionsQuery,
+  useLazyGetAllTransactionInfosForAddressCoinTypeQuery,
   useLazyGetAllTransactionsForAddressCoinTypeQuery,
   useLazyGetCombinedTokenBalanceForAllAccountsQuery,
   useLazyGetDefaultAccountAddressesQuery,
