@@ -14,8 +14,8 @@ brave_utility_sources = [
 
 if (is_android) {
   brave_utility_sources += [
-    "importer/bookmark_html_reader.cc",
-    "importer/bookmark_html_reader.h",
+    "//chrome/utility/importer/bookmark_html_reader.cc",
+    "//chrome/utility/importer/bookmark_html_reader.h",
   ]
 }
 

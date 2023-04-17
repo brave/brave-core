@@ -128,7 +128,7 @@ void BookmarkBridge::ImportBookmarks(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&BookmarkBridge::ImportBookmarksReader,
                      base::Unretained(this), import_path, bookmarks,
-                     search_engines /*, favicons*/),
+                     search_engines),
       base::BindOnce(&BookmarkBridge::ImportBookmarksImpl,
                      weak_ptr_factory_.GetWeakPtr()));
 }

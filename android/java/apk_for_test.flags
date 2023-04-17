@@ -18,9 +18,15 @@
 -keep class org.chromium.brave_wallet.mojom.NetworkInfo { *; }
 
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkBridge {
+    *** mNativeBookmarkBridge;
     *** extensiveBookmarkChangesBeginning(...);
     *** extensiveBookmarkChangesEnded(...);
     *** createBookmarkItem(...);
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BraveBookmarkBridge {
+    <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.LaunchIntentDispatcher {
@@ -204,10 +210,57 @@
 
 -keep class org.chromium.chrome.browser.bookmarks.BraveBookmarkUtils {
     *** addOrEditBookmark(...);
+    *** showBookmarkManagerOnPhone(...);
 }
 
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkUtils {
     *** addOrEditBookmark(...);
+    *** showBookmarkManagerOnPhone(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BookmarkActionBar {
+    *** mDelegate;
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BraveBookmarkActionBar {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BookmarkActivity {
+    *** mBookmarkManager;
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BraveBookmarkActivity {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BookmarkManager {
+    *** mBookmarkModel;
+    *** mContext;
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BraveBookmarkManager {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BookmarkModel {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BraveBookmarkModel {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BookmarkPage {
+    *** mManager;
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BraveBookmarkPage {
+    public <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.preferences.ChromePreferenceKeyChecker {

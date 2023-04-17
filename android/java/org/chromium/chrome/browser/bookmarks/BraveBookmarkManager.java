@@ -12,11 +12,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.OpenableColumns;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import org.chromium.base.Log;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.ui.base.ActivityWindowAndroid;
@@ -65,7 +70,7 @@ public class BraveBookmarkManager extends BookmarkManager implements BraveBookma
                                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                                 doImportBookmarks();
                             } else {
-                                Log.e("tapan", "else import bookmarks");
+                                Log.e("tapan", "ask permission dialog");
                             }
                         });
             }
@@ -84,42 +89,50 @@ public class BraveBookmarkManager extends BookmarkManager implements BraveBookma
                         public void onIntentCompleted(int resultCode, Intent results) {
                             if (resultCode == Activity.RESULT_OK && results != null
                                     && results.getData() != null) {
-                                try {
-                                    Cursor cursor = mContext.getContentResolver().query(
-                                            results.getData(), null, null, null, null);
-                                    int nameIndex =
-                                            cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-                                    cursor.moveToFirst();
-                                    String name = cursor.getString(nameIndex);
-                                    File file = new File(mContext.getFilesDir(), name);
-                                    try (InputStream inputStream =
-                                                    mContext.getContentResolver().openInputStream(
-                                                            results.getData());
-                                            FileOutputStream outputStream =
-                                                    new FileOutputStream(file)) {
-                                        int maxBufferSize = 1 * 1024 * 1024;
-                                        int bytesAvailable = inputStream.available();
-                                        int bufferSize = Math.min(bytesAvailable, maxBufferSize);
-                                        byte[] buffers = new byte[bufferSize];
-                                        int byteRead;
-                                        while ((byteRead = inputStream.read(buffers)) != -1) {
-                                            outputStream.write(buffers, 0, byteRead);
-                                        }
-                                        mBookmarkModel.importBookmarks(
-                                                mWindowAndroid, file.getPath());
-                                    } catch (IOException e) {
-                                        Log.e(TAG,
-                                                "doImportBookmarks IOException:" + e.getMessage());
-                                    }
-
-                                } catch (Exception e) {
-                                    Log.e(TAG, "doImportBookmarks:" + e.getMessage());
-                                }
+                                PostTask.postTask(TaskTraits.USER_VISIBLE_MAY_BLOCK,
+                                        () -> { importFileSelected(results.getData()); });
                             }
                         }
                     },
                     null))
             return;
+    }
+
+    private void importFileSelected(Uri resultData) {
+        try {
+            Cursor cursor = mContext.getContentResolver().query(resultData, null, null, null, null);
+            int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+            cursor.moveToFirst();
+            String name = cursor.getString(nameIndex);
+            File file = new File(mContext.getFilesDir(), name);
+            try (InputStream inputStream =
+                            mContext.getContentResolver().openInputStream(resultData);
+                    FileOutputStream outputStream = new FileOutputStream(file)) {
+                int maxBufferSize = 1 * 1024 * 1024;
+                int bytesAvailable = inputStream.available();
+                int bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                byte[] buffers = new byte[bufferSize];
+                int byteRead;
+                while ((byteRead = inputStream.read(buffers)) != -1) {
+                    outputStream.write(buffers, 0, byteRead);
+                }
+                ((AppCompatActivity) mWindowAndroid.getContext().get())
+                        .runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (mBookmarkModel instanceof BraveBookmarkModel) {
+                                    ((BraveBookmarkModel) mBookmarkModel)
+                                            .importBookmarks(mWindowAndroid, file.getPath());
+                                }
+                            }
+                        });
+            } catch (IOException e) {
+                Log.e(TAG, "doImportBookmarks IOException:" + e.getMessage());
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, "doImportBookmarks:" + e.getMessage());
+        }
     }
 
     @Override
@@ -140,8 +153,6 @@ public class BraveBookmarkManager extends BookmarkManager implements BraveBookma
                             if (grantResults.length >= 1
                                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                                 doExportBookmarks();
-                            } else {
-                                Log.e("tapan", "else export bookmarks");
                             }
                         });
             }
@@ -158,6 +169,8 @@ public class BraveBookmarkManager extends BookmarkManager implements BraveBookma
             exportFileName = "bookmarks (" + (num++) + ").html";
             file = new File(downloadDir, exportFileName);
         }
-        mBookmarkModel.exportBookmarks(mWindowAndroid, file.getPath());
+        if (mBookmarkModel instanceof BraveBookmarkModel) {
+            ((BraveBookmarkModel) mBookmarkModel).exportBookmarks(mWindowAndroid, file.getPath());
+        }
     }
 }

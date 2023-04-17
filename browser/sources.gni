@@ -289,10 +289,10 @@ if (is_android) {
     "//brave/browser/android/brave_init_android.cc",
     "//brave/browser/sync/brave_sync_devices_android.cc",
     "//brave/browser/sync/brave_sync_devices_android.h",
-    "bookmarks/bookmark_html_writer.cc",
-    "bookmarks/bookmark_html_writer.h",
-    "importer/profile_writer.cc",
-    "importer/profile_writer.h",
+    "//chrome/browser/bookmarks/bookmark_html_writer.cc",
+    "//chrome/browser/bookmarks/bookmark_html_writer.h",
+    "//chrome/browser/importer/profile_writer.cc",
+    "//chrome/browser/importer/profile_writer.h",
   ]
 
   brave_chrome_browser_sources += brave_browser_brave_wallet_android_sources

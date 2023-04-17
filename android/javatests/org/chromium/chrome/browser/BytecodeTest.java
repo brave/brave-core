@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -199,6 +200,8 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/tabmodel/ChromeTabCreator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/tabmodel/BraveTabCreator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/bookmarks/BraveBookmarkModel"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/safe_browsing/settings/BraveStandardProtectionSettingsFragment"));
         Assert.assertTrue(classExists(
@@ -390,6 +393,10 @@ public class BytecodeTest {
                 "addOrEditBookmark", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/bookmarks/BookmarkUtils",
                 "addOrEditBookmark", false, null));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils",
+                "showBookmarkManagerOnPhone", false, null));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/bookmarks/BookmarkUtils",
+                "showBookmarkManagerOnPhone", false, null));
         Assert.assertTrue(
                 methodExists("org/chromium/components/permissions/BravePermissionDialogModel",
                         "getModel", false, null));
@@ -768,6 +775,20 @@ public class BytecodeTest {
                 AppMenuDelegate.class, StatusBarColorProvider.class, ObservableSupplierImpl.class,
                 IntentRequestTracker.class, int.class, Supplier.class, Function.class,
                 OneshotSupplier.class, boolean.class, BackPressManager.class));
+        Assert.assertTrue(
+                constructorsMatch("org/chromium/chrome/browser/bookmarks/BookmarkActionBar",
+                        "org/chromium/chrome/browser/bookmarks/BraveBookmarkActionBar",
+                        Context.class, AttributeSet.class));
+        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/bookmarks/BookmarkManager",
+                "org/chromium/chrome/browser/bookmarks/BraveBookmarkManager", Context.class,
+                ComponentName.class, boolean.class, boolean.class, SnackbarManager.class));
+        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/bookmarks/BookmarkBridge",
+                "org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge", long.class));
+        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/bookmarks/BookmarkModel",
+                "org/chromium/chrome/browser/bookmarks/BraveBookmarkModel", long.class));
+        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/bookmarks/BookmarkPage",
+                "org/chromium/chrome/browser/bookmarks/BraveBookmarkPage", ComponentName.class,
+                SnackbarManager.class, boolean.class, NativePageHost.class));
     }
 
     @Test
@@ -968,6 +989,16 @@ public class BytecodeTest {
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/incognito/reauth/IncognitoReauthCoordinatorBase",
                 "mIncognitoReauthView"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/bookmarks/BookmarkActionBar", "mDelegate"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/app/bookmarks/BookmarkActivity", "mBookmarkManager"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/bookmarks/BookmarkManager", "mBookmarkModel"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/bookmarks/BookmarkManager", "mContext"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/bookmarks/BookmarkPage", "mManager"));
     }
 
     @Test
@@ -1051,6 +1082,9 @@ public class BytecodeTest {
         Assert.assertTrue(checkSuperName(
                 "org/chromium/chrome/browser/incognito/reauth/FullScreenIncognitoReauthCoordinator",
                 "org/chromium/chrome/browser/incognito/reauth/BravePrivateTabReauthCoordinatorBase"));
+        Assert.assertTrue(
+                checkSuperName("org/chromium/chrome/browser/browser/bookmarks/BookmarkModel",
+                        "org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge"));
     }
 
     private boolean classExists(String className) {

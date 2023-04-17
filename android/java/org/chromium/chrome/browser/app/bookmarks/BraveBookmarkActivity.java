@@ -25,7 +25,8 @@ public class BraveBookmarkActivity extends BookmarkActivity {
         IntentRequestTracker intentRequestTracker = IntentRequestTracker.createFromActivity(this);
         mWindowAndroid = new ActivityWindowAndroid(this, true, intentRequestTracker);
         mWindowAndroid.getIntentRequestTracker().restoreInstanceState(savedInstanceState);
-        if (mBookmarkManager != null && mBookmarkManager instanceof BraveBookmarkManager) {
+        assert mBookmarkManager != null;
+        if (mBookmarkManager instanceof BraveBookmarkManager) {
             ((BraveBookmarkManager) mBookmarkManager).setWindow(mWindowAndroid);
         }
     }

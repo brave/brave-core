@@ -19,7 +19,8 @@ public class BraveBookmarkPage extends BookmarkPage {
     public BraveBookmarkPage(ComponentName componentName, SnackbarManager snackbarManager,
             boolean isIncognito, NativePageHost host) {
         super(componentName, snackbarManager, isIncognito, host);
-        if (mManager != null && mManager instanceof BraveBookmarkManager) {
+        if (mManager != null && mManager instanceof BraveBookmarkManager
+                && BraveActivity.getChromeTabbedActivity() != null) {
             ((BraveBookmarkManager) mManager)
                     .setWindow(BraveActivity.getChromeTabbedActivity().getWindowAndroid());
         }
