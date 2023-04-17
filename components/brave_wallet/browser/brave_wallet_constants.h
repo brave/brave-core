@@ -1214,6 +1214,7 @@ constexpr char kEVMFeeRecipient[] =
     "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
 constexpr char kAffiliateAddress[] =
     "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
+constexpr char k0xAPIKeyHeader[] = "0x-api-key";
 
 // Jupiter swap constants
 constexpr char kSolanaSwapBaseAPIURL[] = "https://quote-api.jup.ag/";

@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/common/buildflags.h"
 #include "net/base/load_flags.h"
 #include "net/base/url_util.h"
+#include "net/http/http_request_headers.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -151,6 +152,14 @@ GURL AppendJupiterQuoteParams(
   // until there's a reliable way to get around this UX issue.
   url = net::AppendQueryParameter(url, "onlyDirectRoutes", "true");
   return url;
+}
+
+base::flat_map<std::string, std::string> Get0xAPIHeaders() {
+  std::string brave_zero_ex_api_key(BUILDFLAG(BRAVE_ZERO_EX_API_KEY));
+  if (brave_zero_ex_api_key.empty()) {
+    return {};
+  }
+  return {{brave_wallet::k0xAPIKeyHeader, std::move(brave_zero_ex_api_key)}};
 }
 
 std::string GetBaseSwapURL(const std::string& chain_id) {
@@ -304,10 +313,11 @@ void SwapService::GetPriceQuote(mojom::SwapParamsPtr swap_params,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
   api_request_helper_.Request(
-      "GET",
+      net::HttpRequestHeaders::kGetMethod,
       GetPriceQuoteURL(std::move(swap_params),
                        json_rpc_service_->GetChainId(mojom::CoinType::ETH)),
-      "", "", true, std::move(internal_callback), Get0xAPIHeaders());
+      base::EmptyString(), base::EmptyString(), true,
+      std::move(internal_callback), Get0xAPIHeaders());
 }
 
 void SwapService::OnGetPriceQuote(GetPriceQuoteCallback callback,
@@ -315,7 +325,8 @@ void SwapService::OnGetPriceQuote(GetPriceQuoteCallback callback,
   if (!api_request_result.Is2XXResponseCode()) {
     if (auto swap_error_response =
             ParseSwapErrorResponse(api_request_result.value_body())) {
-      std::move(callback).Run(nullptr, std::move(swap_error_response), "");
+      std::move(callback).Run(nullptr, std::move(swap_error_response),
+                              base::EmptyString());
     } else {
       std::move(callback).Run(
           nullptr, nullptr, l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
@@ -325,7 +336,8 @@ void SwapService::OnGetPriceQuote(GetPriceQuoteCallback callback,
 
   if (auto swap_response =
           ParseSwapResponse(api_request_result.value_body(), false)) {
-    std::move(callback).Run(std::move(swap_response), nullptr, "");
+    std::move(callback).Run(std::move(swap_response), nullptr,
+                            base::EmptyString());
   } else {
     std::move(callback).Run(nullptr, nullptr,
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
@@ -347,11 +359,12 @@ void SwapService::GetTransactionPayload(
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
   api_request_helper_.Request(
-      "GET",
+      net::HttpRequestHeaders::kGetMethod,
       GetTransactionPayloadURL(
           std::move(swap_params),
           json_rpc_service_->GetChainId(mojom::CoinType::ETH)),
-      "", "", true, std::move(internal_callback), Get0xAPIHeaders());
+      base::EmptyString(), base::EmptyString(), true,
+      std::move(internal_callback), Get0xAPIHeaders());
 }
 
 void SwapService::OnGetTransactionPayload(
@@ -360,7 +373,8 @@ void SwapService::OnGetTransactionPayload(
   if (!api_request_result.Is2XXResponseCode()) {
     if (auto swap_error_response =
             ParseSwapErrorResponse(api_request_result.value_body())) {
-      std::move(callback).Run(nullptr, std::move(swap_error_response), "");
+      std::move(callback).Run(nullptr, std::move(swap_error_response),
+                              base::EmptyString());
     } else {
       std::move(callback).Run(
           nullptr, nullptr, l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
@@ -371,7 +385,8 @@ void SwapService::OnGetTransactionPayload(
 
   if (auto swap_response =
           ParseSwapResponse(api_request_result.value_body(), true)) {
-    std::move(callback).Run(std::move(swap_response), nullptr, "");
+    std::move(callback).Run(std::move(swap_response), nullptr,
+                            base::EmptyString());
   } else {
     std::move(callback).Run(nullptr, nullptr,
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
@@ -396,10 +411,11 @@ void SwapService::GetJupiterQuote(mojom::JupiterQuoteParamsPtr params,
 
   base::flat_map<std::string, std::string> request_headers;
   api_request_helper_.Request(
-      "GET",
+      net::HttpRequestHeaders::kGetMethod,
       GetJupiterQuoteURL(std::move(params),
                          json_rpc_service_->GetChainId(mojom::CoinType::SOL)),
-      "", "", true, std::move(internal_callback), request_headers, -1u,
+      base::EmptyString(), base::EmptyString(), true,
+      std::move(internal_callback), request_headers, -1u,
       std::move(conversion_callback));
 }
 
@@ -408,7 +424,8 @@ void SwapService::OnGetJupiterQuote(GetJupiterQuoteCallback callback,
   if (!api_request_result.Is2XXResponseCode()) {
     if (auto error_response =
             ParseJupiterErrorResponse(api_request_result.value_body())) {
-      std::move(callback).Run(nullptr, std::move(error_response), "");
+      std::move(callback).Run(nullptr, std::move(error_response),
+                              base::EmptyString());
     } else {
       std::move(callback).Run(
           nullptr, nullptr, l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
@@ -417,7 +434,8 @@ void SwapService::OnGetJupiterQuote(GetJupiterQuoteCallback callback,
   }
 
   if (auto swap_quote = ParseJupiterQuote(api_request_result.value_body())) {
-    std::move(callback).Run(std::move(swap_quote), nullptr, "");
+    std::move(callback).Run(std::move(swap_quote), nullptr,
+                            base::EmptyString());
   } else {
     std::move(callback).Run(nullptr, nullptr,
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
@@ -459,7 +477,8 @@ void SwapService::OnGetJupiterSwapTransactions(
   if (!api_request_result.Is2XXResponseCode()) {
     if (auto error_response =
             ParseJupiterErrorResponse(api_request_result.value_body())) {
-      std::move(callback).Run(nullptr, std::move(error_response), "");
+      std::move(callback).Run(nullptr, std::move(error_response),
+                              base::EmptyString());
     } else {
       std::move(callback).Run(
           nullptr, nullptr, l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
@@ -470,7 +489,8 @@ void SwapService::OnGetJupiterSwapTransactions(
 
   if (auto swap_transactions =
           ParseJupiterSwapTransactions(api_request_result.value_body())) {
-    std::move(callback).Run(std::move(swap_transactions), nullptr, "");
+    std::move(callback).Run(std::move(swap_transactions), nullptr,
+                            base::EmptyString());
   } else {
     std::move(callback).Run(nullptr, nullptr,
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
