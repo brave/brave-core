@@ -12,6 +12,7 @@
 #include "base/containers/flat_map.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/ref_counted.h"
 #include "base/strings/string_piece_forward.h"
 #include "base/timer/timer.h"
@@ -61,9 +62,9 @@ class MessageManager : public MetricLogStore::Delegate {
                                 bool is_constellation) = 0;
     virtual ~Delegate() {}
   };
-  MessageManager(PrefService* local_state,
+  MessageManager(PrefService& local_state,
                  const P3AConfig* config,
-                 Delegate* delegate,
+                 Delegate& delegate,
                  std::string channel,
                  std::string week_of_install);
   ~MessageManager() override;
@@ -111,7 +112,7 @@ class MessageManager : public MetricLogStore::Delegate {
   bool IsActualMetric(const std::string& histogram_name) const override;
   bool IsEphemeralMetric(const std::string& histogram_name) const override;
 
-  PrefService* local_state_ = nullptr;
+  const raw_ref<PrefService> local_state_;
 
   MessageMetainfo message_meta_;
 
@@ -132,7 +133,7 @@ class MessageManager : public MetricLogStore::Delegate {
 
   std::unique_ptr<RotationScheduler> rotation_scheduler_;
 
-  Delegate* const delegate_ = nullptr;
+  const raw_ref<Delegate> delegate_;
 };
 
 }  // namespace p3a

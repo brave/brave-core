@@ -36,7 +36,7 @@ void PermissionLifetimeManager::RegisterProfilePrefs(
 }
 
 PermissionLifetimeManager::PermissionLifetimeManager(
-    HostContentSettingsMap* host_content_settings_map,
+    HostContentSettingsMap& host_content_settings_map,
     PrefService* prefs,
     std::unique_ptr<PermissionOriginLifetimeMonitor>
         permission_origin_lifetime_monitor)
@@ -46,7 +46,6 @@ PermissionLifetimeManager::PermissionLifetimeManager(
           std::move(permission_origin_lifetime_monitor)),
       permission_expirations_(prefs_),
       expiration_timer_(std::make_unique<base::WallClockTimer>()) {
-  DCHECK(host_content_settings_map_);
   // In incognito prefs_ is nullptr.
 
   ResetExpiredPermissionsAndUpdateTimer(base::Time::Now());
@@ -59,7 +58,7 @@ PermissionLifetimeManager::PermissionLifetimeManager(
             base::Unretained(this)));
   }
 
-  host_content_settings_map_observation_.Observe(host_content_settings_map_);
+  host_content_settings_map_observation_.Observe(&*host_content_settings_map_);
 }
 
 PermissionLifetimeManager::~PermissionLifetimeManager() = default;
@@ -172,7 +171,7 @@ void PermissionLifetimeManager::OnContentSettingChanged(
                    origins.requesting_origin(), origins.embedding_origin(),
                    content_type) != origins.content_setting();
       },
-      base::Unretained(host_content_settings_map_),
+      base::Unretained(&*host_content_settings_map_),
       base::Unretained(&primary_pattern), base::Unretained(&secondary_pattern),
       content_type);
 

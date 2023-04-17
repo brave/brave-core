@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/base64url.h"
+#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/scoped_observation.h"
 #include "base/strings/stringprintf.h"
@@ -57,7 +58,7 @@ class DebounceComponentInstallerWaiter
     run_loop_.QuitWhenIdle();
   }
 
-  DebounceComponentInstaller* const component_installer_;
+  raw_ptr<DebounceComponentInstaller> component_installer_;
   base::RunLoop run_loop_;
   base::ScopedObservation<DebounceComponentInstaller,
                           DebounceComponentInstaller::Observer>

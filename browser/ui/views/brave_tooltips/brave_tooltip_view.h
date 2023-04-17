@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/brave_tooltips/brave_tooltip.h"
 #include "brave/browser/ui/views/brave_tooltips/brave_tooltip_label_button.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -79,7 +80,7 @@ class BraveTooltipView : public views::View {
   void UpdateOkButtonColors();
   void UpdateCancelButtonColors();
 
-  BraveTooltipPopup* tooltip_popup_ = nullptr;  // NOT OWNED
+  raw_ptr<BraveTooltipPopup> tooltip_popup_;
   BraveTooltipAttributes tooltip_attributes_;
 
   gfx::Point initial_mouse_pressed_location_;
@@ -87,11 +88,11 @@ class BraveTooltipView : public views::View {
 
   bool is_closing_ = false;
 
-  views::Label* title_label_ = nullptr;  // NOT OWNED
-  views::Label* body_label_ = nullptr;   // NOT OWNED
+  raw_ptr<views::Label> title_label_ = nullptr;
+  raw_ptr<views::Label> body_label_ = nullptr;
 
-  views::LabelButton* ok_button_ = nullptr;      // NOT OWNED
-  views::LabelButton* cancel_button_ = nullptr;  // NOT OWNED
+  raw_ptr<views::LabelButton> ok_button_ = nullptr;
+  raw_ptr<views::LabelButton> cancel_button_ = nullptr;
 
   std::u16string accessible_name_;
 };

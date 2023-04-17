@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/containers/flat_set.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/permissions/permission_origin_lifetime_monitor.h"
 
@@ -38,7 +39,7 @@ class PermissionOriginLifetimeMonitorImpl
  private:
   void OnEphemeralTLDDestroyed(const std::string& storage_domain);
 
-  content::BrowserContext* const browser_context_ = nullptr;
+  const raw_ptr<content::BrowserContext> browser_context_;
 
   base::RepeatingCallback<void(const std::string&)>
       permission_destroyed_callback_;

@@ -12,6 +12,7 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/values_util.h"
+#include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"
 #include "base/time/time_override.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
@@ -229,7 +230,7 @@ class BraveWalletPinServiceTest : public testing::Test {
   testing::NiceMock<MockIpfsLocalPinService> ipfs_local_pin_service_;
   testing::NiceMock<MockJsonRpcService> json_rpc_service_;
   testing::NiceMock<MockIpfsService> ipfs_service_;
-  testing::NiceMock<MockContentTypeChecker>* content_type_checker_;
+  raw_ptr<testing::NiceMock<MockContentTypeChecker>> content_type_checker_;
 
   std::unique_ptr<BraveWalletPinService> brave_wallet_pin_service_;
   TestingPrefServiceSimple pref_service_;

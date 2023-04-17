@@ -79,7 +79,7 @@ class GreaselionDownloadServiceWaiter
     run_loop_.QuitWhenIdle();
   }
 
-  GreaselionDownloadService* const download_service_;
+  const raw_ptr<GreaselionDownloadService> download_service_;
   base::RunLoop run_loop_;
   base::ScopedObservation<GreaselionDownloadService,
                           GreaselionDownloadService::Observer>
@@ -110,7 +110,7 @@ class GreaselionServiceWaiter : public GreaselionService::Observer {
     run_loop_.QuitWhenIdle();
   }
 
-  GreaselionService* const greaselion_service_;
+  const raw_ptr<GreaselionService> greaselion_service_;
   base::RunLoop run_loop_;
   base::ScopedObservation<GreaselionService, GreaselionService::Observer>
       scoped_observer_{this};

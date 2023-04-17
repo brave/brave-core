@@ -52,7 +52,7 @@ class OnionLocationNavigationThrottle : public content::NavigationThrottle {
   static bool block_onion_requests_outside_tor_for_testing_;
   bool is_tor_profile_ = false;
 
-  PrefService* pref_service_ = nullptr;
+  const raw_ptr<PrefService> pref_service_ = nullptr;
 
   std::unique_ptr<Delegate> delegate_;
 

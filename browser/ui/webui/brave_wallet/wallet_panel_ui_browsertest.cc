@@ -5,6 +5,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
@@ -224,8 +225,8 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
   content::WebContents* settings() { return settings_; }
 
  private:
-  content::WebContents* wallet_ = nullptr;
-  content::WebContents* settings_ = nullptr;
+  raw_ptr<content::WebContents> wallet_ = nullptr;
+  raw_ptr<content::WebContents> settings_ = nullptr;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
 };

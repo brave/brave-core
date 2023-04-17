@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/brave_wallet_p3a.h"
+#include "base/memory/raw_ptr.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
@@ -45,9 +46,9 @@ class BraveWalletP3AUnitTest : public testing::Test {
   std::unique_ptr<ScopedTestingLocalState> local_state_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<base::HistogramTester> histogram_tester_;
-  KeyringService* keyring_service_;
-  BraveWalletService* wallet_service_;
-  BraveWalletP3A* wallet_p3a_;
+  raw_ptr<KeyringService> keyring_service_;
+  raw_ptr<BraveWalletService> wallet_service_;
+  raw_ptr<BraveWalletP3A> wallet_p3a_;
 };
 
 TEST_F(BraveWalletP3AUnitTest, DefaultEthereumWalletSetting) {

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/common/brotli_util.h"
 
+#include <memory>
 #include <vector>
 
 #include "third_party/brotli/include/brotli/decode.h"
@@ -13,15 +14,14 @@ namespace {
 
 class BrotliStreamDecoder {
  public:
-  explicit BrotliStreamDecoder(size_t buffer_size) {
-    brotli_state_ = BrotliDecoderCreateInstance(nullptr, nullptr, nullptr);
+  explicit BrotliStreamDecoder(size_t buffer_size)
+      : decoder_(BrotliDecoderCreateInstance(nullptr, nullptr, nullptr),
+                 BrotliDecoderDestroyInstance) {
     out_vector_.resize(buffer_size);
   }
 
   BrotliStreamDecoder(const BrotliStreamDecoder&) = delete;
   BrotliStreamDecoder& operator=(const BrotliStreamDecoder&) = delete;
-
-  ~BrotliStreamDecoder() { BrotliDecoderDestroyInstance(brotli_state_); }
 
   enum class Result {
     Done = 0,
@@ -40,7 +40,7 @@ class BrotliStreamDecoder {
 
     for (;;) {
       auto brotli_result = BrotliDecoderDecompressStream(
-          brotli_state_, &input_length, &input_buffer, &output_length,
+          decoder_.get(), &input_length, &input_buffer, &output_length,
           &output_buffer, nullptr);
 
       switch (brotli_result) {
@@ -65,7 +65,8 @@ class BrotliStreamDecoder {
   }
 
  private:
-  BrotliDecoderState* brotli_state_;
+  std::unique_ptr<BrotliDecoderState, decltype(&BrotliDecoderDestroyInstance)>
+      decoder_;
   std::vector<uint8_t> out_vector_;
 };
 

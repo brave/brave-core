@@ -27,7 +27,7 @@ class UrlStorageChecker : public base::RefCounted<UrlStorageChecker> {
  public:
   using Callback = base::OnceCallback<void(bool is_storage_empty)>;
 
-  UrlStorageChecker(content::StoragePartition* storage_partition,
+  UrlStorageChecker(content::StoragePartition& storage_partition,
                     const GURL& url,
                     Callback callback);
 
@@ -44,7 +44,7 @@ class UrlStorageChecker : public base::RefCounted<UrlStorageChecker> {
   void OnGetLocalStorageData(
       std::vector<blink::mojom::KeyValuePtr> local_storage_data);
 
-  content::StoragePartition* storage_partition_ = nullptr;
+  const raw_ref<content::StoragePartition> storage_partition_;
   GURL url_;
   Callback callback_;
 

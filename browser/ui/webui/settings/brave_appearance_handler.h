@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 #include "components/prefs/pref_change_registrar.h"
 
@@ -35,7 +36,7 @@ class BraveAppearanceHandler : public settings::SettingsPageUIHandler {
   void GetNewTabShowsOptionsList(const base::Value::List& args);
   void ShouldShowNewTabDashboardSettings(const base::Value::List& args);
 
-  Profile* profile_ = nullptr;
+  raw_ptr<Profile> profile_ = nullptr;
   PrefChangeRegistrar local_state_change_registrar_;
   PrefChangeRegistrar profile_state_change_registrar_;
 };

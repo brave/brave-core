@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ref.h"
 #include "base/values.h"
 #include "build/build_config.h"
 
@@ -61,7 +62,7 @@ class Prefs {
   void Clear();
 
  private:
-  PrefService* const pref_service_;
+  const raw_ref<PrefService> pref_service_;
 };
 
 void MigrateBraveSyncPrefs(PrefService* prefs);

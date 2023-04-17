@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/files/file_path.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 #include "base/synchronization/lock.h"
@@ -53,9 +54,10 @@ class HTTPSEverywhereService : public BaseBraveShieldsService {
 
   class Engine : public base::SupportsWeakPtr<Engine> {
    public:
-    explicit Engine(HTTPSEverywhereService* service);
+    explicit Engine(HTTPSEverywhereService& service);
     Engine(const Engine&) = delete;
     Engine& operator=(const Engine&) = delete;
+    ~Engine();
 
     void Init(const base::FilePath& base_dir);
     bool GetHTTPSURL(const GURL* url,
@@ -68,8 +70,8 @@ class HTTPSEverywhereService : public BaseBraveShieldsService {
     std::string CorrecttoRuleToRE2Engine(const std::string& to);
     void CloseDatabase();
 
-    leveldb::DB* level_db_;
-    HTTPSEverywhereService* service_;  // not owned
+    std::unique_ptr<leveldb::DB> level_db_;
+    const raw_ref<HTTPSEverywhereService> service_;
     SEQUENCE_CHECKER(sequence_checker_);
   };
 

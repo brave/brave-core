@@ -202,7 +202,7 @@ class ShieldsCookieSetting : public ShieldsSetting {
     }
   }
 
-  PrefService* prefs_ = nullptr;
+  raw_ptr<PrefService> prefs_ = nullptr;
 };
 
 class CookieSettings : public ShieldsSetting {

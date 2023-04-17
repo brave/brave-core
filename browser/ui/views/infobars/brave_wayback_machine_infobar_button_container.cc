@@ -34,7 +34,7 @@ BraveWaybackMachineInfoBarButtonContainer::
   throbber_ = new BraveWaybackMachineInfoBarThrobber;
   throbber_->SetSize(gfx::Size(kThrobberDiameter, kThrobberDiameter));
   throbber_->SetVisible(false);
-  button_->AddChildView(throbber_);
+  button_->AddChildView(throbber_.get());
 }
 
 BraveWaybackMachineInfoBarButtonContainer::

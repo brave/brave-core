@@ -11,11 +11,10 @@
 BraveWalletPermissionPromptImpl::BraveWalletPermissionPromptImpl(
     Browser* browser,
     content::WebContents* web_contents,
-    Delegate* delegate)
+    Delegate& delegate)
     : web_contents_(web_contents),
       delegate_(delegate),
       permission_requested_time_(base::TimeTicks::Now()) {
-  DCHECK(delegate_);
   DCHECK(web_contents_);
   ShowBubble();
 }

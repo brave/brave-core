@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/memory/raw_ptr.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -41,9 +42,8 @@ class ExtensionWebstoreInstaller final
       extensions::WebstoreInstallWithPrompt::Callback callback)
       : extensions::WebstoreInstallWithPrompt(webstore_item_id,
                                               profile,
-                                              std::move(callback)) {
-    web_contents_ = web_contents;
-  }
+                                              std::move(callback)),
+        web_contents_(web_contents) {}
 
  private:
   ~ExtensionWebstoreInstaller() final = default;
@@ -54,7 +54,7 @@ class ExtensionWebstoreInstaller final
     return std::make_unique<ExtensionInstallPrompt>(web_contents_);
   }
 
-  content::WebContents* web_contents_ = nullptr;
+  const raw_ptr<content::WebContents> web_contents_ = nullptr;
 };
 
 struct ExtensionManifestV2 {

@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/memory/raw_ptr.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
@@ -89,7 +90,7 @@ class SidebarAddItemButton : public views::LabelButton {
   }
 
  private:
-  const ui::ColorProvider* color_provider_;
+  const raw_ptr<const ui::ColorProvider> color_provider_;
 };
 
 BEGIN_METADATA(SidebarAddItemButton, views::LabelButton)

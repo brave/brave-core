@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/ref_counted.h"
 #include "base/threading/thread_checker.h"
 #include "components/update_client/component.h"
@@ -64,7 +65,7 @@ class SequentialUpdateChecker : public UpdateChecker {
   base::ThreadChecker thread_checker_;
 
   const scoped_refptr<Configurator> config_;
-  PersistedData* metadata_ = nullptr;
+  const raw_ptr<PersistedData> metadata_ = nullptr;
 
   // This update conext instance is stored locally and then used to create
   // individidual UpdateContext instances based on each application id.

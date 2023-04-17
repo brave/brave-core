@@ -8,6 +8,7 @@
 #include "brave/browser/ipfs/ipfs_host_resolver.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
+#include "build/build_config.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/common/channel_info.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -80,7 +81,7 @@ class IpfsTabHelperBrowserTest : public InProcessBrowserTest {
 
 class FakeIPFSHostResolver : public ipfs::IPFSHostResolver {
  public:
-  explicit FakeIPFSHostResolver(network::mojom::NetworkContext* context)
+  explicit FakeIPFSHostResolver(network::mojom::NetworkContext& context)
       : ipfs::IPFSHostResolver(context) {}
   ~FakeIPFSHostResolver() override = default;
   void Resolve(const net::HostPortPair& host,
@@ -107,12 +108,14 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolvedIPFSLinkLocal) {
       ipfs::IPFSTabHelper::MaybeCreateForWebContents(active_contents()));
   ipfs::IPFSTabHelper* helper =
       ipfs::IPFSTabHelper::FromWebContents(active_contents());
-  if (!helper)
-    return;
-  auto* storage_partition =
-      active_contents()->GetBrowserContext()->GetDefaultStoragePartition();
+  ASSERT_TRUE(helper);
+  auto* network_context = active_contents()
+                              ->GetBrowserContext()
+                              ->GetDefaultStoragePartition()
+                              ->GetNetworkContext();
+  ASSERT_TRUE(network_context);
   std::unique_ptr<FakeIPFSHostResolver> resolver(
-      new FakeIPFSHostResolver(storage_partition->GetNetworkContext()));
+      new FakeIPFSHostResolver(*network_context));
   FakeIPFSHostResolver* resolver_raw = resolver.get();
   helper->SetResolverForTesting(std::move(resolver));
   auto* prefs =
@@ -183,12 +186,14 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolvedIPFSLinkGateway) {
       ipfs::IPFSTabHelper::MaybeCreateForWebContents(active_contents()));
   ipfs::IPFSTabHelper* helper =
       ipfs::IPFSTabHelper::FromWebContents(active_contents());
-  if (!helper)
-    return;
-  auto* storage_partition =
-      active_contents()->GetBrowserContext()->GetDefaultStoragePartition();
+  ASSERT_TRUE(helper);
+  auto* network_context = active_contents()
+                              ->GetBrowserContext()
+                              ->GetDefaultStoragePartition()
+                              ->GetNetworkContext();
+  ASSERT_TRUE(network_context);
   std::unique_ptr<FakeIPFSHostResolver> resolver(
-      new FakeIPFSHostResolver(storage_partition->GetNetworkContext()));
+      new FakeIPFSHostResolver(*network_context));
   FakeIPFSHostResolver* resolver_raw = resolver.get();
   helper->SetResolverForTesting(std::move(resolver));
   auto* prefs =
@@ -210,12 +215,14 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, NoResolveIPFSLinkCalledMode) {
       ipfs::IPFSTabHelper::MaybeCreateForWebContents(active_contents()));
   ipfs::IPFSTabHelper* helper =
       ipfs::IPFSTabHelper::FromWebContents(active_contents());
-  if (!helper)
-    return;
-  auto* storage_partition =
-      active_contents()->GetBrowserContext()->GetDefaultStoragePartition();
+  ASSERT_TRUE(helper);
+  auto* network_context = active_contents()
+                              ->GetBrowserContext()
+                              ->GetDefaultStoragePartition()
+                              ->GetNetworkContext();
+  ASSERT_TRUE(network_context);
   std::unique_ptr<FakeIPFSHostResolver> resolver(
-      new FakeIPFSHostResolver(storage_partition->GetNetworkContext()));
+      new FakeIPFSHostResolver(*network_context));
   FakeIPFSHostResolver* resolver_raw = resolver.get();
   helper->SetResolverForTesting(std::move(resolver));
   auto* prefs =
@@ -246,12 +253,14 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest,
       ipfs::IPFSTabHelper::MaybeCreateForWebContents(active_contents()));
   ipfs::IPFSTabHelper* helper =
       ipfs::IPFSTabHelper::FromWebContents(active_contents());
-  if (!helper)
-    return;
-  auto* storage_partition =
-      active_contents()->GetBrowserContext()->GetDefaultStoragePartition();
+  ASSERT_TRUE(helper);
+  auto* network_context = active_contents()
+                              ->GetBrowserContext()
+                              ->GetDefaultStoragePartition()
+                              ->GetNetworkContext();
+  ASSERT_TRUE(network_context);
   std::unique_ptr<FakeIPFSHostResolver> resolver(
-      new FakeIPFSHostResolver(storage_partition->GetNetworkContext()));
+      new FakeIPFSHostResolver(*network_context));
   FakeIPFSHostResolver* resolver_raw = resolver.get();
   helper->SetResolverForTesting(std::move(resolver));
   auto* prefs =
@@ -272,12 +281,14 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest,
       ipfs::IPFSTabHelper::MaybeCreateForWebContents(active_contents()));
   ipfs::IPFSTabHelper* helper =
       ipfs::IPFSTabHelper::FromWebContents(active_contents());
-  if (!helper)
-    return;
-  auto* storage_partition =
-      active_contents()->GetBrowserContext()->GetDefaultStoragePartition();
+  ASSERT_TRUE(helper);
+  auto* network_context = active_contents()
+                              ->GetBrowserContext()
+                              ->GetDefaultStoragePartition()
+                              ->GetNetworkContext();
+  ASSERT_TRUE(network_context);
   std::unique_ptr<FakeIPFSHostResolver> resolver(
-      new FakeIPFSHostResolver(storage_partition->GetNetworkContext()));
+      new FakeIPFSHostResolver(*network_context));
   FakeIPFSHostResolver* resolver_raw = resolver.get();
   helper->SetResolverForTesting(std::move(resolver));
   auto* prefs =
@@ -307,12 +318,14 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, GatewayRedirectToIPFS) {
       ipfs::IPFSTabHelper::MaybeCreateForWebContents(active_contents()));
   ipfs::IPFSTabHelper* helper =
       ipfs::IPFSTabHelper::FromWebContents(active_contents());
-  if (!helper)
-    return;
-  auto* storage_partition =
-      active_contents()->GetBrowserContext()->GetDefaultStoragePartition();
+  ASSERT_TRUE(helper);
+  auto* network_context = active_contents()
+                              ->GetBrowserContext()
+                              ->GetDefaultStoragePartition()
+                              ->GetNetworkContext();
+  ASSERT_TRUE(network_context);
   std::unique_ptr<FakeIPFSHostResolver> resolver(
-      new FakeIPFSHostResolver(storage_partition->GetNetworkContext()));
+      new FakeIPFSHostResolver(*network_context));
   FakeIPFSHostResolver* resolver_raw = resolver.get();
   resolver_raw->SetDNSLinkToRespond("/ipfs/QmXoypiz");
   helper->SetResolverForTesting(std::move(resolver));
@@ -352,12 +365,14 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest,
       ipfs::IPFSTabHelper::MaybeCreateForWebContents(active_contents()));
   ipfs::IPFSTabHelper* helper =
       ipfs::IPFSTabHelper::FromWebContents(active_contents());
-  if (!helper)
-    return;
-  auto* storage_partition =
-      active_contents()->GetBrowserContext()->GetDefaultStoragePartition();
+  ASSERT_TRUE(helper);
+  auto* network_context = active_contents()
+                              ->GetBrowserContext()
+                              ->GetDefaultStoragePartition()
+                              ->GetNetworkContext();
+  ASSERT_TRUE(network_context);
   std::unique_ptr<FakeIPFSHostResolver> resolver(
-      new FakeIPFSHostResolver(storage_partition->GetNetworkContext()));
+      new FakeIPFSHostResolver(*network_context));
   FakeIPFSHostResolver* resolver_raw = resolver.get();
   resolver_raw->SetDNSLinkToRespond("/ipfs/QmXoypiz");
   helper->SetResolverForTesting(std::move(resolver));
@@ -400,12 +415,14 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, GatewayRedirectToIPNS) {
       ipfs::IPFSTabHelper::MaybeCreateForWebContents(active_contents()));
   ipfs::IPFSTabHelper* helper =
       ipfs::IPFSTabHelper::FromWebContents(active_contents());
-  if (!helper)
-    return;
-  auto* storage_partition =
-      active_contents()->GetBrowserContext()->GetDefaultStoragePartition();
+  ASSERT_TRUE(helper);
+  auto* network_context = active_contents()
+                              ->GetBrowserContext()
+                              ->GetDefaultStoragePartition()
+                              ->GetNetworkContext();
+  ASSERT_TRUE(network_context);
   std::unique_ptr<FakeIPFSHostResolver> resolver(
-      new FakeIPFSHostResolver(storage_partition->GetNetworkContext()));
+      new FakeIPFSHostResolver(*network_context));
   FakeIPFSHostResolver* resolver_raw = resolver.get();
   resolver_raw->SetDNSLinkToRespond("/ipns/QmXoypiz");
   helper->SetResolverForTesting(std::move(resolver));
@@ -446,12 +463,14 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolveIPFSLinkCalled5xx) {
       ipfs::IPFSTabHelper::MaybeCreateForWebContents(active_contents()));
   ipfs::IPFSTabHelper* helper =
       ipfs::IPFSTabHelper::FromWebContents(active_contents());
-  if (!helper)
-    return;
-  auto* storage_partition =
-      active_contents()->GetBrowserContext()->GetDefaultStoragePartition();
+  ASSERT_TRUE(helper);
+  auto* network_context = active_contents()
+                              ->GetBrowserContext()
+                              ->GetDefaultStoragePartition()
+                              ->GetNetworkContext();
+  ASSERT_TRUE(network_context);
   std::unique_ptr<FakeIPFSHostResolver> resolver(
-      new FakeIPFSHostResolver(storage_partition->GetNetworkContext()));
+      new FakeIPFSHostResolver(*network_context));
   FakeIPFSHostResolver* resolver_raw = resolver.get();
   resolver_raw->SetDNSLinkToRespond("/ipfs/QmXoypiz");
   helper->SetResolverForTesting(std::move(resolver));
@@ -476,12 +495,14 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolveNotCalled5xx) {
       ipfs::IPFSTabHelper::MaybeCreateForWebContents(active_contents()));
   ipfs::IPFSTabHelper* helper =
       ipfs::IPFSTabHelper::FromWebContents(active_contents());
-  if (!helper)
-    return;
-  auto* storage_partition =
-      active_contents()->GetBrowserContext()->GetDefaultStoragePartition();
+  ASSERT_TRUE(helper);
+  auto* network_context = active_contents()
+                              ->GetBrowserContext()
+                              ->GetDefaultStoragePartition()
+                              ->GetNetworkContext();
+  ASSERT_TRUE(network_context);
   std::unique_ptr<FakeIPFSHostResolver> resolver(
-      new FakeIPFSHostResolver(storage_partition->GetNetworkContext()));
+      new FakeIPFSHostResolver(*network_context));
   FakeIPFSHostResolver* resolver_raw = resolver.get();
   SetHttpStatusCode(net::HTTP_INTERNAL_SERVER_ERROR);
   helper->SetResolverForTesting(std::move(resolver));
@@ -504,12 +525,14 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolvedIPFSLinkBad) {
       ipfs::IPFSTabHelper::MaybeCreateForWebContents(active_contents()));
   ipfs::IPFSTabHelper* helper =
       ipfs::IPFSTabHelper::FromWebContents(active_contents());
-  if (!helper)
-    return;
-  auto* storage_partition =
-      active_contents()->GetBrowserContext()->GetDefaultStoragePartition();
+  ASSERT_TRUE(helper);
+  auto* network_context = active_contents()
+                              ->GetBrowserContext()
+                              ->GetDefaultStoragePartition()
+                              ->GetNetworkContext();
+  ASSERT_TRUE(network_context);
   std::unique_ptr<FakeIPFSHostResolver> resolver(
-      new FakeIPFSHostResolver(storage_partition->GetNetworkContext()));
+      new FakeIPFSHostResolver(*network_context));
 
   FakeIPFSHostResolver* resolver_raw = resolver.get();
   helper->SetResolverForTesting(std::move(resolver));
@@ -543,12 +566,14 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest,
       ipfs::IPFSTabHelper::MaybeCreateForWebContents(active_contents()));
   ipfs::IPFSTabHelper* helper =
       ipfs::IPFSTabHelper::FromWebContents(active_contents());
-  if (!helper)
-    return;
-  auto* storage_partition =
-      active_contents()->GetBrowserContext()->GetDefaultStoragePartition();
+  ASSERT_TRUE(helper);
+  auto* network_context = active_contents()
+                              ->GetBrowserContext()
+                              ->GetDefaultStoragePartition()
+                              ->GetNetworkContext();
+  ASSERT_TRUE(network_context);
   std::unique_ptr<FakeIPFSHostResolver> resolver(
-      new FakeIPFSHostResolver(storage_partition->GetNetworkContext()));
+      new FakeIPFSHostResolver(*network_context));
   FakeIPFSHostResolver* resolver_raw = resolver.get();
   helper->SetResolverForTesting(std::move(resolver));
   std::string ipfs_path = "/ipfs/bafybeiemx/";

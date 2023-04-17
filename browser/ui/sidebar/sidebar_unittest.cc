@@ -5,6 +5,7 @@
 
 #include <memory>
 
+#include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
@@ -77,7 +78,7 @@ class SidebarModelTest : public testing::Test {
 
   content::BrowserTaskEnvironment browser_task_environment_;
   testing::NiceMock<MockSidebarModelObserver> observer_;
-  SidebarService* service_ = nullptr;
+  raw_ptr<SidebarService> service_ = nullptr;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<SidebarModel> model_;
   base::ScopedObservation<SidebarModel, SidebarModel::Observer> observation_{

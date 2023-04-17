@@ -11,6 +11,7 @@
 
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
@@ -88,7 +89,7 @@ class StarRandomnessMeta {
 
   bool has_used_cached_info = false;
 
-  PrefService* local_state_;
+  const raw_ptr<PrefService> local_state_;
 
   base::OneShotTimer rnd_info_retry_timer_;
   base::TimeDelta current_backoff_time_;

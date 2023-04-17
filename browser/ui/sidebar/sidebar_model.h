@@ -9,6 +9,7 @@
 #include <memory>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
@@ -126,7 +127,7 @@ class SidebarModel : public SidebarService::Observer,
 
   // Optional engaged if sidebar panel is opened.
   absl::optional<size_t> active_index_ = absl::nullopt;
-  Profile* profile_ = nullptr;
+  const raw_ptr<Profile> profile_ = nullptr;
   std::unique_ptr<base::CancelableTaskTracker> task_tracker_;
   base::ObserverList<Observer> observers_;
   base::ScopedObservation<SidebarService, SidebarService::Observer>

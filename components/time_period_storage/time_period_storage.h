@@ -9,6 +9,7 @@
 #include <list>
 #include <memory>
 
+#include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
 
 namespace base {
@@ -58,7 +59,7 @@ class TimePeriodStorage {
   void Load();
   void Save();
 
-  PrefService* prefs_ = nullptr;
+  const raw_ptr<PrefService> prefs_;
   const char* pref_name_ = nullptr;
   size_t period_days_;
 

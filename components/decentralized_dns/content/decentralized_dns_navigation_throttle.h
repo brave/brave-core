@@ -47,8 +47,8 @@ class DecentralizedDnsNavigationThrottle : public content::NavigationThrottle {
   void ShowInterstitial();
   void ShowEnsOffchainLookupInterstitial();
 
-  PrefService* user_prefs_ = nullptr;
-  PrefService* local_state_ = nullptr;
+  const raw_ptr<PrefService> user_prefs_ = nullptr;
+  const raw_ptr<PrefService> local_state_ = nullptr;
   std::string locale_;
   base::WeakPtrFactory<DecentralizedDnsNavigationThrottle> weak_ptr_factory_{
       this};

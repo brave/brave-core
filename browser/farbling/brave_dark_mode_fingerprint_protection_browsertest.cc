@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
@@ -44,7 +45,7 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
     const ui::NativeTheme* GetWebTheme() const override { return theme_; }
 
    private:
-    const ui::NativeTheme* const theme_;
+    const raw_ptr<const ui::NativeTheme> theme_;
   };
 
   void SetUpOnMainThread() override {

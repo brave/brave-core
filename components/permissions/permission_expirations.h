@@ -13,6 +13,7 @@
 
 #include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "brave/components/permissions/permission_expiration_key.h"
 #include "brave/components/permissions/permission_origins.h"
 #include "components/content_settings/core/common/content_settings.h"
@@ -79,7 +80,7 @@ class PermissionExpirations {
   base::Value::List ExpiringPermissionsToList(
       const ExpiringPermissions& expiring_permissions) const;
 
-  PrefService* const prefs_ = nullptr;
+  const raw_ptr<PrefService> prefs_ = nullptr;
 
   // Expirations data from prefs used at runtime. Kept in sync with prefs.
   TypeKeyExpirationsMap expirations_;

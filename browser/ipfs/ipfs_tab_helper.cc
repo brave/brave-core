@@ -67,14 +67,15 @@ IPFSTabHelper::~IPFSTabHelper() = default;
 
 IPFSTabHelper::IPFSTabHelper(content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents),
-      IpfsImportController(web_contents),
-      content::WebContentsUserData<IPFSTabHelper>(*web_contents) {
-  pref_service_ = user_prefs::UserPrefs::Get(web_contents->GetBrowserContext());
+      IpfsImportController(*web_contents),
+      content::WebContentsUserData<IPFSTabHelper>(*web_contents),
+      pref_service_(
+          user_prefs::UserPrefs::Get(web_contents->GetBrowserContext())) {
   auto* storage_partition =
       web_contents->GetBrowserContext()->GetDefaultStoragePartition();
 
   resolver_ = std::make_unique<IPFSHostResolver>(
-      storage_partition->GetNetworkContext(), kDnsDomainPrefix);
+      *storage_partition->GetNetworkContext(), kDnsDomainPrefix);
   pref_change_registrar_.Init(pref_service_);
   pref_change_registrar_.Add(
       kIPFSResolveMethod,

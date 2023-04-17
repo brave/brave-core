@@ -8,6 +8,8 @@
 
 #include <memory>
 
+#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "brave/browser/ui/brave_shields_data_controller.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
@@ -24,8 +26,8 @@ class BraveShieldsActionView
       public brave_shields::BraveShieldsDataController::Observer,
       public TabStripModelObserver {
  public:
-  explicit BraveShieldsActionView(Profile* profile,
-                                  TabStripModel* tab_strip_model);
+  explicit BraveShieldsActionView(Profile& profile,
+                                  TabStripModel& tab_strip_model);
   BraveShieldsActionView(const BraveShieldsActionView&) = delete;
   BraveShieldsActionView& operator=(const BraveShieldsActionView&) = delete;
   ~BraveShieldsActionView() override;
@@ -57,8 +59,8 @@ class BraveShieldsActionView
       const TabStripSelectionChange& selection) override;
 
   raw_ptr<views::MenuButtonController> menu_button_controller_ = nullptr;
-  Profile* profile_ = nullptr;
-  TabStripModel* tab_strip_model_ = nullptr;
+  raw_ref<Profile> profile_;
+  raw_ref<TabStripModel> tab_strip_model_;
   std::unique_ptr<WebUIBubbleManagerT<ShieldsPanelUI>> webui_bubble_manager_;
 };
 

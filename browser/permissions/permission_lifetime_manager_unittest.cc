@@ -5,6 +5,7 @@
 
 #include "brave/components/permissions/permission_lifetime_manager.h"
 
+#include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
 #include "base/stl_util.h"
 #include "base/strings/strcat.h"
@@ -147,7 +148,7 @@ class PermissionLifetimeManagerTest : public testing::Test {
   PermissionLifetimeManager* manager() {
     if (!manager_) {
       manager_ = std::make_unique<PermissionLifetimeManager>(
-          host_content_settings_map_, prefs(),
+          *host_content_settings_map_, prefs(),
           GetPermissionOriginLifetimeMonitor());
     }
     return manager_.get();
@@ -233,7 +234,7 @@ class PermissionLifetimeManagerTest : public testing::Test {
 
   content::BrowserTaskEnvironment browser_task_environment_;
   TestingProfile profile_;
-  HostContentSettingsMap* host_content_settings_map_ = nullptr;
+  raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
   std::unique_ptr<PermissionLifetimeManager> manager_;
 };
 
@@ -583,7 +584,8 @@ class PermissionLifetimeManagerWithOriginMonitorTest
   }
 
  protected:
-  MockPermissionOriginLifetimeMonitor* origin_lifetime_monitor_ = nullptr;
+  raw_ptr<MockPermissionOriginLifetimeMonitor> origin_lifetime_monitor_ =
+      nullptr;
 };
 
 TEST_F(PermissionLifetimeManagerWithOriginMonitorTest,

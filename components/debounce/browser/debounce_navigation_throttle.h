@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/memory/raw_ref.h"
 #include "content/public/browser/navigation_throttle.h"
 
 namespace content {
@@ -21,7 +22,7 @@ class DebounceService;
 class DebounceNavigationThrottle : public content::NavigationThrottle {
  public:
   explicit DebounceNavigationThrottle(content::NavigationHandle* handle,
-                                      DebounceService* debounce_service);
+                                      DebounceService& debounce_service);
   ~DebounceNavigationThrottle() override;
 
   DebounceNavigationThrottle(const DebounceNavigationThrottle&) = delete;
@@ -40,7 +41,7 @@ class DebounceNavigationThrottle : public content::NavigationThrottle {
  private:
   ThrottleCheckResult MaybeRedirect();
 
-  DebounceService* debounce_service_ = nullptr;  // not owned
+  const raw_ref<DebounceService> debounce_service_;
 };
 
 }  // namespace debounce

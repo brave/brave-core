@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/functional/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/browser/ad_block_filters_provider.h"
 
@@ -61,7 +62,8 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
 
   base::FilePath component_path_;
   std::string component_id_;
-  component_updater::ComponentUpdateService* component_updater_service_;
+  const raw_ptr<component_updater::ComponentUpdateService>
+      component_updater_service_;
 
   base::WeakPtrFactory<AdBlockComponentFiltersProvider> weak_factory_{this};
 };

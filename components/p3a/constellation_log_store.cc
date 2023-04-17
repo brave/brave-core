@@ -26,10 +26,9 @@ constexpr char kPrefName[] = "p3a.constellation_logs";
 
 }  // namespace
 
-ConstellationLogStore::ConstellationLogStore(PrefService* local_state,
+ConstellationLogStore::ConstellationLogStore(PrefService& local_state,
                                              size_t keep_epoch_count)
     : local_state_(local_state), keep_epoch_count_(keep_epoch_count) {
-  DCHECK(local_state);
   DCHECK_GT(keep_epoch_count, 0U);
 }
 
@@ -48,7 +47,7 @@ void ConstellationLogStore::RegisterPrefs(PrefRegistrySimple* registry) {
 void ConstellationLogStore::UpdateMessage(const std::string& histogram_name,
                                           uint8_t epoch,
                                           const std::string& msg) {
-  ScopedDictPrefUpdate update(local_state_, kPrefName);
+  ScopedDictPrefUpdate update(&*local_state_, kPrefName);
   std::string epoch_key = base::NumberToString(epoch);
   base::Value::Dict* epoch_dict = update->EnsureDict(epoch_key);
   epoch_dict->Set(histogram_name, msg);
@@ -65,7 +64,7 @@ void ConstellationLogStore::RemoveMessageIfExists(const LogKey& key) {
   unsent_entries_.erase(key);
 
   // Update the persistent value.
-  ScopedDictPrefUpdate update(local_state_, kPrefName);
+  ScopedDictPrefUpdate update(&*local_state_, kPrefName);
   std::string epoch_key = base::NumberToString(key.epoch);
   base::Value::Dict* epoch_dict = update->EnsureDict(epoch_key);
   epoch_dict->Remove(key.histogram_name);
@@ -192,7 +191,7 @@ void ConstellationLogStore::LoadPersistedUnsentLogs() {
   }
 
   if (!epochs_to_remove.empty()) {
-    ScopedDictPrefUpdate update(local_state_, kPrefName);
+    ScopedDictPrefUpdate update(&*local_state_, kPrefName);
     for (const std::string& epoch : epochs_to_remove) {
       update->Remove(epoch);
     }

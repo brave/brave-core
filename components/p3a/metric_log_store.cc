@@ -62,17 +62,14 @@ std::string GetUploadType(const std::string& histogram_name) {
 
 }  // namespace
 
-MetricLogStore::MetricLogStore(Delegate* delegate,
-                               PrefService* local_state,
+MetricLogStore::MetricLogStore(Delegate& delegate,
+                               PrefService& local_state,
                                bool is_constellation,
                                MetricLogType type)
     : delegate_(delegate),
       local_state_(local_state),
       type_(type),
-      is_constellation_(is_constellation) {
-  DCHECK(delegate_);
-  DCHECK(local_state);
-}
+      is_constellation_(is_constellation) {}
 
 MetricLogStore::~MetricLogStore() = default;
 
@@ -116,7 +113,7 @@ void MetricLogStore::UpdateValue(const std::string& histogram_name,
   }
 
   // Update the persistent value.
-  ScopedDictPrefUpdate update(local_state_, GetPrefName());
+  ScopedDictPrefUpdate update(&*local_state_, GetPrefName());
   base::Value::Dict* log_dict = update->EnsureDict(histogram_name);
   log_dict->Set(kLogValueKey, base::NumberToString(value));
   log_dict->Set(kLogSentKey, entry.sent);
@@ -127,7 +124,7 @@ void MetricLogStore::RemoveValueIfExists(const std::string& histogram_name) {
   unsent_entries_.erase(histogram_name);
 
   // Update the persistent value.
-  ScopedDictPrefUpdate(local_state_, GetPrefName())->Remove(histogram_name);
+  ScopedDictPrefUpdate(&*local_state_, GetPrefName())->Remove(histogram_name);
 
   if (has_staged_log() && staged_entry_key_ == histogram_name) {
     staged_entry_key_.clear();
@@ -137,7 +134,7 @@ void MetricLogStore::RemoveValueIfExists(const std::string& histogram_name) {
 
 void MetricLogStore::ResetUploadStamps() {
   // Clear log entries flags.
-  ScopedDictPrefUpdate update(local_state_, GetPrefName());
+  ScopedDictPrefUpdate update(&*local_state_, GetPrefName());
   for (auto it = log_.begin(); it != log_.end();) {
     if (it->second.sent) {
       DCHECK(!it->second.sent_timestamp.is_null());
@@ -245,7 +242,7 @@ void MetricLogStore::DiscardStagedLog() {
   log_iter->second.MarkAsSent();
 
   // Update the persistent value.
-  ScopedDictPrefUpdate update(local_state_, GetPrefName());
+  ScopedDictPrefUpdate update(&*local_state_, GetPrefName());
   base::Value::Dict* log_dict = update->EnsureDict(log_iter->first);
   log_dict->Set(kLogSentKey, log_iter->second.sent);
   log_dict->Set(kLogTimestampKey, log_iter->second.sent_timestamp.ToDoubleT());
@@ -315,7 +312,7 @@ void MetricLogStore::LoadPersistedUnsentLogs() {
   }
 
   if (!metrics_to_remove.empty()) {
-    ScopedDictPrefUpdate update(local_state_, pref_name);
+    ScopedDictPrefUpdate update(&*local_state_, pref_name);
     for (const std::string& name : metrics_to_remove) {
       update->Remove(name);
     }

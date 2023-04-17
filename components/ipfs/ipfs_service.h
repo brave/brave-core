@@ -271,7 +271,7 @@ class IpfsService : public KeyedService,
   int64_t ipfs_pid_ = -1;
   base::ObserverList<IpfsServiceObserver> observers_;
 
-  PrefService* prefs_ = nullptr;
+  const raw_ptr<PrefService> prefs_ = nullptr;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   APIRequestList requests_list_;
   SimpleURLLoaderList url_loaders_;

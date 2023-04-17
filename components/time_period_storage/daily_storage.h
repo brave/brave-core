@@ -9,6 +9,7 @@
 #include <list>
 #include <memory>
 
+#include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
 
 namespace base {
@@ -46,7 +47,7 @@ class DailyStorage {
   void Load();
   void Save();
 
-  PrefService* prefs_ = nullptr;
+  const raw_ptr<PrefService> prefs_ = nullptr;
   const char* pref_name_ = nullptr;
   std::unique_ptr<base::Clock> clock_;
 

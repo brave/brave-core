@@ -11,6 +11,7 @@
 #include "base/containers/flat_map.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/time/time.h"
 #include "base/timer/wall_clock_timer.h"
 #include "brave/components/p3a/metric_log_type.h"
@@ -30,7 +31,7 @@ class RotationScheduler {
 
  public:
   RotationScheduler(
-      PrefService* local_state,
+      PrefService& local_state,
       const P3AConfig* config,
       JsonRotationCallback json_rotation_callback,
       ConstellationRotationCallback constellation_rotation_callback);
@@ -64,7 +65,7 @@ class RotationScheduler {
   base::flat_map<MetricLogType, base::Time> last_json_rotation_times_;
   base::Time last_constellation_rotation_time_;
 
-  PrefService* local_state_;
+  const raw_ref<PrefService> local_state_;
   const raw_ptr<const P3AConfig> config_;
 };
 

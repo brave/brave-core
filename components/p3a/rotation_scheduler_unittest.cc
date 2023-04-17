@@ -33,7 +33,7 @@ class P3ARotationSchedulerTest : public testing::Test {
                                      base::Hours(4));
     }
     scheduler_ = std::make_unique<RotationScheduler>(
-        &local_state_, &config_,
+        local_state_, &config_,
         base::BindLambdaForTesting(
             [&](MetricLogType log_type) { json_rotation_counts_[log_type]++; }),
         base::BindLambdaForTesting([&]() { constellation_rotation_count_++; }));

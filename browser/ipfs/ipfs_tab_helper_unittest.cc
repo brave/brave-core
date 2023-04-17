@@ -28,7 +28,7 @@ namespace ipfs {
 
 class FakeIPFSHostResolver : public ipfs::IPFSHostResolver {
  public:
-  explicit FakeIPFSHostResolver(network::mojom::NetworkContext* context)
+  explicit FakeIPFSHostResolver(network::mojom::NetworkContext& context)
       : ipfs::IPFSHostResolver(context) {}
   ~FakeIPFSHostResolver() override = default;
   void Resolve(const net::HostPortPair& host,
@@ -61,7 +61,7 @@ class IpfsTabHelperUnitTest : public testing::Test {
     profile_ = profile_manager_.CreateTestingProfile("TestProfile");
     web_contents_ = content::TestWebContents::Create(profile(), nullptr);
     auto ipfs_host_resolver =
-        std::make_unique<FakeIPFSHostResolver>(test_network_context_.get());
+        std::make_unique<FakeIPFSHostResolver>(*test_network_context_);
     ipfs_host_resolver_ = ipfs_host_resolver.get();
     ASSERT_TRUE(web_contents_.get());
     ASSERT_TRUE(
@@ -108,7 +108,7 @@ class IpfsTabHelperUnitTest : public testing::Test {
   raw_ptr<TestingProfile> profile_ = nullptr;
   std::unique_ptr<content::TestWebContents> web_contents_;
   std::unique_ptr<network::TestNetworkContext> test_network_context_;
-  FakeIPFSHostResolver* ipfs_host_resolver_;
+  raw_ptr<FakeIPFSHostResolver> ipfs_host_resolver_;
 };
 
 TEST_F(IpfsTabHelperUnitTest, CanResolveURLTest) {

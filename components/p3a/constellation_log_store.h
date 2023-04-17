@@ -12,6 +12,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
+#include "base/memory/raw_ref.h"
 #include "base/strings/string_piece.h"
 #include "base/time/time.h"
 #include "components/metrics/log_store.h"
@@ -28,7 +29,7 @@ namespace p3a {
 // the "keep epoch count".
 class ConstellationLogStore : public metrics::LogStore {
  public:
-  ConstellationLogStore(PrefService* local_state, size_t keep_epoch_count);
+  ConstellationLogStore(PrefService& local_state, size_t keep_epoch_count);
   ~ConstellationLogStore() override;
 
   ConstellationLogStore(const ConstellationLogStore&) = delete;
@@ -74,7 +75,7 @@ class ConstellationLogStore : public metrics::LogStore {
 
   void RemoveMessageIfExists(const LogKey& key);
 
-  PrefService* const local_state_ = nullptr;
+  const raw_ref<PrefService> local_state_;
 
   base::flat_map<LogKey, std::string, LogKeyCompare> log_;
   base::flat_set<LogKey, LogKeyCompare> unsent_entries_;

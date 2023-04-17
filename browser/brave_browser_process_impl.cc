@@ -368,7 +368,7 @@ p3a::P3AService* BraveBrowserProcessImpl::p3a_service() {
     return p3a_service_.get();
   }
   p3a_service_ = base::MakeRefCounted<p3a::P3AService>(
-      local_state(), brave::GetChannelName(),
+      *local_state(), brave::GetChannelName(),
       local_state()->GetString(kWeekOfInstallation),
       p3a::P3AConfig::LoadFromCommandLine());
   p3a_service()->InitCallbacks();

@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/memory/raw_ref.h"
 #include "chrome/browser/ui/views/infobars/infobar_view.h"
 
 namespace content {
@@ -32,7 +33,7 @@ class BraveWaybackMachineInfoBarView : public InfoBarView {
   // InfoBarView overrides:
   void Layout() override;
 
-  views::View* sub_views_ = nullptr;
+  const raw_ref<views::View> sub_views_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_INFOBARS_BRAVE_WAYBACK_MACHINE_INFOBAR_VIEW_H_

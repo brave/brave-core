@@ -6,10 +6,9 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ADBLOCK_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ADBLOCK_HANDLER_H_
 
-#include <memory>
-
 #include "base/scoped_observation.h"
 
+#include "base/memory/raw_ptr.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager_observer.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
@@ -51,7 +50,7 @@ class BraveAdBlockHandler : public settings::SettingsPageUIHandler,
 
   base::Value::List GetSubscriptions();
 
-  Profile* profile_ = nullptr;
+  raw_ptr<Profile> profile_ = nullptr;
 
   base::ScopedObservation<AdBlockSubscriptionServiceManager,
                           AdBlockSubscriptionServiceManagerObserver>

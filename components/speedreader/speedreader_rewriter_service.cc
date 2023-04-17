@@ -130,7 +130,7 @@ SpeedreaderRewriterService::SpeedreaderRewriterService()
 
 SpeedreaderRewriterService::~SpeedreaderRewriterService() {
   if (file_watcher_) {
-    watch_task_runner_->DeleteSoon(FROM_HERE, file_watcher_);
+    watch_task_runner_->DeleteSoon(FROM_HERE, &*file_watcher_);
   }
 }
 

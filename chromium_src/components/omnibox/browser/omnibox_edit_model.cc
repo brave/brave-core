@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/memory/raw_ptr.h"
 #include "brave/components/omnibox/browser/brave_omnibox_client.h"
 #include "components/omnibox/browser/omnibox_client.h"
 #include "components/omnibox/browser/omnibox_controller.h"
@@ -31,7 +32,7 @@ class BraveOmniboxController : public OmniboxController {
   }
 
  private:
-  BraveOmniboxClient* client_ = nullptr;
+  const raw_ptr<BraveOmniboxClient> client_ = nullptr;
 };
 
 namespace {

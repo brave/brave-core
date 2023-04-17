@@ -60,7 +60,7 @@ class WalletUpdatedWaiter : public brave_rewards::RewardsServiceObserver {
 
  private:
   base::RunLoop run_loop_;
-  brave_rewards::RewardsService* rewards_service_;
+  raw_ptr<brave_rewards::RewardsService> rewards_service_;
 };
 
 class RewardsBrowserTest : public InProcessBrowserTest {

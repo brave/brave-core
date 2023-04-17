@@ -132,7 +132,7 @@ class NotificationAdPopup : public views::WidgetDelegateView,
                         gfx::NativeView browser_native_view);
   void CloseWidgetView();
 
-  NotificationAdView* notification_ad_view_ = nullptr;  // NOT OWNED
+  raw_ptr<NotificationAdView> notification_ad_view_ = nullptr;
 
   void FadeIn();
   void FadeOut();

@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/tor/tor_launcher_observer.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/web_ui_message_handler.h"
@@ -40,7 +41,7 @@ class TorInternalsDOMHandler : public content::WebUIMessageHandler,
   void OnTorControlEvent(const std::string& event) override;
   void OnTorLogUpdated() override;
 
-  TorLauncherFactory* tor_launcher_factory_ = nullptr;
+  const raw_ref<TorLauncherFactory> tor_launcher_factory_;
 
   base::WeakPtrFactory<TorInternalsDOMHandler> weak_ptr_factory_;
 };

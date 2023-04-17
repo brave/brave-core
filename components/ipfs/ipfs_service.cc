@@ -10,6 +10,7 @@
 
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
+#include "base/memory/raw_ref.h"
 #include "base/rand_util.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
@@ -56,9 +57,12 @@ namespace {
 // Works similarly to base::AutoReset but checks for access from the wrong
 // thread as well as ensuring that the previous value of the re-entrancy guard
 // variable was false.
+// TODO(cdesouza): Replace this class with base::AutoReset in M114, as it now
+// offers a way to check the starting value, and as it also reduces maintainance
+// burden.
 class ReentrancyCheck {
  public:
-  explicit ReentrancyCheck(bool* guard_flag) : guard_flag_(guard_flag) {
+  explicit ReentrancyCheck(bool& guard_flag) : guard_flag_(guard_flag) {
     DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
     DCHECK(!*guard_flag_);
     *guard_flag_ = true;
@@ -67,7 +71,7 @@ class ReentrancyCheck {
   ~ReentrancyCheck() { *guard_flag_ = false; }
 
  private:
-  bool* const guard_flag_;
+  const raw_ref<bool> guard_flag_;
 };
 #endif
 // Used to retry request if we got zero peers from ipfs service
@@ -132,8 +136,9 @@ IpfsService::IpfsService(
     OnExecutableReady(ipfs_client_updater_->GetExecutablePath());
   }
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
+  DCHECK(blob_context_getter_factory_);
   ipns_keys_manager_ = std::make_unique<IpnsKeysManager>(
-      blob_context_getter_factory_.get(), url_loader_factory, server_endpoint_);
+      *blob_context_getter_factory_, url_loader_factory, server_endpoint_);
   AddObserver(ipns_keys_manager_.get());
 #endif
 
@@ -546,7 +551,7 @@ void IpfsService::ImportFileToIpfs(const base::FilePath& path,
       std::move(callback).Run(ipfs::ImportedData());
     return;
   }
-  ReentrancyCheck reentrancy_check(&reentrancy_guard_);
+  ReentrancyCheck reentrancy_check(reentrancy_guard_);
   if (!IsDaemonLaunched()) {
     StartDaemonAndLaunch(base::BindOnce(&IpfsService::ImportFileToIpfs,
                                         weak_factory_.GetWeakPtr(), path, key,
@@ -574,7 +579,7 @@ void IpfsService::ImportLinkToIpfs(const GURL& url,
     return;
   }
 
-  ReentrancyCheck reentrancy_check(&reentrancy_guard_);
+  ReentrancyCheck reentrancy_check(reentrancy_guard_);
   if (!IsDaemonLaunched()) {
     StartDaemonAndLaunch(base::BindOnce(&IpfsService::ImportLinkToIpfs,
                                         weak_factory_.GetWeakPtr(), url,
@@ -601,7 +606,7 @@ void IpfsService::ImportDirectoryToIpfs(const base::FilePath& folder,
       std::move(callback).Run(ipfs::ImportedData());
     return;
   }
-  ReentrancyCheck reentrancy_check(&reentrancy_guard_);
+  ReentrancyCheck reentrancy_check(reentrancy_guard_);
   if (!IsDaemonLaunched()) {
     StartDaemonAndLaunch(base::BindOnce(&IpfsService::ImportDirectoryToIpfs,
                                         weak_factory_.GetWeakPtr(), folder, key,
@@ -629,7 +634,7 @@ void IpfsService::ImportTextToIpfs(const std::string& text,
       std::move(callback).Run(ipfs::ImportedData());
     return;
   }
-  ReentrancyCheck reentrancy_check(&reentrancy_guard_);
+  ReentrancyCheck reentrancy_check(reentrancy_guard_);
   if (!IsDaemonLaunched()) {
     StartDaemonAndLaunch(base::BindOnce(&IpfsService::ImportTextToIpfs,
                                         weak_factory_.GetWeakPtr(), text, host,

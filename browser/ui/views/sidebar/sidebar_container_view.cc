@@ -54,7 +54,7 @@ sidebar::SidebarService* GetSidebarService(BraveBrowser* browser) {
 class SidebarContainerView::BrowserWindowEventObserver
     : public ui::EventObserver {
  public:
-  explicit BrowserWindowEventObserver(SidebarContainerView* host)
+  explicit BrowserWindowEventObserver(SidebarContainerView& host)
       : host_(host) {}
   ~BrowserWindowEventObserver() override = default;
   BrowserWindowEventObserver(const BrowserWindowEventObserver&) = delete;
@@ -81,7 +81,7 @@ class SidebarContainerView::BrowserWindowEventObserver
   }
 
  private:
-  SidebarContainerView* host_ = nullptr;
+  const raw_ref<SidebarContainerView> host_;
 };
 
 SidebarContainerView::SidebarContainerView(
@@ -91,7 +91,7 @@ SidebarContainerView::SidebarContainerView(
     : browser_(browser),
       side_panel_coordinator_(side_panel_coordinator),
       browser_window_event_observer_(
-          std::make_unique<BrowserWindowEventObserver>(this)) {
+          std::make_unique<BrowserWindowEventObserver>(*this)) {
   SetNotifyEnterExitOnChild(true);
   side_panel_ = AddChildView(std::move(side_panel));
 }
@@ -345,9 +345,9 @@ SidebarContainerView::GetEventDetectWidget() {
   if (!show_options_widget_) {
     show_options_widget_ =
         std::make_unique<SidebarShowOptionsEventDetectWidget>(
-            static_cast<BraveBrowserView*>(
+            *static_cast<BraveBrowserView*>(
                 BrowserView::GetBrowserViewForBrowser(browser_)),
-            this);
+            *this);
   }
 
   return show_options_widget_.get();
