@@ -13,8 +13,7 @@ namespace brave_ads::geographic {
 
 bool IsSupportedCountryCodeForSubdivisionTargeting(
     const std::string& country_code) {
-  const auto& supported_subdivision_codes =
-      geographic::GetSupportedSubdivisionCodes();
+  const auto& supported_subdivision_codes = GetSupportedSubdivisionCodes();
   return base::Contains(supported_subdivision_codes, country_code);
 }
 
