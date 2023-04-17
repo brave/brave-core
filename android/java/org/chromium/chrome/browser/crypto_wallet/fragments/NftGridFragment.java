@@ -40,6 +40,7 @@ import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
+import org.chromium.chrome.browser.crypto_wallet.activities.NetworkSelectorActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.NftDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletNftAdapter;
@@ -201,12 +202,9 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
     }
 
     private void openNetworkSelection() {
-        try {
-            BraveActivity activity = BraveActivity.getBraveActivity();
-            activity.openNetworkSelection(NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER, TAG);
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "Network selection cannot be opened.", e);
-        }
+        Intent intent = NetworkSelectorActivity.createIntent(
+                getContext(), NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER, TAG);
+        startActivity(intent);
     }
 
     private void setPositiveButtonAccountCreation(NetworkInfo networkInfo) {
