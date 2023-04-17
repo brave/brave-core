@@ -8,8 +8,8 @@
 #include <cmath>
 
 #include "base/logging.h"
+#include "brave/third_party/bip39wally-core-native/include/wally_bip39.h"
 #include "brave/vendor/bat-native-tweetnacl/tweetnacl.h"
-#include "brave/vendor/bip39wally-core-native/include/wally_bip39.h"
 #include "crypto/random.h"
 #include "third_party/boringssl/src/include/openssl/curve25519.h"
 #include "third_party/boringssl/src/include/openssl/digest.h"

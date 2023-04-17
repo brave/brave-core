@@ -18,8 +18,8 @@
 #include "base/time/time.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
-#include "brave/vendor/bip39wally-core-native/include/wally_bip39.h"
-#include "brave/vendor/bip39wally-core-native/src/wordlist.h"
+#include "brave/third_party/bip39wally-core-native/include/wally_bip39.h"
+#include "brave/third_party/bip39wally-core-native/src/wordlist.h"
 
 namespace brave_sync {
 
