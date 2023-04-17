@@ -59,7 +59,7 @@ public class UserAssetModel {
                         mCryptoNetworks = new ArrayList<>(allNetworks);
                         if (mType == WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
                             if (NetworkUtils.isAllNetwork(mSelectedNetwork)) {
-                                fetAllNetworksAssets(nftsOnly);
+                                fetchAllNetworksAssets(nftsOnly);
                             } else {
                                 TokenUtils.getUserAssetsFiltered(mBraveWalletService,
                                         mSelectedNetwork, mSelectedNetwork.coin,
@@ -104,7 +104,7 @@ public class UserAssetModel {
         }
     }
 
-    private void fetAllNetworksAssets(boolean nftsOnly) {
+    private void fetchAllNetworksAssets(boolean nftsOnly) {
         mBraveWalletService.getAllUserAssets(userAssets -> {
             var supportedNetworkAssets =
                     Arrays.stream(userAssets)
