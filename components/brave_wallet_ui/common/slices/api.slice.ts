@@ -299,7 +299,7 @@ let selectedPendingTransactionId: string = ''
           networksList
         )
 
-        return normalizedNetworksState
+        this._networksRegistry = normalizedNetworksState
       }
       return this._networksRegistry
     }
