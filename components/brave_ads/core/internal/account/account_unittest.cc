@@ -232,8 +232,6 @@ TEST_F(BatAdsAccountTest,
 
 TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
-
   MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
 
   account_->Process();
