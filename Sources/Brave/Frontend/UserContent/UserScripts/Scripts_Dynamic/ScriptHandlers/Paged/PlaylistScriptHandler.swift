@@ -136,6 +136,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
                         pageTitle: handler.tab?.webView?.title ?? item.pageTitle,
                         mimeType: item.mimeType,
                         duration: item.duration,
+                        lastPlayedOffset: 0.0,
                         detected: item.detected,
                         dateAdded: item.dateAdded,
                         tagId: item.tagId,

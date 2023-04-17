@@ -382,7 +382,11 @@ extension PlaylistListViewController: UITableViewDelegate {
           PlaylistCarplayManager.shared.currentlyPlayingItemIndex = indexPath.row
           PlaylistCarplayManager.shared.currentPlaylistItem = item
           self.commitPlayerItemTransaction(at: indexPath, isExpired: false)
-          self.delegate?.updateLastPlayedItem(item: item)
+          
+          self.seekLastPlayedItem(
+            at: indexPath,
+            lastPlayedItemId: item.tagId,
+            lastPlayedTime: item.lastPlayedOffset)
         case .cancelled:
           self.commitPlayerItemTransaction(at: indexPath, isExpired: false)
           Logger.module.debug("User cancelled Playlist Playback")

@@ -450,8 +450,7 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
         ensureMainThread {
           if task.state != .completed,
             let item = PlaylistItem.getItem(uuid: itemId),
-            let mediaSrc = item.mediaSrc,
-            let assetUrl = URL(string: mediaSrc) {
+            let assetUrl = URL(string: item.mediaSrc) {
             let info = PlaylistInfo(item: item)
             let asset = MediaDownloadTask(id: info.tagId, name: info.name, asset: AVURLAsset(url: assetUrl, options: AVAsset.defaultOptions))
             self.activeDownloadTasks[task] = asset

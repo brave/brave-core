@@ -19,8 +19,7 @@ class PlaylistFolderImageLoader: ObservableObject {
   private var faviconTask: Task<Void, Error>?
 
   func load(thumbnail: PlaylistItem) {
-    guard let mediaSrc = thumbnail.mediaSrc,
-      let assetUrl = URL(string: mediaSrc)
+    guard let assetUrl = URL(string: thumbnail.mediaSrc)
     else {
       image = nil
       return
@@ -30,8 +29,7 @@ class PlaylistFolderImageLoader: ObservableObject {
   }
 
   func load(favIcon: PlaylistItem) {
-    guard let pageSrc = favIcon.pageSrc,
-      let favIconUrl = URL(string: pageSrc)
+    guard let favIconUrl = URL(string: favIcon.pageSrc)
     else {
       image = nil
       return
@@ -98,12 +96,10 @@ private struct PlaylistFolderImage: View {
 
           Spacer()
 
-          if let title = item.name {
-            Text(title)
-              .font(.footnote.weight(.semibold))
-              .lineLimit(2)
-              .foregroundColor(.white)
-          }
+          Text(item.name)
+            .font(.footnote.weight(.semibold))
+            .lineLimit(2)
+            .foregroundColor(.white)
         }.padding(8.0), alignment: .topLeading
       )
       .clipShape(RoundedRectangle(cornerRadius: PlaylistFolderImage.cornerRadius, style: .continuous))

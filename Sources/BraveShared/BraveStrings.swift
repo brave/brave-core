@@ -1691,12 +1691,12 @@ extension Strings {
 
     public static let playlistStartPlaybackSettingsOptionTitle =
       NSLocalizedString("playlist.playlistStartPlaybackSettingsOptionTitle", tableName: "BraveShared", bundle: .module,
-        value: "Start Playback where I last left off",
+        value: "Remember file playback position",
         comment: "Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off")
 
     public static let playlistStartPlaybackSettingsFooterText =
       NSLocalizedString("playlist.playlistStartPlaybackSettingsFooterText", tableName: "BraveShared", bundle: .module,
-        value: "This option will enable/disable the ability to start playback of media (video/audio) from the time where you last left off.",
+        value: "For individual files, resume playing from the point of last pause.",
         comment: "Footer Text for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off")
 
     public static let playlistAutoSaveOptionOn =

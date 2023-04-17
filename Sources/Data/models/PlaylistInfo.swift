@@ -15,6 +15,7 @@ public struct PlaylistInfo: Codable, Identifiable, Hashable, Equatable {
   public let pageTitle: String
   public let mimeType: String
   public let duration: TimeInterval
+  public let lastPlayedOffset: TimeInterval
   public let detected: Bool
   public let dateAdded: Date
   public let tagId: String
@@ -31,6 +32,7 @@ public struct PlaylistInfo: Codable, Identifiable, Hashable, Equatable {
     self.pageTitle = ""
     self.mimeType = ""
     self.duration = 0.0
+    self.lastPlayedOffset = 0.0
     self.dateAdded = Date()
     self.detected = false
     self.tagId = UUID().uuidString
@@ -38,25 +40,27 @@ public struct PlaylistInfo: Codable, Identifiable, Hashable, Equatable {
   }
 
   public init(item: PlaylistItem) {
-    self.name = item.name ?? ""
-    self.src = item.mediaSrc ?? ""
-    self.pageSrc = item.pageSrc ?? ""
+    self.name = item.name
+    self.src = item.mediaSrc
+    self.pageSrc = item.pageSrc
     self.pageTitle = item.pageTitle ?? ""
-    self.mimeType = item.mimeType ?? ""
+    self.mimeType = item.mimeType
     self.duration = item.duration
-    self.dateAdded = item.dateAdded ?? Date()
+    self.lastPlayedOffset = item.lastPlayedOffset
+    self.dateAdded = item.dateAdded
     self.detected = false
     self.tagId = item.uuid ?? UUID().uuidString
     self.order = item.order
   }
 
-  public init(name: String, src: String, pageSrc: String, pageTitle: String, mimeType: String, duration: TimeInterval, detected: Bool, dateAdded: Date, tagId: String, order: Int32) {
+  public init(name: String, src: String, pageSrc: String, pageTitle: String, mimeType: String, duration: TimeInterval, lastPlayedOffset: TimeInterval, detected: Bool, dateAdded: Date, tagId: String, order: Int32) {
     self.name = name
     self.src = src
     self.pageSrc = pageSrc
     self.pageTitle = pageTitle
     self.mimeType = mimeType
     self.duration = duration
+    self.lastPlayedOffset = lastPlayedOffset
     self.detected = detected
     self.dateAdded = dateAdded
     self.tagId = tagId.isEmpty ? UUID().uuidString : tagId
@@ -71,6 +75,7 @@ public struct PlaylistInfo: Codable, Identifiable, Hashable, Equatable {
     self.pageTitle = try container.decode(String.self, forKey: .pageTitle)
     self.mimeType = try container.decodeIfPresent(String.self, forKey: .mimeType) ?? ""
     self.duration = try container.decodeIfPresent(TimeInterval.self, forKey: .duration) ?? 0.0
+    self.lastPlayedOffset = try container.decodeIfPresent(TimeInterval.self, forKey: .lastPlayedOffset) ?? 0.0
     self.detected = try container.decodeIfPresent(Bool.self, forKey: .detected) ?? false
     self.tagId = try container.decodeIfPresent(String.self, forKey: .tagId) ?? UUID().uuidString
     self.dateAdded = Date()
@@ -121,6 +126,7 @@ public struct PlaylistInfo: Codable, Identifiable, Hashable, Equatable {
     case pageTitle
     case mimeType
     case duration
+    case lastPlayedOffset
     case detected
     case tagId
     case dateAdded

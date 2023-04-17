@@ -111,13 +111,10 @@ struct PlaylistMoveFolderView: View {
 
   private var itemDescription: String {
     if selectedItems.count == 1 {
-      return selectedItems[0].name ?? Strings.PlaylistFolders.playlistFolderMoveItemWithMultipleNoNameTitle
+      return selectedItems[0].name
     }
 
-    guard let title = selectedItems[0].name else {
-      return Strings.PlaylistFolders.playlistFolderMoveItemWithMultipleNoNameTitle
-    }
-
+    let title = selectedItems[0].name
     if selectedItems.count == 2 {
       return String.localizedStringWithFormat(Strings.PlaylistFolders.playlistFolderMoveItemDescription, title)
     }
