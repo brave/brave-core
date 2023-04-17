@@ -23,20 +23,20 @@ void AdsClientNotifier::RemoveObserver(AdsClientNotifierObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void AdsClientNotifier::NotifyLocaleDidChange(const std::string& locale) {
+void AdsClientNotifier::NotifyLocaleDidChange(const std::string& locale) const {
   for (auto& observer : observers_) {
     observer.OnNotifyLocaleDidChange(locale);
   }
 }
 
-void AdsClientNotifier::NotifyPrefDidChange(const std::string& path) {
+void AdsClientNotifier::NotifyPrefDidChange(const std::string& path) const {
   for (auto& observer : observers_) {
     observer.OnNotifyPrefDidChange(path);
   }
 }
 
 void AdsClientNotifier::NotifyDidUpdateResourceComponent(
-    const std::string& id) {
+    const std::string& id) const {
   for (auto& observer : observers_) {
     observer.OnNotifyDidUpdateResourceComponent(id);
   }
@@ -45,7 +45,7 @@ void AdsClientNotifier::NotifyDidUpdateResourceComponent(
 void AdsClientNotifier::NotifyTabTextContentDidChange(
     const int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
-    const std::string& text) {
+    const std::string& text) const {
   for (auto& observer : observers_) {
     observer.OnNotifyTabTextContentDidChange(tab_id, redirect_chain, text);
   }
@@ -54,19 +54,21 @@ void AdsClientNotifier::NotifyTabTextContentDidChange(
 void AdsClientNotifier::NotifyTabHtmlContentDidChange(
     const int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
-    const std::string& html) {
+    const std::string& html) const {
   for (auto& observer : observers_) {
     observer.OnNotifyTabHtmlContentDidChange(tab_id, redirect_chain, html);
   }
 }
 
-void AdsClientNotifier::NotifyTabDidStartPlayingMedia(const int32_t tab_id) {
+void AdsClientNotifier::NotifyTabDidStartPlayingMedia(
+    const int32_t tab_id) const {
   for (auto& observer : observers_) {
     observer.OnNotifyTabDidStartPlayingMedia(tab_id);
   }
 }
 
-void AdsClientNotifier::NotifyTabDidStopPlayingMedia(const int32_t tab_id) {
+void AdsClientNotifier::NotifyTabDidStopPlayingMedia(
+    const int32_t tab_id) const {
   for (auto& observer : observers_) {
     observer.OnNotifyTabDidStopPlayingMedia(tab_id);
   }
@@ -76,27 +78,27 @@ void AdsClientNotifier::NotifyTabDidChange(
     const int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const bool is_visible,
-    const bool is_incognito) {
+    const bool is_incognito) const {
   for (auto& observer : observers_) {
     observer.OnNotifyTabDidChange(tab_id, redirect_chain, is_visible,
                                   is_incognito);
   }
 }
 
-void AdsClientNotifier::NotifyDidCloseTab(const int32_t tab_id) {
+void AdsClientNotifier::NotifyDidCloseTab(const int32_t tab_id) const {
   for (auto& observer : observers_) {
     observer.OnNotifyDidCloseTab(tab_id);
   }
 }
 
 void AdsClientNotifier::NotifyUserGestureEventTriggered(
-    const int32_t page_transition_type) {
+    const int32_t page_transition_type) const {
   for (auto& observer : observers_) {
     observer.OnNotifyUserGestureEventTriggered(page_transition_type);
   }
 }
 
-void AdsClientNotifier::NotifyUserDidBecomeIdle() {
+void AdsClientNotifier::NotifyUserDidBecomeIdle() const {
   for (auto& observer : observers_) {
     observer.OnNotifyUserDidBecomeIdle();
   }
@@ -104,31 +106,31 @@ void AdsClientNotifier::NotifyUserDidBecomeIdle() {
 
 void AdsClientNotifier::NotifyUserDidBecomeActive(
     const base::TimeDelta idle_time,
-    const bool screen_was_locked) {
+    const bool screen_was_locked) const {
   for (auto& observer : observers_) {
     observer.OnNotifyUserDidBecomeActive(idle_time, screen_was_locked);
   }
 }
 
-void AdsClientNotifier::NotifyBrowserDidEnterForeground() {
+void AdsClientNotifier::NotifyBrowserDidEnterForeground() const {
   for (auto& observer : observers_) {
     observer.OnNotifyBrowserDidEnterForeground();
   }
 }
 
-void AdsClientNotifier::NotifyBrowserDidEnterBackground() {
+void AdsClientNotifier::NotifyBrowserDidEnterBackground() const {
   for (auto& observer : observers_) {
     observer.OnNotifyBrowserDidEnterBackground();
   }
 }
 
-void AdsClientNotifier::NotifyBrowserDidBecomeActive() {
+void AdsClientNotifier::NotifyBrowserDidBecomeActive() const {
   for (auto& observer : observers_) {
     observer.OnNotifyBrowserDidBecomeActive();
   }
 }
 
-void AdsClientNotifier::NotifyBrowserDidResignActive() {
+void AdsClientNotifier::NotifyBrowserDidResignActive() const {
   for (auto& observer : observers_) {
     observer.OnNotifyBrowserDidResignActive();
   }

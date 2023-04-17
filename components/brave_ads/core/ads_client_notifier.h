@@ -36,13 +36,13 @@ class AdsClientNotifier {
   // call is not required if the operating system restarts the browser when
   // changing the locale. |locale| should be specified in either
   // <ISO-639-1>-<ISO-3166-1> or <ISO-639-1>_<ISO-3166-1> format.
-  void NotifyLocaleDidChange(const std::string& locale);
+  void NotifyLocaleDidChange(const std::string& locale) const;
 
   // Invoked when a preference has changed for the specified |path|.
-  void NotifyPrefDidChange(const std::string& path);
+  void NotifyPrefDidChange(const std::string& path) const;
 
   // Invoked when a resource component has been updated.
-  void NotifyDidUpdateResourceComponent(const std::string& id);
+  void NotifyDidUpdateResourceComponent(const std::string& id) const;
 
   // Invoked when the page for |tab_id| has loaded and the content is available
   // for analysis. |redirect_chain| containing a list of redirect URLs that
@@ -51,7 +51,7 @@ class AdsClientNotifier {
   // the list). |text| containing the page content as text.
   void NotifyTabTextContentDidChange(int32_t tab_id,
                                      const std::vector<GURL>& redirect_chain,
-                                     const std::string& text);
+                                     const std::string& text) const;
 
   // Invoked when the page for |tab_id| has loaded and the content is available
   // for analysis. |redirect_chain| containing a list of redirect URLs that
@@ -60,15 +60,15 @@ class AdsClientNotifier {
   // the list). |html| containing the page content as HTML.
   void NotifyTabHtmlContentDidChange(int32_t tab_id,
                                      const std::vector<GURL>& redirect_chain,
-                                     const std::string& html);
+                                     const std::string& html) const;
 
   // Invoked when media starts playing on a browser tab for the specified
   // |tab_id|.
-  void NotifyTabDidStartPlayingMedia(int32_t tab_id);
+  void NotifyTabDidStartPlayingMedia(int32_t tab_id) const;
 
   // Called when media stops playing on a browser tab for the specified
   // |tab_id|.
-  void NotifyTabDidStopPlayingMedia(int32_t tab_id);
+  void NotifyTabDidStopPlayingMedia(int32_t tab_id) const;
 
   // Invoked when a browser tab is updated with the specified |redirect_chain|
   // containing a list of redirect URLs that occurred on the way to the current
@@ -81,39 +81,40 @@ class AdsClientNotifier {
   void NotifyTabDidChange(int32_t tab_id,
                           const std::vector<GURL>& redirect_chain,
                           bool is_visible,
-                          bool is_incognito);
+                          bool is_incognito) const;
 
   // Invoked when a browser tab with the specified |tab_id| is closed.
-  void NotifyDidCloseTab(int32_t tab_id);
+  void NotifyDidCloseTab(int32_t tab_id) const;
 
   // Called when a page navigation was initiated by a user gesture.
   // |page_transition_type| containing the page transition type, see enums for
   // |PageTransitionType|.
-  virtual void NotifyUserGestureEventTriggered(int32_t page_transition_type);
+  virtual void NotifyUserGestureEventTriggered(
+      int32_t page_transition_type) const;
 
   // Invoked when a user has been idle for the threshold set in
   // |prefs::kIdleTimeThreshold|. NOTE: This should not be called on mobile
   // devices.
-  void NotifyUserDidBecomeIdle();
+  void NotifyUserDidBecomeIdle() const;
 
   // Called when a user is no longer idle. |idle_time| is the amount of time in
   // seconds that the user was idle. |screen_was_locked| should be |true| if the
   // screen was locked, otherwise |false|. NOTE: This should not be called on
   // mobile devices.
   void NotifyUserDidBecomeActive(base::TimeDelta idle_time,
-                                 bool screen_was_locked);
+                                 bool screen_was_locked) const;
 
   // Invoked when the browser did enter the foreground.
-  void NotifyBrowserDidEnterForeground();
+  void NotifyBrowserDidEnterForeground() const;
 
   // Invoked when the browser did enter the background.
-  void NotifyBrowserDidEnterBackground();
+  void NotifyBrowserDidEnterBackground() const;
 
   // Invoked when the browser did become active.
-  void NotifyBrowserDidBecomeActive();
+  void NotifyBrowserDidBecomeActive() const;
 
   // Invoked when the browser did resign active.
-  void NotifyBrowserDidResignActive();
+  void NotifyBrowserDidResignActive() const;
 
  private:
   base::ObserverList<AdsClientNotifierObserver> observers_;
