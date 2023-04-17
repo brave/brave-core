@@ -443,6 +443,7 @@ public class Utils {
             throw new ParseException(
                     "Invalid input string to BigDecimal at ", parsePosition.getIndex());
         BigDecimal multiplier = BigDecimal.TEN.pow(decimals);
+
         return parsed.multiply(multiplier).toBigInteger();
     }
 
@@ -1750,6 +1751,7 @@ public class Utils {
 
         NumberFormat nf = NumberFormat.getNumberInstance(Locale.getDefault());
         ParsePosition parsePosition = new ParsePosition(0);
+        nf.setGroupingUsed(false);
         Number num = nf.parse(s, parsePosition);
 
         if (parsePosition.getIndex() != s.length()) {

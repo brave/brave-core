@@ -2546,6 +2546,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_CRYPTO_WALLET_ERROR_INSUFFICIENT_LIQUIDITY" desc="Error on crypto wallets">
       Insufficient liquidity
     </message>
+    <message name="IDS_CRYPTO_WALLET_ERROR_WRONG_NUMBER_FORMAT" desc="Error on crypto wallets">
+      Unrecognized number format
+    </message>
     <message name="IDS_CRYPTO_WALLET_ERROR_UNKNOWN_ERROR" desc="Error on crypto wallets">
       Unknown error
     </message>
