@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_observer.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/new_tab_page_ad_serving_observer.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/new_tab_page_ad_serving_delegate.h"
 
 namespace brave_ads {
 
@@ -35,7 +35,7 @@ class Transfer;
 struct NewTabPageAdInfo;
 
 class NewTabPageAdHandler final : public new_tab_page_ads::EventHandlerObserver,
-                                  public new_tab_page_ads::ServingObserver {
+                                  public new_tab_page_ads::ServingDelegate {
  public:
   NewTabPageAdHandler(
       Account* account,
@@ -58,7 +58,7 @@ class NewTabPageAdHandler final : public new_tab_page_ads::EventHandlerObserver,
                     mojom::NewTabPageAdEventType event_type);
 
  private:
-  // new_tab_page_ads::ServingObserver:
+  // new_tab_page_ads::ServingDelegate:
   void OnOpportunityAroseToServeNewTabPageAd(
       const SegmentList& segments) override;
   void OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) override;

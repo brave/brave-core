@@ -3,10 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_INLINE_CONTENT_AD_SERVING_OBSERVER_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_INLINE_CONTENT_AD_SERVING_OBSERVER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_INLINE_CONTENT_AD_SERVING_DELEGATE_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_INLINE_CONTENT_AD_SERVING_DELEGATE_H_
 
-#include "base/observer_list_types.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
 namespace brave_ads {
@@ -15,7 +14,7 @@ struct InlineContentAdInfo;
 
 namespace inline_content_ads {
 
-class ServingObserver : public base::CheckedObserver {
+class ServingDelegate {
  public:
   // Invoked when an opportunity arises to serve an inline content ad for the
   // |segments|.
@@ -27,9 +26,12 @@ class ServingObserver : public base::CheckedObserver {
 
   // Invoked when an inline content ad fails to serve.
   virtual void OnFailedToServeInlineContentAd() {}
+
+ protected:
+  virtual ~ServingDelegate() = default;
 };
 
 }  // namespace inline_content_ads
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_INLINE_CONTENT_AD_SERVING_OBSERVER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_INLINE_CONTENT_AD_SERVING_DELEGATE_H_

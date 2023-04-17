@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_handler_observer.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_observer.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_delegate.h"
 
 namespace brave_ads {
 
@@ -36,7 +36,7 @@ struct InlineContentAdInfo;
 
 class InlineContentAdHandler final
     : public inline_content_ads::EventHandlerObserver,
-      public inline_content_ads::ServingObserver {
+      public inline_content_ads::ServingDelegate {
  public:
   InlineContentAdHandler(
       Account* account,
@@ -60,7 +60,7 @@ class InlineContentAdHandler final
                     mojom::InlineContentAdEventType event_type);
 
  private:
-  // inline_content_ads::ServingObserver:
+  // inline_content_ads::ServingDelegate:
   void OnOpportunityAroseToServeInlineContentAd(
       const SegmentList& segments) override;
   void OnDidServeInlineContentAd(const InlineContentAdInfo& ad) override;

@@ -37,12 +37,11 @@ NewTabPageAdHandler::NewTabPageAdHandler(
 
   serving_ = std::make_unique<new_tab_page_ads::Serving>(
       subdivision_targeting, anti_targeting_resource);
-  serving_->AddObserver(this);
+  serving_->SetDelegate(this);
 }
 
 NewTabPageAdHandler::~NewTabPageAdHandler() {
   event_handler_->RemoveObserver(this);
-  serving_->RemoveObserver(this);
 }
 
 void NewTabPageAdHandler::MaybeServe(MaybeServeNewTabPageAdCallback callback) {

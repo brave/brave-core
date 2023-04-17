@@ -56,7 +56,7 @@ NotificationAdHandler::NotificationAdHandler(
 
   serving_ = std::make_unique<notification_ads::Serving>(
       subdivision_targeting, anti_targeting_resource);
-  serving_->AddObserver(this);
+  serving_->SetDelegate(this);
 
   BrowserManager::GetInstance()->AddObserver(this);
   AdsClientHelper::AddObserver(this);
@@ -65,7 +65,6 @@ NotificationAdHandler::NotificationAdHandler(
 NotificationAdHandler::~NotificationAdHandler() {
   account_->RemoveObserver(this);
   event_handler_->RemoveObserver(this);
-  serving_->RemoveObserver(this);
   BrowserManager::GetInstance()->RemoveObserver(this);
   AdsClientHelper::RemoveObserver(this);
 }

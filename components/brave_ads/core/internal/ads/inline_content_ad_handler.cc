@@ -38,12 +38,11 @@ InlineContentAdHandler::InlineContentAdHandler(
 
   serving_ = std::make_unique<inline_content_ads::Serving>(
       subdivision_targeting, anti_targeting_resource);
-  serving_->AddObserver(this);
+  serving_->SetDelegate(this);
 }
 
 InlineContentAdHandler::~InlineContentAdHandler() {
   event_handler_->RemoveObserver(this);
-  serving_->RemoveObserver(this);
 }
 
 void InlineContentAdHandler::MaybeServe(
