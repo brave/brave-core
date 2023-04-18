@@ -22,9 +22,6 @@
 
 namespace brave_wallet {
 
-const char kDefaultWalletHistogramName[] = "Brave.Wallet.DefaultWalletSetting";
-const char kDefaultSolanaWalletHistogramName[] =
-    "Brave.Wallet.DefaultSolanaWalletSetting";
 const char kKeyringCreatedHistogramName[] = "Brave.Wallet.KeyringCreated";
 const char kOnboardingConversionHistogramName[] =
     "Brave.Wallet.OnboardingConversion.2";
@@ -64,28 +61,6 @@ void RecordKeyringCreated(mojom::KeyringInfoPtr keyring_info) {
                         static_cast<int>(keyring_info->is_keyring_created));
 }
 
-// What is the DefaultWalletSetting (Ethereum)?
-// 0) AskDeprecated, 1) None, 2) CryptoWallets,
-// 3) BraveWalletPreferExtension, 4) BraveWallet
-void RecordDefaultEthereumWalletSetting(PrefService* pref_service) {
-  const int max_bucket =
-      static_cast<int>(brave_wallet::mojom::DefaultWallet::kMaxValue);
-  auto default_wallet = pref_service->GetInteger(kDefaultEthereumWallet);
-  UMA_HISTOGRAM_EXACT_LINEAR(kDefaultWalletHistogramName, default_wallet,
-                             max_bucket);
-}
-
-// What is the DefaultSolanaWalletSetting?
-// 0) AskDeprecated, 1) None, 2) CryptoWallets,
-// 3) BraveWalletPreferExtension, 4) BraveWallet
-void RecordDefaultSolanaWalletSetting(PrefService* pref_service) {
-  const int max_bucket =
-      static_cast<int>(brave_wallet::mojom::DefaultWallet::kMaxValue);
-  auto default_wallet = pref_service->GetInteger(kDefaultSolanaWallet);
-  UMA_HISTOGRAM_EXACT_LINEAR(kDefaultSolanaWalletHistogramName, default_wallet,
-                             max_bucket);
-}
-
 }  // namespace
 
 BraveWalletP3A::BraveWalletP3A(BraveWalletService* wallet_service,
@@ -115,8 +90,6 @@ BraveWalletP3A::BraveWalletP3A() = default;
 BraveWalletP3A::~BraveWalletP3A() = default;
 
 void BraveWalletP3A::AddObservers() {
-  wallet_service_->AddObserver(
-      wallet_service_observer_receiver_.BindNewPipeAndPassRemote());
   keyring_service_->AddObserver(
       keyring_service_observer_receiver_.BindNewPipeAndPassRemote());
   update_timer_.Start(FROM_HERE, base::Hours(kRefreshP3AFrequencyHours), this,
@@ -354,26 +327,12 @@ void BraveWalletP3A::WriteUsageStatsToHistogram() {
 void BraveWalletP3A::RecordInitialBraveWalletP3AState() {
   keyring_service_->GetKeyringInfo(mojom::kDefaultKeyringId,
                                    base::BindOnce(&RecordKeyringCreated));
-  RecordDefaultEthereumWalletSetting(profile_prefs_);
-  RecordDefaultSolanaWalletSetting(profile_prefs_);
 }
 
 // KeyringServiceObserver
 void BraveWalletP3A::KeyringCreated(const std::string& keyring_id) {
   keyring_service_->GetKeyringInfo(keyring_id,
                                    base::BindOnce(&RecordKeyringCreated));
-}
-
-// BraveWalletServiceObserver
-void BraveWalletP3A::OnDefaultEthereumWalletChanged(
-    brave_wallet::mojom::DefaultWallet default_wallet) {
-  RecordDefaultEthereumWalletSetting(profile_prefs_);
-}
-
-// BraveWalletServiceObserver
-void BraveWalletP3A::OnDefaultSolanaWalletChanged(
-    brave_wallet::mojom::DefaultWallet default_wallet) {
-  RecordDefaultSolanaWalletSetting(profile_prefs_);
 }
 
 }  // namespace brave_wallet

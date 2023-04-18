@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service_observer_base.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -52,7 +51,6 @@ enum class JSProviderAnswer {
 
 // Reports BraveWallet related P3A data
 class BraveWalletP3A : public mojom::KeyringServiceObserver,
-                       public brave_wallet::BraveWalletServiceObserverBase,
                        public mojom::BraveWalletP3A {
  public:
   BraveWalletP3A(BraveWalletService* wallet_service,
@@ -95,12 +93,6 @@ class BraveWalletP3A : public mojom::KeyringServiceObserver,
   void AutoLockMinutesChanged() override {}
   void SelectedAccountChanged(mojom::CoinType coin) override {}
 
-  // BraveWalletServiceObserver
-  void OnDefaultEthereumWalletChanged(
-      brave_wallet::mojom::DefaultWallet wallet) override;
-  void OnDefaultSolanaWalletChanged(
-      brave_wallet::mojom::DefaultWallet wallet) override;
-
  private:
   void MigrateUsageProfilePrefsToLocalState();
   void OnUpdateTimerFired();
@@ -111,8 +103,6 @@ class BraveWalletP3A : public mojom::KeyringServiceObserver,
   raw_ptr<PrefService> profile_prefs_;
   raw_ptr<PrefService> local_state_;
 
-  mojo::Receiver<brave_wallet::mojom::BraveWalletServiceObserver>
-      wallet_service_observer_receiver_{this};
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
       keyring_service_observer_receiver_{this};
 
