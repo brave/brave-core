@@ -11,20 +11,11 @@ export function getCountryName (code: string) {
   return countryNames.of(code)
 }
 
-function getCountryOptions (countries: string[], defaultCountry: string) {
+function getCountryOptions (countries: string[]) {
   return countries
-    .map((code) => ({
-      code,
-      name: countryNames.of(code) || '',
-      bold: code === defaultCountry
-    }))
+    .map((code) => ({ code, name: countryNames.of(code) || '' }))
     .filter((item) => Boolean(item.name))
-    .sort((a, b) => {
-      if (a.bold !== b.bold) {
-        return a.bold ? -1 : 1
-      }
-      return a.name.localeCompare(b.name)
-    })
+    .sort((a, b) => a.name.localeCompare(b.name))
 }
 
 interface Props {
@@ -33,7 +24,6 @@ interface Props {
   placeholderText: string
   value: string
   onChange: (country: string) => void
-  autoFocus?: boolean
 }
 
 export function CountrySelect (props: Props) {
@@ -44,23 +34,28 @@ export function CountrySelect (props: Props) {
     }
   }
 
+  // When the select element receives focus, automatically select the "default"
+  // option - which will typically be the device country.
+  const onFocus = (event: React.FormEvent<HTMLSelectElement>) => {
+    const { countries, defaultCountry } = props
+    if (!props.value && defaultCountry && countries.includes(defaultCountry)) {
+      props.onChange(defaultCountry)
+    }
+  }
+
   return (
     <select
       className={!props.value ? 'empty' : ''}
       value={props.value}
       onChange={onCountryChange}
-      autoFocus={props.autoFocus}
+      onFocus={onFocus}
       data-test-id='country-select'
     >
       <option value=''>{props.placeholderText}</option>
       {
-        getCountryOptions(props.countries, props.defaultCountry).map(
+        getCountryOptions(props.countries).map(
           (option) => (
-            <option
-              key={option.code}
-              value={option.code}
-              className={option.bold ? 'bold' : ''}
-            >
+            <option key={option.code} value={option.code}>
               {option.name}
             </option>
           )

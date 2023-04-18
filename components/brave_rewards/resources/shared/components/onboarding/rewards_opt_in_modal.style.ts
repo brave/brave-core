@@ -90,10 +90,6 @@ export const selectCountry = styled.div`
     &.empty {
       color: var(--brave-palette-neutral600);
     }
-
-    option.bold {
-      font-weight: bold;
-    }
   }
 `
 
