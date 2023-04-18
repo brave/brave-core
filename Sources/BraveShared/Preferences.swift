@@ -151,7 +151,7 @@ extension Preferences {
     ///
     /// This is a useful setting because it take too long for filter lists to load during launch
     /// and therefore we can try to load them right away and have them ready on the first tab load
-    public static let lastDefaultFilterListFolderPath =
+    @MainActor public static let lastDefaultFilterListFolderPath =
       Option<String?>(key: "caching.last-default-filter-list-folder-path", default: nil)
   }
   

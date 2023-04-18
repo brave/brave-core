@@ -12,7 +12,7 @@ import BraveCore
 
 /// A view showing enabled and disabled community filter lists
 struct FilterListsView: View {
-  @ObservedObject private var filterListDownloader = FilterListResourceDownloader.shared
+  @ObservedObject private var filterListStorage = FilterListStorage.shared
   @ObservedObject private var customFilterListStorage = CustomFilterListStorage.shared
   @Environment(\.editMode) private var editMode
   @State private var showingAddSheet = false
@@ -81,7 +81,7 @@ struct FilterListsView: View {
       }
       
       Section {
-        ForEach($filterListDownloader.filterLists) { $filterList in
+        ForEach($filterListStorage.filterLists) { $filterList in
           Toggle(isOn: $filterList.isEnabled) {
             VStack(alignment: .leading) {
               Text(filterList.entry.title)
