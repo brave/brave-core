@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/account/account_observer.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/notification_ads/notification_ad_event_handler_observer.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_observer.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_delegate.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
@@ -51,7 +51,7 @@ class NotificationAdHandler final
       public AdsClientNotifierObserver,
       public BrowserManagerObserver,
       public notification_ads::EventHandlerObserver,
-      public notification_ads::ServingObserver {
+      public notification_ads::ServingDelegate {
  public:
   NotificationAdHandler(
       Account* account,
@@ -86,7 +86,7 @@ class NotificationAdHandler final
   void OnBrowserDidEnterForeground() override;
   void OnBrowserDidEnterBackground() override;
 
-  // notification_ads::ServingObserver:
+  // notification_ads::ServingDelegate:
   void OnOpportunityAroseToServeNotificationAd(
       const SegmentList& segments) override;
   void OnDidServeNotificationAd(const NotificationAdInfo& ad) override;

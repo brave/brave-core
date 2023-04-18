@@ -9,12 +9,12 @@
 #include <memory>
 #include <string>
 
+#include "base/check_op.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/observer_list.h"
 #include "brave/components/brave_ads/core/ads_callback.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_observer.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_delegate.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
-#include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
 namespace brave_ads {
 
@@ -49,13 +49,17 @@ class Serving final {
 
   ~Serving();
 
-  void AddObserver(ServingObserver* observer);
-  void RemoveObserver(ServingObserver* observer);
+  void SetDelegate(ServingDelegate* delegate) {
+    DCHECK_EQ(delegate_, nullptr);
+    delegate_ = delegate;
+  }
 
   void MaybeServeAd(const std::string& dimensions,
                     MaybeServeInlineContentAdCallback callback);
 
  private:
+  bool IsSupported() const { return static_cast<bool>(eligible_ads_); }
+
   void OnBuildUserModel(const std::string& dimensions,
                         MaybeServeInlineContentAdCallback callback,
                         const targeting::UserModelInfo& user_model);
@@ -65,19 +69,12 @@ class Serving final {
                          bool had_opportunity,
                          const CreativeInlineContentAdList& creative_ads);
 
-  bool IsSupported() const { return static_cast<bool>(eligible_ads_); }
-
   void ServeAd(const InlineContentAdInfo& ad,
                MaybeServeInlineContentAdCallback callback);
   void FailedToServeAd(const std::string& dimensions,
                        MaybeServeInlineContentAdCallback callback);
 
-  void NotifyOpportunityAroseToServeInlineContentAd(
-      const SegmentList& segments) const;
-  void NotifyDidServeInlineContentAd(const InlineContentAdInfo& ad) const;
-  void NotifyFailedToServeInlineContentAd() const;
-
-  base::ObserverList<ServingObserver> observers_;
+  raw_ptr<ServingDelegate> delegate_ = nullptr;
 
   std::unique_ptr<EligibleAdsBase> eligible_ads_;
 

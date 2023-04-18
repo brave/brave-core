@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving.h"
 
-#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/rand_util.h"
 #include "base/time/time.h"
@@ -44,16 +43,8 @@ Serving::Serving(const geographic::SubdivisionTargeting& subdivision_targeting,
 
 Serving::~Serving() {
   AdsClientHelper::RemoveObserver(this);
-}
 
-void Serving::AddObserver(ServingObserver* observer) {
-  DCHECK(observer);
-  observers_.AddObserver(observer);
-}
-
-void Serving::RemoveObserver(ServingObserver* observer) {
-  DCHECK(observer);
-  observers_.RemoveObserver(observer);
+  delegate_ = nullptr;
 }
 
 void Serving::StartServingAdsAtRegularIntervals() {
@@ -121,8 +112,10 @@ void Serving::OnGetForUserModel(
     const bool had_opportunity,
     const CreativeNotificationAdList& creative_ads) {
   if (had_opportunity) {
-    const SegmentList segments = targeting::GetTopChildSegments(user_model);
-    NotifyOpportunityAroseToServeNotificationAd(segments);
+    if (delegate_) {
+      delegate_->OnOpportunityAroseToServeNotificationAd(
+          targeting::GetTopChildSegments(user_model));
+    }
   }
 
   if (creative_ads.empty()) {
@@ -137,6 +130,21 @@ void Serving::OnGetForUserModel(
 
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
   ServeAd(ad);
+}
+
+void Serving::OnAdsPerHourPrefChanged() {
+  const int ads_per_hour = settings::GetMaximumNotificationAdsPerHour();
+  BLOG(1, "Maximum notification ads per hour changed to " << ads_per_hour);
+
+  if (!ShouldServeAdsAtRegularIntervals()) {
+    return;
+  }
+
+  if (ads_per_hour == 0) {
+    return StopServingAdsAtRegularIntervals();
+  }
+
+  MaybeServeAdAtNextRegularInterval();
 }
 
 void Serving::MaybeServeAdAtNextRegularInterval() {
@@ -197,7 +205,9 @@ void Serving::ServeAd(const NotificationAdInfo& ad) {
 
   is_serving_ = false;
 
-  NotifyDidServeNotificationAd(ad);
+  if (delegate_) {
+    delegate_->OnDidServeNotificationAd(ad);
+  }
 
   MaybeServeAdAtNextRegularInterval();
 }
@@ -205,49 +215,17 @@ void Serving::ServeAd(const NotificationAdInfo& ad) {
 void Serving::FailedToServeAd() {
   is_serving_ = false;
 
-  NotifyFailedToServeNotificationAd();
+  if (delegate_) {
+    delegate_->OnFailedToServeNotificationAd();
+  }
 
   RetryServingAdAtNextInterval();
-}
-
-void Serving::NotifyOpportunityAroseToServeNotificationAd(
-    const SegmentList& segments) const {
-  for (ServingObserver& observer : observers_) {
-    observer.OnOpportunityAroseToServeNotificationAd(segments);
-  }
-}
-
-void Serving::NotifyDidServeNotificationAd(const NotificationAdInfo& ad) const {
-  for (ServingObserver& observer : observers_) {
-    observer.OnDidServeNotificationAd(ad);
-  }
-}
-
-void Serving::NotifyFailedToServeNotificationAd() const {
-  for (ServingObserver& observer : observers_) {
-    observer.OnFailedToServeNotificationAd();
-  }
 }
 
 void Serving::OnNotifyPrefDidChange(const std::string& path) {
   if (path == prefs::kMaximumNotificationAdsPerHour) {
     OnAdsPerHourPrefChanged();
   }
-}
-
-void Serving::OnAdsPerHourPrefChanged() {
-  const int ads_per_hour = settings::GetMaximumNotificationAdsPerHour();
-  BLOG(1, "Maximum notification ads per hour changed to " << ads_per_hour);
-
-  if (!ShouldServeAdsAtRegularIntervals()) {
-    return;
-  }
-
-  if (ads_per_hour == 0) {
-    return StopServingAdsAtRegularIntervals();
-  }
-
-  MaybeServeAdAtNextRegularInterval();
 }
 
 }  // namespace brave_ads::notification_ads
