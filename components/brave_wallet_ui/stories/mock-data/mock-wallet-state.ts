@@ -11,7 +11,7 @@ import { BraveWallet, WalletAccountType, WalletState } from '../../constants/typ
 import { AllNetworksOptionDefault } from '../../options/network-filter-options'
 import { HighToLowAssetsFilterOption } from '../../options/asset-filter-options'
 import { AllAccountsOption } from '../../options/account-filter-options'
-import { mockMoonCatNFT } from './mock-asset-options'
+import { mockBasicAttentionToken, mockMoonCatNFT } from './mock-asset-options'
 
 // mocks
 import { mockedErc20ApprovalTransaction, mockTransactionInfo } from './mock-transaction-info'
@@ -199,7 +199,8 @@ export const mockWalletState: WalletState = {
       visible: true,
       coin: BraveWallet.CoinType.ETH,
       chainId: BraveWallet.MAINNET_CHAIN_ID
-    }
+    },
+    mockBasicAttentionToken
   ],
   gasEstimates: undefined,
   hasIncorrectPassword: false,
