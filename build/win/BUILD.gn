@@ -26,14 +26,10 @@ copy("copy_pdb") {
 action("create_signed_installer") {
   script = "//brave/script/create-signed-installer.py"
   inputs = [ "$root_out_dir/mini_installer.exe" ]
-  outputs = [
-    "$root_out_dir/brave_installer.exe",
-    "$root_out_dir/$brave_installer_exe",
-  ]
-  out_dir = rebase_path(root_out_dir, "//")
+  outputs = [ "$root_out_dir/$brave_installer_exe" ]
   args = [
-    "--root_out_dir=$out_dir",
-    "--brave_installer_exe=$brave_installer_exe",
+    "mini_installer.exe",
+    "$brave_installer_exe",
   ]
 
   if (skip_signing) {

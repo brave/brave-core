@@ -103,7 +103,7 @@ if (is_win) {
   if (target_cpu == "x86") {
     _arch = "32"
   }
-  brave_installer_exe = "brave_installer$brave_underline_full_version.exe"
+  brave_installer_exe = "brave_installer.exe"
   brave_stub_installer_exe =
       "BraveBrowser$_channel" + "Setup$_arch$brave_underline_full_version.exe"
   brave_untagged_stub_installer_exe =
