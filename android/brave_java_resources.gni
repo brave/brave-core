@@ -533,6 +533,7 @@ brave_java_resources = [
   "java/res/drawable/ic_eth.xml",
   "java/res/drawable/ic_eth_24.xml",
   "java/res/drawable/ic_expand_arrows.xml",
+  "java/res/drawable/ic_fil_asset_icon.xml",
   "java/res/drawable/ic_fingerprint.xml",
   "java/res/drawable/ic_following.xml",
   "java/res/drawable/ic_gemini_logo_cyan.xml",

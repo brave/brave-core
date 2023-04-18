@@ -131,11 +131,10 @@ public class AssetUtils {
             case BraveWalletConstants.SOLANA_KEYRING_ID:
                 coin = CoinType.SOL;
                 break;
-            // Todo(pav): Un-comment once Filecoin is supported
-            // case BraveWalletConstants.FILECOIN_KEYRING_ID:
-            // case BraveWalletConstants.FILECOIN_TESTNET_KEYRING_ID:
-            //     coin = CoinType.FIL;
-            //     break;
+            case BraveWalletConstants.FILECOIN_KEYRING_ID:
+            case BraveWalletConstants.FILECOIN_TESTNET_KEYRING_ID:
+                coin = CoinType.FIL;
+                break;
             default:
                 // Do nothing
         }
@@ -172,8 +171,8 @@ public class AssetUtils {
                 return "SOLANA";
             case BraveWalletConstants.OPTIMISM_MAINNET_CHAIN_ID:
                 return "OPTIMISM";
-            //            case BraveWalletConstants.FILECOIN_MAINNET: return "FILECOIN"; /*not
-            //            supported yet*/
+            case BraveWalletConstants.FILECOIN_MAINNET:
+                return "FILECOIN";
             case BraveWalletConstants.MAINNET_CHAIN_ID:
             case BraveWalletConstants.CELO_MAINNET_CHAIN_ID:
             default:

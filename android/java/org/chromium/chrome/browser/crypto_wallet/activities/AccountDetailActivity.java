@@ -123,7 +123,12 @@ public class AccountDetailActivity
                 addAccountActivityIntent.putExtra(Utils.ISUPDATEACCOUNT, true);
                 CryptoAccountTypeInfo cryptoAccountTypeInfo;
                 // TODO(sergz): Add other networks here
-                if (mCoinType == CoinType.SOL) {
+                if (mCoinType == CoinType.FIL) {
+                    cryptoAccountTypeInfo = new CryptoAccountTypeInfo(
+                            getString(R.string.brave_wallet_create_account_filecoin_description),
+                            getString(R.string.wallet_fil_name), CoinType.FIL,
+                            R.drawable.ic_fil_asset_icon);
+                } else if (mCoinType == CoinType.SOL) {
                     cryptoAccountTypeInfo = new CryptoAccountTypeInfo(
                             getString(R.string.brave_wallet_create_account_solana_description),
                             getString(R.string.wallet_sol_name), CoinType.SOL,
