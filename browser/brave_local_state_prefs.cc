@@ -13,6 +13,7 @@
 #include "brave/browser/metrics/buildflags/buildflags.h"
 #include "brave/browser/metrics/metrics_reporting_util.h"
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
+#include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
@@ -140,6 +141,8 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   misc_metrics::PageMetricsService::RegisterPrefs(registry);
   brave_ads::BraveStatsHelper::RegisterLocalStatePrefs(registry);
   misc_metrics::GeneralBrowserUsage::RegisterPrefs(registry);
+
+  playlist::PlaylistServiceFactory::RegisterLocalStatePrefs(registry);
 }
 
 }  // namespace brave

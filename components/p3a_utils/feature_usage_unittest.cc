@@ -15,10 +15,12 @@ constexpr char kFirstUsagePrefName[] = "brave.feature_usage.first_use";
 constexpr char kLastUsagePrefName[] = "brave.feature_usage.last_use";
 constexpr char kUsedSecondDayPrefName[] = "brave.feature_usage.used_second_day";
 constexpr char kDaysInMonthPrefName[] = "brave.feature_usage.days_in_month";
+constexpr char kDaysInWeekPrefName[] = "brave.feature_usage.days_in_week";
 
 constexpr char kNewUserReturningHistogramName[] =
     "Brave.Feature.NewUserReturning";
 constexpr char kDaysInMonthHistogramName[] = "Brave.Feature.DaysInMonth";
+constexpr char kDaysInWeekHistogramName[] = "Brave.Feature.DaysInWeek";
 constexpr char kLastUsageTimeHistogramName[] = "Brave.Feature.LastUsageTime";
 
 class FeatureUsageTest : public testing::Test {
@@ -30,7 +32,8 @@ class FeatureUsageTest : public testing::Test {
   void SetUp() override {
     PrefRegistrySimple* registry = pref_service_.registry();
     RegisterFeatureUsagePrefs(registry, kFirstUsagePrefName, kLastUsagePrefName,
-                              kUsedSecondDayPrefName, kDaysInMonthPrefName);
+                              kUsedSecondDayPrefName, kDaysInMonthPrefName,
+                              kDaysInWeekPrefName);
     task_environment_.AdvanceClock(base::Days(2));
   }
 
@@ -49,6 +52,11 @@ class FeatureUsageTest : public testing::Test {
     ::p3a_utils::RecordFeatureDaysInMonthUsed(
         &pref_service_, is_add, kLastUsagePrefName, kDaysInMonthPrefName,
         kDaysInMonthHistogramName);
+  }
+
+  void RecordFeatureDaysInWeekUsed(bool is_add) {
+    ::p3a_utils::RecordFeatureDaysInWeekUsed(
+        &pref_service_, is_add, kDaysInWeekPrefName, kDaysInWeekHistogramName);
   }
 
   void RecordFeatureLastUsageTimeMetric() {
@@ -143,6 +151,39 @@ TEST_F(FeatureUsageTest, TestDaysInMonthUsedCount) {
 
   histogram_tester_.ExpectTotalCount(kDaysInMonthHistogramName, 9);
   histogram_tester_.ExpectBucketCount(kDaysInMonthHistogramName, 2, 2);
+}
+
+TEST_F(FeatureUsageTest, TestDaysInWeekUsedCount) {
+  histogram_tester_.ExpectTotalCount(kDaysInWeekHistogramName, 0);
+  RecordFeatureDaysInWeekUsed(true);
+
+  histogram_tester_.ExpectUniqueSample(kDaysInWeekHistogramName, 1, 1);
+  // same day
+  RecordFeatureDaysInWeekUsed(true);
+  histogram_tester_.ExpectUniqueSample(kDaysInWeekHistogramName, 1, 2);
+  task_environment_.AdvanceClock(base::Days(1));
+
+  RecordFeatureDaysInWeekUsed(true);
+  // second day
+  histogram_tester_.ExpectUniqueSample(kDaysInWeekHistogramName, 1, 3);
+  task_environment_.AdvanceClock(base::Days(1));
+
+  RecordFeatureDaysInWeekUsed(true);
+  histogram_tester_.ExpectBucketCount(kDaysInWeekHistogramName, 2, 1);
+
+  task_environment_.AdvanceClock(base::Days(14));
+  RecordFeatureDaysInWeekUsed(true);
+  histogram_tester_.ExpectBucketCount(kDaysInWeekHistogramName, 1, 4);
+  RecordFeatureDaysInWeekUsed(false);
+  RecordFeatureDaysInWeekUsed(false);
+  RecordFeatureDaysInWeekUsed(false);
+  RecordFeatureDaysInWeekUsed(false);
+  histogram_tester_.ExpectBucketCount(kDaysInWeekHistogramName, 1, 8);
+
+  histogram_tester_.ExpectTotalCount(kDaysInWeekHistogramName, 9);
+  task_environment_.AdvanceClock(base::Days(14));
+  RecordFeatureDaysInWeekUsed(false);
+  histogram_tester_.ExpectTotalCount(kDaysInWeekHistogramName, 9);
 }
 
 TEST_F(FeatureUsageTest, TestNewUserReturningFollowingDay) {

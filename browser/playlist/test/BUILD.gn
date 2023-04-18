@@ -41,7 +41,10 @@ source_set("unit_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [ "playlist_service_unittest.cc" ]
+  sources = [
+    "playlist_p3a_unittest.cc",
+    "playlist_service_unittest.cc",
+  ]
 
   deps = [
     "//base",

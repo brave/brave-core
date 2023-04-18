@@ -79,9 +79,9 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterTimePref(kBraveWalletP3ALastReportTime, base::Time());
   registry->RegisterTimePref(kBraveWalletP3AFirstReportTime, base::Time());
   registry->RegisterListPref(kBraveWalletP3AWeeklyStorage);
-  p3a_utils::RegisterFeatureUsagePrefs(registry, kBraveWalletP3AFirstUnlockTime,
-                                       kBraveWalletP3ALastUnlockTime,
-                                       kBraveWalletP3AUsedSecondDay, nullptr);
+  p3a_utils::RegisterFeatureUsagePrefs(
+      registry, kBraveWalletP3AFirstUnlockTime, kBraveWalletP3ALastUnlockTime,
+      kBraveWalletP3AUsedSecondDay, nullptr, nullptr);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -120,9 +120,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   // TODO(djandries): remove the following prefs at some point,
   //                  since they're now maintained in local state
-  p3a_utils::RegisterFeatureUsagePrefs(registry, kBraveWalletP3AFirstUnlockTime,
-                                       kBraveWalletP3ALastUnlockTime,
-                                       kBraveWalletP3AUsedSecondDay, nullptr);
+  p3a_utils::RegisterFeatureUsagePrefs(
+      registry, kBraveWalletP3AFirstUnlockTime, kBraveWalletP3ALastUnlockTime,
+      kBraveWalletP3AUsedSecondDay, nullptr, nullptr);
   registry->RegisterTimePref(kBraveWalletLastUnlockTime, base::Time());
   registry->RegisterTimePref(kBraveWalletP3ALastReportTime, base::Time());
   registry->RegisterTimePref(kBraveWalletP3AFirstReportTime, base::Time());

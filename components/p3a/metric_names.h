@@ -42,6 +42,9 @@ constexpr inline auto kCollectedTypicalHistograms =
     "Brave.NTP.SponsoredNewTabsCreated",
     "Brave.Omnibox.SearchCount",
     "Brave.P3A.SentAnswersCount",
+    "Brave.Playlist.FirstTimeOffset",
+    "Brave.Playlist.NewUserReturning",
+    "Brave.Playlist.UsageDaysInWeek",
     "Brave.Rewards.AdsState.2",
     "Brave.Rewards.AutoContributionsState.2",
     "Brave.Rewards.TipsState.2",
@@ -179,6 +182,7 @@ constexpr inline auto kCollectedSlowHistograms =
     // Please remove following placeholder metric once
     // static slow metrics are added
     "Brave.P3A.TestSlowMetric",
+    "Brave.Playlist.LastUsageTime",
 });
 
 constexpr inline auto kCollectedExpressHistograms =
@@ -186,14 +190,16 @@ constexpr inline auto kCollectedExpressHistograms =
     // Keep the top metric for the express unit test
     // Remove it when there are other non ephemeral metrics at the beginning of the set
     "Brave.P3A.TestExpressMetric",
-    "Brave.Rewards.EnabledInstallationTime"
+    "Brave.Rewards.EnabledInstallationTime",
 });
 
 // List of metrics that should only be sent once per latest histogram update.
 // Once the metric value has been sent, the value will be removed from the log store.
 constexpr inline auto kEphemeralHistograms =
   base::MakeFixedFlatSet<base::StringPiece>({
-    "Brave.Rewards.EnabledInstallationTime"
+    "Brave.Playlist.UsageDaysInWeek",
+    "Brave.Playlist.FirstTimeOffset",
+    "Brave.Rewards.EnabledInstallationTime",
 });
 
 // clang-format on
