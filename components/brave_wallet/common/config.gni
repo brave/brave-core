@@ -1,3 +1,4 @@
 declare_args() {
   brave_infura_project_id = ""
+  brave_zero_ex_api_key = ""
 }

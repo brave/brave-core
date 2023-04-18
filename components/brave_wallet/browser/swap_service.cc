@@ -12,6 +12,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/swap_request_helper.h"
 #include "brave/components/brave_wallet/browser/swap_response_parser.h"
+#include "brave/components/brave_wallet/common/buildflags.h"
 #include "net/base/load_flags.h"
 #include "net/base/url_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -119,6 +120,14 @@ GURL AppendJupiterQuoteParams(
   // until there's a reliable way to get around this UX issue.
   url = net::AppendQueryParameter(url, "onlyDirectRoutes", "true");
   return url;
+}
+
+base::flat_map<std::string, std::string> Get0xAPIHeaders() {
+  std::string brave_zero_ex_api_key(BUILDFLAG(BRAVE_ZERO_EX_API_KEY));
+  if (brave_zero_ex_api_key.empty()) {
+    return {};
+  }
+  return {{"0x-api-key", std::move(brave_zero_ex_api_key)}};
 }
 
 }  // namespace
@@ -297,7 +306,7 @@ void SwapService::GetPriceQuote(mojom::SwapParamsPtr swap_params,
       "GET",
       GetPriceQuoteURL(std::move(swap_params),
                        json_rpc_service_->GetChainId(mojom::CoinType::ETH)),
-      "", "", true, std::move(internal_callback));
+      "", "", true, std::move(internal_callback), Get0xAPIHeaders());
 }
 
 void SwapService::OnGetPriceQuote(GetPriceQuoteCallback callback,
@@ -340,7 +349,7 @@ void SwapService::GetTransactionPayload(
       GetTransactionPayloadURL(
           std::move(swap_params),
           json_rpc_service_->GetChainId(mojom::CoinType::ETH)),
-      "", "", true, std::move(internal_callback));
+      "", "", true, std::move(internal_callback), Get0xAPIHeaders());
 }
 
 void SwapService::OnGetTransactionPayload(

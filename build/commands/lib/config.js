@@ -122,6 +122,7 @@ const Config = function () {
   this.googleDefaultClientSecret = getNPMConfig(['google_default_client_secret']) || ''
   this.braveServicesKey = getNPMConfig(['brave_services_key']) || ''
   this.infuraProjectId = getNPMConfig(['brave_infura_project_id']) || ''
+  this.braveZeroExApiKey = getNPMConfig(['brave_zero_ex_api_key']) || ''
   this.bitflyerClientId = getNPMConfig(['bitflyer_client_id']) || ''
   this.bitflyerClientSecret = getNPMConfig(['bitflyer_client_secret']) || ''
   this.bitflyerStagingClientId = getNPMConfig(['bitflyer_staging_client_id']) || ''
@@ -286,6 +287,7 @@ Config.prototype.buildArgs = function () {
     google_default_client_id: this.googleDefaultClientId,
     google_default_client_secret: this.googleDefaultClientSecret,
     brave_infura_project_id: this.infuraProjectId,
+    brave_zero_ex_api_key: this.braveZeroExApiKey,
     bitflyer_client_id: this.bitflyerClientId,
     bitflyer_client_secret: this.bitflyerClientSecret,
     bitflyer_staging_client_id: this.bitflyerStagingClientId,
@@ -743,7 +745,11 @@ Config.prototype.update = function (options) {
   }
 
   if (options.brave_infura_project_id) {
-    this.infuraProjectId = options.infura_project_id
+    this.infuraProjectId = options.brave_infura_project_id
+  }
+
+  if (options.brave_zero_ex_api_key) {
+    this.braveZeroExApiKey = options.brave_zero_ex_api_key
   }
 
   if (options.bitflyer_client_id) {
