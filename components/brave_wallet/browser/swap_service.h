@@ -55,6 +55,7 @@ class SwapService : public KeyedService, public mojom::SwapService {
   void IsSwapSupported(const std::string& chain_id,
                        IsSwapSupportedCallback callback) override;
 
+  static std::string GetBaseSwapURL(const std::string& chain_id);
   static GURL GetPriceQuoteURL(const mojom::SwapParamsPtr swap_params,
                                const std::string& chain_id);
   static GURL GetTransactionPayloadURL(mojom::SwapParamsPtr swap_params,

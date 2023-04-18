@@ -66,36 +66,31 @@ bool HasRFQTLiquidity(const std::string& chain_id) {
 }
 
 std::string GetFee(const std::string& chain_id) {
-  std::string fee;
   if (IsEVMNetworkSupported(chain_id)) {
-    fee = brave_wallet::kBuyTokenPercentageFee;
+    return brave_wallet::kBuyTokenPercentageFee;
   } else if (IsSolanaNetworkSupported(chain_id)) {
-    fee = brave_wallet::kSolanaBuyTokenFeeBps;
+    return brave_wallet::kSolanaBuyTokenFeeBps;
   }
 
-  return fee;
+  return "";
 }
 
 std::string GetFeeRecipient(const std::string& chain_id) {
-  std::string feeRecipient;
-
   if (IsEVMNetworkSupported(chain_id)) {
-    feeRecipient = brave_wallet::kEVMFeeRecipient;
+    return brave_wallet::kEVMFeeRecipient;
   } else if (IsSolanaNetworkSupported(chain_id)) {
-    feeRecipient = brave_wallet::kSolanaFeeRecipient;
+    return brave_wallet::kSolanaFeeRecipient;
   }
 
-  return feeRecipient;
+  return "";
 }
 
 std::string GetAffiliateAddress(const std::string& chain_id) {
-  std::string affiliateAddress;
-
   if (IsEVMNetworkSupported(chain_id)) {
-    affiliateAddress = brave_wallet::kAffiliateAddress;
+    return brave_wallet::kAffiliateAddress;
   }
 
-  return affiliateAddress;
+  return "";
 }
 
 GURL Append0xSwapParams(const GURL& swap_url,
@@ -162,35 +157,6 @@ base::flat_map<std::string, std::string> Get0xAPIHeaders() {
   return {{brave_wallet::k0xAPIKeyHeader, std::move(brave_zero_ex_api_key)}};
 }
 
-std::string GetBaseSwapURL(const std::string& chain_id) {
-  std::string url;
-
-  if (chain_id == brave_wallet::mojom::kGoerliChainId) {
-    url = brave_wallet::kGoerliSwapBaseAPIURL;
-  } else if (chain_id == brave_wallet::mojom::kMainnetChainId) {
-    url = brave_wallet::kSwapBaseAPIURL;
-  } else if (chain_id == brave_wallet::mojom::kPolygonMainnetChainId) {
-    url = brave_wallet::kPolygonSwapBaseAPIURL;
-  } else if (chain_id ==
-             brave_wallet::mojom::kBinanceSmartChainMainnetChainId) {
-    url = brave_wallet::kBinanceSmartChainSwapBaseAPIURL;
-  } else if (chain_id == brave_wallet::mojom::kAvalancheMainnetChainId) {
-    url = brave_wallet::kAvalancheSwapBaseAPIURL;
-  } else if (chain_id == brave_wallet::mojom::kFantomMainnetChainId) {
-    url = brave_wallet::kFantomSwapBaseAPIURL;
-  } else if (chain_id == brave_wallet::mojom::kCeloMainnetChainId) {
-    url = brave_wallet::kCeloSwapBaseAPIURL;
-  } else if (chain_id == brave_wallet::mojom::kOptimismMainnetChainId) {
-    url = brave_wallet::kOptimismSwapBaseAPIURL;
-  } else if (chain_id == brave_wallet::mojom::kArbitrumMainnetChainId) {
-    url = brave_wallet::kArbitrumSwapBaseAPIURL;
-  } else if (chain_id == brave_wallet::mojom::kSolanaMainnet) {
-    url = brave_wallet::kSolanaSwapBaseAPIURL;
-  }
-
-  return url;
-}
-
 }  // namespace
 
 namespace brave_wallet {
@@ -223,6 +189,38 @@ void SwapService::SetBaseURLForTest(const GURL& base_url_for_test) {
 }
 
 // static
+std::string SwapService::GetBaseSwapURL(const std::string& chain_id) {
+  if (!base_url_for_test_.is_empty()) {
+    return base_url_for_test_.spec();
+  }
+
+  if (chain_id == brave_wallet::mojom::kGoerliChainId) {
+    return brave_wallet::kGoerliSwapBaseAPIURL;
+  } else if (chain_id == brave_wallet::mojom::kMainnetChainId) {
+    return brave_wallet::kSwapBaseAPIURL;
+  } else if (chain_id == brave_wallet::mojom::kPolygonMainnetChainId) {
+    return brave_wallet::kPolygonSwapBaseAPIURL;
+  } else if (chain_id ==
+             brave_wallet::mojom::kBinanceSmartChainMainnetChainId) {
+    return brave_wallet::kBinanceSmartChainSwapBaseAPIURL;
+  } else if (chain_id == brave_wallet::mojom::kAvalancheMainnetChainId) {
+    return brave_wallet::kAvalancheSwapBaseAPIURL;
+  } else if (chain_id == brave_wallet::mojom::kFantomMainnetChainId) {
+    return brave_wallet::kFantomSwapBaseAPIURL;
+  } else if (chain_id == brave_wallet::mojom::kCeloMainnetChainId) {
+    return brave_wallet::kCeloSwapBaseAPIURL;
+  } else if (chain_id == brave_wallet::mojom::kOptimismMainnetChainId) {
+    return brave_wallet::kOptimismSwapBaseAPIURL;
+  } else if (chain_id == brave_wallet::mojom::kArbitrumMainnetChainId) {
+    return brave_wallet::kArbitrumSwapBaseAPIURL;
+  } else if (chain_id == brave_wallet::mojom::kSolanaMainnet) {
+    return brave_wallet::kSolanaSwapBaseAPIURL;
+  }
+
+  return "";
+}
+
+// static
 GURL SwapService::GetPriceQuoteURL(mojom::SwapParamsPtr swap_params,
                                    const std::string& chain_id) {
   const bool use_rfqt = HasRFQTLiquidity(chain_id);
@@ -234,10 +232,9 @@ GURL SwapService::GetPriceQuoteURL(mojom::SwapParamsPtr swap_params,
   // this, noting the inability of /price to discover optimal RFQ quotes. This
   // should be considered a temporary workaround until 0x comes up with a
   // solution.
-  std::string spec = base::StringPrintf(
-      use_rfqt ? "%sswap/v1/quote" : "%sswap/v1/price",
-      base_url_for_test_.is_empty() ? GetBaseSwapURL(chain_id).c_str()
-                                    : base_url_for_test_.spec().c_str());
+  std::string spec =
+      base::StringPrintf(use_rfqt ? "%sswap/v1/quote" : "%sswap/v1/price",
+                         GetBaseSwapURL(chain_id).c_str());
   GURL url(spec);
   url = Append0xSwapParams(url, *swap_params, chain_id);
   // That flag prevents an allowance validation by the 0x router. Disable it
@@ -254,10 +251,8 @@ GURL SwapService::GetPriceQuoteURL(mojom::SwapParamsPtr swap_params,
 // static
 GURL SwapService::GetTransactionPayloadURL(mojom::SwapParamsPtr swap_params,
                                            const std::string& chain_id) {
-  std::string spec = base::StringPrintf(
-      "%sswap/v1/quote", base_url_for_test_.is_empty()
-                             ? GetBaseSwapURL(chain_id).c_str()
-                             : base_url_for_test_.spec().c_str());
+  std::string spec =
+      base::StringPrintf("%sswap/v1/quote", GetBaseSwapURL(chain_id).c_str());
   GURL url(spec);
   url = Append0xSwapParams(url, *swap_params, chain_id);
 
@@ -274,9 +269,7 @@ GURL SwapService::GetJupiterQuoteURL(mojom::JupiterQuoteParamsPtr params,
   DCHECK(params);
 
   std::string spec =
-      base::StringPrintf("%sv1/quote", base_url_for_test_.is_empty()
-                                           ? GetBaseSwapURL(chain_id).c_str()
-                                           : base_url_for_test_.spec().c_str());
+      base::StringPrintf("%sv1/quote", GetBaseSwapURL(chain_id).c_str());
   GURL url(spec);
   url = AppendJupiterQuoteParams(url, *params, chain_id);
 
@@ -286,9 +279,7 @@ GURL SwapService::GetJupiterQuoteURL(mojom::JupiterQuoteParamsPtr params,
 // static
 GURL SwapService::GetJupiterSwapTransactionsURL(const std::string& chain_id) {
   std::string spec =
-      base::StringPrintf("%sv1/swap", base_url_for_test_.is_empty()
-                                          ? GetBaseSwapURL(chain_id).c_str()
-                                          : base_url_for_test_.spec().c_str());
+      base::StringPrintf("%sv1/swap", GetBaseSwapURL(chain_id).c_str());
   GURL url(spec);
   return url;
 }
@@ -325,8 +316,7 @@ void SwapService::OnGetPriceQuote(GetPriceQuoteCallback callback,
   if (!api_request_result.Is2XXResponseCode()) {
     if (auto swap_error_response =
             ParseSwapErrorResponse(api_request_result.value_body())) {
-      std::move(callback).Run(nullptr, std::move(swap_error_response),
-                              base::EmptyString());
+      std::move(callback).Run(nullptr, std::move(swap_error_response), "");
     } else {
       std::move(callback).Run(
           nullptr, nullptr, l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
@@ -336,8 +326,7 @@ void SwapService::OnGetPriceQuote(GetPriceQuoteCallback callback,
 
   if (auto swap_response =
           ParseSwapResponse(api_request_result.value_body(), false)) {
-    std::move(callback).Run(std::move(swap_response), nullptr,
-                            base::EmptyString());
+    std::move(callback).Run(std::move(swap_response), nullptr, "");
   } else {
     std::move(callback).Run(nullptr, nullptr,
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
@@ -373,8 +362,7 @@ void SwapService::OnGetTransactionPayload(
   if (!api_request_result.Is2XXResponseCode()) {
     if (auto swap_error_response =
             ParseSwapErrorResponse(api_request_result.value_body())) {
-      std::move(callback).Run(nullptr, std::move(swap_error_response),
-                              base::EmptyString());
+      std::move(callback).Run(nullptr, std::move(swap_error_response), "");
     } else {
       std::move(callback).Run(
           nullptr, nullptr, l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
@@ -385,8 +373,7 @@ void SwapService::OnGetTransactionPayload(
 
   if (auto swap_response =
           ParseSwapResponse(api_request_result.value_body(), true)) {
-    std::move(callback).Run(std::move(swap_response), nullptr,
-                            base::EmptyString());
+    std::move(callback).Run(std::move(swap_response), nullptr, "");
   } else {
     std::move(callback).Run(nullptr, nullptr,
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
@@ -424,8 +411,7 @@ void SwapService::OnGetJupiterQuote(GetJupiterQuoteCallback callback,
   if (!api_request_result.Is2XXResponseCode()) {
     if (auto error_response =
             ParseJupiterErrorResponse(api_request_result.value_body())) {
-      std::move(callback).Run(nullptr, std::move(error_response),
-                              base::EmptyString());
+      std::move(callback).Run(nullptr, std::move(error_response), "");
     } else {
       std::move(callback).Run(
           nullptr, nullptr, l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
@@ -434,8 +420,7 @@ void SwapService::OnGetJupiterQuote(GetJupiterQuoteCallback callback,
   }
 
   if (auto swap_quote = ParseJupiterQuote(api_request_result.value_body())) {
-    std::move(callback).Run(std::move(swap_quote), nullptr,
-                            base::EmptyString());
+    std::move(callback).Run(std::move(swap_quote), nullptr, "");
   } else {
     std::move(callback).Run(nullptr, nullptr,
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
@@ -477,8 +462,7 @@ void SwapService::OnGetJupiterSwapTransactions(
   if (!api_request_result.Is2XXResponseCode()) {
     if (auto error_response =
             ParseJupiterErrorResponse(api_request_result.value_body())) {
-      std::move(callback).Run(nullptr, std::move(error_response),
-                              base::EmptyString());
+      std::move(callback).Run(nullptr, std::move(error_response), "");
     } else {
       std::move(callback).Run(
           nullptr, nullptr, l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
@@ -489,8 +473,7 @@ void SwapService::OnGetJupiterSwapTransactions(
 
   if (auto swap_transactions =
           ParseJupiterSwapTransactions(api_request_result.value_body())) {
-    std::move(callback).Run(std::move(swap_transactions), nullptr,
-                            base::EmptyString());
+    std::move(callback).Run(std::move(swap_transactions), nullptr, "");
   } else {
     std::move(callback).Run(nullptr, nullptr,
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
