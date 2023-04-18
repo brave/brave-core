@@ -20,7 +20,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_unittest_constants.h"
-#include "brave/components/brave_ads/core/sys_info.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "third_party/re2/src/re2/re2.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -37,7 +37,8 @@ TEST_F(BatAdsConfirmationUserDataBuilderTest,
 
   SetCatalogId(kCatalogId);
 
-  SysInfo().device_id =
+  auto& sys_info = GlobalState::GetInstance()->SysInfo();
+  sys_info.device_id =
       "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 
   const base::Time time =
@@ -75,7 +76,8 @@ TEST_F(BatAdsConfirmationUserDataBuilderTest,
 
   SetCatalogId(kCatalogId);
 
-  SysInfo().device_id =
+  auto& sys_info = GlobalState::GetInstance()->SysInfo();
+  sys_info.device_id =
       "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 
   const base::Time time =

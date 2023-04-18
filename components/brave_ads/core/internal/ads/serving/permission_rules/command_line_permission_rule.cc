@@ -5,16 +5,20 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/command_line_permission_rule.h"
 
-#include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
-#include "brave/components/brave_ads/core/internal/flags/flag_manager_util.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
 namespace brave_ads {
 
 namespace {
 
+bool IsProductionEnvironment() {
+  return GlobalState::GetInstance()->Flags().environment_type ==
+         mojom::EnvironmentType::kProduction;
+}
+
 bool DoesRespectCap() {
   return !(IsProductionEnvironment() &&
-           FlagManager::GetInstance()->DidOverrideFromCommandLine());
+           GlobalState::GetInstance()->Flags().did_override_from_command_line);
 }
 
 }  // namespace

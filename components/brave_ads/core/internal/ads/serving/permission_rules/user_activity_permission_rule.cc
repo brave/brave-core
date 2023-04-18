@@ -18,7 +18,7 @@ bool DoesRespectCap() {
     return true;
   }
 
-  if (PlatformHelper::GetInstance()->GetType() == PlatformType::kIOS) {
+  if (PlatformHelper::GetInstance().GetType() == PlatformType::kIOS) {
     return true;
   }
 

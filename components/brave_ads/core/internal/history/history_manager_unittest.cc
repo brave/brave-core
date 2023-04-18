@@ -99,7 +99,7 @@ TEST_F(BatAdsHistoryManagerTest, HasInstance) {
   // Arrange
 
   // Act
-  const bool has_instance = HistoryManager::HasInstance();
+  const bool has_instance = HistoryManager::GetInstance();
 
   // Assert
   EXPECT_TRUE(has_instance);

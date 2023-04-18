@@ -14,7 +14,7 @@ namespace brave_ads {
 namespace {
 
 bool DoesRespectCap() {
-  if (PlatformHelper::GetInstance()->IsMobile()) {
+  if (PlatformHelper::GetInstance().IsMobile()) {
     return true;
   }
 

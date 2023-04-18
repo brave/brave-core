@@ -17,9 +17,9 @@ class PlatformHelper {
  public:
   virtual ~PlatformHelper();
 
-  static PlatformHelper* GetInstance();
+  static const PlatformHelper& GetInstance();
 
-  static void SetForTesting(PlatformHelper* platform_helper);
+  static void SetForTesting(const PlatformHelper* platform_helper);
 
   virtual bool IsMobile() const;
   virtual std::string GetName() const;
@@ -31,7 +31,7 @@ class PlatformHelper {
   PlatformHelper();
 
  private:
-  static PlatformHelper* GetInstanceImpl();
+  static const PlatformHelper& GetInstanceImpl();
 };
 
 }  // namespace brave_ads

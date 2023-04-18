@@ -11,6 +11,7 @@
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/notification_ad_value_util.h"
 #include "build/build_config.h"
 
@@ -22,8 +23,6 @@ namespace brave_ads {
 
 namespace {
 
-NotificationAdManager* g_notification_ad_manager_instance = nullptr;
-
 #if BUILDFLAG(IS_ANDROID)
 constexpr int kMaximumNotificationAds = 3;
 #endif  // BUILDFLAG(IS_ANDROID)
@@ -31,26 +30,17 @@ constexpr int kMaximumNotificationAds = 3;
 }  // namespace
 
 NotificationAdManager::NotificationAdManager() {
-  DCHECK(!g_notification_ad_manager_instance);
-  g_notification_ad_manager_instance = this;
-
   Initialize();
 }
 
-NotificationAdManager::~NotificationAdManager() {
-  DCHECK_EQ(this, g_notification_ad_manager_instance);
-  g_notification_ad_manager_instance = nullptr;
-}
+NotificationAdManager::~NotificationAdManager() {}
 
 // static
 NotificationAdManager* NotificationAdManager::GetInstance() {
-  DCHECK(g_notification_ad_manager_instance);
-  return g_notification_ad_manager_instance;
-}
-
-// static
-bool NotificationAdManager::HasInstance() {
-  return !!g_notification_ad_manager_instance;
+  auto* notification_ad_manager =
+      GlobalState::GetInstance()->GetNotificationAdManager();
+  DCHECK(notification_ad_manager);
+  return notification_ad_manager;
 }
 
 absl::optional<NotificationAdInfo>

@@ -28,7 +28,7 @@ bool ShouldServeAd() {
 }  // namespace
 
 bool ShouldServeAdsAtRegularIntervals() {
-  return PlatformHelper::GetInstance()->IsMobile();
+  return PlatformHelper::GetInstance().IsMobile();
 }
 
 base::Time ServeAdAt() {

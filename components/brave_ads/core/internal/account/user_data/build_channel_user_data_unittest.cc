@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/build_channel_user_data.h"
 
 #include "base/test/values_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -13,7 +14,9 @@
 
 namespace brave_ads::user_data {
 
-TEST(BatAdsBuildChannelUserDataTest, GetBuildChannel) {
+class BatAdsBuildChannelUserDataTest : public UnitTestBase {};
+
+TEST_F(BatAdsBuildChannelUserDataTest, GetBuildChannel) {
   // Arrange
   MockBuildChannel(BuildChannelType::kRelease);
 

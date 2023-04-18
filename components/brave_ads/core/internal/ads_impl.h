@@ -49,29 +49,19 @@ class TextEmbedding;
 }  // namespace resource
 
 class Account;
-class AdsClientHelper;
-class BrowserManager;
+class GlobalState;
 class Catalog;
-class ClientStateManager;
-class ConfirmationStateManager;
 class Conversions;
-class DatabaseManager;
-class DiagnosticManager;
-class FlagManager;
-class HistoryManager;
 class IdleDetection;
 class InlineContentAdHandler;
 class NewTabPageAdHandler;
 class NotificationAdHandler;
-class NotificationAdManager;
-class PredictorsManager;
 class PromotedContentAd;
 class Reminder;
 class SearchResultAd;
 class SubdivisionTargeting;
 class TabManager;
 class Transfer;
-class UserActivityManager;
 class UserReactions;
 struct AdInfo;
 struct ConversionQueueItemInfo;
@@ -93,6 +83,10 @@ class AdsImpl final : public Ads,
   ~AdsImpl() override;
 
   // Ads:
+  void SetSysInfo(mojom::SysInfoPtr sys_info) override;
+  void SetBuildChannel(mojom::BuildChannelInfoPtr build_channel) override;
+  void SetFlags(mojom::FlagsPtr flags) override;
+
   void Initialize(InitializeCallback callback) override;
   void Shutdown(ShutdownCallback callback) override;
 
@@ -182,20 +176,7 @@ class AdsImpl final : public Ads,
 
   bool is_initialized_ = false;
 
-  std::unique_ptr<AdsClientHelper> ads_client_helper_;
-
-  std::unique_ptr<BrowserManager> browser_manager_;
-  std::unique_ptr<ClientStateManager> client_state_manager_;
-  std::unique_ptr<ConfirmationStateManager> confirmation_state_manager_;
-  std::unique_ptr<DatabaseManager> database_manager_;
-  std::unique_ptr<DiagnosticManager> diagnostic_manager_;
-  std::unique_ptr<FlagManager> flag_manager_;
-  std::unique_ptr<HistoryManager> history_manager_;
-  std::unique_ptr<IdleDetection> idle_detection_;
-  std::unique_ptr<NotificationAdManager> notification_ad_manager_;
-  std::unique_ptr<PredictorsManager> predictors_manager_;
-  std::unique_ptr<TabManager> tab_manager_;
-  std::unique_ptr<UserActivityManager> user_activity_manager_;
+  std::unique_ptr<GlobalState> global_state_;
 
   std::unique_ptr<Catalog> catalog_;
 

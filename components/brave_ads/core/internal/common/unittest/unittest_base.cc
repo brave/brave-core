@@ -19,6 +19,7 @@
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/database.h"
+#include "brave/components/brave_ads/core/flags_util.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base_util.h"
@@ -28,6 +29,10 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_test_suite_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/database/database_manager.h"
+#include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
+#include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "url/gurl.h"
@@ -181,50 +186,30 @@ void UnitTestBase::Initialize() {
 
   MockDefaultPrefs();
 
-  if (!is_integration_test_) {
-    ads_client_helper_ =
-        std::make_unique<AdsClientHelper>(ads_client_mock_.get());
-  }
-
   SetUpMocks();
 
   if (is_integration_test_) {
     return SetUpIntegrationTest();
   }
 
-  browser_manager_ = std::make_unique<BrowserManager>();
+  global_state_ = std::make_unique<GlobalState>(ads_client_mock_.get());
 
-  client_state_manager_ = std::make_unique<ClientStateManager>();
-  client_state_manager_->Initialize(
+  MockBuildChannel(BuildChannelType::kRelease);
+
+  global_state_->Flags() = *BuildFlags();
+
+  global_state_->GetClientStateManager()->Initialize(
       base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
-  confirmation_state_manager_ = std::make_unique<ConfirmationStateManager>();
-  confirmation_state_manager_->Initialize(
+  global_state_->GetConfirmationStateManager()->Initialize(
       GetWalletForTesting(),  // IN-TEST
       base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
-  database_manager_ = std::make_unique<DatabaseManager>();
-  database_manager_->CreateOrOpen(
+  global_state_->GetDatabaseManager()->CreateOrOpen(
       base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
-  diagnostic_manager_ = std::make_unique<DiagnosticManager>();
-
-  flag_manager_ = std::make_unique<FlagManager>();
-
-  history_manager_ = std::make_unique<HistoryManager>();
-
-  idle_detection_ = std::make_unique<IdleDetection>();
-
-  notification_ad_manager_ = std::make_unique<NotificationAdManager>();
-
-  predictors_manager_ = std::make_unique<PredictorsManager>();
-
-  tab_manager_ = std::make_unique<TabManager>();
-
-  user_activity_manager_ = std::make_unique<UserActivityManager>();
-
-  // Fast forward until no tasks remain to ensure "EnsureSqliteInitialized"
-  // tasks have fired before running tests.
+  // Fast forward until no tasks remain to ensure
+  // "EnsureSqliteInitialized" tasks have fired before running tests.
   task_environment_.FastForwardUntilNoTasksRemain();
 }
 
@@ -274,8 +259,6 @@ void UnitTestBase::MockDefaultAdsClient() {
   MockSetListPref(ads_client_mock_);
   MockClearPref(ads_client_mock_);
   MockHasPrefPath(ads_client_mock_);
-
-  MockBuildChannel(BuildChannelType::kRelease);
 
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
@@ -439,6 +422,10 @@ void UnitTestBase::SetUpIntegrationTest() {
          "initialized for integration testing";
 
   ads_ = std::make_unique<AdsImpl>(ads_client_mock_.get());
+
+  ads_->SetFlags(BuildFlags());
+
+  MockBuildChannel(BuildChannelType::kRelease);
 
   ads_->OnRewardsWalletDidChange(kWalletPaymentId, kWalletRecoverySeed);
 

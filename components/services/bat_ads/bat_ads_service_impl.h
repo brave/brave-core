@@ -36,12 +36,6 @@ class BatAdsServiceImpl : public mojom::BatAdsService {
                   bat_ads_client_notifier,
               CreateCallback callback) override;
 
-  void SetSysInfo(brave_ads::mojom::SysInfoPtr sys_info,
-                  SetSysInfoCallback callback) override;
-
-  void SetBuildChannel(brave_ads::mojom::BuildChannelInfoPtr build_channel,
-                       SetBuildChannelCallback callback) override;
-
  private:
   mojo::Receiver<mojom::BatAdsService> receiver_;
   mojo::UniqueAssociatedReceiverSet<mojom::BatAds> associated_receivers_;

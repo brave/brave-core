@@ -12,34 +12,21 @@
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_migration.h"
 
 namespace brave_ads {
 
-namespace {
-DatabaseManager* g_database_manager_instance = nullptr;
-}  // namespace
+DatabaseManager::DatabaseManager() = default;
 
-DatabaseManager::DatabaseManager() {
-  DCHECK(!g_database_manager_instance);
-  g_database_manager_instance = this;
-}
-
-DatabaseManager::~DatabaseManager() {
-  DCHECK_EQ(this, g_database_manager_instance);
-  g_database_manager_instance = nullptr;
-}
+DatabaseManager::~DatabaseManager() = default;
 
 // static
 DatabaseManager* DatabaseManager::GetInstance() {
-  DCHECK(g_database_manager_instance);
-  return g_database_manager_instance;
-}
-
-// static
-bool DatabaseManager::HasInstance() {
-  return !!g_database_manager_instance;
+  auto* database_manager = GlobalState::GetInstance()->GetDatabaseManager();
+  DCHECK(database_manager);
+  return database_manager;
 }
 
 void DatabaseManager::AddObserver(DatabaseManagerObserver* observer) {

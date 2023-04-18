@@ -14,7 +14,7 @@ namespace brave_ads {
 
 namespace {
 
-bool g_from_local_exploded_failed = false;
+bool g_from_local_exploded_failed_for_testing = false;
 
 // TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
 // function when base::Time::FromLocalExploded for linux sandbox will be fixed.
@@ -135,7 +135,7 @@ base::Time AdjustLocalTimeToBeginningOfPreviousMonth(const base::Time time) {
 
   base::Time adjusted_time;
   const bool success = base::Time::FromLocalExploded(exploded, &adjusted_time);
-  if (!success || g_from_local_exploded_failed) {
+  if (!success || g_from_local_exploded_failed_for_testing) {
     return CalculateBeginningOfPreviousMonth(time);
   }
 
@@ -165,7 +165,7 @@ base::Time AdjustLocalTimeToEndOfPreviousMonth(const base::Time time) {
 
   base::Time adjusted_time;
   const bool success = base::Time::FromLocalExploded(exploded, &adjusted_time);
-  if (!success || g_from_local_exploded_failed) {
+  if (!success || g_from_local_exploded_failed_for_testing) {
     return CalculateEndOfPreviousMonth(time);
   }
 
@@ -189,7 +189,7 @@ base::Time AdjustLocalTimeToBeginningOfMonth(const base::Time time) {
 
   base::Time adjusted_time;
   const bool success = base::Time::FromLocalExploded(exploded, &adjusted_time);
-  if (!success || g_from_local_exploded_failed) {
+  if (!success || g_from_local_exploded_failed_for_testing) {
     return CalculateBeginningOfMonth(time);
   }
 
@@ -213,7 +213,7 @@ base::Time AdjustLocalTimeToEndOfMonth(const base::Time time) {
 
   base::Time adjusted_time;
   const bool success = base::Time::FromLocalExploded(exploded, &adjusted_time);
-  if (!success || g_from_local_exploded_failed) {
+  if (!success || g_from_local_exploded_failed_for_testing) {
     return CalculateEndOfMonth(time);
   }
 
@@ -254,7 +254,7 @@ std::string TimeToPrivacyPreservingISO8601(const base::Time time) {
 }
 
 void SetFromLocalExplodedFailedForTesting(const bool set_failed) {
-  g_from_local_exploded_failed = set_failed;
+  g_from_local_exploded_failed_for_testing = set_failed;
 }
 
 }  // namespace brave_ads

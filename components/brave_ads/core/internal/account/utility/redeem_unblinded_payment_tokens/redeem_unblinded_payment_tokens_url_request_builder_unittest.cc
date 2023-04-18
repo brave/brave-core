@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
-#include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/public_key.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 #include "url/gurl.h"
@@ -77,8 +77,8 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensUrlRequestBuilderTest, BuildUrl) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
-  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
-      EnvironmentType::kStaging);
+  GlobalState::GetInstance()->Flags().environment_type =
+      mojom::EnvironmentType::kStaging;
 
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
       GetUnblindedPaymentTokens(/*count*/ 7);

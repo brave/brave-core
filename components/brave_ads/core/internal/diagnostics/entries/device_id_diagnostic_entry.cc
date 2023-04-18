@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/device_id_diagnostic_entry.h"
 
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
-#include "brave/components/brave_ads/core/sys_info.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
 namespace brave_ads {
 
@@ -26,7 +26,8 @@ std::string DeviceIdDiagnosticEntry::GetName() const {
 }
 
 std::string DeviceIdDiagnosticEntry::GetValue() const {
-  const std::string& device_id = SysInfo().device_id;
+  const auto& sys_info = GlobalState::GetInstance()->SysInfo();
+  const std::string& device_id = sys_info.device_id;
 
   if (device_id.empty()) {
     return kUnknown;

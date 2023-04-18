@@ -16,6 +16,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_container_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
+#include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
@@ -291,7 +292,7 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, DoNotGetPacedAds) {
   SaveCreativeAds(creative_ads);
 
   // Act
-  const ScopedPacingRandomNumberSetter scoped_setter(0.3);
+  const ScopedPacingRandomNumberSetterForTesting scoped_setter(0.3);
 
   CreativeNotificationAdList expected_creative_ads = {creative_ad_2};
 

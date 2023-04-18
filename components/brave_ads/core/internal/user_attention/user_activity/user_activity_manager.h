@@ -39,8 +39,6 @@ class UserActivityManager final : public AdsClientNotifierObserver,
 
   static UserActivityManager* GetInstance();
 
-  static bool HasInstance();
-
   void RecordEvent(UserActivityEventType event_type);
 
   UserActivityEventList GetHistoryForTimeWindow(

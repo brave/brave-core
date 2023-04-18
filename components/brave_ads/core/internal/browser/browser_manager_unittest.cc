@@ -53,7 +53,7 @@ TEST_F(BatAdsBrowserManagerTest, HasInstance) {
   // Arrange
 
   // Act
-  const bool has_instance = BrowserManager::HasInstance();
+  const bool has_instance = BrowserManager::GetInstance();
 
   // Assert
   EXPECT_TRUE(has_instance);

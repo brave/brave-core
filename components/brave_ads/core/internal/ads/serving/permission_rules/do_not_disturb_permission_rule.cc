@@ -18,7 +18,7 @@ constexpr int kDoNotDisturbFromHour = 21;  // 9pm
 constexpr int kDoNotDisturbToHour = 6;     // 6am
 
 bool DoesRespectCap() {
-  if (PlatformHelper::GetInstance()->GetType() != PlatformType::kAndroid) {
+  if (PlatformHelper::GetInstance().GetType() != PlatformType::kAndroid) {
     return true;
   }
 

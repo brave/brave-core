@@ -23,7 +23,6 @@
 #include "brave/components/brave_ads/core/internal/ads/promoted_content_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/ads/search_result_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
-#include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_info.h"
@@ -33,9 +32,8 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_manager.h"
-#include "brave/components/brave_ads/core/internal/fl/predictors/predictors_manager.h"
-#include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
@@ -54,9 +52,7 @@
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_classification/text_classification_resource.h"
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_embedding/text_embedding_resource.h"
 #include "brave/components/brave_ads/core/internal/studies/studies_util.h"
-#include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
-#include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_reactions/user_reactions.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
@@ -74,20 +70,7 @@ void FailedToInitialize(InitializeCallback callback) {
 }  // namespace
 
 AdsImpl::AdsImpl(AdsClient* ads_client)
-    : ads_client_helper_(std::make_unique<AdsClientHelper>(ads_client)) {
-  browser_manager_ = std::make_unique<BrowserManager>();
-  client_state_manager_ = std::make_unique<ClientStateManager>();
-  confirmation_state_manager_ = std::make_unique<ConfirmationStateManager>();
-  predictors_manager_ = std::make_unique<PredictorsManager>();
-  database_manager_ = std::make_unique<DatabaseManager>();
-  diagnostic_manager_ = std::make_unique<DiagnosticManager>();
-  flag_manager_ = std::make_unique<FlagManager>();
-  history_manager_ = std::make_unique<HistoryManager>();
-  idle_detection_ = std::make_unique<IdleDetection>();
-  notification_ad_manager_ = std::make_unique<NotificationAdManager>();
-  tab_manager_ = std::make_unique<TabManager>();
-  user_activity_manager_ = std::make_unique<UserActivityManager>();
-
+    : global_state_(std::make_unique<GlobalState>(ads_client)) {
   catalog_ = std::make_unique<Catalog>();
 
   token_generator_ = std::make_unique<privacy::TokenGenerator>();
@@ -144,6 +127,25 @@ AdsImpl::~AdsImpl() {
   account_->RemoveObserver(this);
   conversions_->RemoveObserver(this);
   transfer_->RemoveObserver(this);
+}
+
+void AdsImpl::SetSysInfo(mojom::SysInfoPtr sys_info) {
+  auto& sys_info_state = GlobalState::GetInstance()->SysInfo();
+  sys_info_state.device_id = sys_info->device_id;
+}
+
+void AdsImpl::SetBuildChannel(mojom::BuildChannelInfoPtr build_channel) {
+  auto& build_channel_state = GlobalState::GetInstance()->BuildChannel();
+  build_channel_state.is_release = build_channel->is_release;
+  build_channel_state.name = build_channel->name;
+}
+
+void AdsImpl::SetFlags(mojom::FlagsPtr flags) {
+  auto& flags_state = GlobalState::GetInstance()->Flags();
+  flags_state.should_debug = flags->should_debug;
+  flags_state.did_override_from_command_line =
+      flags->did_override_from_command_line;
+  flags_state.environment_type = flags->environment_type;
 }
 
 void AdsImpl::Initialize(InitializeCallback callback) {

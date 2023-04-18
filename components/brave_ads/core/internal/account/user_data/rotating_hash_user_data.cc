@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
-#include "brave/components/brave_ads/core/sys_info.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
 namespace brave_ads::user_data {
 
@@ -26,7 +26,8 @@ constexpr char kRotatingHashKey[] = "rotating_hash";
 base::Value::Dict GetRotatingHash(const TransactionInfo& transaction) {
   base::Value::Dict user_data;
 
-  const std::string& device_id = SysInfo().device_id;
+  const auto& sys_info = GlobalState::GetInstance()->SysInfo();
+  const std::string& device_id = sys_info.device_id;
   if (device_id.empty()) {
     return user_data;
   }

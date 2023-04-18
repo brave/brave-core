@@ -37,7 +37,7 @@ bool DoesRespectCap(const std::vector<base::Time>& history) {
 }  // namespace
 
 bool MinimumWaitTimePermissionRule::ShouldAllow() {
-  if (PlatformHelper::GetInstance()->IsMobile()) {
+  if (PlatformHelper::GetInstance().IsMobile()) {
     // Ads are periodically served on mobile so they will never be served before
     // the minimum wait time has passed
     return true;

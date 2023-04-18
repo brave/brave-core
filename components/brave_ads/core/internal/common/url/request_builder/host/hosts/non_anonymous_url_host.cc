@@ -8,8 +8,8 @@
 #include <ostream>
 
 #include "base/notreached.h"
-#include "brave/components/brave_ads/core/internal/flags/environment/environment_types.h"
-#include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
+#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
 namespace brave_ads {
 
@@ -21,15 +21,15 @@ constexpr char kStagingHost[] = "https://mywallet.ads.bravesoftware.com";
 }  // namespace
 
 std::string NonAnonymousUrlHost::Get() const {
-  const EnvironmentType environment_type =
-      FlagManager::GetInstance()->GetEnvironmentType();
+  const mojom::EnvironmentType environment_type =
+      GlobalState::GetInstance()->Flags().environment_type;
 
   switch (environment_type) {
-    case EnvironmentType::kProduction: {
+    case mojom::EnvironmentType::kProduction: {
       return kProductionHost;
     }
 
-    case EnvironmentType::kStaging: {
+    case mojom::EnvironmentType::kStaging: {
       return kStagingHost;
     }
   }

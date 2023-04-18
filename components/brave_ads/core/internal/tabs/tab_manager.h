@@ -35,8 +35,6 @@ class TabManager final : public AdsClientNotifierObserver {
 
   static TabManager* GetInstance();
 
-  static bool HasInstance();
-
   void AddObserver(TabManagerObserver* observer);
   void RemoveObserver(TabManagerObserver* observer);
 

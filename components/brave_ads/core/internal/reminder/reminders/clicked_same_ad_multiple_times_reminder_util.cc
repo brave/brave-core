@@ -19,7 +19,7 @@ namespace brave_ads {
 namespace {
 
 bool CanRemind(const HistoryItemInfo& history_item) {
-  return !PlatformHelper::GetInstance()->IsMobile() &&
+  return !PlatformHelper::GetInstance().IsMobile() &&
          kRemindUserIfClickingTheSameAdAfter.Get() > 0 &&
          history_item.ad_content.type == AdType::kNotificationAd &&
          history_item.ad_content.confirmation_type ==

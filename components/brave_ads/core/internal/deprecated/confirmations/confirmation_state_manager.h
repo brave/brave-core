@@ -38,8 +38,6 @@ class ConfirmationStateManager final {
 
   static ConfirmationStateManager* GetInstance();
 
-  static bool HasInstance();
-
   void Initialize(const WalletInfo& wallet, InitializeCallback callback);
   bool IsInitialized() const { return is_initialized_; }
 

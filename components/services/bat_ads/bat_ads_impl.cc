@@ -46,6 +46,19 @@ BatAdsImpl::BatAdsImpl(
 
 BatAdsImpl::~BatAdsImpl() = default;
 
+void BatAdsImpl::SetSysInfo(brave_ads::mojom::SysInfoPtr sys_info) {
+  ads_->SetSysInfo(std::move(sys_info));
+}
+
+void BatAdsImpl::SetBuildChannel(
+    brave_ads::mojom::BuildChannelInfoPtr build_channel) {
+  ads_->SetBuildChannel(std::move(build_channel));
+}
+
+void BatAdsImpl::SetFlags(brave_ads::mojom::FlagsPtr flags) {
+  ads_->SetFlags(std::move(flags));
+}
+
 void BatAdsImpl::Initialize(InitializeCallback callback) {
   ads_->Initialize(std::move(callback));
 }
