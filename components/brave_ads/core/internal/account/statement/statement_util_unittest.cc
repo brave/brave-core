@@ -12,13 +12,13 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsStatementUtilTest : public UnitTestBase {};
+class BraveAdsStatementUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsStatementUtilTest, GetNextPaymentDate) {
+TEST_F(BraveAdsStatementUtilTest, GetNextPaymentDate) {
   // Arrange
   base::FieldTrialParams params;
   params["next_payment_day"] = "7";
@@ -44,7 +44,7 @@ TEST_F(BatAdsStatementUtilTest, GetNextPaymentDate) {
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
 
-TEST_F(BatAdsStatementUtilTest, GetEarningsForThisMonth) {
+TEST_F(BraveAdsStatementUtilTest, GetEarningsForThisMonth) {
   // Arrange
   AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
 
@@ -79,7 +79,7 @@ TEST_F(BatAdsStatementUtilTest, GetEarningsForThisMonth) {
   EXPECT_DOUBLE_EQ(0.07, earnings);
 }
 
-TEST_F(BatAdsStatementUtilTest, GetEarningsForLastMonth) {
+TEST_F(BraveAdsStatementUtilTest, GetEarningsForLastMonth) {
   // Arrange
   AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
 
@@ -114,7 +114,7 @@ TEST_F(BatAdsStatementUtilTest, GetEarningsForLastMonth) {
   EXPECT_DOUBLE_EQ(0.02, earnings);
 }
 
-TEST_F(BatAdsStatementUtilTest, GetAdsReceivedThisMonth) {
+TEST_F(BraveAdsStatementUtilTest, GetAdsReceivedThisMonth) {
   // Arrange
   AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
 

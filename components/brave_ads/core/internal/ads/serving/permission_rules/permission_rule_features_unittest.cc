@@ -10,11 +10,11 @@
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-TEST(BatAdsPermissionRuleFeaturesTest, IsEnabled) {
+TEST(BraveAdsPermissionRuleFeaturesTest, IsEnabled) {
   // Arrange
 
   // Act
@@ -23,7 +23,7 @@ TEST(BatAdsPermissionRuleFeaturesTest, IsEnabled) {
   EXPECT_TRUE(IsPermissionRulesEnabled());
 }
 
-TEST(BatAdsPermissionRuleFeaturesTest, IsDisabled) {
+TEST(BraveAdsPermissionRuleFeaturesTest, IsDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
@@ -40,7 +40,7 @@ TEST(BatAdsPermissionRuleFeaturesTest, IsDisabled) {
   EXPECT_FALSE(IsPermissionRulesEnabled());
 }
 
-TEST(BatAdsPermissionRuleFeaturesTest, ShouldOnlyServeAdsInWindowedMode) {
+TEST(BraveAdsPermissionRuleFeaturesTest, ShouldOnlyServeAdsInWindowedMode) {
   // Arrange
   base::FieldTrialParams params;
   params["should_only_serve_ads_in_windowed_mode"] = "false";
@@ -59,7 +59,7 @@ TEST(BatAdsPermissionRuleFeaturesTest, ShouldOnlyServeAdsInWindowedMode) {
   EXPECT_FALSE(kShouldOnlyServeAdsInWindowedMode.Get());
 }
 
-TEST(BatAdsPermissionRuleFeaturesTest,
+TEST(BraveAdsPermissionRuleFeaturesTest,
      DefaultShouldOnlyServeAdsInWindowedMode) {
   // Arrange
 
@@ -69,7 +69,7 @@ TEST(BatAdsPermissionRuleFeaturesTest,
   EXPECT_TRUE(kShouldOnlyServeAdsInWindowedMode.Get());
 }
 
-TEST(BatAdsPermissionRuleFeaturesTest,
+TEST(BraveAdsPermissionRuleFeaturesTest,
      DefaultShouldOnlyServeAdsInWindowedModeWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
@@ -87,7 +87,7 @@ TEST(BatAdsPermissionRuleFeaturesTest,
   EXPECT_TRUE(kShouldOnlyServeAdsInWindowedMode.Get());
 }
 
-TEST(BatAdsPermissionRuleFeaturesTest,
+TEST(BraveAdsPermissionRuleFeaturesTest,
      ShouldOnlyServeAdsWithValidInternetConnection) {
   // Arrange
   base::FieldTrialParams params;
@@ -107,7 +107,7 @@ TEST(BatAdsPermissionRuleFeaturesTest,
   EXPECT_FALSE(kShouldOnlyServeAdsWithValidInternetConnection.Get());
 }
 
-TEST(BatAdsPermissionRuleFeaturesTest,
+TEST(BraveAdsPermissionRuleFeaturesTest,
      DefaultShouldOnlyServeAdsWithValidInternetConnection) {
   // Arrange
 
@@ -117,7 +117,7 @@ TEST(BatAdsPermissionRuleFeaturesTest,
   EXPECT_TRUE(kShouldOnlyServeAdsWithValidInternetConnection.Get());
 }
 
-TEST(BatAdsPermissionRuleFeaturesTest,
+TEST(BraveAdsPermissionRuleFeaturesTest,
      ShouldOnlyServeAdsWithValidInternetConnectionWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
@@ -135,7 +135,8 @@ TEST(BatAdsPermissionRuleFeaturesTest,
   EXPECT_TRUE(kShouldOnlyServeAdsWithValidInternetConnection.Get());
 }
 
-TEST(BatAdsPermissionRuleFeaturesTest, ShouldOnlyServeAdsIfMediaIsNotPlaying) {
+TEST(BraveAdsPermissionRuleFeaturesTest,
+     ShouldOnlyServeAdsIfMediaIsNotPlaying) {
   // Arrange
   base::FieldTrialParams params;
   params["should_only_serve_ads_if_media_is_not_playing"] = "false";
@@ -154,7 +155,7 @@ TEST(BatAdsPermissionRuleFeaturesTest, ShouldOnlyServeAdsIfMediaIsNotPlaying) {
   EXPECT_FALSE(kShouldOnlyServeAdsIfMediaIsNotPlaying.Get());
 }
 
-TEST(BatAdsPermissionRuleFeaturesTest,
+TEST(BraveAdsPermissionRuleFeaturesTest,
      DefaultShouldOnlyServeAdsIfMediaIsNotPlaying) {
   // Arrange
 
@@ -164,7 +165,7 @@ TEST(BatAdsPermissionRuleFeaturesTest,
   EXPECT_TRUE(kShouldOnlyServeAdsIfMediaIsNotPlaying.Get());
 }
 
-TEST(BatAdsPermissionRuleFeaturesTest,
+TEST(BraveAdsPermissionRuleFeaturesTest,
      DefaultShouldOnlyServeAdsIfMediaIsNotPlayingWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
@@ -182,7 +183,7 @@ TEST(BatAdsPermissionRuleFeaturesTest,
   EXPECT_TRUE(kShouldOnlyServeAdsIfMediaIsNotPlaying.Get());
 }
 
-TEST(BatAdsPermissionRuleFeaturesTest, ShouldOnlyServeAdsIfBrowserIsActive) {
+TEST(BraveAdsPermissionRuleFeaturesTest, ShouldOnlyServeAdsIfBrowserIsActive) {
   // Arrange
   base::FieldTrialParams params;
   params["should_only_serve_ads_if_browser_is_active"] = "false";
@@ -201,7 +202,7 @@ TEST(BatAdsPermissionRuleFeaturesTest, ShouldOnlyServeAdsIfBrowserIsActive) {
   EXPECT_FALSE(kShouldOnlyServeAdsIfBrowserIsActive.Get());
 }
 
-TEST(BatAdsPermissionRuleFeaturesTest,
+TEST(BraveAdsPermissionRuleFeaturesTest,
      DefaultShouldOnlyServeAdsIfBrowserIsActive) {
   // Arrange
 
@@ -211,7 +212,7 @@ TEST(BatAdsPermissionRuleFeaturesTest,
   EXPECT_TRUE(kShouldOnlyServeAdsIfBrowserIsActive.Get());
 }
 
-TEST(BatAdsPermissionRuleFeaturesTest,
+TEST(BraveAdsPermissionRuleFeaturesTest,
      DefaultShouldOnlyServeAdsIfBrowserIsActiveWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;

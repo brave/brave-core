@@ -11,11 +11,11 @@
 #include "base/test/values_test_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::user_data {
 
-TEST(BatAdsStudiesUserDataTest, GetStudiesForNoFieldTrials) {
+TEST(BraveAdsStudiesUserDataTest, GetStudiesForNoFieldTrials) {
   // Arrange
 
   // Act
@@ -29,7 +29,7 @@ TEST(BatAdsStudiesUserDataTest, GetStudiesForNoFieldTrials) {
   EXPECT_EQ(expected_user_data, user_data);
 }
 
-TEST(BatAdsStudiesUserDataTest, GetStudies) {
+TEST(BraveAdsStudiesUserDataTest, GetStudies) {
   // Arrange
   const std::string name_1 = "BraveAds.FooStudy";
   const std::string group_name_1 = "GroupA";

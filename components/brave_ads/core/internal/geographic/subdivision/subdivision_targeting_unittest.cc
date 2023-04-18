@@ -16,11 +16,11 @@
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "net/http/http_status_code.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsSubdivisionTargetingTest : public UnitTestBase {
+class BraveAdsSubdivisionTargetingTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -31,7 +31,7 @@ class BatAdsSubdivisionTargetingTest : public UnitTestBase {
   std::unique_ptr<SubdivisionTargeting> subdivision_targeting_;
 };
 
-TEST_F(BatAdsSubdivisionTargetingTest,
+TEST_F(BraveAdsSubdivisionTargetingTest,
        ShouldAllowAndAutoDetectForSupportedCountryAndRegionUrlResponse) {
   // Arrange
   const URLResponseMap url_responses = {
@@ -52,7 +52,7 @@ TEST_F(BatAdsSubdivisionTargetingTest,
 }
 
 TEST_F(
-    BatAdsSubdivisionTargetingTest,
+    BraveAdsSubdivisionTargetingTest,
     ShouldAllowButDefaultToDisabledForSupportedCountryButNoRegionUrlResponse) {
   // Arrange
   const URLResponseMap url_responses = {
@@ -70,7 +70,7 @@ TEST_F(
   EXPECT_FALSE(subdivision_targeting_->ShouldAutoDetect());
 }
 
-TEST_F(BatAdsSubdivisionTargetingTest,
+TEST_F(BraveAdsSubdivisionTargetingTest,
        ShouldAutoDetectForUnsupportedCountryAndRegionUrlResponse) {
   // Arrange
   const URLResponseMap url_responses = {
@@ -88,7 +88,7 @@ TEST_F(BatAdsSubdivisionTargetingTest,
   EXPECT_TRUE(subdivision_targeting_->ShouldAutoDetect());
 }
 
-TEST_F(BatAdsSubdivisionTargetingTest, ShouldAutoDetectForUnsupportedLocale) {
+TEST_F(BraveAdsSubdivisionTargetingTest, ShouldAutoDetectForUnsupportedLocale) {
   // Arrange
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"xx_XX"};
 
@@ -101,7 +101,7 @@ TEST_F(BatAdsSubdivisionTargetingTest, ShouldAutoDetectForUnsupportedLocale) {
   EXPECT_TRUE(subdivision_targeting_->ShouldAutoDetect());
 }
 
-TEST_F(BatAdsSubdivisionTargetingTest,
+TEST_F(BraveAdsSubdivisionTargetingTest,
        ShouldAllowIfDisabledAndCountryIsSupported) {
   // Arrange
   AdsClientHelper::GetInstance()->SetStringPref(
@@ -116,7 +116,7 @@ TEST_F(BatAdsSubdivisionTargetingTest,
   EXPECT_FALSE(subdivision_targeting_->ShouldAutoDetect());
 }
 
-TEST_F(BatAdsSubdivisionTargetingTest,
+TEST_F(BraveAdsSubdivisionTargetingTest,
        ShouldAllowAndAutoDetectIfCountryIsSupported) {
   // Arrange
   AdsClientHelper::GetInstance()->SetStringPref(
@@ -133,7 +133,7 @@ TEST_F(BatAdsSubdivisionTargetingTest,
                          prefs::kAutoDetectedSubdivisionTargetingCode));
 }
 
-TEST_F(BatAdsSubdivisionTargetingTest, ShouldNotAllowIfCountryIsUnsupported) {
+TEST_F(BraveAdsSubdivisionTargetingTest, ShouldNotAllowIfCountryIsUnsupported) {
   // Arrange
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"xx_XX"};
 
@@ -146,7 +146,7 @@ TEST_F(BatAdsSubdivisionTargetingTest, ShouldNotAllowIfCountryIsUnsupported) {
   EXPECT_TRUE(subdivision_targeting_->ShouldAutoDetect());
 }
 
-TEST_F(BatAdsSubdivisionTargetingTest,
+TEST_F(BraveAdsSubdivisionTargetingTest,
        ShouldNotAllowIfLocaleAndSubdivisionCountriesMismatch) {
   // Arrange
   ads_client_mock_->SetStringPref(prefs::kSubdivisionTargetingCode, "CA-QC");
@@ -160,7 +160,7 @@ TEST_F(BatAdsSubdivisionTargetingTest,
   EXPECT_TRUE(subdivision_targeting_->ShouldAutoDetect());
 }
 
-TEST_F(BatAdsSubdivisionTargetingTest,
+TEST_F(BraveAdsSubdivisionTargetingTest,
        ShouldAutoDetectAndNotAllowIfSubdivisionCodeIsEmpty) {
   // Arrange
 
@@ -173,7 +173,8 @@ TEST_F(BatAdsSubdivisionTargetingTest,
   EXPECT_TRUE(subdivision_targeting_->ShouldAutoDetect());
 }
 
-TEST_F(BatAdsSubdivisionTargetingTest, RetryAfterInvalidUrlResponseStatusCode) {
+TEST_F(BraveAdsSubdivisionTargetingTest,
+       RetryAfterInvalidUrlResponseStatusCode) {
   // Arrange
   const URLResponseMap url_responses = {
       {kSubdivisionTargetingUrlPath,
@@ -194,11 +195,11 @@ TEST_F(BatAdsSubdivisionTargetingTest, RetryAfterInvalidUrlResponseStatusCode) {
                          prefs::kAutoDetectedSubdivisionTargetingCode));
 }
 
-class BatAdsSubdivisionTargetingRetryOnInvalidUrlResponseBodyTest
-    : public BatAdsSubdivisionTargetingTest,
+class BraveAdsSubdivisionTargetingRetryOnInvalidUrlResponseBodyTest
+    : public BraveAdsSubdivisionTargetingTest,
       public ::testing::WithParamInterface<const char*> {};
 
-TEST_P(BatAdsSubdivisionTargetingRetryOnInvalidUrlResponseBodyTest,
+TEST_P(BraveAdsSubdivisionTargetingRetryOnInvalidUrlResponseBodyTest,
        RetryAfterInvalidUrlResponseBody) {
   // Arrange
   const URLResponseMap url_responses = {
@@ -223,7 +224,7 @@ TEST_P(BatAdsSubdivisionTargetingRetryOnInvalidUrlResponseBodyTest,
 
 INSTANTIATE_TEST_SUITE_P(
     ,
-    BatAdsSubdivisionTargetingRetryOnInvalidUrlResponseBodyTest,
+    BraveAdsSubdivisionTargetingRetryOnInvalidUrlResponseBodyTest,
     ::testing::Values("",
                       "INVALID",
                       "{}",

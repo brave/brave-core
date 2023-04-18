@@ -27,7 +27,7 @@
 #include "brave/components/brave_ads/core/internal/conversions/conversion_info.h"
 #include "url/gurl.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -437,9 +437,9 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
 
 }  // namespace
 
-class BatAdsCatalogJsonReaderTest : public UnitTestBase {};
+class BraveAdsCatalogJsonReaderTest : public UnitTestBase {};
 
-TEST_F(BatAdsCatalogJsonReaderTest, ParseCatalogWithSingleCampaign) {
+TEST_F(BraveAdsCatalogJsonReaderTest, ParseCatalogWithSingleCampaign) {
   // Arrange
   const absl::optional<std::string> json =
       ReadFileFromTestPathAndParseTagsToString(kCatalogWithSingleCampaign);
@@ -459,7 +459,7 @@ TEST_F(BatAdsCatalogJsonReaderTest, ParseCatalogWithSingleCampaign) {
   EXPECT_EQ(expected_catalog, *catalog);
 }
 
-TEST_F(BatAdsCatalogJsonReaderTest, ParseCatalogWithMultipleCampaigns) {
+TEST_F(BraveAdsCatalogJsonReaderTest, ParseCatalogWithMultipleCampaigns) {
   // Arrange
   const absl::optional<std::string> json =
       ReadFileFromTestPathAndParseTagsToString(kCatalogWithMultipleCampaigns);
@@ -480,7 +480,7 @@ TEST_F(BatAdsCatalogJsonReaderTest, ParseCatalogWithMultipleCampaigns) {
   EXPECT_EQ(expected_catalog, *catalog);
 }
 
-TEST_F(BatAdsCatalogJsonReaderTest, ParseEmptyCatalog) {
+TEST_F(BraveAdsCatalogJsonReaderTest, ParseEmptyCatalog) {
   // Arrange
   const absl::optional<std::string> json =
       ReadFileFromTestPathAndParseTagsToString(kEmptyCatalog);
@@ -499,7 +499,7 @@ TEST_F(BatAdsCatalogJsonReaderTest, ParseEmptyCatalog) {
   EXPECT_EQ(expected_catalog, *catalog);
 }
 
-TEST_F(BatAdsCatalogJsonReaderTest, InvalidCatalog) {
+TEST_F(BraveAdsCatalogJsonReaderTest, InvalidCatalog) {
   // Arrange
 
   // Act

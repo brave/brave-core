@@ -15,11 +15,11 @@
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::notification_ads {
 
-class BatAdsEligibleNotificationAdsV2Test : public UnitTestBase {
+class BraveAdsEligibleNotificationAdsV2Test : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -35,7 +35,7 @@ class BatAdsEligibleNotificationAdsV2Test : public UnitTestBase {
   std::unique_ptr<EligibleAdsV2> eligible_ads_;
 };
 
-TEST_F(BatAdsEligibleNotificationAdsV2Test, GetAds) {
+TEST_F(BraveAdsEligibleNotificationAdsV2Test, GetAds) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
@@ -65,7 +65,7 @@ TEST_F(BatAdsEligibleNotificationAdsV2Test, GetAds) {
       }));
 }
 
-TEST_F(BatAdsEligibleNotificationAdsV2Test, GetAdsForNoSegments) {
+TEST_F(BraveAdsEligibleNotificationAdsV2Test, GetAdsForNoSegments) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
@@ -95,7 +95,7 @@ TEST_F(BatAdsEligibleNotificationAdsV2Test, GetAdsForNoSegments) {
       }));
 }
 
-TEST_F(BatAdsEligibleNotificationAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
+TEST_F(BraveAdsEligibleNotificationAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
   // Arrange
 
   // Act

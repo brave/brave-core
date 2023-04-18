@@ -19,14 +19,14 @@
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 #include "net/http/http_status_code.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
 using ::testing::_;
 using ::testing::Invoke;
 
-class BatAdsNotificationAdIntegrationTest : public UnitTestBase {
+class BraveAdsNotificationAdIntegrationTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
@@ -53,7 +53,7 @@ class BatAdsNotificationAdIntegrationTest : public UnitTestBase {
   }
 };
 
-TEST_F(BatAdsNotificationAdIntegrationTest, Serve) {
+TEST_F(BraveAdsNotificationAdIntegrationTest, Serve) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotificationAd)
       .WillOnce(Invoke([](const NotificationAdInfo& ad) {
@@ -71,7 +71,7 @@ TEST_F(BatAdsNotificationAdIntegrationTest, Serve) {
   EXPECT_EQ(0, GetTransactionCount());
 }
 
-TEST_F(BatAdsNotificationAdIntegrationTest, DoNotServeAtRegularIntervals) {
+TEST_F(BraveAdsNotificationAdIntegrationTest, DoNotServeAtRegularIntervals) {
   // Arrange
 
   // Act
@@ -80,7 +80,7 @@ TEST_F(BatAdsNotificationAdIntegrationTest, DoNotServeAtRegularIntervals) {
   ASSERT_FALSE(notification_ads::ShouldServeAdsAtRegularIntervals());
 }
 
-TEST_F(BatAdsNotificationAdIntegrationTest, TriggerServedEvent) {
+TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerServedEvent) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotificationAd)
       .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
@@ -103,7 +103,7 @@ TEST_F(BatAdsNotificationAdIntegrationTest, TriggerServedEvent) {
   ServeAd();
 }
 
-TEST_F(BatAdsNotificationAdIntegrationTest, TriggerViewedEvent) {
+TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerViewedEvent) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotificationAd)
       .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
@@ -130,7 +130,7 @@ TEST_F(BatAdsNotificationAdIntegrationTest, TriggerViewedEvent) {
   ServeAd();
 }
 
-TEST_F(BatAdsNotificationAdIntegrationTest, TriggerClickedEvent) {
+TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotificationAd)
       .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
@@ -154,7 +154,7 @@ TEST_F(BatAdsNotificationAdIntegrationTest, TriggerClickedEvent) {
   ServeAd();
 }
 
-TEST_F(BatAdsNotificationAdIntegrationTest, TriggerDismissedEvent) {
+TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerDismissedEvent) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotificationAd)
       .WillOnce(Invoke([=](const NotificationAdInfo& ad) {
@@ -179,7 +179,7 @@ TEST_F(BatAdsNotificationAdIntegrationTest, TriggerDismissedEvent) {
   ServeAd();
 }
 
-TEST_F(BatAdsNotificationAdIntegrationTest, TriggerTimedOutEvent) {
+TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerTimedOutEvent) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowNotificationAd)
       .WillOnce(Invoke([=](const NotificationAdInfo& ad) {

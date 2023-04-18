@@ -9,13 +9,13 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsTransactionsUtilTest : public UnitTestBase {};
+class BraveAdsTransactionsUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsTransactionsUtilTest, GetTransactionsForDateRange) {
+TEST_F(BraveAdsTransactionsUtilTest, GetTransactionsForDateRange) {
   // Arrange
   AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
 
@@ -43,7 +43,7 @@ TEST_F(BatAdsTransactionsUtilTest, GetTransactionsForDateRange) {
   EXPECT_EQ(expected_transactions_for_date_range, transactions_for_date_range);
 }
 
-TEST_F(BatAdsTransactionsUtilTest, DoNotGetTransactionsForDateRange) {
+TEST_F(BraveAdsTransactionsUtilTest, DoNotGetTransactionsForDateRange) {
   // Arrange
   AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
 

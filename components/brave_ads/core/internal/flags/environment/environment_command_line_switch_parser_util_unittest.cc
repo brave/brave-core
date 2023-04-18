@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/flags/flag_constants.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -26,20 +26,15 @@ struct ParamInfo final {
   CommandLineSwitchInfo command_line_switch;
   mojom::EnvironmentType expected_environment_type;
 } const kTestCases[] = {
-    {/*command_line_switch*/ {kRewardsSwitch, "staging=true"},
-     /*expected_environment_type*/ mojom::EnvironmentType::kStaging},
-    {/*command_line_switch*/ {kRewardsSwitch, "staging=1"},
-     /*expected_environment_type*/ mojom::EnvironmentType::kStaging},
-    {/*command_line_switch*/ {kRewardsSwitch, "staging=false"},
-     /*expected_environment_type*/ mojom::EnvironmentType::kProduction},
-    {/*command_line_switch*/ {kRewardsSwitch, "staging=foobar"},
-     /*expected_environment_type*/ mojom::EnvironmentType::kProduction},
-    {/*command_line_switch*/ {},
-     /*expected_environment_type*/ kDefaultEnvironmentType}};
+    {{kRewardsSwitch, "staging=true"}, mojom::EnvironmentType::kStaging},
+    {{kRewardsSwitch, "staging=1"}, mojom::EnvironmentType::kStaging},
+    {{kRewardsSwitch, "staging=false"}, mojom::EnvironmentType::kProduction},
+    {{kRewardsSwitch, "staging=foobar"}, mojom::EnvironmentType::kProduction},
+    {{}, kDefaultEnvironmentType}};
 
 }  // namespace
 
-class BatAdsEnvironmentCommandLineSwitchParserUtilTest
+class BraveAdsEnvironmentCommandLineSwitchParserUtilTest
     : public UnitTestBase,
       public ::testing::WithParamInterface<ParamInfo> {
  protected:
@@ -48,7 +43,7 @@ class BatAdsEnvironmentCommandLineSwitchParserUtilTest
   }
 };
 
-TEST_P(BatAdsEnvironmentCommandLineSwitchParserUtilTest,
+TEST_P(BraveAdsEnvironmentCommandLineSwitchParserUtilTest,
        ParseEnvironmentCommandLineSwitch) {
   // Arrange
 
@@ -73,7 +68,7 @@ std::string TestParamToString(
 }
 
 INSTANTIATE_TEST_SUITE_P(,
-                         BatAdsEnvironmentCommandLineSwitchParserUtilTest,
+                         BraveAdsEnvironmentCommandLineSwitchParserUtilTest,
                          testing::ValuesIn(kTestCases),
                          TestParamToString);
 

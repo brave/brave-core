@@ -9,13 +9,13 @@
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::user_data {
 
-class BatAdsMutatedUserDataTest : public UnitTestBase {};
+class BraveAdsMutatedUserDataTest : public UnitTestBase {};
 
-TEST_F(BatAdsMutatedUserDataTest, GetMutatedConfirmations) {
+TEST_F(BraveAdsMutatedUserDataTest, GetMutatedConfirmations) {
   // Arrange
   ads_client_mock_->SetUint64Pref(
       prefs::kConfirmationsHash,
@@ -32,7 +32,7 @@ TEST_F(BatAdsMutatedUserDataTest, GetMutatedConfirmations) {
   EXPECT_EQ(expected_user_data, user_data);
 }
 
-TEST_F(BatAdsMutatedUserDataTest, GetMutatedClient) {
+TEST_F(BraveAdsMutatedUserDataTest, GetMutatedClient) {
   // Arrange
   ads_client_mock_->SetUint64Pref(
       prefs::kClientHash,

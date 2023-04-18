@@ -9,13 +9,13 @@
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::user_data {
 
-class BatAdsDiagnosticIdUserDataTest : public UnitTestBase {};
+class BraveAdsDiagnosticIdUserDataTest : public UnitTestBase {};
 
-TEST_F(BatAdsDiagnosticIdUserDataTest, GetDiagnosticId) {
+TEST_F(BraveAdsDiagnosticIdUserDataTest, GetDiagnosticId) {
   // Arrange
   ads_client_mock_->SetStringPref(prefs::kDiagnosticId,
                                   "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2");
@@ -31,7 +31,7 @@ TEST_F(BatAdsDiagnosticIdUserDataTest, GetDiagnosticId) {
   EXPECT_EQ(expected_user_data, user_data);
 }
 
-TEST_F(BatAdsDiagnosticIdUserDataTest, DoNotGetInvalidDiagnosticId) {
+TEST_F(BraveAdsDiagnosticIdUserDataTest, DoNotGetInvalidDiagnosticId) {
   // Arrange
   ads_client_mock_->SetStringPref(prefs::kDiagnosticId, "INVALID");
 
@@ -42,7 +42,7 @@ TEST_F(BatAdsDiagnosticIdUserDataTest, DoNotGetInvalidDiagnosticId) {
   EXPECT_TRUE(user_data.empty());
 }
 
-TEST_F(BatAdsDiagnosticIdUserDataTest, DoNotGetEmptyDiagnosticId) {
+TEST_F(BraveAdsDiagnosticIdUserDataTest, DoNotGetEmptyDiagnosticId) {
   // Arrange
   ads_client_mock_->SetStringPref(prefs::kDiagnosticId, "");
 

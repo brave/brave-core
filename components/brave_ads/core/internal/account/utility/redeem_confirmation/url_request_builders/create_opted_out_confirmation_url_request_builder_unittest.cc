@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "url/gurl.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -27,10 +27,10 @@ constexpr char kExpectedContent[] =
 
 }  // namespace
 
-class BatAdsCreateOptedOutConfirmationUrlRequestBuilderTest
+class BraveAdsCreateOptedOutConfirmationUrlRequestBuilderTest
     : public UnitTestBase {};
 
-TEST_F(BatAdsCreateOptedOutConfirmationUrlRequestBuilderTest, BuildUrl) {
+TEST_F(BraveAdsCreateOptedOutConfirmationUrlRequestBuilderTest, BuildUrl) {
   // Arrange
   ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
 

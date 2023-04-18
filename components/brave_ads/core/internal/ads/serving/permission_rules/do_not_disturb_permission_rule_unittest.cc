@@ -8,13 +8,13 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsDoNotDisturbPermissionRuleTest : public UnitTestBase {};
+class BraveAdsDoNotDisturbPermissionRuleTest : public UnitTestBase {};
 
-TEST_F(BatAdsDoNotDisturbPermissionRuleTest,
+TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
        AllowAdWhileBrowserIsInactiveBetween6amAnd9pmForAndroid) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
@@ -62,7 +62,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest,
   }
 }
 
-TEST_F(BatAdsDoNotDisturbPermissionRuleTest,
+TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
        AllowAdWhileBrowserIsActiveForAndroid) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
@@ -110,7 +110,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest,
   }
 }
 
-TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForIOS) {
+TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForIOS) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
 
@@ -138,7 +138,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForIOS) {
   }
 }
 
-TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForMacOS) {
+TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForMacOS) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
@@ -166,7 +166,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForMacOS) {
   }
 }
 
-TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForWindows) {
+TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForWindows) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
@@ -194,7 +194,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForWindows) {
   }
 }
 
-TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForLinux) {
+TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForLinux) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kLinux);
 

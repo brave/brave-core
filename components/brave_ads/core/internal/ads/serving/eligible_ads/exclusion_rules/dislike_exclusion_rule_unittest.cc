@@ -10,16 +10,16 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsDislikeExclusionRuleTest : public UnitTestBase {
+class BraveAdsDislikeExclusionRuleTest : public UnitTestBase {
  protected:
   DislikeExclusionRule exclusion_rule_;
 };
 
-TEST_F(BatAdsDislikeExclusionRuleTest, AllowAd) {
+TEST_F(BraveAdsDislikeExclusionRuleTest, AllowAd) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.advertiser_id = kAdvertiserId;
@@ -30,7 +30,7 @@ TEST_F(BatAdsDislikeExclusionRuleTest, AllowAd) {
   EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsDislikeExclusionRuleTest, DoNotAllowAd) {
+TEST_F(BraveAdsDislikeExclusionRuleTest, DoNotAllowAd) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.advertiser_id = kAdvertiserId;

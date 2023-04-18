@@ -11,13 +11,13 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsPaymentsIssuerUtilTest : public UnitTestBase {};
+class BraveAdsPaymentsIssuerUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsPaymentsIssuerUtilTest, IsValid) {
+TEST_F(BraveAdsPaymentsIssuerUtilTest, IsValid) {
   // Arrange
   IssuerInfo issuer;
   issuer.type = IssuerType::kPayments;
@@ -37,7 +37,7 @@ TEST_F(BatAdsPaymentsIssuerUtilTest, IsValid) {
   EXPECT_TRUE(IsPaymentsIssuerValid(issuers));
 }
 
-TEST_F(BatAdsPaymentsIssuerUtilTest, IsInvalid) {
+TEST_F(BraveAdsPaymentsIssuerUtilTest, IsInvalid) {
   // Arrange
   IssuerInfo issuer;
   issuer.type = IssuerType::kPayments;

@@ -10,11 +10,11 @@
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-TEST(BatAdsEligibleAdsFeaturesTest, IsEnabled) {
+TEST(BraveAdsEligibleAdsFeaturesTest, IsEnabled) {
   // Arrange
 
   // Act
@@ -23,7 +23,7 @@ TEST(BatAdsEligibleAdsFeaturesTest, IsEnabled) {
   EXPECT_TRUE(IsEligibleAdsEnabled());
 }
 
-TEST(BatAdsEligibleAdsFeaturesTest, IsDisabled) {
+TEST(BraveAdsEligibleAdsFeaturesTest, IsDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
@@ -40,7 +40,7 @@ TEST(BatAdsEligibleAdsFeaturesTest, IsDisabled) {
   EXPECT_FALSE(IsEligibleAdsEnabled());
 }
 
-TEST(BatAdsEligibleAdsFeaturesTest, GetAdPredictorWeights) {
+TEST(BraveAdsEligibleAdsFeaturesTest, GetAdPredictorWeights) {
   // Arrange
   base::FieldTrialParams params;
   params["ad_predictor_weights"] = "0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7";
@@ -59,7 +59,7 @@ TEST(BatAdsEligibleAdsFeaturesTest, GetAdPredictorWeights) {
   EXPECT_EQ("0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7", kAdPredictorWeights.Get());
 }
 
-TEST(BatAdsEligibleAdsFeaturesTest, DefaultAdFeatureWeights) {
+TEST(BraveAdsEligibleAdsFeaturesTest, DefaultAdFeatureWeights) {
   // Arrange
 
   // Act
@@ -68,7 +68,7 @@ TEST(BatAdsEligibleAdsFeaturesTest, DefaultAdFeatureWeights) {
   EXPECT_EQ("1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0", kAdPredictorWeights.Get());
 }
 
-TEST(BatAdsEligibleAdsFeaturesTest, DefaultAdFeatureWeightsWhenDisabled) {
+TEST(BraveAdsEligibleAdsFeaturesTest, DefaultAdFeatureWeightsWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
@@ -85,7 +85,7 @@ TEST(BatAdsEligibleAdsFeaturesTest, DefaultAdFeatureWeightsWhenDisabled) {
   EXPECT_EQ("1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0", kAdPredictorWeights.Get());
 }
 
-TEST(BatAdsEligibleAdsFeaturesTest, GetBrowsingHistoryMaxCount) {
+TEST(BraveAdsEligibleAdsFeaturesTest, GetBrowsingHistoryMaxCount) {
   // Arrange
   base::FieldTrialParams params;
   params["browsing_history_max_count"] = "666";
@@ -104,7 +104,7 @@ TEST(BatAdsEligibleAdsFeaturesTest, GetBrowsingHistoryMaxCount) {
   EXPECT_EQ(666, kBrowsingHistoryMaxCount.Get());
 }
 
-TEST(BatAdsEligibleAdsFeaturesTest, DefaultBrowsingHistoryMaxCount) {
+TEST(BraveAdsEligibleAdsFeaturesTest, DefaultBrowsingHistoryMaxCount) {
   // Arrange
 
   // Act
@@ -113,7 +113,7 @@ TEST(BatAdsEligibleAdsFeaturesTest, DefaultBrowsingHistoryMaxCount) {
   EXPECT_EQ(5'000, kBrowsingHistoryMaxCount.Get());
 }
 
-TEST(BatAdsEligibleAdsFeaturesTest,
+TEST(BraveAdsEligibleAdsFeaturesTest,
      DefaultBrowsingHistoryMaxCountWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
@@ -131,7 +131,7 @@ TEST(BatAdsEligibleAdsFeaturesTest,
   EXPECT_EQ(5'000, kBrowsingHistoryMaxCount.Get());
 }
 
-TEST(BatAdsEligibleAdsFeaturesTest, GetBrowsingHistoryDaysAgo) {
+TEST(BraveAdsEligibleAdsFeaturesTest, GetBrowsingHistoryDaysAgo) {
   // Arrange
   base::FieldTrialParams params;
   params["browsing_history_days_ago"] = "7";
@@ -150,7 +150,7 @@ TEST(BatAdsEligibleAdsFeaturesTest, GetBrowsingHistoryDaysAgo) {
   EXPECT_EQ(7, kBrowsingHistoryDaysAgo.Get());
 }
 
-TEST(BatAdsEligibleAdsFeaturesTest, DefaultBrowsingHistoryDaysAgo) {
+TEST(BraveAdsEligibleAdsFeaturesTest, DefaultBrowsingHistoryDaysAgo) {
   // Arrange
 
   // Act
@@ -159,7 +159,8 @@ TEST(BatAdsEligibleAdsFeaturesTest, DefaultBrowsingHistoryDaysAgo) {
   EXPECT_EQ(180, kBrowsingHistoryDaysAgo.Get());
 }
 
-TEST(BatAdsEligibleAdsFeaturesTest, DefaultBrowsingHistoryDaysAgoWhenDisabled) {
+TEST(BraveAdsEligibleAdsFeaturesTest,
+     DefaultBrowsingHistoryDaysAgoWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 

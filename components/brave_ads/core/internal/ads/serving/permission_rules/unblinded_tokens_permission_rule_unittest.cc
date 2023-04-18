@@ -8,16 +8,16 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsUnblindedTokensPermissionRuleTest : public UnitTestBase {
+class BraveAdsUnblindedTokensPermissionRuleTest : public UnitTestBase {
  protected:
   UnblindedTokensPermissionRule permission_rule_;
 };
 
-TEST_F(BatAdsUnblindedTokensPermissionRuleTest, AllowAdIfDoesNotExceedCap) {
+TEST_F(BraveAdsUnblindedTokensPermissionRuleTest, AllowAdIfDoesNotExceedCap) {
   // Arrange
   privacy::SetUnblindedTokens(/*count*/ 10);
 
@@ -27,7 +27,7 @@ TEST_F(BatAdsUnblindedTokensPermissionRuleTest, AllowAdIfDoesNotExceedCap) {
   EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
-TEST_F(BatAdsUnblindedTokensPermissionRuleTest,
+TEST_F(BraveAdsUnblindedTokensPermissionRuleTest,
        DoNotAllowAdIfNoUnblindedTokens) {
   // Arrange
 
@@ -37,7 +37,7 @@ TEST_F(BatAdsUnblindedTokensPermissionRuleTest,
   EXPECT_FALSE(permission_rule_.ShouldAllow());
 }
 
-TEST_F(BatAdsUnblindedTokensPermissionRuleTest, DoNotAllowAdIfExceedsCap) {
+TEST_F(BraveAdsUnblindedTokensPermissionRuleTest, DoNotAllowAdIfExceedsCap) {
   // Arrange
   privacy::SetUnblindedTokens(/*count*/ 9);
 

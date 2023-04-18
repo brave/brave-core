@@ -17,7 +17,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::privacy::cbr {
 
@@ -25,7 +25,7 @@ namespace {
 constexpr char kMessage[] = "The quick brown fox jumps over the lazy dog";
 }  // namespace
 
-TEST(BatAdsChallengeBypassRistrettoTest, ProveAndVerifyUnblindedToken) {
+TEST(BraveAdsChallengeBypassRistrettoTest, ProveAndVerifyUnblindedToken) {
   // Server prepares a random signing key.
   SigningKey signing_key;
   EXPECT_TRUE(signing_key.has_value());

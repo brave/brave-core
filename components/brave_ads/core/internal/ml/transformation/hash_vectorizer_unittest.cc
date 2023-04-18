@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::ml {
 
@@ -62,9 +62,9 @@ void RunHashingExtractorTestCase(const std::string& test_case_name) {
 
 }  // namespace
 
-class BatAdsHashVectorizerTest : public UnitTestBase {};
+class BraveAdsHashVectorizerTest : public UnitTestBase {};
 
-TEST_F(BatAdsHashVectorizerTest, ValidJsonScheme) {
+TEST_F(BraveAdsHashVectorizerTest, ValidJsonScheme) {
   // Arrange
   const absl::optional<base::Value> root = base::JSONReader::Read(
       "{"
@@ -93,23 +93,23 @@ TEST_F(BatAdsHashVectorizerTest, ValidJsonScheme) {
   EXPECT_TRUE(list);
 }
 
-TEST_F(BatAdsHashVectorizerTest, EmptyText) {
+TEST_F(BraveAdsHashVectorizerTest, EmptyText) {
   RunHashingExtractorTestCase("empty");
 }
 
-TEST_F(BatAdsHashVectorizerTest, ShortText) {
+TEST_F(BraveAdsHashVectorizerTest, ShortText) {
   RunHashingExtractorTestCase("tiny");
 }
 
-TEST_F(BatAdsHashVectorizerTest, EnglishText) {
+TEST_F(BraveAdsHashVectorizerTest, EnglishText) {
   RunHashingExtractorTestCase("english");
 }
 
-TEST_F(BatAdsHashVectorizerTest, GreekText) {
+TEST_F(BraveAdsHashVectorizerTest, GreekText) {
   RunHashingExtractorTestCase("greek");
 }
 
-TEST_F(BatAdsHashVectorizerTest, JapaneseText) {
+TEST_F(BraveAdsHashVectorizerTest, JapaneseText) {
   RunHashingExtractorTestCase("japanese");
 }
 

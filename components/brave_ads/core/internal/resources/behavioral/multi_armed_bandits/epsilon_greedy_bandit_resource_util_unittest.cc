@@ -8,13 +8,13 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::resource {
 
-class BatAdsEpsilonGreedyBanditResourceUtilTest : public UnitTestBase {};
+class BraveAdsEpsilonGreedyBanditResourceUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsEpsilonGreedyBanditResourceUtilTest, SetEligibleSegments) {
+TEST_F(BraveAdsEpsilonGreedyBanditResourceUtilTest, SetEligibleSegments) {
   const SegmentList expected_segments = {"foo", "bar"};
 
   // Arrange
@@ -26,7 +26,7 @@ TEST_F(BatAdsEpsilonGreedyBanditResourceUtilTest, SetEligibleSegments) {
   EXPECT_EQ(expected_segments, GetEpsilonGreedyBanditEligibleSegments());
 }
 
-TEST_F(BatAdsEpsilonGreedyBanditResourceUtilTest, SetNoEligibleSegments) {
+TEST_F(BraveAdsEpsilonGreedyBanditResourceUtilTest, SetNoEligibleSegments) {
   // Arrange
 
   // Act

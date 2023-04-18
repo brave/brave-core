@@ -11,11 +11,11 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "url/gurl.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsTransferTest : public TransferObserver, public UnitTestBase {
+class BraveAdsTransferTest : public TransferObserver, public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -44,7 +44,7 @@ class BatAdsTransferTest : public TransferObserver, public UnitTestBase {
   int transfer_count_ = 0;
 };
 
-TEST_F(BatAdsTransferTest, DoNotTransferAdIfUrlIsMissingHTTPOrHTTPSScheme) {
+TEST_F(BraveAdsTransferTest, DoNotTransferAdIfUrlIsMissingHTTPOrHTTPSScheme) {
   // Arrange
   const AdInfo ad =
       BuildAd(AdType::kNotificationAd, /*should_use_random_guids*/ false);
@@ -64,7 +64,7 @@ TEST_F(BatAdsTransferTest, DoNotTransferAdIfUrlIsMissingHTTPOrHTTPSScheme) {
   EXPECT_EQ(0, GetTransferCount());
 }
 
-TEST_F(BatAdsTransferTest,
+TEST_F(BraveAdsTransferTest,
        DoNotTransferAdIfTheUrlDoesNotMatchTheLastClickedAd) {
   // Arrange
   const AdInfo ad =
@@ -85,7 +85,7 @@ TEST_F(BatAdsTransferTest,
   EXPECT_EQ(0, GetTransferCount());
 }
 
-TEST_F(BatAdsTransferTest, DoNotTransferAdIfTheSameAdIsAlreadyTransferring) {
+TEST_F(BraveAdsTransferTest, DoNotTransferAdIfTheSameAdIsAlreadyTransferring) {
   // Arrange
   const AdInfo ad =
       BuildAd(AdType::kNotificationAd, /*should_use_random_guids*/ false);
@@ -108,7 +108,7 @@ TEST_F(BatAdsTransferTest, DoNotTransferAdIfTheSameAdIsAlreadyTransferring) {
   EXPECT_EQ(1, GetTransferCount());
 }
 
-TEST_F(BatAdsTransferTest, TransferAdIfAnotherAdIsAlreadyTransferring) {
+TEST_F(BraveAdsTransferTest, TransferAdIfAnotherAdIsAlreadyTransferring) {
   // Arrange
   const AdInfo ad =
       BuildAd(AdType::kNotificationAd, /*should_use_random_guids*/ false);
@@ -141,7 +141,7 @@ TEST_F(BatAdsTransferTest, TransferAdIfAnotherAdIsAlreadyTransferring) {
   EXPECT_EQ(1, GetTransferCount());
 }
 
-TEST_F(BatAdsTransferTest,
+TEST_F(BraveAdsTransferTest,
        TransferAdIfTheTabIsVisibleAndTheUrlIsTheSameAsTheDomainOrHost) {
   // Arrange
   const AdInfo ad =
@@ -163,7 +163,7 @@ TEST_F(BatAdsTransferTest,
   EXPECT_EQ(1, GetTransferCount());
 }
 
-TEST_F(BatAdsTransferTest, FailToTransferAdIfNotVisible) {
+TEST_F(BraveAdsTransferTest, FailToTransferAdIfNotVisible) {
   // Arrange
   const AdInfo ad =
       BuildAd(AdType::kNotificationAd, /*should_use_random_guids*/ false);
@@ -184,7 +184,7 @@ TEST_F(BatAdsTransferTest, FailToTransferAdIfNotVisible) {
   EXPECT_EQ(-1, GetTransferCount());
 }
 
-TEST_F(BatAdsTransferTest,
+TEST_F(BraveAdsTransferTest,
        FailToTransferAdIfTheTabUrlIsNotTheSameAsTheDomainOrHost) {
   // Arrange
   const AdInfo ad =

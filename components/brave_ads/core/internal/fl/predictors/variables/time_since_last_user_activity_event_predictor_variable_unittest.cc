@@ -10,14 +10,15 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsTimeSinceLastUserActivityEventPredictorVariableTest
+class BraveAdsTimeSinceLastUserActivityEventPredictorVariableTest
     : public UnitTestBase {};
 
-TEST_F(BatAdsTimeSinceLastUserActivityEventPredictorVariableTest, GetDataType) {
+TEST_F(BraveAdsTimeSinceLastUserActivityEventPredictorVariableTest,
+       GetDataType) {
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
       std::make_unique<TimeSinceLastUserActivityEventPredictorVariable>(
@@ -32,7 +33,7 @@ TEST_F(BatAdsTimeSinceLastUserActivityEventPredictorVariableTest, GetDataType) {
             predictor_variable->GetDataType());
 }
 
-TEST_F(BatAdsTimeSinceLastUserActivityEventPredictorVariableTest,
+TEST_F(BraveAdsTimeSinceLastUserActivityEventPredictorVariableTest,
        GetValueForNoHistory) {
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
@@ -47,7 +48,7 @@ TEST_F(BatAdsTimeSinceLastUserActivityEventPredictorVariableTest,
   EXPECT_EQ("-1", predictor_variable->GetValue());
 }
 
-TEST_F(BatAdsTimeSinceLastUserActivityEventPredictorVariableTest, GetValue) {
+TEST_F(BraveAdsTimeSinceLastUserActivityEventPredictorVariableTest, GetValue) {
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
       std::make_unique<TimeSinceLastUserActivityEventPredictorVariable>(

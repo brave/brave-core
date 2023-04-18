@@ -17,7 +17,7 @@
 #include "brave/components/brave_ads/core/internal/flags/flag_constants.h"
 #include "components/variations/variations_switches.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -32,60 +32,49 @@ struct ParamInfo final {
   mojom::EnvironmentType expected_environment_type;
 } const kTestCases[] = {
     // Should debug
-    {/*command_line_switches*/ {{kRewardsSwitch, "debug=true"}},
-     /*expected_should_debug*/ true,
-     /*expected_did_override_command_line_switches*/ false,
-     kDefaultEnvironmentType},
+    {{{kRewardsSwitch, "debug=true"}}, true, false, kDefaultEnvironmentType},
 
     // Should not debug
-    {/*command_line_switches*/ {{kRewardsSwitch, "debug=false"}},
-     /*expected_should_debug*/ false,
-     /*expected_did_override_command_line_switches*/ false,
-     kDefaultEnvironmentType},
+    {{{kRewardsSwitch, "debug=false"}}, false, false, kDefaultEnvironmentType},
 
     // Override variations command-line switches
-    {/*command_line_switches*/
-     {{variations::switches::kFakeVariationsChannel, "foobar"}},
-     /*expected_should_debug*/ false,
-     /*expected_did_override_command_line_switches*/ true,
+    {{{variations::switches::kFakeVariationsChannel, "foobar"}},
+     false,
+     true,
      kDefaultEnvironmentType},
 
     // Do not override variations command-line switches
-    {/*command_line_switches*/
-     {{variations::switches::kFakeVariationsChannel, {}}},
-     /*expected_should_debug*/ false,
-     /*expected_did_override_command_line_switches*/ false,
+    {{{variations::switches::kFakeVariationsChannel, {}}},
+     false,
+     false,
      kDefaultEnvironmentType},
 
     // Force staging environment from command-line switch
-    {/*command_line_switches*/ {{kRewardsSwitch, "staging=true"}},
-     /*expected_should_debug*/ false,
-     /*expected_did_override_command_line_switches*/ false,
+    {{{kRewardsSwitch, "staging=true"}},
+     false,
+     false,
      mojom::EnvironmentType::kStaging},
 
     // Force production environment from command-line switch
-    {/*command_line_switches*/ {{kRewardsSwitch, "staging=false"}},
-     /*expected_should_debug*/ false,
-     /*expected_did_override_command_line_switches*/ false,
+    {{{kRewardsSwitch, "staging=false"}},
+     false,
+     false,
      mojom::EnvironmentType::kProduction},
 
     // Use default environment
-    {/*command_line_switches*/ {},
-     /*expected_should_debug*/ false,
-     /*expected_did_override_command_line_switches*/ false,
-     kDefaultEnvironmentType}};
+    {{}, false, false, kDefaultEnvironmentType}};
 
 }  // namespace
 
-class BatAdsFlagsUtilTest : public UnitTestBase,
-                            public ::testing::WithParamInterface<ParamInfo> {
+class BraveAdsFlagsUtilTest : public UnitTestBase,
+                              public ::testing::WithParamInterface<ParamInfo> {
  protected:
   void SetUpMocks() override {
     AppendCommandLineSwitches(GetParam().command_line_switches);
   }
 };
 
-TEST_P(BatAdsFlagsUtilTest, BuildFlags) {
+TEST_P(BraveAdsFlagsUtilTest, BuildFlags) {
   // Arrange
   const ParamInfo param = GetParam();
 
@@ -150,7 +139,7 @@ std::string TestParamToString(
 }
 
 INSTANTIATE_TEST_SUITE_P(,
-                         BatAdsFlagsUtilTest,
+                         BraveAdsFlagsUtilTest,
                          testing::ValuesIn(kTestCases),
                          TestParamToString);
 

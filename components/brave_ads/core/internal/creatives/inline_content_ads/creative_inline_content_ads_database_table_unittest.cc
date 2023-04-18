@@ -14,16 +14,16 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::database::table {
 
-class BatAdsCreativeInlineContentAdsDatabaseTableTest : public UnitTestBase {
+class BraveAdsCreativeInlineContentAdsDatabaseTableTest : public UnitTestBase {
  protected:
   CreativeInlineContentAds database_table_;
 };
 
-TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
        SaveEmptyCreativeInlineContentAds) {
   // Arrange
 
@@ -33,7 +33,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   // Assert
 }
 
-TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
        SaveCreativeInlineContentAds) {
   // Arrange
   const CreativeInlineContentAdList creative_ads =
@@ -53,7 +53,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
       creative_ads));
 }
 
-TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
        SaveCreativeInlineContentAdsInBatches) {
   // Arrange
   database_table_.SetBatchSize(2);
@@ -75,7 +75,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
       creative_ads));
 }
 
-TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
        DoNotSaveDuplicateCreativeInlineContentAds) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
@@ -100,7 +100,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
       creative_ads));
 }
 
-TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
        GetForSegmentsAndDimensions) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
@@ -142,7 +142,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
           std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
        GetCreativeInlineContentAdsForCreativeInstanceId) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
@@ -174,7 +174,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
           expected_creative_ad));
 }
 
-TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
        GetCreativeInlineContentAdsForNonExistentCreativeInstanceId) {
   // Arrange
   const CreativeInlineContentAdList creative_ads =
@@ -194,7 +194,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
       }));
 }
 
-TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
        GetCreativeInlineContentAdsForEmptySegments) {
   // Arrange
   const CreativeInlineContentAdList creative_ads =
@@ -214,7 +214,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
       }));
 }
 
-TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
        GetCreativeInlineContentAdsForNonExistentCategory) {
   // Arrange
   const CreativeInlineContentAdList creative_ads =
@@ -234,7 +234,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
       }));
 }
 
-TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
        GetCreativeInlineContentAdsFromMultipleSegments) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
@@ -275,7 +275,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
           std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
        GetNonExpiredCreativeInlineContentAds) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
@@ -310,7 +310,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
       std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
        GetCreativeInlineContentAdsMatchingCaseInsensitiveSegments) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
@@ -344,7 +344,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
           std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest, TableName) {
+TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest, TableName) {
   // Arrange
 
   // Act

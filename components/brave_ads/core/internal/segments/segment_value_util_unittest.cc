@@ -8,7 +8,7 @@
 #include "base/test/values_test_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -20,7 +20,7 @@ constexpr char kNoSegmentsAsJson[] = "[]";
 
 }  // namespace
 
-TEST(BatAdsSegmentValueUtilTest, SegmentsToValue) {
+TEST(BraveAdsSegmentValueUtilTest, SegmentsToValue) {
   // Arrange
 
   // Act
@@ -36,7 +36,7 @@ TEST(BatAdsSegmentValueUtilTest, SegmentsToValue) {
   EXPECT_EQ(*expected_list, list);
 }
 
-TEST(BatAdsSegmentValueUtilTest, NoSegmentsToValue) {
+TEST(BraveAdsSegmentValueUtilTest, NoSegmentsToValue) {
   // Arrange
 
   // Act
@@ -50,7 +50,7 @@ TEST(BatAdsSegmentValueUtilTest, NoSegmentsToValue) {
   EXPECT_EQ(*expected_list, list);
 }
 
-TEST(BatAdsSegmentValueUtilTest, SegmentsFromValue) {
+TEST(BraveAdsSegmentValueUtilTest, SegmentsFromValue) {
   // Arrange
   const base::Value value = base::test::ParseJson(kSegmentsAsJson);
   const base::Value::List* const list = value.GetIfList();
@@ -66,7 +66,7 @@ TEST(BatAdsSegmentValueUtilTest, SegmentsFromValue) {
   EXPECT_EQ(expected_segments, segments);
 }
 
-TEST(BatAdsSegmentValueUtilTest, NoSegmentsFromValue) {
+TEST(BraveAdsSegmentValueUtilTest, NoSegmentsFromValue) {
   // Arrange
   const base::Value value = base::test::ParseJson(kNoSegmentsAsJson);
   const base::Value::List* const list = value.GetIfList();

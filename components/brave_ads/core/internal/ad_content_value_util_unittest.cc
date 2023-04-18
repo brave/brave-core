@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/history/ad_content_util.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -29,9 +29,9 @@ constexpr char kJson[] =
 
 }  // namespace
 
-class BatAdsAdContentValueUtilTest : public UnitTestBase {};
+class BraveAdsAdContentValueUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsAdContentValueUtilTest, FromValue) {
+TEST_F(BraveAdsAdContentValueUtilTest, FromValue) {
   // Arrange
   const base::Value value = base::test::ParseJson(kJson);
   const base::Value::Dict* const dict = value.GetIfDict();
@@ -49,7 +49,7 @@ TEST_F(BatAdsAdContentValueUtilTest, FromValue) {
   EXPECT_EQ(expected_ad_content, ad_content);
 }
 
-TEST_F(BatAdsAdContentValueUtilTest, ToValue) {
+TEST_F(BraveAdsAdContentValueUtilTest, ToValue) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ false);

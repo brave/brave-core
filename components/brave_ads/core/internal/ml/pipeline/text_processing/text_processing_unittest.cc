@@ -21,7 +21,7 @@
 #include "brave/components/brave_ads/core/internal/ml/transformation/lowercase_transformation.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::ml {
 
@@ -41,9 +41,9 @@ constexpr char kTextCMCCrash[] =
 
 }  // namespace
 
-class BatAdsTextProcessingTest : public UnitTestBase {};
+class BraveAdsTextProcessingTest : public UnitTestBase {};
 
-TEST_F(BatAdsTextProcessingTest, BuildSimplePipeline) {
+TEST_F(BraveAdsTextProcessingTest, BuildSimplePipeline) {
   // Arrange
   constexpr double kTolerance = 1e-6;
   constexpr char kTestString[] = "Test String";
@@ -87,7 +87,7 @@ TEST_F(BatAdsTextProcessingTest, BuildSimplePipeline) {
   }
 }
 
-TEST_F(BatAdsTextProcessingTest, TestLoadFromValue) {
+TEST_F(BraveAdsTextProcessingTest, TestLoadFromValue) {
   // Arrange
   const std::vector<std::string> train_texts = {
       "This is a spam email.", "Another spam trying to sell you viagra",
@@ -125,7 +125,7 @@ TEST_F(BatAdsTextProcessingTest, TestLoadFromValue) {
   }
 }
 
-TEST_F(BatAdsTextProcessingTest, InitValidModelTest) {
+TEST_F(BraveAdsTextProcessingTest, InitValidModelTest) {
   // Arrange
   const absl::optional<std::string> json =
       ReadFileFromTestPathToString(kValidSegmentClassificationPipeline);
@@ -141,7 +141,7 @@ TEST_F(BatAdsTextProcessingTest, InitValidModelTest) {
   EXPECT_TRUE(success);
 }
 
-TEST_F(BatAdsTextProcessingTest, EmptySegmentModelTest) {
+TEST_F(BraveAdsTextProcessingTest, EmptySegmentModelTest) {
   // Arrange
   const absl::optional<std::string> json =
       ReadFileFromTestPathToString(kEmptySegmentClassificationPipeline);
@@ -157,7 +157,7 @@ TEST_F(BatAdsTextProcessingTest, EmptySegmentModelTest) {
   EXPECT_FALSE(success);
 }
 
-TEST_F(BatAdsTextProcessingTest, EmptyModelTest) {
+TEST_F(BraveAdsTextProcessingTest, EmptyModelTest) {
   // Arrange
   // Act
   pipeline::TextProcessing text_processing_pipeline;
@@ -168,7 +168,7 @@ TEST_F(BatAdsTextProcessingTest, EmptyModelTest) {
   EXPECT_FALSE(success);
 }
 
-TEST_F(BatAdsTextProcessingTest, TopPredUnitTest) {
+TEST_F(BraveAdsTextProcessingTest, TopPredUnitTest) {
   // Arrange
   constexpr size_t kMaxPredictionsSize = 100;
   constexpr char kTestPage[] = "ethereum bitcoin bat zcash crypto tokens!";
@@ -195,7 +195,7 @@ TEST_F(BatAdsTextProcessingTest, TopPredUnitTest) {
   }
 }
 
-TEST_F(BatAdsTextProcessingTest, TextCMCCrashTest) {
+TEST_F(BraveAdsTextProcessingTest, TextCMCCrashTest) {
   // Arrange
   constexpr size_t kMinPredictionsSize = 2;
   constexpr size_t kMaxPredictionsSize = 100;

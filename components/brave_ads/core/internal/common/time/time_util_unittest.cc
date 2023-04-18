@@ -18,7 +18,7 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #endif  // BUILDFLAG(IS_LINUX)
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -63,8 +63,8 @@ constexpr char ScopedLibcTZ::kTZ[];
 
 #endif  // BUILDFLAG(IS_LINUX)
 
-class BatAdsTimeUtilTest : public UnitTestBase,
-                           public testing::WithParamInterface<bool> {
+class BraveAdsTimeUtilTest : public UnitTestBase,
+                             public testing::WithParamInterface<bool> {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -78,7 +78,7 @@ class BatAdsTimeUtilTest : public UnitTestBase,
   }
 };
 
-TEST_P(BatAdsTimeUtilTest, GetLocalTimeAsMinutes) {
+TEST_P(BraveAdsTimeUtilTest, GetLocalTimeAsMinutes) {
   // Arrange
   const base::Time time =
       TimeFromString("November 18 2020 12:34:56", /*is_local*/ true);
@@ -91,7 +91,7 @@ TEST_P(BatAdsTimeUtilTest, GetLocalTimeAsMinutes) {
   EXPECT_EQ(expected_minutes, minutes);
 }
 
-TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToBeginningOfPreviousMonth) {
+TEST_P(BraveAdsTimeUtilTest, AdjustLocalTimeToBeginningOfPreviousMonth) {
   // Arrange
   const base::Time time =
       TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ true);
@@ -108,7 +108,7 @@ TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToBeginningOfPreviousMonth) {
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
-TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToBeginningOfPreviousMonthOnCusp) {
+TEST_P(BraveAdsTimeUtilTest, AdjustLocalTimeToBeginningOfPreviousMonthOnCusp) {
   // Arrange
   const base::Time time =
       TimeFromString("January 1 2020 00:00:00.000", /*is_local*/ true);
@@ -125,7 +125,7 @@ TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToBeginningOfPreviousMonthOnCusp) {
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
-TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToEndOfPreviousMonth) {
+TEST_P(BraveAdsTimeUtilTest, AdjustLocalTimeToEndOfPreviousMonth) {
   // Arrange
   const base::Time time =
       TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ true);
@@ -141,7 +141,7 @@ TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToEndOfPreviousMonth) {
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
-TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToEndOfPreviousMonthOnTheCusp) {
+TEST_P(BraveAdsTimeUtilTest, AdjustLocalTimeToEndOfPreviousMonthOnTheCusp) {
   // Arrange
   const base::Time time =
       TimeFromString("January 1 2020 00:00:00.000", /*is_local*/ true);
@@ -157,7 +157,7 @@ TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToEndOfPreviousMonthOnTheCusp) {
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
-TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToBeginningOfMonth) {
+TEST_P(BraveAdsTimeUtilTest, AdjustLocalTimeToBeginningOfMonth) {
   // Arrange
   const base::Time time =
       TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ true);
@@ -173,7 +173,7 @@ TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToBeginningOfMonth) {
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
-TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToEndOfMonth) {
+TEST_P(BraveAdsTimeUtilTest, AdjustLocalTimeToEndOfMonth) {
   // Arrange
   const base::Time time =
       TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ true);
@@ -189,7 +189,7 @@ TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToEndOfMonth) {
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
-TEST_P(BatAdsTimeUtilTest, GetLocalTimeAtBeginningOfLastMonth) {
+TEST_P(BraveAdsTimeUtilTest, GetLocalTimeAtBeginningOfLastMonth) {
   // Arrange
   const base::Time time =
       TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ true);
@@ -205,7 +205,7 @@ TEST_P(BatAdsTimeUtilTest, GetLocalTimeAtBeginningOfLastMonth) {
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
-TEST_P(BatAdsTimeUtilTest, GetLocalTimeAtBeginningOfLastMonthOnTheCusp) {
+TEST_P(BraveAdsTimeUtilTest, GetLocalTimeAtBeginningOfLastMonthOnTheCusp) {
   // Arrange
   const base::Time time =
       TimeFromString("January 1 2020 00:00:00.000", /*is_local*/ true);
@@ -221,7 +221,7 @@ TEST_P(BatAdsTimeUtilTest, GetLocalTimeAtBeginningOfLastMonthOnTheCusp) {
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
-TEST_P(BatAdsTimeUtilTest, GetLocalTimeAtEndOfLastMonth) {
+TEST_P(BraveAdsTimeUtilTest, GetLocalTimeAtEndOfLastMonth) {
   // Arrange
   const base::Time time =
       TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ true);
@@ -237,7 +237,7 @@ TEST_P(BatAdsTimeUtilTest, GetLocalTimeAtEndOfLastMonth) {
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
-TEST_P(BatAdsTimeUtilTest, GetLocalTimeAtEndOfLastMonthOnTheCusp) {
+TEST_P(BraveAdsTimeUtilTest, GetLocalTimeAtEndOfLastMonthOnTheCusp) {
   // Arrange
   const base::Time time =
       TimeFromString("January 1 2020 00:00:00.000", /*is_local*/ true);
@@ -253,7 +253,7 @@ TEST_P(BatAdsTimeUtilTest, GetLocalTimeAtEndOfLastMonthOnTheCusp) {
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
-TEST_P(BatAdsTimeUtilTest, GetLocalTimeAtBeginningOfThisMonth) {
+TEST_P(BraveAdsTimeUtilTest, GetLocalTimeAtBeginningOfThisMonth) {
   // Arrange
   const base::Time time =
       TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ true);
@@ -269,7 +269,7 @@ TEST_P(BatAdsTimeUtilTest, GetLocalTimeAtBeginningOfThisMonth) {
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
-TEST_P(BatAdsTimeUtilTest, GetLocalTimeAtEndOfThisMonth) {
+TEST_P(BraveAdsTimeUtilTest, GetLocalTimeAtEndOfThisMonth) {
   // Arrange
   const base::Time time =
       TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ true);
@@ -285,7 +285,7 @@ TEST_P(BatAdsTimeUtilTest, GetLocalTimeAtEndOfThisMonth) {
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
-TEST_P(BatAdsTimeUtilTest, TimeToPrivacyPreservingISO8601) {
+TEST_P(BraveAdsTimeUtilTest, TimeToPrivacyPreservingISO8601) {
   // Arrange
   const base::Time time =
       TimeFromString("November 18 2020 23:45:12.345", /*is_local*/ false);
@@ -301,7 +301,7 @@ TEST_P(BatAdsTimeUtilTest, TimeToPrivacyPreservingISO8601) {
 }
 
 #if BUILDFLAG(IS_LINUX)
-TEST_P(BatAdsTimeUtilTest, CheckLocalMidnightUSPacificTimezone) {
+TEST_P(BraveAdsTimeUtilTest, CheckLocalMidnightUSPacificTimezone) {
   ScopedLibcTZ scoped_libc_tz("US/Pacific");
   // Arrange
   const base::Time daylight_saving_started_day =
@@ -327,7 +327,7 @@ TEST_P(BatAdsTimeUtilTest, CheckLocalMidnightUSPacificTimezone) {
             adjusted_daylight_saving_ended_day);
 }
 
-TEST_P(BatAdsTimeUtilTest, CheckLocalMidnightEuropeLondonTimezone) {
+TEST_P(BraveAdsTimeUtilTest, CheckLocalMidnightEuropeLondonTimezone) {
   ScopedLibcTZ scoped_libc_tz("Europe/London");
   // Arrange
   const base::Time daylight_saving_started_day =
@@ -353,7 +353,7 @@ TEST_P(BatAdsTimeUtilTest, CheckLocalMidnightEuropeLondonTimezone) {
             adjusted_daylight_saving_ended_day);
 }
 
-TEST_P(BatAdsTimeUtilTest, CheckLocalMidnightAustaliaSydneyTimezone) {
+TEST_P(BraveAdsTimeUtilTest, CheckLocalMidnightAustaliaSydneyTimezone) {
   ScopedLibcTZ scoped_libc_tz("Australia/Sydney");
   // Arrange
   const base::Time daylight_saving_started_day =
@@ -379,7 +379,7 @@ TEST_P(BatAdsTimeUtilTest, CheckLocalMidnightAustaliaSydneyTimezone) {
             adjusted_daylight_saving_ended_day);
 }
 
-TEST_P(BatAdsTimeUtilTest, CheckLocalMidnightNoDSTTimezone) {
+TEST_P(BraveAdsTimeUtilTest, CheckLocalMidnightNoDSTTimezone) {
   ScopedLibcTZ scoped_libc_tz("America/Cayman");
   // Arrange
   const base::Time time =
@@ -395,7 +395,7 @@ TEST_P(BatAdsTimeUtilTest, CheckLocalMidnightNoDSTTimezone) {
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
-TEST_P(BatAdsTimeUtilTest,
+TEST_P(BraveAdsTimeUtilTest,
        AdjustLocalTimeToBeginningOfMonthForUSPacificTimezone) {
   ScopedLibcTZ scoped_libc_tz("US/Pacific");
   // Arrange
@@ -434,7 +434,7 @@ TEST_P(BatAdsTimeUtilTest,
             adjusted_daylight_saving_ended_time2);
 }
 
-TEST_P(BatAdsTimeUtilTest,
+TEST_P(BraveAdsTimeUtilTest,
        AdjustLocalTimeToBeginningOfMonthForEuropeLondonTimezone) {
   ScopedLibcTZ scoped_libc_tz("Europe/London");
   // Arrange
@@ -473,7 +473,7 @@ TEST_P(BatAdsTimeUtilTest,
             adjusted_daylight_saving_ended_time2);
 }
 
-TEST_P(BatAdsTimeUtilTest,
+TEST_P(BraveAdsTimeUtilTest,
        AdjustLocalTimeToBeginningOfMonthForAustraliaSydneyTimezone) {
   ScopedLibcTZ scoped_libc_tz("Australia/Sydney");
   // Arrange
@@ -512,7 +512,8 @@ TEST_P(BatAdsTimeUtilTest,
             adjusted_daylight_saving_ended_time2);
 }
 
-TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToBeginningOfMonthForNoDSTTimezone) {
+TEST_P(BraveAdsTimeUtilTest,
+       AdjustLocalTimeToBeginningOfMonthForNoDSTTimezone) {
   ScopedLibcTZ scoped_libc_tz("America/Cayman");
   // Arrange
   const base::Time time =
@@ -528,7 +529,7 @@ TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToBeginningOfMonthForNoDSTTimezone) {
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
-TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToEndOfMonthForUSPacificTimezone) {
+TEST_P(BraveAdsTimeUtilTest, AdjustLocalTimeToEndOfMonthForUSPacificTimezone) {
   ScopedLibcTZ scoped_libc_tz("US/Pacific");
   // Arrange
   const base::Time daylight_saving_started_time1 =
@@ -566,7 +567,8 @@ TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToEndOfMonthForUSPacificTimezone) {
             adjusted_daylight_saving_ended_time2);
 }
 
-TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToEndOfMonthForEuropeLondonTimezone) {
+TEST_P(BraveAdsTimeUtilTest,
+       AdjustLocalTimeToEndOfMonthForEuropeLondonTimezone) {
   ScopedLibcTZ scoped_libc_tz("Europe/London");
   // Arrange
   const base::Time daylight_saving_started_time1 =
@@ -604,7 +606,7 @@ TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToEndOfMonthForEuropeLondonTimezone) {
             adjusted_daylight_saving_ended_time2);
 }
 
-TEST_P(BatAdsTimeUtilTest,
+TEST_P(BraveAdsTimeUtilTest,
        AdjustLocalTimeToEndOfMonthForAustraliaSydneyTimezone) {
   ScopedLibcTZ scoped_libc_tz("Australia/Sydney");
   const base::Time daylight_saving_started_time1 =
@@ -642,7 +644,7 @@ TEST_P(BatAdsTimeUtilTest,
             adjusted_daylight_saving_ended_time2);
 }
 
-TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToEndOfMonthForNoDSTTimezone) {
+TEST_P(BraveAdsTimeUtilTest, AdjustLocalTimeToEndOfMonthForNoDSTTimezone) {
   ScopedLibcTZ scoped_libc_tz("America/Cayman");
   // Arrange
   const base::Time time =
@@ -658,7 +660,7 @@ TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToEndOfMonthForNoDSTTimezone) {
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
-TEST_P(BatAdsTimeUtilTest,
+TEST_P(BraveAdsTimeUtilTest,
        AdjustLocalTimeToBeginningOfLastMonthForUSPacificTimezone) {
   ScopedLibcTZ scoped_libc_tz("US/Pacific");
   // Arrange
@@ -685,7 +687,7 @@ TEST_P(BatAdsTimeUtilTest,
             adjusted_daylight_saving_ended_time);
 }
 
-TEST_P(BatAdsTimeUtilTest,
+TEST_P(BraveAdsTimeUtilTest,
        AdjustLocalTimeToBeginningOfLastMonthForEuropeLondonTimezone) {
   ScopedLibcTZ scoped_libc_tz("Europe/London");
   // Arrange
@@ -712,7 +714,7 @@ TEST_P(BatAdsTimeUtilTest,
             adjusted_daylight_saving_ended_time);
 }
 
-TEST_P(BatAdsTimeUtilTest,
+TEST_P(BraveAdsTimeUtilTest,
        AdjustLocalTimeToBeginningOfLastMonthForAustraliaSydneyTimezone) {
   ScopedLibcTZ scoped_libc_tz("Australia/Sydney");
   // Arrange
@@ -739,7 +741,7 @@ TEST_P(BatAdsTimeUtilTest,
             adjusted_daylight_saving_ended_time);
 }
 
-TEST_P(BatAdsTimeUtilTest,
+TEST_P(BraveAdsTimeUtilTest,
        AdjustLocalTimeToBeginningOfLastMonthForNoDSTTimezone) {
   ScopedLibcTZ scoped_libc_tz("America/Cayman");
   // Arrange
@@ -758,6 +760,6 @@ TEST_P(BatAdsTimeUtilTest,
 }
 #endif  // BUILDFLAG(IS_LINUX)
 
-INSTANTIATE_TEST_SUITE_P(, BatAdsTimeUtilTest, ::testing::Bool());
+INSTANTIATE_TEST_SUITE_P(, BraveAdsTimeUtilTest, ::testing::Bool());
 
 }  // namespace brave_ads

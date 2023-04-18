@@ -10,13 +10,13 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsIssuersUtilTest : public UnitTestBase {};
+class BraveAdsIssuersUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsIssuersUtilTest, HasIssuersChanged) {
+TEST_F(BraveAdsIssuersUtilTest, HasIssuersChanged) {
   // Arrange
   BuildAndSetIssuers();
 
@@ -34,7 +34,7 @@ TEST_F(BatAdsIssuersUtilTest, HasIssuersChanged) {
   EXPECT_TRUE(has_changed);
 }
 
-TEST_F(BatAdsIssuersUtilTest, HasIssuersChangedOnInitialFetch) {
+TEST_F(BraveAdsIssuersUtilTest, HasIssuersChangedOnInitialFetch) {
   // Arrange
   ads_client_mock_->ClearPref(prefs::kIssuers);
 
@@ -52,7 +52,7 @@ TEST_F(BatAdsIssuersUtilTest, HasIssuersChangedOnInitialFetch) {
   EXPECT_TRUE(has_changed);
 }
 
-TEST_F(BatAdsIssuersUtilTest, HasIssuersNotChanged) {
+TEST_F(BraveAdsIssuersUtilTest, HasIssuersNotChanged) {
   // Arrange
   BuildAndSetIssuers();
 
@@ -70,7 +70,7 @@ TEST_F(BatAdsIssuersUtilTest, HasIssuersNotChanged) {
   EXPECT_FALSE(has_changed);
 }
 
-TEST_F(BatAdsIssuersUtilTest, IssuerDoesExistForConfirmationsType) {
+TEST_F(BraveAdsIssuersUtilTest, IssuerDoesExistForConfirmationsType) {
   // Arrange
   BuildAndSetIssuers();
 
@@ -81,7 +81,7 @@ TEST_F(BatAdsIssuersUtilTest, IssuerDoesExistForConfirmationsType) {
   EXPECT_TRUE(does_exist);
 }
 
-TEST_F(BatAdsIssuersUtilTest, IssuerDoesNotExistForConfirmationsType) {
+TEST_F(BraveAdsIssuersUtilTest, IssuerDoesNotExistForConfirmationsType) {
   // Arrange
   const IssuersInfo issuers =
       BuildIssuers(/*ping*/ 7'200'000, /*confirmations_public_keys*/ {},
@@ -98,7 +98,7 @@ TEST_F(BatAdsIssuersUtilTest, IssuerDoesNotExistForConfirmationsType) {
   EXPECT_FALSE(does_exist);
 }
 
-TEST_F(BatAdsIssuersUtilTest, IssuerDoesExistForPaymentsType) {
+TEST_F(BraveAdsIssuersUtilTest, IssuerDoesExistForPaymentsType) {
   // Arrange
   BuildAndSetIssuers();
 
@@ -109,7 +109,7 @@ TEST_F(BatAdsIssuersUtilTest, IssuerDoesExistForPaymentsType) {
   EXPECT_TRUE(does_exist);
 }
 
-TEST_F(BatAdsIssuersUtilTest, IssuerDoesNotExistForPaymentsType) {
+TEST_F(BraveAdsIssuersUtilTest, IssuerDoesNotExistForPaymentsType) {
   // Arrange
   const IssuersInfo issuers =
       BuildIssuers(7'200'000,
@@ -126,7 +126,7 @@ TEST_F(BatAdsIssuersUtilTest, IssuerDoesNotExistForPaymentsType) {
   EXPECT_FALSE(does_exist);
 }
 
-TEST_F(BatAdsIssuersUtilTest, PublicKeyDoesExistForConfirmationsType) {
+TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesExistForConfirmationsType) {
   // Arrange
   BuildAndSetIssuers();
 
@@ -139,7 +139,7 @@ TEST_F(BatAdsIssuersUtilTest, PublicKeyDoesExistForConfirmationsType) {
   EXPECT_TRUE(does_exist);
 }
 
-TEST_F(BatAdsIssuersUtilTest, PublicKeyDoesNotExistForConfirmationsType) {
+TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesNotExistForConfirmationsType) {
   // Arrange
   BuildAndSetIssuers();
 
@@ -152,7 +152,7 @@ TEST_F(BatAdsIssuersUtilTest, PublicKeyDoesNotExistForConfirmationsType) {
   EXPECT_FALSE(does_exist);
 }
 
-TEST_F(BatAdsIssuersUtilTest, PublicKeyDoesExistForPaymentsType) {
+TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesExistForPaymentsType) {
   // Arrange
   BuildAndSetIssuers();
 
@@ -164,7 +164,7 @@ TEST_F(BatAdsIssuersUtilTest, PublicKeyDoesExistForPaymentsType) {
   EXPECT_TRUE(does_exist);
 }
 
-TEST_F(BatAdsIssuersUtilTest, PublicKeyDoesNotExistForPaymentsType) {
+TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesNotExistForPaymentsType) {
   // Arrange
   BuildAndSetIssuers();
 
@@ -176,7 +176,7 @@ TEST_F(BatAdsIssuersUtilTest, PublicKeyDoesNotExistForPaymentsType) {
   EXPECT_FALSE(does_exist);
 }
 
-TEST_F(BatAdsIssuersUtilTest, GetIssuersForType) {
+TEST_F(BraveAdsIssuersUtilTest, GetIssuersForType) {
   // Arrange
   const IssuersInfo issuers =
       BuildIssuers(7'200'000,
@@ -200,7 +200,7 @@ TEST_F(BatAdsIssuersUtilTest, GetIssuersForType) {
   EXPECT_EQ(expected_issuer, *issuer);
 }
 
-TEST_F(BatAdsIssuersUtilTest, DoNotGetIssuersForMissingType) {
+TEST_F(BraveAdsIssuersUtilTest, DoNotGetIssuersForMissingType) {
   // Arrange
   const IssuersInfo issuers =
       BuildIssuers(7'200'000,
@@ -216,7 +216,7 @@ TEST_F(BatAdsIssuersUtilTest, DoNotGetIssuersForMissingType) {
   EXPECT_FALSE(issuer);
 }
 
-TEST_F(BatAdsIssuersUtilTest, IsIssuersValid) {
+TEST_F(BraveAdsIssuersUtilTest, IsIssuersValid) {
   // Arrange
   const IssuersInfo issuers =
       BuildIssuers(7'200'000,
@@ -236,7 +236,7 @@ TEST_F(BatAdsIssuersUtilTest, IsIssuersValid) {
   EXPECT_TRUE(IsIssuersValid(issuers));
 }
 
-TEST_F(BatAdsIssuersUtilTest, IsIssuersInvalid) {
+TEST_F(BraveAdsIssuersUtilTest, IsIssuersInvalid) {
   // Arrange
   const IssuersInfo issuers =
       BuildIssuers(7'200'000,

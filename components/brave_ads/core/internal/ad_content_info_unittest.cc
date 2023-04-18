@@ -8,13 +8,13 @@
 #include "brave/components/brave_ads/core/ad_content_action_types.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsAdContentInfoTest : public UnitTestBase {};
+class BraveAdsAdContentInfoTest : public UnitTestBase {};
 
-TEST_F(BatAdsAdContentInfoTest, ToggleThumbUp) {
+TEST_F(BraveAdsAdContentInfoTest, ToggleThumbUp) {
   // Arrange
   const AdContentInfo ad_content;
 
@@ -26,7 +26,7 @@ TEST_F(BatAdsAdContentInfoTest, ToggleThumbUp) {
   EXPECT_EQ(AdContentLikeActionType::kThumbsUp, action_type);
 }
 
-TEST_F(BatAdsAdContentInfoTest, ToggleThumbUpToNetrual) {
+TEST_F(BraveAdsAdContentInfoTest, ToggleThumbUpToNetrual) {
   // Arrange
   AdContentInfo ad_content;
   ad_content.like_action_type = ad_content.ToggleThumbUpActionType();
@@ -40,7 +40,7 @@ TEST_F(BatAdsAdContentInfoTest, ToggleThumbUpToNetrual) {
   EXPECT_EQ(AdContentLikeActionType::kNeutral, like_action_type);
 }
 
-TEST_F(BatAdsAdContentInfoTest, ToggleThumbDown) {
+TEST_F(BraveAdsAdContentInfoTest, ToggleThumbDown) {
   // Arrange
   const AdContentInfo ad_content;
 
@@ -52,7 +52,7 @@ TEST_F(BatAdsAdContentInfoTest, ToggleThumbDown) {
   EXPECT_EQ(AdContentLikeActionType::kThumbsDown, like_action_type);
 }
 
-TEST_F(BatAdsAdContentInfoTest, ToggleThumbDownToNetrual) {
+TEST_F(BraveAdsAdContentInfoTest, ToggleThumbDownToNetrual) {
   // Arrange
   AdContentInfo ad_content;
   ad_content.like_action_type = ad_content.ToggleThumbDownActionType();

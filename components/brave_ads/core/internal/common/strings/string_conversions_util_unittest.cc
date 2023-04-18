@@ -8,7 +8,7 @@
 
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -18,7 +18,7 @@ constexpr char kDelimiter[] = ",";
 const std::vector<float> kTestVector = {1.2F, 2.3F, 3.4F, 4.5F, 5.6F};
 }  // namespace
 
-TEST(BatAdsStringConversionsUtilTest, TrueBoolToString) {
+TEST(BraveAdsStringConversionsUtilTest, TrueBoolToString) {
   // Arrange
 
   // Act
@@ -28,7 +28,7 @@ TEST(BatAdsStringConversionsUtilTest, TrueBoolToString) {
   EXPECT_EQ("true", value);
 }
 
-TEST(BatAdsStringConversionsUtilTest, FalseBoolToString) {
+TEST(BraveAdsStringConversionsUtilTest, FalseBoolToString) {
   // Arrange
 
   // Act
@@ -38,7 +38,7 @@ TEST(BatAdsStringConversionsUtilTest, FalseBoolToString) {
   EXPECT_EQ("false", value);
 }
 
-TEST(BatAdsStringConversionsUtilTest, DelimitedStringToVector) {
+TEST(BraveAdsStringConversionsUtilTest, DelimitedStringToVector) {
   // Arrange
   const std::string delimited_string = "1.2,2.3,3.4,4.5,5.6";
 
@@ -52,7 +52,7 @@ TEST(BatAdsStringConversionsUtilTest, DelimitedStringToVector) {
   }
 }
 
-TEST(BatAdsStringConversionsUtilTest, VectorToDelimitedString) {
+TEST(BraveAdsStringConversionsUtilTest, VectorToDelimitedString) {
   // Arrange
 
   // Act
@@ -69,7 +69,7 @@ TEST(BatAdsStringConversionsUtilTest, VectorToDelimitedString) {
   }
 }
 
-TEST(BatAdsStringConversionsUtilTest, ReflexiveVectorToDelimitedString) {
+TEST(BraveAdsStringConversionsUtilTest, ReflexiveVectorToDelimitedString) {
   // Arrange
 
   // Act

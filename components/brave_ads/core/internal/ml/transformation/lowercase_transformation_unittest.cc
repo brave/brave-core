@@ -10,13 +10,13 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::ml {
 
-class BatAdsLowercaseTransformationTest : public UnitTestBase {};
+class BraveAdsLowercaseTransformationTest : public UnitTestBase {};
 
-TEST_F(BatAdsLowercaseTransformationTest, LowercaseTest) {
+TEST_F(BraveAdsLowercaseTransformationTest, LowercaseTest) {
   // Arrange
   constexpr char kUppercaseText[] = "LOWER CASE";
   constexpr char kLowercaseText[] = "lower case";

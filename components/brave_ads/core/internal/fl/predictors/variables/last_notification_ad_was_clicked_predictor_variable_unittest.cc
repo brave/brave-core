@@ -14,14 +14,14 @@
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsLastNotificationAdWasClickedPredictorVariableTest
+class BraveAdsLastNotificationAdWasClickedPredictorVariableTest
     : public UnitTestBase {};
 
-TEST_F(BatAdsLastNotificationAdWasClickedPredictorVariableTest, GetDataType) {
+TEST_F(BraveAdsLastNotificationAdWasClickedPredictorVariableTest, GetDataType) {
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
       std::make_unique<LastNotificationAdWasClickedPredictorVariable>();
 
@@ -32,7 +32,7 @@ TEST_F(BatAdsLastNotificationAdWasClickedPredictorVariableTest, GetDataType) {
             predictor_variable->GetDataType());
 }
 
-TEST_F(BatAdsLastNotificationAdWasClickedPredictorVariableTest,
+TEST_F(BraveAdsLastNotificationAdWasClickedPredictorVariableTest,
        GetValueForNoHistory) {
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
@@ -44,7 +44,7 @@ TEST_F(BatAdsLastNotificationAdWasClickedPredictorVariableTest,
   EXPECT_EQ("-1", predictor_variable->GetValue());
 }
 
-TEST_F(BatAdsLastNotificationAdWasClickedPredictorVariableTest,
+TEST_F(BraveAdsLastNotificationAdWasClickedPredictorVariableTest,
        GetValueAfterExceedingTimeWindow) {
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
@@ -65,7 +65,7 @@ TEST_F(BatAdsLastNotificationAdWasClickedPredictorVariableTest,
   EXPECT_EQ("-1", predictor_variable->GetValue());
 }
 
-TEST_F(BatAdsLastNotificationAdWasClickedPredictorVariableTest,
+TEST_F(BraveAdsLastNotificationAdWasClickedPredictorVariableTest,
        GetValueWhenLastClicked) {
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
@@ -84,7 +84,7 @@ TEST_F(BatAdsLastNotificationAdWasClickedPredictorVariableTest,
   EXPECT_EQ("1", predictor_variable->GetValue());
 }
 
-TEST_F(BatAdsLastNotificationAdWasClickedPredictorVariableTest,
+TEST_F(BraveAdsLastNotificationAdWasClickedPredictorVariableTest,
        GetValueWhenLastViewed) {
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =

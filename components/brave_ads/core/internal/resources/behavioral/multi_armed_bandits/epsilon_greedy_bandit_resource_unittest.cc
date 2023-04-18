@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -22,9 +22,9 @@ namespace {
 constexpr char kCatalog[] = "catalog.json";
 }  // namespace
 
-class BatAdsEpsilonGreedyBanditResourceTest : public UnitTestBase {};
+class BraveAdsEpsilonGreedyBanditResourceTest : public UnitTestBase {};
 
-TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
+TEST_F(BraveAdsEpsilonGreedyBanditResourceTest,
        SuccessfullyInitializeWithCatalog) {
   // Arrange
   Catalog catalog;
@@ -45,7 +45,7 @@ TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
   EXPECT_TRUE(resource.IsInitialized());
 }
 
-TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
+TEST_F(BraveAdsEpsilonGreedyBanditResourceTest,
        SuccessfullyInitializeWithEmptyCatalog) {
   // Arrange
   Catalog catalog;
@@ -58,7 +58,7 @@ TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
   EXPECT_TRUE(resource.IsInitialized());
 }
 
-TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
+TEST_F(BraveAdsEpsilonGreedyBanditResourceTest,
        FailToInitializeIfCatalogIsNotLoaded) {
   // Arrange
   Catalog catalog;

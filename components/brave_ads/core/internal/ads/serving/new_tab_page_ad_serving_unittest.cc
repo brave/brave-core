@@ -19,11 +19,11 @@
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::new_tab_page_ads {
 
-class BatAdsNewTabPageAdServingDelegate : public ServingDelegate {
+class BraveAdsNewTabPageAdServingDelegate : public ServingDelegate {
  public:
   void OnOpportunityAroseToServeNewTabPageAd(
       const SegmentList& /*segments*/) override {
@@ -54,7 +54,7 @@ class BatAdsNewTabPageAdServingDelegate : public ServingDelegate {
   bool failed_to_serve_ad_ = false;
 };
 
-class BatAdsNewTabPageAdServingTest : public UnitTestBase {
+class BraveAdsNewTabPageAdServingTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -72,16 +72,16 @@ class BatAdsNewTabPageAdServingTest : public UnitTestBase {
   std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
   std::unique_ptr<Serving> serving_;
 
-  BatAdsNewTabPageAdServingDelegate serving_delegate_;
+  BraveAdsNewTabPageAdServingDelegate serving_delegate_;
 };
 
-TEST_F(BatAdsNewTabPageAdServingTest, DoNotServeAdForUnsupportedVersion) {
+TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdForUnsupportedVersion) {
   // Arrange
   ForceServingVersion(0);
 
   // Act
   serving_->MaybeServeAd(base::BindOnce(
-      [](BatAdsNewTabPageAdServingDelegate* serving_delegate,
+      [](BraveAdsNewTabPageAdServingDelegate* serving_delegate,
          const absl::optional<NewTabPageAdInfo>& ad) {
         // Assert
         EXPECT_FALSE(ad);
@@ -92,7 +92,7 @@ TEST_F(BatAdsNewTabPageAdServingTest, DoNotServeAdForUnsupportedVersion) {
       base::Unretained(&serving_delegate_)));
 }
 
-TEST_F(BatAdsNewTabPageAdServingTest, ServeAd) {
+TEST_F(BraveAdsNewTabPageAdServingTest, ServeAd) {
   // Arrange
   ForcePermissionRulesForTesting();
 
@@ -102,7 +102,7 @@ TEST_F(BatAdsNewTabPageAdServingTest, ServeAd) {
 
   // Act
   serving_->MaybeServeAd(base::BindOnce(
-      [](BatAdsNewTabPageAdServingDelegate* serving_delegate,
+      [](BraveAdsNewTabPageAdServingDelegate* serving_delegate,
          const absl::optional<NewTabPageAdInfo>& ad) {
         // Assert
         EXPECT_TRUE(ad);
@@ -114,7 +114,7 @@ TEST_F(BatAdsNewTabPageAdServingTest, ServeAd) {
       base::Unretained(&serving_delegate_)));
 }
 
-TEST_F(BatAdsNewTabPageAdServingTest, DoNotServeAdIfMissingWallpapers) {
+TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdIfMissingWallpapers) {
   // Arrange
   ForcePermissionRulesForTesting();
 
@@ -125,7 +125,7 @@ TEST_F(BatAdsNewTabPageAdServingTest, DoNotServeAdIfMissingWallpapers) {
 
   // Act
   serving_->MaybeServeAd(base::BindOnce(
-      [](BatAdsNewTabPageAdServingDelegate* serving_delegate,
+      [](BraveAdsNewTabPageAdServingDelegate* serving_delegate,
          const absl::optional<NewTabPageAdInfo>& ad) {
         // Assert
         EXPECT_FALSE(ad);
@@ -136,13 +136,13 @@ TEST_F(BatAdsNewTabPageAdServingTest, DoNotServeAdIfMissingWallpapers) {
       base::Unretained(&serving_delegate_)));
 }
 
-TEST_F(BatAdsNewTabPageAdServingTest, DoNotServeAdIfNoEligibleAdsFound) {
+TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdIfNoEligibleAdsFound) {
   // Arrange
   ForcePermissionRulesForTesting();
 
   // Act
   serving_->MaybeServeAd(base::BindOnce(
-      [](BatAdsNewTabPageAdServingDelegate* serving_delegate,
+      [](BraveAdsNewTabPageAdServingDelegate* serving_delegate,
          const absl::optional<NewTabPageAdInfo>& ad) {
         // Assert
         EXPECT_FALSE(ad);
@@ -153,7 +153,7 @@ TEST_F(BatAdsNewTabPageAdServingTest, DoNotServeAdIfNoEligibleAdsFound) {
       base::Unretained(&serving_delegate_)));
 }
 
-TEST_F(BatAdsNewTabPageAdServingTest,
+TEST_F(BraveAdsNewTabPageAdServingTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad =
@@ -162,7 +162,7 @@ TEST_F(BatAdsNewTabPageAdServingTest,
 
   // Act
   serving_->MaybeServeAd(base::BindOnce(
-      [](BatAdsNewTabPageAdServingDelegate* serving_delegate,
+      [](BraveAdsNewTabPageAdServingDelegate* serving_delegate,
          const absl::optional<NewTabPageAdInfo>& ad) {
         // Assert
         EXPECT_FALSE(ad);

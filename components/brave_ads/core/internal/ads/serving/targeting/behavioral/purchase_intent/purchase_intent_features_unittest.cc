@@ -11,11 +11,11 @@
 #include "base/time/time.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::targeting {
 
-TEST(BatAdsPurchaseIntentFeaturesTest, IsEnabled) {
+TEST(BraveAdsPurchaseIntentFeaturesTest, IsEnabled) {
   // Arrange
 
   // Act
@@ -24,7 +24,7 @@ TEST(BatAdsPurchaseIntentFeaturesTest, IsEnabled) {
   EXPECT_TRUE(IsPurchaseIntentEnabled());
 }
 
-TEST(BatAdsPurchaseIntentFeaturesTest, IsDisabled) {
+TEST(BraveAdsPurchaseIntentFeaturesTest, IsDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
@@ -41,7 +41,7 @@ TEST(BatAdsPurchaseIntentFeaturesTest, IsDisabled) {
   EXPECT_FALSE(IsPurchaseIntentEnabled());
 }
 
-TEST(BatAdsPurchaseIntentFeaturesTest, GetPurchaseIntentResourceVersion) {
+TEST(BraveAdsPurchaseIntentFeaturesTest, GetPurchaseIntentResourceVersion) {
   // Arrange
   base::FieldTrialParams params;
   params["resource_version"] = "0";
@@ -60,7 +60,7 @@ TEST(BatAdsPurchaseIntentFeaturesTest, GetPurchaseIntentResourceVersion) {
   EXPECT_EQ(0, kPurchaseIntentResourceVersion.Get());
 }
 
-TEST(BatAdsPurchaseIntentFeaturesTest, DefaultPurchaseIntentResourceVersion) {
+TEST(BraveAdsPurchaseIntentFeaturesTest, DefaultPurchaseIntentResourceVersion) {
   // Arrange
 
   // Act
@@ -69,7 +69,7 @@ TEST(BatAdsPurchaseIntentFeaturesTest, DefaultPurchaseIntentResourceVersion) {
   EXPECT_EQ(1, kPurchaseIntentResourceVersion.Get());
 }
 
-TEST(BatAdsPurchaseIntentFeaturesTest,
+TEST(BraveAdsPurchaseIntentFeaturesTest,
      DefaultPurchaseIntentResourceVersionWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
@@ -87,7 +87,7 @@ TEST(BatAdsPurchaseIntentFeaturesTest,
   EXPECT_EQ(1, kPurchaseIntentResourceVersion.Get());
 }
 
-TEST(BatAdsPurchaseIntentFeaturesTest, GetPurchaseIntentThreshold) {
+TEST(BraveAdsPurchaseIntentFeaturesTest, GetPurchaseIntentThreshold) {
   // Arrange
   base::FieldTrialParams params;
   params["threshold"] = "5";
@@ -106,7 +106,7 @@ TEST(BatAdsPurchaseIntentFeaturesTest, GetPurchaseIntentThreshold) {
   EXPECT_EQ(5, kPurchaseIntentThreshold.Get());
 }
 
-TEST(BatAdsPurchaseIntentFeaturesTest, DefaultPurchaseIntentThreshold) {
+TEST(BraveAdsPurchaseIntentFeaturesTest, DefaultPurchaseIntentThreshold) {
   // Arrange
 
   // Act
@@ -115,7 +115,7 @@ TEST(BatAdsPurchaseIntentFeaturesTest, DefaultPurchaseIntentThreshold) {
   EXPECT_EQ(3, kPurchaseIntentThreshold.Get());
 }
 
-TEST(BatAdsPurchaseIntentFeaturesTest,
+TEST(BraveAdsPurchaseIntentFeaturesTest,
      DefaultPurchaseIntentThresholdWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
@@ -133,7 +133,7 @@ TEST(BatAdsPurchaseIntentFeaturesTest,
   EXPECT_EQ(3, kPurchaseIntentThreshold.Get());
 }
 
-TEST(BatAdsPurchaseIntentFeaturesTest, GetPurchaseIntentTimeWindow) {
+TEST(BraveAdsPurchaseIntentFeaturesTest, GetPurchaseIntentTimeWindow) {
   // Arrange
   base::FieldTrialParams params;
   params["time_window"] = "1d";
@@ -152,7 +152,7 @@ TEST(BatAdsPurchaseIntentFeaturesTest, GetPurchaseIntentTimeWindow) {
   EXPECT_EQ(base::Days(1), kPurchaseIntentTimeWindow.Get());
 }
 
-TEST(BatAdsPurchaseIntentFeaturesTest, DefaultPurchaseIntentTimeWindow) {
+TEST(BraveAdsPurchaseIntentFeaturesTest, DefaultPurchaseIntentTimeWindow) {
   // Arrange
 
   // Act
@@ -161,7 +161,7 @@ TEST(BatAdsPurchaseIntentFeaturesTest, DefaultPurchaseIntentTimeWindow) {
   EXPECT_EQ(base::Days(7), kPurchaseIntentTimeWindow.Get());
 }
 
-TEST(BatAdsPurchaseIntentFeaturesTest,
+TEST(BraveAdsPurchaseIntentFeaturesTest,
      DefaultPurchaseIntentTimeWindowWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;

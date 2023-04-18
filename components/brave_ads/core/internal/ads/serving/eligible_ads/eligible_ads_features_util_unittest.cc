@@ -7,11 +7,11 @@
 
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-TEST(BatAdsEligibleAdsFeaturesUtilTest,
+TEST(BraveAdsEligibleAdsFeaturesUtilTest,
      ToAdPredictorWeightsForEmptyParamValue) {
   // Arrange
 
@@ -22,7 +22,7 @@ TEST(BatAdsEligibleAdsFeaturesUtilTest,
   EXPECT_TRUE(weights.empty());
 }
 
-TEST(BatAdsEligibleAdsFeaturesUtilTest,
+TEST(BraveAdsEligibleAdsFeaturesUtilTest,
      ToAdPredictorWeightsForNonNumericParamValue) {
   // Arrange
 
@@ -34,7 +34,7 @@ TEST(BatAdsEligibleAdsFeaturesUtilTest,
   EXPECT_TRUE(weights.empty());
 }
 
-TEST(BatAdsEligibleAdsFeaturesUtilTest,
+TEST(BraveAdsEligibleAdsFeaturesUtilTest,
      ToAdPredictorWeightsForAllZeroParamValue) {
   // Arrange
 
@@ -45,7 +45,7 @@ TEST(BatAdsEligibleAdsFeaturesUtilTest,
   EXPECT_TRUE(weights.empty());
 }
 
-TEST(BatAdsEligibleAdsFeaturesUtilTest,
+TEST(BraveAdsEligibleAdsFeaturesUtilTest,
      ToAdPredictorWeightsForSomeZeroParamValue) {
   // Arrange
 
@@ -57,7 +57,7 @@ TEST(BatAdsEligibleAdsFeaturesUtilTest,
   EXPECT_EQ(expected_weights, weights);
 }
 
-TEST(BatAdsEligibleAdsFeaturesUtilTest,
+TEST(BraveAdsEligibleAdsFeaturesUtilTest,
      ToAdPredictorWeightsForNegativeParamValue) {
   // Arrange
 
@@ -68,7 +68,7 @@ TEST(BatAdsEligibleAdsFeaturesUtilTest,
   EXPECT_TRUE(weights.empty());
 }
 
-TEST(BatAdsEligibleAdsFeaturesUtilTest,
+TEST(BraveAdsEligibleAdsFeaturesUtilTest,
      ToAdPredictorWeightsForSingleParamValue) {
   // Arrange
 
@@ -80,7 +80,7 @@ TEST(BatAdsEligibleAdsFeaturesUtilTest,
   EXPECT_EQ(expected_weights, weights);
 }
 
-TEST(BatAdsEligibleAdsFeaturesUtilTest, ToAdPredictorWeightsForParamValue) {
+TEST(BraveAdsEligibleAdsFeaturesUtilTest, ToAdPredictorWeightsForParamValue) {
   // Arrange
 
   // Act
@@ -91,7 +91,7 @@ TEST(BatAdsEligibleAdsFeaturesUtilTest, ToAdPredictorWeightsForParamValue) {
   EXPECT_EQ(expected_weights, weights);
 }
 
-TEST(BatAdsEligibleAdsFeaturesUtilTest,
+TEST(BraveAdsEligibleAdsFeaturesUtilTest,
      ToAdPredictorWeightsForParamValueWithMixedTypes) {
   // Arrange
 

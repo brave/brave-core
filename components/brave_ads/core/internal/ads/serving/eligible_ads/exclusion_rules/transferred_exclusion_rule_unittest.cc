@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -26,9 +26,9 @@ constexpr const char* kCampaignIds[] = {"60267cee-d5bb-4a0d-baaf-91cd7f18e07e",
 
 }  // namespace
 
-class BatAdsTransferredExclusionRuleTest : public UnitTestBase {};
+class BraveAdsTransferredExclusionRuleTest : public UnitTestBase {};
 
-TEST_F(BatAdsTransferredExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
+TEST_F(BraveAdsTransferredExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -42,7 +42,7 @@ TEST_F(BatAdsTransferredExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsTransferredExclusionRuleTest,
+TEST_F(BraveAdsTransferredExclusionRuleTest,
        AllowAdWithDifferentCampaignIdWithin2Days) {
   // Arrange
   base::FieldTrialParams params;
@@ -82,7 +82,7 @@ TEST_F(BatAdsTransferredExclusionRuleTest,
   EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad_1));
 }
 
-TEST_F(BatAdsTransferredExclusionRuleTest,
+TEST_F(BraveAdsTransferredExclusionRuleTest,
        AllowAdWithDifferentCampaignIdWithin2DaysForMultipleTypes) {
   // Arrange
   base::FieldTrialParams params;
@@ -136,7 +136,7 @@ TEST_F(BatAdsTransferredExclusionRuleTest,
   EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad_1));
 }
 
-TEST_F(BatAdsTransferredExclusionRuleTest,
+TEST_F(BraveAdsTransferredExclusionRuleTest,
        DoNotAllowAdWithSameCampaignIdWithin2Days) {
   // Arrange
   base::FieldTrialParams params;
@@ -172,7 +172,7 @@ TEST_F(BatAdsTransferredExclusionRuleTest,
   EXPECT_TRUE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsTransferredExclusionRuleTest,
+TEST_F(BraveAdsTransferredExclusionRuleTest,
        AllowAdWithSameCampaignIdWithin0Seconds) {
   // Arrange
   base::FieldTrialParams params;
@@ -208,7 +208,7 @@ TEST_F(BatAdsTransferredExclusionRuleTest,
   EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsTransferredExclusionRuleTest,
+TEST_F(BraveAdsTransferredExclusionRuleTest,
        AllowAdWithSameCampaignIdAfter2Days) {
   // Arrange
   base::FieldTrialParams params;
@@ -244,7 +244,7 @@ TEST_F(BatAdsTransferredExclusionRuleTest,
   EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsTransferredExclusionRuleTest,
+TEST_F(BraveAdsTransferredExclusionRuleTest,
        AllowAdWithDifferentCampaignIdAfter2Days) {
   // Arrange
   base::FieldTrialParams params;

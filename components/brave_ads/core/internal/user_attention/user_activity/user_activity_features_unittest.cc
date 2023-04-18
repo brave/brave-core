@@ -10,11 +10,11 @@
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-TEST(BatAdsUserActivityFeaturesTest, IsEnabled) {
+TEST(BraveAdsUserActivityFeaturesTest, IsEnabled) {
   // Arrange
 
   // Act
@@ -23,7 +23,7 @@ TEST(BatAdsUserActivityFeaturesTest, IsEnabled) {
   EXPECT_TRUE(IsUserActivityEnabled());
 }
 
-TEST(BatAdsUserActivityFeaturesTest, IsDisabled) {
+TEST(BraveAdsUserActivityFeaturesTest, IsDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
@@ -40,7 +40,7 @@ TEST(BatAdsUserActivityFeaturesTest, IsDisabled) {
   EXPECT_FALSE(IsUserActivityEnabled());
 }
 
-TEST(BatAdsUserActivityFeaturesTest, GetTriggers) {
+TEST(BraveAdsUserActivityFeaturesTest, GetTriggers) {
   // Arrange
   base::FieldTrialParams params;
   params["triggers"] = "01=0.5;010203=1.0;0203=0.75";
@@ -59,7 +59,7 @@ TEST(BatAdsUserActivityFeaturesTest, GetTriggers) {
   EXPECT_EQ("01=0.5;010203=1.0;0203=0.75", kUserActivityTriggers.Get());
 }
 
-TEST(BatAdsUserActivityFeaturesTest, DefaultTriggers) {
+TEST(BraveAdsUserActivityFeaturesTest, DefaultTriggers) {
   // Arrange
 
   // Act
@@ -70,7 +70,7 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultTriggers) {
       kUserActivityTriggers.Get());
 }
 
-TEST(BatAdsUserActivityFeaturesTest, DefaultTriggersWhenDisabled) {
+TEST(BraveAdsUserActivityFeaturesTest, DefaultTriggersWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
@@ -89,7 +89,7 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultTriggersWhenDisabled) {
       kUserActivityTriggers.Get());
 }
 
-TEST(BatAdsUserActivityFeaturesTest, GetTimeWindow) {
+TEST(BraveAdsUserActivityFeaturesTest, GetTimeWindow) {
   // Arrange
   base::FieldTrialParams params;
   params["time_window"] = "2h";
@@ -108,7 +108,7 @@ TEST(BatAdsUserActivityFeaturesTest, GetTimeWindow) {
   EXPECT_EQ(base::Hours(2), kUserActivityTimeWindow.Get());
 }
 
-TEST(BatAdsUserActivityFeaturesTest, DefaultTimeWindow) {
+TEST(BraveAdsUserActivityFeaturesTest, DefaultTimeWindow) {
   // Arrange
 
   // Act
@@ -117,7 +117,7 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultTimeWindow) {
   EXPECT_EQ(base::Minutes(15), kUserActivityTimeWindow.Get());
 }
 
-TEST(BatAdsUserActivityFeaturesTest, DefaultTimeWindowWhenDisabled) {
+TEST(BraveAdsUserActivityFeaturesTest, DefaultTimeWindowWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
@@ -134,7 +134,7 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultTimeWindowWhenDisabled) {
   EXPECT_EQ(base::Minutes(15), kUserActivityTimeWindow.Get());
 }
 
-TEST(BatAdsUserActivityFeaturesTest, GetThreshold) {
+TEST(BraveAdsUserActivityFeaturesTest, GetThreshold) {
   // Arrange
   base::FieldTrialParams params;
   params["threshold"] = "7.0";
@@ -153,7 +153,7 @@ TEST(BatAdsUserActivityFeaturesTest, GetThreshold) {
   EXPECT_EQ(7.0, kUserActivityThreshold.Get());
 }
 
-TEST(BatAdsUserActivityFeaturesTest, DefaultThreshold) {
+TEST(BraveAdsUserActivityFeaturesTest, DefaultThreshold) {
   // Arrange
 
   // Act
@@ -162,7 +162,7 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultThreshold) {
   EXPECT_EQ(0.0, kUserActivityThreshold.Get());
 }
 
-TEST(BatAdsUserActivityFeaturesTest, DefaultThresholdWhenDisabled) {
+TEST(BraveAdsUserActivityFeaturesTest, DefaultThresholdWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 

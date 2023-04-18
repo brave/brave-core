@@ -12,14 +12,14 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsRedeemUnblindedPaymentTokensUserDataBuilderTest
+class BraveAdsRedeemUnblindedPaymentTokensUserDataBuilderTest
     : public UnitTestBase {};
 
-TEST_F(BatAdsRedeemUnblindedPaymentTokensUserDataBuilderTest, BuildUserData) {
+TEST_F(BraveAdsRedeemUnblindedPaymentTokensUserDataBuilderTest, BuildUserData) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 

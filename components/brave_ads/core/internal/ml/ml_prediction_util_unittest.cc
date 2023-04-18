@@ -11,13 +11,13 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::ml {
 
-class BatAdsMLPredictionUtilTest : public UnitTestBase {};
+class BraveAdsMLPredictionUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsMLPredictionUtilTest, SoftmaxTest) {
+TEST_F(BraveAdsMLPredictionUtilTest, SoftmaxTest) {
   // Arrange
   constexpr double kTolerance = 1e-8;
 
@@ -41,7 +41,7 @@ TEST_F(BatAdsMLPredictionUtilTest, SoftmaxTest) {
   EXPECT_LT(sum - 1.0, kTolerance);
 }
 
-TEST_F(BatAdsMLPredictionUtilTest, ExtendedSoftmaxTest) {
+TEST_F(BraveAdsMLPredictionUtilTest, ExtendedSoftmaxTest) {
   // Arrange
   constexpr double kTolerance = 1e-8;
 

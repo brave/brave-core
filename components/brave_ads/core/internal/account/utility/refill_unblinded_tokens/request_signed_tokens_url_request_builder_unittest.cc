@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/token.h"
 #include "url/gurl.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -48,9 +48,9 @@ std::vector<privacy::cbr::Token> GetTokens(const int count) {
 
 }  // namespace
 
-class BatAdsRequestSignedTokensUrlRequestBuilderTest : public UnitTestBase {};
+class BraveAdsRequestSignedTokensUrlRequestBuilderTest : public UnitTestBase {};
 
-TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrl) {
+TEST_F(BraveAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrl) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kStaging;

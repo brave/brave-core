@@ -12,13 +12,13 @@
 #include "brave/components/brave_ads/core/internal/ads/notification_ad_features.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsSettingsTest : public UnitTestBase {};
+class BraveAdsSettingsTest : public UnitTestBase {};
 
-TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasChangedDefaultSetting) {
+TEST_F(BraveAdsSettingsTest, AdsPerHourWhenUserHasChangedDefaultSetting) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
@@ -40,7 +40,7 @@ TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasChangedDefaultSetting) {
   EXPECT_EQ(3, ads_per_hour);
 }
 
-TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasNotChangedDefaultSetting) {
+TEST_F(BraveAdsSettingsTest, AdsPerHourWhenUserHasNotChangedDefaultSetting) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
@@ -60,7 +60,7 @@ TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasNotChangedDefaultSetting) {
   EXPECT_EQ(2, ads_per_hour);
 }
 
-TEST_F(BatAdsSettingsTest, ClampMinAdsPerHour) {
+TEST_F(BraveAdsSettingsTest, ClampMinAdsPerHour) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
@@ -80,7 +80,7 @@ TEST_F(BatAdsSettingsTest, ClampMinAdsPerHour) {
   EXPECT_EQ(0, ads_per_hour);
 }
 
-TEST_F(BatAdsSettingsTest, ClampMaxAdsPerHour) {
+TEST_F(BraveAdsSettingsTest, ClampMaxAdsPerHour) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;

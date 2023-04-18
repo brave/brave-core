@@ -11,13 +11,13 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsPerWeekExclusionRuleTest : public UnitTestBase {};
+class BraveAdsPerWeekExclusionRuleTest : public UnitTestBase {};
 
-TEST_F(BatAdsPerWeekExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
+TEST_F(BraveAdsPerWeekExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -31,7 +31,7 @@ TEST_F(BatAdsPerWeekExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsPerWeekExclusionRuleTest, AllowAdIfZero) {
+TEST_F(BraveAdsPerWeekExclusionRuleTest, AllowAdIfZero) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -45,7 +45,7 @@ TEST_F(BatAdsPerWeekExclusionRuleTest, AllowAdIfZero) {
   EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsPerWeekExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
+TEST_F(BraveAdsPerWeekExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -66,7 +66,7 @@ TEST_F(BatAdsPerWeekExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
   EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsPerWeekExclusionRuleTest, AllowAdIfDoesNotExceedCapAfter1Week) {
+TEST_F(BraveAdsPerWeekExclusionRuleTest, AllowAdIfDoesNotExceedCapAfter1Week) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -90,7 +90,7 @@ TEST_F(BatAdsPerWeekExclusionRuleTest, AllowAdIfDoesNotExceedCapAfter1Week) {
   EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsPerWeekExclusionRuleTest, DoNotAllowAdIfExceedsCapWithin1Week) {
+TEST_F(BraveAdsPerWeekExclusionRuleTest, DoNotAllowAdIfExceedsCapWithin1Week) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -114,7 +114,7 @@ TEST_F(BatAdsPerWeekExclusionRuleTest, DoNotAllowAdIfExceedsCapWithin1Week) {
   EXPECT_TRUE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsPerWeekExclusionRuleTest, DoNotAllowAdIfExceedsCap) {
+TEST_F(BraveAdsPerWeekExclusionRuleTest, DoNotAllowAdIfExceedsCap) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;

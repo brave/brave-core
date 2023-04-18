@@ -10,11 +10,11 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/challenge_bypass_ristretto_unittest_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::privacy::cbr {
 
-TEST(BatAdsTokenTest, Random) {
+TEST(BraveAdsTokenTest, Random) {
   // Arrange
   const Token token;
 
@@ -25,7 +25,7 @@ TEST(BatAdsTokenTest, Random) {
   EXPECT_TRUE(has_value);
 }
 
-TEST(BatAdsTokenTest, FailToInitializeWithEmptyBase64) {
+TEST(BraveAdsTokenTest, FailToInitializeWithEmptyBase64) {
   // Arrange
   const Token token("");
 
@@ -36,7 +36,7 @@ TEST(BatAdsTokenTest, FailToInitializeWithEmptyBase64) {
   EXPECT_FALSE(has_value);
 }
 
-TEST(BatAdsTokenTest, FailToInitializeWithInvalidBase64) {
+TEST(BraveAdsTokenTest, FailToInitializeWithInvalidBase64) {
   // Arrange
   const Token token(kInvalidBase64);
 
@@ -47,7 +47,7 @@ TEST(BatAdsTokenTest, FailToInitializeWithInvalidBase64) {
   EXPECT_FALSE(has_value);
 }
 
-TEST(BatAdsTokenTest, DecodeBase64) {
+TEST(BraveAdsTokenTest, DecodeBase64) {
   // Arrange
 
   // Act
@@ -58,7 +58,7 @@ TEST(BatAdsTokenTest, DecodeBase64) {
   EXPECT_TRUE(has_value);
 }
 
-TEST(BatAdsTokenTest, FailToDecodeEmptyBase64) {
+TEST(BraveAdsTokenTest, FailToDecodeEmptyBase64) {
   // Arrange
 
   // Act
@@ -69,7 +69,7 @@ TEST(BatAdsTokenTest, FailToDecodeEmptyBase64) {
   EXPECT_FALSE(has_value);
 }
 
-TEST(BatAdsTokenTest, FailToDecodeInvalidBase64) {
+TEST(BraveAdsTokenTest, FailToDecodeInvalidBase64) {
   // Arrange
 
   // Act
@@ -80,7 +80,7 @@ TEST(BatAdsTokenTest, FailToDecodeInvalidBase64) {
   EXPECT_FALSE(has_value);
 }
 
-TEST(BatAdsTokenTest, EncodeBase64) {
+TEST(BraveAdsTokenTest, EncodeBase64) {
   // Arrange
   const Token token(kTokenBase64);
 
@@ -92,7 +92,7 @@ TEST(BatAdsTokenTest, EncodeBase64) {
   EXPECT_EQ(kTokenBase64, *encoded_base64);
 }
 
-TEST(BatAdsTokenTest, EncodeRandomBase64) {
+TEST(BraveAdsTokenTest, EncodeRandomBase64) {
   // Arrange
   const Token token;
 
@@ -103,7 +103,7 @@ TEST(BatAdsTokenTest, EncodeRandomBase64) {
   EXPECT_TRUE(encoded_base64);
 }
 
-TEST(BatAdsTokenTest, IsEqual) {
+TEST(BraveAdsTokenTest, IsEqual) {
   // Arrange
   const Token token;
 
@@ -113,7 +113,7 @@ TEST(BatAdsTokenTest, IsEqual) {
   EXPECT_EQ(token, token);
 }
 
-TEST(BatAdsTokenTest, IsEmptyBase64Equal) {
+TEST(BraveAdsTokenTest, IsEmptyBase64Equal) {
   // Arrange
   const Token token("");
 
@@ -123,7 +123,7 @@ TEST(BatAdsTokenTest, IsEmptyBase64Equal) {
   EXPECT_EQ(token, token);
 }
 
-TEST(BatAdsTokenTest, IsInvalidBase64Equal) {
+TEST(BraveAdsTokenTest, IsInvalidBase64Equal) {
   // Arrange
   const Token token(kInvalidBase64);
 
@@ -133,7 +133,7 @@ TEST(BatAdsTokenTest, IsInvalidBase64Equal) {
   EXPECT_EQ(token, token);
 }
 
-TEST(BatAdsTokenTest, IsNotEqual) {
+TEST(BraveAdsTokenTest, IsNotEqual) {
   // Arrange
   const Token token;
 
@@ -144,7 +144,7 @@ TEST(BatAdsTokenTest, IsNotEqual) {
   EXPECT_NE(different_token, token);
 }
 
-TEST(BatAdsTokenTest, OutputStream) {
+TEST(BraveAdsTokenTest, OutputStream) {
   // Arrange
   const Token token(kTokenBase64);
 

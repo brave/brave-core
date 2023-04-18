@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -27,14 +27,12 @@ constexpr char kEnableAutomationSwitch[] = "enable-automation";
 struct ParamInfo final {
   CommandLineSwitchInfo command_line_switch;
   bool expected_did_override_command_line_switch;
-} const kTestCases[] = {{/*command_line_switch*/ {kFooBarSwitch, {}},
-                         /*expected_did_override_command_line_switch*/ false},
-                        {/*command_line_switch*/ {kEnableAutomationSwitch, {}},
-                         /*expected_did_override_command_line_switch*/ true}};
+} const kTestCases[] = {{{kFooBarSwitch, {}}, false},
+                        {{kEnableAutomationSwitch, {}}, true}};
 
 }  // namespace
 
-class BatAdsDidOverrideCommandLineSwitchesUtilTest
+class BraveAdsDidOverrideCommandLineSwitchesUtilTest
     : public UnitTestBase,
       public ::testing::WithParamInterface<ParamInfo> {
  protected:
@@ -53,7 +51,7 @@ class BatAdsDidOverrideCommandLineSwitchesUtilTest
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-TEST_P(BatAdsDidOverrideCommandLineSwitchesUtilTest,
+TEST_P(BraveAdsDidOverrideCommandLineSwitchesUtilTest,
        DidOverrideCommandLineSwitches) {
   // Arrange
 
@@ -80,7 +78,7 @@ std::string TestParamToString(
 }
 
 INSTANTIATE_TEST_SUITE_P(,
-                         BatAdsDidOverrideCommandLineSwitchesUtilTest,
+                         BraveAdsDidOverrideCommandLineSwitchesUtilTest,
                          testing::ValuesIn(kTestCases),
                          TestParamToString);
 

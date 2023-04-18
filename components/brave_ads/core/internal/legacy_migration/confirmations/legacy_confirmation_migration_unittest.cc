@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::confirmations {
 
@@ -22,7 +22,7 @@ constexpr char kInvalidJsonFilename[] = "invalid.json";
 
 }  // namespace
 
-class BatAdsLegacyConfirmationMigrationTest : public UnitTestBase {
+class BraveAdsLegacyConfirmationMigrationTest : public UnitTestBase {
  protected:
   void SetUpMocks() override {
     ads_client_mock_->SetBooleanPref(prefs::kHasMigratedConfirmationState,
@@ -30,7 +30,7 @@ class BatAdsLegacyConfirmationMigrationTest : public UnitTestBase {
   }
 };
 
-TEST_F(BatAdsLegacyConfirmationMigrationTest, Migrate) {
+TEST_F(BraveAdsLegacyConfirmationMigrationTest, Migrate) {
   // Arrange
   CopyFileFromTestPathToTempPath(kConfirmationStateFilename);
 
@@ -43,7 +43,7 @@ TEST_F(BatAdsLegacyConfirmationMigrationTest, Migrate) {
   EXPECT_EQ(kMigratedConfirmationJsonHash, GetHash());
 }
 
-TEST_F(BatAdsLegacyConfirmationMigrationTest, InvalidState) {
+TEST_F(BraveAdsLegacyConfirmationMigrationTest, InvalidState) {
   // Arrange
   CopyFileFromTestPathToTempPath(kInvalidJsonFilename,
                                  kConfirmationStateFilename);
@@ -55,7 +55,7 @@ TEST_F(BatAdsLegacyConfirmationMigrationTest, InvalidState) {
   EXPECT_FALSE(HasMigrated());
 }
 
-TEST_F(BatAdsLegacyConfirmationMigrationTest, AlreadyMigrated) {
+TEST_F(BraveAdsLegacyConfirmationMigrationTest, AlreadyMigrated) {
   // Arrange
   CopyFileFromTestPathToTempPath(kConfirmationStateFilename);
 

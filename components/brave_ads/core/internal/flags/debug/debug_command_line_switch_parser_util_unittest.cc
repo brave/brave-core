@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -22,20 +22,15 @@ constexpr char kRewardsSwitch[] = "rewards";
 struct ParamInfo final {
   CommandLineSwitchInfo command_line_switch;
   bool expected_should_debug;
-} const kTestCases[] = {
-    {/*command_line_switch*/ {kRewardsSwitch, "debug=true"},
-     /*expected_should_debug*/ true},
-    {/*command_line_switch*/ {kRewardsSwitch, "debug=1"},
-     /*expected_should_debug*/ true},
-    {/*command_line_switch*/ {kRewardsSwitch, "debug=false"},
-     /*expected_should_debug*/ false},
-    {/*command_line_switch*/ {kRewardsSwitch, "debug=foobar"},
-     /*expected_should_debug*/ false},
-    {/*command_line_switch */ {}, /* expected_should_debug*/ false}};
+} const kTestCases[] = {{{kRewardsSwitch, "debug=true"}, true},
+                        {{kRewardsSwitch, "debug=1"}, true},
+                        {{kRewardsSwitch, "debug=false"}, false},
+                        {{kRewardsSwitch, "debug=foobar"}, false},
+                        {{}, false}};
 
 }  // namespace
 
-class BatAdsDebugCommandLineSwitchParserUtilTest
+class BraveAdsDebugCommandLineSwitchParserUtilTest
     : public UnitTestBase,
       public ::testing::WithParamInterface<ParamInfo> {
  protected:
@@ -44,7 +39,7 @@ class BatAdsDebugCommandLineSwitchParserUtilTest
   }
 };
 
-TEST_P(BatAdsDebugCommandLineSwitchParserUtilTest,
+TEST_P(BraveAdsDebugCommandLineSwitchParserUtilTest,
        ParseDebugCommandLineSwitch) {
   // Arrange
 
@@ -68,7 +63,7 @@ std::string TestParamToString(
 }
 
 INSTANTIATE_TEST_SUITE_P(,
-                         BatAdsDebugCommandLineSwitchParserUtilTest,
+                         BraveAdsDebugCommandLineSwitchParserUtilTest,
                          testing::ValuesIn(kTestCases),
                          TestParamToString);
 

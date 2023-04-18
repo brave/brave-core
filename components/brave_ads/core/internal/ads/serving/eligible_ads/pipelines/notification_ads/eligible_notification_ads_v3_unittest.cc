@@ -21,13 +21,13 @@
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::notification_ads {
 
-class BatAdsEligibleNotificationAdsV3Test : public UnitTestBase {
+class BraveAdsEligibleNotificationAdsV3Test : public UnitTestBase {
  protected:
-  BatAdsEligibleNotificationAdsV3Test() = default;
+  BraveAdsEligibleNotificationAdsV3Test() = default;
 
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -43,7 +43,7 @@ class BatAdsEligibleNotificationAdsV3Test : public UnitTestBase {
   std::unique_ptr<EligibleAdsV3> eligible_ads_;
 };
 
-TEST_F(BatAdsEligibleNotificationAdsV3Test, GetAds) {
+TEST_F(BraveAdsEligibleNotificationAdsV3Test, GetAds) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
@@ -80,7 +80,7 @@ TEST_F(BatAdsEligibleNotificationAdsV3Test, GetAds) {
           creative_ad_1));
 }
 
-TEST_F(BatAdsEligibleNotificationAdsV3Test, GetAdsForNoStoredTextEmbeddings) {
+TEST_F(BraveAdsEligibleNotificationAdsV3Test, GetAdsForNoStoredTextEmbeddings) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
@@ -110,7 +110,7 @@ TEST_F(BatAdsEligibleNotificationAdsV3Test, GetAdsForNoStoredTextEmbeddings) {
       }));
 }
 
-TEST_F(BatAdsEligibleNotificationAdsV3Test,
+TEST_F(BraveAdsEligibleNotificationAdsV3Test,
        GetAdsForCreativeWithoutEmbeddingProperty) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
@@ -145,7 +145,7 @@ TEST_F(BatAdsEligibleNotificationAdsV3Test,
       }));
 }
 
-TEST_F(BatAdsEligibleNotificationAdsV3Test, DoNotGetAdsIfNoEligibleAds) {
+TEST_F(BraveAdsEligibleNotificationAdsV3Test, DoNotGetAdsIfNoEligibleAds) {
   // Arrange
   const TextEmbeddingHtmlEventInfo text_embedding_event =
       BuildTextEmbeddingHtmlEvent(BuildTextEmbedding());

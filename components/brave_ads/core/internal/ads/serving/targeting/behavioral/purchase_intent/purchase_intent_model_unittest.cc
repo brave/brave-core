@@ -10,13 +10,14 @@
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
 #include "url/gurl.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::targeting::model {
 
-class BatAdsPurchaseIntentModelTest : public UnitTestBase {};
+class BraveAdsPurchaseIntentModelTest : public UnitTestBase {};
 
-TEST_F(BatAdsPurchaseIntentModelTest, DoNotGetSegmentsForUnitializedResource) {
+TEST_F(BraveAdsPurchaseIntentModelTest,
+       DoNotGetSegmentsForUnitializedResource) {
   // Arrange
   resource::PurchaseIntent resource;
   processor::PurchaseIntent processor(&resource);
@@ -33,7 +34,7 @@ TEST_F(BatAdsPurchaseIntentModelTest, DoNotGetSegmentsForUnitializedResource) {
   EXPECT_TRUE(segments.empty());
 }
 
-TEST_F(BatAdsPurchaseIntentModelTest, DoNotGetSegmentsForExpiredSignals) {
+TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsForExpiredSignals) {
   // Arrange
   resource::PurchaseIntent resource;
   resource.Load();
@@ -58,7 +59,7 @@ TEST_F(BatAdsPurchaseIntentModelTest, DoNotGetSegmentsForExpiredSignals) {
   EXPECT_TRUE(segments.empty());
 }
 
-TEST_F(BatAdsPurchaseIntentModelTest, DoNotGetSegmentsIfNeverProcessed) {
+TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsIfNeverProcessed) {
   // Arrange
   resource::PurchaseIntent resource;
   resource.Load();
@@ -73,7 +74,7 @@ TEST_F(BatAdsPurchaseIntentModelTest, DoNotGetSegmentsIfNeverProcessed) {
   EXPECT_TRUE(segments.empty());
 }
 
-TEST_F(BatAdsPurchaseIntentModelTest,
+TEST_F(BraveAdsPurchaseIntentModelTest,
        DoNotGetSegmentsIfNeverMatchedFunnelSites) {
   // Arrange
   resource::PurchaseIntent resource;
@@ -94,7 +95,7 @@ TEST_F(BatAdsPurchaseIntentModelTest,
   EXPECT_TRUE(segments.empty());
 }
 
-TEST_F(BatAdsPurchaseIntentModelTest, GetSegmentsForPreviouslyMatchedSite) {
+TEST_F(BraveAdsPurchaseIntentModelTest, GetSegmentsForPreviouslyMatchedSite) {
   // Arrange
   resource::PurchaseIntent resource;
   resource.Load();
@@ -120,7 +121,7 @@ TEST_F(BatAdsPurchaseIntentModelTest, GetSegmentsForPreviouslyMatchedSite) {
   EXPECT_EQ(expected_segments, segments);
 }
 
-TEST_F(BatAdsPurchaseIntentModelTest,
+TEST_F(BraveAdsPurchaseIntentModelTest,
        GetSegmentsForPreviouslyMatchedSegmentKeywords) {
   // Arrange
   resource::PurchaseIntent resource;
@@ -144,7 +145,7 @@ TEST_F(BatAdsPurchaseIntentModelTest,
   EXPECT_EQ(expected_segments, segments);
 }
 
-TEST_F(BatAdsPurchaseIntentModelTest,
+TEST_F(BraveAdsPurchaseIntentModelTest,
        GetSegmentsForPreviouslyMatchedFunnelKeywords) {
   // Arrange
   resource::PurchaseIntent resource;

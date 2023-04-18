@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -24,9 +24,9 @@ constexpr const char* kCreativeSetIds[] = {
 
 }  // namespace
 
-class BatAdsTotalMaxExclusionRuleTest : public UnitTestBase {};
+class BraveAdsTotalMaxExclusionRuleTest : public UnitTestBase {};
 
-TEST_F(BatAdsTotalMaxExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
+TEST_F(BraveAdsTotalMaxExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetIds[0];
@@ -40,7 +40,7 @@ TEST_F(BatAdsTotalMaxExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsTotalMaxExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
+TEST_F(BraveAdsTotalMaxExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetIds[0];
@@ -61,7 +61,7 @@ TEST_F(BatAdsTotalMaxExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
   EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsTotalMaxExclusionRuleTest,
+TEST_F(BraveAdsTotalMaxExclusionRuleTest,
        AllowAdIfDoesNotExceedCapForNoMatchingCreatives) {
   // Arrange
   CreativeAdInfo creative_ad_1;
@@ -87,7 +87,7 @@ TEST_F(BatAdsTotalMaxExclusionRuleTest,
   EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad_1));
 }
 
-TEST_F(BatAdsTotalMaxExclusionRuleTest, DoNotAllowAdIfExceedsZeroCap) {
+TEST_F(BraveAdsTotalMaxExclusionRuleTest, DoNotAllowAdIfExceedsZeroCap) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetIds[0];
@@ -101,7 +101,7 @@ TEST_F(BatAdsTotalMaxExclusionRuleTest, DoNotAllowAdIfExceedsZeroCap) {
   EXPECT_TRUE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsTotalMaxExclusionRuleTest, DoNotAllowAdIfExceedsCap) {
+TEST_F(BraveAdsTotalMaxExclusionRuleTest, DoNotAllowAdIfExceedsCap) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetIds[0];

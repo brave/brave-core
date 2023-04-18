@@ -14,13 +14,13 @@
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_envelope_unittest_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::user_data {
 
-class BatAdsConversionUserDataBuilderTest : public UnitTestBase {};
+class BraveAdsConversionUserDataBuilderTest : public UnitTestBase {};
 
-TEST_F(BatAdsConversionUserDataBuilderTest, BuildConversion) {
+TEST_F(BraveAdsConversionUserDataBuilderTest, BuildConversion) {
   // Arrange
   BuildAndSaveConversionQueueItems(AdType::kNotificationAd, kConversionId,
                                    kConversionAdvertiserPublicKey,
@@ -42,7 +42,7 @@ TEST_F(BatAdsConversionUserDataBuilderTest, BuildConversion) {
                   }));
 }
 
-TEST_F(BatAdsConversionUserDataBuilderTest,
+TEST_F(BraveAdsConversionUserDataBuilderTest,
        DoNotBuildConversionForMissingCreativeInstanceId) {
   // Arrange
   BuildAndSaveConversionQueueItems(AdType::kNotificationAd, kConversionId,
@@ -64,7 +64,7 @@ TEST_F(BatAdsConversionUserDataBuilderTest,
                   }));
 }
 
-TEST_F(BatAdsConversionUserDataBuilderTest,
+TEST_F(BraveAdsConversionUserDataBuilderTest,
        DoNotBuildConversionIfConversionIdOrAdvertiserPublicKeyAreEmpty) {
   // Arrange
   BuildAndSaveConversionQueueItems(AdType::kNotificationAd, kEmptyConversionId,

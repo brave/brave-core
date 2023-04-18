@@ -8,11 +8,11 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/token.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::privacy {
 
-TEST(BatAdsTokenGeneratorTest, Generate) {
+TEST(BraveAdsTokenGeneratorTest, Generate) {
   // Arrange
   const TokenGenerator token_generator;
 
@@ -24,7 +24,7 @@ TEST(BatAdsTokenGeneratorTest, Generate) {
   EXPECT_EQ(5U, count);
 }
 
-TEST(BatAdsTokenGeneratorTest, GenerateZero) {
+TEST(BraveAdsTokenGeneratorTest, GenerateZero) {
   // Arrange
   const TokenGenerator token_generator;
 

@@ -12,11 +12,11 @@
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_features.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsUserActivityPermissionRuleTest : public UnitTestBase {
+class BraveAdsUserActivityPermissionRuleTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -39,7 +39,7 @@ class BatAdsUserActivityPermissionRuleTest : public UnitTestBase {
   UserActivityPermissionRule permission_rule_;
 };
 
-TEST_F(BatAdsUserActivityPermissionRuleTest,
+TEST_F(BraveAdsUserActivityPermissionRuleTest,
        AllowAdIfUserActivityScoreIsEqualToTheThreshold) {
   // Arrange
 
@@ -53,7 +53,7 @@ TEST_F(BatAdsUserActivityPermissionRuleTest,
   EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
-TEST_F(BatAdsUserActivityPermissionRuleTest,
+TEST_F(BraveAdsUserActivityPermissionRuleTest,
        AllowAdIfUserActivityScoreIsGreaterThanTheThreshold) {
   // Arrange
 
@@ -69,7 +69,7 @@ TEST_F(BatAdsUserActivityPermissionRuleTest,
   EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
-TEST_F(BatAdsUserActivityPermissionRuleTest,
+TEST_F(BraveAdsUserActivityPermissionRuleTest,
        DoNotAllowAdIfUserActivityScoreIsLessThanTheThreshold) {
   // Arrange
 

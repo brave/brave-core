@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/history_sort_types.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -37,7 +37,7 @@ HistoryItemList GetUnsortedHistory() {
 
 }  // namespace
 
-TEST(BatAdsHistorySortTest, NoSortOrder) {
+TEST(BraveAdsHistorySortTest, NoSortOrder) {
   // Arrange
 
   // Act
@@ -47,7 +47,7 @@ TEST(BatAdsHistorySortTest, NoSortOrder) {
   EXPECT_EQ(nullptr, sort);
 }
 
-TEST(BatAdsHistorySortTest, DescendingSortOrder) {
+TEST(BraveAdsHistorySortTest, DescendingSortOrder) {
   // Arrange
   const auto sort =
       HistorySortFactory::Build(HistorySortType::kDescendingOrder);
@@ -74,7 +74,7 @@ TEST(BatAdsHistorySortTest, DescendingSortOrder) {
   EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
-TEST(BatAdsHistorySortTest, DescendingSortOrderForEmptyHistory) {
+TEST(BraveAdsHistorySortTest, DescendingSortOrderForEmptyHistory) {
   // Arrange
   const auto sort =
       HistorySortFactory::Build(HistorySortType::kDescendingOrder);
@@ -90,7 +90,7 @@ TEST(BatAdsHistorySortTest, DescendingSortOrderForEmptyHistory) {
   EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
-TEST(BatAdsHistorySortTest, AscendingSortOrder) {
+TEST(BraveAdsHistorySortTest, AscendingSortOrder) {
   // Arrange
   const auto sort = HistorySortFactory::Build(HistorySortType::kAscendingOrder);
 
@@ -116,7 +116,7 @@ TEST(BatAdsHistorySortTest, AscendingSortOrder) {
   EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
-TEST(BatAdsHistorySortTest, AscendingSortOrderForEmptyHistory) {
+TEST(BraveAdsHistorySortTest, AscendingSortOrderForEmptyHistory) {
   // Arrange
   const auto sort = HistorySortFactory::Build(HistorySortType::kAscendingOrder);
 

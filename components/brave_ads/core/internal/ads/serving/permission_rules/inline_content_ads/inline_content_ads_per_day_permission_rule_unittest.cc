@@ -12,11 +12,11 @@
 #include "brave/components/brave_ads/core/internal/ads/inline_content_ad_features.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::inline_content_ads {
 
-class BatAdsInlineContentAdsPerDayPermissionRuleTest : public UnitTestBase {
+class BraveAdsInlineContentAdsPerDayPermissionRuleTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -33,7 +33,7 @@ class BatAdsInlineContentAdsPerDayPermissionRuleTest : public UnitTestBase {
   AdsPerDayPermissionRule permission_rule_;
 };
 
-TEST_F(BatAdsInlineContentAdsPerDayPermissionRuleTest,
+TEST_F(BraveAdsInlineContentAdsPerDayPermissionRuleTest,
        AllowAdIfThereIsNoAdsHistory) {
   // Arrange
 
@@ -43,7 +43,7 @@ TEST_F(BatAdsInlineContentAdsPerDayPermissionRuleTest,
   EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
-TEST_F(BatAdsInlineContentAdsPerDayPermissionRuleTest,
+TEST_F(BraveAdsInlineContentAdsPerDayPermissionRuleTest,
        AllowAdIfDoesNotExceedCap) {
   // Arrange
 
@@ -55,7 +55,7 @@ TEST_F(BatAdsInlineContentAdsPerDayPermissionRuleTest,
   EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
-TEST_F(BatAdsInlineContentAdsPerDayPermissionRuleTest,
+TEST_F(BraveAdsInlineContentAdsPerDayPermissionRuleTest,
        AllowAdIfDoesNotExceedCapAfter1Day) {
   // Arrange
   RecordAdEvents(AdType::kInlineContentAd, ConfirmationType::kServed,
@@ -68,7 +68,7 @@ TEST_F(BatAdsInlineContentAdsPerDayPermissionRuleTest,
   EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
-TEST_F(BatAdsInlineContentAdsPerDayPermissionRuleTest,
+TEST_F(BraveAdsInlineContentAdsPerDayPermissionRuleTest,
        DoNotAllowAdIfExceedsCapWithin1Day) {
   // Arrange
   RecordAdEvents(AdType::kInlineContentAd, ConfirmationType::kServed,

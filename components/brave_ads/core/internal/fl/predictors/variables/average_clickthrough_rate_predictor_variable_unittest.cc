@@ -14,14 +14,14 @@
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsAverageClickthroughRatePredictorVariableTest : public UnitTestBase {
-};
+class BraveAdsAverageClickthroughRatePredictorVariableTest
+    : public UnitTestBase {};
 
-TEST_F(BatAdsAverageClickthroughRatePredictorVariableTest, GetDataType) {
+TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest, GetDataType) {
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
       std::make_unique<AverageClickthroughRatePredictorVariable>(base::Days(7));
@@ -33,7 +33,7 @@ TEST_F(BatAdsAverageClickthroughRatePredictorVariableTest, GetDataType) {
             predictor_variable->GetDataType());
 }
 
-TEST_F(BatAdsAverageClickthroughRatePredictorVariableTest,
+TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest,
        GetValueForNoHistory) {
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
@@ -45,7 +45,7 @@ TEST_F(BatAdsAverageClickthroughRatePredictorVariableTest,
   EXPECT_EQ("-1", predictor_variable->GetValue());
 }
 
-TEST_F(BatAdsAverageClickthroughRatePredictorVariableTest,
+TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest,
        GetValueAfterExceedingTimeWindow) {
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
@@ -67,7 +67,7 @@ TEST_F(BatAdsAverageClickthroughRatePredictorVariableTest,
   EXPECT_EQ("-1", predictor_variable->GetValue());
 }
 
-TEST_F(BatAdsAverageClickthroughRatePredictorVariableTest,
+TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest,
        GetValueForNoClicks) {
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
@@ -85,7 +85,7 @@ TEST_F(BatAdsAverageClickthroughRatePredictorVariableTest,
   EXPECT_EQ("0", predictor_variable->GetValue());
 }
 
-TEST_F(BatAdsAverageClickthroughRatePredictorVariableTest,
+TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest,
        GetValueForOneClick) {
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
@@ -104,7 +104,7 @@ TEST_F(BatAdsAverageClickthroughRatePredictorVariableTest,
   EXPECT_EQ("1", predictor_variable->GetValue());
 }
 
-TEST_F(BatAdsAverageClickthroughRatePredictorVariableTest,
+TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest,
        GetValueForMoreThanOneClick) {
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
@@ -124,7 +124,7 @@ TEST_F(BatAdsAverageClickthroughRatePredictorVariableTest,
   EXPECT_EQ("-1", predictor_variable->GetValue());
 }
 
-TEST_F(BatAdsAverageClickthroughRatePredictorVariableTest, GetValue) {
+TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest, GetValue) {
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
       std::make_unique<AverageClickthroughRatePredictorVariable>(base::Days(1));

@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -20,7 +20,7 @@ constexpr char kID2[] = "5b2f108c-e176-4a3e-8e7c-fe67fb3db518";
 
 }  // namespace
 
-class BatAdsAdEventHistoryTest : public UnitTestBase {
+class BraveAdsAdEventHistoryTest : public UnitTestBase {
  protected:
   void RecordAdEvent(const std::string& id,
                      const AdType& ad_type,
@@ -39,7 +39,7 @@ class BatAdsAdEventHistoryTest : public UnitTestBase {
   AdEventHistory ad_event_history_;
 };
 
-TEST_F(BatAdsAdEventHistoryTest, RecordAdEventForNewType) {
+TEST_F(BraveAdsAdEventHistoryTest, RecordAdEventForNewType) {
   // Arrange
   RecordAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
 
@@ -52,7 +52,7 @@ TEST_F(BatAdsAdEventHistoryTest, RecordAdEventForNewType) {
   EXPECT_EQ(expected_history, history);
 }
 
-TEST_F(BatAdsAdEventHistoryTest, RecordAdEventForExistingType) {
+TEST_F(BraveAdsAdEventHistoryTest, RecordAdEventForExistingType) {
   // Arrange
   RecordAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
   RecordAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
@@ -66,7 +66,7 @@ TEST_F(BatAdsAdEventHistoryTest, RecordAdEventForExistingType) {
   EXPECT_EQ(expected_history, history);
 }
 
-TEST_F(BatAdsAdEventHistoryTest, RecordAdEventForMultipleIds) {
+TEST_F(BraveAdsAdEventHistoryTest, RecordAdEventForMultipleIds) {
   // Arrange
   RecordAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
   RecordAdEvent(kID2, AdType::kNotificationAd, ConfirmationType::kViewed);
@@ -80,7 +80,7 @@ TEST_F(BatAdsAdEventHistoryTest, RecordAdEventForMultipleIds) {
   EXPECT_EQ(expected_history, history);
 }
 
-TEST_F(BatAdsAdEventHistoryTest, RecordAdEventForMultipleTypes) {
+TEST_F(BraveAdsAdEventHistoryTest, RecordAdEventForMultipleTypes) {
   // Arrange
   RecordAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
   RecordAdEvent(kID1, AdType::kNewTabPageAd, ConfirmationType::kClicked);
@@ -94,7 +94,7 @@ TEST_F(BatAdsAdEventHistoryTest, RecordAdEventForMultipleTypes) {
   EXPECT_EQ(expected_history, history);
 }
 
-TEST_F(BatAdsAdEventHistoryTest, PurgeHistoryOlderThan) {
+TEST_F(BraveAdsAdEventHistoryTest, PurgeHistoryOlderThan) {
   // Arrange
   RecordAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
 

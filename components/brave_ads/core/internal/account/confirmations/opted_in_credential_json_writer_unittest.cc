@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -20,9 +20,9 @@ constexpr char kExpectedJson[] =
 
 }  // namespace
 
-class BatAdsOptedInCredentialJsonWriterTest : public UnitTestBase {};
+class BraveAdsOptedInCredentialJsonWriterTest : public UnitTestBase {};
 
-TEST_F(BatAdsOptedInCredentialJsonWriterTest, WriteJson) {
+TEST_F(BraveAdsOptedInCredentialJsonWriterTest, WriteJson) {
   // Arrange
   const privacy::UnblindedTokenList unblinded_tokens =
       privacy::GetUnblindedTokens(/*count*/ 1);

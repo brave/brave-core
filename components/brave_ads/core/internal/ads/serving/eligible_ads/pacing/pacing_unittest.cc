@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -24,7 +24,7 @@ std::vector<double> GetPacingRandomNumbers() {
 
 }  // namespace
 
-TEST(BatAdsPacingTest, PaceCreativeAdsWithMinPassThroughRate) {
+TEST(BraveAdsPacingTest, PaceCreativeAdsWithMinPassThroughRate) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
@@ -44,7 +44,7 @@ TEST(BatAdsPacingTest, PaceCreativeAdsWithMinPassThroughRate) {
   }
 }
 
-TEST(BatAdsPacingTest, DoNotPaceCreativeAdsWithMaxPassThroughRate) {
+TEST(BraveAdsPacingTest, DoNotPaceCreativeAdsWithMaxPassThroughRate) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
@@ -66,7 +66,7 @@ TEST(BatAdsPacingTest, DoNotPaceCreativeAdsWithMaxPassThroughRate) {
   }
 }
 
-TEST(BatAdsPacingTest,
+TEST(BraveAdsPacingTest,
      PaceCreativeAdIfPacingIsGreaterThanOrEqualToPassThroughRate) {
   // Arrange
   CreativeNotificationAdList creative_ads;
@@ -85,7 +85,8 @@ TEST(BatAdsPacingTest,
   EXPECT_TRUE(paced_creative_ads.empty());
 }
 
-TEST(BatAdsPacingTest, DoNotPaceCreativeAdWhenPacingIsLessThanPassThroughRate) {
+TEST(BraveAdsPacingTest,
+     DoNotPaceCreativeAdWhenPacingIsLessThanPassThroughRate) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 

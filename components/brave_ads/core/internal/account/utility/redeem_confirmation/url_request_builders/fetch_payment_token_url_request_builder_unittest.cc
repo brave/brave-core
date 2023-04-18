@@ -11,13 +11,13 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "url/gurl.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsFetchPaymentTokenUrlRequestBuilderTest : public UnitTestBase {};
+class BraveAdsFetchPaymentTokenUrlRequestBuilderTest : public UnitTestBase {};
 
-TEST_F(BatAdsFetchPaymentTokenUrlRequestBuilderTest, BuildUrl) {
+TEST_F(BraveAdsFetchPaymentTokenUrlRequestBuilderTest, BuildUrl) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kStaging;

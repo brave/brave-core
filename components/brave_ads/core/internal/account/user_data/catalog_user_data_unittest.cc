@@ -10,13 +10,13 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::user_data {
 
-class BatAdsCatalogUserDataTest : public UnitTestBase {};
+class BraveAdsCatalogUserDataTest : public UnitTestBase {};
 
-TEST_F(BatAdsCatalogUserDataTest, GetCatalog) {
+TEST_F(BraveAdsCatalogUserDataTest, GetCatalog) {
   // Arrange
   SetCatalogId(kCatalogId);
 

@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
 #include "brave/components/brave_ads/core/internal/resources/resources_unittest_constants.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -24,9 +24,9 @@ namespace {
 constexpr char kResourceId[] = "feibnmjhecfbjpeciancnchbmlobenjn";
 }  // namespace
 
-class BatAdsTextClassificationResourceTest : public UnitTestBase {};
+class BraveAdsTextClassificationResourceTest : public UnitTestBase {};
 
-TEST_F(BatAdsTextClassificationResourceTest, LoadResource) {
+TEST_F(BraveAdsTextClassificationResourceTest, LoadResource) {
   // Arrange
   resource::TextClassification resource;
 
@@ -38,7 +38,7 @@ TEST_F(BatAdsTextClassificationResourceTest, LoadResource) {
   EXPECT_TRUE(resource.IsInitialized());
 }
 
-TEST_F(BatAdsTextClassificationResourceTest, DoNotLoadInvalidResource) {
+TEST_F(BraveAdsTextClassificationResourceTest, DoNotLoadInvalidResource) {
   // Arrange
   CopyFileFromTestPathToTempPath(kInvalidResourceId, kResourceId);
 
@@ -52,7 +52,7 @@ TEST_F(BatAdsTextClassificationResourceTest, DoNotLoadInvalidResource) {
   EXPECT_FALSE(resource.IsInitialized());
 }
 
-TEST_F(BatAdsTextClassificationResourceTest, DoNotLoadMissingResource) {
+TEST_F(BraveAdsTextClassificationResourceTest, DoNotLoadMissingResource) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, LoadFileResource(kResourceId, _, _))
       .WillOnce(Invoke([](const std::string& /*id*/, const int /*version*/,
@@ -75,7 +75,7 @@ TEST_F(BatAdsTextClassificationResourceTest, DoNotLoadMissingResource) {
   EXPECT_FALSE(resource.IsInitialized());
 }
 
-TEST_F(BatAdsTextClassificationResourceTest, IsNotInitialized) {
+TEST_F(BraveAdsTextClassificationResourceTest, IsNotInitialized) {
   // Arrange
   resource::TextClassification resource;
 

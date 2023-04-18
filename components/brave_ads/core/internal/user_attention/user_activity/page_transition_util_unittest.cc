@@ -7,11 +7,11 @@
 
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-TEST(BatAdsPageTransitionUtilTest, IsNewNavigation) {
+TEST(BraveAdsPageTransitionUtilTest, IsNewNavigation) {
   // Arrange
 
   // Act
@@ -20,7 +20,7 @@ TEST(BatAdsPageTransitionUtilTest, IsNewNavigation) {
   EXPECT_TRUE(IsNewNavigation(kPageTransitionTyped));
 }
 
-TEST(BatAdsPageTransitionUtilTest,
+TEST(BraveAdsPageTransitionUtilTest,
      DidUseBackOrFowardButtonToTriggerNavigation) {
   // Arrange
 
@@ -31,7 +31,7 @@ TEST(BatAdsPageTransitionUtilTest,
       DidUseBackOrFowardButtonToTriggerNavigation(kPageTransitionForwardBack));
 }
 
-TEST(BatAdsPageTransitionUtilTest, DidUseAddressBarToTriggerNavigation) {
+TEST(BraveAdsPageTransitionUtilTest, DidUseAddressBarToTriggerNavigation) {
   // Arrange
 
   // Act
@@ -41,7 +41,7 @@ TEST(BatAdsPageTransitionUtilTest, DidUseAddressBarToTriggerNavigation) {
       DidUseAddressBarToTriggerNavigation(kPageTransitionFromAddressBar));
 }
 
-TEST(BatAdsPageTransitionUtilTest, DidNavigateToHomePage) {
+TEST(BraveAdsPageTransitionUtilTest, DidNavigateToHomePage) {
   // Arrange
 
   // Act
@@ -50,7 +50,7 @@ TEST(BatAdsPageTransitionUtilTest, DidNavigateToHomePage) {
   EXPECT_TRUE(DidNavigateToHomePage(kPageTransitionHomePage));
 }
 
-TEST(BatAdsPageTransitionUtilTest, DidTransitionFromExternalApplication) {
+TEST(BraveAdsPageTransitionUtilTest, DidTransitionFromExternalApplication) {
   // Arrange
 
   // Act
@@ -59,7 +59,7 @@ TEST(BatAdsPageTransitionUtilTest, DidTransitionFromExternalApplication) {
   EXPECT_TRUE(DidTransitionFromExternalApplication(kPageTransitionFromAPI));
 }
 
-TEST(BatAdsPageTransitionUtilTest, ToUserActivityClickedLinkEventType) {
+TEST(BraveAdsPageTransitionUtilTest, ToUserActivityClickedLinkEventType) {
   // Arrange
 
   // Act
@@ -69,7 +69,7 @@ TEST(BatAdsPageTransitionUtilTest, ToUserActivityClickedLinkEventType) {
             ToUserActivityEventType(kPageTransitionLink));
 }
 
-TEST(BatAdsPageTransitionUtilTest, ToUserActivityTypedUrlEventType) {
+TEST(BraveAdsPageTransitionUtilTest, ToUserActivityTypedUrlEventType) {
   // Arrange
 
   // Act
@@ -79,7 +79,7 @@ TEST(BatAdsPageTransitionUtilTest, ToUserActivityTypedUrlEventType) {
             ToUserActivityEventType(kPageTransitionTyped));
 }
 
-TEST(BatAdsPageTransitionUtilTest, ToUserActivityClickedBookmarkEventType) {
+TEST(BraveAdsPageTransitionUtilTest, ToUserActivityClickedBookmarkEventType) {
   // Arrange
 
   // Act
@@ -89,7 +89,7 @@ TEST(BatAdsPageTransitionUtilTest, ToUserActivityClickedBookmarkEventType) {
             ToUserActivityEventType(kPageTransitionAutoBookmark));
 }
 
-TEST(BatAdsPageTransitionUtilTest,
+TEST(BraveAdsPageTransitionUtilTest,
      ToUserActivityTypedAndSelectedNonUrlEventType) {
   // Arrange
 
@@ -100,7 +100,7 @@ TEST(BatAdsPageTransitionUtilTest,
             ToUserActivityEventType(kPageTransitionGenerated));
 }
 
-TEST(BatAdsPageTransitionUtilTest, ToUserActivitySubmittedFormEventType) {
+TEST(BraveAdsPageTransitionUtilTest, ToUserActivitySubmittedFormEventType) {
   // Arrange
 
   // Act
@@ -110,7 +110,8 @@ TEST(BatAdsPageTransitionUtilTest, ToUserActivitySubmittedFormEventType) {
             ToUserActivityEventType(kPageTransitionFormSubmit));
 }
 
-TEST(BatAdsPageTransitionUtilTest, ToUserActivityClickedReloadButtonEventType) {
+TEST(BraveAdsPageTransitionUtilTest,
+     ToUserActivityClickedReloadButtonEventType) {
   // Arrange
 
   // Act
@@ -120,7 +121,7 @@ TEST(BatAdsPageTransitionUtilTest, ToUserActivityClickedReloadButtonEventType) {
             ToUserActivityEventType(kPageTransitionReload));
 }
 
-TEST(BatAdsPageTransitionUtilTest,
+TEST(BraveAdsPageTransitionUtilTest,
      ToUserActivityTypedKeywordOtherThanDefaultSearchProviderEventType) {
   // Arrange
 
@@ -131,7 +132,7 @@ TEST(BatAdsPageTransitionUtilTest,
             ToUserActivityEventType(kPageTransitionKeyword));
 }
 
-TEST(BatAdsPageTransitionUtilTest, ToUserActivityGeneratedKeywordEventType) {
+TEST(BraveAdsPageTransitionUtilTest, ToUserActivityGeneratedKeywordEventType) {
   // Arrange
 
   // Act

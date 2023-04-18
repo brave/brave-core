@@ -9,13 +9,13 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsCategoryContentUtilTest : public UnitTestBase {};
+class BraveAdsCategoryContentUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsCategoryContentUtilTest, Build) {
+TEST_F(BraveAdsCategoryContentUtilTest, Build) {
   // Arrange
 
   // Act

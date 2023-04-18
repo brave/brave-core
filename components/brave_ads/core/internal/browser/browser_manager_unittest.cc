@@ -7,12 +7,12 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsBrowserManagerTest : public BrowserManagerObserver,
-                                 public UnitTestBase {
+class BraveAdsBrowserManagerTest : public BrowserManagerObserver,
+                                   public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -49,7 +49,7 @@ class BatAdsBrowserManagerTest : public BrowserManagerObserver,
   bool browser_did_enter_background_ = false;
 };
 
-TEST_F(BatAdsBrowserManagerTest, HasInstance) {
+TEST_F(BraveAdsBrowserManagerTest, HasInstance) {
   // Arrange
 
   // Act
@@ -59,7 +59,7 @@ TEST_F(BatAdsBrowserManagerTest, HasInstance) {
   EXPECT_TRUE(has_instance);
 }
 
-TEST_F(BatAdsBrowserManagerTest, BrowserDidBecomeActive) {
+TEST_F(BraveAdsBrowserManagerTest, BrowserDidBecomeActive) {
   // Arrange
   BrowserManager::GetInstance()->SetBrowserIsInForeground(true);
   BrowserManager::GetInstance()->SetBrowserIsActive(false);
@@ -73,7 +73,7 @@ TEST_F(BatAdsBrowserManagerTest, BrowserDidBecomeActive) {
   EXPECT_FALSE(browser_did_resign_active_);
 }
 
-TEST_F(BatAdsBrowserManagerTest, BrowserDidResignActive) {
+TEST_F(BraveAdsBrowserManagerTest, BrowserDidResignActive) {
   // Arrange
   BrowserManager::GetInstance()->SetBrowserIsActive(true);
 
@@ -86,7 +86,7 @@ TEST_F(BatAdsBrowserManagerTest, BrowserDidResignActive) {
   EXPECT_TRUE(browser_did_resign_active_);
 }
 
-TEST_F(BatAdsBrowserManagerTest, BrowserDidEnterForeground) {
+TEST_F(BraveAdsBrowserManagerTest, BrowserDidEnterForeground) {
   // Arrange
   BrowserManager::GetInstance()->SetBrowserIsInForeground(false);
 
@@ -99,7 +99,7 @@ TEST_F(BatAdsBrowserManagerTest, BrowserDidEnterForeground) {
   EXPECT_FALSE(browser_did_enter_background_);
 }
 
-TEST_F(BatAdsBrowserManagerTest, BrowserDidEnterBackground) {
+TEST_F(BraveAdsBrowserManagerTest, BrowserDidEnterBackground) {
   // Arrange
   BrowserManager::GetInstance()->SetBrowserIsInForeground(true);
 

@@ -17,13 +17,13 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsAccountUtilTest : public UnitTestBase {};
+class BraveAdsAccountUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsAccountUtilTest, ShouldRewardUser) {
+TEST_F(BraveAdsAccountUtilTest, ShouldRewardUser) {
   // Arrange
 
   // Act
@@ -32,7 +32,7 @@ TEST_F(BatAdsAccountUtilTest, ShouldRewardUser) {
   EXPECT_TRUE(ShouldRewardUser());
 }
 
-TEST_F(BatAdsAccountUtilTest, ShouldNotRewardUser) {
+TEST_F(BraveAdsAccountUtilTest, ShouldNotRewardUser) {
   // Arrange
   ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
 
@@ -42,7 +42,7 @@ TEST_F(BatAdsAccountUtilTest, ShouldNotRewardUser) {
   EXPECT_FALSE(ShouldRewardUser());
 }
 
-TEST_F(BatAdsAccountUtilTest, ResetRewards) {
+TEST_F(BraveAdsAccountUtilTest, ResetRewards) {
   // Arrange
   TransactionList transactions;
   const TransactionInfo transaction =
@@ -82,7 +82,7 @@ TEST_F(BatAdsAccountUtilTest, ResetRewards) {
   // Assert
 }
 
-TEST_F(BatAdsAccountUtilTest, ResetRewardsWithNoState) {
+TEST_F(BraveAdsAccountUtilTest, ResetRewardsWithNoState) {
   // Arrange
 
   // Act

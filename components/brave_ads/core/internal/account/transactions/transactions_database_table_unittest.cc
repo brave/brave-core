@@ -13,13 +13,13 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_container_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::database::table {
 
-class BatAdsTransactionsDatabaseTableTest : public UnitTestBase {};
+class BraveAdsTransactionsDatabaseTableTest : public UnitTestBase {};
 
-TEST_F(BatAdsTransactionsDatabaseTableTest, SaveEmptyTransactions) {
+TEST_F(BraveAdsTransactionsDatabaseTableTest, SaveEmptyTransactions) {
   // Arrange
 
   // Act
@@ -34,7 +34,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, SaveEmptyTransactions) {
       }));
 }
 
-TEST_F(BatAdsTransactionsDatabaseTableTest, SaveTransactions) {
+TEST_F(BraveAdsTransactionsDatabaseTableTest, SaveTransactions) {
   // Arrange
   TransactionList transactions;
 
@@ -62,7 +62,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, SaveTransactions) {
       std::move(transactions)));
 }
 
-TEST_F(BatAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
+TEST_F(BraveAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
   // Arrange
   TransactionList transactions;
 
@@ -86,7 +86,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
       std::move(transactions)));
 }
 
-TEST_F(BatAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
+TEST_F(BraveAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
   // Arrange
   TransactionList transactions;
 
@@ -119,7 +119,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
   // Assert
 }
 
-TEST_F(BatAdsTransactionsDatabaseTableTest, UpdateTransactions) {
+TEST_F(BraveAdsTransactionsDatabaseTableTest, UpdateTransactions) {
   // Arrange
   TransactionList transactions;
 
@@ -158,7 +158,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, UpdateTransactions) {
       std::move(expected_transactions)));
 }
 
-TEST_F(BatAdsTransactionsDatabaseTableTest, DeleteTransactions) {
+TEST_F(BraveAdsTransactionsDatabaseTableTest, DeleteTransactions) {
   // Arrange
   TransactionList transactions;
 
@@ -186,7 +186,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, DeleteTransactions) {
       }));
 }
 
-TEST_F(BatAdsTransactionsDatabaseTableTest, TableName) {
+TEST_F(BraveAdsTransactionsDatabaseTableTest, TableName) {
   // Arrange
   const Transactions database_table;
 

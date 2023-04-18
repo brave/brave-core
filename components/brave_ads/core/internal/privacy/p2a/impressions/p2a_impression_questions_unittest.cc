@@ -7,11 +7,11 @@
 
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::privacy::p2a {
 
-TEST(BatAdsP2AImpressionQuestionsTest, CreateAdImpressionQuestions) {
+TEST(BraveAdsP2AImpressionQuestionsTest, CreateAdImpressionQuestions) {
   // Arrange
   const std::string segment = "technology & computing-software";
 

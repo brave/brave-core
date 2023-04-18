@@ -13,13 +13,13 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsTransactionsTest : public UnitTestBase {};
+class BraveAdsTransactionsTest : public UnitTestBase {};
 
-TEST_F(BatAdsTransactionsTest, Add) {
+TEST_F(BraveAdsTransactionsTest, Add) {
   // Arrange
 
   // Act
@@ -45,7 +45,7 @@ TEST_F(BatAdsTransactionsTest, Add) {
           std::move(expected_transactions)));
 }
 
-TEST_F(BatAdsTransactionsTest, GetForDateRange) {
+TEST_F(BraveAdsTransactionsTest, GetForDateRange) {
   // Arrange
   TransactionList transactions;
 
@@ -83,7 +83,7 @@ TEST_F(BatAdsTransactionsTest, GetForDateRange) {
   // Assert
 }
 
-TEST_F(BatAdsTransactionsTest, RemoveAll) {
+TEST_F(BraveAdsTransactionsTest, RemoveAll) {
   // Arrange
   TransactionList transactions;
 

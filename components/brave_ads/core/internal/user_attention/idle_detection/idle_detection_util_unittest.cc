@@ -12,13 +12,13 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection_features.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsIdleDetectionUtilTest : public UnitTestBase {};
+class BraveAdsIdleDetectionUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsIdleDetectionUtilTest, WasLocked) {
+TEST_F(BraveAdsIdleDetectionUtilTest, WasLocked) {
   // Arrange
   base::FieldTrialParams params;
   params["should_detect_screen_was_locked"] = "true";
@@ -39,7 +39,7 @@ TEST_F(BatAdsIdleDetectionUtilTest, WasLocked) {
   EXPECT_TRUE(screen_was_locked);
 }
 
-TEST_F(BatAdsIdleDetectionUtilTest, WasLockedIfShouldDetectScreenWasLocked) {
+TEST_F(BraveAdsIdleDetectionUtilTest, WasLockedIfShouldDetectScreenWasLocked) {
   // Arrange
   base::FieldTrialParams params;
   params["should_detect_screen_was_locked"] = "true";
@@ -60,7 +60,7 @@ TEST_F(BatAdsIdleDetectionUtilTest, WasLockedIfShouldDetectScreenWasLocked) {
   EXPECT_TRUE(screen_was_locked);
 }
 
-TEST_F(BatAdsIdleDetectionUtilTest, WasNotLocked) {
+TEST_F(BraveAdsIdleDetectionUtilTest, WasNotLocked) {
   // Arrange
   base::FieldTrialParams params;
   params["should_detect_screen_was_locked"] = "true";
@@ -81,7 +81,7 @@ TEST_F(BatAdsIdleDetectionUtilTest, WasNotLocked) {
   EXPECT_FALSE(screen_was_locked);
 }
 
-TEST_F(BatAdsIdleDetectionUtilTest, WasNotLockedIfShouldNotDetectWasLocked) {
+TEST_F(BraveAdsIdleDetectionUtilTest, WasNotLockedIfShouldNotDetectWasLocked) {
   // Arrange
   base::FieldTrialParams params;
   params["should_detect_screen_was_locked"] = "false";
@@ -102,7 +102,7 @@ TEST_F(BatAdsIdleDetectionUtilTest, WasNotLockedIfShouldNotDetectWasLocked) {
   EXPECT_FALSE(screen_was_locked);
 }
 
-TEST_F(BatAdsIdleDetectionUtilTest, HasNotExceededMaximumIdleTime) {
+TEST_F(BraveAdsIdleDetectionUtilTest, HasNotExceededMaximumIdleTime) {
   // Arrange
   base::FieldTrialParams params;
   params["maximum_idle_time"] = "10s";
@@ -123,7 +123,7 @@ TEST_F(BatAdsIdleDetectionUtilTest, HasNotExceededMaximumIdleTime) {
   EXPECT_FALSE(has_exceeded_maximum_idle_time);
 }
 
-TEST_F(BatAdsIdleDetectionUtilTest, HasNotExceededInfiniteMaximumIdleTime) {
+TEST_F(BraveAdsIdleDetectionUtilTest, HasNotExceededInfiniteMaximumIdleTime) {
   // Arrange
   base::FieldTrialParams params;
   params["maximum_idle_time"] = "0s";
@@ -144,7 +144,7 @@ TEST_F(BatAdsIdleDetectionUtilTest, HasNotExceededInfiniteMaximumIdleTime) {
   EXPECT_FALSE(has_exceeded_maximum_idle_time);
 }
 
-TEST_F(BatAdsIdleDetectionUtilTest, HasExceededMaximumIdleTime) {
+TEST_F(BraveAdsIdleDetectionUtilTest, HasExceededMaximumIdleTime) {
   // Arrange
   base::FieldTrialParams params;
   params["maximum_idle_time"] = "10s";
@@ -165,7 +165,7 @@ TEST_F(BatAdsIdleDetectionUtilTest, HasExceededMaximumIdleTime) {
   EXPECT_TRUE(has_exceeded_maximum_idle_time);
 }
 
-TEST_F(BatAdsIdleDetectionUtilTest, UpdateIdleTimeThreshold) {
+TEST_F(BraveAdsIdleDetectionUtilTest, UpdateIdleTimeThreshold) {
   // Arrange
   base::FieldTrialParams params;
   params["idle_time_threshold"] = "5s";
@@ -190,7 +190,7 @@ TEST_F(BatAdsIdleDetectionUtilTest, UpdateIdleTimeThreshold) {
   EXPECT_EQ(5, idle_time_threshold);
 }
 
-TEST_F(BatAdsIdleDetectionUtilTest, DoNotUpdateIdleTimeThreshold) {
+TEST_F(BraveAdsIdleDetectionUtilTest, DoNotUpdateIdleTimeThreshold) {
   // Arrange
   base::FieldTrialParams params;
   params["idle_time_threshold"] = "10s";

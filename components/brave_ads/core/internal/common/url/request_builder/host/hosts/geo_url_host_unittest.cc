@@ -8,13 +8,13 @@
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsGeoUrlHostTest : public UnitTestBase {};
+class BraveAdsGeoUrlHostTest : public UnitTestBase {};
 
-TEST_F(BatAdsGeoUrlHostTest, GetProductionUrlHost) {
+TEST_F(BraveAdsGeoUrlHostTest, GetProductionUrlHost) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kProduction;
@@ -25,7 +25,7 @@ TEST_F(BatAdsGeoUrlHostTest, GetProductionUrlHost) {
   EXPECT_EQ("https://geo.ads.brave.com", GetGeoUrlHost());
 }
 
-TEST_F(BatAdsGeoUrlHostTest, GetStagingUrlHost) {
+TEST_F(BraveAdsGeoUrlHostTest, GetStagingUrlHost) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kStaging;

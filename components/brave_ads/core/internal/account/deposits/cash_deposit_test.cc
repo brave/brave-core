@@ -11,11 +11,11 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "net/http/http_status_code.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsCashDepositIntegrationTest : public UnitTestBase {
+class BraveAdsCashDepositIntegrationTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
@@ -30,7 +30,7 @@ class BatAdsCashDepositIntegrationTest : public UnitTestBase {
   }
 };
 
-TEST_F(BatAdsCashDepositIntegrationTest, GetValue) {
+TEST_F(BraveAdsCashDepositIntegrationTest, GetValue) {
   // Arrange
   CashDeposit deposit;
 
@@ -44,7 +44,7 @@ TEST_F(BatAdsCashDepositIntegrationTest, GetValue) {
                    }));
 }
 
-TEST_F(BatAdsCashDepositIntegrationTest,
+TEST_F(BraveAdsCashDepositIntegrationTest,
        DoNotGetValueForMissingCreativeInstanceId) {
   // Arrange
   CashDeposit deposit;

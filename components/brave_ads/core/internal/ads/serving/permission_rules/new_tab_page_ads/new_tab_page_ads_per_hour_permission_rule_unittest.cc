@@ -12,11 +12,11 @@
 #include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_features.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::new_tab_page_ads {
 
-class BatAdsNewTabPageAdsPerHourPermissionRuleTest : public UnitTestBase {
+class BraveAdsNewTabPageAdsPerHourPermissionRuleTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -33,7 +33,7 @@ class BatAdsNewTabPageAdsPerHourPermissionRuleTest : public UnitTestBase {
   AdsPerHourPermissionRule permission_rule_;
 };
 
-TEST_F(BatAdsNewTabPageAdsPerHourPermissionRuleTest,
+TEST_F(BraveAdsNewTabPageAdsPerHourPermissionRuleTest,
        AllowAdIfThereIsNoAdsHistory) {
   // Arrange
 
@@ -43,7 +43,7 @@ TEST_F(BatAdsNewTabPageAdsPerHourPermissionRuleTest,
   EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
-TEST_F(BatAdsNewTabPageAdsPerHourPermissionRuleTest,
+TEST_F(BraveAdsNewTabPageAdsPerHourPermissionRuleTest,
        AllowAdIfDoesNotExceedCap) {
   // Arrange
   RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed,
@@ -55,7 +55,7 @@ TEST_F(BatAdsNewTabPageAdsPerHourPermissionRuleTest,
   EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
-TEST_F(BatAdsNewTabPageAdsPerHourPermissionRuleTest,
+TEST_F(BraveAdsNewTabPageAdsPerHourPermissionRuleTest,
        AllowAdIfDoesNotExceedCapAfter1Hour) {
   // Arrange
   RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed,
@@ -68,7 +68,7 @@ TEST_F(BatAdsNewTabPageAdsPerHourPermissionRuleTest,
   EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
-TEST_F(BatAdsNewTabPageAdsPerHourPermissionRuleTest,
+TEST_F(BraveAdsNewTabPageAdsPerHourPermissionRuleTest,
        DoNotAllowAdIfExceedsCapWithin1Hour) {
   // Arrange
   RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed,

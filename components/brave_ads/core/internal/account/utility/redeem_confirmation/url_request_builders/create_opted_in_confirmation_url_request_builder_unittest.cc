@@ -14,7 +14,7 @@
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "url/gurl.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -32,10 +32,10 @@ constexpr char kExpectedContent[] =
 
 }  // namespace
 
-class BatAdsCreateOptedInConfirmationUrlRequestBuilderTest
+class BraveAdsCreateOptedInConfirmationUrlRequestBuilderTest
     : public UnitTestBase {};
 
-TEST_F(BatAdsCreateOptedInConfirmationUrlRequestBuilderTest,
+TEST_F(BraveAdsCreateOptedInConfirmationUrlRequestBuilderTest,
        BuildUrlForLargeAnonmityCountry) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
@@ -63,7 +63,7 @@ TEST_F(BatAdsCreateOptedInConfirmationUrlRequestBuilderTest,
   EXPECT_EQ(url_request, expected_url_request);
 }
 
-TEST_F(BatAdsCreateOptedInConfirmationUrlRequestBuilderTest,
+TEST_F(BraveAdsCreateOptedInConfirmationUrlRequestBuilderTest,
        BuildUrlForAnonymousCountry) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
@@ -93,7 +93,7 @@ TEST_F(BatAdsCreateOptedInConfirmationUrlRequestBuilderTest,
   EXPECT_EQ(url_request, expected_url_request);
 }
 
-TEST_F(BatAdsCreateOptedInConfirmationUrlRequestBuilderTest,
+TEST_F(BraveAdsCreateOptedInConfirmationUrlRequestBuilderTest,
        BuildUrlForOtherCountry) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
@@ -123,7 +123,7 @@ TEST_F(BatAdsCreateOptedInConfirmationUrlRequestBuilderTest,
   EXPECT_EQ(url_request, expected_url_request);
 }
 
-TEST_F(BatAdsCreateOptedInConfirmationUrlRequestBuilderTest,
+TEST_F(BraveAdsCreateOptedInConfirmationUrlRequestBuilderTest,
        BuildUrlForLargeAnonmityCountryAndNonReleaseBuildChannel) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
@@ -151,7 +151,7 @@ TEST_F(BatAdsCreateOptedInConfirmationUrlRequestBuilderTest,
   EXPECT_EQ(url_request, expected_url_request);
 }
 
-TEST_F(BatAdsCreateOptedInConfirmationUrlRequestBuilderTest,
+TEST_F(BraveAdsCreateOptedInConfirmationUrlRequestBuilderTest,
        BuildUrlForAnonymousCountryAndNonReleaseBuildChannel) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
@@ -181,7 +181,7 @@ TEST_F(BatAdsCreateOptedInConfirmationUrlRequestBuilderTest,
   EXPECT_EQ(url_request, expected_url_request);
 }
 
-TEST_F(BatAdsCreateOptedInConfirmationUrlRequestBuilderTest,
+TEST_F(BraveAdsCreateOptedInConfirmationUrlRequestBuilderTest,
        BuildUrlForOtherCountryAndNonReleaseBuildChannel) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =

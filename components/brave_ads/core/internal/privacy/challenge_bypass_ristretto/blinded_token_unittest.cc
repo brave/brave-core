@@ -11,11 +11,11 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::privacy::cbr {
 
-TEST(BatAdsBlindedTokenTest, FailToInitialize) {
+TEST(BraveAdsBlindedTokenTest, FailToInitialize) {
   // Arrange
   const BlindedToken blinded_token;
 
@@ -26,7 +26,7 @@ TEST(BatAdsBlindedTokenTest, FailToInitialize) {
   EXPECT_FALSE(has_value);
 }
 
-TEST(BatAdsBlindedTokenTest, FailToInitializeWithEmptyBase64) {
+TEST(BraveAdsBlindedTokenTest, FailToInitializeWithEmptyBase64) {
   // Arrange
   const BlindedToken blinded_token("");
 
@@ -37,7 +37,7 @@ TEST(BatAdsBlindedTokenTest, FailToInitializeWithEmptyBase64) {
   EXPECT_FALSE(has_value);
 }
 
-TEST(BatAdsBlindedTokenTest, FailToInitializeWithInvalidBase64) {
+TEST(BraveAdsBlindedTokenTest, FailToInitializeWithInvalidBase64) {
   // Arrange
   const BlindedToken blinded_token(kInvalidBase64);
 
@@ -48,7 +48,7 @@ TEST(BatAdsBlindedTokenTest, FailToInitializeWithInvalidBase64) {
   EXPECT_FALSE(has_value);
 }
 
-TEST(BatAdsBlindedTokenTest, DecodeBase64) {
+TEST(BraveAdsBlindedTokenTest, DecodeBase64) {
   // Arrange
 
   // Act
@@ -60,7 +60,7 @@ TEST(BatAdsBlindedTokenTest, DecodeBase64) {
   EXPECT_TRUE(has_value);
 }
 
-TEST(BatAdsBlindedTokenTest, FailToDecodeEmptyBase64) {
+TEST(BraveAdsBlindedTokenTest, FailToDecodeEmptyBase64) {
   // Arrange
 
   // Act
@@ -71,7 +71,7 @@ TEST(BatAdsBlindedTokenTest, FailToDecodeEmptyBase64) {
   EXPECT_FALSE(has_value);
 }
 
-TEST(BatAdsBlindedTokenTest, FailToDecodeInvalidBase64) {
+TEST(BraveAdsBlindedTokenTest, FailToDecodeInvalidBase64) {
   // Arrange
 
   // Act
@@ -82,7 +82,7 @@ TEST(BatAdsBlindedTokenTest, FailToDecodeInvalidBase64) {
   EXPECT_FALSE(has_value);
 }
 
-TEST(BatAdsBlindedTokenTest, EncodeBase64) {
+TEST(BraveAdsBlindedTokenTest, EncodeBase64) {
   // Arrange
   const BlindedToken blinded_token(kBlindedTokenBase64);
 
@@ -95,7 +95,7 @@ TEST(BatAdsBlindedTokenTest, EncodeBase64) {
   EXPECT_EQ(kBlindedTokenBase64, *encoded_base64);
 }
 
-TEST(BatAdsBlindedTokenTest, FailToEncodeBase64WhenUninitialized) {
+TEST(BraveAdsBlindedTokenTest, FailToEncodeBase64WhenUninitialized) {
   // Arrange
   const BlindedToken blinded_token;
 
@@ -107,7 +107,7 @@ TEST(BatAdsBlindedTokenTest, FailToEncodeBase64WhenUninitialized) {
   EXPECT_FALSE(encoded_base64);
 }
 
-TEST(BatAdsBlindedTokenTest, IsEqual) {
+TEST(BraveAdsBlindedTokenTest, IsEqual) {
   // Arrange
   const BlindedToken blinded_token(kBlindedTokenBase64);
 
@@ -117,7 +117,7 @@ TEST(BatAdsBlindedTokenTest, IsEqual) {
   EXPECT_EQ(blinded_token, blinded_token);
 }
 
-TEST(BatAdsBlindedTokenTest, IsEqualWhenUninitialized) {
+TEST(BraveAdsBlindedTokenTest, IsEqualWhenUninitialized) {
   // Arrange
   const BlindedToken blinded_token;
 
@@ -127,7 +127,7 @@ TEST(BatAdsBlindedTokenTest, IsEqualWhenUninitialized) {
   EXPECT_EQ(blinded_token, blinded_token);
 }
 
-TEST(BatAdsBlindedTokenTest, IsEmptyBase64Equal) {
+TEST(BraveAdsBlindedTokenTest, IsEmptyBase64Equal) {
   // Arrange
   const BlindedToken blinded_token("");
 
@@ -137,7 +137,7 @@ TEST(BatAdsBlindedTokenTest, IsEmptyBase64Equal) {
   EXPECT_EQ(blinded_token, blinded_token);
 }
 
-TEST(BatAdsBlindedTokenTest, IsInvalidBase64Equal) {
+TEST(BraveAdsBlindedTokenTest, IsInvalidBase64Equal) {
   // Arrange
   const BlindedToken blinded_token(kInvalidBase64);
 
@@ -147,7 +147,7 @@ TEST(BatAdsBlindedTokenTest, IsInvalidBase64Equal) {
   EXPECT_EQ(blinded_token, blinded_token);
 }
 
-TEST(BatAdsBlindedTokenTest, IsNotEqual) {
+TEST(BraveAdsBlindedTokenTest, IsNotEqual) {
   // Arrange
 
   // Act
@@ -158,7 +158,7 @@ TEST(BatAdsBlindedTokenTest, IsNotEqual) {
   EXPECT_NE(different_blinded_token, blinded_token);
 }
 
-TEST(BatAdsBlindedTokenTest, OutputStream) {
+TEST(BraveAdsBlindedTokenTest, OutputStream) {
   // Arrange
   const BlindedToken blinded_token(kBlindedTokenBase64);
 
@@ -170,7 +170,7 @@ TEST(BatAdsBlindedTokenTest, OutputStream) {
   EXPECT_EQ(kBlindedTokenBase64, ss.str());
 }
 
-TEST(BatAdsBlindedTokenTest, OutputStreamWhenUninitialized) {
+TEST(BraveAdsBlindedTokenTest, OutputStreamWhenUninitialized) {
   // Arrange
   const BlindedToken blinded_token;
 
