@@ -10,6 +10,8 @@ import os
 import subprocess
 import sys
 
+from lib.util import execute
+
 cert = os.environ.get('CERT')
 cert_hash = os.environ.get('AUTHENTICODE_HASH')
 signtool_args = (os.environ.get('SIGNTOOL_ARGS') or
@@ -37,14 +39,6 @@ def get_sign_cmd(file):
     return cmd + ' "' + file + '"'
 
 
-def run_cmd(cmd):
-    p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-    for line in p.stdout:
-        print(line)
-    p.wait()
-    assert p.returncode == 0, "Error signing"
-
-
 def sign_binaries(base_dir, endswidth=('.exe', '.dll')):
     matches = []
     for root, _, filenames in os.walk(base_dir):
@@ -58,7 +52,7 @@ def sign_binaries(base_dir, endswidth=('.exe', '.dll')):
 
 def sign_binary(binary):
     cmd = get_sign_cmd(binary)
-    run_cmd(cmd)
+    execute(cmd)
 
 
 def main():

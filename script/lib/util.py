@@ -214,6 +214,7 @@ def safe_mkdir(path):
 def execute(argv, env=os.environ):  # pylint: disable=dangerous-default-value
     if is_verbose_mode():
         print(' '.join(argv))
+    argv_string = argv if isinstance(argv, str) else ' '.join(argv)
     try:
         if sys.version_info.major == 2:
             process = subprocess.Popen(
@@ -237,12 +238,12 @@ def execute(argv, env=os.environ):  # pylint: disable=dangerous-default-value
             # stdout and not stderr.
             print(printable_stdout)
             if process.returncode != 0:
-                raise RuntimeError('Command \'%s\' failed' % (' '.join(argv)),
+                raise RuntimeError('Command \'%s\' failed' % (argv_string),
                                    stderr)
         return stdout
     except subprocess.CalledProcessError as e:
         print('Error in subprocess:')
-        print(' '.join(argv))
+        print(argv_string)
         if sys.version_info.major > 2:
             print(e.stderr)  # pylint: disable=no-member
         raise e
