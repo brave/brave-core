@@ -30,7 +30,6 @@ export interface RewardsParameters {
 }
 
 export type AppError =
-  'load-balance-error' |
   'load-banner-error' |
   'load-parameters-error'
 
