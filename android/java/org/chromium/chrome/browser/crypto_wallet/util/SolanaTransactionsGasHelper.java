@@ -42,7 +42,8 @@ public class SolanaTransactionsGasHelper {
                             == TransactionType
                                        .SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION
                     || txInfo.txType == TransactionType.SOLANA_DAPP_SIGN_AND_SEND_TRANSACTION
-                    || txInfo.txType == TransactionType.SOLANA_DAPP_SIGN_TRANSACTION) {
+                    || txInfo.txType == TransactionType.SOLANA_DAPP_SIGN_TRANSACTION
+                    || txInfo.txType == TransactionType.SOLANA_SWAP) {
                 solanaTransactions.add(txInfo);
             }
         }

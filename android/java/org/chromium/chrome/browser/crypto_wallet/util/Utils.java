@@ -254,10 +254,20 @@ public class Utils {
     public static void openBuySendSwapActivity(Activity activity,
             BuySendSwapActivity.ActivityType activityType, String swapFromAssetSymbol) {
         assert activity != null;
-        Intent buySendSwapActivityIntent = new Intent(activity, BuySendSwapActivity.class);
-        buySendSwapActivityIntent.putExtra("activityType", activityType.getValue());
-        buySendSwapActivityIntent.putExtra("swapFromAssetSymbol", swapFromAssetSymbol);
-        activity.startActivity(buySendSwapActivityIntent);
+        if (activityType == BuySendSwapActivity.ActivityType.SWAP) {
+            try {
+                BraveActivity.getBraveActivity().openNewOrSelectExistingTab(
+                        BraveActivity.BRAVE_SWAP_URL);
+                TabUtils.bringChromeTabbedActivityToTheTop(activity);
+            } catch (ActivityNotFoundException e) {
+                Log.e(TAG, "on Swap tab: " + e);
+            }
+        } else {
+            Intent buySendSwapActivityIntent = new Intent(activity, BuySendSwapActivity.class);
+            buySendSwapActivityIntent.putExtra("activityType", activityType.getValue());
+            buySendSwapActivityIntent.putExtra("swapFromAssetSymbol", swapFromAssetSymbol);
+            activity.startActivity(buySendSwapActivityIntent);
+        }
     }
 
     public static void openBuySendSwapActivity(
@@ -1215,8 +1225,9 @@ public class Utils {
     private static WalletListItemModel makeWalletItem(Context context, TransactionInfo txInfo,
             NetworkInfo selectedNetwork, ParsedTransaction parsedTx) {
         Pair<String, String> itemTitles = parsedTx.makeTxListItemTitles(context);
-        WalletListItemModel itemModel = new WalletListItemModel(
-                R.drawable.ic_eth, itemTitles.first, itemTitles.second, "", null, null);
+        WalletListItemModel itemModel =
+                new WalletListItemModel(Utils.getCoinIcon(selectedNetwork.coin), itemTitles.first,
+                        itemTitles.second, "", null, null);
         updateWalletCoinTransactionStatus(itemModel, context, txInfo);
 
         itemModel.setChainSymbol(selectedNetwork.symbol);

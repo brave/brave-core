@@ -71,8 +71,9 @@ public final class WalletConstants {
             BraveWalletConstants.OPTIMISM_MAINNET_CHAIN_ID,
             BraveWalletConstants.ARBITRUM_MAINNET_CHAIN_ID);
 
-    public static List<String> SWAP_SUPPORTED_NETWORKS = Arrays.asList(
-            BraveWalletConstants.MAINNET_CHAIN_ID, BraveWalletConstants.GOERLI_CHAIN_ID);
+    public static List<String> SWAP_SUPPORTED_NETWORKS =
+            Arrays.asList(BraveWalletConstants.MAINNET_CHAIN_ID,
+                    BraveWalletConstants.GOERLI_CHAIN_ID, BraveWalletConstants.SOLANA_MAINNET);
 
     // Solana
     public static final String SOL = "SOL";
@@ -86,7 +87,7 @@ public final class WalletConstants {
             TransactionType.SOLANA_SYSTEM_TRANSFER, TransactionType.SOLANA_SPL_TOKEN_TRANSFER,
             TransactionType.SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION,
             TransactionType.SOLANA_DAPP_SIGN_TRANSACTION,
-            TransactionType.SOLANA_DAPP_SIGN_AND_SEND_TRANSACTION);
+            TransactionType.SOLANA_DAPP_SIGN_AND_SEND_TRANSACTION, TransactionType.SOLANA_SWAP);
 
     public static List<Integer> SOLANA_DAPPS_TRANSACTION_TYPES =
             Arrays.asList(TransactionType.SOLANA_DAPP_SIGN_TRANSACTION,
