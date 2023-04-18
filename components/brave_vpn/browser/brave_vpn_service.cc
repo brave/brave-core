@@ -414,8 +414,7 @@ void BraveVpnService::LoadPurchasedState(const std::string& domain) {
     return;
   }
 
-  if (!purchased_state_.has_value())
-    SetPurchasedState(requested_env, PurchasedState::LOADING);
+  SetPurchasedState(requested_env, PurchasedState::LOADING);
 
   if (HasValidSubscriberCredential(local_prefs_)) {
 #if BUILDFLAG(IS_ANDROID)
@@ -428,7 +427,6 @@ void BraveVpnService::LoadPurchasedState(const std::string& domain) {
       SetPurchasedState(requested_env, PurchasedState::PURCHASED);
     } else {
       VLOG(2) << __func__ << ": Wait till we get valid region data.";
-      SetPurchasedState(requested_env, PurchasedState::LOADING);
       // TODO(simonhong): Make purchases state independent from region data.
       wait_region_data_ready_ = true;
     }

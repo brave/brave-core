@@ -892,7 +892,7 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateNotifications) {
 
   LoadPurchasedState(domain);
   {
-    // Loading state called if we fetch it first time.
+    // Loading state called if we load purchased state.
     base::RunLoop loop;
     observer.WaitPurchasedStateChange(loop.QuitClosure());
     loop.Run();
@@ -913,10 +913,20 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateNotifications) {
   EXPECT_FALSE(observer.GetPurchasedState().has_value());
   EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
   LoadPurchasedState(domain);
+  {
+    // Loading state called whenever we load purchased state.
+    base::RunLoop loop;
+    observer.WaitPurchasedStateChange(loop.QuitClosure());
+    loop.Run();
+    EXPECT_EQ(PurchasedState::LOADING, GetPurchasedStateSync());
+    EXPECT_TRUE(observer.GetPurchasedState().has_value());
+    EXPECT_EQ(PurchasedState::LOADING, observer.GetPurchasedState().value());
+  }
   base::RunLoop().RunUntilIdle();
-  // Observer event not called second time because the state is not changed.
-  EXPECT_FALSE(observer.GetPurchasedState().has_value());
+  EXPECT_TRUE(observer.GetPurchasedState().has_value());
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
   // Observer called when state will be changed.
+  SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::LOADING);
   SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::PURCHASED);
 }
 
