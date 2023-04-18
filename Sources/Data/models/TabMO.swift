@@ -60,6 +60,12 @@ public final class TabMO: NSManagedObject, CRUD {
   }
 
   // MARK: - Public interface
+  
+  public static func migrate(_ block: @escaping (NSManagedObjectContext) -> Void) {
+    DataController.perform(save: true) { context in
+      block(context)
+    }
+  }
 
   // MARK: Create
 
@@ -102,22 +108,6 @@ public final class TabMO: NSManagedObject, CRUD {
 
   public class func get(fromId id: String?) -> TabMO? {
     return getInternal(fromId: id)
-  }
-
-  public class func insertRecentlyClosed(uuidString: String, _ saved: SavedRecentlyClosed) {
-    DataController.perform { context in
-      guard let entity = entity(context) else {
-        Logger.module.error("Error fetching the entity 'Tab' from Managed Object-Model")
-        return
-      }
-  
-      let tab = TabMO(entity: entity, insertInto: context)
-      tab.syncUUID = uuidString
-      tab.url = saved.url
-      tab.title = saved.title
-      tab.urlHistorySnapshot = saved.historyList as NSArray
-      tab.urlHistoryCurrentIndex = saved.historyIndex
-    }
   }
   
   // MARK: Update

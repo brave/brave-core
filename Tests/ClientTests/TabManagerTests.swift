@@ -113,7 +113,7 @@ class TabManagerTests: XCTestCase {
 
     DataController.shared.initializeOnce()
     let profile = MockProfile()
-    manager = TabManager(prefs: profile.prefs, imageStore: nil, rewards: nil, tabGeneratorAPI: nil)
+    manager = TabManager(prefs: profile.prefs, rewards: nil, tabGeneratorAPI: nil)
     PrivateBrowsingManager.shared.isPrivateBrowsing = false
   }
 
@@ -513,8 +513,8 @@ class TabManagerTests: XCTestCase {
     wait(1)
     delegate.verify("Not all delegate methods were called")
 
-    let storedTabs = TabMO.getAll()
-    XCTAssertNotNil(storedTabs.first(where: { $0.syncUUID == tab.id }))
+    let storedTabs = SessionTab.all()
+    XCTAssertNotNil(storedTabs.first(where: { $0.tabId == tab.id }))
     XCTAssertEqual(storedTabs.count, 1)
   }
 
@@ -529,7 +529,7 @@ class TabManagerTests: XCTestCase {
     manager.addTab(isPrivate: true)
     delegate.verify("Not all delegate methods were called")
 
-    let storedTabs = TabMO.getAll()
+    let storedTabs = SessionTab.all()
     // Shouldn't be storing any private tabs
     XCTAssertTrue(storedTabs.isEmpty)
   }
@@ -547,8 +547,8 @@ class TabManagerTests: XCTestCase {
     wait(1)
     delegate.verify("Not all delegate methods were called")
 
-    let storedTabs = TabMO.getAll()
-    XCTAssertNotNil(storedTabs.first(where: { $0.syncUUID == tab.id }), "Couldn't find added tab: \(tab) in stored tabs: \(storedTabs)")
+    let storedTabs = SessionTab.all()
+    XCTAssertNotNil(storedTabs.first(where: { $0.tabId == tab.id }), "Couldn't find added tab: \(tab) in stored tabs: \(storedTabs)")
     // Shouldn't be storing any private tabs
     XCTAssertEqual(storedTabs.count, 1)
   }

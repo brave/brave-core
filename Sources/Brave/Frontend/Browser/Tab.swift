@@ -63,7 +63,7 @@ enum TabSecureContentState {
 }
 
 class Tab: NSObject {
-  var id: String?
+  let id: UUID
   let rewardsId: UInt32
 
   var onScreenshotUpdated: (() -> Void)?
@@ -134,7 +134,7 @@ class Tab: NSObject {
   var bars = [SnackBar]()
   var favicon: Favicon
   var lastExecutedTime: Timestamp?
-  var sessionData: SessionData?
+  var sessionData: (title: String, interactionState: Data)?
   fileprivate var lastRequest: URLRequest?
   var restoring: Bool = false
   var pendingScreenshot = false
@@ -170,14 +170,7 @@ class Tab: NSObject {
       }
     }
   }
-  var lastKnownUrl: URL? {
-    // Tab url can be nil when user cold starts the app
-    // thus we check session data for last known url
-    guard self.url != nil else {
-      return self.sessionData?.urls.last
-    }
-    return self.url
-  }
+
   var mimeType: String?
   var isEditing: Bool = false
   var shouldClassifyLoadsForAds = true
@@ -239,9 +232,6 @@ class Tab: NSObject {
   }
 
   fileprivate(set) var screenshot: UIImage?
-  var screenshotUUID: UUID? {
-    didSet { TabMO.saveScreenshotUUID(screenshotUUID, tabId: id) }
-  }
   
   var webStateDebounceTimer: Timer?
   var onPageReadyStateChanged: ((ReadyState.State) -> Void)?
@@ -275,9 +265,10 @@ class Tab: NSObject {
     }
   }
 
-  init(configuration: WKWebViewConfiguration, type: TabType = .regular, tabGeneratorAPI: BraveTabGeneratorAPI? = nil) {
+  init(configuration: WKWebViewConfiguration, id: UUID = UUID(), type: TabType = .regular, tabGeneratorAPI: BraveTabGeneratorAPI? = nil) {
     self.configuration = configuration
     self.favicon = Favicon.default
+    self.id = id
     rewardsId = UInt32.random(in: 1...UInt32.max)
     nightMode = Preferences.General.nightModeEnabled.value
     syncTab = tabGeneratorAPI?.createBraveSyncTab(isOffTheRecord: type == .private)
@@ -336,10 +327,11 @@ class Tab: NSObject {
       webView.scrollView.layer.masksToBounds = false
       webView.navigationDelegate = navigationDelegate
 
-      restore(webView, restorationData: self.sessionData?.savedTabData)
+      restore(webView, restorationData: self.sessionData)
 
       self.webView = webView
       self.webView?.addObserver(self, forKeyPath: KVOConstants.URL.rawValue, options: .new, context: nil)
+      
       tabDelegate?.tab(self, didCreateWebView: webView)
       
       let scriptPreferences: [UserScriptManager.ScriptType: Bool] = [
@@ -362,12 +354,9 @@ class Tab: NSObject {
   }
 
   func clearHistory(config: WKWebViewConfiguration) {
-    guard let webView = webView, let tabID = id else {
+    guard let webView = webView else {
       return
     }
-
-    // Remove the tab history from saved tabs
-    TabMO.removeHistory(with: tabID)
 
     /*
      * Clear selector is used on WKWebView backForwardList because backForwardList list is only exposed with a getter
@@ -384,45 +373,27 @@ class Tab: NSObject {
     if webView.backForwardList.responds(to: selector) {
       webView.backForwardList.performSelector(onMainThread: selector, with: nil, waitUntilDone: true)
     }
+    
+    // Remove the tab history from saved tabs
+    SessionTab.update(tabId: id, interactionState: webView.sessionData ?? Data(), title: title, url: webView.url ?? TabManager.ntpInteralURL)
   }
 
-  func restore(_ webView: WKWebView, restorationData: SavedTab?) {
+  func restore(_ webView: WKWebView, restorationData: (title: String, interactionState: Data)?) {
     // Pulls restored session data from a previous SavedTab to load into the Tab. If it's nil, a session restore
     // has already been triggered via custom URL, so we use the last request to trigger it again; otherwise,
     // we extract the information needed to restore the tabs and create a NSURLRequest with the custom session restore URL
     // to trigger the session restore via custom handlers
-    if let sessionData = restorationData {
+    if let sessionInfo = restorationData {
       restoring = true
-
-      lastTitle = sessionData.title
-
-      var urls = [String]()
-      for url in sessionData.history {
-        guard let url = URL(string: url) else { continue }
-        urls.append(url.absoluteString)
-      }
-
-      let currentPage = sessionData.historyIndex
+      lastTitle = sessionInfo.title
+      webView.interactionState = sessionInfo.interactionState
+      restoring = false
       self.sessionData = nil
-      var jsonDict = [String: AnyObject]()
-      jsonDict["history"] = urls as AnyObject?
-      jsonDict["currentPage"] = currentPage as AnyObject?
-      guard let json = JSON(jsonDict).rawString()?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
-        return
-      }
-
-      if let restoreURL = URL(string: "\(InternalURL.baseUrl)/\(SessionRestoreHandler.path)?history=\(json)") {
-        let request = PrivilegedRequest(url: restoreURL) as URLRequest
-        webView.load(request)
-        lastRequest = request
-        restoring = false
-      }
     } else if let request = lastRequest {
       webView.load(request)
     } else {
       Logger.module.warning("creating webview with no lastRequest and no session data: \(self.url?.absoluteString ?? "nil")")
     }
-
   }
 
   func deleteWebView() {
@@ -464,8 +435,8 @@ class Tab: NSObject {
     return tabs
   }
 
-  var title: String? {
-    return webView?.title
+  var title: String {
+    return webView?.title ?? ""
   }
 
   var displayTitle: String {
@@ -481,12 +452,6 @@ class Tab: NSObject {
       return Strings.Hotkey.newTabTitle
     }
 
-    // lets double check the sessionData in case this is a non-restored new tab
-    if let firstURL = sessionData?.urls.first, sessionData?.urls.count == 1, InternalURL(firstURL)?.isAboutHomeURL ?? false {
-      syncTab?.setTitle(Strings.Hotkey.newTabTitle)
-      return Strings.Hotkey.newTabTitle
-    }
-
     if let url = self.url, !InternalURL.isValid(url: url), let shownUrl = url.displayURL?.absoluteString {
       syncTab?.setTitle(shownUrl)
       return shownUrl
@@ -498,10 +463,9 @@ class Tab: NSObject {
       if let title = url?.absoluteString {
         syncTab?.setTitle(title)
         return title
-      } else if let tab = TabMO.get(fromId: id) {
-        let title = tab.title ?? tab.url ?? ""
-        syncTab?.setTitle(title)
-        return title
+      } else if let tab = SessionTab.from(tabId: id) {
+        syncTab?.setTitle(tab.title)
+        return tab.title
       }
       
       syncTab?.setTitle("")
@@ -540,12 +504,8 @@ class Tab: NSObject {
     } else {
       if let tabUrl = url, tabUrl.isWebPage() {
         return tabUrl
-      } else if let tabID = id {
-        let fetchedTab = TabMO.get(fromId: tabID)
-        
-        if let urlString = fetchedTab?.url, let url = URL(string: urlString), url.isWebPage() {
-          return url
-        }
+      } else if let fetchedTab = SessionTab.from(tabId: id), fetchedTab.url.isWebPage() {
+        return url
       }
     }
     
@@ -638,7 +598,7 @@ class Tab: NSObject {
 
     if let webView = self.webView {
       Logger.module.debug("restoring webView from scratch")
-      restore(webView, restorationData: sessionData?.savedTabData)
+      restore(webView, restorationData: sessionData)
     }
   }
 
@@ -713,19 +673,15 @@ class Tab: NSObject {
     bars.reversed().filter({ !$0.shouldPersist(self) }).forEach({ removeSnackbar($0) })
   }
 
-  func setScreenshot(_ screenshot: UIImage?, revUUID: Bool = true) {
+  func setScreenshot(_ screenshot: UIImage?) {
     self.screenshot = screenshot
-    if revUUID {
-      self.screenshotUUID = UUID()
-    }
-
     onScreenshotUpdated?()
   }
 
   /// Switches user agent Desktop -> Mobile or Mobile -> Desktop.
   func switchUserAgent() {
     if let urlString = webView?.url?.baseDomain {
-      // The website was changed once already, need to flip the override.
+      // The website was changed once already, need to flip the override.onScreenshotUpdated
       if let siteOverride = userAgentOverrides[urlString] {
         userAgentOverrides[urlString] = !siteOverride
       } else {

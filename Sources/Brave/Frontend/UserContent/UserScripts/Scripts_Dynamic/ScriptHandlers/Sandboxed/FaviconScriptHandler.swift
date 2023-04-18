@@ -38,16 +38,27 @@ class FaviconScriptHandler: NSObject, TabContentScript {
   func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
     defer { replyHandler(nil, nil) }
     guard let tab = tab else { return }
+    
+    // Assign default favicon
     tab.favicon = Favicon.default
     
     guard let webView = message.webView,
-          let url = webView.url,
-          !InternalURL.isValid(url: url),
-          !(InternalURL(url)?.isSessionRestore ?? false) else { return }
+          let url = webView.url else {
+      return
+    }
     
+    // The WebView has a valid URL
+    // Attempt to fetch the favicon from cache
     let isPrivate = tab.isPrivate
     tab.favicon = FaviconFetcher.getIconFromCache(for: url) ?? Favicon.default
     
+    // If this is an internal page, we don't fetch favicons for such pages from Brave-Core
+    guard !InternalURL.isValid(url: url),
+          !(InternalURL(url)?.isSessionRestore ?? false) else {
+      return
+    }
+    
+    // Update the favicon for this tab, from Brave-Core
     tab.faviconDriver?.webView(webView, scriptMessage: message) { [weak tab] iconUrl, icon in
       let tab = tab
       if let icon = icon {

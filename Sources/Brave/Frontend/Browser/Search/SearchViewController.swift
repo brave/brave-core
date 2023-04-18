@@ -14,7 +14,7 @@ import Favicon
 protocol SearchViewControllerDelegate: AnyObject {
   func searchViewController(_ searchViewController: SearchViewController, didSubmit query: String, braveSearchPromotion: Bool)
   func searchViewController(_ searchViewController: SearchViewController, didSelectURL url: URL)
-  func searchViewController(_ searchViewController: SearchViewController, didSelectOpenTab tabInfo: (id: String?, url: URL))
+  func searchViewController(_ searchViewController: SearchViewController, didSelectOpenTab tabInfo: (id: UUID?, url: URL))
   func searchViewController(_ searchViewController: SearchViewController, didLongPressSuggestion suggestion: String)
   func presentSearchSettingsController()
   func searchViewController(_ searchViewController: SearchViewController, didHighlightText text: String, search: Bool)
@@ -400,7 +400,11 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
       let site = data[indexPath.row]
       if let url = URL(string: site.url) {
         if site.siteType == .tab {
-          searchDelegate?.searchViewController(self, didSelectOpenTab: (site.tabID, url))
+          var tabId: UUID?
+          if let siteId = site.tabID {
+            tabId = UUID(uuidString: siteId)
+          }
+          searchDelegate?.searchViewController(self, didSelectOpenTab: (tabId, url))
         } else {
           searchDelegate?.searchViewController(self, didSelectURL: url)
         }

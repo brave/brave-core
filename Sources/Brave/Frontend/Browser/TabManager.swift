@@ -51,7 +51,7 @@ class TabManager: NSObject {
   weak var stateDelegate: TabManagerStateDelegate?
   
   /// Internal url to access the new tab page.
-  private let ntpInteralURL = URL(string: "\(InternalURL.baseUrl)/\(AboutHomeHandler.path)#panel=0")!
+  static let ntpInteralURL = URL(string: "\(InternalURL.baseUrl)/\(AboutHomeHandler.path)#panel=0")!
 
   func addDelegate(_ delegate: TabManagerDelegate) {
     assert(Thread.isMainThread)
@@ -78,8 +78,6 @@ class TabManager: NSObject {
   lazy fileprivate var configuration: WKWebViewConfiguration = {
     return TabManager.getNewConfiguration()
   }()
-
-  fileprivate let imageStore: DiskImageStore?
 
   fileprivate let prefs: Prefs
   var selectedIndex: Int {
@@ -109,12 +107,11 @@ class TabManager: NSObject {
     }
   }
 
-  init(prefs: Prefs, imageStore: DiskImageStore?, rewards: BraveRewards?, tabGeneratorAPI: BraveTabGeneratorAPI?) {
+  init(prefs: Prefs, rewards: BraveRewards?, tabGeneratorAPI: BraveTabGeneratorAPI?) {
     assert(Thread.isMainThread)
 
     self.prefs = prefs
     self.navDelegate = TabManagerNavDelegate()
-    self.imageStore = imageStore
     self.rewards = rewards
     self.tabGeneratorAPI = tabGeneratorAPI
     self.tabEventHandlers = TabEventHandlers.create(with: prefs)
@@ -330,7 +327,7 @@ class TabManager: NSObject {
     }
 
     if let tabId = tab?.id {
-      TabMO.selectTabAndDeselectOthers(selectedTabId: tabId)
+      SessionTab.setSelected(tabId: tabId)
     }
 
     UIImpactFeedbackGenerator(style: .light).bzzt()
@@ -346,7 +343,7 @@ class TabManager: NSObject {
     }
 
     if let tabID = tab?.id {
-      TabMO.touch(tabID: tabID)
+      SessionTab.touch(tabId: tabID)
     }
 
     guard let newSelectedTab = tab, let previousTab = previous, let newTabUrl = newSelectedTab.url, let previousTabUrl = previousTab.url else { return }
@@ -391,7 +388,7 @@ class TabManager: NSObject {
   }
 
   func addPopupForParentTab(_ parentTab: Tab, configuration: WKWebViewConfiguration) -> Tab {
-    let popup = Tab(configuration: configuration, type: parentTab.type, tabGeneratorAPI: tabGeneratorAPI)
+    let popup = Tab(configuration: configuration, id: UUID(), type: parentTab.type, tabGeneratorAPI: tabGeneratorAPI)
     configureTab(popup, request: nil, afterTab: parentTab, flushToDisk: true, zombie: false, isPopup: true)
 
     // Wait momentarily before selecting the new tab, otherwise the parent tab
@@ -405,8 +402,8 @@ class TabManager: NSObject {
   }
 
   @discardableResult
-  func addTabAndSelect(_ request: URLRequest! = nil, configuration: WKWebViewConfiguration! = nil, afterTab: Tab? = nil, isPrivate: Bool) -> Tab {
-    let tab = addTab(request, configuration: configuration, afterTab: afterTab, isPrivate: isPrivate)
+  func addTabAndSelect(_ request: URLRequest! = nil, afterTab: Tab? = nil, isPrivate: Bool) -> Tab {
+    let tab = addTab(request, afterTab: afterTab, isPrivate: isPrivate)
     selectTab(tab)
     return tab
   }
@@ -431,16 +428,13 @@ class TabManager: NSObject {
   }
 
   @discardableResult
-  func addTab(_ request: URLRequest? = nil, configuration: WKWebViewConfiguration? = nil, afterTab: Tab? = nil, flushToDisk: Bool = true, zombie: Bool = false, id: String? = nil, isPrivate: Bool) -> Tab {
+  func addTab(_ request: URLRequest? = nil, afterTab: Tab? = nil, flushToDisk: Bool = true, zombie: Bool = false, id: UUID? = nil, isPrivate: Bool) -> Tab {
     assert(Thread.isMainThread)
 
-    // Take the given configuration. Or if it was nil, take our default configuration for the current browsing mode.
-    let configuration: WKWebViewConfiguration = configuration ?? self.configuration
-
+    let tabId = id ?? UUID()
     let type: TabType = isPrivate ? .private : .regular
-    let tab = Tab(configuration: configuration, type: type, tabGeneratorAPI: tabGeneratorAPI)
-
-    configureTab(tab, request: request, afterTab: afterTab, flushToDisk: flushToDisk, zombie: zombie, id: id)
+    let tab = Tab(configuration: configuration, id: tabId, type: type, tabGeneratorAPI: tabGeneratorAPI)
+    configureTab(tab, request: request, afterTab: afterTab, flushToDisk: flushToDisk, zombie: zombie)
     return tab
   }
 
@@ -471,18 +465,17 @@ class TabManager: NSObject {
   private func saveTabOrder() {
     if PrivateBrowsingManager.shared.isPrivateBrowsing { return }
     let allTabIds = allTabs.compactMap { $0.id }
-    TabMO.saveTabOrder(tabIds: allTabIds)
+    SessionTab.saveTabOrder(tabIds: allTabIds)
   }
 
-  func configureTab(_ tab: Tab, request: URLRequest?, afterTab parent: Tab? = nil, flushToDisk: Bool, zombie: Bool, id: String? = nil, isPopup: Bool = false) {
+  func configureTab(_ tab: Tab, request: URLRequest?, afterTab parent: Tab? = nil, flushToDisk: Bool, zombie: Bool, isPopup: Bool = false) {
     assert(Thread.isMainThread)
 
     let isPrivate = tab.type == .private
-    if isPrivate {
-      // Creating random tab id for private mode, as we don't want to save to database.
-      tab.id = UUID().uuidString
-    } else {
-      tab.id = id ?? TabMO.create()
+    if !isPrivate {
+      SessionTab.createIfNeeded(tabId: tab.id,
+                                title: Strings.newTab,
+                                tabURL: TabManager.ntpInteralURL)
       
       if let (provider, js) = makeWalletEthProvider?(tab) {
         let providerJS = """
@@ -500,6 +493,7 @@ class TabManager: NSObject {
                                                    forMainFrameOnly: true,
                                                    in: EthereumProviderScriptHandler.scriptSandbox)
       }
+      
       if let (provider, jsScripts) = makeWalletSolProvider?(tab) {
         tab.walletSolProvider = provider
         tab.walletSolProvider?.`init`(tab)
@@ -530,9 +524,8 @@ class TabManager: NSObject {
     if let request = request {
       tab.loadRequest(request)
     } else if !isPopup {
-      
-      tab.loadRequest(PrivilegedRequest(url: ntpInteralURL) as URLRequest)
-      tab.url = ntpInteralURL
+      tab.loadRequest(PrivilegedRequest(url: TabManager.ntpInteralURL) as URLRequest)
+      tab.url = TabManager.ntpInteralURL
     }
 
     // Ignore on restore.
@@ -574,59 +567,18 @@ class TabManager: NSObject {
 
     return nil
   }
+  
+  func saveAllTabs() {
+    if PrivateBrowsingManager.shared.isPrivateBrowsing { return }
+    SessionTab.updateAll(tabs: tabs(withType: .regular).map({ ($0.id, $0.webView?.sessionData ?? Data(), $0.title, $0.webView?.url ?? $0.url ?? TabManager.ntpInteralURL) }))
+  }
 
   func saveTab(_ tab: Tab, saveOrder: Bool = false) {
     if PrivateBrowsingManager.shared.isPrivateBrowsing { return }
-    guard let data = savedTabData(tab: tab) else { return }
-
-    TabMO.update(tabData: data)
+    SessionTab.update(tabId: tab.id, interactionState: tab.webView?.sessionData ?? Data(), title: tab.title, url: tab.url ?? TabManager.ntpInteralURL)
     if saveOrder {
       saveTabOrder()
     }
-  }
-
-  private func savedTabData(tab: Tab) -> SavedTab? {
-
-    guard let webView = tab.webView, let order = indexOfWebView(webView) else { return nil }
-
-    // Ignore session restore data.
-    guard let url = tab.url,
-      !InternalURL.isValid(url: url),
-      !(InternalURL(url)?.isSessionRestore ?? false)
-    else { return nil }
-
-    var urls = [URL]()
-    var currentPage = 0
-
-    if let currentItem = webView.backForwardList.currentItem {
-      // Freshly created web views won't have any history entries at all.
-      let backList = webView.backForwardList.backList
-      let forwardList = webView.backForwardList.forwardList
-      let backListMap = backList.map { $0.url }
-      let forwardListMap = forwardList.map { $0.url }
-      let currentItem = currentItem.url
-
-      // Business as usual.
-      urls = backListMap + [currentItem] + forwardListMap
-      currentPage = -forwardList.count
-    }
-    if let id = TabMO.get(fromId: tab.id)?.syncUUID {
-      let displayTitle = tab.displayTitle
-      let title = displayTitle != "" ? displayTitle : ""
-
-      let isSelected = selectedTab === tab
-
-      let urls = SessionData.updateSessionURLs(urls: urls).map({ $0.absoluteString })
-      let data = SavedTab(
-        id: id, title: title, url: url.absoluteString,
-        isSelected: isSelected, order: Int16(order),
-        screenshot: nil, history: urls,
-        historyIndex: Int16(currentPage),
-        isPrivate: tab.isPrivate)
-      return data
-    }
-
-    return nil
   }
 
   func removeTab(_ tab: Tab) {
@@ -667,7 +619,7 @@ class TabManager: NSObject {
     let prevCount = count
     allTabs.remove(at: removalIndex)
 
-    if let tab = TabMO.get(fromId: tab.id) {
+    if let tab = SessionTab.from(tabId: tab.id) {
       tab.delete()
     }
 
@@ -858,9 +810,8 @@ class TabManager: NSObject {
     return tab
   }
   
-  func getTabForID(_ id: String) -> Tab? {
+  func getTabForID(_ id: UUID) -> Tab? {
     assert(Thread.isMainThread)
-
     return allTabs.filter { $0.id == id }.first
   }
 
@@ -919,71 +870,52 @@ class TabManager: NSObject {
     if isRestoring { return }
 
     Task { @MainActor in
-      var savedUUIDs = Set<String>()
-      
       for tab in allTabs {
-        guard let screenshot = tab.screenshot, let screenshotUUID = tab.screenshotUUID else { continue }
-        savedUUIDs.insert(screenshotUUID.uuidString)
-        try? await imageStore?.put(screenshotUUID.uuidString, image: screenshot)
+        guard let screenshot = tab.screenshot else { continue }
+        SessionTab.updateScreenshot(tabId: tab.id, screenshot: screenshot)
       }
-      
-      // Clean up any screenshots that are no longer associated with a tab.
-      await imageStore?.clearExcluding(savedUUIDs)
     }
   }
 
   fileprivate var restoreTabsInternal: Tab? {
-    var savedTabs = [TabMO]()
+    var savedTabs = [SessionTab]()
 
     if let autocloseTime = Preferences.AutoCloseTabsOption(
       rawValue: Preferences.General.autocloseTabs.value)?.timeInterval {
       // To avoid db problems, we first retrieve fresh tabs(on main thread context)
       // then delete old tabs(background thread context)
-      savedTabs = TabMO.all(noOlderThan: autocloseTime)
-      TabMO.deleteAll(olderThan: autocloseTime)
+      savedTabs = SessionTab.all(noOlderThan: autocloseTime)
+      SessionTab.deleteAll(olderThan: autocloseTime)
     } else {
-      savedTabs = TabMO.getAll()
+      savedTabs = SessionTab.all()
     }
 
     if savedTabs.isEmpty { return nil }
 
     var tabToSelect: Tab?
     for savedTab in savedTabs {
-      guard let urlString = savedTab.url else {
-        savedTab.delete()
-        continue
-      }
-
+      let tabURL = savedTab.url
       // Provide an empty request to prevent a new tab from loading the home screen
-      let tab = addTab(
-        nil, configuration: nil, afterTab: nil, flushToDisk: false, zombie: true,
-        id: savedTab.syncUUID, isPrivate: false)
-
-      // Since this is a restored tab, reset the URL to be loaded as that will be handled by the SessionRestoreHandler
-      tab.url = nil
+      let tab = addTab(URLRequest(url: tabURL),
+                       flushToDisk: false,
+                       zombie: true,
+                       id: savedTab.tabId,
+                       isPrivate: false)
+      
       let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
-      if let url = URL(string: urlString) {
-        tab.favicon = FaviconFetcher.getIconFromCache(for: url) ?? Favicon.default
-        Task { @MainActor in
-          tab.favicon = try await FaviconFetcher.loadIcon(url: url, kind: .smallIcon, persistent: !isPrivateBrowsing)
-        }
-      }
-
-      // Set the UUID for the tab, asynchronously fetch the UIImage, then store
-      // the screenshot in the tab as long as long as a newer one hasn't been taken.
-      if let screenshotUUID = savedTab.screenshotUUID, let imageStore = imageStore {
-        tab.screenshotUUID = UUID(uuidString: screenshotUUID)
-        Task { @MainActor in
-          let screenshot = try await imageStore.get(screenshotUUID)
-          tab.setScreenshot(screenshot, revUUID: false)
-        }
+      
+      tab.lastTitle = savedTab.title
+      tab.favicon = FaviconFetcher.getIconFromCache(for: tabURL) ?? Favicon.default
+      tab.setScreenshot(savedTab.screenshot)
+      
+      Task { @MainActor in
+        tab.favicon = try await FaviconFetcher.loadIcon(url: tabURL, kind: .smallIcon, persistent: !isPrivateBrowsing)
+        tab.setScreenshot(savedTab.screenshot)
       }
 
       if savedTab.isSelected {
         tabToSelect = tab
       }
-
-      tab.lastTitle = savedTab.title
     }
 
     if let tabToSelect = tabToSelect ?? tabsForCurrentMode.last {
@@ -1002,13 +934,12 @@ class TabManager: NSObject {
 
   func restoreTab(_ tab: Tab) {
     // Tab was created with no active webview or session data. Restore tab data from CD and configure.
-    guard let savedTab = TabMO.get(fromId: tab.id) else { return }
+    guard let sessionTab = SessionTab.from(tabId: tab.id) else { return }
 
-    if let history = savedTab.urlHistorySnapshot as? [String], let tabUUID = savedTab.syncUUID, let url = savedTab.url {
-      let data = SavedTab(id: tabUUID, title: savedTab.title, url: url, isSelected: savedTab.isSelected, order: savedTab.order, screenshot: nil, history: history, historyIndex: savedTab.urlHistoryCurrentIndex, isPrivate: tab.isPrivate)
+    if !sessionTab.interactionState.isEmpty {
       if let webView = tab.webView {
         tab.navigationDelegate = navDelegate
-        tab.restore(webView, restorationData: data)
+        tab.restore(webView, restorationData: (sessionTab.title, sessionTab.interactionState))
       }
     }
   }
@@ -1085,30 +1016,17 @@ class TabManager: NSObject {
   
   /// Function invoked when a Recently Closed item is selected
   /// This function adss a new tab, populates this tab with necessary information
-  /// Also executes restore function on this tab to load History Snapshot to teh webview
+  /// Also executes restore function on this tab to load History Snapshot to the webview
   /// - Parameter recentlyClosed: Recently Closed item to be processed
   func addAndSelectRecentlyClosed(_ recentlyClosed: RecentlyClosed) {
-    guard let url = URL(string: recentlyClosed.url) else {
-      return
-    }
+    guard let url = NSURL(idnString: recentlyClosed.url) as? URL ?? URL(string: recentlyClosed.url) else { return }
     
     let tab = addTab(URLRequest(url: url), isPrivate: false)
-    guard let webView = tab.webView, let order = indexOfWebView(webView) else { return }
+    guard let webView = tab.webView else { return }
 
-    if let history = recentlyClosed.historyList as? [String], let tabUUID = tab.id {
-      let data = SavedTab(
-        id: tabUUID,
-        title: recentlyClosed.title,
-        url: recentlyClosed.url,
-        isSelected: false,
-        order: Int16(order),
-        screenshot: nil,
-        history: history,
-        historyIndex: recentlyClosed.historyIndex,
-        isPrivate: false)
-      
+    if let interactionState = recentlyClosed.interactionState, !interactionState.isEmpty {
       tab.navigationDelegate = navDelegate
-      tab.restore(webView, restorationData: data)
+      tab.restore(webView, restorationData: (recentlyClosed.title ?? "", interactionState))
     }
     
     selectTab(tab)
@@ -1133,36 +1051,27 @@ class TabManager: NSObject {
     }
     
     // Fetching the Managed Object using the tab id
-    guard let tabID = tab.id,
-          let fetchedTab = TabMO.get(fromId: tabID),
-          let urlString = fetchedTab.url else {
+    guard let fetchedTab = SessionTab.from(tabId: tab.id) else {
       return nil
     }
     
-    // Gathering History Snaphot from Tab Managed Object
-    let urlHistorySnapshot: [String] = fetchedTab.urlHistorySnapshot as? [String] ?? []
-    
-    let recentlyClosedHistoryList = urlHistorySnapshot.compactMap {
-      // Session Restore URLs should be converted into extracted URL
-      // before being passed as backforward history
-      if let _url = URL(string: $0), let url = InternalURL(_url) {
-        return url.extractedUrlParam
-      }
-      return URL(string: $0)
-    }
-    
-    // NTP should not be passed as Recently Closed item if there are no items in History Snapshot
-    if let url = URL(string: urlString), InternalURL(url)?.isAboutHomeURL == true, urlHistorySnapshot.count > 1 {
+    // NTP should not be passed as Recently Closed item
+    if InternalURL(fetchedTab.url)?.isAboutHomeURL == true {
       return nil
     }
     
-    let savedItem = SavedRecentlyClosed(
-      url: urlString,
+    // Convert any internal URLs to their real URL for the Recently Closed item
+    var fetchedTabURL = fetchedTab.url
+    if let url = InternalURL(fetchedTabURL),
+       let actualURL = url.extractedUrlParam ?? url.originalURLFromErrorPage {
+      fetchedTabURL = actualURL
+    }
+    
+    return SavedRecentlyClosed(
+      url: fetchedTabURL,
       title: fetchedTab.title,
-      historyList: recentlyClosedHistoryList.map({ $0.absoluteString }),
-      historyIndex: fetchedTab.urlHistoryCurrentIndex)
-    
-    return savedItem
+      interactionState: fetchedTab.interactionState,
+      order: fetchedTab.index)
   }
 }
 

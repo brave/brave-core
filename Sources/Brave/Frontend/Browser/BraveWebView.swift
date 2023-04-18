@@ -61,3 +61,14 @@ class BraveWebView: WKWebView {
     return super.hitTest(point, with: event)
   }
 }
+
+extension WKWebView {
+  public var sessionData: Data? {
+    get {
+      interactionState as? Data
+    }
+    set {
+      interactionState = newValue
+    }
+  }
+}

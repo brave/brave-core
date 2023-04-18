@@ -57,6 +57,22 @@ open class DiskImageStore {
       }
     }
   }
+  
+  /// Gets an image for the given key if it is in the store.
+  open func getSynchronously(_ key: String) throws -> UIImage {
+    try queue.sync {
+      if !self.keys.contains(key) {
+        throw DiskImageStoreErrorType(description: "Image key not found")
+      }
+      let imagePath = URL(fileURLWithPath: self.filesDir).appendingPathComponent(key)
+      if let data = try? Data(contentsOf: imagePath),
+         let image = UIImage.imageFromDataThreadSafe(data) {
+        return image
+      }
+      
+      throw DiskImageStoreErrorType(description: "Invalid image data")
+    }
+  }
 
   /// Adds an image for the given key.
   /// This put is asynchronous; the image is not recorded in the cache until the write completes.
