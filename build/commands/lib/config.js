@@ -444,6 +444,11 @@ Config.prototype.buildArgs = function () {
     }
   }
 
+  if (['android', 'linux', 'mac'].includes(this.getTargetOS())) {
+    // LSAN only works with ASAN and has very low overhead.
+    args.is_lsan = args.is_asan
+  }
+
   // Enable Page Graph only in desktop builds.
   // Page Graph gn args should always be set explicitly, because they are parsed
   // from out/<dir>/args.gn by Python scripts during the build. We do this to
