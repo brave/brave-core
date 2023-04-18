@@ -621,7 +621,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
   }
 
   std::string chain_id(const absl::optional<::url::Origin>& origin) {
-    return json_rpc_service_->GetChainId(mojom::CoinType::ETH, origin);
+    return json_rpc_service_->GetChainIdSync(mojom::CoinType::ETH, origin);
   }
 
  protected:

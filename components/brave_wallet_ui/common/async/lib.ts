@@ -861,7 +861,7 @@ export function refreshKeyringInfo () {
 
     // Get default accounts for each CoinType
     const defaultAccounts = await Promise.all(SupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
-      const { chainId } = await jsonRpcService.getChainId(coin, null)
+      const { chainId } = await jsonRpcService.getDefaultChainId(coin)
       const defaultAccount = coin === BraveWallet.CoinType.FIL
         ? await keyringService.getFilecoinSelectedAccount(chainId)
         : await keyringService.getSelectedAccount(coin)
@@ -877,7 +877,7 @@ export function refreshKeyringInfo () {
     let selectedAccount = { address: null } as { address: string | null }
 
     if (selectedCoin === BraveWallet.CoinType.FIL) {
-      const { chainId } = await jsonRpcService.getChainId(selectedCoin, null)
+      const { chainId } = await jsonRpcService.getDefaultChainId(selectedCoin)
       selectedAccount = await keyringService.getFilecoinSelectedAccount(
         chainId
       )

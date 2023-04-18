@@ -131,7 +131,7 @@ void TxService::AddUnapprovedTransaction(
   auto coin_type = GetCoinTypeFromTxDataUnion(*tx_data_union);
 
   GetTxManager(coin_type)->AddUnapprovedTransaction(
-      json_rpc_service_->GetChainId(coin_type, origin),
+      json_rpc_service_->GetChainIdSync(coin_type, origin),
       std::move(tx_data_union), from, origin, group_id, std::move(callback));
 }
 

@@ -124,7 +124,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
             }
         });
         _mChainId.addSource(mSharedData.getCoinTypeLd(), coinType -> {
-            mJsonRpcService.getChainId(coinType, null, chainId -> {
+            mJsonRpcService.getDefaultChainId(coinType, chainId -> {
                 String id = BraveWalletConstants.MAINNET_CHAIN_ID;
                 if (TextUtils.isEmpty(chainId)) {
                     mJsonRpcService.setNetwork(

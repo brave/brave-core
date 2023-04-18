@@ -163,8 +163,8 @@ class SolanaProviderImplUnitTest : public testing::Test {
               for (const auto& request : requests) {
                 SCOPED_TRACE(request->message);
                 EXPECT_EQ(request->chain_id,
-                          json_rpc_service_->GetChainId(mojom::CoinType::SOL,
-                                                        GetOrigin()));
+                          json_rpc_service_->GetChainIdSync(
+                              mojom::CoinType::SOL, GetOrigin()));
                 requests_out.push_back(request.Clone());
               }
               run_loop.Quit();

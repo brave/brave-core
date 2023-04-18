@@ -586,7 +586,7 @@ void JsonRpcService::SetNetwork(const std::string& chain_id,
 void JsonRpcService::GetNetwork(mojom::CoinType coin,
                                 const absl::optional<::url::Origin>& origin,
                                 GetNetworkCallback callback) {
-  const auto& chain_id = GetChainId(coin, origin);
+  const auto& chain_id = GetChainIdSync(coin, origin);
   std::move(callback).Run(GetChain(prefs_, chain_id, coin));
 }
 
@@ -656,17 +656,23 @@ void JsonRpcService::FireNetworkChanged(
   }
 }
 
-std::string JsonRpcService::GetChainId(
+std::string JsonRpcService::GetChainIdSync(
     mojom::CoinType coin,
     const absl::optional<::url::Origin>& origin) const {
   return GetCurrentChainId(prefs_, coin, origin);
 }
 
-void JsonRpcService::GetChainId(
+void JsonRpcService::GetDefaultChainId(
     mojom::CoinType coin,
-    const absl::optional<::url::Origin>& origin,
-    mojom::JsonRpcService::GetChainIdCallback callback) {
-  std::move(callback).Run(GetChainId(coin, origin));
+    mojom::JsonRpcService::GetDefaultChainIdCallback callback) {
+  std::move(callback).Run(GetChainIdSync(coin, absl::nullopt));
+}
+
+void JsonRpcService::GetChainIdForOrigin(
+    mojom::CoinType coin,
+    const ::url::Origin& origin,
+    mojom::JsonRpcService::GetChainIdForOriginCallback callback) {
+  std::move(callback).Run(GetChainIdSync(coin, origin));
 }
 
 void JsonRpcService::GetAllNetworks(mojom::CoinType coin,
@@ -698,7 +704,7 @@ void JsonRpcService::GetHiddenNetworks(mojom::CoinType coin,
 
   // Currently selected chain is never hidden for coin.
   base::Erase(hidden_networks,
-              base::ToLowerASCII(GetChainId(coin, absl::nullopt)));
+              base::ToLowerASCII(GetChainIdSync(coin, absl::nullopt)));
 
   std::move(callback).Run(hidden_networks);
 }
@@ -706,7 +712,7 @@ void JsonRpcService::GetHiddenNetworks(mojom::CoinType coin,
 std::string JsonRpcService::GetNetworkUrl(
     mojom::CoinType coin,
     const absl::optional<::url::Origin>& origin) const {
-  auto network_url = GetNetworkURL(prefs_, GetChainId(coin, origin), coin);
+  auto network_url = GetNetworkURL(prefs_, GetChainIdSync(coin, origin), coin);
   if (!network_url.is_valid()) {
     return std::string();
   }
@@ -2624,7 +2630,7 @@ bool JsonRpcService::AddSwitchEthereumChainRequest(const std::string& chain_id,
   }
 
   // Already on the chain
-  if (GetChainId(mojom::CoinType::ETH, origin) == chain_id) {
+  if (GetChainIdSync(mojom::CoinType::ETH, origin) == chain_id) {
     reject = false;
     std::move(callback).Run(std::move(id), base::Value(), reject, "", false);
     return false;

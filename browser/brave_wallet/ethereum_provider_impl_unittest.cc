@@ -691,8 +691,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
               for (const auto& request : requests) {
                 SCOPED_TRACE(request->message);
                 EXPECT_EQ(request->chain_id,
-                          json_rpc_service_->GetChainId(mojom::CoinType::ETH,
-                                                        GetOrigin()));
+                          json_rpc_service_->GetChainIdSync(
+                              mojom::CoinType::ETH, GetOrigin()));
                 requests_out.push_back(request.Clone());
               }
               run_loop.Quit();
@@ -1128,7 +1128,7 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApproveTransaction) {
           }));
   base::RunLoop().RunUntilIdle();
   const auto& chain_id =
-      json_rpc_service()->GetChainId(mojom::CoinType::ETH, GetOrigin());
+      json_rpc_service()->GetChainIdSync(mojom::CoinType::ETH, GetOrigin());
   std::vector<mojom::TransactionInfoPtr> infos =
       GetAllTransactionInfo(chain_id);
   ASSERT_EQ(infos.size(), 1UL);
@@ -1280,7 +1280,7 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559Transaction) {
           }));
   browser_task_environment_.RunUntilIdle();
   const auto& chain_id =
-      json_rpc_service()->GetChainId(mojom::CoinType::ETH, GetOrigin());
+      json_rpc_service()->GetChainIdSync(mojom::CoinType::ETH, GetOrigin());
   std::vector<mojom::TransactionInfoPtr> infos =
       GetAllTransactionInfo(chain_id);
   ASSERT_EQ(infos.size(), 1UL);
@@ -1779,8 +1779,9 @@ TEST_F(EthereumProviderImplUnitTest, RecoverAddress) {
 }
 
 TEST_F(EthereumProviderImplUnitTest, SignTypedMessage) {
-  EXPECT_EQ(json_rpc_service()->GetChainId(mojom::CoinType::ETH, absl::nullopt),
-            "0x1");
+  EXPECT_EQ(
+      json_rpc_service()->GetChainIdSync(mojom::CoinType::ETH, absl::nullopt),
+      "0x1");
   CreateWallet();
   AddAccount();
   std::string signature;
@@ -2145,7 +2146,7 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribe) {
   response = CommonRequestOrSendAsync(request_payload.value());
 
   const auto& chain_id =
-      json_rpc_service()->GetChainId(mojom::CoinType::ETH, GetOrigin());
+      json_rpc_service()->GetChainIdSync(mojom::CoinType::ETH, GetOrigin());
   EXPECT_TRUE(provider_->eth_block_tracker_.IsRunning(chain_id));
 
   // The second unsubscribe should stop the block tracker
@@ -2518,8 +2519,9 @@ TEST_F(EthereumProviderImplUnitTest, SwitchEthereumChain) {
   EXPECT_TRUE(brave_wallet_tab_helper()->IsShowingBubble());
   brave_wallet_tab_helper()->CloseBubble();
   EXPECT_FALSE(brave_wallet_tab_helper()->IsShowingBubble());
-  EXPECT_EQ(json_rpc_service()->GetChainId(mojom::CoinType::ETH, GetOrigin()),
-            "0xaa36a7");
+  EXPECT_EQ(
+      json_rpc_service()->GetChainIdSync(mojom::CoinType::ETH, GetOrigin()),
+      "0xaa36a7");
 
   // one request per origin
   base::RunLoop run_loop;
@@ -2540,8 +2542,9 @@ TEST_F(EthereumProviderImplUnitTest, SwitchEthereumChain) {
             l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
   json_rpc_service()->NotifySwitchChainRequestProcessed(true, GetOrigin());
   run_loop.Run();
-  EXPECT_EQ(json_rpc_service()->GetChainId(mojom::CoinType::ETH, GetOrigin()),
-            "0x1");
+  EXPECT_EQ(
+      json_rpc_service()->GetChainIdSync(mojom::CoinType::ETH, GetOrigin()),
+      "0x1");
 }
 
 TEST_F(EthereumProviderImplUnitTest, AddEthereumChainSwitchesForInnactive) {
@@ -2576,8 +2579,9 @@ TEST_F(EthereumProviderImplUnitTest, AddEthereumChainSwitchesForInnactive) {
   run_loop.Run();
   brave_wallet_tab_helper()->CloseBubble();
   EXPECT_FALSE(brave_wallet_tab_helper()->IsShowingBubble());
-  EXPECT_EQ(json_rpc_service()->GetChainId(mojom::CoinType::ETH, GetOrigin()),
-            "0x5");
+  EXPECT_EQ(
+      json_rpc_service()->GetChainIdSync(mojom::CoinType::ETH, GetOrigin()),
+      "0x5");
 }
 
 TEST_F(EthereumProviderImplUnitTest, AddSuggestToken) {

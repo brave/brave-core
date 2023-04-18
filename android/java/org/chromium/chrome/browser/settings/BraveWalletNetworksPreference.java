@@ -127,7 +127,7 @@ public class BraveWalletNetworksPreference extends Preference
             Log.e(TAG, "updateNetworksList " + e);
         }
         assert mJsonRpcService != null;
-        mJsonRpcService.getChainId(CoinType.ETH, null, chainId -> {
+        mJsonRpcService.getDefaultChainId(CoinType.ETH, chainId -> {
             mJsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
                 mJsonRpcService.getCustomNetworks(CoinType.ETH, customNetworkIds -> {
                     mAdapter.setDisplayedNetworks(

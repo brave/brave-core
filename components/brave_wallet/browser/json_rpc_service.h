@@ -245,11 +245,15 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                    mojom::CoinType coin,
                    RemoveChainCallback callback) override;
 
-  std::string GetChainId(mojom::CoinType coin,
-                         const absl::optional<::url::Origin>& origin) const;
-  void GetChainId(mojom::CoinType coin,
-                  const absl::optional<::url::Origin>& origin,
-                  mojom::JsonRpcService::GetChainIdCallback callback) override;
+  std::string GetChainIdSync(mojom::CoinType coin,
+                             const absl::optional<::url::Origin>& origin) const;
+  void GetDefaultChainId(
+      mojom::CoinType coin,
+      mojom::JsonRpcService::GetDefaultChainIdCallback callback) override;
+  void GetChainIdForOrigin(
+      mojom::CoinType coin,
+      const ::url::Origin& origin,
+      mojom::JsonRpcService::GetChainIdForOriginCallback callback) override;
   void GetPendingAddChainRequests(
       GetPendingAddChainRequestsCallback callback) override;
   void GetPendingSwitchChainRequests(

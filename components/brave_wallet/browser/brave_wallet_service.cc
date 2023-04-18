@@ -714,7 +714,7 @@ void BraveWalletService::GetChainIdForActiveOrigin(
       [](mojom::CoinType coin, GetChainIdForActiveOriginCallback callback,
          JsonRpcService* json_rpc_service, mojom::OriginInfoPtr origin_info) {
         std::move(callback).Run(
-            json_rpc_service->GetChainId(coin, origin_info->origin));
+            json_rpc_service->GetChainIdSync(coin, origin_info->origin));
       },
       coin, std::move(callback), json_rpc_service_));
 }

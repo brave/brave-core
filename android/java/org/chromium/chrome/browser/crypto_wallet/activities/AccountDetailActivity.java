@@ -242,7 +242,7 @@ public class AccountDetailActivity
     @Override
     public void onAssetClick(BlockchainToken asset) {
         assert mJsonRpcService != null;
-        mJsonRpcService.getChainId(mCoinType, null, chainId -> {
+        mJsonRpcService.getDefaultChainId(mCoinType, chainId -> {
             Utils.openAssetDetailsActivity(AccountDetailActivity.this, chainId, asset);
         });
     }

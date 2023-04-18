@@ -303,8 +303,8 @@ void SwapService::IsSwapSupported(const std::string& chain_id,
 
 void SwapService::GetPriceQuote(mojom::SwapParamsPtr swap_params,
                                 GetPriceQuoteCallback callback) {
-  if (!IsEVMNetworkSupported(
-          json_rpc_service_->GetChainId(mojom::CoinType::ETH, absl::nullopt))) {
+  if (!IsEVMNetworkSupported(json_rpc_service_->GetChainIdSync(
+          mojom::CoinType::ETH, absl::nullopt))) {
     std::move(callback).Run(
         nullptr, nullptr,
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK));
@@ -316,9 +316,9 @@ void SwapService::GetPriceQuote(mojom::SwapParamsPtr swap_params,
 
   api_request_helper_.Request(
       net::HttpRequestHeaders::kGetMethod,
-      GetPriceQuoteURL(
-          std::move(swap_params),
-          json_rpc_service_->GetChainId(mojom::CoinType::ETH, absl::nullopt)),
+      GetPriceQuoteURL(std::move(swap_params),
+                       json_rpc_service_->GetChainIdSync(mojom::CoinType::ETH,
+                                                         absl::nullopt)),
       "", "", true, std::move(internal_callback), Get0xAPIHeaders());
 }
 
@@ -347,8 +347,8 @@ void SwapService::OnGetPriceQuote(GetPriceQuoteCallback callback,
 void SwapService::GetTransactionPayload(
     mojom::SwapParamsPtr swap_params,
     GetTransactionPayloadCallback callback) {
-  if (!IsEVMNetworkSupported(
-          json_rpc_service_->GetChainId(mojom::CoinType::ETH, absl::nullopt))) {
+  if (!IsEVMNetworkSupported(json_rpc_service_->GetChainIdSync(
+          mojom::CoinType::ETH, absl::nullopt))) {
     std::move(callback).Run(
         nullptr, nullptr,
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK));
@@ -360,9 +360,9 @@ void SwapService::GetTransactionPayload(
 
   api_request_helper_.Request(
       net::HttpRequestHeaders::kGetMethod,
-      GetTransactionPayloadURL(
-          std::move(swap_params),
-          json_rpc_service_->GetChainId(mojom::CoinType::ETH, absl::nullopt)),
+      GetTransactionPayloadURL(std::move(swap_params),
+                               json_rpc_service_->GetChainIdSync(
+                                   mojom::CoinType::ETH, absl::nullopt)),
       "", "", true, std::move(internal_callback), Get0xAPIHeaders());
 }
 
@@ -392,8 +392,8 @@ void SwapService::OnGetTransactionPayload(
 
 void SwapService::GetJupiterQuote(mojom::JupiterQuoteParamsPtr params,
                                   GetJupiterQuoteCallback callback) {
-  if (!IsSolanaNetworkSupported(
-          json_rpc_service_->GetChainId(mojom::CoinType::SOL, absl::nullopt))) {
+  if (!IsSolanaNetworkSupported(json_rpc_service_->GetChainIdSync(
+          mojom::CoinType::SOL, absl::nullopt))) {
     std::move(callback).Run(
         nullptr, nullptr,
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK));
@@ -409,9 +409,9 @@ void SwapService::GetJupiterQuote(mojom::JupiterQuoteParamsPtr params,
   base::flat_map<std::string, std::string> request_headers;
   api_request_helper_.Request(
       net::HttpRequestHeaders::kGetMethod,
-      GetJupiterQuoteURL(
-          std::move(params),
-          json_rpc_service_->GetChainId(mojom::CoinType::SOL, absl::nullopt)),
+      GetJupiterQuoteURL(std::move(params),
+                         json_rpc_service_->GetChainIdSync(mojom::CoinType::SOL,
+                                                           absl::nullopt)),
       "", "", true, std::move(internal_callback), request_headers, -1u,
       std::move(conversion_callback));
 }
@@ -440,8 +440,8 @@ void SwapService::OnGetJupiterQuote(GetJupiterQuoteCallback callback,
 void SwapService::GetJupiterSwapTransactions(
     mojom::JupiterSwapParamsPtr params,
     GetJupiterSwapTransactionsCallback callback) {
-  if (!IsSolanaNetworkSupported(
-          json_rpc_service_->GetChainId(mojom::CoinType::SOL, absl::nullopt))) {
+  if (!IsSolanaNetworkSupported(json_rpc_service_->GetChainIdSync(
+          mojom::CoinType::SOL, absl::nullopt))) {
     std::move(callback).Run(
         nullptr, nullptr,
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK));
@@ -461,8 +461,8 @@ void SwapService::GetJupiterSwapTransactions(
 
   api_request_helper_.Request(
       "POST",
-      GetJupiterSwapTransactionsURL(
-          json_rpc_service_->GetChainId(mojom::CoinType::SOL, absl::nullopt)),
+      GetJupiterSwapTransactionsURL(json_rpc_service_->GetChainIdSync(
+          mojom::CoinType::SOL, absl::nullopt)),
       *encoded_params, "application/json", true, std::move(internal_callback));
 }
 

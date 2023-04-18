@@ -290,7 +290,7 @@ export class MockedWalletApiProxy {
     getHiddenNetworks: async () => {
       return { chainIds: [] }
     },
-    getChainId: async (coin) => {
+    getDefaultChainId: async (coin) => {
       return { chainId: this.chainIdsForCoins[coin] }
     },
     getNetwork: async (coin) => {

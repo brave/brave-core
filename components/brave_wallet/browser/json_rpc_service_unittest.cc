@@ -1062,12 +1062,20 @@ class JsonRpcServiceUnitTest : public testing::Test {
                          const absl::optional<::url::Origin>& origin) {
     std::string chain_id_out;
     base::RunLoop run_loop;
-    json_rpc_service_->GetChainId(
-        coin, origin,
-        base::BindLambdaForTesting([&](const std::string& chain_id) {
-          chain_id_out = chain_id;
-          run_loop.Quit();
-        }));
+    if (!origin) {
+      json_rpc_service_->GetDefaultChainId(
+          coin, base::BindLambdaForTesting([&](const std::string& chain_id) {
+            chain_id_out = chain_id;
+            run_loop.Quit();
+          }));
+    } else {
+      json_rpc_service_->GetChainIdForOrigin(
+          coin, *origin,
+          base::BindLambdaForTesting([&](const std::string& chain_id) {
+            chain_id_out = chain_id;
+            run_loop.Quit();
+          }));
+    }
     run_loop.Run();
     return chain_id_out;
   }

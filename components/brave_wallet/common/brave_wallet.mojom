@@ -1079,8 +1079,11 @@ interface JsonRpcService {
   GetKnownNetworks(CoinType coin) => (array<string> chain_ids);
   GetHiddenNetworks(CoinType coin) => (array<string> chain_ids);
 
-  // Obtains the current network's chain ID
-  GetChainId(CoinType coin, url.mojom.Origin? origin) => (string chain_id);
+  // Obtains the default network's chain ID when there is no origin info
+  // available. Ex. wallet page.
+  GetDefaultChainId(CoinType coin) => (string chain_id);
+  // Obtains the selected network's chain ID for origin.
+  GetChainIdForOrigin(CoinType coin, url.mojom.Origin origin) => (string chain_id);
 
   // Obtains the current network's URL
   GetNetworkUrl(CoinType coin, url.mojom.Origin? origin)

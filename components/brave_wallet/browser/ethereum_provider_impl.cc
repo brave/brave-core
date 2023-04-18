@@ -179,8 +179,8 @@ void EthereumProviderImpl::AddEthereumChain(const std::string& json_payload,
   // Check if we already have the chain
   if (GetNetworkURL(prefs_, chain_id_lower, mojom::CoinType::ETH).is_valid()) {
     if (base::CompareCaseInsensitiveASCII(
-            json_rpc_service_->GetChainId(mojom::CoinType::ETH,
-                                          delegate_->GetOrigin()),
+            json_rpc_service_->GetChainIdSync(mojom::CoinType::ETH,
+                                              delegate_->GetOrigin()),
             chain_id_lower) != 0) {
       SwitchEthereumChain(chain_id_lower, std::move(callback), std::move(id));
       return;
@@ -557,7 +557,7 @@ void EthereumProviderImpl::EthSubscribe(
     return std::tuple<bool, std::string>{subscriptions.size() == 1, hex_bytes};
   };
 
-  const std::string& chain_id = json_rpc_service_->GetChainId(
+  const std::string& chain_id = json_rpc_service_->GetChainIdSync(
       mojom::CoinType::ETH, delegate_->GetOrigin());
   if (event_type == kEthSubscribeNewHeads) {
     const auto gen_res = generateHexBytes(eth_subscriptions_);
@@ -606,7 +606,7 @@ bool EthereumProviderImpl::UnsubscribeBlockObserver(
   bool found = it != eth_subscriptions_.end();
   if (found) {
     if (eth_subscriptions_.size() == 1) {
-      eth_block_tracker_.Stop(json_rpc_service_->GetChainId(
+      eth_block_tracker_.Stop(json_rpc_service_->GetChainIdSync(
           mojom::CoinType::ETH, delegate_->GetOrigin()));
     }
     eth_subscriptions_.erase(it);
@@ -801,7 +801,7 @@ void EthereumProviderImpl::SignTypedMessage(
     const std::string chain_id_hex =
         Uint256ValueToHex((uint256_t)(uint64_t)*chain_id);
     if (base::CompareCaseInsensitiveASCII(
-            chain_id_hex, json_rpc_service_->GetChainId(
+            chain_id_hex, json_rpc_service_->GetChainIdSync(
                               mojom::CoinType::ETH, delegate_->GetOrigin())) !=
         0) {
       base::Value formed_response = GetProviderErrorDictionary(
@@ -887,8 +887,8 @@ void EthereumProviderImpl::ContinueSignMessage(
   auto request = mojom::SignMessageRequest::New(
       MakeOriginInfo(origin), -1, address, domain, message, is_eip712,
       domain_hash, primary_hash, absl::nullopt, mojom::CoinType::ETH,
-      json_rpc_service_->GetChainId(mojom::CoinType::ETH,
-                                    delegate_->GetOrigin()));
+      json_rpc_service_->GetChainIdSync(mojom::CoinType::ETH,
+                                        delegate_->GetOrigin()));
 
   brave_wallet_service_->AddSignMessageRequest(
       std::move(request),
@@ -1112,8 +1112,8 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(
       return;
     }
     json_rpc_service_->SendRawTransaction(
-        json_rpc_service_->GetChainId(mojom::CoinType::ETH,
-                                      delegate_->GetOrigin()),
+        json_rpc_service_->GetChainIdSync(mojom::CoinType::ETH,
+                                          delegate_->GetOrigin()),
         signed_transaction,
         base::BindOnce(&EthereumProviderImpl::OnSendRawTransaction,
                        weak_factory_.GetWeakPtr(), std::move(callback),
@@ -1195,8 +1195,8 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(
             std::move(callback), std::move(id));
   } else if (method == kWalletWatchAsset || method == kMetamaskWatchAsset) {
     mojom::BlockchainTokenPtr token;
-    const auto chain_id = json_rpc_service_->GetChainId(mojom::CoinType::ETH,
-                                                        delegate_->GetOrigin());
+    const auto chain_id = json_rpc_service_->GetChainIdSync(
+        mojom::CoinType::ETH, delegate_->GetOrigin());
     if (!ParseWalletWatchAssetParams(normalized_json_request, chain_id,
                                      mojom::CoinType::ETH, &token,
                                      &error_message)) {
@@ -1253,8 +1253,8 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(
     EthUnsubscribe(subscription_id, std::move(callback), std::move(id));
   } else {
     json_rpc_service_->Request(
-        json_rpc_service_->GetChainId(mojom::CoinType::ETH,
-                                      delegate_->GetOrigin()),
+        json_rpc_service_->GetChainIdSync(mojom::CoinType::ETH,
+                                          delegate_->GetOrigin()),
         normalized_json_request, true, std::move(id), mojom::CoinType::ETH,
         std::move(callback));
   }
@@ -1546,8 +1546,8 @@ void EthereumProviderImpl::Web3ClientVersion(RequestCallback callback,
 
 void EthereumProviderImpl::GetChainId(GetChainIdCallback callback) {
   if (json_rpc_service_) {
-    json_rpc_service_->GetChainId(mojom::CoinType::ETH, delegate_->GetOrigin(),
-                                  std::move(callback));
+    json_rpc_service_->GetChainIdForOrigin(
+        mojom::CoinType::ETH, delegate_->GetOrigin(), std::move(callback));
   }
 }
 
