@@ -48,21 +48,30 @@ import { weiToEther } from './web3-utils'
 
 export type TransactionInfo = BraveWallet.TransactionInfo | SerializableTransactionInfo
 
-type EIP1559TransactionInfo = TransactionInfo & {
+export type EIP1559TransactionInfo = TransactionInfo & {
   txDataUnion: {
     ethTxData1559: BraveWallet.TxData1559
+    ethTxData: undefined
+    solanaTxData: undefined
+    filTxData: undefined
   }
 }
 
-type FileCoinTransactionInfo = TransactionInfo & {
+export type FileCoinTransactionInfo = TransactionInfo & {
   txDataUnion: {
     filTxData: BraveWallet.FilTxData
+    ethTxData1559: undefined
+    ethTxData: undefined
+    solanaTxData: undefined
   }
 }
 
 export type SolanaTransactionInfo = TransactionInfo & {
   txDataUnion: {
     solanaTxData: BraveWallet.SolanaTxData
+    ethTxData1559: undefined
+    ethTxData: undefined
+    filTxData: undefined
   }
 }
 
@@ -672,11 +681,31 @@ export function getTransactionGasLimit (transaction: TransactionInfo) {
     : transaction.txDataUnion.ethTxData1559?.baseData.gasLimit || ''
 }
 
-export function getTransactionGas (transaction: TransactionInfo): { gasPrice: string, maxFeePerGas: any, maxPriorityFeePerGas: any } {
+export const getTransactionGas = (
+  transaction: TransactionInfo
+): {
+  gasPrice: string
+  maxFeePerGas: string
+  maxPriorityFeePerGas: string
+} => {
+  if (isFilecoinTransaction(transaction)) {
+    const { filTxData } = transaction.txDataUnion
+    return {
+      maxFeePerGas: filTxData.gasFeeCap || '',
+      maxPriorityFeePerGas: filTxData.gasPremium,
+      // baseFee = gasFeeCap - gasPremium
+      gasPrice:
+        new Amount(filTxData.gasFeeCap)
+          .minus(filTxData.gasPremium)
+          .value?.toString() || ''
+    }
+  }
+
+  const { ethTxData1559 } = transaction.txDataUnion
   return {
-    gasPrice: transaction.txDataUnion.ethTxData1559?.baseData.gasPrice || '',
-    maxFeePerGas: transaction.txDataUnion.ethTxData1559?.maxFeePerGas || '',
-    maxPriorityFeePerGas: transaction.txDataUnion.ethTxData1559?.maxPriorityFeePerGas || ''
+    gasPrice: ethTxData1559?.baseData.gasPrice || '',
+    maxFeePerGas: ethTxData1559?.maxFeePerGas || '',
+    maxPriorityFeePerGas: ethTxData1559?.maxPriorityFeePerGas || ''
   }
 }
 
