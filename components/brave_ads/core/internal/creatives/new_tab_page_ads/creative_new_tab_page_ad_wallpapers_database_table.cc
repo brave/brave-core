@@ -11,7 +11,7 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/ranges/algorithm.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
@@ -132,16 +132,15 @@ std::string CreativeNewTabPageAdWallpapers::BuildInsertOrUpdateQuery(
 
   const int binded_parameters_count = BindParameters(command, creative_ads);
 
-  return base::StringPrintf(
-      "INSERT OR REPLACE INTO %s "
+  return base::ReplaceStringPlaceholders(
+      "INSERT OR REPLACE INTO $1 "
       "(creative_instance_id, "
       "image_url, "
       "focal_point_x, "
-      "focal_point_y) VALUES %s",
-      GetTableName().c_str(),
-      BuildBindingParameterPlaceholders(/*parameters_count*/ 4,
-                                        binded_parameters_count)
-          .c_str());
+      "focal_point_y) VALUES $2",
+      {GetTableName(), BuildBindingParameterPlaceholders(
+                           /*parameters_count*/ 4, binded_parameters_count)},
+      nullptr);
 }
 
 }  // namespace brave_ads::database::table

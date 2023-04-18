@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "base/strings/strcat.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/flags_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/command_line_switch_info.h"
@@ -144,9 +144,8 @@ std::string TestParamToString(
     with = "WithNoCommandLineSwitches";
   }
 
-  return base::StringPrintf("ShouldUse%sEnvironment%s%s",
-                            environment_type.c_str(), when.c_str(),
-                            with.c_str());
+  return base::ReplaceStringPlaceholders(
+      "ShouldUse$1Environment$2$3", {environment_type, when, with}, nullptr);
 }
 
 INSTANTIATE_TEST_SUITE_P(,

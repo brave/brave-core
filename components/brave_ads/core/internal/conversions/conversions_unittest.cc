@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table.h"
@@ -77,9 +77,9 @@ TEST_F(BatAdsConversionsTest,
       /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "creative_set_id = '$1' AND confirmation_type = 'conversion'",
+      {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition,
@@ -114,9 +114,9 @@ TEST_F(BatAdsConversionsTest, ConvertViewedNotificationAdWhenAdsAreEnabled) {
       /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "creative_set_id = '$1' AND confirmation_type = 'conversion'",
+      {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition, base::BindOnce(
@@ -163,9 +163,9 @@ TEST_F(BatAdsConversionsTest,
       /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "creative_set_id = '$1' AND confirmation_type = 'conversion'",
+      {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition,
@@ -203,9 +203,9 @@ TEST_F(BatAdsConversionsTest, ConvertClickedNotificationAdWhenAdsAreEnabled) {
       /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "creative_set_id = '$1' AND confirmation_type = 'conversion'",
+      {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition, base::BindOnce(
@@ -249,9 +249,9 @@ TEST_F(BatAdsConversionsTest,
       /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "creative_set_id = '$1' AND confirmation_type = 'conversion'",
+      {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition,
@@ -286,9 +286,9 @@ TEST_F(BatAdsConversionsTest, ConvertViewedNewTabPageAdWhenAdsAreEnabled) {
       /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "creative_set_id = '$1' AND confirmation_type = 'conversion'",
+      {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition, base::BindOnce(
@@ -335,9 +335,9 @@ TEST_F(BatAdsConversionsTest,
       /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "creative_set_id = '$1' AND confirmation_type = 'conversion'",
+      {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition,
@@ -375,9 +375,9 @@ TEST_F(BatAdsConversionsTest, ConvertClickedNewTabPageAdWhenAdsAreEnabled) {
       /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "creative_set_id = '$1' AND confirmation_type = 'conversion'",
+      {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition, base::BindOnce(
@@ -422,9 +422,9 @@ TEST_F(BatAdsConversionsTest,
       /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "creative_set_id = '$1' AND confirmation_type = 'conversion'",
+      {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition,
@@ -460,9 +460,9 @@ TEST_F(BatAdsConversionsTest, ConvertViewedPromotedContentAdWhenAdsAreEnabled) {
       /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "creative_set_id = '$1' AND confirmation_type = 'conversion'",
+      {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition, base::BindOnce(
@@ -511,9 +511,9 @@ TEST_F(BatAdsConversionsTest,
       /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "creative_set_id = '$1' AND confirmation_type = 'conversion'",
+      {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition,
@@ -554,9 +554,9 @@ TEST_F(BatAdsConversionsTest,
       /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "creative_set_id = '$1' AND confirmation_type = 'conversion'",
+      {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition, base::BindOnce(
@@ -600,9 +600,9 @@ TEST_F(BatAdsConversionsTest,
       /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "creative_set_id = '$1' AND confirmation_type = 'conversion'",
+      {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition,
@@ -638,9 +638,9 @@ TEST_F(BatAdsConversionsTest,
       /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "creative_set_id = '$1' AND confirmation_type = 'conversion'",
+      {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition,
@@ -680,9 +680,9 @@ TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreDisabled) {
       /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "creative_set_id = '$1' AND confirmation_type = 'conversion'",
+      {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition, base::BindOnce(
@@ -726,9 +726,9 @@ TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreEnabled) {
       /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "creative_set_id = '$1' AND confirmation_type = 'conversion'",
+      {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition, base::BindOnce(
@@ -772,9 +772,9 @@ TEST_F(BatAdsConversionsTest,
       /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "creative_set_id = '$1' AND confirmation_type = 'conversion'",
+      {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition,
@@ -809,9 +809,9 @@ TEST_F(BatAdsConversionsTest, ConvertViewedSearchResultAdWhenAdsAreEnabled) {
       /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "creative_set_id = '$1' AND confirmation_type = 'conversion'",
+      {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition, base::BindOnce(
@@ -858,9 +858,9 @@ TEST_F(BatAdsConversionsTest,
       /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "creative_set_id = '$1' AND confirmation_type = 'conversion'",
+      {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition,
@@ -898,9 +898,9 @@ TEST_F(BatAdsConversionsTest, ConvertClickedSearchResultAdWhenAdsAreEnabled) {
       /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "creative_set_id = '$1' AND confirmation_type = 'conversion'",
+      {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition, base::BindOnce(
@@ -967,11 +967,10 @@ TEST_F(BatAdsConversionsTest, ConvertMultipleAds) {
       /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "(creative_set_id = '%s' OR creative_set_id = '%s') AND "
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "(creative_set_id = '$1' OR creative_set_id = '$2') AND "
       "confirmation_type = 'conversion'",
-      conversion_1.creative_set_id.c_str(),
-      conversion_2.creative_set_id.c_str());
+      {conversion_1.creative_set_id, conversion_2.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition,
@@ -1020,9 +1019,9 @@ TEST_F(BatAdsConversionsTest, ConvertViewedAdWhenAdWasDismissed) {
       /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "creative_set_id = '$1' AND confirmation_type = 'conversion'",
+      {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition, base::BindOnce(
@@ -1081,9 +1080,9 @@ TEST_F(BatAdsConversionsTest, DoNotConvertNonViewedOrClickedAds) {
       /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "creative_set_id = '$1' AND confirmation_type = 'conversion'",
+      {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition,
@@ -1118,9 +1117,9 @@ TEST_F(BatAdsConversionsTest, DoNotConvertViewedAdForPostClick) {
       /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "creative_set_id = '$1' AND confirmation_type = 'conversion'",
+      {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition,
@@ -1187,9 +1186,9 @@ TEST_F(BatAdsConversionsTest,
       /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "creative_set_id = '$1' AND confirmation_type = 'conversion'",
+      {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition, base::BindOnce(
@@ -1231,9 +1230,9 @@ TEST_F(BatAdsConversionsTest,
       /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "creative_set_id = '$1' AND confirmation_type = 'conversion'",
+      {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition,
@@ -1270,9 +1269,9 @@ TEST_F(BatAdsConversionsTest, ConvertAdWhenTheConversionIsOnTheCuspOfExpiring) {
       /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "creative_set_id = '$1' AND confirmation_type = 'conversion'",
+      {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition, base::BindOnce(
@@ -1315,9 +1314,9 @@ TEST_F(BatAdsConversionsTest, DoNotConvertAdWhenTheConversionHasExpired) {
       /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "creative_set_id = '$1' AND confirmation_type = 'conversion'",
+      {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition,
@@ -1354,9 +1353,9 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainIntermediateUrl) {
       /*html*/ {}, /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "creative_set_id = '$1' AND confirmation_type = 'conversion'",
+      {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition, base::BindOnce(
@@ -1399,9 +1398,9 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainOriginalUrl) {
       /*html*/ {}, /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "creative_set_id = '$1' AND confirmation_type = 'conversion'",
+      {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition, base::BindOnce(
@@ -1444,9 +1443,9 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainUrl) {
       /*html*/ {}, /*conversion_id_patterns*/ {});
 
   // Assert
-  const std::string condition = base::StringPrintf(
-      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
-      conversion.creative_set_id.c_str());
+  const std::string condition = base::ReplaceStringPlaceholders(
+      "creative_set_id = '$1' AND confirmation_type = 'conversion'",
+      {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
       condition, base::BindOnce(

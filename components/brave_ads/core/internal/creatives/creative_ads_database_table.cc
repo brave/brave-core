@@ -12,7 +12,7 @@
 #include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
@@ -209,20 +209,11 @@ void CreativeAds::GetForCreativeInstanceId(
                                    creative_ad);
   }
 
-  const std::string query = base::StringPrintf(
-      "SELECT "
-      "creative_instance_id, "
-      "conversion, "
-      "per_day, "
-      "per_week, "
-      "per_month, "
-      "total_max, "
-      "value, "
-      "split_test_group, "
-      "target_url "
-      "FROM %s AS ca "
-      "WHERE ca.creative_instance_id = '%s'",
-      GetTableName().c_str(), creative_instance_id.c_str());
+  const std::string query = base::ReplaceStringPlaceholders(
+      "SELECT creative_instance_id, conversion, per_day, per_week, per_month, "
+      "total_max, value, split_test_group, target_url FROM $1 AS ca WHERE "
+      "ca.creative_instance_id = '$2'",
+      {GetTableName(), creative_instance_id}, nullptr);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
@@ -279,21 +270,13 @@ std::string CreativeAds::BuildInsertOrUpdateQuery(
 
   const int binded_parameters_count = BindParameters(command, creative_ads);
 
-  return base::StringPrintf(
-      "INSERT OR REPLACE INTO %s "
-      "(creative_instance_id, "
-      "conversion, "
-      "per_day, "
-      "per_week, "
-      "per_month, "
-      "total_max, "
-      "value, "
-      "split_test_group, "
-      "target_url) VALUES %s",
-      GetTableName().c_str(),
-      BuildBindingParameterPlaceholders(/*parameters_count*/ 9,
-                                        binded_parameters_count)
-          .c_str());
+  return base::ReplaceStringPlaceholders(
+      "INSERT OR REPLACE INTO $1 (creative_instance_id, conversion, per_day, "
+      "per_week, per_month, total_max, value, split_test_group, target_url) "
+      "VALUES $2",
+      {GetTableName(), BuildBindingParameterPlaceholders(
+                           /*parameters_count*/ 9, binded_parameters_count)},
+      nullptr);
 }
 
 }  // namespace brave_ads::database::table

@@ -10,8 +10,8 @@
 #include <vector>
 
 #include "base/ranges/algorithm.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 
 namespace brave_ads {
@@ -40,9 +40,7 @@ std::string HeadersToString(const std::vector<std::string>& headers,
       continue;
     }
 
-    const std::string formatted_header =
-        base::StringPrintf("%s%s", spaces.c_str(), header.c_str());
-
+    const std::string formatted_header = base::StrCat({spaces, header});
     formatted_headers.push_back(formatted_header);
   }
 
@@ -54,21 +52,23 @@ std::string HeadersToString(const std::vector<std::string>& headers,
 std::string UrlRequestToString(const mojom::UrlRequestInfoPtr& url_request) {
   std::string log = "URL Request:\n";
 
-  log += base::StringPrintf("  URL: %s\n", url_request->url.spec().c_str());
+  log += base::ReplaceStringPlaceholders("  URL: $1\n",
+                                         {url_request->url.spec()}, nullptr);
 
   if (!url_request->content.empty()) {
-    log += base::StringPrintf("  Content: %s\n", url_request->content.c_str());
+    log += base::ReplaceStringPlaceholders("  Content: $1\n",
+                                           {url_request->content}, nullptr);
   }
 
   if (!url_request->content_type.empty()) {
-    log += base::StringPrintf("  Content Type: %s\n",
-                              url_request->content_type.c_str());
+    log += base::ReplaceStringPlaceholders(
+        "  Content Type: $1\n", {url_request->content_type}, nullptr);
   }
 
   std::ostringstream ss;
   ss << url_request->method;
 
-  log += base::StringPrintf("  Method: %s", ss.str().c_str());
+  log += base::StrCat({"  Method: ", ss.str()});
 
   return log;
 }

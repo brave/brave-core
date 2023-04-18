@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_test_suite_util.h"
 
 #include "base/check.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_ads {
@@ -16,13 +16,13 @@ std::string GetNamespaceForCurrentTest() {
       ::testing::UnitTest::GetInstance()->current_test_info();
   CHECK(test_info);
 
-  return base::StringPrintf("%s.%s", test_info->test_suite_name(),
-                            test_info->name());
+  return base::ReplaceStringPlaceholders(
+      "$1.$2", {test_info->test_suite_name(), test_info->name()}, nullptr);
 }
 
 std::string GetUuidForCurrentTestAndValue(const std::string& value) {
-  return base::StringPrintf("%s:%s", value.c_str(),
-                            GetNamespaceForCurrentTest().c_str());
+  return base::ReplaceStringPlaceholders(
+      "$1:$2", {value, GetNamespaceForCurrentTest()}, nullptr);
 }
 
 }  // namespace brave_ads

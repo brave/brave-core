@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
@@ -41,10 +41,10 @@ std::string CreativeInstanceExclusionRule::GetUuid(
 bool CreativeInstanceExclusionRule::ShouldExclude(
     const CreativeAdInfo& creative_ad) {
   if (!DoesRespectCap(ad_events_, creative_ad)) {
-    last_message_ = base::StringPrintf(
-        "creativeInstanceId %s has exceeded the creative instance frequency "
+    last_message_ = base::ReplaceStringPlaceholders(
+        "creativeInstanceId $1 has exceeded the creative instance frequency "
         "cap",
-        creative_ad.creative_instance_id.c_str());
+        {creative_ad.creative_instance_id}, nullptr);
 
     return true;
   }

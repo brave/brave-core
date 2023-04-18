@@ -191,6 +191,8 @@ void RefillUnblindedTokens::GetSignedTokens() {
                      weak_factory_.GetWeakPtr()));
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/29824): Reduce cognitive
+// complexity.
 void RefillUnblindedTokens::OnGetSignedTokens(
     const mojom::UrlResponseInfo& url_response) {
   BLOG(1, "OnGetSignedTokens");

@@ -7,7 +7,7 @@
 
 #include <string>
 
-#include "base/strings/stringprintf.h"
+#include "base/strings/strcat.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
 #include "url/gurl.h"
@@ -17,8 +17,7 @@ namespace brave_ads {
 namespace {
 
 GURL BuildUrl() {
-  const std::string spec =
-      base::StringPrintf("%s/v3/issuers/", GetStaticUrlHost().c_str());
+  const std::string spec = base::StrCat({GetStaticUrlHost(), "/v3/issuers/"});
   return GURL(spec);
 }
 

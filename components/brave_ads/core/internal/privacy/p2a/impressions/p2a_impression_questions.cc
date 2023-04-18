@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/privacy/p2a/impressions/p2a_impression_questions.h"
 
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_strip_util.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 
@@ -29,8 +29,8 @@ std::vector<std::string> CreateAdImpressionQuestions(
   base::ReplaceChars(stripped_parent_segment, " ", "",
                      &stripped_parent_segment);
 
-  const std::string question = base::StringPrintf(
-      "%s%s", kQuestionPrefix, stripped_parent_segment.c_str());
+  const std::string question =
+      base::StrCat({kQuestionPrefix, stripped_parent_segment});
 
   questions.push_back(question);
 

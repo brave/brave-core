@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/ranges/algorithm.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
@@ -43,9 +43,9 @@ std::string AntiTargetingExclusionRule::GetUuid(
 bool AntiTargetingExclusionRule::ShouldExclude(
     const CreativeAdInfo& creative_ad) {
   if (!DoesRespectCap(creative_ad)) {
-    last_message_ = base::StringPrintf(
-        "creativeSetId %s excluded due to visiting an anti-targeted site",
-        creative_ad.creative_set_id.c_str());
+    last_message_ = base::ReplaceStringPlaceholders(
+        "creativeSetId $1 excluded due to visiting an anti-targeted site",
+        {creative_ad.creative_set_id}, nullptr);
 
     return true;
   }

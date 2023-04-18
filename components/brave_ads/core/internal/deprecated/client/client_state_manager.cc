@@ -443,8 +443,7 @@ const std::map<std::string, bool>&
 ClientStateManager::GetSeenAdvertisersForType(const AdType& type) {
   DCHECK(is_initialized_);
 
-  const std::string type_as_string = type.ToString();
-  return client_->seen_advertisers[type_as_string];
+  return client_->seen_advertisers[type.ToString()];
 }
 
 void ClientStateManager::ResetSeenAdvertisersForType(

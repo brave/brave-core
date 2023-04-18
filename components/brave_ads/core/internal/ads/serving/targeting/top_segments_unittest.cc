@@ -15,7 +15,7 @@
 #include "base/functional/bind.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_piece.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_features.h"
@@ -234,10 +234,11 @@ static std::string GetTestCaseName(
                                                ? "PreviouslyProcessed"
                                                : "NeverProcessed";
 
-  return base::StringPrintf(
-      "For%s%s%s%s", epsilon_greedy_bandits_enabled.c_str(),
-      purchase_intent_enabled.c_str(), text_classification_enabled.c_str(),
-      previously_processed.c_str());
+  return base::ReplaceStringPlaceholders(
+      "For$1$2$3$4",
+      {epsilon_greedy_bandits_enabled, purchase_intent_enabled,
+       text_classification_enabled, previously_processed},
+      nullptr);
 }
 
 INSTANTIATE_TEST_SUITE_P(BatAdsTopSegmentsTest,

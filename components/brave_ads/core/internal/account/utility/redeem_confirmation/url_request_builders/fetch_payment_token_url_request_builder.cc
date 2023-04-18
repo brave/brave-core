@@ -9,7 +9,7 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
@@ -40,9 +40,9 @@ GURL FetchPaymentTokenUrlRequestBuilder::BuildUrl() const {
                                    ? GetAnonymousSearchUrlHost()
                                    : GetAnonymousUrlHost();
 
-  const std::string spec =
-      base::StringPrintf("%s/v3/confirmation/%s/paymentToken", url_host.c_str(),
-                         confirmation_.transaction_id.c_str());
+  const std::string spec = base::ReplaceStringPlaceholders(
+      "$1/v3/confirmation/$2/paymentToken",
+      {url_host, confirmation_.transaction_id}, nullptr);
 
   return GURL(spec);
 }

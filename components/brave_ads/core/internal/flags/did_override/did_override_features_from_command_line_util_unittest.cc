@@ -12,7 +12,6 @@
 #include "base/base_switches.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/core/internal/account/account_features.h"
@@ -221,9 +220,10 @@ std::string TestParamToString(
   const std::string sanitized_command_line_switch =
       SanitizeCommandLineSwitch(test_param.param.command_line_switch);
 
-  return base::StringPrintf("Set%sFeaturesFor%s",
-                            expected_did_override_from_command_line.c_str(),
-                            sanitized_command_line_switch.c_str());
+  return base::ReplaceStringPlaceholders(
+      "Set$1FeaturesFor$2",
+      {expected_did_override_from_command_line, sanitized_command_line_switch},
+      nullptr);
 }
 
 INSTANTIATE_TEST_SUITE_P(,

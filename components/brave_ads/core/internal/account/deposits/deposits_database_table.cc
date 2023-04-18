@@ -9,7 +9,7 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
@@ -153,14 +153,10 @@ void Deposits::GetForCreativeInstanceId(const std::string& creative_instance_id,
                                    /*deposit*/ absl::nullopt);
   }
 
-  const std::string query = base::StringPrintf(
-      "SELECT "
-      "creative_instance_id, "
-      "value, "
-      "expire_at "
-      "FROM %s AS rv "
-      "WHERE rv.creative_instance_id = '%s'",
-      GetTableName().c_str(), creative_instance_id.c_str());
+  const std::string query = base::ReplaceStringPlaceholders(
+      "SELECT creative_instance_id, value, expire_at FROM $1 AS rv WHERE "
+      "rv.creative_instance_id = '$2'",
+      {GetTableName(), creative_instance_id}, nullptr);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
@@ -183,10 +179,10 @@ void Deposits::GetForCreativeInstanceId(const std::string& creative_instance_id,
 }
 
 void Deposits::PurgeExpired(ResultCallback callback) const {
-  const std::string query = base::StringPrintf(
-      "DELETE FROM %s "
-      "WHERE DATETIME('now') >= DATETIME(expire_at, 'unixepoch')",
-      GetTableName().c_str());
+  const std::string query = base::ReplaceStringPlaceholders(
+      "DELETE FROM $1 WHERE DATETIME('now') >= DATETIME(expire_at, "
+      "'unixepoch')",
+      {GetTableName()}, nullptr);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -229,15 +225,12 @@ std::string Deposits::BuildInsertOrUpdateQuery(
 
   const int binded_parameters_count = BindParameters(command, creative_ads);
 
-  return base::StringPrintf(
-      "INSERT OR REPLACE INTO %s "
-      "(creative_instance_id, "
-      "value, "
-      "expire_at) VALUES %s",
-      GetTableName().c_str(),
-      BuildBindingParameterPlaceholders(/*parameters_count*/ 3,
-                                        binded_parameters_count)
-          .c_str());
+  return base::ReplaceStringPlaceholders(
+      "INSERT OR REPLACE INTO $1 (creative_instance_id, value, expire_at) "
+      "VALUES $2",
+      {GetTableName(), BuildBindingParameterPlaceholders(
+                           /*parameters_count*/ 3, binded_parameters_count)},
+      nullptr);
 }
 
 std::string Deposits::BuildInsertOrUpdateQuery(
@@ -248,15 +241,13 @@ std::string Deposits::BuildInsertOrUpdateQuery(
 
   BindParameters(command, deposit);
 
-  return base::StringPrintf(
-      "INSERT OR REPLACE INTO %s "
-      "(creative_instance_id, "
-      "value, "
-      "expire_at) VALUES %s",
-      GetTableName().c_str(),
-      BuildBindingParameterPlaceholders(/*parameters_count*/ 3,
-                                        /*binded_parameters_count*/ 1)
-          .c_str());
+  return base::ReplaceStringPlaceholders(
+      "INSERT OR REPLACE INTO $1 (creative_instance_id, value, expire_at) "
+      "VALUES $2",
+      {GetTableName(),
+       BuildBindingParameterPlaceholders(/*parameters_count*/ 3,
+                                         /*binded_parameters_count*/ 1)},
+      nullptr);
 }
 
 }  // namespace brave_ads::database::table
