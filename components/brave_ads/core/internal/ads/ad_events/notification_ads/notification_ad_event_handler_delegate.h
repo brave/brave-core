@@ -3,12 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_NOTIFICATION_ADS_NOTIFICATION_AD_EVENT_HANDLER_OBSERVER_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_NOTIFICATION_ADS_NOTIFICATION_AD_EVENT_HANDLER_OBSERVER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_NOTIFICATION_ADS_NOTIFICATION_AD_EVENT_HANDLER_DELEGATE_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_NOTIFICATION_ADS_NOTIFICATION_AD_EVENT_HANDLER_DELEGATE_H_
 
 #include <string>
 
-#include "base/observer_list_types.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
 
 namespace brave_ads {
@@ -17,7 +16,7 @@ struct NotificationAdInfo;
 
 namespace notification_ads {
 
-class EventHandlerObserver : public base::CheckedObserver {
+class EventHandlerDelegate {
  public:
   // Invoked when the notification |ad| is served.
   virtual void OnNotificationAdServed(const NotificationAdInfo& ad) {}
@@ -39,9 +38,12 @@ class EventHandlerObserver : public base::CheckedObserver {
   virtual void OnNotificationAdEventFailed(
       const std::string& placement_id,
       const mojom::NotificationAdEventType event_type) {}
+
+ protected:
+  virtual ~EventHandlerDelegate() = default;
 };
 
 }  // namespace notification_ads
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_NOTIFICATION_ADS_NOTIFICATION_AD_EVENT_HANDLER_OBSERVER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_NOTIFICATION_ADS_NOTIFICATION_AD_EVENT_HANDLER_DELEGATE_H_

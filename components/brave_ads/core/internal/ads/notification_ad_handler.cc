@@ -13,7 +13,6 @@
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_events/notification_ads/notification_ad_event_handler.h"
 #include "brave/components/brave_ads/core/internal/ads/notification_ad_handler_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
@@ -51,8 +50,7 @@ NotificationAdHandler::NotificationAdHandler(
 
   account_->AddObserver(this);
 
-  event_handler_ = std::make_unique<notification_ads::EventHandler>();
-  event_handler_->AddObserver(this);
+  event_handler_.SetDelegate(this);
 
   serving_ = std::make_unique<notification_ads::Serving>(
       subdivision_targeting, anti_targeting_resource);
@@ -64,7 +62,6 @@ NotificationAdHandler::NotificationAdHandler(
 
 NotificationAdHandler::~NotificationAdHandler() {
   account_->RemoveObserver(this);
-  event_handler_->RemoveObserver(this);
   BrowserManager::GetInstance()->RemoveObserver(this);
   AdsClientHelper::RemoveObserver(this);
 }
@@ -86,7 +83,7 @@ void NotificationAdHandler::TriggerEvent(
     const mojom::NotificationAdEventType event_type) {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
-  event_handler_->FireEvent(placement_id, event_type);
+  event_handler_.FireEvent(placement_id, event_type);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

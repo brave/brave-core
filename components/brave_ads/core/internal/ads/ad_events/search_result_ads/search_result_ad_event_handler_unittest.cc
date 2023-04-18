@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ads/ad_events/search_result_ads/search_result_ad_event_handler.h"
 
-#include <memory>
 #include <string>
 #include <utility>
 
@@ -58,25 +57,18 @@ void ExpectConversionCountEquals(const size_t expected_count) {
 
 }  // namespace
 
-class BatAdsSearchResultAdEventHandlerTest : public EventHandlerObserver,
+class BatAdsSearchResultAdEventHandlerTest : public EventHandlerDelegate,
                                              public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    event_handler_ = std::make_unique<EventHandler>();
-    event_handler_->AddObserver(this);
-  }
-
-  void TearDown() override {
-    event_handler_->RemoveObserver(this);
-
-    UnitTestBase::TearDown();
+    event_handler_.SetDelegate(this);
   }
 
   void FireEvent(mojom::SearchResultAdInfoPtr ad_mojom,
                  const mojom::SearchResultAdEventType event_type) {
-    event_handler_->FireEvent(
+    event_handler_.FireEvent(
         std::move(ad_mojom), event_type,
         base::BindOnce([](const bool success, const std::string& placement_id,
                           const mojom::SearchResultAdEventType event_type) {}));
@@ -103,7 +95,7 @@ class BatAdsSearchResultAdEventHandlerTest : public EventHandlerObserver,
     did_fail_to_fire_event_ = true;
   }
 
-  std::unique_ptr<EventHandler> event_handler_;
+  EventHandler event_handler_;
 
   SearchResultAdInfo ad_;
   bool did_serve_ad_ = false;
