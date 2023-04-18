@@ -184,6 +184,8 @@ class IpfsLocalPinService : public KeyedService {
       const std::vector<std::string>& ipfs_urls);
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(IpfsLocalPinServiceTest, ResetTest);
+
   void OnLsPinCliResult(base::OnceCallback<void(bool)> callback,
                         absl::optional<std::string> result);
   void OnRemovePinCliResult(base::OnceCallback<void(bool)> callback,
@@ -194,6 +196,7 @@ class IpfsLocalPinService : public KeyedService {
   void OnValidateJobFinished(ValidatePinsCallback callback,
                              absl::optional<bool> status);
   void OnGcFinishedCallback(bool status);
+  bool HasJobs();
 
   bool gc_task_posted_ = false;
   std::unique_ptr<IpfsBasePinService> ipfs_base_pin_service_;
