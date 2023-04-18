@@ -232,7 +232,6 @@ export const PortfolioAsset = (props: Props) => {
 
   // state
   const [filteredAssetList, setfilteredAssetList] = React.useState<UserAssetInfoType[]>(userAssetList)
-  const [hoverPrice, setHoverPrice] = React.useState<string>()
 
   // more custom hooks
   const parseTransaction = useTransactionParser(selectedAssetsNetwork)
@@ -460,10 +459,6 @@ export const PortfolioAsset = (props: Props) => {
     userAssetList,
     selectedTimeline
   ])
-
-  const onUpdateBalance = React.useCallback((value: number | undefined) => {
-    setHoverPrice(value ? new Amount(value).formatAsFiat(defaultCurrencies.fiat) : undefined)
-  }, [defaultCurrencies.fiat])
 
   const onNftDetailsLoad = React.useCallback(() => {
     setNftIframeLoaded(true)
@@ -743,13 +738,10 @@ export const PortfolioAsset = (props: Props) => {
             <PriceRow>
               <PriceText>
                 {
-                  hoverPrice ||
-                  (
-                    selectedAssetFiatPrice
-                      ? new Amount(selectedAssetFiatPrice.price)
-                        .formatAsFiat(defaultCurrencies.fiat)
-                      : 0.00
-                  )
+                  selectedAssetFiatPrice
+                    ? new Amount(selectedAssetFiatPrice.price)
+                      .formatAsFiat(defaultCurrencies.fiat)
+                    : 0.00
                 }
               </PriceText>
               <PercentBubble
@@ -783,14 +775,11 @@ export const PortfolioAsset = (props: Props) => {
 
         {!isNftAsset &&
           <LineChart
-            isDown={isSelectedAssetPriceDown}
-            isAsset={!!selectedAsset}
             priceData={
               selectedAsset
                 ? formattedPriceHistory
                 : priceHistory
             }
-            onUpdateBalance={onUpdateBalance}
             isLoading={
               selectedAsset
                 ? isLoading

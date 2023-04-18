@@ -12,7 +12,6 @@ import {
   XAxis,
   YAxis,
   ResponsiveContainer,
-  ReferenceDot,
   Tooltip
 } from 'recharts'
 
@@ -27,19 +26,10 @@ import {
 } from './style'
 import { CustomReferenceDot } from './custom-reference-dot'
 
-// #EE6374 and #2AC194 do not exist in design system,
-// will be updated in future design work.
-export const assetDownColor = '#EE6374'
-export const assetUpColor = '#2AC194'
-
 export interface Props {
   priceData: PriceDataObjectType[]
-  onUpdateBalance: (value: number | undefined) => void
-  isAsset: boolean
-  isDown: boolean
   isLoading: boolean
   isDisabled: boolean
-  showPulsatingDot?: boolean
   customStyle?: CSSProperties
   showTooltip?: boolean
 }
@@ -61,17 +51,15 @@ const EmptyChartData = [
 
 function LineChart ({
   priceData,
-  onUpdateBalance,
-  isAsset,
-  isDown,
   isLoading,
   isDisabled,
   customStyle,
-  showPulsatingDot,
   showTooltip
 }: Props) {
   // state
-  const [position, setPosition] = React.useState<number>(0)
+  const [activeXPosition, setActiveXPosition] = React.useState<number>(0)
+  const [activeYPosition, setActiveYPosition] = React.useState<number>(0)
+  const [viewBoxHeight, setViewBoxHeight] = React.useState<number>(0)
 
   // memos / computed
   const chartData = React.useMemo(() => {
@@ -81,11 +69,11 @@ function LineChart ({
     return priceData
   }, [priceData, isDisabled])
 
-  const lastPoint = chartData.length - 1
-
-  // methods
-  const onChartMouseLeave = React.useCallback(() => onUpdateBalance(undefined), [onUpdateBalance])
-  const onUpdatePosition = React.useCallback((value: number) => setPosition(value), [])
+  const viewBoxHeightHalf = viewBoxHeight / 2
+  const toolTipYPosition =
+    activeYPosition < viewBoxHeightHalf
+      ? activeYPosition
+      : activeYPosition - 58
 
   // render
   return (
@@ -96,8 +84,7 @@ function LineChart ({
       <ResponsiveContainer width='99%' height='99%'>
         <AreaChart
           data={chartData}
-          margin={{ top: 5, left: 8, right: 8, bottom: 0 }}
-          onMouseLeave={onChartMouseLeave}
+          margin={{ top: 5, left: 0, right: 0, bottom: 0 }}
         >
           <defs>
             <linearGradient
@@ -124,11 +111,17 @@ function LineChart ({
           {priceData.length > 0 && !isDisabled && showTooltip &&
             <Tooltip
               isAnimationActive={false}
-              position={{ x: position, y: 0 }}
+              position={{
+                x: activeXPosition,
+                y: toolTipYPosition
+              }}
+              cursor={{
+                stroke: leo.color.icon.interactive,
+                strokeWidth: 2
+              }}
               content={
                 <CustomTooltip
-                  onUpdateBalance={onUpdateBalance}
-                  onUpdatePosition={onUpdatePosition}
+                  onUpdateViewBoxHeight={setViewBoxHeight}
                 />
               }
             />
@@ -138,47 +131,18 @@ function LineChart ({
             type='monotone'
             dataKey='close'
             strokeWidth={2}
-            stroke={
-              isAsset
-                ? isDown
-                  ? assetDownColor
-                  : assetUpColor
-                : leo.color.icon.interactive}
+            stroke={leo.color.icon.interactive}
             fill={
-              isAsset ||
-                priceData.length <= 0
+              priceData.length <= 0
                 ? 'none'
                 : 'url(#portfolioGradient)'}
             activeDot={
-              {
-                stroke:
-                  isAsset
-                    ? leo.color.white
-                    : leo.color.icon.interactive,
-                fill:
-                  isAsset
-                    ? isDown
-                      ? assetDownColor
-                      : assetUpColor
-                    : leo.color.white,
-                strokeWidth: 2,
-                r: isAsset ? 4 : 5
-              }}
+              <CustomReferenceDot
+                onUpdateYPosition={setActiveYPosition}
+                onUpdateXPosition={setActiveXPosition}
+              />
+            }
           />
-          {showPulsatingDot &&
-            <ReferenceDot
-              x={chartData[lastPoint].date.toString()}
-              y={chartData[lastPoint].close}
-              shape={
-                <CustomReferenceDot
-                  cx={chartData[lastPoint].date.toString()}
-                  cy={chartData[lastPoint].close}
-                  isAsset={isAsset}
-                  isDown={isDown}
-                />
-              }
-            />
-          }
         </AreaChart>
       </ResponsiveContainer>
     </StyledWrapper>
