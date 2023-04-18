@@ -557,13 +557,13 @@ void EthereumProviderImpl::EthSubscribe(
     return std::tuple<bool, std::string>{subscriptions.size() == 1, hex_bytes};
   };
 
+  const std::string& chain_id = json_rpc_service_->GetChainId(
+      mojom::CoinType::ETH, delegate_->GetOrigin());
   if (event_type == kEthSubscribeNewHeads) {
     const auto gen_res = generateHexBytes(eth_subscriptions_);
     if (std::get<0>(gen_res)) {
       eth_block_tracker_.Start(
-          json_rpc_service_->GetChainId(mojom::CoinType::ETH,
-                                        delegate_->GetOrigin()),
-          base::Seconds(kBlockTrackerDefaultTimeInSeconds));
+          chain_id, base::Seconds(kBlockTrackerDefaultTimeInSeconds));
     }
     std::move(callback).Run(std::move(id), base::Value(std::get<1>(gen_res)),
                             false, "", false);
@@ -571,7 +571,8 @@ void EthereumProviderImpl::EthSubscribe(
     const auto gen_res = generateHexBytes(eth_log_subscriptions_);
 
     if (std::get<0>(gen_res)) {
-      eth_logs_tracker_.Start(base::Seconds(kLogTrackerDefaultTimeInSeconds));
+      eth_logs_tracker_.Start(chain_id,
+                              base::Seconds(kLogTrackerDefaultTimeInSeconds));
     }
 
     eth_logs_tracker_.AddSubscriber(std::get<1>(gen_res), std::move(*filter));
@@ -1569,6 +1570,7 @@ void EthereumProviderImpl::ChainChangedEvent(
     return;
   }
 
+  eth_logs_tracker_.Stop();
   events_listener_->ChainChangedEvent(chain_id);
 }
 
