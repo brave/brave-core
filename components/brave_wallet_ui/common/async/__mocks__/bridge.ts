@@ -45,11 +45,13 @@ export interface WalletApiDataOverrides {
   selectedCoin?: BraveWallet.CoinType
   chainIdsForCoins?: Record<BraveWallet.CoinType, string>
   networks?: BraveWallet.NetworkInfo[]
+  defaultBaseCurrency?: string
 }
 
 export class MockedWalletApiProxy {
   store = makeMockedStoreWithSpy().store
 
+  defaultBaseCurrency: string = 'usd'
   selectedCoin: BraveWallet.CoinType = BraveWallet.CoinType.ETH
 
   chainIdsForCoins: Record<BraveWallet.CoinType, string> = {
@@ -122,17 +124,19 @@ export class MockedWalletApiProxy {
     this.selectedCoin = overrides.selectedCoin ?? this.selectedCoin
     this.chainIdsForCoins = overrides.chainIdsForCoins ?? this.chainIdsForCoins
     this.networks = overrides.networks ?? this.networks
+    this.defaultBaseCurrency =
+      overrides.defaultBaseCurrency ?? this.defaultBaseCurrency
   }
 
   blockchainRegistry: Partial<
     InstanceType<typeof BraveWallet.BlockchainRegistryInterface>
   > = {
     getAllTokens: async (chainId: string, coin: number) => {
-      return ({
+      return {
         tokens: mockWalletState.fullTokenList.filter(
           (t) => t.chainId === chainId && t.coin === coin
         )
-      })
+      }
     }
   }
 
@@ -152,6 +156,12 @@ export class MockedWalletApiProxy {
     setSelectedCoin: (coin) => {
       this.selectedCoin = coin
     },
+    getDefaultBaseCurrency: async () => ({
+      currency: this.defaultBaseCurrency
+    }),
+    setDefaultBaseCurrency: async (currency: string) => {
+      this.defaultBaseCurrency = currency
+    }
   }
 
   swapService: Partial<InstanceType<typeof BraveWallet.SwapServiceInterface>> =
