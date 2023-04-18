@@ -7,7 +7,6 @@ import * as React from 'react'
 
 // mocks
 import {
-  mockSolanaTestnetNetwork,
   mockSolDappSignAndSendTransactionRequest
 } from '../../../common/constants/mocks'
 
@@ -18,7 +17,6 @@ import { ConfirmSolanaTransactionPanel } from './confirm-solana-transaction-pane
 export const _ConfirmSolanaTransactionPanel = () => {
   return <WalletPanelStory
     walletStateOverride={{
-      selectedNetwork: mockSolanaTestnetNetwork,
       hasInitialized: true,
       isWalletCreated: true,
       selectedPendingTransaction: mockSolDappSignAndSendTransactionRequest

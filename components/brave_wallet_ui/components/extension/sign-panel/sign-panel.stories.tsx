@@ -36,7 +36,6 @@ export const _SignPanel = () => {
   return <WalletPageStory>
     <SignPanel
       accounts={mockAccounts}
-      defaultNetworks={mockNetworks}
       onCancel={() => alert('')}
       onSign={() => alert('')}
       selectedNetwork={mockNetworks[0]}
