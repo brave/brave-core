@@ -13,6 +13,7 @@
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
@@ -853,6 +854,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
       }
     }, {
 #endif
+#if !BUILDFLAG(IS_ANDROID)
       std::string("webcompat"), {
         // Report modal
         { "reportModalTitle", IDS_BRAVE_WEBCOMPATREPORTER_REPORT_MODAL_TITLE },
@@ -870,6 +872,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "confirmationNotice",
             IDS_BRAVE_WEBCOMPATREPORTER_CONFIRMATION_NOTICE },
       }
+#endif
     }
   };
   // clang-format on
