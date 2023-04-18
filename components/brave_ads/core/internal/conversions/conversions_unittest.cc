@@ -53,7 +53,7 @@ class BatAdsConversionsTest : public UnitTestBase {
 TEST_F(BatAdsConversionsTest,
        DoNotConvertViewedNotificationAdWhenAdsAreDisabled) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
 
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -92,8 +92,6 @@ TEST_F(BatAdsConversionsTest,
 
 TEST_F(BatAdsConversionsTest, ConvertViewedNotificationAdWhenAdsAreEnabled) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
-
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event = BuildAdEvent(
@@ -138,7 +136,7 @@ TEST_F(BatAdsConversionsTest, ConvertViewedNotificationAdWhenAdsAreEnabled) {
 TEST_F(BatAdsConversionsTest,
        DoNotConvertClickedNotificationAdWhenAdsAreDisabled) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
 
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -180,8 +178,6 @@ TEST_F(BatAdsConversionsTest,
 
 TEST_F(BatAdsConversionsTest, ConvertClickedNotificationAdWhenAdsAreEnabled) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
-
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event_1 = BuildAdEvent(
@@ -229,7 +225,7 @@ TEST_F(BatAdsConversionsTest, ConvertClickedNotificationAdWhenAdsAreEnabled) {
 TEST_F(BatAdsConversionsTest,
        DoNotConvertViewedNewTabPageAdWhenAdsAreDisabled) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
 
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -268,8 +264,6 @@ TEST_F(BatAdsConversionsTest,
 
 TEST_F(BatAdsConversionsTest, ConvertViewedNewTabPageAdWhenAdsAreEnabled) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
-
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event = BuildAdEvent(creative_ad, AdType::kNewTabPageAd,
@@ -314,7 +308,7 @@ TEST_F(BatAdsConversionsTest, ConvertViewedNewTabPageAdWhenAdsAreEnabled) {
 TEST_F(BatAdsConversionsTest,
        DoNotConvertClickedNewTabPageAdWhenAdsAreDisabled) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
 
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -356,8 +350,6 @@ TEST_F(BatAdsConversionsTest,
 
 TEST_F(BatAdsConversionsTest, ConvertClickedNewTabPageAdWhenAdsAreEnabled) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
-
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event_1 = BuildAdEvent(
@@ -405,7 +397,7 @@ TEST_F(BatAdsConversionsTest, ConvertClickedNewTabPageAdWhenAdsAreEnabled) {
 TEST_F(BatAdsConversionsTest,
        DoNotConvertViewedPromotedContentAdWhenAdsAreDisabled) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
 
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -445,8 +437,6 @@ TEST_F(BatAdsConversionsTest,
 
 TEST_F(BatAdsConversionsTest, ConvertViewedPromotedContentAdWhenAdsAreEnabled) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
-
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event =
@@ -492,7 +482,7 @@ TEST_F(BatAdsConversionsTest, ConvertViewedPromotedContentAdWhenAdsAreEnabled) {
 TEST_F(BatAdsConversionsTest,
        DoNotConvertClickedPromotedContentAdWhenAdsAreDisabled) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
 
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -537,8 +527,6 @@ TEST_F(BatAdsConversionsTest,
 TEST_F(BatAdsConversionsTest,
        ConvertClickedPromotedContentAdWhenAdsAreEnabled) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
-
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event_1 =
@@ -588,7 +576,7 @@ TEST_F(BatAdsConversionsTest,
 TEST_F(BatAdsConversionsTest,
        DoNotConvertViewedInlineContentAdWhenAdsAreDisabled) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
 
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -628,8 +616,6 @@ TEST_F(BatAdsConversionsTest,
 TEST_F(BatAdsConversionsTest,
        DoNotConvertViewedInlineContentAdWhenAdsAreEnabled) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
-
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event = BuildAdEvent(
@@ -667,7 +653,7 @@ TEST_F(BatAdsConversionsTest,
 
 TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreDisabled) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
 
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -715,8 +701,6 @@ TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreDisabled) {
 
 TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreEnabled) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
-
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event_1 = BuildAdEvent(
@@ -764,7 +748,7 @@ TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreEnabled) {
 TEST_F(BatAdsConversionsTest,
        DoNotConvertViewedSearchResultAdWhenAdsAreDisabled) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
 
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -803,8 +787,6 @@ TEST_F(BatAdsConversionsTest,
 
 TEST_F(BatAdsConversionsTest, ConvertViewedSearchResultAdWhenAdsAreEnabled) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
-
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event = BuildAdEvent(
@@ -849,7 +831,7 @@ TEST_F(BatAdsConversionsTest, ConvertViewedSearchResultAdWhenAdsAreEnabled) {
 TEST_F(BatAdsConversionsTest,
        DoNotConvertClickedSearchResultAdWhenAdsAreDisabled) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
 
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -891,8 +873,6 @@ TEST_F(BatAdsConversionsTest,
 
 TEST_F(BatAdsConversionsTest, ConvertClickedSearchResultAdWhenAdsAreEnabled) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
-
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event_1 = BuildAdEvent(

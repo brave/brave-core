@@ -21,7 +21,11 @@ Please add to it!
 
 Override `SetUp` and call `SetUpForTesting` with `is_integration_test` set to `true` to test functionality and performance under product-like circumstances with data to replicate live settings to simulate a real user scenario from start to finish.
 
-Use the `GetAds` convenience function to access `AdsImpl`.
+Use the `GetAds` convenience function to access `AdsImpl`. i.e.
+
+```
+GetAds()->TriggerNotificationAdEvent(/*placement_id*/ "7ee858e8-6306-4317-88c3-9e7d58afad26", ConfirmationType::kClicked);
+```
 
 ## Mocking Command-Line Switches
 
@@ -63,7 +67,7 @@ Mocked responses for URL requests can be defined inline or read from a text file
     const URLResponseMap url_responses = {
       "/foo/bar", {
         {
-          net::HTTP_NOT_FOUND, "Not found"
+          net::HTTP_NOT_FOUND, "What we've got here is... failure to communicate"
         },
         {
           net::HTTP_OK, "/response.json"
@@ -109,16 +113,18 @@ You can add multiple responses per request, which will be returned in the specif
 
     MockUrlResponses(ads_client_mock_, url_responses);
 
-## Mocking Ads
+## Mocking Client
 
 | mock  | type  | default  | example  |
 |---|---|---|---|
 | Build channel  | `kRelease`, `kBeta` or `kNightly`  | `kRelease`  | `MockBuildChannel(BuildChannelType::kRelease);`  |
 | Platform  | `kWindows`, `kMacOS`, `kLinux`, `kAndroid` or `kIOS`  | `kWindows`  | `MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);`  |
-| Is network connection available  | boolean  | true  | `MockIsNetworkConnectionAvailable(ads_client_mock_, false);`  |
-| Is browser active  | boolean  | true  | `MockIsBrowserActive(ads_client_mock_, false);`  |
-| Is browser in full-screen mode  | boolean  | false  | `MockIsBrowserInFullScreenMode(ads_client_mock_, true);`  |
-| Can show notification ads  | boolean  | true  | `MockCanShowNotificationAds(ads_client_mock_, false);`  |
-| Can show notification ads while browser is backgrounded  | boolean  | true  | `MockCanShowNotificationAdsWhileBrowserIsBackgrounded(ads_client_mock_, false);`  |
+| Is network connection available  | boolean  | `true`  | `MockIsNetworkConnectionAvailable(ads_client_mock_, false);`  |
+| Is browser active  | boolean  | `true`  | `MockIsBrowserActive(ads_client_mock_, false);`  |
+| Is browser in full-screen mode  | boolean  | `false`  | `MockIsBrowserInFullScreenMode(ads_client_mock_, true);`  |
+| Can show notification ads  | boolean  | `true`  | `MockCanShowNotificationAds(ads_client_mock_, false);`  |
+| Can show notification ads while browser is backgrounded  | boolean  | `true`  | `MockCanShowNotificationAdsWhileBrowserIsBackgrounded(ads_client_mock_, false);`  |
+| Browsing history  | vector<GURL>  |  | `MockGetBrowsingHistory(ads_client_mock_, {GURL("https://foo.com"), GURL("https://bar.com")});`  |
+| Mock URL responses  | URLResponseMap  |  | See [mocking server responses](#mocking-server-responses)  |
 
-See `UnitTestBase::SetDefaultPrefs` for default prefs.
+See `UnitTestBase::MockDefaultPrefs` for default prefs.

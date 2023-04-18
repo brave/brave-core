@@ -27,11 +27,10 @@ TEST_F(BatAdsCatalogUtilTest, ResetCatalog) {
   ResetCatalog();
 
   // Assert
-  EXPECT_TRUE(
-      !AdsClientHelper::GetInstance()->HasPrefPath(prefs::kCatalogId) &&
-      !AdsClientHelper::GetInstance()->HasPrefPath(prefs::kCatalogVersion) &&
-      !AdsClientHelper::GetInstance()->HasPrefPath(prefs::kCatalogPing) &&
-      !AdsClientHelper::GetInstance()->HasPrefPath(prefs::kCatalogLastUpdated));
+  EXPECT_TRUE(!ads_client_mock_->HasPrefPath(prefs::kCatalogId) &&
+              !ads_client_mock_->HasPrefPath(prefs::kCatalogVersion) &&
+              !ads_client_mock_->HasPrefPath(prefs::kCatalogPing) &&
+              !ads_client_mock_->HasPrefPath(prefs::kCatalogLastUpdated));
 }
 
 TEST_F(BatAdsCatalogUtilTest, CatalogExists) {

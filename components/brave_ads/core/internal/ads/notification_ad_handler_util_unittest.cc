@@ -62,7 +62,7 @@ TEST_F(BatAdsNotificationAdUtilTest, ShouldServe) {
 
 TEST_F(BatAdsNotificationAdUtilTest, ShouldNotServe) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
 
   // Act
 

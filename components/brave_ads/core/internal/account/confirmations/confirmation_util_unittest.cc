@@ -33,7 +33,7 @@ class BatAdsConfirmationUtilTest : public UnitTestBase {
 
 TEST_F(BatAdsConfirmationUtilTest, CreateConfirmationForNonOptedInUser) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
 
   privacy::SetUnblindedTokens(/*count*/ 1);
 
@@ -56,7 +56,7 @@ TEST_F(BatAdsConfirmationUtilTest, CreateConfirmationForNonOptedInUser) {
 
 TEST_F(BatAdsConfirmationUtilTest, IsNotValidForNonOptedInUser) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
 
   // Act
   const ConfirmationInfo confirmation;

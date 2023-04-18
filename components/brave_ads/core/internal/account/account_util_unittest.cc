@@ -34,7 +34,7 @@ TEST_F(BatAdsAccountUtilTest, ShouldRewardUser) {
 
 TEST_F(BatAdsAccountUtilTest, ShouldNotRewardUser) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
 
   // Act
 

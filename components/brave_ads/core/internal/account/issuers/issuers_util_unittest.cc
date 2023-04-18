@@ -36,7 +36,7 @@ TEST_F(BatAdsIssuersUtilTest, HasIssuersChanged) {
 
 TEST_F(BatAdsIssuersUtilTest, HasIssuersChangedOnInitialFetch) {
   // Arrange
-  AdsClientHelper::GetInstance()->ClearPref(prefs::kIssuers);
+  ads_client_mock_->ClearPref(prefs::kIssuers);
 
   // Act
   const IssuersInfo issuers =

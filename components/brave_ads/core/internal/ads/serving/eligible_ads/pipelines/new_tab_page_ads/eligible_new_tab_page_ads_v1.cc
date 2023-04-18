@@ -28,7 +28,7 @@
 namespace brave_ads::new_tab_page_ads {
 
 EligibleAdsV1::EligibleAdsV1(
-    const geographic::SubdivisionTargeting& subdivision_targeting,
+    const SubdivisionTargeting& subdivision_targeting,
     const resource::AntiTargeting& anti_targeting_resource)
     : EligibleAdsBase(subdivision_targeting, anti_targeting_resource) {}
 

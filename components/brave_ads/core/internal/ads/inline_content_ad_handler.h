@@ -18,10 +18,6 @@
 
 namespace brave_ads {
 
-namespace geographic {
-class SubdivisionTargeting;
-}  // namespace geographic
-
 namespace inline_content_ads {
 class Serving;
 }  // namespace inline_content_ads
@@ -31,6 +27,7 @@ class AntiTargeting;
 }  // namespace resource
 
 class Account;
+class SubdivisionTargeting;
 class Transfer;
 struct InlineContentAdInfo;
 
@@ -41,7 +38,7 @@ class InlineContentAdHandler final
   InlineContentAdHandler(
       Account* account,
       Transfer* transfer,
-      const geographic::SubdivisionTargeting& subdivision_targeting,
+      const SubdivisionTargeting& subdivision_targeting,
       const resource::AntiTargeting& anti_targeting_resource);
 
   InlineContentAdHandler(const InlineContentAdHandler&) = delete;

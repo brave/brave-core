@@ -25,7 +25,7 @@ namespace brave_ads {
 NewTabPageAdHandler::NewTabPageAdHandler(
     Account* account,
     Transfer* transfer,
-    const geographic::SubdivisionTargeting& subdivision_targeting,
+    const SubdivisionTargeting& subdivision_targeting,
     const resource::AntiTargeting& anti_targeting_resource)
     : account_(account), transfer_(transfer) {
   DCHECK(account_);

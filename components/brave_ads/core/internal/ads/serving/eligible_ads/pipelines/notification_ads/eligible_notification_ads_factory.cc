@@ -16,7 +16,7 @@ namespace brave_ads::notification_ads {
 
 std::unique_ptr<EligibleAdsBase> EligibleAdsFactory::Build(
     const int version,
-    const geographic::SubdivisionTargeting& subdivision_targeting,
+    const SubdivisionTargeting& subdivision_targeting,
     const resource::AntiTargeting& anti_targeting_resource) {
   switch (version) {
     case 1: {

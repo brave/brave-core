@@ -178,13 +178,13 @@ TEST_F(BatAdsIdleDetectionUtilTest, UpdateIdleTimeThreshold) {
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  AdsClientHelper::GetInstance()->SetIntegerPref(prefs::kIdleTimeThreshold, 10);
+  ads_client_mock_->SetIntegerPref(prefs::kIdleTimeThreshold, 10);
 
   ASSERT_TRUE(MaybeUpdateIdleTimeThreshold());
 
   // Act
   const int idle_time_threshold =
-      AdsClientHelper::GetInstance()->GetIntegerPref(prefs::kIdleTimeThreshold);
+      ads_client_mock_->GetIntegerPref(prefs::kIdleTimeThreshold);
 
   // Assert
   EXPECT_EQ(5, idle_time_threshold);
@@ -203,13 +203,13 @@ TEST_F(BatAdsIdleDetectionUtilTest, DoNotUpdateIdleTimeThreshold) {
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  AdsClientHelper::GetInstance()->SetIntegerPref(prefs::kIdleTimeThreshold, 10);
+  ads_client_mock_->SetIntegerPref(prefs::kIdleTimeThreshold, 10);
 
   ASSERT_FALSE(MaybeUpdateIdleTimeThreshold());
 
   // Act
   const int idle_time_threshold =
-      AdsClientHelper::GetInstance()->GetIntegerPref(prefs::kIdleTimeThreshold);
+      ads_client_mock_->GetIntegerPref(prefs::kIdleTimeThreshold);
 
   // Assert
   EXPECT_EQ(10, idle_time_threshold);

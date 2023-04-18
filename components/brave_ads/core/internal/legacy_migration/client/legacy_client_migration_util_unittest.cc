@@ -16,8 +16,7 @@ class BatAdsLegacyClientMigrationUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsLegacyClientMigrationUtilTest, HasMigrated) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kHasMigratedClientState,
-                                                 true);
+  ads_client_mock_->SetBooleanPref(prefs::kHasMigratedClientState, true);
 
   // Act
 
@@ -27,8 +26,7 @@ TEST_F(BatAdsLegacyClientMigrationUtilTest, HasMigrated) {
 
 TEST_F(BatAdsLegacyClientMigrationUtilTest, HasNotMigrated) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kHasMigratedClientState,
-                                                 false);
+  ads_client_mock_->SetBooleanPref(prefs::kHasMigratedClientState, false);
 
   // Act
 
