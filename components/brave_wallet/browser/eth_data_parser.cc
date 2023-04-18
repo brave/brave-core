@@ -18,6 +18,9 @@ namespace brave_wallet {
 
 namespace {
 
+constexpr char kNativeAssetContractAddress[] =
+    "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
+
 constexpr char kERC20TransferSelector[] = "0xa9059cbb";
 constexpr char kERC20ApproveSelector[] = "0x095ea7b3";
 constexpr char kERC721TransferFromSelector[] = "0x23b872dd";
@@ -28,6 +31,9 @@ constexpr char kSellTokenForEthToUniswapV3Selector[] = "0x803ba26d";
 constexpr char kSellTokenForTokenToUniswapV3Selector[] = "0x6af479b2";
 constexpr char kSellToUniswapSelector[] = "0xd9627aa4";
 constexpr char kTransformERC20Selector[] = "0x415565b0";
+constexpr char kFillOtcOrderForEthSelector[] = "0xa578efaf";
+constexpr char kFillOtcOrderWithEthSelector[] = "0x706394d5";
+constexpr char kFillOtcOrderSelector[] = "0xdac748d4";
 
 }  // namespace
 
@@ -194,11 +200,127 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
                                  "uint256"},  // taker amount
         std::vector<std::string>{tx_args.at(0) + tx_args.at(1).substr(2),
                                  tx_args.at(2), tx_args.at(3)});
+  } else if (selector == kFillOtcOrderForEthSelector ||
+             selector == kFillOtcOrderWithEthSelector ||
+             selector == kFillOtcOrderSelector) {
+    // The following block handles decoding of calldata for 0x OTC orders.
+    // These orders are filled by professional market makers using the RFQ-T
+    // system by 0x.
+
+    // TXN: token → ETH
+    // Function:
+    // fillOtcOrderForEth((address buyToken,
+    //                     address sellToken,
+    //                     uint128 buyAmount,
+    //                     uint128 sellAmount,
+    //                     address maker,
+    //                     address taker,
+    //                     address txOrigin,
+    //                     uint256 expiryAndNonce),
+    //                    (uint8 signatureType,
+    //                     uint8 v,
+    //                     bytes32 r,
+    //                     bytes32 s),
+    //                    uint128 takerTokenFillAmount)
+    //
+    // Ref:
+    // https://github.com/0xProject/protocol/blob/bcbfbfa16c2ec98e64cd1f2f2f55a134baf3dbf6/contracts/zero-ex/contracts/src/features/OtcOrdersFeature.sol#L109-L113
+
+    // TXN: ETH → token
+    // Function:
+    // fillOtcOrderWithEth((address buyToken,
+    //                      address sellToken,
+    //                      uint128 buyAmount,
+    //                      uint128 sellAmount,
+    //                      address maker,
+    //                      address taker,
+    //                      address txOrigin,
+    //                      uint256 expiryAndNonce),
+    //                     (uint8 signatureType,
+    //                      uint8 v,
+    //                      bytes32 r,
+    //                      bytes32 s))
+    //
+    // Ref:
+    // https://github.com/0xProject/protocol/blob/bcbfbfa16c2ec98e64cd1f2f2f55a134baf3dbf6/contracts/zero-ex/contracts/src/features/OtcOrdersFeature.sol#L139-L148
+
+    // TXN: token → token
+    // Function:
+    // fillOtcOrder((address buyToken,
+    //               address sellToken,
+    //               uint128 buyAmount,
+    //               uint128 sellAmount,
+    //               address maker,
+    //               address taker,
+    //               address txOrigin,
+    //               uint256 expiryAndNonce),
+    //              (uint8 signatureType,
+    //               uint8 v,
+    //               bytes32 r,
+    //               bytes32 s),
+    //              uint128 takerTokenFillAmount)
+    //
+    // Ref:
+    // https://github.com/0xProject/protocol/blob/bcbfbfa16c2ec98e64cd1f2f2f55a134baf3dbf6/contracts/zero-ex/contracts/src/features/OtcOrdersFeature.sol#L68C6-L79
+
+    // NOTE: tuples with static types can be flattened for easier decoding.
+    // For example, fillOtcOrder() takes three arguments, the first two being
+    // tuples. However, we can also consider this function to be taking 13
+    // arguments.
+    //
+    // For the purpose of parsing transaction data corresponding to ETHSwap, we
+    // are only interested in the first four fields. Ignore the rest of the
+    // arguments as extraneous data.
+    auto decoded_calldata = ABIDecode(
+        {
+            "address",  // buyToken
+            "address",  // sellToken
+            "uint128",  // buyAmount
+            "uint128",  // sellAmount
+        },
+        calldata);
+    if (!decoded_calldata) {
+      return absl::nullopt;
+    }
+
+    const auto& raw_args = std::get<1>(*decoded_calldata);
+    std::vector<std::string> tx_args;
+
+    if (selector == kFillOtcOrderForEthSelector) {
+      // The output of the swap is actually WETH but fillOtcOrderForEth()
+      // automatically unwraps it to ETH. The buyToken is therefore the
+      // 0x native asset contract.
+      tx_args = {
+          raw_args.at(1) + std::string(kNativeAssetContractAddress).substr(2),
+          raw_args.at(3), raw_args.at(2)};
+    } else if (selector == kFillOtcOrderWithEthSelector) {
+      // The input of the swap is actually ETH but fillOtcOrderWithEth()
+      // automatically wraps it to WETH. The sellToken is therefore the 0x
+      // native asset contract.
+      //
+      // Clients are free to use the sellAmount extracted from calldata or
+      // the value field of the swap transaction. The latter is more reliable
+      // since OTC trades may include protocol fees payable in ETH that get
+      // added to the sellAmount.
+      tx_args = {
+          std::string(kNativeAssetContractAddress) + raw_args.at(0).substr(2),
+          raw_args.at(3), raw_args.at(2)};
+    } else if (selector == kFillOtcOrderSelector) {
+      tx_args = {raw_args.at(1) + raw_args.at(0).substr(2), raw_args.at(3),
+                 raw_args.at(2)};
+    }
+
+    return std::make_tuple(mojom::TransactionType::ETHSwap,
+                           std::vector<std::string>{"bytes",     // fill path,
+                                                    "uint128",   // sell amount
+                                                    "uint128"},  // buy amount
+                           tx_args);
   } else if (selector == kERC1155SafeTransferFromSelector) {
     auto decoded = ABIDecode(
         {"address", "address", "uint256", "uint256", "bytes"}, calldata);
-    if (!decoded)
+    if (!decoded) {
       return absl::nullopt;
+    }
 
     return std::tuple_cat(
         std::make_tuple(mojom::TransactionType::ERC1155SafeTransferFrom),
