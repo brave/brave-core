@@ -224,4 +224,45 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Duration) {
                                        AdsEnabledDuration::kQuarters, 1);
 }
 
+#if !BUILDFLAG(IS_ANDROID)
+IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Conversion) {
+  brave_rewards::p3a::ConversionMonitor conversion_monitor;
+  conversion_monitor.RecordPanelTrigger(
+      brave_rewards::p3a::PanelTrigger::kInlineTip);
+
+  histogram_tester_->ExpectTotalCount(
+      brave_rewards::p3a::kEnabledSourceHistogramName, 0);
+  histogram_tester_->ExpectUniqueSample(
+      brave_rewards::p3a::kInlineTipTriggerHistogramName, 1, 1);
+
+  conversion_monitor.RecordRewardsEnable();
+
+  histogram_tester_->ExpectUniqueSample(
+      brave_rewards::p3a::kEnabledSourceHistogramName, 0, 1);
+
+  conversion_monitor.RecordPanelTrigger(
+      brave_rewards::p3a::PanelTrigger::kToolbarButton);
+
+  histogram_tester_->ExpectBucketCount(
+      brave_rewards::p3a::kToolbarButtonTriggerHistogramName, 1, 1);
+
+  conversion_monitor.RecordRewardsEnable();
+
+  histogram_tester_->ExpectBucketCount(
+      brave_rewards::p3a::kEnabledSourceHistogramName, 1, 1);
+
+  conversion_monitor.RecordPanelTrigger(brave_rewards::p3a::PanelTrigger::kNTP);
+
+  histogram_tester_->ExpectBucketCount(
+      brave_rewards::p3a::kToolbarButtonTriggerHistogramName, 1, 1);
+  histogram_tester_->ExpectBucketCount(
+      brave_rewards::p3a::kInlineTipTriggerHistogramName, 1, 1);
+
+  conversion_monitor.RecordRewardsEnable();
+
+  histogram_tester_->ExpectBucketCount(
+      brave_rewards::p3a::kEnabledSourceHistogramName, 2, 1);
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
+
 }  // namespace rewards_browsertest

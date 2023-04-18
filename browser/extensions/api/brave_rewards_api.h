@@ -50,6 +50,16 @@ class BraveRewardsGetLocaleFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveRewardsRecordNTPPanelTriggerFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.recordNTPPanelTrigger", UNKNOWN)
+
+ protected:
+  ~BraveRewardsRecordNTPPanelTriggerFunction() override;
+
+  ResponseAction Run() override;
+};
+
 class BraveRewardsOpenRewardsPanelFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.openRewardsPanel", UNKNOWN)

@@ -26,6 +26,7 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_rewards/browser/diagnostic_log.h"
+#include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/mojom/bat_ledger.mojom.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
@@ -197,6 +198,8 @@ class RewardsServiceImpl : public RewardsService,
   void GetRewardsInternalsInfo(
       GetRewardsInternalsInfoCallback callback) override;
   void GetEnvironment(GetEnvironmentCallback callback) override;
+
+  p3a::ConversionMonitor* GetP3AConversionMonitor() override;
 
   void HandleFlags(const RewardsFlags& flags);
   void SetEnvironment(ledger::mojom::Environment environment);
@@ -640,6 +643,8 @@ class RewardsServiceImpl : public RewardsService,
   int persist_log_level_ = 0;
 
   GetTestResponseCallback test_response_callback_;
+
+  p3a::ConversionMonitor conversion_monitor_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 };

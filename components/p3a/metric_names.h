@@ -42,10 +42,13 @@ constexpr inline auto kCollectedTypicalHistograms =
     "Brave.NTP.SponsoredNewTabsCreated",
     "Brave.Omnibox.SearchCount",
     "Brave.P3A.SentAnswersCount",
+    "Brave.Rewards.AdsEnabledDuration",
     "Brave.Rewards.AdsState.2",
     "Brave.Rewards.AutoContributionsState.2",
+    "Brave.Rewards.EnabledSource",
+    "Brave.Rewards.InlineTipTrigger",
     "Brave.Rewards.TipsState.2",
-    "Brave.Rewards.AdsEnabledDuration",
+    "Brave.Rewards.ToolbarButtonTrigger",
     "Brave.Rewards.WalletBalance.3",
     "Brave.Rewards.WalletState",
     "Brave.Savings.BandwidthSavingsMB",
@@ -195,6 +198,9 @@ constexpr inline auto kCollectedExpressHistograms =
 constexpr inline auto kEphemeralHistograms =
   base::MakeFixedFlatSet<base::StringPiece>({
     "Brave.Rewards.EnabledInstallationTime",
+    "Brave.Rewards.EnabledSource",
+    "Brave.Rewards.InlineTipTrigger",
+    "Brave.Rewards.ToolbarButtonTrigger",
     "Brave.Wallet.UsageDaily",
     "Brave.Wallet.UsageMonthly",
     "Brave.Wallet.UsageWeekly"
