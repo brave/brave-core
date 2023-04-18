@@ -89,7 +89,7 @@ generate_grd("static_grdp") {
   grd_prefix = "brave_webui"
   resource_path_prefix = "brave"
   out_grd = "$brave_resources_extra_grdps_path/brave_static_resources.grdp"
-  input_files = static_files + leo_static_files + [
+  input_files = static_files + rebase_path(leo_static_files, ".", "leo") + [
                   # TODO(petemill): ethereum_remote_client_page.html does not need to be served from chrome://resources
                   # and should be put in to it's own resource package.
                   "ethereum_remote_client_page.html",
