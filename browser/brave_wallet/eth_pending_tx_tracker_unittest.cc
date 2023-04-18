@@ -221,11 +221,9 @@ TEST_F(EthPendingTxTrackerUnitTest, UpdatePendingTransactions) {
   for (const std::string& chain_id :
        {mojom::kMainnetChainId, mojom::kGoerliChainId,
         mojom::kSepoliaChainId}) {
-    size_t num_pending;
     std::set<std::string> pending_chain_ids;
     EXPECT_TRUE(pending_tx_tracker.UpdatePendingTransactions(
-        chain_id, &num_pending, &pending_chain_ids));
-    EXPECT_EQ(4UL, num_pending);
+        chain_id, &pending_chain_ids));
     EXPECT_EQ(1UL, pending_chain_ids.size());
     WaitForResponse();
     auto meta_from_state =

@@ -518,11 +518,11 @@ void EthTxManager::ContinueProcessHardwareSignature(
                           error_message);
 }
 
-void EthTxManager::ApproveTransaction(const std::string& chain_id_str,
+void EthTxManager::ApproveTransaction(const std::string& chain_id,
                                       const std::string& tx_meta_id,
                                       ApproveTransactionCallback callback) {
   std::unique_ptr<EthTxMeta> meta =
-      GetEthTxStateManager()->GetEthTx(chain_id_str, tx_meta_id);
+      GetEthTxStateManager()->GetEthTx(chain_id, tx_meta_id);
   if (!meta) {
     LOG(ERROR) << "No transaction found";
     std::move(callback).Run(
@@ -533,32 +533,20 @@ void EthTxManager::ApproveTransaction(const std::string& chain_id_str,
     return;
   }
 
-  uint256_t chain_id = 0;
-  if (!HexValueToUint256(meta->chain_id(), &chain_id)) {
-    LOG(ERROR) << "Could not convert chain ID";
-    std::move(callback).Run(
-        false,
-        mojom::ProviderErrorUnion::NewProviderError(
-            mojom::ProviderError::kInternalError),
-        l10n_util::GetStringUTF8(IDS_WALLET_ETH_INVALID_CHAIN_ID_RPC));
-    return;
-  }
-
   if (!meta->tx()->nonce()) {
     auto from = meta->from();
     nonce_tracker_->GetNextNonce(
-        chain_id_str, from,
+        chain_id, from,
         base::BindOnce(&EthTxManager::OnGetNextNonce,
-                       weak_factory_.GetWeakPtr(), std::move(meta), chain_id,
+                       weak_factory_.GetWeakPtr(), std::move(meta),
                        std::move(callback)));
   } else {
     uint256_t nonce = meta->tx()->nonce().value();
-    OnGetNextNonce(std::move(meta), chain_id, std::move(callback), true, nonce);
+    OnGetNextNonce(std::move(meta), std::move(callback), true, nonce);
   }
 }
 
 void EthTxManager::OnGetNextNonce(std::unique_ptr<EthTxMeta> meta,
-                                  uint256_t chain_id,
                                   ApproveTransactionCallback callback,
                                   bool success,
                                   uint256_t nonce) {
@@ -573,6 +561,18 @@ void EthTxManager::OnGetNextNonce(std::unique_ptr<EthTxMeta> meta,
         l10n_util::GetStringUTF8(IDS_WALLET_GET_NONCE_ERROR));
     return;
   }
+
+  uint256_t chain_id = 0;
+  if (!HexValueToUint256(meta->chain_id(), &chain_id)) {
+    LOG(ERROR) << "Could not convert chain ID";
+    std::move(callback).Run(
+        false,
+        mojom::ProviderErrorUnion::NewProviderError(
+            mojom::ProviderError::kInternalError),
+        l10n_util::GetStringUTF8(IDS_WALLET_ETH_INVALID_CHAIN_ID_RPC));
+    return;
+  }
+
   meta->tx()->set_nonce(nonce);
   DCHECK(!keyring_service_->IsLocked(mojom::kDefaultKeyringId));
   keyring_service_->SignTransactionByDefaultKeyring(meta->from(), meta->tx(),
@@ -954,18 +954,9 @@ void EthTxManager::OnNewBlock(const std::string& chain_id,
 void EthTxManager::UpdatePendingTransactions(
     const absl::optional<std::string>& chain_id) {
   std::set<std::string> pending_chain_ids;
-  size_t num_pending;
-  if (pending_tx_tracker_->UpdatePendingTransactions(chain_id, &num_pending,
+  if (pending_tx_tracker_->UpdatePendingTransactions(chain_id,
                                                      &pending_chain_ids)) {
-    if (num_pending == 0) {
-      known_no_pending_tx_ = true;
-      CheckIfBlockTrackerShouldRun(absl::nullopt);
-    } else {
-      known_no_pending_tx_ = false;
-      for (const auto& pending_chain_id : pending_chain_ids) {
-        CheckIfBlockTrackerShouldRun(pending_chain_id);
-      }
-    }
+    CheckIfBlockTrackerShouldRun(pending_chain_ids);
   }
 }
 

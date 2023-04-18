@@ -31,9 +31,8 @@ EthPendingTxTracker::~EthPendingTxTracker() = default;
 
 bool EthPendingTxTracker::UpdatePendingTransactions(
     const absl::optional<std::string>& chain_id,
-    size_t* num_pending,
     std::set<std::string>* pending_chain_ids) {
-  CHECK(num_pending && pending_chain_ids);
+  CHECK(pending_chain_ids);
   base::Lock* nonce_lock = nonce_tracker_->GetLock();
   if (!nonce_lock->Try())
     return false;
@@ -62,7 +61,6 @@ bool EthPendingTxTracker::UpdatePendingTransactions(
   }
 
   nonce_lock->Release();
-  *num_pending = pending_transactions.size();
   return true;
 }
 

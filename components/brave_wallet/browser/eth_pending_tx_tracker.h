@@ -34,7 +34,6 @@ class EthPendingTxTracker {
   EthPendingTxTracker operator=(const EthPendingTxTracker&) = delete;
 
   bool UpdatePendingTransactions(const absl::optional<std::string>& chain_id,
-                                 size_t* num_pending,
                                  std::set<std::string>* pending_chain_ids);
   void Reset();
 

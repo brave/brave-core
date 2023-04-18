@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/fil_tx_manager.h"
 
 #include <memory>
+#include <set>
 #include <string>
 #include <utility>
 #include <vector>
@@ -358,6 +359,7 @@ void FilTxManager::UpdatePendingTransactions(
     const absl::optional<std::string>& chain_id) {
   auto pending_transactions = tx_state_manager_->GetTransactionsByStatus(
       chain_id, mojom::TransactionStatus::Submitted, absl::nullopt);
+  std::set<std::string> pending_chain_ids;
   for (const auto& pending_transaction : pending_transactions) {
     auto cid = pending_transaction->tx_hash();
     uint64_t seconds =
@@ -374,14 +376,9 @@ void FilTxManager::UpdatePendingTransactions(
         base::BindOnce(&FilTxManager::OnGetFilStateSearchMsgLimited,
                        weak_factory_.GetWeakPtr(), pending_chain_id,
                        pending_transaction->id()));
-    CheckIfBlockTrackerShouldRun(pending_chain_id);
+    pending_chain_ids.emplace(pending_chain_id);
   }
-  if (pending_transactions.empty()) {
-    known_no_pending_tx_ = true;
-    CheckIfBlockTrackerShouldRun(absl::nullopt);
-  } else {
-    known_no_pending_tx_ = false;
-  }
+  CheckIfBlockTrackerShouldRun(pending_chain_ids);
 }
 
 void FilTxManager::OnGetFilStateSearchMsgLimited(

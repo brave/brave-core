@@ -183,7 +183,6 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
   void NotifyUnapprovedTxUpdated(TxMeta* meta);
   void OnConnectionError();
   void OnGetNextNonce(std::unique_ptr<EthTxMeta> meta,
-                      uint256_t chain_id,
                       ApproveTransactionCallback callback,
                       bool success,
                       uint256_t nonce);

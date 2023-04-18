@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/solana_tx_manager.h"
 
 #include <memory>
+#include <set>
 #include <utility>
 
 #include "base/base64.h"
@@ -207,8 +208,10 @@ void SolanaTxManager::OnSendSolanaTransaction(
 
 void SolanaTxManager::UpdatePendingTransactions(
     const absl::optional<std::string>& chain_id) {
+  std::set<std::string> pending_chain_ids;
   if (chain_id.has_value()) {
-    CheckIfBlockTrackerShouldRun(chain_id);
+    pending_chain_ids = pending_chain_ids_;
+    pending_chain_ids.emplace(*chain_id);
     json_rpc_service_->GetSolanaBlockHeight(
         *chain_id, base::BindOnce(&SolanaTxManager::OnGetBlockHeight,
                                   weak_ptr_factory_.GetWeakPtr(), *chain_id));
@@ -221,15 +224,10 @@ void SolanaTxManager::UpdatePendingTransactions(
           pending_chain_id,
           base::BindOnce(&SolanaTxManager::OnGetBlockHeight,
                          weak_ptr_factory_.GetWeakPtr(), pending_chain_id));
-      CheckIfBlockTrackerShouldRun(pending_chain_id);
-    }
-    if (pending_transactions.empty()) {
-      known_no_pending_tx_ = true;
-      CheckIfBlockTrackerShouldRun(absl::nullopt);
-    } else {
-      known_no_pending_tx_ = false;
+      pending_chain_ids.emplace(pending_chain_id);
     }
   }
+  CheckIfBlockTrackerShouldRun(pending_chain_ids);
 }
 
 void SolanaTxManager::OnGetBlockHeight(const std::string& chain_id,

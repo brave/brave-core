@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_TX_MANAGER_H_
 
 #include <memory>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -88,7 +89,7 @@ class TxManager : public TxStateManager::Observer,
 
  protected:
   void CheckIfBlockTrackerShouldRun(
-      const absl::optional<std::string>& chain_id);
+      const std::set<std::string>& new_pending_chain_ids);
   virtual void UpdatePendingTransactions(
       const absl::optional<std::string>& chain_id) = 0;
 
@@ -98,7 +99,7 @@ class TxManager : public TxStateManager::Observer,
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;  // NOT OWNED
   raw_ptr<KeyringService> keyring_service_ = nullptr;   // NOT OWNED
   raw_ptr<PrefService> prefs_ = nullptr;                // NOT OWNED
-  bool known_no_pending_tx_ = false;
+  std::set<std::string> pending_chain_ids_;
 
  private:
   virtual mojom::CoinType GetCoinType() const = 0;

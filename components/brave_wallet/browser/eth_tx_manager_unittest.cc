@@ -2294,7 +2294,7 @@ TEST_F(EthTxManagerUnitTest, MakeERC1155TransferFromData) {
 }
 
 TEST_F(EthTxManagerUnitTest, Reset) {
-  eth_tx_manager()->known_no_pending_tx_ = true;
+  eth_tx_manager()->pending_chain_ids_.emplace(mojom::kLocalhostChainId);
   eth_tx_manager()->block_tracker_->Start(mojom::kLocalhostChainId,
                                           base::Seconds(10));
   EXPECT_TRUE(
@@ -2316,7 +2316,7 @@ TEST_F(EthTxManagerUnitTest, Reset) {
 
   tx_service_->Reset();
 
-  EXPECT_FALSE(eth_tx_manager()->known_no_pending_tx_);
+  EXPECT_TRUE(eth_tx_manager()->pending_chain_ids_.empty());
   EXPECT_FALSE(
       eth_tx_manager()->block_tracker_->IsRunning(mojom::kLocalhostChainId));
   EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletTransactions));

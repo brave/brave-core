@@ -97,19 +97,29 @@ void TxManager::RejectTransaction(const std::string& chain_id,
 }
 
 void TxManager::CheckIfBlockTrackerShouldRun(
-    const absl::optional<std::string>& chain_id) {
-  const auto& keyring_id = CoinTypeToKeyringId(GetCoinType(), chain_id);
-  CHECK(keyring_id.has_value());
-  bool keyring_created = keyring_service_->IsKeyringCreated(*keyring_id);
+    const std::set<std::string>& new_pending_chain_ids) {
   bool locked = keyring_service_->IsLockedSync();
-  // If a timer in BlockTracker has already stopped, calling Stop() will be a no
-  // op.
-  bool running = chain_id.has_value() && block_tracker_->IsRunning(*chain_id);
-  if (keyring_created && !locked && !running && chain_id.has_value()) {
-    block_tracker_->Start(*chain_id,
-                          base::Seconds(kBlockTrackerDefaultTimeInSeconds));
-  } else if (locked || known_no_pending_tx_) {
+
+  if (locked) {
     block_tracker_->Stop();
+  } else if (new_pending_chain_ids != pending_chain_ids_) {
+    // Stop tracker that is no longer needed.
+    for (const auto& pending_chain_id : pending_chain_ids_) {
+      if (!base::Contains(new_pending_chain_ids, pending_chain_id)) {
+        block_tracker_->Stop(pending_chain_id);
+      }
+    }
+    for (const auto& chain_id : new_pending_chain_ids) {
+      const auto& keyring_id = CoinTypeToKeyringId(GetCoinType(), chain_id);
+      CHECK(keyring_id.has_value());
+      bool keyring_created = keyring_service_->IsKeyringCreated(*keyring_id);
+      bool running = block_tracker_->IsRunning(chain_id);
+      if (keyring_created && !running) {
+        block_tracker_->Start(chain_id,
+                              base::Seconds(kBlockTrackerDefaultTimeInSeconds));
+      }
+    }
+    pending_chain_ids_ = new_pending_chain_ids;
   }
 }
 
@@ -135,7 +145,7 @@ void TxManager::KeyringReset() {
 
 void TxManager::Reset() {
   block_tracker_->Stop();
-  known_no_pending_tx_ = false;
+  pending_chain_ids_.clear();
 }
 
 }  // namespace brave_wallet
