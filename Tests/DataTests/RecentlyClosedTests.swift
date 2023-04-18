@@ -19,19 +19,16 @@ class RecentlyClosedTests: CoreDataTestCase {
 
     XCTAssertEqual(object1.url, url1.absoluteString)
     XCTAssertEqual(object1.title, title1)
-    XCTAssertEqual(object1.historyList?.count, 0)
     
     let url2 = URL(string: "https://www.wikipedia.org")!
     let title2 = "Wikipedia"
     
     let object2 = createAndWait(
-      url: url2, title: title2,
-      historyList: ["https://brave.com", "https://www.wikipedia.org"])
+      url: url2, title: title2)
     XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 2)
 
     XCTAssertEqual(object2.url, url2.absoluteString)
     XCTAssertEqual(object2.title, title2)
-    XCTAssertEqual(object2.historyList?.count, 2)
   }
   
   func testInsertAll() {
@@ -39,21 +36,21 @@ class RecentlyClosedTests: CoreDataTestCase {
     let title1 = "Brave"
     
     let savedObject1 = SavedRecentlyClosed(
-      url: url1.absoluteString,
+      url: url1,
       title: title1,
       dateAdded: Date(),
-      historyList: [],
-      historyIndex: Int16(0))
+      interactionState: Data(),
+      order: 0)
     
     let url2 = URL(string: "https://www.wikipedia.org")!
     let title2 = "Wikipedia"
     
     let savedObject2 = SavedRecentlyClosed(
-      url: url2.absoluteString,
+      url: url2,
       title: title2,
       dateAdded: Date(),
-      historyList: [],
-      historyIndex: Int16(0))
+      interactionState: Data(),
+      order: 0)
     
     let savedRecentlyClosedList = [savedObject1, savedObject2]
     
@@ -69,8 +66,7 @@ class RecentlyClosedTests: CoreDataTestCase {
     let savedUrl = URL(string: "https://brave.com")!
 
     let title1 = "Brave"
-
-    let object1 = createAndWait(url: savedUrl, title: title1)
+    createAndWait(url: savedUrl, title: title1)
 
     XCTAssertNil(RecentlyClosed.get(with: unsavedUrl.absoluteString))
     XCTAssertNotNil(RecentlyClosed.get(with: savedUrl.absoluteString))
@@ -133,14 +129,13 @@ class RecentlyClosedTests: CoreDataTestCase {
   }
   
   @discardableResult
-  private func createAndWait(url: URL, title: String, date: Date = Date(), historyList: [String] = [], historyIndex: Int = 0) -> RecentlyClosed {
+  private func createAndWait(url: URL, title: String, date: Date = Date(), historyIndex: Int = 0) -> RecentlyClosed {
     backgroundSaveAndWaitForExpectation {
       RecentlyClosed.insert(SavedRecentlyClosed(
-        url: url.absoluteString,
+        url: url,
         title: title,
-        dateAdded: date,
-        historyList: historyList,
-        historyIndex: Int16(historyIndex)))
+        interactionState: Data(),
+        order: Int32(historyIndex)))
     }
 
     let predicate = NSPredicate(format: "\(#keyPath(RecentlyClosed.url)) == %@", url.absoluteString)

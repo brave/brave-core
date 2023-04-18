@@ -101,11 +101,11 @@ struct BraveButtonStyle_Previews: PreviewProvider {
       HStack {
         ForEach([false, true], id: \.self) { disabled in
           VStack {
-            ForEach(defaultSizes.indices, id: \.self) { index in
+            ForEach(defaultSizes.indices, id: \.self) { historyIndex in
               Button(action: {}) {
                 Text(verbatim: "Button text")
               }
-              .buttonStyle(BraveFilledButtonStyle(size: defaultSizes[index]))
+              .buttonStyle(BraveFilledButtonStyle(size: defaultSizes[historyIndex]))
               .disabled(disabled)
             }
           }
@@ -115,11 +115,11 @@ struct BraveButtonStyle_Previews: PreviewProvider {
       HStack {
         ForEach([false, true], id: \.self) { disabled in
           VStack {
-            ForEach(defaultSizes.indices, id: \.self) { index in
+            ForEach(defaultSizes.indices, id: \.self) { historyIndex in
               Button(action: {}) {
                 Text(verbatim: "Button text")
               }
-              .buttonStyle(BraveOutlineButtonStyle(size: defaultSizes[index]))
+              .buttonStyle(BraveOutlineButtonStyle(size: defaultSizes[historyIndex]))
               .disabled(disabled)
             }
           }

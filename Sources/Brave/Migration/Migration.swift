@@ -9,6 +9,7 @@ import SwiftKeychainWrapper
 import Data
 import BraveCore
 import Growth
+import Storage
 import os.log
 
 public class Migration {
@@ -69,6 +70,103 @@ public class Migration {
       destinationName: "CookiesData.json",
       destinationLocation: .applicationSupportDirectory)
   }
+  
+  // Migrate from TabMO to SessionTab and SessionWindow
+  public static func migrateTabStateToWebkitState(diskImageStore: DiskImageStore?) {
+    if Preferences.Migration.tabsMigrationToWebKitCompleted.value {
+      return
+    }
+    
+    // Get all the old Tabs from TabMO
+    let oldTabIDs = TabMO.getAll().map({ $0.objectID })
+    let isPrivate = PrivateBrowsingManager.shared.isPrivateBrowsing
+
+    // Nothing to migrate
+    if oldTabIDs.isEmpty {
+      // Create a SessionWindow (default window)
+      // Set the window selected by default
+      TabMO.migrate { context in
+        _ = SessionWindow(context: context, index: 0, isPrivate: isPrivate, isSelected: true)
+      }
+      
+      Preferences.Migration.tabsMigrationToWebKitCompleted.value = true
+      return
+    }
+    
+    TabMO.migrate { context in
+      let oldTabs = oldTabIDs.compactMap({ context.object(with: $0) as? TabMO })
+      if oldTabs.isEmpty { return }  // Migration failed
+
+      // Create a SessionWindow (default window)
+      // Set the window selected by default
+      let sessionWindow = SessionWindow(context: context, index: 0, isPrivate: isPrivate, isSelected: true)
+      
+      oldTabs.forEach { oldTab in
+        guard let urlString = oldTab.url,
+              let url = NSURL(idnString: urlString) as? URL ?? URL(string: urlString) else {
+          return
+        }
+        
+        var tabId: UUID
+        if let syncUUID = oldTab.syncUUID {
+          tabId = UUID(uuidString: syncUUID) ?? UUID()
+        } else {
+          tabId = UUID()
+        }
+        
+        var historyURLs = [URL]()
+        let tabTitle = oldTab.title ?? Strings.newTab
+        let historySnapshot = oldTab.urlHistorySnapshot as? [String] ?? []
+        
+        for url in historySnapshot {
+          guard let url = NSURL(idnString: url) as? URL ?? URL(string: url) else { continue }
+          if let internalUrl = InternalURL(url), !internalUrl.isAuthorized, let authorizedURL = InternalURL.authorize(url: url) {
+            historyURLs.append(authorizedURL)
+          } else {
+            historyURLs.append(url)
+          }
+        }
+
+        // currentPage is -webView.backForwardList.forwardList.count
+        let currentPage = (historyURLs.count - 1) + Int(oldTab.urlHistoryCurrentIndex)
+        
+        // Create WebKit interactionState
+        let interactionState = SynthesizedSessionRestore.serialize(withTitle: tabTitle,
+                                                                   historyURLs: historyURLs,
+                                                                   pageIndex: UInt(currentPage),
+                                                                   isPrivateBrowsing: isPrivate)
+        
+        var screenshot = Data()
+        if let imageStore = diskImageStore, let screenshotUUID = oldTab.screenshotUUID {
+          do {
+            let image = try imageStore.getSynchronously(screenshotUUID)
+            if let data = image.jpegData(compressionQuality: CGFloat(UIConstants.screenshotQuality)) {
+              screenshot = data
+            }
+          } catch {
+            Logger.module.error("Failed to migrate screenshot for Tab: \(error)")
+          }
+        }
+        
+        // Create SessionTab and associate it with a SessionWindow
+        // Tabs currently do not have groups, so sessionTabGroup is nil by default
+        _ = SessionTab(context: context,
+                       sessionWindow: sessionWindow,
+                       sessionTabGroup: nil,
+                       index: Int32(oldTab.order),
+                       interactionState: interactionState,
+                       isPrivate: isPrivate,
+                       isSelected: oldTab.isSelected,
+                       lastUpdated: oldTab.lastUpdate ?? .now,
+                       screenshotData: screenshot,
+                       title: tabTitle,
+                       url: url,
+                       tabId: tabId)
+      }
+      
+      Preferences.Migration.tabsMigrationToWebKitCompleted.value = true
+    }
+  }
 
   public static func postCoreDataInitMigrations() {
     if Preferences.Migration.coreDataCompleted.value { return }
@@ -100,6 +198,8 @@ fileprivate extension Preferences {
     /// A new preference key will be introduced in 1.44.x, indicates if Wallet Preferences migration has completed
     static let walletProviderAccountRequestCompleted =
     Option<Bool>(key: "migration.wallet-provider-account-request-completed", default: false)
+
+    static let tabsMigrationToWebKitCompleted = Option<Bool>(key: "migration.tabs-to-webkit", default: false)
   }
 
   /// Migrate a given key from `Prefs` into a specific option

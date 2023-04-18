@@ -105,8 +105,8 @@ class MockJsonRpcService: BraveWalletJsonRpcService {
   }
   
   func removeChain(_ chainId: String, coin: BraveWallet.CoinType, completion: @escaping (Bool) -> Void) {
-    if let index = networks.firstIndex(where: { $0.chainId == chainId }) {
-      networks.remove(at: index)
+    if let historyIndex = networks.firstIndex(where: { $0.chainId == chainId }) {
+      networks.remove(at: historyIndex)
       completion(true)
     } else {
       completion(false)

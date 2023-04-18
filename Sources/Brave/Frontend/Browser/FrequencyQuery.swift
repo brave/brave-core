@@ -83,32 +83,27 @@ class FrequencyQuery {
       if PrivateBrowsingManager.shared.isPrivateBrowsing {
         if let url = tab.url, url.isWebPage(), !(InternalURL(url)?.isAboutHomeURL ?? false) {
           
-          if let selectedTabID = tabManager.selectedTab?.id, let tabID = tab.id, selectedTabID == tabID {
+          if let selectedTabID = tabManager.selectedTab?.id, selectedTabID == tab.id {
             continue
           }
           
-          tabList.append(Site(url: url.absoluteString, title: tab.displayTitle, siteType: .tab, tabID: tab.id))
+          tabList.append(Site(url: url.absoluteString, title: tab.displayTitle, siteType: .tab, tabID: tab.id.uuidString))
         }
       } else {
         var tabURL: URL?
         
         if let url = tab.url {
           tabURL = url
-        } else if let tabID = tab.id {
-          let fetchedTab = TabMO.get(fromId: tabID)
-          
-          if let urlString = fetchedTab?.url, let url = URL(string: urlString) {
-            tabURL = url
-          }
+        } else if let fetchedTab = SessionTab.from(tabId: tab.id){
+          tabURL = fetchedTab.url
         }
         
         if let url = tabURL, url.isWebPage(), !(InternalURL(url)?.isAboutHomeURL ?? false) {
-          
-          if let selectedTabID = tabManager.selectedTab?.id, let tabID = tab.id, selectedTabID == tabID {
+          if let selectedTabID = tabManager.selectedTab?.id, selectedTabID == tab.id {
             continue
           }
           
-          tabList.append(Site(url: url.absoluteString, title: tab.title ?? tab.displayTitle, siteType: .tab, tabID: tab.id))
+          tabList.append(Site(url: url.absoluteString, title: tab.title, siteType: .tab, tabID: tab.id.uuidString))
         }
       }
     }

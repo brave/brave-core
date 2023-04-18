@@ -50,6 +50,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // initialization. This is because Database container may change. See bugs #3416, #3377.
     DataController.shared.initializeOnce()
     Migration.postCoreDataInitMigrations()
+    Migration.migrateTabStateToWebkitState(diskImageStore: sceneInfo.diskImageStore)
     
     Task(priority: .high) {
       // Start preparing the ad-block services right away

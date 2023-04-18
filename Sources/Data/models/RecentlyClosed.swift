@@ -10,26 +10,26 @@ import os.log
 
 public struct SavedRecentlyClosed {
   public let url: String
-  public let title: String?
-  public let dateAdded: Date?
-  public let historyList: [String]
-  public let historyIndex: Int16
+  public let title: String
+  public let dateAdded: Date
+  public let interactionState: Data
+  public let index: Int32
 
-  public init(url: String, title: String?, dateAdded: Date? = Date(), historyList: [String], historyIndex: Int16) {
-    self.url = url
+  public init(url: URL, title: String, dateAdded: Date = .now, interactionState: Data, order: Int32) {
+    self.url = url.absoluteString
     self.title = title
     self.dateAdded = dateAdded
-    self.historyList = historyList
-    self.historyIndex = historyIndex
+    self.interactionState = interactionState
+    self.index = order
   }
 }
 
 public final class RecentlyClosed: NSManagedObject, CRUD {
   @NSManaged public var url: String
   @NSManaged public var title: String?
-  @NSManaged public var dateAdded: Date?
-  @NSManaged public var historyList: NSArray?  // List of urls for back forward navigation
-  @NSManaged public var historyIndex: Int16
+  @NSManaged public var dateAdded: Date
+  @NSManaged public var interactionState: Data?
+  @NSManaged public var historyIndex: Int32
   
   public class func get(with url: String) -> RecentlyClosed? {
     return getInternal(with: url)
@@ -53,20 +53,7 @@ public final class RecentlyClosed: NSManagedObject, CRUD {
   }
   
   public class func insert(_ saved: SavedRecentlyClosed) {
-    DataController.perform { context in
-      guard let entity = entity(in: context) else {
-        Logger.module.error("Error fetching the entity 'Recently Closed' from Managed Object-Model")
-  
-        return
-      }
-  
-      let source = RecentlyClosed(entity: entity, insertInto: context)
-      source.url = saved.url
-      source.title = saved.title
-      source.dateAdded = saved.dateAdded
-      source.historyList = saved.historyList as NSArray
-      source.historyIndex = saved.historyIndex
-    }
+    Self.insertAll([saved])
   }
   
   public class func insertAll(_ savedList: [SavedRecentlyClosed]) {
@@ -77,8 +64,8 @@ public final class RecentlyClosed: NSManagedObject, CRUD {
           source.url = saved.url
           source.title = saved.title
           source.dateAdded = saved.dateAdded
-          source.historyList = saved.historyList as NSArray
-          source.historyIndex = saved.historyIndex
+          source.interactionState = saved.interactionState
+          source.historyIndex = saved.index
         }
       }
     }
@@ -102,7 +89,7 @@ public final class RecentlyClosed: NSManagedObject, CRUD {
   private class func getInternal(
     with url: String,
     context: NSManagedObjectContext = DataController.viewContext) -> RecentlyClosed? {
-    let predicate = NSPredicate(format: "\(#keyPath(RecentlyClosed.url)) == %@", url)
+      let predicate = NSPredicate(format: "\(#keyPath(RecentlyClosed.url)) == %@", argumentArray: [url])
 
     return first(where: predicate, context: context)
   }
