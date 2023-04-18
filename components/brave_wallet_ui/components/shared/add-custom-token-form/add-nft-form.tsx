@@ -287,7 +287,12 @@ export const AddNftForm = (props: Props) => {
   return (
     <FormWrapper onClick={onHideNetworkDropDown}>
       <FullWidthFormColumn>
-        <InputLabel>{getLocale('braveWalletWatchListTokenAddress')}</InputLabel>
+        <InputLabel>
+          {customAssetsNetwork?.coin === BraveWallet.CoinType.SOL
+            ? getLocale('braveWalletTokenMintAddress')
+            : getLocale('braveWalletWatchListTokenAddress')
+          }
+        </InputLabel>
         <Input
           value={tokenContractAddress}
           onChange={handleTokenAddressChanged}
@@ -336,7 +341,7 @@ export const AddNftForm = (props: Props) => {
       <>
         {showTokenIDRequired &&
           <ErrorText>{getLocale('braveWalletWatchListTokenIdError')}</ErrorText>
-          }
+        }
       </>
       {hasError &&
         <ErrorText>{getLocale('braveWalletWatchListError')}</ErrorText>
