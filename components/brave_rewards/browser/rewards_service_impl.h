@@ -506,18 +506,7 @@ class RewardsServiceImpl : public RewardsService,
   void ClearState(const std::string& name,
                   ClearStateCallback callback) override;
 
-  void GetBooleanOption(const std::string& name,
-                        GetBooleanOptionCallback callback) override;
-  void GetIntegerOption(const std::string& name,
-                        GetIntegerOptionCallback callback) override;
-  void GetDoubleOption(const std::string& name,
-                       GetDoubleOptionCallback callback) override;
-  void GetStringOption(const std::string& name,
-                       GetStringOptionCallback callback) override;
-  void GetInt64Option(const std::string& name,
-                      GetInt64OptionCallback callback) override;
-  void GetUint64Option(const std::string& name,
-                       GetUint64OptionCallback callback) override;
+  void IsBitFlyerRegion(IsBitFlyerRegionCallback callback) override;
 
   void PublisherListNormalized(
       std::vector<ledger::mojom::PublisherInfoPtr> list) override;
@@ -599,7 +588,7 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnDiagnosticLogDeleted(DeleteLogCallback callback, bool success);
 
-  bool IsBitFlyerRegion() const;
+  bool IsBitFlyerCountry() const;
 
   bool IsValidWalletType(const std::string& wallet_type) const;
 

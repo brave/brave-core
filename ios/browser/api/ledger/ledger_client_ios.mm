@@ -166,29 +166,8 @@ void LedgerClientIOS::ShowNotification(const std::string& type,
                                        ShowNotificationCallback callback) {
   [bridge_ showNotification:type args:args callback:std::move(callback)];
 }
-void LedgerClientIOS::GetBooleanOption(const std::string& name,
-                                       GetBooleanOptionCallback callback) {
-  [bridge_ booleanOption:name callback:std::move(callback)];
-}
-void LedgerClientIOS::GetIntegerOption(const std::string& name,
-                                       GetIntegerOptionCallback callback) {
-  [bridge_ integerOption:name callback:std::move(callback)];
-}
-void LedgerClientIOS::GetDoubleOption(const std::string& name,
-                                      GetDoubleOptionCallback callback) {
-  [bridge_ doubleOption:name callback:std::move(callback)];
-}
-void LedgerClientIOS::GetStringOption(const std::string& name,
-                                      GetStringOptionCallback callback) {
-  [bridge_ stringOption:name callback:std::move(callback)];
-}
-void LedgerClientIOS::GetInt64Option(const std::string& name,
-                                     GetInt64OptionCallback callback) {
-  [bridge_ int64Option:name callback:std::move(callback)];
-}
-void LedgerClientIOS::GetUint64Option(const std::string& name,
-                                      GetUint64OptionCallback callback) {
-  [bridge_ uint64Option:name callback:std::move(callback)];
+void LedgerClientIOS::IsBitFlyerRegion(IsBitFlyerRegionCallback callback) {
+  [bridge_ isBitFlyerRegion:std::move(callback)];
 }
 void LedgerClientIOS::GetClientInfo(GetClientInfoCallback callback) {
   [bridge_ clientInfo:std::move(callback)];

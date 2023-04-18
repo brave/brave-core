@@ -62,7 +62,6 @@ source_set("headers") {
     "ledger_database.cc",
     "ledger_database.h",
     "mojom_structs.h",
-    "option_keys.h",
   ]
 
   deps = [ "//sql:sql" ]
