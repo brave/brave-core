@@ -97,7 +97,8 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
 
         btnAdd.setOnClickListener(v -> {
             if (mKeyringService == null) return;
-            @CoinType.EnumType int coinType = mCryptoAccountTypeInfo.getCoinType();
+            @CoinType.EnumType
+            int coinType = mCryptoAccountTypeInfo.getCoinType();
             if (mIsUpdate) {
                 updateAccountName(coinType);
             } else if (!TextUtils.isEmpty(mPrivateKeyControl.getText().toString())) {
@@ -183,13 +184,11 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
     private void handleUpdateAccount(boolean result) {
         if (result) {
             Intent returnIntent = new Intent();
-            returnIntent.putExtra(
-                    Utils.NAME, mAddAccountText.getText().toString());
+            returnIntent.putExtra(Utils.NAME, mAddAccountText.getText().toString());
             setResult(Activity.RESULT_OK, returnIntent);
             finish();
         } else {
-            mAddAccountText.setError(
-                    getString(R.string.account_update_failed));
+            mAddAccountText.setError(getString(R.string.account_update_failed));
         }
     }
 
@@ -199,14 +198,10 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
 
         if (mIsImported) {
             mKeyringService.setKeyringImportedAccountName(
-                    keyring, mAddress, accountName, result -> {
-                        handleUpdateAccount(result);
-                    });
+                    keyring, mAddress, accountName, result -> { handleUpdateAccount(result); });
         } else {
             mKeyringService.setKeyringDerivedAccountName(
-                    keyring, mAddress, accountName, result -> {
-                        handleUpdateAccount(result);
-                    });
+                    keyring, mAddress, accountName, result -> { handleUpdateAccount(result); });
         }
     }
 
@@ -231,9 +226,7 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
             // Import account from JSON.
             String accountPassword = mImportAccountPasswordText.getText().toString();
             mKeyringService.importAccountFromJson(accountName, accountPassword, privateKey,
-                    (result, address) -> {
-                        handleImportAccount(result, true);
-                    });
+                    (result, address) -> { handleImportAccount(result, true); });
         } else {
             // Import account from string.
             if (coinType == CoinType.FIL) {
@@ -250,8 +243,8 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
     private void addAccount(@CoinType.EnumType int coinType) {
         // `KeyringModel#addAccount()` checks the coin type and applies the correct
         // API: when coin type is Filecoin, it calls `KeyringModel#addFilecoinAccount`.
-        mWalletModel.getKeyringModel().addAccount(mAddAccountText.getText().toString(), coinType,
-                result -> {
+        mWalletModel.getKeyringModel().addAccount(
+                mAddAccountText.getText().toString(), coinType, result -> {
                     if (result) {
                         setResult(Activity.RESULT_OK);
                         finish();
