@@ -68,7 +68,8 @@ BraveVpnServiceFactory::~BraveVpnServiceFactory() = default;
 
 KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  if (!brave_vpn::IsAllowedForContext(context)) {
+  if (!brave_vpn::IsAllowedForContext(context) ||
+      !g_brave_browser_process->brave_vpn_os_connection_api()) {
     return nullptr;
   }
 
