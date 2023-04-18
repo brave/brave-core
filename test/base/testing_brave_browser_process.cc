@@ -155,7 +155,6 @@ TestingBraveBrowserProcess::brave_farbling_service() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 brave_vpn::BraveVPNOSConnectionAPI*
 TestingBraveBrowserProcess::brave_vpn_os_connection_api() {
-  NOTREACHED();
   return nullptr;
 }
 #endif
