@@ -22,7 +22,8 @@ void RegisterFeatureUsagePrefs(PrefRegistrySimple* registry,
                                const char* first_use_time_pref_name,
                                const char* last_use_time_pref_name,
                                const char* used_second_day_pref_name,
-                               const char* days_in_month_used_pref_name);
+                               const char* days_in_month_used_pref_name,
+                               const char* days_in_week_used_pref_name);
 
 // Updates the first/last use time preferences which will be used by
 // the metric recording functions below. To be called for each usage of the
@@ -45,7 +46,9 @@ void MaybeRecordFeatureExistingUsageTimestamp(
     const char* last_use_time_pref_name,
     base::Time external_last_use_timestamp);
 
-// Records the NewUserReturning metric.
+// Records the NewUserReturning metric. If `active_users_only` is enabled,
+// the metric will only be reported for users that have used the feature at
+// least once.
 //
 // Question: As a first time user of the feature this week,
 //           did I return again to use it during the week?
@@ -64,7 +67,8 @@ void RecordFeatureNewUserReturning(PrefService* prefs,
                                    const char* last_use_time_pref_name,
                                    const char* used_second_day_pref_name,
                                    const char* histogram_name,
-                                   bool write_to_histogram = true);
+                                   bool write_to_histogram = true,
+                                   bool active_users_only = false);
 
 // Records the DaysInMonthUsed metric. Will not report if feature never used.
 //
@@ -94,6 +98,22 @@ void RecordFeatureDaysInMonthUsed(PrefService* prefs,
                                   const char* days_in_month_used_pref_name,
                                   const char* histogram_name,
                                   bool write_to_histogram = true);
+
+// Records the DaysInWeekUsed metric. Will only record histogram
+// value when sum is above 0. This is best used as an ephemeral metric,
+// so we can stop reporting when a user is no longer "active".
+//
+// Question: As an opted in feature user, how many days did I
+//           use the feature in the last 7 days?
+// Answers:
+// 1. 1 to 2 days
+// 2. 3 to 4 days
+// 3. 5 to 6 days
+// 4. 7 days
+void RecordFeatureDaysInWeekUsed(PrefService* prefs,
+                                 bool is_add,
+                                 const char* days_in_week_used_pref_name,
+                                 const char* histogram_name);
 
 // Records the LastUsageTime metric. Will not report if feature never used.
 //

@@ -14,9 +14,11 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/playlist/browser/playlist_download_request_manager.h"
 #include "brave/components/playlist/browser/playlist_media_file_download_manager.h"
+#include "brave/components/playlist/browser/playlist_p3a.h"
 #include "brave/components/playlist/browser/playlist_thumbnail_downloader.h"
 #include "brave/components/playlist/browser/playlist_types.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
@@ -95,8 +97,10 @@ class PlaylistService : public KeyedService,
       base::StrongAlias<class PlaylistItemIdTag, std::string>;
 
   PlaylistService(content::BrowserContext* context,
+                  PrefService* local_state,
                   MediaDetectorComponentManager* manager,
-                  std::unique_ptr<Delegate> delegate);
+                  std::unique_ptr<Delegate> delegate,
+                  base::Time browser_first_run_time);
   ~PlaylistService() override;
   PlaylistService(const PlaylistService&) = delete;
   PlaylistService& operator=(const PlaylistService&) = delete;
@@ -326,6 +330,8 @@ class PlaylistService : public KeyedService,
   std::unique_ptr<PlaylistThumbnailDownloader> thumbnail_downloader_;
 
   std::unique_ptr<PlaylistDownloadRequestManager> download_request_manager_;
+
+  PlaylistP3A playlist_p3a_;
 
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   raw_ptr<PrefService> prefs_ = nullptr;

@@ -54,10 +54,13 @@ std::vector<base::FilePath> GetOrphanedPaths(
 }  // namespace
 
 PlaylistService::PlaylistService(content::BrowserContext* context,
+                                 PrefService* local_state,
                                  MediaDetectorComponentManager* manager,
-                                 std::unique_ptr<Delegate> delegate)
+                                 std::unique_ptr<Delegate> delegate,
+                                 base::Time browser_first_run_time)
     : delegate_(std::move(delegate)),
       base_dir_(context->GetPath().Append(kBaseDirName)),
+      playlist_p3a_(local_state, browser_first_run_time),
       prefs_(user_prefs::UserPrefs::Get(context)) {
   content::URLDataSource::Add(context,
                               std::make_unique<PlaylistDataSource>(this));
@@ -391,6 +394,8 @@ void PlaylistService::GetAllPlaylists(GetAllPlaylistsCallback callback) {
   }
 
   std::move(callback).Run(std::move(playlists));
+
+  playlist_p3a_.ReportNewUsage();
 }
 
 void PlaylistService::GetPlaylist(const std::string& id,
@@ -406,6 +411,8 @@ void PlaylistService::GetPlaylist(const std::string& id,
 
   const auto& items_dict = prefs_->GetDict(kPlaylistItemsPref);
   std::move(callback).Run(ConvertValueToPlaylist(*playlist_dict, items_dict));
+
+  playlist_p3a_.ReportNewUsage();
 }
 
 void PlaylistService::GetAllPlaylistItems(
@@ -572,6 +579,8 @@ void PlaylistService::CreatePlaylistItem(const mojom::PlaylistItemPtr& item,
                      weak_factory_.GetWeakPtr(), item.Clone(), cache,
                      /*update_media_src_and_retry_on_fail=*/false,
                      base::NullCallback()));
+
+  playlist_p3a_.ReportNewUsage();
 }
 
 bool PlaylistService::ShouldGetMediaFromBackgroundWebContents(
