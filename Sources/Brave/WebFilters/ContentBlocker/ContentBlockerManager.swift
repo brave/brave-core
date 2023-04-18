@@ -194,7 +194,7 @@ actor ContentBlockerManager {
     }
     
     // Get rule lists for filter lists
-    let filterLists = FilterListResourceDownloader.shared.filterLists
+    let filterLists = FilterListStorage.shared.filterLists
     let additionalRuleLists = filterLists.compactMap { filterList -> BlocklistType? in
       guard filterList.isEnabled else { return nil }
       return .filterList(uuid: filterList.uuid)

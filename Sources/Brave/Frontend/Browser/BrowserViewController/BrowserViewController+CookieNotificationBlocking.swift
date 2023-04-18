@@ -18,7 +18,7 @@ extension BrowserViewController {
     }
     
     // Don't show this if we already enabled the setting
-    guard !FilterListResourceDownloader.shared.isEnabled(for: FilterList.cookieConsentNoticesComponentID) else { return }
+    guard !FilterListStorage.shared.isEnabled(for: FilterList.cookieConsentNoticesComponentID) else { return }
     // Don't show this if we are presenting another popup already
     guard !isOnboardingOrFullScreenCalloutPresented else { return }
     // We only show the popup on second launch

@@ -35,7 +35,7 @@ public actor LaunchHelper {
       
       // Load cached data
       // This is done first because compileResources need their results
-      async let filterListCache: Void = FilterListResourceDownloader.shared.loadCachedData()
+      async let filterListCache: Void = FilterListResourceDownloader.shared.loadFilterListSettingsAndCachedData()
       async let adblockResourceCache: Void = AdblockResourceDownloader.shared.loadCachedAndBundledDataIfNeeded()
       async let filterListURLCache: Void = FilterListCustomURLDownloader.shared.loadCachedFilterLists()
       _ = await (filterListCache, adblockResourceCache, filterListURLCache)
@@ -81,7 +81,7 @@ public actor LaunchHelper {
   /// Get all possible types of blocklist types available in this app, this includes actual and potential types
   /// This is used to delete old filter lists so that we clean up old stuff
   @MainActor private func getAllValidBlocklistTypes() -> Set<ContentBlockerManager.BlocklistType> {
-    return FilterListResourceDownloader.shared.filterLists
+    return FilterListStorage.shared.filterLists
       // All filter lists blocklist types
       .reduce(Set<ContentBlockerManager.BlocklistType>()) { partialResult, filterList in
         return partialResult.union([.filterList(uuid: filterList.uuid)])

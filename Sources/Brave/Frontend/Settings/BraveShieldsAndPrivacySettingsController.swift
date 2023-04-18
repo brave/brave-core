@@ -61,7 +61,7 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
     ]
     
     // Listen to changes on filter lists so we know we need to reload the section
-    FilterListResourceDownloader.shared.$filterLists
+    FilterListStorage.shared.$filterLists
       .sink { filterLists in
         Task { @MainActor in
           // Check if we need to update the cookie consent switch
@@ -219,11 +219,11 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
     return .boolRow(
       uuid: self.blockSwitchToAppNoticesRowUUID,
       title: Strings.blockMobileAnnoyances,
-      toggleValue: FilterListResourceDownloader.shared.isEnabled(
+      toggleValue: FilterListStorage.shared.isEnabled(
         for: FilterList.mobileAnnoyancesComponentID
       ),
       valueChange: { isEnabled in
-        FilterListResourceDownloader.shared.enableFilterList(
+        FilterListStorage.shared.enableFilterList(
           for: FilterList.mobileAnnoyancesComponentID, isEnabled: isEnabled
         )
       }, cellReuseId: "blockSwitchToAppNoticesReuseIdentifier"
@@ -355,11 +355,11 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
     return .boolRow(
       uuid: self.cookieConsentNoticesRowUUID,
       title: Strings.blockCookieConsentNotices,
-      toggleValue: FilterListResourceDownloader.shared.isEnabled(
+      toggleValue: FilterListStorage.shared.isEnabled(
         for: FilterList.cookieConsentNoticesComponentID
       ),
       valueChange: { isEnabled in
-        FilterListResourceDownloader.shared.enableFilterList(
+        FilterListStorage.shared.enableFilterList(
           for: FilterList.cookieConsentNoticesComponentID, isEnabled: isEnabled
         )
       }, cellReuseId: "blockCookieConsentNoticesReuseIdentifier"

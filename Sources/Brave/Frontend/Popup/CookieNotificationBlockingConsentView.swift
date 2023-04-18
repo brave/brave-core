@@ -29,7 +29,7 @@ struct CookieNotificationBlockingConsentView: View {
       }
       
       Task { @MainActor in
-        FilterListResourceDownloader.shared.enableFilterList(
+        FilterListStorage.shared.enableFilterList(
           for: FilterList.cookieConsentNoticesComponentID, isEnabled: true
         )
         
