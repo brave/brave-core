@@ -156,6 +156,13 @@ void BraveVpnService::OnRegionDataReady(bool success) {
   }
 
   wait_region_data_ready_ = false;
+
+  // Happened weird state while waiting region data.
+  // Don't update purchased if current state is not loading state.
+  if (purchased_state_ != PurchasedState::LOADING) {
+    return;
+  }
+
   SetPurchasedState(GetCurrentEnvironment(), success ? PurchasedState::PURCHASED
                                                      : PurchasedState::FAILED);
 }
