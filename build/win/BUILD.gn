@@ -23,18 +23,41 @@ copy("copy_pdb") {
   deps = [ "//chrome:reorder_imports" ]
 }
 
-action("create_signed_installer") {
-  script = "//brave/script/create-signed-installer.py"
-  inputs = [ "$root_out_dir/mini_installer.exe" ]
-  outputs = [ "$root_out_dir/$brave_installer_exe" ]
-  args = [
-    "mini_installer.exe",
-    "$brave_installer_exe",
-  ]
-
+template("sign") {
+  assert(defined(invoker.sources),
+         "Need sources in $target_name listing the files to be signed.")
+  assert(defined(invoker.outputs),
+         "Need outputs in $target_name where signed files should be placed.")
+  assert(defined(invoker.deps), "Need deps in $target_name.")
   if (skip_signing) {
-    args += [ "--skip_signing" ]
+    copy(target_name) {
+      forward_variables_from(invoker,
+                             [
+                               "sources",
+                               "outputs",
+                               "deps",
+                             ])
+    }
+  } else {
+    action(target_name) {
+      forward_variables_from(invoker,
+                             [
+                               "sources",
+                               "outputs",
+                               "deps",
+                             ])
+      script = "//brave/script/sign_binaries.py"
+      args = [
+        rebase_path(sources[0], root_build_dir),
+        "--out_file",
+        rebase_path(outputs[0], root_build_dir),
+      ]
+    }
   }
+}
 
+sign("create_signed_installer") {
+  sources = [ "$root_out_dir/mini_installer.exe" ]
+  outputs = [ "$root_out_dir/$brave_installer_exe" ]
   deps = [ "//chrome/installer/mini_installer" ]
 }
