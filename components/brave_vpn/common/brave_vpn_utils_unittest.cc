@@ -217,7 +217,7 @@ TEST(BraveVPNUtilsUnitTest, IsBraveVPNEnabled) {
 }
 
 TEST(BraveVPNUtilsUnitTest, FeatureTest) {
-#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
+#if !BUILDFLAG(IS_LINUX)
   EXPECT_TRUE(brave_vpn::IsBraveVPNFeatureEnabled());
 #else
   EXPECT_FALSE(brave_vpn::IsBraveVPNFeatureEnabled());
