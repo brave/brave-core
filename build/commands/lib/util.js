@@ -496,10 +496,13 @@ const util = {
     if (!fs.existsSync(dir))
       fs.mkdirSync(dir);
 
-    fs.copySync(path.join(config.outputDir, 'brave.exe'), path.join(dir, 'brave.exe'));
-    fs.copySync(path.join(config.outputDir, 'chrome.dll'), path.join(dir, 'chrome.dll'));
-
-    util.run('python', [path.join(config.braveCoreDir, 'script', 'sign_binaries.py'), '--build_dir=' + dir])
+    const files = ['brave.exe', 'chrome.dll'];
+    files.forEach(file => {
+      const src = path.join(config.outputDir, file);
+      const dst = path.join(dir, file);
+      fs.copySync(src, dst);
+      util.run('python', [path.join(config.braveCoreDir, 'script', 'sign_binaries.py'), dst]);
+    });
   },
 
   // TODO(bridiver) - this should move to gn

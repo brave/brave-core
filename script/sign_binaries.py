@@ -63,14 +63,9 @@ def sign_binary(binary):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        '-b', '--build_dir', required=True,
-        help='Build directory. The paths in input_file are relative to this.')
+    parser.add_argument('file', help='the file to sign.')
     args = parser.parse_args()
-
-    args.build_dir = os.path.normpath(args.build_dir)
-
-    sign_binaries(args.build_dir, ('brave.exe', 'chrome.dll'))
+    sign_binary(args.file)
 
 
 if __name__ == '__main__':
