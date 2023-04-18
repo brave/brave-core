@@ -13,6 +13,8 @@ import { createModel } from './storybook_model'
 import { localeStrings } from '../lib/locale_strings'
 import { App } from '../components/app'
 
+import '@brave/leo/tokens/css/variables.css'
+
 export default {
   title: 'Rewards/Tipping'
 }
