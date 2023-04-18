@@ -76,7 +76,7 @@ public class TokenUtils {
             boolean typeFilter;
             switch (tokenType) {
                 case NFTS:
-                    typeFilter = !t.isErc721 && !t.isNft;
+                    typeFilter = !t.isNft;
                     break;
                 case ERC20:
                     typeFilter = !t.isErc20;
@@ -88,7 +88,7 @@ public class TokenUtils {
                     typeFilter = t.coin != CoinType.SOL;
                     break;
                 case NON_NFTS:
-                    typeFilter = t.isErc721 || t.isNft;
+                    typeFilter = t.isNft;
                     break;
                 case ALL:
                     typeFilter = false;
@@ -118,6 +118,35 @@ public class TokenUtils {
                 });
     }
 
+    /**
+     * Get tokens of all networks from <code>networkInfos<code/> list.
+     * @param blockchainRegistry to get tokens from core
+     * @param callback to get array of tokens
+     */
+    public static void getAllTokensFiltered(BlockchainRegistry blockchainRegistry,
+            List<NetworkInfo> networkInfos, TokenType tokenType,
+            Callbacks.Callback1<BlockchainToken[]> callback) {
+        AsyncUtils.MultiResponseHandler allNetworkTokenCollector =
+                new AsyncUtils.MultiResponseHandler(networkInfos.size());
+        ArrayList<AsyncUtils.GetNetworkAllTokensContext> allTokenContexts = new ArrayList<>();
+
+        for (NetworkInfo networkInfo : networkInfos) {
+            AsyncUtils.GetNetworkAllTokensContext context =
+                    new AsyncUtils.GetNetworkAllTokensContext(
+                            allNetworkTokenCollector.singleResponseComplete, networkInfo);
+            blockchainRegistry.getAllTokens(networkInfo.chainId, networkInfo.coin, context);
+            allTokenContexts.add(context);
+        }
+        allNetworkTokenCollector.setWhenAllCompletedAction(() -> {
+            callback.call(allTokenContexts.stream()
+                                  .map(context
+                                          -> filterTokens(context.networkInfo, context.tokens,
+                                                  tokenType, false))
+                                  .flatMap(tokens -> Arrays.stream(tokens))
+                                  .toArray(BlockchainToken[] ::new));
+        });
+    }
+
     /*
      * Wrapper for BlockchainRegistry.getAllTokens with Goerli contract address modifications.
      */
@@ -135,7 +164,7 @@ public class TokenUtils {
         getAllTokens(blockchainRegistry, selectedNetwork.chainId, coinType, tokens -> {
             braveWalletService.getUserAssets(selectedNetwork.chainId, coinType, userTokens -> {
                 BlockchainToken[] filteredTokens = filterTokens(selectedNetwork,
-                        concatenateTwoArrays(tokens, userTokens), tokenType, false);
+                        distinctiveConcatenatedArrays(tokens, userTokens), tokenType, false);
                 callback.call(filteredTokens);
             });
         });
@@ -187,7 +216,14 @@ public class TokenUtils {
         });
     }
 
-    private static BlockchainToken[] concatenateTwoArrays(
+    /**
+     * Concatenate arrays, add only elements of arraySecond that are not present in the arrayFirst
+     * @param arrayFirst first array to be added in the result
+     * @param arraySecond second array, only distinctive elements are added in result by comparing
+     *         with the items of arrayFirst
+     * @return concatenated array
+     */
+    public static BlockchainToken[] distinctiveConcatenatedArrays(
             BlockchainToken[] arrayFirst, BlockchainToken[] arraySecond) {
         List<BlockchainToken> both = new ArrayList<>();
 

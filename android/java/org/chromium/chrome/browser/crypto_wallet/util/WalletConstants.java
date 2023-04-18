@@ -1,3 +1,8 @@
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 package org.chromium.chrome.browser.crypto_wallet.util;
 
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
@@ -107,14 +112,19 @@ public final class WalletConstants {
     public static final String SOL_INS_SIG_VERIFY = "Ed25519SigVerify111111111111111111111111111";
     public static final String SOL_INS_SECP = "KeccakSecp256k11111111111111111111111111111";
 
-    public static final List<String> KNOWN_TEST_CHAIN_IDS = Arrays.asList(
-            BraveWalletConstants.GOERLI_CHAIN_ID, BraveWalletConstants.SEPOLIA_CHAIN_ID,
-            BraveWalletConstants.LOCALHOST_CHAIN_ID, BraveWalletConstants.SOLANA_TESTNET,
-            BraveWalletConstants.SOLANA_DEVNET /*, BraveWalletConstants.FILECOIN_TESTNET*/);
+    public static final List<String> KNOWN_TEST_CHAIN_IDS =
+            Arrays.asList(BraveWalletConstants.GOERLI_CHAIN_ID,
+                    BraveWalletConstants.SEPOLIA_CHAIN_ID, BraveWalletConstants.LOCALHOST_CHAIN_ID,
+                    BraveWalletConstants.SOLANA_TESTNET, BraveWalletConstants.SOLANA_DEVNET,
+                    BraveWalletConstants.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID
+                    /*, BraveWalletConstants.FILECOIN_TESTNET*/);
     // Todo(pav): uncomment FC when file coin is supported
 
     public static final List<Integer> SEND_TRANSACTION_TYPES = Arrays.asList(
             TransactionType.ETH_SEND, TransactionType.ERC20_TRANSFER,
             TransactionType.SOLANA_SYSTEM_TRANSFER, TransactionType.SOLANA_SPL_TOKEN_TRANSFER,
             TransactionType.SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION);
+
+    public static final List<String> UNSUPPORTED_NETWORKS = Arrays.asList(
+            BraveWalletConstants.FILECOIN_MAINNET, BraveWalletConstants.FILECOIN_TESTNET);
 }

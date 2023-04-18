@@ -40,6 +40,7 @@ import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
+import org.chromium.chrome.browser.crypto_wallet.activities.NetworkSelectorActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.NftDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletNftAdapter;
@@ -197,16 +198,13 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
 
         TextView editVisibleNft = view.findViewById(R.id.edit_visible_nfts);
         mRvNft = view.findViewById(R.id.rv_nft);
-        editVisibleNft.setOnClickListener(v -> { onEditVisibleAssetsClick(); });
+        editVisibleNft.setOnClickListener(v -> { showEditVisibleDialog(); });
     }
 
     private void openNetworkSelection() {
-        try {
-            BraveActivity activity = BraveActivity.getBraveActivity();
-            activity.openNetworkSelection(NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER, TAG);
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "Network selection cannot be opened.", e);
-        }
+        Intent intent = NetworkSelectorActivity.createIntent(
+                getContext(), NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER, TAG);
+        startActivity(intent);
     }
 
     private void setPositiveButtonAccountCreation(NetworkInfo networkInfo) {
@@ -300,32 +298,16 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
                 });
     }
 
-    private void onEditVisibleAssetsClick() {
-        NetworkInfo selectedNetwork = mNetworkInfo;
-        if (selectedNetwork == null) {
+    private void showEditVisibleDialog() {
+        if (mNetworkInfo == null) {
             return;
         }
 
-        // TODO(simone): Remove this workaround once all network option is supported by
-        // EditVisibleAssetsBottomSheetDialogFragment. This workaround is to show default network
-        // assets in EditVisibleAssetsBottomSheetDialogFragment when "All Networks" option is
-        // selected. Check also PortfolioFragment#onEditVisibleAssetsClick().
-        if (selectedNetwork.chainId.equals(
-                    NetworkUtils.getAllNetworkOption(getContext()).chainId)) {
-            LiveDataUtil.observeOnce(
-                    mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork,
-                    defaultNetwork -> { showEditVisibleAssetsDialog(defaultNetwork); });
-        } else {
-            showEditVisibleAssetsDialog(selectedNetwork);
-        }
-    }
-
-    private void showEditVisibleAssetsDialog(NetworkInfo selectedNetwork) {
         EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
                 EditVisibleAssetsBottomSheetDialogFragment.newInstance(
                         WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST, true);
 
-        bottomSheetDialogFragment.setSelectedNetwork(selectedNetwork);
+        bottomSheetDialogFragment.setSelectedNetwork(mNetworkInfo);
         bottomSheetDialogFragment.setDismissListener(
                 new EditVisibleAssetsBottomSheetDialogFragment.DismissListener() {
                     @Override

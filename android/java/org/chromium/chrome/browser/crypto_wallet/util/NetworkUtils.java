@@ -48,6 +48,11 @@ public class NetworkUtils {
         return sAllNetworksOption;
     }
 
+    public static boolean isAllNetwork(NetworkInfo networkInfo) {
+        if (networkInfo == null) return false;
+        return networkInfo.chainId.equals("all");
+    }
+
     public static List<NetworkInfo> nonTestNetwork(List<NetworkInfo> networkInfos) {
         if (networkInfos == null) return Collections.emptyList();
         return networkInfos.stream()

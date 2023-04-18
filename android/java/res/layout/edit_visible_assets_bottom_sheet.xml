@@ -30,26 +30,24 @@
             android:paddingVertical="8dp"
             android:textColor="@color/brave_action_color"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/edit_visible_tv_network"
+            app:layout_constraintEnd_toStartOf="@id/edit_visible_btn_network"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/edit_visible_tv_network"
-            style="@style/BraveWalletTextView"
-            android:background="@drawable/crypto_wallet_hollow_button"
-            android:gravity="center"
-            android:paddingHorizontal="8dp"
+        <android.widget.Button
+            android:id="@+id/edit_visible_btn_network"
+            style="@style/BraveWalletButtonHollow"
+            android:layout_width="0dp"
+            android:background="@drawable/rounded_holo_button"
+            android:minHeight="0dp"
             android:paddingVertical="2dp"
-            android:textStyle="bold"
-            android:visibility="gone"
             app:autoSizeTextType="uniform"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/add_custom_asset"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_min="80dp" />
-
+            app:layout_constraintWidth_min="80dp"
+            android:visibility="gone"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
