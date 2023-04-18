@@ -492,16 +492,13 @@ const util = {
   signWinBinaries: () => {
     // Copy & sign only binaries for widevine sig file generation.
     // With this, create_dist doesn't trigger rebuild because original binaries is not modified.
-    const dir = path.join(config.outputDir, 'signed_binaries')
-    if (!fs.existsSync(dir))
-      fs.mkdirSync(dir);
-
     const files = ['brave.exe', 'chrome.dll'];
+    const dstDir = path.join(config.outputDir, 'signed_binaries')
+    const sign = path.join(config.braveCoreDir, 'script', 'sign_binaries.py');
     files.forEach(file => {
       const src = path.join(config.outputDir, file);
-      const dst = path.join(dir, file);
-      fs.copySync(src, dst);
-      util.run('python', [path.join(config.braveCoreDir, 'script', 'sign_binaries.py'), dst]);
+      const dst = path.join(dstDir, file);
+      util.run('python3', [sign, src, '--out_file', dst]);
     });
   },
 

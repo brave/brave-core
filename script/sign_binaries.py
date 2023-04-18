@@ -7,9 +7,10 @@
 
 import argparse
 import os
-import subprocess
+import shutil
 import sys
 
+from os.path import abspath, dirname
 from lib.util import execute
 
 cert = os.environ.get('CERT')
@@ -50,7 +51,11 @@ def sign_binaries(base_dir, endswidth=('.exe', '.dll')):
         sign_binary(binary)
 
 
-def sign_binary(binary):
+def sign_binary(binary, out_file=None):
+    if out_file:
+        os.makedirs(dirname(abspath(out_file)), exist_ok=True)
+        shutil.copy(binary, out_file)
+        binary = out_file
     cmd = get_sign_cmd(binary)
     execute(cmd)
 
@@ -58,8 +63,11 @@ def sign_binary(binary):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('file', help='the file to sign.')
+    parser.add_argument('--out_file',
+                        help=('where to place the signed file. By default, the '
+                              'file is signed in-place.'))
     args = parser.parse_args()
-    sign_binary(args.file)
+    sign_binary(args.file, args.out_file)
 
 
 if __name__ == '__main__':
