@@ -137,6 +137,16 @@ export type AssetPriceById = BraveWallet.AssetPrice & {
  */
 let apiProxyFetcher = () => getAPIProxy()
 
+/**
+ * Assigns a function to use for fetching the walletApiProxy
+ * (useful for injecting spies during testing)
+ * @param fetcher A function to return the ref to either the main api proxy,
+ *  or a mocked proxy
+ */
+export const setApiProxyFetcher = (fetcher: () => WalletApiProxy) => {
+  apiProxyFetcher = fetcher
+}
+
 const emptyBalance = '0x0'
 
 type GetAccountTokenCurrentBalanceArg = {
@@ -193,7 +203,7 @@ let selectedPendingTransactionId: string = ''
   /**
    * A place to store & manage dependency data for other queries
   */
-  class BaseQueryCache {
+  export class BaseQueryCache {
     private _networksRegistry?: NetworksRegistry
     private _walletInfo?: BraveWallet.WalletInfo
     private _accountsRegistry?: AccountInfoEntityState
@@ -466,7 +476,8 @@ let selectedPendingTransactionId: string = ''
 export function createWalletApi (
   getProxy: () => WalletApiProxy = () => getAPIProxy()
 ) {
-  apiProxyFetcher = getProxy // update the proxy whenever a new api is created
+  // update the proxy whenever a new api is created
+  setApiProxyFetcher(getProxy)
 
   const baseQueryCache = new BaseQueryCache();
 
