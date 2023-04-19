@@ -494,6 +494,7 @@
 -ServiceWorker/ExtensionApiTabTestWithContextType.NoPermissions/0
 -ServiceWorker/ExtensionApiTabTestWithContextType.OnUpdated/0
 -ServiceWorker/ExtensionApiTabTestWithContextType.RemoveMultiple/0
+-SystemNetworkContextManagerWithCustomProxyConfigBrowserTest.InitialCustomProxyConfig
 -SystemNetworkContextManagerWithIpProtectionFlagsEnabledAndCommandLineSettingsEnabled.EnableIpProtectionProxyCommandLineOverridesFeature
 
 # These tests fail because we disable DIPS via dips::kFeature
