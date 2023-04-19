@@ -1,16 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkBridge.java b/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkBridge.java
-index bab4cb91f75cc8a8f3b238d6e658df93b8980af8..e987a732388af5965f69bc0ea1ef7104607e539c 100644
+index bab4cb91f75cc8a8f3b238d6e658df93b8980af8..51f8cd1361ae41dc43eb82af9dd0e3b7587ca835 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkBridge.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkBridge.java
-@@ -39,6 +39,7 @@ import org.chromium.components.power_bookmarks.PowerBookmarkMeta;
- import org.chromium.components.power_bookmarks.PowerBookmarkType;
- import org.chromium.components.power_bookmarks.ShoppingSpecifics;
- import org.chromium.content_public.browser.WebContents;
-+import org.chromium.ui.base.WindowAndroid;
- import org.chromium.url.GURL;
- 
- import java.util.ArrayList;
-@@ -1004,6 +1005,7 @@ class BookmarkBridge {
+@@ -1004,6 +1004,7 @@ class BookmarkBridge {
          }
          return pairList;
      }
@@ -18,10 +10,10 @@ index bab4cb91f75cc8a8f3b238d6e658df93b8980af8..e987a732388af5965f69bc0ea1ef7104
  
      @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
      @NativeMethods
-@@ -1082,5 +1084,6 @@ class BookmarkBridge {
+@@ -1082,5 +1083,6 @@ class BookmarkBridge {
          void reorderChildren(long nativeBookmarkBridge, BookmarkBridge caller, BookmarkId parent,
                  long[] orderedNodes);
          boolean isBookmarked(long nativeBookmarkBridge, GURL url);
-+        void importBookmarks(long nativeBookmarkBridge, BookmarkBridge caller, WindowAndroid window, String importFilePath); void exportBookmarks(long nativeBookmarkBridge, BookmarkBridge caller, WindowAndroid window, String exportFilePath);
++        void importBookmarks(long nativeBookmarkBridge, BookmarkBridge caller, org.chromium.ui.base.WindowAndroid window, String importFilePath); void exportBookmarks(long nativeBookmarkBridge, BookmarkBridge caller, org.chromium.ui.base.WindowAndroid window, String exportFilePath);
      }
  }
