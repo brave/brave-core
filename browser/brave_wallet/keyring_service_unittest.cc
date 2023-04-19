@@ -3542,11 +3542,7 @@ TEST_F(KeyringServiceUnitTest, PreCreateEncryptors) {
     ASSERT_TRUE(CreateWallet(&service, "brave"));
     EXPECT_NE(service.encryptors_.at(mojom::kDefaultKeyringId), nullptr);
     EXPECT_NE(service.encryptors_.at(mojom::kSolanaKeyringId), nullptr);
-#if BUILDFLAG(IS_ANDROID)
-    EXPECT_FALSE(service.encryptors_.contains(mojom::kFilecoinKeyringId));
-#else
     EXPECT_NE(service.encryptors_.at(mojom::kFilecoinKeyringId), nullptr);
-#endif
     service.Lock();
     base::test::ScopedFeatureList local_feature_list;
     local_feature_list.InitWithFeatures(
