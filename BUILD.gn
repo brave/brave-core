@@ -11,6 +11,7 @@ import("//build/config/zip.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//media/media_options.gni")
 import("//third_party/icu/config.gni")
+import("//third_party/widevine/cdm/widevine.gni")
 import("//tools/grit/repack.gni")
 import("//tools/v8_context_snapshot/v8_context_snapshot.gni")
 import("//ui/base/ui_features.gni")
@@ -112,6 +113,15 @@ if (is_win) {
 
   group("mini_installer_dependencies") {
     deps = [ ":brave" ]
+    if (enable_widevine && !skip_signing) {
+      deps += [
+        "//brave/browser/widevine:signed_brave_exe",
+        "//brave/browser/widevine:signed_chrome_dll",
+      ]
+      if (enable_cdm_host_verification) {
+        deps += [ "//brave/browser/widevine:sig_files" ]
+      }
+    }
   }
 }
 

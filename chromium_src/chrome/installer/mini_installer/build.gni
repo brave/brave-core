@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/config.gni")
+import("//third_party/widevine/cdm/widevine.gni")
 
 template("brave_mini_installer_archive_action") {
   assert(target_name == "mini_installer_archive")
@@ -13,6 +14,9 @@ template("brave_mini_installer_archive_action") {
     deps += [ "//brave:mini_installer_dependencies" ]
     if (skip_signing) {
       args += [ "--skip_signing" ]
+    }
+    if (enable_widevine) {
+      args += [ "--enable_widevine" ]
     }
   }
 }
