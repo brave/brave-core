@@ -1,17 +1,17 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
-index e64c0b3460fbdf1c79bef470f1e3da5361fa9818..73c468691d7f75c99632eb6fc8875e8d90f98ac4 100644
+index d2fe519e238bb7342a114405f3e083abea73322e..02f322222fe7e9e3a4ae6878887d3e06878cf7e3 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
-@@ -55,7 +55,7 @@ import org.chromium.ui.text.SpanApplier;
+@@ -59,7 +59,7 @@ import org.chromium.ui.text.SpanApplier;
  /**
   * Fragment to keep track of the all the privacy related preferences.
   */
 -public class PrivacySettings extends PreferenceFragmentCompat
 +public class PrivacySettings extends org.chromium.chrome.browser.settings.BravePreferenceFragment
-         implements Preference.OnPreferenceChangeListener, FragmentHelpAndFeedbackLauncher {
+         implements Preference.OnPreferenceChangeListener, FragmentHelpAndFeedbackLauncher,
+                    ProfileDependentSetting {
      private static final String PREF_CAN_MAKE_PAYMENT = "can_make_payment";
-     private static final String PREF_PRELOAD_PAGES = "preload_pages";
-@@ -296,6 +296,7 @@ public class PrivacySettings extends PreferenceFragmentCompat
+@@ -328,6 +328,7 @@ public class PrivacySettings extends PreferenceFragmentCompat
      @Override
      public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
          menu.clear();
@@ -19,7 +19,7 @@ index e64c0b3460fbdf1c79bef470f1e3da5361fa9818..73c468691d7f75c99632eb6fc8875e8d
          MenuItem help =
                  menu.add(Menu.NONE, R.id.menu_id_targeted_help, Menu.NONE, R.string.menu_help);
          help.setIcon(TraceEventVectorDrawableCompat.create(
-@@ -309,7 +310,7 @@ public class PrivacySettings extends PreferenceFragmentCompat
+@@ -341,7 +342,7 @@ public class PrivacySettings extends PreferenceFragmentCompat
                      getActivity(), getString(R.string.help_context_privacy), null);
              return true;
          }

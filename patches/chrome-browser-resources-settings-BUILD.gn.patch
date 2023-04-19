@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/resources/settings/BUILD.gn b/chrome/browser/resources/settings/BUILD.gn
-index 7cd038168ad555e02d04297be54c91187da8137e..8c28afed34b885c11e81f1484523fd8dcb75b964 100644
+index 69c8e93e55eb6f48e7b356eec886a0cdfe38630e..e9be3f156bec85a55971d1a3a64b8a5c78178d8a 100644
 --- a/chrome/browser/resources/settings/BUILD.gn
 +++ b/chrome/browser/resources/settings/BUILD.gn
-@@ -450,4 +450,5 @@ build_webui("build") {
-     optimize_webui_excludes =
-         [ "chrome://resources/mojo/skia/public/mojom/skcolor.mojom-webui.js" ]
+@@ -455,4 +455,5 @@ build_webui("build") {
    }
+ 
+   enable_source_maps = enable_webui_inline_sourcemaps
 +  import("//brave/browser/resources/settings/sources.gni") web_component_files += brave_settings_web_component_files non_web_component_files += brave_settings_non_web_component_files icons_html_files += brave_settings_icons_html_files exclude_html_css_preprocess_files = brave_settings_local_html_files exclude_ts_preprocess_files = brave_settings_local_ts_files preprocess_deps = brave_settings_preprocess_deps ts_extra_deps = brave_settings_ts_extra_deps ts_definitions += brave_settings_ts_definitions if (optimize_webui) { extra_grdp_deps += [ "//brave/browser/resources/settings:resources" ] }
  }

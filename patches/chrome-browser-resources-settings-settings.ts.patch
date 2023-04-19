@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/settings.ts b/chrome/browser/resources/settings/settings.ts
-index 22cc8c7f89a2d4684945dc521b9f555bfc8c4e75..b646b5210687d18ad1cb4a387d38eb54899357a1 100644
+index 3d8bd88fd8446cab9566534a0796bc3962f64871..d08dc461077d41a13adcfee8fba7b86ed87aee46 100644
 --- a/chrome/browser/resources/settings/settings.ts
 +++ b/chrome/browser/resources/settings/settings.ts
 @@ -2,6 +2,7 @@
@@ -9,4 +9,4 @@ index 22cc8c7f89a2d4684945dc521b9f555bfc8c4e75..b646b5210687d18ad1cb4a387d38eb54
 +import './brave_overrides/index.js';
  import './settings_ui/settings_ui.js';
  
- export {CrActionMenuElement} from 'chrome://resources/cr_elements/cr_action_menu/cr_action_menu.js';
+ export {prefToString, stringToPrefValue} from 'chrome://resources/cr_components/settings_prefs/pref_util.js';
