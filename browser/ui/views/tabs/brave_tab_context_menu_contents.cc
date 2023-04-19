@@ -65,45 +65,12 @@ void BraveTabContextMenuContents::RunMenuAt(const gfx::Point& point,
                           views::MenuAnchorPosition::kTopLeft, source_type);
 }
 
-bool BraveTabContextMenuContents::IsCommandIdChecked(int command_id) const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
-    return ui::SimpleMenuModel::Delegate::IsCommandIdChecked(command_id);
-
-  if (command_id == BraveTabMenuModel::CommandShowVerticalTabs)
-    return tabs::utils::ShouldShowVerticalTabs(browser_);
-
-  if (command_id == BraveTabMenuModel::CommandShowTitleBar) {
-    return tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser_);
-  }
-
-  if (command_id == BraveTabMenuModel::CommandUseFloatingVerticalTabStrip) {
-    return tabs::utils::IsFloatingVerticalTabsEnabled(browser_);
-  }
-
-  return ui::SimpleMenuModel::Delegate::IsCommandIdChecked(command_id);
-}
-
 bool BraveTabContextMenuContents::IsCommandIdEnabled(int command_id) const {
   if (IsBraveCommandId(command_id))
     return IsBraveCommandIdEnabled(command_id);
 
   return controller_->IsCommandEnabledForTab(
       static_cast<TabStripModel::ContextMenuCommand>(command_id), tab_);
-}
-
-bool BraveTabContextMenuContents::IsCommandIdVisible(int command_id) const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
-    return ui::SimpleMenuModel::Delegate::IsCommandIdVisible(command_id);
-
-  if (command_id == BraveTabMenuModel::CommandShowVerticalTabs)
-    return tabs::utils::SupportsVerticalTabs(browser_);
-
-  if (command_id == BraveTabMenuModel::CommandShowTitleBar ||
-      command_id == BraveTabMenuModel::CommandUseFloatingVerticalTabStrip) {
-    return tabs::utils::ShouldShowVerticalTabs(browser_);
-  }
-
-  return ui::SimpleMenuModel::Delegate::IsCommandIdVisible(command_id);
 }
 
 bool BraveTabContextMenuContents::GetAcceleratorForCommandId(
@@ -143,10 +110,6 @@ bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(
                chrome::CanBookmarkAllTabs(browser_);
       }
       break;
-    case BraveTabMenuModel::CommandShowTitleBar:
-    case BraveTabMenuModel::CommandShowVerticalTabs:
-    case BraveTabMenuModel::CommandUseFloatingVerticalTabStrip:
-      return true;
     case BraveTabMenuModel::CommandToggleTabMuted: {
       auto* model = static_cast<BraveTabStripModel*>(controller_->model());
       for (const auto& index : model->GetTabIndicesForCommandAt(tab_index_)) {
@@ -171,20 +134,6 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
     case BraveTabMenuModel::CommandBookmarkAllTabs:
       chrome::BookmarkAllTabs(browser_);
       return;
-    case BraveTabMenuModel::CommandShowVerticalTabs: {
-      brave::ToggleVerticalTabStrip(browser_);
-      BrowserView::GetBrowserViewForBrowser(browser_)->InvalidateLayout();
-      return;
-    }
-    case BraveTabMenuModel::CommandShowTitleBar: {
-      brave::ToggleWindowTitleVisibilityForVerticalTabs(browser_);
-      BrowserView::GetBrowserViewForBrowser(browser_)->InvalidateLayout();
-      return;
-    }
-    case BraveTabMenuModel::CommandUseFloatingVerticalTabStrip: {
-      brave::ToggleVerticalTabStripFloatingMode(browser_);
-      return;
-    }
     case BraveTabMenuModel::CommandToggleTabMuted: {
       auto* model = static_cast<BraveTabStripModel*>(controller_->model());
       auto indices = model->GetTabIndicesForCommandAt(tab_index_);
