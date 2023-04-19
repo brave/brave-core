@@ -28,7 +28,7 @@ class PostTransactionGeminiTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
-  PostTransactionGemini order_{&mock_ledger_impl_};
+  PostTransactionGemini order_{mock_ledger_impl_};
 };
 
 TEST_F(PostTransactionGeminiTest, ServerOK) {

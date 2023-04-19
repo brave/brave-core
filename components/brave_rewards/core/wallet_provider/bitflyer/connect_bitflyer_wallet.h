@@ -24,7 +24,7 @@ namespace bitflyer {
 
 class ConnectBitFlyerWallet : public wallet_provider::ConnectExternalWallet {
  public:
-  explicit ConnectBitFlyerWallet(LedgerImpl*);
+  explicit ConnectBitFlyerWallet(LedgerImpl& ledger);
 
   ~ConnectBitFlyerWallet() override;
 

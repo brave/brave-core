@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/functional/callback_forward.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // GET https://api.uphold.com/v0/me/cards/{wallet_address}
@@ -82,7 +83,7 @@ using GetCardCallback = base::OnceCallback<void(const mojom::Result result,
 
 class GetCard {
  public:
-  explicit GetCard(LedgerImpl* ledger);
+  explicit GetCard(LedgerImpl& ledger);
   ~GetCard();
 
   void Request(const std::string& address,
@@ -98,7 +99,7 @@ class GetCard {
 
   void OnRequest(GetCardCallback callback, mojom::UrlResponsePtr response);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace uphold

@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -26,7 +27,7 @@ class RequestBuilder {
   absl::optional<mojom::UrlRequestPtr> Request() const;
 
  protected:
-  explicit RequestBuilder(LedgerImpl*);
+  explicit RequestBuilder(LedgerImpl& ledger);
 
   virtual absl::optional<std::string> Url() const = 0;
 
@@ -43,7 +44,7 @@ class RequestBuilder {
 
   virtual uint32_t LoadFlags() const;
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace endpoints

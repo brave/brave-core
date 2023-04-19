@@ -19,11 +19,9 @@ using std::placeholders::_3;
 namespace ledger {
 namespace sku {
 
-SKUOrder::SKUOrder(LedgerImpl* ledger)
+SKUOrder::SKUOrder(LedgerImpl& ledger)
     : ledger_(ledger),
-      payment_server_(std::make_unique<endpoint::PaymentServer>(ledger)) {
-  DCHECK(ledger_);
-}
+      payment_server_(std::make_unique<endpoint::PaymentServer>(ledger)) {}
 
 SKUOrder::~SKUOrder() = default;
 

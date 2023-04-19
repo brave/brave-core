@@ -20,9 +20,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-PostSuggestions::PostSuggestions(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+PostSuggestions::PostSuggestions(LedgerImpl& ledger) : ledger_(ledger) {}
 
 PostSuggestions::~PostSuggestions() = default;
 

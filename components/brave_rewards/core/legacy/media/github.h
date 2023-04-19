@@ -13,6 +13,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/gtest_prod_util.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/legacy/media/helper.h"
 
@@ -24,7 +25,7 @@ namespace braveledger_media {
 
 class GitHub {
  public:
-  explicit GitHub(ledger::LedgerImpl* ledger);
+  explicit GitHub(ledger::LedgerImpl& ledger);
 
   static std::string GetLinkType(const std::string& url);
 
@@ -129,7 +130,7 @@ class GitHub {
   FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetJSONStringValue);
   FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetJSONIntValue);
 
-  ledger::LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<ledger::LedgerImpl> ledger_;
 };
 }  // namespace braveledger_media
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEGACY_MEDIA_GITHUB_H_

@@ -10,7 +10,7 @@
 namespace ledger {
 namespace endpoint {
 
-GeminiServer::GeminiServer(LedgerImpl* ledger)
+GeminiServer::GeminiServer(LedgerImpl& ledger)
     : post_account_(std::make_unique<gemini::PostAccount>(ledger)),
       post_balance_(std::make_unique<gemini::PostBalance>(ledger)),
       post_oauth_(std::make_unique<gemini::PostOauth>(ledger)),

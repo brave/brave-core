@@ -20,9 +20,7 @@ using ledger::endpoints::RequestFor;
 namespace ledger {
 namespace api {
 
-APIParameters::APIParameters(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+APIParameters::APIParameters(LedgerImpl& ledger) : ledger_(ledger) {}
 
 APIParameters::~APIParameters() = default;
 
@@ -40,7 +38,7 @@ void APIParameters::Fetch(ledger::GetRewardsParametersCallback callback) {
 
   refresh_timer_.Stop();
 
-  RequestFor<GetParameters>(ledger_).Send(
+  RequestFor<GetParameters>(*ledger_).Send(
       base::BindOnce(&APIParameters::OnFetch, base::Unretained(this)));
 }
 

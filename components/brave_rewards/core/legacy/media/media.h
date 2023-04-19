@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/legacy/media/github.h"
 #include "brave/components/brave_rewards/core/legacy/media/youtube.h"
@@ -22,7 +23,7 @@ namespace braveledger_media {
 
 class Media {
  public:
-  explicit Media(ledger::LedgerImpl* ledger);
+  explicit Media(ledger::LedgerImpl& ledger);
 
   ~Media();
 
@@ -52,7 +53,7 @@ class Media {
                             const std::string& type,
                             uint64_t windowId);
 
-  ledger::LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<ledger::LedgerImpl> ledger_;
   std::unique_ptr<braveledger_media::YouTube> media_youtube_;
   std::unique_ptr<braveledger_media::GitHub> media_github_;
 };

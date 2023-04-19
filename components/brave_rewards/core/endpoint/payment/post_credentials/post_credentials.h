@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ref.h"
 #include "base/values.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
@@ -45,7 +46,7 @@ using PostCredentialsCallback = base::OnceCallback<void(mojom::Result)>;
 
 class PostCredentials {
  public:
-  explicit PostCredentials(LedgerImpl* ledger);
+  explicit PostCredentials(LedgerImpl& ledger);
   ~PostCredentials();
 
   void Request(const std::string& order_id,
@@ -66,7 +67,7 @@ class PostCredentials {
   void OnRequest(PostCredentialsCallback callback,
                  mojom::UrlResponsePtr response);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace payment

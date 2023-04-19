@@ -76,7 +76,7 @@ class PublisherTest : public testing::Test {
 
   base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
-  Publisher publisher_{&mock_ledger_impl_};
+  Publisher publisher_{mock_ledger_impl_};
 
   double a_ = 0;
   double b_ = 0;

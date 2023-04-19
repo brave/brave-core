@@ -22,9 +22,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-GetAvailable::GetAvailable(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+GetAvailable::GetAvailable(LedgerImpl& ledger) : ledger_(ledger) {}
 
 GetAvailable::~GetAvailable() = default;
 

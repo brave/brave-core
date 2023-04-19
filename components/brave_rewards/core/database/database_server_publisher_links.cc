@@ -21,7 +21,7 @@ const char kTableName[] = "server_publisher_links";
 namespace ledger {
 namespace database {
 
-DatabaseServerPublisherLinks::DatabaseServerPublisherLinks(LedgerImpl* ledger)
+DatabaseServerPublisherLinks::DatabaseServerPublisherLinks(LedgerImpl& ledger)
     : DatabaseTable(ledger) {}
 
 DatabaseServerPublisherLinks::~DatabaseServerPublisherLinks() = default;

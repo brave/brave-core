@@ -18,9 +18,8 @@
 namespace ledger {
 namespace contribution {
 
-ContributionMonthly::ContributionMonthly(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+ContributionMonthly::ContributionMonthly(LedgerImpl& ledger)
+    : ledger_(ledger) {}
 
 ContributionMonthly::~ContributionMonthly() = default;
 

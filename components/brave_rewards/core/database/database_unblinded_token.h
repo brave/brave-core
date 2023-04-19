@@ -19,7 +19,7 @@ using GetUnblindedTokenListCallback =
 
 class DatabaseUnblindedToken : public DatabaseTable {
  public:
-  explicit DatabaseUnblindedToken(LedgerImpl* ledger);
+  explicit DatabaseUnblindedToken(LedgerImpl& ledger);
   ~DatabaseUnblindedToken() override;
 
   void InsertOrUpdateList(std::vector<mojom::UnblindedTokenPtr> list,

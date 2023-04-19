@@ -149,9 +149,7 @@ namespace ledger {
 namespace endpoint {
 namespace private_cdn {
 
-GetPublisher::GetPublisher(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+GetPublisher::GetPublisher(LedgerImpl& ledger) : ledger_(ledger) {}
 
 GetPublisher::~GetPublisher() = default;
 

@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // GET /publishers/prefixes/{prefix}
@@ -34,7 +35,7 @@ using GetPublisherCallback =
 
 class GetPublisher {
  public:
-  explicit GetPublisher(LedgerImpl* ledger);
+  explicit GetPublisher(LedgerImpl& ledger);
   ~GetPublisher();
 
   void Request(const std::string& publisher_key,
@@ -54,7 +55,7 @@ class GetPublisher {
                  const std::string& publisher_key,
                  GetPublisherCallback callback);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace private_cdn

@@ -9,9 +9,7 @@
 namespace ledger {
 namespace database {
 
-DatabaseTable::DatabaseTable(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+DatabaseTable::DatabaseTable(LedgerImpl& ledger) : ledger_(ledger) {}
 
 DatabaseTable::~DatabaseTable() = default;
 

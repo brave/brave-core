@@ -28,7 +28,7 @@ namespace endpoints {
 
 class PostConnectBitflyer final : public PostConnect {
  public:
-  PostConnectBitflyer(LedgerImpl*, std::string&& linking_info);
+  PostConnectBitflyer(LedgerImpl& ledger, std::string&& linking_info);
   ~PostConnectBitflyer() override;
 
  private:

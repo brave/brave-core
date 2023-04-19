@@ -18,9 +18,7 @@ namespace ledger {
 namespace endpoint {
 namespace payment {
 
-GetCredentials::GetCredentials(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+GetCredentials::GetCredentials(LedgerImpl& ledger) : ledger_(ledger) {}
 
 GetCredentials::~GetCredentials() = default;
 

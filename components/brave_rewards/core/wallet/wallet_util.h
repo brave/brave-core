@@ -18,29 +18,30 @@ class LedgerImpl;
 
 namespace wallet {
 
-mojom::ExternalWalletPtr GetWallet(LedgerImpl*, const std::string& wallet_type);
+mojom::ExternalWalletPtr GetWallet(LedgerImpl& ledger,
+                                   const std::string& wallet_type);
 
-mojom::ExternalWalletPtr GetWalletIf(LedgerImpl*,
+mojom::ExternalWalletPtr GetWalletIf(LedgerImpl& ledger,
                                      const std::string& wallet_type,
                                      const std::set<mojom::WalletStatus>&);
 
-bool SetWallet(LedgerImpl*, mojom::ExternalWalletPtr);
+bool SetWallet(LedgerImpl& ledger, mojom::ExternalWalletPtr);
 
 mojom::ExternalWalletPtr TransitionWallet(
-    LedgerImpl*,
+    LedgerImpl& ledger,
     absl::variant<mojom::ExternalWalletPtr, std::string> wallet_info,
     mojom::WalletStatus to);
 
-mojom::ExternalWalletPtr MaybeCreateWallet(LedgerImpl*,
+mojom::ExternalWalletPtr MaybeCreateWallet(LedgerImpl& ledger,
                                            const std::string& wallet_type);
 
-bool LogOutWallet(LedgerImpl*,
+bool LogOutWallet(LedgerImpl& ledger,
                   const std::string& wallet_type,
                   const std::string& notification = "");
 
 mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr);
 
-void FetchBalance(LedgerImpl* ledger,
+void FetchBalance(LedgerImpl& ledger,
                   const std::string& wallet_type,
                   base::OnceCallback<void(mojom::Result, double)> callback);
 

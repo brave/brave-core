@@ -13,7 +13,7 @@
 namespace ledger {
 namespace attestation {
 
-AttestationDesktop::AttestationDesktop(LedgerImpl* ledger)
+AttestationDesktop::AttestationDesktop(LedgerImpl& ledger)
     : Attestation(ledger),
       promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)) {}
 

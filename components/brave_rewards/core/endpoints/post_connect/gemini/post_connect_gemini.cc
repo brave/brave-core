@@ -12,7 +12,7 @@
 
 namespace ledger::endpoints {
 
-PostConnectGemini::PostConnectGemini(LedgerImpl* ledger,
+PostConnectGemini::PostConnectGemini(LedgerImpl& ledger,
                                      std::string&& linking_info,
                                      std::string&& recipient_id)
     : PostConnect(ledger),

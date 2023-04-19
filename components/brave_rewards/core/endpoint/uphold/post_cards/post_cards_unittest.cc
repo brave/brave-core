@@ -28,7 +28,7 @@ class PostCardsTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
-  PostCards card_{&mock_ledger_impl_};
+  PostCards card_{mock_ledger_impl_};
 };
 
 TEST_F(PostCardsTest, ServerOK) {

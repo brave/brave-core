@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // GET /v1/promotions/{promotion_id}/claims/{claim_id}
@@ -53,7 +54,7 @@ using GetSignedCredsCallback =
 
 class GetSignedCreds {
  public:
-  explicit GetSignedCreds(LedgerImpl* ledger);
+  explicit GetSignedCreds(LedgerImpl& ledger);
   ~GetSignedCreds();
 
   void Request(const std::string& promotion_id,
@@ -71,7 +72,7 @@ class GetSignedCreds {
   void OnRequest(GetSignedCredsCallback callback,
                  mojom::UrlResponsePtr response);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace promotion

@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_redeem.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
@@ -45,7 +46,7 @@ using PostSuggestionsCallback = std::function<void(const mojom::Result result)>;
 
 class PostSuggestions {
  public:
-  explicit PostSuggestions(LedgerImpl* ledger);
+  explicit PostSuggestions(LedgerImpl& ledger);
   ~PostSuggestions();
 
   void Request(const credential::CredentialsRedeem& redeem,
@@ -61,7 +62,7 @@ class PostSuggestions {
   void OnRequest(mojom::UrlResponsePtr response,
                  PostSuggestionsCallback callback);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace promotion

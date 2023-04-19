@@ -26,7 +26,7 @@ const char kTableName[] = "promotion";
 
 }  // namespace
 
-DatabasePromotion::DatabasePromotion(LedgerImpl* ledger)
+DatabasePromotion::DatabasePromotion(LedgerImpl& ledger)
     : DatabaseTable(ledger) {}
 
 DatabasePromotion::~DatabasePromotion() = default;

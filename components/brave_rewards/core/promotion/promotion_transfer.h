@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 namespace ledger {
@@ -23,7 +24,7 @@ namespace promotion {
 
 class PromotionTransfer {
  public:
-  explicit PromotionTransfer(LedgerImpl* ledger);
+  explicit PromotionTransfer(LedgerImpl& ledger);
   ~PromotionTransfer();
 
   void Start(ledger::PostSuggestionsClaimCallback callback) const;
@@ -38,7 +39,7 @@ class PromotionTransfer {
                      mojom::Result result,
                      std::string drain_id) const;
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
   std::unique_ptr<credential::CredentialsPromotion> credentials_;
 };
 

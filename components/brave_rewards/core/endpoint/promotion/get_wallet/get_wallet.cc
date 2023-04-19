@@ -19,9 +19,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-GetWallet::GetWallet(LedgerImpl* ledger) : ledger_{ledger} {
-  DCHECK(ledger_);
-}
+GetWallet::GetWallet(LedgerImpl& ledger) : ledger_{ledger} {}
 
 GetWallet::~GetWallet() = default;
 

@@ -21,7 +21,7 @@ const char kTableName[] = "sku_order";
 
 }  // namespace
 
-DatabaseSKUOrder::DatabaseSKUOrder(LedgerImpl* ledger)
+DatabaseSKUOrder::DatabaseSKUOrder(LedgerImpl& ledger)
     : DatabaseTable(ledger),
       items_(std::make_unique<DatabaseSKUOrderItems>(ledger)) {}
 

@@ -27,7 +27,7 @@ using std::placeholders::_3;
 
 namespace braveledger_media {
 
-GitHub::GitHub(ledger::LedgerImpl* ledger) : ledger_(ledger) {}
+GitHub::GitHub(ledger::LedgerImpl& ledger) : ledger_(ledger) {}
 
 GitHub::~GitHub() = default;
 

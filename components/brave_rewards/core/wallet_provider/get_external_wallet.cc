@@ -13,14 +13,12 @@
 
 namespace ledger::wallet_provider {
 
-GetExternalWallet::GetExternalWallet(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+GetExternalWallet::GetExternalWallet(LedgerImpl& ledger) : ledger_(ledger) {}
 
 GetExternalWallet::~GetExternalWallet() = default;
 
 void GetExternalWallet::Run(ledger::GetExternalWalletCallback callback) const {
-  auto wallet = ledger::wallet::MaybeCreateWallet(ledger_, WalletType());
+  auto wallet = ledger::wallet::MaybeCreateWallet(*ledger_, WalletType());
   if (!wallet) {
     return std::move(callback).Run(
         base::unexpected(mojom::GetExternalWalletError::kUnexpected));
@@ -44,7 +42,7 @@ void GetExternalWallet::OnTransferTokens(
     BLOG(0, "Failed to transfer tokens!");
   }
 
-  auto wallet = ledger::wallet::GetWallet(ledger_, WalletType());
+  auto wallet = ledger::wallet::GetWallet(*ledger_, WalletType());
   if (!wallet) {
     return std::move(callback).Run(
         base::unexpected(mojom::GetExternalWalletError::kUnexpected));

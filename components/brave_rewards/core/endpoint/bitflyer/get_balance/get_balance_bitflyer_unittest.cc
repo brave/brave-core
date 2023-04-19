@@ -28,7 +28,7 @@ class GetBalanceTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
-  GetBalance balance_{&mock_ledger_impl_};
+  GetBalance balance_{mock_ledger_impl_};
 };
 
 TEST_F(GetBalanceTest, ServerOK) {

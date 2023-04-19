@@ -18,9 +18,7 @@ namespace ledger {
 namespace endpoint {
 namespace uphold {
 
-GetCapabilities::GetCapabilities(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+GetCapabilities::GetCapabilities(LedgerImpl& ledger) : ledger_(ledger) {}
 
 GetCapabilities::~GetCapabilities() = default;
 

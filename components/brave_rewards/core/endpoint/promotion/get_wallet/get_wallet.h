@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // GET /v3/wallet/{payment_id}
@@ -47,7 +48,7 @@ using GetWalletCallback = std::function<
 
 class GetWallet {
  public:
-  explicit GetWallet(LedgerImpl* ledger);
+  explicit GetWallet(LedgerImpl& ledger);
   ~GetWallet();
 
   void Request(GetWalletCallback callback) const;
@@ -64,7 +65,7 @@ class GetWallet {
                           std::string* custodian,
                           bool* linked) const;
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace promotion

@@ -53,7 +53,7 @@ Result GetTransactionStatusUphold::ProcessResponse(
 }
 
 GetTransactionStatusUphold::GetTransactionStatusUphold(
-    LedgerImpl* ledger,
+    LedgerImpl& ledger,
     std::string&& token,
     std::string&& transaction_id)
     : RequestBuilder(ledger),

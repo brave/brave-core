@@ -91,7 +91,7 @@ TEST_P(TransitionWalletCreate, Paths) {
       });
 
   const auto wallet =
-      TransitionWallet(&mock_ledger_impl_, constant::kWalletUphold, to);
+      TransitionWallet(mock_ledger_impl_, constant::kWalletUphold, to);
   EXPECT_EQ(static_cast<bool>(wallet), expected);
 
   if (wallet) {
@@ -170,7 +170,7 @@ TEST_P(TransitionWalletTransition, Paths) {
       });
 
   const auto to_wallet =
-      TransitionWallet(&mock_ledger_impl_, std::move(*from_wallet), to);
+      TransitionWallet(mock_ledger_impl_, std::move(*from_wallet), to);
   EXPECT_EQ(static_cast<bool>(to_wallet), expected);
 
   if (to_wallet) {

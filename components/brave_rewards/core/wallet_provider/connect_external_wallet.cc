@@ -20,10 +20,8 @@ using ledger::wallet::GetWalletIf;
 
 namespace ledger::wallet_provider {
 
-ConnectExternalWallet::ConnectExternalWallet(LedgerImpl* ledger)
-    : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+ConnectExternalWallet::ConnectExternalWallet(LedgerImpl& ledger)
+    : ledger_(ledger) {}
 
 ConnectExternalWallet::~ConnectExternalWallet() = default;
 
@@ -31,7 +29,7 @@ void ConnectExternalWallet::Run(
     const base::flat_map<std::string, std::string>& query_parameters,
     ledger::ConnectExternalWalletCallback callback) const {
   auto wallet = GetWalletIf(
-      ledger_, WalletType(),
+      *ledger_, WalletType(),
       {mojom::WalletStatus::kNotConnected, mojom::WalletStatus::kLoggedOut});
   if (!wallet) {
     return std::move(callback).Run(
@@ -76,7 +74,7 @@ ConnectExternalWallet::ExchangeOAuthInfo(
     return absl::nullopt;
   }
 
-  if (!ledger::wallet::SetWallet(ledger_, std::move(wallet))) {
+  if (!ledger::wallet::SetWallet(*ledger_, std::move(wallet))) {
     BLOG(0, "Failed to save " << WalletType() << " wallet!");
     return absl::nullopt;
   }
@@ -123,7 +121,7 @@ void ConnectExternalWallet::OnConnect(
     std::string&& address,
     endpoints::PostConnect::Result&& result) const {
   auto wallet = GetWalletIf(
-      ledger_, WalletType(),
+      *ledger_, WalletType(),
       {mojom::WalletStatus::kNotConnected, mojom::WalletStatus::kLoggedOut});
   if (!wallet) {
     return std::move(callback).Run(
@@ -153,7 +151,7 @@ void ConnectExternalWallet::OnConnect(
   wallet->token = std::move(token);
   wallet->address = std::move(address);
   // {kNotConnected, kLoggedOut} ==> kConnected
-  if (!ledger::wallet::TransitionWallet(ledger_, std::move(wallet),
+  if (!ledger::wallet::TransitionWallet(*ledger_, std::move(wallet),
                                         mojom::WalletStatus::kConnected)) {
     BLOG(0, "Failed to transition " << WalletType() << " wallet state!");
     return std::move(callback).Run(

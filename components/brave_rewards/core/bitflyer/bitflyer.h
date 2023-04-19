@@ -15,6 +15,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/functional/callback_forward.h"
+#include "base/memory/raw_ref.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/wallet_provider/connect_external_wallet.h"
@@ -34,7 +35,7 @@ using FetchBalanceCallback = base::OnceCallback<void(mojom::Result, double)>;
 
 class Bitflyer {
  public:
-  explicit Bitflyer(LedgerImpl*);
+  explicit Bitflyer(LedgerImpl& ledger);
 
   ~Bitflyer();
 
@@ -90,11 +91,11 @@ class Bitflyer {
 
   void RemoveTransferFee(const std::string& contribution_id);
 
+  const raw_ref<LedgerImpl> ledger_;
   std::unique_ptr<wallet_provider::ConnectExternalWallet> connect_wallet_;
   std::unique_ptr<wallet_provider::GetExternalWallet> get_wallet_;
   std::unique_ptr<wallet_provider::Transfer> transfer_;
   std::unique_ptr<endpoint::BitflyerServer> bitflyer_server_;
-  LedgerImpl* ledger_;  // NOT OWNED
   std::map<std::string, base::OneShotTimer> transfer_fee_timers_;
 };
 

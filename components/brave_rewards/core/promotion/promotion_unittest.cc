@@ -50,7 +50,7 @@ class PromotionTest : public testing::Test {
 
   base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
-  Promotion promotion_{&mock_ledger_impl_};
+  Promotion promotion_{mock_ledger_impl_};
 };
 
 TEST_F(PromotionTest, LegacyPromotionIsNotOverwritten) {

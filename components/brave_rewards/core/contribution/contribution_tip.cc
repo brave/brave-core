@@ -19,9 +19,7 @@
 
 namespace ledger::contribution {
 
-ContributionTip::ContributionTip(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+ContributionTip::ContributionTip(LedgerImpl& ledger) : ledger_(ledger) {}
 
 ContributionTip::~ContributionTip() = default;
 

@@ -12,6 +12,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/gtest_prod_util.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/database/database_server_publisher_info.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
@@ -25,7 +26,7 @@ class ServerPublisherFetcher;
 
 class Publisher {
  public:
-  explicit Publisher(LedgerImpl* ledger);
+  explicit Publisher(LedgerImpl& ledger);
 
   ~Publisher();
 
@@ -200,7 +201,7 @@ class Publisher {
       bool use_prefix_list,
       database::GetServerPublisherInfoCallback callback);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
   std::unique_ptr<PublisherPrefixListUpdater> prefix_list_updater_;
   std::unique_ptr<ServerPublisherFetcher> server_publisher_fetcher_;
 

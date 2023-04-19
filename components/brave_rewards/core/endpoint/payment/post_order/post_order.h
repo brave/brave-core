@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // POST /v1/orders
@@ -67,7 +68,7 @@ using PostOrderCallback =
 
 class PostOrder {
  public:
-  explicit PostOrder(LedgerImpl* ledger);
+  explicit PostOrder(LedgerImpl& ledger);
   ~PostOrder();
 
   void Request(const std::vector<mojom::SKUOrderItem>& items,
@@ -88,7 +89,7 @@ class PostOrder {
                  const std::vector<mojom::SKUOrderItem>& items,
                  PostOrderCallback callback);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace payment

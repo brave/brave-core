@@ -16,13 +16,13 @@ class LedgerImpl;
 namespace publisher {
 
 // Refreshes the publisher status for each entry in the specified list
-void RefreshPublisherStatus(LedgerImpl* ledger,
+void RefreshPublisherStatus(LedgerImpl& ledger,
                             std::vector<mojom::PublisherInfoPtr>&& info_list,
                             ledger::GetRecurringTipsCallback callback);
 
 // Refreshes the publisher status for each entry in the specified list
 void RefreshPublisherStatus(
-    LedgerImpl* ledger,
+    LedgerImpl& ledger,
     std::vector<mojom::PendingContributionInfoPtr>&& list,
     ledger::GetPendingContributionsCallback callback);
 

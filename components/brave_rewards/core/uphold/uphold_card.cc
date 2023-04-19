@@ -12,7 +12,7 @@
 
 namespace ledger::uphold {
 
-UpholdCard::UpholdCard(LedgerImpl* ledger)
+UpholdCard::UpholdCard(LedgerImpl& ledger)
     : uphold_server_(std::make_unique<endpoint::UpholdServer>(ledger)) {}
 
 UpholdCard::~UpholdCard() = default;

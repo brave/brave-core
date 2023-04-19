@@ -17,9 +17,7 @@
 namespace ledger {
 namespace credential {
 
-CredentialsCommon::CredentialsCommon(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+CredentialsCommon::CredentialsCommon(LedgerImpl& ledger) : ledger_(ledger) {}
 
 CredentialsCommon::~CredentialsCommon() = default;
 

@@ -35,19 +35,19 @@ namespace ledger {
 LedgerImpl::LedgerImpl(
     mojo::PendingAssociatedRemote<mojom::LedgerClient> ledger_client_remote)
     : ledger_client_(std::move(ledger_client_remote)),
-      promotion_(std::make_unique<promotion::Promotion>(this)),
-      publisher_(std::make_unique<publisher::Publisher>(this)),
-      media_(std::make_unique<braveledger_media::Media>(this)),
-      contribution_(std::make_unique<contribution::Contribution>(this)),
-      wallet_(std::make_unique<wallet::Wallet>(this)),
-      database_(std::make_unique<database::Database>(this)),
-      report_(std::make_unique<report::Report>(this)),
-      state_(std::make_unique<state::State>(this)),
-      api_(std::make_unique<api::API>(this)),
-      recovery_(std::make_unique<recovery::Recovery>(this)),
-      bitflyer_(std::make_unique<bitflyer::Bitflyer>(this)),
-      gemini_(std::make_unique<gemini::Gemini>(this)),
-      uphold_(std::make_unique<uphold::Uphold>(this)) {
+      promotion_(std::make_unique<promotion::Promotion>(*this)),
+      publisher_(std::make_unique<publisher::Publisher>(*this)),
+      media_(std::make_unique<braveledger_media::Media>(*this)),
+      contribution_(std::make_unique<contribution::Contribution>(*this)),
+      wallet_(std::make_unique<wallet::Wallet>(*this)),
+      database_(std::make_unique<database::Database>(*this)),
+      report_(std::make_unique<report::Report>(*this)),
+      state_(std::make_unique<state::State>(*this)),
+      api_(std::make_unique<api::API>(*this)),
+      recovery_(std::make_unique<recovery::Recovery>(*this)),
+      bitflyer_(std::make_unique<bitflyer::Bitflyer>(*this)),
+      gemini_(std::make_unique<gemini::Gemini>(*this)),
+      uphold_(std::make_unique<uphold::Uphold>(*this)) {
   DCHECK(base::ThreadPoolInstance::Get());
   set_ledger_client_for_logging(ledger_client_.get());
 }

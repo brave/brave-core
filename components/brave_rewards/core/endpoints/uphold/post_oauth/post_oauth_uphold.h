@@ -48,7 +48,7 @@ class PostOAuthUphold final : public RequestBuilder,
  public:
   static Result ProcessResponse(const mojom::UrlResponse&);
 
-  PostOAuthUphold(LedgerImpl*, std::string&& code);
+  PostOAuthUphold(LedgerImpl& ledger, std::string&& code);
   ~PostOAuthUphold() override;
 
  private:

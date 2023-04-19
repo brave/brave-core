@@ -24,7 +24,7 @@ const char kTableName[] = "event_log";
 
 }  // namespace
 
-DatabaseEventLog::DatabaseEventLog(LedgerImpl* ledger)
+DatabaseEventLog::DatabaseEventLog(LedgerImpl& ledger)
     : DatabaseTable(ledger) {}
 
 DatabaseEventLog::~DatabaseEventLog() = default;

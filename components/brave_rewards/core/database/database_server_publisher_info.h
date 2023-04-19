@@ -21,7 +21,7 @@ using GetServerPublisherInfoCallback =
 
 class DatabaseServerPublisherInfo : public DatabaseTable {
  public:
-  explicit DatabaseServerPublisherInfo(LedgerImpl* ledger);
+  explicit DatabaseServerPublisherInfo(LedgerImpl& ledger);
   ~DatabaseServerPublisherInfo() override;
 
   void InsertOrUpdate(const mojom::ServerPublisherInfo& server_info,

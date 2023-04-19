@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/database/database_migration.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
@@ -19,7 +20,7 @@ namespace database {
 
 class DatabaseInitialize {
  public:
-  explicit DatabaseInitialize(LedgerImpl* ledger);
+  explicit DatabaseInitialize(LedgerImpl& ledger);
   ~DatabaseInitialize();
 
   void Start(ledger::LegacyResultCallback callback);
@@ -29,7 +30,7 @@ class DatabaseInitialize {
                     ledger::LegacyResultCallback callback);
 
   std::unique_ptr<ledger::database::DatabaseMigration> migration_;
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace database

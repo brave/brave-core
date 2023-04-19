@@ -26,7 +26,7 @@ const char kTableName[] = "publisher_info";
 namespace ledger {
 namespace database {
 
-DatabasePublisherInfo::DatabasePublisherInfo(LedgerImpl* ledger)
+DatabasePublisherInfo::DatabasePublisherInfo(LedgerImpl& ledger)
     : DatabaseTable(ledger) {}
 
 DatabasePublisherInfo::~DatabasePublisherInfo() = default;

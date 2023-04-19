@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // POST https://api.sandbox.gemini.com/v1/account
@@ -47,7 +48,7 @@ using PostAccountCallback = base::OnceCallback<
 
 class PostAccount {
  public:
-  explicit PostAccount(LedgerImpl*);
+  explicit PostAccount(LedgerImpl& ledger);
   ~PostAccount();
 
   void Request(const std::string& token, PostAccountCallback);
@@ -61,7 +62,7 @@ class PostAccount {
 
   void OnRequest(PostAccountCallback, mojom::UrlResponsePtr);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace endpoint::gemini

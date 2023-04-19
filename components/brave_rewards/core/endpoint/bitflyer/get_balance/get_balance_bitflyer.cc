@@ -20,9 +20,7 @@ namespace ledger {
 namespace endpoint {
 namespace bitflyer {
 
-GetBalance::GetBalance(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+GetBalance::GetBalance(LedgerImpl& ledger) : ledger_(ledger) {}
 
 GetBalance::~GetBalance() = default;
 

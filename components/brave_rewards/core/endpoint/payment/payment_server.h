@@ -23,7 +23,7 @@ namespace endpoint {
 
 class PaymentServer {
  public:
-  explicit PaymentServer(LedgerImpl* ledger);
+  explicit PaymentServer(LedgerImpl& ledger);
   ~PaymentServer();
 
   payment::PostOrder* post_order() const;

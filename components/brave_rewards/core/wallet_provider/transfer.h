@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ref.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_rewards/core/database/database_external_transactions.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
@@ -19,7 +20,7 @@ namespace wallet_provider {
 
 class Transfer {
  public:
-  explicit Transfer(LedgerImpl*);
+  explicit Transfer(LedgerImpl& ledger);
 
   virtual ~Transfer();
 
@@ -60,7 +61,7 @@ class Transfer {
   virtual void CommitTransaction(ledger::ResultCallback,
                                  mojom::ExternalTransactionPtr) const = 0;
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace wallet_provider

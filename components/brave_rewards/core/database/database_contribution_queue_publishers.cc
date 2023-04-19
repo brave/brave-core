@@ -24,7 +24,7 @@ const char kTableName[] = "contribution_queue_publishers";
 }  // namespace
 
 DatabaseContributionQueuePublishers::DatabaseContributionQueuePublishers(
-    LedgerImpl* ledger)
+    LedgerImpl& ledger)
     : DatabaseTable(ledger) {}
 
 DatabaseContributionQueuePublishers::~DatabaseContributionQueuePublishers() =

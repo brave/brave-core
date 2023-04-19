@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // POST https://bitflyer.com/api/link/v1/token
@@ -54,7 +55,7 @@ using PostOauthCallback = base::OnceCallback<void(mojom::Result,
 
 class PostOauth {
  public:
-  explicit PostOauth(LedgerImpl*);
+  explicit PostOauth(LedgerImpl& ledger);
   ~PostOauth();
 
   void Request(const std::string& external_account_id,
@@ -78,7 +79,7 @@ class PostOauth {
 
   void OnRequest(PostOauthCallback, mojom::UrlResponsePtr);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace endpoint::bitflyer

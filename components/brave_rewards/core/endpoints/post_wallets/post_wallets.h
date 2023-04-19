@@ -48,7 +48,7 @@ class PostWallets final : public RequestBuilder,
  public:
   static Result ProcessResponse(const mojom::UrlResponse&);
 
-  PostWallets(LedgerImpl*, absl::optional<std::string>&& geo_country);
+  PostWallets(LedgerImpl& ledger, absl::optional<std::string>&& geo_country);
   ~PostWallets() override;
 
  private:

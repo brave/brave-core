@@ -68,7 +68,7 @@ TEST_P(GetParameters, Paths) {
     }
   });
 
-  RequestFor<endpoints::GetParameters>(&mock_ledger_impl_).Send(callback.Get());
+  RequestFor<endpoints::GetParameters>(mock_ledger_impl_).Send(callback.Get());
 
   task_environment_.RunUntilIdle();
 }

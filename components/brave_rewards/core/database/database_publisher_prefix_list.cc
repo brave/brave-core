@@ -48,7 +48,7 @@ namespace ledger {
 
 namespace database {
 
-DatabasePublisherPrefixList::DatabasePublisherPrefixList(LedgerImpl* ledger)
+DatabasePublisherPrefixList::DatabasePublisherPrefixList(LedgerImpl& ledger)
     : DatabaseTable(ledger) {}
 
 DatabasePublisherPrefixList::~DatabasePublisherPrefixList() = default;

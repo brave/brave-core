@@ -15,7 +15,7 @@ namespace database {
 
 class DatabasePublisherInfo : public DatabaseTable {
  public:
-  explicit DatabasePublisherInfo(LedgerImpl* ledger);
+  explicit DatabasePublisherInfo(LedgerImpl& ledger);
   ~DatabasePublisherInfo() override;
 
   void InsertOrUpdate(mojom::PublisherInfoPtr info,

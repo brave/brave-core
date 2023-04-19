@@ -58,7 +58,7 @@ TEST_P(PostOAuthUphold, Paths) {
   EXPECT_CALL(callback, Run(Result(expected_result))).Times(1);
 
   RequestFor<endpoints::PostOAuthUphold>(
-      &mock_ledger_impl_, "bb50f9d4782fb86a4302ef18179033abb17c257f")
+      mock_ledger_impl_, "bb50f9d4782fb86a4302ef18179033abb17c257f")
       .Send(callback.Get());
 
   task_environment_.RunUntilIdle();

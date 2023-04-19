@@ -21,7 +21,7 @@ const char kTableName[] = "server_publisher_banner";
 namespace ledger {
 namespace database {
 
-DatabaseServerPublisherBanner::DatabaseServerPublisherBanner(LedgerImpl* ledger)
+DatabaseServerPublisherBanner::DatabaseServerPublisherBanner(LedgerImpl& ledger)
     : DatabaseTable(ledger),
       links_(std::make_unique<DatabaseServerPublisherLinks>(ledger)) {}
 

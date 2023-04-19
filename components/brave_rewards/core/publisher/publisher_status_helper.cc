@@ -11,6 +11,7 @@
 #include <string>
 #include <utility>
 
+#include "base/memory/raw_ref.h"
 #include "base/time/time.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
@@ -26,7 +27,7 @@ struct PublisherStatusData {
 using PublisherStatusMap = std::map<std::string, PublisherStatusData>;
 
 struct RefreshTaskInfo {
-  RefreshTaskInfo(ledger::LedgerImpl* ledger,
+  RefreshTaskInfo(ledger::LedgerImpl& ledger,
                   PublisherStatusMap&& status_map,
                   std::function<void(PublisherStatusMap)> callback)
       : ledger(ledger),
@@ -34,7 +35,7 @@ struct RefreshTaskInfo {
         current(map.begin()),
         callback(callback) {}
 
-  ledger::LedgerImpl* ledger;
+  const raw_ref<ledger::LedgerImpl> ledger;
   PublisherStatusMap map;
   PublisherStatusMap::iterator current;
   std::function<void(PublisherStatusMap)> callback;
@@ -84,10 +85,9 @@ void RefreshNext(std::shared_ptr<RefreshTaskInfo> task_info) {
 }
 
 void RefreshPublisherStatusMap(
-    ledger::LedgerImpl* ledger,
+    ledger::LedgerImpl& ledger,
     PublisherStatusMap&& status_map,
     std::function<void(PublisherStatusMap)> callback) {
-  DCHECK(ledger);
   RefreshNext(std::make_shared<RefreshTaskInfo>(ledger, std::move(status_map),
                                                 callback));
 }
@@ -97,11 +97,9 @@ void RefreshPublisherStatusMap(
 namespace ledger {
 namespace publisher {
 
-void RefreshPublisherStatus(LedgerImpl* ledger,
+void RefreshPublisherStatus(LedgerImpl& ledger,
                             std::vector<mojom::PublisherInfoPtr>&& info_list,
                             ledger::GetRecurringTipsCallback callback) {
-  DCHECK(ledger);
-
   PublisherStatusMap map;
   for (const auto& info : info_list) {
     map[info->id] = {info->status, info->status_updated_at};
@@ -120,11 +118,9 @@ void RefreshPublisherStatus(LedgerImpl* ledger,
 }
 
 void RefreshPublisherStatus(
-    LedgerImpl* ledger,
+    LedgerImpl& ledger,
     std::vector<mojom::PendingContributionInfoPtr>&& info_list,
     ledger::GetPendingContributionsCallback callback) {
-  DCHECK(ledger);
-
   PublisherStatusMap map;
   for (const auto& info : info_list) {
     map[info->publisher_key] = {info->status, info->status_updated_at};

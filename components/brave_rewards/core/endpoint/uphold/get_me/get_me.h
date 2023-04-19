@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_user.h"
 
@@ -121,7 +122,7 @@ using GetMeCallback =
 
 class GetMe {
  public:
-  explicit GetMe(LedgerImpl* ledger);
+  explicit GetMe(LedgerImpl& ledger);
   ~GetMe();
 
   void Request(const std::string& token, GetMeCallback callback);
@@ -136,7 +137,7 @@ class GetMe {
 
   void OnRequest(GetMeCallback callback, mojom::UrlResponsePtr response);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace uphold

@@ -15,13 +15,13 @@ using std::placeholders::_1;
 namespace ledger {
 namespace state {
 
-StateMigrationV2::StateMigrationV2(LedgerImpl* ledger) : ledger_(ledger) {}
+StateMigrationV2::StateMigrationV2(LedgerImpl& ledger) : ledger_(ledger) {}
 
 StateMigrationV2::~StateMigrationV2() = default;
 
 void StateMigrationV2::Migrate(ledger::LegacyResultCallback callback) {
   legacy_state_ =
-      std::make_unique<braveledger_bat_state::LegacyBatState>(ledger_);
+      std::make_unique<braveledger_bat_state::LegacyBatState>(*ledger_);
 
   auto load_callback =
       std::bind(&StateMigrationV2::OnLoadState, this, _1, callback);

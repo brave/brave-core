@@ -17,9 +17,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-GetSignedCreds::GetSignedCreds(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+GetSignedCreds::GetSignedCreds(LedgerImpl& ledger) : ledger_(ledger) {}
 
 GetSignedCreds::~GetSignedCreds() = default;
 

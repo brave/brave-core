@@ -45,11 +45,9 @@ ledger::mojom::SKUTransactionType GetTransactionTypeFromWalletType(
 namespace ledger {
 namespace sku {
 
-SKUTransaction::SKUTransaction(LedgerImpl* ledger)
+SKUTransaction::SKUTransaction(LedgerImpl& ledger)
     : ledger_(ledger),
-      payment_server_(std::make_unique<endpoint::PaymentServer>(ledger)) {
-  DCHECK(ledger_);
-}
+      payment_server_(std::make_unique<endpoint::PaymentServer>(ledger)) {}
 
 SKUTransaction::~SKUTransaction() = default;
 

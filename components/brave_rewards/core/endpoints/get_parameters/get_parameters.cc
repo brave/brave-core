@@ -140,7 +140,7 @@ Result GetParameters::ProcessResponse(const mojom::UrlResponse& response) {
   }
 }
 
-GetParameters::GetParameters(LedgerImpl* ledger) : RequestBuilder(ledger) {}
+GetParameters::GetParameters(LedgerImpl& ledger) : RequestBuilder(ledger) {}
 
 GetParameters::~GetParameters() = default;
 

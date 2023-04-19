@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/database/database_server_publisher_info.h"
 #include "brave/components/brave_rewards/core/endpoint/private_cdn/private_cdn_server.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
@@ -27,7 +28,7 @@ using FetchCallbackVector =
 // whether a server publisher info record is expired
 class ServerPublisherFetcher {
  public:
-  explicit ServerPublisherFetcher(LedgerImpl* ledger);
+  explicit ServerPublisherFetcher(LedgerImpl& ledger);
 
   ServerPublisherFetcher(const ServerPublisherFetcher&) = delete;
   ServerPublisherFetcher& operator=(const ServerPublisherFetcher&) = delete;
@@ -55,7 +56,7 @@ class ServerPublisherFetcher {
   void RunCallbacks(const std::string& publisher_key,
                     mojom::ServerPublisherInfoPtr server_info);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
   std::map<std::string, FetchCallbackVector> callback_map_;
   std::unique_ptr<endpoint::PrivateCDNServer> private_cdn_server_;
 };

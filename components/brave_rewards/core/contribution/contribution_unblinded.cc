@@ -93,12 +93,11 @@ void GetStatisticalVotingWinners(
 namespace ledger {
 namespace contribution {
 
-Unblinded::Unblinded(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
+Unblinded::Unblinded(LedgerImpl& ledger) : ledger_(ledger) {
   credentials_promotion_ = credential::CredentialsFactory::Create(
-      ledger_, mojom::CredsBatchType::PROMOTION);
+      ledger, mojom::CredsBatchType::PROMOTION);
   credentials_sku_ = credential::CredentialsFactory::Create(
-      ledger_, mojom::CredsBatchType::SKU);
+      ledger, mojom::CredsBatchType::SKU);
   DCHECK(credentials_promotion_ && credentials_sku_);
 }
 

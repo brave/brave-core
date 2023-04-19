@@ -18,9 +18,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-GetCaptcha::GetCaptcha(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+GetCaptcha::GetCaptcha(LedgerImpl& ledger) : ledger_(ledger) {}
 
 GetCaptcha::~GetCaptcha() = default;
 

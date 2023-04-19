@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 namespace ledger {
@@ -17,7 +18,7 @@ namespace wallet_provider {
 
 class GetExternalWallet {
  public:
-  explicit GetExternalWallet(LedgerImpl*);
+  explicit GetExternalWallet(LedgerImpl& ledger);
 
   virtual ~GetExternalWallet();
 
@@ -30,7 +31,7 @@ class GetExternalWallet {
                                 mojom::Result,
                                 std::string drain_id) const;
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace wallet_provider

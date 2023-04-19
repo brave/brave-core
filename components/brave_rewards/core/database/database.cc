@@ -15,30 +15,29 @@ using std::placeholders::_1;
 namespace ledger {
 namespace database {
 
-Database::Database(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-
-  initialize_ = std::make_unique<DatabaseInitialize>(ledger_);
-  activity_info_ = std::make_unique<DatabaseActivityInfo>(ledger_);
-  balance_report_ = std::make_unique<DatabaseBalanceReport>(ledger_);
-  contribution_queue_ = std::make_unique<DatabaseContributionQueue>(ledger_);
-  contribution_info_ = std::make_unique<DatabaseContributionInfo>(ledger_);
-  creds_batch_ = std::make_unique<DatabaseCredsBatch>(ledger_);
-  event_log_ = std::make_unique<DatabaseEventLog>(ledger_);
+Database::Database(LedgerImpl& ledger) : ledger_(ledger) {
+  initialize_ = std::make_unique<DatabaseInitialize>(*ledger_);
+  activity_info_ = std::make_unique<DatabaseActivityInfo>(*ledger_);
+  balance_report_ = std::make_unique<DatabaseBalanceReport>(*ledger_);
+  contribution_queue_ = std::make_unique<DatabaseContributionQueue>(*ledger_);
+  contribution_info_ = std::make_unique<DatabaseContributionInfo>(*ledger_);
+  creds_batch_ = std::make_unique<DatabaseCredsBatch>(*ledger_);
+  event_log_ = std::make_unique<DatabaseEventLog>(*ledger_);
   external_transactions_ =
-      std::make_unique<DatabaseExternalTransactions>(ledger_);
-  media_publisher_info_ = std::make_unique<DatabaseMediaPublisherInfo>(ledger_);
-  multi_tables_ = std::make_unique<DatabaseMultiTables>(ledger_);
-  promotion_ = std::make_unique<DatabasePromotion>(ledger_);
-  publisher_info_ = std::make_unique<DatabasePublisherInfo>(ledger_);
+      std::make_unique<DatabaseExternalTransactions>(*ledger_);
+  media_publisher_info_ =
+      std::make_unique<DatabaseMediaPublisherInfo>(*ledger_);
+  multi_tables_ = std::make_unique<DatabaseMultiTables>(*ledger_);
+  promotion_ = std::make_unique<DatabasePromotion>(*ledger_);
+  publisher_info_ = std::make_unique<DatabasePublisherInfo>(*ledger_);
   publisher_prefix_list_ =
-      std::make_unique<DatabasePublisherPrefixList>(ledger_);
-  recurring_tip_ = std::make_unique<DatabaseRecurringTip>(ledger_);
+      std::make_unique<DatabasePublisherPrefixList>(*ledger_);
+  recurring_tip_ = std::make_unique<DatabaseRecurringTip>(*ledger_);
   server_publisher_info_ =
-      std::make_unique<DatabaseServerPublisherInfo>(ledger_);
-  sku_transaction_ = std::make_unique<DatabaseSKUTransaction>(ledger_);
-  sku_order_ = std::make_unique<DatabaseSKUOrder>(ledger_);
-  unblinded_token_ = std::make_unique<DatabaseUnblindedToken>(ledger_);
+      std::make_unique<DatabaseServerPublisherInfo>(*ledger_);
+  sku_transaction_ = std::make_unique<DatabaseSKUTransaction>(*ledger_);
+  sku_order_ = std::make_unique<DatabaseSKUOrder>(*ledger_);
+  unblinded_token_ = std::make_unique<DatabaseUnblindedToken>(*ledger_);
 }
 
 Database::~Database() = default;

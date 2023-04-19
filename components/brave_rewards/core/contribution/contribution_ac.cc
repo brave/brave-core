@@ -20,9 +20,7 @@ using std::placeholders::_2;
 namespace ledger {
 namespace contribution {
 
-ContributionAC::ContributionAC(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+ContributionAC::ContributionAC(LedgerImpl& ledger) : ledger_(ledger) {}
 
 ContributionAC::~ContributionAC() = default;
 

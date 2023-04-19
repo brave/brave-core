@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // PUT /v2/attestations/safetynet/{nonce}
@@ -44,7 +45,7 @@ using PutSafetynetCallback = base::OnceCallback<void(mojom::Result)>;
 
 class PutSafetynet {
  public:
-  explicit PutSafetynet(LedgerImpl* ledger);
+  explicit PutSafetynet(LedgerImpl& ledger);
   ~PutSafetynet();
 
   void Request(const std::string& token,
@@ -60,7 +61,7 @@ class PutSafetynet {
 
   void OnRequest(PutSafetynetCallback callback, mojom::UrlResponsePtr response);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace promotion

@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/state/state_migration_v1.h"
 #include "brave/components/brave_rewards/core/state/state_migration_v10.h"
@@ -31,7 +32,7 @@ namespace state {
 
 class StateMigration {
  public:
-  explicit StateMigration(LedgerImpl* ledger);
+  explicit StateMigration(LedgerImpl& ledger);
   ~StateMigration();
 
   void Start(ResultCallback callback);
@@ -56,7 +57,7 @@ class StateMigration {
   std::unique_ptr<StateMigrationV11> v11_;
   std::unique_ptr<StateMigrationV12> v12_;
   std::unique_ptr<StateMigrationV13> v13_;
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace state

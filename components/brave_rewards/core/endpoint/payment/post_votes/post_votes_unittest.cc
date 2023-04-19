@@ -28,7 +28,7 @@ class PostVotesTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
-  PostVotes votes_{&mock_ledger_impl_};
+  PostVotes votes_{mock_ledger_impl_};
 };
 
 TEST_F(PostVotesTest, ServerOK) {

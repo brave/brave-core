@@ -19,9 +19,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-PostBatLoss::PostBatLoss(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+PostBatLoss::PostBatLoss(LedgerImpl& ledger) : ledger_(ledger) {}
 
 PostBatLoss::~PostBatLoss() = default;
 

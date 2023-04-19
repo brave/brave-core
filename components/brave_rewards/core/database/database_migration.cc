@@ -65,9 +65,7 @@ namespace database {
 
 uint32_t DatabaseMigration::test_target_version_ = 0;
 
-DatabaseMigration::DatabaseMigration(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+DatabaseMigration::DatabaseMigration(LedgerImpl& ledger) : ledger_(ledger) {}
 
 DatabaseMigration::~DatabaseMigration() = default;
 

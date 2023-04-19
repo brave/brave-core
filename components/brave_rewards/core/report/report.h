@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 namespace ledger {
@@ -18,7 +19,7 @@ namespace report {
 
 class Report {
  public:
-  explicit Report(LedgerImpl* ledger);
+  explicit Report(LedgerImpl& ledger);
 
   ~Report();
 
@@ -50,7 +51,7 @@ class Report {
   void OnGetAllBalanceReports(std::vector<mojom::BalanceReportInfoPtr> reports,
                               ledger::GetAllMonthlyReportIdsCallback callback);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace report

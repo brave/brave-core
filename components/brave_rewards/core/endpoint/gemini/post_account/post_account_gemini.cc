@@ -17,9 +17,7 @@
 
 namespace ledger::endpoint::gemini {
 
-PostAccount::PostAccount(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+PostAccount::PostAccount(LedgerImpl& ledger) : ledger_(ledger) {}
 
 PostAccount::~PostAccount() = default;
 

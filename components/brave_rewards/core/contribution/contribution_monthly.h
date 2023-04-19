@@ -8,6 +8,7 @@
 
 #include <vector>
 
+#include "base/memory/raw_ref.h"
 #include "base/time/time.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -19,7 +20,7 @@ namespace contribution {
 
 class ContributionMonthly {
  public:
-  explicit ContributionMonthly(LedgerImpl* ledger);
+  explicit ContributionMonthly(LedgerImpl& ledger);
 
   ~ContributionMonthly();
 
@@ -37,7 +38,7 @@ class ContributionMonthly {
       ledger::LegacyResultCallback callback,
       bool success);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace contribution

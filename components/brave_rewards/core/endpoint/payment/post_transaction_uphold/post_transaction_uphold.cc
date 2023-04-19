@@ -19,10 +19,8 @@ namespace ledger {
 namespace endpoint {
 namespace payment {
 
-PostTransactionUphold::PostTransactionUphold(LedgerImpl* ledger)
-    : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+PostTransactionUphold::PostTransactionUphold(LedgerImpl& ledger)
+    : ledger_(ledger) {}
 
 PostTransactionUphold::~PostTransactionUphold() = default;
 

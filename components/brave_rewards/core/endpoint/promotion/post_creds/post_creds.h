@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ref.h"
 #include "base/values.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
@@ -49,7 +50,7 @@ using PostCredsCallback =
 
 class PostCreds {
  public:
-  explicit PostCreds(LedgerImpl* ledger);
+  explicit PostCreds(LedgerImpl& ledger);
   ~PostCreds();
 
   void Request(const std::string& promotion_id,
@@ -67,7 +68,7 @@ class PostCreds {
 
   void OnRequest(PostCredsCallback callback, mojom::UrlResponsePtr response);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace promotion

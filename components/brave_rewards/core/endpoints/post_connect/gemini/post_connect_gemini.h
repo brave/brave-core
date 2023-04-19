@@ -29,7 +29,7 @@ namespace endpoints {
 
 class PostConnectGemini final : public PostConnect {
  public:
-  PostConnectGemini(LedgerImpl*,
+  PostConnectGemini(LedgerImpl& ledger,
                     std::string&& linking_info,
                     std::string&& recipient_id);
   ~PostConnectGemini() override;

@@ -15,7 +15,7 @@ namespace gemini {
 
 class GetGeminiWallet : public wallet_provider::GetExternalWallet {
  public:
-  explicit GetGeminiWallet(LedgerImpl*);
+  explicit GetGeminiWallet(LedgerImpl& ledger);
 
   ~GetGeminiWallet() override;
 

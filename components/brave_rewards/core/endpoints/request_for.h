@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/functional/callback.h"
+#include "base/memory/raw_ref.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
@@ -30,12 +31,11 @@ template <typename Endpoint>
 class RequestFor {
  public:
   template <typename... Ts>
-  RequestFor(LedgerImpl* ledger, Ts&&... ts)
+  RequestFor(LedgerImpl& ledger, Ts&&... ts)
       : ledger_(ledger),
         request_(Endpoint(ledger, std::forward<Ts>(ts)...).Request()) {
     static_assert(std::is_base_of_v<RequestBuilder, Endpoint>,
                   "Endpoint should be derived from RequestBuilder!");
-    DCHECK(ledger_);
   }
 
   RequestFor(const RequestFor&) = delete;
@@ -65,7 +65,7 @@ class RequestFor {
   }
 
  private:
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
   absl::optional<ledger::mojom::UrlRequestPtr> request_;
 };
 

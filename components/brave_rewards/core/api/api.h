@@ -19,7 +19,7 @@ namespace api {
 
 class API {
  public:
-  explicit API(LedgerImpl* ledger);
+  explicit API(LedgerImpl& ledger);
   ~API();
 
   void Initialize();

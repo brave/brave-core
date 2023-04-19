@@ -41,7 +41,7 @@ class PostBatLossTest : public testing::Test {
 
   base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
-  PostBatLoss loss_{&mock_ledger_impl_};
+  PostBatLoss loss_{mock_ledger_impl_};
 };
 
 TEST_F(PostBatLossTest, ServerOK) {
