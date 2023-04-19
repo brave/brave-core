@@ -19,8 +19,10 @@ class RecentSearchHeaderView: UICollectionReusableView {
 
   private let titleLabel = UILabel().then {
     $0.text = Strings.recentSearchSectionTitle
-    $0.font = .systemFont(ofSize: 17.0, weight: .semibold)
+    $0.font = .systemFont(ofSize: 15.0, weight: .semibold)
     $0.textColor = .braveLabel
+    $0.setContentHuggingPriority(.required, for: .horizontal)
+    $0.setContentCompressionResistancePriority(.required, for: .horizontal)
   }
 
   private let subtitleLabel = UILabel().then {
@@ -83,21 +85,33 @@ class RecentSearchHeaderView: UICollectionReusableView {
 
     let spacer = UIView().then {
       $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
-      $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+      $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
     }
 
     if showRecentSearches {
       vStackView.addArrangedSubview(hStackView)
 
       [titleLabel, spacer, showButton, hideClearButton].forEach(hStackView.addArrangedSubview(_:))
+      hStackView.setCustomSpacing(0, after: spacer)
+      hStackView.setCustomSpacing(15, after: showButton)
+
+      showButton.do {
+        $0.setContentHuggingPriority(.required, for: .horizontal)
+        $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+        $0.contentHorizontalAlignment = .leading
+      }
+
+      hideClearButton.do {
+        $0.setContentHuggingPriority(.required, for: .horizontal)
+        $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+        $0.contentHorizontalAlignment = .trailing
+      }
 
       showButton.snp.makeConstraints {
-        $0.width.equalTo(hideClearButton)
         $0.height.lessThanOrEqualTo(DesignUX.buttonHeight)
       }
 
       hideClearButton.snp.makeConstraints {
-        $0.width.equalTo(showButton)
         $0.height.lessThanOrEqualTo(DesignUX.buttonHeight)
       }
     } else {
@@ -105,6 +119,7 @@ class RecentSearchHeaderView: UICollectionReusableView {
         self.vStackView.addArrangedSubview($0)
       })
 
+      vStackView.setCustomSpacing(12.0, after: titleLabel)
       vStackView.setCustomSpacing(22.0, after: subtitleLabel)
 
       [showButton, hideClearButton, spacer].forEach({
