@@ -20,12 +20,14 @@
 namespace brave {
 
 void OnPermissionRequestStatus(
-    content::WebContents* contents,
+    int frame_tree_node_id,
     const std::vector<blink::mojom::PermissionStatus>& permission_statuses) {
   DCHECK_EQ(1u, permission_statuses.size());
   // Once permission status has been updated, reload the page.
   // We do this so as to let the user know that they should retry
   // an action. Also just makes state management easier.
+  auto* contents =
+      content::WebContents::FromFrameTreeNodeId(frame_tree_node_id);
   if (contents &&
       permission_statuses[0] == blink::mojom::PermissionStatus::GRANTED) {
     contents->GetController().Reload(content::ReloadType::NORMAL, true);
@@ -121,8 +123,7 @@ int OnBeforeURLRequest_LocalhostPermissionWork(
           {blink::PermissionType::BRAVE_LOCALHOST_ACCESS},
           /* rfh */ contents->GetPrimaryMainFrame(),
           /* requesting_origin */ request_initiator_url, true,
-          base::BindOnce(&OnPermissionRequestStatus, contents));
-
+          base::BindOnce(&OnPermissionRequestStatus, ctx->frame_tree_node_id));
       return net::ERR_ACCESS_DENIED;
     }
   }
