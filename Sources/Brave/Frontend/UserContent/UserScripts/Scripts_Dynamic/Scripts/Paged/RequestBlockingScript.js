@@ -38,15 +38,14 @@ window.__firefox__.execute(function($) {
     const url = new URL(urlString, window.location.href)
     return sendMessage(url).then(blocked => {
       if (blocked) {
-        return new Promise(function (resolve, reject) {
-          reject(new TypeError('Load failed'))
-        })
+        return Promise.reject(new TypeError('Load failed'))
       } else {
         return originalFetch.apply(this, arguments)
       }
     })
   }, /*overrideToString=*/false);
   
+  const localURLProp = Symbol('url')
   const originalOpen = XMLHttpRequest.prototype.open
   XMLHttpRequest.prototype.open = $(function() {
     // Check if we're async
@@ -58,13 +57,13 @@ window.__firefox__.execute(function($) {
 
     // Set the url on the request so we can reference it later
     // Store only primitive types not things like URL objects
-    this._url = arguments[1]
+    this[localURLProp] = arguments[1]
     return originalOpen.apply(this, arguments)
   }, /*overrideToString=*/false);
 
   const originalSend = XMLHttpRequest.prototype.send
   XMLHttpRequest.prototype.send = $(function () {
-    if (this._url === undefined) {
+    if (this[localURLProp] === undefined) {
       return originalSend.apply(this, arguments)
     }
     
@@ -74,7 +73,7 @@ window.__firefox__.execute(function($) {
     try {
       // We do this in a try/catch block to not fail the request in case we can't
       // create a URL
-      resourceURL = new URL(this._url, window.location.href)
+      resourceURL = new URL(this[localURLProp], window.location.href)
     } catch (error) {
       // Ignore this error and proceed like a regular request
       return originalSend.apply(this, arguments)
