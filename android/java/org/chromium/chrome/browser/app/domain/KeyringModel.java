@@ -132,11 +132,11 @@ public class KeyringModel implements KeyringServiceObserver {
                 if (coinType == CoinType.FIL) {
                     mKeyringService.getFilecoinSelectedAccount(
                             BraveWalletConstants.FILECOIN_MAINNET, accountAddress -> {
-                                handleSelectedAccount(accountAddress, accountInfos);
+                                updateSelectedAccountAndState(accountAddress, accountInfos);
                             });
                 } else {
                     mKeyringService.getSelectedAccount(coinType, accountAddress -> {
-                        handleSelectedAccount(accountAddress, accountInfos);
+                        updateSelectedAccountAndState(accountAddress, accountInfos);
                     });
                 }
             });
@@ -167,7 +167,7 @@ public class KeyringModel implements KeyringServiceObserver {
         });
     }
 
-    private void handleSelectedAccount(String accountAddress, List<AccountInfo> accountInfoList) {
+    private void updateSelectedAccountAndState(String accountAddress, List<AccountInfo> accountInfoList) {
         if (!TextUtils.isEmpty(accountAddress)) {
             AccountInfo selectedAccountInfo = null;
             for (AccountInfo accountInfo : accountInfoList) {
@@ -201,10 +201,10 @@ public class KeyringModel implements KeyringServiceObserver {
             int coinType = mSharedData.getCoinType();
             if (coinType == CoinType.FIL) {
                 mKeyringService.getFilecoinSelectedAccount(BraveWalletConstants.FILECOIN_MAINNET,
-                        accountAddress -> { handleSelectedAccount(accountAddress); });
+                        accountAddress -> { updateSelectedAccountAndState(accountAddress); });
             } else {
                 mKeyringService.getSelectedAccount(
-                        coinType, accountAddress -> { handleSelectedAccount(accountAddress); });
+                        coinType, accountAddress -> { updateSelectedAccountAndState(accountAddress); });
             }
         }
         return mSelectedAccount;
@@ -285,11 +285,11 @@ public class KeyringModel implements KeyringServiceObserver {
         if (coinType == CoinType.FIL) {
             mKeyringService.addFilecoinAccount(
                     accountName, BraveWalletConstants.FILECOIN_MAINNET, result -> {
-                        handleAccountResult(result, finalAccountInfo, coinType, callback);
+                        handleAddAccountResult(result, finalAccountInfo, coinType, callback);
                     });
         } else {
             mKeyringService.addAccount(accountName, coinType, result -> {
-                handleAccountResult(result, finalAccountInfo, coinType, callback);
+                handleAddAccountResult(result, finalAccountInfo, coinType, callback);
             });
         }
     }
@@ -298,7 +298,7 @@ public class KeyringModel implements KeyringServiceObserver {
         mKeyringService.isLocked(isWalletLocked -> callback.call(isWalletLocked));
     }
 
-    private void handleAccountResult(boolean result, AccountInfo[] finalAccountInfo,
+    private void handleAddAccountResult(boolean result, AccountInfo[] finalAccountInfo,
             @CoinType.EnumType int coinType, Callbacks.Callback1<Boolean> callback) {
         if (result) {
             boolean hasExistingAccountType = false;
@@ -323,7 +323,7 @@ public class KeyringModel implements KeyringServiceObserver {
         callback.call(result);
     }
 
-    private void handleSelectedAccount(String accountAddress) {
+    private void updateSelectedAccountAndState(String accountAddress) {
         if (accountAddress == null) {
             mKeyringService.getKeyringInfo(getSelectedCoinKeyringId(mSharedData.getCoinType()),
                     keyringInfo -> { updateSelectedAccountPerOriginOrFirst(keyringInfo); });
