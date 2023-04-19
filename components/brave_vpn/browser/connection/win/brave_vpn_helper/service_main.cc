@@ -61,7 +61,7 @@ ServiceMain::ServiceMain()
 ServiceMain::~ServiceMain() = default;
 
 int ServiceMain::RunAsService() {
-  const std::wstring& service_name(brave_vpn::GetVpnServiceName());
+  const std::wstring& service_name(brave_vpn::GetBraveVpnHelperServiceName());
   const SERVICE_TABLE_ENTRY dispatch_table[] = {
       {const_cast<LPTSTR>(service_name.c_str()),
        &ServiceMain::ServiceMainEntry},
@@ -78,9 +78,9 @@ int ServiceMain::RunAsService() {
 
 void ServiceMain::ServiceMainImpl() {
   VLOG(1) << __func__ << " BraveVPN Service started";
-  service_status_handle_ =
-      ::RegisterServiceCtrlHandler(brave_vpn::GetVpnServiceName().c_str(),
-                                   &ServiceMain::ServiceControlHandler);
+  service_status_handle_ = ::RegisterServiceCtrlHandler(
+      brave_vpn::GetBraveVpnHelperServiceName().c_str(),
+      &ServiceMain::ServiceControlHandler);
   if (service_status_handle_ == nullptr) {
     LOG(ERROR) << "RegisterServiceCtrlHandler failed";
     return;
