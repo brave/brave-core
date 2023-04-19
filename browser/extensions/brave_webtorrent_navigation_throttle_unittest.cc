@@ -151,7 +151,7 @@ class BraveWebTorrentNavigationThrottleUnitTest
   base::ScopedTempDir temp_dir_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   // The ExtensionService associated with the primary profile.
-  extensions::ExtensionService* extension_service_ = nullptr;
+  raw_ptr<extensions::ExtensionService> extension_service_ = nullptr;
 };
 
 // Tests the basic case of loading a URL, it should proceed.

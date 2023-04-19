@@ -7,6 +7,7 @@
 #include <string>
 
 #include "base/functional/bind.h"
+#include "base/memory/raw_ptr.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/de_amp/common/pref_names.h"
@@ -144,7 +145,7 @@ class DeAmpBrowserTest : public InProcessBrowserTest {
 
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
-  PrefService* prefs_;
+  raw_ptr<PrefService> prefs_;
 };
 
 // HELPERS

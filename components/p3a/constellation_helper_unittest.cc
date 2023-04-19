@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/memory/raw_ptr.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/time/time.h"
@@ -96,7 +97,7 @@ class P3AConstellationHelperTest : public testing::Test {
   TestingPrefServiceSimple local_state;
   bool interceptor_send_bad_response = false;
 
-  RandomnessServerInfo* server_info_from_callback = nullptr;
+  raw_ptr<RandomnessServerInfo> server_info_from_callback = nullptr;
   std::unique_ptr<std::string> serialized_message_from_callback;
 
   std::string histogram_name_from_callback;

@@ -38,10 +38,8 @@ constexpr int kCloseButtonIconDipSize = 16;
 }  // namespace
 
 NotificationAdControlButtonsView::NotificationAdControlButtonsView(
-    NotificationAdView* notification_ad_view)
+    NotificationAdView& notification_ad_view)
     : notification_ad_view_(notification_ad_view) {
-  DCHECK(notification_ad_view_);
-
   CreateView();
 }
 
@@ -98,7 +96,7 @@ void NotificationAdControlButtonsView::CreateCloseButton() {
   DCHECK(!close_button_);
   close_button_ = AddChildView(std::make_unique<PaddedImageButton>(
       base::BindRepeating(&NotificationAdView::OnCloseButtonPressed,
-                          base::Unretained(notification_ad_view_))));
+                          base::Unretained(&*notification_ad_view_))));
 
   close_button_->SetAccessibleName(brave_l10n::GetLocalizedResourceUTF16String(
       IDS_BRAVE_ADS_NOTIFICATION_AD_CLOSE_BUTTON));

@@ -11,10 +11,8 @@
 
 namespace brave_ads {
 
-NotificationAdPlatformBridge::NotificationAdPlatformBridge(Profile* profile)
-    : profile_(profile) {
-  DCHECK(profile_);
-}
+NotificationAdPlatformBridge::NotificationAdPlatformBridge(Profile& profile)
+    : profile_(profile) {}
 
 NotificationAdPlatformBridge::~NotificationAdPlatformBridge() = default;
 

@@ -6,8 +6,9 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_INFOBARS_BRAVE_WAYBACK_MACHINE_INFOBAR_BUTTON_CONTAINER_H_
 #define BRAVE_BROWSER_UI_VIEWS_INFOBARS_BRAVE_WAYBACK_MACHINE_INFOBAR_BUTTON_CONTAINER_H_
 
-#include "ui/views/view.h"
+#include "base/memory/raw_ptr.h"
 #include "ui/views/controls/button/button.h"
+#include "ui/views/view.h"
 
 class BraveWaybackMachineInfoBarThrobber;
 
@@ -36,8 +37,8 @@ class BraveWaybackMachineInfoBarButtonContainer : public views::View {
  private:
   void AdjustButtonInsets(bool add_insets);
 
-  BraveWaybackMachineInfoBarThrobber* throbber_ = nullptr;
-  views::View* button_ = nullptr;
+  raw_ptr<BraveWaybackMachineInfoBarThrobber> throbber_ = nullptr;
+  raw_ptr<views::View> button_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_INFOBARS_BRAVE_WAYBACK_MACHINE_INFOBAR_BUTTON_CONTAINER_H_

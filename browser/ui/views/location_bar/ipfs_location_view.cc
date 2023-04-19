@@ -138,7 +138,7 @@ IPFSLocationView::IPFSLocationView(Profile* profile) {
   SetLayoutManager(std::move(vertical_container_layout));
 
   button_ = new IPFSLocationButtonView(profile);
-  AddChildView(button_);
+  AddChildView(button_.get());
 }
 
 IPFSLocationView::~IPFSLocationView() = default;
@@ -153,6 +153,6 @@ void IPFSLocationView::Update(content::WebContents* web_contents,
     return;
   auto ipfs_resolved_url = helper->GetIPFSResolvedURL();
   SetVisible(ipfs_resolved_url.is_valid() && show_page_actions);
-  reinterpret_cast<IPFSLocationButtonView*>(button_)->SetIPFSLocation(
-      ipfs_resolved_url);
+  reinterpret_cast<IPFSLocationButtonView*>(button_.get())
+      ->SetIPFSLocation(ipfs_resolved_url);
 }

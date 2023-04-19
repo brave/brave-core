@@ -763,8 +763,8 @@ class BraveWalletServiceUnitTest : public testing::Test {
   std::unique_ptr<base::HistogramTester> histogram_tester_;
   std::unique_ptr<BraveWalletService> service_;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
-  JsonRpcService* json_rpc_service_;
-  TxService* tx_service;
+  raw_ptr<JsonRpcService> json_rpc_service_;
+  raw_ptr<TxService> tx_service;
   std::unique_ptr<TestBraveWalletServiceObserver> observer_;
   base::test::ScopedFeatureList scoped_feature_list_;
 

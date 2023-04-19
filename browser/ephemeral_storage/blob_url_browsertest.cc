@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/memory/raw_ptr.h"
 #include "base/strings/pattern.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
@@ -63,7 +64,7 @@ constexpr char kFetchBlobViaWorkerScript[] = R"(
 class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
  public:
   struct RenderFrameHostBlobData {
-    content::RenderFrameHost* rfh;
+    raw_ptr<content::RenderFrameHost> rfh;
     GURL blob_url;
   };
   using FramesWithRegisteredBlobs = std::vector<RenderFrameHostBlobData>;
@@ -164,7 +165,7 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
 
     // Ensure no blobs from a.com are available to fetch in b.com iframes.
     for (auto& b_com_registered_blob : b_com_registered_blobs) {
-      auto* rfh = b_com_registered_blob.rfh;
+      auto* rfh = b_com_registered_blob.rfh.get();
       // No blobs from a.com should be available.
       for (auto& a_com_registered_blob : a_com_registered_blobs) {
         EXPECT_EQ("error", FetchBlob(rfh, a_com_registered_blob.blob_url));
@@ -176,7 +177,7 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
     FramesWithRegisteredBlobs a_com2_registered_blobs =
         RegisterBlobs(a_site_ephemeral_storage_url_);
     for (size_t idx = 0; idx < a_com2_registered_blobs.size(); ++idx) {
-      auto* rfh = a_com2_registered_blobs[idx].rfh;
+      auto* rfh = a_com2_registered_blobs[idx].rfh.get();
       // All blobs from another a.com tab should be avilable.
       EXPECT_EQ(std::to_string(idx),
                 FetchBlob(rfh, a_com_registered_blobs[idx].blob_url));
@@ -193,7 +194,7 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
         1, TabCloseTypes::CLOSE_NONE));
     content::RunAllTasksUntilIdle();
     for (size_t idx = 0; idx < a_com2_registered_blobs.size(); ++idx) {
-      auto* rfh = a_com2_registered_blobs[idx].rfh;
+      auto* rfh = a_com2_registered_blobs[idx].rfh.get();
       EXPECT_EQ("error", FetchBlob(rfh, a_com_registered_blobs[idx].blob_url));
     }
 
@@ -227,7 +228,7 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
 
     // Ensure blobs from a.com tab are available to fetch in b.com tab.
     for (size_t idx = 0; idx < b_com_registered_blobs.size(); ++idx) {
-      auto* rfh = b_com_registered_blobs[idx].rfh;
+      auto* rfh = b_com_registered_blobs[idx].rfh.get();
       // Blobs from a.com should be available.
       if (idx == 0) {
         const size_t b_com_inside_a_com_idx = 1;
@@ -246,7 +247,7 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
     FramesWithRegisteredBlobs a_com2_registered_blobs =
         RegisterBlobs(a_site_ephemeral_storage_url_);
     for (size_t idx = 0; idx < a_com2_registered_blobs.size(); ++idx) {
-      auto* rfh = a_com2_registered_blobs[idx].rfh;
+      auto* rfh = a_com2_registered_blobs[idx].rfh.get();
       // All blobs from another a.com tab should be avilable.
       EXPECT_EQ(std::to_string(idx),
                 FetchBlob(rfh, a_com_registered_blobs[idx].blob_url));
@@ -270,7 +271,7 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
         1, TabCloseTypes::CLOSE_NONE));
     content::RunAllTasksUntilIdle();
     for (size_t idx = 0; idx < a_com2_registered_blobs.size(); ++idx) {
-      auto* rfh = a_com2_registered_blobs[idx].rfh;
+      auto* rfh = a_com2_registered_blobs[idx].rfh.get();
       EXPECT_EQ("error", FetchBlob(rfh, a_com_registered_blobs[idx].blob_url));
     }
 

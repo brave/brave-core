@@ -141,7 +141,7 @@ class P3AMessageManagerTest : public testing::Test,
         }));
 
     message_manager = std::make_unique<MessageManager>(
-        &local_state, &p3a_config, this, "release", "2099-01-01");
+        local_state, &p3a_config, *this, "release", "2099-01-01");
 
     message_manager->Init(shared_url_loader_factory);
 

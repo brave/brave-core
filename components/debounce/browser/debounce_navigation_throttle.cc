@@ -98,15 +98,13 @@ DebounceNavigationThrottle::MaybeCreateThrottleFor(
   }
 
   return std::make_unique<DebounceNavigationThrottle>(navigation_handle,
-                                                      debounce_service);
+                                                      *debounce_service);
 }
 
 DebounceNavigationThrottle::DebounceNavigationThrottle(
     NavigationHandle* handle,
-    DebounceService* debounce_service)
-    : NavigationThrottle(handle), debounce_service_(debounce_service) {
-  DCHECK(debounce_service_);
-}
+    DebounceService& debounce_service)
+    : NavigationThrottle(handle), debounce_service_(debounce_service) {}
 
 DebounceNavigationThrottle::~DebounceNavigationThrottle() = default;
 

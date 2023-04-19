@@ -1651,7 +1651,7 @@ void AdsServiceImpl::ShowNotificationAd(base::Value::Dict dict) {
 
   if (ShouldShowCustomNotificationAds()) {
     std::unique_ptr<NotificationAdPlatformBridge> platform_bridge =
-        std::make_unique<NotificationAdPlatformBridge>(profile_);
+        std::make_unique<NotificationAdPlatformBridge>(*profile_);
 
     std::u16string title;
     if (base::IsStringUTF8(ad.title)) {
@@ -1706,7 +1706,7 @@ void AdsServiceImpl::ShowNotificationAd(base::Value::Dict dict) {
 void AdsServiceImpl::CloseNotificationAd(const std::string& placement_id) {
   if (ShouldShowCustomNotificationAds()) {
     std::unique_ptr<NotificationAdPlatformBridge> platform_bridge =
-        std::make_unique<NotificationAdPlatformBridge>(profile_);
+        std::make_unique<NotificationAdPlatformBridge>(*profile_);
 
     platform_bridge->CloseNotificationAd(placement_id);
   } else {

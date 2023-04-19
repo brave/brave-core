@@ -144,19 +144,15 @@ namespace ipfs {
 
 IpfsImportController::~IpfsImportController() = default;
 
-IpfsImportController::IpfsImportController(content::WebContents* web_contents)
+IpfsImportController::IpfsImportController(content::WebContents& web_contents)
     : web_contents_(web_contents),
-      ipfs_service_(ipfs::IpfsServiceFactory::GetForContext(
-          web_contents->GetBrowserContext())),
+      ipfs_service_(*ipfs::IpfsServiceFactory::GetForContext(
+          web_contents.GetBrowserContext())),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
-           base::TaskShutdownBehavior::BLOCK_SHUTDOWN})) {
-  DCHECK(web_contents_);
-  DCHECK(ipfs_service_);
-}
+           base::TaskShutdownBehavior::BLOCK_SHUTDOWN})) {}
 
 void IpfsImportController::ImportLinkToIpfs(const GURL& url) {
-  DCHECK(ipfs_service_);
   ipfs_service_->ImportLinkToIpfs(
       url, base::BindOnce(&IpfsImportController::OnImportCompleted,
                           weak_ptr_factory_.GetWeakPtr()));
@@ -214,7 +210,6 @@ void IpfsImportController::OnDownloadFinished(
   DCHECK(download);
   switch (download->GetState()) {
     case download::DownloadItem::COMPLETE:
-      DCHECK(ipfs_service_);
       ipfs_service_->ImportDirectoryToIpfs(
           path, std::string(),
           base::BindOnce(&IpfsImportController::OnWebPageImportCompleted,
@@ -234,7 +229,6 @@ void IpfsImportController::OnDownloadFinished(
 
 void IpfsImportController::ImportDirectoryToIpfs(const base::FilePath& path,
                                                  const std::string& key) {
-  DCHECK(ipfs_service_);
   ipfs_service_->ImportDirectoryToIpfs(
       path, key,
       base::BindOnce(&IpfsImportController::OnImportCompleted,
@@ -242,7 +236,6 @@ void IpfsImportController::ImportDirectoryToIpfs(const base::FilePath& path,
 }
 
 void IpfsImportController::ImportTextToIpfs(const std::string& text) {
-  DCHECK(ipfs_service_);
   ipfs_service_->ImportTextToIpfs(
       text, web_contents_->GetURL().host(),
       base::BindOnce(&IpfsImportController::OnImportCompleted,
@@ -251,7 +244,6 @@ void IpfsImportController::ImportTextToIpfs(const std::string& text) {
 
 void IpfsImportController::ImportFileToIpfs(const base::FilePath& path,
                                             const std::string& key) {
-  DCHECK(ipfs_service_);
   ipfs_service_->ImportFileToIpfs(
       path, key,
       base::BindOnce(&IpfsImportController::OnImportCompleted,
@@ -348,7 +340,7 @@ void IpfsImportController::FileSelectionCanceled(void* params) {
 void IpfsImportController::ShowImportDialog(ui::SelectFileDialog::Type type,
                                             const std::string& key) {
   select_file_dialog_ = ui::SelectFileDialog::Create(
-      this, std::make_unique<ChromeSelectFilePolicy>(web_contents_));
+      this, std::make_unique<ChromeSelectFilePolicy>(&*web_contents_));
   if (!select_file_dialog_) {
     VLOG(1) << "Import already in progress";
     return;

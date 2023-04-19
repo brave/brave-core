@@ -43,9 +43,10 @@ class NotificationAdHeaderView : public views::View {
  private:
   void CreateView(const int width);
 
-  views::Label* title_label_ = nullptr;
   views::Label* CreateTitleLabel();
   void UpdateTitleLabel();
+
+  raw_ptr<views::Label> title_label_ = nullptr;
 };
 
 }  // namespace brave_ads

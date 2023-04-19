@@ -106,7 +106,7 @@ void NotificationAdHeaderView::CreateView(const int width) {
 
   DCHECK(!title_label_);
   title_label_ = CreateTitleLabel();
-  AddChildView(title_label_);
+  AddChildView(title_label_.get());
 
   views::View* control_button_spacing_view =
       CreateFixedSizeSpacerView(kControlButtonsSpacing);

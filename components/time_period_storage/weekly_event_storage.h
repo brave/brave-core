@@ -9,6 +9,7 @@
 #include <list>
 #include <memory>
 
+#include "base/memory/raw_ref.h"
 #include "base/time/clock.h"
 #include "base/time/time.h"
 #include "components/prefs/pref_service.h"
@@ -58,7 +59,7 @@ class WeeklyEventStorage {
   void Load();
   void Save();
 
-  PrefService* prefs_ = nullptr;
+  const raw_ref<PrefService> prefs_;
   const char* pref_name_ = nullptr;
   std::unique_ptr<base::Clock> clock_;
 

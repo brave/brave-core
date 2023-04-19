@@ -17,6 +17,7 @@
 #include "base/containers/unique_ptr_adapters.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/ref_counted_delete_on_sequence.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
@@ -54,7 +55,7 @@ class BraveProxyingURLLoaderFactory
                             public network::mojom::URLLoaderClient {
    public:
     InProgressRequest(
-        BraveProxyingURLLoaderFactory* factory,
+        BraveProxyingURLLoaderFactory& factory,
         uint64_t request_id,
         int32_t network_service_request_id,
         int render_process_id,
@@ -118,7 +119,7 @@ class BraveProxyingURLLoaderFactory
 
     // TODO(iefremov): Get rid of shared_ptr, we should clearly own the pointer.
     std::shared_ptr<brave::BraveRequestInfo> ctx_;
-    BraveProxyingURLLoaderFactory* const factory_;
+    const raw_ref<BraveProxyingURLLoaderFactory> factory_;
     network::ResourceRequest request_;
     const uint64_t request_id_;
     const int32_t network_service_request_id_;
@@ -177,7 +178,7 @@ class BraveProxyingURLLoaderFactory
   // Constructor public for testing purposes. New instances should be created
   // by calling MaybeProxyRequest().
   BraveProxyingURLLoaderFactory(
-      BraveRequestHandler* request_handler,
+      BraveRequestHandler& request_handler,
       content::BrowserContext* browser_context,
       int render_process_id,
       int frame_tree_node_id,
@@ -221,7 +222,7 @@ class BraveProxyingURLLoaderFactory
 
   void MaybeRemoveProxy();
 
-  BraveRequestHandler* const request_handler_;
+  const raw_ref<BraveRequestHandler> request_handler_;
   raw_ptr<content::BrowserContext> browser_context_ = nullptr;
   const int render_process_id_;
   const int frame_tree_node_id_;

@@ -5,6 +5,7 @@
 
 #include <memory>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/brave_shields_data_controller.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -110,7 +111,7 @@ class BraveShieldsDataControllerTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<content::WebContents> test_web_contents_;
   content::RenderViewHostTestEnabler render_view_host_test_enabler_;
-  Profile* profile_;
+  raw_ptr<Profile> profile_;
   std::unique_ptr<TestingProfileManager> profile_manager_;
 };
 

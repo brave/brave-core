@@ -219,7 +219,7 @@ views::View* BraveTooltipView::CreateHeaderView() {
 
   DCHECK(!title_label_);
   title_label_ = CreateTitleLabel();
-  view->AddChildView(title_label_);
+  view->AddChildView(title_label_.get());
 
   return view;
 }
@@ -279,12 +279,12 @@ views::View* BraveTooltipView::CreateButtonView() {
 
   DCHECK(!ok_button_);
   ok_button_ = CreateOkButton();
-  view->AddChildView(ok_button_);
+  view->AddChildView(ok_button_.get());
 
   if (tooltip_attributes_.cancel_button_text() != u"") {
     DCHECK(!cancel_button_);
     cancel_button_ = CreateCancelButton();
-    view->AddChildView(cancel_button_);
+    view->AddChildView(cancel_button_.get());
   }
 
   return view;
@@ -298,7 +298,7 @@ views::View* BraveTooltipView::CreateBodyView() {
 
   DCHECK(!body_label_);
   body_label_ = CreateBodyLabel();
-  view->AddChildView(body_label_);
+  view->AddChildView(body_label_.get());
 
   return view;
 }

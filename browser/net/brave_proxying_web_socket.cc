@@ -30,7 +30,7 @@ BraveProxyingWebSocket::BraveProxyingWebSocket(
     int frame_tree_node_id,
     content::BrowserContext* browser_context,
     scoped_refptr<RequestIDGenerator> request_id_generator,
-    BraveRequestHandler* handler,
+    BraveRequestHandler& handler,
     DisconnectCallback on_disconnect)
     : request_handler_(handler),
       process_id_(process_id),

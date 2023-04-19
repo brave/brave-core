@@ -86,7 +86,7 @@ BraveProxyingURLLoaderFactory::InProgressRequest::FollowRedirectParams::
     ~FollowRedirectParams() = default;
 
 BraveProxyingURLLoaderFactory::InProgressRequest::InProgressRequest(
-    BraveProxyingURLLoaderFactory* factory,
+    BraveProxyingURLLoaderFactory& factory,
     uint64_t request_id,
     int32_t network_service_request_id,
     int render_process_id,
@@ -624,7 +624,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::OnRequestError(
 }
 
 BraveProxyingURLLoaderFactory::BraveProxyingURLLoaderFactory(
-    BraveRequestHandler* request_handler,
+    BraveRequestHandler& request_handler,
     content::BrowserContext* browser_context,
     int render_process_id,
     int frame_tree_node_id,
@@ -690,7 +690,7 @@ void BraveProxyingURLLoaderFactory::CreateLoaderAndStart(
   const uint64_t brave_request_id = request_id_generator_->Generate();
 
   auto result = requests_.emplace(std::make_unique<InProgressRequest>(
-      this, brave_request_id, request_id, render_process_id_,
+      *this, brave_request_id, request_id, render_process_id_,
       frame_tree_node_id_, options, request, browser_context_,
       traffic_annotation, std::move(loader_receiver), std::move(client)));
   (*result.first)->Restart();

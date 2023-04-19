@@ -38,7 +38,7 @@ class IpfsService;
 // when import completed.
 class IpfsImportController : public ui::SelectFileDialog::Listener {
  public:
-  explicit IpfsImportController(content::WebContents* web_contents);
+  explicit IpfsImportController(content::WebContents& web_contents);
   ~IpfsImportController() override;
 
   IpfsImportController(const IpfsImportController&) = delete;
@@ -56,7 +56,7 @@ class IpfsImportController : public ui::SelectFileDialog::Listener {
   bool HasInProgressDownload(download::DownloadItem* item);
 
   void SetIpfsServiceForTesting(ipfs::IpfsService* service) {
-    ipfs_service_ = service;
+    ipfs_service_ = *service;
   }
   void SkipSavePageForTesting(bool value) {
     skip_save_page_for_testing_ = value;
@@ -86,8 +86,8 @@ class IpfsImportController : public ui::SelectFileDialog::Listener {
   ui::SelectFileDialog::Type dialog_type_ = ui::SelectFileDialog::SELECT_NONE;
   std::string dialog_key_;
 
-  content::WebContents* web_contents_ = nullptr;
-  ipfs::IpfsService* ipfs_service_ = nullptr;
+  const raw_ref<content::WebContents> web_contents_;
+  raw_ref<ipfs::IpfsService> ipfs_service_;
   bool skip_save_page_for_testing_ = false;
 
   scoped_refptr<base::SequencedTaskRunner> file_task_runner_;

@@ -93,7 +93,7 @@ const char* GetJsonRotationTimestampPref(MetricLogType log_type) {
 }  // namespace
 
 RotationScheduler::RotationScheduler(
-    PrefService* local_state,
+    PrefService& local_state,
     const P3AConfig* config,
     JsonRotationCallback json_rotation_callback,
     ConstellationRotationCallback constellation_rotation_callback)

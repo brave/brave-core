@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/functional/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "base/sequence_checker.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/browser/ad_block_filters_provider.h"
@@ -42,7 +43,7 @@ class AdBlockCustomFiltersProvider : public AdBlockFiltersProvider {
   void AddObserver(AdBlockFiltersProvider::Observer* observer);
 
  private:
-  PrefService* local_state_;
+  const raw_ptr<PrefService> local_state_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 };

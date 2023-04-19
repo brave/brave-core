@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_SYNC_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_SYNC_HANDLER_H_
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/values.h"
@@ -69,7 +70,7 @@ class BraveSyncHandler : public settings::SettingsPageUIHandler,
   mojo::Remote<qrcode_generator::mojom::QRCodeGeneratorService>
       qr_code_service_remote_;
 
-  Profile* profile_ = nullptr;
+  raw_ptr<Profile> profile_ = nullptr;
 
   // Manages observer lifetimes.
   base::ScopedObservation<syncer::DeviceInfoTracker,

@@ -80,7 +80,7 @@ class P3AServiceTest : public testing::Test {
 
   void SetUpP3AService() {
     p3a_service_ = scoped_refptr(new P3AService(
-        &local_state_, "release", "2049-01-01", P3AConfig(config_)));
+        local_state_, "release", "2049-01-01", P3AConfig(config_)));
 
     p3a_service_->DisableStarAttestationForTesting();
     p3a_service_->Init(shared_url_loader_factory_);

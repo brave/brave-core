@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_SYNC_NETWORK_TIME_HELPER_H_
 
 #include "base/functional/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
@@ -44,7 +45,7 @@ class NetworkTimeHelper {
   SEQUENCE_CHECKER(sequence_checker_);
 
   // Not owned
-  network_time::NetworkTimeTracker* network_time_tracker_ = nullptr;
+  raw_ptr<network_time::NetworkTimeTracker> network_time_tracker_ = nullptr;
 
   base::WeakPtrFactory<NetworkTimeHelper> weak_ptr_factory_{this};
 };

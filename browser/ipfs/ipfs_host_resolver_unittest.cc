@@ -174,7 +174,7 @@ TEST_F(IPFSHostResolverTest, PrefixRunSuccess) {
   auto* fake_host_resolver_raw = fake_host_resolver.get();
   network_context->SetHostResolver(std::move(fake_host_resolver));
   base::RunLoop run_loop;
-  ipfs::IPFSHostResolver ipfs_resolver(network_context, prefix);
+  ipfs::IPFSHostResolver ipfs_resolver(*network_context, prefix);
 
   SetResolvedCallbackCalled(false);
   ipfs_resolver.Resolve(
@@ -202,7 +202,7 @@ TEST_F(IPFSHostResolverTest, SuccessOnReuse) {
   auto* network_context = GetNetworkContext();
   auto* fake_host_resolver_raw = fake_host_resolver.get();
   network_context->SetHostResolver(std::move(fake_host_resolver));
-  ipfs::IPFSHostResolver ipfs_resolver(network_context, prefix);
+  ipfs::IPFSHostResolver ipfs_resolver(*network_context, prefix);
 
   SetResolvedCallbackCalled(false);
   {
@@ -247,7 +247,7 @@ TEST_F(IPFSHostResolverTest, ResolutionFailed) {
   auto* network_context = GetNetworkContext();
   auto* fake_host_resolver_raw = fake_host_resolver.get();
   network_context->SetHostResolver(std::move(fake_host_resolver));
-  ipfs::IPFSHostResolver ipfs_resolver(network_context);
+  ipfs::IPFSHostResolver ipfs_resolver(*network_context);
   base::RunLoop run_loop;
   ipfs_resolver.Resolve(
       net::HostPortPair(host, 11), net::NetworkAnonymizationKey(),

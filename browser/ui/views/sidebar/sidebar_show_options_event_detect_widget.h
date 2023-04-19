@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/scoped_observation.h"
 #include "ui/views/widget/widget_delegate.h"
 
@@ -35,8 +36,8 @@ class SidebarShowOptionsEventDetectWidget : public views::ViewObserver,
     virtual ~Delegate() {}
   };
 
-  explicit SidebarShowOptionsEventDetectWidget(BraveBrowserView* browser_view,
-                                               Delegate* delegate);
+  explicit SidebarShowOptionsEventDetectWidget(BraveBrowserView& browser_view,
+                                               Delegate& delegate);
   ~SidebarShowOptionsEventDetectWidget() override;
 
   SidebarShowOptionsEventDetectWidget(
@@ -56,13 +57,13 @@ class SidebarShowOptionsEventDetectWidget : public views::ViewObserver,
 
   class ContentsView;
 
-  std::unique_ptr<views::Widget> CreateWidget(Delegate* delegate);
+  std::unique_ptr<views::Widget> CreateWidget(Delegate& delegate);
   void AdjustWidgetBounds();
 
   bool sidebar_on_left_ = true;
-  raw_ptr<BraveBrowserView> browser_view_ = nullptr;
+  raw_ref<BraveBrowserView> browser_view_;
   raw_ptr<ContentsView> contents_view_ = nullptr;
-  raw_ptr<Delegate> delegate_ = nullptr;
+  raw_ref<Delegate> delegate_;
   std::unique_ptr<views::Widget> widget_;
   base::ScopedObservation<views::View, views::ViewObserver> observation_{this};
 };

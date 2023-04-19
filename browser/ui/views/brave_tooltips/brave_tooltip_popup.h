@@ -143,11 +143,11 @@ class BraveTooltipPopup : public views::WidgetDelegateView,
   void FadeIn();
   void FadeOut();
 
-  raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
+  raw_ptr<Profile> profile_ = nullptr;
 
   std::unique_ptr<BraveTooltip> tooltip_;
 
-  BraveTooltipView* tooltip_view_ = nullptr;  // NOT OWNED
+  raw_ptr<BraveTooltipView> tooltip_view_ = nullptr;
 
   gfx::Point widget_origin_ = {0, 0};
 

@@ -22,12 +22,12 @@ BraveWaybackMachineDelegateImpl::CreateInfoBarView(
 }
 
 BraveWaybackMachineInfoBarView::BraveWaybackMachineInfoBarView(
-      std::unique_ptr<BraveWaybackMachineInfoBarDelegate> delegate,
-      content::WebContents* contents)
-    : InfoBarView(std::move(delegate)) {
-  sub_views_ = new BraveWaybackMachineInfoBarContentsView(contents);
+    std::unique_ptr<BraveWaybackMachineInfoBarDelegate> delegate,
+    content::WebContents* contents)
+    : InfoBarView(std::move(delegate)),
+      sub_views_(*new BraveWaybackMachineInfoBarContentsView(contents)) {
   sub_views_->SizeToPreferredSize();
-  AddChildView(sub_views_);
+  AddChildView(&*sub_views_);
 }
 
 BraveWaybackMachineInfoBarView::~BraveWaybackMachineInfoBarView() = default;
@@ -38,6 +38,6 @@ void BraveWaybackMachineInfoBarView::Layout() {
   // Don't adjust child view's height. Just use their preferred height.
   // It can cause infinite Layout loop because of infobar's height
   // re-calculation during the animation.
-  sub_views_->SetBounds(0, OffsetY(sub_views_), GetEndX(),
+  sub_views_->SetBounds(0, OffsetY(&*sub_views_), GetEndX(),
                         sub_views_->height());
 }

@@ -100,7 +100,7 @@ TEST_F(TorNavigationThrottleUnitTest, WhitelistedScheme) {
   content::MockNavigationHandle test_handle(tor_web_contents());
   std::unique_ptr<TorNavigationThrottle> throttle =
       TorNavigationThrottle::MaybeCreateThrottleFor(
-          &test_handle, GetTorLauncherFactory(),
+          &test_handle, *GetTorLauncherFactory(),
           tor_web_contents()->GetBrowserContext()->IsTor());
   GURL url("http://www.example.com");
   test_handle.set_url(url);
@@ -138,7 +138,7 @@ TEST_F(TorNavigationThrottleUnitTest, BlockedScheme) {
   content::MockNavigationHandle test_handle(tor_web_contents());
   std::unique_ptr<TorNavigationThrottle> throttle =
       TorNavigationThrottle::MaybeCreateThrottleFor(
-          &test_handle, GetTorLauncherFactory(),
+          &test_handle, *GetTorLauncherFactory(),
           tor_web_contents()->GetBrowserContext()->IsTor());
   GURL url("ftp://ftp.example.com");
   test_handle.set_url(url);
@@ -166,7 +166,7 @@ TEST_F(TorNavigationThrottleUnitTest, DeferUntilTorProcessLaunched) {
   content::MockNavigationHandle test_handle(tor_web_contents());
   std::unique_ptr<TorNavigationThrottle> throttle =
       TorNavigationThrottle::MaybeCreateThrottleFor(
-          &test_handle, GetTorLauncherFactory(),
+          &test_handle, *GetTorLauncherFactory(),
           tor_web_contents()->GetBrowserContext()->IsTor());
   bool was_navigation_resumed = false;
   throttle->set_resume_callback_for_testing(

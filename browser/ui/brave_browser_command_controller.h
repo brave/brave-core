@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_BROWSER_COMMAND_CONTROLLER_H_
 #define BRAVE_BROWSER_UI_BRAVE_BROWSER_COMMAND_CONTROLLER_H_
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_command_controller.h"
@@ -72,7 +73,7 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   PrefChangeRegistrar brave_vpn_pref_change_registrar_;
 #endif
-  Browser* const browser_;
+  const raw_ref<Browser> browser_;
 
   CommandUpdaterImpl brave_command_updater_;
 };

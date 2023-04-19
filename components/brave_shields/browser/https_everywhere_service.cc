@@ -80,10 +80,12 @@ std::string leveldbGet(leveldb::DB* db, const std::string &key) {
 
 namespace brave_shields {
 
-HTTPSEverywhereService::Engine::Engine(HTTPSEverywhereService* service)
-    : level_db_(nullptr), service_(service) {
+HTTPSEverywhereService::Engine::Engine(HTTPSEverywhereService& service)
+    : service_(service) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 }
+
+HTTPSEverywhereService::Engine::~Engine() = default;
 
 void HTTPSEverywhereService::Engine::Init(const base::FilePath& base_dir) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -109,17 +111,17 @@ void HTTPSEverywhereService::Engine::Init(const base::FilePath& base_dir) {
   CloseDatabase();
 
   leveldb::Options options;
+  leveldb::DB* db = nullptr;
   leveldb::Status status =
-      leveldb::DB::Open(options,
-                        unzipped_level_db_path.AsUTF8Unsafe(),
-                        &level_db_);
-  if (!status.ok() || !level_db_) {
+      leveldb::DB::Open(options, unzipped_level_db_path.AsUTF8Unsafe(), &db);
+  if (!status.ok() || !db) {
     LOG(ERROR) << "Level db open error "
                << unzipped_level_db_path.value().c_str()
                << ", error: " << status.ToString();
     CloseDatabase();
     return;
   }
+  level_db_ = base::WrapUnique(db);
 }
 
 bool HTTPSEverywhereService::Engine::GetHTTPSURL(
@@ -155,7 +157,7 @@ bool HTTPSEverywhereService::Engine::GetHTTPSURL(
   const std::vector<std::string> domains =
       ExpandDomainForLookup(candidate_url.host());
   for (auto domain : domains) {
-    std::string value = leveldbGet(level_db_, domain);
+    std::string value = leveldbGet(level_db_.get(), domain);
     if (!value.empty()) {
       *new_url = ApplyHTTPSRule(candidate_url.spec(), value);
       if (0 != new_url->length()) {
@@ -267,10 +269,7 @@ std::string HTTPSEverywhereService::Engine::CorrecttoRuleToRE2Engine(
 
 void HTTPSEverywhereService::Engine::CloseDatabase() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (level_db_) {
-    delete level_db_;
-    level_db_ = nullptr;
-  }
+  level_db_.reset();
 }
 
 bool HTTPSEverywhereService::g_ignore_port_for_test_(false);
@@ -278,7 +277,7 @@ bool HTTPSEverywhereService::g_ignore_port_for_test_(false);
 HTTPSEverywhereService::HTTPSEverywhereService(
     scoped_refptr<base::SequencedTaskRunner> task_runner)
     : BaseBraveShieldsService(task_runner),
-      engine_(new Engine(this), base::OnTaskRunnerDeleter(task_runner)) {}
+      engine_(new Engine(*this), base::OnTaskRunnerDeleter(task_runner)) {}
 
 HTTPSEverywhereService::~HTTPSEverywhereService() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);

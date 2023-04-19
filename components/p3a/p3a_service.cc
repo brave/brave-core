@@ -74,13 +74,13 @@ inline void DCheckCurrentlyOnUIThread() {
 
 }  // namespace
 
-P3AService::P3AService(PrefService* local_state,
+P3AService::P3AService(PrefService& local_state,
                        std::string channel,
                        std::string week_of_install,
                        P3AConfig config)
     : local_state_(local_state), config_(std::move(config)) {
   message_manager_ = std::make_unique<MessageManager>(
-      local_state, &config_, this, channel, week_of_install);
+      local_state, &config_, *this, channel, week_of_install);
 }
 
 P3AService::~P3AService() = default;
@@ -134,7 +134,7 @@ void P3AService::RegisterDynamicMetric(const std::string& histogram_name,
           std::string(histogram_name),
           base::BindRepeating(&P3AService::OnHistogramChanged, this));
 
-  ScopedDictPrefUpdate update(local_state_, kDynamicMetricsDictPref);
+  ScopedDictPrefUpdate update(&*local_state_, kDynamicMetricsDictPref);
   update->Set(histogram_name, static_cast<int>(log_type));
 }
 
@@ -147,7 +147,7 @@ void P3AService::RemoveDynamicMetric(const std::string& histogram_name) {
   dynamic_metric_sample_callbacks_.erase(histogram_name);
   dynamic_metric_log_types_.erase(histogram_name);
 
-  ScopedDictPrefUpdate update(local_state_, kDynamicMetricsDictPref);
+  ScopedDictPrefUpdate update(&*local_state_, kDynamicMetricsDictPref);
   update->Remove(histogram_name);
 }
 

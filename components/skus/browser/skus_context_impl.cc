@@ -120,7 +120,7 @@ std::unique_ptr<SkusUrlLoader> shim_executeRequest(
 SkusContextImpl::SkusContextImpl(
     PrefService* prefs,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : prefs_(prefs), url_loader_factory_(url_loader_factory) {}
+    : prefs_(*prefs), url_loader_factory_(url_loader_factory) {}
 
 SkusContextImpl::~SkusContextImpl() = default;
 
@@ -140,14 +140,14 @@ std::string SkusContextImpl::GetValueFromStore(std::string key) const {
 
 void SkusContextImpl::PurgeStore() const {
   VLOG(1) << "shim_purge";
-  ScopedDictPrefUpdate state(prefs_, prefs::kSkusState);
+  ScopedDictPrefUpdate state(&*prefs_, prefs::kSkusState);
   state->clear();
 }
 
 void SkusContextImpl::UpdateStoreValue(std::string key,
                                        std::string value) const {
   VLOG(1) << "shim_set: `" << key << "` = `" << value << "`";
-  ScopedDictPrefUpdate state(prefs_, prefs::kSkusState);
+  ScopedDictPrefUpdate state(&*prefs_, prefs::kSkusState);
   state->Set(key, value);
 }
 

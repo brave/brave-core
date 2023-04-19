@@ -50,7 +50,7 @@ class BraveTabMenuModel : public TabMenuModel {
   int GetRestoreTabCommandStringId() const;
 
   raw_ptr<content::WebContents> web_contents_ = nullptr;
-  sessions::TabRestoreService* restore_service_ = nullptr;
+  raw_ptr<sessions::TabRestoreService> restore_service_ = nullptr;
   bool all_muted_;
 
   bool is_vertical_tab_ = false;

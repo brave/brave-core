@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/memory/raw_ref.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -23,7 +24,7 @@
 
 class SidebarShowOptionsEventDetectWidget::ContentsView : public views::View {
  public:
-  explicit ContentsView(SidebarShowOptionsEventDetectWidget::Delegate* delegate)
+  explicit ContentsView(SidebarShowOptionsEventDetectWidget::Delegate& delegate)
       : delegate_(delegate) {}
 
   ~ContentsView() override = default;
@@ -36,15 +37,13 @@ class SidebarShowOptionsEventDetectWidget::ContentsView : public views::View {
   }
 
  private:
-  SidebarShowOptionsEventDetectWidget::Delegate* delegate_ = nullptr;
+  raw_ref<SidebarShowOptionsEventDetectWidget::Delegate> delegate_;
 };
 
 SidebarShowOptionsEventDetectWidget::SidebarShowOptionsEventDetectWidget(
-    BraveBrowserView* browser_view,
-    Delegate* delegate)
+    BraveBrowserView& browser_view,
+    Delegate& delegate)
     : browser_view_(browser_view), delegate_(delegate) {
-  DCHECK(browser_view_);
-  DCHECK(delegate_);
   observation_.Observe(browser_view_->contents_container());
   widget_ = CreateWidget(delegate);
 
@@ -75,7 +74,7 @@ void SidebarShowOptionsEventDetectWidget::SetSidebarOnLeft(
 }
 
 std::unique_ptr<views::Widget>
-SidebarShowOptionsEventDetectWidget::CreateWidget(Delegate* delegate) {
+SidebarShowOptionsEventDetectWidget::CreateWidget(Delegate& delegate) {
   std::unique_ptr<views::Widget> widget(new views::Widget);
   views::Widget::InitParams params(views::Widget::InitParams::TYPE_CONTROL);
   params.delegate = this;

@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -46,7 +47,7 @@ class WalletPanelHandler : public brave_wallet::mojom::PanelHandler {
 
  private:
   mojo::Receiver<brave_wallet::mojom::PanelHandler> receiver_;
-  ui::MojoBubbleWebUIController* const webui_controller_;
+  const raw_ptr<ui::MojoBubbleWebUIController> webui_controller_;
   raw_ptr<content::WebContents> active_web_contents_ = nullptr;
   const PanelCloseOnDeactivationCallback close_on_deactivation_;
 };

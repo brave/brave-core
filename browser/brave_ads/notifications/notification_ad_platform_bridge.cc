@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_ads/notifications/notification_ad_platform_bridge.h"
 
+#include "base/memory/raw_ref.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/ui/brave_ads/notification_ad_delegate.h"
@@ -34,7 +35,7 @@ gfx::NativeWindow GetBrowserNativeWindow() {
 // A NotificationAdDelegate that passes through events to the ads service
 class PassThroughDelegate : public NotificationAdDelegate {
  public:
-  PassThroughDelegate(Profile* profile, const NotificationAd& notification_ad)
+  PassThroughDelegate(Profile& profile, const NotificationAd& notification_ad)
       : profile_(profile), notification_ad_(notification_ad) {}
 
   PassThroughDelegate(const PassThroughDelegate&) = delete;
@@ -42,21 +43,21 @@ class PassThroughDelegate : public NotificationAdDelegate {
   PassThroughDelegate& operator=(const PassThroughDelegate&) = delete;
 
   void OnShow() override {
-    AdsService* ads_service = AdsServiceFactory::GetForProfile(profile_);
+    AdsService* ads_service = AdsServiceFactory::GetForProfile(&*profile_);
     DCHECK(ads_service);
 
     ads_service->OnNotificationAdShown(notification_ad_.id());
   }
 
   void OnClose(const bool by_user) override {
-    AdsService* ads_service = AdsServiceFactory::GetForProfile(profile_);
+    AdsService* ads_service = AdsServiceFactory::GetForProfile(&*profile_);
     DCHECK(ads_service);
 
     ads_service->OnNotificationAdClosed(notification_ad_.id(), by_user);
   }
 
   void OnClick() override {
-    AdsService* ads_service = AdsServiceFactory::GetForProfile(profile_);
+    AdsService* ads_service = AdsServiceFactory::GetForProfile(&*profile_);
     DCHECK(ads_service);
 
     ads_service->OnNotificationAdClicked(notification_ad_.id());
@@ -66,17 +67,15 @@ class PassThroughDelegate : public NotificationAdDelegate {
   ~PassThroughDelegate() override = default;
 
  private:
-  Profile* profile_ = nullptr;  // NOT OWNED
+  raw_ref<Profile> profile_;
 
   NotificationAd notification_ad_;
 };
 
 }  // namespace
 
-NotificationAdPlatformBridge::NotificationAdPlatformBridge(Profile* profile)
-    : profile_(profile) {
-  DCHECK(profile_);
-}
+NotificationAdPlatformBridge::NotificationAdPlatformBridge(Profile& profile)
+    : profile_(profile) {}
 
 NotificationAdPlatformBridge::~NotificationAdPlatformBridge() = default;
 
@@ -84,13 +83,13 @@ void NotificationAdPlatformBridge::ShowNotificationAd(
     NotificationAd notification_ad) {
   // If there's no delegate, replace it with a PassThroughDelegate so clicks go
   // back to the appropriate handler
-  notification_ad.set_delegate(
-      base::WrapRefCounted(new PassThroughDelegate(profile_, notification_ad)));
+  notification_ad.set_delegate(base::WrapRefCounted(
+      new PassThroughDelegate(*profile_, notification_ad)));
 
   const gfx::NativeWindow browser_native_window = GetBrowserNativeWindow();
   const gfx::NativeView browser_native_view =
       platform_util::GetViewForWindow(browser_native_window);
-  NotificationAdPopupHandler::Show(profile_, notification_ad,
+  NotificationAdPopupHandler::Show(&*profile_, notification_ad,
                                    browser_native_window, browser_native_view);
 }
 

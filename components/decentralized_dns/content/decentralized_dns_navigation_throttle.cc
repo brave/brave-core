@@ -46,12 +46,10 @@ DecentralizedDnsNavigationThrottle::DecentralizedDnsNavigationThrottle(
     PrefService* local_state,
     const std::string& locale)
     : content::NavigationThrottle(navigation_handle),
+      user_prefs_(user_prefs::UserPrefs::Get(
+          navigation_handle->GetWebContents()->GetBrowserContext())),
       local_state_(local_state),
-      locale_(locale) {
-  content::BrowserContext* context =
-      navigation_handle->GetWebContents()->GetBrowserContext();
-  user_prefs_ = user_prefs::UserPrefs::Get(context);
-}
+      locale_(locale) {}
 
 DecentralizedDnsNavigationThrottle::~DecentralizedDnsNavigationThrottle() =
     default;

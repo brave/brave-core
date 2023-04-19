@@ -67,10 +67,11 @@ class BraveWaybackMachineInfoBarContentsView
   raw_ptr<content::WebContents> contents_ = nullptr;
   WaybackMachineURLFetcher wayback_machine_url_fetcher_;
 
-  BraveWaybackMachineInfoBarButtonContainer* fetch_url_button_ = nullptr;
-  views::View* dont_ask_button_ = nullptr;
-  PrefService* pref_service_ = nullptr;
-  views::ImageView* wayback_spot_graphic_ = nullptr;
+  raw_ptr<BraveWaybackMachineInfoBarButtonContainer> fetch_url_button_ =
+      nullptr;
+  raw_ptr<views::View> dont_ask_button_ = nullptr;
+  const raw_ptr<PrefService> pref_service_ = nullptr;
+  raw_ptr<views::ImageView> wayback_spot_graphic_ = nullptr;
   bool wayback_url_fetch_requested_ = false;
 };
 

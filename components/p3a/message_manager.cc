@@ -32,26 +32,26 @@ constexpr base::TimeDelta kPostRotationUploadDelay = base::Seconds(30);
 
 }  // namespace
 
-MessageManager::MessageManager(PrefService* local_state,
+MessageManager::MessageManager(PrefService& local_state,
                                const P3AConfig* config,
-                               Delegate* delegate,
+                               Delegate& delegate,
                                std::string channel,
                                std::string week_of_install)
     : local_state_(local_state), config_(config), delegate_(delegate) {
-  message_meta_.Init(local_state, channel, week_of_install);
+  message_meta_.Init(&local_state, channel, week_of_install);
 
   // Init log stores.
   for (MetricLogType log_type : kAllMetricLogTypes) {
     json_log_stores_[log_type] =
-        std::make_unique<MetricLogStore>(this, local_state_, false, log_type);
+        std::make_unique<MetricLogStore>(*this, *local_state_, false, log_type);
     json_log_stores_[log_type]->LoadPersistedUnsentLogs();
   }
   if (features::IsConstellationEnabled()) {
     constellation_prep_log_store_ = std::make_unique<MetricLogStore>(
-        this, local_state_, true, MetricLogType::kTypical);
+        *this, *local_state_, true, MetricLogType::kTypical);
     constellation_prep_log_store_->LoadPersistedUnsentLogs();
     constellation_send_log_store_ = std::make_unique<ConstellationLogStore>(
-        local_state_, kMaxEpochsToRetain);
+        *local_state_, kMaxEpochsToRetain);
   }
 }
 
@@ -81,7 +81,7 @@ void MessageManager::Init(
     json_upload_schedulers_[log_type]->Start();
   }
   rotation_scheduler_ = std::make_unique<RotationScheduler>(
-      local_state_, config_.get(),
+      *local_state_, config_.get(),
       base::BindRepeating(&MessageManager::DoJsonRotation,
                           base::Unretained(this)),
       base::BindRepeating(&MessageManager::DoConstellationRotation,
@@ -101,7 +101,7 @@ void MessageManager::Init(
     constellation_upload_scheduler_->Start();
 
     constellation_helper_ = std::make_unique<ConstellationHelper>(
-        local_state_, url_loader_factory,
+        &*local_state_, url_loader_factory,
         base::BindRepeating(&MessageManager::OnNewConstellationMessage,
                             base::Unretained(this)),
         base::BindRepeating(&MessageManager::OnRandomnessServerInfoReady,

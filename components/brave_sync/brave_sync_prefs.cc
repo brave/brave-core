@@ -64,9 +64,7 @@ const char kDuplicatedBookmarksMigrateVersion[] =
 // ============================================================================
 }  // namespace
 
-Prefs::Prefs(PrefService* pref_service) : pref_service_(pref_service) {
-  DCHECK(pref_service_);
-}
+Prefs::Prefs(PrefService* pref_service) : pref_service_(*pref_service) {}
 
 Prefs::~Prefs() = default;
 

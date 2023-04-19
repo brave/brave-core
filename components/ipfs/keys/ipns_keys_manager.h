@@ -14,6 +14,7 @@
 #include "base/containers/queue.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/ipfs/blob_context_getter_factory.h"
@@ -36,7 +37,7 @@ namespace ipfs {
 class IpnsKeysManager : public IpfsServiceObserver {
  public:
   IpnsKeysManager(
-      BlobContextGetterFactory* blob_context_getter_factory,
+      BlobContextGetterFactory& blob_context_getter_factory,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       const GURL& server_endpoint);
   ~IpnsKeysManager() override;
@@ -99,7 +100,7 @@ class IpnsKeysManager : public IpfsServiceObserver {
                   std::unique_ptr<network::ResourceRequest> request);
 
   int last_load_retry_value_for_test_ = -1;
-  BlobContextGetterFactory* blob_context_getter_factory_ = nullptr;
+  raw_ref<BlobContextGetterFactory> blob_context_getter_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   APIRequestList requests_list_;
   SimpleURLLoaderList url_loaders_;

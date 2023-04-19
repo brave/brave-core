@@ -56,8 +56,8 @@ class BraveShieldsActionViewHighlightPathGenerator
 };
 }  // namespace
 
-BraveShieldsActionView::BraveShieldsActionView(Profile* profile,
-                                               TabStripModel* tab_strip_model)
+BraveShieldsActionView::BraveShieldsActionView(Profile& profile,
+                                               TabStripModel& tab_strip_model)
     : LabelButton(base::BindRepeating(&BraveShieldsActionView::ButtonPressed,
                                       base::Unretained(this)),
                   std::u16string()),
@@ -201,7 +201,7 @@ void BraveShieldsActionView::ButtonPressed() {
   if (!webui_bubble_manager_) {
     webui_bubble_manager_ =
         std::make_unique<WebUIBubbleManagerT<ShieldsPanelUI>>(
-            this, profile_, GURL(kShieldsPanelURL), IDS_BRAVE_SHIELDS);
+            this, &*profile_, GURL(kShieldsPanelURL), IDS_BRAVE_SHIELDS);
   }
 
   if (webui_bubble_manager_->GetBubbleWidget()) {

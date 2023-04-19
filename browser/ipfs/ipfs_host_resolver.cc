@@ -43,11 +43,9 @@ absl::optional<std::string> GetDNSRecordValue(
 namespace ipfs {
 
 IPFSHostResolver::IPFSHostResolver(
-    network::mojom::NetworkContext* network_context,
+    network::mojom::NetworkContext& network_context,
     const std::string& prefix)
-    : prefix_(prefix), network_context_(network_context) {
-  DCHECK(network_context);
-}
+    : prefix_(prefix), network_context_(network_context) {}
 IPFSHostResolver::~IPFSHostResolver() = default;
 
 void IPFSHostResolver::Resolve(
