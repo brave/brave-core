@@ -66,6 +66,7 @@ window.__firefox__.execute(function($) {
     // -------------------------------------------------
     // Send ajax requests URLs to the host application
     // -------------------------------------------------
+    const localURLProp = Symbol('url')
     var xhrProto = XMLHttpRequest.prototype;
     if (!originalOpen) {
       originalOpen = xhrProto.open;
@@ -75,13 +76,16 @@ window.__firefox__.execute(function($) {
     xhrProto.open = $(function(method, url) {
       // Blocked async XMLHttpRequest are handled via RequestBlocking.js
       // We only handle sync requests
-      this._shouldTrack = arguments[2] !== undefined && !arguments[2]
-      this._url = url;
+      if (arguments[2] === undefined || arguments[2]) {
+        return originalOpen.apply(this, arguments);
+      }
+      
+      this[localURLProp] = url;
       return originalOpen.apply(this, arguments);
     }, /*overrideToString=*/false);
 
     xhrProto.send = $(function(body) {
-      if (this._url === undefined || !this._shouldTrack) {
+      if (this[localURLProp] === undefined) {
         return originalSend.apply(this, arguments);
       }
       
@@ -91,7 +95,7 @@ window.__firefox__.execute(function($) {
         // If this `XMLHttpRequest` instance fails to load, we
         // can assume it has been blocked.
         this._tpErrorHandler = $(function() {
-          sendMessage(this._url, "xmlhttprequest");
+          sendMessage(this[localURLProp], "xmlhttprequest");
         });
         this.addEventListener("error", this._tpErrorHandler);
       }

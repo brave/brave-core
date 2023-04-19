@@ -16,8 +16,8 @@ window.__firefox__.includeOnce("RewardsReporting", function($) {
     install();
   }
   
-  function install() {
-    let sendMessage = $(function(method, url, data, referrerUrl) {
+  const install = () => {
+    const sendMessage = $(function(method, url, data, referrerUrl) {
       $.postNativeMessage('$<message_handler>', {"securityToken": SECURITY_TOKEN, "data": {
         method: method === undefined ? "GET" : method,
         url: url,
@@ -26,29 +26,33 @@ window.__firefox__.includeOnce("RewardsReporting", function($) {
       }});
     })
     
-    let originalOpen = XMLHttpRequest.prototype.open;
-    let originalSend = XMLHttpRequest.prototype.send;
-    let originalFetch = window.fetch;
-    let originalSendBeacon = navigator.sendBeacon;
-    let originalImageSrc = Object.getOwnPropertyDescriptor(Image.prototype, "src");
+    const originalOpen = XMLHttpRequest.prototype.open;
+    const originalSend = XMLHttpRequest.prototype.send;
+    const originalFetch = window.fetch;
+    const originalSendBeacon = navigator.sendBeacon;
+    const originalImageSrc = Object.getOwnPropertyDescriptor(Image.prototype, "src");
+    const localURLProp = Symbol('url')
+    const localMethodProp = Symbol('method')
+    const localRefProp = Symbol('ref')
+    const localDataProp = Symbol('data')
     
     XMLHttpRequest.prototype.open = $(function(method, url) {
         const listener = function() {
-            sendMessage(this._method, this.responseURL === null ? this._url : this.responseURL, this._data, this._ref);
+            sendMessage(this[localMethodProp], this.responseURL === null ? this[localURLProp] : this.responseURL, this[localDataProp], this[localRefProp]);
         };
-        this._method = method;
-        this._url = url;
+        this[localMethodProp] = method;
+        this[localURLProp] = url;
         this.addEventListener('load', listener, true);
         this.addEventListener('error', listener, true);
         return originalOpen.apply(this, arguments);
     }, /*overrideToString=*/false);
     
     XMLHttpRequest.prototype.send = $(function(body) {
-        this._ref = null;
-        this._data = body;
+        this[localRefProp] = null;
+        this[localDataProp] = body;
         if (body instanceof Document) {
-            this._ref = body.referrer;
-            this._data = null;
+            this[localRefProp] = body.referrer;
+            this[localDataProp] = null;
         }
         return originalSend.apply(this, arguments);
     }, /*overrideToString=*/false);
