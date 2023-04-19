@@ -16,6 +16,12 @@ window.__firefox__.execute(function($) {
         sourceURL: window.location.href,
         resourceType: 'xmlhttprequest'
       }
+    }).then(blocked => {
+      if (blocked) {
+        console.info(`Brave prevented frame displaying ${window.location.href} from loading a resource from ${resourceURL.href}`)
+      }
+      
+      return blocked
     });
   });
   
