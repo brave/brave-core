@@ -19,6 +19,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_helper.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service_helper.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_manager.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
@@ -81,7 +82,7 @@ void BraveVpnService::CheckInitialState() {
     SetPurchasedState(GetCurrentEnvironment(), PurchasedState::PURCHASED);
     // Android has its own region data managing logic.
 #else
-    if (connection_api_->IsRegionDataReady()) {
+    if (connection_api_->GetRegionDataManager().IsRegionDataReady()) {
       SetPurchasedState(GetCurrentEnvironment(), PurchasedState::PURCHASED);
     } else {
       SetPurchasedState(GetCurrentEnvironment(), PurchasedState::LOADING);
@@ -90,7 +91,7 @@ void BraveVpnService::CheckInitialState() {
       // and then set as a purchased user after we get valid region data.
       wait_region_data_ready_ = true;
     }
-    connection_api_->FetchRegionDataIfNeeded();
+    connection_api_->GetRegionDataManager().FetchRegionDataIfNeeded();
 #endif
   } else if (HasValidSkusCredential(local_prefs_)) {
     // If we have valid skus creds during the startup, we can try to get subs
@@ -169,7 +170,7 @@ void BraveVpnService::OnRegionDataReady(bool success) {
 
 void BraveVpnService::OnSelectedRegionChanged(const std::string& region_name) {
   const auto region_ptr = GetRegionPtrWithNameFromRegionList(
-      region_name, connection_api_->GetRegions());
+      region_name, connection_api_->GetRegionDataManager().GetRegions());
   for (const auto& obs : observers_) {
     obs->OnSelectedRegionChanged(region_ptr.Clone());
   }
@@ -230,7 +231,8 @@ void BraveVpnService::GetConnectionState(GetConnectionStateCallback callback) {
 void BraveVpnService::GetAllRegions(GetAllRegionsCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   std::vector<mojom::RegionPtr> regions;
-  for (const auto& region : connection_api_->GetRegions()) {
+  for (const auto& region :
+       connection_api_->GetRegionDataManager().GetRegions()) {
     regions.push_back(region.Clone());
   }
   std::move(callback).Run(std::move(regions));
@@ -240,16 +242,17 @@ void BraveVpnService::GetSelectedRegion(GetSelectedRegionCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << __func__;
 
-  auto region_name = connection_api_->GetSelectedRegion();
+  auto region_name =
+      connection_api_->GetRegionDataManager().GetSelectedRegion();
   std::move(callback).Run(GetRegionPtrWithNameFromRegionList(
-      region_name, connection_api_->GetRegions()));
+      region_name, connection_api_->GetRegionDataManager().GetRegions()));
 }
 
 void BraveVpnService::SetSelectedRegion(mojom::RegionPtr region_ptr) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   VLOG(2) << __func__ << " : " << region_ptr->name_pretty;
-  connection_api_->SetSelectedRegion(region_ptr->name);
+  connection_api_->GetRegionDataManager().SetSelectedRegion(region_ptr->name);
 }
 
 void BraveVpnService::GetProductUrls(GetProductUrlsCallback callback) {
@@ -305,7 +308,7 @@ void BraveVpnService::OnPreferenceChanged(const std::string& pref_name) {
 void BraveVpnService::UpdatePurchasedStateForSessionExpired(
     const std::string& env) {
   // Double check that we don't set session expired state for fresh user.
-  if (!connection_api_->IsRegionDataReady()) {
+  if (!connection_api_->GetRegionDataManager().IsRegionDataReady()) {
     VLOG(1) << __func__ << " : Treat it as not purchased state for fresh user.";
     SetPurchasedState(env, PurchasedState::NOT_PURCHASED);
     return;
@@ -420,7 +423,7 @@ void BraveVpnService::LoadPurchasedState(const std::string& domain) {
 #if BUILDFLAG(IS_ANDROID)
     SetPurchasedState(requested_env, PurchasedState::PURCHASED);
 #else
-    if (connection_api_->IsRegionDataReady()) {
+    if (connection_api_->GetRegionDataManager().IsRegionDataReady()) {
       VLOG(2) << __func__
               << ": Set as a purchased user as we have valid subscriber "
                  "credentials & region data";
@@ -430,7 +433,7 @@ void BraveVpnService::LoadPurchasedState(const std::string& domain) {
       // TODO(simonhong): Make purchases state independent from region data.
       wait_region_data_ready_ = true;
     }
-    connection_api_->FetchRegionDataIfNeeded();
+    connection_api_->GetRegionDataManager().FetchRegionDataIfNeeded();
 #endif
     return;
   }
@@ -618,12 +621,12 @@ void BraveVpnService::OnGetSubscriberCredentialV12(
 #if BUILDFLAG(IS_ANDROID)
   SetPurchasedState(GetCurrentEnvironment(), PurchasedState::PURCHASED);
 #else
-  if (connection_api_->IsRegionDataReady()) {
+  if (connection_api_->GetRegionDataManager().IsRegionDataReady()) {
     SetPurchasedState(GetCurrentEnvironment(), PurchasedState::PURCHASED);
   } else {
     wait_region_data_ready_ = true;
   }
-  connection_api_->FetchRegionDataIfNeeded();
+  connection_api_->GetRegionDataManager().FetchRegionDataIfNeeded();
 #endif
 }
 

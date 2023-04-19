@@ -7,11 +7,13 @@
 
 #include <memory>
 #include <utility>
+#include <vector>
 
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service_helper.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api_sim.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_manager.h"
 #include "brave/components/brave_vpn/common/brave_vpn_data_types.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
@@ -79,11 +81,13 @@ class BraveVPNOSConnectionAPIUnitTest : public testing::Test {
   }
 
   void OnFetchRegionList(const std::string& region_list, bool success) {
-    GetBraveVPNConnectionAPIBase()->OnFetchRegionList(region_list, success);
+    GetBraveVPNConnectionAPIBase()->GetRegionDataManager().OnFetchRegionList(
+        region_list, success);
   }
 
   void OnFetchTimezones(const std::string& timezones_list, bool success) {
-    GetBraveVPNConnectionAPIBase()->OnFetchTimezones(timezones_list, success);
+    GetBraveVPNConnectionAPIBase()->GetRegionDataManager().OnFetchTimezones(
+        timezones_list, success);
   }
 
   std::string GetTimeZonesData() {
@@ -204,33 +208,45 @@ class BraveVPNOSConnectionAPIUnitTest : public testing::Test {
   }
 
   void SetFallbackDeviceRegion() {
-    GetBraveVPNConnectionAPIBase()->SetFallbackDeviceRegion();
+    GetBraveVPNConnectionAPIBase()
+        ->GetRegionDataManager()
+        .SetFallbackDeviceRegion();
   }
 
   void SetTestTimezone(const std::string& timezone) {
-    GetBraveVPNConnectionAPIBase()->test_timezone_ = timezone;
+    GetBraveVPNConnectionAPIBase()->GetRegionDataManager().test_timezone_ =
+        timezone;
   }
 
   void LoadCachedRegionData() {
-    GetBraveVPNConnectionAPIBase()->LoadCachedRegionData();
+    GetBraveVPNConnectionAPIBase()
+        ->GetRegionDataManager()
+        .LoadCachedRegionData();
   }
 
-  void ClearRegions() { GetBraveVPNConnectionAPIBase()->regions_.clear(); }
+  void ClearRegions() {
+    GetBraveVPNConnectionAPIBase()->GetRegionDataManager().regions_.clear();
+  }
 
   bool NeedToUpdateRegionData() {
-    return GetBraveVPNConnectionAPIBase()->NeedToUpdateRegionData();
+    return GetBraveVPNConnectionAPIBase()
+        ->GetRegionDataManager()
+        .NeedToUpdateRegionData();
   }
 
   mojom::Region device_region() {
-    if (auto region_ptr = GetRegionPtrWithNameFromRegionList(
-            GetBraveVPNConnectionAPIBase()->GetDeviceRegion(), regions())) {
+    if (auto region_ptr =
+            GetRegionPtrWithNameFromRegionList(GetBraveVPNConnectionAPIBase()
+                                                   ->GetRegionDataManager()
+                                                   .GetDeviceRegion(),
+                                               regions())) {
       return *region_ptr;
     }
     return mojom::Region();
   }
 
   const std::vector<mojom::Region>& regions() {
-    return GetConnectionAPI()->GetRegions();
+    return GetBraveVPNConnectionAPIBase()->GetRegionDataManager().GetRegions();
   }
 
   PrefService* local_state() { return &local_pref_service_; }

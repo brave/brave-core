@@ -8,7 +8,6 @@
 
 #include <memory>
 #include <string>
-#include <vector>
 
 #include "base/observer_list_types.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
@@ -25,8 +24,9 @@ class PrefService;
 
 namespace brave_vpn {
 
-// Interface for managing OS' vpn connection and related data such as region
-// list, device region or selected region.
+class BraveVPNRegionDataManager;
+
+// Interface for managing OS' vpn connection.
 class BraveVPNOSConnectionAPI {
  public:
   virtual ~BraveVPNOSConnectionAPI() = default;
@@ -57,11 +57,7 @@ class BraveVPNOSConnectionAPI {
   // Returns user friendly error string if existed.
   // Otherwise returns empty.
   virtual std::string GetLastConnectionError() const = 0;
-  virtual const std::vector<mojom::Region>& GetRegions() const = 0;
-  virtual bool IsRegionDataReady() const = 0;
-  virtual void SetSelectedRegion(const std::string& name) = 0;
-  virtual std::string GetSelectedRegion() const = 0;
-  virtual void FetchRegionDataIfNeeded() = 0;
+  virtual BraveVPNRegionDataManager& GetRegionDataManager() = 0;
 
  protected:
   BraveVPNOSConnectionAPI() = default;

@@ -40,6 +40,8 @@ source_set("common") {
     "brave_vpn_connection_info.h",
     "brave_vpn_os_connection_api_base.cc",
     "brave_vpn_os_connection_api_base.h",
+    "brave_vpn_region_data_manager.cc",
+    "brave_vpn_region_data_manager.h",
   ]
   deps = [
     ":api",
@@ -80,6 +82,7 @@ source_set("unit_tests") {
 
   deps = [
     ":api",
+    ":common",
     ":sim",
     "//brave/components/brave_vpn/browser",
     "//brave/components/brave_vpn/common",

@@ -281,8 +281,11 @@ class BraveVPNServiceTest : public testing::Test {
   bool& wait_region_data_ready() { return service_->wait_region_data_ready_; }
 
   mojom::Region device_region() const {
-    if (auto region_ptr = GetRegionPtrWithNameFromRegionList(
-            GetBraveVPNConnectionAPI()->GetDeviceRegion(), regions())) {
+    if (auto region_ptr =
+            GetRegionPtrWithNameFromRegionList(GetBraveVPNConnectionAPI()
+                                                   ->GetRegionDataManager()
+                                                   .GetDeviceRegion(),
+                                               regions())) {
       return *region_ptr;
     }
     return mojom::Region();
@@ -294,19 +297,22 @@ class BraveVPNServiceTest : public testing::Test {
   }
 
   const std::vector<mojom::Region>& regions() const {
-    return GetBraveVPNConnectionAPI()->GetRegions();
+    return GetBraveVPNConnectionAPI()->GetRegionDataManager().GetRegions();
   }
 
   void SetSelectedRegion(const std::string& region) {
-    GetBraveVPNConnectionAPI()->SetSelectedRegion(region);
+    GetBraveVPNConnectionAPI()->GetRegionDataManager().SetSelectedRegion(
+        region);
   }
 
   void OnFetchRegionList(const std::string& region_list, bool success) {
-    GetBraveVPNConnectionAPI()->OnFetchRegionList(region_list, success);
+    GetBraveVPNConnectionAPI()->GetRegionDataManager().OnFetchRegionList(
+        region_list, success);
   }
 
   void OnFetchTimezones(const std::string& timezones_list, bool success) {
-    GetBraveVPNConnectionAPI()->OnFetchTimezones(timezones_list, success);
+    GetBraveVPNConnectionAPI()->GetRegionDataManager().OnFetchTimezones(
+        timezones_list, success);
   }
 
   BraveVPNOSConnectionAPIBase* GetBraveVPNConnectionAPI() const {
@@ -326,15 +332,18 @@ class BraveVPNServiceTest : public testing::Test {
   }
 
   void SetDeviceRegion(const std::string& name) {
-    GetBraveVPNConnectionAPI()->SetDeviceRegion(name);
+    GetBraveVPNConnectionAPI()->GetRegionDataManager().SetDeviceRegion(name);
   }
 
   void SetFallbackDeviceRegion() {
-    GetBraveVPNConnectionAPI()->SetFallbackDeviceRegion();
+    GetBraveVPNConnectionAPI()
+        ->GetRegionDataManager()
+        .SetFallbackDeviceRegion();
   }
 
   void SetTestTimezone(const std::string& timezone) {
-    GetBraveVPNConnectionAPI()->test_timezone_ = timezone;
+    GetBraveVPNConnectionAPI()->GetRegionDataManager().test_timezone_ =
+        timezone;
   }
 
   BraveVPNOSConnectionAPI* GetConnectionAPI() { return connection_api_.get(); }

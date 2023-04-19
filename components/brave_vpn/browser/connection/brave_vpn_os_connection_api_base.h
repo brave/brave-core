@@ -8,17 +8,16 @@
 
 #include <memory>
 #include <string>
-#include <vector>
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
-#include "base/timer/timer.h"
 #include "base/values.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_manager.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "net/base/network_change_notifier.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -55,11 +54,7 @@ class BraveVPNOSConnectionAPIBase
   void RemoveObserver(Observer* observer) override;
   void SetConnectionState(mojom::ConnectionState state) override;
   std::string GetLastConnectionError() const override;
-  const std::vector<mojom::Region>& GetRegions() const override;
-  bool IsRegionDataReady() const override;
-  void SetSelectedRegion(const std::string& name) override;
-  std::string GetSelectedRegion() const override;
-  void FetchRegionDataIfNeeded() override;
+  BraveVPNRegionDataManager& GetRegionDataManager() override;
 
  protected:
   BraveVPNOSConnectionAPIBase(
@@ -88,6 +83,7 @@ class BraveVPNOSConnectionAPIBase
   std::string target_vpn_entry_name() const { return target_vpn_entry_name_; }
 
  private:
+  friend class BraveVPNRegionDataManager;
   friend class BraveVPNOSConnectionAPISim;
   friend class BraveVPNOSConnectionAPIUnitTest;
   friend class BraveVPNServiceTest;
@@ -129,25 +125,9 @@ class BraveVPNOSConnectionAPIBase
   bool QuickCancelIfPossible();
   void SetPreventCreationForTesting(bool value);
 
-  void SetDeviceRegion(const std::string& name);
-  void SetFallbackDeviceRegion();
-  std::string GetDeviceRegion() const;
-  void SetDeviceRegionWithTimezone(const base::Value::List& timezons_value);
-
-  void LoadCachedRegionData();
-  void OnFetchRegionList(const std::string& region_list, bool success);
-  bool ParseAndCacheRegionList(const base::Value::List& region_value,
-                               bool save_to_prefs = false);
-  void OnFetchTimezones(const std::string& timezones_list, bool success);
-  void SetRegionListToPrefs();
-
   // Notify it's ready when |regions_| is not empty.
-  void NotifyRegionDataReady() const;
-  std::string GetCurrentTimeZone();
-  bool NeedToUpdateRegionData() const;
-
-  // For testing only.
-  std::string test_timezone_;
+  void NotifyRegionDataReady(bool ready) const;
+  void NotifySelectedRegionChanged(const std::string& name) const;
 
   bool cancel_connecting_ = false;
   bool needs_connect_ = false;
@@ -160,7 +140,6 @@ class BraveVPNOSConnectionAPIBase
   raw_ptr<PrefService> local_prefs_ = nullptr;
   std::unique_ptr<Hostname> hostname_;
   base::ObserverList<Observer> observers_;
-  std::vector<mojom::Region> regions_;
 
   // Only not null when there is active network request.
   // When network request is done, we reset this so we can know
@@ -169,9 +148,8 @@ class BraveVPNOSConnectionAPIBase
   // profile credentials is not yet finished by reset this.
   std::unique_ptr<BraveVpnAPIRequest> api_request_;
 
-  // Only not null when region_data fetching is in-progress.
-  std::unique_ptr<BraveVpnAPIRequest> region_data_api_request_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  BraveVPNRegionDataManager region_data_manager_;
 };
 
 }  // namespace brave_vpn
