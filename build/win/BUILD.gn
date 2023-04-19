@@ -1,4 +1,9 @@
-import("//brave/build/config.gni")
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("sign.gni")
 
 group("brave") {
   public_deps = [
@@ -21,39 +26,6 @@ copy("copy_pdb") {
   outputs = [ "$root_out_dir/brave.exe.pdb" ]
 
   deps = [ "//chrome:reorder_imports" ]
-}
-
-template("sign") {
-  assert(defined(invoker.sources),
-         "Need sources in $target_name listing the files to be signed.")
-  assert(defined(invoker.outputs),
-         "Need outputs in $target_name where signed files should be placed.")
-  assert(defined(invoker.deps), "Need deps in $target_name.")
-  if (skip_signing) {
-    copy(target_name) {
-      forward_variables_from(invoker,
-                             [
-                               "sources",
-                               "outputs",
-                               "deps",
-                             ])
-    }
-  } else {
-    action(target_name) {
-      forward_variables_from(invoker,
-                             [
-                               "sources",
-                               "outputs",
-                               "deps",
-                             ])
-      script = "//brave/script/sign_binaries.py"
-      args = [
-        rebase_path(sources[0], root_build_dir),
-        "--out_file",
-        rebase_path(outputs[0], root_build_dir),
-      ]
-    }
-  }
 }
 
 sign("create_signed_installer") {
