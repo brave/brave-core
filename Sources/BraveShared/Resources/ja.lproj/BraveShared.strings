@@ -19,6 +19,15 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "ブックマークに追加";
 
+/* A title within a cell where a user can navigate to an add screen. */
+"AddCustomFilterList" = "カスタムフィルターのリストを追加";
+
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "信頼できるコミュニティにより作成および管理されているリストを追加します。";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "信頼する機関のリストにのみ登録してください**。ブラウザでは入力されたURLを用いて定期的にリストの更新があるかチェックを行います。";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "お気に入りに追加";
 
@@ -562,6 +571,15 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "現在使用中の検索エンジン";
 
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "カスタムフィルターリスト";
+
+/* A title for a section that contains all custom filter lists */
+"CustomFilterLists" = "カスタムフィルターリスト";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "カスタムフィルターリストのURL";
+
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "追加する";
 
@@ -640,6 +658,9 @@
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "デフォルトブラウザの設定メッセージを閉じる";
 
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "デフォルトフィルターリスト";
+
 /* Name for default Brave theme. */
 "defaultThemeName" = "Brave デフォルト";
 
@@ -685,14 +706,8 @@
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "送信しない";
 
-/* A label representing the state of a filter list that is downloaded */
-"Downloaded" = "ダウンロード済み";
-
 /* Settings item for clearing downloaded files. */
 "DownloadedFiles" = "ダウンロード済みのファイル";
-
-/* A label representing the state of a filter list that is currently being downloaded */
-"Downloading" = "ダウンロードしています";
 
 /* Title for downloads menu item */
 "DownloadsMenuItem" = "ダウンロード";
@@ -814,11 +829,38 @@
 /* No comment provided by engineer. */
 "Features" = "機能";
 
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "入力されたURLが無効です";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "カスタムフィルターリストでは安全な (https) URLのみが許可されます";
+
 /* A title on the content filtering screen that allows you to enable/disable filter lists */
 "FilterLists" = "フィルターリスト";
 
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "追加する";
+
 /* A description on the content filtering screen for the filter lists section. */
 "FilterListsDescription" = "その他の人気コミュニティリスト。フィルターが多すぎると、ブラウジング速度が遅くなる場合があります。";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "ダウンロード エラー";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "ダウンロード待ち";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "動画の管理";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "フィルターリストのURLを入力";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "最終更新 %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "フィルターリストのURLをここに入力してください";
 
 /* Share action title */
 "FindInPage" = "ページを検索";
@@ -1077,9 +1119,6 @@
 
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "検索結果が見つかりませんでした。";
-
-/* A label representing the state of a filter list that is not downloaded */
-"NotDownloaded" = "未ダウンロード";
 
 /* Error message for when the sync code does not have the correct amount of words */
 "NotEnoughWordsDescription" = "すべてのワードを入力して、もう一度やり直してください。";
@@ -1634,10 +1673,10 @@
 "playlist.playlistSidebarLocationTitle" = "サイドバーの位置";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
-"playlist.playlistStartPlaybackSettingsFooterText" = "この設定は、前回の再生時に中断したメディア（動画もしくは音声）の続きから再生する機能のオン/オフを切り替えます。";
+"playlist.playlistStartPlaybackSettingsFooterText" = "個別ファイルの場合、最後に一時停止したところから再生を開始します。";
 
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
-"playlist.playlistStartPlaybackSettingsOptionTitle" = "前回の続きから再生";
+"playlist.playlistStartPlaybackSettingsOptionTitle" = "ファイルの再生位置を記憶";
 
 /* Description for Playlist setting */
 "playlist.playlistWebCompatibilityDescription" = "WebKit MediaSource APIを無効化します";
@@ -2902,24 +2941,6 @@
 /* Brave panel topmost title */
 "SiteShieldSettings" = "Shield (保護機能)";
 
-/* Title on the button that users can click to disable Brave to resolve the SNS domain they entered. */
-"SnsDomainInterstitialPageButtonDisable" = "無効にする";
-
-/* Title on the button that users can click to enable Brave to resolve the SNS domain they entered. */
-"SnsDomainInterstitialPageButtonProceed" = "Syndicaサーバーを使用して続行する";
-
-/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Syndica's terms of use page. The second '%@' will be replaced with the value of 'snsDomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Syndica's privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
-"SnsDomainInterstitialPageDescription" = "Braveは、.solドメイン名の解決にSyndicaを使用する予定です。BraveはあなたのIPアドレスを隠します。これを有効にすると、Syndicaは、誰かがこれらの.solドメインを訪問しようとしていることを確認しますが、それ以外は何もしません。Syndicaの<a href=%1$@>%2$@</a>と<a href=%3$@>%4$@</a>を参照してください。";
-
-/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Brave uses to resolve SNS domain. */
-"SnsDomainInterstitialPagePrivacyPolicy" = "プライバシーポリシー";
-
-/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Brave uses to resolve SNS domain. */
-"SnsDomainInterstitialPageTAndU" = "利用規約";
-
-/* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
-"SnsDomainInterstitialPageTitle" = "Braveでソラナネームサービス（SNS）のサポートを有効にしますか？";
-
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "Braveでwebを閲覧してデータ通信量を節約しています";
 
@@ -3786,6 +3807,18 @@
 
 /* Title for favorites widget on 'add widget' screen. */
 "widgets.favoritesWidgetTitle" = "お気に入り";
+
+/* Displayed on a news widget that has failed to load */
+"widgets.newsClusteringErrorLabel" = "後でもう一度お試しください";
+
+/* Displayed on a news widget that links into the app to read more Brave News content */
+"widgets.newsClusteringReadMoreButtonTitle" = "もっと読む";
+
+/* Description for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetDescription" = "最新ニュースを入手";
+
+/* Title for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetTitle" = "人気のニュース";
 
 /* This shows when you add a widget but have no favorites added in your app */
 "widgets.noFavoritesFound" = "Braveを開いてお気に入りのサイトを追加してください";

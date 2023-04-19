@@ -65,6 +65,9 @@
 "e13lS3-vs094F" = "您要的是“新隐私标签页”，对吗？";
 
 /* (No Comment) */
+"e13lS3-XCyA8c" = "您是想要“Brave 新闻”’，对吗？";
+
+/* (No Comment) */
 "e13lS3-Y7TWy8" = "您是想要‘搜索’，对吗？";
 
 /* (No Comment) */
@@ -113,6 +116,9 @@
 "L1fziM-vs094F" = "有 ${count} 个与“新隐私标签页”匹配的选项。";
 
 /* (No Comment) */
+"L1fziM-XCyA8c" = "有 ${count} 个选项符合“Brave 新闻”。";
+
+/* (No Comment) */
 "L1fziM-Y7TWy8" = "有 ${count} 个选项符合‘搜索’。";
 
 /* (No Comment) */
@@ -147,6 +153,9 @@
 
 /* (No Comment) */
 "r2EI05-vs094F" = "您要的是“新隐私标签页”，对吗？";
+
+/* (No Comment) */
+"r2EI05-XCyA8c" = "您是想要“Brave 新闻”’，对吗？";
 
 /* (No Comment) */
 "r2EI05-Y7TWy8" = "您是想要‘搜索’，对吗？";
@@ -185,6 +194,9 @@
 "tNCrcE-vs094F" = "有 ${count} 个与“新隐私标签页”匹配的选项。";
 
 /* (No Comment) */
+"tNCrcE-XCyA8c" = "有 ${count} 个选项符合“Brave 新闻”。";
+
+/* (No Comment) */
 "tNCrcE-Y7TWy8" = "有 ${count} 个选项符合‘搜索’。";
 
 /* (No Comment) */
@@ -215,6 +227,9 @@
 "TxuMja-vs094F" = "有 ${count} 个与“新隐私标签页”匹配的选项。";
 
 /* (No Comment) */
+"TxuMja-XCyA8c" = "有 ${count} 个选项符合“Brave 新闻”。";
+
+/* (No Comment) */
 "TxuMja-Y7TWy8" = "有 ${count} 个选项符合‘搜索’。";
 
 /* (No Comment) */
@@ -231,6 +246,9 @@
 
 /* (No Comment) */
 "xcI3h9" = "拦截广告";
+
+/* (No Comment) */
+"XCyA8c" = "Brave 新闻";
 
 /* (No Comment) */
 "XkwBGY" = "屏幕锁定快捷方式配置";
@@ -261,6 +279,9 @@
 
 /* (No Comment) */
 "YQiQuz-vs094F" = "您要的是“新隐私标签页”，对吗？";
+
+/* (No Comment) */
+"YQiQuz-XCyA8c" = "您是想要“Brave 新闻”’，对吗？";
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "您是想要‘搜索’，对吗？";
