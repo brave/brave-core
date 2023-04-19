@@ -307,7 +307,6 @@
       <part file="management_strings.grdp" />
       <part file="media_message_center_strings.grdp" />
       <part file="new_or_sad_tab_strings.grdp" />
-      <part file="ntp_snippets_strings.grdp" />
       <part file="omnibox_strings.grdp" />
       <part file="page_info_strings.grdp" />
       <part file="paint_preview_strings.grdp" />
@@ -325,7 +324,6 @@
       <part file="send_tab_to_self_strings.grdp" />
       <part file="site_settings_strings.grdp" />
       <part file="sms_strings.grdp" />
-      <part file="soda_strings.grdp" />
       <part file="ssl_errors_strings.grdp" />
       <part file="subresource_filter_strings.grdp" />
       <part file="supervised_user_strings.grdp" />

@@ -206,10 +206,13 @@
   <message name="IDS_AUTOFILL_ENABLE_PROFILES_TOGGLE_SUBLABEL" desc="Sublabel for a toggle that allows users to control whether addresses should be saved and forms should be autofilled with them." formatter_data="android_java">
     Includes information like phone numbers, email addresses, and shipping addresses
   </message>
+  <message name="IDS_AUTOFILL_LOCAL_PROFILE_ACCESSIBILITY_LABEL" desc="Accessibility label for icon used to identify user's local address profile" formatter_data="android_java">
+    Local address
+  </message>
   <message name="IDS_AUTOFILL_ENABLE_CREDIT_CARDS_TOGGLE_SUBLABEL" desc="Sublabel for a toggle that allows users to control whether credit cards should be saved and forms should be autofilled with it." formatter_data="android_java">
     Fills in payment forms with your saved payment methods
   </message>
-  <message name="IDS_AUTOFILL_EDIT_ACCOUNT_ADDRESS_SOURCE_NOTICE" desc="The footer message in the 'Add/Edit address' dialog warning the user that this address is stored in their account." formatter_data="android_java">
+  <message name="IDS_AUTOFILL_EDIT_ACCOUNT_ADDRESS_SOURCE_NOTICE" desc="The footer message in the 'Add/Edit address' dialog warning the user that this address is stored in their account.">
     This address is saved in your Brave sync chain (<ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>). You can use address across Brave products on any device.
   </message>
   <message name="IDS_AUTOFILL_DELETE_ACCOUNT_ADDRESS_SOURCE_NOTICE" desc="The notice/warning for the user before the address deletion." formatter_data="android_java">
@@ -225,10 +228,16 @@
     In your Brave sync chain <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>
   </message>
   <message name="IDS_AUTOFILL_SAVE_IN_ACCOUNT_MESSAGE_ADDRESS_MIGRATION_SOURCE_NOTICE" desc="The notice/warning message for the user that this address is going to be migrated in their account.">
-    Save address in your Brave sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>
+    You can use it across Brave products
   </message>
-  <message name="IDS_AUTOFILL_SAVE_IN_ACCOUNT_PROMPT_ADDRESS_SOURCE_NOTICE" desc="The footer message in the 'Save address' prompt informing the user that this address will be stored in their account.">
+  <message name="IDS_AUTOFILL_ADDRESS_ALREADY_SAVED_IN_ACCOUNT_SOURCE_NOTICE" desc="The footer message used to notify user that their address is stored in their account." formatter_data="android_java">
     You can use saved addresses across Brave products. This address is saved in your Brave sync chain (<ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>).
+  </message>
+  <message name="IDS_AUTOFILL_ADDRESS_WILL_BE_SAVED_IN_ACCOUNT_SOURCE_NOTICE" desc="The footer message used to notify user that their address will be saved in their account." formatter_data="android_java">
+    You can use saved addresses across Brave products. This address will be saved in your Brave sync chain (<ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>).
+  </message>
+  <message name="IDS_AUTOFILL_ADDRESS_WILL_BE_MIGRATED_TO_ACCOUNT_SOURCE_NOTICE" desc="The description message used to notify the user that their address will be migrated to their account." formatter_data="android_java">
+    This address is saved only to Brave. To use it across Brave products, save it in your Brave sync chain, (<ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>).
   </message>
   <message name="IDS_AUTOFILL_EDIT_ADDRESS_REQUIRED_FIELD_FORM_ERROR" desc="The form error message shown to the user in case of a single required field missing.">
     A required field is empty. Fill it before saving.
@@ -350,6 +359,9 @@
   <message name="IDS_AUTOFILL_SAVE_ADDRESS_PROMPT_MIGRATION_OK_BUTTON_LABEL" desc="Label of the OK button in the prompt that offers the user to migrate a new address to their Brave account.">
     Save in account
   </message>
+  <message name="IDS_AUTOFILL_ACCOUNT_MIGRATE_ADDRESS_PROMPT_TITLE" desc="Title shown at the top of prompt that offers the user to save existing address into account.">
+    Save address in account?
+  </message>
   <message name="IDS_AUTOFILL_UPDATE_ADDRESS_PROMPT_OK_BUTTON_LABEL" desc="Label of the OK button in the prompt that offers the user to update an existing address.">
     Update
   </message>
@@ -358,6 +370,12 @@
   </message>
   <message name="IDS_AUTOFILL_UPDATE_ADDRESS_PROMPT_OLD_VALUES_SECTION_LABEL" meaning="In the address update prompt" desc="Label shown next to the section that displays the old address values in the prompt that offers the user to update an existing address." formatter_data="android_java">
     Old
+  </message>
+  <message name="IDS_AUTOFILL_SAVE_IN_ACCOUNT_ADDRESS_PROMPT_CANCEL_BUTTON_LABEL" desc="Label of the Cancel button in the prompt that offers the user to save a new address profile in their Brave account." meaning="Don't have this address">
+    No thanks
+  </message>
+  <message name="IDS_AUTOFILL_MIGRATE_ADDRESS_PROMPT_CANCEL_BUTTON_LABEL" desc="Label of the Cancel button in the prompt that offers the user to migrate an existing address profile in their Brave account." meaning="Don't migrate this address">
+    No thanks
   </message>
   <!-- Used on Android: -->
   <if expr="is_android">
@@ -400,20 +418,23 @@
     <message name="IDS_IOS_AUTOFILL_SAVE_ADDRESS_PROMPT_TITLE" desc="In Title Case: Title shown at the top of modal dialog that offers the user to save a new address." meaning="In Title Case for iOS">
       Save Address
     </message>
+   <message name="IDS_IOS_AUTOFILL_SAVE_ADDRESS_IN_ACCOUNT_PROMPT_TITLE" desc="In Title Case: Title shown at the top of modal dialog that offers the user to save a new address in Brave sync chain." meaning="In Title Case for iOS">
+      Save in Account
+    </message>
     <message name="IDS_IOS_AUTOFILL_UPDATE_ADDRESS_PROMPT_TITLE" desc="In Title Case: Title shown at the top of modal dialog that offers the user to update an existing address." meaning="In Title Case for iOS">
       Update Address
     </message>
     <message name="IDS_IOS_AUTOFILL_SAVE_ADDRESS_IN_ACCOUNT_MESSAGE_SUBTITLE" desc="Subtitle shown in the messages UI view when a new profile is asked to be saved in the Brave sync chain">
        In your Brave sync chain, <ph name="USER_EMAIL">$1<ex>janedoe@google.com</ex></ph>
     </message>
+    <message name="IDS_IOS_AUTOFILL_SAVE_ADDRESS_IN_ACCOUNT_FOOTER" desc="Footer text shown in the save modal for saving a new address profile or migrating it in the Brave sync chain">
+      You can use saved addresses across Brave products. This address will be saved in your Brave sync chain, <ph name="USER_EMAIL">$1<ex>janedoe@google.com</ex></ph>.
+    </message>
   </if>
   <!-- Used on Desktop: -->
   <if expr="not is_android and not is_ios">
     <message name="IDS_AUTOFILL_SAVE_ADDRESS_PROMPT_TITLE" desc="Title shown at the top of prompt that offers the user to save a new address.">
       Save address?
-    </message>
-    <message name="IDS_AUTOFILL_ACCOUNT_MIGRATE_ADDRESS_PROMPT_TITLE" desc="Title shown at the top of prompt that offers the user to save existing address into account.">
-      Save address in account?
     </message>
     <message name="IDS_AUTOFILL_SAVE_ADDRESS_PROMPT_CANCEL_BUTTON_LABEL" desc="Label of the Cancel button in the prompt that offers the user to save a new address.">
       No thanks
