@@ -6,6 +6,8 @@
 import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
 
+assert(!is_android)
+
 declare_args() {
   webcompat_report_api_endpoint = "https://webcompat.brave.com/1/webcompat"
 }

@@ -45,8 +45,6 @@ source_set("ui") {
     "webui/brave_web_ui_controller_factory.h",
     "webui/brave_webui_source.cc",
     "webui/brave_webui_source.h",
-    "webui/webcompat_reporter_ui.cc",
-    "webui/webcompat_reporter_ui.h",
   ]
 
   # It doesn't make sense to view accelerators on iOS & Android.
@@ -54,6 +52,8 @@ source_set("ui") {
     sources += [
       "webui/commands_ui.cc",
       "webui/commands_ui.h",
+      "webui/webcompat_reporter_ui.cc",
+      "webui/webcompat_reporter_ui.h",
     ]
   }
 
@@ -476,8 +476,6 @@ source_set("ui") {
     "//brave/components/tor/buildflags",
     "//brave/components/url_sanitizer/browser",
     "//brave/components/vector_icons",
-    "//brave/components/webcompat_reporter/browser",
-    "//brave/components/webcompat_reporter/ui:generated_resources",
     "//chrome/app:command_ids",
     "//chrome/app/vector_icons:vector_icons",
     "//chrome/browser:browser_process",
@@ -555,7 +553,11 @@ source_set("ui") {
   }
 
   if (!is_android && !is_ios) {
-    deps += [ "//brave/components/commander/browser" ]
+    deps += [
+      "//brave/components/commander/browser",
+      "//brave/components/webcompat_reporter/browser",
+      "//brave/components/webcompat_reporter/ui:generated_resources",
+    ]
   }
 
   # This is no longer compiled into Chromium on Android, but we still

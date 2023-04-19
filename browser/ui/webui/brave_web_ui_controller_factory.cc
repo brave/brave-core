@@ -15,7 +15,6 @@
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_page_ui.h"
-#include "brave/browser/ui/webui/webcompat_reporter_ui.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_shields/common/features.h"
@@ -44,6 +43,7 @@
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/browser/ui/webui/speedreader/speedreader_panel_ui.h"
+#include "brave/browser/ui/webui/webcompat_reporter_ui.h"
 #include "brave/browser/ui/webui/welcome_page/brave_welcome_ui.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -93,8 +93,10 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     return new BraveAdblockUI(web_ui, url.host());
   } else if (host == kAdblockInternalsHost) {
     return new BraveAdblockInternalsUI(web_ui, url.host());
+#if !BUILDFLAG(IS_ANDROID)
   } else if (host == kWebcompatReporterHost) {
     return new WebcompatReporterUI(web_ui, url.host());
+#endif
 #if BUILDFLAG(ENABLE_IPFS)
   } else if (host == kIPFSWebUIHost &&
              ipfs::IpfsServiceFactory::IsIpfsEnabled(profile)) {

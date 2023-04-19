@@ -431,16 +431,18 @@
       <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_UNSUBSCRIBE" desc="Text for button to unsubscribe from a custom filter list subscription">Unsubscribe</message>
 
       <!-- WebUI webcompat reporter resources -->
-      <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_MODAL_TITLE" desc="Title for broken website report dialog window">Report a broken site</message>
-      <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_EXPLANATION" desc="Label for a website's URL indicating that it will be reported for compatibility issues">Let Brave's developers know that this site doesn't work properly with Shields:</message>
-      <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_DISCLAIMER" desc="Describes what information is sent to Brave's servers in a broken website report">Note: When you click "Submit", you'll share the site address, your Brave version number, and your IP address with Brave developers. (The IP address will not be stored.)</message>
-      <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_DETAILS" desc="Placeholder text for the optional details field in the broken website report">Additional details (optional)</message>
-      <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_CONTACT_LABEL" desc="Label for the optional contact information field in the broken website report">Contact me at: (optional)</message>
-      <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_CONTACT_PLACEHOLDER" desc="Placeholder text for the optional contact information field in the broken website report">Email, Twitter, etc.</message>
-      <message name="IDS_BRAVE_WEBCOMPATREPORTER_CANCEL" desc="Text for button to cancel sending a broken website report">Cancel</message>
-      <message name="IDS_BRAVE_WEBCOMPATREPORTER_SUBMIT" desc="Text for button to submit a broken website report">Submit</message>
-      <message name="IDS_BRAVE_WEBCOMPATREPORTER_THANK_YOU" desc="Thanks the user for submitting a report of a broken website">Thank you!</message>
-      <message name="IDS_BRAVE_WEBCOMPATREPORTER_CONFIRMATION_NOTICE" desc="Assures the user that a problem with a website reported as broken will be fixed soon">Thanks for letting Brave's developers know that there's something wrong with this site. We'll do our best to fix it!</message>
+      <if expr="not is_android">
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_MODAL_TITLE" desc="Title for broken website report dialog window">Report a broken site</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_EXPLANATION" desc="Label for a website's URL indicating that it will be reported for compatibility issues">Let Brave's developers know that this site doesn't work properly with Shields:</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_DISCLAIMER" desc="Describes what information is sent to Brave's servers in a broken website report">Note: When you click "Submit", you'll share the site address, your Brave version number, and your IP address with Brave developers. (The IP address will not be stored.)</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_DETAILS" desc="Placeholder text for the optional details field in the broken website report">Additional details (optional)</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_CONTACT_LABEL" desc="Label for the optional contact information field in the broken website report">Contact me at: (optional)</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_CONTACT_PLACEHOLDER" desc="Placeholder text for the optional contact information field in the broken website report">Email, Twitter, etc.</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_CANCEL" desc="Text for button to cancel sending a broken website report">Cancel</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_SUBMIT" desc="Text for button to submit a broken website report">Submit</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_THANK_YOU" desc="Thanks the user for submitting a report of a broken website">Thank you!</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_CONFIRMATION_NOTICE" desc="Assures the user that a problem with a website reported as broken will be fixed soon">Thanks for letting Brave's developers know that there's something wrong with this site. We'll do our best to fix it!</message>
+      </if>
 
       <!-- WebUI rewards resources -->
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE" desc="">Brave Private Ads</message>
