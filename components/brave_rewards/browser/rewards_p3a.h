@@ -19,6 +19,10 @@ namespace p3a {
 extern const char kEnabledSourceHistogramName[];
 extern const char kInlineTipTriggerHistogramName[];
 extern const char kToolbarButtonTriggerHistogramName[];
+extern const char kTipsSentHistogramName[];
+extern const char kAutoContributionsStateHistogramName[];
+extern const char kAdsStateHistogramName[];
+extern const char kAdsEnabledDurationHistogramName[];
 
 enum class AutoContributionsState {
   kNoWallet,
@@ -34,13 +38,6 @@ enum class PanelTrigger {
   kMaxValue = kNTP
 };
 
-void RecordAutoContributionsState(AutoContributionsState state, int count);
-
-void RecordTipsState(bool wallet_created,
-                     bool rewards_enabled,
-                     int one_time_count,
-                     int recurring_count);
-
 enum class AdsState {
   kNoWallet,
   kRewardsDisabled,
@@ -50,6 +47,10 @@ enum class AdsState {
   kAdsEnabledThenDisabledRewardsOff,
   kMaxValue = kAdsEnabledThenDisabledRewardsOff,
 };
+
+void RecordTipsSent(size_t tip_count);
+
+void RecordAutoContributionsState(bool ac_enabled);
 
 void RecordAdsState(AdsState state);
 
@@ -61,8 +62,6 @@ void UpdateAdsStateOnPreferenceChange(PrefService* prefs,
 void MaybeRecordInitialAdsState(PrefService* local_state);
 
 void RecordNoWalletCreatedForAllMetrics();
-
-void RecordRewardsDisabledForSomeMetrics();
 
 enum class AdsEnabledDuration {
   kNever,

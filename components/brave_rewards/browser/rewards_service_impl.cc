@@ -91,6 +91,9 @@ constexpr int kDiagnosticLogMaxVerboseLevel = 6;
 constexpr int kDiagnosticLogKeepNumLines = 20000;
 constexpr int kDiagnosticLogMaxFileSize = 10 * (1024 * 1024);
 constexpr char pref_prefix[] = "brave.rewards";
+constexpr base::TimeDelta kP3AMonthlyReportingPeriod = base::Days(30);
+constexpr base::TimeDelta kP3ATipReportDelay = base::Seconds(30);
+constexpr base::TimeDelta kP3ADailyReportInterval = base::Days(1);
 
 std::string URLMethodToRequestType(ledger::mojom::UrlMethod method) {
   switch (method) {
@@ -239,13 +242,6 @@ ledger::mojom::InlineTipsPlatforms ConvertInlineTipStringToPlatform(
   return ledger::mojom::InlineTipsPlatforms::TWITTER;
 }
 
-bool IsAdsOrAutoContributeEnabled(Profile* profile) {
-  DCHECK(profile);
-  auto* prefs = profile->GetPrefs();
-  return prefs->GetBoolean(prefs::kAutoContributeEnabled) ||
-         prefs->GetBoolean(brave_ads::prefs::kEnabled);
-}
-
 std::string GetPrefPath(const std::string& name) {
   return base::StringPrintf("%s.%s", pref_prefix, name.c_str());
 }
@@ -388,20 +384,14 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
   if (key == prefs::kAutoContributeEnabled) {
     if (profile_->GetPrefs()->GetBoolean(prefs::kAutoContributeEnabled)) {
       StartLedgerProcessIfNecessary();
-    } else {
-      // Just record the disabled state.
-      p3a::RecordAutoContributionsState(
-          p3a::AutoContributionsState::kWalletCreatedAutoContributeOff, 0);
     }
+    // Must check for connected external wallet before recording
+    // AC state.
+    RecordBackendP3AStats();
   }
 
   if (key == prefs::kAutoContributeEnabled ||
       key == brave_ads::prefs::kEnabled) {
-    if (IsAdsOrAutoContributeEnabled(profile_)) {
-      RecordBackendP3AStats();
-    } else {
-      p3a::RecordRewardsDisabledForSomeMetrics();
-    }
     p3a::RecordAdsEnabledDuration(
         profile_->GetPrefs(),
         profile_->GetPrefs()->GetBoolean(brave_ads::prefs::kEnabled));
@@ -849,24 +839,14 @@ void RewardsServiceImpl::OnLedgerInitialized(ledger::mojom::Result result) {
     ready_->Signal();
   }
 
-  if (IsAdsOrAutoContributeEnabled(profile_)) {
-    RecordBackendP3AStats();
-  } else {
-    p3a::RecordRewardsDisabledForSomeMetrics();
-  }
-
-  GetRewardsWallet(base::BindOnce(&RewardsServiceImpl::OnGetRewardsWalletForP3A,
-                                  AsWeakPtr()));
+  RecordBackendP3AStats();
+  p3a_daily_timer_.Start(
+      FROM_HERE, kP3ADailyReportInterval,
+      base::BindRepeating(&RewardsServiceImpl::RecordBackendP3AStats,
+                          AsWeakPtr()));
 
   for (auto& observer : observers_) {
     observer.OnRewardsInitialized(this);
-  }
-}
-
-void RewardsServiceImpl::OnGetRewardsWalletForP3A(
-    ledger::mojom::RewardsWalletPtr wallet) {
-  if (!wallet) {
-    p3a::RecordNoWalletCreatedForAllMetrics();
   }
 }
 
@@ -1390,6 +1370,10 @@ void RewardsServiceImpl::StopLedger(StopLedgerCallback callback) {
     return;
   }
 
+  p3a_daily_timer_.Stop();
+  p3a_tip_report_timer_.Stop();
+  p3a::RecordNoWalletCreatedForAllMetrics();
+
   ledger_->Shutdown(base::BindOnce(&RewardsServiceImpl::OnStopLedger,
                                    AsWeakPtr(), std::move(callback)));
 }
@@ -1850,6 +1834,7 @@ void RewardsServiceImpl::OnContributionSent(
       observer.OnRecurringTipSaved(this, success);
     }
   }
+
   std::move(callback).Run(success);
 }
 
@@ -2141,6 +2126,12 @@ void RewardsServiceImpl::OnTip(const std::string& publisher_key,
                          ledger::mojom::Result::LEDGER_ERROR);
   }
 
+  // Update "tips sent" metric.
+  // Use delay to ensure tip is confirmed when counting.
+  p3a_tip_report_timer_.Start(
+      FROM_HERE, kP3ATipReportDelay,
+      base::BindOnce(&RewardsServiceImpl::RecordBackendP3AStats, AsWeakPtr()));
+
   if (recurring) {
     return SaveRecurringTip(publisher_key, amount, std::move(callback));
   }
@@ -2429,9 +2420,18 @@ void RewardsServiceImpl::ConnectExternalWallet(
     const std::string& path,
     const std::string& query,
     ConnectExternalWalletCallback callback) {
+  auto inner_callback = base::BindOnce(
+      [](base::WeakPtr<RewardsServiceImpl> self,
+         ConnectExternalWalletCallback callback,
+         ConnectExternalWalletResult result) {
+        std::move(callback).Run(result);
+        self->RecordBackendP3AStats();
+      },
+      AsWeakPtr(), std::move(callback));
+
   if (!Connected()) {
     return DeferCallback(
-        FROM_HERE, std::move(callback),
+        FROM_HERE, std::move(inner_callback),
         base::unexpected(
             ledger::mojom::ConnectExternalWalletError::kUnexpected));
   }
@@ -2440,7 +2440,7 @@ void RewardsServiceImpl::ConnectExternalWallet(
                                             base::SPLIT_WANT_NONEMPTY);
   if (path_items.empty()) {
     return DeferCallback(
-        FROM_HERE, std::move(callback),
+        FROM_HERE, std::move(inner_callback),
         base::unexpected(
             ledger::mojom::ConnectExternalWalletError::kUnexpected));
   }
@@ -2455,7 +2455,7 @@ void RewardsServiceImpl::ConnectExternalWallet(
   }
 
   ledger_->ConnectExternalWallet(wallet_type, query_parameters,
-                                 std::move(callback));
+                                 std::move(inner_callback));
 }
 
 void RewardsServiceImpl::ShowNotification(const std::string& type,
@@ -2482,6 +2482,24 @@ void RewardsServiceImpl::RecordBackendP3AStats() {
     return;
   }
 
+  GetExternalWallet(base::BindOnce(
+      &RewardsServiceImpl::OnRecordBackendP3AExternalWallet, AsWeakPtr()));
+}
+
+void RewardsServiceImpl::OnRecordBackendP3AExternalWallet(
+    GetExternalWalletResult result) {
+  if (!Connected()) {
+    return;
+  }
+
+  auto wallet = std::move(result).value_or(nullptr);
+  if (!wallet || wallet->status != ledger::mojom::WalletStatus::kConnected) {
+    // Do not report "tips sent" and "auto-contribute" enabled metrics if user
+    // does not have a custodial account linked.
+    p3a::RecordNoWalletCreatedForAllMetrics();
+    return;
+  }
+
   ledger_->GetRecurringTips(base::BindOnce(
       &RewardsServiceImpl::OnRecordBackendP3AStatsRecurring, AsWeakPtr()));
 }
@@ -2498,51 +2516,28 @@ void RewardsServiceImpl::OnRecordBackendP3AStatsRecurring(
 }
 
 void RewardsServiceImpl::OnRecordBackendP3AStatsContributions(
-    const uint32_t recurring_donation_size,
+    size_t recurring_tip_count,
     std::vector<ledger::mojom::ContributionInfoPtr> list) {
-  int auto_contributions = 0;
-  int tips = 0;
-  int queued_recurring = 0;
+  size_t onetime_tip_count = 0;
 
+  base::Time now = base::Time::Now();
   for (const auto& contribution : list) {
-    switch (contribution->type) {
-      case ledger::mojom::RewardsType::AUTO_CONTRIBUTE: {
-        auto_contributions += 1;
-        break;
+    if (contribution->type == ledger::mojom::RewardsType::ONE_TIME_TIP) {
+      if (now - base::Time::FromTimeT(contribution->created_at) <
+          kP3AMonthlyReportingPeriod) {
+        onetime_tip_count++;
       }
-      case ledger::mojom::RewardsType::ONE_TIME_TIP: {
-        tips += 1;
-        break;
-      }
-      case ledger::mojom::RewardsType::RECURRING_TIP: {
-        queued_recurring += 1;
-        break;
-      }
-    default:
-      NOTREACHED();
     }
   }
 
-  if (queued_recurring == 0) {
-    queued_recurring = recurring_donation_size;
-  }
-
-  p3a::RecordTipsState(true, true, tips, queued_recurring);
+  p3a::RecordTipsSent(onetime_tip_count + recurring_tip_count);
 
   GetAutoContributeEnabled(base::BindOnce(
-    &RewardsServiceImpl::OnRecordBackendP3AStatsAC,
-    AsWeakPtr(),
-    auto_contributions));
+      &RewardsServiceImpl::OnRecordBackendP3AStatsAC, AsWeakPtr()));
 }
 
-void RewardsServiceImpl::OnRecordBackendP3AStatsAC(
-    const int auto_contributions,
-    bool ac_enabled) {
-  const auto auto_contributions_state =
-      ac_enabled ? p3a::AutoContributionsState::kAutoContributeOn
-                 : p3a::AutoContributionsState::kWalletCreatedAutoContributeOff;
-  p3a::RecordAutoContributionsState(auto_contributions_state,
-                                    auto_contributions);
+void RewardsServiceImpl::OnRecordBackendP3AStatsAC(bool ac_enabled) {
+  p3a::RecordAutoContributionsState(ac_enabled);
 }
 
 ledger::mojom::Environment RewardsServiceImpl::GetDefaultServerEnvironment() {
