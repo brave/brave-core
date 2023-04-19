@@ -18,14 +18,9 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
   let tab: Tab
   private lazy var url: URL? = {
     guard let _url = tab.url else { return nil }
-
-    if InternalURL.isValid(url: _url),
-       let internalURL = InternalURL(_url) {
-      if internalURL.isErrorPage {
-        return internalURL.originalURLFromErrorPage
-      } else if internalURL.isWeb3URL {
-        return internalURL.extractedUrlParam?.displayURL
-      }
+    
+    if let tabURL = _url.stippedInternalURL {
+      return tabURL
     }
 
     return _url

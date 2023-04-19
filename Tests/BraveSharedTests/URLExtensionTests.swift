@@ -25,5 +25,15 @@ class URLExtensionTests: XCTestCase {
     urls.forEach { XCTAssertEqual(URL(string: $0.0)!.origin.serialized, $0.1) }
     badurls.forEach { XCTAssertTrue(URL(string: $0)!.origin.isOpaque) }
   }
+  
+  func testStrippedInternalURL() {
+    let urls = [
+      ("internal://local/web3/ddns?service_id=ethereum&url=http%3A%2F%2Fvitalik%2Eeth%2F", URL(string: "http://vitalik.eth/")),
+      ("internal://local/sessionrestore?url=https://en.m.wikipedia.org/wiki/Main_Page", URL(string: "https://en.m.wikipedia.org/wiki/Main_Page")),
+      ("internal://local/reader-mode?url=https://en.m.wikipedia.org/wiki/Main_Page", URL(string: "https://en.m.wikipedia.org/wiki/Main_Page"))
+    ]
+    
+    urls.forEach { XCTAssertEqual(URL(string: $0.0)!.stippedInternalURL, $0.1) }
+  }
 
 }
