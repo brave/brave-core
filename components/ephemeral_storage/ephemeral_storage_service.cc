@@ -76,11 +76,12 @@ void EphemeralStorageService::CanEnable1PESForUrl(
 
   auto site_instance = content::SiteInstance::CreateForURL(context_, url);
   auto* storage_partition = context_->GetStoragePartition(site_instance.get());
+  DCHECK(storage_partition);
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
       base::BindOnce(&UrlStorageChecker::StartCheck,
                      base::MakeRefCounted<UrlStorageChecker>(
-                         storage_partition, url, std::move(callback))));
+                         *storage_partition, url, std::move(callback))));
 }
 
 void EphemeralStorageService::Set1PESEnabledForUrl(const GURL& url,

@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/sku/sku_common.h"
 
@@ -20,7 +21,7 @@ namespace sku {
 
 class SKU {
  public:
-  explicit SKU(LedgerImpl* ledger);
+  explicit SKU(LedgerImpl& ledger);
   ~SKU();
 
   void Process(const std::vector<mojom::SKUOrderItem>& items,
@@ -52,7 +53,7 @@ class SKU {
                const std::string& wallet_type,
                ledger::SKUOrderCallback callback);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
   std::unique_ptr<SKUCommon> common_;
 };
 

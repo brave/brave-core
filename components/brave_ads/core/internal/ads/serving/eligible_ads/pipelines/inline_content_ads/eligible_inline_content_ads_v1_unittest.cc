@@ -17,6 +17,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_container_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
+#include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
@@ -29,14 +30,13 @@ class BatAdsEligibleInlineContentAdsV1Test : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    subdivision_targeting_ =
-        std::make_unique<geographic::SubdivisionTargeting>();
+    subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
     anti_targeting_resource_ = std::make_unique<resource::AntiTargeting>();
     eligible_ads_ = std::make_unique<EligibleAdsV1>(*subdivision_targeting_,
                                                     *anti_targeting_resource_);
   }
 
-  std::unique_ptr<geographic::SubdivisionTargeting> subdivision_targeting_;
+  std::unique_ptr<SubdivisionTargeting> subdivision_targeting_;
   std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
   std::unique_ptr<EligibleAdsV1> eligible_ads_;
 };
@@ -304,7 +304,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, DoNotGetPacedAds) {
   SaveCreativeAds(creative_ads);
 
   // Act
-  const ScopedPacingRandomNumberSetter scoped_setter(0.3);
+  const ScopedPacingRandomNumberSetterForTesting scoped_setter(0.3);
 
   CreativeInlineContentAdList expected_creative_ads = {creative_ad_2};
 

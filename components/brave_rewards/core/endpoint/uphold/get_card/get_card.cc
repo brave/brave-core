@@ -21,9 +21,7 @@ namespace ledger {
 namespace endpoint {
 namespace uphold {
 
-GetCard::GetCard(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+GetCard::GetCard(LedgerImpl& ledger) : ledger_(ledger) {}
 
 GetCard::~GetCard() = default;
 

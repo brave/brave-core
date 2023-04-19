@@ -11,6 +11,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
+#include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/history/history_constants.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
@@ -47,7 +48,7 @@ TEST_F(BatAdsHistoryUtilTest, PurgeHistoryOlderThanTimeWindow) {
   const NotificationAdInfo ad_1 = BuildNotificationAd(creative_ad_1);
   HistoryManager::GetInstance()->Add(ad_1, ConfirmationType::kViewed);
 
-  AdvanceClockBy(kHistoryTimeWindow + base::Seconds(1));
+  AdvanceClockBy(kHistoryTimeWindow + base::Milliseconds(1));
 
   // Act
   const CreativeNotificationAdInfo creative_ad_2 =

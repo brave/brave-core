@@ -8,6 +8,7 @@
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_helpers.h"
+#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/process/process.h"
 #include "base/process/process_iterator.h"
@@ -111,7 +112,7 @@ void NonBlockingDelay(const base::TimeDelta& delay) {
 class BraveTorTest : public InProcessBrowserTest {
  public:
   struct TorInfo {
-    Profile* tor_profile = nullptr;
+    raw_ptr<Profile> tor_profile = nullptr;
     int tor_pid = 0;
   };
 

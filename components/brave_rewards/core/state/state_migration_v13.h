@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 namespace ledger {
@@ -17,7 +18,7 @@ namespace state {
 
 class StateMigrationV13 {
  public:
-  explicit StateMigrationV13(LedgerImpl*);
+  explicit StateMigrationV13(LedgerImpl& ledger);
   ~StateMigrationV13();
 
   void Migrate(ledger::LegacyResultCallback);
@@ -25,7 +26,7 @@ class StateMigrationV13 {
  private:
   bool MigrateExternalWallet(const std::string& wallet_type);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace state

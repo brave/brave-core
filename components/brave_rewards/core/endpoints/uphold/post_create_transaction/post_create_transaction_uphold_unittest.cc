@@ -58,7 +58,7 @@ TEST_P(PostCreateTransactionUphold, Paths) {
   EXPECT_CALL(callback, Run(Result(expected_result))).Times(1);
 
   RequestFor<endpoints::PostCreateTransactionUphold>(
-      &mock_ledger_impl_, "token", "address",
+      mock_ledger_impl_, "token", "address",
       mojom::ExternalTransaction::New("", "contribution_id", "destination",
                                       "amount"))
       .Send(callback.Get());

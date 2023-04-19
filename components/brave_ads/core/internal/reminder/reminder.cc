@@ -14,7 +14,7 @@ namespace brave_ads {
 namespace {
 
 void MaybeShowReminder(const HistoryItemInfo& history_item) {
-  if (!features::IsEnabled()) {
+  if (!IsReminderEnabled()) {
     return;
   }
 

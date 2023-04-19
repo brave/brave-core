@@ -17,9 +17,9 @@
 namespace brave_ads::database::table {
 
 using GetCreativeAdCallback =
-    base::OnceCallback<void(const bool success,
+    base::OnceCallback<void(bool success,
                             const std::string& creative_instance_id,
-                            const CreativeAdInfo& ad)>;
+                            const CreativeAdInfo& creative_ad)>;
 
 class CreativeAds final : public TableInterface {
  public:

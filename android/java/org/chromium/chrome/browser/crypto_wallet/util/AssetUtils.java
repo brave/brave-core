@@ -5,19 +5,22 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
-import android.text.TextUtils;
+import static java.util.stream.Collectors.toMap;
 
-import androidx.annotation.NonNull;
+import android.text.TextUtils;
 
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.CoinType;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.IntStream;
 
 public class AssetUtils {
     public static String AURORA_SUPPORTED_CONTRACT_ADDRESSES[] = {
@@ -225,5 +228,13 @@ public class AssetUtils {
                 || TextUtils.isEmpty(token.contractAddress))
             return token.symbol;
         return token.contractAddress;
+    }
+
+    public static Map<String, Integer> toNetworkIndexMap(List<NetworkInfo> networks) {
+        return IntStream.range(0, networks.size())
+                .boxed()
+                .collect(toMap(i
+                        -> networks.get(i).chainId,
+                        Function.identity(), (index1, index2) -> index1));
     }
 }

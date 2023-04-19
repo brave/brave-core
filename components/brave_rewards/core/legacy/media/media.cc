@@ -14,7 +14,7 @@
 
 namespace braveledger_media {
 
-Media::Media(ledger::LedgerImpl* ledger)
+Media::Media(ledger::LedgerImpl& ledger)
     : ledger_(ledger),
       media_youtube_(new braveledger_media::YouTube(ledger)),
       media_github_(new braveledger_media::GitHub(ledger)) {}

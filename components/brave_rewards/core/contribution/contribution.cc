@@ -23,7 +23,6 @@
 #include "brave/components/brave_rewards/core/gemini/gemini.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
-#include "brave/components/brave_rewards/core/option_keys.h"
 #include "brave/components/brave_rewards/core/publisher/publisher_status_helper.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
@@ -110,15 +109,13 @@ Contribution::ContributionRequest& Contribution::ContributionRequest::operator=(
 
 Contribution::ContributionRequest::~ContributionRequest() = default;
 
-Contribution::Contribution(LedgerImpl* ledger)
+Contribution::Contribution(LedgerImpl& ledger)
     : ledger_(ledger),
-      unverified_(std::make_unique<Unverified>(ledger)),
       unblinded_(std::make_unique<Unblinded>(ledger)),
       sku_(std::make_unique<ContributionSKU>(ledger)),
       monthly_(std::make_unique<ContributionMonthly>(ledger)),
       ac_(std::make_unique<ContributionAC>(ledger)),
       tip_(std::make_unique<ContributionTip>(ledger)) {
-  DCHECK(ledger_);
   external_wallet_ = std::make_unique<ContributionExternalWallet>(ledger);
 }
 
@@ -253,6 +250,9 @@ void Contribution::OnBalance(mojom::ContributionQueuePtr queue,
   if (!result.has_value()) {
     queue_in_progress_ = false;
     BLOG(0, "We couldn't get balance from the server.");
+    if (queue->type == mojom::RewardsType::ONE_TIME_TIP) {
+      MarkContributionQueueAsComplete(queue->id, false);
+    }
     return;
   }
 
@@ -414,10 +414,6 @@ void Contribution::ContributionCompletedSaved(
                             this, _1, contribution_id);
   ledger_->database()->MarkUnblindedTokensAsSpendable(contribution_id,
                                                       callback);
-}
-
-void Contribution::ContributeUnverifiedPublishers() {
-  unverified_->Contribute();
 }
 
 void Contribution::OneTimeTip(const std::string& publisher_key,
@@ -885,7 +881,7 @@ void Contribution::GetRecurringTips(ledger::GetRecurringTipsCallback callback) {
       [this, callback](std::vector<mojom::PublisherInfoPtr> list) {
         // The publisher status field may be expired. Attempt to refresh
         // expired publisher status values before executing callback.
-        publisher::RefreshPublisherStatus(ledger_, std::move(list), callback);
+        publisher::RefreshPublisherStatus(*ledger_, std::move(list), callback);
       });
 }
 

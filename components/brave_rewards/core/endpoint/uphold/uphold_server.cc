@@ -10,7 +10,7 @@
 namespace ledger {
 namespace endpoint {
 
-UpholdServer::UpholdServer(LedgerImpl* ledger)
+UpholdServer::UpholdServer(LedgerImpl& ledger)
     : get_capabilities_(std::make_unique<uphold::GetCapabilities>(ledger)),
       get_cards_(std::make_unique<uphold::GetCards>(ledger)),
       get_card_(std::make_unique<uphold::GetCard>(ledger)),

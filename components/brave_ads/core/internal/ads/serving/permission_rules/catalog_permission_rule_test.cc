@@ -22,33 +22,33 @@ class BatAdsCatalogPermissionRuleIntegrationTest : public UnitTestBase {
 
   void SetUpMocks() override {
     const URLResponseMap url_responses = {
-        {"/v9/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
+        {// Fetch catalog request
+         "/v9/catalog",
+         {{net::HTTP_OK, /*response_body*/ "/catalog.json"}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
   }
+
+  CatalogPermissionRule permission_rule_;
 };
 
 TEST_F(BatAdsCatalogPermissionRuleIntegrationTest, AllowAd) {
   // Arrange
 
   // Act
-  CatalogPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsCatalogPermissionRuleIntegrationTest,
        AllowAdIfCatalogWasLastUpdated23HoursAnd59MinutesAgo) {
   // Arrange
-  AdvanceClockBy(base::Days(1) - base::Seconds(1));
+  AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
   // Act
-  CatalogPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsCatalogPermissionRuleIntegrationTest,
@@ -57,11 +57,9 @@ TEST_F(BatAdsCatalogPermissionRuleIntegrationTest,
   AdvanceClockBy(base::Days(1));
 
   // Act
-  CatalogPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_FALSE(is_allowed);
+  EXPECT_FALSE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsCatalogPermissionRuleIntegrationTest,
@@ -70,11 +68,9 @@ TEST_F(BatAdsCatalogPermissionRuleIntegrationTest,
   SetCatalogVersion(0);
 
   // Act
-  CatalogPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_FALSE(is_allowed);
+  EXPECT_FALSE(permission_rule_.ShouldAllow());
 }
 
 }  // namespace brave_ads

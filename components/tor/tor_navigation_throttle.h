@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "base/gtest_prod_util.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/tor/tor_launcher_observer.h"
 #include "content/public/browser/navigation_throttle.h"
 
@@ -29,11 +30,11 @@ class TorNavigationThrottle : public content::NavigationThrottle,
   // For tests to use its own McokTorLauncherFactory
   static std::unique_ptr<TorNavigationThrottle> MaybeCreateThrottleFor(
       content::NavigationHandle* navigation_handle,
-      TorLauncherFactory* tor_launcher_factory,
+      TorLauncherFactory& tor_launcher_factory,
       bool is_tor_profile);
   explicit TorNavigationThrottle(content::NavigationHandle* navigation_handle);
   TorNavigationThrottle(content::NavigationHandle* navigation_handle,
-                        TorLauncherFactory* tor_launcher_factory);
+                        TorLauncherFactory& tor_launcher_factory);
   TorNavigationThrottle(const TorNavigationThrottle&) = delete;
   TorNavigationThrottle& operator=(const TorNavigationThrottle&) = delete;
   ~TorNavigationThrottle() override;
@@ -50,7 +51,7 @@ class TorNavigationThrottle : public content::NavigationThrottle,
   void OnTorCircuitEstablished(bool result) override;
 
   bool resume_pending_ = false;
-  TorLauncherFactory* tor_launcher_factory_ = nullptr;
+  const raw_ref<TorLauncherFactory> tor_launcher_factory_;
 };
 
 }  // namespace tor

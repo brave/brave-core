@@ -1189,13 +1189,18 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveNftsTabEmptyStateDisclaimer",
      IDS_BRAVE_WALLET_NFTS_TAB_EMPTY_STATE_DISCLAIMER},
     {"braveWalletImportNftModalTitle", IDS_BRAVE_WALLET_IMPORT_NFT_MODAL_TITLE},
-    {"braveWalletEditNftModalTitle", IDS_BRAVE_WALLET_EDIT_NFT_MODAL_TITLE}};
+    {"braveWalletEditNftModalTitle", IDS_BRAVE_WALLET_EDIT_NFT_MODAL_TITLE},
+    {"braveWalletEnableNftAutoDiscoveryModalHeader",
+     IDS_BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_HEADER},
+    {"braveWalletEnableNftAutoDiscoveryModalDescription",
+     IDS_BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_DESCRIPTION},
+    {"braveWalletEnableNftAutoDiscoveryModalConfirm",
+     IDS_BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_CONFIRM},
+    {"braveWalletEnableNftAutoDiscoveryModalCancel",
+     IDS_BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_CANCEL}};
 
 // 0x swap constants
 constexpr char kGoerliSwapBaseAPIURL[] = "https://goerli.api.0x.org/";
-// As of 22-02-2022, this address is controlled by @onyb.
-constexpr char kGoerliFeeRecipient[] =
-    "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4";
 constexpr char kPolygonSwapBaseAPIURL[] = "https://polygon.api.0x.org/";
 constexpr char kBinanceSmartChainSwapBaseAPIURL[] = "https://bsc.api.0x.org/";
 constexpr char kAvalancheSwapBaseAPIURL[] = "https://avalanche.api.0x.org/";
@@ -1205,9 +1210,11 @@ constexpr char kOptimismSwapBaseAPIURL[] = "https://optimism.api.0x.org/";
 constexpr char kArbitrumSwapBaseAPIURL[] = "https://arbitrum.api.0x.org/";
 constexpr char kSwapBaseAPIURL[] = "https://api.0x.org/";
 constexpr char kBuyTokenPercentageFee[] = "0.00875";
-constexpr char kFeeRecipient[] = "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
+constexpr char kEVMFeeRecipient[] =
+    "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
 constexpr char kAffiliateAddress[] =
     "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
+constexpr char k0xAPIKeyHeader[] = "0x-api-key";
 
 // Jupiter swap constants
 constexpr char kSolanaSwapBaseAPIURL[] = "https://quote-api.jup.ag/";

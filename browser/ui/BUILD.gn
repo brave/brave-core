@@ -45,8 +45,6 @@ source_set("ui") {
     "webui/brave_web_ui_controller_factory.h",
     "webui/brave_webui_source.cc",
     "webui/brave_webui_source.h",
-    "webui/webcompat_reporter_ui.cc",
-    "webui/webcompat_reporter_ui.h",
   ]
 
   # It doesn't make sense to view accelerators on iOS & Android.
@@ -54,6 +52,8 @@ source_set("ui") {
     sources += [
       "webui/commands_ui.cc",
       "webui/commands_ui.h",
+      "webui/webcompat_reporter_ui.cc",
+      "webui/webcompat_reporter_ui.h",
     ]
   }
 
@@ -119,6 +119,10 @@ source_set("ui") {
       "webui/brave_rewards/rewards_panel_handler.h",
       "webui/brave_rewards/rewards_panel_ui.cc",
       "webui/brave_rewards/rewards_panel_ui.h",
+      "webui/brave_rewards/tip_panel_handler.cc",
+      "webui/brave_rewards/tip_panel_handler.h",
+      "webui/brave_rewards/tip_panel_ui.cc",
+      "webui/brave_rewards/tip_panel_ui.h",
       "webui/brave_settings_ui.cc",
       "webui/brave_settings_ui.h",
       "webui/brave_shields/cookie_list_opt_in_page_handler.cc",
@@ -131,8 +135,6 @@ source_set("ui") {
       "webui/brave_shields/shields_panel_handler.h",
       "webui/brave_shields/shields_panel_ui.cc",
       "webui/brave_shields/shields_panel_ui.h",
-      "webui/brave_tip_ui.cc",
-      "webui/brave_tip_ui.h",
       "webui/navigation_bar_data_provider.cc",
       "webui/navigation_bar_data_provider.h",
       "webui/new_tab_page/brave_new_tab_message_handler.cc",
@@ -247,6 +249,8 @@ source_set("ui") {
       "views/brave_news/brave_news_feed_item_view.h",
       "views/brave_news/brave_news_feeds_container_view.cc",
       "views/brave_news/brave_news_feeds_container_view.h",
+      "views/brave_rewards/tip_panel_bubble_host.cc",
+      "views/brave_rewards/tip_panel_bubble_host.h",
       "views/brave_shields/cookie_list_opt_in_bubble_host.cc",
       "views/brave_shields/cookie_list_opt_in_bubble_host.h",
       "views/brave_tab_search_bubble_host.cc",
@@ -472,8 +476,6 @@ source_set("ui") {
     "//brave/components/tor/buildflags",
     "//brave/components/url_sanitizer/browser",
     "//brave/components/vector_icons",
-    "//brave/components/webcompat_reporter/browser",
-    "//brave/components/webcompat_reporter/ui:generated_resources",
     "//chrome/app:command_ids",
     "//chrome/app/vector_icons:vector_icons",
     "//chrome/browser:browser_process",
@@ -551,7 +553,11 @@ source_set("ui") {
   }
 
   if (!is_android && !is_ios) {
-    deps += [ "//brave/components/commander/browser" ]
+    deps += [
+      "//brave/components/commander/browser",
+      "//brave/components/webcompat_reporter/browser",
+      "//brave/components/webcompat_reporter/ui:generated_resources",
+    ]
   }
 
   # This is no longer compiled into Chromium on Android, but we still
@@ -670,8 +676,8 @@ source_set("ui") {
       "//brave/components/brave_private_new_tab_ui/common:mojom",
       "//brave/components/brave_private_new_tab_ui/resources/page:generated_resources",
       "//brave/components/brave_rewards/browser",
-      "//brave/components/brave_rewards/resources:tip_generated_resources",
       "//brave/components/brave_rewards/resources/rewards_panel:brave_rewards_panel_generated",
+      "//brave/components/brave_rewards/resources/tip_panel:tip_panel_generated",
       "//brave/components/brave_shields/resources/cookie_list_opt_in:cookie_list_opt_in_generated",
       "//brave/components/brave_shields/resources/panel:brave_shields_panel_generated",
       "//brave/components/brave_sync",
@@ -834,8 +840,10 @@ source_set("ui") {
 
   if (!is_android) {
     sources += [
-      "brave_rewards/rewards_panel/rewards_panel_coordinator.cc",
-      "brave_rewards/rewards_panel/rewards_panel_coordinator.h",
+      "brave_rewards/rewards_panel_coordinator.cc",
+      "brave_rewards/rewards_panel_coordinator.h",
+      "brave_rewards/tip_panel_coordinator.cc",
+      "brave_rewards/tip_panel_coordinator.h",
       "commands/accelerator_service.cc",
       "commands/accelerator_service.h",
       "commands/accelerator_service_factory.cc",

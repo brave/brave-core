@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/last_unidle_time_diagnostic_util.h"
-#include "brave/components/brave_ads/core/sys_info.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -26,7 +26,8 @@ TEST_F(BatAdsDiagnosticManagerTest, DiagnosticManager) {
   AdvanceClockTo(
       TimeFromString("Wed, 18 Nov 1970 12:34:56", /*is_local*/ true));
 
-  SysInfo().device_id =
+  auto& sys_info = GlobalState::GetInstance()->SysInfo();
+  sys_info.device_id =
       "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_KY"};

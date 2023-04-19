@@ -20,7 +20,7 @@ interface Props {
 export function MonthlyToggle (props: Props) {
   const { getString } = useLocaleContext()
   return (
-    <style.root>
+    <style.root data-test-id='monthly-toggle'>
       <style.label>
         {getString('monthlyToggleLabel')}
       </style.label>

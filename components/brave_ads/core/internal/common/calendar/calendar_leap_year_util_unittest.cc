@@ -13,30 +13,10 @@ namespace brave_ads {
 
 TEST(BatAdsCalendarLeapYearUtilTest, IsLeapYear) {
   // Arrange
-  const int leap_years[] = {2000, 2004, 2008, 2012, 2016, 2020, 2024,
-                            2028, 2032, 2036, 2040, 2044, 2048};
-
-  // Act
-  for (const int year : leap_years) {
-    const bool is_leap_year = IsLeapYear(year);
-    EXPECT_TRUE(is_leap_year);
-  }
-
-  // Assert
-}
-
-TEST(BatAdsCalendarLeapYearUtilTest, IsCommonYear) {
-  // Arrange
 
   // Act
   for (int year = 2000; year < 2050; year++) {
-    if (year % 4 == 0) {
-      ASSERT_TRUE(IsLeapYear(year));
-      continue;
-    }
-
-    const bool is_leap_year = IsLeapYear(year);
-    EXPECT_FALSE(is_leap_year);
+    EXPECT_EQ(year % 4 == 0, IsLeapYear(year));
   }
 
   // Assert

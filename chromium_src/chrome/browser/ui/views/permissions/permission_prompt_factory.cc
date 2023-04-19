@@ -30,7 +30,7 @@ std::unique_ptr<permissions::PermissionPrompt> CreatePermissionPrompt(
       delegate->Requests()[0]->request_type() ==
           permissions::RequestType::kBraveSolana) {
     return std::make_unique<BraveWalletPermissionPromptImpl>(
-        browser, web_contents, delegate);
+        browser, web_contents, *delegate);
   }
 #endif
 

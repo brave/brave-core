@@ -17,10 +17,8 @@ using std::placeholders::_2;
 namespace ledger {
 namespace sku {
 
-SKU::SKU(LedgerImpl* ledger)
-    : ledger_(ledger), common_(std::make_unique<SKUCommon>(ledger)) {
-  DCHECK(ledger_);
-}
+SKU::SKU(LedgerImpl& ledger)
+    : ledger_(ledger), common_(std::make_unique<SKUCommon>(ledger)) {}
 
 SKU::~SKU() = default;
 

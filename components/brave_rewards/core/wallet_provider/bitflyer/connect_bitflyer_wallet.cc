@@ -27,7 +27,7 @@ using ledger::wallet_provider::ConnectExternalWallet;
 
 namespace ledger::bitflyer {
 
-ConnectBitFlyerWallet::ConnectBitFlyerWallet(LedgerImpl* ledger)
+ConnectBitFlyerWallet::ConnectBitFlyerWallet(LedgerImpl& ledger)
     : ConnectExternalWallet(ledger),
       bitflyer_server_(std::make_unique<endpoint::BitflyerServer>(ledger)) {}
 
@@ -102,7 +102,7 @@ void ConnectBitFlyerWallet::OnAuthorize(
       base::BindOnce(&ConnectBitFlyerWallet::OnConnect, base::Unretained(this),
                      std::move(callback), std::move(token), std::move(address));
 
-  RequestFor<PostConnectBitflyer>(ledger_, std::move(linking_info))
+  RequestFor<PostConnectBitflyer>(*ledger_, std::move(linking_info))
       .Send(std::move(on_connect));
 }
 

@@ -23,15 +23,15 @@ TEST_F(BatAdsStatementUtilTest, GetNextPaymentDate) {
   base::FieldTrialParams params;
   params["next_payment_day"] = "7";
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(features::kAccount,
+  scoped_feature_list.InitAndEnableFeatureWithParameters(kAccountFeature,
                                                          params);
 
   AdvanceClockTo(TimeFromString("31 January 2020", /*is_local*/ false));
 
   const base::Time next_token_redemption_at =
       TimeFromString("5 February 2020", /*is_local*/ false);
-  AdsClientHelper::GetInstance()->SetTimePref(prefs::kNextTokenRedemptionAt,
-                                              next_token_redemption_at);
+  ads_client_mock_->SetTimePref(prefs::kNextTokenRedemptionAt,
+                                next_token_redemption_at);
 
   const TransactionList transactions;
 

@@ -5,17 +5,16 @@
 
 #include "brave/components/brave_ads/core/internal/ads/ad_events/notification_ads/notification_ad_event_handler.h"
 
-#include <memory>
-
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_events/notification_ads/notification_ad_event_handler_observer.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_events/notification_ads/notification_ad_event_handler_delegate.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
+#include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -34,20 +33,13 @@ NotificationAdInfo BuildAndSaveNotificationAd() {
 
 }  // namespace
 
-class BatAdsNotificationAdEventHandlerTest : public EventHandlerObserver,
+class BatAdsNotificationAdEventHandlerTest : public EventHandlerDelegate,
                                              public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    event_handler_ = std::make_unique<EventHandler>();
-    event_handler_->AddObserver(this);
-  }
-
-  void TearDown() override {
-    event_handler_->RemoveObserver(this);
-
-    UnitTestBase::TearDown();
+    event_handler_.SetDelegate(this);
   }
 
   void OnNotificationAdServed(const NotificationAdInfo& ad) override {
@@ -81,7 +73,7 @@ class BatAdsNotificationAdEventHandlerTest : public EventHandlerObserver,
     did_fail_to_fire_event_ = true;
   }
 
-  std::unique_ptr<EventHandler> event_handler_;
+  EventHandler event_handler_;
 
   NotificationAdInfo ad_;
   bool did_serve_ad_ = false;
@@ -97,8 +89,8 @@ TEST_F(BatAdsNotificationAdEventHandlerTest, FireServedEvent) {
   const NotificationAdInfo ad = BuildAndSaveNotificationAd();
 
   // Act
-  event_handler_->FireEvent(ad.placement_id,
-                            mojom::NotificationAdEventType::kServed);
+  event_handler_.FireEvent(ad.placement_id,
+                           mojom::NotificationAdEventType::kServed);
 
   // Assert
   EXPECT_TRUE(did_serve_ad_);
@@ -117,8 +109,8 @@ TEST_F(BatAdsNotificationAdEventHandlerTest, FireViewedEvent) {
   const NotificationAdInfo ad = BuildAndSaveNotificationAd();
 
   // Act
-  event_handler_->FireEvent(ad.placement_id,
-                            mojom::NotificationAdEventType::kViewed);
+  event_handler_.FireEvent(ad.placement_id,
+                           mojom::NotificationAdEventType::kViewed);
 
   // Assert
   EXPECT_FALSE(did_serve_ad_);
@@ -137,8 +129,8 @@ TEST_F(BatAdsNotificationAdEventHandlerTest, FireClickedEvent) {
   const NotificationAdInfo ad = BuildAndSaveNotificationAd();
 
   // Act
-  event_handler_->FireEvent(ad.placement_id,
-                            mojom::NotificationAdEventType::kClicked);
+  event_handler_.FireEvent(ad.placement_id,
+                           mojom::NotificationAdEventType::kClicked);
 
   // Asser
   EXPECT_FALSE(did_serve_ad_);
@@ -157,8 +149,8 @@ TEST_F(BatAdsNotificationAdEventHandlerTest, FireDismissedEvent) {
   const NotificationAdInfo ad = BuildAndSaveNotificationAd();
 
   // Act
-  event_handler_->FireEvent(ad.placement_id,
-                            mojom::NotificationAdEventType::kDismissed);
+  event_handler_.FireEvent(ad.placement_id,
+                           mojom::NotificationAdEventType::kDismissed);
 
   // Assert
   EXPECT_FALSE(did_serve_ad_);
@@ -177,8 +169,8 @@ TEST_F(BatAdsNotificationAdEventHandlerTest, FireTimedOutEvent) {
   const NotificationAdInfo ad = BuildAndSaveNotificationAd();
 
   // Act
-  event_handler_->FireEvent(ad.placement_id,
-                            mojom::NotificationAdEventType::kTimedOut);
+  event_handler_.FireEvent(ad.placement_id,
+                           mojom::NotificationAdEventType::kTimedOut);
 
   // Assert
   EXPECT_FALSE(did_serve_ad_);
@@ -194,8 +186,8 @@ TEST_F(BatAdsNotificationAdEventHandlerTest, DoNotFireEventIfUuidWasNotFound) {
   // Arrange
 
   // Act
-  event_handler_->FireEvent(kPlacementId,
-                            mojom::NotificationAdEventType::kViewed);
+  event_handler_.FireEvent(kPlacementId,
+                           mojom::NotificationAdEventType::kViewed);
 
   // Assert
   EXPECT_FALSE(did_serve_ad_);

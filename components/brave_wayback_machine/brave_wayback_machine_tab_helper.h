@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -42,7 +43,7 @@ class BraveWaybackMachineTabHelper
   // virtual for test.
   virtual bool ShouldAttachWaybackMachineInfoBar(int response_code) const;
 
-  PrefService* pref_service_ = nullptr;
+  raw_ref<PrefService> pref_service_;
   std::unique_ptr<BraveWaybackMachineDelegate> delegate_;
 
   base::WeakPtrFactory<BraveWaybackMachineTabHelper> weak_factory_;

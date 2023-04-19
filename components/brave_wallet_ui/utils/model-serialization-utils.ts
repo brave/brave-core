@@ -27,6 +27,12 @@ export function makeSerializableTimeDelta (td: TimeDelta | SerializableTimeDelta
   }
 }
 
+export function deserializeTimeDelta (td: SerializableTimeDelta): TimeDelta {
+  return {
+    microseconds: BigInt(td.microseconds)
+  }
+}
+
 export function makeSerializableUnguessableToken (
   token:
     | BraveWallet.OriginInfo['origin']['nonceIfOpaque']
@@ -74,16 +80,12 @@ export function deserializeOrigin (origin: SerializableOrigin): BraveWallet.Orig
   }
 }
 
-export function revertSerializableOriginInfoProp <
-  G,
-  T extends WithSerializableOriginInfo<ObjWithOriginInfo<G>>
-> (obj: T) {
+export function deserializeOriginInfo(
+  originInfo: SerializableOriginInfo
+): BraveWallet.OriginInfo {
   return {
-    ...obj,
-    originInfo: {
-      ...obj.originInfo,
-      origin: deserializeOrigin(obj.originInfo.origin)
-    }
+    ...originInfo,
+    origin: deserializeOrigin(originInfo.origin)
   }
 }
 
@@ -115,9 +117,32 @@ export function makeSerializableSolanaTxData (
     sendOptions: solanaTxData.sendOptions ? {
       ...solanaTxData.sendOptions,
       maxRetries: solanaTxData.sendOptions?.maxRetries ? {
-        maxRetries: Number(solanaTxData.sendOptions.maxRetries)
+        maxRetries: Number(solanaTxData.sendOptions.maxRetries.maxRetries)
       } : undefined
     } : undefined
+  }
+}
+
+export function deserializeSolanaTxData(
+  solanaTxData: SerializableSolanaTxData
+): BraveWallet.SolanaTxData {
+  return {
+    ...solanaTxData,
+    lastValidBlockHeight: BigInt(solanaTxData?.lastValidBlockHeight),
+    lamports: BigInt(solanaTxData?.lamports),
+    amount: BigInt(solanaTxData?.amount),
+    sendOptions: solanaTxData.sendOptions
+      ? {
+          ...solanaTxData.sendOptions,
+          maxRetries: solanaTxData.sendOptions?.maxRetries
+            ? {
+                maxRetries: BigInt(
+                  solanaTxData.sendOptions.maxRetries.maxRetries
+                )
+              }
+            : undefined
+        }
+      : undefined
   }
 }
 
@@ -134,6 +159,29 @@ export function makeSerializableTransaction (tx: BraveWallet.TransactionInfo): S
     confirmedTime: makeSerializableTimeDelta(tx.confirmedTime),
     createdTime: makeSerializableTimeDelta(tx.createdTime),
     submittedTime: makeSerializableTimeDelta(tx.submittedTime)
+  }
+}
+
+export function deserializeTransaction(
+  tx: SerializableTransactionInfo
+): BraveWallet.TransactionInfo {
+  return {
+    ...tx,
+    originInfo: tx.originInfo
+      ? deserializeOriginInfo(tx.originInfo)
+      : tx.originInfo,
+    txDataUnion: {
+      ...tx.txDataUnion,
+      ethTxData: tx.txDataUnion.ethTxData,
+      ethTxData1559: tx.txDataUnion.ethTxData1559,
+      filTxData: tx.txDataUnion.filTxData,
+      solanaTxData: tx.txDataUnion.solanaTxData
+        ? deserializeSolanaTxData(tx.txDataUnion.solanaTxData)
+        : undefined
+    },
+    confirmedTime: deserializeTimeDelta(tx.confirmedTime),
+    createdTime: deserializeTimeDelta(tx.createdTime),
+    submittedTime: deserializeTimeDelta(tx.submittedTime)
   }
 }
 

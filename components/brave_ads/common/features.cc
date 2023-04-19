@@ -62,9 +62,11 @@ constexpr char kFieldTrialParameterShouldSupportMultipleDisplays[] =
     "should_support_multiple_displays";
 constexpr bool kDefaultShouldSupportMultipleDisplays = false;
 
+#if !BUILDFLAG(IS_LINUX)
 constexpr char kFieldTrialParameterShouldAttachNotificationAdToBrowserWindow[] =
-    "should_attached_ad_notification_to_browser_window";
+    "should_attach_ad_notification_to_browser_window";
 constexpr bool kDefaultShouldAttachNotificationAdToBrowserWindow = false;
+#endif  // !BUILDFLAG(IS_LINUX)
 
 // Ad notification normalized display coordinate for the x component should be
 // between 0.0 and 1.0; coordinates outside this range will be adjusted to fit
@@ -169,11 +171,18 @@ bool ShouldSupportMultipleDisplays() {
       kDefaultShouldSupportMultipleDisplays);
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/29744): Enable the feature
+// parameter for Linux when the attached custom notification ad for Linux is
+// implemented.
 bool ShouldAttachNotificationAdToBrowserWindow() {
+#if !BUILDFLAG(IS_LINUX)
   return GetFieldTrialParamByFeatureAsBool(
       kCustomNotificationAds,
       kFieldTrialParameterShouldAttachNotificationAdToBrowserWindow,
       kDefaultShouldAttachNotificationAdToBrowserWindow);
+#else
+  return false;
+#endif  // !BUILDFLAG(IS_LINUX)
 }
 
 double NotificationAdNormalizedDisplayCoordinateX() {

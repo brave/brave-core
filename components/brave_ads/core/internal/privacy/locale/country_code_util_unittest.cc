@@ -15,42 +15,36 @@ TEST(BatAdsCountryCodeUtilTest, IsCountryCodeMemberOfAnonymitySet) {
   // Arrange
 
   // Act
-  const bool is_member_of_anonymity_set =
-      IsCountryCodeMemberOfAnonymitySet("US");
 
   // Assert
-  EXPECT_TRUE(is_member_of_anonymity_set);
+  EXPECT_TRUE(IsCountryCodeMemberOfAnonymitySet("US"));
 }
 
 TEST(BatAdsCountryCodeUtilTest, IsCountryCodeNotMemberOfAnonymitySet) {
   // Arrange
 
   // Act
-  const bool is_member_of_anonymity_set =
-      IsCountryCodeMemberOfAnonymitySet("XX");
 
   // Assert
-  EXPECT_FALSE(is_member_of_anonymity_set);
+  EXPECT_FALSE(IsCountryCodeMemberOfAnonymitySet("XX"));
 }
 
 TEST(BatAdsCountryCodeUtilTest, ShouldClassifyCountryCodeAsOther) {
   // Arrange
 
   // Act
-  const bool is_anonymous = ShouldClassifyCountryCodeAsOther("CX");
 
   // Assert
-  EXPECT_TRUE(is_anonymous);
+  EXPECT_TRUE(ShouldClassifyCountryCodeAsOther("CX"));
 }
 
 TEST(BatAdsCountryCodeUtilTest, ShouldNotClassifyCountryCodeAsOther) {
   // Arrange
 
   // Act
-  const bool is_anonymous = ShouldClassifyCountryCodeAsOther("XX");
 
   // Assert
-  EXPECT_FALSE(is_anonymous);
+  EXPECT_FALSE(ShouldClassifyCountryCodeAsOther("XX"));
 }
 
 }  // namespace brave_ads::privacy::locale

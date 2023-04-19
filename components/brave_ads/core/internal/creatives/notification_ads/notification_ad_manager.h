@@ -28,8 +28,6 @@ class NotificationAdManager final {
 
   static NotificationAdManager* GetInstance();
 
-  static bool HasInstance();
-
   absl::optional<NotificationAdInfo> MaybeGetForPlacementId(
       const std::string& placement_id) const;
 

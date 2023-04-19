@@ -27,7 +27,7 @@ class GeminiPostAccountTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
-  PostAccount post_account_{&mock_ledger_impl_};
+  PostAccount post_account_{mock_ledger_impl_};
 };
 
 TEST_F(GeminiPostAccountTest, ServerOK) {

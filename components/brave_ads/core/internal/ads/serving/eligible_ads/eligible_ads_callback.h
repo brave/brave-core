@@ -11,7 +11,8 @@
 namespace brave_ads {
 
 template <typename T>
-using GetEligibleAdsCallback = base::OnceCallback<void(const bool, const T&)>;
+using GetEligibleAdsCallback =
+    base::OnceCallback<void(bool success, const T& eligible_ads)>;
 
 }  // namespace brave_ads
 

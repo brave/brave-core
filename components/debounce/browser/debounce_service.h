@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_DEBOUNCE_BROWSER_DEBOUNCE_SERVICE_H_
 #define BRAVE_COMPONENTS_DEBOUNCE_BROWSER_DEBOUNCE_SERVICE_H_
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -29,7 +30,7 @@ class DebounceService : public KeyedService {
   bool IsEnabled();
 
  private:
-  DebounceComponentInstaller* component_installer_ = nullptr;  // NOT OWNED
+  const raw_ptr<DebounceComponentInstaller> component_installer_;
   raw_ptr<PrefService> prefs_ = nullptr;
   base::WeakPtrFactory<DebounceService> weak_factory_{this};
 };

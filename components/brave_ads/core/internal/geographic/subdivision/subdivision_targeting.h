@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_ads::geographic {
+namespace brave_ads {
 
 class SubdivisionTargeting final : public AdsClientNotifierObserver {
  public:
@@ -72,6 +72,6 @@ class SubdivisionTargeting final : public AdsClientNotifierObserver {
   base::WeakPtrFactory<SubdivisionTargeting> weak_factory_{this};
 };
 
-}  // namespace brave_ads::geographic
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_GEOGRAPHIC_SUBDIVISION_SUBDIVISION_TARGETING_H_

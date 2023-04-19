@@ -18,9 +18,7 @@
 
 namespace ledger::endpoint::bitflyer {
 
-PostOauth::PostOauth(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+PostOauth::PostOauth(LedgerImpl& ledger) : ledger_(ledger) {}
 
 PostOauth::~PostOauth() = default;
 

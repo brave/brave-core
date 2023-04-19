@@ -25,7 +25,7 @@ bool DoesRespectCap() {
 }  // namespace
 
 bool MediaPermissionRule::ShouldAllow() {
-  if (!permission_rules::features::ShouldOnlyServeAdsIfMediaIsNotPlaying()) {
+  if (!kShouldOnlyServeAdsIfMediaIsNotPlaying.Get()) {
     return true;
   }
 

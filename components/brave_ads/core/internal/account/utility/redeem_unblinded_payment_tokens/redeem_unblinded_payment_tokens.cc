@@ -20,7 +20,7 @@
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
-#include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_util.h"
 #include "brave_base/random.h"
 #include "net/http/http_status_code.h"
@@ -57,7 +57,7 @@ base::TimeDelta CalculateTokenRedemptionDelay() {
 base::Time CalculateNextTokenRedemptionDate() {
   const base::Time now = base::Time::Now();
 
-  const int64_t delay = FlagManager::GetInstance()->ShouldDebug()
+  const int64_t delay = GlobalState::GetInstance()->Flags().should_debug
                             ? kDebugNextTokenRedemptionAfterSeconds
                             : kNextTokenRedemptionAfterSeconds;
 

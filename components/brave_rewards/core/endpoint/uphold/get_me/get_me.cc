@@ -18,9 +18,7 @@ namespace ledger {
 namespace endpoint {
 namespace uphold {
 
-GetMe::GetMe(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+GetMe::GetMe(LedgerImpl& ledger) : ledger_(ledger) {}
 
 GetMe::~GetMe() = default;
 

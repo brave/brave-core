@@ -65,9 +65,10 @@ InstallStatus UninstallProduct(const ModifyParams& modify_params,
   }
   if (installer_state->system_install()) {
     if (!InstallServiceWorkItem::DeleteService(
-            brave_vpn::GetVpnServiceName(),
+            brave_vpn::GetBraveVpnHelperServiceName(),
             brave_vpn::kBraveVpnHelperRegistryStoragePath, {}, {})) {
-      LOG(WARNING) << "Failed to delete " << brave_vpn::GetVpnServiceName();
+      LOG(WARNING) << "Failed to delete "
+                   << brave_vpn::GetBraveVpnHelperServiceName();
     }
   }
   return UninstallProduct_ChromiumImpl(modify_params, remove_all,

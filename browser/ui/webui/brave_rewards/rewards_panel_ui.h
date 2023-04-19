@@ -9,20 +9,18 @@
 #include <memory>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/components/brave_rewards/common/mojom/brave_rewards_panel.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_panel.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "ui/webui/mojo_bubble_web_ui_controller.h"
 
-class Browser;
-
 namespace brave_rewards {
+
 class RewardsPanelCoordinator;
-}
 
 class RewardsPanelUI : public ui::MojoBubbleWebUIController,
-                       public brave_rewards::mojom::PanelHandlerFactory {
+                       public mojom::PanelHandlerFactory {
  public:
   explicit RewardsPanelUI(content::WebUI* web_ui);
   ~RewardsPanelUI() override;
@@ -33,17 +31,18 @@ class RewardsPanelUI : public ui::MojoBubbleWebUIController,
   void BindInterface(mojo::PendingReceiver<PanelHandlerFactory> receiver);
 
  private:
-  // brave_rewards::mojom::PanelHandlerFactory:
+  // mojom::PanelHandlerFactory:
   void CreatePanelHandler(
-      mojo::PendingRemote<brave_rewards::mojom::Panel> panel,
-      mojo::PendingReceiver<brave_rewards::mojom::PanelHandler> receiver)
-      override;
+      mojo::PendingRemote<mojom::Panel> panel,
+      mojo::PendingReceiver<mojom::PanelHandler> receiver) override;
 
-  std::unique_ptr<brave_rewards::mojom::PanelHandler> panel_handler_;
+  std::unique_ptr<mojom::PanelHandler> panel_handler_;
   mojo::Receiver<PanelHandlerFactory> panel_factory_receiver_{this};
-  raw_ptr<brave_rewards::RewardsPanelCoordinator> panel_coordinator_ = nullptr;
+  raw_ptr<RewardsPanelCoordinator> panel_coordinator_ = nullptr;
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
+
+}  // namespace brave_rewards
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_REWARDS_REWARDS_PANEL_UI_H_

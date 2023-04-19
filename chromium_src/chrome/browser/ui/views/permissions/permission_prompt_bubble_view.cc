@@ -7,6 +7,7 @@
 
 #include "base/feature_list.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
@@ -170,10 +171,9 @@ class PermissionLifetimeCombobox : public views::Combobox,
                                    public ui::ComboboxModel {
  public:
   explicit PermissionLifetimeCombobox(
-      permissions::PermissionPrompt::Delegate* delegate)
+      permissions::PermissionPrompt::Delegate& delegate)
       : delegate_(delegate),
         lifetime_options_(permissions::CreatePermissionLifetimeOptions()) {
-    DCHECK(delegate_);
     SetCallback(base::BindRepeating(&PermissionLifetimeCombobox::OnItemSelected,
                                     base::Unretained(this)));
     SetModel(this);
@@ -196,10 +196,10 @@ class PermissionLifetimeCombobox : public views::Combobox,
  private:
   void OnItemSelected() {
     SetRequestsLifetime(lifetime_options_, GetSelectedIndex().value(),
-                        delegate_);
+                        &*delegate_);
   }
 
-  permissions::PermissionPrompt::Delegate* const delegate_;
+  const raw_ref<permissions::PermissionPrompt::Delegate> delegate_;
   std::vector<permissions::PermissionLifetimeOption> lifetime_options_;
 };
 
@@ -227,8 +227,9 @@ views::View* AddPermissionLifetimeComboboxIfNeeded(
   container->AddChildView(std::move(label));
 
   // Add the combobox.
+  DCHECK(delegate);
   auto* combobox = container->AddChildView(
-      std::make_unique<PermissionLifetimeCombobox>(delegate));
+      std::make_unique<PermissionLifetimeCombobox>(*delegate));
   static_cast<views::BoxLayout*>(container->GetLayoutManager())
       ->SetFlexForView(combobox, 1);
 

@@ -23,7 +23,7 @@ TEST_F(BatAdsNextPaymentDateUtilTest,
   base::FieldTrialParams params;
   params["next_payment_day"] = "5";
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(features::kAccount,
+  scoped_feature_list.InitAndEnableFeatureWithParameters(kAccountFeature,
                                                          params);
 
   AdvanceClockTo(TimeFromString("1 January 2020", /*is_local*/ false));
@@ -54,7 +54,7 @@ TEST_F(BatAdsNextPaymentDateUtilTest,
   base::FieldTrialParams params;
   params["next_payment_day"] = "5";
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(features::kAccount,
+  scoped_feature_list.InitAndEnableFeatureWithParameters(kAccountFeature,
                                                          params);
 
   AdvanceClockTo(TimeFromString("1 February 2020", /*is_local*/ false));
@@ -80,7 +80,7 @@ TEST_F(BatAdsNextPaymentDateUtilTest,
   base::FieldTrialParams params;
   params["next_payment_day"] = "5";
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(features::kAccount,
+  scoped_feature_list.InitAndEnableFeatureWithParameters(kAccountFeature,
                                                          params);
 
   AdvanceClockTo(TimeFromString("31 January 2020", /*is_local*/ false));
@@ -110,7 +110,7 @@ TEST_F(
   base::FieldTrialParams params;
   params["next_payment_day"] = "5";
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(features::kAccount,
+  scoped_feature_list.InitAndEnableFeatureWithParameters(kAccountFeature,
                                                          params);
 
   AdvanceClockTo(TimeFromString("11 January 2020", /*is_local*/ false));
@@ -137,7 +137,7 @@ TEST_F(
   base::FieldTrialParams params;
   params["next_payment_day"] = "5";
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(features::kAccount,
+  scoped_feature_list.InitAndEnableFeatureWithParameters(kAccountFeature,
                                                          params);
 
   AdvanceClockTo(TimeFromString("31 January 2020", /*is_local*/ false));

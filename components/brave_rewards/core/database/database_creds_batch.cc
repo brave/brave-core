@@ -21,7 +21,7 @@ const char kTableName[] = "creds_batch";
 
 }  // namespace
 
-DatabaseCredsBatch::DatabaseCredsBatch(LedgerImpl* ledger)
+DatabaseCredsBatch::DatabaseCredsBatch(LedgerImpl& ledger)
     : DatabaseTable(ledger) {}
 
 DatabaseCredsBatch::~DatabaseCredsBatch() = default;

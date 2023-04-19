@@ -32,7 +32,7 @@ namespace endpoint {
 
 class PromotionServer {
  public:
-  explicit PromotionServer(LedgerImpl* ledger);
+  explicit PromotionServer(LedgerImpl& ledger);
   ~PromotionServer();
 
   promotion::GetAvailable* get_available() const;

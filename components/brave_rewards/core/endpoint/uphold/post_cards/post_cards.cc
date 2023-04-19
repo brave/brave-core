@@ -16,9 +16,7 @@
 
 namespace ledger::endpoint::uphold {
 
-PostCards::PostCards(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+PostCards::PostCards(LedgerImpl& ledger) : ledger_(ledger) {}
 
 PostCards::~PostCards() = default;
 

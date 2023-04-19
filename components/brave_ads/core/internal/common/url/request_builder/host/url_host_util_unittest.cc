@@ -5,9 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
 
+#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/flags/environment/environment_types.h"
-#include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -17,8 +17,8 @@ class BatAdsUrlHostUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsUrlHostUtilTest, GetStaticUrlHost) {
   // Arrange
-  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
-      EnvironmentType::kProduction);
+  GlobalState::GetInstance()->Flags().environment_type =
+      mojom::EnvironmentType::kProduction;
 
   // Act
 
@@ -28,8 +28,8 @@ TEST_F(BatAdsUrlHostUtilTest, GetStaticUrlHost) {
 
 TEST_F(BatAdsUrlHostUtilTest, GetGeoUrlHost) {
   // Arrange
-  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
-      EnvironmentType::kProduction);
+  GlobalState::GetInstance()->Flags().environment_type =
+      mojom::EnvironmentType::kProduction;
 
   // Act
 
@@ -39,8 +39,8 @@ TEST_F(BatAdsUrlHostUtilTest, GetGeoUrlHost) {
 
 TEST_F(BatAdsUrlHostUtilTest, GetNonAnonymousUrlHost) {
   // Arrange
-  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
-      EnvironmentType::kProduction);
+  GlobalState::GetInstance()->Flags().environment_type =
+      mojom::EnvironmentType::kProduction;
 
   // Act
 
@@ -50,8 +50,8 @@ TEST_F(BatAdsUrlHostUtilTest, GetNonAnonymousUrlHost) {
 
 TEST_F(BatAdsUrlHostUtilTest, GetAnonymousUrlHost) {
   // Arrange
-  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
-      EnvironmentType::kProduction);
+  GlobalState::GetInstance()->Flags().environment_type =
+      mojom::EnvironmentType::kProduction;
 
   // Act
 
@@ -61,8 +61,8 @@ TEST_F(BatAdsUrlHostUtilTest, GetAnonymousUrlHost) {
 
 TEST_F(BatAdsUrlHostUtilTest, GetAnonymousSearchUrlHost) {
   // Arrange
-  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
-      EnvironmentType::kProduction);
+  GlobalState::GetInstance()->Flags().environment_type =
+      mojom::EnvironmentType::kProduction;
 
   // Act
 

@@ -141,11 +141,24 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, RewardsDisabled) {
   rewards_browsertest_util::StartProcess(rewards_service_);
   WaitForRewardsInitialization();
 
-  histogram_tester_->ExpectBucketCount("Brave.Rewards.AutoContributionsState.2",
-                                       1, 1);
-  histogram_tester_->ExpectBucketCount("Brave.Rewards.TipsState.2", 1, 1);
-  histogram_tester_->ExpectBucketCount("Brave.Rewards.AdsEnabledDuration",
-                                       AdsEnabledDuration::kNever, 1);
+  histogram_tester_->ExpectTotalCount(
+      brave_rewards::p3a::kAutoContributionsStateHistogramName, 0);
+  histogram_tester_->ExpectTotalCount(
+      brave_rewards::p3a::kTipsSentHistogramName, 0);
+  histogram_tester_->ExpectUniqueSample(
+      brave_rewards::p3a::kAdsEnabledDurationHistogramName,
+      AdsEnabledDuration::kNever, 1);
+}
+
+IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, RewardsReset) {
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  WaitForRewardsInitialization();
+  TurnOnRewards();
+
+  histogram_tester_->ExpectUniqueSample(
+      brave_rewards::p3a::kAutoContributionsStateHistogramName, INT_MAX - 1, 1);
+  histogram_tester_->ExpectUniqueSample(
+      brave_rewards::p3a::kTipsSentHistogramName, INT_MAX - 1, 1);
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Duration) {
@@ -156,16 +169,18 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Duration) {
 
   // Turn rewards on.
   TurnOnRewards();
-  histogram_tester_->ExpectBucketCount("Brave.Rewards.AdsEnabledDuration",
-                                       AdsEnabledDuration::kStillEnabled, 1);
+  histogram_tester_->ExpectBucketCount(
+      brave_rewards::p3a::kAdsEnabledDurationHistogramName,
+      AdsEnabledDuration::kStillEnabled, 1);
 
   // We can't turn rewards back off without shutting down the ledger
   // process, which interferes with other tests running in parallel.
   // Instead rely on the fact that the EnabledDuration P3A measurement
   // is made by the rewards service preference observer.
   prefs->SetBoolean(brave_ads::prefs::kEnabled, false);
-  histogram_tester_->ExpectBucketCount("Brave.Rewards.AdsEnabledDuration",
-                                       AdsEnabledDuration::kHours, 1);
+  histogram_tester_->ExpectBucketCount(
+      brave_rewards::p3a::kAdsEnabledDurationHistogramName,
+      AdsEnabledDuration::kHours, 1);
 
   // Mock turning rewards back on.
   prefs->SetBoolean(brave_ads::prefs::kEnabled, true);
@@ -176,8 +191,9 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Duration) {
 
   // Mock turning rewards off.
   prefs->SetBoolean(brave_ads::prefs::kEnabled, false);
-  histogram_tester_->ExpectBucketCount("Brave.Rewards.AdsEnabledDuration",
-                                       AdsEnabledDuration::kHours, 2);
+  histogram_tester_->ExpectBucketCount(
+      brave_rewards::p3a::kAdsEnabledDurationHistogramName,
+      AdsEnabledDuration::kHours, 2);
 
   // Mock turning rewards back on.
   prefs->SetBoolean(brave_ads::prefs::kEnabled, true);
@@ -187,8 +203,9 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Duration) {
 
   // Mock turning rewards off.
   prefs->SetBoolean(brave_ads::prefs::kEnabled, false);
-  histogram_tester_->ExpectBucketCount("Brave.Rewards.AdsEnabledDuration",
-                                       AdsEnabledDuration::kDays, 1);
+  histogram_tester_->ExpectBucketCount(
+      brave_rewards::p3a::kAdsEnabledDurationHistogramName,
+      AdsEnabledDuration::kDays, 1);
 
   // Mock turning rewards on for more than a week.
   prefs->SetBoolean(brave_ads::prefs::kEnabled, true);
@@ -198,8 +215,9 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Duration) {
 
   // Mock turning rewards off.
   prefs->SetBoolean(brave_ads::prefs::kEnabled, false);
-  histogram_tester_->ExpectBucketCount("Brave.Rewards.AdsEnabledDuration",
-                                       AdsEnabledDuration::kWeeks, 1);
+  histogram_tester_->ExpectBucketCount(
+      brave_rewards::p3a::kAdsEnabledDurationHistogramName,
+      AdsEnabledDuration::kWeeks, 1);
 
   // Mock turning rewards on for more than a month.
   prefs->SetBoolean(brave_ads::prefs::kEnabled, true);
@@ -209,8 +227,9 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Duration) {
 
   // Mock turning rewards off.
   prefs->SetBoolean(brave_ads::prefs::kEnabled, false);
-  histogram_tester_->ExpectBucketCount("Brave.Rewards.AdsEnabledDuration",
-                                       AdsEnabledDuration::kMonths, 1);
+  histogram_tester_->ExpectBucketCount(
+      brave_rewards::p3a::kAdsEnabledDurationHistogramName,
+      AdsEnabledDuration::kMonths, 1);
 
   // Mock turning rewards on for our longest measured value.
   prefs->SetBoolean(brave_ads::prefs::kEnabled, true);
@@ -220,8 +239,50 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Duration) {
 
   // Mock turning rewards off.
   prefs->SetBoolean(brave_ads::prefs::kEnabled, false);
-  histogram_tester_->ExpectBucketCount("Brave.Rewards.AdsEnabledDuration",
-                                       AdsEnabledDuration::kQuarters, 1);
+  histogram_tester_->ExpectBucketCount(
+      brave_rewards::p3a::kAdsEnabledDurationHistogramName,
+      AdsEnabledDuration::kQuarters, 1);
 }
+
+#if !BUILDFLAG(IS_ANDROID)
+IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Conversion) {
+  brave_rewards::p3a::ConversionMonitor conversion_monitor;
+  conversion_monitor.RecordPanelTrigger(
+      brave_rewards::p3a::PanelTrigger::kInlineTip);
+
+  histogram_tester_->ExpectTotalCount(
+      brave_rewards::p3a::kEnabledSourceHistogramName, 0);
+  histogram_tester_->ExpectUniqueSample(
+      brave_rewards::p3a::kInlineTipTriggerHistogramName, 1, 1);
+
+  conversion_monitor.RecordRewardsEnable();
+
+  histogram_tester_->ExpectUniqueSample(
+      brave_rewards::p3a::kEnabledSourceHistogramName, 0, 1);
+
+  conversion_monitor.RecordPanelTrigger(
+      brave_rewards::p3a::PanelTrigger::kToolbarButton);
+
+  histogram_tester_->ExpectBucketCount(
+      brave_rewards::p3a::kToolbarButtonTriggerHistogramName, 1, 1);
+
+  conversion_monitor.RecordRewardsEnable();
+
+  histogram_tester_->ExpectBucketCount(
+      brave_rewards::p3a::kEnabledSourceHistogramName, 1, 1);
+
+  conversion_monitor.RecordPanelTrigger(brave_rewards::p3a::PanelTrigger::kNTP);
+
+  histogram_tester_->ExpectBucketCount(
+      brave_rewards::p3a::kToolbarButtonTriggerHistogramName, 1, 1);
+  histogram_tester_->ExpectBucketCount(
+      brave_rewards::p3a::kInlineTipTriggerHistogramName, 1, 1);
+
+  conversion_monitor.RecordRewardsEnable();
+
+  histogram_tester_->ExpectBucketCount(
+      brave_rewards::p3a::kEnabledSourceHistogramName, 2, 1);
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 }  // namespace rewards_browsertest

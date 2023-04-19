@@ -29,6 +29,8 @@ class BatAdsSearchResultAdsPerHourPermissionRuleTest : public UnitTestBase {
     scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                       disabled_features);
   }
+
+  AdsPerHourPermissionRule permission_rule_;
 };
 
 TEST_F(BatAdsSearchResultAdsPerHourPermissionRuleTest,
@@ -36,57 +38,47 @@ TEST_F(BatAdsSearchResultAdsPerHourPermissionRuleTest,
   // Arrange
 
   // Act
-  AdsPerHourPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsSearchResultAdsPerHourPermissionRuleTest,
        AllowAdIfDoesNotExceedCap) {
   // Arrange
-  const int count = features::GetMaximumAdsPerHour() - 1;
-  RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed, count);
 
   // Act
-  AdsPerHourPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
+  RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed,
+                 /*count*/ kMaximumAdsPerHour.Get() - 1);
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsSearchResultAdsPerHourPermissionRuleTest,
        AllowAdIfDoesNotExceedCapAfter1Hour) {
   // Arrange
-  const int count = features::GetMaximumAdsPerHour();
-  RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed, count);
-
-  AdvanceClockBy(base::Hours(1));
+  RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed,
+                 /*count*/ kMaximumAdsPerHour.Get());
 
   // Act
-  AdsPerHourPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
+  AdvanceClockBy(base::Hours(1));
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsSearchResultAdsPerHourPermissionRuleTest,
        DoNotAllowAdIfExceedsCapWithin1Hour) {
   // Arrange
-  const int count = features::GetMaximumAdsPerHour();
-  RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed, count);
-
-  AdvanceClockBy(base::Hours(1) - base::Seconds(1));
+  RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed,
+                 /*count*/ kMaximumAdsPerHour.Get());
 
   // Act
-  AdsPerHourPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
+  AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
   // Assert
-  EXPECT_FALSE(is_allowed);
+  EXPECT_FALSE(permission_rule_.ShouldAllow());
 }
 
 }  // namespace brave_ads::search_result_ads

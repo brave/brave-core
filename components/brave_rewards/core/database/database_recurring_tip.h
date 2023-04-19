@@ -18,7 +18,7 @@ namespace database {
 
 class DatabaseRecurringTip : public DatabaseTable {
  public:
-  explicit DatabaseRecurringTip(LedgerImpl* ledger);
+  explicit DatabaseRecurringTip(LedgerImpl& ledger);
   ~DatabaseRecurringTip() override;
 
   // DEPRECATED

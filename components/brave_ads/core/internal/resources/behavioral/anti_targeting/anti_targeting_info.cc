@@ -15,10 +15,13 @@
 namespace brave_ads::resource {
 
 AntiTargetingInfo::AntiTargetingInfo() = default;
+
 AntiTargetingInfo::AntiTargetingInfo(AntiTargetingInfo&& other) noexcept =
     default;
+
 AntiTargetingInfo& AntiTargetingInfo::operator=(
     AntiTargetingInfo&& other) noexcept = default;
+
 AntiTargetingInfo::~AntiTargetingInfo() = default;
 
 // static
@@ -27,8 +30,8 @@ AntiTargetingInfo::CreateFromValue(const base::Value::Dict dict) {
   AntiTargetingInfo anti_targeting;
 
   if (absl::optional<int> version = dict.FindInt("version")) {
-    if (features::GetAntiTargetingResourceVersion() != *version) {
-      return base::unexpected("Failed to load from JSON, version missing");
+    if (kAntiTargetingResourceVersion.Get() != *version) {
+      return base::unexpected("Failed to load from JSON, version mismatch");
     }
 
     anti_targeting.version = *version;

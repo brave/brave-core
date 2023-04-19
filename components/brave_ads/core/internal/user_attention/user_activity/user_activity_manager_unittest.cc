@@ -20,7 +20,7 @@ TEST_F(BatAdsUserActivityManagerTest, HasInstance) {
   // Arrange
 
   // Act
-  const bool has_instance = UserActivityManager::HasInstance();
+  const bool has_instance = UserActivityManager::GetInstance();
 
   // Assert
   EXPECT_TRUE(has_instance);

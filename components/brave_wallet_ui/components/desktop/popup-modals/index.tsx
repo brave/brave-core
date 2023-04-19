@@ -20,6 +20,7 @@ export interface Props {
   title: string
   width?: string
   showDivider?: boolean
+  hideHeader?: boolean
   headerPaddingVertical?: number
   headerPaddingHorizontal?: number
   borderRadius?: number
@@ -36,6 +37,7 @@ const PopupModal = React.forwardRef<HTMLDivElement, Props>(
       headerPaddingVertical,
       headerPaddingHorizontal,
       showDivider,
+      hideHeader,
       onClose,
       children
     } = props
@@ -57,13 +59,15 @@ const PopupModal = React.forwardRef<HTMLDivElement, Props>(
     return (
       <StyledWrapper>
         <Modal width={width} borderRadius={borderRadius} ref={forwardedRef}>
-          <Header
-            headerPaddingHorizontal={headerPaddingHorizontal}
-            headerPaddingVertical={headerPaddingVertical}
-          >
-            <Title>{title}</Title>
-            <CloseButton onClick={onClose} />
-          </Header>
+          {!hideHeader &&
+            <Header
+              headerPaddingHorizontal={headerPaddingHorizontal}
+              headerPaddingVertical={headerPaddingVertical}
+            >
+              <Title>{title}</Title>
+              <CloseButton onClick={onClose} />
+            </Header>
+          }
           {showDivider && <Divider />}
           {children}
         </Modal>

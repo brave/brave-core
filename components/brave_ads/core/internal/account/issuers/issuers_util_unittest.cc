@@ -36,7 +36,7 @@ TEST_F(BatAdsIssuersUtilTest, HasIssuersChanged) {
 
 TEST_F(BatAdsIssuersUtilTest, HasIssuersChangedOnInitialFetch) {
   // Arrange
-  AdsClientHelper::GetInstance()->ClearPref(prefs::kIssuers);
+  ads_client_mock_->ClearPref(prefs::kIssuers);
 
   // Act
   const IssuersInfo issuers =
@@ -231,10 +231,9 @@ TEST_F(BatAdsIssuersUtilTest, IsIssuersValid) {
                     {"hJP1nDjTdHcVDw347oH0XO+XBPPh5wZA2xWZE8QUSSA=", 0.1}});
 
   // Act
-  const bool is_valid = IsIssuersValid(issuers);
 
   // Assert
-  EXPECT_TRUE(is_valid);
+  EXPECT_TRUE(IsIssuersValid(issuers));
 }
 
 TEST_F(BatAdsIssuersUtilTest, IsIssuersInvalid) {

@@ -93,7 +93,7 @@ const char* GetJsonRotationTimestampPref(MetricLogType log_type) {
 }  // namespace
 
 RotationScheduler::RotationScheduler(
-    PrefService* local_state,
+    PrefService& local_state,
     const P3AConfig* config,
     JsonRotationCallback json_rotation_callback,
     ConstellationRotationCallback constellation_rotation_callback)
@@ -105,6 +105,8 @@ RotationScheduler::RotationScheduler(
     json_rotation_timers_[log_type] = std::make_unique<base::WallClockTimer>();
     InitJsonTimer(log_type);
   }
+  last_constellation_rotation_time_ =
+      local_state_->GetTime(kLastConstellationRotationTimeStampPref);
 }
 
 RotationScheduler::~RotationScheduler() = default;

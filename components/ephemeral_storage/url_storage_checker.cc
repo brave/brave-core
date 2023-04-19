@@ -17,13 +17,12 @@
 namespace ephemeral_storage {
 
 UrlStorageChecker::UrlStorageChecker(
-    content::StoragePartition* storage_partition,
+    content::StoragePartition& storage_partition,
     const GURL& url,
     Callback callback)
     : storage_partition_(storage_partition),
       url_(url),
       callback_(std::move(callback)) {
-  DCHECK(storage_partition_);
   DCHECK(url_.is_valid());
   DCHECK(callback_);
 }

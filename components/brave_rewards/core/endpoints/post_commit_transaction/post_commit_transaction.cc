@@ -9,7 +9,7 @@
 
 namespace ledger::endpoints {
 PostCommitTransaction::PostCommitTransaction(
-    LedgerImpl* ledger,
+    LedgerImpl& ledger,
     std::string&& token,
     std::string&& address,
     mojom::ExternalTransactionPtr transaction)

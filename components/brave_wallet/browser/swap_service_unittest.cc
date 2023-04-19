@@ -49,6 +49,8 @@ brave_wallet::mojom::SwapParamsPtr GetCannedSwapParams() {
   params->buy_token = "ETH";
   params->sell_token = "DAI";
   params->buy_amount = "1000000000000000000000";
+  params->taker_address = "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4";
+  params->slippage_percentage = 0.03;
   return params;
 }
 
@@ -155,19 +157,6 @@ class SwapServiceUnitTest : public testing::Test {
     return result;
   }
 
-  void TestSwapConfigurationMainnet(const std::string& chain_id,
-                                    const std::string& expected_swap_api_url) {
-    std::string buy_token_percantage_fee = "0.00875";
-    std::string fee_recipient = "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
-    std::string affiliate_address =
-        "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
-
-    EXPECT_EQ(expected_swap_api_url, SwapService::GetBaseSwapURL(chain_id));
-    EXPECT_EQ(buy_token_percantage_fee, SwapService::GetFee(chain_id));
-    EXPECT_EQ(fee_recipient, SwapService::GetFeeRecipient(chain_id));
-    EXPECT_EQ(affiliate_address, SwapService::GetAffiliateAddress(chain_id));
-  }
-
   void TestGetJupiterQuoteCase(const std::string& json,
                                const bool expected_success) {
     SetInterceptor(json);
@@ -252,7 +241,6 @@ TEST_F(SwapServiceUnitTest, GetPriceQuote) {
       "sellTokenAddress":"0x6b175474e89094c44da98b954eedeac495271d0f",
       "buyAmount":"1000000000000000000000",
       "sellAmount":"1916275479988140583549706",
-      "sources":[],
       "allowanceTarget":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
       "sellTokenToEthRate":"1900.44962824532464391",
       "buyTokenToEthRate":"1",
@@ -364,7 +352,6 @@ TEST_F(SwapServiceUnitTest, GetTransactionPayload) {
       "sellTokenAddress":"0x6b175474e89094c44da98b954eedeac495271d0f",
       "buyAmount":"1000000000000000000000",
       "sellAmount":"1916275479988140583549706",
-      "sources":[],
       "allowanceTarget":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
       "sellTokenToEthRate":"1900.44962824532464391",
       "buyTokenToEthRate":"1",
@@ -443,50 +430,272 @@ TEST_F(SwapServiceUnitTest, GetTransactionPayloadUnexpectedReturn) {
   base::RunLoop().RunUntilIdle();
 }
 
-TEST_F(SwapServiceUnitTest, GetSwapConfigurationGoerli) {
-  std::string swap_api_url = "https://goerli.api.0x.org/";
-  std::string buy_token_percantage_fee = "0.00875";
-  std::string fee_recipient = "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4";
-  std::string affiliate_address;
-  EXPECT_EQ(swap_api_url, SwapService::GetBaseSwapURL(mojom::kGoerliChainId));
-  EXPECT_EQ(buy_token_percantage_fee,
-            SwapService::GetFee(mojom::kGoerliChainId));
-  EXPECT_EQ(fee_recipient, SwapService::GetFeeRecipient(mojom::kGoerliChainId));
-  EXPECT_EQ(affiliate_address,
-            SwapService::GetAffiliateAddress(mojom::kGoerliChainId));
+TEST_F(SwapServiceUnitTest, GetPriceQuoteURL) {
+  auto params = GetCannedSwapParams();
+  auto url =
+      swap_service_->GetPriceQuoteURL(params.Clone(), mojom::kGoerliChainId);
+  EXPECT_EQ(url,
+            "https://goerli.api.0x.org/swap/v1/price?"
+            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
+            "buyAmount=1000000000000000000000&"
+            "buyToken=ETH&"
+            "sellToken=DAI&"
+            "buyTokenPercentageFee=0.00875&"
+            "slippagePercentage=0.030000&"
+            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "skipValidation=true");
+
+  // Ethereum has RFQ-T liquidity available, so /quote endpoint is used for
+  // fetching indicative prices.
+  url = swap_service_->GetPriceQuoteURL(params.Clone(), mojom::kMainnetChainId);
+  EXPECT_EQ(url,
+            "https://api.0x.org/swap/v1/quote?"
+            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
+            "buyAmount=1000000000000000000000&"
+            "buyToken=ETH&"
+            "sellToken=DAI&"
+            "buyTokenPercentageFee=0.00875&"
+            "slippagePercentage=0.030000&"
+            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "skipValidation=true&"
+            "intentOnFilling=false");
+
+  // Polygon has RFQ-T liquidity available, so /quote endpoint is used for
+  // fetching indicative prices.
+  url = swap_service_->GetPriceQuoteURL(params.Clone(),
+                                        mojom::kPolygonMainnetChainId);
+  EXPECT_EQ(url,
+            "https://polygon.api.0x.org/swap/v1/quote?"
+            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
+            "buyAmount=1000000000000000000000&"
+            "buyToken=ETH&"
+            "sellToken=DAI&"
+            "buyTokenPercentageFee=0.00875&"
+            "slippagePercentage=0.030000&"
+            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "skipValidation=true&"
+            "intentOnFilling=false");
+
+  url = swap_service_->GetPriceQuoteURL(
+      params.Clone(), mojom::kBinanceSmartChainMainnetChainId);
+  EXPECT_EQ(url,
+            "https://bsc.api.0x.org/swap/v1/price?"
+            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
+            "buyAmount=1000000000000000000000&"
+            "buyToken=ETH&"
+            "sellToken=DAI&"
+            "buyTokenPercentageFee=0.00875&"
+            "slippagePercentage=0.030000&"
+            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "skipValidation=true");
+
+  url = swap_service_->GetPriceQuoteURL(params.Clone(),
+                                        mojom::kAvalancheMainnetChainId);
+  EXPECT_EQ(url,
+            "https://avalanche.api.0x.org/swap/v1/price?"
+            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
+            "buyAmount=1000000000000000000000&"
+            "buyToken=ETH&"
+            "sellToken=DAI&"
+            "buyTokenPercentageFee=0.00875&"
+            "slippagePercentage=0.030000&"
+            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "skipValidation=true");
+
+  url = swap_service_->GetPriceQuoteURL(params.Clone(),
+                                        mojom::kFantomMainnetChainId);
+  EXPECT_EQ(url,
+            "https://fantom.api.0x.org/swap/v1/price?"
+            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
+            "buyAmount=1000000000000000000000&"
+            "buyToken=ETH&"
+            "sellToken=DAI&"
+            "buyTokenPercentageFee=0.00875&"
+            "slippagePercentage=0.030000&"
+            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "skipValidation=true");
+
+  url = swap_service_->GetPriceQuoteURL(params.Clone(),
+                                        mojom::kCeloMainnetChainId);
+  EXPECT_EQ(url,
+            "https://celo.api.0x.org/swap/v1/price?"
+            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
+            "buyAmount=1000000000000000000000&"
+            "buyToken=ETH&"
+            "sellToken=DAI&"
+            "buyTokenPercentageFee=0.00875&"
+            "slippagePercentage=0.030000&"
+            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "skipValidation=true");
+
+  url = swap_service_->GetPriceQuoteURL(params.Clone(),
+                                        mojom::kOptimismMainnetChainId);
+  EXPECT_EQ(url,
+            "https://optimism.api.0x.org/swap/v1/price?"
+            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
+            "buyAmount=1000000000000000000000&"
+            "buyToken=ETH&"
+            "sellToken=DAI&"
+            "buyTokenPercentageFee=0.00875&"
+            "slippagePercentage=0.030000&"
+            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "skipValidation=true");
+
+  url = swap_service_->GetPriceQuoteURL(params.Clone(),
+                                        mojom::kArbitrumMainnetChainId);
+  EXPECT_EQ(url,
+            "https://arbitrum.api.0x.org/swap/v1/price?"
+            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
+            "buyAmount=1000000000000000000000&"
+            "buyToken=ETH&"
+            "sellToken=DAI&"
+            "buyTokenPercentageFee=0.00875&"
+            "slippagePercentage=0.030000&"
+            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "skipValidation=true");
+
+  // KO: unsupported network
+  url = swap_service_->GetPriceQuoteURL(params.Clone(), "0x3");
+  EXPECT_EQ(url, "");
 }
 
-TEST_F(SwapServiceUnitTest, GetSwapConfigurationMainnet) {
-  TestSwapConfigurationMainnet(mojom::kMainnetChainId, "https://api.0x.org/");
-  TestSwapConfigurationMainnet(mojom::kPolygonMainnetChainId,
-                               "https://polygon.api.0x.org/");
-  TestSwapConfigurationMainnet(mojom::kBinanceSmartChainMainnetChainId,
-                               "https://bsc.api.0x.org/");
-  TestSwapConfigurationMainnet(mojom::kAvalancheMainnetChainId,
-                               "https://avalanche.api.0x.org/");
-  TestSwapConfigurationMainnet(mojom::kFantomMainnetChainId,
-                               "https://fantom.api.0x.org/");
-  TestSwapConfigurationMainnet(mojom::kCeloMainnetChainId,
-                               "https://celo.api.0x.org/");
-  TestSwapConfigurationMainnet(mojom::kOptimismMainnetChainId,
-                               "https://optimism.api.0x.org/");
-  TestSwapConfigurationMainnet(mojom::kArbitrumMainnetChainId,
-                               "https://arbitrum.api.0x.org/");
-}
+TEST_F(SwapServiceUnitTest, GetTransactionPayloadURL) {
+  auto params = GetCannedSwapParams();
+  auto url = swap_service_->GetTransactionPayloadURL(params.Clone(),
+                                                     mojom::kGoerliChainId);
+  EXPECT_EQ(url,
+            "https://goerli.api.0x.org/swap/v1/quote?"
+            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
+            "buyAmount=1000000000000000000000&"
+            "buyToken=ETH&"
+            "sellToken=DAI&"
+            "buyTokenPercentageFee=0.00875&"
+            "slippagePercentage=0.030000&"
+            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d");
 
-TEST_F(SwapServiceUnitTest, GetSwapConfigurationOtherNet) {
-  std::string swap_api_url;
-  std::string buy_token_percantage_fee;
-  std::string fee_recipient;
-  std::string affiliate_address;
-  EXPECT_EQ(swap_api_url, SwapService::GetBaseSwapURL("0x3"));
-  EXPECT_EQ(buy_token_percantage_fee, SwapService::GetFee("0x3"));
-  EXPECT_EQ(fee_recipient, SwapService::GetFeeRecipient("0x3"));
-  EXPECT_EQ(affiliate_address, SwapService::GetAffiliateAddress("0x3"));
-  EXPECT_EQ(swap_api_url, SwapService::GetBaseSwapURL("0x4"));
-  EXPECT_EQ(buy_token_percantage_fee, SwapService::GetFee("0x4"));
-  EXPECT_EQ(fee_recipient, SwapService::GetFeeRecipient("0x4"));
-  EXPECT_EQ(affiliate_address, SwapService::GetAffiliateAddress("0x4"));
+  // Ethereum has RFQ-T liquidity available, so intentOnFilling=true is
+  // specified while fetching firm quotes.
+  url = swap_service_->GetTransactionPayloadURL(params.Clone(),
+                                                mojom::kMainnetChainId);
+  EXPECT_EQ(url,
+            "https://api.0x.org/swap/v1/quote?"
+            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
+            "buyAmount=1000000000000000000000&"
+            "buyToken=ETH&"
+            "sellToken=DAI&"
+            "buyTokenPercentageFee=0.00875&"
+            "slippagePercentage=0.030000&"
+            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "intentOnFilling=true");
+
+  // Polygon has RFQ-T liquidity available, so intentOnFilling=true is
+  // specified while fetching firm quotes.
+  url = swap_service_->GetTransactionPayloadURL(params.Clone(),
+                                                mojom::kPolygonMainnetChainId);
+  EXPECT_EQ(url,
+            "https://polygon.api.0x.org/swap/v1/quote?"
+            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
+            "buyAmount=1000000000000000000000&"
+            "buyToken=ETH&"
+            "sellToken=DAI&"
+            "buyTokenPercentageFee=0.00875&"
+            "slippagePercentage=0.030000&"
+            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "intentOnFilling=true");
+
+  url = swap_service_->GetTransactionPayloadURL(
+      params.Clone(), mojom::kBinanceSmartChainMainnetChainId);
+  EXPECT_EQ(url,
+            "https://bsc.api.0x.org/swap/v1/quote?"
+            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
+            "buyAmount=1000000000000000000000&"
+            "buyToken=ETH&"
+            "sellToken=DAI&"
+            "buyTokenPercentageFee=0.00875&"
+            "slippagePercentage=0.030000&"
+            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d");
+
+  url = swap_service_->GetTransactionPayloadURL(
+      params.Clone(), mojom::kAvalancheMainnetChainId);
+  EXPECT_EQ(url,
+            "https://avalanche.api.0x.org/swap/v1/quote?"
+            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
+            "buyAmount=1000000000000000000000&"
+            "buyToken=ETH&"
+            "sellToken=DAI&"
+            "buyTokenPercentageFee=0.00875&"
+            "slippagePercentage=0.030000&"
+            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d");
+
+  url = swap_service_->GetTransactionPayloadURL(params.Clone(),
+                                                mojom::kFantomMainnetChainId);
+  EXPECT_EQ(url,
+            "https://fantom.api.0x.org/swap/v1/quote?"
+            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
+            "buyAmount=1000000000000000000000&"
+            "buyToken=ETH&"
+            "sellToken=DAI&"
+            "buyTokenPercentageFee=0.00875&"
+            "slippagePercentage=0.030000&"
+            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d");
+
+  url = swap_service_->GetTransactionPayloadURL(params.Clone(),
+                                                mojom::kCeloMainnetChainId);
+  EXPECT_EQ(url,
+            "https://celo.api.0x.org/swap/v1/quote?"
+            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
+            "buyAmount=1000000000000000000000&"
+            "buyToken=ETH&"
+            "sellToken=DAI&"
+            "buyTokenPercentageFee=0.00875&"
+            "slippagePercentage=0.030000&"
+            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d");
+
+  url = swap_service_->GetTransactionPayloadURL(params.Clone(),
+                                                mojom::kOptimismMainnetChainId);
+  EXPECT_EQ(url,
+            "https://optimism.api.0x.org/swap/v1/quote?"
+            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
+            "buyAmount=1000000000000000000000&"
+            "buyToken=ETH&"
+            "sellToken=DAI&"
+            "buyTokenPercentageFee=0.00875&"
+            "slippagePercentage=0.030000&"
+            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d");
+
+  url = swap_service_->GetTransactionPayloadURL(params.Clone(),
+                                                mojom::kArbitrumMainnetChainId);
+  EXPECT_EQ(url,
+            "https://arbitrum.api.0x.org/swap/v1/quote?"
+            "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
+            "buyAmount=1000000000000000000000&"
+            "buyToken=ETH&"
+            "sellToken=DAI&"
+            "buyTokenPercentageFee=0.00875&"
+            "slippagePercentage=0.030000&"
+            "feeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+            "affiliateAddress=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d");
+
+  // KO: unsupported network
+  url = swap_service_->GetTransactionPayloadURL(params.Clone(), "0x3");
+  EXPECT_EQ(url, "");
 }
 
 TEST_F(SwapServiceUnitTest, IsSwapSupported) {

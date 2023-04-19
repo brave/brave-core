@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_payload_json_writer.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_util.h"
@@ -63,9 +63,9 @@ GURL CreateOptedInConfirmationUrlRequestBuilder::BuildUrl() const {
   const std::string credential_base64_url =
       *confirmation_.opted_in->credential_base64url;
 
-  const std::string spec = base::StringPrintf(
-      "%s/v3/confirmation/%s/%s", url_host.c_str(),
-      confirmation_.transaction_id.c_str(), credential_base64_url.c_str());
+  const std::string spec = base::ReplaceStringPlaceholders(
+      "$1/v3/confirmation/$2/$3",
+      {url_host, confirmation_.transaction_id, credential_base64_url}, nullptr);
 
   return GURL(spec);
 }

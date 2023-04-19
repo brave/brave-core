@@ -7,7 +7,7 @@
 
 #include <string>
 
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -23,8 +23,8 @@ TEST(BatAdsVersionNumberUserDataTest, GetVersionNumber) {
   const base::Value::Dict user_data = GetVersionNumber();
 
   // Assert
-  const std::string expected_json = base::StringPrintf(
-      R"({"versionNumber":"%s"})", GetBrowserVersionNumber().c_str());
+  const std::string expected_json = base::ReplaceStringPlaceholders(
+      R"({"versionNumber":"$1"})", {GetBrowserVersionNumber()}, nullptr);
 
   const base::Value expected_user_data = base::test::ParseJson(expected_json);
   ASSERT_TRUE(expected_user_data.is_dict());

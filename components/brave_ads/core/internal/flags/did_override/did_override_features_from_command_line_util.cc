@@ -7,14 +7,13 @@
 
 #include <string>
 
+#include "base/base_switches.h"
 #include "base/check.h"
 #include "base/command_line.h"
 #include "base/containers/flat_set.h"
-#include "base/no_destructor.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
 #include "brave/components/brave_ads/common/features.h"
-#include "brave/components/brave_ads/core/ad_switches.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/internal/account/account_features.h"
 #include "brave/components/brave_ads/core/internal/ads/inline_content_ad_features.h"
 #include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_features.h"
@@ -36,48 +35,54 @@ namespace brave_ads {
 namespace {
 
 const base::Feature* const kFeatures[] = {
-    &exclusion_rules::features::kFeature,
-    &features::kAccount,
-    &features::kConversions,
-    &features::kEligibleAds,
     &features::kShouldTriggerSearchResultAdEvents,
-    &inline_content_ads::features::kFeature,
-    &new_tab_page_ads::features::kFeature,
-    &notification_ads::features::kFeature,
-    &permission_rules::features::kFeature,
-    &promoted_content_ads::features::kFeature,
-    &resource::features::kAntiTargeting,
-    &search_result_ads::features::kFeature,
-    &targeting::features::kEpsilonGreedyBandit,
-    &targeting::features::kPurchaseIntent,
-    &targeting::features::kTextClassification,
-    &user_activity::features::kFeature};
+    &inline_content_ads::kAdsFeature,
+    &kAccountFeature,
+    &kAntiTargetingFeature,
+    &kConversionsFeature,
+    &kEligibleAdsFeature,
+    &kExclusionRulesFeature,
+    &kPermissionRulesFeature,
+    &kUserActivityFeature,
+    &new_tab_page_ads::kAdsFeature,
+    &notification_ads::kAdsFeature,
+    &promoted_content_ads::kAdsFeature,
+    &search_result_ads::kAdsFeature,
+    &targeting::kEpsilonGreedyBanditFeatures,
+    &targeting::kPurchaseIntentFeature,
+    &targeting::kTextClassificationFeature};
 
 constexpr char kFeaturesSeparators[] = ",:<";
 
-bool IsFeatureOverridden(const std::string& feature) {
-  const base::NoDestructor<base::flat_set<std::string>> brave_ad_features(
-      []() -> base::flat_set<std::string> {
-        const auto* const command_line = base::CommandLine::ForCurrentProcess();
-        const std::string features_switch =
-            command_line->GetSwitchValueASCII(switches::kFeaturesSwitch);
-        base::flat_set<std::string> features =
-            base::SplitString(features_switch, kFeaturesSeparators,
-                              base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-        return features;
-      }());
-  return brave_ad_features->contains(feature);
+base::flat_set<std::string> ParseCommandLineSwitches() {
+  const auto* const command_line = base::CommandLine::ForCurrentProcess();
+  const std::string enabled_features_switch =
+      command_line->GetSwitchValueASCII(::switches::kEnableFeatures);
+  base::flat_set<std::string> enabled_features =
+      base::SplitString(enabled_features_switch, kFeaturesSeparators,
+                        base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  const std::string disabled_features_switch =
+      command_line->GetSwitchValueASCII(::switches::kDisableFeatures);
+  base::flat_set<std::string> disabled_features =
+      base::SplitString(disabled_features_switch, kFeaturesSeparators,
+                        base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  base::flat_set<std::string> features;
+  base::ranges::set_union(enabled_features, disabled_features,
+                          std::inserter(features, features.begin()));
+  return features;
 }
 
 }  // namespace
 
 bool DidOverrideFeaturesFromCommandLine() {
-  return base::ranges::any_of(kFeatures, [](const auto* feature) {
+  const auto brave_ads_features = ParseCommandLineSwitches();
+  return base::ranges::any_of(kFeatures, [&brave_ads_features](
+                                             const auto* feature) {
     DCHECK(feature);
 
     return base::FeatureList::GetInstance()->IsFeatureOverriddenFromCommandLine(
                feature->name) ||
-           IsFeatureOverridden(feature->name);
+           brave_ads_features.contains(feature->name);
   });
 }
 

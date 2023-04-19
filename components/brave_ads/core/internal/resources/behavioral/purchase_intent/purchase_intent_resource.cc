@@ -20,11 +20,12 @@ constexpr char kResourceId[] = "bejenkminijgplakmkmcgkhjjnkelbld";
 }  // namespace
 
 PurchaseIntent::PurchaseIntent() = default;
+
 PurchaseIntent::~PurchaseIntent() = default;
 
 void PurchaseIntent::Load() {
   LoadAndParseResource(kResourceId,
-                       targeting::features::GetPurchaseIntentResourceVersion(),
+                       targeting::kPurchaseIntentResourceVersion.Get(),
                        base::BindOnce(&PurchaseIntent::OnLoadAndParseResource,
                                       weak_factory_.GetWeakPtr()));
 }

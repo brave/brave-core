@@ -17,10 +17,8 @@ using std::placeholders::_1;
 namespace ledger {
 namespace database {
 
-DatabaseMultiTables::DatabaseMultiTables(LedgerImpl* ledger) {
-  DCHECK(ledger);
-  ledger_ = ledger;
-}
+DatabaseMultiTables::DatabaseMultiTables(LedgerImpl& ledger)
+    : ledger_(ledger) {}
 
 DatabaseMultiTables::~DatabaseMultiTables() = default;
 

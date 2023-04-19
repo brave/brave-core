@@ -14,10 +14,8 @@ namespace {
 const void* const kUserDataKey = &kUserDataKey;
 }  // namespace
 
-AdsNotificationHandler::AdsNotificationHandler(Profile* profile)
-    : profile_(profile) {
-  DCHECK(profile_);
-}
+AdsNotificationHandler::AdsNotificationHandler(Profile& profile)
+    : profile_(profile) {}
 
 AdsNotificationHandler::~AdsNotificationHandler() = default;
 

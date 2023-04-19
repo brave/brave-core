@@ -16,7 +16,7 @@ namespace brave_ads::database {
 
 std::string BuildBindingParameterPlaceholder(size_t parameters_count);
 std::string BuildBindingParameterPlaceholders(size_t parameters_count,
-                                              size_t values_count);
+                                              size_t binded_parameters_count);
 
 void Bind(sql::Statement* statement,
           const mojom::DBCommandBindingInfo& binding);

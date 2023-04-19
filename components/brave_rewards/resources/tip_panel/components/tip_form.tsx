@@ -42,12 +42,8 @@ export function TipForm () {
     return sendAmount <= 0 || insufficientBalance || sendStatus === 'pending'
   }
 
-  function onConnectClick () {
-    tabOpener.openTab(urls.connectURL)
-  }
-
   function onReconnectClick () {
-    model.reconnectWallet()
+    tabOpener.openTab(state.rewardsUser.reconnectUrl)
   }
 
   function onSendClick () {
@@ -58,12 +54,24 @@ export function TipForm () {
     setSendStatus('pending')
 
     model.sendContribution(sendAmount, monthlyChecked).then(
-      scopedCallback(() => setSendStatus('sent')),
-      scopedCallback(() => setSendStatus('failed')))
+      scopedCallback((success) => {
+        setSendStatus(success ? 'sent' : 'failed')
+      }))
   }
 
   function onWeb3Click () {
-    tabOpener.openTab(state.creatorBanner.web3URL)
+    tabOpener.openTab(state.creatorBanner.web3Url)
+  }
+
+  function onShareClick () {
+    const text = formatMessage(getString('shareText'), [
+      sendAmount,
+      model.getState().creatorBanner.title
+    ]).join('')
+
+    tabOpener.openTab(
+      `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`
+    )
   }
 
   function renderSendButtonLabel () {
@@ -74,22 +82,43 @@ export function TipForm () {
     }
   }
 
+  function maybeRenderMonthlyTipNote () {
+    if (!state.monthlyContributionSet) {
+      return null
+    }
+    return (
+      <InfoBox title={getString('monthlySetTitle')}>
+        {
+          formatMessage(getString('monthlySetText'), {
+            tags: {
+              $1: (content) => (
+                <NewTabLink key='link' href={urls.settingsURL + '#monthly'}>
+                  {content}
+                </NewTabLink>
+              )
+            }
+          })
+        }
+      </InfoBox>
+    )
+  }
+
   // The following flags control form rendering and are set in `renderInfo`.
   let providerName = ''
   let sendEnabled = false
   let showBalance = true
   let needsReconnect = false
-  let showConnect = false
 
   function renderInfo () {
+    // If the user does not have a wallet provider, then for simplicity assume
+    // that this is a legacy "unconnected" user. A 2.5 or later user that is
+    // unconnected should never be shown this UI, but if somehow they are it
+    // will do no harm; a zero balance will be displayed.
     if (!state.rewardsUser.walletProvider) {
-      showBalance = false
-      showConnect = true
-      return (
-        <InfoBox title={getString('notConnectedTitle')}>
-          {getString('notConnectedText')}
-        </InfoBox>
-      )
+      if (state.creatorWallets.length > 0) {
+        sendEnabled = true
+      }
+      return maybeRenderMonthlyTipNote()
     }
 
     providerName =
@@ -104,14 +133,14 @@ export function TipForm () {
             {formatMessage(getString('reconnectText'), [providerName])}
           </div>
           {
-            state.creatorBanner.web3URL &&
+            state.creatorBanner.web3Url &&
               <div>{getString('reconnectWeb3Text')}</div>
           }
         </InfoBox>
       )
     }
 
-    if (state.creatorWallets.length === 0 && state.creatorBanner.web3URL) {
+    if (state.creatorWallets.length === 0 && state.creatorBanner.web3Url) {
       showBalance = false
       return (
         <InfoBox title={getString('web3OnlyTitle')}>
@@ -119,7 +148,7 @@ export function TipForm () {
             {formatMessage(getString('providerMismatchText'), [providerName])}
           </div>
           {
-            state.creatorBanner.web3URL &&
+            state.creatorBanner.web3Url &&
               <div>{getString('providerMismatchWeb3Text')}</div>
           }
         </InfoBox>
@@ -137,7 +166,7 @@ export function TipForm () {
             {formatMessage(getString('providerMismatchText'), [providerName])}
           </div>
           {
-            state.creatorBanner.web3URL &&
+            state.creatorBanner.web3Url &&
               <div>{getString('providerMismatchWeb3Text')}</div>
           }
         </InfoBox>
@@ -154,7 +183,7 @@ export function TipForm () {
       )
     }
 
-    if (insufficientBalance) {
+    if (insufficientBalance && state.rewardsUser.balance.hasValue()) {
       return (
         <InfoBox title={getString('insufficientBalanceTitle')} style='error'>
           {
@@ -166,29 +195,10 @@ export function TipForm () {
       )
     }
 
-    if (state.monthlyContributionSet) {
-      return (
-        <InfoBox title={getString('monthlySetTitle')}>
-          {
-            formatMessage(getString('monthlySetText'), {
-              tags: {
-                $1: (content) => (
-                  <NewTabLink key='link' href={urls.settingsURL}>
-                    {content}
-                  </NewTabLink>
-                )
-              }
-            })
-          }
-        </InfoBox>
-      )
-    }
-
-    return null
+    return maybeRenderMonthlyTipNote()
   }
 
   if (sendStatus === 'sent') {
-    const onShareClick = () => { model.shareContribution() }
     return (
       <style.root>
         <style.successCard>
@@ -258,28 +268,24 @@ export function TipForm () {
               </button>
           }
           {
-            showConnect &&
-              <button onClick={onConnectClick}>
-                {getString('connectButtonLabel')}
-              </button>
-          }
-          {
             sendEnabled &&
               <button
                 onClick={onSendClick}
                 disabled={sendButtonDisabled()}
                 className={sendStatus === 'pending' ? 'pressed' : ''}
+                data-test-id='send-button'
               >
                 {renderSendButtonLabel()}
               </button>
           }
           {
-            state.creatorBanner.web3URL &&
+            state.creatorBanner.web3Url &&
               <button onClick={onWeb3Click}>
                 {getString('web3ButtonLabel')}
               </button>
           }
         </style.buttons>
+        <style.successBackgroundPreloader />
       </style.card>
       <Terms />
     </style.root>

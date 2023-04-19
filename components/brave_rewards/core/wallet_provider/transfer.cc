@@ -14,9 +14,7 @@
 
 namespace ledger::wallet_provider {
 
-Transfer::Transfer(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+Transfer::Transfer(LedgerImpl& ledger) : ledger_(ledger) {}
 
 Transfer::~Transfer() = default;
 

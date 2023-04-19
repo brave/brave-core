@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_util.h"
@@ -21,12 +21,9 @@ constexpr int kTransferredCap = 1;
 
 bool DoesRespectCap(const AdEventList& ad_events,
                     const CreativeAdInfo& creative_ad) {
-  const base::TimeDelta time_constraint =
-      exclusion_rules::features::GetExcludeAdIfTransferredWithinTimeWindow();
-
-  return DoesRespectCampaignCap(creative_ad, ad_events,
-                                ConfirmationType::kTransferred, time_constraint,
-                                kTransferredCap);
+  return DoesRespectCampaignCap(
+      creative_ad, ad_events, ConfirmationType::kTransferred,
+      kShouldExcludeAdIfTransferredWithinTimeWindow.Get(), kTransferredCap);
 }
 
 }  // namespace
@@ -44,9 +41,9 @@ std::string TransferredExclusionRule::GetUuid(
 bool TransferredExclusionRule::ShouldExclude(
     const CreativeAdInfo& creative_ad) {
   if (!DoesRespectCap(ad_events_, creative_ad)) {
-    last_message_ = base::StringPrintf(
-        "campaignId %s has exceeded the transferred frequency cap",
-        creative_ad.campaign_id.c_str());
+    last_message_ = base::ReplaceStringPlaceholders(
+        "campaignId $1 has exceeded the transferred frequency cap",
+        {creative_ad.campaign_id}, nullptr);
 
     return true;
   }

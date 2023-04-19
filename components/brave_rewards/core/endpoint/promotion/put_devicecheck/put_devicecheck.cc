@@ -16,9 +16,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-PutDevicecheck::PutDevicecheck(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+PutDevicecheck::PutDevicecheck(LedgerImpl& ledger) : ledger_(ledger) {}
 
 PutDevicecheck::~PutDevicecheck() = default;
 

@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/split_test_exclusion_rule.h"
 
 #include "base/metrics/field_trial.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -55,10 +55,10 @@ std::string SplitTestExclusionRule::GetUuid(
 
 bool SplitTestExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
   if (!DoesRespectCap(creative_ad)) {
-    last_message_ = base::StringPrintf(
-        "creativeSetId %s excluded as not associated with an advertiser split "
+    last_message_ = base::ReplaceStringPlaceholders(
+        "creativeSetId $1 excluded as not associated with an advertiser split "
         "test group",
-        creative_ad.creative_set_id.c_str());
+        {creative_ad.creative_set_id}, nullptr);
 
     return true;
   }

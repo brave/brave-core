@@ -211,7 +211,15 @@ IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest,
   CheckPromotionStatus("Over");
 }
 
-IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, PromotionNotQuiteOver) {
+// TODO(https://github.com/brave/brave-browser/issues/29519): Test flaky on
+// master for the mac build.
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_PromotionNotQuiteOver DISABLED_PromotionNotQuiteOver
+#else
+#define MAYBE_PromotionNotQuiteOver PromotionNotQuiteOver
+#endif  // BUILDFLAG(IS_MAC)
+IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest,
+                       MAYBE_PromotionNotQuiteOver) {
   rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   rewards_service_->FetchPromotions(base::DoNothing());
   promotion_->WaitForPromotionInitialization();

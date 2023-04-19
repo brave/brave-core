@@ -21,7 +21,7 @@ const char kTableName[] = "server_publisher_banner";
 namespace ledger {
 namespace database {
 
-DatabaseServerPublisherBanner::DatabaseServerPublisherBanner(LedgerImpl* ledger)
+DatabaseServerPublisherBanner::DatabaseServerPublisherBanner(LedgerImpl& ledger)
     : DatabaseTable(ledger),
       links_(std::make_unique<DatabaseServerPublisherLinks>(ledger)) {}
 
@@ -45,8 +45,8 @@ void DatabaseServerPublisherBanner::InsertOrUpdate(
   command->type = mojom::DBCommand::Type::RUN;
   command->command = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
-      "(publisher_key, title, description, background, logo) "
-      "VALUES (?, ?, ?, ?, ?)",
+      "(publisher_key, title, description, background, logo, web3_url) "
+      "VALUES (?, ?, ?, ?, ?, ?)",
       kTableName);
 
   BindString(command.get(), 0, server_info.publisher_key);
@@ -54,6 +54,7 @@ void DatabaseServerPublisherBanner::InsertOrUpdate(
   BindString(command.get(), 2, server_info.banner->description);
   BindString(command.get(), 3, server_info.banner->background);
   BindString(command.get(), 4, server_info.banner->logo);
+  BindString(command.get(), 5, server_info.banner->web3_url);
 
   transaction->commands.push_back(std::move(command));
 
@@ -89,7 +90,7 @@ void DatabaseServerPublisherBanner::GetRecord(
   }
   auto transaction = mojom::DBTransaction::New();
   const std::string query = base::StringPrintf(
-      "SELECT title, description, background, logo "
+      "SELECT title, description, background, logo, web3_url "
       "FROM %s "
       "WHERE publisher_key=?",
       kTableName);
@@ -101,6 +102,7 @@ void DatabaseServerPublisherBanner::GetRecord(
   BindString(command.get(), 0, publisher_key);
 
   command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
                               mojom::DBCommand::RecordBindingType::STRING_TYPE,
                               mojom::DBCommand::RecordBindingType::STRING_TYPE,
                               mojom::DBCommand::RecordBindingType::STRING_TYPE};
@@ -144,6 +146,7 @@ void DatabaseServerPublisherBanner::OnGetRecord(
   banner.description = GetStringColumn(record, 1);
   banner.background = GetStringColumn(record, 2);
   banner.logo = GetStringColumn(record, 3);
+  banner.web3_url = GetStringColumn(record, 4);
 
   // Get links
   auto links_callback =

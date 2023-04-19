@@ -65,7 +65,7 @@ class BraveTabContextMenuContents : public ui::SimpleMenuModel::Delegate {
   raw_ptr<Tab> tab_ = nullptr;
   int tab_index_;
   raw_ptr<Browser> browser_ = nullptr;
-  sessions::TabRestoreService* restore_service_ = nullptr;
+  raw_ptr<sessions::TabRestoreService> restore_service_ = nullptr;
   raw_ptr<BraveBrowserTabStripController> controller_ = nullptr;
 };
 

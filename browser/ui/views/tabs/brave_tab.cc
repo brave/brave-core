@@ -22,6 +22,8 @@
 #include "ui/compositor/paint_recorder.h"
 #include "ui/gfx/favicon_size.h"
 #include "ui/gfx/skia_paint_util.h"
+#include "ui/views/animation/ink_drop.h"
+#include "ui/views/view_class_properties.h"
 
 namespace {
 
@@ -178,13 +180,37 @@ void BraveTab::UpdateIconVisibility() {
   }
 }
 
+void BraveTab::OnLayerBoundsChanged(const gfx::Rect& old_bounds,
+                                    ui::PropertyChangeReason reason) {
+  Tab::OnLayerBoundsChanged(old_bounds, reason);
+
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
+    return;
+  }
+
+  if (shadow_layer_ && shadow_layer_->parent() &&
+      shadow_layer_->parent() == layer()->parent()) {
+    LayoutShadowLayer();
+  }
+}
+
 void BraveTab::Layout() {
   Tab::Layout();
   if (IsAtMinWidthForVerticalTabStrip()) {
     if (showing_close_button_) {
       close_button_->SetX(GetLocalBounds().CenterPoint().x() -
                           (close_button_->width() / 2));
-      close_button_->SetButtonPadding({});
+      gfx::Insets* current_padding =
+          close_button_->GetProperty(views::kInternalPaddingKey);
+      DCHECK(current_padding);
+
+      // Use the same padding for all sides.
+      close_button_->SetButtonPadding(gfx::Insets(current_padding->left()));
+
+      // In order to reset ink drop bounds based on new padding.
+      auto* ink_drop = views::InkDrop::Get(close_button_)->GetInkDrop();
+      DCHECK(ink_drop);
+      ink_drop->HostSizeChanged(close_button_->size());
     }
   }
 }
@@ -209,14 +235,6 @@ void BraveTab::ReorderChildLayers(ui::Layer* parent_layer) {
 
   DCHECK_EQ(shadow_layer_->parent(), layer()->parent());
   layer()->parent()->StackBelow(shadow_layer_.get(), layer());
-}
-
-void BraveTab::OnBoundsChanged(const gfx::Rect& previous_bounds) {
-  Tab::OnBoundsChanged(previous_bounds);
-
-  if (shadow_layer_ && shadow_layer_->parent()) {
-    LayoutShadowLayer();
-  }
 }
 
 void BraveTab::MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,

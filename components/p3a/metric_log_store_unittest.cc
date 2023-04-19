@@ -46,7 +46,7 @@ class P3AMetricLogStoreTest : public testing::Test,
   }
 
   void SetUpLogStore() {
-    log_store = std::make_unique<MetricLogStore>(this, &local_state, false,
+    log_store = std::make_unique<MetricLogStore>(*this, local_state, false,
                                                  MetricLogType::kTypical);
   }
 

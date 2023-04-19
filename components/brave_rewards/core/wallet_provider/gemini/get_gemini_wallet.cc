@@ -11,7 +11,7 @@ using ledger::wallet_provider::GetExternalWallet;
 
 namespace ledger::gemini {
 
-GetGeminiWallet::GetGeminiWallet(LedgerImpl* ledger)
+GetGeminiWallet::GetGeminiWallet(LedgerImpl& ledger)
     : GetExternalWallet(ledger) {}
 
 GetGeminiWallet::~GetGeminiWallet() = default;

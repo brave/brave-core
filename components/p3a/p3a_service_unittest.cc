@@ -80,7 +80,7 @@ class P3AServiceTest : public testing::Test {
 
   void SetUpP3AService() {
     p3a_service_ = scoped_refptr(new P3AService(
-        &local_state_, "release", "2049-01-01", P3AConfig(config_)));
+        local_state_, "release", "2049-01-01", P3AConfig(config_)));
 
     p3a_service_->DisableStarAttestationForTesting();
     p3a_service_->Init(shared_url_loader_factory_);
@@ -276,7 +276,7 @@ TEST_F(P3AServiceTest, UpdateLogsAndSendSlow) {
     task_environment_.RunUntilIdle();
   }
 
-  task_environment_.FastForwardBy(base::Seconds(kUploadIntervalSeconds * 200));
+  task_environment_.FastForwardBy(base::Seconds(kUploadIntervalSeconds * 400));
 
   EXPECT_EQ(p3a_json_sent_metrics_.size(), 2U);
   EXPECT_EQ(p2a_json_sent_metrics_.size(), 0U);
@@ -292,7 +292,7 @@ TEST_F(P3AServiceTest, UpdateLogsAndSendSlow) {
 
   // Fast forward to the first of the next month
   task_environment_.FastForwardBy(base::Days(15) +
-                                  base::Seconds(kUploadIntervalSeconds * 200));
+                                  base::Seconds(kUploadIntervalSeconds * 400));
 
   EXPECT_EQ(p3a_json_sent_metrics_.size(), 2U);
   EXPECT_EQ(p2a_json_sent_metrics_.size(), 0U);

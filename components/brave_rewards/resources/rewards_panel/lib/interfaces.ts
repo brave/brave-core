@@ -32,6 +32,7 @@ export interface EarningsInfo {
 export interface PublisherInfo {
   id: string
   name: string
+  verified: boolean
   icon: string
   platform: PublisherPlatform | null
   attentionScore: number
@@ -107,8 +108,6 @@ export interface HostState {
 
 export type HostListener = (state: HostState) => void
 
-export type MonthlyTipAction = 'update' | 'cancel'
-
 export interface Host {
   state: HostState
   addListener: (callback: HostListener) => () => void
@@ -120,7 +119,6 @@ export interface Host {
   setAdsEnabled: (adsEnabled: boolean) => void
   setAdsPerHour: (adsPerHour: number) => void
   sendTip: () => void
-  handleMonthlyTipAction: (action: MonthlyTipAction) => void
   handleExternalWalletAction: (action: ExternalWalletAction) => void
   handleNotificationAction: (action: NotificationAction) => void
   dismissNotification: (notification: Notification) => void

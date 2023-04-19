@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_INLINE_CONTENT_AD_SERVING_FEATURES_UNITTEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_INLINE_CONTENT_AD_SERVING_FEATURES_UNITTEST_UTIL_H_
 
-namespace brave_ads::inline_content_ads::features {
+namespace brave_ads::inline_content_ads {
 
 void ForceServingVersion(int version);
 
-}  // namespace brave_ads::inline_content_ads::features
+}  // namespace brave_ads::inline_content_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_INLINE_CONTENT_AD_SERVING_FEATURES_UNITTEST_UTIL_H_

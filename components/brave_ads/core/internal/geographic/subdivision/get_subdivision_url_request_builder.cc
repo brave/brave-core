@@ -7,24 +7,23 @@
 
 #include <string>
 
-#include "base/strings/stringprintf.h"
+#include "base/strings/strcat.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision/get_subdivision_url_request_builder_constants.h"
 #include "url/gurl.h"
 
-namespace brave_ads::geographic {
+namespace brave_ads {
 
 namespace {
 
 GURL BuildUrl() {
   const std::string spec =
-      base::StringPrintf("%s/v1/getstate", GetGeoUrlHost().c_str());
+      base::StrCat({GetGeoUrlHost(), kSubdivisionTargetingUrlPath});
   return GURL(spec);
 }
 
 }  // namespace
-
-// GET /v1/getstate
 
 mojom::UrlRequestInfoPtr GetSubdivisionUrlRequestBuilder::Build() {
   mojom::UrlRequestInfoPtr url_request = mojom::UrlRequestInfo::New();
@@ -34,4 +33,4 @@ mojom::UrlRequestInfoPtr GetSubdivisionUrlRequestBuilder::Build() {
   return url_request;
 }
 
-}  // namespace brave_ads::geographic
+}  // namespace brave_ads

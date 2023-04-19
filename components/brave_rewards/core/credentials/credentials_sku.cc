@@ -70,11 +70,11 @@ std::string ConvertItemTypeToString(const std::string& type) {
 namespace ledger {
 namespace credential {
 
-CredentialsSKU::CredentialsSKU(LedgerImpl* ledger)
+CredentialsSKU::CredentialsSKU(LedgerImpl& ledger)
     : ledger_(ledger),
       common_(std::make_unique<CredentialsCommon>(ledger)),
       payment_server_(std::make_unique<endpoint::PaymentServer>(ledger)) {
-  DCHECK(ledger_ && common_);
+  DCHECK(common_);
 }
 
 CredentialsSKU::~CredentialsSKU() = default;

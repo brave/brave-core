@@ -154,7 +154,7 @@ OnionLocationView::OnionLocationView(Profile* profile) {
   SetLayoutManager(std::move(vertical_container_layout));
 
   button_ = new OnionLocationButtonView(profile);
-  AddChildView(button_);
+  AddChildView(button_.get());
 }
 
 OnionLocationView::~OnionLocationView() = default;
@@ -168,6 +168,6 @@ void OnionLocationView::Update(content::WebContents* web_contents,
   if (!helper)
     return;
   SetVisible(helper->should_show_icon() && show_page_actions);
-  reinterpret_cast<OnionLocationButtonView*>(button_)->SetOnionLocation(
-      helper->onion_location());
+  reinterpret_cast<OnionLocationButtonView*>(button_.get())
+      ->SetOnionLocation(helper->onion_location());
 }

@@ -12,17 +12,13 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/ads_callback.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_observer.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/new_tab_page_ad_serving_observer.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_delegate.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/new_tab_page_ad_serving_delegate.h"
 
 namespace brave_ads {
 
-namespace geographic {
-class SubdivisionTargeting;
-}  // namespace geographic
-
 namespace new_tab_page_ads {
-class EventHandler;
 class Serving;
 }  // namespace new_tab_page_ads
 
@@ -32,16 +28,16 @@ class AntiTargeting;
 
 class Account;
 class Transfer;
+class SubdivisionTargeting;
 struct NewTabPageAdInfo;
 
-class NewTabPageAdHandler final : public new_tab_page_ads::EventHandlerObserver,
-                                  public new_tab_page_ads::ServingObserver {
+class NewTabPageAdHandler final : public new_tab_page_ads::EventHandlerDelegate,
+                                  public new_tab_page_ads::ServingDelegate {
  public:
-  NewTabPageAdHandler(
-      Account* account,
-      Transfer* transfer,
-      const geographic::SubdivisionTargeting& subdivision_targeting,
-      const resource::AntiTargeting& anti_targeting_resource);
+  NewTabPageAdHandler(Account* account,
+                      Transfer* transfer,
+                      const SubdivisionTargeting& subdivision_targeting,
+                      const resource::AntiTargeting& anti_targeting_resource);
 
   NewTabPageAdHandler(const NewTabPageAdHandler&) = delete;
   NewTabPageAdHandler& operator=(const NewTabPageAdHandler&) = delete;
@@ -58,17 +54,17 @@ class NewTabPageAdHandler final : public new_tab_page_ads::EventHandlerObserver,
                     mojom::NewTabPageAdEventType event_type);
 
  private:
-  // new_tab_page_ads::ServingObserver:
+  // new_tab_page_ads::ServingDelegate:
   void OnOpportunityAroseToServeNewTabPageAd(
       const SegmentList& segments) override;
   void OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) override;
 
-  // new_tab_page_ads::EventHandlerObserver:
+  // new_tab_page_ads::EventHandlerDelegate:
   void OnNewTabPageAdServed(const NewTabPageAdInfo& ad) override;
   void OnNewTabPageAdViewed(const NewTabPageAdInfo& ad) override;
   void OnNewTabPageAdClicked(const NewTabPageAdInfo& ad) override;
 
-  std::unique_ptr<new_tab_page_ads::EventHandler> event_handler_;
+  new_tab_page_ads::EventHandler event_handler_;
 
   std::unique_ptr<new_tab_page_ads::Serving> serving_;
 

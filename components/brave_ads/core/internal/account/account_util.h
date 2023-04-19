@@ -10,7 +10,7 @@
 
 namespace brave_ads {
 
-using ResetRewardsCallback = base::OnceCallback<void(const bool)>;
+using ResetRewardsCallback = base::OnceCallback<void(bool success)>;
 
 bool ShouldRewardUser();
 

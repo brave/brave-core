@@ -5,27 +5,12 @@
 
 #include "brave/components/brave_ads/core/internal/account/account_features.h"
 
-#include "base/metrics/field_trial_params.h"
+namespace brave_ads {
 
-namespace brave_ads::features {
-
-namespace {
-
-constexpr char kNextPaymentDayFieldTrialParamName[] = "next_payment_day";
-constexpr int kNextPaymentDayDefaultValue = 7;
-
-}  // namespace
-
-BASE_FEATURE(kAccount, "Account", base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kAccountFeature, "Account", base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsAccountEnabled() {
-  return base::FeatureList::IsEnabled(kAccount);
+  return base::FeatureList::IsEnabled(kAccountFeature);
 }
 
-int GetNextPaymentDay() {
-  return GetFieldTrialParamByFeatureAsInt(kAccount,
-                                          kNextPaymentDayFieldTrialParamName,
-                                          kNextPaymentDayDefaultValue);
-}
-
-}  // namespace brave_ads::features
+}  // namespace brave_ads

@@ -51,7 +51,7 @@ TEST_F(BatAdsNotificationAdServingUtilTest, SetServeAdAt) {
 TEST_F(BatAdsNotificationAdServingUtilTest,
        CalculateDelayBeforeServingTheFirstAd) {
   // Arrange
-  AdsClientHelper::GetInstance()->ClearPref(prefs::kServeAdAt);
+  ads_client_mock_->ClearPref(prefs::kServeAdAt);
 
   // Act
 

@@ -60,11 +60,11 @@ class ReaderModeBubble : public SpeedreaderBubbleView,
   void OnButtonPressed(const ui::Event& event);
   void OnLinkClicked(const ui::Event& event);
 
-  raw_ptr<SpeedreaderTabHelper> tab_helper_ = nullptr;  // weak.
+  raw_ptr<SpeedreaderTabHelper> tab_helper_ = nullptr;
 
-  views::Label* heading_label_ = nullptr;              // weak.
-  views::StyledLabel* global_toggle_label_ = nullptr;  // weak.
-  ReaderButton* enable_speedreader_button_ = nullptr;  // weak.
+  raw_ptr<views::Label> heading_label_ = nullptr;
+  raw_ptr<views::StyledLabel> global_toggle_label_ = nullptr;
+  raw_ptr<ReaderButton> enable_speedreader_button_ = nullptr;
 };
 
 }  // namespace speedreader

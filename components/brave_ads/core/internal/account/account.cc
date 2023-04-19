@@ -188,7 +188,7 @@ void Account::ProcessDeposit(const std::string& creative_instance_id,
                              const std::string& segment,
                              const ConfirmationType& confirmation_type,
                              const double value) const {
-  transactions::Add(
+  AddTransaction(
       creative_instance_id, segment, value, ad_type, confirmation_type,
       base::BindOnce(&Account::OnDepositProcessed, weak_factory_.GetWeakPtr(),
                      creative_instance_id, ad_type, confirmation_type));

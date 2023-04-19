@@ -11,6 +11,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/gtest_prod_util.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/legacy/media/helper.h"
 
@@ -22,7 +23,7 @@ namespace braveledger_media {
 
 class YouTube {
  public:
-  explicit YouTube(ledger::LedgerImpl* ledger);
+  explicit YouTube(ledger::LedgerImpl& ledger);
 
   ~YouTube();
 
@@ -149,7 +150,7 @@ class YouTube {
                           const std::string& media_key,
                           ledger::mojom::UrlResponsePtr response);
 
-  ledger::LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<ledger::LedgerImpl> ledger_;
 
   // For testing purposes
   friend class MediaYouTubeTest;

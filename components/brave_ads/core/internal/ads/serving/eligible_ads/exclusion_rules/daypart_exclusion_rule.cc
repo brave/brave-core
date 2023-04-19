@@ -7,7 +7,7 @@
 
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/calendar/calendar_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
@@ -56,9 +56,9 @@ std::string DaypartExclusionRule::GetUuid(
 
 bool DaypartExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
   if (!DoesRespectCap(creative_ad)) {
-    last_message_ = base::StringPrintf(
-        "creativeSetId %s excluded as not within a scheduled time slot",
-        creative_ad.creative_set_id.c_str());
+    last_message_ = base::ReplaceStringPlaceholders(
+        "creativeSetId $1 excluded as not within a scheduled time slot",
+        {creative_ad.creative_set_id}, nullptr);
 
     return true;
   }

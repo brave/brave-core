@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // POST /v2/attestations/safetynet
@@ -42,7 +43,7 @@ using PostSafetynetCallback =
 
 class PostSafetynet {
  public:
-  explicit PostSafetynet(LedgerImpl* ledger);
+  explicit PostSafetynet(LedgerImpl& ledger);
   ~PostSafetynet();
 
   void Request(PostSafetynetCallback callback);
@@ -59,7 +60,7 @@ class PostSafetynet {
   void OnRequest(PostSafetynetCallback callback,
                  mojom::UrlResponsePtr response);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace promotion

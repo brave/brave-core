@@ -25,7 +25,9 @@ class BatAdsCreativeInlineContentAdsDatabaseTableIntegrationTest
 
   void SetUpMocks() override {
     const URLResponseMap url_responses = {
-        {"/v9/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
+        {// Fetch catalog request
+         "/v9/catalog",
+         {{net::HTTP_OK, /*response_body*/ "/catalog.json"}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
   }
 };
@@ -37,8 +39,8 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableIntegrationTest,
   // Act
 
   // Assert
-  const database::table::CreativeInlineContentAds creative_ads;
-  creative_ads.GetForSegmentsAndDimensions(
+  const database::table::CreativeInlineContentAds database_table;
+  database_table.GetForSegmentsAndDimensions(
       /*segments*/ {"technology & computing"}, /*dimensions*/ "200x100",
       base::BindOnce([](const bool success, const SegmentList& /*segments*/,
                         const CreativeInlineContentAdList& creative_ads) {
@@ -54,8 +56,8 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableIntegrationTest,
   // Act
 
   // Assert
-  const database::table::CreativeInlineContentAds creative_ads;
-  creative_ads.GetForDimensions(
+  const database::table::CreativeInlineContentAds database_table;
+  database_table.GetForDimensions(
       "200x100",
       base::BindOnce([](const bool success,
                         const CreativeInlineContentAdList& creative_ads) {

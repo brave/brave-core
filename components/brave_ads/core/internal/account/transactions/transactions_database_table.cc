@@ -11,7 +11,7 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
@@ -70,16 +70,17 @@ TransactionInfo GetFromRecord(mojom::DBRecordInfo* record) {
 }
 
 void OnGetTransactions(GetTransactionsCallback callback,
-                       mojom::DBCommandResponseInfoPtr response) {
-  if (!response || response->status !=
-                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+                       mojom::DBCommandResponseInfoPtr command_response) {
+  if (!command_response ||
+      command_response->status !=
+          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get transactions");
     return std::move(callback).Run(/*success*/ false, /*transactions*/ {});
   }
 
   TransactionList transactions;
 
-  for (const auto& record : response->result->get_records()) {
+  for (const auto& record : command_response->result->get_records()) {
     const TransactionInfo transaction = GetFromRecord(record.get());
     transactions.push_back(transaction);
   }
@@ -90,7 +91,7 @@ void OnGetTransactions(GetTransactionsCallback callback,
 void MigrateToV18(mojom::DBTransactionInfo* transaction) {
   DCHECK(transaction);
 
-  const std::string query = base::StringPrintf(
+  const std::string query =
       "CREATE TABLE IF NOT EXISTS transactions "
       "(id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE, "
       "created_at TIMESTAMP NOT NULL, "
@@ -98,7 +99,7 @@ void MigrateToV18(mojom::DBTransactionInfo* transaction) {
       "value DOUBLE NOT NULL, "
       "ad_type TEXT NOT NULL, "
       "confirmation_type TEXT NOT NULL, "
-      "reconciled_at TIMESTAMP)");
+      "reconciled_at TIMESTAMP)";
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -112,11 +113,9 @@ void MigrateToV18(mojom::DBTransactionInfo* transaction) {
 void MigrateToV26(mojom::DBTransactionInfo* transaction) {
   DCHECK(transaction);
 
-  const std::string temp_table_name = "transactions_temp";
-
   // Create a temporary table with new |segment| column.
-  const std::string query = base::StringPrintf(
-      "CREATE TABLE %s "
+  const std::string query =
+      "CREATE TABLE transactions_temp "
       "(id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE, "
       "created_at TIMESTAMP NOT NULL, "
       "creative_instance_id TEXT, "
@@ -124,8 +123,7 @@ void MigrateToV26(mojom::DBTransactionInfo* transaction) {
       "segment TEXT, "
       "ad_type TEXT NOT NULL, "
       "confirmation_type TEXT NOT NULL, "
-      "reconciled_at TIMESTAMP)",
-      temp_table_name.c_str());
+      "reconciled_at TIMESTAMP)";
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -138,11 +136,11 @@ void MigrateToV26(mojom::DBTransactionInfo* transaction) {
       "id",      "created_at",        "creative_instance_id", "value",
       "ad_type", "confirmation_type", "reconciled_at"};
 
-  CopyTableColumns(transaction, "transactions", temp_table_name, columns,
+  CopyTableColumns(transaction, "transactions", "transactions_temp", columns,
                    /*should_drop*/ true);
 
   // Rename temporary table.
-  RenameTable(transaction, temp_table_name, "transactions");
+  RenameTable(transaction, "transactions_temp", "transactions");
 
   CreateTableIndex(transaction, "transactions", "id");
 }
@@ -164,18 +162,10 @@ void Transactions::Save(const TransactionList& transactions,
 }
 
 void Transactions::GetAll(GetTransactionsCallback callback) const {
-  const std::string query = base::StringPrintf(
-      "SELECT "
-      "id, "
-      "created_at, "
-      "creative_instance_id, "
-      "segment, "
-      "value, "
-      "ad_type, "
-      "confirmation_type, "
-      "reconciled_at "
-      "FROM %s",
-      GetTableName().c_str());
+  const std::string query = base::ReplaceStringPlaceholders(
+      "SELECT id, created_at, creative_instance_id, segment, value, ad_type, "
+      "confirmation_type, reconciled_at FROM $1",
+      {GetTableName()}, nullptr);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
@@ -205,19 +195,13 @@ void Transactions::GetAll(GetTransactionsCallback callback) const {
 void Transactions::GetForDateRange(const base::Time from_time,
                                    const base::Time to_time,
                                    GetTransactionsCallback callback) const {
-  const std::string query = base::StringPrintf(
-      "SELECT "
-      "id, "
-      "created_at, "
-      "creative_instance_id, "
-      "segment, "
-      "value, "
-      "ad_type, "
-      "confirmation_type, "
-      "reconciled_at "
-      "FROM %s "
-      "WHERE created_at BETWEEN %f and %f ",
-      GetTableName().c_str(), from_time.ToDoubleT(), to_time.ToDoubleT());
+  const std::string query = base::ReplaceStringPlaceholders(
+      "SELECT id, created_at, creative_instance_id, segment, value, ad_type, "
+      "confirmation_type, reconciled_at FROM $1 WHERE created_at BETWEEN $2 "
+      "and $3",
+      {GetTableName(), TimeAsTimestampString(from_time),
+       TimeAsTimestampString(to_time)},
+      nullptr);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
@@ -253,14 +237,13 @@ void Transactions::Update(
   }
   transaction_ids.emplace_back(rewards::kMigrationUnreconciledTransactionId);
 
-  const std::string query = base::StringPrintf(
-      "UPDATE %s "
-      "SET reconciled_at = %s "
-      "WHERE reconciled_at == 0 "
-      "AND (id IN %s OR creative_instance_id IN %s)",
-      GetTableName().c_str(), TimeAsTimestampString(base::Time::Now()).c_str(),
-      BuildBindingParameterPlaceholder(transaction_ids.size()).c_str(),
-      BuildBindingParameterPlaceholder(1).c_str());
+  const std::string query = base::ReplaceStringPlaceholders(
+      "UPDATE $1 SET reconciled_at = $2 WHERE reconciled_at == 0 AND (id IN $3 "
+      "OR creative_instance_id IN $4)",
+      {GetTableName(), TimeAsTimestampString(base::Time::Now()),
+       BuildBindingParameterPlaceholder(transaction_ids.size()),
+       BuildBindingParameterPlaceholder(1)},
+      nullptr);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
@@ -341,20 +324,14 @@ std::string Transactions::BuildInsertOrUpdateQuery(
     const TransactionList& transactions) const {
   DCHECK(command);
 
-  const int count = BindParameters(command, transactions);
+  const int binded_parameters_count = BindParameters(command, transactions);
 
-  return base::StringPrintf(
-      "INSERT OR REPLACE INTO %s "
-      "(id, "
-      "created_at, "
-      "creative_instance_id, "
-      "segment, "
-      "value, "
-      "ad_type, "
-      "confirmation_type, "
-      "reconciled_at) VALUES %s",
-      GetTableName().c_str(),
-      BuildBindingParameterPlaceholders(8, count).c_str());
+  return base::ReplaceStringPlaceholders(
+      "INSERT OR REPLACE INTO $1 (id, created_at, creative_instance_id, "
+      "segment, value, ad_type, confirmation_type, reconciled_at) VALUES $2",
+      {GetTableName(), BuildBindingParameterPlaceholders(
+                           /*parameters_count*/ 8, binded_parameters_count)},
+      nullptr);
 }
 
 }  // namespace brave_ads::database::table

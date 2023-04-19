@@ -18,11 +18,9 @@
 namespace ledger {
 namespace promotion {
 
-PromotionTransfer::PromotionTransfer(LedgerImpl* ledger)
+PromotionTransfer::PromotionTransfer(LedgerImpl& ledger)
     : ledger_(ledger),
-      credentials_(
-          std::make_unique<credential::CredentialsPromotion>(ledger_)) {
-  DCHECK(ledger_);
+      credentials_(std::make_unique<credential::CredentialsPromotion>(ledger)) {
 }
 
 PromotionTransfer::~PromotionTransfer() = default;

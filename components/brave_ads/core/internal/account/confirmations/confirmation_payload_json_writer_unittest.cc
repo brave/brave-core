@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_payload_json_writer.h"
 
+#include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
@@ -24,7 +25,7 @@ class BatAdsConfirmationPayloadJsonWriterTest : public UnitTestBase {};
 
 TEST_F(BatAdsConfirmationPayloadJsonWriterTest, WriteJson) {
   // Arrange
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);

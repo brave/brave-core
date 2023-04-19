@@ -25,7 +25,7 @@ const char kCardName[] = "Brave Browser";
 
 class UpholdCard {
  public:
-  explicit UpholdCard(LedgerImpl*);
+  explicit UpholdCard(LedgerImpl& ledger);
 
   ~UpholdCard();
 

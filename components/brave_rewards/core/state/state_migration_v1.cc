@@ -16,13 +16,13 @@ using std::placeholders::_1;
 namespace ledger {
 namespace state {
 
-StateMigrationV1::StateMigrationV1(LedgerImpl* ledger) : ledger_(ledger) {}
+StateMigrationV1::StateMigrationV1(LedgerImpl& ledger) : ledger_(ledger) {}
 
 StateMigrationV1::~StateMigrationV1() = default;
 
 void StateMigrationV1::Migrate(ledger::LegacyResultCallback callback) {
   legacy_publisher_ =
-      std::make_unique<publisher::LegacyPublisherState>(ledger_);
+      std::make_unique<publisher::LegacyPublisherState>(*ledger_);
 
   auto load_callback =
       std::bind(&StateMigrationV1::OnLoadState, this, _1, callback);
@@ -71,10 +71,7 @@ void StateMigrationV1::OnLoadState(mojom::Result result,
 
     ledger_->database()->SaveBalanceReportInfoList(std::move(reports),
                                                    save_callback);
-    return;
   }
-
-  SaveProcessedPublishers(callback);
 }
 
 void StateMigrationV1::BalanceReportsSaved(
@@ -85,28 +82,6 @@ void StateMigrationV1::BalanceReportsSaved(
     callback(result);
     return;
   }
-
-  SaveProcessedPublishers(callback);
-}
-
-void StateMigrationV1::SaveProcessedPublishers(
-    ledger::LegacyResultCallback callback) {
-  auto save_callback =
-      std::bind(&StateMigrationV1::ProcessedPublisherSaved, this, _1, callback);
-
-  ledger_->database()->SaveProcessedPublisherList(
-      legacy_publisher_->GetAlreadyProcessedPublishers(), save_callback);
-}
-
-void StateMigrationV1::ProcessedPublisherSaved(
-    mojom::Result result,
-    ledger::LegacyResultCallback callback) {
-  if (result != mojom::Result::LEDGER_OK) {
-    BLOG(0, "Processed publisher save failed");
-    callback(result);
-    return;
-  }
-
   callback(mojom::Result::LEDGER_OK);
 }
 

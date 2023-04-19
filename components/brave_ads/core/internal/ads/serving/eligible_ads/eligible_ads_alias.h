@@ -10,7 +10,7 @@
 
 namespace brave_ads {
 
-using AdPredictorWeightList = std::vector<double>;
+using AdPredictorWeightList = std::vector</*ad_predictor_weight*/ double>;
 
 }  // namespace brave_ads
 

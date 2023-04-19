@@ -12,9 +12,7 @@
 namespace ledger {
 namespace state {
 
-StateMigrationV4::StateMigrationV4(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+StateMigrationV4::StateMigrationV4(LedgerImpl& ledger) : ledger_(ledger) {}
 
 StateMigrationV4::~StateMigrationV4() = default;
 

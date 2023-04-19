@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -103,7 +104,7 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
   PrefChangeRegistrar local_state_change_registrar_;
   bool was_widevine_enabled_ = false;
 #endif
-  Profile* profile_ = nullptr;
+  raw_ptr<Profile> profile_ = nullptr;
   PrefChangeRegistrar pref_change_registrar_;
 #if BUILDFLAG(ENABLE_IPFS)
   base::ScopedObservation<ipfs::IpfsService, ipfs::IpfsServiceObserver>

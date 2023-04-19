@@ -16,7 +16,7 @@ class BraveWalletPermissionPromptImpl : public permissions::PermissionPrompt {
  public:
   BraveWalletPermissionPromptImpl(Browser* browser,
                                   content::WebContents* web_contents,
-                                  Delegate* delegate);
+                                  Delegate& delegate);
   ~BraveWalletPermissionPromptImpl() override;
 
   BraveWalletPermissionPromptImpl(const BraveWalletPermissionPromptImpl&) =
@@ -33,8 +33,8 @@ class BraveWalletPermissionPromptImpl : public permissions::PermissionPrompt {
  private:
   void ShowBubble();
 
-  raw_ptr<content::WebContents> web_contents_ = nullptr;
-  permissions::PermissionPrompt::Delegate* const delegate_;
+  const raw_ptr<content::WebContents> web_contents_ = nullptr;
+  raw_ref<permissions::PermissionPrompt::Delegate> delegate_;
   base::TimeTicks permission_requested_time_;
 };
 

@@ -15,7 +15,7 @@
 #include "base/functional/bind.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_piece.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_features.h"
@@ -181,21 +181,21 @@ TEST_P(BatAdsTopSegmentsTest, GetSegments) {
     base::FieldTrialParams params;
     params["epsilon_value"] =
         "0.0";  // Set bandit to always exploit for deterministic execution
-    enabled_features.emplace_back(features::kEpsilonGreedyBandit, params);
+    enabled_features.emplace_back(kEpsilonGreedyBanditFeatures, params);
   } else {
-    disabled_features.emplace_back(features::kEpsilonGreedyBandit);
+    disabled_features.emplace_back(kEpsilonGreedyBanditFeatures);
   }
 
   if (param.purchase_intent_enabled) {
-    enabled_features.push_back({features::kPurchaseIntent, {}});
+    enabled_features.push_back({kPurchaseIntentFeature, {}});
   } else {
-    disabled_features.emplace_back(features::kPurchaseIntent);
+    disabled_features.emplace_back(kPurchaseIntentFeature);
   }
 
   if (param.text_classification_enabled) {
-    enabled_features.push_back({features::kTextClassification, {}});
+    enabled_features.push_back({kTextClassificationFeature, {}});
   } else {
-    disabled_features.emplace_back(features::kTextClassification);
+    disabled_features.emplace_back(kTextClassificationFeature);
   }
 
   base::test::ScopedFeatureList scoped_feature_list;
@@ -234,10 +234,11 @@ static std::string GetTestCaseName(
                                                ? "PreviouslyProcessed"
                                                : "NeverProcessed";
 
-  return base::StringPrintf(
-      "For%s%s%s%s", epsilon_greedy_bandits_enabled.c_str(),
-      purchase_intent_enabled.c_str(), text_classification_enabled.c_str(),
-      previously_processed.c_str());
+  return base::ReplaceStringPlaceholders(
+      "For$1$2$3$4",
+      {epsilon_greedy_bandits_enabled, purchase_intent_enabled,
+       text_classification_enabled, previously_processed},
+      nullptr);
 }
 
 INSTANTIATE_TEST_SUITE_P(BatAdsTopSegmentsTest,
@@ -259,9 +260,9 @@ TEST_F(BatAdsTopSegmentsTest, GetSegmentsForAllModelsIfPreviouslyProcessed) {
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(
-      {{features::kPurchaseIntent, /*default params*/ {}},
-       {features::kEpsilonGreedyBandit, params},
-       {features::kTextClassification, /*default params*/ {}}},
+      {{kPurchaseIntentFeature, /*default params*/ {}},
+       {kEpsilonGreedyBanditFeatures, params},
+       {kTextClassificationFeature, /*default params*/ {}}},
       {});
 
   // Act

@@ -22,7 +22,7 @@ const char kTableName[] = "media_publisher_info";
 
 }  // namespace
 
-DatabaseMediaPublisherInfo::DatabaseMediaPublisherInfo(LedgerImpl* ledger)
+DatabaseMediaPublisherInfo::DatabaseMediaPublisherInfo(LedgerImpl& ledger)
     : DatabaseTable(ledger) {}
 
 DatabaseMediaPublisherInfo::~DatabaseMediaPublisherInfo() = default;

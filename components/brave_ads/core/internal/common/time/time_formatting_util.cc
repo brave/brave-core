@@ -6,8 +6,9 @@
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 
 #include "base/i18n/time_formatting.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 
@@ -19,8 +20,8 @@ std::string LongFriendlyDateAndTime(const base::Time time,
       base::TimeFormatFriendlyDateAndTime(time);
 
   // Show date and time as "on Tuesday, 5 May 2020 at 2:44:30 PM" if over 1 day
-  return base::StringPrintf("%s%s", use_sentence_style ? "on " : "",
-                            base::UTF16ToUTF8(friendly_date_and_time).c_str());
+  return base::StrCat({use_sentence_style ? "on " : "",
+                       base::UTF16ToUTF8(friendly_date_and_time)});
 }
 
 std::string FriendlyDateAndTime(const base::Time time,
@@ -44,9 +45,11 @@ std::string FriendlyDateAndTime(const base::Time time,
   const std::u16string time_of_day =
       base::TimeFormatTimeOfDayWithMilliseconds(time);
 
-  return base::StringPrintf("%s%s at %s", use_sentence_style ? "in " : "",
-                            base::UTF16ToUTF8(time_duration).c_str(),
-                            base::UTF16ToUTF8(time_of_day).c_str());
+  return base::ReplaceStringPlaceholders(
+      "$1$2 at $3",
+      {use_sentence_style ? "in " : "", base::UTF16ToUTF8(time_duration),
+       base::UTF16ToUTF8(time_of_day)},
+      nullptr);
 }
 
 std::string TimeAsTimestampString(const base::Time time) {

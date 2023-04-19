@@ -459,11 +459,11 @@ double GetRewardsPopupMonthlyTipValue(content::WebContents* context) {
   if (!context)
     return 0;
 
-  WaitForElementToAppear(context, "[data-test-id=monthly-tip-actions-button]");
+  WaitForElementToAppear(context, "[data-test-id=monthly-tip-button]");
   std::string script = R"_(
     new Promise(resolve => setTimeout(resolve, 0)).then(() => {
       const elem = document.querySelector(
-        '[data-test-id=monthly-tip-actions-button]')
+        '[data-test-id=monthly-tip-button]')
       return elem && parseFloat(elem.innerText) || 0
     })
   )_";

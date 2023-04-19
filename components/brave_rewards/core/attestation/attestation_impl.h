@@ -18,7 +18,7 @@ namespace attestation {
 
 class AttestationImpl : public Attestation {
  public:
-  explicit AttestationImpl(LedgerImpl* ledger);
+  explicit AttestationImpl(LedgerImpl& ledger);
   ~AttestationImpl() override;
 
   void Start(const std::string& payload, StartCallback callback) override;

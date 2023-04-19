@@ -28,7 +28,7 @@ class GetPublisherTest : public BATLedgerTest {
     base::RunLoop run_loop;
     mojom::Result result;
 
-    GetPublisher(GetLedgerImpl())
+    GetPublisher(*GetLedgerImpl())
         .Request(id, prefix,
                  [&run_loop, &result, info](
                      mojom::Result request_result,

@@ -18,7 +18,7 @@ namespace endpoint {
 
 class RewardsServer {
  public:
-  explicit RewardsServer(LedgerImpl* ledger);
+  explicit RewardsServer(LedgerImpl& ledger);
   ~RewardsServer();
 
   rewards::GetPrefixList* get_prefix_list() const;

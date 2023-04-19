@@ -30,8 +30,8 @@ static_library("crypto") {
 
   deps = [
     "//base",
+    "//brave/third_party/bip39wally-core-native:bip39wally-core",
     "//brave/vendor/bat-native-tweetnacl:tweetnacl",
-    "//brave/vendor/bip39wally-core-native:bip39wally-core",
     "//crypto",
     "//third_party/boringssl",
   ]

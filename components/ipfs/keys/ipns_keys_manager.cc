@@ -53,14 +53,12 @@ base::TimeDelta CalculateKeysRetryTime() {
 namespace ipfs {
 
 IpnsKeysManager::IpnsKeysManager(
-    BlobContextGetterFactory* context_factory,
+    BlobContextGetterFactory& context_factory,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     const GURL& server_endpoint)
     : blob_context_getter_factory_(context_factory),
       url_loader_factory_(url_loader_factory),
-      server_endpoint_(server_endpoint) {
-  DCHECK(blob_context_getter_factory_);
-}
+      server_endpoint_(server_endpoint) {}
 
 IpnsKeysManager::~IpnsKeysManager() = default;
 
@@ -72,7 +70,7 @@ void IpnsKeysManager::ImportKey(const base::FilePath& upload_file_path,
                      std::move(callback), name);
   auto filename = upload_file_path.BaseName().MaybeAsASCII();
   auto file_request_callback = base::BindOnce(
-      &CreateRequestForFile, upload_file_path, blob_context_getter_factory_,
+      &CreateRequestForFile, upload_file_path, &*blob_context_getter_factory_,
       ipfs::kFileMimeType, filename, std::move(upload_callback));
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},

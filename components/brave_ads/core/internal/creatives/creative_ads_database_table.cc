@@ -12,7 +12,7 @@
 #include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
@@ -24,7 +24,8 @@
 
 namespace brave_ads::database::table {
 
-using CreativeAdMap = std::map<std::string, CreativeAdInfo>;
+using CreativeAdMap =
+    std::map</*creative_instance_id*/ std::string, CreativeAdInfo>;
 
 namespace {
 
@@ -72,12 +73,12 @@ CreativeAdInfo GetFromRecord(mojom::DBRecordInfo* record) {
 }
 
 CreativeAdMap GroupCreativeAdsFromResponse(
-    mojom::DBCommandResponseInfoPtr response) {
-  DCHECK(response);
+    mojom::DBCommandResponseInfoPtr command_response) {
+  DCHECK(command_response);
 
   CreativeAdMap creative_ads;
 
-  for (const auto& record : response->result->get_records()) {
+  for (const auto& record : command_response->result->get_records()) {
     const CreativeAdInfo creative_ad = GetFromRecord(record.get());
 
     const auto iter = creative_ads.find(creative_ad.creative_instance_id);
@@ -106,11 +107,11 @@ CreativeAdMap GroupCreativeAdsFromResponse(
 }
 
 CreativeAdList GetCreativeAdsFromResponse(
-    mojom::DBCommandResponseInfoPtr response) {
-  DCHECK(response);
+    mojom::DBCommandResponseInfoPtr command_response) {
+  DCHECK(command_response);
 
   const CreativeAdMap grouped_creative_ads =
-      GroupCreativeAdsFromResponse(std::move(response));
+      GroupCreativeAdsFromResponse(std::move(command_response));
 
   CreativeAdList creative_ads;
   for (const auto& [creative_instance_id, creative_ad] : grouped_creative_ads) {
@@ -120,21 +121,25 @@ CreativeAdList GetCreativeAdsFromResponse(
   return creative_ads;
 }
 
-void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
-                                GetCreativeAdCallback callback,
-                                mojom::DBCommandResponseInfoPtr response) {
-  if (!response || response->status !=
-                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+void OnGetForCreativeInstanceId(
+    const std::string& creative_instance_id,
+    GetCreativeAdCallback callback,
+    mojom::DBCommandResponseInfoPtr command_response) {
+  if (!command_response ||
+      command_response->status !=
+          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative ad");
-    return std::move(callback).Run(/*success*/ false, creative_instance_id, {});
+    return std::move(callback).Run(/*success*/ false, creative_instance_id,
+                                   /*creative_ad*/ {});
   }
 
   const CreativeAdList creative_ads =
-      GetCreativeAdsFromResponse(std::move(response));
+      GetCreativeAdsFromResponse(std::move(command_response));
 
   if (creative_ads.size() != 1) {
     BLOG(0, "Failed to get creative ad");
-    return std::move(callback).Run(/*success*/ false, creative_instance_id, {});
+    return std::move(callback).Run(/*success*/ false, creative_instance_id,
+                                   /*creative_ad*/ {});
   }
 
   const CreativeAdInfo& creative_ad = creative_ads.front();
@@ -204,20 +209,11 @@ void CreativeAds::GetForCreativeInstanceId(
                                    creative_ad);
   }
 
-  const std::string query = base::StringPrintf(
-      "SELECT "
-      "creative_instance_id, "
-      "conversion, "
-      "per_day, "
-      "per_week, "
-      "per_month, "
-      "total_max, "
-      "value, "
-      "split_test_group, "
-      "target_url "
-      "FROM %s AS ca "
-      "WHERE ca.creative_instance_id = '%s'",
-      GetTableName().c_str(), creative_instance_id.c_str());
+  const std::string query = base::ReplaceStringPlaceholders(
+      "SELECT creative_instance_id, conversion, per_day, per_week, per_month, "
+      "total_max, value, split_test_group, target_url FROM $1 AS ca WHERE "
+      "ca.creative_instance_id = '$2'",
+      {GetTableName(), creative_instance_id}, nullptr);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
@@ -272,21 +268,15 @@ std::string CreativeAds::BuildInsertOrUpdateQuery(
     const CreativeAdList& creative_ads) const {
   DCHECK(command);
 
-  const int count = BindParameters(command, creative_ads);
+  const int binded_parameters_count = BindParameters(command, creative_ads);
 
-  return base::StringPrintf(
-      "INSERT OR REPLACE INTO %s "
-      "(creative_instance_id, "
-      "conversion, "
-      "per_day, "
-      "per_week, "
-      "per_month, "
-      "total_max, "
-      "value, "
-      "split_test_group, "
-      "target_url) VALUES %s",
-      GetTableName().c_str(),
-      BuildBindingParameterPlaceholders(9, count).c_str());
+  return base::ReplaceStringPlaceholders(
+      "INSERT OR REPLACE INTO $1 (creative_instance_id, conversion, per_day, "
+      "per_week, per_month, total_max, value, split_test_group, target_url) "
+      "VALUES $2",
+      {GetTableName(), BuildBindingParameterPlaceholders(
+                           /*parameters_count*/ 9, binded_parameters_count)},
+      nullptr);
 }
 
 }  // namespace brave_ads::database::table

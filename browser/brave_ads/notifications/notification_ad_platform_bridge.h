@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "brave/browser/ui/brave_ads/notification_ad.h"
 #include "chrome/browser/profiles/profile.h"
 
@@ -16,7 +16,7 @@ namespace brave_ads {
 
 class NotificationAdPlatformBridge {
  public:
-  explicit NotificationAdPlatformBridge(Profile* profile);
+  explicit NotificationAdPlatformBridge(Profile& profile);
 
   NotificationAdPlatformBridge(const NotificationAdPlatformBridge&) = delete;
   NotificationAdPlatformBridge& operator=(const NotificationAdPlatformBridge&) =
@@ -33,7 +33,7 @@ class NotificationAdPlatformBridge {
   void CloseNotificationAd(const std::string& notification_id);
 
  private:
-  raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
+  raw_ref<Profile> profile_;
 };
 
 }  // namespace brave_ads

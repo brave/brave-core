@@ -23,7 +23,7 @@ namespace ledger {
 
 namespace database {
 
-DatabaseServerPublisherInfo::DatabaseServerPublisherInfo(LedgerImpl* ledger)
+DatabaseServerPublisherInfo::DatabaseServerPublisherInfo(LedgerImpl& ledger)
     : DatabaseTable(ledger),
       banner_(std::make_unique<DatabaseServerPublisherBanner>(ledger)) {}
 

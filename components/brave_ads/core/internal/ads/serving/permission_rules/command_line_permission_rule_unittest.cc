@@ -5,78 +5,73 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/command_line_permission_rule.h"
 
+#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/flags/environment/environment_types.h"
-#include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace brave_ads {
 
-class BatAdsCommandLinePermissionRuleTest : public UnitTestBase {};
+class BatAdsCommandLinePermissionRuleTest : public UnitTestBase {
+ protected:
+  CommandLinePermissionRule permission_rule_;
+};
 
 TEST_F(BatAdsCommandLinePermissionRuleTest,
        AllowAdIfDidNotOverrideCommandLineSwitchesForProduction) {
   // Arrange
-  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
-      EnvironmentType::kProduction);
+  GlobalState::GetInstance()->Flags().environment_type =
+      mojom::EnvironmentType::kProduction;
 
-  FlagManager::GetInstance()->SetDidOverrideFromCommandLineForTesting(false);
+  GlobalState::GetInstance()->Flags().did_override_from_command_line = false;
 
   // Act
-  CommandLinePermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsCommandLinePermissionRuleTest,
        AllowAdIfDidNotOverrideCommandLineSwitchesForStaging) {
   // Arrange
-  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
-      EnvironmentType::kStaging);
+  GlobalState::GetInstance()->Flags().environment_type =
+      mojom::EnvironmentType::kStaging;
 
-  FlagManager::GetInstance()->SetDidOverrideFromCommandLineForTesting(false);
+  GlobalState::GetInstance()->Flags().did_override_from_command_line = false;
 
   // Act
-  CommandLinePermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsCommandLinePermissionRuleTest,
        DoNotAllowAdIfDidOverrideCommandLineSwitchesForProduction) {
   // Arrange
-  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
-      EnvironmentType::kProduction);
+  GlobalState::GetInstance()->Flags().environment_type =
+      mojom::EnvironmentType::kProduction;
 
-  FlagManager::GetInstance()->SetDidOverrideFromCommandLineForTesting(true);
+  GlobalState::GetInstance()->Flags().did_override_from_command_line = true;
 
   // Act
-  CommandLinePermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_FALSE(is_allowed);
+  EXPECT_FALSE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsCommandLinePermissionRuleTest,
        AllowAdIfDidOverrideCommandLineSwitchesForStaging) {
   // Arrange
-  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
-      EnvironmentType::kStaging);
+  GlobalState::GetInstance()->Flags().environment_type =
+      mojom::EnvironmentType::kStaging;
 
-  FlagManager::GetInstance()->SetDidOverrideFromCommandLineForTesting(true);
+  GlobalState::GetInstance()->Flags().did_override_from_command_line = true;
 
   // Act
-  CommandLinePermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 }  // namespace brave_ads

@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/legacy/client_properties.h"
 #include "brave/components/brave_rewards/core/legacy/wallet_info_properties.h"
@@ -23,7 +24,7 @@ namespace braveledger_bat_state {
 
 class LegacyBatState {
  public:
-  explicit LegacyBatState(ledger::LedgerImpl* ledger);
+  explicit LegacyBatState(ledger::LedgerImpl& ledger);
   ~LegacyBatState();
 
   void Load(ledger::LegacyResultCallback callback);
@@ -53,7 +54,7 @@ class LegacyBatState {
               ledger::mojom::Result result,
               const std::string& data);
 
-  ledger::LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<ledger::LedgerImpl> ledger_;
   std::unique_ptr<ledger::ClientProperties> state_;
 };
 

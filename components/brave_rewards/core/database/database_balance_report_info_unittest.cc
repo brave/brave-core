@@ -25,7 +25,7 @@ class DatabaseBalanceReportTest : public ::testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
-  DatabaseBalanceReport balance_report_{&mock_ledger_impl_};
+  DatabaseBalanceReport balance_report_{mock_ledger_impl_};
 };
 
 TEST_F(DatabaseBalanceReportTest, InsertOrUpdateOk) {

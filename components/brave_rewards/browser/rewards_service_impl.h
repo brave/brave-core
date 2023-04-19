@@ -26,6 +26,7 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_rewards/browser/diagnostic_log.h"
+#include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/mojom/bat_ledger.mojom.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
@@ -198,6 +199,8 @@ class RewardsServiceImpl : public RewardsService,
       GetRewardsInternalsInfoCallback callback) override;
   void GetEnvironment(GetEnvironmentCallback callback) override;
 
+  p3a::ConversionMonitor* GetP3AConversionMonitor() override;
+
   void HandleFlags(const RewardsFlags& flags);
   void SetEnvironment(ledger::mojom::Environment environment);
   void SetDebug(bool debug);
@@ -271,11 +274,6 @@ class RewardsServiceImpl : public RewardsService,
   void RemovePendingContribution(const uint64_t id) override;
 
   void RemoveAllPendingContributions() override;
-
-  void OnTip(const std::string& publisher_key,
-             const double amount,
-             const bool recurring,
-             ledger::mojom::PublisherInfoPtr publisher) override;
 
   void OnTip(const std::string& publisher_key,
              double amount,
@@ -511,18 +509,7 @@ class RewardsServiceImpl : public RewardsService,
   void ClearState(const std::string& name,
                   ClearStateCallback callback) override;
 
-  void GetBooleanOption(const std::string& name,
-                        GetBooleanOptionCallback callback) override;
-  void GetIntegerOption(const std::string& name,
-                        GetIntegerOptionCallback callback) override;
-  void GetDoubleOption(const std::string& name,
-                       GetDoubleOptionCallback callback) override;
-  void GetStringOption(const std::string& name,
-                       GetStringOptionCallback callback) override;
-  void GetInt64Option(const std::string& name,
-                      GetInt64OptionCallback callback) override;
-  void GetUint64Option(const std::string& name,
-                       GetUint64OptionCallback callback) override;
+  void IsBitFlyerRegion(IsBitFlyerRegionCallback callback) override;
 
   void PublisherListNormalized(
       std::vector<ledger::mojom::PublisherInfoPtr> list) override;
@@ -545,11 +532,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void PendingContributionSaved(ledger::mojom::Result result) override;
 
-  void OnTipPublisherSaved(const std::string& publisher_key,
-                           const double amount,
-                           const bool recurring,
-                           const ledger::mojom::Result result);
-
   void ClearAllNotifications() override;
 
   void ExternalWalletConnected() override;
@@ -571,23 +553,19 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& publisher_key,
       const std::string& publisher_name) override;
 
-  void OnGetRewardsWalletForP3A(ledger::mojom::RewardsWalletPtr wallet);
-
   bool Connected() const;
   void ConnectionClosed();
 
   void RecordBackendP3AStats();
 
+  void OnRecordBackendP3AExternalWallet(GetExternalWalletResult result);
   void OnRecordBackendP3AStatsRecurring(
       std::vector<ledger::mojom::PublisherInfoPtr> list);
-
   void OnRecordBackendP3AStatsContributions(
-      const uint32_t recurring_donation_size,
+      const size_t recurring_tip_count,
       std::vector<ledger::mojom::ContributionInfoPtr> list);
 
-  void OnRecordBackendP3AStatsAC(
-      const int auto_contributions,
-      bool ac_enabled);
+  void OnRecordBackendP3AStatsAC(bool ac_enabled);
 
   void OnGetBalanceReport(GetBalanceReportCallback callback,
                           const ledger::mojom::Result result,
@@ -609,7 +587,7 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnDiagnosticLogDeleted(DeleteLogCallback callback, bool success);
 
-  bool IsBitFlyerRegion() const;
+  bool IsBitFlyerCountry() const;
 
   bool IsValidWalletType(const std::string& wallet_type) const;
 
@@ -659,8 +637,12 @@ class RewardsServiceImpl : public RewardsService,
   int ledger_state_target_version_for_testing_ = -1;
   bool resetting_rewards_ = false;
   int persist_log_level_ = 0;
+  base::RepeatingTimer p3a_daily_timer_;
+  base::OneShotTimer p3a_tip_report_timer_;
 
   GetTestResponseCallback test_response_callback_;
+
+  p3a::ConversionMonitor conversion_monitor_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 };

@@ -44,8 +44,6 @@ class HistoryManager final {
 
   static HistoryManager* GetInstance();
 
-  static bool HasInstance();
-
   void AddObserver(HistoryManagerObserver* observer);
   void RemoveObserver(HistoryManagerObserver* observer);
 

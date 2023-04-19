@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/functional/callback_forward.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // GET https://bitflyer.com/api/link/v1/account/inventory
@@ -52,7 +53,7 @@ using GetBalanceCallback = base::OnceCallback<void(const mojom::Result result,
 
 class GetBalance {
  public:
-  explicit GetBalance(LedgerImpl* ledger);
+  explicit GetBalance(LedgerImpl& ledger);
   ~GetBalance();
 
   void Request(const std::string& token, GetBalanceCallback callback);
@@ -66,7 +67,7 @@ class GetBalance {
 
   void OnRequest(GetBalanceCallback callback, mojom::UrlResponsePtr response);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace bitflyer

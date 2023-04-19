@@ -258,49 +258,8 @@ void TestLedgerClient::ClearState(const std::string& name,
   std::move(callback).Run();
 }
 
-void TestLedgerClient::GetBooleanOption(const std::string& name,
-                                        GetBooleanOptionCallback callback) {
-  std::move(callback).Run(
-      option_store_.FindBoolByDottedPath(name).value_or(false));
-}
-
-void TestLedgerClient::GetIntegerOption(const std::string& name,
-                                        GetIntegerOptionCallback callback) {
-  std::move(callback).Run(option_store_.FindIntByDottedPath(name).value_or(0));
-}
-
-void TestLedgerClient::GetDoubleOption(const std::string& name,
-                                       GetDoubleOptionCallback callback) {
-  std::move(callback).Run(
-      option_store_.FindDoubleByDottedPath(name).value_or(0.0));
-}
-
-void TestLedgerClient::GetStringOption(const std::string& name,
-                                       GetStringOptionCallback callback) {
-  const auto* value = option_store_.FindStringByDottedPath(name);
-  std::move(callback).Run(value ? *value : base::EmptyString());
-}
-
-void TestLedgerClient::GetInt64Option(const std::string& name,
-                                      GetInt64OptionCallback callback) {
-  if (const std::string* opt = option_store_.FindStringByDottedPath(name)) {
-    int64_t value;
-    if (base::StringToInt64(*opt, &value)) {
-      return std::move(callback).Run(value);
-    }
-  }
-  std::move(callback).Run(0);
-}
-
-void TestLedgerClient::GetUint64Option(const std::string& name,
-                                       GetUint64OptionCallback callback) {
-  if (const std::string* opt = option_store_.FindStringByDottedPath(name)) {
-    uint64_t value;
-    if (base::StringToUint64(*opt, &value)) {
-      return std::move(callback).Run(value);
-    }
-  }
-  std::move(callback).Run(0);
+void TestLedgerClient::IsBitFlyerRegion(IsBitFlyerRegionCallback callback) {
+  std::move(callback).Run(is_bitflyer_region_);
 }
 
 void TestLedgerClient::OnContributeUnverifiedPublishers(
@@ -372,9 +331,8 @@ void TestLedgerClient::DecryptString(const std::string& value,
   std::move(callback).Run(FakeEncryption::DecryptString(value));
 }
 
-void TestLedgerClient::SetOptionForTesting(const std::string& name,
-                                           base::Value value) {
-  option_store_.SetByDottedPath(name, std::move(value));
+void TestLedgerClient::SetIsBitFlyerRegionForTesting(bool is_bitflyer_region) {
+  is_bitflyer_region_ = is_bitflyer_region;
 }
 
 void TestLedgerClient::AddNetworkResultForTesting(

@@ -12,6 +12,7 @@
 
 #include "base/callback_list.h"
 #include "base/containers/flat_map.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/ref_counted.h"
 #include "base/metrics/histogram_base.h"
 #include "base/metrics/statistics_recorder.h"
@@ -41,7 +42,7 @@ struct P3AConfig;
 class P3AService : public base::RefCountedThreadSafe<P3AService>,
                    public MessageManager::Delegate {
  public:
-  P3AService(PrefService* local_state,
+  P3AService(PrefService& local_state,
              std::string channel,
              std::string week_of_install,
              P3AConfig config);
@@ -111,7 +112,7 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
   // General prefs:
   bool initialized_ = false;
 
-  PrefService* local_state_;
+  const raw_ref<PrefService> local_state_;
   P3AConfig config_;
 
   // Contains metrics added via `RegisterDynamicMetric`

@@ -10,6 +10,8 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/timer/wall_clock_timer.h"
@@ -37,7 +39,7 @@ class PermissionLifetimeManager : public KeyedService,
  public:
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
-  PermissionLifetimeManager(HostContentSettingsMap* host_content_settings_map,
+  PermissionLifetimeManager(HostContentSettingsMap& host_content_settings_map,
                             PrefService* prefs,
                             std::unique_ptr<PermissionOriginLifetimeMonitor>
                                 permission_origin_lifetime_monitor);
@@ -83,8 +85,8 @@ class PermissionLifetimeManager : public KeyedService,
                        const GURL& requesting_origin,
                        const GURL& embedding_origin);
 
-  HostContentSettingsMap* const host_content_settings_map_ = nullptr;
-  PrefService* const prefs_ = nullptr;
+  const raw_ref<HostContentSettingsMap> host_content_settings_map_;
+  const raw_ptr<PrefService> prefs_ = nullptr;
   // Origin lifetime monitor enables origin-based permission lifetime support.
   std::unique_ptr<PermissionOriginLifetimeMonitor>
       permission_origin_lifetime_monitor_;

@@ -12,9 +12,9 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace brave_ads::notification_ads::features {
+namespace brave_ads::notification_ads {
 
-TEST(BatAdsServingFeaturesTest, IsServingEnabled) {
+TEST(BatAdsServingFeaturesTest, IsEnabled) {
   // Arrange
 
   // Act
@@ -23,12 +23,12 @@ TEST(BatAdsServingFeaturesTest, IsServingEnabled) {
   EXPECT_TRUE(IsServingEnabled());
 }
 
-TEST(BatAdsServingFeaturesTest, IsServingDisabled) {
+TEST(BatAdsServingFeaturesTest, IsDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kServing);
+  disabled_features.emplace_back(kServingFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -45,7 +45,7 @@ TEST(BatAdsServingFeaturesTest, GetServingVersion) {
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
   params["version"] = "0";
-  enabled_features.emplace_back(kServing, params);
+  enabled_features.emplace_back(kServingFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -56,7 +56,7 @@ TEST(BatAdsServingFeaturesTest, GetServingVersion) {
   // Act
 
   // Assert
-  EXPECT_EQ(0, GetServingVersion());
+  EXPECT_EQ(0, kServingVersion.Get());
 }
 
 TEST(BatAdsServingFeaturesTest, DefaultServingVersion) {
@@ -65,7 +65,7 @@ TEST(BatAdsServingFeaturesTest, DefaultServingVersion) {
   // Act
 
   // Assert
-  EXPECT_EQ(2, GetServingVersion());
+  EXPECT_EQ(2, kServingVersion.Get());
 }
 
 TEST(BatAdsServingFeaturesTest, DefaultServingVersionWhenDisabled) {
@@ -73,7 +73,7 @@ TEST(BatAdsServingFeaturesTest, DefaultServingVersionWhenDisabled) {
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kServing);
+  disabled_features.emplace_back(kServingFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -82,7 +82,7 @@ TEST(BatAdsServingFeaturesTest, DefaultServingVersionWhenDisabled) {
   // Act
 
   // Assert
-  EXPECT_EQ(2, GetServingVersion());
+  EXPECT_EQ(2, kServingVersion.Get());
 }
 
-}  // namespace brave_ads::notification_ads::features
+}  // namespace brave_ads::notification_ads

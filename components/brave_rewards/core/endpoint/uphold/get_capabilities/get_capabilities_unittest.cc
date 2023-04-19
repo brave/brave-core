@@ -30,7 +30,7 @@ class GetCapabilitiesTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
-  GetCapabilities get_capabilities_{&mock_ledger_impl_};
+  GetCapabilities get_capabilities_{mock_ledger_impl_};
 };
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKSufficientReceivesAndSends) {

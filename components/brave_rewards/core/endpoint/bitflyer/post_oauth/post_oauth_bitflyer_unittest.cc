@@ -29,7 +29,7 @@ class BitflyerPostOauthTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
-  PostOauth oauth_{&mock_ledger_impl_};
+  PostOauth oauth_{mock_ledger_impl_};
 };
 
 TEST_F(BitflyerPostOauthTest, ServerOK) {

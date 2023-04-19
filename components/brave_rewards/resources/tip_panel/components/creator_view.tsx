@@ -6,6 +6,7 @@
 import * as React from 'react'
 
 import { useModelState } from '../lib/model_context'
+import { useLocaleContext } from '../lib/locale_strings'
 import { NewTabLink } from '../../shared/components/new_tab_link'
 import { VerifiedIcon } from './icons/verified_icon'
 import { LaunchIcon } from './icons/launch_icon'
@@ -15,10 +16,9 @@ import { VerifiedTooltip } from './verified_tooltip'
 import * as style from './creator_view.style'
 
 export function CreatorView () {
+  const { getString } = useLocaleContext()
   const creatorBanner = useModelState(state => state.creatorBanner)
-  const creatorWallets = useModelState(state => state.creatorWallets)
-
-  const isVerified = creatorWallets.length > 0
+  const creatorVerified = useModelState(state => state.creatorVerified)
 
   const styleProps = {}
 
@@ -26,6 +26,7 @@ export function CreatorView () {
     styleProps['--creator-background-image-url'] =
       `url("${creatorBanner.background}")`
   }
+
   if (creatorBanner.logo) {
     styleProps['--creator-avatar-image-url'] = `url("${creatorBanner.logo}")`
   }
@@ -51,10 +52,10 @@ export function CreatorView () {
       <style.avatar />
       <style.title>
         <style.name>
-          {creatorBanner.title}
+          {creatorBanner.title || creatorBanner.name}
         </style.name>
         {
-          isVerified &&
+          creatorVerified &&
             <style.verifiedCheck>
               <VerifiedIcon />
               <div className='tooltip'>
@@ -64,15 +65,15 @@ export function CreatorView () {
         }
       </style.title>
       <style.text>
-        {creatorBanner.description}
+        {creatorBanner.description || getString('defaultCreatorDescription')}
       </style.text>
       <style.links>
         {renderedLinks}
         {
-          creatorBanner.web3URL &&
+          creatorBanner.web3Url &&
             <>
               {renderedLinks.length > 0 && <style.linkDivider />}
-              <NewTabLink href={creatorBanner.web3URL}>
+              <NewTabLink href={creatorBanner.web3Url}>
                 <LaunchIcon />
               </NewTabLink>
             </>

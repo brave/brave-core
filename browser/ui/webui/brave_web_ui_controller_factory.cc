@@ -15,8 +15,6 @@
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_page_ui.h"
-#include "brave/browser/ui/webui/brave_tip_ui.h"
-#include "brave/browser/ui/webui/webcompat_reporter_ui.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_shields/common/features.h"
@@ -35,6 +33,7 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
+#include "brave/browser/ui/webui/brave_rewards/tip_panel_ui.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_shields/cookie_list_opt_in_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
@@ -44,6 +43,7 @@
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/browser/ui/webui/speedreader/speedreader_panel_ui.h"
+#include "brave/browser/ui/webui/webcompat_reporter_ui.h"
 #include "brave/browser/ui/webui/welcome_page/brave_welcome_ui.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -93,8 +93,10 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     return new BraveAdblockUI(web_ui, url.host());
   } else if (host == kAdblockInternalsHost) {
     return new BraveAdblockInternalsUI(web_ui, url.host());
+#if !BUILDFLAG(IS_ANDROID)
   } else if (host == kWebcompatReporterHost) {
     return new WebcompatReporterUI(web_ui, url.host());
+#endif
 #if BUILDFLAG(ENABLE_IPFS)
   } else if (host == kIPFSWebUIHost &&
              ipfs::IpfsServiceFactory::IsIpfsEnabled(profile)) {
@@ -138,12 +140,12 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
              brave_rewards::IsSupportedForProfile(profile)) {
     return new BraveRewardsInternalsUI(web_ui, url.host());
 #if !BUILDFLAG(IS_ANDROID)
-  } else if (host == kTipHost &&
-             brave_rewards::IsSupportedForProfile(profile)) {
-    return new BraveTipUI(web_ui, url.host());
   } else if (host == kBraveRewardsPanelHost &&
              brave_rewards::IsSupportedForProfile(profile)) {
-    return new RewardsPanelUI(web_ui);
+    return new brave_rewards::RewardsPanelUI(web_ui);
+  } else if (host == kBraveTipPanelHost &&
+             brave_rewards::IsSupportedForProfile(profile)) {
+    return new brave_rewards::TipPanelUI(web_ui);
 #endif  // !BUILDFLAG(IS_ANDROID)
 #if !BUILDFLAG(IS_ANDROID)
   } else if (host == kWelcomeHost && !profile->IsGuestSession()) {
@@ -213,8 +215,8 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui, const GURL& url) {
       url.host_piece() == kRewardsPageHost ||
       url.host_piece() == kRewardsInternalsHost ||
 #if !BUILDFLAG(IS_ANDROID)
-      url.host_piece() == kTipHost ||
       url.host_piece() == kBraveRewardsPanelHost ||
+      url.host_piece() == kBraveTipPanelHost ||
       url.host_piece() == kSpeedreaderPanelHost ||
       url.host_piece() == kCommandsHost ||
 #endif
@@ -239,8 +241,8 @@ bool ShouldBlockRewardsWebUI(content::BrowserContext* browser_context,
                              const GURL& url) {
   if (url.host_piece() != kRewardsPageHost &&
 #if !BUILDFLAG(IS_ANDROID)
-      url.host_piece() != kTipHost &&
       url.host_piece() != kBraveRewardsPanelHost &&
+      url.host_piece() != kBraveTipPanelHost &&
 #endif  // !BUILDFLAG(IS_ANDROID)
       url.host_piece() != kRewardsInternalsHost) {
     return false;

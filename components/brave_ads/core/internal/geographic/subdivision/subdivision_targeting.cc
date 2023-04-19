@@ -9,7 +9,7 @@
 
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
@@ -20,14 +20,15 @@
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
-#include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/get_subdivision_url_request_builder.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision/get_subdivision_url_request_builder_constants.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting_util.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/supported_subdivision_codes.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "net/http/http_status_code.h"
 
-namespace brave_ads::geographic {
+namespace brave_ads {
 
 namespace {
 
@@ -35,6 +36,7 @@ constexpr base::TimeDelta kRetryAfter = base::Minutes(1);
 constexpr base::TimeDelta kFetchSubdivisionTargetingPing = base::Days(1);
 constexpr base::TimeDelta kDebugFetchSubdivisionTargetingPing =
     base::Minutes(5);
+
 constexpr char kAuto[] = "AUTO";
 constexpr char kDisabled[] = "DISABLED";
 
@@ -206,7 +208,7 @@ void SubdivisionTargeting::MaybeFetchForLocale(const std::string& locale) {
 
 void SubdivisionTargeting::Fetch() {
   BLOG(1, "FetchSubdivisionTargeting");
-  BLOG(2, "GET /v1/getstate");
+  BLOG(2, "GET " << kSubdivisionTargetingUrlPath);
 
   GetSubdivisionUrlRequestBuilder url_request_builder;
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -261,7 +263,7 @@ bool SubdivisionTargeting::ParseJson(const std::string& json) {
   }
 
   const std::string subdivision_code =
-      base::StringPrintf("%s-%s", country->c_str(), region->c_str());
+      base::ReplaceStringPlaceholders("$1-$2", {*country, *region}, nullptr);
 
   auto_detected_subdivision_code_ = subdivision_code;
   AdsClientHelper::GetInstance()->SetStringPref(
@@ -280,7 +282,7 @@ void SubdivisionTargeting::Retry() {
 }
 
 void SubdivisionTargeting::FetchAfterDelay() {
-  const base::TimeDelta delay = FlagManager::GetInstance()->ShouldDebug()
+  const base::TimeDelta delay = GlobalState::GetInstance()->Flags().should_debug
                                     ? kDebugFetchSubdivisionTargetingPing
                                     : kFetchSubdivisionTargetingPing;
 
@@ -305,4 +307,4 @@ void SubdivisionTargeting::OnNotifyPrefDidChange(const std::string& path) {
   }
 }
 
-}  // namespace brave_ads::geographic
+}  // namespace brave_ads

@@ -373,7 +373,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void filter(String text) {
+    public void filter(String text, boolean searchSubtitle) {
         walletListItemModelList.clear();
         if (text.isEmpty()) {
             walletListItemModelList.addAll(walletListItemModelListCopy);
@@ -381,7 +381,10 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
             text = text.toLowerCase(Locale.getDefault());
             for (WalletListItemModel item : walletListItemModelListCopy) {
                 if (item.getTitle().toLowerCase(Locale.getDefault()).contains(text)
-                        || item.getSubTitle().toLowerCase(Locale.getDefault()).contains(text)) {
+                        || (searchSubtitle
+                                && item.getSubTitle()
+                                           .toLowerCase(Locale.getDefault())
+                                           .contains(text))) {
                     walletListItemModelList.add(item);
                 }
             }

@@ -19,9 +19,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-PostCreds::PostCreds(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+PostCreds::PostCreds(LedgerImpl& ledger) : ledger_(ledger) {}
 
 PostCreds::~PostCreds() = default;
 

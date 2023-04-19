@@ -9,6 +9,7 @@
 #include <memory>
 #include <vector>
 
+#include "base/memory/raw_ref.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/endpoints/get_parameters/get_parameters.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
@@ -20,7 +21,7 @@ namespace api {
 
 class APIParameters {
  public:
-  explicit APIParameters(LedgerImpl* ledger);
+  explicit APIParameters(LedgerImpl& ledger);
   ~APIParameters();
 
   void Initialize();
@@ -35,7 +36,7 @@ class APIParameters {
   void SetRefreshTimer(base::TimeDelta delay,
                        base::TimeDelta base_delay = base::TimeDelta());
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
   base::OneShotTimer refresh_timer_;
   std::vector<ledger::GetRewardsParametersCallback> callbacks_;
 };

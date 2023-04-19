@@ -25,7 +25,7 @@ namespace gemini {
 
 class ConnectGeminiWallet : public wallet_provider::ConnectExternalWallet {
  public:
-  explicit ConnectGeminiWallet(LedgerImpl*);
+  explicit ConnectGeminiWallet(LedgerImpl& ledger);
 
   ~ConnectGeminiWallet() override;
 

@@ -12,8 +12,8 @@
 #include <memory>
 #include <string>
 #include <vector>
-
 #include "base/functional/callback_forward.h"
+#include "base/memory/raw_ref.h"
 #include "base/time/time.h"
 #include "brave/components/brave_rewards/core/database/database_activity_info.h"
 #include "brave/components/brave_rewards/core/database/database_balance_report.h"
@@ -25,8 +25,6 @@
 #include "brave/components/brave_rewards/core/database/database_initialize.h"
 #include "brave/components/brave_rewards/core/database/database_media_publisher_info.h"
 #include "brave/components/brave_rewards/core/database/database_multi_tables.h"
-#include "brave/components/brave_rewards/core/database/database_pending_contribution.h"
-#include "brave/components/brave_rewards/core/database/database_processed_publisher.h"
 #include "brave/components/brave_rewards/core/database/database_promotion.h"
 #include "brave/components/brave_rewards/core/database/database_publisher_info.h"
 #include "brave/components/brave_rewards/core/database/database_publisher_prefix_list.h"
@@ -45,7 +43,7 @@ namespace database {
 
 class Database {
  public:
-  explicit Database(LedgerImpl* ledger);
+  explicit Database(LedgerImpl& ledger);
   virtual ~Database();
 
   void Initialize(ledger::LegacyResultCallback callback);
@@ -211,35 +209,6 @@ class Database {
                             ledger::GetTransactionReportCallback callback);
 
   /**
-   * PENDING CONTRIBUTION
-   */
-  void SavePendingContribution(std::vector<mojom::PendingContributionPtr> list,
-                               ledger::LegacyResultCallback callback);
-
-  void GetPendingContributionsTotal(
-      ledger::GetPendingContributionsTotalCallback callback);
-
-  void GetPendingContributions(
-      ledger::GetPendingContributionsCallback callback);
-
-  void GetUnverifiedPublishersForPendingContributions(
-      ledger::UnverifiedPublishersCallback callback);
-
-  void RemovePendingContribution(uint64_t id,
-                                 ledger::LegacyResultCallback callback);
-
-  void RemoveAllPendingContributions(ledger::LegacyResultCallback callback);
-
-  /**
-   * PROCESSED PUBLISHER
-   */
-  void SaveProcessedPublisherList(const std::vector<std::string>& list,
-                                  ledger::LegacyResultCallback callback);
-
-  void WasPublisherProcessed(const std::string& publisher_key,
-                             ledger::LegacyResultCallback callback);
-
-  /**
    * PROMOTION
    */
   virtual void SavePromotion(mojom::PromotionPtr info,
@@ -397,8 +366,6 @@ class Database {
   std::unique_ptr<DatabaseCredsBatch> creds_batch_;
   std::unique_ptr<DatabaseEventLog> event_log_;
   std::unique_ptr<DatabaseExternalTransactions> external_transactions_;
-  std::unique_ptr<DatabasePendingContribution> pending_contribution_;
-  std::unique_ptr<DatabaseProcessedPublisher> processed_publisher_;
   std::unique_ptr<DatabasePromotion> promotion_;
   std::unique_ptr<DatabaseMediaPublisherInfo> media_publisher_info_;
   std::unique_ptr<DatabaseMultiTables> multi_tables_;
@@ -409,7 +376,7 @@ class Database {
   std::unique_ptr<DatabaseSKUOrder> sku_order_;
   std::unique_ptr<DatabaseSKUTransaction> sku_transaction_;
   std::unique_ptr<DatabaseUnblindedToken> unblinded_token_;
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace database

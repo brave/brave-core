@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/functional/callback_forward.h"
+#include "base/memory/raw_ref.h"
 #include "chrome/browser/notifications/notification_handler.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -19,7 +20,7 @@ namespace brave_ads {
 
 class AdsNotificationHandler : public NotificationHandler {
  public:
-  explicit AdsNotificationHandler(Profile* profile);
+  explicit AdsNotificationHandler(Profile& profile);
   ~AdsNotificationHandler() override;
 
   // NotificationHandler:
@@ -38,7 +39,7 @@ class AdsNotificationHandler : public NotificationHandler {
   void OpenSettings(Profile* profile, const GURL& origin) override;
 
  private:
-  Profile* profile_ = nullptr;  // NOT OWNED
+  raw_ref<Profile> profile_;
 
   AdsNotificationHandler(const AdsNotificationHandler&) = delete;
   AdsNotificationHandler& operator=(const AdsNotificationHandler&) = delete;

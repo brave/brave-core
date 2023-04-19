@@ -15,10 +15,6 @@
 
 namespace brave_ads {
 
-namespace geographic {
-class SubdivisionTargeting;
-}  // namespace geographic
-
 namespace resource {
 class AntiTargeting;
 }  // namespace resource
@@ -27,11 +23,13 @@ namespace targeting {
 struct UserModelInfo;
 }  // namespace targeting
 
+class SubdivisionTargeting;
+
 namespace notification_ads {
 
 class EligibleAdsV3 final : public EligibleAdsBase {
  public:
-  EligibleAdsV3(const geographic::SubdivisionTargeting& subdivision_targeting,
+  EligibleAdsV3(const SubdivisionTargeting& subdivision_targeting,
                 const resource::AntiTargeting& anti_targeting_resource);
   ~EligibleAdsV3() override;
 

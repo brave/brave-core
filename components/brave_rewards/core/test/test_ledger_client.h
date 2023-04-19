@@ -139,23 +139,7 @@ class TestLedgerClient : public mojom::LedgerClient {
   void ClearState(const std::string& name,
                   ClearStateCallback callback) override;
 
-  void GetBooleanOption(const std::string& name,
-                        GetBooleanOptionCallback callback) override;
-
-  void GetIntegerOption(const std::string& name,
-                        GetIntegerOptionCallback callback) override;
-
-  void GetDoubleOption(const std::string& name,
-                       GetDoubleOptionCallback callback) override;
-
-  void GetStringOption(const std::string& name,
-                       GetStringOptionCallback callback) override;
-
-  void GetInt64Option(const std::string& name,
-                      GetInt64OptionCallback callback) override;
-
-  void GetUint64Option(const std::string& name,
-                       GetUint64OptionCallback callback) override;
+  void IsBitFlyerRegion(IsBitFlyerRegionCallback callback) override;
 
   void OnContributeUnverifiedPublishers(
       mojom::Result result,
@@ -202,7 +186,7 @@ class TestLedgerClient : public mojom::LedgerClient {
 
   // Test environment setup methods:
 
-  void SetOptionForTesting(const std::string& name, base::Value value);
+  void SetIsBitFlyerRegionForTesting(bool is_bitflyer_region);
 
   void AddNetworkResultForTesting(const std::string& url,
                                   mojom::UrlMethod method,
@@ -216,7 +200,7 @@ class TestLedgerClient : public mojom::LedgerClient {
  private:
   LedgerDatabase ledger_database_;
   base::Value::Dict state_store_;
-  base::Value::Dict option_store_;
+  bool is_bitflyer_region_{false};
   std::list<TestNetworkResult> network_results_;
   LogCallback log_callback_;
 };

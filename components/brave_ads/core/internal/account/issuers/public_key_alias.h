@@ -12,7 +12,8 @@
 
 namespace brave_ads {
 
-using PublicKeyMap = base::flat_map<std::string, double>;
+using PublicKeyMap =
+    base::flat_map</*public_key*/ std::string, /*associated_value*/ double>;
 
 }  // namespace brave_ads
 

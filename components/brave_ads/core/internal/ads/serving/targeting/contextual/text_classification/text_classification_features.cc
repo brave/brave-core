@@ -5,39 +5,14 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_features.h"
 
-#include "base/metrics/field_trial_params.h"
+namespace brave_ads::targeting {
 
-namespace brave_ads::targeting::features {
-
-namespace {
-
-constexpr char kResourceVersionFieldTrialParamName[] = "resource_version";
-constexpr int kResourceVersionDefaultValue = 1;
-
-constexpr char kPageProbabilitiesHistorySizeFieldTrialParamName[] =
-    "page_probabilities_history_size";
-constexpr int kPageProbabilitiesHistorySizeDefaultValue = 5;
-
-}  // namespace
-
-BASE_FEATURE(kTextClassification,
+BASE_FEATURE(kTextClassificationFeature,
              "TextClassification",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsTextClassificationEnabled() {
-  return base::FeatureList::IsEnabled(kTextClassification);
+  return base::FeatureList::IsEnabled(kTextClassificationFeature);
 }
 
-int GetTextClassificationResourceVersion() {
-  return GetFieldTrialParamByFeatureAsInt(kTextClassification,
-                                          kResourceVersionFieldTrialParamName,
-                                          kResourceVersionDefaultValue);
-}
-
-int GetTextClassificationProbabilitiesHistorySize() {
-  return GetFieldTrialParamByFeatureAsInt(
-      kTextClassification, kPageProbabilitiesHistorySizeFieldTrialParamName,
-      kPageProbabilitiesHistorySizeDefaultValue);
-}
-
-}  // namespace brave_ads::targeting::features
+}  // namespace brave_ads::targeting

@@ -35,8 +35,6 @@ class TabManager final : public AdsClientNotifierObserver {
 
   static TabManager* GetInstance();
 
-  static bool HasInstance();
-
   void AddObserver(TabManagerObserver* observer);
   void RemoveObserver(TabManagerObserver* observer);
 
@@ -90,7 +88,7 @@ class TabManager final : public AdsClientNotifierObserver {
   int32_t visible_tab_id_ = 0;
   int32_t last_visible_tab_id_ = 0;
 
-  std::map<int32_t, TabInfo> tabs_;
+  std::map</*id*/ int32_t, TabInfo> tabs_;
 };
 
 }  // namespace brave_ads

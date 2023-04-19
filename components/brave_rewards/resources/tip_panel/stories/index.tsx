@@ -13,15 +13,17 @@ import { createModel } from './storybook_model'
 import { localeStrings } from '../lib/locale_strings'
 import { App } from '../components/app'
 
+import '@brave/leo/tokens/css/variables.css'
+
 export default {
   title: 'Rewards/Tipping'
 }
 
 const style = {
   panelFrame: styled.div`
-    background: var(--leo-color-container-background);
     box-shadow: 0px 4px 13px -2px rgba(0, 0, 0, 0.35);
     border-radius: 0px 0px 16px 16px;
+    overflow: hidden;
   `
 }
 

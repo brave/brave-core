@@ -14,6 +14,7 @@
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/page_transition_util.h"
@@ -28,34 +29,23 @@ namespace brave_ads {
 
 namespace {
 
-UserActivityManager* g_user_activity_manager_instance = nullptr;
-
 void LogEvent(const UserActivityEventType event_type) {
   const UserActivityTriggerList triggers =
-      ToUserActivityTriggers(user_activity::features::GetTriggers());
+      ToUserActivityTriggers(kUserActivityTriggers.Get());
 
-  const base::TimeDelta time_window = user_activity::features::GetTimeWindow();
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(time_window);
+      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+          kUserActivityTimeWindow.Get());
 
-  const double score = GetUserActivityScore(triggers, events);
-
-  const double threshold = user_activity::features::GetThreshold();
-
-  const std::string encoded_event_type =
-      base::HexEncode(&event_type, sizeof(int8_t));
-
-  BLOG(6, "Triggered event: "
-              << encoded_event_type << " (" << score << ":" << threshold << ":"
-              << user_activity::features::GetTimeWindow() << ")");
+  BLOG(6, "Triggered event: " << base::HexEncode(&event_type, sizeof(int8_t))
+                              << " (" << GetUserActivityScore(triggers, events)
+                              << ":" << kUserActivityThreshold.Get() << ":"
+                              << kUserActivityTimeWindow.Get() << ")");
 }
 
 }  // namespace
 
 UserActivityManager::UserActivityManager() {
-  DCHECK(!g_user_activity_manager_instance);
-  g_user_activity_manager_instance = this;
-
   AdsClientHelper::AddObserver(this);
   BrowserManager::GetInstance()->AddObserver(this);
   TabManager::GetInstance()->AddObserver(this);
@@ -65,20 +55,14 @@ UserActivityManager::~UserActivityManager() {
   AdsClientHelper::RemoveObserver(this);
   BrowserManager::GetInstance()->RemoveObserver(this);
   TabManager::GetInstance()->RemoveObserver(this);
-
-  DCHECK_EQ(this, g_user_activity_manager_instance);
-  g_user_activity_manager_instance = nullptr;
 }
 
 // static
 UserActivityManager* UserActivityManager::GetInstance() {
-  DCHECK(g_user_activity_manager_instance);
-  return g_user_activity_manager_instance;
-}
-
-// static
-bool UserActivityManager::HasInstance() {
-  return !!g_user_activity_manager_instance;
+  auto* user_activity_manager =
+      GlobalState::GetInstance()->GetUserActivityManager();
+  DCHECK(user_activity_manager);
+  return user_activity_manager;
 }
 
 void UserActivityManager::RecordEvent(const UserActivityEventType event_type) {

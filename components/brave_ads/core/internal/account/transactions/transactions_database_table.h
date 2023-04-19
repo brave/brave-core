@@ -23,7 +23,7 @@ class Time;
 namespace brave_ads::database::table {
 
 using GetTransactionsCallback =
-    base::OnceCallback<void(const bool, const TransactionList&)>;
+    base::OnceCallback<void(bool success, const TransactionList& transactions)>;
 
 class Transactions final : public TableInterface {
  public:

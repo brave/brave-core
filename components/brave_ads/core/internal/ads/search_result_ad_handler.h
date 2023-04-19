@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SEARCH_RESULT_AD_HANDLER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SEARCH_RESULT_AD_HANDLER_H_
 
-#include <memory>
 #include <string>
 
 #include "base/containers/circular_deque.h"
@@ -14,19 +13,16 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_events/search_result_ads/search_result_ad_event_handler_observer.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_events/search_result_ads/search_result_ad_event_handler.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_events/search_result_ads/search_result_ad_event_handler_delegate.h"
 
 namespace brave_ads {
-
-namespace search_result_ads {
-class EventHandler;
-}  // namespace search_result_ads
 
 class Account;
 class Transfer;
 struct SearchResultAdInfo;
 
-class SearchResultAd final : public search_result_ads::EventHandlerObserver {
+class SearchResultAd final : public search_result_ads::EventHandlerDelegate {
  public:
   SearchResultAd(Account* account, Transfer* transfer);
 
@@ -50,11 +46,11 @@ class SearchResultAd final : public search_result_ads::EventHandlerObserver {
                            const std::string& placement_id,
                            mojom::SearchResultAdEventType event_type);
 
-  // search_result_ads::EventHandlerObserver:
+  // search_result_ads::EventHandlerDelegate:
   void OnSearchResultAdViewed(const SearchResultAdInfo& ad) override;
   void OnSearchResultAdClicked(const SearchResultAdInfo& ad) override;
 
-  std::unique_ptr<search_result_ads::EventHandler> event_handler_;
+  search_result_ads::EventHandler event_handler_;
 
   base::circular_deque<mojom::SearchResultAdInfoPtr> ad_viewed_event_queue_;
 

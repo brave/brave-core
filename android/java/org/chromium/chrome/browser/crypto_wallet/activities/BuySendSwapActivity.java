@@ -1381,7 +1381,17 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             if (mFrom ? mFromValueText.hasFocus() : mToValueText.hasFocus()) {
-                getSendSwapQuota(mFrom, false);
+                try {
+                    Utils.parseDouble(s.toString());
+
+                    setSendToFromValueValidationResult("", true, !mFrom);
+                    getSendSwapQuota(mFrom, false);
+                } catch (ParseException e) {
+                    Log.w(TAG, e.getMessage());
+                    setSendToFromValueValidationResult(
+                            getString(R.string.crypto_wallet_error_wrong_number_format), true,
+                            !mFrom);
+                }
             }
         }
 
@@ -1458,14 +1468,15 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             Double fromSendValue = 0d;
             try {
                 fromSendValue = Utils.parseDouble(s.toString());
-            } catch (ParseException ex) {
+                String validationResult = (fromSendValue > mConvertedFromBalance)
+                        ? getString(R.string.crypto_wallet_error_insufficient_balance)
+                        : "";
+                setSendToFromValueValidationResult(validationResult, false, false);
+            } catch (ParseException e) {
+                Log.w(TAG, e.getMessage());
+                setSendToFromValueValidationResult(
+                        getString(R.string.crypto_wallet_error_wrong_number_format), true, false);
             }
-
-            String validationResult = (fromSendValue > mConvertedFromBalance)
-                    ? getString(R.string.crypto_wallet_error_insufficient_balance)
-                    : "";
-
-            setSendToFromValueValidationResult(validationResult, false, false);
         }
 
         @Override

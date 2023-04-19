@@ -72,7 +72,7 @@ TEST_P(PostWallets, Paths) {
   base::MockCallback<base::OnceCallback<void(Result&&)>> callback;
   EXPECT_CALL(callback, Run(Result(expected_result))).Times(1);
 
-  RequestFor<endpoints::PostWallets>(&mock_ledger_impl_, "geo_country")
+  RequestFor<endpoints::PostWallets>(mock_ledger_impl_, "geo_country")
       .Send(callback.Get());
 
   task_environment_.RunUntilIdle();

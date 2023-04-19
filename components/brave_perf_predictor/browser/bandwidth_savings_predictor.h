@@ -10,6 +10,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/gtest_prod_util.h"
+#include "base/memory/raw_ptr.h"
 #include "brave/components/brave_perf_predictor/browser/named_third_party_registry.h"
 #include "url/gurl.h"
 
@@ -63,7 +64,7 @@ class BandwidthSavingsPredictor {
                            FeaturiseResourceLoading);
 
   GURL main_frame_url_;
-  const NamedThirdPartyRegistry* tp_registry_;  // not owned
+  const raw_ptr<const NamedThirdPartyRegistry> tp_registry_;
   base::flat_map<std::string, double> feature_map_;
 };
 

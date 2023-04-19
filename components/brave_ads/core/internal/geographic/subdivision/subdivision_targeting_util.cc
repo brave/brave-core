@@ -9,13 +9,12 @@
 #include "base/strings/string_piece.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/supported_subdivision_codes.h"
 
-namespace brave_ads::geographic {
+namespace brave_ads {
 
 bool IsSupportedCountryCodeForSubdivisionTargeting(
     const std::string& country_code) {
-  const auto& supported_subdivision_codes =
-      geographic::GetSupportedSubdivisionCodes();
+  const auto& supported_subdivision_codes = GetSupportedSubdivisionCodes();
   return base::Contains(supported_subdivision_codes, country_code);
 }
 
-}  // namespace brave_ads::geographic
+}  // namespace brave_ads

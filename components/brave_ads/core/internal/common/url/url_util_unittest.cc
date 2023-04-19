@@ -16,326 +16,270 @@ namespace brave_ads {
 
 TEST(BatAdsUrlUtilTest, HttpsSchemeIsSupported) {
   // Arrange
-  const GURL url = GURL("https://foobar.com");
 
   // Act
-  const bool is_supported = SchemeIsSupported(url);
 
   // Assert
-  EXPECT_TRUE(is_supported);
+  EXPECT_TRUE(SchemeIsSupported(GURL("https://foobar.com")));
 }
 
 TEST(BatAdsUrlUtilTest, HttpSchemeIsNotSupported) {
   // Arrange
-  const GURL url = GURL("http://foobar.com");
 
   // Act
-  const bool is_supported = SchemeIsSupported(url);
 
   // Assert
-  EXPECT_FALSE(is_supported);
+  EXPECT_FALSE(SchemeIsSupported(GURL("http://foobar.com")));
 }
 
 TEST(BatAdsUrlUtilTest, FooBarSchemeIsNotSupported) {
   // Arrange
-  const GURL url = GURL("foobar://baz");
 
   // Act
-  const bool is_supported = SchemeIsSupported(url);
 
   // Assert
-  EXPECT_FALSE(is_supported);
+  EXPECT_FALSE(SchemeIsSupported(GURL("foobar://baz")));
 }
 
 TEST(BatAdsUrlUtilTest, BraveSchemeWithFooBarHostNameIsNotSupported) {
   // Arrange
-  const GURL url = GURL("brave://foobar");
 
   // Act
-  const bool is_supported = SchemeIsSupported(url);
 
   // Assert
-  EXPECT_FALSE(is_supported);
+  EXPECT_FALSE(SchemeIsSupported(GURL("brave://foobar")));
 }
 
 TEST(BatAdsUrlUtilTest, BraveSchemeWithWalletHostNameIsSupported) {
   // Arrange
-  const GURL url = GURL("brave://wallet");
 
   // Act
-  const bool is_supported = SchemeIsSupported(url);
 
   // Assert
-  EXPECT_TRUE(is_supported);
+  EXPECT_TRUE(SchemeIsSupported(GURL("brave://wallet")));
 }
 
 TEST(BatAdsUrlUtilTest, BraveSchemeWithWalletHostNameAndPathIsSupported) {
   // Arrange
-  const GURL url = GURL("brave://wallet/foo");
 
   // Act
-  const bool is_supported = SchemeIsSupported(url);
 
   // Assert
-  EXPECT_TRUE(is_supported);
+  EXPECT_TRUE(SchemeIsSupported(GURL("brave://wallet/foo")));
 }
 
 TEST(BatAdsUrlUtilTest, BraveSchemeWithSyncHostNameIsSupported) {
   // Arrange
-  const GURL url = GURL("brave://sync");
 
   // Act
-  const bool is_supported = SchemeIsSupported(url);
 
   // Assert
-  EXPECT_TRUE(is_supported);
+  EXPECT_TRUE(SchemeIsSupported(GURL("brave://sync")));
 }
 
 TEST(BatAdsUrlUtilTest, BraveSchemeWithSyncHostNameAndPathIsSupported) {
   // Arrange
-  const GURL url = GURL("brave://sync/foo");
 
   // Act
-  const bool is_supported = SchemeIsSupported(url);
 
   // Assert
-  EXPECT_TRUE(is_supported);
+  EXPECT_TRUE(SchemeIsSupported(GURL("brave://sync/foo")));
 }
 
 TEST(BatAdsUrlUtilTest, BraveSchemeWithRewardsHostNameIsSupported) {
   // Arrange
-  const GURL url = GURL("brave://rewards");
 
   // Act
-  const bool is_supported = SchemeIsSupported(url);
 
   // Assert
-  EXPECT_TRUE(is_supported);
+  EXPECT_TRUE(SchemeIsSupported(GURL("brave://rewards")));
 }
 
 TEST(BatAdsUrlUtilTest, BraveSchemeWithRewardsHostNameAndPathIsSupported) {
   // Arrange
-  const GURL url = GURL("brave://rewards/foo");
 
   // Act
-  const bool is_supported = SchemeIsSupported(url);
 
   // Assert
-  EXPECT_TRUE(is_supported);
+  EXPECT_TRUE(SchemeIsSupported(GURL("brave://rewards/foo")));
 }
 
 TEST(BatAdsUrlUtilTest,
      BraveSchemeWithSettingsHostNameAndSearchEnginesPathIsSupported) {
   // Arrange
-  const GURL url = GURL("brave://settings/searchEngines");
 
   // Act
-  const bool is_supported = SchemeIsSupported(url);
 
   // Assert
-  EXPECT_TRUE(is_supported);
+  EXPECT_TRUE(SchemeIsSupported(GURL("brave://settings/searchEngines")));
 }
 
 TEST(BatAdsUrlUtilTest,
      BraveSchemeWithSettingsHostNameAndSearchPathIsSupported) {
   // Arrange
-  const GURL url = GURL("brave://settings/search");
 
   // Act
-  const bool is_supported = SchemeIsSupported(url);
 
   // Assert
-  EXPECT_TRUE(is_supported);
+  EXPECT_TRUE(SchemeIsSupported(GURL("brave://settings/search")));
 }
 
 TEST(BatAdsUrlUtilTest,
      BraveSchemeWithSettingsHostNameAndFooBarPathIsNotSupported) {
   // Arrange
-  const GURL url = GURL("brave://settings/foobar");
 
   // Act
-  const bool is_supported = SchemeIsSupported(url);
 
   // Assert
-  EXPECT_FALSE(is_supported);
+  EXPECT_FALSE(SchemeIsSupported(GURL("brave://settings/foobar")));
 }
 
 TEST(BatAdsUrlUtilTest, BraveSchemeWithSettingsHostNameIsNotSupported) {
   // Arrange
-  const GURL url = GURL("brave://settings");
 
   // Act
-  const bool is_supported = SchemeIsSupported(url);
 
   // Assert
-  EXPECT_FALSE(is_supported);
+  EXPECT_FALSE(SchemeIsSupported(GURL("brave://settings")));
 }
 
 TEST(BatAdsUrlUtilTest, MalformedUrlIsNotSupported) {
   // Arrange
-  const GURL url = GURL("http://foobar.com/brave://wallet");
 
   // Act
-  const bool is_supported = SchemeIsSupported(url);
 
   // Assert
-  EXPECT_FALSE(is_supported);
+  EXPECT_FALSE(SchemeIsSupported(GURL("http://foobar.com/brave://wallet")));
 }
 
 TEST(BatAdsUrlUtilTest, UrlMatchesPatternWithNoWildcards) {
   // Arrange
-  const GURL url = GURL("https://www.foo.com/");
-  const std::string pattern = "https://www.foo.com/";
 
   // Act
-  const bool does_match = MatchUrlPattern(url, pattern);
 
   // Assert
-  EXPECT_TRUE(does_match);
+  EXPECT_TRUE(MatchUrlPattern(GURL("https://www.foo.com/"),
+                              /*pattern*/ "https://www.foo.com/"));
 }
 
 TEST(BatAdsUrlUtilTest, UrlWithPathMatchesPatternWithNoWildcards) {
   // Arrange
-  const GURL url = GURL("https://www.foo.com/bar");
-  const std::string pattern = "https://www.foo.com/bar";
 
   // Act
-  const bool does_match = MatchUrlPattern(url, pattern);
 
   // Assert
-  EXPECT_TRUE(does_match);
+  EXPECT_TRUE(MatchUrlPattern(GURL("https://www.foo.com/bar"),
+                              /*pattern*/ "https://www.foo.com/bar"));
 }
 
 TEST(BatAdsUrlUtilTest, UrlDoesNotMatchPattern) {
   // Arrange
-  const GURL url = GURL("https://www.foo.com/");
-  const std::string pattern = "www.foo.com";
 
   // Act
-  const bool does_match = MatchUrlPattern(url, pattern);
 
   // Assert
-  EXPECT_FALSE(does_match);
+  EXPECT_FALSE(
+      MatchUrlPattern(GURL("https://www.foo.com/"), /*pattern*/ "www.foo.com"));
 }
 
 TEST(BatAdsUrlUtilTest, UrlDoesNotMatchPatternWithMissingEmptyPath) {
   // Arrange
-  const GURL url = GURL("https://www.foo.com/");
-  const std::string pattern = "https://www.foo.com";
 
   // Act
-  const bool does_match = MatchUrlPattern(url, pattern);
 
   // Assert
-  EXPECT_FALSE(does_match);
+  EXPECT_FALSE(MatchUrlPattern(GURL("https://www.foo.com/"),
+                               /*pattern*/ "https://www.foo.com"));
 }
 
 TEST(BatAdsUrlUtilTest, UrlMatchesEndWildcardPattern) {
   // Arrange
-  const GURL url = GURL("https://www.foo.com/bar?key=test");
-  const std::string pattern = "https://www.foo.com/bar*";
 
   // Act
-  const bool does_match = MatchUrlPattern(url, pattern);
 
   // Assert
-  EXPECT_TRUE(does_match);
+  EXPECT_TRUE(MatchUrlPattern(GURL("https://www.foo.com/bar?key=test"),
+                              /*pattern*/ "https://www.foo.com/bar*"));
 }
 
 TEST(BatAdsUrlUtilTest, UrlMatchesMidWildcardPattern) {
   // Arrange
-  const GURL url = GURL("https://www.foo.com/woo-bar-hoo");
-  const std::string pattern = "https://www.foo.com/woo*hoo";
 
   // Act
-  const bool does_match = MatchUrlPattern(url, pattern);
 
   // Assert
-  EXPECT_TRUE(does_match);
+  EXPECT_TRUE(MatchUrlPattern(GURL("https://www.foo.com/woo-bar-hoo"),
+                              /*pattern*/ "https://www.foo.com/woo*hoo"));
 }
 
 TEST(BatAdsUrlUtilTest, UrlDoesNotMatchMidWildcardPattern) {
   // Arrange
-  const GURL url = GURL("https://www.foo.com/woo");
-  const std::string pattern = "https://www.foo.com/woo*hoo";
 
   // Act
-  const bool does_match = MatchUrlPattern(url, pattern);
 
   // Assert
-  EXPECT_FALSE(does_match);
+  EXPECT_FALSE(MatchUrlPattern(GURL("https://www.foo.com/woo"),
+                               /*pattern*/ "https://www.foo.com/woo*hoo"));
 }
 
 TEST(BatAdsUrlUtilTest, SameDomainOrHost) {
   // Arrange
-  const GURL url1 = GURL("https://foo.com?bar=test");
-  const GURL url2 = GURL("https://subdomain.foo.com/bar");
 
   // Act
-  const bool is_same_site = SameDomainOrHost(url1, url2);
 
   // Assert
-  EXPECT_TRUE(is_same_site);
+  EXPECT_TRUE(SameDomainOrHost(GURL("https://foo.com?bar=test"),
+                               GURL("https://subdomain.foo.com/bar")));
 }
 
 TEST(BatAdsUrlUtilTest, NotSameDomainOrHost) {
   // Arrange
-  const GURL url1 = GURL("https://foo.com?bar=test");
-  const GURL url2 = GURL("https://subdomain.bar.com/foo");
 
   // Act
-  const bool is_same_site = SameDomainOrHost(url1, url2);
 
   // Assert
-  EXPECT_FALSE(is_same_site);
+  EXPECT_FALSE(SameDomainOrHost(GURL("https://foo.com?bar=test"),
+                                GURL("https://subdomain.bar.com/foo")));
 }
 
 TEST(BatAdsUrlUtilTest, SameDomainOrHostForUrlWithNoSubdomain) {
   // Arrange
-  const GURL url1 = GURL("https://foo.com?bar=test");
-  const GURL url2 = GURL("https://foo.com/bar");
 
   // Act
-  const bool is_same_site = SameDomainOrHost(url1, url2);
 
   // Assert
-  EXPECT_TRUE(is_same_site);
+  EXPECT_TRUE(SameDomainOrHost(GURL("https://foo.com?bar=test"),
+                               GURL("https://foo.com/bar")));
 }
 
 TEST(BatAdsUrlUtilTest, NotSameDomainOrHostForUrlWithNoSubdomain) {
   // Arrange
-  const GURL url1 = GURL("https://foo.com?bar=test");
-  const GURL url2 = GURL("https://bar.com/foo");
 
   // Act
-  const bool is_same_site = SameDomainOrHost(url1, url2);
 
   // Assert
-  EXPECT_FALSE(is_same_site);
+  EXPECT_FALSE(SameDomainOrHost(GURL("https://foo.com?bar=test"),
+                                GURL("https://bar.com/foo")));
 }
 
 TEST(BatAdsUrlUtilTest, SameDomainOrHostForUrlWithRef) {
   // Arrange
-  const GURL url1 = GURL("https://foo.com?bar=test#ref");
-  const GURL url2 = GURL("https://foo.com/bar");
 
   // Act
-  const bool is_same_site = SameDomainOrHost(url1, url2);
 
   // Assert
-  EXPECT_TRUE(is_same_site);
+  EXPECT_TRUE(SameDomainOrHost(GURL("https://foo.com?bar=test#ref"),
+                               GURL("https://foo.com/bar")));
 }
 
 TEST(BatAdsUrlUtilTest, NotSameDomainOrHostForUrlWithRef) {
   // Arrange
-  const GURL url1 = GURL("https://foo.com?bar=test#ref");
-  const GURL url2 = GURL("https://bar.com/foo");
 
   // Act
-  const bool is_same_site = SameDomainOrHost(url1, url2);
 
   // Assert
-  EXPECT_FALSE(is_same_site);
+  EXPECT_FALSE(SameDomainOrHost(GURL("https://foo.com?bar=test#ref"),
+                                GURL("https://bar.com/foo")));
 }
 
 TEST(BatAdsUrlUtilTest, DomainOrHostExists) {
@@ -343,13 +287,10 @@ TEST(BatAdsUrlUtilTest, DomainOrHostExists) {
   const std::vector<GURL> urls = {GURL("https://foo.com"),
                                   GURL("https://bar.com")};
 
-  const GURL url = GURL("https://bar.com/foo");
-
   // Act
-  const bool does_exist = DomainOrHostExists(urls, url);
 
   // Assert
-  EXPECT_TRUE(does_exist);
+  EXPECT_TRUE(DomainOrHostExists(urls, GURL("https://bar.com/foo")));
 }
 
 TEST(BatAdsUrlUtilTest, DomainOrHostDoesNotExist) {
@@ -357,13 +298,10 @@ TEST(BatAdsUrlUtilTest, DomainOrHostDoesNotExist) {
   const std::vector<GURL> urls = {GURL("https://foo.com"),
                                   GURL("https://bar.com")};
 
-  const GURL url = GURL("https://baz.com/qux");
-
   // Act
-  const bool does_exist = DomainOrHostExists(urls, url);
 
   // Assert
-  EXPECT_FALSE(does_exist);
+  EXPECT_FALSE(DomainOrHostExists(urls, GURL("https://baz.com/qux")));
 }
 
 }  // namespace brave_ads

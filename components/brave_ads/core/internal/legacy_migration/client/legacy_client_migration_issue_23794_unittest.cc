@@ -24,8 +24,7 @@ class BatAdsLegacyClientMigrationIssue23794Test : public UnitTestBase {};
 
 TEST_F(BatAdsLegacyClientMigrationIssue23794Test, Migrate) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kHasMigratedClientState,
-                                                 false);
+  ads_client_mock_->SetBooleanPref(prefs::kHasMigratedClientState, false);
 
   CopyFileFromTestPathToTempPath(kClientIssue23794Filename,
                                  kClientStateFilename);

@@ -32,6 +32,10 @@ class NavigationHandle;
 
 namespace brave_rewards {
 
+namespace p3a {
+class ConversionMonitor;
+}  // namespace p3a
+
 class RewardsNotificationService;
 class RewardsServiceObserver;
 
@@ -227,16 +231,12 @@ class RewardsService : public KeyedService {
       GetAutoContributionAmountCallback callback) = 0;
   virtual void GetPublisherBanner(const std::string& publisher_id,
                                   GetPublisherBannerCallback callback) = 0;
+
+  // DEPRECATED: Use `SendContribution` instead.
   virtual void OnTip(const std::string& publisher_key,
                      double amount,
                      bool recurring,
                      OnTipCallback callback) = 0;
-
-  // Used in importer from muon days
-  virtual void OnTip(const std::string& publisher_key,
-                     double amount,
-                     const bool recurring,
-                     ledger::mojom::PublisherInfoPtr publisher) = 0;
 
   virtual void RemoveRecurringTip(const std::string& publisher_key) = 0;
 
@@ -370,6 +370,8 @@ class RewardsService : public KeyedService {
   virtual void SetExternalWalletType(const std::string& wallet_type) = 0;
 
   virtual void GetEnvironment(GetEnvironmentCallback callback) = 0;
+
+  virtual p3a::ConversionMonitor* GetP3AConversionMonitor() = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;

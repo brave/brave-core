@@ -47,7 +47,7 @@ class TextEmbedding final : public AdsClientNotifierObserver,
   // TabManagerObserver:
   void OnHtmlContentDidChange(int32_t tab_id,
                               const std::vector<GURL>& redirect_chain,
-                              const std::string& html) override;
+                              const std::string& content) override;
 
   const raw_ptr<resource::TextEmbedding> resource_ = nullptr;  // NOT OWNED
 };

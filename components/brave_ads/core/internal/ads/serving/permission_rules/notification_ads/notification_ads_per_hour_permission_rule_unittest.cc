@@ -9,6 +9,7 @@
 
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/ads/notification_ad_features.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 
@@ -16,118 +17,105 @@
 
 namespace brave_ads::notification_ads {
 
-class BatAdsNotificationAdsPerHourPermissionRuleTest : public UnitTestBase {};
+class BatAdsNotificationAdsPerHourPermissionRuleTest : public UnitTestBase {
+ protected:
+  AdsPerHourPermissionRule permission_rule_;
+};
 
 TEST_F(BatAdsNotificationAdsPerHourPermissionRuleTest,
        AllowAdIfThereIsNoAdsHistory) {
   // Arrange
 
   // Act
-  AdsPerHourPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsNotificationAdsPerHourPermissionRuleTest, AlwaysAllowAdOnAndroid) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
-  const int64_t ads_per_hour = 5;
+  const int ads_per_hour = kDefaultAdsPerHour.Get();
 
-  AdsClientHelper::GetInstance()->SetInt64Pref(
-      prefs::kMaximumNotificationAdsPerHour, ads_per_hour);
-
-  RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
-                 ads_per_hour);
+  ads_client_mock_->SetInt64Pref(prefs::kMaximumNotificationAdsPerHour,
+                                 ads_per_hour);
 
   // Act
-  AdsPerHourPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
+  RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
+                 /*count*/ ads_per_hour);
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsNotificationAdsPerHourPermissionRuleTest, AlwaysAllowAdOnIOS) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
 
-  const int64_t ads_per_hour = 5;
-  AdsClientHelper::GetInstance()->SetInt64Pref(
-      prefs::kMaximumNotificationAdsPerHour, ads_per_hour);
+  const int ads_per_hour = kDefaultAdsPerHour.Get();
 
-  RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
-                 ads_per_hour);
+  ads_client_mock_->SetInt64Pref(prefs::kMaximumNotificationAdsPerHour,
+                                 ads_per_hour);
 
   // Act
-  AdsPerHourPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
+  RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
+                 /*count*/ ads_per_hour);
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsNotificationAdsPerHourPermissionRuleTest,
        AllowAdIfDoesNotExceedCap) {
   // Arrange
-  const int64_t ads_per_hour = 5;
+  const int ads_per_hour = kDefaultAdsPerHour.Get();
 
-  AdsClientHelper::GetInstance()->SetInt64Pref(
-      prefs::kMaximumNotificationAdsPerHour, ads_per_hour);
-
-  RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
-                 ads_per_hour - 1);
+  ads_client_mock_->SetInt64Pref(prefs::kMaximumNotificationAdsPerHour,
+                                 ads_per_hour);
 
   // Act
-  AdsPerHourPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
+  RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
+                 /*count*/ ads_per_hour - 1);
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsNotificationAdsPerHourPermissionRuleTest,
        AllowAdIfDoesNotExceedCapAfter1Hour) {
   // Arrange
-  const int64_t ads_per_hour = 5;
+  const int ads_per_hour = kDefaultAdsPerHour.Get();
 
-  AdsClientHelper::GetInstance()->SetInt64Pref(
-      prefs::kMaximumNotificationAdsPerHour, ads_per_hour);
+  ads_client_mock_->SetInt64Pref(prefs::kMaximumNotificationAdsPerHour,
+                                 ads_per_hour);
 
   RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
-                 ads_per_hour);
-
-  AdvanceClockBy(base::Hours(1));
+                 /*count*/ ads_per_hour);
 
   // Act
-  AdsPerHourPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
+  AdvanceClockBy(base::Hours(1));
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsNotificationAdsPerHourPermissionRuleTest,
        DoNotAllowAdIfExceedsCapWithin1Hour) {
   // Arrange
-  const int64_t ads_per_hour = 5;
+  const int ads_per_hour = kDefaultAdsPerHour.Get();
 
-  AdsClientHelper::GetInstance()->SetInt64Pref(
-      prefs::kMaximumNotificationAdsPerHour, ads_per_hour);
+  ads_client_mock_->SetInt64Pref(prefs::kMaximumNotificationAdsPerHour,
+                                 ads_per_hour);
 
   RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
-                 ads_per_hour);
-
-  AdvanceClockBy(base::Hours(1) - base::Seconds(1));
+                 /*count*/ ads_per_hour);
 
   // Act
-  AdsPerHourPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
+  AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
   // Assert
-  EXPECT_FALSE(is_allowed);
+  EXPECT_FALSE(permission_rule_.ShouldAllow());
 }
 
 }  // namespace brave_ads::notification_ads

@@ -43,7 +43,7 @@ bool ShouldFilterConfirmationType(const ConfirmationType& confirmation_type) {
   return true;
 }
 
-std::map<std::string, HistoryItemInfo> BuildBuckets(
+std::map</*placement_id*/ std::string, HistoryItemInfo> BuildBuckets(
     const HistoryItemList& history_items) {
   std::map<std::string, HistoryItemInfo> buckets;
 

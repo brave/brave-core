@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/files/file_path.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 
 namespace base {
@@ -49,7 +50,7 @@ class SpeedreaderRewriterService {
   void OnLoadStylesheet(std::string stylesheet);
 
   scoped_refptr<base::SequencedTaskRunner> watch_task_runner_;
-  base::FilePathWatcher* file_watcher_ = nullptr;
+  raw_ptr<base::FilePathWatcher> file_watcher_ = nullptr;
 
   std::string content_stylesheet_;
   base::FilePath stylesheet_override_path_;

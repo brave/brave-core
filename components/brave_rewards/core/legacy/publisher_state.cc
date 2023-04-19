@@ -16,7 +16,7 @@ using std::placeholders::_2;
 namespace ledger {
 namespace publisher {
 
-LegacyPublisherState::LegacyPublisherState(ledger::LedgerImpl* ledger)
+LegacyPublisherState::LegacyPublisherState(ledger::LedgerImpl& ledger)
     : ledger_(ledger), state_(new ledger::PublisherSettingsProperties) {}
 
 LegacyPublisherState::~LegacyPublisherState() = default;

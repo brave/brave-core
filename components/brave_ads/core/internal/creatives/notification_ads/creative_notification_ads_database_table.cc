@@ -11,7 +11,6 @@
 #include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
@@ -36,7 +35,7 @@
 namespace brave_ads::database::table {
 
 using CreativeNotificationAdMap =
-    std::map<std::string, CreativeNotificationAdInfo>;
+    std::map</*creative_instance_id*/ std::string, CreativeNotificationAdInfo>;
 
 namespace {
 
@@ -103,12 +102,12 @@ CreativeNotificationAdInfo GetFromRecord(mojom::DBRecordInfo* record) {
 }
 
 CreativeNotificationAdMap GroupCreativeAdsFromResponse(
-    mojom::DBCommandResponseInfoPtr response) {
-  DCHECK(response);
+    mojom::DBCommandResponseInfoPtr command_response) {
+  DCHECK(command_response);
 
   CreativeNotificationAdMap creative_ads;
 
-  for (const auto& record : response->result->get_records()) {
+  for (const auto& record : command_response->result->get_records()) {
     const CreativeNotificationAdInfo creative_ad = GetFromRecord(record.get());
 
     const auto iter = creative_ads.find(creative_ad.creative_instance_id);
@@ -137,11 +136,11 @@ CreativeNotificationAdMap GroupCreativeAdsFromResponse(
 }
 
 CreativeNotificationAdList GetCreativeAdsFromResponse(
-    mojom::DBCommandResponseInfoPtr response) {
-  DCHECK(response);
+    mojom::DBCommandResponseInfoPtr command_response) {
+  DCHECK(command_response);
 
   const CreativeNotificationAdMap grouped_creative_ads =
-      GroupCreativeAdsFromResponse(std::move(response));
+      GroupCreativeAdsFromResponse(std::move(command_response));
 
   CreativeNotificationAdList creative_ads;
   for (const auto& [creative_instance_id, creative_ad] : grouped_creative_ads) {
@@ -153,29 +152,33 @@ CreativeNotificationAdList GetCreativeAdsFromResponse(
 
 void OnGetForSegments(const SegmentList& segments,
                       GetCreativeNotificationAdsCallback callback,
-                      mojom::DBCommandResponseInfoPtr response) {
-  if (!response || response->status !=
-                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+                      mojom::DBCommandResponseInfoPtr command_response) {
+  if (!command_response ||
+      command_response->status !=
+          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative notification ads");
-    return std::move(callback).Run(/*success*/ false, segments, {});
+    return std::move(callback).Run(/*success*/ false, segments,
+                                   /*creative_ads*/ {});
   }
 
   const CreativeNotificationAdList creative_ads =
-      GetCreativeAdsFromResponse(std::move(response));
+      GetCreativeAdsFromResponse(std::move(command_response));
 
   std::move(callback).Run(/*success*/ true, segments, creative_ads);
 }
 
 void OnGetAll(GetCreativeNotificationAdsCallback callback,
-              mojom::DBCommandResponseInfoPtr response) {
-  if (!response || response->status !=
-                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+              mojom::DBCommandResponseInfoPtr command_response) {
+  if (!command_response ||
+      command_response->status !=
+          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get all creative notification ads");
-    return std::move(callback).Run(/*success*/ false, {}, {});
+    return std::move(callback).Run(/*success*/ false, /*segments*/ {},
+                                   /*creative_ads*/ {});
   }
 
   const CreativeNotificationAdList creative_ads =
-      GetCreativeAdsFromResponse(std::move(response));
+      GetCreativeAdsFromResponse(std::move(command_response));
 
   const SegmentList segments = GetSegments(creative_ads);
 
@@ -267,54 +270,28 @@ void CreativeNotificationAds::GetForSegments(
     const SegmentList& segments,
     GetCreativeNotificationAdsCallback callback) const {
   if (segments.empty()) {
-    return std::move(callback).Run(/*success*/ true, segments, {});
+    return std::move(callback).Run(/*success*/ true, segments,
+                                   /*creative_ads*/ {});
   }
 
-  const std::string query = base::StringPrintf(
-      "SELECT "
-      "can.creative_instance_id, "
-      "can.creative_set_id, "
-      "can.campaign_id, "
-      "cam.start_at_timestamp, "
-      "cam.end_at_timestamp, "
-      "cam.daily_cap, "
-      "cam.advertiser_id, "
-      "cam.priority, "
-      "ca.conversion, "
-      "ca.per_day, "
-      "ca.per_week, "
-      "ca.per_month, "
-      "ca.total_max, "
-      "ca.value, "
-      "ca.split_test_group, "
-      "s.segment, "
-      "e.embedding, "
-      "gt.geo_target, "
-      "ca.target_url, "
-      "can.title, "
-      "can.body, "
-      "cam.ptr, "
-      "dp.dow, "
-      "dp.start_minute, "
-      "dp.end_minute "
-      "FROM %s AS can "
-      "INNER JOIN campaigns AS cam "
-      "ON cam.campaign_id = can.campaign_id "
-      "INNER JOIN segments AS s "
-      "ON s.creative_set_id = can.creative_set_id "
-      "LEFT JOIN embeddings AS e "
-      "ON e.creative_set_id = can.creative_set_id "
-      "INNER JOIN creative_ads AS ca "
-      "ON ca.creative_instance_id = can.creative_instance_id "
-      "INNER JOIN geo_targets AS gt "
-      "ON gt.campaign_id = can.campaign_id "
-      "INNER JOIN dayparts AS dp "
-      "ON dp.campaign_id = can.campaign_id "
-      "WHERE s.segment IN %s "
-      "AND %s BETWEEN cam.start_at_timestamp AND cam.end_at_timestamp",
-      GetTableName().c_str(),
-      BuildBindingParameterPlaceholder(segments.size()).c_str(),
-      TimeAsTimestampString(base::Time::Now()).c_str());
+  const std::string query = base::ReplaceStringPlaceholders(
+      "SELECT can.creative_instance_id, can.creative_set_id, can.campaign_id, "
+      "cam.start_at_timestamp, cam.end_at_timestamp, cam.daily_cap, "
+      "cam.advertiser_id, cam.priority, ca.conversion, ca.per_day, "
+      "ca.per_week, ca.per_month, ca.total_max, ca.value, ca.split_test_group, "
+      "s.segment, e.embedding, gt.geo_target, ca.target_url, can.title, "
+      "can.body, cam.ptr, dp.dow, dp.start_minute, dp.end_minute FROM $1 AS "
+      "can INNER JOIN campaigns AS cam ON cam.campaign_id = can.campaign_id "
+      "INNER JOIN segments AS s ON s.creative_set_id = can.creative_set_id "
+      "LEFT JOIN embeddings AS e ON e.creative_set_id = can.creative_set_id "
+      "INNER JOIN creative_ads AS ca ON ca.creative_instance_id = "
+      "can.creative_instance_id INNER JOIN geo_targets AS gt ON gt.campaign_id "
+      "= can.campaign_id INNER JOIN dayparts AS dp ON dp.campaign_id = "
+      "can.campaign_id WHERE s.segment IN $2 AND $3 BETWEEN "
+      "cam.start_at_timestamp AND cam.end_at_timestamp",
+      {GetTableName(), BuildBindingParameterPlaceholder(segments.size()),
+       TimeAsTimestampString(base::Time::Now())},
+      nullptr);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
@@ -366,48 +343,22 @@ void CreativeNotificationAds::GetForSegments(
 
 void CreativeNotificationAds::GetAll(
     GetCreativeNotificationAdsCallback callback) const {
-  const std::string query = base::StringPrintf(
-      "SELECT "
-      "can.creative_instance_id, "
-      "can.creative_set_id, "
-      "can.campaign_id, "
-      "cam.start_at_timestamp, "
-      "cam.end_at_timestamp, "
-      "cam.daily_cap, "
-      "cam.advertiser_id, "
-      "cam.priority, "
-      "ca.conversion, "
-      "ca.per_day, "
-      "ca.per_week, "
-      "ca.per_month, "
-      "ca.total_max, "
-      "ca.value, "
-      "ca.split_test_group, "
-      "s.segment, "
-      "e.embedding, "
-      "gt.geo_target, "
-      "ca.target_url, "
-      "can.title, "
-      "can.body, "
-      "cam.ptr, "
-      "dp.dow, "
-      "dp.start_minute, "
-      "dp.end_minute "
-      "FROM %s AS can "
-      "INNER JOIN campaigns AS cam "
-      "ON cam.campaign_id = can.campaign_id "
-      "INNER JOIN segments AS s "
-      "ON s.creative_set_id = can.creative_set_id "
-      "LEFT JOIN embeddings AS e "
-      "ON e.creative_set_id = can.creative_set_id "
-      "INNER JOIN creative_ads AS ca "
-      "ON ca.creative_instance_id = can.creative_instance_id "
-      "INNER JOIN geo_targets AS gt "
-      "ON gt.campaign_id = can.campaign_id "
-      "INNER JOIN dayparts AS dp "
-      "ON dp.campaign_id = can.campaign_id "
-      "WHERE %s BETWEEN cam.start_at_timestamp AND cam.end_at_timestamp",
-      GetTableName().c_str(), TimeAsTimestampString(base::Time::Now()).c_str());
+  const std::string query = base::ReplaceStringPlaceholders(
+      "SELECT can.creative_instance_id, can.creative_set_id, can.campaign_id, "
+      "cam.start_at_timestamp, cam.end_at_timestamp, cam.daily_cap, "
+      "cam.advertiser_id, cam.priority, ca.conversion, ca.per_day, "
+      "ca.per_week, ca.per_month, ca.total_max, ca.value, ca.split_test_group, "
+      "s.segment, e.embedding, gt.geo_target, ca.target_url, can.title, "
+      "can.body, cam.ptr, dp.dow, dp.start_minute, dp.end_minute FROM $1 AS "
+      "can INNER JOIN campaigns AS cam ON cam.campaign_id = can.campaign_id "
+      "INNER JOIN segments AS s ON s.creative_set_id = can.creative_set_id "
+      "LEFT JOIN embeddings AS e ON e.creative_set_id = can.creative_set_id "
+      "INNER JOIN creative_ads AS ca ON ca.creative_instance_id = "
+      "can.creative_instance_id INNER JOIN geo_targets AS gt ON gt.campaign_id "
+      "= can.campaign_id INNER JOIN dayparts AS dp ON dp.campaign_id = "
+      "can.campaign_id WHERE $2 BETWEEN cam.start_at_timestamp AND "
+      "cam.end_at_timestamp",
+      {GetTableName(), TimeAsTimestampString(base::Time::Now())}, nullptr);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
@@ -493,17 +444,18 @@ std::string CreativeNotificationAds::BuildInsertOrUpdateQuery(
     const CreativeNotificationAdList& creative_ads) const {
   DCHECK(command);
 
-  const int count = BindParameters(command, creative_ads);
+  const int binded_parameters_count = BindParameters(command, creative_ads);
 
-  return base::StringPrintf(
-      "INSERT OR REPLACE INTO %s "
+  return base::ReplaceStringPlaceholders(
+      "INSERT OR REPLACE INTO $1 "
       "(creative_instance_id, "
       "creative_set_id, "
       "campaign_id, "
       "title, "
-      "body) VALUES %s",
-      GetTableName().c_str(),
-      BuildBindingParameterPlaceholders(5, count).c_str());
+      "body) VALUES $2",
+      {GetTableName(), BuildBindingParameterPlaceholders(
+                           /*parameters_count*/ 5, binded_parameters_count)},
+      nullptr);
 }
 
 }  // namespace brave_ads::database::table

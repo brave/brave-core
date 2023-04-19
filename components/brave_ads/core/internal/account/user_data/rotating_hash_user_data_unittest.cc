@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
-#include "brave/components/brave_ads/core/sys_info.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -20,7 +20,8 @@ class BatAdsRotatingHashUserDataTest : public UnitTestBase {};
 
 TEST_F(BatAdsRotatingHashUserDataTest, GetRotatingHash) {
   // Arrange
-  SysInfo().device_id =
+  auto& sys_info = GlobalState::GetInstance()->SysInfo();
+  sys_info.device_id =
       "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 
   AdvanceClockTo(TimeFromString("2 June 2022 11:00", /*is_local*/ false));
@@ -41,7 +42,8 @@ TEST_F(BatAdsRotatingHashUserDataTest, GetRotatingHash) {
 
 TEST_F(BatAdsRotatingHashUserDataTest, RotatingHashMatchesBeforeNextHour) {
   // Arrange
-  SysInfo().device_id =
+  auto& sys_info = GlobalState::GetInstance()->SysInfo();
+  sys_info.device_id =
       "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 
   TransactionInfo transaction;
@@ -51,7 +53,7 @@ TEST_F(BatAdsRotatingHashUserDataTest, RotatingHashMatchesBeforeNextHour) {
   const base::Value::Dict user_data_before = GetRotatingHash(transaction);
 
   // Act
-  AdvanceClockBy(base::Hours(1) - base::Seconds(1));
+  AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
   const base::Value::Dict user_data_after = GetRotatingHash(transaction);
 
@@ -61,7 +63,8 @@ TEST_F(BatAdsRotatingHashUserDataTest, RotatingHashMatchesBeforeNextHour) {
 
 TEST_F(BatAdsRotatingHashUserDataTest, RotatingHashDifferentAfterNextHour) {
   // Arrange
-  SysInfo().device_id =
+  auto& sys_info = GlobalState::GetInstance()->SysInfo();
+  sys_info.device_id =
       "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 
   TransactionInfo transaction;
@@ -82,7 +85,8 @@ TEST_F(BatAdsRotatingHashUserDataTest, RotatingHashDifferentAfterNextHour) {
 TEST_F(BatAdsRotatingHashUserDataTest,
        RotatingHashDifferentForSameHourNextDay) {
   // Arrange
-  SysInfo().device_id =
+  auto& sys_info = GlobalState::GetInstance()->SysInfo();
+  sys_info.device_id =
       "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 
   TransactionInfo transaction;

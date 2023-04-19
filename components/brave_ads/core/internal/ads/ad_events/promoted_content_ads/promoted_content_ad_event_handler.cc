@@ -76,16 +76,8 @@ bool ShouldDebounceAdEvent(
 
 EventHandler::EventHandler() = default;
 
-EventHandler::~EventHandler() = default;
-
-void EventHandler::AddObserver(EventHandlerObserver* observer) {
-  DCHECK(observer);
-  observers_.AddObserver(observer);
-}
-
-void EventHandler::RemoveObserver(EventHandlerObserver* observer) {
-  DCHECK(observer);
-  observers_.RemoveObserver(observer);
+EventHandler::~EventHandler() {
+  delegate_ = nullptr;
 }
 
 void EventHandler::FireEvent(
@@ -184,7 +176,34 @@ void EventHandler::OnGetAdEvents(
   const auto ad_event = AdEventFactory::Build(event_type);
   ad_event->FireEvent(ad);
 
-  NotifyPromotedContentAdEvent(ad, event_type);
+  SuccessfullyFiredEvent(ad, event_type);
+}
+
+void EventHandler::SuccessfullyFiredEvent(
+    const PromotedContentAdInfo& ad,
+    const mojom::PromotedContentAdEventType event_type) const {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
+  if (!delegate_) {
+    return;
+  }
+
+  switch (event_type) {
+    case mojom::PromotedContentAdEventType::kServed: {
+      delegate_->OnPromotedContentAdServed(ad);
+      break;
+    }
+
+    case mojom::PromotedContentAdEventType::kViewed: {
+      delegate_->OnPromotedContentAdViewed(ad);
+      break;
+    }
+
+    case mojom::PromotedContentAdEventType::kClicked: {
+      delegate_->OnPromotedContentAdClicked(ad);
+      break;
+    }
+  }
 }
 
 void EventHandler::FailedToFireEvent(
@@ -197,63 +216,9 @@ void EventHandler::FailedToFireEvent(
               << event_type << " event for placement id " << placement_id
               << " and creative instance id " << creative_instance_id);
 
-  NotifyPromotedContentAdEventFailed(placement_id, creative_instance_id,
-                                     event_type);
-}
-
-void EventHandler::NotifyPromotedContentAdEvent(
-    const PromotedContentAdInfo& ad,
-    const mojom::PromotedContentAdEventType event_type) const {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
-
-  switch (event_type) {
-    case mojom::PromotedContentAdEventType::kServed: {
-      NotifyPromotedContentAdServed(ad);
-      break;
-    }
-
-    case mojom::PromotedContentAdEventType::kViewed: {
-      NotifyPromotedContentAdViewed(ad);
-      break;
-    }
-
-    case mojom::PromotedContentAdEventType::kClicked: {
-      NotifyPromotedContentAdClicked(ad);
-      break;
-    }
-  }
-}
-
-void EventHandler::NotifyPromotedContentAdServed(
-    const PromotedContentAdInfo& ad) const {
-  for (EventHandlerObserver& observer : observers_) {
-    observer.OnPromotedContentAdServed(ad);
-  }
-}
-
-void EventHandler::NotifyPromotedContentAdViewed(
-    const PromotedContentAdInfo& ad) const {
-  for (EventHandlerObserver& observer : observers_) {
-    observer.OnPromotedContentAdViewed(ad);
-  }
-}
-
-void EventHandler::NotifyPromotedContentAdClicked(
-    const PromotedContentAdInfo& ad) const {
-  for (EventHandlerObserver& observer : observers_) {
-    observer.OnPromotedContentAdClicked(ad);
-  }
-}
-
-void EventHandler::NotifyPromotedContentAdEventFailed(
-    const std::string& placement_id,
-    const std::string& creative_instance_id,
-    const mojom::PromotedContentAdEventType event_type) const {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
-
-  for (EventHandlerObserver& observer : observers_) {
-    observer.OnPromotedContentAdEventFailed(placement_id, creative_instance_id,
-                                            event_type);
+  if (delegate_) {
+    delegate_->OnPromotedContentAdEventFailed(placement_id,
+                                              creative_instance_id, event_type);
   }
 }
 

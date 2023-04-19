@@ -14,7 +14,7 @@
 namespace ledger {
 namespace attestation {
 
-AttestationAndroid::AttestationAndroid(LedgerImpl* ledger)
+AttestationAndroid::AttestationAndroid(LedgerImpl& ledger)
     : Attestation(ledger),
       promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)) {}
 

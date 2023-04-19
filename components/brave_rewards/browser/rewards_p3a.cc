@@ -9,69 +9,54 @@
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/p3a_utils/bucket.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave_rewards {
 namespace p3a {
 
-void RecordAutoContributionsState(AutoContributionsState state, int count) {
-  DCHECK_GE(count, 0);
-  int answer = 0;
-  switch (state) {
-    case AutoContributionsState::kNoWallet:
-      break;
-    case AutoContributionsState::kRewardsDisabled:
-      answer = 1;
-      break;
-    case AutoContributionsState::kWalletCreatedAutoContributeOff:
-      answer = 2;
-      break;
-    case AutoContributionsState::kAutoContributeOn:
-      switch (count) {
-        case 0:
-          answer = 3;
-          break;
-        case 1:
-          answer = 4;
-          break;
-        default:
-          answer = 5;
-      }
-      break;
-    default:
-      NOTREACHED();
-  }
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Rewards.AutoContributionsState.2", answer,
-                             6);
+#if !BUILDFLAG(IS_ANDROID)
+namespace {
+
+// The maximum time difference allowed between the rewards panel opening action
+// (which may have enabled rewards) and the actual enabling of rewards. This is
+// to ensure that there is a clear connection between the action and the reward
+// enabling.
+constexpr base::TimeDelta kMaxEnabledCauseTriggerTime = base::Minutes(1);
+
+}  // namespace
+#endif  // !BUILDFLAG(IS_ANDROID)
+
+const char kEnabledSourceHistogramName[] = "Brave.Rewards.EnabledSource";
+const char kInlineTipTriggerHistogramName[] = "Brave.Rewards.InlineTipTrigger";
+const char kToolbarButtonTriggerHistogramName[] =
+    "Brave.Rewards.ToolbarButtonTrigger";
+const char kTipsSentHistogramName[] = "Brave.Rewards.TipsSent";
+const char kAutoContributionsStateHistogramName[] =
+    "Brave.Rewards.AutoContributionsState.3";
+const char kAdsEnabledDurationHistogramName[] =
+    "Brave.Rewards.AdsEnabledDuration";
+const char kAdsStateHistogramName[] = "Brave.Rewards.AdsState.2";
+const int kTipsSentBuckets[] = {1, 3};
+
+void RecordAutoContributionsState(bool ac_enabled) {
+  UMA_HISTOGRAM_EXACT_LINEAR(kAutoContributionsStateHistogramName, ac_enabled,
+                             2);
 }
 
-void RecordTipsState(bool wallet_created,
-                     bool rewards_enabled,
-                     int one_time_count,
-                     int recurring_count) {
-  DCHECK_GE(one_time_count, 0);
-  DCHECK_GE(recurring_count, 0);
+void RecordTipsSent(size_t tip_count) {
+  DCHECK_GE(tip_count, 0u);
 
-  int answer = 0;
-  if (wallet_created && !rewards_enabled) {
-    answer = 1;
-  } else if (rewards_enabled) {
-    DCHECK(wallet_created);
-    if (one_time_count == 0 && recurring_count == 0) {
-      answer = 2;
-    } else if (one_time_count > 0 && recurring_count > 0) {
-      answer = 5;
-    } else if (one_time_count > 0) {
-      answer = 3;
-    } else {
-      answer = 4;
-    }
+  if (tip_count == 0) {
+    return;
   }
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Rewards.TipsState.2", answer, 6);
+
+  p3a_utils::RecordToHistogramBucket(kTipsSentHistogramName, kTipsSentBuckets,
+                                     tip_count);
 }
 
 void RecordAdsState(AdsState state) {
-  UMA_HISTOGRAM_ENUMERATION("Brave.Rewards.AdsState.2", state);
+  UMA_HISTOGRAM_ENUMERATION(kAdsStateHistogramName, state);
 }
 
 void UpdateAdsStateOnPreferenceChange(PrefService* prefs,
@@ -98,15 +83,10 @@ void MaybeRecordInitialAdsState(PrefService* prefs) {
 }
 
 void RecordNoWalletCreatedForAllMetrics() {
-  RecordAutoContributionsState(AutoContributionsState::kNoWallet, 0);
-  RecordTipsState(false, false, 0, 0);
   RecordAdsState(AdsState::kNoWallet);
-}
-
-void RecordRewardsDisabledForSomeMetrics() {
-  RecordAutoContributionsState(AutoContributionsState::kRewardsDisabled, 0);
-  RecordTipsState(true, false, 0, 0);
-  // Ads state is handled separately.
+  UMA_HISTOGRAM_EXACT_LINEAR(kTipsSentHistogramName, INT_MAX - 1, 3);
+  UMA_HISTOGRAM_EXACT_LINEAR(kAutoContributionsStateHistogramName, INT_MAX - 1,
+                             2);
 }
 
 void RecordAdsEnabledDuration(PrefService* prefs, bool ads_enabled) {
@@ -156,8 +136,42 @@ void RecordAdsEnabledDuration(PrefService* prefs, bool ads_enabled) {
     enabled_duration = AdsEnabledDuration::kQuarters;
   }
 
-  UMA_HISTOGRAM_ENUMERATION("Brave.Rewards.AdsEnabledDuration",
-                            enabled_duration);
+  UMA_HISTOGRAM_ENUMERATION(kAdsEnabledDurationHistogramName, enabled_duration);
+}
+
+ConversionMonitor::ConversionMonitor() = default;
+ConversionMonitor::~ConversionMonitor() = default;
+
+void ConversionMonitor::RecordPanelTrigger(PanelTrigger trigger) {
+#if !BUILDFLAG(IS_ANDROID)
+  if (trigger == PanelTrigger::kInlineTip) {
+    UMA_HISTOGRAM_EXACT_LINEAR(kInlineTipTriggerHistogramName, 1, 2);
+  } else if (trigger == PanelTrigger::kToolbarButton) {
+    UMA_HISTOGRAM_EXACT_LINEAR(kToolbarButtonTriggerHistogramName, 1, 2);
+  }
+  last_trigger_ = trigger;
+  last_trigger_time_ = base::Time::Now();
+#endif  // !BUILDFLAG(IS_ANDROID)
+}
+
+void ConversionMonitor::RecordRewardsEnable() {
+#if !BUILDFLAG(IS_ANDROID)
+  // Suspend the other two metrics to prevent overlapping
+  // data from being sent once the "rewards enabled source" metric is recorded.
+  UMA_HISTOGRAM_EXACT_LINEAR(kToolbarButtonTriggerHistogramName, INT_MAX - 1,
+                             2);
+  UMA_HISTOGRAM_EXACT_LINEAR(kInlineTipTriggerHistogramName, INT_MAX - 1, 2);
+
+  if (!last_trigger_.has_value() ||
+      base::Time::Now() - last_trigger_time_ > kMaxEnabledCauseTriggerTime) {
+    return;
+  }
+
+  UMA_HISTOGRAM_ENUMERATION(kEnabledSourceHistogramName, *last_trigger_);
+
+  last_trigger_.reset();
+  last_trigger_time_ = base::Time();
+#endif  // !BUILDFLAG(IS_ANDROID)
 }
 
 }  // namespace p3a

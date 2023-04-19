@@ -13,6 +13,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_factory.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
@@ -29,7 +30,7 @@ using StatisticalVotingWinners = std::map<std::string, uint32_t>;
 
 class Unblinded {
  public:
-  explicit Unblinded(LedgerImpl* ledger);
+  explicit Unblinded(LedgerImpl& ledger);
   ~Unblinded();
 
   void Start(const std::vector<mojom::CredsBatchType>& types,
@@ -132,7 +133,7 @@ class Unblinded {
       const std::vector<ledger::mojom::ContributionPublisherPtr>&
           publisher_list);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
   std::unique_ptr<credential::Credentials> credentials_promotion_;
   std::unique_ptr<credential::Credentials> credentials_sku_;
 };

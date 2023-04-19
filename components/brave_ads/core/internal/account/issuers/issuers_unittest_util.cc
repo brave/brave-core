@@ -28,7 +28,7 @@ IssuerInfo BuildIssuer(const IssuerType type, const PublicKeyMap& public_keys) {
 URLResponseMap GetValidIssuersUrlResponses() {
   return {{// Issuers request
            "/v3/issuers/",
-           {{net::HTTP_OK, R"(
+           {{net::HTTP_OK, /*response_body*/ R"(
         {
           "ping": 7200000,
           "issuers": [
@@ -66,7 +66,7 @@ URLResponseMap GetValidIssuersUrlResponses() {
 URLResponseMap GetInvalidIssuersUrlResponses() {
   return {{// Get issuers request
            "/v3/issuers/",
-           {{net::HTTP_OK, R"(
+           {{net::HTTP_OK, /*response_body*/ R"(
         {
           "ping": 7200000,
           "issuers": [

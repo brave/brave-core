@@ -8,9 +8,6 @@
 #include <memory>
 #include <utility>
 
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
-#include "brave/components/brave_ads/core/build_channel.h"
-#include "brave/components/brave_ads/core/sys_info.h"
 #include "brave/components/services/bat_ads/bat_ads_impl.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 
@@ -32,22 +29,6 @@ void BatAdsServiceImpl::Create(
       std::make_unique<BatAdsImpl>(std::move(bat_ads_client),
                                    std::move(bat_ads_client_notifier)),
       std::move(bat_ads));
-
-  std::move(callback).Run();
-}
-
-void BatAdsServiceImpl::SetSysInfo(brave_ads::mojom::SysInfoPtr sys_info,
-                                   SetSysInfoCallback callback) {
-  brave_ads::SysInfo().device_id = sys_info->device_id;
-
-  std::move(callback).Run();
-}
-
-void BatAdsServiceImpl::SetBuildChannel(
-    brave_ads::mojom::BuildChannelInfoPtr build_channel,
-    SetBuildChannelCallback callback) {
-  brave_ads::BuildChannel().is_release = build_channel->is_release;
-  brave_ads::BuildChannel().name = build_channel->name;
 
   std::move(callback).Run();
 }

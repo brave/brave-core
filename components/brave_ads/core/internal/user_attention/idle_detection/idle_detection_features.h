@@ -7,20 +7,27 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ATTENTION_IDLE_DETECTION_IDLE_DETECTION_FEATURES_H_
 
 #include "base/feature_list.h"
+#include "base/metrics/field_trial_params.h"
 
 namespace base {
 class TimeDelta;
 }  // namespace base
 
-namespace brave_ads::idle_detection::features {
+namespace brave_ads {
 
-BASE_DECLARE_FEATURE(kIdleDetection);
+BASE_DECLARE_FEATURE(kIdleDetectionFeature);
 
-bool IsEnabled();
-base::TimeDelta GetIdleTimeThreshold();
-base::TimeDelta GetMaximumIdleTime();
-bool ShouldDetectScreenWasLocked();
+bool IsIdleDetectionEnabled();
 
-}  // namespace brave_ads::idle_detection::features
+constexpr base::FeatureParam<base::TimeDelta> kIdleTimeThreshold{
+    &kIdleDetectionFeature, "idle_time_threshold", base::Seconds(5)};
+
+constexpr base::FeatureParam<base::TimeDelta> kMaximumIdleTime{
+    &kIdleDetectionFeature, "maximum_idle_time", base::Seconds(0)};
+
+constexpr base::FeatureParam<bool> kShouldDetectScreenWasLocked{
+    &kIdleDetectionFeature, "should_detect_screen_was_locked", false};
+
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ATTENTION_IDLE_DETECTION_IDLE_DETECTION_FEATURES_H_

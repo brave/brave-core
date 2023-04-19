@@ -12,10 +12,8 @@ namespace ledger {
 namespace credential {
 
 std::unique_ptr<Credentials> CredentialsFactory::Create(
-    LedgerImpl* ledger,
+    LedgerImpl& ledger,
     const mojom::CredsBatchType trigger_type) {
-  DCHECK(ledger);
-
   switch (trigger_type) {
     case mojom::CredsBatchType::NONE: {
       return nullptr;

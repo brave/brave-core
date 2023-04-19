@@ -23,6 +23,8 @@ export function LimitedView () {
 
   const [adsEnabled, setAdsEnabled] =
     React.useState(host.state.settings.adsEnabled)
+  const [publisherInfo, setPublisherInfo] =
+    React.useState(host.state.publisherInfo)
   const [publishersVisitedCount, setPublishersVisitedCount] =
     React.useState(host.state.publishersVisitedCount)
   const [publisherCountText, setPublisherCountText] = React.useState('')
@@ -31,6 +33,7 @@ export function LimitedView () {
 
   useHostListener(host, (state) => {
     setAdsEnabled(state.settings.adsEnabled)
+    setPublisherInfo(state.publisherInfo)
     setPublishersVisitedCount(state.publishersVisitedCount)
     setCanConnectAccount(derivedState.canConnectAccount(state))
   })
@@ -59,13 +62,37 @@ export function LimitedView () {
       return (
         <style.connect>
           <div>
-            {getString('connectAccountNoProviders')}
+            {
+              getString(publisherInfo
+                ? 'connectContributeNoProviders'
+                : 'connectAccountNoProviders')
+            }
           </div>
           <style.connectLearnMore>
             <NewTabLink href={supportedWalletRegionsURL}>
               {getString('learnMore')}
             </NewTabLink>
           </style.connectLearnMore>
+        </style.connect>
+      )
+    }
+
+    if (publisherInfo) {
+      return (
+        <style.connect>
+          <style.connectAction>
+            <button onClick={onConnectAccount}>
+              {getString('rewardsConnectAccount')}<ArrowNextIcon />
+            </button>
+          </style.connectAction>
+          <div>
+            <div>
+              <strong>{getString('connectContributeHeader')}</strong>
+            </div>
+            <div>
+              {getString('connectContributeText')}
+            </div>
+          </div>
         </style.connect>
       )
     }

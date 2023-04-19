@@ -8,11 +8,12 @@
 
 #include <string>
 
+#include "base/check_op.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/observer_list.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_observer.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_delegate.h"
 
 namespace brave_ads {
 
@@ -21,7 +22,7 @@ struct NewTabPageAdInfo;
 
 namespace new_tab_page_ads {
 
-class EventHandler final : public EventHandlerObserver {
+class EventHandler final : public EventHandlerDelegate {
  public:
   EventHandler();
 
@@ -33,8 +34,10 @@ class EventHandler final : public EventHandlerObserver {
 
   ~EventHandler() override;
 
-  void AddObserver(EventHandlerObserver* observer);
-  void RemoveObserver(EventHandlerObserver* observer);
+  void SetDelegate(EventHandlerDelegate* delegate) {
+    DCHECK_EQ(delegate_, nullptr);
+    delegate_ = delegate;
+  }
 
   void FireEvent(const std::string& placement_id,
                  const std::string& creative_instance_id,
@@ -53,21 +56,14 @@ class EventHandler final : public EventHandlerObserver {
                      mojom::NewTabPageAdEventType event_type,
                      bool success,
                      const AdEventList& ad_events);
+
+  void SuccessfullyFiredEvent(const NewTabPageAdInfo& ad,
+                              mojom::NewTabPageAdEventType event_type) const;
   void FailedToFireEvent(const std::string& placement_id,
                          const std::string& creative_instance_id,
                          mojom::NewTabPageAdEventType event_type) const;
 
-  void NotifyNewTabPageAdEvent(const NewTabPageAdInfo& ad,
-                               mojom::NewTabPageAdEventType event_type) const;
-  void NotifyNewTabPageAdServed(const NewTabPageAdInfo& ad) const;
-  void NotifyNewTabPageAdViewed(const NewTabPageAdInfo& ad) const;
-  void NotifyNewTabPageAdClicked(const NewTabPageAdInfo& ad) const;
-  void NotifyNewTabPageAdEventFailed(
-      const std::string& placement_id,
-      const std::string& creative_instance_id,
-      mojom::NewTabPageAdEventType event_type) const;
-
-  base::ObserverList<EventHandlerObserver> observers_;
+  raw_ptr<EventHandlerDelegate> delegate_ = nullptr;
 
   base::WeakPtrFactory<EventHandler> weak_factory_{this};
 };

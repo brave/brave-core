@@ -22,7 +22,7 @@ using GetPromotionListCallback =
 
 class DatabasePromotion : public DatabaseTable {
  public:
-  explicit DatabasePromotion(LedgerImpl* ledger);
+  explicit DatabasePromotion(LedgerImpl& ledger);
   ~DatabasePromotion() override;
 
   void InsertOrUpdate(mojom::PromotionPtr info,

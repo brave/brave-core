@@ -16,8 +16,8 @@ using std::placeholders::_2;
 namespace ledger {
 namespace database {
 
-DatabaseInitialize::DatabaseInitialize(LedgerImpl* ledger) : ledger_(ledger) {
-  migration_ = std::make_unique<ledger::database::DatabaseMigration>(ledger_);
+DatabaseInitialize::DatabaseInitialize(LedgerImpl& ledger) : ledger_(ledger) {
+  migration_ = std::make_unique<ledger::database::DatabaseMigration>(ledger);
 }
 
 DatabaseInitialize::~DatabaseInitialize() = default;

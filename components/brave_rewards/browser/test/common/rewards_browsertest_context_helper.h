@@ -26,8 +26,7 @@ class RewardsBrowserTestContextHelper {
 
   base::WeakPtr<content::WebContents> OpenRewardsPopup();
 
-  base::WeakPtr<content::WebContents> OpenSiteBanner(
-      rewards_browsertest_util::TipAction tip_action);
+  base::WeakPtr<content::WebContents> OpenSiteBanner();
 
   // Visit publisher and verify that the auto-contribution panel on
   // brave://rewards looks correct

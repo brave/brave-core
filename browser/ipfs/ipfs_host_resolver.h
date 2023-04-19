@@ -25,7 +25,7 @@ namespace ipfs {
 // automatically adds it to the host.
 class IPFSHostResolver : public network::ResolveHostClientBase {
  public:
-  explicit IPFSHostResolver(network::mojom::NetworkContext* network_context,
+  explicit IPFSHostResolver(network::mojom::NetworkContext& network_context,
                             const std::string& prefix = std::string());
   ~IPFSHostResolver() override;
 
@@ -54,7 +54,7 @@ class IPFSHostResolver : public network::ResolveHostClientBase {
   std::string prefix_;
   absl::optional<std::string> dnslink_;
 
-  network::mojom::NetworkContext* network_context_ = nullptr;
+  raw_ref<network::mojom::NetworkContext> network_context_;
   HostTextResultsCallback resolved_callback_;
 
   mojo::Receiver<network::mojom::ResolveHostClient> receiver_{this};

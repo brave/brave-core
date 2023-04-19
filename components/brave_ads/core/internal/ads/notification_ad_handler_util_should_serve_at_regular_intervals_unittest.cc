@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads/notification_ad_handler_util.h"
 
+#include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -83,16 +84,15 @@ class BatAdsNotificationAdUtilShouldServeAtRegularIntervalsTest
   void SetUpMocks() override {
     const ParamInfo param = GetParam();
 
-    AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled,
-                                                   param.is_enabled);
+    ads_client_mock_->SetBooleanPref(prefs::kEnabled, param.is_enabled);
 
     MockIsBrowserActive(ads_client_mock_, param.is_browser_active);
 
     MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
         ads_client_mock_, param.can_show_while_browser_is_backgrounded);
 
-    AdsClientHelper::GetInstance()->SetInt64Pref(
-        prefs::kMaximumNotificationAdsPerHour, param.ads_per_hour);
+    ads_client_mock_->SetInt64Pref(prefs::kMaximumNotificationAdsPerHour,
+                                   param.ads_per_hour);
   }
 };
 
@@ -127,12 +127,13 @@ std::string TestParamToString(::testing::TestParamInfo<ParamInfo> test_param) {
           : "CannotShowWhileBrowserIsBackgrounded";
 
   const std::string ads_per_hour =
-      base::StringPrintf("%dAdsPerHour", test_param.param.ads_per_hour);
+      base::StringPrintf("%dAdsPerPerHour", test_param.param.ads_per_hour);
 
-  return base::StringPrintf(
-      "%sIf%sAnd%sAnd%sAnd%s", should_serve_at_regular_intervals.c_str(),
-      is_enabled.c_str(), is_browser_active.c_str(),
-      can_show_while_browser_is_backgrounded.c_str(), ads_per_hour.c_str());
+  return base::ReplaceStringPlaceholders(
+      "$1If$2And$3And$4And$5",
+      {should_serve_at_regular_intervals, is_enabled, is_browser_active,
+       can_show_while_browser_is_backgrounded, ads_per_hour},
+      nullptr);
 }
 
 INSTANTIATE_TEST_SUITE_P(

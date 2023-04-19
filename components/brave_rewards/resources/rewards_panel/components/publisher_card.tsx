@@ -8,16 +8,17 @@ import * as React from 'react'
 import { LocaleContext, formatMessage } from '../../shared/lib/locale_context'
 import { getPublisherPlatformName } from '../../shared/lib/publisher_platform'
 import { HostContext, useHostListener } from '../lib/host_context'
-import { MonthlyTipAction } from '../lib/interfaces'
 import { NewTabLink } from '../../shared/components/new_tab_link'
 import { ToggleButton } from '../../shared/components/toggle_button'
-import { MonthlyTipView } from './monthly_tip_view'
+import { TokenAmount } from '../../shared/components/token_amount'
 import { VerifiedIcon } from './icons/verified_icon'
 import { LoadingIcon } from '../../shared/components/icons/loading_icon'
+import { InfoIcon } from './icons/info_icon'
 import { RefreshStatusIcon } from './icons/refresh_status_icon'
-import { getExternalWalletProviderName } from '../../shared/lib/external_wallet'
 
 import * as style from './publisher_card.style'
+
+const unverifiedLearnMoreURL = 'https://brave.com/faq/#unclaimed-funds'
 
 export function PublisherCard () {
   const { getString } = React.useContext(LocaleContext)
@@ -27,8 +28,6 @@ export function PublisherCard () {
     React.useState(host.state.publisherInfo)
   const [publisherRefreshing, setPublisherRefreshing] =
     React.useState(host.state.publisherRefreshing)
-  const [externalWallet, setExternalWallet] =
-    React.useState(host.state.externalWallet)
   const [settings, setSettings] = React.useState(host.state.settings)
 
   const [showPublisherLoading, setShowPublisherLoading] = React.useState(false)
@@ -36,7 +35,6 @@ export function PublisherCard () {
   useHostListener(host, (state) => {
     setPublisherInfo(state.publisherInfo)
     setPublisherRefreshing(state.publisherRefreshing)
-    setExternalWallet(state.externalWallet)
     setSettings(host.state.settings)
   })
 
@@ -44,79 +42,21 @@ export function PublisherCard () {
     return null
   }
 
-  function shouldRenderPendingBubble () {
-    if (!publisherInfo) {
-      return false
-    }
-
-    const { supportedWalletProviders } = publisherInfo
-
-    // Show the bubble if the publisher is not verified.
-    if (supportedWalletProviders.length === 0) {
-      return true
-    }
-
-    // Do not show the bubble if the publisher is verified and the user does
-    // not have an external wallet.
-    if (!externalWallet) {
-      return false
-    }
-
-    // Do not show the bubble if the publisher has a wallet provider address
-    // that matches the user's wallet provider.
-    if (supportedWalletProviders.includes(externalWallet.provider)) {
-      return false
-    }
-
-    return true
-  }
-
-  function renderPendingBubble () {
-    if (!publisherInfo || !shouldRenderPendingBubble()) {
-      return null
-    }
-
-    const { supportedWalletProviders } = publisherInfo
-
-    return (
-      <style.pendingBubble>
-        <style.pendingBubbleHeader>
-          {
-            supportedWalletProviders.length === 0
-            ? getString('pendingTipTitle')
-            : formatMessage(getString('pendingTipTitleRegistered'), [
-                getExternalWalletProviderName(externalWallet!.provider),
-                getExternalWalletProviderName(supportedWalletProviders[0])
-              ])
-          }
-        </style.pendingBubbleHeader>
-        <style.pendingBubbleText>
-          {
-            getString('pendingTipText')
-          }
-          <NewTabLink href='https://brave.com/faq/#unclaimed-funds'>
-            {getString('unverifiedTextMore')}
-          </NewTabLink>
-        </style.pendingBubbleText>
-      </style.pendingBubble>
-    )
-  }
+  const publisherVerified = publisherInfo.verified
 
   function renderStatusIndicator () {
     if (!publisherInfo) {
       return null
     }
 
-    const verified = publisherInfo.supportedWalletProviders.length !== 0
-
     return (
-      <style.statusIndicator className={verified ? 'verified' : ''}>
+      <style.statusIndicator className={publisherVerified ? 'verified' : ''}>
         <div><VerifiedIcon /></div>
         <div>
-          {getString(verified ? 'verifiedCreator' : 'unverifiedCreator')}
-          <div className='pending-bubble'>
-            {renderPendingBubble()}
-          </div>
+          {
+            getString(
+              publisherVerified ? 'verifiedCreator' : 'unverifiedCreator')
+          }
         </div>
       </style.statusIndicator>
     )
@@ -131,10 +71,8 @@ export function PublisherCard () {
     host.refreshPublisherStatus()
   }
 
-  function monthlyTipHandler (action: MonthlyTipAction) {
-    return () => {
-      host.handleMonthlyTipAction(action)
-    }
+  function onMonthlyTipClick () {
+    host.openRewardsSettings()
   }
 
   function getPublisherName () {
@@ -150,6 +88,75 @@ export function PublisherCard () {
     }
 
     return publisherInfo.name
+  }
+
+  function renderContributionInfo () {
+    if (!publisherInfo) {
+      return null
+    }
+
+    if (!publisherVerified) {
+      return (
+        <style.unverifiedNote>
+          <div>
+            <InfoIcon />
+          </div>
+          <div>
+            {getString('unverifiedText')}
+            <div>
+              <NewTabLink href={unverifiedLearnMoreURL}>
+                {getString('learnMore')}
+              </NewTabLink>
+            </div>
+          </div>
+        </style.unverifiedNote>
+      )
+    }
+
+    return (
+      <>
+        {
+          settings.autoContributeEnabled &&
+            <style.attention data-test-id='attention-score-text'>
+              <div>{getString('attention')}</div>
+              <div className='value'>
+                {(publisherInfo.attentionScore * 100).toFixed(0)}%
+              </div>
+            </style.attention>
+        }
+        <style.contribution>
+          {
+            settings.autoContributeEnabled &&
+              <style.autoContribution>
+                <div>{getString('includeInAutoContribute')}</div>
+                <div>
+                  <ToggleButton
+                    checked={publisherInfo.autoContributeEnabled}
+                    onChange={host.setIncludeInAutoContribute}
+                  />
+                </div>
+              </style.autoContribution>
+          }
+          {
+            publisherInfo.monthlyTip > 0 &&
+              <style.monthlyTip>
+                <div>{getString('monthlyTip')}</div>
+                <style.monthlyTipAmount>
+                  <button
+                    onClick={onMonthlyTipClick}
+                    data-test-id='monthly-tip-button'
+                  >
+                    <TokenAmount
+                      amount={publisherInfo.monthlyTip}
+                      minimumFractionDigits={0}
+                    />
+                  </button>
+                </style.monthlyTipAmount>
+              </style.monthlyTip>
+          }
+        </style.contribution>
+      </>
+    )
   }
 
   return (
@@ -181,41 +188,13 @@ export function PublisherCard () {
           </style.status>
         </style.name>
       </style.heading>
-      {
-        settings.autoContributeEnabled &&
-          <style.attention data-test-id='attention-score-text'>
-            <div>{getString('attention')}</div>
-            <div className='value'>
-              {(publisherInfo.attentionScore * 100).toFixed(0)}%
-            </div>
-          </style.attention>
-      }
-      <style.contribution>
-        {
-          settings.autoContributeEnabled &&
-            <style.autoContribution>
-              <div>{getString('includeInAutoContribute')}</div>
-              <div>
-                <ToggleButton
-                  checked={publisherInfo.autoContributeEnabled}
-                  onChange={host.setIncludeInAutoContribute}
-                />
-              </div>
-            </style.autoContribution>
-        }
-        <style.monthlyTip>
-          <div>{getString('monthlyTip')}</div>
-          <div>
-            <MonthlyTipView
-              publisherInfo={publisherInfo}
-              onUpdateClick={monthlyTipHandler('update')}
-              onCancelClick={monthlyTipHandler('cancel')}
-            />
-          </div>
-        </style.monthlyTip>
-      </style.contribution>
+      {renderContributionInfo()}
       <style.tipAction>
-        <button data-test-id='tip-button' onClick={host.sendTip}>
+        <button
+          data-test-id='tip-button'
+          onClick={host.sendTip}
+          disabled={!publisherVerified}
+        >
           {getString('sendTip')}
         </button>
       </style.tipAction>

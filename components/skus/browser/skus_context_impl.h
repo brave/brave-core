@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ref.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/skus/browser/rs/cxx/src/shim.h"
 
@@ -48,7 +49,7 @@ class SkusContextImpl : public SkusContext {
 
  private:
   // used to store the credential
-  PrefService* prefs_;
+  const raw_ref<PrefService> prefs_;
 
   // used for making requests to SKU server
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;

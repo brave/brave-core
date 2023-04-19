@@ -22,7 +22,7 @@ const char kTableName[] = "sku_order_items";
 
 }  // namespace
 
-DatabaseSKUOrderItems::DatabaseSKUOrderItems(LedgerImpl* ledger)
+DatabaseSKUOrderItems::DatabaseSKUOrderItems(LedgerImpl& ledger)
     : DatabaseTable(ledger) {}
 
 DatabaseSKUOrderItems::~DatabaseSKUOrderItems() = default;

@@ -28,7 +28,7 @@ class GetCredentialsTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
-  GetCredentials creds_{&mock_ledger_impl_};
+  GetCredentials creds_{mock_ledger_impl_};
 };
 
 TEST_F(GetCredentialsTest, ServerOK) {

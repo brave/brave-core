@@ -77,6 +77,7 @@ struct PublisherBanner {
   string provider;
   map<string, string> links;
   PublisherStatus status = PublisherStatus.NOT_VERIFIED;
+  string web3_url;
 };
 
 struct PendingContribution {
@@ -229,7 +230,8 @@ enum PublisherStatus {
   NOT_VERIFIED = 0,
   UPHOLD_VERIFIED = 2,
   BITFLYER_VERIFIED = 3,
-  GEMINI_VERIFIED = 4
+  GEMINI_VERIFIED = 4,
+  WEB3_ENABLED = 5
 };
 
 struct ServerPublisherInfo {

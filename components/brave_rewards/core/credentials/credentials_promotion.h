@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_common.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotion_server.h"
 
@@ -19,7 +20,7 @@ namespace credential {
 
 class CredentialsPromotion : public Credentials {
  public:
-  explicit CredentialsPromotion(LedgerImpl* ledger);
+  explicit CredentialsPromotion(LedgerImpl& ledger);
   ~CredentialsPromotion() override;
 
   void Start(const CredentialsTrigger& trigger,
@@ -100,7 +101,7 @@ class CredentialsPromotion : public Credentials {
                      mojom::Result result,
                      std::string drain_id);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
   std::unique_ptr<CredentialsCommon> common_;
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;
 };

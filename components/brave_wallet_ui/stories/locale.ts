@@ -884,5 +884,11 @@ provideStrings({
   braveWalletNftPinningErrorTooltipReasonTwo: 'Internal IPFS node problems',
   braveWalletNftPinningErrorTooltipReasonThree: 'Not enough space on local node',
   braveWalletImportNftModalTitle: 'Import NFT',
-  braveWalletEditNftModalTitle: 'Edit NFT'
+  braveWalletEditNftModalTitle: 'Edit NFT',
+  
+  // NFT auto discovery modal
+  braveWalletEnableNftAutoDiscoveryModalHeader: 'Want your NFTs displayed automatically?',
+  braveWalletEnableNftAutoDiscoveryModalDescription: 'Brave Wallet can use a third-party service to automatically display your NFTs. Brave will share your wallet addresses with $1SimpleHash$2 to provide this service. $3Learn more.$4',
+  braveWalletEnableNftAutoDiscoveryModalConfirm: 'Yes, proceed',
+  braveWalletEnableNftAutoDiscoveryModalCancel: 'No thanks, I\'ll do it manually'
 })

@@ -13,6 +13,7 @@
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
@@ -743,65 +744,6 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
       }
     }, {
 #endif
-      std::string("tip"), {
-        { "batFunds", IDS_BRAVE_REWARDS_TIP_BAT_FUNDS },
-        { "cancel", IDS_BRAVE_REWARDS_TIP_CANCEL },
-        { "cancelConfirmationText", IDS_BRAVE_REWARDS_TIP_CANCEL_CONFIRMATION_TEXT },  // NOLINT
-        { "cancelMonthlyTip", IDS_BRAVE_REWARDS_TIP_CANCEL_MONTHLY_TIP },
-        { "changeAmount", IDS_BRAVE_REWARDS_TIP_CHANGE_AMOUNT },
-        { "confirmCancel", IDS_BRAVE_REWARDS_TIP_CONFIRM_CANCEL },
-        { "continue", IDS_BRAVE_REWARDS_TIP_CONTINUE },
-        { "tipAmount", IDS_BRAVE_REWARDS_TIP_TIP_AMOUNT },
-        { "tipCanceled", IDS_BRAVE_REWARDS_TIP_TIP_CANCELED },
-        { "connectAccountButton", IDS_BRAVE_REWARDS_TIP_CONNECT_ACCOUNT_BUTTON },
-        { "connectAccountText", IDS_BRAVE_REWARDS_TIP_CONNECT_ACCOUNT_TEXT },
-        { "currentlySupporting", IDS_BRAVE_REWARDS_TIP_CURRENTLY_SUPPORTING },
-        { "currentMonthlyTip", IDS_BRAVE_REWARDS_TIP_CURRENT_MONTHLY_TIP },
-        { "customAmount", IDS_BRAVE_REWARDS_TIP_CUSTOM_AMOUNT },
-        { "customMonthlyTipText", IDS_BRAVE_REWARDS_TIP_CUSTOM_MONTHLY_TIP_TEXT },  // NOLINT
-        { "customTipAmount", IDS_BRAVE_REWARDS_TIP_CUSTOM_TIP_AMOUNT },
-        { "customTipText", IDS_BRAVE_REWARDS_TIP_CUSTOM_TIP_TEXT },
-        { "doMonthly", IDS_BRAVE_UI_DO_MONTHLY },
-        { "errorHasOccurred", IDS_BRAVE_REWARDS_TIP_ERROR_HAS_OCCURRED },
-        { "errorServerConnection", IDS_BRAVE_REWARDS_TIP_ERROR_SERVER_CONNECTION },  // NOLINT
-        { "errorTipFailed", IDS_BRAVE_REWARDS_TIP_ERROR_TIP_FAILED },
-        { "errorTryAgain", IDS_BRAVE_REWARDS_TIP_ERROR_TRY_AGAIN },
-        { "exampleTipAmount", IDS_BRAVE_REWARDS_TIP_EXAMPLE_TIP_AMOUNT },
-        { "minimumTipAmount", IDS_BRAVE_REWARDS_TIP_MINIMUM_TIP_AMOUNT },
-        { "monthlyTip", IDS_BRAVE_UI_MONTHLY_TIP },
-        { "monthlyTipSet", IDS_BRAVE_REWARDS_TIP_MONTHLY_TIP_SET },
-        { "monthlyText", IDS_BRAVE_UI_MONTHLY_TEXT },
-        { "nextTipDate", IDS_BRAVE_REWARDS_TIP_NEXT_TIP_DATE },
-        { "notEnoughTokens", IDS_BRAVE_REWARDS_TIP_NOT_ENOUGH_TOKENS },
-        { "tippingFeeNote", IDS_BRAVE_REWARDS_TIPPING_FEE_NOTE },
-        { "on", IDS_BRAVE_UI_ON },
-        { "onboardingTerms", IDS_BRAVE_REWARDS_ONBOARDING_TERMS },
-        { "oneTimeTip", IDS_BRAVE_REWARDS_TIP_ONE_TIME_TIP },
-        { "oneTimeTipAmount", IDS_BRAVE_REWARDS_TIP_ONE_TIME_TIP_AMOUNT },
-        { "pendingTipText", IDS_REWARDS_PANEL_PENDING_TIP_TEXT},
-        { "pendingTipTitleRegistered",
-        IDS_REWARDS_PANEL_PENDING_TIP_TITLE_REGISTERED},
-        { "postHeader", IDS_BRAVE_REWARDS_TIP_POST_HEADER },
-        { "postHeaderTwitter", IDS_BRAVE_REWARDS_TIP_POST_HEADER_TWITTER },
-        { "rewardsBannerText1", IDS_BRAVE_UI_REWARDS_BANNER_TEXT1 },
-        { "sendDonation", IDS_BRAVE_UI_SEND_DONATION },
-        { "siteBannerNoticeNote", IDS_BRAVE_UI_SITE_BANNER_NOTICE_NOTE },
-        { "siteBannerNoticeNotRegistered", IDS_BRAVE_UI_SITE_BANNER_NOTICE_NOT_REGISTERED },  // NOLINT
-        { "sorryToSeeYouGo", IDS_BRAVE_REWARDS_TIP_SORRY_TO_SEE_YOU_GO },
-        { "supportThisCreator", IDS_BRAVE_REWARDS_TIP_SUPPORT_THIS_CREATOR },
-        { "thanksForTheSupport", IDS_BRAVE_REWARDS_TIP_THANKS_FOR_THE_SUPPORT },  // NOLINT
-        { "tipDelayNote", IDS_BRAVE_REWARDS_TIP_DELAY_NOTE },
-        { "tipFavoriteCreators", IDS_BRAVE_REWARDS_TIP_TIP_FAVORITE_CREATORS },
-        { "tipHasBeenSent", IDS_BRAVE_REWARDS_TIP_TIP_HAS_BEEN_SET },
-        { "tipIsPending", IDS_BRAVE_REWARDS_TIP_TIP_IS_PENDING },
-        { "tipPostSubtitle", IDS_BRAVE_REWARDS_TIP_TIP_POST_SUBTITLE },
-        { "tokens", IDS_BRAVE_UI_TOKENS },
-        { "tweetAboutSupport", IDS_BRAVE_REWARDS_TIP_TWEET_ABOUT_SUPPORT },
-        { "unverifiedTextMore", IDS_BRAVE_UI_SITE_UNVERIFIED_TEXT_MORE },
-        { "welcome", IDS_BRAVE_UI_WELCOME },
-        { "youAreCurrentlyLoggedOut", IDS_BRAVE_REWARDS_TIP_YOU_ARE_CURRENTLY_LOGGED_OUT},  // NOLINT
-      }
-    }, {
       std::string("rewards-internals"), {
         { "adDiagnosticId", IDS_BRAVE_REWARDS_INTERNALS_AD_DIAGNOSTIC_ID },
         { "adDiagnosticInfo", IDS_BRAVE_REWARDS_INTERNALS_AD_DIAGNOSTIC_INFO },                  // NOLINT
@@ -912,6 +854,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
       }
     }, {
 #endif
+#if !BUILDFLAG(IS_ANDROID)
       std::string("webcompat"), {
         // Report modal
         { "reportModalTitle", IDS_BRAVE_WEBCOMPATREPORTER_REPORT_MODAL_TITLE },
@@ -929,6 +872,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "confirmationNotice",
             IDS_BRAVE_WEBCOMPATREPORTER_CONFIRMATION_NOTICE },
       }
+#endif
     }
   };
   // clang-format on

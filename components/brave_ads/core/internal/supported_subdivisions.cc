@@ -16,7 +16,7 @@ namespace brave_ads {
 SupportedSubdivisions GetSupportedSubdivisions() {
   const std::string country_code = brave_l10n::GetDefaultISOCountryCodeString();
 
-  const auto& subdivision_codes = geographic::GetSupportedSubdivisionCodes();
+  const auto& subdivision_codes = GetSupportedSubdivisionCodes();
   const auto iter = subdivision_codes.find(country_code);
   if (iter == subdivision_codes.cend()) {
     return {};

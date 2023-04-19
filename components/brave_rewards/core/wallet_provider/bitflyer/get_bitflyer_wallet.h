@@ -15,7 +15,7 @@ namespace bitflyer {
 
 class GetBitFlyerWallet : public wallet_provider::GetExternalWallet {
  public:
-  explicit GetBitFlyerWallet(LedgerImpl*);
+  explicit GetBitFlyerWallet(LedgerImpl& ledger);
 
   ~GetBitFlyerWallet() override;
 

@@ -25,7 +25,7 @@ using std::placeholders::_3;
 
 namespace braveledger_media {
 
-YouTube::YouTube(ledger::LedgerImpl* ledger) : ledger_(ledger) {}
+YouTube::YouTube(ledger::LedgerImpl& ledger) : ledger_(ledger) {}
 
 YouTube::~YouTube() = default;
 

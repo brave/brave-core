@@ -20,7 +20,7 @@ namespace attestation {
 
 class AttestationDesktop : public Attestation {
  public:
-  explicit AttestationDesktop(LedgerImpl* ledger);
+  explicit AttestationDesktop(LedgerImpl& ledger);
   ~AttestationDesktop() override;
 
   void Start(const std::string& payload, StartCallback callback) override;

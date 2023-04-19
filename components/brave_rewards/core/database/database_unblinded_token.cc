@@ -26,7 +26,7 @@ const char kTableName[] = "unblinded_tokens";
 
 }  // namespace
 
-DatabaseUnblindedToken::DatabaseUnblindedToken(LedgerImpl* ledger)
+DatabaseUnblindedToken::DatabaseUnblindedToken(LedgerImpl& ledger)
     : DatabaseTable(ledger) {}
 
 DatabaseUnblindedToken::~DatabaseUnblindedToken() = default;

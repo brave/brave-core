@@ -21,7 +21,7 @@ namespace endpoint {
 
 class GeminiServer {
  public:
-  explicit GeminiServer(LedgerImpl* ledger);
+  explicit GeminiServer(LedgerImpl& ledger);
   ~GeminiServer();
 
   gemini::PostAccount* post_account() const;

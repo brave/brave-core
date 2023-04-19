@@ -15,6 +15,7 @@
 
 #include "base/functional/callback_forward.h"
 #include "base/gtest_prod_util.h"
+#include "base/memory/raw_ref.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_ac.h"
@@ -23,7 +24,6 @@
 #include "brave/components/brave_rewards/core/contribution/contribution_sku.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_tip.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_unblinded.h"
-#include "brave/components/brave_rewards/core/contribution/unverified.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 namespace ledger {
@@ -33,7 +33,7 @@ namespace contribution {
 
 class Contribution {
  public:
-  explicit Contribution(LedgerImpl* ledger);
+  explicit Contribution(LedgerImpl& ledger);
 
   ~Contribution();
 
@@ -56,8 +56,6 @@ class Contribution {
                              mojom::ContributionInfoPtr contribution);
 
   void ResetReconcileStamp();
-
-  void ContributeUnverifiedPublishers();
 
   void OneTimeTip(const std::string& publisher_key,
                   double amount,
@@ -180,8 +178,7 @@ class Contribution {
   void OnMarkUnblindedTokensAsSpendable(const mojom::Result result,
                                         const std::string& contribution_id);
 
-  LedgerImpl* ledger_;  // NOT OWNED
-  std::unique_ptr<Unverified> unverified_;
+  const raw_ref<LedgerImpl> ledger_;
   std::unique_ptr<Unblinded> unblinded_;
   std::unique_ptr<ContributionSKU> sku_;
   std::unique_ptr<ContributionMonthly> monthly_;

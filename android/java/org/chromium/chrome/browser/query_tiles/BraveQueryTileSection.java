@@ -7,17 +7,28 @@ package org.chromium.chrome.browser.query_tiles;
 
 import android.content.Context;
 
+import org.chromium.base.Log;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.components.user_prefs.UserPrefs;
 
 public class BraveQueryTileSection {
+    private static final String TAG = "BraveQTSection";
+
     public static int getMaxRowsForMostVisitedTiles(Context context) {
-        if (!UserPrefs.get(Profile.getLastUsedRegularProfile())
-                        .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
-            return 2;
-        } else {
-            return 1;
+        try {
+            if (!ProfileManager.isInitialized()
+                    || !UserPrefs.get(BraveActivity.getBraveActivity().getCurrentProfile())
+                                .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
+                return 2;
+            } else {
+                return 1;
+            }
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "getMaxRowsForMostVisitedTiles ", e);
         }
+
+        return 2;
     }
 }

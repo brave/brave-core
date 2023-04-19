@@ -83,7 +83,6 @@ TEST_F(BatAdsSegmentUtilTest, GetParentSegments) {
   // Assert
   const SegmentList expected_parent_segments = {
       "technology & computing", "personal finance", "automobiles"};
-
   EXPECT_EQ(expected_parent_segments, parent_segments);
 }
 
@@ -103,10 +102,9 @@ TEST_F(BatAdsSegmentUtilTest, ShouldFilterMatchingParentChildSegment) {
       "parent-child", CategoryContentOptActionType::kNone);
 
   // Act
-  const bool should_filter_segment = ShouldFilterSegment("parent-child");
 
   // Assert
-  EXPECT_TRUE(should_filter_segment);
+  EXPECT_TRUE(ShouldFilterSegment("parent-child"));
 }
 
 TEST_F(BatAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentChildSegment) {
@@ -115,10 +113,9 @@ TEST_F(BatAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentChildSegment) {
       "parent-child", CategoryContentOptActionType::kNone);
 
   // Act
-  const bool should_filter_segment = ShouldFilterSegment("foo-bar");
 
   // Assert
-  EXPECT_FALSE(should_filter_segment);
+  EXPECT_FALSE(ShouldFilterSegment("foo-bar"));
 }
 
 TEST_F(BatAdsSegmentUtilTest, ShouldFilterMatchingParentSegment) {
@@ -127,10 +124,9 @@ TEST_F(BatAdsSegmentUtilTest, ShouldFilterMatchingParentSegment) {
       "parent", CategoryContentOptActionType::kNone);
 
   // Act
-  const bool should_filter_segment = ShouldFilterSegment("parent");
 
   // Assert
-  EXPECT_TRUE(should_filter_segment);
+  EXPECT_TRUE(ShouldFilterSegment("parent"));
 }
 
 TEST_F(BatAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentSegment) {
@@ -139,10 +135,9 @@ TEST_F(BatAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentSegment) {
       "parent", CategoryContentOptActionType::kNone);
 
   // Act
-  const bool should_filter_segment = ShouldFilterSegment("foo");
 
   // Assert
-  EXPECT_FALSE(should_filter_segment);
+  EXPECT_FALSE(ShouldFilterSegment("foo"));
 }
 
 TEST_F(BatAdsSegmentUtilTest,
@@ -152,10 +147,9 @@ TEST_F(BatAdsSegmentUtilTest,
       "parent", CategoryContentOptActionType::kNone);
 
   // Act
-  const bool should_filter_segment = ShouldFilterSegment("parent-child");
 
   // Assert
-  EXPECT_TRUE(should_filter_segment);
+  EXPECT_TRUE(ShouldFilterSegment("parent-child"));
 }
 
 TEST_F(BatAdsSegmentUtilTest,
@@ -165,53 +159,47 @@ TEST_F(BatAdsSegmentUtilTest,
       "parent", CategoryContentOptActionType::kNone);
 
   // Act
-  const bool should_filter_segment = ShouldFilterSegment("foo-bar");
 
   // Assert
-  EXPECT_FALSE(should_filter_segment);
+  EXPECT_FALSE(ShouldFilterSegment("foo-bar"));
 }
 
 TEST_F(BatAdsSegmentUtilTest, MatchParentSegments) {
   // Arrange
 
   // Act
-  const bool does_match = MatchParentSegments("technology & computing-windows",
-                                              "technology & computing-linux");
 
   // Assert
-  EXPECT_TRUE(does_match);
+  EXPECT_TRUE(MatchParentSegments("technology & computing-windows",
+                                  "technology & computing-linux"));
 }
 
 TEST_F(BatAdsSegmentUtilTest, ParentSegmentsDoNotMatch) {
   // Arrange
 
   // Act
-  const bool does_match =
-      MatchParentSegments("business-banking", "technology & computing-linux");
 
   // Assert
-  EXPECT_FALSE(does_match);
+  EXPECT_FALSE(
+      MatchParentSegments("business-banking", "technology & computing-linux"));
 }
 
 TEST_F(BatAdsSegmentUtilTest, HasChildSegment) {
   // Arrange
 
   // Act
-  const bool has_child_segment =
-      HasChildSegment("technology & computing-windows");
 
   // Assert
-  EXPECT_TRUE(has_child_segment);
+  EXPECT_TRUE(HasChildSegment("technology & computing-windows"));
 }
 
 TEST_F(BatAdsSegmentUtilTest, DoesNotHaveChildSegment) {
   // Arrange
 
   // Act
-  const bool has_child_segment = HasChildSegment("technology & computing");
 
   // Assert
-  EXPECT_FALSE(has_child_segment);
+  EXPECT_FALSE(HasChildSegment("technology & computing"));
 }
 
 }  // namespace brave_ads

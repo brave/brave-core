@@ -132,10 +132,13 @@ void AdsTabHelper::DidFinishNavigation(
     return;
   }
 
-  // Some browser initiated navigations have HasUserGesture set to false. This
-  // should eventually be fixed in crbug.com/617904.
-  if (navigation_handle->HasUserGesture() ||
-      !navigation_handle->IsRendererInitiated()) {
+  const bool tab_not_restored =
+      navigation_handle->GetRestoreType() == content::RestoreType::kNotRestored;
+
+  // Some browser initiated navigations have HasUserGesture set to false.
+  // This should eventually be fixed in crbug.com/617904.
+  if (tab_not_restored && (navigation_handle->HasUserGesture() ||
+                           !navigation_handle->IsRendererInitiated())) {
     const int32_t page_transition =
         static_cast<int32_t>(navigation_handle->GetPageTransition());
 
@@ -145,9 +148,7 @@ void AdsTabHelper::DidFinishNavigation(
   redirect_chain_ = navigation_handle->GetRedirectChain();
 
   if (!navigation_handle->IsSameDocument()) {
-    should_process_ = navigation_handle->GetRestoreType() ==
-                      content::RestoreType::kNotRestored;
-
+    should_process_ = tab_not_restored;
     return;
   }
 

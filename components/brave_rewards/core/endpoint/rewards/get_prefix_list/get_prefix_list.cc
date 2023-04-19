@@ -17,9 +17,7 @@ namespace ledger {
 namespace endpoint {
 namespace rewards {
 
-GetPrefixList::GetPrefixList(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+GetPrefixList::GetPrefixList(LedgerImpl& ledger) : ledger_(ledger) {}
 
 GetPrefixList::~GetPrefixList() = default;
 

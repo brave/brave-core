@@ -380,6 +380,12 @@
         ]
       },
       {
+        "name": "recordNTPPanelTrigger",
+        "type": "function",
+        "description": "Records an NTP Rewards card 'Start using Brave Rewards' click.",
+        "parameters": []
+      },
+      {
         "name": "openRewardsPanel",
         "type": "function",
         "description": "Opens the Rewards panel in the active window.",

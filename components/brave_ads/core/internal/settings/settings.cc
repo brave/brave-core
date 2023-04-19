@@ -20,8 +20,8 @@ int GetMaximumNotificationAdsPerHour() {
       prefs::kMaximumNotificationAdsPerHour);
 
   if (ads_per_hour == -1) {
-    ads_per_hour = static_cast<int64_t>(
-        notification_ads::features::GetDefaultAdsPerHour());
+    ads_per_hour =
+        static_cast<int64_t>(notification_ads::kDefaultAdsPerHour.Get());
   }
 
   const int64_t clamped_ads_per_hour = base::clamp(

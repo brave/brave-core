@@ -21,7 +21,7 @@ using GetSKUTransactionCallback = std::function<void(
 
 class DatabaseSKUTransaction : public DatabaseTable {
  public:
-  explicit DatabaseSKUTransaction(LedgerImpl* ledger);
+  explicit DatabaseSKUTransaction(LedgerImpl& ledger);
   ~DatabaseSKUTransaction() override;
 
   void InsertOrUpdate(mojom::SKUTransactionPtr info,

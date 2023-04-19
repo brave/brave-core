@@ -24,10 +24,8 @@ using std::placeholders::_2;
 namespace ledger {
 namespace contribution {
 
-ContributionExternalWallet::ContributionExternalWallet(LedgerImpl* ledger)
-    : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+ContributionExternalWallet::ContributionExternalWallet(LedgerImpl& ledger)
+    : ledger_(ledger) {}
 
 ContributionExternalWallet::~ContributionExternalWallet() = default;
 
@@ -105,14 +103,6 @@ void ContributionExternalWallet::ContributionInfo(
   callback(mojom::Result::LEDGER_OK);
 }
 
-void ContributionExternalWallet::OnSavePendingContribution(
-    const mojom::Result result) {
-  if (result != mojom::Result::LEDGER_OK) {
-    BLOG(0, "Problem saving pending");
-  }
-  ledger_->client()->PendingContributionSaved(result);
-}
-
 void ContributionExternalWallet::OnServerPublisherInfo(
     mojom::ServerPublisherInfoPtr info,
     const std::string& contribution_id,
@@ -147,25 +137,8 @@ void ContributionExternalWallet::OnServerPublisherInfo(
     // the specified |provider| and that the wallet balance is non-zero. We also
     // assume that the user cannot have two connected wallets at the same time.
     // We can then infer that no other external wallet will be able to service
-    // this contribution item, and we can safely put the contribution into the
-    // pending list.
-
+    // this contribution item, and we can safely error out.
     BLOG(1, "Publisher not verified");
-
-    auto save_callback = std::bind(
-        &ContributionExternalWallet::OnSavePendingContribution, this, _1);
-
-    auto contribution = mojom::PendingContribution::New();
-    contribution->publisher_key = info->publisher_key;
-    contribution->amount = amount;
-    contribution->type = type;
-
-    std::vector<mojom::PendingContributionPtr> list;
-    list.push_back(std::move(contribution));
-
-    ledger_->database()->SavePendingContribution(std::move(list),
-                                                 save_callback);
-
     callback(mojom::Result::LEDGER_ERROR);
     return;
   }

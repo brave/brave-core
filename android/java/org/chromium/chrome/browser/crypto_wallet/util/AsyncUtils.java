@@ -11,6 +11,7 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.AssetTimePrice;
+import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
@@ -429,6 +430,24 @@ public class AsyncUtils {
             this.tokenMetadata = erc721Metadata;
             this.errorCode = errorCode;
             this.errorMessage = errorMessage;
+            super.fireResponseCompleteCallback();
+        }
+    }
+
+    public static class GetNetworkAllTokensContext
+            extends SingleResponseBaseContext implements BlockchainRegistry.GetAllTokens_Response {
+        public BlockchainToken[] tokens;
+        public NetworkInfo networkInfo;
+
+        public GetNetworkAllTokensContext(
+                Runnable responseCompleteCallback, NetworkInfo networkInfo) {
+            super(responseCompleteCallback);
+            this.networkInfo = networkInfo;
+        }
+
+        @Override
+        public void call(BlockchainToken[] tokens) {
+            this.tokens = tokens;
             super.fireResponseCompleteCallback();
         }
     }

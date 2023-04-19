@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
-#include "brave/components/brave_ads/core/internal/flags/environment/environment_types.h"
-#include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -16,8 +16,8 @@ class BatAdsAnonymousUrlHostTest : public UnitTestBase {};
 
 TEST_F(BatAdsAnonymousUrlHostTest, GetProductionUrlHost) {
   // Arrange
-  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
-      EnvironmentType::kProduction);
+  GlobalState::GetInstance()->Flags().environment_type =
+      mojom::EnvironmentType::kProduction;
 
   // Act
 
@@ -27,8 +27,8 @@ TEST_F(BatAdsAnonymousUrlHostTest, GetProductionUrlHost) {
 
 TEST_F(BatAdsAnonymousUrlHostTest, GetStagingUrlHost) {
   // Arrange
-  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
-      EnvironmentType::kStaging);
+  GlobalState::GetInstance()->Flags().environment_type =
+      mojom::EnvironmentType::kStaging;
 
   // Act
 

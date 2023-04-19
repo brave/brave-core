@@ -13,10 +13,6 @@
 
 namespace brave_ads {
 
-namespace geographic {
-class SubdivisionTargeting;
-}  // namespace geographic
-
 namespace resource {
 class AntiTargeting;
 }  // namespace resource
@@ -24,6 +20,8 @@ class AntiTargeting;
 namespace targeting {
 struct UserModelInfo;
 }  // namespace targeting
+
+class SubdivisionTargeting;
 
 namespace notification_ads {
 
@@ -44,11 +42,10 @@ class EligibleAdsBase {
   void SetLastServedAd(const AdInfo& ad) { last_served_ad_ = ad; }
 
  protected:
-  EligibleAdsBase(const geographic::SubdivisionTargeting& subdivision_targeting,
+  EligibleAdsBase(const SubdivisionTargeting& subdivision_targeting,
                   const resource::AntiTargeting& anti_targeting_resource);
 
-  const base::raw_ref<const geographic::SubdivisionTargeting>
-      subdivision_targeting_;
+  const base::raw_ref<const SubdivisionTargeting> subdivision_targeting_;
   const base::raw_ref<const resource::AntiTargeting> anti_targeting_resource_;
 
   AdInfo last_served_ad_;

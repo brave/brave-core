@@ -18,7 +18,7 @@ constexpr char kPlatformKey[] = "platform";
 base::Value::Dict GetPlatform() {
   base::Value::Dict user_data;
 
-  const std::string platform_name = PlatformHelper::GetInstance()->GetName();
+  const std::string platform_name = PlatformHelper::GetInstance().GetName();
   if (!platform_name.empty()) {
     user_data.Set(kPlatformKey, platform_name);
   }

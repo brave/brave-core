@@ -12,29 +12,28 @@
 
 namespace brave_ads {
 
-class BatAdsIssuersPermissionRuleTest : public UnitTestBase {};
+class BatAdsIssuersPermissionRuleTest : public UnitTestBase {
+ protected:
+  IssuersPermissionRule permission_rule_;
+};
 
 TEST_F(BatAdsIssuersPermissionRuleTest, Issuers) {
   // Arrange
   BuildAndSetIssuers();
 
   // Act
-  IssuersPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsIssuersPermissionRuleTest, NoIssuers) {
   // Arrange
 
   // Act
-  IssuersPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_FALSE(is_allowed);
+  EXPECT_FALSE(permission_rule_.ShouldAllow());
 }
 
 }  // namespace brave_ads

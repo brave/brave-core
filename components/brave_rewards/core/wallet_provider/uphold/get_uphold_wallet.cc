@@ -11,7 +11,7 @@ using ledger::wallet_provider::GetExternalWallet;
 
 namespace ledger::uphold {
 
-GetUpholdWallet::GetUpholdWallet(LedgerImpl* ledger)
+GetUpholdWallet::GetUpholdWallet(LedgerImpl& ledger)
     : GetExternalWallet(ledger) {}
 
 GetUpholdWallet::~GetUpholdWallet() = default;

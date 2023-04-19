@@ -70,7 +70,7 @@ TEST_F(BatAdsTabManagerTest, HasInstance) {
   // Arrange
 
   // Act
-  const bool has_instance = TabManager::HasInstance();
+  const bool has_instance = TabManager::GetInstance();
 
   // Assert
   EXPECT_TRUE(has_instance);

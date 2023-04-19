@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_entry_types.h"
-#include "brave/components/brave_ads/core/sys_info.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds.*
 
@@ -17,7 +17,8 @@ class BatAdsDeviceIdDiagnosticEntryTest : public UnitTestBase {};
 
 TEST_F(BatAdsDeviceIdDiagnosticEntryTest, GetValue) {
   // Arrange
-  SysInfo().device_id =
+  auto& sys_info = GlobalState::GetInstance()->SysInfo();
+  sys_info.device_id =
       "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 
   // Act

@@ -12,7 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace brave_ads::notification_ads::features {
+namespace brave_ads::notification_ads {
 
 TEST(BatAdsFeaturesTest, IsEnabled) {
   // Arrange
@@ -28,7 +28,7 @@ TEST(BatAdsFeaturesTest, IsDisabled) {
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kFeature);
+  disabled_features.emplace_back(kAdsFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -45,7 +45,7 @@ TEST(BatAdsFeaturesTest, GetDefaultAdsPerHour) {
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
   params["default_ads_per_hour"] = "42";
-  enabled_features.emplace_back(kFeature, params);
+  enabled_features.emplace_back(kAdsFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -56,7 +56,7 @@ TEST(BatAdsFeaturesTest, GetDefaultAdsPerHour) {
   // Act
 
   // Assert
-  EXPECT_EQ(42, GetDefaultAdsPerHour());
+  EXPECT_EQ(42, kDefaultAdsPerHour.Get());
 }
 
 TEST(BatAdsFeaturesTest, DefaultDefaultAdsPerHour) {
@@ -65,7 +65,7 @@ TEST(BatAdsFeaturesTest, DefaultDefaultAdsPerHour) {
   // Act
 
   // Assert
-  EXPECT_EQ(10, GetDefaultAdsPerHour());
+  EXPECT_EQ(10, kDefaultAdsPerHour.Get());
 }
 
 TEST(BatAdsFeaturesTest, DefaultDefaultAdsPerHourWhenDisabled) {
@@ -73,7 +73,7 @@ TEST(BatAdsFeaturesTest, DefaultDefaultAdsPerHourWhenDisabled) {
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kFeature);
+  disabled_features.emplace_back(kAdsFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -82,7 +82,7 @@ TEST(BatAdsFeaturesTest, DefaultDefaultAdsPerHourWhenDisabled) {
   // Act
 
   // Assert
-  EXPECT_EQ(10, GetDefaultAdsPerHour());
+  EXPECT_EQ(10, kDefaultAdsPerHour.Get());
 }
 
 TEST(BatAdsFeaturesTest, GetMaximumAdsPerDay) {
@@ -90,7 +90,7 @@ TEST(BatAdsFeaturesTest, GetMaximumAdsPerDay) {
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
   params["maximum_ads_per_day"] = "24";
-  enabled_features.emplace_back(kFeature, params);
+  enabled_features.emplace_back(kAdsFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -101,7 +101,7 @@ TEST(BatAdsFeaturesTest, GetMaximumAdsPerDay) {
   // Act
 
   // Assert
-  EXPECT_EQ(24, GetMaximumAdsPerDay());
+  EXPECT_EQ(24, kMaximumAdsPerDay.Get());
 }
 
 TEST(BatAdsFeaturesTest, DefaultMaximumAdsPerDay) {
@@ -110,7 +110,7 @@ TEST(BatAdsFeaturesTest, DefaultMaximumAdsPerDay) {
   // Act
 
   // Assert
-  EXPECT_EQ(100, GetMaximumAdsPerDay());
+  EXPECT_EQ(100, kMaximumAdsPerDay.Get());
 }
 
 TEST(BatAdsFeaturesTest, DefaultMaximumAdsPerDayWhenDisabled) {
@@ -118,7 +118,7 @@ TEST(BatAdsFeaturesTest, DefaultMaximumAdsPerDayWhenDisabled) {
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kFeature);
+  disabled_features.emplace_back(kAdsFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -127,7 +127,7 @@ TEST(BatAdsFeaturesTest, DefaultMaximumAdsPerDayWhenDisabled) {
   // Act
 
   // Assert
-  EXPECT_EQ(100, GetMaximumAdsPerDay());
+  EXPECT_EQ(100, kMaximumAdsPerDay.Get());
 }
 
-}  // namespace brave_ads::notification_ads::features
+}  // namespace brave_ads::notification_ads

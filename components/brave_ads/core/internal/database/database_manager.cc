@@ -12,34 +12,21 @@
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_migration.h"
 
 namespace brave_ads {
 
-namespace {
-DatabaseManager* g_database_manager_instance = nullptr;
-}  // namespace
+DatabaseManager::DatabaseManager() = default;
 
-DatabaseManager::DatabaseManager() {
-  DCHECK(!g_database_manager_instance);
-  g_database_manager_instance = this;
-}
-
-DatabaseManager::~DatabaseManager() {
-  DCHECK_EQ(this, g_database_manager_instance);
-  g_database_manager_instance = nullptr;
-}
+DatabaseManager::~DatabaseManager() = default;
 
 // static
 DatabaseManager* DatabaseManager::GetInstance() {
-  DCHECK(g_database_manager_instance);
-  return g_database_manager_instance;
-}
-
-// static
-bool DatabaseManager::HasInstance() {
-  return !!g_database_manager_instance;
+  auto* database_manager = GlobalState::GetInstance()->GetDatabaseManager();
+  DCHECK(database_manager);
+  return database_manager;
 }
 
 void DatabaseManager::AddObserver(DatabaseManagerObserver* observer) {
@@ -70,13 +57,14 @@ void DatabaseManager::CreateOrOpen(ResultCallback callback) {
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void DatabaseManager::OnCreateOrOpen(ResultCallback callback,
-                                     mojom::DBCommandResponseInfoPtr response) {
-  DCHECK(response);
+void DatabaseManager::OnCreateOrOpen(
+    ResultCallback callback,
+    mojom::DBCommandResponseInfoPtr command_response) {
+  DCHECK(command_response);
 
-  if (response->status !=
+  if (command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK ||
-      !response->result) {
+      !command_response->result) {
     BLOG(0, "Failed to open or create database");
     NotifyFailedToCreateOrOpenDatabase();
     std::move(callback).Run(/*success*/ false);
@@ -85,9 +73,10 @@ void DatabaseManager::OnCreateOrOpen(ResultCallback callback,
 
   NotifyDidCreateOrOpenDatabase();
 
-  DCHECK(response->result->get_value()->which() ==
+  DCHECK(command_response->result->get_value()->which() ==
          mojom::DBValue::Tag::kIntValue);
-  const int from_version = response->result->get_value()->get_int_value();
+  const int from_version =
+      command_response->result->get_value()->get_int_value();
   MaybeMigrate(from_version, std::move(callback));
 }
 

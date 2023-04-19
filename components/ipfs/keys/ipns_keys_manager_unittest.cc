@@ -34,7 +34,7 @@ class IpnsKeysManagerUnitTest : public testing::Test {
         &IpnsKeysManagerUnitTest::Interceptor, base::Unretained(this)));
     blob_factory_ = std::make_unique<IpfsBlobContextGetterFactory>(&profile_);
     ipns_keys_manager_ = std::make_unique<IpnsKeysManager>(
-        blob_factory_.get(), url_loader_factory_.GetSafeWeakWrapper(),
+        *blob_factory_, url_loader_factory_.GetSafeWeakWrapper(),
         GURL("http://localhost/"));
   }
 

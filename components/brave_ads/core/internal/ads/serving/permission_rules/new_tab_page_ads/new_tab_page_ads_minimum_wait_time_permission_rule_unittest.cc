@@ -14,18 +14,19 @@
 namespace brave_ads::new_tab_page_ads {
 
 class BatAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest
-    : public UnitTestBase {};
+    : public UnitTestBase {
+ protected:
+  MinimumWaitTimePermissionRule permission_rule_;
+};
 
 TEST_F(BatAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
        AllowAdIfThereIsNoAdsHistory) {
   // Arrange
 
   // Act
-  MinimumWaitTimePermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
@@ -33,14 +34,11 @@ TEST_F(BatAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
   // Arrange
   RecordAdEvent(AdType::kNewTabPageAd, ConfirmationType::kServed);
 
-  AdvanceClockBy(features::GetMinimumWaitTime());
-
   // Act
-  MinimumWaitTimePermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
+  AdvanceClockBy(kMinimumWaitTime.Get());
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
@@ -48,14 +46,11 @@ TEST_F(BatAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
   // Arrange
   RecordAdEvent(AdType::kNewTabPageAd, ConfirmationType::kServed);
 
-  AdvanceClockBy(features::GetMinimumWaitTime() - base::Seconds(1));
-
   // Act
-  MinimumWaitTimePermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
+  AdvanceClockBy(kMinimumWaitTime.Get() - base::Milliseconds(1));
 
   // Assert
-  EXPECT_FALSE(is_allowed);
+  EXPECT_FALSE(permission_rule_.ShouldAllow());
 }
 
 }  // namespace brave_ads::new_tab_page_ads

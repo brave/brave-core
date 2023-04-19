@@ -8,7 +8,7 @@
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/blinded_token_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/token.h"
 #include "url/gurl.h"
@@ -52,10 +52,10 @@ class BatAdsRequestSignedTokensUrlRequestBuilderTest : public UnitTestBase {};
 
 TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrl) {
   // Arrange
-  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
-      EnvironmentType::kStaging);
+  GlobalState::GetInstance()->Flags().environment_type =
+      mojom::EnvironmentType::kStaging;
 
-  const std::vector<privacy::cbr::Token> tokens = GetTokens(3);
+  const std::vector<privacy::cbr::Token> tokens = GetTokens(/*count*/ 3);
   const std::vector<privacy::cbr::BlindedToken> blinded_tokens =
       privacy::cbr::BlindTokens(tokens);
 

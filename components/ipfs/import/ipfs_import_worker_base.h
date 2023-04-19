@@ -87,7 +87,8 @@ class IpfsImportWorkerBase {
   ImportCompletedCallback callback_;
   std::unique_ptr<ipfs::ImportedData> data_;
 
-  BlobContextGetterFactory* blob_context_getter_factory_ = nullptr;
+  const raw_ptr<BlobContextGetterFactory> blob_context_getter_factory_ =
+      nullptr;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<api_request_helper::APIRequestHelper> url_loader_;
   std::unique_ptr<network::SimpleURLLoader> simple_url_loader_;

@@ -20,7 +20,7 @@ namespace ledger::uphold {
 
 class ConnectUpholdWallet : public wallet_provider::ConnectExternalWallet {
  public:
-  explicit ConnectUpholdWallet(LedgerImpl*);
+  explicit ConnectUpholdWallet(LedgerImpl& ledger);
 
   ~ConnectUpholdWallet() override;
 

@@ -10,7 +10,7 @@
 namespace brave_ads {
 
 void ForceUnblindedTokensPermissionRuleForTesting() {
-  privacy::SetUnblindedTokens(50);
+  privacy::SetUnblindedTokens(/*count*/ 50);
 }
 
 }  // namespace brave_ads

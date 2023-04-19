@@ -20,7 +20,8 @@ struct ConversionIdPatternInfo final {
 bool operator==(const ConversionIdPatternInfo&, const ConversionIdPatternInfo&);
 bool operator!=(const ConversionIdPatternInfo&, const ConversionIdPatternInfo&);
 
-using ConversionIdPatternMap = std::map<std::string, ConversionIdPatternInfo>;
+using ConversionIdPatternMap =
+    std::map</*conversion_url_pattern*/ std::string, ConversionIdPatternInfo>;
 
 }  // namespace brave_ads
 

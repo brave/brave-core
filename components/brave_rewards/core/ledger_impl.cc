@@ -35,19 +35,19 @@ namespace ledger {
 LedgerImpl::LedgerImpl(
     mojo::PendingAssociatedRemote<mojom::LedgerClient> ledger_client_remote)
     : ledger_client_(std::move(ledger_client_remote)),
-      promotion_(std::make_unique<promotion::Promotion>(this)),
-      publisher_(std::make_unique<publisher::Publisher>(this)),
-      media_(std::make_unique<braveledger_media::Media>(this)),
-      contribution_(std::make_unique<contribution::Contribution>(this)),
-      wallet_(std::make_unique<wallet::Wallet>(this)),
-      database_(std::make_unique<database::Database>(this)),
-      report_(std::make_unique<report::Report>(this)),
-      state_(std::make_unique<state::State>(this)),
-      api_(std::make_unique<api::API>(this)),
-      recovery_(std::make_unique<recovery::Recovery>(this)),
-      bitflyer_(std::make_unique<bitflyer::Bitflyer>(this)),
-      gemini_(std::make_unique<gemini::Gemini>(this)),
-      uphold_(std::make_unique<uphold::Uphold>(this)) {
+      promotion_(std::make_unique<promotion::Promotion>(*this)),
+      publisher_(std::make_unique<publisher::Publisher>(*this)),
+      media_(std::make_unique<braveledger_media::Media>(*this)),
+      contribution_(std::make_unique<contribution::Contribution>(*this)),
+      wallet_(std::make_unique<wallet::Wallet>(*this)),
+      database_(std::make_unique<database::Database>(*this)),
+      report_(std::make_unique<report::Report>(*this)),
+      state_(std::make_unique<state::State>(*this)),
+      api_(std::make_unique<api::API>(*this)),
+      recovery_(std::make_unique<recovery::Recovery>(*this)),
+      bitflyer_(std::make_unique<bitflyer::Bitflyer>(*this)),
+      gemini_(std::make_unique<gemini::Gemini>(*this)),
+      uphold_(std::make_unique<uphold::Uphold>(*this)) {
   DCHECK(base::ThreadPoolInstance::Get());
   set_ledger_client_for_logging(ledger_client_.get());
 }
@@ -613,39 +613,23 @@ void LedgerImpl::GetShareURL(
 
 void LedgerImpl::GetPendingContributions(
     GetPendingContributionsCallback callback) {
-  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
-    database()->GetPendingContributions(
-        [this, callback = std::move(callback)](
-            std::vector<mojom::PendingContributionInfoPtr> list) mutable {
-          // The publisher status field may be expired. Attempt to refresh
-          // expired publisher status values before executing callback.
-          publisher::RefreshPublisherStatus(this, std::move(list),
-                                            std::move(callback));
-        });
-  });
+  std::move(callback).Run({});
 }
 
 void LedgerImpl::RemovePendingContribution(
     uint64_t id,
     RemovePendingContributionCallback callback) {
-  WhenReady(
-      [this, id, callback = ToLegacyCallback(std::move(callback))]() mutable {
-        database()->RemovePendingContribution(id, std::move(callback));
-      });
+  std::move(callback).Run(mojom::Result::LEDGER_OK);
 }
 
 void LedgerImpl::RemoveAllPendingContributions(
     RemovePendingContributionCallback callback) {
-  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
-    database()->RemoveAllPendingContributions(std::move(callback));
-  });
+  std::move(callback).Run(mojom::Result::LEDGER_OK);
 }
 
 void LedgerImpl::GetPendingContributionsTotal(
     GetPendingContributionsTotalCallback callback) {
-  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
-    database()->GetPendingContributionsTotal(std::move(callback));
-  });
+  std::move(callback).Run(0);
 }
 
 void LedgerImpl::FetchBalance(FetchBalanceCallback callback) {
@@ -723,15 +707,6 @@ void LedgerImpl::GetAllContributions(GetAllContributionsCallback callback) {
   });
 }
 
-void LedgerImpl::SavePublisherInfoForTip(
-    mojom::PublisherInfoPtr info,
-    SavePublisherInfoForTipCallback callback) {
-  WhenReady([this, info = std::move(info),
-             callback = ToLegacyCallback(std::move(callback))]() mutable {
-    database()->SavePublisherInfo(std::move(info), std::move(callback));
-  });
-}
-
 void LedgerImpl::GetMonthlyReport(mojom::ActivityMonth month,
                                   int year,
                                   GetMonthlyReportCallback callback) {
@@ -789,6 +764,12 @@ void LedgerImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {
 // mojom::Ledger implementation end
 
 // mojom::LedgerClient helpers begin (in the order of appearance in Mojom)
+bool LedgerImpl::IsBitFlyerRegion() {
+  bool value = false;
+  ledger_client_->IsBitFlyerRegion(&value);
+  return value;
+}
+
 std::string LedgerImpl::GetLegacyWallet() {
   std::string wallet;
   ledger_client_->GetLegacyWallet(&wallet);

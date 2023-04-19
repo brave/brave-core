@@ -54,7 +54,7 @@ class IpfsP3A : public IpfsServiceObserver {
   raw_ptr<IpfsService> service_ = nullptr;
   base::TimeTicks daemon_start_time_;
   base::TimeDelta elapsed_time_;
-  PrefService* pref_service_ = nullptr;
+  const raw_ptr<PrefService> pref_service_;
   PrefChangeRegistrar pref_change_registrar_;
 };
 

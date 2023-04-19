@@ -54,7 +54,7 @@ class DatabasePublisherPrefixListTest : public ::testing::Test {
 
   base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
-  DatabasePublisherPrefixList database_prefix_list_{&mock_ledger_impl_};
+  DatabasePublisherPrefixList database_prefix_list_{mock_ledger_impl_};
 };
 
 TEST_F(DatabasePublisherPrefixListTest, Reset) {

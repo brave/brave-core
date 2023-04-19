@@ -31,22 +31,22 @@ TextEmbeddingHtmlEventInfo BuildTextEmbeddingHtmlEvent(
 
 void LogTextEmbeddingHtmlEvent(
     const TextEmbeddingHtmlEventInfo& text_embedding_html_event,
-    TextEmbeddingHtmlEventCallback callback) {
+    LogTextEmbeddingHtmlEventCallback callback) {
   database::table::TextEmbeddingHtmlEvents database_table;
   database_table.LogEvent(
       text_embedding_html_event,
       base::BindOnce(
-          [](TextEmbeddingHtmlEventCallback callback, const bool success) {
+          [](LogTextEmbeddingHtmlEventCallback callback, const bool success) {
             std::move(callback).Run(success);
           },
           std::move(callback)));
 }
 
 void PurgeStaleTextEmbeddingHtmlEvents(
-    TextEmbeddingHtmlEventCallback callback) {
+    LogTextEmbeddingHtmlEventCallback callback) {
   const database::table::TextEmbeddingHtmlEvents database_table;
   database_table.PurgeStale(base::BindOnce(
-      [](TextEmbeddingHtmlEventCallback callback, const bool success) {
+      [](LogTextEmbeddingHtmlEventCallback callback, const bool success) {
         std::move(callback).Run(success);
       },
       std::move(callback)));
@@ -66,7 +66,7 @@ void OnGetTextEmbeddingHtmlEventsFromDatabase(
   if (!success) {
     BLOG(1, "Failed to get text embedding HTML events");
     return std::move(callback).Run(success,
-                                   /* text_embedding_html_events */ {});
+                                   /*text_embedding_html_events*/ {});
   }
   std::move(callback).Run(success, text_embedding_html_events);
 }

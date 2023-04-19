@@ -82,7 +82,7 @@ bool BraveActionsContainer::ShouldShowBraveRewardsAction() const {
 void BraveActionsContainer::AddActionViewForShields() {
   shields_action_btn_ =
       AddChildViewAt(std::make_unique<BraveShieldsActionView>(
-                         browser_->profile(), browser_->tab_strip_model()),
+                         *browser_->profile(), *browser_->tab_strip_model()),
                      1);
   shields_action_btn_->SetPreferredSize(kToolbarActionSize);
   shields_action_btn_->Init();

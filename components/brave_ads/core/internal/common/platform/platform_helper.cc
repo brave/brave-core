@@ -24,7 +24,7 @@ namespace {
 
 constexpr char kPlatformName[] = "unknown";
 
-PlatformHelper* g_platform_helper_for_testing = nullptr;
+const PlatformHelper* g_platform_helper_for_testing = nullptr;
 
 }  // namespace
 
@@ -33,7 +33,7 @@ PlatformHelper::PlatformHelper() = default;
 PlatformHelper::~PlatformHelper() = default;
 
 // static
-void PlatformHelper::SetForTesting(PlatformHelper* platform_helper) {
+void PlatformHelper::SetForTesting(const PlatformHelper* platform_helper) {
   g_platform_helper_for_testing = platform_helper;
 }
 
@@ -50,32 +50,32 @@ PlatformType PlatformHelper::GetType() const {
 }
 
 // static
-PlatformHelper* PlatformHelper::GetInstance() {
+const PlatformHelper& PlatformHelper::GetInstance() {
   if (g_platform_helper_for_testing) {
-    return g_platform_helper_for_testing;
+    return *g_platform_helper_for_testing;
   }
 
   return GetInstanceImpl();
 }
 
 // static
-PlatformHelper* PlatformHelper::GetInstanceImpl() {
+const PlatformHelper& PlatformHelper::GetInstanceImpl() {
 #if BUILDFLAG(IS_ANDROID)
-  static base::NoDestructor<PlatformHelperAndroid> platform_helper;
+  static const base::NoDestructor<PlatformHelperAndroid> kPlatformHelper;
 #elif BUILDFLAG(IS_IOS)
-  static base::NoDestructor<PlatformHelperIos> platform_helper;
+  static const base::NoDestructor<PlatformHelperIos> kPlatformHelper;
 #elif BUILDFLAG(IS_LINUX)
-  static base::NoDestructor<PlatformHelperLinux> platform_helper;
+  static const base::NoDestructor<PlatformHelperLinux> kPlatformHelper;
 #elif BUILDFLAG(IS_MAC)
-  static base::NoDestructor<PlatformHelperMac> platform_helper;
+  static const base::NoDestructor<PlatformHelperMac> kPlatformHelper;
 #elif BUILDFLAG(IS_WIN)
-  static base::NoDestructor<PlatformHelperWin> platform_helper;
+  static const base::NoDestructor<PlatformHelperWin> kPlatformHelper;
 #else
   // Default platform helper for unsupported platforms
-  static base::NoDestructor<PlatformHelper> platform_helper;
+  static const base::NoDestructor<PlatformHelper> kPlatformHelper;
 #endif  // BUILDFLAG(IS_ANDROID)
 
-  return platform_helper.get();
+  return *kPlatformHelper;
 }
 
 }  // namespace brave_ads

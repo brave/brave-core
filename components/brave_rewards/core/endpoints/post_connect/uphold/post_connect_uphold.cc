@@ -15,7 +15,7 @@
 
 namespace ledger::endpoints {
 
-PostConnectUphold::PostConnectUphold(LedgerImpl* ledger, std::string&& address)
+PostConnectUphold::PostConnectUphold(LedgerImpl& ledger, std::string&& address)
     : PostConnect(ledger), address_(std::move(address)) {}
 
 PostConnectUphold::~PostConnectUphold() = default;

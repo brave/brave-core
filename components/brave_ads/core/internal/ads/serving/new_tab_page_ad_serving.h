@@ -8,18 +8,14 @@
 
 #include <memory>
 
+#include "base/check_op.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/observer_list.h"
 #include "brave/components/brave_ads/core/ads_callback.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/new_tab_page_ad_serving_observer.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/new_tab_page_ad_serving_delegate.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
-#include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
 namespace brave_ads {
-
-namespace geographic {
-class SubdivisionTargeting;
-}  // namespace geographic
 
 namespace resource {
 class AntiTargeting;
@@ -29,6 +25,7 @@ namespace targeting {
 struct UserModelInfo;
 }  // namespace targeting
 
+class SubdivisionTargeting;
 struct NewTabPageAdInfo;
 
 namespace new_tab_page_ads {
@@ -37,7 +34,7 @@ class EligibleAdsBase;
 
 class Serving final {
  public:
-  Serving(const geographic::SubdivisionTargeting& subdivision_targeting,
+  Serving(const SubdivisionTargeting& subdivision_targeting,
           const resource::AntiTargeting& anti_targeting_resource);
 
   Serving(const Serving&) = delete;
@@ -48,12 +45,16 @@ class Serving final {
 
   ~Serving();
 
-  void AddObserver(ServingObserver* observer);
-  void RemoveObserver(ServingObserver* observer);
+  void SetDelegate(ServingDelegate* delegate) {
+    DCHECK_EQ(delegate_, nullptr);
+    delegate_ = delegate;
+  }
 
   void MaybeServeAd(MaybeServeNewTabPageAdCallback callback);
 
  private:
+  bool IsSupported() const { return static_cast<bool>(eligible_ads_); }
+
   void OnBuildUserModel(MaybeServeNewTabPageAdCallback callback,
                         const targeting::UserModelInfo& user_model);
   void OnGetForUserModel(MaybeServeNewTabPageAdCallback callback,
@@ -61,18 +62,11 @@ class Serving final {
                          bool had_opportunity,
                          const CreativeNewTabPageAdList& creative_ads);
 
-  bool IsSupported() const { return static_cast<bool>(eligible_ads_); }
-
   void ServeAd(const NewTabPageAdInfo& ad,
                MaybeServeNewTabPageAdCallback callback);
   void FailedToServeAd(MaybeServeNewTabPageAdCallback callback);
 
-  void NotifyOpportunityAroseToServeNewTabPageAd(
-      const SegmentList& segments) const;
-  void NotifyDidServeNewTabPageAd(const NewTabPageAdInfo& ad) const;
-  void NotifyFailedToServeNewTabPageAd() const;
-
-  base::ObserverList<ServingObserver> observers_;
+  raw_ptr<ServingDelegate> delegate_ = nullptr;
 
   std::unique_ptr<EligibleAdsBase> eligible_ads_;
 

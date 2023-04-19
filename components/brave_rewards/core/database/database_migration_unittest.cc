@@ -15,7 +15,6 @@
 #include "brave/components/brave_rewards/core/database/database_migration.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
-#include "brave/components/brave_rewards/core/option_keys.h"
 #include "brave/components/brave_rewards/core/test/bat_ledger_test.h"
 #include "brave/components/brave_rewards/core/test/test_ledger_client.h"
 #include "build/build_config.h"
@@ -747,8 +746,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_30_NotBitflyerRegion) {
 TEST_F(LedgerDatabaseMigrationTest, Migration_30_BitflyerRegion) {
   DatabaseMigration::SetTargetVersionForTesting(30);
   InitializeDatabaseAtVersion(29);
-  GetTestLedgerClient()->SetOptionForTesting(option::kIsBitflyerRegion,
-                                             base::Value(true));
+  GetTestLedgerClient()->SetIsBitFlyerRegionForTesting(true);
   InitializeLedger();
   EXPECT_EQ(CountTableRows("unblinded_tokens"), 0);
   EXPECT_EQ(CountTableRows("unblinded_tokens_bap"), 1);
@@ -771,8 +769,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_32_NotBitflyerRegion) {
 TEST_F(LedgerDatabaseMigrationTest, Migration_32_BitflyerRegion) {
   DatabaseMigration::SetTargetVersionForTesting(32);
   InitializeDatabaseAtVersion(30);
-  GetTestLedgerClient()->SetOptionForTesting(option::kIsBitflyerRegion,
-                                             base::Value(true));
+  GetTestLedgerClient()->SetIsBitFlyerRegionForTesting(true);
   InitializeLedger();
   EXPECT_EQ(CountTableRows("balance_report_info"), 0);
 }
@@ -822,6 +819,13 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_38) {
   InitializeLedger();
   EXPECT_TRUE(
       GetDB()->DoesColumnExist("recurring_donation", "next_contribution_at"));
+}
+
+TEST_F(LedgerDatabaseMigrationTest, Migration_39) {
+  DatabaseMigration::SetTargetVersionForTesting(39);
+  InitializeDatabaseAtVersion(38);
+  InitializeLedger();
+  EXPECT_TRUE(GetDB()->DoesColumnExist("server_publisher_banner", "web3_url"));
 }
 
 }  // namespace ledger

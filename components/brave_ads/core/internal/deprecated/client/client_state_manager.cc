@@ -22,14 +22,13 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager_constants.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/history/history_constants.h"
 #include "build/build_config.h"  // IWYU pragma: keep
 
 namespace brave_ads {
 
 namespace {
-
-ClientStateManager* g_client_instance = nullptr;
 
 constexpr uint64_t kMaximumEntriesPerSegmentInPurchaseIntentSignalHistory = 100;
 
@@ -95,25 +94,16 @@ void OnSaved(const bool success) {
 
 }  // namespace
 
-ClientStateManager::ClientStateManager() : client_(new ClientInfo()) {
-  DCHECK(!g_client_instance);
-  g_client_instance = this;
-}
+ClientStateManager::ClientStateManager() : client_(new ClientInfo()) {}
 
-ClientStateManager::~ClientStateManager() {
-  DCHECK_EQ(this, g_client_instance);
-  g_client_instance = nullptr;
-}
+ClientStateManager::~ClientStateManager() {}
 
 // static
 ClientStateManager* ClientStateManager::GetInstance() {
-  DCHECK(g_client_instance);
-  return g_client_instance;
-}
-
-// static
-bool ClientStateManager::HasInstance() {
-  return !!g_client_instance;
+  auto* client_state_manager =
+      GlobalState::GetInstance()->GetClientStateManager();
+  DCHECK(client_state_manager);
+  return client_state_manager;
 }
 
 const FilteredAdvertiserList& ClientStateManager::GetFilteredAdvertisers()
@@ -453,8 +443,7 @@ const std::map<std::string, bool>&
 ClientStateManager::GetSeenAdvertisersForType(const AdType& type) {
   DCHECK(is_initialized_);
 
-  const std::string type_as_string = type.ToString();
-  return client_->seen_advertisers[type_as_string];
+  return client_->seen_advertisers[type.ToString()];
 }
 
 void ClientStateManager::ResetSeenAdvertisersForType(
@@ -493,7 +482,7 @@ void ClientStateManager::AppendTextClassificationProbabilitiesToHistory(
   client_->text_classification_probabilities.push_front(probabilities);
 
   const size_t maximum_entries =
-      targeting::features::GetTextClassificationProbabilitiesHistorySize();
+      targeting::kTextClassificationPageProbabilitiesHistorySize.Get();
   if (client_->text_classification_probabilities.size() > maximum_entries) {
     client_->text_classification_probabilities.resize(maximum_entries);
   }

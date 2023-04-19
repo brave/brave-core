@@ -9,7 +9,7 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
@@ -65,17 +65,18 @@ AdEventInfo GetFromRecord(mojom::DBRecordInfo* record) {
 }
 
 void OnGetAdEvents(GetAdEventsCallback callback,
-                   mojom::DBCommandResponseInfoPtr response) {
-  if (!response || response->status !=
-                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+                   mojom::DBCommandResponseInfoPtr command_response) {
+  if (!command_response ||
+      command_response->status !=
+          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get ad events");
-    std::move(callback).Run(/*success*/ false, {});
+    std::move(callback).Run(/*success*/ false, /*ad_events*/ {});
     return;
   }
 
   AdEventList ad_events;
 
-  for (const auto& record : response->result->get_records()) {
+  for (const auto& record : command_response->result->get_records()) {
     const AdEventInfo ad_event = GetFromRecord(record.get());
     ad_events.push_back(ad_event);
   }
@@ -114,7 +115,7 @@ void MigrateToV5(mojom::DBTransactionInfo* transaction) {
 
   DropTable(transaction, "ad_events");
 
-  const std::string query = base::StringPrintf(
+  const std::string query =
       "CREATE TABLE ad_events "
       "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
       "uuid TEXT NOT NULL, "
@@ -124,7 +125,7 @@ void MigrateToV5(mojom::DBTransactionInfo* transaction) {
       "creative_set_id TEXT NOT NULL, "
       "creative_instance_id TEXT NOT NULL, "
       "advertiser_id TEXT, "
-      "timestamp TIMESTAMP NOT NULL)");
+      "timestamp TIMESTAMP NOT NULL)";
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -138,7 +139,7 @@ void MigrateToV13(mojom::DBTransactionInfo* transaction) {
 
   RenameTable(transaction, "ad_events", "ad_events_temp");
 
-  const std::string query = base::StringPrintf(
+  const std::string query =
       "CREATE TABLE ad_events "
       "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
       "uuid TEXT NOT NULL, "
@@ -166,7 +167,7 @@ void MigrateToV13(mojom::DBTransactionInfo* transaction) {
       "creative_set_id, "
       "creative_instance_id, "
       "timestamp "
-      "FROM ad_events_temp");
+      "FROM ad_events_temp";
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -197,38 +198,21 @@ void AdEvents::LogEvent(const AdEventInfo& ad_event, ResultCallback callback) {
 
 void AdEvents::GetIf(const std::string& condition,
                      GetAdEventsCallback callback) const {
-  const std::string query = base::StringPrintf(
-      "SELECT "
-      "ae.uuid, "
-      "ae.type, "
-      "ae.confirmation_type, "
-      "ae.campaign_id, "
-      "ae.creative_set_id, "
-      "ae.creative_instance_id, "
-      "ae.advertiser_id, "
-      "ae.timestamp "
-      "FROM %s AS ae "
-      "WHERE %s "
-      "ORDER BY timestamp DESC ",
-      GetTableName().c_str(), condition.c_str());
+  const std::string query = base::ReplaceStringPlaceholders(
+      "SELECT ae.uuid, ae.type, ae.confirmation_type, ae.campaign_id, "
+      "ae.creative_set_id, ae.creative_instance_id, ae.advertiser_id, "
+      "ae.timestamp FROM $1 AS ae WHERE $2 ORDER BY timestamp DESC",
+      {GetTableName(), condition}, nullptr);
 
   RunTransaction(query, std::move(callback));
 }
 
 void AdEvents::GetAll(GetAdEventsCallback callback) const {
-  const std::string query = base::StringPrintf(
-      "SELECT "
-      "ae.uuid, "
-      "ae.type, "
-      "ae.confirmation_type, "
-      "ae.campaign_id, "
-      "ae.creative_set_id, "
-      "ae.creative_instance_id, "
-      "ae.advertiser_id, "
-      "ae.timestamp "
-      "FROM %s AS ae "
-      "ORDER BY timestamp DESC",
-      GetTableName().c_str());
+  const std::string query = base::ReplaceStringPlaceholders(
+      "SELECT ae.uuid, ae.type, ae.confirmation_type, ae.campaign_id, "
+      "ae.creative_set_id, ae.creative_instance_id, ae.advertiser_id, "
+      "ae.timestamp FROM $1 AS ae ORDER BY timestamp DESC",
+      {GetTableName()}, nullptr);
 
   RunTransaction(query, std::move(callback));
 }
@@ -237,35 +221,22 @@ void AdEvents::GetForType(const mojom::AdType ad_type,
                           GetAdEventsCallback callback) const {
   DCHECK(mojom::IsKnownEnumValue(ad_type));
 
-  const std::string ad_type_as_string = AdType(ad_type).ToString();
-
-  const std::string query = base::StringPrintf(
-      "SELECT "
-      "ae.uuid, "
-      "ae.type, "
-      "ae.confirmation_type, "
-      "ae.campaign_id, "
-      "ae.creative_set_id, "
-      "ae.creative_instance_id, "
-      "ae.advertiser_id, "
-      "ae.timestamp "
-      "FROM %s AS ae "
-      "WHERE type = '%s' "
-      "ORDER BY timestamp DESC",
-      GetTableName().c_str(), ad_type_as_string.c_str());
+  const std::string query = base::ReplaceStringPlaceholders(
+      "SELECT ae.uuid, ae.type, ae.confirmation_type, ae.campaign_id, "
+      "ae.creative_set_id, ae.creative_instance_id, ae.advertiser_id, "
+      "ae.timestamp FROM $1 AS ae WHERE type = '$2' ORDER BY timestamp DESC",
+      {GetTableName(), AdType(ad_type).ToString()}, nullptr);
 
   RunTransaction(query, std::move(callback));
 }
 
 void AdEvents::PurgeExpired(ResultCallback callback) const {
-  const std::string query = base::StringPrintf(
-      "DELETE FROM %s "
-      "WHERE creative_set_id NOT IN "
-      "(SELECT creative_set_id from creative_ads) "
-      "AND creative_set_id NOT IN "
-      "(SELECT creative_set_id from creative_ad_conversions) "
-      "AND DATETIME('now') >= DATETIME(timestamp, 'unixepoch', '+3 month')",
-      GetTableName().c_str());
+  const std::string query = base::ReplaceStringPlaceholders(
+      "DELETE FROM $1 WHERE creative_set_id NOT IN (SELECT creative_set_id "
+      "from creative_ads) AND creative_set_id NOT IN (SELECT creative_set_id "
+      "from creative_ad_conversions) AND DATETIME('now') >= "
+      "DATETIME(timestamp, 'unixepoch', '+3 month')",
+      {GetTableName()}, nullptr);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -283,16 +254,13 @@ void AdEvents::PurgeOrphaned(const mojom::AdType ad_type,
                              ResultCallback callback) const {
   DCHECK(mojom::IsKnownEnumValue(ad_type));
 
-  const std::string ad_type_as_string = AdType(ad_type).ToString();
-
-  const std::string query = base::StringPrintf(
-      "DELETE FROM %s "
-      "WHERE uuid IN (SELECT uuid from %s GROUP BY uuid having count(*) = 1) "
-      "AND confirmation_type IN (SELECT confirmation_type from %s "
-      "WHERE confirmation_type = 'served') "
-      "AND type = '%s'",
-      GetTableName().c_str(), GetTableName().c_str(), GetTableName().c_str(),
-      ad_type_as_string.c_str());
+  const std::string query = base::ReplaceStringPlaceholders(
+      "DELETE FROM $1 WHERE uuid IN (SELECT uuid from $2 GROUP BY uuid having "
+      "count(*) = 1) AND confirmation_type IN (SELECT confirmation_type from "
+      "$3 WHERE confirmation_type = 'served') AND type = '$4'",
+      {GetTableName(), GetTableName(), GetTableName(),
+       AdType(ad_type).ToString()},
+      nullptr);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -358,20 +326,15 @@ std::string AdEvents::BuildInsertOrUpdateQuery(
     const AdEventList& ad_events) const {
   DCHECK(command);
 
-  const int count = BindParameters(command, ad_events);
+  const int binded_parameters_count = BindParameters(command, ad_events);
 
-  return base::StringPrintf(
-      "INSERT OR REPLACE INTO %s "
-      "(uuid, "
-      "type, "
-      "confirmation_type, "
-      "campaign_id, "
-      "creative_set_id, "
-      "creative_instance_id, "
-      "advertiser_id, "
-      "timestamp) VALUES %s",
-      GetTableName().c_str(),
-      BuildBindingParameterPlaceholders(8, count).c_str());
+  return base::ReplaceStringPlaceholders(
+      "INSERT OR REPLACE INTO $1 (uuid, type, confirmation_type, campaign_id, "
+      "creative_set_id, creative_instance_id, advertiser_id, timestamp) VALUES "
+      "$2",
+      {GetTableName(), BuildBindingParameterPlaceholders(
+                           /*parameters_count*/ 8, binded_parameters_count)},
+      nullptr);
 }
 
 }  // namespace brave_ads::database::table

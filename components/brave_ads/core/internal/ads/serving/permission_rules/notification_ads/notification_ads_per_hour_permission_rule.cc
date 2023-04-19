@@ -29,13 +29,13 @@ bool DoesRespectCap(const std::vector<base::Time>& history) {
   }
 
   return DoesHistoryRespectRollingTimeConstraint(history, kTimeConstraint,
-                                                 ads_per_hour);
+                                                 /*cap*/ ads_per_hour);
 }
 
 }  // namespace
 
 bool AdsPerHourPermissionRule::ShouldAllow() {
-  if (PlatformHelper::GetInstance()->IsMobile()) {
+  if (PlatformHelper::GetInstance().IsMobile()) {
     // Ads are periodically served on mobile so they will never exceed the
     // maximum ads per hour
     return true;

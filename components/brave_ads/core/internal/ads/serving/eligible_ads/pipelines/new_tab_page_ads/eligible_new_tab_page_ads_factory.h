@@ -10,13 +10,11 @@
 
 namespace brave_ads {
 
-namespace geographic {
-class SubdivisionTargeting;
-}  // namespace geographic
-
 namespace resource {
 class AntiTargeting;
 }  // namespace resource
+
+class SubdivisionTargeting;
 
 namespace new_tab_page_ads {
 
@@ -26,7 +24,7 @@ class EligibleAdsFactory final {
  public:
   static std::unique_ptr<EligibleAdsBase> Build(
       int version,
-      const geographic::SubdivisionTargeting& subdivision_targeting,
+      const SubdivisionTargeting& subdivision_targeting,
       const resource::AntiTargeting& anti_targeting_resource);
 };
 

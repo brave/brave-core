@@ -12,7 +12,6 @@
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_handler.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
@@ -27,24 +26,20 @@ namespace brave_ads {
 InlineContentAdHandler::InlineContentAdHandler(
     Account* account,
     Transfer* transfer,
-    const geographic::SubdivisionTargeting& subdivision_targeting,
+    const SubdivisionTargeting& subdivision_targeting,
     const resource::AntiTargeting& anti_targeting_resource)
     : account_(account), transfer_(transfer) {
   DCHECK(account_);
   DCHECK(transfer_);
 
-  event_handler_ = std::make_unique<inline_content_ads::EventHandler>();
-  event_handler_->AddObserver(this);
+  event_handler_.SetDelegate(this);
 
   serving_ = std::make_unique<inline_content_ads::Serving>(
       subdivision_targeting, anti_targeting_resource);
-  serving_->AddObserver(this);
+  serving_->SetDelegate(this);
 }
 
-InlineContentAdHandler::~InlineContentAdHandler() {
-  event_handler_->RemoveObserver(this);
-  serving_->RemoveObserver(this);
-}
+InlineContentAdHandler::~InlineContentAdHandler() = default;
 
 void InlineContentAdHandler::MaybeServe(
     const std::string& dimensions,
@@ -58,7 +53,7 @@ void InlineContentAdHandler::TriggerEvent(
     const mojom::InlineContentAdEventType event_type) {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
-  event_handler_->FireEvent(placement_id, creative_instance_id, event_type);
+  event_handler_.FireEvent(placement_id, creative_instance_id, event_type);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

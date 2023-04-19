@@ -13,17 +13,14 @@
 
 namespace brave_ads {
 
-namespace geographic {
 class SubdivisionTargeting;
-}  // namespace geographic
-
 struct CreativeAdInfo;
 
 class SubdivisionTargetingExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
   explicit SubdivisionTargetingExclusionRule(
-      const geographic::SubdivisionTargeting& subdivision_targeting);
+      const SubdivisionTargeting& subdivision_targeting);
 
   SubdivisionTargetingExclusionRule(const SubdivisionTargetingExclusionRule&) =
       delete;
@@ -46,8 +43,7 @@ class SubdivisionTargetingExclusionRule final
  private:
   bool DoesRespectCap(const CreativeAdInfo& creative_ad);
 
-  const base::raw_ref<const geographic::SubdivisionTargeting>
-      subdivision_targeting_;
+  const base::raw_ref<const SubdivisionTargeting> subdivision_targeting_;
 
   std::string last_message_;
 };

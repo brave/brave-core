@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/rand_util.h"
 #include "brave/components/brave_ads/core/inline_content_ad_info.h"
@@ -26,28 +25,19 @@
 
 namespace brave_ads::inline_content_ads {
 
-Serving::Serving(const geographic::SubdivisionTargeting& subdivision_targeting,
+Serving::Serving(const SubdivisionTargeting& subdivision_targeting,
                  const resource::AntiTargeting& anti_targeting_resource) {
-  const int version = features::GetServingVersion();
-  eligible_ads_ = EligibleAdsFactory::Build(version, subdivision_targeting,
-                                            anti_targeting_resource);
+  eligible_ads_ = EligibleAdsFactory::Build(
+      kServingVersion.Get(), subdivision_targeting, anti_targeting_resource);
 }
 
-Serving::~Serving() = default;
-
-void Serving::AddObserver(ServingObserver* observer) {
-  DCHECK(observer);
-  observers_.AddObserver(observer);
-}
-
-void Serving::RemoveObserver(ServingObserver* observer) {
-  DCHECK(observer);
-  observers_.RemoveObserver(observer);
+Serving::~Serving() {
+  delegate_ = nullptr;
 }
 
 void Serving::MaybeServeAd(const std::string& dimensions,
                            MaybeServeInlineContentAdCallback callback) {
-  if (!features::IsServingEnabled()) {
+  if (!IsServingEnabled()) {
     BLOG(1, "Inline content ad not served: Feature is disabled");
     return FailedToServeAd(dimensions, std::move(callback));
   }
@@ -87,8 +77,10 @@ void Serving::OnGetForUserModel(
     const bool had_opportunity,
     const CreativeInlineContentAdList& creative_ads) {
   if (had_opportunity) {
-    const SegmentList segments = targeting::GetTopChildSegments(user_model);
-    NotifyOpportunityAroseToServeInlineContentAd(segments);
+    if (delegate_) {
+      delegate_->OnOpportunityAroseToServeInlineContentAd(
+          targeting::GetTopChildSegments(user_model));
+    }
   }
 
   if (creative_ads.empty()) {
@@ -129,36 +121,20 @@ void Serving::ServeAd(const InlineContentAdInfo& ad,
   DCHECK(eligible_ads_);
   eligible_ads_->SetLastServedAd(ad);
 
-  NotifyDidServeInlineContentAd(ad);
+  if (delegate_) {
+    delegate_->OnDidServeInlineContentAd(ad);
+  }
 
   std::move(callback).Run(ad.dimensions, ad);
 }
 
 void Serving::FailedToServeAd(const std::string& dimensions,
                               MaybeServeInlineContentAdCallback callback) {
-  NotifyFailedToServeInlineContentAd();
-
-  std::move(callback).Run(dimensions, absl::nullopt);
-}
-
-void Serving::NotifyOpportunityAroseToServeInlineContentAd(
-    const SegmentList& segments) const {
-  for (ServingObserver& observer : observers_) {
-    observer.OnOpportunityAroseToServeInlineContentAd(segments);
+  if (delegate_) {
+    delegate_->OnFailedToServeInlineContentAd();
   }
-}
 
-void Serving::NotifyDidServeInlineContentAd(
-    const InlineContentAdInfo& ad) const {
-  for (ServingObserver& observer : observers_) {
-    observer.OnDidServeInlineContentAd(ad);
-  }
-}
-
-void Serving::NotifyFailedToServeInlineContentAd() const {
-  for (ServingObserver& observer : observers_) {
-    observer.OnFailedToServeInlineContentAd();
-  }
+  std::move(callback).Run(dimensions, /*ad*/ absl::nullopt);
 }
 
 }  // namespace brave_ads::inline_content_ads

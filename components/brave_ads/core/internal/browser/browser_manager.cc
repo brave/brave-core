@@ -5,20 +5,14 @@
 
 #include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
 
-#include "base/check_op.h"
+#include "base/check.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
 namespace brave_ads {
 
-namespace {
-BrowserManager* g_browser_manager_instance = nullptr;
-}  // namespace
-
 BrowserManager::BrowserManager() {
-  DCHECK(!g_browser_manager_instance);
-  g_browser_manager_instance = this;
-
   const bool is_browser_active =
       AdsClientHelper::GetInstance()->IsBrowserActive();
 
@@ -33,20 +27,13 @@ BrowserManager::BrowserManager() {
 
 BrowserManager::~BrowserManager() {
   AdsClientHelper::RemoveObserver(this);
-
-  DCHECK_EQ(this, g_browser_manager_instance);
-  g_browser_manager_instance = nullptr;
 }
 
 // static
 BrowserManager* BrowserManager::GetInstance() {
-  DCHECK(g_browser_manager_instance);
-  return g_browser_manager_instance;
-}
-
-// static
-bool BrowserManager::HasInstance() {
-  return !!g_browser_manager_instance;
+  auto* browser_manager = GlobalState::GetInstance()->GetBrowserManager();
+  DCHECK(browser_manager);
+  return browser_manager;
 }
 
 void BrowserManager::AddObserver(BrowserManagerObserver* observer) {

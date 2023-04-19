@@ -9,7 +9,7 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
@@ -62,21 +62,24 @@ DepositInfo GetFromRecord(mojom::DBRecordInfo* record) {
   return deposit;
 }
 
-void OnGetForCreativeInstanceId(const std::string& /*creative_instance_id*/,
-                                GetDepositsCallback callback,
-                                mojom::DBCommandResponseInfoPtr response) {
-  if (!response || response->status !=
-                       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+void OnGetForCreativeInstanceId(
+    const std::string& /*creative_instance_id*/,
+    GetDepositsCallback callback,
+    mojom::DBCommandResponseInfoPtr command_response) {
+  if (!command_response ||
+      command_response->status !=
+          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get deposit value");
-    return std::move(callback).Run(/*success*/ false, absl::nullopt);
+    return std::move(callback).Run(/*success*/ false,
+                                   /*deposit*/ absl::nullopt);
   }
 
-  if (response->result->get_records().empty()) {
-    return std::move(callback).Run(/*success*/ true, absl::nullopt);
+  if (command_response->result->get_records().empty()) {
+    return std::move(callback).Run(/*success*/ true, /*deposit*/ absl::nullopt);
   }
 
   const mojom::DBRecordInfoPtr record =
-      std::move(response->result->get_records().front());
+      std::move(command_response->result->get_records().front());
   DepositInfo deposit = GetFromRecord(record.get());
 
   std::move(callback).Run(/*success*/ true, std::move(deposit));
@@ -146,17 +149,14 @@ void Deposits::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
 void Deposits::GetForCreativeInstanceId(const std::string& creative_instance_id,
                                         GetDepositsCallback callback) const {
   if (creative_instance_id.empty()) {
-    return std::move(callback).Run(/*success*/ false, absl::nullopt);
+    return std::move(callback).Run(/*success*/ false,
+                                   /*deposit*/ absl::nullopt);
   }
 
-  const std::string query = base::StringPrintf(
-      "SELECT "
-      "creative_instance_id, "
-      "value, "
-      "expire_at "
-      "FROM %s AS rv "
-      "WHERE rv.creative_instance_id = '%s'",
-      GetTableName().c_str(), creative_instance_id.c_str());
+  const std::string query = base::ReplaceStringPlaceholders(
+      "SELECT creative_instance_id, value, expire_at FROM $1 AS rv WHERE "
+      "rv.creative_instance_id = '$2'",
+      {GetTableName(), creative_instance_id}, nullptr);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
@@ -179,10 +179,10 @@ void Deposits::GetForCreativeInstanceId(const std::string& creative_instance_id,
 }
 
 void Deposits::PurgeExpired(ResultCallback callback) const {
-  const std::string query = base::StringPrintf(
-      "DELETE FROM %s "
-      "WHERE DATETIME('now') >= DATETIME(expire_at, 'unixepoch')",
-      GetTableName().c_str());
+  const std::string query = base::ReplaceStringPlaceholders(
+      "DELETE FROM $1 WHERE DATETIME('now') >= DATETIME(expire_at, "
+      "'unixepoch')",
+      {GetTableName()}, nullptr);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -223,15 +223,14 @@ std::string Deposits::BuildInsertOrUpdateQuery(
     const CreativeAdList& creative_ads) const {
   DCHECK(command);
 
-  const int count = BindParameters(command, creative_ads);
+  const int binded_parameters_count = BindParameters(command, creative_ads);
 
-  return base::StringPrintf(
-      "INSERT OR REPLACE INTO %s "
-      "(creative_instance_id, "
-      "value, "
-      "expire_at) VALUES %s",
-      GetTableName().c_str(),
-      BuildBindingParameterPlaceholders(3, count).c_str());
+  return base::ReplaceStringPlaceholders(
+      "INSERT OR REPLACE INTO $1 (creative_instance_id, value, expire_at) "
+      "VALUES $2",
+      {GetTableName(), BuildBindingParameterPlaceholders(
+                           /*parameters_count*/ 3, binded_parameters_count)},
+      nullptr);
 }
 
 std::string Deposits::BuildInsertOrUpdateQuery(
@@ -242,12 +241,13 @@ std::string Deposits::BuildInsertOrUpdateQuery(
 
   BindParameters(command, deposit);
 
-  return base::StringPrintf(
-      "INSERT OR REPLACE INTO %s "
-      "(creative_instance_id, "
-      "value, "
-      "expire_at) VALUES %s",
-      GetTableName().c_str(), BuildBindingParameterPlaceholders(3, 1).c_str());
+  return base::ReplaceStringPlaceholders(
+      "INSERT OR REPLACE INTO $1 (creative_instance_id, value, expire_at) "
+      "VALUES $2",
+      {GetTableName(),
+       BuildBindingParameterPlaceholders(/*parameters_count*/ 3,
+                                         /*binded_parameters_count*/ 1)},
+      nullptr);
 }
 
 }  // namespace brave_ads::database::table

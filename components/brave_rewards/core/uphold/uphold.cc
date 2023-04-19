@@ -26,7 +26,7 @@
 
 namespace ledger::uphold {
 
-Uphold::Uphold(LedgerImpl* ledger)
+Uphold::Uphold(LedgerImpl& ledger)
     : card_(std::make_unique<UpholdCard>(ledger)),
       connect_wallet_(std::make_unique<ConnectUpholdWallet>(ledger)),
       get_wallet_(std::make_unique<GetUpholdWallet>(ledger)),
@@ -226,27 +226,27 @@ void Uphold::OnTransferFeeTimerElapsed(const std::string& id, int attempts) {
 }
 
 mojom::ExternalWalletPtr Uphold::GetWallet() {
-  return ledger::wallet::GetWallet(ledger_, constant::kWalletUphold);
+  return ledger::wallet::GetWallet(*ledger_, constant::kWalletUphold);
 }
 
 mojom::ExternalWalletPtr Uphold::GetWalletIf(
     const std::set<mojom::WalletStatus>& statuses) {
-  return ledger::wallet::GetWalletIf(ledger_, constant::kWalletUphold,
+  return ledger::wallet::GetWalletIf(*ledger_, constant::kWalletUphold,
                                      statuses);
 }
 
 bool Uphold::SetWallet(mojom::ExternalWalletPtr wallet) {
-  return ledger::wallet::SetWallet(ledger_, std::move(wallet));
+  return ledger::wallet::SetWallet(*ledger_, std::move(wallet));
 }
 
 mojom::ExternalWalletPtr Uphold::TransitionWallet(
     mojom::ExternalWalletPtr wallet,
     mojom::WalletStatus to) {
-  return ledger::wallet::TransitionWallet(ledger_, std::move(wallet), to);
+  return ledger::wallet::TransitionWallet(*ledger_, std::move(wallet), to);
 }
 
 bool Uphold::LogOutWallet(const std::string& notification) {
-  return ledger::wallet::LogOutWallet(ledger_, constant::kWalletUphold,
+  return ledger::wallet::LogOutWallet(*ledger_, constant::kWalletUphold,
                                       notification);
 }
 

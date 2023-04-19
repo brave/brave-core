@@ -19,7 +19,7 @@ namespace endpoint {
 
 class BitflyerServer {
  public:
-  explicit BitflyerServer(LedgerImpl* ledger);
+  explicit BitflyerServer(LedgerImpl& ledger);
   ~BitflyerServer();
 
   bitflyer::GetBalance* get_balance() const;

@@ -107,7 +107,7 @@ class AdsServiceImpl : public AdsService,
   void RestartBatAdsServiceAfterDelay();
   void CancelRestartBatAdsService();
 
-  void InitializeBasePathDirectory();
+  void OnBatAdsServiceCreated();
   void OnInitializeBasePathDirectory(bool success);
   void Initialize();
   void InitializeDatabase();
@@ -121,8 +121,8 @@ class AdsServiceImpl : public AdsService,
   void ShutdownAndResetState();
 
   void SetSysInfo();
-
   void SetBuildChannel();
+  void SetFlags();
 
   void CleanUpOnFirstRun();
   void RemoveDeprecatedFiles() const;

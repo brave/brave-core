@@ -13,7 +13,6 @@
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
-#include "brave/components/brave_ads/core/internal/ads/ad_events/notification_ads/notification_ad_event_handler.h"
 #include "brave/components/brave_ads/core/internal/ads/notification_ad_handler_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
@@ -40,7 +39,7 @@ NotificationAdHandler::NotificationAdHandler(
     Account* account,
     Transfer* transfer,
     processor::EpsilonGreedyBandit* epsilon_greedy_bandit_processor,
-    const geographic::SubdivisionTargeting& subdivision_targeting,
+    const SubdivisionTargeting& subdivision_targeting,
     const resource::AntiTargeting& anti_targeting_resource)
     : account_(account),
       transfer_(transfer),
@@ -51,12 +50,11 @@ NotificationAdHandler::NotificationAdHandler(
 
   account_->AddObserver(this);
 
-  event_handler_ = std::make_unique<notification_ads::EventHandler>();
-  event_handler_->AddObserver(this);
+  event_handler_.SetDelegate(this);
 
   serving_ = std::make_unique<notification_ads::Serving>(
       subdivision_targeting, anti_targeting_resource);
-  serving_->AddObserver(this);
+  serving_->SetDelegate(this);
 
   BrowserManager::GetInstance()->AddObserver(this);
   AdsClientHelper::AddObserver(this);
@@ -64,8 +62,6 @@ NotificationAdHandler::NotificationAdHandler(
 
 NotificationAdHandler::~NotificationAdHandler() {
   account_->RemoveObserver(this);
-  event_handler_->RemoveObserver(this);
-  serving_->RemoveObserver(this);
   BrowserManager::GetInstance()->RemoveObserver(this);
   AdsClientHelper::RemoveObserver(this);
 }
@@ -87,7 +83,7 @@ void NotificationAdHandler::TriggerEvent(
     const mojom::NotificationAdEventType event_type) {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
-  event_handler_->FireEvent(placement_id, event_type);
+  event_handler_.FireEvent(placement_id, event_type);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -109,12 +105,12 @@ void NotificationAdHandler::OnNotifyUserDidBecomeActive(
     return;
   }
 
-  if (idle_detection::MaybeScreenWasLocked(screen_was_locked)) {
+  if (MaybeScreenWasLocked(screen_was_locked)) {
     BLOG(1, "Notification ad not served: Screen was locked");
     return;
   }
 
-  if (idle_detection::HasExceededMaximumIdleTime(idle_time)) {
+  if (HasExceededMaximumIdleTime(idle_time)) {
     BLOG(1, "Notification ad not served: Exceeded maximum idle time");
     return;
   }

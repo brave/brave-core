@@ -12,22 +12,9 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_ads/core/ads_client_notifier.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/ads_client_mock.h"
 #include "brave/components/brave_ads/core/internal/ads_impl.h"
-#include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper_mock.h"
-#include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
-#include "brave/components/brave_ads/core/internal/database/database_manager.h"
-#include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
-#include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_manager.h"
-#include "brave/components/brave_ads/core/internal/fl/predictors/predictors_manager.h"
-#include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
-#include "brave/components/brave_ads/core/internal/history/history_manager.h"
-#include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
-#include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection.h"
-#include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -42,6 +29,7 @@ class ScopedDefaultLocale;
 
 namespace brave_ads {
 
+class GlobalState;
 class Database;
 
 class UnitTestBase : public AdsClientNotifier, public testing::Test {
@@ -139,9 +127,19 @@ class UnitTestBase : public AdsClientNotifier, public testing::Test {
 
   void MockAdsClientAddObserver();
 
-  void SetDefaultMocks();
+  void MockDefaultAdsClient();
 
-  void SetDefaultPrefs();
+  void MockSetBooleanPref(const std::unique_ptr<AdsClientMock>& mock);
+  void MockSetIntegerPref(const std::unique_ptr<AdsClientMock>& mock);
+  void MockSetDoublePref(const std::unique_ptr<AdsClientMock>& mock);
+  void MockSetStringPref(const std::unique_ptr<AdsClientMock>& mock);
+  void MockSetInt64Pref(const std::unique_ptr<AdsClientMock>& mock);
+  void MockSetUint64Pref(const std::unique_ptr<AdsClientMock>& mock);
+  void MockSetTimePref(const std::unique_ptr<AdsClientMock>& mock);
+  void MockSetDictPref(const std::unique_ptr<AdsClientMock>& mock);
+  void MockSetListPref(const std::unique_ptr<AdsClientMock>& mock);
+
+  void MockDefaultPrefs();
 
   void SetUpIntegrationTest();
 
@@ -158,20 +156,7 @@ class UnitTestBase : public AdsClientNotifier, public testing::Test {
 
   std::unique_ptr<Database> database_;
 
-  std::unique_ptr<AdsClientHelper> ads_client_helper_;
-
-  std::unique_ptr<BrowserManager> browser_manager_;
-  std::unique_ptr<ClientStateManager> client_state_manager_;
-  std::unique_ptr<ConfirmationStateManager> confirmation_state_manager_;
-  std::unique_ptr<DatabaseManager> database_manager_;
-  std::unique_ptr<DiagnosticManager> diagnostic_manager_;
-  std::unique_ptr<FlagManager> flag_manager_;
-  std::unique_ptr<HistoryManager> history_manager_;
-  std::unique_ptr<IdleDetection> idle_detection_;
-  std::unique_ptr<NotificationAdManager> notification_ad_manager_;
-  std::unique_ptr<PredictorsManager> predictors_manager_;
-  std::unique_ptr<TabManager> tab_manager_;
-  std::unique_ptr<UserActivityManager> user_activity_manager_;
+  std::unique_ptr<GlobalState> global_state_;
 };
 
 }  // namespace brave_ads

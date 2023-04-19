@@ -9,15 +9,21 @@
 #include <string>
 
 #include "base/feature_list.h"
+#include "base/metrics/field_trial_params.h"
 
-namespace brave_ads::features {
+namespace brave_ads {
 
-BASE_DECLARE_FEATURE(kConversions);
+BASE_DECLARE_FEATURE(kConversionsFeature);
 
 bool IsConversionsEnabled();
-int GetConversionsResourceVersion();
-std::string GetConversionIdPattern();
 
-}  // namespace brave_ads::features
+constexpr base::FeatureParam<int> kConversionsResourceVersion{
+    &kConversionsFeature, "resource_version", 1};
+
+constexpr base::FeatureParam<std::string> kConversionsIdPattern{
+    &kConversionsFeature, "conversion_id_pattern",
+    R"~(<meta.*name="ad-conversion-id".*content="([-a-zA-Z0-9]*)".*>)~"};
+
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_CONVERSIONS_FEATURES_H_

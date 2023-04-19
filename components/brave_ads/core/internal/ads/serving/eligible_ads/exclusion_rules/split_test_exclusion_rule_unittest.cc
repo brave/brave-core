@@ -9,6 +9,7 @@
 #include "base/test/mock_entropy_provider.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -29,7 +30,10 @@ scoped_refptr<base::FieldTrial> CreateFieldTrial(
 
 }  // namespace
 
-class BatAdsSplitTestExclusionRuleTest : public UnitTestBase {};
+class BatAdsSplitTestExclusionRuleTest : public UnitTestBase {
+ protected:
+  SplitTestExclusionRule exclusion_rule_;
+};
 
 TEST_F(BatAdsSplitTestExclusionRuleTest, AllowIfNoFieldTrialAndNoAdGroup) {
   // Arrange
@@ -37,11 +41,9 @@ TEST_F(BatAdsSplitTestExclusionRuleTest, AllowIfNoFieldTrialAndNoAdGroup) {
   creative_ad.creative_set_id = kCreativeSetId;
 
   // Act
-  SplitTestExclusionRule exclusion_rule;
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsSplitTestExclusionRuleTest, DoNotAllowIfNoFieldTrialAndAdGroup) {
@@ -51,11 +53,9 @@ TEST_F(BatAdsSplitTestExclusionRuleTest, DoNotAllowIfNoFieldTrialAndAdGroup) {
   creative_ad.split_test_group = "GroupA";
 
   // Act
-  SplitTestExclusionRule exclusion_rule;
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_TRUE(should_exclude);
+  EXPECT_TRUE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsSplitTestExclusionRuleTest, AllowIfFieldTrialAndNoAdGroup) {
@@ -68,11 +68,9 @@ TEST_F(BatAdsSplitTestExclusionRuleTest, AllowIfFieldTrialAndNoAdGroup) {
   field_trial->AppendGroup(kGroupName, /*group_probability*/ 100);
 
   // Act
-  SplitTestExclusionRule exclusion_rule;
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsSplitTestExclusionRuleTest, AllowIfFieldTrialMatchesAdGroup) {
@@ -86,11 +84,9 @@ TEST_F(BatAdsSplitTestExclusionRuleTest, AllowIfFieldTrialMatchesAdGroup) {
   field_trial->AppendGroup(kGroupName, /*group_probability*/ 100);
 
   // Act
-  SplitTestExclusionRule exclusion_rule;
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsSplitTestExclusionRuleTest,
@@ -105,11 +101,9 @@ TEST_F(BatAdsSplitTestExclusionRuleTest,
   field_trial->AppendGroup(kGroupName, /*group_probability*/ 100);
 
   // Act
-  SplitTestExclusionRule exclusion_rule;
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_TRUE(should_exclude);
+  EXPECT_TRUE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
 }  // namespace brave_ads

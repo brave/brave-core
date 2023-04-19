@@ -10,6 +10,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
+#include "base/memory/raw_ref.h"
 #include "base/strings/string_piece.h"
 #include "base/time/time.h"
 #include "brave/components/p3a/metric_log_type.h"
@@ -41,8 +42,8 @@ class MetricLogStore : public metrics::LogStore {
     virtual ~Delegate() {}
   };
 
-  MetricLogStore(Delegate* delegate,
-                 PrefService* local_state,
+  MetricLogStore(Delegate& delegate,
+                 PrefService& local_state,
                  bool is_constellation,
                  MetricLogType type);
   ~MetricLogStore() override;
@@ -97,8 +98,8 @@ class MetricLogStore : public metrics::LogStore {
 
   const char* GetPrefName() const;
 
-  Delegate* const delegate_ = nullptr;  // Weak.
-  PrefService* const local_state_ = nullptr;
+  const raw_ref<Delegate> delegate_;
+  const raw_ref<PrefService> local_state_;
 
   MetricLogType type_;
 

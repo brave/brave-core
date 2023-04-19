@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/credentials/credentials.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
@@ -22,7 +23,7 @@ namespace credential {
 
 class CredentialsCommon {
  public:
-  explicit CredentialsCommon(LedgerImpl* ledger);
+  explicit CredentialsCommon(LedgerImpl& ledger);
   ~CredentialsCommon();
 
   void GetBlindedCreds(const CredentialsTrigger& trigger,
@@ -43,7 +44,7 @@ class CredentialsCommon {
                             const CredentialsTrigger& trigger,
                             mojom::Result result);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace credential

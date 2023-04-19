@@ -9,6 +9,7 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -21,14 +22,12 @@ TEST_F(BatAdsCreativeInstanceExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
 
-  const AdEventList ad_events;
+  CreativeInstanceExclusionRule exclusion_rule({});
 
   // Act
-  CreativeInstanceExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsCreativeInstanceExclusionRuleTest, AdAllowedAfter1Hour) {
@@ -43,14 +42,14 @@ TEST_F(BatAdsCreativeInstanceExclusionRuleTest, AdAllowedAfter1Hour) {
 
   ad_events.push_back(ad_event);
 
+  CreativeInstanceExclusionRule exclusion_rule(ad_events);
+
   AdvanceClockBy(base::Hours(1));
 
   // Act
-  CreativeInstanceExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsCreativeInstanceExclusionRuleTest,
@@ -78,14 +77,14 @@ TEST_F(BatAdsCreativeInstanceExclusionRuleTest,
       creative_ad, AdType::kSearchResultAd, ConfirmationType::kServed, Now());
   ad_events.push_back(ad_event_4);
 
+  CreativeInstanceExclusionRule exclusion_rule(ad_events);
+
   AdvanceClockBy(base::Hours(1));
 
   // Act
-  CreativeInstanceExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsCreativeInstanceExclusionRuleTest,
@@ -101,14 +100,14 @@ TEST_F(BatAdsCreativeInstanceExclusionRuleTest,
 
   ad_events.push_back(ad_event);
 
-  AdvanceClockBy(base::Hours(1) - base::Seconds(1));
+  CreativeInstanceExclusionRule exclusion_rule(ad_events);
+
+  AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
   // Act
-  CreativeInstanceExclusionRule exclusion_rule(ad_events);
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_TRUE(should_exclude);
+  EXPECT_TRUE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
 }  // namespace brave_ads

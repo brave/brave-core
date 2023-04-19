@@ -11,7 +11,7 @@
 #include "base/check.h"
 #include "base/json/json_writer.h"
 #include "base/notreached.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/token_preimage.h"
@@ -116,9 +116,9 @@ RedeemUnblindedPaymentTokensUrlRequestBuilder::Build() {
 ///////////////////////////////////////////////////////////////////////////////
 
 GURL RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildUrl() const {
-  const std::string spec = base::StringPrintf("%s/v3/confirmation/payment/%s",
-                                              GetNonAnonymousUrlHost().c_str(),
-                                              wallet_.payment_id.c_str());
+  const std::string spec = base::ReplaceStringPlaceholders(
+      "$1/v3/confirmation/payment/$2",
+      {GetNonAnonymousUrlHost(), wallet_.payment_id}, nullptr);
   return GURL(spec);
 }
 

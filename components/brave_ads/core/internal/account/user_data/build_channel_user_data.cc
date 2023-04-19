@@ -7,7 +7,7 @@
 
 #include "base/check.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
-#include "brave/components/brave_ads/core/build_channel.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
 namespace brave_ads::user_data {
 
@@ -18,8 +18,9 @@ constexpr char kBuildChannelKey[] = "buildChannel";
 base::Value::Dict GetBuildChannel() {
   base::Value::Dict user_data;
 
-  DCHECK(!BuildChannel().name.empty());
-  user_data.Set(kBuildChannelKey, BuildChannel().name);
+  auto& build_channel = GlobalState::GetInstance()->BuildChannel();
+  DCHECK(!build_channel.name.empty());
+  user_data.Set(kBuildChannelKey, build_channel.name);
 
   return user_data;
 }

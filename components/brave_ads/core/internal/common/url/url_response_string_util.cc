@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
@@ -24,8 +25,8 @@ std::string HeadersToString(
   const std::string spaces = std::string(indent, ' ');
 
   for (const auto& [header, value] : headers) {
-    const std::string formatted_header = base::StringPrintf(
-        "%s%s: %s", spaces.c_str(), header.c_str(), value.c_str());
+    const std::string formatted_header = base::ReplaceStringPlaceholders(
+        "$1$2: $3", {spaces, header, value}, nullptr);
 
     formatted_headers.push_back(formatted_header);
   }
@@ -45,8 +46,7 @@ std::string UrlResponseToString(const mojom::UrlResponseInfo& url_response) {
 
 std::string UrlResponseHeadersToString(
     const mojom::UrlResponseInfo& url_response) {
-  const std::string formatted_headers = HeadersToString(url_response.headers);
-  return base::StringPrintf("  Headers:\n%s", formatted_headers.c_str());
+  return base::StrCat({"  Headers:\n", HeadersToString(url_response.headers)});
 }
 
 }  // namespace brave_ads

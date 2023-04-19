@@ -10,7 +10,6 @@
 
 #include "base/check_op.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 
 namespace brave_ads::database {
@@ -20,22 +19,24 @@ std::string BuildBindingParameterPlaceholder(const size_t parameters_count) {
 
   const std::vector<std::string> placeholders(parameters_count, "?");
 
-  return base::StringPrintf("(%s)",
-                            base::JoinString(placeholders, ", ").c_str());
+  return base::ReplaceStringPlaceholders(
+      "($1)", {base::JoinString(placeholders, ", ")}, nullptr);
 }
 
-std::string BuildBindingParameterPlaceholders(const size_t parameters_count,
-                                              const size_t values_count) {
-  DCHECK_NE(0U, values_count);
+std::string BuildBindingParameterPlaceholders(
+    const size_t parameters_count,
+    const size_t binded_parameters_count) {
+  DCHECK_NE(0U, binded_parameters_count);
 
-  std::string value = BuildBindingParameterPlaceholder(parameters_count);
-  if (values_count == 1) {
-    return value;
+  std::string placeholder = BuildBindingParameterPlaceholder(parameters_count);
+  if (binded_parameters_count == 1) {
+    return placeholder;
   }
 
-  const std::vector<std::string> values(values_count, value);
+  const std::vector<std::string> placeholders(binded_parameters_count,
+                                              placeholder);
 
-  return base::JoinString(values, ", ");
+  return base::JoinString(placeholders, ", ");
 }
 
 void Bind(sql::Statement* statement,

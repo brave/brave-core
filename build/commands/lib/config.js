@@ -444,6 +444,11 @@ Config.prototype.buildArgs = function () {
     }
   }
 
+  if (['android', 'linux', 'mac'].includes(this.getTargetOS())) {
+    // LSAN only works with ASAN and has very low overhead.
+    args.is_lsan = args.is_asan
+  }
+
   // Enable Page Graph only in desktop builds.
   // Page Graph gn args should always be set explicitly, because they are parsed
   // from out/<dir>/args.gn by Python scripts during the build. We do this to
@@ -1023,8 +1028,8 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
 
     if (this.use_goma) {
       // Vars used by autoninja to generate -j value, adjusted for Brave-specific setup.
-      env.NINJA_CORE_MULTIPLIER = 20
-      env.NINJA_CORE_LIMIT = 160
+      env.NINJA_CORE_MULTIPLIER = Math.min(20, env.NINJA_CORE_MULTIPLIER || 20)
+      env.NINJA_CORE_LIMIT = Math.min(160, env.NINJA_CORE_LIMIT || 160)
     }
 
     if (this.isCI) {

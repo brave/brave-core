@@ -9,6 +9,7 @@
 #include <map>
 #include <string>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 namespace ledger {
@@ -18,7 +19,7 @@ namespace contribution {
 
 class ContributionExternalWallet {
  public:
-  explicit ContributionExternalWallet(LedgerImpl* ledger);
+  explicit ContributionExternalWallet(LedgerImpl& ledger);
 
   ~ContributionExternalWallet();
 
@@ -34,8 +35,6 @@ class ContributionExternalWallet {
 
   void OnAC(const mojom::Result result, const std::string& contribution_id);
 
-  void OnSavePendingContribution(const mojom::Result result);
-
   void OnServerPublisherInfo(mojom::ServerPublisherInfoPtr info,
                              const std::string& contribution_id,
                              double amount,
@@ -48,7 +47,7 @@ class ContributionExternalWallet {
                  bool single_publisher,
                  ledger::LegacyResultCallback callback);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace contribution

@@ -10,10 +10,8 @@
 namespace ledger {
 namespace recovery {
 
-Recovery::Recovery(LedgerImpl* ledger)
-    : ledger_(ledger), empty_balance_(std::make_unique<EmptyBalance>(ledger)) {
-  DCHECK(ledger_);
-}
+Recovery::Recovery(LedgerImpl& ledger)
+    : ledger_(ledger), empty_balance_(std::make_unique<EmptyBalance>(ledger)) {}
 
 Recovery::~Recovery() = default;
 

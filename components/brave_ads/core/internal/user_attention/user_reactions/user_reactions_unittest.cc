@@ -37,17 +37,15 @@ class BatAdsUserReactionsTest : public AccountObserver, public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    token_generator_mock_ =
-        std::make_unique<NiceMock<privacy::TokenGeneratorMock>>();
-    account_ = std::make_unique<Account>(token_generator_mock_.get());
+    account_ = std::make_unique<Account>(&token_generator_mock_);
     account_->AddObserver(this);
 
     user_reactions_ = std::make_unique<UserReactions>(account_.get());
 
-    ON_CALL(*token_generator_mock_, Generate(_))
-        .WillByDefault(Return(privacy::GetTokens(1)));
+    ON_CALL(token_generator_mock_, Generate(_))
+        .WillByDefault(Return(privacy::GetTokens(/*count*/ 1)));
 
-    privacy::SetUnblindedTokens(1);
+    privacy::SetUnblindedTokens(/*count*/ 1);
   }
 
   void TearDown() override {
@@ -75,7 +73,7 @@ class BatAdsUserReactionsTest : public AccountObserver, public UnitTestBase {
     failed_to_process_deposit_ = true;
   }
 
-  std::unique_ptr<privacy::TokenGeneratorMock> token_generator_mock_;
+  NiceMock<privacy::TokenGeneratorMock> token_generator_mock_;
   std::unique_ptr<Account> account_;
 
   bool did_process_deposit_ = false;

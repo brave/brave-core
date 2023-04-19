@@ -11,7 +11,6 @@
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
-#include "brave/components/brave_rewards/core/option_keys.h"
 #include "brave/components/brave_rewards/core/publisher/prefix_list_reader.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "net/http/http_status_code.h"
@@ -30,7 +29,7 @@ constexpr int64_t kMaxRetryAfterFailureDelay = 4 * base::Time::kSecondsPerHour;
 namespace ledger {
 namespace publisher {
 
-PublisherPrefixListUpdater::PublisherPrefixListUpdater(LedgerImpl* ledger)
+PublisherPrefixListUpdater::PublisherPrefixListUpdater(LedgerImpl& ledger)
     : ledger_(ledger),
       rewards_server_(std::make_unique<endpoint::RewardsServer>(ledger)) {}
 
@@ -127,8 +126,6 @@ void PublisherPrefixListUpdater::OnPrefixListInserted(
 
 base::TimeDelta PublisherPrefixListUpdater::GetAutoUpdateDelay() {
   uint64_t last_fetch_sec = ledger_->state()->GetServerPublisherListStamp();
-  uint64_t interval_sec =
-      ledger_->GetOption<uint64_t>(option::kPublisherListRefreshInterval);
 
   auto now = base::Time::Now();
   auto fetch_time =
@@ -138,7 +135,7 @@ base::TimeDelta PublisherPrefixListUpdater::GetAutoUpdateDelay() {
     fetch_time = now;
   }
 
-  fetch_time += base::Seconds(interval_sec);
+  fetch_time += base::Seconds(kPublisherListRefreshInterval);
   return fetch_time < now ? base::Seconds(0) : fetch_time - now;
 }
 

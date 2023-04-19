@@ -15,9 +15,8 @@
 #include "content/public/browser/web_ui.h"
 
 TorInternalsDOMHandler::TorInternalsDOMHandler()
-    : tor_launcher_factory_(TorLauncherFactory::GetInstance()),
+    : tor_launcher_factory_(*TorLauncherFactory::GetInstance()),
       weak_ptr_factory_{this} {
-  DCHECK(tor_launcher_factory_);
   tor_launcher_factory_->AddObserver(this);
 }
 

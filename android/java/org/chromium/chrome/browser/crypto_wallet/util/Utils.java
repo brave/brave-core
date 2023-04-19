@@ -443,6 +443,7 @@ public class Utils {
             throw new ParseException(
                     "Invalid input string to BigDecimal at ", parsePosition.getIndex());
         BigDecimal multiplier = BigDecimal.TEN.pow(decimals);
+
         return parsed.multiply(multiplier).toBigInteger();
     }
 
@@ -1229,8 +1230,9 @@ public class Utils {
     private static WalletListItemModel makeWalletItem(Context context, TransactionInfo txInfo,
             NetworkInfo selectedNetwork, ParsedTransaction parsedTx) {
         Pair<String, String> itemTitles = parsedTx.makeTxListItemTitles(context);
-        WalletListItemModel itemModel = new WalletListItemModel(
-                R.drawable.ic_eth, itemTitles.first, itemTitles.second, "", null, null);
+        WalletListItemModel itemModel =
+                new WalletListItemModel(Utils.getCoinIcon(selectedNetwork.coin), itemTitles.first,
+                        itemTitles.second, "", null, null);
         updateWalletCoinTransactionStatus(itemModel, context, txInfo);
 
         itemModel.setChainSymbol(selectedNetwork.symbol);
@@ -1749,6 +1751,7 @@ public class Utils {
 
         NumberFormat nf = NumberFormat.getNumberInstance(Locale.getDefault());
         ParsePosition parsePosition = new ParsePosition(0);
+        nf.setGroupingUsed(false);
         Number num = nf.parse(s, parsePosition);
 
         if (parsePosition.getIndex() != s.length()) {

@@ -14,7 +14,7 @@ namespace brave_ads {
 namespace {
 
 bool DoesRespectCap() {
-  if (PlatformHelper::GetInstance()->IsMobile()) {
+  if (PlatformHelper::GetInstance().IsMobile()) {
     return true;
   }
 
@@ -24,7 +24,7 @@ bool DoesRespectCap() {
 }  // namespace
 
 bool FullScreenModePermissionRule::ShouldAllow() {
-  if (!permission_rules::features::ShouldOnlyServeAdsInWindowedMode()) {
+  if (!kShouldOnlyServeAdsInWindowedMode.Get()) {
     return true;
   }
 

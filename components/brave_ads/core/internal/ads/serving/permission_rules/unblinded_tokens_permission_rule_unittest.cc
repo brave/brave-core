@@ -12,18 +12,19 @@
 
 namespace brave_ads {
 
-class BatAdsUnblindedTokensPermissionRuleTest : public UnitTestBase {};
+class BatAdsUnblindedTokensPermissionRuleTest : public UnitTestBase {
+ protected:
+  UnblindedTokensPermissionRule permission_rule_;
+};
 
 TEST_F(BatAdsUnblindedTokensPermissionRuleTest, AllowAdIfDoesNotExceedCap) {
   // Arrange
-  privacy::SetUnblindedTokens(10);
+  privacy::SetUnblindedTokens(/*count*/ 10);
 
   // Act
-  UnblindedTokensPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsUnblindedTokensPermissionRuleTest,
@@ -31,23 +32,19 @@ TEST_F(BatAdsUnblindedTokensPermissionRuleTest,
   // Arrange
 
   // Act
-  UnblindedTokensPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_FALSE(is_allowed);
+  EXPECT_FALSE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsUnblindedTokensPermissionRuleTest, DoNotAllowAdIfExceedsCap) {
   // Arrange
-  privacy::SetUnblindedTokens(9);
+  privacy::SetUnblindedTokens(/*count*/ 9);
 
   // Act
-  UnblindedTokensPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_FALSE(is_allowed);
+  EXPECT_FALSE(permission_rule_.ShouldAllow());
 }
 
 }  // namespace brave_ads

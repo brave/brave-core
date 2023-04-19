@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/legacy/bat_state.h"
 
@@ -19,7 +20,7 @@ namespace state {
 
 class StateMigrationV2 {
  public:
-  explicit StateMigrationV2(LedgerImpl* ledger);
+  explicit StateMigrationV2(LedgerImpl& ledger);
   ~StateMigrationV2();
 
   void Migrate(ledger::LegacyResultCallback callback);
@@ -28,7 +29,7 @@ class StateMigrationV2 {
   void OnLoadState(mojom::Result result, ledger::LegacyResultCallback callback);
 
   std::unique_ptr<braveledger_bat_state::LegacyBatState> legacy_state_;
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace state

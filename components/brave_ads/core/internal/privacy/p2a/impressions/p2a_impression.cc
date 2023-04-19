@@ -7,7 +7,7 @@
 
 #include <vector>
 
-#include "base/strings/stringprintf.h"
+#include "base/strings/strcat.h"
 #include "brave/components/brave_ads/core/ad_info.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/internal/privacy/p2a/impressions/p2a_impression_questions.h"
@@ -16,7 +16,7 @@
 namespace brave_ads::privacy::p2a {
 
 std::string GetAdImpressionNameForAdType(const AdType& ad_type) {
-  return base::StringPrintf("%s_impression", ad_type.ToString().c_str());
+  return base::StrCat({ad_type.ToString(), "_impression"});
 }
 
 void RecordAdImpression(const AdInfo& ad) {

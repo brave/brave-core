@@ -71,6 +71,15 @@
   <message name="IDS_REWARDS_CONNECT_ACCOUNT_NO_PROVIDERS" desc="">
     To earn BAT, users must connect a custodial account to Brave Rewards. Unfortunately, there's no custodian available in your region, so earning isn't available. For now, turning on Brave Rewards will automatically support creators.
   </message>
+  <message name="IDS_REWARDS_CONNECT_CONTRIBUTE_HEADER" desc="">
+    Send contributions with Brave Rewards
+  </message>
+  <message name="IDS_REWARDS_CONNECT_CONTRIBUTE_TEXT" desc="">
+    You'll be able to send on-demand contributions to your favorite Creators with your Brave Rewards balance once you have a custodial account connected.
+  </message>
+  <message name="IDS_REWARDS_CONNECT_CONTRIBUTE_NO_PROVIDERS" desc="">
+    To send on-demand contributions, users must connect a custodial account to Brave Rewards. Unfortunately, there’s no custodian available in your region, so sending isn’t available. In the meantime, you’re still automatically supporting creators.
+  </message>
   <message name="IDS_REWARDS_LEARN_MORE" desc="">
     Learn more
   </message>
@@ -154,25 +163,19 @@
     Summary
   </message>
   <message name="IDS_REWARDS_PANEL_TIP" desc="">
-    Tip
+    Contribute
   </message>
   <message name="IDS_REWARDS_PANEL_UNVERIFIED_CREATOR" desc="">
     Unverified Creator
+  </message>
+  <message name="IDS_REWARDS_PANEL_UNVERIFIED_TEXT" desc="">
+    This Creator is not yet verified with Brave Creators. You'll be able to send them contributions once they're verified.
   </message>
   <message name="IDS_REWARDS_PANEL_VERIFIED_CREATOR" desc="">
     Verified Creator
   </message>
   <message name="IDS_REWARDS_PANEL_REFRESH_STATUS" desc="">
     Refresh Creator verification status
-  </message>
-  <message name="IDS_REWARDS_PANEL_PENDING_TIP_TEXT" desc="">
-    For now, any tip you make will remain pending and retry automatically for 90 days.
-  </message>
-  <message name="IDS_REWARDS_PANEL_PENDING_TIP_TITLE" desc="">
-    This creator is not signed up yet.
-  </message>
-  <message name="IDS_REWARDS_PANEL_PENDING_TIP_TITLE_REGISTERED" desc="">
-    You're connected to <ph name="USER_PROVIDER">$1<ex>Uphold</ex></ph>, but this creator is connected to <ph name="CREATOR_PROVIDER">$2<ex>Gemini</ex></ph>. This means your tip can't reach this creator.
   </message>
   <message name="IDS_REWARDS_PANEL_PLATFORM_PUBLISHER_TITLE" desc="">
     <ph name="NAME">$1<ex>Brave</ex></ph> on <ph name="PLATFORM">$2<ex>Twitter</ex></ph>
@@ -181,13 +184,13 @@
     Attention
   </message>
   <message name="IDS_REWARDS_PANEL_SEND_TIP" desc="">
-    Send Tip
+    Send Contribution
   </message>
   <message name="IDS_REWARDS_PANEL_INCLUDE_IN_AUTO_CONTRIBUTE" desc="">
     Include in Auto-Contribute
   </message>
   <message name="IDS_REWARDS_PANEL_MONTHLY_TIP" desc="">
-    Monthly Tip
+    Monthly Contribution
   </message>
   <message name="IDS_REWARDS_PANEL_OK" desc="">
     OK
@@ -328,7 +331,7 @@
     Monthly contribution failed
   </message>
   <message name="IDS_REWARDS_NOTIFICATION_MONTHLY_TIP_COMPLETED_TITLE" desc="">
-    Contributions and tips
+    Contributions
   </message>
   <message name="IDS_REWARDS_NOTIFICATION_MONTHLY_TIP_COMPLETED_TEXT" desc="">
     Your monthly tips have been processed.
@@ -534,6 +537,107 @@
   <!-- Rewards common strings -->
   <message name="IDS_BRAVE_REWARDS_LOADING_LABEL" desc="">
     Loading...
+  </message>
+
+  <!-- Tip panel -->
+  <message name="IDS_REWARDS_TIP_BALANCE_LABEL" desc="">
+    Rewards balance
+  </message>
+  <message name="IDS_REWARDS_TIP_MONTHLY_TOGGLE_LABEL" desc="">
+    Set as monthly contribution
+  </message>
+  <message name="IDS_REWARDS_TIP_FEE_NOTICE" desc="">
+    Brave collects <ph name="FEE_PCT">$1</ph> of the sent amount as a processing fee.
+  </message>
+  <message name="IDS_REWARDS_TIP_SEND_FORM_TITLE" desc="">
+    Support this creator
+  </message>
+  <message name="IDS_REWARDS_TIP_SEND_BUTTON_LABEL" desc="">
+    Send
+  </message>
+  <message name="IDS_REWARDS_TIP_WEB3_BUTTON_LABEL" desc="">
+    Use Web3 Wallet
+  </message>
+  <message name="IDS_REWARDS_TIP_VERIFIED_TOOLTIP_TITLE" desc="">
+    Verified Creator
+  </message>
+  <message name="IDS_REWARDS_TIP_VERIFIED_TOOLTIP_TEXT" desc="">
+    This Creator has registered with Brave and can receive contributions from Brave Rewards users.
+  </message>
+  <message name="IDS_REWARDS_TIP_MONTHLY_TOOLTIP_TEXT" desc="">
+    Make this a monthly recurring contribution. You can cancel it at any time.
+  </message>
+  <message name="IDS_REWARDS_TIP_LEARN_MORE_LABEL" desc="">
+    Learn more
+  </message>
+  <message name="IDS_REWARDS_TIP_CUSTOM_AMOUNT_LABEL" desc="">
+    Custom
+  </message>
+  <message name="IDS_REWARDS_TIP_MONTHLY_SET_TITLE" desc="">
+    You're already sending monthly contributions to this creator
+  </message>
+  <message name="IDS_REWARDS_TIP_MONTHLY_SET_TEXT" desc="">
+    You can still send a contribution now, and you can cancel your monthly contributions to this Creator by removing them from <ph name="LINK_BEGIN">$1</ph>Monthly Contributions<ph name="LINK_END">$2</ph>.
+  </message>
+  <message name="IDS_REWARDS_TIP_PROVIDER_MISMATCH_TITLE" desc="">
+    Can't send your contribution
+  </message>
+  <message name="IDS_REWARDS_TIP_PROVIDER_MISMATCH_TEXT" desc="">
+    This creator is unable to receive contributions from <ph name="PROVIDER">$1</ph>.
+  </message>
+  <message name="IDS_REWARDS_TIP_PROVIDER_MISMATCH_WEB3_TEXT" desc="">
+    You can still send crypto contributions to this creator by using your Web3 wallet.
+  </message>
+  <message name="IDS_REWARDS_TIP_WEB3_ONLY_TITLE" desc="">
+    Send Crypto contributions
+  </message>
+  <message name="IDS_REWARDS_TIP_RECONNECT_TITLE" desc="">
+    Logged out of <ph name="PROVIDER">$1</ph>
+  </message>
+  <message name="IDS_REWARDS_TIP_RECONNECT_TEXT" desc="">
+    It looks like you're logged out of <ph name="PROVIDER">$1</ph> for Brave Rewards. Log in again to continue.
+  </message>
+  <message name="IDS_REWARDS_TIP_RECONNECT_WEB3_TEXT" desc="">
+    You can also send crypto contributions to this creator by using your Web3 wallet.
+  </message>
+  <message name="IDS_REWARDS_TIP_RECONNECT_BUTTON_LABEL" desc="">
+    Log in to <ph name="PROVIDER">$1</ph>
+  </message>
+  <message name="IDS_REWARDS_TIP_INSUFFICIENT_BALANCE_TITLE" desc="">
+    You don't have enough tokens
+  </message>
+  <message name="IDS_REWARDS_TIP_INSUFFICIENT_BALANCE_TEXT" desc="">
+    You can only send up to <ph name="AMOUNT">$1</ph> BAT using your Brave Rewards balance.
+  </message>
+  <message name="IDS_REWARDS_TIP_CONTRIBUTION_FAILED_TITLE" desc="">
+    There was a problem sending your contribution
+  </message>
+  <message name="IDS_REWARDS_TIP_CONTRIBUTION_FAILED_TEXT" desc="">
+    Please try again.
+  </message>
+  <message name="IDS_REWARDS_TIP_TRY_AGAIN_BUTTON_LABEL" desc="">
+    Try again
+  </message>
+  <message name="IDS_REWARDS_TIP_CONTRIBUTION_SENT_TITLE" desc="">
+    Contribution sent!
+  </message>
+  <message name="IDS_REWARDS_TIP_CONTRIBUTION_SENT_TEXT" desc="">
+    Thanks for supporting your favorite creators
+  </message>
+  <message name="IDS_REWARDS_TIP_SHARE_BUTTON_LABEL" desc="">
+    Share your support
+  </message>
+  <message name="IDS_REWARDS_TIP_SHARE_TEXT" desc="">
+    I just contributed <ph name="AMOUNT">$1</ph> using the Brave Browser! See how you can support your favorite creators and sites too: https://brave.com/rewards
+  </message>
+  <message name="IDS_REWARDS_TIP_UNEXPECTED_ERROR_TITLE" desc="">
+    An unexpected error has occurred
+  </message>
+  <message name="IDS_REWARDS_TIP_UNEXPECTED_ERROR_TEXT" desc="">
+    Please reopen the contribution panel to try again.
+  </message>
+  <message name="IDS_REWARDS_TIP_DEFAULT_CREATOR_DESCRIPTION" desc="">
+    Welcome! Users can support this content creator by sending them contributions. It’s a way of thanking them for making great content.
   </message>
 
 </grit-part>

@@ -7,14 +7,17 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_ANTI_TARGETING_ANTI_TARGETING_FEATURES_H_
 
 #include "base/feature_list.h"
+#include "base/metrics/field_trial_params.h"
 
-namespace brave_ads::resource::features {
+namespace brave_ads {
 
-BASE_DECLARE_FEATURE(kAntiTargeting);
+BASE_DECLARE_FEATURE(kAntiTargetingFeature);
 
 bool IsAntiTargetingEnabled();
-int GetAntiTargetingResourceVersion();
 
-}  // namespace brave_ads::resource::features
+constexpr base::FeatureParam<int> kAntiTargetingResourceVersion{
+    &kAntiTargetingFeature, "resource_version", 1};
+
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_ANTI_TARGETING_ANTI_TARGETING_FEATURES_H_

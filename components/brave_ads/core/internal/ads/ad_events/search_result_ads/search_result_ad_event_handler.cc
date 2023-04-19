@@ -85,16 +85,8 @@ bool ShouldDebounceAdEvent(const AdInfo& ad,
 
 EventHandler::EventHandler() = default;
 
-EventHandler::~EventHandler() = default;
-
-void EventHandler::AddObserver(EventHandlerObserver* observer) {
-  DCHECK(observer);
-  observers_.AddObserver(observer);
-}
-
-void EventHandler::RemoveObserver(EventHandlerObserver* observer) {
-  DCHECK(observer);
-  observers_.RemoveObserver(observer);
+EventHandler::~EventHandler() {
+  delegate_ = nullptr;
 }
 
 void EventHandler::FireEvent(mojom::SearchResultAdInfoPtr ad_mojom,
@@ -144,7 +136,7 @@ void EventHandler::FireEvent(const SearchResultAdInfo& ad,
   const auto ad_event = AdEventFactory::Build(event_type);
   ad_event->FireEvent(ad);
 
-  NotifySearchResultAdEvent(ad, event_type, std::move(callback));
+  SuccessfullyFiredEvent(ad, event_type, std::move(callback));
 }
 
 void EventHandler::FireViewedEvent(mojom::SearchResultAdInfoPtr ad_mojom,
@@ -275,6 +267,34 @@ void EventHandler::OnGetAdEventsForClickedSearchResultAd(
   FireEvent(ad, event_type, std::move(callback));
 }
 
+void EventHandler::SuccessfullyFiredEvent(
+    const SearchResultAdInfo& ad,
+    const mojom::SearchResultAdEventType event_type,
+    FireAdEventHandlerCallback callback) const {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
+  if (delegate_) {
+    switch (event_type) {
+      case mojom::SearchResultAdEventType::kServed: {
+        delegate_->OnSearchResultAdServed(ad);
+        break;
+      }
+
+      case mojom::SearchResultAdEventType::kViewed: {
+        delegate_->OnSearchResultAdViewed(ad);
+        break;
+      }
+
+      case mojom::SearchResultAdEventType::kClicked: {
+        delegate_->OnSearchResultAdClicked(ad);
+        break;
+      }
+    }
+  }
+
+  std::move(callback).Run(/*success*/ true, ad.placement_id, event_type);
+}
+
 void EventHandler::FailedToFireEvent(
     const SearchResultAdInfo& ad,
     const mojom::SearchResultAdEventType event_type,
@@ -285,64 +305,8 @@ void EventHandler::FailedToFireEvent(
               << event_type << " event for placement_id " << ad.placement_id
               << " and creative instance id " << ad.creative_instance_id);
 
-  NotifySearchResultAdEventFailed(ad, event_type, std::move(callback));
-}
-
-void EventHandler::NotifySearchResultAdEvent(
-    const SearchResultAdInfo& ad,
-    const mojom::SearchResultAdEventType event_type,
-    FireAdEventHandlerCallback callback) const {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
-
-  switch (event_type) {
-    case mojom::SearchResultAdEventType::kServed: {
-      NotifySearchResultAdServed(ad);
-      break;
-    }
-
-    case mojom::SearchResultAdEventType::kViewed: {
-      NotifySearchResultAdViewed(ad);
-      break;
-    }
-
-    case mojom::SearchResultAdEventType::kClicked: {
-      NotifySearchResultAdClicked(ad);
-      break;
-    }
-  }
-
-  std::move(callback).Run(/*success*/ true, ad.placement_id, event_type);
-}
-
-void EventHandler::NotifySearchResultAdServed(
-    const SearchResultAdInfo& ad) const {
-  for (EventHandlerObserver& observer : observers_) {
-    observer.OnSearchResultAdServed(ad);
-  }
-}
-
-void EventHandler::NotifySearchResultAdViewed(
-    const SearchResultAdInfo& ad) const {
-  for (EventHandlerObserver& observer : observers_) {
-    observer.OnSearchResultAdViewed(ad);
-  }
-}
-
-void EventHandler::NotifySearchResultAdClicked(
-    const SearchResultAdInfo& ad) const {
-  for (EventHandlerObserver& observer : observers_) {
-    observer.OnSearchResultAdClicked(ad);
-  }
-}
-
-void EventHandler::NotifySearchResultAdEventFailed(
-    const SearchResultAdInfo& ad,
-    const mojom::SearchResultAdEventType event_type,
-    FireAdEventHandlerCallback callback) const {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
-
-  for (EventHandlerObserver& observer : observers_) {
-    observer.OnSearchResultAdEventFailed(ad, event_type);
+  if (delegate_) {
+    delegate_->OnSearchResultAdEventFailed(ad, event_type);
   }
 
   std::move(callback).Run(/*success*/ false, ad.placement_id, event_type);

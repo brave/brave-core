@@ -19,9 +19,7 @@ using std::placeholders::_2;
 namespace ledger {
 namespace report {
 
-Report::Report(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+Report::Report(LedgerImpl& ledger) : ledger_(ledger) {}
 
 Report::~Report() = default;
 

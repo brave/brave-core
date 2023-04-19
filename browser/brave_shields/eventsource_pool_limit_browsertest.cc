@@ -293,8 +293,15 @@ IN_PROC_BROWSER_TEST_F(EventSourcePoolLimitBrowserTest,
 
 // Ensures that sub-frame opaque origins are treated properly when used from
 // different top-frame opaque origins.
+// TODO(https://github.com/brave/brave-browser/issues/28393): Test flaky on
+// master for the windows build.
+#if BUILDFLAG(IS_WIN)
+#define MAYBE_SandboxedFramesAreLimited DISABLED_SandboxedFramesAreLimited
+#else
+#define MAYBE_SandboxedFramesAreLimited SandboxedFramesAreLimited
+#endif  // BUILDFLAG(IS_MAC)
 IN_PROC_BROWSER_TEST_F(EventSourcePoolLimitBrowserTest,
-                       SandboxedFramesAreLimited) {
+                       MAYBE_SandboxedFramesAreLimited) {
   const GURL a_com_url(
       https_server_.GetURL("a.com", "/csp_sandboxed_frame.html"));
   auto* a_com_rfh = ui_test_utils::NavigateToURLWithDisposition(

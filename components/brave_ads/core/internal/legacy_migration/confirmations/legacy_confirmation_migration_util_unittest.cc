@@ -16,8 +16,7 @@ class BatAdsLegacyConfirmationMigrationUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsLegacyConfirmationMigrationUtilTest, HasMigrated) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(
-      prefs::kHasMigratedConfirmationState, true);
+  ads_client_mock_->SetBooleanPref(prefs::kHasMigratedConfirmationState, true);
 
   // Act
 
@@ -27,8 +26,7 @@ TEST_F(BatAdsLegacyConfirmationMigrationUtilTest, HasMigrated) {
 
 TEST_F(BatAdsLegacyConfirmationMigrationUtilTest, HasNotMigrated) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(
-      prefs::kHasMigratedConfirmationState, false);
+  ads_client_mock_->SetBooleanPref(prefs::kHasMigratedConfirmationState, false);
 
   // Act
 

@@ -23,7 +23,7 @@ namespace endpoint {
 
 class UpholdServer {
  public:
-  explicit UpholdServer(LedgerImpl*);
+  explicit UpholdServer(LedgerImpl& ledger);
   ~UpholdServer();
 
   uphold::GetCapabilities* get_capabilities() const;

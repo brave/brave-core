@@ -12,12 +12,14 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 
+namespace brave_rewards {
+
 RewardsPanelHandler::RewardsPanelHandler(
-    mojo::PendingRemote<brave_rewards::mojom::Panel> panel,
-    mojo::PendingReceiver<brave_rewards::mojom::PanelHandler> receiver,
+    mojo::PendingRemote<mojom::Panel> panel,
+    mojo::PendingReceiver<mojom::PanelHandler> receiver,
     base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder,
-    brave_rewards::RewardsService* rewards_service,
-    brave_rewards::RewardsPanelCoordinator* panel_coordinator)
+    RewardsService* rewards_service,
+    RewardsPanelCoordinator* panel_coordinator)
     : receiver_(this, std::move(receiver)),
       panel_(std::move(panel)),
       embedder_(embedder),
@@ -48,10 +50,12 @@ void RewardsPanelHandler::GetRewardsPanelArgs(
     GetRewardsPanelArgsCallback callback) {
   std::move(callback).Run(panel_coordinator_
                               ? panel_coordinator_->panel_args().Clone()
-                              : brave_rewards::mojom::RewardsPanelArgs::New());
+                              : mojom::RewardsPanelArgs::New());
 }
 
 void RewardsPanelHandler::OnRewardsPanelRequested(
-    const brave_rewards::mojom::RewardsPanelArgs& args) {
+    const mojom::RewardsPanelArgs& args) {
   panel_->OnRewardsPanelRequested(args.Clone());
 }
+
+}  // namespace brave_rewards

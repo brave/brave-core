@@ -12,15 +12,27 @@
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
-#include "brave/components/brave_rewards/core/option_keys.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
 
 namespace ledger::wallet {
 
-WalletBalance::WalletBalance(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
+namespace {
+std::string GetConnectedWalletType(LedgerImpl& ledger) {
+  return GetWalletIf(ledger, constant::kWalletBitflyer,
+                     {mojom::WalletStatus::kConnected})
+             ? constant::kWalletBitflyer
+         : GetWalletIf(ledger, constant::kWalletGemini,
+                       {mojom::WalletStatus::kConnected})
+             ? constant::kWalletGemini
+         : GetWalletIf(ledger, constant::kWalletUphold,
+                       {mojom::WalletStatus::kConnected})
+             ? constant::kWalletUphold
+             : "";
 }
+}  // namespace
+
+WalletBalance::WalletBalance(LedgerImpl& ledger) : ledger_(ledger) {}
 
 WalletBalance::~WalletBalance() = default;
 
@@ -49,16 +61,13 @@ void WalletBalance::OnGetUnblindedTokens(
   balance->total = total;
   balance->wallets.emplace(constant::kWalletUnBlinded, balance->total);
 
-  const auto wallet_type =
-      ledger_->GetState<std::string>(state::kExternalWalletType);
-  if (wallet_type.empty() ||
-      !wallet::GetWalletIf(ledger_, wallet_type,
-                           {mojom::WalletStatus::kConnected})) {
+  const auto wallet_type = GetConnectedWalletType(*ledger_);
+  if (wallet_type.empty()) {
     return std::move(callback).Run(std::move(balance));
   }
 
   wallet::FetchBalance(
-      ledger_, wallet_type,
+      *ledger_, wallet_type,
       base::BindOnce(&WalletBalance::OnFetchExternalWalletBalance,
                      base::Unretained(this), wallet_type, std::move(balance),
                      std::move(callback)));

@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // POST /v1/orders/{order_id}/transactions/uphold
@@ -51,7 +52,7 @@ using PostTransactionUpholdCallback =
 
 class PostTransactionUphold {
  public:
-  explicit PostTransactionUphold(LedgerImpl* ledger);
+  explicit PostTransactionUphold(LedgerImpl& ledger);
   ~PostTransactionUphold();
 
   void Request(const mojom::SKUTransaction& transaction,
@@ -67,7 +68,7 @@ class PostTransactionUphold {
   void OnRequest(mojom::UrlResponsePtr response,
                  PostTransactionUpholdCallback callback);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace payment

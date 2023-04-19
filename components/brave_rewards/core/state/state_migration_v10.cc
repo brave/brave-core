@@ -20,7 +20,7 @@ using std::placeholders::_3;
 namespace ledger {
 namespace state {
 
-StateMigrationV10::StateMigrationV10(LedgerImpl* ledger)
+StateMigrationV10::StateMigrationV10(LedgerImpl& ledger)
     : ledger_(ledger),
       get_wallet_{
           std::make_unique<ledger::endpoint::promotion::GetWallet>(ledger)} {}

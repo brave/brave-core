@@ -55,8 +55,9 @@ BraveWaybackMachineInfoBarContentsView::BraveWaybackMachineInfoBarContentsView(
           this,
           contents->GetBrowserContext()
               ->GetDefaultStoragePartition()
-              ->GetURLLoaderFactoryForBrowserProcess()) {
-  pref_service_ = user_prefs::UserPrefs::Get(contents_->GetBrowserContext());
+              ->GetURLLoaderFactoryForBrowserProcess()),
+      pref_service_(
+          user_prefs::UserPrefs::Get(contents_->GetBrowserContext())) {
   SetLayoutManager(std::make_unique<views::FlexLayout>());
   InitializeChildren();
 }
@@ -132,7 +133,7 @@ void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
   wayback_spot_graphic_ = new views::ImageView();
   wayback_spot_graphic_->SetProperty(views::kMarginsKey,
                                      gfx::Insets::TLBR(8, 34, 8, 24));
-  AddChildView(wayback_spot_graphic_);
+  AddChildView(wayback_spot_graphic_.get());
 
   const views::FlexSpecification label_flex_rule =
       views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToMinimum,

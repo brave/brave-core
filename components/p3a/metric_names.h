@@ -42,10 +42,13 @@ constexpr inline auto kCollectedTypicalHistograms =
     "Brave.NTP.SponsoredNewTabsCreated",
     "Brave.Omnibox.SearchCount",
     "Brave.P3A.SentAnswersCount",
-    "Brave.Rewards.AdsState.2",
-    "Brave.Rewards.AutoContributionsState.2",
-    "Brave.Rewards.TipsState.2",
     "Brave.Rewards.AdsEnabledDuration",
+    "Brave.Rewards.AdsState.2",
+    "Brave.Rewards.AutoContributionsState.3",
+    "Brave.Rewards.EnabledSource",
+    "Brave.Rewards.InlineTipTrigger",
+    "Brave.Rewards.TipsState.2",
+    "Brave.Rewards.ToolbarButtonTrigger",
     "Brave.Rewards.WalletBalance.3",
     "Brave.Rewards.WalletState",
     "Brave.Savings.BandwidthSavingsMB",
@@ -91,8 +94,6 @@ constexpr inline auto kCollectedTypicalHistograms =
     "Brave.Wallet.EthProvider.3",
     "Brave.Wallet.EthTransactionSent",
     "Brave.Wallet.FilTransactionSent",
-    "Brave.Wallet.DefaultSolanaWalletSetting",
-    "Brave.Wallet.DefaultWalletSetting",
     "Brave.Wallet.KeyringCreated",
     "Brave.Wallet.LastUsageTime",
     "Brave.Wallet.NewUserReturning",
@@ -178,6 +179,7 @@ constexpr inline auto kCollectedSlowHistograms =
   base::MakeFixedFlatSet<base::StringPiece>({
     "Brave.Core.UsageMonthly",
     "Brave.P3A.TestSlowMetric",
+    "Brave.Rewards.TipsSent",
     "Brave.Sync.EnabledTypes",
     "Brave.Sync.SyncedObjectsCount",
     "Brave.Wallet.UsageMonthly"
@@ -195,6 +197,10 @@ constexpr inline auto kCollectedExpressHistograms =
 constexpr inline auto kEphemeralHistograms =
   base::MakeFixedFlatSet<base::StringPiece>({
     "Brave.Rewards.EnabledInstallationTime",
+    "Brave.Rewards.EnabledSource",
+    "Brave.Rewards.InlineTipTrigger",
+    "Brave.Rewards.TipsSent",
+    "Brave.Rewards.ToolbarButtonTrigger",
     "Brave.Wallet.UsageDaily",
     "Brave.Wallet.UsageMonthly",
     "Brave.Wallet.UsageWeekly"

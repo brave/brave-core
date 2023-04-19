@@ -16,7 +16,6 @@
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/endpoints/get_parameters/get_parameters_utils.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
-#include "brave/components/brave_rewards/core/option_keys.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
@@ -154,10 +153,8 @@ std::string ConvertInlineTipPlatformToKey(
 namespace ledger {
 namespace state {
 
-State::State(LedgerImpl* ledger)
-    : ledger_(ledger), migration_(std::make_unique<StateMigration>(ledger)) {
-  DCHECK(ledger_);
-}
+State::State(LedgerImpl& ledger)
+    : ledger_(ledger), migration_(std::make_unique<StateMigration>(ledger)) {}
 
 State::~State() = default;
 
@@ -221,7 +218,7 @@ void State::GetScoreValues(double* a, double* b) {
 void State::SetAutoContributeEnabled(bool enabled) {
   // Auto-contribute is not supported for regions where bitFlyer is the external
   // wallet provider. If AC is not supported, then always set the pref to false.
-  if (ledger_->GetOption<bool>(option::kIsBitflyerRegion)) {
+  if (ledger_->IsBitFlyerRegion()) {
     enabled = false;
   }
 
@@ -237,7 +234,7 @@ void State::SetAutoContributeEnabled(bool enabled) {
 bool State::GetAutoContributeEnabled() {
   // Auto-contribute is not supported for regions where bitFlyer is the external
   // wallet provider. If AC is not supported, then always report AC as disabled.
-  if (ledger_->GetOption<bool>(option::kIsBitflyerRegion)) {
+  if (ledger_->IsBitFlyerRegion()) {
     return false;
   }
 
@@ -426,10 +423,6 @@ bool State::GetPromotionCorruptedMigrated() {
 
 void State::SetPromotionLastFetchStamp(const uint64_t stamp) {
   ledger_->SetState(kPromotionLastFetchStamp, stamp);
-}
-
-void State::ResetWalletType() {
-  ledger_->SetState(kExternalWalletType, std::string());
 }
 
 uint64_t State::GetPromotionLastFetchStamp() {

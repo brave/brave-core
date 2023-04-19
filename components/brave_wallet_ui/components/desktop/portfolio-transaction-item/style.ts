@@ -126,6 +126,10 @@ export const DetailTextDark = styled.span`
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text02};
   margin-right: 6px;
+
+  & > strong {
+    font-weight: 500;
+  }
 `
 
 export const DetailTextDarkBold = styled.span`

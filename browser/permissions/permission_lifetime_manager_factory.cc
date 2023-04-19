@@ -53,7 +53,7 @@ KeyedService* PermissionLifetimeManagerFactory::BuildServiceInstanceFor(
   }
   auto* profile = Profile::FromBrowserContext(context);
   return new permissions::PermissionLifetimeManager(
-      HostContentSettingsMapFactory::GetForProfile(context),
+      *HostContentSettingsMapFactory::GetForProfile(context),
       profile->IsOffTheRecord() ? nullptr : profile->GetPrefs(),
       std::move(permission_origin_lifetime_monitor));
 }

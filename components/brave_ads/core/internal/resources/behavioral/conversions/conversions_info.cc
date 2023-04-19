@@ -14,9 +14,12 @@
 namespace brave_ads::resource {
 
 ConversionsInfo::ConversionsInfo() = default;
+
 ConversionsInfo::ConversionsInfo(ConversionsInfo&& other) noexcept = default;
+
 ConversionsInfo& ConversionsInfo::operator=(ConversionsInfo&& other) noexcept =
     default;
+
 ConversionsInfo::~ConversionsInfo() = default;
 
 // static
@@ -25,8 +28,8 @@ base::expected<ConversionsInfo, std::string> ConversionsInfo::CreateFromValue(
   ConversionsInfo conversion;
 
   if (absl::optional<int> version = dict.FindInt("version")) {
-    if (features::GetConversionsResourceVersion() != *version) {
-      return base::unexpected("Failed to load from JSON, version missing");
+    if (kConversionsResourceVersion.Get() != *version) {
+      return base::unexpected("Failed to load from JSON, version mismatch");
     }
     conversion.version = *version;
   }
@@ -56,12 +59,12 @@ base::expected<ConversionsInfo, std::string> ConversionsInfo::CreateFromValue(
           "Failed to load from JSON, pattern search_in missing");
     }
 
-    ConversionIdPatternInfo info;
-    info.id_pattern = *id_pattern;
-    info.search_in = *search_in;
-    info.url_pattern = key;
+    ConversionIdPatternInfo conversion_id_pattern;
+    conversion_id_pattern.id_pattern = *id_pattern;
+    conversion_id_pattern.search_in = *search_in;
+    conversion_id_pattern.url_pattern = key;
 
-    conversion.id_patterns[key] = std::move(info);
+    conversion.id_patterns[key] = std::move(conversion_id_pattern);
   }
 
   return conversion;

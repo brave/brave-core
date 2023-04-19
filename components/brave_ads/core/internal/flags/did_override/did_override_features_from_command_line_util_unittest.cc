@@ -12,10 +12,8 @@
 #include "base/base_switches.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/common/features.h"
-#include "brave/components/brave_ads/core/ad_switches.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/internal/account/account_features.h"
 #include "brave/components/brave_ads/core/internal/ads/inline_content_ad_features.h"
 #include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_features.h"
@@ -56,73 +54,70 @@ struct ParamInfo final {
      /*expected_did_override_from_command_line*/ false},
     {/*command_line_switch*/ {
          ::switches::kEnableFeatures,
-         base::JoinString(
-             {"Foo", user_activity::features::kFeature.name, "Bar"},
-             ",")},
+         base::JoinString({"Foo", kUserActivityFeature.name, "Bar"}, ",")},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {::switches::kEnableFeatures,
-                              exclusion_rules::features::kFeature.name},
+                              kExclusionRulesFeature.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {::switches::kEnableFeatures,
-                              features::kAccount.name},
+                              kAccountFeature.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {::switches::kEnableFeatures,
-                              features::kConversions.name},
+                              kConversionsFeature.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {::switches::kEnableFeatures,
-                              features::kEligibleAds.name},
+                              kEligibleAdsFeature.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {
          ::switches::kEnableFeatures,
          features::kShouldTriggerSearchResultAdEvents.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {::switches::kEnableFeatures,
-                              inline_content_ads::features::kFeature.name},
+                              inline_content_ads::kAdsFeature.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {::switches::kEnableFeatures,
-                              new_tab_page_ads::features::kFeature.name},
+                              new_tab_page_ads::kAdsFeature.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {::switches::kEnableFeatures,
-                              notification_ads::features::kFeature.name},
+                              notification_ads::kAdsFeature.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {::switches::kEnableFeatures,
-                              permission_rules::features::kFeature.name},
+                              kPermissionRulesFeature.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {::switches::kEnableFeatures,
-                              promoted_content_ads::features::kFeature.name},
+                              promoted_content_ads::kAdsFeature.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {::switches::kEnableFeatures,
-                              resource::features::kAntiTargeting.name},
+                              kAntiTargetingFeature.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {
          ::switches::kEnableFeatures,
-         base::StrCat(
-             {resource::features::kAntiTargeting.name, ":param/value"})},
+         base::StrCat({kAntiTargetingFeature.name, ":param/value"})},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {::switches::kEnableFeatures,
-                              search_result_ads::features::kFeature.name},
+                              search_result_ads::kAdsFeature.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {::switches::kEnableFeatures,
-                              targeting::features::kEpsilonGreedyBandit.name},
+                              targeting::kEpsilonGreedyBanditFeatures.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {
          ::switches::kEnableFeatures,
-         base::StrCat({targeting::features::kEpsilonGreedyBandit.name,
+         base::StrCat({targeting::kEpsilonGreedyBanditFeatures.name,
                        "<TrialName:param/value"})},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {::switches::kEnableFeatures,
-                              targeting::features::kPurchaseIntent.name},
+                              targeting::kPurchaseIntentFeature.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {::switches::kEnableFeatures,
-                              targeting::features::kTextClassification.name},
+                              targeting::kTextClassificationFeature.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {
          ::switches::kEnableFeatures,
-         base::StrCat({targeting::features::kTextClassification.name,
+         base::StrCat({targeting::kTextClassificationFeature.name,
                        "<TrialName.GroupName:param/value"})},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {::switches::kEnableFeatures,
-                              user_activity::features::kFeature.name},
+                              kUserActivityFeature.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {variations::switches::kForceFieldTrialParams, {}},
      /*expected_did_override_from_command_line*/ false},
@@ -131,58 +126,56 @@ struct ParamInfo final {
      /*expected_did_override_from_command_line*/ false},
     {/*command_line_switch*/ {
          variations::switches::kForceFieldTrialParams,
-         base::JoinString(
-             {"Foo", user_activity::features::kFeature.name, "Bar"},
-             ",")},
+         base::JoinString({"Foo", kUserActivityFeature.name, "Bar"}, ",")},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {variations::switches::kForceFieldTrialParams,
-                              exclusion_rules::features::kFeature.name},
+                              kExclusionRulesFeature.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {variations::switches::kForceFieldTrialParams,
-                              features::kAccount.name},
+                              kAccountFeature.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {variations::switches::kForceFieldTrialParams,
-                              features::kConversions.name},
+                              kConversionsFeature.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {variations::switches::kForceFieldTrialParams,
-                              features::kEligibleAds.name},
+                              kEligibleAdsFeature.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {
          variations::switches::kForceFieldTrialParams,
          features::kShouldTriggerSearchResultAdEvents.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {variations::switches::kForceFieldTrialParams,
-                              inline_content_ads::features::kFeature.name},
+                              inline_content_ads::kAdsFeature.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {variations::switches::kForceFieldTrialParams,
-                              new_tab_page_ads::features::kFeature.name},
+                              new_tab_page_ads::kAdsFeature.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {variations::switches::kForceFieldTrialParams,
-                              notification_ads::features::kFeature.name},
+                              notification_ads::kAdsFeature.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {variations::switches::kForceFieldTrialParams,
-                              permission_rules::features::kFeature.name},
+                              kPermissionRulesFeature.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {variations::switches::kForceFieldTrialParams,
-                              promoted_content_ads::features::kFeature.name},
+                              promoted_content_ads::kAdsFeature.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {variations::switches::kForceFieldTrialParams,
-                              resource::features::kAntiTargeting.name},
+                              kAntiTargetingFeature.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {variations::switches::kForceFieldTrialParams,
-                              search_result_ads::features::kFeature.name},
+                              search_result_ads::kAdsFeature.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {variations::switches::kForceFieldTrialParams,
-                              targeting::features::kEpsilonGreedyBandit.name},
+                              targeting::kEpsilonGreedyBanditFeatures.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {variations::switches::kForceFieldTrialParams,
-                              targeting::features::kPurchaseIntent.name},
+                              targeting::kPurchaseIntentFeature.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {variations::switches::kForceFieldTrialParams,
-                              targeting::features::kTextClassification.name},
+                              targeting::kTextClassificationFeature.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {variations::switches::kForceFieldTrialParams,
-                              user_activity::features::kFeature.name},
+                              kUserActivityFeature.name},
      /*expected_did_override_from_command_line*/ true}};
 
 }  // namespace
@@ -195,13 +188,6 @@ class BatAdsDidOverrideFeaturesFromCommandLineUtilTest
     const ParamInfo param = GetParam();
 
     AppendCommandLineSwitches({param.command_line_switch});
-
-    if (param.command_line_switch.key == ::switches::kEnableFeatures) {
-      CommandLineSwitchInfo command_line_switch;
-      command_line_switch.key = switches::kFeaturesSwitch;
-      command_line_switch.value = param.command_line_switch.value;
-      AppendCommandLineSwitches({command_line_switch});
-    }
 
     std::unique_ptr<base::FeatureList> feature_list =
         std::make_unique<base::FeatureList>();
@@ -234,9 +220,10 @@ std::string TestParamToString(
   const std::string sanitized_command_line_switch =
       SanitizeCommandLineSwitch(test_param.param.command_line_switch);
 
-  return base::StringPrintf("Set%sFeaturesFor%s",
-                            expected_did_override_from_command_line.c_str(),
-                            sanitized_command_line_switch.c_str());
+  return base::ReplaceStringPlaceholders(
+      "Set$1FeaturesFor$2",
+      {expected_did_override_from_command_line, sanitized_command_line_switch},
+      nullptr);
 }
 
 INSTANTIATE_TEST_SUITE_P(,

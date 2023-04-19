@@ -20,7 +20,7 @@ using GetCredsBatchListCallback =
 
 class DatabaseCredsBatch : public DatabaseTable {
  public:
-  explicit DatabaseCredsBatch(LedgerImpl* ledger);
+  explicit DatabaseCredsBatch(LedgerImpl& ledger);
   ~DatabaseCredsBatch() override;
 
   void InsertOrUpdate(mojom::CredsBatchPtr creds,

@@ -10,12 +10,17 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/creative_daypart_info.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace brave_ads {
 
-class BatAdsDaypartExclusionRuleTest : public UnitTestBase {};
+class BatAdsDaypartExclusionRuleTest : public UnitTestBase {
+ protected:
+  DaypartExclusionRule exclusion_rule_;
+};
 
 TEST_F(BatAdsDaypartExclusionRuleTest, AllowIfDaypartsIsEmpty) {
   // Arrange
@@ -23,11 +28,9 @@ TEST_F(BatAdsDaypartExclusionRuleTest, AllowIfDaypartsIsEmpty) {
   creative_ad.creative_set_id = kCreativeSetId;
 
   // Act
-  DaypartExclusionRule exclusion_rule;
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsDaypartExclusionRuleTest, AllowIfRightDayAndHours) {
@@ -47,11 +50,9 @@ TEST_F(BatAdsDaypartExclusionRuleTest, AllowIfRightDayAndHours) {
   creative_ad.dayparts.push_back(daypart_1);
 
   // Act
-  DaypartExclusionRule exclusion_rule;
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsDaypartExclusionRuleTest, AllowForMultipleDays) {
@@ -70,11 +71,9 @@ TEST_F(BatAdsDaypartExclusionRuleTest, AllowForMultipleDays) {
   creative_ad.dayparts.push_back(daypart_1);
 
   // Act
-  DaypartExclusionRule exclusion_rule;
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsDaypartExclusionRuleTest, AllowIfOneMatchExists) {
@@ -109,11 +108,9 @@ TEST_F(BatAdsDaypartExclusionRuleTest, AllowIfOneMatchExists) {
   creative_ad.dayparts.push_back(daypart_3);
 
   // Act
-  DaypartExclusionRule exclusion_rule;
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsDaypartExclusionRuleTest, DisallowIfNoMatches) {
@@ -148,11 +145,9 @@ TEST_F(BatAdsDaypartExclusionRuleTest, DisallowIfNoMatches) {
   creative_ad.dayparts.push_back(daypart_3);
 
   // Act
-  DaypartExclusionRule exclusion_rule;
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_TRUE(should_exclude);
+  EXPECT_TRUE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsDaypartExclusionRuleTest, DisallowIfWrongDay) {
@@ -174,11 +169,9 @@ TEST_F(BatAdsDaypartExclusionRuleTest, DisallowIfWrongDay) {
   creative_ad.dayparts.push_back(daypart_1);
 
   // Act
-  DaypartExclusionRule exclusion_rule;
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_TRUE(should_exclude);
+  EXPECT_TRUE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
 TEST_F(BatAdsDaypartExclusionRuleTest, DisallowIfWrongHours) {
@@ -199,11 +192,9 @@ TEST_F(BatAdsDaypartExclusionRuleTest, DisallowIfWrongHours) {
   creative_ad.dayparts.push_back(daypart_1);
 
   // Act
-  DaypartExclusionRule exclusion_rule;
-  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
-  EXPECT_TRUE(should_exclude);
+  EXPECT_TRUE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
 }  // namespace brave_ads

@@ -58,11 +58,9 @@ OnionLocationNavigationThrottle::OnionLocationNavigationThrottle(
     bool is_tor_profile)
     : content::NavigationThrottle(navigation_handle),
       is_tor_profile_(is_tor_profile),
-      delegate_(std::move(delegate)) {
-  content::BrowserContext* context =
-      navigation_handle->GetWebContents()->GetBrowserContext();
-  pref_service_ = user_prefs::UserPrefs::Get(context);
-}
+      pref_service_(user_prefs::UserPrefs::Get(
+          navigation_handle->GetWebContents()->GetBrowserContext())),
+      delegate_(std::move(delegate)) {}
 
 OnionLocationNavigationThrottle::~OnionLocationNavigationThrottle() = default;
 

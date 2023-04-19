@@ -31,7 +31,7 @@ class BraveThemeEventRouter : public ui::NativeThemeObserver {
   // Make virtual for testing.
   virtual void Notify();
 
-  ui::NativeTheme* current_native_theme_for_testing_ = nullptr;
+  raw_ptr<ui::NativeTheme> current_native_theme_for_testing_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
   base::ScopedObservation<ui::NativeTheme, ui::NativeThemeObserver> observer_{
       this};

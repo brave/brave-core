@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ref.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/attestation/attestation_impl.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_factory.h"
@@ -27,7 +28,7 @@ class PromotionTransfer;
 
 class Promotion {
  public:
-  explicit Promotion(LedgerImpl* ledger);
+  explicit Promotion(LedgerImpl& ledger);
   ~Promotion();
 
   void Initialize();
@@ -131,7 +132,7 @@ class Promotion {
   std::unique_ptr<PromotionTransfer> transfer_;
   std::unique_ptr<credential::Credentials> credentials_;
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
   base::OneShotTimer last_check_timer_;
   base::OneShotTimer retry_timer_;
 };

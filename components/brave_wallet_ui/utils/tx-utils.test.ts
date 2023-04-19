@@ -2,7 +2,9 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
-import { getTransactionStatusString } from './tx-utils'
+import { mockFilSendTransaction, mockTransactionInfo } from '../stories/mock-data/mock-transaction-info'
+import Amount from './amount'
+import { getTransactionGas, getTransactionStatusString } from './tx-utils'
 
 describe('Check Transaction Status Strings Value', () => {
   test('Transaction ID 0 should return Unapproved', () => {
@@ -39,5 +41,32 @@ describe('Check Transaction Status Strings Value', () => {
 
   test('Transaction ID 8 should return an empty string', () => {
     expect(getTransactionStatusString(8)).toEqual('')
+  })
+})
+
+describe('getTransactionGas()', () => {
+  it('should get the gas values of a FIL transaction', () => {
+    const txGas = getTransactionGas(mockFilSendTransaction)
+
+    const { filTxData } = mockFilSendTransaction.txDataUnion
+
+    expect(txGas.maxFeePerGas).toBe(filTxData.gasFeeCap || '')
+    expect(txGas.maxPriorityFeePerGas).toBe(filTxData.gasPremium)
+    expect(txGas.gasPrice).toBe(
+      new Amount(filTxData.gasFeeCap)
+        .minus(filTxData.gasPremium)
+        .value?.toString() || ''
+    )
+  })
+  it('should get the gas values of an EVM transaction', () => {
+    const txGas = getTransactionGas(mockTransactionInfo)
+
+    const { ethTxData1559 } = mockTransactionInfo.txDataUnion
+
+    expect(txGas.maxFeePerGas).toBe(ethTxData1559?.maxFeePerGas || '')
+    expect(txGas.maxPriorityFeePerGas).toBe(
+      ethTxData1559?.maxPriorityFeePerGas || ''
+    )
+    expect(txGas.gasPrice).toBe(ethTxData1559?.baseData.gasPrice || '')
   })
 })

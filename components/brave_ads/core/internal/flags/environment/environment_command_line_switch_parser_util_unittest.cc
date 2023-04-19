@@ -5,14 +5,14 @@
 
 #include <string>
 
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
+#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/command_line_switch_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
-#include "brave/components/brave_ads/core/internal/flags/environment/environment_types.h"
 #include "brave/components/brave_ads/core/internal/flags/environment/environment_types_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
-#include "brave/components/brave_ads/core/internal/flags/flag_manager_constants.h"
+#include "brave/components/brave_ads/core/internal/flags/flag_constants.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -24,16 +24,16 @@ constexpr char kRewardsSwitch[] = "rewards";
 
 struct ParamInfo final {
   CommandLineSwitchInfo command_line_switch;
-  EnvironmentType expected_environment_type;
+  mojom::EnvironmentType expected_environment_type;
 } const kTestCases[] = {
     {/*command_line_switch*/ {kRewardsSwitch, "staging=true"},
-     /*expected_environment_type*/ EnvironmentType::kStaging},
+     /*expected_environment_type*/ mojom::EnvironmentType::kStaging},
     {/*command_line_switch*/ {kRewardsSwitch, "staging=1"},
-     /*expected_environment_type*/ EnvironmentType::kStaging},
+     /*expected_environment_type*/ mojom::EnvironmentType::kStaging},
     {/*command_line_switch*/ {kRewardsSwitch, "staging=false"},
-     /*expected_environment_type*/ EnvironmentType::kProduction},
+     /*expected_environment_type*/ mojom::EnvironmentType::kProduction},
     {/*command_line_switch*/ {kRewardsSwitch, "staging=foobar"},
-     /*expected_environment_type*/ EnvironmentType::kProduction},
+     /*expected_environment_type*/ mojom::EnvironmentType::kProduction},
     {/*command_line_switch*/ {},
      /*expected_environment_type*/ kDefaultEnvironmentType}};
 
@@ -56,7 +56,7 @@ TEST_P(BatAdsEnvironmentCommandLineSwitchParserUtilTest,
 
   // Assert
   EXPECT_EQ(GetParam().expected_environment_type,
-            FlagManager::GetInstance()->GetEnvironmentType());
+            GlobalState::GetInstance()->Flags().environment_type);
 }
 
 std::string TestParamToString(
@@ -67,9 +67,9 @@ std::string TestParamToString(
   const std::string sanitized_command_line_switch =
       SanitizeCommandLineSwitch(test_param.param.command_line_switch);
 
-  return base::StringPrintf("%sEnvironmentFor%s",
-                            expected_environment_type.c_str(),
-                            sanitized_command_line_switch.c_str());
+  return base::ReplaceStringPlaceholders(
+      "$1EnvironmentFor$2",
+      {expected_environment_type, sanitized_command_line_switch}, nullptr);
 }
 
 INSTANTIATE_TEST_SUITE_P(,

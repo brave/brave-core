@@ -43,7 +43,7 @@ mojom::ReportType ConvertRewardsTypeToReportType(
 
 }  // namespace
 
-DatabaseContributionInfo::DatabaseContributionInfo(LedgerImpl* ledger)
+DatabaseContributionInfo::DatabaseContributionInfo(LedgerImpl& ledger)
     : DatabaseTable(ledger),
       publishers_(
           std::make_unique<DatabaseContributionInfoPublishers>(ledger)) {}

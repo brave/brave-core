@@ -19,10 +19,8 @@ namespace ledger {
 namespace endpoint {
 namespace payment {
 
-PostTransactionGemini::PostTransactionGemini(LedgerImpl* ledger)
-    : ledger_(ledger) {
-  DCHECK(ledger_);
-}
+PostTransactionGemini::PostTransactionGemini(LedgerImpl& ledger)
+    : ledger_(ledger) {}
 
 PostTransactionGemini::~PostTransactionGemini() = default;
 

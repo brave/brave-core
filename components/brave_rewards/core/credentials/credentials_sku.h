@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_common.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/payment_server.h"
 
@@ -19,7 +20,7 @@ namespace credential {
 
 class CredentialsSKU : public Credentials {
  public:
-  explicit CredentialsSKU(LedgerImpl* ledger);
+  explicit CredentialsSKU(LedgerImpl& ledger);
   ~CredentialsSKU() override;
 
   void Start(const CredentialsTrigger& trigger,
@@ -80,7 +81,7 @@ class CredentialsSKU : public Credentials {
                       const CredentialsRedeem& redeem,
                       ledger::LegacyResultCallback callback);
 
-  LedgerImpl* ledger_;  // NOT OWNED
+  const raw_ref<LedgerImpl> ledger_;
   std::unique_ptr<CredentialsCommon> common_;
   std::unique_ptr<endpoint::PaymentServer> payment_server_;
 };

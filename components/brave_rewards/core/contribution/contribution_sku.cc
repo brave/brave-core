@@ -75,10 +75,9 @@ void GetCredentialTrigger(ledger::mojom::SKUOrderPtr order,
 namespace ledger {
 namespace contribution {
 
-ContributionSKU::ContributionSKU(LedgerImpl* ledger) : ledger_(ledger) {
-  DCHECK(ledger_);
+ContributionSKU::ContributionSKU(LedgerImpl& ledger) : ledger_(ledger) {
   credentials_ = credential::CredentialsFactory::Create(
-      ledger_, mojom::CredsBatchType::SKU);
+      ledger, mojom::CredsBatchType::SKU);
   DCHECK(credentials_);
   sku_ = std::make_unique<sku::SKU>(ledger);
   DCHECK(sku_);

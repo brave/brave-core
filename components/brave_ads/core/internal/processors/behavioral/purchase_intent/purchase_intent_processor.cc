@@ -27,7 +27,7 @@
 
 namespace brave_ads::processor {
 
-using KeywordList = std::vector<std::string>;
+using KeywordList = std::vector</*keyword*/ std::string>;
 
 namespace {
 
@@ -109,7 +109,7 @@ void PurchaseIntent::Process(const GURL& url) {
 
 targeting::PurchaseIntentSignalInfo PurchaseIntent::ExtractSignal(
     const GURL& url) const {
-  targeting::PurchaseIntentSignalInfo signal_info;
+  targeting::PurchaseIntentSignalInfo purchase_intent_signal;
 
   const absl::optional<std::string> search_query =
       ExtractSearchTermQueryValue(url);
@@ -117,38 +117,39 @@ targeting::PurchaseIntentSignalInfo PurchaseIntent::ExtractSignal(
     const SegmentList keyword_segments =
         GetSegmentsForSearchQuery(*search_query);
     if (!keyword_segments.empty()) {
-      signal_info.created_at = base::Time::Now();
-      signal_info.segments = keyword_segments;
-      signal_info.weight = GetFunnelWeightForSearchQuery(*search_query);
+      purchase_intent_signal.created_at = base::Time::Now();
+      purchase_intent_signal.segments = keyword_segments;
+      purchase_intent_signal.weight =
+          GetFunnelWeightForSearchQuery(*search_query);
     }
   } else {
-    const targeting::PurchaseIntentSiteInfo info = GetSite(url);
+    const targeting::PurchaseIntentSiteInfo purchase_intent_site = GetSite(url);
 
-    if (info.url_netloc.is_valid()) {
-      signal_info.created_at = base::Time::Now();
-      signal_info.segments = info.segments;
-      signal_info.weight = info.weight;
+    if (purchase_intent_site.url_netloc.is_valid()) {
+      purchase_intent_signal.created_at = base::Time::Now();
+      purchase_intent_signal.segments = purchase_intent_site.segments;
+      purchase_intent_signal.weight = purchase_intent_site.weight;
     }
   }
 
-  return signal_info;
+  return purchase_intent_signal;
 }
 
 targeting::PurchaseIntentSiteInfo PurchaseIntent::GetSite(
     const GURL& url) const {
-  targeting::PurchaseIntentSiteInfo info;
+  targeting::PurchaseIntentSiteInfo purchase_intent_site;
 
   const targeting::PurchaseIntentInfo* const purchase_intent = resource_->Get();
   DCHECK(purchase_intent);
 
   for (const auto& site : purchase_intent->sites) {
     if (SameDomainOrHost(url, site.url_netloc)) {
-      info = site;
+      purchase_intent_site = site;
       break;
     }
   }
 
-  return info;
+  return purchase_intent_site;
 }
 
 SegmentList PurchaseIntent::GetSegmentsForSearchQuery(

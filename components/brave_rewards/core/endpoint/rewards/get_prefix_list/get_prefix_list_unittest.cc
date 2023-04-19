@@ -28,7 +28,7 @@ class GetPrefixListTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
-  GetPrefixList list_{&mock_ledger_impl_};
+  GetPrefixList list_{mock_ledger_impl_};
 };
 
 TEST_F(GetPrefixListTest, ServerOK) {

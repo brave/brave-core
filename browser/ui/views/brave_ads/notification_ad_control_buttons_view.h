@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_ADS_NOTIFICATION_AD_CONTROL_BUTTONS_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_BRAVE_ADS_NOTIFICATION_AD_CONTROL_BUTTONS_VIEW_H_
 
+#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/view.h"
 
@@ -24,7 +26,7 @@ class NotificationAdControlButtonsView : public views::View {
   METADATA_HEADER(NotificationAdControlButtonsView);
 
   explicit NotificationAdControlButtonsView(
-      NotificationAdView* notification_ad_view);
+      NotificationAdView& notification_ad_view);
 
   NotificationAdControlButtonsView(const NotificationAdControlButtonsView&) =
       delete;
@@ -44,11 +46,6 @@ class NotificationAdControlButtonsView : public views::View {
   void UpdateContent();
 
  private:
-  NotificationAdView* notification_ad_view_ = nullptr;  // NOT OWNED
-
-  PaddedImageView* info_button_ = nullptr;
-  PaddedImageButton* close_button_ = nullptr;
-
   void CreateView();
 
   void CreateInfoButton();
@@ -56,6 +53,11 @@ class NotificationAdControlButtonsView : public views::View {
 
   void CreateCloseButton();
   void UpdateCloseButton();
+
+  raw_ref<NotificationAdView> notification_ad_view_;
+
+  raw_ptr<PaddedImageView> info_button_ = nullptr;
+  raw_ptr<PaddedImageButton> close_button_ = nullptr;
 };
 
 }  // namespace brave_ads

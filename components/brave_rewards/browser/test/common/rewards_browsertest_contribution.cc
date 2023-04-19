@@ -45,42 +45,29 @@ void RewardsBrowserTestContribution::TipViaCode(
     const std::string& publisher_key,
     const double amount,
     const ledger::mojom::PublisherStatus status,
-    const int32_t number_of_contributions,
     const bool recurring) {
-  pending_tip_saved_ = false;
   multiple_tip_reconcile_completed_ = false;
   multiple_tip_reconcile_count_ = 0;
 
-  bool should_contribute = number_of_contributions > 0;
   auto publisher = ledger::mojom::PublisherInfo::New();
   publisher->id = publisher_key;
   publisher->name = publisher_key;
   publisher->url = publisher_key;
   publisher->status = status;
-  rewards_service_->OnTip(
-      publisher_key,
-      amount,
-      recurring,
-      std::move(publisher));
 
-  if (recurring) {
-    return;
-  }
+  rewards_service_->SavePublisherInfo(0, std::move(publisher),
+                                      base::DoNothing());
 
-  if (should_contribute) {
-    // Wait for reconciliation to complete
-    WaitForMultipleTipReconcileCompleted(number_of_contributions);
-    return;
-  }
+  rewards_service_->SendContribution(publisher_key, amount, recurring,
+                                     base::DoNothing());
 
-  // Signal to update pending contribution balance
-  WaitForPendingTipToBeSaved();
-  UpdateContributionBalance(amount, should_contribute);
+  // Wait for reconciliation to complete
+  WaitForMultipleTipReconcileCompleted(1);
 }
 
 void RewardsBrowserTestContribution::TipPublisher(
     const GURL& url,
-    rewards_browsertest_util::TipAction tip_action,
+    bool set_monthly,
     int32_t number_of_contributions,
     int32_t selection,
     double custom_amount) {
@@ -97,8 +84,26 @@ void RewardsBrowserTestContribution::TipPublisher(
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
+  // Ensure that the tip button is disabled for unverified publishers.
+  if (!should_contribute) {
+    base::WeakPtr<content::WebContents> popup_contents =
+        context_helper_->OpenRewardsPopup();
+
+    rewards_browsertest_util::WaitForElementToAppear(
+        popup_contents.get(), "[data-test-id=tip-button]");
+
+    content::EvalJsResult js_result =
+        EvalJs(popup_contents.get(),
+               "document.querySelector('[data-test-id=tip-button]').disabled",
+               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+               content::ISOLATED_WORLD_ID_CONTENT_END);
+
+    EXPECT_TRUE(js_result.ExtractBool());
+    return;
+  }
+
   base::WeakPtr<content::WebContents> site_banner_contents =
-      context_helper_->OpenSiteBanner(tip_action);
+      context_helper_->OpenSiteBanner();
   ASSERT_TRUE(site_banner_contents);
 
   double amount = 0.0;
@@ -112,98 +117,72 @@ void RewardsBrowserTestContribution::TipPublisher(
         site_banner_contents.get(), "[data-test-id=custom-amount-input]");
 
     constexpr char set_input_script[] = R"(
-        const input = document.querySelector(
-          '[data-test-id=custom-amount-input]');
-        input.value = $1;
-        input.blur();
+        new Promise(resolve => {
+          const input =
+            document.querySelector('[data-test-id=custom-amount-input]');
+          input.value = $1;
+          input.blur();
+          setTimeout(resolve, 30);
+        })
     )";
 
     ASSERT_TRUE(ExecJs(site_banner_contents.get(),
                        content::JsReplace(set_input_script, amount),
                        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                        content::ISOLATED_WORLD_ID_CONTENT_END));
-
-    rewards_browsertest_util::WaitForElementThenClick(
-        site_banner_contents.get(), "[data-test-id=form-submit-button]");
   } else {
     amount = rewards_browsertest_util::GetSiteBannerTipOptions(
         site_banner_contents.get())[selection];
 
     // Select the tip amount (default is 1.000 BAT)
     std::string amount_selector = base::StringPrintf(
-        "[data-test-id=tip-amount-options] [data-option-index='%u'] button",
+        "[data-test-id=tip-amount-options] [data-option-index='%u']",
         selection);
 
     rewards_browsertest_util::WaitForElementThenClick(
         site_banner_contents.get(), amount_selector);
   }
 
+  if (set_monthly) {
+    rewards_browsertest_util::WaitForElementThenClick(
+        site_banner_contents.get(), "[data-test-id=monthly-toggle] button");
+  }
+
   // Send the tip
   rewards_browsertest_util::WaitForElementThenClick(
-      site_banner_contents.get(), "[data-test-id=form-submit-button]");
-
-  // Signal that direct tip was made and update wallet with new
-  // balance
-  if (tip_action == rewards_browsertest_util::TipAction::OneTime &&
-      !should_contribute) {
-    WaitForPendingTipToBeSaved();
-    UpdateContributionBalance(amount, should_contribute);
-  }
+      site_banner_contents.get(), "[data-test-id=send-button]");
 
   // Wait for thank you banner to load
   ASSERT_TRUE(WaitForLoadStop(site_banner_contents.get()));
 
-  if (tip_action == rewards_browsertest_util::TipAction::SetMonthly) {
+  // Make sure that thank you banner shows correct publisher data
+  rewards_browsertest_util::WaitForElementToContain(
+      site_banner_contents.get(), "body", "Contribution sent");
+
+  // Wait for reconciliation to complete
+  WaitForMultipleTipReconcileCompleted(number_of_contributions);
+  ASSERT_EQ(static_cast<int32_t>(multiple_tip_reconcile_status_.size()),
+            number_of_contributions);
+  for (const auto status : multiple_tip_reconcile_status_) {
+    ASSERT_EQ(status, ledger::mojom::Result::LEDGER_OK);
+  }
+
+  if (set_monthly) {
     WaitForRecurringTipToBeSaved();
     // Trigger contribution process
     rewards_service_->StartContributionsForTesting();
 
     // Wait for reconciliation to complete
-    if (should_contribute) {
-      WaitForTipReconcileCompleted();
-      const auto result = should_contribute
-                              ? ledger::mojom::Result::LEDGER_OK
-                              : ledger::mojom::Result::RECURRING_TABLE_EMPTY;
-      ASSERT_EQ(tip_reconcile_status_, result);
-    }
-
-    // Signal that monthly contribution was made and update wallet
-    // with new balance
-    if (!should_contribute) {
-      UpdateContributionBalance(amount, should_contribute);
-    }
-  } else if (tip_action == rewards_browsertest_util::TipAction::OneTime &&
-      should_contribute) {
-    // Wait for reconciliation to complete
-    WaitForMultipleTipReconcileCompleted(number_of_contributions);
-    ASSERT_EQ(
-        static_cast<int32_t>(multiple_tip_reconcile_status_.size()),
-        number_of_contributions);
-    for (const auto status : multiple_tip_reconcile_status_) {
-      ASSERT_EQ(status, ledger::mojom::Result::LEDGER_OK);
-    }
+    WaitForTipReconcileCompleted();
+    ASSERT_EQ(tip_reconcile_status_, ledger::mojom::Result::LEDGER_OK);
   }
 
-  // Make sure that thank you banner shows correct publisher data
-  {
-    rewards_browsertest_util::WaitForElementToContain(
-        site_banner_contents.get(), "body", "Thanks for the support!");
-    rewards_browsertest_util::WaitForElementToContain(
-        site_banner_contents.get(), "body",
-        base::StringPrintf("%.3f BAT", amount));
-  }
-
-  const bool is_monthly =
-      tip_action == rewards_browsertest_util::TipAction::SetMonthly;
-
-  VerifyTip(amount, should_contribute, is_monthly);
+  VerifyTip(amount, set_monthly);
 }
 
-void RewardsBrowserTestContribution::VerifyTip(
-    const double amount,
-    const bool should_contribute,
-    const bool monthly,
-    const bool via_code) {
+void RewardsBrowserTestContribution::VerifyTip(const double amount,
+                                               const bool monthly,
+                                               const bool via_code) {
   if (via_code && monthly) {
     return;
   }
@@ -211,40 +190,21 @@ void RewardsBrowserTestContribution::VerifyTip(
   // Load rewards page
   context_helper_->LoadRewardsPage();
 
-  if (should_contribute) {
-    // Make sure that balance is updated correctly
-    IsBalanceCorrect();
-
-    // Check that tip table shows the appropriate tip amount
-    const std::string selector =
-        monthly ? "[data-test-id=rewards-summary-monthly]"
-                : "[data-test-id=rewards-summary-one-time]";
-
-    rewards_browsertest_util::WaitForElementToContain(
-        contents(), selector, base::StringPrintf("-%.2f BAT", amount));
-    return;
-  }
-
-  // Make sure that balance did not change
+  // Make sure that balance is updated correctly
   IsBalanceCorrect();
 
-  // Make sure that pending contribution box shows the correct
-  // amount
-  IsPendingBalanceCorrect();
+  // Check that tip table shows the appropriate tip amount
+  const std::string selector = monthly
+                                   ? "[data-test-id=rewards-summary-monthly]"
+                                   : "[data-test-id=rewards-summary-one-time]";
 
-  rewards_browsertest_util::WaitForElementToEqual(
-      contents(), "[data-test-id=tip-total]", "0.000 BAT0.00 USD");
+  rewards_browsertest_util::WaitForElementToContain(
+      contents(), selector, base::StringPrintf("-%.2f BAT", amount));
 }
 
 void RewardsBrowserTestContribution::IsBalanceCorrect() {
   rewards_browsertest_util::WaitForElementToEqual(
       contents(), "[data-test-id=rewards-balance-text]", GetStringBalance());
-}
-
-void RewardsBrowserTestContribution::IsPendingBalanceCorrect() {
-  rewards_browsertest_util::WaitForElementToContain(
-      contents(), "[data-test-id=rewards-summary-pending]",
-      GetStringPendingBalance());
 }
 
 void RewardsBrowserTestContribution::AddBalance(const double balance) {
@@ -257,28 +217,6 @@ double RewardsBrowserTestContribution::GetBalance() {
 
 std::string RewardsBrowserTestContribution::GetExternalBalance() {
   return rewards_browsertest_util::BalanceDoubleToString(external_balance_);
-}
-
-void RewardsBrowserTestContribution::WaitForPendingTipToBeSaved() {
-  if (pending_tip_saved_) {
-    return;
-  }
-
-  wait_for_pending_tip_saved_loop_ = std::make_unique<base::RunLoop>();
-  wait_for_pending_tip_saved_loop_->Run();
-}
-
-void RewardsBrowserTestContribution::OnPendingContributionSaved(
-    brave_rewards::RewardsService* rewards_service,
-    const ledger::mojom::Result result) {
-  if (result != ledger::mojom::Result::LEDGER_OK) {
-    return;
-  }
-
-  pending_tip_saved_ = true;
-  if (wait_for_pending_tip_saved_loop_) {
-    wait_for_pending_tip_saved_loop_->Quit();
-  }
 }
 
 void RewardsBrowserTestContribution::WaitForTipReconcileCompleted() {
@@ -366,8 +304,6 @@ void RewardsBrowserTestContribution::UpdateContributionBalance(
 
     return;
   }
-
-  pending_balance_ += amount;
 }
 
 void RewardsBrowserTestContribution::WaitForRecurringTipToBeSaved() {
@@ -429,10 +365,6 @@ std::string RewardsBrowserTestContribution::GetStringBalance() {
   const std::string balance = rewards_browsertest_util::BalanceDoubleToString(
       balance_ + external_balance_);
   return balance + " BAT";
-}
-
-std::string RewardsBrowserTestContribution::GetStringPendingBalance() {
-  return base::StringPrintf("%.2f BAT", pending_balance_);
 }
 
 ledger::mojom::Result RewardsBrowserTestContribution::GetACStatus() {

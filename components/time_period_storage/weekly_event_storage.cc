@@ -32,8 +32,7 @@ WeeklyEventStorage::WeeklyEventStorage(PrefService* prefs,
 WeeklyEventStorage::WeeklyEventStorage(PrefService* prefs,
                                        const char* pref_name,
                                        std::unique_ptr<base::Clock> clock)
-    : prefs_(prefs), pref_name_(pref_name), clock_(std::move(clock)) {
-  DCHECK(prefs);
+    : prefs_(*prefs), pref_name_(pref_name), clock_(std::move(clock)) {
   DCHECK(pref_name);
   DCHECK(clock_);
   Load();

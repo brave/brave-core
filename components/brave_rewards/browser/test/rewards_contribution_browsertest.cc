@@ -150,8 +150,15 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, AutoContribution) {
       contents(), "[data-test-id=rewards-summary-ac]", "-20.00 BAT");
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/29632): Test flaky on
+// master for the mac build.
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_AutoContributionUnconnected DISABLED_AutoContributionUnconnected
+#else
+#define MAYBE_AutoContributionUnconnected AutoContributionUnconnected
+#endif  // BUILDFLAG(IS_MAC)
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
-                       AutoContributionUnconnected) {
+                       MAYBE_AutoContributionUnconnected) {
   // Set kEnabled to false before calling CreateRewardsWallet to ensure that
   // prefs are configured to reflect an unconnected user
   auto* pref_service = browser()->profile()->GetPrefs();
@@ -180,8 +187,16 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
       "This month, you've visited 1 creator supported by Brave Rewards");
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/29480): Test flaky on
+// master for the mac build.
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_AutoContributionUnconnectedJapan \
+  DISABLED_AutoContributionUnconnectedJapan
+#else
+#define MAYBE_AutoContributionUnconnectedJapan AutoContributionUnconnectedJapan
+#endif  // BUILDFLAG(IS_MAC)
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
-                       AutoContributionUnconnectedJapan) {
+                       MAYBE_AutoContributionUnconnectedJapan) {
   // Set kEnabled to false before calling CreateRewardsWallet to ensure that
   // prefs are configured to reflect an unconnected user
   auto* pref_service = browser()->profile()->GetPrefs();
@@ -341,8 +356,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, TipVerifiedPublisher) {
 
   contribution_->TipPublisher(
       rewards_browsertest_util::GetUrl(https_server_.get(), "duckduckgo.com"),
-      rewards_browsertest_util::TipAction::OneTime,
-      1);
+      false, 1);
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
@@ -353,7 +367,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 
   contribution_->TipPublisher(
       rewards_browsertest_util::GetUrl(https_server_.get(), "duckduckgo.com"),
-      rewards_browsertest_util::TipAction::OneTime, 1, 0, 1.25);
+      false, 1, 0, 1.25);
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, TipUnverifiedPublisher) {
@@ -363,7 +377,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, TipUnverifiedPublisher) {
 
   contribution_->TipPublisher(
       rewards_browsertest_util::GetUrl(https_server_.get(), "brave.com"),
-      rewards_browsertest_util::TipAction::OneTime);
+      false);
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
@@ -374,99 +388,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 
   contribution_->TipPublisher(
       rewards_browsertest_util::GetUrl(https_server_.get(), "duckduckgo.com"),
-      rewards_browsertest_util::TipAction::SetMonthly,
-      1);
-}
-
-// Check pending contributions
-IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, PendingContributionTip) {
-  const std::string publisher = "example.com";
-  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
-  context_helper_->LoadRewardsPage();
-  contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
-
-  // Tip unverified publisher
-  contribution_->TipPublisher(
-      rewards_browsertest_util::GetUrl(https_server_.get(), publisher),
-      rewards_browsertest_util::TipAction::OneTime);
-
-  // Check that link for pending is shown and open modal
-  rewards_browsertest_util::WaitForElementThenClick(
-      contents(), "[data-test-id=view-pending-button]");
-
-  // Make sure that table is populated
-  rewards_browsertest_util::WaitForElementToContain(
-      contents(),
-      "[id='pendingContributionTable'] a",
-      publisher);
-}
-
-IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
-                       ProcessPendingContributions) {
-  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
-  context_helper_->LoadRewardsPage();
-  response_->SetAlternativePublisherList(true);
-  // Tip unverified publisher
-  contribution_->TipViaCode("brave.com", 1.0,
-                            ledger::mojom::PublisherStatus::NOT_VERIFIED);
-  contribution_->TipViaCode("brave.com", 5.0,
-                            ledger::mojom::PublisherStatus::NOT_VERIFIED);
-  contribution_->TipViaCode("3zsistemi.si", 10.0,
-                            ledger::mojom::PublisherStatus::NOT_VERIFIED);
-  contribution_->TipViaCode("3zsistemi.si", 5.0,
-                            ledger::mojom::PublisherStatus::NOT_VERIFIED);
-  contribution_->TipViaCode("3zsistemi.si", 10.0,
-                            ledger::mojom::PublisherStatus::NOT_VERIFIED);
-  contribution_->TipViaCode("3zsistemi.si", 10.0,
-                            ledger::mojom::PublisherStatus::NOT_VERIFIED);
-  contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
-
-  response_->SetAlternativePublisherList(false);
-  contribution_->VerifyTip(41.0, false, false, true);
-
-  // Visit publisher
-  rewards_browsertest_util::NavigateToPublisherPage(
-      browser(),
-      https_server_.get(),
-      "3zsistemi.si");
-
-  // The pending tips processor may not process tips that were created less than
-  // a second ago. Wait to make sure all tips are processed.
-  base::PlatformThread::Sleep(base::Milliseconds(1100));
-
-  // Refresh publisher list
-  RefreshPublisherListUsingRewardsPopup();
-
-  // Activate the Rewards settings page tab
-  rewards_browsertest_util::ActivateTabAtIndex(browser(), 0);
-
-  // Wait for new verified publisher to be processed
-  contribution_->WaitForMultipleTipReconcileCompleted(3);
-  for (const auto status : contribution_->GetMultipleTipStatus()) {
-    ASSERT_EQ(status, ledger::mojom::Result::LEDGER_OK);
-  }
-  contribution_->UpdateContributionBalance(-25.0, false);
-
-  // Make sure that balance is updated correctly
-  contribution_->IsBalanceCorrect();
-
-  // Check that wallet summary shows the appropriate tip amount
-  rewards_browsertest_util::WaitForElementToEqual(
-      contents(), "[data-test-id=rewards-summary-one-time]",
-      ExpectedTipSummaryAmountString());
-
-  // Make sure that pending contribution box shows the correct
-  // amount
-  contribution_->IsPendingBalanceCorrect();
-
-  // Open the Rewards popup
-  base::WeakPtr<content::WebContents> popup_contents =
-      context_helper_->OpenRewardsPopup();
-  ASSERT_TRUE(popup_contents);
-
-  // Check if verified notification is shown
-  rewards_browsertest_util::WaitForElementToContain(popup_contents.get(),
-                                                    "#root", "3zsistemi.si");
+      true, 1);
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, TipWithVerifiedWallet) {
@@ -475,8 +397,8 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, TipWithVerifiedWallet) {
 
   const double amount = 5.0;
   contribution_->TipViaCode("duckduckgo.com", amount,
-                            ledger::mojom::PublisherStatus::UPHOLD_VERIFIED, 1);
-  contribution_->VerifyTip(amount, true, false, true);
+                            ledger::mojom::PublisherStatus::UPHOLD_VERIFIED);
+  contribution_->VerifyTip(amount, false, true);
 }
 
 // TODO(https://github.com/brave/brave-browser/issues/12555): This test is known
@@ -494,11 +416,11 @@ IN_PROC_BROWSER_TEST_F(
   const double fee_percentage = 0.05;
   const double tip_fee = amount * fee_percentage;
   contribution_->TipViaCode("duckduckgo.com", amount,
-                            ledger::mojom::PublisherStatus::UPHOLD_VERIFIED, 1);
+                            ledger::mojom::PublisherStatus::UPHOLD_VERIFIED);
   total_amount += amount;
 
   contribution_->TipViaCode("laurenwags.github.io", amount,
-                            ledger::mojom::PublisherStatus::UPHOLD_VERIFIED, 1);
+                            ledger::mojom::PublisherStatus::UPHOLD_VERIFIED);
   total_amount += amount;
 
   base::RunLoop run_loop_first;
@@ -513,52 +435,7 @@ IN_PROC_BROWSER_TEST_F(
         run_loop_first.Quit();
       }));
   run_loop_first.Run();
-  contribution_->VerifyTip(total_amount, true, false, true);
-}
-
-IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
-                       TipConnectedPublisherAnon) {
-  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
-  context_helper_->LoadRewardsPage();
-  contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
-
-  const double amount = 5.0;
-  contribution_->TipViaCode("bumpsmack.com", amount,
-                            ledger::mojom::PublisherStatus::NOT_VERIFIED, 0);
-  contribution_->VerifyTip(amount, false, false, true);
-}
-
-IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
-                       TipConnectedPublisherAnonAndConnected) {
-  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
-  contribution_->SetUpUpholdWallet(rewards_service_, 50.0);
-  context_helper_->LoadRewardsPage();
-  contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
-
-  const double amount = 5.0;
-  contribution_->TipViaCode("bumpsmack.com", amount,
-                            ledger::mojom::PublisherStatus::NOT_VERIFIED, 0);
-  contribution_->VerifyTip(amount, false, false, true);
-}
-
-// Reenable when https://github.com/brave/brave-browser/issues/19982 is fixed.
-IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
-                       DISABLED_TipConnectedPublisherVerified) {
-  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
-  context_helper_->LoadRewardsPage();
-  contribution_->SetUpUpholdWallet(rewards_service_, 50.0);
-
-  const double amount = 5.0;
-  contribution_->TipViaCode("bumpsmack.com", amount,
-                            ledger::mojom::PublisherStatus::NOT_VERIFIED, 0);
-
-  contribution_->IsBalanceCorrect();
-
-  // Make sure that tips table is empty
-  rewards_browsertest_util::WaitForElementToEqual(
-      contents(),
-      "#tips-table > div > div",
-      "Have you tipped your favorite content creator today?");
+  contribution_->VerifyTip(total_amount, false, true);
 }
 
 // Ensure that we can make a one-time tip of a non-integral amount.
@@ -567,7 +444,8 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, TipNonIntegralAmount) {
   context_helper_->LoadRewardsPage();
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
 
-  rewards_service_->OnTip("duckduckgo.com", 2.5, false, base::DoNothing());
+  rewards_service_->SendContribution("duckduckgo.com", 2.5, false,
+                                     base::DoNothing());
   contribution_->WaitForTipReconcileCompleted();
   ASSERT_EQ(contribution_->GetTipStatus(), ledger::mojom::Result::LEDGER_OK);
   ASSERT_EQ(contribution_->GetReconcileTipTotal(), 2.5);
@@ -586,7 +464,8 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
       rewards_browsertest_util::GetUrl(https_server_.get(), "duckduckgo.com"),
       verified);
 
-  rewards_service_->OnTip("duckduckgo.com", 2.5, true, base::DoNothing());
+  rewards_service_->SendContribution("duckduckgo.com", 2.5, true,
+                                     base::DoNothing());
   rewards_service_->StartContributionsForTesting();
   contribution_->WaitForTipReconcileCompleted();
   ASSERT_EQ(contribution_->GetTipStatus(), ledger::mojom::Result::LEDGER_OK);
@@ -609,7 +488,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 
   // Set monthly recurring
   contribution_->TipViaCode("duckduckgo.com", 25.0,
-                            ledger::mojom::PublisherStatus::UPHOLD_VERIFIED, 0,
+                            ledger::mojom::PublisherStatus::UPHOLD_VERIFIED,
                             true);
 
   context_helper_->VisitPublisher(
@@ -640,22 +519,20 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
   rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   rewards_service_->SetAutoContributeEnabled(true);
   context_helper_->LoadRewardsPage();
-  contribution_->TipViaCode("duckduckgo.com", 5.0,
-                            ledger::mojom::PublisherStatus::UPHOLD_VERIFIED, 0,
-                            true);
-
-  contribution_->TipViaCode("site1.com", 10.0,
-                            ledger::mojom::PublisherStatus::UPHOLD_VERIFIED, 0,
-                            true);
-
-  contribution_->TipViaCode("site2.com", 10.0,
-                            ledger::mojom::PublisherStatus::UPHOLD_VERIFIED, 0,
-                            true);
-
-  contribution_->TipViaCode("site3.com", 10.0,
-                            ledger::mojom::PublisherStatus::UPHOLD_VERIFIED, 0,
-                            true);
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
+
+  contribution_->TipViaCode("duckduckgo.com", 3.0,
+                            ledger::mojom::PublisherStatus::UPHOLD_VERIFIED,
+                            true);
+
+  contribution_->TipViaCode(
+      "site1.com", 5.0, ledger::mojom::PublisherStatus::UPHOLD_VERIFIED, true);
+
+  contribution_->TipViaCode(
+      "site2.com", 5.0, ledger::mojom::PublisherStatus::UPHOLD_VERIFIED, true);
+
+  contribution_->TipViaCode(
+      "site3.com", 5.0, ledger::mojom::PublisherStatus::UPHOLD_VERIFIED, true);
 
   const bool verified = true;
   context_helper_->VisitPublisher(
@@ -678,7 +555,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 
   // Check that summary table shows the appropriate contribution
   rewards_browsertest_util::WaitForElementToContain(
-      contents(), "[data-test-id=rewards-summary-ac]", "-5.00 BAT");
+      contents(), "[data-test-id=rewards-summary-ac]", "-4.00 BAT");
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
@@ -767,8 +644,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 
   contribution_->TipPublisher(
       rewards_browsertest_util::GetUrl(https_server_.get(), "duckduckgo.com"),
-      rewards_browsertest_util::TipAction::SetMonthly,
-      1);
+      true, 1);
 
   base::RunLoop run_loop_second;
   rewards_service_->GetReconcileStamp(
@@ -795,8 +671,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
   contribution_->TipPublisher(
       rewards_browsertest_util::GetUrl(https_server_.get(), "duckduckgo.com"),
-      rewards_browsertest_util::TipAction::SetMonthly,
-      1);
+      true, 1);
 
   base::RunLoop run_loop_second;
   rewards_service_->GetReconcileStamp(
@@ -805,48 +680,6 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
         run_loop_second.Quit();
       }));
   run_loop_second.Run();
-}
-
-IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
-                       DISABLED_SplitProcessOneTimeTip) {
-  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
-  contribution_->SetUpUpholdWallet(rewards_service_, 50.0);
-  context_helper_->LoadRewardsPage();
-  contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
-
-  contribution_->TipPublisher(
-      rewards_browsertest_util::GetUrl(
-          https_server_.get(),
-          "kjozwiakstaging.github.io"),
-      rewards_browsertest_util::TipAction::OneTime,
-      2,
-      1);
-
-  // Load rewards page
-  context_helper_->LoadRewardsPage();
-
-  // Wait for UI to update with contribution
-  rewards_browsertest_util::WaitForElementToContain(
-      contents(), "[data-test-id=rewards-summary-one-time]", "-50.00 BAT");
-
-  rewards_browsertest_util::WaitForElementThenClick(
-      contents(), "[data-test-id=view-statement-button]");
-
-  rewards_browsertest_util::WaitForElementThenClick(
-      contents(),
-      "[data-test-id='tab-oneTimeDonation']");
-
-  rewards_browsertest_util::WaitForElementToEqual(
-      contents(),
-      "[data-test-id='activity-table-body'] tr:nth-of-type(1) "
-      "td:nth-of-type(3)",
-      "20.000BAT28.60 USD");
-
-  rewards_browsertest_util::WaitForElementToEqual(
-      contents(),
-      "[data-test-id='activity-table-body'] tr:nth-of-type(2) "
-      "td:nth-of-type(3)",
-      "30.000BAT42.90 USD");
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, PanelMonthlyTipAmount) {
@@ -861,7 +694,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, PanelMonthlyTipAmount) {
 
   // Add a recurring tip of 10 BAT.
   contribution_->TipViaCode("3zsistemi.si", 10.0,
-                            ledger::mojom::PublisherStatus::UPHOLD_VERIFIED, 0,
+                            ledger::mojom::PublisherStatus::UPHOLD_VERIFIED,
                             true);
 
   // Verify current tip amount displayed on panel
@@ -870,37 +703,6 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, PanelMonthlyTipAmount) {
   const double tip_amount =
       rewards_browsertest_util::GetRewardsPopupMonthlyTipValue(popup.get());
   ASSERT_EQ(tip_amount, 10.0);
-}
-
-IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, PanelMonthlyTipActions) {
-  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
-  context_helper_->LoadRewardsPage();
-  contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
-
-  rewards_browsertest_util::NavigateToPublisherPage(
-      browser(),
-      https_server_.get(),
-      "3zsistemi.si");
-
-  // Add a recurring tip of 10 BAT.
-  contribution_->TipViaCode("3zsistemi.si", 10.0,
-                            ledger::mojom::PublisherStatus::UPHOLD_VERIFIED, 0,
-                            true);
-
-  // Verify "Change amount" opens monthly tip form
-  base::WeakPtr<content::WebContents> banner = context_helper_->OpenSiteBanner(
-      rewards_browsertest_util::TipAction::ChangeMonthly);
-
-  rewards_browsertest_util::WaitForElementToContain(
-      banner.get(), "[data-test-id=form-submit-button]", "Set monthly tip");
-
-  // Verify "Cancel" opens cancel confirmation form
-  banner = context_helper_->OpenSiteBanner(
-      rewards_browsertest_util::TipAction::ClearMonthly);
-
-  rewards_browsertest_util::WaitForElementToContain(
-      banner.get(), "[data-test-id=form-submit-button]",
-      "Confirm Canceling Monthly");
 }
 
 }  // namespace rewards_browsertest

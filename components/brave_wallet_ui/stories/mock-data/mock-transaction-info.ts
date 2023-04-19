@@ -4,7 +4,12 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 // Types
-import { BraveWallet, SerializableTransactionInfo } from '../../constants/types'
+import { mockAccount } from '../../common/constants/mocks'
+import {
+  BraveWallet,
+  SerializableTransactionInfo
+} from '../../constants/types'
+import { FileCoinTransactionInfo } from '../../utils/tx-utils'
 
 // Mocks
 import { mockOriginInfo } from './mock-origin-info'
@@ -37,13 +42,44 @@ export const mockTransactionInfo: SerializableTransactionInfo = {
   },
   txHash: '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da971497',
   txStatus: 0,
-  txParams: ['address', 'ammount'],
+  txParams: ['address', 'amount'],
   txType: BraveWallet.TransactionType.ERC20Transfer,
   createdTime: { microseconds: 0 },
   submittedTime: { microseconds: 0 },
   confirmedTime: { microseconds: 0 },
   originInfo: mockOriginInfo,
   groupId: undefined
+}
+
+export const mockFilSendTransaction: FileCoinTransactionInfo = {
+  chainId: BraveWallet.FILECOIN_MAINNET,
+  confirmedTime: { microseconds: BigInt(new Date().getUTCMilliseconds()) },
+  createdTime: { microseconds: BigInt(new Date().getUTCMilliseconds()) },
+  fromAddress: mockAccount.address,
+  groupId: undefined,
+  id: 'fil-send-tx',
+  originInfo: undefined,
+  submittedTime: { microseconds: BigInt(new Date().getUTCMilliseconds()) },
+  txArgs: [],
+  txDataUnion: {
+    filTxData: {
+      from: mockAccount.address,
+      to: mockAccount.address,
+      value: '1000',
+      nonce: '1',
+      gasFeeCap: '100',
+      gasLimit: '200',
+      gasPremium: '1',
+      maxFee: '1000'
+    },
+    ethTxData: undefined,
+    ethTxData1559: undefined,
+    solanaTxData: undefined
+  },
+  txHash: 'fil-send-tx',
+  txParams: [],
+  txStatus: BraveWallet.TransactionStatus.Confirmed,
+  txType: BraveWallet.TransactionType.Other
 }
 
 export const mockedErc20ApprovalTransaction = {

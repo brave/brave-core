@@ -14,7 +14,6 @@
 #include "base/time/time.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
-#include "brave/components/brave_rewards/core/option_keys.h"
 #include "brave/components/brave_rewards/core/publisher/prefix_util.h"
 #include "brave/components/brave_rewards/core/publisher/protos/channel_response.pb.h"
 #include "brave_base/random.h"
@@ -27,13 +26,11 @@ namespace {
 
 constexpr size_t kQueryPrefixBytes = 2;
 
-int64_t GetCacheExpiryInSeconds(ledger::LedgerImpl* ledger) {
-  DCHECK(ledger);
+int64_t GetCacheExpiryInSeconds() {
   // NOTE: We are reusing the publisher prefix list refresh interval for
   // determining the cache lifetime of publisher details. At a later
   // time we may want to introduce an additional option for this value.
-  return ledger->GetOption<uint64_t>(
-      ledger::option::kPublisherListRefreshInterval);
+  return ledger::kPublisherListRefreshInterval;
 }
 
 }  // namespace
@@ -41,12 +38,10 @@ int64_t GetCacheExpiryInSeconds(ledger::LedgerImpl* ledger) {
 namespace ledger {
 namespace publisher {
 
-ServerPublisherFetcher::ServerPublisherFetcher(LedgerImpl* ledger)
+ServerPublisherFetcher::ServerPublisherFetcher(LedgerImpl& ledger)
     : ledger_(ledger),
       private_cdn_server_(
-          std::make_unique<endpoint::PrivateCDNServer>(ledger)) {
-  DCHECK(ledger);
-}
+          std::make_unique<endpoint::PrivateCDNServer>(ledger)) {}
 
 ServerPublisherFetcher::~ServerPublisherFetcher() = default;
 
@@ -112,12 +107,12 @@ bool ServerPublisherFetcher::IsExpired(
     BLOG(0, "Server publisher info has a future updated_at time.");
   }
 
-  return age.InSeconds() > GetCacheExpiryInSeconds(ledger_);
+  return age.InSeconds() > GetCacheExpiryInSeconds();
 }
 
 void ServerPublisherFetcher::PurgeExpiredRecords() {
   BLOG(1, "Purging expired server publisher info records");
-  int64_t max_age = GetCacheExpiryInSeconds(ledger_) * 2;
+  int64_t max_age = GetCacheExpiryInSeconds() * 2;
   ledger_->database()->DeleteExpiredServerPublisherInfo(max_age,
                                                         [](auto result) {});
 }

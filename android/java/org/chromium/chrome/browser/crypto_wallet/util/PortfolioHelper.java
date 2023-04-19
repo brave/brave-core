@@ -343,10 +343,7 @@ public class PortfolioHelper {
     // Update map of Map<ChainId, Priority/Network-Index>, to be used for sorting "All Networks"
     // asset list
     private void updateAssetSortPriority(List<NetworkInfo> networks) {
-        mAssertSortPriorityPerCoinIndex =
-                IntStream.range(0, networks.size())
-                        .boxed()
-                        .collect(toMap(i -> networks.get(i).chainId, Function.identity()));
+        mAssertSortPriorityPerCoinIndex = AssetUtils.toNetworkIndexMap(networks);
     }
 
     private static class AssetAccountsNetworkBalance {

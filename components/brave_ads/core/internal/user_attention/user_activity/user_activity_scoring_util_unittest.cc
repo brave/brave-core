@@ -26,7 +26,7 @@ class BatAdsUserActivityScoringUtilTest : public UnitTestBase {
     params["time_window"] = "1h";
     params["threshold"] = "2.0";
     std::vector<base::test::FeatureRefAndParams> enabled_features;
-    enabled_features.emplace_back(user_activity::features::kFeature, params);
+    enabled_features.emplace_back(kUserActivityFeature, params);
 
     const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -41,36 +41,33 @@ TEST_F(BatAdsUserActivityScoringUtilTest, WasUserActive) {
   // Arrange
   UserActivityManager::GetInstance()->RecordEvent(
       UserActivityEventType::kOpenedNewTab);
+
+  // Act
   UserActivityManager::GetInstance()->RecordEvent(
       UserActivityEventType::kClosedTab);
 
-  // Act
-  const bool was_user_active = WasUserActive();
-
   // Assert
-  EXPECT_TRUE(was_user_active);
+  EXPECT_TRUE(WasUserActive());
 }
 
 TEST_F(BatAdsUserActivityScoringUtilTest, WasUserInactive) {
   // Arrange
 
   // Act
-  const bool was_user_active = WasUserActive();
 
   // Assert
-  EXPECT_FALSE(was_user_active);
+  EXPECT_FALSE(WasUserActive());
 }
 
 TEST_F(BatAdsUserActivityScoringUtilTest, WasUserInactiveIfBelowThreshold) {
   // Arrange
+
+  // Act
   UserActivityManager::GetInstance()->RecordEvent(
       UserActivityEventType::kOpenedNewTab);
 
-  // Act
-  const bool was_user_active = WasUserActive();
-
   // Assert
-  EXPECT_FALSE(was_user_active);
+  EXPECT_FALSE(WasUserActive());
 }
 
 TEST_F(BatAdsUserActivityScoringUtilTest,
@@ -81,15 +78,11 @@ TEST_F(BatAdsUserActivityScoringUtilTest,
   UserActivityManager::GetInstance()->RecordEvent(
       UserActivityEventType::kClosedTab);
 
-  const base::TimeDelta elapsed_time_window =
-      user_activity::features::GetTimeWindow() + base::Seconds(1);
-  AdvanceClockBy(elapsed_time_window);
-
   // Act
-  const bool was_user_active = WasUserActive();
+  AdvanceClockBy(kUserActivityTimeWindow.Get() + base::Milliseconds(1));
 
   // Assert
-  EXPECT_FALSE(was_user_active);
+  EXPECT_FALSE(WasUserActive());
 }
 
 }  // namespace brave_ads

@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
@@ -42,9 +42,9 @@ std::string PerMonthExclusionRule::GetUuid(
 
 bool PerMonthExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
   if (!DoesRespectCap(ad_events_, creative_ad)) {
-    last_message_ = base::StringPrintf(
-        "creativeSetId %s has exceeded the perMonth frequency cap",
-        creative_ad.creative_set_id.c_str());
+    last_message_ = base::ReplaceStringPlaceholders(
+        "creativeSetId $1 has exceeded the perMonth frequency cap",
+        {creative_ad.creative_set_id}, nullptr);
 
     return true;
   }

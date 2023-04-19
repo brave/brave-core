@@ -8,10 +8,21 @@
 
 #include <string>
 
+#include "base/time/time.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
+
 class PrefService;
 
 namespace brave_rewards {
 namespace p3a {
+
+extern const char kEnabledSourceHistogramName[];
+extern const char kInlineTipTriggerHistogramName[];
+extern const char kToolbarButtonTriggerHistogramName[];
+extern const char kTipsSentHistogramName[];
+extern const char kAutoContributionsStateHistogramName[];
+extern const char kAdsStateHistogramName[];
+extern const char kAdsEnabledDurationHistogramName[];
 
 enum class AutoContributionsState {
   kNoWallet,
@@ -20,12 +31,12 @@ enum class AutoContributionsState {
   kAutoContributeOn,
 };
 
-void RecordAutoContributionsState(AutoContributionsState state, int count);
-
-void RecordTipsState(bool wallet_created,
-                     bool rewards_enabled,
-                     int one_time_count,
-                     int recurring_count);
+enum class PanelTrigger {
+  kInlineTip = 0,
+  kToolbarButton = 1,
+  kNTP = 2,
+  kMaxValue = kNTP
+};
 
 enum class AdsState {
   kNoWallet,
@@ -37,6 +48,10 @@ enum class AdsState {
   kMaxValue = kAdsEnabledThenDisabledRewardsOff,
 };
 
+void RecordTipsSent(size_t tip_count);
+
+void RecordAutoContributionsState(bool ac_enabled);
+
 void RecordAdsState(AdsState state);
 
 void UpdateAdsStateOnPreferenceChange(PrefService* prefs,
@@ -47,8 +62,6 @@ void UpdateAdsStateOnPreferenceChange(PrefService* prefs,
 void MaybeRecordInitialAdsState(PrefService* local_state);
 
 void RecordNoWalletCreatedForAllMetrics();
-
-void RecordRewardsDisabledForSomeMetrics();
 
 enum class AdsEnabledDuration {
   kNever,
@@ -62,6 +75,27 @@ enum class AdsEnabledDuration {
 };
 
 void RecordAdsEnabledDuration(PrefService* prefs, bool ads_enabled);
+
+class ConversionMonitor {
+ public:
+  ConversionMonitor();
+  ~ConversionMonitor();
+
+  ConversionMonitor(const ConversionMonitor&) = delete;
+  ConversionMonitor& operator=(const ConversionMonitor&) = delete;
+
+  // Record trigger of an action that could potentially trigger opening the
+  // Rewards panel. Will immediately record the action (if applicable).
+  void RecordPanelTrigger(PanelTrigger trigger);
+
+  // Record the enabled of rewards, which may record a metric containing the
+  // source of user conversion a.k.a. the action that opened the Rewards panel.
+  void RecordRewardsEnable();
+
+ private:
+  absl::optional<PanelTrigger> last_trigger_;
+  base::Time last_trigger_time_;
+};
 
 }  // namespace p3a
 }  // namespace brave_rewards

@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/common/buildflags.h"
 #include "net/base/load_flags.h"
 #include "net/base/url_util.h"
+#include "net/http/http_request_headers.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -43,8 +44,9 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
     )");
 }
 
-bool IsMainnetEVMNetworkSupported(const std::string& chain_id) {
-  return (chain_id == brave_wallet::mojom::kMainnetChainId ||
+bool IsEVMNetworkSupported(const std::string& chain_id) {
+  return (chain_id == brave_wallet::mojom::kGoerliChainId ||
+          chain_id == brave_wallet::mojom::kMainnetChainId ||
           chain_id == brave_wallet::mojom::kPolygonMainnetChainId ||
           chain_id == brave_wallet::mojom::kBinanceSmartChainMainnetChainId ||
           chain_id == brave_wallet::mojom::kAvalancheMainnetChainId ||
@@ -54,13 +56,41 @@ bool IsMainnetEVMNetworkSupported(const std::string& chain_id) {
           chain_id == brave_wallet::mojom::kArbitrumMainnetChainId);
 }
 
-bool IsEVMNetworkSupported(const std::string& chain_id) {
-  return (chain_id == brave_wallet::mojom::kGoerliChainId ||
-          IsMainnetEVMNetworkSupported(chain_id));
-}
-
 bool IsSolanaNetworkSupported(const std::string& chain_id) {
   return chain_id == brave_wallet::mojom::kSolanaMainnet;
+}
+
+bool HasRFQTLiquidity(const std::string& chain_id) {
+  return (chain_id == brave_wallet::mojom::kMainnetChainId ||
+          chain_id == brave_wallet::mojom::kPolygonMainnetChainId);
+}
+
+std::string GetFee(const std::string& chain_id) {
+  if (IsEVMNetworkSupported(chain_id)) {
+    return brave_wallet::kBuyTokenPercentageFee;
+  } else if (IsSolanaNetworkSupported(chain_id)) {
+    return brave_wallet::kSolanaBuyTokenFeeBps;
+  }
+
+  return "";
+}
+
+std::string GetFeeRecipient(const std::string& chain_id) {
+  if (IsEVMNetworkSupported(chain_id)) {
+    return brave_wallet::kEVMFeeRecipient;
+  } else if (IsSolanaNetworkSupported(chain_id)) {
+    return brave_wallet::kSolanaFeeRecipient;
+  }
+
+  return "";
+}
+
+std::string GetAffiliateAddress(const std::string& chain_id) {
+  if (IsEVMNetworkSupported(chain_id)) {
+    return brave_wallet::kAffiliateAddress;
+  }
+
+  return "";
 }
 
 GURL Append0xSwapParams(const GURL& swap_url,
@@ -77,17 +107,15 @@ GURL Append0xSwapParams(const GURL& swap_url,
     url = net::AppendQueryParameter(url, "buyToken", params.buy_token);
   if (!params.sell_token.empty())
     url = net::AppendQueryParameter(url, "sellToken", params.sell_token);
-  url = net::AppendQueryParameter(url, "buyTokenPercentageFee",
-                                  brave_wallet::SwapService::GetFee(chain_id));
+  url =
+      net::AppendQueryParameter(url, "buyTokenPercentageFee", GetFee(chain_id));
   url = net::AppendQueryParameter(
       url, "slippagePercentage",
       base::StringPrintf("%.6f", params.slippage_percentage));
-  std::string fee_recipient =
-      brave_wallet::SwapService::GetFeeRecipient(chain_id);
+  std::string fee_recipient = GetFeeRecipient(chain_id);
   if (!fee_recipient.empty())
     url = net::AppendQueryParameter(url, "feeRecipient", fee_recipient);
-  std::string affiliate_address =
-      brave_wallet::SwapService::GetAffiliateAddress(chain_id);
+  std::string affiliate_address = GetAffiliateAddress(chain_id);
   if (!affiliate_address.empty())
     url = net::AppendQueryParameter(url, "affiliateAddress", affiliate_address);
   if (!params.gas_price.empty())
@@ -108,8 +136,7 @@ GURL AppendJupiterQuoteParams(
     url = net::AppendQueryParameter(url, "amount", params.amount);
 
   if (brave_wallet::HasJupiterFeesForTokenMint(params.output_mint)) {
-    url = net::AppendQueryParameter(
-        url, "feeBps", brave_wallet::SwapService::GetFee(chain_id));
+    url = net::AppendQueryParameter(url, "feeBps", GetFee(chain_id));
   }
 
   url = net::AppendQueryParameter(
@@ -127,7 +154,7 @@ base::flat_map<std::string, std::string> Get0xAPIHeaders() {
   if (brave_zero_ex_api_key.empty()) {
     return {};
   }
-  return {{"0x-api-key", std::move(brave_zero_ex_api_key)}};
+  return {{brave_wallet::k0xAPIKeyHeader, std::move(brave_zero_ex_api_key)}};
 }
 
 }  // namespace
@@ -162,87 +189,61 @@ void SwapService::SetBaseURLForTest(const GURL& base_url_for_test) {
 }
 
 // static
-std::string SwapService::GetFee(const std::string& chain_id) {
-  std::string fee;
-  if (IsEVMNetworkSupported(chain_id)) {
-    fee = brave_wallet::kBuyTokenPercentageFee;
-  } else if (IsSolanaNetworkSupported(chain_id)) {
-    fee = brave_wallet::kSolanaBuyTokenFeeBps;
+std::string SwapService::GetBaseSwapURL(const std::string& chain_id) {
+  if (!base_url_for_test_.is_empty()) {
+    return base_url_for_test_.spec();
   }
 
-  return fee;
-}
-
-// static
-std::string SwapService::GetBaseSwapURL(const std::string& chain_id) {
-  std::string url;
-
   if (chain_id == brave_wallet::mojom::kGoerliChainId) {
-    url = brave_wallet::kGoerliSwapBaseAPIURL;
+    return brave_wallet::kGoerliSwapBaseAPIURL;
   } else if (chain_id == brave_wallet::mojom::kMainnetChainId) {
-    url = brave_wallet::kSwapBaseAPIURL;
+    return brave_wallet::kSwapBaseAPIURL;
   } else if (chain_id == brave_wallet::mojom::kPolygonMainnetChainId) {
-    url = brave_wallet::kPolygonSwapBaseAPIURL;
+    return brave_wallet::kPolygonSwapBaseAPIURL;
   } else if (chain_id ==
              brave_wallet::mojom::kBinanceSmartChainMainnetChainId) {
-    url = brave_wallet::kBinanceSmartChainSwapBaseAPIURL;
+    return brave_wallet::kBinanceSmartChainSwapBaseAPIURL;
   } else if (chain_id == brave_wallet::mojom::kAvalancheMainnetChainId) {
-    url = brave_wallet::kAvalancheSwapBaseAPIURL;
+    return brave_wallet::kAvalancheSwapBaseAPIURL;
   } else if (chain_id == brave_wallet::mojom::kFantomMainnetChainId) {
-    url = brave_wallet::kFantomSwapBaseAPIURL;
+    return brave_wallet::kFantomSwapBaseAPIURL;
   } else if (chain_id == brave_wallet::mojom::kCeloMainnetChainId) {
-    url = brave_wallet::kCeloSwapBaseAPIURL;
+    return brave_wallet::kCeloSwapBaseAPIURL;
   } else if (chain_id == brave_wallet::mojom::kOptimismMainnetChainId) {
-    url = brave_wallet::kOptimismSwapBaseAPIURL;
+    return brave_wallet::kOptimismSwapBaseAPIURL;
   } else if (chain_id == brave_wallet::mojom::kArbitrumMainnetChainId) {
-    url = brave_wallet::kArbitrumSwapBaseAPIURL;
+    return brave_wallet::kArbitrumSwapBaseAPIURL;
   } else if (chain_id == brave_wallet::mojom::kSolanaMainnet) {
-    url = brave_wallet::kSolanaSwapBaseAPIURL;
+    return brave_wallet::kSolanaSwapBaseAPIURL;
   }
 
-  return url;
-}
-
-// static
-std::string SwapService::GetFeeRecipient(const std::string& chain_id) {
-  std::string feeRecipient;
-
-  // For easy testability on test networks, we use an address different from
-  // the production multisig address.
-  if (chain_id == brave_wallet::mojom::kGoerliChainId) {
-    feeRecipient = brave_wallet::kGoerliFeeRecipient;
-  } else if (IsMainnetEVMNetworkSupported(chain_id)) {
-    feeRecipient = brave_wallet::kFeeRecipient;
-  } else if (IsSolanaNetworkSupported(chain_id)) {
-    feeRecipient = brave_wallet::kSolanaFeeRecipient;
-  }
-
-  return feeRecipient;
-}
-
-// static
-std::string SwapService::GetAffiliateAddress(const std::string& chain_id) {
-  std::string affiliateAddress;
-
-  if (IsMainnetEVMNetworkSupported(chain_id)) {
-    affiliateAddress = brave_wallet::kAffiliateAddress;
-  }
-
-  return affiliateAddress;
+  return "";
 }
 
 // static
 GURL SwapService::GetPriceQuoteURL(mojom::SwapParamsPtr swap_params,
                                    const std::string& chain_id) {
-  std::string spec = base::StringPrintf(
-      "%sswap/v1/price", base_url_for_test_.is_empty()
-                             ? GetBaseSwapURL(chain_id).c_str()
-                             : base_url_for_test_.spec().c_str());
+  const bool use_rfqt = HasRFQTLiquidity(chain_id);
+
+  // If chain has RFQ-T liquidity available, use the /quote endpoint for
+  // fetching the indicative price, since /price is often inaccurate. This is
+  // discouraged in 0x docs, particularly for RFQ-T trades, since it locks up
+  // the capital of market makers. However, the 0x team has approved us to do
+  // this, noting the inability of /price to discover optimal RFQ quotes. This
+  // should be considered a temporary workaround until 0x comes up with a
+  // solution.
+  std::string spec =
+      base::StringPrintf(use_rfqt ? "%sswap/v1/quote" : "%sswap/v1/price",
+                         GetBaseSwapURL(chain_id).c_str());
   GURL url(spec);
   url = Append0xSwapParams(url, *swap_params, chain_id);
-  // That flag prevents an allowance validation on a swap exchange proxy side.
-  // We do in clients allowance validation.
+  // That flag prevents an allowance validation by the 0x router. Disable it
+  // here and perform the validation on the client side.
   url = net::AppendQueryParameter(url, "skipValidation", "true");
+
+  if (use_rfqt) {
+    url = net::AppendQueryParameter(url, "intentOnFilling", "false");
+  }
 
   return url;
 }
@@ -250,12 +251,15 @@ GURL SwapService::GetPriceQuoteURL(mojom::SwapParamsPtr swap_params,
 // static
 GURL SwapService::GetTransactionPayloadURL(mojom::SwapParamsPtr swap_params,
                                            const std::string& chain_id) {
-  std::string spec = base::StringPrintf(
-      "%sswap/v1/quote", base_url_for_test_.is_empty()
-                             ? GetBaseSwapURL(chain_id).c_str()
-                             : base_url_for_test_.spec().c_str());
+  std::string spec =
+      base::StringPrintf("%sswap/v1/quote", GetBaseSwapURL(chain_id).c_str());
   GURL url(spec);
   url = Append0xSwapParams(url, *swap_params, chain_id);
+
+  if (HasRFQTLiquidity(chain_id)) {
+    url = net::AppendQueryParameter(url, "intentOnFilling", "true");
+  }
+
   return url;
 }
 
@@ -265,9 +269,7 @@ GURL SwapService::GetJupiterQuoteURL(mojom::JupiterQuoteParamsPtr params,
   DCHECK(params);
 
   std::string spec =
-      base::StringPrintf("%sv1/quote", base_url_for_test_.is_empty()
-                                           ? GetBaseSwapURL(chain_id).c_str()
-                                           : base_url_for_test_.spec().c_str());
+      base::StringPrintf("%sv1/quote", GetBaseSwapURL(chain_id).c_str());
   GURL url(spec);
   url = AppendJupiterQuoteParams(url, *params, chain_id);
 
@@ -277,9 +279,7 @@ GURL SwapService::GetJupiterQuoteURL(mojom::JupiterQuoteParamsPtr params,
 // static
 GURL SwapService::GetJupiterSwapTransactionsURL(const std::string& chain_id) {
   std::string spec =
-      base::StringPrintf("%sv1/swap", base_url_for_test_.is_empty()
-                                          ? GetBaseSwapURL(chain_id).c_str()
-                                          : base_url_for_test_.spec().c_str());
+      base::StringPrintf("%sv1/swap", GetBaseSwapURL(chain_id).c_str());
   GURL url(spec);
   return url;
 }
@@ -302,8 +302,9 @@ void SwapService::GetPriceQuote(mojom::SwapParamsPtr swap_params,
   auto internal_callback =
       base::BindOnce(&SwapService::OnGetPriceQuote,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
   api_request_helper_.Request(
-      "GET",
+      net::HttpRequestHeaders::kGetMethod,
       GetPriceQuoteURL(std::move(swap_params),
                        json_rpc_service_->GetChainId(mojom::CoinType::ETH)),
       "", "", true, std::move(internal_callback), Get0xAPIHeaders());
@@ -344,8 +345,9 @@ void SwapService::GetTransactionPayload(
   auto internal_callback =
       base::BindOnce(&SwapService::OnGetTransactionPayload,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
   api_request_helper_.Request(
-      "GET",
+      net::HttpRequestHeaders::kGetMethod,
       GetTransactionPayloadURL(
           std::move(swap_params),
           json_rpc_service_->GetChainId(mojom::CoinType::ETH)),
@@ -394,7 +396,7 @@ void SwapService::GetJupiterQuote(mojom::JupiterQuoteParamsPtr params,
 
   base::flat_map<std::string, std::string> request_headers;
   api_request_helper_.Request(
-      "GET",
+      net::HttpRequestHeaders::kGetMethod,
       GetJupiterQuoteURL(std::move(params),
                          json_rpc_service_->GetChainId(mojom::CoinType::SOL)),
       "", "", true, std::move(internal_callback), request_headers, -1u,

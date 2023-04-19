@@ -14,54 +14,47 @@
 namespace brave_ads::notification_ads {
 
 class BatAdsNotificationAdsMinimumWaitTimePermissionRuleTest
-    : public UnitTestBase {};
+    : public UnitTestBase {
+ protected:
+  MinimumWaitTimePermissionRule permission_rule_;
+};
 
 TEST_F(BatAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
        AllowAdIfThereIsNoAdsHistory) {
   // Arrange
 
   // Act
-  MinimumWaitTimePermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
        AllowAdIfDoesNotExceedCap) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetInt64Pref(
-      prefs::kMaximumNotificationAdsPerHour, 5);
+  ads_client_mock_->SetInt64Pref(prefs::kMaximumNotificationAdsPerHour, 5);
 
   RecordAdEvent(AdType::kNotificationAd, ConfirmationType::kServed);
 
+  // Act
   AdvanceClockBy(base::Minutes(12));
 
-  // Act
-  MinimumWaitTimePermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
-
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
        DoNotAllowAdIfExceedsCap) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetInt64Pref(
-      prefs::kMaximumNotificationAdsPerHour, 5);
+  ads_client_mock_->SetInt64Pref(prefs::kMaximumNotificationAdsPerHour, 5);
 
   RecordAdEvent(AdType::kNotificationAd, ConfirmationType::kServed);
 
-  AdvanceClockBy(base::Minutes(12) - base::Seconds(1));
-
   // Act
-  MinimumWaitTimePermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
+  AdvanceClockBy(base::Minutes(12) - base::Milliseconds(1));
 
   // Assert
-  EXPECT_FALSE(is_allowed);
+  EXPECT_FALSE(permission_rule_.ShouldAllow());
 }
 
 }  // namespace brave_ads::notification_ads

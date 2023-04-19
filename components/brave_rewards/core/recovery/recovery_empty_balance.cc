@@ -26,11 +26,9 @@ const int32_t kVersion = 1;
 namespace ledger {
 namespace recovery {
 
-EmptyBalance::EmptyBalance(LedgerImpl* ledger)
+EmptyBalance::EmptyBalance(LedgerImpl& ledger)
     : ledger_(ledger),
-      promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)) {
-  DCHECK(ledger_);
-}
+      promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)) {}
 
 EmptyBalance::~EmptyBalance() = default;
 

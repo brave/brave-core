@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "components/page_load_metrics/browser/page_load_metrics_observer.h"
 #include "services/metrics/public/cpp/ukm_source_id.h"
 
@@ -61,7 +62,7 @@ class PerfPredictorPageMetricsObserver
   int64_t navigation_id_ = 0;
 
   // The browser context this navigation is operating in.
-  PerfPredictorTabHelper* observer_ = nullptr;
+  raw_ptr<PerfPredictorTabHelper> observer_ = nullptr;
 };
 
 }  // namespace brave_perf_predictor

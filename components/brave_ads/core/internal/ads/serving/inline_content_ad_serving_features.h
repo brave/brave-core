@@ -7,14 +7,17 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_INLINE_CONTENT_AD_SERVING_FEATURES_H_
 
 #include "base/feature_list.h"
+#include "base/metrics/field_trial_params.h"
 
-namespace brave_ads::inline_content_ads::features {
+namespace brave_ads::inline_content_ads {
 
-BASE_DECLARE_FEATURE(kServing);
+BASE_DECLARE_FEATURE(kServingFeature);
 
 bool IsServingEnabled();
-int GetServingVersion();
 
-}  // namespace brave_ads::inline_content_ads::features
+constexpr base::FeatureParam<int> kServingVersion{&kServingFeature, "version",
+                                                  2};
+
+}  // namespace brave_ads::inline_content_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_INLINE_CONTENT_AD_SERVING_FEATURES_H_

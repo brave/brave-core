@@ -100,7 +100,7 @@ void TextNotificationAdView::CreateView(const NotificationAd& notification_ad) {
   // Header
   NotificationAdHeaderView* header_view = CreateHeaderView(notification_ad);
   NotificationAdControlButtonsView* control_buttons_view =
-      new NotificationAdControlButtonsView(this);
+      new NotificationAdControlButtonsView(*this);
   header_view->AddChildView(control_buttons_view);
   AddChildView(header_view);
 
@@ -144,7 +144,7 @@ views::View* TextNotificationAdView::CreateBodyView(
 
   DCHECK(!body_label_);
   body_label_ = CreateBodyLabel(notification_ad);
-  view->AddChildView(body_label_);
+  view->AddChildView(body_label_.get());
 
   return view;
 }

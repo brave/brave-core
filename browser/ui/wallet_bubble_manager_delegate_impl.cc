@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/functional/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/wallet_bubble_focus_observer.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
@@ -120,10 +121,10 @@ class BraveWebUIBubbleManagerT : public WebUIBubbleManagerT<T>,
   }
 
  private:
-  Browser* browser_ = nullptr;
+  const raw_ptr<Browser> browser_;
   std::unique_ptr<WalletBubbleFocusObserver> brave_observer_;
-  WebUIBubbleDialogView* bubble_view_ = nullptr;
-  content::WebContents* web_ui_contents_for_testing_ = nullptr;
+  raw_ptr<WebUIBubbleDialogView> bubble_view_ = nullptr;
+  raw_ptr<content::WebContents> web_ui_contents_for_testing_ = nullptr;
   base::WeakPtrFactory<BraveWebUIBubbleManagerT<T>> weak_factory_{this};
 };
 
