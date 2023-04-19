@@ -108,15 +108,20 @@ class RedirectCC {
       if (!compile_file_found && base::Contains(kCompileFileFlags, arg_piece)) {
         compile_file_found = true;
         if (arg_idx + 1 >= argc_) {
-          LOG(ERROR) << "No arg after compile flag";
+          LOG(ERROR) << "No arg after compile flag " << arg_piece;
           return -1;
         }
 
         // Trim a file path to look for a similar file in
         // brave/chromium_src.
         base::FilePath::StringPieceType path_cc = argv_[arg_idx + 1];
-        // Most common case - a file is located directly in src/...
-        if (base::StartsWith(path_cc, chromium_src_dir_with_slash)) {
+        if (!path_cc.empty() && path_cc[0] == arg_piece[0]) {
+          // That's not a file path, but another compiler parameter. This syntax
+          // is used by asm compiler. We can safely ignore this, becaused we
+          // don't redirect asm files.
+          path_cc = base::FilePath::StringPieceType();
+        } else if (base::StartsWith(path_cc, chromium_src_dir_with_slash)) {
+          // Most common case - a file is located directly in src/...
           path_cc.remove_prefix(chromium_src_dir_with_slash.size());
         } else {
           // Less common case - a file is generated and located in the `out`
