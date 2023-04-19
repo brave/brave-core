@@ -346,9 +346,7 @@ private class TabsBarView: UIView, UICollectionViewDelegate {
       flowLayout.minimumInteritemSpacing = 0
       flowLayout.minimumLineSpacing = 0
       flowLayout.sectionInset = .init(top: 0, left: 16, bottom: 0, right: 16)
-      // When we add back more items to the pages list, switch this back to estimated and remove
-      // item size setting within `layoutSubviews`
-      flowLayout.itemSize = CGSize(width: 44, height: tabBarHeight)
+      flowLayout.estimatedItemSize = CGSize(width: 44, height: tabBarHeight)
       return flowLayout
     }()
   )
@@ -362,14 +360,6 @@ private class TabsBarView: UIView, UICollectionViewDelegate {
         boundsWidthChanged?()
       }
     }
-  }
-
-  override func layoutSubviews() {
-    super.layoutSubviews()
-
-    guard bounds.width != 0 && collectionView.numberOfItems(inSection: 0) != 0 else { return }
-    (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?
-      .itemSize = CGSize(width: (bounds.width - 32) / CGFloat(collectionView.numberOfItems(inSection: 0)), height: tabBarHeight)
   }
 
   override init(frame: CGRect) {

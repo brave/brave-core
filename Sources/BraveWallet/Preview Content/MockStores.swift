@@ -216,6 +216,18 @@ extension TabDappStore {
   }
 }
 
+extension TransactionsActivityStore {
+  static let preview: TransactionsActivityStore = .init(
+    keyringService: MockKeyringService(),
+    rpcService: MockJsonRpcService(),
+    walletService: MockBraveWalletService(),
+    assetRatioService: MockAssetRatioService(),
+    blockchainRegistry: MockBlockchainRegistry(),
+    txService: MockTxService(),
+    solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy
+  )
+}
+
 extension BraveWallet.TestSolanaTxManagerProxy {
   static var previewProxy: BraveWallet.TestSolanaTxManagerProxy {
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
