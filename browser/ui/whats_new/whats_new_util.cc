@@ -14,6 +14,8 @@
 #include "base/version.h"
 #include "brave/browser/ui/whats_new/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
+#include "chrome/browser/profiles/chrome_version_service.h"
+#include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -27,6 +29,53 @@ namespace {
 double g_testing_major_version = 0;
 constexpr char kWhatsNewTrial[] = "WhatsNewStudy";
 constexpr char kWhatsNewTargetMajorVersion[] = "target_major_version";
+
+// |version| has four components like 111.1.51.34.
+// First one is upstream's major version.
+// Brave's major version is second and third component like 1.51.
+// Ignored fourth number as it's build number.
+absl::optional<double> GetBraveMajorVersionAsDouble(
+    const base::Version& version) {
+  double brave_major_version;
+  if (!base::StringToDouble(base::StringPrintf("%d.%d", version.components()[1],
+                                               version.components()[2]),
+                            &brave_major_version)) {
+    return absl::nullopt;
+  }
+
+  return brave_major_version;
+}
+
+// Returns 1.xx or 2.xx as double.
+absl::optional<double> GetCurrentBrowserVersion() {
+  if (g_testing_major_version != 0) {
+    return g_testing_major_version;
+  }
+
+  const auto& version = version_info::GetVersion();
+  DCHECK(version.IsValid());
+  DCHECK_EQ(version.components().size(), 4ul);
+
+  return GetBraveMajorVersionAsDouble(version);
+}
+
+bool DoesUserGetMajorUpdateSinceInstall() {
+  Profile* profile = ProfileManager::GetLastUsedProfile();
+  DCHECK(profile);
+
+  const auto current_version = GetCurrentBrowserVersion();
+  const auto profile_created_version = GetBraveMajorVersionAsDouble(
+      base::Version(ChromeVersionService::GetVersion(profile->GetPrefs())));
+  if (!current_version || !profile_created_version) {
+    return false;
+  }
+
+  VLOG(2) << __func__ << " : current_version: " << *current_version
+          << ", profile_created_version: " << *profile_created_version;
+  // If profile created version and current version is different,
+  // we think this user had major version update since the install.
+  return current_version != profile_created_version;
+}
 
 absl::optional<double> GetTargetMajorVersion() {
   const std::string target_major_version_string = base::GetFieldTrialParamValue(
@@ -45,30 +94,6 @@ absl::optional<double> GetTargetMajorVersion() {
   return target_major_version;
 }
 
-// Returns 1.xx or 2.xx as double.
-absl::optional<double> GetCurrentBrowserVersion() {
-  if (g_testing_major_version != 0) {
-    return g_testing_major_version;
-  }
-
-  const auto& version = version_info::GetVersion();
-  DCHECK(version.IsValid());
-  DCHECK_EQ(version.components().size(), 4ul);
-
-  // |version| has four components like 111.1.51.34.
-  // First one is upstream's major version.
-  // Brave's major version is second and third component - 1.51
-  // Ignored fourth number as it's build number.
-  double current_version;
-  if (!base::StringToDouble(base::StringPrintf("%d.%d", version.components()[1],
-                                               version.components()[2]),
-                            &current_version)) {
-    return absl::nullopt;
-  }
-
-  return current_version;
-}
-
 }  // namespace
 
 namespace whats_new {
@@ -78,6 +103,11 @@ void SetCurrentVersionForTesting(double major_version) {
 }
 
 bool ShouldShowBraveWhatsNewForState(PrefService* local_state) {
+  if (!DoesUserGetMajorUpdateSinceInstall()) {
+    VLOG(2) << __func__ << " : This user doesn't get major update yet.";
+    return false;
+  }
+
   // Supported languages/translations for the What's New page are:
   // Simplified Chinese, French, German, Japanese, Korean, Portuguese, and
   // Spanish.
