@@ -539,7 +539,7 @@ TEST_F(BraveVPNServiceTest, SkusCredentialCacheTest) {
   OnPrepareCredentialsPresentation(
       domain, "credential=abcdefghijk; Expires=Wed, 21 Oct 2050 07:28:00 GMT");
   EXPECT_TRUE(HasValidSkusCredential(&local_pref_service_));
-  OnGetSubscriberCredentialV12("inalid", false);
+  OnGetSubscriberCredentialV12("invalid", false);
   EXPECT_EQ(PurchasedState::FAILED, GetPurchasedStateSync());
 
   // Trying again with valid subscriber credential.
@@ -661,6 +661,12 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateTest) {
   SetPurchasedState(env, PurchasedState::LOADING);
   OnPrepareCredentialsPresentation(domain, "credential=abcdefghijk");
   EXPECT_EQ(PurchasedState::FAILED, GetPurchasedStateSync());
+
+  // Expired credentials.
+  SetPurchasedState(env, PurchasedState::LOADING);
+  OnPrepareCredentialsPresentation(
+      domain, "credential=abcdefghijk; Expires=Wed, 21 Oct 2000 07:28:00 GMT");
+  EXPECT_EQ(GetPurchasedStateSync(), PurchasedState::INVALID);
 }
 
 TEST_F(BraveVPNServiceTest, ResetConnectionStateTest) {
