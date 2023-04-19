@@ -8,10 +8,9 @@ import { useDispatch, useSelector } from 'react-redux'
 
 // utils
 import { getLocale } from '../../../../../../common/locale'
-import { getBalance } from '../../../../../common/async/lib'
 
 // components
-import HardwareWalletAccountsList from './accounts-list'
+import { HardwareWalletAccountsList } from './accounts-list'
 import { AuthorizeHardwareDeviceIFrame } from '../../../../shared/authorize-hardware-device/authorize-hardware-device'
 import { NavButton } from '../../../../extension'
 
@@ -41,10 +40,6 @@ import { LedgerError } from '../../../../../common/hardware/ledgerjs/ledger-mess
 
 // hooks
 import { useLib } from '../../../../../common/hooks'
-import {
-  useGetDefaultNetworksQuery,
-  useGetSelectedChainQuery
-} from '../../../../../common/slices/api.slice'
 
 export interface Props {
   selectedAccountType: CreateAccountOptionsType
@@ -83,10 +78,6 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
   // redux
   const dispatch = useDispatch()
   const savedAccounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
-
-  // queries
-  const { data: selectedNetwork } = useGetSelectedChainQuery()
-  const { data: defaultNetworks } = useGetDefaultNetworksQuery()
 
   // state
   const [selectedHardwareWallet, setSelectedHardwareWallet] = React.useState<HardwareVendor>(BraveWallet.LEDGER_HARDWARE_VENDOR)
@@ -229,15 +220,6 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
     )
   }, [savedAccounts])
 
-  const selectedAccountTypesDefaultNetwork = React.useMemo(() => {
-    return (
-      defaultNetworks?.find(
-        (network: BraveWallet.NetworkInfo) =>
-          network.coin === selectedAccountType.coin
-      ) ?? selectedNetwork
-    )
-  }, [defaultNetworks, selectedAccountType, selectedNetwork])
-
   // render
   if (showAuthorizeDevice) {
     return (
@@ -267,8 +249,6 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
         selectedDerivationScheme={selectedDerivationScheme}
         setSelectedDerivationScheme={onChangeDerivationScheme}
         onAddAccounts={onAddAccounts}
-        getBalance={getBalance}
-        selectedNetwork={selectedAccountTypesDefaultNetwork}
         filecoinNetwork={filecoinNetwork}
         onChangeFilecoinNetwork={onFilecoinNetworkChanged}
         selectedAccountType={selectedAccountType}
