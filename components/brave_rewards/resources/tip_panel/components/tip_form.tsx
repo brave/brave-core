@@ -183,7 +183,7 @@ export function TipForm () {
       )
     }
 
-    if (insufficientBalance) {
+    if (insufficientBalance && state.rewardsUser.balance.hasValue()) {
       return (
         <InfoBox title={getString('insufficientBalanceTitle')} style='error'>
           {

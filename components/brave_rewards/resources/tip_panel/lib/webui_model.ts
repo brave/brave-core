@@ -34,7 +34,6 @@ export function createModel (): Model {
     ])
 
     function getError (): AppError | null {
-      if (!balance) { return 'load-balance-error' }
       if (!banner) { return 'load-banner-error' }
       if (!parameters) { return 'load-parameters-error' }
       return null
