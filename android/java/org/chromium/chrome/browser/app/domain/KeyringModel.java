@@ -280,17 +280,17 @@ public class KeyringModel implements KeyringServiceObserver {
 
     public void addAccount(String accountName, @CoinType.EnumType int coinType,
             Callbacks.Callback1<Boolean> callback) {
-        final AccountInfo[] finalAccountInfo =
+        final AccountInfo[] accountInfoArray =
                 WalletUtils.getAccountInfosFromKeyrings(_mKeyringInfosLiveData.getValue())
                         .toArray(new AccountInfo[0]);
         if (coinType == CoinType.FIL) {
             mKeyringService.addFilecoinAccount(
                     accountName, BraveWalletConstants.FILECOIN_MAINNET, result -> {
-                        handleAddAccountResult(result, finalAccountInfo, coinType, callback);
+                        handleAddAccountResult(result, accountInfoArray, coinType, callback);
                     });
         } else {
             mKeyringService.addAccount(accountName, coinType, result -> {
-                handleAddAccountResult(result, finalAccountInfo, coinType, callback);
+                handleAddAccountResult(result, accountInfoArray, coinType, callback);
             });
         }
     }
@@ -299,11 +299,11 @@ public class KeyringModel implements KeyringServiceObserver {
         mKeyringService.isLocked(isWalletLocked -> callback.call(isWalletLocked));
     }
 
-    private void handleAddAccountResult(boolean result, AccountInfo[] finalAccountInfo,
+    private void handleAddAccountResult(boolean result, AccountInfo[] accountInfoArray,
             @CoinType.EnumType int coinType, Callbacks.Callback1<Boolean> callback) {
         if (result) {
             boolean hasExistingAccountType = false;
-            for (AccountInfo accountInfo : finalAccountInfo) {
+            for (AccountInfo accountInfo : accountInfoArray) {
                 hasExistingAccountType = (accountInfo.coin == coinType);
                 if (hasExistingAccountType) break;
             }
