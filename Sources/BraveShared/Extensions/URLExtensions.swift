@@ -5,6 +5,7 @@
 
 import Foundation
 import BraveCore
+import Shared
 
 extension URL {
   /// Obtains a URLOrigin given the current URL
@@ -21,5 +22,61 @@ extension URL {
   /// |url| (e.g. in case of blob URLs - see OriginTest.ConstructFromGURL).
   public var origin: URLOrigin {
     .init(url: self)
+  }
+  
+  /// Obtains a clean stripped url from the current Internal URL
+  ///
+  /// Returns the original url without  internal parameters
+  public var stippedInternalURL: URL? {
+    if InternalURL.isValid(url: self),
+       let internalURL = InternalURL(self) {
+      
+      switch internalURL.urlType {
+      case .errorPage:
+        return internalURL.originalURLFromErrorPage
+      case .web3Page, .sessionRestorePage, .readerModePage, .aboutHomePage:
+        return internalURL.extractedUrlParam
+      default:
+        return nil
+      }
+    }
+    
+    return nil
+  }
+}
+
+extension InternalURL {
+  
+  enum URLType {
+    case sessionRestorePage
+    case errorPage
+    case readerModePage
+    case aboutHomePage
+    case web3Page
+    case other
+  }
+  
+  var urlType: URLType {
+    if isErrorPage {
+      return .errorPage
+    }
+    
+    if isWeb3URL {
+      return .web3Page
+    }
+    
+    if isReaderModePage {
+      return .readerModePage
+    }
+    
+    if isSessionRestore {
+      return .sessionRestorePage
+    }
+    
+    if isAboutHomeURL {
+      return .aboutHomePage
+    }
+    
+    return .other
   }
 }
