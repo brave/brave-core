@@ -1,5 +1,5 @@
 diff --git a/build/config/BUILDCONFIG.gn b/build/config/BUILDCONFIG.gn
-index ca7debdbbd76a48ff322fd7665ff99a27e2e2691..e84c182c46efec3e85df0caf374762d7d97d282f 100644
+index 33651426b6d5a591a9565dfc0d6418d486a3e480..6b961f7c6eaf84799276ebb397b36422759927ca 100644
 --- a/build/config/BUILDCONFIG.gn
 +++ b/build/config/BUILDCONFIG.gn
 @@ -329,6 +329,7 @@ is_posix = !is_win && !is_fuchsia

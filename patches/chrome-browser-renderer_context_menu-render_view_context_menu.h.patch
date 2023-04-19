@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/renderer_context_menu/render_view_context_menu.h b/chrome/browser/renderer_context_menu/render_view_context_menu.h
-index 4b6e2d55455c3e368c9db68e31a8137521e89e44..50108d37a4e4fa10b3669c394abe849db53985f7 100644
+index e636279410001289615856bfbef31dac68c25247..f7864d8b65e2bdb279692d2f5cf52db9a1c6ddf5 100644
 --- a/chrome/browser/renderer_context_menu/render_view_context_menu.h
 +++ b/chrome/browser/renderer_context_menu/render_view_context_menu.h
 @@ -181,6 +181,7 @@ class RenderViewContextMenu
