@@ -65,6 +65,9 @@
 "e13lS3-vs094F" = "Czy na pewno masz na myśli „Nowa karta w trybie prywatnym”?";
 
 /* (No Comment) */
+"e13lS3-XCyA8c" = "Czy na pewno masz na myśli „Aktualności Brave”?";
+
+/* (No Comment) */
 "e13lS3-Y7TWy8" = "Czy na pewno masz na myśli „Wyszukiwanie”?";
 
 /* (No Comment) */
@@ -113,6 +116,9 @@
 "L1fziM-vs094F" = "Do „Nowa karta w trybie prywatnym” pasuje następująca liczba opcji: ${count}";
 
 /* (No Comment) */
+"L1fziM-XCyA8c" = "Do „Aktualności Brave” pasuje następująca liczba opcji: ${count}.";
+
+/* (No Comment) */
 "L1fziM-Y7TWy8" = "Do „Wyszukiwanie” pasuje następująca liczba opcji: ${count}.";
 
 /* (No Comment) */
@@ -147,6 +153,9 @@
 
 /* (No Comment) */
 "r2EI05-vs094F" = "Czy na pewno masz na myśli „Nowa karta w trybie prywatnym”?";
+
+/* (No Comment) */
+"r2EI05-XCyA8c" = "Czy na pewno masz na myśli „Aktualności Brave”?";
 
 /* (No Comment) */
 "r2EI05-Y7TWy8" = "Czy na pewno masz na myśli „Wyszukiwanie”?";
@@ -185,6 +194,9 @@
 "tNCrcE-vs094F" = "Do „Nowa karta w trybie prywatnym” pasuje następująca liczba opcji: ${count}";
 
 /* (No Comment) */
+"tNCrcE-XCyA8c" = "Do „Aktualności Brave” pasuje następująca liczba opcji: ${count}.";
+
+/* (No Comment) */
 "tNCrcE-Y7TWy8" = "Do „Wyszukiwanie” pasuje następująca liczba opcji: ${count}.";
 
 /* (No Comment) */
@@ -215,6 +227,9 @@
 "TxuMja-vs094F" = "Do „Nowa karta w trybie prywatnym” pasuje następująca liczba opcji: ${count}";
 
 /* (No Comment) */
+"TxuMja-XCyA8c" = "Do „Aktualności Brave” pasuje następująca liczba opcji: ${count}.";
+
+/* (No Comment) */
 "TxuMja-Y7TWy8" = "Do „Wyszukiwanie” pasuje następująca liczba opcji: ${count}.";
 
 /* (No Comment) */
@@ -231,6 +246,9 @@
 
 /* (No Comment) */
 "xcI3h9" = "Zablokowane reklamy";
+
+/* (No Comment) */
+"XCyA8c" = "Aktualności Brave";
 
 /* (No Comment) */
 "XkwBGY" = "Konfiguracja skrótów na zablokowanym ekranie";
@@ -261,6 +279,9 @@
 
 /* (No Comment) */
 "YQiQuz-vs094F" = "Czy na pewno masz na myśli „Nowa karta w trybie prywatnym”?";
+
+/* (No Comment) */
+"YQiQuz-XCyA8c" = "Czy na pewno masz na myśli „Aktualności Brave”?";
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "Czy na pewno masz na myśli „Wyszukiwanie”?";

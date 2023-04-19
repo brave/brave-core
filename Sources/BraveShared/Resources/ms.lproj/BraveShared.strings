@@ -19,6 +19,15 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Tambah Penanda Halaman";
 
+/* A title within a cell where a user can navigate to an add screen. */
+"AddCustomFilterList" = "Tambah Senarai Penapis Tersuai";
+
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "Tambah senarai tambahan yang dicipta dan disenggara oleh komuniti yang anda percayai.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**Langgan senarai dari entiti yang anda percayai sahaja.** Pelayar anda secara berkala akan menyemak kemaskinian senarai daripada URL yang anda masukkan.";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Tambahkan pada Kegemaran";
 
@@ -562,6 +571,15 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Enjin carian yang digunakan sekarang";
 
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "Senarai Penapis Tersuai";
+
+/* A title for a section that contains all custom filter lists */
+"CustomFilterLists" = "Senarai Penapis Tersuai";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "URL Senarai Penapis Tersuai";
+
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Tambah";
 
@@ -640,6 +658,9 @@
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Tutup timbul penyemak imbas lalai";
 
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "Senarai Penapis Lalai";
+
 /* Name for default Brave theme. */
 "defaultThemeName" = "Brave gagal";
 
@@ -685,14 +706,8 @@
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "Jangan Hantar";
 
-/* A label representing the state of a filter list that is downloaded */
-"Downloaded" = "Sudah dimuat turun";
-
 /* Settings item for clearing downloaded files. */
 "DownloadedFiles" = "Fail-fail yang dimuat turun";
-
-/* A label representing the state of a filter list that is currently being downloaded */
-"Downloading" = "Memuat turun";
 
 /* Title for downloads menu item */
 "DownloadsMenuItem" = "Muat Turun";
@@ -814,11 +829,38 @@
 /* No comment provided by engineer. */
 "Features" = "Ciri";
 
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "URL yang dimasukkan tidak sah";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "Hanya URL selamat (https) dibenarkan untuk senarai penapis tersuai";
+
 /* A title on the content filtering screen that allows you to enable/disable filter lists */
 "FilterLists" = "Senarai Penapis";
 
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "Tambah";
+
 /* A description on the content filtering screen for the filter lists section. */
 "FilterListsDescription" = "Senarai komuniti terkenal tambahan. Ambil perhatian bahawa tindakan mendayakan terlalu banyak penapis akan mengurangkan kelajuan penyemakan imbas.";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "Muat turun gagal";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "Muat turun belum selesai";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "Edit";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "Masukkan URL senarai penapis";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "Kemaskinian terakhir %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "Masukkan URL senarai penapis di sini";
 
 /* Share action title */
 "FindInPage" = "Cari dalam Halaman";
@@ -1077,9 +1119,6 @@
 
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "Hasil carian tidak ditemukan.";
-
-/* A label representing the state of a filter list that is not downloaded */
-"NotDownloaded" = "Tidak dimuat turun";
 
 /* Error message for when the sync code does not have the correct amount of words */
 "NotEnoughWordsDescription" = "Sila masukkan semua perkataan dan cuba lagi.";
@@ -1634,10 +1673,10 @@
 "playlist.playlistSidebarLocationTitle" = "Lokasi Bar Sisi";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
-"playlist.playlistStartPlaybackSettingsFooterText" = "Pilihan ini akan mendayakan/menyahdayakan kemampuan untuk memulakan main balik media (video/audio) dari saat terakhir anda berhenti.";
+"playlist.playlistStartPlaybackSettingsFooterText" = "Untuk fail individu, sambung main daripada titik jeda terakhir.";
 
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
-"playlist.playlistStartPlaybackSettingsOptionTitle" = "Mulakan Main Balik di tempat terakhir saya berhenti";
+"playlist.playlistStartPlaybackSettingsOptionTitle" = "Ingat kedudukan main semula fail";
 
 /* Description for Playlist setting */
 "playlist.playlistWebCompatibilityDescription" = "Menyahdayakan API WebKit MediaSource";
@@ -2902,24 +2941,6 @@
 /* Brave panel topmost title */
 "SiteShieldSettings" = "Perisai";
 
-/* Title on the button that users can click to disable Brave to resolve the SNS domain they entered. */
-"SnsDomainInterstitialPageButtonDisable" = "Nyahdayakan";
-
-/* Title on the button that users can click to enable Brave to resolve the SNS domain they entered. */
-"SnsDomainInterstitialPageButtonProceed" = "Teruskan penggunaan pelayan Syndica";
-
-/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Syndica's terms of use page. The second '%@' will be replaced with the value of 'snsDomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Syndica's privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
-"SnsDomainInterstitialPageDescription" = "Brave akan menggunakan Syndica untuk menyelesaikan nama doman .sol. Brave menyembunyikan alamat IP anda. Jika anda mendayakan ciri ini, Syndica dapat lihat bahawa ada orang cuba melawat domain .sol ini tetapi setakat itu sahaja. Lihat <a href=%1$@>%2$@</a> dan <a href=%3$@>%4$@</a> Syndica.";
-
-/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Brave uses to resolve SNS domain. */
-"SnsDomainInterstitialPagePrivacyPolicy" = "dasar privasi";
-
-/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Brave uses to resolve SNS domain. */
-"SnsDomainInterstitialPageTAndU" = "syarat penggunaan";
-
-/* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
-"SnsDomainInterstitialPageTitle" = "Mengaktifkan sokongan Solana Name Service (SNS) di Brave?";
-
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "Setiap hari saya menjimatkan data dengan melayari web menggunakan Brave.";
 
@@ -3786,6 +3807,18 @@
 
 /* Title for favorites widget on 'add widget' screen. */
 "widgets.favoritesWidgetTitle" = "Kegemaran";
+
+/* Displayed on a news widget that has failed to load */
+"widgets.newsClusteringErrorLabel" = "Cuba lagi kemudian";
+
+/* Displayed on a news widget that links into the app to read more Brave News content */
+"widgets.newsClusteringReadMoreButtonTitle" = "Baca Lebih Lanjut";
+
+/* Description for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetDescription" = "Dapatkan berita terkini";
+
+/* Title for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetTitle" = "Berita Hangat";
 
 /* This shows when you add a widget but have no favorites added in your app */
 "widgets.noFavoritesFound" = "Sila buka Brave untuk melihat kegemaran anda di sini";

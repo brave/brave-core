@@ -65,6 +65,9 @@
 "e13lS3-vs094F" = "Solo per conferma, volevi “Nuova scheda privata”?";
 
 /* (No Comment) */
+"e13lS3-XCyA8c" = "Solo per conferma, volevi “News Brave”?";
+
+/* (No Comment) */
 "e13lS3-Y7TWy8" = "Solo per conferma, volevi “Ricerca”?";
 
 /* (No Comment) */
@@ -113,6 +116,9 @@
 "L1fziM-vs094F" = "Ci sono ${count} opzioni che corrispondono a “Nuova scheda privata”.";
 
 /* (No Comment) */
+"L1fziM-XCyA8c" = "Ci sono ${count} opzioni per “News Brave”.";
+
+/* (No Comment) */
 "L1fziM-Y7TWy8" = "Ci sono ${count} opzioni per “Ricerca”.";
 
 /* (No Comment) */
@@ -147,6 +153,9 @@
 
 /* (No Comment) */
 "r2EI05-vs094F" = "Solo per conferma, volevi “Nuova scheda privata”?";
+
+/* (No Comment) */
+"r2EI05-XCyA8c" = "Solo per conferma, volevi “News Brave”?";
 
 /* (No Comment) */
 "r2EI05-Y7TWy8" = "Solo per conferma, volevi “Ricerca”?";
@@ -185,6 +194,9 @@
 "tNCrcE-vs094F" = "Ci sono ${count} opzioni che corrispondono a “Nuova scheda privata”.";
 
 /* (No Comment) */
+"tNCrcE-XCyA8c" = "Ci sono ${count} opzioni per “News Brave”.";
+
+/* (No Comment) */
 "tNCrcE-Y7TWy8" = "Ci sono ${count} opzioni per “Ricerca”.";
 
 /* (No Comment) */
@@ -215,6 +227,9 @@
 "TxuMja-vs094F" = "Ci sono ${count} opzioni che corrispondono a “Nuova scheda privata”.";
 
 /* (No Comment) */
+"TxuMja-XCyA8c" = "Ci sono ${count} opzioni per “News Brave”.";
+
+/* (No Comment) */
 "TxuMja-Y7TWy8" = "Ci sono ${count} opzioni per “Ricerca”.";
 
 /* (No Comment) */
@@ -231,6 +246,9 @@
 
 /* (No Comment) */
 "xcI3h9" = "Annunci bloccati";
+
+/* (No Comment) */
+"XCyA8c" = "News di Brave";
 
 /* (No Comment) */
 "XkwBGY" = "Configurazione del comando rapido della schermata di blocco";
@@ -261,6 +279,9 @@
 
 /* (No Comment) */
 "YQiQuz-vs094F" = "Solo per conferma, volevi “Nuova scheda privata”?";
+
+/* (No Comment) */
+"YQiQuz-XCyA8c" = "Solo per conferma, volevi “News Brave”?";
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "Solo per conferma, volevi “Ricerca”?";

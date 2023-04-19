@@ -19,6 +19,15 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "添加书签";
 
+/* A title within a cell where a user can navigate to an add screen. */
+"AddCustomFilterList" = "新增自定义筛选器列表";
+
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "新增由您信任的社群所建立维护的额外清单。";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**仅订阅来自您信任的实体的列表**。您的浏览器将定期检查您输入的网址的列表更新。";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "添加到收藏夹";
 
@@ -562,6 +571,15 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "当前使用的搜索引擎";
 
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "自定义筛选器列表";
+
+/* A title for a section that contains all custom filter lists */
+"CustomFilterLists" = "自定义筛选器列表";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "输入过滤器列表网址";
+
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "添加";
 
@@ -640,6 +658,9 @@
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "关闭默认浏览器标注";
 
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "默认筛选器列表";
+
 /* Name for default Brave theme. */
 "defaultThemeName" = "Brave 默认";
 
@@ -685,14 +706,8 @@
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "不发送";
 
-/* A label representing the state of a filter list that is downloaded */
-"Downloaded" = "已下載";
-
 /* Settings item for clearing downloaded files. */
 "DownloadedFiles" = "已下载文件";
-
-/* A label representing the state of a filter list that is currently being downloaded */
-"Downloading" = "下載中";
 
 /* Title for downloads menu item */
 "DownloadsMenuItem" = "下载";
@@ -814,11 +829,38 @@
 /* No comment provided by engineer. */
 "Features" = "功能";
 
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "输入的网址无效";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "自定义筛选器列表只允许使用安全（https）网址";
+
 /* A title on the content filtering screen that allows you to enable/disable filter lists */
 "FilterLists" = "过滤列表";
 
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "添加";
+
 /* A description on the content filtering screen for the filter lists section. */
 "FilterListsDescription" = "其他熱門社群清單。請注意，啟用太多過濾器可能會導致瀏覽速度變慢。";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "下載失敗";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "等待下载";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "编辑";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "输入过滤器清单 URL";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "上次更新时间 %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "在此处输入筛选器清单网址";
 
 /* Share action title */
 "FindInPage" = "在页面中查找";
@@ -1077,9 +1119,6 @@
 
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "找不到搜索结果。";
-
-/* A label representing the state of a filter list that is not downloaded */
-"NotDownloaded" = "未下载";
 
 /* Error message for when the sync code does not have the correct amount of words */
 "NotEnoughWordsDescription" = "输入所有文字并重试。";
@@ -1634,10 +1673,10 @@
 "playlist.playlistSidebarLocationTitle" = "侧边栏位置";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
-"playlist.playlistStartPlaybackSettingsFooterText" = "此选项将启用/禁用从上次停止播放的位置开始播放媒体（视频/音频）的功能。";
+"playlist.playlistStartPlaybackSettingsFooterText" = "对于单个文件，请从上次暂停的位置重新开始播放。";
 
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
-"playlist.playlistStartPlaybackSettingsOptionTitle" = "从我上次停止播放的位置开始播放 ";
+"playlist.playlistStartPlaybackSettingsOptionTitle" = "记住文件重新播放的位置";
 
 /* Description for Playlist setting */
 "playlist.playlistWebCompatibilityDescription" = "禁用 WebKit MediaSource API";
@@ -2902,24 +2941,6 @@
 /* Brave panel topmost title */
 "SiteShieldSettings" = "屏蔽";
 
-/* Title on the button that users can click to disable Brave to resolve the SNS domain they entered. */
-"SnsDomainInterstitialPageButtonDisable" = "禁用";
-
-/* Title on the button that users can click to enable Brave to resolve the SNS domain they entered. */
-"SnsDomainInterstitialPageButtonProceed" = "使用 Syndica 服务器继续";
-
-/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Syndica's terms of use page. The second '%@' will be replaced with the value of 'snsDomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Syndica's privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
-"SnsDomainInterstitialPageDescription" = "Brave 将会使用 Syndica 来解析 .sol 域名。Brave 将隐藏您的 IP 地址。如果您启用这项功能，Syndica 只会看到有人正在尝试访问这些 .sol 域，不会看到其他信息。查看 Syndica 的<a href=%1$@>%2$@</a>和<a href=%3$@>%4$@</a>。";
-
-/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Brave uses to resolve SNS domain. */
-"SnsDomainInterstitialPagePrivacyPolicy" = "隐私政策";
-
-/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Brave uses to resolve SNS domain. */
-"SnsDomainInterstitialPageTAndU" = "使用条款";
-
-/* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
-"SnsDomainInterstitialPageTitle" = "是否在 Brave 中启用 Solana Name Service（SNS）的支持？";
-
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "我每天都通过使用 Brave 浏览网页来保存数据。";
 
@@ -3786,6 +3807,18 @@
 
 /* Title for favorites widget on 'add widget' screen. */
 "widgets.favoritesWidgetTitle" = "收藏夹";
+
+/* Displayed on a news widget that has failed to load */
+"widgets.newsClusteringErrorLabel" = "稍后重试";
+
+/* Displayed on a news widget that links into the app to read more Brave News content */
+"widgets.newsClusteringReadMoreButtonTitle" = "了解更多";
+
+/* Description for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetDescription" = "获取最新消息";
+
+/* Title for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetTitle" = "头条新闻";
 
 /* This shows when you add a widget but have no favorites added in your app */
 "widgets.noFavoritesFound" = "请打开 Brave，在此查看您的收藏夹";

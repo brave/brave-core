@@ -19,6 +19,15 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Legg til bokmerke";
 
+/* A title within a cell where a user can navigate to an add screen. */
+"AddCustomFilterList" = "Legg til egendefinert filterliste";
+
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "Legg til ytterligere lister som er laget og oppdatert av brukerfellesskapet.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**Abonner bare på lister fra kilder du stoler på**. Nettleseren din ser jevnlig etter listeoppdateringer fra nettadressen du skriver inn.";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Legg til i favoritter";
 
@@ -562,6 +571,15 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Søkemotorer som for tiden er i bruk";
 
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "Egendefinert filterliste";
+
+/* A title for a section that contains all custom filter lists */
+"CustomFilterLists" = "Egendefinerte filterlister";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "Nettadresse til egendefinert filterliste";
+
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Legg til";
 
@@ -640,6 +658,9 @@
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Lukk infomelding om standard nettleser";
 
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "Standard filterlister";
+
 /* Name for default Brave theme. */
 "defaultThemeName" = "Brave standard";
 
@@ -685,14 +706,8 @@
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "Ikke send";
 
-/* A label representing the state of a filter list that is downloaded */
-"Downloaded" = "Lastet ned";
-
 /* Settings item for clearing downloaded files. */
 "DownloadedFiles" = "Nedlastede filer";
-
-/* A label representing the state of a filter list that is currently being downloaded */
-"Downloading" = "Laster ned";
 
 /* Title for downloads menu item */
 "DownloadsMenuItem" = "Nedlastinger";
@@ -814,11 +829,38 @@
 /* No comment provided by engineer. */
 "Features" = "Funksjoner";
 
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "Nettadressen er ugyldig";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "Bare sikre (https) nettadresser er tillatt for egendefinerte filterlister";
+
 /* A title on the content filtering screen that allows you to enable/disable filter lists */
 "FilterLists" = "Filtrer lister";
 
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "Legg til";
+
 /* A description on the content filtering screen for the filter lists section. */
 "FilterListsDescription" = "Øvrige populære fellesskapslister. Merk at det å slå på for mange filtre vil ha en negativ innvirkning på nettleserhastigheten.";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "Nedlastingen mislyktes";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "Nedlasting venter";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "Endre";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "Skriv inn filterliste-URL";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "Sist oppdatert %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "Skriv inn filterliste-URL-en her";
 
 /* Share action title */
 "FindInPage" = "Finn på siden";
@@ -1077,9 +1119,6 @@
 
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "Fant ingen søkeresultater.";
-
-/* A label representing the state of a filter list that is not downloaded */
-"NotDownloaded" = "Ikke lastet ned";
 
 /* Error message for when the sync code does not have the correct amount of words */
 "NotEnoughWordsDescription" = "Skriv alle ordene og prøv igjen.";
@@ -1634,10 +1673,10 @@
 "playlist.playlistSidebarLocationTitle" = "Plassering til sidestolpe";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
-"playlist.playlistStartPlaybackSettingsFooterText" = "Dette alternativet aktiverer/deaktiverer muligheten til å starte avspilling av media (video/lyd) fra der du var.";
+"playlist.playlistStartPlaybackSettingsFooterText" = "For enkeltfiler kan avspilling gjenopptas fra stedet de sist ble pauset.";
 
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
-"playlist.playlistStartPlaybackSettingsOptionTitle" = "Start avspilling fra der jeg var";
+"playlist.playlistStartPlaybackSettingsOptionTitle" = "Husk avspillingsposisjonen";
 
 /* Description for Playlist setting */
 "playlist.playlistWebCompatibilityDescription" = "Deaktiverer WebKit MediaSource-API";
@@ -2902,24 +2941,6 @@
 /* Brave panel topmost title */
 "SiteShieldSettings" = "Skjold";
 
-/* Title on the button that users can click to disable Brave to resolve the SNS domain they entered. */
-"SnsDomainInterstitialPageButtonDisable" = "Deaktiver";
-
-/* Title on the button that users can click to enable Brave to resolve the SNS domain they entered. */
-"SnsDomainInterstitialPageButtonProceed" = "Fortsett med Syndica-serveren";
-
-/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Syndica's terms of use page. The second '%@' will be replaced with the value of 'snsDomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Syndica's privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
-"SnsDomainInterstitialPageDescription" = "Brave vil bruke Syndica til å resolve .sol-domenenavn. Brave skjuler IP-adressen din. Hvis du slår på dette vil Syndica se at noen forsøker å besøke disse .sol-domenene, men ikke noe annet. Se Syndicas <a href=%1$@>%2$@</a> og <a href=%3$@>%4$@</a>.";
-
-/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Brave uses to resolve SNS domain. */
-"SnsDomainInterstitialPagePrivacyPolicy" = "personvernerklæring";
-
-/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Brave uses to resolve SNS domain. */
-"SnsDomainInterstitialPageTAndU" = "brukervilkår";
-
-/* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
-"SnsDomainInterstitialPageTitle" = "Vil du slå på støtte for Solana Name Service (SNS) i Brave?";
-
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "Hver dag sparer jeg data ved å surfe på nettet med Brave.";
 
@@ -3786,6 +3807,18 @@
 
 /* Title for favorites widget on 'add widget' screen. */
 "widgets.favoritesWidgetTitle" = "Favoritter";
+
+/* Displayed on a news widget that has failed to load */
+"widgets.newsClusteringErrorLabel" = "Prøv på nytt senere";
+
+/* Displayed on a news widget that links into the app to read more Brave News content */
+"widgets.newsClusteringReadMoreButtonTitle" = "Les mer";
+
+/* Description for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetDescription" = "Få siste nytt";
+
+/* Title for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetTitle" = "Toppnyheter";
 
 /* This shows when you add a widget but have no favorites added in your app */
 "widgets.noFavoritesFound" = "Åpne Brave for å se favorittene dine her";

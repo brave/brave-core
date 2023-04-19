@@ -19,6 +19,15 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Ajouter un marque-page";
 
+/* A title within a cell where a user can navigate to an add screen. */
+"AddCustomFilterList" = "Ajouter une liste de filtres personnalisés";
+
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "Ajoutez des listes supplémentaires créées et maintenues par une communauté de confiance.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**Inscrivez-vous uniquement aux listes des entités auxquelles vous faites confiance**. Votre navigateur vérifiera régulièrement les mises à jour de liste à partir de l'URL que vous saisissez.";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Ajouter aux favoris";
 
@@ -562,6 +571,15 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Moteurs de recherches actuellement utilisés";
 
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "Liste de filtres personnalisés";
+
+/* A title for a section that contains all custom filter lists */
+"CustomFilterLists" = "Listes de filtres personnalisés";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "URL de la liste de filtres personnalisés";
+
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Ajouter";
 
@@ -640,6 +658,9 @@
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Fermer la légende du navigateur par défaut";
 
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "Listes de filtres par défaut";
+
 /* Name for default Brave theme. */
 "defaultThemeName" = "Thème Brave par défaut";
 
@@ -685,14 +706,8 @@
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "Ne pas envoyer";
 
-/* A label representing the state of a filter list that is downloaded */
-"Downloaded" = "Téléchargé";
-
 /* Settings item for clearing downloaded files. */
 "DownloadedFiles" = "Fichiers téléchargés";
-
-/* A label representing the state of a filter list that is currently being downloaded */
-"Downloading" = "Téléchargement";
 
 /* Title for downloads menu item */
 "DownloadsMenuItem" = "Téléchargements";
@@ -814,11 +829,38 @@
 /* No comment provided by engineer. */
 "Features" = "Fonctionnalités";
 
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "L'URL saisie n'est pas valide";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "Seules les URL sécurisées (HTTPS) sont autorisées pour les listes de filtres personnalisés";
+
 /* A title on the content filtering screen that allows you to enable/disable filter lists */
 "FilterLists" = "Listes de filtres";
 
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "Ajouter";
+
 /* A description on the content filtering screen for the filter lists section. */
 "FilterListsDescription" = "Listes les plus populaires créées par la communauté. Notez que l'activation d'un trop grand nombre de filtres risque de ralentir le chargement des pages.";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "Échec du téléchargement";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "Téléchargement en attente";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "Modifier";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "Saisissez l'URL de la liste de filtres";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "Dernière mise à jour %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "Saisissez l'URL de la liste de filtres ici";
 
 /* Share action title */
 "FindInPage" = "Rechercher sur la page";
@@ -1077,9 +1119,6 @@
 
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "Aucun résultat trouvé.";
-
-/* A label representing the state of a filter list that is not downloaded */
-"NotDownloaded" = "Non téléchargée";
 
 /* Error message for when the sync code does not have the correct amount of words */
 "NotEnoughWordsDescription" = "Saisissez tous les mots et réessayez.";
@@ -1634,10 +1673,10 @@
 "playlist.playlistSidebarLocationTitle" = "Emplacement de la barre latérale";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
-"playlist.playlistStartPlaybackSettingsFooterText" = "Cette option active/désactive la capacité de reprendre la lecture des fichiers (vidéo/audio) au moment où vous l’avez interrompue.";
+"playlist.playlistStartPlaybackSettingsFooterText" = "Reprendre la lecture depuis l'endroit où le fichier a été mis en pause pour la dernière fois.";
 
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
-"playlist.playlistStartPlaybackSettingsOptionTitle" = "Reprendre la lecture au moment où je l’ai interrompue";
+"playlist.playlistStartPlaybackSettingsOptionTitle" = "Se souvenir de la position de lecture du fichier";
 
 /* Description for Playlist setting */
 "playlist.playlistWebCompatibilityDescription" = "Désactive l’API WebKit MediaSource";
@@ -2902,24 +2941,6 @@
 /* Brave panel topmost title */
 "SiteShieldSettings" = "Shields";
 
-/* Title on the button that users can click to disable Brave to resolve the SNS domain they entered. */
-"SnsDomainInterstitialPageButtonDisable" = "Désactiver";
-
-/* Title on the button that users can click to enable Brave to resolve the SNS domain they entered. */
-"SnsDomainInterstitialPageButtonProceed" = "Continuer en utilisant le serveur Syndica";
-
-/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Syndica's terms of use page. The second '%@' will be replaced with the value of 'snsDomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Syndica's privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
-"SnsDomainInterstitialPageDescription" = "Brave utilisera Syndica pour résoudre les noms de domaine .sol. Brave masque votre adresse IP. Si vous activez cette option, Syndica verra que quelqu'un essaie d'accéder à ces domaines .sol, mais n'aura accès à aucune autre information. Consultez les <a href=%1$@>%2$@</a> et la <a href=%3$@>%4$@</a> de Syndica.";
-
-/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Brave uses to resolve SNS domain. */
-"SnsDomainInterstitialPagePrivacyPolicy" = "politique de confidentialité";
-
-/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Brave uses to resolve SNS domain. */
-"SnsDomainInterstitialPageTAndU" = "conditions d'utilisation";
-
-/* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
-"SnsDomainInterstitialPageTitle" = "Activer la prise en charge de Solana Name Service (SNS) dans Brave?";
-
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "J'enregistre tous les jours des données en naviguant sur le Web avec Brave.";
 
@@ -3786,6 +3807,18 @@
 
 /* Title for favorites widget on 'add widget' screen. */
 "widgets.favoritesWidgetTitle" = "Favoris";
+
+/* Displayed on a news widget that has failed to load */
+"widgets.newsClusteringErrorLabel" = "Réessayez plus tard";
+
+/* Displayed on a news widget that links into the app to read more Brave News content */
+"widgets.newsClusteringReadMoreButtonTitle" = "En savoir plus";
+
+/* Description for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetDescription" = "Obtenez les dernières actualités";
+
+/* Title for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetTitle" = "Actualités incontournables";
 
 /* This shows when you add a widget but have no favorites added in your app */
 "widgets.noFavoritesFound" = "Ouvrez Brave pour afficher vos favoris ici";

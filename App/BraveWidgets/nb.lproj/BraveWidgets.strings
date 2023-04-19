@@ -65,6 +65,9 @@
 "e13lS3-vs094F" = "Bare som en bekreftelse – du ville ha 'Ny privat fane'?";
 
 /* (No Comment) */
+"e13lS3-XCyA8c" = "Bare for å være sikker, ser du etter «Brave News»?";
+
+/* (No Comment) */
 "e13lS3-Y7TWy8" = "Bare for å være sikker, ser du etter «Søk»?";
 
 /* (No Comment) */
@@ -113,6 +116,9 @@
 "L1fziM-vs094F" = "${count} alternativer matcher med 'Ny privat fane'.";
 
 /* (No Comment) */
+"L1fziM-XCyA8c" = "Det er ${count} alternativer som samsvarer med «Brave News».";
+
+/* (No Comment) */
 "L1fziM-Y7TWy8" = "Det er ${count} alternativer som samsvarer med «Søk».";
 
 /* (No Comment) */
@@ -147,6 +153,9 @@
 
 /* (No Comment) */
 "r2EI05-vs094F" = "Bare som en bekreftelse – du ville ha 'Ny privat fane'?";
+
+/* (No Comment) */
+"r2EI05-XCyA8c" = "Bare for å være sikker, ser du etter «Brave News»?";
 
 /* (No Comment) */
 "r2EI05-Y7TWy8" = "Bare for å være sikker, ser du etter «Søk»?";
@@ -185,6 +194,9 @@
 "tNCrcE-vs094F" = "${count} alternativer matcher med 'Ny privat fane'.";
 
 /* (No Comment) */
+"tNCrcE-XCyA8c" = "Det er ${count} alternativer som samsvarer med «Brave News».";
+
+/* (No Comment) */
 "tNCrcE-Y7TWy8" = "Det er ${count} alternativer som samsvarer med «Søk».";
 
 /* (No Comment) */
@@ -215,6 +227,9 @@
 "TxuMja-vs094F" = "${count} alternativer matcher med 'Ny privat fane'.";
 
 /* (No Comment) */
+"TxuMja-XCyA8c" = "Det er ${count} alternativer som samsvarer med «Brave News».";
+
+/* (No Comment) */
 "TxuMja-Y7TWy8" = "Det er ${count} alternativer som samsvarer med «Søk».";
 
 /* (No Comment) */
@@ -231,6 +246,9 @@
 
 /* (No Comment) */
 "xcI3h9" = "Blokkerte annonser";
+
+/* (No Comment) */
+"XCyA8c" = "Brave News";
 
 /* (No Comment) */
 "XkwBGY" = "Konfigurasjon av låseskjerm-snarvei";
@@ -261,6 +279,9 @@
 
 /* (No Comment) */
 "YQiQuz-vs094F" = "Bare som en bekreftelse – du ville ha 'Ny privat fane'?";
+
+/* (No Comment) */
+"YQiQuz-XCyA8c" = "Bare for å være sikker, ser du etter «Brave News»?";
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "Bare for å være sikker, ser du etter «Søk»?";

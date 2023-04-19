@@ -65,6 +65,9 @@
 "e13lS3-vs094F" = "Só para confirmar: você queria a opção \"Nova guia privada\"?";
 
 /* (No Comment) */
+"e13lS3-XCyA8c" = "Só para confirmar: você queria a opção \"Brave News\"?";
+
+/* (No Comment) */
 "e13lS3-Y7TWy8" = "Só para confirmar: você queria a opção \"Pesquisa\"?";
 
 /* (No Comment) */
@@ -113,6 +116,9 @@
 "L1fziM-vs094F" = "Há ${count} opções que correspondem a \"Nova guia privada\".";
 
 /* (No Comment) */
+"L1fziM-XCyA8c" = "Há ${count} opções que correspondem a \"Brave News\".";
+
+/* (No Comment) */
 "L1fziM-Y7TWy8" = "Há ${count} opções que correspondem a \"Pesquisa\".";
 
 /* (No Comment) */
@@ -147,6 +153,9 @@
 
 /* (No Comment) */
 "r2EI05-vs094F" = "Só para confirmar: você queria a opção \"Nova guia privada\"?";
+
+/* (No Comment) */
+"r2EI05-XCyA8c" = "Só para confirmar: você queria a opção \"Brave News\"?";
 
 /* (No Comment) */
 "r2EI05-Y7TWy8" = "Só para confirmar: você queria a opção \"Pesquisa\"?";
@@ -185,6 +194,9 @@
 "tNCrcE-vs094F" = "Há ${count} opções que correspondem a \"Nova guia privada\".";
 
 /* (No Comment) */
+"tNCrcE-XCyA8c" = "Há ${count} opções que correspondem a \"Brave News\".";
+
+/* (No Comment) */
 "tNCrcE-Y7TWy8" = "Há ${count} opções que correspondem a \"Pesquisa\".";
 
 /* (No Comment) */
@@ -215,6 +227,9 @@
 "TxuMja-vs094F" = "Há ${count} opções que correspondem a \"Nova guia privada\".";
 
 /* (No Comment) */
+"TxuMja-XCyA8c" = "Há ${count} opções que correspondem a \"Brave News\".";
+
+/* (No Comment) */
 "TxuMja-Y7TWy8" = "Há ${count} opções que correspondem a \"Pesquisa\".";
 
 /* (No Comment) */
@@ -231,6 +246,9 @@
 
 /* (No Comment) */
 "xcI3h9" = "Anúncios bloqueados";
+
+/* (No Comment) */
+"XCyA8c" = "Brave News";
 
 /* (No Comment) */
 "XkwBGY" = "Configuração de atalhos da tela de bloqueio";
@@ -261,6 +279,9 @@
 
 /* (No Comment) */
 "YQiQuz-vs094F" = "Só para confirmar: você queria a opção \"Nova guia privada\"?";
+
+/* (No Comment) */
+"YQiQuz-XCyA8c" = "Só para confirmar: você queria a opção \"Brave News\"?";
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "Só para confirmar: você queria a opção \"Pesquisa\"?";

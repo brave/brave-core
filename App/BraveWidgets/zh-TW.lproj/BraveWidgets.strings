@@ -65,6 +65,9 @@
 "e13lS3-vs094F" = "您要的是「新隱私分頁」，對嗎？";
 
 /* (No Comment) */
+"e13lS3-XCyA8c" = "您要的是「Brave 新聞」，對嗎？";
+
+/* (No Comment) */
 "e13lS3-Y7TWy8" = "您要的是「搜尋」，對嗎？";
 
 /* (No Comment) */
@@ -113,6 +116,9 @@
 "L1fziM-vs094F" = "有 ${count} 個選項符合「新隱私分頁」。";
 
 /* (No Comment) */
+"L1fziM-XCyA8c" = "有 ${count} 個符合「Brave 新聞」的選項。";
+
+/* (No Comment) */
 "L1fziM-Y7TWy8" = "有 ${count} 個選項符合「搜尋」。";
 
 /* (No Comment) */
@@ -147,6 +153,9 @@
 
 /* (No Comment) */
 "r2EI05-vs094F" = "您要的是「新隱私分頁」，對嗎？";
+
+/* (No Comment) */
+"r2EI05-XCyA8c" = "您要的是「Brave 新聞」，對嗎？";
 
 /* (No Comment) */
 "r2EI05-Y7TWy8" = "您要的是「搜尋」，對嗎？";
@@ -185,6 +194,9 @@
 "tNCrcE-vs094F" = "有 ${count} 個選項符合「新隱私分頁」。";
 
 /* (No Comment) */
+"tNCrcE-XCyA8c" = "有 ${count} 個符合「Brave 新聞」的選項。";
+
+/* (No Comment) */
 "tNCrcE-Y7TWy8" = "有 ${count} 個選項符合「搜尋」。";
 
 /* (No Comment) */
@@ -215,6 +227,9 @@
 "TxuMja-vs094F" = "有 ${count} 個選項符合「新隱私分頁」。";
 
 /* (No Comment) */
+"TxuMja-XCyA8c" = "有 ${count} 個符合「Brave 新聞」的選項。";
+
+/* (No Comment) */
 "TxuMja-Y7TWy8" = "有 ${count} 個選項符合「搜尋」。";
 
 /* (No Comment) */
@@ -231,6 +246,9 @@
 
 /* (No Comment) */
 "xcI3h9" = "已封鎖廣告";
+
+/* (No Comment) */
+"XCyA8c" = "Brave News";
 
 /* (No Comment) */
 "XkwBGY" = "螢幕鎖定捷徑組態";
@@ -261,6 +279,9 @@
 
 /* (No Comment) */
 "YQiQuz-vs094F" = "您要的是「新隱私分頁」，對嗎？";
+
+/* (No Comment) */
+"YQiQuz-XCyA8c" = "您要的是「Brave 新聞」，對嗎？";
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "您要的是「搜尋」，對嗎？";

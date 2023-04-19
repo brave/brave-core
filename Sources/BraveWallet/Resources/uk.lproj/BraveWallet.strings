@@ -10,6 +10,9 @@
 /* The title displayed on the account details screen */
 "wallet.accountDetailsTitle" = "Інформація облікового запису";
 
+/* The error shown below the account name field when adding or renaming a wallet account if the length is longer than 30 characters. */
+"wallet.accountNameLengthError" = "Довжина імені облікового запису не має перевищувати 30 символів";
+
 /* A button title for displaying their accounts private key */
 "wallet.accountPrivateKey" = "Закритий ключ";
 
@@ -27,6 +30,15 @@
 
 /* The title of the button at the bottom of Swap Screen, when the sell token is erc20 and it has not been activated its allowance. %@ will be replaced with the sell token's symbol such as 'DAI' or 'USDC' */
 "wallet.activateToken" = "Активувати токен %@";
+
+/* The description when showing no transactions inside Activity tab. */
+"wallet.activityPageEmptyDescription" = "Коли ви виконаєте першу транзакцію, її можна буде переглянути тут.";
+
+/* The title when showing no transactions inside Activity tab. */
+"wallet.activityPageEmptyTitle" = "Транзакцій наразі немає";
+
+/* The title of the tab that will display user's transaction activity for all accounts. */
+"wallet.activityPageTitle" = "Активність";
 
 /* The title of the button which when tapped will add a new account to the users list of crypto accounts. It will be used as the title of the navigation bar item button on the top right of the add custom token scree. */
 "wallet.addAccountAddButton" = "Додати";
@@ -301,6 +313,12 @@
 /* The title of the crypto tab */
 "wallet.cryptoTitle" = "Гаманець Brave";
 
+/* The navigation title of the screen for users to customize ipfs public gateway address for NFT. */
+"wallet.customizeIPFSNFTPublicGatewayNavTitle" = "Налаштування шлюзу IPFS для NFT";
+
+/* The navigation title of the screen for users to customize ipfs public gateway address. */
+"wallet.customizeIPFSPublicGatewayNavTitle" = "Налаштування шлюзу IPFS";
+
 /* The title above the input fields for users to input network block explorer urls in Custom Network Details Screen. */
 "wallet.customNetworkBlockExplorerUrlsTitle" = "URL-адреси оглядача блоків";
 
@@ -550,6 +568,24 @@
 /* The button title for showing the screen to change what assets are visible */
 "wallet.editVisibleAssetsButtonTitle" = "Редагувати видимі активи";
 
+/* Title on the button that users can click to enable Brave to resolve the ENS domain they entered. */
+"wallet.ensDomainInterstitialPageButtonProceed" = "Продовжити з використанням сервера Infura";
+
+/* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Infura's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
+"wallet.ensDomainInterstitialPageDescription" = "Brave використовуватиме Infura для обробки доменних імен .eth, які є в реєстрі Ethereum Name Service (ENS). Brave приховає вашу IP-адресу. Якщо ввімкнути цей параметр, Infura бачитиме лише те, що хтось намагається відвідати домени .eth. Див. <a href=%1$@>%2$@</a> та <a href=%3$@>%4$@</a> Infura.";
+
+/* Title displayed when users chose Brave to ask them if they want the ENS domain to be resolved every time they enter one. */
+"wallet.ensDomainInterstitialPageTitle" = "Увімкнути підтримку Ethereum Name Service (ENS) у Brave?";
+
+/* Title on the button that users can click to enable Brave to resolve the ENS offchain lookup for the domain they entered. */
+"wallet.ensOffchainDomainInterstitialPageButtonProceed" = "Продовжити пошук за межами мережі";
+
+/* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave Wallet's offchain lookup privacy considerations. The second '%@' will be replaced with the value of 'ensOffchainDomainInterstitialLearnMore'. */
+"wallet.ensOffchainDomainInterstitialPageDescription" = "Це доменне ім’я .eth зберігається поза мережею та оброблятиметься стороннім шлюзом. Якщо ви ввімкнете пошук поза мережею ENS, сторонній шлюз побачить, що ви намагаєтеся відвідати домен .eth. <a href=%1$@>%2$@</a>.";
+
+/* Title displayed when users chose Brave to ask them if they want the ENS Offchain domain to be resolved every time they enter one. */
+"wallet.ensOffchainDomainInterstitialPageTitle" = "Увімкнути підтримку пошуку за межами мережі Ethereum Name Service (ENS) у Brave?";
+
 /* Button title when requesting to do an ENS off chain lookup. */
 "wallet.ensOffchainGatewayButton" = "Використати домен мережі ENS";
 
@@ -703,8 +739,20 @@
 /* An error message displayed when the user doesn't have enough liquidity to proceed with a transaction. */
 "wallet.insufficientLiquidity" = "Недостатня ліквідність";
 
-/* The footer of the section for IPFS NFT gateway setting. */
-"wallet.ipfsSettingsFooter" = "Шлюз використовується для вирішення NFT-контенту в гаманці";
+/* A title will displayed in the IPFS error page when IPFS is disabled. */
+"wallet.ipfsErrorTitle" = "Цей сайт недоступний";
+
+/* The navigation title of the screen for users to customize NFT gateway. */
+"wallet.ipfsPublicGatewayAddressNFTTitle" = "Адреса загальнодоступного шлюзу IPFS для NFT";
+
+/* The navigation title of the screen for users to customize IPFS public gateway. */
+"wallet.ipfsPublicGatewayAddressTitle" = "Адреса загальнодоступного шлюзу IPFS";
+
+/* The description for the options to allow to resolve IPFS scheme urls. '%@' will be replaced with a url to explain more about IPFS gateway privacy. */
+"wallet.ipfsResolveMethodDescription" = "[Докладніше](%@) про використання шлюзів IPFS із метою конфіденційності.";
+
+/* The title of the section under Web3 settings for users to pick an option to resolve IPFS Resources. */
+"wallet.ipfsResourcesOptionsTitle" = "Обробка ресурсів IPFS";
 
 /* The header of the section under Web3 settings for IPFS NFT gateway setting. */
 "wallet.ipfsSettingsHeader" = "IPFS";
@@ -829,9 +877,6 @@
 /* Description of the NFT Gateway setting */
 "wallet.nftGatewayLongDescription" = "Потрібно надати дійсний IPFS-шлюз. Наданий шлюз буде перевірено на можливість завантаження ресурсів IPFS.";
 
-/* The navigation title of the screen for users to customize NFT gateway. */
-"wallet.nftGatewayTitle" = "Налаштуйте NFT-шлюз";
-
 /* The title which is displayed above a list of NFTs. 'NFT' is an acronym for Non-Fungible Token. */
 "wallet.nftsTitle" = "NFT";
 
@@ -854,7 +899,7 @@
 "wallet.otherWalletActionsAccessibilityTitle" = "Інші дії з гаманцем";
 
 /* The error message displayed when a user enters a password that does not meet the requirements */
-"wallet.passwordDoesNotMeetRequirementsError" = "Пароль має містити щонайменше 7 символів, зокрема хоча б одну літеру, одну цифру й один спеціальний символ.";
+"wallet.passwordDoesNotMeetRequirementsError" = "Пароль має складатися щонайменше з 8 символів.";
 
 /* A placeholder string that will be used on password text fields */
 "wallet.passwordPlaceholder" = "Пароль";
@@ -1152,6 +1197,15 @@
 
 /* The button title to skip recovery phrase backup */
 "wallet.skipButtonTitle" = "Пропустити";
+
+/* Title on the button that users can click to enable Brave to resolve the SNS domain they entered. */
+"wallet.snsDomainInterstitialPageButtonProceed" = "Продовжити із сервером Syndica";
+
+/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Syndica's terms of use page. The second '%@' will be replaced with the value of 'snsDomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Syndica's privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
+"wallet.snsDomainInterstitialPageDescription" = "Brave використовуватиме Syndica для вирішення доменних імен .sol. Brave приховає вашу IP-адресу. Якщо ввімкнути цей параметр, Syndica бачитиме, що хтось намагається відвідати домени .sol, але жодної іншої інформації. Див. <a href=%1$@>%2$@</a> й <a href=%3$@>%4$@</a> Syndica.";
+
+/* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
+"wallet.snsDomainInterstitialPageTitle" = "Увімкнути в Brave підтримку для Solana Name Service (SNS)?";
 
 /* The title displayed above the System Program AdvanceNonceAccount instruction type for Solana Instruction details. */
 "wallet.solanaAdvanceNonceAccountInstructionName" = "Розширений рахунок нонс";
@@ -1489,6 +1543,18 @@
 /* The short name of one of the on ramp provider. */
 "wallet.transakProviderShortName" = "Transak";
 
+/* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
+"wallet.udDomainInterstitialPageDescription" = "Brave використовуватиме Infura для обробки доменних імен .crypto (а також %1$@), які є в реєстрі Unstoppable Domains. Brave приховає вашу IP-адресу. Якщо ввімкнути цей параметр, Infura бачитиме лише те, що хтось намагається відвідати ці домени. Див. <a href=%2$@>%3$@</a> та <a href=%4$@>%5$@</a> Infura.";
+
+/* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
+"wallet.udDomainInterstitialPageTitle" = "Увімкнути підтримку Unstoppable Domains у Brave?";
+
+/* The description for the options to allow Unstoppable Domain domain names. '%@' will be replaced with a url to explain more about Unstoppable Domains. */
+"wallet.udResolveMethodDescription" = "[Докладніше](%@) про використання доменів Unstoppable Domains із метою конфіденційності.";
+
+/* The title for the options to resolve Unstoppable Domains domain names. */
+"wallet.udResolveMethodTitle" = "Обробка доменних імен Unstoppable Domains";
+
 /* An error message displayed when an unspecified problem occurs. */
 "wallet.unknownError" = "Невідома помилка";
 
@@ -1552,13 +1618,22 @@
 /* The title shown on the settings menu to Web3 settings. */
 "wallet.web3" = "Web3";
 
-/* One of the options for Brave to handle Ethereum/Solana Name Service domain name. 'Ask' means Brave will ask user first before enable or disable resolving ENS/SNS domain name. */
+/* Title on the button that users can click to disable Brave to resolve the ENS/SNS domain they entered. */
+"wallet.web3DomainInterstitialPageButtonDisable" = "Вимкнути";
+
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Brave uses to resolve SNS domain. */
+"wallet.web3DomainInterstitialPagePrivacyPolicy" = "політику конфіденційності";
+
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Brave uses to resolve SNS domain. */
+"wallet.web3DomainInterstitialPageTAndU" = "умови використання";
+
+/* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Ask' means Brave will ask user first before enable or disable resolving ENS/SNS domain name and IPFS scheme url. */
 "wallet.web3DomainOptionAsk" = "Запитати";
 
-/* One of the options for Brave to handle Ethereum/Solana Name Service domain name. 'Disabled' means Brave will disable resolving ENS/SNS domain name. */
+/* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Disabled' means Brave will disable resolving ENS/SNS domain name and IPFS scheme url. */
 "wallet.web3DomainOptionDisabled" = "Вимкнено";
 
-/* One of the options for Brave to handle Ethereum/Solana Name Service domain name. 'Enabled' means Brave will enable resolving ENS/SNS domain name. */
+/* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Enabled' means Brave will enable resolving ENS/SNS domain name and IPFS scheme url. */
 "wallet.web3DomainOptionEnabled" = "Увімкнено";
 
 /* The header for the options to resolve Solana Name service domain names. */
@@ -1566,6 +1641,18 @@
 
 /* The title for the options to resolve Solana Name service domain names. */
 "wallet.web3DomainOptionsTitle" = "Обробка запитів на пошук доменних імен Solana Name Service (SNS)";
+
+/* A brief explaination of IPFS on privacy. The first '%@' will be replaced with a link to a Brave article that explains how does IPFS impact users' privacy in details. The second '%@' will be replaced with 'web3IPFSInterstitialIPFSPrivacyLearnMore'. */
+"wallet.web3IPFSInterstitialIPFSPrivacy" = "IPFS (InterPlanetary File System) — це загальнодоступна мережа для однорангового зберігання та доставки даних. Цей протокол має інші міркування щодо конфіденційності, ніж HTTP(S). <a href=%1$@>%2$@</a>";
+
+/* A brief explaination of resolving IPFS scheme url using a public gateway. */
+"wallet.web3IPFSInterstitialIPFSPublicGateway" = "Захищає вашу IP-адресу й уміст, який ви запитуєте, від потенційних сторонніх спостерігачів, але не від оператора загальнодоступних шлюзів. Оператор шлюзу несе відповідальність за те, щоб уміст, який вам подається через шлюз, був умістом, який ви запитували. Крім того, ваш пристрій не належить до загальнодоступної мережі IPFS.";
+
+/* The title of the IPFS interstitial page for user to set the preference of IPFS scheme url handling. */
+"wallet.web3IPFSInterstitialIPFSTitle" = "Установіть свою перевагу IPFS";
+
+/* The title of the button that user will click to let Brave to resolve IPFS shceme url. */
+"wallet.web3IPFSInterstitialProceedButton" = "Використати загальнодоступний шлюз";
 
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
 "wallet.web3PreferencesAllowEthProviderAccess" = "Сайти можуть запитувати доступ до вашого гаманця Ethereum";

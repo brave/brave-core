@@ -65,6 +65,9 @@
 "e13lS3-vs094F" = "Nur, um sicherzugehen, Sie suchten nach „Neuer privater Tab“?";
 
 /* (No Comment) */
+"e13lS3-XCyA8c" = "Nur, um sicherzugehen, Sie suchten nach „Brave-Nachrichten“?";
+
+/* (No Comment) */
 "e13lS3-Y7TWy8" = "Nur, um sicherzugehen, Sie suchten nach „Suche“?";
 
 /* (No Comment) */
@@ -113,6 +116,9 @@
 "L1fziM-vs094F" = "Es gibt ${count} Optionen, die mit „Neuer privater Tab“ übereinstimmen.";
 
 /* (No Comment) */
+"L1fziM-XCyA8c" = "Es gibt ${count} Optionen, die mit „Brave-Nachrichten“ übereinstimmen.";
+
+/* (No Comment) */
 "L1fziM-Y7TWy8" = "Es gibt ${count} Optionen, die mit „Suche“ übereinstimmen.";
 
 /* (No Comment) */
@@ -147,6 +153,9 @@
 
 /* (No Comment) */
 "r2EI05-vs094F" = "Nur, um sicherzugehen, Sie suchten nach „Neuer privater Tab“?";
+
+/* (No Comment) */
+"r2EI05-XCyA8c" = "Nur, um sicherzugehen, Sie suchten nach „Brave-Nachrichten“?";
 
 /* (No Comment) */
 "r2EI05-Y7TWy8" = "Nur, um sicherzugehen, Sie suchten nach „Suche“?";
@@ -185,6 +194,9 @@
 "tNCrcE-vs094F" = "Es gibt ${count} Optionen, die mit „Neuer privater Tab“ übereinstimmen.";
 
 /* (No Comment) */
+"tNCrcE-XCyA8c" = "Es gibt ${count} Optionen, die mit „Brave-Nachrichten“ übereinstimmen.";
+
+/* (No Comment) */
 "tNCrcE-Y7TWy8" = "Es gibt ${count} Optionen, die mit „Suche“ übereinstimmen.";
 
 /* (No Comment) */
@@ -215,6 +227,9 @@
 "TxuMja-vs094F" = "Es gibt ${count} Optionen, die mit „Neuer privater Tab“ übereinstimmen.";
 
 /* (No Comment) */
+"TxuMja-XCyA8c" = "Es gibt ${count} Optionen, die mit „Brave-Nachrichten“ übereinstimmen.";
+
+/* (No Comment) */
 "TxuMja-Y7TWy8" = "Es gibt ${count} Optionen, die mit „Suche“ übereinstimmen.";
 
 /* (No Comment) */
@@ -231,6 +246,9 @@
 
 /* (No Comment) */
 "xcI3h9" = "Blockierte Anzeigen";
+
+/* (No Comment) */
+"XCyA8c" = "Brave-Nachrichten";
 
 /* (No Comment) */
 "XkwBGY" = "Sperrbildschirm Verknüpfungskonfiguration";
@@ -261,6 +279,9 @@
 
 /* (No Comment) */
 "YQiQuz-vs094F" = "Nur, um sicherzugehen, Sie suchten nach „Neuer privater Tab“?";
+
+/* (No Comment) */
+"YQiQuz-XCyA8c" = "Nur, um sicherzugehen, Sie suchten nach „Brave-Nachrichten“?";
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "Nur, um sicherzugehen, Sie suchten nach „Suche“?";

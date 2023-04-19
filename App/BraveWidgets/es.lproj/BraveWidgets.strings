@@ -65,6 +65,9 @@
 "e13lS3-vs094F" = "Solo para confirmar: ¿querías decir \"Nueva pestaña privada\"?";
 
 /* (No Comment) */
+"e13lS3-XCyA8c" = "Solo para confirmar: ¿querías decir \"Noticias de Brave\"?";
+
+/* (No Comment) */
 "e13lS3-Y7TWy8" = "Solo para confirmar: ¿querías decir \"Búsqueda\"?";
 
 /* (No Comment) */
@@ -113,6 +116,9 @@
 "L1fziM-vs094F" = "Hay ${count} opciones que coinciden con \"Nueva pestaña privada\".";
 
 /* (No Comment) */
+"L1fziM-XCyA8c" = "Hay ${count} opciones que coinciden con \"Noticias de Brave\".";
+
+/* (No Comment) */
 "L1fziM-Y7TWy8" = "Hay ${count} opciones que coinciden con \"Búsqueda\".";
 
 /* (No Comment) */
@@ -147,6 +153,9 @@
 
 /* (No Comment) */
 "r2EI05-vs094F" = "Solo para confirmar: ¿querías decir \"Nueva pestaña privada\"?";
+
+/* (No Comment) */
+"r2EI05-XCyA8c" = "Solo para confirmar: ¿querías decir \"Noticias de Brave\"?";
 
 /* (No Comment) */
 "r2EI05-Y7TWy8" = "Solo para confirmar: ¿querías decir \"Búsqueda\"?";
@@ -185,6 +194,9 @@
 "tNCrcE-vs094F" = "Hay ${count} opciones que coinciden con \"Nueva pestaña privada\".";
 
 /* (No Comment) */
+"tNCrcE-XCyA8c" = "Hay ${count} opciones que coinciden con \"Noticias de Brave\".";
+
+/* (No Comment) */
 "tNCrcE-Y7TWy8" = "Hay ${count} opciones que coinciden con \"Búsqueda\".";
 
 /* (No Comment) */
@@ -215,6 +227,9 @@
 "TxuMja-vs094F" = "Hay ${count} opciones que coinciden con \"Nueva pestaña privada\".";
 
 /* (No Comment) */
+"TxuMja-XCyA8c" = "Hay ${count} opciones que coinciden con \"Noticias de Brave\".";
+
+/* (No Comment) */
 "TxuMja-Y7TWy8" = "Hay ${count} opciones que coinciden con \"Búsqueda\".";
 
 /* (No Comment) */
@@ -231,6 +246,9 @@
 
 /* (No Comment) */
 "xcI3h9" = "Anuncios bloqueados";
+
+/* (No Comment) */
+"XCyA8c" = "Noticias de Brave";
 
 /* (No Comment) */
 "XkwBGY" = "Configuración de accesos directos en la pantalla de bloqueo";
@@ -261,6 +279,9 @@
 
 /* (No Comment) */
 "YQiQuz-vs094F" = "Solo para confirmar: ¿querías decir \"Nueva pestaña privada\"?";
+
+/* (No Comment) */
+"YQiQuz-XCyA8c" = "Solo para confirmar: ¿querías decir \"Noticias de Brave\"?";
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "Solo para confirmar: ¿querías decir \"Búsqueda\"?";

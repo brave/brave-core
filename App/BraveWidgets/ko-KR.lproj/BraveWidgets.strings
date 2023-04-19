@@ -65,6 +65,9 @@
 "e13lS3-vs094F" = "'새 비공개 탭'을 찾고 계신가요?";
 
 /* (No Comment) */
+"e13lS3-XCyA8c" = "'Brave News'를 찾고 계신가요?";
+
+/* (No Comment) */
 "e13lS3-Y7TWy8" = "'검색'을 찾고 계신가요?";
 
 /* (No Comment) */
@@ -113,6 +116,9 @@
 "L1fziM-vs094F" = "'새 비공개 탭'과 일치하는 옵션이 ${count}개 있습니다.";
 
 /* (No Comment) */
+"L1fziM-XCyA8c" = "'Brave News'와 일치하는 옵션이 ${count}개 있습니다.";
+
+/* (No Comment) */
 "L1fziM-Y7TWy8" = "'검색'과 일치하는 옵션이 ${count}개 있습니다.";
 
 /* (No Comment) */
@@ -147,6 +153,9 @@
 
 /* (No Comment) */
 "r2EI05-vs094F" = "'새 비공개 탭'을 찾고 계신가요?";
+
+/* (No Comment) */
+"r2EI05-XCyA8c" = "'Brave News'를 찾고 계신가요?";
 
 /* (No Comment) */
 "r2EI05-Y7TWy8" = "'검색'을 찾고 계신가요?";
@@ -185,6 +194,9 @@
 "tNCrcE-vs094F" = "'새 비공개 탭'과 일치하는 옵션이 ${count}개 있습니다.";
 
 /* (No Comment) */
+"tNCrcE-XCyA8c" = "'Brave News'와 일치하는 옵션이 ${count}개 있습니다.";
+
+/* (No Comment) */
 "tNCrcE-Y7TWy8" = "'검색'과 일치하는 옵션이 ${count}개 있습니다.";
 
 /* (No Comment) */
@@ -215,6 +227,9 @@
 "TxuMja-vs094F" = "'새 비공개 탭'과 일치하는 옵션이 ${count}개 있습니다.";
 
 /* (No Comment) */
+"TxuMja-XCyA8c" = "'Brave News'와 일치하는 옵션이 ${count}개 있습니다.";
+
+/* (No Comment) */
 "TxuMja-Y7TWy8" = "'검색'과 일치하는 옵션이 ${count}개 있습니다.";
 
 /* (No Comment) */
@@ -231,6 +246,9 @@
 
 /* (No Comment) */
 "xcI3h9" = "차단된 광고 수";
+
+/* (No Comment) */
+"XCyA8c" = "Brave News";
 
 /* (No Comment) */
 "XkwBGY" = "화면 바로가기 구성 잠금";
@@ -261,6 +279,9 @@
 
 /* (No Comment) */
 "YQiQuz-vs094F" = "'새 비공개 탭'을 찾고 계신가요?";
+
+/* (No Comment) */
+"YQiQuz-XCyA8c" = "'Brave News'를 찾고 계신가요?";
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "'검색'을 찾고 계신가요?";

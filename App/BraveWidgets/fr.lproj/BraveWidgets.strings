@@ -65,6 +65,9 @@
 "e13lS3-vs094F" = "Vouliez-vous dire « Nouvel onglet privé » ?";
 
 /* (No Comment) */
+"e13lS3-XCyA8c" = "Vouliez-vous dire \"Actualités Brave\" ?";
+
+/* (No Comment) */
 "e13lS3-Y7TWy8" = "Vouliez-vous dire \"Recherche\" ?";
 
 /* (No Comment) */
@@ -113,6 +116,9 @@
 "L1fziM-vs094F" = "Il y a ${count} options correspondant à « Nouvel onglet privé ».";
 
 /* (No Comment) */
+"L1fziM-XCyA8c" = "Il y a ${count} options correspondant à \"Actualités Brave\".";
+
+/* (No Comment) */
 "L1fziM-Y7TWy8" = "Il y a ${count} options correspondant à \"Recherche\".";
 
 /* (No Comment) */
@@ -147,6 +153,9 @@
 
 /* (No Comment) */
 "r2EI05-vs094F" = "Vouliez-vous dire « Nouvel onglet privé » ?";
+
+/* (No Comment) */
+"r2EI05-XCyA8c" = "Vouliez-vous dire \"Actualités Brave\" ?";
 
 /* (No Comment) */
 "r2EI05-Y7TWy8" = "Vouliez-vous dire \"Recherche\" ?";
@@ -185,6 +194,9 @@
 "tNCrcE-vs094F" = "Il y a ${count} options correspondant à « Nouvel onglet privé ».";
 
 /* (No Comment) */
+"tNCrcE-XCyA8c" = "Il y a ${count} options correspondant à \"Actualités Brave\".";
+
+/* (No Comment) */
 "tNCrcE-Y7TWy8" = "Il y a ${count} options correspondant à \"Recherche\".";
 
 /* (No Comment) */
@@ -215,6 +227,9 @@
 "TxuMja-vs094F" = "Il y a ${count} options correspondant à « Nouvel onglet privé ».";
 
 /* (No Comment) */
+"TxuMja-XCyA8c" = "Il y a ${count} options correspondant à \"Actualités Brave\".";
+
+/* (No Comment) */
 "TxuMja-Y7TWy8" = "Il y a ${count} options correspondant à \"Recherche\".";
 
 /* (No Comment) */
@@ -231,6 +246,9 @@
 
 /* (No Comment) */
 "xcI3h9" = "Publicités bloquées";
+
+/* (No Comment) */
+"XCyA8c" = "Actualités Brave";
 
 /* (No Comment) */
 "XkwBGY" = "Configuration des raccourcis sur l'écran de verrouillage";
@@ -261,6 +279,9 @@
 
 /* (No Comment) */
 "YQiQuz-vs094F" = "Vouliez-vous dire « Nouvel onglet privé » ?";
+
+/* (No Comment) */
+"YQiQuz-XCyA8c" = "Vouliez-vous dire \"Actualités Brave\" ?";
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "Vouliez-vous dire \"Recherche\" ?";

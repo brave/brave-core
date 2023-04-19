@@ -65,6 +65,9 @@
 "e13lS3-vs094F" = "Var det ”Ny privat flik” du sökte efter?";
 
 /* (No Comment) */
+"e13lS3-XCyA8c" = "Var det \"Brave News\" du sökte efter?";
+
+/* (No Comment) */
 "e13lS3-Y7TWy8" = "Var det \"Sök\" du sökte efter?";
 
 /* (No Comment) */
@@ -113,6 +116,9 @@
 "L1fziM-vs094F" = "Det finns ${count} alternativ som matchar ”Ny privat flik”.";
 
 /* (No Comment) */
+"L1fziM-XCyA8c" = "Det finns ${count} alternativ som matchar \"Brave News\".";
+
+/* (No Comment) */
 "L1fziM-Y7TWy8" = "Det finns ${count} alternativ som matchar \"Sök\".";
 
 /* (No Comment) */
@@ -147,6 +153,9 @@
 
 /* (No Comment) */
 "r2EI05-vs094F" = "Var det ”Ny privat flik” du sökte efter?";
+
+/* (No Comment) */
+"r2EI05-XCyA8c" = "Var det \"Brave News\" du sökte efter?";
 
 /* (No Comment) */
 "r2EI05-Y7TWy8" = "Var det ”Sök” du sökte efter?";
@@ -185,6 +194,9 @@
 "tNCrcE-vs094F" = "Det finns ${count} alternativ som matchar ”Ny privat flik”.";
 
 /* (No Comment) */
+"tNCrcE-XCyA8c" = "Det finns ${count} alternativ som matchar \"Brave News\".";
+
+/* (No Comment) */
 "tNCrcE-Y7TWy8" = "Det finns ${count} alternativ som matchar \"Sök\".";
 
 /* (No Comment) */
@@ -215,6 +227,9 @@
 "TxuMja-vs094F" = "Det finns ${count} alternativ som matchar ”Ny privat flik”.";
 
 /* (No Comment) */
+"TxuMja-XCyA8c" = "Det finns ${count} alternativ som matchar \"Brave News\".";
+
+/* (No Comment) */
 "TxuMja-Y7TWy8" = "Det finns ${count} alternativ som matchar \"Sök\".";
 
 /* (No Comment) */
@@ -231,6 +246,9 @@
 
 /* (No Comment) */
 "xcI3h9" = "Blockerade annonser";
+
+/* (No Comment) */
+"XCyA8c" = "Brave News";
 
 /* (No Comment) */
 "XkwBGY" = "Genvägskonfigurering för låsskärm";
@@ -261,6 +279,9 @@
 
 /* (No Comment) */
 "YQiQuz-vs094F" = "Var det ”Ny privat flik” du sökte efter?";
+
+/* (No Comment) */
+"YQiQuz-XCyA8c" = "Var det \"Brave News\" du sökte efter?";
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "Ville du ha \"Sök\"?";

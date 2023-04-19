@@ -10,6 +10,9 @@
 /* The title displayed on the account details screen */
 "wallet.accountDetailsTitle" = "계정 세부정보";
 
+/* The error shown below the account name field when adding or renaming a wallet account if the length is longer than 30 characters. */
+"wallet.accountNameLengthError" = "계정 이름은 최대 30자 이내여야 함";
+
 /* A button title for displaying their accounts private key */
 "wallet.accountPrivateKey" = "비공개 키";
 
@@ -27,6 +30,15 @@
 
 /* The title of the button at the bottom of Swap Screen, when the sell token is erc20 and it has not been activated its allowance. %@ will be replaced with the sell token's symbol such as 'DAI' or 'USDC' */
 "wallet.activateToken" = "토큰 %@ 활성화";
+
+/* The description when showing no transactions inside Activity tab. */
+"wallet.activityPageEmptyDescription" = "첫 트랜잭션 이후 여기서 볼 수 있습니다.";
+
+/* The title when showing no transactions inside Activity tab. */
+"wallet.activityPageEmptyTitle" = "아직 트랜잭션 없음";
+
+/* The title of the tab that will display user's transaction activity for all accounts. */
+"wallet.activityPageTitle" = "활동";
 
 /* The title of the button which when tapped will add a new account to the users list of crypto accounts. It will be used as the title of the navigation bar item button on the top right of the add custom token scree. */
 "wallet.addAccountAddButton" = "추가";
@@ -301,6 +313,12 @@
 /* The title of the crypto tab */
 "wallet.cryptoTitle" = "Brave 월렛";
 
+/* The navigation title of the screen for users to customize ipfs public gateway address for NFT. */
+"wallet.customizeIPFSNFTPublicGatewayNavTitle" = "NFT용 IPFS 게이트웨이 맞춤 설정";
+
+/* The navigation title of the screen for users to customize ipfs public gateway address. */
+"wallet.customizeIPFSPublicGatewayNavTitle" = "IPFS 게이트웨이 맞춤 설정";
+
 /* The title above the input fields for users to input network block explorer urls in Custom Network Details Screen. */
 "wallet.customNetworkBlockExplorerUrlsTitle" = "블록 탐색기 URL";
 
@@ -550,6 +568,24 @@
 /* The button title for showing the screen to change what assets are visible */
 "wallet.editVisibleAssetsButtonTitle" = "표시되는 자산 편집";
 
+/* Title on the button that users can click to enable Brave to resolve the ENS domain they entered. */
+"wallet.ensDomainInterstitialPageButtonProceed" = "Infura 서버를 사용하여 계속하기";
+
+/* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Infura's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
+"wallet.ensDomainInterstitialPageDescription" = "Brave는 Ethereum Name Service (ENS)상에서 .eth 도메인 이름을 해석하는 데 Infura를 사용합니다. Brave는 귀하의 IP 주소를 숨깁니다. 이를 활성화하면 누군가 이러한 도메인을 방문하려고 한다는 사실 외에는 Infura가 확인할 수 없습니다. Infura의 <a href=%1$@>%2$@</a> 및 <a href=%3$@>%4$@</a>을 참조하세요.";
+
+/* Title displayed when users chose Brave to ask them if they want the ENS domain to be resolved every time they enter one. */
+"wallet.ensDomainInterstitialPageTitle" = "Brave에서 Ethereum Name Service(ENS) 지원을 활성화할까요?";
+
+/* Title on the button that users can click to enable Brave to resolve the ENS offchain lookup for the domain they entered. */
+"wallet.ensOffchainDomainInterstitialPageButtonProceed" = "오프체인 룩업으로 계속";
+
+/* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave Wallet's offchain lookup privacy considerations. The second '%@' will be replaced with the value of 'ensOffchainDomainInterstitialLearnMore'. */
+"wallet.ensOffchainDomainInterstitialPageDescription" = "이 .eth 도메인 이름은 오프체인으로 저장되어 제3자 게이트웨이가 해석합니다. ENS 오프체인 룩업을 활성화하면 귀하가 .eth 도메인 방문을 시도한다는 사실을 제3자 게이트웨이가 확인할 수 있습니다. <a href=%1$@>%2$@</a>.";
+
+/* Title displayed when users chose Brave to ask them if they want the ENS Offchain domain to be resolved every time they enter one. */
+"wallet.ensOffchainDomainInterstitialPageTitle" = "Brave는 ENS(Ethereum Name Service) 오프체인 룩업 지원을 활성화할까요?";
+
 /* Button title when requesting to do an ENS off chain lookup. */
 "wallet.ensOffchainGatewayButton" = "ENS 도메인 사용";
 
@@ -703,8 +739,20 @@
 /* An error message displayed when the user doesn't have enough liquidity to proceed with a transaction. */
 "wallet.insufficientLiquidity" = "유동성 부족";
 
-/* The footer of the section for IPFS NFT gateway setting. */
-"wallet.ipfsSettingsFooter" = "월렛 내 NFT 콘텐츠 해석에 게이트웨이 사용";
+/* A title will displayed in the IPFS error page when IPFS is disabled. */
+"wallet.ipfsErrorTitle" = "사이트에 도달할 수 없음";
+
+/* The navigation title of the screen for users to customize NFT gateway. */
+"wallet.ipfsPublicGatewayAddressNFTTitle" = "NFT용 IPFS 공개 게이트웨이 주소";
+
+/* The navigation title of the screen for users to customize IPFS public gateway. */
+"wallet.ipfsPublicGatewayAddressTitle" = "IPFS 공개 게이트웨이 주소";
+
+/* The description for the options to allow to resolve IPFS scheme urls. '%@' will be replaced with a url to explain more about IPFS gateway privacy. */
+"wallet.ipfsResolveMethodDescription" = "IPFS 게이트웨이 프라이버시 고려 사항에 대해 [자세히 알아보세요](%@).";
+
+/* The title of the section under Web3 settings for users to pick an option to resolve IPFS Resources. */
+"wallet.ipfsResourcesOptionsTitle" = "IPFS 리소스 해석";
 
 /* The header of the section under Web3 settings for IPFS NFT gateway setting. */
 "wallet.ipfsSettingsHeader" = "IPFS";
@@ -829,9 +877,6 @@
 /* Description of the NFT Gateway setting */
 "wallet.nftGatewayLongDescription" = "유효한 IPFS 게이트웨이를 제공해야 합니다. 제공된 게이트웨이에 IPFS 리소스 로드 권한이 있는지 확인합니다.";
 
-/* The navigation title of the screen for users to customize NFT gateway. */
-"wallet.nftGatewayTitle" = "NFT 게이트웨이 맞춤 설정";
-
 /* The title which is displayed above a list of NFTs. 'NFT' is an acronym for Non-Fungible Token. */
 "wallet.nftsTitle" = "NFT";
 
@@ -854,7 +899,7 @@
 "wallet.otherWalletActionsAccessibilityTitle" = "기타 월렛 관련 액션";
 
 /* The error message displayed when a user enters a password that does not meet the requirements */
-"wallet.passwordDoesNotMeetRequirementsError" = "비밀번호는 7자 이상이어야 하며, 숫자와 특수문자를 각각 하나 이상 포함해야 합니다.";
+"wallet.passwordDoesNotMeetRequirementsError" = "비밀번호는 8자 이상이어야 합니다.";
 
 /* A placeholder string that will be used on password text fields */
 "wallet.passwordPlaceholder" = "비밀번호";
@@ -1152,6 +1197,15 @@
 
 /* The button title to skip recovery phrase backup */
 "wallet.skipButtonTitle" = "건너뛰기";
+
+/* Title on the button that users can click to enable Brave to resolve the SNS domain they entered. */
+"wallet.snsDomainInterstitialPageButtonProceed" = "Syndica 서버를 이용하여 계속 진행";
+
+/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Syndica's terms of use page. The second '%@' will be replaced with the value of 'snsDomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Syndica's privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
+"wallet.snsDomainInterstitialPageDescription" = "Brave는 .sol 도메인 네임을 변환하기 위해 Syndica를 사용할 예정입니다. 이를 활성화하면 Syndica에서 누군가 .sol 도메인을 방문하고자 할 때 이를 확인할 수 있게 되나, 그 외의 정보는 확인할 수 없습니다. Syndica의 <a href=%1$@>%2$@</a> 및 <a href=%3$@>%4$@</a> 내용을 확인하십시오.";
+
+/* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
+"wallet.snsDomainInterstitialPageTitle" = "Brave에서 SNS(Solana Name Service) 지원을 활성화할까요?";
 
 /* The title displayed above the System Program AdvanceNonceAccount instruction type for Solana Instruction details. */
 "wallet.solanaAdvanceNonceAccountInstructionName" = "논스 계정 진행";
@@ -1489,6 +1543,18 @@
 /* The short name of one of the on ramp provider. */
 "wallet.transakProviderShortName" = "Transak";
 
+/* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
+"wallet.udDomainInterstitialPageDescription" = "Brave는 Unstoppable Domains상에서 .crypto(및 %1$@) 도메인 이름을 해석하는 데 Infura를 사용합니다. Brave는 귀하의 IP 주소를 숨깁니다. 이를 활성화하면 누군가 이러한 도메인을 방문하려고 한다는 사실 외에는 Infura가 확인할 수 없습니다. Infura의 <a href=%2$@>%3$@</a> 및 <a href=%4$@>%5$@</a>을 참조하세요.";
+
+/* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
+"wallet.udDomainInterstitialPageTitle" = "Brave에서 Unstoppable Domains 지원을 활성화할까요?";
+
+/* The description for the options to allow Unstoppable Domain domain names. '%@' will be replaced with a url to explain more about Unstoppable Domains. */
+"wallet.udResolveMethodDescription" = "Unstoppable Domains 프라이버시 고려 사항에 대해 [자세히 알아보세요](%@).";
+
+/* The title for the options to resolve Unstoppable Domains domain names. */
+"wallet.udResolveMethodTitle" = "Unstoppable Domains 도메인 이름 해석";
+
 /* An error message displayed when an unspecified problem occurs. */
 "wallet.unknownError" = "알 수 없는 오류";
 
@@ -1552,13 +1618,22 @@
 /* The title shown on the settings menu to Web3 settings. */
 "wallet.web3" = "Web3";
 
-/* One of the options for Brave to handle Ethereum/Solana Name Service domain name. 'Ask' means Brave will ask user first before enable or disable resolving ENS/SNS domain name. */
+/* Title on the button that users can click to disable Brave to resolve the ENS/SNS domain they entered. */
+"wallet.web3DomainInterstitialPageButtonDisable" = "비활성화";
+
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Brave uses to resolve SNS domain. */
+"wallet.web3DomainInterstitialPagePrivacyPolicy" = "개인정보 보호정책";
+
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Brave uses to resolve SNS domain. */
+"wallet.web3DomainInterstitialPageTAndU" = "이용 약관";
+
+/* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Ask' means Brave will ask user first before enable or disable resolving ENS/SNS domain name and IPFS scheme url. */
 "wallet.web3DomainOptionAsk" = "확인";
 
-/* One of the options for Brave to handle Ethereum/Solana Name Service domain name. 'Disabled' means Brave will disable resolving ENS/SNS domain name. */
+/* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Disabled' means Brave will disable resolving ENS/SNS domain name and IPFS scheme url. */
 "wallet.web3DomainOptionDisabled" = "비활성화됨";
 
-/* One of the options for Brave to handle Ethereum/Solana Name Service domain name. 'Enabled' means Brave will enable resolving ENS/SNS domain name. */
+/* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Enabled' means Brave will enable resolving ENS/SNS domain name and IPFS scheme url. */
 "wallet.web3DomainOptionEnabled" = "활성화됨";
 
 /* The header for the options to resolve Solana Name service domain names. */
@@ -1566,6 +1641,18 @@
 
 /* The title for the options to resolve Solana Name service domain names. */
 "wallet.web3DomainOptionsTitle" = "SNS(Solana Name Service) 도메인 이름 해석";
+
+/* A brief explaination of IPFS on privacy. The first '%@' will be replaced with a link to a Brave article that explains how does IPFS impact users' privacy in details. The second '%@' will be replaced with 'web3IPFSInterstitialIPFSPrivacyLearnMore'. */
+"wallet.web3IPFSInterstitialIPFSPrivacy" = "IPFS(InterPlanetary File System)는 피어 투 피어 데이터 저장 및 전달을 위한 공개 네트워크입니다. 이 프로토콜의 프라이버시 고려 사항은 HTTP(S)와 다릅니다. <a href=%1$@>%2$@</a>";
+
+/* A brief explaination of resolving IPFS scheme url using a public gateway. */
+"wallet.web3IPFSInterstitialIPFSPublicGateway" = "공개 게이트웨이 운영자가 아닌 제3자 옵저버로부터의 요청으로 보이는 경우 귀하의 IP 주소 및 콘텐츠를 보호합니다. 귀하가 요청한 콘텐츠가 게이트웨이를 통해 제공되도록 할 책임은 게이트웨이 운영자에게 있습니다. 그리고 귀하의 디바이스는 공개 IPFS 네트워크에 기여하지 않습니다.";
+
+/* The title of the IPFS interstitial page for user to set the preference of IPFS scheme url handling. */
+"wallet.web3IPFSInterstitialIPFSTitle" = "IPFS 기본 환경 설정";
+
+/* The title of the button that user will click to let Brave to resolve IPFS shceme url. */
+"wallet.web3IPFSInterstitialProceedButton" = "공개 게이트웨이 사용";
 
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
 "wallet.web3PreferencesAllowEthProviderAccess" = "사이트는 회원님의 이더리움 지갑에 대한 액세스를 요청할 수 있습니다";

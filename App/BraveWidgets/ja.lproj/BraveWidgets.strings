@@ -65,6 +65,9 @@
 "e13lS3-vs094F" = "確認ですが、'新しいプライベートタブ' を探していましたか？";
 
 /* (No Comment) */
+"e13lS3-XCyA8c" = "'Braveニュース' をお探しですか？";
+
+/* (No Comment) */
 "e13lS3-Y7TWy8" = "'検索' をお探しですか？";
 
 /* (No Comment) */
@@ -113,6 +116,9 @@
 "L1fziM-vs094F" = "‘新しいプライベートタブ’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
+"L1fziM-XCyA8c" = "‘Braveニュース’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
 "L1fziM-Y7TWy8" = "‘検索’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
@@ -147,6 +153,9 @@
 
 /* (No Comment) */
 "r2EI05-vs094F" = "確認ですが、'新しいプライベートタブ' を探していましたか？";
+
+/* (No Comment) */
+"r2EI05-XCyA8c" = "'Braveニュース' をお探しですか？";
 
 /* (No Comment) */
 "r2EI05-Y7TWy8" = "'検索' をお探しですか？";
@@ -185,6 +194,9 @@
 "tNCrcE-vs094F" = "‘新しいプライベートタブ’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
+"tNCrcE-XCyA8c" = "‘Braveニュース’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
 "tNCrcE-Y7TWy8" = "‘検索’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
@@ -215,6 +227,9 @@
 "TxuMja-vs094F" = "‘新しいプライベートタブ’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
+"TxuMja-XCyA8c" = "‘Braveニュース’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
 "TxuMja-Y7TWy8" = "‘検索’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
@@ -231,6 +246,9 @@
 
 /* (No Comment) */
 "xcI3h9" = "ブロック済の広告";
+
+/* (No Comment) */
+"XCyA8c" = "Braveニュース";
 
 /* (No Comment) */
 "XkwBGY" = "ロック画面のショートカット設定";
@@ -261,6 +279,9 @@
 
 /* (No Comment) */
 "YQiQuz-vs094F" = "確認ですが、'新しいプライベートタブ' を探していましたか？";
+
+/* (No Comment) */
+"YQiQuz-XCyA8c" = "'Braveニュース' をお探しですか？";
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "'検索' をお探しですか？";
