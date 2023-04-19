@@ -3573,11 +3573,7 @@ TEST_F(KeyringServiceUnitTest, PreCreateEncryptors) {
         RestoreWallet(&service, *mnemonic_to_be_restored, "brave", false));
     EXPECT_NE(service.encryptors_.at(mojom::kDefaultKeyringId), nullptr);
     EXPECT_NE(service.encryptors_.at(mojom::kSolanaKeyringId), nullptr);
-#if BUILDFLAG(IS_ANDROID)
-    EXPECT_FALSE(service.encryptors_.contains(mojom::kFilecoinKeyringId));
-#else
     EXPECT_NE(service.encryptors_.at(mojom::kFilecoinKeyringId), nullptr);
-#endif
 
     base::test::ScopedFeatureList local_feature_list;
     base::FieldTrialParams local_parameters;
