@@ -179,12 +179,12 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
                                     .setMessage(getString(
                                             R.string.brave_wallet_create_account_description,
                                             networkInfo.symbolName))
-                                    .setPositiveButton(R.string.wallet_action_yes,
+                                    .setPositiveButton(R.string.brave_action_yes,
                                             (dialog, which) -> {
                                                 setPositiveButtonAccountCreation(networkInfo);
                                             })
                                     .setNegativeButton(
-                                            R.string.wallet_action_no, (dialog, which) -> {
+                                            R.string.brave_action_no, (dialog, which) -> {
                                                 setNegativeButtonAccountCreation(dialog);
                                             });
                     builder.show();

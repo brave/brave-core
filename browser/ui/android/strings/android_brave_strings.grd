@@ -3164,10 +3164,10 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_DESCRIPTION" desc="Create Account Tab Description">
       You don’t yet have a <ph name="ACCOUNT_TYPE"><ex>Solana</ex>%1$s</ph> account. Create one now?
     </message>
-    <message name="IDS_WALLET_ACTION_YES" desc="Action text for general positive actions">
+    <message name="IDS_BRAVE_ACTION_YES" desc="Action text for general positive actions">
       Yes
     </message>
-    <message name="IDS_WALLET_ACTION_NO" desc="Action text for general negative actions">
+    <message name="IDS_BRAVE_ACTION_NO" desc="Action text for general negative actions">
       No
     </message>
     <message name="IDS_WALLET_ETH_NAME" desc="Name of ETH cointype">
@@ -3869,11 +3869,11 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_DESCRIPTION" desc="Enable NFT auto-discovery modal description">
       Brave Wallet can use a third-party service to automatically display your NFTs. Brave will share your wallet addresses with <ph name="BEGIN_LINK">&lt;LINK_1&gt;</ph>SimpleHash<ph name="END_LINK">&lt;/LINK_1&gt;</ph> to provide this service. <ph name="BEGIN_LINK2">&lt;LINK_2&gt;</ph>Learn more.<ph name="END_LINK2">&lt;/LINK_2&gt;</ph>
     </message>
-    <message name="IDS_BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_CONFIRM" desc="Enable NFT auto-discovery modal confirm button text">
-      Yes, proceed
+    <message name="IDS_BRAVE_ACTION_ENABLE" desc="Action text to enable something">
+      Enable
     </message>
-    <message name="IDS_BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_CANCEL" desc="Enable NFT auto-discovery modal cancel button text">
-      No thanks, I’ll do it manually
+    <message name="IDS_BRAVE_ACTION_CANCEL" desc="Action text to cancel something">
+      Cancel
     </message>
   </messages>
   </release>
