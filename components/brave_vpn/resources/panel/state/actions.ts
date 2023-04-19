@@ -48,7 +48,6 @@ export const purchaseExpired = createAction('purchaseExpired')
 export const showSellView = createAction('showSellView')
 export const showLoadingView = createAction('showLoadingView')
 export const resetConnectionState = createAction('resetConnectionState')
-export const showSubscriptionInvalidView = createAction('showSubscriptionInvalidView')
 
 export const purchaseFailed =
   createAction<purchasedStatePayload>('purchaseFailed')

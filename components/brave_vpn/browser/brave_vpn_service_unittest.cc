@@ -137,7 +137,9 @@ class TestBraveVPNServiceObserver : public mojom::ServiceObserver {
  public:
   TestBraveVPNServiceObserver() = default;
 
-  void OnPurchasedStateChanged(PurchasedState state) override {
+  void OnPurchasedStateChanged(
+      PurchasedState state,
+      const absl::optional<std::string>& description) override {
     purchased_state_ = state;
     if (purchased_callback_)
       std::move(purchased_callback_).Run();
@@ -666,7 +668,7 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateTest) {
   SetPurchasedState(env, PurchasedState::LOADING);
   OnPrepareCredentialsPresentation(
       domain, "credential=abcdefghijk; Expires=Wed, 21 Oct 2000 07:28:00 GMT");
-  EXPECT_EQ(GetPurchasedStateSync(), PurchasedState::INVALID);
+  EXPECT_EQ(GetPurchasedStateSync(), PurchasedState::FAILED);
 }
 
 TEST_F(BraveVPNServiceTest, ResetConnectionStateTest) {
@@ -838,7 +840,7 @@ TEST_F(BraveVPNServiceTest, SubscribedCredentials) {
   SetPurchasedState(env, PurchasedState::PURCHASED);
   EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedStateSync());
   OnGetSubscriberCredentialV12("Token No Longer Valid", false);
-  EXPECT_EQ(PurchasedState::INVALID, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::FAILED, GetPurchasedStateSync());
 }
 
 // Test connection check is asked only when purchased state.
@@ -864,9 +866,6 @@ TEST_F(BraveVPNServiceTest, GetPurchasedStateSync) {
   SetPurchasedState(env, PurchasedState::PURCHASED);
   EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedStateSync());
 
-  SetPurchasedState(env, PurchasedState::INVALID);
-  EXPECT_EQ(PurchasedState::INVALID, GetPurchasedStateSync());
-
   SetPurchasedState(env, PurchasedState::FAILED);
   EXPECT_EQ(PurchasedState::FAILED, GetPurchasedStateSync());
 
@@ -881,7 +880,6 @@ TEST_F(BraveVPNServiceTest, SetPurchasedState) {
   EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
 
   SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::LOADING);
-  SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::INVALID);
   SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::FAILED);
   SetAndExpectPurchasedStateChange(&observer, env,
                                    PurchasedState::NOT_PURCHASED);

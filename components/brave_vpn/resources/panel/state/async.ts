@@ -90,10 +90,6 @@ handler.on(Actions.initialize.getType(), async (store) => {
     store.dispatch(Actions.showSellView())
   }
 
-  if (state === PurchasedState.INVALID) {
-    store.dispatch(Actions.showSubscriptionInvalidView())
-  }
-
   if (state === PurchasedState.PURCHASED) {
     store.dispatch(Actions.purchaseConfirmed())
   }

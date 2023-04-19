@@ -117,13 +117,6 @@ reducer.on(Actions.showLoadingView, (state): RootState => {
   }
 })
 
-reducer.on(Actions.showSubscriptionInvalidView, (state): RootState => {
-  return {
-    ...state,
-    currentView: ViewType.Invalid
-  }
-})
-
 reducer.on(Actions.initialized, (state, payload): RootState => {
   return {
     ...state,

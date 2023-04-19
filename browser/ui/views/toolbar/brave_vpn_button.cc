@@ -5,8 +5,8 @@
 
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
 
-#include <string>
 #include <memory>
+#include <string>
 #include <utility>
 
 #include "base/memory/raw_ptr.h"
