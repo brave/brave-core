@@ -1181,7 +1181,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Could not join this sync chain. The sync chain was deleted.
       </message>
       <message name="IDS_BRAVE_SYNC_AUTOFILL" desc="Title for preference which enables sync'ing of autofill. [CHAR_LIMIT=32]">
-        Addresses, payment info, etc.
+        Phone numbers, emails, and addresses
       </message>
       <message name="IDS_SYNC_FINAL_WARNING_TITLE" desc="Sync final warning alert dialog title">
         Warning
