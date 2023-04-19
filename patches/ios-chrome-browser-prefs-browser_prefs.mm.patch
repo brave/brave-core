@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/prefs/browser_prefs.mm b/ios/chrome/browser/prefs/browser_prefs.mm
-index 1c2e3c3cd4ad867bb08746907088ba8aba0335f2..33b165c07a8ceeb58ea27db0584aa1c283ce54f4 100644
+index dd437d19aaf5025efbb72bb5b0bae622739ce066..b9ac232ab21e25bd38cbab6a3bf64ccc07550c23 100644
 --- a/ios/chrome/browser/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/prefs/browser_prefs.mm
-@@ -278,6 +278,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -232,6 +232,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
    // Preferences related to tab grid.
    // Default to 0 which is the unassigned value.
    registry->RegisterIntegerPref(prefs::kInactiveTabsTimeThreshold, 0);
@@ -10,17 +10,17 @@ index 1c2e3c3cd4ad867bb08746907088ba8aba0335f2..33b165c07a8ceeb58ea27db0584aa1c2
  }
  
  void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -424,6 +425,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-   // shown.
-   registry->RegisterBooleanPref(prefs::kIosBringAndroidTabsPromptDisplayed,
-                                 false);
+@@ -378,6 +379,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+   registry->RegisterBooleanPref(prefs::kBrowserLockdownModeEnabled, false);
+ 
+   ntp_snippets::prefs::RegisterProfilePrefsForMigrationApril2023(registry);
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  
  // This method should be periodically pruned of year+ old migrations.
-@@ -569,4 +571,5 @@ void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
-   if (prefs->FindPreference(kUserClassifierLastTimeToUseSuggestions)) {
-     prefs->ClearPref(kUserClassifierLastTimeToUseSuggestions);
-   }
+@@ -449,4 +451,5 @@ void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
+ 
+   // Added 04/2023.
+   ntp_snippets::prefs::MigrateObsoleteProfilePrefsApril2023(prefs);
 +  BRAVE_MIGRATE_OBSOLETE_BROWSER_STATE_PREFS
  }

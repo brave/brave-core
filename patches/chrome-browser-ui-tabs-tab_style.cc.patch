@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tabs/tab_style.cc b/chrome/browser/ui/tabs/tab_style.cc
-index 2070b5956576442c6cf7ddf667134232013e5dc2..a3bf90a36d71a29eb73030b5eb18dbc2482e4fcd 100644
+index ec1c357cd2ead1d7a6bac49d24cef0cd4bb26f24..c17e2ad3f961eccbc62b22c1784245935eef40b5 100644
 --- a/chrome/browser/ui/tabs/tab_style.cc
 +++ b/chrome/browser/ui/tabs/tab_style.cc
-@@ -15,7 +15,7 @@ constexpr int kSeparatorThickness = 1;
+@@ -16,7 +16,7 @@ constexpr int kSeparatorThickness = 1;
  
  // Returns the height of the separator between tabs.
  int GetSeparatorHeight() {
@@ -10,4 +10,4 @@ index 2070b5956576442c6cf7ddf667134232013e5dc2..a3bf90a36d71a29eb73030b5eb18dbc2
 +  return ui::TouchUiController::Get()->touch_ui() ? 24 : 24;
  }
  
- }  // namespace
+ class GM2TabStyle : public TabStyle {
