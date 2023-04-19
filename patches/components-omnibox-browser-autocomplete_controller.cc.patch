@@ -1,8 +1,8 @@
 diff --git a/components/omnibox/browser/autocomplete_controller.cc b/components/omnibox/browser/autocomplete_controller.cc
-index a647111c97540a479ca5d07f96fed386a5369b40..b6ed1f6c09eef4145af467dbada438e81d6101d2 100644
+index aacd690d3934b1cb11a7fc4a06b4d12ad0a04544..8937e6da39ab330eb2bc3ee61f707caa62f00041 100644
 --- a/components/omnibox/browser/autocomplete_controller.cc
 +++ b/components/omnibox/browser/autocomplete_controller.cc
-@@ -828,6 +828,7 @@ void AutocompleteController::InitializeAsyncProviders(int provider_types) {
+@@ -836,6 +836,7 @@ void AutocompleteController::InitializeAsyncProviders(int provider_types) {
    if (provider_types & AutocompleteProvider::TYPE_SEARCH) {
      search_provider_ = new SearchProvider(provider_client_.get(), this);
      providers_.push_back(search_provider_.get());
@@ -10,7 +10,7 @@ index a647111c97540a479ca5d07f96fed386a5369b40..b6ed1f6c09eef4145af467dbada438e8
    }
    // Providers run in the order they're added.  Add `HistoryURLProvider` after
    // `SearchProvider` because:
-@@ -1004,6 +1005,7 @@ void AutocompleteController::UpdateResult(
+@@ -1026,6 +1027,7 @@ void AutocompleteController::UpdateResult(
      // Sort the matches and trim them to a small number of "best" matches.
      result_.SortAndCull(input_, template_url_service_, preserve_default_match);
    }

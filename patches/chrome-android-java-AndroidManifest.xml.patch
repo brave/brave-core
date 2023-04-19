@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index de76ef16789868141feb1d6d0fe9bf33202a0291..00faa18f0ee971ea36c06d5767dee0ce772c195b 100644
+index 58d4d0203d3ffd23b2779ad9d0a930dad80546ab..12f9a71a3665a7ba263bc681eac49e803474e38f 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -28,6 +28,7 @@ by a child template that "extends" this file.
@@ -10,7 +10,7 @@ index de76ef16789868141feb1d6d0fe9bf33202a0291..00faa18f0ee971ea36c06d5767dee0ce
  
      <!--
        Enable runtime permissions as uses-permission in tip of tree builds
-@@ -61,7 +62,9 @@ by a child template that "extends" this file.
+@@ -62,7 +63,9 @@ by a child template that "extends" this file.
      <uses-permission-sdk-23 android:name="android.permission.BLUETOOTH_SCAN"
                              android:usesPermissionFlags="neverForLocation"/>
  
@@ -21,7 +21,7 @@ index de76ef16789868141feb1d6d0fe9bf33202a0291..00faa18f0ee971ea36c06d5767dee0ce
      <uses-permission-sdk-23 android:name="android.permission.REORDER_TASKS"/>
      <uses-permission-sdk-23 android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
  
-@@ -73,11 +76,17 @@ by a child template that "extends" this file.
+@@ -74,11 +77,17 @@ by a child template that "extends" this file.
      <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" tools:ignore="SystemPermissionTypo" />
      <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" tools:ignore="SystemPermissionTypo" />
  
@@ -41,7 +41,7 @@ index de76ef16789868141feb1d6d0fe9bf33202a0291..00faa18f0ee971ea36c06d5767dee0ce
      <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
      <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
      <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-@@ -86,7 +95,9 @@ by a child template that "extends" this file.
+@@ -87,7 +96,9 @@ by a child template that "extends" this file.
      <uses-permission-sdk-23 android:name="android.permission.READ_MEDIA_VIDEO"/>
      <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
      <uses-permission android:name="android.permission.RECORD_AUDIO"/>
@@ -52,7 +52,7 @@ index de76ef16789868141feb1d6d0fe9bf33202a0291..00faa18f0ee971ea36c06d5767dee0ce
      <uses-permission-sdk-23 android:name="android.permission.USE_BIOMETRIC"/>
      <uses-permission-sdk-23 android:name="android.permission.USE_FINGERPRINT"/>
      <uses-permission android:name="android.permission.VIBRATE"/>
-@@ -131,7 +142,9 @@ by a child template that "extends" this file.
+@@ -138,7 +149,9 @@ by a child template that "extends" this file.
      <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
      <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
  
@@ -63,7 +63,7 @@ index de76ef16789868141feb1d6d0fe9bf33202a0291..00faa18f0ee971ea36c06d5767dee0ce
  
      {% block extra_uses_permissions %}
      {% endblock %}
-@@ -177,6 +190,7 @@ by a child template that "extends" this file.
+@@ -184,6 +197,7 @@ by a child template that "extends" this file.
      <!-- Set android:largeHeap to "true" to allow more than the default
           Java heap limit (32Mb on Nexus S, 48Mb on Xoom). -->
        <application android:name="{% block application_name %}org.chromium.chrome.browser.base.SplitChromeApplication{% endblock %}"
@@ -71,7 +71,7 @@ index de76ef16789868141feb1d6d0fe9bf33202a0291..00faa18f0ee971ea36c06d5767dee0ce
          android:icon="@drawable/ic_launcher"
          android:roundIcon="@drawable/ic_launcher_round"
          android:label="{% block application_label %}@string/app_name{% endblock %}"
-@@ -344,6 +358,7 @@ by a child template that "extends" this file.
+@@ -351,6 +365,7 @@ by a child template that "extends" this file.
              <intent-filter>
                  <action android:name="com.sec.android.airview.HOVER" />
              </intent-filter>
@@ -79,7 +79,7 @@ index de76ef16789868141feb1d6d0fe9bf33202a0291..00faa18f0ee971ea36c06d5767dee0ce
              <meta-data android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
          </activity-alias>
-@@ -1216,6 +1231,7 @@ by a child template that "extends" this file.
+@@ -1232,6 +1247,7 @@ by a child template that "extends" this file.
              android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize" >
          </activity>
  
@@ -87,7 +87,7 @@ index de76ef16789868141feb1d6d0fe9bf33202a0291..00faa18f0ee971ea36c06d5767dee0ce
          {% block extra_application_definitions %}
          {% endblock %}
        {% endmacro %}
-@@ -1293,6 +1309,7 @@ by a child template that "extends" this file.
+@@ -1309,6 +1325,7 @@ by a child template that "extends" this file.
            android:value="allow_front_facing_motion_tracking_6dof," />
        {% endblock base_application_extra_arcore_definitions %}
  
