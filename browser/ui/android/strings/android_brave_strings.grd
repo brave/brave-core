@@ -3226,7 +3226,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_ACTION_CANCEL" desc="Action text to cancel something">
       Cancel
     </message>
-    <message name="IDS_WALLET_ETH_NAME" desc="Name of ETH cointype">
+    <message name="IDS_WALLET_ETH_NAME" desc="Name of ETH cointype" translateable="false">
       Ethereum
     </message>
     <message name="IDS_WALLET_SOL_NAME" desc="Name of SOL cointype" translateable="false">
