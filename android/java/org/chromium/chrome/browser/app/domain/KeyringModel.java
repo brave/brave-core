@@ -167,7 +167,8 @@ public class KeyringModel implements KeyringServiceObserver {
         });
     }
 
-    private void updateSelectedAccountAndState(String accountAddress, List<AccountInfo> accountInfoList) {
+    private void updateSelectedAccountAndState(
+            String accountAddress, List<AccountInfo> accountInfoList) {
         if (!TextUtils.isEmpty(accountAddress)) {
             AccountInfo selectedAccountInfo = null;
             for (AccountInfo accountInfo : accountInfoList) {
@@ -203,8 +204,8 @@ public class KeyringModel implements KeyringServiceObserver {
                 mKeyringService.getFilecoinSelectedAccount(BraveWalletConstants.FILECOIN_MAINNET,
                         accountAddress -> { updateSelectedAccountAndState(accountAddress); });
             } else {
-                mKeyringService.getSelectedAccount(
-                        coinType, accountAddress -> { updateSelectedAccountAndState(accountAddress); });
+                mKeyringService.getSelectedAccount(coinType,
+                        accountAddress -> { updateSelectedAccountAndState(accountAddress); });
             }
         }
         return mSelectedAccount;
