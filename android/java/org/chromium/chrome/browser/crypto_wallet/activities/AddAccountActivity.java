@@ -172,7 +172,7 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
                         }
                         mPrivateKeyControl.setText(content);
                     } catch (Exception ex) {
-                        Log.e(TAG, "NTP", ex);
+                        Log.e(TAG, "Error while processing the selected JSON file", ex);
                     }
                 }
                 break;
