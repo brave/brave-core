@@ -13,7 +13,6 @@ import {
   mockBasicAttentionToken,
   mockBinanceCoinErc20Token
 } from '../../../stories/mock-data/mock-asset-options'
-import { mockNetworks } from '../../../stories/mock-data/mock-networks'
 import { mockTransactionInfo } from '../../../stories/mock-data/mock-transaction-info'
 
 // Components
@@ -30,8 +29,6 @@ export const _ConfirmSwapTransaction = () => {
     <WalletPanelStory
       walletStateOverride={{
         fullTokenList: [mockBasicAttentionToken, mockBinanceCoinErc20Token],
-        networkList: mockNetworks,
-        selectedNetwork: mockNetworks[0],
         hasInitialized: true,
         isWalletCreated: true,
         selectedPendingTransaction: {
