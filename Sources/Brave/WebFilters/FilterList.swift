@@ -19,6 +19,12 @@ struct FilterList: Identifiable {
   public static let maintainedRegionalComponentIDs = [
     "llgjaaddopeckcifdceaaadmemagkepi" // Japanese filter lists
   ]
+  /// This is a list of disabled filter lists. These lists are disabled because they are incompatible with iOS (for the time being)
+  public static let disabledComponentIDs = [
+    // The Anti-porn list has 500251 rules and is strictly all content blocking driven content
+    // The limit for the rule store is 150000 rules. We have no way to handle this at the current moment
+    "lbnibkdpkdjnookgfeogjdanfenekmpe"
+  ]
   
   /// All the component ids that should be set to on by default.
   public static var defaultOnComponentIds: Set<String> {
@@ -36,11 +42,13 @@ struct FilterList: Identifiable {
   }
   
   var id: String { return entry.uuid }
+  let order: Int
   let entry: AdblockFilterListCatalogEntry
   var isEnabled: Bool = false
   
-  init(from entry: AdblockFilterListCatalogEntry, isEnabled: Bool) {
+  init(from entry: AdblockFilterListCatalogEntry, order: Int, isEnabled: Bool) {
     self.entry = entry
+    self.order = order
     self.isEnabled = isEnabled
   }
 }

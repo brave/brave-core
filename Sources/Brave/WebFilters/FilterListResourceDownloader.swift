@@ -194,7 +194,6 @@ public class FilterListResourceDownloader {
   @MainActor private func register(filterList: FilterList) {
     guard adBlockServiceTasks[filterList.uuid] == nil else { return }
     guard let adBlockService = adBlockService else { return }
-    guard let index = FilterListStorage.shared.filterLists.firstIndex(where: { $0.id == filterList.id }) else { return }
     startFetchingGenericContentBlockingBehaviors(for: filterList)
 
     adBlockServiceTasks[filterList.uuid] = Task { @MainActor in
@@ -203,7 +202,7 @@ public class FilterListResourceDownloader {
         guard FilterListStorage.shared.isEnabled(for: filterList.entry.componentId) else { return }
         
         await self.addEngineResources(
-          forFilterListUUID: filterList.uuid, downloadedFolderURL: folderURL, relativeOrder: index
+          forFilterListUUID: filterList.uuid, downloadedFolderURL: folderURL, relativeOrder: filterList.order
         )
         
         // Save the downloaded folder for later (caching) purposes
