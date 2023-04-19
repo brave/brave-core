@@ -275,6 +275,26 @@ public class BraveRewardsCreatorPanelFragment extends Fragment
         setPublisherNoteText(pubStatus, walletStatus);
     }
 
+    private String getWalletStringFromType(String walletType) {
+        if (walletType.equals(BraveWalletProvider.UPHOLD)) {
+            return getResources().getString(R.string.uphold);
+        } else if (walletType.equals(BraveWalletProvider.GEMINI)) {
+            return getResources().getString(R.string.gemini);
+        } else {
+            return getResources().getString(R.string.bitflyer);
+        }
+    }
+
+    private String getWalletStringFromStatus(int pubStatus) {
+        if (pubStatus == PublisherStatus.UPHOLD_VERIFIED) {
+            return getResources().getString(R.string.uphold);
+        } else if (pubStatus == PublisherStatus.GEMINI_VERIFIED) {
+            return getResources().getString(R.string.gemini);
+        } else {
+            return getResources().getString(R.string.bitflyer);
+        }
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     private void setPublisherNoteText(int pubStatus, int walletStatus) {
         String notePart1 = "";
@@ -300,10 +320,9 @@ public class BraveRewardsCreatorPanelFragment extends Fragment
                             && !walletType.equals(BraveWalletProvider.BITFLYER))
                     || (pubStatus == PublisherStatus.GEMINI_VERIFIED
                             && !walletType.equals(BraveWalletProvider.GEMINI))) {
-                notePart1 = getResources().getString(
-                        R.string.brave_ui_site_banner_different_verified_notice_text);
-                Log.d(TAG,
-                        "User is verified and publisher is verified but not with the same provider");
+                notePart1 = String.format(
+                        getString(R.string.brave_ui_site_banner_different_verified_notice_text1),
+                        getWalletStringFromType(walletType), getWalletStringFromStatus(pubStatus));
             }
         }
 
