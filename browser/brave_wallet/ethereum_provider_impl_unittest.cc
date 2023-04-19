@@ -18,6 +18,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
@@ -374,7 +375,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
   }
 
   std::pair<bool, base::Value> CommonRequestOrSendAsync(
-      base::ValueView input_value) {
+      base::ValueView input_value,
+      bool format_json_rpc_response = false) {
     base::RunLoop run_loop;
     std::pair<bool, base::Value> response;
     provider()->CommonRequestOrSendAsync(
@@ -385,7 +387,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
                 const bool update_bind_js_properties) {
               response = std::make_pair(reject, std::move(formed_response));
               run_loop.Quit();
-            }));
+            }),
+        format_json_rpc_response);
     run_loop.Run();
     return response;
   }
@@ -409,6 +412,55 @@ class EthereumProviderImplUnitTest : public testing::Test {
         base::Value(), "", GetOrigin());
     run_loop.Run();
     return allowed_accounts;
+  }
+
+  EthereumProviderImpl::RequestCallback CreateResponseCallback(
+      base::RunLoop& run_loop,
+      std::pair<bool, base::Value>& response) {
+    return base::BindLambdaForTesting(
+        [&run_loop, &response](base::Value id, base::Value formed_response,
+                               const bool reject,
+                               const std::string& first_allowed_account,
+                               const bool update_bind_js_properties) {
+          response = std::make_pair(reject, std::move(formed_response));
+          run_loop.Quit();
+        });
+  }
+
+  std::pair<bool, base::Value> Enable() {
+    base::RunLoop run_loop;
+    std::pair<bool, base::Value> response;
+    provider()->Enable(CreateResponseCallback(run_loop, response));
+    run_loop.Run();
+    return response;
+  }
+
+  std::pair<bool, base::Value> Request(base::Value input) {
+    base::RunLoop run_loop;
+    std::pair<bool, base::Value> response;
+    provider()->Request(std::move(input),
+                        CreateResponseCallback(run_loop, response));
+    run_loop.Run();
+    return response;
+  }
+
+  std::pair<bool, base::Value> Send(const std::string& method,
+                                    base::Value params) {
+    base::RunLoop run_loop;
+    std::pair<bool, base::Value> response;
+    provider()->Send(method, std::move(params),
+                     CreateResponseCallback(run_loop, response));
+    run_loop.Run();
+    return response;
+  }
+
+  std::pair<bool, base::Value> SendAsync(base::Value input) {
+    base::RunLoop run_loop;
+    std::pair<bool, base::Value> response;
+    provider()->SendAsync(std::move(input),
+                          CreateResponseCallback(run_loop, response));
+    run_loop.Run();
+    return response;
   }
 
   ~EthereumProviderImplUnitTest() override = default;
@@ -2750,6 +2802,79 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthCoinbase) {
   EXPECT_FALSE(keyring_service()->HasPendingUnlockRequest());
   EXPECT_EQ(response.first, false);
   EXPECT_EQ(response.second, base::Value(account0));
+}
+
+TEST_F(EthereumProviderImplUnitTest, ProviderResponseFormat) {
+  base::Value input = base::test::ParseJson(
+      R"({"id":"1","jsonrpc":"2.0","method":"eth_chainId"})");
+  const std::string success_rpc_response =
+      R"({"jsonrpc":"2.0","id":1,"result":"0x1"})";
+  const std::string error_rpc_response =
+      R"({"jsonrpc":"2.0","id":1,"error":{"code":-32005,"message":"err"}})";
+
+  // Test provider responses for send, sendAsync are in JsonRpcResponse format.
+  // And responses for request are not in JsonRpcResponse format.
+  // Success case:
+  SetInterceptor(success_rpc_response);
+  base::Value::Dict expected_dict =
+      base::test::ParseJsonDict(success_rpc_response);
+  // Type of id is string in JsonRpcResponse interface.
+  // https://docs.metamask.io/guide/ethereum-provider.html#legacy-methods
+  expected_dict.Set("id", "1");
+  base::Value expected_value = base::Value(std::move(expected_dict));
+
+  auto response = Send("eth_chainId", base::Value());
+  EXPECT_FALSE(response.first);
+  EXPECT_EQ(response.second, expected_value);
+
+  response = SendAsync(input.Clone());
+  EXPECT_FALSE(response.first);
+  EXPECT_EQ(response.second, expected_value);
+
+  response = Request(input.Clone());
+  EXPECT_FALSE(response.first);
+  EXPECT_EQ(response.second, base::Value("0x1"));
+
+  // Error case:
+  SetInterceptor(error_rpc_response);
+  expected_dict = base::test::ParseJsonDict(error_rpc_response);
+  expected_dict.Set("id", "1");
+  expected_value = base::Value(std::move(expected_dict));
+
+  response = Send("eth_chainId", base::Value());
+  EXPECT_TRUE(response.first);
+  EXPECT_EQ(response.second, expected_value);
+
+  response = SendAsync(input.Clone());
+  EXPECT_TRUE(response.first);
+  EXPECT_EQ(response.second, expected_value);
+
+  response = Request(input.Clone());
+  EXPECT_TRUE(response.first);
+  EXPECT_EQ(response.second,
+            base::test::ParseJson(R"({"code":-32005,"message":"err"})"));
+
+  // Test provider responses for enable are not in JsonRpcResponse format.
+  // Error case:
+  response = Enable();
+  EXPECT_TRUE(response.first);
+  EXPECT_EQ(
+      response.second,
+      base::test::ParseJson(
+          R"({"code": -32603,"message": "An internal error has occurred"})"));
+
+  CreateWallet();
+  AddAccount();
+  GURL url("https://brave.com");
+  Navigate(url);
+
+  // Success case:
+  AddEthereumPermission(GetOrigin(), 0);
+  response = Enable();
+  EXPECT_FALSE(response.first);
+  base::Value::List expected_list;
+  expected_list.Append(base::Value(from_lower(0)));
+  EXPECT_EQ(response.second, base::Value(std::move(expected_list)));
 }
 
 }  // namespace brave_wallet
