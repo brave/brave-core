@@ -17,7 +17,8 @@ type RootState = {
   regions?: Region[]
   currentRegion?: Region
   productUrls?: ProductUrls
-  currentView: ViewType
+  currentView: ViewType,
+  stateDescription?: string
 }
 
 const defaultState: RootState = {
@@ -94,10 +95,11 @@ reducer.on(Actions.purchaseConfirmed, (state): RootState => {
   }
 })
 
-reducer.on(Actions.purchaseFailed, (state): RootState => {
+reducer.on(Actions.purchaseFailed, (state, payload): RootState => {
   return {
     ...state,
-    currentView: ViewType.PurchaseFailed
+    currentView: ViewType.PurchaseFailed,
+    stateDescription: payload.stateDescription
   }
 })
 

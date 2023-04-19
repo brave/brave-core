@@ -32,7 +32,7 @@ interface ServiceObserver {
   [EnableIfNot=is_android]
   OnSelectedRegionChanged(Region region);
 
-  OnPurchasedStateChanged(PurchasedState state);
+  OnPurchasedStateChanged(PurchasedState state, string? description);
 };
 
 // Browser-side handler for vpn service things

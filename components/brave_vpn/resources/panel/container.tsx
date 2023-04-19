@@ -14,6 +14,7 @@ import PurchaseFailedPanel from './components/purchase-failed-panel'
 
 function Main () {
   const currentView = useSelector(state => state.currentView)
+  const stateDescription = useSelector(state => state.stateDescription)
 
   if (currentView === ViewType.Loading) {
     return (
@@ -29,7 +30,7 @@ function Main () {
 
   if (currentView === ViewType.PurchaseFailed) {
     return (
-      <PurchaseFailedPanel />
+      <PurchaseFailedPanel stateDescription={stateDescription} />
     )
   }
 

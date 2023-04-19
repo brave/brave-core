@@ -26,12 +26,14 @@
 #include "brave/components/p3a_utils/feature_usage.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/version_info/version_info.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/version_info/version_info.h"
 #include "net/cookies/cookie_inclusion_status.h"
 #include "net/cookies/cookie_util.h"
 #include "net/cookies/parsed_cookie.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "url/url_util.h"
 
 namespace brave_vpn {
@@ -575,7 +577,9 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
 
   // Early return when it's already expired.
   if (time < base::Time::Now()) {
-    SetPurchasedState(env, PurchasedState::INVALID);
+    SetPurchasedState(
+        GetCurrentEnvironment(), PurchasedState::FAILED,
+        l10n_util::GetStringUTF8(IDS_BRAVE_VPN_PURCHASE_CREDENTIALS_EXPIRED));
     return;
   }
 
@@ -601,11 +605,11 @@ void BraveVpnService::OnGetSubscriberCredentialV12(
 #if BUILDFLAG(IS_ANDROID)
     SetPurchasedState(GetCurrentEnvironment(), PurchasedState::NOT_PURCHASED);
 #else
-    if (subscriber_credential == kTokenNoLongerValid) {
-      SetPurchasedState(GetCurrentEnvironment(), PurchasedState::INVALID);
-    } else {
-      SetPurchasedState(GetCurrentEnvironment(), PurchasedState::FAILED);
-    }
+    auto message_id = (subscriber_credential == kTokenNoLongerValid)
+                          ? IDS_BRAVE_VPN_PURCHASE_TOKEN_NOT_VALID
+                          : IDS_BRAVE_VPN_PURCHASE_CREDENTIALS_FETCH_FAILED;
+    SetPurchasedState(GetCurrentEnvironment(), PurchasedState::FAILED,
+                      l10n_util::GetStringUTF8(message_id));
 #endif
     return;
   }
@@ -715,8 +719,10 @@ void BraveVpnService::OnP3AInterval() {
   RecordP3A(false);
 }
 
-void BraveVpnService::SetPurchasedState(const std::string& env,
-                                        PurchasedState state) {
+void BraveVpnService::SetPurchasedState(
+    const std::string& env,
+    PurchasedState state,
+    const absl::optional<std::string>& description) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (GetPurchasedStateSync() == state || env != GetCurrentEnvironment()) {
     return;
@@ -726,7 +732,7 @@ void BraveVpnService::SetPurchasedState(const std::string& env,
   VLOG(2) << __func__ << " " << state;
 
   for (const auto& obs : observers_)
-    obs->OnPurchasedStateChanged(purchased_state_.value());
+    obs->OnPurchasedStateChanged(purchased_state_.value(), description);
 
 #if !BUILDFLAG(IS_ANDROID)
   if (state == PurchasedState::PURCHASED)
