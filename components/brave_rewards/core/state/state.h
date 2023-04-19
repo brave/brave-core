@@ -108,8 +108,6 @@ class State {
 
   void SetPromotionLastFetchStamp(const uint64_t stamp);
 
-  void ResetWalletType();
-
   uint64_t GetPromotionLastFetchStamp();
 
   absl::optional<std::string> GetEncryptedString(const std::string& key);
