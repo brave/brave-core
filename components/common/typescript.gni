@@ -1,3 +1,8 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/resources/brave_grit.gni")
 
 # JS / TS imports via `require` or `import` will be added to a list and
@@ -119,9 +124,13 @@ template("transpile_web_ui") {
       gen_output_dir = "$root_gen_dir/brave/web-ui-$resource_name"
     }
 
-    # sole output is a GRD that includes all the resources
+    # Output is a GRD that includes all the resources, and a bundle for each
+    # entry point.
     grd_name = "$resource_name.grd"
     outputs = [ "$gen_output_dir/$grd_name" ]
+    foreach(entry_point, invoker.entry_points) {
+      outputs += [ "$gen_output_dir/" + entry_point[0] + ".bundle.js" ]
+    }
 
     # Base script arguments:
     #  - resource (compiled) output destination
