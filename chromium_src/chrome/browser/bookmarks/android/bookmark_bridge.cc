@@ -7,11 +7,15 @@
 
 #include "base/task/thread_pool.h"
 #include "base/threading/thread.h"
+#include "chrome/browser/bookmarks/android/bookmark_bridge.h"
 #include "chrome/browser/bookmarks/bookmark_html_writer.h"
 #include "chrome/browser/importer/profile_writer.h"
 #include "chrome/common/url_constants.h"
 #include "chrome/utility/importer/bookmark_html_reader.h"
 #include "components/url_formatter/url_fixer.h"
+#define BraveBookmarkBridge BookmarkBridge
+#include "brave/build/android/jni_headers/BraveBookmarkBridge_jni.h"
+#undef BraveBookmarkBridge
 #include "src/chrome/browser/bookmarks/android/bookmark_bridge.cc"
 #include "ui/android/window_android.h"
 
@@ -82,8 +86,8 @@ class FileBookmarksExportObserver : public BookmarksExportObserver {
 
   void OnExportFinished(Result result) override {
     JNIEnv* env = AttachCurrentThread();
-    Java_BookmarkBridge_bookmarksExported(env, obj_,
-                                          result == Result::kSuccess);
+    Java_BraveBookmarkBridge_bookmarksExported(env, obj_,
+                                               result == Result::kSuccess);
     delete this;
   }
 
@@ -164,7 +168,7 @@ void BookmarkBridge::ImportBookmarksImpl(
     return;
   }
 
-  Java_BookmarkBridge_bookmarksImported(env, obj, !bookmarks.empty());
+  Java_BraveBookmarkBridge_bookmarksImported(env, obj, !bookmarks.empty());
 }
 
 std::pair<std::vector<ImportedBookmarkEntry>,

@@ -7,6 +7,8 @@ package org.chromium.chrome.browser.bookmarks;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.chromium.base.annotations.CalledByNative;
+import org.chromium.base.annotations.NativeMethods;
 import org.chromium.ui.base.WindowAndroid;
 
 class BraveBookmarkBridge extends BookmarkBridge {
@@ -18,7 +20,7 @@ class BraveBookmarkBridge extends BookmarkBridge {
         super(nativeBookmarkBridge);
     }
 
-    @Override
+    @CalledByNative
     public void bookmarksImported(boolean isSuccess) {
         if (mWindowAndroid != null && mWindowAndroid.getContext().get() != null
                 && mWindowAndroid.getContext().get() instanceof AppCompatActivity) {
@@ -32,7 +34,7 @@ class BraveBookmarkBridge extends BookmarkBridge {
         }
     }
 
-    @Override
+    @CalledByNative
     public void bookmarksExported(boolean isSuccess) {
         if (mWindowAndroid != null && mWindowAndroid.getContext().get() != null
                 && mWindowAndroid.getContext().get() instanceof AppCompatActivity) {
@@ -49,13 +51,21 @@ class BraveBookmarkBridge extends BookmarkBridge {
 
     public void importBookmarks(WindowAndroid windowAndroid, String importFilePath) {
         mWindowAndroid = windowAndroid;
-        BookmarkBridgeJni.get().importBookmarks(
+        BraveBookmarkBridgeJni.get().importBookmarks(
                 mNativeBookmarkBridge, BraveBookmarkBridge.this, windowAndroid, importFilePath);
     }
 
     public void exportBookmarks(WindowAndroid windowAndroid, String exportFilePath) {
         mWindowAndroid = windowAndroid;
-        BookmarkBridgeJni.get().exportBookmarks(
+        BraveBookmarkBridgeJni.get().exportBookmarks(
                 mNativeBookmarkBridge, BraveBookmarkBridge.this, windowAndroid, exportFilePath);
+    }
+
+    @NativeMethods
+    public interface Natives {
+        void importBookmarks(long nativeBraveBookmarkBridge, BraveBookmarkBridge caller,
+                org.chromium.ui.base.WindowAndroid window, String importFilePath);
+        void exportBookmarks(long nativeBraveBookmarkBridge, BraveBookmarkBridge caller,
+                org.chromium.ui.base.WindowAndroid window, String exportFilePath);
     }
 }
