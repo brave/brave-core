@@ -166,9 +166,9 @@ extension BraveWallet.TransactionInfo {
       txType: .ethSend,
       txParams: [],
       txArgs: [],
-      createdTime: Date(timeIntervalSince1970: 1636399671),
-      submittedTime: Date(timeIntervalSince1970: 1636399673),
-      confirmedTime: Date(timeIntervalSince1970: 1636402508),
+      createdTime: Date(timeIntervalSince1970: 1636399671), // Monday, November 8, 2021 7:27:51 PM
+      submittedTime: Date(timeIntervalSince1970: 1636399673), // Monday, November 8, 2021 7:27:53 PM
+      confirmedTime: Date(timeIntervalSince1970: 1636402508), // Monday, November 8, 2021 8:15:08 PM
       originInfo: .init(),
       groupId: nil,
       chainId: ""
@@ -204,9 +204,9 @@ extension BraveWallet.TransactionInfo {
       txType: .other,
       txParams: [],
       txArgs: [],
-      createdTime: Date(timeIntervalSince1970: 1636399671),
-      submittedTime: Date(timeIntervalSince1970: 1636399673),
-      confirmedTime: Date(timeIntervalSince1970: 1636402508),
+      createdTime: Date(timeIntervalSince1970: 1636399671), // Monday, November 8, 2021 7:27:51 PM
+      submittedTime: Date(timeIntervalSince1970: 1636399673), // Monday, November 8, 2021 7:27:53 PM
+      confirmedTime: Date(timeIntervalSince1970: 1636402508), // Monday, November 8, 2021 8:15:08 PM
       originInfo: .init(),
       groupId: nil,
       chainId: ""
@@ -253,7 +253,7 @@ extension BraveWallet.TransactionInfo {
     BraveWallet.TransactionInfo(
       id: "3d3c7715-f5f2-4f70-ab97-7fb8d3b2a3cd",
       fromAddress: "6WRQXT2wMAkSjTjGQSqfEnuqgnqskTp5FnT28tScDsAd",
-      txHash: "",
+      txHash: "2rbyfcSQ9xCem4wtpjMYD4u6PdKE9YcBurCHDgkMcAaBMh8CirQvuLYtj8AyaYu62ekwWKM1UDZ2VLRB4uN96Fcu",
       txDataUnion: .init(
         solanaTxData: .init(
           recentBlockhash: "",
@@ -273,9 +273,9 @@ extension BraveWallet.TransactionInfo {
       txType: .solanaSystemTransfer,
       txParams: [],
       txArgs: [],
-      createdTime: Date(timeIntervalSince1970: 1636399671),
-      submittedTime: Date(timeIntervalSince1970: 1636399673),
-      confirmedTime: Date(timeIntervalSince1970: 1636402508),
+      createdTime: Date(timeIntervalSince1970: 1667854800), // Monday, November 7, 2022 9:00:00 PM GMT
+      submittedTime: Date(timeIntervalSince1970: 1667854810), // Monday, November 7, 2022 9:00:10 PM GMT
+      confirmedTime: Date(timeIntervalSince1970: 1667854820), // Monday, November 7, 2022 9:00:20 PM GMT
       originInfo: .init(),
       groupId: nil,
       chainId: ""

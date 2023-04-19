@@ -188,6 +188,14 @@ private class CryptoPagesViewController: TabbedPageViewController {
         $0.title = Strings.Wallet.portfolioPageTitle
       },
       UIHostingController(
+        rootView: TransactionsActivityView(
+          store: cryptoStore.transactionsActivityStore,
+          networkStore: cryptoStore.networkStore
+        )
+      ).then {
+        $0.title = Strings.Wallet.activityPageTitle
+      },
+      UIHostingController(
         rootView: AccountsView(
           cryptoStore: cryptoStore,
           keyringStore: keyringStore
