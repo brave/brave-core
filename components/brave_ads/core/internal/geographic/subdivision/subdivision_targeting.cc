@@ -9,7 +9,7 @@
 
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
@@ -263,7 +263,7 @@ bool SubdivisionTargeting::ParseJson(const std::string& json) {
   }
 
   const std::string subdivision_code =
-      base::StringPrintf("%s-%s", country->c_str(), region->c_str());
+      base::ReplaceStringPlaceholders("$1-$2", {*country, *region}, nullptr);
 
   auto_detected_subdivision_code_ = subdivision_code;
   AdsClientHelper::GetInstance()->SetStringPref(

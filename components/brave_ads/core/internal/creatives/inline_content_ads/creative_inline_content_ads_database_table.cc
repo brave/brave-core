@@ -13,7 +13,6 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
@@ -323,48 +322,22 @@ void CreativeInlineContentAds::GetForCreativeInstanceId(
                                    /*creative_ads*/ {});
   }
 
-  const std::string query = base::StringPrintf(
-      "SELECT "
-      "cbna.creative_instance_id, "
-      "cbna.creative_set_id, "
-      "cbna.campaign_id, "
-      "cam.start_at_timestamp, "
-      "cam.end_at_timestamp, "
-      "cam.daily_cap, "
-      "cam.advertiser_id, "
-      "cam.priority, "
-      "ca.conversion, "
-      "ca.per_day, "
-      "ca.per_week, "
-      "ca.per_month, "
-      "ca.total_max, "
-      "ca.value, "
-      "ca.split_test_group, "
-      "s.segment, "
-      "gt.geo_target, "
-      "ca.target_url, "
-      "cbna.title, "
-      "cbna.description, "
-      "cbna.image_url, "
-      "cbna.dimensions, "
-      "cbna.cta_text, "
-      "cam.ptr, "
-      "dp.dow, "
-      "dp.start_minute, "
-      "dp.end_minute "
-      "FROM %s AS cbna "
-      "INNER JOIN campaigns AS cam "
-      "ON cam.campaign_id = cbna.campaign_id "
-      "INNER JOIN segments AS s "
-      "ON s.creative_set_id = cbna.creative_set_id "
-      "INNER JOIN creative_ads AS ca "
-      "ON ca.creative_instance_id = cbna.creative_instance_id "
-      "INNER JOIN geo_targets AS gt "
-      "ON gt.campaign_id = cbna.campaign_id "
-      "INNER JOIN dayparts AS dp "
-      "ON dp.campaign_id = cbna.campaign_id "
-      "WHERE cbna.creative_instance_id = '%s'",
-      GetTableName().c_str(), creative_instance_id.c_str());
+  const std::string query = base::ReplaceStringPlaceholders(
+      "SELECT cbna.creative_instance_id, cbna.creative_set_id, "
+      "cbna.campaign_id, cam.start_at_timestamp, cam.end_at_timestamp, "
+      "cam.daily_cap, cam.advertiser_id, cam.priority, ca.conversion, "
+      "ca.per_day, ca.per_week, ca.per_month, ca.total_max, ca.value, "
+      "ca.split_test_group, s.segment, gt.geo_target, ca.target_url, "
+      "cbna.title, cbna.description, cbna.image_url, cbna.dimensions, "
+      "cbna.cta_text, cam.ptr, dp.dow, dp.start_minute, dp.end_minute FROM $1 "
+      "AS cbna INNER JOIN campaigns AS cam ON cam.campaign_id = "
+      "cbna.campaign_id INNER JOIN segments AS s ON s.creative_set_id = "
+      "cbna.creative_set_id INNER JOIN creative_ads AS ca ON "
+      "ca.creative_instance_id = cbna.creative_instance_id INNER JOIN "
+      "geo_targets AS gt ON gt.campaign_id = cbna.campaign_id INNER JOIN "
+      "dayparts AS dp ON dp.campaign_id = cbna.campaign_id WHERE "
+      "cbna.creative_instance_id = '$2'",
+      {GetTableName(), creative_instance_id}, nullptr);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
@@ -420,52 +393,25 @@ void CreativeInlineContentAds::GetForSegmentsAndDimensions(
                                    /*creative_ads*/ {});
   }
 
-  const std::string query = base::StringPrintf(
-      "SELECT "
-      "cbna.creative_instance_id, "
-      "cbna.creative_set_id, "
-      "cbna.campaign_id, "
-      "cam.start_at_timestamp, "
-      "cam.end_at_timestamp, "
-      "cam.daily_cap, "
-      "cam.advertiser_id, "
-      "cam.priority, "
-      "ca.conversion, "
-      "ca.per_day, "
-      "ca.per_week, "
-      "ca.per_month, "
-      "ca.total_max, "
-      "ca.value, "
-      "ca.split_test_group, "
-      "s.segment, "
-      "gt.geo_target, "
-      "ca.target_url, "
-      "cbna.title, "
-      "cbna.description, "
-      "cbna.image_url, "
-      "cbna.dimensions, "
-      "cbna.cta_text, "
-      "cam.ptr, "
-      "dp.dow, "
-      "dp.start_minute, "
-      "dp.end_minute "
-      "FROM %s AS cbna "
-      "INNER JOIN campaigns AS cam "
-      "ON cam.campaign_id = cbna.campaign_id "
-      "INNER JOIN segments AS s "
-      "ON s.creative_set_id = cbna.creative_set_id "
-      "INNER JOIN creative_ads AS ca "
-      "ON ca.creative_instance_id = cbna.creative_instance_id "
-      "INNER JOIN geo_targets AS gt "
-      "ON gt.campaign_id = cbna.campaign_id "
-      "INNER JOIN dayparts AS dp "
-      "ON dp.campaign_id = cbna.campaign_id "
-      "WHERE s.segment IN %s "
-      "AND cbna.dimensions = '%s' "
-      "AND %s BETWEEN cam.start_at_timestamp AND cam.end_at_timestamp",
-      GetTableName().c_str(),
-      BuildBindingParameterPlaceholder(segments.size()).c_str(),
-      dimensions.c_str(), TimeAsTimestampString(base::Time::Now()).c_str());
+  const std::string query = base::ReplaceStringPlaceholders(
+      "SELECT cbna.creative_instance_id, cbna.creative_set_id, "
+      "cbna.campaign_id, cam.start_at_timestamp, cam.end_at_timestamp, "
+      "cam.daily_cap, cam.advertiser_id, cam.priority, ca.conversion, "
+      "ca.per_day, ca.per_week, ca.per_month, ca.total_max, ca.value, "
+      "ca.split_test_group, s.segment, gt.geo_target, ca.target_url, "
+      "cbna.title, cbna.description, cbna.image_url, cbna.dimensions, "
+      "cbna.cta_text, cam.ptr, dp.dow, dp.start_minute, dp.end_minute FROM $1 "
+      "AS cbna INNER JOIN campaigns AS cam ON cam.campaign_id = "
+      "cbna.campaign_id INNER JOIN segments AS s ON s.creative_set_id = "
+      "cbna.creative_set_id INNER JOIN creative_ads AS ca ON "
+      "ca.creative_instance_id = cbna.creative_instance_id INNER JOIN "
+      "geo_targets AS gt ON gt.campaign_id = cbna.campaign_id INNER JOIN "
+      "dayparts AS dp ON dp.campaign_id = cbna.campaign_id WHERE s.segment IN "
+      "$2 AND cbna.dimensions = '$3' AND $4 BETWEEN cam.start_at_timestamp AND "
+      "cam.end_at_timestamp",
+      {GetTableName(), BuildBindingParameterPlaceholder(segments.size()),
+       dimensions, TimeAsTimestampString(base::Time::Now())},
+      nullptr);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
@@ -524,50 +470,23 @@ void CreativeInlineContentAds::GetForDimensions(
     return std::move(callback).Run(/*success*/ true, /*creative_ads*/ {});
   }
 
-  const std::string query = base::StringPrintf(
-      "SELECT "
-      "cbna.creative_instance_id, "
-      "cbna.creative_set_id, "
-      "cbna.campaign_id, "
-      "cam.start_at_timestamp, "
-      "cam.end_at_timestamp, "
-      "cam.daily_cap, "
-      "cam.advertiser_id, "
-      "cam.priority, "
-      "ca.conversion, "
-      "ca.per_day, "
-      "ca.per_week, "
-      "ca.per_month, "
-      "ca.total_max, "
-      "ca.value, "
-      "ca.split_test_group, "
-      "s.segment, "
-      "gt.geo_target, "
-      "ca.target_url, "
-      "cbna.title, "
-      "cbna.description, "
-      "cbna.image_url, "
-      "cbna.dimensions, "
-      "cbna.cta_text, "
-      "cam.ptr, "
-      "dp.dow, "
-      "dp.start_minute, "
-      "dp.end_minute "
-      "FROM %s AS cbna "
-      "INNER JOIN campaigns AS cam "
-      "ON cam.campaign_id = cbna.campaign_id "
-      "INNER JOIN segments AS s "
-      "ON s.creative_set_id = cbna.creative_set_id "
-      "INNER JOIN creative_ads AS ca "
-      "ON ca.creative_instance_id = cbna.creative_instance_id "
-      "INNER JOIN geo_targets AS gt "
-      "ON gt.campaign_id = cbna.campaign_id "
-      "INNER JOIN dayparts AS dp "
-      "ON dp.campaign_id = cbna.campaign_id "
-      "AND cbna.dimensions = '%s' "
-      "AND %s BETWEEN cam.start_at_timestamp AND cam.end_at_timestamp",
-      GetTableName().c_str(), dimensions.c_str(),
-      TimeAsTimestampString(base::Time::Now()).c_str());
+  const std::string query = base::ReplaceStringPlaceholders(
+      "SELECT cbna.creative_instance_id, cbna.creative_set_id, "
+      "cbna.campaign_id, cam.start_at_timestamp, cam.end_at_timestamp, "
+      "cam.daily_cap, cam.advertiser_id, cam.priority, ca.conversion, "
+      "ca.per_day, ca.per_week, ca.per_month, ca.total_max, ca.value, "
+      "ca.split_test_group, s.segment, gt.geo_target, ca.target_url, "
+      "cbna.title, cbna.description, cbna.image_url, cbna.dimensions, "
+      "cbna.cta_text, cam.ptr, dp.dow, dp.start_minute, dp.end_minute FROM $1 "
+      "AS cbna INNER JOIN campaigns AS cam ON cam.campaign_id = "
+      "cbna.campaign_id INNER JOIN segments AS s ON s.creative_set_id = "
+      "cbna.creative_set_id INNER JOIN creative_ads AS ca ON "
+      "ca.creative_instance_id = cbna.creative_instance_id INNER JOIN "
+      "geo_targets AS gt ON gt.campaign_id = cbna.campaign_id INNER JOIN "
+      "dayparts AS dp ON dp.campaign_id = cbna.campaign_id AND cbna.dimensions "
+      "= '$2' AND $3 BETWEEN cam.start_at_timestamp AND cam.end_at_timestamp",
+      {GetTableName(), dimensions, TimeAsTimestampString(base::Time::Now())},
+      nullptr);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
@@ -615,48 +534,22 @@ void CreativeInlineContentAds::GetForDimensions(
 
 void CreativeInlineContentAds::GetAll(
     GetCreativeInlineContentAdsCallback callback) const {
-  const std::string query = base::StringPrintf(
-      "SELECT "
-      "cbna.creative_instance_id, "
-      "cbna.creative_set_id, "
-      "cbna.campaign_id, "
-      "cam.start_at_timestamp, "
-      "cam.end_at_timestamp, "
-      "cam.daily_cap, "
-      "cam.advertiser_id, "
-      "cam.priority, "
-      "ca.conversion, "
-      "ca.per_day, "
-      "ca.per_week, "
-      "ca.per_month, "
-      "ca.total_max, "
-      "ca.value, "
-      "ca.split_test_group, "
-      "s.segment, "
-      "gt.geo_target, "
-      "ca.target_url, "
-      "cbna.title, "
-      "cbna.description, "
-      "cbna.image_url, "
-      "cbna.dimensions, "
-      "cbna.cta_text, "
-      "cam.ptr, "
-      "dp.dow, "
-      "dp.start_minute, "
-      "dp.end_minute "
-      "FROM %s AS cbna "
-      "INNER JOIN campaigns AS cam "
-      "ON cam.campaign_id = cbna.campaign_id "
-      "INNER JOIN segments AS s "
-      "ON s.creative_set_id = cbna.creative_set_id "
-      "INNER JOIN creative_ads AS ca "
-      "ON ca.creative_instance_id = cbna.creative_instance_id "
-      "INNER JOIN geo_targets AS gt "
-      "ON gt.campaign_id = cbna.campaign_id "
-      "INNER JOIN dayparts AS dp "
-      "ON dp.campaign_id = cbna.campaign_id "
-      "WHERE %s BETWEEN cam.start_at_timestamp AND cam.end_at_timestamp",
-      GetTableName().c_str(), TimeAsTimestampString(base::Time::Now()).c_str());
+  const std::string query = base::ReplaceStringPlaceholders(
+      "SELECT cbna.creative_instance_id, cbna.creative_set_id, "
+      "cbna.campaign_id, cam.start_at_timestamp, cam.end_at_timestamp, "
+      "cam.daily_cap, cam.advertiser_id, cam.priority, ca.conversion, "
+      "ca.per_day, ca.per_week, ca.per_month, ca.total_max, ca.value, "
+      "ca.split_test_group, s.segment, gt.geo_target, ca.target_url, "
+      "cbna.title, cbna.description, cbna.image_url, cbna.dimensions, "
+      "cbna.cta_text, cam.ptr, dp.dow, dp.start_minute, dp.end_minute FROM $1 "
+      "AS cbna INNER JOIN campaigns AS cam ON cam.campaign_id = "
+      "cbna.campaign_id INNER JOIN segments AS s ON s.creative_set_id = "
+      "cbna.creative_set_id INNER JOIN creative_ads AS ca ON "
+      "ca.creative_instance_id = cbna.creative_instance_id INNER JOIN "
+      "geo_targets AS gt ON gt.campaign_id = cbna.campaign_id INNER JOIN "
+      "dayparts AS dp ON dp.campaign_id = cbna.campaign_id WHERE $2 BETWEEN "
+      "cam.start_at_timestamp AND cam.end_at_timestamp",
+      {GetTableName(), TimeAsTimestampString(base::Time::Now())}, nullptr);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
@@ -746,8 +639,8 @@ std::string CreativeInlineContentAds::BuildInsertOrUpdateQuery(
 
   const int binded_parameters_count = BindParameters(command, creative_ads);
 
-  return base::StringPrintf(
-      "INSERT OR REPLACE INTO %s "
+  return base::ReplaceStringPlaceholders(
+      "INSERT OR REPLACE INTO $1 "
       "(creative_instance_id, "
       "creative_set_id, "
       "campaign_id, "
@@ -755,11 +648,10 @@ std::string CreativeInlineContentAds::BuildInsertOrUpdateQuery(
       "description, "
       "image_url, "
       "dimensions, "
-      "cta_text) VALUES %s",
-      GetTableName().c_str(),
-      BuildBindingParameterPlaceholders(/*parameters_count*/ 8,
-                                        binded_parameters_count)
-          .c_str());
+      "cta_text) VALUES $2",
+      {GetTableName(), BuildBindingParameterPlaceholders(
+                           /*parameters_count*/ 8, binded_parameters_count)},
+      nullptr);
 }
 
 }  // namespace brave_ads::database::table

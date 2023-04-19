@@ -9,8 +9,7 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "base/strings/stringprintf.h"
-#include "base/time/time.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
@@ -123,17 +122,11 @@ void Conversions::Save(const ConversionList& conversions,
 }
 
 void Conversions::GetAll(GetConversionsCallback callback) const {
-  const std::string query = base::StringPrintf(
-      "SELECT "
-      "ac.creative_set_id, "
-      "ac.type, "
-      "ac.url_pattern, "
-      "ac.advertiser_public_key, "
-      "ac.observation_window, "
-      "ac.expiry_timestamp "
-      "FROM %s AS ac "
-      "WHERE %s < expiry_timestamp",
-      GetTableName().c_str(), TimeAsTimestampString(base::Time::Now()).c_str());
+  const std::string query = base::ReplaceStringPlaceholders(
+      "SELECT ac.creative_set_id, ac.type, ac.url_pattern, "
+      "ac.advertiser_public_key, ac.observation_window, ac.expiry_timestamp "
+      "FROM $1 AS ac WHERE $2 < expiry_timestamp",
+      {GetTableName(), TimeAsTimestampString(base::Time::Now())}, nullptr);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
@@ -160,10 +153,9 @@ void Conversions::GetAll(GetConversionsCallback callback) const {
 void Conversions::PurgeExpired(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
-  const std::string query = base::StringPrintf(
-      "DELETE FROM %s "
-      "WHERE %s >= expiry_timestamp",
-      GetTableName().c_str(), TimeAsTimestampString(base::Time::Now()).c_str());
+  const std::string query = base::ReplaceStringPlaceholders(
+      "DELETE FROM $1 WHERE $2 >= expiry_timestamp",
+      {GetTableName(), TimeAsTimestampString(base::Time::Now())}, nullptr);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -220,18 +212,12 @@ std::string Conversions::BuildInsertOrUpdateQuery(
 
   const int binded_parameters_count = BindParameters(command, conversions);
 
-  return base::StringPrintf(
-      "INSERT OR REPLACE INTO %s "
-      "(creative_set_id, "
-      "type, "
-      "url_pattern, "
-      "advertiser_public_key, "
-      "observation_window, "
-      "expiry_timestamp) VALUES %s",
-      GetTableName().c_str(),
-      BuildBindingParameterPlaceholders(/*parameters_count*/ 6,
-                                        binded_parameters_count)
-          .c_str());
+  return base::ReplaceStringPlaceholders(
+      "INSERT OR REPLACE INTO $1 (creative_set_id, type, url_pattern, "
+      "advertiser_public_key, observation_window, expiry_timestamp) VALUES $2",
+      {GetTableName(), BuildBindingParameterPlaceholders(
+                           /*parameters_count*/ 6, binded_parameters_count)},
+      nullptr);
 }
 
 }  // namespace brave_ads::database::table

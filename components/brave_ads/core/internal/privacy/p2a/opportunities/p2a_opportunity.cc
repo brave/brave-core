@@ -7,7 +7,7 @@
 
 #include <vector>
 
-#include "base/strings/stringprintf.h"
+#include "base/strings/strcat.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/internal/privacy/p2a/opportunities/p2a_opportunity_questions.h"
 #include "brave/components/brave_ads/core/internal/privacy/p2a/p2a.h"
@@ -15,7 +15,7 @@
 namespace brave_ads::privacy::p2a {
 
 std::string GetAdOpportunityNameForAdType(const AdType& ad_type) {
-  return base::StringPrintf("%s_opportunity", ad_type.ToString().c_str());
+  return base::StrCat({ad_type.ToString(), "_opportunity"});
 }
 
 void RecordAdOpportunityForSegments(const AdType& ad_type,

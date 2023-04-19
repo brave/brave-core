@@ -6,8 +6,8 @@
 #include "brave/components/brave_ads/core/internal/privacy/p2a/opportunities/p2a_opportunity_questions.h"
 
 #include "base/check.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_strip_util.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 
@@ -32,7 +32,7 @@ std::vector<std::string> CreateAdOpportunityQuestions(
     DCHECK(!stripped_segment.empty());
 
     const std::string question =
-        base::StringPrintf("%s%s", kQuestionPrefix, stripped_segment.c_str());
+        base::StrCat({kQuestionPrefix, stripped_segment});
 
     questions.push_back(question);
   }

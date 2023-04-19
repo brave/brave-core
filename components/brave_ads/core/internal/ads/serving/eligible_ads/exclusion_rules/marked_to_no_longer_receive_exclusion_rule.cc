@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/marked_to_no_longer_receive_exclusion_rule.h"
 
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 
@@ -27,10 +27,10 @@ std::string MarkedToNoLongerReceiveExclusionRule::GetUuid(
 bool MarkedToNoLongerReceiveExclusionRule::ShouldExclude(
     const CreativeAdInfo& creative_ad) {
   if (!DoesRespectCap(creative_ad)) {
-    last_message_ = base::StringPrintf(
-        "creativeSetId %s excluded due to %s category being marked to no "
+    last_message_ = base::ReplaceStringPlaceholders(
+        "creativeSetId $1 excluded due to $2 category being marked to no "
         "longer receive ads",
-        creative_ad.creative_set_id.c_str(), creative_ad.segment.c_str());
+        {creative_ad.creative_set_id, creative_ad.segment}, nullptr);
 
     return true;
   }

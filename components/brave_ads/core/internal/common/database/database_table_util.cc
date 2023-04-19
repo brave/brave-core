@@ -9,7 +9,6 @@
 
 #include "base/check_op.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 
 namespace brave_ads::database {
@@ -28,16 +27,11 @@ std::string BuildInsertQuery(const std::string& from,
   DCHECK(!to_columns.empty());
   DCHECK_EQ(from_columns.size(), to_columns.size());
 
-  const std::string comma_separated_from_columns =
-      base::JoinString(from_columns, ", ");
-
-  const std::string comma_separated_to_columns =
-      base::JoinString(to_columns, ", ");
-
-  return base::StringPrintf("INSERT INTO %s (%s) SELECT %s FROM %s %s;",
-                            to.c_str(), comma_separated_to_columns.c_str(),
-                            comma_separated_from_columns.c_str(), from.c_str(),
-                            group_by.c_str());
+  return base::ReplaceStringPlaceholders(
+      "INSERT INTO $1 ($2) SELECT $3 FROM $4 $5;",
+      {to, base::JoinString(to_columns, ", "),
+       base::JoinString(from_columns, ", "), from, group_by},
+      nullptr);
 }
 
 }  // namespace
@@ -49,9 +43,9 @@ void CreateTableIndex(mojom::DBTransactionInfo* transaction,
   DCHECK(!table_name.empty());
   DCHECK(!key.empty());
 
-  const std::string query = base::StringPrintf(
-      "CREATE INDEX IF NOT EXISTS %s_%s_index ON %s (%s)", table_name.c_str(),
-      key.c_str(), table_name.c_str(), key.c_str());
+  const std::string query = base::ReplaceStringPlaceholders(
+      "CREATE INDEX IF NOT EXISTS $1_$2_index ON $3 ($4)",
+      {table_name, key, table_name, key}, nullptr);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -65,11 +59,10 @@ void DropTable(mojom::DBTransactionInfo* transaction,
   DCHECK(transaction);
   DCHECK(!table_name.empty());
 
-  const std::string query = base::StringPrintf(
-      "PRAGMA foreign_keys = off;"
-      "DROP TABLE IF EXISTS %s;"
-      "PRAGMA foreign_keys = on;",
-      table_name.c_str());
+  const std::string query = base::ReplaceStringPlaceholders(
+      "PRAGMA foreign_keys = off; DROP TABLE IF EXISTS $1; PRAGMA foreign_keys "
+      "= on;",
+      {table_name}, nullptr);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -84,7 +77,7 @@ void DeleteTable(mojom::DBTransactionInfo* transaction,
   DCHECK(!table_name.empty());
 
   const std::string query =
-      base::StringPrintf("DELETE FROM %s", table_name.c_str());
+      base::ReplaceStringPlaceholders("DELETE FROM $1", {table_name}, nullptr);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -110,15 +103,13 @@ void CopyTableColumns(mojom::DBTransactionInfo* transaction,
 
   std::string query = "PRAGMA foreign_keys = off;";
 
-  const std::string insert_query =
-      BuildInsertQuery(from, to, from_columns, to_columns, group_by);
-  query.append(insert_query);
+  query += BuildInsertQuery(from, to, from_columns, to_columns, group_by);
 
   if (should_drop) {
-    query.append(base::StringPrintf("DROP TABLE %s;", from.c_str()));
+    query += base::ReplaceStringPlaceholders("DROP TABLE $1;", {from}, nullptr);
   }
 
-  query.append("PRAGMA foreign_keys = on;");
+  query += "PRAGMA foreign_keys = on;";
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -151,8 +142,8 @@ void RenameTable(mojom::DBTransactionInfo* transaction,
   DCHECK(!to.empty());
   DCHECK_NE(from, to);
 
-  const std::string query = base::StringPrintf("ALTER TABLE %s RENAME TO %s",
-                                               from.c_str(), to.c_str());
+  const std::string query = base::ReplaceStringPlaceholders(
+      "ALTER TABLE $1 RENAME TO $2", {from, to}, nullptr);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;

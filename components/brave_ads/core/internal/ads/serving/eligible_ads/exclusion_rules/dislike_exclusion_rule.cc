@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/dislike_exclusion_rule.h"
 
 #include "base/containers/contains.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/filtered_advertiser_info.h"
@@ -35,9 +35,9 @@ std::string DislikeExclusionRule::GetUuid(
 
 bool DislikeExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
   if (!DoesRespectCap(creative_ad)) {
-    last_message_ =
-        base::StringPrintf("advertiserId %s excluded due to being disliked",
-                           creative_ad.advertiser_id.c_str());
+    last_message_ = base::ReplaceStringPlaceholders(
+        "advertiserId $1 excluded due to being disliked",
+        {creative_ad.advertiser_id}, nullptr);
 
     return true;
   }

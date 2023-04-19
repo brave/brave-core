@@ -12,7 +12,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "base/time/time_to_iso8601.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -120,7 +119,8 @@ void ReplaceTagsForText(const std::vector<std::string>& tags,
       continue;
     }
 
-    const std::string enclosed_tag = base::StringPrintf("<%s>", tag.c_str());
+    const std::string enclosed_tag =
+        base::ReplaceStringPlaceholders("<$1>", {tag}, nullptr);
     const std::string escaped_enclosed_tag = RE2::QuoteMeta(enclosed_tag);
     RE2::Replace(out_text, escaped_enclosed_tag, value);
   }

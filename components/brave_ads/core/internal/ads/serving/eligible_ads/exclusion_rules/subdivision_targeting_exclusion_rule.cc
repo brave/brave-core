@@ -9,7 +9,7 @@
 
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/locale/subdivision_code_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
@@ -59,9 +59,9 @@ std::string SubdivisionTargetingExclusionRule::GetUuid(
 bool SubdivisionTargetingExclusionRule::ShouldExclude(
     const CreativeAdInfo& creative_ad) {
   if (!DoesRespectCap(creative_ad)) {
-    last_message_ = base::StringPrintf(
-        "creativeSetId %s excluded as not within the targeted subdivision",
-        creative_ad.creative_set_id.c_str());
+    last_message_ = base::ReplaceStringPlaceholders(
+        "creativeSetId $1 excluded as not within the targeted subdivision",
+        {creative_ad.creative_set_id}, nullptr);
 
     return true;
   }

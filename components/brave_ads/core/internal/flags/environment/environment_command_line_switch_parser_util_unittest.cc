@@ -5,7 +5,7 @@
 
 #include <string>
 
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/command_line_switch_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -67,9 +67,9 @@ std::string TestParamToString(
   const std::string sanitized_command_line_switch =
       SanitizeCommandLineSwitch(test_param.param.command_line_switch);
 
-  return base::StringPrintf("%sEnvironmentFor%s",
-                            expected_environment_type.c_str(),
-                            sanitized_command_line_switch.c_str());
+  return base::ReplaceStringPlaceholders(
+      "$1EnvironmentFor$2",
+      {expected_environment_type, sanitized_command_line_switch}, nullptr);
 }
 
 INSTANTIATE_TEST_SUITE_P(,

@@ -13,7 +13,7 @@
 #include "base/containers/flat_map.h"
 #include "base/json/json_writer.h"
 #include "base/strings/strcat.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
@@ -30,7 +30,7 @@ std::string BuildDigestHeaderValue(const std::string& body) {
   const std::vector<uint8_t> body_sha256 = crypto::Sha256(body);
   const std::string body_sha256_base64 = base::Base64Encode(body_sha256);
 
-  return base::StringPrintf("SHA-256=%s", body_sha256_base64.c_str());
+  return base::StrCat({"SHA-256=", body_sha256_base64});
 }
 
 }  // namespace
@@ -63,9 +63,9 @@ mojom::UrlRequestInfoPtr RequestSignedTokensUrlRequestBuilder::Build() {
 ///////////////////////////////////////////////////////////////////////////////
 
 GURL RequestSignedTokensUrlRequestBuilder::BuildUrl() const {
-  const std::string spec = base::StringPrintf("%s/v3/confirmation/token/%s",
-                                              GetNonAnonymousUrlHost().c_str(),
-                                              wallet_.payment_id.c_str());
+  const std::string spec = base::ReplaceStringPlaceholders(
+      "$1/v3/confirmation/token/$2",
+      {GetNonAnonymousUrlHost(), wallet_.payment_id}, nullptr);
   return GURL(spec);
 }
 
@@ -75,12 +75,12 @@ std::vector<std::string> RequestSignedTokensUrlRequestBuilder::BuildHeaders(
 
   const std::string digest_header_value = BuildDigestHeaderValue(body);
   const std::string digest_header =
-      base::StringPrintf("digest: %s", digest_header_value.c_str());
+      base::StrCat({"digest: ", digest_header_value});
   headers.push_back(digest_header);
 
   const std::string signature_header_value = BuildSignatureHeaderValue(body);
   const std::string signature_header =
-      base::StringPrintf("signature: %s", signature_header_value.c_str());
+      base::StrCat({"signature: ", signature_header_value});
   headers.push_back(signature_header);
 
   const std::string content_type_header = "content-type: application/json";

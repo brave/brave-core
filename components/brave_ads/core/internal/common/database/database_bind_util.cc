@@ -10,7 +10,6 @@
 
 #include "base/check_op.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 
 namespace brave_ads::database {
@@ -20,8 +19,8 @@ std::string BuildBindingParameterPlaceholder(const size_t parameters_count) {
 
   const std::vector<std::string> placeholders(parameters_count, "?");
 
-  return base::StringPrintf("(%s)",
-                            base::JoinString(placeholders, ", ").c_str());
+  return base::ReplaceStringPlaceholders(
+      "($1)", {base::JoinString(placeholders, ", ")}, nullptr);
 }
 
 std::string BuildBindingParameterPlaceholders(

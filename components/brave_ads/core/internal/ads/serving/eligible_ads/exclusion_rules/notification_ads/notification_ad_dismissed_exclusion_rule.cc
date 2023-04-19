@@ -9,7 +9,7 @@
 #include <utility>
 
 #include "base/ranges/algorithm.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
@@ -77,9 +77,9 @@ bool DismissedExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
       FilterAdEvents(ad_events_, creative_ad);
 
   if (!DoesRespectCap(filtered_ad_events)) {
-    last_message_ = base::StringPrintf(
-        "campaignId %s has exceeded the dismissed frequency cap",
-        creative_ad.campaign_id.c_str());
+    last_message_ = base::ReplaceStringPlaceholders(
+        "campaignId $1 has exceeded the dismissed frequency cap",
+        {creative_ad.campaign_id}, nullptr);
 
     return true;
   }

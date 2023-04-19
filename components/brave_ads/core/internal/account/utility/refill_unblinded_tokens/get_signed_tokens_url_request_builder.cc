@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
 #include "url/gurl.h"
@@ -36,9 +36,9 @@ mojom::UrlRequestInfoPtr GetSignedTokensUrlRequestBuilder::Build() {
 ///////////////////////////////////////////////////////////////////////////////
 
 GURL GetSignedTokensUrlRequestBuilder::BuildUrl() const {
-  const std::string spec = base::StringPrintf(
-      "%s/v3/confirmation/token/%s?nonce=%s", GetNonAnonymousUrlHost().c_str(),
-      wallet_.payment_id.c_str(), nonce_.c_str());
+  const std::string spec = base::ReplaceStringPlaceholders(
+      "$1/v3/confirmation/token/$2?nonce=$3",
+      {GetNonAnonymousUrlHost(), wallet_.payment_id, nonce_}, nullptr);
   return GURL(spec);
 }
 

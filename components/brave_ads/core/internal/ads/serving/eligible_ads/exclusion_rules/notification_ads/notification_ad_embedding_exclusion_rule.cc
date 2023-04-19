@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_features.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 
@@ -34,9 +34,9 @@ std::string EmbeddingExclusionRule::GetUuid(
 
 bool EmbeddingExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
   if (!DoesRespectCap(creative_ad)) {
-    last_message_ = base::StringPrintf(
-        "creativeSetId %s does not have a matching embedding",
-        creative_ad.creative_set_id.c_str());
+    last_message_ = base::ReplaceStringPlaceholders(
+        "creativeSetId $1 does not have a matching embedding",
+        {creative_ad.creative_set_id}, nullptr);
 
     return true;
   }
