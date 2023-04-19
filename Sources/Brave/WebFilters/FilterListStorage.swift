@@ -38,11 +38,14 @@ import BraveCore
   /// Load filter lists from the ad block service
   /// - Warning: You should always call `loadFilterListSettings` before calling this
   func loadFilterLists(from regionalFilterLists: [AdblockFilterListCatalogEntry]) {
-    let filterLists = regionalFilterLists.map { adBlockFilterList in
+    let filterLists = regionalFilterLists.enumerated().compactMap { index, adBlockFilterList -> FilterList? in
+      // Certain filter lists are disabled if they are currently incompatible with iOS
+      guard !FilterList.disabledComponentIDs.contains(adBlockFilterList.componentId) else { return nil }
       let setting = allFilterListSettings.first(where: { $0.componentId == adBlockFilterList.componentId })
       
       return FilterList(
         from: adBlockFilterList,
+        order: index,
         isEnabled: setting?.isEnabled ?? pendingDefaults[adBlockFilterList.componentId] ?? adBlockFilterList.defaultToggle
       )
     }
@@ -84,10 +87,12 @@ import BraveCore
   }
   
   /// - Warning: Do not call this before we load core data
-  public func isEnabled(for componentID: String) -> Bool {
-    return filterLists.first(where: { $0.entry.componentId == componentID })?.isEnabled
-      ?? allFilterListSettings.first(where: { $0.componentId == componentID })?.isEnabled
-      ?? pendingDefaults[componentID]
+  public func isEnabled(for componentId: String) -> Bool {
+    guard !FilterList.disabledComponentIDs.contains(componentId) else { return false }
+    
+    return filterLists.first(where: { $0.entry.componentId == componentId })?.isEnabled
+      ?? allFilterListSettings.first(where: { $0.componentId == componentId })?.isEnabled
+      ?? pendingDefaults[componentId]
       ?? false
   }
   
@@ -104,7 +109,7 @@ import BraveCore
       isEnabled: filterList.isEnabled,
       componentId: filterList.entry.componentId,
       allowCreation: filterList.entry.defaultToggle != filterList.isEnabled || filterList.isEnabled,
-      order: filterLists.firstIndex(where: { $0.id == filterList.id }) ?? 0
+      order: filterList.order
     )
   }
   
