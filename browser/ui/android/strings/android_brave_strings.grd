@@ -3229,10 +3229,10 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WALLET_ETH_NAME" desc="Name of ETH cointype">
       Ethereum
     </message>
-    <message name="IDS_WALLET_SOL_NAME" desc="Name of SOL cointype">
+    <message name="IDS_WALLET_SOL_NAME" desc="Name of SOL cointype" translateable="false">
       Solana
     </message>
-    <message name="IDS_WALLET_FIL_NAME" desc="Name of FIL cointype">
+    <message name="IDS_WALLET_FIL_NAME" desc="Name of FIL cointype" translateable="false">
       Filecoin
     </message>
     <message name="IDS_EXCLUDED_APPS" desc="Vpn splittunnel, Excluded apps title text">
