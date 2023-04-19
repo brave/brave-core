@@ -579,11 +579,12 @@ void VerticalTabStripRegionView::SetState(State state) {
   mouse_enter_timer_.Stop();
   state_ = state;
 
-  original_region_view_->tab_strip_->SetAvailableWidthCallback(
-      base::BindRepeating(
-          &VerticalTabStripRegionView::GetAvailableWidthForTabContainer,
-          base::Unretained(this)));
-  original_region_view_->tab_strip_->tab_container_->InvalidateIdealBounds();
+  auto tab_strip = original_region_view_->tab_strip_;
+  tab_strip->SetAvailableWidthCallback(base::BindRepeating(
+      &VerticalTabStripRegionView::GetAvailableWidthForTabContainer,
+      base::Unretained(this)));
+  tab_strip->tab_container_->InvalidateIdealBounds();
+  tab_strip->tab_container_->CompleteAnimationAndLayout();
 
   PreferredSizeChanged();
 }
