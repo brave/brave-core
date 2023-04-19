@@ -178,6 +178,20 @@ void BraveTab::UpdateIconVisibility() {
   }
 }
 
+void BraveTab::OnLayerBoundsChanged(const gfx::Rect& old_bounds,
+                                    ui::PropertyChangeReason reason) {
+  Tab::OnLayerBoundsChanged(old_bounds, reason);
+
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
+    return;
+  }
+
+  if (shadow_layer_ && shadow_layer_->parent() &&
+      shadow_layer_->parent() == layer()->parent()) {
+    LayoutShadowLayer();
+  }
+}
+
 void BraveTab::Layout() {
   Tab::Layout();
   if (IsAtMinWidthForVerticalTabStrip()) {
@@ -209,14 +223,6 @@ void BraveTab::ReorderChildLayers(ui::Layer* parent_layer) {
 
   DCHECK_EQ(shadow_layer_->parent(), layer()->parent());
   layer()->parent()->StackBelow(shadow_layer_.get(), layer());
-}
-
-void BraveTab::OnBoundsChanged(const gfx::Rect& previous_bounds) {
-  Tab::OnBoundsChanged(previous_bounds);
-
-  if (shadow_layer_ && shadow_layer_->parent()) {
-    LayoutShadowLayer();
-  }
 }
 
 void BraveTab::MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,
