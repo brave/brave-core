@@ -19,8 +19,10 @@ import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.Bra
 
 public class SearchWidgetPromoPanel implements View.OnClickListener {
     private PopupWindow mPopupWindow;
+    private Context mContext;
 
     public SearchWidgetPromoPanel(@NonNull Context context) {
+        mContext = context;
         View view = View.inflate(context, R.layout.layout_search_widget_promo, null);
         view.findViewById(R.id.btAddWidget).setOnClickListener(this);
         view.findViewById(R.id.tvNotNow).setOnClickListener(this);
@@ -39,7 +41,7 @@ public class SearchWidgetPromoPanel implements View.OnClickListener {
     }
 
     public void showIfNeeded(@NonNull View anchorView) {
-        if (BraveSearchWidgetUtils.getShouldShowWidgetPromo())
+        if (BraveSearchWidgetUtils.getShouldShowWidgetPromo(mContext))
             mPopupWindow.showAsDropDown(anchorView);
     }
 }
