@@ -29,9 +29,12 @@ source_set("unit_test") {
   deps = [
     "//base",
     "//brave/components/l10n/common:test_support",
+    "//chrome/browser",
     "//chrome/browser/ui",
+    "//chrome/test:test_support",
     "//components/prefs",
     "//components/prefs:test_support",
+    "//content/test:test_support",
     "//testing/gtest",
   ]
 }
