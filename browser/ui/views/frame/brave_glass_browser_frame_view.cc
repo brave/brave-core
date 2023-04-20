@@ -12,6 +12,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/glass_browser_caption_button_container.h"
 #include "ui/base/hit_test.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
@@ -54,11 +55,31 @@ int BraveGlassBrowserFrameView::GetTopInset(bool restored) const {
 
   return GlassBrowserFrameView::GetTopInset(restored);
 }
+
 int BraveGlassBrowserFrameView::NonClientHitTest(const gfx::Point& point) {
-  if (auto res = brave::NonClientHitTest(browser_view(), point);
-      res != HTNOWHERE) {
-    return res;
+  auto result = GlassBrowserFrameView::NonClientHitTest(point);
+  if (result != HTCLIENT) {
+    return result;
   }
 
-  return GlassBrowserFrameView::NonClientHitTest(point);
+  if (caption_button_container()) {
+    // When we use custom caption button container, it could return HTCLIENT.
+    // We shouldn't override it.
+    gfx::Point local_point = point;
+    ConvertPointToTarget(parent(), caption_button_container(), &local_point);
+    if (caption_button_container()->HitTestPoint(local_point)) {
+      const int hit_test_result =
+          caption_button_container()->NonClientHitTest(local_point);
+      if (hit_test_result != HTNOWHERE) {
+        return hit_test_result;
+      }
+    }
+  }
+
+  if (auto overridden_result = brave::NonClientHitTest(browser_view(), point);
+      overridden_result != HTNOWHERE) {
+    return overridden_result;
+  }
+
+  return result;
 }

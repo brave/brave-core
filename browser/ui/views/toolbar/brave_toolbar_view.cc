@@ -125,7 +125,8 @@ BraveToolbarView::~BraveToolbarView() = default;
 void BraveToolbarView::Init() {
   ToolbarView::Init();
 
-  // This will allow us to move this window by dragging toolbar
+  // This will allow us to move this window by dragging toolbar.
+  // See brave_non_client_hit_test_helper.h
   views::SetHitTestComponent(this, HTCAPTION);
 
   // For non-normal mode, we don't have to more.
@@ -346,6 +347,7 @@ void BraveToolbarView::ViewHierarchyChanged(
   if (details.is_add && details.parent == this) {
     // Mark children of this view as client area so that they are not perceived
     // as client area.
+    // See brave_non_client_hit_test_helper.h
     views::SetHitTestComponent(details.child, HTCLIENT);
   }
 }
