@@ -177,7 +177,7 @@ class EthereumProviderImpl final
                            EthSubscribeLogsFiltered);
   friend class EthereumProviderImplUnitTest;
 
-  // mojom::BraveWalletProvider:
+  // mojom::EthereumProvider:
   void Init(
       mojo::PendingRemote<mojom::EventsListener> events_listener) override;
   void Request(base::Value input, RequestCallback callback) override;
@@ -185,6 +185,7 @@ class EthereumProviderImpl final
   void Send(const std::string& method,
             base::Value params,
             SendCallback callback) override;
+  void SendAsync(base::Value input, SendAsyncCallback callback) override;
   void GetChainId(GetChainIdCallback callback) override;
   void IsLocked(IsLockedCallback callback) override;
 
@@ -338,7 +339,8 @@ class EthereumProviderImpl final
   void SelectedAccountChanged(mojom::CoinType coin) override;
 
   void CommonRequestOrSendAsync(base::ValueView input_value,
-                                RequestCallback callback);
+                                RequestCallback request_callback,
+                                bool format_json_rpc_response);
 
   void RequestEthereumPermissions(RequestCallback callback,
                                   base::Value id,
@@ -373,6 +375,14 @@ class EthereumProviderImpl final
   void OnGetBlockByNumber(base::Value result,
                           mojom::ProviderError,
                           const std::string&);
+
+  void OnResponse(bool format_json_rpc_response,
+                  RequestCallback callback,
+                  base::Value id,
+                  base::Value formed_response,
+                  const bool reject,
+                  const std::string& first_allowed_account,
+                  const bool update_bind_js_properties);
 
   // EthBlockTracker::Observer:
   void OnLatestBlock(uint256_t block_num) override;

@@ -13,7 +13,6 @@
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
@@ -87,7 +86,6 @@ void JSEthereumProvider::SendResponse(
     std::unique_ptr<v8::Global<v8::Function>> global_callback,
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
-    bool force_json_response,
     base::Value formed_response,
     bool success) {
   if (!render_frame()) {
@@ -98,13 +96,6 @@ void JSEthereumProvider::SendResponse(
   v8::Context::Scope context_scope(context);
   v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
-
-  if (global_callback || force_json_response) {
-    auto full_formed_response = brave_wallet::ToProviderResponse(
-        std::move(id), success ? &formed_response : nullptr,
-        success ? nullptr : &formed_response);
-    formed_response = std::move(full_formed_response);
-  }
 
   v8::Local<v8::Value> result =
       content::V8ValueConverter::Create()->ToV8Value(formed_response, context);
@@ -426,7 +417,7 @@ v8::Local<v8::Promise> JSEthereumProvider::SendMethod(gin::Arguments* args) {
       method, std::move(*params),
       base::BindOnce(&JSEthereumProvider::OnRequestOrSendAsync,
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
-                     nullptr, std::move(promise_resolver), isolate, true));
+                     nullptr, std::move(promise_resolver), isolate));
 
   return resolver.ToLocalChecked()->GetPromise();
 }
@@ -451,13 +442,12 @@ void JSEthereumProvider::SendAsync(gin::Arguments* args) {
       content::V8ValueConverter::Create()->FromV8Value(
           input, isolate->GetCurrentContext());
 
-  ethereum_provider_->Request(
+  ethereum_provider_->SendAsync(
       std::move(*input_value),
-      base::BindOnce(
-          &JSEthereumProvider::JSEthereumProvider::OnRequestOrSendAsync,
-          weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
-          std::move(global_callback), v8::Global<v8::Promise::Resolver>(),
-          isolate, true));
+      base::BindOnce(&JSEthereumProvider::OnRequestOrSendAsync,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
+                     std::move(global_callback),
+                     v8::Global<v8::Promise::Resolver>(), isolate));
 }
 
 bool JSEthereumProvider::IsConnected() {
@@ -489,10 +479,9 @@ v8::Local<v8::Promise> JSEthereumProvider::Request(v8::Isolate* isolate,
 
   ethereum_provider_->Request(
       std::move(*input_value),
-      base::BindOnce(
-          &JSEthereumProvider::JSEthereumProvider::OnRequestOrSendAsync,
-          weak_ptr_factory_.GetWeakPtr(), std::move(global_context), nullptr,
-          std::move(promise_resolver), isolate, false));
+      base::BindOnce(&JSEthereumProvider::OnRequestOrSendAsync,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
+                     nullptr, std::move(promise_resolver), isolate));
 
   return resolver.ToLocalChecked()->GetPromise();
 }
@@ -502,7 +491,6 @@ void JSEthereumProvider::OnRequestOrSendAsync(
     std::unique_ptr<v8::Global<v8::Function>> global_callback,
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
-    bool force_json_response,
     base::Value id,
     base::Value formed_response,
     const bool reject,
@@ -513,7 +501,7 @@ void JSEthereumProvider::OnRequestOrSendAsync(
   }
   SendResponse(std::move(id), std::move(global_context),
                std::move(global_callback), std::move(promise_resolver), isolate,
-               force_json_response, std::move(formed_response), !reject);
+               std::move(formed_response), !reject);
 }
 
 v8::Local<v8::Promise> JSEthereumProvider::Enable(v8::Isolate* isolate) {
@@ -536,7 +524,7 @@ v8::Local<v8::Promise> JSEthereumProvider::Enable(v8::Isolate* isolate) {
   ethereum_provider_->Enable(
       base::BindOnce(&JSEthereumProvider::OnRequestOrSendAsync,
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
-                     nullptr, std::move(promise_resolver), isolate, false));
+                     nullptr, std::move(promise_resolver), isolate));
 
   return resolver.ToLocalChecked()->GetPromise();
 }
