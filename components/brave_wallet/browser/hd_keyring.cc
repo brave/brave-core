@@ -119,7 +119,7 @@ std::vector<uint8_t> HDKeyring::SignMessage(
     return std::vector<uint8_t>();
   }
 
-  return hd_key->Sign(message, nullptr);
+  return hd_key->SignCompact(message, nullptr);
 }
 
 HDKeyBase* HDKeyring::GetHDKeyFromAddress(const std::string& address) {

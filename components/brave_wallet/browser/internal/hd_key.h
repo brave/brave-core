@@ -20,6 +20,8 @@
 
 namespace brave_wallet {
 
+constexpr size_t kCompactSignatureSize = 64;
+
 using SecureVector = std::vector<uint8_t, SecureZeroAllocator<uint8_t>>;
 
 enum class ExtendedKeyVersion {
@@ -86,11 +88,11 @@ class HDKey : public HDKeyBase {
   // Sign the message using private key. The msg has to be exactly 32 bytes
   // Return 64 bytes ECDSA signature when succeed, otherwise empty vector
   // if recid is not null, recovery id will be filled.
-  std::vector<uint8_t> Sign(const std::vector<uint8_t>& msg,
-                            int* recid = nullptr) override;
+  std::vector<uint8_t> SignCompact(const std::vector<uint8_t>& msg,
+                                   int* recid = nullptr) override;
 
   // Sign the message using private key and return it in DER format.
-  std::vector<uint8_t> SignBitcoin(base::span<const uint8_t, 32> msg);
+  std::vector<uint8_t> SignDer(base::span<const uint8_t, 32> msg);
 
   // Verify the ECDSA signature using public key. The msg has to be exactly 32
   // bytes and the sig has to be 64 bytes.

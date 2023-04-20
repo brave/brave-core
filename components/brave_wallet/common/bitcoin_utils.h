@@ -32,7 +32,7 @@ struct DecodedBitcoinAddress {
 
   BitcoinAddressType address_type;
   std::vector<uint8_t> pubkey_hash;
-  uint32_t witness_version = 0;
+  uint8_t witness_version = 0;
 };
 
 absl::optional<DecodedBitcoinAddress> DecodeBitcoinAddress(

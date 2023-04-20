@@ -43,7 +43,7 @@ std::vector<uint8_t> BitcoinKeyring::SignBitcoinMessage(
 
   auto* hd_key = static_cast<HDKey*>(hd_key_base.get());
 
-  return hd_key->SignBitcoin(message);
+  return hd_key->SignDer(message);
 }
 
 std::string BitcoinKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {

@@ -88,8 +88,8 @@ std::unique_ptr<HDKeyBase> HDKeyEd25519::DeriveChildFromPath(
   return std::make_unique<HDKeyEd25519>(path, std::move(child_private_key));
 }
 
-std::vector<uint8_t> HDKeyEd25519::Sign(const std::vector<uint8_t>& msg,
-                                        int* recid) {
+std::vector<uint8_t> HDKeyEd25519::SignCompact(const std::vector<uint8_t>& msg,
+                                               int* recid) {
   auto signature_result = private_key_->unwrap().sign(
       rust::Slice<const uint8_t>{msg.data(), msg.size()});
   if (!signature_result->is_ok()) {

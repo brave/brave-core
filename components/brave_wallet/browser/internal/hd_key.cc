@@ -35,6 +35,7 @@ constexpr char kMasterSecret[] = "Bitcoin seed";
 constexpr size_t kSHA512Length = 64;
 constexpr uint32_t kHardenedOffset = 0x80000000;
 constexpr size_t kSerializationLength = 78;
+constexpr size_t kSignatureSize = 72;
 
 bool UTCPasswordVerification(const std::string& derived_key,
                              const std::vector<uint8_t>& ciphertext,
@@ -646,8 +647,9 @@ std::unique_ptr<HDKeyBase> HDKey::DeriveChildFromPath(const std::string& path) {
   return hd_key;
 }
 
-std::vector<uint8_t> HDKey::Sign(const std::vector<uint8_t>& msg, int* recid) {
-  std::vector<uint8_t> sig(64);
+std::vector<uint8_t> HDKey::SignCompact(const std::vector<uint8_t>& msg,
+                                        int* recid) {
+  std::vector<uint8_t> sig(kCompactSignatureSize);
   if (msg.size() != 32) {
     LOG(ERROR) << __func__ << ": message length should be 32";
     return sig;
@@ -685,7 +687,7 @@ std::vector<uint8_t> HDKey::Sign(const std::vector<uint8_t>& msg, int* recid) {
   return sig;
 }
 
-std::vector<uint8_t> HDKey::SignBitcoin(base::span<const uint8_t, 32> msg) {
+std::vector<uint8_t> HDKey::SignDer(base::span<const uint8_t, 32> msg) {
   unsigned char extra_entropy[32] = {0};
   secp256k1_ecdsa_signature ecdsa_sig;
   if (!secp256k1_ecdsa_sign(secp256k1_ctx_, &ecdsa_sig, msg.data(),
@@ -697,7 +699,7 @@ std::vector<uint8_t> HDKey::SignBitcoin(base::span<const uint8_t, 32> msg) {
 
   auto sig_has_low_r = [](const secp256k1_context* ctx,
                           const secp256k1_ecdsa_signature* sig) {
-    unsigned char compact_sig[64] = {};
+    uint8_t compact_sig[kCompactSignatureSize] = {};
     secp256k1_ecdsa_signature_serialize_compact(ctx, compact_sig, sig);
 
     return compact_sig[0] < 0x80;
@@ -717,7 +719,7 @@ std::vector<uint8_t> HDKey::SignBitcoin(base::span<const uint8_t, 32> msg) {
     }
   }
 
-  std::vector<uint8_t> sig_der(72);
+  std::vector<uint8_t> sig_der(kSignatureSize);
   size_t sig_der_length = sig_der.size();
   if (!secp256k1_ecdsa_signature_serialize_der(secp256k1_ctx_, sig_der.data(),
                                                &sig_der_length, &ecdsa_sig)) {
@@ -732,7 +734,7 @@ std::vector<uint8_t> HDKey::SignBitcoin(base::span<const uint8_t, 32> msg) {
 
 bool HDKey::Verify(const std::vector<uint8_t>& msg,
                    const std::vector<uint8_t>& sig) {
-  if (msg.size() != 32 || sig.size() != 64) {
+  if (msg.size() != 32 || sig.size() != kCompactSignatureSize) {
     LOG(ERROR) << __func__ << ": message or signature length is invalid";
     return false;
   }
@@ -764,7 +766,7 @@ std::vector<uint8_t> HDKey::Recover(bool compressed,
                                     int recid) {
   size_t public_key_len = compressed ? 33 : 65;
   std::vector<uint8_t> public_key(public_key_len);
-  if (msg.size() != 32 || sig.size() != 64) {
+  if (msg.size() != 32 || sig.size() != kCompactSignatureSize) {
     LOG(ERROR) << __func__ << ": message or signature length is invalid";
     return public_key;
   }

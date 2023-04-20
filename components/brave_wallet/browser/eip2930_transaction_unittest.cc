@@ -124,7 +124,7 @@ TEST(Eip2930TransactionUnitTest, GetSignedTransactionAndHash) {
   key.SetPrivateKey(private_key);
   int recid;
   const std::vector<uint8_t> signature =
-      key.Sign(tx.GetMessageToSign(), &recid);
+      key.SignCompact(tx.GetMessageToSign(), &recid);
 
   ASSERT_FALSE(tx.IsSigned());
   tx.ProcessSignature(signature, recid);

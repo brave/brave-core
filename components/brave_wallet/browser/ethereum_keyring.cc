@@ -10,7 +10,6 @@
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
-#include "brave/components/brave_wallet/common/hex_utils.h"
 
 namespace brave_wallet {
 
@@ -34,7 +33,7 @@ bool EthereumKeyring::RecoverAddress(const std::vector<uint8_t>& message,
                                      std::string* address) {
   CHECK(address);
   // A compact ECDSA signature (recovery id byte + 64 bytes).
-  if (signature.size() != 65)
+  if (signature.size() != kCompactSignatureSize + 1)
     return false;
 
   std::vector<uint8_t> signature_only = signature;
@@ -95,7 +94,7 @@ std::vector<uint8_t> EthereumKeyring::SignMessage(
   }
 
   int recid;
-  std::vector<uint8_t> signature = hd_key->Sign(hash, &recid);
+  std::vector<uint8_t> signature = hd_key->SignCompact(hash, &recid);
   uint8_t v =
       static_cast<uint8_t>(chain_id ? recid + chain_id * 2 + 35 : recid + 27);
   signature.push_back(v);
@@ -112,7 +111,7 @@ void EthereumKeyring::SignTransaction(const std::string& address,
 
   const std::vector<uint8_t> message = tx->GetMessageToSign(chain_id);
   int recid;
-  const std::vector<uint8_t> signature = hd_key->Sign(message, &recid);
+  const std::vector<uint8_t> signature = hd_key->SignCompact(message, &recid);
   tx->ProcessSignature(signature, recid, chain_id);
 }
 

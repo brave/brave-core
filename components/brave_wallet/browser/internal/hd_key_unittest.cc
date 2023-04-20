@@ -36,17 +36,20 @@ std::string GetHexAddr(const HDKey* key) {
   return addr.ToHex();
 }
 
-std::string GetWifPrivateKey(std::vector<uint8_t> private_key) {
-  private_key.insert(private_key.begin(), 0x80);  // Version Byte.
+std::string GetWifPrivateKey(std::vector<uint8_t> private_key, bool testnet) {
+  private_key.insert(private_key.begin(),
+                     testnet ? 0xef : 0x80);  // Version Byte.
   auto sha256hash = DoubleSHA256Hash(private_key);
   private_key.insert(private_key.end(), sha256hash.begin(),
                      sha256hash.begin() + 4);  // Checksum.
   return Base58Encode(private_key);
 }
 
-std::string GetWifCompressedPrivateKey(std::vector<uint8_t> private_key) {
-  private_key.insert(private_key.begin(), 0x80);  // Version Byte.
-  private_key.push_back(0x01);                    // Compression Byte.
+std::string GetWifCompressedPrivateKey(std::vector<uint8_t> private_key,
+                                       bool testnet) {
+  private_key.insert(private_key.begin(),
+                     testnet ? 0xef : 0x80);  // Version Byte.
+  private_key.push_back(0x01);                // Compression Byte.
   auto sha256hash = DoubleSHA256Hash(private_key);
   private_key.insert(private_key.end(), sha256hash.begin(),
                      sha256hash.begin() + 4);  // Checksum.
@@ -318,8 +321,8 @@ TEST(HDKeyUnitTest, GenerateFromPrivateKey) {
   const std::vector<uint8_t> msg_b(32, 0x08);
   int recid_a = -1;
   int recid_b = -1;
-  const std::vector<uint8_t> sig_a = key->Sign(msg_a, &recid_a);
-  const std::vector<uint8_t> sig_b = key->Sign(msg_b, &recid_b);
+  const std::vector<uint8_t> sig_a = key->SignCompact(msg_a, &recid_a);
+  const std::vector<uint8_t> sig_b = key->SignCompact(msg_b, &recid_b);
   EXPECT_NE(recid_a, -1);
   EXPECT_NE(recid_b, -1);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig_a)),
@@ -344,8 +347,8 @@ TEST(HDKeyUnitTest, SignAndVerifyAndRecover) {
   const std::vector<uint8_t> msg_b(32, 0x08);
   int recid_a = -1;
   int recid_b = -1;
-  const std::vector<uint8_t> sig_a = key->Sign(msg_a, &recid_a);
-  const std::vector<uint8_t> sig_b = key->Sign(msg_b, &recid_b);
+  const std::vector<uint8_t> sig_a = key->SignCompact(msg_a, &recid_a);
+  const std::vector<uint8_t> sig_b = key->SignCompact(msg_b, &recid_b);
   EXPECT_NE(recid_a, -1);
   EXPECT_NE(recid_b, -1);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig_a)),
@@ -612,7 +615,7 @@ TEST(HDKeyUnitTest, SignBitcoin) {
       "12b004fff7f4b69ef8650e767f18f11ede158148b425660723b9f9a66e61f747",
       &private_key_bytes));
   // https://github.com/bitcoin/bitcoin/blob/v24.0/src/test/key_tests.cpp#L20
-  EXPECT_EQ(GetWifPrivateKey(private_key_bytes),
+  ASSERT_EQ(GetWifPrivateKey(private_key_bytes, false),
             "5HxWvvfubhXpYYpS3tJkw6fq9jE9j18THftkZjHHfmFiWtmAbrj");
 
   std::unique_ptr<HDKey> hdkey =
@@ -621,7 +624,7 @@ TEST(HDKeyUnitTest, SignBitcoin) {
   std::string message = "Very deterministic message";
   auto hashed = DoubleSHA256Hash(base::as_bytes(base::make_span(message)));
 
-  auto signature = hdkey->SignBitcoin(hashed);
+  auto signature = hdkey->SignDer(hashed);
   // https://github.com/bitcoin/bitcoin/blob/v24.0/src/test/key_tests.cpp#L141
   EXPECT_EQ(
       HexEncodeLower(signature),
@@ -657,7 +660,7 @@ TEST(HDKeyUnitTest, Bip84TestVectors) {
             "qtfSdVCToUG868RvUUkgDKf31mGDtKsAYz2oz2AGutZYs");
 
   base = m_key->DeriveChildFromPath("m/84'/0'/0'/0/0");
-  EXPECT_EQ(GetWifCompressedPrivateKey(base->GetPrivateKeyBytes()),
+  EXPECT_EQ(GetWifCompressedPrivateKey(base->GetPrivateKeyBytes(), false),
             "KyZpNDKnfs94vbrwhJneDi77V6jF64PWPF8x5cdJb8ifgg2DUc9d");
   EXPECT_EQ(
       base::HexEncode(base->GetPublicKeyBytes()),
@@ -666,7 +669,7 @@ TEST(HDKeyUnitTest, Bip84TestVectors) {
             "bc1qcr8te4kr609gcawutmrza0j4xv80jy8z306fyu");
 
   base = m_key->DeriveChildFromPath("m/84'/0'/0'/0/1");
-  EXPECT_EQ(GetWifCompressedPrivateKey(base->GetPrivateKeyBytes()),
+  EXPECT_EQ(GetWifCompressedPrivateKey(base->GetPrivateKeyBytes(), false),
             "Kxpf5b8p3qX56DKEe5NqWbNUP9MnqoRFzZwHRtsFqhzuvUJsYZCy");
   EXPECT_EQ(
       base::HexEncode(base->GetPublicKeyBytes()),
@@ -675,7 +678,7 @@ TEST(HDKeyUnitTest, Bip84TestVectors) {
             "bc1qnjg0jd8228aq7egyzacy8cys3knf9xvrerkf9g");
 
   base = m_key->DeriveChildFromPath("m/84'/0'/0'/1/0");
-  EXPECT_EQ(GetWifCompressedPrivateKey(base->GetPrivateKeyBytes()),
+  EXPECT_EQ(GetWifCompressedPrivateKey(base->GetPrivateKeyBytes(), false),
             "KxuoxufJL5csa1Wieb2kp29VNdn92Us8CoaUG3aGtPtcF3AzeXvF");
   EXPECT_EQ(
       base::HexEncode(base->GetPublicKeyBytes()),

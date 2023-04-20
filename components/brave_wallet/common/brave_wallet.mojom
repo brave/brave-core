@@ -561,6 +561,7 @@ const string kFilecoinTestnetKeyringId = "filecoin_testnet";
 const string kSolanaKeyringId = "solana";
 const string kDefaultKeyringId = "default";
 
+// BIP 84 keyrings.
 const string kBitcoinKeyring84Id = "bitcoin_84";
 const string kBitcoinKeyring84TestId = "bitcoin_84_test";
 
