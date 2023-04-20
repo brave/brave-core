@@ -25,8 +25,13 @@ import { WalletPageActions } from '../../../../../page/actions'
 // utils
 import { getLocale } from '$web-common/locale'
 import Amount from '../../../../../utils/amount'
-import { getNftDiscoveryEnabledStatus, setNftDiscoveryEnabled } from '../../../../../common/async/lib'
-import { LOCAL_STORAGE_KEYS } from '../../../../../common/constants/local-storage-keys'
+import {
+  LOCAL_STORAGE_KEYS
+} from '../../../../../common/constants/local-storage-keys'
+import {
+  useGetNftDiscoveryEnabledStatusQuery,
+  useSetNftDiscoveryEnabledMutation
+} from '../../../../../common/slices/api.slice'
 
 // components
 import SearchBar from '../../../../shared/search-bar'
@@ -65,8 +70,6 @@ export const Nfts = (props: Props) => {
   // state
   const [searchValue, setSearchValue] = React.useState<string>('')
   const [showAddNftModal, setShowAddNftModal] = React.useState<boolean>(false)
-  // initial: true to avoid modal flashing
-  const [isNftAutoDiscoveryEnabled, setIsNftAutoDiscoveryEnabled] = React.useState<boolean>(true)
   const [showNftDiscoveryModal, setShowNftDiscoveryModal] = React.useState<boolean>(
     localStorage.getItem(LOCAL_STORAGE_KEYS.IS_ENABLE_NFT_AUTO_DISCOVERY_MODAL_HIDDEN) === null
   )
@@ -75,6 +78,12 @@ export const Nfts = (props: Props) => {
   const history = useHistory()
   const dispatch = useDispatch()
   const { nonFungibleTokens } = useNftPin()
+
+  // queries
+  const { data: isNftAutoDiscoveryEnabled } = useGetNftDiscoveryEnabledStatusQuery()
+
+  // mutations
+  const [setNftDiscovery] = useSetNftDiscoveryEnabledMutation()
 
   // methods
   const onSearchValueChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -103,9 +112,9 @@ export const Nfts = (props: Props) => {
   }, [])
 
   const onConfirmNftAutoDiscovery = React.useCallback(async () => {
-    await setNftDiscoveryEnabled(true)
+    await setNftDiscovery(true)
     hideNftDiscoveryModal()
-  }, [hideNftDiscoveryModal])
+  }, [hideNftDiscoveryModal, setNftDiscovery])
 
   // memos
   const filteredNfts = React.useMemo(() => {
@@ -131,16 +140,6 @@ export const Nfts = (props: Props) => {
     return filteredNfts.sort((a, b) => a.name.localeCompare(b.name))
   }, [filteredNfts])
 
-  // effects
-  React.useEffect(() => {
-    const getAutoDisoveryStatus = () => {
-      getNftDiscoveryEnabledStatus()
-        .then(enabled => setIsNftAutoDiscoveryEnabled(enabled))
-        .catch(error => console.error(error))
-    }
-
-    getAutoDisoveryStatus()
-  }, [getNftDiscoveryEnabledStatus])
 
   return (
     <>

@@ -493,7 +493,8 @@ export function createWalletApi (
       'TransactionsForAccount',
       'TransactionInfosForAccount',
       'UserBlockchainTokens',
-      'WalletInfo'
+      'WalletInfo',
+      'NftDiscoveryEnabledStatus'
     ],
     endpoints: ({ mutation, query }) => ({
       //
@@ -2943,6 +2944,40 @@ export function createWalletApi (
           tx.isSolanaTransaction
             ? [{ type: 'SolanaEstimatedFees', id: tx.id }]
             : ['GasEstimation1559']
+      }),
+      getNftDiscoveryEnabledStatus: query<boolean, void>({
+        queryFn: async (_arg, _api, _extraOptions, _baseQuery) => {
+          try {
+            const { braveWalletService } = apiProxyFetcher()
+            const result = await braveWalletService.getNftDiscoveryEnabled()
+            return {
+              data: result.enabled
+            }
+
+          } catch(error) {
+            return { error: 'Failed to fetch NFT auto-discovery status' }
+          }
+        },
+        providesTags: ['NftDiscoveryEnabledStatus']
+      }),
+      setNftDiscoveryEnabled: mutation<
+      boolean, // success
+      boolean>({
+        queryFn: async (arg, _api, _extraOptions, _baseQuery) => {
+          try {
+            const { braveWalletService } = apiProxyFetcher()
+            await braveWalletService.setNftDiscoveryEnabled(arg)
+            
+            return {
+              data: true
+            }
+          } catch(error) {
+            return {
+              error: 'Failed to set NFT auto-discovery status'
+            }
+          }
+        },
+        invalidatesTags: ['NftDiscoveryEnabledStatus']
       })
     })
   })
@@ -2983,6 +3018,8 @@ export const {
   useGetTokenSpotPriceQuery,
   useGetTokensRegistryQuery,
   useGetUserTokensRegistryQuery,
+  useGetNftDiscoveryEnabledStatusQuery,
+  useSetNftDiscoveryEnabledMutation,
   useInvalidateTransactionsCacheMutation,
   useIsEip1559ChangedMutation,
   useLazyGetAccountInfosRegistryQuery,
