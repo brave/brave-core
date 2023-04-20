@@ -5,7 +5,7 @@
 import Foundation
 @testable import Brave
 import WebKit
-import BraveShared
+import Preferences
 import XCTest
 
 class NavigationRouterTests: XCTestCase {

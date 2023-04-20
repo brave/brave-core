@@ -8,7 +8,7 @@ import Static
 import SwiftKeychainWrapper
 import Shared
 import BraveUI
-import BraveShared
+import Preferences
 import UIKit
 
 class PasscodeSettingsViewController: TableViewController {

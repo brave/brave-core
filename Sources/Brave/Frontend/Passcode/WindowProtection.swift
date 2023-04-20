@@ -8,7 +8,7 @@ import UIKit
 import LocalAuthentication
 import Shared
 import Combine
-import BraveShared
+import Preferences
 import BraveUI
 import SwiftKeychainWrapper
 import os.log

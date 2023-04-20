@@ -5,7 +5,6 @@
 
 import Foundation
 import Shared
-import BraveShared
 import UIKit
 import BraveUI
 

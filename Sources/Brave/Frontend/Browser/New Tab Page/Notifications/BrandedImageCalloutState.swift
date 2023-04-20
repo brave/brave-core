@@ -4,7 +4,7 @@
 
 import Foundation
 import Shared
-import BraveShared
+import Preferences
 
 enum BrandedImageCalloutState {
   /// User is supporting content creators

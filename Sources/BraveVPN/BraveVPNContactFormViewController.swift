@@ -5,7 +5,6 @@
 
 import Foundation
 import Shared
-import BraveShared
 import Static
 import MessageUI
 // To get cellular carrier name
@@ -13,6 +12,7 @@ import CoreTelephony
 import UIKit
 import BraveUI
 import os.log
+import BraveStrings
 
 class BraveVPNContactFormViewController: TableViewController {
 

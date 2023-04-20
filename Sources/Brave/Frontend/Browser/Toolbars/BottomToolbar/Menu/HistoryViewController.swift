@@ -5,6 +5,7 @@
 import Foundation
 import Shared
 import BraveShared
+import Preferences
 import Storage
 import Data
 import CoreData
@@ -231,8 +232,8 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
       $0.setLines(historyItem.title, detailText: historyItem.url.absoluteString)
 
       $0.imageView?.contentMode = .scaleAspectFit
-      $0.imageView?.layer.borderColor = BraveUX.faviconBorderColor.cgColor
-      $0.imageView?.layer.borderWidth = BraveUX.faviconBorderWidth
+      $0.imageView?.layer.borderColor = FaviconUX.faviconBorderColor.cgColor
+      $0.imageView?.layer.borderWidth = FaviconUX.faviconBorderWidth
       $0.imageView?.layer.cornerRadius = 6
       $0.imageView?.layer.cornerCurve = .continuous
       $0.imageView?.layer.masksToBounds = true

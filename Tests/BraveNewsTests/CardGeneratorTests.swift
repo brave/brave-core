@@ -218,7 +218,7 @@ final class CardGeneratorTests: XCTestCase {
     ]
     let dealsSource = FeedItem.Source(id: "1", isDefault: false, category: "Deals", name: "Deals", destinationDomains: [], backgroundColor: nil, localeDetails: [.init(channels: ["Brave"], locale: "en_US")])
     let dealsItems: [FeedItem] = (1...3).map {
-      .init(score: Double($0), content: .init(publishTime: Date(), title: "", description: "", contentType: .deals, publisherID: dealsSource.id, urlHash: "1", baseScore: Double($0), offersCategory: "Deal"), source: dealsSource)
+      .init(score: Double($0), content: .init(publishTime: Date(), title: "", description: "", contentType: .deals, publisherID: dealsSource.id, urlHash: "\($0)", baseScore: Double($0), offersCategory: "Deal"), source: dealsSource)
     }
     let generator = FeedCardGenerator(
       scoredItems: dealsItems,

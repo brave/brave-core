@@ -9,7 +9,7 @@ import BraveCore
 import DesignSystem
 import Strings
 import Data
-import BraveShared
+import Preferences
 
 public protocol WalletSiteConnectionDelegate {
   /// A list of accounts connected to this webpage (addresses)

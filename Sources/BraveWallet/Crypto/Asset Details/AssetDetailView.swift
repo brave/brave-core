@@ -9,7 +9,7 @@ import SwiftUI
 import BraveCore
 import DesignSystem
 import Strings
-import BraveShared
+import Preferences
 import BraveUI
 import Introspect
 import Shared

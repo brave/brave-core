@@ -5,7 +5,7 @@
 
 import XCTest
 import Shared
-import BraveShared
+import Preferences
 import BraveVPN
 @testable import Growth
 

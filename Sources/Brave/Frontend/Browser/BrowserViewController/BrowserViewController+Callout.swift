@@ -4,6 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import BraveShared
+import Preferences
 import BraveCore
 import BraveUI
 import Shared
@@ -67,7 +68,7 @@ extension BrowserViewController {
           self?.braveCore.p3aUtils.isP3AEnabled = isOn
         },
         linkAction: { url in
-          let p3aLearnMoreController = SFSafariViewController(url: BraveUX.braveP3ALearnMoreURL, configuration: .init())
+          let p3aLearnMoreController = SFSafariViewController(url: .brave.p3aHelpArticle, configuration: .init())
           p3aLearnMoreController.modalPresentationStyle = .currentContext
           
           onboardingP3ACalloutController.present(p3aLearnMoreController, animated: true)
@@ -257,7 +258,7 @@ extension BrowserViewController {
     
     var linkReceiptView = OnboardingLinkReceiptView()
     linkReceiptView.linkReceiptAction = {
-      self.openURLInNewTab(BraveUX.braveVPNLinkReceiptProd, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing, isPrivileged: false)
+      self.openURLInNewTab(.brave.braveVPNLinkReceiptProd, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing, isPrivileged: false)
     }
     let popup = PopupViewController(rootView: linkReceiptView, isDismissable: true)
     isOnboardingOrFullScreenCalloutPresented = true

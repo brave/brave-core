@@ -5,7 +5,7 @@
 
 import Foundation
 import UIKit
-import BraveShared
+import BraveUI
 import Shared
 import SnapKit
 import Data

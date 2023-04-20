@@ -6,7 +6,7 @@
 import XCTest
 @testable import Brave
 import Shared
-import BraveShared
+import Preferences
 
 class WebsiteRedirectsTests: XCTestCase {
   

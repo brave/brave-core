@@ -6,7 +6,7 @@
 import SwiftUI
 import BraveUI
 import Shared
-import BraveShared
+import Preferences
 import DesignSystem
 import os.log
 

@@ -5,7 +5,7 @@
 
 import Foundation
 import BraveCore
-import BraveShared
+import Preferences
 import Combine
 import DeviceCheck
 import Shared

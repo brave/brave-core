@@ -6,7 +6,7 @@
 import SwiftUI
 import Shared
 import BraveUI
-import BraveShared
+import BraveStrings
 
 public struct OnboardingBottomBarView: View {
   public var dismiss: (() -> Void)?

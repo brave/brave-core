@@ -3,10 +3,11 @@
 import UIKit
 import CoreData
 import Foundation
-import BraveShared
+import BraveShields
 import Shared
 import BraveCore
 import os.log
+import Preferences
 
 public final class Domain: NSManagedObject, CRUD {
 

@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import BraveShared
+import BraveStrings
 import Data
 import UIKit
 import Favicon
@@ -45,8 +45,8 @@ extension TabTrayController: UITableViewDataSource, UITableViewDelegate {
     
     cell.imageIconView.do {
       $0.contentMode = .scaleAspectFit
-      $0.layer.borderColor = BraveUX.faviconBorderColor.cgColor
-      $0.layer.borderWidth = BraveUX.faviconBorderWidth
+      $0.layer.borderColor = FaviconUX.faviconBorderColor.cgColor
+      $0.layer.borderWidth = FaviconUX.faviconBorderWidth
       $0.layer.cornerRadius = 6
       $0.layer.cornerCurve = .continuous
       $0.layer.masksToBounds = true

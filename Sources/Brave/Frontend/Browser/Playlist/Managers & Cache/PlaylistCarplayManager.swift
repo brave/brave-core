@@ -9,7 +9,7 @@ import MediaPlayer
 import CarPlay
 import Shared
 import Data
-import BraveShared
+import Preferences
 import os.log
 
 /// Lightweight class that manages a single MediaPlayer item

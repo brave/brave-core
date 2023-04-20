@@ -6,7 +6,7 @@ import Foundation
 import CoreData
 import XCTest
 @testable import Data
-import DataTestsUtils
+import TestHelpers
 
 class FavoriteTests: CoreDataTestCase {
 

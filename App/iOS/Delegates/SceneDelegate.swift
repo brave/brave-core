@@ -17,6 +17,7 @@ import BraveVPN
 import Growth
 import os.log
 import BraveCore
+import Preferences
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 

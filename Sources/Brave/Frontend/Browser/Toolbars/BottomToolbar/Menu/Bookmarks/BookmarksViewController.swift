@@ -7,6 +7,7 @@ import CoreData
 import Shared
 import Data
 import BraveShared
+import Preferences
 import Favicon
 import CoreServices
 import os.log
@@ -406,8 +407,8 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
         cell.imageView?.layer.borderWidth = 0.0
         cell.imageView?.clearMonogramFavicon()
       } else {
-        cell.imageView?.layer.borderColor = BraveUX.faviconBorderColor.cgColor
-        cell.imageView?.layer.borderWidth = BraveUX.faviconBorderWidth
+        cell.imageView?.layer.borderColor = FaviconUX.faviconBorderColor.cgColor
+        cell.imageView?.layer.borderWidth = FaviconUX.faviconBorderWidth
 
         // Sets the favIcon of a cell's imageView from Brave-Core
         // If the icon does not exist, fallback to our FavIconFetcher

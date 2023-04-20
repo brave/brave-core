@@ -7,6 +7,7 @@ import Foundation
 import Data
 import Shared
 import BraveShared
+import Preferences
 import BraveUI
 import UIKit
 import Growth
@@ -291,7 +292,7 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate, PlaylistFolderSh
             let isPrivate = PrivateBrowsingManager.shared.isPrivateBrowsing
             self.topToolbar.leaveOverlayMode()
             let tab = self.tabManager.addTab(
-              PrivilegedRequest(url: BraveUX.bravePlaylistOnboardingURL) as URLRequest,
+              PrivilegedRequest(url: .brave.playlist) as URLRequest,
               afterTab: self.tabManager.selectedTab,
               isPrivate: isPrivate)
             self.tabManager.selectTab(tab)

@@ -6,7 +6,6 @@
 import WidgetKit
 import SwiftUI
 import CodableHelpers
-import SDWebImageSwiftUI
 import Shared
 import DesignSystem
 import os
@@ -75,12 +74,12 @@ private struct TopNewsListView: View {
           .font(.system(size: 12))
           .imageScale(.large)
           .foregroundColor(Color(.braveOrange))
-        Text(Strings.BraveNews.braveNews)
+        Text(Strings.Widgets.braveNews)
           .foregroundColor(Color(.braveLabel))
           .font(.system(size: 14, weight: .bold, design: .rounded))
       }
       Spacer()
-      Link(destination: URL(string: "\(BraveUX.appURLScheme)://shortcut?path=\(WidgetShortcut.braveNews.rawValue)")!) {
+      Link(destination: URL(string: "\(AppURLScheme.appURLScheme)://shortcut?path=\(WidgetShortcut.braveNews.rawValue)")!) {
         Text(Strings.Widgets.newsClusteringReadMoreButtonTitle)
           .foregroundColor(Color(.braveBlurpleTint))
           .font(.system(size: 13, weight: .semibold, design: .rounded))

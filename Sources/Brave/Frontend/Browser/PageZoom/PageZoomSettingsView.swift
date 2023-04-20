@@ -5,7 +5,7 @@
 
 import SwiftUI
 import Shared
-import BraveShared
+import Preferences
 import Data
 import CoreData
 import BraveUI

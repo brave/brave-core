@@ -5,7 +5,7 @@
 
 import Foundation
 import Shared
-import BraveShared
+import BraveShields
 import WebKit
 
 enum DomainUserScript: CaseIterable {

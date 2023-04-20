@@ -4,7 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
-import BraveShared
+import Preferences
 import OSLog
 
 /// Handles recording usage of a particular feature

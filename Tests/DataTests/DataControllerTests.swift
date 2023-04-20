@@ -4,7 +4,7 @@
 
 import XCTest
 import CoreData
-import DataTestsUtils
+import TestHelpers
 @testable import Data
 
 class DataControllerTests: CoreDataTestCase {

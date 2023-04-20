@@ -6,7 +6,6 @@
 import WidgetKit
 import SwiftUI
 import CodableHelpers
-import SDWebImageSwiftUI
 import Shared
 import DesignSystem
 import os

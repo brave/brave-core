@@ -5,7 +5,7 @@
 
 import Shared
 import Data
-import BraveShared
+import Preferences
 import Intents
 import CoreSpotlight
 import MobileCoreServices

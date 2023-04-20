@@ -5,7 +5,7 @@
 
 import Foundation
 import BraveWallet
-import BraveShared
+import Preferences
 import BraveCore
 import Data
 

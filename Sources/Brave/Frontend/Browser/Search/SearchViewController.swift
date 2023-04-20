@@ -5,7 +5,7 @@
 import UIKit
 import Shared
 import Storage
-import BraveShared
+import Preferences
 import Data
 import Favicon
 

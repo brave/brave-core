@@ -4,7 +4,7 @@ import UIKit
 import CoreData
 import Shared
 import Data
-import BraveShared
+import Preferences
 import BraveCore
 import BraveUI
 import os.log

@@ -6,9 +6,10 @@
 import UIKit
 import Static
 import Shared
-import BraveShared
+import Preferences
 import BraveUI
 import os.log
+import BraveShared
 
 public class BraveVPNSettingsViewController: TableViewController {
 
@@ -71,17 +72,17 @@ public class BraveVPNSettingsViewController: TableViewController {
     
     rows.append(Row(text: Strings.VPN.settingsLinkReceipt,
                     selection: { [unowned self] in
-      openURL?(BraveUX.braveVPNLinkReceiptProd)
+      openURL?(.brave.braveVPNLinkReceiptProd)
     }, cellClass: ButtonCell.self))
     
     if BraveVPN.isSandbox {
       rows += [Row(text: "[Staging] Link Receipt",
                    selection: { [unowned self] in
-        openURL?(BraveUX.braveVPNLinkReceiptStaging)
+        openURL?(.brave.braveVPNLinkReceiptStaging)
       }, cellClass: ButtonCell.self),
                Row(text: "[Dev] Link Receipt",
                    selection: { [unowned self] in
-        openURL?(BraveUX.braveVPNLinkReceiptDev)
+        openURL?(.brave.braveVPNLinkReceiptDev)
       }, cellClass: ButtonCell.self)]
     }
     
@@ -156,7 +157,7 @@ public class BraveVPNSettingsViewController: TableViewController {
     
     let termsSection = Section(rows:
                                 [Row(text: Strings.VPN.settingsFAQ, selection: { [unowned self] in
-      self.openURL?(BraveUX.braveVPNFaqURL)
+      self.openURL?(.brave.braveVPNFaq)
       
     }, accessory: .disclosureIndicator, cellClass: ButtonCell.self)])
     

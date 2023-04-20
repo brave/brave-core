@@ -5,7 +5,8 @@
 import WebKit
 import Shared
 import Data
-import BraveShared
+import BraveShields
+import Preferences
 import BraveCore
 import os.log
 

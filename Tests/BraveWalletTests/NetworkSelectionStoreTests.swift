@@ -6,7 +6,7 @@
 import XCTest
 import Combine
 import BraveCore
-import BraveShared
+import Preferences
 @testable import BraveWallet
 
 @MainActor class NetworkSelectionStoreTests: XCTestCase {

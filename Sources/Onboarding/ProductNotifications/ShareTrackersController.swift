@@ -6,7 +6,7 @@
 import Foundation
 import BraveCore
 import BraveUI
-import BraveShared
+import BraveShared // Strings (should be moved to this module)
 import Shared
 
 // MARK: TrackingType

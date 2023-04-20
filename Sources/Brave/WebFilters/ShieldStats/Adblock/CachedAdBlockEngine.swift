@@ -6,7 +6,7 @@
 import Foundation
 import BraveCore
 import Data
-import BraveShared
+import Preferences
 
 /// An object that wraps around an `AdblockEngine` and caches some results
 /// and ensures information is always returned on the correct thread on the engine.

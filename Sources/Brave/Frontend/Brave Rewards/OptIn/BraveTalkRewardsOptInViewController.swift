@@ -34,9 +34,9 @@ class BraveTalkRewardsOptInViewController: UIViewController, PopoverContentCompo
       self.dismiss(animated: true) {
         switch link.absoluteString {
         case "tos":
-          request = URLRequest(url: BraveUX.batTermsOfUseURL)
+          request = URLRequest(url: .brave.batTermsOfUse)
         case "privacy-policy":
-          request = URLRequest(url: BraveUX.bravePrivacyURL)
+          request = URLRequest(url: .brave.privacy)
         default:
           assertionFailure()
         }

@@ -4,10 +4,10 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
-import BraveCore
 import Collections
-import BraveShared
 import OSLog
+import UIKit
+import BraveCore
 
 /// Generates the cards that appear on the Brave News feed
 ///
@@ -168,7 +168,7 @@ extension FeedCardGenerator {
       case .deals:
         return dealsFillStrategy.next(3, from: &deals).map {
           let title = $0.first?.content.offersCategory
-          return [.deals($0, title: title ?? Strings.BraveNews.deals)]
+          return [.deals($0, title: title)]
         }
       case .partner:
         let imageExists = { (item: FeedItem) -> Bool in
@@ -183,23 +183,13 @@ extension FeedCardGenerator {
         guard !contentAdsQueryFailed, let ads = ads, ads.isAdsServiceRunning() else { return [] }
         if !inlineContentAdsPurged {
           inlineContentAdsPurged = true
-          await withCheckedContinuation { c in
-            DispatchQueue.main.async {
-              ads.purgeOrphanedAdEvents(.inlineContentAd, completion: { _ in
-                c.resume()
-              })
-            }
-          }
+          _ = await Task { @MainActor in
+            await ads.purgeOrphanedAdEvents(.inlineContentAd)
+          }.value
         }
-        let contentAd = await withCheckedContinuation { c in
-          DispatchQueue.main.async {
-            ads.inlineContentAds(
-              dimensions: "900x750",
-              completion: { dimensions, ad in
-                c.resume(returning: ad)
-              })
-          }
-        }
+        let contentAd = await Task { @MainActor in
+          await ads.inlineContentAds(dimensions: "900x750").1
+        }.value
         guard let ad = contentAd else {
           contentAdsQueryFailed = true
           Logger.module.debug("Inline content ads could not be filled; Skipping for the rest of this feed generation")

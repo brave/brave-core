@@ -6,7 +6,7 @@
 import Foundation
 import UIKit
 import SnapKit
-import BraveShared
+import Preferences
 import Combine
 
 class HeaderContainerView: UIView {

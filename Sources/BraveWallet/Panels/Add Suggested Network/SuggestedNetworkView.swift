@@ -150,7 +150,7 @@ struct SuggestedNetworkView: View {
           .multilineTextAlignment(.center)
         if case .addNetwork = mode {
           Button {
-            openWalletURL(BraveUX.braveWalletNetworkLearnMoreURL)
+            openWalletURL(.brave.support)
           } label: {
             Text(Strings.Wallet.learnMoreButton)
               .foregroundColor(Color(.braveBlurpleTint))

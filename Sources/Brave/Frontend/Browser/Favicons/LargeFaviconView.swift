@@ -9,6 +9,11 @@ import Data
 import UIKit
 import Favicon
 
+struct FaviconUX {
+  static let faviconBorderColor = UIColor(white: 0, alpha: 0.2)
+  static let faviconBorderWidth = 1.0 / UIScreen.main.scale
+}
+
 /// Displays a large favicon given some favorite
 class LargeFaviconView: UIView {
   func loadFavicon(siteURL: URL, monogramFallbackCharacter: Character? = nil) {
@@ -93,8 +98,8 @@ class LargeFaviconView: UIView {
     layer.cornerCurve = .continuous
 
     clipsToBounds = true
-    layer.borderColor = BraveUX.faviconBorderColor.cgColor
-    layer.borderWidth = BraveUX.faviconBorderWidth
+    layer.borderColor = FaviconUX.faviconBorderColor.cgColor
+    layer.borderWidth = FaviconUX.faviconBorderWidth
 
     layoutMargins = .zero
 

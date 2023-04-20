@@ -5,7 +5,7 @@
 
 import Foundation
 import SwiftUI
-import BraveShared
+import BraveStrings
 import BraveUI
 
 struct SourceListContainerView: View {

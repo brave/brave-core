@@ -23,6 +23,7 @@ import class Combine.AnyCancellable
 import BraveWallet
 import BraveVPN
 import BraveNews
+import Preferences
 import os.log
 #if canImport(BraveTalk)
 import BraveTalk
@@ -30,6 +31,8 @@ import BraveTalk
 import Favicon
 import Onboarding
 import Growth
+import BraveShields
+import CertificateUtilities
 
 private let KVOs: [KVOConstants] = [
   .estimatedProgress,
@@ -1439,7 +1442,7 @@ public class BrowserViewController: UIViewController {
   public func presentCorrespondingVPNViewController() {
     if BraveSkusManager.keepShowingSessionExpiredState {
       let alert = BraveSkusManager.sessionExpiredStateAlert(loginCallback: { [unowned self] _ in
-        self.openURLInNewTab(BraveUX.braveAccountMainURL, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing,
+        self.openURLInNewTab(.brave.account, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing,
                              isPrivileged: false)
       })
       
@@ -3177,7 +3180,7 @@ extension BrowserViewController {
     host.rootView.openPrivacyReportsUrl = { [weak self] in
       guard let self = self else { return }
       let tab = self.tabManager.addTab(
-        PrivilegedRequest(url: BraveUX.privacyReportsURL) as URLRequest,
+        PrivilegedRequest(url: .brave.privacyFeatures) as URLRequest,
         afterTab: self.tabManager.selectedTab,
         // Privacy Reports view is unavailable in private mode.
         isPrivate: false)

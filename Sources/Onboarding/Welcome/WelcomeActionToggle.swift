@@ -8,7 +8,6 @@ import UIKit
 import SnapKit
 import BraveUI
 import Shared
-import BraveShared
 
 class WelcomeShareActionToggle: BlockedAdsStackView {
   

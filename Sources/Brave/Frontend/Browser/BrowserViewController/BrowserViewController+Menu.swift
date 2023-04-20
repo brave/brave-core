@@ -6,7 +6,7 @@
 import Foundation
 import SwiftUI
 import BraveUI
-import BraveShared
+import Preferences
 import Shared
 import Data
 import BraveWallet

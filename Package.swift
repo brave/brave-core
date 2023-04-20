@@ -16,6 +16,7 @@ var package = Package(
     .library(name: "Shared", targets: ["Shared"]),
     .library(name: "BraveCore", targets: ["BraveCore", "MaterialComponents"]),
     .library(name: "BraveShared", targets: ["BraveShared"]),
+    .library(name: "BraveShields", targets: ["BraveShields"]),
     .library(name: "BraveUI", targets: ["BraveUI"]),
     .library(name: "DesignSystem", targets: ["DesignSystem"]),
     .library(name: "BraveWallet", targets: ["BraveWallet"]),
@@ -24,14 +25,19 @@ var package = Package(
     .library(name: "BrowserIntentsModels", targets: ["BrowserIntentsModels"]),
     .library(name: "BraveWidgetsModels", targets: ["BraveWidgetsModels"]),
     .library(name: "Strings", targets: ["Strings"]),
+    .library(name: "BraveStrings", targets: ["BraveStrings"]),
     .library(name: "BraveVPN", targets: ["BraveVPN"]),
     .library(name: "BraveNews", targets: ["BraveNews"]),
     .library(name: "Favicon", targets: ["Favicon"]),
+    .library(name: "FaviconModels", targets: ["FaviconModels"]),
     .library(name: "Onboarding", targets: ["Onboarding"]),
     .library(name: "Growth", targets: ["Growth"]),
     .library(name: "RuntimeWarnings", targets: ["RuntimeWarnings"]),
     .library(name: "CodableHelpers", targets: ["CodableHelpers"]),
     .library(name: "GRDWireGuardKit", targets: ["GRDWireGuardKit"]),
+    .library(name: "Preferences", targets: ["Preferences"]),
+    .library(name: "PrivateCDN", targets: ["PrivateCDN"]),
+    .library(name: "CertificateUtilities", targets: ["CertificateUtilities"]),
     .plugin(name: "IntentBuilderPlugin", targets: ["IntentBuilderPlugin"]),
     .plugin(name: "LoggerPlugin", targets: ["LoggerPlugin"])
   ],
@@ -63,7 +69,6 @@ var package = Package(
         "BraveCore",
         "MaterialComponents",
         "Strings",
-        "SDWebImage",
         "SwiftKeychainWrapper",
         "SwiftyJSON",
       ],
@@ -71,7 +76,12 @@ var package = Package(
     ),
     .target(
       name: "BraveShared",
-      dependencies: ["SDWebImage", "Shared", "Strings", "SnapKit"],
+      dependencies: ["BraveCore", "Shared"],
+      plugins: ["LoggerPlugin"]
+    ),
+    .target(
+      name: "CertificateUtilities",
+      dependencies: ["Shared"],
       resources: [
         .copy("Certificates/AmazonRootCA1.cer"),
         .copy("Certificates/AmazonRootCA2.cer"),
@@ -89,166 +99,9 @@ var package = Package(
       ],
       plugins: ["LoggerPlugin"]
     ),
-    .target(
-      name: "Growth",
-      dependencies: ["BraveVPN", "Shared", "BraveShared", "Strings", "SnapKit"],
-      plugins: ["LoggerPlugin"]
-    ),
-    .target(
-      name: "BraveUI",
-      dependencies: [
-        "BraveShared",
-        "Strings",
-        "DesignSystem",
-        "PanModal",
-        "SDWebImage",
-        "SDWebImageSVGNativeCoder",
-        "SnapKit",
-        .product(name: "Introspect", package: "SwiftUI-Introspect"),
-        "Then",
-        "Static",
-        .product(name: "Lottie", package: "lottie-ios")
-      ],
-      plugins: ["LoggerPlugin"]
-    ),
-    .target(name: "DesignSystem"),
-    .binaryTarget(name: "BraveCore", path: "node_modules/brave-core-ios/BraveCore.xcframework"),
-    .binaryTarget(name: "MaterialComponents", path: "node_modules/brave-core-ios/MaterialComponents.xcframework"),
-    .binaryTarget(name: "GRDWireGuardKit", path: "ThirdParty/GRDWireGuardKit/GRDWireGuardKit.xcframework"),
-    .target(
-      name: "Storage",
-      dependencies: ["Shared", "SDWebImage"],
-      cSettings: [.define("SQLITE_HAS_CODEC")],
-      plugins: ["LoggerPlugin"]
-    ),
-    .target(
-      name: "Data",
-      dependencies: ["BraveShared", "Storage", "Strings"],
-      plugins: ["LoggerPlugin"]
-    ),
-    .target(
-      name: "BraveWallet",
-      dependencies: [
-        "Data",
-        "BraveCore",
-        "MaterialComponents",
-        "BraveShared",
-        "BraveUI",
-        "DesignSystem",
-        "Favicon",
-        "Strings",
-        "PanModal",
-        "SDWebImage",
-        "SDWebImageSwiftUI",
-        "SnapKit",
-        "Then",
-        .product(name: "BigNumber", package: "Swift-BigInt"),
-        .product(name: "Algorithms", package: "swift-algorithms"),
-        .product(name: "Collections", package: "swift-collections"),
-      ],
-      plugins: ["LoggerPlugin"]
-    ),
-    .target(
-      name: "BrowserIntentsModels",
-      sources: ["BrowserIntents.intentdefinition", "CustomIntentHandler.swift"],
-      plugins: ["IntentBuilderPlugin"]
-    ),
-    .target(
-      name: "BraveWidgetsModels",
-      dependencies: ["Favicon"],
-      sources: ["BraveWidgets.intentdefinition", "LockScreenFavoriteIntentHandler.swift", "FavoritesWidgetData.swift"],
-      plugins: ["IntentBuilderPlugin", "LoggerPlugin"]
-    ),
-    .target(name: "BraveSharedTestUtils"),
-    .target(name: "DataTestsUtils", dependencies: ["Data", "BraveShared"]),
-    .target(
-      name: "BraveVPN",
-      dependencies: [
-        "BraveShared",
-        "Strings",
-        "SnapKit",
-        "Then",
-        "Data",
-        "GuardianConnect",
-        "BraveUI",
-        .product(name: "Lottie", package: "lottie-ios")
-      ],
-      resources: [.copy("vpncheckmark.json")],
-      plugins: ["LoggerPlugin"]
-    ),
-    .target(
-      name: "BraveNews",
-      dependencies: [
-        "BraveShared",
-        "Strings",
-        "SnapKit",
-        "Then",
-        "Data",
-        "BraveUI",
-        "DesignSystem",
-        "CodableHelpers",
-        "BraveCore",
-        "MaterialComponents",
-        "Static",
-        "FeedKit",
-        "Fuzi",
-        "Growth",
-        .product(name: "Lottie", package: "lottie-ios"),
-        .product(name: "Collections", package: "swift-collections"),
-      ],
-      resources: [
-        .copy("Lottie Assets/brave-today-welcome-graphic.json"),
-      ],
-      plugins: ["LoggerPlugin"]
-    ),
-    .target(
-      name: "Onboarding",
-      dependencies: [
-        "BraveShared",
-        "Strings",
-        "SnapKit",
-        "Then",
-        "Data",
-        "BraveUI",
-        "DesignSystem",
-        "BraveCore",
-        "Fuzi",
-        "Storage",
-        "Growth",
-        .product(name: "Lottie", package: "lottie-ios")
-      ],
-      resources: [
-        .copy("LottieAssets/onboarding-ads.json"),
-        .copy("LottieAssets/onboarding-rewards.json"),
-        .copy("LottieAssets/onboarding-shields.json"),
-        .copy("Welcome/Resources/disconnect-entitylist.json"),
-        .copy("ProductNotifications/Resources/blocking-summary.json")
-      ],
-      plugins: ["LoggerPlugin"]
-    ),
-    .testTarget(name: "BraveNewsTests", dependencies: ["BraveNews"], resources: [
-      .copy("opml-test-files/subscriptionList.opml"),
-      .copy("opml-test-files/states.opml"),
-    ]),
-    .target(name: "CodableHelpers"),
-    .target(
-      name: "Favicon",
-      dependencies: [
-        "BraveCore",
-        "BraveShared",
-        "Shared",
-        "SDWebImage",
-      ],
-      resources: [
-        .copy("Assets/top_sites.json"),
-        .copy("Assets/TopSites")
-      ],
-      plugins: ["LoggerPlugin"]
-    ),
-    .testTarget(name: "SharedTests", dependencies: ["Shared"]),
     .testTarget(
-      name: "BraveSharedTests",
-      dependencies: ["BraveShared", "BraveSharedTestUtils"],
+      name: "CertificateUtilitiesTests",
+      dependencies: ["CertificateUtilities", "BraveShared", "BraveCore", "MaterialComponents"],
       exclude: [ "Certificates/self-signed.conf" ],
       resources: [
         .copy("Certificates/root.cer"),
@@ -266,20 +119,187 @@ var package = Package(
         .copy("Certificates/certviewer/github.com.cer"),
       ]
     ),
+    .target(name: "BraveStrings", dependencies: ["Strings", "Preferences"]),
+    .target(
+      name: "Growth",
+      dependencies: ["BraveVPN", "Shared", "BraveShared", "Strings", "SnapKit", "CertificateUtilities"],
+      plugins: ["LoggerPlugin"]
+    ),
+    .target(
+      name: "BraveUI",
+      dependencies: [
+        "Strings",
+        "DesignSystem",
+        "PanModal",
+        "SDWebImage",
+        "SDWebImageSVGNativeCoder",
+        "SnapKit",
+        .product(name: "Introspect", package: "SwiftUI-Introspect"),
+        "Then",
+        "Static",
+        "Preferences",
+        "Shared",
+        .product(name: "Lottie", package: "lottie-ios")
+      ],
+      plugins: ["LoggerPlugin"]
+    ),
+    .target(name: "BraveShields", dependencies: ["Strings", "Preferences"], plugins: ["LoggerPlugin"]),
+    .target(name: "DesignSystem"),
+    .binaryTarget(name: "BraveCore", path: "node_modules/brave-core-ios/BraveCore.xcframework"),
+    .binaryTarget(name: "MaterialComponents", path: "node_modules/brave-core-ios/MaterialComponents.xcframework"),
+    .binaryTarget(name: "GRDWireGuardKit", path: "ThirdParty/GRDWireGuardKit/GRDWireGuardKit.xcframework"),
+    .target(
+      name: "Storage",
+      dependencies: ["Shared"],
+      plugins: ["LoggerPlugin"]
+    ),
+    .target(
+      name: "Data",
+      dependencies: ["BraveShields", "Storage", "Strings", "Preferences", "Shared"],
+      plugins: ["LoggerPlugin"]
+    ),
+    .target(
+      name: "BraveWallet",
+      dependencies: [
+        "Data",
+        "BraveCore",
+        "MaterialComponents",
+        "BraveShared",
+        "BraveUI",
+        "DesignSystem",
+        "Favicon",
+        "Strings",
+        "PanModal",
+        "SDWebImageSwiftUI",
+        "SnapKit",
+        "Then",
+        "Shared",
+        .product(name: "BigNumber", package: "Swift-BigInt"),
+        .product(name: "Algorithms", package: "swift-algorithms"),
+        .product(name: "Collections", package: "swift-collections"),
+        .product(name: "Introspect", package: "SwiftUI-Introspect"),
+      ],
+      plugins: ["LoggerPlugin"]
+    ),
+    .target(
+      name: "BrowserIntentsModels",
+      sources: ["BrowserIntents.intentdefinition", "CustomIntentHandler.swift"],
+      plugins: ["IntentBuilderPlugin"]
+    ),
+    .target(
+      name: "BraveWidgetsModels",
+      dependencies: ["FaviconModels"],
+      sources: ["BraveWidgets.intentdefinition", "LockScreenFavoriteIntentHandler.swift", "FavoritesWidgetData.swift"],
+      plugins: ["IntentBuilderPlugin", "LoggerPlugin"]
+    ),
+    .target(name: "TestHelpers", dependencies: ["Data", "BraveShared"]),
+    .target(
+      name: "BraveVPN",
+      dependencies: [
+        "BraveStrings",
+        "SnapKit",
+        "Then",
+        "Data",
+        "GuardianConnect",
+        "BraveUI",
+        .product(name: "Lottie", package: "lottie-ios")
+      ],
+      resources: [.copy("vpncheckmark.json")],
+      plugins: ["LoggerPlugin"]
+    ),
+    .target(
+      name: "BraveNews",
+      dependencies: [
+        "BraveCore",
+        "BraveShared",
+        "BraveStrings",
+        "BraveUI",
+        "CodableHelpers",
+        "Data",
+        "DesignSystem",
+        "FeedKit",
+        "Fuzi",
+        "Growth",
+        "Preferences",
+        "Shared",
+        "SnapKit",
+        "Storage",
+        "Strings",
+        "Then",
+        .product(name: "Collections", package: "swift-collections"),
+        .product(name: "Introspect", package: "SwiftUI-Introspect"),
+        .product(name: "Lottie", package: "lottie-ios"),
+      ],
+      resources: [
+        .copy("Lottie Assets/brave-today-welcome-graphic.json"),
+      ],
+      plugins: ["LoggerPlugin"]
+    ),
+    .target(name: "Preferences", dependencies: ["Shared"]),
+    .target(
+      name: "Onboarding",
+      dependencies: [
+        "BraveCore",
+        "BraveShared",
+        "BraveStrings",
+        "BraveUI",
+        "DesignSystem",
+        "Growth",
+        .product(name: "Lottie", package: "lottie-ios"),
+        "Preferences",
+        "Shared",
+        "SnapKit",
+        "Storage",
+      ],
+      resources: [
+        .copy("LottieAssets/onboarding-ads.json"),
+        .copy("LottieAssets/onboarding-rewards.json"),
+        .copy("LottieAssets/onboarding-shields.json"),
+        .copy("Welcome/Resources/disconnect-entitylist.json"),
+        .copy("ProductNotifications/Resources/blocking-summary.json")
+      ],
+      plugins: ["LoggerPlugin"]
+    ),
+    .testTarget(name: "BraveNewsTests", dependencies: ["BraveNews"], resources: [
+      .copy("opml-test-files/subscriptionList.opml"),
+      .copy("opml-test-files/states.opml"),
+    ]),
+    .target(name: "CodableHelpers"),
+    .target(name: "FaviconModels", dependencies: ["Shared"]),
+    .target(
+      name: "Favicon",
+      dependencies: [
+        "FaviconModels",
+        "BraveCore",
+        "BraveShared",
+        "Shared",
+        "SDWebImage",
+      ],
+      resources: [
+        .copy("Assets/top_sites.json")
+      ],
+      plugins: ["LoggerPlugin"]
+    ),
+    .testTarget(name: "SharedTests", dependencies: ["Shared"]),
+    .testTarget(
+      name: "BraveSharedTests",
+      dependencies: ["BraveShared", "Preferences"]
+    ),
     .testTarget(
       name: "BraveWalletTests",
       dependencies: [
         "BraveWallet",
-        "DataTestsUtils",
+        "TestHelpers",
         "Favicon",
+        "BraveStrings",
         .product(name: "CustomDump", package: "swift-custom-dump")
       ]
     ),
-    .testTarget(name: "StorageTests", dependencies: ["Storage", "BraveSharedTestUtils"], resources: [.copy("fixtures/v33.db"), .copy("testcert1.pem"), .copy("testcert2.pem")]),
-    .testTarget(name: "DataTests", dependencies: ["Data", "DataTestsUtils"]),
+    .testTarget(name: "StorageTests", dependencies: ["Storage", "TestHelpers"], resources: [.copy("fixtures/v33.db"), .copy("testcert1.pem"), .copy("testcert2.pem")]),
+    .testTarget(name: "DataTests", dependencies: ["Data", "TestHelpers"]),
     .testTarget(
       name: "ClientTests",
-      dependencies: ["Brave", "BraveSharedTestUtils"],
+      dependencies: ["Brave", "BraveStrings"],
       resources: [
         .copy("Resources/debouncing.json"),
         .copy("Resources/content-blocking.json"),
@@ -300,6 +320,8 @@ var package = Package(
     ),
     .target(name: "Strings"),
     .target(name: "RuntimeWarnings"),
+    .target(name: "PrivateCDN", dependencies: ["SDWebImage"]),
+    .testTarget(name: "PrivateCDNTests", dependencies: ["PrivateCDN"]),
     .testTarget(name: "GrowthTests", dependencies: ["Growth", "Shared", "BraveShared", "BraveVPN"]),
     .plugin(name: "IntentBuilderPlugin", capability: .buildTool()),
     .plugin(name: "LoggerPlugin", capability: .buildTool()),
@@ -334,6 +356,9 @@ var braveTarget: PackageDescription.Target = .target(
     "Onboarding",
     "Growth",
     "CodableHelpers",
+    "Preferences",
+    "Favicon",
+    "CertificateUtilities",
     .product(name: "Lottie", package: "lottie-ios"),
     .product(name: "Collections", package: "swift-collections"),
   ],

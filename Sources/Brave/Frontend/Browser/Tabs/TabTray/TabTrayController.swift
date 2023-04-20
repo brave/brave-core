@@ -7,7 +7,7 @@ import UIKit
 import Shared
 import SwiftUI
 import BraveCore
-import BraveShared
+import Preferences
 import Combine
 import Data
 import SnapKit

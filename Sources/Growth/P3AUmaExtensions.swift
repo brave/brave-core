@@ -6,7 +6,7 @@
 import Foundation
 import BraveCore
 import os.log
-import BraveShared
+import Preferences
 
 /// For adding a sample to an enumerated histogram
 public func UmaHistogramEnumeration<E: RawRepresentable & CaseIterable>(

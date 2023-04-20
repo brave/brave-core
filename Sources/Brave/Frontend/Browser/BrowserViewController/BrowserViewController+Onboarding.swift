@@ -3,12 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import BraveShared
+import Preferences
 import BraveUI
 import Shared
 import BraveCore
 import UIKit
 import Onboarding
+import BraveShields
 
 // MARK: - Onboarding
 
@@ -283,11 +284,7 @@ extension BrowserViewController {
   /// New Tab Page Education screen should load after onboarding is finished and user is on locale JP
   /// - Returns: A tuple which shows NTP Education is enabled and URL to be loaded
   func showNTPEducation() -> (isEnabled: Bool, url: URL?) {
-    guard let url = BraveUX.ntpTutorialPageURL else {
-      return (false, nil)
-    }
-
-    return (Locale.current.regionCode == "JP", url)
+    return (Locale.current.regionCode == "JP", .brave.ntpTutorialPage)
   }
 
   func completeOnboarding(_ controller: UIViewController) {

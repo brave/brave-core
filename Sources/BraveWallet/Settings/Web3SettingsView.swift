@@ -6,7 +6,7 @@
 import SwiftUI
 import Strings
 import BraveUI
-import BraveShared
+import Preferences
 import BraveCore
 
 public struct Web3SettingsView: View {

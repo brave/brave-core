@@ -11,7 +11,7 @@ import CarPlay
 import MediaPlayer
 import Combine
 
-import BraveShared
+import Preferences
 import Shared
 import SDWebImage
 import CoreData

@@ -6,7 +6,7 @@
 import Foundation
 import BraveUI
 import Shared
-import BraveShared
+import Preferences
 import UIKit
 
 class NTPDefaultBrowserCalloutProvider: NSObject, NTPObservableSectionProvider {

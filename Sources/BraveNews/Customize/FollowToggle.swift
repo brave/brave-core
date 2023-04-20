@@ -5,7 +5,7 @@
 
 import Foundation
 import SwiftUI
-import BraveShared
+import BraveStrings
 
 struct FollowToggle: View {
   @Binding var isFollowing: Bool

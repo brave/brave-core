@@ -14,7 +14,7 @@ import os.log
 // Third-Party
 import SDWebImage
 
-import BraveShared
+import Preferences
 import Shared
 import Data
 import SwiftUI

@@ -6,7 +6,7 @@ import UIKit
 import Static
 import WebKit
 import Shared
-import BraveShared
+import Preferences
 import Combine
 import BraveUI
 

@@ -5,7 +5,7 @@
 
 import UIKit
 import BraveCore
-import BraveShared
+import Preferences
 import Shared
 import Static
 import CoreServices

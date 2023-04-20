@@ -7,7 +7,7 @@ import Foundation
 import Shared
 import SwiftUI
 import BraveUI
-import BraveShared
+import Preferences
 
 /// A menu button that provides a shortcut to toggling Night Mode
 struct NightModeMenuButton: View {

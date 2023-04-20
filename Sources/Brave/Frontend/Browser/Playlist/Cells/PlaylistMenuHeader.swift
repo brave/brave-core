@@ -6,7 +6,7 @@
 import Foundation
 import UIKit
 import BraveUI
-import BraveShared
+import BraveStrings
 
 class PlaylistMenuHeader: UITableViewHeaderFooterView {
   enum State {

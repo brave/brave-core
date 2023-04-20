@@ -5,7 +5,7 @@
 import Foundation
 import DeviceCheck
 import BraveCore
-import BraveShared
+import Preferences
 import Shared
 import os.log
 

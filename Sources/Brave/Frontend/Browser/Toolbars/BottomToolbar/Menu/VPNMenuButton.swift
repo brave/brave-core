@@ -41,7 +41,7 @@ struct VPNMenuButton: View {
   private func toggleVPN(_ enabled: Bool) {
     if BraveSkusManager.keepShowingSessionExpiredState {
       let alert = BraveSkusManager.sessionExpiredStateAlert(loginCallback: { _ in
-        openURL(BraveUX.braveAccountMainURL)
+        openURL(.brave.account)
       })
       
       displayAlert(alert)

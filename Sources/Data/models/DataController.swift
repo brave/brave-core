@@ -3,8 +3,8 @@
 import UIKit
 import CoreData
 import Shared
-import BraveShared
 import os.log
+import Preferences
 
 /// A helper structure for `DataController.perform()` method
 /// to decide whether a new or existing context should be used

@@ -6,7 +6,7 @@
 import XCTest
 import Combine
 import BraveCore
-import BraveShared
+import Preferences
 import BigNumber
 @testable import BraveWallet
 

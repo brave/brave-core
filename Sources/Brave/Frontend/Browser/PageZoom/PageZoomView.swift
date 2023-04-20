@@ -8,7 +8,7 @@ import BraveUI
 import WebKit
 import Data
 import Shared
-import BraveShared
+import Preferences
 
 private struct ZoomView: View {
   @ScaledMetric private var buttonWidth = 44.0

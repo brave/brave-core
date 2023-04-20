@@ -5,7 +5,7 @@
 import UIKit
 import SnapKit
 import Shared
-import BraveShared
+import Preferences
 import Combine
 
 class BottomToolbarView: UIView, ToolbarProtocol {

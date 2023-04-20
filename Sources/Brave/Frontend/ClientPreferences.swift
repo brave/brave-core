@@ -4,8 +4,8 @@
 
 import Foundation
 import Shared
-import BraveShared
 import UIKit
+import Preferences
 
 enum TabBarVisibility: Int, CaseIterable {
   case never
@@ -14,18 +14,9 @@ enum TabBarVisibility: Int, CaseIterable {
 }
 
 extension Preferences {
-  public enum AutoCloseTabsOption: Int, CaseIterable, RepresentableOptionType {
+  public enum AutoCloseTabsOption: Int, CaseIterable {
     case manually
     case oneDay, oneWeek, oneMonth
-
-    public var displayString: String {
-      switch self {
-      case .manually: return Strings.Settings.autocloseTabsManualOption
-      case .oneDay: return Strings.Settings.autocloseTabsOneDayOption
-      case .oneWeek: return Strings.Settings.autocloseTabsOneWeekOption
-      case .oneMonth: return Strings.Settings.autocloseTabsOneMonthOption
-      }
-    }
 
     /// Return time interval when to remove old tabs, or nil if no tabs should be removed.
     public var timeInterval: TimeInterval? {

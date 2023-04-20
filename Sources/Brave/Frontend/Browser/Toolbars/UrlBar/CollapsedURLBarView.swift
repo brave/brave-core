@@ -6,7 +6,7 @@
 import Foundation
 import UIKit
 import BraveCore
-import BraveShared
+import BraveStrings
 import SnapKit
 
 /// A view that displays the tab's secure content state and the URL while scrolling into the page

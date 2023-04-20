@@ -39,7 +39,12 @@ public extension PopoverContentComponent {
   }
 
   var closeActionAccessibilityLabel: String {
-    return Strings.Popover.closeContextMenu
+    return NSLocalizedString(
+      "PopoverDefaultClose",
+      bundle: .module,
+      value: "Close Context Menu",
+      comment: "Description for closing a popover menu that is displayed."
+    )
   }
 }
 

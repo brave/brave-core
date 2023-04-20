@@ -7,7 +7,7 @@ import Foundation
 @preconcurrency import WebKit
 import Data
 import Shared
-import BraveShared
+import Preferences
 import os.log
 
 /// A class that aids in the managment of rule lists on the rule store.

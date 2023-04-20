@@ -7,7 +7,7 @@ import Combine
 import XCTest
 import BraveCore
 import Data
-import DataTestsUtils
+import TestHelpers
 @testable import BraveWallet
 
 class ManageSiteConnectionsStoreTests: CoreDataTestCase {

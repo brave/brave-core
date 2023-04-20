@@ -5,6 +5,7 @@
 import Foundation
 import Static
 import BraveShared
+import Preferences
 import Shared
 import BraveCore
 import BraveUI
