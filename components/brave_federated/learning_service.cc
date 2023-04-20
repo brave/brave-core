@@ -12,10 +12,12 @@
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
+#include "base/files/file_util.h"
 #include "brave/components/brave_federated/communication_adapter.h"
 #include "brave/components/brave_federated/eligibility_service.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_federated/task/federated_task_runner.h"
+#include "brave/components/brave_federated/config_utils.h"
 #include "brave/components/brave_federated/task/model.h"
 #include "brave/components/brave_federated/task/typing.h"
 #include "brave/components/brave_federated/util/synthetic_dataset.h"
@@ -45,19 +47,22 @@ LearningService::LearningService(
     EligibilityService* eligibility_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : url_loader_factory_(url_loader_factory),
-      eligibility_service_(eligibility_service),
-      communication_adapter_(
-          std::make_unique<CommunicationAdapter>(url_loader_factory_)) {
+      eligibility_service_(eligibility_service) {
   DCHECK(!init_task_timer_);
-  post_results_policy_ = std::make_unique<const net::BackoffEntry::Policy>(
-      /*.num_errors_to_ignore = */ 0,
-      /*.initial_delay_ms = */
-      features::GetFederatedLearningUpdateCycleInSeconds() * 1000,
-      /*.multiply_factor =*/2.0,
-      /*.jitter_factor =*/0.0,
-      /*.maximum_backoff_ms =*/16 *
-          features::GetFederatedLearningUpdateCycleInSeconds() * 1000,
-      /*.always_use_initial_delay =*/true);
+
+  lsc_ = std::unique_ptr<LearningServiceConfig>(new LearningServiceConfig(
+    base::FilePath(FILE_PATH_LITERAL("components/brave_federated/config.json"))));
+  const net::BackoffEntry::Policy reconnect_policy = lsc_->GetReconnectPolicy();
+  const net::BackoffEntry::Policy request_task_policy = lsc_->GetRequestTaskPolicy();
+  const net::BackoffEntry::Policy post_results_policy = lsc_->GetPostResultsPolicy();
+  model_spec_ = std::make_unique<ModelSpec>(lsc_->GetModelSpec());
+
+  base::FilePath* fp = new base::FilePath("./");
+  base::GetCurrentDirectory(fp);
+
+  communication_adapter_ =
+      std::make_unique<CommunicationAdapter>(url_loader_factory_, reconnect_policy, request_task_policy);
+  post_results_policy_ = std::make_unique<const net::BackoffEntry::Policy>(post_results_policy);
   post_results_backoff_entry_ =
       std::make_unique<net::BackoffEntry>(post_results_policy_.get());
 
@@ -133,7 +138,6 @@ void LearningService::HandleTasksOrReconnect(TaskList tasks, int reconnect) {
     return;
   }
 
-  // TODO(stevelaskaridis): extract into a utility function
   Task task = tasks.at(0);
   float lr = 0.01;
   std::map<std::string, float> config = task.GetConfig();
@@ -143,20 +147,16 @@ void LearningService::HandleTasksOrReconnect(TaskList tasks, int reconnect) {
     VLOG(2) << "Learning rate applied from server: " << lr;
   }
 
-  ModelSpec spec{.num_params = 32,
-                 .batch_size = 64,
-                 .learning_rate = lr,
-                 .num_iterations = 500,
-                 .threshold = 0.5};
+  model_spec_->learning_rate = lr;
 
-  if (static_cast<int>(task.GetParameters().at(0).size()) != spec.num_params &&
+  if (static_cast<int>(task.GetParameters().at(0).size()) != model_spec_->num_params &&
       task.GetParameters().at(1).size() != 1U) {
     VLOG(2) << "Task specifies a different model size than the client";
     return;
   }
   VLOG(2) << "Task model and client model match!";
 
-  std::unique_ptr<Model> model = std::make_unique<Model>(spec);
+  std::unique_ptr<Model> model = std::make_unique<Model>(*model_spec_);
   model->SetWeights(task.GetParameters().at(0));
   model->SetBias(task.GetParameters().at(1).at(0));
   auto task_runner =

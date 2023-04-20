@@ -14,15 +14,33 @@
 #include <vector>
 
 #include "brave/components/brave_federated/util/linear_algebra_util.h"
+#include "base/json/json_value_converter.h"
 
 namespace brave_federated {
 
 struct ModelSpec {
   int num_params;
   int batch_size;
-  float learning_rate;
+  double learning_rate;
   int num_iterations;
-  float threshold;
+  double threshold;
+
+  static void RegisterJSONConverter(base::JSONValueConverter<ModelSpec>* spec_converter) {
+    spec_converter->RegisterIntField("num_params", &ModelSpec::num_params);
+    spec_converter->RegisterIntField("batch_size", &ModelSpec::batch_size);
+    spec_converter->RegisterDoubleField("learning_rate", &ModelSpec::learning_rate);
+    spec_converter->RegisterIntField("num_iterations", &ModelSpec::num_iterations);
+    spec_converter->RegisterDoubleField("threshold", &ModelSpec::threshold);
+  }
+
+  friend std::ostream& operator<<(std::ostream& os, const ModelSpec& obj) {
+    os << "num_params=" << obj.num_params << ", "
+          "batch_size=" << obj.batch_size << ", "
+          "learning_rate=" << obj.learning_rate << ", "
+          "num_iterations=" << obj.num_iterations << ", "
+          "threshold=" << obj.threshold;
+    return os;
+}
 };
 
 struct PerformanceReport {

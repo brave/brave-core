@@ -1,0 +1,33 @@
+{
+   "reconnect_policy": {
+       "num_errors_to_ignore": 0,
+       "initial_delay_ms": 10000,
+       "multiply_factor": 2.0,
+       "jitter_factor": 0.0,
+       "maximum_backoff_ms": "600000",
+       "always_use_initial_delay": true
+   },
+   "request_task_policy": {
+      "num_errors_to_ignore": 0,
+      "initial_delay_ms": 10000,
+      "multiply_factor": 2.0,
+      "jitter_factor": 0.0,
+      "maximum_backoff_ms": "160000",
+      "always_use_initial_delay": true
+   },
+   "post_results_policy": {
+      "num_errors_to_ignore": 0,
+      "initial_delay_ms": 10000,
+      "multiply_factor": 2.0,
+      "jitter_factor": 0.0,
+      "maximum_backoff_ms": "160000",
+      "always_use_initial_delay": true
+   },
+   "model_spec": {
+    "num_params": 32,
+    "batch_size": 64,
+    "learning_rate": 0.01,
+    "num_iterations": 500,
+    "threshold": 0.5
+   }
+}
