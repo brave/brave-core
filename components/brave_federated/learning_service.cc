@@ -16,6 +16,7 @@
 #include "brave/components/brave_federated/communication_adapter.h"
 #include "brave/components/brave_federated/eligibility_service.h"
 #include "brave/components/brave_federated/features.h"
+#include "brave/components/brave_federated/resources/grit/brave_federated_resources.h"
 #include "brave/components/brave_federated/task/federated_task_runner.h"
 #include "brave/components/brave_federated/config_utils.h"
 #include "brave/components/brave_federated/task/model.h"
@@ -24,6 +25,7 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "ui/base/resource/resource_bundle.h"
 
 namespace brave_federated {
 
@@ -50,15 +52,22 @@ LearningService::LearningService(
       eligibility_service_(eligibility_service) {
   DCHECK(!init_task_timer_);
 
+  auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
+  std::string data_resource;
+
+  if (resource_bundle.IsGzipped(IDR_BRAVE_FEDERATED_CONFIG)) {
+    data_resource = resource_bundle.LoadDataResourceString(IDR_BRAVE_FEDERATED_CONFIG);
+  } else {
+    data_resource =
+        static_cast<std::string>(resource_bundle.GetRawDataResource(IDR_BRAVE_FEDERATED_CONFIG));
+  }
+
   lsc_ = std::unique_ptr<LearningServiceConfig>(new LearningServiceConfig(
-    base::FilePath(FILE_PATH_LITERAL("components/brave_federated/config.json"))));
+    base::FilePath(FILE_PATH_LITERAL(data_resource))));
   const net::BackoffEntry::Policy reconnect_policy = lsc_->GetReconnectPolicy();
   const net::BackoffEntry::Policy request_task_policy = lsc_->GetRequestTaskPolicy();
   const net::BackoffEntry::Policy post_results_policy = lsc_->GetPostResultsPolicy();
   model_spec_ = std::make_unique<ModelSpec>(lsc_->GetModelSpec());
-
-  base::FilePath* fp = new base::FilePath("./");
-  base::GetCurrentDirectory(fp);
 
   communication_adapter_ =
       std::make_unique<CommunicationAdapter>(url_loader_factory_, reconnect_policy, request_task_policy);
