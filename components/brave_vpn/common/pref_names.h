@@ -16,6 +16,9 @@ constexpr char kBraveVPNLocalStateMigrated[] = "brave.brave_vpn.migrated";
 constexpr char kBraveVPNRootPref[] = "brave.brave_vpn";
 constexpr char kBraveVPNShowButton[] = "brave.brave_vpn.show_button";
 constexpr char kBraveVPNRegionList[] = "brave.brave_vpn.region_list";
+// Cached fetched date for trying to refresh region_list once per day
+constexpr char kBraveVPNRegionListFetchedDate[] =
+    "brave.brave_vpn.region_list_fetched_date";
 constexpr char kBraveVPNDeviceRegion[] = "brave.brave_vpn.device_region_name";
 constexpr char kBraveVPNSelectedRegion[] =
     "brave.brave_vpn.selected_region_name";

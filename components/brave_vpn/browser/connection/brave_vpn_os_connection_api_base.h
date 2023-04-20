@@ -17,10 +17,10 @@
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_manager.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "net/base/network_change_notifier.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "url/gurl.h"
 
 class PrefService;
 
@@ -54,6 +54,8 @@ class BraveVPNOSConnectionAPIBase
   void RemoveObserver(Observer* observer) override;
   void SetConnectionState(mojom::ConnectionState state) override;
   std::string GetLastConnectionError() const override;
+  BraveVPNRegionDataManager& GetRegionDataManager() override;
+  void SetSelectedRegion(const std::string& name) override;
 
  protected:
   BraveVPNOSConnectionAPIBase(
@@ -82,8 +84,10 @@ class BraveVPNOSConnectionAPIBase
   std::string target_vpn_entry_name() const { return target_vpn_entry_name_; }
 
  private:
+  friend class BraveVPNRegionDataManager;
   friend class BraveVPNOSConnectionAPISim;
   friend class BraveVPNOSConnectionAPIUnitTest;
+  friend class BraveVPNServiceTest;
 
   FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
                            CreateOSVPNEntryWithValidInfoWhenConnectTest);
@@ -106,8 +110,6 @@ class BraveVPNOSConnectionAPIBase
       net::NetworkChangeNotifier::ConnectionType type) override;
 
   void CreateVPNConnection();
-  std::string GetSelectedRegion() const;
-  std::string GetDeviceRegion() const;
   std::string GetCurrentEnvironment() const;
   void FetchHostnamesForRegion(const std::string& name);
   void OnFetchHostnames(const std::string& region,
@@ -124,6 +126,10 @@ class BraveVPNOSConnectionAPIBase
   bool QuickCancelIfPossible();
   void SetPreventCreationForTesting(bool value);
 
+  // Notify it's ready when |regions_| is not empty.
+  void NotifyRegionDataReady(bool ready) const;
+  void NotifySelectedRegionChanged(const std::string& name) const;
+
   bool cancel_connecting_ = false;
   bool needs_connect_ = false;
   bool prevent_creation_ = false;
@@ -135,13 +141,16 @@ class BraveVPNOSConnectionAPIBase
   raw_ptr<PrefService> local_prefs_ = nullptr;
   std::unique_ptr<Hostname> hostname_;
   base::ObserverList<Observer> observers_;
+
   // Only not null when there is active network request.
   // When network request is done, we reset this so we can know
   // whether we're waiting the response or not.
   // We can cancel connecting request quickly when fetching hostnames or
   // profile credentials is not yet finished by reset this.
   std::unique_ptr<BraveVpnAPIRequest> api_request_;
+
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  BraveVPNRegionDataManager region_data_manager_;
 };
 
 }  // namespace brave_vpn

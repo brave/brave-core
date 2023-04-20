@@ -30,6 +30,7 @@ namespace {
 void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
 #if !BUILDFLAG(IS_ANDROID)
   registry->RegisterListPref(prefs::kBraveVPNRegionList);
+  registry->RegisterTimePref(prefs::kBraveVPNRegionListFetchedDate, {});
   registry->RegisterStringPref(prefs::kBraveVPNDeviceRegion, "");
   registry->RegisterStringPref(prefs::kBraveVPNSelectedRegion, "");
 #endif

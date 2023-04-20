@@ -21,6 +21,7 @@ static_library("browser") {
     "api",
     "connection",
     "connection:api",
+    "connection:common",
     "//base",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/mojom",
