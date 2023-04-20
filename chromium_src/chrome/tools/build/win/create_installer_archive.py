@@ -11,10 +11,12 @@ import re
 import shutil
 import subprocess
 
+from os.path import join
+
 import override_utils
 
 from import_inline import get_src_dir
-from sign_binaries import sign_binaries, sign_binary
+from sign_binaries import sign_binaries
 
 
 @override_utils.override_function(globals())
@@ -80,6 +82,18 @@ def CreateArchiveFile(original_function, options, staging_dir, current_version,
                              prev_version)
 
 
+@override_utils.override_function(globals())
+def PrepareSetupExec(original_function, options, current_version, prev_version):
+    if options.skip_signing:
+        return original_function(options, current_version, prev_version)
+    build_dir_before = options.build_dir
+    options.build_dir = join(options.build_dir, 'presigned_binaries')
+    try:
+        return original_function(options, current_version, prev_version)
+    finally:
+        options.build_dir = build_dir_before
+
+
 def CopyExtensionLocalization(extension_name, locales_src_dir_path, config,
                               staging_dir, g_archive_inputs):
     """Copies extension localization files from locales_src_dir_path to
@@ -108,7 +122,6 @@ def SignAndCopyPreSignedBinaries(skip_signing, enable_widevine, output_dir,
                                  staging_dir, current_version):
     if not skip_signing:
         sign_binaries(staging_dir)
-        sign_binary(os.path.join(output_dir, SETUP_EXEC))
         if enable_widevine:
             # Copy files that already were signed into the staging directory.
             # This is important to make sure that their associated .sig files,

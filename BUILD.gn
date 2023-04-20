@@ -29,6 +29,10 @@ if (is_mac) {
   import("//build/config/mac/rules.gni")
 }
 
+if (is_win) {
+  import("//brave/build/win/sign.gni")
+}
+
 if (is_linux) {
   import("//brave/build/linux/channels.gni")
 }
@@ -111,15 +115,26 @@ if (is_win) {
     }
   }
 
+  if (!skip_signing) {
+    sign("signed_setup_exe") {
+      sources = [ "$root_out_dir/setup.exe" ]
+      outputs = [ "$root_out_dir/presigned_binaries/setup.exe" ]
+      deps = [ "//chrome/installer/setup:setup" ]
+    }
+  }
+
   group("mini_installer_dependencies") {
     deps = [ ":brave" ]
-    if (enable_widevine && !skip_signing) {
-      deps += [
-        "//brave/browser/widevine:signed_brave_exe",
-        "//brave/browser/widevine:signed_chrome_dll",
-      ]
-      if (enable_cdm_host_verification) {
-        deps += [ "//brave/browser/widevine:sig_files" ]
+    if (!skip_signing) {
+      deps += [ ":signed_setup_exe" ]
+      if (enable_widevine) {
+        deps += [
+          "//brave/browser/widevine:signed_brave_exe",
+          "//brave/browser/widevine:signed_chrome_dll",
+        ]
+        if (enable_cdm_host_verification) {
+          deps += [ "//brave/browser/widevine:sig_files" ]
+        }
       }
     }
   }
