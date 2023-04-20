@@ -9,21 +9,7 @@ package org.chromium.chrome.browser;
  *  Brave configuration.
  */
 public class BraveConfig {
-#if defined(BRAVE_ANDROID_DEVELOPER_OPTIONS_CODE)
   public static final String DEVELOPER_OPTIONS_CODE = BRAVE_ANDROID_DEVELOPER_OPTIONS_CODE;
-#else
-  public static final String DEVELOPER_OPTIONS_CODE = "";
-#endif
-
-#if defined(BRAVE_ANDROID_P3A_ENABLED)
   public static final boolean P3A_ENABLED = BRAVE_ANDROID_P3A_ENABLED;
-#else
-  public static final boolean P3A_ENABLED = false;
-#endif
-
-#if defined(ENABLE_IPFS)
-  public static final boolean IPFS_ENABLED = ENABLE_IPFS;
-#else
-  public static final boolean IPFS_ENABLED = false;
-#endif
+  public static final boolean IPFS_ENABLED = BRAVE_ANDROID_ENABLE_IPFS;
 }
