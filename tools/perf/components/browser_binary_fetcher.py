@@ -35,7 +35,7 @@ class BrowserBinary:
       if b.package == android_package:
         binary.telemetry_browser_type = b.browser_type
     if binary.telemetry_browser_type is None:
-      raise RuntimeError('No matching matching browser-type found')
+      raise RuntimeError('No matching browser-type found')
 
     return binary
 
@@ -63,9 +63,9 @@ def _GetPackageName(apk_path: str) -> str:
   assert (apk_path.endswith('.apk'))
   _, aapt2_info = GetProcessOutput([aapt2, 'dump', 'badging', apk_path],
                                    check=True)
-  packege_match = re.search(r'package: name=\'((?:\w|\.)+)\'', aapt2_info)
-  assert (packege_match is not None)
-  return packege_match.group(1)
+  package_match = re.search(r'package: name=\'((?:\w|\.)+)\'', aapt2_info)
+  assert (package_match is not None)
+  return package_match.group(1)
 
 
 def _GetPackageVersion(package: str) -> str:
