@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEGACY_MEDIA_MEDIA_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEGACY_MEDIA_MEDIA_H_
 
-#include <memory>
 #include <string>
 
 #include "base/containers/flat_map.h"
@@ -54,8 +53,8 @@ class Media {
                             uint64_t windowId);
 
   const raw_ref<ledger::LedgerImpl> ledger_;
-  std::unique_ptr<braveledger_media::YouTube> media_youtube_;
-  std::unique_ptr<braveledger_media::GitHub> media_github_;
+  braveledger_media::YouTube media_youtube_;
+  braveledger_media::GitHub media_github_;
 };
 
 }  // namespace braveledger_media

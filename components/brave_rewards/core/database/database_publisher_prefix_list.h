@@ -6,11 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_PUBLISHER_PREFIX_LIST_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_PUBLISHER_PREFIX_LIST_H_
 
-#include <memory>
 #include <string>
 
 #include "brave/components/brave_rewards/core/database/database_table.h"
 #include "brave/components/brave_rewards/core/publisher/prefix_list_reader.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ledger {
 namespace database {
@@ -22,7 +22,7 @@ class DatabasePublisherPrefixList : public DatabaseTable {
   explicit DatabasePublisherPrefixList(LedgerImpl& ledger);
   ~DatabasePublisherPrefixList() override;
 
-  void Reset(std::unique_ptr<publisher::PrefixListReader> reader,
+  void Reset(publisher::PrefixListReader reader,
              ledger::LegacyResultCallback callback);
 
   void Search(const std::string& publisher_key,
@@ -32,7 +32,7 @@ class DatabasePublisherPrefixList : public DatabaseTable {
   void InsertNext(publisher::PrefixIterator begin,
                   ledger::LegacyResultCallback callback);
 
-  std::unique_ptr<publisher::PrefixListReader> reader_;
+  absl::optional<publisher::PrefixListReader> reader_;
 };
 
 }  // namespace database

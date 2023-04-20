@@ -46,8 +46,7 @@ namespace ledger {
 namespace sku {
 
 SKUTransaction::SKUTransaction(LedgerImpl& ledger)
-    : ledger_(ledger),
-      payment_server_(std::make_unique<endpoint::PaymentServer>(ledger)) {}
+    : ledger_(ledger), payment_server_(ledger) {}
 
 SKUTransaction::~SKUTransaction() = default;
 
@@ -222,13 +221,13 @@ void SKUTransaction::SendExternalTransaction(
       return;
     }
     case mojom::SKUTransactionType::UPHOLD: {
-      payment_server_->post_transaction_uphold()->Request(transaction,
-                                                          url_callback);
+      payment_server_.post_transaction_uphold().Request(transaction,
+                                                        url_callback);
       return;
     }
     case mojom::SKUTransactionType::GEMINI: {
-      payment_server_->post_transaction_gemini()->Request(transaction,
-                                                          url_callback);
+      payment_server_.post_transaction_gemini().Request(transaction,
+                                                        url_callback);
       return;
     }
   }

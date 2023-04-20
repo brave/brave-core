@@ -17,7 +17,8 @@ namespace ledger {
 
 struct PublisherSettingsProperties {
   PublisherSettingsProperties();
-  PublisherSettingsProperties(const PublisherSettingsProperties& properties);
+  PublisherSettingsProperties(PublisherSettingsProperties&& other);
+  PublisherSettingsProperties& operator=(PublisherSettingsProperties&& other);
   ~PublisherSettingsProperties();
 
   bool operator==(const PublisherSettingsProperties& rhs) const;

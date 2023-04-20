@@ -40,7 +40,7 @@ const char* ConnectUpholdWallet::WalletType() const {
 
 void ConnectUpholdWallet::Authorize(
     OAuthInfo&& oauth_info,
-    ledger::ConnectExternalWalletCallback callback) const {
+    ledger::ConnectExternalWalletCallback callback) {
   DCHECK(!oauth_info.code.empty());
 
   RequestFor<PostOAuthUphold>(*ledger_, std::move(oauth_info.code))
@@ -50,7 +50,7 @@ void ConnectUpholdWallet::Authorize(
 
 void ConnectUpholdWallet::OnAuthorize(
     ledger::ConnectExternalWalletCallback callback,
-    PostOAuthUphold::Result&& result) const {
+    PostOAuthUphold::Result&& result) {
   if (!ledger_->uphold()->GetWalletIf({mojom::WalletStatus::kNotConnected,
                                        mojom::WalletStatus::kLoggedOut})) {
     return std::move(callback).Run(

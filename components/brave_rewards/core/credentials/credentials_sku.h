@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CREDENTIALS_CREDENTIALS_SKU_H_
 
 #include <map>
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -82,8 +81,8 @@ class CredentialsSKU : public Credentials {
                       ledger::LegacyResultCallback callback);
 
   const raw_ref<LedgerImpl> ledger_;
-  std::unique_ptr<CredentialsCommon> common_;
-  std::unique_ptr<endpoint::PaymentServer> payment_server_;
+  CredentialsCommon common_;
+  endpoint::PaymentServer payment_server_;
 };
 
 }  // namespace credential

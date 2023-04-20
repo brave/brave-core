@@ -6,20 +6,16 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_PROVIDER_GEMINI_CONNECT_GEMINI_WALLET_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_PROVIDER_GEMINI_CONNECT_GEMINI_WALLET_H_
 
-#include <memory>
 #include <string>
 
 #include "base/containers/flat_map.h"
+#include "brave/components/brave_rewards/core/endpoint/gemini/gemini_server.h"
 #include "brave/components/brave_rewards/core/endpoints/gemini/get_recipient_id/get_recipient_id_gemini.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/wallet_provider/connect_external_wallet.h"
 
 namespace ledger {
 class LedgerImpl;
-
-namespace endpoint {
-class GeminiServer;
-}
 
 namespace gemini {
 
@@ -32,30 +28,29 @@ class ConnectGeminiWallet : public wallet_provider::ConnectExternalWallet {
  private:
   const char* WalletType() const override;
 
-  void Authorize(OAuthInfo&&,
-                 ledger::ConnectExternalWalletCallback) const override;
+  void Authorize(OAuthInfo&&, ledger::ConnectExternalWalletCallback) override;
 
   void OnAuthorize(ledger::ConnectExternalWalletCallback,
                    mojom::Result,
-                   std::string&& token) const;
+                   std::string&& token);
 
   void OnGetRecipientID(ledger::ConnectExternalWalletCallback,
                         std::string&& token,
-                        endpoints::GetRecipientIDGemini::Result&&) const;
+                        endpoints::GetRecipientIDGemini::Result&&);
 
   void OnPostRecipientID(ledger::ConnectExternalWalletCallback,
                          std::string&& token,
                          mojom::Result,
-                         std::string&& recipient_id) const;
+                         std::string&& recipient_id);
 
   void OnPostAccount(ledger::ConnectExternalWalletCallback,
                      std::string&& token,
                      std::string&& recipient_id,
                      mojom::Result,
                      std::string&& linking_info,
-                     std::string&& user_name) const;
+                     std::string&& user_name);
 
-  std::unique_ptr<endpoint::GeminiServer> gemini_server_;
+  endpoint::GeminiServer gemini_server_;
 };
 
 }  // namespace gemini

@@ -136,8 +136,6 @@ static_library("ledger") {
     "credentials/credentials.h",
     "credentials/credentials_common.cc",
     "credentials/credentials_common.h",
-    "credentials/credentials_factory.cc",
-    "credentials/credentials_factory.h",
     "credentials/credentials_promotion.cc",
     "credentials/credentials_promotion.h",
     "credentials/credentials_redeem.cc",

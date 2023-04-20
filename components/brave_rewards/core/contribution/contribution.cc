@@ -111,13 +111,12 @@ Contribution::ContributionRequest::~ContributionRequest() = default;
 
 Contribution::Contribution(LedgerImpl& ledger)
     : ledger_(ledger),
-      unblinded_(std::make_unique<Unblinded>(ledger)),
-      sku_(std::make_unique<ContributionSKU>(ledger)),
-      monthly_(std::make_unique<ContributionMonthly>(ledger)),
-      ac_(std::make_unique<ContributionAC>(ledger)),
-      tip_(std::make_unique<ContributionTip>(ledger)) {
-  external_wallet_ = std::make_unique<ContributionExternalWallet>(ledger);
-}
+      unblinded_(ledger),
+      sku_(ledger),
+      monthly_(ledger),
+      ac_(ledger),
+      tip_(ledger),
+      external_wallet_(ledger) {}
 
 Contribution::~Contribution() = default;
 
@@ -218,7 +217,7 @@ void Contribution::StartMonthlyContributions(
 
   BLOG(1, "Starting monthly contributions");
 
-  monthly_->Process(cutoff_time, [this, options](mojom::Result result) {
+  monthly_.Process(cutoff_time, [this, options](mojom::Result result) {
     monthly_contributions_processing_ = false;
 
     // Only restart the timer on success. If we were unable to advance the
@@ -242,7 +241,7 @@ void Contribution::StartAutoContribute() {
   uint64_t reconcile_stamp = ledger_->state()->GetReconcileStamp();
   ResetReconcileStamp();
   BLOG(1, "Starting auto-contribute");
-  ac_->Process(reconcile_stamp);
+  ac_.Process(reconcile_stamp);
 }
 
 void Contribution::OnBalance(mojom::ContributionQueuePtr queue,
@@ -321,9 +320,9 @@ void Contribution::SendContribution(const std::string& publisher_id,
   ContributionRequest request(publisher_id, amount, set_monthly,
                               std::move(callback));
 
-  tip_->Process(publisher_id, amount,
-                base::BindOnce(&Contribution::OnContributionRequestQueued,
-                               base::Unretained(this), std::move(request)));
+  tip_.Process(publisher_id, amount,
+               base::BindOnce(&Contribution::OnContributionRequestQueued,
+                              base::Unretained(this), std::move(request)));
 }
 
 void Contribution::OnContributionRequestQueued(
@@ -424,8 +423,8 @@ void Contribution::OneTimeTip(const std::string& publisher_key,
     callback(mojom::Result::LEDGER_OK);
   };
 
-  tip_->Process(publisher_key, amount,
-                base::BindOnce(on_added, std::move(callback)));
+  tip_.Process(publisher_key, amount,
+               base::BindOnce(on_added, std::move(callback)));
 }
 
 void Contribution::OnMarkContributionQueueAsComplete(
@@ -567,7 +566,7 @@ void Contribution::OnEntrySaved(
     auto result_callback =
         std::bind(&Contribution::Result, this, _1, queue_id, contribution_id);
 
-    external_wallet_->Process(contribution_id, result_callback);
+    external_wallet_.Process(contribution_id, result_callback);
   }
 
   if ((*shared_queue)->amount > 0) {
@@ -660,7 +659,7 @@ void Contribution::TransferFunds(const mojom::SKUTransaction& transaction,
   }
 
   if (wallet_type == constant::kWalletUnBlinded) {
-    sku_->Merchant(transaction, callback);
+    sku_.Merchant(transaction, callback);
     return;
   }
 
@@ -671,14 +670,14 @@ void Contribution::TransferFunds(const mojom::SKUTransaction& transaction,
 void Contribution::SKUAutoContribution(const std::string& contribution_id,
                                        const std::string& wallet_type,
                                        ledger::LegacyResultCallback callback) {
-  sku_->AutoContribution(contribution_id, wallet_type, callback);
+  sku_.AutoContribution(contribution_id, wallet_type, callback);
 }
 
 void Contribution::StartUnblinded(
     const std::vector<mojom::CredsBatchType>& types,
     const std::string& contribution_id,
     ledger::LegacyResultCallback callback) {
-  unblinded_->Start(types, contribution_id, callback);
+  unblinded_.Start(types, contribution_id, callback);
 }
 
 void Contribution::RetryUnblinded(
@@ -695,7 +694,7 @@ void Contribution::RetryUnblindedContribution(
     mojom::ContributionInfoPtr contribution,
     const std::vector<mojom::CredsBatchType>& types,
     ledger::LegacyResultCallback callback) {
-  unblinded_->Retry(types, std::move(contribution), callback);
+  unblinded_.Retry(types, std::move(contribution), callback);
 }
 
 void Contribution::Result(const mojom::Result result,
@@ -861,11 +860,11 @@ void Contribution::Retry(
     case mojom::ContributionProcessor::BITFLYER:
     case mojom::ContributionProcessor::GEMINI: {
       if ((*shared_contribution)->type == mojom::RewardsType::AUTO_CONTRIBUTE) {
-        sku_->Retry((*shared_contribution)->Clone(), result_callback);
+        sku_.Retry((*shared_contribution)->Clone(), result_callback);
         return;
       }
 
-      external_wallet_->Retry((*shared_contribution)->Clone(), result_callback);
+      external_wallet_.Retry((*shared_contribution)->Clone(), result_callback);
       return;
     }
     case mojom::ContributionProcessor::NONE: {

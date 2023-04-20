@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -26,9 +25,8 @@ namespace database {
 
 class DatabasePublisherPrefixListTest : public ::testing::Test {
  protected:
-  std::unique_ptr<publisher::PrefixListReader> CreateReader(
-      uint32_t prefix_count) {
-    auto reader = std::make_unique<publisher::PrefixListReader>();
+  publisher::PrefixListReader CreateReader(uint32_t prefix_count) {
+    publisher::PrefixListReader reader;
     if (prefix_count == 0) {
       return reader;
     }
@@ -48,7 +46,7 @@ class DatabasePublisherPrefixListTest : public ::testing::Test {
 
     std::string out;
     message.SerializeToString(&out);
-    reader->Parse(out);
+    reader.Parse(out);
     return reader;
   }
 

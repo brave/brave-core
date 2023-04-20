@@ -153,13 +153,12 @@ std::string ConvertInlineTipPlatformToKey(
 namespace ledger {
 namespace state {
 
-State::State(LedgerImpl& ledger)
-    : ledger_(ledger), migration_(std::make_unique<StateMigration>(ledger)) {}
+State::State(LedgerImpl& ledger) : ledger_(ledger), migration_(ledger) {}
 
 State::~State() = default;
 
 void State::Initialize(ResultCallback callback) {
-  migration_->Start(std::move(callback));
+  migration_.Start(std::move(callback));
 }
 
 void State::SetVersion(const int version) {

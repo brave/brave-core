@@ -9,14 +9,9 @@
 namespace ledger {
 namespace endpoint {
 
-RewardsServer::RewardsServer(LedgerImpl& ledger)
-    : get_prefix_list_(std::make_unique<rewards::GetPrefixList>(ledger)) {}
+RewardsServer::RewardsServer(LedgerImpl& ledger) : get_prefix_list_(ledger) {}
 
 RewardsServer::~RewardsServer() = default;
-
-rewards::GetPrefixList* RewardsServer::get_prefix_list() const {
-  return get_prefix_list_.get();
-}
 
 }  // namespace endpoint
 }  // namespace ledger

@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PROMOTION_PROMOTION_SERVER_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PROMOTION_PROMOTION_SERVER_H_
 
-#include <memory>
-
 #include "brave/components/brave_rewards/core/endpoint/promotion/get_available/get_available.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/get_captcha/get_captcha.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/get_signed_creds/get_signed_creds.h"
@@ -35,52 +33,56 @@ class PromotionServer {
   explicit PromotionServer(LedgerImpl& ledger);
   ~PromotionServer();
 
-  promotion::GetAvailable* get_available() const;
+  promotion::GetAvailable& get_available() { return get_available_; }
 
-  promotion::PostCreds* post_creds() const;
+  promotion::PostCreds& post_creds() { return post_creds_; }
 
-  promotion::GetSignedCreds* get_signed_creds() const;
+  promotion::GetSignedCreds& get_signed_creds() { return get_signed_creds_; }
 
-  promotion::PostClobberedClaims* post_clobbered_claims() const;
+  promotion::PostClobberedClaims& post_clobbered_claims() {
+    return post_clobbered_claims_;
+  }
 
-  promotion::PostBatLoss* post_bat_loss() const;
+  promotion::PostBatLoss& post_bat_loss() { return post_bat_loss_; }
 
-  promotion::GetWallet* get_wallet() const;
+  promotion::GetWallet& get_wallet() { return get_wallet_; }
 
-  promotion::PostCaptcha* post_captcha() const;
+  promotion::PostCaptcha& post_captcha() { return post_captcha_; }
 
-  promotion::GetCaptcha* get_captcha() const;
+  promotion::GetCaptcha& get_captcha() { return get_captcha_; }
 
-  promotion::PutCaptcha* put_captcha() const;
+  promotion::PutCaptcha& put_captcha() { return put_captcha_; }
 
-  promotion::PostSafetynet* post_safetynet() const;
+  promotion::PostSafetynet& post_safetynet() { return post_safetynet_; }
 
-  promotion::PutSafetynet* put_safetynet() const;
+  promotion::PutSafetynet& put_safetynet() { return put_safetynet_; }
 
-  promotion::PostDevicecheck* post_devicecheck() const;
+  promotion::PostDevicecheck& post_devicecheck() { return post_devicecheck_; }
 
-  promotion::PutDevicecheck* put_devicecheck() const;
+  promotion::PutDevicecheck& put_devicecheck() { return put_devicecheck_; }
 
-  promotion::PostSuggestions* post_suggestions() const;
+  promotion::PostSuggestions& post_suggestions() { return post_suggestions_; }
 
-  promotion::PostSuggestionsClaim* post_suggestions_claim() const;
+  promotion::PostSuggestionsClaim& post_suggestions_claim() {
+    return post_suggestions_claim_;
+  }
 
  private:
-  std::unique_ptr<promotion::GetAvailable> get_available_;
-  std::unique_ptr<promotion::PostCreds> post_creds_;
-  std::unique_ptr<promotion::GetSignedCreds> get_signed_creds_;
-  std::unique_ptr<promotion::PostClobberedClaims> post_clobbered_claims_;
-  std::unique_ptr<promotion::PostBatLoss> post_bat_loss_;
-  std::unique_ptr<promotion::GetWallet> get_wallet_;
-  std::unique_ptr<promotion::PostCaptcha> post_captcha_;
-  std::unique_ptr<promotion::GetCaptcha> get_captcha_;
-  std::unique_ptr<promotion::PutCaptcha> put_captcha_;
-  std::unique_ptr<promotion::PostSafetynet> post_safetynet_;
-  std::unique_ptr<promotion::PutSafetynet> put_safetynet_;
-  std::unique_ptr<promotion::PostDevicecheck> post_devicecheck_;
-  std::unique_ptr<promotion::PutDevicecheck> put_devicecheck_;
-  std::unique_ptr<promotion::PostSuggestions> post_suggestions_;
-  std::unique_ptr<promotion::PostSuggestionsClaim> post_suggestions_claim_;
+  promotion::GetAvailable get_available_;
+  promotion::PostCreds post_creds_;
+  promotion::GetSignedCreds get_signed_creds_;
+  promotion::PostClobberedClaims post_clobbered_claims_;
+  promotion::PostBatLoss post_bat_loss_;
+  promotion::GetWallet get_wallet_;
+  promotion::PostCaptcha post_captcha_;
+  promotion::GetCaptcha get_captcha_;
+  promotion::PutCaptcha put_captcha_;
+  promotion::PostSafetynet post_safetynet_;
+  promotion::PutSafetynet put_safetynet_;
+  promotion::PostDevicecheck post_devicecheck_;
+  promotion::PutDevicecheck put_devicecheck_;
+  promotion::PostSuggestions post_suggestions_;
+  promotion::PostSuggestionsClaim post_suggestions_claim_;
 };
 
 }  // namespace endpoint

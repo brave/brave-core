@@ -11,14 +11,14 @@ namespace ledger {
 namespace recovery {
 
 Recovery::Recovery(LedgerImpl& ledger)
-    : ledger_(ledger), empty_balance_(std::make_unique<EmptyBalance>(ledger)) {}
+    : ledger_(ledger), empty_balance_(ledger) {}
 
 Recovery::~Recovery() = default;
 
 void Recovery::Check() {
   if (!ledger_->state()->GetEmptyBalanceChecked()) {
     BLOG(1, "Running empty balance check...")
-    empty_balance_->Check();
+    empty_balance_.Check();
   }
 }
 

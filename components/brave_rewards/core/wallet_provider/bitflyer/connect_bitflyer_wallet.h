@@ -6,19 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_PROVIDER_BITFLYER_CONNECT_BITFLYER_WALLET_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_PROVIDER_BITFLYER_CONNECT_BITFLYER_WALLET_H_
 
-#include <memory>
 #include <string>
 
 #include "base/containers/flat_map.h"
+#include "brave/components/brave_rewards/core/endpoint/bitflyer/bitflyer_server.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/wallet_provider/connect_external_wallet.h"
 
 namespace ledger {
 class LedgerImpl;
-
-namespace endpoint {
-class BitflyerServer;
-}
 
 namespace bitflyer {
 
@@ -31,8 +27,7 @@ class ConnectBitFlyerWallet : public wallet_provider::ConnectExternalWallet {
  private:
   const char* WalletType() const override;
 
-  void Authorize(OAuthInfo&&,
-                 ledger::ConnectExternalWalletCallback) const override;
+  void Authorize(OAuthInfo&&, ledger::ConnectExternalWalletCallback) override;
 
   void OnAuthorize(ledger::ConnectExternalWalletCallback,
                    mojom::Result,
@@ -40,7 +35,7 @@ class ConnectBitFlyerWallet : public wallet_provider::ConnectExternalWallet {
                    std::string&& address,
                    std::string&& linking_info) const;
 
-  std::unique_ptr<endpoint::BitflyerServer> bitflyer_server_;
+  endpoint::BitflyerServer bitflyer_server_;
 };
 
 }  // namespace bitflyer

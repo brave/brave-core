@@ -37,16 +37,9 @@ ClientProperties::ClientProperties()
       auto_contribute(false),
       rewards_enabled(false) {}
 
-ClientProperties::ClientProperties(const ClientProperties& properties) {
-  wallet_info = properties.wallet_info;
-  boot_timestamp = properties.boot_timestamp;
-  reconcile_timestamp = properties.reconcile_timestamp;
-  fee_amount = properties.fee_amount;
-  user_changed_fee = properties.user_changed_fee;
-  auto_contribute = properties.auto_contribute;
-  rewards_enabled = properties.rewards_enabled;
-  inline_tips = properties.inline_tips;
-}
+ClientProperties::ClientProperties(ClientProperties&& other) = default;
+ClientProperties& ClientProperties::operator=(ClientProperties&& other) =
+    default;
 
 ClientProperties::~ClientProperties() = default;
 

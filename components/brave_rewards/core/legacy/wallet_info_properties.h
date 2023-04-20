@@ -16,7 +16,8 @@ namespace ledger {
 
 struct WalletInfoProperties {
   WalletInfoProperties();
-  WalletInfoProperties(const WalletInfoProperties& properties);
+  WalletInfoProperties(WalletInfoProperties&& other);
+  WalletInfoProperties& operator=(WalletInfoProperties&& other);
   ~WalletInfoProperties();
 
   bool operator==(const WalletInfoProperties& rhs) const;

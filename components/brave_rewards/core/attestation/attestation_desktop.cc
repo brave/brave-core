@@ -14,8 +14,7 @@ namespace ledger {
 namespace attestation {
 
 AttestationDesktop::AttestationDesktop(LedgerImpl& ledger)
-    : Attestation(ledger),
-      promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)) {}
+    : Attestation(ledger), promotion_server_(ledger) {}
 
 AttestationDesktop::~AttestationDesktop() = default;
 
@@ -62,7 +61,7 @@ void AttestationDesktop::Start(const std::string& payload,
       base::BindOnce(&AttestationDesktop::DownloadCaptchaImage,
                      base::Unretained(this), std::move(callback));
 
-  promotion_server_->post_captcha()->Request(std::move(url_callback));
+  promotion_server_.post_captcha().Request(std::move(url_callback));
 }
 
 void AttestationDesktop::DownloadCaptchaImage(StartCallback callback,
@@ -78,8 +77,7 @@ void AttestationDesktop::DownloadCaptchaImage(StartCallback callback,
       &AttestationDesktop::OnDownloadCaptchaImage, base::Unretained(this),
       std::move(callback), hint, captcha_id);
 
-  promotion_server_->get_captcha()->Request(captcha_id,
-                                            std::move(url_callback));
+  promotion_server_.get_captcha().Request(captcha_id, std::move(url_callback));
 }
 
 void AttestationDesktop::OnDownloadCaptchaImage(StartCallback callback,
@@ -120,8 +118,8 @@ void AttestationDesktop::Confirm(const std::string& solution,
       base::BindOnce(&AttestationDesktop::OnConfirm, base::Unretained(this),
                      std::move(callback));
 
-  promotion_server_->put_captcha()->Request(x, y, captcha_id,
-                                            std::move(url_callback));
+  promotion_server_.put_captcha().Request(x, y, captcha_id,
+                                          std::move(url_callback));
 }
 
 void AttestationDesktop::OnConfirm(ConfirmCallback callback,

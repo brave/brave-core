@@ -16,15 +16,13 @@ namespace ledger {
 namespace sku {
 
 SKUCommon::SKUCommon(LedgerImpl& ledger)
-    : ledger_(ledger),
-      order_(std::make_unique<SKUOrder>(ledger)),
-      transaction_(std::make_unique<SKUTransaction>(ledger)) {}
+    : ledger_(ledger), order_(ledger), transaction_(ledger) {}
 
 SKUCommon::~SKUCommon() = default;
 
 void SKUCommon::CreateOrder(const std::vector<mojom::SKUOrderItem>& items,
                             ledger::SKUOrderCallback callback) {
-  order_->Create(items, callback);
+  order_.Create(items, callback);
 }
 
 void SKUCommon::CreateTransaction(mojom::SKUOrderPtr order,
@@ -40,7 +38,7 @@ void SKUCommon::CreateTransaction(mojom::SKUOrderPtr order,
   auto create_callback = std::bind(&SKUCommon::OnTransactionCompleted, this, _1,
                                    order->order_id, callback);
 
-  transaction_->Run(order->Clone(), destination, wallet_type, create_callback);
+  transaction_.Run(order->Clone(), destination, wallet_type, create_callback);
 }
 
 void SKUCommon::OnTransactionCompleted(const mojom::Result result,
@@ -81,7 +79,7 @@ void SKUCommon::GetSKUTransactionByOrderId(
     return callback(mojom::Result::LEDGER_ERROR, "");
   }
 
-  transaction_->SendExternalTransaction(
+  transaction_.SendExternalTransaction(
       mojom::Result::LEDGER_OK, *transaction,
       std::bind(&SKUCommon::OnTransactionCompleted, this, _1,
                 transaction->order_id, std::move(callback)));

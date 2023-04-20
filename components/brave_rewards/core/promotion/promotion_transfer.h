@@ -6,19 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PROMOTION_PROMOTION_TRANSFER_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PROMOTION_PROMOTION_TRANSFER_H_
 
-#include <memory>
 #include <string>
 #include <vector>
 
 #include "base/memory/raw_ref.h"
+#include "brave/components/brave_rewards/core/credentials/credentials_promotion.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 namespace ledger {
 class LedgerImpl;
-
-namespace credential {
-class CredentialsPromotion;
-}
 
 namespace promotion {
 
@@ -27,12 +23,12 @@ class PromotionTransfer {
   explicit PromotionTransfer(LedgerImpl& ledger);
   ~PromotionTransfer();
 
-  void Start(ledger::PostSuggestionsClaimCallback callback) const;
+  void Start(ledger::PostSuggestionsClaimCallback callback);
 
  private:
   void OnGetSpendableUnblindedTokens(
       ledger::PostSuggestionsClaimCallback callback,
-      std::vector<mojom::UnblindedTokenPtr> tokens) const;
+      std::vector<mojom::UnblindedTokenPtr> tokens);
 
   void OnDrainTokens(ledger::PostSuggestionsClaimCallback callback,
                      double transfer_amount,
@@ -40,7 +36,7 @@ class PromotionTransfer {
                      std::string drain_id) const;
 
   const raw_ref<LedgerImpl> ledger_;
-  std::unique_ptr<credential::CredentialsPromotion> credentials_;
+  credential::CredentialsPromotion credentials_;
 };
 
 }  // namespace promotion

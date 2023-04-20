@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <algorithm>
-#include <memory>
 #include <utility>
 
 #include "brave/components/brave_rewards/core/common/time_util.h"
@@ -18,8 +17,7 @@ using std::placeholders::_2;
 
 namespace braveledger_bat_state {
 
-LegacyBatState::LegacyBatState(ledger::LedgerImpl& ledger)
-    : ledger_(ledger), state_(new ledger::ClientProperties()) {}
+LegacyBatState::LegacyBatState(ledger::LedgerImpl& ledger) : ledger_(ledger) {}
 
 LegacyBatState::~LegacyBatState() = default;
 
@@ -44,64 +42,65 @@ void LegacyBatState::OnLoad(ledger::LegacyResultCallback callback,
     return;
   }
 
-  state_ = std::make_unique<ledger::ClientProperties>(state);
+  state_ = std::move(state);
 
   // fix timestamp ms to s conversion
-  if (std::to_string(state_->reconcile_timestamp).length() > 10) {
-    state_->reconcile_timestamp = state_->reconcile_timestamp / 1000;
+  if (std::to_string(state_.reconcile_timestamp).length() > 10) {
+    state_.reconcile_timestamp = state_.reconcile_timestamp / 1000;
   }
 
   // fix timestamp ms to s conversion
-  if (std::to_string(state_->boot_timestamp).length() > 10) {
-    state_->boot_timestamp = state_->boot_timestamp / 1000;
+  if (std::to_string(state_.boot_timestamp).length() > 10) {
+    state_.boot_timestamp = state_.boot_timestamp / 1000;
   }
 
   callback(ledger::mojom::Result::LEDGER_OK);
 }
 
 bool LegacyBatState::GetRewardsMainEnabled() const {
-  return state_->rewards_enabled;
+  return state_.rewards_enabled;
 }
 
 double LegacyBatState::GetAutoContributionAmount() const {
-  return state_->fee_amount;
+  return state_.fee_amount;
 }
 
 bool LegacyBatState::GetUserChangedContribution() const {
-  return state_->user_changed_fee;
+  return state_.user_changed_fee;
 }
 
 bool LegacyBatState::GetAutoContributeEnabled() const {
-  return state_->auto_contribute;
+  return state_.auto_contribute;
 }
 
 const std::string& LegacyBatState::GetCardIdAddress() const {
-  return state_->wallet_info.address_card_id;
+  return state_.wallet_info.address_card_id;
 }
 
 uint64_t LegacyBatState::GetReconcileStamp() const {
-  return state_->reconcile_timestamp;
+  return state_.reconcile_timestamp;
 }
 
 const std::string& LegacyBatState::GetPaymentId() const {
-  return state_->wallet_info.payment_id;
+  return state_.wallet_info.payment_id;
 }
 
 const std::vector<uint8_t>& LegacyBatState::GetRecoverySeed() const {
-  return state_->wallet_info.key_info_seed;
+  return state_.wallet_info.key_info_seed;
 }
 
 uint64_t LegacyBatState::GetCreationStamp() const {
-  return state_->boot_timestamp;
+  return state_.boot_timestamp;
 }
 
 bool LegacyBatState::GetInlineTipSetting(const std::string& key) const {
-  if (state_->inline_tips.find(key) == state_->inline_tips.end()) {
+  auto tip = state_.inline_tips.find(key);
+  if (tip == state_.inline_tips.end()) {
     // not found, all tips are on by default
     return true;
-  } else {
-    return state_->inline_tips[key];
   }
+
+  return tip->second;
 }
 
 }  // namespace braveledger_bat_state

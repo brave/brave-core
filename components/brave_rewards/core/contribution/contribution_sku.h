@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/credentials/credentials_factory.h"
+#include "brave/components/brave_rewards/core/credentials/credentials_sku.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/sku/sku.h"
 
@@ -82,8 +82,8 @@ class ContributionSKU {
                       ledger::LegacyResultCallback callback);
 
   const raw_ref<LedgerImpl> ledger_;
-  std::unique_ptr<credential::Credentials> credentials_;
-  std::unique_ptr<sku::SKU> sku_;
+  credential::CredentialsSKU credentials_;
+  sku::SKU sku_;
 };
 
 }  // namespace contribution

@@ -10,19 +10,16 @@
 namespace ledger {
 namespace api {
 
-API::API(LedgerImpl& ledger)
-    : parameters_(std::make_unique<APIParameters>(ledger)) {
-  DCHECK(parameters_);
-}
+API::API(LedgerImpl& ledger) : parameters_(ledger) {}
 
 API::~API() = default;
 
 void API::Initialize() {
-  parameters_->Initialize();
+  parameters_.Initialize();
 }
 
 void API::FetchParameters(ledger::GetRewardsParametersCallback callback) {
-  parameters_->Fetch(std::move(callback));
+  parameters_.Fetch(std::move(callback));
 }
 
 }  // namespace api

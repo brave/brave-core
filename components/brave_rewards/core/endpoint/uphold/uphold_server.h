@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_UPHOLD_UPHOLD_SERVER_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_UPHOLD_UPHOLD_SERVER_H_
 
-#include <memory>
-
 #include "brave/components/brave_rewards/core/endpoint/uphold/get_capabilities/get_capabilities.h"
 #include "brave/components/brave_rewards/core/endpoint/uphold/get_card/get_card.h"
 #include "brave/components/brave_rewards/core/endpoint/uphold/get_cards/get_cards.h"
@@ -26,25 +24,25 @@ class UpholdServer {
   explicit UpholdServer(LedgerImpl& ledger);
   ~UpholdServer();
 
-  uphold::GetCapabilities* get_capabilities() const;
+  uphold::GetCapabilities& get_capabilities() { return get_capabilities_; }
 
-  uphold::GetCards* get_cards() const;
+  uphold::GetCards& get_cards() { return get_cards_; }
 
-  uphold::GetCard* get_card() const;
+  uphold::GetCard& get_card() { return get_card_; }
 
-  uphold::GetMe* get_me() const;
+  uphold::GetMe& get_me() { return get_me_; }
 
-  uphold::PostCards* post_cards() const;
+  uphold::PostCards& post_cards() { return post_cards_; }
 
-  uphold::PatchCard* patch_card() const;
+  uphold::PatchCard& patch_card() { return patch_card_; }
 
  private:
-  std::unique_ptr<uphold::GetCapabilities> get_capabilities_;
-  std::unique_ptr<uphold::GetCards> get_cards_;
-  std::unique_ptr<uphold::GetCard> get_card_;
-  std::unique_ptr<uphold::GetMe> get_me_;
-  std::unique_ptr<uphold::PostCards> post_cards_;
-  std::unique_ptr<uphold::PatchCard> patch_card_;
+  uphold::GetCapabilities get_capabilities_;
+  uphold::GetCards get_cards_;
+  uphold::GetCard get_card_;
+  uphold::GetMe get_me_;
+  uphold::PostCards post_cards_;
+  uphold::PatchCard patch_card_;
 };
 
 }  // namespace endpoint
