@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { SerializableTimeDelta } from '../constants/types'
+import { SerializableTimeDelta, TimeDelta } from '../constants/types'
 
 const monthMap = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
@@ -49,7 +49,7 @@ export function formatDateAsRelative (date: Date, now: Date = new Date()) {
  * @return {!Date}
  */
 export function serializedTimeDeltaToJSDate (
-  timeDelta: SerializableTimeDelta
+  timeDelta: SerializableTimeDelta | TimeDelta
 ): Date {
   return new Date(Number(timeDelta.microseconds) / 1000)
 }

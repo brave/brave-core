@@ -80,9 +80,14 @@ export const getAccountType = (
   return info.isImported ? 'Secondary' : 'Primary'
 }
 
-export const getAddressLabel = (
+export const getAddressLabel = <
+  T extends Array<{
+    address: string
+    name: string
+  }>
+>(
   address: string,
-  accounts: WalletAccountType[]
+  accounts: T
 ): string => {
   return (
     registry[address.toLowerCase()] ??
@@ -97,7 +102,7 @@ export const getAddressLabelFromRegistry = (
 ): string => {
   return (
     registry[address.toLowerCase()] ??
-    accounts.entities[address.toLowerCase()]?.name ??
+    accounts.entities[address]?.name ??
     reduceAddress(address)
   )
 }

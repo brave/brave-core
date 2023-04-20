@@ -9,7 +9,8 @@ import * as React from 'react'
 import {
   BraveWallet,
   SerializableTransactionInfo,
-  SolFeeEstimates
+  SolFeeEstimates,
+  TransactionInfo
 } from '../../constants/types'
 
 // Utils
@@ -19,8 +20,7 @@ import {
   ParsedTransaction,
   ParsedTransactionFees,
   parseTransactionFeesWithoutPrices,
-  parseTransactionWithPrices,
-  TransactionInfo
+  parseTransactionWithPrices
 } from '../../utils/tx-utils'
 import { WalletSelectors } from '../selectors'
 
