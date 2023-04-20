@@ -28,20 +28,15 @@ bool DoesRespectCap(const std::vector<base::Time>& history) {
 
 }  // namespace
 
-bool AdsPerDayPermissionRule::ShouldAllow() {
+base::expected<void, std::string> AdsPerDayPermissionRule::ShouldAllow() const {
   const std::vector<base::Time> history =
       GetAdEventHistory(AdType::kSearchResultAd, ConfirmationType::kServed);
-
   if (!DoesRespectCap(history)) {
-    last_message_ = "You have exceeded the allowed search result ads per day";
-    return false;
+    return base::unexpected(
+        "You have exceeded the allowed search result ads per day");
   }
 
-  return true;
-}
-
-const std::string& AdsPerDayPermissionRule::GetLastMessage() const {
-  return last_message_;
+  return base::ok();
 }
 
 }  // namespace brave_ads::search_result_ads

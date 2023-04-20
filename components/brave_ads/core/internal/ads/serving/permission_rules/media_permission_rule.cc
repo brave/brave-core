@@ -14,6 +14,10 @@ namespace brave_ads {
 namespace {
 
 bool DoesRespectCap() {
+  if (!kShouldOnlyServeAdsIfMediaIsNotPlaying.Get()) {
+    return true;
+  }
+
   const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetVisible();
   if (!tab) {
     return true;
@@ -24,21 +28,12 @@ bool DoesRespectCap() {
 
 }  // namespace
 
-bool MediaPermissionRule::ShouldAllow() {
-  if (!kShouldOnlyServeAdsIfMediaIsNotPlaying.Get()) {
-    return true;
-  }
-
+base::expected<void, std::string> MediaPermissionRule::ShouldAllow() const {
   if (!DoesRespectCap()) {
-    last_message_ = "Media is playing";
-    return false;
+    return base::unexpected("Media is playing");
   }
 
-  return true;
-}
-
-const std::string& MediaPermissionRule::GetLastMessage() const {
-  return last_message_;
+  return base::ok();
 }
 
 }  // namespace brave_ads

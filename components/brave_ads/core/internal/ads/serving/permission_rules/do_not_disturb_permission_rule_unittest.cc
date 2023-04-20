@@ -31,7 +31,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    EXPECT_FALSE(permission_rule.ShouldAllow());
+    EXPECT_FALSE(permission_rule.ShouldAllow().has_value());
   }
 
   {
@@ -40,7 +40,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    EXPECT_TRUE(permission_rule.ShouldAllow());
+    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
 
   {
@@ -49,7 +49,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    EXPECT_TRUE(permission_rule.ShouldAllow());
+    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
 
   {
@@ -58,7 +58,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    EXPECT_FALSE(permission_rule.ShouldAllow());
+    EXPECT_FALSE(permission_rule.ShouldAllow().has_value());
   }
 }
 
@@ -79,7 +79,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    EXPECT_TRUE(permission_rule.ShouldAllow());
+    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
 
   {
@@ -88,7 +88,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    EXPECT_TRUE(permission_rule.ShouldAllow());
+    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
 
   {
@@ -97,7 +97,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    EXPECT_TRUE(permission_rule.ShouldAllow());
+    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
 
   {
@@ -106,7 +106,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    EXPECT_TRUE(permission_rule.ShouldAllow());
+    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
 }
 
@@ -125,7 +125,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForIOS) {
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    EXPECT_TRUE(permission_rule.ShouldAllow());
+    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
 
   {
@@ -134,7 +134,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForIOS) {
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    EXPECT_TRUE(permission_rule.ShouldAllow());
+    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
 }
 
@@ -153,7 +153,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForMacOS) {
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    EXPECT_TRUE(permission_rule.ShouldAllow());
+    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
 
   {
@@ -162,7 +162,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForMacOS) {
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    EXPECT_TRUE(permission_rule.ShouldAllow());
+    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
 }
 
@@ -181,7 +181,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForWindows) {
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    EXPECT_TRUE(permission_rule.ShouldAllow());
+    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
 
   {
@@ -190,7 +190,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForWindows) {
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    EXPECT_TRUE(permission_rule.ShouldAllow());
+    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
 }
 
@@ -209,7 +209,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForLinux) {
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    EXPECT_TRUE(permission_rule.ShouldAllow());
+    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
 
   {
@@ -218,7 +218,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForLinux) {
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
-    EXPECT_TRUE(permission_rule.ShouldAllow());
+    EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
 }
 

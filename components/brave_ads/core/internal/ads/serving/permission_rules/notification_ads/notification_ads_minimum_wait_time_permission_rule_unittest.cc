@@ -26,7 +26,7 @@ TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
@@ -40,7 +40,7 @@ TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
   AdvanceClockBy(base::Minutes(12));
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
@@ -54,7 +54,7 @@ TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
   AdvanceClockBy(base::Minutes(12) - base::Milliseconds(1));
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 }  // namespace brave_ads::notification_ads

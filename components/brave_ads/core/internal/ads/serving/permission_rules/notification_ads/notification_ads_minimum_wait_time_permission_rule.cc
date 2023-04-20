@@ -36,27 +36,22 @@ bool DoesRespectCap(const std::vector<base::Time>& history) {
 
 }  // namespace
 
-bool MinimumWaitTimePermissionRule::ShouldAllow() {
+base::expected<void, std::string> MinimumWaitTimePermissionRule::ShouldAllow()
+    const {
   if (PlatformHelper::GetInstance().IsMobile()) {
     // Ads are periodically served on mobile so they will never be served before
     // the minimum wait time has passed
-    return true;
+    return base::ok();
   }
 
   const std::vector<base::Time> history =
       GetAdEventHistory(AdType::kNotificationAd, ConfirmationType::kServed);
-
   if (!DoesRespectCap(history)) {
-    last_message_ =
-        "Notification ad cannot be shown as minimum wait time has not passed";
-    return false;
+    return base::unexpected(
+        "Notification ad cannot be shown as minimum wait time has not passed");
   }
 
-  return true;
-}
-
-const std::string& MinimumWaitTimePermissionRule::GetLastMessage() const {
-  return last_message_;
+  return base::ok();
 }
 
 }  // namespace brave_ads::notification_ads

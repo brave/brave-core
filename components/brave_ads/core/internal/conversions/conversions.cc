@@ -25,7 +25,7 @@
 #include "brave/components/brave_ads/core/internal/conversions/conversions_features.h"
 #include "brave/components/brave_ads/core/internal/conversions/sorts/conversions_sort_factory.h"
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_info.h"
-#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+#include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversions_info.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversions_resource.h"
 #include "brave/components/brave_ads/core/internal/resources/country_components.h"
@@ -400,9 +400,7 @@ void Conversions::AddItemToQueue(
       verifiable_conversion.public_key;
   conversion_queue_item.ad_type = ad_event.type;
   const auto rand_delay = static_cast<int64_t>(brave_base::random::Geometric(
-      GlobalState::GetInstance()->Flags().should_debug
-          ? kDebugConvertAfterSeconds
-          : kConvertAfterSeconds));
+      ShouldDebug() ? kDebugConvertAfterSeconds : kConvertAfterSeconds));
   conversion_queue_item.process_at =
       base::Time::Now() + base::Seconds(rand_delay);
 

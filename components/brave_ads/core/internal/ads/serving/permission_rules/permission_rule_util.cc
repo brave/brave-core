@@ -16,16 +16,13 @@ namespace brave_ads {
 bool ShouldAllow(PermissionRuleInterface* permission_rule) {
   DCHECK(permission_rule);
 
-  if (permission_rule->ShouldAllow()) {
-    return true;
+  const auto result = permission_rule->ShouldAllow();
+  if (!result.has_value()) {
+    BLOG(2, result.error());
+    return false;
   }
 
-  const std::string& last_message = permission_rule->GetLastMessage();
-  if (!last_message.empty()) {
-    BLOG(2, last_message);
-  }
-
-  return false;
+  return true;
 }
 
 }  // namespace brave_ads

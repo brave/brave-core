@@ -35,20 +35,15 @@ std::string DailyCapExclusionRule::GetUuid(
   return creative_ad.campaign_id;
 }
 
-bool DailyCapExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
+base::expected<void, std::string> DailyCapExclusionRule::ShouldInclude(
+    const CreativeAdInfo& creative_ad) const {
   if (!DoesRespectCap(ad_events_, creative_ad)) {
-    last_message_ = base::ReplaceStringPlaceholders(
+    return base::unexpected(base::ReplaceStringPlaceholders(
         "campaignId $1 has exceeded the dailyCap frequency cap",
-        {creative_ad.campaign_id}, nullptr);
-
-    return true;
+        {creative_ad.campaign_id}, nullptr));
   }
 
-  return false;
-}
-
-const std::string& DailyCapExclusionRule::GetLastMessage() const {
-  return last_message_;
+  return base::ok();
 }
 
 }  // namespace brave_ads

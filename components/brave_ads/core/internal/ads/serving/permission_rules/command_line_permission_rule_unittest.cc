@@ -29,7 +29,7 @@ TEST_F(BraveAdsCommandLinePermissionRuleTest,
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsCommandLinePermissionRuleTest,
@@ -43,7 +43,7 @@ TEST_F(BraveAdsCommandLinePermissionRuleTest,
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsCommandLinePermissionRuleTest,
@@ -57,7 +57,7 @@ TEST_F(BraveAdsCommandLinePermissionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsCommandLinePermissionRuleTest,
@@ -71,7 +71,7 @@ TEST_F(BraveAdsCommandLinePermissionRuleTest,
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 }  // namespace brave_ads

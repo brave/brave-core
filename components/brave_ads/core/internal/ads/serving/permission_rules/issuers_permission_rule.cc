@@ -22,17 +22,12 @@ bool DoesRespectCap() {
 
 }  // namespace
 
-bool IssuersPermissionRule::ShouldAllow() {
+base::expected<void, std::string> IssuersPermissionRule::ShouldAllow() const {
   if (!DoesRespectCap()) {
-    last_message_ = "Missing issuers";
-    return false;
+    return base::unexpected("Missing issuers");
   }
 
-  return true;
-}
-
-const std::string& IssuersPermissionRule::GetLastMessage() const {
-  return last_message_;
+  return base::ok();
 }
 
 }  // namespace brave_ads

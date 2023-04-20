@@ -37,7 +37,7 @@ TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest, AllowAd) {
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest,
@@ -48,7 +48,7 @@ TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest,
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest,
@@ -59,7 +59,7 @@ TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest,
@@ -70,7 +70,7 @@ TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 }  // namespace brave_ads

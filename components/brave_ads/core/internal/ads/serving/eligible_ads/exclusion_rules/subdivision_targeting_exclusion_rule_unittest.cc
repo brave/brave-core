@@ -133,7 +133,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_TRUE(exclusion_rule_->ShouldExclude(creative_ad));
+  EXPECT_FALSE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
 TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
@@ -149,7 +149,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule_->ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
 TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
@@ -169,7 +169,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule_->ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
 TEST_P(
@@ -191,7 +191,7 @@ TEST_P(
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule_->ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
 TEST_P(
@@ -212,7 +212,7 @@ TEST_P(
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule_->ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
 TEST_P(
@@ -236,7 +236,7 @@ TEST_P(
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule_->ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
 TEST_P(
@@ -261,7 +261,7 @@ TEST_P(
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule_->ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
 TEST_P(
@@ -285,7 +285,7 @@ TEST_P(
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule_->ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
 TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
@@ -304,7 +304,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
       locale::BuildSubdivisionCode(/*country*/ "US", /*region*/ "XX")};
 
   // Assert
-  EXPECT_TRUE(exclusion_rule_->ShouldExclude(creative_ad));
+  EXPECT_FALSE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
 TEST_P(
@@ -326,7 +326,7 @@ TEST_P(
   // Act
 
   // Assert
-  EXPECT_TRUE(exclusion_rule_->ShouldExclude(creative_ad));
+  EXPECT_FALSE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
 TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
@@ -347,7 +347,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule_->ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
 TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
@@ -369,7 +369,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_TRUE(exclusion_rule_->ShouldExclude(creative_ad));
+  EXPECT_FALSE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
 TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
@@ -391,7 +391,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule_->ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
 std::string TestParamToString(::testing::TestParamInfo<TestParam> test_param) {

@@ -72,23 +72,17 @@ std::string DismissedExclusionRule::GetUuid(
   return creative_ad.campaign_id;
 }
 
-bool DismissedExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
+base::expected<void, std::string> DismissedExclusionRule::ShouldInclude(
+    const CreativeAdInfo& creative_ad) const {
   const AdEventList filtered_ad_events =
       FilterAdEvents(ad_events_, creative_ad);
-
   if (!DoesRespectCap(filtered_ad_events)) {
-    last_message_ = base::ReplaceStringPlaceholders(
+    return base::unexpected(base::ReplaceStringPlaceholders(
         "campaignId $1 has exceeded the dismissed frequency cap",
-        {creative_ad.campaign_id}, nullptr);
-
-    return true;
+        {creative_ad.campaign_id}, nullptr));
   }
 
-  return false;
-}
-
-const std::string& DismissedExclusionRule::GetLastMessage() const {
-  return last_message_;
+  return base::ok();
 }
 
 }  // namespace brave_ads::notification_ads

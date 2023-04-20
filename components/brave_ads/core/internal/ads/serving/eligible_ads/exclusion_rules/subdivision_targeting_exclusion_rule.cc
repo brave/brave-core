@@ -56,25 +56,22 @@ std::string SubdivisionTargetingExclusionRule::GetUuid(
   return creative_ad.creative_set_id;
 }
 
-bool SubdivisionTargetingExclusionRule::ShouldExclude(
-    const CreativeAdInfo& creative_ad) {
+base::expected<void, std::string>
+SubdivisionTargetingExclusionRule::ShouldInclude(
+    const CreativeAdInfo& creative_ad) const {
   if (!DoesRespectCap(creative_ad)) {
-    last_message_ = base::ReplaceStringPlaceholders(
+    return base::unexpected(base::ReplaceStringPlaceholders(
         "creativeSetId $1 excluded as not within the targeted subdivision",
-        {creative_ad.creative_set_id}, nullptr);
-
-    return true;
+        {creative_ad.creative_set_id}, nullptr));
   }
 
-  return false;
+  return base::ok();
 }
 
-const std::string& SubdivisionTargetingExclusionRule::GetLastMessage() const {
-  return last_message_;
-}
+///////////////////////////////////////////////////////////////////////////////
 
 bool SubdivisionTargetingExclusionRule::DoesRespectCap(
-    const CreativeAdInfo& creative_ad) {
+    const CreativeAdInfo& creative_ad) const {
   if (!SubdivisionTargeting::ShouldAllow()) {
     return !DoesAdTargetSubdivision(creative_ad);
   }

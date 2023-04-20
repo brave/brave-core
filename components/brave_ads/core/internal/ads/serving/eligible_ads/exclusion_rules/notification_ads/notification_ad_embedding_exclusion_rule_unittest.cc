@@ -41,7 +41,7 @@ TEST_F(EmbeddingExclusionRuleTest, AllowIfNoEmbeddingV2) {
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(EmbeddingExclusionRuleTest, AllowIfEmbeddingV2) {
@@ -64,7 +64,7 @@ TEST_F(EmbeddingExclusionRuleTest, AllowIfEmbeddingV2) {
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(EmbeddingExclusionRuleTest, DisallowIfNoEmbeddingV3) {
@@ -86,7 +86,7 @@ TEST_F(EmbeddingExclusionRuleTest, DisallowIfNoEmbeddingV3) {
   // Act
 
   // Assert
-  EXPECT_TRUE(exclusion_rule_.ShouldExclude(creative_ad));
+  EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(EmbeddingExclusionRuleTest, DisallowIfEmptyEmbeddingV3) {
@@ -108,7 +108,7 @@ TEST_F(EmbeddingExclusionRuleTest, DisallowIfEmptyEmbeddingV3) {
   // Act
 
   // Assert
-  EXPECT_TRUE(exclusion_rule_.ShouldExclude(creative_ad));
+  EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(EmbeddingExclusionRuleTest, AllowIfEmbeddingV3) {
@@ -131,7 +131,7 @@ TEST_F(EmbeddingExclusionRuleTest, AllowIfEmbeddingV3) {
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
 }  // namespace brave_ads::notification_ads

@@ -40,7 +40,7 @@ TEST_F(BraveAdsConversionExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsConversionExclusionRuleTest, DoNotAllowAdIfAlreadyConverted) {
@@ -61,7 +61,7 @@ TEST_F(BraveAdsConversionExclusionRuleTest, DoNotAllowAdIfAlreadyConverted) {
   // Act
 
   // Assert
-  EXPECT_TRUE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_FALSE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsConversionExclusionRuleTest,
@@ -94,7 +94,7 @@ TEST_F(BraveAdsConversionExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsConversionExclusionRuleTest, AllowAdIfNotAlreadyConverted) {
@@ -118,7 +118,7 @@ TEST_F(BraveAdsConversionExclusionRuleTest, AllowAdIfNotAlreadyConverted) {
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad_1));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad_1).has_value());
 }
 
 }  // namespace brave_ads

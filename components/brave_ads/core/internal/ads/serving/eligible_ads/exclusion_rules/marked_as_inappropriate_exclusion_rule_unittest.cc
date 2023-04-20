@@ -28,7 +28,7 @@ TEST_F(BraveAdsMarkedAsInappropriateExclusionRuleTest, AllowAd) {
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsMarkedAsInappropriateExclusionRuleTest, DoNotAllowAd) {
@@ -45,7 +45,7 @@ TEST_F(BraveAdsMarkedAsInappropriateExclusionRuleTest, DoNotAllowAd) {
   // Act
 
   // Assert
-  EXPECT_TRUE(exclusion_rule_.ShouldExclude(creative_ad));
+  EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
 }  // namespace brave_ads

@@ -27,17 +27,13 @@ bool DoesRespectCap() {
 
 }  // namespace
 
-bool UserActivityPermissionRule::ShouldAllow() {
+base::expected<void, std::string> UserActivityPermissionRule::ShouldAllow()
+    const {
   if (!DoesRespectCap()) {
-    last_message_ = "User was inactive";
-    return false;
+    return base::unexpected("User was inactive");
   }
 
-  return true;
-}
-
-const std::string& UserActivityPermissionRule::GetLastMessage() const {
-  return last_message_;
+  return base::ok();
 }
 
 }  // namespace brave_ads

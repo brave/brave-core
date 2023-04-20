@@ -27,7 +27,7 @@ T ApplyExclusionRules(const T& creative_ads,
                       ExclusionRulesBase* exclusion_rules) {
   DCHECK(exclusion_rules);
 
-  const bool should_cap_last_served_ad =
+  const bool should_cap_last_served_creative_ad =
       ShouldCapLastServedCreativeAd(creative_ads);
 
   T filtered_creative_ads;
@@ -35,10 +35,10 @@ T ApplyExclusionRules(const T& creative_ads,
   base::ranges::copy_if(
       creative_ads, std::back_inserter(filtered_creative_ads),
       [exclusion_rules, &last_served_ad,
-       &should_cap_last_served_ad](const CreativeAdInfo& creative_ad) {
+       &should_cap_last_served_creative_ad](const CreativeAdInfo& creative_ad) {
         const bool should_exclude =
             exclusion_rules->ShouldExcludeCreativeAd(creative_ad) ||
-            (should_cap_last_served_ad &&
+            (should_cap_last_served_creative_ad &&
              creative_ad.creative_instance_id ==
                  last_served_ad.creative_instance_id);
 

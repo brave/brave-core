@@ -24,17 +24,13 @@ bool DoesRespectCap() {
 
 }  // namespace
 
-bool UnblindedTokensPermissionRule::ShouldAllow() {
+base::expected<void, std::string> UnblindedTokensPermissionRule::ShouldAllow()
+    const {
   if (!DoesRespectCap()) {
-    last_message_ = "You do not have enough unblinded tokens";
-    return false;
+    return base::unexpected("You do not have enough unblinded tokens");
   }
 
-  return true;
-}
-
-const std::string& UnblindedTokensPermissionRule::GetLastMessage() const {
-  return last_message_;
+  return base::ok();
 }
 
 }  // namespace brave_ads

@@ -29,7 +29,7 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
@@ -47,7 +47,7 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
                  /*count*/ ads_per_hour);
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest, AlwaysAllowAdOnIOS) {
@@ -64,7 +64,7 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest, AlwaysAllowAdOnIOS) {
                  /*count*/ ads_per_hour);
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
@@ -80,7 +80,7 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
                  /*count*/ ads_per_hour - 1);
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
@@ -98,7 +98,7 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
   AdvanceClockBy(base::Hours(1));
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
@@ -116,7 +116,7 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 }  // namespace brave_ads::notification_ads

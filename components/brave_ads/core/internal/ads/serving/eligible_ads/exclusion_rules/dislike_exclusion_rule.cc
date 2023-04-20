@@ -33,20 +33,15 @@ std::string DislikeExclusionRule::GetUuid(
   return creative_ad.advertiser_id;
 }
 
-bool DislikeExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
+base::expected<void, std::string> DislikeExclusionRule::ShouldInclude(
+    const CreativeAdInfo& creative_ad) const {
   if (!DoesRespectCap(creative_ad)) {
-    last_message_ = base::ReplaceStringPlaceholders(
+    return base::unexpected(base::ReplaceStringPlaceholders(
         "advertiserId $1 excluded due to being disliked",
-        {creative_ad.advertiser_id}, nullptr);
-
-    return true;
+        {creative_ad.advertiser_id}, nullptr));
   }
 
-  return false;
-}
-
-const std::string& DislikeExclusionRule::GetLastMessage() const {
-  return last_message_;
+  return base::ok();
 }
 
 }  // namespace brave_ads

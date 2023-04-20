@@ -22,7 +22,7 @@
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
-#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+#include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -133,9 +133,8 @@ void Catalog::OnFetch(const mojom::UrlResponseInfo& url_response) {
 void Catalog::FetchAfterDelay() {
   retry_timer_.Stop();
 
-  const base::TimeDelta delay = GlobalState::GetInstance()->Flags().should_debug
-                                    ? kDebugCatalogPing
-                                    : GetCatalogPing();
+  const base::TimeDelta delay =
+      ShouldDebug() ? kDebugCatalogPing : GetCatalogPing();
 
   const base::Time fetch_at = timer_.StartWithPrivacy(
       FROM_HERE, delay,

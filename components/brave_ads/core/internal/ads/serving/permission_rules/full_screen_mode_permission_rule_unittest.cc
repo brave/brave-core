@@ -28,7 +28,7 @@ TEST_F(BraveAdsFullScreenModePermissionRuleTest, AllowAd) {
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsFullScreenModePermissionRuleTest, AlwaysAllowAdForAndroid) {
@@ -40,7 +40,7 @@ TEST_F(BraveAdsFullScreenModePermissionRuleTest, AlwaysAllowAdForAndroid) {
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsFullScreenModePermissionRuleTest, AlwaysAllowAdForIOS) {
@@ -52,7 +52,7 @@ TEST_F(BraveAdsFullScreenModePermissionRuleTest, AlwaysAllowAdForIOS) {
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsFullScreenModePermissionRuleTest, DoNotAllowAd) {
@@ -62,7 +62,7 @@ TEST_F(BraveAdsFullScreenModePermissionRuleTest, DoNotAllowAd) {
   // Act
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsFullScreenModePermissionRuleTest,
@@ -84,7 +84,7 @@ TEST_F(BraveAdsFullScreenModePermissionRuleTest,
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 }  // namespace brave_ads

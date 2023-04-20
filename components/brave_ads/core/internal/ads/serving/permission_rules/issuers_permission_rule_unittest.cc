@@ -24,7 +24,7 @@ TEST_F(BraveAdsIssuersPermissionRuleTest, Issuers) {
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsIssuersPermissionRuleTest, NoIssuers) {
@@ -33,7 +33,7 @@ TEST_F(BraveAdsIssuersPermissionRuleTest, NoIssuers) {
   // Act
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 }  // namespace brave_ads

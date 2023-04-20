@@ -8,6 +8,8 @@
 
 #include <string>
 
+#include "base/types/expected.h"
+
 namespace brave_ads {
 
 template <typename T>
@@ -17,9 +19,7 @@ class ExclusionRuleInterface {
 
   virtual std::string GetUuid(const T&) const = 0;
 
-  virtual bool ShouldExclude(const T&) = 0;
-
-  virtual const std::string& GetLastMessage() const = 0;
+  virtual base::expected<void, std::string> ShouldInclude(const T&) const = 0;
 };
 
 }  // namespace brave_ads
