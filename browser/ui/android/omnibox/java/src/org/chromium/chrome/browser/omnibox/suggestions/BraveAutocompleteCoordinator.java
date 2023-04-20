@@ -20,7 +20,6 @@ import androidx.annotation.Nullable;
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.Callback;
 import org.chromium.base.StrictModeContext;
-import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.omnibox.R;
