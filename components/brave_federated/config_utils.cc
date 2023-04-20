@@ -41,7 +41,7 @@ LearningServiceConfig::LearningServiceConfig() {
     };
     model_spec_ = {
         /* .num_params = */ 32,
-        /* .batch_size = */ 64,
+        /* .batch_size = */ 32,
         /* .learning_rate = */ 0.01,
         /* .num_iterations = */ 500,
         /* .threshold = */ 0.5
