@@ -68,9 +68,9 @@ absl::optional<DecodedBitcoinAddress> DecodeBitcoinAddress(
   // https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki#witness-program
   if (result.witness_version == 0) {
     if (result.pubkey_hash.size() == kP2WPKHLength) {
-      result.address_type = BitcoinAddressType::WitnessV0PubkeyHash;
+      result.address_type = BitcoinAddressType::kWitnessV0PubkeyHash;
     } else if (result.pubkey_hash.size() == kP2WSHLength) {
-      result.address_type = BitcoinAddressType::WitnessV0ScriptHash;
+      result.address_type = BitcoinAddressType::kWitnessV0ScriptHash;
     } else {
       return absl::nullopt;
     }

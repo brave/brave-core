@@ -687,6 +687,7 @@ std::vector<uint8_t> HDKey::SignCompact(const std::vector<uint8_t>& msg,
   return sig;
 }
 
+// TODO(apaymyshev): return as base::expected
 std::vector<uint8_t> HDKey::SignDer(base::span<const uint8_t, 32> msg) {
   unsigned char extra_entropy[32] = {0};
   secp256k1_ecdsa_signature ecdsa_sig;

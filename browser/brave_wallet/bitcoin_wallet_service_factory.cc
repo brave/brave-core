@@ -32,6 +32,10 @@ BitcoinWalletServiceFactory::GetForContext(content::BrowserContext* context) {
     return mojo::PendingRemote<mojom::BitcoinWalletService>();
   }
 
+  if (!IsBitcoinEnabled()) {
+    return mojo::PendingRemote<mojom::BitcoinWalletService>();
+  }
+
   return static_cast<BitcoinWalletService*>(
              GetInstance()->GetServiceForBrowserContext(context, true))
       ->MakeRemote();

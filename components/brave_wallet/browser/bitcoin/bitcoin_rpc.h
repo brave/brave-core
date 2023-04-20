@@ -21,6 +21,7 @@
 namespace brave_wallet {
 
 // TODO(apaymyshev): test this class
+// TODO(apaymyshev): consider this being a separate keyed service
 class BitcoinRpc {
  public:
   explicit BitcoinRpc(

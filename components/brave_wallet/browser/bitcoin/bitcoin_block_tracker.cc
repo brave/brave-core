@@ -35,7 +35,7 @@ void BitcoinBlockTracker::Start(const std::string& chain_id,
 }
 
 void BitcoinBlockTracker::GetBlockHeight(const std::string& chain_id) {
-  bitcoin_wallet_service_->bitcoin_rpc()->GetChainHeight(
+  bitcoin_wallet_service_->bitcoin_rpc().GetChainHeight(
       chain_id, base::BindOnce(&BitcoinBlockTracker::OnGetBlockHeight,
                                weak_ptr_factory_.GetWeakPtr(), chain_id));
 }

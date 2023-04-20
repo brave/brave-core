@@ -340,7 +340,7 @@ bool BitcoinWalletService::PrepareOutputs(SendToContext& context) {
   // TODO(apaymyshev): support more types
   // TODO(apaymyshev): rewrite as 'convert address to lock script'
   if (decoded_address && decoded_address->address_type ==
-                             BitcoinAddressType::WitnessV0PubkeyHash) {
+                             BitcoinAddressType::kWitnessV0PubkeyHash) {
     target_output.pubkey_hash = std::move(decoded_address->pubkey_hash);
     CHECK_EQ(target_output.pubkey_hash.size(), 20u);
 
@@ -374,7 +374,7 @@ bool BitcoinWalletService::PrepareOutputs(SendToContext& context) {
       DecodeBitcoinAddress(change_output.address, context.IsTestnet());
 
   if (decoded_change_address && decoded_change_address->address_type ==
-                                    BitcoinAddressType::WitnessV0PubkeyHash) {
+                                    BitcoinAddressType::kWitnessV0PubkeyHash) {
     change_output.pubkey_hash = std::move(decoded_change_address->pubkey_hash);
     CHECK_EQ(change_output.pubkey_hash.size(), 20u);
 

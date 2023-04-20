@@ -17,8 +17,8 @@ namespace brave_wallet {
 
 // TODO(apaymyshev): support more
 enum BitcoinAddressType {
-  WitnessV0ScriptHash,
-  WitnessV0PubkeyHash,
+  kWitnessV0ScriptHash,
+  kWitnessV0PubkeyHash,
   kWitnessUnknown
 };
 

@@ -112,7 +112,7 @@ TEST(BitcoinUtilsUnitTest, DecodeBitcoinAddress) {
   EXPECT_EQ(base::HexEncode(decoded_address->pubkey_hash),
             "8E89DFE173318530F8535BF0DFB206A93CC82A60");
   EXPECT_EQ(decoded_address->address_type,
-            BitcoinAddressType::WitnessV0PubkeyHash);
+            BitcoinAddressType::kWitnessV0PubkeyHash);
   EXPECT_EQ(decoded_address->witness_version, 0u);
 
   EXPECT_FALSE(DecodeBitcoinAddress(
@@ -124,7 +124,7 @@ TEST(BitcoinUtilsUnitTest, DecodeBitcoinAddress) {
   EXPECT_EQ(base::HexEncode(decoded_address->pubkey_hash),
             "C7A1F1A4D6B4C1802A59631966A18359DE779E8A6A65973735A3CCDFDABC407D");
   EXPECT_EQ(decoded_address->address_type,
-            BitcoinAddressType::WitnessV0ScriptHash);
+            BitcoinAddressType::kWitnessV0ScriptHash);
   EXPECT_EQ(decoded_address->witness_version, 0u);
 
   EXPECT_FALSE(DecodeBitcoinAddress(

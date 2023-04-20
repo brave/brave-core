@@ -65,7 +65,7 @@ class BitcoinWalletService : public KeyedService,
               uint64_t fee,
               SendToCallback callback) override;
 
-  BitcoinRpc* bitcoin_rpc() { return bitcoin_rpc_.get(); }
+  BitcoinRpc& bitcoin_rpc() { return *bitcoin_rpc_; }
 
  private:
   // KeyringServiceObserverBase:
@@ -102,8 +102,8 @@ class BitcoinWalletService : public KeyedService,
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   mojo::ReceiverSet<mojom::BitcoinWalletService> receivers_;
   // TODO(apaymyshev): need prefs_ and local_state_prefs_ here?
-  PrefService* prefs_ = nullptr;
-  PrefService* local_state_prefs_ = nullptr;
+  const raw_ptr<PrefService> prefs_ = nullptr;
+  const raw_ptr<PrefService> local_state_prefs_ = nullptr;
   std::unique_ptr<BitcoinRpc> bitcoin_rpc_;
   base::WeakPtrFactory<BitcoinWalletService> weak_ptr_factory_{this};
 };
