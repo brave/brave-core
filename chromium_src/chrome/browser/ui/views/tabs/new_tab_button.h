@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_NEW_TAB_BUTTON_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_NEW_TAB_BUTTON_H_
 
+#include "chrome/browser/ui/tabs/tab_style.h"
+
 #define BRAVE_NEW_TAB_BUTTON_H_   \
  private:                         \
   friend class BraveNewTabButton; \
