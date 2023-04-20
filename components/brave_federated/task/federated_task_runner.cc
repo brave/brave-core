@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/logging.h"
 
 #include "brave/components/brave_federated/task/model.h"
 #include "brave/components/brave_federated/task/typing.h"
@@ -28,18 +29,24 @@ absl::optional<TaskResult> FederatedTaskRunner::Run() {
   PerformanceReport report(0, 0, 0, {}, {});
   if (task_.GetType() == TaskType::Training) {
     if (training_data_.empty()) {
+      VLOG(1) << "Training data empty";
       return absl::nullopt;
     }
     if (model_->GetBatchSize() > training_data_.size()) {
+      VLOG(1) << "Batch size (" << model_->GetBatchSize()
+              << ") < training dataset size(" << training_data_.size() << ")" ;
       return absl::nullopt;
     }
 
     report = model_->Train(training_data_);
   } else if (task_.GetType() == TaskType::Evaluation) {
     if (test_data_.empty()) {
+      VLOG(1) << "Test data empty";
       return absl::nullopt;
     }
     if (model_->GetBatchSize() > test_data_.size()) {
+      VLOG(1) << "Batch size (" << model_->GetBatchSize()
+              << ") < Test dataset size(" << test_data_.size() << ")" ;
       return absl::nullopt;
     }
 
