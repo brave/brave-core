@@ -233,7 +233,7 @@ public class AccountDetailActivity
             Log.e(TAG, "finishNativeInitialization " + e);
         }
         assert mJsonRpcService != null;
-        mJsonRpcService.getNetwork(mCoinType, selectedNetwork -> {
+        mJsonRpcService.getNetwork(mCoinType, null, selectedNetwork -> {
             setUpAssetList(selectedNetwork);
             fetchAccountInfo(selectedNetwork);
         });
@@ -242,7 +242,7 @@ public class AccountDetailActivity
     @Override
     public void onAssetClick(BlockchainToken asset) {
         assert mJsonRpcService != null;
-        mJsonRpcService.getChainId(mCoinType, chainId -> {
+        mJsonRpcService.getDefaultChainId(mCoinType, chainId -> {
             Utils.openAssetDetailsActivity(AccountDetailActivity.this, chainId, asset);
         });
     }

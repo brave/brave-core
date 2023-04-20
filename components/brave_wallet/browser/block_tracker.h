@@ -6,6 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BLOCK_TRACKER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BLOCK_TRACKER_H_
 
+#include <map>
+#include <memory>
+#include <string>
+
 #include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
@@ -17,14 +21,16 @@ class JsonRpcService;
 class BlockTracker {
  public:
   explicit BlockTracker(JsonRpcService* json_rpc_service);
-  virtual ~BlockTracker() = default;
+  virtual ~BlockTracker();
 
-  virtual void Start(base::TimeDelta interval) = 0;
+  virtual void Start(const std::string& chain_id, base::TimeDelta interval) = 0;
+  virtual void Stop(const std::string& chain_id);
   virtual void Stop();
-  bool IsRunning() const;
+  bool IsRunning(const std::string& chain_id) const;
 
  protected:
-  base::RepeatingTimer timer_;
+  // <chain_id, timer>
+  std::map<std::string, std::unique_ptr<base::RepeatingTimer>> timers_;
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
 };
 

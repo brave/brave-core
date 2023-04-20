@@ -14,7 +14,7 @@ import * as WalletActions from '../actions/wallet_actions'
 import Amount from '../../utils/amount'
 import { findAccountName } from '../../utils/account-utils'
 import { getLocale } from '../../../common/locale'
-import { getNetworkFromTXDataUnion } from '../../utils/network-utils'
+import { getCoinFromTxDataUnion } from '../../utils/network-utils'
 import { reduceAddress } from '../../utils/reduce-address'
 import { WalletSelectors } from '../selectors'
 
@@ -27,10 +27,7 @@ import {
   useSafeWalletSelector,
   useUnsafeWalletSelector
 } from './use-safe-selector'
-import {
-  useGetDefaultNetworksQuery,
-  useGetSelectedChainQuery
-} from '../slices/api.slice'
+import { useGetNetworkQuery } from '../slices/api.slice'
 
 // Constants
 import { BraveWallet } from '../../constants/types'
@@ -65,18 +62,17 @@ export const usePendingTransactions = () => {
   )
 
   // queries
-  const { data: selectedNetwork } = useGetSelectedChainQuery()
-  const { data: defaultNetworks = [] } = useGetDefaultNetworksQuery()
-
+  const { data: transactionsNetwork } = useGetNetworkQuery(
+    transactionInfo
+      ? {
+          chainId: transactionInfo.chainId,
+          coin: getCoinFromTxDataUnion(transactionInfo.txDataUnion)
+        }
+      : undefined,
+    { skip: !transactionInfo }
+  )
 
   const transactionGasEstimates = transactionInfo?.txDataUnion.ethTxData1559?.gasEstimation
-
-  const transactionsNetwork = React.useMemo(() => {
-    if (!transactionInfo) {
-      return selectedNetwork
-    }
-    return getNetworkFromTXDataUnion(transactionInfo.txDataUnion, defaultNetworks, selectedNetwork)
-  }, [defaultNetworks, transactionInfo, selectedNetwork])
 
   // custom hooks
   const { getBlockchainTokenInfo, getERC20Allowance } = useLib()
@@ -124,6 +120,7 @@ export const usePendingTransactions = () => {
   const onEditAllowanceSave = React.useCallback((allowance: string) => {
     if (transactionInfo?.id && transactionDetails) {
       dispatch(WalletActions.updateUnapprovedTransactionSpendAllowance({
+        chainId: transactionInfo.chainId,
         txMetaId: transactionInfo.id,
         spenderAddress: transactionDetails.approvalTarget || '',
         allowance: new Amount(allowance)

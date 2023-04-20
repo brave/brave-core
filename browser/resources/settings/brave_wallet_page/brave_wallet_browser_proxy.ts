@@ -30,7 +30,7 @@ export type NetworkInfo = {
 }
 
 export type NetworksList = {
-  activeNetwork: string
+  defaultNetwork: string
   networks: NetworkInfo[]
   knownNetworks: string[]
   customNetworks: string[]
@@ -56,7 +56,7 @@ export interface BraveWalletBrowserProxy {
   addChain(value: NetworkInfo): Promise<[boolean, string]>
   addHiddenNetwork(chainId: string, coin: number): Promise<boolean>
   removeHiddenNetwork(chainId: string, coin: number): Promise<boolean>
-  setActiveNetwork(chainId: string, coin: number): Promise<boolean>
+  setDefaultNetwork(chainId: string, coin: number): Promise<boolean>
   resetTransactionInfo (): void
   getPinnedNftCount(): Promise<number>
   clearPinnedNft(): Promise<boolean>
@@ -83,8 +83,8 @@ export class BraveWalletBrowserProxyImpl implements BraveWalletBrowserProxy {
     return sendWithPromise('getPrepopulatedNetworksList')
   }
 
-  setActiveNetwork (chainId: string, coin: number) {
-    return sendWithPromise('setActiveNetwork', chainId, coin)
+  setDefaultNetwork (chainId: string, coin: number) {
+    return sendWithPromise('setDefaultNetwork', chainId, coin)
   }
 
   removeChain (chainId: string, coin: number) {

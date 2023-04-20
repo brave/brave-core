@@ -94,7 +94,7 @@ public class BraveWalletNetworksPreference extends Preference
     @Override
     public void onItemSetAsActive(NetworkInfo chain) {
         assert mJsonRpcService != null;
-        mJsonRpcService.setNetwork(chain.chainId, CoinType.ETH, success -> {
+        mJsonRpcService.setNetwork(chain.chainId, CoinType.ETH, null, success -> {
             if (!success) {
                 return;
             }
@@ -127,7 +127,7 @@ public class BraveWalletNetworksPreference extends Preference
             Log.e(TAG, "updateNetworksList " + e);
         }
         assert mJsonRpcService != null;
-        mJsonRpcService.getChainId(CoinType.ETH, chainId -> {
+        mJsonRpcService.getDefaultChainId(CoinType.ETH, chainId -> {
             mJsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
                 mJsonRpcService.getCustomNetworks(CoinType.ETH, customNetworkIds -> {
                     mAdapter.setDisplayedNetworks(

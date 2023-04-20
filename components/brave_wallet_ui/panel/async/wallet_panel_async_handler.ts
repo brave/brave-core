@@ -220,7 +220,8 @@ handler.on(PanelActions.approveHardwareTransaction.type, async (store: Store, tx
         ({ success, error, code } = await signLedgerFilecoinTransaction(apiProxy, txInfo, found.coin))
         break
       case BraveWallet.CoinType.SOL:
-        ({ success, error, code } = await signLedgerSolanaTransaction(apiProxy, hardwareAccount.path, txInfo.id, found.coin))
+        ({ success, error, code } = await signLedgerSolanaTransaction(
+          apiProxy, hardwareAccount.path, txInfo, found.coin))
         break
       default:
         await store.dispatch(PanelActions.navigateToMain())

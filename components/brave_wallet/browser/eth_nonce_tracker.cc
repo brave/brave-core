@@ -22,12 +22,14 @@ EthNonceTracker::EthNonceTracker(TxStateManager* tx_state_manager,
 
 EthNonceTracker::~EthNonceTracker() = default;
 
-void EthNonceTracker::GetNextNonce(const std::string& from,
+void EthNonceTracker::GetNextNonce(const std::string& chain_id,
+                                   const std::string& from,
                                    GetNextNonceCallback callback) {
   json_rpc_service_->GetEthTransactionCount(
-      from,
+      chain_id, from,
       base::BindOnce(&EthNonceTracker::OnGetNetworkNonce,
-                     weak_factory_.GetWeakPtr(), from, std::move(callback)));
+                     weak_factory_.GetWeakPtr(), chain_id, from,
+                     std::move(callback)));
 }
 
 uint256_t EthNonceTracker::GetHighestLocallyConfirmed(
@@ -56,7 +58,8 @@ uint256_t EthNonceTracker::GetHighestContinuousFrom(
   return highest;
 }
 
-void EthNonceTracker::OnGetNetworkNonce(const std::string& from,
+void EthNonceTracker::OnGetNetworkNonce(const std::string& chain_id,
+                                        const std::string& from,
                                         GetNextNonceCallback callback,
                                         uint256_t network_nonce,
                                         mojom::ProviderError error,
@@ -65,8 +68,8 @@ void EthNonceTracker::OnGetNetworkNonce(const std::string& from,
     std::move(callback).Run(false, network_nonce);
     return;
   }
-  auto nonce = GetFinalNonce(EthAddress::FromHex(from).ToChecksumAddress(),
-                             network_nonce);
+  auto nonce = GetFinalNonce(
+      chain_id, EthAddress::FromHex(from).ToChecksumAddress(), network_nonce);
   std::move(callback).Run(nonce.has_value(), nonce.has_value() ? *nonce : 0);
 }
 

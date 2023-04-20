@@ -27,29 +27,32 @@ namespace brave_wallet {
 
 class TxMeta;
 class EthTxMeta;
-class JsonRpcService;
 
 class EthTxStateManager : public TxStateManager {
  public:
-  explicit EthTxStateManager(PrefService* prefs,
-                             JsonRpcService* json_rpc_service);
+  explicit EthTxStateManager(PrefService* prefs);
   ~EthTxStateManager() override;
   EthTxStateManager(const EthTxStateManager&) = delete;
   EthTxStateManager operator=(const EthTxStateManager&) = delete;
 
   std::vector<std::unique_ptr<TxMeta>> GetTransactionsByStatus(
-      absl::optional<mojom::TransactionStatus> status,
-      absl::optional<EthAddress> from);
+      const absl::optional<std::string>& chain_id,
+      const absl::optional<mojom::TransactionStatus>& status,
+      const absl::optional<EthAddress>& from);
 
-  std::unique_ptr<EthTxMeta> GetEthTx(const std::string& id);
+  std::unique_ptr<EthTxMeta> GetEthTx(const std::string& chain_id,
+                                      const std::string& id);
   std::unique_ptr<EthTxMeta> ValueToEthTxMeta(const base::Value::Dict& value);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(EthTxStateManagerUnitTest, GetTxPrefPathPrefix);
 
+  mojom::CoinType GetCoinType() const override;
+
   std::unique_ptr<TxMeta> ValueToTxMeta(
       const base::Value::Dict& value) override;
-  std::string GetTxPrefPathPrefix() override;
+  std::string GetTxPrefPathPrefix(
+      const absl::optional<std::string>& chain_id) override;
 };
 
 }  // namespace brave_wallet

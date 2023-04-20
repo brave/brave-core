@@ -8,6 +8,7 @@
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
 
 #include "base/run_loop.h"
+#include "base/scoped_observation.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
@@ -17,98 +18,50 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
-#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
-#include "services/network/test/test_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using base::test::ParseJson;
 using base::test::ParseJsonDict;
+using testing::_;
 
 namespace brave_wallet {
 
-class TestTxStateManagerObserver : public TxStateManager::Observer {
+class MockTxStateManagerObserver : public TxStateManager::Observer {
  public:
-  TestTxStateManagerObserver() = default;
-
-  void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx) override {
-    new_unapproved_tx_fired_ = true;
-    tx_status_ = tx->tx_status;
-    tx_id_ = tx->id;
+  explicit MockTxStateManagerObserver(TxStateManager* tx_state_manager) {
+    observation_.Observe(tx_state_manager);
   }
 
-  void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx) override {
-    tx_status_changed_fired_ = true;
-    tx_status_ = tx->tx_status;
-    tx_id_ = tx->id;
-  }
-
-  void ExpectMatch(const std::string& expected_tx_id,
-                   mojom::TransactionStatus expected_status) {
-    base::RunLoop().RunUntilIdle();
-    EXPECT_EQ(expected_tx_id, tx_id_);
-    EXPECT_EQ(expected_status, tx_status_);
-  }
-
-  void Reset() {
-    new_unapproved_tx_fired_ = false;
-    tx_status_changed_fired_ = false;
-  }
-
-  bool NewUnapprovedTxFired() const {
-    base::RunLoop().RunUntilIdle();
-    return new_unapproved_tx_fired_;
-  }
-
-  bool TxStatusChangedFired() const {
-    base::RunLoop().RunUntilIdle();
-    return tx_status_changed_fired_;
-  }
+  MOCK_METHOD1(OnTransactionStatusChanged, void(mojom::TransactionInfoPtr));
+  MOCK_METHOD1(OnNewUnapprovedTx, void(mojom::TransactionInfoPtr));
 
  private:
-  std::string tx_id_;
-  mojom::TransactionStatus tx_status_;
-  bool new_unapproved_tx_fired_ = false;
-  bool tx_status_changed_fired_ = false;
+  base::ScopedObservation<TxStateManager, TxStateManager::Observer>
+      observation_{this};
 };
 
 class TxStateManagerUnitTest : public testing::Test {
  public:
-  TxStateManagerUnitTest()
-      : shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {}
+  TxStateManagerUnitTest() {}
 
  protected:
   void SetUp() override {
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     brave_wallet::RegisterProfilePrefsForMigration(prefs_.registry());
-    json_rpc_service_ =
-        std::make_unique<JsonRpcService>(shared_url_loader_factory_, &prefs_);
     // The only different between each coin type's tx state manager in these
     // base functions are their pref paths, so here we just use
     // EthTxStateManager to test common methods in TxStateManager.
-    tx_state_manager_ =
-        std::make_unique<EthTxStateManager>(&prefs_, json_rpc_service_.get());
-  }
-
-  void SetNetwork(const std::string& chain_id, mojom::CoinType coin) {
-    base::RunLoop run_loop;
-    json_rpc_service_->SetNetwork(
-        chain_id, coin,
-        base::BindLambdaForTesting([&](bool success) { run_loop.Quit(); }));
-    run_loop.Run();
+    tx_state_manager_ = std::make_unique<EthTxStateManager>(&prefs_);
   }
 
   base::test::TaskEnvironment task_environment_;
-  network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
-  std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<TxStateManager> tx_state_manager_;
 };
 
@@ -117,6 +70,7 @@ TEST_F(TxStateManagerUnitTest, TxOperations) {
 
   EthTxMeta meta;
   meta.set_id("001");
+  meta.set_chain_id(mojom::kMainnetChainId);
   EXPECT_FALSE(prefs_.HasPrefPath(kBraveWalletTransactions));
   // Add
   tx_state_manager_->AddOrUpdateTx(meta);
@@ -173,23 +127,25 @@ TEST_F(TxStateManagerUnitTest, TxOperations) {
 
   // Get
   {
-    auto meta_fetched = tx_state_manager_->GetTx("001");
+    auto meta_fetched = tx_state_manager_->GetTx(mojom::kMainnetChainId, "001");
     ASSERT_NE(meta_fetched, nullptr);
-    ASSERT_EQ(tx_state_manager_->GetTx("003"), nullptr);
+    ASSERT_EQ(tx_state_manager_->GetTx(mojom::kMainnetChainId, "003"), nullptr);
+    ASSERT_EQ(tx_state_manager_->GetTx(mojom::kGoerliChainId, "001"), nullptr);
     EXPECT_EQ(meta_fetched->id(), "001");
     EXPECT_EQ(meta_fetched->tx_hash(), "0xabcd");
 
-    auto meta_fetched2 = tx_state_manager_->GetTx("002");
+    auto meta_fetched2 =
+        tx_state_manager_->GetTx(mojom::kMainnetChainId, "002");
     ASSERT_NE(meta_fetched2, nullptr);
     EXPECT_EQ(meta_fetched2->id(), "002");
     EXPECT_EQ(meta_fetched2->tx_hash(), "0xabff");
 
-    auto meta_fetched3 = tx_state_manager_->GetTx("");
+    auto meta_fetched3 = tx_state_manager_->GetTx(mojom::kMainnetChainId, "");
     EXPECT_EQ(meta_fetched3, nullptr);
   }
 
   // Delete
-  tx_state_manager_->DeleteTx("001");
+  tx_state_manager_->DeleteTx(mojom::kMainnetChainId, "001");
   {
     const auto& dict = prefs_.GetDict(kBraveWalletTransactions);
     EXPECT_EQ(dict.size(), 1u);
@@ -221,50 +177,110 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
     if (i % 2 == 0) {
       if (i % 4 == 0)
         meta.set_from(addr1);
+      if (i % 6 == 0) {
+        meta.set_chain_id(mojom::kMainnetChainId);
+      } else {
+        meta.set_chain_id(mojom::kGoerliChainId);
+      }
       meta.set_status(mojom::TransactionStatus::Confirmed);
     } else {
       if (i % 5 == 0)
         meta.set_from(addr2);
+      if (i % 7 == 0) {
+        meta.set_chain_id(mojom::kMainnetChainId);
+      } else {
+        meta.set_chain_id(mojom::kGoerliChainId);
+      }
       meta.set_status(mojom::TransactionStatus::Submitted);
     }
     tx_state_manager_->AddOrUpdateTx(meta);
   }
 
+  EXPECT_EQ(
+      tx_state_manager_
+          ->GetTransactionsByStatus(
+              absl::nullopt, mojom::TransactionStatus::Approved, absl::nullopt)
+          .size(),
+      0u);
+  EXPECT_EQ(
+      tx_state_manager_
+          ->GetTransactionsByStatus(
+              absl::nullopt, mojom::TransactionStatus::Confirmed, absl::nullopt)
+          .size(),
+      10u);
   EXPECT_EQ(tx_state_manager_
-                ->GetTransactionsByStatus(mojom::TransactionStatus::Approved,
+                ->GetTransactionsByStatus(mojom::kMainnetChainId,
+                                          mojom::TransactionStatus::Confirmed,
                                           absl::nullopt)
+                .size(),
+            4u);
+  EXPECT_EQ(tx_state_manager_
+                ->GetTransactionsByStatus(mojom::kGoerliChainId,
+                                          mojom::TransactionStatus::Confirmed,
+                                          absl::nullopt)
+                .size(),
+            6u);
+  EXPECT_EQ(
+      tx_state_manager_
+          ->GetTransactionsByStatus(
+              absl::nullopt, mojom::TransactionStatus::Submitted, absl::nullopt)
+          .size(),
+      10u);
+  EXPECT_EQ(tx_state_manager_
+                ->GetTransactionsByStatus(mojom::kMainnetChainId,
+                                          mojom::TransactionStatus::Submitted,
+                                          absl::nullopt)
+                .size(),
+            1u);
+  EXPECT_EQ(tx_state_manager_
+                ->GetTransactionsByStatus(mojom::kGoerliChainId,
+                                          mojom::TransactionStatus::Submitted,
+                                          absl::nullopt)
+                .size(),
+            9u);
+
+  EXPECT_EQ(tx_state_manager_
+                ->GetTransactionsByStatus(
+                    absl::nullopt, mojom::TransactionStatus::Approved, addr1)
                 .size(),
             0u);
-  EXPECT_EQ(tx_state_manager_
-                ->GetTransactionsByStatus(mojom::TransactionStatus::Confirmed,
-                                          absl::nullopt)
-                .size(),
-            10u);
-  EXPECT_EQ(tx_state_manager_
-                ->GetTransactionsByStatus(mojom::TransactionStatus::Submitted,
-                                          absl::nullopt)
-                .size(),
-            10u);
 
   EXPECT_EQ(
       tx_state_manager_
-          ->GetTransactionsByStatus(mojom::TransactionStatus::Approved, addr1)
-          .size(),
-      0u);
-
-  EXPECT_EQ(
-      tx_state_manager_->GetTransactionsByStatus(absl::nullopt, absl::nullopt)
+          ->GetTransactionsByStatus(absl::nullopt, absl::nullopt, absl::nullopt)
           .size(),
       20u);
+  EXPECT_EQ(tx_state_manager_
+                ->GetTransactionsByStatus(absl::nullopt, absl::nullopt, addr1)
+                .size(),
+            5u);
+  EXPECT_EQ(tx_state_manager_
+                ->GetTransactionsByStatus(mojom::kMainnetChainId, absl::nullopt,
+                                          addr1)
+                .size(),
+            2u);
   EXPECT_EQ(
-      tx_state_manager_->GetTransactionsByStatus(absl::nullopt, addr1).size(),
-      5u);
+      tx_state_manager_
+          ->GetTransactionsByStatus(mojom::kGoerliChainId, absl::nullopt, addr1)
+          .size(),
+      3u);
+  EXPECT_EQ(tx_state_manager_
+                ->GetTransactionsByStatus(absl::nullopt, absl::nullopt, addr2)
+                .size(),
+            2u);
+  EXPECT_EQ(tx_state_manager_
+                ->GetTransactionsByStatus(mojom::kMainnetChainId, absl::nullopt,
+                                          addr2)
+                .size(),
+            0u);
   EXPECT_EQ(
-      tx_state_manager_->GetTransactionsByStatus(absl::nullopt, addr2).size(),
+      tx_state_manager_
+          ->GetTransactionsByStatus(mojom::kGoerliChainId, absl::nullopt, addr2)
+          .size(),
       2u);
 
   auto confirmed_addr1 = tx_state_manager_->GetTransactionsByStatus(
-      mojom::TransactionStatus::Confirmed, addr1);
+      absl::nullopt, mojom::TransactionStatus::Confirmed, addr1);
   EXPECT_EQ(confirmed_addr1.size(), 5u);
   for (const auto& meta : confirmed_addr1) {
     unsigned id;
@@ -273,7 +289,7 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
   }
 
   auto submitted_addr2 = tx_state_manager_->GetTransactionsByStatus(
-      mojom::TransactionStatus::Submitted, addr2);
+      absl::nullopt, mojom::TransactionStatus::Submitted, addr2);
   EXPECT_EQ(submitted_addr2.size(), 2u);
   for (const auto& meta : submitted_addr2) {
     unsigned id;
@@ -282,23 +298,20 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
   }
 }
 
-TEST_F(TxStateManagerUnitTest, SwitchNetwork) {
+TEST_F(TxStateManagerUnitTest, MultiChainId) {
   prefs_.ClearPref(kBraveWalletTransactions);
 
   EthTxMeta meta;
   meta.set_id("001");
+  meta.set_chain_id(mojom::kMainnetChainId);
   tx_state_manager_->AddOrUpdateTx(meta);
 
-  SetNetwork("0x5", mojom::CoinType::ETH);
-  // Wait for network info
-  base::RunLoop().RunUntilIdle();
-  EXPECT_EQ(tx_state_manager_->GetTx("001"), nullptr);
+  EXPECT_EQ(tx_state_manager_->GetTx(mojom::kGoerliChainId, "001"), nullptr);
+  meta.set_chain_id(mojom::kGoerliChainId);
   tx_state_manager_->AddOrUpdateTx(meta);
 
-  SetNetwork(brave_wallet::mojom::kLocalhostChainId, mojom::CoinType::ETH);
-  // Wait for network info
-  base::RunLoop().RunUntilIdle();
-  EXPECT_EQ(tx_state_manager_->GetTx("001"), nullptr);
+  EXPECT_EQ(tx_state_manager_->GetTx(mojom::kLocalhostChainId, "001"), nullptr);
+  meta.set_chain_id(mojom::kLocalhostChainId);
   tx_state_manager_->AddOrUpdateTx(meta);
 
   const auto& dict = prefs_.GetDict(kBraveWalletTransactions);
@@ -330,6 +343,7 @@ TEST_F(TxStateManagerUnitTest, RetireOldTxMeta) {
   for (size_t i = 0; i < 20; ++i) {
     EthTxMeta meta;
     meta.set_id(base::NumberToString(i));
+    meta.set_chain_id(mojom::kMainnetChainId);
     if (i % 2 == 0) {
       meta.set_status(mojom::TransactionStatus::Confirmed);
       meta.set_confirmed_time(base::Time::Now());
@@ -340,53 +354,68 @@ TEST_F(TxStateManagerUnitTest, RetireOldTxMeta) {
     tx_state_manager_->AddOrUpdateTx(meta);
   }
 
-  EXPECT_TRUE(tx_state_manager_->GetTx("0"));
+  EXPECT_TRUE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "0"));
   EthTxMeta meta21;
   meta21.set_id("20");
+  meta21.set_chain_id(mojom::kMainnetChainId);
   meta21.set_status(mojom::TransactionStatus::Confirmed);
   meta21.set_confirmed_time(base::Time::Now());
   tx_state_manager_->AddOrUpdateTx(meta21);
-  EXPECT_FALSE(tx_state_manager_->GetTx("0"));
+  EXPECT_FALSE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "0"));
 
-  EXPECT_TRUE(tx_state_manager_->GetTx("1"));
+  EXPECT_TRUE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "1"));
   EthTxMeta meta22;
   meta22.set_id("21");
+  meta22.set_chain_id(mojom::kMainnetChainId);
   meta22.set_status(mojom::TransactionStatus::Rejected);
   meta22.set_created_time(base::Time::Now());
   tx_state_manager_->AddOrUpdateTx(meta22);
-  EXPECT_FALSE(tx_state_manager_->GetTx("1"));
+  EXPECT_FALSE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "1"));
 
   // Other status doesn't matter
-  EXPECT_TRUE(tx_state_manager_->GetTx("2"));
-  EXPECT_TRUE(tx_state_manager_->GetTx("3"));
+  EXPECT_TRUE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "2"));
+  EXPECT_TRUE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "3"));
   EthTxMeta meta23;
   meta23.set_id("22");
+  meta23.set_chain_id(mojom::kMainnetChainId);
   meta23.set_status(mojom::TransactionStatus::Submitted);
   meta23.set_created_time(base::Time::Now());
   tx_state_manager_->AddOrUpdateTx(meta23);
-  EXPECT_TRUE(tx_state_manager_->GetTx("2"));
-  EXPECT_TRUE(tx_state_manager_->GetTx("3"));
+  EXPECT_TRUE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "2"));
+  EXPECT_TRUE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "3"));
+
+  // Other chain id doesn't matter
+  EthTxMeta meta24;
+  meta24.set_id("23");
+  meta23.set_chain_id(mojom::kGoerliChainId);
+  meta24.set_status(mojom::TransactionStatus::Confirmed);
+  meta24.set_created_time(base::Time::Now());
+  tx_state_manager_->AddOrUpdateTx(meta24);
+  EXPECT_TRUE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "2"));
+  EXPECT_TRUE(tx_state_manager_->GetTx(mojom::kMainnetChainId, "3"));
 }
 
 TEST_F(TxStateManagerUnitTest, Observer) {
-  TestTxStateManagerObserver observer;
-  tx_state_manager_->AddObserver(&observer);
+  prefs_.ClearPref(kBraveWalletTransactions);
+  MockTxStateManagerObserver observer(tx_state_manager_.get());
 
   EthTxMeta meta;
   meta.set_id("001");
   // Add
+  EXPECT_CALL(observer,
+              OnNewUnapprovedTx(EqualsMojo(meta.ToTransactionInfo())));
+  EXPECT_CALL(observer, OnTransactionStatusChanged(_)).Times(0);
   tx_state_manager_->AddOrUpdateTx(meta);
-  observer.ExpectMatch("001", mojom::TransactionStatus::Unapproved);
-  EXPECT_TRUE(observer.NewUnapprovedTxFired());
-  EXPECT_FALSE(observer.TxStatusChangedFired());
-  observer.Reset();
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
+
   // Modify
   meta.set_status(mojom::TransactionStatus::Approved);
+  EXPECT_CALL(observer, OnNewUnapprovedTx(_)).Times(0);
+  EXPECT_CALL(observer,
+              OnTransactionStatusChanged(EqualsMojo(meta.ToTransactionInfo())))
+      .Times(1);
   tx_state_manager_->AddOrUpdateTx(meta);
-  observer.ExpectMatch("001", mojom::TransactionStatus::Approved);
-  EXPECT_FALSE(observer.NewUnapprovedTxFired());
-  EXPECT_TRUE(observer.TxStatusChangedFired());
-  observer.Reset();
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 }
 
 TEST_F(TxStateManagerUnitTest,

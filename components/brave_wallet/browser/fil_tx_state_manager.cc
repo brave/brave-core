@@ -9,31 +9,39 @@
 
 #include "base/strings/strcat.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/fil_tx_meta.h"
-#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
-FilTxStateManager::FilTxStateManager(PrefService* prefs,
-                                     JsonRpcService* json_rpc_service)
-    : TxStateManager(prefs, json_rpc_service) {}
+FilTxStateManager::FilTxStateManager(PrefService* prefs)
+    : TxStateManager(prefs) {}
 
 FilTxStateManager::~FilTxStateManager() = default;
 
-std::unique_ptr<FilTxMeta> FilTxStateManager::GetFilTx(const std::string& id) {
+std::unique_ptr<FilTxMeta> FilTxStateManager::GetFilTx(
+    const std::string& chain_id,
+    const std::string& id) {
   return std::unique_ptr<FilTxMeta>{
-      static_cast<FilTxMeta*>(TxStateManager::GetTx(id).release())};
+      static_cast<FilTxMeta*>(TxStateManager::GetTx(chain_id, id).release())};
 }
 
-std::string FilTxStateManager::GetTxPrefPathPrefix() {
-  return base::StrCat(
-      {kFilecoinPrefKey, ".",
-       GetNetworkId(prefs_, mojom::CoinType::FIL,
-                    json_rpc_service_->GetChainId(mojom::CoinType::FIL))});
+std::string FilTxStateManager::GetTxPrefPathPrefix(
+    const absl::optional<std::string>& chain_id) {
+  if (chain_id.has_value()) {
+    return base::StrCat(
+        {kFilecoinPrefKey, ".",
+         GetNetworkId(prefs_, mojom::CoinType::FIL, *chain_id)});
+  }
+  return kFilecoinPrefKey;
+}
+
+mojom::CoinType FilTxStateManager::GetCoinType() const {
+  return mojom::CoinType::FIL;
 }
 
 std::unique_ptr<FilTxMeta> FilTxStateManager::ValueToFilTxMeta(
@@ -46,14 +54,17 @@ std::unique_ptr<TxMeta> FilTxStateManager::ValueToTxMeta(
     const base::Value::Dict& value) {
   std::unique_ptr<FilTxMeta> meta = std::make_unique<FilTxMeta>();
 
-  if (!TxStateManager::ValueToTxMeta(value, meta.get()))
+  if (!TxStateManager::ValueToTxMeta(value, meta.get())) {
     return nullptr;
+  }
   const base::Value::Dict* tx = value.FindDict("tx");
-  if (!tx)
+  if (!tx) {
     return nullptr;
+  }
   absl::optional<FilTransaction> tx_from_value = FilTransaction::FromValue(*tx);
-  if (!tx_from_value)
+  if (!tx_from_value) {
     return nullptr;
+  }
   meta->set_tx(std::make_unique<FilTransaction>(*tx_from_value));
   return meta;
 }

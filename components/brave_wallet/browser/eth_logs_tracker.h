@@ -40,7 +40,7 @@ class EthLogsTracker {
   };
 
   // If timer is already running, it will be replaced with new interval
-  void Start(base::TimeDelta interval);
+  void Start(const std::string& chain_id, base::TimeDelta interval);
   void Stop();
   bool IsRunning() const;
 
@@ -52,7 +52,7 @@ class EthLogsTracker {
   void RemoveObserver(Observer* observer);
 
  private:
-  void GetLogs();
+  void GetLogs(const std::string& chain_id);
   void OnGetLogs(const std::string& subscription,
                  const std::vector<Log>& logs,
                  base::Value rawlogs,

@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // utils
-import { getNetworkFromTXDataUnion } from '../../utils/network-utils'
+import { getCoinFromTxDataUnion } from '../../utils/network-utils'
 import { parseTransactionWithPrices } from '../../utils/tx-utils'
 
 // mocks
@@ -19,9 +19,10 @@ export const mockParsedTransactionInfo = parseTransactionWithPrices({
   tx: mockTransactionInfo,
   userVisibleTokensList: mockWalletState.userVisibleTokensInfo,
   solFeeEstimates: mockWalletState.solFeeEstimates,
-  transactionNetwork: getNetworkFromTXDataUnion(
-    mockTransactionInfo.txDataUnion,
-    mockNetworks
+  transactionNetwork: mockNetworks.find(
+    (n) =>
+      n.chainId === mockTransactionInfo.chainId &&
+      n.coin === getCoinFromTxDataUnion(mockTransactionInfo.txDataUnion)
   )
 })
 
@@ -32,8 +33,10 @@ export const mockedParsedErc20ApprovalTransaction = parseTransactionWithPrices({
   tx: mockedErc20ApprovalTransaction,
   userVisibleTokensList: mockWalletState.userVisibleTokensInfo,
   solFeeEstimates: mockWalletState.solFeeEstimates,
-  transactionNetwork: getNetworkFromTXDataUnion(
-    mockedErc20ApprovalTransaction.txDataUnion,
-    mockNetworks
+  transactionNetwork: mockNetworks.find(
+    (n) =>
+      n.chainId === mockedErc20ApprovalTransaction.chainId &&
+      n.coin ===
+        getCoinFromTxDataUnion(mockedErc20ApprovalTransaction.txDataUnion)
   )
 })

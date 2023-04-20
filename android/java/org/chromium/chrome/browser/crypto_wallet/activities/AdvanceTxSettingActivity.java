@@ -26,6 +26,8 @@ public class AdvanceTxSettingActivity extends BraveWalletBaseActivity {
 
         mEtCustomNonce = findViewById(R.id.activity_advance_setting_et_nonce);
         String txId = getIntent().getStringExtra(WalletConstants.ADVANCE_TX_SETTING_INTENT_TX_ID);
+        String chainId =
+                getIntent().getStringExtra(WalletConstants.ADVANCE_TX_SETTING_INTENT_TX_CHAIN_ID);
         String nonce =
                 getIntent().getStringExtra(WalletConstants.ADVANCE_TX_SETTING_INTENT_TX_NONCE);
         mEtCustomNonce.setText(Utils.hexToIntString(nonce));
@@ -35,16 +37,18 @@ public class AdvanceTxSettingActivity extends BraveWalletBaseActivity {
             if (!TextUtils.isEmpty(newNonce)) {
                 newNonce = Utils.toHex(mEtCustomNonce.getText().toString());
             }
-            getEthTxManagerProxy().setNonceForUnapprovedTransaction(txId, newNonce, isSet -> {
-                if (isSet) {
-                    Intent result = new Intent().putExtra(
-                            WalletConstants.ADVANCE_TX_SETTING_INTENT_RESULT_NONCE, newNonce);
-                    setResult(Activity.RESULT_OK, result);
-                    finish();
-                } else {
-                    Log.e(TAG, "Unable to set nonce ");
-                }
-            });
+            getEthTxManagerProxy().setNonceForUnapprovedTransaction(
+                    chainId, txId, newNonce, isSet -> {
+                        if (isSet) {
+                            Intent result = new Intent().putExtra(
+                                    WalletConstants.ADVANCE_TX_SETTING_INTENT_RESULT_NONCE,
+                                    newNonce);
+                            setResult(Activity.RESULT_OK, result);
+                            finish();
+                        } else {
+                            Log.e(TAG, "Unable to set nonce ");
+                        }
+                    });
         });
         onInitialLayoutInflationComplete();
     }

@@ -5,8 +5,10 @@
 
 #include "brave/components/brave_wallet/browser/fil_block_tracker.h"
 
+#include <memory>
 #include <utility>
 
+#include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 
@@ -17,20 +19,35 @@ FilBlockTracker::FilBlockTracker(JsonRpcService* json_rpc_service)
 
 FilBlockTracker::~FilBlockTracker() = default;
 
-void FilBlockTracker::Start(base::TimeDelta interval) {
-  timer_.Start(FROM_HERE, interval,
-               base::BindRepeating(&FilBlockTracker::GetFilBlockHeight,
-                                   weak_ptr_factory_.GetWeakPtr(),
-                                   base::NullCallback()));
+void FilBlockTracker::Start(const std::string& chain_id,
+                            base::TimeDelta interval) {
+  if (!base::Contains(timers_, chain_id)) {
+    timers_[chain_id] = std::make_unique<base::RepeatingTimer>();
+  }
+  timers_[chain_id]->Start(
+      FROM_HERE, interval,
+      base::BindRepeating(&FilBlockTracker::GetFilBlockHeight,
+                          weak_ptr_factory_.GetWeakPtr(), chain_id,
+                          base::NullCallback()));
 }
 
-void FilBlockTracker::GetFilBlockHeight(GetFilBlockHeightCallback callback) {
+void FilBlockTracker::GetFilBlockHeight(const std::string& chain_id,
+                                        GetFilBlockHeightCallback callback) {
   json_rpc_service_->GetFilBlockHeight(
-      base::BindOnce(&FilBlockTracker::OnGetFilBlockHeight,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+      chain_id, base::BindOnce(&FilBlockTracker::OnGetFilBlockHeight,
+                               weak_ptr_factory_.GetWeakPtr(), chain_id,
+                               std::move(callback)));
 }
 
-void FilBlockTracker::OnGetFilBlockHeight(GetFilBlockHeightCallback callback,
+uint64_t FilBlockTracker::GetLatestHeight(const std::string& chain_id) const {
+  if (!base::Contains(latest_height_map_, chain_id)) {
+    return 0;
+  }
+  return latest_height_map_.at(chain_id);
+}
+
+void FilBlockTracker::OnGetFilBlockHeight(const std::string& chain_id,
+                                          GetFilBlockHeightCallback callback,
                                           uint64_t latest_height,
                                           mojom::FilecoinProviderError error,
                                           const std::string& error_message) {
@@ -42,11 +59,12 @@ void FilBlockTracker::OnGetFilBlockHeight(GetFilBlockHeightCallback callback,
             << static_cast<int>(error) << ", error_message: " << error_message;
     return;
   }
-  if (latest_height_ == latest_height)
+  if (GetLatestHeight(chain_id) == latest_height) {
     return;
-  latest_height_ = latest_height;
+  }
+  latest_height_map_[chain_id] = latest_height;
   for (auto& observer : observers_)
-    observer.OnLatestHeightUpdated(latest_height);
+    observer.OnLatestHeightUpdated(chain_id, latest_height);
 }
 
 void FilBlockTracker::AddObserver(FilBlockTracker::Observer* observer) {

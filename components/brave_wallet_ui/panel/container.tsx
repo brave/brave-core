@@ -299,6 +299,7 @@ function Container () {
     dispatch(WalletActions.retryTransaction({
       coinType: getCoinFromTxDataUnion(transaction.txDataUnion),
       fromAddress: findTransactionAccount(accounts, transaction)?.address || '',
+      chainId: transaction.chainId,
       transactionId: transaction.id
     }))
   }
@@ -307,6 +308,7 @@ function Container () {
     dispatch(WalletActions.speedupTransaction({
       coinType: getCoinFromTxDataUnion(transaction.txDataUnion),
       fromAddress: findTransactionAccount(accounts, transaction)?.address || '',
+      chainId: transaction.chainId,
       transactionId: transaction.id
     }))
   }
@@ -315,6 +317,7 @@ function Container () {
     dispatch(WalletActions.cancelTransaction({
       coinType: getCoinFromTxDataUnion(transaction.txDataUnion),
       fromAddress: findTransactionAccount(accounts, transaction)?.address || '',
+      chainId: transaction.chainId,
       transactionId: transaction.id
     }))
   }
@@ -502,7 +505,6 @@ function Container () {
             accounts={accounts}
             onCancel={onCancelSigning}
             onSign={onSignData}
-            selectedNetwork={selectedNetwork}
             // Pass a boolean here if the signing method is risky
             showWarning={false}
           />
@@ -640,7 +642,6 @@ function Container () {
             onBack={onGoBackToTransactions}
             accounts={accounts}
             defaultCurrencies={defaultCurrencies}
-            selectedNetwork={selectedNetwork}
             transaction={selectedTransaction}
             transactionSpotPrices={transactionSpotPrices}
             visibleTokens={userVisibleTokensInfo}

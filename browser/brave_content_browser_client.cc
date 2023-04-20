@@ -345,7 +345,8 @@ void MaybeBindSolanaProvider(
       std::make_unique<brave_wallet::SolanaProviderImpl>(
           keyring_service, brave_wallet_service, tx_service,
           std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
-              web_contents, frame_host)),
+              web_contents, frame_host),
+          user_prefs::UserPrefs::Get(web_contents->GetBrowserContext())),
       std::move(receiver));
 }
 

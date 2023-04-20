@@ -63,7 +63,7 @@ public class SolanaTransactionsGasHelper {
 
             if (mActivity.get() != null)
                 mActivity.get().getSolanaTxManagerProxy().getEstimatedTxFee(
-                        txInfo.id, estimatesContext);
+                        txInfo.chainId, txInfo.id, estimatesContext);
         }
 
         estimatesMultiResponse.setWhenAllCompletedAction(() -> {

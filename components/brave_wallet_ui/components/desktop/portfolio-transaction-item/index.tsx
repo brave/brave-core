@@ -222,6 +222,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
       dispatch(WalletActions.retryTransaction({
         coinType: transaction.coinType,
         fromAddress: transaction.accountAddress,
+        chainId: transaction.chainId,
         transactionId: transaction.id
       }))
     },
@@ -237,6 +238,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
       dispatch(WalletActions.speedupTransaction({
         coinType: transaction.coinType,
         fromAddress: transaction.accountAddress,
+        chainId: transaction.chainId,
         transactionId: transaction.id
       }))
     },
@@ -252,6 +254,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
       dispatch(WalletActions.cancelTransaction({
         coinType: transaction.coinType,
         fromAddress: transaction.accountAddress,
+        chainId: transaction.chainId,
         transactionId: transaction.id
       }))
     },

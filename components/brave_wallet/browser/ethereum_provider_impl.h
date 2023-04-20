@@ -191,7 +191,8 @@ class EthereumProviderImpl final
 
   // mojom::JsonRpcServiceObserver
   void ChainChangedEvent(const std::string& chain_id,
-                         mojom::CoinType coin) override;
+                         mojom::CoinType coin,
+                         const absl::optional<url::Origin>& origin) override;
   void OnAddEthereumChainRequestCompleted(const std::string& chain_id,
                                           const std::string& error) override;
   void OnIsEip1559Changed(const std::string& chain_id,
@@ -235,12 +236,6 @@ class EthereumProviderImpl final
       mojom::ProviderError error,
       const std::string& error_message);
 
-  void ContinueAddAndApprove1559Transaction(RequestCallback callback,
-                                            base::Value id,
-                                            mojom::TxData1559Ptr tx_data,
-                                            const std::string& from,
-                                            const url::Origin& origin,
-                                            const std::string& chain_id);
   void ContinueAddAndApprove1559TransactionWithAccounts(
       RequestCallback callback,
       base::Value id,
@@ -385,8 +380,8 @@ class EthereumProviderImpl final
                   const bool update_bind_js_properties);
 
   // EthBlockTracker::Observer:
-  void OnLatestBlock(uint256_t block_num) override;
-  void OnNewBlock(uint256_t block_num) override;
+  void OnLatestBlock(const std::string& chain_id, uint256_t block_num) override;
+  void OnNewBlock(const std::string& chain_id, uint256_t block_num) override;
   bool UnsubscribeBlockObserver(const std::string& subscription_id);
 
   // EthLogsTracker::Observer:

@@ -5,8 +5,10 @@
 
 #include "brave/components/brave_wallet/browser/solana_block_tracker.h"
 
+#include <memory>
 #include <utility>
 
+#include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
@@ -26,32 +28,40 @@ SolanaBlockTracker::SolanaBlockTracker(JsonRpcService* json_rpc_service)
 
 SolanaBlockTracker::~SolanaBlockTracker() = default;
 
-void SolanaBlockTracker::Start(base::TimeDelta interval) {
-  timer_.Start(FROM_HERE, interval,
-               base::BindRepeating(&SolanaBlockTracker::GetLatestBlockhash,
-                                   weak_ptr_factory_.GetWeakPtr(),
-                                   base::NullCallback(), false));
+void SolanaBlockTracker::Start(const std::string& chain_id,
+                               base::TimeDelta interval) {
+  if (!base::Contains(timers_, chain_id)) {
+    timers_[chain_id] = std::make_unique<base::RepeatingTimer>();
+  }
+  timers_[chain_id]->Start(
+      FROM_HERE, interval,
+      base::BindRepeating(&SolanaBlockTracker::GetLatestBlockhash,
+                          weak_ptr_factory_.GetWeakPtr(), chain_id,
+                          base::NullCallback(), false));
 }
 
-void SolanaBlockTracker::Stop() {
-  BlockTracker::Stop();
-}
-
-void SolanaBlockTracker::GetLatestBlockhash(GetLatestBlockhashCallback callback,
+void SolanaBlockTracker::GetLatestBlockhash(const std::string& chain_id,
+                                            GetLatestBlockhashCallback callback,
                                             bool try_cached_value) {
-  if (try_cached_value && !latest_blockhash_.empty() &&
-      latest_blockhash_expired_time_ > base::Time::Now()) {
-    std::move(callback).Run(latest_blockhash_, last_valid_block_height_,
+  if (try_cached_value && base::Contains(latest_blockhash_map_, chain_id) &&
+      !latest_blockhash_map_[chain_id].empty() &&
+      base::Contains(latest_blockhash_expired_time_map_, chain_id) &&
+      latest_blockhash_expired_time_map_[chain_id] > base::Time::Now() &&
+      base::Contains(last_valid_block_height_map_, chain_id)) {
+    std::move(callback).Run(latest_blockhash_map_[chain_id],
+                            last_valid_block_height_map_[chain_id],
                             mojom::SolanaProviderError::kSuccess, "");
     return;
   }
 
   json_rpc_service_->GetSolanaLatestBlockhash(
-      base::BindOnce(&SolanaBlockTracker::OnGetLatestBlockhash,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+      chain_id, base::BindOnce(&SolanaBlockTracker::OnGetLatestBlockhash,
+                               weak_ptr_factory_.GetWeakPtr(), chain_id,
+                               std::move(callback)));
 }
 
 void SolanaBlockTracker::OnGetLatestBlockhash(
+    const std::string& chain_id,
     GetLatestBlockhashCallback callback,
     const std::string& latest_blockhash,
     uint64_t last_valid_block_height,
@@ -67,14 +77,17 @@ void SolanaBlockTracker::OnGetLatestBlockhash(
     return;
   }
 
-  if (latest_blockhash_ == latest_blockhash)
+  if (base::Contains(latest_blockhash_map_, chain_id) &&
+      latest_blockhash_map_[chain_id] == latest_blockhash) {
     return;
+  }
 
-  latest_blockhash_ = latest_blockhash;
-  last_valid_block_height_ = last_valid_block_height;
-  latest_blockhash_expired_time_ = base::Time::Now() + kExpiredTimeDelta;
+  latest_blockhash_map_[chain_id] = latest_blockhash;
+  last_valid_block_height_map_[chain_id] = last_valid_block_height;
+  latest_blockhash_expired_time_map_[chain_id] =
+      base::Time::Now() + kExpiredTimeDelta;
   for (auto& observer : observers_)
-    observer.OnLatestBlockhashUpdated(latest_blockhash,
+    observer.OnLatestBlockhashUpdated(chain_id, latest_blockhash,
                                       last_valid_block_height);
 }
 

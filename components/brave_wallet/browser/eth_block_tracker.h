@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_BLOCK_TRACKER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_BLOCK_TRACKER_H_
 
+#include <map>
 #include <string>
 
 #include "base/functional/callback.h"
@@ -30,35 +31,41 @@ class EthBlockTracker : public BlockTracker {
   class Observer : public base::CheckedObserver {
    public:
     // Fires for each latest block check
-    virtual void OnLatestBlock(uint256_t block_num) = 0;
+    virtual void OnLatestBlock(const std::string& chain_id,
+                               uint256_t block_num) = 0;
     // Only fires when there is a new block
-    virtual void OnNewBlock(uint256_t block_num) = 0;
+    virtual void OnNewBlock(const std::string& chain_id,
+                            uint256_t block_num) = 0;
   };
 
   // If timer is already running, it will be replaced with new interval
-  void Start(base::TimeDelta interval) override;
+  void Start(const std::string& chain_id, base::TimeDelta interval) override;
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  uint256_t GetCurrentBlock() const { return current_block_; }
+  uint256_t GetCurrentBlock(const std::string& chain_id) const;
 
   void CheckForLatestBlock(
+      const std::string& chain_id,
       base::OnceCallback<void(uint256_t block_num,
                               mojom::ProviderError error,
                               const std::string& error_message)>);
 
  private:
   void SendGetBlockNumber(
+      const std::string& chain_id,
       base::OnceCallback<void(uint256_t block_num,
                               mojom::ProviderError error,
                               const std::string& error_message)>);
-  void GetBlockNumber();
-  void OnGetBlockNumber(uint256_t block_num,
+  void GetBlockNumber(const std::string& chain_id);
+  void OnGetBlockNumber(const std::string& chain_id,
+                        uint256_t block_num,
                         mojom::ProviderError error,
                         const std::string& error_message);
 
-  uint256_t current_block_ = 0;
+  // <chain_id, block_number>
+  std::map<std::string, uint256_t> current_block_map_;
   base::ObserverList<Observer> observers_;
 
   base::WeakPtrFactory<EthBlockTracker> weak_factory_;

@@ -18,13 +18,10 @@
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eip2930_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
-#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
-#include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/origin.h"
 
@@ -33,38 +30,19 @@ namespace brave_wallet {
 class EthTxStateManagerUnitTest : public testing::Test {
  public:
   EthTxStateManagerUnitTest()
-      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-        shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {}
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
   ~EthTxStateManagerUnitTest() override = default;
 
  protected:
   void SetUp() override {
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
-    json_rpc_service_ = std::make_unique<JsonRpcService>(
-        shared_url_loader_factory_, GetPrefs());
-    eth_tx_state_manager_ = std::make_unique<EthTxStateManager>(
-        GetPrefs(), json_rpc_service_.get());
-  }
-
-  void SetNetwork(const std::string& chain_id) {
-    base::RunLoop run_loop;
-    json_rpc_service_->SetNetwork(
-        chain_id, mojom::CoinType::ETH,
-        base::BindLambdaForTesting([&](bool success) { run_loop.Quit(); }));
-    run_loop.Run();
-    // Wait for network info
-    base::RunLoop().RunUntilIdle();
+    eth_tx_state_manager_ = std::make_unique<EthTxStateManager>(GetPrefs());
   }
 
   PrefService* GetPrefs() { return &prefs_; }
 
   base::test::TaskEnvironment task_environment_;
-  network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
-  std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<EthTxStateManager> eth_tx_state_manager_;
 };
 
@@ -101,6 +79,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
   meta.set_tx_hash(
       "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238");
   meta.set_origin(url::Origin::Create(GURL("https://test.brave.com")));
+  meta.set_chain_id(mojom::kMainnetChainId);
 
   base::Value::Dict meta_value = meta.ToValue();
   const std::string* from = meta_value.FindString("from");
@@ -117,6 +96,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
   EXPECT_EQ(meta_from_value->tx_receipt(), meta.tx_receipt());
   EXPECT_EQ(meta_from_value->tx_hash(), meta.tx_hash());
   EXPECT_EQ(meta_from_value->origin(), meta.origin());
+  EXPECT_EQ(meta_from_value->chain_id(), meta.chain_id());
   ASSERT_EQ(meta_from_value->tx()->type(), 0);
   EXPECT_EQ(*meta_from_value->tx(), *meta.tx());
   // optional sign_only will be false by default
@@ -195,12 +175,17 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
 }
 
 TEST_F(EthTxStateManagerUnitTest, GetTxPrefPathPrefix) {
-  EXPECT_EQ("ethereum.mainnet", eth_tx_state_manager_->GetTxPrefPathPrefix());
-  SetNetwork("0x5");
-  EXPECT_EQ("ethereum.goerli", eth_tx_state_manager_->GetTxPrefPathPrefix());
-  SetNetwork(brave_wallet::mojom::kLocalhostChainId);
-  EXPECT_EQ("ethereum.http://localhost:7545/",
-            eth_tx_state_manager_->GetTxPrefPathPrefix());
+  EXPECT_EQ("ethereum.mainnet",
+            eth_tx_state_manager_->GetTxPrefPathPrefix(mojom::kMainnetChainId));
+  EXPECT_EQ("ethereum.goerli",
+            eth_tx_state_manager_->GetTxPrefPathPrefix(mojom::kGoerliChainId));
+  EXPECT_EQ("ethereum.sepolia",
+            eth_tx_state_manager_->GetTxPrefPathPrefix(mojom::kSepoliaChainId));
+  EXPECT_EQ(
+      "ethereum.http://localhost:7545/",
+      eth_tx_state_manager_->GetTxPrefPathPrefix(mojom::kLocalhostChainId));
+  EXPECT_EQ("ethereum",
+            eth_tx_state_manager_->GetTxPrefPathPrefix(absl::nullopt));
 }
 
 }  // namespace brave_wallet

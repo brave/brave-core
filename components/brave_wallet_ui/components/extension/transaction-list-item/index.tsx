@@ -11,10 +11,10 @@ import { getLocale } from '../../../../common/locale'
 import { toProperCase } from '../../../utils/string-utils'
 import { getTransactionStatusString } from '../../../utils/tx-utils'
 import { formatDateAsRelative, serializedTimeDeltaToJSDate } from '../../../utils/datetime-utils'
-import { getNetworkFromTXDataUnion } from '../../../utils/network-utils'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { WalletSelectors } from '../../../common/selectors'
 import Amount from '../../../utils/amount'
+import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
 
 // Types
 import { BraveWallet, SerializableTransactionInfo } from '../../../constants/types'
@@ -23,6 +23,7 @@ import { SwapExchangeProxy } from '../../../common/constants/registry'
 // Hooks
 import { useTransactionParser } from '../../../common/hooks'
 import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
+import { useGetNetworkQuery } from '../../../common/slices/api.slice'
 
 // Components
 import { TransactionIntentDescription } from './transaction-intent-description'
@@ -42,7 +43,6 @@ import {
   ToCircle,
   TransactionDetailRow
 } from './style'
-import { useGetDefaultNetworksQuery } from '../../../common/slices/api.slice'
 
 export interface Props {
   selectedNetwork?: BraveWallet.NetworkInfo
@@ -61,7 +61,10 @@ export const TransactionsListItem = ({
   const defaultFiatCurrency = useSafeWalletSelector(WalletSelectors.defaultFiatCurrency)
 
   // queries
-  const { data: defaultNetworks = [] } = useGetDefaultNetworksQuery()
+  const { data: transactionsNetwork } = useGetNetworkQuery({
+    chainId: transaction.chainId,
+    coin: getCoinFromTxDataUnion(transaction.txDataUnion)
+  })
 
   // methods
   const onClickTransaction = () => {
@@ -69,10 +72,6 @@ export const TransactionsListItem = ({
   }
 
   // memos & custom hooks
-  const transactionsNetwork = React.useMemo(() => {
-    return getNetworkFromTXDataUnion(transaction.txDataUnion, defaultNetworks, selectedNetwork)
-  }, [defaultNetworks, transaction, selectedNetwork])
-
   const parseTransaction = useTransactionParser(transactionsNetwork)
 
   const transactionDetails = React.useMemo(

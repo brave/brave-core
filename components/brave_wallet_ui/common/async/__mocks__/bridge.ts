@@ -161,7 +161,21 @@ export class MockedWalletApiProxy {
     }),
     setDefaultBaseCurrency: async (currency: string) => {
       this.defaultBaseCurrency = currency
-    }
+    },
+    getActiveOrigin: async () => {
+      return {
+        originInfo: {
+          origin: {
+            scheme: 'https',
+            host: 'brave.com',
+            port: 443,
+            nonceIfOpaque: undefined
+          },
+          originSpec: 'https://brave.com',
+          eTldPlusOne: 'brave.com'
+        }
+      }
+    },
   }
 
   swapService: Partial<InstanceType<typeof BraveWallet.SwapServiceInterface>> =
@@ -276,7 +290,7 @@ export class MockedWalletApiProxy {
     getHiddenNetworks: async () => {
       return { chainIds: [] }
     },
-    getChainId: async (coin) => {
+    getDefaultChainId: async (coin) => {
       return { chainId: this.chainIdsForCoins[coin] }
     },
     getNetwork: async (coin) => {

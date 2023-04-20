@@ -764,7 +764,7 @@ void KeyringService::MaybeCreateDefaultSolanaAccount() {
     // This is needed for Android to select default coin, because they listen
     // to network change events.
     json_rpc_service_->SetNetwork(brave_wallet::mojom::kSolanaMainnet,
-                                  mojom::CoinType::SOL, false);
+                                  mojom::CoinType::SOL, absl::nullopt, false);
 
     NotifyAccountsAdded(mojom::CoinType::SOL, {address.value()});
   }
@@ -1284,7 +1284,7 @@ bool KeyringService::SetSelectedAccountForCoinSilently(
     json_rpc_service_->SetNetwork(keyring_id == mojom::kFilecoinKeyringId
                                       ? mojom::kFilecoinMainnet
                                       : mojom::kFilecoinTestnet,
-                                  coin, true /* silent */);
+                                  coin, absl::nullopt, true /* silent */);
   }
   return true;
 }
@@ -1383,6 +1383,7 @@ void KeyringService::AddDiscoveryAccountsForKeyring(
     return;
   }
   json_rpc_service_->GetEthTransactionCount(
+      mojom::kMainnetChainId,
       keyring->GetDiscoveryAddress(discovery_account_index),
       base::BindOnce(&KeyringService::OnGetTransactionCount,
                      discovery_weak_factory_.GetWeakPtr(),
@@ -1602,7 +1603,7 @@ absl::optional<std::string> KeyringService::SignTransactionByFilecoinKeyring(
     return absl::nullopt;
   }
 
-  std::string keyring_id = GetFilecoinKeyringId(tx->from().network());
+  const std::string& keyring_id = GetFilecoinKeyringId(tx->from().network());
   auto* keyring = GetHDKeyringById(keyring_id);
   if (!keyring) {
     return absl::nullopt;

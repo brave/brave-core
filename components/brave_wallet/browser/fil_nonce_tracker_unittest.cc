@@ -52,15 +52,24 @@ class FilNonceTrackerUnitTest : public testing::Test {
                                     mojom::CoinType::FIL)
             .spec(),
         GetResultString());
+    url_loader_factory_.AddResponse(
+        brave_wallet::GetNetworkURL(GetPrefs(), mojom::kFilecoinMainnet,
+                                    mojom::CoinType::FIL)
+            .spec(),
+        GetResultString());
   }
 
-  void GetNextNonce(FilNonceTracker* tracker,
+  void GetNextNonce(const base::Location& location,
+                    FilNonceTracker* tracker,
+                    const std::string& chain_id,
                     const std::string& address,
                     bool expected_success,
                     uint64_t expected_nonce) {
+    SCOPED_TRACE(testing::Message() << location.ToString());
     base::RunLoop run_loop;
     tracker->GetNextNonce(
-        address, base::BindLambdaForTesting([&](bool success, uint256_t nonce) {
+        chain_id, address,
+        base::BindLambdaForTesting([&](bool success, uint256_t nonce) {
           EXPECT_EQ(expected_success, success);
           EXPECT_EQ(expected_nonce, nonce);
           run_loop.Quit();
@@ -84,29 +93,27 @@ class FilNonceTrackerUnitTest : public testing::Test {
 
 TEST_F(FilNonceTrackerUnitTest, GetNonce) {
   JsonRpcService service(shared_url_loader_factory(), GetPrefs());
-  base::RunLoop run_loop;
-  service.SetNetwork(
-      mojom::kLocalhostChainId, mojom::CoinType::FIL,
-      base::BindLambdaForTesting([&](bool success) { run_loop.Quit(); }));
-  run_loop.Run();
 
-  FilTxStateManager tx_state_manager(GetPrefs(), &service);
+  FilTxStateManager tx_state_manager(GetPrefs());
   FilNonceTracker nonce_tracker(&tx_state_manager, &service);
 
   SetTransactionCount(2);
 
   const std::string address("t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy");
-  GetNextNonce(&nonce_tracker, address, true, uint64_t(2));
+  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kLocalhostChainId, address,
+               true, uint64_t(2));
 
   // tx count: 2, confirmed: [2], pending: null
   FilTxMeta meta;
   meta.set_id(TxMeta::GenerateMetaID());
+  meta.set_chain_id(mojom::kLocalhostChainId);
   meta.set_from(FilAddress::FromAddress(address).EncodeAsString());
   meta.set_status(mojom::TransactionStatus::Confirmed);
   meta.tx()->set_nonce(uint64_t(2));
   tx_state_manager.AddOrUpdateTx(meta);
 
-  GetNextNonce(&nonce_tracker, address, true, uint64_t(3));
+  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kLocalhostChainId, address,
+               true, uint64_t(3));
 
   // tx count: 2, confirmed: [2, 3], pending: null
   meta.set_id(TxMeta::GenerateMetaID());
@@ -114,7 +121,8 @@ TEST_F(FilNonceTrackerUnitTest, GetNonce) {
   meta.tx()->set_nonce(uint64_t(3));
   tx_state_manager.AddOrUpdateTx(meta);
 
-  GetNextNonce(&nonce_tracker, address, true, uint64_t(4));
+  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kLocalhostChainId, address,
+               true, uint64_t(4));
 
   // tx count: 2, confirmed: [2, 3], pending: [4, 4]
   meta.set_status(mojom::TransactionStatus::Submitted);
@@ -124,17 +132,17 @@ TEST_F(FilNonceTrackerUnitTest, GetNonce) {
   meta.set_id(TxMeta::GenerateMetaID());
   tx_state_manager.AddOrUpdateTx(meta);
 
-  GetNextNonce(&nonce_tracker, address, true, uint64_t(5));
+  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kLocalhostChainId, address,
+               true, uint64_t(5));
+
+  // tx count: 2, confirmed: null, pending: null (mainnet)
+  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kFilecoinMainnet, address,
+               true, uint64_t(2));
 }
 
 TEST_F(FilNonceTrackerUnitTest, NonceLock) {
   JsonRpcService service(shared_url_loader_factory(), GetPrefs());
-  base::RunLoop run_loop;
-  service.SetNetwork(
-      mojom::kLocalhostChainId, mojom::CoinType::FIL,
-      base::BindLambdaForTesting([&](bool success) { run_loop.Quit(); }));
-  run_loop.Run();
-  FilTxStateManager tx_state_manager(GetPrefs(), &service);
+  FilTxStateManager tx_state_manager(GetPrefs());
   FilNonceTracker nonce_tracker(&tx_state_manager, &service);
 
   SetTransactionCount(4);
@@ -142,10 +150,16 @@ TEST_F(FilNonceTrackerUnitTest, NonceLock) {
   base::Lock* lock = nonce_tracker.GetLock();
   lock->Acquire();
   const std::string address("t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy");
-  GetNextNonce(&nonce_tracker, address, false, 0u);
+  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kLocalhostChainId, address,
+               false, 0u);
+  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kFilecoinMainnet, address,
+               false, 0u);
   lock->Release();
 
-  GetNextNonce(&nonce_tracker, address, true, uint64_t(4));
+  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kLocalhostChainId, address,
+               true, uint64_t(4));
+  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kFilecoinMainnet, address,
+               true, uint64_t(4));
 }
 
 }  // namespace brave_wallet

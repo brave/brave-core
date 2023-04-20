@@ -41,11 +41,13 @@ SolanaProviderImpl::SolanaProviderImpl(
     KeyringService* keyring_service,
     BraveWalletService* brave_wallet_service,
     TxService* tx_service,
-    std::unique_ptr<BraveWalletProviderDelegate> delegate)
+    std::unique_ptr<BraveWalletProviderDelegate> delegate,
+    PrefService* prefs)
     : keyring_service_(keyring_service),
       brave_wallet_service_(brave_wallet_service),
       tx_service_(tx_service),
       delegate_(std::move(delegate)),
+      prefs_(prefs),
       weak_factory_(this) {
   DCHECK(keyring_service_);
   keyring_service_->AddObserver(
@@ -212,7 +214,8 @@ void SolanaProviderImpl::SignTransaction(
       MakeOriginInfo(delegate_->GetOrigin()), -1, *account,
       mojom::TxDataUnion::NewSolanaTxData(tx->ToSolanaTxData()),
       mojom::ByteArrayStringUnion::NewBytes(std::move(msg_pair->second)),
-      mojom::CoinType::SOL);
+      mojom::CoinType::SOL,
+      GetCurrentChainId(prefs_, mojom::CoinType::SOL, delegate_->GetOrigin()));
   brave_wallet_service_->AddSignTransactionRequest(
       std::move(request),
       base::BindOnce(&SolanaProviderImpl::OnSignTransactionRequestProcessed,
@@ -310,7 +313,8 @@ void SolanaProviderImpl::SignAllTransactions(
 
   auto request = mojom::SignAllTransactionsRequest::New(
       MakeOriginInfo(delegate_->GetOrigin()), -1, *account, std::move(tx_datas),
-      std::move(raw_messages), mojom::CoinType::SOL);
+      std::move(raw_messages), mojom::CoinType::SOL,
+      GetCurrentChainId(prefs_, mojom::CoinType::SOL, delegate_->GetOrigin()));
 
   brave_wallet_service_->AddSignAllTransactionsRequest(
       std::move(request),
@@ -509,7 +513,8 @@ void SolanaProviderImpl::SignMessage(
   }
   auto request = mojom::SignMessageRequest::New(
       MakeOriginInfo(delegate_->GetOrigin()), -1, *account, "", message, false,
-      absl::nullopt, absl::nullopt, blob_msg, mojom::CoinType::SOL);
+      absl::nullopt, absl::nullopt, blob_msg, mojom::CoinType::SOL,
+      GetCurrentChainId(prefs_, mojom::CoinType::SOL, delegate_->GetOrigin()));
 
   brave_wallet_service_->AddSignMessageRequest(
       std::move(request),

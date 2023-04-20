@@ -357,7 +357,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
 
     private void sendSwapTransaction(TxData data, String from) {
         assert mEthTxManagerProxy != null;
-        mEthTxManagerProxy.getGasEstimation1559(estimation -> {
+        mEthTxManagerProxy.getGasEstimation1559(mSelectedNetwork.chainId, estimation -> {
             String maxPriorityFeePerGas = "";
             String maxFeePerGas = "";
             if (estimation.fastMaxPriorityFeePerGas.equals(estimation.avgMaxPriorityFeePerGas)) {
@@ -587,8 +587,8 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         assert mCurrentBlockchainToken != null;
         String ownerAddress = mCustomAccountAdapter.getAccountAddressAtPosition(
                 mAccountSpinner.getSelectedItemPosition());
-        mJsonRpcService.getErc20TokenAllowance(
-                contract, ownerAddress, spenderAddress, (allowance, error, errorMessage) -> {
+        mJsonRpcService.getErc20TokenAllowance(contract, ownerAddress, spenderAddress,
+                mSelectedNetwork.chainId, (allowance, error, errorMessage) -> {
                     warnWhenError(TAG, "getErc20TokenAllowance", error, errorMessage);
                     if (error != ProviderError.SUCCESS
                             || amountToSend <= Utils.fromHexWei(
@@ -1011,8 +1011,9 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                     if (mCurrentBlockchainToken.isNft) {
                         amount = "1";
                     }
-                    mSendModel.sendSolanaToken(mCurrentBlockchainToken, mSelectedAccount.address,
-                            to, Utils.toDecimalLamport(amount, mCurrentBlockchainToken.decimals),
+                    mSendModel.sendSolanaToken(mSelectedNetwork.chainId, mCurrentBlockchainToken,
+                            mSelectedAccount.address, to,
+                            Utils.toDecimalLamport(amount, mCurrentBlockchainToken.decimals),
                             (success, txMetaId, errorMessage) -> {
                                 // Do nothing here when success as we will receive an
                                 // unapproved transaction in TxServiceObserver.

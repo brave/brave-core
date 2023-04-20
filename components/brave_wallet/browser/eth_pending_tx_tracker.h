@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_PENDING_TX_TRACKER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_PENDING_TX_TRACKER_H_
 
+#include <map>
+#include <set>
 #include <string>
 
 #include "base/containers/flat_map.h"
@@ -31,8 +33,8 @@ class EthPendingTxTracker {
   EthPendingTxTracker(const EthPendingTxTracker&) = delete;
   EthPendingTxTracker operator=(const EthPendingTxTracker&) = delete;
 
-  bool UpdatePendingTransactions(size_t* num_pending);
-  void ResubmitPendingTransactions();
+  bool UpdatePendingTransactions(const absl::optional<std::string>& chain_id,
+                                 std::set<std::string>* pending_chain_ids);
   void Reset();
 
  private:
@@ -40,11 +42,13 @@ class EthPendingTxTracker {
   FRIEND_TEST_ALL_PREFIXES(EthPendingTxTrackerUnitTest, ShouldTxDropped);
   FRIEND_TEST_ALL_PREFIXES(EthPendingTxTrackerUnitTest, DropTransaction);
 
-  void OnGetTxReceipt(std::string id,
+  void OnGetTxReceipt(const std::string& chain_id,
+                      std::string id,
                       TransactionReceipt receipt,
                       mojom::ProviderError error,
                       const std::string& error_message);
-  void OnGetNetworkNonce(std::string address,
+  void OnGetNetworkNonce(const std::string& chain_id,
+                         const std::string& address,
                          uint256_t result,
                          mojom::ProviderError error,
                          const std::string& error_message);
@@ -57,8 +61,9 @@ class EthPendingTxTracker {
 
   void DropTransaction(TxMeta*);
 
-  // (address, nonce)
-  base::flat_map<std::string, uint256_t> network_nonce_map_;
+  // (address, (chain_id, nonce))
+  base::flat_map<std::string, std::map<std::string, uint256_t>>
+      network_nonce_map_;
   // (txHash, count)
   base::flat_map<std::string, uint8_t> dropped_blocks_counter_;
 

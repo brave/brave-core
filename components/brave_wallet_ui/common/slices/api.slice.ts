@@ -80,7 +80,11 @@ import { getEntitiesListFromEntityState } from '../../utils/entities.utils'
 import { makeNetworkAsset } from '../../options/asset-options'
 import { getTokenParam } from '../../utils/api-utils'
 import { getAccountType, getAddressLabelFromRegistry } from '../../utils/account-utils'
-import { getCoinFromTxDataUnion, getFilecoinKeyringIdFromNetwork, getNetworkFromTXDataUnion, hasEIP1559Support } from '../../utils/network-utils'
+import {
+  getCoinFromTxDataUnion,
+  getFilecoinKeyringIdFromNetwork,
+  hasEIP1559Support
+} from '../../utils/network-utils'
 import Amount from '../../utils/amount'
 import {
   accountHasInsufficientFundsForGas,
@@ -227,13 +231,14 @@ let selectedPendingTransactionId: string = ''
 
     getSelectedAccountAddress = async () => {
       if (!this._selectedAccountAddress) {
-        const { braveWalletService, jsonRpcService, keyringService } =
+        const { braveWalletService, keyringService } =
           apiProxyFetcher()
         const { coin: selectedCoin } =
           await braveWalletService.getSelectedCoin()
 
         if (selectedCoin === BraveWallet.CoinType.FIL) {
-          const { chainId } = await jsonRpcService.getChainId(selectedCoin)
+          const { chainId }
+            = await braveWalletService.getChainIdForActiveOrigin(selectedCoin)
           const { address } = await keyringService.getFilecoinSelectedAccount(
             chainId
           )
@@ -509,12 +514,14 @@ export function createWalletApi (
       getDefaultAccountAddresses: query<string[], void>({
         queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
           // apiProxy
-          const { keyringService, jsonRpcService } = baseQuery(undefined).data
+          const { braveWalletService, keyringService }
+            = baseQuery(undefined).data
 
           // Get default account addresses for each CoinType
           const defaultAccountAddresses = await Promise.all(
             SupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
-              const { chainId } = await jsonRpcService.getChainId(coin)
+              const { chainId }
+                = await braveWalletService.getChainIdForActiveOrigin(coin)
               const defaultAccount =
                 coin === BraveWallet.CoinType.FIL
                   ? await keyringService.getFilecoinSelectedAccount(chainId)
@@ -706,11 +713,14 @@ export function createWalletApi (
         // Transactions and Sign-Message Requests include a chainId
         queryFn: async (arg, api, extraOptions, baseQuery) => {
           try {
-            const { jsonRpcService } = baseQuery(undefined).data // apiProxy
+            const { braveWalletService, jsonRpcService }
+              = baseQuery(undefined).data // apiProxy
+            const { originInfo } = await braveWalletService.getActiveOrigin()
 
             const defaultChains = await Promise.all(
               SupportedCoinTypes.map(async (coinType) => {
-                const { network } = await jsonRpcService.getNetwork(coinType)
+                const { network }
+                  = await jsonRpcService.getNetwork(coinType, originInfo.origin)
                 return network
               })
             )
@@ -775,15 +785,19 @@ export function createWalletApi (
           baseQuery
         ) => {
           try {
-            const { jsonRpcService } = baseQuery(undefined).data
+            const { braveWalletService }
+              = baseQuery(undefined).data
 
             await dispatch(
               walletApi.endpoints.setSelectedCoin.initiate(coin)
             ).unwrap()
 
-            const { success } = await jsonRpcService.setNetwork(chainId, coin)
+            const { success }
+              = await braveWalletService.setChainIdForActiveOrigin(coin,
+                                                                   chainId)
             if (!success) {
-              throw new Error('jsonRpcService.setNetwork failed')
+              throw new Error(
+                'braveWalletService.SetChainIdForActiveOrigin failed')
             }
             return {
               data: { chainId, coin }
@@ -1553,7 +1567,7 @@ export function createWalletApi (
             const transactionInfoResults = await Promise.all(
               accounts.map(async (a) => {
                 const { transactionInfos } =
-                  await txService.getAllTransactionInfo(a.coin, a.address)
+                  await txService.getAllTransactionInfo(a.coin, null, a.address)
 
                 // return only pending txs
                 return transactionInfos.filter(
@@ -1656,6 +1670,7 @@ export function createWalletApi (
             // TODO: Core should allow fetching by chain Id instead of cointype
             const { transactionInfos } = await txService.getAllTransactionInfo(
               coinType,
+              null,
               address
             )
 
@@ -1756,6 +1771,7 @@ export function createWalletApi (
             // TODO: Core should allow fetching by chain Id + cointype
             const { transactionInfos } = await txService.getAllTransactionInfo(
               coinType,
+              null,
               address
             )
 
@@ -1792,7 +1808,8 @@ export function createWalletApi (
       >({
         queryFn: async (payload, { dispatch }, extraOptions, baseQuery) => {
           try {
-            const { jsonRpcService, txService } = baseQuery(undefined).data
+            const { braveWalletService,
+                    txService } = baseQuery(undefined).data
             /***
              * Determine whether to create a legacy or EIP-1559 transaction.
              *
@@ -1814,9 +1831,9 @@ export function createWalletApi (
               // Check if network and keyring support EIP-1559.
               payload.hasEIP1559Support
 
-            const { chainId } = await jsonRpcService.getChainId(
-              BraveWallet.CoinType.ETH
-            )
+            const { chainId }
+              = await braveWalletService.getChainIdForActiveOrigin(
+                  BraveWallet.CoinType.ETH)
 
             const txData: BraveWallet.TxData = {
               nonce: '',
@@ -2107,8 +2124,13 @@ export function createWalletApi (
             const { solanaTxManagerProxy, txService } =
               baseQuery(undefined).data
 
+            const selectedNetwork = await getSelectedNetwork(
+              baseQuery(undefined).data
+            )
+
             const { errorMessage: transferTxDataErrorMessage, txData } =
               await solanaTxManagerProxy.makeTokenProgramTransferTxData(
+                selectedNetwork.chainId,
                 payload.splTokenMintAddress,
                 payload.from,
                 payload.to,
@@ -2305,7 +2327,7 @@ export function createWalletApi (
         { success: boolean },
         Pick<
           SerializableTransactionInfo,
-          'id' | 'txDataUnion' | 'txType' | 'fromAddress'
+          'id' | 'txDataUnion' | 'txType' | 'fromAddress' | 'chainId'
         >
       >({
         queryFn: async (txInfo, { dispatch }, extraOptions, baseQuery) => {
@@ -2317,7 +2339,8 @@ export function createWalletApi (
               status: boolean
               errorUnion: BraveWallet.ProviderErrorUnion
               errorMessage: string
-            } = await txService.approveTransaction(coin, txInfo.id)
+            } = await txService.approveTransaction(
+              coin, txInfo.chainId, txInfo.id)
 
             const error =
               result.errorUnion.providerError ??
@@ -2373,12 +2396,12 @@ export function createWalletApi (
       }),
       rejectTransaction: mutation<
         { success: boolean },
-        Pick<TransactionEntity, 'id' | 'coinType'>
+        Pick<TransactionEntity, 'id' | 'coinType' | 'chainId'>
       >({
         queryFn: async (tx, api, extraOptions, baseQuery) => {
           try {
             const { txService } = baseQuery(undefined).data
-            await txService.rejectTransaction(tx.coinType, tx.id)
+            await txService.rejectTransaction(tx.coinType, tx.chainId, tx.id)
             return {
               data: { success: true }
             }
@@ -2398,10 +2421,11 @@ export function createWalletApi (
             ).unwrap()
 
             await Promise.all(
-              pendingTxs.map(async ({ coinType, id }) => {
+              pendingTxs.map(async ({ coinType, id , chainId}) => {
                 const { success } = await dispatch(
                   walletApi.endpoints.rejectTransaction.initiate({
                     coinType,
+                    chainId,
                     id
                   })
                 ).unwrap()
@@ -2436,12 +2460,14 @@ export function createWalletApi (
               ethTxManagerProxy
 
             if (isEIP1559) {
-              const result = await setGasFeeAndLimitForUnapprovedTransaction(
-                payload.txMetaId,
-                payload.maxPriorityFeePerGas || '',
-                payload.maxFeePerGas || '',
-                payload.gasLimit
-              )
+              const result =
+                await setGasFeeAndLimitForUnapprovedTransaction(
+                  payload.chainId,
+                  payload.txMetaId,
+                  payload.maxPriorityFeePerGas || '',
+                  payload.maxFeePerGas || '',
+                  payload.gasLimit
+                )
 
               if (!result.success) {
                 return {
@@ -2468,11 +2494,13 @@ export function createWalletApi (
             const { setGasPriceAndLimitForUnapprovedTransaction } =
               ethTxManagerProxy
 
-            const result = await setGasPriceAndLimitForUnapprovedTransaction(
-              payload.txMetaId,
-              payload.gasPrice,
-              payload.gasLimit
-            )
+            const result =
+              await setGasPriceAndLimitForUnapprovedTransaction(
+                payload.chainId,
+                payload.txMetaId,
+                payload.gasPrice,
+                payload.gasLimit
+              )
 
             if (!result.success) {
               return {
@@ -2526,6 +2554,7 @@ export function createWalletApi (
 
             const result =
               await ethTxManagerProxy.setDataForUnapprovedTransaction(
+                payload.chainId,
                 payload.txMetaId,
                 data
               )
@@ -2560,6 +2589,7 @@ export function createWalletApi (
 
             const result =
               await ethTxManagerProxy.setNonceForUnapprovedTransaction(
+                payload.chainId,
                 payload.txMetaId,
                 payload.nonce
               )
@@ -2582,6 +2612,7 @@ export function createWalletApi (
 
               const result = await txService.retryTransaction(
                 payload.coinType,
+                payload.chainId,
                 payload.transactionId
               )
 
@@ -2626,6 +2657,7 @@ export function createWalletApi (
 
             const result = await txService.speedupOrCancelTransaction(
               payload.coinType,
+              payload.chainId,
               payload.transactionId,
               true
             )
@@ -2672,6 +2704,7 @@ export function createWalletApi (
 
             const result = await txService.speedupOrCancelTransaction(
               payload.coinType,
+              payload.chainId,
               payload.transactionId,
               false
             )
@@ -2822,8 +2855,15 @@ export function createWalletApi (
               }
             }
 
+            if (!selectedNetwork) {
+              return {
+                error:
+                  'No selected network'
+              }
+            }
             const { estimation } =
-              await ethTxManagerProxy.getGasEstimation1559()
+              await ethTxManagerProxy.getGasEstimation1559(
+                selectedNetwork.chainId)
 
             if (!estimation) {
               const msg = 'Failed to fetch gas estimates'
@@ -2842,12 +2882,13 @@ export function createWalletApi (
         },
         providesTags: ['GasEstimation1559']
       }),
-      getSolanaEstimatedFee: query<string, string>({
-        queryFn: async (txIdArg, api, extraOptions, baseQuery) => {
+      getSolanaEstimatedFee: query<string, {chainId: string, txId: string}>({
+        queryFn: async (arg, api, extraOptions, baseQuery) => {
           try {
             const { solanaTxManagerProxy } = baseQuery(undefined).data
             const { errorMessage, fee } =
-              await solanaTxManagerProxy.getEstimatedTxFee(txIdArg)
+              await solanaTxManagerProxy.getEstimatedTxFee(arg.chainId,
+                                                           arg.txId)
 
             if (!fee) {
               throw new Error(errorMessage)
@@ -2857,7 +2898,7 @@ export function createWalletApi (
               data: fee.toString()
             }
           } catch (error) {
-            const msg = `Unable to fetch Solana fees - txId: ${txIdArg}`
+            const msg = `Unable to fetch Solana fees - txId: ${arg.txId}`
             console.error(msg)
             console.error(error)
             return {
@@ -2865,19 +2906,20 @@ export function createWalletApi (
             }
           }
         },
-        providesTags: (res, er, txIdArg) => [
-          { type: 'SolanaEstimatedFees', id: txIdArg }
+        providesTags: (res, er, arg) => [
+          { type: 'SolanaEstimatedFees', id: arg.txId }
         ]
       }),
       refreshGasEstimates: mutation<
         boolean, // success
-        Pick<TransactionEntity, 'id' | 'isSolanaTransaction'>
+        Pick<TransactionEntity, 'id' | 'isSolanaTransaction' | 'chainId'>
       >({
         queryFn: async (txInfo, { dispatch }, extraOptions, baseQuery) => {
           try {
             if (txInfo.isSolanaTransaction) {
               await dispatch(
-                walletApi.endpoints.getSolanaEstimatedFee.initiate(txInfo.id)
+                walletApi.endpoints.getSolanaEstimatedFee.initiate(
+                  {chainId: txInfo.chainId, txId: txInfo.id})
               )
               return {
                 data: true
@@ -3156,7 +3198,9 @@ export async function getSelectedNetwork(api: WalletApiProxy) {
     throw new Error('selected coin was undefined')
   }
 
-  const { network } = await jsonRpcService.getNetwork(selectedCoin)
+  const { originInfo } = await braveWalletService.getActiveOrigin()
+  const { network } = await jsonRpcService.getNetwork(selectedCoin,
+                                                      originInfo.origin)
 
   return network
 }
@@ -3281,9 +3325,10 @@ export const parseTransactionWithoutPricesAsync = async ({
   dispatch: ThunkDispatch<any, any, any>
 }): Promise<ParsedTransactionWithoutFiatValues> => {
   const networks = getEntitiesListFromEntityState(networksRegistry)
-  const transactionNetwork = getNetworkFromTXDataUnion(
-    tx.txDataUnion,
-    networks
+  const transactionNetwork = networks.find(
+    (n) =>
+      n.chainId === tx.chainId &&
+      n.coin === getCoinFromTxDataUnion(tx.txDataUnion)
   )
 
   // Tokens lists
@@ -3310,7 +3355,8 @@ export const parseTransactionWithoutPricesAsync = async ({
   try {
     solFeeEstimates = isSolanaTransaction(tx)
       ? await dispatch(
-          walletApi.endpoints.getSolanaEstimatedFee.initiate(tx.id)
+          walletApi.endpoints.getSolanaEstimatedFee.initiate(
+            {chainId: tx.chainId, txId: tx.id})
         ).unwrap()
       : '0'
   } catch (error) {

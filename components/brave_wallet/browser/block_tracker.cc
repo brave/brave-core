@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/block_tracker.h"
 
+#include "base/containers/contains.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 
 namespace brave_wallet {
@@ -14,12 +15,23 @@ BlockTracker::BlockTracker(JsonRpcService* json_rpc_service)
   DCHECK(json_rpc_service_);
 }
 
-void BlockTracker::Stop() {
-  timer_.Stop();
+BlockTracker::~BlockTracker() = default;
+
+void BlockTracker::Stop(const std::string& chain_id) {
+  if (base::Contains(timers_, chain_id)) {
+    timers_.erase(chain_id);
+  }
 }
 
-bool BlockTracker::IsRunning() const {
-  return timer_.IsRunning();
+void BlockTracker::Stop() {
+  timers_.clear();
+}
+
+bool BlockTracker::IsRunning(const std::string& chain_id) const {
+  if (!base::Contains(timers_, chain_id)) {
+    return false;
+  }
+  return timers_.at(chain_id)->IsRunning();
 }
 
 }  // namespace brave_wallet

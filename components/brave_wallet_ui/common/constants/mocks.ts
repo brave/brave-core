@@ -336,7 +336,8 @@ export const mockSolDappSignTransactionRequest: BraveWallet.SignTransactionReque
     }
   },
   'rawMessage': { bytes: [1], str: undefined },
-  'coin': BraveWallet.CoinType.SOL
+  'coin': BraveWallet.CoinType.SOL,
+  'chainId': BraveWallet.SOLANA_MAINNET
 }
 
 // BraveWallet.TransactionInfo (selectedPendingTransaction)
@@ -546,5 +547,6 @@ export const mockSolDappSignAllTransactionsRequest: BraveWallet.SignAllTransacti
     }
   ],
   'rawMessages': [{ bytes: [1], str: undefined }],
-  'coin': BraveWallet.CoinType.SOL
+  'coin': BraveWallet.CoinType.SOL,
+  'chainId': BraveWallet.SOLANA_MAINNET
 }

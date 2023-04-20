@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 
+#include "base/scoped_observation.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
@@ -16,28 +17,27 @@
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
+
+using testing::_;
 
 namespace brave_wallet {
 
 namespace {
 
-class TrackerObserver : public FilBlockTracker::Observer {
+class MockTrackerObserver : public FilBlockTracker::Observer {
  public:
-  void OnLatestHeightUpdated(uint64_t latest_height) override {
-    latest_height_ = latest_height;
-    ++latest_height_updated_fired_;
+  explicit MockTrackerObserver(FilBlockTracker* tracker) {
+    observation_.Observe(tracker);
   }
 
-  size_t latest_height_updated_fired() const {
-    return latest_height_updated_fired_;
-  }
-  uint64_t latest_height() const { return latest_height_; }
+  MOCK_METHOD2(OnLatestHeightUpdated, void(const std::string&, uint64_t));
 
  private:
-  size_t latest_height_updated_fired_ = 0;
-  uint64_t latest_height_ = 0;
+  base::ScopedObservation<FilBlockTracker, FilBlockTracker::Observer>
+      observation_{this};
 };
 
 }  // namespace
@@ -65,13 +65,16 @@ class FilBlockTrackerUnitTest : public testing::Test {
            std::to_string(response_height_) + "}}";
   }
 
-  void TestGetLatestHeight(uint64_t expected_latest_height,
+  void TestGetLatestHeight(const std::string& chain_id,
+                           uint64_t expected_latest_height,
                            mojom::FilecoinProviderError expected_error,
                            const std::string& expected_error_message) {
     base::RunLoop run_loop;
-    tracker_->GetFilBlockHeight(base::BindLambdaForTesting(
-        [&](uint64_t latest_height, mojom::FilecoinProviderError error,
-            const std::string& error_message) {
+    tracker_->GetFilBlockHeight(
+        chain_id,
+        base::BindLambdaForTesting([&](uint64_t latest_height,
+                                       mojom::FilecoinProviderError error,
+                                       const std::string& error_message) {
           EXPECT_EQ(latest_height, expected_latest_height);
           EXPECT_EQ(error, expected_error);
           EXPECT_EQ(error_message, expected_error_message);
@@ -99,27 +102,40 @@ TEST_F(FilBlockTrackerUnitTest, GetLatestHeight) {
                                         GetResponseString());
       }));
   response_height_ = UINT64_MAX;
-  TrackerObserver observer;
-  tracker_->AddObserver(&observer);
+  MockTrackerObserver observer(tracker_.get());
 
-  tracker_->Start(base::Seconds(5));
+  tracker_->Start(mojom::kFilecoinMainnet, base::Seconds(5));
+  tracker_->Start(mojom::kFilecoinTestnet, base::Seconds(2));
+  EXPECT_CALL(observer,
+              OnLatestHeightUpdated(mojom::kFilecoinMainnet, UINT64_MAX))
+      .Times(1);
+  EXPECT_CALL(observer,
+              OnLatestHeightUpdated(mojom::kFilecoinTestnet, UINT64_MAX))
+      .Times(1);
   task_environment_.FastForwardBy(base::Seconds(5));
-  EXPECT_EQ(observer.latest_height(), UINT64_MAX);
-  EXPECT_EQ(observer.latest_height_updated_fired(), 1u);
-  EXPECT_EQ(tracker_->latest_height(), UINT64_MAX);
+  EXPECT_EQ(tracker_->GetLatestHeight(mojom::kFilecoinMainnet), UINT64_MAX);
+  EXPECT_EQ(tracker_->GetLatestHeight(mojom::kFilecoinTestnet), UINT64_MAX);
+  EXPECT_EQ(tracker_->GetLatestHeight("skynet"), 0u);
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 
   response_height_ = 1;
-  tracker_->Start(base::Seconds(5));
+  tracker_->Start(mojom::kFilecoinMainnet, base::Seconds(5));
+  tracker_->Start(mojom::kFilecoinTestnet, base::Seconds(2));
+  EXPECT_CALL(observer, OnLatestHeightUpdated(mojom::kFilecoinMainnet, 1u))
+      .Times(1);
+  EXPECT_CALL(observer, OnLatestHeightUpdated(mojom::kFilecoinTestnet, 1u))
+      .Times(1);
   task_environment_.FastForwardBy(base::Seconds(5));
-  EXPECT_EQ(observer.latest_height(), 1u);
-  EXPECT_EQ(observer.latest_height_updated_fired(), 2u);
-  EXPECT_EQ(tracker_->latest_height(), 1u);
+  EXPECT_EQ(tracker_->GetLatestHeight(mojom::kFilecoinMainnet), 1u);
+  EXPECT_EQ(tracker_->GetLatestHeight(mojom::kFilecoinTestnet), 1u);
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 
   // Still response_height_ 1, shouldn't fire updated event.
+  EXPECT_CALL(observer, OnLatestHeightUpdated(_, _)).Times(0);
   task_environment_.FastForwardBy(base::Seconds(5));
-  EXPECT_EQ(observer.latest_height(), 1u);
-  EXPECT_EQ(observer.latest_height_updated_fired(), 2u);
-  EXPECT_EQ(tracker_->latest_height(), 1u);
+  EXPECT_EQ(tracker_->GetLatestHeight(mojom::kFilecoinMainnet), 1u);
+  EXPECT_EQ(tracker_->GetLatestHeight(mojom::kFilecoinTestnet), 1u);
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 }
 
 TEST_F(FilBlockTrackerUnitTest, GetLatestHeightInvalidResponseJSON) {
@@ -131,14 +147,15 @@ TEST_F(FilBlockTrackerUnitTest, GetLatestHeightInvalidResponseJSON) {
       }));
 
   response_height_ = UINT64_MAX;
-  TrackerObserver observer;
-  tracker_->AddObserver(&observer);
+  MockTrackerObserver observer(tracker_.get());
 
-  tracker_->Start(base::Seconds(5));
+  tracker_->Start(mojom::kFilecoinMainnet, base::Seconds(5));
+  tracker_->Start(mojom::kFilecoinTestnet, base::Seconds(2));
+  EXPECT_CALL(observer, OnLatestHeightUpdated(_, _)).Times(0);
   task_environment_.FastForwardBy(base::Seconds(5));
-  EXPECT_EQ(observer.latest_height(), 0u);
-  EXPECT_EQ(observer.latest_height_updated_fired(), 0u);
-  EXPECT_EQ(tracker_->latest_height(), 0u);
+  EXPECT_EQ(tracker_->GetLatestHeight(mojom::kFilecoinMainnet), 0u);
+  EXPECT_EQ(tracker_->GetLatestHeight(mojom::kFilecoinTestnet), 0u);
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 }
 
 TEST_F(FilBlockTrackerUnitTest, GetLatestHeightInternalError) {
@@ -157,14 +174,15 @@ TEST_F(FilBlockTrackerUnitTest, GetLatestHeightInternalError) {
       }));
 
   response_height_ = 3;
-  TrackerObserver observer;
-  tracker_->AddObserver(&observer);
+  MockTrackerObserver observer(tracker_.get());
 
-  tracker_->Start(base::Seconds(5));
+  tracker_->Start(mojom::kFilecoinMainnet, base::Seconds(5));
+  tracker_->Start(mojom::kFilecoinTestnet, base::Seconds(2));
+  EXPECT_CALL(observer, OnLatestHeightUpdated(_, _)).Times(0);
   task_environment_.FastForwardBy(base::Seconds(5));
-  EXPECT_EQ(observer.latest_height(), 0u);
-  EXPECT_EQ(observer.latest_height_updated_fired(), 0u);
-  EXPECT_EQ(tracker_->latest_height(), 0u);
+  EXPECT_EQ(tracker_->GetLatestHeight(mojom::kFilecoinMainnet), 0u);
+  EXPECT_EQ(tracker_->GetLatestHeight(mojom::kFilecoinTestnet), 0u);
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 }
 
 TEST_F(FilBlockTrackerUnitTest, GetLatestHeightRequestTimeout) {
@@ -176,19 +194,18 @@ TEST_F(FilBlockTrackerUnitTest, GetLatestHeightRequestTimeout) {
       }));
 
   response_height_ = 3;
-  TrackerObserver observer;
-  tracker_->AddObserver(&observer);
+  MockTrackerObserver observer(tracker_.get());
 
-  tracker_->Start(base::Seconds(5));
+  tracker_->Start(mojom::kFilecoinMainnet, base::Seconds(5));
+  tracker_->Start(mojom::kFilecoinTestnet, base::Seconds(2));
+  EXPECT_CALL(observer, OnLatestHeightUpdated(_, _)).Times(0);
   task_environment_.FastForwardBy(base::Seconds(5));
-  EXPECT_EQ(observer.latest_height(), 0u);
-  EXPECT_EQ(observer.latest_height_updated_fired(), 0u);
-  EXPECT_EQ(tracker_->latest_height(), 0u);
+  EXPECT_EQ(tracker_->GetLatestHeight(mojom::kFilecoinMainnet), 0u);
+  EXPECT_EQ(tracker_->GetLatestHeight(mojom::kFilecoinTestnet), 0u);
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 }
 
 TEST_F(FilBlockTrackerUnitTest, GetLatestHeightWithoutStartTracker) {
-  ASSERT_FALSE(tracker_->IsRunning());
-
   url_loader_factory_.SetInterceptor(
       base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
         url_loader_factory_.ClearResponses();
@@ -197,7 +214,15 @@ TEST_F(FilBlockTrackerUnitTest, GetLatestHeightWithoutStartTracker) {
       }));
 
   response_height_ = 1;
-  TestGetLatestHeight(1, mojom::FilecoinProviderError::kSuccess, "");
+  MockTrackerObserver observer(tracker_.get());
+  for (const std::string& chain_id :
+       {mojom::kFilecoinMainnet, mojom::kFilecoinTestnet}) {
+    ASSERT_FALSE(tracker_->IsRunning(chain_id));
+    EXPECT_CALL(observer, OnLatestHeightUpdated(chain_id, 1u)).Times(1);
+    TestGetLatestHeight(chain_id, 1, mojom::FilecoinProviderError::kSuccess,
+                        "");
+    EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
+  }
 }
 
 }  // namespace brave_wallet

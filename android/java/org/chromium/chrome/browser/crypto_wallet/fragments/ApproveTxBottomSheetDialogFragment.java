@@ -270,7 +270,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
             associatedSplTokenInfo.setText(associatedSPLTokenAccountInfo);
         }
         mCoinType = TransactionUtils.getCoinFromTxDataUnion(mTxInfo.txDataUnion);
-        jsonRpcService.getNetwork(mCoinType, selectedNetwork -> {
+        jsonRpcService.getNetwork(mCoinType, null, selectedNetwork -> {
             networkName.setText(selectedNetwork.chainName);
             keyringService.getKeyringInfo(
                     AssetUtils.getKeyringForCoinType(mCoinType), keyringInfo -> {
@@ -471,7 +471,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         if (txService == null) {
             return;
         }
-        txService.rejectTransaction(mCoinType, mTxInfo.id, success -> {
+        txService.rejectTransaction(mCoinType, mTxInfo.chainId, mTxInfo.id, success -> {
             assert success : "tx is not rejected";
             if (!success || !dismiss) {
                 return;
@@ -489,34 +489,36 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         if (txService == null) {
             return;
         }
-        txService.approveTransaction(mCoinType, mTxInfo.id, (success, error, errorMessage) -> {
-            if (!success) {
-                int providerError = -1;
-                switch (error.which()) {
-                    case ProviderErrorUnion.Tag.ProviderError:
-                        providerError = error.getProviderError();
-                        break;
-                    case ProviderErrorUnion.Tag.SolanaProviderError:
-                        providerError = error.getSolanaProviderError();
-                        break;
-                    case ProviderErrorUnion.Tag.FilecoinProviderError:
-                        providerError = error.getFilecoinProviderError();
-                        break;
-                    default:
-                        assert false : "unknown error " + errorMessage;
-                }
-                assert success : "tx is not approved error: " + providerError + ", " + errorMessage;
-                Utils.warnWhenError(ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT,
-                        "approveTransaction", providerError, errorMessage);
-                return;
-            }
-            reportTransactionForP3A();
-            mApproved = true;
-            if (mTransactionConfirmationListener != null) {
-                mTransactionConfirmationListener.onApproveTransaction();
-            }
-            dismiss();
-        });
+        txService.approveTransaction(
+                mCoinType, mTxInfo.chainId, mTxInfo.id, (success, error, errorMessage) -> {
+                    if (!success) {
+                        int providerError = -1;
+                        switch (error.which()) {
+                            case ProviderErrorUnion.Tag.ProviderError:
+                                providerError = error.getProviderError();
+                                break;
+                            case ProviderErrorUnion.Tag.SolanaProviderError:
+                                providerError = error.getSolanaProviderError();
+                                break;
+                            case ProviderErrorUnion.Tag.FilecoinProviderError:
+                                providerError = error.getFilecoinProviderError();
+                                break;
+                            default:
+                                assert false : "unknown error " + errorMessage;
+                        }
+                        assert success : "tx is not approved error: " + providerError + ", "
+                                         + errorMessage;
+                        Utils.warnWhenError(ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT,
+                                "approveTransaction", providerError, errorMessage);
+                        return;
+                    }
+                    reportTransactionForP3A();
+                    mApproved = true;
+                    if (mTransactionConfirmationListener != null) {
+                        mTransactionConfirmationListener.onApproveTransaction();
+                    }
+                    dismiss();
+                });
     }
 
     private void reportTransactionForP3A() {
@@ -528,7 +530,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
         assert jsonRpcService != null && braveWalletP3A != null;
 
-        jsonRpcService.getNetwork(mCoinType, selectedNetwork -> {
+        jsonRpcService.getNetwork(mCoinType, null, selectedNetwork -> {
             boolean countTestNetworks = CommandLine.getInstance().hasSwitch(
                     BraveWalletConstants.P3A_COUNT_TEST_NETWORKS_SWITCH);
             if (countTestNetworks

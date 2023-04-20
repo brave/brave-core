@@ -5,11 +5,15 @@
 import * as React from 'react'
 
 // Types
-import { BraveWallet, SerializableSignMessageRequest, WalletAccountType } from '../../../constants/types'
+import {
+  SerializableSignMessageRequest,
+  WalletAccountType
+} from '../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
 import { unicodeEscape, hasUnicode } from '../../../utils/string-utils'
+import { useGetNetworkQuery } from '../../../common/slices/api.slice'
 
 // Components
 import { NavButton, PanelTab } from '../'
@@ -46,11 +50,9 @@ import {
   URLText,
   WarningIcon
 } from '../shared-panel-styles'
-import { useGetDefaultNetworksQuery } from '../../../common/slices/api.slice'
 
 export interface Props {
   accounts: WalletAccountType[]
-  selectedNetwork?: BraveWallet.NetworkInfo
   signMessageData: SerializableSignMessageRequest[]
   onSign: () => void
   onCancel: () => void
@@ -75,7 +77,6 @@ const onClickLearnMore = () => {
 export const SignPanel = (props: Props) => {
   const {
     accounts,
-    selectedNetwork,
     signMessageData,
     onSign,
     onCancel,
@@ -83,7 +84,10 @@ export const SignPanel = (props: Props) => {
   } = props
 
   // queries
-  const { data: defaultNetworks = [] } = useGetDefaultNetworksQuery()
+  const { data: network } = useGetNetworkQuery({
+    chainId: signMessageData[0].chainId,
+    coin: signMessageData[0].coin
+  })
 
   // state
   const [signStep, setSignStep] = React.useState<SignDataSteps>(SignDataSteps.SignData)
@@ -106,13 +110,6 @@ export const SignPanel = (props: Props) => {
     (data) =>
       data.id === selectedQueueData.id) !== 0
     , [signMessageData, selectedQueueData]
-  )
-
-  const network = React.useMemo(
-    () =>
-      defaultNetworks.find((n) => n.coin === signMessageData[0].coin) ??
-      selectedNetwork,
-    [defaultNetworks, selectedNetwork, signMessageData[0].coin]
   )
 
   // methods

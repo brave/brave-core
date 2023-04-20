@@ -354,7 +354,7 @@ public class BraveWalletPanel implements DialogInterface {
             return;
         }
         mBraveWalletPanelServices.getJsonRpcService().getNetwork(
-                selectedAccount.coin, selectedNetwork -> {
+                selectedAccount.coin, null, selectedNetwork -> {
                     BlockchainToken asset = Utils.makeNetworkAsset(selectedNetwork);
                     AssetsPricesHelper.fetchPrices(mBraveWalletPanelServices.getAssetRatioService(),
                             new BlockchainToken[] {asset}, assetPrices -> {

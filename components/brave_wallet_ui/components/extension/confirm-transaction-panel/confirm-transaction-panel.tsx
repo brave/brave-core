@@ -183,6 +183,7 @@ export const ConfirmTransactionPanel = ({
       <AdvancedTransactionSettings
         onCancel={onToggleAdvancedTransactionSettings}
         nonce={transactionDetails.nonce}
+        chainId={transactionInfo.chainId}
         txMetaId={transactionInfo.id}
         updateUnapprovedTransactionNonce={updateUnapprovedTransactionNonce}
       />
