@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
 #include "base/test/thread_test_helper.h"
@@ -258,7 +259,7 @@ class LocalhostAccessBrowserTest : public InProcessBrowserTest {
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   std::unique_ptr<net::EmbeddedTestServer> localhost_server_;
   base::test::ScopedFeatureList feature_list_;
-  Browser* current_browser_;
+  raw_ptr<Browser> current_browser_;
   std::unique_ptr<brave_shields::TestFiltersProvider> source_provider_;
 
  private:
