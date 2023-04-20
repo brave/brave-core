@@ -36,8 +36,8 @@ bool ConversionInfo::operator!=(const ConversionInfo& other) const {
 }
 
 bool ConversionInfo::IsValid() const {
-  return !(creative_set_id.empty() || type.empty() || url_pattern.empty() ||
-           expire_at.is_null());
+  return !creative_set_id.empty() && !type.empty() && !url_pattern.empty() &&
+         !expire_at.is_null();
 }
 
 }  // namespace brave_ads
