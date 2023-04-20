@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="36dp">
+    android:padding="28dp">
 
     <TextView
         android:id="@+id/dialog_tv_title"
@@ -14,15 +13,29 @@
         android:gravity="center"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/dialog_tv_msg"
         style="@style/BraveWalletTextView"
         android:layout_width="match_parent"
         android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/dialog_tv_title"/>
+        app:layout_constraintTop_toBottomOf="@id/dialog_tv_title" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/dialog_wallet_btn_negative"
+        style="@style/BraveWalletButtonHollow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/crypto_wallet_negative_button"
+        android:text="@string/brave_action_cancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias=".1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialog_tv_msg" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/dialog_wallet_btn_positive"
@@ -31,19 +44,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dialog_tv_msg"/>
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/dialog_wallet_btn_negative"
-        style="@style/BraveWalletButtonHollow"
-        android:background="@null"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="@string/brave_action_cancel"
-        app:layout_constraintTop_toBottomOf="@id/dialog_tv_msg"/>
+        app:layout_constraintHorizontal_bias=".9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialog_tv_msg" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
