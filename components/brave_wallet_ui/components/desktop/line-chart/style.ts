@@ -16,6 +16,7 @@ export const StyledWrapper = styled.div<{
   margin-bottom: 30px;
   box-sizing: border-box;
   position: relative;
+  z-index: 9;
   ${p => p.customStyle
     ? css`
       ${p.customStyle}
