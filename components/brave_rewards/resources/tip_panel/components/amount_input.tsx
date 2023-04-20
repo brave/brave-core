@@ -12,7 +12,7 @@ import { SwapIcon } from './icons/swap_icon'
 
 import * as style from './amount_input.style'
 
-const minimumAmount = 0.25
+const minimumAmount = 0
 const maximumAmount = 100
 const amountStep = 0.25
 
@@ -39,19 +39,6 @@ function currencySymbol (currency: string) {
   return ''
 }
 
-function getDefaultOption (balance: number, options: number[]) {
-  // Select the highest amount that is greater than or equal to the user's
-  // balance, starting from the middle option.
-  if (options.length > 0) {
-    for (let i = Math.floor(options.length / 2); i >= 0; --i) {
-      if (i === 0 || options[i] <= balance) {
-        return optional(options[i])
-      }
-    }
-  }
-  return optional<number>()
-}
-
 interface Props {
   amountOptions: number[]
   userBalance: number
@@ -63,8 +50,7 @@ interface Props {
 export function AmountInput (props: Props) {
   const { getString } = useLocaleContext()
 
-  const [selectedOption, setSelectedOption] =
-    React.useState(getDefaultOption(props.userBalance, props.amountOptions))
+  const [selectedOption, setSelectedOption] = React.useState(optional(0))
   const [customAmount, setCustomAmount] = React.useState(0)
   const [customAmountText, setCustomAmountText] = React.useState('')
   const [exchangePrimary, setExchangePrimary] = React.useState(false)
@@ -101,7 +87,7 @@ export function AmountInput (props: Props) {
     }
     setCustomAmountText(textValue)
     let updatedAmount = parseFloat(textValue || '0')
-    if (isNaN(customAmount)) {
+    if (isNaN(updatedAmount)) {
       return customAmount
     }
     if (exchangePrimary) {

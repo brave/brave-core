@@ -187,15 +187,16 @@ export function createHost (): Host {
     switch (args.view) {
       case mojom.RewardsPanelView.kRewardsTour:
         stateManager.update({ requestedView: 'rewards-tour' })
-        return true
+        break
       case mojom.RewardsPanelView.kGrantCaptcha:
         loadGrantCaptcha(args.data, 'pending')
-        return true
+        break
       case mojom.RewardsPanelView.kAdaptiveCaptcha:
         loadAdaptiveCaptcha()
-        return true
-      default:
-        return false
+        break
+      case mojom.RewardsPanelView.kInlineTip:
+        stateManager.update({ requestedView: 'inline-tip' })
+        break
     }
   }
 

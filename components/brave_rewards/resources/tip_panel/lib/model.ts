@@ -8,6 +8,7 @@ import { ExternalWalletProvider } from '../../shared/lib/external_wallet'
 
 export interface CreatorBanner {
   name: string
+  provider: string
   title: string
   description: string
   logo: string
@@ -58,6 +59,7 @@ export function defaultState (): ModelState {
     error: null,
     creatorBanner: {
       name: '',
+      provider: '',
       title: '',
       description: '',
       logo: '',

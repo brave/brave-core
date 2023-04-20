@@ -564,7 +564,7 @@ void BraveRewardsTipUserFunction::ShowTipDialog() {
     return;
   }
 
-  coordinator->ShowPanelForPublisher(params->publisher_key);
+  coordinator->ShowPanelForInlineTip(params->publisher_key);
 }
 
 BraveRewardsIncludeInAutoContributionFunction::
