@@ -31,7 +31,7 @@ TEST_F(BraveAdsSettingsTest, AdsPerHourWhenUserHasChangedDefaultSetting) {
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  ads_client_mock_->SetInt64Pref(prefs::kMaximumNotificationAdsPerHour, 3);
+  ads_client_mock_.SetInt64Pref(prefs::kMaximumNotificationAdsPerHour, 3);
 
   // Act
   const int ads_per_hour = settings::GetMaximumNotificationAdsPerHour();

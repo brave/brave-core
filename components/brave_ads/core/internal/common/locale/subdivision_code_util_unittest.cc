@@ -15,20 +15,18 @@ TEST(BraveAdsSubdivisionCodeUtilTest, GetCountryCode) {
   // Arrange
 
   // Act
-  const std::string country_code = locale::GetCountryCode("US-CA");
 
   // Assert
-  EXPECT_EQ("US", country_code);
+  EXPECT_EQ("US", locale::GetCountryCode("US-CA"));
 }
 
 TEST(BraveAdsSubdivisionCodeUtilTest, GetSubdivisionCode) {
   // Arrange
 
   // Act
-  const std::string subdivision_code = locale::GetSubdivisionCode("US-CA");
 
   // Assert
-  EXPECT_EQ("CA", subdivision_code);
+  EXPECT_EQ("CA", locale::GetSubdivisionCode("US-CA"));
 }
 
 }  // namespace brave_ads

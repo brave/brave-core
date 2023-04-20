@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/containers/circular_deque.h"
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
@@ -24,7 +24,7 @@ struct SearchResultAdInfo;
 
 class SearchResultAd final : public search_result_ads::EventHandlerDelegate {
  public:
-  SearchResultAd(Account* account, Transfer* transfer);
+  SearchResultAd(Account& account, Transfer& transfer);
 
   SearchResultAd(const SearchResultAd&) = delete;
   SearchResultAd& operator=(const SearchResultAd&) = delete;
@@ -50,14 +50,14 @@ class SearchResultAd final : public search_result_ads::EventHandlerDelegate {
   void OnSearchResultAdViewed(const SearchResultAdInfo& ad) override;
   void OnSearchResultAdClicked(const SearchResultAdInfo& ad) override;
 
+  const raw_ref<Account> account_;
+  const raw_ref<Transfer> transfer_;
+
   search_result_ads::EventHandler event_handler_;
 
   base::circular_deque<mojom::SearchResultAdInfoPtr> ad_viewed_event_queue_;
 
   bool trigger_ad_viewed_event_in_progress_ = false;
-
-  const raw_ptr<Account> account_ = nullptr;    // NOT OWNED
-  const raw_ptr<Transfer> transfer_ = nullptr;  // NOT OWNED
 
   base::WeakPtrFactory<SearchResultAd> weak_factory_{this};
 };

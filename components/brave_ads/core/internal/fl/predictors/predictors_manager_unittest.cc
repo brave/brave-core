@@ -21,7 +21,7 @@ TEST_F(BraveAdsPredictorsManagerTest, GetTrainingSample) {
 
   // Act
   const std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample =
-      PredictorsManager::GetInstance()->GetTrainingSample();
+      PredictorsManager::GetInstance().GetTrainingSample();
 
   // Assert
   EXPECT_EQ(32U, training_sample.size());
@@ -36,7 +36,7 @@ TEST_F(BraveAdsPredictorsManagerTest, GetTrainingSampleWithSetters) {
 
   // Act
   const std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample =
-      PredictorsManager::GetInstance()->GetTrainingSample();
+      PredictorsManager::GetInstance().GetTrainingSample();
 
   // Assert
   EXPECT_EQ(34U, training_sample.size());

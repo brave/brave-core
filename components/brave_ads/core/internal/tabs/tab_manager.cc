@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 
-#include "base/check_op.h"
+#include "base/check.h"
 #include "base/hash/hash.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -23,10 +23,8 @@ TabManager::~TabManager() {
 }
 
 // static
-TabManager* TabManager::GetInstance() {
-  auto* tab_manager = GlobalState::GetInstance()->GetTabManager();
-  DCHECK(tab_manager);
-  return tab_manager;
+TabManager& TabManager::GetInstance() {
+  return GlobalState::GetInstance()->GetTabManager();
 }
 
 void TabManager::AddObserver(TabManagerObserver* observer) {

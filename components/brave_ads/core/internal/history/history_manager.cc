@@ -7,7 +7,6 @@
 
 #include <memory>
 
-#include "base/check_op.h"
 #include "base/containers/circular_deque.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/ad_content_info.h"
@@ -31,10 +30,8 @@ HistoryManager::HistoryManager() = default;
 HistoryManager::~HistoryManager() = default;
 
 // static
-HistoryManager* HistoryManager::GetInstance() {
-  auto* history_manager = GlobalState::GetInstance()->GetHistoryManager();
-  DCHECK(history_manager);
-  return history_manager;
+HistoryManager& HistoryManager::GetInstance() {
+  return GlobalState::GetInstance()->GetHistoryManager();
 }
 
 void HistoryManager::AddObserver(HistoryManagerObserver* observer) {
@@ -49,7 +46,7 @@ void HistoryManager::RemoveObserver(HistoryManagerObserver* observer) {
 
 // static
 const HistoryItemList& HistoryManager::Get() {
-  return ClientStateManager::GetInstance()->GetHistory();
+  return ClientStateManager::GetInstance().GetHistory();
 }
 
 // static
@@ -124,7 +121,7 @@ HistoryItemInfo HistoryManager::Add(
 AdContentLikeActionType HistoryManager::LikeAd(
     const AdContentInfo& ad_content) const {
   const AdContentLikeActionType action_type =
-      ClientStateManager::GetInstance()->ToggleLikeAd(ad_content);
+      ClientStateManager::GetInstance().ToggleLikeAd(ad_content);
   if (action_type == AdContentLikeActionType::kThumbsUp) {
     NotifyDidLikeAd(ad_content);
   }
@@ -135,7 +132,7 @@ AdContentLikeActionType HistoryManager::LikeAd(
 AdContentLikeActionType HistoryManager::DislikeAd(
     const AdContentInfo& ad_content) const {
   const AdContentLikeActionType action_type =
-      ClientStateManager::GetInstance()->ToggleDislikeAd(ad_content);
+      ClientStateManager::GetInstance().ToggleDislikeAd(ad_content);
   if (action_type == AdContentLikeActionType::kThumbsDown) {
     NotifyDidDislikeAd(ad_content);
   }
@@ -147,8 +144,8 @@ CategoryContentOptActionType HistoryManager::LikeCategory(
     const std::string& category,
     const CategoryContentOptActionType& action_type) const {
   const CategoryContentOptActionType toggled_action_type =
-      ClientStateManager::GetInstance()->ToggleLikeCategory(category,
-                                                            action_type);
+      ClientStateManager::GetInstance().ToggleLikeCategory(category,
+                                                           action_type);
   if (toggled_action_type == CategoryContentOptActionType::kOptIn) {
     NotifyDidLikeCategory(category);
   }
@@ -160,8 +157,8 @@ CategoryContentOptActionType HistoryManager::DislikeCategory(
     const std::string& category,
     const CategoryContentOptActionType& action_type) const {
   const CategoryContentOptActionType toggled_action_type =
-      ClientStateManager::GetInstance()->ToggleDislikeCategory(category,
-                                                               action_type);
+      ClientStateManager::GetInstance().ToggleDislikeCategory(category,
+                                                              action_type);
   if (toggled_action_type == CategoryContentOptActionType::kOptOut) {
     NotifyDidDislikeCategory(category);
   }
@@ -171,7 +168,7 @@ CategoryContentOptActionType HistoryManager::DislikeCategory(
 
 bool HistoryManager::ToggleSaveAd(const AdContentInfo& ad_content) const {
   const bool is_saved =
-      ClientStateManager::GetInstance()->ToggleSaveAd(ad_content);
+      ClientStateManager::GetInstance().ToggleSaveAd(ad_content);
   if (is_saved) {
     NotifyDidSaveAd(ad_content);
   } else {
@@ -184,8 +181,7 @@ bool HistoryManager::ToggleSaveAd(const AdContentInfo& ad_content) const {
 bool HistoryManager::ToggleMarkAdAsInappropriate(
     const AdContentInfo& ad_content) const {
   const bool is_marked =
-      ClientStateManager::GetInstance()->ToggleMarkAdAsInappropriate(
-          ad_content);
+      ClientStateManager::GetInstance().ToggleMarkAdAsInappropriate(ad_content);
 
   if (is_marked) {
     NotifyDidMarkAdAsInappropriate(ad_content);

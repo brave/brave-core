@@ -6,21 +6,17 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_INLINE_CONTENT_AD_HANDLER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_INLINE_CONTENT_AD_HANDLER_H_
 
-#include <memory>
 #include <string>
 
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_handler.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_handler_delegate.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_delegate.h"
 
 namespace brave_ads {
-
-namespace inline_content_ads {
-class Serving;
-}  // namespace inline_content_ads
 
 namespace resource {
 class AntiTargeting;
@@ -36,8 +32,8 @@ class InlineContentAdHandler final
       public inline_content_ads::ServingDelegate {
  public:
   InlineContentAdHandler(
-      Account* account,
-      Transfer* transfer,
+      Account& account,
+      Transfer& transfer,
       const SubdivisionTargeting& subdivision_targeting,
       const resource::AntiTargeting& anti_targeting_resource);
 
@@ -69,10 +65,10 @@ class InlineContentAdHandler final
 
   inline_content_ads::EventHandler event_handler_;
 
-  std::unique_ptr<inline_content_ads::Serving> serving_;
+  const raw_ref<Account> account_;
+  const raw_ref<Transfer> transfer_;
 
-  const raw_ptr<Account> account_ = nullptr;    // NOT OWNED
-  const raw_ptr<Transfer> transfer_ = nullptr;  // NOT OWNED
+  inline_content_ads::Serving serving_;
 };
 
 }  // namespace brave_ads

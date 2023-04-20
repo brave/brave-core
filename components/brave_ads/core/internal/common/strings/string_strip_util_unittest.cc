@@ -13,28 +13,24 @@ namespace brave_ads {
 
 TEST(BraveAdsStringStripUtilTest, StripNonAlphaCharactersFromEmptyContent) {
   // Arrange
-  const std::string content;
 
   // Act
-  const std::string stripped_content = StripNonAlphaCharacters(content);
 
   // Assert
   const std::string expected_stripped_content;
 
-  EXPECT_EQ(expected_stripped_content, stripped_content);
+  EXPECT_EQ(expected_stripped_content, StripNonAlphaCharacters({}));
 }
 
 TEST(BraveAdsStringStripUtilTest, StripNonAlphaCharactersFromWhitespace) {
   // Arrange
-  const std::string content = "   ";
 
   // Act
-  const std::string stripped_content = StripNonAlphaCharacters(content);
 
   // Assert
   const std::string expected_stripped_content;
 
-  EXPECT_EQ(expected_stripped_content, stripped_content);
+  EXPECT_EQ(expected_stripped_content, StripNonAlphaCharacters("   "));
 }
 
 TEST(BraveAdsStringStripUtilTest, StripNonAlphaCharacters) {
@@ -67,29 +63,25 @@ TEST(BraveAdsStringStripUtilTest, StripNonAlphaCharacters) {
 TEST(BraveAdsStringStripUtilTest,
      StripNonAlphaNumericCharactersFromEmptyContent) {
   // Arrange
-  const std::string content;
 
   // Act
-  const std::string stripped_content = StripNonAlphaNumericCharacters(content);
 
   // Assert
   const std::string expected_stripped_content;
 
-  EXPECT_EQ(expected_stripped_content, stripped_content);
+  EXPECT_EQ(expected_stripped_content, StripNonAlphaNumericCharacters({}));
 }
 
 TEST(BraveAdsStringStripUtilTest,
      StripNonAlphaNumericCharactersFromWhitespace) {
   // Arrange
-  const std::string content = "   ";
 
   // Act
-  const std::string stripped_content = StripNonAlphaNumericCharacters(content);
 
   // Assert
   const std::string expected_stripped_content;
 
-  EXPECT_EQ(expected_stripped_content, stripped_content);
+  EXPECT_EQ(expected_stripped_content, StripNonAlphaNumericCharacters("   "));
 }
 
 TEST(BraveAdsStringStripUtilTest, StripNonAlphaNumericCharacters) {

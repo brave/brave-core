@@ -24,7 +24,7 @@ class BraveAdsLegacyClientMigrationIssue23794Test : public UnitTestBase {};
 
 TEST_F(BraveAdsLegacyClientMigrationIssue23794Test, Migrate) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kHasMigratedClientState, false);
+  ads_client_mock_.SetBooleanPref(prefs::kHasMigratedClientState, false);
 
   CopyFileFromTestPathToTempPath(kClientIssue23794Filename,
                                  kClientStateFilename);

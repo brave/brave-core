@@ -32,10 +32,9 @@ TEST(BraveAdsDLEQProofTest, FailToInitialize) {
   const DLEQProof dleq_proof;
 
   // Act
-  const bool has_value = dleq_proof.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(dleq_proof.has_value());
 }
 
 TEST(BraveAdsDLEQProofTest, FailToInitializeWithEmptyBase64) {
@@ -43,10 +42,9 @@ TEST(BraveAdsDLEQProofTest, FailToInitializeWithEmptyBase64) {
   const DLEQProof dleq_proof("");
 
   // Act
-  const bool has_value = dleq_proof.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(dleq_proof.has_value());
 }
 
 TEST(BraveAdsDLEQProofTest, FailToInitializeWithInvalidBase64) {
@@ -54,10 +52,9 @@ TEST(BraveAdsDLEQProofTest, FailToInitializeWithInvalidBase64) {
   const DLEQProof dleq_proof(kInvalidBase64);
 
   // Act
-  const bool has_value = dleq_proof.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(dleq_proof.has_value());
 }
 
 TEST(BraveAdsDLEQProofTest, FailToInitializeWithInvalidBlindedToken) {
@@ -66,10 +63,9 @@ TEST(BraveAdsDLEQProofTest, FailToInitializeWithInvalidBlindedToken) {
                              GetSigningKey());
 
   // Act
-  const bool has_value = dleq_proof.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(dleq_proof.has_value());
 }
 
 TEST(BraveAdsDLEQProofTest, FailToInitializeWithInvalidSignedToken) {
@@ -78,10 +74,9 @@ TEST(BraveAdsDLEQProofTest, FailToInitializeWithInvalidSignedToken) {
                              GetSigningKey());
 
   // Act
-  const bool has_value = dleq_proof.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(dleq_proof.has_value());
 }
 
 TEST(BraveAdsDLEQProofTest, FailToInitializeWithInvalidSigningKey) {
@@ -90,10 +85,9 @@ TEST(BraveAdsDLEQProofTest, FailToInitializeWithInvalidSigningKey) {
                              GetInvalidSigningKey());
 
   // Act
-  const bool has_value = dleq_proof.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(dleq_proof.has_value());
 }
 
 TEST(BraveAdsDLEQProofTest, DecodeBase64) {
@@ -103,8 +97,7 @@ TEST(BraveAdsDLEQProofTest, DecodeBase64) {
   const DLEQProof dleq_proof = DLEQProof::DecodeBase64(kDLEQProofBase64);
 
   // Assert
-  const bool has_value = dleq_proof.has_value();
-  EXPECT_TRUE(has_value);
+  EXPECT_TRUE(dleq_proof.has_value());
 }
 
 TEST(BraveAdsDLEQProofTest, FailToDecodeEmptyBase64) {
@@ -114,8 +107,7 @@ TEST(BraveAdsDLEQProofTest, FailToDecodeEmptyBase64) {
   const DLEQProof dleq_proof = DLEQProof::DecodeBase64({});
 
   // Assert
-  const bool has_value = dleq_proof.has_value();
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(dleq_proof.has_value());
 }
 
 TEST(BraveAdsDLEQProofTest, FailToDecodeInvalidBase64) {
@@ -125,8 +117,7 @@ TEST(BraveAdsDLEQProofTest, FailToDecodeInvalidBase64) {
   const DLEQProof dleq_proof = DLEQProof::DecodeBase64(kInvalidBase64);
 
   // Assert
-  const bool has_value = dleq_proof.has_value();
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(dleq_proof.has_value());
 }
 
 TEST(BraveAdsDLEQProofTest, EncodeBase64) {

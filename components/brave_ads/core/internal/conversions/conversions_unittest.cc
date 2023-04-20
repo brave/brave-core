@@ -5,17 +5,17 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/conversions.h"
 
+#include <memory>
 #include <utility>
-
 #include "base/functional/bind.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_database_table.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversions_database_table.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_database_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
@@ -47,13 +47,12 @@ class BraveAdsConversionsTest : public UnitTestBase {
   std::unique_ptr<Conversions> conversions_;
   database::table::AdEvents ad_events_database_table_;
   database::table::ConversionQueue conversion_queue_database_table_;
-  database::table::Conversions conversions_database_table_;
 };
 
 TEST_F(BraveAdsConversionsTest,
        DoNotConvertViewedNotificationAdWhenAdsAreDisabled) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -136,7 +135,7 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedNotificationAdWhenAdsAreEnabled) {
 TEST_F(BraveAdsConversionsTest,
        DoNotConvertClickedNotificationAdWhenAdsAreDisabled) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -225,7 +224,7 @@ TEST_F(BraveAdsConversionsTest, ConvertClickedNotificationAdWhenAdsAreEnabled) {
 TEST_F(BraveAdsConversionsTest,
        DoNotConvertViewedNewTabPageAdWhenAdsAreDisabled) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -308,7 +307,7 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedNewTabPageAdWhenAdsAreEnabled) {
 TEST_F(BraveAdsConversionsTest,
        DoNotConvertClickedNewTabPageAdWhenAdsAreDisabled) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -397,7 +396,7 @@ TEST_F(BraveAdsConversionsTest, ConvertClickedNewTabPageAdWhenAdsAreEnabled) {
 TEST_F(BraveAdsConversionsTest,
        DoNotConvertViewedPromotedContentAdWhenAdsAreDisabled) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -483,7 +482,7 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest,
        DoNotConvertClickedPromotedContentAdWhenAdsAreDisabled) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -577,7 +576,7 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest,
        DoNotConvertViewedInlineContentAdWhenAdsAreDisabled) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -655,7 +654,7 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest,
        ConvertClickedInlineContentAdWhenAdsAreDisabled) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -751,7 +750,7 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest,
        DoNotConvertViewedSearchResultAdWhenAdsAreDisabled) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -834,7 +833,7 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdWhenAdsAreEnabled) {
 TEST_F(BraveAdsConversionsTest,
        DoNotConvertClickedSearchResultAdWhenAdsAreDisabled) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -1135,10 +1134,8 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertViewedAdForPostClick) {
 
 TEST_F(BraveAdsConversionsTest, DoNotConvertAdIfConversionDoesNotExist) {
   // Arrange
-  const std::string creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
-
   const AdEventInfo ad_event =
-      BuildAdEvent(creative_set_id, ConfirmationType::kViewed);
+      BuildAdEvent(kMissingCreativeInstanceId, ConfirmationType::kViewed);
   FireAdEvent(ad_event);
 
   // Act
@@ -1148,8 +1145,7 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertAdIfConversionDoesNotExist) {
 
   // Assert
   const std::string condition =
-      "creative_set_id = 'foobar' AND "
-      "confirmation_type = 'conversion'";
+      "creative_set_id = 'foobar' AND confirmation_type = 'conversion'";
 
   ad_events_database_table_.GetIf(
       condition,

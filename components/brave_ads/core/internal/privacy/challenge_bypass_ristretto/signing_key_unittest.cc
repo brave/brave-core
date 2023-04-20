@@ -26,10 +26,9 @@ TEST(BraveAdsSigningKeyTest, FailToInitializeWithEmptyBase64) {
   const SigningKey signing_key("");
 
   // Act
-  const bool has_value = signing_key.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(signing_key.has_value());
 }
 
 TEST(BraveAdsSigningKeyTest, FailToInitializeWithInvalidBase64) {
@@ -37,10 +36,9 @@ TEST(BraveAdsSigningKeyTest, FailToInitializeWithInvalidBase64) {
   const SigningKey signing_key(kInvalidBase64);
 
   // Act
-  const bool has_value = signing_key.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(signing_key.has_value());
 }
 
 TEST(BraveAdsSigningKeyTest, DecodeBase64) {
@@ -50,8 +48,7 @@ TEST(BraveAdsSigningKeyTest, DecodeBase64) {
   const SigningKey signing_key = SigningKey::DecodeBase64(kSigningKeyBase64);
 
   // Assert
-  const bool has_value = signing_key.has_value();
-  EXPECT_TRUE(has_value);
+  EXPECT_TRUE(signing_key.has_value());
 }
 
 TEST(BraveAdsSigningKeyTest, FailToDecodeEmptyBase64) {
@@ -61,8 +58,7 @@ TEST(BraveAdsSigningKeyTest, FailToDecodeEmptyBase64) {
   const SigningKey signing_key = SigningKey::DecodeBase64({});
 
   // Assert
-  const bool has_value = signing_key.has_value();
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(signing_key.has_value());
 }
 
 TEST(BraveAdsSigningKeyTest, FailToDecodeInvalidBase64) {
@@ -72,8 +68,7 @@ TEST(BraveAdsSigningKeyTest, FailToDecodeInvalidBase64) {
   const SigningKey signing_key = SigningKey::DecodeBase64(kInvalidBase64);
 
   // Assert
-  const bool has_value = signing_key.has_value();
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(signing_key.has_value());
 }
 
 TEST(BraveAdsSigningKeyTest, EncodeBase64) {

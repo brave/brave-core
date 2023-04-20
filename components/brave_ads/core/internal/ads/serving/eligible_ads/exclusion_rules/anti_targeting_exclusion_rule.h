@@ -45,7 +45,7 @@ class AntiTargetingExclusionRule final
  private:
   bool DoesRespectCap(const CreativeAdInfo& creative_ad) const;
 
-  const base::raw_ref<const resource::AntiTargeting> anti_targeting_resource_;
+  const raw_ref<const resource::AntiTargeting> anti_targeting_resource_;
 
   BrowsingHistoryList browsing_history_;
 };

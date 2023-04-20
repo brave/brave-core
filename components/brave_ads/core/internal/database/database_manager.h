@@ -25,7 +25,7 @@ class DatabaseManager final {
 
   ~DatabaseManager();
 
-  static DatabaseManager* GetInstance();
+  static DatabaseManager& GetInstance();
 
   void AddObserver(DatabaseManagerObserver* observer);
   void RemoveObserver(DatabaseManagerObserver* observer);

@@ -24,7 +24,7 @@ Override `SetUp` and call `SetUpForTesting` with `is_integration_test` set to `t
 Use the `GetAds` convenience function to access `AdsImpl`. i.e.
 
 ```
-GetAds()->TriggerNotificationAdEvent(/*placement_id*/ "7ee858e8-6306-4317-88c3-9e7d58afad26", ConfirmationType::kClicked);
+GetAds().TriggerNotificationAdEvent(/*placement_id*/ "7ee858e8-6306-4317-88c3-9e7d58afad26", ConfirmationType::kClicked);
 ```
 
 ## Mocking Command-Line Switches

@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 
@@ -27,7 +27,7 @@ namespace processor {
 class TextClassification final : public AdsClientNotifierObserver,
                                  public TabManagerObserver {
  public:
-  explicit TextClassification(resource::TextClassification* resource);
+  explicit TextClassification(resource::TextClassification& resource);
 
   TextClassification(const TextClassification&) = delete;
   TextClassification& operator=(const TextClassification&) = delete;
@@ -49,7 +49,7 @@ class TextClassification final : public AdsClientNotifierObserver,
                               const std::vector<GURL>& redirect_chain,
                               const std::string& content) override;
 
-  const raw_ptr<resource::TextClassification> resource_ = nullptr;  // NOT OWNED
+  const raw_ref<resource::TextClassification> resource_;
 };
 
 }  // namespace processor

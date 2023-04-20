@@ -13,11 +13,10 @@ namespace brave_ads::privacy::p2a {
 
 TEST(BraveAdsP2AImpressionQuestionsTest, CreateAdImpressionQuestions) {
   // Arrange
-  const std::string segment = "technology & computing-software";
 
   // Act
-  const std::vector<std::string> questions =
-      CreateAdImpressionQuestions(segment);
+  const std::vector<std::string> questions = CreateAdImpressionQuestions(
+      /*segment*/ "technology & computing-software");
 
   // Assert
   const std::vector<std::string> expected_questions = {

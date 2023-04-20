@@ -37,17 +37,15 @@ std::string GetTopSegmentFromPageProbabilities(
 
 }  // namespace
 
-TextClassification::TextClassification(resource::TextClassification* resource)
+TextClassification::TextClassification(resource::TextClassification& resource)
     : resource_(resource) {
-  DCHECK(resource_);
-
   AdsClientHelper::AddObserver(this);
-  TabManager::GetInstance()->AddObserver(this);
+  TabManager::GetInstance().AddObserver(this);
 }
 
 TextClassification::~TextClassification() {
   AdsClientHelper::RemoveObserver(this);
-  TabManager::GetInstance()->RemoveObserver(this);
+  TabManager::GetInstance().RemoveObserver(this);
 }
 
 void TextClassification::Process(const std::string& text) {
@@ -73,7 +71,7 @@ void TextClassification::Process(const std::string& text) {
   BLOG(1, "Classified text with the top segment as " << segment);
 
   ClientStateManager::GetInstance()
-      ->AppendTextClassificationProbabilitiesToHistory(probabilities);
+      .AppendTextClassificationProbabilitiesToHistory(probabilities);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_PROMOTED_CONTENT_ADS_CREATIVE_PROMOTED_CONTENT_ADS_DATABASE_TABLE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_PROMOTED_CONTENT_ADS_CREATIVE_PROMOTED_CONTENT_ADS_DATABASE_TABLE_H_
 
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -14,18 +13,17 @@
 #include "base/functional/callback_forward.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/ads_client_callback.h"
+#include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
+#include "brave/components/brave_ads/core/internal/creatives/campaigns_database_table.h"
+#include "brave/components/brave_ads/core/internal/creatives/creative_ads_database_table.h"
+#include "brave/components/brave_ads/core/internal/creatives/dayparts_database_table.h"
+#include "brave/components/brave_ads/core/internal/creatives/geo_targets_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ad_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/segments_database_table.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
 namespace brave_ads::database::table {
-
-class Campaigns;
-class CreativeAds;
-class Dayparts;
-class Deposits;
-class GeoTargets;
-class Segments;
 
 using GetCreativePromotedContentAdCallback =
     base::OnceCallback<void(bool success,
@@ -85,12 +83,12 @@ class CreativePromotedContentAds final : public TableInterface {
 
   int batch_size_;
 
-  std::unique_ptr<Campaigns> campaigns_database_table_;
-  std::unique_ptr<CreativeAds> creative_ads_database_table_;
-  std::unique_ptr<Dayparts> dayparts_database_table_;
-  std::unique_ptr<Deposits> deposits_database_table_;
-  std::unique_ptr<GeoTargets> geo_targets_database_table_;
-  std::unique_ptr<Segments> segments_database_table_;
+  Campaigns campaigns_database_table_;
+  CreativeAds creative_ads_database_table_;
+  Dayparts dayparts_database_table_;
+  Deposits deposits_database_table_;
+  GeoTargets geo_targets_database_table_;
+  Segments segments_database_table_;
 };
 
 }  // namespace brave_ads::database::table

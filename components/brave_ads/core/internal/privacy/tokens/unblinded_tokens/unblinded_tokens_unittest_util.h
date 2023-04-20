@@ -19,7 +19,7 @@ namespace privacy {
 
 class UnblindedTokens;
 
-UnblindedTokens* GetUnblindedTokens();
+UnblindedTokens& GetUnblindedTokens();
 
 UnblindedTokenList SetUnblindedTokens(int count);
 

@@ -19,6 +19,7 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/utility/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
+#include "brave/components/brave_ads/core/internal/account/wallet/wallet.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 
 namespace brave_ads {
@@ -28,12 +29,11 @@ class TokenGeneratorInterface;
 }  // namespace privacy
 
 class AdType;
-class Confirmations;
 class ConfirmationType;
+class Confirmations;
 class Issuers;
 class RedeemUnblindedPaymentTokens;
 class RefillUnblindedTokens;
-class Wallet;
 struct IssuersInfo;
 struct TransactionInfo;
 struct WalletInfo;
@@ -71,6 +71,8 @@ class Account final : public AdsClientNotifierObserver,
   static void GetStatement(GetStatementOfAccountsCallback callback);
 
  private:
+  void Initialize();
+
   void MaybeGetIssuers() const;
 
   void OnGetDepositValue(const std::string& creative_instance_id,
@@ -140,15 +142,18 @@ class Account final : public AdsClientNotifierObserver,
 
   base::ObserverList<AccountObserver> observers_;
 
-  raw_ptr<privacy::TokenGeneratorInterface> token_generator_ =
+  const raw_ptr<privacy::TokenGeneratorInterface> token_generator_ =
       nullptr;  // NOT OWNED
 
   std::unique_ptr<Confirmations> confirmations_;
+
   std::unique_ptr<Issuers> issuers_;
+
   std::unique_ptr<RedeemUnblindedPaymentTokens>
       redeem_unblinded_payment_tokens_;
   std::unique_ptr<RefillUnblindedTokens> refill_unblinded_tokens_;
-  std::unique_ptr<Wallet> wallet_;
+
+  Wallet wallet_;
 
   base::WeakPtrFactory<Account> weak_factory_{this};
 };

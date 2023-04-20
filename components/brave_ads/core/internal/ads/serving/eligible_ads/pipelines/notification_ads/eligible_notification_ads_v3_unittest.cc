@@ -27,8 +27,6 @@ namespace brave_ads::notification_ads {
 
 class BraveAdsEligibleNotificationAdsV3Test : public UnitTestBase {
  protected:
-  BraveAdsEligibleNotificationAdsV3Test() = default;
-
   void SetUp() override {
     UnitTestBase::SetUp();
 

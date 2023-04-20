@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ATTENTION_USER_REACTIONS_USER_REACTIONS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ATTENTION_USER_REACTIONS_USER_REACTIONS_H_
 
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager_observer.h"
 
 namespace brave_ads {
@@ -16,7 +16,7 @@ struct AdContentInfo;
 
 class UserReactions final : public HistoryManagerObserver {
  public:
-  explicit UserReactions(Account* account);
+  explicit UserReactions(Account& account);
 
   UserReactions(const UserReactions&) = delete;
   UserReactions& operator=(const UserReactions&) = delete;
@@ -33,7 +33,7 @@ class UserReactions final : public HistoryManagerObserver {
   void OnDidMarkAdAsInappropriate(const AdContentInfo& ad_content) override;
   void OnDidSaveAd(const AdContentInfo& ad_content) override;
 
-  const raw_ptr<Account> account_ = nullptr;  // NOT OWNED
+  const raw_ref<const Account> account_;
 };
 
 }  // namespace brave_ads

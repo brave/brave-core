@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/promoted_content_ads/promoted_content_ad_event_handler.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/promoted_content_ads/promoted_content_ad_event_handler_delegate.h"
@@ -22,7 +22,7 @@ struct PromotedContentAdInfo;
 class PromotedContentAd final
     : public promoted_content_ads::EventHandlerDelegate {
  public:
-  PromotedContentAd(Account* account, Transfer* transfer);
+  PromotedContentAd(Account& account, Transfer& transfer);
 
   PromotedContentAd(const PromotedContentAd&) = delete;
   PromotedContentAd& operator=(const PromotedContentAd&) = delete;
@@ -41,10 +41,10 @@ class PromotedContentAd final
   void OnPromotedContentAdViewed(const PromotedContentAdInfo& ad) override;
   void OnPromotedContentAdClicked(const PromotedContentAdInfo& ad) override;
 
-  promoted_content_ads::EventHandler event_handler_;
+  const raw_ref<Account> account_;
+  const raw_ref<Transfer> transfer_;
 
-  const raw_ptr<Account> account_ = nullptr;    // NOT OWNED
-  const raw_ptr<Transfer> transfer_ = nullptr;  // NOT OWNED
+  promoted_content_ads::EventHandler event_handler_;
 };
 
 }  // namespace brave_ads

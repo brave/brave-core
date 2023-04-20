@@ -22,10 +22,8 @@ TEST_F(BraveAdsGetSignedTokensUrlRequestBuilderTest, BuildUrl) {
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kStaging;
 
-  const std::string nonce = "716c3381-66e6-46e4-962f-15d01455b5b9";
-
-  GetSignedTokensUrlRequestBuilder url_request_builder(GetWalletForTesting(),
-                                                       nonce);
+  GetSignedTokensUrlRequestBuilder url_request_builder(
+      GetWalletForTesting(), /*nonce*/ "716c3381-66e6-46e4-962f-15d01455b5b9");
 
   // Act
   mojom::UrlRequestInfoPtr const url_request = url_request_builder.Build();

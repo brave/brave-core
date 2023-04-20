@@ -34,7 +34,7 @@ TimeSinceLastUserActivityEventPredictorVariable::GetType() const {
 
 std::string TimeSinceLastUserActivityEventPredictorVariable::GetValue() const {
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(kTimeWindow);
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(kTimeWindow);
 
   return base::NumberToString(
       GetTimeSinceLastUserActivityEvent(events, event_type_));

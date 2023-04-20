@@ -31,11 +31,10 @@ class BraveAdsTextClassificationModelTest : public UnitTestBase {
 TEST_F(BraveAdsTextClassificationModelTest,
        DoNotGetSegmentsForUninitializedResource) {
   // Arrange
-  resource::TextClassification uninitialized_resource;
+  resource::TextClassification resource;
 
-  const std::string text = "The quick brown fox jumps over the lazy dog";
-  processor::TextClassification processor(&uninitialized_resource);
-  processor.Process(text);
+  processor::TextClassification processor(resource);
+  processor.Process(/*text*/ "The quick brown fox jumps over the lazy dog");
 
   const TextClassification model;
 
@@ -49,7 +48,7 @@ TEST_F(BraveAdsTextClassificationModelTest,
 TEST_F(BraveAdsTextClassificationModelTest, DoNotGetSegmentsForEmptyText) {
   // Arrange
   const std::string text;
-  processor::TextClassification processor(&resource_);
+  processor::TextClassification processor(resource_);
   processor.Process(text);
 
   const TextClassification model;
@@ -64,9 +63,8 @@ TEST_F(BraveAdsTextClassificationModelTest, DoNotGetSegmentsForEmptyText) {
 TEST_F(BraveAdsTextClassificationModelTest,
        GetSegmentsForPreviouslyClassifiedText) {
   // Arrange
-  const std::string text = "Some content about technology & computing";
-  processor::TextClassification processor(&resource_);
-  processor.Process(text);
+  processor::TextClassification processor(resource_);
+  processor.Process(/*text*/ "Some content about technology & computing");
 
   const TextClassification model;
 
@@ -142,7 +140,7 @@ TEST_F(BraveAdsTextClassificationModelTest,
       "Some content about cooking food", "Some content about finance & banking",
       "Some content about technology & computing"};
 
-  processor::TextClassification processor(&resource_);
+  processor::TextClassification processor(resource_);
   for (const auto& text : texts) {
     processor.Process(text);
   }

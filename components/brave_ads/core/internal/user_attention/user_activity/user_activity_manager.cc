@@ -7,7 +7,6 @@
 
 #include <string>
 
-#include "base/check_op.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
@@ -34,7 +33,7 @@ void LogEvent(const UserActivityEventType event_type) {
       ToUserActivityTriggers(kUserActivityTriggers.Get());
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           kUserActivityTimeWindow.Get());
 
   BLOG(6, "Triggered event: " << base::HexEncode(&event_type, sizeof(int8_t))
@@ -47,22 +46,19 @@ void LogEvent(const UserActivityEventType event_type) {
 
 UserActivityManager::UserActivityManager() {
   AdsClientHelper::AddObserver(this);
-  BrowserManager::GetInstance()->AddObserver(this);
-  TabManager::GetInstance()->AddObserver(this);
+  BrowserManager::GetInstance().AddObserver(this);
+  TabManager::GetInstance().AddObserver(this);
 }
 
 UserActivityManager::~UserActivityManager() {
   AdsClientHelper::RemoveObserver(this);
-  BrowserManager::GetInstance()->RemoveObserver(this);
-  TabManager::GetInstance()->RemoveObserver(this);
+  BrowserManager::GetInstance().RemoveObserver(this);
+  TabManager::GetInstance().RemoveObserver(this);
 }
 
 // static
-UserActivityManager* UserActivityManager::GetInstance() {
-  auto* user_activity_manager =
-      GlobalState::GetInstance()->GetUserActivityManager();
-  DCHECK(user_activity_manager);
-  return user_activity_manager;
+UserActivityManager& UserActivityManager::GetInstance() {
+  return GlobalState::GetInstance()->GetUserActivityManager();
 }
 
 void UserActivityManager::RecordEvent(const UserActivityEventType event_type) {

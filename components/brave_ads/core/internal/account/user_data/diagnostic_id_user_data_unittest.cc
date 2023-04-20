@@ -17,8 +17,8 @@ class BraveAdsDiagnosticIdUserDataTest : public UnitTestBase {};
 
 TEST_F(BraveAdsDiagnosticIdUserDataTest, GetDiagnosticId) {
   // Arrange
-  ads_client_mock_->SetStringPref(prefs::kDiagnosticId,
-                                  "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2");
+  ads_client_mock_.SetStringPref(prefs::kDiagnosticId,
+                                 "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2");
 
   // Act
   const base::Value::Dict user_data = GetDiagnosticId();
@@ -33,7 +33,7 @@ TEST_F(BraveAdsDiagnosticIdUserDataTest, GetDiagnosticId) {
 
 TEST_F(BraveAdsDiagnosticIdUserDataTest, DoNotGetInvalidDiagnosticId) {
   // Arrange
-  ads_client_mock_->SetStringPref(prefs::kDiagnosticId, "INVALID");
+  ads_client_mock_.SetStringPref(prefs::kDiagnosticId, "INVALID");
 
   // Act
   const base::Value::Dict user_data = GetDiagnosticId();
@@ -44,7 +44,7 @@ TEST_F(BraveAdsDiagnosticIdUserDataTest, DoNotGetInvalidDiagnosticId) {
 
 TEST_F(BraveAdsDiagnosticIdUserDataTest, DoNotGetEmptyDiagnosticId) {
   // Arrange
-  ads_client_mock_->SetStringPref(prefs::kDiagnosticId, "");
+  ads_client_mock_.SetStringPref(prefs::kDiagnosticId, "");
 
   // Act
   const base::Value::Dict user_data = GetDiagnosticId();

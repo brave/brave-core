@@ -54,7 +54,7 @@ TEST_F(BraveAdsTextClassificationResourceTest, DoNotLoadInvalidResource) {
 
 TEST_F(BraveAdsTextClassificationResourceTest, DoNotLoadMissingResource) {
   // Arrange
-  EXPECT_CALL(*ads_client_mock_, LoadFileResource(kResourceId, _, _))
+  EXPECT_CALL(ads_client_mock_, LoadFileResource(kResourceId, _, _))
       .WillOnce(Invoke([](const std::string& /*id*/, const int /*version*/,
                           LoadFileCallback callback) {
         const base::FilePath path =

@@ -14,7 +14,7 @@
 namespace brave_ads {
 
 void SetNotificationAdServedAtPredictorVariable(const base::Time time) {
-  PredictorsManager::GetInstance()->SetPredictorVariable(
+  PredictorsManager::GetInstance().SetPredictorVariable(
       std::make_unique<NotificationAdServedAtPredictorVariable>(time));
 }
 

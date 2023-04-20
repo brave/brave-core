@@ -17,7 +17,7 @@ namespace {
 
 bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
   const FlaggedAdList& flagged_ads =
-      ClientStateManager::GetInstance()->GetFlaggedAds();
+      ClientStateManager::GetInstance().GetFlaggedAds();
   if (flagged_ads.empty()) {
     return true;
   }

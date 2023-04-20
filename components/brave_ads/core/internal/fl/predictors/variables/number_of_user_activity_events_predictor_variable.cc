@@ -29,7 +29,7 @@ NumberOfUserActivityEventsPredictorVariable::GetType() const {
 
 std::string NumberOfUserActivityEventsPredictorVariable::GetValue() const {
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Minutes(30));
 
   return base::NumberToString(

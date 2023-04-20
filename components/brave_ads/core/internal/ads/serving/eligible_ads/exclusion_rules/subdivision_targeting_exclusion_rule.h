@@ -42,7 +42,7 @@ class SubdivisionTargetingExclusionRule final
  private:
   bool DoesRespectCap(const CreativeAdInfo& creative_ad) const;
 
-  const base::raw_ref<const SubdivisionTargeting> subdivision_targeting_;
+  const raw_ref<const SubdivisionTargeting> subdivision_targeting_;
 };
 
 }  // namespace brave_ads

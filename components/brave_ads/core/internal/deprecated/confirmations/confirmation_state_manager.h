@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_CONFIRMATIONS_CONFIRMATION_STATE_MANAGER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_CONFIRMATIONS_CONFIRMATION_STATE_MANAGER_H_
 
-#include <memory>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
@@ -14,14 +13,11 @@
 #include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
+#include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
+#include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
-
-namespace privacy {
-class UnblindedPaymentTokens;
-class UnblindedTokens;
-}  // namespace privacy
 
 class ConfirmationStateManager final {
  public:
@@ -36,7 +32,7 @@ class ConfirmationStateManager final {
 
   ~ConfirmationStateManager();
 
-  static ConfirmationStateManager* GetInstance();
+  static ConfirmationStateManager& GetInstance();
 
   void Initialize(const WalletInfo& wallet, InitializeCallback callback);
   bool IsInitialized() const { return is_initialized_; }
@@ -55,14 +51,24 @@ class ConfirmationStateManager final {
   bool RemoveFailedConfirmation(const ConfirmationInfo& confirmation);
   void reset_failed_confirmations() { failed_confirmations_.clear(); }
 
-  privacy::UnblindedTokens* GetUnblindedTokens() const {
+  const privacy::UnblindedTokens& GetUnblindedTokens() const {
     DCHECK(is_initialized_);
-    return unblinded_tokens_.get();
+    return unblinded_tokens_;
   }
 
-  privacy::UnblindedPaymentTokens* GetUnblindedPaymentTokens() const {
+  privacy::UnblindedTokens& GetUnblindedTokens() {
     DCHECK(is_initialized_);
-    return unblinded_payment_tokens_.get();
+    return unblinded_tokens_;
+  }
+
+  const privacy::UnblindedPaymentTokens& GetUnblindedPaymentTokens() const {
+    DCHECK(is_initialized_);
+    return unblinded_payment_tokens_;
+  }
+
+  privacy::UnblindedPaymentTokens& GetUnblindedPaymentTokens() {
+    DCHECK(is_initialized_);
+    return unblinded_payment_tokens_;
   }
 
   bool is_mutated() const { return is_mutated_; }
@@ -86,8 +92,8 @@ class ConfirmationStateManager final {
 
   ConfirmationList failed_confirmations_;
 
-  std::unique_ptr<privacy::UnblindedTokens> unblinded_tokens_;
-  std::unique_ptr<privacy::UnblindedPaymentTokens> unblinded_payment_tokens_;
+  privacy::UnblindedTokens unblinded_tokens_;
+  privacy::UnblindedPaymentTokens unblinded_payment_tokens_;
 
   base::WeakPtrFactory<ConfirmationStateManager> weak_factory_{this};
 };

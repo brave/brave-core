@@ -32,7 +32,7 @@ class BraveAdsCreateOptedOutConfirmationUrlRequestBuilderTest
 
 TEST_F(BraveAdsCreateOptedOutConfirmationUrlRequestBuilderTest, BuildUrl) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kStaging;

@@ -54,21 +54,20 @@ TEST_F(BraveAdsSegmentUtilTest, GetParentSegmentFromParentChildSegment) {
   // Arrange
 
   // Act
-  const std::string parent_segment =
-      GetParentSegment("technology & computing-software");
 
   // Assert
-  EXPECT_EQ("technology & computing", parent_segment);
+  EXPECT_EQ("technology & computing",
+            GetParentSegment("technology & computing-software"));
 }
 
 TEST_F(BraveAdsSegmentUtilTest, GetParentSegmentFromParentSegment) {
   // Arrange
 
   // Act
-  const std::string parent_segment = GetParentSegment("technology & computing");
 
   // Assert
-  EXPECT_EQ("technology & computing", parent_segment);
+  EXPECT_EQ("technology & computing",
+            GetParentSegment("technology & computing"));
 }
 
 TEST_F(BraveAdsSegmentUtilTest, GetParentSegments) {
@@ -98,7 +97,7 @@ TEST_F(BraveAdsSegmentUtilTest, GetParentSegmentsForEmptyList) {
 
 TEST_F(BraveAdsSegmentUtilTest, ShouldFilterMatchingParentChildSegment) {
   // Arrange
-  ClientStateManager::GetInstance()->ToggleDislikeCategory(
+  ClientStateManager::GetInstance().ToggleDislikeCategory(
       "parent-child", CategoryContentOptActionType::kNone);
 
   // Act
@@ -109,7 +108,7 @@ TEST_F(BraveAdsSegmentUtilTest, ShouldFilterMatchingParentChildSegment) {
 
 TEST_F(BraveAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentChildSegment) {
   // Arrange
-  ClientStateManager::GetInstance()->ToggleDislikeCategory(
+  ClientStateManager::GetInstance().ToggleDislikeCategory(
       "parent-child", CategoryContentOptActionType::kNone);
 
   // Act
@@ -120,7 +119,7 @@ TEST_F(BraveAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentChildSegment) {
 
 TEST_F(BraveAdsSegmentUtilTest, ShouldFilterMatchingParentSegment) {
   // Arrange
-  ClientStateManager::GetInstance()->ToggleDislikeCategory(
+  ClientStateManager::GetInstance().ToggleDislikeCategory(
       "parent", CategoryContentOptActionType::kNone);
 
   // Act
@@ -131,7 +130,7 @@ TEST_F(BraveAdsSegmentUtilTest, ShouldFilterMatchingParentSegment) {
 
 TEST_F(BraveAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentSegment) {
   // Arrange
-  ClientStateManager::GetInstance()->ToggleDislikeCategory(
+  ClientStateManager::GetInstance().ToggleDislikeCategory(
       "parent", CategoryContentOptActionType::kNone);
 
   // Act
@@ -143,7 +142,7 @@ TEST_F(BraveAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentSegment) {
 TEST_F(BraveAdsSegmentUtilTest,
        ShouldFilterAgainstParentForMatchingParentSegmentWithChild) {
   // Arrange
-  ClientStateManager::GetInstance()->ToggleDislikeCategory(
+  ClientStateManager::GetInstance().ToggleDislikeCategory(
       "parent", CategoryContentOptActionType::kNone);
 
   // Act
@@ -155,7 +154,7 @@ TEST_F(BraveAdsSegmentUtilTest,
 TEST_F(BraveAdsSegmentUtilTest,
        ShouldNotFilterAgainstParentForNonMatchingParentSegmentWithChild) {
   // Arrange
-  ClientStateManager::GetInstance()->ToggleDislikeCategory(
+  ClientStateManager::GetInstance().ToggleDislikeCategory(
       "parent", CategoryContentOptActionType::kNone);
 
   // Act

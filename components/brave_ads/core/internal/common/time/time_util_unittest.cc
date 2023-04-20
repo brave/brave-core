@@ -292,12 +292,9 @@ TEST_P(BraveAdsTimeUtilTest, TimeToPrivacyPreservingISO8601) {
   AdvanceClockTo(time);
 
   // Act
-  const std::string iso_8601 = TimeToPrivacyPreservingISO8601(Now());
 
   // Assert
-  const std::string expected_iso_8601 = "2020-11-18T23:00:00.000Z";
-
-  EXPECT_EQ(expected_iso_8601, iso_8601);
+  EXPECT_EQ("2020-11-18T23:00:00.000Z", TimeToPrivacyPreservingISO8601(Now()));
 }
 
 #if BUILDFLAG(IS_LINUX)

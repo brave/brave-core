@@ -16,7 +16,7 @@ class BraveAdsLegacyConfirmationMigrationUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsLegacyConfirmationMigrationUtilTest, HasMigrated) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kHasMigratedConfirmationState, true);
+  ads_client_mock_.SetBooleanPref(prefs::kHasMigratedConfirmationState, true);
 
   // Act
 
@@ -26,7 +26,7 @@ TEST_F(BraveAdsLegacyConfirmationMigrationUtilTest, HasMigrated) {
 
 TEST_F(BraveAdsLegacyConfirmationMigrationUtilTest, HasNotMigrated) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kHasMigratedConfirmationState, false);
+  ads_client_mock_.SetBooleanPref(prefs::kHasMigratedConfirmationState, false);
 
   // Act
 

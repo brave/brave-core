@@ -20,7 +20,7 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
        DoNotGetSegmentsForUnitializedResource) {
   // Arrange
   resource::PurchaseIntent resource;
-  processor::PurchaseIntent processor(&resource);
+  processor::PurchaseIntent processor(resource);
 
   const GURL url = GURL("https://www.brave.com/test?foo=bar");
   processor.Process(url);
@@ -40,7 +40,7 @@ TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsForExpiredSignals) {
   resource.Load();
   task_environment_.RunUntilIdle();
 
-  processor::PurchaseIntent processor(&resource);
+  processor::PurchaseIntent processor(resource);
 
   const GURL url_1 = GURL("https://www.brave.com/test?foo=bar");
   processor.Process(url_1);
@@ -81,7 +81,7 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
   resource.Load();
   task_environment_.RunUntilIdle();
 
-  processor::PurchaseIntent processor(&resource);
+  processor::PurchaseIntent processor(resource);
 
   const GURL url = GURL("https://duckduckgo.com/?q=segment+keyword+1");
   processor.Process(url);
@@ -101,7 +101,7 @@ TEST_F(BraveAdsPurchaseIntentModelTest, GetSegmentsForPreviouslyMatchedSite) {
   resource.Load();
   task_environment_.RunUntilIdle();
 
-  processor::PurchaseIntent processor(&resource);
+  processor::PurchaseIntent processor(resource);
 
   const GURL url_1 = GURL("https://www.brave.com/test?foo=bar");
   processor.Process(url_1);
@@ -128,7 +128,7 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
   resource.Load();
   task_environment_.RunUntilIdle();
 
-  processor::PurchaseIntent processor(&resource);
+  processor::PurchaseIntent processor(resource);
 
   const GURL url = GURL("https://duckduckgo.com/?q=segment+keyword+1&foo=bar");
   processor.Process(url);
@@ -152,7 +152,7 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
   resource.Load();
   task_environment_.RunUntilIdle();
 
-  processor::PurchaseIntent processor(&resource);
+  processor::PurchaseIntent processor(resource);
 
   const GURL url =
       GURL("https://duckduckgo.com/?q=segment+keyword+1+funnel+keyword+2");

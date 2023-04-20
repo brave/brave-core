@@ -25,7 +25,7 @@ class DiagnosticManager final {
 
   ~DiagnosticManager();
 
-  static DiagnosticManager* GetInstance();
+  static DiagnosticManager& GetInstance();
 
   void SetEntry(std::unique_ptr<DiagnosticEntryInterface> entry);
 

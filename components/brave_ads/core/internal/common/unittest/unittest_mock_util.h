@@ -20,29 +20,24 @@ namespace brave_ads {
 
 void MockBuildChannel(BuildChannelType type);
 
-void MockPlatformHelper(const std::unique_ptr<PlatformHelperMock>& mock,
-                        PlatformType type);
+void MockPlatformHelper(const PlatformHelperMock& mock, PlatformType type);
 
-void MockIsNetworkConnectionAvailable(
-    const std::unique_ptr<AdsClientMock>& mock,
-    bool is_available);
+void MockIsNetworkConnectionAvailable(const AdsClientMock& mock,
+                                      bool is_available);
 
-void MockIsBrowserActive(const std::unique_ptr<AdsClientMock>& mock,
-                         bool is_browser_active);
-void MockIsBrowserInFullScreenMode(const std::unique_ptr<AdsClientMock>& mock,
+void MockIsBrowserActive(const AdsClientMock& mock, bool is_browser_active);
+void MockIsBrowserInFullScreenMode(const AdsClientMock& mock,
                                    bool is_browser_in_full_screen_mode);
 
-void MockCanShowNotificationAds(const std::unique_ptr<AdsClientMock>& mock,
-                                bool can_show);
+void MockCanShowNotificationAds(AdsClientMock& mock, bool can_show);
 void MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
-    const std::unique_ptr<AdsClientMock>& mock,
+    const AdsClientMock& mock,
     bool can_show);
 
-void MockGetBrowsingHistory(const std::unique_ptr<AdsClientMock>& mock,
+void MockGetBrowsingHistory(AdsClientMock& mock,
                             const std::vector<GURL>& history);
 
-void MockUrlResponses(const std::unique_ptr<AdsClientMock>& mock,
-                      const URLResponseMap& url_responses);
+void MockUrlResponses(AdsClientMock& mock, const URLResponseMap& url_responses);
 
 }  // namespace brave_ads
 

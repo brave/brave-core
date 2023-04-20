@@ -52,20 +52,20 @@ TEST_F(BraveAdsNumberOfUserActivityEventsPredictorVariableTest, GetValue) {
           UserActivityEventType::kOpenedNewTab,
           brave_federated::mojom::CovariateType::kNumberOfOpenedNewTabEvents);
 
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kBrowserDidResignActive);
 
   AdvanceClockBy(base::Minutes(31));
 
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kBrowserDidBecomeActive);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClosedTab);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
 
   // Act

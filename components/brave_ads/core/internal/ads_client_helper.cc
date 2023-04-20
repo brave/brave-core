@@ -11,10 +11,6 @@
 
 namespace brave_ads {
 
-AdsClientHelper::AdsClientHelper() = default;
-
-AdsClientHelper::~AdsClientHelper() = default;
-
 // static
 AdsClient* AdsClientHelper::GetInstance() {
   AdsClient* ads_client = GlobalState::GetInstance()->GetAdsClient();

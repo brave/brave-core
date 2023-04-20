@@ -20,7 +20,6 @@ class BraveAdsGlobalStateTest : public ::testing::Test {
     global_state_ = std::make_unique<GlobalState>(&ads_client_mock_);
   }
 
- protected:
   NiceMock<AdsClientMock> ads_client_mock_;
 
   std::unique_ptr<GlobalState> global_state_;
@@ -30,10 +29,9 @@ TEST_F(BraveAdsGlobalStateTest, HasInstance) {
   // Arrange
 
   // Act
-  const bool has_instance = GlobalState::HasInstance();
 
   // Assert
-  EXPECT_TRUE(has_instance);
+  EXPECT_TRUE(GlobalState::HasInstance());
 }
 
 TEST_F(BraveAdsGlobalStateTest, HasNoInstanceAfterDestruction) {
@@ -41,29 +39,9 @@ TEST_F(BraveAdsGlobalStateTest, HasNoInstanceAfterDestruction) {
   global_state_.reset();
 
   // Act
-  const bool has_instance = GlobalState::HasInstance();
 
   // Assert
-  EXPECT_FALSE(has_instance);
-}
-
-TEST_F(BraveAdsGlobalStateTest, CheckManagersNotNull) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  EXPECT_TRUE(GlobalState::GetInstance()->GetAdsClient());
-  EXPECT_TRUE(GlobalState::GetInstance()->GetBrowserManager());
-  EXPECT_TRUE(GlobalState::GetInstance()->GetClientStateManager());
-  EXPECT_TRUE(GlobalState::GetInstance()->GetConfirmationStateManager());
-  EXPECT_TRUE(GlobalState::GetInstance()->GetDatabaseManager());
-  EXPECT_TRUE(GlobalState::GetInstance()->GetDiagnosticManager());
-  EXPECT_TRUE(GlobalState::GetInstance()->GetHistoryManager());
-  EXPECT_TRUE(GlobalState::GetInstance()->GetNotificationAdManager());
-  EXPECT_TRUE(GlobalState::GetInstance()->GetPredictorsManager());
-  EXPECT_TRUE(GlobalState::GetInstance()->GetTabManager());
-  EXPECT_TRUE(GlobalState::GetInstance()->GetUserActivityManager());
+  EXPECT_FALSE(GlobalState::HasInstance());
 }
 
 }  // namespace brave_ads

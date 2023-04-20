@@ -21,7 +21,7 @@ TEST_F(BraveAdsUnblindedTokenUtilTest, GetUnblindedToken) {
   const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(/*count*/ 2);
   ASSERT_EQ(2U, unblinded_tokens.size());
 
-  GetUnblindedTokens()->SetTokens(unblinded_tokens);
+  GetUnblindedTokens().SetTokens(unblinded_tokens);
 
   // Act
   const absl::optional<UnblindedTokenInfo> unblinded_token =
@@ -51,14 +51,14 @@ TEST_F(BraveAdsUnblindedTokenUtilTest, AddUnblindedTokens) {
   const UnblindedTokenInfo& token_1 = unblinded_tokens.at(0);
   const UnblindedTokenInfo& token_2 = unblinded_tokens.at(1);
 
-  GetUnblindedTokens()->SetTokens({token_1});
+  GetUnblindedTokens().SetTokens({token_1});
 
   // Act
   AddUnblindedTokens({token_2});
 
   // Assert
   const UnblindedTokenList expected_tokens = {token_1, token_2};
-  EXPECT_EQ(expected_tokens, GetUnblindedTokens()->GetAllTokens());
+  EXPECT_EQ(expected_tokens, GetUnblindedTokens().GetAllTokens());
 }
 
 TEST_F(BraveAdsUnblindedTokenUtilTest, RemoveUnblindedToken) {
@@ -70,14 +70,14 @@ TEST_F(BraveAdsUnblindedTokenUtilTest, RemoveUnblindedToken) {
   const UnblindedTokenInfo& token_2 = unblinded_tokens.at(1);
   const UnblindedTokenInfo& token_3 = unblinded_tokens.at(2);
 
-  GetUnblindedTokens()->SetTokens(unblinded_tokens);
+  GetUnblindedTokens().SetTokens(unblinded_tokens);
 
   // Act
   RemoveUnblindedToken(token_2);
 
   // Assert
   const UnblindedTokenList expected_tokens = {token_1, token_3};
-  EXPECT_EQ(expected_tokens, GetUnblindedTokens()->GetAllTokens());
+  EXPECT_EQ(expected_tokens, GetUnblindedTokens().GetAllTokens());
 }
 
 TEST_F(BraveAdsUnblindedTokenUtilTest, UnblindedTokenCount) {

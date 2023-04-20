@@ -17,13 +17,13 @@
 
 namespace brave_ads::privacy {
 
-UnblindedTokens* GetUnblindedTokens() {
-  return ConfirmationStateManager::GetInstance()->GetUnblindedTokens();
+UnblindedTokens& GetUnblindedTokens() {
+  return ConfirmationStateManager::GetInstance().GetUnblindedTokens();
 }
 
 UnblindedTokenList SetUnblindedTokens(const int count) {
   UnblindedTokenList unblinded_tokens = GetUnblindedTokens(count);
-  GetUnblindedTokens()->SetTokens(unblinded_tokens);
+  GetUnblindedTokens().SetTokens(unblinded_tokens);
   return unblinded_tokens;
 }
 
@@ -77,7 +77,7 @@ UnblindedTokenList GetUnblindedTokens(const int count) {
       R"(6tKJHOtQqpNzFjLGT0gvXlCF0GGKrqQlK82e2tc7gJvQkorg60Y21jEAg8JHbU8D3mBK/riZCILoi1cPCiBDAdhWJNVm003mZ0ShjmbESnKhL/NxRv/0/PB3GQ5iydoc)",
       R"(ujGlRHnz+UF0h8i6gYDnfeZDUj7qZZz6o29ZJFa3XN2g+yVXgRTws1yv6RAtLCr39OQso6FAT12o8GAvHVEzmRqyzm2XU9gMK5WrNtT/fhr8gQ9RvupdznGKOqmVbuIc)"};
 
-  const int modulo = unblinded_tokens_base64.size();
+  const size_t modulo = unblinded_tokens_base64.size();
 
   UnblindedTokenList unblinded_tokens;
 

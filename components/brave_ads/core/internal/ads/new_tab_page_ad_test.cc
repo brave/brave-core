@@ -43,7 +43,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, Serve) {
   // Arrange
 
   // Act
-  GetAds()->MaybeServeNewTabPageAd(
+  GetAds().MaybeServeNewTabPageAd(
       base::BindOnce([](const absl::optional<NewTabPageAdInfo>& ad) {
         // Assert
         EXPECT_TRUE(ad);
@@ -57,8 +57,8 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerServedEvent) {
   // Arrange
 
   // Act
-  GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                                     mojom::NewTabPageAdEventType::kServed);
+  GetAds().TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
+                                    mojom::NewTabPageAdEventType::kServed);
 
   // Assert
   EXPECT_EQ(1,
@@ -69,12 +69,12 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerServedEvent) {
 
 TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
   // Arrange
-  GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                                     mojom::NewTabPageAdEventType::kServed);
+  GetAds().TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
+                                    mojom::NewTabPageAdEventType::kServed);
 
   // Act
-  GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                                     mojom::NewTabPageAdEventType::kViewed);
+  GetAds().TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
+                                    mojom::NewTabPageAdEventType::kViewed);
 
   // Assert
   EXPECT_EQ(1,
@@ -87,14 +87,14 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
 
 TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
-  GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                                     mojom::NewTabPageAdEventType::kServed);
-  GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                                     mojom::NewTabPageAdEventType::kViewed);
+  GetAds().TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
+                                    mojom::NewTabPageAdEventType::kServed);
+  GetAds().TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
+                                    mojom::NewTabPageAdEventType::kViewed);
 
   // Act
-  GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                                     mojom::NewTabPageAdEventType::kClicked);
+  GetAds().TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
+                                    mojom::NewTabPageAdEventType::kClicked);
 
   // Assert
   EXPECT_EQ(1,

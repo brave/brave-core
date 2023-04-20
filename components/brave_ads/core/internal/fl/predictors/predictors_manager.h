@@ -33,7 +33,7 @@ class PredictorsManager final {
 
   ~PredictorsManager();
 
-  static PredictorsManager* GetInstance();
+  static PredictorsManager& GetInstance();
 
   void SetPredictorVariable(
       std::unique_ptr<PredictorVariableInterface> predictor_variable);

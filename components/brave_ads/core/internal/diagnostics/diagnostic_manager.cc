@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/check_op.h"
+#include "base/check.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_value_util.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/catalog_id_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/catalog_last_updated_diagnostic_entry.h"
@@ -28,13 +28,11 @@ DiagnosticManager::DiagnosticManager() {
   SetEntry(std::make_unique<LastUnIdleTimeDiagnosticEntry>());
 }
 
-DiagnosticManager::~DiagnosticManager() {}
+DiagnosticManager::~DiagnosticManager() = default;
 
 // static
-DiagnosticManager* DiagnosticManager::GetInstance() {
-  auto* diagnostic_manager = GlobalState::GetInstance()->GetDiagnosticManager();
-  DCHECK(diagnostic_manager);
-  return diagnostic_manager;
+DiagnosticManager& DiagnosticManager::GetInstance() {
+  return GlobalState::GetInstance()->GetDiagnosticManager();
 }
 
 void DiagnosticManager::SetEntry(

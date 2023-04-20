@@ -50,7 +50,8 @@ class ADS_EXPORT Ads {
   virtual void SetFlags(mojom::FlagsPtr flags) = 0;
 
   // Called to initialize ads. The callback takes one argument - |bool| is set
-  // to |true| if successful otherwise |false|.
+  // to |true| if successful otherwise |false|. |OnRewardsWalletDidChange| must
+  // be called before calling |Initialize|.
   virtual void Initialize(InitializeCallback callback) = 0;
 
   // Called to shutdown ads. The callback takes one argument - |bool| is set to

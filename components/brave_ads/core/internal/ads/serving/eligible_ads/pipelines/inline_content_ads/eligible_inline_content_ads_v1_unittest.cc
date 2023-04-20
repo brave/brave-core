@@ -263,7 +263,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, DoNotGetAdsIfAlreadySeen) {
   SaveCreativeAds(creative_ads);
 
   const InlineContentAdInfo ad = BuildInlineContentAd(creative_ad_1);
-  ClientStateManager::GetInstance()->UpdateSeenAd(ad);
+  ClientStateManager::GetInstance().UpdateSeenAd(ad);
 
   // Act
   CreativeInlineContentAdList expected_creative_ads = {creative_ad_2};

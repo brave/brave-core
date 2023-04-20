@@ -40,7 +40,7 @@ TEST_F(BraveAdsMarkedAsInappropriateExclusionRuleTest, DoNotAllowAd) {
   AdContentInfo ad_content;
   ad_content.creative_set_id = kCreativeSetId;
   ad_content.is_flagged = false;
-  ClientStateManager::GetInstance()->ToggleMarkAdAsInappropriate(ad_content);
+  ClientStateManager::GetInstance().ToggleMarkAdAsInappropriate(ad_content);
 
   // Act
 

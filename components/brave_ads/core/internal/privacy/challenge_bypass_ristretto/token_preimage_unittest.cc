@@ -19,10 +19,9 @@ TEST(BraveAdsTokenPreimageTest, FailToInitialize) {
   const TokenPreimage token_preimage;
 
   // Act
-  const bool has_value = token_preimage.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(token_preimage.has_value());
 }
 
 TEST(BraveAdsTokenPreimageTest, FailToInitializeWithEmptyBase64) {
@@ -30,10 +29,9 @@ TEST(BraveAdsTokenPreimageTest, FailToInitializeWithEmptyBase64) {
   const TokenPreimage token_preimage("");
 
   // Act
-  const bool has_value = token_preimage.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(token_preimage.has_value());
 }
 
 TEST(BraveAdsTokenPreimageTest, FailToInitializeWithInvalidBase64) {
@@ -41,10 +39,9 @@ TEST(BraveAdsTokenPreimageTest, FailToInitializeWithInvalidBase64) {
   const TokenPreimage token_preimage(kInvalidBase64);
 
   // Act
-  const bool has_value = token_preimage.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(token_preimage.has_value());
 }
 
 TEST(BraveAdsTokenPreimageTest, DecodeBase64) {
@@ -55,8 +52,7 @@ TEST(BraveAdsTokenPreimageTest, DecodeBase64) {
       TokenPreimage::DecodeBase64(kTokenPreimageBase64);
 
   // Assert
-  const bool has_value = token_preimage.has_value();
-  EXPECT_TRUE(has_value);
+  EXPECT_TRUE(token_preimage.has_value());
 }
 
 TEST(BraveAdsTokenPreimageTest, FailToDecodeEmptyBase64) {
@@ -66,8 +62,7 @@ TEST(BraveAdsTokenPreimageTest, FailToDecodeEmptyBase64) {
   const TokenPreimage token_preimage = TokenPreimage::DecodeBase64({});
 
   // Assert
-  const bool has_value = token_preimage.has_value();
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(token_preimage.has_value());
 }
 
 TEST(BraveAdsTokenPreimageTest, FailToDecodeInvalidBase64) {
@@ -78,8 +73,7 @@ TEST(BraveAdsTokenPreimageTest, FailToDecodeInvalidBase64) {
       TokenPreimage::DecodeBase64(kInvalidBase64);
 
   // Assert
-  const bool has_value = token_preimage.has_value();
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(token_preimage.has_value());
 }
 
 TEST(BraveAdsTokenPreimageTest, EncodeBase64) {

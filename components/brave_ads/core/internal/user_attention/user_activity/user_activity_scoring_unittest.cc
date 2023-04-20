@@ -21,25 +21,25 @@ TEST_F(BraveAdsUserActivityScoringTest, GetUserActivityScore) {
   const UserActivityTriggerList triggers =
       ToUserActivityTriggers("06=.3;0D1406=1.0;0D14=0.5");
 
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedLink);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedReloadButton);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTypedUrl);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTabStartedPlayingMedia);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTypedUrl);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedLink);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Act
@@ -54,26 +54,26 @@ TEST_F(BraveAdsUserActivityScoringTest, GetUserActivityScoreForTimeWindow) {
   const UserActivityTriggerList triggers =
       ToUserActivityTriggers("06=.3;0D1406=1.0;0D14=0.5");
 
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedLink);
   AdvanceClockBy(base::Hours(2));
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedReloadButton);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTypedUrl);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTabStartedPlayingMedia);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTypedUrl);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedLink);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Act
@@ -88,25 +88,25 @@ TEST_F(BraveAdsUserActivityScoringTest,
   // Arrange
   const UserActivityTriggerList triggers = ToUserActivityTriggers("INVALID");
 
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedLink);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedReloadButton);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTypedUrl);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTabStartedPlayingMedia);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTypedUrl);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedLink);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Act
@@ -122,25 +122,25 @@ TEST_F(BraveAdsUserActivityScoringTest,
   const UserActivityTriggerList triggers =
       ToUserActivityTriggers("06=1;0D1406=1.0;=0.5");
 
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedLink);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedReloadButton);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTypedUrl);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTabStartedPlayingMedia);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTypedUrl);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedLink);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Act
@@ -156,25 +156,25 @@ TEST_F(BraveAdsUserActivityScoringTest,
   const UserActivityTriggerList triggers =
       ToUserActivityTriggers("06=.3;0d1406=1.0;0D14=0.5");
 
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedLink);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedReloadButton);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTypedUrl);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTabStartedPlayingMedia);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTypedUrl);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedLink);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Act
@@ -189,25 +189,25 @@ TEST_F(BraveAdsUserActivityScoringTest,
   // Arrange
   const UserActivityTriggerList triggers = ToUserActivityTriggers({});
 
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedLink);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedReloadButton);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTypedUrl);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTabStartedPlayingMedia);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTypedUrl);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedLink);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Act

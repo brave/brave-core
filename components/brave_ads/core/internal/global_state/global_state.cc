@@ -7,18 +7,7 @@
 
 #include "base/check.h"
 #include "brave/components/brave_ads/core/ads_client.h"
-#include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
-#include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
-#include "brave/components/brave_ads/core/internal/database/database_manager.h"
-#include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
-#include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_manager.h"
-#include "brave/components/brave_ads/core/internal/fl/predictors/predictors_manager.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state_holder.h"
-#include "brave/components/brave_ads/core/internal/history/history_manager.h"
-#include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
-#include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection.h"
-#include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
 
 namespace brave_ads {
 
@@ -26,18 +15,6 @@ GlobalState::GlobalState(AdsClient* ads_client)
     : ads_client_(ads_client),
       global_state_holder_(std::make_unique<GlobalStateHolder>(this)) {
   DCHECK(ads_client_);
-
-  browser_manager_ = std::make_unique<BrowserManager>();
-  client_state_manager_ = std::make_unique<ClientStateManager>();
-  confirmation_state_manager_ = std::make_unique<ConfirmationStateManager>();
-  predictors_manager_ = std::make_unique<PredictorsManager>();
-  database_manager_ = std::make_unique<DatabaseManager>();
-  diagnostic_manager_ = std::make_unique<DiagnosticManager>();
-  history_manager_ = std::make_unique<HistoryManager>();
-  idle_detection_ = std::make_unique<IdleDetection>();
-  notification_ad_manager_ = std::make_unique<NotificationAdManager>();
-  tab_manager_ = std::make_unique<TabManager>();
-  user_activity_manager_ = std::make_unique<UserActivityManager>();
 }
 
 GlobalState::~GlobalState() = default;
@@ -50,7 +27,7 @@ GlobalState* GlobalState::GetInstance() {
 
 // static
 bool GlobalState::HasInstance() {
-  return !!GlobalStateHolder::GetGlobalState();
+  return GlobalStateHolder::GetGlobalState() != nullptr;
 }
 
 AdsClient* GlobalState::GetAdsClient() {
@@ -58,44 +35,44 @@ AdsClient* GlobalState::GetAdsClient() {
   return ads_client_;
 }
 
-BrowserManager* GlobalState::GetBrowserManager() {
-  return browser_manager_.get();
+BrowserManager& GlobalState::GetBrowserManager() {
+  return browser_manager_;
 }
 
-ClientStateManager* GlobalState::GetClientStateManager() {
-  return client_state_manager_.get();
+ClientStateManager& GlobalState::GetClientStateManager() {
+  return client_state_manager_;
 }
 
-ConfirmationStateManager* GlobalState::GetConfirmationStateManager() {
-  return confirmation_state_manager_.get();
+ConfirmationStateManager& GlobalState::GetConfirmationStateManager() {
+  return confirmation_state_manager_;
 }
 
-DatabaseManager* GlobalState::GetDatabaseManager() {
-  return database_manager_.get();
+DatabaseManager& GlobalState::GetDatabaseManager() {
+  return database_manager_;
 }
 
-DiagnosticManager* GlobalState::GetDiagnosticManager() {
-  return diagnostic_manager_.get();
+DiagnosticManager& GlobalState::GetDiagnosticManager() {
+  return diagnostic_manager_;
 }
 
-HistoryManager* GlobalState::GetHistoryManager() {
-  return history_manager_.get();
+HistoryManager& GlobalState::GetHistoryManager() {
+  return history_manager_;
 }
 
-NotificationAdManager* GlobalState::GetNotificationAdManager() {
-  return notification_ad_manager_.get();
+NotificationAdManager& GlobalState::GetNotificationAdManager() {
+  return notification_ad_manager_;
 }
 
-PredictorsManager* GlobalState::GetPredictorsManager() {
-  return predictors_manager_.get();
+PredictorsManager& GlobalState::GetPredictorsManager() {
+  return predictors_manager_;
 }
 
-TabManager* GlobalState::GetTabManager() {
-  return tab_manager_.get();
+TabManager& GlobalState::GetTabManager() {
+  return tab_manager_;
 }
 
-UserActivityManager* GlobalState::GetUserActivityManager() {
-  return user_activity_manager_.get();
+UserActivityManager& GlobalState::GetUserActivityManager() {
+  return user_activity_manager_;
 }
 
 mojom::SysInfo& GlobalState::SysInfo() {

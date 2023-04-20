@@ -200,8 +200,8 @@ bool IsValid(const ConfirmationInfo& confirmation) {
 }
 
 void ResetConfirmations() {
-  ConfirmationStateManager::GetInstance()->reset_failed_confirmations();
-  ConfirmationStateManager::GetInstance()->Save();
+  ConfirmationStateManager::GetInstance().reset_failed_confirmations();
+  ConfirmationStateManager::GetInstance().Save();
 
   privacy::RemoveAllUnblindedPaymentTokens();
 

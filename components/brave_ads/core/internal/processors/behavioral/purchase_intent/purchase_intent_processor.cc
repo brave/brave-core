@@ -40,7 +40,7 @@ void AppendIntentSignalToHistory(
         purchase_intent_signal.created_at, purchase_intent_signal.weight);
 
     ClientStateManager::GetInstance()
-        ->AppendToPurchaseIntentSignalHistoryForSegment(segment, history);
+        .AppendToPurchaseIntentSignalHistoryForSegment(segment, history);
   }
 }
 
@@ -62,17 +62,15 @@ bool IsSubset(KeywordList keywords_lhs, KeywordList keywords_rhs) {
 
 }  // namespace
 
-PurchaseIntent::PurchaseIntent(resource::PurchaseIntent* resource)
+PurchaseIntent::PurchaseIntent(resource::PurchaseIntent& resource)
     : resource_(resource) {
-  DCHECK(resource_);
-
   AdsClientHelper::AddObserver(this);
-  TabManager::GetInstance()->AddObserver(this);
+  TabManager::GetInstance().AddObserver(this);
 }
 
 PurchaseIntent::~PurchaseIntent() {
   AdsClientHelper::RemoveObserver(this);
-  TabManager::GetInstance()->RemoveObserver(this);
+  TabManager::GetInstance().RemoveObserver(this);
 }
 
 void PurchaseIntent::Process(const GURL& url) {
@@ -223,7 +221,7 @@ void PurchaseIntent::OnTextContentDidChange(
   }
 
   const absl::optional<TabInfo> last_visible_tab =
-      TabManager::GetInstance()->GetLastVisible();
+      TabManager::GetInstance().GetLastVisible();
   if (!last_visible_tab) {
     return;
   }
