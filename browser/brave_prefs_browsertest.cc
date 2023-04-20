@@ -160,8 +160,13 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
       spellcheck::prefs::kSpellCheckUseSpellingService));
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       prefs::kSafeBrowsingExtendedReportingOptInAllowed));
+#if BUILDFLAG(IS_ANDROID)
+  // On desktop, value could be change based on current country and search
+  // provider. SearchEngineProviderServiceTest.DefaultSearchSuggestEnabledTest
+  // test about this.
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       prefs::kSearchSuggestEnabled));
+#endif
   EXPECT_EQ(chrome_test_utils::GetProfile(this)->GetPrefs()->GetInteger(
                 prefetch::prefs::kNetworkPredictionOptions),
             static_cast<int>(prefetch::NetworkPredictionOptions::kDisabled));

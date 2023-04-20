@@ -290,9 +290,13 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(kSideSearchEnabled, base::Value(false));
 #endif
 
+#if BUILDFLAG(IS_ANDROID)
+  // On desktop NormalWindowSearchEngineProviderService controls
+  // its default value based on current country and search provider.
   // Disable search suggestion
   registry->SetDefaultPrefValue(prefs::kSearchSuggestEnabled,
                                 base::Value(false));
+#endif
 
   // Disable "Use a prediction service to load pages more quickly"
   registry->SetDefaultPrefValue(
