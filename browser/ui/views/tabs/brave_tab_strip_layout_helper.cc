@@ -37,6 +37,8 @@ void CalculatePinnedTabsBoundsInGrid(
     return;
   }
 
+  auto* tab_style = TabStyle::Get();
+
   gfx::Rect rect(/* x= */ kMarginForVerticalTabContainers,
                  /* y= */ kMarginForVerticalTabContainers,
                  /* width= */ kVerticalTabMinWidth,
@@ -54,7 +56,7 @@ void CalculatePinnedTabsBoundsInGrid(
 
     // Update rect for the next pinned tabs. If overflowed, break into new line
     if (rect.right() + kVerticalTabMinWidth + kVerticalTabsSpacing <
-        width.value_or(TabStyle::GetStandardWidth())) {
+        width.value_or(tab_style->GetStandardWidth())) {
       rect.set_x(rect.right() + kVerticalTabsSpacing);
     } else {
       // New line
@@ -131,11 +133,13 @@ std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
   const bool is_vertical_tabs_floating =
       static_cast<BraveTabStrip*>(tab_strip)->IsVerticalTabsFloating();
 
+  auto* tab_style = TabStyle::Get();
+
   std::vector<gfx::Rect> bounds;
   int x = 0;
   int y = 0;
   for (const TabSlotView* view : views) {
-    auto width = TabStyle::GetStandardWidth();
+    auto width = tab_style->GetStandardWidth();
     const int height = view->height();
     if (view->GetTabSlotViewType() == TabSlotView::ViewType::kTab) {
       if (!is_vertical_tabs_floating &&
