@@ -8,45 +8,44 @@ import Shared
 import BraveShared
 import Growth
 
-public struct FullScreenCalloutManager {
+public enum FullScreenCalloutType: CaseIterable {
+  case bottomBar, p3a, vpn, rewards, defaultBrowser, blockCookieConsentNotices, linkReceipt
 
-  public enum FullScreenCalloutType {
-    case bottomBar, p3a, vpn, rewards, defaultBrowser, blockCookieConsentNotices, linkReceipt
-
-    /// The number of days passed to show certain type of callout
-    var period: Int {
-      switch self {
-      case .bottomBar: return 0
-      case .p3a: return 0
-      case .vpn: return 4
-      case .rewards: return 8
-      case .defaultBrowser: return 10
-      case .blockCookieConsentNotices: return 0
-      case .linkReceipt: return 0
-      }
-    }
-
-    /// The preference value stored for complete state
-    public var preferenceValue: Preferences.Option<Bool> {
-      switch self {
-      case .bottomBar:
-        return Preferences.FullScreenCallout.bottomBarCalloutCompleted
-      case .p3a:
-        return Preferences.Onboarding.p3aOnboardingShown
-      case .vpn:
-        return Preferences.FullScreenCallout.vpnCalloutCompleted
-      case .rewards:
-        return Preferences.FullScreenCallout.rewardsCalloutCompleted
-      case .defaultBrowser:
-        return Preferences.DefaultBrowserIntro.completed
-      case .blockCookieConsentNotices:
-        return Preferences.FullScreenCallout.blockCookieConsentNoticesCalloutCompleted
-      case .linkReceipt:
-        return Preferences.Onboarding.linkReceiptShown
-      }
+  /// The number of days passed to show certain type of callout
+  var period: Int {
+    switch self {
+    case .bottomBar: return 0
+    case .p3a: return 0
+    case .vpn: return 4
+    case .rewards: return 8
+    case .defaultBrowser: return 10
+    case .blockCookieConsentNotices: return 0
+    case .linkReceipt: return 0
     }
   }
 
+  /// The preference value stored for complete state
+  public var preferenceValue: Preferences.Option<Bool> {
+    switch self {
+    case .bottomBar:
+      return Preferences.FullScreenCallout.bottomBarCalloutCompleted
+    case .p3a:
+      return Preferences.Onboarding.p3aOnboardingShown
+    case .vpn:
+      return Preferences.FullScreenCallout.vpnCalloutCompleted
+    case .rewards:
+      return Preferences.FullScreenCallout.rewardsCalloutCompleted
+    case .defaultBrowser:
+      return Preferences.DefaultBrowserIntro.completed
+    case .blockCookieConsentNotices:
+      return Preferences.FullScreenCallout.blockCookieConsentNoticesCalloutCompleted
+    case .linkReceipt:
+      return Preferences.Onboarding.linkReceiptShown
+    }
+  }
+}
+
+public struct FullScreenCalloutManager {
   /// It determines whether we should show show the designated callout or not and sets corresponding preferences accordingly.
   /// Returns true if the callout should be shown.
   public static func shouldShowDefaultBrowserCallout(calloutType: FullScreenCalloutType) -> Bool {

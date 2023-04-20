@@ -361,7 +361,7 @@ public class BrowserViewController: UIViewController {
         if case .sendTabToSelfEntriesAddedRemotely(let newEntries) = stateChange {
           // Fetching the last URL that has been sent from synced sessions
           if let requestedURL = newEntries.last?.url {
-            self?.presentTabReceivedCallout(url: requestedURL)
+            self?.presentTabReceivedToast(url: requestedURL)
           }
         }
       })
@@ -1182,16 +1182,8 @@ public class BrowserViewController: UIViewController {
     presentOnboardingIntro()
 
     // Full Screen Callout Presentation
-    // Priority: P3A - VPN - Default Browser - Rewards
-    // TODO: Remove the dispatch after with a proper fix and fix calling present functions before super.viewDidAppear
     DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-      self.presentP3AScreenCallout()
-      self.presentBottomBarCallout()
-      self.presentVPNAlertCallout()
-      self.presentDefaultBrowserScreenCallout()
-      self.presentBraveRewardsScreenCallout()
-      self.presentCookieNotificationBlockingCalloutIfNeeded()
-      self.presentLinkReceiptCallout(skipSafeGuards: false)
+      self.presentFullScreenCallouts()
     }
 
     screenshotHelper.viewIsVisible = true
@@ -3099,6 +3091,27 @@ extension BrowserViewController {
   public func handleNavigationPath(path: NavigationPath) {
     executeAfterSetup {
       NavigationPath.handle(nav: path, with: self)
+    }
+  }
+}
+
+extension BrowserViewController {
+  func presentTabReceivedToast(url: URL) {
+    // 'Tab Received' indicator will only be shown in normal browsing
+    if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+      let toast = ButtonToast(
+        labelText: Strings.Callout.tabReceivedCalloutTitle,
+        image: UIImage(braveSystemNamed: "brave.tablet.and.phone"),
+        buttonText: Strings.goButtonTittle,
+        completion: { [weak self] buttonPressed in
+          guard let self = self else { return }
+          
+          if buttonPressed {
+            self.tabManager.addTabAndSelect(URLRequest(url: url), isPrivate: false)
+          }
+      })
+      
+      show(toast: toast, duration: ButtonToastUX.toastDismissAfter)
     }
   }
 }

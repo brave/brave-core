@@ -8,8 +8,9 @@ import Strings
 import DesignSystem
 import BraveShared
 import Growth
+import BraveUI
 
-struct CookieNotificationBlockingConsentView: View {
+public struct CookieNotificationBlockingConsentView: View {
   public static let contentHeight = 480.0
   public static let contentWidth = 344.0
   private static let gifHeight = 328.0
@@ -22,22 +23,23 @@ struct CookieNotificationBlockingConsentView: View {
   @Environment(\.presentationMode) @Binding private var presentationMode
   @State private var showAnimation = false
   
+  public var onYesButtonPressed: (() -> Void)?
+
   private var yesButton: some View {
-    Button(Strings.yesBlockCookieConsentNotices) {
-      withAnimation(animation) {
-        self.showAnimation = true
-      }
+    
+    Button(Strings.yesBlockCookieConsentNotices,
+      action: {
+        withAnimation(animation) {
+          self.showAnimation = true
+        }
       
-      Task { @MainActor in
-        FilterListStorage.shared.enableFilterList(
-          for: FilterList.cookieConsentNoticesComponentID, isEnabled: true
-        )
-        
-        recordCookieListPromptP3A(answer: .tappedYes)
-        try await Task.sleep(seconds: 3.5)
-        self.dismiss()
+        Task { @MainActor in
+          recordCookieListPromptP3A(answer: .tappedYes)
+          onYesButtonPressed?()
+          self.dismiss()
+        }
       }
-    }
+    )
     .buttonStyle(BraveFilledButtonStyle(size: .large))
     .multilineTextAlignment(.center)
     .transition(transition)
@@ -54,7 +56,7 @@ struct CookieNotificationBlockingConsentView: View {
     .transition(transition)
   }
   
-  var body: some View {
+  public var body: some View {
     ScrollView {
       VStack {
         VStack {
@@ -123,3 +125,29 @@ struct CookieNotificationBlockingConsentView_Previews: PreviewProvider {
   }
 }
 #endif
+
+public class CookieNotificationBlockingConsentViewController: UIHostingController<CookieNotificationBlockingConsentView>, PopoverContentComponent {
+  public init() {
+    super.init(rootView: CookieNotificationBlockingConsentView())
+    
+    self.preferredContentSize = CGSize(
+      width: CookieNotificationBlockingConsentView.contentWidth,
+      height: CookieNotificationBlockingConsentView.contentHeight
+    )
+  }
+
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  public override func viewDidLoad() {
+    super.viewDidLoad()
+    view.backgroundColor = UIColor.braveBackground
+  }
+}
+
+extension Task where Success == Never, Failure == Never {
+  public static func sleep(seconds: TimeInterval) async throws {
+    try await sleep(nanoseconds: NSEC_PER_MSEC * UInt64(seconds * 1000))
+  }
+}
