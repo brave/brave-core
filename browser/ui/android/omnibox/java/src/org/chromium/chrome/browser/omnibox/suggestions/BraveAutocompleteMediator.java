@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.chromium.base.Callback;
-import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
@@ -47,13 +46,12 @@ class BraveAutocompleteMediator extends AutocompleteMediator implements BraveSug
             @NonNull LocationBarDataProvider locationBarDataProvider,
             @NonNull Callback<Tab> bringTabToFrontCallback,
             @NonNull Supplier<TabWindowManager> tabWindowManagerSupplier,
-            @NonNull BookmarkState bookmarkState, @NonNull JankTracker jankTracker,
-            @NonNull ActionChipsDelegate actionChipsDelegate,
+            @NonNull BookmarkState bookmarkState, @NonNull ActionChipsDelegate actionChipsDelegate,
             @NonNull OpenHistoryClustersDelegate openHistoryClustersDelegate) {
         super(context, controllerProvider, delegate, textProvider, listPropertyModel, handler,
                 modalDialogManagerSupplier, activityTabSupplier, shareDelegateSupplier,
                 locationBarDataProvider, bringTabToFrontCallback, tabWindowManagerSupplier,
-                bookmarkState, jankTracker, actionChipsDelegate, openHistoryClustersDelegate);
+                bookmarkState, actionChipsDelegate, openHistoryClustersDelegate);
     }
 
     @Override

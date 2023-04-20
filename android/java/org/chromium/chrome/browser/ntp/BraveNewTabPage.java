@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 
 import androidx.annotation.Nullable;
 
-import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
@@ -55,11 +54,10 @@ public class BraveNewTabPage extends NewTabPage {
             NativePageHost nativePageHost, Tab tab, String url,
             BottomSheetController bottomSheetController,
             Supplier<ShareDelegate> shareDelegateSupplier, WindowAndroid windowAndroid,
-            JankTracker jankTracker, Supplier<Toolbar> toolbarSupplier,
-            SettingsLauncher settingsLauncher) {
+            Supplier<Toolbar> toolbarSupplier, SettingsLauncher settingsLauncher) {
         super(activity, browserControlsStateProvider, activityTabProvider, snackbarManager,
                 lifecycleDispatcher, tabModelSelector, isTablet, uma, isInNightMode, nativePageHost,
-                tab, url, bottomSheetController, shareDelegateSupplier, windowAndroid, jankTracker,
+                tab, url, bottomSheetController, shareDelegateSupplier, windowAndroid,
                 toolbarSupplier, settingsLauncher);
 
         assert mNewTabPageLayout instanceof BraveNewTabPageLayout;

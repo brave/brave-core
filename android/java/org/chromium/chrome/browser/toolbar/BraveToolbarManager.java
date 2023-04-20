@@ -18,7 +18,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.chromium.base.Callback;
 import org.chromium.base.CallbackController;
 import org.chromium.base.Log;
-import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
@@ -57,7 +56,7 @@ import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.tab_management.TabGroupUi;
-import org.chromium.chrome.browser.tasks.tab_management.TabManagementModuleProvider;
+import org.chromium.chrome.browser.tasks.tab_management.TabManagementDelegateProvider;
 import org.chromium.chrome.browser.tasks.tab_management.TabUiFeatureUtilities;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.bottom.BottomControlsCoordinator;
@@ -161,7 +160,6 @@ public class BraveToolbarManager extends ToolbarManager {
             @NonNull Supplier<Boolean> isWarmOnResumeSupplier,
             @NonNull TabContentManager tabContentManager,
             @NonNull TabCreatorManager tabCreatorManager, @NonNull SnackbarManager snackbarManager,
-            JankTracker jankTracker,
             @NonNull Supplier<MerchantTrustSignalsCoordinator>
                     merchantTrustSignalsCoordinatorSupplier,
             OneshotSupplier<TabReparentingController> tabReparentingControllerSupplier,
@@ -179,7 +177,7 @@ public class BraveToolbarManager extends ToolbarManager {
                 windowAndroid, isInOverviewModeSupplier, modalDialogManagerSupplier,
                 statusBarColorController, appMenuDelegate, activityLifecycleDispatcher,
                 startSurfaceParentTabSupplier, bottomSheetController, isWarmOnResumeSupplier,
-                tabContentManager, tabCreatorManager, snackbarManager, jankTracker,
+                tabContentManager, tabCreatorManager, snackbarManager,
                 merchantTrustSignalsCoordinatorSupplier, tabReparentingControllerSupplier,
                 actionChipsDelegate, ephemeralTabCoordinatorSupplier, initializeWithIncognitoColors,
                 backPressManager, openHistoryClustersDelegate);
@@ -242,8 +240,8 @@ public class BraveToolbarManager extends ToolbarManager {
             mBottomControls =
                     (BraveScrollingBottomViewResourceFrameLayout) bottomControlsStub.inflate();
             if (TabUiFeatureUtilities.isTabGroupsAndroidEnabled(mActivity)) {
-                mTabGroupUi = TabManagementModuleProvider.getDelegate().createTabGroupUi(mActivity,
-                        mBottomControls.findViewById(R.id.bottom_container_slot),
+                mTabGroupUi = TabManagementDelegateProvider.getDelegate().createTabGroupUi(
+                        mActivity, mBottomControls.findViewById(R.id.bottom_container_slot),
                         mIncognitoStateProvider, mScrimCoordinator, mOmniboxFocusStateSupplier,
                         mBottomSheetController, mActivityLifecycleDispatcher,
                         mIsWarmOnResumeSupplier, mTabModelSelector, mTabContentManager,

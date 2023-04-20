@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.chromium.base.Callback;
-import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.back_press.BackPressManager;
@@ -58,7 +57,7 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             @NonNull SaveOfflineButtonState saveOfflineButtonState, @NonNull OmniboxUma omniboxUma,
             @NonNull Supplier<TabWindowManager> tabWindowManagerSupplier,
             @NonNull BookmarkState bookmarkState,
-            @NonNull BooleanSupplier isToolbarMicEnabledSupplier, JankTracker jankTracker,
+            @NonNull BooleanSupplier isToolbarMicEnabledSupplier,
             @Nullable Supplier<MerchantTrustSignalsCoordinator>
                     merchantTrustSignalsCoordinatorSupplier,
             @NonNull ActionChipsDelegate actionChipsDelegate,
@@ -74,7 +73,7 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 shareDelegateSupplier, incognitoStateProvider, activityLifecycleDispatcher,
                 overrideUrlLoadingDelegate, backKeyBehavior, searchEngineLogoUtils, pageInfoAction,
                 bringTabToFrontCallback, saveOfflineButtonState, omniboxUma,
-                tabWindowManagerSupplier, bookmarkState, isToolbarMicEnabledSupplier, jankTracker,
+                tabWindowManagerSupplier, bookmarkState, isToolbarMicEnabledSupplier,
                 merchantTrustSignalsCoordinatorSupplier, actionChipsDelegate,
                 browserControlsVisibilityDelegate, reportExceptionCallback, backPressManager,
                 omniboxSuggestionsDropdownScrollListener, openHistoryClustersDelegate);
