@@ -66,7 +66,7 @@ absl::optional<OptedInInfo> CreateOptedIn(
   opted_in.user_data = opted_in_user_data;
 
   // Credential
-  ConfirmationInfo mutable_confirmation = confirmation;
+  ConfirmationInfo mutable_confirmation(confirmation);
   mutable_confirmation.opted_in = opted_in;
 
   const absl::optional<std::string> credential =

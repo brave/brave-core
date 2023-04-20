@@ -26,24 +26,23 @@ class HistoryManagerObserver : public base::CheckedObserver {
   // Invoked when the user dislikes an ad.
   virtual void OnDidDislikeAd(const AdContentInfo& ad_content) {}
 
-  // Invoked when a user marks to no longer receive ads for the |category|.
-  virtual void OnDidMarkToNoLongerReceiveAdsForCategory(
-      const std::string& category) {}
+  // Invoked when the likes a |category|.
+  virtual void OnDidLikeCategory(const std::string& category) {}
 
-  // Invoked when a user marks to receive ads for the |category|.
-  virtual void OnDidMarkToReceiveAdsForCategory(const std::string& category) {}
-
-  // Invoked when a user marks an ad as inappropriate.
-  virtual void OnDidMarkAdAsInappropriate(const AdContentInfo& ad_content) {}
-
-  // Invoked when a user marks an ad as appropriate.
-  virtual void OnDidMarkAdAsAppropriate(const AdContentInfo& ad_content) {}
+  // Invoked when the user dislikes a |category|.
+  virtual void OnDidDislikeCategory(const std::string& category) {}
 
   // Invoked when a user saves an ad.
   virtual void OnDidSaveAd(const AdContentInfo& ad_content) {}
 
   // Invoked when a user unsaves an ad.
   virtual void OnDidUnsaveAd(const AdContentInfo& ad_content) {}
+
+  // Invoked when a user marks an ad as appropriate.
+  virtual void OnDidMarkAdAsAppropriate(const AdContentInfo& ad_content) {}
+
+  // Invoked when a user marks an ad as inappropriate.
+  virtual void OnDidMarkAdAsInappropriate(const AdContentInfo& ad_content) {}
 };
 
 }  // namespace brave_ads

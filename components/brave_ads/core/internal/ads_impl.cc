@@ -310,27 +310,25 @@ AdContentLikeActionType AdsImpl::ToggleDislikeAd(base::Value::Dict value) {
   return HistoryManager::GetInstance()->DislikeAd(AdContentFromValue(value));
 }
 
-CategoryContentOptActionType AdsImpl::ToggleMarkToReceiveAdsForCategory(
+CategoryContentOptActionType AdsImpl::ToggleLikeCategory(
     const std::string& category,
     const CategoryContentOptActionType& action_type) {
-  return HistoryManager::GetInstance()->MarkToReceiveAdsForCategory(
-      category, action_type);
+  return HistoryManager::GetInstance()->LikeCategory(category, action_type);
 }
 
-CategoryContentOptActionType AdsImpl::ToggleMarkToNoLongerReceiveAdsForCategory(
+CategoryContentOptActionType AdsImpl::ToggleDislikeCategory(
     const std::string& category,
     const CategoryContentOptActionType& action_type) {
-  return HistoryManager::GetInstance()->MarkToNoLongerReceiveAdsForCategory(
-      category, action_type);
+  return HistoryManager::GetInstance()->DislikeCategory(category, action_type);
+}
+
+bool AdsImpl::ToggleSaveAd(base::Value::Dict value) {
+  return HistoryManager::GetInstance()->ToggleSaveAd(AdContentFromValue(value));
 }
 
 bool AdsImpl::ToggleMarkAdAsInappropriate(base::Value::Dict value) {
   return HistoryManager::GetInstance()->ToggleMarkAdAsInappropriate(
       AdContentFromValue(value));
-}
-
-bool AdsImpl::ToggleSaveAd(base::Value::Dict value) {
-  return HistoryManager::GetInstance()->ToggleSaveAd(AdContentFromValue(value));
 }
 
 ///////////////////////////////////////////////////////////////////////////////

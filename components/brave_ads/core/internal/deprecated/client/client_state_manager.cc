@@ -257,8 +257,7 @@ ClientStateManager::GetAdContentLikeActionTypeForAdvertiser(
   return iter->ad_content.like_action_type;
 }
 
-CategoryContentOptActionType
-ClientStateManager::ToggleMarkToReceiveAdsForCategory(
+CategoryContentOptActionType ClientStateManager::ToggleLikeCategory(
     const std::string& category,
     const CategoryContentOptActionType opt_action_type) {
   DCHECK(is_initialized_);
@@ -283,8 +282,7 @@ ClientStateManager::ToggleMarkToReceiveAdsForCategory(
   return toggled_opt_action_type;
 }
 
-CategoryContentOptActionType
-ClientStateManager::ToggleMarkToNoLongerReceiveAdsForCategory(
+CategoryContentOptActionType ClientStateManager::ToggleDislikeCategory(
     const std::string& category,
     const CategoryContentOptActionType opt_action_type) {
   DCHECK(is_initialized_);

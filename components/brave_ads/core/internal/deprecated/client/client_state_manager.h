@@ -63,10 +63,10 @@ class ClientStateManager final {
   AdContentLikeActionType GetAdContentLikeActionTypeForAdvertiser(
       const std::string& advertiser_id);
 
-  CategoryContentOptActionType ToggleMarkToReceiveAdsForCategory(
+  CategoryContentOptActionType ToggleLikeCategory(
       const std::string& category,
       CategoryContentOptActionType action_type);
-  CategoryContentOptActionType ToggleMarkToNoLongerReceiveAdsForCategory(
+  CategoryContentOptActionType ToggleDislikeCategory(
       const std::string& category,
       CategoryContentOptActionType action_type);
   CategoryContentOptActionType GetCategoryContentOptActionTypeForSegment(

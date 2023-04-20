@@ -25,9 +25,9 @@ class AntiTargetingExclusionRule;
 class ConversionExclusionRule;
 class DailyCapExclusionRule;
 class DaypartExclusionRule;
+class DislikeCategoryExclusionRule;
 class DislikeExclusionRule;
 class MarkedAsInappropriateExclusionRule;
-class MarkedToNoLongerReceiveExclusionRule;
 class PerDayExclusionRule;
 class PerMonthExclusionRule;
 class PerWeekExclusionRule;
@@ -71,11 +71,11 @@ class ExclusionRulesBase {
   std::unique_ptr<ConversionExclusionRule> conversion_exclusion_rule_;
   std::unique_ptr<DailyCapExclusionRule> daily_cap_exclusion_rule_;
   std::unique_ptr<DaypartExclusionRule> daypart_exclusion_rule_;
+  std::unique_ptr<DislikeCategoryExclusionRule>
+      dislike_category_exclusion_rule_;
   std::unique_ptr<DislikeExclusionRule> dislike_exclusion_rule_;
   std::unique_ptr<MarkedAsInappropriateExclusionRule>
       marked_as_inappropriate_exclusion_rule_;
-  std::unique_ptr<MarkedToNoLongerReceiveExclusionRule>
-      marked_to_no_longer_receive_exclusion_rule_;
   std::unique_ptr<PerDayExclusionRule> per_day_exclusion_rule_;
   std::unique_ptr<PerMonthExclusionRule> per_month_exclusion_rule_;
   std::unique_ptr<PerWeekExclusionRule> per_week_exclusion_rule_;

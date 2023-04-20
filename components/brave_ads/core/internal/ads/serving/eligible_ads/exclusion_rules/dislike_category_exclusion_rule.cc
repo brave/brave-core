@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/marked_to_no_longer_receive_exclusion_rule.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/dislike_category_exclusion_rule.h"
 
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
@@ -19,12 +19,12 @@ bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
 
 }  // namespace
 
-std::string MarkedToNoLongerReceiveExclusionRule::GetUuid(
+std::string DislikeCategoryExclusionRule::GetUuid(
     const CreativeAdInfo& creative_ad) const {
   return creative_ad.segment;
 }
 
-bool MarkedToNoLongerReceiveExclusionRule::ShouldExclude(
+bool DislikeCategoryExclusionRule::ShouldExclude(
     const CreativeAdInfo& creative_ad) {
   if (!DoesRespectCap(creative_ad)) {
     last_message_ = base::ReplaceStringPlaceholders(
@@ -38,8 +38,7 @@ bool MarkedToNoLongerReceiveExclusionRule::ShouldExclude(
   return false;
 }
 
-const std::string& MarkedToNoLongerReceiveExclusionRule::GetLastMessage()
-    const {
+const std::string& DislikeCategoryExclusionRule::GetLastMessage() const {
   return last_message_;
 }
 

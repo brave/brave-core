@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/marked_to_no_longer_receive_exclusion_rule.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/dislike_category_exclusion_rule.h"
 
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -13,12 +13,12 @@
 
 namespace brave_ads {
 
-class BraveAdsMarkedToNoLongerReceiveExclusionRuleTest : public UnitTestBase {
+class BraveAdsDislikeCategoryExclusionRuleTest : public UnitTestBase {
  protected:
-  MarkedToNoLongerReceiveExclusionRule exclusion_rule_;
+  DislikeCategoryExclusionRule exclusion_rule_;
 };
 
-TEST_F(BraveAdsMarkedToNoLongerReceiveExclusionRuleTest, AllowAd) {
+TEST_F(BraveAdsDislikeCategoryExclusionRuleTest, AllowAd) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.segment = kSegment;
@@ -29,12 +29,12 @@ TEST_F(BraveAdsMarkedToNoLongerReceiveExclusionRuleTest, AllowAd) {
   EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
-TEST_F(BraveAdsMarkedToNoLongerReceiveExclusionRuleTest, DoNotAllowAd) {
+TEST_F(BraveAdsDislikeCategoryExclusionRuleTest, DoNotAllowAd) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.segment = kSegment;
 
-  ClientStateManager::GetInstance()->ToggleMarkToNoLongerReceiveAdsForCategory(
+  ClientStateManager::GetInstance()->ToggleDislikeCategory(
       creative_ad.segment, CategoryContentOptActionType::kNone);
 
   // Act

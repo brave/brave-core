@@ -70,7 +70,7 @@ AdPredictorInfo<T> ComputePredictorFeatures(
     const AdPredictorInfo<T>& ad_predictor,
     const targeting::UserModelInfo& user_model,
     const AdEventList& ad_events) {
-  AdPredictorInfo<T> mutable_ad_predictor = ad_predictor;
+  AdPredictorInfo<T> mutable_ad_predictor(ad_predictor);
 
   const SegmentList intent_child_segments_intersection = SegmentIntersection(
       targeting::GetTopChildPurchaseIntentSegments(user_model),

@@ -106,7 +106,7 @@ void RedeemOptedInConfirmation::OnCreateConfirmation(
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 
-  ConfirmationInfo mutable_confirmation = confirmation;
+  ConfirmationInfo mutable_confirmation(confirmation);
   mutable_confirmation.was_created = true;
 
   FetchPaymentToken(mutable_confirmation);
@@ -139,7 +139,7 @@ void RedeemOptedInConfirmation::OnFetchPaymentToken(
   if (url_response.status_code == net::HTTP_NOT_FOUND) {
     BLOG(1, "Confirmation not found");
 
-    ConfirmationInfo mutable_confirmation = confirmation;
+    ConfirmationInfo mutable_confirmation(confirmation);
     mutable_confirmation.was_created = false;
 
     return FailedToRedeemConfirmation(mutable_confirmation,
