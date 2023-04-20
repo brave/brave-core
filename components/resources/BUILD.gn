@@ -120,6 +120,13 @@ repack("resources") {
     ]
   }
 
+  if (!is_android) {
+    deps += [ "//brave/components/brave_federated/resources" ]
+    sources += [
+      "$root_gen_dir/brave/components/brave_federated/resources/brave_federated_resources.pak",
+    ]
+  }
+
   if (ethereum_remote_client_enabled) {
     if (!is_android && !is_ios) {
       sources += [ "$root_gen_dir/brave/components/ethereum_remote_client_page/resources/ethereum_remote_client_page_generated.pak" ]
