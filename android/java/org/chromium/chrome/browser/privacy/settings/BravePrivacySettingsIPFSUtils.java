@@ -24,7 +24,7 @@ public class BravePrivacySettingsIPFSUtils {
         if (BraveConfig.IPFS_ENABLED) {
             return UserPrefs.get(Profile.getLastUsedRegularProfile())
                            .getInteger(BravePref.IPFS_RESOLVE_METHOD)
-                    == IPFSResolveMethodTypes.IPFS_ASK;
+                    != IPFSResolveMethodTypes.IPFS_DISABLED;
         } else {
             return false;
         }
