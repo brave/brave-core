@@ -31,7 +31,9 @@ class TaskResultResponse;
 class CommunicationAdapter {
  public:
   explicit CommunicationAdapter(
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      const net::BackoffEntry::Policy reconnect_policy,
+      const net::BackoffEntry::Policy request_task_policy);
   ~CommunicationAdapter();
 
   using PostResultCallback = base::OnceCallback<void(TaskResultResponse)>;

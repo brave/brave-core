@@ -14,6 +14,8 @@ static_library("brave_federated") {
     "brave_federated_service.h",
     "communication_adapter.cc",
     "communication_adapter.h",
+    "config_utils.cc",
+    "config_utils.h",
     "data_store_service.cc",
     "data_store_service.h",
     "data_stores/async_data_store.cc",
