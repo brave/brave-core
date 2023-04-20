@@ -57,27 +57,16 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 }  // namespace
 
 CommunicationAdapter::CommunicationAdapter(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    const net::BackoffEntry::Policy reconnect_policy,
+    const net::BackoffEntry::Policy request_task_policy)
     : url_loader_factory_(std::move(url_loader_factory)) {
-  reconnect_policy_ = std::make_unique<const net::BackoffEntry::Policy>(
-      /*.num_errors_to_ignore = */ 0,
-      /*.initial_delay_ms = */ 10 * 1000,
-      /*.multiply_factor =*/2.0,
-      /*.jitter_factor =*/0.0,
-      /*.maximum_backoff_ms =*/60 * 10 * 1000,
-      /*.always_use_initial_delay =*/true);
+  reconnect_policy_ = std::make_unique<const net::BackoffEntry::Policy>(reconnect_policy);
   reconnect_backoff_entry_ =
       std::make_unique<net::BackoffEntry>(reconnect_policy_.get());
 
   request_task_policy_ = std::make_unique<const net::BackoffEntry::Policy>(
-      /*.num_errors_to_ignore = */ 0,
-      /*.initial_delay_ms = */
-      features::GetFederatedLearningUpdateCycleInSeconds() * 1000,
-      /*.multiply_factor =*/2.0,
-      /*.jitter_factor =*/0.0,
-      /*.maximum_backoff_ms =*/16 *
-          features::GetFederatedLearningUpdateCycleInSeconds() * 1000,
-      /*.always_use_initial_delay =*/true);
+      request_task_policy);
   request_task_backoff_entry_ =
       std::make_unique<net::BackoffEntry>(request_task_policy_.get());
 }

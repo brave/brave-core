@@ -14,6 +14,8 @@
 #include "base/scoped_observation.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_federated/eligibility_service_observer.h"
+#include "brave/components/brave_federated/config_utils.h"
+#include "brave/components/brave_federated/task/model.h"
 #include "brave/components/brave_federated/task/typing.h"
 #include "net/base/backoff_entry.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -60,8 +62,11 @@ class LearningService : public EligibilityObserver {
   std::unique_ptr<base::RetainingOneShotTimer> reconnect_timer_;
   bool participating_ = false;
 
+  std::unique_ptr<LearningServiceConfig> lsc_;
   std::unique_ptr<const net::BackoffEntry::Policy> post_results_policy_;
   std::unique_ptr<net::BackoffEntry> post_results_backoff_entry_;
+
+  std::unique_ptr<ModelSpec> model_spec_;
 
   base::ScopedObservation<EligibilityService, EligibilityObserver>
       eligibility_observation_{this};
