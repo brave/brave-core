@@ -107,6 +107,12 @@ def CopyExtensionLocalization(extension_name, locales_src_dir_path, config,
     locales_dest_path = os.path.realpath(locales_dest_path)
     shutil.rmtree(locales_dest_path, ignore_errors=True)
     shutil.copytree(locales_src_dir_path, locales_dest_path)
+    # The "nb" locale is a subset of "no". Chromium uses the former, while
+    # Transifex uses the latter. To integrate with Transifex, our code renames
+    # "nb" to "no". But we still need to present "nb" to Chromium. The following
+    # code achieves this:
+    os.rename(os.path.join(locales_dest_path, 'no'),
+              os.path.join(locales_dest_path, 'nb'))
     # Files are copied, but we need to inform g_archive_inputs about that
     for root, _, files in os.walk(locales_dest_path):
         for name in files:
