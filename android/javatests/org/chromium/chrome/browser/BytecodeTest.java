@@ -869,8 +869,6 @@ public class BytecodeTest {
                         "mGoogleActivityControls"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/sync/settings/ManageSyncSettings", "mSyncEncryption"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/sync/settings/ManageSyncSettings", "mReviewSyncData"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/sync/settings/ManageSyncSettings",
                         "mSyncPaymentsIntegration"));
@@ -879,8 +877,6 @@ public class BytecodeTest {
                         "mSyncReadingList"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/sync/settings/ManageSyncSettings", "mSyncAutofill"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/sync/settings/ManageSyncSettings", "mTurnOffSync"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator",
                         "mMediator"));
