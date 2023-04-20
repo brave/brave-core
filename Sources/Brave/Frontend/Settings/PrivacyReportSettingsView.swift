@@ -5,7 +5,7 @@
 
 import SwiftUI
 import Shared
-import BraveShared
+import Preferences
 import BraveUI
 
 struct PrivacyReportSettingsView: View {

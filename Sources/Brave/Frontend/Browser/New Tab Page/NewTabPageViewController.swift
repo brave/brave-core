@@ -9,6 +9,7 @@ import CoreData
 import Data
 import Shared
 import BraveShared
+import Preferences
 import BraveCore
 import SnapKit
 import SwiftUI
@@ -166,7 +167,7 @@ class NewTabPageViewController: UIViewController {
         
         host.rootView.openPrivacyReportsUrl = { [weak self] in
           self?.delegate?.navigateToInput(
-            BraveUX.privacyReportsURL.absoluteString,
+            URL.brave.privacyFeatures.absoluteString,
             inNewTab: false,
             // Privacy Reports view is unavailable in private mode.
             switchingToPrivateMode: false
@@ -546,7 +547,7 @@ class NewTabPageViewController: UIViewController {
         self.backgroundButtonsView.alpha = 1.0
       }
     case .optInCardAction(.learnMoreButtonTapped):
-      delegate?.navigateToInput(BraveUX.braveNewsPrivacyURL.absoluteString, inNewTab: false, switchingToPrivateMode: false)
+      delegate?.navigateToInput(URL.brave.braveNewsPrivacy.absoluteString, inNewTab: false, switchingToPrivateMode: false)
     case .optInCardAction(.turnOnBraveNewsButtonTapped):
       preventReloadOnBraveNewsEnabledChange = true
       Preferences.BraveNews.userOptedIn.value = true
@@ -562,13 +563,13 @@ class NewTabPageViewController: UIViewController {
       loadFeedContents()
     case .moreBraveOffersTapped:
       delegate?.navigateToInput(
-        BraveUX.braveOffersURL.absoluteString,
+        URL.brave.braveOffers.absoluteString,
         inNewTab: false,
         switchingToPrivateMode: false
       )
     case .bravePartnerLearnMoreTapped:
       delegate?.navigateToInput(
-        BraveUX.braveNewsPartnersURL.absoluteString,
+        URL.brave.braveNews.absoluteString,
         inNewTab: false,
         switchingToPrivateMode: false
       )

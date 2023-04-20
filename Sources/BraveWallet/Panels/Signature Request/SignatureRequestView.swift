@@ -4,9 +4,8 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import SwiftUI
-import Strings
+import BraveStrings
 import BraveCore
-import BraveShared
 import DesignSystem
 
 struct SignatureRequestView: View {

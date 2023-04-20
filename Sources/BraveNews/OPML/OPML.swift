@@ -6,21 +6,21 @@
 import Foundation
 import Fuzi
 import Shared
-import os.log
+import OSLog
 
 /// A set of subscription RSS feed URLs defined through Outline Processor Markup Language
-struct OPML: Equatable {
+public struct OPML: Equatable {
   /// A node contains a set of named attributes describing an XML feed
-  struct Outline: Equatable {
+  public struct Outline: Equatable {
     /// Some text describing the feed
-    var text: String?
+    public var text: String?
     /// The URL of this feed
-    var xmlUrl: String?
+    public var xmlUrl: String?
   }
   /// The title of the subscription list
-  var title: String?
+  public var title: String?
   /// A list of all the feeds contained in the list
-  var outlines: [Outline]
+  public var outlines: [Outline]
 }
 
 /// A simple parser to read part of an OPML files contents
@@ -28,9 +28,9 @@ struct OPML: Equatable {
 /// In our case, we only care about obtaining a subset of data from an OPML file:
 ///     - The main OPML's title (for UI purposes)
 ///     - The set of "outlines", or feed entries, whos type is "rss" and aren't commented out
-class OPMLParser {
+public class OPMLParser {
   /// Parses the data passed and returns an OPML object
-  static func parse(data: Data) -> OPML? {
+  public static func parse(data: Data) -> OPML? {
     guard let document = try? XMLDocument(data: data),
       let _ = document.firstChild(xpath: "//opml")
     else {

@@ -5,7 +5,7 @@
 import XCTest
 import CoreData
 import Shared
-import DataTestsUtils
+import TestHelpers
 @testable import Data
 
 class TabMOTests: CoreDataTestCase {
@@ -16,13 +16,14 @@ class TabMOTests: CoreDataTestCase {
   }
 
   func testCreate() {
-    let object = createAndWait()
+    let title = "New Tab"
+    let object = createAndWait(title: title)
     XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
 
     XCTAssertNotNil(object.syncUUID)
     XCTAssertNotNil(object.imageUrl)
     XCTAssertNil(object.url)
-    XCTAssertEqual(object.title, Strings.newTab)
+    XCTAssertEqual(object.title, title)
 
     // Testing default values
     XCTAssertEqual(object.order, 0)
@@ -252,11 +253,11 @@ class TabMOTests: CoreDataTestCase {
     XCTAssertNil(TabMO.get(fromId: wrongId))
   }
 
-  @discardableResult private func createAndWait(lastUpdateDate: Date = Date()) -> TabMO {
+  @discardableResult private func createAndWait(lastUpdateDate: Date = Date(), title: String = "New Tab") -> TabMO {
     let uuid = UUID().uuidString
 
     backgroundSaveAndWaitForExpectation {
-      TabMO.createInternal(uuidString: uuid, lastUpdateDate: lastUpdateDate)
+      TabMO.createInternal(uuidString: uuid, title: title, lastUpdateDate: lastUpdateDate)
     }
 
     return TabMO.get(fromId: uuid)!

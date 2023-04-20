@@ -5,6 +5,7 @@
 import UIKit
 import Shared
 import BraveShared
+import Preferences
 import Static
 import SwiftKeychainWrapper
 import LocalAuthentication
@@ -25,6 +26,17 @@ extension TabBarVisibility: RepresentableOptionType {
     case .always: return Strings.alwaysShow
     case .landscapeOnly: return Strings.showInLandscapeOnly
     case .never: return Strings.neverShow
+    }
+  }
+}
+
+extension Preferences.AutoCloseTabsOption: RepresentableOptionType {
+  public var displayString: String {
+    switch self {
+    case .manually: return Strings.Settings.autocloseTabsManualOption
+    case .oneDay: return Strings.Settings.autocloseTabsOneDayOption
+    case .oneWeek: return Strings.Settings.autocloseTabsOneWeekOption
+    case .oneMonth: return Strings.Settings.autocloseTabsOneMonthOption
     }
   }
 }
@@ -228,7 +240,7 @@ class SettingsViewController: TableViewController {
               guard let self = self else { return }
               self.dismiss(animated: true) {
                 self.presentingViewController?.dismiss(animated: true) {
-                  self.settingsDelegate?.settingsOpenURLInNewTab(BraveUX.braveRewardsLearnMoreURL)
+                  self.settingsDelegate?.settingsOpenURLInNewTab(.brave.rewardsOniOS)
                 }
               }
             }
@@ -552,7 +564,7 @@ class SettingsViewController: TableViewController {
         Row(
           text: Strings.reportABug,
           selection: { [unowned self] in
-            self.settingsDelegate?.settingsOpenURLInNewTab(BraveUX.braveCommunityURL)
+            self.settingsDelegate?.settingsOpenURLInNewTab(.brave.community)
             self.dismiss(animated: true)
           },
           image: UIImage(named: "settings-report-bug", in: .module, compatibleWith: nil)!.template,
@@ -609,7 +621,7 @@ class SettingsViewController: TableViewController {
           text: Strings.privacyPolicy,
           selection: { [unowned self] in
             // Show privacy policy
-            let privacy = SettingsContentViewController().then { $0.url = BraveUX.bravePrivacyURL }
+            let privacy = SettingsContentViewController().then { $0.url = .brave.privacy }
             self.navigationController?.pushViewController(privacy, animated: true)
           },
           accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
@@ -617,7 +629,7 @@ class SettingsViewController: TableViewController {
           text: Strings.termsOfUse,
           selection: { [unowned self] in
             // Show terms of use
-            let toc = SettingsContentViewController().then { $0.url = BraveUX.braveTermsOfUseURL }
+            let toc = SettingsContentViewController().then { $0.url = .brave.termsOfUse }
             self.navigationController?.pushViewController(toc, animated: true)
           },
           accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),

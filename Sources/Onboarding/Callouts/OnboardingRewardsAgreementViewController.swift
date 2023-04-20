@@ -5,6 +5,7 @@
 import Foundation
 import Shared
 import BraveShared
+import Preferences
 import BraveCore
 import Lottie
 import UIKit
@@ -52,14 +53,14 @@ public class OnboardingRewardsAgreementViewController: UIViewController {
     contentView.skipButton.addTarget(self, action: #selector(skipTapped), for: .touchUpInside)
 
     contentView.onTermsOfServicePressed = { [weak self] in
-      let vc = SFSafariViewController(url: BraveUX.braveTermsOfUseURL, configuration: .init())
+      let vc = SFSafariViewController(url: .brave.termsOfUse, configuration: .init())
       vc.modalPresentationStyle = .currentContext
 
       self?.present(vc, animated: true)
     }
 
     contentView.onPrivacyPolicyPressed = { [weak self] in
-      let vc = SFSafariViewController(url: BraveUX.bravePrivacyURL, configuration: .init())
+      let vc = SFSafariViewController(url: .brave.privacy, configuration: .init())
       vc.modalPresentationStyle = .currentContext
 
       self?.present(vc, animated: true)

@@ -6,7 +6,6 @@
 import Foundation
 import StoreKit
 import Shared
-import BraveShared
 import os.log
 
 public protocol IAPObserverDelegate: AnyObject {

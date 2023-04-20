@@ -13,6 +13,8 @@ import SwiftUI
 import BraveNews
 import os.log
 import BraveWallet
+import Preferences
+import CertificateUtilities
 
 // MARK: - TopToolbarDelegate
 

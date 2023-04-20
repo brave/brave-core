@@ -4,7 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import DesignSystem
-import Strings
+import BraveStrings
 import SwiftUI
 import BraveCore
 import LocalAuthentication

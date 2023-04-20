@@ -9,7 +9,8 @@ import WebKit
 import MobileCoreServices
 import Data
 import Shared
-import BraveShared
+import BraveShields
+import Preferences
 import BraveCore
 import Storage
 import os.log

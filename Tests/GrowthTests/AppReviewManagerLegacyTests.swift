@@ -5,7 +5,7 @@
 
 import XCTest
 import Shared
-import BraveShared
+import Preferences
 @testable import Growth
 
 class AppReviewManagerLegacyTests: XCTestCase {

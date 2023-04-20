@@ -7,7 +7,7 @@ import Foundation
 import LocalAuthentication
 import BraveCore
 import Data
-import BraveShared
+import Preferences
 import Combine
 
 public class SettingsStore: ObservableObject {

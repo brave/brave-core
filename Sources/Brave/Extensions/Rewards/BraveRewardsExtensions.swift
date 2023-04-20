@@ -4,8 +4,9 @@
 
 import Foundation
 import BraveCore
-import BraveShared
+import BraveUI
 import Shared
+import BraveNews
 
 extension Ledger.DrainStatus: RepresentableOptionType {
   public var displayString: String {

@@ -7,7 +7,7 @@ import WebKit
 import Storage
 import Shared
 import BraveCore
-import BraveShared
+import Preferences
 import SwiftyJSON
 import Data
 import os.log

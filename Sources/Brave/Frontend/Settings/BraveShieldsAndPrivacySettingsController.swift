@@ -6,7 +6,7 @@
 import Foundation
 import Static
 import Shared
-import BraveShared
+import Preferences
 import BraveCore
 import class SwiftUI.UIHostingController
 import UIKit

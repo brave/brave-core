@@ -5,7 +5,7 @@
 
 import Foundation
 import SwiftUI
-import BraveShared
+import BraveStrings
 
 struct SourceSuggestionsContainerView: View {
   @ObservedObject var dataSource: FeedDataSource

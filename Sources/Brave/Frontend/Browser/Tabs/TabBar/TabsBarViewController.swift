@@ -6,7 +6,7 @@ import Foundation
 import UIKit
 import SnapKit
 import Shared
-import BraveShared
+import Preferences
 import Combine
 
 protocol TabsBarViewControllerDelegate: AnyObject {

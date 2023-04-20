@@ -5,7 +5,7 @@
 
 import Foundation
 import Shared
-import BraveShared
+import Preferences
 import BraveCore
 import BraveVPN
 import os.log

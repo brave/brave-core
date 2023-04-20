@@ -6,7 +6,7 @@
 // The preload and postload js files are unmodified from Focus.
 
 import Shared
-import BraveShared
+import Preferences
 import Data
 import Foundation
 import BraveCore

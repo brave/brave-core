@@ -4,10 +4,9 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
-import SDWebImage
 import Shared
 import WidgetKit
-import Favicon
+import FaviconModels
 import os.log
 
 public struct WidgetFavorite: Codable {

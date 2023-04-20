@@ -4,7 +4,7 @@
 
 import XCTest
 import Shared
-import BraveShared
+import Preferences
 import WebKit
 @testable import Brave
 

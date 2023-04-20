@@ -7,6 +7,7 @@ import BraveCore
 import Data
 import Shared
 import BraveShared
+import Preferences
 import BraveUI
 import Onboarding
 import Storage
@@ -72,7 +73,7 @@ extension BrowserViewController {
     braveRewardsPanel.actionHandler = { [weak self] action in
       switch action {
       case .unverifiedPublisherLearnMoreTapped:
-        self?.loadNewTabWithRewardsURL(BraveUX.braveRewardsUnverifiedPublisherLearnMoreURL)
+        self?.loadNewTabWithRewardsURL(.brave.rewardsUnverifiedPublisherLearnMoreURL)
       }
     }
 

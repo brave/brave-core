@@ -1,6 +1,6 @@
 import WebKit
 import Shared
-import BraveShared
+import Preferences
 
 // WKNavigationDelegates must implement NSObjectProtocol
 class TabManagerNavDelegate: NSObject, WKNavigationDelegate {

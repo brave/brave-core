@@ -7,7 +7,7 @@ import Foundation
 import SwiftUI
 import BraveUI
 import DesignSystem
-import BraveShared
+import BraveStrings
 import Lottie
 
 struct OptInView: View {

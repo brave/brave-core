@@ -6,7 +6,7 @@ import WebKit
 import Shared
 import Data
 import BraveCore
-import BraveShared
+import Preferences
 import BraveWallet
 import os.log
 

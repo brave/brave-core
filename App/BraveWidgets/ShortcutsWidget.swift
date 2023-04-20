@@ -5,10 +5,10 @@
 
 import SwiftUI
 import WidgetKit
-import Strings
-import BraveShared
 import Intents
 import BraveWidgetsModels
+import BraveShared
+import Strings
 
 struct ShortcutsWidget: Widget {
   var body: some WidgetConfiguration {
@@ -121,11 +121,11 @@ extension WidgetShortcut {
       return Strings.Widgets.shortcutsPrivateTabButton
     // Reusing localized strings for few items here.
     case .bookmarks:
-      return Strings.bookmarksMenuItem
+      return Strings.Widgets.bookmarksMenuItem
     case .history:
-      return Strings.historyMenuItem
+      return Strings.Widgets.historyMenuItem
     case .downloads:
-      return Strings.downloadsMenuItem
+      return Strings.Widgets.downloadsMenuItem
     case .playlist:
       // We usually use `Brave Playlist` to describe this feature.
       // Here we try to be more concise and use 'Playlist' word only.
@@ -135,9 +135,9 @@ extension WidgetShortcut {
     case .wallet:
       return Strings.Widgets.walletShortcutTitle
     case .scanQRCode:
-      return Strings.QRCode
+      return Strings.Widgets.QRCode
     case .braveNews:
-      return Strings.BraveNews.braveNews
+      return Strings.Widgets.braveNews
     @unknown default:
       assertionFailure()
       return ""
@@ -183,7 +183,7 @@ private struct ShortcutsView: View {
     VStack(spacing: 8) {
       // TODO: Would be nice to export handling this url to `BraveShared`.
       // Now it's hardcoded here and in `NavigationRouter`.
-      if let url = URL(string: "\(BraveUX.appURLScheme)://shortcut?path=0") {
+      if let url = URL(string: "\(AppURLScheme.appURLScheme)://shortcut?path=0") {
         Link(
           destination: url,
           label: {
@@ -204,7 +204,7 @@ private struct ShortcutsView: View {
       HStack(spacing: 8) {
         ForEach(slots, id: \.self) { shortcut in
           ShortcutLink(
-            url: "\(BraveUX.appURLScheme)://shortcut?path=\(shortcut.rawValue)",
+            url: "\(AppURLScheme.appURLScheme)://shortcut?path=\(shortcut.rawValue)",
             text: shortcut.displayString,
             image: {
               shortcut.image

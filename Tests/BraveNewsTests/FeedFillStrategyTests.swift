@@ -74,7 +74,7 @@ class DefaultFillStrategyTests: XCTestCase {
     var list: [FeedItem] =
       (0..<3).map { _ in .init(score: 0, content: .mockArticle, source: .mock) } + adjustedScoresList
     let listCopy = list
-    let items = strategy.next(3, from: &list, where: { $0.content.baseScore >= 10 })
+    let items = strategy.next(3, from: &list, where: { ($0.content.baseScore ?? 0) >= 10 })
     XCTAssertEqual(items, adjustedScoresList)
     XCTAssertEqual(list.count, listCopy.count - adjustedScoresList.count)
   }
@@ -116,7 +116,7 @@ class FilteredFillStrategyTests: XCTestCase {
     var list: [FeedItem] =
       (0..<3).map { _ in .init(score: 0, content: .mockArticle, source: .mock) } + adjustedScoresList
     let listCopy = list
-    let items = strategy.next(3, from: &list, where: { $0.content.baseScore >= 10 })
+    let items = strategy.next(3, from: &list, where: { ($0.content.baseScore ?? 0) >= 10 })
     XCTAssertEqual(items, adjustedScoresList)
     XCTAssertEqual(list.count, listCopy.count - adjustedScoresList.count)
   }

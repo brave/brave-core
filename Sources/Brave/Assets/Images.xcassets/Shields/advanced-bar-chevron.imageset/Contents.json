@@ -1,7 +1,6 @@
 {
   "images" : [
     {
-      "filename" : "arrows-chevron-down.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -12,7 +11,6 @@
           "value" : "dark"
         }
       ],
-      "filename" : "arrows-chevron-down_dark.png",
       "idiom" : "universal",
       "scale" : "1x"
     },

@@ -10,7 +10,7 @@ import CoreData
 
 import Shared
 import Data
-import BraveShared
+import Preferences
 import os.log
 
 public class PlaylistManager: NSObject {

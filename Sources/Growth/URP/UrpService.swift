@@ -4,6 +4,7 @@ import Foundation
 import SafariServices
 import Shared
 import BraveShared
+import CertificateUtilities
 import SwiftyJSON
 import os.log
 

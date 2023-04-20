@@ -6,7 +6,7 @@
 import UIKit
 import Shared
 import BraveUI
-import BraveShared
+import Preferences
 
 class BraveSearchPromotionCell: UITableViewCell {
   private struct DesignUX {

@@ -8,7 +8,7 @@ import Combine
 import Data
 import BraveCore
 import Shared
-import BraveShared
+import Preferences
 import os.log
 
 /// An object responsible for fetching filer lists resources from multiple sources

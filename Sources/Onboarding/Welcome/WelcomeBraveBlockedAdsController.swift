@@ -8,7 +8,6 @@ import UIKit
 import SnapKit
 import BraveUI
 import DesignSystem
-import BraveShared
 import Shared
 
 public class WelcomeBraveBlockedAdsController: UIViewController, PopoverContentComponent {

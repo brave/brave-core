@@ -4,7 +4,7 @@ import Foundation
 import Shared
 import BraveCore
 import os.log
-import BraveShared
+import Preferences
 
 public class DAU {
 

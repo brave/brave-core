@@ -6,7 +6,7 @@
 import Foundation
 import XCTest
 import Shared
-import BraveShared
+import Preferences
 
 class SearchEnginesTests: XCTestCase {
 

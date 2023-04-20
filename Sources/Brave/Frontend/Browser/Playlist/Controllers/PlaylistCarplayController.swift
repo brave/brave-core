@@ -8,7 +8,7 @@ import Combine
 import CarPlay
 import MediaPlayer
 import Data
-import BraveShared
+import Preferences
 import Shared
 import CoreData
 import Favicon

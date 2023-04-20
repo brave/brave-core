@@ -9,7 +9,7 @@ import BraveCore
 import SwiftUI
 import BraveUI
 import Shared
-import BraveShared
+import Preferences
 import Data
 import os.log
 import Growth

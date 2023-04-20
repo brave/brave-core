@@ -6,7 +6,7 @@
 import Foundation
 import BraveUI
 import Shared
-import BraveShared
+import Preferences
 import BraveCore
 import BraveNews
 import DesignSystem
@@ -287,6 +287,7 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
       return cell
     case .deals(let items, let title):
       let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<DealsFeedGroupView>
+      let title = title ?? Strings.BraveNews.deals
       cell.content.titleLabel.text = title
       cell.content.titleLabel.isHidden = title.isEmpty
       zip(cell.content.feedViews, items.indices).forEach { (view, index) in

@@ -5,6 +5,8 @@
 
 import Foundation
 import BraveShared
+import BraveStrings
+import Preferences
 import SwiftUI
 import Combine
 import BraveUI
@@ -23,7 +25,7 @@ public class NewsSettingsViewController: UIHostingController<NewsSettingsView> {
     self.dataSource = dataSource
     super.init(rootView: NewsSettingsView(dataSource: dataSource, searchDelegate: searchDelegate))
     rootView.tappedOptInLearnMore = {
-      openURL(BraveUX.braveNewsPrivacyURL)
+      openURL(.brave.braveNewsPrivacy)
     }
   }
   

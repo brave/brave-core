@@ -7,6 +7,7 @@ import Foundation
 import UIKit
 import SnapKit
 import BraveShared
+import Preferences
 import Shared
 import BraveCore
 import BraveUI
@@ -368,7 +369,7 @@ public class WelcomeViewController: UIViewController {
           self?.p3aUtilities.isP3AEnabled = isOn
         },
         linkAction: { url in
-          let p3aLearnMoreController = SFSafariViewController(url: BraveUX.braveP3ALearnMoreURL, configuration: .init())
+          let p3aLearnMoreController = SFSafariViewController(url: .brave.p3aHelpArticle, configuration: .init())
           p3aLearnMoreController.modalPresentationStyle = .currentContext
           
           nextController.present(p3aLearnMoreController, animated: true)

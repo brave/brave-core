@@ -4,7 +4,6 @@
 
 import UIKit
 import Shared
-import BraveShared
 
 public enum PopupViewDismissType: Int {
   case dont

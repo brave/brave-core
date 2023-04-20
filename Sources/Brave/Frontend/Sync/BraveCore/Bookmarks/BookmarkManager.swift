@@ -6,7 +6,7 @@
 import Foundation
 import Data
 import BraveCore
-import BraveShared
+import Preferences
 import CoreData
 import Shared
 import Growth

@@ -28,6 +28,9 @@ import BraveTalk
 import Onboarding
 import os
 import BraveWallet
+import Preferences
+import BraveShields
+import PrivateCDN
 
 extension AppDelegate {
   // A model that is passed used in every scene

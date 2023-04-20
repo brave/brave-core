@@ -5,9 +5,8 @@
 import Shared
 @testable import Storage
 import UIKit
-import BraveSharedTestUtils
-
 import XCTest
+import TestHelpers
 
 extension Sequence {
   fileprivate func asyncForEach(_ operation: (Element) async throws -> Void) async rethrows {

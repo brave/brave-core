@@ -28,7 +28,7 @@ public struct RSSFeedLocation: Hashable, Identifiable {
 extension FeedDataSource {
   // MARK: - RSS Sources
 
-  @MainActor var rssFeedLocations: [RSSFeedLocation] {
+  @MainActor public var rssFeedLocations: [RSSFeedLocation] {
     RSSFeedSource.all().compactMap {
       guard let url = URL(string: $0.feedUrl) else { return nil }
       return RSSFeedLocation(title: $0.title, url: url)
@@ -40,7 +40,7 @@ extension FeedDataSource {
   /// - returns: `true` if the feed is successfully added, `false` if it already exists or the
   ///            url location is not a web page url
   @discardableResult
-  func addRSSFeedLocation(_ location: RSSFeedLocation) -> Bool {
+  public func addRSSFeedLocation(_ location: RSSFeedLocation) -> Bool {
     if !location.url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: location.url) {
       return false
     }
@@ -64,7 +64,7 @@ extension FeedDataSource {
   }
 
   /// Remove a users custom RSS feed to the list of sources
-  func removeRSSFeed(_ location: RSSFeedLocation) {
+  public func removeRSSFeed(_ location: RSSFeedLocation) {
     let feedUrl = location.url.absoluteString
     if RSSFeedSource.get(with: feedUrl) == nil {
       return
@@ -80,11 +80,11 @@ extension FeedDataSource {
   /// Whether or not an RSS feed is currently enabled
   ///
   /// - note: RSS Feeds are enabled by default since they are added by the user
-  func isRSSFeedEnabled(_ location: RSSFeedLocation) -> Bool {
+  public func isRSSFeedEnabled(_ location: RSSFeedLocation) -> Bool {
     FeedSourceOverride.get(fromId: location.id)?.enabled ?? true
   }
   
-  @MainActor func isFollowingRSSFeedBinding(feed: RSSFeedLocation) -> Binding<Bool> {
+  @MainActor public func isFollowingRSSFeedBinding(feed: RSSFeedLocation) -> Binding<Bool> {
     .init {
       self.rssFeedLocations.contains(where: { $0.id == feed.id })
     } set: { [self] newValue in
@@ -98,11 +98,11 @@ extension FeedDataSource {
     }
   }
   
-  func updateRSSFeed(feed: RSSFeedLocation, title: String) {
+  public func updateRSSFeed(feed: RSSFeedLocation, title: String) {
     RSSFeedSource.update(feedUrl: feed.id, title: title)
   }
   
-  @MainActor func purgeDisabledRSSLocations() {
+  @MainActor public func purgeDisabledRSSLocations() {
     // News 2.0 no longer allows keeping RSS feeds, so this will attempt to remove any RSS feeds the user has
     // specifically disabled
     let locations = Set(rssFeedLocations.map(\.id))

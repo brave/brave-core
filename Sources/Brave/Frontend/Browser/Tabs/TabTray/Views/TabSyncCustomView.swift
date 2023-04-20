@@ -5,7 +5,7 @@
 
 import UIKit
 import BraveUI
-import BraveShared
+import BraveStrings
 
 protocol TabSyncHeaderViewDelegate {
   func toggleSection(_ header: TabSyncHeaderView, section: Int)

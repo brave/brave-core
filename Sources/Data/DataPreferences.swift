@@ -3,10 +3,10 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
-import BraveShared
+import Preferences
 
-public extension Preferences {
-  final class BraveVPNAlertTotals {
+extension Preferences {
+  public final class BraveVPNAlertTotals {
     public static let consolidatedTrackerCount = Option<Int>(key: "vpn-alert-consolidated-tracker", default: 0)
     public static let consolidatedLocationPingCount = Option<Int>(key: "vpn-alert-consolidated-location", default: 0)
     public static let consolidatedEmailTrackerCount = Option<Int>(key: "vpn-alert-consolidated-email", default: 0)

@@ -3,6 +3,7 @@ import WebKit
 import Shared
 import BraveShared
 import Storage
+import CertificateUtilities
 
 private let MozDomain = "mozilla"
 private let MozErrorDownloadsNotEnabled = 100

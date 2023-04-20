@@ -9,6 +9,7 @@ import BraveCore
 import SDWebImage
 import Shared
 import os.log
+import FaviconModels
 
 /// Favicon Errors
 public enum FaviconError: Error {

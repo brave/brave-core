@@ -29,6 +29,16 @@ else
   npm install
 fi
 
+# Delete Chromium Assets from BraveCore.framework since they aren't used.
+# TODO: Get this removed in the brave-core builds if possible
+echo "${COLOR_ORANGE}Cleaning up BraveCore framework assets…${COLOR_NONE}"
+find "node_modules/brave-core-ios" -name 'BraveCore.framework' -print0 | while read -d $'\0' framework
+do
+  if [[ -f "$framework/Assets.car" ]]; then
+    rm "$framework/Assets.car"
+  fi
+done
+
 # Codesign BraveCore + MaterialComponents to pass library validation on unit tests on M1 machines
 echo "${COLOR_ORANGE}Signing BraveCore frameworks…${COLOR_NONE}"
 find "node_modules/brave-core-ios" -name '*.framework' -print0 | while read -d $'\0' framework

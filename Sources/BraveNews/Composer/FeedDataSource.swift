@@ -4,16 +4,17 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
-import BraveUI
 import Data
 import Shared
-import BraveShared
+import Preferences
 import FeedKit
-import BraveCore
 import CodableHelpers
-import os.log
+import OSLog
 import SwiftUI
 import Combine
+import Then
+import BraveShared
+import BraveCore
 
 /// Powers the Brave News feed.
 public class FeedDataSource: ObservableObject {
@@ -52,21 +53,21 @@ public class FeedDataSource: ObservableObject {
   }
 
   @Published public private(set) var state: State = .initial
-  @Published private(set) var sources: [FeedItem.Source] = [] {
+  @Published public private(set) var sources: [FeedItem.Source] = [] {
     didSet {
       reloadChannels()
       reloadAvailableLocales()
     }
   }
-  @Published private(set) var sourceSuggestions: [String: [FeedItem.SourceSimilarity]] = [:]
+  @Published public private(set) var sourceSuggestions: [String: [FeedItem.SourceSimilarity]] = [:]
   @Published public var selectedLocale: String {
     didSet {
       reloadChannels()
     }
   }
-  private(set) var availableLocales: Set<String> = []
-  @Published private var allChannels: [String: Set<String>] = [:]
-  var channels: Set<String> {
+  public private(set) var availableLocales: Set<String> = []
+  @Published public private(set) var allChannels: [String: Set<String>] = [:]
+  public var channels: Set<String> {
     allChannels[selectedLocale] ?? []
   }
   private var items: [FeedItem.Content] = []
@@ -89,12 +90,12 @@ public class FeedDataSource: ObservableObject {
     availableLocales = Set(localeMap.keys)
   }
   
-  var followedSources: Set<FeedItem.Source> {
+  public var followedSources: Set<FeedItem.Source> {
     let allOverrides = Set(FeedSourceOverride.all().filter(\.enabled).map(\.publisherID))
     return Set(sources.filter({ allOverrides.contains($0.id) }))
   }
   
-  var followedChannels: Set<FeedChannel> {
+  public var followedChannels: Set<FeedChannel> {
     let channels = Preferences.BraveNews.followedChannels.value
     return channels.reduce(into: Set<FeedChannel>()) { result, element in
       result.formUnion(element.value.map({
@@ -140,7 +141,7 @@ public class FeedDataSource: ObservableObject {
   }()
 
   /// A Brave News environment
-  enum Environment: String, CaseIterable {
+  public enum Environment: String, CaseIterable {
     case dev = "brave.software"
     case staging = "bravesoftware.com"
     case production = "brave.com"
@@ -151,7 +152,7 @@ public class FeedDataSource: ObservableObject {
   /// Updating the environment automatically clears the current cached items if any exist.
   ///
   /// - warning: Should only be changed in non-public releases
-  var environment: Environment = .production {
+  public var environment: Environment = .production {
     didSet {
       if oldValue == environment { return }
       assert(
@@ -698,7 +699,7 @@ public class FeedDataSource: ObservableObject {
     needsReloadCards = true
   }
   
-  func isFollowingChannelBinding(channel: FeedChannel) -> Binding<Bool> {
+  public func isFollowingChannelBinding(channel: FeedChannel) -> Binding<Bool> {
     .init {
       Preferences.BraveNews.followedChannels.value[channel.localeIdentifier]?.contains(channel.name) ?? false
     } set: { [self] newValue in
@@ -719,7 +720,7 @@ public class FeedDataSource: ObservableObject {
     }
   }
   
-  func isFollowingSourceBinding(source: FeedItem.Source) -> Binding<Bool> {
+  public func isFollowingSourceBinding(source: FeedItem.Source) -> Binding<Bool> {
     .init {
       FeedSourceOverride.get(fromId: source.id)?.enabled ?? false
     } set: { [self] newValue in
@@ -742,7 +743,7 @@ public class FeedDataSource: ObservableObject {
   }
   
   /// Searches sources, channels and RSS feeds
-  @MainActor func search(query: String) -> SearchResults? {
+  @MainActor public func search(query: String) -> SearchResults? {
     let sourceResults = sources.filter({
       $0.name.localizedCaseInsensitiveContains(query) ||
       $0.siteURL?.absoluteString.localizedCaseInsensitiveContains(query) == true
@@ -956,16 +957,22 @@ enum FeedSequenceElement {
   indirect case repeating([FeedSequenceElement], times: Int = .max)
 }
 
-struct SearchResults {
-  var sources: [FeedItem.Source]
-  var channels: [FeedChannel]
-  var rssFeeds: [RSSFeedLocation]
+public struct SearchResults {
+  public var sources: [FeedItem.Source]
+  public var channels: [FeedChannel]
+  public var rssFeeds: [RSSFeedLocation]
   
-  static var empty: Self {
+  public static var empty: Self {
     .init(sources: [], channels: [], rssFeeds: [])
   }
   
-  var isEmpty: Bool {
+  public var isEmpty: Bool {
     sources.isEmpty && channels.isEmpty && rssFeeds.isEmpty
+  }
+  
+  public init(sources: [FeedItem.Source], channels: [FeedChannel], rssFeeds: [RSSFeedLocation]) {
+    self.sources = sources
+    self.channels = channels
+    self.rssFeeds = rssFeeds
   }
 }

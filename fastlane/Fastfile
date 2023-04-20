@@ -40,6 +40,7 @@ platform :ios do
       device: "iPhone 8",
       code_coverage: true,
       skip_testing: [
+        "CertificateUtilitiesTests/CertificatePinningTest/testSelfSignedRootAllowed2",
         "ClientTests/TabManagerTests/testQueryAddedTabs",
         "ClientTests/TabManagerTests/testQueryAddedPrivateTabs",
         "ClientTests/TabManagerTests/testQueryAddedMixedTabs",
@@ -50,7 +51,6 @@ platform :ios do
         "ClientTests/HttpCookieExtensionTest/testSaveAndLoadCookie",
         "ClientTests/UserAgentTests",
         "DataTests",
-        "BraveSharedTests/CertificatePinningTest/testSelfSignedRootAllowed2",
       	"BraveWalletTests/ManageSiteConnectionsStoreTests/testRemoveAllPermissions",
       	"BraveWalletTests/ManageSiteConnectionsStoreTests/testRemovePermissions",
       	"BraveWalletTests/ManageSiteConnectionsStoreTests/testRemovePermissionsLastPermission"
@@ -78,7 +78,7 @@ platform :ios do
         manageAppVersionAndBuildNumber: false
       }
     }
-    testflight_build({overrideParams: overrideParams})
+    testflight_build({overrideParams: overrideParams, skip_upload: options[:skip_upload]})
   end
 
   desc "Creates a Brave Internal Beta Release build for TestFlight."
@@ -91,7 +91,7 @@ platform :ios do
         manageAppVersionAndBuildNumber: false
       }
     }
-    testflight_build({overrideParams: overrideParams})
+    testflight_build({overrideParams: overrideParams, skip_upload: options[:skip_upload]})
   end
 
   desc "Create an archive to be uploaded to the App Store"
@@ -111,7 +111,7 @@ platform :ios do
         manageAppVersionAndBuildNumber: false
       },
     }
-    testflight_build({overrideParams: overrideParams})
+    testflight_build({overrideParams: overrideParams, skip_upload: options[:skip_upload]})
   end
 
   desc "All Testflight releases use this as the foundation. Pass in `gym` override params."

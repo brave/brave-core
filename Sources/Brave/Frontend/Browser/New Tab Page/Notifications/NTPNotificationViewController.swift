@@ -4,7 +4,7 @@
 
 import UIKit
 import Shared
-import BraveShared
+import Preferences
 import BraveCore
 
 class NTPNotificationViewController: TranslucentBottomSheet {

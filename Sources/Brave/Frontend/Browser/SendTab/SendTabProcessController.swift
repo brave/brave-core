@@ -6,7 +6,7 @@
 import Foundation
 import BraveUI
 import BraveCore
-import BraveShared
+import BraveStrings
 
 class SendTabProcessController: SendTabTransitioningController {
   

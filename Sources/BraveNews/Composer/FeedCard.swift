@@ -4,6 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
+import UIKit
 import BraveCore
 
 /// A set of 2 items
@@ -24,7 +25,7 @@ public enum FeedCard: Hashable {
   /// A sponsored image to display
   case sponsor(_ feed: FeedItem)
   /// A group of deals/offers displayed horizontally
-  case deals(_ feeds: [FeedItem], title: String)
+  case deals(_ feeds: [FeedItem], title: String?)
   /// A brave partner item
   case partner(_ feed: FeedItem)
   /// A brave display ad card
@@ -37,7 +38,7 @@ public enum FeedCard: Hashable {
   case group(_ feeds: [FeedItem], title: String, direction: NSLayoutConstraint.Axis, displayBrand: Bool)
   /// A numbered group of items which will always be displayed in a vertical list.
   case numbered(_ feeds: [FeedItem], title: String)
-
+  
   /// Obtain an estimated height for this card given a width it will be displayed with
   public func estimatedHeight(for width: CGFloat) -> CGFloat {
     switch self {

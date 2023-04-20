@@ -5,8 +5,10 @@
 import XCTest
 import CoreData
 import BraveShared
+import Preferences
 @testable import Data
-import DataTestsUtils
+import BraveShields
+import TestHelpers
 
 class DomainTests: CoreDataTestCase {
   let fetchRequest = NSFetchRequest<Domain>(entityName: String(describing: Domain.self))

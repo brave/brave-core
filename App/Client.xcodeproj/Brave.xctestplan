@@ -49,6 +49,7 @@
         "NavigationRouterTests",
         "PlaylistTests\/testVideoPlayerTrackBarTimeManualFormatter()",
         "SyncTests",
+        "TabSessionTests",
         "TestFavicons"
       ],
       "target" : {
@@ -67,13 +68,6 @@
     {
       "target" : {
         "containerPath" : "container:..",
-        "identifier" : "SPMLibrariesTests",
-        "name" : "SPMLibrariesTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:..",
         "identifier" : "SharedTests",
         "name" : "SharedTests"
       }
@@ -83,6 +77,44 @@
         "containerPath" : "container:..",
         "identifier" : "StorageTests",
         "name" : "StorageTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "BraveNewsTests",
+        "name" : "BraveNewsTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "BraveTalkTests",
+        "name" : "BraveTalkTests"
+      }
+    },
+    {
+      "skippedTests" : [
+        "CertificatePinningTest\/testSelfSignedRootAllowed2()"
+      ],
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "CertificateUtilitiesTests",
+        "name" : "CertificateUtilitiesTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "GrowthTests",
+        "name" : "GrowthTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "PrivateCDNTests",
+        "name" : "PrivateCDNTests"
       }
     }
   ],

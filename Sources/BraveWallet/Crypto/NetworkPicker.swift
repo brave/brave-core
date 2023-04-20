@@ -5,7 +5,7 @@
 
 import SwiftUI
 import BraveCore
-import BraveShared
+import Preferences
 import Strings
 
 struct NetworkPicker: View {

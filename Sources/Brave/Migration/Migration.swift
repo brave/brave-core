@@ -4,7 +4,7 @@
 
 import Foundation
 import Shared
-import BraveShared
+import Preferences
 import SwiftKeychainWrapper
 import Data
 import BraveCore

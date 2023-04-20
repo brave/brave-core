@@ -7,6 +7,7 @@ import UIKit
 import Shared
 import BraveShared
 import BraveUI
+import Preferences
 import Storage
 import Data
 import BraveCore
@@ -196,8 +197,8 @@ extension LoginListViewController {
 
       cell.imageIconView.do {
         $0.contentMode = .scaleAspectFit
-        $0.layer.borderColor = BraveUX.faviconBorderColor.cgColor
-        $0.layer.borderWidth = BraveUX.faviconBorderWidth
+        $0.layer.borderColor = FaviconUX.faviconBorderColor.cgColor
+        $0.layer.borderWidth = FaviconUX.faviconBorderWidth
         $0.layer.cornerRadius = 6
         $0.layer.cornerCurve = .continuous
         $0.layer.masksToBounds = true

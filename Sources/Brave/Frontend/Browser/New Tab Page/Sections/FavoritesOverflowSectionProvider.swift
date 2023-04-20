@@ -5,7 +5,7 @@
 
 import Foundation
 import BraveUI
-import BraveShared
+import Preferences
 import Data
 import CoreData
 import Shared

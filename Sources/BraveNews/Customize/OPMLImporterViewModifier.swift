@@ -6,7 +6,7 @@
 import Foundation
 import SwiftUI
 import BraveUI
-import BraveShared
+import BraveStrings
 import FeedKit
 
 enum FindFeedsError: Error, Identifiable {

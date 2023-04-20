@@ -5,7 +5,7 @@
 
 import Foundation
 import Strings
-import BraveShared
+import BraveShields
 import UIKit
 import BraveWidgetsModels
 
@@ -35,11 +35,11 @@ extension StatKind {
   var name: String {
     switch self {
     case .adsBlocked:
-      return Strings.shieldsAdAndTrackerStats
+      return Strings.Shields.shieldsAdAndTrackerStats
     case .dataSaved:
-      return Strings.dataSavedStat
+      return Strings.Shields.dataSavedStat
     case .timeSaved:
-      return Strings.shieldsTimeStats
+      return Strings.Shields.shieldsTimeStats
     case .unknown:
       return ""
     @unknown default:

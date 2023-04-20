@@ -6,7 +6,7 @@
 import Foundation
 import Static
 import Shared
-import BraveShared
+import Preferences
 import UIKit
 import BraveUI
 import Onboarding

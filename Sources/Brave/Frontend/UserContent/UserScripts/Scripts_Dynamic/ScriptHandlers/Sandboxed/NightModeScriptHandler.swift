@@ -5,7 +5,7 @@
 import Foundation
 import WebKit
 import Shared
-import BraveShared
+import Preferences
 import Data
 
 class NightModeScriptHandler: TabContentScript {

@@ -5,7 +5,7 @@
 
 import UIKit
 import BraveUI
-import BraveShared
+import Preferences
 import Shared
 import SnapKit
 

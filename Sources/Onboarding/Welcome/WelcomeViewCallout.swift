@@ -8,7 +8,6 @@ import UIKit
 import SnapKit
 import BraveUI
 import Shared
-import BraveShared
 
 public enum WelcomeViewCalloutState {
   public struct WelcomeViewDefaultBrowserDetails {

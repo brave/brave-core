@@ -5,7 +5,7 @@
 
 import UIKit
 import Shared
-import BraveShared
+import Preferences
 import StoreKit
 import os.log
 

@@ -55,7 +55,7 @@ extension FeedItem {
     public var backgroundColor: String?
     public var localeDetails: [LocaleDetails]?
     
-    func rank(of locale: String) -> Int {
+    public func rank(of locale: String) -> Int {
       localeDetails?.first(where: { $0.locale == locale })?.rank ?? Int.max
     }
     

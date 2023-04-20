@@ -9,6 +9,7 @@ import SwiftUI
 import BraveUI
 import Shared
 import BraveShared
+import CertificateUtilities
 
 private struct CertificateTitleView: View {
   let isRootCertificate: Bool

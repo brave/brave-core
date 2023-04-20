@@ -8,6 +8,7 @@ import UIKit
 import BraveCore
 import Shared
 import BraveShared
+import FaviconModels
 import os.log
 
 /// A class for rendering a Bundled FavIcon onto a `UIImage`
@@ -87,7 +88,7 @@ public class BundledFaviconRenderer {
   }
 
   private static let multiRegionDomains = ["craigslist", "google", "amazon"]
-
+  
   private static let bundledIcons: [String: (color: UIColor, url: String)] = {
     guard let filePath = Bundle.module.path(forResource: "top_sites", ofType: "json") else {
       Logger.module.error("Failed to get bundle path for \"top_sites.json\"")
@@ -97,7 +98,6 @@ public class BundledFaviconRenderer {
       let file = try Data(contentsOf: URL(fileURLWithPath: filePath))
       let json = try JSONDecoder().decode([TopSite].self, from: file)
       var icons: [String: (color: UIColor, url: String)] = [:]
-
       json.forEach({
         guard let url = $0.domain,
               let color = $0.backgroundColor?.lowercased(),
@@ -105,7 +105,6 @@ public class BundledFaviconRenderer {
         else {
           return
         }
-
         let filePath = Bundle.module.path(forResource: "TopSites/" + path, ofType: "png")
         if let filePath = filePath {
           if color == "#fff" {
@@ -132,5 +131,12 @@ public class BundledFaviconRenderer {
       case backgroundColor = "background_color"
       case imageURL = "image_url"
     }
+  }
+}
+
+extension Favicon {
+  @MainActor
+  public static func renderImage(_ image: UIImage, backgroundColor: UIColor?, shouldScale: Bool) async -> Favicon {
+    await UIImage.renderFavicon(image, backgroundColor: backgroundColor, shouldScale: shouldScale)
   }
 }

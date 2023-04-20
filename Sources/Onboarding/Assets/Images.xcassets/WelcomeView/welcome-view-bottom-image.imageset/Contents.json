@@ -1,7 +1,6 @@
 {
   "images" : [
     {
-      "filename" : "image 2.png",
       "idiom" : "iphone",
       "scale" : "1x"
     },
@@ -16,7 +15,6 @@
       "scale" : "3x"
     },
     {
-      "filename" : "bottom leaves@2x.png",
       "idiom" : "ipad",
       "scale" : "1x"
     },

@@ -5,7 +5,7 @@
 
 import Foundation
 import Shared
-import BraveShared
+import Preferences
 
 extension Preferences {
   /// Launch arguments can be set in scheme editor in Xcode.

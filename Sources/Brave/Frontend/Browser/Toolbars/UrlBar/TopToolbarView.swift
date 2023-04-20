@@ -4,7 +4,7 @@
 
 import Shared
 import SnapKit
-import BraveShared
+import Preferences
 import Data
 import Combine
 import UIKit

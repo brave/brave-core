@@ -4,7 +4,8 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import UIKit
-import BraveShared
+import Strings
+import Preferences
 import Static
 
 /// Displays a picker that allows the user to pick the position of the location view (URL bar)

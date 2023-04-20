@@ -7,7 +7,7 @@ import Foundation
 import WebKit
 import AVKit
 import Data
-import BraveShared
+import Preferences
 import Shared
 import os.log
 

@@ -5,8 +5,9 @@
 
 import UIKit
 import SwiftUI
-import BraveShared
+import BraveStrings
 import BraveUI
+import Preferences
 
 extension FeedDataSource.Environment {
   fileprivate var name: String {

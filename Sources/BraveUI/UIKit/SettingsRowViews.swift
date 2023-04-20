@@ -4,7 +4,7 @@
 
 import Foundation
 import Static
-import BraveShared
+import Preferences
 import UIKit
 
 /// The same style switch accessory view as in Static framework, except will not be recreated each time the Cell

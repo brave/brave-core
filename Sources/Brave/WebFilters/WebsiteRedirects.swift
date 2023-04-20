@@ -5,7 +5,7 @@
 
 import Foundation
 import Shared
-import BraveShared
+import Preferences
 
 struct WebsiteRedirects {
   private struct Rule {
