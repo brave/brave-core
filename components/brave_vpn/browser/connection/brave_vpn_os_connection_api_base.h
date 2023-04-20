@@ -55,6 +55,7 @@ class BraveVPNOSConnectionAPIBase
   void SetConnectionState(mojom::ConnectionState state) override;
   std::string GetLastConnectionError() const override;
   BraveVPNRegionDataManager& GetRegionDataManager() override;
+  void SetSelectedRegion(const std::string& name) override;
 
  protected:
   BraveVPNOSConnectionAPIBase(

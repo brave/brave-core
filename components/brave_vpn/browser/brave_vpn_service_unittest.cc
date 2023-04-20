@@ -301,8 +301,7 @@ class BraveVPNServiceTest : public testing::Test {
   }
 
   void SetSelectedRegion(const std::string& region) {
-    GetBraveVPNConnectionAPI()->GetRegionDataManager().SetSelectedRegion(
-        region);
+    GetBraveVPNConnectionAPI()->SetSelectedRegion(region);
   }
 
   void OnFetchRegionList(const std::string& region_list, bool success) {

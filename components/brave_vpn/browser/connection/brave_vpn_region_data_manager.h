@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
@@ -20,14 +21,11 @@ class PrefService;
 
 namespace brave_vpn {
 
-class BraveVPNOSConnectionAPIBase;
-
 class BraveVPNRegionDataManager {
  public:
   BraveVPNRegionDataManager(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      PrefService* local_prefs,
-      BraveVPNOSConnectionAPIBase* connection_api);
+      PrefService* local_prefs);
   ~BraveVPNRegionDataManager();
   BraveVPNRegionDataManager(const BraveVPNRegionDataManager&) = delete;
   BraveVPNRegionDataManager& operator=(const BraveVPNRegionDataManager&) =
@@ -35,7 +33,6 @@ class BraveVPNRegionDataManager {
 
   const std::vector<mojom::Region>& GetRegions() const;
   bool IsRegionDataReady() const;
-  void SetSelectedRegion(const std::string& name);
   std::string GetSelectedRegion() const;
   void FetchRegionDataIfNeeded();
 
@@ -44,8 +41,19 @@ class BraveVPNRegionDataManager {
   friend class BraveVPNServiceTest;
   friend class BraveVPNOSConnectionAPIUnitTest;
 
+  void set_selected_region_changed_callback(
+      base::RepeatingCallback<void(const std::string&)> callback) {
+    selected_region_changed_callback_ = callback;
+  }
+
+  void set_region_data_ready_callback(
+      base::RepeatingCallback<void(bool)> callback) {
+    region_data_ready_callback_ = callback;
+  }
+
   std::string GetDeviceRegion() const;
   void SetDeviceRegion(const std::string& name);
+  void SetSelectedRegion(const std::string& name);
   void SetFallbackDeviceRegion();
   void SetDeviceRegionWithTimezone(const base::Value::List& timezons_value);
 
@@ -69,8 +77,10 @@ class BraveVPNRegionDataManager {
   // Only not null when region_data fetching is in-progress.
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   raw_ptr<PrefService> local_prefs_ = nullptr;
-  raw_ptr<BraveVPNOSConnectionAPIBase> connection_api_ = nullptr;
   std::unique_ptr<BraveVpnAPIRequest> api_request_;
+  base::RepeatingCallback<void(const std::string&)>
+      selected_region_changed_callback_;
+  base::RepeatingCallback<void(bool)> region_data_ready_callback_;
 };
 
 }  // namespace brave_vpn

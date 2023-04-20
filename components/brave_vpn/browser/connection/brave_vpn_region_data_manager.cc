@@ -10,17 +10,15 @@
 
 #include "base/check_is_test.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_forward.h"
 #include "base/json/json_reader.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_helper.h"
-#include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api_base.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
-
-using ConnectionState = mojom::ConnectionState;
 
 namespace {
 
@@ -96,11 +94,8 @@ std::vector<mojom::Region> ParseRegionList(
 
 BraveVPNRegionDataManager::BraveVPNRegionDataManager(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* local_prefs,
-    BraveVPNOSConnectionAPIBase* connection_api)
-    : url_loader_factory_(url_loader_factory),
-      local_prefs_(local_prefs),
-      connection_api_(connection_api) {
+    PrefService* local_prefs)
+    : url_loader_factory_(url_loader_factory), local_prefs_(local_prefs) {
   LoadCachedRegionData();
 }
 
@@ -116,28 +111,11 @@ bool BraveVPNRegionDataManager::IsRegionDataReady() const {
 }
 
 void BraveVPNRegionDataManager::SetSelectedRegion(const std::string& name) {
-  // TODO(simonhong): Can remove this when UI block region changes while
-  // operation is in-progress.
-  // Don't allow region change while operation is in-progress.
-  auto connection_state = connection_api_->GetConnectionState();
-  if (connection_state == ConnectionState::DISCONNECTING ||
-      connection_state == ConnectionState::CONNECTING) {
-    VLOG(2) << __func__ << ": Current state: " << connection_state
-            << " : prevent changing selected region while previous operation "
-               "is in-progress";
-    // This is workaround to prevent UI changes seleted region.
-    // Early return by notify again with current region name.
-    connection_api_->NotifySelectedRegionChanged(GetSelectedRegion());
-    return;
-  }
-
   local_prefs_->SetString(prefs::kBraveVPNSelectedRegion, name);
 
-  connection_api_->NotifySelectedRegionChanged(name);
-
-  // As new selected region is used, |connection_info_| for previous selected
-  // should be cleared.
-  connection_api_->ResetConnectionInfo();
+  if (selected_region_changed_callback_) {
+    selected_region_changed_callback_.Run(name);
+  }
 }
 
 std::string BraveVPNRegionDataManager::GetSelectedRegion() const {
@@ -262,7 +240,9 @@ bool BraveVPNRegionDataManager::NeedToUpdateRegionData() const {
 }
 
 void BraveVPNRegionDataManager::NotifyRegionDataReady() const {
-  connection_api_->NotifyRegionDataReady(!regions_.empty());
+  if (region_data_ready_callback_) {
+    region_data_ready_callback_.Run(!regions_.empty());
+  }
 }
 
 void BraveVPNRegionDataManager::FetchRegionDataIfNeeded() {

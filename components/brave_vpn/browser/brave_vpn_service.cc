@@ -252,7 +252,7 @@ void BraveVpnService::SetSelectedRegion(mojom::RegionPtr region_ptr) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   VLOG(2) << __func__ << " : " << region_ptr->name_pretty;
-  connection_api_->GetRegionDataManager().SetSelectedRegion(region_ptr->name);
+  connection_api_->SetSelectedRegion(region_ptr->name);
 }
 
 void BraveVpnService::GetProductUrls(GetProductUrlsCallback callback) {

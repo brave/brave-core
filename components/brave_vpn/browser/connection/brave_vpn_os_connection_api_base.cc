@@ -31,8 +31,17 @@ BraveVPNOSConnectionAPIBase::BraveVPNOSConnectionAPIBase(
     : target_vpn_entry_name_(GetBraveVPNEntryName(channel)),
       local_prefs_(local_prefs),
       url_loader_factory_(url_loader_factory),
-      region_data_manager_(url_loader_factory_, local_prefs_, this) {
+      region_data_manager_(url_loader_factory_, local_prefs_) {
   DCHECK(url_loader_factory_ && local_prefs_);
+
+  // Safe to use Unretained here because |region_data_manager_| is owned
+  // instance.
+  region_data_manager_.set_selected_region_changed_callback(base::BindRepeating(
+      &BraveVPNOSConnectionAPIBase::NotifySelectedRegionChanged,
+      base::Unretained(this)));
+  region_data_manager_.set_region_data_ready_callback(
+      base::BindRepeating(&BraveVPNOSConnectionAPIBase::NotifyRegionDataReady,
+                          base::Unretained(this)));
   net::NetworkChangeNotifier::AddNetworkChangeObserver(this);
 }
 
@@ -69,6 +78,29 @@ std::string BraveVPNOSConnectionAPIBase::GetLastConnectionError() const {
 
 BraveVPNRegionDataManager& BraveVPNOSConnectionAPIBase::GetRegionDataManager() {
   return region_data_manager_;
+}
+
+void BraveVPNOSConnectionAPIBase::SetSelectedRegion(const std::string& name) {
+  // TODO(simonhong): Can remove this when UI block region changes while
+  // operation is in-progress.
+  // Don't allow region change while operation is in-progress.
+  auto connection_state = GetConnectionState();
+  if (connection_state == ConnectionState::DISCONNECTING ||
+      connection_state == ConnectionState::CONNECTING) {
+    VLOG(2) << __func__ << ": Current state: " << connection_state
+            << " : prevent changing selected region while previous operation "
+               "is in-progress";
+    // This is workaround to prevent UI changes seleted region.
+    // Early return by notify again with current region name.
+    NotifySelectedRegionChanged(region_data_manager_.GetSelectedRegion());
+    return;
+  }
+
+  region_data_manager_.SetSelectedRegion(name);
+
+  // As new selected region is used, |connection_info_| for previous selected
+  // should be cleared.
+  ResetConnectionInfo();
 }
 
 bool BraveVPNOSConnectionAPIBase::IsInProgress() const {
