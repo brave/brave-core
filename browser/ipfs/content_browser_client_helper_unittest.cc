@@ -116,6 +116,7 @@ class ContentBrowserClientHelperUnitTest : public testing::Test {
     return web_contents()->GetBrowserContext();
   }
 
+#if BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
   bool RedirectedToInternalPage(IPFSResolveMethodTypes method) {
     profile()->GetPrefs()->SetInteger(kIPFSResolveMethod,
                                       static_cast<int>(method));
@@ -125,6 +126,7 @@ class ContentBrowserClientHelperUnitTest : public testing::Test {
            HandleIPFSURLReverseRewrite(&ipfs_diagnostic, browser_context()) &&
            ipfs_diagnostic.spec() == kIPFSWebUIURL;
   }
+#endif
 
  private:
   content::BrowserTaskEnvironment task_environment_;
@@ -333,12 +335,14 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLReverseRewriteGateway) {
       "ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/");
 }
 
+#if BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
 TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteInternal) {
   ASSERT_TRUE(RedirectedToInternalPage(IPFSResolveMethodTypes::IPFS_LOCAL));
   ASSERT_TRUE(RedirectedToInternalPage(IPFSResolveMethodTypes::IPFS_GATEWAY));
   ASSERT_TRUE(RedirectedToInternalPage(IPFSResolveMethodTypes::IPFS_ASK));
   ASSERT_TRUE(RedirectedToInternalPage(IPFSResolveMethodTypes::IPFS_DISABLED));
 }
+#endif
 
 TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteCrypto) {
   profile()->GetPrefs()->SetInteger(

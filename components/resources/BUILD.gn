@@ -39,6 +39,7 @@ brave_grit("static_resources") {
   defines = [
     "enable_brave_vpn=$enable_brave_vpn",
     "enable_ipfs=$enable_ipfs",
+    "enable_ipfs_internals_webui=$enable_ipfs_internals_webui",
     "enable_playlist=$enable_playlist",
     "enable_playlist_webui=$enable_playlist_webui",
     "enable_speedreader=$enable_speedreader",
@@ -87,7 +88,7 @@ repack("resources") {
     ]
   }
 
-  if (enable_ipfs) {
+  if (enable_ipfs_internals_webui) {
     deps += [ "//brave/components/ipfs_ui:generated_resources" ]
     sources += [
       "$root_gen_dir/brave/components/ipfs_ui/resources/ipfs_generated.pak",
@@ -141,6 +142,7 @@ brave_grit("strings") {
   defines = [
     "enable_speedreader=$enable_speedreader",
     "enable_ipfs=$enable_ipfs",
+    "enable_ipfs_internals_webui=$enable_ipfs_internals_webui",
     "ethereum_remote_client_enabled=$ethereum_remote_client_enabled",
     "enable_tor=$enable_tor",
     "enable_brave_vpn=$enable_brave_vpn",

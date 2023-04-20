@@ -62,10 +62,12 @@
 
 #if BUILDFLAG(ENABLE_IPFS)
 #include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/browser/ui/webui/ipfs_ui.h"
 #include "brave/components/ipfs/features.h"
 #include "brave/components/ipfs/ipfs_utils.h"
-#endif
+#if BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
+#include "brave/browser/ui/webui/ipfs_ui.h"
+#endif  // BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
+#endif  // BUILDFLAG(ENABLE_IPFS)
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #include "brave/browser/ui/webui/playlist_ui.h"
@@ -97,7 +99,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == kWebcompatReporterHost) {
     return new WebcompatReporterUI(web_ui, url.host());
 #endif
-#if BUILDFLAG(ENABLE_IPFS)
+#if BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
   } else if (host == kIPFSWebUIHost &&
              ipfs::IpfsServiceFactory::IsIpfsEnabled(profile)) {
     return new IPFSUI(web_ui, url.host());
@@ -193,10 +195,10 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui, const GURL& url) {
   if (url.host_piece() == kAdblockHost ||
       url.host_piece() == kAdblockInternalsHost ||
       url.host_piece() == kWebcompatReporterHost ||
-#if BUILDFLAG(ENABLE_IPFS)
+#if BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
       (url.host_piece() == kIPFSWebUIHost &&
        base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) ||
-#endif  // BUILDFLAG(ENABLE_IPFS)
+#endif  // BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
 #if !BUILDFLAG(IS_ANDROID)
       url.host_piece() == kWalletPanelHost ||
       url.host_piece() == kWalletPageHost ||
