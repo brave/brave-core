@@ -238,7 +238,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
     &net::features::kPartitionHttpServerPropertiesByNetworkIsolationKey,
     &net::features::kPartitionSSLSessionsByNetworkIsolationKey,
     &net::features::kSplitHostCacheByNetworkIsolationKey,
-    &password_manager::features::kPasswordImport,
   };
 
   for (const auto* feature : enabled_features)
