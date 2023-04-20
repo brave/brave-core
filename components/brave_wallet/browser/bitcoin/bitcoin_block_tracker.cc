@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_block_tracker.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/functional/bind.h"

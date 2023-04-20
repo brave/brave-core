@@ -33,8 +33,9 @@ bool EthereumKeyring::RecoverAddress(const std::vector<uint8_t>& message,
                                      std::string* address) {
   CHECK(address);
   // A compact ECDSA signature (recovery id byte + 64 bytes).
-  if (signature.size() != kCompactSignatureSize + 1)
+  if (signature.size() != kCompactSignatureSize + 1) {
     return false;
+  }
 
   std::vector<uint8_t> signature_only = signature;
   uint8_t v = signature_only.back();
