@@ -13,14 +13,6 @@ const createDist = (buildConfig = config.defaultBuildConfig, options = {}) => {
   config.update(options)
   util.touchOverriddenFiles()
   util.updateBranding()
-  // On Android CI does two builds sequentially: for aab and for apk.
-  // Symbols are uploaded after 2nd build, but we need to preserve the symbols
-  // from the 1st build, so don't clean here dist folder; in anyway symbols zips
-  // are overwritten and brave.breakpad.syms dir is cleared before generating
-  // the symbols.
-  if (config.targetOS !== 'android') {
-    fs.removeSync(path.join(config.outputDir, 'dist'))
-  }
   config.buildTarget = 'create_dist'
   util.generateNinjaFiles()
   util.buildTarget()
