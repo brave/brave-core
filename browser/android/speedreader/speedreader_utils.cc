@@ -40,6 +40,23 @@ static void JNI_BraveSpeedReaderUtils_ToggleEnabledForWebContent(
   tab_helper->MaybeToggleEnabledForSite(enabled);
 }
 
+static jboolean JNI_BraveSpeedReaderUtils_TabProbablyReadable(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& tab) {
+  TabAndroid* tab_android = TabAndroid::GetNativeTab(env, tab);
+  content::WebContents* web_contents = tab_android->web_contents();
+  if (!web_contents) {
+    return false;
+  }
+
+  auto* tab_helper = SpeedreaderTabHelper::FromWebContents(web_contents);
+  if (!tab_helper) {
+    return false;
+  }
+
+  return tab_helper->PageDistillState() == DistillState::kPageProbablyReadable;
+}
+
 static jboolean JNI_BraveSpeedReaderUtils_TabStateIsDistilled(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& tab) {
@@ -89,5 +106,18 @@ static jboolean JNI_BraveSpeedReaderUtils_TabWantsDistill(
   }
 
   return PageWantsDistill(tab_helper->PageDistillState());
+}
+
+static void JNI_BraveSpeedReaderUtils_SingleShotSpeedreaderForWebContent(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& jweb_contents) {
+  content::WebContents* web_contents =
+      content::WebContents::FromJavaWebContents(jweb_contents);
+  auto* tab_helper = SpeedreaderTabHelper::FromWebContents(web_contents);
+  if (!tab_helper) {
+    LOG(ERROR) << "speedreader_tab_helper: no tab_helper!";
+    return;
+  }
+  tab_helper->SingleShotSpeedreader();
 }
 }  // namespace speedreader

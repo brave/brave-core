@@ -151,7 +151,7 @@ public class BraveSpeedReaderManager extends EmptyTabObserver implements UserDat
                                         resources.getString(R.string.speedreader_message_button))
                                 .with(MessageBannerProperties.ON_PRIMARY_ACTION,
                                         () -> {
-                                            enableSpeedreaderMode();
+                                            BraveSpeedReaderUtils.enableSpeedreaderMode(mTab);
                                             return PrimaryActionClickBehavior.DISMISS_IMMEDIATELY;
                                         })
                                 .with(MessageBannerProperties.ON_DISMISSED,
@@ -169,21 +169,6 @@ public class BraveSpeedReaderManager extends EmptyTabObserver implements UserDat
 
         if (dismissReason != DismissReason.PRIMARY_ACTION) {
             mIsDismissed = false;
-        }
-    }
-
-    public void enableSpeedreaderMode() {
-        if (mTab == null || mTab.getWebContents() == null) return;
-        WebContents webContents = mTab.getWebContents();
-
-        GURL url = webContents.getLastCommittedUrl();
-
-        // Enable on tab
-        BraveSpeedReaderUtils.toggleEnabledForWebContent(webContents, true);
-
-        // Enable from original page
-        if (BraveSpeedReaderUtils.tabSupportsDistillation(mTab)) {
-            mTab.reload();
         }
     }
 
