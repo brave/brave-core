@@ -878,7 +878,7 @@ provideStrings({
   braveWalletNftPinningRunNodeHeading: 'Run an IPFS node to keep your NFTs online forever',
   braveWalletNftPinningRunNodeDescription: 'IPFS is a super-secure alternative to traditional Web hosting. Instead of relying on a single host, IPFS enables thousands of individuals (who run “nodes”) to work together to store content. And as long as one person has a copy, a file can never disappear. “Pinning” your NFTs to IPFS—and running your own IPFS node—is the best way to secure your NFTs.',
   braveWalletNftPinningCheckNftsButton: 'See which of my NFTs are eligible',
-  braveWalletNftPinningBannerStart: 'Now you can run your IPFS and be part of web 3. Your NFT data will stay online forever.',
+  braveWalletNftPinningBannerStart: 'Back up your NFT data with IPFS.',
   braveWalletNftPinningBannerUploading: 'NFTs are being pinned to your local IPFS node.',
   braveWalletNftPinningBannerSuccess: '$1 supported NFTs are pinned to your local IPFS node.',
   braveWalletNftPinningBannerLearnMore: 'Learn more',
