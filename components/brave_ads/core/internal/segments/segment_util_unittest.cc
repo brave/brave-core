@@ -98,7 +98,7 @@ TEST_F(BraveAdsSegmentUtilTest, GetParentSegmentsForEmptyList) {
 
 TEST_F(BraveAdsSegmentUtilTest, ShouldFilterMatchingParentChildSegment) {
   // Arrange
-  ClientStateManager::GetInstance()->ToggleMarkToNoLongerReceiveAdsForCategory(
+  ClientStateManager::GetInstance()->ToggleDislikeCategory(
       "parent-child", CategoryContentOptActionType::kNone);
 
   // Act
@@ -109,7 +109,7 @@ TEST_F(BraveAdsSegmentUtilTest, ShouldFilterMatchingParentChildSegment) {
 
 TEST_F(BraveAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentChildSegment) {
   // Arrange
-  ClientStateManager::GetInstance()->ToggleMarkToNoLongerReceiveAdsForCategory(
+  ClientStateManager::GetInstance()->ToggleDislikeCategory(
       "parent-child", CategoryContentOptActionType::kNone);
 
   // Act
@@ -120,7 +120,7 @@ TEST_F(BraveAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentChildSegment) {
 
 TEST_F(BraveAdsSegmentUtilTest, ShouldFilterMatchingParentSegment) {
   // Arrange
-  ClientStateManager::GetInstance()->ToggleMarkToNoLongerReceiveAdsForCategory(
+  ClientStateManager::GetInstance()->ToggleDislikeCategory(
       "parent", CategoryContentOptActionType::kNone);
 
   // Act
@@ -131,7 +131,7 @@ TEST_F(BraveAdsSegmentUtilTest, ShouldFilterMatchingParentSegment) {
 
 TEST_F(BraveAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentSegment) {
   // Arrange
-  ClientStateManager::GetInstance()->ToggleMarkToNoLongerReceiveAdsForCategory(
+  ClientStateManager::GetInstance()->ToggleDislikeCategory(
       "parent", CategoryContentOptActionType::kNone);
 
   // Act
@@ -143,7 +143,7 @@ TEST_F(BraveAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentSegment) {
 TEST_F(BraveAdsSegmentUtilTest,
        ShouldFilterAgainstParentForMatchingParentSegmentWithChild) {
   // Arrange
-  ClientStateManager::GetInstance()->ToggleMarkToNoLongerReceiveAdsForCategory(
+  ClientStateManager::GetInstance()->ToggleDislikeCategory(
       "parent", CategoryContentOptActionType::kNone);
 
   // Act
@@ -155,7 +155,7 @@ TEST_F(BraveAdsSegmentUtilTest,
 TEST_F(BraveAdsSegmentUtilTest,
        ShouldNotFilterAgainstParentForNonMatchingParentSegmentWithChild) {
   // Arrange
-  ClientStateManager::GetInstance()->ToggleMarkToNoLongerReceiveAdsForCategory(
+  ClientStateManager::GetInstance()->ToggleDislikeCategory(
       "parent", CategoryContentOptActionType::kNone);
 
   // Act

@@ -34,9 +34,9 @@ using ToggleLikeAdCallback =
     base::OnceCallback<void(base::Value::Dict ad_content)>;
 using ToggleDislikeAdCallback =
     base::OnceCallback<void(base::Value::Dict ad_content)>;
-using ToggleMarkToReceiveAdsForCategoryCallback =
+using ToggleLikeCategoryCallback =
     base::OnceCallback<void(const std::string& category, int action)>;
-using ToggleMarkToNoLongerReceiveAdsForCategoryCallback =
+using ToggleDislikeCategoryCallback =
     base::OnceCallback<void(const std::string& category, int action)>;
 using ToggleSaveAdCallback =
     base::OnceCallback<void(base::Value::Dict ad_content)>;

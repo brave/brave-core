@@ -138,10 +138,10 @@ class AdsImpl final : public Ads,
 
   AdContentLikeActionType ToggleLikeAd(base::Value::Dict value) override;
   AdContentLikeActionType ToggleDislikeAd(base::Value::Dict value) override;
-  CategoryContentOptActionType ToggleMarkToReceiveAdsForCategory(
+  CategoryContentOptActionType ToggleLikeCategory(
       const std::string& category,
       const CategoryContentOptActionType& action_type) override;
-  CategoryContentOptActionType ToggleMarkToNoLongerReceiveAdsForCategory(
+  CategoryContentOptActionType ToggleDislikeCategory(
       const std::string& category,
       const CategoryContentOptActionType& action_type) override;
   bool ToggleSaveAd(base::Value::Dict value) override;

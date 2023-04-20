@@ -192,7 +192,7 @@ void Confirmations::OnRecreateOptedInDynamicUserDataAndRedeem(
     return Redeem(confirmation);
   }
 
-  ConfirmationInfo mutable_confirmation = confirmation;
+  ConfirmationInfo mutable_confirmation(confirmation);
   mutable_confirmation.opted_in->user_data.dynamic =
       std::move(dynamic_opted_in_user_data);
   mutable_confirmation.opted_in->credential_base64url =

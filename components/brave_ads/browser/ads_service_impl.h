@@ -274,14 +274,12 @@ class AdsServiceImpl : public AdsService,
                     ToggleLikeAdCallback callback) override;
   void ToggleDislikeAd(base::Value::Dict value,
                        ToggleDislikeAdCallback callback) override;
-  void ToggleMarkToReceiveAdsForCategory(
-      const std::string& category,
-      int action,
-      ToggleMarkToReceiveAdsForCategoryCallback callback) override;
-  void ToggleMarkToNoLongerReceiveAdsForCategory(
-      const std::string& category,
-      int action,
-      ToggleMarkToNoLongerReceiveAdsForCategoryCallback callback) override;
+  void ToggleLikeCategory(const std::string& category,
+                          int action,
+                          ToggleLikeCategoryCallback callback) override;
+  void ToggleDislikeCategory(const std::string& category,
+                             int action,
+                             ToggleDislikeCategoryCallback callback) override;
   void ToggleSaveAd(base::Value::Dict value,
                     ToggleSaveAdCallback callback) override;
   void ToggleMarkAdAsInappropriate(
@@ -301,7 +299,9 @@ class AdsServiceImpl : public AdsService,
                           bool is_visible,
                           bool is_incognito) override;
   void NotifyDidCloseTab(int32_t tab_id) override;
+
   void NotifyUserGestureEventTriggered(int32_t page_transition_type) override;
+
   void NotifyBrowserDidBecomeActive() override;
   void NotifyBrowserDidResignActive() override;
 

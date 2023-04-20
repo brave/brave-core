@@ -57,23 +57,12 @@ class BraveAdsHistoryManagerTest : public HistoryManagerObserver,
     did_dislike_ad_ = true;
   }
 
-  void OnDidMarkToNoLongerReceiveAdsForCategory(
-      const std::string& /*category*/) override {
-    did_mark_to_no_longer_receive_ads_for_category_ = true;
+  void OnDidLikeCategory(const std::string& /*category*/) override {
+    did_like_category_ = true;
   }
 
-  void OnDidMarkToReceiveAdsForCategory(
-      const std::string& /*category*/) override {
-    did_mark_to_receive_ads_for_category_ = true;
-  }
-
-  void OnDidMarkAdAsInappropriate(
-      const AdContentInfo& /*ad_content*/) override {
-    did_mark_ad_as_inappropriate_ = true;
-  }
-
-  void OnDidMarkAdAsAppropriate(const AdContentInfo& /*ad_content*/) override {
-    did_mark_ad_as_appropriate_ = true;
+  void OnDidDislikeCategory(const std::string& /*category*/) override {
+    did_dislike_category_ = true;
   }
 
   void OnDidSaveAd(const AdContentInfo& /*ad_content*/) override {
@@ -84,15 +73,24 @@ class BraveAdsHistoryManagerTest : public HistoryManagerObserver,
     did_unsave_ad_ = true;
   }
 
+  void OnDidMarkAdAsAppropriate(const AdContentInfo& /*ad_content*/) override {
+    did_mark_ad_as_appropriate_ = true;
+  }
+
+  void OnDidMarkAdAsInappropriate(
+      const AdContentInfo& /*ad_content*/) override {
+    did_mark_ad_as_inappropriate_ = true;
+  }
+
   bool did_add_history_ = false;
   bool did_like_ad_ = false;
   bool did_dislike_ad_ = false;
-  bool did_mark_to_no_longer_receive_ads_for_category_ = false;
-  bool did_mark_to_receive_ads_for_category_ = false;
-  bool did_mark_ad_as_inappropriate_ = false;
-  bool did_mark_ad_as_appropriate_ = false;
+  bool did_like_category_ = false;
+  bool did_dislike_category_ = false;
   bool did_save_ad_ = false;
   bool did_unsave_ad_ = false;
+  bool did_mark_ad_as_inappropriate_ = false;
+  bool did_mark_ad_as_appropriate_ = false;
 };
 
 TEST_F(BraveAdsHistoryManagerTest, HasInstance) {
@@ -239,7 +237,7 @@ TEST_F(BraveAdsHistoryManagerTest, DislikeAd) {
   EXPECT_TRUE(did_dislike_ad_);
 }
 
-TEST_F(BraveAdsHistoryManagerTest, MarkToNoLongerReceiveAdsForCategory) {
+TEST_F(BraveAdsHistoryManagerTest, LikeCategory) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
@@ -248,15 +246,15 @@ TEST_F(BraveAdsHistoryManagerTest, MarkToNoLongerReceiveAdsForCategory) {
   HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
 
   // Act
-  HistoryManager::GetInstance()->MarkToNoLongerReceiveAdsForCategory(
+  HistoryManager::GetInstance()->LikeCategory(
       ad.segment, CategoryContentOptActionType::kNone);
 
   // Assert
-  EXPECT_TRUE(did_mark_to_no_longer_receive_ads_for_category_);
-  EXPECT_FALSE(did_mark_to_receive_ads_for_category_);
+  EXPECT_FALSE(did_dislike_category_);
+  EXPECT_TRUE(did_like_category_);
 }
 
-TEST_F(BraveAdsHistoryManagerTest, MarkToReceiveAdsForCategory) {
+TEST_F(BraveAdsHistoryManagerTest, DislikeCategory) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
@@ -265,12 +263,47 @@ TEST_F(BraveAdsHistoryManagerTest, MarkToReceiveAdsForCategory) {
   HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
 
   // Act
-  HistoryManager::GetInstance()->MarkToReceiveAdsForCategory(
+  HistoryManager::GetInstance()->DislikeCategory(
       ad.segment, CategoryContentOptActionType::kNone);
 
   // Assert
-  EXPECT_FALSE(did_mark_to_no_longer_receive_ads_for_category_);
-  EXPECT_TRUE(did_mark_to_receive_ads_for_category_);
+  EXPECT_TRUE(did_dislike_category_);
+  EXPECT_FALSE(did_like_category_);
+}
+
+TEST_F(BraveAdsHistoryManagerTest, SaveAd) {
+  // Arrange
+  const CreativeNotificationAdInfo creative_ad =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+  const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
+
+  const HistoryItemInfo history_item =
+      HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
+
+  // Act
+  HistoryManager::GetInstance()->ToggleSaveAd(history_item.ad_content);
+
+  // Assert
+  EXPECT_TRUE(did_save_ad_);
+  EXPECT_FALSE(did_unsave_ad_);
+}
+
+TEST_F(BraveAdsHistoryManagerTest, UnsaveAd) {
+  // Arrange
+  const CreativeNotificationAdInfo creative_ad =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+  const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
+
+  HistoryItemInfo history_item =
+      HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
+  history_item.ad_content.is_saved = true;
+
+  // Act
+  HistoryManager::GetInstance()->ToggleSaveAd(history_item.ad_content);
+
+  // Assert
+  EXPECT_FALSE(did_save_ad_);
+  EXPECT_TRUE(did_unsave_ad_);
 }
 
 TEST_F(BraveAdsHistoryManagerTest, MarkAdAsInappropriate) {
@@ -308,41 +341,6 @@ TEST_F(BraveAdsHistoryManagerTest, MarkAdAsAppropriate) {
   // Assert
   EXPECT_FALSE(did_mark_ad_as_inappropriate_);
   EXPECT_TRUE(did_mark_ad_as_appropriate_);
-}
-
-TEST_F(BraveAdsHistoryManagerTest, SaveAd) {
-  // Arrange
-  const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
-  const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
-
-  const HistoryItemInfo history_item =
-      HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
-
-  // Act
-  HistoryManager::GetInstance()->ToggleSaveAd(history_item.ad_content);
-
-  // Assert
-  EXPECT_TRUE(did_save_ad_);
-  EXPECT_FALSE(did_unsave_ad_);
-}
-
-TEST_F(BraveAdsHistoryManagerTest, UnsaveAd) {
-  // Arrange
-  const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
-  const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
-
-  HistoryItemInfo history_item =
-      HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
-  history_item.ad_content.is_saved = true;
-
-  // Act
-  HistoryManager::GetInstance()->ToggleSaveAd(history_item.ad_content);
-
-  // Assert
-  EXPECT_FALSE(did_save_ad_);
-  EXPECT_TRUE(did_unsave_ad_);
 }
 
 }  // namespace brave_ads

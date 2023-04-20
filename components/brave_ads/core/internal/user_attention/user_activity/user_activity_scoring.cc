@@ -42,7 +42,7 @@ std::string EncodeEvents(const UserActivityEventList& events) {
 
 double CalculateScore(const UserActivityTriggerList& triggers,
                       const std::string& events) {
-  std::string mutable_events = events;
+  std::string mutable_events(events);
 
   double score = 0.0;
 

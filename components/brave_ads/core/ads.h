@@ -165,18 +165,17 @@ class ADS_EXPORT Ads {
   // containing the current state.
   virtual AdContentLikeActionType ToggleDislikeAd(base::Value::Dict value) = 0;
 
-  // Called to no longer receive ads for the specified category. This is a
-  // toggle, so calling it again returns the setting to the neutral state.
-  // Returns |CategoryContentOptActionType| containing the current state.
-  virtual CategoryContentOptActionType ToggleMarkToReceiveAdsForCategory(
+  // Called to like a category. This is a toggle, so calling it again returns
+  // the setting to the neutral state. Returns |CategoryContentOptActionType|
+  // containing the current state.
+  virtual CategoryContentOptActionType ToggleLikeCategory(
       const std::string& category,
       const CategoryContentOptActionType& action_type) = 0;
 
-  // Called to receive ads for the specified category. This is a toggle, so
-  // calling it again returns the setting to the neutral state. Returns
-  // |CategoryContentOptActionType| containing the current state.
-  virtual CategoryContentOptActionType
-  ToggleMarkToNoLongerReceiveAdsForCategory(
+  // Called to dislike a category. This is a toggle, so calling it again returns
+  // the setting to the neutral state. Returns |CategoryContentOptActionType|
+  // containing the current state.
+  virtual CategoryContentOptActionType ToggleDislikeCategory(
       const std::string& category,
       const CategoryContentOptActionType& action_type) = 0;
 

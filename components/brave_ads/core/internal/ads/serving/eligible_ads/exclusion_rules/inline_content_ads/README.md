@@ -9,9 +9,9 @@ Exclusion rules frequency cap the number of times a user can see an inline conte
 | creative instance  | Exclude the ad if it exceeds the cap for the creative instance  |
 | daily cap  | Exclude the ad if the user has exceeded the daily cap for the campaign  |
 | dayparting  | Exclude the ad if not within the scheduled time slot  |
+| dislike category  | Exclude the ad if the user disliked the category  |
 | dislike  | Exclude the ad if the user disliked the advertiser  |
 | marked as inappropriate  | Exclude the ad if the user marked the creative set as inappropriate  |
-| marked to no longer receive  | Exclude the ad if the user marked the creative set to no longer receive ads  |
 | per day  | Exclude the ad if it exceeds the per-day cap for the creative set  |
 | per month  | Exclude the ad if it exceeds the per-month cap for the creative set  |
 | per week  | Exclude the ad if it exceeds the per-week cap for the creative set  |

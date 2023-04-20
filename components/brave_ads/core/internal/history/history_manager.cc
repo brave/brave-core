@@ -143,31 +143,42 @@ AdContentLikeActionType HistoryManager::DislikeAd(
   return action_type;
 }
 
-CategoryContentOptActionType
-HistoryManager::MarkToNoLongerReceiveAdsForCategory(
+CategoryContentOptActionType HistoryManager::LikeCategory(
     const std::string& category,
     const CategoryContentOptActionType& action_type) const {
   const CategoryContentOptActionType toggled_action_type =
-      ClientStateManager::GetInstance()
-          ->ToggleMarkToNoLongerReceiveAdsForCategory(category, action_type);
-  if (toggled_action_type == CategoryContentOptActionType::kOptOut) {
-    NotifyDidMarkToNoLongerReceiveAdsForCategory(category);
+      ClientStateManager::GetInstance()->ToggleLikeCategory(category,
+                                                            action_type);
+  if (toggled_action_type == CategoryContentOptActionType::kOptIn) {
+    NotifyDidLikeCategory(category);
   }
 
   return toggled_action_type;
 }
 
-CategoryContentOptActionType HistoryManager::MarkToReceiveAdsForCategory(
+CategoryContentOptActionType HistoryManager::DislikeCategory(
     const std::string& category,
     const CategoryContentOptActionType& action_type) const {
   const CategoryContentOptActionType toggled_action_type =
-      ClientStateManager::GetInstance()->ToggleMarkToReceiveAdsForCategory(
-          category, action_type);
-  if (toggled_action_type == CategoryContentOptActionType::kOptIn) {
-    NotifyDidMarkToReceiveAdsForCategory(category);
+      ClientStateManager::GetInstance()->ToggleDislikeCategory(category,
+                                                               action_type);
+  if (toggled_action_type == CategoryContentOptActionType::kOptOut) {
+    NotifyDidDislikeCategory(category);
   }
 
   return toggled_action_type;
+}
+
+bool HistoryManager::ToggleSaveAd(const AdContentInfo& ad_content) const {
+  const bool is_saved =
+      ClientStateManager::GetInstance()->ToggleSaveAd(ad_content);
+  if (is_saved) {
+    NotifyDidSaveAd(ad_content);
+  } else {
+    NotifyDidUnsaveAd(ad_content);
+  }
+
+  return is_saved;
 }
 
 bool HistoryManager::ToggleMarkAdAsInappropriate(
@@ -183,18 +194,6 @@ bool HistoryManager::ToggleMarkAdAsInappropriate(
   }
 
   return is_marked;
-}
-
-bool HistoryManager::ToggleSaveAd(const AdContentInfo& ad_content) const {
-  const bool is_saved =
-      ClientStateManager::GetInstance()->ToggleSaveAd(ad_content);
-  if (is_saved) {
-    NotifyDidSaveAd(ad_content);
-  } else {
-    NotifyDidUnsaveAd(ad_content);
-  }
-
-  return is_saved;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -218,17 +217,28 @@ void HistoryManager::NotifyDidDislikeAd(const AdContentInfo& ad_content) const {
   }
 }
 
-void HistoryManager::NotifyDidMarkToNoLongerReceiveAdsForCategory(
-    const std::string& category) const {
+void HistoryManager::NotifyDidLikeCategory(const std::string& category) const {
   for (HistoryManagerObserver& observer : observers_) {
-    observer.OnDidMarkToNoLongerReceiveAdsForCategory(category);
+    observer.OnDidLikeCategory(category);
   }
 }
 
-void HistoryManager::NotifyDidMarkToReceiveAdsForCategory(
+void HistoryManager::NotifyDidDislikeCategory(
     const std::string& category) const {
   for (HistoryManagerObserver& observer : observers_) {
-    observer.OnDidMarkToReceiveAdsForCategory(category);
+    observer.OnDidDislikeCategory(category);
+  }
+}
+
+void HistoryManager::NotifyDidSaveAd(const AdContentInfo& ad_content) const {
+  for (HistoryManagerObserver& observer : observers_) {
+    observer.OnDidSaveAd(ad_content);
+  }
+}
+
+void HistoryManager::NotifyDidUnsaveAd(const AdContentInfo& ad_content) const {
+  for (HistoryManagerObserver& observer : observers_) {
+    observer.OnDidUnsaveAd(ad_content);
   }
 }
 
@@ -243,18 +253,6 @@ void HistoryManager::NotifyDidMarkAdAsAppropriate(
     const AdContentInfo& ad_content) const {
   for (HistoryManagerObserver& observer : observers_) {
     observer.OnDidMarkAdAsAppropriate(ad_content);
-  }
-}
-
-void HistoryManager::NotifyDidSaveAd(const AdContentInfo& ad_content) const {
-  for (HistoryManagerObserver& observer : observers_) {
-    observer.OnDidSaveAd(ad_content);
-  }
-}
-
-void HistoryManager::NotifyDidUnsaveAd(const AdContentInfo& ad_content) const {
-  for (HistoryManagerObserver& observer : observers_) {
-    observer.OnDidUnsaveAd(ad_content);
   }
 }
 
