@@ -221,9 +221,12 @@ def execute(argv, env=os.environ):  # pylint: disable=dangerous-default-value
                 argv, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                 universal_newlines=True)
         else:
-            process = subprocess.Popen(  # pylint: disable=unexpected-keyword-arg
-                argv, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                encoding='utf-8', universal_newlines=True)
+            process = subprocess.Popen(argv,
+                                       env=env,
+                                       stdout=subprocess.PIPE,
+                                       stderr=subprocess.PIPE,
+                                       encoding='utf-8',
+                                       universal_newlines=True)
         stdout, stderr = process.communicate()
         if is_verbose_mode() or process.returncode != 0:
             if sys.version_info.major == 2:
@@ -249,7 +252,8 @@ def execute(argv, env=os.environ):  # pylint: disable=dangerous-default-value
         raise e
 
 
-def execute_stdout(argv, env=os.environ):  # pylint: disable=dangerous-default-value
+# pylint: disable=dangerous-default-value
+def execute_stdout(argv, env=os.environ):
     if is_verbose_mode():
         print(' '.join(argv))
         try:
