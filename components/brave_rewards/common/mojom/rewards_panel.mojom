@@ -9,7 +9,8 @@ enum RewardsPanelView {
   kDefault,
   kRewardsTour,
   kGrantCaptcha,
-  kAdaptiveCaptcha
+  kAdaptiveCaptcha,
+  kInlineTip
 };
 
 struct RewardsPanelArgs {

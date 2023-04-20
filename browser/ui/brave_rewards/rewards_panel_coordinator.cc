@@ -43,6 +43,11 @@ bool RewardsPanelCoordinator::ShowAdaptiveCaptcha() {
       mojom::RewardsPanelArgs(mojom::RewardsPanelView::kAdaptiveCaptcha, ""));
 }
 
+bool RewardsPanelCoordinator::ShowInlineTipView() {
+  return OpenWithArgs(
+      mojom::RewardsPanelArgs(mojom::RewardsPanelView::kInlineTip, ""));
+}
+
 void RewardsPanelCoordinator::AddObserver(Observer* observer) {
   observers_.AddObserver(observer);
 }

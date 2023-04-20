@@ -17,9 +17,13 @@ namespace brave_rewards {
 
 namespace {
 
-void OpenRewardsPanel(Browser* browser) {
+void OpenRewardsPanel(Browser* browser, bool inline_tip) {
   if (auto* coordinator = RewardsPanelCoordinator::FromBrowser(browser)) {
-    coordinator->OpenRewardsPanel();
+    if (inline_tip) {
+      coordinator->ShowInlineTipView();
+    } else {
+      coordinator->OpenRewardsPanel();
+    }
   }
 }
 
@@ -38,7 +42,14 @@ void TipPanelCoordinator::ShowPanelForPublisher(
     const std::string& publisher_id) {
   rewards_service_->GetUserType(
       base::BindOnce(&TipPanelCoordinator::GetUserTypeCallback,
-                     weak_factory_.GetWeakPtr(), publisher_id));
+                     weak_factory_.GetWeakPtr(), publisher_id, false));
+}
+
+void TipPanelCoordinator::ShowPanelForInlineTip(
+    const std::string& publisher_id) {
+  rewards_service_->GetUserType(
+      base::BindOnce(&TipPanelCoordinator::GetUserTypeCallback,
+                     weak_factory_.GetWeakPtr(), publisher_id, true));
 }
 
 void TipPanelCoordinator::AddObserver(Observer* observer) {
@@ -51,28 +62,30 @@ void TipPanelCoordinator::RemoveObserver(Observer* observer) {
 
 void TipPanelCoordinator::GetUserTypeCallback(
     const std::string& publisher_id,
+    bool inline_tip,
     ledger::mojom::UserType user_type) {
   // If the user is not "connected" (i.e. if they have not linked an external
   // wallet and they are not a "legacy" anonymous user), then open the Rewards
   // panel instead.
   if (user_type == ledger::mojom::UserType::kUnconnected) {
-    OpenRewardsPanel(&GetBrowser());
+    OpenRewardsPanel(&GetBrowser(), inline_tip);
     return;
   }
 
   rewards_service_->IsPublisherRegistered(
       publisher_id,
       base::BindOnce(&TipPanelCoordinator::IsPublisherRegisteredCallback,
-                     weak_factory_.GetWeakPtr(), publisher_id));
+                     weak_factory_.GetWeakPtr(), publisher_id, inline_tip));
 }
 
 void TipPanelCoordinator::IsPublisherRegisteredCallback(
     const std::string& publisher_id,
+    bool inline_tip,
     bool is_publisher_registered) {
   // If the creator is not "registered" (and therefore has no banner information
   // to display), then open the Rewards panel instead.
   if (!is_publisher_registered) {
-    OpenRewardsPanel(&GetBrowser());
+    OpenRewardsPanel(&GetBrowser(), inline_tip);
     return;
   }
 
