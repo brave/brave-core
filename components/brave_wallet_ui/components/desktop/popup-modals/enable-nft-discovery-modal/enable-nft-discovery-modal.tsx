@@ -49,8 +49,8 @@ export const EnableNftDiscoveryModal = ({ onConfirm, onCancel }: Props) => {
           <Link target='_blank' rel='noreferrer' href={LEARN_MORE_LINK}>{learnMore}</Link>
         </Description>
         <ButtonRow>
-          <ConfirmButton onClick={onConfirm}>{getLocale('braveWalletEnableNftAutoDiscoveryModalConfirm')}</ConfirmButton>
           <CancelButton onClick={onCancel}>{getLocale('braveWalletEnableNftAutoDiscoveryModalCancel')}</CancelButton>
+          <ConfirmButton onClick={onConfirm}>{getLocale('braveWalletEnableNftAutoDiscoveryModalConfirm')}</ConfirmButton>
         </ButtonRow>
       </StyledWrapper>
     </PopupModal>
