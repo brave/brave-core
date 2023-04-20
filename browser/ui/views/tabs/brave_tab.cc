@@ -22,6 +22,8 @@
 #include "ui/compositor/paint_recorder.h"
 #include "ui/gfx/favicon_size.h"
 #include "ui/gfx/skia_paint_util.h"
+#include "ui/views/animation/ink_drop.h"
+#include "ui/views/view_class_properties.h"
 
 namespace {
 
@@ -184,7 +186,17 @@ void BraveTab::Layout() {
     if (showing_close_button_) {
       close_button_->SetX(GetLocalBounds().CenterPoint().x() -
                           (close_button_->width() / 2));
-      close_button_->SetButtonPadding({});
+      gfx::Insets* current_padding =
+          close_button_->GetProperty(views::kInternalPaddingKey);
+      DCHECK(current_padding);
+
+      // Use the same padding for all sides.
+      close_button_->SetButtonPadding(gfx::Insets(current_padding->left()));
+
+      // In order to reset ink drop bounds based on new padding.
+      auto* ink_drop = views::InkDrop::Get(close_button_)->GetInkDrop();
+      DCHECK(ink_drop);
+      ink_drop->HostSizeChanged(close_button_->size());
     }
   }
 }
