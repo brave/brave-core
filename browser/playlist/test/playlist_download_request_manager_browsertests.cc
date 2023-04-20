@@ -7,6 +7,7 @@
 
 #include "base/ranges/algorithm.h"
 #include "base/test/bind.h"
+#include "base/test/mock_callback.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/playlist/browser/media_detector_component_manager.h"
 #include "brave/components/playlist/browser/playlist_service.h"
@@ -112,7 +113,7 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
       }
       https_server()->RegisterRequestHandler(
           base::BindRepeating(&PlaylistDownloadRequestManagerBrowserTest::Serve,
-                              base::Unretained(this), html));
+                              https_server(), html));
       ASSERT_TRUE(https_server()->Start());
     })();
 
@@ -205,10 +206,11 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
   }
 
  private:
-  std::unique_ptr<net::test_server::HttpResponse> Serve(
+  static std::unique_ptr<net::test_server::HttpResponse> Serve(
+      net::EmbeddedTestServer* server,
       const std::string& html,
       const net::test_server::HttpRequest& request) {
-    GURL absolute_url = https_server()->GetURL(request.relative_url);
+    GURL absolute_url = server->GetURL(request.relative_url);
     auto response = std::make_unique<net::test_server::BasicHttpResponse>();
     response->set_code(net::HTTP_OK);
     response->set_content(html);
@@ -478,14 +480,27 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
   // And after that, we should find dynamically added media files and
   // notify observers.
   using testing::_;
+  base::MockOnceCallback<void(const GURL&,
+                              std::vector<playlist::mojom::PlaylistItemPtr>)>
+      callback;
+
+  // Unfortunately, testing::ElementsAreArray does't seem to work with
+  // non-copyable When we we write
+  //   EXPECT_CALL(callback, Run(url,
+  //                             testing::ElementsAreArray(
+  //                             empty_result.begin(), empty_result.empty())));
+  // It fails to compile. So as a workaround, checks it in an Action.
+  EXPECT_CALL(callback, Run(url, _))
+      .WillOnce([](const GURL& url,
+                   std::vector<playlist::mojom::PlaylistItemPtr> items) {
+        EXPECT_TRUE(items.empty());
+      });
+
   base::RunLoop run_loop;
-  ON_CALL(observer, OnMediaFilesUpdated(_, _)).WillByDefault([&]() {
+  EXPECT_CALL(observer, OnMediaFilesUpdated(url, _)).WillOnce([&]() {
     run_loop.Quit();
   });
-  EXPECT_CALL(observer, OnMediaFilesUpdated(url, _));
-  playlist_service->FindMediaFilesFromActiveTab(base::BindLambdaForTesting(
-      [](const GURL& url, std::vector<playlist::mojom::PlaylistItemPtr> items) {
-        EXPECT_TRUE(items.empty());
-      }));
+
+  playlist_service->FindMediaFilesFromActiveTab(callback.Get());
   run_loop.Run();
 }
