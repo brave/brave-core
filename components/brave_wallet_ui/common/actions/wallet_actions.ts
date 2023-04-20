@@ -96,4 +96,6 @@
   updateUnapprovedTransactionNonce,
   updateUnapprovedTransactionSpendAllowance,
   updateUserAsset,
- } = WalletActions
+  setHidePortfolioGraph,
+  setHidePortfolioBalances
+} = WalletActions

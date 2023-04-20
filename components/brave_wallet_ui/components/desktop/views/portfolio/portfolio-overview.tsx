@@ -4,19 +4,26 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
+
+// selectors
+import {
+  useSafeWalletSelector,
+  useUnsafeWalletSelector,
+  useSafePageSelector,
+  useUnsafePageSelector
+} from '../../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../../common/selectors'
+import { PageSelectors } from '../../../../page/selectors'
 
 // Constants
 import {
   BraveWallet,
   UserAssetInfoType,
-  WalletState,
-  PageState,
   SupportedTestNetworks,
   WalletRoutes
 } from '../../../../constants/types'
-import { LOCAL_STORAGE_KEYS } from '../../../../common/constants/local-storage-keys'
 
 // actions
 import { WalletActions } from '../../../../common/actions'
@@ -54,9 +61,7 @@ import {
 } from './style'
 import {
   Column,
-  HorizontalSpace,
   Row,
-  ToggleVisibilityButton,
   VerticalSpace
 } from '../../../shared/style'
 import { PlaceholderText } from '../../with-hide-balance-placeholder/style'
@@ -68,15 +73,30 @@ export const PortfolioOverview = () => {
 
   // redux
   const dispatch = useDispatch()
-  const defaultCurrencies = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies)
-  const userVisibleTokensInfo = useSelector(({ wallet }: { wallet: WalletState }) => wallet.userVisibleTokensInfo)
-  const selectedPortfolioTimeline = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedPortfolioTimeline)
-  const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
-  const transactionSpotPrices = useSelector(({ wallet }: { wallet: WalletState }) => wallet.transactionSpotPrices)
-  const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
-  const selectedAccountFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedAccountFilter)
-  const selectedTimeline = useSelector(({ page }: { page: PageState }) => page.selectedTimeline)
-  const nftMetadata = useSelector(({ page }: { page: PageState }) => page.nftMetadata)
+
+  const defaultCurrencies =
+    useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
+  const userVisibleTokensInfo =
+    useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
+  const selectedPortfolioTimeline =
+    useSafeWalletSelector(WalletSelectors.selectedPortfolioTimeline)
+  const accounts =
+    useUnsafeWalletSelector(WalletSelectors.accounts)
+  const transactionSpotPrices =
+    useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
+  const selectedNetworkFilter =
+    useUnsafeWalletSelector(WalletSelectors.selectedNetworkFilter)
+  const selectedAccountFilter =
+    useSafeWalletSelector(WalletSelectors.selectedAccountFilter)
+  const selectedTimeline =
+    useSafePageSelector(PageSelectors.selectedTimeline)
+  const nftMetadata =
+    useUnsafePageSelector(PageSelectors.nftMetadata)
+  const hidePortfolioGraph =
+    useSafeWalletSelector(WalletSelectors.hidePortfolioGraph)
+  const hidePortfolioBalances =
+    useSafeWalletSelector(WalletSelectors.hidePortfolioBalances)
+
 
   // queries
   const { data: networks } = useGetVisibleNetworksQuery()
@@ -187,11 +207,6 @@ export const PortfolioOverview = () => {
     return parseFloat(formatAsDouble(fullPortfolioFiatBalance)) === 0
   }, [fullPortfolioFiatBalance])
 
-  // state
-  const [hideBalances, setHideBalances] = React.useState<boolean>(false)
-  const [showChart, setShowChart] = React.useState<boolean>(
-    window.localStorage.getItem(LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN) === 'true'
-  )
 
   // methods
   const onChangeTimeline = React.useCallback((timeline: BraveWallet.AssetPriceTimeframe) => {
@@ -211,20 +226,6 @@ export const PortfolioOverview = () => {
     }
   }, [selectedTimeline])
 
-  const onToggleHideBalances = React.useCallback(() => {
-    setHideBalances(prev => !prev)
-  }, [])
-
-  const onToggleShowChart = () => {
-    setShowChart(prev => {
-      window.localStorage.setItem(
-        LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN,
-        prev ? 'false' : 'true'
-      )
-      return !prev
-    })
-  }
-
   // effects
   React.useEffect(() => {
     dispatch(WalletPageActions.selectAsset({ asset: undefined, timeFrame: selectedTimeline }))
@@ -241,7 +242,7 @@ export const PortfolioOverview = () => {
         <Row justifyContent='space-between'>
           <Column>
             <BalanceRow>
-              {hideBalances
+              {hidePortfolioBalances
                 ? <PlaceholderText isBig>******</PlaceholderText>
                 : <div>
                   <BalanceText>
@@ -252,20 +253,14 @@ export const PortfolioOverview = () => {
                   </BalanceText>
                 </div>
               }
-              <HorizontalSpace space='16px' />
-              <ToggleVisibilityButton
-                isVisible={!hideBalances}
-                onClick={onToggleHideBalances}
-              />
             </BalanceRow>
           </Column>
 
           <Column>
             <BalanceRow>
               <ChartControlBar
-                disabled={!showChart}
+                disabled={hidePortfolioGraph}
                 onSelectTimeframe={onChangeTimeline}
-                onDisabledChanged={onToggleShowChart}
                 selectedTimeline={selectedPortfolioTimeline}
                 timelineOptions={ChartTimelineOptions}
               />
@@ -275,7 +270,7 @@ export const PortfolioOverview = () => {
 
         <VerticalSpace space='20px' />
 
-        <ColumnReveal hideContent={!showChart}>
+        <ColumnReveal hideContent={hidePortfolioGraph}>
           <PortfolioOverviewChart
             hasZeroBalance={isZeroBalance}
           />
@@ -293,7 +288,7 @@ export const PortfolioOverview = () => {
               key={getAssetIdKey(item.asset)}
               assetBalance={item.assetBalance}
               token={item.asset}
-              hideBalances={hideBalances}
+              hideBalances={hidePortfolioBalances}
             />
             : <NFTGridViewItem
               key={`${item.asset.tokenId}-${item.asset.contractAddress}`}
