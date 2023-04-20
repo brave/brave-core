@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <unordered_map>
+#include<string>
 
 #include "brave/components/brave_federated/config_utils.h"
 #include "brave/components/brave_federated/features.h"
@@ -53,7 +53,7 @@ LearningServiceConfig::LearningServiceConfig(const base::FilePath& path) : Learn
     const bool success = base::ReadFileToString(path, &data);
     if (!success || data.empty()) {
         VLOG(1) << "Error in reading JSON configuration from " << path;
-        return; // return default ctor's initialisation
+        return;  // return default ctor's initialisation
     }
 
     const absl::optional<base::Value> root = base::JSONReader::Read(data,
@@ -62,7 +62,7 @@ LearningServiceConfig::LearningServiceConfig(const base::FilePath& path) : Learn
 
     if (!root || !root->is_dict()) {
         VLOG(1) << "Error in configuration file (" << path << "): root is not a dict.";
-        return; // return default ctor's initialisation
+        return;  // return default ctor's initialisation
     }
 
     const base::Value::Dict& dict = root->GetDict();
@@ -74,15 +74,15 @@ LearningServiceConfig::LearningServiceConfig(const base::FilePath& path) : Learn
 
     bool result = false;
     result = policy_converter.Convert(*(dict.Find("reconnect_policy")), &custom_reconnect_policy);
-    if (not result) {
+    if (!result) {
         VLOG(1) << "JSON conversion failed for reconnect policy, falling back to default values.";
     }
     result = policy_converter.Convert(*(dict.Find("request_task_policy")), &custom_request_task_policy);
-    if (not result) {
+    if (!result) {
         VLOG(1) << "JSON conversion failed for request policy, falling back to default values.";
     }
     result = policy_converter.Convert(*(dict.Find("post_results_policy")), &custom_post_results_policy);
-    if (not result) {
+    if (!result) {
         VLOG(1) << "JSON conversion failed for post results policy, falling back to default values.";
     }
 
@@ -93,7 +93,7 @@ LearningServiceConfig::LearningServiceConfig(const base::FilePath& path) : Learn
 
     base::JSONValueConverter<ModelSpec> spec_converter;
     result = spec_converter.Convert(*(dict.Find("model_spec")), &model_spec_);
-    if (not result) {
+    if (!result) {
         VLOG(1) << "JSON conversion failed for model spec, falling back to default values.";
     }
 }
@@ -113,5 +113,4 @@ net::BackoffEntry::Policy LearningServiceConfig::GetPostResultsPolicy() {
 ModelSpec LearningServiceConfig::GetModelSpec() {
     return model_spec_;
 }
-}
-
+}  // namespace brave_federated
