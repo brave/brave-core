@@ -106,7 +106,7 @@ bool BraveSyncWorker::RequestSync() {
     sync_service_observer_.AddObservation(sync_service);
   }
 
-  sync_service->GetUserSettings()->SetSyncRequested(true);
+  sync_service->GetUserSettings()->SetSyncRequested();
 
   return true;
 }
@@ -295,7 +295,7 @@ bool BraveSyncWorker::SetSetupComplete() {
     return false;
   }
 
-  sync_service->GetUserSettings()->SetSyncRequested(true);
+  sync_service->GetUserSettings()->SetSyncRequested();
 
   if (!sync_service->GetUserSettings()->IsFirstSetupComplete()) {
     sync_service->GetUserSettings()->SetFirstSetupComplete(
