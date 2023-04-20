@@ -570,7 +570,12 @@ class TabManager: NSObject {
   
   func saveAllTabs() {
     if PrivateBrowsingManager.shared.isPrivateBrowsing { return }
-    SessionTab.updateAll(tabs: tabs(withType: .regular).map({ ($0.id, $0.webView?.sessionData ?? Data(), $0.title, $0.webView?.url ?? $0.url ?? TabManager.ntpInteralURL) }))
+    SessionTab.updateAll(tabs: tabs(withType: .regular).compactMap({
+      if let sessionData = $0.webView?.sessionData {
+        return ($0.id, sessionData, $0.title, $0.webView?.url ?? $0.url ?? TabManager.ntpInteralURL)
+      }
+      return nil
+    }))
   }
 
   func saveTab(_ tab: Tab, saveOrder: Bool = false) {

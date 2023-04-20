@@ -62,8 +62,14 @@ public final class TabMO: NSManagedObject, CRUD {
   // MARK: - Public interface
   
   public static func migrate(_ block: @escaping (NSManagedObjectContext) -> Void) {
-    DataController.perform(save: true) { context in
+    DataController.performOnMainContext(save: true) { context in
       block(context)
+      
+      do {
+        try context.save()
+      } catch {
+        Logger.module.error("Error saving context: \(error)")
+      }
     }
   }
 

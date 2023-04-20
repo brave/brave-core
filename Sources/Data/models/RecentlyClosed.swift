@@ -29,7 +29,7 @@ public final class RecentlyClosed: NSManagedObject, CRUD {
   @NSManaged public var title: String?
   @NSManaged public var dateAdded: Date
   @NSManaged public var interactionState: Data?
-  @NSManaged public var historyIndex: Int32
+  @NSManaged public var historyIndex: Int16
   
   public class func get(with url: String) -> RecentlyClosed? {
     return getInternal(with: url)
@@ -65,7 +65,7 @@ public final class RecentlyClosed: NSManagedObject, CRUD {
           source.title = saved.title
           source.dateAdded = saved.dateAdded
           source.interactionState = saved.interactionState
-          source.historyIndex = saved.index
+          source.historyIndex = Int16(saved.index)
         }
       }
     }
