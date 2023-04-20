@@ -76,11 +76,9 @@
 -keep class org.chromium.chrome.browser.sync.settings.ManageSyncSettings {
     *** mGoogleActivityControls;
     *** mSyncEncryption;
-    *** mReviewSyncData;
     *** mSyncPaymentsIntegration;
     *** mSyncReadingList;
     *** mSyncAutofill;
-    *** mTurnOffSync;
 }
 
 -keep class org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter {
