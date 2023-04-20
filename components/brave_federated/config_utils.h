@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_FEDERATED_CONFIG_UTIL_H_
-#define BRAVE_COMPONENTS_BRAVE_FEDERATED_CONFIG_UTIL_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_FEDERATED_CONFIG_UTILS_H_
+#define BRAVE_COMPONENTS_BRAVE_FEDERATED_CONFIG_UTILS_H_
 
 #include "base/files/file_util.h"
 #include "base/strings/string_number_conversions.h"
@@ -14,7 +14,6 @@
 namespace brave_federated {
 
 struct CustomBackoffEntryPolicy : net::BackoffEntry::Policy {
-
     static bool ParseInt64(base::StringPiece value, int64_t* field) {
         return base::StringToInt64(value, field);
     }
@@ -43,7 +42,7 @@ struct CustomBackoffEntryPolicy : net::BackoffEntry::Policy {
 class LearningServiceConfig {
     public:
         LearningServiceConfig();
-        LearningServiceConfig(const base::FilePath& path);
+        explicit LearningServiceConfig(const base::FilePath& path);
         net::BackoffEntry::Policy GetReconnectPolicy();
         net::BackoffEntry::Policy GetRequestTaskPolicy();
         net::BackoffEntry::Policy GetPostResultsPolicy();
@@ -55,7 +54,6 @@ class LearningServiceConfig {
         ModelSpec model_spec_;
 
 };
+}  // namespace brave_federated
 
-}
-
-#endif
+#endif  // BRAVE_COMPONENTS_BRAVE_FEDERATED_CONFIG_UTILS_H_
