@@ -78,28 +78,28 @@ void PlaylistRenderFrameObserver::InstallMediaDetector() {
       // Note that there's a global object named |pl_worker|. This worker is
       // created and bound by PlaylistJSHandler.
 
-      let mutationSources = new Set();
+      const mutationSources = new Set();
+      const mutationObserver = new MutationObserver(mutations => {
+          mutations.forEach(mutation => { pl_worker.onMediaUpdated(mutation.target.src); })
+      });
       const findNewMediaAndObserveMutation = () => {
           return document.querySelectorAll('video, audio').forEach((mediaNode) => {
               if (mutationSources.has(mediaNode)) return
 
               mutationSources.add(mediaNode)
               pl_worker.onMediaUpdated(mediaNode.src)
-
-              new MutationObserver(mutations => {
-                mutations.forEach(mutation => { pl_worker.onMediaUpdated(mutation.target.src); })
-              }).observe(mediaNode, { attributeFilter: ['src'] })
+              mutationObserver.observe(mediaNode, { attributeFilter: ['src'] })
           });
       }
 
-      const pollingIntervalId = window.setInterval(findNewMediaAndObserveMutation);
+      const pollingIntervalId = window.setInterval(findNewMediaAndObserveMutation, 1000);
       window.setTimeout(() => {
           window.clearInterval(pollingIntervalId)
           window.requestIdleCallback(findNewMediaAndObserveMutation)
           // TODO(sko) We might want to check if idle callback is waiting too long.
           // In that case, we should get back to the polling style. And also, this
           // time could be too long for production.
-      }, 20000, pollingIntervalId)
+      }, 20000)
     })();
     )-";
 

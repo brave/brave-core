@@ -92,7 +92,7 @@ void PlaylistJSHandler::BindFunctionsToWorkerObject(
   DVLOG(2) << __FUNCTION__;
   BindFunctionToObject(isolate, worker_object, "onMediaUpdated",
                        base::BindRepeating(&PlaylistJSHandler::OnMediaUpdated,
-                                           base::Unretained(this)));
+                                           weak_ptr_factory_.GetWeakPtr()));
 }
 
 void PlaylistJSHandler::OnMediaUpdated(const std::string& src) {
