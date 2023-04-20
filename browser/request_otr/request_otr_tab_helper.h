@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_REQUEST_OTR_REQUEST_OTR_TAB_HELPER_H_
 #define BRAVE_BROWSER_REQUEST_OTR_REQUEST_OTR_TAB_HELPER_H_
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -29,7 +30,7 @@ class RequestOTRTabHelper
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
 
-  PrefService* pref_service_ = nullptr;
+  raw_ptr<PrefService> pref_service_ = nullptr;
 
   base::WeakPtrFactory<RequestOTRTabHelper> weak_factory_;
 };
