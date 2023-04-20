@@ -162,7 +162,7 @@ void BraveVpnService::OnRegionDataReady(bool success) {
 
   // Happened weird state while waiting region data.
   // Don't update purchased if current state is not loading state.
-  if (purchased_state_ != PurchasedState::LOADING) {
+  if (GetPurchasedInfoSync().state != PurchasedState::LOADING) {
     return;
   }
 
@@ -399,22 +399,21 @@ void BraveVpnService::AddObserver(
   observers_.Add(std::move(observer));
 }
 
-mojom::PurchasedState BraveVpnService::GetPurchasedStateSync() const {
-  return purchased_state_.value_or(mojom::PurchasedState::NOT_PURCHASED);
+mojom::PurchasedInfo BraveVpnService::GetPurchasedInfoSync() const {
+  return purchased_state_.value_or(mojom::PurchasedInfo(
+      mojom::PurchasedState::NOT_PURCHASED, absl::nullopt));
 }
 
 void BraveVpnService::GetPurchasedState(GetPurchasedStateCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  auto value = GetPurchasedStateSync();
-  VLOG(2) << __func__ << " : " << value;
-  std::move(callback).Run(value);
+  std::move(callback).Run(GetPurchasedInfoSync().Clone());
 }
 
 void BraveVpnService::LoadPurchasedState(const std::string& domain) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto requested_env = skus::GetEnvironmentForDomain(domain);
   if (GetCurrentEnvironment() == requested_env &&
-      purchased_state_ == PurchasedState::LOADING) {
+      GetPurchasedInfoSync().state == PurchasedState::LOADING) {
     VLOG(2) << __func__ << ": Loading in-progress";
     return;
   }
@@ -428,7 +427,7 @@ void BraveVpnService::LoadPurchasedState(const std::string& domain) {
     if (connection_api_->GetRegionDataManager().IsRegionDataReady()) {
       VLOG(2) << __func__
               << ": Set as a purchased user as we have valid subscriber "
-                 "credentials & region data";
+                 "L:ntials & region data";
       SetPurchasedState(requested_env, PurchasedState::PURCHASED);
     } else {
       VLOG(2) << __func__ << ": Wait till we get valid region data.";
@@ -724,15 +723,14 @@ void BraveVpnService::SetPurchasedState(
     PurchasedState state,
     const absl::optional<std::string>& description) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (GetPurchasedStateSync() == state || env != GetCurrentEnvironment()) {
+  if (GetPurchasedInfoSync().state == state || env != GetCurrentEnvironment()) {
     return;
   }
 
-  purchased_state_ = state;
-  VLOG(2) << __func__ << " " << state;
+  purchased_state_ = mojom::PurchasedInfo(state, description);
 
   for (const auto& obs : observers_)
-    obs->OnPurchasedStateChanged(purchased_state_.value(), description);
+    obs->OnPurchasedStateChanged(state, description);
 
 #if !BUILDFLAG(IS_ANDROID)
   if (state == PurchasedState::PURCHASED)
