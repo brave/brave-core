@@ -92,6 +92,9 @@
   "brave/components/brave_ads/resources/bat_ads_resources.grd": {
     "includes": [54900]
   },
+  "brave/components/brave_federated/resources/static_resources.grd": {
+    "includes": [52230]
+  },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_page/brave_wallet_page.grd": {
     "META": {"sizes": {"includes": [200]}},
