@@ -231,7 +231,7 @@ class BraveBrowserTypeImpl(BrowserType):
 
   def DownloadBrowserBinary(self, tag: BraveVersion, out_dir: str,
                             target_os: str) -> str:
-    if target_os == 'darwin':
+    if target_os == 'mac':
       return self._DownloadDmgAndExtract(tag, out_dir)
     if (target_os == 'win32' and tag.version()[0] == 1
         and tag.version()[1] < 35):

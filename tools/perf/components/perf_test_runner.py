@@ -3,11 +3,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 import argparse
-import os
-import sys
 import json
 import logging
+import os
 import shutil
+import sys
 import time
 
 from copy import deepcopy
@@ -22,13 +22,15 @@ from components.browser_type import BrowserType
 from components.browser_binary_fetcher import (BrowserBinary, PrepareBinary,
                                                ParseTarget)
 
+with path_util.SysPath(path_util.GetChromiumPerfDir()):
+  from core.perf_benchmark import PerfBenchmark  # pylint: disable=import-error
 
 class CommonOptions:
   verbose: bool = False
   ci_mode: bool = False
   variations_repo_dir: Optional[str] = None
   working_directory: str = ''
-  target_os: str = sys.platform
+  target_os: str = PerfBenchmark.FixupTargetOS(sys.platform)
 
   do_run_tests: bool = True
   do_report: bool = False
@@ -50,7 +52,7 @@ class CommonOptions:
     options.variations_repo_dir = args.variations_repo_dir
     options.working_directory = args.working_directory
     if args.target_os is not None:
-      options.target_os = args.target_os
+      options.target_os = PerfBenchmark.FixupTargetOS(args.target_os)
     return options
 
 
