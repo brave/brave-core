@@ -122,7 +122,7 @@ export const HardwareWalletAccountCircle = styled.div<AccountCircleStyleProps>`
   background-size: cover;
 `
 
-export const HardwareWalletAccountsList = styled.div`
+export const HardwareWalletAccountsListContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;

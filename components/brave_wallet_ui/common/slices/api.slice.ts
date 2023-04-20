@@ -82,7 +82,6 @@ import { getTokenParam } from '../../utils/api-utils'
 import { getAccountType, getAddressLabelFromRegistry } from '../../utils/account-utils'
 import {
   getCoinFromTxDataUnion,
-  getFilecoinKeyringIdFromNetwork,
   hasEIP1559Support
 } from '../../utils/network-utils'
 import Amount from '../../utils/amount'
@@ -150,7 +149,7 @@ export const setApiProxyFetcher = (fetcher: () => WalletApiProxy) => {
 const emptyBalance = '0x0'
 
 type GetAccountTokenCurrentBalanceArg = {
-  account: Pick<AccountInfoEntity, 'address' | 'coin' | 'keyringId'>
+  account: Pick<AccountInfoEntity, 'address' | 'coin'>
   token: GetBlockchainTokenIdArg & Pick<BraveWallet.BlockchainToken, 'isNft'>
 }
 
@@ -719,37 +718,6 @@ export function createWalletApi (
         },
         providesTags: [{ type: 'Network', id: NETWORK_TAG_IDS.SWAP_SUPPORTED }]
       }),
-      getDefaultNetworks: query<BraveWallet.NetworkInfo[], void>({
-        // We can probably remove this when all
-        // Transactions and Sign-Message Requests include a chainId
-        queryFn: async (arg, api, extraOptions, baseQuery) => {
-          try {
-            const { braveWalletService, jsonRpcService }
-              = baseQuery(undefined).data // apiProxy
-            const { originInfo } = await braveWalletService.getActiveOrigin()
-
-            const defaultChains = await Promise.all(
-              SupportedCoinTypes.map(async (coinType) => {
-                const { network }
-                  = await jsonRpcService.getNetwork(coinType, originInfo.origin)
-                return network
-              })
-            )
-
-            return {
-              data: defaultChains
-            }
-          } catch (error) {
-            console.error(error)
-            return {
-              error: `Error occurred within "getDefaultNetworks": ${
-                error.toString() //
-              }`
-            }
-          }
-        },
-        providesTags: [{ type: 'Network', id: NETWORK_TAG_IDS.DEFAULTS }]
-      }),
       getSelectedChain: query<BraveWallet.NetworkInfo, void>({
         queryFn: async (arg, api, extraOptions, baseQuery) => {
           try {
@@ -1317,18 +1285,6 @@ export function createWalletApi (
               case BraveWallet.CoinType.FIL:
               case BraveWallet.CoinType.ETH:
               default: {
-                if (BraveWallet.CoinType.FIL) {
-                  // Get network keyring id
-                  const filecoinKeyringIdFromNetwork =
-                    getFilecoinKeyringIdFromNetwork({
-                      chainId: token.chainId,
-                      coin: account.coin
-                    })
-
-                  if (account.keyringId !== filecoinKeyringIdFromNetwork) {
-                    return { data: emptyBalanceResult }
-                  }
-                }
 
                 const { balance, error, errorMessage } =
                   await jsonRpcService.getBalance(
@@ -1441,7 +1397,6 @@ export function createWalletApi (
                     account: {
                       address: account.address,
                       coin: account.coin,
-                      keyringId: account.keyringId
                     },
                     token: {
                       chainId: asset.chainId,
@@ -2981,7 +2936,6 @@ export const {
   useGetCombinedTokenBalanceForAllAccountsQuery,
   useGetDefaultAccountAddressesQuery,
   useGetDefaultFiatCurrencyQuery,
-  useGetDefaultNetworksQuery,
   useGetERC721MetadataQuery,
   useGetGasEstimation1559Query,
   useGetNetworksRegistryQuery,
@@ -3005,7 +2959,6 @@ export const {
   useLazyGetCombinedTokenBalanceForAllAccountsQuery,
   useLazyGetDefaultAccountAddressesQuery,
   useLazyGetDefaultFiatCurrencyQuery,
-  useLazyGetDefaultNetworksQuery,
   useLazyGetERC721MetadataQuery,
   useLazyGetGasEstimation1559Query,
   useLazyGetNetworksRegistryQuery,
@@ -3402,8 +3355,7 @@ export const parseTransactionWithoutPricesAsync = async ({
             {
               account: {
                 address: account.address,
-                coin: account.coin,
-                keyringId: account.keyringId
+                coin: account.coin
               },
               token: {
                 chainId: nativeAsset.chainId,
@@ -3425,8 +3377,7 @@ export const parseTransactionWithoutPricesAsync = async ({
             {
               account: {
                 address: account.address,
-                coin: account.coin,
-                keyringId: account.keyringId
+                coin: account.coin
               },
               token: {
                 chainId: token.chainId,
@@ -3448,8 +3399,7 @@ export const parseTransactionWithoutPricesAsync = async ({
             {
               account: {
                 address: account.address,
-                coin: account.coin,
-                keyringId: account.keyringId
+                coin: account.coin
               },
               token: {
                 chainId: sellToken.chainId,
