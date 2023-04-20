@@ -3,20 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled, { css } from 'styled-components'
+import * as leo from '@brave/leo/tokens/css'
 import { LoaderIcon } from 'brave-ui/components/icons'
 
-interface StyleProps {
-  labelPosition: 'start' | 'middle' | 'end'
-  labelTranslate: number
-  isLoading: boolean
+export const StyledWrapper = styled.div<{
   customStyle?: { [key: string]: string }
-}
-
-export const StyledWrapper = styled.div<Partial<StyleProps>>`
+}>`
   width: 100%;
-  height: 200px;
-  min-height: 200px;
-  max-height: 200px;
+  height: 130px;
+  min-height: 130px;
+  max-height: 130px;
   margin-bottom: 30px;
   box-sizing: border-box;
   position: relative;
@@ -28,27 +24,48 @@ export const StyledWrapper = styled.div<Partial<StyleProps>>`
   };
 `
 
-export const LabelWrapper = styled.div<Partial<StyleProps>>`
+export const TooltipWrapper = styled.div<{
+  labelPosition: 'start' | 'middle' | 'end'
+  labelTranslate: number
+}>`
   --label-start-translate: translateX(calc(-${(p) => p.labelTranslate}px + 4px));
   --label-end-translate: translateX(calc(-100% + ${(p) => p.labelTranslate}px));
   --label-middle-end-condition: ${(p) => p.labelPosition === 'end' ? 'var(--label-end-translate)' : 'translateX(-50%)'};
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   position: absolute;
-  top: -16px;
   transform: ${(p) => p.labelPosition === 'start' ? 'var(--label-start-translate)' : 'var(--label-middle-end-condition)'};
-  white-space: nowrap
+  white-space: nowrap;
+  background-color: ${leo.color.container.background};
+  box-shadow: 0px 4px 16px -1px rgba(0, 0, 0, 0.07);
+  border-radius: 4px;
+  padding: 2px 4px;
+  z-index: 100;
 `
 
-export const ChartLabel = styled.span`
+export const ChartBalance = styled.span`
   font-family: Poppins;
-  font-size: 13px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text01};
+  font-style: normal;
+  font-weight: 600;
+  font-size: 11px;
+  line-height: 16px;
+  color: ${leo.color.text.primary};
 `
 
-export const LoadingOverlay = styled.div<Partial<StyleProps>>`
+export const ChartDate = styled.span`
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 16px;
+  color: ${leo.color.text.secondary};
+`
+
+export const LoadingOverlay = styled.div<{
+  isLoading: boolean
+}>`
   display: ${(p) => p.isLoading ? 'flex' : 'none'};
   flex-direction: column;
   align-items: center;

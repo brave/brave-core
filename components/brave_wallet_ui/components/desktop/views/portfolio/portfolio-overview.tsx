@@ -188,7 +188,6 @@ export const PortfolioOverview = () => {
   }, [fullPortfolioFiatBalance])
 
   // state
-  const [hoverBalance, setHoverBalance] = React.useState<string>()
   const [hideBalances, setHideBalances] = React.useState<boolean>(false)
   const [showChart, setShowChart] = React.useState<boolean>(
     window.localStorage.getItem(LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN) === 'true'
@@ -247,7 +246,7 @@ export const PortfolioOverview = () => {
                 : <div>
                   <BalanceText>
                     {fullPortfolioFiatBalance !== ''
-                      ? `${hoverBalance || fullPortfolioFiatBalance}`
+                      ? fullPortfolioFiatBalance
                       : <LoadingSkeleton width={150} height={32} />
                     }
                   </BalanceText>
@@ -279,7 +278,6 @@ export const PortfolioOverview = () => {
         <ColumnReveal hideContent={!showChart}>
           <PortfolioOverviewChart
             hasZeroBalance={isZeroBalance}
-            onHover={setHoverBalance}
           />
         </ColumnReveal>
       </Column>

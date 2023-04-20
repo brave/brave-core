@@ -2,7 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
-import { formatDateAsRelative } from './datetime-utils'
+import { formatDateAsRelative, formatTimelineDate } from './datetime-utils'
 
 describe('Relative dates format correctly', () => {
   const now = new Date(2021, 2, 1)
@@ -40,5 +40,12 @@ describe('Relative dates format correctly', () => {
     const date = new Date(now)
     date.setTime(date.getTime() - 1000 * 60 * 60 * 24 * 60) // 90 Days
     expect(formatDateAsRelative(date, now)).toEqual('Dec 31, 2020')
+  })
+})
+
+describe('Test Timeline Date Format', () => {
+  test('June 28, 2021', () => {
+    const date = new Date(1624897229773)
+    expect(formatTimelineDate(date)).toContain('6/28/2021')
   })
 })
