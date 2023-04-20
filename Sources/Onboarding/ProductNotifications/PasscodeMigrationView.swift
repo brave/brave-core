@@ -8,11 +8,11 @@ import DesignSystem
 import LocalAuthentication
 import Shared
 
-struct PasscodeMigrationContainerView: View {
-  var dismiss: ((_ enableBrowserLock: Bool) -> Void)?
+public struct PasscodeMigrationContainerView: View {
+  public var dismiss: ((_ enableBrowserLock: Bool) -> Void)?
   @State private var context = LAContext()
 
-  var body: some View {
+  public var body: some View {
     let isUserAuthenticationAvailable =
       context
       .canEvaluatePolicy(.deviceOwnerAuthentication, error: nil)
@@ -132,3 +132,14 @@ struct PasscodeMigrationView_Previews: PreviewProvider {
   }
 }
 #endif
+
+public class PasscodeMigrationViewController: UIHostingController<PasscodeMigrationContainerView> {
+
+  public init() {
+    super.init(rootView: PasscodeMigrationContainerView())
+  }
+
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+}

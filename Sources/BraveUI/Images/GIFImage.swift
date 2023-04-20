@@ -6,7 +6,7 @@
 import UIKit
 import SwiftUI
 
-struct GIFImage: UIViewRepresentable {
+public struct GIFImage: UIViewRepresentable {
   private let asset: String
   private let animationRepeatCount: Int
   private let animate: Bool
@@ -17,16 +17,16 @@ struct GIFImage: UIViewRepresentable {
     self.animate = animate
   }
 
-  func makeUIView(context: Context) -> GIFImageView {
+  public func makeUIView(context: Context) -> GIFImageView {
     return GIFImageView(asset: asset)
   }
 
-  func updateUIView(_ uiView: GIFImageView, context: Context) {
+  public func updateUIView(_ uiView: GIFImageView, context: Context) {
     uiView.startAnimation(start: animate)
   }
 }
 
-class GIFImageView: UIView, CAAnimationDelegate {
+public class GIFImageView: UIView, CAAnimationDelegate {
   private var assetName: String = ""
   private var animationRepeatCount: Int = 1
   
@@ -40,14 +40,14 @@ class GIFImageView: UIView, CAAnimationDelegate {
     fatalError("init(coder:) has not been implemented")
   }
 
-  init(asset: String, animationRepeatCount: Int = 1) {
+  public init(asset: String, animationRepeatCount: Int = 1) {
     super.init(frame: .zero)
     self.assetName = asset
     self.animationRepeatCount = animationRepeatCount
     initView()
   }
   
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+  public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
     loadAsset()
   }
@@ -62,7 +62,7 @@ class GIFImageView: UIView, CAAnimationDelegate {
     imageView.animationRepeatCount = animationRepeatCount
   }
 
-  override func layoutSubviews() {
+  public override func layoutSubviews() {
     super.layoutSubviews()
     imageView.frame = bounds
     self.addSubview(imageView)
