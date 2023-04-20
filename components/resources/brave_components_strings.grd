@@ -450,7 +450,7 @@
         Brave Private Ads are unobtrusive and private by design. Ads are based on your interests, but no personal data or browsing history ever leaves your device. Best of all, Brave Private Ads let you earn BAT (<ph name="BEGIN_LINK">$1</ph>Basic Attention Token<ph name="END_LINK">$2</ph>) just for viewing.
       </message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TITLE" desc="">Auto-Contribute</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DESC" desc="">An automatic way to support sites and content creators. Set a monthly contribution amount and browse normally. <ph name="BEGIN_LINK">$1</ph>Verified sites and creators<ph name="END_LINK">$2</ph> you visit will receive contributions from you each month based on the amount of time you spend on their content.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DESC" desc="">An automatic way to support sites and content creators. Set a monthly contribution and browse normally. <ph name="BEGIN_LINK">$1</ph>Verified sites and creators<ph name="END_LINK">$2</ph> you visit will receive contributions from you each month based on the amount of time you spend on their content.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CURRENT_EARNINGS" desc="">Current earnings this month (estimated)</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PAYMENT_DATE" desc="">Next payment date</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_NOTIFICATIONS_RECEIVED" desc="">Ads received this month</message>
@@ -476,16 +476,16 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_MONTHLY" desc="">Monthly Payment</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_NEXT_DATE" desc="">Next contribution date</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_SITES" desc="">Sites viewed</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_TITLE" desc="">Tips</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DESC" desc="">See the one-time tips you've given to websites and creators.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DESC_LEARN_MORE" desc="">Learn more about tipping.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_MONTHLY_TIPS_TITLE" desc="">Monthly Tips</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_MONTHLY_TIPS_DESC" desc="">Set up recurring monthly tips so you can continually support your favorite creators.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_MONTHLY_TIPS_EMPTY" desc="">No monthly tips set up yet.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_TITLE" desc="">Contributions</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DESC" desc="">See the on-demand contributions you've given to websites and creators.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DESC_LEARN_MORE" desc="">Learn more about contributions.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_MONTHLY_TIPS_TITLE" desc="">Monthly Contributions</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_MONTHLY_TIPS_DESC" desc="">Set up recurring monthly contributions so you can continually support your favorite creators.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_MONTHLY_TIPS_EMPTY" desc="">No monthly contributions set up yet.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_NEXT_CONTRIBUTION" desc="">Next contribution</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_SOME" desc="">Sites will appear as you browse</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_TOTAL_DONATIONS" desc="">Total tips this month</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_VISIT_SOME" desc="">Have you tipped your favorite content creator today?</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_TOTAL_DONATIONS" desc="">Total contributions this month</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_VISIT_SOME" desc="">Have you contributed to your favorite content creator today?</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_MIN_TIME" desc="">Minimum page time before logging a visit</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_MIN_VISITS" desc="">Minimum visits for publisher relevancy</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_OTHER" desc="">Other settings</message>
@@ -615,8 +615,8 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_COUNT" desc="Retry count">Retry Count:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_COUNTRY" desc="Rewards	country">Rewards country:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_AUTO" desc="Auto Contribute">Auto Contribute</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_ONE_TIME_TIP" desc="One-time tip">One-time tip</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_RECURRING_TIP" desc="Recurring tip">Recurring tip</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_ONE_TIME_TIP" desc="On-demand tip">Contribution</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_RECURRING_TIP" desc="Recurring tip">Recurring contribution</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_AD_DIAGNOSTICS" desc="">Ad diagnostics</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_CONTRIBUTIONS" desc="">Contributions</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_EVENT_LOGS" desc="">Event logs</message>
@@ -671,7 +671,7 @@
       <message name="IDS_BRAVE_UI_DEPOSITS" desc="">Deposits</message>
       <message name="IDS_BRAVE_UI_DESCRIPTION" desc="">Description</message>
       <message name="IDS_BRAVE_UI_DISABLED_PANEL_TITLE" desc="">Brave Rewards is</message>
-      <message name="IDS_BRAVE_UI_DONATION" desc="">Tip</message>
+      <message name="IDS_BRAVE_UI_DONATION" desc="">Contribute</message>
       <message name="IDS_BRAVE_UI_DONE" desc="">Done</message>
       <message name="IDS_BRAVE_UI_EARNINGS_ADS" desc="">Earnings from Ads</message>
       <message name="IDS_BRAVE_UI_EARNINGS_VIEW_DEPOSIT_HISTORY" desc="">View deposit history</message>
@@ -681,8 +681,8 @@
       <message name="IDS_BRAVE_UI_GRANT_EXPIRE" desc="">Grant Expiration Date</message>
       <message name="IDS_BRAVE_UI_IMPORT" desc="">import</message>
       <message name="IDS_BRAVE_UI_LEARN_MORE" desc="">Learn More</message>
-      <message name="IDS_BRAVE_UI_MONTHLY_TIPS_BANG" desc="">Monthly Tips!</message>
-      <message name="IDS_BRAVE_UI_MONTHLY_TIPS" desc="">Monthly Tips</message>
+      <message name="IDS_BRAVE_UI_MONTHLY_TIPS_BANG" desc="">Monthly Contributions!</message>
+      <message name="IDS_BRAVE_UI_MONTHLY_TIPS" desc="">Monthly Contributions</message>
       <message name="IDS_BRAVE_UI_GRANT_TITLE_UGP" desc="Title for a reward grant when it has been claimed">It's your lucky day!</message>
       <message name="IDS_BRAVE_UI_GRANT_SUBTITLE_UGP" desc="Subtitle for a reward grant when it has been claimed">Your token grant is on its way.</message>
       <message name="IDS_BRAVE_UI_GRANT_AMOUNT_TITLE_UGP" desc="">Free Token Grant</message>
@@ -691,21 +691,21 @@
       <message name="IDS_BRAVE_UI_GRANT_SUBTITLE_ADS" desc="Subtitle for an ads reward when it has been claimed">You've successfully claimed ads rewards.</message>
       <message name="IDS_BRAVE_UI_GRANT_AMOUNT_TITLE_ADS" desc="">Ads Rewards</message>
       <message name="IDS_BRAVE_UI_GRANT_DATE_TITLE_ADS" desc="">Rewards Period</message>
-      <message name="IDS_BRAVE_UI_MONTHLY_TIP" desc="">Monthly Tip</message>
+      <message name="IDS_BRAVE_UI_MONTHLY_TIP" desc="">Monthly Contribution</message>
       <message name="IDS_BRAVE_UI_NO_ACTIVITY" desc="">No activities yet…</message>
       <message name="IDS_BRAVE_UI_OFF" desc="">off</message>
       <message name="IDS_BRAVE_UI_OK" desc="">ok</message>
       <message name="IDS_BRAVE_UI_ON" desc="">on</message>
-      <message name="IDS_BRAVE_UI_ONE_TIME" desc="">One-time</message>
-      <message name="IDS_BRAVE_UI_ONE_TIME_DONATION" desc="">One-time Tips</message>
+      <message name="IDS_BRAVE_UI_ONE_TIME" desc="">Contribution</message>
+      <message name="IDS_BRAVE_UI_ONE_TIME_DONATION" desc="">Contributions</message>
       <message name="IDS_BRAVE_UI_OPEN_ADS_HISTORY" desc="">30-day Ads History</message>
       <message name="IDS_BRAVE_UI_PAYMENT" desc="">Payment</message>
       <message name="IDS_BRAVE_UI_PAYMENT_PINNED_SITES_HEADER" desc="">Pinned sites are now</message>
-      <message name="IDS_BRAVE_UI_PAYMENT_PINNED_SITES_MSG" desc="">Here's how monthly tips work:</message>
-      <message name="IDS_BRAVE_UI_PAYMENT_PINNED_SITES_ONE" desc="">Monthly tips do not come out of your Auto-Contribute payment. They're separate.</message>
+      <message name="IDS_BRAVE_UI_PAYMENT_PINNED_SITES_MSG" desc="">Here's how monthly contributions work:</message>
+      <message name="IDS_BRAVE_UI_PAYMENT_PINNED_SITES_ONE" desc="">Monthly contributions do not come out of your Auto-Contribute payment. They're separate.</message>
       <message name="IDS_BRAVE_UI_PAYMENT_PINNED_SITES_TWO" desc="">Each site is paid a fixed amount monthly.</message>
-      <message name="IDS_BRAVE_UI_PAYMENT_PINNED_SITES_THREE" desc="">Monthly tips are paid out all at once, each month. If you're using Auto-Contribute, tips go out at the same time as your monthly Auto-Contribute payment.</message>
-      <message name="IDS_BRAVE_UI_PAYMENT_PINNED_SITES_FOUR" desc="">You can remove any site receiving monthly tips from inside of the Tips panel.</message>
+      <message name="IDS_BRAVE_UI_PAYMENT_PINNED_SITES_THREE" desc="">Monthly contributions are paid out all at once, each month. If you're using Auto-Contribute, contributions go out at the same time as your monthly Auto-Contribute payment.</message>
+      <message name="IDS_BRAVE_UI_PAYMENT_PINNED_SITES_FOUR" desc="">You can remove any site receiving monthly contributions from inside of the Contribution panel.</message>
       <message name="IDS_BRAVE_UI_PLEASE_NOTE" desc="">Please note:</message>
       <message name="IDS_BRAVE_UI_PRINT" desc="">Print</message>
       <message name="IDS_BRAVE_UI_PROCESSING_REQUEST" desc="">Your request is still being processed, please wait.</message>
@@ -715,7 +715,7 @@
       <message name="IDS_BRAVE_UI_PROCESSOR_GEMINI" desc="">Gemini</message>
       <message name="IDS_BRAVE_UI_PROCESSOR_UPHOLD" desc="">Uphold</message>
       <message name="IDS_BRAVE_UI_RECURRING" desc="">Recurring</message>
-      <message name="IDS_BRAVE_UI_RECURRING_DONATIONS" desc="">Monthly Tips</message>
+      <message name="IDS_BRAVE_UI_RECURRING_DONATIONS" desc="">Monthly Contributions</message>
       <message name="IDS_BRAVE_UI_RELAUNCH" desc="">Relaunch</message>
       <message name="IDS_BRAVE_UI_REMOVE" desc="">remove</message>
       <message name="IDS_BRAVE_UI_REMOVE_AD_FROM_SAVED" desc="">Remove From Saved</message>
@@ -733,7 +733,7 @@
       <message name="IDS_BRAVE_UI_REWARDS_SUMMARY" desc="">Rewards Summary</message>
       <message name="IDS_BRAVE_UI_SAVE" desc="">Save</message>
       <message name="IDS_BRAVE_UI_SEE_ALL_ITEMS" desc="">See all [[numItems]] items</message>
-      <message name="IDS_BRAVE_UI_SEND_TIP" desc="">Send my Tip</message>
+      <message name="IDS_BRAVE_UI_SEND_TIP" desc="">Send my Contribution</message>
       <message name="IDS_BRAVE_UI_SETTINGS" desc="">Settings</message>
       <message name="IDS_BRAVE_UI_SITE" desc="">site</message>
       <message name="IDS_BRAVE_UI_TIP_ON_LIKE" desc="">Tip on like</message>
@@ -751,8 +751,8 @@
       <message name="IDS_BRAVE_UI_VIEW_DETAILS" desc="">View Details</message>
       <message name="IDS_BRAVE_UI_REWARDS_CREATING_TEXT" desc="">Creating your Brave Rewards profile</message>
       <message name="IDS_BRAVE_UI_PENDING_CONTRIBUTIONS" desc="Title of pending contribution modal">Pending contributions</message>
-      <message name="IDS_BRAVE_UI_PENDING_TYPE_RECURRING" desc="Name of recurring tip type">Monthly Tip</message>
-      <message name="IDS_BRAVE_UI_PENDING_TYPE_TIP" desc="Name of one-time tip type">One-time tip</message>
+      <message name="IDS_BRAVE_UI_PENDING_TYPE_RECURRING" desc="Name of recurring tip type">Monthly Contribution</message>
+      <message name="IDS_BRAVE_UI_PENDING_TYPE_TIP" desc="Name of on-demand tip type">Contribution</message>
       <message name="IDS_BRAVE_UI_PENDING_TYPE_AC" desc="Name of auto contribute type">Auto-Contribute</message>
       <message name="IDS_BRAVE_UI_RESERVED_ALL_LINK" desc="Link that shows all pending contributions">Show all pending contributions</message>
       <message name="IDS_BRAVE_UI_PENDING_UNTIL" desc="Table header for pending contribution date">Pending until</message>
