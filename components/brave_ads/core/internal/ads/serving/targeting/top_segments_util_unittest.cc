@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::targeting {
 
@@ -16,9 +16,9 @@ namespace {
 constexpr int kSegmentsMaxCount = 3;
 }  // namespace
 
-class BatAdsTopSegmentsUtilTest : public UnitTestBase {};
+class BraveAdsTopSegmentsUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsTopSegmentsUtilTest, GetTopChildSegments) {
+TEST_F(BraveAdsTopSegmentsUtilTest, GetTopChildSegments) {
   // Arrange
   UserModelInfo user_model;
   user_model.interest_segments = {"interest-1", "interest-2"};
@@ -39,7 +39,7 @@ TEST_F(BatAdsTopSegmentsUtilTest, GetTopChildSegments) {
   EXPECT_EQ(expected_segments, segments);
 }
 
-TEST_F(BatAdsTopSegmentsUtilTest, GetTopChildSegmentsForEmptyUserModel) {
+TEST_F(BraveAdsTopSegmentsUtilTest, GetTopChildSegmentsForEmptyUserModel) {
   // Arrange
   const UserModelInfo user_model;
 
@@ -51,7 +51,7 @@ TEST_F(BatAdsTopSegmentsUtilTest, GetTopChildSegmentsForEmptyUserModel) {
   EXPECT_TRUE(segments.empty());
 }
 
-TEST_F(BatAdsTopSegmentsUtilTest, GetTopParentSegments) {
+TEST_F(BraveAdsTopSegmentsUtilTest, GetTopParentSegments) {
   // Arrange
   UserModelInfo user_model;
   user_model.interest_segments = {"interest_1", "interest_2"};
@@ -72,7 +72,7 @@ TEST_F(BatAdsTopSegmentsUtilTest, GetTopParentSegments) {
   EXPECT_EQ(expected_segments, segments);
 }
 
-TEST_F(BatAdsTopSegmentsUtilTest, GetTopParentSegmentsForEmptyUserModel) {
+TEST_F(BraveAdsTopSegmentsUtilTest, GetTopParentSegmentsForEmptyUserModel) {
   // Arrange
   const UserModelInfo user_model;
 

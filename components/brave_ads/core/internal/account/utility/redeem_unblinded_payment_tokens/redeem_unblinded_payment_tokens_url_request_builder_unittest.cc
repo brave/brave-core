@@ -20,7 +20,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 #include "url/gurl.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -70,10 +70,10 @@ privacy::UnblindedPaymentTokenList GetUnblindedPaymentTokens(const int count) {
 
 }  // namespace
 
-class BatAdsRedeemUnblindedPaymentTokensUrlRequestBuilderTest
+class BraveAdsRedeemUnblindedPaymentTokensUrlRequestBuilderTest
     : public UnitTestBase {};
 
-TEST_F(BatAdsRedeemUnblindedPaymentTokensUrlRequestBuilderTest, BuildUrl) {
+TEST_F(BraveAdsRedeemUnblindedPaymentTokensUrlRequestBuilderTest, BuildUrl) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 

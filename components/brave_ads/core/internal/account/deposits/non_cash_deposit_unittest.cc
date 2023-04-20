@@ -9,13 +9,13 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsNonCashDepositTest : public UnitTestBase {};
+class BraveAdsNonCashDepositTest : public UnitTestBase {};
 
-TEST_F(BatAdsNonCashDepositTest, GetValue) {
+TEST_F(BraveAdsNonCashDepositTest, GetValue) {
   // Arrange
   NonCashDeposit deposit;
 

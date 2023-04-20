@@ -10,16 +10,16 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsMarkedAsInappropriateExclusionRuleTest : public UnitTestBase {
+class BraveAdsMarkedAsInappropriateExclusionRuleTest : public UnitTestBase {
  protected:
   MarkedAsInappropriateExclusionRule exclusion_rule_;
 };
 
-TEST_F(BatAdsMarkedAsInappropriateExclusionRuleTest, AllowAd) {
+TEST_F(BraveAdsMarkedAsInappropriateExclusionRuleTest, AllowAd) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -31,7 +31,7 @@ TEST_F(BatAdsMarkedAsInappropriateExclusionRuleTest, AllowAd) {
   EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsMarkedAsInappropriateExclusionRuleTest, DoNotAllowAd) {
+TEST_F(BraveAdsMarkedAsInappropriateExclusionRuleTest, DoNotAllowAd) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;

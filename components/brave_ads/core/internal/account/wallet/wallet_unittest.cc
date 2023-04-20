@@ -10,11 +10,11 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-TEST(BatAdsWalletTest, SetWallet) {
+TEST(BraveAdsWalletTest, SetWallet) {
   // Arrange
   Wallet wallet;
 

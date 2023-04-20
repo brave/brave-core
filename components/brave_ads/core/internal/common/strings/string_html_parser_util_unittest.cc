@@ -11,13 +11,13 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsStringHtmlParserUtilTest : public UnitTestBase {};
+class BraveAdsStringHtmlParserUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsStringHtmlParserUtilTest, ParseHtmlTagAttributeSimple) {
+TEST_F(BraveAdsStringHtmlParserUtilTest, ParseHtmlTagAttributeSimple) {
   // Arrange
   const std::string meta_html_tag =
       R"(<meta property="og:title" content="this is info ">)";

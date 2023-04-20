@@ -21,7 +21,7 @@
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "net/http/http_status_code.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -63,7 +63,7 @@ struct TestParam final {
 
 }  // namespace
 
-class BatAdsSubdivisionTargetingExclusionRuleTest
+class BraveAdsSubdivisionTargetingExclusionRuleTest
     : public UnitTestBase,
       public ::testing::WithParamInterface<TestParam> {
  protected:
@@ -123,7 +123,7 @@ class BatAdsSubdivisionTargetingExclusionRuleTest
   std::unique_ptr<SubdivisionTargetingExclusionRule> exclusion_rule_;
 };
 
-TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
+TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
        DoNotAllowAdIfSubdivisionTargetingIsNotAllowedForGeoTargetWithRegion) {
   // Arrange
   CreativeAdInfo creative_ad;
@@ -136,7 +136,7 @@ TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
   EXPECT_TRUE(exclusion_rule_->ShouldExclude(creative_ad));
 }
 
-TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
+TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
        AllowAdIfSubdivisionTargetingIsNotAllowedForGeoTargetWithNoRegion) {
   // Arrange
   ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
@@ -152,7 +152,7 @@ TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
   EXPECT_FALSE(exclusion_rule_->ShouldExclude(creative_ad));
 }
 
-TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
+TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
        AllowAdIfSubdivisionTargetingIsSupportedAndAutoDetected) {
   // Arrange
   ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
@@ -173,7 +173,7 @@ TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
 }
 
 TEST_P(
-    BatAdsSubdivisionTargetingExclusionRuleTest,
+    BraveAdsSubdivisionTargetingExclusionRuleTest,
     AllowAdIfSubdivisionTargetingIsSupportedAndAutoDetectedForMultipleGeoTargets) {
   // Arrange
   ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
@@ -195,7 +195,7 @@ TEST_P(
 }
 
 TEST_P(
-    BatAdsSubdivisionTargetingExclusionRuleTest,
+    BraveAdsSubdivisionTargetingExclusionRuleTest,
     AllowAdIfSubdivisionTargetingIsSupportedAndAutoDetectedForGeoTargetWithNoRegion) {
   // Arrange
   ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
@@ -216,7 +216,7 @@ TEST_P(
 }
 
 TEST_P(
-    BatAdsSubdivisionTargetingExclusionRuleTest,
+    BraveAdsSubdivisionTargetingExclusionRuleTest,
     AllowAdIfSubdivisionTargetingIsSupportedAndSubdivisionWasManuallySelected) {
   // Arrange
   ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
@@ -240,7 +240,7 @@ TEST_P(
 }
 
 TEST_P(
-    BatAdsSubdivisionTargetingExclusionRuleTest,
+    BraveAdsSubdivisionTargetingExclusionRuleTest,
     AllowAdIfSubdivisionTargetingIsSupportedAndSubdivisionWasManuallySelectedForMultipleGeoTargets) {
   // Arrange
   ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
@@ -265,7 +265,7 @@ TEST_P(
 }
 
 TEST_P(
-    BatAdsSubdivisionTargetingExclusionRuleTest,
+    BraveAdsSubdivisionTargetingExclusionRuleTest,
     AllowAdIfSubdivisionTargetingIsSupportedAndManuallySelectedForGeoTargetWithNoRegion) {
   // Arrange
   ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
@@ -288,7 +288,7 @@ TEST_P(
   EXPECT_FALSE(exclusion_rule_->ShouldExclude(creative_ad));
 }
 
-TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
+TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
        DoNotAllowAdIfSubdivisionTargetingIsSupportedForUnsupportedGeoTarget) {
   // Arrange
   ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
@@ -308,7 +308,7 @@ TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
 }
 
 TEST_P(
-    BatAdsSubdivisionTargetingExclusionRuleTest,
+    BraveAdsSubdivisionTargetingExclusionRuleTest,
     DoNotAllowAdIfSubdivisionTargetingIsNotSupportedForSubdivisionGeoTarget) {
   // Arrange
   ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
@@ -329,7 +329,7 @@ TEST_P(
   EXPECT_TRUE(exclusion_rule_->ShouldExclude(creative_ad));
 }
 
-TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
+TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
        AllowAdIfSubdivisionTargetingIsNotSupportedForNonSubdivisionGeoTarget) {
   // Arrange
   ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
@@ -350,7 +350,7 @@ TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
   EXPECT_FALSE(exclusion_rule_->ShouldExclude(creative_ad));
 }
 
-TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
+TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
        DoNotAllowAdIfSubdivisionTargetingIsDisabledForSubdivisionGeoTarget) {
   // Arrange
   ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
@@ -372,7 +372,7 @@ TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
   EXPECT_TRUE(exclusion_rule_->ShouldExclude(creative_ad));
 }
 
-TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
+TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
        AllowAdIfSubdivisionTargetingIsDisabledForNonSubdivisionGeoTarget) {
   // Arrange
   ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
@@ -401,7 +401,7 @@ std::string TestParamToString(::testing::TestParamInfo<TestParam> test_param) {
 }
 
 INSTANTIATE_TEST_SUITE_P(,
-                         BatAdsSubdivisionTargetingExclusionRuleTest,
+                         BraveAdsSubdivisionTargetingExclusionRuleTest,
                          ::testing::ValuesIn(kTests),
                          TestParamToString);
 

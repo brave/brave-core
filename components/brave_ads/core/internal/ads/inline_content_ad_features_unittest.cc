@@ -10,11 +10,11 @@
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::inline_content_ads {
 
-TEST(BatAdsFeaturesTest, IsEnabled) {
+TEST(BraveAdsFeaturesTest, IsEnabled) {
   // Arrange
 
   // Act
@@ -23,7 +23,7 @@ TEST(BatAdsFeaturesTest, IsEnabled) {
   EXPECT_TRUE(IsEnabled());
 }
 
-TEST(BatAdsFeaturesTest, IsDisabled) {
+TEST(BraveAdsFeaturesTest, IsDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
@@ -40,7 +40,7 @@ TEST(BatAdsFeaturesTest, IsDisabled) {
   EXPECT_FALSE(IsEnabled());
 }
 
-TEST(BatAdsFeaturesTest, GetMaximumAdsPerHour) {
+TEST(BraveAdsFeaturesTest, GetMaximumAdsPerHour) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
@@ -59,7 +59,7 @@ TEST(BatAdsFeaturesTest, GetMaximumAdsPerHour) {
   EXPECT_EQ(42, kMaximumAdsPerHour.Get());
 }
 
-TEST(BatAdsFeaturesTest, DefaultMaximumAdsPerHour) {
+TEST(BraveAdsFeaturesTest, DefaultMaximumAdsPerHour) {
   // Arrange
 
   // Act
@@ -68,7 +68,7 @@ TEST(BatAdsFeaturesTest, DefaultMaximumAdsPerHour) {
   EXPECT_EQ(6, kMaximumAdsPerHour.Get());
 }
 
-TEST(BatAdsFeaturesTest, DefaultMaximumAdsPerHourWhenDisabled) {
+TEST(BraveAdsFeaturesTest, DefaultMaximumAdsPerHourWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
@@ -85,7 +85,7 @@ TEST(BatAdsFeaturesTest, DefaultMaximumAdsPerHourWhenDisabled) {
   EXPECT_EQ(6, kMaximumAdsPerHour.Get());
 }
 
-TEST(BatAdsFeaturesTest, GetMaximumAdsPerDay) {
+TEST(BraveAdsFeaturesTest, GetMaximumAdsPerDay) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
@@ -104,7 +104,7 @@ TEST(BatAdsFeaturesTest, GetMaximumAdsPerDay) {
   EXPECT_EQ(24, kMaximumAdsPerDay.Get());
 }
 
-TEST(BatAdsFeaturesTest, DefaultMaximumAdsPerDay) {
+TEST(BraveAdsFeaturesTest, DefaultMaximumAdsPerDay) {
   // Arrange
 
   // Act
@@ -113,7 +113,7 @@ TEST(BatAdsFeaturesTest, DefaultMaximumAdsPerDay) {
   EXPECT_EQ(20, kMaximumAdsPerDay.Get());
 }
 
-TEST(BatAdsFeaturesTest, DefaultMaximumAdsPerDayWhenDisabled) {
+TEST(BraveAdsFeaturesTest, DefaultMaximumAdsPerDayWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 

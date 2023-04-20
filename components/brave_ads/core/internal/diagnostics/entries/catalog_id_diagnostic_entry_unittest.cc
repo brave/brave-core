@@ -9,13 +9,13 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_entry_types.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds.*
+// npm run test -- brave_unit_tests --filter=BraveAds.*
 
 namespace brave_ads {
 
-class BatAdsCatalogIdDiagnosticEntryTest : public UnitTestBase {};
+class BraveAdsCatalogIdDiagnosticEntryTest : public UnitTestBase {};
 
-TEST_F(BatAdsCatalogIdDiagnosticEntryTest, CatalogId) {
+TEST_F(BraveAdsCatalogIdDiagnosticEntryTest, CatalogId) {
   // Arrange
   SetCatalogId("da5dd0e8-71e9-4607-a45b-13e28b607a81");
 
@@ -29,7 +29,7 @@ TEST_F(BatAdsCatalogIdDiagnosticEntryTest, CatalogId) {
             diagnostic_entry.GetValue());
 }
 
-TEST_F(BatAdsCatalogIdDiagnosticEntryTest, EmptyCatalogId) {
+TEST_F(BraveAdsCatalogIdDiagnosticEntryTest, EmptyCatalogId) {
   // Arrange
 
   // Act

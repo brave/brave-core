@@ -12,13 +12,13 @@
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_event_unittest_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsTextEmbeddingHtmlEventsTest : public UnitTestBase {};
+class BraveAdsTextEmbeddingHtmlEventsTest : public UnitTestBase {};
 
-TEST_F(BatAdsTextEmbeddingHtmlEventsTest, BuildEvent) {
+TEST_F(BraveAdsTextEmbeddingHtmlEventsTest, BuildEvent) {
   // Arrange
   const ml::pipeline::TextEmbeddingInfo text_embedding = BuildTextEmbedding();
 
@@ -33,7 +33,7 @@ TEST_F(BatAdsTextEmbeddingHtmlEventsTest, BuildEvent) {
   EXPECT_EQ(text_embedding.embedding, text_embedding_html_event.embedding);
 }
 
-TEST_F(BatAdsTextEmbeddingHtmlEventsTest, LogEvent) {
+TEST_F(BraveAdsTextEmbeddingHtmlEventsTest, LogEvent) {
   // Arrange
   const ml::pipeline::TextEmbeddingInfo text_embedding = BuildTextEmbedding();
 
@@ -56,7 +56,7 @@ TEST_F(BatAdsTextEmbeddingHtmlEventsTest, LogEvent) {
       text_embedding));
 }
 
-TEST_F(BatAdsTextEmbeddingHtmlEventsTest, PurgeEvents) {
+TEST_F(BraveAdsTextEmbeddingHtmlEventsTest, PurgeEvents) {
   // Arrange
   for (int i = 0; i < targeting::kTextEmbeddingHistorySize.Get() + 4; i++) {
     const ml::pipeline::TextEmbeddingInfo text_embedding = BuildTextEmbedding();

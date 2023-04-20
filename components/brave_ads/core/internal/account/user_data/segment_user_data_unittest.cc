@@ -9,13 +9,13 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::user_data {
 
-class BatAdsSegmentUserDataTest : public UnitTestBase {};
+class BraveAdsSegmentUserDataTest : public UnitTestBase {};
 
-TEST_F(BatAdsSegmentUserDataTest, GetEmptySegment) {
+TEST_F(BraveAdsSegmentUserDataTest, GetEmptySegment) {
   // Arrange
 
   // Act
@@ -28,7 +28,7 @@ TEST_F(BatAdsSegmentUserDataTest, GetEmptySegment) {
   EXPECT_EQ(expected_user_data, user_data);
 }
 
-TEST_F(BatAdsSegmentUserDataTest, GetSegment) {
+TEST_F(BraveAdsSegmentUserDataTest, GetSegment) {
   // Arrange
   TransactionInfo transaction;
   transaction.segment = "untargeted";

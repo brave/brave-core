@@ -12,11 +12,12 @@
 #include "brave/components/brave_ads/core/internal/ads/promoted_content_ad_features.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::promoted_content_ads {
 
-class BatAdsPromotedContentAdsPerHourPermissionRuleTest : public UnitTestBase {
+class BraveAdsPromotedContentAdsPerHourPermissionRuleTest
+    : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -33,7 +34,7 @@ class BatAdsPromotedContentAdsPerHourPermissionRuleTest : public UnitTestBase {
   AdsPerHourPermissionRule permission_rule_;
 };
 
-TEST_F(BatAdsPromotedContentAdsPerHourPermissionRuleTest,
+TEST_F(BraveAdsPromotedContentAdsPerHourPermissionRuleTest,
        AllowAdIfThereIsNoAdsHistory) {
   // Arrange
 
@@ -43,7 +44,7 @@ TEST_F(BatAdsPromotedContentAdsPerHourPermissionRuleTest,
   EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
-TEST_F(BatAdsPromotedContentAdsPerHourPermissionRuleTest,
+TEST_F(BraveAdsPromotedContentAdsPerHourPermissionRuleTest,
        AllowAdIfDoesNotExceedCap) {
   // Arrange
 
@@ -55,7 +56,7 @@ TEST_F(BatAdsPromotedContentAdsPerHourPermissionRuleTest,
   EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
-TEST_F(BatAdsPromotedContentAdsPerHourPermissionRuleTest,
+TEST_F(BraveAdsPromotedContentAdsPerHourPermissionRuleTest,
        AllowAdIfDoesNotExceedCapAfter1Hour) {
   // Arrange
   RecordAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed,
@@ -68,7 +69,7 @@ TEST_F(BatAdsPromotedContentAdsPerHourPermissionRuleTest,
   EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
-TEST_F(BatAdsPromotedContentAdsPerHourPermissionRuleTest,
+TEST_F(BraveAdsPromotedContentAdsPerHourPermissionRuleTest,
        DoNotAllowAdIfExceedsCapWithin1Hour) {
   // Arrange
   RecordAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed,

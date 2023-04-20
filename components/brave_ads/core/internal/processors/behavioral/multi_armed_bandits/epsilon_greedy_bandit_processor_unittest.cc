@@ -11,13 +11,13 @@
 #include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/bandit_feedback_info.h"
 #include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_arm_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsEpsilonGreedyBanditProcessorTest : public UnitTestBase {};
+class BraveAdsEpsilonGreedyBanditProcessorTest : public UnitTestBase {};
 
-TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, InitializeArmsFromResource) {
+TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest, InitializeArmsFromResource) {
   // Arrange
   {
     targeting::EpsilonGreedyBanditArmMap arms;
@@ -49,7 +49,7 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, InitializeArmsFromResource) {
   EXPECT_EQ(0U, arms.count("bar"));
 }
 
-TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, NeverProcessed) {
+TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest, NeverProcessed) {
   // Arrange
   const std::string segment = "travel";  // rewards: [] => value: 1.0
 
@@ -71,7 +71,7 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, NeverProcessed) {
   EXPECT_EQ(expected_arm, arm);
 }
 
-TEST_F(BatAdsEpsilonGreedyBanditProcessorTest,
+TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest,
        ProcessSegmentFourTimesWithOneReward) {
   // Arrange
   const std::string segment = "travel";  // rewards: [0, 0, 0, 0] => value: 0.0
@@ -102,7 +102,7 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest,
   EXPECT_EQ(expected_arm, arm);
 }
 
-TEST_F(BatAdsEpsilonGreedyBanditProcessorTest,
+TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest,
        ProcessSegmentFourTimesWithTwoRewards) {
   // Arrange
   const std::string segment = "travel";  // rewards: [1, 0, 1, 0] => value: 0.5
@@ -133,7 +133,7 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest,
   EXPECT_EQ(expected_arm, arm);
 }
 
-TEST_F(BatAdsEpsilonGreedyBanditProcessorTest,
+TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest,
        ProcessSegmentFourTimesWithFourRewards) {
   // Arrange
   const std::string segment = "travel";  // rewards: [1, 1, 1, 1] => value: 1.0
@@ -164,7 +164,7 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest,
   EXPECT_EQ(expected_arm, arm);
 }
 
-TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, ProcessSegmentNotInResource) {
+TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest, ProcessSegmentNotInResource) {
   // Arrange
   const std::string segment = "foobar";
 
@@ -180,7 +180,7 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, ProcessSegmentNotInResource) {
   EXPECT_TRUE(iter == arms.cend());
 }
 
-TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, ProcessChildSegment) {
+TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest, ProcessChildSegment) {
   // Arrange
   const std::string segment = "travel-child";
   const std::string parent_segment = "travel";
@@ -205,7 +205,7 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, ProcessChildSegment) {
   EXPECT_EQ(expected_arm, arm);
 }
 
-TEST_F(BatAdsEpsilonGreedyBanditProcessorTest,
+TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest,
        InitializeArmsFromResourceWithEmptySegments) {
   // Arrange
   {

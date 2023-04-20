@@ -16,13 +16,13 @@
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 #include "url/gurl.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsPurchaseIntentProcessorTest : public UnitTestBase {};
+class BraveAdsPurchaseIntentProcessorTest : public UnitTestBase {};
 
-TEST_F(BatAdsPurchaseIntentProcessorTest,
+TEST_F(BraveAdsPurchaseIntentProcessorTest,
        DoNotProcessIfResourceIsNotInitialized) {
   // Arrange
   resource::PurchaseIntent resource;
@@ -39,7 +39,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest,
   EXPECT_TRUE(history.empty());
 }
 
-TEST_F(BatAdsPurchaseIntentProcessorTest, DoNotProcessForInvalidUrl) {
+TEST_F(BraveAdsPurchaseIntentProcessorTest, DoNotProcessForInvalidUrl) {
   // Arrange
   resource::PurchaseIntent resource;
   resource.Load();
@@ -57,7 +57,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, DoNotProcessForInvalidUrl) {
   EXPECT_TRUE(history.empty());
 }
 
-TEST_F(BatAdsPurchaseIntentProcessorTest, NeverProcessed) {
+TEST_F(BraveAdsPurchaseIntentProcessorTest, NeverProcessed) {
   // Arrange
   resource::PurchaseIntent resource;
   resource.Load();
@@ -74,7 +74,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, NeverProcessed) {
   EXPECT_TRUE(history.empty());
 }
 
-TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessUrl) {
+TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessUrl) {
   // Arrange
   resource::PurchaseIntent resource;
   resource.Load();
@@ -99,7 +99,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessUrl) {
   EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
-TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingUrls) {
+TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingUrls) {
   // Arrange
   resource::PurchaseIntent resource;
   resource.Load();
@@ -130,7 +130,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingUrls) {
   EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
-TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueUrls) {
+TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueUrls) {
   // Arrange
   resource::PurchaseIntent resource;
   resource.Load();
@@ -166,7 +166,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueUrls) {
   EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
-TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingKeywords) {
+TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingKeywords) {
   // Arrange
   resource::PurchaseIntent resource;
   resource.Load();
@@ -203,7 +203,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingKeywords) {
   EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
-TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueKeywords) {
+TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueKeywords) {
   // Arrange
   resource::PurchaseIntent resource;
   resource.Load();
@@ -238,7 +238,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueKeywords) {
   EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
-TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessSegmentAndFunnelKeywords) {
+TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessSegmentAndFunnelKeywords) {
   // Arrange
   resource::PurchaseIntent resource;
   resource.Load();

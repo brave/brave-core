@@ -10,13 +10,13 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::privacy {
 
-class BatAdsUnblindedTokenUtilTest : public UnitTestBase {};
+class BraveAdsUnblindedTokenUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsUnblindedTokenUtilTest, GetUnblindedToken) {
+TEST_F(BraveAdsUnblindedTokenUtilTest, GetUnblindedToken) {
   // Arrange
   const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(/*count*/ 2);
   ASSERT_EQ(2U, unblinded_tokens.size());
@@ -32,7 +32,7 @@ TEST_F(BatAdsUnblindedTokenUtilTest, GetUnblindedToken) {
   EXPECT_EQ(unblinded_tokens.front(), *unblinded_token);
 }
 
-TEST_F(BatAdsUnblindedTokenUtilTest, DoNotGetUnblindedToken) {
+TEST_F(BraveAdsUnblindedTokenUtilTest, DoNotGetUnblindedToken) {
   // Arrange
 
   // Act
@@ -43,7 +43,7 @@ TEST_F(BatAdsUnblindedTokenUtilTest, DoNotGetUnblindedToken) {
   EXPECT_FALSE(unblinded_token);
 }
 
-TEST_F(BatAdsUnblindedTokenUtilTest, AddUnblindedTokens) {
+TEST_F(BraveAdsUnblindedTokenUtilTest, AddUnblindedTokens) {
   // Arrange
   const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(/*count*/ 2);
   ASSERT_EQ(2U, unblinded_tokens.size());
@@ -61,7 +61,7 @@ TEST_F(BatAdsUnblindedTokenUtilTest, AddUnblindedTokens) {
   EXPECT_EQ(expected_tokens, GetUnblindedTokens()->GetAllTokens());
 }
 
-TEST_F(BatAdsUnblindedTokenUtilTest, RemoveUnblindedToken) {
+TEST_F(BraveAdsUnblindedTokenUtilTest, RemoveUnblindedToken) {
   // Arrange
   const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(/*count*/ 3);
   ASSERT_EQ(3U, unblinded_tokens.size());
@@ -80,7 +80,7 @@ TEST_F(BatAdsUnblindedTokenUtilTest, RemoveUnblindedToken) {
   EXPECT_EQ(expected_tokens, GetUnblindedTokens()->GetAllTokens());
 }
 
-TEST_F(BatAdsUnblindedTokenUtilTest, UnblindedTokenCount) {
+TEST_F(BraveAdsUnblindedTokenUtilTest, UnblindedTokenCount) {
   // Arrange
   SetUnblindedTokens(/*count*/ 3);
 
@@ -90,7 +90,7 @@ TEST_F(BatAdsUnblindedTokenUtilTest, UnblindedTokenCount) {
   EXPECT_EQ(3, UnblindedTokenCount());
 }
 
-TEST_F(BatAdsUnblindedTokenUtilTest, IsValid) {
+TEST_F(BraveAdsUnblindedTokenUtilTest, IsValid) {
   // Arrange
   const UnblindedTokenInfo unblinded_token = GetUnblindedToken();
 
@@ -100,7 +100,7 @@ TEST_F(BatAdsUnblindedTokenUtilTest, IsValid) {
   EXPECT_TRUE(IsValid(unblinded_token));
 }
 
-TEST_F(BatAdsUnblindedTokenUtilTest, IsNotValid) {
+TEST_F(BraveAdsUnblindedTokenUtilTest, IsNotValid) {
   // Arrange
   const UnblindedTokenInfo unblinded_token;
 

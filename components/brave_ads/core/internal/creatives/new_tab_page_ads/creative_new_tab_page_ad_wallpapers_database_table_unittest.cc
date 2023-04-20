@@ -7,11 +7,11 @@
 
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::database::table {
 
-TEST(BatAdsCreativeNewTabPageAdWallpapersDatabaseTableTest, TableName) {
+TEST(BraveAdsCreativeNewTabPageAdWallpapersDatabaseTableTest, TableName) {
   // Arrange
   const CreativeNewTabPageAdWallpapers database_table;
 

@@ -21,11 +21,11 @@
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::new_tab_page_ads {
 
-class BatAdsEligibleNewTabPageAdsV1Test : public UnitTestBase {
+class BraveAdsEligibleNewTabPageAdsV1Test : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -41,7 +41,7 @@ class BatAdsEligibleNewTabPageAdsV1Test : public UnitTestBase {
   std::unique_ptr<EligibleAdsV1> eligible_ads_;
 };
 
-TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetAdsForChildSegment) {
+TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForChildSegment) {
   // Arrange
   CreativeNewTabPageAdList creative_ads;
 
@@ -77,7 +77,7 @@ TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetAdsForChildSegment) {
           std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetAdsForParentSegment) {
+TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForParentSegment) {
   // Arrange
   CreativeNewTabPageAdInfo creative_ad =
       BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
@@ -104,7 +104,7 @@ TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetAdsForParentSegment) {
           std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetAdsForUntargetedSegment) {
+TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForUntargetedSegment) {
   // Arrange
   CreativeNewTabPageAdInfo creative_ad =
       BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
@@ -130,7 +130,7 @@ TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetAdsForUntargetedSegment) {
           std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetAdsForMultipleSegments) {
+TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForMultipleSegments) {
   // Arrange
   CreativeNewTabPageAdList creative_ads;
 
@@ -172,7 +172,7 @@ TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetAdsForMultipleSegments) {
           std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetAdsForNoSegments) {
+TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForNoSegments) {
   // Arrange
   CreativeNewTabPageAdInfo creative_ad =
       BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
@@ -195,7 +195,7 @@ TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetAdsForNoSegments) {
           std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsForUnmatchedSegments) {
+TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsForUnmatchedSegments) {
   // Arrange
   CreativeNewTabPageAdInfo creative_ad =
       BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
@@ -216,7 +216,7 @@ TEST_F(BatAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsForUnmatchedSegments) {
       }));
 }
 
-TEST_F(BatAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsIfNoEligibleAds) {
+TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsIfNoEligibleAds) {
   // Arrange
 
   // Act
@@ -234,7 +234,7 @@ TEST_F(BatAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsIfNoEligibleAds) {
       }));
 }
 
-TEST_F(BatAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsIfAlreadySeen) {
+TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsIfAlreadySeen) {
   // Arrange
   CreativeNewTabPageAdList creative_ads;
 
@@ -273,7 +273,7 @@ TEST_F(BatAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsIfAlreadySeen) {
           std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsEligibleNewTabPageAdsV1Test, DoNotGetPacedAds) {
+TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, DoNotGetPacedAds) {
   // Arrange
   CreativeNewTabPageAdList creative_ads;
 
@@ -313,7 +313,7 @@ TEST_F(BatAdsEligibleNewTabPageAdsV1Test, DoNotGetPacedAds) {
           std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetPrioritizedAds) {
+TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetPrioritizedAds) {
   // Arrange
   CreativeNewTabPageAdList creative_ads;
 

@@ -24,7 +24,7 @@
 #include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversions_resource.h"
 #include "url/gurl.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -36,7 +36,7 @@ base::Time CalculateExpireAtTime(const int observation_window) {
 
 }  // namespace
 
-class BatAdsConversionsTest : public UnitTestBase {
+class BraveAdsConversionsTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -50,7 +50,7 @@ class BatAdsConversionsTest : public UnitTestBase {
   database::table::Conversions conversions_database_table_;
 };
 
-TEST_F(BatAdsConversionsTest,
+TEST_F(BraveAdsConversionsTest,
        DoNotConvertViewedNotificationAdWhenAdsAreDisabled) {
   // Arrange
   ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
@@ -90,7 +90,7 @@ TEST_F(BatAdsConversionsTest,
       }));
 }
 
-TEST_F(BatAdsConversionsTest, ConvertViewedNotificationAdWhenAdsAreEnabled) {
+TEST_F(BraveAdsConversionsTest, ConvertViewedNotificationAdWhenAdsAreEnabled) {
   // Arrange
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -133,7 +133,7 @@ TEST_F(BatAdsConversionsTest, ConvertViewedNotificationAdWhenAdsAreEnabled) {
                      std::move(conversion)));
 }
 
-TEST_F(BatAdsConversionsTest,
+TEST_F(BraveAdsConversionsTest,
        DoNotConvertClickedNotificationAdWhenAdsAreDisabled) {
   // Arrange
   ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
@@ -176,7 +176,7 @@ TEST_F(BatAdsConversionsTest,
       }));
 }
 
-TEST_F(BatAdsConversionsTest, ConvertClickedNotificationAdWhenAdsAreEnabled) {
+TEST_F(BraveAdsConversionsTest, ConvertClickedNotificationAdWhenAdsAreEnabled) {
   // Arrange
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -222,7 +222,7 @@ TEST_F(BatAdsConversionsTest, ConvertClickedNotificationAdWhenAdsAreEnabled) {
                      std::move(conversion)));
 }
 
-TEST_F(BatAdsConversionsTest,
+TEST_F(BraveAdsConversionsTest,
        DoNotConvertViewedNewTabPageAdWhenAdsAreDisabled) {
   // Arrange
   ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
@@ -262,7 +262,7 @@ TEST_F(BatAdsConversionsTest,
       }));
 }
 
-TEST_F(BatAdsConversionsTest, ConvertViewedNewTabPageAdWhenAdsAreEnabled) {
+TEST_F(BraveAdsConversionsTest, ConvertViewedNewTabPageAdWhenAdsAreEnabled) {
   // Arrange
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -305,7 +305,7 @@ TEST_F(BatAdsConversionsTest, ConvertViewedNewTabPageAdWhenAdsAreEnabled) {
                      std::move(conversion)));
 }
 
-TEST_F(BatAdsConversionsTest,
+TEST_F(BraveAdsConversionsTest,
        DoNotConvertClickedNewTabPageAdWhenAdsAreDisabled) {
   // Arrange
   ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
@@ -348,7 +348,7 @@ TEST_F(BatAdsConversionsTest,
       }));
 }
 
-TEST_F(BatAdsConversionsTest, ConvertClickedNewTabPageAdWhenAdsAreEnabled) {
+TEST_F(BraveAdsConversionsTest, ConvertClickedNewTabPageAdWhenAdsAreEnabled) {
   // Arrange
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -394,7 +394,7 @@ TEST_F(BatAdsConversionsTest, ConvertClickedNewTabPageAdWhenAdsAreEnabled) {
                      std::move(conversion)));
 }
 
-TEST_F(BatAdsConversionsTest,
+TEST_F(BraveAdsConversionsTest,
        DoNotConvertViewedPromotedContentAdWhenAdsAreDisabled) {
   // Arrange
   ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
@@ -435,7 +435,8 @@ TEST_F(BatAdsConversionsTest,
       }));
 }
 
-TEST_F(BatAdsConversionsTest, ConvertViewedPromotedContentAdWhenAdsAreEnabled) {
+TEST_F(BraveAdsConversionsTest,
+       ConvertViewedPromotedContentAdWhenAdsAreEnabled) {
   // Arrange
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -479,7 +480,7 @@ TEST_F(BatAdsConversionsTest, ConvertViewedPromotedContentAdWhenAdsAreEnabled) {
                      std::move(conversion)));
 }
 
-TEST_F(BatAdsConversionsTest,
+TEST_F(BraveAdsConversionsTest,
        DoNotConvertClickedPromotedContentAdWhenAdsAreDisabled) {
   // Arrange
   ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
@@ -524,7 +525,7 @@ TEST_F(BatAdsConversionsTest,
       }));
 }
 
-TEST_F(BatAdsConversionsTest,
+TEST_F(BraveAdsConversionsTest,
        ConvertClickedPromotedContentAdWhenAdsAreEnabled) {
   // Arrange
   const CreativeAdInfo creative_ad =
@@ -573,7 +574,7 @@ TEST_F(BatAdsConversionsTest,
                      std::move(conversion)));
 }
 
-TEST_F(BatAdsConversionsTest,
+TEST_F(BraveAdsConversionsTest,
        DoNotConvertViewedInlineContentAdWhenAdsAreDisabled) {
   // Arrange
   ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
@@ -613,7 +614,7 @@ TEST_F(BatAdsConversionsTest,
       }));
 }
 
-TEST_F(BatAdsConversionsTest,
+TEST_F(BraveAdsConversionsTest,
        DoNotConvertViewedInlineContentAdWhenAdsAreEnabled) {
   // Arrange
   const CreativeAdInfo creative_ad =
@@ -651,7 +652,8 @@ TEST_F(BatAdsConversionsTest,
       }));
 }
 
-TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreDisabled) {
+TEST_F(BraveAdsConversionsTest,
+       ConvertClickedInlineContentAdWhenAdsAreDisabled) {
   // Arrange
   ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
 
@@ -699,7 +701,8 @@ TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreDisabled) {
                      std::move(conversion)));
 }
 
-TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreEnabled) {
+TEST_F(BraveAdsConversionsTest,
+       ConvertClickedInlineContentAdWhenAdsAreEnabled) {
   // Arrange
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -745,7 +748,7 @@ TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreEnabled) {
                      std::move(conversion)));
 }
 
-TEST_F(BatAdsConversionsTest,
+TEST_F(BraveAdsConversionsTest,
        DoNotConvertViewedSearchResultAdWhenAdsAreDisabled) {
   // Arrange
   ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
@@ -785,7 +788,7 @@ TEST_F(BatAdsConversionsTest,
       }));
 }
 
-TEST_F(BatAdsConversionsTest, ConvertViewedSearchResultAdWhenAdsAreEnabled) {
+TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdWhenAdsAreEnabled) {
   // Arrange
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -828,7 +831,7 @@ TEST_F(BatAdsConversionsTest, ConvertViewedSearchResultAdWhenAdsAreEnabled) {
                      std::move(conversion)));
 }
 
-TEST_F(BatAdsConversionsTest,
+TEST_F(BraveAdsConversionsTest,
        DoNotConvertClickedSearchResultAdWhenAdsAreDisabled) {
   // Arrange
   ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
@@ -871,7 +874,7 @@ TEST_F(BatAdsConversionsTest,
       }));
 }
 
-TEST_F(BatAdsConversionsTest, ConvertClickedSearchResultAdWhenAdsAreEnabled) {
+TEST_F(BraveAdsConversionsTest, ConvertClickedSearchResultAdWhenAdsAreEnabled) {
   // Arrange
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -917,7 +920,7 @@ TEST_F(BatAdsConversionsTest, ConvertClickedSearchResultAdWhenAdsAreEnabled) {
                      std::move(conversion)));
 }
 
-TEST_F(BatAdsConversionsTest, ConvertMultipleAds) {
+TEST_F(BraveAdsConversionsTest, ConvertMultipleAds) {
   // Arrange
   ConversionList conversions;
 
@@ -992,7 +995,7 @@ TEST_F(BatAdsConversionsTest, ConvertMultipleAds) {
           std::move(conversions)));
 }
 
-TEST_F(BatAdsConversionsTest, ConvertViewedAdWhenAdWasDismissed) {
+TEST_F(BraveAdsConversionsTest, ConvertViewedAdWhenAdWasDismissed) {
   // Arrange
   ConversionList conversions;
 
@@ -1038,7 +1041,7 @@ TEST_F(BatAdsConversionsTest, ConvertViewedAdWhenAdWasDismissed) {
                      std::move(conversion)));
 }
 
-TEST_F(BatAdsConversionsTest, DoNotConvertNonViewedOrClickedAds) {
+TEST_F(BraveAdsConversionsTest, DoNotConvertNonViewedOrClickedAds) {
   // Arrange
   ConversionList conversions;
 
@@ -1093,7 +1096,7 @@ TEST_F(BatAdsConversionsTest, DoNotConvertNonViewedOrClickedAds) {
       }));
 }
 
-TEST_F(BatAdsConversionsTest, DoNotConvertViewedAdForPostClick) {
+TEST_F(BraveAdsConversionsTest, DoNotConvertViewedAdForPostClick) {
   // Arrange
   ConversionList conversions;
 
@@ -1130,7 +1133,7 @@ TEST_F(BatAdsConversionsTest, DoNotConvertViewedAdForPostClick) {
       }));
 }
 
-TEST_F(BatAdsConversionsTest, DoNotConvertAdIfConversionDoesNotExist) {
+TEST_F(BraveAdsConversionsTest, DoNotConvertAdIfConversionDoesNotExist) {
   // Arrange
   const std::string creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
 
@@ -1157,7 +1160,7 @@ TEST_F(BatAdsConversionsTest, DoNotConvertAdIfConversionDoesNotExist) {
       }));
 }
 
-TEST_F(BatAdsConversionsTest,
+TEST_F(BraveAdsConversionsTest,
        DoNotConvertAdWhenThereIsConversionHistoryForTheSameCreativeSet) {
   // Arrange
   ConversionList conversions;
@@ -1205,7 +1208,7 @@ TEST_F(BatAdsConversionsTest,
                      std::move(conversion)));
 }
 
-TEST_F(BatAdsConversionsTest,
+TEST_F(BraveAdsConversionsTest,
        DoNotConvertAdWhenUrlDoesNotMatchConversionIdPattern) {
   // Arrange
   ConversionList conversions;
@@ -1243,7 +1246,8 @@ TEST_F(BatAdsConversionsTest,
       }));
 }
 
-TEST_F(BatAdsConversionsTest, ConvertAdWhenTheConversionIsOnTheCuspOfExpiring) {
+TEST_F(BraveAdsConversionsTest,
+       ConvertAdWhenTheConversionIsOnTheCuspOfExpiring) {
   // Arrange
   ConversionList conversions;
 
@@ -1288,7 +1292,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdWhenTheConversionIsOnTheCuspOfExpiring) {
                      std::move(conversion)));
 }
 
-TEST_F(BatAdsConversionsTest, DoNotConvertAdWhenTheConversionHasExpired) {
+TEST_F(BraveAdsConversionsTest, DoNotConvertAdWhenTheConversionHasExpired) {
   // Arrange
   ConversionList conversions;
 
@@ -1327,7 +1331,7 @@ TEST_F(BatAdsConversionsTest, DoNotConvertAdWhenTheConversionHasExpired) {
       }));
 }
 
-TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainIntermediateUrl) {
+TEST_F(BraveAdsConversionsTest, ConvertAdForRedirectChainIntermediateUrl) {
   // Arrange
   ConversionList conversions;
 
@@ -1372,7 +1376,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainIntermediateUrl) {
                      std::move(conversion)));
 }
 
-TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainOriginalUrl) {
+TEST_F(BraveAdsConversionsTest, ConvertAdForRedirectChainOriginalUrl) {
   // Arrange
   ConversionList conversions;
 
@@ -1417,7 +1421,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainOriginalUrl) {
                      std::move(conversion)));
 }
 
-TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainUrl) {
+TEST_F(BraveAdsConversionsTest, ConvertAdForRedirectChainUrl) {
   // Arrange
   ConversionList conversions;
 
@@ -1462,7 +1466,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainUrl) {
                      std::move(conversion)));
 }
 
-TEST_F(BatAdsConversionsTest, ExtractConversionId) {
+TEST_F(BraveAdsConversionsTest, ExtractConversionId) {
   // Arrange
   resource::Conversions resource;
   resource.Load();
@@ -1511,7 +1515,8 @@ TEST_F(BatAdsConversionsTest, ExtractConversionId) {
       conversion));
 }
 
-TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromHtml) {
+TEST_F(BraveAdsConversionsTest,
+       ExtractConversionIdWithResourcePatternFromHtml) {
   // Arrange
   resource::Conversions resource;
   resource.Load();
@@ -1562,7 +1567,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromHtml) {
       conversion));
 }
 
-TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromUrl) {
+TEST_F(BraveAdsConversionsTest, ExtractConversionIdWithResourcePatternFromUrl) {
   // Arrange
   resource::Conversions resource;
   resource.Load();

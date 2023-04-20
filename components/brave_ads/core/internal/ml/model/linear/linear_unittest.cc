@@ -10,13 +10,13 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::ml {
 
-class BatAdsLinearTest : public UnitTestBase {};
+class BraveAdsLinearTest : public UnitTestBase {};
 
-TEST_F(BatAdsLinearTest, ThreeClassesPredictionTest) {
+TEST_F(BraveAdsLinearTest, ThreeClassesPredictionTest) {
   // Arrange
   const std::map<std::string, VectorData> weights = {
       {"class_1", VectorData({1.0, 0.0, 0.0})},
@@ -47,7 +47,7 @@ TEST_F(BatAdsLinearTest, ThreeClassesPredictionTest) {
               predictions_3.at("class_3") > predictions_3.at("class_2"));
 }
 
-TEST_F(BatAdsLinearTest, BiasesPredictionTest) {
+TEST_F(BraveAdsLinearTest, BiasesPredictionTest) {
   // Arrange
   const std::map<std::string, VectorData> weights = {
       {"class_1", VectorData({1.0, 0.0, 0.0})},
@@ -69,7 +69,7 @@ TEST_F(BatAdsLinearTest, BiasesPredictionTest) {
               predictions.at("class_1") > predictions.at("class_2"));
 }
 
-TEST_F(BatAdsLinearTest, BinaryClassifierPredictionTest) {
+TEST_F(BraveAdsLinearTest, BinaryClassifierPredictionTest) {
   // Arrange
   const std::vector<float> data = {0.3, 0.2, 0.25};
   const std::map<std::string, VectorData> weights = {
@@ -92,7 +92,7 @@ TEST_F(BatAdsLinearTest, BinaryClassifierPredictionTest) {
               predictions_1.at("the_only_class") > 0.5);
 }
 
-TEST_F(BatAdsLinearTest, TopPredictionsTest) {
+TEST_F(BraveAdsLinearTest, TopPredictionsTest) {
   // Arrange
   constexpr size_t kPredictionLimits[2] = {2, 1};
   const std::map<std::string, VectorData> weights = {

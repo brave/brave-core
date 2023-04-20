@@ -9,7 +9,7 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 using ::testing::Eq;
 
@@ -22,9 +22,9 @@ constexpr char kQuestionsAsJson[] = R"(["question_1","question_2"])";
 
 }  // namespace
 
-class BatAdsP2ATest : public UnitTestBase {};
+class BraveAdsP2ATest : public UnitTestBase {};
 
-TEST_F(BatAdsP2ATest, RecordEvent) {
+TEST_F(BraveAdsP2ATest, RecordEvent) {
   // Arrange
   const base::Value value = base::test::ParseJson(kQuestionsAsJson);
   const base::Value::List* const list = value.GetIfList();

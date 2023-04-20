@@ -21,7 +21,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::new_tab_page_ads {
 
@@ -38,8 +38,8 @@ CreativeNewTabPageAdInfo BuildAndSaveCreativeAd() {
 
 }  // namespace
 
-class BatAdsNewTabPageAdEventHandlerTest : public EventHandlerDelegate,
-                                           public UnitTestBase {
+class BraveAdsNewTabPageAdEventHandlerTest : public EventHandlerDelegate,
+                                             public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -78,7 +78,7 @@ class BatAdsNewTabPageAdEventHandlerTest : public EventHandlerDelegate,
   bool did_fail_to_fire_event_ = false;
 };
 
-TEST_F(BatAdsNewTabPageAdEventHandlerTest, FireViewedEvent) {
+TEST_F(BraveAdsNewTabPageAdEventHandlerTest, FireViewedEvent) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
 
@@ -101,7 +101,8 @@ TEST_F(BatAdsNewTabPageAdEventHandlerTest, FireViewedEvent) {
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
-TEST_F(BatAdsNewTabPageAdEventHandlerTest, DoNotFireViewedEventIfAlreadyFired) {
+TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
+       DoNotFireViewedEventIfAlreadyFired) {
   // Arrange
   ForcePermissionRulesForTesting();
 
@@ -121,7 +122,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerTest, DoNotFireViewedEventIfAlreadyFired) {
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
-TEST_F(BatAdsNewTabPageAdEventHandlerTest, FireClickedEvent) {
+TEST_F(BraveAdsNewTabPageAdEventHandlerTest, FireClickedEvent) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
 
@@ -146,7 +147,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerTest, FireClickedEvent) {
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kClicked));
 }
 
-TEST_F(BatAdsNewTabPageAdEventHandlerTest,
+TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
        DoNotFireClickedEventIfMissingAdPlacement) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
@@ -160,7 +161,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerTest,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kClicked));
 }
 
-TEST_F(BatAdsNewTabPageAdEventHandlerTest,
+TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
        DoNotFireClickedEventIfAlreadyFired) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
@@ -181,7 +182,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerTest,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kClicked));
 }
 
-TEST_F(BatAdsNewTabPageAdEventHandlerTest,
+TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
        DoNotFireEventWithInvalidPlacementId) {
   // Arrange
 
@@ -198,7 +199,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerTest,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
 }
 
-TEST_F(BatAdsNewTabPageAdEventHandlerTest,
+TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
        DoNotFireEventWithInvalidCreativeInstanceId) {
   // Arrange
 
@@ -215,7 +216,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerTest,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
 }
 
-TEST_F(BatAdsNewTabPageAdEventHandlerTest,
+TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
        DoNotFireEventForUnknownCreativeInstanceId) {
   // Arrange
 
@@ -232,7 +233,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerTest,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
 }
 
-TEST_F(BatAdsNewTabPageAdEventHandlerTest,
+TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
        FireEventIfNotExceededAdsPerHourCap) {
   // Arrange
   ForcePermissionRulesForTesting();

@@ -21,11 +21,11 @@
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::inline_content_ads {
 
-class BatAdsEligibleInlineContentAdsV1Test : public UnitTestBase {
+class BraveAdsEligibleInlineContentAdsV1Test : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -41,7 +41,7 @@ class BatAdsEligibleInlineContentAdsV1Test : public UnitTestBase {
   std::unique_ptr<EligibleAdsV1> eligible_ads_;
 };
 
-TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForChildSegment) {
+TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForChildSegment) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
 
@@ -78,7 +78,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForChildSegment) {
           std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForParentSegment) {
+TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForParentSegment) {
   // Arrange
   CreativeInlineContentAdInfo creative_ad =
       BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
@@ -106,7 +106,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForParentSegment) {
           std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForUntargetedSegment) {
+TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForUntargetedSegment) {
   // Arrange
   CreativeInlineContentAdInfo creative_ad =
       BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
@@ -133,7 +133,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForUntargetedSegment) {
           std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForMultipleSegments) {
+TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForMultipleSegments) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
 
@@ -176,7 +176,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForMultipleSegments) {
           std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForNoSegments) {
+TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForNoSegments) {
   // Arrange
   CreativeInlineContentAdInfo creative_ad =
       BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
@@ -199,7 +199,8 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForNoSegments) {
           std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsEligibleInlineContentAdsV1Test, DoNotGetAdsForUnmatchedSegments) {
+TEST_F(BraveAdsEligibleInlineContentAdsV1Test,
+       DoNotGetAdsForUnmatchedSegments) {
   // Arrange
   CreativeInlineContentAdInfo creative_ad =
       BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
@@ -221,7 +222,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, DoNotGetAdsForUnmatchedSegments) {
       }));
 }
 
-TEST_F(BatAdsEligibleInlineContentAdsV1Test,
+TEST_F(BraveAdsEligibleInlineContentAdsV1Test,
        DoNotGetAdsForNonExistentDimensions) {
   // Arrange
   CreativeInlineContentAdInfo creative_ad =
@@ -245,7 +246,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test,
       }));
 }
 
-TEST_F(BatAdsEligibleInlineContentAdsV1Test, DoNotGetAdsIfAlreadySeen) {
+TEST_F(BraveAdsEligibleInlineContentAdsV1Test, DoNotGetAdsIfAlreadySeen) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
 
@@ -285,7 +286,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, DoNotGetAdsIfAlreadySeen) {
           std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsEligibleInlineContentAdsV1Test, DoNotGetPacedAds) {
+TEST_F(BraveAdsEligibleInlineContentAdsV1Test, DoNotGetPacedAds) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
 
@@ -326,7 +327,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, DoNotGetPacedAds) {
           std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetPrioritizedAds) {
+TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetPrioritizedAds) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
 

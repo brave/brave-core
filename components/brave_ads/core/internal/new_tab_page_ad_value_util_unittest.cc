@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -24,9 +24,9 @@ constexpr char kJson[] =
 
 }  // namespace
 
-class BatAdsNewTabPageAdValueUtilTest : public UnitTestBase {};
+class BraveAdsNewTabPageAdValueUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsNewTabPageAdValueUtilTest, FromValue) {
+TEST_F(BraveAdsNewTabPageAdValueUtilTest, FromValue) {
   // Arrange
   const base::Value value = base::test::ParseJson(kJson);
   const base::Value::Dict* const dict = value.GetIfDict();
@@ -43,7 +43,7 @@ TEST_F(BatAdsNewTabPageAdValueUtilTest, FromValue) {
   EXPECT_EQ(expected_ad, ad);
 }
 
-TEST_F(BatAdsNewTabPageAdValueUtilTest, ToValue) {
+TEST_F(BraveAdsNewTabPageAdValueUtilTest, ToValue) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad =
       BuildCreativeNewTabPageAd(/*should_use_random_guids*/ false);

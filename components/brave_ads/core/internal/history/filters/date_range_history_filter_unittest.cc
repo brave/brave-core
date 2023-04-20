@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -38,7 +38,7 @@ HistoryItemList GetHistory() {
 
 }  // namespace
 
-TEST(BatAdsDateRangeHistoryFilterTest,
+TEST(BraveAdsDateRangeHistoryFilterTest,
      FilterHistoryFromTimestamp444444444ToDistantFuture) {
   // Arrange
   HistoryItemList history = GetHistory();
@@ -64,7 +64,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
-TEST(BatAdsDateRangeHistoryFilterTest,
+TEST(BraveAdsDateRangeHistoryFilterTest,
      FilterHistoryFromTimestamp777777777ToDistantFuture) {
   // Arrange
   HistoryItemList history = GetHistory();
@@ -80,7 +80,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   EXPECT_TRUE(history.empty());
 }
 
-TEST(BatAdsDateRangeHistoryFilterTest,
+TEST(BraveAdsDateRangeHistoryFilterTest,
      FilterHistoryFromDistantPastToTimestamp444444444) {
   // Arrange
   HistoryItemList history = GetHistory();
@@ -105,7 +105,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
-TEST(BatAdsDateRangeHistoryFilterTest,
+TEST(BraveAdsDateRangeHistoryFilterTest,
      FilterHistoryFromDistancePastToTimestamp111111111) {
   // Arrange
   HistoryItemList history = GetHistory();
@@ -121,7 +121,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   EXPECT_TRUE(history.empty());
 }
 
-TEST(BatAdsDateRangeHistoryFilterTest,
+TEST(BraveAdsDateRangeHistoryFilterTest,
      FilterHistoryFromDistantPastToDistantFuture) {
   // Arrange
   HistoryItemList history = GetHistory();
@@ -150,7 +150,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
-TEST(BatAdsDateRangeHistoryFilterTest,
+TEST(BraveAdsDateRangeHistoryFilterTest,
      FilterHistoryFromDistantFutureToDistantPast) {
   // Arrange
   HistoryItemList history = GetHistory();
@@ -166,7 +166,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   EXPECT_TRUE(history.empty());
 }
 
-TEST(BatAdsDateRangeHistoryFilterTest, FilterEmptyHistory) {
+TEST(BraveAdsDateRangeHistoryFilterTest, FilterEmptyHistory) {
   // Arrange
   HistoryItemList history;
 

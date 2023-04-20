@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/history/category_content_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -19,9 +19,9 @@ namespace {
 constexpr char kJson[] = R"({"category":"untargeted","optAction":0})";
 }  // namespace
 
-class BatAdsCategoryContentValueUtilTest : public UnitTestBase {};
+class BraveAdsCategoryContentValueUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsCategoryContentValueUtilTest, FromValue) {
+TEST_F(BraveAdsCategoryContentValueUtilTest, FromValue) {
   // Arrange
   const base::Value value = base::test::ParseJson(kJson);
   const base::Value::Dict* const dict = value.GetIfDict();
@@ -36,7 +36,7 @@ TEST_F(BatAdsCategoryContentValueUtilTest, FromValue) {
   EXPECT_EQ(expected_category_content, category_content);
 }
 
-TEST_F(BatAdsCategoryContentValueUtilTest, ToValue) {
+TEST_F(BraveAdsCategoryContentValueUtilTest, ToValue) {
   // Arrange
   const CategoryContentInfo category_content = BuildCategoryContent(kSegment);
 

@@ -10,13 +10,13 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsCatalogUtilTest : public UnitTestBase {};
+class BraveAdsCatalogUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsCatalogUtilTest, ResetCatalog) {
+TEST_F(BraveAdsCatalogUtilTest, ResetCatalog) {
   // Arrange
   SetCatalogId("150a9518-4db8-4fba-b104-0c420a1d9c0c");
   SetCatalogVersion(1);
@@ -33,7 +33,7 @@ TEST_F(BatAdsCatalogUtilTest, ResetCatalog) {
               !ads_client_mock_->HasPrefPath(prefs::kCatalogLastUpdated));
 }
 
-TEST_F(BatAdsCatalogUtilTest, CatalogExists) {
+TEST_F(BraveAdsCatalogUtilTest, CatalogExists) {
   // Arrange
   SetCatalogVersion(1);
 
@@ -44,7 +44,7 @@ TEST_F(BatAdsCatalogUtilTest, CatalogExists) {
   EXPECT_TRUE(does_exist);
 }
 
-TEST_F(BatAdsCatalogUtilTest, CatalogDoesNotExist) {
+TEST_F(BraveAdsCatalogUtilTest, CatalogDoesNotExist) {
   // Arrange
   SetCatalogVersion(0);
 
@@ -55,7 +55,7 @@ TEST_F(BatAdsCatalogUtilTest, CatalogDoesNotExist) {
   EXPECT_FALSE(does_exist);
 }
 
-TEST_F(BatAdsCatalogUtilTest, CatalogHasChanged) {
+TEST_F(BraveAdsCatalogUtilTest, CatalogHasChanged) {
   // Arrange
   SetCatalogId(kCatalogId);
 
@@ -67,7 +67,7 @@ TEST_F(BatAdsCatalogUtilTest, CatalogHasChanged) {
   EXPECT_TRUE(has_changed);
 }
 
-TEST_F(BatAdsCatalogUtilTest, CatalogHasNotChanged) {
+TEST_F(BraveAdsCatalogUtilTest, CatalogHasNotChanged) {
   // Arrange
   SetCatalogId(kCatalogId);
 
@@ -78,7 +78,7 @@ TEST_F(BatAdsCatalogUtilTest, CatalogHasNotChanged) {
   EXPECT_FALSE(has_changed);
 }
 
-TEST_F(BatAdsCatalogUtilTest, CatalogHasExpired) {
+TEST_F(BraveAdsCatalogUtilTest, CatalogHasExpired) {
   // Arrange
   SetCatalogLastUpdated(Now());
 
@@ -90,7 +90,7 @@ TEST_F(BatAdsCatalogUtilTest, CatalogHasExpired) {
   EXPECT_TRUE(has_expired);
 }
 
-TEST_F(BatAdsCatalogUtilTest, CatalogHasNotExpired) {
+TEST_F(BraveAdsCatalogUtilTest, CatalogHasNotExpired) {
   // Arrange
   SetCatalogLastUpdated(Now());
 

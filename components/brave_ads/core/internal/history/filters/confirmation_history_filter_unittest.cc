@@ -10,11 +10,11 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_container_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-TEST(BatAdsConfirmationHistoryFilterTest, FilterActions) {
+TEST(BraveAdsConfirmationHistoryFilterTest, FilterActions) {
   // Arrange
   HistoryItemInfo ad1;  // Ad 1 (Viewed)
   ad1.ad_content.placement_id = "b7a0aa61-7c3a-40f8-aa29-d416b64cebd9";
@@ -76,7 +76,7 @@ TEST(BatAdsConfirmationHistoryFilterTest, FilterActions) {
   EXPECT_TRUE(ContainersEq(expected_history, history));
 }
 
-TEST(BatAdsConfirmationHistoryFilterTest, FilterUnsupportedActions) {
+TEST(BraveAdsConfirmationHistoryFilterTest, FilterUnsupportedActions) {
   // Arrange
   HistoryItemInfo ad1;  // Unsupported
   ad1.ad_content.placement_id = "54ee85b3-b84e-4e80-a6db-8954b554f466";

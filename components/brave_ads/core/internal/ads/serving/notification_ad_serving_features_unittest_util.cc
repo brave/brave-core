@@ -13,7 +13,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_features.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::notification_ads {
 

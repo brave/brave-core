@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/embedding_pipeline_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::ml::pipeline {
 
@@ -28,9 +28,9 @@ constexpr char kJsonMalformed[] =
 
 }  // namespace
 
-class BatAdsEmbeddingPipelineValueUtilTest : public UnitTestBase {};
+class BraveAdsEmbeddingPipelineValueUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsEmbeddingPipelineValueUtilTest, FromValue) {
+TEST_F(BraveAdsEmbeddingPipelineValueUtilTest, FromValue) {
   // Arrange
   const base::Value value = base::test::ParseJson(kJson);
   const base::Value::Dict* const dict = value.GetIfDict();
@@ -64,7 +64,7 @@ TEST_F(BatAdsEmbeddingPipelineValueUtilTest, FromValue) {
   }
 }
 
-TEST_F(BatAdsEmbeddingPipelineValueUtilTest, FromValueEmpty) {
+TEST_F(BraveAdsEmbeddingPipelineValueUtilTest, FromValueEmpty) {
   // Arrange
   const base::Value value = base::test::ParseJson(kJsonEmpty);
   const base::Value::Dict* const dict = value.GetIfDict();
@@ -78,7 +78,7 @@ TEST_F(BatAdsEmbeddingPipelineValueUtilTest, FromValueEmpty) {
   EXPECT_TRUE(!pipeline);
 }
 
-TEST_F(BatAdsEmbeddingPipelineValueUtilTest, FromValueMalformed) {
+TEST_F(BraveAdsEmbeddingPipelineValueUtilTest, FromValueMalformed) {
   // Arrange
   const base::Value value = base::test::ParseJson(kJsonMalformed);
   const base::Value::Dict* const dict = value.GetIfDict();

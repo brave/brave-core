@@ -10,11 +10,11 @@
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-TEST(BatAdsExclusionRuleFeaturesTest, IsEnabled) {
+TEST(BraveAdsExclusionRuleFeaturesTest, IsEnabled) {
   // Arrange
 
   // Act
@@ -23,7 +23,7 @@ TEST(BatAdsExclusionRuleFeaturesTest, IsEnabled) {
   EXPECT_TRUE(IsExclusionRulesEnabled());
 }
 
-TEST(BatAdsExclusionRuleFeaturesTest, IsDisabled) {
+TEST(BraveAdsExclusionRuleFeaturesTest, IsDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
@@ -40,7 +40,7 @@ TEST(BatAdsExclusionRuleFeaturesTest, IsDisabled) {
   EXPECT_FALSE(IsExclusionRulesEnabled());
 }
 
-TEST(BatAdsExclusionRuleFeaturesTest, ShouldExcludeAdIfConverted) {
+TEST(BraveAdsExclusionRuleFeaturesTest, ShouldExcludeAdIfConverted) {
   // Arrange
   base::FieldTrialParams params;
   params["should_exclude_ad_if_converted"] = "false";
@@ -59,7 +59,7 @@ TEST(BatAdsExclusionRuleFeaturesTest, ShouldExcludeAdIfConverted) {
   EXPECT_FALSE(kShouldExcludeAdIfConverted.Get());
 }
 
-TEST(BatAdsExclusionRuleFeaturesTest, DefaultShouldExcludeAdIfConverted) {
+TEST(BraveAdsExclusionRuleFeaturesTest, DefaultShouldExcludeAdIfConverted) {
   // Arrange
 
   // Act
@@ -68,7 +68,7 @@ TEST(BatAdsExclusionRuleFeaturesTest, DefaultShouldExcludeAdIfConverted) {
   EXPECT_TRUE(kShouldExcludeAdIfConverted.Get());
 }
 
-TEST(BatAdsExclusionRuleFeaturesTest,
+TEST(BraveAdsExclusionRuleFeaturesTest,
      DefaultShouldExcludeAdIfConvertedWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
@@ -86,7 +86,8 @@ TEST(BatAdsExclusionRuleFeaturesTest,
   EXPECT_TRUE(kShouldExcludeAdIfConverted.Get());
 }
 
-TEST(BatAdsExclusionRuleFeaturesTest, GetExcludeAdIfDismissedWithinTimeWindow) {
+TEST(BraveAdsExclusionRuleFeaturesTest,
+     GetExcludeAdIfDismissedWithinTimeWindow) {
   // Arrange
   base::FieldTrialParams params;
   params["should_exclude_ad_if_dismissed_within_time_window"] = "24h";
@@ -105,7 +106,7 @@ TEST(BatAdsExclusionRuleFeaturesTest, GetExcludeAdIfDismissedWithinTimeWindow) {
   EXPECT_EQ(base::Days(1), kShouldExcludeAdIfDismissedWithinTimeWindow.Get());
 }
 
-TEST(BatAdsExclusionRuleFeaturesTest,
+TEST(BraveAdsExclusionRuleFeaturesTest,
      DefaultExcludeAdIfDismissedWithinTimeWindow) {
   // Arrange
 
@@ -115,7 +116,7 @@ TEST(BatAdsExclusionRuleFeaturesTest,
   EXPECT_EQ(base::Hours(0), kShouldExcludeAdIfDismissedWithinTimeWindow.Get());
 }
 
-TEST(BatAdsExclusionRuleFeaturesTest,
+TEST(BraveAdsExclusionRuleFeaturesTest,
      DefaultExcludeAdIfDismissedWithinTimeWindowWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
@@ -133,7 +134,7 @@ TEST(BatAdsExclusionRuleFeaturesTest,
   EXPECT_EQ(base::Hours(0), kShouldExcludeAdIfDismissedWithinTimeWindow.Get());
 }
 
-TEST(BatAdsExclusionRuleFeaturesTest,
+TEST(BraveAdsExclusionRuleFeaturesTest,
      GetExcludeAdIfTransferredWithinTimeWindow) {
   // Arrange
   base::FieldTrialParams params;
@@ -153,7 +154,7 @@ TEST(BatAdsExclusionRuleFeaturesTest,
   EXPECT_EQ(base::Days(1), kShouldExcludeAdIfTransferredWithinTimeWindow.Get());
 }
 
-TEST(BatAdsExclusionRuleFeaturesTest,
+TEST(BraveAdsExclusionRuleFeaturesTest,
      DefaultExcludeAdIfTransferredWithinTimeWindow) {
   // Arrange
 
@@ -164,7 +165,7 @@ TEST(BatAdsExclusionRuleFeaturesTest,
             kShouldExcludeAdIfTransferredWithinTimeWindow.Get());
 }
 
-TEST(BatAdsExclusionRuleFeaturesTest,
+TEST(BraveAdsExclusionRuleFeaturesTest,
      DefaultExcludeAdIfTransferredWithinTimeWindowWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;

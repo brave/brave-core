@@ -14,16 +14,16 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_unittest_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::database::table {
 
-class BatAdsCreativeNewTabPageAdsDatabaseTableTest : public UnitTestBase {
+class BraveAdsCreativeNewTabPageAdsDatabaseTableTest : public UnitTestBase {
  protected:
   CreativeNewTabPageAds database_table_;
 };
 
-TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
        SaveEmptyCreativeNewTabPageAds) {
   // Arrange
 
@@ -33,7 +33,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   // Assert
 }
 
-TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
        SaveCreativeNewTabPageAds) {
   // Arrange
   const CreativeNewTabPageAdList creative_ads =
@@ -53,7 +53,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
       creative_ads));
 }
 
-TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
        SaveCreativeNewTabPageAdsInBatches) {
   // Arrange
   database_table_.SetBatchSize(2);
@@ -75,7 +75,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
       creative_ads));
 }
 
-TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
        DoNotSaveDuplicateCreativeNewTabPageAds) {
   // Arrange
   CreativeNewTabPageAdList creative_ads;
@@ -100,7 +100,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
       creative_ads));
 }
 
-TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest, GetForSegments) {
+TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, GetForSegments) {
   // Arrange
   CreativeNewTabPageAdList creative_ads;
 
@@ -139,7 +139,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest, GetForSegments) {
           std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
        GetCreativeNewTabPageAdsForCreativeInstanceId) {
   // Arrange
   CreativeNewTabPageAdList creative_ads;
@@ -171,7 +171,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
           expected_creative_ad));
 }
 
-TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
        GetCreativeNewTabPageAdsForNonExistentCreativeInstanceId) {
   // Arrange
   const CreativeNewTabPageAdList creative_ads =
@@ -191,7 +191,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
       }));
 }
 
-TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
        GetCreativeNewTabPageAdsForEmptySegments) {
   // Arrange
   const CreativeNewTabPageAdList creative_ads =
@@ -211,7 +211,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
       }));
 }
 
-TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
        GetCreativeNewTabPageAdsForNonExistentSegment) {
   // Arrange
   const CreativeNewTabPageAdList creative_ads =
@@ -231,7 +231,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
       }));
 }
 
-TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
        GetCreativeNewTabPageAdsFromMultipleSegments) {
   // Arrange
   CreativeNewTabPageAdList creative_ads;
@@ -271,7 +271,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
           std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
        GetNonExpiredCreativeNewTabPageAds) {
   // Arrange
   CreativeNewTabPageAdList creative_ads;
@@ -306,7 +306,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
       std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
        GetCreativeNewTabPageAdsMatchingCaseInsensitiveSegments) {
   // Arrange
   CreativeNewTabPageAdList creative_ads;
@@ -340,7 +340,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
           std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest, TableName) {
+TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, TableName) {
   // Arrange
 
   // Act

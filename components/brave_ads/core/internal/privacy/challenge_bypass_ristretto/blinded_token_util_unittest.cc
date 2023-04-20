@@ -11,11 +11,11 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/token_unittest_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::privacy::cbr {
 
-TEST(BatAdsBlindedTokenUtilTest, BlindTokens) {
+TEST(BraveAdsBlindedTokenUtilTest, BlindTokens) {
   // Arrange
   const std::vector<Token> tokens = GetTokens();
 
@@ -26,18 +26,17 @@ TEST(BatAdsBlindedTokenUtilTest, BlindTokens) {
   EXPECT_EQ(GetBlindedTokens(), blinded_tokens);
 }
 
-TEST(BatAdsBlindedTokenUtilTToUnblindedTokensest, BlindEmptyTokens) {
+TEST(BraveAdsBlindedTokenUtilTToUnblindedTokensest, BlindEmptyTokens) {
   // Arrange
-  const std::vector<Token> tokens;
 
   // Act
-  const std::vector<BlindedToken> blinded_tokens = BlindTokens(tokens);
+  const std::vector<BlindedToken> blinded_tokens = BlindTokens({});
 
   // Assert
   EXPECT_TRUE(blinded_tokens.empty());
 }
 
-TEST(BatAdsBlindedTokenUtilTest, TokensToRawTokens) {
+TEST(BraveAdsBlindedTokenUtilTest, TokensToRawTokens) {
   // Arrange
   const std::vector<BlindedToken> tokens = GetBlindedTokens();
 
@@ -55,13 +54,12 @@ TEST(BatAdsBlindedTokenUtilTest, TokensToRawTokens) {
   EXPECT_EQ(expected_raw_tokens, raw_tokens);
 }
 
-TEST(BatAdsBlindedTokenUtilTest, EmptyTokensToRawTokens) {
+TEST(BraveAdsBlindedTokenUtilTest, EmptyTokensToRawTokens) {
   // Arrange
-  const std::vector<BlindedToken> tokens;
 
   // Act
   const std::vector<challenge_bypass_ristretto::BlindedToken> raw_tokens =
-      ToRawBlindedTokens(tokens);
+      ToRawBlindedTokens({});
 
   // Assert
   EXPECT_TRUE(raw_tokens.empty());

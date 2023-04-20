@@ -31,7 +31,7 @@
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds
+// npm run test -- brave_unit_tests --filter=BraveAds
 
 namespace brave_ads {
 
@@ -39,7 +39,7 @@ using ::testing::_;
 using ::testing::NiceMock;
 using ::testing::Return;
 
-class BatAdsAccountTest : public AccountObserver, public UnitTestBase {
+class BraveAdsAccountTest : public AccountObserver, public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -99,7 +99,7 @@ class BatAdsAccountTest : public AccountObserver, public UnitTestBase {
   bool statement_of_accounts_did_change_ = false;
 };
 
-TEST_F(BatAdsAccountTest, SetWallet) {
+TEST_F(BraveAdsAccountTest, SetWallet) {
   // Arrange
 
   // Act
@@ -112,7 +112,7 @@ TEST_F(BatAdsAccountTest, SetWallet) {
   EXPECT_FALSE(invalid_wallet_);
 }
 
-TEST_F(BatAdsAccountTest, SetWalletWithEmptyPaymentId) {
+TEST_F(BraveAdsAccountTest, SetWalletWithEmptyPaymentId) {
   // Arrange
   MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
 
@@ -126,7 +126,7 @@ TEST_F(BatAdsAccountTest, SetWalletWithEmptyPaymentId) {
   EXPECT_TRUE(invalid_wallet_);
 }
 
-TEST_F(BatAdsAccountTest, SetWalletWithInvalidRecoverySeed) {
+TEST_F(BraveAdsAccountTest, SetWalletWithInvalidRecoverySeed) {
   // Arrange
   MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
 
@@ -140,7 +140,7 @@ TEST_F(BatAdsAccountTest, SetWalletWithInvalidRecoverySeed) {
   EXPECT_TRUE(invalid_wallet_);
 }
 
-TEST_F(BatAdsAccountTest, SetWalletWithEmptyRecoverySeed) {
+TEST_F(BraveAdsAccountTest, SetWalletWithEmptyRecoverySeed) {
   // Arrange
   MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
 
@@ -154,7 +154,7 @@ TEST_F(BatAdsAccountTest, SetWalletWithEmptyRecoverySeed) {
   EXPECT_TRUE(invalid_wallet_);
 }
 
-TEST_F(BatAdsAccountTest, ChangeWallet) {
+TEST_F(BraveAdsAccountTest, ChangeWallet) {
   // Arrange
   account_->SetWallet(kWalletPaymentId, kWalletRecoverySeed);
 
@@ -169,7 +169,7 @@ TEST_F(BatAdsAccountTest, ChangeWallet) {
   EXPECT_FALSE(invalid_wallet_);
 }
 
-TEST_F(BatAdsAccountTest, GetWallet) {
+TEST_F(BraveAdsAccountTest, GetWallet) {
   // Arrange
   account_->SetWallet(kWalletPaymentId, kWalletRecoverySeed);
 
@@ -185,7 +185,7 @@ TEST_F(BatAdsAccountTest, GetWallet) {
   EXPECT_EQ(expected_wallet, wallet);
 }
 
-TEST_F(BatAdsAccountTest, GetIssuersWhenWalletIsCreated) {
+TEST_F(BraveAdsAccountTest, GetIssuersWhenWalletIsCreated) {
   // Arrange
   privacy::SetUnblindedTokens(/*count*/ 50);
 
@@ -206,7 +206,7 @@ TEST_F(BatAdsAccountTest, GetIssuersWhenWalletIsCreated) {
   EXPECT_EQ(BuildIssuers(), *issuers);
 }
 
-TEST_F(BatAdsAccountTest,
+TEST_F(BraveAdsAccountTest,
        DoNotGetIssuersWhenWalletIsCreatedIfIssuersAlreadyExist) {
   // Arrange
   privacy::SetUnblindedTokens(/*count*/ 50);
@@ -230,7 +230,7 @@ TEST_F(BatAdsAccountTest,
   EXPECT_EQ(BuildIssuers(), *issuers);
 }
 
-TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
+TEST_F(BraveAdsAccountTest, GetIssuersIfAdsAreEnabled) {
   // Arrange
   MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
 
@@ -245,7 +245,7 @@ TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
   EXPECT_EQ(expected_issuers, *issuers);
 }
 
-TEST_F(BatAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
+TEST_F(BraveAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
   // Arrange
   ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
 
@@ -262,7 +262,7 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
   EXPECT_EQ(expected_issuers, *issuers);
 }
 
-TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
+TEST_F(BraveAdsAccountTest, DoNotGetInvalidIssuers) {
   // Arrange
   MockUrlResponses(ads_client_mock_, GetInvalidIssuersUrlResponses());
 
@@ -277,7 +277,7 @@ TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
   EXPECT_EQ(expected_issuers, *issuers);
 }
 
-TEST_F(BatAdsAccountTest, DoNotGetMissingIssuers) {
+TEST_F(BraveAdsAccountTest, DoNotGetMissingIssuers) {
   // Arrange
   const URLResponseMap url_responses = {{// Get issuers request
                                          "/v3/issuers/",
@@ -300,7 +300,7 @@ TEST_F(BatAdsAccountTest, DoNotGetMissingIssuers) {
   EXPECT_EQ(expected_issuers, *issuers);
 }
 
-TEST_F(BatAdsAccountTest, DoNotGetIssuersFromInvalidResponse) {
+TEST_F(BraveAdsAccountTest, DoNotGetIssuersFromInvalidResponse) {
   // Arrange
   const URLResponseMap url_responses = {
       {// Get issuers request
@@ -319,7 +319,7 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersFromInvalidResponse) {
   EXPECT_EQ(expected_issuers, *issuers);
 }
 
-TEST_F(BatAdsAccountTest, DepositForCash) {
+TEST_F(BraveAdsAccountTest, DepositForCash) {
   // Arrange
   const URLResponseMap url_responses = {
       {// Create confirmation request
@@ -404,7 +404,7 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
           std::move(expected_transactions)));
 }
 
-TEST_F(BatAdsAccountTest, DepositForNonCash) {
+TEST_F(BraveAdsAccountTest, DepositForNonCash) {
   // Arrange
   ON_CALL(token_generator_mock_, Generate(_))
       .WillByDefault(Return(privacy::GetTokens(/*count*/ 1)));
@@ -442,7 +442,7 @@ TEST_F(BatAdsAccountTest, DepositForNonCash) {
           std::move(expected_transactions)));
 }
 
-TEST_F(BatAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
+TEST_F(BraveAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
   // Arrange
   ON_CALL(token_generator_mock_, Generate(_))
       .WillByDefault(Return(privacy::GetTokens(/*count*/ 1)));
@@ -469,7 +469,7 @@ TEST_F(BatAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
           }));
 }
 
-TEST_F(BatAdsAccountTest, GetStatement) {
+TEST_F(BraveAdsAccountTest, GetStatement) {
   // Arrange
   TransactionList transactions;
 
@@ -526,7 +526,7 @@ TEST_F(BatAdsAccountTest, GetStatement) {
   // Assert
 }
 
-TEST_F(BatAdsAccountTest, DoNotGetStatementIfAdsAreDisabled) {
+TEST_F(BraveAdsAccountTest, DoNotGetStatementIfAdsAreDisabled) {
   // Arrange
   ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
 

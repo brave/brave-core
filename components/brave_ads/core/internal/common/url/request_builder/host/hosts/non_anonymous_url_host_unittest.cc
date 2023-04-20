@@ -8,13 +8,13 @@
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsNonAnonymousUrlHostTest : public UnitTestBase {};
+class BraveAdsNonAnonymousUrlHostTest : public UnitTestBase {};
 
-TEST_F(BatAdsNonAnonymousUrlHostTest, GetProductionUrlHost) {
+TEST_F(BraveAdsNonAnonymousUrlHostTest, GetProductionUrlHost) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kProduction;
@@ -25,7 +25,7 @@ TEST_F(BatAdsNonAnonymousUrlHostTest, GetProductionUrlHost) {
   EXPECT_EQ("https://mywallet.ads.brave.com", GetNonAnonymousUrlHost());
 }
 
-TEST_F(BatAdsNonAnonymousUrlHostTest, GetStagingUrlHost) {
+TEST_F(BraveAdsNonAnonymousUrlHostTest, GetStagingUrlHost) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kStaging;

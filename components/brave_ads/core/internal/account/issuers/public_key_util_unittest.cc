@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -20,9 +20,9 @@ constexpr char kMissingPublicKey[] =
 
 }  // namespace
 
-class BatAdsPublicKeyUtilTest : public UnitTestBase {};
+class BraveAdsPublicKeyUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsPublicKeyUtilTest, PublicKeyExists) {
+TEST_F(BraveAdsPublicKeyUtilTest, PublicKeyExists) {
   // Arrange
   IssuerInfo issuer;
   issuer.public_keys.insert({kPublicKey, /*associated_value*/ 0.1});
@@ -33,7 +33,7 @@ TEST_F(BatAdsPublicKeyUtilTest, PublicKeyExists) {
   EXPECT_TRUE(PublicKeyExists(issuer, kPublicKey));
 }
 
-TEST_F(BatAdsPublicKeyUtilTest, PublicKeyDoesNotExist) {
+TEST_F(BraveAdsPublicKeyUtilTest, PublicKeyDoesNotExist) {
   // Arrange
   IssuerInfo issuer;
   issuer.public_keys.insert({kPublicKey, /*associated_value*/ 0.1});
@@ -44,7 +44,7 @@ TEST_F(BatAdsPublicKeyUtilTest, PublicKeyDoesNotExist) {
   EXPECT_FALSE(PublicKeyExists(issuer, kMissingPublicKey));
 }
 
-TEST_F(BatAdsPublicKeyUtilTest, NoPublicKeys) {
+TEST_F(BraveAdsPublicKeyUtilTest, NoPublicKeys) {
   // Arrange
   const IssuerInfo issuer;
 

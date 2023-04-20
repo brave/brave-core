@@ -16,13 +16,13 @@
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsHistoryUtilTest : public UnitTestBase {};
+class BraveAdsHistoryUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsHistoryUtilTest, AddHistory) {
+TEST_F(BraveAdsHistoryUtilTest, AddHistory) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
@@ -41,7 +41,7 @@ TEST_F(BatAdsHistoryUtilTest, AddHistory) {
   EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
-TEST_F(BatAdsHistoryUtilTest, PurgeHistoryOlderThanTimeWindow) {
+TEST_F(BraveAdsHistoryUtilTest, PurgeHistoryOlderThanTimeWindow) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad_1 =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
@@ -66,7 +66,7 @@ TEST_F(BatAdsHistoryUtilTest, PurgeHistoryOlderThanTimeWindow) {
   EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
-TEST_F(BatAdsHistoryUtilTest, DoNotPurgeHistoryWithinTimeWindow) {
+TEST_F(BraveAdsHistoryUtilTest, DoNotPurgeHistoryWithinTimeWindow) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad_1 =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);

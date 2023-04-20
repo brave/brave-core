@@ -13,16 +13,16 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::notification_ads {
 
-class BatAdsNotificationAdsPerHourPermissionRuleTest : public UnitTestBase {
+class BraveAdsNotificationAdsPerHourPermissionRuleTest : public UnitTestBase {
  protected:
   AdsPerHourPermissionRule permission_rule_;
 };
 
-TEST_F(BatAdsNotificationAdsPerHourPermissionRuleTest,
+TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
        AllowAdIfThereIsNoAdsHistory) {
   // Arrange
 
@@ -32,7 +32,8 @@ TEST_F(BatAdsNotificationAdsPerHourPermissionRuleTest,
   EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
-TEST_F(BatAdsNotificationAdsPerHourPermissionRuleTest, AlwaysAllowAdOnAndroid) {
+TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
+       AlwaysAllowAdOnAndroid) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
@@ -49,7 +50,7 @@ TEST_F(BatAdsNotificationAdsPerHourPermissionRuleTest, AlwaysAllowAdOnAndroid) {
   EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
-TEST_F(BatAdsNotificationAdsPerHourPermissionRuleTest, AlwaysAllowAdOnIOS) {
+TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest, AlwaysAllowAdOnIOS) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
 
@@ -66,7 +67,7 @@ TEST_F(BatAdsNotificationAdsPerHourPermissionRuleTest, AlwaysAllowAdOnIOS) {
   EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
-TEST_F(BatAdsNotificationAdsPerHourPermissionRuleTest,
+TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
        AllowAdIfDoesNotExceedCap) {
   // Arrange
   const int ads_per_hour = kDefaultAdsPerHour.Get();
@@ -82,7 +83,7 @@ TEST_F(BatAdsNotificationAdsPerHourPermissionRuleTest,
   EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
-TEST_F(BatAdsNotificationAdsPerHourPermissionRuleTest,
+TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
        AllowAdIfDoesNotExceedCapAfter1Hour) {
   // Arrange
   const int ads_per_hour = kDefaultAdsPerHour.Get();
@@ -100,7 +101,7 @@ TEST_F(BatAdsNotificationAdsPerHourPermissionRuleTest,
   EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
-TEST_F(BatAdsNotificationAdsPerHourPermissionRuleTest,
+TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
        DoNotAllowAdIfExceedsCapWithin1Hour) {
   // Arrange
   const int ads_per_hour = kDefaultAdsPerHour.Get();

@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/promoted_content_ad_builder.h"
 #include "brave/components/brave_ads/core/promoted_content_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -24,9 +24,9 @@ constexpr char kJson[] =
 
 }  // namespace
 
-class BatAdsPromotedContentAdValueUtilTest : public UnitTestBase {};
+class BraveAdsPromotedContentAdValueUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsPromotedContentAdValueUtilTest, FromValue) {
+TEST_F(BraveAdsPromotedContentAdValueUtilTest, FromValue) {
   // Arrange
   const base::Value value = base::test::ParseJson(kJson);
   const base::Value::Dict* const dict = value.GetIfDict();
@@ -43,7 +43,7 @@ TEST_F(BatAdsPromotedContentAdValueUtilTest, FromValue) {
   EXPECT_EQ(expected_ad, ad);
 }
 
-TEST_F(BatAdsPromotedContentAdValueUtilTest, ToValue) {
+TEST_F(BraveAdsPromotedContentAdValueUtilTest, ToValue) {
   // Arrange
   const CreativePromotedContentAdInfo creative_ad =
       BuildCreativePromotedContentAd(/*should_use_random_guids*/ false);

@@ -12,16 +12,16 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsBrowserIsActivePermissionRuleTest : public UnitTestBase {
+class BraveAdsBrowserIsActivePermissionRuleTest : public UnitTestBase {
  protected:
   BrowserIsActivePermissionRule permission_rule_;
 };
 
-TEST_F(BatAdsBrowserIsActivePermissionRuleTest, AllowAd) {
+TEST_F(BraveAdsBrowserIsActivePermissionRuleTest, AllowAd) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
@@ -33,7 +33,7 @@ TEST_F(BatAdsBrowserIsActivePermissionRuleTest, AllowAd) {
   EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
-TEST_F(BatAdsBrowserIsActivePermissionRuleTest, AlwaysAllowAdForAndroid) {
+TEST_F(BraveAdsBrowserIsActivePermissionRuleTest, AlwaysAllowAdForAndroid) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
@@ -45,7 +45,7 @@ TEST_F(BatAdsBrowserIsActivePermissionRuleTest, AlwaysAllowAdForAndroid) {
   EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
-TEST_F(BatAdsBrowserIsActivePermissionRuleTest, DoNotAllowAd) {
+TEST_F(BraveAdsBrowserIsActivePermissionRuleTest, DoNotAllowAd) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
@@ -57,7 +57,7 @@ TEST_F(BatAdsBrowserIsActivePermissionRuleTest, DoNotAllowAd) {
   EXPECT_FALSE(permission_rule_.ShouldAllow());
 }
 
-TEST_F(BatAdsBrowserIsActivePermissionRuleTest,
+TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
        AllowAdIfPermissionRuleIsDisabled) {
   // Arrange
   base::FieldTrialParams params;
@@ -81,7 +81,7 @@ TEST_F(BatAdsBrowserIsActivePermissionRuleTest,
   EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
-TEST_F(BatAdsBrowserIsActivePermissionRuleTest,
+TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
        DoNotAllowAdIfWindowIsActiveAndBrowserIsBackgrounded) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
@@ -94,7 +94,7 @@ TEST_F(BatAdsBrowserIsActivePermissionRuleTest,
   EXPECT_FALSE(permission_rule_.ShouldAllow());
 }
 
-TEST_F(BatAdsBrowserIsActivePermissionRuleTest,
+TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
        DoNotAllowAdIfWindowIsInactiveAndBrowserIsForegrounded) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);

@@ -12,11 +12,11 @@
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_features.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsUserActivityScoringUtilTest : public UnitTestBase {
+class BraveAdsUserActivityScoringUtilTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -37,7 +37,7 @@ class BatAdsUserActivityScoringUtilTest : public UnitTestBase {
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-TEST_F(BatAdsUserActivityScoringUtilTest, WasUserActive) {
+TEST_F(BraveAdsUserActivityScoringUtilTest, WasUserActive) {
   // Arrange
   UserActivityManager::GetInstance()->RecordEvent(
       UserActivityEventType::kOpenedNewTab);
@@ -50,7 +50,7 @@ TEST_F(BatAdsUserActivityScoringUtilTest, WasUserActive) {
   EXPECT_TRUE(WasUserActive());
 }
 
-TEST_F(BatAdsUserActivityScoringUtilTest, WasUserInactive) {
+TEST_F(BraveAdsUserActivityScoringUtilTest, WasUserInactive) {
   // Arrange
 
   // Act
@@ -59,7 +59,7 @@ TEST_F(BatAdsUserActivityScoringUtilTest, WasUserInactive) {
   EXPECT_FALSE(WasUserActive());
 }
 
-TEST_F(BatAdsUserActivityScoringUtilTest, WasUserInactiveIfBelowThreshold) {
+TEST_F(BraveAdsUserActivityScoringUtilTest, WasUserInactiveIfBelowThreshold) {
   // Arrange
 
   // Act
@@ -70,7 +70,7 @@ TEST_F(BatAdsUserActivityScoringUtilTest, WasUserInactiveIfBelowThreshold) {
   EXPECT_FALSE(WasUserActive());
 }
 
-TEST_F(BatAdsUserActivityScoringUtilTest,
+TEST_F(BraveAdsUserActivityScoringUtilTest,
        WasUserInactiveAfterTimeWindowHasElapsed) {
   // Arrange
   UserActivityManager::GetInstance()->RecordEvent(

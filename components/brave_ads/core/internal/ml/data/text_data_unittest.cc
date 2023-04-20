@@ -7,13 +7,13 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::ml {
 
-class BatAdsTextDataTest : public UnitTestBase {};
+class BraveAdsTextDataTest : public UnitTestBase {};
 
-TEST_F(BatAdsTextDataTest, TextDataInitialization) {
+TEST_F(BraveAdsTextDataTest, TextDataInitialization) {
   // Arrange
   const std::string expected_text = "expected text";
   const TextData text_data(expected_text);

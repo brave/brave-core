@@ -9,16 +9,16 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsMarkedToNoLongerReceiveExclusionRuleTest : public UnitTestBase {
+class BraveAdsMarkedToNoLongerReceiveExclusionRuleTest : public UnitTestBase {
  protected:
   MarkedToNoLongerReceiveExclusionRule exclusion_rule_;
 };
 
-TEST_F(BatAdsMarkedToNoLongerReceiveExclusionRuleTest, AllowAd) {
+TEST_F(BraveAdsMarkedToNoLongerReceiveExclusionRuleTest, AllowAd) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.segment = kSegment;
@@ -29,7 +29,7 @@ TEST_F(BatAdsMarkedToNoLongerReceiveExclusionRuleTest, AllowAd) {
   EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsMarkedToNoLongerReceiveExclusionRuleTest, DoNotAllowAd) {
+TEST_F(BraveAdsMarkedToNoLongerReceiveExclusionRuleTest, DoNotAllowAd) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.segment = kSegment;

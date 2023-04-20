@@ -14,11 +14,11 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-TEST(BatAdsSearchEngineUtilTest, IsMultilingualAmazonSearchEngine) {
+TEST(BraveAdsSearchEngineUtilTest, IsMultilingualAmazonSearchEngine) {
   // Arrange
   const auto domain_extensions = GetAmazonSearchEngineDomainExtensions();
 
@@ -32,7 +32,7 @@ TEST(BatAdsSearchEngineUtilTest, IsMultilingualAmazonSearchEngine) {
   // Assert
 }
 
-TEST(BatAdsSearchEngineUtilTest, IsNotMultilingualAmazonSearchEngine) {
+TEST(BraveAdsSearchEngineUtilTest, IsNotMultilingualAmazonSearchEngine) {
   // Arrange
 
   // Act
@@ -41,7 +41,7 @@ TEST(BatAdsSearchEngineUtilTest, IsNotMultilingualAmazonSearchEngine) {
   // Assert
 }
 
-TEST(BatAdsSearchEngineUtilTest, IsMultilingualGoogleSearchEngine) {
+TEST(BraveAdsSearchEngineUtilTest, IsMultilingualGoogleSearchEngine) {
   // Arrange
   const auto domain_extensions = GetGoogleSearchEngineDomainExtensions();
 
@@ -55,7 +55,7 @@ TEST(BatAdsSearchEngineUtilTest, IsMultilingualGoogleSearchEngine) {
   // Assert
 }
 
-TEST(BatAdsSearchEngineUtilTest, IsNotMultilingualGoogleSearchEngine) {
+TEST(BraveAdsSearchEngineUtilTest, IsNotMultilingualGoogleSearchEngine) {
   // Arrange
 
   // Act
@@ -64,7 +64,7 @@ TEST(BatAdsSearchEngineUtilTest, IsNotMultilingualGoogleSearchEngine) {
   // Assert
 }
 
-TEST(BatAdsSearchEngineUtilTest, IsMultilingualMojeekSearchEngine) {
+TEST(BraveAdsSearchEngineUtilTest, IsMultilingualMojeekSearchEngine) {
   // Arrange
   const auto domain_extensions = GetMojeekSearchEngineDomainExtensions();
 
@@ -78,7 +78,7 @@ TEST(BatAdsSearchEngineUtilTest, IsMultilingualMojeekSearchEngine) {
   // Assert
 }
 
-TEST(BatAdsSearchEngineUtilTest, IsNotMultilingualMojeekSearchEngine) {
+TEST(BraveAdsSearchEngineUtilTest, IsNotMultilingualMojeekSearchEngine) {
   // Arrange
 
   // Act
@@ -87,7 +87,7 @@ TEST(BatAdsSearchEngineUtilTest, IsNotMultilingualMojeekSearchEngine) {
   // Assert
 }
 
-TEST(BatAdsSearchEngineUtilTest, IsMultilingualWikipediaSearchEngine) {
+TEST(BraveAdsSearchEngineUtilTest, IsMultilingualWikipediaSearchEngine) {
   // Arrange
   const auto subdomains = GetWikipediaSearchEngineSubdomains();
 
@@ -101,7 +101,7 @@ TEST(BatAdsSearchEngineUtilTest, IsMultilingualWikipediaSearchEngine) {
   // Assert
 }
 
-TEST(BatAdsSearchEngineUtilTest, IsNotMultilingualWikipediaSearchEngine) {
+TEST(BraveAdsSearchEngineUtilTest, IsNotMultilingualWikipediaSearchEngine) {
   // Arrange
 
   // Act
@@ -110,7 +110,7 @@ TEST(BatAdsSearchEngineUtilTest, IsNotMultilingualWikipediaSearchEngine) {
   // Assert
 }
 
-TEST(BatAdsSearchEngineUtilTest, IsMultilingualYahooSearchEngine) {
+TEST(BraveAdsSearchEngineUtilTest, IsMultilingualYahooSearchEngine) {
   // Arrange
   const auto subdomains = GetYahooSearchEngineSubdomains();
 
@@ -124,7 +124,7 @@ TEST(BatAdsSearchEngineUtilTest, IsMultilingualYahooSearchEngine) {
   // Assert
 }
 
-TEST(BatAdsSearchEngineUtilTest, IsNotMultilingualYahooSearchEngine) {
+TEST(BraveAdsSearchEngineUtilTest, IsNotMultilingualYahooSearchEngine) {
   // Arrange
 
   // Act
@@ -133,7 +133,7 @@ TEST(BatAdsSearchEngineUtilTest, IsNotMultilingualYahooSearchEngine) {
   // Assert
 }
 
-TEST(BatAdsSearchEngineUtilTest, IsMonolingualSearchEngine) {
+TEST(BraveAdsSearchEngineUtilTest, IsMonolingualSearchEngine) {
   // Arrange
   const std::vector<GURL> urls = {GURL("https://developer.mozilla.org/en-US/"),
                                   GURL("https://duckduckgo.com/"),
@@ -172,7 +172,7 @@ TEST(BatAdsSearchEngineUtilTest, IsMonolingualSearchEngine) {
   // Assert
 }
 
-TEST(BatAdsSearchEngineUtilTest, IsNotSearchEngine) {
+TEST(BraveAdsSearchEngineUtilTest, IsNotSearchEngine) {
   // Arrange
   const GURL url = GURL("https://foobar.com/");
 
@@ -182,7 +182,7 @@ TEST(BatAdsSearchEngineUtilTest, IsNotSearchEngine) {
   EXPECT_FALSE(IsSearchEngine(url));
 }
 
-TEST(BatAdsSearchEngineUtilTest, IsNotSearchEngineWithInvalidUrl) {
+TEST(BraveAdsSearchEngineUtilTest, IsNotSearchEngineWithInvalidUrl) {
   // Arrange
   const GURL url = GURL("INVALID_URL");
 

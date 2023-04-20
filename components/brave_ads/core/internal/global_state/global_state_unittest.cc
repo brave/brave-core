@@ -8,13 +8,13 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
 using ::testing::NiceMock;
 
-class BatAdsGlobalStateTest : public ::testing::Test {
+class BraveAdsGlobalStateTest : public ::testing::Test {
  protected:
   void SetUp() override {
     global_state_ = std::make_unique<GlobalState>(&ads_client_mock_);
@@ -22,10 +22,11 @@ class BatAdsGlobalStateTest : public ::testing::Test {
 
  protected:
   NiceMock<AdsClientMock> ads_client_mock_;
+
   std::unique_ptr<GlobalState> global_state_;
 };
 
-TEST_F(BatAdsGlobalStateTest, HasInstance) {
+TEST_F(BraveAdsGlobalStateTest, HasInstance) {
   // Arrange
 
   // Act
@@ -35,7 +36,7 @@ TEST_F(BatAdsGlobalStateTest, HasInstance) {
   EXPECT_TRUE(has_instance);
 }
 
-TEST_F(BatAdsGlobalStateTest, HasNoInstanceAfterDestruction) {
+TEST_F(BraveAdsGlobalStateTest, HasNoInstanceAfterDestruction) {
   // Arrange
   global_state_.reset();
 
@@ -46,7 +47,7 @@ TEST_F(BatAdsGlobalStateTest, HasNoInstanceAfterDestruction) {
   EXPECT_FALSE(has_instance);
 }
 
-TEST_F(BatAdsGlobalStateTest, CheckManagersNotNull) {
+TEST_F(BraveAdsGlobalStateTest, CheckManagersNotNull) {
   // Arrange
 
   // Act

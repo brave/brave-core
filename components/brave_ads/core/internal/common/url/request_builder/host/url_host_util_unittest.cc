@@ -9,13 +9,13 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsUrlHostUtilTest : public UnitTestBase {};
+class BraveAdsUrlHostUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsUrlHostUtilTest, GetStaticUrlHost) {
+TEST_F(BraveAdsUrlHostUtilTest, GetStaticUrlHost) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kProduction;
@@ -26,7 +26,7 @@ TEST_F(BatAdsUrlHostUtilTest, GetStaticUrlHost) {
   EXPECT_EQ("https://static.ads.brave.com", GetStaticUrlHost());
 }
 
-TEST_F(BatAdsUrlHostUtilTest, GetGeoUrlHost) {
+TEST_F(BraveAdsUrlHostUtilTest, GetGeoUrlHost) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kProduction;
@@ -37,7 +37,7 @@ TEST_F(BatAdsUrlHostUtilTest, GetGeoUrlHost) {
   EXPECT_EQ("https://geo.ads.brave.com", GetGeoUrlHost());
 }
 
-TEST_F(BatAdsUrlHostUtilTest, GetNonAnonymousUrlHost) {
+TEST_F(BraveAdsUrlHostUtilTest, GetNonAnonymousUrlHost) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kProduction;
@@ -48,7 +48,7 @@ TEST_F(BatAdsUrlHostUtilTest, GetNonAnonymousUrlHost) {
   EXPECT_EQ("https://mywallet.ads.brave.com", GetNonAnonymousUrlHost());
 }
 
-TEST_F(BatAdsUrlHostUtilTest, GetAnonymousUrlHost) {
+TEST_F(BraveAdsUrlHostUtilTest, GetAnonymousUrlHost) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kProduction;
@@ -59,7 +59,7 @@ TEST_F(BatAdsUrlHostUtilTest, GetAnonymousUrlHost) {
   EXPECT_EQ("https://anonymous.ads.brave.com", GetAnonymousUrlHost());
 }
 
-TEST_F(BatAdsUrlHostUtilTest, GetAnonymousSearchUrlHost) {
+TEST_F(BraveAdsUrlHostUtilTest, GetAnonymousSearchUrlHost) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kProduction;

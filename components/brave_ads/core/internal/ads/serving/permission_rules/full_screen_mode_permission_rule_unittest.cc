@@ -12,16 +12,16 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsFullScreenModePermissionRuleTest : public UnitTestBase {
+class BraveAdsFullScreenModePermissionRuleTest : public UnitTestBase {
  protected:
   FullScreenModePermissionRule permission_rule_;
 };
 
-TEST_F(BatAdsFullScreenModePermissionRuleTest, AllowAd) {
+TEST_F(BraveAdsFullScreenModePermissionRuleTest, AllowAd) {
   // Arrange
   MockIsBrowserInFullScreenMode(ads_client_mock_, false);
 
@@ -31,7 +31,7 @@ TEST_F(BatAdsFullScreenModePermissionRuleTest, AllowAd) {
   EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
-TEST_F(BatAdsFullScreenModePermissionRuleTest, AlwaysAllowAdForAndroid) {
+TEST_F(BraveAdsFullScreenModePermissionRuleTest, AlwaysAllowAdForAndroid) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
@@ -43,7 +43,7 @@ TEST_F(BatAdsFullScreenModePermissionRuleTest, AlwaysAllowAdForAndroid) {
   EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
-TEST_F(BatAdsFullScreenModePermissionRuleTest, AlwaysAllowAdForIOS) {
+TEST_F(BraveAdsFullScreenModePermissionRuleTest, AlwaysAllowAdForIOS) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
 
@@ -55,7 +55,7 @@ TEST_F(BatAdsFullScreenModePermissionRuleTest, AlwaysAllowAdForIOS) {
   EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
-TEST_F(BatAdsFullScreenModePermissionRuleTest, DoNotAllowAd) {
+TEST_F(BraveAdsFullScreenModePermissionRuleTest, DoNotAllowAd) {
   // Arrange
   MockIsBrowserInFullScreenMode(ads_client_mock_, true);
 
@@ -65,7 +65,7 @@ TEST_F(BatAdsFullScreenModePermissionRuleTest, DoNotAllowAd) {
   EXPECT_FALSE(permission_rule_.ShouldAllow());
 }
 
-TEST_F(BatAdsFullScreenModePermissionRuleTest,
+TEST_F(BraveAdsFullScreenModePermissionRuleTest,
        AllowAdIfPermissionRuleIsDisabled) {
   // Arrange
   base::FieldTrialParams params;

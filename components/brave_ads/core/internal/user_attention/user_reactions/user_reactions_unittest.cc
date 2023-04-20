@@ -24,7 +24,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -32,7 +32,7 @@ using ::testing::_;
 using ::testing::NiceMock;
 using ::testing::Return;
 
-class BatAdsUserReactionsTest : public AccountObserver, public UnitTestBase {
+class BraveAdsUserReactionsTest : public AccountObserver, public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -82,7 +82,7 @@ class BatAdsUserReactionsTest : public AccountObserver, public UnitTestBase {
   std::unique_ptr<UserReactions> user_reactions_;
 };
 
-TEST_F(BatAdsUserReactionsTest, LikeAd) {
+TEST_F(BraveAdsUserReactionsTest, LikeAd) {
   // Arrange
   const HistoryItemInfo history_item = AddHistoryItem();
 
@@ -94,7 +94,7 @@ TEST_F(BatAdsUserReactionsTest, LikeAd) {
   EXPECT_FALSE(failed_to_process_deposit_);
 }
 
-TEST_F(BatAdsUserReactionsTest, DislikeAd) {
+TEST_F(BraveAdsUserReactionsTest, DislikeAd) {
   // Arrange
   const HistoryItemInfo history_item = AddHistoryItem();
 
@@ -106,7 +106,7 @@ TEST_F(BatAdsUserReactionsTest, DislikeAd) {
   EXPECT_FALSE(failed_to_process_deposit_);
 }
 
-TEST_F(BatAdsUserReactionsTest, MarkAdAsInappropriate) {
+TEST_F(BraveAdsUserReactionsTest, MarkAdAsInappropriate) {
   // Arrange
   const HistoryItemInfo history_item = AddHistoryItem();
 
@@ -119,7 +119,7 @@ TEST_F(BatAdsUserReactionsTest, MarkAdAsInappropriate) {
   EXPECT_FALSE(failed_to_process_deposit_);
 }
 
-TEST_F(BatAdsUserReactionsTest, SaveAd) {
+TEST_F(BraveAdsUserReactionsTest, SaveAd) {
   // Arrange
   const HistoryItemInfo history_item = AddHistoryItem();
 

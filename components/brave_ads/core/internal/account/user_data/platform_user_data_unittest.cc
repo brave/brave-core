@@ -9,13 +9,13 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::user_data {
 
-class BatAdsPlatformUserDataTest : public UnitTestBase {};
+class BraveAdsPlatformUserDataTest : public UnitTestBase {};
 
-TEST_F(BatAdsPlatformUserDataTest, GetPlatform) {
+TEST_F(BraveAdsPlatformUserDataTest, GetPlatform) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 

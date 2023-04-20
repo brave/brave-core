@@ -7,11 +7,11 @@
 
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-TEST(BatAdsSubdivisionCodeUtilTest, GetCountryCode) {
+TEST(BraveAdsSubdivisionCodeUtilTest, GetCountryCode) {
   // Arrange
 
   // Act
@@ -21,7 +21,7 @@ TEST(BatAdsSubdivisionCodeUtilTest, GetCountryCode) {
   EXPECT_EQ("US", country_code);
 }
 
-TEST(BatAdsSubdivisionCodeUtilTest, GetSubdivisionCode) {
+TEST(BraveAdsSubdivisionCodeUtilTest, GetSubdivisionCode) {
   // Arrange
 
   // Act

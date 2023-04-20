@@ -9,13 +9,13 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsTimeConstraintUtilTest : public UnitTestBase {};
+class BraveAdsTimeConstraintUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsTimeConstraintUtilTest, DoesRespectWhenNoHistoory) {
+TEST_F(BraveAdsTimeConstraintUtilTest, DoesRespectWhenNoHistoory) {
   // Arrange
   const std::vector<base::Time> history;
 
@@ -27,7 +27,7 @@ TEST_F(BatAdsTimeConstraintUtilTest, DoesRespectWhenNoHistoory) {
   EXPECT_TRUE(does_respect);
 }
 
-TEST_F(BatAdsTimeConstraintUtilTest, DoesRespect) {
+TEST_F(BraveAdsTimeConstraintUtilTest, DoesRespect) {
   // Arrange
   std::vector<base::Time> history;
   history.push_back(Now());
@@ -42,7 +42,7 @@ TEST_F(BatAdsTimeConstraintUtilTest, DoesRespect) {
   EXPECT_TRUE(does_respect);
 }
 
-TEST_F(BatAdsTimeConstraintUtilTest, DoesNotRespect) {
+TEST_F(BraveAdsTimeConstraintUtilTest, DoesNotRespect) {
   // Arrange
   std::vector<base::Time> history;
   history.push_back(Now());

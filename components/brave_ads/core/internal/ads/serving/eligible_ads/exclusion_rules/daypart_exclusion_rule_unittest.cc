@@ -13,16 +13,16 @@
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_daypart_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsDaypartExclusionRuleTest : public UnitTestBase {
+class BraveAdsDaypartExclusionRuleTest : public UnitTestBase {
  protected:
   DaypartExclusionRule exclusion_rule_;
 };
 
-TEST_F(BatAdsDaypartExclusionRuleTest, AllowIfDaypartsIsEmpty) {
+TEST_F(BraveAdsDaypartExclusionRuleTest, AllowIfDaypartsIsEmpty) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -33,7 +33,7 @@ TEST_F(BatAdsDaypartExclusionRuleTest, AllowIfDaypartsIsEmpty) {
   EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsDaypartExclusionRuleTest, AllowIfRightDayAndHours) {
+TEST_F(BraveAdsDaypartExclusionRuleTest, AllowIfRightDayAndHours) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -55,7 +55,7 @@ TEST_F(BatAdsDaypartExclusionRuleTest, AllowIfRightDayAndHours) {
   EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsDaypartExclusionRuleTest, AllowForMultipleDays) {
+TEST_F(BraveAdsDaypartExclusionRuleTest, AllowForMultipleDays) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -76,7 +76,7 @@ TEST_F(BatAdsDaypartExclusionRuleTest, AllowForMultipleDays) {
   EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsDaypartExclusionRuleTest, AllowIfOneMatchExists) {
+TEST_F(BraveAdsDaypartExclusionRuleTest, AllowIfOneMatchExists) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -113,7 +113,7 @@ TEST_F(BatAdsDaypartExclusionRuleTest, AllowIfOneMatchExists) {
   EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsDaypartExclusionRuleTest, DisallowIfNoMatches) {
+TEST_F(BraveAdsDaypartExclusionRuleTest, DisallowIfNoMatches) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -150,7 +150,7 @@ TEST_F(BatAdsDaypartExclusionRuleTest, DisallowIfNoMatches) {
   EXPECT_TRUE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsDaypartExclusionRuleTest, DisallowIfWrongDay) {
+TEST_F(BraveAdsDaypartExclusionRuleTest, DisallowIfWrongDay) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -174,7 +174,7 @@ TEST_F(BatAdsDaypartExclusionRuleTest, DisallowIfWrongDay) {
   EXPECT_TRUE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsDaypartExclusionRuleTest, DisallowIfWrongHours) {
+TEST_F(BraveAdsDaypartExclusionRuleTest, DisallowIfWrongHours) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;

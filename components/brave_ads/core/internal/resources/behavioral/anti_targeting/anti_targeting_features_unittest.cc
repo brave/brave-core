@@ -10,11 +10,11 @@
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-TEST(BatAdsAntiTargetingFeaturesTest, IsEnabled) {
+TEST(BraveAdsAntiTargetingFeaturesTest, IsEnabled) {
   // Arrange
 
   // Act
@@ -23,7 +23,7 @@ TEST(BatAdsAntiTargetingFeaturesTest, IsEnabled) {
   EXPECT_TRUE(IsAntiTargetingEnabled());
 }
 
-TEST(BatAdsAntiTargetingFeaturesTest, IsDisabled) {
+TEST(BraveAdsAntiTargetingFeaturesTest, IsDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
@@ -40,7 +40,7 @@ TEST(BatAdsAntiTargetingFeaturesTest, IsDisabled) {
   EXPECT_FALSE(IsAntiTargetingEnabled());
 }
 
-TEST(BatAdsAntiTargetingFeaturesTest, GetAntiTargetingResourceVersion) {
+TEST(BraveAdsAntiTargetingFeaturesTest, GetAntiTargetingResourceVersion) {
   // Arrange
   base::FieldTrialParams params;
   params["resource_version"] = "0";
@@ -59,7 +59,7 @@ TEST(BatAdsAntiTargetingFeaturesTest, GetAntiTargetingResourceVersion) {
   EXPECT_EQ(0, kAntiTargetingResourceVersion.Get());
 }
 
-TEST(BatAdsAntiTargetingFeaturesTest, DefaultAntiTargetingResourceVersion) {
+TEST(BraveAdsAntiTargetingFeaturesTest, DefaultAntiTargetingResourceVersion) {
   // Arrange
 
   // Act
@@ -68,7 +68,7 @@ TEST(BatAdsAntiTargetingFeaturesTest, DefaultAntiTargetingResourceVersion) {
   EXPECT_EQ(1, kAntiTargetingResourceVersion.Get());
 }
 
-TEST(BatAdsIdleDetectionFeaturesTest,
+TEST(BraveAdsIdleDetectionFeaturesTest,
      DefaultAntiTargetingResourceVersionWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;

@@ -15,11 +15,11 @@
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::notification_ads {
 
-class BatAdsEligibleNotificationAdsV1Issue17199Test : public UnitTestBase {
+class BraveAdsEligibleNotificationAdsV1Issue17199Test : public UnitTestBase {
  protected:
   void SetUpMocks() override {
     CopyFileFromTestPathToTempPath("database_issue_17199.sqlite",
@@ -30,7 +30,7 @@ class BatAdsEligibleNotificationAdsV1Issue17199Test : public UnitTestBase {
   }
 };
 
-TEST_F(BatAdsEligibleNotificationAdsV1Issue17199Test, GetEligibleAds) {
+TEST_F(BraveAdsEligibleNotificationAdsV1Issue17199Test, GetEligibleAds) {
   // Arrange
   AdvanceClockTo(TimeFromString("4 July 2021", /*is_local*/ false));
 

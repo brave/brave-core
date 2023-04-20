@@ -10,13 +10,13 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::processor {
 
-class BatAdsTextEmbeddingProcessorUtilTest : public UnitTestBase {};
+class BraveAdsTextEmbeddingProcessorUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsTextEmbeddingProcessorUtilTest, SanitizeHtml) {
+TEST_F(BraveAdsTextEmbeddingProcessorUtilTest, SanitizeHtml) {
   // Arrange
   const std::vector<std::tuple<std::string, std::string>> samples = {
       {R"(<meta property="og:title" content="test">)", "test"},
@@ -46,7 +46,7 @@ TEST_F(BatAdsTextEmbeddingProcessorUtilTest, SanitizeHtml) {
   }
 }
 
-TEST_F(BatAdsTextEmbeddingProcessorUtilTest, SanitizeText) {
+TEST_F(BraveAdsTextEmbeddingProcessorUtilTest, SanitizeText) {
   // Arrange
   const std::vector<std::tuple<std::string, std::string>> samples = {
       {"test", "test"},

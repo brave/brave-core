@@ -11,13 +11,13 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsNextPaymentDateUtilTest : public UnitTestBase {};
+class BraveAdsNextPaymentDateUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsNextPaymentDateUtilTest,
+TEST_F(BraveAdsNextPaymentDateUtilTest,
        TimeNowIsBeforeNextPaymentDayWithReconciledTransactionsLastMonth) {
   // Arrange
   base::FieldTrialParams params;
@@ -48,7 +48,7 @@ TEST_F(BatAdsNextPaymentDateUtilTest,
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
 
-TEST_F(BatAdsNextPaymentDateUtilTest,
+TEST_F(BraveAdsNextPaymentDateUtilTest,
        TimeNowIsBeforeNextPaymentDayWithNoReconciledTransactionsLastMonth) {
   // Arrange
   base::FieldTrialParams params;
@@ -74,7 +74,7 @@ TEST_F(BatAdsNextPaymentDateUtilTest,
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
 
-TEST_F(BatAdsNextPaymentDateUtilTest,
+TEST_F(BraveAdsNextPaymentDateUtilTest,
        TimeNowIsAfterNextPaymentDayWithReconciledTransactionsThisMonth) {
   // Arrange
   base::FieldTrialParams params;
@@ -104,7 +104,7 @@ TEST_F(BatAdsNextPaymentDateUtilTest,
 }
 
 TEST_F(
-    BatAdsNextPaymentDateUtilTest,
+    BraveAdsNextPaymentDateUtilTest,
     TimeNowIsAfterNextPaymentDayWhenNextTokenRedemptionDateIsThisMonthAndNoReconciledTransactionsThisMonth) {  // NOLINT
   // Arrange
   base::FieldTrialParams params;
@@ -131,7 +131,7 @@ TEST_F(
 }
 
 TEST_F(
-    BatAdsNextPaymentDateUtilTest,
+    BraveAdsNextPaymentDateUtilTest,
     TimeNowIsAfterNextPaymentDayWhenNextTokenRedemptionDateIsNextMonthAndNoReconciledTransactionsThisMonth) {  // NOLINT
   // Arrange
   base::FieldTrialParams params;

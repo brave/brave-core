@@ -18,12 +18,12 @@
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::notification_ads {
 
-class BatAdsNotificationAdServingTest : public ServingDelegate,
-                                        public UnitTestBase {
+class BraveAdsNotificationAdServingTest : public ServingDelegate,
+                                          public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -59,7 +59,7 @@ class BatAdsNotificationAdServingTest : public ServingDelegate,
   bool failed_to_serve_ad_ = false;
 };
 
-TEST_F(BatAdsNotificationAdServingTest, DoNotServeAdForUnsupportedVersion) {
+TEST_F(BraveAdsNotificationAdServingTest, DoNotServeAdForUnsupportedVersion) {
   // Arrange
   ForceServingVersion(0);
 
@@ -72,7 +72,7 @@ TEST_F(BatAdsNotificationAdServingTest, DoNotServeAdForUnsupportedVersion) {
   EXPECT_TRUE(failed_to_serve_ad_);
 }
 
-TEST_F(BatAdsNotificationAdServingTest, ServeAd) {
+TEST_F(BraveAdsNotificationAdServingTest, ServeAd) {
   // Arrange
   ForcePermissionRulesForTesting();
 
@@ -93,7 +93,7 @@ TEST_F(BatAdsNotificationAdServingTest, ServeAd) {
   EXPECT_EQ(expected_ad, ad_);
 }
 
-TEST_F(BatAdsNotificationAdServingTest, DoNotServeAdIfNoEligibleAdsFound) {
+TEST_F(BraveAdsNotificationAdServingTest, DoNotServeAdIfNoEligibleAdsFound) {
   // Arrange
   ForcePermissionRulesForTesting();
 
@@ -106,7 +106,7 @@ TEST_F(BatAdsNotificationAdServingTest, DoNotServeAdIfNoEligibleAdsFound) {
   EXPECT_TRUE(failed_to_serve_ad_);
 }
 
-TEST_F(BatAdsNotificationAdServingTest,
+TEST_F(BraveAdsNotificationAdServingTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =

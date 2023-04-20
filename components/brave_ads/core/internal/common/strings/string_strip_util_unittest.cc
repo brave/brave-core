@@ -7,11 +7,11 @@
 
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-TEST(BatAdsStringStripUtilTest, StripNonAlphaCharactersFromEmptyContent) {
+TEST(BraveAdsStringStripUtilTest, StripNonAlphaCharactersFromEmptyContent) {
   // Arrange
   const std::string content;
 
@@ -24,7 +24,7 @@ TEST(BatAdsStringStripUtilTest, StripNonAlphaCharactersFromEmptyContent) {
   EXPECT_EQ(expected_stripped_content, stripped_content);
 }
 
-TEST(BatAdsStringStripUtilTest, StripNonAlphaCharactersFromWhitespace) {
+TEST(BraveAdsStringStripUtilTest, StripNonAlphaCharactersFromWhitespace) {
   // Arrange
   const std::string content = "   ";
 
@@ -37,7 +37,7 @@ TEST(BatAdsStringStripUtilTest, StripNonAlphaCharactersFromWhitespace) {
   EXPECT_EQ(expected_stripped_content, stripped_content);
 }
 
-TEST(BatAdsStringStripUtilTest, StripNonAlphaCharacters) {
+TEST(BraveAdsStringStripUtilTest, StripNonAlphaCharacters) {
   // Arrange
   const std::string content =
       "  The quick brown fox jumps over the lazy dog. "
@@ -64,7 +64,7 @@ TEST(BatAdsStringStripUtilTest, StripNonAlphaCharacters) {
   EXPECT_EQ(expected_stripped_content, stripped_content);
 }
 
-TEST(BatAdsStringStripUtilTest,
+TEST(BraveAdsStringStripUtilTest,
      StripNonAlphaNumericCharactersFromEmptyContent) {
   // Arrange
   const std::string content;
@@ -78,7 +78,8 @@ TEST(BatAdsStringStripUtilTest,
   EXPECT_EQ(expected_stripped_content, stripped_content);
 }
 
-TEST(BatAdsStringStripUtilTest, StripNonAlphaNumericCharactersFromWhitespace) {
+TEST(BraveAdsStringStripUtilTest,
+     StripNonAlphaNumericCharactersFromWhitespace) {
   // Arrange
   const std::string content = "   ";
 
@@ -91,7 +92,7 @@ TEST(BatAdsStringStripUtilTest, StripNonAlphaNumericCharactersFromWhitespace) {
   EXPECT_EQ(expected_stripped_content, stripped_content);
 }
 
-TEST(BatAdsStringStripUtilTest, StripNonAlphaNumericCharacters) {
+TEST(BraveAdsStringStripUtilTest, StripNonAlphaNumericCharacters) {
   // Arrange
   const std::string content =
       "  The quick brown fox jumps over the lazy dog. "

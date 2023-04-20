@@ -17,11 +17,11 @@
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsNewTabPageAdIntegrationTest : public UnitTestBase {
+class BraveAdsNewTabPageAdIntegrationTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
@@ -39,7 +39,7 @@ class BatAdsNewTabPageAdIntegrationTest : public UnitTestBase {
   }
 };
 
-TEST_F(BatAdsNewTabPageAdIntegrationTest, Serve) {
+TEST_F(BraveAdsNewTabPageAdIntegrationTest, Serve) {
   // Arrange
 
   // Act
@@ -53,7 +53,7 @@ TEST_F(BatAdsNewTabPageAdIntegrationTest, Serve) {
       }));
 }
 
-TEST_F(BatAdsNewTabPageAdIntegrationTest, TriggerServedEvent) {
+TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerServedEvent) {
   // Arrange
 
   // Act
@@ -67,7 +67,7 @@ TEST_F(BatAdsNewTabPageAdIntegrationTest, TriggerServedEvent) {
   EXPECT_EQ(0, GetTransactionCount());
 }
 
-TEST_F(BatAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
+TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
   // Arrange
   GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
                                      mojom::NewTabPageAdEventType::kServed);
@@ -85,7 +85,7 @@ TEST_F(BatAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
   EXPECT_EQ(1, GetTransactionCount());
 }
 
-TEST_F(BatAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
+TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
   GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
                                      mojom::NewTabPageAdEventType::kServed);

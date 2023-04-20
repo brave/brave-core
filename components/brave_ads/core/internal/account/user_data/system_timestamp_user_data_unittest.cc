@@ -10,13 +10,13 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::user_data {
 
-class BatAdsSystemTimestampUserDataTest : public UnitTestBase {};
+class BraveAdsSystemTimestampUserDataTest : public UnitTestBase {};
 
-TEST_F(BatAdsSystemTimestampUserDataTest, GetSystemTimestamp) {
+TEST_F(BraveAdsSystemTimestampUserDataTest, GetSystemTimestamp) {
   // Arrange
   const base::Time time =
       TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false);

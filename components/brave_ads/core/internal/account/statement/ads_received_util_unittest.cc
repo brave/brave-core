@@ -9,13 +9,13 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsAdsReceivedUtilTest : public UnitTestBase {};
+class BraveAdsAdsReceivedUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsAdsReceivedUtilTest, GetAdsReceivedForDateRange) {
+TEST_F(BraveAdsAdsReceivedUtilTest, GetAdsReceivedForDateRange) {
   // Arrange
   AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
 
@@ -51,7 +51,7 @@ TEST_F(BatAdsAdsReceivedUtilTest, GetAdsReceivedForDateRange) {
   EXPECT_EQ(2, GetAdsReceivedForDateRange(transactions, from_time, to_time));
 }
 
-TEST_F(BatAdsAdsReceivedUtilTest, DoNotGetAdsReceivedForDateRange) {
+TEST_F(BraveAdsAdsReceivedUtilTest, DoNotGetAdsReceivedForDateRange) {
   // Arrange
   AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
 
@@ -76,7 +76,7 @@ TEST_F(BatAdsAdsReceivedUtilTest, DoNotGetAdsReceivedForDateRange) {
   EXPECT_EQ(0, GetAdsReceivedForDateRange(transactions, from_time, to_time));
 }
 
-TEST_F(BatAdsAdsReceivedUtilTest, GetAdsReceivedForNoTransactions) {
+TEST_F(BraveAdsAdsReceivedUtilTest, GetAdsReceivedForNoTransactions) {
   // Arrange
   const TransactionList transactions;
 

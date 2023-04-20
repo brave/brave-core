@@ -11,13 +11,13 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsStatementTest : public UnitTestBase {};
+class BraveAdsStatementTest : public UnitTestBase {};
 
-TEST_F(BatAdsStatementTest, GetForTransactionsThisMonth) {
+TEST_F(BraveAdsStatementTest, GetForTransactionsThisMonth) {
   // Arrange
   AdvanceClockTo(TimeFromString("18 November 2020", /*is_local*/ true));
 
@@ -50,7 +50,8 @@ TEST_F(BatAdsStatementTest, GetForTransactionsThisMonth) {
   // Assert
 }
 
-TEST_F(BatAdsStatementTest, GetForTransactionsSplitOverThreeConsecutiveMonths) {
+TEST_F(BraveAdsStatementTest,
+       GetForTransactionsSplitOverThreeConsecutiveMonths) {
   // Arrange
   TransactionList transactions;
 
@@ -111,7 +112,7 @@ TEST_F(BatAdsStatementTest, GetForTransactionsSplitOverThreeConsecutiveMonths) {
   // Assert
 }
 
-TEST_F(BatAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
+TEST_F(BraveAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
   // Arrange
   TransactionList transactions;
 
@@ -162,7 +163,7 @@ TEST_F(BatAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
   // Assert
 }
 
-TEST_F(BatAdsStatementTest, GetForNoTransactions) {
+TEST_F(BraveAdsStatementTest, GetForNoTransactions) {
   // Arrange
   AdvanceClockTo(TimeFromString("18 November 2020", /*is_local*/ true));
 

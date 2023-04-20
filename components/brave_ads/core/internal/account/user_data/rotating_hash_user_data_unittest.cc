@@ -12,13 +12,13 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::user_data {
 
-class BatAdsRotatingHashUserDataTest : public UnitTestBase {};
+class BraveAdsRotatingHashUserDataTest : public UnitTestBase {};
 
-TEST_F(BatAdsRotatingHashUserDataTest, GetRotatingHash) {
+TEST_F(BraveAdsRotatingHashUserDataTest, GetRotatingHash) {
   // Arrange
   auto& sys_info = GlobalState::GetInstance()->SysInfo();
   sys_info.device_id =
@@ -40,7 +40,7 @@ TEST_F(BatAdsRotatingHashUserDataTest, GetRotatingHash) {
   EXPECT_EQ(expected_user_data, user_data);
 }
 
-TEST_F(BatAdsRotatingHashUserDataTest, RotatingHashMatchesBeforeNextHour) {
+TEST_F(BraveAdsRotatingHashUserDataTest, RotatingHashMatchesBeforeNextHour) {
   // Arrange
   auto& sys_info = GlobalState::GetInstance()->SysInfo();
   sys_info.device_id =
@@ -61,7 +61,7 @@ TEST_F(BatAdsRotatingHashUserDataTest, RotatingHashMatchesBeforeNextHour) {
   EXPECT_EQ(user_data_before, user_data_after);
 }
 
-TEST_F(BatAdsRotatingHashUserDataTest, RotatingHashDifferentAfterNextHour) {
+TEST_F(BraveAdsRotatingHashUserDataTest, RotatingHashDifferentAfterNextHour) {
   // Arrange
   auto& sys_info = GlobalState::GetInstance()->SysInfo();
   sys_info.device_id =
@@ -82,7 +82,7 @@ TEST_F(BatAdsRotatingHashUserDataTest, RotatingHashDifferentAfterNextHour) {
   EXPECT_NE(user_data_before, user_data_after);
 }
 
-TEST_F(BatAdsRotatingHashUserDataTest,
+TEST_F(BraveAdsRotatingHashUserDataTest,
        RotatingHashDifferentForSameHourNextDay) {
   // Arrange
   auto& sys_info = GlobalState::GetInstance()->SysInfo();

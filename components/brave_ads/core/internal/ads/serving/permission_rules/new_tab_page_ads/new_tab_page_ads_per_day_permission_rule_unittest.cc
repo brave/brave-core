@@ -12,11 +12,11 @@
 #include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_features.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::new_tab_page_ads {
 
-class BatAdsNewTabPageAdsPerDayPermissionRuleTest : public UnitTestBase {
+class BraveAdsNewTabPageAdsPerDayPermissionRuleTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -33,7 +33,7 @@ class BatAdsNewTabPageAdsPerDayPermissionRuleTest : public UnitTestBase {
   AdsPerDayPermissionRule permission_rule_;
 };
 
-TEST_F(BatAdsNewTabPageAdsPerDayPermissionRuleTest,
+TEST_F(BraveAdsNewTabPageAdsPerDayPermissionRuleTest,
        AllowAdIfThereIsNoAdsHistory) {
   // Arrange
 
@@ -43,7 +43,8 @@ TEST_F(BatAdsNewTabPageAdsPerDayPermissionRuleTest,
   EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
-TEST_F(BatAdsNewTabPageAdsPerDayPermissionRuleTest, AllowAdIfDoesNotExceedCap) {
+TEST_F(BraveAdsNewTabPageAdsPerDayPermissionRuleTest,
+       AllowAdIfDoesNotExceedCap) {
   // Arrange
   RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed,
                  /*count*/ kMaximumAdsPerDay.Get() - 1);
@@ -54,7 +55,7 @@ TEST_F(BatAdsNewTabPageAdsPerDayPermissionRuleTest, AllowAdIfDoesNotExceedCap) {
   EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
-TEST_F(BatAdsNewTabPageAdsPerDayPermissionRuleTest,
+TEST_F(BraveAdsNewTabPageAdsPerDayPermissionRuleTest,
        AllowAdIfDoesNotExceedCapAfter1Day) {
   // Arrange
   RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed,
@@ -67,7 +68,7 @@ TEST_F(BatAdsNewTabPageAdsPerDayPermissionRuleTest,
   EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
-TEST_F(BatAdsNewTabPageAdsPerDayPermissionRuleTest,
+TEST_F(BraveAdsNewTabPageAdsPerDayPermissionRuleTest,
        DoNotAllowAdIfExceedsCapWithin1Day) {
   // Arrange
   RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed,

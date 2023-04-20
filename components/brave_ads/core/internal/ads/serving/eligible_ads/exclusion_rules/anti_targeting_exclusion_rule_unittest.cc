@@ -11,13 +11,14 @@
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "url/gurl.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsAntiTargetingExclusionRuleTest : public UnitTestBase {};
+class BraveAdsAntiTargetingExclusionRuleTest : public UnitTestBase {};
 
-TEST_F(BatAdsAntiTargetingExclusionRuleTest, AllowIfResourceIsNotInitialized) {
+TEST_F(BraveAdsAntiTargetingExclusionRuleTest,
+       AllowIfResourceIsNotInitialized) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -36,7 +37,7 @@ TEST_F(BatAdsAntiTargetingExclusionRuleTest, AllowIfResourceIsNotInitialized) {
   EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsAntiTargetingExclusionRuleTest, AllowIfCreativeSetDoesNotExist) {
+TEST_F(BraveAdsAntiTargetingExclusionRuleTest, AllowIfCreativeSetDoesNotExist) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kMissingCreativeSetId;
@@ -57,7 +58,7 @@ TEST_F(BatAdsAntiTargetingExclusionRuleTest, AllowIfCreativeSetDoesNotExist) {
   EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsAntiTargetingExclusionRuleTest, AllowIfSiteDoesNotExist) {
+TEST_F(BraveAdsAntiTargetingExclusionRuleTest, AllowIfSiteDoesNotExist) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -77,7 +78,7 @@ TEST_F(BatAdsAntiTargetingExclusionRuleTest, AllowIfSiteDoesNotExist) {
   EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsAntiTargetingExclusionRuleTest,
+TEST_F(BraveAdsAntiTargetingExclusionRuleTest,
        DoNotAllowIfCreativeSetAndSiteMatch) {
   // Arrange
   CreativeAdInfo creative_ad;

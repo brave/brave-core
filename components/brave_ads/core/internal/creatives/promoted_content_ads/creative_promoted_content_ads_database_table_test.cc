@@ -10,11 +10,11 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "net/http/http_status_code.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsCreativePromotedContentAdsDatabaseTableIntegrationTest
+class BraveAdsCreativePromotedContentAdsDatabaseTableIntegrationTest
     : public UnitTestBase {
  protected:
   void SetUp() override {
@@ -30,7 +30,7 @@ class BatAdsCreativePromotedContentAdsDatabaseTableIntegrationTest
   }
 };
 
-TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableIntegrationTest,
+TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableIntegrationTest,
        GetCreativePromotedContentAdsFromCatalogResponse) {
   // Arrange
 

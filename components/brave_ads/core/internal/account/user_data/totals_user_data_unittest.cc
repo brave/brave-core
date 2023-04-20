@@ -9,11 +9,11 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::user_data {
 
-TEST(BatAdsTotalsUserDataTest, GetTotalsForNoUnblindedPaymentTokens) {
+TEST(BraveAdsTotalsUserDataTest, GetTotalsForNoUnblindedPaymentTokens) {
   // Arrange
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens;
 
@@ -28,7 +28,7 @@ TEST(BatAdsTotalsUserDataTest, GetTotalsForNoUnblindedPaymentTokens) {
   EXPECT_EQ(expected_user_data, user_data);
 }
 
-TEST(BatAdsTotalsUserDataTest, GetTotals) {
+TEST(BraveAdsTotalsUserDataTest, GetTotals) {
   // Arrange
   privacy::UnblindedPaymentTokenList unblinded_payment_tokens;
 

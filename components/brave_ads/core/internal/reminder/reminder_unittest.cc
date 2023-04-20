@@ -18,7 +18,7 @@
 #include "brave/components/brave_ads/core/internal/reminder/reminder_features.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -37,7 +37,7 @@ void AddHistory(const size_t count) {
 
 }  // namespace
 
-class BatAdsReminderTest : public UnitTestBase {
+class BraveAdsReminderTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
@@ -48,7 +48,7 @@ class BatAdsReminderTest : public UnitTestBase {
   std::unique_ptr<Reminder> reminder_;
 };
 
-TEST_F(BatAdsReminderTest, ShowReminderWhenUserClicksTheSameAdMultipleTimes) {
+TEST_F(BraveAdsReminderTest, ShowReminderWhenUserClicksTheSameAdMultipleTimes) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_,
               ShowReminder(mojom::ReminderType::kClickedSameAdMultipleTimes));
@@ -59,7 +59,7 @@ TEST_F(BatAdsReminderTest, ShowReminderWhenUserClicksTheSameAdMultipleTimes) {
   // Assert
 }
 
-TEST_F(BatAdsReminderTest,
+TEST_F(BraveAdsReminderTest,
        DoNotShowReminderIfUserDoesNotClickTheSameAdMultipleTimes) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, ShowReminder(_)).Times(0);
@@ -70,7 +70,7 @@ TEST_F(BatAdsReminderTest,
   // Assert
 }
 
-TEST_F(BatAdsReminderTest,
+TEST_F(BraveAdsReminderTest,
        DoNotShowReminderIfUserDoesNotClickTheSameAdMultipleTimesWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;

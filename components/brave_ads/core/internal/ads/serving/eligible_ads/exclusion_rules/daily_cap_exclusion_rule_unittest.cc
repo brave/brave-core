@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -23,9 +23,9 @@ constexpr const char* kCampaignIds[] = {"60267cee-d5bb-4a0d-baaf-91cd7f18e07e",
 
 }  // namespace
 
-class BatAdsDailyCapExclusionRuleTest : public UnitTestBase {};
+class BraveAdsDailyCapExclusionRuleTest : public UnitTestBase {};
 
-TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
+TEST_F(BraveAdsDailyCapExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.campaign_id = kCampaignIds[0];
@@ -39,7 +39,7 @@ TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
+TEST_F(BraveAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.campaign_id = kCampaignIds[0];
@@ -60,7 +60,7 @@ TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
   EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsDailyCapExclusionRuleTest,
+TEST_F(BraveAdsDailyCapExclusionRuleTest,
        AllowAdIfDoesNotExceedCapForNoMatchingCampaigns) {
   // Arrange
   CreativeAdInfo creative_ad_1;
@@ -85,7 +85,7 @@ TEST_F(BatAdsDailyCapExclusionRuleTest,
   EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad_1));
 }
 
-TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCapWithin1Day) {
+TEST_F(BraveAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCapWithin1Day) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.campaign_id = kCampaignIds[0];
@@ -108,7 +108,7 @@ TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCapWithin1Day) {
   EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCapAfter1Day) {
+TEST_F(BraveAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCapAfter1Day) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.campaign_id = kCampaignIds[0];
@@ -131,7 +131,7 @@ TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCapAfter1Day) {
   EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsDailyCapExclusionRuleTest, DoNotAllowAdIfExceedsCap) {
+TEST_F(BraveAdsDailyCapExclusionRuleTest, DoNotAllowAdIfExceedsCap) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.campaign_id = kCampaignIds[0];

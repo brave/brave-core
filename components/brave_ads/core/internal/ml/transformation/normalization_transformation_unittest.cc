@@ -15,13 +15,13 @@
 #include "brave/components/brave_ads/core/internal/ml/transformation/hashed_ngrams_transformation.h"
 #include "brave/components/brave_ads/core/internal/ml/transformation/lowercase_transformation.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::ml {
 
-class BatAdsNormalizationTransformationTest : public UnitTestBase {};
+class BraveAdsNormalizationTransformationTest : public UnitTestBase {};
 
-TEST_F(BatAdsNormalizationTransformationTest, NormalizationTest) {
+TEST_F(BraveAdsNormalizationTransformationTest, NormalizationTest) {
   // Arrange
   constexpr double kTolerance = 1e-7;
 
@@ -56,7 +56,7 @@ TEST_F(BatAdsNormalizationTransformationTest, NormalizationTest) {
   EXPECT_LT(std::fabs(s - 1.0), kTolerance);
 }
 
-TEST_F(BatAdsNormalizationTransformationTest, ChainingTest) {
+TEST_F(BraveAdsNormalizationTransformationTest, ChainingTest) {
   // Arrange
   constexpr int kDefaultBucketCount = 10'000;
   constexpr char kTestString[] = "TINY";

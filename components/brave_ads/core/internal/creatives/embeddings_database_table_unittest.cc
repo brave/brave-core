@@ -7,11 +7,11 @@
 
 #include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::database::table {
 
-TEST(BatAdsEmbeddingsDatabaseTableTest, TableName) {
+TEST(BraveAdsEmbeddingsDatabaseTableTest, TableName) {
   // Arrange
   const Embeddings database_table;
 

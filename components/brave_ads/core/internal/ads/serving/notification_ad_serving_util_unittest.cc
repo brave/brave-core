@@ -11,13 +11,14 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::notification_ads {
 
-class BatAdsNotificationAdServingUtilTest : public UnitTestBase {};
+class BraveAdsNotificationAdServingUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsNotificationAdServingUtilTest, ShouldServeAdsAtRegularIntervals) {
+TEST_F(BraveAdsNotificationAdServingUtilTest,
+       ShouldServeAdsAtRegularIntervals) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
@@ -27,7 +28,7 @@ TEST_F(BatAdsNotificationAdServingUtilTest, ShouldServeAdsAtRegularIntervals) {
   EXPECT_TRUE(ShouldServeAdsAtRegularIntervals());
 }
 
-TEST_F(BatAdsNotificationAdServingUtilTest,
+TEST_F(BraveAdsNotificationAdServingUtilTest,
        ShouldNotServeAdsAtRegularIntervals) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
@@ -38,7 +39,7 @@ TEST_F(BatAdsNotificationAdServingUtilTest,
   EXPECT_FALSE(ShouldServeAdsAtRegularIntervals());
 }
 
-TEST_F(BatAdsNotificationAdServingUtilTest, SetServeAdAt) {
+TEST_F(BraveAdsNotificationAdServingUtilTest, SetServeAdAt) {
   // Arrange
 
   // Act
@@ -48,7 +49,7 @@ TEST_F(BatAdsNotificationAdServingUtilTest, SetServeAdAt) {
   EXPECT_EQ(DistantFuture(), ServeAdAt());
 }
 
-TEST_F(BatAdsNotificationAdServingUtilTest,
+TEST_F(BraveAdsNotificationAdServingUtilTest,
        CalculateDelayBeforeServingTheFirstAd) {
   // Arrange
   ads_client_mock_->ClearPref(prefs::kServeAdAt);
@@ -59,7 +60,7 @@ TEST_F(BatAdsNotificationAdServingUtilTest,
   EXPECT_EQ(base::Minutes(2), CalculateDelayBeforeServingAnAd());
 }
 
-TEST_F(BatAdsNotificationAdServingUtilTest,
+TEST_F(BraveAdsNotificationAdServingUtilTest,
        CalculateDelayBeforeServingAPastDueAd) {
   // Arrange
   SetServeAdAt(DistantPast());
@@ -70,7 +71,7 @@ TEST_F(BatAdsNotificationAdServingUtilTest,
   EXPECT_EQ(base::Minutes(1), CalculateDelayBeforeServingAnAd());
 }
 
-TEST_F(BatAdsNotificationAdServingUtilTest, CalculateDelayBeforeServingAnAd) {
+TEST_F(BraveAdsNotificationAdServingUtilTest, CalculateDelayBeforeServingAnAd) {
   // Arrange
   SetServeAdAt(DistantFuture());
 

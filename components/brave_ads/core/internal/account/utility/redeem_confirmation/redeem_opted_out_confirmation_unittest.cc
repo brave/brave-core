@@ -15,14 +15,14 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "net/http/http_status_code.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
 using ::testing::_;
 using ::testing::NiceMock;
 
-class BatAdsRedeemOptedOutConfirmationTest : public UnitTestBase {
+class BraveAdsRedeemOptedOutConfirmationTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -36,7 +36,7 @@ class BatAdsRedeemOptedOutConfirmationTest : public UnitTestBase {
       confirmation_delegate_weak_factory_{&redeem_confirmation_delegate_mock_};
 };
 
-TEST_F(BatAdsRedeemOptedOutConfirmationTest, Redeem) {
+TEST_F(BraveAdsRedeemOptedOutConfirmationTest, Redeem) {
   // Arrange
   const URLResponseMap url_responses = {
       {// Create confirmation request
@@ -73,7 +73,7 @@ TEST_F(BatAdsRedeemOptedOutConfirmationTest, Redeem) {
   // Assert
 }
 
-TEST_F(BatAdsRedeemOptedOutConfirmationTest,
+TEST_F(BraveAdsRedeemOptedOutConfirmationTest,
        DoNotRetryRedeemingForHttpBadRequestResponse) {
   // Arrange
   const URLResponseMap url_responses = {
@@ -105,7 +105,7 @@ TEST_F(BatAdsRedeemOptedOutConfirmationTest,
   // Assert
 }
 
-TEST_F(BatAdsRedeemOptedOutConfirmationTest,
+TEST_F(BraveAdsRedeemOptedOutConfirmationTest,
        DoNotRetryRedeemingForHttpConflictResponse) {
   // Arrange
   const URLResponseMap url_responses = {
@@ -137,7 +137,7 @@ TEST_F(BatAdsRedeemOptedOutConfirmationTest,
   // Assert
 }
 
-TEST_F(BatAdsRedeemOptedOutConfirmationTest,
+TEST_F(BraveAdsRedeemOptedOutConfirmationTest,
        DoNotRetryReemingForHttpCreatedResponse) {
   // Arrange
   const URLResponseMap url_responses = {
@@ -169,7 +169,7 @@ TEST_F(BatAdsRedeemOptedOutConfirmationTest,
   // Assert
 }
 
-TEST_F(BatAdsRedeemOptedOutConfirmationTest, RetryRedeeming) {
+TEST_F(BraveAdsRedeemOptedOutConfirmationTest, RetryRedeeming) {
   // Arrange
   const URLResponseMap url_responses = {
       {// Create confirmation request

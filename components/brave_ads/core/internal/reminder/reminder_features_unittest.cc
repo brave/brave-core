@@ -10,11 +10,11 @@
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-TEST(BatAdsReminderFeaturesTest, IsEnabled) {
+TEST(BraveAdsReminderFeaturesTest, IsEnabled) {
   // Arrange
 
   // Act
@@ -22,7 +22,7 @@ TEST(BatAdsReminderFeaturesTest, IsEnabled) {
   // Assert
   EXPECT_TRUE(IsReminderEnabled());
 }
-TEST(BatAdsReminderFeaturesTest, IsDisabled) {
+TEST(BraveAdsReminderFeaturesTest, IsDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
@@ -39,7 +39,7 @@ TEST(BatAdsReminderFeaturesTest, IsDisabled) {
   EXPECT_FALSE(IsReminderEnabled());
 }
 
-TEST(BatAdsReminderFeaturesTest, RemindUserIfClickingTheSameAdAfter) {
+TEST(BraveAdsReminderFeaturesTest, RemindUserIfClickingTheSameAdAfter) {
   // Arrange
   base::FieldTrialParams params;
   params["remind_user_if_clicking_the_same_ad_after"] = "1";
@@ -58,7 +58,7 @@ TEST(BatAdsReminderFeaturesTest, RemindUserIfClickingTheSameAdAfter) {
   EXPECT_EQ(1, kRemindUserIfClickingTheSameAdAfter.Get());
 }
 
-TEST(BatAdsReminderFeaturesTest, DefaultRemindUserIfClickingTheSameAdAfter) {
+TEST(BraveAdsReminderFeaturesTest, DefaultRemindUserIfClickingTheSameAdAfter) {
   // Arrange
 
   // Act
@@ -67,7 +67,7 @@ TEST(BatAdsReminderFeaturesTest, DefaultRemindUserIfClickingTheSameAdAfter) {
   EXPECT_EQ(3, kRemindUserIfClickingTheSameAdAfter.Get());
 }
 
-TEST(BatAdsReminderFeaturesTest,
+TEST(BraveAdsReminderFeaturesTest,
      DefaultRemindUserIfClickingTheSameAdAfterWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;

@@ -10,13 +10,13 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_constants.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsUserActivityManagerTest : public UnitTestBase {};
+class BraveAdsUserActivityManagerTest : public UnitTestBase {};
 
-TEST_F(BatAdsUserActivityManagerTest, HasInstance) {
+TEST_F(BraveAdsUserActivityManagerTest, HasInstance) {
   // Arrange
 
   // Act
@@ -26,7 +26,7 @@ TEST_F(BatAdsUserActivityManagerTest, HasInstance) {
   EXPECT_TRUE(has_instance);
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordInitializedAdsEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordInitializedAdsEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kInitializedAds;
@@ -48,7 +48,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordInitializedAdsEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordBrowserDidEnterForegroundEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordBrowserDidEnterForegroundEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kBrowserDidEnterForeground;
@@ -70,7 +70,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordBrowserDidEnterForegroundEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordBrowserDidEnterBackgroundEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordBrowserDidEnterBackgroundEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kBrowserDidEnterBackground;
@@ -92,7 +92,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordBrowserDidEnterBackgroundEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest,
+TEST_F(BraveAdsUserActivityManagerTest,
        RecordClickedBackOrForwardNavigationButtonsEvent) {
   // Arrange
   const UserActivityEventType event_type =
@@ -115,7 +115,7 @@ TEST_F(BatAdsUserActivityManagerTest,
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordClickedBookmarkEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordClickedBookmarkEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kClickedBookmark;
@@ -137,7 +137,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordClickedBookmarkEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordClickedHomePageButtonEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordClickedHomePageButtonEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kClickedHomePageButton;
@@ -159,7 +159,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordClickedHomePageButtonEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordClickedLinkEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordClickedLinkEvent) {
   // Arrange
   const UserActivityEventType event_type = UserActivityEventType::kClickedLink;
 
@@ -180,7 +180,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordClickedLinkEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordClickedReloadButtonEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordClickedReloadButtonEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kClickedReloadButton;
@@ -202,7 +202,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordClickedReloadButtonEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordClosedTabEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordClosedTabEvent) {
   // Arrange
   const UserActivityEventType event_type = UserActivityEventType::kClosedTab;
 
@@ -223,7 +223,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordClosedTabEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordFocusedOnExistingTabEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordFocusedOnExistingTabEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kTabChangedFocus;
@@ -245,7 +245,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordFocusedOnExistingTabEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordGeneratedKeywordEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordGeneratedKeywordEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kGeneratedKeyword;
@@ -267,7 +267,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordGeneratedKeywordEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordNewNavigationEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordNewNavigationEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kNewNavigation;
@@ -289,7 +289,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordNewNavigationEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest,
+TEST_F(BraveAdsUserActivityManagerTest,
        RecordOpenedLinkFromExternalApplicationEvent) {
   // Arrange
   const UserActivityEventType event_type =
@@ -312,7 +312,7 @@ TEST_F(BatAdsUserActivityManagerTest,
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordOpenedNewTabEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordOpenedNewTabEvent) {
   // Arrange
   const UserActivityEventType event_type = UserActivityEventType::kOpenedNewTab;
 
@@ -333,7 +333,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordOpenedNewTabEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordPlayedMediaEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordPlayedMediaEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kTabStartedPlayingMedia;
@@ -355,7 +355,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordPlayedMediaEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordStoppedPlayingMediaEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordStoppedPlayingMediaEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kTabStoppedPlayingMedia;
@@ -377,7 +377,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordStoppedPlayingMediaEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordSubmittedFormEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordSubmittedFormEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kSubmittedForm;
@@ -399,7 +399,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordSubmittedFormEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordTabUpdatedEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordTabUpdatedEvent) {
   // Arrange
   const UserActivityEventType event_type = UserActivityEventType::kTabUpdated;
 
@@ -420,7 +420,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordTabUpdatedEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordTypedAndSelectedNonUrlEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordTypedAndSelectedNonUrlEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kTypedAndSelectedNonUrl;
@@ -442,7 +442,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordTypedAndSelectedNonUrlEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest,
+TEST_F(BraveAdsUserActivityManagerTest,
        RecordTypedKeywordOtherThanDefaultSearchProviderEvent) {
   // Arrange
   const UserActivityEventType event_type =
@@ -465,7 +465,7 @@ TEST_F(BatAdsUserActivityManagerTest,
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordTypedUrlEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordTypedUrlEvent) {
   // Arrange
   const UserActivityEventType event_type = UserActivityEventType::kTypedUrl;
 
@@ -486,7 +486,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordTypedUrlEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordUsedAddressBarEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordUsedAddressBarEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kUsedAddressBar;
@@ -508,7 +508,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordUsedAddressBarEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordBrowserDidBecomeActiveEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordBrowserDidBecomeActiveEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kBrowserDidBecomeActive;
@@ -530,7 +530,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordBrowserDidBecomeActiveEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordBrowserDidResignActiveEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordBrowserDidResignActiveEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kBrowserDidResignActive;
@@ -552,7 +552,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordBrowserDidResignActiveEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, GetHistoryForTimeWindow) {
+TEST_F(BraveAdsUserActivityManagerTest, GetHistoryForTimeWindow) {
   // Arrange
   UserActivityManager::GetInstance()->RecordEvent(
       UserActivityEventType::kInitializedAds);
@@ -634,7 +634,7 @@ TEST_F(BatAdsUserActivityManagerTest, GetHistoryForTimeWindow) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, MaximumHistoryItems) {
+TEST_F(BraveAdsUserActivityManagerTest, MaximumHistoryItems) {
   // Arrange
   const UserActivityEventType event_type = UserActivityEventType::kClosedTab;
   for (int i = 0; i < kMaximumHistoryItems; i++) {

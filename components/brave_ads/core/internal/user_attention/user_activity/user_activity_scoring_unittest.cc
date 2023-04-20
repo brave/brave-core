@@ -10,13 +10,13 @@
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_trigger_info.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsUserActivityScoringTest : public UnitTestBase {};
+class BraveAdsUserActivityScoringTest : public UnitTestBase {};
 
-TEST_F(BatAdsUserActivityScoringTest, GetUserActivityScore) {
+TEST_F(BraveAdsUserActivityScoringTest, GetUserActivityScore) {
   // Arrange
   const UserActivityTriggerList triggers =
       ToUserActivityTriggers("06=.3;0D1406=1.0;0D14=0.5");
@@ -49,7 +49,7 @@ TEST_F(BatAdsUserActivityScoringTest, GetUserActivityScore) {
   EXPECT_EQ(1.8, score);
 }
 
-TEST_F(BatAdsUserActivityScoringTest, GetUserActivityScoreForTimeWindow) {
+TEST_F(BraveAdsUserActivityScoringTest, GetUserActivityScoreForTimeWindow) {
   // Arrange
   const UserActivityTriggerList triggers =
       ToUserActivityTriggers("06=.3;0D1406=1.0;0D14=0.5");
@@ -83,7 +83,7 @@ TEST_F(BatAdsUserActivityScoringTest, GetUserActivityScoreForTimeWindow) {
   EXPECT_EQ(1.5, score);
 }
 
-TEST_F(BatAdsUserActivityScoringTest,
+TEST_F(BraveAdsUserActivityScoringTest,
        GetUserActivityScoreForInvalidEventSequence) {
   // Arrange
   const UserActivityTriggerList triggers = ToUserActivityTriggers("INVALID");
@@ -116,7 +116,7 @@ TEST_F(BatAdsUserActivityScoringTest,
   EXPECT_EQ(0.0, score);
 }
 
-TEST_F(BatAdsUserActivityScoringTest,
+TEST_F(BraveAdsUserActivityScoringTest,
        GetUserActivityScoreForMalformedEventSequence) {
   // Arrange
   const UserActivityTriggerList triggers =
@@ -150,7 +150,7 @@ TEST_F(BatAdsUserActivityScoringTest,
   EXPECT_EQ(2.0, score);
 }
 
-TEST_F(BatAdsUserActivityScoringTest,
+TEST_F(BraveAdsUserActivityScoringTest,
        GetUserActivityScoreForMixedCaseEventSequence) {
   // Arrange
   const UserActivityTriggerList triggers =
@@ -184,7 +184,7 @@ TEST_F(BatAdsUserActivityScoringTest,
   EXPECT_EQ(1.8, score);
 }
 
-TEST_F(BatAdsUserActivityScoringTest,
+TEST_F(BraveAdsUserActivityScoringTest,
        GetUserActivityScoreForEmptyEventSequence) {
   // Arrange
   const UserActivityTriggerList triggers = ToUserActivityTriggers({});

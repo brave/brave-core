@@ -10,13 +10,13 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::user_data {
 
-class BatAdsLocaleUserDataTest : public UnitTestBase {};
+class BraveAdsLocaleUserDataTest : public UnitTestBase {};
 
-TEST_F(BatAdsLocaleUserDataTest, GetLocaleForNonReleaseBuildChannel) {
+TEST_F(BraveAdsLocaleUserDataTest, GetLocaleForNonReleaseBuildChannel) {
   // Arrange
   MockBuildChannel(BuildChannelType::kNightly);
 
@@ -30,7 +30,7 @@ TEST_F(BatAdsLocaleUserDataTest, GetLocaleForNonReleaseBuildChannel) {
   EXPECT_EQ(expected_user_data, user_data);
 }
 
-TEST_F(BatAdsLocaleUserDataTest, GetLocaleForReleaseBuildChannel) {
+TEST_F(BraveAdsLocaleUserDataTest, GetLocaleForReleaseBuildChannel) {
   // Arrange
   MockBuildChannel(BuildChannelType::kRelease);
 
@@ -45,7 +45,7 @@ TEST_F(BatAdsLocaleUserDataTest, GetLocaleForReleaseBuildChannel) {
   EXPECT_EQ(expected_user_data, user_data);
 }
 
-TEST_F(BatAdsLocaleUserDataTest, GetLocaleForCountryNotInAnonymitySet) {
+TEST_F(BraveAdsLocaleUserDataTest, GetLocaleForCountryNotInAnonymitySet) {
   // Arrange
   MockBuildChannel(BuildChannelType::kRelease);
 
@@ -61,7 +61,7 @@ TEST_F(BatAdsLocaleUserDataTest, GetLocaleForCountryNotInAnonymitySet) {
   EXPECT_EQ(expected_user_data, user_data);
 }
 
-TEST_F(BatAdsLocaleUserDataTest,
+TEST_F(BraveAdsLocaleUserDataTest,
        GetLocaleForCountryNotInAnonymitySetButShouldClassifyAsOther) {
   // Arrange
   MockBuildChannel(BuildChannelType::kRelease);

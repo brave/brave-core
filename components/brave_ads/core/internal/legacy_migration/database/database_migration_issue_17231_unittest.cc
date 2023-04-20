@@ -14,11 +14,11 @@
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_info.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_database_table.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsDatabaseMigrationIssue17231Test : public UnitTestBase {
+class BraveAdsDatabaseMigrationIssue17231Test : public UnitTestBase {
  protected:
   void SetUpMocks() override {
     CopyFileFromTestPathToTempPath("database_issue_17231.sqlite",
@@ -26,7 +26,7 @@ class BatAdsDatabaseMigrationIssue17231Test : public UnitTestBase {
   }
 };
 
-TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionQueueDatabase) {
+TEST_F(BraveAdsDatabaseMigrationIssue17231Test, ConversionQueueDatabase) {
   // Arrange
   const database::table::ConversionQueue database_table;
 
@@ -59,7 +59,7 @@ TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionQueueDatabase) {
   // Assert
 }
 
-TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionsDatabase) {
+TEST_F(BraveAdsDatabaseMigrationIssue17231Test, ConversionsDatabase) {
   // Arrange
   const database::table::Conversions database_table;
 

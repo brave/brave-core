@@ -14,11 +14,11 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-TEST(BatAdsAdEventUtilTest, GetLastSeenAdTimeForEmptyAdEvents) {
+TEST(BraveAdsAdEventUtilTest, GetLastSeenAdTimeForEmptyAdEvents) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
@@ -29,7 +29,7 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdTimeForEmptyAdEvents) {
   EXPECT_FALSE(GetLastSeenAdTime(/*ad_events*/ {}, creative_ad));
 }
 
-TEST(BatAdsAdEventUtilTest, GetLastSeenAdTimeForUnseenAd) {
+TEST(BraveAdsAdEventUtilTest, GetLastSeenAdTimeForUnseenAd) {
   // Arrange
   AdEventList ad_events;
 
@@ -51,7 +51,7 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdTimeForUnseenAd) {
   EXPECT_FALSE(GetLastSeenAdTime(ad_events, creative_ad_2));
 }
 
-TEST(BatAdsAdEventUtilTest, GetLastSeenAdTime) {
+TEST(BraveAdsAdEventUtilTest, GetLastSeenAdTime) {
   // Arrange
   AdEventList ad_events;
 
@@ -92,7 +92,7 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdTime) {
   EXPECT_EQ(now - base::Hours(6), *last_seen_ad_time);
 }
 
-TEST(BatAdsAdEventUtilTest, GetLastSeenAdvertiserTimeForEmptyAdEvents) {
+TEST(BraveAdsAdEventUtilTest, GetLastSeenAdvertiserTimeForEmptyAdEvents) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
@@ -103,7 +103,7 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdvertiserTimeForEmptyAdEvents) {
   EXPECT_FALSE(GetLastSeenAdvertiserTime(/*ad_events*/ {}, creative_ad));
 }
 
-TEST(BatAdsAdEventUtilTest, GetLastSeenAdvertiserTimeForUnseenAdvertiser) {
+TEST(BraveAdsAdEventUtilTest, GetLastSeenAdvertiserTimeForUnseenAdvertiser) {
   // Arrange
   AdEventList ad_events;
 
@@ -124,7 +124,7 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdvertiserTimeForUnseenAdvertiser) {
   EXPECT_FALSE(GetLastSeenAdvertiserTime(ad_events, creative_ad_2));
 }
 
-TEST(BatAdsAdEventUtilTest, GetLastSeenAdvertiserTime) {
+TEST(BraveAdsAdEventUtilTest, GetLastSeenAdvertiserTime) {
   // Arrange
   const std::string advertiser_id_1 =
       base::GUID::GenerateRandomV4().AsLowercaseString();

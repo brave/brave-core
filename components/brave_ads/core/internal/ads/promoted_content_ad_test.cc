@@ -14,11 +14,11 @@
 #include "brave/components/brave_ads/core/internal/history/history_unittest_util.h"
 #include "net/http/http_status_code.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsPromotedContentAdIntegrationTest : public UnitTestBase {
+class BraveAdsPromotedContentAdIntegrationTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
@@ -36,7 +36,7 @@ class BatAdsPromotedContentAdIntegrationTest : public UnitTestBase {
   }
 };
 
-TEST_F(BatAdsPromotedContentAdIntegrationTest, TriggerViewedEvent) {
+TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerViewedEvent) {
   // Arrange
   GetAds()->TriggerPromotedContentAdEvent(
       kPlacementId, kCreativeInstanceId,
@@ -56,7 +56,7 @@ TEST_F(BatAdsPromotedContentAdIntegrationTest, TriggerViewedEvent) {
   EXPECT_EQ(1, GetTransactionCount());
 }
 
-TEST_F(BatAdsPromotedContentAdIntegrationTest, TriggerClickedEvent) {
+TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
   GetAds()->TriggerPromotedContentAdEvent(
       kPlacementId, kCreativeInstanceId,

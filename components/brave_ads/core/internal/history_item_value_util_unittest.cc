@@ -17,7 +17,7 @@
 #include "brave/components/brave_ads/core/internal/history/history_item_util.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -39,9 +39,9 @@ HistoryItemList BuildHistoryItems() {
 
 }  // namespace
 
-class BatAdsHistoryItemValueUtilTest : public UnitTestBase {};
+class BraveAdsHistoryItemValueUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsHistoryItemValueUtilTest, FromValue) {
+TEST_F(BraveAdsHistoryItemValueUtilTest, FromValue) {
   // Arrange
   AdvanceClockTo(TimeFromString("22 March 2023", /*is_local*/ false));
 
@@ -56,7 +56,7 @@ TEST_F(BatAdsHistoryItemValueUtilTest, FromValue) {
   EXPECT_TRUE(base::ranges::equal(BuildHistoryItems(), history_items));
 }
 
-TEST_F(BatAdsHistoryItemValueUtilTest, ToValue) {
+TEST_F(BraveAdsHistoryItemValueUtilTest, ToValue) {
   // Arrange
   AdvanceClockTo(TimeFromString("22 March 2023", /*is_local*/ false));
 

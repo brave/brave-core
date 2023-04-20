@@ -15,13 +15,13 @@
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds.*
+// npm run test -- brave_unit_tests --filter=BraveAds.*
 
 namespace brave_ads {
 
-class BatAdsDiagnosticManagerTest : public UnitTestBase {};
+class BraveAdsDiagnosticManagerTest : public UnitTestBase {};
 
-TEST_F(BatAdsDiagnosticManagerTest, DiagnosticManager) {
+TEST_F(BraveAdsDiagnosticManagerTest, DiagnosticManager) {
   // Arrange
   AdvanceClockTo(
       TimeFromString("Wed, 18 Nov 1970 12:34:56", /*is_local*/ true));

@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
 #include "brave/components/brave_ads/core/internal/resources/resources_unittest_constants.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -24,9 +24,9 @@ namespace {
 constexpr char kResourceId[] = "bejenkminijgplakmkmcgkhjjnkelbld";
 }  // namespace
 
-class BatAdsPurchaseIntentResourceTest : public UnitTestBase {};
+class BraveAdsPurchaseIntentResourceTest : public UnitTestBase {};
 
-TEST_F(BatAdsPurchaseIntentResourceTest, LoadResource) {
+TEST_F(BraveAdsPurchaseIntentResourceTest, LoadResource) {
   // Arrange
   resource::PurchaseIntent resource;
 
@@ -38,7 +38,7 @@ TEST_F(BatAdsPurchaseIntentResourceTest, LoadResource) {
   EXPECT_TRUE(resource.IsInitialized());
 }
 
-TEST_F(BatAdsPurchaseIntentResourceTest, DoNotLoadInvalidResource) {
+TEST_F(BraveAdsPurchaseIntentResourceTest, DoNotLoadInvalidResource) {
   // Arrange
   CopyFileFromTestPathToTempPath(kInvalidResourceId, kResourceId);
 
@@ -52,7 +52,7 @@ TEST_F(BatAdsPurchaseIntentResourceTest, DoNotLoadInvalidResource) {
   EXPECT_FALSE(resource.IsInitialized());
 }
 
-TEST_F(BatAdsPurchaseIntentResourceTest, DoNotLoadMissingResource) {
+TEST_F(BraveAdsPurchaseIntentResourceTest, DoNotLoadMissingResource) {
   // Arrange
   resource::PurchaseIntent resource;
   EXPECT_CALL(*ads_client_mock_, LoadFileResource(kResourceId, _, _))
@@ -75,7 +75,7 @@ TEST_F(BatAdsPurchaseIntentResourceTest, DoNotLoadMissingResource) {
   EXPECT_FALSE(resource.IsInitialized());
 }
 
-TEST_F(BatAdsPurchaseIntentResourceTest, IsNotInitialized) {
+TEST_F(BraveAdsPurchaseIntentResourceTest, IsNotInitialized) {
   // Arrange
   resource::PurchaseIntent resource;
 

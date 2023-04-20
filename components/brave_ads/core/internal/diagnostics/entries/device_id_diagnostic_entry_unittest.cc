@@ -9,13 +9,13 @@
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_entry_types.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds.*
+// npm run test -- brave_unit_tests --filter=BraveAds.*
 
 namespace brave_ads {
 
-class BatAdsDeviceIdDiagnosticEntryTest : public UnitTestBase {};
+class BraveAdsDeviceIdDiagnosticEntryTest : public UnitTestBase {};
 
-TEST_F(BatAdsDeviceIdDiagnosticEntryTest, GetValue) {
+TEST_F(BraveAdsDeviceIdDiagnosticEntryTest, GetValue) {
   // Arrange
   auto& sys_info = GlobalState::GetInstance()->SysInfo();
   sys_info.device_id =

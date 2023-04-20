@@ -19,7 +19,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
 #include "net/http/http_status_code.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -27,9 +27,9 @@ using ::testing::_;
 using ::testing::InSequence;
 using ::testing::NiceMock;
 
-class BatAdsRedeemUnblindedPaymentTokensTest : public UnitTestBase {
+class BraveAdsRedeemUnblindedPaymentTokensTest : public UnitTestBase {
  protected:
-  BatAdsRedeemUnblindedPaymentTokensTest()
+  BraveAdsRedeemUnblindedPaymentTokensTest()
       : redeem_unblinded_payment_tokens_(
             std::make_unique<RedeemUnblindedPaymentTokens>()) {
     redeem_unblinded_payment_tokens_->SetDelegate(
@@ -42,7 +42,7 @@ class BatAdsRedeemUnblindedPaymentTokensTest : public UnitTestBase {
       redeem_unblinded_payment_tokens_delegate_mock_;
 };
 
-TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, RedeemUnblindedPaymentTokens) {
+TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest, RedeemUnblindedPaymentTokens) {
   // Arrange
   const URLResponseMap url_responses = {
       {// Redeem unblinded payment tokens request
@@ -97,7 +97,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, RedeemUnblindedPaymentTokens) {
   EXPECT_TRUE(privacy::UnblindedPaymentTokensIsEmpty());
 }
 
-TEST_F(BatAdsRedeemUnblindedPaymentTokensTest,
+TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest,
        RedeemUnblindedPaymentTokensMultipleTimes) {
   // Arrange
   const URLResponseMap url_responses = {
@@ -168,7 +168,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest,
   EXPECT_EQ(1U, GetPendingTaskCount());
 }
 
-TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
+TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
   // Arrange
   const URLResponseMap url_responses = {
       {// Redeem unblinded payment tokens request
@@ -223,7 +223,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
   EXPECT_TRUE(privacy::UnblindedPaymentTokensIsEmpty());
 }
 
-TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
+TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
   // Arrange
   const URLResponseMap url_responses = {
       {// Redeem unblinded payment tokens request
@@ -278,7 +278,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
   EXPECT_EQ(1, privacy::GetUnblindedPaymentTokens()->Count());
 }
 
-TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
+TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
   // Arrange
   const URLResponseMap url_responses = {
       {// Redeem unblinded payment tokens request
@@ -330,7 +330,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
   EXPECT_TRUE(privacy::UnblindedPaymentTokensIsEmpty());
 }
 
-TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, Retry) {
+TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest, Retry) {
   // Arrange
   const URLResponseMap url_responses = {
       {// Redeem unblinded payment tokens request

@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -30,12 +30,12 @@ scoped_refptr<base::FieldTrial> CreateFieldTrial(
 
 }  // namespace
 
-class BatAdsSplitTestExclusionRuleTest : public UnitTestBase {
+class BraveAdsSplitTestExclusionRuleTest : public UnitTestBase {
  protected:
   SplitTestExclusionRule exclusion_rule_;
 };
 
-TEST_F(BatAdsSplitTestExclusionRuleTest, AllowIfNoFieldTrialAndNoAdGroup) {
+TEST_F(BraveAdsSplitTestExclusionRuleTest, AllowIfNoFieldTrialAndNoAdGroup) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -46,7 +46,7 @@ TEST_F(BatAdsSplitTestExclusionRuleTest, AllowIfNoFieldTrialAndNoAdGroup) {
   EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsSplitTestExclusionRuleTest, DoNotAllowIfNoFieldTrialAndAdGroup) {
+TEST_F(BraveAdsSplitTestExclusionRuleTest, DoNotAllowIfNoFieldTrialAndAdGroup) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -58,7 +58,7 @@ TEST_F(BatAdsSplitTestExclusionRuleTest, DoNotAllowIfNoFieldTrialAndAdGroup) {
   EXPECT_TRUE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsSplitTestExclusionRuleTest, AllowIfFieldTrialAndNoAdGroup) {
+TEST_F(BraveAdsSplitTestExclusionRuleTest, AllowIfFieldTrialAndNoAdGroup) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -73,7 +73,7 @@ TEST_F(BatAdsSplitTestExclusionRuleTest, AllowIfFieldTrialAndNoAdGroup) {
   EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsSplitTestExclusionRuleTest, AllowIfFieldTrialMatchesAdGroup) {
+TEST_F(BraveAdsSplitTestExclusionRuleTest, AllowIfFieldTrialMatchesAdGroup) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -89,7 +89,7 @@ TEST_F(BatAdsSplitTestExclusionRuleTest, AllowIfFieldTrialMatchesAdGroup) {
   EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
-TEST_F(BatAdsSplitTestExclusionRuleTest,
+TEST_F(BraveAdsSplitTestExclusionRuleTest,
        DoNotAllowIfFieldTrialDoesNotMatchAdGroup) {
   // Arrange
   CreativeAdInfo creative_ad;

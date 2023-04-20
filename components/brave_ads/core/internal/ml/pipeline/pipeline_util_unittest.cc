@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/pipeline_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::ml {
 
@@ -22,9 +22,9 @@ constexpr char kValidSpamClassificationPipeline[] =
     "ml/pipeline/text_processing/valid_spam_classification.json";
 }  // namespace
 
-class BatAdsPipelineUtilTest : public UnitTestBase {};
+class BraveAdsPipelineUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsPipelineUtilTest, ParsePipelineValueTest) {
+TEST_F(BraveAdsPipelineUtilTest, ParsePipelineValueTest) {
   // Arrange
   const absl::optional<std::string> json =
       ReadFileFromTestPathToString(kValidSpamClassificationPipeline);

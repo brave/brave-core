@@ -9,13 +9,13 @@
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::ml {
 
-class BatAdsHashedNGramsTransformationTest : public UnitTestBase {};
+class BraveAdsHashedNGramsTransformationTest : public UnitTestBase {};
 
-TEST_F(BatAdsHashedNGramsTransformationTest, HashingTest) {
+TEST_F(BraveAdsHashedNGramsTransformationTest, HashingTest) {
   // Arrange
   constexpr int kDefaultBucketCount = 10'000;
   constexpr char kTestString[] = "tiny";
@@ -40,7 +40,7 @@ TEST_F(BatAdsHashedNGramsTransformationTest, HashingTest) {
   EXPECT_EQ(10U, hashed_vector_data->GetData().size());
 }
 
-TEST_F(BatAdsHashedNGramsTransformationTest, CustomHashingTest) {
+TEST_F(BraveAdsHashedNGramsTransformationTest, CustomHashingTest) {
   // Arrange
   constexpr int kHashBucketCount = 3;
   constexpr char kTestString[] = "tiny";

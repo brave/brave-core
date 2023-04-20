@@ -8,13 +8,13 @@
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::confirmations {
 
-class BatAdsLegacyConfirmationMigrationUtilTest : public UnitTestBase {};
+class BraveAdsLegacyConfirmationMigrationUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsLegacyConfirmationMigrationUtilTest, HasMigrated) {
+TEST_F(BraveAdsLegacyConfirmationMigrationUtilTest, HasMigrated) {
   // Arrange
   ads_client_mock_->SetBooleanPref(prefs::kHasMigratedConfirmationState, true);
 
@@ -24,7 +24,7 @@ TEST_F(BatAdsLegacyConfirmationMigrationUtilTest, HasMigrated) {
   EXPECT_TRUE(HasMigrated());
 }
 
-TEST_F(BatAdsLegacyConfirmationMigrationUtilTest, HasNotMigrated) {
+TEST_F(BraveAdsLegacyConfirmationMigrationUtilTest, HasNotMigrated) {
   // Arrange
   ads_client_mock_->SetBooleanPref(prefs::kHasMigratedConfirmationState, false);
 

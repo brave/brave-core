@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -20,9 +20,9 @@ namespace {
 constexpr char kCatalog[] = "catalog_with_multiple_campaigns.json";
 }  // namespace
 
-class BatAdsSegmentUtilTest : public UnitTestBase {};
+class BraveAdsSegmentUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsSegmentUtilTest, GetSegmentsFromCatalog) {
+TEST_F(BraveAdsSegmentUtilTest, GetSegmentsFromCatalog) {
   // Arrange
   const absl::optional<std::string> json =
       ReadFileFromTestPathToString(kCatalog);
@@ -40,7 +40,7 @@ TEST_F(BatAdsSegmentUtilTest, GetSegmentsFromCatalog) {
   EXPECT_EQ(expected_segments, segments);
 }
 
-TEST_F(BatAdsSegmentUtilTest, GetSegmentsFromEmptyCatalog) {
+TEST_F(BraveAdsSegmentUtilTest, GetSegmentsFromEmptyCatalog) {
   // Arrange
 
   // Act
@@ -50,7 +50,7 @@ TEST_F(BatAdsSegmentUtilTest, GetSegmentsFromEmptyCatalog) {
   EXPECT_TRUE(segments.empty());
 }
 
-TEST_F(BatAdsSegmentUtilTest, GetParentSegmentFromParentChildSegment) {
+TEST_F(BraveAdsSegmentUtilTest, GetParentSegmentFromParentChildSegment) {
   // Arrange
 
   // Act
@@ -61,7 +61,7 @@ TEST_F(BatAdsSegmentUtilTest, GetParentSegmentFromParentChildSegment) {
   EXPECT_EQ("technology & computing", parent_segment);
 }
 
-TEST_F(BatAdsSegmentUtilTest, GetParentSegmentFromParentSegment) {
+TEST_F(BraveAdsSegmentUtilTest, GetParentSegmentFromParentSegment) {
   // Arrange
 
   // Act
@@ -71,7 +71,7 @@ TEST_F(BatAdsSegmentUtilTest, GetParentSegmentFromParentSegment) {
   EXPECT_EQ("technology & computing", parent_segment);
 }
 
-TEST_F(BatAdsSegmentUtilTest, GetParentSegments) {
+TEST_F(BraveAdsSegmentUtilTest, GetParentSegments) {
   // Arrange
   const SegmentList segments = {"technology & computing-software",
                                 "personal finance-personal finance",
@@ -86,7 +86,7 @@ TEST_F(BatAdsSegmentUtilTest, GetParentSegments) {
   EXPECT_EQ(expected_parent_segments, parent_segments);
 }
 
-TEST_F(BatAdsSegmentUtilTest, GetParentSegmentsForEmptyList) {
+TEST_F(BraveAdsSegmentUtilTest, GetParentSegmentsForEmptyList) {
   // Arrange
 
   // Act
@@ -96,7 +96,7 @@ TEST_F(BatAdsSegmentUtilTest, GetParentSegmentsForEmptyList) {
   EXPECT_TRUE(parent_segments.empty());
 }
 
-TEST_F(BatAdsSegmentUtilTest, ShouldFilterMatchingParentChildSegment) {
+TEST_F(BraveAdsSegmentUtilTest, ShouldFilterMatchingParentChildSegment) {
   // Arrange
   ClientStateManager::GetInstance()->ToggleMarkToNoLongerReceiveAdsForCategory(
       "parent-child", CategoryContentOptActionType::kNone);
@@ -107,7 +107,7 @@ TEST_F(BatAdsSegmentUtilTest, ShouldFilterMatchingParentChildSegment) {
   EXPECT_TRUE(ShouldFilterSegment("parent-child"));
 }
 
-TEST_F(BatAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentChildSegment) {
+TEST_F(BraveAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentChildSegment) {
   // Arrange
   ClientStateManager::GetInstance()->ToggleMarkToNoLongerReceiveAdsForCategory(
       "parent-child", CategoryContentOptActionType::kNone);
@@ -118,7 +118,7 @@ TEST_F(BatAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentChildSegment) {
   EXPECT_FALSE(ShouldFilterSegment("foo-bar"));
 }
 
-TEST_F(BatAdsSegmentUtilTest, ShouldFilterMatchingParentSegment) {
+TEST_F(BraveAdsSegmentUtilTest, ShouldFilterMatchingParentSegment) {
   // Arrange
   ClientStateManager::GetInstance()->ToggleMarkToNoLongerReceiveAdsForCategory(
       "parent", CategoryContentOptActionType::kNone);
@@ -129,7 +129,7 @@ TEST_F(BatAdsSegmentUtilTest, ShouldFilterMatchingParentSegment) {
   EXPECT_TRUE(ShouldFilterSegment("parent"));
 }
 
-TEST_F(BatAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentSegment) {
+TEST_F(BraveAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentSegment) {
   // Arrange
   ClientStateManager::GetInstance()->ToggleMarkToNoLongerReceiveAdsForCategory(
       "parent", CategoryContentOptActionType::kNone);
@@ -140,7 +140,7 @@ TEST_F(BatAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentSegment) {
   EXPECT_FALSE(ShouldFilterSegment("foo"));
 }
 
-TEST_F(BatAdsSegmentUtilTest,
+TEST_F(BraveAdsSegmentUtilTest,
        ShouldFilterAgainstParentForMatchingParentSegmentWithChild) {
   // Arrange
   ClientStateManager::GetInstance()->ToggleMarkToNoLongerReceiveAdsForCategory(
@@ -152,7 +152,7 @@ TEST_F(BatAdsSegmentUtilTest,
   EXPECT_TRUE(ShouldFilterSegment("parent-child"));
 }
 
-TEST_F(BatAdsSegmentUtilTest,
+TEST_F(BraveAdsSegmentUtilTest,
        ShouldNotFilterAgainstParentForNonMatchingParentSegmentWithChild) {
   // Arrange
   ClientStateManager::GetInstance()->ToggleMarkToNoLongerReceiveAdsForCategory(
@@ -164,7 +164,7 @@ TEST_F(BatAdsSegmentUtilTest,
   EXPECT_FALSE(ShouldFilterSegment("foo-bar"));
 }
 
-TEST_F(BatAdsSegmentUtilTest, MatchParentSegments) {
+TEST_F(BraveAdsSegmentUtilTest, MatchParentSegments) {
   // Arrange
 
   // Act
@@ -174,7 +174,7 @@ TEST_F(BatAdsSegmentUtilTest, MatchParentSegments) {
                                   "technology & computing-linux"));
 }
 
-TEST_F(BatAdsSegmentUtilTest, ParentSegmentsDoNotMatch) {
+TEST_F(BraveAdsSegmentUtilTest, ParentSegmentsDoNotMatch) {
   // Arrange
 
   // Act
@@ -184,7 +184,7 @@ TEST_F(BatAdsSegmentUtilTest, ParentSegmentsDoNotMatch) {
       MatchParentSegments("business-banking", "technology & computing-linux"));
 }
 
-TEST_F(BatAdsSegmentUtilTest, HasChildSegment) {
+TEST_F(BraveAdsSegmentUtilTest, HasChildSegment) {
   // Arrange
 
   // Act
@@ -193,7 +193,7 @@ TEST_F(BatAdsSegmentUtilTest, HasChildSegment) {
   EXPECT_TRUE(HasChildSegment("technology & computing-windows"));
 }
 
-TEST_F(BatAdsSegmentUtilTest, DoesNotHaveChildSegment) {
+TEST_F(BraveAdsSegmentUtilTest, DoesNotHaveChildSegment) {
   // Arrange
 
   // Act

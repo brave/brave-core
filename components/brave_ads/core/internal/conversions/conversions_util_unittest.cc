@@ -14,11 +14,11 @@
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_info.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::security {
 
-TEST(BatAdsConversionsUtilTest, DoNotSealEnvelopeWithShortMessage) {
+TEST(BraveAdsConversionsUtilTest, DoNotSealEnvelopeWithShortMessage) {
   // Arrange
   VerifiableConversionInfo verifiable_conversion;
   verifiable_conversion.id =
@@ -33,7 +33,7 @@ TEST(BatAdsConversionsUtilTest, DoNotSealEnvelopeWithShortMessage) {
   EXPECT_FALSE(verifiable_conversion_envelope);
 }
 
-TEST(BatAdsConversionsUtilTest, DoNotSealEnvelopeWithLongMessage) {
+TEST(BraveAdsConversionsUtilTest, DoNotSealEnvelopeWithLongMessage) {
   // Arrange
   VerifiableConversionInfo verifiable_conversion;
   verifiable_conversion.id =
@@ -48,7 +48,7 @@ TEST(BatAdsConversionsUtilTest, DoNotSealEnvelopeWithLongMessage) {
   EXPECT_FALSE(verifiable_conversion_envelope);
 }
 
-TEST(BatAdsConversionsUtilTest, DoNotSealEnvelopeWithInvalidMessage) {
+TEST(BraveAdsConversionsUtilTest, DoNotSealEnvelopeWithInvalidMessage) {
   // Arrange
   VerifiableConversionInfo verifiable_conversion;
   verifiable_conversion.id = kInvalidConversionId;
@@ -62,7 +62,7 @@ TEST(BatAdsConversionsUtilTest, DoNotSealEnvelopeWithInvalidMessage) {
   EXPECT_FALSE(verifiable_conversion_envelope);
 }
 
-TEST(BatAdsConversionsUtilTest, DoNotSealEnvelopeWithInvalidPublicKey) {
+TEST(BraveAdsConversionsUtilTest, DoNotSealEnvelopeWithInvalidPublicKey) {
   // Arrange
   VerifiableConversionInfo verifiable_conversion;
   verifiable_conversion.id = kConversionId;
@@ -76,7 +76,7 @@ TEST(BatAdsConversionsUtilTest, DoNotSealEnvelopeWithInvalidPublicKey) {
   EXPECT_FALSE(verifiable_conversion_envelope);
 }
 
-TEST(BatAdsConversionsUtilTest, SealEnvelope) {
+TEST(BraveAdsConversionsUtilTest, SealEnvelope) {
   // Arrange
   VerifiableConversionInfo verifiable_conversion;
   verifiable_conversion.id = kConversionId;

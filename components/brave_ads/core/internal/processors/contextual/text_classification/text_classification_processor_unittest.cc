@@ -11,11 +11,11 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_classification/text_classification_resource.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsTextClassificationProcessorTest : public UnitTestBase {
+class BraveAdsTextClassificationProcessorTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -27,7 +27,7 @@ class BatAdsTextClassificationProcessorTest : public UnitTestBase {
   resource::TextClassification resource_;
 };
 
-TEST_F(BatAdsTextClassificationProcessorTest,
+TEST_F(BraveAdsTextClassificationProcessorTest,
        DoNotProcessIfResourceIsNotInitialized) {
   // Arrange
   resource::TextClassification uninitialized_resource;
@@ -45,7 +45,7 @@ TEST_F(BatAdsTextClassificationProcessorTest,
   EXPECT_TRUE(list.empty());
 }
 
-TEST_F(BatAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
+TEST_F(BraveAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
   // Act
   const std::string text;
   processor::TextClassification processor(&resource_);
@@ -59,7 +59,7 @@ TEST_F(BatAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
   EXPECT_TRUE(list.empty());
 }
 
-TEST_F(BatAdsTextClassificationProcessorTest, NeverProcessed) {
+TEST_F(BraveAdsTextClassificationProcessorTest, NeverProcessed) {
   // Act
   const targeting::model::TextClassification model;
   const SegmentList segments = model.GetSegments();
@@ -72,7 +72,7 @@ TEST_F(BatAdsTextClassificationProcessorTest, NeverProcessed) {
   EXPECT_TRUE(list.empty());
 }
 
-TEST_F(BatAdsTextClassificationProcessorTest, ProcessText) {
+TEST_F(BraveAdsTextClassificationProcessorTest, ProcessText) {
   // Act
   const std::string text = "Some content about technology & computing";
   processor::TextClassification processor(&resource_);
@@ -86,7 +86,7 @@ TEST_F(BatAdsTextClassificationProcessorTest, ProcessText) {
   EXPECT_EQ(1U, list.size());
 }
 
-TEST_F(BatAdsTextClassificationProcessorTest, ProcessMultipleText) {
+TEST_F(BraveAdsTextClassificationProcessorTest, ProcessMultipleText) {
   // Act
   processor::TextClassification processor(&resource_);
 
