@@ -146,7 +146,7 @@ void BraveSyncWorker::RequestSync(JNIEnv* env) {
   // Sync was set up but then was reset via the dashboard. This also pokes the
   // SyncService to start up immediately, i.e. bypass deferred startup.
   if (service) {
-    service->GetUserSettings()->SetSyncRequested(true);
+    service->GetUserSettings()->SetSyncRequested();
   }
 }
 
@@ -157,7 +157,7 @@ void BraveSyncWorker::MarkFirstSetupComplete() {
   if (!service)
     return;
 
-  service->GetUserSettings()->SetSyncRequested(true);
+  service->GetUserSettings()->SetSyncRequested();
 
   // If the first-time setup is already complete, there's nothing else to do.
   if (service->GetUserSettings()->IsFirstSetupComplete())
