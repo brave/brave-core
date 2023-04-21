@@ -21,16 +21,20 @@ struct TransactionsActivityView: View {
           emptyState
             .listRowBackground(Color.clear)
         } else {
-          ForEach(store.transactionSummaries) { txSummary in
-            Button(action: {
-              self.transactionDetails = store.transactionDetailsStore(for: txSummary.txInfo)
-            }) {
-              TransactionSummaryView(summary: txSummary)
+          Group {
+            ForEach(store.transactionSummaries) { txSummary in
+              Button(action: {
+                self.transactionDetails = store.transactionDetailsStore(for: txSummary.txInfo)
+              }) {
+                TransactionSummaryView(summary: txSummary)
+              }
             }
           }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       }
     }
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .onAppear {
       store.update()
     }

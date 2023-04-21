@@ -152,6 +152,7 @@ struct AddAccountView: View {
               }
               .padding(.vertical, 10)
             }
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       }
     }
