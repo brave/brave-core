@@ -68,7 +68,7 @@ TEST(BraveAdsAntiTargetingFeatureTest, DefaultAntiTargetingResourceVersion) {
   EXPECT_EQ(1, kAntiTargetingResourceVersion.Get());
 }
 
-TEST(BraveAdsIdleDetectionFeatureTest,
+TEST(BraveAdsAntiTargetingFeatureTest,
      DefaultAntiTargetingResourceVersionWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;

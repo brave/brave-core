@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection_feature.h"
+#include "brave/components/brave_ads/core/internal/user_attention/user_idle_detection/user_idle_detection_feature.h"
 
 #include <vector>
 
@@ -14,7 +14,7 @@
 
 namespace brave_ads {
 
-TEST(BraveAdsIdleDetectionFeatureTest, IsEnabled) {
+TEST(BraveAdsUserIdleDetectionFeatureTest, IsEnabled) {
   // Arrange
 
   // Act
@@ -23,7 +23,7 @@ TEST(BraveAdsIdleDetectionFeatureTest, IsEnabled) {
   EXPECT_TRUE(IsIdleDetectionFeatureEnabled());
 }
 
-TEST(BraveAdsIdleDetectionFeatureTest, IsDisabled) {
+TEST(BraveAdsUserIdleDetectionFeatureTest, IsDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
@@ -40,7 +40,7 @@ TEST(BraveAdsIdleDetectionFeatureTest, IsDisabled) {
   EXPECT_FALSE(IsIdleDetectionFeatureEnabled());
 }
 
-TEST(BraveAdsIdleDetectionFeatureTest, GetIdleTimeThreshold) {
+TEST(BraveAdsUserIdleDetectionFeatureTest, GetIdleTimeThreshold) {
   // Arrange
   base::FieldTrialParams params;
   params["idle_time_threshold"] = "7s";
@@ -59,7 +59,7 @@ TEST(BraveAdsIdleDetectionFeatureTest, GetIdleTimeThreshold) {
   EXPECT_EQ(base::Seconds(7), kIdleTimeThreshold.Get());
 }
 
-TEST(BraveAdsIdleDetectionFeatureTest, DefaultIdleTimeThreshold) {
+TEST(BraveAdsUserIdleDetectionFeatureTest, DefaultIdleTimeThreshold) {
   // Arrange
 
   // Act
@@ -68,7 +68,8 @@ TEST(BraveAdsIdleDetectionFeatureTest, DefaultIdleTimeThreshold) {
   EXPECT_EQ(base::Seconds(5), kIdleTimeThreshold.Get());
 }
 
-TEST(BraveAdsIdleDetectionFeatureTest, DefaultIdleTimeThresholdWhenDisabled) {
+TEST(BraveAdsUserIdleDetectionFeatureTest,
+     DefaultIdleTimeThresholdWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
@@ -85,7 +86,7 @@ TEST(BraveAdsIdleDetectionFeatureTest, DefaultIdleTimeThresholdWhenDisabled) {
   EXPECT_EQ(base::Seconds(5), kIdleTimeThreshold.Get());
 }
 
-TEST(BraveAdsIdleDetectionFeatureTest, GetMaximumIdleTime) {
+TEST(BraveAdsUserIdleDetectionFeatureTest, GetMaximumIdleTime) {
   // Arrange
   base::FieldTrialParams params;
   params["maximum_idle_time"] = "30m";
@@ -104,7 +105,7 @@ TEST(BraveAdsIdleDetectionFeatureTest, GetMaximumIdleTime) {
   EXPECT_EQ(base::Minutes(30), kMaximumIdleTime.Get());
 }
 
-TEST(BraveAdsIdleDetectionFeatureTest, DefaultMaximumIdleTime) {
+TEST(BraveAdsUserIdleDetectionFeatureTest, DefaultMaximumIdleTime) {
   // Arrange
 
   // Act
@@ -113,7 +114,7 @@ TEST(BraveAdsIdleDetectionFeatureTest, DefaultMaximumIdleTime) {
   EXPECT_EQ(base::Seconds(0), kMaximumIdleTime.Get());
 }
 
-TEST(BraveAdsIdleDetectionFeatureTest, DefaultMaximumIdleTimeWhenDisabled) {
+TEST(BraveAdsUserIdleDetectionFeatureTest, DefaultMaximumIdleTimeWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
@@ -130,7 +131,7 @@ TEST(BraveAdsIdleDetectionFeatureTest, DefaultMaximumIdleTimeWhenDisabled) {
   EXPECT_EQ(base::Seconds(0), kMaximumIdleTime.Get());
 }
 
-TEST(BraveAdsIdleDetectionFeatureTest, ShouldDetectScreenWasLocked) {
+TEST(BraveAdsUserIdleDetectionFeatureTest, ShouldDetectScreenWasLocked) {
   // Arrange
   base::FieldTrialParams params;
   params["should_detect_screen_was_locked"] = "true";
@@ -149,7 +150,7 @@ TEST(BraveAdsIdleDetectionFeatureTest, ShouldDetectScreenWasLocked) {
   EXPECT_TRUE(kShouldDetectScreenWasLocked.Get());
 }
 
-TEST(BraveAdsIdleDetectionFeatureTest, DefaultShouldDetectScreenWasLocked) {
+TEST(BraveAdsUserIdleDetectionFeatureTest, DefaultShouldDetectScreenWasLocked) {
   // Arrange
 
   // Act
@@ -158,7 +159,7 @@ TEST(BraveAdsIdleDetectionFeatureTest, DefaultShouldDetectScreenWasLocked) {
   EXPECT_FALSE(kShouldDetectScreenWasLocked.Get());
 }
 
-TEST(BraveAdsIdleDetectionFeatureTest,
+TEST(BraveAdsUserIdleDetectionFeatureTest,
      ShouldDetectScreenWasLockedWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
