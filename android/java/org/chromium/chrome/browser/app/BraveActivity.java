@@ -168,6 +168,7 @@ import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.share.ShareDelegate.ShareOrigin;
 import org.chromium.chrome.browser.site_settings.BraveWalletEthereumConnectedSites;
+import org.chromium.chrome.browser.speedreader.BraveSpeedReaderUtils;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.tab.TabLaunchType;
@@ -411,6 +412,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                     }
                 }
             }
+        } else if (id == R.id.brave_speedreader_id) {
+            enableSpeedreaderMode();
         } else {
             return false;
         }
@@ -1710,6 +1713,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
 
         return null;
+    }
+
+    private void enableSpeedreaderMode() {
+        final Tab currentTab = getActivityTab();
+        if (currentTab != null) {
+            BraveSpeedReaderUtils.enableSpeedreaderMode(currentTab);
+        }
     }
 
     static public ChromeTabbedActivity getChromeTabbedActivity() {

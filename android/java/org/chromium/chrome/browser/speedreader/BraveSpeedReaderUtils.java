@@ -9,6 +9,7 @@ import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.content_public.browser.WebContents;
+import org.chromium.url.GURL;
 
 @JNINamespace("speedreader")
 public class BraveSpeedReaderUtils {
@@ -32,10 +33,39 @@ public class BraveSpeedReaderUtils {
         return BraveSpeedReaderUtilsJni.get().tabWantsDistill(tab);
     }
 
+    public static void singleShotSpeedreaderForWebContent(WebContents webContents) {
+        BraveSpeedReaderUtilsJni.get().singleShotSpeedreaderForWebContent(webContents);
+    }
+
+    public static boolean tabProbablyReadable(Tab tab) {
+        return BraveSpeedReaderUtilsJni.get().tabProbablyReadable(tab);
+    }
+
+    public static void enableSpeedreaderMode(Tab tab) {
+        if (tab == null || tab.getWebContents() == null) return;
+        WebContents webContents = tab.getWebContents();
+
+        GURL url = webContents.getLastCommittedUrl();
+
+        // Enable on tab
+        toggleEnabledForWebContent(webContents, true);
+
+        // Enable from original page
+        if (tabSupportsDistillation(tab)) {
+            if (tabProbablyReadable(tab)) {
+                singleShotSpeedreaderForWebContent(webContents);
+            } else {
+                tab.reload();
+            }
+        }
+    }
+
     @NativeMethods
     interface Natives {
         boolean isEnabledForWebContent(WebContents webContents);
+        void singleShotSpeedreaderForWebContent(WebContents webContents);
         void toggleEnabledForWebContent(WebContents webContents, boolean enabled);
+        boolean tabProbablyReadable(Tab tab);
         boolean tabStateIsDistilled(Tab tab);
         boolean tabSupportsDistillation(Tab tab);
         boolean tabWantsDistill(Tab tab);
