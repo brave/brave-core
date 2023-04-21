@@ -336,7 +336,8 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 void BraveBrowserCommandController::OnPurchasedStateChanged(
-    brave_vpn::mojom::PurchasedState state) {
+    brave_vpn::mojom::PurchasedState state,
+    const absl::optional<std::string>& description) {
   UpdateCommandForBraveVPN();
 }
 #endif

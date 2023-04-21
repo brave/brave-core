@@ -137,7 +137,9 @@ class TestBraveVPNServiceObserver : public mojom::ServiceObserver {
  public:
   TestBraveVPNServiceObserver() = default;
 
-  void OnPurchasedStateChanged(PurchasedState state) override {
+  void OnPurchasedStateChanged(
+      PurchasedState state,
+      const absl::optional<std::string>& description) override {
     purchased_state_ = state;
     if (purchased_callback_)
       std::move(purchased_callback_).Run();
@@ -266,8 +268,8 @@ class BraveVPNServiceTest : public testing::Test {
     service_->LoadPurchasedState(domain);
   }
 
-  PurchasedState GetPurchasedStateSync() const {
-    return service_->GetPurchasedStateSync();
+  PurchasedState GetPurchasedInfoSync() const {
+    return service_->GetPurchasedInfoSync().state;
   }
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -536,12 +538,12 @@ TEST_F(BraveVPNServiceTest, SkusCredentialCacheTest) {
   SetPurchasedState(env, PurchasedState::LOADING);
   OnCredentialSummary(
       domain, R"({ "active": true, "remaining_credential_count": 1 } )");
-  EXPECT_EQ(PurchasedState::LOADING, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::LOADING, GetPurchasedInfoSync());
   OnPrepareCredentialsPresentation(
       domain, "credential=abcdefghijk; Expires=Wed, 21 Oct 2050 07:28:00 GMT");
   EXPECT_TRUE(HasValidSkusCredential(&local_pref_service_));
-  OnGetSubscriberCredentialV12("inalid", false);
-  EXPECT_EQ(PurchasedState::FAILED, GetPurchasedStateSync());
+  OnGetSubscriberCredentialV12("invalid", false);
+  EXPECT_EQ(PurchasedState::FAILED, GetPurchasedInfoSync());
 
   // Trying again with valid subscriber credential.
   // Check cached skus credential is gone and we have valid subs credential
@@ -561,7 +563,7 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateSessionExpiredTest) {
   SetPurchasedState(env, PurchasedState::LOADING);
   OnCredentialSummary(
       domain, R"({ "active": false, "remaining_credential_count": 1 } )");
-  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedInfoSync());
 
   // Treat as not purchased.
   // Although zero credential credential string received, we think it's
@@ -569,7 +571,7 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateSessionExpiredTest) {
   SetPurchasedState(env, PurchasedState::LOADING);
   OnCredentialSummary(
       domain, R"({ "active": false, "remaining_credential_count": 0 } )");
-  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedInfoSync());
   auto session_expired_time =
       local_pref_service_.GetTime(prefs::kBraveVPNSessionExpiredDate);
   EXPECT_TRUE(session_expired_time.is_null());
@@ -578,7 +580,7 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateSessionExpiredTest) {
   OnFetchRegionList(GetRegionsData(), true);
   OnCredentialSummary(
       domain, R"({ "active": false, "remaining_credential_count": 0 } )");
-  EXPECT_EQ(PurchasedState::SESSION_EXPIRED, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::SESSION_EXPIRED, GetPurchasedInfoSync());
   // Check session expired start date is set.
   session_expired_time =
       local_pref_service_.GetTime(prefs::kBraveVPNSessionExpiredDate);
@@ -591,7 +593,7 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateSessionExpiredTest) {
                               session_expired_time - base::Days(31));
   OnCredentialSummary(
       domain, R"({ "active": false, "remaining_credential_count": 0 } )");
-  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedInfoSync());
 
   // Checks cached time data is cleared when received vaild credential.
   SetPurchasedState(env, PurchasedState::LOADING);
@@ -609,17 +611,17 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateTest) {
   SetPurchasedState(env, PurchasedState::LOADING);
   // Treat not purchased When empty credential string received.
   OnCredentialSummary(domain, "");
-  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedInfoSync());
 
   // Treat expired when credential with non active received.
   SetPurchasedState(env, PurchasedState::LOADING);
   OnCredentialSummary(domain, R"({ "active": false } )");
-  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedInfoSync());
 
   // Treat failed when invalid string received.
   SetPurchasedState(env, PurchasedState::LOADING);
   OnCredentialSummary(domain, R"( "invalid" )");
-  EXPECT_EQ(PurchasedState::FAILED, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::FAILED, GetPurchasedInfoSync());
 
   // Reached to purchased state when valid credential, region data
   // and timezone info.
@@ -629,39 +631,47 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateTest) {
   OnCredentialSummary(
       domain, R"({ "active": true, "remaining_credential_count": 1 } )");
   EXPECT_TRUE(regions().empty());
-  EXPECT_EQ(PurchasedState::LOADING, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::LOADING, GetPurchasedInfoSync());
   OnPrepareCredentialsPresentation(
       domain, "credential=abcdefghijk; Expires=Wed, 21 Oct 2050 07:28:00 GMT");
-  EXPECT_EQ(PurchasedState::LOADING, GetPurchasedStateSync());
+
+  EXPECT_EQ(PurchasedState::LOADING, GetPurchasedInfoSync());
   OnFetchRegionList(GetRegionsData(), true);
-  EXPECT_EQ(PurchasedState::LOADING, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::LOADING, GetPurchasedInfoSync());
   SetTestTimezone("Asia/Seoul");
   OnFetchTimezones(GetTimeZonesData(), true);
   EXPECT_FALSE(wait_region_data_ready());
-  EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedInfoSync());
 
   // Check purchased is set when fetching timezone is failed.
   SetPurchasedState(env, PurchasedState::LOADING);
   wait_region_data_ready() = true;
   OnFetchTimezones("", false);
+
   EXPECT_FALSE(wait_region_data_ready());
-  EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedInfoSync());
 
   // Treat not purchased when empty.
   SetPurchasedState(env, PurchasedState::LOADING);
   OnPrepareCredentialsPresentation(
       domain, "credential=; Expires=Wed, 21 Oct 2050 07:28:00 GMT");
-  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedInfoSync());
 
   // Treat failed when invalid.
   SetPurchasedState(env, PurchasedState::LOADING);
   OnPrepareCredentialsPresentation(domain, "");
-  EXPECT_EQ(PurchasedState::FAILED, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::FAILED, GetPurchasedInfoSync());
 
   // Treat failed when cookie doesn't have expired date.
   SetPurchasedState(env, PurchasedState::LOADING);
   OnPrepareCredentialsPresentation(domain, "credential=abcdefghijk");
-  EXPECT_EQ(PurchasedState::FAILED, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::FAILED, GetPurchasedInfoSync());
+
+  // Expired credentials.
+  SetPurchasedState(env, PurchasedState::LOADING);
+  OnPrepareCredentialsPresentation(
+      domain, "credential=abcdefghijk; Expires=Wed, 21 Oct 2000 07:28:00 GMT");
+  EXPECT_EQ(GetPurchasedInfoSync(), PurchasedState::FAILED);
 }
 
 TEST_F(BraveVPNServiceTest, ResetConnectionStateTest) {
@@ -733,7 +743,7 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateForAnotherEnvFailed) {
             skus::GetDefaultEnvironment());
   TestBraveVPNServiceObserver observer;
   AddObserver(observer.GetReceiver());
-  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedInfoSync());
   EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
   EXPECT_FALSE(observer.GetPurchasedState().has_value());
 
@@ -743,7 +753,7 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateForAnotherEnvFailed) {
   EXPECT_TRUE(observer.GetPurchasedState().has_value());
   EXPECT_EQ(observer.GetPurchasedState().value(), PurchasedState::PURCHASED);
   EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
-  EXPECT_EQ(GetPurchasedStateSync(), PurchasedState::PURCHASED);
+  EXPECT_EQ(GetPurchasedInfoSync(), PurchasedState::PURCHASED);
 
   observer.ResetStates();
   SetInterceptorResponse("");
@@ -756,7 +766,7 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateForAnotherEnvFailed) {
   // The purchased state was not changed from dev env.
   EXPECT_FALSE(observer.GetPurchasedState().has_value());
   EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
-  EXPECT_EQ(GetPurchasedStateSync(), PurchasedState::PURCHASED);
+  EXPECT_EQ(GetPurchasedInfoSync(), PurchasedState::PURCHASED);
 
   observer.ResetStates();
   staging = SetupTestingStoreForEnv(skus::kEnvStaging, false);
@@ -769,7 +779,7 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateForAnotherEnvFailed) {
   // The purchased state was not changed from dev env.
   EXPECT_FALSE(observer.GetPurchasedState().has_value());
   EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
-  EXPECT_EQ(GetPurchasedStateSync(), PurchasedState::PURCHASED);
+  EXPECT_EQ(GetPurchasedInfoSync(), PurchasedState::PURCHASED);
 
   observer.ResetStates();
   staging = SetupTestingStoreForEnv(skus::kEnvStaging, false);
@@ -780,7 +790,7 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateForAnotherEnvFailed) {
   // The purchased state was not changed from dev env.
   EXPECT_FALSE(observer.GetPurchasedState().has_value());
   EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
-  EXPECT_EQ(GetPurchasedStateSync(), PurchasedState::PURCHASED);
+  EXPECT_EQ(GetPurchasedInfoSync(), PurchasedState::PURCHASED);
 
   observer.ResetStates();
   staging = SetupTestingStoreForEnv(skus::kEnvStaging, false);
@@ -791,33 +801,34 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateForAnotherEnvFailed) {
   // The purchased state was not changed from dev env.
   EXPECT_FALSE(observer.GetPurchasedState().has_value());
   EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
-  EXPECT_EQ(GetPurchasedStateSync(), PurchasedState::PURCHASED);
+  EXPECT_EQ(GetPurchasedInfoSync(), PurchasedState::PURCHASED);
 }
 
 TEST_F(BraveVPNServiceTest, CheckInitialPurchasedStateTest) {
   // Purchased state is not checked for fresh user.
-  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedInfoSync());
 
   // Set valid subscriber credential to pretend it's purchased user.
   SetValidSubscriberCredential();
   ResetVpnService();
+
   // Loading state if region data is not ready.
-  EXPECT_EQ(PurchasedState::LOADING, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::LOADING, GetPurchasedInfoSync());
 
   // Set in-valid subscriber credential but not empty to pretend it's purchased
   // user but expired while browser is terminated.
   // In this case, service should try to reload purchased state at startup.
   SetInvalidSubscriberCredential();
   ResetVpnService();
-  EXPECT_EQ(PurchasedState::LOADING, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::LOADING, GetPurchasedInfoSync());
 }
 
 TEST_F(BraveVPNServiceTest, SubscribedCredentials) {
   std::string env = skus::GetDefaultEnvironment();
   SetPurchasedState(env, PurchasedState::PURCHASED);
-  EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedInfoSync());
   OnGetSubscriberCredentialV12("Token No Longer Valid", false);
-  EXPECT_EQ(PurchasedState::INVALID, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::FAILED, GetPurchasedInfoSync());
 }
 
 // Test connection check is asked only when purchased state.
@@ -833,34 +844,30 @@ TEST_F(BraveVPNServiceTest, CheckConnectionStateAfterPurchased) {
 
 #endif
 
-TEST_F(BraveVPNServiceTest, GetPurchasedStateSync) {
+TEST_F(BraveVPNServiceTest, GetPurchasedInfoSync) {
   std::string env = skus::GetDefaultEnvironment();
-  EXPECT_EQ(mojom::PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+  EXPECT_EQ(mojom::PurchasedState::NOT_PURCHASED, GetPurchasedInfoSync());
 
   SetPurchasedState(env, PurchasedState::LOADING);
-  EXPECT_EQ(PurchasedState::LOADING, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::LOADING, GetPurchasedInfoSync());
 
   SetPurchasedState(env, PurchasedState::PURCHASED);
-  EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedStateSync());
-
-  SetPurchasedState(env, PurchasedState::INVALID);
-  EXPECT_EQ(PurchasedState::INVALID, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedInfoSync());
 
   SetPurchasedState(env, PurchasedState::FAILED);
-  EXPECT_EQ(PurchasedState::FAILED, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::FAILED, GetPurchasedInfoSync());
 
   SetPurchasedState(env, PurchasedState::NOT_PURCHASED);
-  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedInfoSync());
 }
 
 TEST_F(BraveVPNServiceTest, SetPurchasedState) {
   std::string env = skus::GetDefaultEnvironment();
   TestBraveVPNServiceObserver observer;
   AddObserver(observer.GetReceiver());
-  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedInfoSync());
 
   SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::LOADING);
-  SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::INVALID);
   SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::FAILED);
   SetAndExpectPurchasedStateChange(&observer, env,
                                    PurchasedState::NOT_PURCHASED);
@@ -881,7 +888,7 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateNotifications) {
   std::string domain = skus::GetDomain("vpn", env);
   TestBraveVPNServiceObserver observer;
   AddObserver(observer.GetReceiver());
-  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedInfoSync());
 
   LoadPurchasedState(domain);
   {
@@ -889,7 +896,7 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateNotifications) {
     base::RunLoop loop;
     observer.WaitPurchasedStateChange(loop.QuitClosure());
     loop.Run();
-    EXPECT_EQ(PurchasedState::LOADING, GetPurchasedStateSync());
+    EXPECT_EQ(PurchasedState::LOADING, GetPurchasedInfoSync());
     EXPECT_TRUE(observer.GetPurchasedState().has_value());
     EXPECT_EQ(PurchasedState::LOADING, observer.GetPurchasedState().value());
   }
@@ -897,27 +904,27 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateNotifications) {
     base::RunLoop loop;
     observer.WaitPurchasedStateChange(loop.QuitClosure());
     loop.Run();
-    EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+    EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedInfoSync());
     EXPECT_TRUE(observer.GetPurchasedState().has_value());
     EXPECT_EQ(PurchasedState::NOT_PURCHASED,
               observer.GetPurchasedState().value());
   }
   observer.ResetStates();
   EXPECT_FALSE(observer.GetPurchasedState().has_value());
-  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedInfoSync());
   LoadPurchasedState(domain);
   {
     // Loading state called whenever we load purchased state.
     base::RunLoop loop;
     observer.WaitPurchasedStateChange(loop.QuitClosure());
     loop.Run();
-    EXPECT_EQ(PurchasedState::LOADING, GetPurchasedStateSync());
+    EXPECT_EQ(PurchasedState::LOADING, GetPurchasedInfoSync());
     EXPECT_TRUE(observer.GetPurchasedState().has_value());
     EXPECT_EQ(PurchasedState::LOADING, observer.GetPurchasedState().value());
   }
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(observer.GetPurchasedState().has_value());
-  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedInfoSync());
   // Observer called when state will be changed.
   SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::LOADING);
   SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::PURCHASED);
@@ -929,7 +936,7 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateForAnotherEnv) {
             skus::GetDefaultEnvironment());
   TestBraveVPNServiceObserver observer;
   AddObserver(observer.GetReceiver());
-  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedInfoSync());
   EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
   LoadPurchasedState(development);
   base::RunLoop().RunUntilIdle();
