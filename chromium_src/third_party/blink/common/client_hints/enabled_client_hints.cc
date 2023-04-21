@@ -12,22 +12,44 @@
 
 #undef SetIsEnabled
 
+// If the kAllowCertainClientHints feature is turned on then, by default, we
+// will send three (3) non-privacy-risking CHs: kUA, kUAMobile, and kUAPlatform.
+// Additionally, if we receive CH requests for
+// kUAPlatformVersion and/or kUAModel, we will send these, but:
+// - kUAModel will be always set to an empty string;
+// - kUAPlatformVersion will be clamped to the same value we report in the
+//   User-Agent string.
+
 namespace blink {
+
+namespace {
+bool AreCertainClientHintsAllowed() {
+  return base::FeatureList::IsEnabled(
+      blink::features::kAllowCertainClientHints);
+}
+}  // namespace
 
 void EnabledClientHints::SetIsEnabled(const WebClientHintsType type,
                                       const bool should_send) {
+  bool type_is_enabled = false;
   switch (type) {
     case WebClientHintsType::kUA:
     case WebClientHintsType::kUAMobile:
+    case WebClientHintsType::kUAModel:
     case WebClientHintsType::kUAPlatform:
-      if (base::FeatureList::IsEnabled(
-              blink::features::kAllowCertainClientHints)) {
-        SetIsEnabled_ChromiumImpl(type, should_send);
-        break;
+    case WebClientHintsType::kUAPlatformVersion:
+      if (AreCertainClientHintsAllowed()) {
+        type_is_enabled = true;
       }
-      ABSL_FALLTHROUGH_INTENDED;
+      break;
     default:
-      enabled_types_[static_cast<int>(type)] = false;
+      break;
+  }
+
+  if (type_is_enabled) {
+    SetIsEnabled_ChromiumImpl(type, should_send);
+  } else {
+    enabled_types_[static_cast<int>(type)] = false;
   }
 }
 
@@ -37,20 +59,7 @@ void EnabledClientHints::SetIsEnabled(
     const net::HttpResponseHeaders* response_headers,
     const network::mojom::WebClientHintsType type,
     const bool should_send) {
-  switch (type) {
-    case WebClientHintsType::kUA:
-    case WebClientHintsType::kUAMobile:
-    case WebClientHintsType::kUAPlatform:
-      if (base::FeatureList::IsEnabled(
-              blink::features::kAllowCertainClientHints)) {
-        SetIsEnabled_ChromiumImpl(url, third_party_url, response_headers, type,
-                                  should_send);
-        break;
-      }
-      ABSL_FALLTHROUGH_INTENDED;
-    default:
-      SetIsEnabled(type, should_send);
-  }
+  SetIsEnabled(type, should_send);
 }
 
 }  // namespace blink
