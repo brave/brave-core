@@ -47,7 +47,6 @@
 #include "brave/browser/ui/webui/welcome_page/brave_welcome_ui.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/common_util.h"
 #include "brave/components/commands/common/features.h"
 #endif
 
@@ -109,10 +108,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
              base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
     return new commands::CommandsUI(web_ui, url.host());
   } else if (host == kWalletPageHost &&
-             // We don't want to check for supported profile type here because
-             // we want private windows to redirect to the regular profile.
-             // Guest session will just show an error page.
-             brave_wallet::IsAllowed(profile->GetPrefs())) {
+             brave_wallet::IsAllowedForContext(profile)) {
     if (brave_wallet::IsNativeWalletEnabled()) {
       auto default_wallet =
           brave_wallet::GetDefaultEthereumWallet(profile->GetPrefs());
