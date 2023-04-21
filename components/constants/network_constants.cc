@@ -48,6 +48,8 @@ const char kCRLSetPrefix3[] =
 const char kCRLSetPrefix4[] =
     "*://storage.googleapis.com/update-delta/hfnkpimlhhgieaddgfemjhofmfblmnib"
     "/*crxd";
+const char kCRLSetPrefix5[] =
+    "*://www.google.com/dl/release2/chrome_component/*";
 const char kChromeCastPrefix[] =
     "*://*.gvt1.com/edgedl/chromewebstore/*pkedcjkdefgpdelpbcmbmeomcjbeemfm*";
 

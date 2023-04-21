@@ -36,6 +36,7 @@ extern const char kCRLSetPrefix1[];
 extern const char kCRLSetPrefix2[];
 extern const char kCRLSetPrefix3[];
 extern const char kCRLSetPrefix4[];
+extern const char kCRLSetPrefix5[];
 extern const char kChromeCastPrefix[];
 extern const char kWidevineGvt1Prefix[];
 extern const char kWidevineGoogleDlPrefix[];

@@ -71,6 +71,8 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kCRLSetPrefix3);
   static URLPattern crlSet_pattern4(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kCRLSetPrefix4);
+  static URLPattern crlSet_pattern5(
+      URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kCRLSetPrefix5);
   static URLPattern crxDownload_pattern(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kCRXDownloadPrefix);
   static URLPattern autofill_pattern(
@@ -156,7 +158,12 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
     *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
   }
-
+  if (crlSet_pattern5.MatchesURL(request_url)) {
+    replacements.SetSchemeStr("https");
+    replacements.SetHostStr("redirector.brave.com");
+    *new_url = request_url.ReplaceComponents(replacements);
+    return net::OK;
+  }
   if (gvt1_pattern.MatchesURL(request_url) &&
       !widevine_gvt1_pattern.MatchesURL(request_url)) {
     replacements.SetSchemeStr("https");
