@@ -128,7 +128,7 @@ std::string GenerateP3AConstellationMessage(base::StringPiece metric_name,
                  });
 
   return base::JoinString(serialized_attributes,
-                          kP3AMessageConstellationKeyValueSeparator);
+                          kP3AMessageConstellationLayerSeparator);
 }
 
 void MessageMetainfo::Init(PrefService* local_state,

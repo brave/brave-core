@@ -36,7 +36,7 @@ std::string HandleRandomnessRequest(const network::ResourceRequest& request,
   base::Value::List& points_list =
       req_parsed_val.FindListKey("points")->GetList();
 
-  EXPECT_NE(points_list.size(), 0U);
+  EXPECT_EQ(points_list.size(), 8U);
 
   std::transform(
       points_list.cbegin(), points_list.cend(),
@@ -51,7 +51,7 @@ std::string HandleRandomnessRequest(const network::ResourceRequest& request,
   auto rand_result =
       constellation::generate_local_randomness(req_points_rust, expected_epoch);
 
-  EXPECT_NE(rand_result.points.size(), 0U);
+  EXPECT_EQ(rand_result.points.size(), 8U);
 
   base::Value::List resp_points_list;
   for (const constellation::VecU8& resp_point_rust : rand_result.points) {
