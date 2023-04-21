@@ -215,7 +215,7 @@ extension PlaylistListViewController: UITableViewDataSource {
               let folderId = folder.uuid
         else { return nil }
         
-        let syncAction = UIAction(title: Strings.PlaylistFolderSharing.syncNowMenuTitle, image: UIImage(braveSystemNamed: "brave.arrow.triangle.2.circlepath")?.template) { _ in
+        let syncAction = UIAction(title: Strings.PlaylistFolderSharing.syncNowMenuTitle, image: UIImage(braveSystemNamed: "leo.refresh")?.template) { _ in
           guard let sharedFolderUrl = folder.sharedFolderUrl else {
             Logger.module.error("Invalid Playlist Shared Folder URL")
             return
@@ -235,11 +235,11 @@ extension PlaylistListViewController: UITableViewDataSource {
           }
         }
         
-        let editAction = UIAction(title: Strings.PlaylistFolderSharing.editMenuTitle, image: UIImage(braveSystemNamed: "brave.edit")?.template) { [unowned self] _ in
+        let editAction = UIAction(title: Strings.PlaylistFolderSharing.editMenuTitle, image: UIImage(braveSystemNamed: "leo.edit.pencil")?.template) { [unowned self] _ in
           self.onEditItems()
         }
         
-        let renameAction = UIAction(title: Strings.PlaylistFolderSharing.renameMenuTitle, image: UIImage(braveSystemNamed: "brave.letter.folder")?.template) { [unowned self] _ in
+        let renameAction = UIAction(title: Strings.PlaylistFolderSharing.renameMenuTitle, image: UIImage(braveSystemNamed: "leo.folder.text")?.template) { [unowned self] _ in
           let folderID = folder.objectID
           var editView = PlaylistEditFolderView(currentFolder: folderID, currentFolderTitle: folder.title ?? "")
 
@@ -293,7 +293,7 @@ extension PlaylistListViewController: UITableViewDataSource {
           }
         }
         
-        let saveOfflineAction = UIAction(title: Strings.PlaylistFolderSharing.saveOfflineDataMenuTitle, image: UIImage(braveSystemNamed: "brave.cloud.and.arrow.down")?.template) { [unowned self] _ in
+        let saveOfflineAction = UIAction(title: Strings.PlaylistFolderSharing.saveOfflineDataMenuTitle, image: UIImage(braveSystemNamed: "leo.cloud.download")?.template) { [unowned self] _ in
           folder.playlistItems?.forEach {
             PlaylistManager.shared.download(item: PlaylistInfo(item: $0))
           }
@@ -301,7 +301,7 @@ extension PlaylistListViewController: UITableViewDataSource {
           self.tableView.reloadData()
         }
         
-        let deleteOfflineAction = UIAction(title: Strings.PlaylistFolderSharing.deleteOfflineDataMenuTitle, image: UIImage(braveSystemNamed: "brave.cloud.slash")?.template) { [unowned self] _ in
+        let deleteOfflineAction = UIAction(title: Strings.PlaylistFolderSharing.deleteOfflineDataMenuTitle, image: UIImage(braveSystemNamed: "leo.cloud.off")?.template) { [unowned self] _ in
           folder.playlistItems?.forEach {
             PlaylistManager.shared.deleteCache(item: PlaylistInfo(item: $0))
           }
@@ -309,7 +309,7 @@ extension PlaylistListViewController: UITableViewDataSource {
           self.tableView.reloadData()
         }
         
-        let deleteAction = UIAction(title: Strings.PlaylistFolderSharing.deletePlaylistMenuTitle, image: UIImage(braveSystemNamed: "brave.trash")?.template, attributes: .destructive) { [unowned self] _ in
+        let deleteAction = UIAction(title: Strings.PlaylistFolderSharing.deletePlaylistMenuTitle, image: UIImage(braveSystemNamed: "leo.trash")?.template, attributes: .destructive) { [unowned self] _ in
           
           PlaylistManager.shared.delete(folder: folder) { success in
             if success {

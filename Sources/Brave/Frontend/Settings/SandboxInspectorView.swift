@@ -114,7 +114,7 @@ struct SandboxInspectorView: View {
               Label {
                 Text(row.url.lastPathComponent)
               } icon: {
-                Image(braveSystemName: "brave.folder")
+                Image(braveSystemName: "leo.folder")
                   .opacity(row.isDirectory ? 1 : 0)
               }
               Spacer()

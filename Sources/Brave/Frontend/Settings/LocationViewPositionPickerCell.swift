@@ -16,12 +16,12 @@ class LocationViewPositionPickerCell: UITableViewCell, Cell {
   }
   
   private let topBarButton = BarButton(
-    image: UIImage(braveSystemNamed: "brave.platter.filled.top.and.arrow.up.phone")!,
+    image: UIImage(braveSystemNamed: "leo.browser.mobile-tabs-top")!,
     text: Strings.tabsOptionTopBar
   )
   
   private let bottomBarButton = BarButton(
-    image: UIImage(braveSystemNamed: "brave.platter.filled.bottom.and.arrow.down.phone")!,
+    image: UIImage(braveSystemNamed: "leo.browser.mobile-tabs-bottom")!,
     text: Strings.tabsOptionBottomBar
   )
   
@@ -84,7 +84,7 @@ class LocationViewPositionPickerCell: UITableViewCell, Cell {
       stackView.spacing = 2
       
       let imageView = UIImageView(image: image)
-      imageView.preferredSymbolConfiguration = .init(font: .systemFont(ofSize: 56))
+      imageView.preferredSymbolConfiguration = .init(font: .systemFont(ofSize: 40))
       let label = UILabel()
       label.text = text
       label.font = .preferredFont(forTextStyle: .callout)
@@ -104,7 +104,7 @@ class LocationViewPositionPickerCell: UITableViewCell, Cell {
     
     override var isSelected: Bool {
       didSet {
-        checkmarkView.image = UIImage(systemName: isSelected ? "checkmark.circle" : "circle")
+        checkmarkView.image = UIImage(braveSystemNamed: isSelected ? "leo.check.circle-outline" : "leo.radio.unchecked")
         checkmarkView.tintColor = isSelected ? .braveBlurpleTint : .braveDisabled
       }
     }

@@ -24,7 +24,7 @@ class WalletConnectionView: UIControl {
   }()
 
   private let iconImageView: UIImageView = {
-    let result = UIImageView(image: UIImage(braveSystemNamed: "brave.unlock")!)
+    let result = UIImageView(image: UIImage(braveSystemNamed: "leo.lock.open")!)
     result.tintColor = .white
     result.contentMode = .scaleAspectFit
     result.setContentHuggingPriority(.required, for: .horizontal)

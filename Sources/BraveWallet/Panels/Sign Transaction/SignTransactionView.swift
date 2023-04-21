@@ -233,7 +233,7 @@ struct SignTransactionView: View {
           onDismiss()
         }
       }) {
-        Label(Strings.Wallet.sign, braveSystemImage: "brave.key")
+        Label(Strings.Wallet.sign, braveSystemImage: "leo.key")
           .fixedSize(horizontal: true, vertical: false)
           .imageScale(.large)
       }

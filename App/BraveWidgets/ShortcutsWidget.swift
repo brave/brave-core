@@ -150,25 +150,25 @@ extension WidgetShortcut {
       assertionFailure()
       return Image(systemName: "xmark.octagon")
     case .newTab:
-      return Image(braveSystemName: "brave.plus")
+      return Image(braveSystemName: "leo.plus.add")
     case .newPrivateTab:
-      return Image(braveSystemName: "brave.sunglasses")
+      return Image(braveSystemName: "leo.product.private-window")
     case .bookmarks:
-      return Image(braveSystemName: "brave.book")
+      return Image(braveSystemName: "leo.book.6")
     case .history:
-      return Image(braveSystemName: "brave.history")
+      return Image(braveSystemName: "leo.history")
     case .downloads:
-      return Image(braveSystemName: "brave.arrow.down.to.line")
+      return Image(braveSystemName: "leo.download")
     case .playlist:
-      return Image(braveSystemName: "brave.playlist")
+      return Image(braveSystemName: "leo.product.playlist")
     case .search:
-      return Image(braveSystemName: "brave.magnifyingglass")
+      return Image(braveSystemName: "leo.search")
     case .wallet:
-      return Image(braveSystemName: "brave.wallet")
+      return Image(braveSystemName: "leo.product.brave-wallet")
     case .scanQRCode:
-      return Image(braveSystemName: "brave.qr-code")
+      return Image(braveSystemName: "leo.qr.code")
     case .braveNews:
-      return Image(braveSystemName: "brave.newspaper")
+      return Image(braveSystemName: "leo.newspaper")
     @unknown default:
       assertionFailure()
       return Image(systemName: "xmark.octagon")

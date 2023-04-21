@@ -14,7 +14,7 @@ class ToolbarHelper: NSObject {
     self.toolbar = toolbar
     super.init()
 
-    toolbar.backButton.setImage(UIImage(braveSystemNamed: "brave.arrowtriangle.left"), for: .normal)
+    toolbar.backButton.setImage(UIImage(braveSystemNamed: "leo.browser.back"), for: .normal)
     toolbar.backButton.accessibilityLabel = Strings.tabToolbarBackButtonAccessibilityLabel
     let longPressGestureBackButton = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressBack))
     toolbar.backButton.addGestureRecognizer(longPressGestureBackButton)
@@ -26,19 +26,19 @@ class ToolbarHelper: NSObject {
 
     toolbar.tabsButton.addTarget(self, action: #selector(didClickTabs), for: .touchUpInside)
 
-    toolbar.addTabButton.setImage(UIImage(braveSystemNamed: "brave.plus"), for: .normal)
+    toolbar.addTabButton.setImage(UIImage(braveSystemNamed: "leo.plus.add"), for: .normal)
     toolbar.addTabButton.accessibilityLabel = Strings.tabToolbarAddTabButtonAccessibilityLabel
     toolbar.addTabButton.addTarget(self, action: #selector(didClickAddTab), for: UIControl.Event.touchUpInside)
 
-    toolbar.searchButton.setImage(UIImage(braveSystemNamed: "brave.magnifyingglass"), for: .normal)
+    toolbar.searchButton.setImage(UIImage(braveSystemNamed: "leo.search"), for: .normal)
     // Accessibility label not needed, since overriden in the bottom tool bar class.
     toolbar.searchButton.addTarget(self, action: #selector(didClickSearch), for: UIControl.Event.touchUpInside)
 
-    toolbar.menuButton.setImage(UIImage(systemName: "ellipsis"), for: .normal)
+    toolbar.menuButton.setImage(UIImage(braveSystemNamed: "leo.more.horizontal"), for: .normal)
     toolbar.menuButton.accessibilityLabel = Strings.tabToolbarMenuButtonAccessibilityLabel
     toolbar.menuButton.addTarget(self, action: #selector(didClickMenu), for: UIControl.Event.touchUpInside)
 
-    toolbar.forwardButton.setImage(UIImage(braveSystemNamed: "brave.arrowtriangle.right"), for: .normal)
+    toolbar.forwardButton.setImage(UIImage(braveSystemNamed: "leo.browser.forward"), for: .normal)
     toolbar.forwardButton.accessibilityLabel = Strings.tabToolbarForwardButtonAccessibilityLabel
     let longPressGestureForwardButton = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressForward))
     toolbar.forwardButton.addGestureRecognizer(longPressGestureForwardButton)

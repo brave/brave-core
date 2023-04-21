@@ -19,12 +19,12 @@ class PlaylistURLBarButton: UIButton {
     didSet {
       switch buttonState {
       case .addToPlaylist:
-        setImage(UIImage(braveSystemNamed: "brave.text.badge.plus"), for: .normal)
+        setImage(UIImage(braveSystemNamed: "leo.product.playlist-add"), for: .normal)
         tintColor = .white
         gradientView.isHidden = false
         backgroundView.isHidden = true
       case .addedToPlaylist:
-        setImage(UIImage(braveSystemNamed: "brave.text.badge.checkmark"), for: .normal)
+        setImage(UIImage(braveSystemNamed: "leo.product.playlist-added"), for: .normal)
         tintColor = .braveSuccessLabel
         gradientView.isHidden = true
         backgroundView.isHidden = false

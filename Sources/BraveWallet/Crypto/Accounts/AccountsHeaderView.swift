@@ -20,7 +20,7 @@ struct AccountsHeaderView: View {
     HStack {
       Button(action: { isPresentingBackup = true }) {
         HStack {
-          Image(braveSystemName: "brave.safe")
+          Image(braveSystemName: "leo.safe")
             .foregroundColor(Color(.braveLabel))
           Text(Strings.Wallet.accountBackup)
             .font(.subheadline.weight(.medium))
@@ -64,7 +64,7 @@ struct AccountsHeaderView: View {
             networkStore: networkStore,
             keyringStore: keyringStore)
         ) {
-          Label(Strings.Wallet.settings, braveSystemImage: "brave.gear")
+          Label(Strings.Wallet.settings, braveSystemImage: "leo.settings")
             .labelStyle(.iconOnly)
         }
       }

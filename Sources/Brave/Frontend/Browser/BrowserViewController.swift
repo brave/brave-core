@@ -3104,7 +3104,7 @@ extension BrowserViewController {
     if !PrivateBrowsingManager.shared.isPrivateBrowsing {
       let toast = ButtonToast(
         labelText: Strings.Callout.tabReceivedCalloutTitle,
-        image: UIImage(braveSystemNamed: "brave.tablet.and.phone"),
+        image: UIImage(braveSystemNamed: "leo.smartphone.tablet"),
         buttonText: Strings.goButtonTittle,
         completion: { [weak self] buttonPressed in
           guard let self = self else { return }

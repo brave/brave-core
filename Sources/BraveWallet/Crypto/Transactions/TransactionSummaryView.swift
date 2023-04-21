@@ -63,7 +63,7 @@ struct TransactionSummaryView: View {
           .foregroundColor(Color(.bravePrimary))
         if let gasFee = summary.gasFee {
           HStack(spacing: 4) {
-            Image(braveSystemName: "brave.coins.4")
+            Image(braveSystemName: "leo.coins.alt2")
             Text(
               String.localizedStringWithFormat(
                 Strings.Wallet.transactionSummaryFee,

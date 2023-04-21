@@ -220,7 +220,7 @@ struct EncryptionView: View {
     Button(action: { // approve
       handleAction(approved: true)
     }) {
-      Label(approveButtonTitle, braveSystemImage: "brave.checkmark.circle.fill")
+      Label(approveButtonTitle, braveSystemImage: "leo.check.circle-filled")
         .imageScale(.large)
     }
     .buttonStyle(BraveFilledButtonStyle(size: .large))

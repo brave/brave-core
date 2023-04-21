@@ -128,7 +128,7 @@ class PlaylistMenuHeader: UITableViewHeaderFooterView {
       menuButton.sizeToFit()
     case .menu:
       menuButton.setTitle(nil, for: .normal)
-      menuButton.setImage(UIImage(systemName: "ellipsis"), for: .normal)
+      menuButton.setImage(UIImage(braveSystemNamed: "leo.more.horizontal"), for: .normal)
       menuButton.backgroundColor = .clear
       menuButton.accessibilityLabel = Strings.PlaylistFolderSharing.menuButtonAccessibilityTitle
       menuButton.contentEdgeInsets = UIEdgeInsets(top: 6.0, left: 20.0, bottom: 6.0, right: 0.0)

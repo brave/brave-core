@@ -200,7 +200,7 @@ struct PendingTransactionView: View {
       )
     ) {
       HStack {
-        Image(braveSystemName: "brave.gear")
+        Image(braveSystemName: "leo.settings")
           .foregroundColor(Color(.braveBlurpleTint))
         Text(Strings.Wallet.advancedSettingsTransaction)
           .frame(maxWidth: .infinity, alignment: .leading)

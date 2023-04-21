@@ -151,7 +151,7 @@ struct MarketPriceView: View {
       Button(action: {
         swapTokenStore.fetchPriceQuote(base: .perSellAsset)
       }) {
-        Label(Strings.Wallet.refreshMarketPriceLabel, braveSystemImage: "brave.arrow.triangle.2.circlepath")
+        Label(Strings.Wallet.refreshMarketPriceLabel, braveSystemImage: "leo.refresh")
           .labelStyle(.iconOnly)
           .foregroundColor(Color(.braveBlurpleTint))
           .font(.title3)

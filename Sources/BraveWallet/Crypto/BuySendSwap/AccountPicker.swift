@@ -68,7 +68,7 @@ struct AccountPicker: View {
     Menu {
       Text(keyringStore.selectedAccount.address.zwspOutput)
       Button(action: copyAddress) {
-        Label(Strings.Wallet.copyAddressButtonTitle, braveSystemImage: "brave.clipboard")
+        Label(Strings.Wallet.copyAddressButtonTitle, braveSystemImage: "leo.copy.plain-text")
       }
     } label: {
       accountView

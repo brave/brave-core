@@ -19,7 +19,7 @@ public struct OnboardingBottomBarView: View {
       Button {
         dismiss?()
       } label: {
-        Image(braveSystemName: "brave.xmark")
+        Image(braveSystemName: "leo.close")
           .renderingMode(.template)
           .foregroundColor(Color(.bravePrimary))
       }

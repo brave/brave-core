@@ -123,7 +123,7 @@ struct SuggestedNetworkView: View {
         Button(action: {
           UIPasteboard.general.string = keyringStore.selectedAccount.address
         }) {
-          Label(Strings.Wallet.copyAddressButtonTitle, braveSystemImage: "brave.clipboard")
+          Label(Strings.Wallet.copyAddressButtonTitle, braveSystemImage: "leo.copy.plain-text")
             .font(.body)
         }
       } label: {
@@ -307,7 +307,7 @@ struct SuggestedNetworkView: View {
       },
       label: {
         HStack {
-          Image(braveSystemName: "brave.checkmark.circle.fill")
+          Image(braveSystemName: "leo.check.circle-filled")
           Text(actionButtonTitle)
             .multilineTextAlignment(.center)
         }

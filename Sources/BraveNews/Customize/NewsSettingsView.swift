@@ -152,7 +152,7 @@ public struct NewsSettingsView: View {
       SourceListContainerView(dataSource: dataSource)
     } label: {
       DestinationLabel(
-        image: Image(braveSystemName: "brave.crown"),
+        image: Image(braveSystemName: "leo.crown"),
         title: Strings.BraveNews.popularSourcesButtonTitle,
         subtitle: Strings.BraveNews.popularSourcesButtonSubtitle
       )
@@ -163,7 +163,7 @@ public struct NewsSettingsView: View {
         SourceSuggestionsContainerView(dataSource: dataSource)
       } label: {
         DestinationLabel(
-          image: Image(braveSystemName: "brave.star"),
+          image: Image(braveSystemName: "leo.star.outline"),
           title: Strings.BraveNews.suggestedSourcesButtonTitle,
           subtitle: Strings.BraveNews.suggestedSourcesButtonSubtitle
         )
@@ -174,7 +174,7 @@ public struct NewsSettingsView: View {
         ChannelListContainerView(dataSource: dataSource)
       } label: {
         DestinationLabel(
-          image: Image(braveSystemName: "brave.newspaper"),
+          image: Image(braveSystemName: "leo.newspaper"),
           title: Strings.BraveNews.channelsButtonTitle,
           subtitle: Strings.BraveNews.channelsButtonSubtitle
         )
@@ -185,7 +185,7 @@ public struct NewsSettingsView: View {
         FollowingListContainerView(dataSource: dataSource)
       } label: {
         DestinationLabel(
-          image: Image(braveSystemName: "brave.heart"),
+          image: Image(braveSystemName: "leo.heart.outline"),
           title: {
             HStack {
               Text(Strings.BraveNews.followingButtonTitle)
@@ -253,7 +253,7 @@ public struct NewsSettingsView: View {
                       Label(Strings.BraveNews.importOPML, systemImage: "square.and.arrow.down")
                     }
                   } label: {
-                    Image(systemName: "ellipsis")
+                    Image(braveSystemName: "leo.more.horizontal")
                       .frame(height: 44) // Menu label's don't have proper tap areas in toolbar
                   }
                 }

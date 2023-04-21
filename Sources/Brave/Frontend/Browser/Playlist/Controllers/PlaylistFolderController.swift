@@ -197,7 +197,7 @@ extension PlaylistFolderController: UITableViewDataSource {
 
     switch section {
     case .savedItems:
-      let folderIcon = UIImage(braveSystemNamed: "brave.folder.badge.star")?.template
+      let folderIcon = UIImage(braveSystemNamed: "leo.folder.star")?.template
       let itemCount = savedFolder?.playlistItems?.count ?? 0
 
       cell.imageView?.image = folderIcon
@@ -212,8 +212,8 @@ extension PlaylistFolderController: UITableViewDataSource {
         return
       }
 
-      let folderIcon = section == .nonSharedFolders ? UIImage(braveSystemNamed: "brave.folder")?.template :
-                      UIImage(braveSystemNamed: "brave.folder.badge.sync")?.template
+      let folderIcon = section == .nonSharedFolders ? UIImage(braveSystemNamed: "leo.folder")?.template :
+                      UIImage(braveSystemNamed: "leo.folder.sync")?.template
       
       let itemCount = folder.playlistItems?.count ?? 0
 
@@ -386,7 +386,7 @@ extension PlaylistFolderController: UITableViewDelegate {
     editAction.image = UIImage(systemName: "pencil")
     editAction.backgroundColor = .braveBlurpleTint
 
-    deleteAction.image = UIImage(braveSystemNamed: "brave.trash")!
+    deleteAction.image = UIImage(braveSystemNamed: "leo.trash")!
     deleteAction.backgroundColor = .braveErrorLabel
 
     return UISwipeActionsConfiguration(actions: [deleteAction, editAction])

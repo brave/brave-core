@@ -184,7 +184,7 @@ private struct RestoreWalletView: View {
               phrase = string
             }
           }) {
-            Label(Strings.Wallet.pasteFromPasteboard, braveSystemImage: "brave.clipboard")
+            Label(Strings.Wallet.pasteFromPasteboard, braveSystemImage: "leo.copy.plain-text")
               .labelStyle(.iconOnly)
           }
         }

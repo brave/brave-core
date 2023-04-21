@@ -24,7 +24,7 @@ struct AddressView<Content: View>: View {
         Button(action: {
           UIPasteboard.general.string = address
         }) {
-          Label(Strings.Wallet.copyAddressButtonTitle, braveSystemImage: "brave.clipboard")
+          Label(Strings.Wallet.copyAddressButtonTitle, braveSystemImage: "leo.copy.plain-text")
         }
       }
   }
