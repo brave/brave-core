@@ -32,13 +32,13 @@ interface ServiceObserver {
   [EnableIfNot=is_android]
   OnSelectedRegionChanged(Region region);
 
-  OnPurchasedStateChanged(PurchasedState state);
+  OnPurchasedStateChanged(PurchasedState state, string? description);
 };
 
 // Browser-side handler for vpn service things
 interface ServiceHandler {
   AddObserver(pending_remote<ServiceObserver> observer);
-  GetPurchasedState() => (PurchasedState state);
+  GetPurchasedState() => (PurchasedInfo state);
   LoadPurchasedState(string domain);
 
   [EnableIfNot=is_android]
@@ -99,10 +99,14 @@ enum ConnectionState {
 enum PurchasedState {
   NOT_PURCHASED,
   PURCHASED,
-  INVALID,
   LOADING,
   SESSION_EXPIRED,
   FAILED,
+};
+
+struct PurchasedInfo {
+  PurchasedState state;
+  string? description;
 };
 
 // Make sure updating BraveVpnService properly when member is added to Region

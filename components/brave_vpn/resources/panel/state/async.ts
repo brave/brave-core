@@ -86,24 +86,26 @@ handler.on(Actions.initialize.getType(), async (store) => {
     productUrls: urls
   }))
 
-  if (state === PurchasedState.NOT_PURCHASED) {
+  if (state.state === PurchasedState.NOT_PURCHASED) {
     store.dispatch(Actions.showSellView())
   }
 
-  if (state === PurchasedState.INVALID) {
-    store.dispatch(Actions.showSubscriptionInvalidView())
-  }
-
-  if (state === PurchasedState.PURCHASED) {
+  if (state.state === PurchasedState.PURCHASED) {
     store.dispatch(Actions.purchaseConfirmed())
   }
 
-  if (state === PurchasedState.SESSION_EXPIRED) {
+  if (state.state === PurchasedState.SESSION_EXPIRED) {
     store.dispatch(Actions.purchaseExpired())
   }
 
-  if (state === PurchasedState.LOADING) {
+  if (state.state === PurchasedState.LOADING) {
     store.dispatch(Actions.showLoadingView())
+  }
+  if (state.state === PurchasedState.FAILED) {
+    store.dispatch(Actions.purchaseFailed({
+      state: PurchasedState.FAILED,
+      stateDescription: state.description
+    }))
   }
 })
 

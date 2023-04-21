@@ -5,7 +5,6 @@
 export enum ViewType {
   Sell,
   Main,
-  Invalid,
   Loading,
   PurchaseFailed
 }

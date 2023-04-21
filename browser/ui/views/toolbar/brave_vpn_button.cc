@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
 
 #include <memory>
+#include <string>
 #include <utility>
 
 #include "base/memory/raw_ptr.h"
@@ -23,6 +24,7 @@
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "components/grit/brave_components_strings.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/simple_menu_model.h"
@@ -84,7 +86,8 @@ class VPNButtonMenuModel : public ui::SimpleMenuModel,
 
   // BraveVPNServiceObserver overrides:
   void OnPurchasedStateChanged(
-      brave_vpn::mojom::PurchasedState state) override {
+      brave_vpn::mojom::PurchasedState state,
+      const absl::optional<std::string>& description) override {
     // Rebuild menu items based on purchased state change.
     Build(service_->is_purchased_user());
   }

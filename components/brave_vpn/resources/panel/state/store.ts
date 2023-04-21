@@ -24,7 +24,7 @@ const observer = {
     store.dispatch(Actions.selectedRegionChanged({ region }))
   },
 
-  onPurchasedStateChanged: (state: PurchasedState) => {
+  onPurchasedStateChanged: (state: PurchasedState, description: string) => {
     switch (state) {
       case PurchasedState.PURCHASED:
         store.dispatch(Actions.purchaseConfirmed())
@@ -33,13 +33,12 @@ const observer = {
         store.dispatch(Actions.purchaseExpired())
         break
       case PurchasedState.FAILED:
-        store.dispatch(Actions.purchaseFailed())
+        store.dispatch(Actions.purchaseFailed({
+          state: PurchasedState.FAILED, stateDescription: description
+        }))
         break
       case PurchasedState.NOT_PURCHASED:
         store.dispatch(Actions.showSellView())
-        break
-      case PurchasedState.INVALID:
-        store.dispatch(Actions.showSubscriptionInvalidView())
         break
       case PurchasedState.LOADING:
         store.dispatch(Actions.showLoadingView())

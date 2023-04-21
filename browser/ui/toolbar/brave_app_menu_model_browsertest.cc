@@ -67,7 +67,7 @@ class BraveAppMenuBrowserTest : public InProcessBrowserTest {
     // async way.
     static_cast<chrome::BraveBrowserCommandController*>(
         browser->command_controller())
-        ->OnPurchasedStateChanged(target_state);
+        ->OnPurchasedStateChanged(target_state, absl::nullopt);
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;
