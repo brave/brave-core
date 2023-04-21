@@ -298,7 +298,7 @@ public class KeyringModel implements KeyringServiceObserver {
         final AccountInfo[] accountInfoArray =
                 WalletUtils.getAccountInfosFromKeyrings(_mKeyringInfosLiveData.getValue())
                         .toArray(new AccountInfo[0]);
-        mSelectedFilecoinNetwork = BraveWalletConstants.FILECOIN_MAINNET;
+        mSelectedFilecoinNetwork = filecoinNetwork;
         mKeyringService.addFilecoinAccount(accountName, mSelectedFilecoinNetwork, result -> {
             handleAddAccountResult(result, accountInfoArray, CoinType.FIL, callback);
         });
