@@ -65,7 +65,7 @@ class TabLocationView: UIView {
         reloadButton.setImage(UIImage(systemName: "xmark"), for: .normal)
         reloadButton.accessibilityLabel = Strings.tabToolbarStopButtonAccessibilityLabel
       } else {
-        reloadButton.setImage(UIImage(braveSystemNamed: "brave.refresh"), for: .normal)
+        reloadButton.setImage(UIImage(braveSystemNamed: "leo.browser.refresh"), for: .normal)
         reloadButton.accessibilityLabel = Strings.tabToolbarReloadButtonAccessibilityLabel
       }
     }
@@ -78,7 +78,7 @@ class TabLocationView: UIView {
     case .localHost:
       lockImageView.isHidden = true
     case .insecure:
-      lockImageView.setImage(UIImage(braveSystemNamed: "brave.exclamationmark.circle.fill")?
+      lockImageView.setImage(UIImage(braveSystemNamed: "leo.info.filled")?
         .withRenderingMode(.alwaysOriginal)
         .withTintColor(.braveErrorLabel), for: .normal)
       lockImageView.accessibilityLabel = Strings.tabToolbarWarningImageAccessibilityLabel
@@ -199,7 +199,7 @@ class TabLocationView: UIView {
     $0.accessibilityIdentifier = "TabToolbar.stopReloadButton"
     $0.isAccessibilityElement = true
     $0.accessibilityLabel = Strings.tabToolbarReloadButtonAccessibilityLabel
-    $0.setImage(UIImage(braveSystemNamed: "brave.refresh", compatibleWith: nil), for: .normal)
+    $0.setImage(UIImage(braveSystemNamed: "leo.browser.refresh", compatibleWith: nil), for: .normal)
     $0.tintColor = .braveLabel
     let longPressGestureStopReloadButton = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressStopReload(_:)))
     $0.addGestureRecognizer(longPressGestureStopReloadButton)

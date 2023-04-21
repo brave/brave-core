@@ -33,7 +33,7 @@ class WalletURLBarButton: UIButton {
     super.init(frame: frame)
     
     adjustsImageWhenHighlighted = false
-    setImage(UIImage(braveSystemNamed: "brave.wallet"), for: .normal)
+    setImage(UIImage(braveSystemNamed: "leo.product.brave-wallet"), for: .normal)
     imageView?.contentMode = .scaleAspectFit
     imageEdgeInsets = .init(top: 3, left: 3, bottom: 3, right: 3)
     

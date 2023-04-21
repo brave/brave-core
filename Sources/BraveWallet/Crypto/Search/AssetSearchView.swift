@@ -43,7 +43,7 @@ struct AssetSearchView: View {
       self.isPresentingNetworkFilter = true
     }) {
       HStack {
-        Image(braveSystemName: "brave.text.alignleft")
+        Image(braveSystemName: "leo.list")
         Text(networkFilter.title)
       }
       .font(.footnote.weight(.medium))

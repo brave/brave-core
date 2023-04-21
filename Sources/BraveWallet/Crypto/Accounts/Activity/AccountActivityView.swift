@@ -199,7 +199,7 @@ private struct AccountActivityHeaderView: View {
       HStack {
         Button(action: { action(false) }) {
           HStack {
-            Image(braveSystemName: "brave.qr-code")
+            Image(braveSystemName: "leo.qr.code")
               .font(.body)
             Text(Strings.Wallet.detailsButtonTitle)
               .font(.footnote.weight(.bold))
@@ -207,7 +207,7 @@ private struct AccountActivityHeaderView: View {
         }
         Button(action: { action(true) }) {
           HStack {
-            Image(braveSystemName: "brave.edit")
+            Image(braveSystemName: "leo.edit.pencil")
               .font(.body)
             Text(Strings.Wallet.renameButtonTitle)
               .font(.footnote.weight(.bold))

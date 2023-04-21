@@ -33,7 +33,7 @@ struct SensitiveTextView: View {
         Button(action: {
           UIPasteboard.general.setSecureString(text)
         }) {
-          Text("\(Strings.Wallet.copyToPasteboard) \(Image(braveSystemName: "brave.clipboard"))")
+          Text("\(Strings.Wallet.copyToPasteboard) \(Image(braveSystemName: "leo.copy.plain-text"))")
             .font(.subheadline)
             .foregroundColor(Color(.braveBlurpleTint))
         }

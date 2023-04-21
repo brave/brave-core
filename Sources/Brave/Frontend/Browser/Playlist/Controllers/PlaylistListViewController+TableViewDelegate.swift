@@ -198,10 +198,10 @@ extension PlaylistListViewController: UITableViewDelegate {
         completionHandler(true)
       })
 
-    cacheAction.image = cacheState == .invalid ? UIImage(braveSystemNamed: "brave.cloud.and.arrow.down")! : UIImage(braveSystemNamed: "brave.cloud.slash")!
+    cacheAction.image = cacheState == .invalid ? UIImage(braveSystemNamed: "leo.cloud.download")! : UIImage(braveSystemNamed: "leo.cloud.off")!
     cacheAction.backgroundColor = UIColor.braveDarkerBlurple
 
-    deleteAction.image = UIImage(braveSystemNamed: "brave.trash")!
+    deleteAction.image = UIImage(braveSystemNamed: "leo.trash")!
     deleteAction.backgroundColor = UIColor.braveErrorLabel
 
     shareAction.image = UIImage(systemName: "square.and.arrow.up")
@@ -224,7 +224,7 @@ extension PlaylistListViewController: UITableViewDelegate {
     let actionProvider: UIContextMenuActionProvider = { _ in
       let cacheState = PlaylistManager.shared.state(for: currentItem.tagId)
       let cacheTitle = cacheState == .invalid ? Strings.PlayList.playlistSaveForOfflineButtonTitle : Strings.PlayList.playlistDeleteForOfflineButtonTitle
-      let cacheIcon = cacheState == .invalid ? UIImage(braveSystemNamed: "brave.cloud.and.arrow.down") : UIImage(braveSystemNamed: "brave.cloud.slash")
+      let cacheIcon = cacheState == .invalid ? UIImage(braveSystemNamed: "leo.cloud.download") : UIImage(braveSystemNamed: "leo.cloud.off")
       
       var menuItems: [UIMenuElement] = [
         UIMenu(
@@ -274,7 +274,7 @@ extension PlaylistListViewController: UITableViewDelegate {
               if PlaylistFolder.getOtherFoldersCount() > 0 {
                 actions.append(
                   UIAction(
-                    title: Strings.PlayList.sharePlaylistMoveActionMenuTitle, image: UIImage(braveSystemNamed: "brave.folder"),
+                    title: Strings.PlayList.sharePlaylistMoveActionMenuTitle, image: UIImage(braveSystemNamed: "leo.folder"),
                     handler: { [weak self] _ in
                       self?.moveItems(indexPaths: [indexPath])
                     }))
@@ -291,7 +291,7 @@ extension PlaylistListViewController: UITableViewDelegate {
             }()),
 
           UIAction(
-            title: Strings.delete, image: UIImage(braveSystemNamed: "brave.trash"), attributes: .destructive,
+            title: Strings.delete, image: UIImage(braveSystemNamed: "leo.trash"), attributes: .destructive,
             handler: { [weak self] _ in
               self?.deleteItem(itemId: currentItem.tagId, indexPath: indexPath)
             })

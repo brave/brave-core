@@ -65,35 +65,35 @@ struct ChannelLabel: View {
 }
 
 private let channelGlyphMap: [String: String] = [
-  "Health": "brave.heart.and.hands",
-  "Home": "brave.house",
-  "Crypto": "brave.bitcoinsign",
-  "Technology": "brave.desktop.and.phone", // Deprecated
-  "Entertainment": "brave.video", // Deprecated
-  "Top News": "brave.trophy",
-  "Culture": "brave.book.alt",
-  "Travel": "brave.mappin",
-  "Business": "brave.building.2",
-  "Sports": "brave.basketball",
-  "Gaming": "brave.pacman",
-  "Science": "brave.erlenmeyerflask",
-  "Fashion": "brave.tshirt",
-  "Food": "brave.bread.and.carrot",
-  "Weather": "brave.moon.cloud",
-  "Top Sources": "brave.newspaper",
-  "Brave": "brave.logo",
-  "Politics": "brave.building.columns",
-  "Fun": "brave.face.smiling",
-  "Cars": "brave.car",
-  "World News": "brave.globe",
+  "Health": "leo.news.health",
+  "Home": "leo.news.home",
+  "Crypto": "leo.bitcoin",
+  "Technology": "leo.news.technology", // Deprecated
+  "Entertainment": "leo.news.filmandtv", // Deprecated
+  "Top News": "leo.news.topnews",
+  "Culture": "leo.news.culture",
+  "Travel": "leo.news.travel",
+  "Business": "leo.news.business",
+  "Sports": "leo.news.sports",
+  "Gaming": "leo.news.gaming",
+  "Science": "leo.news.science",
+  "Fashion": "leo.news.fashion",
+  "Food": "leo.news.food",
+  "Weather": "leo.news.weather",
+  "Top Sources": "leo.news.default",
+  "Brave": "leo.news.brave",
+  "Politics": "leo.news.politics",
+  "Fun": "leo.news.fun",
+  "Cars": "leo.news.car",
+  "World News": "leo.news.worldnews",
   // Added Later
-  "Entertainment News": "brave.party.popper",
-  "Film and TV": "brave.video",
-  "Music": "brave.music.eighthnote.2.grouped",
-  "Tech News": "brave.laptop.and.phone",
-  "Tech Reviews": "brave.laptop.and.phone.star",
-  "US News": "brave.globe.and.mappin",
-  "UK News": "brave.globe.and.mappin",
+  "Entertainment News": "leo.news.entertainment",
+  "Film and TV": "leo.news.filmandtv",
+  "Music": "leo.news.music",
+  "Tech News": "leo.news.technology",
+  "Tech Reviews": "leo.news.technology-reviews",
+  "US News": "leo.news.regional",
+  "UK News": "leo.news.regional",
 ]
 
 #if DEBUG

@@ -12,7 +12,7 @@ class ReaderModeButton: UIButton {
   override init(frame: CGRect) {
     super.init(frame: frame)
     adjustsImageWhenHighlighted = false
-    setImage(UIImage(braveSystemNamed: "brave.text.alignleft"), for: .normal)
+    setImage(UIImage(braveSystemNamed: "leo.list"), for: .normal)
     updateIconSize()
   }
 

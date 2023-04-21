@@ -168,7 +168,7 @@ private struct AccountDetailsHeaderView: View {
         HStack {
           Text(address)
             .foregroundColor(Color(.secondaryBraveLabel))
-          Label(Strings.Wallet.copyToPasteboard, braveSystemImage: "brave.clipboard")
+          Label(Strings.Wallet.copyToPasteboard, braveSystemImage: "leo.copy.plain-text")
             .labelStyle(.iconOnly)
             .foregroundColor(Color(.braveLabel))
         }

@@ -41,7 +41,7 @@ struct PrivacyReportsView: View {
     Button(action: {
       showClearDataPrompt = true
     }, label: {
-      Image(uiImage: .init(braveSystemNamed: "brave.trash")!.template)
+      Image(uiImage: .init(braveSystemNamed: "leo.trash")!.template)
     })
       .accessibility(label: Text(Strings.PrivacyHub.clearAllDataAccessibility))
       .foregroundColor(Color(.braveBlurpleTint))

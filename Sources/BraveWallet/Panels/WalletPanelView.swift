@@ -67,7 +67,7 @@ public struct WalletPanelContainerView: View {
         presentWalletWithContext?(.panelUnlockOrSetup)
       } label: {
         HStack(spacing: 4) {
-          Image(braveSystemName: "brave.unlock")
+          Image(braveSystemName: "leo.lock.open")
           Text(Strings.Wallet.walletPanelUnlockWallet)
         }
       }
@@ -305,7 +305,7 @@ struct WalletPanelView: View {
   
   private var pendingRequestsButton: some View {
     Button(action: { presentWalletWithContext(.pendingRequests) }) {
-      Image(braveSystemName: "brave.bell.badge")
+      Image(braveSystemName: "leo.notification.dot")
         .foregroundColor(.white)
         .frame(minWidth: 30, minHeight: 44)
         .contentShape(Rectangle())
@@ -327,17 +327,17 @@ struct WalletPanelView: View {
   private var menuButton: some View {
     Menu {
       Button(action: { keyringStore.lock() }) {
-        Label(Strings.Wallet.lock, braveSystemImage: "brave.lock")
+        Label(Strings.Wallet.lock, braveSystemImage: "leo.lock")
       }
       Button(action: { presentWalletWithContext(.settings) }) {
-        Label(Strings.Wallet.settings, braveSystemImage: "brave.gear")
+        Label(Strings.Wallet.settings, braveSystemImage: "leo.settings")
       }
       Divider()
       Button(action: { openWalletURL(WalletConstants.braveWalletSupportURL) }) {
-        Label(Strings.Wallet.helpCenter, braveSystemImage: "brave.info.circle")
+        Label(Strings.Wallet.helpCenter, braveSystemImage: "leo.info.outline")
       }
     } label: {
-      Image(systemName: "ellipsis")
+      Image(braveSystemName: "leo.more.horizontal")
         .frame(minWidth: 30, minHeight: 44)
         .contentShape(Rectangle())
     }
@@ -465,7 +465,7 @@ struct WalletPanelView: View {
             Button {
               presentBuySendSwap()
             } label: {
-              Image(braveSystemName: "brave.arrow.left.arrow.right")
+              Image(braveSystemName: "leo.swap.horizontal")
                 .imageScale(.large)
                 .padding(.horizontal, 44)
                 .padding(.vertical, 8)
@@ -476,7 +476,7 @@ struct WalletPanelView: View {
             Button {
               presentWalletWithContext(.transactionHistory)
             } label: {
-              Image(braveSystemName: "brave.history")
+              Image(braveSystemName: "leo.history")
                 .imageScale(.large)
                 .padding(.horizontal, 44)
                 .padding(.vertical, 8)

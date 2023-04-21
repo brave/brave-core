@@ -143,7 +143,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
   }()
 
   lazy var bookmarkButton = ToolbarButton(top: true).then {
-    $0.setImage(UIImage(braveSystemNamed: "brave.book"), for: .normal)
+    $0.setImage(UIImage(braveSystemNamed: "leo.book.6"), for: .normal)
     $0.accessibilityLabel = Strings.bookmarksMenuItem
     $0.addTarget(self, action: #selector(didClickBookmarkButton), for: .touchUpInside)
   }

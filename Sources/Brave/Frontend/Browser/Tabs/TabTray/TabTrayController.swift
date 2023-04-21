@@ -349,8 +349,8 @@ class TabTrayController: LoadingViewController {
   }
   
   private func createTypeSelectorItems() {
-    tabTypeSelectorItems = [UIImage(braveSystemNamed: "brave.rectangle.on.rectangle")!.template,
-                            UIImage(braveSystemNamed: "brave.laptop.and.phone")!.template]
+    tabTypeSelectorItems = [UIImage(braveSystemNamed: "leo.browser.mobile-tabs")!.template,
+                            UIImage(braveSystemNamed: "leo.smartphone.laptop")!.template]
   }
   
   @objc func typeSelectionDidChange(_ sender: UISegmentedControl) {

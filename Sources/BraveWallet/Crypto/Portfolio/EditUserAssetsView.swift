@@ -100,7 +100,7 @@ struct EditUserAssetsView: View {
       self.isPresentingNetworkFilter = true
     }) {
       HStack {
-        Image(braveSystemName: "brave.text.alignleft")
+        Image(braveSystemName: "leo.list")
         Text(userAssetsStore.networkFilter.title)
       }
       .font(.footnote.weight(.medium))

@@ -121,7 +121,7 @@ struct AddSuggestedTokenView: View {
       onDismiss()
     }) {
       HStack {
-        Image(braveSystemName: "brave.checkmark.circle.fill")
+        Image(braveSystemName: "leo.check.circle-filled")
         Text(Strings.Wallet.add)
           .multilineTextAlignment(.center)
       }

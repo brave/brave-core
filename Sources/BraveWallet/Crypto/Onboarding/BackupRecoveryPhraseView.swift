@@ -79,7 +79,7 @@ struct BackupRecoveryPhraseView: View {
         }
         .padding(.horizontal)
         Button(action: copyRecoveryPhrase) {
-          Text("\(Strings.Wallet.copyToPasteboard) \(Image(braveSystemName: "brave.clipboard"))")
+          Text("\(Strings.Wallet.copyToPasteboard) \(Image(braveSystemName: "leo.copy.plain-text"))")
             .font(.subheadline.bold())
             .foregroundColor(Color(.braveBlurpleTint))
         }

@@ -101,16 +101,16 @@ struct CryptoPagesView: View {
           Button(action: {
             keyringStore.lock()
           }) {
-            Label(Strings.Wallet.lock, braveSystemImage: "brave.lock")
+            Label(Strings.Wallet.lock, braveSystemImage: "leo.lock")
               .imageScale(.medium)  // Menu inside nav bar implicitly gets large
           }
           Button(action: { isShowingSettings = true }) {
-            Label(Strings.Wallet.settings, braveSystemImage: "brave.gear")
+            Label(Strings.Wallet.settings, braveSystemImage: "leo.settings")
               .imageScale(.medium)  // Menu inside nav bar implicitly gets large
           }
           Divider()
           Button(action: { openWalletURL(WalletConstants.braveWalletSupportURL) }) {
-            Label(Strings.Wallet.helpCenter, braveSystemImage: "brave.info.circle")
+            Label(Strings.Wallet.helpCenter, braveSystemImage: "leo.info.outline")
           }
         } label: {
           Label(Strings.Wallet.otherWalletActionsAccessibilityTitle, systemImage: "ellipsis.circle")
@@ -253,7 +253,7 @@ private class CryptoPagesViewController: TabbedPageViewController {
 
 private class ConfirmationsButton: SpringButton {
   private let imageView = UIImageView(
-    image: UIImage(braveSystemNamed: "brave.bell.badge")!
+    image: UIImage(braveSystemNamed: "leo.notification.dot")!
       .applyingSymbolConfiguration(.init(pointSize: 18))
   ).then {
     $0.tintColor = .white

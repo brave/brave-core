@@ -405,11 +405,11 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
         }
       }
       var openInNewTab: UIAction {
-        .init(title: Strings.openNewTabButtonTitle, image: UIImage(braveSystemNamed: "brave.plus"), handler: mapDeferredHandler(openInNewTabHandler))
+        .init(title: Strings.openNewTabButtonTitle, image: UIImage(braveSystemNamed: "leo.plus.add"), handler: mapDeferredHandler(openInNewTabHandler))
       }
 
       var openInNewPrivateTab: UIAction {
-        .init(title: Strings.openNewPrivateTabButtonTitle, image: UIImage(braveSystemNamed: "brave.sunglasses"), handler: mapDeferredHandler(openInNewPrivateTabHandler))
+        .init(title: Strings.openNewPrivateTabButtonTitle, image: UIImage(braveSystemNamed: "leo.product.private-window"), handler: mapDeferredHandler(openInNewPrivateTabHandler))
       }
       let openActions: [UIAction] = [
         openInNewTab,
@@ -453,19 +453,19 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
       }
 
       var openInNewTab: UIAction {
-        .init(title: Strings.openNewTabButtonTitle, image: UIImage(braveSystemNamed: "brave.plus"), handler: mapDeferredHandler(openInNewTabHandler))
+        .init(title: Strings.openNewTabButtonTitle, image: UIImage(braveSystemNamed: "leo.plus.add"), handler: mapDeferredHandler(openInNewTabHandler))
       }
 
       var openInNewPrivateTab: UIAction {
-        .init(title: Strings.openNewPrivateTabButtonTitle, image: UIImage(braveSystemNamed: "brave.sunglasses"), handler: mapDeferredHandler(openInNewPrivateTabHandler))
+        .init(title: Strings.openNewPrivateTabButtonTitle, image: UIImage(braveSystemNamed: "leo.product.private-window"), handler: mapDeferredHandler(openInNewPrivateTabHandler))
       }
 
       var disableSource: UIAction {
-        .init(title: String(format: Strings.BraveNews.disablePublisherContent, item.source.name), image: UIImage(braveSystemNamed: "brave.eye.slash"), attributes: .destructive, handler: mapDeferredHandler(toggleSourceHandler))
+        .init(title: String(format: Strings.BraveNews.disablePublisherContent, item.source.name), image: UIImage(braveSystemNamed: "leo.eye.off"), attributes: .destructive, handler: mapDeferredHandler(toggleSourceHandler))
       }
 
       var enableSource: UIAction {
-        .init(title: String(format: Strings.BraveNews.enablePublisherContent, item.source.name), image: UIImage(braveSystemNamed: "brave.eye"), handler: mapDeferredHandler(toggleSourceHandler))
+        .init(title: String(format: Strings.BraveNews.enablePublisherContent, item.source.name), image: UIImage(braveSystemNamed: "leo.eye.on"), handler: mapDeferredHandler(toggleSourceHandler))
       }
 
       let openActions: [UIAction] = [

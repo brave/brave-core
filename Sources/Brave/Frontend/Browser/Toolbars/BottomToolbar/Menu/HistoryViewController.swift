@@ -69,7 +69,7 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
         $0.searchController = searchController
         $0.hidesSearchBarWhenScrolling = false
         $0.rightBarButtonItem =
-          UIBarButtonItem(image: UIImage(braveSystemNamed: "brave.trash")!.template, style: .done, target: self, action: #selector(performDeleteAll))
+          UIBarButtonItem(image: UIImage(braveSystemNamed: "leo.trash")!.template, style: .done, target: self, action: #selector(performDeleteAll))
       }
     }
 

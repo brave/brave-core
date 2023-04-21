@@ -21,7 +21,7 @@ struct LocalStateInspectorView: View {
           Button {
             loadLocalState()
           } label: {
-            Label("Refresh", braveSystemImage: "brave.refresh")
+            Label("Refresh", braveSystemImage: "leo.browser.refresh")
               .imageScale(.medium)
           }
         }

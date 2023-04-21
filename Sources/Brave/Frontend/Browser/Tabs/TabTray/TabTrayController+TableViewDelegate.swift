@@ -71,11 +71,11 @@ extension TabTrayController: UITableViewDataSource, UITableViewDelegate {
     
     switch sectionDetails.deviceFormFactor {
     case .phone, .tablet:
-      deviceTypeImage = UIImage(braveSystemNamed: "brave.tablet.and.phone")
+      deviceTypeImage = UIImage(braveSystemNamed: "leo.smartphone.tablet")
     case .desktop:
-      deviceTypeImage = UIImage(braveSystemNamed: "brave.laptop")
+      deviceTypeImage = UIImage(braveSystemNamed: "leo.laptop")
     default:
-      deviceTypeImage = UIImage(braveSystemNamed: "brave.laptop.and.phone")
+      deviceTypeImage = UIImage(braveSystemNamed: "leo.smartphone.laptop")
     }
         
     let headerView = tableView.dequeueReusableHeaderFooter() as TabSyncHeaderView

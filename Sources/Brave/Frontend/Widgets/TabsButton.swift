@@ -69,7 +69,7 @@ class TabsButton: UIButton {
     let metrics = UIFontMetrics(forTextStyle: .body)
     borderView.snp.remakeConstraints {
       $0.center.equalToSuperview()
-      $0.size.equalTo(metrics.scaledValue(for: 19, compatibleWith: toolbarTraitCollection))
+      $0.size.equalTo(metrics.scaledValue(for: 20, compatibleWith: toolbarTraitCollection))
     }
     countLabel.font = .systemFont(ofSize: UIFont.preferredFont(forTextStyle: .caption2, compatibleWith: toolbarTraitCollection).pointSize, weight: .bold)
   }

@@ -49,7 +49,7 @@ class CollapsedURLBarView: UIView {
     case .localHost:
       lockImageView.isHidden = true
     case .insecure:
-      lockImageView.setImage(UIImage(braveSystemNamed: "brave.exclamationmark.circle.fill")?
+      lockImageView.setImage(UIImage(braveSystemNamed: "leo.info.filled")?
         .withRenderingMode(.alwaysOriginal)
         .withTintColor(.braveErrorLabel), for: .normal)
       lockImageView.accessibilityLabel = Strings.tabToolbarWarningImageAccessibilityLabel

@@ -109,7 +109,7 @@ public struct NewSiteConnectionView: View {
                 Spacer()
                 Group {
                   if selectedAccounts.contains(account.id) {
-                    Image(braveSystemName: "brave.checkmark.circle.fill")
+                    Image(braveSystemName: "leo.check.circle-filled")
                       .foregroundColor(Color(.braveSuccessLabel))
                   } else {
                     Image(systemName: "circle")
@@ -206,7 +206,7 @@ public struct NewSiteConnectionView: View {
       }
       Section {
         HStack(spacing: 12) {
-          Image(braveSystemName: "brave.checkmark.circle.fill")
+          Image(braveSystemName: "leo.check.circle-filled")
             .imageScale(.large)
           Text(Strings.Wallet.newSiteConnectConfirmationMessage)
             .multilineTextAlignment(.leading)
