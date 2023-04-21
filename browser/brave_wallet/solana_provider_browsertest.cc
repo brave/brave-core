@@ -8,8 +8,10 @@
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/values_test_util.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
@@ -228,21 +230,6 @@ constexpr char kSignedTxArrayStrV0[] =
     "62,117,14,95,59,44,129,146,205,25,85,231,59,33,111,45,217,138,53,56,53,66,"
     "159,240,201,66,1,1,0";
 
-std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
-    const net::test_server::HttpRequest& request) {
-  std::unique_ptr<net::test_server::BasicHttpResponse> http_response(
-      new net::test_server::BasicHttpResponse());
-  http_response->set_code(net::HTTP_OK);
-  http_response->set_content_type("text/html");
-  std::string request_path = request.GetURL().path();
-  http_response->set_content(R"({
-    "jsonrpc": "2.0",
-    "id": 1,
-    "result": "ns1aBL6AowxpiPzQL3ZeBK1RpCSLq1VfhqNw9KFSsytayARYdYrqrmbmhaizUTTkT4SXEnjnbVmPBrie3o9yuyB"
-  })");
-  return std::move(http_response);
-}
-
 // signMessage
 constexpr char kMessage[] = "bravey baby!";
 constexpr char kEncodedMessage[] = "98,114,97,118,121,32,98,97,98,121,33";
@@ -305,6 +292,13 @@ bool WaitForWalletBubble(content::WebContents* web_contents) {
 
   return tab_helper->IsShowingBubble();
 }
+
+void CloseWalletBubble(content::WebContents* web_contents) {
+  auto* tab_helper =
+      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents);
+  tab_helper->CloseBubble();
+}
+
 }  // namespace
 
 class SolanaProviderTest : public InProcessBrowserTest {
@@ -348,13 +342,46 @@ class SolanaProviderTest : public InProcessBrowserTest {
     tx_service_ = TxServiceFactory::GetServiceForContext(browser()->profile());
     tx_service_->AddObserver(observer()->GetReceiver());
 
-    StartRPCServer(base::BindRepeating(&HandleRequest));
+    StartRPCServer(base::BindRepeating(&SolanaProviderTest::HandleRequest,
+                                       base::Unretained(this)));
 
     // load solana web3 script
     if (g_provider_solana_web3_script->empty()) {
       *g_provider_solana_web3_script =
           LoadDataResource(IDR_BRAVE_WALLET_SOLANA_WEB3_JS_FOR_TEST);
     }
+  }
+
+  std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
+      const net::test_server::HttpRequest& request) {
+    std::unique_ptr<net::test_server::BasicHttpResponse> http_response(
+        new net::test_server::BasicHttpResponse());
+    http_response->set_code(net::HTTP_OK);
+    http_response->set_content_type("text/html");
+    std::string request_path = request.GetURL().path();
+
+    auto body = base::test::ParseJsonDict(request.content);
+    auto* method = body.FindString("method");
+    EXPECT_TRUE(method);
+    if (*method == "isBlockhashValid") {
+      std::string reply = R"({
+      "jsonrpc": "2.0",
+      "id": 1,
+      "result": {
+        "value": {valid}
+      }
+    })";
+      base::ReplaceFirstSubstringAfterOffset(
+          &reply, 0, "{valid}", mock_blockhash_is_valid_ ? "true" : "false");
+      http_response->set_content(reply);
+    } else {
+      http_response->set_content(R"({
+      "jsonrpc": "2.0",
+      "id": 1,
+      "result": "ns1aBL6AowxpiPzQL3ZeBK1RpCSLq1VfhqNw9KFSsytayARYdYrqrmbmhaizUTTkT4SXEnjnbVmPBrie3o9yuyB"
+    })");
+    }
+    return std::move(http_response);
   }
 
   void StartRPCServer(
@@ -534,12 +561,14 @@ class SolanaProviderTest : public InProcessBrowserTest {
 
   void CallSolanaSignMessage(const std::string& message,
                              const std::string& encoding) {
+    CloseWalletBubble(web_contents());
     ASSERT_TRUE(ExecJs(web_contents(),
                        base::StringPrintf(R"(solanaSignMessage('%s', '%s'))",
                                           message.c_str(), encoding.c_str())));
   }
 
   void CallSolanaRequest(const std::string& json) {
+    CloseWalletBubble(web_contents());
     ASSERT_TRUE(
         ExecJs(web_contents(),
                base::StringPrintf(R"(solanaRequest(%s))", json.c_str())));
@@ -557,6 +586,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
       const std::string& pubkey = "",
       const std::string& signature_array_string = "",
       bool v0 = false) {
+    CloseWalletBubble(web_contents());
     const std::string script =
         pubkey.empty()
             ? base::StringPrintf(
@@ -583,6 +613,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
                                  const std::string& pubkey = "",
                                  const std::string& signature_array_string = "",
                                  bool v0 = false) {
+    CloseWalletBubble(web_contents());
     const std::string script =
         pubkey.empty()
             ? base::StringPrintf(
@@ -604,6 +635,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
       const std::string& pubkey = "",
       const std::string& signature_array_string = "",
       bool v0 = false) {
+    CloseWalletBubble(web_contents());
     const std::string script =
         pubkey.empty()
             ? base::StringPrintf(
@@ -672,6 +704,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
  protected:
   raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
+  bool mock_blockhash_is_valid_ = true;
 
  private:
   TestTxServiceObserver observer_;
@@ -1133,6 +1166,13 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignTransaction) {
       true, request_index++, nullptr, absl::nullopt);
   WaitForResultReady();
   EXPECT_EQ(GetSignTransactionResult(), kSignedTxArrayStrV0);
+
+  // Test blockhash is invalid.
+  mock_blockhash_is_valid_ = false;
+  CallSolanaSignTransaction(kUnsignedTxArrayStr);
+  WaitForResultReady();
+  EXPECT_EQ(GetSignTransactionResult(),
+            l10n_util::GetStringUTF8(IDS_WALLET_INVALID_BLOCKHASH_ERROR));
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAllTransactions) {
@@ -1184,6 +1224,13 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAllTransactions) {
       true, request_index++, absl::nullopt, absl::nullopt);
   WaitForResultReady();
   EXPECT_EQ(GetSignAllTransactionsResult(), "success");
+
+  // Test blockhash is invalid.
+  mock_blockhash_is_valid_ = false;
+  CallSolanaSignAllTransactions(kUnsignedTxArrayStr, kSignedTxArrayStr);
+  WaitForResultReady();
+  EXPECT_EQ(GetSignAllTransactionsResult(),
+            l10n_util::GetStringUTF8(IDS_WALLET_INVALID_BLOCKHASH_ERROR));
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {

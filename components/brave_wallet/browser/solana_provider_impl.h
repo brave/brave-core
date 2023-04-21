@@ -20,12 +20,11 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-class PrefService;
-
 namespace brave_wallet {
 
 class BraveWalletProviderDelegate;
 class BraveWalletService;
+class JsonRpcService;
 class KeyringService;
 class SolanaMessage;
 class SolanaTransaction;
@@ -40,8 +39,8 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   SolanaProviderImpl(KeyringService* keyring_service,
                      BraveWalletService* brave_wallet_service,
                      TxService* tx_service,
-                     std::unique_ptr<BraveWalletProviderDelegate> delegate,
-                     PrefService* prefs);
+                     JsonRpcService* json_rpc_service,
+                     std::unique_ptr<BraveWalletProviderDelegate> delegate);
   ~SolanaProviderImpl() override;
   SolanaProviderImpl(const SolanaProviderImpl&) = delete;
   SolanaProviderImpl& operator=(const SolanaProviderImpl&) = delete;
@@ -88,6 +87,15 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
                                      bool approved,
                                      mojom::ByteArrayStringUnionPtr signature,
                                      const absl::optional<std::string>& error);
+  void ContinueSignTransaction(
+      absl::optional<std::pair<SolanaMessage, std::vector<uint8_t>>> msg_pair,
+      mojom::SolanaSignTransactionParamPtr param,
+      const std::string& account,
+      const std::string& chain_id,
+      SignTransactionCallback callback,
+      bool is_valid,
+      mojom::SolanaProviderError error,
+      const std::string& error_message);
   void OnSignTransactionRequestProcessed(
       std::unique_ptr<SolanaTransaction> tx,
       const std::string& account,
@@ -95,6 +103,14 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
       bool approved,
       mojom::ByteArrayStringUnionPtr signature,
       const absl::optional<std::string>& error);
+  void ContinueSignAllTransactions(
+      std::vector<mojom::TxDataUnionPtr> tx_datas,
+      std::vector<std::unique_ptr<SolanaTransaction>> txs,
+      std::vector<mojom::ByteArrayStringUnionPtr> raw_messages,
+      const std::string& account,
+      const std::string& chain_id,
+      SignAllTransactionsCallback callback,
+      const std::vector<bool>& is_valids);
   void OnSignAllTransactionsRequestProcessed(
       const std::vector<std::unique_ptr<SolanaTransaction>>& txs,
       const std::string& account,
@@ -158,11 +174,11 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
   raw_ptr<TxService> tx_service_ = nullptr;
+  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
       keyring_observer_receiver_{this};
   mojo::Receiver<mojom::TxServiceObserver> tx_observer_receiver_{this};
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
-  const raw_ptr<PrefService> prefs_ = nullptr;
   base::WeakPtrFactory<SolanaProviderImpl> weak_factory_;
 };
 

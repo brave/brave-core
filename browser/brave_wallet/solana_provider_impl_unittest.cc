@@ -41,6 +41,9 @@
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_web_contents_factory.h"
 #include "content/test/test_web_contents.h"
+#include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
+#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
+#include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -98,7 +101,10 @@ class TestEventsListener : public mojom::SolanaEventsListener {
 
 class SolanaProviderImplUnitTest : public testing::Test {
  public:
-  SolanaProviderImplUnitTest() {
+  SolanaProviderImplUnitTest()
+      : shared_url_loader_factory_(
+            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+                &url_loader_factory_)) {
     feature_list_.InitAndEnableFeature(
         brave_wallet::features::kBraveWalletSolanaFeature);
   }
@@ -121,6 +127,18 @@ class SolanaProviderImplUnitTest : public testing::Test {
     permissions::PermissionRequestManager::CreateForWebContents(web_contents());
     json_rpc_service_ =
         JsonRpcServiceFactory::GetServiceForContext(browser_context());
+    json_rpc_service_->SetAPIRequestHelperForTesting(
+        shared_url_loader_factory_);
+
+    // Return true for checking blockhash.
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&](const network::ResourceRequest& request) {
+          url_loader_factory_.ClearResponses();
+          url_loader_factory_.AddResponse(
+              request.url.spec(),
+              R"({"jsonrpc": "2.0", "id": 1, "result": { "value": true }})");
+        }));
+
     keyring_service_ =
         KeyringServiceFactory::GetServiceForContext(browser_context());
     brave_wallet_service_ =
@@ -133,10 +151,9 @@ class SolanaProviderImplUnitTest : public testing::Test {
             PermissionManagerFactory::GetInstance()->BuildServiceInstanceFor(
                 browser_context()))));
     provider_ = std::make_unique<SolanaProviderImpl>(
-        keyring_service_, brave_wallet_service_, tx_service_,
+        keyring_service_, brave_wallet_service_, tx_service_, json_rpc_service_,
         std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
-            web_contents(), web_contents()->GetPrimaryMainFrame()),
-        profile_.GetPrefs());
+            web_contents(), web_contents()->GetPrimaryMainFrame()));
     observer_ = std::make_unique<TestEventsListener>();
     provider_->Init(observer_->GetReceiver());
   }
@@ -372,9 +389,12 @@ class SolanaProviderImplUnitTest : public testing::Test {
         }));
 
     if (run_notify) {
-      brave_wallet_service_->NotifySignTransactionRequestProcessed(
-          approve, brave_wallet_service_->sign_transaction_id_ - 1,
-          std::move(hw_sig), err_in);
+      brave_wallet_service_->SetSignTransactionRequestAddedCallbackForTesting(
+          base::BindLambdaForTesting([&]() {
+            brave_wallet_service_->NotifySignTransactionRequestProcessed(
+                approve, brave_wallet_service_->sign_transaction_id_ - 1,
+                std::move(hw_sig), err_in);
+          }));
     }
 
     run_loop.Run();
@@ -412,9 +432,15 @@ class SolanaProviderImplUnitTest : public testing::Test {
             }));
 
     if (run_notify) {
-      brave_wallet_service_->NotifySignAllTransactionsRequestProcessed(
-          approve, brave_wallet_service_->sign_all_transactions_id_ - 1,
-          std::move(hw_sigs), err_in);
+      brave_wallet_service_
+          ->SetSignAllTransactionsRequestAddedCallbackForTesting(
+              base::BindLambdaForTesting([&]() {
+                brave_wallet_service_
+                    ->NotifySignAllTransactionsRequestProcessed(
+                        approve,
+                        brave_wallet_service_->sign_all_transactions_id_ - 1,
+                        std::move(hw_sigs), err_in);
+              }));
     }
 
     run_loop.Run();
@@ -470,6 +496,9 @@ class SolanaProviderImplUnitTest : public testing::Test {
   content::TestWebContentsFactory factory_;
   TestingProfile profile_;
   base::test::ScopedFeatureList feature_list_;
+  data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
+  network::TestURLLoaderFactory url_loader_factory_;
+  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
 };
 
 TEST_F(SolanaProviderImplUnitTest, Connect) {
