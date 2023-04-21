@@ -121,16 +121,13 @@ void RewardsBrowserTestContribution::TipPublisher(
         new Promise(resolve => {
           const input =
             document.querySelector('[data-test-id=custom-amount-input]');
-          input.value = $1;
-          input.blur();
+          input[Symbol.for('updateCustomAmountForTesting')](`$1`);
           setTimeout(resolve, 30);
         })
     )";
 
     ASSERT_TRUE(ExecJs(site_banner_contents.get(),
-                       content::JsReplace(set_input_script, amount),
-                       content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                       content::ISOLATED_WORLD_ID_CONTENT_END));
+                       content::JsReplace(set_input_script, amount)));
   } else {
     amount = test_util::GetSiteBannerTipOptions(
         site_banner_contents.get())[selection];

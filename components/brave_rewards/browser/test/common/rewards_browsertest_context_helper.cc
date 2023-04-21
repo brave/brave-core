@@ -96,7 +96,7 @@ void RewardsBrowserTestContextHelper::VisitPublisher(const GURL& url,
 
   // The minimum publisher duration when testing is 1 second (and the
   // granularity is seconds), so wait for just over 2 seconds to elapse
-  base::PlatformThread::Sleep(base::Milliseconds(2100));
+  test_util::WaitForAutoContributeVisitTime();
 
   LoadRewardsPage();
 

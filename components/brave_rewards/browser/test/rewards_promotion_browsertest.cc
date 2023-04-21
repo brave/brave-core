@@ -7,6 +7,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
+#include "base/test/bind.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.h"
@@ -203,29 +204,24 @@ IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest,
   CheckPromotionStatus("Over");
 }
 
-// TODO(https://github.com/brave/brave-browser/issues/29519): Test flaky on
-// master for the mac build.
-#if BUILDFLAG(IS_MAC)
-#define MAYBE_PromotionNotQuiteOver DISABLED_PromotionNotQuiteOver
-#else
-#define MAYBE_PromotionNotQuiteOver PromotionNotQuiteOver
-#endif  // BUILDFLAG(IS_MAC)
-IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest,
-                       MAYBE_PromotionNotQuiteOver) {
+IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, PromotionNotQuiteOver) {
   test_util::CreateRewardsWallet(rewards_service_);
-  rewards_service_->FetchPromotions(base::DoNothing());
-  promotion_->WaitForPromotionInitialization();
+
+  auto fetch_promotions = [this]() {
+    base::RunLoop run_loop;
+    rewards_service_->FetchPromotions(base::BindLambdaForTesting(
+        [&](std::vector<mojom::PromotionPtr>) { run_loop.Quit(); }));
+    run_loop.Run();
+  };
+
+  fetch_promotions();
 
   removed_ = true;
-  rewards_service_->FetchPromotions(base::DoNothing());
-  promotion_->WaitForPromotionInitialization();
-
+  fetch_promotions();
   CheckPromotionStatus("Over");
 
   removed_ = false;
-  rewards_service_->FetchPromotions(base::DoNothing());
-  promotion_->WaitForPromotionInitialization();
-
+  fetch_promotions();
   CheckPromotionStatus("Active");
 }
 

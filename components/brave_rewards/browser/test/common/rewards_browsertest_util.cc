@@ -12,6 +12,7 @@
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/stringprintf.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
 #include "brave/components/brave_rewards/common/mojom/bat_ledger.mojom-test-utils.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -101,6 +102,14 @@ void WaitForLedgerStop(RewardsServiceImpl* rewards_service) {
   base::RunLoop run_loop;
   rewards_service->StopLedger(base::BindLambdaForTesting(
       [&](const mojom::Result) { run_loop.Quit(); }));
+  run_loop.Run();
+}
+
+void WaitForAutoContributeVisitTime() {
+  base::RunLoop run_loop;
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+      FROM_HERE, base::BindLambdaForTesting([&]() { run_loop.Quit(); }),
+      base::Seconds(2.1));
   run_loop.Run();
 }
 

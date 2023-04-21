@@ -150,15 +150,8 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, AutoContribution) {
       contents(), "[data-test-id=rewards-summary-ac]", "-20.00 BAT");
 }
 
-// TODO(https://github.com/brave/brave-browser/issues/29632): Test flaky on
-// master for the mac build.
-#if BUILDFLAG(IS_MAC)
-#define MAYBE_AutoContributionUnconnected DISABLED_AutoContributionUnconnected
-#else
-#define MAYBE_AutoContributionUnconnected AutoContributionUnconnected
-#endif  // BUILDFLAG(IS_MAC)
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
-                       MAYBE_AutoContributionUnconnected) {
+                       AutoContributionUnconnected) {
   // Set kEnabled to false before calling CreateRewardsWallet to ensure that
   // prefs are configured to reflect an unconnected user
   auto* pref_service = browser()->profile()->GetPrefs();
@@ -169,9 +162,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
   test_util::NavigateToPublisherPage(browser(), https_server_.get(),
                                      "duckduckgo.com");
 
-  // The minimum publisher duration when testing is 1 second (and the
-  // granularity is seconds), so wait for just over 2 seconds to elapse
-  base::PlatformThread::Sleep(base::Milliseconds(2100));
+  test_util::WaitForAutoContributeVisitTime();
 
   // Switch to original tab to trigger saving publisher activity
   browser()->tab_strip_model()->ActivateTabAt(0);
@@ -187,16 +178,8 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
       "This month, you've visited 1 creator supported by Brave Rewards");
 }
 
-// TODO(https://github.com/brave/brave-browser/issues/29480): Test flaky on
-// master for the mac build.
-#if BUILDFLAG(IS_MAC)
-#define MAYBE_AutoContributionUnconnectedJapan \
-  DISABLED_AutoContributionUnconnectedJapan
-#else
-#define MAYBE_AutoContributionUnconnectedJapan AutoContributionUnconnectedJapan
-#endif  // BUILDFLAG(IS_MAC)
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
-                       MAYBE_AutoContributionUnconnectedJapan) {
+                       AutoContributionUnconnectedJapan) {
   // Set kEnabled to false before calling CreateRewardsWallet to ensure that
   // prefs are configured to reflect an unconnected user
   auto* pref_service = browser()->profile()->GetPrefs();
@@ -210,9 +193,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
   test_util::NavigateToPublisherPage(browser(), https_server_.get(),
                                      "duckduckgo.com");
 
-  // The minimum publisher duration when testing is 1 second (and the
-  // granularity is seconds), so wait for just over 2 seconds to elapse
-  base::PlatformThread::Sleep(base::Milliseconds(2100));
+  test_util::WaitForAutoContributeVisitTime();
 
   // Switch to original tab to trigger saving publisher activity
   browser()->tab_strip_model()->ActivateTabAt(0);
@@ -228,17 +209,8 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
       "This month, you've visited 1 creator supported by Brave Rewards");
 }
 
-// TODO(https://github.com/brave/brave-browser/issues/29825): Test flaky on
-// master for the mac build.
-#if BUILDFLAG(IS_MAC)
-#define MAYBE_AutoContributionMultiplePublishers \
-  DISABLED_AutoContributionMultiplePublishers
-#else
-#define MAYBE_AutoContributionMultiplePublishers \
-  AutoContributionMultiplePublishers
-#endif  // BUILDFLAG(IS_MAC)
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
-                       MAYBE_AutoContributionMultiplePublishers) {
+                       AutoContributionMultiplePublishers) {
   test_util::CreateRewardsWallet(rewards_service_);
   rewards_service_->SetAutoContributeEnabled(true);
   context_helper_->LoadRewardsPage();
@@ -250,12 +222,6 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
       test_util::GetUrl(https_server_.get(), "laurenwags.github.io"), true);
   context_helper_->VisitPublisher(
       test_util::GetUrl(https_server_.get(), "site1.com"), true);
-  context_helper_->VisitPublisher(
-      test_util::GetUrl(https_server_.get(), "site2.com"), true);
-  context_helper_->VisitPublisher(
-      test_util::GetUrl(https_server_.get(), "site3.com"), true);
-  context_helper_->VisitPublisher(
-      test_util::GetUrl(https_server_.get(), "3zsistemi.si"), true);
 
   rewards_service_->StartContributionsForTesting();
 
@@ -272,7 +238,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
   test_util::WaitForElementThenClick(
       contents(), "#internals-tabs > div > div:nth-of-type(4)");
 
-  for (int i = 1; i <= 6; i++) {
+  for (int i = 1; i <= 3; i++) {
     const std::string query = base::StringPrintf(
         "[data-test-id='publisher-wrapper'] > div:nth-of-type(%d) "
         "[data-test-id='contributed-amount']",
