@@ -87,7 +87,7 @@ public class BraveWalletPreferences
         });
         mWeb3NftDiscoverySwitch.setOnPreferenceChangeListener(
                 (Preference preference, Object newValue) -> {
-                    mWalletModel.getCryptoModel().updateNftDiscovery((Boolean) newValue);
+                    mWalletModel.getCryptoModel().updateNftDiscovery((boolean) newValue);
                     return true;
                 });
     }

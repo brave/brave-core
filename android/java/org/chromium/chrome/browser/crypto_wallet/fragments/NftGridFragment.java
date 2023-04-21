@@ -239,7 +239,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
                                             WalletConstants.NFT_DISCOVERY_LEARN_MORE_LINK);
                                 })));
 
-        MaterialAlertDialogBuilder auroraDialogBuilder = new MaterialAlertDialogBuilder(
+        MaterialAlertDialogBuilder nftDiscoveryDialogBuilder = new MaterialAlertDialogBuilder(
                 requireContext(), R.style.BraveWalletAlertDialogTheme);
 
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_alert_template, null);
@@ -252,8 +252,8 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         message.setMovementMethod(LinkMovementMethod.getInstance());
         message.setText(nftDiscoveryDesc);
         enableBtn.setText(R.string.brave_action_enable);
-        auroraDialogBuilder.setView(dialogView);
-        var dialog = auroraDialogBuilder.create();
+        nftDiscoveryDialogBuilder.setView(dialogView);
+        var dialog = nftDiscoveryDialogBuilder.create();
 
         enableBtn.setOnClickListener(v -> {
             dialog.dismiss();
