@@ -562,6 +562,12 @@ Config.prototype.buildArgs = function () {
     args.ios_enable_credential_provider_extension = false
     args.ios_enable_widget_kit_extension = false
 
+    // This is currently being flipped on and off by the Chromium team to test
+    // however it causes crashes for us at launch. Check `ios/features.gni`
+    // in the future to see if this is no longer needed
+    // https://github.com/brave/brave-browser/issues/29934
+    args.ios_partition_alloc_enabled = false
+
     args.ios_provider_target = "//brave/ios/browser/providers:brave_providers"
 
     args.ios_locales_pack_extra_source_patterns = [
