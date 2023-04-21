@@ -134,7 +134,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
     @Override
     public void onResume() {
         super.onResume();
-        if (!JavaUtils.anyNull(mWalletModel) || !mCanRunOnceWhenResumed
+        if (JavaUtils.anyNull(mWalletModel) || !mCanRunOnceWhenResumed
                 || !SharedPreferencesManager.getInstance().readBoolean(
                         SHOW_NFT_DISCOVERY_DIALOG, true))
             return;
