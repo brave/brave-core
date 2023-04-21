@@ -481,11 +481,14 @@ const util = {
   // So, we should copy our pre-installed files to overwrite upstream pre-installed files.
   // After checking, pre-installed files are copied to gen dir and they are used to compile.
   // So, this copying in every build doesn't affect compile performance.
-  updateOmahaMidlFiles: () => {
-    console.log('update omaha midl files...')
-    const srcDir = path.join(config.braveCoreDir, 'win_build_output', 'midl', 'google_update')
-    const dstDir = path.join(config.srcDir, 'third_party', 'win_build_output', 'midl', 'google_update')
-    fs.copySync(srcDir, dstDir)
+  updateMidlFiles: () => {
+    console.log('update midl files...')
+    for (const source of ["google_update", "brave"]) {
+      fs.copySync(
+        path.join(config.braveCoreDir, 'win_build_output', 'midl', source),
+        path.join(config.srcDir,
+                  'third_party', 'win_build_output', 'midl', source))
+    }
   },
 
   buildNativeRedirectCC: (options = config.defaultOptions) => {
@@ -550,7 +553,7 @@ const util = {
     console.log('generating ninja files...')
 
     if (process.platform === 'win32') {
-      util.updateOmahaMidlFiles()
+      util.updateMidlFiles()
     }
     util.runGnGen(options)
   },

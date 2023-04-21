@@ -1,0 +1,82 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+import("//build/toolchain/win/midl.gni")
+import("//build/util/process_version.gni")
+import("//chrome/process_version_rc_template.gni")
+
+assert(is_win)
+
+midl("brave_wireguard_manager_idl") {
+  sources = [ "brave_wireguard_manager_idl.idl" ]
+
+  writes_tlb = true
+}
+
+# This service needs to work with Windows 7, so explicitly setting the defines
+# to reflect this. Otherwise, WRL uses APIs that are only available in later
+# Windows versions.
+config("winver") {
+  defines = [
+    "NTDDI_VERSION=NTDDI_WIN7",
+    "_WIN32_WINNT=_WIN32_WINNT_WIN7",
+    "WINVER=_WIN32_WINNT_WIN7",
+  ]
+}
+
+source_set("common") {
+  sources = [
+    "scoped_sc_handle.h",
+    "service_constants.cc",
+    "service_constants.h",
+  ]
+
+  deps = [
+    "//base",
+    "//chrome/install_static:install_static_util",
+  ]
+}
+
+executable("brave_vpn_wireguard_service") {
+  configs -= [ "//build/config/win:winver" ]
+  configs += [ ":winver" ]
+  sources = [
+    "brave_vpn_wireguard_service.rc",
+    "brave_wireguard_manager.cc",
+    "brave_wireguard_manager.h",
+    "brave_wireguard_service_crash_reporter_client.cc",
+    "brave_wireguard_service_crash_reporter_client.h",
+    "main.cc",
+    "service_main.cc",
+    "service_main.h",
+    "service_main.h",
+    "service_utils.cc",
+    "service_utils.h",
+  ]
+
+  deps = [
+    ":common",
+    ":version_resources",
+    "//base",
+    "//base:base_static",
+    "//build/win:default_exe_manifest",
+    "//chrome/install_static:install_static_util",
+    "//chrome/installer/util:with_no_strings",
+    "//components/crash/core/app",
+    "//components/crash/core/app:crash_export_thunks",
+    "//components/crash/core/app:run_as_crashpad_handler",
+    "//components/version_info:channel",
+  ]
+  public_deps = [ ":brave_wireguard_manager_idl" ]
+  libs = [
+    "userenv.lib",  # For GetUserProfileDirectoryW()
+  ]
+}
+
+process_version_rc_template("version_resources") {
+  sources = [ "brave_vpn_wireguard_service.ver" ]
+  output = "$target_gen_dir/brave_vpn_wireguard_service.rc"
+}

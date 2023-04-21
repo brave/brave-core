@@ -11,10 +11,12 @@ namespace {
 // components\brave_vpn\browser\connection\win\brave_vpn_helper\brave_vpn_helper_crash_reporter_client.cc
 // // NOLINT Need keep it in sync
 constexpr char kBraveVPNHelperProcessType[] = "brave-vpn-helper";
+constexpr char kBraveWireguardProcessType[] = "brave-wireguard-vpn";
 }  // namespace
 
 #define BRAVE_INITIALIZE_CRASHPAD_IMPL_PROCESS_TYPE \
-  process_type == kBraveVPNHelperProcessType ||
+  process_type == kBraveVPNHelperProcessType ||     \
+      process_type == kBraveWireguardProcessType ||
 #endif
 
 #include "src/components/crash/core/app/crashpad.cc"

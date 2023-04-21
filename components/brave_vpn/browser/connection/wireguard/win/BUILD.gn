@@ -17,6 +17,7 @@ source_set("win") {
   ]
 
   deps = [
+    "brave_vpn_wireguard_service",
     "//base",
     "//brave/components/brave_vpn/browser/api",
     "//brave/components/brave_vpn/browser/connection:api",
