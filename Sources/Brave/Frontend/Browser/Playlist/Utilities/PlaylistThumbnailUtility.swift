@@ -24,38 +24,45 @@ public class PlaylistThumbnailRenderer {
     if let assetUrl = assetUrl, let cachedImage = SDImageCache.shared.imageFromCache(forKey: assetUrl.absoluteString) {
       self.destroy()
       completion(cachedImage)
-    } else {
-      var generators = [Future<UIImage, Error>]()
-      if let assetUrl = assetUrl {
-        generators.append(contentsOf: [
-          bind(loadHLSThumbnail, url: assetUrl),
-          bind(loadAssetThumbnail, url: assetUrl),
-        ])
-      }
-
-      if let favIconUrl = favIconUrl {
-        generators.append(bind(loadFavIconThumbnail, url: favIconUrl))
-      }
-
-      var chainedGenerator = generators.removeFirst().eraseToAnyPublisher()
-      for generator in generators {
-        chainedGenerator = chainedGenerator.catch { _ in
-          generator
-        }.eraseToAnyPublisher()
-      }
-
-      chainedGenerator.receive(on: RunLoop.main).sink(
-        receiveCompletion: {
-          if case .failure(let error) = $0 {
-            Logger.module.error("\(error.localizedDescription)")
-            completion(nil)
-          }
-        },
-        receiveValue: {
-          completion($0)
-        }
-      ).store(in: &thumbnailGenerator)
+      return
     }
+    
+    if let favIconUrl = favIconUrl, let cachedImage = SDImageCache.shared.imageFromCache(forKey: favIconUrl.absoluteString) {
+      self.destroy()
+      completion(cachedImage)
+      return
+    }
+    
+    var generators = [Future<UIImage, Error>]()
+    if let assetUrl = assetUrl {
+      generators.append(contentsOf: [
+        bind(loadHLSThumbnail, url: assetUrl),
+        bind(loadAssetThumbnail, url: assetUrl),
+      ])
+    }
+
+    if let favIconUrl = favIconUrl {
+      generators.append(bind(loadFavIconThumbnail, url: favIconUrl))
+    }
+
+    var chainedGenerator = generators.removeFirst().eraseToAnyPublisher()
+    for generator in generators {
+      chainedGenerator = chainedGenerator.catch { _ in
+        generator
+      }.eraseToAnyPublisher()
+    }
+
+    chainedGenerator.receive(on: RunLoop.main).sink(
+      receiveCompletion: {
+        if case .failure(let error) = $0 {
+          Logger.module.error("\(error.localizedDescription)")
+          completion(nil)
+        }
+      },
+      receiveValue: {
+        completion($0)
+      }
+    ).store(in: &thumbnailGenerator)
   }
 
   func cancel() {

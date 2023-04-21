@@ -388,10 +388,10 @@ private class PlaylistHLSDownloadManager: NSObject, AVAssetDownloadDelegate {
         }
 
       case (NSURLErrorDomain, NSURLErrorUnknown):
-        assertionFailure("Downloading HLS streams is not supported on the simulator.")
+        Logger.module.error("Downloading HLS streams is not supported on the simulator.")
 
       default:
-        assertionFailure("An unknown error occured while attempting to download the playlist item: \(error.localizedDescription)")
+        Logger.module.error("An unknown error occurred while attempting to donwload the playlist item: \(error)")
       }
 
       DispatchQueue.main.async {
