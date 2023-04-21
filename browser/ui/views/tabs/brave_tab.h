@@ -35,9 +35,11 @@ class BraveTab : public Tab {
   bool ShouldRenderAsNormalTab() const override;
   void Layout() override;
   void ReorderChildLayers(ui::Layer* parent_layer) override;
-  void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
   void MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,
                                    int visual_width) const override;
+
+  void OnLayerBoundsChanged(const gfx::Rect& old_bounds,
+                            ui::PropertyChangeReason reason) override;
 
  private:
   bool IsAtMinWidthForVerticalTabStrip() const;
