@@ -5,7 +5,7 @@
 
 #include "brave/browser/ui/views/brave_ads/bounds_util.h"
 
-#include "brave/components/brave_ads/common/features.h"
+#include "brave/components/brave_ads/common/custom_notification_ads_features.h"
 #include "ui/display/screen.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/native_widget_types.h"

@@ -18,7 +18,6 @@
 #include "base/functional/callback_helpers.h"
 #include "base/hash/hash.h"
 #include "base/logging.h"
-#include "base/metrics/field_trial_params.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
@@ -39,8 +38,9 @@
 #include "brave/components/brave_ads/browser/frequency_capping_helper.h"
 #include "brave/components/brave_ads/browser/reminder_util.h"
 #include "brave/components/brave_ads/browser/service_sandbox_type.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/common/ad_notifications_features.h"
 #include "brave/components/brave_ads/common/constants.h"
-#include "brave/components/brave_ads/common/features.h"
+#include "brave/components/brave_ads/common/custom_notification_ads_features.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/ad_constants.h"
 #include "brave/components/brave_ads/core/ads_util.h"
@@ -106,8 +106,6 @@ constexpr unsigned int kMaximumNumberOfTimesToRetryNetworkRequests = 1;
 constexpr int kHttpUpgradeRequiredStatusResponseCode = 426;
 
 constexpr char kNotificationAdUrlPrefix[] = "https://www.brave.com/ads/?";
-
-BASE_FEATURE(kFeature, "NotificationAds", base::FEATURE_ENABLED_BY_DEFAULT);
 
 int GetDataResourceId(const std::string& name) {
   if (name == data::resource::kCatalogJsonSchemaFilename) {
@@ -751,7 +749,7 @@ void AdsServiceImpl::ProcessIdleState(const ui::IdleState idle_state,
 }
 
 bool AdsServiceImpl::CheckIfCanShowNotificationAds() {
-  if (!features::IsNotificationAdsEnabled()) {
+  if (!features::IsAdsNotificationEnabled()) {
     VLOG(1) << "Notification not made: Ad notifications feature is disabled";
     return false;
   }
@@ -1283,9 +1281,7 @@ int64_t AdsServiceImpl::GetMaximumNotificationAdsPerHour() const {
   int64_t ads_per_hour =
       GetPrefService()->GetInt64(prefs::kMaximumNotificationAdsPerHour);
   if (ads_per_hour == -1) {
-    ads_per_hour = base::GetFieldTrialParamByFeatureAsInt(
-        kFeature, "default_ads_per_hour",
-        kDefaultBraveRewardsNotificationAdsPerHour);
+    ads_per_hour = GetDefaultBraveRewardsNotificationAdsPerHour();
   }
 
   return ads_per_hour;

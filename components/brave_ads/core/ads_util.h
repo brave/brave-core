@@ -12,6 +12,8 @@ namespace brave_ads {
 // |false|.
 bool IsSupportedRegion();
 
+int GetDefaultBraveRewardsNotificationAdsPerHour();
+
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_ADS_UTIL_H_

@@ -10,7 +10,7 @@
 #include "brave/browser/ui/brave_ads/notification_ad_popup_handler.h"
 #include "brave/browser/ui/views/brave_ads/notification_ad_popup.h"
 #include "brave/browser/ui/views/brave_ads/notification_ad_popup_collection.h"
-#include "brave/components/brave_ads/common/features.h"
+#include "brave/components/brave_ads/common/search_result_ad_features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/test/views/snapshot/widget_snapshot_checker.h"
 #include "chrome/browser/platform_util.h"

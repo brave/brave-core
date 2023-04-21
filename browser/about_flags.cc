@@ -12,7 +12,7 @@
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ethereum_remote_client/features.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/components/brave_ads/common/features.h"
+#include "brave/components/brave_ads/common/custom_notification_ads_features.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_news/common/features.h"

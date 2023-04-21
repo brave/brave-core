@@ -12,7 +12,7 @@
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/browser/mock_ads_service.h"
-#include "brave/components/brave_ads/common/features.h"
+#include "brave/components/brave_ads/common/search_result_ad_features.h"
 #include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_handler.h"
 #include "brave/components/brave_ads/core/search_result_ad/test_web_page_util.h"
 #include "testing/gmock/include/gmock/gmock.h"
