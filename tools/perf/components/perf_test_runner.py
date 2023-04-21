@@ -25,6 +25,7 @@ from components.browser_binary_fetcher import (BrowserBinary, PrepareBinary,
 with path_util.SysPath(path_util.GetChromiumPerfDir()):
   from core.perf_benchmark import PerfBenchmark  # pylint: disable=import-error
 
+
 class CommonOptions:
   verbose: bool = False
   ci_mode: bool = False
