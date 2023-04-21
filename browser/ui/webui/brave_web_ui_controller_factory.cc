@@ -187,17 +187,20 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
 // Returns a function that can be used to create the right type of WebUI for a
 // tab, based on its URL. Returns NULL if the URL doesn't have WebUI associated
 // with it.
-WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui, const GURL& url) {
+WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
+                                             Profile* profile,
+                                             const GURL& url) {
   if (url.host_piece() == kAdblockHost ||
       url.host_piece() == kAdblockInternalsHost ||
       url.host_piece() == kWebcompatReporterHost ||
 #if BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
       (url.host_piece() == kIPFSWebUIHost &&
-       base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) ||
+       ipfs::IpfsServiceFactory::IsIpfsEnabled(profile)) ||
 #endif  // BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
 #if !BUILDFLAG(IS_ANDROID)
-      url.host_piece() == kWalletPanelHost ||
-      url.host_piece() == kWalletPageHost ||
+      ((url.host_piece() == kWalletPanelHost ||
+        url.host_piece() == kWalletPageHost) &&
+       brave_wallet::IsAllowedForContext(profile)) ||
 #endif
 #if BUILDFLAG(IS_ANDROID)
       (url.is_valid() &&
@@ -216,13 +219,15 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui, const GURL& url) {
       url.host_piece() == kBraveRewardsPanelHost ||
       url.host_piece() == kBraveTipPanelHost ||
       url.host_piece() == kSpeedreaderPanelHost ||
-      url.host_piece() == kCommandsHost ||
+      (url.host_piece() == kCommandsHost &&
+       base::FeatureList::IsEnabled(commands::features::kBraveCommands)) ||
 #endif
 #if BUILDFLAG(ENABLE_TOR)
       url.host_piece() == kTorInternalsHost ||
 #endif
-      url.host_piece() == kWelcomeHost ||
-      url.host_piece() == chrome::kChromeUIWelcomeURL ||
+      ((url.host_piece() == kWelcomeHost ||
+        url.host_piece() == chrome::kChromeUIWelcomeURL) &&
+       !profile->IsGuestSession()) ||
 #if !BUILDFLAG(IS_ANDROID)
       // On Android New Tab is a native page implemented in Java, so no need in
       // WebUI.
@@ -276,7 +281,9 @@ WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
   if (playlist::PlaylistUI::ShouldBlockPlaylistWebUI(browser_context, url))
     return WebUI::kNoWebUI;
 #endif
-  WebUIFactoryFunction function = GetWebUIFactoryFunction(nullptr, url);
+  Profile* profile = Profile::FromBrowserContext(browser_context);
+  WebUIFactoryFunction function =
+      GetWebUIFactoryFunction(nullptr, profile, url);
   if (function) {
     return reinterpret_cast<WebUI::TypeID>(function);
   }
@@ -286,7 +293,8 @@ WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
 std::unique_ptr<WebUIController>
 BraveWebUIControllerFactory::CreateWebUIControllerForURL(WebUI* web_ui,
                                                          const GURL& url) {
-  WebUIFactoryFunction function = GetWebUIFactoryFunction(web_ui, url);
+  Profile* profile = Profile::FromWebUI(web_ui);
+  WebUIFactoryFunction function = GetWebUIFactoryFunction(web_ui, profile, url);
   if (!function) {
     return ChromeWebUIControllerFactory::CreateWebUIControllerForURL(web_ui,
                                                                      url);
