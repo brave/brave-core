@@ -11,6 +11,7 @@ import {getTemplate} from './toolbar.html.js'
 import '../settings_shared.css.js'
 import '../settings_vars.css.js'
 import './sidebar.js'
+import './tabs.js'
 
 const SettingsBraveAppearanceToolbarElementBase = I18nMixin(PolymerElement) as {
   new (): PolymerElement & I18nMixinInterface
@@ -47,15 +48,6 @@ class SettingsBraveAppearanceToolbarElement extends SettingsBraveAppearanceToolb
   //     }
   //   }
   // }
-
-  private tabTooltipModes_ = [
-    { value: 1, name: this.i18n('appearanceSettingsTabHoverModeCard') },
-    {
-      value: 2,
-      name: this.i18n('appearanceSettingsTabHoverModeCardWithPreview')
-    },
-    { value: 0, name: this.i18n('appearanceSettingsTabHoverModeTooltip') }
-  ]
 
   private showBraveVPNOption_() {
     return loadTimeData.getBoolean('isBraveVPNEnabled')

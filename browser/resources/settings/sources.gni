@@ -11,11 +11,13 @@ import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 # webui build pipeline.
 brave_settings_preprocess_deps =
     [ "//brave/browser/resources/settings:preprocess" ]
+
 brave_settings_web_component_files = [
+  "brave_appearance_page/bookmark_bar.ts",
   "brave_appearance_page/brave_theme.ts",
   "brave_appearance_page/sidebar.ts",
-  "brave_appearance_page/bookmark_bar.ts",
   "brave_appearance_page/super_referral.ts",
+  "brave_appearance_page/tabs.ts",
   "brave_appearance_page/toolbar.ts",
   "brave_clear_browsing_data_dialog/brave_clear_browsing_data_on_exit_page.ts",
   "brave_default_extensions_page/brave_default_extensions_page.ts",
@@ -32,6 +34,7 @@ brave_settings_web_component_files = [
   "brave_privacy_page/brave_personalization_options.ts",
   "brave_rewards_page/brave_rewards_page.ts",
   "brave_search_engines_page/brave_search_engines_page.ts",
+  "brave_site_settings/brave_site_data_details_subpage.ts",
   "brave_sync_page/brave_sync_code_dialog.ts",
   "brave_sync_page/brave_sync_configure.ts",
   "brave_sync_page/brave_sync_delete_account_dialog.ts",
@@ -54,6 +57,7 @@ brave_settings_web_component_files = [
   "getting_started_page/getting_started.ts",
   "social_blocking_page/social_blocking_page.ts",
 ]
+
 brave_settings_non_web_component_files = [
   "brave_appearance_page/brave_appearance_browser_proxy.ts",
   "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.ts",
