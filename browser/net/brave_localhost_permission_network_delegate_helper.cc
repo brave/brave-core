@@ -12,7 +12,7 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
-#include "content/public/browser/permission_controller_delegate.h"
+#include "content/public/browser/permission_controller.h"
 #include "content/public/browser/web_contents.h"
 #include "net/base/url_util.h"
 #include "third_party/blink/public/common/permissions/permission_utils.h"
@@ -103,11 +103,12 @@ int OnBeforeURLRequest_LocalhostPermissionWork(
                                                     ctx->browser_context);
   }
 
-  content::PermissionControllerDelegate* permission_controller =
-      contents->GetBrowserContext()->GetPermissionControllerDelegate();
-  auto current_status = permission_controller->GetPermissionStatusForOrigin(
-      blink::PermissionType::BRAVE_LOCALHOST_ACCESS,
-      /* rfh */ contents->GetPrimaryMainFrame(), request_initiator_url);
+  auto* permission_controller =
+      contents->GetBrowserContext()->GetPermissionController();
+  auto current_status =
+      permission_controller->GetPermissionStatusForCurrentDocument(
+          blink::PermissionType::BRAVE_LOCALHOST_ACCESS,
+          /* rfh */ contents->GetPrimaryMainFrame());
 
   switch (current_status) {
     case blink::mojom::PermissionStatus::GRANTED: {
@@ -119,10 +120,9 @@ int OnBeforeURLRequest_LocalhostPermissionWork(
     }
 
     case blink::mojom::PermissionStatus::ASK: {
-      permission_controller->RequestPermissionsForOrigin(
+      permission_controller->RequestPermissionsFromCurrentDocument(
           {blink::PermissionType::BRAVE_LOCALHOST_ACCESS},
-          /* rfh */ contents->GetPrimaryMainFrame(),
-          /* requesting_origin */ request_initiator_url, true,
+          /* rfh */ contents->GetPrimaryMainFrame(), true,
           base::BindOnce(&OnPermissionRequestStatus, ctx->frame_tree_node_id));
       return net::ERR_ACCESS_DENIED;
     }
