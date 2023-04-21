@@ -19,7 +19,7 @@ source_set("web_image") {
     "//brave/ios/browser/svg",
     "//components/image_fetcher/ios",
     "//ios/chrome/browser/browser_state",
-    "//ios/chrome/browser/ui/util",
+    "//ios/chrome/browser/shared/ui/util",
     "//net",
   ]
 }

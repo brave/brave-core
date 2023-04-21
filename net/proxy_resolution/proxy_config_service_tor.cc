@@ -140,8 +140,8 @@ std::string ProxyConfigServiceTor::CircuitAnonymizationKey(const GURL& url) {
   // In particular, we need not isolate by the scheme,
   // username/password, port, path, or query part of the URL.
   const net::SchemefulSite url_site(url);
-  const net::NetworkAnonymizationKey network_anonymization_key(url_site,
-                                                               url_site);
+  const auto network_anonymization_key =
+      net::NetworkAnonymizationKey::CreateFromFrameSite(url_site, url_site);
 
   const absl::optional<net::SchemefulSite>& schemeful_site =
       network_anonymization_key.GetTopFrameSite();

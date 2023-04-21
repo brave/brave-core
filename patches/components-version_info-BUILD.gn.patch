@@ -1,12 +1,12 @@
 diff --git a/components/version_info/BUILD.gn b/components/version_info/BUILD.gn
-index 236a8e980e828b17d9cc0366b6952ed70ac1400d..d75a107597114f0eb80564044b537a0818adcc36 100644
+index 236a8e980e828b17d9cc0366b6952ed70ac1400d..15c060765c6ae7fed8fe83298a6810b5a650bb7b 100644
 --- a/components/version_info/BUILD.gn
 +++ b/components/version_info/BUILD.gn
-@@ -11,6 +11,7 @@ declare_args() {
+@@ -27,6 +27,7 @@ static_library("version_info") {
+     ":channel",
+     ":generate_version_info",
+   ]
++  configs += [ "//brave/build:version" ] deps += [ "//brave/components/version_info" ]
  }
  
- static_library("version_info") {
-+  configs += [ "//brave/build:version" ]
-   sources = [
-     "version_info.cc",
-     "version_info.h",
+ # Isolate the //ui/base dependency in this target.

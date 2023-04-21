@@ -24,9 +24,8 @@ import org.chromium.chrome.browser.feedback.HelpAndFeedbackLauncherImpl;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.search_engines.BraveTemplateUrlServiceFactory;
+import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.share.ShareDelegate;
-import org.chromium.chrome.browser.share.crow.CrowButtonDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -57,11 +56,11 @@ public class BraveNewTabPage extends NewTabPage {
             BottomSheetController bottomSheetController,
             Supplier<ShareDelegate> shareDelegateSupplier, WindowAndroid windowAndroid,
             JankTracker jankTracker, Supplier<Toolbar> toolbarSupplier,
-            SettingsLauncher settingsLauncher, CrowButtonDelegate crowButtonDelegate) {
+            SettingsLauncher settingsLauncher) {
         super(activity, browserControlsStateProvider, activityTabProvider, snackbarManager,
                 lifecycleDispatcher, tabModelSelector, isTablet, uma, isInNightMode, nativePageHost,
                 tab, url, bottomSheetController, shareDelegateSupplier, windowAndroid, jankTracker,
-                toolbarSupplier, settingsLauncher, crowButtonDelegate);
+                toolbarSupplier, settingsLauncher);
 
         assert mNewTabPageLayout instanceof BraveNewTabPageLayout;
         if (mNewTabPageLayout instanceof BraveNewTabPageLayout) {
@@ -75,26 +74,21 @@ public class BraveNewTabPage extends NewTabPage {
             for (TabModel tabModel : tabModelSelector.getModels()) {
                 if (tabModel.getProfile() != null) {
                     TemplateUrlService templateUrlService =
-                            BraveTemplateUrlServiceFactory.getForProfile(tabModel.getProfile());
-                    if (templateUrlService != null) {
-                        templateUrlService.removeObserver(this);
-                    }
+                            TemplateUrlServiceFactory.getForProfile(tabModel.getProfile());
+                    templateUrlService.removeObserver(this);
                 }
             }
         }
         // Re-add to the new tab's profile
-        TemplateUrlService templateUrlService = BraveTemplateUrlServiceFactory.getForProfile(
+        TemplateUrlService templateUrlService = TemplateUrlServiceFactory.getForProfile(
                 Profile.fromWebContents(mTab.getWebContents()));
-        if (templateUrlService != null) {
-            templateUrlService.addObserver(this);
-        }
+        templateUrlService.addObserver(this);
     }
 
     @Override
     protected void initializeMainView(Activity activity, WindowAndroid windowAndroid,
             SnackbarManager snackbarManager, NewTabPageUma uma, boolean isInNightMode,
-            Supplier<ShareDelegate> shareDelegateSupplier, CrowButtonDelegate crowButtonDelegate,
-            String url) {
+            Supplier<ShareDelegate> shareDelegateSupplier, String url) {
         // Override surface provider
         Profile profile = Profile.fromWebContents(mTab.getWebContents());
 
@@ -113,7 +107,7 @@ public class BraveNewTabPage extends NewTabPage {
                 SurfaceType.NEW_TAB_PAGE, mConstructedTimeNs,
                 FeedSwipeRefreshLayout.create(activity, R.id.toolbar_container),
                 /* overScrollDisabled= */ false, /* viewportView= */ null,
-                /* actionDelegate= */ null, HelpAndFeedbackLauncherImpl.getInstance(),
+                /* actionDelegate= */ null, HelpAndFeedbackLauncherImpl.getForProfile(profile),
                 mTabModelSelector);
 
         mFeedSurfaceProvider = feedSurfaceCoordinator;

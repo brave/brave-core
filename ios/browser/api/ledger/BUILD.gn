@@ -40,7 +40,7 @@ source_set("ledger") {
     "//brave/components/brave_rewards/core",
     "//brave/ios/browser/api/common",
     "//brave/ios/browser/api/ledger/legacy_database",
-    "//components/os_crypt",
+    "//components/os_crypt/sync",
     "//net:net",
     "//url",
   ]

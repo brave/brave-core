@@ -5,7 +5,7 @@
 
 #include "base/command_line.h"
 #include "chrome/test/base/in_process_browser_test.h"
-#include "components/os_crypt/keychain_password_mac.h"
+#include "components/os_crypt/sync/keychain_password_mac.h"
 #include "content/public/test/browser_test.h"
 
 namespace {

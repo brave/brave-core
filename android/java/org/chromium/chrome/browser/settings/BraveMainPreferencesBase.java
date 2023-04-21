@@ -36,6 +36,7 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.partnercustomizations.CloseBraveManager;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
@@ -402,7 +403,8 @@ public class BraveMainPreferencesBase
     }
 
     private void updateSearchEnginePreference() {
-        if (!TemplateUrlServiceFactory.get().isLoaded()) {
+        if (!TemplateUrlServiceFactory.getForProfile(Profile.getLastUsedRegularProfile())
+                        .isLoaded()) {
             ChromeBasePreference searchEnginePref =
                     (ChromeBasePreference) findPreference(PREF_BRAVE_SEARCH_ENGINES);
             searchEnginePref.setEnabled(false);

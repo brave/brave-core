@@ -115,7 +115,8 @@ class SidebarItemsScrollView : public views::View,
   // But can't avoid because View::DropCallback uses non const refererence
   // as its parameter type.
   void PerformDrop(const ui::DropTargetEvent& event,
-                   ui::mojom::DragOperation& output_drag_op);  // NOLINT
+                   ui::mojom::DragOperation& output_drag_op,
+                   std::unique_ptr<ui::LayerTreeOwner> drag_image_layer_owner);
 
   // Returns true if |position| is in visible contents area.
   bool IsInVisibleContentsViewBounds(const gfx::Point& position) const;

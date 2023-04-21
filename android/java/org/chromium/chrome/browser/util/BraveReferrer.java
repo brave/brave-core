@@ -24,7 +24,6 @@ import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
-import org.chromium.content_public.browser.UiThreadTaskTraits;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -183,7 +182,7 @@ public class BraveReferrer implements InstallReferrerStateListener {
     }
 
     private void onReferrerReady() {
-        PostTask.postTask(UiThreadTaskTraits.BEST_EFFORT,
+        PostTask.postTask(TaskTraits.UI_BEST_EFFORT,
                 () -> { BraveReferrerJni.get().onReferrerReady(mNativeBraveReferrer); });
     }
 

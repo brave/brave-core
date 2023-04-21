@@ -1,8 +1,8 @@
 diff --git a/services/network/cookie_settings.cc b/services/network/cookie_settings.cc
-index fe0e18cb21a4716da17ad4bf07c55dae82112ae6..15c53118ef0063d73fc977485ed0171aa92b56a1 100644
+index d5299ee0a680d1deced34cf86aadbf0deae06152..17e46c7981ac2cdf506dd4befd21a80e9153ee31 100644
 --- a/services/network/cookie_settings.cc
 +++ b/services/network/cookie_settings.cc
-@@ -228,6 +228,7 @@ CookieSettings::GetCookieSettingWithMetadata(
+@@ -230,6 +230,7 @@ CookieSettings::GetCookieSettingWithMetadata(
        storage_access_result =
            net::cookie_util::StorageAccessResult::ACCESS_BLOCKED;
      }

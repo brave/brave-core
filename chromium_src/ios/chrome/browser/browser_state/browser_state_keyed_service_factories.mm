@@ -6,7 +6,7 @@
 #include "ios/chrome/browser/browser_state/browser_state_keyed_service_factories.h"
 
 #include "ios/chrome/browser/autofill/personal_data_manager_factory.h"
-#include "ios/chrome/browser/bookmarks/bookmark_model_factory.h"
+#include "ios/chrome/browser/bookmarks/local_or_syncable_bookmark_model_factory.h"
 #include "ios/chrome/browser/consent_auditor/consent_auditor_factory.h"
 #include "ios/chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "ios/chrome/browser/favicon/favicon_service_factory.h"
@@ -37,7 +37,7 @@ void EnsureBrowserStateKeyedServiceFactoriesBuilt() {
   autofill::PersonalDataManagerFactory::GetInstance();
   ConsentAuditorFactory::GetInstance();
   ios::AccountConsistencyServiceFactory::GetInstance();
-  ios::BookmarkModelFactory::GetInstance();
+  ios::LocalOrSyncableBookmarkModelFactory::GetInstance();
   ios::BookmarkUndoServiceFactory::GetInstance();
   ios::FaviconServiceFactory::GetInstance();
   ios::HistoryServiceFactory::GetInstance();

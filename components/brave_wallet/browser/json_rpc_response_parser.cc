@@ -39,7 +39,12 @@ absl::optional<std::vector<uint8_t>> ParseDecodedBytesResult(
 }
 
 absl::optional<base::Value> ParseResultValue(const base::Value& json_value) {
-  auto response = json_rpc_responses::RPCResponse::FromValue(json_value);
+  if (!json_value.is_dict()) {
+    return absl::nullopt;
+  }
+
+  auto response =
+      json_rpc_responses::RPCResponse::FromValue(json_value.GetDict());
   if (!response || !response->result)
     return absl::nullopt;
   return std::move(*response->result);

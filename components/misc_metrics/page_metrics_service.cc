@@ -5,6 +5,8 @@
 
 #include "brave/components/misc_metrics/page_metrics_service.h"
 
+#include <utility>
+
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/time/time.h"
@@ -92,11 +94,14 @@ void PageMetricsService::ReportPagesLoaded() {
 }
 
 void PageMetricsService::OnDomainDiversityResult(
-    std::vector<history::DomainMetricSet> metrics) {
-  if (metrics.size() == 0) {
+    std::pair<history::DomainDiversityResults, history::DomainDiversityResults>
+        metrics) {
+  if (metrics.first.empty() || metrics.second.empty()) {
     return;
   }
-  const history::DomainMetricSet& metric_set = metrics[0];
+  // The second entry in the pair counts both local, and foreign (synced)
+  // visits.
+  const history::DomainMetricSet& metric_set = metrics.first.front();
   if (!metric_set.seven_day_metric.has_value()) {
     return;
   }

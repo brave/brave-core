@@ -39,8 +39,6 @@ import org.chromium.chrome.browser.omnibox.suggestions.entity.EntitySuggestionVi
 import org.chromium.chrome.browser.omnibox.suggestions.header.HeaderView;
 import org.chromium.chrome.browser.omnibox.suggestions.header.HeaderViewBinder;
 import org.chromium.chrome.browser.omnibox.suggestions.mostvisited.MostVisitedTilesProcessor;
-import org.chromium.chrome.browser.omnibox.suggestions.pedal.PedalSuggestionView;
-import org.chromium.chrome.browser.omnibox.suggestions.pedal.PedalSuggestionViewBinder;
 import org.chromium.chrome.browser.omnibox.suggestions.tail.TailSuggestionView;
 import org.chromium.chrome.browser.omnibox.suggestions.tail.TailSuggestionViewBinder;
 import org.chromium.chrome.browser.profiles.Profile;

@@ -31,7 +31,7 @@ absl::optional<Publishers> ParseCombinedPublisherList(
   for (const base::Value& publisher_value : value.GetList()) {
     std::u16string error;
     auto parsed_publisher =
-        api::feed::Publisher::FromValue(publisher_value, &error);
+        api::feed::Publisher::FromValueDeprecated(publisher_value, &error);
     if (!parsed_publisher) {
       LOG(ERROR) << "Invalid Brave Publisher data. error=" << error;
       return absl::nullopt;

@@ -11,6 +11,7 @@ import android.widget.ListView;
 
 import androidx.fragment.app.ListFragment;
 
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.R;
 
 public class BraveSearchEnginePreference extends SearchEngineSettings {
@@ -19,6 +20,7 @@ public class BraveSearchEnginePreference extends SearchEngineSettings {
 
     // Own members.
     private boolean mPrivate;
+    private Profile mProfile;
 
     public BraveSearchEnginePreference(boolean isPrivate) {
         mPrivate = isPrivate;
@@ -33,6 +35,15 @@ public class BraveSearchEnginePreference extends SearchEngineSettings {
 
     public void createAdapterIfNecessary() {
         if (mSearchEngineAdapter != null) return;
-        mSearchEngineAdapter = new BraveSearchEngineAdapter(getActivity(), mPrivate);
+        mSearchEngineAdapter = new BraveSearchEngineAdapter(getActivity(), getProfile(mPrivate));
+    }
+
+    private Profile getProfile(boolean isPrivate) {
+        if (!isPrivate) {
+            return mProfile;
+        } else {
+            return mProfile.getPrimaryOTRProfile(
+                    /* createIfNeeded= */ true);
+        }
     }
 }

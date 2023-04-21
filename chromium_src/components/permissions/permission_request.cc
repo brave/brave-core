@@ -121,4 +121,8 @@ bool PermissionRequest::IsDuplicateOf(PermissionRequest* other_request) const {
       other_request);
 }
 
+base::WeakPtr<PermissionRequest> PermissionRequest::GetWeakPtr() {
+  return weak_factory_.GetWeakPtr();
+}
+
 }  // namespace permissions
