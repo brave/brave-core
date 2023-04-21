@@ -17,7 +17,8 @@ namespace brave {
 // Helper function to set additional draggable area in client view.
 // Returns HTNOWHERE if the point is not what we're interested in. In that
 // case, caller should depend on the default behavior.
-int NonClientHitTest(BrowserView* browser_view, const gfx::Point& point);
+int NonClientHitTest(BrowserView* browser_view,
+                     const gfx::Point& point_in_widget);
 
 }  // namespace brave
 
