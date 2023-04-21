@@ -278,7 +278,8 @@ var package = Package(
         "SDWebImage",
       ],
       resources: [
-        .copy("Assets/top_sites.json")
+        .copy("Assets/top_sites.json"),
+        .copy("Assets/TopSites")
       ],
       plugins: ["LoggerPlugin"]
     ),
