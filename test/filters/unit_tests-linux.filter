@@ -6,10 +6,18 @@
 ##
 
 # These fail because we override IdentityManager::GetAccountsInCookieJar
--ChildAccountServiceTest.GetGoogleAuthState
--SupervisedUserGoogleAuthNavigationThrottleTest.NavigationForValidSignedinSupervisedUsers
--SupervisedUserURLFilterExtensionsTest.ChromeWebstoreURLsAreAlwaysAllowed
 -SupervisedUserURLFilterTest.UrlsNotRequiringGuardianApprovalAllowed
+
+# These fail because we disable prefs::kSafeBrowsingScoutReportingEnabled.
+-Impl/TrialComparisonCertVerifierControllerTest.OfficialBuildTrialEnabled/1
+-Impl/TrialComparisonCertVerifierControllerTest.OfficialBuildTrialEnabledTwoClients/1
+-Impl/TrialComparisonCertVerifierControllerTest.OfficialBuildTrialEnabledUmaOnly/1
+
+# These fail because OsIntegrationTestOverride::IsRunOnOsLoginEnabled on Linux
+# hard-codes "chrome-" into the shortcut name and the shortcut start with
+# "brave-".
+-All/RunOnOsLoginSubManagerExecuteTest.*
+-All/ShortcutSubManagerExecuteTest.*
 
 -ChromeBrowsingDataRemoverDelegateTest.*
 -ChromePaths.*

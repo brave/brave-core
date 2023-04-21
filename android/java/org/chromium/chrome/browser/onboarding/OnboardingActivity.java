@@ -63,11 +63,6 @@ public class OnboardingActivity extends AppCompatActivity implements OnViewPager
         finish();
     }
 
-    @Override
-    public void onBackPressed() {
-
-    }
-
     static public OnboardingActivity getOnboardingActivity() {
         for (Activity ref : ApplicationStatus.getRunningActivities()) {
             if (!(ref instanceof OnboardingActivity)) continue;

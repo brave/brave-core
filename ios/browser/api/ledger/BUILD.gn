@@ -39,7 +39,7 @@ source_set("ledger") {
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/core",
     "//brave/ios/browser/api/common",
-    "//components/os_crypt",
+    "//components/os_crypt/sync",
     "//net:net",
     "//url",
   ]

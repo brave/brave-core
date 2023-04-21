@@ -655,19 +655,18 @@ void EthereumProviderImpl::ContinueDecryptWithSanitizedJson(
     const std::string& address,
     const url::Origin& origin,
     data_decoder::JsonSanitizer::Result result) {
-  if (result.error || !result.value.has_value()) {
+  if (!result.has_value()) {
     SendErrorOnRequest(mojom::ProviderError::kInvalidParams,
                        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
                        std::move(callback), std::move(id));
     return;
   }
-  std::string validated_encrypted_data_json = result.value.value();
   std::string version;
   std::vector<uint8_t> nonce;
   std::vector<uint8_t> ephemeral_public_key;
   std::vector<uint8_t> ciphertext;
-  if (!ParseEthDecryptData(validated_encrypted_data_json, &version, &nonce,
-                           &ephemeral_public_key, &ciphertext)) {
+  if (!ParseEthDecryptData(*result, &version, &nonce, &ephemeral_public_key,
+                           &ciphertext)) {
     SendErrorOnRequest(mojom::ProviderError::kInvalidParams,
                        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
                        std::move(callback), std::move(id));

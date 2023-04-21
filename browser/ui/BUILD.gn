@@ -351,8 +351,8 @@ source_set("ui") {
 
     if (is_win) {
       sources += [
-        "views/frame/brave_glass_browser_frame_view.cc",
-        "views/frame/brave_glass_browser_frame_view.h",
+        "views/frame/brave_browser_frame_view_win.cc",
+        "views/frame/brave_browser_frame_view_win.h",
       ]
     }
 

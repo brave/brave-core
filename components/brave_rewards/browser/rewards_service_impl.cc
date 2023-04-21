@@ -60,7 +60,7 @@
 #include "components/favicon/core/favicon_service.h"
 #include "components/favicon_base/favicon_types.h"
 #include "components/grit/brave_components_resources.h"
-#include "components/os_crypt/os_crypt.h"
+#include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/service_process_host.h"
@@ -1066,12 +1066,12 @@ void RewardsServiceImpl::OnURLLoaderComplete(
                          const scoped_refptr<base::SequencedTaskRunner>&
                              post_response_runner,
                          data_decoder::JsonSanitizer::Result result) {
-                        if (result.value) {
-                          response->body = std::move(*result.value);
+                        if (result.has_value()) {
+                          response->body = std::move(result).value();
                         } else {
                           response->body = {};
                           VLOG(0) << "Response sanitization error: "
-                                  << (result.error ? *result.error : "unknown");
+                                  << result.error();
                         }
 
                         post_response_runner->PostTask(

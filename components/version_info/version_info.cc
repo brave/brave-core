@@ -13,10 +13,6 @@ std::string GetBraveVersionWithoutChromiumMajorVersion() {
   return constants::kBraveBrowserVersion;
 }
 
-std::string GetBraveVersionNumberForDisplay() {
-  return constants::kBraveVersionNumberForDisplay;
-}
-
 std::string GetBraveChromiumVersionNumber() {
   return constants::kBraveChromiumVersion;
 }

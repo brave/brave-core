@@ -147,7 +147,7 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
             updateFollowerCount();
 
             if (!mIsSuggestionAvailable) {
-                PostTask.postTask(TaskTraits.THREAD_POOL_BEST_EFFORT, () -> {
+                PostTask.postTask(TaskTraits.BEST_EFFORT, () -> {
                     if (mBraveNewsController != null) {
                         BraveNewsUtils.getSuggestionsSources(mBraveNewsController, this);
                     }

@@ -1,11 +1,11 @@
 diff --git a/net/cookies/cookie_deletion_info.h b/net/cookies/cookie_deletion_info.h
-index 2876868e6023f56694a5ba29e902ab53400ff7d9..b9243f01acea471ef0cc0502658df8b44e706900 100644
+index 835aa8b7cabddbc1fe6c4435d35f44b777870b23..19e21e215122e445b4cf79b74583b0606a44e012 100644
 --- a/net/cookies/cookie_deletion_info.h
 +++ b/net/cookies/cookie_deletion_info.h
-@@ -146,6 +146,7 @@ struct NET_EXPORT CookieDeletionInfo {
-   // all partitions.
-   CookiePartitionKeyCollection cookie_partition_key_collection =
-       CookiePartitionKeyCollection::ContainsAll();
+@@ -150,6 +150,7 @@ struct NET_EXPORT CookieDeletionInfo {
+   // If true, third-party cookie blocking applies to the context that triggered
+   // the deletion. In this case, we should only delete partitioned cookies.
+   bool partitioned_state_only = false;
 +  BRAVE_COOKIE_DELETION_INFO_H
  };
  

@@ -17,7 +17,7 @@
 
 namespace translate {
 
-class TranslateUIDelegate : public TranslateUIDelegate_ChromiumImpl {
+class TranslateUIDelegate final : public TranslateUIDelegate_ChromiumImpl {
  public:
   using TranslateUIDelegate_ChromiumImpl::TranslateUIDelegate_ChromiumImpl;
   bool ShouldShowAlwaysTranslateShortcut() const override;

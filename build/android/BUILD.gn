@@ -214,5 +214,5 @@ generate_jni("jni_headers") {
     "//brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnNativeWorker.java",
   ]
 
-  deps = [ "//brave/android/java/org/chromium/chrome/browser/search_engines:jni_headers" ]
+  public_deps = [ "//brave/android/java/org/chromium/chrome/browser/search_engines:jni_headers" ]
 }

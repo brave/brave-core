@@ -24,8 +24,9 @@ RewardsNotificationsAddNotificationFunction::
 
 ExtensionFunction::ResponseAction
 RewardsNotificationsAddNotificationFunction::Run() {
-  std::unique_ptr<rewards_notifications::AddNotification::Params> params(
-      rewards_notifications::AddNotification::Params::Create(args()));
+  absl::optional<rewards_notifications::AddNotification::Params> params =
+      rewards_notifications::AddNotification::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params);
   Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsNotificationService* rewards_notification_service =
       RewardsServiceFactory::GetForProfile(profile)->GetNotificationService();
@@ -43,8 +44,9 @@ RewardsNotificationsDeleteNotificationFunction::
 
 ExtensionFunction::ResponseAction
 RewardsNotificationsDeleteNotificationFunction::Run() {
-  std::unique_ptr<rewards_notifications::DeleteNotification::Params> params(
-      rewards_notifications::DeleteNotification::Params::Create(args()));
+  absl::optional<rewards_notifications::DeleteNotification::Params> params =
+      rewards_notifications::DeleteNotification::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params);
   Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsNotificationService* rewards_notification_service =
       RewardsServiceFactory::GetForProfile(profile)->GetNotificationService();
@@ -73,8 +75,9 @@ RewardsNotificationsGetNotificationFunction::
 
 ExtensionFunction::ResponseAction
 RewardsNotificationsGetNotificationFunction::Run() {
-  std::unique_ptr<rewards_notifications::GetNotification::Params> params(
-      rewards_notifications::GetNotification::Params::Create(args()));
+  absl::optional<rewards_notifications::GetNotification::Params> params =
+      rewards_notifications::GetNotification::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params);
   Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsNotificationService* rewards_notification_service =
       RewardsServiceFactory::GetForProfile(profile)->GetNotificationService();

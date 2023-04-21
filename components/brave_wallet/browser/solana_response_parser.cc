@@ -188,7 +188,8 @@ bool ParseGetAccountInfo(const base::Value& json_value,
                          absl::optional<SolanaAccountInfo>* account_info_out) {
   DCHECK(account_info_out);
 
-  auto response = json_rpc_responses::RPCResponse::FromValue(json_value);
+  auto response =
+      json_rpc_responses::RPCResponse::FromValueDeprecated(json_value);
   if (!response)
     return false;
 

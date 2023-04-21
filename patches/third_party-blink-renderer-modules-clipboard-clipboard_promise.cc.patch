@@ -1,10 +1,10 @@
 diff --git a/third_party/blink/renderer/modules/clipboard/clipboard_promise.cc b/third_party/blink/renderer/modules/clipboard/clipboard_promise.cc
-index 09262ed96758e2ee9e0294e1f477106d400e7f88..d683a9f2c7b528ef2777e3b7a3218245da8e6a5d 100644
+index 92b72c553d8966da6d8a4a4ae2517d6fc7271f12..632622148a9e56ce42e8f5e3f2033261c35ded6c 100644
 --- a/third_party/blink/renderer/modules/clipboard/clipboard_promise.cc
 +++ b/third_party/blink/renderer/modules/clipboard/clipboard_promise.cc
-@@ -548,6 +548,7 @@ void ClipboardPromise::RequestPermission(
-   // `will_be_sanitized` is false only when we are trying to read/write
-   // web custom formats.
+@@ -588,6 +588,7 @@ void ClipboardPromise::RequestPermission(
+   // TODO(ansollan): Remove this block as custom formats don't need both a user
+   // gesture and a permission grant to use custom clipboard.
    if (!will_be_sanitized &&
 +      BRAVE_CLIPBOARD_PROMISE_REQUEST_PERMISSION
        RuntimeEnabledFeatures::ClipboardCustomFormatsEnabled() &&

@@ -21,6 +21,7 @@ import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.omnibox.OmniboxPrefManager;
 import org.chromium.chrome.browser.omnibox.R;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
+import org.chromium.chrome.browser.omnibox.suggestions.ActionChipsDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
 import org.chromium.chrome.browser.omnibox.suggestions.brave_search.BraveSearchBannerProcessor;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -46,8 +47,8 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
     private Context mContext;
 
     BraveDropdownItemViewInfoListBuilder(@NonNull Supplier<Tab> tabSupplier,
-            BookmarkState bookmarkState, @NonNull OmniboxPedalDelegate omniboxPedalDelegate) {
-        super(tabSupplier, bookmarkState, omniboxPedalDelegate);
+            BookmarkState bookmarkState, @NonNull ActionChipsDelegate actionChipsDelegate) {
+        super(tabSupplier, bookmarkState, actionChipsDelegate);
 
         mActivityTabSupplier = tabSupplier;
     }

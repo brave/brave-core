@@ -6,7 +6,7 @@
 #include "components/sync/driver/sync_internals_util.h"
 
 #include "brave/components/sync/driver/brave_sync_service_impl.h"
-#include "components/os_crypt/os_crypt.h"
+#include "components/os_crypt/sync/os_crypt.h"
 
 #define ConstructAboutInformation ConstructAboutInformation_ChromiumImpl
 #include "src/components/sync/driver/sync_internals_util.cc"

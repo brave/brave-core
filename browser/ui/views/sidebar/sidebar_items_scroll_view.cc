@@ -28,6 +28,7 @@
 #include "ui/base/dragdrop/drag_drop_types.h"
 #include "ui/base/dragdrop/mojom/drag_drop_types.mojom.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/compositor/layer_tree_owner.h"
 #include "ui/events/event.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/color_palette.h"
@@ -436,7 +437,8 @@ views::View::DropCallback SidebarItemsScrollView::GetDropCallback(
 
 void SidebarItemsScrollView::PerformDrop(
     const ui::DropTargetEvent& event,
-    ui::mojom::DragOperation& output_drag_op) {
+    ui::mojom::DragOperation& output_drag_op,
+    std::unique_ptr<ui::LayerTreeOwner> drag_image_layer_owner) {
   output_drag_op = ui::mojom::DragOperation::kNone;
   if (drag_context_->ShouldMoveItem()) {
     output_drag_op = ui::mojom::DragOperation::kMove;

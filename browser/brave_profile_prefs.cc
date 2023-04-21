@@ -309,7 +309,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                 base::Value(false));
 
   // Disable default webstore icons in topsites or apps.
-  registry->SetDefaultPrefValue(prefs::kHideWebStoreIcon, base::Value(true));
+  registry->SetDefaultPrefValue(policy::policy_prefs::kHideWebStoreIcon,
+                                base::Value(true));
 
   // Disable Chromium's privacy sandbox
   registry->SetDefaultPrefValue(prefs::kPrivacySandboxApisEnabled,

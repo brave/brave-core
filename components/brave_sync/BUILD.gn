@@ -89,7 +89,7 @@ source_set("prefs") {
 
   deps = [
     "//base",
-    "//components/os_crypt",
+    "//components/os_crypt/sync",
     "//components/prefs",
   ]
 }
@@ -154,7 +154,7 @@ source_set("unit_tests") {
     ":prefs",
     ":time_limited_codes",
     "//base/test:test_support",
-    "//components/os_crypt:test_support",
+    "//components/os_crypt/sync:test_support",
     "//components/prefs:test_support",
     "//components/sync/base",
   ]

@@ -95,9 +95,9 @@ ExtensionFunction::ResponseAction IpfsRemoveIpfsPeerFunction::Run() {
   if (!ipfs_service) {
     return RespondNow(Error("Could not obtain IPFS service"));
   }
-  std::unique_ptr<ipfs::RemoveIpfsPeer::Params> params(
-      ipfs::RemoveIpfsPeer::Params::Create(args()));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
+  absl::optional<ipfs::RemoveIpfsPeer::Params> params =
+      ipfs::RemoveIpfsPeer::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params);
   ipfs_service->GetConfig(
       base::BindOnce(&IpfsRemoveIpfsPeerFunction::OnConfigLoaded,
                      base::RetainedRef(this), params->id, params->address));
@@ -141,9 +141,9 @@ ExtensionFunction::ResponseAction IpfsAddIpfsPeerFunction::Run() {
   if (!ipfs_service) {
     return RespondNow(Error("Could not obtain IPFS service"));
   }
-  std::unique_ptr<ipfs::AddIpfsPeer::Params> params(
-      ipfs::AddIpfsPeer::Params::Create(args()));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
+  absl::optional<ipfs::AddIpfsPeer::Params> params =
+      ipfs::AddIpfsPeer::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params);
   ipfs_service->GetConfig(
       base::BindOnce(&IpfsAddIpfsPeerFunction::OnConfigLoaded,
                      base::RetainedRef(this), params->value));
@@ -216,9 +216,9 @@ ExtensionFunction::ResponseAction IpfsRemoveIpnsKeyFunction::Run() {
   if (!ipfs_service->IsDaemonLaunched() || !key_manager) {
     return RespondNow(Error("IPFS node is not launched"));
   }
-  std::unique_ptr<ipfs::RemoveIpnsKey::Params> params(
-      ipfs::RemoveIpnsKey::Params::Create(args()));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
+  absl::optional<ipfs::RemoveIpnsKey::Params> params =
+      ipfs::RemoveIpnsKey::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params);
   key_manager->RemoveKey(
       params->name, base::BindOnce(&IpfsRemoveIpnsKeyFunction::OnKeyRemoved,
                                    base::RetainedRef(this), key_manager));
@@ -242,9 +242,9 @@ ExtensionFunction::ResponseAction IpfsRotateKeyFunction::Run() {
   if (!ipfs_service) {
     return RespondNow(Error("Could not obtain IPFS service"));
   }
-  std::unique_ptr<ipfs::RotateKey::Params> params(
-      ipfs::RotateKey::Params::Create(args()));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
+  absl::optional<ipfs::RotateKey::Params> params =
+      ipfs::RotateKey::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params);
   ipfs_service->RotateKey(params->name,
                           base::BindOnce(&IpfsRotateKeyFunction::OnKeyRotated,
                                          base::RetainedRef(this)));
@@ -266,9 +266,9 @@ ExtensionFunction::ResponseAction IpfsAddIpnsKeyFunction::Run() {
   if (!ipfs_service->IsDaemonLaunched() || !key_manager) {
     return RespondNow(Error("IPFS node is not launched"));
   }
-  std::unique_ptr<ipfs::AddIpnsKey::Params> params(
-      ipfs::AddIpnsKey::Params::Create(args()));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
+  absl::optional<ipfs::AddIpnsKey::Params> params =
+      ipfs::AddIpnsKey::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params);
   key_manager->GenerateNewKey(
       params->name, base::BindOnce(&IpfsAddIpnsKeyFunction::OnKeyCreated,
                                    base::RetainedRef(this), key_manager));
@@ -430,9 +430,9 @@ ExtensionFunction::ResponseAction IpfsResolveIPFSURIFunction::Run() {
     return RespondNow(Error("IPFS not enabled"));
   }
 
-  std::unique_ptr<ipfs::ResolveIPFSURI::Params> params(
-      ipfs::ResolveIPFSURI::Params::Create(args()));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
+  absl::optional<ipfs::ResolveIPFSURI::Params> params =
+      ipfs::ResolveIPFSURI::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params);
   GURL uri(params->uri);
   GURL ipfs_gateway_url;
   PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
@@ -452,9 +452,9 @@ ExtensionFunction::ResponseAction IpfsValidateGatewayUrlFunction::Run() {
   if (!ipfs_service) {
     return RespondNow(Error("Could not obtain IPFS service"));
   }
-  std::unique_ptr<ipfs::ValidateGatewayUrl::Params> params(
-      ipfs::ValidateGatewayUrl::Params::Create(args()));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
+  absl::optional<ipfs::ValidateGatewayUrl::Params> params =
+      ipfs::ValidateGatewayUrl::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params);
 
   ipfs_service->ValidateGateway(
       GURL(params->url),

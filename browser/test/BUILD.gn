@@ -32,6 +32,6 @@ source_set("browser_tests") {
   if (is_mac) {
     sources += [ "os_crypt/keychain_password_mac_browsertest.mm" ]
 
-    deps += [ "//components/os_crypt:test_support" ]
+    deps += [ "//components/os_crypt/sync:test_support" ]
   }
 }

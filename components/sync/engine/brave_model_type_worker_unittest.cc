@@ -42,7 +42,8 @@ class BraveModelTypeWorkerTest : public ::testing::Test {
     initial_state.mutable_progress_marker()->set_token(
         "some_saved_progress_token");
 
-    initial_state.set_initial_sync_done(true);
+    initial_state.set_initial_sync_state(
+        sync_pb::ModelTypeState_InitialSyncState_INITIAL_SYNC_DONE);
 
     InitializeWithState(model_type_, initial_state);
 
