@@ -44,12 +44,10 @@ const char kCRLSetPrefix1[] =
 const char kCRLSetPrefix2[] =
     "*://*.gvt1.com/edgedl/release2/chrome_component/*";
 const char kCRLSetPrefix3[] =
-    "*://www.google.com/dl/release2/chrome_component/*crl-set*";
+    "*://www.google.com/dl/release2/chrome_component/*";
 const char kCRLSetPrefix4[] =
     "*://storage.googleapis.com/update-delta/hfnkpimlhhgieaddgfemjhofmfblmnib"
     "/*crxd";
-const char kCRLSetPrefix5[] =
-    "*://www.google.com/dl/release2/chrome_component/*";
 const char kChromeCastPrefix[] =
     "*://*.gvt1.com/edgedl/chromewebstore/*pkedcjkdefgpdelpbcmbmeomcjbeemfm*";
 
