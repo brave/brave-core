@@ -5,10 +5,6 @@
 
 import styled from 'styled-components'
 
-// icons
-import EyeOnIcon from '../../../assets/svg-icons/eye-on-icon.svg'
-import EyeOffIcon from '../../../assets/svg-icons/eye-off-icon.svg'
-
 // styles
 import { WalletButton } from '../../shared/style'
 
@@ -53,28 +49,4 @@ export const ButtonText = styled.span<{ isSelected?: boolean, disabled?: boolean
       ? 'var(--selected-color)'
       : p.theme.color.text02
   };
-`
-
-export const ToggleVisibilityButton = styled(WalletButton)`
-  cursor: pointer;
-  outline: none;
-  background: none;
-  border: none;
-  padding-left: 4px;
-  padding-right: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
-
-export const ToggleVisibilityIcon = styled.div<{
-  isVisible: boolean
-}>`
-  width: 18px;
-  height: 18px;
-  background-color: ${(p) => p.theme.color.text02};
-  -webkit-mask-image: url(${(p) => !p.isVisible ? EyeOffIcon : EyeOnIcon});
-  mask-image: url(${(p) => !p.isVisible ? EyeOffIcon : EyeOnIcon});
-  mask-size: contain;
-  mask-repeat: no-repeat;
 `

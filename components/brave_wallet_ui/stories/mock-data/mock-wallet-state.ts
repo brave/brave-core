@@ -338,5 +338,7 @@ export const mockWalletState: WalletState = {
   coinMarketData: mockCoinMarketData,
   assetAutoDiscoveryCompleted: false,
   isNftPinningFeatureEnabled: false,
-  isPanelV2FeatureEnabled: false
+  isPanelV2FeatureEnabled: false,
+  hidePortfolioBalances: false,
+  hidePortfolioGraph: false
 }

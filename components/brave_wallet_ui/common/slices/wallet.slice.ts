@@ -128,7 +128,19 @@ const defaultState: WalletState = {
   passwordAttempts: 0,
   assetAutoDiscoveryCompleted: false,
   isNftPinningFeatureEnabled: false,
-  isPanelV2FeatureEnabled: false
+  isPanelV2FeatureEnabled: false,
+  hidePortfolioGraph: window
+    .localStorage
+    .getItem(
+      LOCAL_STORAGE_KEYS
+        .IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN
+    ) === 'true',
+  hidePortfolioBalances: window
+    .localStorage
+    .getItem(
+      LOCAL_STORAGE_KEYS
+        .HIDE_PORTFOLIO_BALANCES
+    ) === 'true',
 }
 
 // async actions
@@ -436,6 +448,22 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
       setSelectedAssetFilterItem (state: WalletState, { payload }: PayloadAction<string>) {
         state.selectedAssetFilter = payload
+      },
+
+      setHidePortfolioGraph
+        (
+          state: WalletState,
+          { payload }: PayloadAction<boolean>
+        ) {
+        state.hidePortfolioGraph = payload
+      },
+
+      setHidePortfolioBalances
+        (
+          state: WalletState,
+          { payload }: PayloadAction<boolean>
+        ) {
+        state.hidePortfolioBalances = payload
       },
 
       setSitePermissions (state: WalletState, { payload }: PayloadAction<SitePermissionsPayloadType>) {

@@ -35,6 +35,8 @@ function CustomTooltip ({
   // Selectors
   const defaultFiatCurrency =
     useSafeWalletSelector(WalletSelectors.defaultFiatCurrency)
+  const hidePortfolioBalances =
+    useSafeWalletSelector(WalletSelectors.hidePortfolioBalances)
 
   // Effects
   React.useLayoutEffect(() => {
@@ -67,7 +69,7 @@ function CustomTooltip ({
         labelPosition={labelPosition}
       >
         <ChartBalance>
-          {balance}
+          {hidePortfolioBalances ? '******' : balance}
         </ChartBalance>
         <ChartDate>
           {formatTimelineDate(label)}

@@ -29,6 +29,10 @@ export const assetAutoDiscoveryCompleted = ({ wallet }: State) => wallet.assetAu
 export const hasFeeEstimatesError = ({ wallet }: State) =>
   wallet.hasFeeEstimatesError
 export const isNftPinningFeatureEnabled = ({ wallet }: State) => wallet.isNftPinningFeatureEnabled
+export const hidePortfolioGraph = ({ wallet }: State) =>
+  wallet.hidePortfolioGraph
+export const hidePortfolioBalances = ({ wallet }: State) =>
+  wallet.hidePortfolioBalances
 
 // unsafe selectors (will cause re-render if not strictly equal "===") (objects and lists)
 export const accounts = ({ wallet }: State) => wallet.accounts

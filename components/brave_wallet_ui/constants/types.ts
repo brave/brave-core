@@ -270,6 +270,8 @@ export interface WalletState {
   assetAutoDiscoveryCompleted: boolean
   isNftPinningFeatureEnabled: boolean
   isPanelV2FeatureEnabled: boolean
+  hidePortfolioGraph: boolean
+  hidePortfolioBalances: boolean
 }
 
 export interface PanelState {
