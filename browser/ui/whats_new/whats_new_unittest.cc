@@ -8,7 +8,11 @@
 #include "brave/browser/ui/whats_new/pref_names.h"
 #include "brave/browser/ui/whats_new/whats_new_util.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
+#include "chrome/browser/profiles/chrome_version_service.h"
+#include "chrome/test/base/testing_browser_process.h"
+#include "chrome/test/base/testing_profile_manager.h"
 #include "components/prefs/testing_pref_service.h"
+#include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace whats_new {
@@ -21,12 +25,19 @@ constexpr char kWhatsNewTrial[] = "WhatsNewStudy";
 
 class BraveWhatsNewTest : public testing::Test {
  public:
-  BraveWhatsNewTest() = default;
+  BraveWhatsNewTest()
+      : testing_profile_manager_(TestingBrowserProcess::GetGlobal()) {}
   ~BraveWhatsNewTest() override = default;
 
   void SetUp() override {
     RegisterLocalStatePrefs(local_state_.registry());
     PrepareValidFieldTrialParams();
+    ASSERT_TRUE(testing_profile_manager_.SetUp());
+    profile_ = testing_profile_manager_.CreateTestingProfile("testing_profile");
+    testing_profile_manager_.UpdateLastUser(profile_);
+
+    // Make updated user.
+    ChromeVersionService::SetVersion(profile_->GetPrefs(), "112.1.50.4");
   }
 
   void PrepareValidFieldTrialParams() {
@@ -36,7 +47,10 @@ class BraveWhatsNewTest : public testing::Test {
         base::AssociateFieldTrialParams(kWhatsNewTrial, "Enabled", params));
   }
 
+  content::BrowserTaskEnvironment task_environment_;
   TestingPrefServiceSimple local_state_;
+  TestingProfile* profile_ = nullptr;
+  TestingProfileManager testing_profile_manager_;
 };
 
 TEST_F(BraveWhatsNewTest, SupportedLangTest) {
@@ -69,6 +83,26 @@ TEST_F(BraveWhatsNewTest, FieldTrialNotAvailableTest) {
   SetCurrentVersionForTesting(1.51);
 
   EXPECT_FALSE(ShouldShowBraveWhatsNewForState(&local_state_));
+}
+
+// Test when profile created version and current version is same.
+// We treat these users as users who have never experienced updates.
+// For these users, we don't launch whats-new.
+TEST_F(BraveWhatsNewTest, NotUpdatedUserTest) {
+  // Make not updated user. Profile created version is 1.51 and
+  // current version is set as 1.51 below.
+  ChromeVersionService::SetVersion(profile_->GetPrefs(), "112.1.51.4");
+
+  // Set supported lang.
+  const brave_l10n::test::ScopedDefaultLocale scoped_default_locale("en_US");
+
+  // Set current version with field trial's target major version(1.51)
+  SetCurrentVersionForTesting(1.51);
+  base::FieldTrialList::CreateFieldTrial(kWhatsNewTrial, "Enabled");
+
+  EXPECT_EQ(0, local_state_.GetDouble(prefs::kWhatsNewLastVersion));
+  EXPECT_FALSE(ShouldShowBraveWhatsNewForState(&local_state_));
+  EXPECT_EQ(0, local_state_.GetDouble(prefs::kWhatsNewLastVersion));
 }
 
 // Test when current version and target version is matched.

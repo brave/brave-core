@@ -14,7 +14,9 @@ source_set("browser_test") {
   deps = [
     "//brave/components/l10n/common",
     "//brave/components/l10n/common:test_support",
+    "//chrome/browser",
     "//chrome/browser:browser_process",
+    "//chrome/browser/profiles:profile",
     "//chrome/browser/ui",
     "//chrome/test:test_support_ui",
     "//components/prefs",
@@ -29,9 +31,12 @@ source_set("unit_test") {
   deps = [
     "//base",
     "//brave/components/l10n/common:test_support",
+    "//chrome/browser",
     "//chrome/browser/ui",
+    "//chrome/test:test_support",
     "//components/prefs",
     "//components/prefs:test_support",
+    "//content/test:test_support",
     "//testing/gtest",
   ]
 }
