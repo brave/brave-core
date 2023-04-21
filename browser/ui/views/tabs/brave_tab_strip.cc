@@ -303,7 +303,11 @@ void BraveTabStrip::UpdateTabContainer() {
     }
 
     tab_container_->SetLayoutManager(std::make_unique<views::FlexLayout>())
-        ->SetOrientation(views::LayoutOrientation::kVertical);
+        ->SetOrientation(views::LayoutOrientation::kVertical)
+        .SetDefault(views::kFlexBehaviorKey,
+                    views::FlexSpecification(
+                        views::MinimumFlexSizeRule::kScaleToMinimumSnapToZero,
+                        views::MaximumFlexSizeRule::kPreferred));
   } else {
     if (base::FeatureList::IsEnabled(features::kScrollableTabStrip)) {
       auto* browser_view = static_cast<BraveBrowserView*>(
