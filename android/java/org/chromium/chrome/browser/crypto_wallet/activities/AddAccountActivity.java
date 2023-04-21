@@ -13,8 +13,11 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
@@ -25,6 +28,7 @@ import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.KeyringModel.FilecoinNetworkType;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
@@ -34,10 +38,14 @@ import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 public class AddAccountActivity extends BraveWalletBaseActivity {
     public static final String ACCOUNT = "account";
     private static final String TAG = "AddAccountActivity";
+
+    private static final int FILECOIN_MAINNET_POSITION = 0;
+    private static final int FILECOIN_TESTNET_POSITION = 1;
 
     private String mAddress;
     private String mName;
@@ -46,12 +54,24 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
     private EditText mPrivateKeyControl;
     private EditText mAddAccountText;
     private EditText mImportAccountPasswordText;
+    private Spinner mFilecoinNetworkSpinner;
     private static final int FILE_PICKER_REQUEST_CODE = 1;
     private CryptoAccountTypeInfo mCryptoAccountTypeInfo;
     private WalletModel mWalletModel;
+    @FilecoinNetworkType
+    private String mSelectedFilecoinNetwork;
 
-    public AddAccountActivity() {
-        mIsUpdate = false;
+    @Override
+    protected void onPreCreate() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            mAddress = intent.getStringExtra(Utils.ADDRESS);
+            mName = intent.getStringExtra(Utils.NAME);
+            mIsImported = intent.getBooleanExtra(Utils.ISIMPORTED, false);
+            mIsUpdate = intent.getBooleanExtra(Utils.ISUPDATEACCOUNT, false);
+            mCryptoAccountTypeInfo = (CryptoAccountTypeInfo) intent.getSerializableExtra(ACCOUNT);
+        }
+        mSelectedFilecoinNetwork = BraveWalletConstants.FILECOIN_MAINNET;
     }
 
     @Override
@@ -66,6 +86,8 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
         mAddAccountText = findViewById(R.id.add_account_text);
         mPrivateKeyControl = findViewById(R.id.import_account_text);
 
+        mFilecoinNetworkSpinner = findViewById(R.id.filecoin_network_spinner);
+
         final Button btnAdd = findViewById(R.id.btn_add);
         TextView importBtn = findViewById(R.id.import_btn);
         EditText mImportAccountPasswordText = findViewById(R.id.import_account_password_text);
@@ -78,7 +100,42 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
             Log.e(TAG, "Error during triggerLayoutInflation", e);
         }
 
-        mCryptoAccountTypeInfo = (CryptoAccountTypeInfo) getIntent().getSerializableExtra(ACCOUNT);
+        int coinType = mCryptoAccountTypeInfo.getCoinType();
+        if (coinType == CoinType.FIL && !mIsUpdate) {
+            mFilecoinNetworkSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<String> filecoinNetworkArrayAdapter =
+                    new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
+                            Arrays.asList(getString(R.string.wallet_filecoin_mainnet),
+                                    getString(R.string.wallet_filecoin_testnet)));
+            filecoinNetworkArrayAdapter.setDropDownViewResource(
+                    android.R.layout.simple_spinner_dropdown_item);
+            mFilecoinNetworkSpinner.setAdapter(filecoinNetworkArrayAdapter);
+            mFilecoinNetworkSpinner.setOnItemSelectedListener(
+                    new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(
+                                AdapterView<?> parent, View view, int position, long id) {
+                            switch (position) {
+                                case FILECOIN_MAINNET_POSITION:
+                                    mSelectedFilecoinNetwork =
+                                            BraveWalletConstants.FILECOIN_MAINNET;
+                                    break;
+                                case FILECOIN_TESTNET_POSITION:
+                                    mSelectedFilecoinNetwork =
+                                            BraveWalletConstants.FILECOIN_TESTNET;
+                                    break;
+                                default:
+                                    throw new IllegalStateException(String.format(
+                                            "No Filecoin network found for position %d.",
+                                            position));
+                            }
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) { /* Unused. */
+                        }
+                    });
+        }
 
         mAddAccountText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -97,8 +154,6 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
 
         btnAdd.setOnClickListener(v -> {
             if (mKeyringService == null) return;
-            @CoinType.EnumType
-            int coinType = mCryptoAccountTypeInfo.getCoinType();
             if (mIsUpdate) {
                 updateAccountName(coinType);
             } else if (!TextUtils.isEmpty(mPrivateKeyControl.getText().toString())) {
@@ -122,12 +177,7 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
-        if (getIntent() != null) {
-            mAddress = getIntent().getStringExtra(Utils.ADDRESS);
-            mName = getIntent().getStringExtra(Utils.NAME);
-            mIsImported = getIntent().getBooleanExtra(Utils.ISIMPORTED, false);
-            mIsUpdate = getIntent().getBooleanExtra(Utils.ISUPDATEACCOUNT, false);
-        }
+
         if (mIsUpdate) {
             Button btnAdd = findViewById(R.id.btn_add);
             btnAdd.setText(getResources().getString(R.string.update));
@@ -231,7 +281,7 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
             // Import account from string.
             if (coinType == CoinType.FIL) {
                 mKeyringService.importFilecoinAccount(accountName, privateKey.trim(),
-                        BraveWalletConstants.FILECOIN_MAINNET,
+                        mSelectedFilecoinNetwork,
                         (result, address) -> { handleImportAccount(result, false); });
             } else {
                 mKeyringService.importAccount(accountName, privateKey.trim(), coinType,
@@ -241,16 +291,21 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
     }
 
     private void addAccount(@CoinType.EnumType int coinType) {
-        // `KeyringModel#addAccount()` checks the coin type and applies the correct
-        // API: when coin type is Filecoin, it calls `KeyringModel#addFilecoinAccount`.
-        mWalletModel.getKeyringModel().addAccount(
-                mAddAccountText.getText().toString(), coinType, result -> {
-                    if (result) {
-                        setResult(Activity.RESULT_OK);
-                        finish();
-                    } else {
-                        mAddAccountText.setError(getString(R.string.account_name_empty_error));
-                    }
-                });
+        if (coinType == CoinType.FIL) {
+            mWalletModel.getKeyringModel().addFilecoinAccount(mAddAccountText.getText().toString(),
+                    mSelectedFilecoinNetwork, result -> { handleAddAccountResult(result); });
+        } else {
+            mWalletModel.getKeyringModel().addAccount(mAddAccountText.getText().toString(),
+                    coinType, result -> { handleAddAccountResult(result); });
+        }
+    }
+
+    private void handleAddAccountResult(boolean result) {
+        if (result) {
+            setResult(Activity.RESULT_OK);
+            finish();
+        } else {
+            mAddAccountText.setError(getString(R.string.account_name_empty_error));
+        }
     }
 }

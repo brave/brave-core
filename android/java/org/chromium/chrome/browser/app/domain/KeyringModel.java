@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.app.domain;
 
 import android.text.TextUtils;
 
+import androidx.annotation.StringDef;
 import androidx.annotation.UiThread;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -38,6 +39,8 @@ import java.util.Set;
 public class KeyringModel implements KeyringServiceObserver {
     private KeyringService mKeyringService;
     private BraveWalletService mBraveWalletService;
+    @FilecoinNetworkType
+    private String mSelectedFilecoinNetwork;
     private MutableLiveData<KeyringInfo[]> _mKeyringInfosLiveData;
     private MutableLiveData<KeyringInfo> _mSelectedCoinKeyringInfoLiveData;
     private final MutableLiveData<AccountInfo> _mSelectedAccount;
@@ -76,6 +79,8 @@ public class KeyringModel implements KeyringServiceObserver {
         mKeyringToCoin.put(CoinType.ETH, BraveWalletConstants.DEFAULT_KEYRING_ID);
         mKeyringToCoin.put(CoinType.SOL, BraveWalletConstants.SOLANA_KEYRING_ID);
         mKeyringToCoin.put(CoinType.FIL, BraveWalletConstants.FILECOIN_KEYRING_ID);
+
+        mSelectedFilecoinNetwork = BraveWalletConstants.FILECOIN_MAINNET;
 
         _mAccountAllAccountsPair.addSource(_mSelectedAccount, accountInfo -> {
             _mAccountAllAccountsPair.postValue(Pair.create(accountInfo, _mAccountInfos.getValue()));
@@ -131,7 +136,7 @@ public class KeyringModel implements KeyringServiceObserver {
                 _mKeyringInfosLiveData.postValue(keyringInfos);
                 if (coinType == CoinType.FIL) {
                     mKeyringService.getFilecoinSelectedAccount(
-                            BraveWalletConstants.FILECOIN_MAINNET, accountAddress -> {
+                            mSelectedFilecoinNetwork, accountAddress -> {
                                 updateSelectedAccountAndState(accountAddress, accountInfos);
                             });
                 } else {
@@ -201,7 +206,7 @@ public class KeyringModel implements KeyringServiceObserver {
             @CoinType.EnumType
             int coinType = mSharedData.getCoinType();
             if (coinType == CoinType.FIL) {
-                mKeyringService.getFilecoinSelectedAccount(BraveWalletConstants.FILECOIN_MAINNET,
+                mKeyringService.getFilecoinSelectedAccount(mSelectedFilecoinNetwork,
                         accountAddress -> { updateSelectedAccountAndState(accountAddress); });
             } else {
                 mKeyringService.getSelectedAccount(coinType,
@@ -283,16 +288,20 @@ public class KeyringModel implements KeyringServiceObserver {
         final AccountInfo[] accountInfoArray =
                 WalletUtils.getAccountInfosFromKeyrings(_mKeyringInfosLiveData.getValue())
                         .toArray(new AccountInfo[0]);
-        if (coinType == CoinType.FIL) {
-            mKeyringService.addFilecoinAccount(
-                    accountName, BraveWalletConstants.FILECOIN_MAINNET, result -> {
-                        handleAddAccountResult(result, accountInfoArray, coinType, callback);
-                    });
-        } else {
-            mKeyringService.addAccount(accountName, coinType, result -> {
-                handleAddAccountResult(result, accountInfoArray, coinType, callback);
-            });
-        }
+        mKeyringService.addAccount(accountName, coinType, result -> {
+            handleAddAccountResult(result, accountInfoArray, coinType, callback);
+        });
+    }
+
+    public void addFilecoinAccount(String accountName, @FilecoinNetworkType String filecoinNetwork,
+            Callbacks.Callback1<Boolean> callback) {
+        final AccountInfo[] accountInfoArray =
+                WalletUtils.getAccountInfosFromKeyrings(_mKeyringInfosLiveData.getValue())
+                        .toArray(new AccountInfo[0]);
+        mSelectedFilecoinNetwork = BraveWalletConstants.FILECOIN_MAINNET;
+        mKeyringService.addFilecoinAccount(accountName, mSelectedFilecoinNetwork, result -> {
+            handleAddAccountResult(result, accountInfoArray, CoinType.FIL, callback);
+        });
     }
 
     public void isWalletLocked(Callbacks.Callback1<Boolean> callback) {
@@ -396,4 +405,7 @@ public class KeyringModel implements KeyringServiceObserver {
 
     @Override
     public void close() {}
+
+    @StringDef({BraveWalletConstants.FILECOIN_MAINNET, BraveWalletConstants.FILECOIN_TESTNET})
+    public @interface FilecoinNetworkType {}
 }
