@@ -33,7 +33,8 @@ public class BraveWalletPreferences
     private static final String PREF_BRAVE_WALLET_AUTOLOCK = "pref_brave_wallet_autolock";
     private static final String PREF_BRAVE_WALLET_RESET = "pref_brave_wallet_reset";
     private static final String BRAVE_WALLET_WEB3_NOTIFICATION_SWITCH = "web3_notifications_switch";
-    private static final String BRAVE_WALLET_WEB3_NFT_DISCOVERY_SWITCH = "nft_auto_discovery_switch";
+    private static final String BRAVE_WALLET_WEB3_NFT_DISCOVERY_SWITCH =
+            "nft_auto_discovery_switch";
     // A global preference, default state is on
     public static final String PREF_BRAVE_WALLET_WEB3_NOTIFICATIONS =
             "pref_brave_wallet_web3_notifications";
