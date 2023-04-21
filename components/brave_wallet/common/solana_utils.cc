@@ -153,4 +153,9 @@ absl::optional<uint8_t> GetUint8FromStringDict(const base::Value::Dict& dict,
   return val;
 }
 
+bool IsValidCommitmentString(const std::string& commitment) {
+  return commitment == "processed" || commitment == "confirmed" ||
+         commitment == "finalized";
+}
+
 }  // namespace brave_wallet

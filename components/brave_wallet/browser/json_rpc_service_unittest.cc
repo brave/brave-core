@@ -1509,6 +1509,24 @@ class JsonRpcServiceUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  void TestIsSolanaBlockhashValid(bool expected_is_valid,
+                                  mojom::SolanaProviderError expected_error,
+                                  const std::string& expected_error_message) {
+    base::RunLoop run_loop;
+    json_rpc_service_->IsSolanaBlockhashValid(
+        mojom::kSolanaMainnet, "J7rBdM6AecPDEZp8aPq5iPSNKVkU5Q76F3oAV4eW5wsW",
+        absl::nullopt,
+        base::BindLambdaForTesting([&](bool is_valid,
+                                       mojom::SolanaProviderError error,
+                                       const std::string& error_message) {
+          EXPECT_EQ(is_valid, expected_is_valid);
+          EXPECT_EQ(error, expected_error);
+          EXPECT_EQ(error_message, expected_error_message);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
   void GetFilEstimateGas(const std::string& chain_id,
                          const std::string& from,
                          const std::string& to,
@@ -4140,6 +4158,40 @@ TEST_F(JsonRpcServiceUnitTest, GetSPLTokenAccountBalance) {
   SetHTTPRequestTimeoutInterceptor();
   TestGetSPLTokenAccountBalance(
       "", 0u, "", mojom::SolanaProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+}
+
+TEST_F(JsonRpcServiceUnitTest, IsSolanaBlockhashValid) {
+  auto expected_network =
+      GetNetwork(mojom::kSolanaMainnet, mojom::CoinType::SOL);
+  SetInterceptor(expected_network, "isBlockhashValid", "",
+                 R"({"jsonrpc":"2.0","id":1,"result":{
+                      "context":{"slot":2483},"value":true}})");
+  TestIsSolanaBlockhashValid(true, mojom::SolanaProviderError::kSuccess, "");
+
+  SetInterceptor(expected_network, "isBlockhashValid", "",
+                 R"({"jsonrpc":"2.0","id":1,"result":{
+                      "context":{"slot":2483},"value":false}})");
+  TestIsSolanaBlockhashValid(false, mojom::SolanaProviderError::kSuccess, "");
+
+  // Response parsing error
+  SetInterceptor(expected_network, "isBlockhashValid", "",
+                 R"({"jsonrpc":"2.0","id":1,"result":"0"})");
+  TestIsSolanaBlockhashValid(
+      false, mojom::SolanaProviderError::kParsingError,
+      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+
+  // JSON RPC error
+  SetInterceptor(expected_network, "isBlockhashValid", "",
+                 R"({"jsonrpc":"2.0","id":1,"error":{
+                      "code":-32601, "message": "method does not exist"}})");
+  TestIsSolanaBlockhashValid(false, mojom::SolanaProviderError::kMethodNotFound,
+                             "method does not exist");
+
+  // HTTP error
+  SetHTTPRequestTimeoutInterceptor();
+  TestIsSolanaBlockhashValid(
+      false, mojom::SolanaProviderError::kInternalError,
       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
