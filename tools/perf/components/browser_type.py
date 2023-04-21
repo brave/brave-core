@@ -195,9 +195,9 @@ class BraveBrowserTypeImpl(BrowserType):
                         'Application')
 
   @classmethod
-  def _GetZipDownloadUrl(cls, tag: BraveVersion) -> str:
+  def _GetZipDownloadUrl(cls, tag: BraveVersion, target_os: str) -> str:
     platform_name = None
-    if sys.platform == 'win32':
+    if target_os == 'windows':
       platform_name = 'win32-x64'
     if not platform_name:
       raise NotImplementedError()
@@ -233,7 +233,7 @@ class BraveBrowserTypeImpl(BrowserType):
                             target_os: str) -> str:
     if target_os == 'mac':
       return self._DownloadDmgAndExtract(tag, out_dir)
-    if (target_os == 'win32' and tag.version()[0] == 1
+    if (target_os == 'windows' and tag.version()[0] == 1
         and tag.version()[1] < 35):
       return _DownloadWinInstallerAndExtract(out_dir,
                                              self._GetSetupDownloadUrl(tag),
@@ -245,7 +245,8 @@ class BraveBrowserTypeImpl(BrowserType):
       _DownloadFile(url, apk_filename)
       return apk_filename
 
-    return _DownloadArchiveAndUnpack(out_dir, self._GetZipDownloadUrl(tag))
+    return _DownloadArchiveAndUnpack(out_dir,
+                                     self._GetZipDownloadUrl(tag, target_os))
 
   def MakeFieldTrials(self, tag: BraveVersion, artifacts_dir: str,
                       variations_repo_dir: Optional[str],
@@ -334,7 +335,7 @@ class ChromeBrowserTypeImpl(BrowserType):
 
   def DownloadBrowserBinary(self, tag: BraveVersion, out_dir: str,
                             target_os: str) -> str:
-    if target_os == 'win32':
+    if target_os == 'windows':
       return _DownloadWinInstallerAndExtract(out_dir,
                                              _GetNearestChromiumUrl(tag),
                                              self._GetWinInstallPath(),
