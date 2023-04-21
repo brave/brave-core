@@ -36,7 +36,7 @@ public struct Web3SettingsView: View {
   public var body: some View {
     List {
       if let settingsStore = settingsStore {
-        if let networkStore = networkStore, let keyringStore = keyringStore, keyringStore.isDefaultKeyringCreated {
+        if let networkStore = networkStore, let keyringStore = keyringStore {
           WalletSettingsView(
             settingsStore: settingsStore,
             networkStore: networkStore,
@@ -171,6 +171,17 @@ private struct WalletSettingsView: View {
   }
 
   var body: some View {
+    if keyringStore.isDefaultKeyringCreated {
+      sections
+    } else {
+      // `KeyringStore` is optional in `Web3SettingsView`, but observed here.
+      // When wallet is reset, we need SwiftUI to be notified `isDefaultKeyringCreated`
+      // changed so we can hide Wallet specific sections
+      EmptyView()
+    }
+  }
+  
+  @ViewBuilder private var sections: some View {
     Section(
       footer: Text(Strings.Wallet.autoLockFooter)
         .foregroundColor(Color(.secondaryBraveLabel))
