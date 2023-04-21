@@ -29,7 +29,7 @@ import org.chromium.mojo.system.MojoException;
 
 public class BraveWalletPreferences
         extends BravePreferenceFragment implements ConnectionErrorHandler {
-    private static final String TAG = "BraveWalletPreferences";
+    private static final String TAG = "WalletPreferences";
     private static final String PREF_BRAVE_WALLET_AUTOLOCK = "pref_brave_wallet_autolock";
     private static final String PREF_BRAVE_WALLET_RESET = "pref_brave_wallet_reset";
     private static final String BRAVE_WALLET_WEB3_NOTIFICATION_SWITCH = "web3_notifications_switch";
