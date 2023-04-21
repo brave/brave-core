@@ -56,7 +56,6 @@ class PlaylistViewController: UIViewController {
   private lazy var listController = PlaylistListViewController(playerView: playerView)
   private let detailController = PlaylistDetailViewController()
 
-  private var lastPlayedTimeObserver: Any?
   private var folderObserver: AnyCancellable?
   private var playerStateObservers = Set<AnyCancellable>()
   private var assetStateObservers = Set<AnyCancellable>()
@@ -198,6 +197,22 @@ class PlaylistViewController: UIViewController {
 
     detailController.setVideoPlayer(playerView)
     updateLayoutForOrientationMode()
+    
+    NotificationCenter.default.do {
+      $0.addObserver(
+        self, selector: #selector(saveLastPlayedPosition),
+        name: UIApplication.willResignActiveNotification, object: nil)
+      $0.addObserver(
+        self, selector: #selector(saveLastPlayedPosition),
+        name: UIApplication.willTerminateNotification, object: nil)
+    }
+  }
+  
+  @objc
+  private func saveLastPlayedPosition() {
+    if let item = PlaylistCarplayManager.shared.currentPlaylistItem {
+      updateLastPlayedItem(item: item)
+    }
   }
   
   func setFolderSharingUrl(_ folderSharingUrl: String) {
@@ -462,12 +477,6 @@ class PlaylistViewController: UIViewController {
       self.playerView.infoView.pictureInPictureButton.isEnabled =
         event.mediaPlayer.pictureInPictureController?.isPictureInPicturePossible == true
     }.store(in: &playerStateObservers)
-    
-    lastPlayedTimeObserver = self.player.addTimeObserver(interval: 5000, onTick: { [weak self] _ in
-      if let currentItem = PlaylistCarplayManager.shared.currentPlaylistItem {
-        self?.updateLastPlayedItem(item: currentItem)
-      }
-    })
   }
 
   private func observeFolderStates() {
@@ -664,6 +673,7 @@ extension PlaylistViewController: VideoViewDelegate {
       return
     }
 
+    saveLastPlayedPosition()
     let index = PlaylistCarplayManager.shared.currentlyPlayingItemIndex - 1
     if index < PlaylistManager.shared.numberOfAssets {
       let indexPath = IndexPath(row: index, section: 0)
@@ -714,6 +724,7 @@ extension PlaylistViewController: VideoViewDelegate {
     let assetCount = PlaylistManager.shared.numberOfAssets
     let isAtEnd = PlaylistCarplayManager.shared.currentlyPlayingItemIndex >= assetCount - 1
     var index = PlaylistCarplayManager.shared.currentlyPlayingItemIndex
+    saveLastPlayedPosition()
 
     switch repeatMode {
     case .none:
