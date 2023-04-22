@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_WHATS_NEW_WHATS_NEW_UTIL_H_
 #define BRAVE_BROWSER_UI_WHATS_NEW_WHATS_NEW_UTIL_H_
 
+#include <string>
+
 class PrefRegistrySimple;
 class PrefService;
 class Browser;
@@ -17,6 +19,9 @@ bool ShouldShowBraveWhatsNewForState(PrefService* local_state);
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 void StartBraveWhatsNew(Browser* browser);
 void SetCurrentVersionForTesting(double major_version);
+
+// Param name is different for each channels.
+std::string GetTargetMajorVersionParamName();
 
 }  // namespace whats_new
 

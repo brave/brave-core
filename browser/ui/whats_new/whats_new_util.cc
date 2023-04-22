@@ -19,16 +19,17 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/common/channel_info.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/version_info/version_info.h"
 #include "url/gurl.h"
 
+using version_info::Channel;
+
 namespace {
 
 double g_testing_major_version = 0;
-constexpr char kWhatsNewTrial[] = "WhatsNewStudy";
-constexpr char kWhatsNewTargetMajorVersion[] = "target_major_version";
 
 // |version| has four components like 111.1.51.34.
 // First one is upstream's major version.
@@ -78,8 +79,10 @@ bool DoesUserGetMajorUpdateSinceInstall() {
 }
 
 absl::optional<double> GetTargetMajorVersion() {
+  constexpr char kWhatsNewTrial[] = "WhatsNewStudy";
+
   const std::string target_major_version_string = base::GetFieldTrialParamValue(
-      kWhatsNewTrial, kWhatsNewTargetMajorVersion);
+      kWhatsNewTrial, whats_new::GetTargetMajorVersionParamName());
   // Field trial doesn't have this value.
   if (target_major_version_string.empty()) {
     return absl::nullopt;
@@ -97,6 +100,22 @@ absl::optional<double> GetTargetMajorVersion() {
 }  // namespace
 
 namespace whats_new {
+
+std::string GetTargetMajorVersionParamName() {
+  switch (chrome::GetChannel()) {
+    case Channel::STABLE:
+      return "target_major_version_stable";
+    case Channel::BETA:
+      return "target_major_version_beta";
+    case Channel::DEV:
+      return "target_major_version_dev";
+    case Channel::CANARY:
+      return "target_major_version_nightly";
+    case Channel::UNKNOWN:
+      return "target_major_version_unknown";
+  }
+  NOTREACHED_NORETURN();
+}
 
 void SetCurrentVersionForTesting(double major_version) {
   g_testing_major_version = major_version;
