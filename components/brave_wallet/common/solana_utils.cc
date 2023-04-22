@@ -108,4 +108,9 @@ bool Uint8ArrayDecode(const std::string& str,
   return true;
 }
 
+bool IsValidCommitmentString(const std::string& commitment) {
+  return commitment == "processed" || commitment == "confirmed" ||
+         commitment == "finalized";
+}
+
 }  // namespace brave_wallet

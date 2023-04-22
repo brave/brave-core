@@ -2788,6 +2788,43 @@ void JsonRpcService::GetSolTokenMetadata(const std::string& chain_id,
                                              std::move(callback));
 }
 
+void JsonRpcService::IsSolanaBlockhashValid(
+    const std::string& chain_id,
+    const std::string& blockhash,
+    const absl::optional<std::string>& commitment,
+    IsSolanaBlockhashValidCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnIsSolanaBlockhashValid,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  RequestInternal(solana::isBlockhashValid(blockhash, commitment), true,
+                  GetNetworkURL(prefs_, chain_id, mojom::CoinType::SOL),
+                  std::move(internal_callback));
+}
+
+void JsonRpcService::OnIsSolanaBlockhashValid(
+    IsSolanaBlockhashValidCallback callback,
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run(
+        false, mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  auto is_valid =
+      solana::ParseIsBlockhashValid(api_request_result.value_body());
+  if (!is_valid) {
+    mojom::SolanaProviderError error;
+    std::string error_message;
+    ParseErrorResult<mojom::SolanaProviderError>(
+        api_request_result.value_body(), &error, &error_message);
+    std::move(callback).Run(false, error, error_message);
+    return;
+  }
+
+  std::move(callback).Run(*is_valid, mojom::SolanaProviderError::kSuccess, "");
+}
+
 void JsonRpcService::SendFilecoinTransaction(
     const std::string& signed_tx,
     SendFilecoinTransactionCallback callback) {

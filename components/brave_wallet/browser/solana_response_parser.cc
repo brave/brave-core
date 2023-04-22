@@ -309,6 +309,20 @@ bool ParseGetTokenAccountsByOwner(const base::Value& json_value,
   return true;
 }
 
+absl::optional<bool> ParseIsBlockhashValid(const base::Value& json_value) {
+  auto result = ParseResultDict(json_value);
+  if (!result) {
+    return absl::nullopt;
+  }
+
+  auto is_valid = result->FindBool("value");
+  if (!is_valid) {
+    return absl::nullopt;
+  }
+
+  return *is_valid;
+}
+
 base::OnceCallback<absl::optional<std::string>(const std::string& raw_response)>
 ConverterForGetAccountInfo() {
   return base::BindOnce(&ConvertMultiUint64ToString,

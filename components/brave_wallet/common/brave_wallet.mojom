@@ -1180,6 +1180,10 @@ interface JsonRpcService {
        SolanaProviderError error, string error_message);
   // Returns the metadata json associated with the NFT account address
   GetSolTokenMetadata(string chain_id, string token_mint_address) => (string token_url, string response, SolanaProviderError error, string error_message);
+
+  // Returns whether a blockhash is still valid or not for a given chain.
+  IsSolanaBlockhashValid(string chain_id, string blockhash, string? commitment)
+    => (bool is_valid, SolanaProviderError error, string error_message);
 };
 
 enum TransactionStatus {

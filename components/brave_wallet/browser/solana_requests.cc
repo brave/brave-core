@@ -9,6 +9,7 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
+#include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/json/rs/src/lib.rs.h"
 
 namespace brave_wallet {
@@ -114,6 +115,21 @@ std::string getTokenAccountsByOwner(const std::string& pubkey) {
 
   base::Value::Dict dictionary =
       GetJsonRpcDictionary("getTokenAccountsByOwner", std::move(params));
+  return GetJSON(dictionary);
+}
+
+std::string isBlockhashValid(const std::string& blockhash,
+                             const absl::optional<std::string>& commitment) {
+  CHECK(!commitment || IsValidCommitmentString(*commitment));
+  base::Value::List params;
+  params.Append(blockhash);
+
+  base::Value::Dict configuration;
+  configuration.Set("commitment", commitment ? *commitment : "processed");
+  params.Append(std::move(configuration));
+
+  base::Value::Dict dictionary =
+      GetJsonRpcDictionary("isBlockhashValid", std::move(params));
   return GetJSON(dictionary);
 }
 

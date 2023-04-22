@@ -32,11 +32,6 @@ constexpr char kMaxRetries[] = "maxRetries";
 constexpr char kPreflightCommitment[] = "preflightCommitment";
 constexpr char kSkipPreflight[] = "skipPreflight";
 
-bool IsValidCommitmentString(const std::string& commitment) {
-  return commitment == "processed" || commitment == "confirmed" ||
-         commitment == "finalized";
-}
-
 }  // namespace
 
 SolanaTransaction::SendOptions::SendOptions() = default;
