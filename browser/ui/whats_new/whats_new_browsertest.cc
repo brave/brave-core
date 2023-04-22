@@ -40,7 +40,7 @@ class BraveWhatsNewBrowserTest : public InProcessBrowserTest {
   void PrepareValidFieldTrialParams() {
     constexpr char kWhatsNewTrial[] = "WhatsNewStudy";
     std::map<std::string, std::string> params;
-    params["target_major_version"] = "1.52";
+    params[GetTargetMajorVersionParamName()] = "1.52";
     ASSERT_TRUE(
         base::AssociateFieldTrialParams(kWhatsNewTrial, "Enabled", params));
     base::FieldTrialList::CreateFieldTrial(kWhatsNewTrial, "Enabled");
