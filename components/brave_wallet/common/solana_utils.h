@@ -52,6 +52,8 @@ absl::optional<std::vector<uint8_t>> CompactArrayDecode(
     const std::vector<uint8_t>& bytes,
     size_t* bytes_index);
 
+bool IsValidCommitmentString(const std::string& commitment);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_SOLANA_UTILS_H_

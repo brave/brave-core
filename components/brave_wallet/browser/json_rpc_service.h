@@ -437,6 +437,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void GetSolTokenMetadata(const std::string& chain_id,
                            const std::string& token_mint_address,
                            GetSolTokenMetadataCallback callback) override;
+  void IsSolanaBlockhashValid(const std::string& chain_id,
+                              const std::string& blockhash,
+                              const absl::optional<std::string>& commitment,
+                              IsSolanaBlockhashValidCallback callback) override;
   using SendSolanaTransactionCallback =
       base::OnceCallback<void(const std::string& tx_hash,
                               mojom::SolanaProviderError error,
@@ -647,6 +651,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void OnGetSolanaTokenAccountsByOwner(
       GetSolanaTokenAccountsByOwnerCallback callback,
       APIRequestResult api_request_result);
+  void OnIsSolanaBlockhashValid(IsSolanaBlockhashValidCallback callback,
+                                APIRequestResult api_request_result);
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<APIRequestHelper> api_request_helper_;

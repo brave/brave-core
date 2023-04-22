@@ -6,7 +6,15 @@
 #include "brave/components/brave_wallet/browser/solana_requests.h"
 
 #include "base/json/json_reader.h"
+#include "base/test/gtest_util.h"
+#include "base/test/values_test_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+namespace {
+
+constexpr char kBlockhash[] = "J7rBdM6AecPDEZp8aPq5iPSNKVkU5Q76F3oAV4eW5wsW";
+
+}
 
 namespace brave_wallet {
 
@@ -104,6 +112,32 @@ TEST(SolanaRequestsUnitTest, getTokenAccountsByOwner) {
   ASSERT_EQ(
       getTokenAccountsByOwner("pubkey"),
       R"({"id":1,"jsonrpc":"2.0","method":"getTokenAccountsByOwner","params":["pubkey",{"programId":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"encoding":"base64"}]})");
+}
+
+TEST(SolanaRequestsUnitTest, isBlockhashValid) {
+  EXPECT_EQ(
+      base::test::ParseJsonDict(isBlockhashValid(kBlockhash, absl::nullopt)),
+      base::test::ParseJsonDict(
+          R"({"id": 1,
+              "jsonrpc": "2.0",
+              "method": "isBlockhashValid",
+              "params": [
+                "J7rBdM6AecPDEZp8aPq5iPSNKVkU5Q76F3oAV4eW5wsW",
+                {"commitment": "processed"}
+              ]})"));
+
+  EXPECT_EQ(
+      base::test::ParseJsonDict(isBlockhashValid(kBlockhash, "finalized")),
+      base::test::ParseJsonDict(
+          R"({"id": 1,
+              "jsonrpc": "2.0",
+              "method": "isBlockhashValid",
+              "params": [
+                "J7rBdM6AecPDEZp8aPq5iPSNKVkU5Q76F3oAV4eW5wsW",
+                {"commitment": "finalized"}
+              ]})"));
+
+  EXPECT_CHECK_DEATH(isBlockhashValid(kBlockhash, "invalid_commitment"));
 }
 
 }  // namespace solana
