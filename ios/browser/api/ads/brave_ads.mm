@@ -189,6 +189,15 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
            selector:@selector(applicationDidBackground)
                name:UIApplicationDidEnterBackgroundNotification
              object:nil];
+
+    const auto dbPath = base::SysNSStringToUTF8([self adsDatabasePath]);
+    adsDatabase = new brave_ads::Database(base::FilePath(dbPath));
+
+    adEventHistory = new brave_ads::AdEventHistory();
+
+    adsClient = new AdsClientIOS(self);
+    adsClientNotifier = new brave_ads::AdsClientNotifier();
+    ads = brave_ads::Ads::CreateInstance(adsClient);
   }
   return self;
 }
@@ -237,14 +246,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     return;
   }
 
-  const auto dbPath = base::SysNSStringToUTF8([self adsDatabasePath]);
-  adsDatabase = new brave_ads::Database(base::FilePath(dbPath));
-
-  adEventHistory = new brave_ads::AdEventHistory();
-
-  adsClient = new AdsClientIOS(self);
-  adsClientNotifier = new brave_ads::AdsClientNotifier();
-  ads = brave_ads::Ads::CreateInstance(adsClient);
   auto cppSysInfo =
       sysInfo ? sysInfo.cppObjPtr : brave_ads::mojom::SysInfo::New();
   ads->SetSysInfo(std::move(cppSysInfo));
