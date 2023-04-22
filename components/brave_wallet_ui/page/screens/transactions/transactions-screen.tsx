@@ -9,6 +9,7 @@ import { useHistory } from 'react-router'
 // types
 import {
   BraveWallet,
+  SerializableTransactionInfo,
   WalletAccountType,
   WalletRoutes
 } from '../../../constants/types'
@@ -25,19 +26,25 @@ import {
   accountInfoEntityAdaptorInitialState,
   selectAllAccountInfosFromQuery
 } from '../../../common/slices/entities/account-info.entity'
-import { ParsedTransactionWithoutFiatValues } from '../../../utils/tx-utils'
 import {
-  combineTransactionRegistries,
-  transactionEntityInitialState,
-  TransactionEntityState
-} from '../../../common/slices/entities/transaction.entity'
-import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
+  selectAllUserAssetsFromQueryResult,
+  selectAllBlockchainTokensFromQueryResult
+} from '../../../common/slices/entities/blockchain-token.entity'
+import {
+  networkEntityAdapter
+} from '../../../common/slices/entities/network.entity'
+import {
+  filterTransactionsBySearchValue,
+  makeSearchableTransaction
+} from '../../../utils/search-utils'
 
 // hooks
 import {
   useGetAccountInfosRegistryQuery,
-  useGetNetworkQuery,
-  useLazyGetAllTransactionsForAddressCoinTypeQuery
+  useGetNetworksRegistryQuery,
+  useLazyGetTransactionsQuery,
+  useGetUserTokensRegistryQuery,
+  useGetTokensRegistryQuery
 } from '../../../common/slices/api.slice'
 
 // components
@@ -79,10 +86,9 @@ export const TransactionsScreen: React.FC = () => {
 
   // state
   const [searchValue, setSearchValue] = React.useState<string>('')
-  const [
-    combinedTxEntityState,
-    setCombinedTxEntityState
-  ] = React.useState<TransactionEntityState>(transactionEntityInitialState)
+  const [txInfos, setTxInfos] = React.useState<SerializableTransactionInfo[]>(
+    []
+  )
   const [isLoadingTxsList, setIsLoadingTxsList] = React.useState<boolean>(false)
 
   // route params
@@ -114,22 +120,41 @@ export const TransactionsScreen: React.FC = () => {
     })
   })
 
-  const [fetchAllTransactionsForAddressCoinType] = useLazyGetAllTransactionsForAddressCoinTypeQuery()
+  const { data: knownTokensList } = useGetTokensRegistryQuery(undefined, {
+    selectFromResult: (res) => ({
+      isLoading: res.isLoading,
+      data: selectAllBlockchainTokensFromQueryResult(res)
+    })
+  })
 
-  const { data: specificNetworkFromParam } = useGetNetworkQuery(
+  const { data: userTokensList } = useGetUserTokensRegistryQuery(
+    undefined,
     {
-      chainId: chainId!,
-      coin: chainCoinType
-    },
-    {
-      skip:
-        !chainId ||
-        chainId === AllNetworksOption.chainId ||
-        chainCoinType === undefined
+      selectFromResult: (res) => ({
+        isLoading: res.isLoading,
+        data: selectAllUserAssetsFromQueryResult(res)
+      })
     }
   )
 
+  const [fetchTransactions] = useLazyGetTransactionsQuery()
+
+  const { data: networksRegistry } = useGetNetworksRegistryQuery()
+
   // computed / memos
+  const specificNetworkFromParam =
+    chainId &&
+    chainId !== AllNetworksOption.chainId &&
+    chainCoinType !== undefined &&
+    networksRegistry
+      ? networksRegistry.entities[
+          networkEntityAdapter.selectId({
+            chainId,
+            coin: chainCoinType
+          })
+        ]
+      : undefined
+
   const foundNetworkFromParam = chainId
     ? chainId === AllNetworksOption.chainId
       ? AllNetworksOption
@@ -147,17 +172,18 @@ export const TransactionsScreen: React.FC = () => {
 
     Promise.all(
       accounts.map(({ coin, address }) => {
-        return fetchAllTransactionsForAddressCoinType({
+        return fetchTransactions({
           address: address,
-          coinType: coin
+          coinType: coin,
+          chainId:
+            foundNetworkFromParam?.chainId === AllNetworksOption.chainId
+              ? null
+              : foundNetworkFromParam?.chainId || null
         }).unwrap()
       }
     ))
-    .then(registries => {
-      const combinedRegistry: TransactionEntityState =
-        combineTransactionRegistries(transactionEntityInitialState, registries)
-
-      setCombinedTxEntityState(combinedRegistry)
+    .then(txInfos => {
+      setTxInfos(txInfos.flat())
       setIsLoadingTxsList(false)
     })
     .catch(error => {
@@ -173,7 +199,8 @@ export const TransactionsScreen: React.FC = () => {
       })
     })
   }, [
-    fetchAllTransactionsForAddressCoinType
+    fetchTransactions,
+    foundNetworkFromParam?.chainId
   ])
 
   React.useEffect(() => {
@@ -196,28 +223,56 @@ export const TransactionsScreen: React.FC = () => {
     fetchTxsForAccounts(accounts)
   }, [
     isLoadingDeps,
-    accounts,
     fetchTxsForAccounts,
     foundAccountFromParam?.address,
     foundAccountFromParam?.coin
   ])
 
-  const txIdsForSelectedChain = React.useMemo(() => {
-    return chainId && chainId !== AllNetworksOption.chainId
-      ? combinedTxEntityState.idsByChainId[chainId] ?? []
-      : combinedTxEntityState.ids ?? []
-  }, [combinedTxEntityState.idsByChainId, combinedTxEntityState.ids, chainId])
+  const combinedTokensList = React.useMemo(() => {
+    return userTokensList.concat(knownTokensList)
+  }, [userTokensList, knownTokensList])
 
   const txsForSelectedChain = React.useMemo(() => {
-    return getEntitiesListFromEntityState(
-      combinedTxEntityState,
-      txIdsForSelectedChain
-    )
-  }, [combinedTxEntityState, txIdsForSelectedChain])
+    return chainId && chainId !== AllNetworksOption.chainId
+      ? txInfos.filter(tx => tx.chainId === chainId)
+      : txInfos
+  }, [chainId, txInfos])
+
+  const combinedTokensListForSelectedChain = React.useMemo(() => {
+    return chainId && chainId !== AllNetworksOption.chainId
+      ? combinedTokensList.filter(token => token.chainId === chainId)
+      : combinedTokensList
+  }, [chainId, combinedTokensList])
+
+  const searchableTransactions = React.useMemo(() => {
+    return txsForSelectedChain.map((tx) => {
+      return makeSearchableTransaction(
+        tx,
+        combinedTokensListForSelectedChain,
+        networksRegistry,
+        accountInfosRegistry
+      )
+    })
+  }, [
+    txsForSelectedChain,
+    combinedTokensListForSelectedChain,
+    networksRegistry,
+    accountInfosRegistry
+  ])
 
   const filteredTransactions = React.useMemo(() => {
-    return filterTransactionsBySearchValue(searchValue, txsForSelectedChain)
-  }, [searchValue, txsForSelectedChain])
+    if (searchValue.trim() === '') {
+      return searchableTransactions
+    }
+
+    return filterTransactionsBySearchValue(
+      searchableTransactions,
+      searchValue.toLowerCase()
+    )
+  }, [
+    searchValue,
+    searchableTransactions
+  ])
 
   // methods
   const onSelectAccount = React.useCallback(
@@ -350,55 +405,4 @@ const updatePageParams = ({
   const paramsString = params.toString()
 
   return `${WalletRoutes.Activity}${paramsString ? `?${paramsString}` : ''}`
-}
-
-const findTokenBySearchValue = (
-  searchValue: string,
-  token?: BraveWallet.BlockchainToken
-) => {
-  if (!token) {
-    return false
-  }
-
-  return (
-    token.name.toLowerCase().includes(searchValue) ||
-    token.symbol.toLowerCase().includes(searchValue) ||
-    token.contractAddress.toLowerCase().includes(searchValue)
-  )
-}
-
-const filterTransactionsBySearchValue = <T extends ParsedTransactionWithoutFiatValues>(
-  searchValue: string,
-  txsForFilteredChain: T[]
-): T[] => {
-  const lowerCaseSearchValue = searchValue.toLowerCase()
-  return searchValue === ''
-    ? txsForFilteredChain
-    : txsForFilteredChain.filter((tx) => (
-      // Tokens
-      findTokenBySearchValue(lowerCaseSearchValue, tx.token) ||
-      // Buy Token
-      findTokenBySearchValue(lowerCaseSearchValue, tx.buyToken) ||
-      // Sell Token
-      findTokenBySearchValue(lowerCaseSearchValue, tx.sellToken) ||
-      // ERC721 NFTs
-      findTokenBySearchValue(lowerCaseSearchValue, tx.erc721BlockchainToken) ||
-      // Sender
-      tx.sender.toLowerCase().includes(lowerCaseSearchValue) ||
-      tx.senderLabel.toLowerCase().includes(lowerCaseSearchValue) ||
-      // Receiver
-      tx.recipient.toLowerCase().includes(lowerCaseSearchValue) ||
-      tx.recipientLabel.toLowerCase().includes(lowerCaseSearchValue) ||
-      // Intent
-      tx.intent.toLowerCase().includes(lowerCaseSearchValue) ||
-      // Hash
-      tx.hash.toLowerCase().includes(lowerCaseSearchValue) ||
-      // Account Address
-      tx.accountAddress.toLowerCase().includes(lowerCaseSearchValue) ||
-      // Approval Target
-      tx.approvalTarget && tx.approvalTarget.toLowerCase().includes(lowerCaseSearchValue) ||
-      tx.approvalTargetLabel && tx.approvalTargetLabel.toLowerCase().includes(lowerCaseSearchValue) ||
-      tx.originInfo?.eTldPlusOne.toLowerCase().includes(searchValue.toLowerCase()) ||
-      tx.originInfo?.originSpec.toLowerCase().includes(searchValue.toLowerCase())
-    ))
 }

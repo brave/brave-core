@@ -7,6 +7,7 @@ import { EntityId, EntityState } from '@reduxjs/toolkit'
 import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query'
 import { blockchainTokenEntityAdaptor } from '../common/slices/entities/blockchain-token.entity'
 import { GetBlockchainTokenIdArg } from './asset-utils'
+import { BraveWallet } from '../constants/types'
 
 /**
  * Default tags used by the cacher helpers
@@ -266,6 +267,56 @@ export const invalidatesUnknownErrors = () => <
   arg: Arg
 ): ['UNKNOWN_ERROR'] => ['UNKNOWN_ERROR']
 
+export const TX_CACHE_TAGS = {
+  LISTS: (
+    coin: BraveWallet.CoinType,
+    fromAddress: string | null,
+    chainId: string | null
+  ) =>
+    [
+      {
+        type: 'Transactions',
+        id: `coin: ${coin}`
+      } as const,
+      ...(fromAddress
+        ? [
+            {
+              type: 'Transactions',
+              id: `fromAddress: ${fromAddress}`
+            } as const
+          ]
+        : []),
+      ...(chainId
+        ? [
+            {
+              type: 'Transactions',
+              id: `chainId: ${chainId}`
+            } as const
+          ]
+        : []),
+    ] as const,
+  ID: (
+    tx: Pick<BraveWallet.TransactionInfo, 'id'> & {
+      chainId?: string | null
+      fromAddress?: string | null
+    },
+    txCoinType: BraveWallet.CoinType | null
+  ) =>
+    [
+      {
+        type: 'Transactions',
+        id: tx.id
+      },
+      ...(txCoinType
+        ? TX_CACHE_TAGS.LISTS(
+            txCoinType,
+            tx.fromAddress || null,
+            tx.chainId || null
+          )
+        : (['Transactions'] as const))
+    ] as const
+} as const
+
 /**
  * Utility helpers for common provides/invalidates scenarios
  */
@@ -279,5 +330,6 @@ export const cacher = {
   invalidatesUnauthorized,
   invalidatesUnknownErrors,
   providesList,
-  providesRegistry
+  providesRegistry,
+  TX_CACHE_TAGS
 }

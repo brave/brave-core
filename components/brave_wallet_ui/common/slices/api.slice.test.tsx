@@ -7,7 +7,7 @@ import * as React from 'react'
 import { Provider } from 'react-redux'
 import { renderHook } from '@testing-library/react-hooks'
 
-import { useGetAllTransactionInfosForAddressCoinTypeQuery } from './api.slice'
+import { useGetTransactionsQuery } from './api.slice'
 
 import { mockAccount } from '../constants/mocks'
 import { createMockStore } from '../../utils/test-utils'
@@ -28,9 +28,10 @@ describe('api slice: getAllTransactionInfosForAddressCoinType', () => {
 
     const { result, waitForValueToChange } = renderHook(
       () =>
-        useGetAllTransactionInfosForAddressCoinTypeQuery({
+        useGetTransactionsQuery({
           address: mockAccount.address,
-          coinType: mockAccount.coin
+          coinType: mockAccount.coin,
+          chainId: null
         }),
       renderHookOptionsWithCustomStore(store)
     )

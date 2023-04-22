@@ -565,6 +565,10 @@ export type SerializableTransactionInfo = Omit<
   originInfo: SerializableOriginInfo | undefined
 }
 
+export type TransactionInfo =
+  | BraveWallet.TransactionInfo
+  | SerializableTransactionInfo
+
 export type SerializableAddSuggestTokenRequest = Omit<BraveWallet.AddSuggestTokenRequest, 'origin'> & {
   origin: SerializableOriginInfo
 }

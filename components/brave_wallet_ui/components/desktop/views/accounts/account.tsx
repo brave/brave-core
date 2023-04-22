@@ -23,16 +23,14 @@ import {
 // utils
 import { reduceAddress } from '../../../../utils/reduce-address'
 import { getLocale } from '../../../../../common/locale'
-import {
-  parseTransactionWithPrices,
-  sortTransactionByDate
-} from '../../../../utils/tx-utils'
+import { sortTransactionByDate } from '../../../../utils/tx-utils'
 import { getBalance } from '../../../../utils/balance-utils'
 import {
-  getCoinFromTxDataUnion,
   getFilecoinKeyringIdFromNetwork
 } from '../../../../utils/network-utils'
-import { selectAllBlockchainTokensFromQueryResult, selectAllUserAssetsFromQueryResult } from '../../../../common/slices/entities/blockchain-token.entity'
+import {
+  selectAllUserAssetsFromQueryResult
+} from '../../../../common/slices/entities/blockchain-token.entity'
 
 // Styled Components
 import {
@@ -67,7 +65,6 @@ import { AccountButtonOptions } from '../../../../options/account-list-button-op
 import { useScrollIntoView } from '../../../../common/hooks/use-scroll-into-view'
 import {
   useGetNetworksQuery,
-  useGetTokensRegistryQuery,
   useGetUserTokensRegistryQuery
 } from '../../../../common/slices/api.slice'
 import { useMultiChainSellAssets } from '../../../../common/hooks/use-multi-chain-sell-assets'
@@ -90,22 +87,14 @@ export const Account = ({
   const dispatch = useDispatch()
 
   // unsafe selectors
-  const userVisibleTokensInfo = useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
   const transactions = useUnsafeWalletSelector(WalletSelectors.transactions)
-  const solFeeEstimates = useUnsafeWalletSelector(WalletSelectors.solFeeEstimates)
-  const spotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
 
   // queries
   const { data: networkList = [] } = useGetNetworksQuery()
-  const { fullTokenList } = useGetTokensRegistryQuery(undefined, {
-    selectFromResult: (result) => ({
-      fullTokenList: selectAllBlockchainTokensFromQueryResult(result)
-    })
-  })
-  const { userVisibleTokensList } = useGetUserTokensRegistryQuery(undefined, {
+  const { userVisibleTokensInfo } = useGetUserTokensRegistryQuery(undefined, {
     selectFromResult: result => ({
-      userVisibleTokensList: selectAllUserAssetsFromQueryResult(result)
+      userVisibleTokensInfo: selectAllUserAssetsFromQueryResult(result)
     })
   })
 
@@ -148,34 +137,13 @@ export const Account = ({
       return sortTransactionByDate(
         transactions[selectedAccount.address],
         'descending'
-      ).map((tx) =>
-        parseTransactionWithPrices({
-          tx,
-          accounts,
-          fullTokenList,
-          userVisibleTokensList,
-          solFeeEstimates,
-          transactionNetwork: networkList.find(
-            (n) =>
-              n.chainId === tx.chainId &&
-              n.coin === getCoinFromTxDataUnion(tx.txDataUnion)
-          ),
-          spotPrices
-        })
       )
     } else {
       return []
     }
   }, [
-    accounts,
     selectedAccount?.address,
-    transactions,
-    accounts,
-    fullTokenList,
-    userVisibleTokensList,
-    solFeeEstimates,
-    networkList,
-    spotPrices
+    selectedAccount && transactions[selectedAccount.address],
   ])
 
   const accountsTokensList = React.useMemo(() => {

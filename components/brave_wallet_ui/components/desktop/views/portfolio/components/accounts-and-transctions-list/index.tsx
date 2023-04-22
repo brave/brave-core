@@ -9,7 +9,8 @@ import * as React from 'react'
 import {
   BraveWallet,
   AddAccountNavTypes,
-  WalletAccountType
+  WalletAccountType,
+  SerializableTransactionInfo
 } from '../../../../../../constants/types'
 
 // Utils
@@ -17,7 +18,6 @@ import { getLocale } from '../../../../../../../common/locale'
 import Amount from '../../../../../../utils/amount'
 import { WalletSelectors } from '../../../../../../common/selectors'
 import { getBalance } from '../../../../../../utils/balance-utils'
-import { ParsedTransaction } from '../../../../../../utils/tx-utils'
 
 // Components
 import {
@@ -58,7 +58,7 @@ export interface Props {
   selectedAsset: BraveWallet.BlockchainToken | undefined
   fullAssetFiatBalance: Amount
   formattedFullAssetBalance: string
-  selectedAssetTransactions: ParsedTransaction[]
+  selectedAssetTransactions: SerializableTransactionInfo[]
   onClickAddAccount: (tabId: AddAccountNavTypes) => () => void
 }
 
@@ -114,7 +114,7 @@ export const AccountsAndTransactionsList = ({
 
   const nonRejectedTransactions = React.useMemo(() => {
     return selectedAssetTransactions
-      .filter(t => t.status !== BraveWallet.TransactionStatus.Rejected)
+      .filter(t => t.txStatus !== BraveWallet.TransactionStatus.Rejected)
   }, [selectedAssetTransactions])
 
   // Methods

@@ -700,7 +700,8 @@ handler.on(WalletActions.transactionStatusChanged.type, async (store: Store, pay
       coinType: getCoinFromTxDataUnion(payload.txInfo.txDataUnion),
       fromAddress: payload.txInfo.fromAddress,
       txStatus: payload.txInfo.txStatus,
-      id: payload.txInfo.id
+      id: payload.txInfo.id,
+      chainId: payload.txInfo.chainId,
     })
   )
   const status = payload.txInfo.txStatus

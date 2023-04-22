@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { EntityId, ThunkDispatch } from '@reduxjs/toolkit'
+import { EntityId } from '@reduxjs/toolkit'
 import { createApi } from '@reduxjs/toolkit/query/react'
 
 // types
@@ -55,19 +55,13 @@ import {
 import {
   blockchainTokenEntityAdaptor,
   blockchainTokenEntityAdaptorInitialState,
-  BlockchainTokenEntityAdaptorState,
-  combineTokenRegistries
+  BlockchainTokenEntityAdaptorState
 } from './entities/blockchain-token.entity'
 import { AccountTokenBalanceForChainId, TokenBalancesForChainId } from './entities/token-balance.entity'
-import {
-  TransactionEntity,
-  transactionEntityAdapter,
-  transactionEntityInitialState,
-  TransactionEntityState
-} from './entities/transaction.entity'
+import { TransactionEntity } from './entities/transaction.entity'
 
 // utils
-import { cacher } from '../../utils/query-cache-utils'
+import { cacher, TX_CACHE_TAGS } from '../../utils/query-cache-utils'
 import getAPIProxy from '../async/bridge'
 import type WalletApiProxy from '../wallet_api_proxy'
 import {
@@ -79,50 +73,16 @@ import {
 import { getEntitiesListFromEntityState } from '../../utils/entities.utils'
 import { makeNetworkAsset } from '../../options/asset-options'
 import { getTokenParam } from '../../utils/api-utils'
-import { getAccountType, getAddressLabelFromRegistry } from '../../utils/account-utils'
+import { getAccountType } from '../../utils/account-utils'
 import {
   getCoinFromTxDataUnion,
   hasEIP1559Support
 } from '../../utils/network-utils'
 import Amount from '../../utils/amount'
+import { shouldReportTransactionP3A } from '../../utils/tx-utils'
 import {
-  accountHasInsufficientFundsForGas,
-  accountHasInsufficientFundsForTransaction,
-  findTransactionAccountFromRegistry,
-  findTransactionToken,
-  getETHSwapTransactionBuyAndSellTokens,
-  getFormattedTransactionTransferredValue,
-  getIsTxApprovalUnlimited,
-  getTransactionApprovalTargetAddress,
-  getTransactionDecimals,
-  getTransactionErc721TokenId,
-  getTransactionFormattedNativeCurrencyTotal,
-  getTransactionFormattedSendCurrencyTotal,
-  getTransactionIntent,
-  getTransactionNonce,
-  getTransactionToAddress,
-  getTransactionTransferredToken,
-  isFilecoinTransaction,
-  isSendingToKnownTokenContractAddress,
-  isSolanaSplTransaction,
-  isSolanaTransaction,
-  isSwapTransaction,
-  ParsedTransactionWithoutFiatValues,
-  parseTransactionFeesWithoutPrices,
-  shouldReportTransactionP3A,
-  transactionHasSameAddressError
-} from '../../utils/tx-utils'
-import { getLocale } from '../../../common/locale'
-import {
-  makeSerializableOriginInfo,
-  makeSerializableTimeDelta,
   makeSerializableTransaction
 } from '../../utils/model-serialization-utils'
-import { SwapExchangeProxy } from '../constants/registry'
-import {
-  getTypedSolanaTxInstructions,
-  TypedSolanaInstructionWithParams
-} from '../../utils/solana-instruction-utils'
 import { addLogoToToken } from '../async/lib'
 
 export type AssetPriceById = BraveWallet.AssetPrice & {
@@ -169,9 +129,16 @@ export interface IsEip1559ChangedMutationArg {
   isEip1559: boolean
 }
 
-export interface GetAllTransactionsForAddressCoinTypeArg {
-  address: string
+export interface GetTransactionsQueryArg {
   coinType: BraveWallet.CoinType
+  /**
+   * will fetch for all coin-type addresses if null
+  */
+  address: string | null
+  /**
+   * will fetch for all coin-type chains if null
+  */
+  chainId: string | null
 }
 
 const NETWORK_TAG_IDS = {
@@ -500,8 +467,7 @@ export function createWalletApi (
       'Network',
       'PendingTransactions',
       'TokenSpotPrice',
-      'TransactionsForAccount',
-      'TransactionInfosForAccount',
+      'Transactions',
       'UserBlockchainTokens',
       'WalletInfo'
     ],
@@ -524,14 +490,14 @@ export function createWalletApi (
       getDefaultAccountAddresses: query<string[], void>({
         queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
           // apiProxy
-          const { braveWalletService, keyringService }
-            = baseQuery(undefined).data
+          const { braveWalletService, keyringService } =
+            baseQuery(undefined).data
 
           // Get default account addresses for each CoinType
           const defaultAccountAddresses = await Promise.all(
             SupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
-              const { chainId }
-                = await braveWalletService.getChainIdForActiveOrigin(coin)
+              const { chainId } =
+                await braveWalletService.getChainIdForActiveOrigin(coin)
               const defaultAccount =
                 coin === BraveWallet.CoinType.FIL
                   ? await keyringService.getFilecoinSelectedAccount(chainId)
@@ -577,7 +543,7 @@ export function createWalletApi (
         invalidatesTags: [
           'DefaultAccountAddresses',
           { type: 'Network', id: NETWORK_TAG_IDS.SELECTED },
-          { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED },
+          { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }
         ]
       }),
       getSelectedAccountAddress: query<string, void>({
@@ -764,19 +730,18 @@ export function createWalletApi (
           baseQuery
         ) => {
           try {
-            const { braveWalletService }
-              = baseQuery(undefined).data
+            const { braveWalletService } = baseQuery(undefined).data
 
             await dispatch(
               walletApi.endpoints.setSelectedCoin.initiate(coin)
             ).unwrap()
 
-            const { success }
-              = await braveWalletService.setChainIdForActiveOrigin(coin,
-                                                                   chainId)
+            const { success } =
+              await braveWalletService.setChainIdForActiveOrigin(coin, chainId)
             if (!success) {
               throw new Error(
-                'braveWalletService.SetChainIdForActiveOrigin failed')
+                'braveWalletService.SetChainIdForActiveOrigin failed'
+              )
             }
             return {
               data: { chainId, coin }
@@ -904,12 +869,14 @@ export function createWalletApi (
                   )
 
                   const fullTokensListForChain: BraveWallet.BlockchainToken[] =
-                    await Promise.all(tokens.map(async (token) => {
-                      return addChainIdToToken(
-                        await addLogoToToken(token),
-                        network.chainId
-                      )
-                    }))
+                    await Promise.all(
+                      tokens.map(async (token) => {
+                        return addChainIdToToken(
+                          await addLogoToToken(token),
+                          network.chainId
+                        )
+                      })
+                    )
 
                   tokenIdsByChainId[networkId] =
                     fullTokensListForChain.map(getAssetIdKey)
@@ -1497,7 +1464,10 @@ export function createWalletApi (
       //
       // Transactions
       //
-      getAllPendingTransactions: query<TransactionEntity[], void>({
+      getAllPendingTransactions: query<
+        SerializableTransactionInfo[],
+        { chainId: string | null }
+      >({
         queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
           try {
             const {
@@ -1507,33 +1477,15 @@ export function createWalletApi (
 
             // accounts
             const { accountInfos: accounts } = await cache.getWalletInfo()
-            const accountsRegistry = await cache.getAccountsRegistry()
 
-            // networks
-            const networksRegistry = await cache.getNetworksRegistry()
-
-            // user tokens
-            const userTokensRegistry = await cache.getUserTokensRegistry()
-
-            // known tokens
-            let tokensRegistry = blockchainTokenEntityAdaptorInitialState
-            try {
-              await dispatch(
-                walletApi.endpoints.getTokensRegistry.initiate(undefined)
-              ).unwrap()
-            } catch (error) {}
-
-            // combined token registry
-            const combinedTokenRegistry = combineTokenRegistries(
-              tokensRegistry,
-              userTokensRegistry
-            )
-
-            // TODO: Core should allow fetching by chain Id instead of cointype
             const transactionInfoResults = await Promise.all(
               accounts.map(async (a) => {
                 const { transactionInfos } =
-                  await txService.getAllTransactionInfo(a.coin, null, a.address)
+                  await txService.getAllTransactionInfo(
+                    a.coin,
+                    arg.chainId,
+                    a.address
+                  )
 
                 // return only pending txs
                 return transactionInfos.filter(
@@ -1543,25 +1495,14 @@ export function createWalletApi (
               })
             )
 
-            const transactions = transactionInfoResults.flat()
+            const transactions = transactionInfoResults
+              .flat()
+              .map(makeSerializableTransaction)
 
-            const parsedTransactionsWithoutPrices = await Promise.all(
-              transactions.map(async (tx: BraveWallet.TransactionInfo) => {
-                return await parseTransactionWithoutPricesAsync({
-                  tx,
-                  accountsRegistry,
-                  networksRegistry,
-                  tokensRegistry: combinedTokenRegistry,
-                  dispatch
-                })
-              })
-            )
-
-            selectedPendingTransactionId =
-              parsedTransactionsWithoutPrices[0]?.id || ''
+            selectedPendingTransactionId = transactions[0]?.id || ''
 
             return {
-              data: parsedTransactionsWithoutPrices
+              data: transactions
             }
           } catch (error) {
             console.error(error)
@@ -1578,153 +1519,14 @@ export function createWalletApi (
         queryFn: () => {
           return { data: true }
         }, // no-op, uses invalidateTags
-        invalidatesTags: ['PendingTransactions', 'TransactionsForAccount']
+        invalidatesTags: ['PendingTransactions', 'Transactions']
       }),
-      getAllTransactionsForAddressCoinType: query<
-        TransactionEntityState,
-        GetAllTransactionsForAddressCoinTypeArg
-      >({
-        queryFn: async (
-          { address, coinType },
-          { dispatch },
-          extraOptions,
-          baseQuery
-        ) => {
-          const isFil = coinType === BraveWallet.CoinType.FIL
-          try {
-            const {
-              cache,
-              data: { txService }
-            } = baseQuery(undefined)
-
-            // accounts
-            const accountsRegistry = await cache.getAccountsRegistry()
-
-            // networks
-            const networksRegistry = await cache.getNetworksRegistry()
-
-            // user tokens (skipped for FIL accounts)
-            let userTokensRegistry: BlockchainTokenEntityAdaptorState =
-              blockchainTokenEntityAdaptorInitialState
-            try {
-              userTokensRegistry = isFil
-                ? await cache.getUserTokensRegistry()
-                : blockchainTokenEntityAdaptorInitialState
-            } catch (error) {
-              console.log(error)
-            }
-
-            // known tokens (skipped for FIL accounts)
-            let tokensRegistry: BlockchainTokenEntityAdaptorState =
-              blockchainTokenEntityAdaptorInitialState
-            try {
-              tokensRegistry = isFil
-                ? await dispatch(
-                    walletApi.endpoints.getTokensRegistry.initiate(undefined)
-                  ).unwrap()
-                : blockchainTokenEntityAdaptorInitialState
-            } catch (error) {
-              console.log(error)
-            }
-
-            // combined token registry
-            const combinedTokenRegistry = combineTokenRegistries(
-              tokensRegistry,
-              userTokensRegistry
-            )
-
-            // TODO: Core should allow fetching by chain Id instead of cointype
-            const { transactionInfos } = await txService.getAllTransactionInfo(
-              coinType,
-              null,
-              address
-            )
-
-            const idsByChainId: Record<EntityId, EntityId[]> = {}
-            const pendingIds: EntityId[] = []
-            const pendingIdsByChainId: Record<EntityId, EntityId[]> = {}
-
-            const parsedTransactionsWithoutPrices = await Promise.all(
-              transactionInfos
-                // hide rejected txs
-                .filter(
-                  (tx) => tx.txStatus !== BraveWallet.TransactionStatus.Rejected
-                )
-                .map(async (tx: BraveWallet.TransactionInfo) => {
-                  const parsedTx = await parseTransactionWithoutPricesAsync({
-                    tx,
-                    accountsRegistry,
-                    networksRegistry,
-                    tokensRegistry: combinedTokenRegistry,
-                    dispatch
-                  })
-
-                  const networkId = networkEntityAdapter.selectId({
-                    chainId: parsedTx.chainId,
-                    coin: parsedTx.coinType
-                  })
-
-                  // track txs by chain
-                  if (idsByChainId[networkId]) {
-                    idsByChainId[networkId].push(tx.id)
-                  } else {
-                    idsByChainId[networkId] = [tx.id]
-                  }
-
-                  // track pending txs
-                  if (
-                    tx.txStatus === BraveWallet.TransactionStatus.Unapproved
-                  ) {
-                    pendingIds.push(tx.id)
-                    // track pending txs by chain
-                    if (pendingIdsByChainId[networkId]) {
-                      pendingIdsByChainId[networkId].push(tx.id)
-                    } else {
-                      pendingIdsByChainId[networkId] = [tx.id]
-                    }
-                  }
-
-                  return parsedTx
-                })
-            )
-
-            const state: TransactionEntityState =
-              transactionEntityAdapter.setAll(
-                {
-                  ...transactionEntityInitialState,
-                  idsByChainId,
-                  pendingIds,
-                  pendingIdsByChainId
-                },
-                parsedTransactionsWithoutPrices
-              )
-
-            return {
-              data: state
-            }
-          } catch (error) {
-            return {
-              error: `Unable to fetch txs for address: ${address} (${coinType})
-              error: ${error?.message ?? error}`
-            }
-          }
-        },
-        providesTags: (res, err, arg) =>
-          err
-            ? ['UNKNOWN_ERROR']
-            : [
-                {
-                  type: 'TransactionsForAccount',
-                  id: `${arg.address}-${arg.coinType}`
-                }
-              ]
-      }),
-      getAllTransactionInfosForAddressCoinType: query<
+      getTransactions: query<
         SerializableTransactionInfo[],
-        GetAllTransactionsForAddressCoinTypeArg
+        GetTransactionsQueryArg
       >({
         queryFn: async (
-          { address, coinType },
+          { address, coinType, chainId },
           { dispatch },
           extraOptions,
           baseQuery
@@ -1737,7 +1539,7 @@ export function createWalletApi (
             // TODO: Core should allow fetching by chain Id + cointype
             const { transactionInfos } = await txService.getAllTransactionInfo(
               coinType,
-              null,
+              chainId || null,
               address
             )
 
@@ -1761,21 +1563,15 @@ export function createWalletApi (
         providesTags: (res, err, arg) =>
           err
             ? ['UNKNOWN_ERROR']
-            : [
-                {
-                  type: 'TransactionInfosForAccount',
-                  id: `${arg.address}-${arg.coinType}`
-                }
-              ]
+            : TX_CACHE_TAGS.LISTS(arg.coinType, arg.address, arg.chainId)
       }),
       sendEthTransaction: mutation<
-        { success: boolean },
+        { success: boolean; txMetaId: string },
         SendEthTransactionParams
       >({
         queryFn: async (payload, { dispatch }, extraOptions, baseQuery) => {
           try {
-            const { braveWalletService,
-                    txService } = baseQuery(undefined).data
+            const { braveWalletService, txService } = baseQuery(undefined).data
             /***
              * Determine whether to create a legacy or EIP-1559 transaction.
              *
@@ -1797,9 +1593,10 @@ export function createWalletApi (
               // Check if network and keyring support EIP-1559.
               payload.hasEIP1559Support
 
-            const { chainId }
-              = await braveWalletService.getChainIdForActiveOrigin(
-                  BraveWallet.CoinType.ETH)
+            const { chainId } =
+              await braveWalletService.getChainIdForActiveOrigin(
+                BraveWallet.CoinType.ETH
+              )
 
             const txData: BraveWallet.TxData = {
               nonce: '',
@@ -1833,7 +1630,7 @@ export function createWalletApi (
               ethTxData1559: txData1559
             } as BraveWallet.TxDataUnion
 
-            const { errorMessage, success } =
+            const { errorMessage, success, txMetaId } =
               await txService.addUnapprovedTransaction(
                 isEIP1559 ? txDataUnion1559 : txDataUnion,
                 payload.from,
@@ -1850,15 +1647,19 @@ export function createWalletApi (
             }
 
             return {
-              data: { success }
+              data: { success, txMetaId }
             }
           } catch (error) {
             return { error: 'Failed to send Eth transaction' }
           }
         },
-        invalidatesTags: (res, err, arg) => [
-          { type: 'TransactionsForAccount', id: `${arg.from}-${arg.coin}` }
-        ]
+        invalidatesTags: (res, err, arg) =>
+          res?.txMetaId
+            ? TX_CACHE_TAGS.ID(
+                { id: res.txMetaId, chainId: null, fromAddress: arg.from },
+                arg.coin
+              )
+            : TX_CACHE_TAGS.LISTS(arg.coin, arg.from, null)
       }),
       sendFilTransaction: mutation<
         { success: boolean },
@@ -1904,9 +1705,8 @@ export function createWalletApi (
             return { error: 'Failed to send Fil transaction' }
           }
         },
-        invalidatesTags: (res, err, arg) => [
-          { type: 'TransactionsForAccount', id: `${arg.from}-${arg.coin}` }
-        ]
+        invalidatesTags: (res, err, arg) =>
+          TX_CACHE_TAGS.LISTS(arg.coin, arg.from, null)
       }),
       sendSolTransaction: mutation<
         { success: boolean },
@@ -1958,9 +1758,8 @@ export function createWalletApi (
             return { error: 'Failed to send Sol transaction' }
           }
         },
-        invalidatesTags: (res, err, arg) => [
-          { type: 'TransactionsForAccount', id: `${arg.from}-${arg.coin}` }
-        ]
+        invalidatesTags: (res, err, arg) =>
+          TX_CACHE_TAGS.LISTS(arg.coin, arg.from, null)
       }),
       sendTransaction: mutation<
         { success: boolean },
@@ -2145,9 +1944,8 @@ export function createWalletApi (
             return { error: msg }
           }
         },
-        invalidatesTags: (res, err, arg) => [
-          { type: 'TransactionsForAccount', id: `${arg.from}-${arg.coin}` }
-        ]
+        invalidatesTags: (res, err, arg) =>
+          TX_CACHE_TAGS.LISTS(arg.coin, arg.from, null)
       }),
       sendERC721TransferFrom: mutation<
         { success: boolean },
@@ -2193,7 +1991,9 @@ export function createWalletApi (
           } catch (error) {
             return { error: '' }
           }
-        }
+        },
+        invalidatesTags: (res, err, arg) =>
+          TX_CACHE_TAGS.LISTS(arg.coin, arg.from, null)
       }),
       approveERC20Allowance: mutation<{ success: boolean }, ApproveERC20Params>(
         {
@@ -2232,12 +2032,14 @@ export function createWalletApi (
             } catch (error) {
               return { error: '' }
             }
-          }
+          },
+          invalidatesTags: (res, err, arg) =>
+            TX_CACHE_TAGS.LISTS(BraveWallet.CoinType.ETH, arg.from, null)
         }
       ),
       transactionStatusChanged: mutation<
         undefined,
-        Pick<SerializableTransactionInfo, 'txStatus' | 'id'> & {
+        Pick<SerializableTransactionInfo, 'txStatus' | 'id' | 'chainId'> & {
           fromAddress: string
           coinType: BraveWallet.CoinType
         }
@@ -2250,10 +2052,14 @@ export function createWalletApi (
         invalidatesTags: (res, err, arg) => {
           const txTags = [
             'PendingTransactions',
-            {
-              type: 'TransactionsForAccount',
-              id: `${arg.fromAddress}-${arg.coinType}`
-            }
+            ...TX_CACHE_TAGS.ID(
+              {
+                fromAddress: arg.fromAddress,
+                id: arg.id,
+                chainId: arg.chainId
+              },
+              arg.coinType
+            )
           ] as const
           switch (arg.txStatus) {
             case BraveWallet.TransactionStatus.Confirmed:
@@ -2265,19 +2071,23 @@ export function createWalletApi (
                 // token historical prices?
               ]
             case BraveWallet.TransactionStatus.Error:
-              return txTags
             default:
-              return []
+              return txTags
           }
         },
         onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
           const patchResult = dispatch(
             walletApi.util.updateQueryData(
-              'getAllTransactionsForAddressCoinType',
-              { address: arg.fromAddress, coinType: arg.coinType },
+              'getTransactions',
+              {
+                address: arg.fromAddress || null,
+                coinType: arg.coinType,
+                chainId: arg.chainId
+              },
               (draft) => {
-                if (draft.entities[arg.id]) {
-                  draft.entities[arg.id]!.status = arg.txStatus
+                const foundTx = draft.find((tx) => tx.id === arg.id)
+                if (foundTx) {
+                  foundTx.txStatus = arg.txStatus
                 }
               }
             )
@@ -2306,7 +2116,10 @@ export function createWalletApi (
               errorUnion: BraveWallet.ProviderErrorUnion
               errorMessage: string
             } = await txService.approveTransaction(
-              coin, txInfo.chainId, txInfo.id)
+              coin,
+              txInfo.chainId,
+              txInfo.id
+            )
 
             const error =
               result.errorUnion.providerError ??
@@ -2351,12 +2164,10 @@ export function createWalletApi (
           err
             ? []
             : [
-                {
-                  type: 'TransactionsForAccount',
-                  id: `${arg.fromAddress}-${getCoinFromTxDataUnion(
-                    arg.txDataUnion
-                  )}`
-                },
+                ...TX_CACHE_TAGS.ID(
+                  arg,
+                  getCoinFromTxDataUnion(arg.txDataUnion)
+                ),
                 'PendingTransactions'
               ]
       }),
@@ -2377,20 +2188,31 @@ export function createWalletApi (
             }
           }
         },
-        invalidatesTags: (res, err) => (err ? [] : ['PendingTransactions'])
+        invalidatesTags: (res, err, arg) =>
+          err
+            ? []
+            : [
+                ...TX_CACHE_TAGS.ID(
+                  { fromAddress: null, id: arg.id, chainId: arg.chainId },
+                  arg.coinType
+                ),
+                'PendingTransactions'
+              ]
       }),
       rejectAllTransactions: mutation<{ success: boolean }, void>({
         queryFn: async (_arg, { dispatch }) => {
           try {
-            const pendingTxs: TransactionEntity[] = await dispatch(
-              walletApi.endpoints.getAllPendingTransactions.initiate()
+            const pendingTxs: SerializableTransactionInfo[] = await dispatch(
+              walletApi.endpoints.getAllPendingTransactions.initiate({
+                chainId: null
+              })
             ).unwrap()
 
             await Promise.all(
-              pendingTxs.map(async ({ coinType, id , chainId}) => {
+              pendingTxs.map(async ({ id, chainId, txDataUnion }) => {
                 const { success } = await dispatch(
                   walletApi.endpoints.rejectTransaction.initiate({
-                    coinType,
+                    coinType: getCoinFromTxDataUnion(txDataUnion),
                     chainId,
                     id
                   })
@@ -2426,14 +2248,13 @@ export function createWalletApi (
               ethTxManagerProxy
 
             if (isEIP1559) {
-              const result =
-                await setGasFeeAndLimitForUnapprovedTransaction(
-                  payload.chainId,
-                  payload.txMetaId,
-                  payload.maxPriorityFeePerGas || '',
-                  payload.maxFeePerGas || '',
-                  payload.gasLimit
-                )
+              const result = await setGasFeeAndLimitForUnapprovedTransaction(
+                payload.chainId,
+                payload.txMetaId,
+                payload.maxPriorityFeePerGas || '',
+                payload.maxFeePerGas || '',
+                payload.gasLimit
+              )
 
               if (!result.success) {
                 return {
@@ -2460,13 +2281,12 @@ export function createWalletApi (
             const { setGasPriceAndLimitForUnapprovedTransaction } =
               ethTxManagerProxy
 
-            const result =
-              await setGasPriceAndLimitForUnapprovedTransaction(
-                payload.chainId,
-                payload.txMetaId,
-                payload.gasPrice,
-                payload.gasLimit
-              )
+            const result = await setGasPriceAndLimitForUnapprovedTransaction(
+              payload.chainId,
+              payload.txMetaId,
+              payload.gasPrice,
+              payload.gasLimit
+            )
 
             if (!result.success) {
               return {
@@ -2539,7 +2359,9 @@ export function createWalletApi (
               error: errMsg + ` - ${error}`
             }
           }
-        }
+        },
+        invalidatesTags: (res, err, arg) =>
+          err ? [] : [{ type: 'PendingTransactions', id: arg.txMetaId }]
       }),
       updateUnapprovedTransactionNonce: mutation<
         { success: boolean },
@@ -2568,7 +2390,9 @@ export function createWalletApi (
           } catch (error) {
             return { error: errorMsg + ` - ${error}` }
           }
-        }
+        },
+        invalidatesTags: (res, err, arg) =>
+          err ? [] : [{ type: 'PendingTransactions', id: arg.txMetaId }]
       }),
       retryTransaction: mutation<{ success: boolean }, RetryTransactionPayload>(
         {
@@ -2606,10 +2430,15 @@ export function createWalletApi (
             err
               ? []
               : [
-                  {
-                    id: `${arg.fromAddress}-${arg.coinType}`,
-                    type: 'TransactionsForAccount'
-                  }
+                  'PendingTransactions',
+                  ...TX_CACHE_TAGS.ID(
+                    {
+                      id: arg.transactionId,
+                      chainId: arg.chainId,
+                      fromAddress: arg.fromAddress
+                    },
+                    arg.coinType
+                  )
                 ]
         }
       ),
@@ -2654,10 +2483,15 @@ export function createWalletApi (
           err
             ? []
             : [
-                {
-                  id: `${arg.fromAddress}-${arg.coinType}`,
-                  type: 'TransactionsForAccount'
-                }
+                'PendingTransactions',
+                ...TX_CACHE_TAGS.ID(
+                  {
+                    id: arg.transactionId,
+                    chainId: arg.chainId,
+                    fromAddress: arg.fromAddress
+                  },
+                  arg.coinType
+                )
               ]
       }),
       speedupTransaction: mutation<
@@ -2701,10 +2535,15 @@ export function createWalletApi (
           err
             ? []
             : [
-                {
-                  id: `${arg.fromAddress}-${arg.coinType}`,
-                  type: 'TransactionsForAccount'
-                }
+                'PendingTransactions',
+                ...TX_CACHE_TAGS.ID(
+                  {
+                    id: arg.transactionId,
+                    chainId: arg.chainId,
+                    fromAddress: arg.fromAddress
+                  },
+                  arg.coinType
+                )
               ]
       }),
       newUnapprovedTxAdded: mutation<
@@ -2715,7 +2554,20 @@ export function createWalletApi (
           return { data: { success: true } } // no-op (invalidate pending txs)
         },
         // Refresh the transaction history of the origin account.
-        invalidatesTags: ['PendingTransactions']
+        invalidatesTags: (_, err, arg) =>
+          err
+            ? []
+            : [
+                'PendingTransactions',
+                ...TX_CACHE_TAGS.ID(
+                  {
+                    id: arg.id,
+                    chainId: arg.chainId,
+                    fromAddress: arg.fromAddress
+                  },
+                  getCoinFromTxDataUnion(arg.txDataUnion)
+                )
+              ]
       }),
       unapprovedTxUpdated: mutation<
         { success: boolean },
@@ -2725,7 +2577,20 @@ export function createWalletApi (
           return { data: { success: true } } // no-op (invalidate pending txs)
         },
         // Refresh the transaction history of the origin account.
-        invalidatesTags: ['PendingTransactions']
+        invalidatesTags: (_, err, arg) =>
+          err
+            ? []
+            : [
+                'PendingTransactions',
+                ...TX_CACHE_TAGS.ID(
+                  {
+                    id: arg.id,
+                    chainId: arg.chainId,
+                    fromAddress: arg.fromAddress
+                  },
+                  getCoinFromTxDataUnion(arg.txDataUnion)
+                )
+              ]
       }),
       getSelectedPendingTransactionId: query<string, void>({
         queryFn: async (arg, api, extraOptions, baseQuery) => {
@@ -2741,7 +2606,9 @@ export function createWalletApi (
         queryFn: async (payload, { dispatch }, extraOptions, baseQuery) => {
           try {
             const pendingTransactions = await dispatch(
-              walletApi.endpoints.getAllPendingTransactions.initiate()
+              walletApi.endpoints.getAllPendingTransactions.initiate({
+                chainId: null
+              })
             ).unwrap()
 
             const index =
@@ -2823,13 +2690,12 @@ export function createWalletApi (
 
             if (!selectedNetwork) {
               return {
-                error:
-                  'No selected network'
+                error: 'No selected network'
               }
             }
-            const { estimation } =
-              await ethTxManagerProxy.getGasEstimation1559(
-                selectedNetwork.chainId)
+            const { estimation } = await ethTxManagerProxy.getGasEstimation1559(
+              selectedNetwork.chainId
+            )
 
             if (!estimation) {
               const msg = 'Failed to fetch gas estimates'
@@ -2848,13 +2714,15 @@ export function createWalletApi (
         },
         providesTags: ['GasEstimation1559']
       }),
-      getSolanaEstimatedFee: query<string, {chainId: string, txId: string}>({
+      getSolanaEstimatedFee: query<string, { chainId: string; txId: string }>({
         queryFn: async (arg, api, extraOptions, baseQuery) => {
           try {
             const { solanaTxManagerProxy } = baseQuery(undefined).data
             const { errorMessage, fee } =
-              await solanaTxManagerProxy.getEstimatedTxFee(arg.chainId,
-                                                           arg.txId)
+              await solanaTxManagerProxy.getEstimatedTxFee(
+                arg.chainId,
+                arg.txId
+              )
 
             if (!fee) {
               throw new Error(errorMessage)
@@ -2884,8 +2752,10 @@ export function createWalletApi (
           try {
             if (txInfo.isSolanaTransaction) {
               await dispatch(
-                walletApi.endpoints.getSolanaEstimatedFee.initiate(
-                  {chainId: txInfo.chainId, txId: txInfo.id})
+                walletApi.endpoints.getSolanaEstimatedFee.initiate({
+                  chainId: txInfo.chainId,
+                  txId: txInfo.id
+                })
               )
               return {
                 data: true
@@ -2931,8 +2801,7 @@ export const {
   useGetAccountTokenCurrentBalanceQuery,
   useGetAddressByteCodeQuery,
   useGetAllPendingTransactionsQuery,
-  useGetAllTransactionInfosForAddressCoinTypeQuery,
-  useGetAllTransactionsForAddressCoinTypeQuery,
+  useGetTransactionsQuery,
   useGetCombinedTokenBalanceForAllAccountsQuery,
   useGetDefaultAccountAddressesQuery,
   useGetDefaultFiatCurrencyQuery,
@@ -2954,8 +2823,7 @@ export const {
   useLazyGetAccountTokenCurrentBalanceQuery,
   useLazyGetAddressByteCodeQuery,
   useLazyGetAllPendingTransactionsQuery,
-  useLazyGetAllTransactionInfosForAddressCoinTypeQuery,
-  useLazyGetAllTransactionsForAddressCoinTypeQuery,
+  useLazyGetTransactionsQuery,
   useLazyGetCombinedTokenBalanceForAllAccountsQuery,
   useLazyGetDefaultAccountAddressesQuery,
   useLazyGetDefaultFiatCurrencyQuery,
@@ -3273,326 +3141,4 @@ async function fetchUserAssetsForNetwork (
   }
 
   return tokenList
-}
-
-export const parseTransactionWithoutPricesAsync = async ({
-  tx,
-  accountsRegistry,
-  networksRegistry,
-  tokensRegistry,
-  dispatch
-}: {
-  tx: BraveWallet.TransactionInfo
-  accountsRegistry: AccountInfoEntityState
-  networksRegistry: NetworksRegistry
-  tokensRegistry: BlockchainTokenEntityAdaptorState
-  dispatch: ThunkDispatch<any, any, any>
-}): Promise<ParsedTransactionWithoutFiatValues> => {
-  const networks = getEntitiesListFromEntityState(networksRegistry)
-  const transactionNetwork = networks.find(
-    (n) =>
-      n.chainId === tx.chainId &&
-      n.coin === getCoinFromTxDataUnion(tx.txDataUnion)
-  )
-
-  // Tokens lists
-  const fullTokensListIds = transactionNetwork?.coin !== undefined
-    ? tokensRegistry.idsByCoinType[transactionNetwork.coin]
-    : tokensRegistry.ids
-
-  const userVisibleListIds = transactionNetwork?.coin !== undefined
-    ? tokensRegistry.visibleTokenIdsByCoinType[transactionNetwork.coin]
-    : tokensRegistry.visibleTokenIds
-
-  const fullTokenList = getEntitiesListFromEntityState(
-    tokensRegistry,
-    fullTokensListIds
-  )
-
-  const userVisibleTokensList = getEntitiesListFromEntityState(
-    tokensRegistry,
-    userVisibleListIds
-  )
-
-  // network fees
-  let solFeeEstimates: string = '0'
-  try {
-    solFeeEstimates = isSolanaTransaction(tx)
-      ? await dispatch(
-          walletApi.endpoints.getSolanaEstimatedFee.initiate(
-            {chainId: tx.chainId, txId: tx.id})
-        ).unwrap()
-      : '0'
-  } catch (error) {
-    console.error(error)
-  }
-
-  const to = getTransactionToAddress(tx)
-  const combinedTokensList = userVisibleTokensList.concat(fullTokenList)
-  const token = findTransactionToken(tx, combinedTokensList)
-  const nativeAsset = makeNetworkAsset(transactionNetwork)
-  const account = findTransactionAccountFromRegistry(accountsRegistry, tx)
-
-  const {
-    buyToken,
-    sellToken,
-    buyAmount,
-    sellAmount,
-    sellAmountWei,
-    buyAmountWei
-  } = getETHSwapTransactionBuyAndSellTokens({
-    nativeAsset,
-    tokensList: combinedTokensList,
-    tx
-  })
-
-  // balances
-  const emptyBalance = { balance: '0' }
-  const { balance: accountNativeBalance } =
-    nativeAsset && account
-      ? await dispatch(
-          walletApi.endpoints.getAccountTokenCurrentBalance.initiate(
-            {
-              account: {
-                address: account.address,
-                coin: account.coin
-              },
-              token: {
-                chainId: nativeAsset.chainId,
-                contractAddress: nativeAsset.contractAddress,
-                isErc721: nativeAsset.isErc721,
-                isNft: nativeAsset.isNft,
-                symbol: nativeAsset.symbol,
-                tokenId: nativeAsset.tokenId
-              }
-            }
-          )
-        ).unwrap()
-      : emptyBalance
-
-  const { balance: accountTokenBalance } =
-    token && account
-      ? await dispatch(
-          walletApi.endpoints.getAccountTokenCurrentBalance.initiate(
-            {
-              account: {
-                address: account.address,
-                coin: account.coin
-              },
-              token: {
-                chainId: token.chainId,
-                contractAddress: token.contractAddress,
-                isErc721: token.isErc721,
-                isNft: token.isNft,
-                symbol: token.symbol,
-                tokenId: token.tokenId
-              }
-            }
-          )
-        ).unwrap()
-      : emptyBalance
-
-  const { balance: sellTokenBalance } =
-    sellToken && account
-      ? await dispatch(
-          walletApi.endpoints.getAccountTokenCurrentBalance.initiate(
-            {
-              account: {
-                address: account.address,
-                coin: account.coin
-              },
-              token: {
-                chainId: sellToken.chainId,
-                contractAddress: sellToken.contractAddress,
-                isErc721: sellToken.isErc721,
-                isNft: sellToken.isNft,
-                symbol: sellToken.symbol,
-                tokenId: sellToken.tokenId
-              }
-            }
-          )
-        ).unwrap()
-      : emptyBalance
-
-  const {
-    normalizedTransferredValue,
-    normalizedTransferredValueExact,
-    weiTransferredValue
-  } = getFormattedTransactionTransferredValue({
-    tx,
-    txNetwork: transactionNetwork,
-    token,
-    sellToken
-  })
-
-  const erc721BlockchainToken = [
-    BraveWallet.TransactionType.ERC721TransferFrom,
-    BraveWallet.TransactionType.ERC721SafeTransferFrom
-  ].includes(tx.txType) ? token : undefined
-
-  const approvalTarget = getTransactionApprovalTargetAddress(tx)
-
-  const {
-    gasFee,
-    gasFeeCap,
-    gasLimit,
-    gasPremium,
-    gasPrice,
-    isMissingGasLimit,
-    maxFeePerGas,
-    maxPriorityFeePerGas,
-    isEIP1559Transaction
-  } = parseTransactionFeesWithoutPrices(tx, { fee: solFeeEstimates })
-
-  const insufficientFundsError = accountHasInsufficientFundsForTransaction({
-    accountNativeBalance,
-    accountTokenBalance,
-    gasFee,
-    tx,
-    sellAmountWei,
-    sellTokenBalance
-  })
-
-  const erc721TokenId = getTransactionErc721TokenId(tx)
-
-  const missingGasLimitError = isMissingGasLimit
-    ? getLocale('braveWalletMissingGasLimitError')
-    : undefined
-
-  const approvalTargetLabel = getAddressLabelFromRegistry(
-    approvalTarget,
-    accountsRegistry
-  )
-
-  const coinType = getCoinFromTxDataUnion(tx.txDataUnion)
-  const createdTime = makeSerializableTimeDelta(tx.createdTime)
-
-  const contractAddressError = isSendingToKnownTokenContractAddress(
-    tx,
-    combinedTokensList
-  )
-    ? getLocale('braveWalletContractAddressError')
-    : undefined
-
-  const decimals = getTransactionDecimals({
-    tx,
-    network: transactionNetwork,
-    sellToken,
-    erc721Token: erc721BlockchainToken,
-    token
-  })
-
-  const instructions: TypedSolanaInstructionWithParams[] =
-    getTypedSolanaTxInstructions(tx.txDataUnion.solanaTxData)
-
-  const sameAddressError = transactionHasSameAddressError(tx)
-    ? getLocale('braveWalletSameAddressError')
-    : undefined
-
-  const txToken = getTransactionTransferredToken({
-    tx,
-    txNetwork: transactionNetwork,
-    token,
-    sellToken
-  })
-
-  const symbol = txToken?.symbol || ''
-
-  const intent = getTransactionIntent({
-    normalizedTransferredValue,
-    tx,
-    buyAmount,
-    buyToken,
-    erc721TokenId,
-    sellAmount,
-    sellToken,
-    token,
-    transactionNetwork
-  })
-
-  const insufficientFundsForGasError = accountHasInsufficientFundsForGas({
-    accountNativeBalance,
-    gasFee
-  })
-
-  const isSendingToZeroXExchangeProxy =
-    tx.txDataUnion.ethTxData1559?.baseData.to.toLowerCase() ===
-    SwapExchangeProxy
-
-  const formattedNativeCurrencyTotal =
-    getTransactionFormattedNativeCurrencyTotal({
-      gasFee,
-      normalizedTransferredValue,
-      tx,
-      sellAmountWei: sellAmountWei.value?.toString(),
-      sellToken,
-      token,
-      transferredValueWei: weiTransferredValue,
-      txNetwork: transactionNetwork
-    })
-
-  const formattedSendCurrencyTotal = getTransactionFormattedSendCurrencyTotal({
-    normalizedTransferredValue,
-    sellToken,
-    token,
-    txNetwork: transactionNetwork,
-    tx
-  })
-
-  return {
-    accountAddress: account?.address || '',
-    approvalTarget,
-    approvalTargetLabel,
-    buyToken,
-    chainId: transactionNetwork?.chainId || '',
-    coinType,
-    contractAddressError,
-    createdTime,
-    decimals,
-    erc721BlockchainToken,
-    erc721TokenId,
-    gasFee,
-    gasFeeCap,
-    gasLimit,
-    gasPremium,
-    gasPrice,
-    hash: tx.txHash,
-    id: tx.id,
-    instructions,
-    insufficientFundsError,
-    insufficientFundsForGasError,
-    intent,
-    isApprovalUnlimited: getIsTxApprovalUnlimited(tx),
-    isEIP1559Transaction,
-    isFilecoinTransaction: isFilecoinTransaction(tx),
-    isSendingToZeroXExchangeProxy,
-    isSolanaDappTransaction: isSolanaTransaction(tx),
-    isSolanaSPLTransaction: isSolanaSplTransaction(tx),
-    isSolanaTransaction: isSolanaTransaction(tx),
-    isSwap: isSwapTransaction(tx),
-    maxFeePerGas,
-    maxPriorityFeePerGas,
-    minBuyAmount: buyAmount,
-    minBuyAmountWei: buyAmountWei,
-    missingGasLimitError,
-    nonce: getTransactionNonce(tx),
-    originInfo: makeSerializableOriginInfo(tx.originInfo),
-    recipient: to,
-    recipientLabel: getAddressLabelFromRegistry(to, accountsRegistry),
-    sameAddressError,
-    sellAmount,
-    sellAmountWei,
-    sellToken,
-    sender: tx.fromAddress,
-    senderLabel: getAddressLabelFromRegistry(tx.fromAddress, accountsRegistry),
-    status: tx.txStatus,
-    symbol,
-    token,
-    txType: tx.txType,
-    value: normalizedTransferredValue,
-    valueExact: normalizedTransferredValueExact,
-    weiTransferredValue,
-    formattedNativeCurrencyTotal,
-    formattedSendCurrencyTotal
-  }
 }
