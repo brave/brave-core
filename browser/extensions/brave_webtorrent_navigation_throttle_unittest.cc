@@ -168,8 +168,10 @@ TEST_F(BraveWebTorrentNavigationThrottleUnitTest, ExternalWebPage) {
       << url;
 }
 
-// Tests the case of loading a torrent without having the extension
-// installed. It should defer which it does to install the extension.
+// Tests the case of loading a torrent without having the extension installed.
+// It should proceed with the navigation (it used to defer prior to changes in
+// cr114, but OnExtensionReady is triggered immediately now when loading the
+// WebTorrent extension).
 TEST_F(BraveWebTorrentNavigationThrottleUnitTest,
     WebTorrentUrlNotInstalled) {
   web_contents_tester()->NavigateAndCommit(GURL("http://example.com"));
@@ -179,12 +181,14 @@ TEST_F(BraveWebTorrentNavigationThrottleUnitTest,
   test_handle.set_starting_site_instance(host->GetSiteInstance());
   auto throttle =
       std::make_unique<BraveWebTorrentNavigationThrottle>(&test_handle);
-  EXPECT_EQ(NavigationThrottle::DEFER, throttle->WillStartRequest().action())
+  EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
       << GetTorrentUrl();
 }
 
-// Tests the case of loading a torrent without having the extension
-// installed. It should defer which it does to install the extension.
+// Tests the case of loading a torrent without having the extension installed.
+// It should proceed with the navigation (it used to defer prior to changes in
+// cr114, but OnExtensionReady is triggered immediately now when loading the
+// WebTorrent extension).
 TEST_F(BraveWebTorrentNavigationThrottleUnitTest,
     WebTorrentMagnetUrlNotInstalled) {
   web_contents_tester()->NavigateAndCommit(GURL("http://example.com"));
@@ -194,7 +198,7 @@ TEST_F(BraveWebTorrentNavigationThrottleUnitTest,
   test_handle.set_starting_site_instance(host->GetSiteInstance());
   auto throttle =
       std::make_unique<BraveWebTorrentNavigationThrottle>(&test_handle);
-  EXPECT_EQ(NavigationThrottle::DEFER, throttle->WillStartRequest().action())
+  EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
       << GetMagnetUrl();
 }
 
