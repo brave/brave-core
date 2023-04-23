@@ -30,8 +30,8 @@ TEST_F(BraveAdsStatementUtilTest, GetNextPaymentDate) {
 
   const base::Time next_token_redemption_at =
       TimeFromString("5 February 2020", /*is_local*/ false);
-  ads_client_mock_->SetTimePref(prefs::kNextTokenRedemptionAt,
-                                next_token_redemption_at);
+  ads_client_mock_.SetTimePref(prefs::kNextTokenRedemptionAt,
+                               next_token_redemption_at);
 
   const TransactionList transactions;
 

@@ -92,12 +92,11 @@ TEST_F(BraveAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploration) {
 
   const processor::EpsilonGreedyBandit processor;
 
-  const std::string segment_1 = "travel";
   processor::EpsilonGreedyBandit::Process(
-      {segment_1, mojom::NotificationAdEventType::kDismissed});
-  const std::string segment_2 = "personal finance";
+      {/*segment*/ "travel", mojom::NotificationAdEventType::kDismissed});
   processor::EpsilonGreedyBandit::Process(
-      {segment_2, mojom::NotificationAdEventType::kClicked});
+      {/*segment*/ "personal finance",
+       mojom::NotificationAdEventType::kClicked});
 
   // Act
   const EpsilonGreedyBandit model;

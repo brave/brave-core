@@ -52,7 +52,7 @@ TEST_F(BraveAdsNotificationAdServingUtilTest, SetServeAdAt) {
 TEST_F(BraveAdsNotificationAdServingUtilTest,
        CalculateDelayBeforeServingTheFirstAd) {
   // Arrange
-  ads_client_mock_->ClearPref(prefs::kServeAdAt);
+  ads_client_mock_.ClearPref(prefs::kServeAdAt);
 
   // Act
 

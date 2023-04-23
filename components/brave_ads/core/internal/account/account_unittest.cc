@@ -247,7 +247,7 @@ TEST_F(BraveAdsAccountTest, GetIssuersIfAdsAreEnabled) {
 
 TEST_F(BraveAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
   MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
 
@@ -528,7 +528,7 @@ TEST_F(BraveAdsAccountTest, GetStatement) {
 
 TEST_F(BraveAdsAccountTest, DoNotGetStatementIfAdsAreDisabled) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
   // Act
   Account::GetStatement(base::BindOnce(

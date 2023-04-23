@@ -139,8 +139,8 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
 TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
        AllowAdIfSubdivisionTargetingIsNotAllowedForGeoTargetWithNoRegion) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
-                                   false);
+  ads_client_mock_.SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
+                                  false);
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -155,8 +155,8 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
 TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
        AllowAdIfSubdivisionTargetingIsSupportedAndAutoDetected) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
-                                   true);
+  ads_client_mock_.SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
+                                  true);
 
   MockUrlResponseForTestParam();
 
@@ -176,8 +176,8 @@ TEST_P(
     BraveAdsSubdivisionTargetingExclusionRuleTest,
     AllowAdIfSubdivisionTargetingIsSupportedAndAutoDetectedForMultipleGeoTargets) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
-                                   true);
+  ads_client_mock_.SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
+                                  true);
 
   MockUrlResponseForTestParam();
 
@@ -198,8 +198,8 @@ TEST_P(
     BraveAdsSubdivisionTargetingExclusionRuleTest,
     AllowAdIfSubdivisionTargetingIsSupportedAndAutoDetectedForGeoTargetWithNoRegion) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
-                                   true);
+  ads_client_mock_.SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
+                                  true);
 
   MockUrlResponseForTestParam();
 
@@ -219,11 +219,11 @@ TEST_P(
     BraveAdsSubdivisionTargetingExclusionRuleTest,
     AllowAdIfSubdivisionTargetingIsSupportedAndSubdivisionWasManuallySelected) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
-                                   true);
+  ads_client_mock_.SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
+                                  true);
 
-  ads_client_mock_->SetStringPref(prefs::kSubdivisionTargetingCode,
-                                  BuildSubdivisionCode());
+  ads_client_mock_.SetStringPref(prefs::kSubdivisionTargetingCode,
+                                 BuildSubdivisionCode());
 
   MockUrlResponseForTestParam();
 
@@ -243,11 +243,11 @@ TEST_P(
     BraveAdsSubdivisionTargetingExclusionRuleTest,
     AllowAdIfSubdivisionTargetingIsSupportedAndSubdivisionWasManuallySelectedForMultipleGeoTargets) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
-                                   true);
+  ads_client_mock_.SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
+                                  true);
 
-  ads_client_mock_->SetStringPref(prefs::kSubdivisionTargetingCode,
-                                  BuildSubdivisionCode());
+  ads_client_mock_.SetStringPref(prefs::kSubdivisionTargetingCode,
+                                 BuildSubdivisionCode());
 
   MockUrlResponseForTestParam();
 
@@ -268,11 +268,11 @@ TEST_P(
     BraveAdsSubdivisionTargetingExclusionRuleTest,
     AllowAdIfSubdivisionTargetingIsSupportedAndManuallySelectedForGeoTargetWithNoRegion) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
-                                   true);
+  ads_client_mock_.SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
+                                  true);
 
-  ads_client_mock_->SetStringPref(prefs::kSubdivisionTargetingCode,
-                                  BuildSubdivisionCode());
+  ads_client_mock_.SetStringPref(prefs::kSubdivisionTargetingCode,
+                                 BuildSubdivisionCode());
 
   MockUrlResponseForTestParam();
 
@@ -291,8 +291,8 @@ TEST_P(
 TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
        DoNotAllowAdIfSubdivisionTargetingIsSupportedForUnsupportedGeoTarget) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
-                                   true);
+  ads_client_mock_.SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
+                                  true);
 
   MockUrlResponseForTestParam();
 
@@ -311,8 +311,8 @@ TEST_P(
     BraveAdsSubdivisionTargetingExclusionRuleTest,
     DoNotAllowAdIfSubdivisionTargetingIsNotSupportedForSubdivisionGeoTarget) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
-                                   true);
+  ads_client_mock_.SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
+                                  true);
 
   MockUrlResponseForTestParam();
 
@@ -332,8 +332,8 @@ TEST_P(
 TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
        AllowAdIfSubdivisionTargetingIsNotSupportedForNonSubdivisionGeoTarget) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
-                                   true);
+  ads_client_mock_.SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
+                                  true);
 
   MockUrlResponse(/*country*/ "XX",
                   /*region*/ "NO REGION");
@@ -353,10 +353,10 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
 TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
        DoNotAllowAdIfSubdivisionTargetingIsDisabledForSubdivisionGeoTarget) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
-                                   true);
+  ads_client_mock_.SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
+                                  true);
 
-  ads_client_mock_->SetStringPref(prefs::kSubdivisionTargetingCode, "DISABLED");
+  ads_client_mock_.SetStringPref(prefs::kSubdivisionTargetingCode, "DISABLED");
 
   MockUrlResponseForTestParam();
 
@@ -375,10 +375,10 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
 TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
        AllowAdIfSubdivisionTargetingIsDisabledForNonSubdivisionGeoTarget) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
-                                   true);
+  ads_client_mock_.SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting,
+                                  true);
 
-  ads_client_mock_->SetStringPref(prefs::kSubdivisionTargetingCode, "DISABLED");
+  ads_client_mock_.SetStringPref(prefs::kSubdivisionTargetingCode, "DISABLED");
 
   MockUrlResponseForTestParam();
 

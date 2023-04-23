@@ -44,9 +44,9 @@ TEST_F(BraveAdsUserActivityPermissionRuleTest,
   // Arrange
 
   // Act
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClosedTab);
 
   // Assert
@@ -58,11 +58,11 @@ TEST_F(BraveAdsUserActivityPermissionRuleTest,
   // Arrange
 
   // Act
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTabStartedPlayingMedia);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClosedTab);
 
   // Assert
@@ -74,7 +74,7 @@ TEST_F(BraveAdsUserActivityPermissionRuleTest,
   // Arrange
 
   // Act
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
 
   // Assert

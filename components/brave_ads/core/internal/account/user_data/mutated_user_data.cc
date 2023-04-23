@@ -17,8 +17,8 @@ constexpr char kMutatedKey[] = "mutated";
 base::Value::Dict GetMutated() {
   base::Value::Dict user_data;
 
-  if (ConfirmationStateManager::GetInstance()->is_mutated() ||
-      ClientStateManager::GetInstance()->is_mutated()) {
+  if (ConfirmationStateManager::GetInstance().is_mutated() ||
+      ClientStateManager::GetInstance().is_mutated()) {
     user_data.Set(kMutatedKey, true);
   }
 

@@ -39,11 +39,11 @@ class BraveAdsUserActivityScoringUtilTest : public UnitTestBase {
 
 TEST_F(BraveAdsUserActivityScoringUtilTest, WasUserActive) {
   // Arrange
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
 
   // Act
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClosedTab);
 
   // Assert
@@ -63,7 +63,7 @@ TEST_F(BraveAdsUserActivityScoringUtilTest, WasUserInactiveIfBelowThreshold) {
   // Arrange
 
   // Act
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
 
   // Assert
@@ -73,9 +73,9 @@ TEST_F(BraveAdsUserActivityScoringUtilTest, WasUserInactiveIfBelowThreshold) {
 TEST_F(BraveAdsUserActivityScoringUtilTest,
        WasUserInactiveAfterTimeWindowHasElapsed) {
   // Arrange
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClosedTab);
 
   // Act

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_MULTI_ARMED_BANDITS_EPSILON_GREEDY_BANDIT_RESOURCE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_MULTI_ARMED_BANDITS_EPSILON_GREEDY_BANDIT_RESOURCE_H_
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_observer.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
@@ -18,7 +19,7 @@ namespace resource {
 
 class EpsilonGreedyBandit final : public CatalogObserver {
  public:
-  explicit EpsilonGreedyBandit(Catalog* catalog);
+  explicit EpsilonGreedyBandit(Catalog& catalog);
 
   EpsilonGreedyBandit(const EpsilonGreedyBandit&) = delete;
   EpsilonGreedyBandit& operator=(const EpsilonGreedyBandit&) = delete;
@@ -40,7 +41,7 @@ class EpsilonGreedyBandit final : public CatalogObserver {
 
   bool is_initialized_ = false;
 
-  const raw_ptr<Catalog> catalog_ = nullptr;  // NOT OWNED
+  const raw_ref<Catalog> catalog_;
 };
 
 }  // namespace resource

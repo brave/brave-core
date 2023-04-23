@@ -251,7 +251,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsIfAlreadySeen) {
   SaveCreativeAds(creative_ads);
 
   const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad_1);
-  ClientStateManager::GetInstance()->UpdateSeenAd(ad);
+  ClientStateManager::GetInstance().UpdateSeenAd(ad);
 
   // Act
   CreativeNewTabPageAdList expected_creative_ads = {creative_ad_2};

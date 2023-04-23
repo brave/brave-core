@@ -33,7 +33,7 @@ class TabManager final : public AdsClientNotifierObserver {
 
   ~TabManager() override;
 
-  static TabManager* GetInstance();
+  static TabManager& GetInstance();
 
   void AddObserver(TabManagerObserver* observer);
   void RemoveObserver(TabManagerObserver* observer);

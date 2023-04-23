@@ -251,7 +251,7 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, DoNotGetAdsIfAlreadySeen) {
   SaveCreativeAds(creative_ads);
 
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad_1);
-  ClientStateManager::GetInstance()->UpdateSeenAd(ad);
+  ClientStateManager::GetInstance().UpdateSeenAd(ad);
 
   // Act
   CreativeNotificationAdList expected_creative_ads = {creative_ad_2};

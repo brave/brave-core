@@ -40,7 +40,7 @@ TEST_F(BraveAdsDiagnosticManagerTest, DiagnosticManager) {
   SetLastUnIdleTimeDiagnosticEntry(Now());
 
   // Act
-  DiagnosticManager::GetInstance()->GetDiagnostics(
+  DiagnosticManager::GetInstance().GetDiagnostics(
       base::BindOnce([](absl::optional<base::Value::List> list) {
         // Assert
         ASSERT_TRUE(list);

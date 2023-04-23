@@ -19,10 +19,9 @@ TEST(BraveAdsVerificationSignatureTest, FailToInitialize) {
   const VerificationSignature verification_signature;
 
   // Act
-  const bool has_value = verification_signature.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(verification_signature.has_value());
 }
 
 TEST(BraveAdsVerificationSignatureTest, FailToInitializeWithEmptyBase64) {
@@ -30,10 +29,9 @@ TEST(BraveAdsVerificationSignatureTest, FailToInitializeWithEmptyBase64) {
   const VerificationSignature verification_signature("");
 
   // Act
-  const bool has_value = verification_signature.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(verification_signature.has_value());
 }
 
 TEST(BraveAdsVerificationSignatureTest, FailToInitializeWithInvalidBase64) {
@@ -41,10 +39,9 @@ TEST(BraveAdsVerificationSignatureTest, FailToInitializeWithInvalidBase64) {
   const VerificationSignature verification_signature(kInvalidBase64);
 
   // Act
-  const bool has_value = verification_signature.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(verification_signature.has_value());
 }
 
 TEST(BraveAdsVerificationSignatureTest, DecodeBase64) {
@@ -55,8 +52,7 @@ TEST(BraveAdsVerificationSignatureTest, DecodeBase64) {
       VerificationSignature::DecodeBase64(kVerificationSignatureBase64);
 
   // Assert
-  const bool has_value = verification_signature.has_value();
-  EXPECT_TRUE(has_value);
+  EXPECT_TRUE(verification_signature.has_value());
 }
 
 TEST(BraveAdsVerificationSignatureTest, FailToDecodeEmptyBase64) {
@@ -67,8 +63,7 @@ TEST(BraveAdsVerificationSignatureTest, FailToDecodeEmptyBase64) {
       VerificationSignature::DecodeBase64({});
 
   // Assert
-  const bool has_value = verification_signature.has_value();
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(verification_signature.has_value());
 }
 
 TEST(BraveAdsVerificationSignatureTest, FailToDecodeInvalidBase64) {
@@ -79,8 +74,7 @@ TEST(BraveAdsVerificationSignatureTest, FailToDecodeInvalidBase64) {
       VerificationSignature::DecodeBase64(kInvalidBase64);
 
   // Assert
-  const bool has_value = verification_signature.has_value();
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(verification_signature.has_value());
 }
 
 TEST(BraveAdsVerificationSignatureTest, EncodeBase64) {

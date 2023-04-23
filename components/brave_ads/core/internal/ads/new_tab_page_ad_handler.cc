@@ -11,7 +11,6 @@
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/new_tab_page_ad_serving.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
@@ -23,25 +22,22 @@
 namespace brave_ads {
 
 NewTabPageAdHandler::NewTabPageAdHandler(
-    Account* account,
-    Transfer* transfer,
+    Account& account,
+    Transfer& transfer,
     const SubdivisionTargeting& subdivision_targeting,
     const resource::AntiTargeting& anti_targeting_resource)
-    : account_(account), transfer_(transfer) {
-  DCHECK(account_);
-  DCHECK(transfer_);
-
+    : account_(account),
+      transfer_(transfer),
+      serving_(subdivision_targeting, anti_targeting_resource) {
   event_handler_.SetDelegate(this);
 
-  serving_ = std::make_unique<new_tab_page_ads::Serving>(
-      subdivision_targeting, anti_targeting_resource);
-  serving_->SetDelegate(this);
+  serving_.SetDelegate(this);
 }
 
 NewTabPageAdHandler::~NewTabPageAdHandler() = default;
 
 void NewTabPageAdHandler::MaybeServe(MaybeServeNewTabPageAdCallback callback) {
-  serving_->MaybeServeAd(std::move(callback));
+  serving_.MaybeServeAd(std::move(callback));
 }
 
 void NewTabPageAdHandler::TriggerEvent(
@@ -66,11 +62,11 @@ void NewTabPageAdHandler::OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) {
 }
 
 void NewTabPageAdHandler::OnNewTabPageAdServed(const NewTabPageAdInfo& ad) {
-  ClientStateManager::GetInstance()->UpdateSeenAd(ad);
+  ClientStateManager::GetInstance().UpdateSeenAd(ad);
 }
 
 void NewTabPageAdHandler::OnNewTabPageAdViewed(const NewTabPageAdInfo& ad) {
-  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
   account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
                     ConfirmationType::kViewed);
@@ -79,7 +75,7 @@ void NewTabPageAdHandler::OnNewTabPageAdViewed(const NewTabPageAdInfo& ad) {
 void NewTabPageAdHandler::OnNewTabPageAdClicked(const NewTabPageAdInfo& ad) {
   transfer_->SetLastClickedAd(ad);
 
-  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kClicked);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 
   account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
                     ConfirmationType::kClicked);

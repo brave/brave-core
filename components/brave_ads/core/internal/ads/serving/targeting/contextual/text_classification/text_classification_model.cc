@@ -40,8 +40,7 @@ SegmentProbabilityMap GetSegmentProbabilities(
 
 SegmentProbabilityList ToSortedSegmentProbabilityList(
     const SegmentProbabilityMap& segment_probabilities) {
-  const int count = segment_probabilities.size();
-  SegmentProbabilityList list(count);
+  SegmentProbabilityList list(segment_probabilities.size());
 
   std::partial_sort_copy(
       segment_probabilities.cbegin(), segment_probabilities.cend(),
@@ -70,7 +69,7 @@ SegmentList ToSegmentList(const SegmentProbabilityList& segment_probabilities) {
 SegmentList TextClassification::GetSegments() const {
   const TextClassificationProbabilityList& probabilities =
       ClientStateManager::GetInstance()
-          ->GetTextClassificationProbabilitiesHistory();
+          .GetTextClassificationProbabilitiesHistory();
 
   if (probabilities.empty()) {
     BLOG(1, "No text classification probabilities found for "

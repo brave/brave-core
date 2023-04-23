@@ -43,10 +43,9 @@ void RunHashingExtractorTestCase(const std::string& test_case_name) {
   const base::Value* const count = case_params->FindListKey("count");
   ASSERT_TRUE(count);
 
-  const std::string input_value = *input;
   const HashVectorizer vectorizer;
   const std::map<unsigned, double> frequencies =
-      vectorizer.GetFrequencies(input_value);
+      vectorizer.GetFrequencies(*input);
   const auto& idx_list = idx->GetList();
   const auto& count_list = count->GetList();
 

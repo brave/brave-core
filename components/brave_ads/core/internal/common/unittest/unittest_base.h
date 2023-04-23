@@ -15,6 +15,7 @@
 #include "brave/components/brave_ads/core/internal/ads_client_mock.h"
 #include "brave/components/brave_ads/core/internal/ads_impl.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper_mock.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -23,11 +24,9 @@ class Time;
 class TimeDelta;
 }  // namespace base
 
-namespace brave_l10n::test {
-class ScopedDefaultLocale;
-}  // namespace brave_l10n::test
-
 namespace brave_ads {
+
+using ::testing::NiceMock;
 
 class GlobalState;
 class Database;
@@ -61,7 +60,7 @@ class UnitTestBase : public AdsClientNotifier, public testing::Test {
   virtual void SetUpMocks() {}
 
   // Convenience function for accessing AdsImpl from integration tests.
-  AdsImpl* GetAds() const;
+  AdsImpl& GetAds() const;
 
   // Copies a single file from "data/test" to the temp path. Use
   // |CopyDirectoryFromTestPathToTempPath| to copy directories.
@@ -119,8 +118,8 @@ class UnitTestBase : public AdsClientNotifier, public testing::Test {
 
   base::test::TaskEnvironment task_environment_;
 
-  std::unique_ptr<AdsClientMock> ads_client_mock_;
-  std::unique_ptr<PlatformHelperMock> platform_helper_mock_;
+  NiceMock<AdsClientMock> ads_client_mock_;
+  NiceMock<PlatformHelperMock> platform_helper_mock_;
 
  private:
   void Initialize();
@@ -129,15 +128,15 @@ class UnitTestBase : public AdsClientNotifier, public testing::Test {
 
   void MockDefaultAdsClient();
 
-  void MockSetBooleanPref(const std::unique_ptr<AdsClientMock>& mock);
-  void MockSetIntegerPref(const std::unique_ptr<AdsClientMock>& mock);
-  void MockSetDoublePref(const std::unique_ptr<AdsClientMock>& mock);
-  void MockSetStringPref(const std::unique_ptr<AdsClientMock>& mock);
-  void MockSetInt64Pref(const std::unique_ptr<AdsClientMock>& mock);
-  void MockSetUint64Pref(const std::unique_ptr<AdsClientMock>& mock);
-  void MockSetTimePref(const std::unique_ptr<AdsClientMock>& mock);
-  void MockSetDictPref(const std::unique_ptr<AdsClientMock>& mock);
-  void MockSetListPref(const std::unique_ptr<AdsClientMock>& mock);
+  void MockSetBooleanPref(AdsClientMock& mock);
+  void MockSetIntegerPref(AdsClientMock& mock);
+  void MockSetDoublePref(AdsClientMock& mock);
+  void MockSetStringPref(AdsClientMock& mock);
+  void MockSetInt64Pref(AdsClientMock& mock);
+  void MockSetUint64Pref(AdsClientMock& mock);
+  void MockSetTimePref(AdsClientMock& mock);
+  void MockSetDictPref(AdsClientMock& mock);
+  void MockSetListPref(AdsClientMock& mock);
 
   void MockDefaultPrefs();
 
@@ -150,7 +149,7 @@ class UnitTestBase : public AdsClientNotifier, public testing::Test {
   bool setup_called_ = false;
   bool teardown_called_ = false;
 
-  std::unique_ptr<brave_l10n::test::ScopedDefaultLocale> scoped_default_locale_;
+  brave_l10n::test::ScopedDefaultLocale scoped_default_locale_;
 
   std::unique_ptr<AdsImpl> ads_;
 

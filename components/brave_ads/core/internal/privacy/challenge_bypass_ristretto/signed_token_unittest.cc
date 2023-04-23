@@ -19,10 +19,9 @@ TEST(BraveAdsSignedTokenTest, FailToInitialize) {
   const SignedToken signed_token;
 
   // Act
-  const bool has_value = signed_token.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(signed_token.has_value());
 }
 
 TEST(BraveAdsSignedTokenTest, FailToInitializeWithEmptyBase64) {
@@ -30,10 +29,9 @@ TEST(BraveAdsSignedTokenTest, FailToInitializeWithEmptyBase64) {
   const SignedToken signed_token("");
 
   // Act
-  const bool has_value = signed_token.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(signed_token.has_value());
 }
 
 TEST(BraveAdsSignedTokenTest, FailToInitializeWithInvalidBase64) {
@@ -41,10 +39,9 @@ TEST(BraveAdsSignedTokenTest, FailToInitializeWithInvalidBase64) {
   const SignedToken signed_token(kInvalidBase64);
 
   // Act
-  const bool has_value = signed_token.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(signed_token.has_value());
 }
 
 TEST(BraveAdsSignedTokenTest, DecodeBase64) {
@@ -55,8 +52,7 @@ TEST(BraveAdsSignedTokenTest, DecodeBase64) {
       SignedToken::DecodeBase64(kSignedTokenBase64);
 
   // Assert
-  const bool has_value = signed_token.has_value();
-  EXPECT_TRUE(has_value);
+  EXPECT_TRUE(signed_token.has_value());
 }
 
 TEST(BraveAdsSignedTokenTest, FailToDecodeEmptyBase64) {
@@ -66,8 +62,7 @@ TEST(BraveAdsSignedTokenTest, FailToDecodeEmptyBase64) {
   const SignedToken signed_token = SignedToken::DecodeBase64({});
 
   // Assert
-  const bool has_value = signed_token.has_value();
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(signed_token.has_value());
 }
 
 TEST(BraveAdsSignedTokenTest, FailToDecodeInvalidBase64) {
@@ -77,8 +72,7 @@ TEST(BraveAdsSignedTokenTest, FailToDecodeInvalidBase64) {
   const SignedToken signed_token = SignedToken::DecodeBase64(kInvalidBase64);
 
   // Assert
-  const bool has_value = signed_token.has_value();
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(signed_token.has_value());
 }
 
 TEST(BraveAdsSignedTokenTest, EncodeBase64) {

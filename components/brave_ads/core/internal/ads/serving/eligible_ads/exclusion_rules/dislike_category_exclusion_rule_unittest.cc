@@ -34,7 +34,7 @@ TEST_F(BraveAdsDislikeCategoryExclusionRuleTest, DoNotAllowAd) {
   CreativeAdInfo creative_ad;
   creative_ad.segment = kSegment;
 
-  ClientStateManager::GetInstance()->ToggleDislikeCategory(
+  ClientStateManager::GetInstance().ToggleDislikeCategory(
       creative_ad.segment, CategoryContentOptActionType::kNone);
 
   // Act

@@ -40,7 +40,7 @@ class BraveAdsUserReactionsTest : public AccountObserver, public UnitTestBase {
     account_ = std::make_unique<Account>(&token_generator_mock_);
     account_->AddObserver(this);
 
-    user_reactions_ = std::make_unique<UserReactions>(account_.get());
+    user_reactions_ = std::make_unique<UserReactions>(*account_);
 
     ON_CALL(token_generator_mock_, Generate(_))
         .WillByDefault(Return(privacy::GetTokens(/*count*/ 1)));
@@ -59,7 +59,7 @@ class BraveAdsUserReactionsTest : public AccountObserver, public UnitTestBase {
         BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
     const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
-    return HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
+    return HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
   }
 
   void OnDidProcessDeposit(const TransactionInfo& /*transaction*/) override {
@@ -87,7 +87,7 @@ TEST_F(BraveAdsUserReactionsTest, LikeAd) {
   const HistoryItemInfo history_item = AddHistoryItem();
 
   // Act
-  HistoryManager::GetInstance()->LikeAd(history_item.ad_content);
+  HistoryManager::GetInstance().LikeAd(history_item.ad_content);
 
   // Assert
   EXPECT_TRUE(did_process_deposit_);
@@ -99,7 +99,7 @@ TEST_F(BraveAdsUserReactionsTest, DislikeAd) {
   const HistoryItemInfo history_item = AddHistoryItem();
 
   // Act
-  HistoryManager::GetInstance()->DislikeAd(history_item.ad_content);
+  HistoryManager::GetInstance().DislikeAd(history_item.ad_content);
 
   // Assert
   EXPECT_TRUE(did_process_deposit_);
@@ -111,7 +111,7 @@ TEST_F(BraveAdsUserReactionsTest, MarkAdAsInappropriate) {
   const HistoryItemInfo history_item = AddHistoryItem();
 
   // Act
-  HistoryManager::GetInstance()->ToggleMarkAdAsInappropriate(
+  HistoryManager::GetInstance().ToggleMarkAdAsInappropriate(
       history_item.ad_content);
 
   // Assert
@@ -124,7 +124,7 @@ TEST_F(BraveAdsUserReactionsTest, SaveAd) {
   const HistoryItemInfo history_item = AddHistoryItem();
 
   // Act
-  HistoryManager::GetInstance()->ToggleSaveAd(history_item.ad_content);
+  HistoryManager::GetInstance().ToggleSaveAd(history_item.ad_content);
 
   // Assert
   EXPECT_TRUE(did_process_deposit_);

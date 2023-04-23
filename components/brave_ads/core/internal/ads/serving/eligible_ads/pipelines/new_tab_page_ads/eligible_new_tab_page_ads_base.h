@@ -45,8 +45,8 @@ class EligibleAdsBase {
   EligibleAdsBase(const SubdivisionTargeting& subdivision_targeting,
                   const resource::AntiTargeting& anti_targeting_resource);
 
-  const base::raw_ref<const SubdivisionTargeting> subdivision_targeting_;
-  const base::raw_ref<const resource::AntiTargeting> anti_targeting_resource_;
+  const raw_ref<const SubdivisionTargeting> subdivision_targeting_;
+  const raw_ref<const resource::AntiTargeting> anti_targeting_resource_;
 
   AdInfo last_served_ad_;
 };

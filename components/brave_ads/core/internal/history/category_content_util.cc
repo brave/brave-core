@@ -15,7 +15,7 @@ CategoryContentInfo BuildCategoryContent(const std::string& segment) {
 
   category_content.opt_action_type =
       ClientStateManager::GetInstance()
-          ->GetCategoryContentOptActionTypeForSegment(segment);
+          .GetCategoryContentOptActionTypeForSegment(segment);
   category_content.category = segment;
 
   return category_content;

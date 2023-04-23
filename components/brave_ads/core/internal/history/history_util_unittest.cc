@@ -36,7 +36,7 @@ TEST_F(BraveAdsHistoryUtilTest, AddHistory) {
   const HistoryItemList expected_history = {history_item};
 
   const HistoryItemList& history =
-      ClientStateManager::GetInstance()->GetHistory();
+      ClientStateManager::GetInstance().GetHistory();
 
   EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
@@ -46,7 +46,7 @@ TEST_F(BraveAdsHistoryUtilTest, PurgeHistoryOlderThanTimeWindow) {
   const CreativeNotificationAdInfo creative_ad_1 =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   const NotificationAdInfo ad_1 = BuildNotificationAd(creative_ad_1);
-  HistoryManager::GetInstance()->Add(ad_1, ConfirmationType::kViewed);
+  HistoryManager::GetInstance().Add(ad_1, ConfirmationType::kViewed);
 
   AdvanceClockBy(kHistoryTimeWindow + base::Milliseconds(1));
 
@@ -55,13 +55,13 @@ TEST_F(BraveAdsHistoryUtilTest, PurgeHistoryOlderThanTimeWindow) {
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   const NotificationAdInfo ad_2 = BuildNotificationAd(creative_ad_2);
   const HistoryItemInfo history_item_2 =
-      HistoryManager::GetInstance()->Add(ad_2, ConfirmationType::kViewed);
+      HistoryManager::GetInstance().Add(ad_2, ConfirmationType::kViewed);
 
   // Assert
   const HistoryItemList expected_history = {history_item_2};
 
   const HistoryItemList& history =
-      ClientStateManager::GetInstance()->GetHistory();
+      ClientStateManager::GetInstance().GetHistory();
 
   EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
@@ -72,7 +72,7 @@ TEST_F(BraveAdsHistoryUtilTest, DoNotPurgeHistoryWithinTimeWindow) {
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   const NotificationAdInfo ad_1 = BuildNotificationAd(creative_ad_1);
   const HistoryItemInfo history_item_1 =
-      HistoryManager::GetInstance()->Add(ad_1, ConfirmationType::kViewed);
+      HistoryManager::GetInstance().Add(ad_1, ConfirmationType::kViewed);
 
   AdvanceClockBy(kHistoryTimeWindow);
 
@@ -81,13 +81,13 @@ TEST_F(BraveAdsHistoryUtilTest, DoNotPurgeHistoryWithinTimeWindow) {
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   const NotificationAdInfo ad_2 = BuildNotificationAd(creative_ad_2);
   const HistoryItemInfo history_item_2 =
-      HistoryManager::GetInstance()->Add(ad_2, ConfirmationType::kViewed);
+      HistoryManager::GetInstance().Add(ad_2, ConfirmationType::kViewed);
 
   // Assert
   const HistoryItemList expected_history = {history_item_2, history_item_1};
 
   const HistoryItemList& history =
-      ClientStateManager::GetInstance()->GetHistory();
+      ClientStateManager::GetInstance().GetHistory();
 
   EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }

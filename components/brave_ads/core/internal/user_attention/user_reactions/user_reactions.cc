@@ -12,14 +12,12 @@
 
 namespace brave_ads {
 
-UserReactions::UserReactions(Account* account) : account_(account) {
-  DCHECK(account_);
-
-  HistoryManager::GetInstance()->AddObserver(this);
+UserReactions::UserReactions(Account& account) : account_(account) {
+  HistoryManager::GetInstance().AddObserver(this);
 }
 
 UserReactions::~UserReactions() {
-  HistoryManager::GetInstance()->RemoveObserver(this);
+  HistoryManager::GetInstance().RemoveObserver(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

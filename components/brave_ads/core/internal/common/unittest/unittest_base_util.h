@@ -19,34 +19,32 @@ using PrefMap = base::flat_map</*uuid*/ std::string, /*value*/ std::string>;
 
 PrefMap& Prefs();
 
-void MockShowNotificationAd(const std::unique_ptr<AdsClientMock>& mock);
-void MockCloseNotificationAd(const std::unique_ptr<AdsClientMock>& mock);
+void MockShowNotificationAd(AdsClientMock& mock);
+void MockCloseNotificationAd(AdsClientMock& mock);
 
-void MockRecordAdEventForId(const std::unique_ptr<AdsClientMock>& mock);
-void MockGetAdEventHistory(const std::unique_ptr<AdsClientMock>& mock);
-void MockResetAdEventHistoryForId(const std::unique_ptr<AdsClientMock>& mock);
+void MockRecordAdEventForId(const AdsClientMock& mock);
+void MockGetAdEventHistory(const AdsClientMock& mock);
+void MockResetAdEventHistoryForId(const AdsClientMock& mock);
 
-void MockSave(const std::unique_ptr<AdsClientMock>& mock);
-void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
-              const base::ScopedTempDir& temp_dir);
-void MockLoadFileResource(const std::unique_ptr<AdsClientMock>& mock,
+void MockSave(AdsClientMock& mock);
+void MockLoad(AdsClientMock& mock, const base::ScopedTempDir& temp_dir);
+void MockLoadFileResource(AdsClientMock& mock,
                           const base::ScopedTempDir& temp_dir);
-void MockLoadDataResource(const std::unique_ptr<AdsClientMock>& mock);
+void MockLoadDataResource(AdsClientMock& mock);
 
-void MockRunDBTransaction(const std::unique_ptr<AdsClientMock>& mock,
-                          const std::unique_ptr<Database>& database);
+void MockRunDBTransaction(AdsClientMock& mock, Database& database);
 
-void MockGetBooleanPref(const std::unique_ptr<AdsClientMock>& mock);
-void MockGetIntegerPref(const std::unique_ptr<AdsClientMock>& mock);
-void MockGetDoublePref(const std::unique_ptr<AdsClientMock>& mock);
-void MockGetStringPref(const std::unique_ptr<AdsClientMock>& mock);
-void MockGetInt64Pref(const std::unique_ptr<AdsClientMock>& mock);
-void MockGetUint64Pref(const std::unique_ptr<AdsClientMock>& mock);
-void MockGetTimePref(const std::unique_ptr<AdsClientMock>& mock);
-void MockGetDictPref(const std::unique_ptr<AdsClientMock>& mock);
-void MockGetListPref(const std::unique_ptr<AdsClientMock>& mock);
-void MockClearPref(const std::unique_ptr<AdsClientMock>& mock);
-void MockHasPrefPath(const std::unique_ptr<AdsClientMock>& mock);
+void MockGetBooleanPref(const AdsClientMock& mock);
+void MockGetIntegerPref(const AdsClientMock& mock);
+void MockGetDoublePref(const AdsClientMock& mock);
+void MockGetStringPref(const AdsClientMock& mock);
+void MockGetInt64Pref(const AdsClientMock& mock);
+void MockGetUint64Pref(const AdsClientMock& mock);
+void MockGetTimePref(const AdsClientMock& mock);
+void MockGetDictPref(const AdsClientMock& mock);
+void MockGetListPref(const AdsClientMock& mock);
+void MockClearPref(AdsClientMock& mock);
+void MockHasPrefPath(const AdsClientMock& mock);
 
 }  // namespace brave_ads
 

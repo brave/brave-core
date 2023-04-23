@@ -26,8 +26,7 @@ void EventHandler::FireEvent(const std::string& placement_id,
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
   const absl::optional<NotificationAdInfo> ad =
-      NotificationAdManager::GetInstance()->MaybeGetForPlacementId(
-          placement_id);
+      NotificationAdManager::GetInstance().MaybeGetForPlacementId(placement_id);
   if (!ad) {
     BLOG(1, "Failed to fire notification ad event due to missing placement id "
                 << placement_id);

@@ -37,10 +37,9 @@ TEST(BraveAdsBatchDLEQProofTest, FailToInitialize) {
   const BatchDLEQProof batch_dleq_proof;
 
   // Act
-  const bool has_value = batch_dleq_proof.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(batch_dleq_proof.has_value());
 }
 
 TEST(BraveAdsBatchDLEQProofTest, FailToInitializeWithEmptyBase64) {
@@ -48,10 +47,9 @@ TEST(BraveAdsBatchDLEQProofTest, FailToInitializeWithEmptyBase64) {
   const BatchDLEQProof batch_dleq_proof("");
 
   // Act
-  const bool has_value = batch_dleq_proof.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(batch_dleq_proof.has_value());
 }
 
 TEST(BraveAdsBatchDLEQProofTest, FailToInitializeWithInvalidBase64) {
@@ -59,10 +57,9 @@ TEST(BraveAdsBatchDLEQProofTest, FailToInitializeWithInvalidBase64) {
   const BatchDLEQProof batch_dleq_proof(kInvalidBase64);
 
   // Act
-  const bool has_value = batch_dleq_proof.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(batch_dleq_proof.has_value());
 }
 
 TEST(BraveAdsBatchDLEQProofTest, FailToInitializeWithInvalidBlindedTokens) {
@@ -71,10 +68,9 @@ TEST(BraveAdsBatchDLEQProofTest, FailToInitializeWithInvalidBlindedTokens) {
                                         GetSignedTokens(), GetSigningKey());
 
   // Act
-  const bool has_value = batch_dleq_proof.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(batch_dleq_proof.has_value());
 }
 
 TEST(BraveAdsBatchDLEQProofTest, FailToInitializeWithInvalidSignedTokens) {
@@ -83,10 +79,9 @@ TEST(BraveAdsBatchDLEQProofTest, FailToInitializeWithInvalidSignedTokens) {
       GetBlindedTokens(), GetInvalidSignedTokens(), GetSigningKey());
 
   // Act
-  const bool has_value = batch_dleq_proof.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(batch_dleq_proof.has_value());
 }
 
 TEST(BraveAdsBatchDLEQProofTest, FailToInitializeWithInvalidSigningKey) {
@@ -95,10 +90,9 @@ TEST(BraveAdsBatchDLEQProofTest, FailToInitializeWithInvalidSigningKey) {
                                         GetInvalidSigningKey());
 
   // Act
-  const bool has_value = batch_dleq_proof.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(batch_dleq_proof.has_value());
 }
 
 TEST(BraveAdsBatchDLEQProofTest, DecodeBase64) {
@@ -109,8 +103,7 @@ TEST(BraveAdsBatchDLEQProofTest, DecodeBase64) {
       BatchDLEQProof::DecodeBase64(kBatchDLEQProofBase64);
 
   // Assert
-  const bool has_value = batch_dleq_proof.has_value();
-  EXPECT_TRUE(has_value);
+  EXPECT_TRUE(batch_dleq_proof.has_value());
 }
 
 TEST(BraveAdsBatchDLEQProofTest, FailToDecodeEmptyBase64) {
@@ -120,8 +113,7 @@ TEST(BraveAdsBatchDLEQProofTest, FailToDecodeEmptyBase64) {
   const BatchDLEQProof batch_dleq_proof = BatchDLEQProof::DecodeBase64("");
 
   // Assert
-  const bool has_value = batch_dleq_proof.has_value();
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(batch_dleq_proof.has_value());
 }
 
 TEST(BraveAdsBatchDLEQProofTest, FailToDecodeInvalidBase64) {
@@ -132,8 +124,7 @@ TEST(BraveAdsBatchDLEQProofTest, FailToDecodeInvalidBase64) {
       BatchDLEQProof::DecodeBase64(kInvalidBase64);
 
   // Assert
-  const bool has_value = batch_dleq_proof.has_value();
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(batch_dleq_proof.has_value());
 }
 
 TEST(BraveAdsBatchDLEQProofTest, EncodeBase64) {

@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_processor.h"
 
-#include "base/check.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_embedding/text_embedding_features.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
@@ -23,17 +22,15 @@
 
 namespace brave_ads::processor {
 
-TextEmbedding::TextEmbedding(resource::TextEmbedding* resource)
+TextEmbedding::TextEmbedding(resource::TextEmbedding& resource)
     : resource_(resource) {
-  DCHECK(resource_);
-
   AdsClientHelper::AddObserver(this);
-  TabManager::GetInstance()->AddObserver(this);
+  TabManager::GetInstance().AddObserver(this);
 }
 
 TextEmbedding::~TextEmbedding() {
   AdsClientHelper::RemoveObserver(this);
-  TabManager::GetInstance()->RemoveObserver(this);
+  TabManager::GetInstance().RemoveObserver(this);
 }
 
 void TextEmbedding::Process(const std::string& html) {

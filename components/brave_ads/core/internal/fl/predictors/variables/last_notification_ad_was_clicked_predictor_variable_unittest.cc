@@ -54,8 +54,8 @@ TEST_F(BraveAdsLastNotificationAdWasClickedPredictorVariableTest,
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
-  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
-  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kClicked);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 
   AdvanceClockBy(base::Days(31));
 
@@ -75,8 +75,8 @@ TEST_F(BraveAdsLastNotificationAdWasClickedPredictorVariableTest,
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
-  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
-  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kClicked);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 
   // Act
 
@@ -94,8 +94,8 @@ TEST_F(BraveAdsLastNotificationAdWasClickedPredictorVariableTest,
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
-  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kClicked);
-  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
   // Act
 

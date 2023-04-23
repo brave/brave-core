@@ -82,9 +82,9 @@ class Serving final : public AdsClientNotifierObserver {
   // AdsClientNotifierObserver:
   void OnNotifyPrefDidChange(const std::string& path) override;
 
-  bool is_serving_ = false;
-
   raw_ptr<ServingDelegate> delegate_ = nullptr;
+
+  bool is_serving_ = false;
 
   Timer timer_;
 

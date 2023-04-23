@@ -18,12 +18,12 @@ bool DoesRespectCap() {
     return true;
   }
 
-  const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetVisible();
+  const absl::optional<TabInfo> tab = TabManager::GetInstance().GetVisible();
   if (!tab) {
     return true;
   }
 
-  return !TabManager::GetInstance()->IsPlayingMedia(tab->id);
+  return !TabManager::GetInstance().IsPlayingMedia(tab->id);
 }
 
 }  // namespace

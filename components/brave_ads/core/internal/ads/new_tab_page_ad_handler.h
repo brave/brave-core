@@ -6,21 +6,17 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_NEW_TAB_PAGE_AD_HANDLER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_NEW_TAB_PAGE_AD_HANDLER_H_
 
-#include <memory>
 #include <string>
 
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_delegate.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/new_tab_page_ad_serving.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/new_tab_page_ad_serving_delegate.h"
 
 namespace brave_ads {
-
-namespace new_tab_page_ads {
-class Serving;
-}  // namespace new_tab_page_ads
 
 namespace resource {
 class AntiTargeting;
@@ -34,8 +30,8 @@ struct NewTabPageAdInfo;
 class NewTabPageAdHandler final : public new_tab_page_ads::EventHandlerDelegate,
                                   public new_tab_page_ads::ServingDelegate {
  public:
-  NewTabPageAdHandler(Account* account,
-                      Transfer* transfer,
+  NewTabPageAdHandler(Account& account,
+                      Transfer& transfer,
                       const SubdivisionTargeting& subdivision_targeting,
                       const resource::AntiTargeting& anti_targeting_resource);
 
@@ -66,10 +62,10 @@ class NewTabPageAdHandler final : public new_tab_page_ads::EventHandlerDelegate,
 
   new_tab_page_ads::EventHandler event_handler_;
 
-  std::unique_ptr<new_tab_page_ads::Serving> serving_;
+  const raw_ref<Account> account_;
+  const raw_ref<Transfer> transfer_;
 
-  const raw_ptr<Account> account_ = nullptr;    // NOT OWNED
-  const raw_ptr<Transfer> transfer_ = nullptr;  // NOT OWNED
+  new_tab_page_ads::Serving serving_;
 };
 
 }  // namespace brave_ads

@@ -29,7 +29,7 @@ TEST_F(BraveAdsEnabledDiagnosticEntryTest, IsEnabled) {
 
 TEST_F(BraveAdsEnabledDiagnosticEntryTest, IsDisabled) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
   // Act
   const EnabledDiagnosticEntry diagnostic_entry;

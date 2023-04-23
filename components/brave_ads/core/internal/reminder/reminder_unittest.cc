@@ -31,26 +31,26 @@ void AddHistory(const size_t count) {
       BuildCreativeNotificationAd(/*should_use_random_guids*/ false));
 
   for (size_t i = 0; i < count; i++) {
-    HistoryManager::GetInstance()->Add(ad, ConfirmationType::kClicked);
+    HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
   }
 }
 
 }  // namespace
 
 class BraveAdsReminderTest : public UnitTestBase {
+ protected:
   void SetUp() override {
     UnitTestBase::SetUp();
 
     reminder_ = std::make_unique<Reminder>();
   }
 
- protected:
   std::unique_ptr<Reminder> reminder_;
 };
 
 TEST_F(BraveAdsReminderTest, ShowReminderWhenUserClicksTheSameAdMultipleTimes) {
   // Arrange
-  EXPECT_CALL(*ads_client_mock_,
+  EXPECT_CALL(ads_client_mock_,
               ShowReminder(mojom::ReminderType::kClickedSameAdMultipleTimes));
 
   // Act
@@ -62,7 +62,7 @@ TEST_F(BraveAdsReminderTest, ShowReminderWhenUserClicksTheSameAdMultipleTimes) {
 TEST_F(BraveAdsReminderTest,
        DoNotShowReminderIfUserDoesNotClickTheSameAdMultipleTimes) {
   // Arrange
-  EXPECT_CALL(*ads_client_mock_, ShowReminder(_)).Times(0);
+  EXPECT_CALL(ads_client_mock_, ShowReminder(_)).Times(0);
 
   // Act
   AddHistory(/*count*/ kRemindUserIfClickingTheSameAdAfter.Get() - 1);
@@ -82,7 +82,7 @@ TEST_F(BraveAdsReminderTest,
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  EXPECT_CALL(*ads_client_mock_, ShowReminder(_)).Times(0);
+  EXPECT_CALL(ads_client_mock_, ShowReminder(_)).Times(0);
 
   // Act
   AddHistory(/*count*/ kRemindUserIfClickingTheSameAdAfter.Get());

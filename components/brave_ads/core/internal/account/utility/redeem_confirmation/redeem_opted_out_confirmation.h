@@ -49,7 +49,7 @@ class RedeemOptedOutConfirmation final {
                                   bool should_retry,
                                   bool should_backoff);
 
-  base::WeakPtr<RedeemConfirmationDelegate> delegate_;
+  base::WeakPtr<RedeemConfirmationDelegate> delegate_ = nullptr;
 };
 
 }  // namespace brave_ads

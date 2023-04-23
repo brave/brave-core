@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
 
-#include "base/check_op.h"
+#include "base/check.h"
 #include "base/ranges/algorithm.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/common/pref_names.h"
@@ -33,14 +33,11 @@ NotificationAdManager::NotificationAdManager() {
   Initialize();
 }
 
-NotificationAdManager::~NotificationAdManager() {}
+NotificationAdManager::~NotificationAdManager() = default;
 
 // static
-NotificationAdManager* NotificationAdManager::GetInstance() {
-  auto* notification_ad_manager =
-      GlobalState::GetInstance()->GetNotificationAdManager();
-  DCHECK(notification_ad_manager);
-  return notification_ad_manager;
+NotificationAdManager& NotificationAdManager::GetInstance() {
+  return GlobalState::GetInstance()->GetNotificationAdManager();
 }
 
 absl::optional<NotificationAdInfo>

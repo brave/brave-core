@@ -47,7 +47,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
   EXPECT_TRUE(SubdivisionTargeting::ShouldAllow());
   EXPECT_FALSE(subdivision_targeting_->IsDisabled());
   EXPECT_TRUE(subdivision_targeting_->ShouldAutoDetect());
-  EXPECT_EQ("US-CA", ads_client_mock_->GetStringPref(
+  EXPECT_EQ("US-CA", ads_client_mock_.GetStringPref(
                          prefs::kAutoDetectedSubdivisionTargetingCode));
 }
 
@@ -129,7 +129,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
   EXPECT_TRUE(SubdivisionTargeting::ShouldAllow());
   EXPECT_FALSE(subdivision_targeting_->IsDisabled());
   EXPECT_TRUE(subdivision_targeting_->ShouldAutoDetect());
-  EXPECT_EQ("US-CA", ads_client_mock_->GetStringPref(
+  EXPECT_EQ("US-CA", ads_client_mock_.GetStringPref(
                          prefs::kAutoDetectedSubdivisionTargetingCode));
 }
 
@@ -149,7 +149,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest, ShouldNotAllowIfCountryIsUnsupported) {
 TEST_F(BraveAdsSubdivisionTargetingTest,
        ShouldNotAllowIfLocaleAndSubdivisionCountriesMismatch) {
   // Arrange
-  ads_client_mock_->SetStringPref(prefs::kSubdivisionTargetingCode, "CA-QC");
+  ads_client_mock_.SetStringPref(prefs::kSubdivisionTargetingCode, "CA-QC");
 
   // Act
   subdivision_targeting_->MaybeAllow();
@@ -191,7 +191,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
   // Assert
   EXPECT_TRUE(SubdivisionTargeting::ShouldAllow());
   EXPECT_FALSE(subdivision_targeting_->IsDisabled());
-  EXPECT_EQ("US-CA", ads_client_mock_->GetStringPref(
+  EXPECT_EQ("US-CA", ads_client_mock_.GetStringPref(
                          prefs::kAutoDetectedSubdivisionTargetingCode));
 }
 
@@ -218,7 +218,7 @@ TEST_P(BraveAdsSubdivisionTargetingRetryOnInvalidUrlResponseBodyTest,
   // Assert
   EXPECT_TRUE(SubdivisionTargeting::ShouldAllow());
   EXPECT_FALSE(subdivision_targeting_->IsDisabled());
-  EXPECT_EQ("US-CA", ads_client_mock_->GetStringPref(
+  EXPECT_EQ("US-CA", ads_client_mock_.GetStringPref(
                          prefs::kAutoDetectedSubdivisionTargetingCode));
 }
 

@@ -202,7 +202,7 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
 TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
        RemindUserTheyDoNotNeedToClickToEarnRewards) {
   // Arrange
-  EXPECT_CALL(*ads_client_mock_,
+  EXPECT_CALL(ads_client_mock_,
               ShowReminder(mojom::ReminderType::kClickedSameAdMultipleTimes));
 
   // Act
@@ -214,7 +214,7 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
 TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
        RemindUserMultipleTimesTheyDoNotNeedToClickToEarnRewards) {
   // Arrange
-  EXPECT_CALL(*ads_client_mock_,
+  EXPECT_CALL(ads_client_mock_,
               ShowReminder(mojom::ReminderType::kClickedSameAdMultipleTimes))
       .Times(2);
 

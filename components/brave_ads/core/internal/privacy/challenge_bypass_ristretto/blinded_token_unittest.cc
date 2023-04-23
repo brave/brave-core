@@ -20,10 +20,9 @@ TEST(BraveAdsBlindedTokenTest, FailToInitialize) {
   const BlindedToken blinded_token;
 
   // Act
-  const bool has_value = blinded_token.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(blinded_token.has_value());
 }
 
 TEST(BraveAdsBlindedTokenTest, FailToInitializeWithEmptyBase64) {
@@ -31,10 +30,9 @@ TEST(BraveAdsBlindedTokenTest, FailToInitializeWithEmptyBase64) {
   const BlindedToken blinded_token("");
 
   // Act
-  const bool has_value = blinded_token.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(blinded_token.has_value());
 }
 
 TEST(BraveAdsBlindedTokenTest, FailToInitializeWithInvalidBase64) {
@@ -42,10 +40,9 @@ TEST(BraveAdsBlindedTokenTest, FailToInitializeWithInvalidBase64) {
   const BlindedToken blinded_token(kInvalidBase64);
 
   // Act
-  const bool has_value = blinded_token.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(blinded_token.has_value());
 }
 
 TEST(BraveAdsBlindedTokenTest, DecodeBase64) {
@@ -56,8 +53,7 @@ TEST(BraveAdsBlindedTokenTest, DecodeBase64) {
       BlindedToken::DecodeBase64(kBlindedTokenBase64);
 
   // Assert
-  const bool has_value = blinded_token.has_value();
-  EXPECT_TRUE(has_value);
+  EXPECT_TRUE(blinded_token.has_value());
 }
 
 TEST(BraveAdsBlindedTokenTest, FailToDecodeEmptyBase64) {
@@ -67,8 +63,7 @@ TEST(BraveAdsBlindedTokenTest, FailToDecodeEmptyBase64) {
   const BlindedToken blinded_token = BlindedToken::DecodeBase64({});
 
   // Assert
-  const bool has_value = blinded_token.has_value();
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(blinded_token.has_value());
 }
 
 TEST(BraveAdsBlindedTokenTest, FailToDecodeInvalidBase64) {
@@ -78,8 +73,7 @@ TEST(BraveAdsBlindedTokenTest, FailToDecodeInvalidBase64) {
   const BlindedToken blinded_token = BlindedToken::DecodeBase64(kInvalidBase64);
 
   // Assert
-  const bool has_value = blinded_token.has_value();
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(blinded_token.has_value());
 }
 
 TEST(BraveAdsBlindedTokenTest, EncodeBase64) {

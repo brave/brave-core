@@ -29,28 +29,28 @@ bool CanServeAtRegularIntervals() {
 
 bool ShouldServeAtRegularIntervals() {
   return ShouldServe() &&
-         (BrowserManager::GetInstance()->IsBrowserActive() ||
+         (BrowserManager::GetInstance().IsBrowserActive() ||
           AdsClientHelper::GetInstance()
               ->CanShowNotificationAdsWhileBrowserIsBackgrounded()) &&
          settings::GetMaximumNotificationAdsPerHour() > 0;
 }
 
 void ShowNotificationAd(const NotificationAdInfo& ad) {
-  NotificationAdManager::GetInstance()->Add(ad);
+  NotificationAdManager::GetInstance().Add(ad);
   AdsClientHelper::GetInstance()->ShowNotificationAd(ad);
 }
 
 void DismissNotificationAd(const std::string& placement_id) {
-  NotificationAdManager::GetInstance()->Remove(placement_id);
+  NotificationAdManager::GetInstance().Remove(placement_id);
 }
 
 void CloseNotificationAd(const std::string& placement_id) {
-  NotificationAdManager::GetInstance()->Remove(placement_id);
+  NotificationAdManager::GetInstance().Remove(placement_id);
   AdsClientHelper::GetInstance()->CloseNotificationAd(placement_id);
 }
 
 void NotificationAdTimedOut(const std::string& placement_id) {
-  NotificationAdManager::GetInstance()->Remove(placement_id);
+  NotificationAdManager::GetInstance().Remove(placement_id);
 }
 
 }  // namespace brave_ads

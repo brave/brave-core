@@ -30,7 +30,7 @@ TEST_F(BraveAdsP2ATest, RecordEvent) {
   const base::Value::List* const list = value.GetIfList();
   ASSERT_TRUE(list);
 
-  EXPECT_CALL(*ads_client_mock_,
+  EXPECT_CALL(ads_client_mock_,
               RecordP2AEvent(kEventName, Eq(std::ref(*list))));
 
   // Act

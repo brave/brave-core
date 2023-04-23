@@ -38,12 +38,12 @@ class BraveAdsPromotedContentAdIntegrationTest : public UnitTestBase {
 
 TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerViewedEvent) {
   // Arrange
-  GetAds()->TriggerPromotedContentAdEvent(
+  GetAds().TriggerPromotedContentAdEvent(
       kPlacementId, kCreativeInstanceId,
       mojom::PromotedContentAdEventType::kServed);
 
   // Act
-  GetAds()->TriggerPromotedContentAdEvent(
+  GetAds().TriggerPromotedContentAdEvent(
       kPlacementId, kCreativeInstanceId,
       mojom::PromotedContentAdEventType::kViewed);
 
@@ -58,15 +58,15 @@ TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerViewedEvent) {
 
 TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
-  GetAds()->TriggerPromotedContentAdEvent(
+  GetAds().TriggerPromotedContentAdEvent(
       kPlacementId, kCreativeInstanceId,
       mojom::PromotedContentAdEventType::kServed);
-  GetAds()->TriggerPromotedContentAdEvent(
+  GetAds().TriggerPromotedContentAdEvent(
       kPlacementId, kCreativeInstanceId,
       mojom::PromotedContentAdEventType::kViewed);
 
   // Act
-  GetAds()->TriggerPromotedContentAdEvent(
+  GetAds().TriggerPromotedContentAdEvent(
       kPlacementId, kCreativeInstanceId,
       mojom::PromotedContentAdEventType::kClicked);
 

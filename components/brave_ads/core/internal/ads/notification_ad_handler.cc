@@ -14,7 +14,6 @@
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/internal/ads/notification_ad_handler_util.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -27,7 +26,6 @@
 #include "brave/components/brave_ads/core/internal/privacy/p2a/impressions/p2a_impression.h"
 #include "brave/components/brave_ads/core/internal/privacy/p2a/opportunities/p2a_opportunity.h"
 #include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/bandit_feedback_info.h"
-#include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_processor.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
 #include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection_util.h"
@@ -36,33 +34,26 @@
 namespace brave_ads {
 
 NotificationAdHandler::NotificationAdHandler(
-    Account* account,
-    Transfer* transfer,
-    processor::EpsilonGreedyBandit* epsilon_greedy_bandit_processor,
+    Account& account,
+    Transfer& transfer,
     const SubdivisionTargeting& subdivision_targeting,
     const resource::AntiTargeting& anti_targeting_resource)
     : account_(account),
       transfer_(transfer),
-      epsilon_greedy_bandit_processor_(epsilon_greedy_bandit_processor) {
-  DCHECK(account_);
-  DCHECK(transfer_);
-  DCHECK(epsilon_greedy_bandit_processor_);
-
+      serving_(subdivision_targeting, anti_targeting_resource) {
   account_->AddObserver(this);
 
   event_handler_.SetDelegate(this);
 
-  serving_ = std::make_unique<notification_ads::Serving>(
-      subdivision_targeting, anti_targeting_resource);
-  serving_->SetDelegate(this);
+  serving_.SetDelegate(this);
 
-  BrowserManager::GetInstance()->AddObserver(this);
+  BrowserManager::GetInstance().AddObserver(this);
   AdsClientHelper::AddObserver(this);
 }
 
 NotificationAdHandler::~NotificationAdHandler() {
   account_->RemoveObserver(this);
-  BrowserManager::GetInstance()->RemoveObserver(this);
+  BrowserManager::GetInstance().RemoveObserver(this);
   AdsClientHelper::RemoveObserver(this);
 }
 
@@ -72,9 +63,9 @@ void NotificationAdHandler::MaybeServeAtRegularIntervals() {
   }
 
   if (ShouldServeAtRegularIntervals()) {
-    serving_->StartServingAdsAtRegularIntervals();
+    serving_.StartServingAdsAtRegularIntervals();
   } else {
-    serving_->StopServingAdsAtRegularIntervals();
+    serving_.StopServingAdsAtRegularIntervals();
   }
 }
 
@@ -115,7 +106,7 @@ void NotificationAdHandler::OnNotifyUserDidBecomeActive(
     return;
   }
 
-  serving_->MaybeServeAd();
+  serving_.MaybeServeAd();
 }
 
 void NotificationAdHandler::OnBrowserDidEnterForeground() {
@@ -143,12 +134,12 @@ void NotificationAdHandler::OnDidServeNotificationAd(
 
 void NotificationAdHandler::OnNotificationAdServed(
     const NotificationAdInfo& ad) {
-  ClientStateManager::GetInstance()->UpdateSeenAd(ad);
+  ClientStateManager::GetInstance().UpdateSeenAd(ad);
 }
 
 void NotificationAdHandler::OnNotificationAdViewed(
     const NotificationAdInfo& ad) {
-  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
   account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
                     ConfirmationType::kViewed);
@@ -164,7 +155,7 @@ void NotificationAdHandler::OnNotificationAdClicked(
 
   transfer_->SetLastClickedAd(ad);
 
-  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kClicked);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 
   account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
                     ConfirmationType::kClicked);
@@ -174,14 +165,14 @@ void NotificationAdHandler::OnNotificationAdClicked(
 
   SetNotificationAdEventPredictorVariable(
       mojom::NotificationAdEventType::kClicked);
-  PredictorsManager::GetInstance()->AddTrainingSample();
+  PredictorsManager::GetInstance().AddTrainingSample();
 }
 
 void NotificationAdHandler::OnNotificationAdDismissed(
     const NotificationAdInfo& ad) {
   DismissNotificationAd(ad.placement_id);
 
-  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kDismissed);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kDismissed);
 
   account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
                     ConfirmationType::kDismissed);
@@ -191,7 +182,7 @@ void NotificationAdHandler::OnNotificationAdDismissed(
 
   SetNotificationAdEventPredictorVariable(
       mojom::NotificationAdEventType::kDismissed);
-  PredictorsManager::GetInstance()->AddTrainingSample();
+  PredictorsManager::GetInstance().AddTrainingSample();
 }
 
 void NotificationAdHandler::OnNotificationAdTimedOut(
@@ -203,7 +194,7 @@ void NotificationAdHandler::OnNotificationAdTimedOut(
 
   SetNotificationAdEventPredictorVariable(
       mojom::NotificationAdEventType::kTimedOut);
-  PredictorsManager::GetInstance()->AddTrainingSample();
+  PredictorsManager::GetInstance().AddTrainingSample();
 }
 
 }  // namespace brave_ads

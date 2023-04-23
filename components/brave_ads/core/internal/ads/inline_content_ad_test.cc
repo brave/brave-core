@@ -50,7 +50,7 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, Serve) {
   // Arrange
 
   // Act
-  GetAds()->MaybeServeInlineContentAd(
+  GetAds().MaybeServeInlineContentAd(
       kDimensions,
       base::BindOnce([](const std::string& dimensions,
                         const absl::optional<InlineContentAdInfo>& ad) {
@@ -67,7 +67,7 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerServedEvent) {
   // Arrange
 
   // Act
-  GetAds()->TriggerInlineContentAdEvent(
+  GetAds().TriggerInlineContentAdEvent(
       kPlacementId, kCreativeInstanceId,
       mojom::InlineContentAdEventType::kServed);
 
@@ -82,14 +82,14 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
   // Arrange
   const std::string name =
       privacy::p2a::GetAdImpressionNameForAdType(AdType::kInlineContentAd);
-  EXPECT_CALL(*ads_client_mock_, RecordP2AEvent(name, _));
+  EXPECT_CALL(ads_client_mock_, RecordP2AEvent(name, _));
 
-  GetAds()->TriggerInlineContentAdEvent(
+  GetAds().TriggerInlineContentAdEvent(
       kPlacementId, kCreativeInstanceId,
       mojom::InlineContentAdEventType::kServed);
 
   // Act
-  GetAds()->TriggerInlineContentAdEvent(
+  GetAds().TriggerInlineContentAdEvent(
       kPlacementId, kCreativeInstanceId,
       mojom::InlineContentAdEventType::kViewed);
 
@@ -102,15 +102,15 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
 
 TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
-  GetAds()->TriggerInlineContentAdEvent(
+  GetAds().TriggerInlineContentAdEvent(
       kPlacementId, kCreativeInstanceId,
       mojom::InlineContentAdEventType::kServed);
-  GetAds()->TriggerInlineContentAdEvent(
+  GetAds().TriggerInlineContentAdEvent(
       kPlacementId, kCreativeInstanceId,
       mojom::InlineContentAdEventType::kViewed);
 
   // Act
-  GetAds()->TriggerInlineContentAdEvent(
+  GetAds().TriggerInlineContentAdEvent(
       kPlacementId, kCreativeInstanceId,
       mojom::InlineContentAdEventType::kClicked);
 

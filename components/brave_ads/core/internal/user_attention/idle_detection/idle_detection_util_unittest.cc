@@ -32,11 +32,9 @@ TEST_F(BraveAdsIdleDetectionUtilTest, WasLocked) {
                                                     disabled_features);
 
   // Act
-  const bool screen_was_locked =
-      MaybeScreenWasLocked(/*screen_was_locked*/ true);
 
   // Assert
-  EXPECT_TRUE(screen_was_locked);
+  EXPECT_TRUE(MaybeScreenWasLocked(/*screen_was_locked*/ true));
 }
 
 TEST_F(BraveAdsIdleDetectionUtilTest, WasLockedIfShouldDetectScreenWasLocked) {
@@ -53,11 +51,9 @@ TEST_F(BraveAdsIdleDetectionUtilTest, WasLockedIfShouldDetectScreenWasLocked) {
                                                     disabled_features);
 
   // Act
-  const bool screen_was_locked =
-      MaybeScreenWasLocked(/*screen_was_locked*/ true);
 
   // Assert
-  EXPECT_TRUE(screen_was_locked);
+  EXPECT_TRUE(MaybeScreenWasLocked(/*screen_was_locked*/ true));
 }
 
 TEST_F(BraveAdsIdleDetectionUtilTest, WasNotLocked) {
@@ -74,11 +70,9 @@ TEST_F(BraveAdsIdleDetectionUtilTest, WasNotLocked) {
                                                     disabled_features);
 
   // Act
-  const bool screen_was_locked =
-      MaybeScreenWasLocked(/*screen_was_locked*/ false);
 
   // Assert
-  EXPECT_FALSE(screen_was_locked);
+  EXPECT_FALSE(MaybeScreenWasLocked(/*screen_was_locked*/ false));
 }
 
 TEST_F(BraveAdsIdleDetectionUtilTest, WasNotLockedIfShouldNotDetectWasLocked) {
@@ -95,11 +89,9 @@ TEST_F(BraveAdsIdleDetectionUtilTest, WasNotLockedIfShouldNotDetectWasLocked) {
                                                     disabled_features);
 
   // Act
-  const bool screen_was_locked =
-      MaybeScreenWasLocked(/*screen_was_locked*/ true);
 
   // Assert
-  EXPECT_FALSE(screen_was_locked);
+  EXPECT_FALSE(MaybeScreenWasLocked(/*screen_was_locked*/ true));
 }
 
 TEST_F(BraveAdsIdleDetectionUtilTest, HasNotExceededMaximumIdleTime) {
@@ -116,11 +108,9 @@ TEST_F(BraveAdsIdleDetectionUtilTest, HasNotExceededMaximumIdleTime) {
                                                     disabled_features);
 
   // Act
-  const bool has_exceeded_maximum_idle_time =
-      HasExceededMaximumIdleTime(base::Seconds(10));
 
   // Assert
-  EXPECT_FALSE(has_exceeded_maximum_idle_time);
+  EXPECT_FALSE(HasExceededMaximumIdleTime(base::Seconds(10)));
 }
 
 TEST_F(BraveAdsIdleDetectionUtilTest, HasNotExceededInfiniteMaximumIdleTime) {
@@ -137,11 +127,9 @@ TEST_F(BraveAdsIdleDetectionUtilTest, HasNotExceededInfiniteMaximumIdleTime) {
                                                     disabled_features);
 
   // Act
-  const bool has_exceeded_maximum_idle_time =
-      HasExceededMaximumIdleTime(base::TimeDelta::Max());
 
   // Assert
-  EXPECT_FALSE(has_exceeded_maximum_idle_time);
+  EXPECT_FALSE(HasExceededMaximumIdleTime(base::TimeDelta::Max()));
 }
 
 TEST_F(BraveAdsIdleDetectionUtilTest, HasExceededMaximumIdleTime) {
@@ -158,11 +146,9 @@ TEST_F(BraveAdsIdleDetectionUtilTest, HasExceededMaximumIdleTime) {
                                                     disabled_features);
 
   // Act
-  const bool has_exceeded_maximum_idle_time =
-      HasExceededMaximumIdleTime(base::Seconds(11));
 
   // Assert
-  EXPECT_TRUE(has_exceeded_maximum_idle_time);
+  EXPECT_TRUE(HasExceededMaximumIdleTime(base::Seconds(11)));
 }
 
 TEST_F(BraveAdsIdleDetectionUtilTest, UpdateIdleTimeThreshold) {
@@ -178,13 +164,13 @@ TEST_F(BraveAdsIdleDetectionUtilTest, UpdateIdleTimeThreshold) {
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  ads_client_mock_->SetIntegerPref(prefs::kIdleTimeThreshold, 10);
+  ads_client_mock_.SetIntegerPref(prefs::kIdleTimeThreshold, 10);
 
   ASSERT_TRUE(MaybeUpdateIdleTimeThreshold());
 
   // Act
   const int idle_time_threshold =
-      ads_client_mock_->GetIntegerPref(prefs::kIdleTimeThreshold);
+      ads_client_mock_.GetIntegerPref(prefs::kIdleTimeThreshold);
 
   // Assert
   EXPECT_EQ(5, idle_time_threshold);
@@ -203,13 +189,13 @@ TEST_F(BraveAdsIdleDetectionUtilTest, DoNotUpdateIdleTimeThreshold) {
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  ads_client_mock_->SetIntegerPref(prefs::kIdleTimeThreshold, 10);
+  ads_client_mock_.SetIntegerPref(prefs::kIdleTimeThreshold, 10);
 
   ASSERT_FALSE(MaybeUpdateIdleTimeThreshold());
 
   // Act
   const int idle_time_threshold =
-      ads_client_mock_->GetIntegerPref(prefs::kIdleTimeThreshold);
+      ads_client_mock_.GetIntegerPref(prefs::kIdleTimeThreshold);
 
   // Assert
   EXPECT_EQ(10, idle_time_threshold);

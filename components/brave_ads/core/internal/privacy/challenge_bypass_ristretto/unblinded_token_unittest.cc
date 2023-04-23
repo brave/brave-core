@@ -20,10 +20,9 @@ TEST(BraveAdsUnblindedTokenTest, FailToInitialize) {
   const UnblindedToken unblinded_token;
 
   // Act
-  const bool has_value = unblinded_token.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(unblinded_token.has_value());
 }
 
 TEST(BraveAdsUnblindedTokenTest, FailToInitializeWithEmptyBase64) {
@@ -31,10 +30,9 @@ TEST(BraveAdsUnblindedTokenTest, FailToInitializeWithEmptyBase64) {
   const UnblindedToken unblinded_token("");
 
   // Act
-  const bool has_value = unblinded_token.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(unblinded_token.has_value());
 }
 
 TEST(BraveAdsUnblindedTokenTest, FailToInitializeWithInvalidBase64) {
@@ -42,10 +40,9 @@ TEST(BraveAdsUnblindedTokenTest, FailToInitializeWithInvalidBase64) {
   const UnblindedToken unblinded_token(kInvalidBase64);
 
   // Act
-  const bool has_value = unblinded_token.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(unblinded_token.has_value());
 }
 
 TEST(BraveAdsUnblindedTokenTest, DecodeBase64) {
@@ -56,8 +53,7 @@ TEST(BraveAdsUnblindedTokenTest, DecodeBase64) {
       UnblindedToken::DecodeBase64(kUnblindedTokenBase64);
 
   // Assert
-  const bool has_value = unblinded_token.has_value();
-  EXPECT_TRUE(has_value);
+  EXPECT_TRUE(unblinded_token.has_value());
 }
 
 TEST(BraveAdsUnblindedTokenTest, FailToDecodeEmptyBase64) {
@@ -67,8 +63,7 @@ TEST(BraveAdsUnblindedTokenTest, FailToDecodeEmptyBase64) {
   const UnblindedToken unblinded_token = UnblindedToken::DecodeBase64({});
 
   // Assert
-  const bool has_value = unblinded_token.has_value();
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(unblinded_token.has_value());
 }
 
 TEST(BraveAdsUnblindedTokenTest, FailToDecodeInvalidBase64) {
@@ -79,8 +74,7 @@ TEST(BraveAdsUnblindedTokenTest, FailToDecodeInvalidBase64) {
       UnblindedToken::DecodeBase64(kInvalidBase64);
 
   // Assert
-  const bool has_value = unblinded_token.has_value();
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(unblinded_token.has_value());
 }
 
 TEST(BraveAdsUnblindedTokenTest, EncodeBase64) {

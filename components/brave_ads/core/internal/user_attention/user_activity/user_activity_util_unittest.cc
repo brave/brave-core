@@ -17,12 +17,12 @@ class BraveAdsUserActivityUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsUserActivityUtilTest, NoTabsOpened) {
   // Arrange
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedLink);
 
   // Act
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Minutes(30));
   const int number_of_tabs_opened = GetNumberOfTabsOpened(events);
 
@@ -32,23 +32,23 @@ TEST_F(BraveAdsUserActivityUtilTest, NoTabsOpened) {
 
 TEST_F(BraveAdsUserActivityUtilTest, TabsOpened) {
   // Arrange
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedLink);
 
   AdvanceClockBy(base::Minutes(30));
 
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedLink);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClosedTab);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
 
   // Act
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Minutes(30));
   const int number_of_tabs_opened = GetNumberOfTabsOpened(events);
 
@@ -58,28 +58,28 @@ TEST_F(BraveAdsUserActivityUtilTest, TabsOpened) {
 
 TEST_F(BraveAdsUserActivityUtilTest, GetNumberOfUserActivityEvents) {
   // Arrange
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedLink);
 
   AdvanceClockBy(base::Minutes(30));
 
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedLink);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClosedTab);
 
   AdvanceClockBy(base::Minutes(5));
 
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedLink);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
 
   // Act
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Minutes(30));
   const int number_of_tabs_opened = GetNumberOfUserActivityEvents(
       events, UserActivityEventType::kClickedLink);
@@ -91,12 +91,12 @@ TEST_F(BraveAdsUserActivityUtilTest, GetNumberOfUserActivityEvents) {
 TEST_F(BraveAdsUserActivityUtilTest,
        GetNumberOfUserActivityEventsForMissingEvent) {
   // Arrange
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
 
   // Act
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Minutes(30));
   const int number_of_tabs_opened =
       GetNumberOfUserActivityEvents(events, UserActivityEventType::kClosedTab);
@@ -111,7 +111,7 @@ TEST_F(BraveAdsUserActivityUtilTest,
 
   // Act
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Minutes(30));
   const int number_of_tabs_opened =
       GetNumberOfUserActivityEvents(events, UserActivityEventType::kClosedTab);
@@ -122,37 +122,37 @@ TEST_F(BraveAdsUserActivityUtilTest,
 
 TEST_F(BraveAdsUserActivityUtilTest, GetTimeSinceLastUserActivityEvent) {
   // Arrange
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTabStartedPlayingMedia);
   AdvanceClockBy(base::Minutes(30));
 
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedLink);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTabStartedPlayingMedia);
   AdvanceClockBy(base::Minutes(5));
 
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedLink);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTabStartedPlayingMedia);
   AdvanceClockBy(base::Minutes(5));
 
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedLink);
   AdvanceClockBy(base::Minutes(1));
 
   // Act
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Minutes(30));
   const int64_t time = GetTimeSinceLastUserActivityEvent(
       events, UserActivityEventType::kTabStartedPlayingMedia);
@@ -164,12 +164,12 @@ TEST_F(BraveAdsUserActivityUtilTest, GetTimeSinceLastUserActivityEvent) {
 TEST_F(BraveAdsUserActivityUtilTest,
        GetTimeSinceLastUserActivityEventForMissingEvent) {
   // Arrange
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedLink);
 
   // Act
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Minutes(30));
   const int64_t time = GetTimeSinceLastUserActivityEvent(
       events, UserActivityEventType::kTabStartedPlayingMedia);
@@ -184,7 +184,7 @@ TEST_F(BraveAdsUserActivityUtilTest,
 
   // Act
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Minutes(30));
   const int64_t time = GetTimeSinceLastUserActivityEvent(
       events, UserActivityEventType::kTabStartedPlayingMedia);

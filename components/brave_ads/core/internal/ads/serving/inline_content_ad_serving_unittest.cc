@@ -34,6 +34,7 @@ class BraveAdsInlineContentAdServingDelegate : public ServingDelegate {
     ad_ = ad;
     did_serve_ad_ = true;
   }
+
   void OnFailedToServeInlineContentAd() override { failed_to_serve_ad_ = true; }
 
   const InlineContentAdInfo& ad() const { return ad_; }

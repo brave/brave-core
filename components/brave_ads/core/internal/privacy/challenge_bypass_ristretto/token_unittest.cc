@@ -19,10 +19,9 @@ TEST(BraveAdsTokenTest, Random) {
   const Token token;
 
   // Act
-  const bool has_value = token.has_value();
 
   // Assert
-  EXPECT_TRUE(has_value);
+  EXPECT_TRUE(token.has_value());
 }
 
 TEST(BraveAdsTokenTest, FailToInitializeWithEmptyBase64) {
@@ -30,10 +29,9 @@ TEST(BraveAdsTokenTest, FailToInitializeWithEmptyBase64) {
   const Token token("");
 
   // Act
-  const bool has_value = token.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(token.has_value());
 }
 
 TEST(BraveAdsTokenTest, FailToInitializeWithInvalidBase64) {
@@ -41,10 +39,9 @@ TEST(BraveAdsTokenTest, FailToInitializeWithInvalidBase64) {
   const Token token(kInvalidBase64);
 
   // Act
-  const bool has_value = token.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(token.has_value());
 }
 
 TEST(BraveAdsTokenTest, DecodeBase64) {
@@ -54,8 +51,7 @@ TEST(BraveAdsTokenTest, DecodeBase64) {
   const Token token = Token::DecodeBase64(kTokenBase64);
 
   // Assert
-  const bool has_value = token.has_value();
-  EXPECT_TRUE(has_value);
+  EXPECT_TRUE(token.has_value());
 }
 
 TEST(BraveAdsTokenTest, FailToDecodeEmptyBase64) {
@@ -65,8 +61,7 @@ TEST(BraveAdsTokenTest, FailToDecodeEmptyBase64) {
   const Token token = Token::DecodeBase64({});
 
   // Assert
-  const bool has_value = token.has_value();
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(token.has_value());
 }
 
 TEST(BraveAdsTokenTest, FailToDecodeInvalidBase64) {
@@ -76,8 +71,7 @@ TEST(BraveAdsTokenTest, FailToDecodeInvalidBase64) {
   const Token token = Token::DecodeBase64(kInvalidBase64);
 
   // Assert
-  const bool has_value = token.has_value();
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(token.has_value());
 }
 
 TEST(BraveAdsTokenTest, EncodeBase64) {

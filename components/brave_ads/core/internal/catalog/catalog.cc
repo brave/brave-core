@@ -37,11 +37,11 @@ constexpr base::TimeDelta kDebugCatalogPing = base::Minutes(15);
 }  // namespace
 
 Catalog::Catalog() {
-  DatabaseManager::GetInstance()->AddObserver(this);
+  DatabaseManager::GetInstance().AddObserver(this);
 }
 
 Catalog::~Catalog() {
-  DatabaseManager::GetInstance()->RemoveObserver(this);
+  DatabaseManager::GetInstance().RemoveObserver(this);
 }
 
 void Catalog::AddObserver(CatalogObserver* observer) {

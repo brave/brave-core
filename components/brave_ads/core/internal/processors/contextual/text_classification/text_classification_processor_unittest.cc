@@ -30,17 +30,16 @@ class BraveAdsTextClassificationProcessorTest : public UnitTestBase {
 TEST_F(BraveAdsTextClassificationProcessorTest,
        DoNotProcessIfResourceIsNotInitialized) {
   // Arrange
-  resource::TextClassification uninitialized_resource;
+  resource::TextClassification resource;
 
   // Act
-  const std::string text = "The quick brown fox jumps over the lazy dog";
-  processor::TextClassification processor(&uninitialized_resource);
-  processor.Process(text);
+  processor::TextClassification processor(resource);
+  processor.Process(/*text*/ "The quick brown fox jumps over the lazy dog");
 
   // Assert
   const targeting::TextClassificationProbabilityList& list =
       ClientStateManager::GetInstance()
-          ->GetTextClassificationProbabilitiesHistory();
+          .GetTextClassificationProbabilitiesHistory();
 
   EXPECT_TRUE(list.empty());
 }
@@ -48,13 +47,13 @@ TEST_F(BraveAdsTextClassificationProcessorTest,
 TEST_F(BraveAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
   // Act
   const std::string text;
-  processor::TextClassification processor(&resource_);
+  processor::TextClassification processor(resource_);
   processor.Process(text);
 
   // Assert
   const targeting::TextClassificationProbabilityList& list =
       ClientStateManager::GetInstance()
-          ->GetTextClassificationProbabilitiesHistory();
+          .GetTextClassificationProbabilitiesHistory();
 
   EXPECT_TRUE(list.empty());
 }
@@ -67,42 +66,35 @@ TEST_F(BraveAdsTextClassificationProcessorTest, NeverProcessed) {
   // Assert
   const targeting::TextClassificationProbabilityList& list =
       ClientStateManager::GetInstance()
-          ->GetTextClassificationProbabilitiesHistory();
+          .GetTextClassificationProbabilitiesHistory();
 
   EXPECT_TRUE(list.empty());
 }
 
 TEST_F(BraveAdsTextClassificationProcessorTest, ProcessText) {
   // Act
-  const std::string text = "Some content about technology & computing";
-  processor::TextClassification processor(&resource_);
-  processor.Process(text);
+  processor::TextClassification processor(resource_);
+  processor.Process(/*text*/ "Some content about technology & computing");
 
   // Assert
   const targeting::TextClassificationProbabilityList& list =
       ClientStateManager::GetInstance()
-          ->GetTextClassificationProbabilitiesHistory();
+          .GetTextClassificationProbabilitiesHistory();
 
   EXPECT_EQ(1U, list.size());
 }
 
 TEST_F(BraveAdsTextClassificationProcessorTest, ProcessMultipleText) {
   // Act
-  processor::TextClassification processor(&resource_);
-
-  const std::string text_1 = "Some content about cooking food";
-  processor.Process(text_1);
-
-  const std::string text_2 = "Some content about finance & banking";
-  processor.Process(text_2);
-
-  const std::string text_3 = "Some content about technology & computing";
-  processor.Process(text_3);
+  processor::TextClassification processor(resource_);
+  processor.Process(/*text*/ "Some content about cooking food");
+  processor.Process(/*text*/ "Some content about finance & banking");
+  processor.Process(/*text*/ "Some content about technology & computing");
 
   // Assert
   const targeting::TextClassificationProbabilityList& list =
       ClientStateManager::GetInstance()
-          ->GetTextClassificationProbabilitiesHistory();
+          .GetTextClassificationProbabilitiesHistory();
 
   EXPECT_EQ(3U, list.size());
 }

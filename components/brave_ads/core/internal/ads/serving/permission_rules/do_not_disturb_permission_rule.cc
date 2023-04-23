@@ -22,7 +22,7 @@ bool DoesRespectCap() {
     return true;
   }
 
-  if (BrowserManager::GetInstance()->IsBrowserActive()) {
+  if (BrowserManager::GetInstance().IsBrowserActive()) {
     return true;
   }
 

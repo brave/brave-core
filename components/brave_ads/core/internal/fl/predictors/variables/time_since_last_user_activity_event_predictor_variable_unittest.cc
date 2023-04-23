@@ -56,12 +56,12 @@ TEST_F(BraveAdsTimeSinceLastUserActivityEventPredictorVariableTest, GetValue) {
           brave_federated::mojom::CovariateType::
               kTimeSinceLastOpenedNewTabEvent);
 
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
 
   AdvanceClockBy(base::Minutes(2));
 
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClosedTab);
 
   // Act

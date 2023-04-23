@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_CLIENT_CLIENT_STATE_MANAGER_H_
 
 #include <map>
-#include <memory>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
@@ -17,6 +16,7 @@
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_alias.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
+#include "brave/components/brave_ads/core/internal/deprecated/client/client_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/filtered_advertiser_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/filtered_category_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/flagged_ad_info.h"
@@ -27,7 +27,6 @@ namespace brave_ads {
 class AdType;
 struct AdContentInfo;
 struct AdInfo;
-struct ClientInfo;
 
 class ClientStateManager final {
  public:
@@ -41,7 +40,7 @@ class ClientStateManager final {
 
   ~ClientStateManager();
 
-  static ClientStateManager* GetInstance();
+  static ClientStateManager& GetInstance();
 
   void Initialize(InitializeCallback callback);
 
@@ -90,7 +89,7 @@ class ClientStateManager final {
   void AppendTextClassificationProbabilitiesToHistory(
       const targeting::TextClassificationProbabilityMap& probabilities);
   const targeting::TextClassificationProbabilityList&
-  GetTextClassificationProbabilitiesHistory();
+  GetTextClassificationProbabilitiesHistory() const;
 
   void RemoveAllHistory();
 
@@ -106,7 +105,7 @@ class ClientStateManager final {
 
   bool FromJson(const std::string& json);
 
-  std::unique_ptr<ClientInfo> client_;
+  ClientInfo client_;
 
   bool is_mutated_ = false;
 

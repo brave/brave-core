@@ -28,15 +28,13 @@ TEST_F(BraveAdsIssuersUtilTest, HasIssuersChanged) {
                    {{"PmXS59VTEVIPZckOqGdpjisDidUbhLGbhAhN5tmfhhs=", 0.1},
                     {"Bgk5gT+b96iSr3nD5nuTM/yGQ5klrIe6VC6DDdM6sFs=", 0.0}});
 
-  const bool has_changed = HasIssuersChanged(issuers);
-
   // Assert
-  EXPECT_TRUE(has_changed);
+  EXPECT_TRUE(HasIssuersChanged(issuers));
 }
 
 TEST_F(BraveAdsIssuersUtilTest, HasIssuersChangedOnInitialFetch) {
   // Arrange
-  ads_client_mock_->ClearPref(prefs::kIssuers);
+  ads_client_mock_.ClearPref(prefs::kIssuers);
 
   // Act
   const IssuersInfo issuers =
@@ -46,10 +44,8 @@ TEST_F(BraveAdsIssuersUtilTest, HasIssuersChangedOnInitialFetch) {
                    {{"PmXS59VTEVIPZckOqGdpjisDidUbhLGbhAhN5tmfhhs=", 0.1},
                     {"Bgk5gT+b96iSr3nD5nuTM/yGQ5klrIe6VC6DDdM6sFs=", 0.0}});
 
-  const bool has_changed = HasIssuersChanged(issuers);
-
   // Assert
-  EXPECT_TRUE(has_changed);
+  EXPECT_TRUE(HasIssuersChanged(issuers));
 }
 
 TEST_F(BraveAdsIssuersUtilTest, HasIssuersNotChanged) {
@@ -64,10 +60,8 @@ TEST_F(BraveAdsIssuersUtilTest, HasIssuersNotChanged) {
                    {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
                     {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
 
-  const bool has_changed = HasIssuersChanged(issuers);
-
   // Assert
-  EXPECT_FALSE(has_changed);
+  EXPECT_FALSE(HasIssuersChanged(issuers));
 }
 
 TEST_F(BraveAdsIssuersUtilTest, IssuerDoesExistForConfirmationsType) {
@@ -75,27 +69,24 @@ TEST_F(BraveAdsIssuersUtilTest, IssuerDoesExistForConfirmationsType) {
   BuildAndSetIssuers();
 
   // Act
-  const bool does_exist = IssuerExistsForType(IssuerType::kConfirmations);
 
   // Assert
-  EXPECT_TRUE(does_exist);
+  EXPECT_TRUE(IssuerExistsForType(IssuerType::kConfirmations));
 }
 
 TEST_F(BraveAdsIssuersUtilTest, IssuerDoesNotExistForConfirmationsType) {
   // Arrange
   const IssuersInfo issuers =
-      BuildIssuers(/*ping*/ 7'200'000, /*confirmations_public_keys*/ {},
-                   /*payments_public_keys*/
+      BuildIssuers(7'200'000, {},
                    {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
                     {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
 
   SetIssuers(issuers);
 
   // Act
-  const bool does_exist = IssuerExistsForType(IssuerType::kConfirmations);
 
   // Assert
-  EXPECT_FALSE(does_exist);
+  EXPECT_FALSE(IssuerExistsForType(IssuerType::kConfirmations));
 }
 
 TEST_F(BraveAdsIssuersUtilTest, IssuerDoesExistForPaymentsType) {
@@ -103,10 +94,9 @@ TEST_F(BraveAdsIssuersUtilTest, IssuerDoesExistForPaymentsType) {
   BuildAndSetIssuers();
 
   // Act
-  const bool does_exist = IssuerExistsForType(IssuerType::kPayments);
 
   // Assert
-  EXPECT_TRUE(does_exist);
+  EXPECT_TRUE(IssuerExistsForType(IssuerType::kPayments));
 }
 
 TEST_F(BraveAdsIssuersUtilTest, IssuerDoesNotExistForPaymentsType) {
@@ -120,10 +110,9 @@ TEST_F(BraveAdsIssuersUtilTest, IssuerDoesNotExistForPaymentsType) {
   SetIssuers(issuers);
 
   // Act
-  const bool does_exist = IssuerExistsForType(IssuerType::kPayments);
 
   // Assert
-  EXPECT_FALSE(does_exist);
+  EXPECT_FALSE(IssuerExistsForType(IssuerType::kPayments));
 }
 
 TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesExistForConfirmationsType) {
@@ -133,7 +122,7 @@ TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesExistForConfirmationsType) {
   // Act
   const bool does_exist = PublicKeyExistsForIssuerType(
       IssuerType::kConfirmations,
-      "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=");
+      /*public_key*/ "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=");
 
   // Assert
   EXPECT_TRUE(does_exist);
@@ -146,7 +135,7 @@ TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesNotExistForConfirmationsType) {
   // Act
   const bool does_exist = PublicKeyExistsForIssuerType(
       IssuerType::kConfirmations,
-      "Nj2NZ6nJUsK5MJ9ga9tfyctxzpT+GlvENF2TRHU4kBg=");
+      /*public_key*/ "Nj2NZ6nJUsK5MJ9ga9tfyctxzpT+GlvENF2TRHU4kBg=");
 
   // Assert
   EXPECT_FALSE(does_exist);
@@ -158,7 +147,8 @@ TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesExistForPaymentsType) {
 
   // Act
   const bool does_exist = PublicKeyExistsForIssuerType(
-      IssuerType::kPayments, "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=");
+      IssuerType::kPayments,
+      /*public_key*/ "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=");
 
   // Assert
   EXPECT_TRUE(does_exist);
@@ -170,7 +160,8 @@ TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesNotExistForPaymentsType) {
 
   // Act
   const bool does_exist = PublicKeyExistsForIssuerType(
-      IssuerType::kPayments, "zNWjpwIbghgXvTol3XPLKV3NJoEFtvUoPMiKstiWm3A=");
+      IssuerType::kPayments,
+      /*public_key*/ "zNWjpwIbghgXvTol3XPLKV3NJoEFtvUoPMiKstiWm3A=");
 
   // Assert
   EXPECT_FALSE(does_exist);

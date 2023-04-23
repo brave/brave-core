@@ -25,8 +25,8 @@ constexpr char kInvalidJsonFilename[] = "invalid.json";
 class BraveAdsLegacyConfirmationMigrationTest : public UnitTestBase {
  protected:
   void SetUpMocks() override {
-    ads_client_mock_->SetBooleanPref(prefs::kHasMigratedConfirmationState,
-                                     false);
+    ads_client_mock_.SetBooleanPref(prefs::kHasMigratedConfirmationState,
+                                    false);
   }
 };
 

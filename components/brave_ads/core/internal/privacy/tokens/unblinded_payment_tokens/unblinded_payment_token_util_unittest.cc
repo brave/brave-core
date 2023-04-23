@@ -22,7 +22,7 @@ TEST_F(BraveAdsUnblindedPaymentTokenUtilTest, GetUnblindedPaymentToken) {
       GetUnblindedPaymentTokens(/*count*/ 2);
   ASSERT_EQ(2U, unblinded_payment_tokens.size());
 
-  GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
+  GetUnblindedPaymentTokens().SetTokens(unblinded_payment_tokens);
 
   // Act
   const absl::optional<UnblindedPaymentTokenInfo> unblinded_payment_token =
@@ -53,7 +53,7 @@ TEST_F(BraveAdsUnblindedPaymentTokenUtilTest, AddUnblindedPaymentTokens) {
   const UnblindedPaymentTokenInfo& token_1 = unblinded_payment_tokens.at(0);
   const UnblindedPaymentTokenInfo& token_2 = unblinded_payment_tokens.at(1);
 
-  GetUnblindedPaymentTokens()->SetTokens({token_1});
+  GetUnblindedPaymentTokens().SetTokens({token_1});
 
   // Act
   AddUnblindedPaymentTokens({token_2});
@@ -73,7 +73,7 @@ TEST_F(BraveAdsUnblindedPaymentTokenUtilTest, RemoveUnblindedPaymentToken) {
   const UnblindedPaymentTokenInfo& token_2 = unblinded_payment_tokens.at(1);
   const UnblindedPaymentTokenInfo& token_3 = unblinded_payment_tokens.at(2);
 
-  GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
+  GetUnblindedPaymentTokens().SetTokens(unblinded_payment_tokens);
 
   // Act
   RemoveUnblindedPaymentToken(token_2);

@@ -121,8 +121,8 @@ class BraveAdsTopSegmentsTest
 
     purchase_intent_resource_ = std::make_unique<resource::PurchaseIntent>();
     purchase_intent_resource_->Load();
-    purchase_intent_processor_ = std::make_unique<processor::PurchaseIntent>(
-        purchase_intent_resource_.get());
+    purchase_intent_processor_ =
+        std::make_unique<processor::PurchaseIntent>(*purchase_intent_resource_);
 
     text_classification_resource_ =
         std::make_unique<resource::TextClassification>();
@@ -130,7 +130,7 @@ class BraveAdsTopSegmentsTest
     task_environment_.RunUntilIdle();
     text_classification_processor_ =
         std::make_unique<processor::TextClassification>(
-            text_classification_resource_.get());
+            *text_classification_resource_);
   }
 
   void ProcessTextClassification() {

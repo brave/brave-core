@@ -15,11 +15,8 @@
 
 namespace brave_ads {
 
-PromotedContentAd::PromotedContentAd(Account* account, Transfer* transfer)
+PromotedContentAd::PromotedContentAd(Account& account, Transfer& transfer)
     : account_(account), transfer_(transfer) {
-  DCHECK(account_);
-  DCHECK(transfer_);
-
   event_handler_.SetDelegate(this);
 }
 
@@ -38,7 +35,7 @@ void PromotedContentAd::TriggerEvent(
 
 void PromotedContentAd::OnPromotedContentAdViewed(
     const PromotedContentAdInfo& ad) {
-  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
   account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
                     ConfirmationType::kViewed);
@@ -48,7 +45,7 @@ void PromotedContentAd::OnPromotedContentAdClicked(
     const PromotedContentAdInfo& ad) {
   transfer_->SetLastClickedAd(ad);
 
-  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kClicked);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 
   account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
                     ConfirmationType::kClicked);

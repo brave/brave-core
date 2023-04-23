@@ -8,7 +8,7 @@
 #include <cstdint>
 #include <utility>
 
-#include "base/check_op.h"
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/hash/hash.h"
 #include "base/ranges/algorithm.h"
@@ -20,7 +20,6 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_features.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/deprecated/client/client_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager_constants.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/history/history_constants.h"
@@ -45,6 +44,7 @@ FilteredAdvertiserList::iterator FindFilteredAdvertiser(
 FilteredCategoryList::iterator FindFilteredCategory(
     const std::string& category,
     FilteredCategoryList* filtered_categories) {
+  DCHECK(!category.empty());
   DCHECK(filtered_categories);
 
   return base::ranges::find(*filtered_categories, category,
@@ -94,35 +94,32 @@ void OnSaved(const bool success) {
 
 }  // namespace
 
-ClientStateManager::ClientStateManager() : client_(new ClientInfo()) {}
+ClientStateManager::ClientStateManager() = default;
 
-ClientStateManager::~ClientStateManager() {}
+ClientStateManager::~ClientStateManager() = default;
 
 // static
-ClientStateManager* ClientStateManager::GetInstance() {
-  auto* client_state_manager =
-      GlobalState::GetInstance()->GetClientStateManager();
-  DCHECK(client_state_manager);
-  return client_state_manager;
+ClientStateManager& ClientStateManager::GetInstance() {
+  return GlobalState::GetInstance()->GetClientStateManager();
 }
 
 const FilteredAdvertiserList& ClientStateManager::GetFilteredAdvertisers()
     const {
   DCHECK(is_initialized_);
 
-  return client_->ad_preferences.filtered_advertisers;
+  return client_.ad_preferences.filtered_advertisers;
 }
 
 const FilteredCategoryList& ClientStateManager::GetFilteredCategories() const {
   DCHECK(is_initialized_);
 
-  return client_->ad_preferences.filtered_categories;
+  return client_.ad_preferences.filtered_categories;
 }
 
 const FlaggedAdList& ClientStateManager::GetFlaggedAds() const {
   DCHECK(is_initialized_);
 
-  return client_->ad_preferences.flagged_ads;
+  return client_.ad_preferences.flagged_ads;
 }
 
 void ClientStateManager::Initialize(InitializeCallback callback) {
@@ -133,17 +130,17 @@ void ClientStateManager::AppendHistory(const HistoryItemInfo& history_item) {
 #if !BUILDFLAG(IS_IOS)
   DCHECK(is_initialized_);
 
-  client_->history_items.push_front(history_item);
+  client_.history_items.push_front(history_item);
 
   const base::Time distant_past = base::Time::Now() - kHistoryTimeWindow;
 
-  const auto iter = std::remove_if(
-      client_->history_items.begin(), client_->history_items.end(),
-      [distant_past](const HistoryItemInfo& history_item) {
-        return history_item.created_at < distant_past;
-      });
+  const auto iter =
+      std::remove_if(client_.history_items.begin(), client_.history_items.end(),
+                     [distant_past](const HistoryItemInfo& history_item) {
+                       return history_item.created_at < distant_past;
+                     });
 
-  client_->history_items.erase(iter, client_->history_items.cend());
+  client_.history_items.erase(iter, client_.history_items.cend());
 
   Save();
 #endif
@@ -152,7 +149,7 @@ void ClientStateManager::AppendHistory(const HistoryItemInfo& history_item) {
 const HistoryItemList& ClientStateManager::GetHistory() const {
   DCHECK(is_initialized_);
 
-  return client_->history_items;
+  return client_.history_items;
 }
 
 void ClientStateManager::AppendToPurchaseIntentSignalHistoryForSegment(
@@ -160,16 +157,16 @@ void ClientStateManager::AppendToPurchaseIntentSignalHistoryForSegment(
     const targeting::PurchaseIntentSignalHistoryInfo& history) {
   DCHECK(is_initialized_);
 
-  if (client_->purchase_intent_signal_history.find(segment) ==
-      client_->purchase_intent_signal_history.cend()) {
-    client_->purchase_intent_signal_history.insert({segment, {}});
+  if (client_.purchase_intent_signal_history.find(segment) ==
+      client_.purchase_intent_signal_history.cend()) {
+    client_.purchase_intent_signal_history.insert({segment, {}});
   }
 
-  client_->purchase_intent_signal_history.at(segment).push_back(history);
+  client_.purchase_intent_signal_history.at(segment).push_back(history);
 
-  if (client_->purchase_intent_signal_history.at(segment).size() >
+  if (client_.purchase_intent_signal_history.at(segment).size() >
       kMaximumEntriesPerSegmentInPurchaseIntentSignalHistory) {
-    client_->purchase_intent_signal_history.at(segment).pop_back();
+    client_.purchase_intent_signal_history.at(segment).pop_back();
   }
 
   Save();
@@ -179,7 +176,7 @@ const targeting::PurchaseIntentSignalHistoryMap&
 ClientStateManager::GetPurchaseIntentSignalHistory() const {
   DCHECK(is_initialized_);
 
-  return client_->purchase_intent_signal_history;
+  return client_.purchase_intent_signal_history;
 }
 
 AdContentLikeActionType ClientStateManager::ToggleLikeAd(
@@ -187,15 +184,15 @@ AdContentLikeActionType ClientStateManager::ToggleLikeAd(
   DCHECK(is_initialized_);
 
   const auto iter = FindFilteredAdvertiser(
-      ad_content.advertiser_id, &client_->ad_preferences.filtered_advertisers);
-  if (iter != client_->ad_preferences.filtered_advertisers.cend()) {
-    client_->ad_preferences.filtered_advertisers.erase(iter);
+      ad_content.advertiser_id, &client_.ad_preferences.filtered_advertisers);
+  if (iter != client_.ad_preferences.filtered_advertisers.cend()) {
+    client_.ad_preferences.filtered_advertisers.erase(iter);
   }
 
   const AdContentLikeActionType like_action_type =
       ad_content.ToggleThumbUpActionType();
 
-  for (auto& item : client_->history_items) {
+  for (auto& item : client_.history_items) {
     if (item.ad_content.advertiser_id == ad_content.advertiser_id) {
       item.ad_content.like_action_type = like_action_type;
     }
@@ -214,23 +211,23 @@ AdContentLikeActionType ClientStateManager::ToggleDislikeAd(
       ad_content.ToggleThumbDownActionType();
 
   const auto iter = FindFilteredAdvertiser(
-      ad_content.advertiser_id, &client_->ad_preferences.filtered_advertisers);
+      ad_content.advertiser_id, &client_.ad_preferences.filtered_advertisers);
 
   if (like_action_type == AdContentLikeActionType::kNeutral) {
-    if (iter != client_->ad_preferences.filtered_advertisers.cend()) {
-      client_->ad_preferences.filtered_advertisers.erase(iter);
+    if (iter != client_.ad_preferences.filtered_advertisers.cend()) {
+      client_.ad_preferences.filtered_advertisers.erase(iter);
     }
   } else {
-    if (iter == client_->ad_preferences.filtered_advertisers.cend()) {
+    if (iter == client_.ad_preferences.filtered_advertisers.cend()) {
       FilteredAdvertiserInfo filtered_advertiser;
       filtered_advertiser.id = ad_content.advertiser_id;
 
-      client_->ad_preferences.filtered_advertisers.push_back(
+      client_.ad_preferences.filtered_advertisers.push_back(
           filtered_advertiser);
     }
   }
 
-  for (auto& item : client_->history_items) {
+  for (auto& item : client_.history_items) {
     if (item.ad_content.advertiser_id == ad_content.advertiser_id) {
       item.ad_content.like_action_type = like_action_type;
     }
@@ -245,12 +242,12 @@ AdContentLikeActionType
 ClientStateManager::GetAdContentLikeActionTypeForAdvertiser(
     const std::string& advertiser_id) {
   const auto iter = base::ranges::find_if(
-      client_->history_items,
+      client_.history_items,
       [&advertiser_id](const HistoryItemInfo& history_item) -> bool {
         return history_item.ad_content.advertiser_id == advertiser_id;
       });
 
-  if (iter == client_->history_items.cend()) {
+  if (iter == client_.history_items.cend()) {
     return AdContentLikeActionType::kNeutral;
   }
 
@@ -263,15 +260,15 @@ CategoryContentOptActionType ClientStateManager::ToggleLikeCategory(
   DCHECK(is_initialized_);
 
   const auto iter = FindFilteredCategory(
-      category, &client_->ad_preferences.filtered_categories);
-  if (iter != client_->ad_preferences.filtered_categories.cend()) {
-    client_->ad_preferences.filtered_categories.erase(iter);
+      category, &client_.ad_preferences.filtered_categories);
+  if (iter != client_.ad_preferences.filtered_categories.cend()) {
+    client_.ad_preferences.filtered_categories.erase(iter);
   }
 
   const CategoryContentOptActionType toggled_opt_action_type =
       ToggleOptInActionType(opt_action_type);
 
-  for (auto& item : client_->history_items) {
+  for (auto& item : client_.history_items) {
     if (item.category_content.category == category) {
       item.category_content.opt_action_type = toggled_opt_action_type;
     }
@@ -291,21 +288,21 @@ CategoryContentOptActionType ClientStateManager::ToggleDislikeCategory(
       ToggleOptOutActionType(opt_action_type);
 
   const auto iter = FindFilteredCategory(
-      category, &client_->ad_preferences.filtered_categories);
+      category, &client_.ad_preferences.filtered_categories);
 
   if (toggled_opt_action_type == CategoryContentOptActionType::kNone) {
-    if (iter != client_->ad_preferences.filtered_categories.cend()) {
-      client_->ad_preferences.filtered_categories.erase(iter);
+    if (iter != client_.ad_preferences.filtered_categories.cend()) {
+      client_.ad_preferences.filtered_categories.erase(iter);
     }
   } else {
-    if (iter == client_->ad_preferences.filtered_categories.cend()) {
+    if (iter == client_.ad_preferences.filtered_categories.cend()) {
       FilteredCategoryInfo filtered_category;
       filtered_category.name = category;
-      client_->ad_preferences.filtered_categories.push_back(filtered_category);
+      client_.ad_preferences.filtered_categories.push_back(filtered_category);
     }
   }
 
-  for (auto& item : client_->history_items) {
+  for (auto& item : client_.history_items) {
     if (item.category_content.category == category) {
       item.category_content.opt_action_type = toggled_opt_action_type;
     }
@@ -320,12 +317,12 @@ CategoryContentOptActionType
 ClientStateManager::GetCategoryContentOptActionTypeForSegment(
     const std::string& segment) {
   const auto iter = base::ranges::find_if(
-      client_->history_items,
+      client_.history_items,
       [&segment](const HistoryItemInfo& history_item) -> bool {
         return history_item.category_content.category == segment;
       });
 
-  if (iter == client_->history_items.cend()) {
+  if (iter == client_.history_items.cend()) {
     return CategoryContentOptActionType::kNone;
   }
 
@@ -339,18 +336,18 @@ bool ClientStateManager::ToggleSaveAd(const AdContentInfo& ad_content) {
   if (is_saved) {
     SavedAdInfo saved_ad;
     saved_ad.creative_instance_id = ad_content.creative_instance_id;
-    client_->ad_preferences.saved_ads.push_back(saved_ad);
+    client_.ad_preferences.saved_ads.push_back(saved_ad);
   } else {
-    const auto iter = base::ranges::find(client_->ad_preferences.saved_ads,
+    const auto iter = base::ranges::find(client_.ad_preferences.saved_ads,
                                          ad_content.creative_instance_id,
                                          &SavedAdInfo::creative_instance_id);
 
-    if (iter != client_->ad_preferences.saved_ads.cend()) {
-      client_->ad_preferences.saved_ads.erase(iter);
+    if (iter != client_.ad_preferences.saved_ads.cend()) {
+      client_.ad_preferences.saved_ads.erase(iter);
     }
   }
 
-  for (auto& item : client_->history_items) {
+  for (auto& item : client_.history_items) {
     if (item.ad_content.creative_instance_id ==
         ad_content.creative_instance_id) {
       item.ad_content.is_saved = is_saved;
@@ -370,20 +367,20 @@ bool ClientStateManager::ToggleMarkAdAsInappropriate(
   if (is_flagged) {
     FlaggedAdInfo flagged_ad;
     flagged_ad.creative_set_id = ad_content.creative_set_id;
-    client_->ad_preferences.flagged_ads.push_back(flagged_ad);
+    client_.ad_preferences.flagged_ads.push_back(flagged_ad);
   } else {
-    client_->ad_preferences.flagged_ads.erase(
-        base::ranges::remove(client_->ad_preferences.flagged_ads,
+    client_.ad_preferences.flagged_ads.erase(
+        base::ranges::remove(client_.ad_preferences.flagged_ads,
                              ad_content.creative_set_id,
                              &FlaggedAdInfo::creative_set_id),
-        client_->ad_preferences.flagged_ads.end());
+        client_.ad_preferences.flagged_ads.end());
   }
 
   auto iter = base::ranges::find_if(
-      client_->history_items, [&ad_content](const HistoryItemInfo& item) {
+      client_.history_items, [&ad_content](const HistoryItemInfo& item) {
         return item.ad_content.creative_set_id == ad_content.creative_set_id;
       });
-  if (iter != client_->history_items.end()) {
+  if (iter != client_.history_items.end()) {
     iter->ad_content.is_flagged = is_flagged;
   }
 
@@ -396,8 +393,8 @@ void ClientStateManager::UpdateSeenAd(const AdInfo& ad) {
   DCHECK(is_initialized_);
 
   const std::string type_as_string = ad.type.ToString();
-  client_->seen_ads[type_as_string][ad.creative_instance_id] = true;
-  client_->seen_advertisers[type_as_string][ad.advertiser_id] = true;
+  client_.seen_ads[type_as_string][ad.creative_instance_id] = true;
+  client_.seen_advertisers[type_as_string][ad.advertiser_id] = true;
   Save();
 }
 
@@ -406,7 +403,7 @@ const std::map<std::string, bool>& ClientStateManager::GetSeenAdsForType(
   DCHECK(is_initialized_);
 
   const std::string type_as_string = type.ToString();
-  return client_->seen_ads[type_as_string];
+  return client_.seen_ads[type_as_string];
 }
 
 void ClientStateManager::ResetSeenAdsForType(const CreativeAdList& creative_ads,
@@ -418,10 +415,10 @@ void ClientStateManager::ResetSeenAdsForType(const CreativeAdList& creative_ads,
   BLOG(1, "Resetting seen " << type_as_string << "s");
 
   for (const auto& creative_ad : creative_ads) {
-    const auto iter = client_->seen_ads[type_as_string].find(
-        creative_ad.creative_instance_id);
-    if (iter != client_->seen_ads[type_as_string].cend()) {
-      client_->seen_ads[type_as_string].erase(iter);
+    const auto iter =
+        client_.seen_ads[type_as_string].find(creative_ad.creative_instance_id);
+    if (iter != client_.seen_ads[type_as_string].cend()) {
+      client_.seen_ads[type_as_string].erase(iter);
     }
   }
 
@@ -433,7 +430,7 @@ void ClientStateManager::ResetAllSeenAdsForType(const AdType& type) {
 
   const std::string type_as_string = type.ToString();
   BLOG(1, "Resetting seen " << type_as_string << "s");
-  client_->seen_ads[type_as_string] = {};
+  client_.seen_ads[type_as_string] = {};
   Save();
 }
 
@@ -441,7 +438,7 @@ const std::map<std::string, bool>&
 ClientStateManager::GetSeenAdvertisersForType(const AdType& type) {
   DCHECK(is_initialized_);
 
-  return client_->seen_advertisers[type.ToString()];
+  return client_.seen_advertisers[type.ToString()];
 }
 
 void ClientStateManager::ResetSeenAdvertisersForType(
@@ -454,10 +451,10 @@ void ClientStateManager::ResetSeenAdvertisersForType(
   BLOG(1, "Resetting seen " << type_as_string << " advertisers");
 
   for (const auto& creative_ad : creative_ads) {
-    const auto iter = client_->seen_advertisers[type_as_string].find(
+    const auto iter = client_.seen_advertisers[type_as_string].find(
         creative_ad.advertiser_id);
-    if (iter != client_->seen_advertisers[type_as_string].cend()) {
-      client_->seen_advertisers[type_as_string].erase(iter);
+    if (iter != client_.seen_advertisers[type_as_string].cend()) {
+      client_.seen_advertisers[type_as_string].erase(iter);
     }
   }
 
@@ -469,7 +466,7 @@ void ClientStateManager::ResetAllSeenAdvertisersForType(const AdType& type) {
 
   const std::string type_as_string = type.ToString();
   BLOG(1, "Resetting seen " << type_as_string << " advertisers");
-  client_->seen_advertisers[type_as_string] = {};
+  client_.seen_advertisers[type_as_string] = {};
   Save();
 }
 
@@ -477,22 +474,22 @@ void ClientStateManager::AppendTextClassificationProbabilitiesToHistory(
     const targeting::TextClassificationProbabilityMap& probabilities) {
   DCHECK(is_initialized_);
 
-  client_->text_classification_probabilities.push_front(probabilities);
+  client_.text_classification_probabilities.push_front(probabilities);
 
   const size_t maximum_entries =
       targeting::kTextClassificationPageProbabilitiesHistorySize.Get();
-  if (client_->text_classification_probabilities.size() > maximum_entries) {
-    client_->text_classification_probabilities.resize(maximum_entries);
+  if (client_.text_classification_probabilities.size() > maximum_entries) {
+    client_.text_classification_probabilities.resize(maximum_entries);
   }
 
   Save();
 }
 
 const targeting::TextClassificationProbabilityList&
-ClientStateManager::GetTextClassificationProbabilitiesHistory() {
+ClientStateManager::GetTextClassificationProbabilitiesHistory() const {
   DCHECK(is_initialized_);
 
-  return client_->text_classification_probabilities;
+  return client_.text_classification_probabilities;
 }
 
 void ClientStateManager::RemoveAllHistory() {
@@ -500,7 +497,7 @@ void ClientStateManager::RemoveAllHistory() {
 
   BLOG(1, "Successfully reset client state");
 
-  client_ = std::make_unique<ClientInfo>();
+  client_ = {};
 
   Save();
 }
@@ -514,7 +511,7 @@ void ClientStateManager::Save() {
 
   BLOG(9, "Saving client state");
 
-  const std::string json = client_->ToJson();
+  const std::string json = client_.ToJson();
 
   if (!is_mutated_) {
     SetHash(json);
@@ -541,7 +538,7 @@ void ClientStateManager::OnLoaded(InitializeCallback callback,
 
     is_initialized_ = true;
 
-    client_ = std::make_unique<ClientInfo>();
+    client_ = {};
     Save();
   } else {
     if (!FromJson(json)) {
@@ -557,7 +554,7 @@ void ClientStateManager::OnLoaded(InitializeCallback callback,
     is_initialized_ = true;
   }
 
-  is_mutated_ = IsMutated(client_->ToJson());
+  is_mutated_ = IsMutated(client_.ToJson());
   if (is_mutated_) {
     BLOG(9, "Client state is mutated");
   }
@@ -571,7 +568,7 @@ bool ClientStateManager::FromJson(const std::string& json) {
     return false;
   }
 
-  client_ = std::make_unique<ClientInfo>(client);
+  client_ = client;
 
   return true;
 }

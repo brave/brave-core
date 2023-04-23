@@ -39,9 +39,9 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerViewedEvents) {
     const mojom::SearchResultAdInfoPtr search_result_ad =
         BuildSearchResultAd(/*should_use_random_guids*/ true);
 
-    GetAds()->TriggerSearchResultAdEvent(
+    GetAds().TriggerSearchResultAdEvent(
         search_result_ad.Clone(), mojom::SearchResultAdEventType::kServed);
-    GetAds()->TriggerSearchResultAdEvent(
+    GetAds().TriggerSearchResultAdEvent(
         search_result_ad.Clone(), mojom::SearchResultAdEventType::kViewed);
   }
 
@@ -49,9 +49,9 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerViewedEvents) {
     const mojom::SearchResultAdInfoPtr search_result_ad =
         BuildSearchResultAd(/*should_use_random_guids*/ true);
 
-    GetAds()->TriggerSearchResultAdEvent(
+    GetAds().TriggerSearchResultAdEvent(
         search_result_ad.Clone(), mojom::SearchResultAdEventType::kServed);
-    GetAds()->TriggerSearchResultAdEvent(
+    GetAds().TriggerSearchResultAdEvent(
         search_result_ad.Clone(), mojom::SearchResultAdEventType::kViewed);
   }
 
@@ -75,9 +75,9 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerQueuedViewedEvents) {
     const mojom::SearchResultAdInfoPtr search_result_ad =
         BuildSearchResultAd(/*should_use_random_guids*/ true);
 
-    GetAds()->TriggerSearchResultAdEvent(
+    GetAds().TriggerSearchResultAdEvent(
         search_result_ad.Clone(), mojom::SearchResultAdEventType::kServed);
-    GetAds()->TriggerSearchResultAdEvent(
+    GetAds().TriggerSearchResultAdEvent(
         search_result_ad.Clone(), mojom::SearchResultAdEventType::kViewed);
   }
 
@@ -86,9 +86,9 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerQueuedViewedEvents) {
     // not completed.
     const mojom::SearchResultAdInfoPtr search_result_ad =
         BuildSearchResultAd(/*should_use_random_guids*/ true);
-    GetAds()->TriggerSearchResultAdEvent(
+    GetAds().TriggerSearchResultAdEvent(
         search_result_ad.Clone(), mojom::SearchResultAdEventType::kServed);
-    GetAds()->TriggerSearchResultAdEvent(
+    GetAds().TriggerSearchResultAdEvent(
         search_result_ad.Clone(), mojom::SearchResultAdEventType::kViewed);
   }
 
@@ -116,14 +116,14 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerClickedEvent) {
   const mojom::SearchResultAdInfoPtr search_result_ad =
       BuildSearchResultAd(/*should_use_random_guids*/ true);
 
-  GetAds()->TriggerSearchResultAdEvent(search_result_ad->Clone(),
-                                       mojom::SearchResultAdEventType::kServed);
-  GetAds()->TriggerSearchResultAdEvent(search_result_ad->Clone(),
-                                       mojom::SearchResultAdEventType::kViewed);
+  GetAds().TriggerSearchResultAdEvent(search_result_ad->Clone(),
+                                      mojom::SearchResultAdEventType::kServed);
+  GetAds().TriggerSearchResultAdEvent(search_result_ad->Clone(),
+                                      mojom::SearchResultAdEventType::kViewed);
 
   // Act
-  GetAds()->TriggerSearchResultAdEvent(
-      search_result_ad->Clone(), mojom::SearchResultAdEventType::kClicked);
+  GetAds().TriggerSearchResultAdEvent(search_result_ad->Clone(),
+                                      mojom::SearchResultAdEventType::kClicked);
 
   // Assert
   EXPECT_EQ(

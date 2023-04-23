@@ -15,13 +15,13 @@ class BraveAdsTextDataTest : public UnitTestBase {};
 
 TEST_F(BraveAdsTextDataTest, TextDataInitialization) {
   // Arrange
-  const std::string expected_text = "expected text";
-  const TextData text_data(expected_text);
+  const std::string text = "The quick brown fox jumps over the lazy dog";
 
   // Act
+  const TextData text_data(text);
 
   // Assert
-  EXPECT_EQ(expected_text, text_data.GetText());
+  EXPECT_EQ(text, text_data.GetText());
 }
 
 }  // namespace brave_ads::ml

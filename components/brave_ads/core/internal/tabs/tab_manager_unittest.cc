@@ -16,11 +16,11 @@ class BraveAdsTabManagerTest : public TabManagerObserver, public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    TabManager::GetInstance()->AddObserver(this);
+    TabManager::GetInstance().AddObserver(this);
   }
 
   void TearDown() override {
-    TabManager::GetInstance()->RemoveObserver(this);
+    TabManager::GetInstance().RemoveObserver(this);
 
     UnitTestBase::TearDown();
   }
@@ -66,16 +66,6 @@ class BraveAdsTabManagerTest : public TabManagerObserver, public UnitTestBase {
   bool tab_did_stop_playing_media_ = false;
 };
 
-TEST_F(BraveAdsTabManagerTest, HasInstance) {
-  // Arrange
-
-  // Act
-  const bool has_instance = TabManager::GetInstance();
-
-  // Assert
-  EXPECT_TRUE(has_instance);
-}
-
 TEST_F(BraveAdsTabManagerTest, IsVisible) {
   // Arrange
 
@@ -86,7 +76,7 @@ TEST_F(BraveAdsTabManagerTest, IsVisible) {
       /*is_incognito*/ false);
 
   // Assert
-  EXPECT_TRUE(TabManager::GetInstance()->IsVisible(/*id*/ 1));
+  EXPECT_TRUE(TabManager::GetInstance().IsVisible(/*id*/ 1));
 }
 
 TEST_F(BraveAdsTabManagerTest, IsTabOccluded) {
@@ -98,7 +88,7 @@ TEST_F(BraveAdsTabManagerTest, IsTabOccluded) {
       /*is_visible*/ false, /*is_incognito*/ false);
 
   // Assert
-  EXPECT_FALSE(TabManager::GetInstance()->IsVisible(/*id*/ 1));
+  EXPECT_FALSE(TabManager::GetInstance().IsVisible(/*id*/ 1));
 }
 
 TEST_F(BraveAdsTabManagerTest, OpenNewTab) {
@@ -111,7 +101,7 @@ TEST_F(BraveAdsTabManagerTest, OpenNewTab) {
       /*is_incognito*/ false);
 
   // Assert
-  const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetForId(1);
+  const absl::optional<TabInfo> tab = TabManager::GetInstance().GetForId(1);
 
   TabInfo expected_tab;
   expected_tab.id = 1;
@@ -159,7 +149,7 @@ TEST_F(BraveAdsTabManagerTest, DoNotUpdateIncognitoTab) {
       /*is_incognito*/ true);
 
   // Assert
-  EXPECT_FALSE(TabManager::GetInstance()->GetForId(1));
+  EXPECT_FALSE(TabManager::GetInstance().GetForId(1));
 
   EXPECT_FALSE(tab_did_change_focus_);
   EXPECT_FALSE(tab_did_change_);
@@ -182,7 +172,7 @@ TEST_F(BraveAdsTabManagerTest, DoNotUpdateExistingOccludedTabWithSameUrl) {
       /*is_visible*/ false, /*is_incognito*/ false);
 
   // Assert
-  const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetForId(1);
+  const absl::optional<TabInfo> tab = TabManager::GetInstance().GetForId(1);
   ASSERT_TRUE(tab);
 
   TabInfo expected_tab;
@@ -212,7 +202,7 @@ TEST_F(BraveAdsTabManagerTest, UpdateExistingOccludedTabWithDifferentUrl) {
       /*is_visible*/ false, /*is_incognito*/ false);
 
   // Assert
-  const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetForId(1);
+  const absl::optional<TabInfo> tab = TabManager::GetInstance().GetForId(1);
   ASSERT_TRUE(tab);
 
   TabInfo expected_tab;
@@ -244,7 +234,7 @@ TEST_F(BraveAdsTabManagerTest, DoNotUpdateExistingTabWithSameUrl) {
       /*is_incognito*/ false);
 
   // Assert
-  const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetForId(1);
+  const absl::optional<TabInfo> tab = TabManager::GetInstance().GetForId(1);
   ASSERT_TRUE(tab);
 
   TabInfo expected_tab;
@@ -275,7 +265,7 @@ TEST_F(BraveAdsTabManagerTest, UpdatedExistingTabWithDifferentUrl) {
       /*is_visible*/ true, /*is_incognito*/ false);
 
   // Assert
-  const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetForId(1);
+  const absl::optional<TabInfo> tab = TabManager::GetInstance().GetForId(1);
   ASSERT_TRUE(tab);
 
   TabInfo expected_tab;
@@ -304,7 +294,7 @@ TEST_F(BraveAdsTabManagerTest, CloseTab) {
   NotifyDidCloseTab(/*id*/ 1);
 
   // Assert
-  EXPECT_FALSE(TabManager::GetInstance()->GetForId(1));
+  EXPECT_FALSE(TabManager::GetInstance().GetForId(1));
 
   EXPECT_FALSE(tab_did_change_focus_);
   EXPECT_FALSE(tab_did_change_);
@@ -326,7 +316,7 @@ TEST_F(BraveAdsTabManagerTest, PlayMedia) {
   NotifyTabDidStartPlayingMedia(/*tab_id*/ 1);
 
   // Assert
-  EXPECT_TRUE(TabManager::GetInstance()->IsPlayingMedia(1));
+  EXPECT_TRUE(TabManager::GetInstance().IsPlayingMedia(1));
 
   EXPECT_FALSE(tab_did_change_focus_);
   EXPECT_FALSE(tab_did_change_);
@@ -349,7 +339,7 @@ TEST_F(BraveAdsTabManagerTest, AlreadyPlayingMedia) {
   NotifyTabDidStartPlayingMedia(/*tab_id*/ 1);
 
   // Assert
-  EXPECT_TRUE(TabManager::GetInstance()->IsPlayingMedia(1));
+  EXPECT_TRUE(TabManager::GetInstance().IsPlayingMedia(1));
 
   EXPECT_FALSE(tab_did_change_focus_);
   EXPECT_FALSE(tab_did_change_);
@@ -372,7 +362,7 @@ TEST_F(BraveAdsTabManagerTest, StopPlayingMedia) {
   NotifyTabDidStopPlayingMedia(/*id*/ 1);
 
   // Assert
-  EXPECT_FALSE(TabManager::GetInstance()->IsPlayingMedia(1));
+  EXPECT_FALSE(TabManager::GetInstance().IsPlayingMedia(1));
 
   EXPECT_FALSE(tab_did_change_focus_);
   EXPECT_FALSE(tab_did_change_);
@@ -395,7 +385,7 @@ TEST_F(BraveAdsTabManagerTest, GetVisible) {
   ResetObserver();
 
   // Act
-  const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetVisible();
+  const absl::optional<TabInfo> tab = TabManager::GetInstance().GetVisible();
   ASSERT_TRUE(tab);
 
   // Assert
@@ -421,7 +411,7 @@ TEST_F(BraveAdsTabManagerTest, GetLastVisible) {
 
   // Act
   const absl::optional<TabInfo> tab =
-      TabManager::GetInstance()->GetLastVisible();
+      TabManager::GetInstance().GetLastVisible();
   ASSERT_TRUE(tab);
 
   // Assert
@@ -442,7 +432,7 @@ TEST_F(BraveAdsTabManagerTest, GetForId) {
   ResetObserver();
 
   // Act
-  const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetForId(1);
+  const absl::optional<TabInfo> tab = TabManager::GetInstance().GetForId(1);
   ASSERT_TRUE(tab);
 
   // Assert
@@ -465,7 +455,7 @@ TEST_F(BraveAdsTabManagerTest, DoNotGetTabForMissingId) {
   // Act
 
   // Assert
-  EXPECT_FALSE(TabManager::GetInstance()->GetForId(2));
+  EXPECT_FALSE(TabManager::GetInstance().GetForId(2));
 }
 
 }  // namespace brave_ads

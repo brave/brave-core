@@ -19,10 +19,9 @@ TEST(BraveAdsPublicKeyTest, FailToInitialize) {
   const PublicKey public_key;
 
   // Act
-  const bool has_value = public_key.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(public_key.has_value());
 }
 
 TEST(BraveAdsPublicKeyTest, FailToInitializeWithEmptyBase64) {
@@ -30,10 +29,9 @@ TEST(BraveAdsPublicKeyTest, FailToInitializeWithEmptyBase64) {
   const PublicKey public_key("");
 
   // Act
-  const bool has_value = public_key.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(public_key.has_value());
 }
 
 TEST(BraveAdsPublicKeyTest, FailToInitializeWithInvalidBase64) {
@@ -41,10 +39,9 @@ TEST(BraveAdsPublicKeyTest, FailToInitializeWithInvalidBase64) {
   const PublicKey public_key(kInvalidBase64);
 
   // Act
-  const bool has_value = public_key.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(public_key.has_value());
 }
 
 TEST(BraveAdsPublicKeyTest, DecodeBase64) {
@@ -54,8 +51,7 @@ TEST(BraveAdsPublicKeyTest, DecodeBase64) {
   const PublicKey public_key = PublicKey::DecodeBase64(kPublicKeyBase64);
 
   // Assert
-  const bool has_value = public_key.has_value();
-  EXPECT_TRUE(has_value);
+  EXPECT_TRUE(public_key.has_value());
 }
 
 TEST(BraveAdsPublicKeyTest, FailToDecodeEmptyBase64) {
@@ -65,8 +61,7 @@ TEST(BraveAdsPublicKeyTest, FailToDecodeEmptyBase64) {
   const PublicKey public_key = PublicKey::DecodeBase64({});
 
   // Assert
-  const bool has_value = public_key.has_value();
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(public_key.has_value());
 }
 
 TEST(BraveAdsPublicKeyTest, FailToDecodeInvalidBase64) {
@@ -76,8 +71,7 @@ TEST(BraveAdsPublicKeyTest, FailToDecodeInvalidBase64) {
   const PublicKey public_key = PublicKey::DecodeBase64(kInvalidBase64);
 
   // Assert
-  const bool has_value = public_key.has_value();
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(public_key.has_value());
 }
 
 TEST(BraveAdsPublicKeyTest, EncodeBase64) {

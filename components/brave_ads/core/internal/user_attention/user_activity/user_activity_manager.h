@@ -37,7 +37,7 @@ class UserActivityManager final : public AdsClientNotifierObserver,
 
   ~UserActivityManager() override;
 
-  static UserActivityManager* GetInstance();
+  static UserActivityManager& GetInstance();
 
   void RecordEvent(UserActivityEventType event_type);
 

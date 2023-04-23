@@ -23,10 +23,8 @@ DatabaseManager::DatabaseManager() = default;
 DatabaseManager::~DatabaseManager() = default;
 
 // static
-DatabaseManager* DatabaseManager::GetInstance() {
-  auto* database_manager = GlobalState::GetInstance()->GetDatabaseManager();
-  DCHECK(database_manager);
-  return database_manager;
+DatabaseManager& DatabaseManager::GetInstance() {
+  return GlobalState::GetInstance()->GetDatabaseManager();
 }
 
 void DatabaseManager::AddObserver(DatabaseManagerObserver* observer) {

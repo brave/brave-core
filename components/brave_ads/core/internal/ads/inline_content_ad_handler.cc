@@ -12,7 +12,6 @@
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
@@ -24,19 +23,16 @@
 namespace brave_ads {
 
 InlineContentAdHandler::InlineContentAdHandler(
-    Account* account,
-    Transfer* transfer,
+    Account& account,
+    Transfer& transfer,
     const SubdivisionTargeting& subdivision_targeting,
     const resource::AntiTargeting& anti_targeting_resource)
-    : account_(account), transfer_(transfer) {
-  DCHECK(account_);
-  DCHECK(transfer_);
-
+    : account_(account),
+      transfer_(transfer),
+      serving_(subdivision_targeting, anti_targeting_resource) {
   event_handler_.SetDelegate(this);
 
-  serving_ = std::make_unique<inline_content_ads::Serving>(
-      subdivision_targeting, anti_targeting_resource);
-  serving_->SetDelegate(this);
+  serving_.SetDelegate(this);
 }
 
 InlineContentAdHandler::~InlineContentAdHandler() = default;
@@ -44,7 +40,7 @@ InlineContentAdHandler::~InlineContentAdHandler() = default;
 void InlineContentAdHandler::MaybeServe(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) {
-  serving_->MaybeServeAd(dimensions, std::move(callback));
+  serving_.MaybeServeAd(dimensions, std::move(callback));
 }
 
 void InlineContentAdHandler::TriggerEvent(
@@ -71,12 +67,12 @@ void InlineContentAdHandler::OnDidServeInlineContentAd(
 
 void InlineContentAdHandler::OnInlineContentAdServed(
     const InlineContentAdInfo& ad) {
-  ClientStateManager::GetInstance()->UpdateSeenAd(ad);
+  ClientStateManager::GetInstance().UpdateSeenAd(ad);
 }
 
 void InlineContentAdHandler::OnInlineContentAdViewed(
     const InlineContentAdInfo& ad) {
-  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
   account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
                     ConfirmationType::kViewed);
@@ -88,7 +84,7 @@ void InlineContentAdHandler::OnInlineContentAdClicked(
     const InlineContentAdInfo& ad) {
   transfer_->SetLastClickedAd(ad);
 
-  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kClicked);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 
   account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
                     ConfirmationType::kClicked);
