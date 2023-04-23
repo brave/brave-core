@@ -34,16 +34,8 @@ bool InlineContentAdInfo::operator!=(const InlineContentAdInfo& other) const {
 }
 
 bool InlineContentAdInfo::IsValid() const {
-  if (!AdInfo::IsValid()) {
-    return false;
-  }
-
-  if (title.empty() || description.empty() || !image_url.is_valid() ||
-      dimensions.empty() || cta_text.empty()) {
-    return false;
-  }
-
-  return true;
+  return AdInfo::IsValid() && !title.empty() && !description.empty() &&
+         image_url.is_valid() && !dimensions.empty() && !cta_text.empty();
 }
 
 }  // namespace brave_ads

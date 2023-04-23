@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_EXCLUSION_RULES_EXCLUSION_RULE_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_EXCLUSION_RULES_EXCLUSION_RULE_UTIL_H_
 
-#include <string>
-
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_interface.h"
@@ -39,16 +37,14 @@ bool DoesRespectCreativeCap(const CreativeAdInfo& creative_ad,
                             int cap);
 
 template <typename T>
-bool ShouldExclude(const T& ad, ExclusionRuleInterface<T>* exclusion_rule) {
+bool ShouldInclude(const T& ad,
+                   const ExclusionRuleInterface<T>* const exclusion_rule) {
   DCHECK(exclusion_rule);
 
-  if (!exclusion_rule->ShouldExclude(ad)) {
+  const auto result = exclusion_rule->ShouldInclude(ad);
+  if (!result.has_value()) {
+    BLOG(2, result.error());
     return false;
-  }
-
-  const std::string& last_message = exclusion_rule->GetLastMessage();
-  if (!last_message.empty()) {
-    BLOG(2, last_message);
   }
 
   return true;

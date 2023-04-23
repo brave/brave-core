@@ -30,7 +30,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest, AllowIfDaypartsIsEmpty) {
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsDaypartExclusionRuleTest, AllowIfRightDayAndHours) {
@@ -52,7 +52,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest, AllowIfRightDayAndHours) {
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsDaypartExclusionRuleTest, AllowForMultipleDays) {
@@ -73,7 +73,6 @@ TEST_F(BraveAdsDaypartExclusionRuleTest, AllowForMultipleDays) {
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
 }
 
 TEST_F(BraveAdsDaypartExclusionRuleTest, AllowIfOneMatchExists) {
@@ -110,7 +109,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest, AllowIfOneMatchExists) {
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsDaypartExclusionRuleTest, DisallowIfNoMatches) {
@@ -147,7 +146,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest, DisallowIfNoMatches) {
   // Act
 
   // Assert
-  EXPECT_TRUE(exclusion_rule_.ShouldExclude(creative_ad));
+  EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsDaypartExclusionRuleTest, DisallowIfWrongDay) {
@@ -171,7 +170,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest, DisallowIfWrongDay) {
   // Act
 
   // Assert
-  EXPECT_TRUE(exclusion_rule_.ShouldExclude(creative_ad));
+  EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsDaypartExclusionRuleTest, DisallowIfWrongHours) {
@@ -194,7 +193,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest, DisallowIfWrongHours) {
   // Act
 
   // Assert
-  EXPECT_TRUE(exclusion_rule_.ShouldExclude(creative_ad));
+  EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
 }  // namespace brave_ads

@@ -39,7 +39,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
@@ -84,7 +84,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
@@ -131,7 +131,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
@@ -175,7 +175,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
@@ -218,7 +218,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
@@ -262,7 +262,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
@@ -305,7 +305,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
@@ -348,7 +348,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
@@ -393,7 +393,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_TRUE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_FALSE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
@@ -432,7 +432,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
@@ -480,7 +480,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad_1));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad_1).has_value());
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
@@ -516,7 +516,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad_1));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad_1).has_value());
 }
 
 }  // namespace brave_ads::notification_ads

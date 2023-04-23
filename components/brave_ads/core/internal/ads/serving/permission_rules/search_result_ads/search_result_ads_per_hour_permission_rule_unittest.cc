@@ -40,7 +40,7 @@ TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
@@ -52,7 +52,7 @@ TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
                  /*count*/ kMaximumAdsPerHour.Get() - 1);
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
@@ -65,7 +65,7 @@ TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
   AdvanceClockBy(base::Hours(1));
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
@@ -78,7 +78,7 @@ TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 }  // namespace brave_ads::search_result_ads

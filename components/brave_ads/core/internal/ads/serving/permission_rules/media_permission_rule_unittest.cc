@@ -27,7 +27,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest, AllowAdIfMediaIsNotPlaying) {
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsMediaPermissionRuleTest, AllowAdIfMediaIsStoppedForSingleTab) {
@@ -43,7 +43,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest, AllowAdIfMediaIsStoppedForSingleTab) {
   NotifyTabDidStopPlayingMedia(/*id*/ 1);
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsMediaPermissionRuleTest, AllowAdIfMediaIsStoppedOnMultipleTabs) {
@@ -61,7 +61,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest, AllowAdIfMediaIsStoppedOnMultipleTabs) {
   NotifyTabDidStopPlayingMedia(/*id*/ 2);
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsMediaPermissionRuleTest,
@@ -79,7 +79,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   NotifyTabDidStopPlayingMedia(/*id*/ 1);
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsMediaPermissionRuleTest,
@@ -94,7 +94,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   NotifyTabDidStartPlayingMedia(/*id*/ 1);
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsMediaPermissionRuleTest,
@@ -121,7 +121,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsMediaPermissionRuleTest,
@@ -137,7 +137,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   NotifyTabDidStartPlayingMedia(/*id*/ 2);
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsMediaPermissionRuleTest,
@@ -155,7 +155,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   NotifyTabDidStopPlayingMedia(/*id*/ 2);
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 }  // namespace brave_ads

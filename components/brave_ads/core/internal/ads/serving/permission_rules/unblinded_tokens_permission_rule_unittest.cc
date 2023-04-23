@@ -24,7 +24,7 @@ TEST_F(BraveAdsUnblindedTokensPermissionRuleTest, AllowAdIfDoesNotExceedCap) {
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsUnblindedTokensPermissionRuleTest,
@@ -34,7 +34,7 @@ TEST_F(BraveAdsUnblindedTokensPermissionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsUnblindedTokensPermissionRuleTest, DoNotAllowAdIfExceedsCap) {
@@ -44,7 +44,7 @@ TEST_F(BraveAdsUnblindedTokensPermissionRuleTest, DoNotAllowAdIfExceedsCap) {
   // Act
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 }  // namespace brave_ads

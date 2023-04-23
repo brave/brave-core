@@ -14,12 +14,7 @@ namespace brave_ads::inline_content_ads {
 
 class AdsPerDayPermissionRule final : public PermissionRuleInterface {
  public:
-  bool ShouldAllow() override;
-
-  const std::string& GetLastMessage() const override;
-
- private:
-  std::string last_message_;
+  base::expected<void, std::string> ShouldAllow() const override;
 };
 
 }  // namespace brave_ads::inline_content_ads

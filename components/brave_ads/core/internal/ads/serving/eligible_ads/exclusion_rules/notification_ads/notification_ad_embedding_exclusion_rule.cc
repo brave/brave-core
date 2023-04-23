@@ -32,20 +32,15 @@ std::string EmbeddingExclusionRule::GetUuid(
   return creative_ad.creative_set_id;
 }
 
-bool EmbeddingExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
+base::expected<void, std::string> EmbeddingExclusionRule::ShouldInclude(
+    const CreativeAdInfo& creative_ad) const {
   if (!DoesRespectCap(creative_ad)) {
-    last_message_ = base::ReplaceStringPlaceholders(
+    return base::unexpected(base::ReplaceStringPlaceholders(
         "creativeSetId $1 does not have a matching embedding",
-        {creative_ad.creative_set_id}, nullptr);
-
-    return true;
+        {creative_ad.creative_set_id}, nullptr));
   }
 
-  return false;
-}
-
-const std::string& EmbeddingExclusionRule::GetLastMessage() const {
-  return last_message_;
+  return base::ok();
 }
 
 }  // namespace brave_ads::notification_ads

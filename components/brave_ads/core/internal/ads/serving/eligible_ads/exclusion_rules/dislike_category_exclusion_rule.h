@@ -19,12 +19,8 @@ class DislikeCategoryExclusionRule final
  public:
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
 
-  bool ShouldExclude(const CreativeAdInfo& creative_ad) override;
-
-  const std::string& GetLastMessage() const override;
-
- private:
-  std::string last_message_;
+  base::expected<void, std::string> ShouldInclude(
+      const CreativeAdInfo& creative_ad) const override;
 };
 
 }  // namespace brave_ads

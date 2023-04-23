@@ -24,22 +24,16 @@ std::string DislikeCategoryExclusionRule::GetUuid(
   return creative_ad.segment;
 }
 
-bool DislikeCategoryExclusionRule::ShouldExclude(
-    const CreativeAdInfo& creative_ad) {
+base::expected<void, std::string> DislikeCategoryExclusionRule::ShouldInclude(
+    const CreativeAdInfo& creative_ad) const {
   if (!DoesRespectCap(creative_ad)) {
-    last_message_ = base::ReplaceStringPlaceholders(
+    return base::unexpected(base::ReplaceStringPlaceholders(
         "creativeSetId $1 excluded due to $2 category being marked to no "
         "longer receive ads",
-        {creative_ad.creative_set_id, creative_ad.segment}, nullptr);
-
-    return true;
+        {creative_ad.creative_set_id, creative_ad.segment}, nullptr));
   }
 
-  return false;
-}
-
-const std::string& DislikeCategoryExclusionRule::GetLastMessage() const {
-  return last_message_;
+  return base::ok();
 }
 
 }  // namespace brave_ads

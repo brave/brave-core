@@ -36,16 +36,13 @@ class SubdivisionTargetingExclusionRule final
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
 
-  bool ShouldExclude(const CreativeAdInfo& creative_ad) override;
-
-  const std::string& GetLastMessage() const override;
+  base::expected<void, std::string> ShouldInclude(
+      const CreativeAdInfo& creative_ad) const override;
 
  private:
-  bool DoesRespectCap(const CreativeAdInfo& creative_ad);
+  bool DoesRespectCap(const CreativeAdInfo& creative_ad) const;
 
   const base::raw_ref<const SubdivisionTargeting> subdivision_targeting_;
-
-  std::string last_message_;
 };
 
 }  // namespace brave_ads

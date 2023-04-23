@@ -8,15 +8,7 @@
 namespace brave_ads {
 
 bool SearchResultAdInfo::IsValid() const {
-  if (!AdInfo::IsValid()) {
-    return false;
-  }
-
-  if (headline_text.empty() || description.empty()) {
-    return false;
-  }
-
-  return true;
+  return AdInfo::IsValid() && !headline_text.empty() && !description.empty();
 }
 
 }  // namespace brave_ads

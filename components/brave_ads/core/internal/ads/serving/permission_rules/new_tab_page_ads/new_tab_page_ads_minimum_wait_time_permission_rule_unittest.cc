@@ -26,7 +26,7 @@ TEST_F(BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
@@ -38,7 +38,7 @@ TEST_F(BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
   AdvanceClockBy(kMinimumWaitTime.Get());
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
@@ -50,7 +50,7 @@ TEST_F(BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
   AdvanceClockBy(kMinimumWaitTime.Get() - base::Milliseconds(1));
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 }  // namespace brave_ads::new_tab_page_ads

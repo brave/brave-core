@@ -39,9 +39,8 @@ class AntiTargetingExclusionRule final
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
 
-  bool ShouldExclude(const CreativeAdInfo& creative_ad) override;
-
-  const std::string& GetLastMessage() const override;
+  base::expected<void, std::string> ShouldInclude(
+      const CreativeAdInfo& creative_ad) const override;
 
  private:
   bool DoesRespectCap(const CreativeAdInfo& creative_ad) const;
@@ -49,8 +48,6 @@ class AntiTargetingExclusionRule final
   const base::raw_ref<const resource::AntiTargeting> anti_targeting_resource_;
 
   BrowsingHistoryList browsing_history_;
-
-  std::string last_message_;
 };
 
 }  // namespace brave_ads

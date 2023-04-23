@@ -14,12 +14,7 @@ namespace brave_ads {
 
 class BrowserIsActivePermissionRule final : public PermissionRuleInterface {
  public:
-  bool ShouldAllow() override;
-
-  const std::string& GetLastMessage() const override;
-
- private:
-  std::string last_message_;
+  base::expected<void, std::string> ShouldAllow() const override;
 };
 
 }  // namespace brave_ads

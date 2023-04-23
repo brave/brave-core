@@ -30,7 +30,7 @@ TEST_F(BraveAdsBrowserIsActivePermissionRuleTest, AllowAd) {
   NotifyBrowserDidEnterForeground();
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsBrowserIsActivePermissionRuleTest, AlwaysAllowAdForAndroid) {
@@ -42,7 +42,7 @@ TEST_F(BraveAdsBrowserIsActivePermissionRuleTest, AlwaysAllowAdForAndroid) {
   NotifyBrowserDidEnterBackground();
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsBrowserIsActivePermissionRuleTest, DoNotAllowAd) {
@@ -54,7 +54,7 @@ TEST_F(BraveAdsBrowserIsActivePermissionRuleTest, DoNotAllowAd) {
   NotifyBrowserDidEnterBackground();
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
@@ -78,7 +78,7 @@ TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
   NotifyBrowserDidEnterBackground();
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
@@ -91,7 +91,7 @@ TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
   NotifyBrowserDidEnterBackground();
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
@@ -104,7 +104,7 @@ TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
   NotifyBrowserDidEnterForeground();
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 }  // namespace brave_ads

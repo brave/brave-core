@@ -89,9 +89,11 @@ ExclusionRulesBase::~ExclusionRulesBase() = default;
 
 bool ExclusionRulesBase::ShouldExcludeCreativeAd(
     const CreativeAdInfo& creative_ad) {
-  return base::ranges::any_of(exclusion_rules_, [=](auto* exclusion_rule) {
-    return AddToCacheIfNeeded(creative_ad, exclusion_rule);
-  });
+  return base::ranges::any_of(
+      exclusion_rules_,
+      [=](ExclusionRuleInterface<CreativeAdInfo>* exclusion_rule) {
+        return AddToCacheIfNeeded(creative_ad, exclusion_rule);
+      });
 }
 
 bool ExclusionRulesBase::AddToCacheIfNeeded(
@@ -103,43 +105,27 @@ bool ExclusionRulesBase::AddToCacheIfNeeded(
     return true;
   }
 
-  if (!exclusion_rule->ShouldExclude(creative_ad)) {
+  const auto result = exclusion_rule->ShouldInclude(creative_ad);
+  if (result.has_value()) {
     return false;
   }
 
-  const std::string& last_message = exclusion_rule->GetLastMessage();
-  if (!last_message.empty()) {
-    BLOG(2, last_message);
-  }
+  BLOG(2, result.error());
 
-  const std::string uuid = exclusion_rule->GetUuid(creative_ad);
-  AddToCache(uuid);
+  AddToCache(exclusion_rule->GetUuid(creative_ad));
 
   return true;
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
 bool ExclusionRulesBase::IsCached(const CreativeAdInfo& creative_ad) const {
-  if (uuids_.find(creative_ad.campaign_id) != uuids_.cend()) {
-    return true;
-  }
-
-  if (uuids_.find(creative_ad.advertiser_id) != uuids_.cend()) {
-    return true;
-  }
-
-  if (uuids_.find(creative_ad.creative_set_id) != uuids_.cend()) {
-    return true;
-  }
-
-  if (uuids_.find(creative_ad.creative_instance_id) != uuids_.cend()) {
-    return true;
-  }
-
-  if (uuids_.find(creative_ad.segment) != uuids_.cend()) {
-    return true;
-  }
-
-  return false;
+  return base::ranges::any_of(uuids_, [&creative_ad](const std::string& uuid) {
+    return creative_ad.creative_instance_id == uuid ||
+           creative_ad.creative_set_id == uuid ||
+           creative_ad.campaign_id == uuid ||
+           creative_ad.advertiser_id == uuid || creative_ad.segment == uuid;
+  });
 }
 
 void ExclusionRulesBase::AddToCache(const std::string& uuid) {

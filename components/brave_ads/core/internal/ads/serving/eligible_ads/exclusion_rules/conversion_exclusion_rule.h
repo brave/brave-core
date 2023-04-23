@@ -31,14 +31,11 @@ class ConversionExclusionRule final
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
 
-  bool ShouldExclude(const CreativeAdInfo& creative_ad) override;
-
-  const std::string& GetLastMessage() const override;
+  base::expected<void, std::string> ShouldInclude(
+      const CreativeAdInfo& creative_ad) const override;
 
  private:
   AdEventList ad_events_;
-
-  std::string last_message_;
 };
 
 }  // namespace brave_ads

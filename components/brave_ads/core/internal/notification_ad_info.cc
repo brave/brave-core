@@ -8,15 +8,7 @@
 namespace brave_ads {
 
 bool NotificationAdInfo::IsValid() const {
-  if (!AdInfo::IsValid()) {
-    return false;
-  }
-
-  if (title.empty() || body.empty()) {
-    return false;
-  }
-
-  return true;
+  return AdInfo::IsValid() && !title.empty() && !body.empty();
 }
 
 }  // namespace brave_ads

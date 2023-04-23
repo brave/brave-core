@@ -92,8 +92,9 @@ AdEventInfo BuildAdEvent(const std::string& placement_id,
 
 AdEventInfo BuildAdEvent(const std::string& creative_set_id,
                          const ConfirmationType& confirmation_type) {
-  const std::string uuid = base::GUID::GenerateRandomV4().AsLowercaseString();
-  return BuildAdEvent(uuid, creative_set_id, confirmation_type);
+  const std::string placement_id =
+      base::GUID::GenerateRandomV4().AsLowercaseString();
+  return BuildAdEvent(placement_id, creative_set_id, confirmation_type);
 }
 
 void RecordAdEvent(const AdType& type,

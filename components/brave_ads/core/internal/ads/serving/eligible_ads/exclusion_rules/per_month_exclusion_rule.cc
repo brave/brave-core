@@ -40,20 +40,15 @@ std::string PerMonthExclusionRule::GetUuid(
   return creative_ad.creative_set_id;
 }
 
-bool PerMonthExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
+base::expected<void, std::string> PerMonthExclusionRule::ShouldInclude(
+    const CreativeAdInfo& creative_ad) const {
   if (!DoesRespectCap(ad_events_, creative_ad)) {
-    last_message_ = base::ReplaceStringPlaceholders(
+    return base::unexpected(base::ReplaceStringPlaceholders(
         "creativeSetId $1 has exceeded the perMonth frequency cap",
-        {creative_ad.creative_set_id}, nullptr);
-
-    return true;
+        {creative_ad.creative_set_id}, nullptr));
   }
 
-  return false;
-}
-
-const std::string& PerMonthExclusionRule::GetLastMessage() const {
-  return last_message_;
+  return base::ok();
 }
 
 }  // namespace brave_ads

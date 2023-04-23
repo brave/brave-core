@@ -40,22 +40,18 @@ std::string AntiTargetingExclusionRule::GetUuid(
   return creative_ad.creative_set_id;
 }
 
-bool AntiTargetingExclusionRule::ShouldExclude(
-    const CreativeAdInfo& creative_ad) {
+base::expected<void, std::string> AntiTargetingExclusionRule::ShouldInclude(
+    const CreativeAdInfo& creative_ad) const {
   if (!DoesRespectCap(creative_ad)) {
-    last_message_ = base::ReplaceStringPlaceholders(
+    return base::unexpected(base::ReplaceStringPlaceholders(
         "creativeSetId $1 excluded due to visiting an anti-targeted site",
-        {creative_ad.creative_set_id}, nullptr);
-
-    return true;
+        {creative_ad.creative_set_id}, nullptr));
   }
 
-  return false;
+  return base::ok();
 }
 
-const std::string& AntiTargetingExclusionRule::GetLastMessage() const {
-  return last_message_;
-}
+///////////////////////////////////////////////////////////////////////////////
 
 bool AntiTargetingExclusionRule::DoesRespectCap(
     const CreativeAdInfo& creative_ad) const {

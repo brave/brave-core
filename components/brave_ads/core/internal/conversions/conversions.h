@@ -49,8 +49,6 @@ class Conversions final : public AdsClientNotifierObserver,
   void AddObserver(ConversionsObserver* observer);
   void RemoveObserver(ConversionsObserver* observer);
 
-  bool ShouldAllow() const;
-
   void MaybeConvert(const std::vector<GURL>& redirect_chain,
                     const std::string& html,
                     const ConversionIdPatternMap& conversion_id_patterns);

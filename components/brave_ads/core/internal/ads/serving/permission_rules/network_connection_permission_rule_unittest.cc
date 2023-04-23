@@ -28,7 +28,7 @@ TEST_F(BraveAdsNetworkConnectionPermissionRuleTest, AllowAd) {
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsNetworkConnectionPermissionRuleTest, DoNotAllowAd) {
@@ -38,7 +38,7 @@ TEST_F(BraveAdsNetworkConnectionPermissionRuleTest, DoNotAllowAd) {
   // Act
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsNetworkConnectionPermissionRuleTest,
@@ -60,7 +60,7 @@ TEST_F(BraveAdsNetworkConnectionPermissionRuleTest,
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 }  // namespace brave_ads

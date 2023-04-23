@@ -40,16 +40,8 @@ bool NewTabPageAdInfo::operator!=(const NewTabPageAdInfo& other) const {
 }
 
 bool NewTabPageAdInfo::IsValid() const {
-  if (!AdInfo::IsValid()) {
-    return false;
-  }
-
-  if (company_name.empty() || !image_url.is_valid() || alt.empty() ||
-      wallpapers.empty()) {
-    return false;
-  }
-
-  return true;
+  return AdInfo::IsValid() && !company_name.empty() && image_url.is_valid() &&
+         !alt.empty() && !wallpapers.empty();
 }
 
 bool NewTabPageAdInfo::HasValidCreativeInstanceIdAndCampaignId() const {

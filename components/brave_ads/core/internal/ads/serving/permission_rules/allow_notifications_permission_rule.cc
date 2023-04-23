@@ -17,17 +17,13 @@ bool DoesRespectCap() {
 
 }  // namespace
 
-bool AllowNotificationsPermissionRule::ShouldAllow() {
+base::expected<void, std::string>
+AllowNotificationsPermissionRule::ShouldAllow() const {
   if (!DoesRespectCap()) {
-    last_message_ = "System notifications not allowed";
-    return false;
+    return base::unexpected("System notifications not allowed");
   }
 
-  return true;
-}
-
-const std::string& AllowNotificationsPermissionRule::GetLastMessage() const {
-  return last_message_;
+  return base::ok();
 }
 
 }  // namespace brave_ads

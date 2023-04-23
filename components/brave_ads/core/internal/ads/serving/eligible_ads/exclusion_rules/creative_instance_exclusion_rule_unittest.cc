@@ -28,7 +28,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsCreativeInstanceExclusionRuleTest, AdAllowedAfter1Hour) {
@@ -50,7 +50,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest, AdAllowedAfter1Hour) {
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
@@ -85,7 +85,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
@@ -108,7 +108,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_TRUE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_FALSE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
 }  // namespace brave_ads

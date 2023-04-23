@@ -18,7 +18,7 @@ bool VerifiableConversionInfo::operator!=(
 }
 
 bool VerifiableConversionInfo::IsValid() const {
-  return !(id.empty() || public_key.empty());
+  return !id.empty() && !public_key.empty();
 }
 
 }  // namespace brave_ads

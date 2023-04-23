@@ -43,7 +43,7 @@ TEST_F(BraveAdsSplitTestExclusionRuleTest, AllowIfNoFieldTrialAndNoAdGroup) {
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsSplitTestExclusionRuleTest, DoNotAllowIfNoFieldTrialAndAdGroup) {
@@ -55,7 +55,7 @@ TEST_F(BraveAdsSplitTestExclusionRuleTest, DoNotAllowIfNoFieldTrialAndAdGroup) {
   // Act
 
   // Assert
-  EXPECT_TRUE(exclusion_rule_.ShouldExclude(creative_ad));
+  EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsSplitTestExclusionRuleTest, AllowIfFieldTrialAndNoAdGroup) {
@@ -70,7 +70,7 @@ TEST_F(BraveAdsSplitTestExclusionRuleTest, AllowIfFieldTrialAndNoAdGroup) {
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsSplitTestExclusionRuleTest, AllowIfFieldTrialMatchesAdGroup) {
@@ -86,7 +86,7 @@ TEST_F(BraveAdsSplitTestExclusionRuleTest, AllowIfFieldTrialMatchesAdGroup) {
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsSplitTestExclusionRuleTest,
@@ -103,7 +103,7 @@ TEST_F(BraveAdsSplitTestExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_TRUE(exclusion_rule_.ShouldExclude(creative_ad));
+  EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
 }  // namespace brave_ads
