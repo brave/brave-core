@@ -34,7 +34,6 @@ brave_settings_web_component_files = [
   "brave_privacy_page/brave_personalization_options.ts",
   "brave_rewards_page/brave_rewards_page.ts",
   "brave_search_engines_page/brave_search_engines_page.ts",
-  "brave_site_settings/brave_site_data_details_subpage.ts",
   "brave_sync_page/brave_sync_code_dialog.ts",
   "brave_sync_page/brave_sync_configure.ts",
   "brave_sync_page/brave_sync_delete_account_dialog.ts",
