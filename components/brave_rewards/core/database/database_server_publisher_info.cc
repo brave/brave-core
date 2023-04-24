@@ -24,8 +24,7 @@ namespace ledger {
 namespace database {
 
 DatabaseServerPublisherInfo::DatabaseServerPublisherInfo(LedgerImpl& ledger)
-    : DatabaseTable(ledger),
-      banner_(std::make_unique<DatabaseServerPublisherBanner>(ledger)) {}
+    : DatabaseTable(ledger), banner_(ledger) {}
 
 DatabaseServerPublisherInfo::~DatabaseServerPublisherInfo() = default;
 
@@ -54,7 +53,7 @@ void DatabaseServerPublisherInfo::InsertOrUpdate(
   BindInt64(command.get(), 3, server_info.updated_at);
 
   transaction->commands.push_back(std::move(command));
-  banner_->InsertOrUpdate(transaction.get(), server_info);
+  banner_.InsertOrUpdate(transaction.get(), server_info);
 
   ledger_->RunDBTransaction(std::move(transaction),
                             std::bind(&OnResultCallback, _1, callback));
@@ -74,7 +73,7 @@ void DatabaseServerPublisherInfo::GetRecord(
       std::bind(&DatabaseServerPublisherInfo::OnGetRecordBanner, this, _1,
                 publisher_key, callback);
 
-  banner_->GetRecord(publisher_key, banner_callback);
+  banner_.GetRecord(publisher_key, banner_callback);
 }
 
 void DatabaseServerPublisherInfo::OnGetRecordBanner(
@@ -190,7 +189,7 @@ void DatabaseServerPublisherInfo::OnExpiredRecordsSelected(
   auto transaction = mojom::DBTransaction::New();
 
   // Delete records in child tables.
-  banner_->DeleteRecords(transaction.get(), publisher_key_list);
+  banner_.DeleteRecords(transaction.get(), publisher_key_list);
 
   // Delete records in this table.
   auto command = mojom::DBCommand::New();

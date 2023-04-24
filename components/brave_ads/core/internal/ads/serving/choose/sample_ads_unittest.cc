@@ -12,11 +12,11 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-TEST(BatAdsSampleAdsTest, CalculateNormalizingConstantBaseInteger) {
+TEST(BraveAdsSampleAdsTest, CalculateNormalizingConstantBaseInteger) {
   // Arrange
   const std::vector<int> score = {1, 2, 3, 4, 5};
 
@@ -27,7 +27,7 @@ TEST(BatAdsSampleAdsTest, CalculateNormalizingConstantBaseInteger) {
   EXPECT_EQ(15, normalizing_constant);
 }
 
-TEST(BatAdsSampleAdsTest, CalculateNormalizingConstantBaseDouble) {
+TEST(BraveAdsSampleAdsTest, CalculateNormalizingConstantBaseDouble) {
   // Arrange
   const std::vector<double> score = {1.3, 2.7, 3.1, 4.8, 5.2};
 
@@ -38,7 +38,7 @@ TEST(BatAdsSampleAdsTest, CalculateNormalizingConstantBaseDouble) {
   EXPECT_DOUBLE_EQ(17.1, normalizing_constant);
 }
 
-TEST(BatAdsSampleAdsTest, CalculateNormalizingConstantWithEmptyAds) {
+TEST(BraveAdsSampleAdsTest, CalculateNormalizingConstantWithEmptyAds) {
   // Arrange
   const CreativeAdPredictorMap<CreativeNotificationAdInfo>
       creative_ad_predictors;
@@ -51,7 +51,7 @@ TEST(BatAdsSampleAdsTest, CalculateNormalizingConstantWithEmptyAds) {
   EXPECT_DOUBLE_EQ(0.0, normalizing_constant);
 }
 
-TEST(BatAdsSampleAdsTest, CalculateNormalizingConstant) {
+TEST(BraveAdsSampleAdsTest, CalculateNormalizingConstant) {
   // Arrange
   CreativeAdPredictorMap<CreativeNotificationAdInfo> creative_ad_predictors;
 
@@ -78,7 +78,7 @@ TEST(BatAdsSampleAdsTest, CalculateNormalizingConstant) {
   EXPECT_DOUBLE_EQ(6.6, normalizing_constant);
 }
 
-TEST(BatAdsSampleAdsTest, SampleAdFromPredictorsWithZeroScores) {
+TEST(BraveAdsSampleAdsTest, SampleAdFromPredictorsWithZeroScores) {
   // Arrange
   CreativeAdPredictorMap<CreativeNotificationAdInfo> creative_ad_predictors;
 
@@ -105,7 +105,7 @@ TEST(BatAdsSampleAdsTest, SampleAdFromPredictorsWithZeroScores) {
   EXPECT_FALSE(creative_ad);
 }
 
-TEST(BatAdsSampleAdsTest,
+TEST(BraveAdsSampleAdsTest,
      DeterministicallySampleAdFromPredictorsWithOneNonZeroScore) {
   // Arrange
   CreativeAdPredictorMap<CreativeNotificationAdInfo> creative_ad_predictors;
@@ -149,7 +149,7 @@ TEST(BatAdsSampleAdsTest,
   // Assert
 }
 
-TEST(BatAdsSampleAdsTest, ProbabilisticallySampleAdFromPredictors) {
+TEST(BraveAdsSampleAdsTest, ProbabilisticallySampleAdFromPredictors) {
   // Arrange
   CreativeAdPredictorMap<CreativeNotificationAdInfo> creative_ad_predictors;
 
@@ -195,7 +195,7 @@ TEST(BatAdsSampleAdsTest, ProbabilisticallySampleAdFromPredictors) {
   EXPECT_FALSE((creative_ad_1_count == 0 || creative_ad_2_count == 0));
 }
 
-TEST(BatAdsSampleAdsTest, ComputeProbabilities) {
+TEST(BraveAdsSampleAdsTest, ComputeProbabilities) {
   // Arrange
   const std::vector<int> scores = {1, 0, 5, 4};
 

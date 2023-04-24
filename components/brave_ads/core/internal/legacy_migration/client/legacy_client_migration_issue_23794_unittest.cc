@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager_constants.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration_unittest_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::client {
 
@@ -20,11 +20,11 @@ constexpr uint64_t kMigratedClientIssue23794JsonHash = 2087726078;
 
 }  // namespace
 
-class BatAdsLegacyClientMigrationIssue23794Test : public UnitTestBase {};
+class BraveAdsLegacyClientMigrationIssue23794Test : public UnitTestBase {};
 
-TEST_F(BatAdsLegacyClientMigrationIssue23794Test, Migrate) {
+TEST_F(BraveAdsLegacyClientMigrationIssue23794Test, Migrate) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kHasMigratedClientState, false);
+  ads_client_mock_.SetBooleanPref(prefs::kHasMigratedClientState, false);
 
   CopyFileFromTestPathToTempPath(kClientIssue23794Filename,
                                  kClientStateFilename);

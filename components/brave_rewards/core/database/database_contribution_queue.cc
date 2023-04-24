@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <map>
+#include <memory>
 #include <utility>
 
 #include "base/strings/stringprintf.h"
@@ -24,9 +25,7 @@ const char kTableName[] = "contribution_queue";
 }  // namespace
 
 DatabaseContributionQueue::DatabaseContributionQueue(LedgerImpl& ledger)
-    : DatabaseTable(ledger),
-      publishers_(
-          std::make_unique<DatabaseContributionQueuePublishers>(ledger)) {}
+    : DatabaseTable(ledger), publishers_(ledger) {}
 
 DatabaseContributionQueue::~DatabaseContributionQueue() = default;
 
@@ -91,8 +90,8 @@ void DatabaseContributionQueue::OnInsertOrUpdate(
     return;
   }
 
-  publishers_->InsertOrUpdate((*shared_queue)->id,
-                              std::move((*shared_queue)->publishers), callback);
+  publishers_.InsertOrUpdate((*shared_queue)->id,
+                             std::move((*shared_queue)->publishers), callback);
 }
 
 void DatabaseContributionQueue::GetFirstRecord(
@@ -152,7 +151,7 @@ void DatabaseContributionQueue::OnGetFirstRecord(
       std::bind(&DatabaseContributionQueue::OnGetPublishers, this, _1,
                 shared_info, callback);
 
-  publishers_->GetRecordsByQueueId(info->id, publishers_callback);
+  publishers_.GetRecordsByQueueId(info->id, publishers_callback);
 }
 
 void DatabaseContributionQueue::OnGetPublishers(

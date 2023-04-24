@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_BLOCK_TRACKER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_BLOCK_TRACKER_H_
 
+#include <map>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
@@ -27,7 +28,8 @@ class SolanaBlockTracker : public BlockTracker {
 
   class Observer : public base::CheckedObserver {
    public:
-    virtual void OnLatestBlockhashUpdated(const std::string& latest_blockhash,
+    virtual void OnLatestBlockhashUpdated(const std::string& chain_id,
+                                          const std::string& latest_blockhash,
                                           uint64_t last_valid_block_height) = 0;
   };
 
@@ -35,30 +37,30 @@ class SolanaBlockTracker : public BlockTracker {
   void RemoveObserver(Observer* observer);
 
   // If timer is already running, it will be replaced with new interval
-  void Start(base::TimeDelta interval) override;
-  void Stop() override;
-
-  std::string latest_blockhash() const { return latest_blockhash_; }
-  uint64_t last_valid_block_height() const { return last_valid_block_height_; }
+  void Start(const std::string& chain_id, base::TimeDelta interval) override;
 
   using GetLatestBlockhashCallback =
       base::OnceCallback<void(const std::string& latest_blockhash,
                               uint64_t last_valid_block_height,
                               mojom::SolanaProviderError error,
                               const std::string& error_message)>;
-  void GetLatestBlockhash(GetLatestBlockhashCallback callback,
+  void GetLatestBlockhash(const std::string& chain_id,
+                          GetLatestBlockhashCallback callback,
                           bool try_cached_value);
 
  private:
-  void OnGetLatestBlockhash(GetLatestBlockhashCallback callback,
+  void OnGetLatestBlockhash(const std::string& chain_id,
+                            GetLatestBlockhashCallback callback,
                             const std::string& latest_blockhash,
                             uint64_t last_valid_block_height,
                             mojom::SolanaProviderError error,
                             const std::string& error_message);
-
-  std::string latest_blockhash_;
-  uint64_t last_valid_block_height_ = 0;
-  base::Time latest_blockhash_expired_time_;
+  // <chain_id, lastest_blockhash>
+  std::map<std::string, std::string> latest_blockhash_map_;
+  // <chain_id, last_valid_block_height>
+  std::map<std::string, uint64_t> last_valid_block_height_map_;
+  // <chain_id, latest_blockhash_expired_time>
+  std::map<std::string, base::Time> latest_blockhash_expired_time_map_;
   base::ObserverList<Observer> observers_;
 
   base::WeakPtrFactory<SolanaBlockTracker> weak_ptr_factory_;

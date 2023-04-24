@@ -17,7 +17,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::notification_ads {
 
@@ -27,14 +27,14 @@ NotificationAdInfo BuildAndSaveNotificationAd() {
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   NotificationAdInfo ad = BuildNotificationAd(creative_ad);
-  NotificationAdManager::GetInstance()->Add(ad);
+  NotificationAdManager::GetInstance().Add(ad);
   return ad;
 }
 
 }  // namespace
 
-class BatAdsNotificationAdEventHandlerTest : public EventHandlerDelegate,
-                                             public UnitTestBase {
+class BraveAdsNotificationAdEventHandlerTest : public EventHandlerDelegate,
+                                               public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -84,7 +84,7 @@ class BatAdsNotificationAdEventHandlerTest : public EventHandlerDelegate,
   bool did_fail_to_fire_event_ = false;
 };
 
-TEST_F(BatAdsNotificationAdEventHandlerTest, FireServedEvent) {
+TEST_F(BraveAdsNotificationAdEventHandlerTest, FireServedEvent) {
   // Arrange
   const NotificationAdInfo ad = BuildAndSaveNotificationAd();
 
@@ -104,7 +104,7 @@ TEST_F(BatAdsNotificationAdEventHandlerTest, FireServedEvent) {
       1, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kServed));
 }
 
-TEST_F(BatAdsNotificationAdEventHandlerTest, FireViewedEvent) {
+TEST_F(BraveAdsNotificationAdEventHandlerTest, FireViewedEvent) {
   // Arrange
   const NotificationAdInfo ad = BuildAndSaveNotificationAd();
 
@@ -124,7 +124,7 @@ TEST_F(BatAdsNotificationAdEventHandlerTest, FireViewedEvent) {
       1, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kViewed));
 }
 
-TEST_F(BatAdsNotificationAdEventHandlerTest, FireClickedEvent) {
+TEST_F(BraveAdsNotificationAdEventHandlerTest, FireClickedEvent) {
   // Arrange
   const NotificationAdInfo ad = BuildAndSaveNotificationAd();
 
@@ -144,7 +144,7 @@ TEST_F(BatAdsNotificationAdEventHandlerTest, FireClickedEvent) {
       1, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kClicked));
 }
 
-TEST_F(BatAdsNotificationAdEventHandlerTest, FireDismissedEvent) {
+TEST_F(BraveAdsNotificationAdEventHandlerTest, FireDismissedEvent) {
   // Arrange
   const NotificationAdInfo ad = BuildAndSaveNotificationAd();
 
@@ -164,7 +164,7 @@ TEST_F(BatAdsNotificationAdEventHandlerTest, FireDismissedEvent) {
                                ConfirmationType::kDismissed));
 }
 
-TEST_F(BatAdsNotificationAdEventHandlerTest, FireTimedOutEvent) {
+TEST_F(BraveAdsNotificationAdEventHandlerTest, FireTimedOutEvent) {
   // Arrange
   const NotificationAdInfo ad = BuildAndSaveNotificationAd();
 
@@ -182,7 +182,8 @@ TEST_F(BatAdsNotificationAdEventHandlerTest, FireTimedOutEvent) {
   EXPECT_EQ(ad, ad_);
 }
 
-TEST_F(BatAdsNotificationAdEventHandlerTest, DoNotFireEventIfUuidWasNotFound) {
+TEST_F(BraveAdsNotificationAdEventHandlerTest,
+       DoNotFireEventIfUuidWasNotFound) {
   // Arrange
 
   // Act

@@ -7,6 +7,7 @@
 #include <cmath>
 #include <ctime>
 #include <map>
+#include <memory>
 #include <utility>
 #include <vector>
 
@@ -33,29 +34,27 @@ namespace publisher {
 
 Publisher::Publisher(LedgerImpl& ledger)
     : ledger_(ledger),
-      prefix_list_updater_(
-          std::make_unique<PublisherPrefixListUpdater>(ledger)),
-      server_publisher_fetcher_(
-          std::make_unique<ServerPublisherFetcher>(ledger)) {}
+      prefix_list_updater_(ledger),
+      server_publisher_fetcher_(ledger) {}
 
 Publisher::~Publisher() = default;
 
 bool Publisher::ShouldFetchServerPublisherInfo(
     mojom::ServerPublisherInfo* server_info) {
-  return server_publisher_fetcher_->IsExpired(server_info);
+  return server_publisher_fetcher_.IsExpired(server_info);
 }
 
 void Publisher::FetchServerPublisherInfo(
     const std::string& publisher_key,
     database::GetServerPublisherInfoCallback callback) {
-  server_publisher_fetcher_->Fetch(publisher_key, callback);
+  server_publisher_fetcher_.Fetch(publisher_key, callback);
 }
 
 void Publisher::RefreshPublisher(const std::string& publisher_key,
                                  ledger::RefreshPublisherCallback callback) {
   // Bypass cache and unconditionally fetch the latest info
   // for the specified publisher.
-  server_publisher_fetcher_->Fetch(publisher_key, [callback](auto server_info) {
+  server_publisher_fetcher_.Fetch(publisher_key, [callback](auto server_info) {
     auto status = server_info ? server_info->status
                               : mojom::PublisherStatus::NOT_VERIFIED;
     callback(status);
@@ -63,7 +62,7 @@ void Publisher::RefreshPublisher(const std::string& publisher_key,
 }
 
 void Publisher::SetPublisherServerListTimer() {
-  prefix_list_updater_->StartAutoUpdate(
+  prefix_list_updater_.StartAutoUpdate(
       [this]() { ledger_->client()->OnPublisherRegistryUpdated(); });
 }
 

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/promotion/promotion_transfer.h"
 
+#include <memory>
 #include <utility>
 #include <vector>
 
@@ -19,14 +20,11 @@ namespace ledger {
 namespace promotion {
 
 PromotionTransfer::PromotionTransfer(LedgerImpl& ledger)
-    : ledger_(ledger),
-      credentials_(std::make_unique<credential::CredentialsPromotion>(ledger)) {
-}
+    : ledger_(ledger), credentials_(ledger) {}
 
 PromotionTransfer::~PromotionTransfer() = default;
 
-void PromotionTransfer::Start(
-    ledger::PostSuggestionsClaimCallback callback) const {
+void PromotionTransfer::Start(ledger::PostSuggestionsClaimCallback callback) {
   auto tokens_callback =
       base::BindOnce(&PromotionTransfer::OnGetSpendableUnblindedTokens,
                      base::Unretained(this), std::move(callback));
@@ -40,7 +38,7 @@ void PromotionTransfer::Start(
 
 void PromotionTransfer::OnGetSpendableUnblindedTokens(
     ledger::PostSuggestionsClaimCallback callback,
-    std::vector<mojom::UnblindedTokenPtr> tokens) const {
+    std::vector<mojom::UnblindedTokenPtr> tokens) {
   std::vector<mojom::UnblindedToken> token_list;
   for (auto& token : tokens) {
     token_list.push_back(*token);
@@ -55,7 +53,7 @@ void PromotionTransfer::OnGetSpendableUnblindedTokens(
   redeem.processor = mojom::ContributionProcessor::BRAVE_TOKENS;
   redeem.token_list = std::move(token_list);
 
-  credentials_->DrainTokens(
+  credentials_.DrainTokens(
       redeem, base::BindOnce(&PromotionTransfer::OnDrainTokens,
                              base::Unretained(this), std::move(callback),
                              redeem.token_list.size() * constant::kVotePrice));

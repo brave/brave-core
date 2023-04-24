@@ -73,7 +73,7 @@ void DownloadToolbarButtonView::UpdateIcon() {
   if (HasInsecureDownloads(bubble_controller()->GetMainView())) {
     const gfx::VectorIcon* new_icon = &vector_icons::kNotSecureWarningIcon;
     SkColor icon_color =
-        GetColorProvider()->GetColor(ui::kColorAlertMediumSeverity);
+        GetColorProvider()->GetColor(ui::kColorAlertMediumSeverityIcon);
 
     SetImageModel(ButtonState::STATE_NORMAL,
                   ui::ImageModel::FromVectorIcon(*new_icon, icon_color));
@@ -89,7 +89,7 @@ void DownloadToolbarButtonView::UpdateIcon() {
 }
 
 bool DownloadToolbarButtonView::HasInsecureDownloads(
-    const std::vector<DownloadUIModelPtr>& models) const {
+    const std::vector<DownloadUIModel::DownloadUIModelPtr>& models) const {
   return base::ranges::any_of(models, [](const auto& model) {
     return (model->GetInsecureDownloadStatus() ==
                 download::DownloadItem::InsecureDownloadStatus::BLOCK ||

@@ -356,6 +356,32 @@ TEST(SolanaResponseParserUnitTest, ParseGetBlockHeight) {
   EXPECT_DCHECK_DEATH(ParseGetBlockHeight(ParseJson(json), nullptr));
 }
 
+TEST(SolanaResponseParserUnitTest, ParseIsBlockhashValid) {
+  auto value = base::test::ParseJson(
+      R"({"jsonrpc": "2.0",
+          "id": 1,
+          "result": {
+            "context": {
+              "slot": 2483
+            },
+            "value": false
+          }})");
+  auto is_valid = ParseIsBlockhashValid(value);
+  ASSERT_TRUE(is_valid);
+  EXPECT_FALSE(*is_valid);
+
+  std::vector<std::string> invalid_jsons = {
+      R"({"jsonrpc":"2.0", "id":1})",
+      R"({"jsonrpc":"2.0", "id":1, "result":{}})",
+      R"({"jsonrpc":"2.0", "id":1, "result":{"value":{}}})",
+      R"({"jsonrpc":"2.0", "id":1, "result":{"value":1}})",
+      R"({"jsonrpc":"2.0", "id":1, "result":{"value":{"is_valid":true}}})"};
+  for (const auto& invalid_json : invalid_jsons) {
+    EXPECT_FALSE(ParseIsBlockhashValid(ParseJson(invalid_json)))
+        << invalid_json;
+  }
+}
+
 TEST(SolanaResponseParserUnitTest, ParseGetTokenAccountsByOwner) {
   std::string json = R"({
     "jsonrpc": "2.0",

@@ -13,16 +13,16 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::database::table {
 
-class BatAdsCreativeNotificationAdsDatabaseTableTest : public UnitTestBase {
+class BraveAdsCreativeNotificationAdsDatabaseTableTest : public UnitTestBase {
  protected:
   CreativeNotificationAds database_table_;
 };
 
-TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest,
        SaveEmptyCreativeNotificationAds) {
   // Arrange
 
@@ -32,7 +32,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
   // Assert
 }
 
-TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest,
        SaveCreativeNotificationAds) {
   // Arrange
   const CreativeNotificationAdList creative_ads =
@@ -52,7 +52,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
       creative_ads));
 }
 
-TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest,
        SaveCreativeNotificationAdsInBatches) {
   // Arrange
   database_table_.SetBatchSize(2);
@@ -74,7 +74,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
       creative_ads));
 }
 
-TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest,
        DoNotSaveDuplicateCreativeNotificationAds) {
   // Arrange
   const CreativeNotificationAdList creative_ads =
@@ -95,7 +95,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
       creative_ads));
 }
 
-TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest, GetForSegments) {
+TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest, GetForSegments) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
@@ -134,7 +134,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest, GetForSegments) {
           std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest,
        GetCreativeNotificationAdsForEmptySegments) {
   // Arrange
   const CreativeNotificationAdList creative_ads =
@@ -153,7 +153,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
       }));
 }
 
-TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest,
        GetCreativeNotificationAdsForNonExistentSegment) {
   // Arrange
   const CreativeNotificationAdList creative_ads =
@@ -172,7 +172,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
       }));
 }
 
-TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest,
        GetCreativeNotificationAdsFromMultipleSegments) {
   // Arrange
   CreativeNotificationAdList creative_ads;
@@ -212,7 +212,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
           std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest,
        GetNonExpiredCreativeNotificationAds) {
   // Arrange
   CreativeNotificationAdList creative_ads;
@@ -247,7 +247,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
       std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
+TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest,
        GetCreativeNotificationAdsMatchingCaseInsensitiveSegments) {
   // Arrange
   CreativeNotificationAdList creative_ads;
@@ -281,7 +281,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
           std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest, TableName) {
+TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest, TableName) {
   // Arrange
 
   // Act

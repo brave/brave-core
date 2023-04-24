@@ -54,20 +54,15 @@ std::string DaypartExclusionRule::GetUuid(
   return creative_ad.creative_set_id;
 }
 
-bool DaypartExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
+base::expected<void, std::string> DaypartExclusionRule::ShouldInclude(
+    const CreativeAdInfo& creative_ad) const {
   if (!DoesRespectCap(creative_ad)) {
-    last_message_ = base::ReplaceStringPlaceholders(
+    return base::unexpected(base::ReplaceStringPlaceholders(
         "creativeSetId $1 excluded as not within a scheduled time slot",
-        {creative_ad.creative_set_id}, nullptr);
-
-    return true;
+        {creative_ad.creative_set_id}, nullptr));
   }
 
-  return false;
-}
-
-const std::string& DaypartExclusionRule::GetLastMessage() const {
-  return last_message_;
+  return base::ok();
 }
 
 }  // namespace brave_ads

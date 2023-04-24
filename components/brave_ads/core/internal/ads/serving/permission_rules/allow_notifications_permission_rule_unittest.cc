@@ -8,33 +8,33 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsAllowNotificationsPermissionRuleTest : public UnitTestBase {
+class BraveAdsAllowNotificationsPermissionRuleTest : public UnitTestBase {
  protected:
   AllowNotificationsPermissionRule permission_rule_;
 };
 
-TEST_F(BatAdsAllowNotificationsPermissionRuleTest, AllowAd) {
+TEST_F(BraveAdsAllowNotificationsPermissionRuleTest, AllowAd) {
   // Arrange
   MockCanShowNotificationAds(ads_client_mock_, true);
 
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsAllowNotificationsPermissionRuleTest, DoNotAllowAd) {
+TEST_F(BraveAdsAllowNotificationsPermissionRuleTest, DoNotAllowAd) {
   // Arrange
   MockCanShowNotificationAds(ads_client_mock_, false);
 
   // Act
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 }  // namespace brave_ads

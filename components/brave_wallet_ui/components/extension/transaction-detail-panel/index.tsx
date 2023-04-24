@@ -15,7 +15,7 @@ import { reduceAddress } from '../../../utils/reduce-address'
 import { getTransactionStatusString, isSolanaTransaction } from '../../../utils/tx-utils'
 import { toProperCase } from '../../../utils/string-utils'
 import Amount from '../../../utils/amount'
-import { getNetworkFromTXDataUnion, getCoinFromTxDataUnion } from '../../../utils/network-utils'
+import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
 import { getLocale } from '../../../../common/locale'
 
 // Constants
@@ -55,11 +55,10 @@ import { StatusBubble } from '../../shared/style'
 import { TransactionStatusTooltip } from '../transaction-status-tooltip'
 import { Tooltip } from '../../shared'
 import { serializedTimeDeltaToJSDate } from '../../../utils/datetime-utils'
-import { useGetDefaultNetworksQuery } from '../../../common/slices/api.slice'
+import { useGetNetworkQuery } from '../../../common/slices/api.slice'
 
 export interface Props {
   transaction: SerializableTransactionInfo
-  selectedNetwork?: BraveWallet.NetworkInfo
   accounts: WalletAccountType[]
   visibleTokens: BraveWallet.BlockchainToken[]
   transactionSpotPrices: BraveWallet.AssetPrice[]
@@ -74,7 +73,6 @@ const TransactionDetailPanel = (props: Props) => {
   // props
   const {
     transaction,
-    selectedNetwork,
     accounts,
     defaultCurrencies,
     onBack,
@@ -90,11 +88,10 @@ const TransactionDetailPanel = (props: Props) => {
   } = useSelector((state: { wallet: WalletState }) => state.wallet)
 
   // queries
-  const { data: defaultNetworks = [] } = useGetDefaultNetworksQuery()
-
-  const transactionsNetwork = React.useMemo(() => {
-    return getNetworkFromTXDataUnion(transaction.txDataUnion, defaultNetworks, selectedNetwork)
-  }, [defaultNetworks, transaction, selectedNetwork])
+  const { data: transactionsNetwork } = useGetNetworkQuery({
+    chainId: transaction.chainId,
+    coin: getCoinFromTxDataUnion(transaction.txDataUnion)
+  })
 
   const transactionsList = React.useMemo(() => {
     return accounts.map((account) => {

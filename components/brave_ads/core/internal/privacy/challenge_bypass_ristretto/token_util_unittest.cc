@@ -9,11 +9,11 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/token_unittest_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::privacy::cbr {
 
-TEST(BatAdsTokenUtilTest, TokensToRawTokens) {
+TEST(BraveAdsTokenUtilTest, TokensToRawTokens) {
   // Arrange
   const std::vector<Token> tokens = GetTokens();
 
@@ -31,7 +31,7 @@ TEST(BatAdsTokenUtilTest, TokensToRawTokens) {
   EXPECT_EQ(expected_raw_tokens, raw_tokens);
 }
 
-TEST(BatAdsTokenUtilTest, EmptyTokensToRawTokens) {
+TEST(BraveAdsTokenUtilTest, EmptyTokensToRawTokens) {
   // Arrange
   const std::vector<Token> tokens;
 

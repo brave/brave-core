@@ -25,11 +25,11 @@
 namespace ledger::gemini {
 
 Gemini::Gemini(LedgerImpl& ledger)
-    : connect_wallet_(std::make_unique<ConnectGeminiWallet>(ledger)),
-      get_wallet_(std::make_unique<GetGeminiWallet>(ledger)),
-      transfer_(std::make_unique<GeminiTransfer>(ledger)),
-      gemini_server_(std::make_unique<endpoint::GeminiServer>(ledger)),
-      ledger_(ledger) {}
+    : ledger_(ledger),
+      connect_wallet_(ledger),
+      get_wallet_(ledger),
+      transfer_(ledger),
+      gemini_server_(ledger) {}
 
 Gemini::~Gemini() = default;
 
@@ -55,10 +55,10 @@ void Gemini::StartContribution(const std::string& contribution_id,
 
   const double fee = amount * 0.05;
 
-  transfer_->Run(contribution_id, info->address, amount - fee,
-                 base::BindOnce(&Gemini::ContributionCompleted,
-                                base::Unretained(this), std::move(callback),
-                                contribution_id, fee, info->publisher_key));
+  transfer_.Run(contribution_id, info->address, amount - fee,
+                base::BindOnce(&Gemini::ContributionCompleted,
+                               base::Unretained(this), std::move(callback),
+                               contribution_id, fee, info->publisher_key));
 }
 
 void Gemini::ContributionCompleted(ledger::LegacyResultCallback callback,
@@ -88,8 +88,7 @@ void Gemini::FetchBalance(FetchBalanceCallback callback) {
   auto url_callback = base::BindOnce(
       &Gemini::OnFetchBalance, base::Unretained(this), std::move(callback));
 
-  gemini_server_->post_balance()->Request(wallet->token,
-                                          std::move(url_callback));
+  gemini_server_.post_balance().Request(wallet->token, std::move(url_callback));
 }
 
 void Gemini::OnFetchBalance(FetchBalanceCallback callback,
@@ -122,19 +121,19 @@ void Gemini::TransferFunds(double amount,
                            const std::string& address,
                            const std::string& contribution_id,
                            LegacyResultCallback callback) {
-  transfer_->Run(contribution_id, address, amount,
-                 base::BindOnce([](LegacyResultCallback callback,
-                                   mojom::Result result) { callback(result); },
-                                std::move(callback)));
+  transfer_.Run(contribution_id, address, amount,
+                base::BindOnce([](LegacyResultCallback callback,
+                                  mojom::Result result) { callback(result); },
+                               std::move(callback)));
 }
 
 void Gemini::ConnectWallet(const base::flat_map<std::string, std::string>& args,
                            ledger::ConnectExternalWalletCallback callback) {
-  connect_wallet_->Run(args, std::move(callback));
+  connect_wallet_.Run(args, std::move(callback));
 }
 
 void Gemini::GetWallet(GetExternalWalletCallback callback) {
-  get_wallet_->Run(std::move(callback));
+  get_wallet_.Run(std::move(callback));
 }
 
 void Gemini::SaveTransferFee(const std::string& contribution_id,
@@ -186,7 +185,7 @@ void Gemini::OnTransferFeeCompleted(const std::string& contribution_id,
 void Gemini::TransferFee(const std::string& contribution_id,
                          const double amount,
                          const int attempts) {
-  transfer_->Run(
+  transfer_.Run(
       contribution_id, GetFeeAddress(), amount,
       base::BindOnce(&Gemini::OnTransferFeeCompleted, base::Unretained(this),
                      contribution_id, attempts));

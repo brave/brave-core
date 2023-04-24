@@ -28,7 +28,6 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens.h"
 #include "brave/components/brave_ads/core/internal/account/utility/refill_unblinded_tokens/refill_unblinded_tokens.h"
-#include "brave/components/brave_ads/core/internal/account/wallet/wallet.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -38,7 +37,6 @@
 namespace brave_ads {
 
 namespace {
-
 bool ShouldResetIssuersAndConfirmations() {
   return ShouldRewardUser() && AdsClientHelper::GetInstance()->GetBooleanPref(
                                    prefs::kShouldMigrateVerifiedRewardsUser);
@@ -47,20 +45,10 @@ bool ShouldResetIssuersAndConfirmations() {
 }  // namespace
 
 Account::Account(privacy::TokenGeneratorInterface* token_generator)
-    : token_generator_(token_generator),
-      confirmations_(std::make_unique<Confirmations>(token_generator_)),
-      issuers_(std::make_unique<Issuers>()),
-      redeem_unblinded_payment_tokens_(
-          std::make_unique<RedeemUnblindedPaymentTokens>()),
-      refill_unblinded_tokens_(
-          std::make_unique<RefillUnblindedTokens>(token_generator_)),
-      wallet_(std::make_unique<Wallet>()) {
+    : token_generator_(token_generator) {
   AdsClientHelper::AddObserver(this);
 
-  confirmations_->SetDelegate(this);
-  issuers_->SetDelegate(this);
-  redeem_unblinded_payment_tokens_->SetDelegate(this);
-  refill_unblinded_tokens_->SetDelegate(this);
+  Initialize();
 }
 
 Account::~Account() {
@@ -88,7 +76,7 @@ void Account::SetWallet(const std::string& payment_id,
 
   const WalletInfo last_wallet_copy = GetWallet();
 
-  if (!wallet_->Set(payment_id, *raw_recovery_seed)) {
+  if (!wallet_.Set(payment_id, *raw_recovery_seed)) {
     BLOG(0, "Failed to set wallet");
     return NotifyInvalidWallet();
   }
@@ -115,7 +103,7 @@ void Account::SetWallet(const std::string& payment_id,
 }
 
 const WalletInfo& Account::GetWallet() const {
-  return wallet_->Get();
+  return wallet_.Get();
 }
 
 void Account::Process() {
@@ -136,7 +124,7 @@ void Account::Deposit(const std::string& creative_instance_id,
   DCHECK_NE(AdType::kUndefined, ad_type);
   DCHECK_NE(ConfirmationType::kUndefined, confirmation_type);
 
-  std::unique_ptr<DepositInterface> deposit =
+  const std::unique_ptr<DepositInterface> deposit =
       DepositsFactory::Build(ad_type, confirmation_type);
   if (!deposit) {
     return;
@@ -159,6 +147,22 @@ void Account::GetStatement(GetStatementOfAccountsCallback callback) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+void Account::Initialize() {
+  confirmations_ = std::make_unique<Confirmations>(token_generator_);
+  confirmations_->SetDelegate(this);
+
+  issuers_ = std::make_unique<Issuers>();
+  issuers_->SetDelegate(this);
+
+  redeem_unblinded_payment_tokens_ =
+      std::make_unique<RedeemUnblindedPaymentTokens>();
+  redeem_unblinded_payment_tokens_->SetDelegate(this);
+
+  refill_unblinded_tokens_ =
+      std::make_unique<RefillUnblindedTokens>(token_generator_);
+  refill_unblinded_tokens_->SetDelegate(this);
+}
 
 void Account::MaybeGetIssuers() const {
   if (!ShouldRewardUser()) {
@@ -283,20 +287,9 @@ void Account::MaybeResetIssuersAndConfirmations() {
     return;
   }
 
-  confirmations_ = std::make_unique<Confirmations>(token_generator_);
-  confirmations_->SetDelegate(this);
+  Initialize();
+
   ResetConfirmations();
-
-  issuers_ = std::make_unique<Issuers>();
-  issuers_->SetDelegate(this);
-
-  redeem_unblinded_payment_tokens_ =
-      std::make_unique<RedeemUnblindedPaymentTokens>();
-  redeem_unblinded_payment_tokens_->SetDelegate(this);
-
-  refill_unblinded_tokens_ =
-      std::make_unique<RefillUnblindedTokens>(token_generator_);
-  refill_unblinded_tokens_->SetDelegate(this);
 
   ResetIssuers();
 

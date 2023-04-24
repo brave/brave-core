@@ -11,21 +11,19 @@
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "url/gurl.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsGetSignedTokensUrlRequestBuilderTest : public UnitTestBase {};
+class BraveAdsGetSignedTokensUrlRequestBuilderTest : public UnitTestBase {};
 
-TEST_F(BatAdsGetSignedTokensUrlRequestBuilderTest, BuildUrl) {
+TEST_F(BraveAdsGetSignedTokensUrlRequestBuilderTest, BuildUrl) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kStaging;
 
-  const std::string nonce = "716c3381-66e6-46e4-962f-15d01455b5b9";
-
-  GetSignedTokensUrlRequestBuilder url_request_builder(GetWalletForTesting(),
-                                                       nonce);
+  GetSignedTokensUrlRequestBuilder url_request_builder(
+      GetWalletForTesting(), /*nonce*/ "716c3381-66e6-46e4-962f-15d01455b5b9");
 
   // Act
   mojom::UrlRequestInfoPtr const url_request = url_request_builder.Build();

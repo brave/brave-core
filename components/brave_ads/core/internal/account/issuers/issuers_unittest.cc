@@ -16,14 +16,14 @@
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
 using ::testing::_;
 using ::testing::NiceMock;
 
-class BatAdsIssuersTest : public UnitTestBase {
+class BraveAdsIssuersTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -36,7 +36,7 @@ class BatAdsIssuersTest : public UnitTestBase {
   NiceMock<IssuersDelegateMock> issuers_delegate_mock_;
 };
 
-TEST_F(BatAdsIssuersTest, FetchIssuers) {
+TEST_F(BraveAdsIssuersTest, FetchIssuers) {
   // Arrange
   MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
 
@@ -58,7 +58,7 @@ TEST_F(BatAdsIssuersTest, FetchIssuers) {
   // Assert
 }
 
-TEST_F(BatAdsIssuersTest, FetchIssuersInvalidJsonResponse) {
+TEST_F(BraveAdsIssuersTest, FetchIssuersInvalidJsonResponse) {
   // Arrange
   const URLResponseMap url_responses = {
       {// Issuers request
@@ -84,7 +84,7 @@ TEST_F(BatAdsIssuersTest, FetchIssuersInvalidJsonResponse) {
   EXPECT_EQ(expected_issuers, *issuers);
 }
 
-TEST_F(BatAdsIssuersTest, FetchIssuersNonHttpOkResponse) {
+TEST_F(BraveAdsIssuersTest, FetchIssuersNonHttpOkResponse) {
   // Arrange
   const URLResponseMap url_responses = {
       {// Issuers request

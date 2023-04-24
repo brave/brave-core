@@ -12,25 +12,25 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "url/gurl.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsMediaPermissionRuleTest : public UnitTestBase {
+class BraveAdsMediaPermissionRuleTest : public UnitTestBase {
  protected:
   MediaPermissionRule permission_rule_;
 };
 
-TEST_F(BatAdsMediaPermissionRuleTest, AllowAdIfMediaIsNotPlaying) {
+TEST_F(BraveAdsMediaPermissionRuleTest, AllowAdIfMediaIsNotPlaying) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsMediaPermissionRuleTest, AllowAdIfMediaIsStoppedForSingleTab) {
+TEST_F(BraveAdsMediaPermissionRuleTest, AllowAdIfMediaIsStoppedForSingleTab) {
   // Arrange
   NotifyTabDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
@@ -43,10 +43,10 @@ TEST_F(BatAdsMediaPermissionRuleTest, AllowAdIfMediaIsStoppedForSingleTab) {
   NotifyTabDidStopPlayingMedia(/*id*/ 1);
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsMediaPermissionRuleTest, AllowAdIfMediaIsStoppedOnMultipleTabs) {
+TEST_F(BraveAdsMediaPermissionRuleTest, AllowAdIfMediaIsStoppedOnMultipleTabs) {
   // Arrange
   NotifyTabDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
@@ -61,10 +61,10 @@ TEST_F(BatAdsMediaPermissionRuleTest, AllowAdIfMediaIsStoppedOnMultipleTabs) {
   NotifyTabDidStopPlayingMedia(/*id*/ 2);
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsMediaPermissionRuleTest,
+TEST_F(BraveAdsMediaPermissionRuleTest,
        AllowAdIfMediaIsPlayingOnMultipleTabsButStoppedForVisibleTab) {
   // Arrange
   NotifyTabDidChange(
@@ -79,10 +79,10 @@ TEST_F(BatAdsMediaPermissionRuleTest,
   NotifyTabDidStopPlayingMedia(/*id*/ 1);
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsMediaPermissionRuleTest,
+TEST_F(BraveAdsMediaPermissionRuleTest,
        DoNotAllowAdIfMediaIsPlayingOnVisibleTab) {
   // Arrange
   NotifyTabDidChange(
@@ -94,10 +94,10 @@ TEST_F(BatAdsMediaPermissionRuleTest,
   NotifyTabDidStartPlayingMedia(/*id*/ 1);
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsMediaPermissionRuleTest,
+TEST_F(BraveAdsMediaPermissionRuleTest,
        AlwaysAllowAdIfMediaIsPlayingOnVisibleTabIfPermissionRuleIsDisabled) {
   // Arrange
   base::FieldTrialParams params;
@@ -121,10 +121,10 @@ TEST_F(BatAdsMediaPermissionRuleTest,
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsMediaPermissionRuleTest,
+TEST_F(BraveAdsMediaPermissionRuleTest,
        DoNotAllowAdIfMediaIsPlayingOnMultipleTabs) {
   // Arrange
   NotifyTabDidChange(
@@ -137,10 +137,10 @@ TEST_F(BatAdsMediaPermissionRuleTest,
   NotifyTabDidStartPlayingMedia(/*id*/ 2);
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsMediaPermissionRuleTest,
+TEST_F(BraveAdsMediaPermissionRuleTest,
        DoNotAllowAdIfMediaIsPlayingOnMultipleTabsButStoppedForOccludedTab) {
   // Arrange
   NotifyTabDidChange(
@@ -155,7 +155,7 @@ TEST_F(BatAdsMediaPermissionRuleTest,
   NotifyTabDidStopPlayingMedia(/*id*/ 2);
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 }  // namespace brave_ads

@@ -12,11 +12,11 @@
 #include "brave/components/brave_ads/core/internal/ads/promoted_content_ad_features.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::promoted_content_ads {
 
-class BatAdsPromotedContentAdsPerDayPermissionRuleTest : public UnitTestBase {
+class BraveAdsPromotedContentAdsPerDayPermissionRuleTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -33,17 +33,17 @@ class BatAdsPromotedContentAdsPerDayPermissionRuleTest : public UnitTestBase {
   AdsPerDayPermissionRule permission_rule_;
 };
 
-TEST_F(BatAdsPromotedContentAdsPerDayPermissionRuleTest,
+TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
        AllowAdIfThereIsNoAdsHistory) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsPromotedContentAdsPerDayPermissionRuleTest,
+TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
        AllowAdIfDoesNotExceedCap) {
   // Arrange
 
@@ -52,10 +52,10 @@ TEST_F(BatAdsPromotedContentAdsPerDayPermissionRuleTest,
                  /*count*/ kMaximumAdsPerDay.Get() - 1);
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsPromotedContentAdsPerDayPermissionRuleTest,
+TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
        AllowAdIfDoesNotExceedCapAfter1Day) {
   // Arrange
   RecordAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed,
@@ -65,10 +65,10 @@ TEST_F(BatAdsPromotedContentAdsPerDayPermissionRuleTest,
   AdvanceClockBy(base::Days(1));
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsPromotedContentAdsPerDayPermissionRuleTest,
+TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
        DoNotAllowAdIfExceedsCapWithin1Day) {
   // Arrange
   RecordAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed,
@@ -78,7 +78,7 @@ TEST_F(BatAdsPromotedContentAdsPerDayPermissionRuleTest,
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 }  // namespace brave_ads::promoted_content_ads

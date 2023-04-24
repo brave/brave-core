@@ -25,9 +25,9 @@ GreaselionIsGreaselionExtensionFunction::Run() {
     return RespondNow(WithArguments(false));
   }
 
-  std::unique_ptr<greaselion::IsGreaselionExtension::Params> params(
-      greaselion::IsGreaselionExtension::Params::Create(args()));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
+  absl::optional<greaselion::IsGreaselionExtension::Params> params =
+      greaselion::IsGreaselionExtension::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params);
 
   bool result = greaselion_service->IsGreaselionExtension(params->id);
   return RespondNow(WithArguments(result));

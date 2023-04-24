@@ -33,7 +33,7 @@
 #include "components/favicon_base/favicon_types.h"
 #include "components/keyed_service/core/service_access_type.h"
 #include "components/strings/grit/components_strings.h"
-#include "ios/chrome/browser/bookmarks/bookmark_model_factory.h"
+#include "ios/chrome/browser/bookmarks/local_or_syncable_bookmark_model_factory.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
 #include "ios/chrome/browser/favicon/favicon_service_factory.h"
@@ -456,11 +456,14 @@ BookmarkFaviconFetcher::BookmarkFaviconFetcher(
 }
 
 void BookmarkFaviconFetcher::ExportBookmarks() {
-  ExtractUrls(ios::BookmarkModelFactory::GetForBrowserState(browser_state_)
+  ExtractUrls(ios::LocalOrSyncableBookmarkModelFactory::GetForBrowserState(
+                  browser_state_)
                   ->bookmark_bar_node());
-  ExtractUrls(ios::BookmarkModelFactory::GetForBrowserState(browser_state_)
+  ExtractUrls(ios::LocalOrSyncableBookmarkModelFactory::GetForBrowserState(
+                  browser_state_)
                   ->other_node());
-  ExtractUrls(ios::BookmarkModelFactory::GetForBrowserState(browser_state_)
+  ExtractUrls(ios::LocalOrSyncableBookmarkModelFactory::GetForBrowserState(
+                  browser_state_)
                   ->mobile_node());
   if (!bookmark_urls_.empty())
     FetchNextFavicon();
@@ -490,7 +493,8 @@ void BookmarkFaviconFetcher::ExecuteWriter() {
           &Writer::DoWrite,
           base::MakeRefCounted<Writer>(
               codec.Encode(
-                  ios::BookmarkModelFactory::GetForBrowserState(browser_state_),
+                  ios::LocalOrSyncableBookmarkModelFactory::GetForBrowserState(
+                      browser_state_),
                   /*sync_metadata_str=*/std::string()),
               path_, favicons_map_.release(), observer_)));
   browser_state_->RemoveUserData(kBookmarkFaviconFetcherKey);

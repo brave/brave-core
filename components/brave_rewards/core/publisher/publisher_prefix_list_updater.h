@@ -8,7 +8,6 @@
 
 #include <functional>
 #include <map>
-#include <memory>
 #include <string>
 
 #include "base/memory/raw_ref.h"
@@ -58,7 +57,7 @@ class PublisherPrefixListUpdater {
   bool auto_update_ = false;
   int retry_count_ = 0;
   PublisherPrefixListUpdatedCallback on_updated_callback_;
-  std::unique_ptr<endpoint::RewardsServer> rewards_server_;
+  endpoint::RewardsServer rewards_server_;
 };
 
 }  // namespace publisher

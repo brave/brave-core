@@ -250,7 +250,10 @@ public class BraveRewardsPanel
         mAnchorView = anchorView;
         mPopupWindow = new PopupWindow(anchorView.getContext());
         mPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mPopupWindow.setBackgroundDrawable(
+                ResourcesCompat.getDrawable(ContextUtils.getApplicationContext().getResources(),
+                        R.drawable.rewards_panel_background, null));
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mPopupWindow.setElevation(20);
         }

@@ -10,13 +10,13 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsNotificationAdInfoTest : public UnitTestBase {};
+class BraveAdsNotificationAdInfoTest : public UnitTestBase {};
 
-TEST_F(BatAdsNotificationAdInfoTest, IsValid) {
+TEST_F(BraveAdsNotificationAdInfoTest, IsValid) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
@@ -28,7 +28,7 @@ TEST_F(BatAdsNotificationAdInfoTest, IsValid) {
   EXPECT_TRUE(ad.IsValid());
 }
 
-TEST_F(BatAdsNotificationAdInfoTest, IsInvalid) {
+TEST_F(BraveAdsNotificationAdInfoTest, IsInvalid) {
   // Arrange
   const NotificationAdInfo ad;
 

@@ -1,7 +1,7 @@
 include_rules = [
   "+brave/common/importer",
   "+components/favicon_base",
-  "+components/os_crypt",
+  "+components/os_crypt/sync",
   "+components/password_manager/core/browser",
   "+components/password_manager/core/common",
   "+components/prefs",

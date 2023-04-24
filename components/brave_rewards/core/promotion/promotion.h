@@ -14,17 +14,16 @@
 #include "base/memory/raw_ref.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/attestation/attestation_impl.h"
-#include "brave/components/brave_rewards/core/credentials/credentials_factory.h"
+#include "brave/components/brave_rewards/core/credentials/credentials_promotion.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotion_server.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
+#include "brave/components/brave_rewards/core/promotion/promotion_transfer.h"
 
 namespace ledger {
 class LedgerImpl;
 
 namespace promotion {
-
-class PromotionTransfer;
 
 class Promotion {
  public:
@@ -128,11 +127,11 @@ class Promotion {
 
   void OnLastCheckTimerElapsed();
 
-  std::unique_ptr<ledger::attestation::AttestationImpl> attestation_;
-  std::unique_ptr<PromotionTransfer> transfer_;
-  std::unique_ptr<credential::Credentials> credentials_;
-  std::unique_ptr<endpoint::PromotionServer> promotion_server_;
   const raw_ref<LedgerImpl> ledger_;
+  ledger::attestation::AttestationImpl attestation_;
+  PromotionTransfer transfer_;
+  credential::CredentialsPromotion credentials_;
+  endpoint::PromotionServer promotion_server_;
   base::OneShotTimer last_check_timer_;
   base::OneShotTimer retry_timer_;
 };

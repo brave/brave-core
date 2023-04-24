@@ -6,15 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TIMER_TIMER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TIMER_TIMER_H_
 
-#include <memory>
-
 #include "base/functional/callback.h"
 #include "base/location.h"
+#include "base/timer/wall_clock_timer.h"
 
 namespace base {
 class Time;
 class TimeDelta;
-class WallClockTimer;
 }  // namespace base
 
 namespace brave_ads {
@@ -56,7 +54,7 @@ class Timer final {
   bool Stop();
 
  private:
-  std::unique_ptr<base::WallClockTimer> timer_;
+  base::WallClockTimer timer_;
 };
 
 }  // namespace brave_ads

@@ -12,36 +12,36 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsNetworkConnectionPermissionRuleTest : public UnitTestBase {
+class BraveAdsNetworkConnectionPermissionRuleTest : public UnitTestBase {
  protected:
   NetworkConnectionPermissionRule permission_rule_;
 };
 
-TEST_F(BatAdsNetworkConnectionPermissionRuleTest, AllowAd) {
+TEST_F(BraveAdsNetworkConnectionPermissionRuleTest, AllowAd) {
   // Arrange
   MockIsNetworkConnectionAvailable(ads_client_mock_, true);
 
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsNetworkConnectionPermissionRuleTest, DoNotAllowAd) {
+TEST_F(BraveAdsNetworkConnectionPermissionRuleTest, DoNotAllowAd) {
   // Arrange
   MockIsNetworkConnectionAvailable(ads_client_mock_, false);
 
   // Act
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsNetworkConnectionPermissionRuleTest,
+TEST_F(BraveAdsNetworkConnectionPermissionRuleTest,
        AllowAdIfPermissionRuleIsDisabled) {
   // Arrange
   base::FieldTrialParams params;
@@ -60,7 +60,7 @@ TEST_F(BatAdsNetworkConnectionPermissionRuleTest,
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 }  // namespace brave_ads

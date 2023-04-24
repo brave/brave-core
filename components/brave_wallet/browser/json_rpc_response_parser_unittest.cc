@@ -327,9 +327,8 @@ TEST(JsonRpcResponseParserUnitTest, RPCResponse) {
        "result": "hi"
      })";
 
-  auto value = base::JSONReader::Read(json);
-  ASSERT_TRUE(value);
-  auto response = json_rpc_responses::RPCResponse::FromValue(*value);
+  base::Value::Dict value = base::test::ParseJsonDict(json);
+  auto response = json_rpc_responses::RPCResponse::FromValue(value);
   ASSERT_TRUE(response);
   EXPECT_EQ(response->jsonrpc, "2.0");
   EXPECT_EQ(response->id, base::Value(1));
@@ -346,9 +345,8 @@ TEST(JsonRpcResponseParserUnitTest, RPCResponse) {
          "message":"method does not exist"
        }
      })";
-  value = base::JSONReader::Read(error_json);
-  ASSERT_TRUE(value);
-  response = json_rpc_responses::RPCResponse::FromValue(*value);
+  value = base::test::ParseJsonDict(error_json);
+  response = json_rpc_responses::RPCResponse::FromValue(value);
   ASSERT_TRUE(response);
   EXPECT_EQ(response->jsonrpc, "2.0");
   EXPECT_EQ(response->id, base::Value(2));

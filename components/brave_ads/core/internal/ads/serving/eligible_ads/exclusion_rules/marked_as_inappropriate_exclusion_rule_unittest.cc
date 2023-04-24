@@ -10,16 +10,16 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsMarkedAsInappropriateExclusionRuleTest : public UnitTestBase {
+class BraveAdsMarkedAsInappropriateExclusionRuleTest : public UnitTestBase {
  protected:
   MarkedAsInappropriateExclusionRule exclusion_rule_;
 };
 
-TEST_F(BatAdsMarkedAsInappropriateExclusionRuleTest, AllowAd) {
+TEST_F(BraveAdsMarkedAsInappropriateExclusionRuleTest, AllowAd) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -28,10 +28,10 @@ TEST_F(BatAdsMarkedAsInappropriateExclusionRuleTest, AllowAd) {
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BatAdsMarkedAsInappropriateExclusionRuleTest, DoNotAllowAd) {
+TEST_F(BraveAdsMarkedAsInappropriateExclusionRuleTest, DoNotAllowAd) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -40,12 +40,12 @@ TEST_F(BatAdsMarkedAsInappropriateExclusionRuleTest, DoNotAllowAd) {
   AdContentInfo ad_content;
   ad_content.creative_set_id = kCreativeSetId;
   ad_content.is_flagged = false;
-  ClientStateManager::GetInstance()->ToggleMarkAdAsInappropriate(ad_content);
+  ClientStateManager::GetInstance().ToggleMarkAdAsInappropriate(ad_content);
 
   // Act
 
   // Assert
-  EXPECT_TRUE(exclusion_rule_.ShouldExclude(creative_ad));
+  EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
 }  // namespace brave_ads

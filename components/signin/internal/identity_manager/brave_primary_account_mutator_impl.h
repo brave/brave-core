@@ -17,6 +17,7 @@ class BravePrimaryAccountMutatorImpl : public PrimaryAccountMutatorImpl {
       ProfileOAuth2TokenService* token_service,
       PrimaryAccountManager* primary_account_manager,
       PrefService* pref_service,
+      SigninClient* signin_client,
       signin::AccountConsistencyMethod account_consistency);
   ~BravePrimaryAccountMutatorImpl() override;
 

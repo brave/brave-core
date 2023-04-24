@@ -47,8 +47,8 @@ bool ConversionQueueItemInfo::IsValid() const {
   // campaign_id and advertiser_id will be empty for legacy conversions migrated
   // from |ad_conversions.json| to |database.sqlite| and conversion_id will be
   // empty for non verifiable conversions
-  return !(creative_instance_id.empty() || creative_set_id.empty() ||
-           process_at.is_null());
+  return !creative_instance_id.empty() && !creative_set_id.empty() &&
+         !process_at.is_null();
 }
 
 }  // namespace brave_ads

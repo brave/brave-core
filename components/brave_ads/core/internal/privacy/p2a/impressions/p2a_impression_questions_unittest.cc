@@ -7,17 +7,16 @@
 
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::privacy::p2a {
 
-TEST(BatAdsP2AImpressionQuestionsTest, CreateAdImpressionQuestions) {
+TEST(BraveAdsP2AImpressionQuestionsTest, CreateAdImpressionQuestions) {
   // Arrange
-  const std::string segment = "technology & computing-software";
 
   // Act
-  const std::vector<std::string> questions =
-      CreateAdImpressionQuestions(segment);
+  const std::vector<std::string> questions = CreateAdImpressionQuestions(
+      /*segment*/ "technology & computing-software");
 
   // Assert
   const std::vector<std::string> expected_questions = {

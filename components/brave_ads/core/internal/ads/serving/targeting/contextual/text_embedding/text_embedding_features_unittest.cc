@@ -10,11 +10,11 @@
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::targeting {
 
-TEST(BatAdsTextEmbeddingFeaturesTest, IsEnabled) {
+TEST(BraveAdsTextEmbeddingFeaturesTest, IsEnabled) {
   // Arrange
   base::FieldTrialParams params;
   std::vector<base::test::FeatureRefAndParams> enabled_features;
@@ -32,7 +32,7 @@ TEST(BatAdsTextEmbeddingFeaturesTest, IsEnabled) {
   EXPECT_TRUE(IsTextEmbeddingEnabled());
 }
 
-TEST(BatAdsTextEmbeddingFeaturesTest, IsDisabled) {
+TEST(BraveAdsTextEmbeddingFeaturesTest, IsDisabled) {
   // Arrange
 
   // Act
@@ -41,7 +41,7 @@ TEST(BatAdsTextEmbeddingFeaturesTest, IsDisabled) {
   EXPECT_FALSE(IsTextEmbeddingEnabled());
 }
 
-TEST(BatAdsTextEmbeddingFeaturesTest, GetTextEmbeddingResourceVersion) {
+TEST(BraveAdsTextEmbeddingFeaturesTest, GetTextEmbeddingResourceVersion) {
   // Arrange
   base::FieldTrialParams params;
   params["resource_version"] = "0";
@@ -60,7 +60,7 @@ TEST(BatAdsTextEmbeddingFeaturesTest, GetTextEmbeddingResourceVersion) {
   EXPECT_EQ(0, kTextEmbeddingResourceVersion.Get());
 }
 
-TEST(BatAdsTextEmbeddingFeaturesTest, DefaultTextEmbeddingResourceVersion) {
+TEST(BraveAdsTextEmbeddingFeaturesTest, DefaultTextEmbeddingResourceVersion) {
   // Arrange
 
   // Act
@@ -69,7 +69,7 @@ TEST(BatAdsTextEmbeddingFeaturesTest, DefaultTextEmbeddingResourceVersion) {
   EXPECT_EQ(1, kTextEmbeddingResourceVersion.Get());
 }
 
-TEST(BatAdsTextEmbeddingFeaturesTest,
+TEST(BraveAdsTextEmbeddingFeaturesTest,
      DefaultTextEmbeddingResourceVersionWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
@@ -87,7 +87,7 @@ TEST(BatAdsTextEmbeddingFeaturesTest,
   EXPECT_EQ(1, kTextEmbeddingResourceVersion.Get());
 }
 
-TEST(BatAdsTextEmbeddingFeaturesTest, GetTextEmbeddingsHistorySize) {
+TEST(BraveAdsTextEmbeddingFeaturesTest, GetTextEmbeddingsHistorySize) {
   // Arrange
   base::FieldTrialParams params;
   params["history_size"] = "42";
@@ -106,7 +106,7 @@ TEST(BatAdsTextEmbeddingFeaturesTest, GetTextEmbeddingsHistorySize) {
   EXPECT_EQ(42, kTextEmbeddingHistorySize.Get());
 }
 
-TEST(BatAdsTextEmbeddingFeaturesTest, DefaultTextEmbeddingsHistorySize) {
+TEST(BraveAdsTextEmbeddingFeaturesTest, DefaultTextEmbeddingsHistorySize) {
   // Arrange
 
   // Act
@@ -115,7 +115,7 @@ TEST(BatAdsTextEmbeddingFeaturesTest, DefaultTextEmbeddingsHistorySize) {
   EXPECT_EQ(10, kTextEmbeddingHistorySize.Get());
 }
 
-TEST(BatAdsTextClassificationFeaturesTest,
+TEST(BraveAdsTextClassificationFeaturesTest,
      DefaultTextEmbeddingsHistorySizeWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;

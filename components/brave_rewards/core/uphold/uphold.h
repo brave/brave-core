@@ -9,7 +9,6 @@
 #include <stdint.h>
 
 #include <map>
-#include <memory>
 #include <set>
 #include <string>
 
@@ -19,26 +18,20 @@
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/endpoint/uphold/get_capabilities/get_capabilities.h"
 #include "brave/components/brave_rewards/core/endpoint/uphold/get_me/get_me.h"
+#include "brave/components/brave_rewards/core/endpoint/uphold/uphold_server.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/uphold/uphold_card.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_user.h"
-#include "brave/components/brave_rewards/core/wallet_provider/connect_external_wallet.h"
-#include "brave/components/brave_rewards/core/wallet_provider/get_external_wallet.h"
-#include "brave/components/brave_rewards/core/wallet_provider/transfer.h"
+#include "brave/components/brave_rewards/core/wallet_provider/uphold/connect_uphold_wallet.h"
+#include "brave/components/brave_rewards/core/wallet_provider/uphold/get_uphold_wallet.h"
+#include "brave/components/brave_rewards/core/wallet_provider/uphold/uphold_transfer.h"
 
 namespace ledger {
 class LedgerImpl;
 
-namespace endpoint {
-class UpholdServer;
-}
-
 namespace uphold {
 
-class UpholdCard;
-
 using FetchBalanceCallback = base::OnceCallback<void(mojom::Result, double)>;
-using CreateCardCallback =
-    base::OnceCallback<void(mojom::Result, std::string&& id)>;
 using endpoint::uphold::GetCapabilitiesCallback;
 using endpoint::uphold::GetMeCallback;
 
@@ -111,12 +104,12 @@ class Uphold {
 
   void RemoveTransferFee(const std::string& contribution_id);
 
-  std::unique_ptr<UpholdCard> card_;
-  std::unique_ptr<wallet_provider::ConnectExternalWallet> connect_wallet_;
-  std::unique_ptr<wallet_provider::GetExternalWallet> get_wallet_;
-  std::unique_ptr<wallet_provider::Transfer> transfer_;
-  std::unique_ptr<endpoint::UpholdServer> uphold_server_;
   const raw_ref<LedgerImpl> ledger_;
+  UpholdCard card_;
+  ConnectUpholdWallet connect_wallet_;
+  GetUpholdWallet get_wallet_;
+  UpholdTransfer transfer_;
+  endpoint::UpholdServer uphold_server_;
   std::map<std::string, base::OneShotTimer> transfer_fee_timers_;
 };
 

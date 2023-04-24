@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_API_API_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_API_API_H_
 
-#include <memory>
-
 #include "brave/components/brave_rewards/core/api/api_parameters.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
@@ -27,7 +25,7 @@ class API {
   void FetchParameters(ledger::GetRewardsParametersCallback callback);
 
  private:
-  std::unique_ptr<APIParameters> parameters_;
+  APIParameters parameters_;
 };
 
 }  // namespace api

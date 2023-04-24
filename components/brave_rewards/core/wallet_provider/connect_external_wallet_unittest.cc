@@ -38,8 +38,8 @@ class ConnectTestWallet : public wallet_provider::ConnectExternalWallet {
  private:
   const char* WalletType() const override { return "test"; }
 
-  void Authorize(OAuthInfo&&, ledger::ConnectExternalWalletCallback callback)
-      const override {
+  void Authorize(OAuthInfo&&,
+                 ledger::ConnectExternalWalletCallback callback) override {
     OnConnect(std::move(callback), "token", "address",
               Result(post_connect_result_));
   }

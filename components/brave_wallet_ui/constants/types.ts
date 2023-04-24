@@ -270,6 +270,8 @@ export interface WalletState {
   assetAutoDiscoveryCompleted: boolean
   isNftPinningFeatureEnabled: boolean
   isPanelV2FeatureEnabled: boolean
+  hidePortfolioGraph: boolean
+  hidePortfolioBalances: boolean
 }
 
 export interface PanelState {
@@ -562,6 +564,10 @@ export type SerializableTransactionInfo = Omit<
   }
   originInfo: SerializableOriginInfo | undefined
 }
+
+export type TransactionInfo =
+  | BraveWallet.TransactionInfo
+  | SerializableTransactionInfo
 
 export type SerializableAddSuggestTokenRequest = Omit<BraveWallet.AddSuggestTokenRequest, 'origin'> & {
   origin: SerializableOriginInfo

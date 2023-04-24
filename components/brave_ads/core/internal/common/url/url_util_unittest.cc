@@ -10,11 +10,11 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-TEST(BatAdsUrlUtilTest, HttpsSchemeIsSupported) {
+TEST(BraveAdsUrlUtilTest, HttpsSchemeIsSupported) {
   // Arrange
 
   // Act
@@ -23,7 +23,7 @@ TEST(BatAdsUrlUtilTest, HttpsSchemeIsSupported) {
   EXPECT_TRUE(SchemeIsSupported(GURL("https://foobar.com")));
 }
 
-TEST(BatAdsUrlUtilTest, HttpSchemeIsNotSupported) {
+TEST(BraveAdsUrlUtilTest, HttpSchemeIsNotSupported) {
   // Arrange
 
   // Act
@@ -32,7 +32,7 @@ TEST(BatAdsUrlUtilTest, HttpSchemeIsNotSupported) {
   EXPECT_FALSE(SchemeIsSupported(GURL("http://foobar.com")));
 }
 
-TEST(BatAdsUrlUtilTest, FooBarSchemeIsNotSupported) {
+TEST(BraveAdsUrlUtilTest, FooBarSchemeIsNotSupported) {
   // Arrange
 
   // Act
@@ -41,7 +41,7 @@ TEST(BatAdsUrlUtilTest, FooBarSchemeIsNotSupported) {
   EXPECT_FALSE(SchemeIsSupported(GURL("foobar://baz")));
 }
 
-TEST(BatAdsUrlUtilTest, BraveSchemeWithFooBarHostNameIsNotSupported) {
+TEST(BraveAdsUrlUtilTest, BraveSchemeWithFooBarHostNameIsNotSupported) {
   // Arrange
 
   // Act
@@ -50,7 +50,7 @@ TEST(BatAdsUrlUtilTest, BraveSchemeWithFooBarHostNameIsNotSupported) {
   EXPECT_FALSE(SchemeIsSupported(GURL("brave://foobar")));
 }
 
-TEST(BatAdsUrlUtilTest, BraveSchemeWithWalletHostNameIsSupported) {
+TEST(BraveAdsUrlUtilTest, BraveSchemeWithWalletHostNameIsSupported) {
   // Arrange
 
   // Act
@@ -59,7 +59,7 @@ TEST(BatAdsUrlUtilTest, BraveSchemeWithWalletHostNameIsSupported) {
   EXPECT_TRUE(SchemeIsSupported(GURL("brave://wallet")));
 }
 
-TEST(BatAdsUrlUtilTest, BraveSchemeWithWalletHostNameAndPathIsSupported) {
+TEST(BraveAdsUrlUtilTest, BraveSchemeWithWalletHostNameAndPathIsSupported) {
   // Arrange
 
   // Act
@@ -68,7 +68,7 @@ TEST(BatAdsUrlUtilTest, BraveSchemeWithWalletHostNameAndPathIsSupported) {
   EXPECT_TRUE(SchemeIsSupported(GURL("brave://wallet/foo")));
 }
 
-TEST(BatAdsUrlUtilTest, BraveSchemeWithSyncHostNameIsSupported) {
+TEST(BraveAdsUrlUtilTest, BraveSchemeWithSyncHostNameIsSupported) {
   // Arrange
 
   // Act
@@ -77,7 +77,7 @@ TEST(BatAdsUrlUtilTest, BraveSchemeWithSyncHostNameIsSupported) {
   EXPECT_TRUE(SchemeIsSupported(GURL("brave://sync")));
 }
 
-TEST(BatAdsUrlUtilTest, BraveSchemeWithSyncHostNameAndPathIsSupported) {
+TEST(BraveAdsUrlUtilTest, BraveSchemeWithSyncHostNameAndPathIsSupported) {
   // Arrange
 
   // Act
@@ -86,7 +86,7 @@ TEST(BatAdsUrlUtilTest, BraveSchemeWithSyncHostNameAndPathIsSupported) {
   EXPECT_TRUE(SchemeIsSupported(GURL("brave://sync/foo")));
 }
 
-TEST(BatAdsUrlUtilTest, BraveSchemeWithRewardsHostNameIsSupported) {
+TEST(BraveAdsUrlUtilTest, BraveSchemeWithRewardsHostNameIsSupported) {
   // Arrange
 
   // Act
@@ -95,7 +95,7 @@ TEST(BatAdsUrlUtilTest, BraveSchemeWithRewardsHostNameIsSupported) {
   EXPECT_TRUE(SchemeIsSupported(GURL("brave://rewards")));
 }
 
-TEST(BatAdsUrlUtilTest, BraveSchemeWithRewardsHostNameAndPathIsSupported) {
+TEST(BraveAdsUrlUtilTest, BraveSchemeWithRewardsHostNameAndPathIsSupported) {
   // Arrange
 
   // Act
@@ -104,7 +104,7 @@ TEST(BatAdsUrlUtilTest, BraveSchemeWithRewardsHostNameAndPathIsSupported) {
   EXPECT_TRUE(SchemeIsSupported(GURL("brave://rewards/foo")));
 }
 
-TEST(BatAdsUrlUtilTest,
+TEST(BraveAdsUrlUtilTest,
      BraveSchemeWithSettingsHostNameAndSearchEnginesPathIsSupported) {
   // Arrange
 
@@ -114,7 +114,7 @@ TEST(BatAdsUrlUtilTest,
   EXPECT_TRUE(SchemeIsSupported(GURL("brave://settings/searchEngines")));
 }
 
-TEST(BatAdsUrlUtilTest,
+TEST(BraveAdsUrlUtilTest,
      BraveSchemeWithSettingsHostNameAndSearchPathIsSupported) {
   // Arrange
 
@@ -124,7 +124,7 @@ TEST(BatAdsUrlUtilTest,
   EXPECT_TRUE(SchemeIsSupported(GURL("brave://settings/search")));
 }
 
-TEST(BatAdsUrlUtilTest,
+TEST(BraveAdsUrlUtilTest,
      BraveSchemeWithSettingsHostNameAndFooBarPathIsNotSupported) {
   // Arrange
 
@@ -134,7 +134,7 @@ TEST(BatAdsUrlUtilTest,
   EXPECT_FALSE(SchemeIsSupported(GURL("brave://settings/foobar")));
 }
 
-TEST(BatAdsUrlUtilTest, BraveSchemeWithSettingsHostNameIsNotSupported) {
+TEST(BraveAdsUrlUtilTest, BraveSchemeWithSettingsHostNameIsNotSupported) {
   // Arrange
 
   // Act
@@ -143,7 +143,7 @@ TEST(BatAdsUrlUtilTest, BraveSchemeWithSettingsHostNameIsNotSupported) {
   EXPECT_FALSE(SchemeIsSupported(GURL("brave://settings")));
 }
 
-TEST(BatAdsUrlUtilTest, MalformedUrlIsNotSupported) {
+TEST(BraveAdsUrlUtilTest, MalformedUrlIsNotSupported) {
   // Arrange
 
   // Act
@@ -152,7 +152,7 @@ TEST(BatAdsUrlUtilTest, MalformedUrlIsNotSupported) {
   EXPECT_FALSE(SchemeIsSupported(GURL("http://foobar.com/brave://wallet")));
 }
 
-TEST(BatAdsUrlUtilTest, UrlMatchesPatternWithNoWildcards) {
+TEST(BraveAdsUrlUtilTest, UrlMatchesPatternWithNoWildcards) {
   // Arrange
 
   // Act
@@ -162,7 +162,7 @@ TEST(BatAdsUrlUtilTest, UrlMatchesPatternWithNoWildcards) {
                               /*pattern*/ "https://www.foo.com/"));
 }
 
-TEST(BatAdsUrlUtilTest, UrlWithPathMatchesPatternWithNoWildcards) {
+TEST(BraveAdsUrlUtilTest, UrlWithPathMatchesPatternWithNoWildcards) {
   // Arrange
 
   // Act
@@ -172,7 +172,7 @@ TEST(BatAdsUrlUtilTest, UrlWithPathMatchesPatternWithNoWildcards) {
                               /*pattern*/ "https://www.foo.com/bar"));
 }
 
-TEST(BatAdsUrlUtilTest, UrlDoesNotMatchPattern) {
+TEST(BraveAdsUrlUtilTest, UrlDoesNotMatchPattern) {
   // Arrange
 
   // Act
@@ -182,7 +182,7 @@ TEST(BatAdsUrlUtilTest, UrlDoesNotMatchPattern) {
       MatchUrlPattern(GURL("https://www.foo.com/"), /*pattern*/ "www.foo.com"));
 }
 
-TEST(BatAdsUrlUtilTest, UrlDoesNotMatchPatternWithMissingEmptyPath) {
+TEST(BraveAdsUrlUtilTest, UrlDoesNotMatchPatternWithMissingEmptyPath) {
   // Arrange
 
   // Act
@@ -192,7 +192,7 @@ TEST(BatAdsUrlUtilTest, UrlDoesNotMatchPatternWithMissingEmptyPath) {
                                /*pattern*/ "https://www.foo.com"));
 }
 
-TEST(BatAdsUrlUtilTest, UrlMatchesEndWildcardPattern) {
+TEST(BraveAdsUrlUtilTest, UrlMatchesEndWildcardPattern) {
   // Arrange
 
   // Act
@@ -202,7 +202,7 @@ TEST(BatAdsUrlUtilTest, UrlMatchesEndWildcardPattern) {
                               /*pattern*/ "https://www.foo.com/bar*"));
 }
 
-TEST(BatAdsUrlUtilTest, UrlMatchesMidWildcardPattern) {
+TEST(BraveAdsUrlUtilTest, UrlMatchesMidWildcardPattern) {
   // Arrange
 
   // Act
@@ -212,7 +212,7 @@ TEST(BatAdsUrlUtilTest, UrlMatchesMidWildcardPattern) {
                               /*pattern*/ "https://www.foo.com/woo*hoo"));
 }
 
-TEST(BatAdsUrlUtilTest, UrlDoesNotMatchMidWildcardPattern) {
+TEST(BraveAdsUrlUtilTest, UrlDoesNotMatchMidWildcardPattern) {
   // Arrange
 
   // Act
@@ -222,7 +222,7 @@ TEST(BatAdsUrlUtilTest, UrlDoesNotMatchMidWildcardPattern) {
                                /*pattern*/ "https://www.foo.com/woo*hoo"));
 }
 
-TEST(BatAdsUrlUtilTest, SameDomainOrHost) {
+TEST(BraveAdsUrlUtilTest, SameDomainOrHost) {
   // Arrange
 
   // Act
@@ -232,7 +232,7 @@ TEST(BatAdsUrlUtilTest, SameDomainOrHost) {
                                GURL("https://subdomain.foo.com/bar")));
 }
 
-TEST(BatAdsUrlUtilTest, NotSameDomainOrHost) {
+TEST(BraveAdsUrlUtilTest, NotSameDomainOrHost) {
   // Arrange
 
   // Act
@@ -242,7 +242,7 @@ TEST(BatAdsUrlUtilTest, NotSameDomainOrHost) {
                                 GURL("https://subdomain.bar.com/foo")));
 }
 
-TEST(BatAdsUrlUtilTest, SameDomainOrHostForUrlWithNoSubdomain) {
+TEST(BraveAdsUrlUtilTest, SameDomainOrHostForUrlWithNoSubdomain) {
   // Arrange
 
   // Act
@@ -252,7 +252,7 @@ TEST(BatAdsUrlUtilTest, SameDomainOrHostForUrlWithNoSubdomain) {
                                GURL("https://foo.com/bar")));
 }
 
-TEST(BatAdsUrlUtilTest, NotSameDomainOrHostForUrlWithNoSubdomain) {
+TEST(BraveAdsUrlUtilTest, NotSameDomainOrHostForUrlWithNoSubdomain) {
   // Arrange
 
   // Act
@@ -262,7 +262,7 @@ TEST(BatAdsUrlUtilTest, NotSameDomainOrHostForUrlWithNoSubdomain) {
                                 GURL("https://bar.com/foo")));
 }
 
-TEST(BatAdsUrlUtilTest, SameDomainOrHostForUrlWithRef) {
+TEST(BraveAdsUrlUtilTest, SameDomainOrHostForUrlWithRef) {
   // Arrange
 
   // Act
@@ -272,7 +272,7 @@ TEST(BatAdsUrlUtilTest, SameDomainOrHostForUrlWithRef) {
                                GURL("https://foo.com/bar")));
 }
 
-TEST(BatAdsUrlUtilTest, NotSameDomainOrHostForUrlWithRef) {
+TEST(BraveAdsUrlUtilTest, NotSameDomainOrHostForUrlWithRef) {
   // Arrange
 
   // Act
@@ -282,7 +282,7 @@ TEST(BatAdsUrlUtilTest, NotSameDomainOrHostForUrlWithRef) {
                                 GURL("https://bar.com/foo")));
 }
 
-TEST(BatAdsUrlUtilTest, DomainOrHostExists) {
+TEST(BraveAdsUrlUtilTest, DomainOrHostExists) {
   // Arrange
   const std::vector<GURL> urls = {GURL("https://foo.com"),
                                   GURL("https://bar.com")};
@@ -293,7 +293,7 @@ TEST(BatAdsUrlUtilTest, DomainOrHostExists) {
   EXPECT_TRUE(DomainOrHostExists(urls, GURL("https://bar.com/foo")));
 }
 
-TEST(BatAdsUrlUtilTest, DomainOrHostDoesNotExist) {
+TEST(BraveAdsUrlUtilTest, DomainOrHostDoesNotExist) {
   // Arrange
   const std::vector<GURL> urls = {GURL("https://foo.com"),
                                   GURL("https://bar.com")};

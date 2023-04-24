@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_REWARDS_REWARDS_SERVER_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_REWARDS_REWARDS_SERVER_H_
 
-#include <memory>
-
 #include "brave/components/brave_rewards/core/endpoint/rewards/get_prefix_list/get_prefix_list.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
@@ -21,10 +19,10 @@ class RewardsServer {
   explicit RewardsServer(LedgerImpl& ledger);
   ~RewardsServer();
 
-  rewards::GetPrefixList* get_prefix_list() const;
+  rewards::GetPrefixList& get_prefix_list() { return get_prefix_list_; }
 
  private:
-  std::unique_ptr<rewards::GetPrefixList> get_prefix_list_;
+  rewards::GetPrefixList get_prefix_list_;
 };
 
 }  // namespace endpoint

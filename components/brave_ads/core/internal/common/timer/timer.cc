@@ -9,16 +9,12 @@
 #include <cstdint>
 #include <utility>
 
-#include "base/check.h"
 #include "base/time/time.h"
-#include "base/timer/wall_clock_timer.h"
 #include "brave_base/random.h"
 
 namespace brave_ads {
 
-Timer::Timer() : timer_(std::make_unique<base::WallClockTimer>()) {
-  DCHECK(timer_);
-}
+Timer::Timer() = default;
 
 Timer::~Timer() {
   Stop();
@@ -30,7 +26,7 @@ base::Time Timer::Start(const base::Location& location,
   Stop();
 
   const base::Time fire_at = base::Time::Now() + delay;
-  timer_->Start(location, fire_at, std::move(user_task));
+  timer_.Start(location, fire_at, std::move(user_task));
   return fire_at;
 }
 
@@ -46,7 +42,7 @@ base::Time Timer::StartWithPrivacy(const base::Location& location,
 }
 
 bool Timer::IsRunning() const {
-  return timer_->IsRunning();
+  return timer_.IsRunning();
 }
 
 bool Timer::Stop() {
@@ -54,7 +50,7 @@ bool Timer::Stop() {
     return false;
   }
 
-  timer_->Stop();
+  timer_.Stop();
 
   return true;
 }

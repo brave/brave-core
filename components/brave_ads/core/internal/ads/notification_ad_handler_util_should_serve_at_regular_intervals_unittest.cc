@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -77,26 +77,26 @@ const ParamInfo kTests[] = {
 
 }  // namespace
 
-class BatAdsNotificationAdUtilShouldServeAtRegularIntervalsTest
+class BraveAdsNotificationAdUtilShouldServeAtRegularIntervalsTest
     : public UnitTestBase,
       public ::testing::WithParamInterface<ParamInfo> {
  protected:
   void SetUpMocks() override {
     const ParamInfo param = GetParam();
 
-    ads_client_mock_->SetBooleanPref(prefs::kEnabled, param.is_enabled);
+    ads_client_mock_.SetBooleanPref(prefs::kEnabled, param.is_enabled);
 
     MockIsBrowserActive(ads_client_mock_, param.is_browser_active);
 
     MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
         ads_client_mock_, param.can_show_while_browser_is_backgrounded);
 
-    ads_client_mock_->SetInt64Pref(prefs::kMaximumNotificationAdsPerHour,
-                                   param.ads_per_hour);
+    ads_client_mock_.SetInt64Pref(prefs::kMaximumNotificationAdsPerHour,
+                                  param.ads_per_hour);
   }
 };
 
-TEST_P(BatAdsNotificationAdUtilShouldServeAtRegularIntervalsTest,
+TEST_P(BraveAdsNotificationAdUtilShouldServeAtRegularIntervalsTest,
        NotificationAdHandler) {
   // Arrange
   const ParamInfo param = GetParam();
@@ -138,7 +138,7 @@ std::string TestParamToString(::testing::TestParamInfo<ParamInfo> test_param) {
 
 INSTANTIATE_TEST_SUITE_P(
     ,
-    BatAdsNotificationAdUtilShouldServeAtRegularIntervalsTest,
+    BraveAdsNotificationAdUtilShouldServeAtRegularIntervalsTest,
     testing::ValuesIn(kTests),
     TestParamToString);
 

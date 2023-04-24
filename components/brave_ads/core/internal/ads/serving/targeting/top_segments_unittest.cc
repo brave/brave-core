@@ -34,7 +34,7 @@
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "url/gurl.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::targeting {
 
@@ -108,7 +108,7 @@ void ProcessEpsilonGreedyBandit() {
 
 }  // namespace
 
-class BatAdsTopSegmentsTest
+class BraveAdsTopSegmentsTest
     : public UnitTestBase,
       public ::testing::WithParamInterface<ModelCombinationsParamInfo> {
  protected:
@@ -121,8 +121,8 @@ class BatAdsTopSegmentsTest
 
     purchase_intent_resource_ = std::make_unique<resource::PurchaseIntent>();
     purchase_intent_resource_->Load();
-    purchase_intent_processor_ = std::make_unique<processor::PurchaseIntent>(
-        purchase_intent_resource_.get());
+    purchase_intent_processor_ =
+        std::make_unique<processor::PurchaseIntent>(*purchase_intent_resource_);
 
     text_classification_resource_ =
         std::make_unique<resource::TextClassification>();
@@ -130,7 +130,7 @@ class BatAdsTopSegmentsTest
     task_environment_.RunUntilIdle();
     text_classification_processor_ =
         std::make_unique<processor::TextClassification>(
-            text_classification_resource_.get());
+            *text_classification_resource_);
   }
 
   void ProcessTextClassification() {
@@ -163,7 +163,7 @@ class BatAdsTopSegmentsTest
   std::unique_ptr<processor::TextClassification> text_classification_processor_;
 };
 
-TEST_P(BatAdsTopSegmentsTest, GetSegments) {
+TEST_P(BraveAdsTopSegmentsTest, GetSegments) {
   // Arrange
   resource::SetEpsilonGreedyBanditEligibleSegments(GetSegmentList());
 
@@ -214,7 +214,7 @@ TEST_P(BatAdsTopSegmentsTest, GetSegments) {
       param));
 }
 
-static std::string GetTestCaseName(
+static std::string TestParamToString(
     ::testing::TestParamInfo<ModelCombinationsParamInfo> test_param) {
   const std::string epsilon_greedy_bandits_enabled =
       test_param.param.epsilon_greedy_bandits_enabled
@@ -241,12 +241,12 @@ static std::string GetTestCaseName(
       nullptr);
 }
 
-INSTANTIATE_TEST_SUITE_P(BatAdsTopSegmentsTest,
-                         BatAdsTopSegmentsTest,
+INSTANTIATE_TEST_SUITE_P(,
+                         BraveAdsTopSegmentsTest,
                          ::testing::ValuesIn(kTests),
-                         GetTestCaseName);
+                         TestParamToString);
 
-TEST_F(BatAdsTopSegmentsTest, GetSegmentsForAllModelsIfPreviouslyProcessed) {
+TEST_F(BraveAdsTopSegmentsTest, GetSegmentsForAllModelsIfPreviouslyProcessed) {
   // Arrange
   resource::SetEpsilonGreedyBanditEligibleSegments(GetSegmentList());
 
@@ -284,7 +284,7 @@ TEST_F(BatAdsTopSegmentsTest, GetSegmentsForAllModelsIfPreviouslyProcessed) {
   }));
 }
 
-TEST_F(BatAdsTopSegmentsTest, GetSegmentsForFieldTrialParticipationPath) {
+TEST_F(BraveAdsTopSegmentsTest, GetSegmentsForFieldTrialParticipationPath) {
   // Arrange
   resource::SetEpsilonGreedyBanditEligibleSegments(GetSegmentList());
 

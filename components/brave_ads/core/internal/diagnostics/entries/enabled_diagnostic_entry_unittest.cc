@@ -9,13 +9,13 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_entry_types.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds.*
+// npm run test -- brave_unit_tests --filter=BraveAds.*
 
 namespace brave_ads {
 
-class BatAdsEnabledDiagnosticEntryTest : public UnitTestBase {};
+class BraveAdsEnabledDiagnosticEntryTest : public UnitTestBase {};
 
-TEST_F(BatAdsEnabledDiagnosticEntryTest, IsEnabled) {
+TEST_F(BraveAdsEnabledDiagnosticEntryTest, IsEnabled) {
   // Arrange
 
   // Act
@@ -27,9 +27,9 @@ TEST_F(BatAdsEnabledDiagnosticEntryTest, IsEnabled) {
   EXPECT_EQ("true", diagnostic_entry.GetValue());
 }
 
-TEST_F(BatAdsEnabledDiagnosticEntryTest, IsDisabled) {
+TEST_F(BraveAdsEnabledDiagnosticEntryTest, IsDisabled) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
   // Act
   const EnabledDiagnosticEntry diagnostic_entry;

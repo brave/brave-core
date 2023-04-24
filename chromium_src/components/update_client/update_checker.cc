@@ -55,7 +55,8 @@ void SequentialUpdateChecker::CheckNext() {
       update_context_->notify_observers_callback,
       // We don't pass a context callback here because UpdateChecker doesn't use
       // it. This is instead done by UpdateEngine, which calls us.
-      base::DoNothing(), update_context_->persisted_data);
+      base::DoNothing(), update_context_->persisted_data,
+      /*is_update_check_only=*/false);
 
   auto& component = context->components[id];
   auto& crx_component = update_context_->components[id]->crx_component();

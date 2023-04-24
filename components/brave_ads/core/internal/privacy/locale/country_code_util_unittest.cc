@@ -7,11 +7,11 @@
 
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::privacy::locale {
 
-TEST(BatAdsCountryCodeUtilTest, IsCountryCodeMemberOfAnonymitySet) {
+TEST(BraveAdsCountryCodeUtilTest, IsCountryCodeMemberOfAnonymitySet) {
   // Arrange
 
   // Act
@@ -20,7 +20,7 @@ TEST(BatAdsCountryCodeUtilTest, IsCountryCodeMemberOfAnonymitySet) {
   EXPECT_TRUE(IsCountryCodeMemberOfAnonymitySet("US"));
 }
 
-TEST(BatAdsCountryCodeUtilTest, IsCountryCodeNotMemberOfAnonymitySet) {
+TEST(BraveAdsCountryCodeUtilTest, IsCountryCodeNotMemberOfAnonymitySet) {
   // Arrange
 
   // Act
@@ -29,7 +29,7 @@ TEST(BatAdsCountryCodeUtilTest, IsCountryCodeNotMemberOfAnonymitySet) {
   EXPECT_FALSE(IsCountryCodeMemberOfAnonymitySet("XX"));
 }
 
-TEST(BatAdsCountryCodeUtilTest, ShouldClassifyCountryCodeAsOther) {
+TEST(BraveAdsCountryCodeUtilTest, ShouldClassifyCountryCodeAsOther) {
   // Arrange
 
   // Act
@@ -38,7 +38,7 @@ TEST(BatAdsCountryCodeUtilTest, ShouldClassifyCountryCodeAsOther) {
   EXPECT_TRUE(ShouldClassifyCountryCodeAsOther("CX"));
 }
 
-TEST(BatAdsCountryCodeUtilTest, ShouldNotClassifyCountryCodeAsOther) {
+TEST(BraveAdsCountryCodeUtilTest, ShouldNotClassifyCountryCodeAsOther) {
   // Arrange
 
   // Act

@@ -209,9 +209,9 @@ export function makeGetGasPrice () {
 }
 
 export function makeGetGasPrice1559 () {
-  async function getGasPrice1559 () {
+  async function getGasPrice1559 (chainId: string) {
     const { ethTxManagerProxy } = getAPIProxy()
-    const result = await ethTxManagerProxy.getGasEstimation1559()
+    const result = await ethTxManagerProxy.getGasEstimation1559(chainId)
     if (result && result.estimation) {
       return result.estimation
     } else {

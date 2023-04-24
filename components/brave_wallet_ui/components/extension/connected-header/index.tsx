@@ -43,6 +43,7 @@ export const ConnectedHeader = (props: Props) => {
       {showMore &&
         <WalletMorePopup
           onClickViewOnBlockExplorer={onClickViewOnBlockExplorer}
+          isPanel={true}
         />
       }
     </HeaderWrapper>

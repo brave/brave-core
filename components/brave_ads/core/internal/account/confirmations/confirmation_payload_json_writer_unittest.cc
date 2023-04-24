@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -21,9 +21,9 @@ constexpr char kExpectedJson[] =
 
 }  // namespace
 
-class BatAdsConfirmationPayloadJsonWriterTest : public UnitTestBase {};
+class BraveAdsConfirmationPayloadJsonWriterTest : public UnitTestBase {};
 
-TEST_F(BatAdsConfirmationPayloadJsonWriterTest, WriteJson) {
+TEST_F(BraveAdsConfirmationPayloadJsonWriterTest, WriteJson) {
   // Arrange
   privacy::SetUnblindedTokens(/*count*/ 1);
 

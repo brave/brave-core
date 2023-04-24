@@ -17,8 +17,7 @@ using std::placeholders::_2;
 namespace ledger {
 namespace sku {
 
-SKU::SKU(LedgerImpl& ledger)
-    : ledger_(ledger), common_(std::make_unique<SKUCommon>(ledger)) {}
+SKU::SKU(LedgerImpl& ledger) : ledger_(ledger), common_(ledger) {}
 
 SKU::~SKU() = default;
 
@@ -29,7 +28,7 @@ void SKU::Process(const std::vector<mojom::SKUOrderItem>& items,
   auto create_callback = std::bind(&SKU::OrderCreated, this, _1, _2,
                                    wallet_type, contribution_id, callback);
 
-  common_->CreateOrder(items, create_callback);
+  common_.CreateOrder(items, create_callback);
 }
 
 void SKU::OrderCreated(const mojom::Result result,
@@ -77,8 +76,8 @@ void SKU::CreateTransaction(mojom::SKUOrderPtr order,
 
   const std::string destination = GetBraveDestination(wallet_type);
 
-  common_->CreateTransaction(std::move(order), destination, wallet_type,
-                             callback);
+  common_.CreateTransaction(std::move(order), destination, wallet_type,
+                            callback);
 }
 
 void SKU::Retry(const std::string& order_id,
@@ -111,7 +110,7 @@ void SKU::OnOrder(mojom::SKUOrderPtr order,
       return;
     }
     case mojom::SKUOrderStatus::PAID: {
-      common_->SendExternalTransaction(order->order_id, callback);
+      common_.SendExternalTransaction(order->order_id, callback);
       return;
     }
     case mojom::SKUOrderStatus::FULFILLED: {

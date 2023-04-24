@@ -19,11 +19,11 @@
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::inline_content_ads {
 
-class BatAdsInlineContentAdServingDelegate : public ServingDelegate {
+class BraveAdsInlineContentAdServingDelegate : public ServingDelegate {
  public:
   void OnOpportunityAroseToServeInlineContentAd(
       const SegmentList& /*segments*/) override {
@@ -34,6 +34,7 @@ class BatAdsInlineContentAdServingDelegate : public ServingDelegate {
     ad_ = ad;
     did_serve_ad_ = true;
   }
+
   void OnFailedToServeInlineContentAd() override { failed_to_serve_ad_ = true; }
 
   const InlineContentAdInfo& ad() const { return ad_; }
@@ -53,7 +54,7 @@ class BatAdsInlineContentAdServingDelegate : public ServingDelegate {
   bool failed_to_serve_ad_ = false;
 };
 
-class BatAdsInlineContentAdServingTest : public UnitTestBase {
+class BraveAdsInlineContentAdServingTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -71,10 +72,10 @@ class BatAdsInlineContentAdServingTest : public UnitTestBase {
   std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
   std::unique_ptr<Serving> serving_;
 
-  BatAdsInlineContentAdServingDelegate serving_delegate_;
+  BraveAdsInlineContentAdServingDelegate serving_delegate_;
 };
 
-TEST_F(BatAdsInlineContentAdServingTest, DoNotServeAdForUnsupportedVersion) {
+TEST_F(BraveAdsInlineContentAdServingTest, DoNotServeAdForUnsupportedVersion) {
   // Arrange
   ForceServingVersion(0);
 
@@ -82,7 +83,7 @@ TEST_F(BatAdsInlineContentAdServingTest, DoNotServeAdForUnsupportedVersion) {
   serving_->MaybeServeAd(
       "200x100",
       base::BindOnce(
-          [](BatAdsInlineContentAdServingDelegate* serving_delegate,
+          [](BraveAdsInlineContentAdServingDelegate* serving_delegate,
              const std::string& /*dimensions*/,
              const absl::optional<InlineContentAdInfo>& ad) {
             // Assert
@@ -94,7 +95,7 @@ TEST_F(BatAdsInlineContentAdServingTest, DoNotServeAdForUnsupportedVersion) {
           base::Unretained(&serving_delegate_)));
 }
 
-TEST_F(BatAdsInlineContentAdServingTest, ServeAd) {
+TEST_F(BraveAdsInlineContentAdServingTest, ServeAd) {
   // Arrange
   ForcePermissionRulesForTesting();
 
@@ -106,7 +107,7 @@ TEST_F(BatAdsInlineContentAdServingTest, ServeAd) {
   serving_->MaybeServeAd(
       "200x100",
       base::BindOnce(
-          [](BatAdsInlineContentAdServingDelegate* serving_delegate,
+          [](BraveAdsInlineContentAdServingDelegate* serving_delegate,
              const std::string& /*dimensions*/,
              const absl::optional<InlineContentAdInfo>& ad) {
             // Assert
@@ -119,7 +120,8 @@ TEST_F(BatAdsInlineContentAdServingTest, ServeAd) {
           base::Unretained(&serving_delegate_)));
 }
 
-TEST_F(BatAdsInlineContentAdServingTest, DoNotServeAdForNonExistentDimensions) {
+TEST_F(BraveAdsInlineContentAdServingTest,
+       DoNotServeAdForNonExistentDimensions) {
   // Arrange
   ForcePermissionRulesForTesting();
 
@@ -131,7 +133,7 @@ TEST_F(BatAdsInlineContentAdServingTest, DoNotServeAdForNonExistentDimensions) {
   serving_->MaybeServeAd(
       "?x?",
       base::BindOnce(
-          [](BatAdsInlineContentAdServingDelegate* serving_delegate,
+          [](BraveAdsInlineContentAdServingDelegate* serving_delegate,
              const std::string& /*dimensions*/,
              const absl::optional<InlineContentAdInfo>& ad) {
             // Assert
@@ -145,7 +147,7 @@ TEST_F(BatAdsInlineContentAdServingTest, DoNotServeAdForNonExistentDimensions) {
   // Assert
 }
 
-TEST_F(BatAdsInlineContentAdServingTest,
+TEST_F(BraveAdsInlineContentAdServingTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
   const CreativeInlineContentAdInfo creative_ad =
@@ -156,7 +158,7 @@ TEST_F(BatAdsInlineContentAdServingTest,
   serving_->MaybeServeAd(
       "200x100",
       base::BindOnce(
-          [](BatAdsInlineContentAdServingDelegate* serving_delegate,
+          [](BraveAdsInlineContentAdServingDelegate* serving_delegate,
              const std::string& /*dimensions*/,
              const absl::optional<InlineContentAdInfo>& ad) {
             // Assert

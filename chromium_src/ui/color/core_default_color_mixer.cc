@@ -16,9 +16,9 @@ void AddBraveCoreDefaultColorMixer(ColorProvider* provider,
   const bool dark_mode =
       key.color_mode == ColorProviderManager::ColorMode::kDark;
 
-  mixer[kColorAlertMediumSeverity] = {dark_mode
-                                          ? SkColorSetRGB(0xBB, 0x88, 0x00)
-                                          : SkColorSetRGB(0xE2, 0xA5, 0x00)};
+  mixer[kColorAlertMediumSeverityIcon] = {
+      dark_mode ? SkColorSetRGB(0xBB, 0x88, 0x00)
+                : SkColorSetRGB(0xE2, 0xA5, 0x00)};
 }
 
 void AddCoreDefaultColorMixer(ColorProvider* provider,

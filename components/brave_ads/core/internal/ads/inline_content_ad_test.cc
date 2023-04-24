@@ -18,7 +18,7 @@
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -28,7 +28,7 @@ namespace {
 constexpr char kDimensions[] = "200x100";
 }  // namespace
 
-class BatAdsInlineContentAdIntegrationTest : public UnitTestBase {
+class BraveAdsInlineContentAdIntegrationTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
@@ -46,11 +46,11 @@ class BatAdsInlineContentAdIntegrationTest : public UnitTestBase {
   }
 };
 
-TEST_F(BatAdsInlineContentAdIntegrationTest, Serve) {
+TEST_F(BraveAdsInlineContentAdIntegrationTest, Serve) {
   // Arrange
 
   // Act
-  GetAds()->MaybeServeInlineContentAd(
+  GetAds().MaybeServeInlineContentAd(
       kDimensions,
       base::BindOnce([](const std::string& dimensions,
                         const absl::optional<InlineContentAdInfo>& ad) {
@@ -63,11 +63,11 @@ TEST_F(BatAdsInlineContentAdIntegrationTest, Serve) {
       }));
 }
 
-TEST_F(BatAdsInlineContentAdIntegrationTest, TriggerServedEvent) {
+TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerServedEvent) {
   // Arrange
 
   // Act
-  GetAds()->TriggerInlineContentAdEvent(
+  GetAds().TriggerInlineContentAdEvent(
       kPlacementId, kCreativeInstanceId,
       mojom::InlineContentAdEventType::kServed);
 
@@ -78,18 +78,18 @@ TEST_F(BatAdsInlineContentAdIntegrationTest, TriggerServedEvent) {
   EXPECT_EQ(0, GetTransactionCount());
 }
 
-TEST_F(BatAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
+TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
   // Arrange
   const std::string name =
       privacy::p2a::GetAdImpressionNameForAdType(AdType::kInlineContentAd);
-  EXPECT_CALL(*ads_client_mock_, RecordP2AEvent(name, _));
+  EXPECT_CALL(ads_client_mock_, RecordP2AEvent(name, _));
 
-  GetAds()->TriggerInlineContentAdEvent(
+  GetAds().TriggerInlineContentAdEvent(
       kPlacementId, kCreativeInstanceId,
       mojom::InlineContentAdEventType::kServed);
 
   // Act
-  GetAds()->TriggerInlineContentAdEvent(
+  GetAds().TriggerInlineContentAdEvent(
       kPlacementId, kCreativeInstanceId,
       mojom::InlineContentAdEventType::kViewed);
 
@@ -100,17 +100,17 @@ TEST_F(BatAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
   EXPECT_EQ(1, GetTransactionCount());
 }
 
-TEST_F(BatAdsInlineContentAdIntegrationTest, TriggerClickedEvent) {
+TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
-  GetAds()->TriggerInlineContentAdEvent(
+  GetAds().TriggerInlineContentAdEvent(
       kPlacementId, kCreativeInstanceId,
       mojom::InlineContentAdEventType::kServed);
-  GetAds()->TriggerInlineContentAdEvent(
+  GetAds().TriggerInlineContentAdEvent(
       kPlacementId, kCreativeInstanceId,
       mojom::InlineContentAdEventType::kViewed);
 
   // Act
-  GetAds()->TriggerInlineContentAdEvent(
+  GetAds().TriggerInlineContentAdEvent(
       kPlacementId, kCreativeInstanceId,
       mojom::InlineContentAdEventType::kClicked);
 

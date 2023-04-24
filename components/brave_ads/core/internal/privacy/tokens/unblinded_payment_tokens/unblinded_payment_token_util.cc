@@ -24,34 +24,33 @@ absl::optional<UnblindedPaymentTokenInfo> MaybeGetUnblindedPaymentToken() {
   }
 
   return ConfirmationStateManager::GetInstance()
-      ->GetUnblindedPaymentTokens()
-      ->GetToken();
+      .GetUnblindedPaymentTokens()
+      .GetToken();
 }
 
 const UnblindedPaymentTokenList& GetAllUnblindedPaymentTokens() {
   return ConfirmationStateManager::GetInstance()
-      ->GetUnblindedPaymentTokens()
-      ->GetAllTokens();
+      .GetUnblindedPaymentTokens()
+      .GetAllTokens();
 }
 
 void AddUnblindedPaymentTokens(
     const UnblindedPaymentTokenList& unblinded_tokens) {
-  ConfirmationStateManager::GetInstance()
-      ->GetUnblindedPaymentTokens()
-      ->AddTokens(unblinded_tokens);
+  ConfirmationStateManager::GetInstance().GetUnblindedPaymentTokens().AddTokens(
+      unblinded_tokens);
 
-  ConfirmationStateManager::GetInstance()->Save();
+  ConfirmationStateManager::GetInstance().Save();
 }
 
 bool RemoveUnblindedPaymentToken(
     const UnblindedPaymentTokenInfo& unblinded_token) {
   if (!ConfirmationStateManager::GetInstance()
-           ->GetUnblindedPaymentTokens()
-           ->RemoveToken(unblinded_token)) {
+           .GetUnblindedPaymentTokens()
+           .RemoveToken(unblinded_token)) {
     return false;
   }
 
-  ConfirmationStateManager::GetInstance()->Save();
+  ConfirmationStateManager::GetInstance().Save();
 
   return true;
 }
@@ -59,37 +58,37 @@ bool RemoveUnblindedPaymentToken(
 void RemoveUnblindedPaymentTokens(
     const UnblindedPaymentTokenList& unblinded_tokens) {
   ConfirmationStateManager::GetInstance()
-      ->GetUnblindedPaymentTokens()
-      ->RemoveTokens(unblinded_tokens);
+      .GetUnblindedPaymentTokens()
+      .RemoveTokens(unblinded_tokens);
 
-  ConfirmationStateManager::GetInstance()->Save();
+  ConfirmationStateManager::GetInstance().Save();
 }
 
 void RemoveAllUnblindedPaymentTokens() {
   ConfirmationStateManager::GetInstance()
-      ->GetUnblindedPaymentTokens()
-      ->RemoveAllTokens();
+      .GetUnblindedPaymentTokens()
+      .RemoveAllTokens();
 
-  ConfirmationStateManager::GetInstance()->Save();
+  ConfirmationStateManager::GetInstance().Save();
 }
 
 bool UnblindedPaymentTokenExists(
     const UnblindedPaymentTokenInfo& unblinded_token) {
   return ConfirmationStateManager::GetInstance()
-      ->GetUnblindedPaymentTokens()
-      ->TokenExists(unblinded_token);
+      .GetUnblindedPaymentTokens()
+      .TokenExists(unblinded_token);
 }
 
 bool UnblindedPaymentTokensIsEmpty() {
   return ConfirmationStateManager::GetInstance()
-      ->GetUnblindedPaymentTokens()
-      ->IsEmpty();
+      .GetUnblindedPaymentTokens()
+      .IsEmpty();
 }
 
 int UnblindedPaymentTokenCount() {
   return ConfirmationStateManager::GetInstance()
-      ->GetUnblindedPaymentTokens()
-      ->Count();
+      .GetUnblindedPaymentTokens()
+      .Count();
 }
 
 }  // namespace brave_ads::privacy

@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
@@ -33,7 +33,7 @@ namespace processor {
 class PurchaseIntent final : public AdsClientNotifierObserver,
                              public TabManagerObserver {
  public:
-  explicit PurchaseIntent(resource::PurchaseIntent* resource);
+  explicit PurchaseIntent(resource::PurchaseIntent& resource);
 
   PurchaseIntent(const PurchaseIntent&) = delete;
   PurchaseIntent& operator=(const PurchaseIntent&) = delete;
@@ -63,7 +63,7 @@ class PurchaseIntent final : public AdsClientNotifierObserver,
                               const std::vector<GURL>& redirect_chain,
                               const std::string& content) override;
 
-  const raw_ptr<resource::PurchaseIntent> resource_ = nullptr;  // NOT OWNED
+  const raw_ref<resource::PurchaseIntent> resource_;
 };
 
 }  // namespace processor

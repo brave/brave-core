@@ -16,7 +16,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::inline_content_ads {
 
@@ -33,8 +33,8 @@ CreativeInlineContentAdInfo BuildAndSaveCreativeAd() {
 
 }  // namespace
 
-class BatAdsInlineContentAdEventHandlerTest : public EventHandlerDelegate,
-                                              public UnitTestBase {
+class BraveAdsInlineContentAdEventHandlerTest : public EventHandlerDelegate,
+                                                public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -73,7 +73,7 @@ class BatAdsInlineContentAdEventHandlerTest : public EventHandlerDelegate,
   bool did_fail_to_fire_event_ = false;
 };
 
-TEST_F(BatAdsInlineContentAdEventHandlerTest, FireViewedEvent) {
+TEST_F(BraveAdsInlineContentAdEventHandlerTest, FireViewedEvent) {
   // Arrange
   const CreativeInlineContentAdInfo creative_ad = BuildAndSaveCreativeAd();
 
@@ -98,7 +98,7 @@ TEST_F(BatAdsInlineContentAdEventHandlerTest, FireViewedEvent) {
       1, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kViewed));
 }
 
-TEST_F(BatAdsInlineContentAdEventHandlerTest,
+TEST_F(BraveAdsInlineContentAdEventHandlerTest,
        DoNotFireViewedEventIfAlreadyFired) {
   // Arrange
   const CreativeInlineContentAdInfo creative_ad = BuildAndSaveCreativeAd();
@@ -119,7 +119,7 @@ TEST_F(BatAdsInlineContentAdEventHandlerTest,
       1, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kViewed));
 }
 
-TEST_F(BatAdsInlineContentAdEventHandlerTest, FireClickedEvent) {
+TEST_F(BraveAdsInlineContentAdEventHandlerTest, FireClickedEvent) {
   // Arrange
   const CreativeInlineContentAdInfo creative_ad = BuildAndSaveCreativeAd();
 
@@ -148,7 +148,7 @@ TEST_F(BatAdsInlineContentAdEventHandlerTest, FireClickedEvent) {
       1, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kClicked));
 }
 
-TEST_F(BatAdsInlineContentAdEventHandlerTest,
+TEST_F(BraveAdsInlineContentAdEventHandlerTest,
        DoNotFireClickedEventIfMissingAdPlacement) {
   // Arrange
   const CreativeInlineContentAdInfo creative_ad = BuildAndSaveCreativeAd();
@@ -162,7 +162,7 @@ TEST_F(BatAdsInlineContentAdEventHandlerTest,
       0, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kClicked));
 }
 
-TEST_F(BatAdsInlineContentAdEventHandlerTest,
+TEST_F(BraveAdsInlineContentAdEventHandlerTest,
        DoNotFireClickedEventIfAlreadyFired) {
   // Arrange
   const CreativeInlineContentAdInfo creative_ad = BuildAndSaveCreativeAd();
@@ -187,7 +187,7 @@ TEST_F(BatAdsInlineContentAdEventHandlerTest,
       1, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kClicked));
 }
 
-TEST_F(BatAdsInlineContentAdEventHandlerTest,
+TEST_F(BraveAdsInlineContentAdEventHandlerTest,
        DoNotFireEventWithInvalidPlacementId) {
   // Arrange
 
@@ -204,7 +204,7 @@ TEST_F(BatAdsInlineContentAdEventHandlerTest,
       0, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kServed));
 }
 
-TEST_F(BatAdsInlineContentAdEventHandlerTest,
+TEST_F(BraveAdsInlineContentAdEventHandlerTest,
        DoNotFireEventWithInvalidCreativeInstanceId) {
   // Arrange
 
@@ -221,7 +221,7 @@ TEST_F(BatAdsInlineContentAdEventHandlerTest,
       0, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kServed));
 }
 
-TEST_F(BatAdsInlineContentAdEventHandlerTest,
+TEST_F(BraveAdsInlineContentAdEventHandlerTest,
        DoNotFireEventForUnknownCreativeInstanceId) {
   // Arrange
 

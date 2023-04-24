@@ -8,13 +8,13 @@
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsAnonymousSearchUrlHostTest : public UnitTestBase {};
+class BraveAdsAnonymousSearchUrlHostTest : public UnitTestBase {};
 
-TEST_F(BatAdsAnonymousSearchUrlHostTest, GetProductionUrlHost) {
+TEST_F(BraveAdsAnonymousSearchUrlHostTest, GetProductionUrlHost) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kProduction;
@@ -26,7 +26,7 @@ TEST_F(BatAdsAnonymousSearchUrlHostTest, GetProductionUrlHost) {
             GetAnonymousSearchUrlHost());
 }
 
-TEST_F(BatAdsAnonymousSearchUrlHostTest, GetStagingUrlHost) {
+TEST_F(BraveAdsAnonymousSearchUrlHostTest, GetStagingUrlHost) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kStaging;

@@ -11,11 +11,11 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_classification/text_classification_resource.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsTextClassificationProcessorTest : public UnitTestBase {
+class BraveAdsTextClassificationProcessorTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -27,39 +27,38 @@ class BatAdsTextClassificationProcessorTest : public UnitTestBase {
   resource::TextClassification resource_;
 };
 
-TEST_F(BatAdsTextClassificationProcessorTest,
+TEST_F(BraveAdsTextClassificationProcessorTest,
        DoNotProcessIfResourceIsNotInitialized) {
   // Arrange
-  resource::TextClassification uninitialized_resource;
+  resource::TextClassification resource;
 
   // Act
-  const std::string text = "The quick brown fox jumps over the lazy dog";
-  processor::TextClassification processor(&uninitialized_resource);
-  processor.Process(text);
+  processor::TextClassification processor(resource);
+  processor.Process(/*text*/ "The quick brown fox jumps over the lazy dog");
 
   // Assert
   const targeting::TextClassificationProbabilityList& list =
       ClientStateManager::GetInstance()
-          ->GetTextClassificationProbabilitiesHistory();
+          .GetTextClassificationProbabilitiesHistory();
 
   EXPECT_TRUE(list.empty());
 }
 
-TEST_F(BatAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
+TEST_F(BraveAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
   // Act
   const std::string text;
-  processor::TextClassification processor(&resource_);
+  processor::TextClassification processor(resource_);
   processor.Process(text);
 
   // Assert
   const targeting::TextClassificationProbabilityList& list =
       ClientStateManager::GetInstance()
-          ->GetTextClassificationProbabilitiesHistory();
+          .GetTextClassificationProbabilitiesHistory();
 
   EXPECT_TRUE(list.empty());
 }
 
-TEST_F(BatAdsTextClassificationProcessorTest, NeverProcessed) {
+TEST_F(BraveAdsTextClassificationProcessorTest, NeverProcessed) {
   // Act
   const targeting::model::TextClassification model;
   const SegmentList segments = model.GetSegments();
@@ -67,42 +66,35 @@ TEST_F(BatAdsTextClassificationProcessorTest, NeverProcessed) {
   // Assert
   const targeting::TextClassificationProbabilityList& list =
       ClientStateManager::GetInstance()
-          ->GetTextClassificationProbabilitiesHistory();
+          .GetTextClassificationProbabilitiesHistory();
 
   EXPECT_TRUE(list.empty());
 }
 
-TEST_F(BatAdsTextClassificationProcessorTest, ProcessText) {
+TEST_F(BraveAdsTextClassificationProcessorTest, ProcessText) {
   // Act
-  const std::string text = "Some content about technology & computing";
-  processor::TextClassification processor(&resource_);
-  processor.Process(text);
+  processor::TextClassification processor(resource_);
+  processor.Process(/*text*/ "Some content about technology & computing");
 
   // Assert
   const targeting::TextClassificationProbabilityList& list =
       ClientStateManager::GetInstance()
-          ->GetTextClassificationProbabilitiesHistory();
+          .GetTextClassificationProbabilitiesHistory();
 
   EXPECT_EQ(1U, list.size());
 }
 
-TEST_F(BatAdsTextClassificationProcessorTest, ProcessMultipleText) {
+TEST_F(BraveAdsTextClassificationProcessorTest, ProcessMultipleText) {
   // Act
-  processor::TextClassification processor(&resource_);
-
-  const std::string text_1 = "Some content about cooking food";
-  processor.Process(text_1);
-
-  const std::string text_2 = "Some content about finance & banking";
-  processor.Process(text_2);
-
-  const std::string text_3 = "Some content about technology & computing";
-  processor.Process(text_3);
+  processor::TextClassification processor(resource_);
+  processor.Process(/*text*/ "Some content about cooking food");
+  processor.Process(/*text*/ "Some content about finance & banking");
+  processor.Process(/*text*/ "Some content about technology & computing");
 
   // Assert
   const targeting::TextClassificationProbabilityList& list =
       ClientStateManager::GetInstance()
-          ->GetTextClassificationProbabilitiesHistory();
+          .GetTextClassificationProbabilitiesHistory();
 
   EXPECT_EQ(3U, list.size());
 }

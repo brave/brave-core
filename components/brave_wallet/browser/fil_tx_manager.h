@@ -39,42 +39,53 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
   using ProcessFilHardwareSignatureCallback =
       mojom::FilTxManagerProxy::ProcessFilHardwareSignatureCallback;
 
-  void AddUnapprovedTransaction(mojom::TxDataUnionPtr tx_data_union,
+  void AddUnapprovedTransaction(const std::string& chain_id,
+                                mojom::TxDataUnionPtr tx_data_union,
                                 const std::string& from,
                                 const absl::optional<url::Origin>& origin,
                                 const absl::optional<std::string>& group_id,
                                 AddUnapprovedTransactionCallback) override;
-  void ApproveTransaction(const std::string& tx_meta_id,
+  void ApproveTransaction(const std::string& chain_id,
+                          const std::string& tx_meta_id,
                           ApproveTransactionCallback) override;
-  void GetAllTransactionInfo(const absl::optional<std::string>& from,
+  void GetAllTransactionInfo(const absl::optional<std::string>& chain_id,
+                             const absl::optional<std::string>& from,
                              GetAllTransactionInfoCallback) override;
   void GetTransactionMessageToSign(
+      const std::string& chain_id,
       const std::string& tx_meta_id,
       GetTransactionMessageToSignCallback callback) override;
 
   void SpeedupOrCancelTransaction(
+      const std::string& chain_id,
       const std::string& tx_meta_id,
       bool cancel,
       SpeedupOrCancelTransactionCallback callback) override;
-  void RetryTransaction(const std::string& tx_meta_id,
+  void RetryTransaction(const std::string& chain_id,
+                        const std::string& tx_meta_id,
                         RetryTransactionCallback callback) override;
 
   void Reset() override;
 
   void ProcessFilHardwareSignature(
+      const std::string& chain_id,
       const std::string& tx_meta_id,
       const std::string& signed_message,
       ProcessFilHardwareSignatureCallback callback);
 
-  void GetEstimatedGas(const std::string& from,
+  void GetEstimatedGas(const std::string& chain_id,
+                       const std::string& from,
                        const absl::optional<url::Origin>& origin,
                        const absl::optional<std::string>& group_id,
                        std::unique_ptr<FilTransaction> tx,
                        AddUnapprovedTransactionCallback callback);
-  std::unique_ptr<FilTxMeta> GetTxForTesting(const std::string& tx_meta_id);
+  std::unique_ptr<FilTxMeta> GetTxForTesting(const std::string& chain_id,
+                                             const std::string& tx_meta_id);
 
  private:
   friend class FilTxManagerUnitTest;
+
+  mojom::CoinType GetCoinType() const override;
 
   void OnGetNextNonce(std::unique_ptr<FilTxMeta> meta,
                       ApproveTransactionCallback callback,
@@ -84,12 +95,14 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
                                  GetTransactionMessageToSignCallback callback,
                                  bool success,
                                  uint256_t nonce);
-  void OnSendFilecoinTransaction(const std::string& tx_meta_id,
+  void OnSendFilecoinTransaction(const std::string& chain_id,
+                                 const std::string& tx_meta_id,
                                  ApproveTransactionCallback callback,
                                  const std::string& tx_hash,
                                  mojom::FilecoinProviderError error,
                                  const std::string& error_message);
   void ContinueAddUnapprovedTransaction(
+      const std::string& chain_id,
       const std::string& from,
       const absl::optional<url::Origin>& origin,
       const absl::optional<std::string>& group_id,
@@ -101,7 +114,8 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
       mojom::FilecoinProviderError error,
       const std::string& error_message);
 
-  void OnGetFilStateSearchMsgLimited(const std::string& tx_meta_id,
+  void OnGetFilStateSearchMsgLimited(const std::string& chain_id,
+                                     const std::string& tx_meta_id,
                                      int64_t exit_code,
                                      mojom::FilecoinProviderError error,
                                      const std::string& error_message);
@@ -109,10 +123,12 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
   FilBlockTracker* GetFilBlockTracker();
 
   // FilBlockTracker::Observer
-  void OnLatestHeightUpdated(uint64_t latest_height) override;
+  void OnLatestHeightUpdated(const std::string& chain_id,
+                             uint64_t latest_height) override;
 
   // TxManager
-  void UpdatePendingTransactions() override;
+  void UpdatePendingTransactions(
+      const absl::optional<std::string>& chain_id) override;
 
   std::unique_ptr<FilNonceTracker> nonce_tracker_;
   base::WeakPtrFactory<FilTxManager> weak_factory_{this};

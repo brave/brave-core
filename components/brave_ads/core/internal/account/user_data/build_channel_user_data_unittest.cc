@@ -10,13 +10,13 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::user_data {
 
-class BatAdsBuildChannelUserDataTest : public UnitTestBase {};
+class BraveAdsBuildChannelUserDataTest : public UnitTestBase {};
 
-TEST_F(BatAdsBuildChannelUserDataTest, GetBuildChannel) {
+TEST_F(BraveAdsBuildChannelUserDataTest, GetBuildChannel) {
   // Arrange
   MockBuildChannel(BuildChannelType::kRelease);
 

@@ -54,12 +54,14 @@ class EthNonceTrackerUnitTest : public testing::Test {
   void WaitForResponse() { task_environment_.RunUntilIdle(); }
 
   void GetNextNonce(EthNonceTracker* tracker,
+                    const std::string& chain_id,
                     const std::string& address,
                     bool expected_success,
                     uint256_t expected_nonce) {
     base::RunLoop run_loop;
     tracker->GetNextNonce(
-        address, base::BindLambdaForTesting([&](bool success, uint256_t nonce) {
+        chain_id, address,
+        base::BindLambdaForTesting([&](bool success, uint256_t nonce) {
           EXPECT_EQ(expected_success, success);
           EXPECT_EQ(expected_nonce, nonce);
           run_loop.Quit();
@@ -75,6 +77,11 @@ class EthNonceTrackerUnitTest : public testing::Test {
     // http://localhost:7545 URL used below is coming from.
     url_loader_factory_.AddResponse(
         brave_wallet::GetNetworkURL(GetPrefs(), mojom::kLocalhostChainId,
+                                    mojom::CoinType::ETH)
+            .spec(),
+        GetResultString());
+    url_loader_factory_.AddResponse(
+        brave_wallet::GetNetworkURL(GetPrefs(), mojom::kMainnetChainId,
                                     mojom::CoinType::ETH)
             .spec(),
         GetResultString());
@@ -96,30 +103,26 @@ class EthNonceTrackerUnitTest : public testing::Test {
 
 TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   JsonRpcService service(shared_url_loader_factory(), GetPrefs());
-  base::RunLoop run_loop;
-  service.SetNetwork(
-      brave_wallet::mojom::kLocalhostChainId, mojom::CoinType::ETH,
-      base::BindLambdaForTesting([&](bool success) { run_loop.Quit(); }));
-  run_loop.Run();
 
-  EthTxStateManager tx_state_manager(GetPrefs(), &service);
+  EthTxStateManager tx_state_manager(GetPrefs());
   EthNonceTracker nonce_tracker(&tx_state_manager, &service);
 
   SetTransactionCount(2);
 
   const std::string address("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
   // tx count: 2, confirmed: null, pending: null
-  GetNextNonce(&nonce_tracker, address, true, 2);
+  GetNextNonce(&nonce_tracker, mojom::kLocalhostChainId, address, true, 2);
 
   // tx count: 2, confirmed: [2], pending: null
   EthTxMeta meta;
   meta.set_id(TxMeta::GenerateMetaID());
+  meta.set_chain_id(mojom::kLocalhostChainId);
   meta.set_from(EthAddress::FromHex(address).ToChecksumAddress());
   meta.set_status(mojom::TransactionStatus::Confirmed);
   meta.tx()->set_nonce(uint256_t(2));
   tx_state_manager.AddOrUpdateTx(meta);
 
-  GetNextNonce(&nonce_tracker, address, true, 3);
+  GetNextNonce(&nonce_tracker, mojom::kLocalhostChainId, address, true, 3);
 
   // tx count: 2, confirmed: [2, 3], pending: null
   meta.set_id(TxMeta::GenerateMetaID());
@@ -127,7 +130,7 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   meta.tx()->set_nonce(uint256_t(3));
   tx_state_manager.AddOrUpdateTx(meta);
 
-  GetNextNonce(&nonce_tracker, address, true, 4);
+  GetNextNonce(&nonce_tracker, mojom::kLocalhostChainId, address, true, 4);
 
   // tx count: 2, confirmed: [2, 3], pending: [4, 4]
   meta.set_status(mojom::TransactionStatus::Submitted);
@@ -137,24 +140,22 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   meta.set_id(TxMeta::GenerateMetaID());
   tx_state_manager.AddOrUpdateTx(meta);
 
-  GetNextNonce(&nonce_tracker, address, true, 5);
+  GetNextNonce(&nonce_tracker, mojom::kLocalhostChainId, address, true, 5);
 
   // tx count: 2, confirmed: [2, 3], pending: [4, 4], sign: [5]
   meta.set_status(mojom::TransactionStatus::Signed);
   meta.set_id(TxMeta::GenerateMetaID());
   tx_state_manager.AddOrUpdateTx(meta);
 
-  GetNextNonce(&nonce_tracker, address, true, 5);
+  GetNextNonce(&nonce_tracker, mojom::kLocalhostChainId, address, true, 5);
+
+  // tx count: 2, confirmed: null, pending: null (mainnet)
+  GetNextNonce(&nonce_tracker, mojom::kMainnetChainId, address, true, 2);
 }
 
 TEST_F(EthNonceTrackerUnitTest, NonceLock) {
   JsonRpcService service(shared_url_loader_factory(), GetPrefs());
-  base::RunLoop run_loop;
-  service.SetNetwork(
-      brave_wallet::mojom::kLocalhostChainId, mojom::CoinType::ETH,
-      base::BindLambdaForTesting([&](bool success) { run_loop.Quit(); }));
-  run_loop.Run();
-  EthTxStateManager tx_state_manager(GetPrefs(), &service);
+  EthTxStateManager tx_state_manager(GetPrefs());
   EthNonceTracker nonce_tracker(&tx_state_manager, &service);
 
   SetTransactionCount(4);
@@ -162,11 +163,13 @@ TEST_F(EthNonceTrackerUnitTest, NonceLock) {
   base::Lock* lock = nonce_tracker.GetLock();
   lock->Acquire();
   const std::string addr("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
-  GetNextNonce(&nonce_tracker, addr, false, 0);
+  GetNextNonce(&nonce_tracker, mojom::kLocalhostChainId, addr, false, 0);
+  GetNextNonce(&nonce_tracker, mojom::kMainnetChainId, addr, false, 0);
 
   lock->Release();
 
-  GetNextNonce(&nonce_tracker, addr, true, 4);
+  GetNextNonce(&nonce_tracker, mojom::kLocalhostChainId, addr, true, 4);
+  GetNextNonce(&nonce_tracker, mojom::kMainnetChainId, addr, true, 4);
 }
 
 }  // namespace brave_wallet

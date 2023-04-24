@@ -13,6 +13,8 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {internal::kHideVisits, base::FEATURE_DISABLED_BY_DEFAULT},
     {internal::kHistoryClustersInternalsPage,
      base::FEATURE_DISABLED_BY_DEFAULT},
+    {internal::kOmniboxHistoryClusterProvider,
+     base::FEATURE_DISABLED_BY_DEFAULT},
     {internal::kJourneys, base::FEATURE_DISABLED_BY_DEFAULT},
     {internal::kOmniboxAction, base::FEATURE_DISABLED_BY_DEFAULT},
     {internal::kPersistedClusters, base::FEATURE_DISABLED_BY_DEFAULT},

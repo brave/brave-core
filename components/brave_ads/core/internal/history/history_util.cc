@@ -21,7 +21,7 @@ HistoryItemInfo AddHistory(const AdInfo& ad,
 
   HistoryItemInfo history_item =
       BuildHistoryItem(ad, confirmation_type, title, description);
-  ClientStateManager::GetInstance()->AppendHistory(history_item);
+  ClientStateManager::GetInstance().AppendHistory(history_item);
   return history_item;
 }
 

@@ -64,18 +64,18 @@ import org.chromium.chrome.browser.omnibox.SearchEngineLogoUtils;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.status.PageInfoIPHController;
 import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoAction;
+import org.chromium.chrome.browser.omnibox.suggestions.ActionChipsDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteControllerProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.FaviconFetcher;
-import org.chromium.chrome.browser.omnibox.suggestions.OmniboxPedalDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownScrollListener;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionProcessor;
 import org.chromium.chrome.browser.omnibox.suggestions.UrlBarDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
+import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegateImpl;
-import org.chromium.chrome.browser.share.crow.CrowButtonDelegate;
 import org.chromium.chrome.browser.suggestions.tile.TileRenderer;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
@@ -541,9 +541,6 @@ public class BytecodeTest {
                 "setContentSetting", true, void.class, BrowserContextHandle.class, int.class,
                 int.class));
         Assert.assertTrue(
-                methodExists("org/chromium/chrome/browser/search_engines/TemplateUrlServiceFactory",
-                        "get", true, TemplateUrlService.class));
-        Assert.assertTrue(
                 methodExists("org/chromium/chrome/browser/paint_preview/StartupPaintPreviewHelper",
                         "isEnabled", true, boolean.class));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/tab/TabHelpers",
@@ -582,7 +579,7 @@ public class BytecodeTest {
                 AppMenuDelegate.class, ActivityLifecycleDispatcher.class, Supplier.class,
                 BottomSheetController.class, Supplier.class, TabContentManager.class,
                 TabCreatorManager.class, SnackbarManager.class, JankTracker.class, Supplier.class,
-                OneshotSupplier.class, OmniboxPedalDelegate.class, Supplier.class, boolean.class,
+                OneshotSupplier.class, ActionChipsDelegate.class, Supplier.class, boolean.class,
                 BackPressManager.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
@@ -606,7 +603,7 @@ public class BytecodeTest {
                 ScrimCoordinator.class, ObservableSupplier.class, BottomSheetController.class,
                 ActivityLifecycleDispatcher.class, Supplier.class, TabModelSelector.class,
                 TabContentManager.class, ViewGroup.class, Supplier.class, TabCreatorManager.class,
-                Supplier.class, OneshotSupplier.class, SnackbarManager.class));
+                OneshotSupplier.class, SnackbarManager.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/site_settings/ChromeSiteSettingsDelegate",
                 "org/chromium/chrome/browser/site_settings/BraveSiteSettingsDelegate",
@@ -629,7 +626,7 @@ public class BytecodeTest {
                 ActivityLifecycleDispatcher.class, TabModelSelector.class, boolean.class,
                 NewTabPageUma.class, boolean.class, NativePageHost.class, Tab.class, String.class,
                 BottomSheetController.class, Supplier.class, WindowAndroid.class, JankTracker.class,
-                Supplier.class, SettingsLauncher.class, CrowButtonDelegate.class));
+                Supplier.class, SettingsLauncher.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor",
                 "org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessor",
@@ -645,10 +642,10 @@ public class BytecodeTest {
                 ObservableSupplier.class, ObservableSupplier.class, ObservableSupplier.class,
                 ButtonDataProvider.class, Callback.class, Supplier.class, Supplier.class,
                 BooleanSupplier.class, boolean.class, boolean.class, boolean.class, boolean.class,
-                boolean.class, HistoryDelegate.class, BooleanSupplier.class,
-                OfflineDownloader.class, boolean.class, Callback.class, boolean.class,
-                ObservableSupplier.class, ObservableSupplier.class,
-                BrowserStateBrowserControlsVisibilityDelegate.class, boolean.class));
+                HistoryDelegate.class, BooleanSupplier.class, OfflineDownloader.class,
+                boolean.class, Callback.class, boolean.class, ObservableSupplier.class,
+                ObservableSupplier.class, BrowserStateBrowserControlsVisibilityDelegate.class,
+                boolean.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
                 "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator",
@@ -672,7 +669,7 @@ public class BytecodeTest {
                 UrlBarEditingTextStateProvider.class, PropertyModel.class, Handler.class,
                 Supplier.class, Supplier.class, Supplier.class, LocationBarDataProvider.class,
                 Callback.class, Supplier.class, BookmarkState.class, JankTracker.class,
-                OmniboxPedalDelegate.class));
+                ActionChipsDelegate.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/feed/FeedSurfaceMediator",
                 "org/chromium/chrome/browser/feed/BraveFeedSurfaceMediator",
                 FeedSurfaceCoordinator.class, Context.class, SnapScrollHelper.class,
@@ -701,7 +698,7 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder",
                 "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListBuilder",
-                Supplier.class, BookmarkState.class, OmniboxPedalDelegate.class));
+                Supplier.class, BookmarkState.class, ActionChipsDelegate.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListManager",
                 "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListManager",
@@ -715,13 +712,12 @@ public class BytecodeTest {
                 WindowAndroid.class, Supplier.class, Supplier.class, Supplier.class,
                 IncognitoStateProvider.class, ActivityLifecycleDispatcher.class,
                 OverrideUrlLoadingDelegate.class, BackKeyBehaviorDelegate.class,
-                SearchEngineLogoUtils.class, Runnable.class, PageInfoAction.class, Callback.class,
+                SearchEngineLogoUtils.class, PageInfoAction.class, Callback.class,
                 BraveLocationBarMediator.getSaveOfflineButtonStateClass(),
                 BraveLocationBarMediator.getOmniboxUmaClass(), Supplier.class, BookmarkState.class,
-                BooleanSupplier.class, JankTracker.class, Supplier.class,
-                OmniboxPedalDelegate.class, BrowserStateBrowserControlsVisibilityDelegate.class,
-                Callback.class, BackPressManager.class,
-                OmniboxSuggestionsDropdownScrollListener.class));
+                BooleanSupplier.class, JankTracker.class, Supplier.class, ActionChipsDelegate.class,
+                BrowserStateBrowserControlsVisibilityDelegate.class, Callback.class,
+                BackPressManager.class, OmniboxSuggestionsDropdownScrollListener.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/omnibox/LocationBarMediator",
                 "org/chromium/chrome/browser/omnibox/BraveLocationBarMediator", Context.class,
@@ -730,9 +726,10 @@ public class BytecodeTest {
                 OverrideUrlLoadingDelegate.class, BraveLocationBarMediator.getLocaleManagerClass(),
                 OneshotSupplier.class, BackKeyBehaviorDelegate.class, WindowAndroid.class,
                 boolean.class, SearchEngineLogoUtils.class,
-                BraveLocationBarMediator.getLensControllerClass(), Runnable.class,
+                BraveLocationBarMediator.getLensControllerClass(),
                 BraveLocationBarMediator.getSaveOfflineButtonStateClass(),
-                BraveLocationBarMediator.getOmniboxUmaClass(), BooleanSupplier.class));
+                BraveLocationBarMediator.getOmniboxUmaClass(), BooleanSupplier.class,
+                BraveLocationBarMediator.getOmniboxSuggestionsDropdownEmbedderImplClass()));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/IntentHandler",
                 "org/chromium/chrome/browser/BraveIntentHandler", Activity.class,
                 IntentHandler.IntentHandlerDelegate.class));
@@ -918,6 +915,12 @@ public class BytecodeTest {
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/tasks/tab_management/TabGroupUiCoordinator",
                 "mToolbarView"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
+                "mProfile"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings",
+                "mProfile"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings",
                 "mSearchEngineAdapter"));

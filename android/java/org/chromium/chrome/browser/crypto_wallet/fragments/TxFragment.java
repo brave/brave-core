@@ -126,6 +126,8 @@ public class TxFragment extends Fragment {
                     new Intent(requireActivity(), AdvanceTxSettingActivity.class);
             String nonce = mParsedTx.getNonce();
             toAdvanceTxSetting.putExtra(WalletConstants.ADVANCE_TX_SETTING_INTENT_TX_ID, mTxInfo.id)
+                    .putExtra(
+                            WalletConstants.ADVANCE_TX_SETTING_INTENT_TX_CHAIN_ID, mTxInfo.chainId)
                     .putExtra(WalletConstants.ADVANCE_TX_SETTING_INTENT_TX_NONCE, nonce);
             startActivityForResult(toAdvanceTxSetting, START_ADVANCE_SETTING_ACTIVITY_CODE);
         });
@@ -163,7 +165,7 @@ public class TxFragment extends Fragment {
                     radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
                         EthTxManagerProxy ethTxManagerProxy = getEthTxManagerProxy();
                         assert ethTxManagerProxy != null;
-                        ethTxManagerProxy.getGasEstimation1559(estimation -> {
+                        ethTxManagerProxy.getGasEstimation1559(mTxInfo.chainId, estimation -> {
                             mTxInfo.txDataUnion.getEthTxData1559().gasEstimation = estimation;
                             mCheckedPriorityId = checkedId;
                             String maxPriorityFeePerGas = mParsedTx.getMaxPriorityFeePerGas();
@@ -272,7 +274,7 @@ public class TxFragment extends Fragment {
                             mTxInfo.txDataUnion.getEthTxData1559().baseData.gasPrice =
                                     Utils.toHexWei(gasFeeEdit.getText().toString(), 9);
                             ethTxManagerProxy.setGasPriceAndLimitForUnapprovedTransaction(
-                                    mTxInfo.id,
+                                    mTxInfo.chainId, mTxInfo.id,
                                     mTxInfo.txDataUnion.getEthTxData1559().baseData.gasPrice,
                                     mTxInfo.txDataUnion.getEthTxData1559().baseData.gasLimit,
                                     success -> {
@@ -324,8 +326,9 @@ public class TxFragment extends Fragment {
                             mTxInfo.txDataUnion.getEthTxData1559().maxPriorityFeePerGas =
                                     maxPriorityFeePerGas;
                             mTxInfo.txDataUnion.getEthTxData1559().maxFeePerGas = maxFeePerGas;
-                            ethTxManagerProxy.setGasFeeAndLimitForUnapprovedTransaction(mTxInfo.id,
-                                    maxPriorityFeePerGas, maxFeePerGas, gasLimit, success -> {
+                            ethTxManagerProxy.setGasFeeAndLimitForUnapprovedTransaction(
+                                    mTxInfo.chainId, mTxInfo.id, maxPriorityFeePerGas, maxFeePerGas,
+                                    gasLimit, success -> {
                                         if (!success) {
                                             return;
                                         }

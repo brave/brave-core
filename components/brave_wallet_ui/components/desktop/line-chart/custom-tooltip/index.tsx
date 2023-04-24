@@ -5,53 +5,76 @@
 import * as React from 'react'
 import { TooltipProps } from 'recharts'
 
+// Utils
 import {
-  LabelWrapper,
-  ChartLabel
+  useSafeWalletSelector
+} from '../../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../../common/selectors'
+import Amount from '../../../../utils/amount'
+import { formatTimelineDate } from '../../../../utils/datetime-utils'
+
+// Styled Components
+import {
+  TooltipWrapper,
+  ChartBalance,
+  ChartDate
 } from '../style'
 
 type Props = TooltipProps<number, number> & {
-  onUpdateBalance: (value: number | undefined) => void
-  onUpdatePosition: (value: number) => void
+  onUpdateViewBoxHeight: (value: number) => void
 }
 
 function CustomTooltip ({
   active,
   coordinate,
   label,
-  onUpdateBalance,
-  onUpdatePosition,
+  onUpdateViewBoxHeight,
   payload,
   viewBox
 }: Props) {
-  const parseDate = (date: Date) => {
-    const formatedDate = new Date(date).toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' })
-    const formatedTime = new Date(date).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
-    return `${formatedDate} ${formatedTime}`
-  }
+  // Selectors
+  const defaultFiatCurrency =
+    useSafeWalletSelector(WalletSelectors.defaultFiatCurrency)
+  const hidePortfolioBalances =
+    useSafeWalletSelector(WalletSelectors.hidePortfolioBalances)
 
+  // Effects
   React.useLayoutEffect(() => {
-    if (active && payload && payload.length) {
-      onUpdatePosition(coordinate?.x ?? 0)
-      onUpdateBalance(payload[0].value)
+    if (viewBox?.height !== undefined) {
+      onUpdateViewBoxHeight(Math.trunc(viewBox.height))
     }
-  }, [active, payload, coordinate])
+  }, [viewBox?.height])
 
-  if (active && payload && payload.length) {
+  if (active && payload && payload[0].value) {
+    // Computed
     const xLeftCoordinate = Math.trunc(coordinate?.x ?? 0)
     const viewBoxWidth = Math.trunc(viewBox?.width ?? 0)
     const xRightCoordinate = xLeftCoordinate - viewBoxWidth
-    const isEndOrMiddle = xRightCoordinate >= -46 ? 'end' : 'middle'
+    const isEndOrMiddle = xRightCoordinate >= -62 ? 'end' : 'middle'
     const labelPosition = xLeftCoordinate <= 62 ? 'start' : isEndOrMiddle
-    const middleEndTranslate = xRightCoordinate >= 8 ? 0 : Math.abs(xRightCoordinate) + 8
+    const middleEndTranslate =
+      xRightCoordinate >= 8
+        ? 0
+        : Math.abs(xRightCoordinate) - 4
+    const balance =
+      new Amount(payload[0].value).formatAsFiat(defaultFiatCurrency)
 
     return (
-      <LabelWrapper
-        labelTranslate={labelPosition === 'start' ? xLeftCoordinate : middleEndTranslate}
+      <TooltipWrapper
+        labelTranslate={
+          labelPosition === 'start'
+            ? xLeftCoordinate
+            : middleEndTranslate
+        }
         labelPosition={labelPosition}
       >
-        <ChartLabel>{parseDate(label)}</ChartLabel>
-      </LabelWrapper>
+        <ChartBalance>
+          {hidePortfolioBalances ? '******' : balance}
+        </ChartBalance>
+        <ChartDate>
+          {formatTimelineDate(label)}
+        </ChartDate>
+      </TooltipWrapper>
     )
   }
 

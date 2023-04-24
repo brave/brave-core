@@ -30,5 +30,5 @@ npm run test -- brave_browser_tests --filter=BraveAds*
 ## Unit Tests
 
 ```
-npm run test -- brave_unit_tests --filter=BatAds*
+npm run test -- brave_unit_tests --filter=BraveAds*
 ```

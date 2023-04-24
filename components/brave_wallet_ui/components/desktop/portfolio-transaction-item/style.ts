@@ -171,7 +171,6 @@ export const OrbAndTxDescriptionContainer = styled.div`
   align-items: center;
   justify-content: flex-start;
   flex-direction: row;
-  flex-wrap: wrap;
   width: 50%;
 `
 
@@ -235,7 +234,7 @@ export const StatusBalanceAndMoreContainer = styled.div`
   display: flex;
   align-self: flex-end;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   width: 50%;
 `

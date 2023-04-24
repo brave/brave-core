@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//brave/browser/resources/settings/sources.gni")
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
@@ -14,6 +13,7 @@ import("//chrome/common/features.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//tools/grit/preprocess_if_expr.gni")
 import("//ui/webui/resources/tools/generate_grd.gni")
+import("sources.gni")
 
 preprocess_folder = "preprocessed"
 
@@ -62,10 +62,11 @@ generate_grd("build_grd") {
   deps = [ ":preprocess" ]
 }
 
-# Move brave files to the place where chromium settings page is compiled from. It should be the same directory
-# that build_webui.gni uses after it performs its own preprocess_if_expr. Once chromium and brave frontend files
-# are all in the same place, build_webui.gni will continue its typescript and rollup compile (etc.) from that
-# directory.
+# Move brave files to the place where chromium settings page is compiled from.
+# It should be the same directory that build_webui.gni uses after it performs
+# its own preprocess_if_expr. Once chromium and brave frontend files are all in
+# the same place, build_webui.gni will continue its typescript and rollup
+# compile (etc.) from that directory.
 preprocess_if_expr("preprocess") {
   defines = [
     "enable_tor=$enable_tor",
@@ -74,7 +75,6 @@ preprocess_if_expr("preprocess") {
     "enable_extensions=$enable_extensions",
     "enable_pin_shortcut=$enable_pin_shortcut",
   ]
-  in_folder = "./"
   out_folder =
       "$root_gen_dir/chrome/browser/resources/settings/$preprocess_folder"
 

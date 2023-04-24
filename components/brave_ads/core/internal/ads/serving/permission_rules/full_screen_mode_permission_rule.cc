@@ -14,6 +14,10 @@ namespace brave_ads {
 namespace {
 
 bool DoesRespectCap() {
+  if (!kShouldOnlyServeAdsInWindowedMode.Get()) {
+    return true;
+  }
+
   if (PlatformHelper::GetInstance().IsMobile()) {
     return true;
   }
@@ -23,21 +27,13 @@ bool DoesRespectCap() {
 
 }  // namespace
 
-bool FullScreenModePermissionRule::ShouldAllow() {
-  if (!kShouldOnlyServeAdsInWindowedMode.Get()) {
-    return true;
-  }
-
+base::expected<void, std::string> FullScreenModePermissionRule::ShouldAllow()
+    const {
   if (!DoesRespectCap()) {
-    last_message_ = "Full screen mode";
-    return false;
+    return base::unexpected("Full screen mode");
   }
 
-  return true;
-}
-
-const std::string& FullScreenModePermissionRule::GetLastMessage() const {
-  return last_message_;
+  return base::ok();
 }
 
 }  // namespace brave_ads

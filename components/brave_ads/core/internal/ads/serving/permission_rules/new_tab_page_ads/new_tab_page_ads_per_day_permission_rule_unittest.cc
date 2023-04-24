@@ -12,11 +12,11 @@
 #include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_features.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::new_tab_page_ads {
 
-class BatAdsNewTabPageAdsPerDayPermissionRuleTest : public UnitTestBase {
+class BraveAdsNewTabPageAdsPerDayPermissionRuleTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -33,17 +33,18 @@ class BatAdsNewTabPageAdsPerDayPermissionRuleTest : public UnitTestBase {
   AdsPerDayPermissionRule permission_rule_;
 };
 
-TEST_F(BatAdsNewTabPageAdsPerDayPermissionRuleTest,
+TEST_F(BraveAdsNewTabPageAdsPerDayPermissionRuleTest,
        AllowAdIfThereIsNoAdsHistory) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsNewTabPageAdsPerDayPermissionRuleTest, AllowAdIfDoesNotExceedCap) {
+TEST_F(BraveAdsNewTabPageAdsPerDayPermissionRuleTest,
+       AllowAdIfDoesNotExceedCap) {
   // Arrange
   RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed,
                  /*count*/ kMaximumAdsPerDay.Get() - 1);
@@ -51,10 +52,10 @@ TEST_F(BatAdsNewTabPageAdsPerDayPermissionRuleTest, AllowAdIfDoesNotExceedCap) {
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsNewTabPageAdsPerDayPermissionRuleTest,
+TEST_F(BraveAdsNewTabPageAdsPerDayPermissionRuleTest,
        AllowAdIfDoesNotExceedCapAfter1Day) {
   // Arrange
   RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed,
@@ -64,10 +65,10 @@ TEST_F(BatAdsNewTabPageAdsPerDayPermissionRuleTest,
   AdvanceClockBy(base::Days(1));
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsNewTabPageAdsPerDayPermissionRuleTest,
+TEST_F(BraveAdsNewTabPageAdsPerDayPermissionRuleTest,
        DoNotAllowAdIfExceedsCapWithin1Day) {
   // Arrange
   RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed,
@@ -77,7 +78,7 @@ TEST_F(BatAdsNewTabPageAdsPerDayPermissionRuleTest,
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 }  // namespace brave_ads::new_tab_page_ads

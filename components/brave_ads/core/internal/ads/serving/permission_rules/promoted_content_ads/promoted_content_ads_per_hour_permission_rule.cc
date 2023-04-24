@@ -28,21 +28,16 @@ bool DoesRespectCap(const std::vector<base::Time>& history) {
 
 }  // namespace
 
-bool AdsPerHourPermissionRule::ShouldAllow() {
+base::expected<void, std::string> AdsPerHourPermissionRule::ShouldAllow()
+    const {
   const std::vector<base::Time> history =
       GetAdEventHistory(AdType::kPromotedContentAd, ConfirmationType::kServed);
-
   if (!DoesRespectCap(history)) {
-    last_message_ =
-        "You have exceeded the allowed promoted content ads per hour";
-    return false;
+    return base::unexpected(
+        "You have exceeded the allowed promoted content ads per hour");
   }
 
-  return true;
-}
-
-const std::string& AdsPerHourPermissionRule::GetLastMessage() const {
-  return last_message_;
+  return base::ok();
 }
 
 }  // namespace brave_ads::promoted_content_ads

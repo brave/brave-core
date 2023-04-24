@@ -16,11 +16,12 @@
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-TEST(BatAdsEligibleAdsPredictorUtilTest, GroupCreativeAdsByCreativeInstanceId) {
+TEST(BraveAdsEligibleAdsPredictorUtilTest,
+     GroupCreativeAdsByCreativeInstanceId) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
@@ -59,7 +60,7 @@ TEST(BatAdsEligibleAdsPredictorUtilTest, GroupCreativeAdsByCreativeInstanceId) {
   EXPECT_EQ(expected_segments, ad_predictor.segments);
 }
 
-TEST(BatAdsEligibleAdsPredictorUtilTest,
+TEST(BraveAdsEligibleAdsPredictorUtilTest,
      GroupCreativeAdsByCreativeInstanceIdForEmptyAds) {
   // Arrange
   const CreativeNotificationAdList creative_ads;
@@ -73,7 +74,7 @@ TEST(BatAdsEligibleAdsPredictorUtilTest,
   EXPECT_TRUE(creative_ad_predictors.empty());
 }
 
-TEST(BatAdsEligibleAdsPredictorUtilTest,
+TEST(BraveAdsEligibleAdsPredictorUtilTest,
      ComputePredictorScoreWithZeroWeightsNotAllowedByGriffin) {
   // Arrange
   std::map<std::string, std::string> params;
@@ -103,7 +104,7 @@ TEST(BatAdsEligibleAdsPredictorUtilTest,
   EXPECT_LT(0, ad_predictor.score);
 }
 
-TEST(BatAdsEligibleAdsPredictorUtilTest,
+TEST(BraveAdsEligibleAdsPredictorUtilTest,
      ComputePredictorScoreWithDefaultWeights) {
   // Arrange
   CreativeNotificationAdInfo creative_ad =
@@ -128,7 +129,7 @@ TEST(BatAdsEligibleAdsPredictorUtilTest,
             ad_predictor.score);
 }
 
-TEST(BatAdsEligibleAdsPredictorUtilTest,
+TEST(BraveAdsEligibleAdsPredictorUtilTest,
      ComputePredictorScoreWithEmptyAdFeatures) {
   // Arrange
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor;
@@ -140,7 +141,7 @@ TEST(BatAdsEligibleAdsPredictorUtilTest,
   EXPECT_EQ(0.0, ad_predictor.score);
 }
 
-TEST(BatAdsEligibleAdsPredictorUtilTest, ComputeVoteRegistry) {
+TEST(BraveAdsEligibleAdsPredictorUtilTest, ComputeVoteRegistry) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
@@ -191,7 +192,7 @@ TEST(BatAdsEligibleAdsPredictorUtilTest, ComputeVoteRegistry) {
             vote_registry.at(creative_ads.size() - 1));
 }
 
-TEST(BatAdsEligibleAdsPredictorUtilTest,
+TEST(BraveAdsEligibleAdsPredictorUtilTest,
      ComputeVoteRegistryWithMultipleCreativesWithSameEmbeddings) {
   // Arrange
   CreativeNotificationAdList creative_ads;
@@ -234,7 +235,7 @@ TEST(BatAdsEligibleAdsPredictorUtilTest,
             vote_registry.at(creative_ads.size() - 1));
 }
 
-TEST(BatAdsEligibleAdsPredictorUtilTest,
+TEST(BraveAdsEligibleAdsPredictorUtilTest,
      ComputeVoteRegistryWithNoEmbeddingHistory) {
   // Arrange
   CreativeNotificationAdList creative_ads;

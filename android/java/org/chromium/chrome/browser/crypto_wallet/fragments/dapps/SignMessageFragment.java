@@ -141,7 +141,7 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
     }
 
     private void updateNetwork(@CoinType.EnumType int coin) {
-        getJsonRpcService().getNetwork(
-                coin, selectedNetwork -> { mNetworkName.setText(selectedNetwork.chainName); });
+        getJsonRpcService().getNetwork(coin, null,
+                selectedNetwork -> { mNetworkName.setText(selectedNetwork.chainName); });
     }
 }

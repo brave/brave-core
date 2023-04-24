@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
 #include "brave/components/brave_ads/core/internal/resources/resources_unittest_constants.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -24,9 +24,9 @@ namespace {
 constexpr char kResourceId[] = "mkdhnfmjhklfnamlheoliekgeohamoig";
 }  // namespace
 
-class BatAdsAntiTargetingResourceTest : public UnitTestBase {};
+class BraveAdsAntiTargetingResourceTest : public UnitTestBase {};
 
-TEST_F(BatAdsAntiTargetingResourceTest, LoadResource) {
+TEST_F(BraveAdsAntiTargetingResourceTest, LoadResource) {
   // Arrange
   resource::AntiTargeting resource;
 
@@ -38,7 +38,7 @@ TEST_F(BatAdsAntiTargetingResourceTest, LoadResource) {
   EXPECT_TRUE(resource.IsInitialized());
 }
 
-TEST_F(BatAdsAntiTargetingResourceTest, DoNotLoadInvalidResource) {
+TEST_F(BraveAdsAntiTargetingResourceTest, DoNotLoadInvalidResource) {
   // Arrange
   CopyFileFromTestPathToTempPath(kInvalidResourceId, kResourceId);
 
@@ -52,9 +52,9 @@ TEST_F(BatAdsAntiTargetingResourceTest, DoNotLoadInvalidResource) {
   EXPECT_FALSE(resource.IsInitialized());
 }
 
-TEST_F(BatAdsAntiTargetingResourceTest, DoNotLoadMissingResource) {
+TEST_F(BraveAdsAntiTargetingResourceTest, DoNotLoadMissingResource) {
   // Arrange
-  EXPECT_CALL(*ads_client_mock_, LoadFileResource(kResourceId, _, _))
+  EXPECT_CALL(ads_client_mock_, LoadFileResource(kResourceId, _, _))
       .WillOnce(Invoke([](const std::string& /*id*/, const int /*version*/,
                           LoadFileCallback callback) {
         const base::FilePath path =
@@ -75,7 +75,7 @@ TEST_F(BatAdsAntiTargetingResourceTest, DoNotLoadMissingResource) {
   EXPECT_FALSE(resource.IsInitialized());
 }
 
-TEST_F(BatAdsAntiTargetingResourceTest, IsNotInitialized) {
+TEST_F(BraveAdsAntiTargetingResourceTest, IsNotInitialized) {
   // Arrange
   resource::AntiTargeting resource;
 

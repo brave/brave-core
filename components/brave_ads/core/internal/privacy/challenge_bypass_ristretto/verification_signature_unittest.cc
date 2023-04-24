@@ -10,44 +10,41 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/challenge_bypass_ristretto_unittest_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::privacy::cbr {
 
-TEST(BatAdsVerificationSignatureTest, FailToInitialize) {
+TEST(BraveAdsVerificationSignatureTest, FailToInitialize) {
   // Arrange
   const VerificationSignature verification_signature;
 
   // Act
-  const bool has_value = verification_signature.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(verification_signature.has_value());
 }
 
-TEST(BatAdsVerificationSignatureTest, FailToInitializeWithEmptyBase64) {
+TEST(BraveAdsVerificationSignatureTest, FailToInitializeWithEmptyBase64) {
   // Arrange
   const VerificationSignature verification_signature("");
 
   // Act
-  const bool has_value = verification_signature.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(verification_signature.has_value());
 }
 
-TEST(BatAdsVerificationSignatureTest, FailToInitializeWithInvalidBase64) {
+TEST(BraveAdsVerificationSignatureTest, FailToInitializeWithInvalidBase64) {
   // Arrange
   const VerificationSignature verification_signature(kInvalidBase64);
 
   // Act
-  const bool has_value = verification_signature.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(verification_signature.has_value());
 }
 
-TEST(BatAdsVerificationSignatureTest, DecodeBase64) {
+TEST(BraveAdsVerificationSignatureTest, DecodeBase64) {
   // Arrange
 
   // Act
@@ -55,11 +52,10 @@ TEST(BatAdsVerificationSignatureTest, DecodeBase64) {
       VerificationSignature::DecodeBase64(kVerificationSignatureBase64);
 
   // Assert
-  const bool has_value = verification_signature.has_value();
-  EXPECT_TRUE(has_value);
+  EXPECT_TRUE(verification_signature.has_value());
 }
 
-TEST(BatAdsVerificationSignatureTest, FailToDecodeEmptyBase64) {
+TEST(BraveAdsVerificationSignatureTest, FailToDecodeEmptyBase64) {
   // Arrange
 
   // Act
@@ -67,11 +63,10 @@ TEST(BatAdsVerificationSignatureTest, FailToDecodeEmptyBase64) {
       VerificationSignature::DecodeBase64({});
 
   // Assert
-  const bool has_value = verification_signature.has_value();
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(verification_signature.has_value());
 }
 
-TEST(BatAdsVerificationSignatureTest, FailToDecodeInvalidBase64) {
+TEST(BraveAdsVerificationSignatureTest, FailToDecodeInvalidBase64) {
   // Arrange
 
   // Act
@@ -79,11 +74,10 @@ TEST(BatAdsVerificationSignatureTest, FailToDecodeInvalidBase64) {
       VerificationSignature::DecodeBase64(kInvalidBase64);
 
   // Assert
-  const bool has_value = verification_signature.has_value();
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(verification_signature.has_value());
 }
 
-TEST(BatAdsVerificationSignatureTest, EncodeBase64) {
+TEST(BraveAdsVerificationSignatureTest, EncodeBase64) {
   // Arrange
   const VerificationSignature verification_signature(
       kVerificationSignatureBase64);
@@ -97,7 +91,7 @@ TEST(BatAdsVerificationSignatureTest, EncodeBase64) {
   EXPECT_EQ(kVerificationSignatureBase64, *encoded_base64);
 }
 
-TEST(BatAdsVerificationSignatureTest, FailToEncodeBase64WhenUninitialized) {
+TEST(BraveAdsVerificationSignatureTest, FailToEncodeBase64WhenUninitialized) {
   // Arrange
   const VerificationSignature verification_signature;
 
@@ -109,7 +103,7 @@ TEST(BatAdsVerificationSignatureTest, FailToEncodeBase64WhenUninitialized) {
   EXPECT_FALSE(encoded_base64);
 }
 
-TEST(BatAdsVerificationSignatureTest, IsEqual) {
+TEST(BraveAdsVerificationSignatureTest, IsEqual) {
   // Arrange
   const VerificationSignature verification_signature(
       kVerificationSignatureBase64);
@@ -120,7 +114,7 @@ TEST(BatAdsVerificationSignatureTest, IsEqual) {
   EXPECT_EQ(verification_signature, verification_signature);
 }
 
-TEST(BatAdsVerificationSignatureTest, IsEqualWhenUninitialized) {
+TEST(BraveAdsVerificationSignatureTest, IsEqualWhenUninitialized) {
   // Arrange
   const VerificationSignature verification_signature;
 
@@ -130,7 +124,7 @@ TEST(BatAdsVerificationSignatureTest, IsEqualWhenUninitialized) {
   EXPECT_EQ(verification_signature, verification_signature);
 }
 
-TEST(BatAdsVerificationSignatureTest, IsEmptyBase64Equal) {
+TEST(BraveAdsVerificationSignatureTest, IsEmptyBase64Equal) {
   // Arrange
   const VerificationSignature verification_signature("");
 
@@ -140,7 +134,7 @@ TEST(BatAdsVerificationSignatureTest, IsEmptyBase64Equal) {
   EXPECT_EQ(verification_signature, verification_signature);
 }
 
-TEST(BatAdsVerificationSignatureTest, IsInvalidBase64Equal) {
+TEST(BraveAdsVerificationSignatureTest, IsInvalidBase64Equal) {
   // Arrange
   const VerificationSignature verification_signature(kInvalidBase64);
 
@@ -150,7 +144,7 @@ TEST(BatAdsVerificationSignatureTest, IsInvalidBase64Equal) {
   EXPECT_EQ(verification_signature, verification_signature);
 }
 
-TEST(BatAdsVerificationSignatureTest, IsNotEqual) {
+TEST(BraveAdsVerificationSignatureTest, IsNotEqual) {
   // Arrange
   const VerificationSignature verification_signature(
       kVerificationSignatureBase64);
@@ -162,7 +156,7 @@ TEST(BatAdsVerificationSignatureTest, IsNotEqual) {
   EXPECT_NE(different_verification_signature, verification_signature);
 }
 
-TEST(BatAdsVerificationSignatureTest, OutputStream) {
+TEST(BraveAdsVerificationSignatureTest, OutputStream) {
   // Arrange
   const VerificationSignature verification_signature(
       kVerificationSignatureBase64);
@@ -175,7 +169,7 @@ TEST(BatAdsVerificationSignatureTest, OutputStream) {
   EXPECT_EQ(kVerificationSignatureBase64, ss.str());
 }
 
-TEST(BatAdsVerificationSignatureTest, OutputStreamWhenUninitialized) {
+TEST(BraveAdsVerificationSignatureTest, OutputStreamWhenUninitialized) {
   // Arrange
   const VerificationSignature verification_signature;
 

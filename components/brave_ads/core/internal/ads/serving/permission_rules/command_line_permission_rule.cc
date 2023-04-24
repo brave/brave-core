@@ -5,35 +5,31 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/command_line_permission_rule.h"
 
-#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+#include "brave/components/brave_ads/core/internal/flags/did_override/did_override_command_line_flag_util.h"
+#include "brave/components/brave_ads/core/internal/flags/environment/environment_flag_util.h"
 
 namespace brave_ads {
 
 namespace {
 
-bool IsProductionEnvironment() {
-  return GlobalState::GetInstance()->Flags().environment_type ==
-         mojom::EnvironmentType::kProduction;
-}
-
 bool DoesRespectCap() {
-  return !(IsProductionEnvironment() &&
-           GlobalState::GetInstance()->Flags().did_override_from_command_line);
+  if (!IsProductionEnvironment()) {
+    // Always respect cap for staging environment
+    return true;
+  }
+
+  return IsProductionEnvironment() && !DidOverrideCommandLine();
 }
 
 }  // namespace
 
-bool CommandLinePermissionRule::ShouldAllow() {
+base::expected<void, std::string> CommandLinePermissionRule::ShouldAllow()
+    const {
   if (!DoesRespectCap()) {
-    last_message_ = "Command-line arg is not supported";
-    return false;
+    return base::unexpected("Command-line arg is not supported");
   }
 
-  return true;
-}
-
-const std::string& CommandLinePermissionRule::GetLastMessage() const {
-  return last_message_;
+  return base::ok();
 }
 
 }  // namespace brave_ads

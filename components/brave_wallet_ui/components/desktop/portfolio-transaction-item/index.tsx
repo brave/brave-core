@@ -11,6 +11,7 @@ import * as EthereumBlockies from 'ethereum-blockies'
 // Types
 import {
   BraveWallet,
+  SerializableTransactionInfo,
   WalletRoutes
 } from '../../../constants/types'
 
@@ -22,8 +23,20 @@ import { getLocale } from '../../../../common/locale'
 import { WalletActions } from '../../../common/actions'
 import {
   getGasFeeFiatValue,
+  getTransactionFormattedSendCurrencyTotal,
+  getTransactionGasFee,
   getTransactionStatusString,
-  ParsedTransactionWithoutFiatValues
+  isFilecoinTransaction,
+  isSolanaTransaction,
+  getTransactionToAddress,
+  getIsTxApprovalUnlimited,
+  findTransactionToken,
+  getTransactionApprovalTargetAddress,
+  getTransactionErc721TokenId,
+  isSwapTransaction,
+  getETHSwapTransactionBuyAndSellTokens,
+  getTransactionTokenSymbol,
+  getTransactionTransferredValue
 } from '../../../utils/tx-utils'
 import { findTokenBySymbol } from '../../../utils/asset-utils'
 import {
@@ -32,6 +45,9 @@ import {
 } from '../../../common/slices/entities/account-info.entity'
 import { selectAllUserAssetsFromQueryResult } from '../../../common/slices/entities/blockchain-token.entity'
 import { makeNetworkAsset } from '../../../options/asset-options'
+import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
+import { WalletSelectors } from '../../../common/selectors'
+import { getAddressLabelFromRegistry } from '../../../utils/account-utils'
 
 // Hooks
 import { useExplorer } from '../../../common/hooks'
@@ -42,6 +58,9 @@ import {
   useGetTokenSpotPriceQuery,
   useGetUserTokensRegistryQuery
 } from '../../../common/slices/api.slice'
+import {
+  useUnsafeWalletSelector
+} from '../../../common/hooks/use-safe-selector'
 
 // Styled Components
 import {
@@ -77,7 +96,7 @@ import TransactionTimestampTooltip from '../transaction-timestamp-tooltip'
 import { Skeleton, LoadingSkeletonStyleProps } from '../../shared/loading-skeleton/styles'
 
 export interface Props {
-  transaction: ParsedTransactionWithoutFiatValues
+  transaction: BraveWallet.TransactionInfo | SerializableTransactionInfo
   displayAccountName: boolean
   isFocused?: boolean
 }
@@ -93,18 +112,25 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
   displayAccountName,
   isFocused
 }: Props, forwardedRef) => {
-  const {
-    formattedSendCurrencyTotal,
-    gasFee,
-    isFilecoinTransaction,
-    isSolanaTransaction
-  } = transaction
-
   // routing
   const history = useHistory()
 
   // redux
   const dispatch = useDispatch()
+  const fullTokenList = useUnsafeWalletSelector(WalletSelectors.fullTokenList)
+  const solFeeEstimates = useUnsafeWalletSelector(
+    WalletSelectors.solFeeEstimates
+  )
+
+  // partial tx parsing
+  const gasFee = getTransactionGasFee(transaction, solFeeEstimates)
+  const isFilecoinTx = isFilecoinTransaction(transaction)
+  const isSolanaTx = isSolanaTransaction(transaction)
+  const recipient = getTransactionToAddress(transaction)
+  const approvalTarget = getTransactionApprovalTargetAddress(transaction)
+  const erc721TokenId = getTransactionErc721TokenId(transaction)
+  const isSwap = isSwapTransaction(transaction)
+  const txCoinType = getCoinFromTxDataUnion(transaction.txDataUnion)
 
   // queries
   const {
@@ -117,8 +143,9 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
     isLoading: isLoadingTxNetwork //
   } = useGetNetworkQuery({
     chainId: transaction.chainId,
-    coin: transaction.coinType
+    coin: txCoinType
   })
+
   const networkAsset = React.useMemo(() => {
     return makeNetworkAsset(txNetwork)
   }, [txNetwork])
@@ -140,24 +167,89 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
   const account =
     accountInfosRegistry.entities[
-      accountInfoEntityAdaptor.selectId({ address: transaction.accountAddress })
+      accountInfoEntityAdaptor.selectId({ address: transaction.fromAddress })
     ]
 
+  // memos & computed from queries
+  const combinedTokensList = React.useMemo(
+    () => fullTokenList.concat(userVisibleTokensInfo),
+    [fullTokenList, userVisibleTokensInfo]
+  )
+
+  const txToken = findTransactionToken(
+    transaction,
+    combinedTokensList
+  )
+
+  const recipientLabel = getAddressLabelFromRegistry(
+    recipient,
+    accountInfosRegistry
+  )
+
+  const senderLabel = getAddressLabelFromRegistry(
+    transaction.fromAddress,
+    accountInfosRegistry
+  )
+
+  const approvalTargetLabel = getAddressLabelFromRegistry(
+    approvalTarget,
+    accountInfosRegistry
+  )
+
+  const { buyToken, sellToken, buyAmount, sellAmount } = React.useMemo(() => {
+    return getETHSwapTransactionBuyAndSellTokens({
+      nativeAsset: makeNetworkAsset(txNetwork),
+      tokensList: combinedTokensList,
+      tx: transaction
+    })
+  }, [txNetwork, combinedTokensList, transaction])
+
+  const txSymbol = getTransactionTokenSymbol({
+    tx: transaction,
+    txNetwork,
+    token: txToken,
+    sellToken
+  })
+
+  const normalizedTransferredValue = React.useMemo(() => {
+    const { normalized } = getTransactionTransferredValue({
+      tx: transaction,
+      sellToken,
+      token: txToken,
+      txNetwork
+    })
+    return normalized.format(6)
+  }, [
+    transaction,
+    sellToken,
+    txToken,
+    txNetwork
+  ])
+
+  const formattedSendCurrencyTotal = getTransactionFormattedSendCurrencyTotal({
+    normalizedTransferredValue,
+    tx: transaction,
+    sellToken,
+    token: txToken,
+    txNetwork
+  })
+
+  // price queries
   const {
     fiatValue,
     isLoading: isLoadingTokenSpotPrice
   } = useGetTokenSpotPriceQuery({
-    chainId: transaction.token?.chainId || '',
-    contractAddress: transaction.token?.contractAddress || '',
-    isErc721: transaction.token?.isErc721 || false,
-    symbol: transaction.token?.symbol || '',
-    tokenId: transaction.token?.tokenId || ''
+    chainId: txToken?.chainId || '',
+    contractAddress: txToken?.contractAddress || '',
+    isErc721: txToken?.isErc721 || false,
+    symbol: txToken?.symbol || '',
+    tokenId: txToken?.tokenId || ''
   }, {
-    skip: !transaction.token || !transaction.value,
+    skip: !txToken || !normalizedTransferredValue,
     // TODO: selector
     selectFromResult: (result) => {
       const price = result.data?.price || '0'
-      const fiatValue = new Amount(transaction.value)
+      const fiatValue = new Amount(normalizedTransferredValue)
         .times(price)
         .value?.toString() || '0'
 
@@ -213,21 +305,23 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
   }, [showTransactionPopup])
 
   const onClickCopyTransactionHash = React.useCallback(
-    () => copyToClipboard(transaction.hash),
-    [transaction.hash]
+    () => copyToClipboard(transaction.txHash),
+    [transaction.txHash]
   )
 
   const onClickRetryTransaction = React.useCallback(
     () => {
       dispatch(WalletActions.retryTransaction({
-        coinType: transaction.coinType,
-        fromAddress: transaction.accountAddress,
+        coinType: txCoinType,
+        fromAddress: transaction.fromAddress,
+        chainId: transaction.chainId,
         transactionId: transaction.id
       }))
     },
     [
-      transaction.coinType,
-      transaction.accountAddress,
+      txCoinType,
+      transaction.fromAddress,
+      transaction.chainId,
       transaction.id
     ]
   )
@@ -235,14 +329,16 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
   const onClickSpeedupTransaction = React.useCallback(
     () => {
       dispatch(WalletActions.speedupTransaction({
-        coinType: transaction.coinType,
-        fromAddress: transaction.accountAddress,
+        coinType: txCoinType,
+        fromAddress: transaction.fromAddress,
+        chainId: transaction.chainId,
         transactionId: transaction.id
       }))
     },
     [
-      transaction.coinType,
-      transaction.accountAddress,
+      txCoinType,
+      transaction.fromAddress,
+      transaction.chainId,
       transaction.id
     ]
   )
@@ -250,14 +346,16 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
   const onClickCancelTransaction = React.useCallback(
     () => {
       dispatch(WalletActions.cancelTransaction({
-        coinType: transaction.coinType,
-        fromAddress: transaction.accountAddress,
+        coinType: txCoinType,
+        fromAddress: transaction.fromAddress,
+        chainId: transaction.chainId,
         transactionId: transaction.id
       }))
     },
     [
-      transaction.coinType,
-      transaction.accountAddress,
+      txCoinType,
+      transaction.fromAddress,
+      transaction.chainId,
       transaction.id
     ]
   )
@@ -311,12 +409,20 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
   // memos
   const fromOrb = React.useMemo(() => {
-    return EthereumBlockies.create({ seed: transaction.sender.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [transaction.sender])
+    return EthereumBlockies.create({
+      seed: transaction.fromAddress.toLowerCase(),
+      size: 8,
+      scale: 16
+    }).toDataURL()
+  }, [transaction.fromAddress])
 
   const toOrb = React.useMemo(() => {
-    return EthereumBlockies.create({ seed: transaction.recipient.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [transaction.recipient])
+    return EthereumBlockies.create({
+      seed: recipient.toLowerCase(),
+      size: 8,
+      scale: 16
+    }).toDataURL()
+  }, [recipient])
 
   const transactionIntentDescription = React.useMemo(() => {
     switch (true) {
@@ -327,16 +433,16 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
         return (
           <DetailRow>
             <DetailTextDark>
-              <strong>{text}</strong> {
-                transaction.isApprovalUnlimited
-                  ? getLocale('braveWalletTransactionApproveUnlimited')
-                  : transaction.value
-              }{' '}
-              <AddressOrAsset onClick={onAssetClick(transaction.symbol)}>
-                {transaction.symbol}
-              </AddressOrAsset> -{' '}
-              <AddressOrAsset onClick={onAddressClick(transaction.approvalTarget)}>
-                {transaction.approvalTargetLabel}
+              <strong>{text}{' '}</strong>
+              {getIsTxApprovalUnlimited(transaction)
+                ? getLocale('braveWalletTransactionApproveUnlimited')
+                : normalizedTransferredValue}{' '}
+              <AddressOrAsset onClick={onAssetClick(txSymbol)}>
+                {txSymbol}
+              </AddressOrAsset>
+              {' '}-{' '}
+              <AddressOrAsset onClick={onAddressClick(approvalTarget)}>
+                {approvalTargetLabel}
               </AddressOrAsset>
             </DetailTextDark>
           </DetailRow>
@@ -347,37 +453,36 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
         return (
           <DetailRow>
             <DetailTextDark>
-              {transaction.sellAmount?.format(6)}{' '}
-              <AddressOrAsset
-                onClick={onAssetClick(transaction.sellToken?.symbol)}
-              >
-                {transaction.sellToken?.symbol}
+              {sellAmount?.format(6)}{' '}
+              <AddressOrAsset onClick={onAssetClick(sellToken?.symbol)}>
+                {sellToken?.symbol}
               </AddressOrAsset>
             </DetailTextDark>
             <ArrowIcon />
             <DetailTextDark>
-              {transaction.minBuyAmount?.format(6)}{' '}
-              <AddressOrAsset onClick={onAddressClick(transaction.buyToken?.symbol)}>
-                {transaction.buyToken?.symbol}
+              {buyAmount?.format(6)}{' '}
+              <AddressOrAsset onClick={onAddressClick(buyToken?.symbol)}>
+                {buyToken?.symbol}
               </AddressOrAsset>
             </DetailTextDark>
           </DetailRow>
         )
       }
 
-      case transaction.txType !== BraveWallet.TransactionType.ETHSwap && transaction.isSwap: {
+      case transaction.txType !== BraveWallet.TransactionType.ETHSwap &&
+        isSwap: {
         return (
           <DetailRow>
             <DetailTextDark>
-              {transaction.value}{' '}
-              <AddressOrAsset onClick={onAssetClick(transaction.symbol)}>
-                {transaction.symbol}
+              {normalizedTransferredValue}{' '}
+              <AddressOrAsset onClick={onAssetClick(txSymbol)}>
+                {txSymbol}
               </AddressOrAsset>
             </DetailTextDark>
             <ArrowIcon />
             <DetailTextDark>
-              <AddressOrAsset onClick={onAddressClick(transaction.recipient)}>
-                {transaction.recipientLabel}
+              <AddressOrAsset onClick={onAddressClick(recipient)}>
+                {recipientLabel}
               </AddressOrAsset>
             </DetailTextDark>
           </DetailRow>
@@ -386,30 +491,48 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
       case transaction.txType === BraveWallet.TransactionType.ETHSend:
       case transaction.txType === BraveWallet.TransactionType.ERC20Transfer:
-      case transaction.txType === BraveWallet.TransactionType.ERC721TransferFrom:
-      case transaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom:
+      case transaction.txType ===
+        BraveWallet.TransactionType.ERC721TransferFrom:
+      case transaction.txType ===
+        BraveWallet.TransactionType.ERC721SafeTransferFrom:
       default: {
         return (
           <DetailRow>
             <DetailTextDark>
-              <AddressOrAsset onClick={onAddressClick(transaction.sender)}>
-                {transaction.senderLabel}
+              <AddressOrAsset onClick={onAddressClick(transaction.fromAddress)}>
+                {senderLabel}
               </AddressOrAsset>
             </DetailTextDark>
             <ArrowIcon />
             <DetailTextDark>
-              <AddressOrAsset onClick={onAddressClick(transaction.recipient)}>
-                {transaction.recipientLabel}
+              <AddressOrAsset onClick={onAddressClick(recipient)}>
+                {recipientLabel}
               </AddressOrAsset>
             </DetailTextDark>
           </DetailRow>
         )
       }
     }
-  }, [transaction, onAssetClick, onAddressClick])
+  }, [
+    transaction,
+    isSwap,
+    buyToken?.symbol,
+    buyAmount,
+    txSymbol,
+    senderLabel,
+    recipient,
+    recipientLabel,
+    normalizedTransferredValue,
+    sellAmount,
+    sellToken?.symbol,
+    approvalTargetLabel,
+    approvalTarget,
+    onAssetClick,
+    onAddressClick
+  ])
 
   const transactionActionLocale = React.useMemo(() => {
-    if (transaction.isSwap) {
+    if (isSwap) {
       return <strong>
         {getLocale('braveWalletSwap').toLocaleUpperCase()}
       </strong>
@@ -423,8 +546,8 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
               'braveWalletApprovalTransactionIntent'
             ).toLocaleUpperCase()}{' '}
           </strong>
-          <AddressOrAsset onClick={onAssetClick(transaction.symbol)}>
-            {transaction.symbol}
+          <AddressOrAsset onClick={onAssetClick(txSymbol)}>
+            {txSymbol}
           </AddressOrAsset>
         </>
       )
@@ -441,13 +564,13 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
             transaction.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
             transaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
           }
-          onClick={onAssetClick(transaction.symbol)}
+          onClick={onAssetClick(txSymbol)}
         >
-          {transaction.symbol}
+          {txSymbol}
           {
             transaction.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
               transaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
-              ? ' ' + transaction.erc721TokenId
+              ? ' ' + erc721TokenId
               : ''
           }
         </AddressOrAsset>
@@ -456,8 +579,8 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
   }, [transaction, displayAccountName, onAssetClick])
 
   const wasTxRejected =
-    transaction.status !== BraveWallet.TransactionStatus.Rejected &&
-    transaction.status !== BraveWallet.TransactionStatus.Unapproved
+    transaction.txStatus !== BraveWallet.TransactionStatus.Rejected &&
+    transaction.txStatus !== BraveWallet.TransactionStatus.Unapproved
 
   const formattedGasFeeFiatValue = React.useMemo(() => {
     return new Amount(gasFeeFiat).formatAsFiat(defaultFiatCurrency)
@@ -519,9 +642,9 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
       <StatusBalanceAndMoreContainer>
         <StatusRow>
-          <StatusBubble status={transaction.status} />
+          <StatusBubble status={transaction.txStatus} />
           <DetailTextDarkBold>
-            {getTransactionStatusString(transaction.status)}
+            {getTransactionStatusString(transaction.txStatus)}
           </DetailTextDarkBold>
         </StatusRow>
 
@@ -548,7 +671,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
           </BalanceColumn>
 
           {/* Will remove this conditional for solana once https://github.com/brave/brave-browser/issues/22040 is implemented. */}
-          {(!isSolanaTransaction && !!txNetwork) ? (
+          {!isSolanaTx && !!txNetwork ? (
             <TransactionFeesTooltip
               text={
                 <>
@@ -560,7 +683,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                       <Skeleton {...skeletonProps} />
                     ) : (
                       txNetwork &&
-                      new Amount(transaction.gasFee)
+                      new Amount(gasFee)
                         .divideByDecimals(txNetwork.decimals)
                         .formatAsAsset(6, txNetwork.symbol)
                     )}
@@ -579,9 +702,9 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                 <CoinsIcon />
               </CoinsButton>
             </TransactionFeesTooltip>
-          ):
+          ) : (
             <CoinsButtonSpacer />
-          }
+          )}
 
           {wasTxRejected ? (
             <MoreButton onClick={onShowTransactionPopup}>
@@ -598,10 +721,13 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                 BraveWallet.TransactionStatus.Submitted,
                 BraveWallet.TransactionStatus.Confirmed,
                 BraveWallet.TransactionStatus.Dropped
-              ].includes(transaction.status) && (
+              ].includes(transaction.txStatus) && (
                 <>
                   <TransactionPopupItem
-                    onClick={onClickViewOnBlockExplorer('tx', transaction.hash)}
+                    onClick={onClickViewOnBlockExplorer(
+                      'tx',
+                      transaction.txHash
+                    )}
                     text={getLocale('braveWalletTransactionExplorer')}
                   />
                   <TransactionPopupItem
@@ -614,9 +740,9 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
               {[
                 BraveWallet.TransactionStatus.Submitted,
                 BraveWallet.TransactionStatus.Approved
-              ].includes(transaction.status) &&
-                !isSolanaTransaction &&
-                !isFilecoinTransaction && (
+              ].includes(transaction.txStatus) &&
+                !isSolanaTx &&
+                !isFilecoinTx && (
                   <>
                     <TransactionPopupItem
                       onClick={onClickSpeedupTransaction}
@@ -629,9 +755,9 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                   </>
                 )}
 
-              {BraveWallet.TransactionStatus.Error === transaction.status &&
-                !isSolanaTransaction &&
-                !isFilecoinTransaction && (
+              {BraveWallet.TransactionStatus.Error === transaction.txStatus &&
+                !isSolanaTx &&
+                !isFilecoinTx && (
                   <TransactionPopupItem
                     onClick={onClickRetryTransaction}
                     text={getLocale('braveWalletTransactionRetry')}

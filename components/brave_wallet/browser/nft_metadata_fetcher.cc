@@ -223,20 +223,15 @@ void NftMetadataFetcher::FetchMetadata(
 void NftMetadataFetcher::OnSanitizeTokenMetadata(
     GetTokenMetadataIntermediateCallback callback,
     data_decoder::JsonSanitizer::Result result) {
-  if (result.error) {
-    VLOG(1) << "Data URI JSON validation error:" << *result.error;
+  if (!result.has_value()) {
+    VLOG(1) << "Data URI JSON validation error:" << result.error();
     std::move(callback).Run(
         "", static_cast<int>(mojom::JsonRpcError::kParsingError),
         l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
     return;
   }
 
-  std::string metadata_json;
-  if (result.value.has_value()) {
-    metadata_json = result.value.value();
-  }
-
-  std::move(callback).Run(metadata_json, 0, "");  // 0 is kSuccess
+  std::move(callback).Run(*result, 0, "");  // 0 is kSuccess
 }
 
 void NftMetadataFetcher::OnGetTokenMetadataPayload(
@@ -291,7 +286,7 @@ void NftMetadataFetcher::GetSolTokenMetadata(
       base::BindOnce(&NftMetadataFetcher::OnGetSolanaAccountInfoTokenMetadata,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   json_rpc_service_->GetSolanaAccountInfo(
-      *associated_metadata_account, chain_id, std::move(internal_callback));
+      chain_id, *associated_metadata_account, std::move(internal_callback));
 }
 
 void NftMetadataFetcher::OnGetSolanaAccountInfoTokenMetadata(

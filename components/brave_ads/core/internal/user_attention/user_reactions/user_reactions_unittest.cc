@@ -24,7 +24,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -32,7 +32,7 @@ using ::testing::_;
 using ::testing::NiceMock;
 using ::testing::Return;
 
-class BatAdsUserReactionsTest : public AccountObserver, public UnitTestBase {
+class BraveAdsUserReactionsTest : public AccountObserver, public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -40,7 +40,7 @@ class BatAdsUserReactionsTest : public AccountObserver, public UnitTestBase {
     account_ = std::make_unique<Account>(&token_generator_mock_);
     account_->AddObserver(this);
 
-    user_reactions_ = std::make_unique<UserReactions>(account_.get());
+    user_reactions_ = std::make_unique<UserReactions>(*account_);
 
     ON_CALL(token_generator_mock_, Generate(_))
         .WillByDefault(Return(privacy::GetTokens(/*count*/ 1)));
@@ -59,7 +59,7 @@ class BatAdsUserReactionsTest : public AccountObserver, public UnitTestBase {
         BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
     const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
-    return HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
+    return HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
   }
 
   void OnDidProcessDeposit(const TransactionInfo& /*transaction*/) override {
@@ -82,36 +82,36 @@ class BatAdsUserReactionsTest : public AccountObserver, public UnitTestBase {
   std::unique_ptr<UserReactions> user_reactions_;
 };
 
-TEST_F(BatAdsUserReactionsTest, LikeAd) {
+TEST_F(BraveAdsUserReactionsTest, LikeAd) {
   // Arrange
   const HistoryItemInfo history_item = AddHistoryItem();
 
   // Act
-  HistoryManager::GetInstance()->LikeAd(history_item.ad_content);
+  HistoryManager::GetInstance().LikeAd(history_item.ad_content);
 
   // Assert
   EXPECT_TRUE(did_process_deposit_);
   EXPECT_FALSE(failed_to_process_deposit_);
 }
 
-TEST_F(BatAdsUserReactionsTest, DislikeAd) {
+TEST_F(BraveAdsUserReactionsTest, DislikeAd) {
   // Arrange
   const HistoryItemInfo history_item = AddHistoryItem();
 
   // Act
-  HistoryManager::GetInstance()->DislikeAd(history_item.ad_content);
+  HistoryManager::GetInstance().DislikeAd(history_item.ad_content);
 
   // Assert
   EXPECT_TRUE(did_process_deposit_);
   EXPECT_FALSE(failed_to_process_deposit_);
 }
 
-TEST_F(BatAdsUserReactionsTest, MarkAdAsInappropriate) {
+TEST_F(BraveAdsUserReactionsTest, MarkAdAsInappropriate) {
   // Arrange
   const HistoryItemInfo history_item = AddHistoryItem();
 
   // Act
-  HistoryManager::GetInstance()->ToggleMarkAdAsInappropriate(
+  HistoryManager::GetInstance().ToggleMarkAdAsInappropriate(
       history_item.ad_content);
 
   // Assert
@@ -119,12 +119,12 @@ TEST_F(BatAdsUserReactionsTest, MarkAdAsInappropriate) {
   EXPECT_FALSE(failed_to_process_deposit_);
 }
 
-TEST_F(BatAdsUserReactionsTest, SaveAd) {
+TEST_F(BraveAdsUserReactionsTest, SaveAd) {
   // Arrange
   const HistoryItemInfo history_item = AddHistoryItem();
 
   // Act
-  HistoryManager::GetInstance()->ToggleSaveAd(history_item.ad_content);
+  HistoryManager::GetInstance().ToggleSaveAd(history_item.ad_content);
 
   // Assert
   EXPECT_TRUE(did_process_deposit_);

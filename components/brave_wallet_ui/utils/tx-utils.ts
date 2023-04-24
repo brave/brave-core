@@ -17,7 +17,8 @@ import {
   SerializableTimeDelta,
   SerializableOriginInfo,
   SortingOrder,
-  AssetPriceWithContractAndChainId
+  AssetPriceWithContractAndChainId,
+  TransactionInfo
 } from '../constants/types'
 import { SolanaTransactionTypes } from '../common/constants/solana'
 import { MAX_UINT256, NATIVE_ASSET_CONTRACT_ADDRESS_0X } from '../common/constants/magics'
@@ -45,8 +46,6 @@ import {
   makeSerializableOriginInfo
 } from './model-serialization-utils'
 import { weiToEther } from './web3-utils'
-
-export type TransactionInfo = BraveWallet.TransactionInfo | SerializableTransactionInfo
 
 export type EIP1559TransactionInfo = TransactionInfo & {
   txDataUnion: {

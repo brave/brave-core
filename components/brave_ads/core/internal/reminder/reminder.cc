@@ -25,11 +25,11 @@ void MaybeShowReminder(const HistoryItemInfo& history_item) {
 }  // namespace
 
 Reminder::Reminder() {
-  HistoryManager::GetInstance()->AddObserver(this);
+  HistoryManager::GetInstance().AddObserver(this);
 }
 
 Reminder::~Reminder() {
-  HistoryManager::GetInstance()->RemoveObserver(this);
+  HistoryManager::GetInstance().RemoveObserver(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

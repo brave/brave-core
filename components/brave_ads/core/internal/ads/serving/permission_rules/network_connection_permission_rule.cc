@@ -13,26 +13,22 @@ namespace brave_ads {
 namespace {
 
 bool DoesRespectCap() {
+  if (!kShouldOnlyServeAdsWithValidInternetConnection.Get()) {
+    return true;
+  }
+
   return AdsClientHelper::GetInstance()->IsNetworkConnectionAvailable();
 }
 
 }  // namespace
 
-bool NetworkConnectionPermissionRule::ShouldAllow() {
-  if (!kShouldOnlyServeAdsWithValidInternetConnection.Get()) {
-    return true;
-  }
-
+base::expected<void, std::string> NetworkConnectionPermissionRule::ShouldAllow()
+    const {
   if (!DoesRespectCap()) {
-    last_message_ = "Network connection is unavailable";
-    return false;
+    return base::unexpected("Network connection is unavailable");
   }
 
-  return true;
-}
-
-const std::string& NetworkConnectionPermissionRule::GetLastMessage() const {
-  return last_message_;
+  return base::ok();
 }
 
 }  // namespace brave_ads

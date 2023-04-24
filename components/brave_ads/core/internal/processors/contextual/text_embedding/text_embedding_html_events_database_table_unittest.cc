@@ -7,13 +7,13 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::database::table {
 
-class BatAdsTextEmbeddingHtmlEventsDatabaseTableTest : public UnitTestBase {};
+class BraveAdsTextEmbeddingHtmlEventsDatabaseTableTest : public UnitTestBase {};
 
-TEST(BatAdsTextEmbeddingHtmlEventsDatabaseTableTest, TableName) {
+TEST(BraveAdsTextEmbeddingHtmlEventsDatabaseTableTest, TableName) {
   // Arrange
   const TextEmbeddingHtmlEvents database_table;
 

@@ -29,8 +29,7 @@ using ledger::wallet_provider::ConnectExternalWallet;
 namespace ledger::gemini {
 
 ConnectGeminiWallet::ConnectGeminiWallet(LedgerImpl& ledger)
-    : ConnectExternalWallet(ledger),
-      gemini_server_(std::make_unique<endpoint::GeminiServer>(ledger)) {}
+    : ConnectExternalWallet(ledger), gemini_server_(ledger) {}
 
 ConnectGeminiWallet::~ConnectGeminiWallet() = default;
 
@@ -40,7 +39,7 @@ const char* ConnectGeminiWallet::WalletType() const {
 
 void ConnectGeminiWallet::Authorize(
     OAuthInfo&& oauth_info,
-    ledger::ConnectExternalWalletCallback callback) const {
+    ledger::ConnectExternalWalletCallback callback) {
   DCHECK(!oauth_info.code.empty());
 
   const auto rewards_wallet = ledger_->wallet()->GetWallet();
@@ -55,7 +54,7 @@ void ConnectGeminiWallet::Authorize(
   const std::string external_account_id =
       base::HexEncode(hashed_payment_id.data(), hashed_payment_id.size());
 
-  gemini_server_->post_oauth()->Request(
+  gemini_server_.post_oauth().Request(
       external_account_id, std::move(oauth_info.code),
       base::BindOnce(&ConnectGeminiWallet::OnAuthorize, base::Unretained(this),
                      std::move(callback)));
@@ -64,7 +63,7 @@ void ConnectGeminiWallet::Authorize(
 void ConnectGeminiWallet::OnAuthorize(
     ledger::ConnectExternalWalletCallback callback,
     mojom::Result result,
-    std::string&& token) const {
+    std::string&& token) {
   if (!ledger_->gemini()->GetWalletIf({mojom::WalletStatus::kNotConnected,
                                        mojom::WalletStatus::kLoggedOut})) {
     return std::move(callback).Run(
@@ -94,7 +93,7 @@ void ConnectGeminiWallet::OnAuthorize(
 void ConnectGeminiWallet::OnGetRecipientID(
     ledger::ConnectExternalWalletCallback callback,
     std::string&& token,
-    endpoints::GetRecipientIDGemini::Result&& result) const {
+    endpoints::GetRecipientIDGemini::Result&& result) {
   if (!ledger_->gemini()->GetWalletIf({mojom::WalletStatus::kNotConnected,
                                        mojom::WalletStatus::kLoggedOut})) {
     return std::move(callback).Run(
@@ -108,13 +107,13 @@ void ConnectGeminiWallet::OnGetRecipientID(
 
   auto recipient_id = std::move(result).value();
   if (recipient_id.empty()) {
-    return gemini_server_->post_recipient_id()->Request(
+    return gemini_server_.post_recipient_id().Request(
         token,
         base::BindOnce(&ConnectGeminiWallet::OnPostRecipientID,
                        base::Unretained(this), std::move(callback), token));
   }
 
-  gemini_server_->post_account()->Request(
+  gemini_server_.post_account().Request(
       token, base::BindOnce(&ConnectGeminiWallet::OnPostAccount,
                             base::Unretained(this), std::move(callback), token,
                             std::move(recipient_id)));
@@ -124,7 +123,7 @@ void ConnectGeminiWallet::OnPostRecipientID(
     ledger::ConnectExternalWalletCallback callback,
     std::string&& token,
     mojom::Result result,
-    std::string&& recipient_id) const {
+    std::string&& recipient_id) {
   if (!ledger_->gemini()->GetWalletIf({mojom::WalletStatus::kNotConnected,
                                        mojom::WalletStatus::kLoggedOut})) {
     return std::move(callback).Run(
@@ -157,7 +156,7 @@ void ConnectGeminiWallet::OnPostRecipientID(
         base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
   }
 
-  gemini_server_->post_account()->Request(
+  gemini_server_.post_account().Request(
       token, base::BindOnce(&ConnectGeminiWallet::OnPostAccount,
                             base::Unretained(this), std::move(callback), token,
                             std::move(recipient_id)));
@@ -169,7 +168,7 @@ void ConnectGeminiWallet::OnPostAccount(
     std::string&& recipient_id,
     mojom::Result result,
     std::string&& linking_info,
-    std::string&& user_name) const {
+    std::string&& user_name) {
   auto wallet = ledger_->gemini()->GetWalletIf(
       {mojom::WalletStatus::kNotConnected, mojom::WalletStatus::kLoggedOut});
   if (!wallet) {

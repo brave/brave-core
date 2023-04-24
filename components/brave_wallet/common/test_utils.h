@@ -9,6 +9,7 @@
 #include <string>
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "testing/gmock/include/gmock/gmock-matchers.h"
 
 namespace brave_wallet {
 
@@ -16,6 +17,15 @@ mojom::NetworkInfo GetTestNetworkInfo1(
     const std::string& chain_id = "chain_id");
 mojom::NetworkInfo GetTestNetworkInfo2(
     const std::string& chain_id = "chain_id2");
+
+// Matcher to check equality of two mojo structs. Matcher needs copyable value
+// which is not possible for some mojo types, so wrapping it with RefCounted.
+template <typename T>
+auto EqualsMojo(const T& value) {
+  return testing::Truly(
+      [value = base::MakeRefCounted<base::RefCountedData<T>>(value.Clone())](
+          const T& candidate) { return mojo::Equals(candidate, value->data); });
+}
 
 }  // namespace brave_wallet
 

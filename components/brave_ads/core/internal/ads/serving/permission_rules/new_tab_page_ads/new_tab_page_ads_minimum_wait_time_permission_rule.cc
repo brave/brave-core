@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "base/time/time.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
@@ -27,21 +28,16 @@ bool DoesRespectCap(const std::vector<base::Time>& history) {
 
 }  // namespace
 
-bool MinimumWaitTimePermissionRule::ShouldAllow() {
+base::expected<void, std::string> MinimumWaitTimePermissionRule::ShouldAllow()
+    const {
   const std::vector<base::Time> history =
       GetAdEventHistory(AdType::kNewTabPageAd, ConfirmationType::kServed);
-
   if (!DoesRespectCap(history)) {
-    last_message_ =
-        "New tab page ad cannot be shown as minimum wait time has not passed";
-    return false;
+    return base::unexpected(
+        "New tab page ad cannot be shown as minimum wait time has not passed");
   }
 
-  return true;
-}
-
-const std::string& MinimumWaitTimePermissionRule::GetLastMessage() const {
-  return last_message_;
+  return base::ok();
 }
 
 }  // namespace brave_ads::new_tab_page_ads

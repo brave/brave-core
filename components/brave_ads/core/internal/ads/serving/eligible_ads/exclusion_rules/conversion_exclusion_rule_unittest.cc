@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -27,9 +27,10 @@ constexpr const char* kCreativeSetIds[] = {
 
 }  // namespace
 
-class BatAdsConversionExclusionRuleTest : public UnitTestBase {};
+class BraveAdsConversionExclusionRuleTest : public UnitTestBase {};
 
-TEST_F(BatAdsConversionExclusionRuleTest, AllowAdIfThereIsNoConversionHistory) {
+TEST_F(BraveAdsConversionExclusionRuleTest,
+       AllowAdIfThereIsNoConversionHistory) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -39,10 +40,10 @@ TEST_F(BatAdsConversionExclusionRuleTest, AllowAdIfThereIsNoConversionHistory) {
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BatAdsConversionExclusionRuleTest, DoNotAllowAdIfAlreadyConverted) {
+TEST_F(BraveAdsConversionExclusionRuleTest, DoNotAllowAdIfAlreadyConverted) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetIds[0];
@@ -60,10 +61,10 @@ TEST_F(BatAdsConversionExclusionRuleTest, DoNotAllowAdIfAlreadyConverted) {
   // Act
 
   // Assert
-  EXPECT_TRUE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_FALSE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BatAdsConversionExclusionRuleTest,
+TEST_F(BraveAdsConversionExclusionRuleTest,
        AllowAdIfAlreadyConvertedAndExclusionRuleDisabled) {
   // Arrange
   base::FieldTrialParams params;
@@ -93,10 +94,10 @@ TEST_F(BatAdsConversionExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BatAdsConversionExclusionRuleTest, AllowAdIfNotAlreadyConverted) {
+TEST_F(BraveAdsConversionExclusionRuleTest, AllowAdIfNotAlreadyConverted) {
   // Arrange
   CreativeAdInfo creative_ad_1;
   creative_ad_1.creative_set_id = kCreativeSetIds[0];
@@ -117,7 +118,7 @@ TEST_F(BatAdsConversionExclusionRuleTest, AllowAdIfNotAlreadyConverted) {
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad_1));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad_1).has_value());
 }
 
 }  // namespace brave_ads

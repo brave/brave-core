@@ -18,7 +18,7 @@
 #include "brave/components/brave_ads/core/internal/reminder/reminder_features.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -31,26 +31,26 @@ void AddHistory(const size_t count) {
       BuildCreativeNotificationAd(/*should_use_random_guids*/ false));
 
   for (size_t i = 0; i < count; i++) {
-    HistoryManager::GetInstance()->Add(ad, ConfirmationType::kClicked);
+    HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
   }
 }
 
 }  // namespace
 
-class BatAdsReminderTest : public UnitTestBase {
+class BraveAdsReminderTest : public UnitTestBase {
+ protected:
   void SetUp() override {
     UnitTestBase::SetUp();
 
     reminder_ = std::make_unique<Reminder>();
   }
 
- protected:
   std::unique_ptr<Reminder> reminder_;
 };
 
-TEST_F(BatAdsReminderTest, ShowReminderWhenUserClicksTheSameAdMultipleTimes) {
+TEST_F(BraveAdsReminderTest, ShowReminderWhenUserClicksTheSameAdMultipleTimes) {
   // Arrange
-  EXPECT_CALL(*ads_client_mock_,
+  EXPECT_CALL(ads_client_mock_,
               ShowReminder(mojom::ReminderType::kClickedSameAdMultipleTimes));
 
   // Act
@@ -59,10 +59,10 @@ TEST_F(BatAdsReminderTest, ShowReminderWhenUserClicksTheSameAdMultipleTimes) {
   // Assert
 }
 
-TEST_F(BatAdsReminderTest,
+TEST_F(BraveAdsReminderTest,
        DoNotShowReminderIfUserDoesNotClickTheSameAdMultipleTimes) {
   // Arrange
-  EXPECT_CALL(*ads_client_mock_, ShowReminder(_)).Times(0);
+  EXPECT_CALL(ads_client_mock_, ShowReminder(_)).Times(0);
 
   // Act
   AddHistory(/*count*/ kRemindUserIfClickingTheSameAdAfter.Get() - 1);
@@ -70,7 +70,7 @@ TEST_F(BatAdsReminderTest,
   // Assert
 }
 
-TEST_F(BatAdsReminderTest,
+TEST_F(BraveAdsReminderTest,
        DoNotShowReminderIfUserDoesNotClickTheSameAdMultipleTimesWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
@@ -82,7 +82,7 @@ TEST_F(BatAdsReminderTest,
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  EXPECT_CALL(*ads_client_mock_, ShowReminder(_)).Times(0);
+  EXPECT_CALL(ads_client_mock_, ShowReminder(_)).Times(0);
 
   // Act
   AddHistory(/*count*/ kRemindUserIfClickingTheSameAdAfter.Get());

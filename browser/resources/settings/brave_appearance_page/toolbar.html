@@ -47,6 +47,7 @@
   </div>
 </template>
 <if expr="toolkit_views">
+  <settings-brave-appearance-tabs prefs="{{prefs}}""></settings-brave-appearance-tabs>
   <settings-brave-appearance-sidebar prefs="{{prefs}}"></settings-brave-appearance-sidebar>
 </if>
 <if expr="enable_brave_vpn">
@@ -59,22 +60,3 @@
     </settings-toggle-button>
   </template>
 </if>
-<settings-toggle-button
-  pref="{{prefs.brave.tabs_search_show}}"
-  class="cr-row"
-  label="$i18n{showSearchTabsBtn}">
-</settings-toggle-button>
-<settings-toggle-button
-  pref="{{prefs.brave.tabs.mute_indicator_not_clickable}}"
-  class="cr-row"
-  label="$i18n{braveDisableClickableMuteIndicators}">
-</settings-toggle-button>
-<div class="settings-box">
-  <div class="flex">
-    <div class="label">$i18n{appearanceSettingsTabHoverMode}</div>
-  </div>
-  <settings-dropdown-menu
-    pref="{{prefs.brave.tabs.hover_mode}}"
-    menu-options="[[tabTooltipModes_]]">
-  </settings-dropdown-menu>
-</div>

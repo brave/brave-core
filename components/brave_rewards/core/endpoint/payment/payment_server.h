@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PAYMENT_PAYMENT_SERVER_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PAYMENT_PAYMENT_SERVER_H_
 
-#include <memory>
-
 #include "brave/components/brave_rewards/core/endpoint/payment/get_credentials/get_credentials.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/post_credentials/post_credentials.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/post_order/post_order.h"
@@ -26,25 +24,29 @@ class PaymentServer {
   explicit PaymentServer(LedgerImpl& ledger);
   ~PaymentServer();
 
-  payment::PostOrder* post_order() const;
+  payment::PostOrder& post_order() { return post_order_; }
 
-  payment::PostCredentials* post_credentials() const;
+  payment::PostCredentials& post_credentials() { return post_credentials_; }
 
-  payment::GetCredentials* get_credentials() const;
+  payment::GetCredentials& get_credentials() { return get_credentials_; }
 
-  payment::PostVotes* post_votes() const;
+  payment::PostVotes& post_votes() { return post_votes_; }
 
-  payment::PostTransactionGemini* post_transaction_gemini() const;
+  payment::PostTransactionGemini& post_transaction_gemini() {
+    return post_transaction_gemini_;
+  }
 
-  payment::PostTransactionUphold* post_transaction_uphold() const;
+  payment::PostTransactionUphold& post_transaction_uphold() {
+    return post_transaction_uphold_;
+  }
 
  private:
-  std::unique_ptr<payment::PostOrder> post_order_;
-  std::unique_ptr<payment::PostCredentials> post_credentials_;
-  std::unique_ptr<payment::GetCredentials> get_credentials_;
-  std::unique_ptr<payment::PostVotes> post_votes_;
-  std::unique_ptr<payment::PostTransactionGemini> post_transaction_gemini_;
-  std::unique_ptr<payment::PostTransactionUphold> post_transaction_uphold_;
+  payment::PostOrder post_order_;
+  payment::PostCredentials post_credentials_;
+  payment::GetCredentials get_credentials_;
+  payment::PostVotes post_votes_;
+  payment::PostTransactionGemini post_transaction_gemini_;
+  payment::PostTransactionUphold post_transaction_uphold_;
 };
 
 }  // namespace endpoint

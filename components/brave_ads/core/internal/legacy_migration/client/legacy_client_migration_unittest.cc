@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::client {
 
@@ -22,14 +22,14 @@ constexpr char kInvalidJsonFilename[] = "invalid.json";
 
 }  // namespace
 
-class BatAdsLegacyClientMigrationTest : public UnitTestBase {
+class BraveAdsLegacyClientMigrationTest : public UnitTestBase {
  protected:
   void SetUpMocks() override {
-    ads_client_mock_->SetBooleanPref(prefs::kHasMigratedClientState, false);
+    ads_client_mock_.SetBooleanPref(prefs::kHasMigratedClientState, false);
   }
 };
 
-TEST_F(BatAdsLegacyClientMigrationTest, Migrate) {
+TEST_F(BraveAdsLegacyClientMigrationTest, Migrate) {
   // Arrange
   CopyFileFromTestPathToTempPath(kClientStateFilename);
 
@@ -42,7 +42,7 @@ TEST_F(BatAdsLegacyClientMigrationTest, Migrate) {
   EXPECT_EQ(kMigratedClientJsonHash, GetHash());
 }
 
-TEST_F(BatAdsLegacyClientMigrationTest, InvalidState) {
+TEST_F(BraveAdsLegacyClientMigrationTest, InvalidState) {
   // Arrange
   CopyFileFromTestPathToTempPath(kInvalidJsonFilename, kClientStateFilename);
 
@@ -53,7 +53,7 @@ TEST_F(BatAdsLegacyClientMigrationTest, InvalidState) {
   EXPECT_FALSE(HasMigrated());
 }
 
-TEST_F(BatAdsLegacyClientMigrationTest, AlreadyMigrated) {
+TEST_F(BraveAdsLegacyClientMigrationTest, AlreadyMigrated) {
   // Arrange
   CopyFileFromTestPathToTempPath(kClientStateFilename);
 

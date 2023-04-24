@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 using ::testing::Invoke;
 
@@ -30,9 +30,9 @@ void BuildAndShowNotificationAd() {
 
 }  // namespace
 
-class BatAdsNotificationAdUtilTest : public UnitTestBase {};
+class BraveAdsNotificationAdUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsNotificationAdUtilTest, CanServeIfUserIsActive) {
+TEST_F(BraveAdsNotificationAdUtilTest, CanServeIfUserIsActive) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
@@ -42,7 +42,7 @@ TEST_F(BatAdsNotificationAdUtilTest, CanServeIfUserIsActive) {
   EXPECT_TRUE(CanServeIfUserIsActive());
 }
 
-TEST_F(BatAdsNotificationAdUtilTest, DoNotServeIfUserIsActive) {
+TEST_F(BraveAdsNotificationAdUtilTest, DoNotServeIfUserIsActive) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
@@ -52,7 +52,7 @@ TEST_F(BatAdsNotificationAdUtilTest, DoNotServeIfUserIsActive) {
   EXPECT_FALSE(CanServeIfUserIsActive());
 }
 
-TEST_F(BatAdsNotificationAdUtilTest, ShouldServe) {
+TEST_F(BraveAdsNotificationAdUtilTest, ShouldServe) {
   // Arrange
 
   // Act
@@ -61,9 +61,9 @@ TEST_F(BatAdsNotificationAdUtilTest, ShouldServe) {
   EXPECT_TRUE(ShouldServe());
 }
 
-TEST_F(BatAdsNotificationAdUtilTest, ShouldNotServe) {
+TEST_F(BraveAdsNotificationAdUtilTest, ShouldNotServe) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
   // Act
 
@@ -71,7 +71,7 @@ TEST_F(BatAdsNotificationAdUtilTest, ShouldNotServe) {
   EXPECT_FALSE(ShouldServe());
 }
 
-TEST_F(BatAdsNotificationAdUtilTest, CanServeAtRegularIntervals) {
+TEST_F(BraveAdsNotificationAdUtilTest, CanServeAtRegularIntervals) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
@@ -81,7 +81,7 @@ TEST_F(BatAdsNotificationAdUtilTest, CanServeAtRegularIntervals) {
   EXPECT_TRUE(CanServeAtRegularIntervals());
 }
 
-TEST_F(BatAdsNotificationAdUtilTest, DoNotServeAtRegularIntervals) {
+TEST_F(BraveAdsNotificationAdUtilTest, DoNotServeAtRegularIntervals) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
@@ -91,78 +91,77 @@ TEST_F(BatAdsNotificationAdUtilTest, DoNotServeAtRegularIntervals) {
   EXPECT_FALSE(CanServeAtRegularIntervals());
 }
 
-TEST_F(BatAdsNotificationAdUtilTest, ShowNotificationAd) {
+TEST_F(BraveAdsNotificationAdUtilTest, ShowNotificationAd) {
   // Arrange
-  EXPECT_CALL(*ads_client_mock_, ShowNotificationAd)
+  EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
       .WillOnce(Invoke([](const NotificationAdInfo& ad) {
         // Act
 
         // Assert
         ASSERT_TRUE(
-            NotificationAdManager::GetInstance()->Exists(ad.placement_id));
+            NotificationAdManager::GetInstance().Exists(ad.placement_id));
       }));
 
   BuildAndShowNotificationAd();
 }
 
-TEST_F(BatAdsNotificationAdUtilTest, DismissNotificationAd) {
+TEST_F(BraveAdsNotificationAdUtilTest, DismissNotificationAd) {
   // Arrange
-  EXPECT_CALL(*ads_client_mock_, ShowNotificationAd)
+  EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
       .WillOnce(Invoke([](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
-            NotificationAdManager::GetInstance()->Exists(ad.placement_id));
+            NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
         // Act
         DismissNotificationAd(ad.placement_id);
 
         // Assert
         ASSERT_FALSE(
-            NotificationAdManager::GetInstance()->Exists(ad.placement_id));
+            NotificationAdManager::GetInstance().Exists(ad.placement_id));
       }));
 
   BuildAndShowNotificationAd();
 }
 
-TEST_F(BatAdsNotificationAdUtilTest, CloseNotificationAd) {
+TEST_F(BraveAdsNotificationAdUtilTest, CloseNotificationAd) {
   // Arrange
-  EXPECT_CALL(*ads_client_mock_, CloseNotificationAd)
+  EXPECT_CALL(ads_client_mock_, CloseNotificationAd)
       .WillOnce(Invoke([](const std::string& placement_id) {
         // Act
 
         // Assert
-        ASSERT_FALSE(
-            NotificationAdManager::GetInstance()->Exists(placement_id));
+        ASSERT_FALSE(NotificationAdManager::GetInstance().Exists(placement_id));
       }));
 
-  EXPECT_CALL(*ads_client_mock_, ShowNotificationAd)
+  EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
       .WillOnce(Invoke([](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
-            NotificationAdManager::GetInstance()->Exists(ad.placement_id));
+            NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
         // Act
         CloseNotificationAd(ad.placement_id);
 
         // Assert
         ASSERT_FALSE(
-            NotificationAdManager::GetInstance()->Exists(ad.placement_id));
+            NotificationAdManager::GetInstance().Exists(ad.placement_id));
       }));
 
   BuildAndShowNotificationAd();
 }
 
-TEST_F(BatAdsNotificationAdUtilTest, NotificationAdTimedOut) {
+TEST_F(BraveAdsNotificationAdUtilTest, NotificationAdTimedOut) {
   // Arrange
-  EXPECT_CALL(*ads_client_mock_, ShowNotificationAd)
+  EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
       .WillOnce(Invoke([](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
-            NotificationAdManager::GetInstance()->Exists(ad.placement_id));
+            NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
         // Act
         NotificationAdTimedOut(ad.placement_id);
 
         // Assert
         ASSERT_FALSE(
-            NotificationAdManager::GetInstance()->Exists(ad.placement_id));
+            NotificationAdManager::GetInstance().Exists(ad.placement_id));
       }));
 
   BuildAndShowNotificationAd();

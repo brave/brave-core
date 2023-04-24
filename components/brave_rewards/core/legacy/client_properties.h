@@ -18,7 +18,8 @@ namespace ledger {
 
 struct ClientProperties {
   ClientProperties();
-  ClientProperties(const ClientProperties& properties);
+  ClientProperties(ClientProperties&& other);
+  ClientProperties& operator=(ClientProperties&& other);
   ~ClientProperties();
 
   bool operator==(const ClientProperties& rhs) const;

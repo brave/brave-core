@@ -8,32 +8,32 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsIssuersPermissionRuleTest : public UnitTestBase {
+class BraveAdsIssuersPermissionRuleTest : public UnitTestBase {
  protected:
   IssuersPermissionRule permission_rule_;
 };
 
-TEST_F(BatAdsIssuersPermissionRuleTest, Issuers) {
+TEST_F(BraveAdsIssuersPermissionRuleTest, Issuers) {
   // Arrange
   BuildAndSetIssuers();
 
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsIssuersPermissionRuleTest, NoIssuers) {
+TEST_F(BraveAdsIssuersPermissionRuleTest, NoIssuers) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 }  // namespace brave_ads

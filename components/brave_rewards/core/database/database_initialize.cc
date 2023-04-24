@@ -16,9 +16,8 @@ using std::placeholders::_2;
 namespace ledger {
 namespace database {
 
-DatabaseInitialize::DatabaseInitialize(LedgerImpl& ledger) : ledger_(ledger) {
-  migration_ = std::make_unique<ledger::database::DatabaseMigration>(ledger);
-}
+DatabaseInitialize::DatabaseInitialize(LedgerImpl& ledger)
+    : ledger_(ledger), migration_(ledger) {}
 
 DatabaseInitialize::~DatabaseInitialize() = default;
 
@@ -52,7 +51,7 @@ void DatabaseInitialize::OnInitialize(mojom::DBCommandResponsePtr response,
 
   const auto current_table_version =
       response->result->get_value()->get_int_value();
-  migration_->Start(current_table_version, callback);
+  migration_.Start(current_table_version, callback);
 }
 
 }  // namespace database

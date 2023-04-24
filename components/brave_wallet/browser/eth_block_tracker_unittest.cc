@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 
+#include "base/scoped_observation.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
@@ -17,28 +18,30 @@
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
+
+using testing::_;
 
 namespace brave_wallet {
 
 namespace {
-class TrackerObserver : public EthBlockTracker::Observer {
+
+class MockTrackerObserver : public EthBlockTracker::Observer {
  public:
-  void OnLatestBlock(uint256_t block_num) override {
-    block_num_ = block_num;
-    ++latest_block_fired_;
-  }
-  void OnNewBlock(uint256_t block_num) override {
-    ++new_block_fired_;
-    block_num_from_new_block_ = block_num;
+  explicit MockTrackerObserver(EthBlockTracker* tracker) {
+    observation_.Observe(tracker);
   }
 
-  size_t latest_block_fired_ = 0;
-  size_t new_block_fired_ = 0;
-  uint256_t block_num_ = 0;
-  uint256_t block_num_from_new_block_ = 0;
+  MOCK_METHOD2(OnLatestBlock, void(const std::string&, uint256_t));
+  MOCK_METHOD2(OnNewBlock, void(const std::string&, uint256_t));
+
+ private:
+  base::ScopedObservation<EthBlockTracker, EthBlockTracker::Observer>
+      observation_{this};
 };
+
 }  // namespace
 
 class EthBlockTrackerUnitTest : public testing::Test {
@@ -73,26 +76,36 @@ TEST_F(EthBlockTrackerUnitTest, Timer) {
   bool request_sent = false;
   url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
       [&](const network::ResourceRequest& request) { request_sent = true; }));
-  EXPECT_FALSE(tracker.IsRunning());
-  tracker.Start(base::Seconds(5));
+  EXPECT_FALSE(tracker.IsRunning(mojom::kMainnetChainId));
+  tracker.Start(mojom::kMainnetChainId, base::Seconds(5));
   task_environment_.FastForwardBy(base::Seconds(1));
-  EXPECT_TRUE(tracker.IsRunning());
+  EXPECT_TRUE(tracker.IsRunning(mojom::kMainnetChainId));
   EXPECT_FALSE(request_sent);
   task_environment_.FastForwardBy(base::Seconds(4));
   EXPECT_TRUE(request_sent);
+  EXPECT_FALSE(tracker.IsRunning(mojom::kGoerliChainId));
 
   // interval will be changed
-  tracker.Start(base::Seconds(30));
+  tracker.Start(mojom::kMainnetChainId, base::Seconds(30));
   request_sent = false;
   task_environment_.FastForwardBy(base::Seconds(5));
   EXPECT_FALSE(request_sent);
   task_environment_.FastForwardBy(base::Seconds(25));
   EXPECT_TRUE(request_sent);
+  EXPECT_FALSE(tracker.IsRunning(mojom::kGoerliChainId));
+
+  tracker.Stop(mojom::kMainnetChainId);
+  EXPECT_FALSE(tracker.IsRunning(mojom::kMainnetChainId));
+  tracker.Start(mojom::kMainnetChainId, base::Seconds(5));
+  EXPECT_TRUE(tracker.IsRunning(mojom::kMainnetChainId));
 
   request_sent = false;
+  tracker.Start(mojom::kGoerliChainId, base::Seconds(10));
+  EXPECT_TRUE(tracker.IsRunning(mojom::kGoerliChainId));
   tracker.Stop();
-  EXPECT_FALSE(tracker.IsRunning());
-  task_environment_.FastForwardBy(base::Seconds(40));
+  EXPECT_FALSE(tracker.IsRunning(mojom::kMainnetChainId));
+  EXPECT_FALSE(tracker.IsRunning(mojom::kGoerliChainId));
+  task_environment_.FastForwardBy(base::Seconds(10));
   EXPECT_FALSE(request_sent);
 }
 
@@ -105,54 +118,64 @@ TEST_F(EthBlockTrackerUnitTest, GetBlockNumber) {
                                         GetResponseString());
       }));
   response_block_num_ = 1;
-  TrackerObserver observer;
-  tracker.AddObserver(&observer);
+  MockTrackerObserver observer(&tracker);
 
-  tracker.Start(base::Seconds(5));
+  tracker.Start(mojom::kMainnetChainId, base::Seconds(5));
+  tracker.Start(mojom::kGoerliChainId, base::Seconds(2));
+  EXPECT_CALL(observer, OnLatestBlock(mojom::kMainnetChainId, 1)).Times(1);
+  EXPECT_CALL(observer, OnLatestBlock(mojom::kGoerliChainId, 1)).Times(2);
+  EXPECT_CALL(observer, OnNewBlock(mojom::kMainnetChainId, 1)).Times(1);
+  EXPECT_CALL(observer, OnNewBlock(mojom::kGoerliChainId, 1)).Times(1);
   task_environment_.FastForwardBy(base::Seconds(5));
-  EXPECT_EQ(observer.block_num_, uint256_t(1));
-  EXPECT_EQ(observer.block_num_from_new_block_, uint256_t(1));
-  EXPECT_EQ(observer.latest_block_fired_, 1u);
-  EXPECT_EQ(observer.new_block_fired_, 1u);
-  EXPECT_EQ(tracker.GetCurrentBlock(), uint256_t(1));
+  EXPECT_EQ(tracker.GetCurrentBlock(mojom::kMainnetChainId), uint256_t(1));
+  EXPECT_EQ(tracker.GetCurrentBlock(mojom::kGoerliChainId), uint256_t(1));
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 
   response_block_num_ = 3;
-  tracker.Start(base::Seconds(5));
+  tracker.Start(mojom::kMainnetChainId, base::Seconds(5));
+  tracker.Start(mojom::kGoerliChainId, base::Seconds(2));
+  EXPECT_CALL(observer, OnLatestBlock(mojom::kMainnetChainId, 3)).Times(1);
+  EXPECT_CALL(observer, OnLatestBlock(mojom::kGoerliChainId, 3)).Times(2);
+  EXPECT_CALL(observer, OnNewBlock(mojom::kMainnetChainId, 3)).Times(1);
+  EXPECT_CALL(observer, OnNewBlock(mojom::kGoerliChainId, 3)).Times(1);
   task_environment_.FastForwardBy(base::Seconds(5));
-  EXPECT_EQ(observer.block_num_, uint256_t(3));
-  EXPECT_EQ(observer.block_num_from_new_block_, uint256_t(3));
-  EXPECT_EQ(observer.latest_block_fired_, 2u);
-  EXPECT_EQ(observer.new_block_fired_, 2u);
-  EXPECT_EQ(tracker.GetCurrentBlock(), uint256_t(3));
+  EXPECT_EQ(tracker.GetCurrentBlock(mojom::kMainnetChainId), uint256_t(3));
+  EXPECT_EQ(tracker.GetCurrentBlock(mojom::kGoerliChainId), uint256_t(3));
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 
   // Still response_block_num_ 3
+  EXPECT_CALL(observer, OnLatestBlock(mojom::kMainnetChainId, 3)).Times(1);
+  EXPECT_CALL(observer, OnLatestBlock(mojom::kGoerliChainId, 3)).Times(3);
+  EXPECT_CALL(observer, OnNewBlock(_, _)).Times(0);
   task_environment_.FastForwardBy(base::Seconds(5));
-  EXPECT_EQ(observer.block_num_, uint256_t(3));
-  EXPECT_EQ(observer.block_num_from_new_block_, uint256_t(3));
-  EXPECT_EQ(observer.latest_block_fired_, 3u);
-  EXPECT_EQ(observer.new_block_fired_, 2u);
-  EXPECT_EQ(tracker.GetCurrentBlock(), uint256_t(3));
+  EXPECT_EQ(tracker.GetCurrentBlock(mojom::kMainnetChainId), uint256_t(3));
+  EXPECT_EQ(tracker.GetCurrentBlock(mojom::kGoerliChainId), uint256_t(3));
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 
   tracker.Stop();
   response_block_num_ = 4;
   // Explicity check latest block won't trigger observer nor update current
   // block
-  bool callback_called = false;
-  tracker.CheckForLatestBlock(base::BindLambdaForTesting(
-      [&](uint256_t block_num, brave_wallet::mojom::ProviderError error,
-          const std::string& error_message) {
-        callback_called = true;
-        EXPECT_EQ(error, mojom::ProviderError::kSuccess);
-        EXPECT_TRUE(error_message.empty());
-        EXPECT_EQ(block_num, uint256_t(4));
-      }));
-  task_environment_.RunUntilIdle();
-  EXPECT_TRUE(callback_called);
-  EXPECT_EQ(observer.block_num_, uint256_t(3));
-  EXPECT_EQ(observer.block_num_from_new_block_, uint256_t(3));
-  EXPECT_EQ(observer.latest_block_fired_, 3u);
-  EXPECT_EQ(observer.new_block_fired_, 2u);
-  EXPECT_EQ(tracker.GetCurrentBlock(), uint256_t(3));
+  for (const std::string& chain_id :
+       {mojom::kMainnetChainId, mojom::kGoerliChainId}) {
+    SCOPED_TRACE(chain_id);
+    EXPECT_CALL(observer, OnLatestBlock(_, _)).Times(0);
+    EXPECT_CALL(observer, OnNewBlock(_, _)).Times(0);
+    base::RunLoop run_loop;
+    tracker.CheckForLatestBlock(
+        chain_id,
+        base::BindLambdaForTesting([&](uint256_t block_num,
+                                       brave_wallet::mojom::ProviderError error,
+                                       const std::string& error_message) {
+          EXPECT_EQ(error, mojom::ProviderError::kSuccess);
+          EXPECT_TRUE(error_message.empty());
+          EXPECT_EQ(block_num, uint256_t(4));
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    EXPECT_EQ(tracker.GetCurrentBlock(chain_id), uint256_t(3));
+    EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
+  }
 }
 
 TEST_F(EthBlockTrackerUnitTest, GetBlockNumberInvalidResponseJSON) {
@@ -165,28 +188,34 @@ TEST_F(EthBlockTrackerUnitTest, GetBlockNumberInvalidResponseJSON) {
       }));
 
   response_block_num_ = 3;
-  TrackerObserver observer;
-  tracker.AddObserver(&observer);
+  MockTrackerObserver observer(&tracker);
 
-  tracker.Start(base::Seconds(5));
+  tracker.Start(mojom::kMainnetChainId, base::Seconds(5));
+  tracker.Start(mojom::kGoerliChainId, base::Seconds(2));
+  EXPECT_CALL(observer, OnLatestBlock(_, _)).Times(0);
+  EXPECT_CALL(observer, OnNewBlock(_, _)).Times(0);
   task_environment_.FastForwardBy(base::Seconds(5));
-  EXPECT_EQ(observer.latest_block_fired_, 0u);
-  EXPECT_EQ(observer.block_num_, uint256_t(0));
-  EXPECT_EQ(observer.block_num_from_new_block_, uint256_t(0));
-  EXPECT_EQ(tracker.GetCurrentBlock(), uint256_t(0));
+  EXPECT_EQ(tracker.GetCurrentBlock(mojom::kMainnetChainId), uint256_t(0));
+  EXPECT_EQ(tracker.GetCurrentBlock(mojom::kGoerliChainId), uint256_t(0));
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 
-  bool callback_called = false;
-  tracker.CheckForLatestBlock(base::BindLambdaForTesting(
-      [&](uint256_t block_num, brave_wallet::mojom::ProviderError error,
-          const std::string& error_message) {
-        callback_called = true;
-        EXPECT_EQ(error, mojom::ProviderError::kParsingError);
-        EXPECT_EQ(error_message,
-                  l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-        EXPECT_EQ(block_num, uint256_t(0));
-      }));
-  task_environment_.RunUntilIdle();
-  EXPECT_TRUE(callback_called);
+  for (const std::string& chain_id :
+       {mojom::kMainnetChainId, mojom::kGoerliChainId}) {
+    SCOPED_TRACE(chain_id);
+    base::RunLoop run_loop;
+    tracker.CheckForLatestBlock(
+        chain_id,
+        base::BindLambdaForTesting([&](uint256_t block_num,
+                                       brave_wallet::mojom::ProviderError error,
+                                       const std::string& error_message) {
+          EXPECT_EQ(error, mojom::ProviderError::kParsingError);
+          EXPECT_EQ(error_message,
+                    l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+          EXPECT_EQ(block_num, uint256_t(0));
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
 }
 
 TEST_F(EthBlockTrackerUnitTest, GetBlockNumberLimitExceeded) {
@@ -206,27 +235,33 @@ TEST_F(EthBlockTrackerUnitTest, GetBlockNumberLimitExceeded) {
       }));
 
   response_block_num_ = 3;
-  TrackerObserver observer;
-  tracker.AddObserver(&observer);
+  MockTrackerObserver observer(&tracker);
 
-  tracker.Start(base::Seconds(5));
+  tracker.Start(mojom::kMainnetChainId, base::Seconds(5));
+  tracker.Start(mojom::kGoerliChainId, base::Seconds(2));
   task_environment_.FastForwardBy(base::Seconds(5));
-  EXPECT_EQ(observer.latest_block_fired_, 0u);
-  EXPECT_EQ(observer.block_num_, uint256_t(0));
-  EXPECT_EQ(observer.block_num_from_new_block_, uint256_t(0));
-  EXPECT_EQ(tracker.GetCurrentBlock(), uint256_t(0));
+  EXPECT_CALL(observer, OnLatestBlock(testing::_, testing::_)).Times(0);
+  EXPECT_CALL(observer, OnNewBlock(testing::_, testing::_)).Times(0);
+  EXPECT_EQ(tracker.GetCurrentBlock(mojom::kMainnetChainId), uint256_t(0));
+  EXPECT_EQ(tracker.GetCurrentBlock(mojom::kGoerliChainId), uint256_t(0));
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 
-  bool callback_called = false;
-  tracker.CheckForLatestBlock(base::BindLambdaForTesting(
-      [&](uint256_t block_num, brave_wallet::mojom::ProviderError error,
-          const std::string& error_message) {
-        callback_called = true;
-        EXPECT_EQ(error, mojom::ProviderError::kLimitExceeded);
-        EXPECT_EQ(error_message, "Request exceeds defined limit");
-        EXPECT_EQ(block_num, uint256_t(0));
-      }));
-  task_environment_.RunUntilIdle();
-  EXPECT_TRUE(callback_called);
+  for (const std::string& chain_id :
+       {mojom::kMainnetChainId, mojom::kGoerliChainId}) {
+    SCOPED_TRACE(chain_id);
+    base::RunLoop run_loop;
+    tracker.CheckForLatestBlock(
+        chain_id,
+        base::BindLambdaForTesting([&](uint256_t block_num,
+                                       brave_wallet::mojom::ProviderError error,
+                                       const std::string& error_message) {
+          EXPECT_EQ(error, mojom::ProviderError::kLimitExceeded);
+          EXPECT_EQ(error_message, "Request exceeds defined limit");
+          EXPECT_EQ(block_num, uint256_t(0));
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
 }
 
 TEST_F(EthBlockTrackerUnitTest, GetBlockNumberRequestTimeout) {
@@ -239,28 +274,34 @@ TEST_F(EthBlockTrackerUnitTest, GetBlockNumberRequestTimeout) {
       }));
 
   response_block_num_ = 3;
-  TrackerObserver observer;
-  tracker.AddObserver(&observer);
+  MockTrackerObserver observer(&tracker);
 
-  tracker.Start(base::Seconds(5));
+  tracker.Start(mojom::kMainnetChainId, base::Seconds(5));
+  tracker.Start(mojom::kGoerliChainId, base::Seconds(2));
   task_environment_.FastForwardBy(base::Seconds(5));
-  EXPECT_EQ(observer.latest_block_fired_, 0u);
-  EXPECT_EQ(observer.block_num_, uint256_t(0));
-  EXPECT_EQ(observer.block_num_from_new_block_, uint256_t(0));
-  EXPECT_EQ(tracker.GetCurrentBlock(), uint256_t(0));
+  EXPECT_CALL(observer, OnLatestBlock(testing::_, testing::_)).Times(0);
+  EXPECT_CALL(observer, OnNewBlock(testing::_, testing::_)).Times(0);
+  EXPECT_EQ(tracker.GetCurrentBlock(mojom::kMainnetChainId), uint256_t(0));
+  EXPECT_EQ(tracker.GetCurrentBlock(mojom::kGoerliChainId), uint256_t(0));
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 
-  bool callback_called = false;
-  tracker.CheckForLatestBlock(base::BindLambdaForTesting(
-      [&](uint256_t block_num, brave_wallet::mojom::ProviderError error,
-          const std::string& error_message) {
-        callback_called = true;
-        EXPECT_EQ(error, mojom::ProviderError::kInternalError);
-        EXPECT_EQ(error_message,
-                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-        EXPECT_EQ(block_num, uint256_t(0));
-      }));
-  task_environment_.RunUntilIdle();
-  EXPECT_TRUE(callback_called);
+  for (const std::string& chain_id :
+       {mojom::kMainnetChainId, mojom::kGoerliChainId}) {
+    SCOPED_TRACE(chain_id);
+    base::RunLoop run_loop;
+    tracker.CheckForLatestBlock(
+        chain_id,
+        base::BindLambdaForTesting([&](uint256_t block_num,
+                                       brave_wallet::mojom::ProviderError error,
+                                       const std::string& error_message) {
+          EXPECT_EQ(error, mojom::ProviderError::kInternalError);
+          EXPECT_EQ(error_message,
+                    l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+          EXPECT_EQ(block_num, uint256_t(0));
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
 }
 
 }  // namespace brave_wallet

@@ -1317,7 +1317,7 @@ void RewardsDOMHandler::ToggleAdOptIn(const base::Value::List& args) {
 
   const std::string category = args[0].GetString();
   const int action = args[1].GetInt();
-  ads_service_->ToggleMarkToReceiveAdsForCategory(
+  ads_service_->ToggleLikeCategory(
       category, action,
       base::BindOnce(&RewardsDOMHandler::OnToggleAdOptIn,
                      weak_factory_.GetWeakPtr()));
@@ -1346,7 +1346,7 @@ void RewardsDOMHandler::ToggleAdOptOut(const base::Value::List& args) {
 
   const std::string category = args[0].GetString();
   const int action = args[1].GetInt();
-  ads_service_->ToggleMarkToNoLongerReceiveAdsForCategory(
+  ads_service_->ToggleDislikeCategory(
       category, action,
       base::BindOnce(&RewardsDOMHandler::OnToggleAdOptOut,
                      weak_factory_.GetWeakPtr()));

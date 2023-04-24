@@ -109,7 +109,7 @@ public class BraveNewsBottomSheetDialogFragment extends BottomSheetDialogFragmen
         disable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PostTask.postTask(TaskTraits.THREAD_POOL_BEST_EFFORT, () -> {
+                PostTask.postTask(TaskTraits.BEST_EFFORT, () -> {
                     if (mBraveNewsController != null) {
                         // Removes the news source from the fetch list by setting a
                         // UserEnabled.DISABLED prop for the publisher in question

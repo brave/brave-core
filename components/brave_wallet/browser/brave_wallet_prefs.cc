@@ -48,6 +48,15 @@ base::Value::Dict GetDefaultSelectedNetworks() {
   return selected_networks;
 }
 
+base::Value::Dict GetDefaultSelectedNetworksPerOrigin() {
+  base::Value::Dict selected_networks;
+  selected_networks.Set(kEthereumPrefKey, base::Value::Dict());
+  selected_networks.Set(kSolanaPrefKey, base::Value::Dict());
+  selected_networks.Set(kFilecoinPrefKey, base::Value::Dict());
+
+  return selected_networks;
+}
+
 base::Value::Dict GetDefaultHiddenNetworks() {
   base::Value::Dict hidden_networks;
 
@@ -107,6 +116,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                    GetDefaultHiddenNetworks());
   registry->RegisterDictionaryPref(kBraveWalletSelectedNetworks,
                                    GetDefaultSelectedNetworks());
+  registry->RegisterDictionaryPref(kBraveWalletSelectedNetworksPerOrigin,
+                                   GetDefaultSelectedNetworksPerOrigin());
   registry->RegisterDictionaryPref(kBraveWalletUserAssets,
                                    GetDefaultUserAssets());
   registry->RegisterIntegerPref(kBraveWalletAutoLockMinutes, 5);
@@ -198,6 +209,7 @@ void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
   prefs->ClearPref(kBraveWalletCustomNetworks);
   prefs->ClearPref(kBraveWalletHiddenNetworks);
   prefs->ClearPref(kBraveWalletSelectedNetworks);
+  prefs->ClearPref(kBraveWalletSelectedNetworksPerOrigin);
   prefs->ClearPref(kSupportEip1559OnLocalhostChain);
 }
 

@@ -15,13 +15,13 @@
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_envelope_unittest_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::user_data {
 
-class BatAdsConversionUserDataTest : public UnitTestBase {};
+class BraveAdsConversionUserDataTest : public UnitTestBase {};
 
-TEST_F(BatAdsConversionUserDataTest, GetForConversionConfirmationType) {
+TEST_F(BraveAdsConversionUserDataTest, GetForConversionConfirmationType) {
   // Arrange
   BuildAndSaveConversionQueueItems(AdType::kNotificationAd, kConversionId,
                                    kConversionAdvertiserPublicKey,
@@ -41,7 +41,8 @@ TEST_F(BatAdsConversionUserDataTest, GetForConversionConfirmationType) {
       }));
 }
 
-TEST_F(BatAdsConversionUserDataTest, DoNotGetForNonConversionConfirmationType) {
+TEST_F(BraveAdsConversionUserDataTest,
+       DoNotGetForNonConversionConfirmationType) {
   // Arrange
   BuildAndSaveConversionQueueItems(AdType::kNotificationAd, kConversionId,
                                    kConversionAdvertiserPublicKey,

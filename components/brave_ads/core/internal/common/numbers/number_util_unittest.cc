@@ -7,11 +7,11 @@
 
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-TEST(BatAdsNumberUtilTest, DoubleEquals) {
+TEST(BraveAdsNumberUtilTest, DoubleEquals) {
   // Arrange
 
   // Act
@@ -20,7 +20,7 @@ TEST(BatAdsNumberUtilTest, DoubleEquals) {
   EXPECT_TRUE(DoubleEquals(1.00001, 1.00002));
 }
 
-TEST(BatAdsNumberUtilTest, DoubleNotEquals) {
+TEST(BraveAdsNumberUtilTest, DoubleNotEquals) {
   // Arrange
 
   // Act
@@ -29,7 +29,7 @@ TEST(BatAdsNumberUtilTest, DoubleNotEquals) {
   EXPECT_FALSE(DoubleEquals(1.0001, 1.0002));
 }
 
-TEST(BatAdsNumberUtilTest, DoubleIsGreaterEqual) {
+TEST(BraveAdsNumberUtilTest, DoubleIsGreaterEqual) {
   // Arrange
 
   // Act
@@ -40,7 +40,7 @@ TEST(BatAdsNumberUtilTest, DoubleIsGreaterEqual) {
       0.41750000000000014876988529977097641676664352416992));
 }
 
-TEST(BatAdsNumberUtilTest, DoubleIsNotGreaterEqual) {
+TEST(BraveAdsNumberUtilTest, DoubleIsNotGreaterEqual) {
   // Arrange
 
   // Act
@@ -51,7 +51,7 @@ TEST(BatAdsNumberUtilTest, DoubleIsNotGreaterEqual) {
       0.41750000000000014876988529977097641676664352416992));
 }
 
-TEST(BatAdsNumberUtilTest, DoubleIsGreater) {
+TEST(BraveAdsNumberUtilTest, DoubleIsGreater) {
   // Arrange
 
   // Act
@@ -62,7 +62,7 @@ TEST(BatAdsNumberUtilTest, DoubleIsGreater) {
                       0.41750000000000014876988529977097641676664352416992));
 }
 
-TEST(BatAdsNumberUtilTest, DoubleIsNotGreater) {
+TEST(BraveAdsNumberUtilTest, DoubleIsNotGreater) {
   // Arrange
 
   // Act
@@ -73,7 +73,7 @@ TEST(BatAdsNumberUtilTest, DoubleIsNotGreater) {
                       0.41750000000000014876988529977097641676664352416992));
 }
 
-TEST(BatAdsNumberUtilTest, DoubleIsLessEqual) {
+TEST(BraveAdsNumberUtilTest, DoubleIsLessEqual) {
   // Arrange
 
   // Act
@@ -84,7 +84,7 @@ TEST(BatAdsNumberUtilTest, DoubleIsLessEqual) {
                         0.41749999999999687361196265555918216705322265625000));
 }
 
-TEST(BatAdsNumberUtilTest, DoubleIsNotLessEqual) {
+TEST(BraveAdsNumberUtilTest, DoubleIsNotLessEqual) {
   // Arrange
 
   // Act
@@ -95,7 +95,7 @@ TEST(BatAdsNumberUtilTest, DoubleIsNotLessEqual) {
                         0.41744999999999687361196265555918216705322265625000));
 }
 
-TEST(BatAdsNumberUtilTest, DoubleIsLess) {
+TEST(BraveAdsNumberUtilTest, DoubleIsLess) {
   // Arrange
 
   // Act
@@ -106,7 +106,7 @@ TEST(BatAdsNumberUtilTest, DoubleIsLess) {
                    0.41759999999999687361196265555918216705322265625000));
 }
 
-TEST(BatAdsNumberUtilTest, DoubleIsNotLess) {
+TEST(BraveAdsNumberUtilTest, DoubleIsNotLess) {
   // Arrange
 
   // Act

@@ -9,27 +9,27 @@
 #include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_features.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::new_tab_page_ads {
 
-class BatAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest
+class BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest
     : public UnitTestBase {
  protected:
   MinimumWaitTimePermissionRule permission_rule_;
 };
 
-TEST_F(BatAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
+TEST_F(BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
        AllowAdIfThereIsNoAdsHistory) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
+TEST_F(BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
        AllowAdIfDoesNotExceedCap) {
   // Arrange
   RecordAdEvent(AdType::kNewTabPageAd, ConfirmationType::kServed);
@@ -38,10 +38,10 @@ TEST_F(BatAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
   AdvanceClockBy(kMinimumWaitTime.Get());
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
+TEST_F(BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
        DoNotAllowAdIfExceedsCap) {
   // Arrange
   RecordAdEvent(AdType::kNewTabPageAd, ConfirmationType::kServed);
@@ -50,7 +50,7 @@ TEST_F(BatAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
   AdvanceClockBy(kMinimumWaitTime.Get() - base::Milliseconds(1));
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 }  // namespace brave_ads::new_tab_page_ads

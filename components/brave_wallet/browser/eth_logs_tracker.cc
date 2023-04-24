@@ -17,10 +17,11 @@ EthLogsTracker::EthLogsTracker(JsonRpcService* json_rpc_service)
 
 EthLogsTracker::~EthLogsTracker() = default;
 
-void EthLogsTracker::Start(base::TimeDelta interval) {
+void EthLogsTracker::Start(const std::string& chain_id,
+                           base::TimeDelta interval) {
   timer_.Start(FROM_HERE, interval,
                base::BindRepeating(&EthLogsTracker::GetLogs,
-                                   weak_factory_.GetWeakPtr()));
+                                   weak_factory_.GetWeakPtr(), chain_id));
 }
 
 void EthLogsTracker::Stop() {
@@ -49,9 +50,7 @@ void EthLogsTracker::RemoveObserver(EthLogsTracker::Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void EthLogsTracker::GetLogs() {
-  const auto chain_id = json_rpc_service_->GetChainId(mojom::CoinType::ETH);
-
+void EthLogsTracker::GetLogs(const std::string& chain_id) {
   for (auto const& esi : std::as_const(eth_logs_subscription_info_)) {
     json_rpc_service_->EthGetLogs(
         chain_id, esi.second.Clone(),
@@ -66,8 +65,9 @@ void EthLogsTracker::OnGetLogs(const std::string& subscription,
                                mojom::ProviderError error,
                                const std::string& error_message) {
   if (error == mojom::ProviderError::kSuccess && rawlogs.is_dict()) {
-    for (auto& observer : observers_)
+    for (auto& observer : observers_) {
       observer.OnLogsReceived(subscription, rawlogs.Clone());
+    }
   } else {
     LOG(ERROR) << "OnGetLogs failed";
   }

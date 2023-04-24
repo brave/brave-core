@@ -172,7 +172,8 @@ bool ParseAssetPriceHistory(const base::Value& json_value,
 mojom::BlockchainTokenPtr ParseTokenInfo(const base::Value& json_value,
                                          const std::string& chain_id,
                                          mojom::CoinType coin) {
-  auto token_info = api::asset_ratio::TokenInfo::FromValue(json_value);
+  auto token_info =
+      api::asset_ratio::TokenInfo::FromValueDeprecated(json_value);
   if (!token_info) {
     LOG(ERROR) << "Invalid response, could not parse JSON. ";
     return nullptr;
@@ -205,7 +206,8 @@ mojom::BlockchainTokenPtr ParseTokenInfo(const base::Value& json_value,
 
 absl::optional<std::vector<mojom::CoinMarketPtr>> ParseCoinMarkets(
     const base::Value& json_value) {
-  auto coin_market_data = api::asset_ratio::CoinMarket::FromValue(json_value);
+  auto coin_market_data =
+      api::asset_ratio::CoinMarket::FromValueDeprecated(json_value);
 
   if (!coin_market_data) {
     return absl::nullopt;

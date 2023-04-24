@@ -8,13 +8,13 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::privacy {
 
-class BatAdsUnblindedTokensTest : public UnitTestBase {};
+class BraveAdsUnblindedTokensTest : public UnitTestBase {};
 
-TEST_F(BatAdsUnblindedTokensTest, GetToken) {
+TEST_F(BraveAdsUnblindedTokensTest, GetToken) {
   // Arrange
   // Arrange
   const UnblindedTokenList tokens = GetUnblindedTokens(/*count*/ 2);
@@ -30,7 +30,7 @@ TEST_F(BatAdsUnblindedTokensTest, GetToken) {
   EXPECT_EQ(expected_token, unblinded_tokens.GetToken());
 }
 
-TEST_F(BatAdsUnblindedTokensTest, GetAllTokens) {
+TEST_F(BraveAdsUnblindedTokensTest, GetAllTokens) {
   // Arrange
   UnblindedTokens unblinded_tokens;
   unblinded_tokens.SetTokens(GetUnblindedTokens(/*count*/ 2));
@@ -41,7 +41,7 @@ TEST_F(BatAdsUnblindedTokensTest, GetAllTokens) {
   EXPECT_EQ(GetUnblindedTokens(/*count*/ 2), unblinded_tokens.GetAllTokens());
 }
 
-TEST_F(BatAdsUnblindedTokensTest, SetTokens) {
+TEST_F(BraveAdsUnblindedTokensTest, SetTokens) {
   // Arrange
   UnblindedTokens unblinded_tokens;
 
@@ -52,7 +52,7 @@ TEST_F(BatAdsUnblindedTokensTest, SetTokens) {
   EXPECT_EQ(GetUnblindedTokens(/*count*/ 2), unblinded_tokens.GetAllTokens());
 }
 
-TEST_F(BatAdsUnblindedTokensTest, SetEmptyTokens) {
+TEST_F(BraveAdsUnblindedTokensTest, SetEmptyTokens) {
   // Arrange
   UnblindedTokens unblinded_tokens;
 
@@ -63,7 +63,7 @@ TEST_F(BatAdsUnblindedTokensTest, SetEmptyTokens) {
   EXPECT_TRUE(unblinded_tokens.IsEmpty());
 }
 
-TEST_F(BatAdsUnblindedTokensTest, AddTokens) {
+TEST_F(BraveAdsUnblindedTokensTest, AddTokens) {
   // Arrange
   const UnblindedTokenList tokens = GetUnblindedTokens(/*count*/ 2);
   ASSERT_EQ(2U, tokens.size());
@@ -78,7 +78,7 @@ TEST_F(BatAdsUnblindedTokensTest, AddTokens) {
   EXPECT_EQ(2, unblinded_tokens.Count());
 }
 
-TEST_F(BatAdsUnblindedTokensTest, AddEmptyTokens) {
+TEST_F(BraveAdsUnblindedTokensTest, AddEmptyTokens) {
   // Arrange
   UnblindedTokens unblinded_tokens;
 
@@ -89,7 +89,7 @@ TEST_F(BatAdsUnblindedTokensTest, AddEmptyTokens) {
   EXPECT_TRUE(unblinded_tokens.IsEmpty());
 }
 
-TEST_F(BatAdsUnblindedTokensTest, DoNotAddDuplicateTokens) {
+TEST_F(BraveAdsUnblindedTokensTest, DoNotAddDuplicateTokens) {
   // Arrange
   const UnblindedTokenInfo unblinded_token = GetUnblindedToken();
 
@@ -103,7 +103,7 @@ TEST_F(BatAdsUnblindedTokensTest, DoNotAddDuplicateTokens) {
   EXPECT_EQ(1, unblinded_tokens.Count());
 }
 
-TEST_F(BatAdsUnblindedTokensTest, RemoveToken) {
+TEST_F(BraveAdsUnblindedTokensTest, RemoveToken) {
   // Arrange
   const UnblindedTokenList tokens = GetUnblindedTokens(/*count*/ 2);
   ASSERT_EQ(2U, tokens.size());
@@ -122,7 +122,7 @@ TEST_F(BatAdsUnblindedTokensTest, RemoveToken) {
   EXPECT_EQ(expected_tokens, unblinded_tokens.GetAllTokens());
 }
 
-TEST_F(BatAdsUnblindedTokensTest, RemoveTokens) {
+TEST_F(BraveAdsUnblindedTokensTest, RemoveTokens) {
   // Arrange
   const UnblindedTokenList tokens = GetUnblindedTokens(/*count*/ 3);
   ASSERT_EQ(3U, tokens.size());
@@ -142,7 +142,7 @@ TEST_F(BatAdsUnblindedTokensTest, RemoveTokens) {
   EXPECT_EQ(expected_tokens, unblinded_tokens.GetAllTokens());
 }
 
-TEST_F(BatAdsUnblindedTokensTest, RemoveAllTokens) {
+TEST_F(BraveAdsUnblindedTokensTest, RemoveAllTokens) {
   // Arrange
   UnblindedTokens unblinded_tokens;
   unblinded_tokens.SetTokens(GetUnblindedTokens(/*count*/ 2));
@@ -154,7 +154,7 @@ TEST_F(BatAdsUnblindedTokensTest, RemoveAllTokens) {
   EXPECT_TRUE(unblinded_tokens.IsEmpty());
 }
 
-TEST_F(BatAdsUnblindedTokensTest, TokenDoesExist) {
+TEST_F(BraveAdsUnblindedTokensTest, TokenDoesExist) {
   // Arrange
   const UnblindedTokenInfo unblinded_token = GetUnblindedToken();
 
@@ -167,7 +167,7 @@ TEST_F(BatAdsUnblindedTokensTest, TokenDoesExist) {
   EXPECT_TRUE(unblinded_tokens.TokenExists(unblinded_token));
 }
 
-TEST_F(BatAdsUnblindedTokensTest, TokenDoesNotExist) {
+TEST_F(BraveAdsUnblindedTokensTest, TokenDoesNotExist) {
   // Arrange
   UnblindedTokens unblinded_tokens;
 
@@ -177,7 +177,7 @@ TEST_F(BatAdsUnblindedTokensTest, TokenDoesNotExist) {
   EXPECT_FALSE(unblinded_tokens.TokenExists(GetUnblindedToken()));
 }
 
-TEST_F(BatAdsUnblindedTokensTest, Count) {
+TEST_F(BraveAdsUnblindedTokensTest, Count) {
   // Arrange
   UnblindedTokens unblinded_tokens;
   unblinded_tokens.SetTokens(GetUnblindedTokens(/*count*/ 3));
@@ -188,7 +188,7 @@ TEST_F(BatAdsUnblindedTokensTest, Count) {
   EXPECT_EQ(3, unblinded_tokens.Count());
 }
 
-TEST_F(BatAdsUnblindedTokensTest, IsEmpty) {
+TEST_F(BraveAdsUnblindedTokensTest, IsEmpty) {
   // Arrange
   const UnblindedTokens unblinded_tokens;
 
@@ -198,7 +198,7 @@ TEST_F(BatAdsUnblindedTokensTest, IsEmpty) {
   EXPECT_TRUE(unblinded_tokens.IsEmpty());
 }
 
-TEST_F(BatAdsUnblindedTokensTest, IsNotEmpty) {
+TEST_F(BraveAdsUnblindedTokensTest, IsNotEmpty) {
   // Arrange
   const UnblindedTokenInfo unblinded_token = GetUnblindedToken();
 

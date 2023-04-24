@@ -10,16 +10,16 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsDislikeExclusionRuleTest : public UnitTestBase {
+class BraveAdsDislikeExclusionRuleTest : public UnitTestBase {
  protected:
   DislikeExclusionRule exclusion_rule_;
 };
 
-TEST_F(BatAdsDislikeExclusionRuleTest, AllowAd) {
+TEST_F(BraveAdsDislikeExclusionRuleTest, AllowAd) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.advertiser_id = kAdvertiserId;
@@ -27,10 +27,10 @@ TEST_F(BatAdsDislikeExclusionRuleTest, AllowAd) {
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule_.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BatAdsDislikeExclusionRuleTest, DoNotAllowAd) {
+TEST_F(BraveAdsDislikeExclusionRuleTest, DoNotAllowAd) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.advertiser_id = kAdvertiserId;
@@ -38,12 +38,12 @@ TEST_F(BatAdsDislikeExclusionRuleTest, DoNotAllowAd) {
   AdContentInfo ad_content;
   ad_content.advertiser_id = kAdvertiserId;
   ad_content.like_action_type = AdContentLikeActionType::kNeutral;
-  ClientStateManager::GetInstance()->ToggleDislikeAd(ad_content);
+  ClientStateManager::GetInstance().ToggleDislikeAd(ad_content);
 
   // Act
 
   // Assert
-  EXPECT_TRUE(exclusion_rule_.ShouldExclude(creative_ad));
+  EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
 }  // namespace brave_ads

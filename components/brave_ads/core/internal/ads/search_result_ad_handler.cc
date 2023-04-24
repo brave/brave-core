@@ -27,11 +27,8 @@ bool g_defer_triggering_of_ad_viewed_event_for_testing = false;
 
 }  // namespace
 
-SearchResultAd::SearchResultAd(Account* account, Transfer* transfer)
+SearchResultAd::SearchResultAd(Account& account, Transfer& transfer)
     : account_(account), transfer_(transfer) {
-  DCHECK(account_);
-  DCHECK(transfer_);
-
   event_handler_.SetDelegate(this);
 }
 
@@ -109,7 +106,7 @@ void SearchResultAd::OnFireAdViewedEvent(
 }
 
 void SearchResultAd::OnSearchResultAdViewed(const SearchResultAdInfo& ad) {
-  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
   account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
                     ConfirmationType::kViewed);
@@ -118,7 +115,7 @@ void SearchResultAd::OnSearchResultAdViewed(const SearchResultAdInfo& ad) {
 void SearchResultAd::OnSearchResultAdClicked(const SearchResultAdInfo& ad) {
   transfer_->SetLastClickedAd(ad);
 
-  HistoryManager::GetInstance()->Add(ad, ConfirmationType::kClicked);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 
   account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
                     ConfirmationType::kClicked);

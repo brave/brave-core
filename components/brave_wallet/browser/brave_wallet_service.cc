@@ -6,7 +6,6 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 
 #include <map>
-#include <utility>
 #include <vector>
 
 #include "base/metrics/histogram_macros.h"
@@ -707,6 +706,32 @@ void BraveWalletService::SetSelectedCoin(mojom::CoinType coin) {
   ::brave_wallet::SetSelectedCoin(profile_prefs_, coin);
 }
 
+void BraveWalletService::GetChainIdForActiveOrigin(
+    mojom::CoinType coin,
+    GetChainIdForActiveOriginCallback callback) {
+  GetActiveOrigin(base::BindOnce(
+      [](mojom::CoinType coin, GetChainIdForActiveOriginCallback callback,
+         JsonRpcService* json_rpc_service, mojom::OriginInfoPtr origin_info) {
+        std::move(callback).Run(
+            json_rpc_service->GetChainIdSync(coin, origin_info->origin));
+      },
+      coin, std::move(callback), json_rpc_service_));
+}
+
+void BraveWalletService::SetChainIdForActiveOrigin(
+    mojom::CoinType coin,
+    const std::string& chain_id,
+    SetChainIdForActiveOriginCallback callback) {
+  GetActiveOrigin(base::BindOnce(
+      [](const std::string& chain_id_in, mojom::CoinType coin,
+         SetChainIdForActiveOriginCallback callback,
+         JsonRpcService* json_rpc_service, mojom::OriginInfoPtr origin_info) {
+        std::move(callback).Run(json_rpc_service->SetNetwork(
+            chain_id_in, coin, origin_info->origin));
+      },
+      chain_id, coin, std::move(callback), json_rpc_service_));
+}
+
 void BraveWalletService::OnDefaultEthereumWalletChanged() {
   auto default_wallet =
       ::brave_wallet::GetDefaultEthereumWallet(profile_prefs_);
@@ -1314,6 +1339,9 @@ void BraveWalletService::AddSignTransactionRequest(
   }
   sign_transaction_requests_.push_back(std::move(request));
   sign_transaction_callbacks_.push_back(std::move(callback));
+  if (sign_tx_request_added_cb_for_testing_) {
+    std::move(sign_tx_request_added_cb_for_testing_).Run();
+  }
 }
 
 void BraveWalletService::AddSignAllTransactionsRequest(
@@ -1324,6 +1352,9 @@ void BraveWalletService::AddSignAllTransactionsRequest(
   }
   sign_all_transactions_requests_.push_back(std::move(request));
   sign_all_transactions_callbacks_.push_back(std::move(callback));
+  if (sign_all_txs_request_added_cb_for_testing_) {
+    std::move(sign_all_txs_request_added_cb_for_testing_).Run();
+  }
 }
 
 void BraveWalletService::AddSuggestTokenRequest(
@@ -1439,8 +1470,6 @@ void BraveWalletService::GetPendingDecryptRequests(
 void BraveWalletService::NotifyAddSuggestTokenRequestsProcessed(
     bool approved,
     const std::vector<std::string>& contract_addresses) {
-  const std::string chain_id =
-      GetCurrentChainId(profile_prefs_, mojom::CoinType::ETH);
   for (const auto& addr : contract_addresses) {
     if (add_suggest_token_requests_.contains(addr) &&
         add_suggest_token_callbacks_.contains(addr) &&

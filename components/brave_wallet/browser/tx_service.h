@@ -64,34 +64,39 @@ class TxService : public KeyedService,
                                 const absl::optional<std::string>& group_id,
                                 AddUnapprovedTransactionCallback) override;
   void ApproveTransaction(mojom::CoinType coin_type,
+                          const std::string& chain_id,
                           const std::string& tx_meta_id,
                           ApproveTransactionCallback) override;
   void RejectTransaction(mojom::CoinType coin_type,
+                         const std::string& chain_id,
                          const std::string& tx_meta_id,
                          RejectTransactionCallback) override;
   void GetTransactionInfo(mojom::CoinType coin_type,
+                          const std::string& chain_id,
                           const std::string& tx_meta_id,
                           GetTransactionInfoCallback) override;
   void GetAllTransactionInfo(mojom::CoinType coin_type,
-                             const std::string& from,
+                             const absl::optional<std::string>& chain_id,
+                             const absl::optional<std::string>& from,
                              GetAllTransactionInfoCallback) override;
-  void GetAllTransactionInfo(mojom::CoinType coin_type,
-                             GetAllTransactionInfoCallback);
   void GetPendingTransactionsCount(
       GetPendingTransactionsCountCallback callback) override;
 
   void SpeedupOrCancelTransaction(
       mojom::CoinType coin_type,
+      const std::string& chain_id,
       const std::string& tx_meta_id,
       bool cancel,
       SpeedupOrCancelTransactionCallback callback) override;
 
   void RetryTransaction(mojom::CoinType coin_type,
+                        const std::string& chain_id,
                         const std::string& tx_meta_id,
                         RetryTransactionCallback callback) override;
 
   void GetTransactionMessageToSign(
       mojom::CoinType coin_type,
+      const std::string& chain_id,
       const std::string& tx_meta_id,
       GetTransactionMessageToSignCallback callback) override;
 
@@ -127,35 +132,42 @@ class TxService : public KeyedService,
       MakeERC1155TransferFromDataCallback) override;
 
   void SetGasPriceAndLimitForUnapprovedTransaction(
+      const std::string& chain_id,
       const std::string& tx_meta_id,
       const std::string& gas_price,
       const std::string& gas_limit,
       SetGasPriceAndLimitForUnapprovedTransactionCallback callback) override;
   void SetGasFeeAndLimitForUnapprovedTransaction(
+      const std::string& chain_id,
       const std::string& tx_meta_id,
       const std::string& max_priority_fee_per_gas,
       const std::string& max_fee_per_gas,
       const std::string& gas_limit,
       SetGasFeeAndLimitForUnapprovedTransactionCallback callback) override;
   void SetDataForUnapprovedTransaction(
+      const std::string& chain_id,
       const std::string& tx_meta_id,
       const std::vector<uint8_t>& data,
       SetDataForUnapprovedTransactionCallback callback) override;
   void SetNonceForUnapprovedTransaction(
+      const std::string& chain_id,
       const std::string& tx_meta_id,
       const std::string& nonce,
       SetNonceForUnapprovedTransactionCallback) override;
   void GetNonceForHardwareTransaction(
+      const std::string& chain_id,
       const std::string& tx_meta_id,
       GetNonceForHardwareTransactionCallback callback) override;
   void ProcessHardwareSignature(
+      const std::string& chain_id,
       const std::string& tx_meta_id,
       const std::string& v,
       const std::string& r,
       const std::string& s,
       ProcessHardwareSignatureCallback callback) override;
   // Gas estimation API via eth_feeHistory API
-  void GetGasEstimation1559(GetGasEstimation1559Callback callback) override;
+  void GetGasEstimation1559(const std::string& chain_id,
+                            GetGasEstimation1559Callback callback) override;
 
   // mojom::SolanaTxManagerProxy
   void MakeSystemProgramTransferTxData(
@@ -164,6 +176,7 @@ class TxService : public KeyedService,
       uint64_t lamports,
       MakeSystemProgramTransferTxDataCallback callback) override;
   void MakeTokenProgramTransferTxData(
+      const std::string& chain_id,
       const std::string& spl_token_mint_address,
       const std::string& from_wallet_address,
       const std::string& to_wallet_address,
@@ -175,15 +188,18 @@ class TxService : public KeyedService,
       mojom::SolanaSendTransactionOptionsPtr send_options,
       MakeTxDataFromBase64EncodedTransactionCallback callback) override;
 
-  void GetEstimatedTxFee(const std::string& tx_meta_id,
+  void GetEstimatedTxFee(const std::string& chain_id,
+                         const std::string& tx_meta_id,
                          GetEstimatedTxFeeCallback callback) override;
   void ProcessSolanaHardwareSignature(
+      const std::string& chain_id,
       const std::string& tx_meta_id,
       const std::vector<uint8_t>& signature,
       ProcessSolanaHardwareSignatureCallback callback) override;
 
   // mojom::FilTxManagerProxy
   void ProcessFilHardwareSignature(
+      const std::string& chain_id,
       const std::string& tx_meta_id,
       const std::string& signed_message,
       ProcessFilHardwareSignatureCallback callback) override;
@@ -204,6 +220,7 @@ class TxService : public KeyedService,
   FilTxManager* GetFilTxManager();
 
   raw_ptr<PrefService> prefs_;  // NOT OWNED
+  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   base::flat_map<mojom::CoinType, std::unique_ptr<TxManager>> tx_manager_map_;
   mojo::RemoteSet<mojom::TxServiceObserver> observers_;
   mojo::ReceiverSet<mojom::TxService> tx_service_receivers_;

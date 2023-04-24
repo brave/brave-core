@@ -42,7 +42,7 @@ class HistoryManager final {
 
   ~HistoryManager();
 
-  static HistoryManager* GetInstance();
+  static HistoryManager& GetInstance();
 
   void AddObserver(HistoryManagerObserver* observer);
   void RemoveObserver(HistoryManagerObserver* observer);
@@ -67,28 +67,27 @@ class HistoryManager final {
   AdContentLikeActionType LikeAd(const AdContentInfo& ad_content) const;
   AdContentLikeActionType DislikeAd(const AdContentInfo& ad_content) const;
 
-  CategoryContentOptActionType MarkToNoLongerReceiveAdsForCategory(
+  CategoryContentOptActionType LikeCategory(
       const std::string& category,
       const CategoryContentOptActionType& action_type) const;
-  CategoryContentOptActionType MarkToReceiveAdsForCategory(
+  CategoryContentOptActionType DislikeCategory(
       const std::string& category,
       const CategoryContentOptActionType& action_type) const;
-
-  bool ToggleMarkAdAsInappropriate(const AdContentInfo& ad_content) const;
 
   bool ToggleSaveAd(const AdContentInfo& ad_content) const;
+
+  bool ToggleMarkAdAsInappropriate(const AdContentInfo& ad_content) const;
 
  private:
   void NotifyDidAddHistory(const HistoryItemInfo& history_item) const;
   void NotifyDidLikeAd(const AdContentInfo& ad_content) const;
   void NotifyDidDislikeAd(const AdContentInfo& ad_content) const;
-  void NotifyDidMarkToNoLongerReceiveAdsForCategory(
-      const std::string& category) const;
-  void NotifyDidMarkToReceiveAdsForCategory(const std::string& category) const;
-  void NotifyDidMarkAdAsInappropriate(const AdContentInfo& ad_content) const;
-  void NotifyDidMarkAdAsAppropriate(const AdContentInfo& ad_content) const;
+  void NotifyDidLikeCategory(const std::string& category) const;
+  void NotifyDidDislikeCategory(const std::string& category) const;
   void NotifyDidSaveAd(const AdContentInfo& ad_content) const;
   void NotifyDidUnsaveAd(const AdContentInfo& ad_content) const;
+  void NotifyDidMarkAdAsInappropriate(const AdContentInfo& ad_content) const;
+  void NotifyDidMarkAdAsAppropriate(const AdContentInfo& ad_content) const;
 
   base::ObserverList<HistoryManagerObserver> observers_;
 };

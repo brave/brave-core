@@ -43,6 +43,7 @@ export const makeMockedStoreWithSpy = () => {
 
 export interface WalletApiDataOverrides {
   selectedCoin?: BraveWallet.CoinType
+  selectedAccountAddress?: string
   chainIdsForCoins?: Record<BraveWallet.CoinType, string>
   networks?: BraveWallet.NetworkInfo[]
   defaultBaseCurrency?: string
@@ -53,6 +54,7 @@ export class MockedWalletApiProxy {
 
   defaultBaseCurrency: string = 'usd'
   selectedCoin: BraveWallet.CoinType = BraveWallet.CoinType.ETH
+  selectedAccountAddress: string = mockAccount.address
 
   chainIdsForCoins: Record<BraveWallet.CoinType, string> = {
     [BraveWallet.CoinType.ETH]: BraveWallet.MAINNET_CHAIN_ID,
@@ -121,6 +123,8 @@ export class MockedWalletApiProxy {
       return
     }
 
+    this.selectedAccountAddress =
+      overrides.selectedAccountAddress ?? this.selectedAccountAddress
     this.selectedCoin = overrides.selectedCoin ?? this.selectedCoin
     this.chainIdsForCoins = overrides.chainIdsForCoins ?? this.chainIdsForCoins
     this.networks = overrides.networks ?? this.networks
@@ -161,7 +165,21 @@ export class MockedWalletApiProxy {
     }),
     setDefaultBaseCurrency: async (currency: string) => {
       this.defaultBaseCurrency = currency
-    }
+    },
+    getActiveOrigin: async () => {
+      return {
+        originInfo: {
+          origin: {
+            scheme: 'https',
+            host: 'brave.com',
+            port: 443,
+            nonceIfOpaque: undefined
+          },
+          originSpec: 'https://brave.com',
+          eTldPlusOne: 'brave.com'
+        }
+      }
+    },
   }
 
   swapService: Partial<InstanceType<typeof BraveWallet.SwapServiceInterface>> =
@@ -202,6 +220,9 @@ export class MockedWalletApiProxy {
   keyringService: Partial<
     InstanceType<typeof BraveWallet.KeyringServiceInterface>
   > = {
+    getSelectedAccount: async () => {
+      return { address: this.selectedAccountAddress }
+    },
     validatePassword: async (password: string) => ({
       result: password === 'password'
     }),
@@ -276,7 +297,7 @@ export class MockedWalletApiProxy {
     getHiddenNetworks: async () => {
       return { chainIds: [] }
     },
-    getChainId: async (coin) => {
+    getDefaultChainId: async (coin) => {
       return { chainId: this.chainIdsForCoins[coin] }
     },
     getNetwork: async (coin) => {

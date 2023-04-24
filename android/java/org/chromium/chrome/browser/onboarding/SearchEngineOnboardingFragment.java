@@ -30,7 +30,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.SearchEngineEnum;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.search_engines.BraveTemplateUrlServiceFactory;
+import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
@@ -75,8 +75,7 @@ public class SearchEngineOnboardingFragment extends Fragment {
     }
 
     private void refreshData() {
-        TemplateUrlService templateUrlService =
-                BraveTemplateUrlServiceFactory.getForProfile(mProfile);
+        TemplateUrlService templateUrlService = TemplateUrlServiceFactory.getForProfile(mProfile);
         assert templateUrlService != null; // Non-private profile shall always have the service
         if (templateUrlService == null) return;
         List<TemplateUrl> templateUrls = templateUrlService.getTemplateUrls();

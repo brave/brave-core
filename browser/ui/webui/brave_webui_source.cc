@@ -487,7 +487,6 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "deposits", IDS_BRAVE_UI_DEPOSITS },
         { "description", IDS_BRAVE_UI_DESCRIPTION },
         { "donation", IDS_BRAVE_UI_DONATION },
-        { "donationTips", IDS_BRAVE_REWARDS_LOCAL_DONAT_TITLE },
         { "done", IDS_BRAVE_UI_DONE },
         { "earningsAds", IDS_BRAVE_UI_EARNINGS_ADS },
         { "earningsViewDepositHistory", IDS_BRAVE_UI_EARNINGS_VIEW_DEPOSIT_HISTORY },            // NOLINT
@@ -710,7 +709,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "customListSubscriptionsUnsubscribe", IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_UNSUBSCRIBE },                          // NOLINT
       }
     }, {
-#if BUILDFLAG(ENABLE_IPFS)
+#if BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
       std::string("ipfs-internals"), {
         { "connectedPeersTitle", IDS_IPFS_CONNECTED_PEERS_TITLE },
         { "addressesConfigTitle", IDS_IPFS_ADDRESSES_CONFIG_TITLE },

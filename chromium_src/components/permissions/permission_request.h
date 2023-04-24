@@ -6,6 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_REQUEST_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_REQUEST_H_
 
+#include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 
 #define PermissionRequest PermissionRequest_ChromiumImpl
@@ -38,8 +39,13 @@ class PermissionRequest : public PermissionRequest_ChromiumImpl {
   // will affect this method's only parameter too, which will break subclasses.
   virtual bool IsDuplicateOf(PermissionRequest* other_request) const;
 
+  // Returns a weak pointer to this instance.
+  base::WeakPtr<PermissionRequest> GetWeakPtr();
+
  private:
   absl::optional<base::TimeDelta> lifetime_;
+
+  base::WeakPtrFactory<PermissionRequest> weak_factory_{this};
 };
 
 }  // namespace permissions

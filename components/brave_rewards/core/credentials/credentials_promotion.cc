@@ -5,6 +5,7 @@
 
 #include <stdint.h>
 
+#include <memory>
 #include <utility>
 
 #include "base/json/json_writer.h"
@@ -20,11 +21,7 @@ namespace ledger {
 namespace credential {
 
 CredentialsPromotion::CredentialsPromotion(LedgerImpl& ledger)
-    : ledger_(ledger),
-      common_(std::make_unique<CredentialsCommon>(ledger)),
-      promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)) {
-  DCHECK(common_);
-}
+    : ledger_(ledger), common_(ledger), promotion_server_(ledger) {}
 
 CredentialsPromotion::~CredentialsPromotion() = default;
 
@@ -110,7 +107,7 @@ void CredentialsPromotion::Blind(ledger::ResultCallback callback,
   auto blinded_callback =
       base::BindOnce(&CredentialsPromotion::OnBlind, base::Unretained(this),
                      std::move(callback), trigger);
-  common_->GetBlindedCreds(trigger, std::move(blinded_callback));
+  common_.GetBlindedCreds(trigger, std::move(blinded_callback));
 }
 
 void CredentialsPromotion::OnBlind(ledger::ResultCallback callback,
@@ -165,7 +162,7 @@ void CredentialsPromotion::Claim(ledger::ResultCallback callback,
                      std::move(callback), trigger);
 
   DCHECK(blinded_creds.has_value());
-  promotion_server_->post_creds()->Request(
+  promotion_server_.post_creds().Request(
       trigger.id, std::move(blinded_creds.value()), std::move(url_callback));
 }
 
@@ -271,8 +268,8 @@ void CredentialsPromotion::FetchSignedCreds(ledger::ResultCallback callback,
       base::BindOnce(&CredentialsPromotion::OnFetchSignedCreds,
                      base::Unretained(this), std::move(callback), trigger);
 
-  promotion_server_->get_signed_creds()->Request(
-      trigger.id, promotion->claim_id, std::move(url_callback));
+  promotion_server_.get_signed_creds().Request(trigger.id, promotion->claim_id,
+                                               std::move(url_callback));
 }
 
 void CredentialsPromotion::OnFetchSignedCreds(ledger::ResultCallback callback,
@@ -405,9 +402,9 @@ void CredentialsPromotion::VerifyPublicKey(ledger::ResultCallback callback,
     expires_at = promotion->expires_at;
   }
 
-  common_->SaveUnblindedCreds(expires_at, cred_value, creds,
-                              unblinded_encoded_creds, trigger,
-                              std::move(save_callback));
+  common_.SaveUnblindedCreds(expires_at, cred_value, creds,
+                             unblinded_encoded_creds, trigger,
+                             std::move(save_callback));
 }
 
 void CredentialsPromotion::Completed(ledger::ResultCallback callback,
@@ -450,7 +447,7 @@ void CredentialsPromotion::RedeemTokens(const CredentialsRedeem& redeem,
     return;
   }
 
-  promotion_server_->post_suggestions()->Request(redeem, url_callback);
+  promotion_server_.post_suggestions().Request(redeem, url_callback);
 }
 
 void CredentialsPromotion::OnRedeemTokens(
@@ -493,8 +490,8 @@ void CredentialsPromotion::DrainTokens(
       &CredentialsPromotion::OnDrainTokens, base::Unretained(this),
       std::move(callback), std::move(token_id_list), redeem);
 
-  promotion_server_->post_suggestions_claim()->Request(redeem,
-                                                       std::move(url_callback));
+  promotion_server_.post_suggestions_claim().Request(redeem,
+                                                     std::move(url_callback));
 }
 
 void CredentialsPromotion::OnDrainTokens(

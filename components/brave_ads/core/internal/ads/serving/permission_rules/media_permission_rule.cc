@@ -14,31 +14,26 @@ namespace brave_ads {
 namespace {
 
 bool DoesRespectCap() {
-  const absl::optional<TabInfo> tab = TabManager::GetInstance()->GetVisible();
-  if (!tab) {
-    return true;
-  }
-
-  return !TabManager::GetInstance()->IsPlayingMedia(tab->id);
-}
-
-}  // namespace
-
-bool MediaPermissionRule::ShouldAllow() {
   if (!kShouldOnlyServeAdsIfMediaIsNotPlaying.Get()) {
     return true;
   }
 
-  if (!DoesRespectCap()) {
-    last_message_ = "Media is playing";
-    return false;
+  const absl::optional<TabInfo> tab = TabManager::GetInstance().GetVisible();
+  if (!tab) {
+    return true;
   }
 
-  return true;
+  return !TabManager::GetInstance().IsPlayingMedia(tab->id);
 }
 
-const std::string& MediaPermissionRule::GetLastMessage() const {
-  return last_message_;
+}  // namespace
+
+base::expected<void, std::string> MediaPermissionRule::ShouldAllow() const {
+  if (!DoesRespectCap()) {
+    return base::unexpected("Media is playing");
+  }
+
+  return base::ok();
 }
 
 }  // namespace brave_ads

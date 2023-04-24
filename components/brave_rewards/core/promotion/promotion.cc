@@ -74,15 +74,11 @@ void HandleExpiredPromotions(
 }  // namespace
 
 Promotion::Promotion(LedgerImpl& ledger)
-    : attestation_(
-          std::make_unique<ledger::attestation::AttestationImpl>(ledger)),
-      transfer_(std::make_unique<PromotionTransfer>(ledger)),
-      promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)),
-      ledger_(ledger) {
-  credentials_ = credential::CredentialsFactory::Create(
-      ledger, mojom::CredsBatchType::PROMOTION);
-  DCHECK(credentials_);
-}
+    : ledger_(ledger),
+      attestation_(ledger),
+      transfer_(ledger),
+      credentials_(ledger),
+      promotion_server_(ledger) {}
 
 Promotion::~Promotion() = default;
 
@@ -126,7 +122,7 @@ void Promotion::Fetch(ledger::FetchPromotionsCallback callback) {
 
   auto client_info = ledger_->GetClientInfo();
   const std::string client = ParseClientInfoToString(std::move(client_info));
-  promotion_server_->get_available()->Request(client, std::move(url_callback));
+  promotion_server_.get_available().Request(client, std::move(url_callback));
 }
 
 void Promotion::OnFetch(ledger::FetchPromotionsCallback callback,
@@ -287,7 +283,7 @@ void Promotion::OnClaimPromotion(ledger::ClaimPromotionCallback callback,
     return;
   }
 
-  attestation_->Start(payload, std::move(callback));
+  attestation_.Start(payload, std::move(callback));
 }
 
 void Promotion::Attest(const std::string& promotion_id,
@@ -323,7 +319,7 @@ void Promotion::OnAttestPromotion(ledger::AttestPromotionCallback callback,
   auto confirm_callback =
       base::BindOnce(&Promotion::OnAttestedPromotion, base::Unretained(this),
                      std::move(callback), promotion->id);
-  attestation_->Confirm(solution, std::move(confirm_callback));
+  attestation_.Confirm(solution, std::move(confirm_callback));
 }
 
 void Promotion::OnAttestedPromotion(ledger::AttestPromotionCallback callback,
@@ -449,7 +445,7 @@ void Promotion::GetCredentials(ledger::ResultCallback callback,
       base::BindOnce(&Promotion::CredentialsProcessed, base::Unretained(this),
                      std::move(callback), promotion->id);
 
-  credentials_->Start(trigger, std::move(creds_callback));
+  credentials_.Start(trigger, std::move(creds_callback));
 }
 
 void Promotion::CredentialsProcessed(ledger::ResultCallback callback,
@@ -643,8 +639,8 @@ void Promotion::CorruptedPromotions(std::vector<mojom::PromotionPtr> promotions,
 
   auto url_callback = std::bind(&Promotion::OnCheckForCorrupted, this, _1, ids);
 
-  promotion_server_->post_clobbered_claims()->Request(
-      std::move(corrupted_claims), url_callback);
+  promotion_server_.post_clobbered_claims().Request(std::move(corrupted_claims),
+                                                    url_callback);
 }
 
 void Promotion::OnCheckForCorrupted(
@@ -691,7 +687,7 @@ void Promotion::ErrorCredsStatusSaved(const mojom::Result result) {
 }
 
 void Promotion::TransferTokens(ledger::PostSuggestionsClaimCallback callback) {
-  transfer_->Start(std::move(callback));
+  transfer_.Start(std::move(callback));
 }
 
 void Promotion::OnRetryTimerElapsed() {

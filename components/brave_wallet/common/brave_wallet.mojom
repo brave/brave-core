@@ -905,7 +905,7 @@ interface IpfsService {
 
 interface JsonRpcServiceObserver {
   // Fired when the selected network changes
-  ChainChangedEvent(string chain_id, CoinType coin);
+  ChainChangedEvent(string chain_id, CoinType coin, url.mojom.Origin? origin);
 
   // Fired when a wallet_addEthereumChain request is completed
   OnAddEthereumChainRequestCompleted(string chain_id, string error);
@@ -1071,21 +1071,23 @@ interface JsonRpcService {
   NotifySwitchChainRequestProcessed(bool approved, url.mojom.Origin origin);
   GetPendingSwitchChainRequests() => (array<SwitchChainRequest> requests);
 
-  SetNetwork(string chain_id, CoinType coin) => (bool success);
-  GetNetwork(CoinType coin) => (NetworkInfo network);
+  SetNetwork(string chain_id, CoinType coin, url.mojom.Origin? origin)
+    => (bool success);
+  GetNetwork(CoinType coin, url.mojom.Origin? origin) => (NetworkInfo network);
   GetAllNetworks(CoinType coin) => (array<NetworkInfo> networks);
   GetCustomNetworks(CoinType coin) => (array<string> chain_ids);
   GetKnownNetworks(CoinType coin) => (array<string> chain_ids);
   GetHiddenNetworks(CoinType coin) => (array<string> chain_ids);
 
-  // Obtains the current network's chain ID
-  GetChainId(CoinType coin) => (string chain_id);
-
-  // Obtains the current network's block tracker URL
-  GetBlockTrackerUrl() => (string block_tracker_url);
+  // Obtains the default network's chain ID when there is no origin info
+  // available. Ex. wallet page.
+  GetDefaultChainId(CoinType coin) => (string chain_id);
+  // Obtains the selected network's chain ID for origin.
+  GetChainIdForOrigin(CoinType coin, url.mojom.Origin origin) => (string chain_id);
 
   // Obtains the current network's URL
-  GetNetworkUrl(CoinType coin) => (string network_url);
+  GetNetworkUrl(CoinType coin, url.mojom.Origin? origin)
+    => (string network_url);
 
   // Obtains the native balance (e.g. ETH for Ethereum) for the address
   GetBalance(string address, CoinType coin, string chain_id) => (string balance, ProviderError error, string error_message);
@@ -1111,7 +1113,9 @@ interface JsonRpcService {
 
   // Obtains the contract's ERC20 allowance for an owner and a spender
   GetERC20TokenAllowance(string contract,
-                         string owner_address, string spender_address) => (string allowance, ProviderError error, string error_message);
+                         string owner_address,
+                         string spender_address, string chain_id)
+    => (string allowance, ProviderError error, string error_message);
 
   // Obtains the metadata JSON for a token ID of an ERC721 contract
   GetERC721Metadata(string contract, string token_id, string chain_id) => (string token_url, string response, ProviderError error, string error_message);
@@ -1151,13 +1155,15 @@ interface JsonRpcService {
 
   // Used for making requests to the currently selected EVM compatible node for
   // coin ETH and other nodes with corresponding coin types
-  Request(string json_payload, bool auto_retry_on_network_change, mojo_base.mojom.Value id, CoinType coin) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response, bool reject, string first_allowed_account, bool update_bind_js_properties);
+  Request(string chain_id, string json_payload,
+          bool auto_retry_on_network_change,
+          mojo_base.mojom.Value id, CoinType coin) =>
+      (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,
+        bool reject, string first_allowed_account,
+        bool update_bind_js_properties);
 
   // Adds an observer for the events of JsonRpcService
   AddObserver(pending_remote<JsonRpcServiceObserver> observer);
-
-  // Sets a custom network for testing
-  SetCustomNetworkForTesting(string chain_id, CoinType coin, url.mojom.Url provider_url);
 
   // Obtains the owner of a contract's ERC721 token ID
   GetERC721OwnerOf(string contract, string token_id, string chain_id) => (string owner_address, ProviderError error, string error_message);
@@ -1177,11 +1183,18 @@ interface JsonRpcService {
   GetSolanaBalance(string pubkey, string chain_id) =>
       (uint64 balance, SolanaProviderError error, string error_message);
   // Returns the token balance of an SPL Token account.
-  GetSPLTokenAccountBalance(string wallet_address, string token_mint_address, string chain_id) =>
+  GetSPLTokenAccountBalance(string wallet_address,
+                            string token_mint_address, string chain_id) =>
       (string amount, uint8 decimals, string uiAmountString,
        SolanaProviderError error, string error_message);
   // Returns the metadata json associated with the NFT account address
-  GetSolTokenMetadata(string chain_id, string token_mint_address) => (string token_url, string response, SolanaProviderError error, string error_message);
+  GetSolTokenMetadata(string chain_id, string token_mint_address)
+    => (string token_url, string response, SolanaProviderError error,
+        string error_message);
+
+  // Returns whether a blockhash is still valid or not for a given chain.
+  IsSolanaBlockhashValid(string chain_id, string blockhash, string? commitment)
+    => (bool is_valid, SolanaProviderError error, string error_message);
 };
 
 enum TransactionStatus {
@@ -1269,25 +1282,34 @@ interface TxService {
   AddUnapprovedTransaction(TxDataUnion tx_data_union, string from, url.mojom.Origin? origin, string? group_id) => (bool success, string tx_meta_id, string error_message);
 
   // Used to approve a transaction
-  ApproveTransaction(CoinType coin_type, string tx_meta_id) => (bool status, ProviderErrorUnion error_union, string error_message);
+  ApproveTransaction(CoinType coin_type, string chain_id, string tx_meta_id)
+    => (bool status, ProviderErrorUnion error_union, string error_message);
 
   // Used to reject a transaction
-  RejectTransaction(CoinType coin_type, string tx_meta_id) => (bool status);
+  RejectTransaction(CoinType coin_type, string chain_id, string tx_meta_id)
+    => (bool status);
 
   // Used to get transaction info
-  GetTransactionInfo(CoinType coin_type, string tx_meta_id) => (TransactionInfo? transaction_info);
+  GetTransactionInfo(CoinType coin_type, string chain_id, string tx_meta_id)
+    => (TransactionInfo? transaction_info);
 
   // Obtains a list of all transactions from an address.
   // This returns different data depending on which network is currently selected in JsonRpcService
-  GetAllTransactionInfo(CoinType coin_type, string from) => (array<TransactionInfo> transaction_infos);
+  GetAllTransactionInfo(CoinType coin_type, string? chain_id, string? from)
+    => (array<TransactionInfo> transaction_infos);
 
   // Used to speed-up or cancel a transaction
-  SpeedupOrCancelTransaction(CoinType coin_type, string tx_meta_id, bool cancel) => (bool success, string tx_meta_id, string error_message);
+  SpeedupOrCancelTransaction(CoinType coin_type,
+                             string chain_id, string tx_meta_id, bool cancel)
+    => (bool success, string tx_meta_id, string error_message);
 
   // Used to retry a transaction
-  RetryTransaction(CoinType coin_type, string tx_meta_id) => (bool success, string tx_meta_id, string error_message);
+  RetryTransaction(CoinType coin_type, string chain_id, string tx_meta_id)
+    => (bool success, string tx_meta_id, string error_message);
 
-  GetTransactionMessageToSign(CoinType coin_type, string tx_meta_id) => (MessageToSignUnion? message);
+  GetTransactionMessageToSign(CoinType coin_type,
+                              string chain_id, string tx_meta_id)
+    => (MessageToSignUnion? message);
 
   // Adds an observer for TxService
   AddObserver(pending_remote<TxServiceObserver> observer);
@@ -1307,10 +1329,16 @@ union MessageToSignUnion {
 // Transaction related APIs specific to EVM.
 interface EthTxManagerProxy {
   // Used for modifying transaction data
-  SetGasPriceAndLimitForUnapprovedTransaction(string tx_meta_id, string gas_price, string gas_limit) => (bool success);
-  SetGasFeeAndLimitForUnapprovedTransaction(string tx_meta_id, string max_priority_fee_per_gas, string max_fee_per_gas, string gas_limit) => (bool success);
-  SetDataForUnapprovedTransaction(string tx_meta_id, array<uint8> data) => (bool success);
-  SetNonceForUnapprovedTransaction(string tx_meta_id, string nonce) => (bool success);
+  SetGasPriceAndLimitForUnapprovedTransaction(
+    string chain_id, string tx_meta_id, string gas_price, string gas_limit)
+    => (bool success);
+  SetGasFeeAndLimitForUnapprovedTransaction(
+    string chain_id, string tx_meta_id, string max_priority_fee_per_gas,
+    string max_fee_per_gas, string gas_limit) => (bool success);
+  SetDataForUnapprovedTransaction(
+    string chain_id, string tx_meta_id, array<uint8> data) => (bool success);
+  SetNonceForUnapprovedTransaction(
+    string chain_id, string tx_meta_id, string nonce) => (bool success);
 
   // Used for creating transaction data
   MakeERC20TransferData(string to_address, string amount) => (bool success, array<uint8> data);
@@ -1319,10 +1347,13 @@ interface EthTxManagerProxy {
   MakeERC1155TransferFromData(string from, string to, string token_id, string value, string contract_address) => (bool success, array<uint8> data);
 
   // Gas estimation API via eth_feeHistory API
-  GetGasEstimation1559() => (GasEstimation1559? estimation);
+  GetGasEstimation1559(string chain_id) => (GasEstimation1559? estimation);
 
-  GetNonceForHardwareTransaction(string tx_meta_id) => (string? nonce);
-  ProcessHardwareSignature(string tx_meta_id, string v, string r, string s) => (bool status, ProviderError error, string error_message);
+  GetNonceForHardwareTransaction(string chain_id, string tx_meta_id)
+    => (string? nonce);
+  ProcessHardwareSignature(
+    string chain_id, string tx_meta_id, string v, string r, string s)
+    => (bool status, ProviderError error, string error_message);
 };
 
 interface SolanaTxManagerProxy {
@@ -1330,7 +1361,11 @@ interface SolanaTxManagerProxy {
   MakeSystemProgramTransferTxData(string from, string to, uint64 lamports)
       => (SolanaTxData? tx_data, SolanaProviderError error, string error_message);
 
-  ProcessSolanaHardwareSignature(string tx_meta_id, array<uint8> signature_bytes) => (bool status, ProviderErrorUnion error_union, string error_message);
+  ProcessSolanaHardwareSignature(
+      string chain_id,
+      string tx_meta_id,
+      array<uint8> signature_bytes)
+      => (bool status, ProviderErrorUnion error_union, string error_message);
 
   // Get transaction data for transfering SPL tokens from one associated token
   // account to another.
@@ -1342,15 +1377,19 @@ interface SolanaTxManagerProxy {
   // to create the associated token account for the recipient, and the second
   // instruction is the transfer instruction. Note that sender will fund the
   // creation (an additional cost) with the minimum balance for the new account
-  // to be rent exempt.
+  // to be rent exempt. `chain_id` is needed here because we need to check if
+  // the receiving associated token account exists on the specific chain via
+  // `GetSolanaAccountInfo` which requires chain_id.
   MakeTokenProgramTransferTxData(
+      string chain_id,
       string spl_token_mint_address,
       string from_wallet_address,
       string to_wallet_address,
       uint64 amount)
       => (SolanaTxData? tx_data, SolanaProviderError error, string error_message);
 
-  GetEstimatedTxFee(string tx_meta_id) => (uint64 fee, SolanaProviderError error, string error_message);
+  GetEstimatedTxFee(string chain_id, string tx_meta_id)
+    => (uint64 fee, SolanaProviderError error, string error_message);
 
   // Get transaction data from transaction bytes encoded in base64 format.
   //
@@ -1365,7 +1404,9 @@ interface SolanaTxManagerProxy {
 
 interface FilTxManagerProxy {
   // Publishes signed transaction.
-  ProcessFilHardwareSignature(string tx_meta_id, string signed_message) => (bool status, ProviderErrorUnion error_union, string error_message);
+  ProcessFilHardwareSignature(
+    string chain_id, string tx_meta_id, string signed_message)
+    => (bool status, ProviderErrorUnion error_union, string error_message);
 };
 
 interface BraveWalletServiceObserver {
@@ -1415,6 +1456,7 @@ struct SignMessageRequest {
   // to sign.
   array<uint8>? message_bytes;
   CoinType coin;
+  string chain_id;
 };
 
 struct SignTransactionRequest {
@@ -1424,6 +1466,7 @@ struct SignTransactionRequest {
   TxDataUnion tx_data;
   ByteArrayStringUnion raw_message;
   CoinType coin;
+  string chain_id;
 };
 
 struct SignAllTransactionsRequest {
@@ -1433,6 +1476,7 @@ struct SignAllTransactionsRequest {
   array<TxDataUnion> tx_datas;
   array<ByteArrayStringUnion> raw_messages;
   CoinType coin;
+  string chain_id;
 };
 
 enum ExternalWalletType {
@@ -1514,6 +1558,11 @@ interface BraveWalletService {
   // Controls last selected coin pref.
   GetSelectedCoin() => (CoinType coin);
   SetSelectedCoin(CoinType coin);
+
+  // These will automatically fetch active origin for caller to set/get
+  // chain_id properly according to the origin.
+  GetChainIdForActiveOrigin(CoinType coin) => (string chain_id);
+  SetChainIdForActiveOrigin(CoinType coin, string chain_id) => (bool success);
 
   // Adds the permission of coin type for the account
   AddPermission(CoinType coin, url.mojom.Origin origin, string account)

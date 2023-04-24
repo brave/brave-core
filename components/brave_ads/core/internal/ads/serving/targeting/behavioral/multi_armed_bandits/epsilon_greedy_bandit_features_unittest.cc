@@ -10,11 +10,11 @@
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::targeting {
 
-TEST(BatAdsEpsilonGreedyBanditFeaturesTest, IsEnabled) {
+TEST(BraveAdsEpsilonGreedyBanditFeaturesTest, IsEnabled) {
   // Arrange
   base::FieldTrialParams params;
   std::vector<base::test::FeatureRefAndParams> enabled_features;
@@ -32,7 +32,7 @@ TEST(BatAdsEpsilonGreedyBanditFeaturesTest, IsEnabled) {
   EXPECT_TRUE(IsEpsilonGreedyBanditEnabled());
 }
 
-TEST(BatAdsEpsilonGreedyBanditFeaturesTest, IsDisabled) {
+TEST(BraveAdsEpsilonGreedyBanditFeaturesTest, IsDisabled) {
   // Arrange
 
   // Act
@@ -41,7 +41,7 @@ TEST(BatAdsEpsilonGreedyBanditFeaturesTest, IsDisabled) {
   EXPECT_FALSE(IsEpsilonGreedyBanditEnabled());
 }
 
-TEST(BatAdsEpsilonGreedyBanditFeaturesTest,
+TEST(BraveAdsEpsilonGreedyBanditFeaturesTest,
      GetEpsilonGreedyBanditEpsilonValue) {
   // Arrange
   base::FieldTrialParams params;
@@ -61,7 +61,7 @@ TEST(BatAdsEpsilonGreedyBanditFeaturesTest,
   EXPECT_EQ(0.33, kEpsilonGreedyBanditEpsilonValue.Get());
 }
 
-TEST(BatAdsEpsilonGreedyBanditFeaturesTest,
+TEST(BraveAdsEpsilonGreedyBanditFeaturesTest,
      DefaultEpsilonGreedyBanditEpsilonValue) {
   // Arrange
 
@@ -71,7 +71,7 @@ TEST(BatAdsEpsilonGreedyBanditFeaturesTest,
   EXPECT_EQ(0.25, kEpsilonGreedyBanditEpsilonValue.Get());
 }
 
-TEST(BatAdsEpsilonGreedyBanditFeaturesTest,
+TEST(BraveAdsEpsilonGreedyBanditFeaturesTest,
      DefaultEpsilonGreedyBanditEpsilonValueWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;

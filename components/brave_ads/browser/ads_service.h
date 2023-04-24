@@ -205,23 +205,20 @@ class AdsService : public KeyedService {
   virtual void ToggleDislikeAd(base::Value::Dict value,
                                ToggleDislikeAdCallback callback) = 0;
 
-  // Called to no longer receive ads for the specified category. This is a
-  // toggle, so calling it again returns the setting to the neutral state. The
-  // callback takes two arguments - |std::string| containing the category. |int|
-  // containing the action.
-  virtual void ToggleMarkToReceiveAdsForCategory(
-      const std::string& category,
-      int action,
-      ToggleMarkToReceiveAdsForCategoryCallback callback) = 0;
+  // Called to like a category. This is a toggle, so calling it again returns
+  // the setting to the neutral state. The callback takes two arguments -
+  // |std::string| containing the category. |int| containing the action.
+  virtual void ToggleLikeCategory(const std::string& category,
+                                  int action,
+                                  ToggleLikeCategoryCallback callback) = 0;
 
-  // Called to receive ads for the specified category. This is a toggle, so
-  // calling it again returns the setting to the neutral state. The callback
-  // takes two arguments - |std::string| containing the category. |int|
-  // containing the action.
-  virtual void ToggleMarkToNoLongerReceiveAdsForCategory(
+  // Called to dislike a category. This is a toggle, so calling it again returns
+  // the setting to the neutral state. The callback takes two arguments -
+  // |std::string| containing the category. |int| containing the action.
+  virtual void ToggleDislikeCategory(
       const std::string& category,
       int action,
-      ToggleMarkToNoLongerReceiveAdsForCategoryCallback callback) = 0;
+      ToggleDislikeCategoryCallback callback) = 0;
 
   // Called to save an ad for later viewing. This is a toggle, so calling it
   // again removes the ad from the saved list. The callback takes one argument -

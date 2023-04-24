@@ -250,6 +250,9 @@ provideStrings({
   braveWalletWalletPopupLock: 'Lock wallet',
   braveWalletWalletPopupBackup: 'Backup Wallet',
   braveWalletWalletPopupConnectedSites: 'Connected sites',
+  braveWalletWalletPopupHideBalances: 'Hide balances',
+  braveWalletWalletPopupShowGraph: 'Show graph',
+  braveWalletWalletPopupPortfolioCustomizations: 'Portfolio customizations',
 
   // Backup Warning
   braveWalletBackupWarningText: 'Back up your wallet now to protect your assets and ensure you never lose access.',
@@ -885,7 +888,7 @@ provideStrings({
   braveWalletNftPinningErrorTooltipReasonThree: 'Not enough space on local node',
   braveWalletImportNftModalTitle: 'Import NFT',
   braveWalletEditNftModalTitle: 'Edit NFT',
-  
+
   // NFT auto discovery modal
   braveWalletEnableNftAutoDiscoveryModalHeader: 'Want your NFTs displayed automatically?',
   braveWalletEnableNftAutoDiscoveryModalDescription: 'Brave Wallet can use a third-party service to automatically display your NFTs. Brave will share your wallet addresses with $1SimpleHash$2 to provide this service. $3Learn more.$4',

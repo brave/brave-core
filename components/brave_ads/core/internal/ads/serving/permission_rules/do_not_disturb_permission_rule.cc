@@ -22,7 +22,7 @@ bool DoesRespectCap() {
     return true;
   }
 
-  if (BrowserManager::GetInstance()->IsBrowserActive()) {
+  if (BrowserManager::GetInstance().IsBrowserActive()) {
     return true;
   }
 
@@ -37,17 +37,13 @@ bool DoesRespectCap() {
 
 }  // namespace
 
-bool DoNotDisturbPermissionRule::ShouldAllow() {
+base::expected<void, std::string> DoNotDisturbPermissionRule::ShouldAllow()
+    const {
   if (!DoesRespectCap()) {
-    last_message_ = "Should not disturb";
-    return false;
+    return base::unexpected("Should not disturb");
   }
 
-  return true;
-}
-
-const std::string& DoNotDisturbPermissionRule::GetLastMessage() const {
-  return last_message_;
+  return base::ok();
 }
 
 }  // namespace brave_ads

@@ -30,10 +30,8 @@ BrowserManager::~BrowserManager() {
 }
 
 // static
-BrowserManager* BrowserManager::GetInstance() {
-  auto* browser_manager = GlobalState::GetInstance()->GetBrowserManager();
-  DCHECK(browser_manager);
-  return browser_manager;
+BrowserManager& BrowserManager::GetInstance() {
+  return GlobalState::GetInstance()->GetBrowserManager();
 }
 
 void BrowserManager::AddObserver(BrowserManagerObserver* observer) {

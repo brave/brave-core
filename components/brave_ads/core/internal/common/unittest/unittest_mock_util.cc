@@ -25,6 +25,7 @@ using ::testing::Return;
 
 void MockBuildChannel(const BuildChannelType type) {
   CHECK(GlobalState::HasInstance());
+
   auto& build_channel = GlobalState::GetInstance()->BuildChannel();
   switch (type) {
     case BuildChannelType::kNightly: {
@@ -50,9 +51,9 @@ void MockBuildChannel(const BuildChannelType type) {
                << static_cast<int>(type);
 }
 
-void MockPlatformHelper(const std::unique_ptr<PlatformHelperMock>& mock,
+void MockPlatformHelper(const PlatformHelperMock& mock,
                         const PlatformType type) {
-  PlatformHelper::SetForTesting(mock.get());
+  PlatformHelper::SetForTesting(&mock);
 
   bool is_mobile = false;
   std::string name;
@@ -95,44 +96,42 @@ void MockPlatformHelper(const std::unique_ptr<PlatformHelperMock>& mock,
     }
   }
 
-  ON_CALL(*mock, IsMobile()).WillByDefault(Return(is_mobile));
-  ON_CALL(*mock, GetName()).WillByDefault(Return(name));
-  ON_CALL(*mock, GetType()).WillByDefault(Return(type));
+  ON_CALL(mock, IsMobile()).WillByDefault(Return(is_mobile));
+  ON_CALL(mock, GetName()).WillByDefault(Return(name));
+  ON_CALL(mock, GetType()).WillByDefault(Return(type));
 }
 
-void MockIsNetworkConnectionAvailable(
-    const std::unique_ptr<AdsClientMock>& mock,
-    const bool is_available) {
-  ON_CALL(*mock, IsNetworkConnectionAvailable())
+void MockIsNetworkConnectionAvailable(const AdsClientMock& mock,
+                                      const bool is_available) {
+  ON_CALL(mock, IsNetworkConnectionAvailable())
       .WillByDefault(Return(is_available));
 }
 
-void MockIsBrowserActive(const std::unique_ptr<AdsClientMock>& mock,
+void MockIsBrowserActive(const AdsClientMock& mock,
                          const bool is_browser_active) {
-  ON_CALL(*mock, IsBrowserActive()).WillByDefault(Return(is_browser_active));
+  ON_CALL(mock, IsBrowserActive()).WillByDefault(Return(is_browser_active));
 }
 
-void MockIsBrowserInFullScreenMode(const std::unique_ptr<AdsClientMock>& mock,
+void MockIsBrowserInFullScreenMode(const AdsClientMock& mock,
                                    const bool is_browser_in_full_screen_mode) {
-  ON_CALL(*mock, IsBrowserInFullScreenMode())
+  ON_CALL(mock, IsBrowserInFullScreenMode())
       .WillByDefault(Return(is_browser_in_full_screen_mode));
 }
 
-void MockCanShowNotificationAds(const std::unique_ptr<AdsClientMock>& mock,
-                                const bool can_show) {
-  ON_CALL(*mock, CanShowNotificationAds()).WillByDefault(Return(can_show));
+void MockCanShowNotificationAds(AdsClientMock& mock, const bool can_show) {
+  ON_CALL(mock, CanShowNotificationAds()).WillByDefault(Return(can_show));
 }
 
 void MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
-    const std::unique_ptr<AdsClientMock>& mock,
+    const AdsClientMock& mock,
     const bool can_show) {
-  ON_CALL(*mock, CanShowNotificationAdsWhileBrowserIsBackgrounded())
+  ON_CALL(mock, CanShowNotificationAdsWhileBrowserIsBackgrounded())
       .WillByDefault(Return(can_show));
 }
 
-void MockGetBrowsingHistory(const std::unique_ptr<AdsClientMock>& mock,
+void MockGetBrowsingHistory(AdsClientMock& mock,
                             const std::vector<GURL>& history) {
-  ON_CALL(*mock, GetBrowsingHistory(_, _, _))
+  ON_CALL(mock, GetBrowsingHistory(_, _, _))
       .WillByDefault(
           Invoke([history](const size_t max_count, const size_t /*days_ago*/,
                            GetBrowsingHistoryCallback callback) {
@@ -142,9 +141,9 @@ void MockGetBrowsingHistory(const std::unique_ptr<AdsClientMock>& mock,
           }));
 }
 
-void MockUrlResponses(const std::unique_ptr<AdsClientMock>& mock,
+void MockUrlResponses(AdsClientMock& mock,
                       const URLResponseMap& url_responses) {
-  ON_CALL(*mock, UrlRequest(_, _))
+  ON_CALL(mock, UrlRequest(_, _))
       .WillByDefault(
           Invoke([url_responses](const mojom::UrlRequestInfoPtr& url_request,
                                  UrlRequestCallback callback) {

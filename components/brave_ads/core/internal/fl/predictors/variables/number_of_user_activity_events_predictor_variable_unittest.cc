@@ -10,14 +10,14 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsNumberOfUserActivityEventsPredictorVariableTest
+class BraveAdsNumberOfUserActivityEventsPredictorVariableTest
     : public UnitTestBase {};
 
-TEST_F(BatAdsNumberOfUserActivityEventsPredictorVariableTest, GetDataType) {
+TEST_F(BraveAdsNumberOfUserActivityEventsPredictorVariableTest, GetDataType) {
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
       std::make_unique<NumberOfUserActivityEventsPredictorVariable>(
@@ -31,7 +31,7 @@ TEST_F(BatAdsNumberOfUserActivityEventsPredictorVariableTest, GetDataType) {
             predictor_variable->GetDataType());
 }
 
-TEST_F(BatAdsNumberOfUserActivityEventsPredictorVariableTest,
+TEST_F(BraveAdsNumberOfUserActivityEventsPredictorVariableTest,
        GetValueWithoutUserActivity) {
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
@@ -45,27 +45,27 @@ TEST_F(BatAdsNumberOfUserActivityEventsPredictorVariableTest,
   EXPECT_EQ("0", predictor_variable->GetValue());
 }
 
-TEST_F(BatAdsNumberOfUserActivityEventsPredictorVariableTest, GetValue) {
+TEST_F(BraveAdsNumberOfUserActivityEventsPredictorVariableTest, GetValue) {
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
       std::make_unique<NumberOfUserActivityEventsPredictorVariable>(
           UserActivityEventType::kOpenedNewTab,
           brave_federated::mojom::CovariateType::kNumberOfOpenedNewTabEvents);
 
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kBrowserDidResignActive);
 
   AdvanceClockBy(base::Minutes(31));
 
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kBrowserDidBecomeActive);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClosedTab);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
 
   // Act

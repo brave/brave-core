@@ -11,11 +11,11 @@
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_envelope_info.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::user_data {
 
-TEST(BatAdsConversionUserDataUtilTest, GetEnvelope) {
+TEST(BraveAdsConversionUserDataUtilTest, GetEnvelope) {
   // Arrange
   const ConversionQueueItemInfo conversion_queue_item =
       BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
@@ -30,7 +30,8 @@ TEST(BatAdsConversionUserDataUtilTest, GetEnvelope) {
   EXPECT_TRUE(verifiable_conversion_envelope);
 }
 
-TEST(BatAdsConversionUserDataUtilTest, DoNotGetEnvelopeIfConversionIdIsEmpty) {
+TEST(BraveAdsConversionUserDataUtilTest,
+     DoNotGetEnvelopeIfConversionIdIsEmpty) {
   // Arrange
   const ConversionQueueItemInfo conversion_queue_item =
       BuildConversionQueueItem(AdType::kNotificationAd, kEmptyConversionId,
@@ -45,7 +46,7 @@ TEST(BatAdsConversionUserDataUtilTest, DoNotGetEnvelopeIfConversionIdIsEmpty) {
   EXPECT_FALSE(verifiable_conversion_envelope);
 }
 
-TEST(BatAdsConversionUserDataUtilTest,
+TEST(BraveAdsConversionUserDataUtilTest,
      DoNotGetEnvelopeIfAdvertiserPublicKeyIsEmpty) {
   // Arrange
   const ConversionQueueItemInfo conversion_queue_item =
@@ -61,7 +62,7 @@ TEST(BatAdsConversionUserDataUtilTest,
   EXPECT_FALSE(verifiable_conversion_envelope);
 }
 
-TEST(BatAdsConversionUserDataUtilTest,
+TEST(BraveAdsConversionUserDataUtilTest,
      DoNotGetEnvelopeIfConversionIdAndAdvertiserPublicKeyAreEmpty) {
   // Arrange
   const ConversionQueueItemInfo conversion_queue_item =

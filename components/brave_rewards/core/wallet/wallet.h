@@ -8,7 +8,6 @@
 
 #include <stdint.h>
 
-#include <memory>
 #include <string>
 
 #include "base/containers/flat_map.h"
@@ -41,9 +40,9 @@ class Wallet {
 
  private:
   const raw_ref<LedgerImpl> ledger_;
-  std::unique_ptr<WalletCreate> create_;
-  std::unique_ptr<WalletBalance> balance_;
-  std::unique_ptr<endpoint::PromotionServer> promotion_server_;
+  WalletCreate create_;
+  WalletBalance balance_;
+  endpoint::PromotionServer promotion_server_;
 };
 
 }  // namespace wallet

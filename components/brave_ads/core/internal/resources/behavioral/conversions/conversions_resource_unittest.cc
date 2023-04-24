@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
 #include "brave/components/brave_ads/core/internal/resources/resources_unittest_constants.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -24,9 +24,9 @@ namespace {
 constexpr char kResourceId[] = "nnqccijfhvzwyrxpxwjrpmynaiazctqb";
 }  // namespace
 
-class BatAdsConversionsResourceTest : public UnitTestBase {};
+class BraveAdsConversionsResourceTest : public UnitTestBase {};
 
-TEST_F(BatAdsConversionsResourceTest, LoadResource) {
+TEST_F(BraveAdsConversionsResourceTest, LoadResource) {
   // Arrange
   resource::Conversions resource;
 
@@ -38,7 +38,7 @@ TEST_F(BatAdsConversionsResourceTest, LoadResource) {
   EXPECT_TRUE(resource.IsInitialized());
 }
 
-TEST_F(BatAdsConversionsResourceTest, DoNotLoadInvalidResource) {
+TEST_F(BraveAdsConversionsResourceTest, DoNotLoadInvalidResource) {
   // Arrange
   CopyFileFromTestPathToTempPath(kInvalidResourceId, kResourceId);
 
@@ -52,9 +52,9 @@ TEST_F(BatAdsConversionsResourceTest, DoNotLoadInvalidResource) {
   EXPECT_FALSE(resource.IsInitialized());
 }
 
-TEST_F(BatAdsConversionsResourceTest, DoNotLoadMissingResource) {
+TEST_F(BraveAdsConversionsResourceTest, DoNotLoadMissingResource) {
   // Arrange
-  EXPECT_CALL(*ads_client_mock_, LoadFileResource(kResourceId, _, _))
+  EXPECT_CALL(ads_client_mock_, LoadFileResource(kResourceId, _, _))
       .WillOnce(Invoke([](const std::string& /*id*/, const int /*version*/,
                           LoadFileCallback callback) {
         const base::FilePath path =
@@ -75,7 +75,7 @@ TEST_F(BatAdsConversionsResourceTest, DoNotLoadMissingResource) {
   EXPECT_FALSE(resource.IsInitialized());
 }
 
-TEST_F(BatAdsConversionsResourceTest, IsNotInitialized) {
+TEST_F(BraveAdsConversionsResourceTest, IsNotInitialized) {
   // Arrange
   resource::Conversions resource;
 

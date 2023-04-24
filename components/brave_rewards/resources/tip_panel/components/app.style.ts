@@ -76,8 +76,12 @@ export const errorCode = styled.div`
 `
 
 export const creator = styled.div`
-  flex: 1 1 400px;
-  margin: 120px 56px 32px;
+  flex: 1 1 auto;
+  margin: 120px 56px 48px;
+
+  .narrow-view & {
+    margin-bottom: 16px;
+  }
 `
 
 export const form = styled.div`

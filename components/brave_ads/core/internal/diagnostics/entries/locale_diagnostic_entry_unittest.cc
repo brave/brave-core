@@ -9,13 +9,13 @@
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_entry_types.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds.*
+// npm run test -- brave_unit_tests --filter=BraveAds.*
 
 namespace brave_ads {
 
-class BatAdsLocaleDiagnosticEntryTest : public UnitTestBase {};
+class BraveAdsLocaleDiagnosticEntryTest : public UnitTestBase {};
 
-TEST_F(BatAdsLocaleDiagnosticEntryTest, GetValue) {
+TEST_F(BraveAdsLocaleDiagnosticEntryTest, GetValue) {
   // Arrange
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_KY"};
 

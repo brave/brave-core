@@ -19,7 +19,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_token_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -27,14 +27,14 @@ using ::testing::_;
 using ::testing::NiceMock;
 using ::testing::Return;
 
-class BatAdsConfirmationUtilTest : public UnitTestBase {
+class BraveAdsConfirmationUtilTest : public UnitTestBase {
  protected:
   NiceMock<privacy::TokenGeneratorMock> token_generator_mock_;
 };
 
-TEST_F(BatAdsConfirmationUtilTest, CreateConfirmationForNonOptedInUser) {
+TEST_F(BraveAdsConfirmationUtilTest, CreateConfirmationForNonOptedInUser) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
   privacy::SetUnblindedTokens(/*count*/ 1);
 
@@ -55,9 +55,9 @@ TEST_F(BatAdsConfirmationUtilTest, CreateConfirmationForNonOptedInUser) {
   EXPECT_TRUE(IsValid(*confirmation));
 }
 
-TEST_F(BatAdsConfirmationUtilTest, IsNotValidForNonOptedInUser) {
+TEST_F(BraveAdsConfirmationUtilTest, IsNotValidForNonOptedInUser) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
+  ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
   // Act
   const ConfirmationInfo confirmation;
@@ -66,7 +66,7 @@ TEST_F(BatAdsConfirmationUtilTest, IsNotValidForNonOptedInUser) {
   EXPECT_FALSE(IsValid(confirmation));
 }
 
-TEST_F(BatAdsConfirmationUtilTest, CreateConfirmationForOptedInUser) {
+TEST_F(BraveAdsConfirmationUtilTest, CreateConfirmationForOptedInUser) {
   // Arrange
   privacy::SetUnblindedTokens(/*count*/ 1);
 
@@ -87,7 +87,7 @@ TEST_F(BatAdsConfirmationUtilTest, CreateConfirmationForOptedInUser) {
   EXPECT_TRUE(IsValid(*confirmation));
 }
 
-TEST_F(BatAdsConfirmationUtilTest, FailToCreateConfirmationForOptedInUser) {
+TEST_F(BraveAdsConfirmationUtilTest, FailToCreateConfirmationForOptedInUser) {
   // Arrange
   ON_CALL(token_generator_mock_, Generate(_))
       .WillByDefault(Return(privacy::GetTokens(/*count*/ 1)));
@@ -104,7 +104,7 @@ TEST_F(BatAdsConfirmationUtilTest, FailToCreateConfirmationForOptedInUser) {
   EXPECT_FALSE(confirmation);
 }
 
-TEST_F(BatAdsConfirmationUtilTest, IsNotValidForOptedInUser) {
+TEST_F(BraveAdsConfirmationUtilTest, IsNotValidForOptedInUser) {
   // Arrange
 
   // Act
@@ -114,7 +114,7 @@ TEST_F(BatAdsConfirmationUtilTest, IsNotValidForOptedInUser) {
   EXPECT_FALSE(IsValid(confirmation));
 }
 
-TEST_F(BatAdsConfirmationUtilTest, ResetConfirmations) {
+TEST_F(BraveAdsConfirmationUtilTest, ResetConfirmations) {
   // Arrange
   privacy::SetUnblindedTokens(/*count*/ 2);
 
@@ -122,7 +122,7 @@ TEST_F(BatAdsConfirmationUtilTest, ResetConfirmations) {
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
-  ConfirmationStateManager::GetInstance()->AppendFailedConfirmation(
+  ConfirmationStateManager::GetInstance().AppendFailedConfirmation(
       *confirmation);
 
   // Act
@@ -130,7 +130,7 @@ TEST_F(BatAdsConfirmationUtilTest, ResetConfirmations) {
 
   // Assert
   const ConfirmationList& failed_confirmations =
-      ConfirmationStateManager::GetInstance()->GetFailedConfirmations();
+      ConfirmationStateManager::GetInstance().GetFailedConfirmations();
   EXPECT_TRUE(failed_confirmations.empty());
 
   EXPECT_TRUE(privacy::UnblindedPaymentTokensIsEmpty());
@@ -138,7 +138,7 @@ TEST_F(BatAdsConfirmationUtilTest, ResetConfirmations) {
   EXPECT_TRUE(privacy::UnblindedTokensIsEmpty());
 }
 
-TEST_F(BatAdsConfirmationUtilTest, ResetEmptyConfirmations) {
+TEST_F(BraveAdsConfirmationUtilTest, ResetEmptyConfirmations) {
   // Arrange
 
   // Act
@@ -146,7 +146,7 @@ TEST_F(BatAdsConfirmationUtilTest, ResetEmptyConfirmations) {
 
   // Assert
   const ConfirmationList& failed_confirmations =
-      ConfirmationStateManager::GetInstance()->GetFailedConfirmations();
+      ConfirmationStateManager::GetInstance().GetFailedConfirmations();
   EXPECT_TRUE(failed_confirmations.empty());
 
   EXPECT_TRUE(privacy::UnblindedPaymentTokensIsEmpty());

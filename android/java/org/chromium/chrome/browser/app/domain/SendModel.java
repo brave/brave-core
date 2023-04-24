@@ -65,14 +65,16 @@ public class SendModel {
         // create and update balance and other corresponding details
     }
 
-    public void sendSolanaToken(BlockchainToken token, String fromAddress, String toAddress,
-            long lamportsValue, Callbacks.Callback3<Boolean, String, String> callback) {
+    public void sendSolanaToken(String chainId, BlockchainToken token, String fromAddress,
+            String toAddress, long lamportsValue,
+            Callbacks.Callback3<Boolean, String, String> callback) {
         if (token == null) return;
 
         if (token.coin == CoinType.SOL && !TextUtils.isEmpty(token.contractAddress)) {
             // process SPL (Solana Program Library) tokens
-            mSolanaTxManagerProxy.makeTokenProgramTransferTxData(token.contractAddress, fromAddress,
-                    toAddress, lamportsValue, (solanaTxData, error, errorMessageMakeData) -> {
+            mSolanaTxManagerProxy.makeTokenProgramTransferTxData(chainId, token.contractAddress,
+                    fromAddress, toAddress, lamportsValue,
+                    (solanaTxData, error, errorMessageMakeData) -> {
                         if (error == 0) {
                             mTxService.addUnapprovedTransaction(
                                     WalletUtils.toTxDataUnion(solanaTxData), fromAddress, null,

@@ -9,7 +9,6 @@
 #include <stdint.h>
 
 #include <map>
-#include <memory>
 #include <string>
 #include <vector>
 #include "base/functional/callback_forward.h"
@@ -285,9 +284,8 @@ class Database {
   void SearchPublisherPrefixList(const std::string& publisher_key,
                                  SearchPublisherPrefixListCallback callback);
 
-  void ResetPublisherPrefixList(
-      std::unique_ptr<publisher::PrefixListReader> reader,
-      ledger::LegacyResultCallback callback);
+  void ResetPublisherPrefixList(publisher::PrefixListReader reader,
+                                ledger::LegacyResultCallback callback);
 
   void InsertServerPublisherInfo(const mojom::ServerPublisherInfo& server_info,
                                  ledger::LegacyResultCallback callback);
@@ -358,25 +356,25 @@ class Database {
       GetUnblindedTokenListCallback callback);
 
  private:
-  std::unique_ptr<DatabaseInitialize> initialize_;
-  std::unique_ptr<DatabaseActivityInfo> activity_info_;
-  std::unique_ptr<DatabaseBalanceReport> balance_report_;
-  std::unique_ptr<DatabaseContributionInfo> contribution_info_;
-  std::unique_ptr<DatabaseContributionQueue> contribution_queue_;
-  std::unique_ptr<DatabaseCredsBatch> creds_batch_;
-  std::unique_ptr<DatabaseEventLog> event_log_;
-  std::unique_ptr<DatabaseExternalTransactions> external_transactions_;
-  std::unique_ptr<DatabasePromotion> promotion_;
-  std::unique_ptr<DatabaseMediaPublisherInfo> media_publisher_info_;
-  std::unique_ptr<DatabaseMultiTables> multi_tables_;
-  std::unique_ptr<DatabasePublisherInfo> publisher_info_;
-  std::unique_ptr<DatabasePublisherPrefixList> publisher_prefix_list_;
-  std::unique_ptr<DatabaseRecurringTip> recurring_tip_;
-  std::unique_ptr<DatabaseServerPublisherInfo> server_publisher_info_;
-  std::unique_ptr<DatabaseSKUOrder> sku_order_;
-  std::unique_ptr<DatabaseSKUTransaction> sku_transaction_;
-  std::unique_ptr<DatabaseUnblindedToken> unblinded_token_;
   const raw_ref<LedgerImpl> ledger_;
+  DatabaseInitialize initialize_;
+  DatabaseActivityInfo activity_info_;
+  DatabaseBalanceReport balance_report_;
+  DatabaseContributionInfo contribution_info_;
+  DatabaseContributionQueue contribution_queue_;
+  DatabaseCredsBatch creds_batch_;
+  DatabaseEventLog event_log_;
+  DatabaseExternalTransactions external_transactions_;
+  DatabasePromotion promotion_;
+  DatabaseMediaPublisherInfo media_publisher_info_;
+  DatabaseMultiTables multi_tables_;
+  DatabasePublisherInfo publisher_info_;
+  DatabasePublisherPrefixList publisher_prefix_list_;
+  DatabaseRecurringTip recurring_tip_;
+  DatabaseServerPublisherInfo server_publisher_info_;
+  DatabaseSKUOrder sku_order_;
+  DatabaseSKUTransaction sku_transaction_;
+  DatabaseUnblindedToken unblinded_token_;
 };
 
 }  // namespace database

@@ -47,7 +47,7 @@ class DatabaseSKUOrder : public DatabaseTable {
                         std::shared_ptr<mojom::SKUOrderPtr> shared_order,
                         GetSKUOrderCallback callback);
 
-  std::unique_ptr<DatabaseSKUOrderItems> items_;
+  DatabaseSKUOrderItems items_;
 };
 
 }  // namespace database

@@ -10,11 +10,11 @@
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::new_tab_page_ads {
 
-TEST(BatAdsServingFeaturesTest, IsEnabled) {
+TEST(BraveAdsServingFeaturesTest, IsEnabled) {
   // Arrange
 
   // Act
@@ -23,7 +23,7 @@ TEST(BatAdsServingFeaturesTest, IsEnabled) {
   EXPECT_TRUE(IsServingEnabled());
 }
 
-TEST(BatAdsServingFeaturesTest, IsDisabled) {
+TEST(BraveAdsServingFeaturesTest, IsDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
@@ -40,7 +40,7 @@ TEST(BatAdsServingFeaturesTest, IsDisabled) {
   EXPECT_FALSE(IsServingEnabled());
 }
 
-TEST(BatAdsServingFeaturesTest, GetServingVersion) {
+TEST(BraveAdsServingFeaturesTest, GetServingVersion) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
@@ -59,7 +59,7 @@ TEST(BatAdsServingFeaturesTest, GetServingVersion) {
   EXPECT_EQ(0, kServingVersion.Get());
 }
 
-TEST(BatAdsServingFeaturesTest, DefaultServingVersion) {
+TEST(BraveAdsServingFeaturesTest, DefaultServingVersion) {
   // Arrange
 
   // Act
@@ -68,7 +68,7 @@ TEST(BatAdsServingFeaturesTest, DefaultServingVersion) {
   EXPECT_EQ(2, kServingVersion.Get());
 }
 
-TEST(BatAdsServingFeaturesTest, DefaultServingVersionWhenDisabled) {
+TEST(BraveAdsServingFeaturesTest, DefaultServingVersionWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 

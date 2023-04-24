@@ -107,11 +107,8 @@ bool TxStateManager::ValueToTxMeta(const base::Value::Dict& value,
   return true;
 }
 
-TxStateManager::TxStateManager(PrefService* prefs,
-                               JsonRpcService* json_rpc_service)
-    : prefs_(prefs), json_rpc_service_(json_rpc_service), weak_factory_(this) {
-  DCHECK(json_rpc_service_);
-}
+TxStateManager::TxStateManager(PrefService* prefs)
+    : prefs_(prefs), weak_factory_(this) {}
 
 TxStateManager::~TxStateManager() = default;
 
@@ -119,7 +116,7 @@ void TxStateManager::AddOrUpdateTx(const TxMeta& meta) {
   ScopedDictPrefUpdate update(prefs_, kBraveWalletTransactions);
   base::Value::Dict& dict = update.Get();
   const std::string path =
-      base::JoinString({GetTxPrefPathPrefix(), meta.id()}, ".");
+      base::JoinString({GetTxPrefPathPrefix(meta.chain_id()), meta.id()}, ".");
 
   bool is_add = dict.FindByDottedPath(path) == nullptr;
   dict.SetByDottedPath(path, meta.ToValue());
@@ -135,14 +132,17 @@ void TxStateManager::AddOrUpdateTx(const TxMeta& meta) {
   }
 
   // We only keep most recent 10 confirmed and rejected tx metas per network
-  RetireTxByStatus(mojom::TransactionStatus::Confirmed, kMaxConfirmedTxNum);
-  RetireTxByStatus(mojom::TransactionStatus::Rejected, kMaxRejectedTxNum);
+  RetireTxByStatus(meta.chain_id(), mojom::TransactionStatus::Confirmed,
+                   kMaxConfirmedTxNum);
+  RetireTxByStatus(meta.chain_id(), mojom::TransactionStatus::Rejected,
+                   kMaxRejectedTxNum);
 }
 
-std::unique_ptr<TxMeta> TxStateManager::GetTx(const std::string& id) {
+std::unique_ptr<TxMeta> TxStateManager::GetTx(const std::string& chain_id,
+                                              const std::string& id) {
   const auto& dict = prefs_->GetDict(kBraveWalletTransactions);
   const base::Value::Dict* value = dict.FindDictByDottedPath(
-      base::JoinString({GetTxPrefPathPrefix(), id}, "."));
+      base::JoinString({GetTxPrefPathPrefix(chain_id), id}, "."));
   if (!value) {
     return nullptr;
   }
@@ -150,50 +150,63 @@ std::unique_ptr<TxMeta> TxStateManager::GetTx(const std::string& id) {
   return ValueToTxMeta(*value);
 }
 
-void TxStateManager::DeleteTx(const std::string& id) {
+void TxStateManager::DeleteTx(const std::string& chain_id,
+                              const std::string& id) {
   ScopedDictPrefUpdate update(prefs_, kBraveWalletTransactions);
   update->RemoveByDottedPath(
-      base::JoinString({GetTxPrefPathPrefix(), id}, "."));
+      base::JoinString({GetTxPrefPathPrefix(chain_id), id}, "."));
 }
 
 void TxStateManager::WipeTxs() {
   ScopedDictPrefUpdate update(prefs_, kBraveWalletTransactions);
-  update->RemoveByDottedPath(GetTxPrefPathPrefix());
+  update->RemoveByDottedPath(GetTxPrefPathPrefix(absl::nullopt));
 }
 
 std::vector<std::unique_ptr<TxMeta>> TxStateManager::GetTransactionsByStatus(
-    absl::optional<mojom::TransactionStatus> status,
-    absl::optional<std::string> from) {
+    const absl::optional<std::string>& chain_id,
+    const absl::optional<mojom::TransactionStatus>& status,
+    const absl::optional<std::string>& from) {
   std::vector<std::unique_ptr<TxMeta>> result;
   const auto& dict = prefs_->GetDict(kBraveWalletTransactions);
   const base::Value::Dict* network_dict =
-      dict.FindDictByDottedPath(GetTxPrefPathPrefix());
+      dict.FindDictByDottedPath(GetTxPrefPathPrefix(chain_id));
   if (!network_dict) {
     return result;
   }
 
   for (const auto it : *network_dict) {
-    std::unique_ptr<TxMeta> meta = ValueToTxMeta(it.second.GetDict());
-    if (!meta) {
-      continue;
-    }
-    if (!status.has_value() || meta->status() == *status) {
-      if (from.has_value() && meta->from() != *from) {
+    if (chain_id.has_value()) {
+      std::unique_ptr<TxMeta> meta = ValueToTxMeta(it.second.GetDict());
+      if (!meta) {
         continue;
       }
-      result.push_back(std::move(meta));
+      if (!status.has_value() || meta->status() == *status) {
+        if (from.has_value() && meta->from() != *from) {
+          continue;
+        }
+        result.push_back(std::move(meta));
+      }
+    } else {
+      auto chain_id_from_pref = GetChainId(prefs_, GetCoinType(), it.first);
+      if (!chain_id_from_pref) {
+        continue;
+      }
+      auto metas = GetTransactionsByStatus(chain_id_from_pref, status, from);
+      result.insert(result.end(), std::make_move_iterator(metas.begin()),
+                    std::make_move_iterator(metas.end()));
     }
   }
   return result;
 }
 
-void TxStateManager::RetireTxByStatus(mojom::TransactionStatus status,
+void TxStateManager::RetireTxByStatus(const std::string& chain_id,
+                                      mojom::TransactionStatus status,
                                       size_t max_num) {
   if (status != mojom::TransactionStatus::Confirmed &&
       status != mojom::TransactionStatus::Rejected) {
     return;
   }
-  auto tx_metas = GetTransactionsByStatus(status, absl::nullopt);
+  auto tx_metas = GetTransactionsByStatus(chain_id, status, absl::nullopt);
   if (tx_metas.size() > max_num) {
     TxMeta* oldest_meta = nullptr;
     for (const auto& tx_meta : tx_metas) {
@@ -210,7 +223,7 @@ void TxStateManager::RetireTxByStatus(mojom::TransactionStatus status,
       }
     }
     DCHECK(oldest_meta);
-    DeleteTx(oldest_meta->id());
+    DeleteTx(chain_id, oldest_meta->id());
   }
 }
 

@@ -17,21 +17,21 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "net/http/http_status_code.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
 using ::testing::_;
 using ::testing::NiceMock;
 
-class BatAdsRedeemOptedInConfirmationTest : public UnitTestBase {
+class BraveAdsRedeemOptedInConfirmationTest : public UnitTestBase {
  protected:
   NiceMock<RedeemConfirmationDelegateMock> redeem_confirmation_delegate_mock_;
   base::WeakPtrFactory<RedeemConfirmationDelegateMock>
       confirmation_delegate_weak_factory_{&redeem_confirmation_delegate_mock_};
 };
 
-TEST_F(BatAdsRedeemOptedInConfirmationTest, Redeem) {
+TEST_F(BraveAdsRedeemOptedInConfirmationTest, Redeem) {
   // Arrange
   const URLResponseMap url_responses = {
       {// Create confirmation request
@@ -102,7 +102,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest, Redeem) {
   // Assert
 }
 
-TEST_F(BatAdsRedeemOptedInConfirmationTest, RetryRedeemingIfNoIssuers) {
+TEST_F(BraveAdsRedeemOptedInConfirmationTest, RetryRedeemingIfNoIssuers) {
   // Arrange
   privacy::SetUnblindedTokens(/*count*/ 1);
 
@@ -129,7 +129,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest, RetryRedeemingIfNoIssuers) {
   // Assert
 }
 
-TEST_F(BatAdsRedeemOptedInConfirmationTest,
+TEST_F(BraveAdsRedeemOptedInConfirmationTest,
        RedeemIfConfirmationWasPreviouslyCreated) {
   // Arrange
   const URLResponseMap url_responses = {
@@ -182,7 +182,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   // Assert
 }
 
-TEST_F(BatAdsRedeemOptedInConfirmationTest,
+TEST_F(BraveAdsRedeemOptedInConfirmationTest,
        RetryRedeemingForFetchPaymentTokenHttpNotFoundResponse) {
   // Arrange
   const URLResponseMap url_responses = {
@@ -230,7 +230,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   // Assert
 }
 
-TEST_F(BatAdsRedeemOptedInConfirmationTest,
+TEST_F(BraveAdsRedeemOptedInConfirmationTest,
        DoNotRetryRedeemingForFetchPaymentTokenHttpBadRequestResponse) {
   // Arrange
   const URLResponseMap url_responses = {
@@ -281,7 +281,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   // Assert
 }
 
-TEST_F(BatAdsRedeemOptedInConfirmationTest,
+TEST_F(BraveAdsRedeemOptedInConfirmationTest,
        RetryRedeemingForFetchPaymentTokenHttpAcceptedResponse) {
   // Arrange
   const URLResponseMap url_responses = {
@@ -332,7 +332,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   // Assert
 }
 
-TEST_F(BatAdsRedeemOptedInConfirmationTest,
+TEST_F(BraveAdsRedeemOptedInConfirmationTest,
        RetryRedeemingForFetchPaymentTokenHttpInternalServerErrorResponse) {
   // Arrange
   const URLResponseMap url_responses = {
@@ -383,7 +383,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   // Assert
 }
 
-TEST_F(BatAdsRedeemOptedInConfirmationTest,
+TEST_F(BraveAdsRedeemOptedInConfirmationTest,
        RetryRedeemingIfInvalidJsonResponseBody) {
   // Arrange
   const URLResponseMap url_responses = {
@@ -439,7 +439,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   // Assert
 }
 
-TEST_F(BatAdsRedeemOptedInConfirmationTest,
+TEST_F(BraveAdsRedeemOptedInConfirmationTest,
        DoNotRetryRedeemingIfResponseBodyIdIsMissing) {
   // Arrange
   const URLResponseMap url_responses = {
@@ -512,7 +512,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   // Assert
 }
 
-TEST_F(BatAdsRedeemOptedInConfirmationTest,
+TEST_F(BraveAdsRedeemOptedInConfirmationTest,
        DoNotRetryRedeemingIfResponseBodyIdDoesNotMatchConfirmationId) {
   // Arrange
   const URLResponseMap url_responses = {
@@ -586,7 +586,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   // Assert
 }
 
-TEST_F(BatAdsRedeemOptedInConfirmationTest,
+TEST_F(BraveAdsRedeemOptedInConfirmationTest,
        DoNotRetryRedeemingIfResponseBodyPaymentTokenIsMissing) {
   // Arrange
   const URLResponseMap url_responses = {
@@ -653,7 +653,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   // Assert
 }
 
-TEST_F(BatAdsRedeemOptedInConfirmationTest,
+TEST_F(BraveAdsRedeemOptedInConfirmationTest,
        DoNotRetryRedeemingIfResponseBodyPublicKeyIsMissing) {
   // Arrange
   const URLResponseMap url_responses = {
@@ -726,7 +726,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   // Assert
 }
 
-TEST_F(BatAdsRedeemOptedInConfirmationTest,
+TEST_F(BraveAdsRedeemOptedInConfirmationTest,
        DoNotRetryRedeemingIfResponseBodyPublicKeyIsInvalid) {
   // Arrange
   const URLResponseMap url_responses = {
@@ -800,7 +800,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   // Assert
 }
 
-TEST_F(BatAdsRedeemOptedInConfirmationTest,
+TEST_F(BraveAdsRedeemOptedInConfirmationTest,
        RetryRedeemingIfPublicKeyDoesNotExist) {
   // Arrange
   const URLResponseMap url_responses = {
@@ -873,7 +873,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   // Assert
 }
 
-TEST_F(BatAdsRedeemOptedInConfirmationTest,
+TEST_F(BraveAdsRedeemOptedInConfirmationTest,
        DoNotRetryRedeemingIfResponseBodyBatchProofIsMissing) {
   // Arrange
   const URLResponseMap url_responses = {
@@ -946,7 +946,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   // Assert
 }
 
-TEST_F(BatAdsRedeemOptedInConfirmationTest,
+TEST_F(BraveAdsRedeemOptedInConfirmationTest,
        DoNotRetryRedeemingIfResponseBodyBatchProofIsInvalid) {
   // Arrange
   const URLResponseMap url_responses = {
@@ -1020,7 +1020,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   // Assert
 }
 
-TEST_F(BatAdsRedeemOptedInConfirmationTest,
+TEST_F(BraveAdsRedeemOptedInConfirmationTest,
        DoNotRetryRedeemingIfResponseBodySignedTokensAreMissing) {
   // Arrange
   const URLResponseMap url_responses = {
@@ -1091,7 +1091,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   // Assert
 }
 
-TEST_F(BatAdsRedeemOptedInConfirmationTest,
+TEST_F(BraveAdsRedeemOptedInConfirmationTest,
        DoNotRetryRedeemingIfResponseBodySignedTokenIsInvalid) {
   // Arrange
   const URLResponseMap url_responses = {
@@ -1162,7 +1162,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
   // Assert
 }
 
-TEST_F(BatAdsRedeemOptedInConfirmationTest,
+TEST_F(BraveAdsRedeemOptedInConfirmationTest,
        DoNotRetryRedeemingIfFailedToVerifyAndUnblindTokens) {
   // Arrange
   const URLResponseMap url_responses = {

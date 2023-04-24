@@ -8,7 +8,7 @@
 #include <cstdint>
 #include <utility>
 
-#include "base/check_op.h"
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/guid.h"
 #include "base/hash/hash.h"
@@ -29,10 +29,8 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/token.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_value_util.h"
-#include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_token_value_util.h"
-#include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
@@ -139,19 +137,13 @@ base::Value::Dict GetFailedConfirmationsAsDictionary(
 
 }  // namespace
 
-ConfirmationStateManager::ConfirmationStateManager()
-    : unblinded_tokens_(std::make_unique<privacy::UnblindedTokens>()),
-      unblinded_payment_tokens_(
-          std::make_unique<privacy::UnblindedPaymentTokens>()) {}
+ConfirmationStateManager::ConfirmationStateManager() = default;
 
-ConfirmationStateManager::~ConfirmationStateManager() {}
+ConfirmationStateManager::~ConfirmationStateManager() = default;
 
 // static
-ConfirmationStateManager* ConfirmationStateManager::GetInstance() {
-  auto* confirmation_state_manager =
-      GlobalState::GetInstance()->GetConfirmationStateManager();
-  DCHECK(confirmation_state_manager);
-  return confirmation_state_manager;
+ConfirmationStateManager& ConfirmationStateManager::GetInstance() {
+  return GlobalState::GetInstance()->GetConfirmationStateManager();
 }
 
 void ConfirmationStateManager::Initialize(const WalletInfo& wallet,
@@ -435,12 +427,12 @@ std::string ConfirmationStateManager::ToJson() {
 
   // Unblinded tokens
   dict.Set("unblinded_tokens",
-           privacy::UnblindedTokensToValue(unblinded_tokens_->GetAllTokens()));
+           privacy::UnblindedTokensToValue(unblinded_tokens_.GetAllTokens()));
 
   // Unblinded payment tokens
   dict.Set("unblinded_payment_tokens",
            privacy::UnblindedPaymentTokensToValue(
-               unblinded_payment_tokens_->GetAllTokens()));
+               unblinded_payment_tokens_.GetAllTokens()));
 
   // Write to JSON
   std::string json;
@@ -515,7 +507,7 @@ bool ConfirmationStateManager::ParseUnblindedTokensFromDictionary(
         filtered_unblinded_tokens.cend());
   }
 
-  unblinded_tokens_->SetTokens(filtered_unblinded_tokens);
+  unblinded_tokens_.SetTokens(filtered_unblinded_tokens);
 
   return true;
 }
@@ -528,7 +520,7 @@ bool ConfirmationStateManager::ParseUnblindedPaymentTokensFromDictionary(
     return false;
   }
 
-  unblinded_payment_tokens_->SetTokens(
+  unblinded_payment_tokens_.SetTokens(
       privacy::UnblindedPaymentTokensFromValue(*unblinded_tokens));
 
   return true;

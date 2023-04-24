@@ -15,6 +15,7 @@ export function createModel (): Model {
     monthlyContributionSet: false,
     creatorBanner: {
       name: 'brave.com',
+      provider: '',
       title: 'Brave Software',
       description:
         'Thanks for stopping by. Brave is on a mission to fix the web by ' +
@@ -29,7 +30,7 @@ export function createModel (): Model {
         youtube: 'https://www.youtube.com/bravesoftware',
         twitch: 'https://twitch.tv/bravesoftware'
       },
-      web3Url: 'https://creators.brave.com'
+      web3Url: 'https://www.brave.com'
     },
     creatorVerified: true,
     creatorWallets: ['gemini'],

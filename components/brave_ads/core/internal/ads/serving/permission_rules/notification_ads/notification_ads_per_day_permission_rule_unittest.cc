@@ -12,11 +12,11 @@
 #include "brave/components/brave_ads/core/internal/ads/notification_ad_features.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::notification_ads {
 
-class BatAdsNotificationAdsPerDayPermissionRuleTest : public UnitTestBase {
+class BraveAdsNotificationAdsPerDayPermissionRuleTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -33,17 +33,17 @@ class BatAdsNotificationAdsPerDayPermissionRuleTest : public UnitTestBase {
   AdsPerDayPermissionRule permission_rule_;
 };
 
-TEST_F(BatAdsNotificationAdsPerDayPermissionRuleTest,
+TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
        AllowAdIfThereIsNoAdsHistory) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsNotificationAdsPerDayPermissionRuleTest,
+TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
        AllowAdIfDoesNotExceedCap) {
   // Arrange
   RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
@@ -52,10 +52,10 @@ TEST_F(BatAdsNotificationAdsPerDayPermissionRuleTest,
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsNotificationAdsPerDayPermissionRuleTest,
+TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
        AllowAdIfDoesNotExceedCapAfter1Day) {
   // Arrange
   RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
@@ -65,10 +65,10 @@ TEST_F(BatAdsNotificationAdsPerDayPermissionRuleTest,
   AdvanceClockBy(base::Days(1));
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsNotificationAdsPerDayPermissionRuleTest,
+TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
        DoNotAllowAdIfExceedsCapWithin1Day) {
   // Arrange
   RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
@@ -78,7 +78,7 @@ TEST_F(BatAdsNotificationAdsPerDayPermissionRuleTest,
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 }  // namespace brave_ads::notification_ads

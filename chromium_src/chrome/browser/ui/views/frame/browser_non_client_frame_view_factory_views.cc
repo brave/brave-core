@@ -9,8 +9,8 @@
 #include "build/build_config.h"
 
 #if BUILDFLAG(IS_WIN)
-#include "brave/browser/ui/views/frame/brave_glass_browser_frame_view.h"
-#define GlassBrowserFrameView BraveGlassBrowserFrameView
+#include "brave/browser/ui/views/frame/brave_browser_frame_view_win.h"
+#define BrowserFrameViewWin BraveBrowserFrameViewWin
 #endif
 
 // This file is included for all platform by upstream source code and we need
@@ -42,5 +42,5 @@ static_assert(
     "BraveOpaqueBrowserFrameView");
 
 #if BUILDFLAG(IS_WIN)
-#undef GlassBrowserFrameView
+#undef BrowserFrameViewWin
 #endif

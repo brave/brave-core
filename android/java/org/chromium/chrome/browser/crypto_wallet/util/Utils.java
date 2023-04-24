@@ -1101,7 +1101,7 @@ public class Utils {
     public static void openAddress(String toAppend, JsonRpcService jsonRpcService,
             AppCompatActivity activity, int coinType) {
         assert jsonRpcService != null;
-        jsonRpcService.getNetwork(coinType, network -> {
+        jsonRpcService.getNetwork(coinType, null, network -> {
             String blockExplorerUrl = Arrays.toString(network.blockExplorerUrls);
             if (blockExplorerUrl.length() > 2) {
                 blockExplorerUrl = blockExplorerUrl.substring(1, blockExplorerUrl.length() - 1);
@@ -1148,7 +1148,7 @@ public class Utils {
             coinType = walletListItemModel.getBlockchainToken().coin;
         }
 
-        jsonRpcService.getNetwork(coinType, selectedNetwork -> {
+        jsonRpcService.getNetwork(coinType, null, selectedNetwork -> {
             PendingTxHelper pendingTxHelper = new PendingTxHelper(txService, accounts, true);
 
             pendingTxHelper.fetchTransactions(() -> {

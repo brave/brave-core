@@ -7,11 +7,11 @@
 
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-TEST(BatAdsSearchEngineResultsPageUrlPatternConstantsTest,
+TEST(BraveAdsSearchEngineResultsPageUrlPatternConstantsTest,
      GetAmazonResultsPageUrlPattern) {
   // Arrange
 
@@ -26,7 +26,7 @@ TEST(BatAdsSearchEngineResultsPageUrlPatternConstantsTest,
       url_pattern);
 }
 
-TEST(BatAdsSearchEngineResultsPageUrlPatternConstantsTest,
+TEST(BraveAdsSearchEngineResultsPageUrlPatternConstantsTest,
      GetGoogleResultsPageUrlPattern) {
   // Arrange
 
@@ -52,7 +52,7 @@ TEST(BatAdsSearchEngineResultsPageUrlPatternConstantsTest,
       url_pattern);
 }
 
-TEST(BatAdsSearchEngineResultsPageUrlPatternConstantsTest,
+TEST(BraveAdsSearchEngineResultsPageUrlPatternConstantsTest,
      GetMojeekResultsPageUrlPattern) {
   // Arrange
 
@@ -63,7 +63,7 @@ TEST(BatAdsSearchEngineResultsPageUrlPatternConstantsTest,
   EXPECT_EQ("https://www.mojeek.(co.uk|com)/search", url_pattern);
 }
 
-TEST(BatAdsSearchEngineResultsPageUrlPatternConstantsTest,
+TEST(BraveAdsSearchEngineResultsPageUrlPatternConstantsTest,
      GetWikipediaResultsPageUrlPattern) {
   // Arrange
 
@@ -80,7 +80,7 @@ TEST(BatAdsSearchEngineResultsPageUrlPatternConstantsTest,
       url_pattern);
 }
 
-TEST(BatAdsSearchEngineResultsPageUrlPatternConstantsTest,
+TEST(BraveAdsSearchEngineResultsPageUrlPatternConstantsTest,
      GetYahooResultsPageUrlPattern) {
   // Arrange
 

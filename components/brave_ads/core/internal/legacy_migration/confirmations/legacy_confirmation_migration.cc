@@ -47,7 +47,7 @@ void Migrate(InitializeCallback callback) {
               return SuccessfullyMigrated(std::move(callback));
             }
 
-            if (!ConfirmationStateManager::GetInstance()->FromJson(json)) {
+            if (!ConfirmationStateManager::GetInstance().FromJson(json)) {
               BLOG(0, "Failed to load confirmation state");
               return FailedToMigrate(std::move(callback));
             }
@@ -55,7 +55,7 @@ void Migrate(InitializeCallback callback) {
             BLOG(1, "Migrating confirmation state");
 
             const std::string migrated_json =
-                ConfirmationStateManager::GetInstance()->ToJson();
+                ConfirmationStateManager::GetInstance().ToJson();
             SetHashForJson(migrated_json);
 
             AdsClientHelper::GetInstance()->Save(

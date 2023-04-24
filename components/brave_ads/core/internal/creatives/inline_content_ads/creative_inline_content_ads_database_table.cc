@@ -14,8 +14,6 @@
 #include "base/functional/callback.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
-#include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/containers/container_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
@@ -24,12 +22,7 @@
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/campaigns_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/creative_ads_database_table.h"
-#include "brave/components/brave_ads/core/internal/creatives/dayparts_database_table.h"
-#include "brave/components/brave_ads/core/internal/creatives/geo_targets_database_table.h"
-#include "brave/components/brave_ads/core/internal/creatives/segments_database_table.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 #include "url/gurl.h"
 
@@ -260,12 +253,7 @@ void MigrateToV24(mojom::DBTransactionInfo* transaction) {
 }  // namespace
 
 CreativeInlineContentAds::CreativeInlineContentAds()
-    : batch_size_(kDefaultBatchSize),
-      campaigns_database_table_(std::make_unique<Campaigns>()),
-      creative_ads_database_table_(std::make_unique<CreativeAds>()),
-      dayparts_database_table_(std::make_unique<Dayparts>()),
-      geo_targets_database_table_(std::make_unique<GeoTargets>()),
-      segments_database_table_(std::make_unique<Segments>()) {}
+    : batch_size_(kDefaultBatchSize) {}
 
 CreativeInlineContentAds::~CreativeInlineContentAds() = default;
 
@@ -285,18 +273,18 @@ void CreativeInlineContentAds::Save(
     InsertOrUpdate(transaction.get(), batch);
 
     const CreativeAdList creative_ads_batch(batch.cbegin(), batch.cend());
-    campaigns_database_table_->InsertOrUpdate(transaction.get(),
-                                              creative_ads_batch);
-    creative_ads_database_table_->InsertOrUpdate(transaction.get(),
-                                                 creative_ads_batch);
-    dayparts_database_table_->InsertOrUpdate(transaction.get(),
+    campaigns_database_table_.InsertOrUpdate(transaction.get(),
                                              creative_ads_batch);
-    deposits_database_table_->InsertOrUpdate(transaction.get(),
-                                             creative_ads_batch);
-    geo_targets_database_table_->InsertOrUpdate(transaction.get(),
+    creative_ads_database_table_.InsertOrUpdate(transaction.get(),
                                                 creative_ads_batch);
-    segments_database_table_->InsertOrUpdate(transaction.get(),
-                                             creative_ads_batch);
+    dayparts_database_table_.InsertOrUpdate(transaction.get(),
+                                            creative_ads_batch);
+    deposits_database_table_.InsertOrUpdate(transaction.get(),
+                                            creative_ads_batch);
+    geo_targets_database_table_.InsertOrUpdate(transaction.get(),
+                                               creative_ads_batch);
+    segments_database_table_.InsertOrUpdate(transaction.get(),
+                                            creative_ads_batch);
   }
 
   AdsClientHelper::GetInstance()->RunDBTransaction(

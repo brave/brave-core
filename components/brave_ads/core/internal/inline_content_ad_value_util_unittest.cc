@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -24,9 +24,9 @@ constexpr char kJson[] =
 
 }  // namespace
 
-class BatAdsInlineContentAdValueUtilTest : public UnitTestBase {};
+class BraveAdsInlineContentAdValueUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsInlineContentAdValueUtilTest, FromValue) {
+TEST_F(BraveAdsInlineContentAdValueUtilTest, FromValue) {
   // Arrange
   const base::Value value = base::test::ParseJson(kJson);
   const base::Value::Dict* const dict = value.GetIfDict();
@@ -43,7 +43,7 @@ TEST_F(BatAdsInlineContentAdValueUtilTest, FromValue) {
   EXPECT_EQ(expected_ad, ad);
 }
 
-TEST_F(BatAdsInlineContentAdValueUtilTest, ToValue) {
+TEST_F(BraveAdsInlineContentAdValueUtilTest, ToValue) {
   // Arrange
   const CreativeInlineContentAdInfo creative_ad =
       BuildCreativeInlineContentAd(/*should_use_random_guids*/ false);

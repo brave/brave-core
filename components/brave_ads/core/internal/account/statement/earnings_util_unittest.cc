@@ -9,13 +9,13 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsEarningsUtilTest : public UnitTestBase {};
+class BraveAdsEarningsUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsEarningsUtilTest, GetUnreconciledEarnings) {
+TEST_F(BraveAdsEarningsUtilTest, GetUnreconciledEarnings) {
   // Arrange
   AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
 
@@ -52,7 +52,7 @@ TEST_F(BatAdsEarningsUtilTest, GetUnreconciledEarnings) {
   EXPECT_DOUBLE_EQ(0.09, earnings);
 }
 
-TEST_F(BatAdsEarningsUtilTest, GetUnreconciledEarningsForNoTransactions) {
+TEST_F(BraveAdsEarningsUtilTest, GetUnreconciledEarningsForNoTransactions) {
   // Arrange
   const TransactionList transactions;
 
@@ -63,7 +63,7 @@ TEST_F(BatAdsEarningsUtilTest, GetUnreconciledEarningsForNoTransactions) {
   EXPECT_DOUBLE_EQ(0.0, earnings);
 }
 
-TEST_F(BatAdsEarningsUtilTest, GetReconciledEarningsForThisMonth) {
+TEST_F(BraveAdsEarningsUtilTest, GetReconciledEarningsForThisMonth) {
   // Arrange
   AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
 
@@ -108,7 +108,7 @@ TEST_F(BatAdsEarningsUtilTest, GetReconciledEarningsForThisMonth) {
   EXPECT_DOUBLE_EQ(0.08, earnings);
 }
 
-TEST_F(BatAdsEarningsUtilTest,
+TEST_F(BraveAdsEarningsUtilTest,
        GetReconciledEarningsForThisMonthForNoTransactions) {
   // Arrange
   AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
@@ -146,7 +146,7 @@ TEST_F(BatAdsEarningsUtilTest,
   EXPECT_DOUBLE_EQ(0.0, earnings);
 }
 
-TEST_F(BatAdsEarningsUtilTest, GetReconciledEarningsForLastMonth) {
+TEST_F(BraveAdsEarningsUtilTest, GetReconciledEarningsForLastMonth) {
   // Arrange
   AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
 
@@ -195,7 +195,7 @@ TEST_F(BatAdsEarningsUtilTest, GetReconciledEarningsForLastMonth) {
   EXPECT_DOUBLE_EQ(0.12, earnings);
 }
 
-TEST_F(BatAdsEarningsUtilTest,
+TEST_F(BraveAdsEarningsUtilTest,
        GetReconciledEarningsForLastMonthForNoTransactions) {
   // Arrange
   AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));

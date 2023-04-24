@@ -37,16 +37,9 @@ PublisherSettingsProperties::PublisherSettingsProperties()
       allow_non_verified_sites_in_list(true) {}
 
 PublisherSettingsProperties::PublisherSettingsProperties(
-    const PublisherSettingsProperties& properties) {
-  min_page_time_before_logging_a_visit =
-      properties.min_page_time_before_logging_a_visit;
-  min_visits_for_publisher_relevancy =
-      properties.min_visits_for_publisher_relevancy;
-  allow_non_verified_sites_in_list =
-      properties.allow_non_verified_sites_in_list;
-  monthly_balances = properties.monthly_balances;
-  processed_pending_publishers = properties.processed_pending_publishers;
-}
+    PublisherSettingsProperties&& other) = default;
+PublisherSettingsProperties& PublisherSettingsProperties::operator=(
+    PublisherSettingsProperties&& other) = default;
 
 PublisherSettingsProperties::~PublisherSettingsProperties() = default;
 

@@ -10,11 +10,11 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "net/http/http_status_code.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsCatalogPermissionRuleIntegrationTest : public UnitTestBase {
+class BraveAdsCatalogPermissionRuleIntegrationTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
@@ -31,16 +31,16 @@ class BatAdsCatalogPermissionRuleIntegrationTest : public UnitTestBase {
   CatalogPermissionRule permission_rule_;
 };
 
-TEST_F(BatAdsCatalogPermissionRuleIntegrationTest, AllowAd) {
+TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest, AllowAd) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsCatalogPermissionRuleIntegrationTest,
+TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest,
        AllowAdIfCatalogWasLastUpdated23HoursAnd59MinutesAgo) {
   // Arrange
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
@@ -48,10 +48,10 @@ TEST_F(BatAdsCatalogPermissionRuleIntegrationTest,
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsCatalogPermissionRuleIntegrationTest,
+TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest,
        DoNotAllowAdIfCatalogWasLastUpdated1DayAgo) {
   // Arrange
   AdvanceClockBy(base::Days(1));
@@ -59,10 +59,10 @@ TEST_F(BatAdsCatalogPermissionRuleIntegrationTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsCatalogPermissionRuleIntegrationTest,
+TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest,
        DoNotAllowAdIfCatalogDoesNotExist) {
   // Arrange
   SetCatalogVersion(0);
@@ -70,7 +70,7 @@ TEST_F(BatAdsCatalogPermissionRuleIntegrationTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 }  // namespace brave_ads

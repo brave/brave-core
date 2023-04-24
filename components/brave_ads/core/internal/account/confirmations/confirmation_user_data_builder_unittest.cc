@@ -23,13 +23,13 @@
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "third_party/re2/src/re2/re2.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsConfirmationUserDataBuilderTest : public UnitTestBase {};
+class BraveAdsConfirmationUserDataBuilderTest : public UnitTestBase {};
 
-TEST_F(BatAdsConfirmationUserDataBuilderTest,
+TEST_F(BraveAdsConfirmationUserDataBuilderTest,
        BuildForNonConversionConfirmationType) {
   // Arrange
   MockBuildChannel(BuildChannelType::kRelease);
@@ -68,7 +68,7 @@ TEST_F(BatAdsConfirmationUserDataBuilderTest,
   }));
 }
 
-TEST_F(BatAdsConfirmationUserDataBuilderTest,
+TEST_F(BraveAdsConfirmationUserDataBuilderTest,
        BuildForConversionConfirmationType) {
   // Arrange
   MockBuildChannel(BuildChannelType::kRelease);

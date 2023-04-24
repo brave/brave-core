@@ -25,11 +25,11 @@ constexpr base::TimeDelta kTransferAdAfter = base::Seconds(10);
 }  // namespace
 
 Transfer::Transfer() {
-  TabManager::GetInstance()->AddObserver(this);
+  TabManager::GetInstance().AddObserver(this);
 }
 
 Transfer::~Transfer() {
-  TabManager::GetInstance()->RemoveObserver(this);
+  TabManager::GetInstance().RemoveObserver(this);
 }
 
 void Transfer::AddObserver(TransferObserver* observer) {
@@ -90,12 +90,12 @@ void Transfer::OnTransferAd(const int32_t tab_id,
 
   transferring_ad_tab_id_ = 0;
 
-  if (!TabManager::GetInstance()->IsVisible(tab_id)) {
+  if (!TabManager::GetInstance().IsVisible(tab_id)) {
     return FailedToTransferAd(ad);
   }
 
   const absl::optional<TabInfo> tab =
-      TabManager::GetInstance()->GetForId(tab_id);
+      TabManager::GetInstance().GetForId(tab_id);
   if (!tab) {
     return FailedToTransferAd(ad);
   }

@@ -8,7 +8,7 @@
 #include "base/test/values_test_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::privacy::p2a {
 
@@ -19,7 +19,7 @@ constexpr char kNoQuestionsAsJson[] = "[]";
 
 }  // namespace
 
-TEST(BatAdsP2AValueUtilTest, QuestionsToValue) {
+TEST(BraveAdsP2AValueUtilTest, QuestionsToValue) {
   // Arrange
 
   // Act
@@ -33,7 +33,7 @@ TEST(BatAdsP2AValueUtilTest, QuestionsToValue) {
   EXPECT_EQ(*expected_list, list);
 }
 
-TEST(BatAdsP2AValueUtilTest, NoQuestionsToValue) {
+TEST(BraveAdsP2AValueUtilTest, NoQuestionsToValue) {
   // Arrange
 
   // Act

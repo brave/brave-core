@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/ad_preferences_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -59,9 +59,9 @@ void ParseJsonAndCompareWithSampleAdPreferencesInfo(const std::string& json) {
 
 }  // namespace
 
-class BatAdsAdPreferencesInfoTest : public UnitTestBase {};
+class BraveAdsAdPreferencesInfoTest : public UnitTestBase {};
 
-TEST_F(BatAdsAdPreferencesInfoTest, SerializeSampleAdPreferencesInfo) {
+TEST_F(BraveAdsAdPreferencesInfoTest, SerializeSampleAdPreferencesInfo) {
   // Arrange
   AdPreferencesInfo ad_preferences;
 
@@ -88,12 +88,12 @@ TEST_F(BatAdsAdPreferencesInfoTest, SerializeSampleAdPreferencesInfo) {
   ParseJsonAndCompareWithSampleAdPreferencesInfo(json);
 }
 
-TEST_F(BatAdsAdPreferencesInfoTest, ParseSampleAdPreferencesInfoJson) {
+TEST_F(BraveAdsAdPreferencesInfoTest, ParseSampleAdPreferencesInfoJson) {
   const AdPreferencesInfo ad_preferences;
   ParseJsonAndCompareWithSampleAdPreferencesInfo(kSampleAdPreferencesInfoJson);
 }
 
-TEST_F(BatAdsAdPreferencesInfoTest, ParseEmptyJson) {
+TEST_F(BraveAdsAdPreferencesInfoTest, ParseEmptyJson) {
   // Arrange
   AdPreferencesInfo ad_preferences;
 
@@ -107,7 +107,7 @@ TEST_F(BatAdsAdPreferencesInfoTest, ParseEmptyJson) {
   EXPECT_EQ(0U, ad_preferences.flagged_ads.size());
 }
 
-TEST_F(BatAdsAdPreferencesInfoTest, ParsePreferencesWithNotValidMembers) {
+TEST_F(BraveAdsAdPreferencesInfoTest, ParsePreferencesWithNotValidMembers) {
   // Arrange
   AdPreferencesInfo ad_preferences;
 

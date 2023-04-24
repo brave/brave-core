@@ -159,13 +159,14 @@ class NftMetadataFetcherUnitTest : public testing::Test {
     run_loop.Run();
   }
 
-  void TestGetSolTokenMetadata(const std::string& token_mint_address,
+  void TestGetSolTokenMetadata(const std::string& chain_id,
+                               const std::string& token_mint_address,
                                const std::string& expected_response,
                                mojom::SolanaProviderError expected_error,
                                const std::string& expected_error_message) {
     base::RunLoop loop;
     nft_metadata_fetcher_->GetSolTokenMetadata(
-        mojom::kSolanaMainnet, token_mint_address,
+        chain_id, token_mint_address,
         base::BindLambdaForTesting([&](const std::string& token_url,
                                        const std::string& response,
                                        mojom::SolanaProviderError error,
@@ -693,9 +694,9 @@ TEST_F(NftMetadataFetcherUnitTest, GetSolTokenMetadata) {
            "bafkreif4wx54wjr7pgfug3wlatr3nfntsfwngv6eusebbquezrxenj6ck4.ipfs."
            "dweb.link/?ext="),
       valid_metadata_response);
-  TestGetSolTokenMetadata("5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh",
-                          valid_metadata_response,
-                          mojom::SolanaProviderError::kSuccess, "");
+  TestGetSolTokenMetadata(
+      mojom::kSolanaMainnet, "5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh",
+      valid_metadata_response, mojom::SolanaProviderError::kSuccess, "");
 
   // Invalid token_mint_address yields internal error.
   SetSolTokenMetadataInterceptor(
@@ -704,13 +705,14 @@ TEST_F(NftMetadataFetcherUnitTest, GetSolTokenMetadata) {
            "bafkreif4wx54wjr7pgfug3wlatr3nfntsfwngv6eusebbquezrxenj6ck4.ipfs."
            "dweb.link/?ext="),
       valid_metadata_response);
-  TestGetSolTokenMetadata("Invalid", "",
+  TestGetSolTokenMetadata(mojom::kSolanaMainnet, "Invalid", "",
                           mojom::SolanaProviderError::kInternalError,
                           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 
   // Non 200 getAccountInfo response of yields internal server error.
   SetHTTPRequestTimeoutInterceptor();
-  TestGetSolTokenMetadata("5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh", "",
+  TestGetSolTokenMetadata(mojom::kSolanaMainnet,
+                          "5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh", "",
                           mojom::SolanaProviderError::kInternalError,
                           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 
@@ -721,7 +723,8 @@ TEST_F(NftMetadataFetcherUnitTest, GetSolTokenMetadata) {
            "bafkreif4wx54wjr7pgfug3wlatr3nfntsfwngv6eusebbquezrxenj6ck4.ipfs."
            "dweb.link/?ext="),
       valid_metadata_response);
-  TestGetSolTokenMetadata("5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh", "",
+  TestGetSolTokenMetadata(mojom::kSolanaMainnet,
+                          "5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh", "",
                           mojom::SolanaProviderError::kInternalError,
                           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 
@@ -752,7 +755,8 @@ TEST_F(NftMetadataFetcherUnitTest, GetSolTokenMetadata) {
            "bafkreif4wx54wjr7pgfug3wlatr3nfntsfwngv6eusebbquezrxenj6ck4.ipfs."
            "dweb.link/?ext="),
       valid_metadata_response);
-  TestGetSolTokenMetadata("5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh", "",
+  TestGetSolTokenMetadata(mojom::kSolanaMainnet,
+                          "5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh", "",
                           mojom::SolanaProviderError::kParsingError,
                           l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 
@@ -784,7 +788,8 @@ TEST_F(NftMetadataFetcherUnitTest, GetSolTokenMetadata) {
            "bafkreif4wx54wjr7pgfug3wlatr3nfntsfwngv6eusebbquezrxenj6ck4.ipfs."
            "dweb.link/?ext="),
       valid_metadata_response);
-  TestGetSolTokenMetadata("5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh", "",
+  TestGetSolTokenMetadata(mojom::kSolanaMainnet,
+                          "5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh", "",
                           mojom::SolanaProviderError::kParsingError,
                           l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 
@@ -816,7 +821,8 @@ TEST_F(NftMetadataFetcherUnitTest, GetSolTokenMetadata) {
            "bafkreif4wx54wjr7pgfug3wlatr3nfntsfwngv6eusebbquezrxenj6ck4.ipfs."
            "dweb.link/?ext="),
       valid_metadata_response);
-  TestGetSolTokenMetadata("5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh", "",
+  TestGetSolTokenMetadata(mojom::kSolanaMainnet,
+                          "5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh", "",
                           mojom::SolanaProviderError::kParsingError,
                           l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 
@@ -849,7 +855,8 @@ TEST_F(NftMetadataFetcherUnitTest, GetSolTokenMetadata) {
            "bafkreif4wx54wjr7pgfug3wlatr3nfntsfwngv6eusebbquezrxenj6ck4.ipfs."
            "dweb.link/?ext="),
       valid_metadata_response);
-  TestGetSolTokenMetadata("5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh", "",
+  TestGetSolTokenMetadata(mojom::kSolanaMainnet,
+                          "5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh", "",
                           mojom::SolanaProviderError::kParsingError,
                           l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 }

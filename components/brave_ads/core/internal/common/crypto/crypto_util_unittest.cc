@@ -10,7 +10,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "tweetnacl.h"  // NOLINT
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::crypto {
 
@@ -23,19 +23,18 @@ constexpr char kSecretKey[] =
 
 }  // namespace
 
-TEST(BatAdsCryptoUtilTest, Sha256) {
+TEST(BraveAdsCryptoUtilTest, Sha256) {
   // Arrange
 
   // Act
   const std::vector<uint8_t> sha256 = Sha256(kMessage);
 
   // Assert
-  const std::string expected_sha256_base64 =
-      "16j7swfXgJRpypq8sAguT41WUeRtPNt2LQLQvzfJ5ZI=";
-  EXPECT_EQ(expected_sha256_base64, base::Base64Encode(sha256));
+  EXPECT_EQ("16j7swfXgJRpypq8sAguT41WUeRtPNt2LQLQvzfJ5ZI=",
+            base::Base64Encode(sha256));
 }
 
-TEST(BatAdsCryptoUtilTest, Sha256WithEmptyString) {
+TEST(BraveAdsCryptoUtilTest, Sha256WithEmptyString) {
   // Arrange
   const std::string value;
 
@@ -43,12 +42,11 @@ TEST(BatAdsCryptoUtilTest, Sha256WithEmptyString) {
   const std::vector<uint8_t> sha256 = Sha256(value);
 
   // Assert
-  const std::string expected_sha256_base64 =
-      "47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=";
-  EXPECT_EQ(expected_sha256_base64, base::Base64Encode(sha256));
+  EXPECT_EQ("47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=",
+            base::Base64Encode(sha256));
 }
 
-TEST(BatAdsCryptoUtilTest, GenerateSignKeyPairFromSeed) {
+TEST(BraveAdsCryptoUtilTest, GenerateSignKeyPairFromSeed) {
   // Arrange
   const absl::optional<std::vector<uint8_t>> seed =
       base::Base64Decode("x5uBvgI5MTTVY6sjGv65e9EHr8v7i+UxkFB9qVc5fP0=");
@@ -67,7 +65,7 @@ TEST(BatAdsCryptoUtilTest, GenerateSignKeyPairFromSeed) {
   EXPECT_TRUE(key_pair->IsValid());
 }
 
-TEST(BatAdsCryptoUtilTest, GenerateBoxKeyPair) {
+TEST(BraveAdsCryptoUtilTest, GenerateBoxKeyPair) {
   // Arrange
 
   // Act
@@ -81,7 +79,7 @@ TEST(BatAdsCryptoUtilTest, GenerateBoxKeyPair) {
   EXPECT_TRUE(key_pair.IsValid());
 }
 
-TEST(BatAdsCryptoUtilTest, GenerateRandomNonce) {
+TEST(BraveAdsCryptoUtilTest, GenerateRandomNonce) {
   // Arrange
 
   // Act
@@ -91,7 +89,7 @@ TEST(BatAdsCryptoUtilTest, GenerateRandomNonce) {
   EXPECT_EQ(crypto_box_NONCEBYTES, static_cast<int>(nonce.size()));
 }
 
-TEST(BatAdsCryptoUtilTest, Sign) {
+TEST(BraveAdsCryptoUtilTest, Sign) {
   // Arrange
 
   // Act
@@ -99,14 +97,14 @@ TEST(BatAdsCryptoUtilTest, Sign) {
   ASSERT_TRUE(signature);
 
   // Assert
-  const std::string expected_signature =
+  EXPECT_EQ(
       "t4VwMNwX7hsAHQVXNGl3nGWj6LtCYSacEN/J0xKtXK6sQ5uBRB3m9kE6mVPHj6/"
-      "cv90OIdvrVcrl+eZm60FbAQ==";
-  EXPECT_EQ(expected_signature, *signature);
+      "cv90OIdvrVcrl+eZm60FbAQ==",
+      *signature);
   EXPECT_TRUE(Verify(kMessage, kPublicKey, *signature));
 }
 
-TEST(BatAdsCryptoUtilTest, Encrypt) {
+TEST(BraveAdsCryptoUtilTest, Encrypt) {
   // Arrange
   const KeyPairInfo key_pair = GenerateBoxKeyPair();
   const KeyPairInfo ephemeral_key_pair = GenerateBoxKeyPair();

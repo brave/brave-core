@@ -25,7 +25,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_unittest_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::search_result_ads {
 
@@ -57,8 +57,8 @@ void ExpectConversionCountEquals(const size_t expected_count) {
 
 }  // namespace
 
-class BatAdsSearchResultAdEventHandlerTest : public EventHandlerDelegate,
-                                             public UnitTestBase {
+class BraveAdsSearchResultAdEventHandlerTest : public EventHandlerDelegate,
+                                               public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -104,7 +104,7 @@ class BatAdsSearchResultAdEventHandlerTest : public EventHandlerDelegate,
   bool did_fail_to_fire_event_ = false;
 };
 
-TEST_F(BatAdsSearchResultAdEventHandlerTest, FireViewedEvent) {
+TEST_F(BraveAdsSearchResultAdEventHandlerTest, FireViewedEvent) {
   // Arrange
   ForcePermissionRulesForTesting();
 
@@ -129,7 +129,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest, FireViewedEvent) {
   ExpectConversionCountEquals(0);
 }
 
-TEST_F(BatAdsSearchResultAdEventHandlerTest, FireViewedEventWithConversion) {
+TEST_F(BraveAdsSearchResultAdEventHandlerTest, FireViewedEventWithConversion) {
   // Arrange
   ForcePermissionRulesForTesting();
 
@@ -155,7 +155,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest, FireViewedEventWithConversion) {
   ExpectConversionCountEquals(1);
 }
 
-TEST_F(BatAdsSearchResultAdEventHandlerTest,
+TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        DoNotFireViewedEventIfAlreadyFired) {
   // Arrange
   ForcePermissionRulesForTesting();
@@ -178,7 +178,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   ExpectConversionCountEquals(0);
 }
 
-TEST_F(BatAdsSearchResultAdEventHandlerTest, FireClickedEvent) {
+TEST_F(BraveAdsSearchResultAdEventHandlerTest, FireClickedEvent) {
   // Arrange
   ForcePermissionRulesForTesting();
 
@@ -206,7 +206,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest, FireClickedEvent) {
   ExpectConversionCountEquals(0);
 }
 
-TEST_F(BatAdsSearchResultAdEventHandlerTest,
+TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        DoNotFireClickedEventIfAlreadyFired) {
   // Arrange
   ForcePermissionRulesForTesting();
@@ -231,7 +231,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   ExpectConversionCountEquals(0);
 }
 
-TEST_F(BatAdsSearchResultAdEventHandlerTest,
+TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        DoNotFireEventWithInvalidPlacementId) {
   // Arrange
   mojom::SearchResultAdInfoPtr ad_mojom =
@@ -251,7 +251,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   ExpectConversionCountEquals(0);
 }
 
-TEST_F(BatAdsSearchResultAdEventHandlerTest,
+TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        DoNotFireEventWithInvalidCreativeInstanceId) {
   // Arrange
   mojom::SearchResultAdInfoPtr ad_mojom =
@@ -271,7 +271,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   ExpectConversionCountEquals(0);
 }
 
-TEST_F(BatAdsSearchResultAdEventHandlerTest, DoNotFireEventWhenNotPermitted) {
+TEST_F(BraveAdsSearchResultAdEventHandlerTest, DoNotFireEventWhenNotPermitted) {
   // Arrange
   mojom::SearchResultAdInfoPtr ad_mojom =
       BuildSearchResultAd(/*should_use_random_guids*/ false);
@@ -289,7 +289,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest, DoNotFireEventWhenNotPermitted) {
   ExpectConversionCountEquals(0);
 }
 
-TEST_F(BatAdsSearchResultAdEventHandlerTest,
+TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        FireEventIfNotExceededAdsPerHourCap) {
   // Arrange
   ForcePermissionRulesForTesting();
@@ -321,7 +321,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   ExpectConversionCountEquals(0);
 }
 
-TEST_F(BatAdsSearchResultAdEventHandlerTest,
+TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        DoNotFireEventIfExceededAdsPerHourCap) {
   // Arrange
   ForcePermissionRulesForTesting();
@@ -346,7 +346,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   ExpectConversionCountEquals(0);
 }
 
-TEST_F(BatAdsSearchResultAdEventHandlerTest,
+TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        FireEventIfNotExceededAdsPerDayCap) {
   // Arrange
   ForcePermissionRulesForTesting();
@@ -380,7 +380,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   ExpectConversionCountEquals(0);
 }
 
-TEST_F(BatAdsSearchResultAdEventHandlerTest,
+TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        DoNotFireEventIfExceededAdsPerDayCap) {
   // Arrange
   ForcePermissionRulesForTesting();

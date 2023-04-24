@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/containers/circular_deque.h"
@@ -147,6 +148,13 @@ class BraveWalletService : public KeyedService,
   void SetDefaultBaseCryptocurrency(const std::string& cryptocurrency) override;
   void GetSelectedCoin(GetSelectedCoinCallback callback) override;
   void SetSelectedCoin(mojom::CoinType coin) override;
+  void GetChainIdForActiveOrigin(
+      mojom::CoinType coin,
+      GetChainIdForActiveOriginCallback callback) override;
+  void SetChainIdForActiveOrigin(
+      mojom::CoinType coin,
+      const std::string& chain_id,
+      SetChainIdForActiveOriginCallback callback) override;
   void AddPermission(mojom::CoinType coin,
                      const url::Origin& origin,
                      const std::string& account,
@@ -251,6 +259,15 @@ class BraveWalletService : public KeyedService,
 
   BraveWalletP3A* GetBraveWalletP3A();
 
+  void SetSignTransactionRequestAddedCallbackForTesting(
+      base::OnceClosure callback) {
+    sign_tx_request_added_cb_for_testing_ = std::move(callback);
+  }
+  void SetSignAllTransactionsRequestAddedCallbackForTesting(
+      base::OnceClosure callback) {
+    sign_all_txs_request_added_cb_for_testing_ = std::move(callback);
+  }
+
  protected:
   // For tests
   BraveWalletService();
@@ -305,6 +322,9 @@ class BraveWalletService : public KeyedService,
   void CancelAllSignAllTransactionsCallbacks();
   void CancelAllGetEncryptionPublicKeyCallbacks();
   void CancelAllDecryptCallbacks();
+
+  base::OnceClosure sign_tx_request_added_cb_for_testing_;
+  base::OnceClosure sign_all_txs_request_added_cb_for_testing_;
 
   int sign_message_id_ = 0;
   int sign_transaction_id_ = 0;

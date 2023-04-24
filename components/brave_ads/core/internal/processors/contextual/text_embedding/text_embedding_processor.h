@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 
@@ -27,7 +27,7 @@ namespace processor {
 class TextEmbedding final : public AdsClientNotifierObserver,
                             public TabManagerObserver {
  public:
-  explicit TextEmbedding(resource::TextEmbedding* resource);
+  explicit TextEmbedding(resource::TextEmbedding& resource);
 
   TextEmbedding(const TextEmbedding&) = delete;
   TextEmbedding& operator=(const TextEmbedding&) = delete;
@@ -49,7 +49,7 @@ class TextEmbedding final : public AdsClientNotifierObserver,
                               const std::vector<GURL>& redirect_chain,
                               const std::string& content) override;
 
-  const raw_ptr<resource::TextEmbedding> resource_ = nullptr;  // NOT OWNED
+  const raw_ref<resource::TextEmbedding> resource_;
 };
 
 }  // namespace processor

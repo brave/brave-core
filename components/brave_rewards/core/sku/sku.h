@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_SKU_SKU_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_SKU_SKU_H_
 
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -54,7 +53,7 @@ class SKU {
                ledger::SKUOrderCallback callback);
 
   const raw_ref<LedgerImpl> ledger_;
-  std::unique_ptr<SKUCommon> common_;
+  SKUCommon common_;
 };
 
 }  // namespace sku

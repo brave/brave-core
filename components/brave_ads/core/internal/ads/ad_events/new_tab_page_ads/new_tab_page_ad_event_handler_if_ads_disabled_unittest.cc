@@ -22,7 +22,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::new_tab_page_ads {
 
@@ -39,14 +39,14 @@ CreativeNewTabPageAdInfo BuildAndSaveCreativeAd() {
 
 }  // namespace
 
-class BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest
+class BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest
     : public EventHandlerDelegate,
       public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    ads_client_mock_->SetBooleanPref(prefs::kEnabled, false);
+    ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
     event_handler_.SetDelegate(this);
   }
@@ -82,7 +82,7 @@ class BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest
   bool did_fail_to_fire_event_ = false;
 };
 
-TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireViewedEvent) {
+TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireViewedEvent) {
   // Arrange
   ForcePermissionRulesForTesting();
 
@@ -109,7 +109,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireViewedEvent) {
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
-TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireClickedEvent) {
+TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireClickedEvent) {
   // Arrange
   ForcePermissionRulesForTesting();
 
@@ -141,7 +141,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireClickedEvent) {
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kClicked));
 }
 
-TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
+TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
        DoNotFireViewedEventIfAlreadyFired) {
   // Arrange
   ForcePermissionRulesForTesting();
@@ -162,7 +162,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
-TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
+TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
        DoNotFireEventWithInvalidPlacementId) {
   // Arrange
 
@@ -181,7 +181,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
-TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
+TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
        DoNotFireEventWithInvalidCreativeInstanceId) {
   // Arrange
 
@@ -200,7 +200,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
-TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
+TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
        DoNotFireEventWhenNotPermitted) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
@@ -220,7 +220,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
-TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
+TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
        DoNotFireEventForUnknownCreativeInstanceId) {
   // Arrange
   ForcePermissionRulesForTesting();
@@ -240,7 +240,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
-TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
+TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
        FireEventIfNotExceededAdsPerHourCap) {
   // Arrange
   ForcePermissionRulesForTesting();
@@ -274,7 +274,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
-TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
+TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
        DoNotFireEventIfExceededAdsPerHourCap) {
   // Arrange
   ForcePermissionRulesForTesting();
@@ -303,7 +303,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
-TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
+TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
        FireEventIfNotExceededAdsPerDayCap) {
   // Arrange
   ForcePermissionRulesForTesting();
@@ -337,7 +337,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
-TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
+TEST_F(BraveAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
        DoNotFireEventIfExceededAdsPerDayCap) {
   // Arrange
   ForcePermissionRulesForTesting();

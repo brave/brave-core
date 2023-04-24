@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_rewards/core/publisher/publisher_prefix_list_updater.h"
 
-#include <memory>
 #include <utility>
 
 #include "brave/components/brave_rewards/core/common/time_util.h"
@@ -30,8 +29,7 @@ namespace ledger {
 namespace publisher {
 
 PublisherPrefixListUpdater::PublisherPrefixListUpdater(LedgerImpl& ledger)
-    : ledger_(ledger),
-      rewards_server_(std::make_unique<endpoint::RewardsServer>(ledger)) {}
+    : ledger_(ledger), rewards_server_(ledger) {}
 
 PublisherPrefixListUpdater::~PublisherPrefixListUpdater() = default;
 
@@ -64,7 +62,7 @@ void PublisherPrefixListUpdater::OnFetchTimerElapsed() {
   BLOG(1, "Fetching publisher prefix list");
   auto url_callback =
       std::bind(&PublisherPrefixListUpdater::OnFetchCompleted, this, _1, _2);
-  rewards_server_->get_prefix_list()->Request(url_callback);
+  rewards_server_.get_prefix_list().Request(url_callback);
 }
 
 void PublisherPrefixListUpdater::OnFetchCompleted(const mojom::Result result,
@@ -75,8 +73,8 @@ void PublisherPrefixListUpdater::OnFetchCompleted(const mojom::Result result,
     return;
   }
 
-  auto reader = std::make_unique<PrefixListReader>();
-  auto parse_error = reader->Parse(body);
+  PrefixListReader reader;
+  auto parse_error = reader.Parse(body);
   if (parse_error != PrefixListReader::ParseError::kNone) {
     // This could be a problem on the client or the server, but
     // optimistically assume that it is a server issue and retry
@@ -87,7 +85,7 @@ void PublisherPrefixListUpdater::OnFetchCompleted(const mojom::Result result,
     return;
   }
 
-  if (reader->empty()) {
+  if (reader.empty()) {
     BLOG(1, "Publisher prefix list did not contain any values");
     StartFetchTimer(FROM_HERE, GetRetryAfterFailureDelay());
     return;

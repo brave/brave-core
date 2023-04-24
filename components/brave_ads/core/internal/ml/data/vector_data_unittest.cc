@@ -9,13 +9,13 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::ml {
 
-class BatAdsVectorDataTest : public UnitTestBase {};
+class BraveAdsVectorDataTest : public UnitTestBase {};
 
-TEST_F(BatAdsVectorDataTest, DenseVectorDataInitialization) {
+TEST_F(BraveAdsVectorDataTest, DenseVectorDataInitialization) {
   // Arrange
   const std::vector<float> vector_5{1.0F, 2.0F, 3.0F, 4.0F, 5.0F};
   const VectorData dense_vector_data_5(vector_5);
@@ -27,7 +27,7 @@ TEST_F(BatAdsVectorDataTest, DenseVectorDataInitialization) {
             dense_vector_data_5.GetDimensionCount());
 }
 
-TEST_F(BatAdsVectorDataTest, SparseVectorDataInitialization) {
+TEST_F(BraveAdsVectorDataTest, SparseVectorDataInitialization) {
   // Arrange
   constexpr int kDimensionCount = 6;
 
@@ -41,7 +41,7 @@ TEST_F(BatAdsVectorDataTest, SparseVectorDataInitialization) {
   EXPECT_EQ(kDimensionCount, sparse_vector_data_6.GetDimensionCount());
 }
 
-TEST_F(BatAdsVectorDataTest, DenseDenseProduct) {
+TEST_F(BraveAdsVectorDataTest, DenseDenseProduct) {
   // Arrange
   constexpr double kTolerance = 1e-6;
 
@@ -65,7 +65,7 @@ TEST_F(BatAdsVectorDataTest, DenseDenseProduct) {
               std::fabs(6.0 - res_3x1) < kTolerance);
 }
 
-TEST_F(BatAdsVectorDataTest, SparseSparseProduct) {
+TEST_F(BraveAdsVectorDataTest, SparseSparseProduct) {
   // Arrange
   constexpr double kTolerance = 1e-6;
 
@@ -87,7 +87,7 @@ TEST_F(BatAdsVectorDataTest, SparseSparseProduct) {
               std::fabs(14.0 - res_5x5) < kTolerance);
 }
 
-TEST_F(BatAdsVectorDataTest, SparseDenseProduct) {
+TEST_F(BraveAdsVectorDataTest, SparseDenseProduct) {
   // Arrange
   constexpr double kTolerance = 1e-6;
 
@@ -123,7 +123,7 @@ TEST_F(BatAdsVectorDataTest, SparseDenseProduct) {
               std::fabs(2.0 - mixed_res_5x5_2) < kTolerance);
 }
 
-TEST_F(BatAdsVectorDataTest, NonsenseProduct) {
+TEST_F(BraveAdsVectorDataTest, NonsenseProduct) {
   // Arrange
   const std::vector<float> vector_5{1.0, 2.0, 3.0, 4.0, 5.0};
   const VectorData dense_vector_data_5(vector_5);
@@ -151,7 +151,7 @@ TEST_F(BatAdsVectorDataTest, NonsenseProduct) {
               std::isnan(wrong_sd) && std::isnan(wrong_ds));
 }
 
-TEST_F(BatAdsVectorDataTest, AddElementWise) {
+TEST_F(BraveAdsVectorDataTest, AddElementWise) {
   // Arrange
   const std::vector<float> data_1 = {0.3F, 0.5F, 0.8F};
   VectorData vector_data_1 = VectorData(data_1);
@@ -177,7 +177,7 @@ TEST_F(BatAdsVectorDataTest, AddElementWise) {
   }
 }
 
-TEST_F(BatAdsVectorDataTest, DivideByScalar) {
+TEST_F(BraveAdsVectorDataTest, DivideByScalar) {
   // Arrange
   VectorData vector_data_1 = VectorData({0.4F, 0.3F, 0.8F});
   VectorData vector_data_2 = VectorData({1.9F, -0.75F, 0.0F});
@@ -204,7 +204,7 @@ TEST_F(BatAdsVectorDataTest, DivideByScalar) {
   }
 }
 
-TEST_F(BatAdsVectorDataTest, NormalizeDenseVector) {
+TEST_F(BraveAdsVectorDataTest, NormalizeDenseVector) {
   VectorData dense_vector_data_5({1, 3, 5, 5, 2});
   dense_vector_data_5.Normalize();
   EXPECT_EQ(std::vector<float>(
@@ -212,7 +212,7 @@ TEST_F(BatAdsVectorDataTest, NormalizeDenseVector) {
             dense_vector_data_5.GetData());
 }
 
-TEST_F(BatAdsVectorDataTest, NormalizeSparseVector) {
+TEST_F(BraveAdsVectorDataTest, NormalizeSparseVector) {
   constexpr int kDimensionCount = 6;
   const std::map<unsigned, double> sparse_vector_5 = {
       {0U, 1.0}, {2U, 3.0}, {3U, -2.0}, {10U, -1.0}, {30U, 1.0}};
@@ -223,13 +223,13 @@ TEST_F(BatAdsVectorDataTest, NormalizeSparseVector) {
             sparse_vector_data_5.GetData());
 }
 
-TEST_F(BatAdsVectorDataTest, GetNorm) {
+TEST_F(BraveAdsVectorDataTest, GetNorm) {
   const VectorData vector_data_1({-1.0, 1.0, 2.0, -2.0, 2.0, 1.0, 1.0});
   double norm = vector_data_1.GetNorm();
   EXPECT_EQ(4.0, norm);
 }
 
-TEST_F(BatAdsVectorDataTest, ComputeSimilarity) {
+TEST_F(BraveAdsVectorDataTest, ComputeSimilarity) {
   const VectorData vector_data_1({-1.0, 1.0, 2.0, -2.0, 2.0, 1.0, 1.0});
   const VectorData vector_data_2({-2.0, 1.0, 1.0, -1.0, 2.0, 2.0, 1.0});
   const float similarity = vector_data_1.ComputeSimilarity(vector_data_2);

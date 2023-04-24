@@ -15,12 +15,13 @@
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsDatabaseMigrationTest : public UnitTestBase,
-                                    public ::testing::WithParamInterface<int> {
+class BraveAdsDatabaseMigrationTest
+    : public UnitTestBase,
+      public ::testing::WithParamInterface<int> {
  protected:
   void SetUpMocks() override {
     const std::string database_filename =
@@ -31,7 +32,7 @@ class BatAdsDatabaseMigrationTest : public UnitTestBase,
   static int GetSchemaVersion() { return GetParam() + 1; }
 };
 
-TEST_P(BatAdsDatabaseMigrationTest, MigrateFromSchema) {
+TEST_P(BraveAdsDatabaseMigrationTest, MigrateFromSchema) {
   // Arrange
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(/*should_use_random_guids*/ true);
@@ -57,8 +58,8 @@ std::string TestParamToString(::testing::TestParamInfo<int> test_param) {
                             database::kVersion);
 }
 
-INSTANTIATE_TEST_SUITE_P(BatAdsDatabaseMigration,
-                         BatAdsDatabaseMigrationTest,
+INSTANTIATE_TEST_SUITE_P(,
+                         BraveAdsDatabaseMigrationTest,
                          testing::Range(0, database::kVersion),
                          TestParamToString);
 

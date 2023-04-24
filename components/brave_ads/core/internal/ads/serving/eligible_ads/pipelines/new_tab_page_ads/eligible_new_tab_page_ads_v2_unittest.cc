@@ -15,11 +15,11 @@
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::new_tab_page_ads {
 
-class BatAdsEligibleNewTabPageAdsV2Test : public UnitTestBase {
+class BraveAdsEligibleNewTabPageAdsV2Test : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -35,7 +35,7 @@ class BatAdsEligibleNewTabPageAdsV2Test : public UnitTestBase {
   std::unique_ptr<EligibleAdsV2> eligible_ads_;
 };
 
-TEST_F(BatAdsEligibleNewTabPageAdsV2Test, GetAds) {
+TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, GetAds) {
   // Arrange
   CreativeNewTabPageAdList creative_ads;
 
@@ -65,7 +65,7 @@ TEST_F(BatAdsEligibleNewTabPageAdsV2Test, GetAds) {
       }));
 }
 
-TEST_F(BatAdsEligibleNewTabPageAdsV2Test, GetAdsForNoSegments) {
+TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, GetAdsForNoSegments) {
   // Arrange
   CreativeNewTabPageAdList creative_ads;
 
@@ -95,7 +95,7 @@ TEST_F(BatAdsEligibleNewTabPageAdsV2Test, GetAdsForNoSegments) {
       }));
 }
 
-TEST_F(BatAdsEligibleNewTabPageAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
+TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
   // Arrange
 
   // Act

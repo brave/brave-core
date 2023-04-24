@@ -121,6 +121,7 @@ export function ConfirmSwapTransaction (props: Props) {
       <AdvancedTransactionSettings
         onCancel={onToggleAdvancedTransactionSettings}
         nonce={transactionDetails.nonce}
+        chainId={transactionInfo.chainId}
         txMetaId={transactionInfo.id}
         updateUnapprovedTransactionNonce={updateUnapprovedTransactionNonce}
       />

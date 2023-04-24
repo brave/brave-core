@@ -28,8 +28,7 @@ using ledger::wallet_provider::ConnectExternalWallet;
 namespace ledger::bitflyer {
 
 ConnectBitFlyerWallet::ConnectBitFlyerWallet(LedgerImpl& ledger)
-    : ConnectExternalWallet(ledger),
-      bitflyer_server_(std::make_unique<endpoint::BitflyerServer>(ledger)) {}
+    : ConnectExternalWallet(ledger), bitflyer_server_(ledger) {}
 
 ConnectBitFlyerWallet::~ConnectBitFlyerWallet() = default;
 
@@ -39,7 +38,7 @@ const char* ConnectBitFlyerWallet::WalletType() const {
 
 void ConnectBitFlyerWallet::Authorize(
     OAuthInfo&& oauth_info,
-    ledger::ConnectExternalWalletCallback callback) const {
+    ledger::ConnectExternalWalletCallback callback) {
   DCHECK(!oauth_info.code.empty());
   DCHECK(!oauth_info.code_verifier.empty());
 
@@ -55,7 +54,7 @@ void ConnectBitFlyerWallet::Authorize(
   const std::string external_account_id =
       base::HexEncode(hashed_payment_id.data(), hashed_payment_id.size());
 
-  bitflyer_server_->post_oauth()->Request(
+  bitflyer_server_.post_oauth().Request(
       external_account_id, std::move(oauth_info.code),
       std::move(oauth_info.code_verifier),
       base::BindOnce(&ConnectBitFlyerWallet::OnAuthorize,

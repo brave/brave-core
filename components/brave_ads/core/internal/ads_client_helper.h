@@ -14,7 +14,7 @@ class AdsClientNotifierObserver;
 
 class AdsClientHelper final {
  public:
-  AdsClientHelper();
+  AdsClientHelper() = default;
 
   AdsClientHelper(const AdsClientHelper&) = delete;
   AdsClientHelper& operator=(const AdsClientHelper&) = delete;
@@ -22,7 +22,7 @@ class AdsClientHelper final {
   AdsClientHelper(AdsClientHelper&&) noexcept = delete;
   AdsClientHelper& operator=(AdsClientHelper&&) noexcept = delete;
 
-  ~AdsClientHelper();
+  ~AdsClientHelper() = default;
 
   static AdsClient* GetInstance();
 

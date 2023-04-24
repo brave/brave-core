@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_FIL_BLOCK_TRACKER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_FIL_BLOCK_TRACKER_H_
 
+#include <map>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
@@ -27,7 +28,8 @@ class FilBlockTracker : public BlockTracker {
 
   class Observer : public base::CheckedObserver {
    public:
-    virtual void OnLatestHeightUpdated(uint64_t latest_height) = 0;
+    virtual void OnLatestHeightUpdated(const std::string& chain_id,
+                                       uint64_t latest_height) = 0;
   };
 
   void AddObserver(Observer* observer);
@@ -36,18 +38,21 @@ class FilBlockTracker : public BlockTracker {
       base::OnceCallback<void(uint64_t latest_height,
                               mojom::FilecoinProviderError error,
                               const std::string& error_message)>;
-  void GetFilBlockHeight(GetFilBlockHeightCallback callback);
-  uint64_t latest_height() const { return latest_height_; }
+  void GetFilBlockHeight(const std::string& chain_id,
+                         GetFilBlockHeightCallback callback);
+  uint64_t GetLatestHeight(const std::string& chain_id) const;
   // If timer is already running, it will be replaced with new interval
-  void Start(base::TimeDelta interval) override;
+  void Start(const std::string& chain_id, base::TimeDelta interval) override;
 
  private:
-  void OnGetFilBlockHeight(GetFilBlockHeightCallback callback,
+  void OnGetFilBlockHeight(const std::string& chain_id,
+                           GetFilBlockHeightCallback callback,
                            uint64_t latest_height,
                            mojom::FilecoinProviderError error,
                            const std::string& error_message);
 
-  uint64_t latest_height_ = 0;
+  // <chain_id, block_height>
+  std::map<std::string, uint64_t> latest_height_map_;
   base::ObserverList<Observer> observers_;
 
   base::WeakPtrFactory<FilBlockTracker> weak_ptr_factory_;

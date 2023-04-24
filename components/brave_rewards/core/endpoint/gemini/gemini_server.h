@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_GEMINI_GEMINI_SERVER_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_GEMINI_GEMINI_SERVER_H_
 
-#include <memory>
-
 #include "brave/components/brave_rewards/core/endpoint/gemini/post_account/post_account_gemini.h"
 #include "brave/components/brave_rewards/core/endpoint/gemini/post_balance/post_balance_gemini.h"
 #include "brave/components/brave_rewards/core/endpoint/gemini/post_oauth/post_oauth_gemini.h"
@@ -24,19 +22,19 @@ class GeminiServer {
   explicit GeminiServer(LedgerImpl& ledger);
   ~GeminiServer();
 
-  gemini::PostAccount* post_account() const;
+  gemini::PostAccount& post_account() { return post_account_; }
 
-  gemini::PostBalance* post_balance() const;
+  gemini::PostBalance& post_balance() { return post_balance_; }
 
-  gemini::PostOauth* post_oauth() const;
+  gemini::PostOauth& post_oauth() { return post_oauth_; }
 
-  gemini::PostRecipientId* post_recipient_id() const;
+  gemini::PostRecipientId& post_recipient_id() { return post_recipient_id_; }
 
  private:
-  std::unique_ptr<gemini::PostAccount> post_account_;
-  std::unique_ptr<gemini::PostBalance> post_balance_;
-  std::unique_ptr<gemini::PostOauth> post_oauth_;
-  std::unique_ptr<gemini::PostRecipientId> post_recipient_id_;
+  gemini::PostAccount post_account_;
+  gemini::PostBalance post_balance_;
+  gemini::PostOauth post_oauth_;
+  gemini::PostRecipientId post_recipient_id_;
 };
 
 }  // namespace endpoint

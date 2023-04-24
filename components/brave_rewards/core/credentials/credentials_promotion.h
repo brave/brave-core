@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CREDENTIALS_CREDENTIALS_PROMOTION_H_
 
 #include <map>
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -102,8 +101,8 @@ class CredentialsPromotion : public Credentials {
                      std::string drain_id);
 
   const raw_ref<LedgerImpl> ledger_;
-  std::unique_ptr<CredentialsCommon> common_;
-  std::unique_ptr<endpoint::PromotionServer> promotion_server_;
+  CredentialsCommon common_;
+  endpoint::PromotionServer promotion_server_;
 };
 
 }  // namespace credential

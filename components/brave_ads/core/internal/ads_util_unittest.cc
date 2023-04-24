@@ -8,11 +8,11 @@
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-TEST(BatAdsAdsUtilTest, IsSupportedRegion) {
+TEST(BraveAdsAdsUtilTest, IsSupportedRegion) {
   // Arrange
   brave_l10n::test::ScopedDefaultLocale default_locale("en_US");
 
@@ -22,7 +22,7 @@ TEST(BatAdsAdsUtilTest, IsSupportedRegion) {
   EXPECT_TRUE(IsSupportedRegion());
 }
 
-TEST(BatAdsAdsUtilTest, IsUnsupportedRegion) {
+TEST(BraveAdsAdsUtilTest, IsUnsupportedRegion) {
   // Arrange
   brave_l10n::test::ScopedDefaultLocale default_locale(/*cuba*/ "en_CU");
 

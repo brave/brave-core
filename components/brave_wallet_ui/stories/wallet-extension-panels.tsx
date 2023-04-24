@@ -483,6 +483,7 @@ export const _SignData = () => {
     domain: '',
     originInfo: mockOriginInfo,
     coin: BraveWallet.CoinType.ETH,
+    chainId: BraveWallet.MAINNET_CHAIN_ID,
     isEip712: true,
     domainHash: '',
     primaryHash: '',
@@ -494,7 +495,6 @@ export const _SignData = () => {
       <SignPanel
         signMessageData={signMessageDataPayload}
         accounts={mockAccounts}
-        selectedNetwork={mockNetworks[0]}
         onCancel={onCancel}
         onSign={onSign}
         showWarning={true}
@@ -730,7 +730,6 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                         onSpeedupTransaction={onClickSpeedupTransaction}
                         accounts={mockAccounts}
                         defaultCurrencies={mockDefaultCurrencies}
-                        selectedNetwork={mockNetworks[0]}
                         visibleTokens={mockNewAssetOptions}
                         transactionSpotPrices={[]}
                       />
@@ -897,7 +896,6 @@ export const _TransactionDetail = () => {
               onSpeedupTransaction={mockedFunction}
               accounts={mockedTransactionAccounts}
               defaultCurrencies={mockDefaultCurrencies}
-              selectedNetwork={mockNetworks[0]}
               visibleTokens={mockNewAssetOptions}
               transactionSpotPrices={[]}
               transaction={tx}

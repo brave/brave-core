@@ -9,16 +9,16 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsCommandLinePermissionRuleTest : public UnitTestBase {
+class BraveAdsCommandLinePermissionRuleTest : public UnitTestBase {
  protected:
   CommandLinePermissionRule permission_rule_;
 };
 
-TEST_F(BatAdsCommandLinePermissionRuleTest,
+TEST_F(BraveAdsCommandLinePermissionRuleTest,
        AllowAdIfDidNotOverrideCommandLineSwitchesForProduction) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
@@ -29,10 +29,10 @@ TEST_F(BatAdsCommandLinePermissionRuleTest,
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsCommandLinePermissionRuleTest,
+TEST_F(BraveAdsCommandLinePermissionRuleTest,
        AllowAdIfDidNotOverrideCommandLineSwitchesForStaging) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
@@ -43,10 +43,10 @@ TEST_F(BatAdsCommandLinePermissionRuleTest,
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsCommandLinePermissionRuleTest,
+TEST_F(BraveAdsCommandLinePermissionRuleTest,
        DoNotAllowAdIfDidOverrideCommandLineSwitchesForProduction) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
@@ -57,10 +57,10 @@ TEST_F(BatAdsCommandLinePermissionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsCommandLinePermissionRuleTest,
+TEST_F(BraveAdsCommandLinePermissionRuleTest,
        AllowAdIfDidOverrideCommandLineSwitchesForStaging) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
@@ -71,7 +71,7 @@ TEST_F(BatAdsCommandLinePermissionRuleTest,
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 }  // namespace brave_ads

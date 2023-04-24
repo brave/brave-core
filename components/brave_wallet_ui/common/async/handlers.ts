@@ -136,7 +136,7 @@ async function updateCoinAccountNetworkInfo (store: Store, coin: BraveWallet.Coi
   if (accounts.length === 0) {
     return
   }
-  const { keyringService, jsonRpcService } = getAPIProxy()
+  const { braveWalletService, keyringService } = getAPIProxy()
 
   // Update Selected Coin & cached selected network
   await store
@@ -148,7 +148,7 @@ async function updateCoinAccountNetworkInfo (store: Store, coin: BraveWallet.Coi
     coin === BraveWallet.CoinType.FIL
       ? await keyringService.getFilecoinSelectedAccount(
           (
-            await jsonRpcService.getChainId(coin)
+            await braveWalletService.getChainIdForActiveOrigin(coin)
           ).chainId
         )
       : await keyringService.getSelectedAccount(coin)
@@ -435,8 +435,18 @@ handler.on(WalletActions.sendTransaction.type, async (
 })
 
 handler.on(WalletActions.sendSPLTransfer.type, async (store: Store, payload: SPLTransferFromParams) => {
-  const { solanaTxManagerProxy } = getAPIProxy()
-  const value = await solanaTxManagerProxy.makeTokenProgramTransferTxData(payload.splTokenMintAddress, payload.from, payload.to, BigInt(payload.value))
+  const { braveWalletService,
+          jsonRpcService,
+          solanaTxManagerProxy
+  } = getAPIProxy()
+  const { originInfo } = await braveWalletService.getActiveOrigin()
+  const { network } = await jsonRpcService.getNetwork(
+    BraveWallet.CoinType.SOL, originInfo.origin)
+  const value = await solanaTxManagerProxy.makeTokenProgramTransferTxData(
+    network.chainId,
+    payload.splTokenMintAddress,
+    payload.from, payload.to,
+    BigInt(payload.value))
   if (!value.txData) {
     console.log('Failed making SPL transfer data, to: ', payload.to, ', value: ', payload.value)
     return
@@ -513,7 +523,8 @@ handler.on(WalletActions.approveTransaction.type, async (store: Store, txInfo: B
   const api = getAPIProxy()
   const { txService, braveWalletP3A } = api
   const coin = getCoinFromTxDataUnion(txInfo.txDataUnion)
-  const result = await txService.approveTransaction(coin, txInfo.id)
+  const result = await txService.approveTransaction(coin,
+                                                    txInfo.chainId, txInfo.id)
   const error = result.errorUnion.providerError ?? result.errorUnion.solanaProviderError ?? result.errorUnion.filecoinProviderError
   if (error !== BraveWallet.ProviderError.kSuccess) {
     await store.dispatch(WalletActions.setTransactionProviderError({
@@ -536,7 +547,7 @@ handler.on(WalletActions.approveTransaction.type, async (store: Store, txInfo: B
 handler.on(WalletActions.rejectTransaction.type, async (store: Store, txInfo: BraveWallet.TransactionInfo) => {
   const apiProxy = getAPIProxy()
   const coin = getCoinFromTxDataUnion(txInfo.txDataUnion)
-  await apiProxy.txService.rejectTransaction(coin, txInfo.id)
+  await apiProxy.txService.rejectTransaction(coin, txInfo.chainId, txInfo.id)
   await store.dispatch(refreshTransactionHistory(txInfo.fromAddress))
 })
 
@@ -545,7 +556,8 @@ handler.on(WalletActions.rejectAllTransactions.type, async (store) => {
   const apiProxy = getAPIProxy()
   state.pendingTransactions.forEach(async (transaction) => {
     const coin = getCoinFromTxDataUnion(transaction.txDataUnion)
-    await apiProxy.txService.rejectTransaction(coin, transaction.id)
+    await apiProxy.txService.rejectTransaction(coin, transaction.chainId,
+                                               transaction.id)
   })
   await refreshWalletInfo(store)
 })
@@ -558,6 +570,7 @@ handler.on(WalletActions.refreshGasEstimates.type, async (store: Store, txInfo: 
 
   if (isSolanaTransaction(txInfo)) {
     const { fee, errorMessage } = await solanaTxManagerProxy.getEstimatedTxFee(
+      txInfo.chainId,
       txInfo.id
     )
     if (!fee) {
@@ -578,7 +591,8 @@ handler.on(WalletActions.refreshGasEstimates.type, async (store: Store, txInfo: 
     return
   }
 
-  const { estimation } = await ethTxManagerProxy.getGasEstimation1559()
+  const { estimation } =
+    await ethTxManagerProxy.getGasEstimation1559(txInfo.chainId)
   if (!estimation) {
     console.error('Failed to fetch gas estimates')
     store.dispatch(WalletActions.setHasFeeEstimatesError(true))
@@ -595,6 +609,7 @@ handler.on(WalletActions.updateUnapprovedTransactionGasFields.type, async (store
 
   if (isEIP1559) {
     const result = await apiProxy.ethTxManagerProxy.setGasFeeAndLimitForUnapprovedTransaction(
+      payload.chainId,
       payload.txMetaId,
       payload.maxPriorityFeePerGas || '0x0',
       payload.maxFeePerGas || '0x0',
@@ -614,7 +629,7 @@ handler.on(WalletActions.updateUnapprovedTransactionGasFields.type, async (store
 
   if (!isEIP1559 && payload.gasPrice) {
     const result = await apiProxy.ethTxManagerProxy.setGasPriceAndLimitForUnapprovedTransaction(
-      payload.txMetaId, payload.gasPrice, payload.gasLimit
+      payload.chainId, payload.txMetaId, payload.gasPrice, payload.gasLimit
     )
 
     if (!result.success) {
@@ -640,7 +655,9 @@ handler.on(WalletActions.updateUnapprovedTransactionSpendAllowance.type, async (
     return
   }
 
-  const result = await apiProxy.ethTxManagerProxy.setDataForUnapprovedTransaction(payload.txMetaId, data)
+  const result =
+    await apiProxy.ethTxManagerProxy.setDataForUnapprovedTransaction(
+      payload.chainId, payload.txMetaId, data)
   if (!result.success) {
     console.error(
       'Failed to update unapproved transaction: ' +
@@ -653,7 +670,9 @@ handler.on(WalletActions.updateUnapprovedTransactionSpendAllowance.type, async (
 handler.on(WalletActions.updateUnapprovedTransactionNonce.type, async (store: Store, payload: UpdateUnapprovedTransactionNonceType) => {
   const { ethTxManagerProxy } = getAPIProxy()
 
-  const result = await ethTxManagerProxy.setNonceForUnapprovedTransaction(payload.txMetaId, payload.nonce)
+  const result =
+    await ethTxManagerProxy.setNonceForUnapprovedTransaction(
+      payload.chainId, payload.txMetaId, payload.nonce)
   if (!result.success) {
     console.error(
       'Failed to update unapproved transaction: ' +
@@ -681,7 +700,8 @@ handler.on(WalletActions.transactionStatusChanged.type, async (store: Store, pay
       coinType: getCoinFromTxDataUnion(payload.txInfo.txDataUnion),
       fromAddress: payload.txInfo.fromAddress,
       txStatus: payload.txInfo.txStatus,
-      id: payload.txInfo.id
+      id: payload.txInfo.id,
+      chainId: payload.txInfo.chainId,
     })
   )
   const status = payload.txInfo.txStatus
@@ -696,6 +716,7 @@ handler.on(
     const { txService } = getAPIProxy()
     const result = await txService.retryTransaction(
       payload.coinType,
+      payload.chainId,
       payload.transactionId
     )
     if (!result.success) {
@@ -717,6 +738,7 @@ handler.on(
     const { txService } = getAPIProxy()
     const result = await txService.speedupOrCancelTransaction(
       payload.coinType,
+      payload.chainId,
       payload.transactionId,
       false
     )
@@ -739,6 +761,7 @@ handler.on(
     const { txService } = getAPIProxy()
     const result = await txService.speedupOrCancelTransaction(
       payload.coinType,
+      payload.chainId,
       payload.transactionId,
       true
     )

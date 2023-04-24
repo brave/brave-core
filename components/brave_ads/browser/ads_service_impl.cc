@@ -1512,23 +1512,20 @@ void AdsServiceImpl::ToggleDislikeAd(base::Value::Dict value,
   }
 }
 
-void AdsServiceImpl::ToggleMarkToReceiveAdsForCategory(
-    const std::string& category,
-    const int action,
-    ToggleMarkToReceiveAdsForCategoryCallback callback) {
+void AdsServiceImpl::ToggleLikeCategory(const std::string& category,
+                                        const int action,
+                                        ToggleLikeCategoryCallback callback) {
   if (bat_ads_.is_bound()) {
-    bat_ads_->ToggleMarkToReceiveAdsForCategory(category, action,
-                                                std::move(callback));
+    bat_ads_->ToggleLikeCategory(category, action, std::move(callback));
   }
 }
 
-void AdsServiceImpl::ToggleMarkToNoLongerReceiveAdsForCategory(
+void AdsServiceImpl::ToggleDislikeCategory(
     const std::string& category,
     const int action,
-    ToggleMarkToNoLongerReceiveAdsForCategoryCallback callback) {
+    ToggleDislikeCategoryCallback callback) {
   if (bat_ads_.is_bound()) {
-    bat_ads_->ToggleMarkToNoLongerReceiveAdsForCategory(category, action,
-                                                        std::move(callback));
+    bat_ads_->ToggleDislikeCategory(category, action, std::move(callback));
   }
 }
 

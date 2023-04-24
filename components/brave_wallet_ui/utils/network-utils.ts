@@ -10,9 +10,6 @@ import {
   WalletAccountTypeName
 } from '../constants/types'
 
-// utils
-import { isFilecoinTransaction } from './tx-utils'
-
 export const emptyNetwork: BraveWallet.NetworkInfo = {
   chainId: '',
   chainName: '',
@@ -69,45 +66,6 @@ export const getCoinFromTxDataUnion = <T extends TxDataPresence> (txDataUnion: T
   if (txDataUnion.filTxData) { return BraveWallet.CoinType.FIL }
   if (txDataUnion.solanaTxData) { return BraveWallet.CoinType.SOL }
   return BraveWallet.CoinType.ETH
-}
-
-export const getNetworkFromTXDataUnion = <
-  T extends TxDataPresence,
-  N extends BraveWallet.NetworkInfo
-> (
-  txDataUnion: T,
-  networks: N[],
-  selectedNetwork?: N | undefined
-): N | undefined => {
-  const tx = { txDataUnion }
-  const coin = getCoinFromTxDataUnion(tx.txDataUnion)
-
-  const isFilTx = isFilecoinTransaction(tx)
-  const isFilTestNetTx = tx.txDataUnion.filTxData?.from?.startsWith(
-    BraveWallet.FILECOIN_TESTNET
-  )
-
-  return (
-    networks.find((network) => {
-      switch (network.coin) {
-        case BraveWallet.CoinType.ETH:
-          return network.chainId === txDataUnion.ethTxData1559?.chainId
-
-        case BraveWallet.CoinType.FIL:
-          // fil addresses on testnet start with 't'
-          return isFilTestNetTx
-            ? network.chainId === BraveWallet.FILECOIN_TESTNET
-            : isFilTx
-            ? network.chainId === BraveWallet.FILECOIN_MAINNET
-            : network.coin === coin
-
-        // TODO: find a way to get SOL chainIds
-        case BraveWallet.CoinType.SOL:
-        default:
-          return network.coin === coin
-      }
-    }) ?? selectedNetwork
-  )
 }
 
 export function getFilecoinKeyringIdFromNetwork (

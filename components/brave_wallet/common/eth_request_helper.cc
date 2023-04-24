@@ -39,52 +39,56 @@ absl::optional<base::Value::List> GetParamsList(const std::string& json) {
   return std::move(*params);
 }
 
-absl::optional<base::Value> GetObjectFromParamsList(const std::string& json) {
+absl::optional<base::Value::Dict> GetObjectFromParamsList(
+    const std::string& json) {
   auto list = GetParamsList(json);
   if (!list || list->size() != 1 || !(*list)[0].is_dict())
     return absl::nullopt;
 
-  return std::move((*list)[0]);
+  return std::move((*list)[0]).TakeDict();
 }
 
-absl::optional<base::Value> GetParamsDict(const std::string& json) {
+absl::optional<base::Value::Dict> GetParamsDict(const std::string& json) {
   auto json_value =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSON_ALLOW_TRAILING_COMMAS);
   if (!json_value || !json_value->is_dict()) {
     return absl::nullopt;
   }
-  auto* value = json_value->FindDictKey(brave_wallet::kParams);
+  auto* value = json_value->GetDict().FindDict(brave_wallet::kParams);
   if (!value)
     return absl::nullopt;
 
-  return value->Clone();
+  return std::move(*value);
 }
 
 // This is a best effort parsing of the data
 brave_wallet::mojom::TxDataPtr ValueToTxData(
-    const brave_wallet::json_rpc_requests::Transaction* tx,
+    const brave_wallet::json_rpc_requests::Transaction& tx,
     std::string* from_out) {
-  CHECK(tx);
   CHECK(from_out);
   auto tx_data = brave_wallet::mojom::TxData::New();
 
-  *from_out = tx->from;
-  if (tx->to) {
-    tx_data->to = *tx->to;
+  *from_out = tx.from;
+  if (tx.to) {
+    tx_data->to = *tx.to;
   }
-  if (tx->gas)
-    tx_data->gas_limit = *tx->gas;
-  if (tx->gas_price)
-    tx_data->gas_price = *tx->gas_price;
-  if (tx->value)
-    tx_data->value = *tx->value;
+  if (tx.gas) {
+    tx_data->gas_limit = *tx.gas;
+  }
+  if (tx.gas_price) {
+    tx_data->gas_price = *tx.gas_price;
+  }
+  if (tx.value) {
+    tx_data->value = *tx.value;
+  }
 
   // If data is specified it's best to make sure it's valid
   std::vector<uint8_t> bytes;
-  if (tx->data && !tx->data->empty() &&
-      !brave_wallet::PrefixedHexStringToBytes(*tx->data, &bytes))
+  if (tx.data && !tx.data->empty() &&
+      !brave_wallet::PrefixedHexStringToBytes(*tx.data, &bytes)) {
     return nullptr;
+  }
   tx_data->data = bytes;
 
   return tx_data;
@@ -109,7 +113,7 @@ mojom::TxDataPtr ParseEthTransactionParams(const std::string& json,
   auto tx = brave_wallet::json_rpc_requests::Transaction::FromValue(*param_obj);
   if (!tx)
     return nullptr;
-  return ValueToTxData(tx.get(), from);
+  return ValueToTxData(*tx, from);
 }
 
 mojom::TxData1559Ptr ParseEthTransaction1559Params(const std::string& json,
@@ -125,7 +129,7 @@ mojom::TxData1559Ptr ParseEthTransaction1559Params(const std::string& json,
     return nullptr;
 
   auto tx_data = mojom::TxData1559::New();
-  auto base_data_ret = ValueToTxData(tx.get(), from);
+  auto base_data_ret = ValueToTxData(*tx, from);
   if (!base_data_ret)
     return nullptr;
 
@@ -515,10 +519,11 @@ bool ParseSwitchEthereumChainParams(const std::string& json,
     return false;
 
   auto param_obj = GetObjectFromParamsList(json);
-  if (!param_obj || !param_obj->is_dict())
+  if (!param_obj) {
     return false;
+  }
 
-  const std::string* chain_id_str = param_obj->GetDict().FindString("chainId");
+  const std::string* chain_id_str = param_obj->FindString("chainId");
   if (!chain_id_str)
     return false;
 
@@ -541,17 +546,16 @@ bool ParseWalletWatchAssetParams(const std::string& json,
   *error_message = "";
 
   // Might be a list from legacy send method.
-  absl::optional<base::Value> params = GetObjectFromParamsList(json);
+  absl::optional<base::Value::Dict> params = GetObjectFromParamsList(json);
   if (!params)
     params = GetParamsDict(json);
 
-  if (!params || !params.value().is_dict()) {
+  if (!params) {
     *error_message = "params parameter is required";
     return false;
   }
 
-  const auto& dict = params->GetDict();
-  const std::string* type = dict.FindString("type");
+  const std::string* type = params->FindString("type");
   if (!type) {
     *error_message = "type parameter is required";
     return false;
@@ -563,7 +567,7 @@ bool ParseWalletWatchAssetParams(const std::string& json,
     return false;
   }
 
-  const auto* options_dict = dict.FindDict("options");
+  const auto* options_dict = params->FindDict("options");
   if (!options_dict) {
     *error_message = "options parameter is required";
     return false;
@@ -656,7 +660,7 @@ bool ParseRequestPermissionsParams(
   auto param_obj = GetObjectFromParamsList(json);
   if (!param_obj)
     return false;
-  for (auto prop : param_obj->DictItems()) {
+  for (auto prop : *param_obj) {
     restricted_methods->push_back(prop.first);
   }
   return true;

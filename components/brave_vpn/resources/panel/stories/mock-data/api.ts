@@ -3,9 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as BraveVPN from '../../api/panel_browser_api'
+import { PurchasedInfo } from '../../api/panel_browser_api'
 import { mockRegionList } from './region-list'
 
 const doNothing = () => {}
+
+const loadingState = new PurchasedInfo();
+loadingState.state = BraveVPN.PurchasedState.LOADING;
 
 BraveVPN.setPanelBrowserApiForTesting({
   pageCallbackRouter: {
@@ -17,7 +21,7 @@ BraveVPN.setPanelBrowserApiForTesting({
   },
   serviceHandler: {
     addObserver: doNothing,
-    getPurchasedState: () => Promise.resolve({ state: BraveVPN.PurchasedState.LOADING }),
+    getPurchasedState: () => Promise.resolve({ state: loadingState }),
     getConnectionState: () => Promise.resolve({ state: BraveVPN.ConnectionState.CONNECTED }),
     resetConnectionState: doNothing,
     connect: doNothing,

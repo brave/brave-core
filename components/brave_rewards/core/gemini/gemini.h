@@ -9,7 +9,6 @@
 #include <stdint.h>
 
 #include <map>
-#include <memory>
 #include <set>
 #include <string>
 
@@ -17,17 +16,14 @@
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ref.h"
 #include "base/timer/timer.h"
+#include "brave/components/brave_rewards/core/endpoint/gemini/gemini_server.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
-#include "brave/components/brave_rewards/core/wallet_provider/connect_external_wallet.h"
-#include "brave/components/brave_rewards/core/wallet_provider/get_external_wallet.h"
-#include "brave/components/brave_rewards/core/wallet_provider/transfer.h"
+#include "brave/components/brave_rewards/core/wallet_provider/gemini/connect_gemini_wallet.h"
+#include "brave/components/brave_rewards/core/wallet_provider/gemini/gemini_transfer.h"
+#include "brave/components/brave_rewards/core/wallet_provider/gemini/get_gemini_wallet.h"
 
 namespace ledger {
 class LedgerImpl;
-
-namespace endpoint {
-class GeminiServer;
-}
 
 namespace gemini {
 
@@ -91,11 +87,11 @@ class Gemini {
 
   void RemoveTransferFee(const std::string& contribution_id);
 
-  std::unique_ptr<wallet_provider::ConnectExternalWallet> connect_wallet_;
-  std::unique_ptr<wallet_provider::GetExternalWallet> get_wallet_;
-  std::unique_ptr<wallet_provider::Transfer> transfer_;
-  std::unique_ptr<endpoint::GeminiServer> gemini_server_;
   const raw_ref<LedgerImpl> ledger_;
+  ConnectGeminiWallet connect_wallet_;
+  GetGeminiWallet get_wallet_;
+  GeminiTransfer transfer_;
+  endpoint::GeminiServer gemini_server_;
   std::map<std::string, base::OneShotTimer> transfer_fee_timers_;
 };
 

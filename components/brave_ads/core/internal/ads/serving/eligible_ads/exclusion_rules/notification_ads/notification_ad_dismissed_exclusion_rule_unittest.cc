@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::notification_ads {
 
@@ -26,9 +26,9 @@ constexpr const char* kCampaignIds[] = {"60267cee-d5bb-4a0d-baaf-91cd7f18e07e",
 
 }  // namespace
 
-class BatAdsDismissedExclusionRuleTest : public UnitTestBase {};
+class BraveAdsDismissedExclusionRuleTest : public UnitTestBase {};
 
-TEST_F(BatAdsDismissedExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
+TEST_F(BraveAdsDismissedExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -39,10 +39,10 @@ TEST_F(BatAdsDismissedExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BatAdsDismissedExclusionRuleTest,
+TEST_F(BraveAdsDismissedExclusionRuleTest,
        AllowAdWithSameCampaignIdWithin2DaysIfDismissed) {
   // Arrange
   base::FieldTrialParams params;
@@ -84,10 +84,10 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BatAdsDismissedExclusionRuleTest,
+TEST_F(BraveAdsDismissedExclusionRuleTest,
        AllowAdWithSameCampaignIdWithin2DaysIfDismissedForMultipleTypes) {
   // Arrange
   base::FieldTrialParams params;
@@ -131,10 +131,10 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BatAdsDismissedExclusionRuleTest,
+TEST_F(BraveAdsDismissedExclusionRuleTest,
        AllowAdWithSameCampaignIdWithin2DaysIfDismissedThenClicked) {
   // Arrange
   base::FieldTrialParams params;
@@ -175,10 +175,10 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BatAdsDismissedExclusionRuleTest,
+TEST_F(BraveAdsDismissedExclusionRuleTest,
        AllowAdWithSameCampaignIdAfter2DaysIfDismissedThenClicked) {
   // Arrange
   base::FieldTrialParams params;
@@ -218,10 +218,10 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BatAdsDismissedExclusionRuleTest,
+TEST_F(BraveAdsDismissedExclusionRuleTest,
        AllowAdWithSameCampaignIdWithin2DaysIfClickedThenDismissed) {
   // Arrange
   base::FieldTrialParams params;
@@ -262,10 +262,10 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BatAdsDismissedExclusionRuleTest,
+TEST_F(BraveAdsDismissedExclusionRuleTest,
        AllowAdWithSameCampaignIdAfter2DaysIfClickedThenDismissed) {
   // Arrange
   base::FieldTrialParams params;
@@ -305,10 +305,10 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BatAdsDismissedExclusionRuleTest,
+TEST_F(BraveAdsDismissedExclusionRuleTest,
        AllowAdWithSameCampaignIdAfter2DaysIfClickedThenDismissedTwice) {
   // Arrange
   base::FieldTrialParams params;
@@ -348,10 +348,10 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BatAdsDismissedExclusionRuleTest,
+TEST_F(BraveAdsDismissedExclusionRuleTest,
        DoNotAllowAdWithSameCampaignIdWithin2DaysIfClickedThenDismissedTwice) {
   // Arrange
   base::FieldTrialParams params;
@@ -393,10 +393,10 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_TRUE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_FALSE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BatAdsDismissedExclusionRuleTest,
+TEST_F(BraveAdsDismissedExclusionRuleTest,
        AllowAdWithSameCampaignIdIfClickedThenDismissedTwiceWithin0Seconds) {
   // Arrange
   base::FieldTrialParams params;
@@ -432,10 +432,10 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BatAdsDismissedExclusionRuleTest,
+TEST_F(BraveAdsDismissedExclusionRuleTest,
        AllowAdWithDifferentCampaignIdWithin2Days) {
   // Arrange
   base::FieldTrialParams params;
@@ -480,10 +480,10 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad_1));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad_1).has_value());
 }
 
-TEST_F(BatAdsDismissedExclusionRuleTest,
+TEST_F(BraveAdsDismissedExclusionRuleTest,
        AllowAdWithDifferentCampaignIdAfter2Days) {
   // Arrange
   CreativeAdInfo creative_ad_1;
@@ -516,7 +516,7 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad_1));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad_1).has_value());
 }
 
 }  // namespace brave_ads::notification_ads

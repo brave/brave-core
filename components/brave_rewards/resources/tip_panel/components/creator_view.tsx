@@ -7,6 +7,8 @@ import * as React from 'react'
 
 import { useModelState } from '../lib/model_context'
 import { useLocaleContext } from '../lib/locale_strings'
+import { formatMessage } from '../../shared/lib/locale_context'
+import { lookupPublisherPlatformName } from '../../shared/lib/publisher_platform'
 import { NewTabLink } from '../../shared/components/new_tab_link'
 import { VerifiedIcon } from './icons/verified_icon'
 import { LaunchIcon } from './icons/launch_icon'
@@ -31,6 +33,19 @@ export function CreatorView () {
     styleProps['--creator-avatar-image-url'] = `url("${creatorBanner.logo}")`
   }
 
+  function getName () {
+    if (creatorBanner.title) {
+      return creatorBanner.title
+    }
+    if (creatorBanner.provider) {
+      return formatMessage(getString('platformPublisherTitle'), [
+        creatorBanner.name,
+        lookupPublisherPlatformName(creatorBanner.provider)
+      ])
+    }
+    return creatorBanner.name
+  }
+
   function renderLink (platform: string, url: string) {
     const Icon = getSocialIcon(platform)
     if (!Icon) {
@@ -46,14 +61,23 @@ export function CreatorView () {
   const renderedLinks = Object.entries(creatorBanner.links).map(
     ([key, value]) => renderLink(key, value))
 
+  if (creatorBanner.web3Url) {
+    if (renderedLinks.length > 0) {
+      renderedLinks.push(<style.linkDivider />)
+    }
+    renderedLinks.push(
+      <NewTabLink href={creatorBanner.web3Url}>
+        <LaunchIcon />
+      </NewTabLink>
+    )
+  }
+
   return (
     <style.root style={styleProps as React.CSSProperties}>
       <style.background />
       <style.avatar />
       <style.title>
-        <style.name>
-          {creatorBanner.title || creatorBanner.name}
-        </style.name>
+        <style.name>{getName()}</style.name>
         {
           creatorVerified &&
             <style.verifiedCheck>
@@ -67,18 +91,7 @@ export function CreatorView () {
       <style.text>
         {creatorBanner.description || getString('defaultCreatorDescription')}
       </style.text>
-      <style.links>
-        {renderedLinks}
-        {
-          creatorBanner.web3Url &&
-            <>
-              {renderedLinks.length > 0 && <style.linkDivider />}
-              <NewTabLink href={creatorBanner.web3Url}>
-                <LaunchIcon />
-              </NewTabLink>
-            </>
-        }
-      </style.links>
+      {renderedLinks.length > 0 && <style.links>{renderedLinks}</style.links>}
     </style.root>
   )
 }

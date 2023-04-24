@@ -10,13 +10,13 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsNewTabPageAdInfoTest : public UnitTestBase {};
+class BraveAdsNewTabPageAdInfoTest : public UnitTestBase {};
 
-TEST_F(BatAdsNewTabPageAdInfoTest, IsValid) {
+TEST_F(BraveAdsNewTabPageAdInfoTest, IsValid) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad =
       BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
@@ -28,7 +28,7 @@ TEST_F(BatAdsNewTabPageAdInfoTest, IsValid) {
   EXPECT_TRUE(ad.IsValid());
 }
 
-TEST_F(BatAdsNewTabPageAdInfoTest, IsInvalid) {
+TEST_F(BraveAdsNewTabPageAdInfoTest, IsInvalid) {
   // Arrange
   const NewTabPageAdInfo ad;
 

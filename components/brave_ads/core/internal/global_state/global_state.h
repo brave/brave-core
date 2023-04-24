@@ -10,22 +10,23 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
+#include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
+#include "brave/components/brave_ads/core/internal/database/database_manager.h"
+#include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
+#include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
+#include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_manager.h"
+#include "brave/components/brave_ads/core/internal/fl/predictors/predictors_manager.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state_holder.h"
+#include "brave/components/brave_ads/core/internal/history/history_manager.h"
+#include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
+#include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection.h"
+#include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
 
 namespace brave_ads {
 
 class AdsClient;
 class GlobalStateHolder;
-class BrowserManager;
-class ClientStateManager;
-class ConfirmationStateManager;
-class DatabaseManager;
-class DiagnosticManager;
-class HistoryManager;
-class IdleDetection;
-class NotificationAdManager;
-class PredictorsManager;
-class TabManager;
-class UserActivityManager;
 
 class GlobalState final {
  public:
@@ -45,25 +46,16 @@ class GlobalState final {
 
   AdsClient* GetAdsClient();
 
-  BrowserManager* GetBrowserManager();
-
-  ClientStateManager* GetClientStateManager();
-
-  ConfirmationStateManager* GetConfirmationStateManager();
-
-  DatabaseManager* GetDatabaseManager();
-
-  DiagnosticManager* GetDiagnosticManager();
-
-  HistoryManager* GetHistoryManager();
-
-  NotificationAdManager* GetNotificationAdManager();
-
-  PredictorsManager* GetPredictorsManager();
-
-  TabManager* GetTabManager();
-
-  UserActivityManager* GetUserActivityManager();
+  BrowserManager& GetBrowserManager();
+  ClientStateManager& GetClientStateManager();
+  ConfirmationStateManager& GetConfirmationStateManager();
+  DatabaseManager& GetDatabaseManager();
+  DiagnosticManager& GetDiagnosticManager();
+  HistoryManager& GetHistoryManager();
+  NotificationAdManager& GetNotificationAdManager();
+  PredictorsManager& GetPredictorsManager();
+  TabManager& GetTabManager();
+  UserActivityManager& GetUserActivityManager();
 
   mojom::SysInfo& SysInfo();
 
@@ -72,21 +64,21 @@ class GlobalState final {
   mojom::Flags& Flags();
 
  private:
-  raw_ptr<AdsClient> ads_client_ = nullptr;
+  const raw_ptr<AdsClient> ads_client_ = nullptr;
 
-  std::unique_ptr<GlobalStateHolder> global_state_holder_;
+  const std::unique_ptr<GlobalStateHolder> global_state_holder_;
 
-  std::unique_ptr<BrowserManager> browser_manager_;
-  std::unique_ptr<ClientStateManager> client_state_manager_;
-  std::unique_ptr<ConfirmationStateManager> confirmation_state_manager_;
-  std::unique_ptr<DatabaseManager> database_manager_;
-  std::unique_ptr<DiagnosticManager> diagnostic_manager_;
-  std::unique_ptr<HistoryManager> history_manager_;
-  std::unique_ptr<IdleDetection> idle_detection_;
-  std::unique_ptr<NotificationAdManager> notification_ad_manager_;
-  std::unique_ptr<PredictorsManager> predictors_manager_;
-  std::unique_ptr<TabManager> tab_manager_;
-  std::unique_ptr<UserActivityManager> user_activity_manager_;
+  BrowserManager browser_manager_;
+  ClientStateManager client_state_manager_;
+  ConfirmationStateManager confirmation_state_manager_;
+  DatabaseManager database_manager_;
+  DiagnosticManager diagnostic_manager_;
+  HistoryManager history_manager_;
+  IdleDetection idle_detection_;
+  NotificationAdManager notification_ad_manager_;
+  PredictorsManager predictors_manager_;
+  TabManager tab_manager_;
+  UserActivityManager user_activity_manager_;
 
   mojom::SysInfo sys_info_;
   mojom::BuildChannelInfo build_channel_;

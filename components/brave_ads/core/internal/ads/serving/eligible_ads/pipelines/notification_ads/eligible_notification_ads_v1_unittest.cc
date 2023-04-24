@@ -21,11 +21,11 @@
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::notification_ads {
 
-class BatAdsEligibleNotificationAdsV1Test : public UnitTestBase {
+class BraveAdsEligibleNotificationAdsV1Test : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -41,7 +41,7 @@ class BatAdsEligibleNotificationAdsV1Test : public UnitTestBase {
   std::unique_ptr<EligibleAdsV1> eligible_ads_;
 };
 
-TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForChildSegment) {
+TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetAdsForChildSegment) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
@@ -77,7 +77,7 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForChildSegment) {
           std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForParentSegment) {
+TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetAdsForParentSegment) {
   // Arrange
   CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
@@ -104,7 +104,7 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForParentSegment) {
           std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForUntargetedSegment) {
+TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetAdsForUntargetedSegment) {
   // Arrange
   CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
@@ -130,7 +130,7 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForUntargetedSegment) {
           std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForMultipleSegments) {
+TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetAdsForMultipleSegments) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
@@ -172,7 +172,7 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForMultipleSegments) {
           std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForNoSegments) {
+TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetAdsForNoSegments) {
   // Arrange
   CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
@@ -195,7 +195,7 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForNoSegments) {
           std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsEligibleNotificationAdsV1Test, DoNotGetAdsForUnmatchedSegments) {
+TEST_F(BraveAdsEligibleNotificationAdsV1Test, DoNotGetAdsForUnmatchedSegments) {
   // Arrange
   CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
@@ -216,7 +216,7 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, DoNotGetAdsForUnmatchedSegments) {
       }));
 }
 
-TEST_F(BatAdsEligibleNotificationAdsV1Test, DoNotGetAdsIfNoEligibleAds) {
+TEST_F(BraveAdsEligibleNotificationAdsV1Test, DoNotGetAdsIfNoEligibleAds) {
   // Arrange
 
   // Act
@@ -234,7 +234,7 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, DoNotGetAdsIfNoEligibleAds) {
       }));
 }
 
-TEST_F(BatAdsEligibleNotificationAdsV1Test, DoNotGetAdsIfAlreadySeen) {
+TEST_F(BraveAdsEligibleNotificationAdsV1Test, DoNotGetAdsIfAlreadySeen) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
@@ -251,7 +251,7 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, DoNotGetAdsIfAlreadySeen) {
   SaveCreativeAds(creative_ads);
 
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad_1);
-  ClientStateManager::GetInstance()->UpdateSeenAd(ad);
+  ClientStateManager::GetInstance().UpdateSeenAd(ad);
 
   // Act
   CreativeNotificationAdList expected_creative_ads = {creative_ad_2};
@@ -273,7 +273,7 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, DoNotGetAdsIfAlreadySeen) {
           std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsEligibleNotificationAdsV1Test, DoNotGetPacedAds) {
+TEST_F(BraveAdsEligibleNotificationAdsV1Test, DoNotGetPacedAds) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
@@ -313,7 +313,7 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, DoNotGetPacedAds) {
           std::move(expected_creative_ads)));
 }
 
-TEST_F(BatAdsEligibleNotificationAdsV1Test, GetPrioritizedAds) {
+TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetPrioritizedAds) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 

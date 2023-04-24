@@ -16,14 +16,11 @@ import RowReveal from '../../shared/animated-reveals/row-reveal'
 import {
   StyledWrapper,
   ButtonText,
-  StyledButton,
-  ToggleVisibilityButton,
-  ToggleVisibilityIcon
+  StyledButton
 } from './chart-control-bar.style'
 
 export interface Props {
   disabled?: boolean
-  onDisabledChanged?: (isDisabled: boolean) => void
   onSelectTimeframe: (id: BraveWallet.AssetPriceTimeframe) => void
   selectedTimeline: BraveWallet.AssetPriceTimeframe
   timelineOptions: ChartTimelineObjectType[]
@@ -31,17 +28,14 @@ export interface Props {
 
 export const ChartControlBar = React.memo(({
   disabled,
-  onDisabledChanged,
   onSelectTimeframe,
   selectedTimeline,
   timelineOptions
 }: Props) => {
-  const toggleIsDisabled = () => onDisabledChanged?.(!disabled)
 
   return (
-    <StyledWrapper>
-
-      <RowReveal hideContent={disabled}>
+    <RowReveal hideContent={disabled}>
+      <StyledWrapper>
         {timelineOptions.map((t) =>
           <StyledButton
             key={t.id}
@@ -57,17 +51,8 @@ export const ChartControlBar = React.memo(({
             </ButtonText>
           </StyledButton>
         )}
-      </RowReveal>
 
-      {onDisabledChanged &&
-        <ToggleVisibilityButton
-          onClick={toggleIsDisabled}
-        >
-          <ToggleVisibilityIcon
-            isVisible={!disabled}
-          />
-        </ToggleVisibilityButton>
-      }
-    </StyledWrapper>
+      </StyledWrapper>
+    </RowReveal>
   )
 })

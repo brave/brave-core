@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_RECOVERY_RECOVERY_EMPTY_BALANCE_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_RECOVERY_RECOVERY_EMPTY_BALANCE_H_
 
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -50,7 +49,7 @@ class EmptyBalance {
   void Sent(const mojom::Result result);
 
   const raw_ref<LedgerImpl> ledger_;
-  std::unique_ptr<endpoint::PromotionServer> promotion_server_;
+  endpoint::PromotionServer promotion_server_;
 };
 
 }  // namespace recovery

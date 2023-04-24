@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -28,9 +28,9 @@ constexpr char kListJson[] =
 
 }  // namespace
 
-class BatAdsNotificationAdValueUtilTest : public UnitTestBase {};
+class BraveAdsNotificationAdValueUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsNotificationAdValueUtilTest, ToValue) {
+TEST_F(BraveAdsNotificationAdValueUtilTest, ToValue) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ false);
@@ -44,7 +44,7 @@ TEST_F(BatAdsNotificationAdValueUtilTest, ToValue) {
   EXPECT_EQ(expected_value, value);
 }
 
-TEST_F(BatAdsNotificationAdValueUtilTest, ToListValue) {
+TEST_F(BraveAdsNotificationAdValueUtilTest, ToListValue) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ false);
@@ -58,7 +58,7 @@ TEST_F(BatAdsNotificationAdValueUtilTest, ToListValue) {
   EXPECT_EQ(expected_value, value);
 }
 
-TEST_F(BatAdsNotificationAdValueUtilTest, FromValue) {
+TEST_F(BraveAdsNotificationAdValueUtilTest, FromValue) {
   // Arrange
   const base::Value value = base::test::ParseJson(kJson);
   const base::Value::Dict* const dict = value.GetIfDict();
@@ -75,7 +75,7 @@ TEST_F(BatAdsNotificationAdValueUtilTest, FromValue) {
   EXPECT_EQ(expected_ad, ad);
 }
 
-TEST_F(BatAdsNotificationAdValueUtilTest, FromListValue) {
+TEST_F(BraveAdsNotificationAdValueUtilTest, FromListValue) {
   // Arrange
   const base::Value value = base::test::ParseJson(kListJson);
   const base::Value::List* const list = value.GetIfList();

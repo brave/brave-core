@@ -9,13 +9,13 @@
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "url/gurl.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsIssuersUrlRequestBuilderTest : public UnitTestBase {};
+class BraveAdsIssuersUrlRequestBuilderTest : public UnitTestBase {};
 
-TEST_F(BatAdsIssuersUrlRequestBuilderTest, BuildUrl) {
+TEST_F(BraveAdsIssuersUrlRequestBuilderTest, BuildUrl) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kStaging;

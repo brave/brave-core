@@ -11,11 +11,11 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-TEST(BatAdsSearchEngineResultsPageUtilTest, IsSearchEngineResultsPage) {
+TEST(BraveAdsSearchEngineResultsPageUtilTest, IsSearchEngineResultsPage) {
   // Arrange
   const std::vector<GURL>& urls = GetSearchEngineResultsPageUrls();
 
@@ -27,7 +27,7 @@ TEST(BatAdsSearchEngineResultsPageUtilTest, IsSearchEngineResultsPage) {
   // Assert
 }
 
-TEST(BatAdsSearchEngineResultsPageUtilTest, IsNotSearchEngineResultsPage) {
+TEST(BraveAdsSearchEngineResultsPageUtilTest, IsNotSearchEngineResultsPage) {
   // Arrange
   const GURL url = GURL("https://brave.com/");
 
@@ -37,7 +37,7 @@ TEST(BatAdsSearchEngineResultsPageUtilTest, IsNotSearchEngineResultsPage) {
   EXPECT_FALSE(IsSearchEngineResultsPage(url));
 }
 
-TEST(BatAdsSearchEngineResultsPageUtilTest,
+TEST(BraveAdsSearchEngineResultsPageUtilTest,
      IsNotSearchEngineResultsPageWithInvalidUrl) {
   // Arrange
   const GURL url = GURL("INVALID_URL");
@@ -48,7 +48,7 @@ TEST(BatAdsSearchEngineResultsPageUtilTest,
   EXPECT_FALSE(IsSearchEngineResultsPage(url));
 }
 
-TEST(BatAdsSearchEngineResultsPageUtilTest, ExtractSearchTermQueryValue) {
+TEST(BraveAdsSearchEngineResultsPageUtilTest, ExtractSearchTermQueryValue) {
   // Arrange
   const std::vector<GURL>& urls = GetSearchEngineResultsPageUrls();
 
@@ -64,7 +64,7 @@ TEST(BatAdsSearchEngineResultsPageUtilTest, ExtractSearchTermQueryValue) {
   // Assert
 }
 
-TEST(BatAdsSearchEngineResultsPageUtilTest,
+TEST(BraveAdsSearchEngineResultsPageUtilTest,
      FailToExtractSearchTermQueryValueFromUrlWithMissingQuery) {
   // Arrange
   const GURL url = GURL("https://google.com/");
@@ -77,7 +77,7 @@ TEST(BatAdsSearchEngineResultsPageUtilTest,
   EXPECT_FALSE(search_term_query_value);
 }
 
-TEST(BatAdsSearchEngineResultsPageUtilTest,
+TEST(BraveAdsSearchEngineResultsPageUtilTest,
      FailToExtractSearchTermQueryValueFromInvalidUrl) {
   // Arrange
   const GURL url = GURL("INVALID_URL");

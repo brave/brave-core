@@ -47,7 +47,6 @@
 #include "brave/browser/ui/webui/welcome_page/brave_welcome_ui.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/common_util.h"
 #include "brave/components/commands/common/features.h"
 #endif
 
@@ -62,10 +61,12 @@
 
 #if BUILDFLAG(ENABLE_IPFS)
 #include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/browser/ui/webui/ipfs_ui.h"
 #include "brave/components/ipfs/features.h"
 #include "brave/components/ipfs/ipfs_utils.h"
-#endif
+#if BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
+#include "brave/browser/ui/webui/ipfs_ui.h"
+#endif  // BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
+#endif  // BUILDFLAG(ENABLE_IPFS)
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #include "brave/browser/ui/webui/playlist_ui.h"
@@ -97,7 +98,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == kWebcompatReporterHost) {
     return new WebcompatReporterUI(web_ui, url.host());
 #endif
-#if BUILDFLAG(ENABLE_IPFS)
+#if BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
   } else if (host == kIPFSWebUIHost &&
              ipfs::IpfsServiceFactory::IsIpfsEnabled(profile)) {
     return new IPFSUI(web_ui, url.host());
@@ -107,10 +108,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
              base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
     return new commands::CommandsUI(web_ui, url.host());
   } else if (host == kWalletPageHost &&
-             // We don't want to check for supported profile type here because
-             // we want private windows to redirect to the regular profile.
-             // Guest session will just show an error page.
-             brave_wallet::IsAllowed(profile->GetPrefs())) {
+             brave_wallet::IsAllowedForContext(profile)) {
     if (brave_wallet::IsNativeWalletEnabled()) {
       auto default_wallet =
           brave_wallet::GetDefaultEthereumWallet(profile->GetPrefs());
@@ -193,10 +191,10 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui, const GURL& url) {
   if (url.host_piece() == kAdblockHost ||
       url.host_piece() == kAdblockInternalsHost ||
       url.host_piece() == kWebcompatReporterHost ||
-#if BUILDFLAG(ENABLE_IPFS)
+#if BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
       (url.host_piece() == kIPFSWebUIHost &&
        base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) ||
-#endif  // BUILDFLAG(ENABLE_IPFS)
+#endif  // BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
 #if !BUILDFLAG(IS_ANDROID)
       url.host_piece() == kWalletPanelHost ||
       url.host_piece() == kWalletPageHost ||

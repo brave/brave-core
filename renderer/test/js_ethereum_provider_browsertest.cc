@@ -268,7 +268,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, OnlyWriteOwnProperty) {
             "0x1");
 
   GetJsonRpcService()->SetNetwork("0x5", brave_wallet::mojom::CoinType::ETH,
-                                  false);
+                                  absl::nullopt, false);
   // Needed so ChainChangedEvent observers run
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(content::EvalJs(primary_main_frame(), get_chain_id).ExtractString(),
@@ -285,7 +285,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, OnlyWriteOwnProperty) {
             "0x89");
 
   GetJsonRpcService()->SetNetwork("0x4", brave_wallet::mojom::CoinType::ETH,
-                                  false);
+                                  absl::nullopt, false);
   // Needed so ChainChangedEvent observers run
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(content::EvalJs(primary_main_frame(), get_chain_id).ExtractString(),

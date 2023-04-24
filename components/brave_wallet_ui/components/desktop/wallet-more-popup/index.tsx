@@ -5,9 +5,21 @@
 
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
+import Checkbox from '@brave/leo/react/checkbox'
+
+// Selectors
+import {
+  useSafeWalletSelector
+} from '../../../common/hooks/use-safe-selector'
+import {
+  WalletSelectors
+} from '../../../common/selectors'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
+import {
+  LOCAL_STORAGE_KEYS
+} from '../../../common/constants/local-storage-keys'
 
 // actions
 import { WalletActions } from '../../../common/actions'
@@ -21,19 +33,22 @@ import {
   StyledWrapper,
   PopupButton,
   PopupButtonText,
-  SettingsIcon,
-  LockIcon,
-  ExplorerIcon,
-  BackupIcon,
-  ConnectedSitesIcon,
-  HelpCenterIcon
+  ButtonIcon,
+  CheckBoxRow,
+  SectionTitle
 } from './style'
+import {
+  VerticalDivider,
+  VerticalSpace,
+  Row
+} from '../../shared/style'
 
 export interface Props {
   onClickViewOnBlockExplorer?: () => void
   onClickBackup?: () => void
   onClosePopup?: () => void
   yPosition?: number
+  isPanel?: boolean
 }
 
 export const WalletMorePopup = (props: Props) => {
@@ -41,7 +56,8 @@ export const WalletMorePopup = (props: Props) => {
     onClickViewOnBlockExplorer,
     onClickBackup,
     onClosePopup,
-    yPosition
+    yPosition,
+    isPanel
   } = props
 
   // redux
@@ -50,7 +66,41 @@ export const WalletMorePopup = (props: Props) => {
   // queries
   const { data: selectedNetwork } = useGetSelectedChainQuery()
 
+  // redux
+  const hidePortfolioGraph =
+    useSafeWalletSelector(WalletSelectors.hidePortfolioGraph)
+  const hidePortfolioBalances =
+    useSafeWalletSelector(WalletSelectors.hidePortfolioBalances)
+
   // methods
+  const onToggleHideGraph = React.useCallback(() => {
+    window.localStorage.setItem(
+      LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN,
+      hidePortfolioGraph
+        ? 'false'
+        : 'true'
+    )
+    dispatch(
+      WalletActions
+        .setHidePortfolioGraph(
+          !hidePortfolioGraph
+        ))
+  }, [hidePortfolioGraph])
+
+  const onToggleHideBalances = React.useCallback(() => {
+    window.localStorage.setItem(
+      LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES,
+      hidePortfolioBalances
+        ? 'false'
+        : 'true'
+    )
+    dispatch(
+      WalletActions
+        .setHidePortfolioBalances(
+          !hidePortfolioBalances
+        ))
+  }, [hidePortfolioBalances])
+
   const lockWallet = React.useCallback(() => {
     dispatch(WalletActions.lockWallet())
   }, [])
@@ -112,7 +162,7 @@ export const WalletMorePopup = (props: Props) => {
     <StyledWrapper yPosition={yPosition}>
 
       <PopupButton onClick={lockWallet}>
-        <LockIcon />
+        <ButtonIcon name='lock' />
         <PopupButtonText>
           {getLocale('braveWalletWalletPopupLock')}
         </PopupButtonText>
@@ -120,7 +170,7 @@ export const WalletMorePopup = (props: Props) => {
 
       {onClickBackup &&
         <PopupButton onClick={onClickBackup}>
-          <BackupIcon />
+          <ButtonIcon name='safe' />
           <PopupButtonText>
             {getLocale('braveWalletBackupButton')}
           </PopupButtonText>
@@ -131,7 +181,7 @@ export const WalletMorePopup = (props: Props) => {
         selectedNetwork &&
         selectedNetwork.coin !== BraveWallet.CoinType.FIL &&
         <PopupButton onClick={onClickConnectedSites}>
-          <ConnectedSitesIcon />
+          <ButtonIcon name='link-normal' />
           <PopupButtonText>
             {getLocale('braveWalletWalletPopupConnectedSites')}
           </PopupButtonText>
@@ -139,7 +189,7 @@ export const WalletMorePopup = (props: Props) => {
       }
 
       <PopupButton onClick={onClickSettings}>
-        <SettingsIcon />
+        <ButtonIcon name='settings' />
         <PopupButtonText>
           {getLocale('braveWalletWalletPopupSettings')}
         </PopupButtonText>
@@ -147,7 +197,7 @@ export const WalletMorePopup = (props: Props) => {
 
       {onClickViewOnBlockExplorer &&
         <PopupButton onClick={onClickViewOnBlockExplorer}>
-          <ExplorerIcon />
+          <ButtonIcon name='launch' />
           <PopupButtonText>
             {getLocale('braveWalletTransactionExplorer')}
           </PopupButtonText>
@@ -155,11 +205,65 @@ export const WalletMorePopup = (props: Props) => {
       }
 
       <PopupButton onClick={onClickHelpCenter}>
-        <HelpCenterIcon />
+        <ButtonIcon name='help-outline' />
         <PopupButtonText>
           {getLocale('braveWalletHelpCenter')}
         </PopupButtonText>
       </PopupButton>
+
+      {/* We can remove this prop once PanelV2 is ready. */}
+      {!isPanel &&
+        <>
+          <VerticalDivider />
+          <VerticalSpace space='14px' />
+
+          <Row
+            justifyContent='flex-start'
+            padding='0px 0px 0px 8px'
+            marginBottom={8}
+          >
+            <SectionTitle
+              textSize='12px'
+              textColor='text02'
+              textAlign='left'
+              isBold={true}
+            >
+              {getLocale(
+                'braveWalletWalletPopupPortfolioCustomizations'
+              )}
+            </SectionTitle>
+          </Row>
+
+          <CheckBoxRow onClick={onToggleHideBalances}>
+            <ButtonIcon name='eye-off' />
+            <PopupButtonText>
+              {getLocale('braveWalletWalletPopupHideBalances')}
+            </PopupButtonText>
+            <Checkbox
+              checked={hidePortfolioBalances}
+              onChanged={onToggleHideBalances}
+              size='normal'
+            />
+          </CheckBoxRow>
+
+          <CheckBoxRow onClick={onToggleHideGraph}>
+            <Row>
+              {/* This graph icon needs to be updated to the
+              one in figma once it is added to leo. */}
+              <ButtonIcon name='graph' />
+              <PopupButtonText>
+                {getLocale('braveWalletWalletPopupShowGraph')}
+              </PopupButtonText>
+            </Row>
+            <Checkbox
+              checked={!hidePortfolioGraph}
+              onChanged={onToggleHideGraph}
+              size='normal'
+            />
+          </CheckBoxRow>
+        </>
+      }
+
     </StyledWrapper>
   )
 }

@@ -40,7 +40,8 @@ void ParseErrorResult(const base::Value& json_value,
   *error = Error::kParsingError;
   *error_message = l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR);
 
-  auto response = json_rpc_responses::RPCResponse::FromValue(json_value);
+  auto response =
+      json_rpc_responses::RPCResponse::FromValueDeprecated(json_value);
   if (!response || !response->error)
     return;
   *error = static_cast<Error>(response->error->code);

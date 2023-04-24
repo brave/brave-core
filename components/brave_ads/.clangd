@@ -1,4 +1,0 @@
-If:
-  PathMatch: [.*\.cc, .*\.h]
-Diagnostics:
-  UnusedIncludes: Strict

@@ -10,11 +10,11 @@
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-TEST(BatAdsAccountFeaturesTest, IsEnabled) {
+TEST(BraveAdsAccountFeaturesTest, IsEnabled) {
   // Arrange
 
   // Act
@@ -23,7 +23,7 @@ TEST(BatAdsAccountFeaturesTest, IsEnabled) {
   EXPECT_TRUE(IsAccountEnabled());
 }
 
-TEST(BatAdsAccountFeaturesTest, IsDisabled) {
+TEST(BraveAdsAccountFeaturesTest, IsDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
@@ -40,7 +40,7 @@ TEST(BatAdsAccountFeaturesTest, IsDisabled) {
   EXPECT_FALSE(IsAccountEnabled());
 }
 
-TEST(BatAdsAccountFeaturesTest, GetNextPaymentDay) {
+TEST(BraveAdsAccountFeaturesTest, GetNextPaymentDay) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
@@ -59,7 +59,7 @@ TEST(BatAdsAccountFeaturesTest, GetNextPaymentDay) {
   EXPECT_EQ(5, kNextPaymentDay.Get());
 }
 
-TEST(BatAdsAccountFeaturesTest, DefaultNextPaymentDay) {
+TEST(BraveAdsAccountFeaturesTest, DefaultNextPaymentDay) {
   // Arrange
 
   // Act
@@ -68,7 +68,7 @@ TEST(BatAdsAccountFeaturesTest, DefaultNextPaymentDay) {
   EXPECT_EQ(7, kNextPaymentDay.Get());
 }
 
-TEST(BatAdsAccountFeaturesTest, DefaultNextPaymentDayWhenDisabled) {
+TEST(BraveAdsAccountFeaturesTest, DefaultNextPaymentDayWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 

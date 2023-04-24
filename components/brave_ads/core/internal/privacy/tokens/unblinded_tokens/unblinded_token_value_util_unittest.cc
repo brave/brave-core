@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::privacy {
 
@@ -34,9 +34,9 @@ constexpr char kEmptyJson[] = "[]";
 
 }  // namespace
 
-class BatAdsUnblindedTokenValueUtilTest : public UnitTestBase {};
+class BraveAdsUnblindedTokenValueUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsUnblindedTokenValueUtilTest, ToValue) {
+TEST_F(BraveAdsUnblindedTokenValueUtilTest, ToValue) {
   // Arrange
   const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(2);
 
@@ -49,7 +49,7 @@ TEST_F(BatAdsUnblindedTokenValueUtilTest, ToValue) {
   EXPECT_EQ(expected_value, value);
 }
 
-TEST_F(BatAdsUnblindedTokenValueUtilTest, ToEmptyValue) {
+TEST_F(BraveAdsUnblindedTokenValueUtilTest, ToEmptyValue) {
   // Arrange
   const UnblindedTokenList unblinded_tokens;
 
@@ -62,7 +62,7 @@ TEST_F(BatAdsUnblindedTokenValueUtilTest, ToEmptyValue) {
   EXPECT_EQ(expected_value, value);
 }
 
-TEST_F(BatAdsUnblindedTokenValueUtilTest, FromValue) {
+TEST_F(BraveAdsUnblindedTokenValueUtilTest, FromValue) {
   // Arrange
   const base::Value value = base::test::ParseJson(kJson);
   const base::Value::List* const list = value.GetIfList();
@@ -76,7 +76,7 @@ TEST_F(BatAdsUnblindedTokenValueUtilTest, FromValue) {
   EXPECT_EQ(expected_unblinded_tokens, unblinded_tokens);
 }
 
-TEST_F(BatAdsUnblindedTokenValueUtilTest, FromEmptyValue) {
+TEST_F(BraveAdsUnblindedTokenValueUtilTest, FromEmptyValue) {
   // Arrange
   const base::Value value = base::test::ParseJson(kEmptyJson);
   const base::Value::List* const list = value.GetIfList();

@@ -13,6 +13,11 @@
 # register pref change callbacks.
 -MTPDeviceDelegateImplWinTest.GalleryNameMTP
 
+# These tests fail because we modify the version.
+-ChromeBlocklistTrialTest.DefaultRun
+-ChromeBlocklistTrialTest.VerifyFirstRun
+-ChromeBlocklistTrialTest.VersionChanged
+
 -All/AppMenuIconControllerTest.*
 -AppServiceProxyTest.*
 -BookmarkEditorViewTest.*

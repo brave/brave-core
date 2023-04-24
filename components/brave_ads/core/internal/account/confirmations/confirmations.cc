@@ -34,9 +34,9 @@ constexpr base::TimeDelta kRetryAfter = base::Seconds(15);
 void AppendToRetryQueue(const ConfirmationInfo& confirmation) {
   DCHECK(IsValid(confirmation));
 
-  ConfirmationStateManager::GetInstance()->AppendFailedConfirmation(
+  ConfirmationStateManager::GetInstance().AppendFailedConfirmation(
       confirmation);
-  ConfirmationStateManager::GetInstance()->Save();
+  ConfirmationStateManager::GetInstance().Save();
 
   BLOG(1, "Added " << confirmation.type << " confirmation for "
                    << confirmation.ad_type << " with transaction id "
@@ -49,7 +49,7 @@ void AppendToRetryQueue(const ConfirmationInfo& confirmation) {
 void RemoveFromRetryQueue(const ConfirmationInfo& confirmation) {
   DCHECK(IsValid(confirmation));
 
-  if (!ConfirmationStateManager::GetInstance()->RemoveFailedConfirmation(
+  if (!ConfirmationStateManager::GetInstance().RemoveFailedConfirmation(
           confirmation)) {
     BLOG(0, "Failed to remove "
                 << confirmation.type << " confirmation for "
@@ -68,7 +68,7 @@ void RemoveFromRetryQueue(const ConfirmationInfo& confirmation) {
                      << confirmation.creative_instance_id
                      << " from the confirmations queue");
 
-  ConfirmationStateManager::GetInstance()->Save();
+  ConfirmationStateManager::GetInstance().Save();
 }
 
 }  // namespace
@@ -98,7 +98,7 @@ void Confirmations::ProcessRetryQueue() {
 
 void Confirmations::Retry() {
   const ConfirmationList& failed_confirmations =
-      ConfirmationStateManager::GetInstance()->GetFailedConfirmations();
+      ConfirmationStateManager::GetInstance().GetFailedConfirmations();
   if (failed_confirmations.empty()) {
     BLOG(1, "No failed confirmations to retry");
     return;
@@ -115,7 +115,7 @@ void Confirmations::Retry() {
 
 void Confirmations::OnRetry() {
   const ConfirmationList& failed_confirmations =
-      ConfirmationStateManager::GetInstance()->GetFailedConfirmations();
+      ConfirmationStateManager::GetInstance().GetFailedConfirmations();
   DCHECK(!failed_confirmations.empty());
 
   BLOG(1, "Retry sending failed confirmations");
@@ -192,7 +192,7 @@ void Confirmations::OnRecreateOptedInDynamicUserDataAndRedeem(
     return Redeem(confirmation);
   }
 
-  ConfirmationInfo mutable_confirmation = confirmation;
+  ConfirmationInfo mutable_confirmation(confirmation);
   mutable_confirmation.opted_in->user_data.dynamic =
       std::move(dynamic_opted_in_user_data);
   mutable_confirmation.opted_in->credential_base64url =

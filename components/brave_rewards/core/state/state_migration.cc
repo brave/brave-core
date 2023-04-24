@@ -22,23 +22,18 @@ namespace ledger {
 namespace state {
 
 StateMigration::StateMigration(LedgerImpl& ledger)
-    : v1_(std::make_unique<StateMigrationV1>(ledger)),
-      v2_(std::make_unique<StateMigrationV2>(ledger)),
-      v3_(std::make_unique<StateMigrationV3>()),
-      v4_(std::make_unique<StateMigrationV4>(ledger)),
-      v5_(std::make_unique<StateMigrationV5>(ledger)),
-      v6_(std::make_unique<StateMigrationV6>(ledger)),
-      v7_(std::make_unique<StateMigrationV7>(ledger)),
-      v8_(std::make_unique<StateMigrationV8>(ledger)),
-      v9_(std::make_unique<StateMigrationV9>()),
-      v10_(std::make_unique<StateMigrationV10>(ledger)),
-      v11_(std::make_unique<StateMigrationV11>(ledger)),
-      v12_(std::make_unique<StateMigrationV12>(ledger)),
-      v13_(std::make_unique<StateMigrationV13>(ledger)),
-      ledger_(ledger) {
-  DCHECK(v1_ && v2_ && v3_ && v4_ && v5_ && v6_ && v7_ && v8_ && v9_ && v10_ &&
-         v11_ && v12_ && v13_);
-}
+    : ledger_(ledger),
+      v1_(ledger),
+      v2_(ledger),
+      v4_(ledger),
+      v5_(ledger),
+      v6_(ledger),
+      v7_(ledger),
+      v8_(ledger),
+      v10_(ledger),
+      v11_(ledger),
+      v12_(ledger),
+      v13_(ledger) {}
 
 StateMigration::~StateMigration() = default;
 
@@ -78,55 +73,55 @@ void StateMigration::Migrate(ResultCallback callback) {
 
   switch (new_version) {
     case 1: {
-      v1_->Migrate(ToLegacyCallback(std::move(migrate_callback)));
+      v1_.Migrate(ToLegacyCallback(std::move(migrate_callback)));
       return;
     }
     case 2: {
-      v2_->Migrate(ToLegacyCallback(std::move(migrate_callback)));
+      v2_.Migrate(ToLegacyCallback(std::move(migrate_callback)));
       return;
     }
     case 3: {
-      v3_->Migrate(ToLegacyCallback(std::move(migrate_callback)));
+      v3_.Migrate(ToLegacyCallback(std::move(migrate_callback)));
       return;
     }
     case 4: {
-      v4_->Migrate(std::move(migrate_callback));
+      v4_.Migrate(std::move(migrate_callback));
       return;
     }
     case 5: {
-      v5_->Migrate(ToLegacyCallback(std::move(migrate_callback)));
+      v5_.Migrate(ToLegacyCallback(std::move(migrate_callback)));
       return;
     }
     case 6: {
-      v6_->Migrate(ToLegacyCallback(std::move(migrate_callback)));
+      v6_.Migrate(ToLegacyCallback(std::move(migrate_callback)));
       return;
     }
     case 7: {
-      v7_->Migrate(ToLegacyCallback(std::move(migrate_callback)));
+      v7_.Migrate(ToLegacyCallback(std::move(migrate_callback)));
       return;
     }
     case 8: {
-      v8_->Migrate(ToLegacyCallback(std::move(migrate_callback)));
+      v8_.Migrate(ToLegacyCallback(std::move(migrate_callback)));
       return;
     }
     case 9: {
-      v9_->Migrate(ToLegacyCallback(std::move(migrate_callback)));
+      v9_.Migrate(ToLegacyCallback(std::move(migrate_callback)));
       return;
     }
     case 10: {
-      v10_->Migrate(ToLegacyCallback(std::move(migrate_callback)));
+      v10_.Migrate(ToLegacyCallback(std::move(migrate_callback)));
       return;
     }
     case 11: {
-      v11_->Migrate(ToLegacyCallback(std::move(migrate_callback)));
+      v11_.Migrate(ToLegacyCallback(std::move(migrate_callback)));
       return;
     }
     case 12: {
-      v12_->Migrate(ToLegacyCallback(std::move(migrate_callback)));
+      v12_.Migrate(ToLegacyCallback(std::move(migrate_callback)));
       return;
     }
     case 13: {
-      v13_->Migrate(ToLegacyCallback(std::move(migrate_callback)));
+      v13_.Migrate(ToLegacyCallback(std::move(migrate_callback)));
       return;
     }
   }
@@ -151,7 +146,7 @@ void StateMigration::OnMigration(ResultCallback callback,
   // If the user did not previously have a state version and the initial
   // migration did not find any rewards data stored in JSON files, assume that
   // this is a "fresh" Rewards profile and skip the remaining migrations.
-  if (version == 1 && !v1_->legacy_data_migrated()) {
+  if (version == 1 && !v1_.legacy_data_migrated()) {
     FreshInstall(std::move(callback));
     return;
   }

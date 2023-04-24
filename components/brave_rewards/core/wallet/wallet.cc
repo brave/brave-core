@@ -26,19 +26,19 @@ namespace wallet {
 
 Wallet::Wallet(LedgerImpl& ledger)
     : ledger_(ledger),
-      create_(std::make_unique<WalletCreate>(ledger)),
-      balance_(std::make_unique<WalletBalance>(ledger)),
-      promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)) {}
+      create_(ledger),
+      balance_(ledger),
+      promotion_server_(ledger) {}
 
 Wallet::~Wallet() = default;
 
 void Wallet::CreateWalletIfNecessary(absl::optional<std::string>&& geo_country,
                                      CreateRewardsWalletCallback callback) {
-  create_->CreateWallet(std::move(geo_country), std::move(callback));
+  create_.CreateWallet(std::move(geo_country), std::move(callback));
 }
 
 void Wallet::FetchBalance(ledger::FetchBalanceCallback callback) {
-  balance_->Fetch(std::move(callback));
+  balance_.Fetch(std::move(callback));
 }
 
 mojom::RewardsWalletPtr Wallet::GetWallet(bool* corrupted) {

@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_PUBLISHER_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_PUBLISHER_H_
 
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -15,14 +14,13 @@
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/database/database_server_publisher_info.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/publisher/publisher_prefix_list_updater.h"
+#include "brave/components/brave_rewards/core/publisher/server_publisher_fetcher.h"
 
 namespace ledger {
 class LedgerImpl;
 
 namespace publisher {
-
-class PublisherPrefixListUpdater;
-class ServerPublisherFetcher;
 
 class Publisher {
  public:
@@ -202,8 +200,8 @@ class Publisher {
       database::GetServerPublisherInfoCallback callback);
 
   const raw_ref<LedgerImpl> ledger_;
-  std::unique_ptr<PublisherPrefixListUpdater> prefix_list_updater_;
-  std::unique_ptr<ServerPublisherFetcher> server_publisher_fetcher_;
+  PublisherPrefixListUpdater prefix_list_updater_;
+  ServerPublisherFetcher server_publisher_fetcher_;
 
   // For testing purposes
   friend class PublisherTest;

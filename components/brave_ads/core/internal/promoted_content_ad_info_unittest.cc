@@ -10,13 +10,13 @@
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/promoted_content_ad_builder.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsPromotedContentAdInfoTest : public UnitTestBase {};
+class BraveAdsPromotedContentAdInfoTest : public UnitTestBase {};
 
-TEST_F(BatAdsPromotedContentAdInfoTest, IsValid) {
+TEST_F(BraveAdsPromotedContentAdInfoTest, IsValid) {
   // Arrange
   const CreativePromotedContentAdInfo creative_ad =
       BuildCreativePromotedContentAd(/*should_use_random_guids*/ true);
@@ -28,7 +28,7 @@ TEST_F(BatAdsPromotedContentAdInfoTest, IsValid) {
   EXPECT_TRUE(ad.IsValid());
 }
 
-TEST_F(BatAdsPromotedContentAdInfoTest, IsInvalid) {
+TEST_F(BraveAdsPromotedContentAdInfoTest, IsInvalid) {
   // Arrange
   const PromotedContentAdInfo ad;
 

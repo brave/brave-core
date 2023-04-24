@@ -17,11 +17,11 @@
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsNewTabPageAdIntegrationTest : public UnitTestBase {
+class BraveAdsNewTabPageAdIntegrationTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
@@ -39,11 +39,11 @@ class BatAdsNewTabPageAdIntegrationTest : public UnitTestBase {
   }
 };
 
-TEST_F(BatAdsNewTabPageAdIntegrationTest, Serve) {
+TEST_F(BraveAdsNewTabPageAdIntegrationTest, Serve) {
   // Arrange
 
   // Act
-  GetAds()->MaybeServeNewTabPageAd(
+  GetAds().MaybeServeNewTabPageAd(
       base::BindOnce([](const absl::optional<NewTabPageAdInfo>& ad) {
         // Assert
         EXPECT_TRUE(ad);
@@ -53,12 +53,12 @@ TEST_F(BatAdsNewTabPageAdIntegrationTest, Serve) {
       }));
 }
 
-TEST_F(BatAdsNewTabPageAdIntegrationTest, TriggerServedEvent) {
+TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerServedEvent) {
   // Arrange
 
   // Act
-  GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                                     mojom::NewTabPageAdEventType::kServed);
+  GetAds().TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
+                                    mojom::NewTabPageAdEventType::kServed);
 
   // Assert
   EXPECT_EQ(1,
@@ -67,14 +67,14 @@ TEST_F(BatAdsNewTabPageAdIntegrationTest, TriggerServedEvent) {
   EXPECT_EQ(0, GetTransactionCount());
 }
 
-TEST_F(BatAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
+TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
   // Arrange
-  GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                                     mojom::NewTabPageAdEventType::kServed);
+  GetAds().TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
+                                    mojom::NewTabPageAdEventType::kServed);
 
   // Act
-  GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                                     mojom::NewTabPageAdEventType::kViewed);
+  GetAds().TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
+                                    mojom::NewTabPageAdEventType::kViewed);
 
   // Assert
   EXPECT_EQ(1,
@@ -85,16 +85,16 @@ TEST_F(BatAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
   EXPECT_EQ(1, GetTransactionCount());
 }
 
-TEST_F(BatAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
+TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
-  GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                                     mojom::NewTabPageAdEventType::kServed);
-  GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                                     mojom::NewTabPageAdEventType::kViewed);
+  GetAds().TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
+                                    mojom::NewTabPageAdEventType::kServed);
+  GetAds().TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
+                                    mojom::NewTabPageAdEventType::kViewed);
 
   // Act
-  GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                                     mojom::NewTabPageAdEventType::kClicked);
+  GetAds().TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
+                                    mojom::NewTabPageAdEventType::kClicked);
 
   // Assert
   EXPECT_EQ(1,

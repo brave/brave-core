@@ -31,6 +31,8 @@ const char kBraveWalletP3AActiveWalletDict[] =
 const char kBraveWalletCustomNetworks[] = "brave.wallet.custom_networks";
 const char kBraveWalletHiddenNetworks[] = "brave.wallet.hidden_networks";
 const char kBraveWalletSelectedNetworks[] = "brave.wallet.selected_networks";
+const char kBraveWalletSelectedNetworksPerOrigin[] =
+    "brave.wallet.selected_networks_origin";
 const char kBraveWalletKeyrings[] = "brave.wallet.keyrings";
 const char kBraveWalletUserAssets[] = "brave.wallet.wallet_user_assets";
 const char kBraveWalletUserAssetEthContractAddressMigrated[] =

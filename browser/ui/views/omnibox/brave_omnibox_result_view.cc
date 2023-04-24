@@ -20,6 +20,7 @@
 #include "components/omnibox/browser/autocomplete_provider_client.h"
 #include "components/omnibox/browser/autocomplete_result.h"
 #include "components/omnibox/browser/omnibox_edit_model.h"
+#include "components/omnibox/browser/omnibox_popup_selection.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/window_open_disposition.h"
 #include "ui/views/controls/button/image_button.h"
@@ -59,8 +60,8 @@ void BraveOmniboxResultView::OnSelectionStateChanged() {
 }
 
 void BraveOmniboxResultView::OpenMatch() {
-  model_->OpenMatch(match_, WindowOpenDisposition::CURRENT_TAB, GURL(), u"",
-                    model_index_, base::TimeTicks::Now());
+  model_->OpenSelection(OmniboxPopupSelection(model_index_),
+                        base::TimeTicks::Now());
 }
 
 void BraveOmniboxResultView::Dismiss() {

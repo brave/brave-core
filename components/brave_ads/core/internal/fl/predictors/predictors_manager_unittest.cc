@@ -10,24 +10,24 @@
 #include "brave/components/brave_ads/core/internal/fl/predictors/variables/notification_ad_event_predictor_variable_util.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/variables/notification_ad_served_at_predictor_variable_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsPredictorsManagerTest : public UnitTestBase {};
+class BraveAdsPredictorsManagerTest : public UnitTestBase {};
 
-TEST_F(BatAdsPredictorsManagerTest, GetTrainingSample) {
+TEST_F(BraveAdsPredictorsManagerTest, GetTrainingSample) {
   // Arrange
 
   // Act
   const std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample =
-      PredictorsManager::GetInstance()->GetTrainingSample();
+      PredictorsManager::GetInstance().GetTrainingSample();
 
   // Assert
   EXPECT_EQ(32U, training_sample.size());
 }
 
-TEST_F(BatAdsPredictorsManagerTest, GetTrainingSampleWithSetters) {
+TEST_F(BraveAdsPredictorsManagerTest, GetTrainingSampleWithSetters) {
   // Arrange
   SetNotificationAdServedAtPredictorVariable(Now());
 
@@ -36,7 +36,7 @@ TEST_F(BatAdsPredictorsManagerTest, GetTrainingSampleWithSetters) {
 
   // Act
   const std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample =
-      PredictorsManager::GetInstance()->GetTrainingSample();
+      PredictorsManager::GetInstance().GetTrainingSample();
 
   // Assert
   EXPECT_EQ(34U, training_sample.size());

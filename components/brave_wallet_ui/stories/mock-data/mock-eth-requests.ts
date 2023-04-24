@@ -17,6 +17,7 @@ export const mockSignMessageRequest = {
   domain: '',
   primaryHash: '',
   coin: BraveWallet.CoinType.ETH,
+  chainId: BraveWallet.MAINNET_CHAIN_ID,
   messageBytes: undefined
 }
 

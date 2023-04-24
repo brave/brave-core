@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_CONVERSIONS_H_
 
 #include <cstdint>
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -20,15 +19,12 @@
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_info.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_observer.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversion_id_pattern_info.h"
+#include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversions_resource.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 
 class GURL;
 
 namespace brave_ads {
-
-namespace resource {
-class Conversions;
-}  // namespace resource
 
 struct AdEventInfo;
 struct VerifiableConversionInfo;
@@ -48,8 +44,6 @@ class Conversions final : public AdsClientNotifierObserver,
 
   void AddObserver(ConversionsObserver* observer);
   void RemoveObserver(ConversionsObserver* observer);
-
-  bool ShouldAllow() const;
 
   void MaybeConvert(const std::vector<GURL>& redirect_chain,
                     const std::string& html,
@@ -122,7 +116,7 @@ class Conversions final : public AdsClientNotifierObserver,
 
   base::ObserverList<ConversionsObserver> observers_;
 
-  std::unique_ptr<resource::Conversions> resource_;
+  resource::Conversions resource_;
 
   Timer timer_;
 

@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -31,7 +31,7 @@ std::string GetEventTypeAsString(
 
 }  // namespace
 
-TEST(BatAdsNotificationAdEventPredictorVariableTest, GetDataType) {
+TEST(BraveAdsNotificationAdEventPredictorVariableTest, GetDataType) {
   // Arrange
   const NotificationAdEventPredictorVariable predictor_variable(
       mojom::NotificationAdEventType::kViewed);
@@ -43,7 +43,7 @@ TEST(BatAdsNotificationAdEventPredictorVariableTest, GetDataType) {
             predictor_variable.GetDataType());
 }
 
-TEST(BatAdsNotificationAdEventPredictorVariableTest, GetValueWhenClicked) {
+TEST(BraveAdsNotificationAdEventPredictorVariableTest, GetValueWhenClicked) {
   // Arrange
   const mojom::NotificationAdEventType event_type =
       mojom::NotificationAdEventType::kClicked;
@@ -54,7 +54,7 @@ TEST(BatAdsNotificationAdEventPredictorVariableTest, GetValueWhenClicked) {
   EXPECT_EQ(GetEventTypeAsString(event_type), GetValueForEventType(event_type));
 }
 
-TEST(BatAdsNotificationAdEventPredictorVariableTest, GetValueWhenDismissed) {
+TEST(BraveAdsNotificationAdEventPredictorVariableTest, GetValueWhenDismissed) {
   // Arrange
   const mojom::NotificationAdEventType event_type =
       mojom::NotificationAdEventType::kDismissed;
@@ -65,7 +65,7 @@ TEST(BatAdsNotificationAdEventPredictorVariableTest, GetValueWhenDismissed) {
   EXPECT_EQ(GetEventTypeAsString(event_type), GetValueForEventType(event_type));
 }
 
-TEST(BatAdsNotificationAdEventPredictorVariableTest, GetValueWhenTimedOut) {
+TEST(BraveAdsNotificationAdEventPredictorVariableTest, GetValueWhenTimedOut) {
   // Arrange
   const mojom::NotificationAdEventType event_type =
       mojom::NotificationAdEventType::kTimedOut;

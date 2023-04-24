@@ -68,6 +68,7 @@ export function createModel (): Model {
     function mapBanner () {
       return banner || {
         name: '',
+        provider: '',
         title: '',
         description: '',
         logo: '',

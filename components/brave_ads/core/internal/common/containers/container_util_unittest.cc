@@ -9,11 +9,11 @@
 
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-TEST(BatAdsContainerUtilTest, SplitVectorIntoSingleChunk) {
+TEST(BraveAdsContainerUtilTest, SplitVectorIntoSingleChunk) {
   // Arrange
   const std::vector<std::string> vector = {"item 1", "item 2", "item 3",
                                            "item 4", "item 5", "item 6"};
@@ -27,7 +27,7 @@ TEST(BatAdsContainerUtilTest, SplitVectorIntoSingleChunk) {
   EXPECT_EQ(expected_vectors, vectors);
 }
 
-TEST(BatAdsContainerUtilTest,
+TEST(BraveAdsContainerUtilTest,
      SplitVectorIntoSingleChunkWhenChunkSizeIsLargerThanVectorSize) {
   // Arrange
   const std::vector<std::string> vector = {"item 1", "item 2", "item 3",
@@ -42,7 +42,7 @@ TEST(BatAdsContainerUtilTest,
   EXPECT_EQ(expected_vectors, vectors);
 }
 
-TEST(BatAdsContainerUtilTest, SplitVectorIntoMultipleEvenChunks) {
+TEST(BraveAdsContainerUtilTest, SplitVectorIntoMultipleEvenChunks) {
   // Arrange
   const std::vector<std::string> vector = {
       "item 1", "item 2", "item 3", "item 4", "item 5", "item 6",
@@ -58,7 +58,7 @@ TEST(BatAdsContainerUtilTest, SplitVectorIntoMultipleEvenChunks) {
   EXPECT_EQ(expected_vectors, vectors);
 }
 
-TEST(BatAdsContainerUtilTest, SplitVectorIntoMultipleUnevenChunks) {
+TEST(BraveAdsContainerUtilTest, SplitVectorIntoMultipleUnevenChunks) {
   // Arrange
   const std::vector<std::string> vector = {"item 1", "item 2", "item 3",
                                            "item 4", "item 5"};
@@ -73,7 +73,7 @@ TEST(BatAdsContainerUtilTest, SplitVectorIntoMultipleUnevenChunks) {
   EXPECT_EQ(expected_vectors, vectors);
 }
 
-TEST(BatAdsContainerUtilTest, SplitEmptyVector) {
+TEST(BraveAdsContainerUtilTest, SplitEmptyVector) {
   // Arrange
   const std::vector<std::string> vector;
 

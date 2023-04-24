@@ -41,23 +41,29 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
   EthTxManager operator=(const EthTxManager&) = delete;
 
   // TxManager
-  void AddUnapprovedTransaction(mojom::TxDataUnionPtr tx_data_union,
+  void AddUnapprovedTransaction(const std::string& chain_id,
+                                mojom::TxDataUnionPtr tx_data_union,
                                 const std::string& from,
                                 const absl::optional<url::Origin>& origin,
                                 const absl::optional<std::string>& groupId,
                                 AddUnapprovedTransactionCallback) override;
-  void ApproveTransaction(const std::string& tx_meta_id,
+  void ApproveTransaction(const std::string& chain_id,
+                          const std::string& tx_meta_id,
                           ApproveTransactionCallback) override;
-  void GetAllTransactionInfo(const absl::optional<std::string>& from,
+  void GetAllTransactionInfo(const absl::optional<std::string>& chain_id,
+                             const absl::optional<std::string>& from,
                              GetAllTransactionInfoCallback) override;
 
   void SpeedupOrCancelTransaction(
+      const std::string& chain_id,
       const std::string& tx_meta_id,
       bool cancel,
       SpeedupOrCancelTransactionCallback callback) override;
-  void RetryTransaction(const std::string& tx_meta_id,
+  void RetryTransaction(const std::string& chain_id,
+                        const std::string& tx_meta_id,
                         RetryTransactionCallback callback) override;
   void GetTransactionMessageToSign(
+      const std::string& chain_id,
       const std::string& tx_meta_id,
       GetTransactionMessageToSignCallback callback) override;
 
@@ -109,41 +115,49 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
                                    MakeERC1155TransferFromDataCallback);
 
   void SetGasPriceAndLimitForUnapprovedTransaction(
+      const std::string& chain_id,
       const std::string& tx_meta_id,
       const std::string& gas_price,
       const std::string& gas_limit,
       SetGasPriceAndLimitForUnapprovedTransactionCallback callback);
   void SetGasFeeAndLimitForUnapprovedTransaction(
+      const std::string& chain_id,
       const std::string& tx_meta_id,
       const std::string& max_priority_fee_per_gas,
       const std::string& max_fee_per_gas,
       const std::string& gas_limit,
       SetGasFeeAndLimitForUnapprovedTransactionCallback callback);
   void SetDataForUnapprovedTransaction(
+      const std::string& chain_id,
       const std::string& tx_meta_id,
       const std::vector<uint8_t>& data,
       SetDataForUnapprovedTransactionCallback callback);
   void SetNonceForUnapprovedTransaction(
+      const std::string& chain_id,
       const std::string& tx_meta_id,
       const std::string& nonce,
       SetNonceForUnapprovedTransactionCallback);
   void GetNonceForHardwareTransaction(
+      const std::string& chain_id,
       const std::string& tx_meta_id,
       GetNonceForHardwareTransactionCallback callback);
-  void ProcessHardwareSignature(const std::string& tx_meta_id,
+  void ProcessHardwareSignature(const std::string& chain_id,
+                                const std::string& tx_meta_id,
                                 const std::string& v,
                                 const std::string& r,
                                 const std::string& s,
                                 ProcessHardwareSignatureCallback callback);
 
   // Gas estimation API via eth_feeHistory API
-  void GetGasEstimation1559(GetGasEstimation1559Callback callback);
+  void GetGasEstimation1559(const std::string& chain_id,
+                            GetGasEstimation1559Callback callback);
 
   static bool ValidateTxData(const mojom::TxDataPtr& tx_data,
                              std::string* error);
   static bool ValidateTxData1559(const mojom::TxData1559Ptr& tx_data,
                                  std::string* error);
-  std::unique_ptr<EthTxMeta> GetTxForTesting(const std::string& tx_meta_id);
+  std::unique_ptr<EthTxMeta> GetTxForTesting(const std::string& chain_id,
+                                             const std::string& tx_meta_id);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(EthTxManagerUnitTest, TestSubmittedToConfirmed);
@@ -151,12 +165,16 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
   FRIEND_TEST_ALL_PREFIXES(EthTxManagerUnitTest, Reset);
   friend class EthTxManagerUnitTest;
 
-  void AddUnapprovedTransaction(mojom::TxDataPtr tx_data,
+  mojom::CoinType GetCoinType() const override;
+
+  void AddUnapprovedTransaction(const std::string& chain_id,
+                                mojom::TxDataPtr tx_data,
                                 const std::string& from,
                                 const url::Origin& origin,
                                 const absl::optional<std::string>& groupId,
                                 AddUnapprovedTransactionCallback);
-  void AddUnapproved1559Transaction(mojom::TxData1559Ptr tx_data,
+  void AddUnapproved1559Transaction(const std::string& chain_id,
+                                    mojom::TxData1559Ptr tx_data,
                                     const std::string& from,
                                     const url::Origin& origin,
                                     const absl::optional<std::string>& groupId,
@@ -165,7 +183,6 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
   void NotifyUnapprovedTxUpdated(TxMeta* meta);
   void OnConnectionError();
   void OnGetNextNonce(std::unique_ptr<EthTxMeta> meta,
-                      uint256_t chain_id,
                       ApproveTransactionCallback callback,
                       bool success,
                       uint256_t nonce);
@@ -174,15 +191,18 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       GetNonceForHardwareTransactionCallback callback,
       bool success,
       uint256_t nonce);
-  void PublishTransaction(const std::string& tx_meta_id,
+  void PublishTransaction(const std::string& chain_id,
+                          const std::string& tx_meta_id,
                           const std::string& signed_transaction,
                           ApproveTransactionCallback callback);
-  void OnPublishTransaction(std::string tx_meta_id,
+  void OnPublishTransaction(const std::string& chain_id,
+                            const std::string& tx_meta_id,
                             ApproveTransactionCallback callback,
                             const std::string& tx_hash,
                             mojom::ProviderError error,
                             const std::string& error_message);
-  void OnGetGasPrice(const std::string& from,
+  void OnGetGasPrice(const std::string& chain_id,
+                     const std::string& from,
                      const url::Origin& origin,
                      const std::string& to,
                      const std::string& value,
@@ -196,6 +216,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
                      mojom::ProviderError error,
                      const std::string& error_message);
   void ContinueAddUnapprovedTransaction(
+      const std::string& chain_id,
       const std::string& from,
       const absl::optional<url::Origin>& origin,
       const absl::optional<std::string>& group_id,
@@ -214,6 +235,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       mojom::ProviderError error,
       const std::string& error_message);
   void OnGetGasOracleForUnapprovedTransaction(
+      const std::string& chain_id,
       const std::string& from,
       const url::Origin& origin,
       const std::string& to,
@@ -225,9 +247,11 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       AddUnapprovedTransactionCallback callback,
       bool sign_only,
       mojom::GasEstimation1559Ptr gas_estimation);
-  void UpdatePendingTransactions() override;
+  void UpdatePendingTransactions(
+      const absl::optional<std::string>& chain_id) override;
 
   void ContinueSpeedupOrCancelTransaction(
+      const std::string& chain_id,
       const std::string& from,
       const absl::optional<url::Origin>& origin,
       const absl::optional<std::string>& group_id,
@@ -238,6 +262,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       mojom::ProviderError error,
       const std::string& error_message);
   void ContinueSpeedupOrCancel1559Transaction(
+      const std::string& chain_id,
       const std::string& from,
       const absl::optional<url::Origin>& origin,
       const absl::optional<std::string>& group_id,
@@ -262,8 +287,9 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       const std::string& error_message);
 
   // EthBlockTracker::Observer:
-  void OnLatestBlock(uint256_t block_num) override {}
-  void OnNewBlock(uint256_t block_num) override;
+  void OnLatestBlock(const std::string& chain_id,
+                     uint256_t block_num) override {}
+  void OnNewBlock(const std::string& chain_id, uint256_t block_num) override;
 
   EthTxStateManager* GetEthTxStateManager();
   EthBlockTracker* GetEthBlockTracker();

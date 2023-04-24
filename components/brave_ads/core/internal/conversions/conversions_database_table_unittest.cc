@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_database_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::database::table {
 
@@ -24,12 +24,12 @@ base::Time CalculateExpireAtTime(const int observation_window) {
 
 }  // namespace
 
-class BatAdsConversionsDatabaseTableTest : public UnitTestBase {
+class BraveAdsConversionsDatabaseTableTest : public UnitTestBase {
  protected:
   Conversions database_table_;
 };
 
-TEST_F(BatAdsConversionsDatabaseTableTest, EmptySave) {
+TEST_F(BraveAdsConversionsDatabaseTableTest, EmptySave) {
   // Arrange
 
   // Act
@@ -43,7 +43,7 @@ TEST_F(BatAdsConversionsDatabaseTableTest, EmptySave) {
       }));
 }
 
-TEST_F(BatAdsConversionsDatabaseTableTest, SaveConversions) {
+TEST_F(BraveAdsConversionsDatabaseTableTest, SaveConversions) {
   // Arrange
   ConversionList conversions;
 
@@ -78,7 +78,7 @@ TEST_F(BatAdsConversionsDatabaseTableTest, SaveConversions) {
       conversions));
 }
 
-TEST_F(BatAdsConversionsDatabaseTableTest, DoNotSaveDuplicateConversion) {
+TEST_F(BraveAdsConversionsDatabaseTableTest, DoNotSaveDuplicateConversion) {
   // Arrange
   ConversionList conversions;
 
@@ -105,7 +105,7 @@ TEST_F(BatAdsConversionsDatabaseTableTest, DoNotSaveDuplicateConversion) {
       conversions));
 }
 
-TEST_F(BatAdsConversionsDatabaseTableTest, PurgeExpiredConversions) {
+TEST_F(BraveAdsConversionsDatabaseTableTest, PurgeExpiredConversions) {
   // Arrange
   ConversionList conversions;
 
@@ -155,7 +155,7 @@ TEST_F(BatAdsConversionsDatabaseTableTest, PurgeExpiredConversions) {
       expected_conversions));
 }
 
-TEST_F(BatAdsConversionsDatabaseTableTest,
+TEST_F(BraveAdsConversionsDatabaseTableTest,
        SaveConversionWithMatchingCreativeSetIdAndType) {
   // Arrange
   ConversionList conversions;
@@ -195,7 +195,7 @@ TEST_F(BatAdsConversionsDatabaseTableTest,
       expected_conversions));
 }
 
-TEST_F(BatAdsConversionsDatabaseTableTest, TableName) {
+TEST_F(BraveAdsConversionsDatabaseTableTest, TableName) {
   // Arrange
 
   // Act

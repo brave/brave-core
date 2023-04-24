@@ -22,7 +22,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "net/http/http_status_code.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -123,7 +123,7 @@ URLResponseMap GetValidUrlResonses() {
 
 }  // namespace
 
-class BatAdsRefillUnblindedTokensTest : public UnitTestBase {
+class BraveAdsRefillUnblindedTokensTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -140,7 +140,7 @@ class BatAdsRefillUnblindedTokensTest : public UnitTestBase {
       refill_unblinded_tokens_delegate_mock_;
 };
 
-TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokens) {
+TEST_F(BraveAdsRefillUnblindedTokensTest, RefillUnblindedTokens) {
   // Arrange
   const URLResponseMap url_responses = GetValidUrlResonses();
   MockUrlResponses(ads_client_mock_, url_responses);
@@ -173,7 +173,8 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokens) {
   EXPECT_EQ(50, privacy::UnblindedTokenCount());
 }
 
-TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokensCaptchaRequired) {
+TEST_F(BraveAdsRefillUnblindedTokensTest,
+       RefillUnblindedTokensCaptchaRequired) {
   // Arrange
   const URLResponseMap url_responses = {
       {// Request signed tokens
@@ -226,7 +227,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokensCaptchaRequired) {
   EXPECT_EQ(0, privacy::UnblindedTokenCount());
 }
 
-TEST_F(BatAdsRefillUnblindedTokensTest, IssuersPublicKeyMismatch) {
+TEST_F(BraveAdsRefillUnblindedTokensTest, IssuersPublicKeyMismatch) {
   // Arrange
   const URLResponseMap url_responses = GetValidUrlResonses();
   MockUrlResponses(ads_client_mock_, url_responses);
@@ -266,7 +267,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, IssuersPublicKeyMismatch) {
   EXPECT_EQ(0, privacy::UnblindedTokenCount());
 }
 
-TEST_F(BatAdsRefillUnblindedTokensTest, InvalidIssuersFormat) {
+TEST_F(BraveAdsRefillUnblindedTokensTest, InvalidIssuersFormat) {
   // Arrange
 
   // Act
@@ -292,7 +293,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, InvalidIssuersFormat) {
   EXPECT_EQ(0, privacy::UnblindedTokenCount());
 }
 
-TEST_F(BatAdsRefillUnblindedTokensTest, InvalidWallet) {
+TEST_F(BraveAdsRefillUnblindedTokensTest, InvalidWallet) {
   // Arrange
 
   // Act
@@ -317,7 +318,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, InvalidWallet) {
   EXPECT_EQ(0, privacy::UnblindedTokenCount());
 }
 
-TEST_F(BatAdsRefillUnblindedTokensTest,
+TEST_F(BraveAdsRefillUnblindedTokensTest,
        RetryRequestSignedTokensAfterInternalServerError) {
   // Arrange
   const URLResponseMap url_responses = {
@@ -422,7 +423,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
   EXPECT_EQ(50, privacy::UnblindedTokenCount());
 }
 
-TEST_F(BatAdsRefillUnblindedTokensTest, RequestSignedTokensMissingNonce) {
+TEST_F(BraveAdsRefillUnblindedTokensTest, RequestSignedTokensMissingNonce) {
   // Arrange
   const URLResponseMap url_responses = {
       {"/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7",
@@ -457,7 +458,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RequestSignedTokensMissingNonce) {
   EXPECT_EQ(0, privacy::UnblindedTokenCount());
 }
 
-TEST_F(BatAdsRefillUnblindedTokensTest,
+TEST_F(BraveAdsRefillUnblindedTokensTest,
        RetryGetSignedTokensAfterInternalServerError) {
   // Arrange
   const URLResponseMap url_responses = {
@@ -567,7 +568,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
   EXPECT_EQ(50, privacy::UnblindedTokenCount());
 }
 
-TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensInvalidResponse) {
+TEST_F(BraveAdsRefillUnblindedTokensTest, GetSignedTokensInvalidResponse) {
   // Arrange
   const URLResponseMap url_responses = {
       {// Request signed tokens
@@ -612,7 +613,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensInvalidResponse) {
   EXPECT_EQ(0, privacy::UnblindedTokenCount());
 }
 
-TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingPublicKey) {
+TEST_F(BraveAdsRefillUnblindedTokensTest, GetSignedTokensMissingPublicKey) {
   // Arrange
   const URLResponseMap url_responses = {
       {// Request signed tokens
@@ -713,7 +714,8 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingPublicKey) {
   EXPECT_EQ(0, privacy::UnblindedTokenCount());
 }
 
-TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingBatchProofDleq) {
+TEST_F(BraveAdsRefillUnblindedTokensTest,
+       GetSignedTokensMissingBatchProofDleq) {
   // Arrange
   const URLResponseMap url_responses = {
       {// Request signed tokens
@@ -814,7 +816,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingBatchProofDleq) {
   EXPECT_EQ(0, privacy::UnblindedTokenCount());
 }
 
-TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingSignedTokens) {
+TEST_F(BraveAdsRefillUnblindedTokensTest, GetSignedTokensMissingSignedTokens) {
   // Arrange
   const URLResponseMap url_responses = {
       {// Request signed tokens
@@ -864,7 +866,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingSignedTokens) {
   EXPECT_EQ(0, privacy::UnblindedTokenCount());
 }
 
-TEST_F(BatAdsRefillUnblindedTokensTest, GetInvalidSignedTokens) {
+TEST_F(BraveAdsRefillUnblindedTokensTest, GetInvalidSignedTokens) {
   // Arrange
   const URLResponseMap url_responses = {
       {// Request signed tokens
@@ -966,7 +968,8 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetInvalidSignedTokens) {
   EXPECT_EQ(0, privacy::UnblindedTokenCount());
 }
 
-TEST_F(BatAdsRefillUnblindedTokensTest, DoNotRefillIfAboveTheMinimumThreshold) {
+TEST_F(BraveAdsRefillUnblindedTokensTest,
+       DoNotRefillIfAboveTheMinimumThreshold) {
   // Arrange
   privacy::SetUnblindedTokens(/*count*/ 50);
 
@@ -996,7 +999,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, DoNotRefillIfAboveTheMinimumThreshold) {
   EXPECT_EQ(50, privacy::UnblindedTokenCount());
 }
 
-TEST_F(BatAdsRefillUnblindedTokensTest, RefillIfBelowTheMinimumThreshold) {
+TEST_F(BraveAdsRefillUnblindedTokensTest, RefillIfBelowTheMinimumThreshold) {
   // Arrange
   privacy::SetUnblindedTokens(/*count*/ 19);
 

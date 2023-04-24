@@ -9,13 +9,13 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_entry_types.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds.*
+// npm run test -- brave_unit_tests --filter=BraveAds.*
 
 namespace brave_ads {
 
-class BatAdsLastUnIdleTimeDiagnosticEntryTest : public UnitTestBase {};
+class BraveAdsLastUnIdleTimeDiagnosticEntryTest : public UnitTestBase {};
 
-TEST_F(BatAdsLastUnIdleTimeDiagnosticEntryTest, LastUnIdleTime) {
+TEST_F(BraveAdsLastUnIdleTimeDiagnosticEntryTest, LastUnIdleTime) {
   // Arrange
   AdvanceClockTo(
       TimeFromString("Mon, 8 July 1996 12:34:56", /*is_local*/ true));
@@ -30,7 +30,7 @@ TEST_F(BatAdsLastUnIdleTimeDiagnosticEntryTest, LastUnIdleTime) {
             diagnostic_entry.GetValue());
 }
 
-TEST_F(BatAdsLastUnIdleTimeDiagnosticEntryTest, WasNeverUnIdle) {
+TEST_F(BraveAdsLastUnIdleTimeDiagnosticEntryTest, WasNeverUnIdle) {
   // Arrange
   const LastUnIdleTimeDiagnosticEntry diagnostic_entry;
 

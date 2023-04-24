@@ -6,13 +6,19 @@
 #include <memory>
 #include <utility>
 
-#include "brave/components/brave_rewards/core/attestation/attestation_androidx.h"
-#include "brave/components/brave_rewards/core/attestation/attestation_desktop.h"
 #include "brave/components/brave_rewards/core/attestation/attestation_impl.h"
-#include "brave/components/brave_rewards/core/attestation/attestation_iosx.h"
+
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "build/build_config.h"
 #include "net/http/http_status_code.h"
+
+#if BUILDFLAG(IS_IOS)
+#include "brave/components/brave_rewards/core/attestation/attestation_iosx.h"
+#elif BUILDFLAG(IS_ANDROID)
+#include "brave/components/brave_rewards/core/attestation/attestation_androidx.h"
+#else
+#include "brave/components/brave_rewards/core/attestation/attestation_desktop.h"
+#endif
 
 namespace ledger {
 namespace attestation {

@@ -8,15 +8,15 @@
 
 #include <string>
 
+#include "base/types/expected.h"
+
 namespace brave_ads {
 
 class PermissionRuleInterface {
  public:
   virtual ~PermissionRuleInterface() = default;
 
-  virtual bool ShouldAllow() = 0;
-
-  virtual const std::string& GetLastMessage() const = 0;
+  virtual base::expected<void, std::string> ShouldAllow() const = 0;
 };
 
 }  // namespace brave_ads

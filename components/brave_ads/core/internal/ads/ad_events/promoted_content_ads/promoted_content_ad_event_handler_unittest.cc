@@ -21,7 +21,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/promoted_content_ad_builder.h"
 #include "brave/components/brave_ads/core/promoted_content_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::promoted_content_ads {
 
@@ -38,8 +38,8 @@ CreativePromotedContentAdInfo BuildAndSaveCreativeAd() {
 
 }  // namespace
 
-class BatAdsPromotedContentAdEventHandlerTest : public EventHandlerDelegate,
-                                                public UnitTestBase {
+class BraveAdsPromotedContentAdEventHandlerTest : public EventHandlerDelegate,
+                                                  public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -78,7 +78,7 @@ class BatAdsPromotedContentAdEventHandlerTest : public EventHandlerDelegate,
   bool did_fail_to_fire_event_ = false;
 };
 
-TEST_F(BatAdsPromotedContentAdEventHandlerTest, FireViewedEvent) {
+TEST_F(BraveAdsPromotedContentAdEventHandlerTest, FireViewedEvent) {
   // Arrange
   ForcePermissionRulesForTesting();
 
@@ -105,7 +105,7 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest, FireViewedEvent) {
                                ConfirmationType::kViewed));
 }
 
-TEST_F(BatAdsPromotedContentAdEventHandlerTest,
+TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        DoNotFireViewedEventIfAlreadyFired) {
   // Arrange
   ForcePermissionRulesForTesting();
@@ -129,7 +129,7 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
                                ConfirmationType::kViewed));
 }
 
-TEST_F(BatAdsPromotedContentAdEventHandlerTest, FireClickedEvent) {
+TEST_F(BraveAdsPromotedContentAdEventHandlerTest, FireClickedEvent) {
   // Arrange
   ForcePermissionRulesForTesting();
 
@@ -161,7 +161,7 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest, FireClickedEvent) {
                                ConfirmationType::kClicked));
 }
 
-TEST_F(BatAdsPromotedContentAdEventHandlerTest,
+TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        DoNotFireClickedEventIfMissingAdPlacement) {
   // Arrange
   const CreativePromotedContentAdInfo creative_ad = BuildAndSaveCreativeAd();
@@ -175,7 +175,7 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
                                ConfirmationType::kClicked));
 }
 
-TEST_F(BatAdsPromotedContentAdEventHandlerTest,
+TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        DoNotFireClickedEventIfAlreadyFired) {
   // Arrange
   ForcePermissionRulesForTesting();
@@ -202,7 +202,7 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
                                ConfirmationType::kClicked));
 }
 
-TEST_F(BatAdsPromotedContentAdEventHandlerTest,
+TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        DoNotFireEventWithInvalidPlacementId) {
   // Arrange
 
@@ -219,7 +219,7 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
                                ConfirmationType::kServed));
 }
 
-TEST_F(BatAdsPromotedContentAdEventHandlerTest,
+TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        DoNotFireEventWithInvalidCreativeInstanceId) {
   // Arrange
 
@@ -236,7 +236,7 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
                                ConfirmationType::kViewed));
 }
 
-TEST_F(BatAdsPromotedContentAdEventHandlerTest,
+TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        DoNotFireEventWhenNotPermitted) {
   // Arrange
   const CreativePromotedContentAdInfo creative_ad = BuildAndSaveCreativeAd();
@@ -254,7 +254,7 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
                                ConfirmationType::kViewed));
 }
 
-TEST_F(BatAdsPromotedContentAdEventHandlerTest,
+TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        DoNotFireEventForUnknownCreativeInstanceId) {
   // Arrange
   ForcePermissionRulesForTesting();
@@ -272,7 +272,7 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
                                ConfirmationType::kViewed));
 }
 
-TEST_F(BatAdsPromotedContentAdEventHandlerTest,
+TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        FireEventIfNotExceededAdsPerHourCap) {
   // Arrange
   ForcePermissionRulesForTesting();
@@ -298,7 +298,7 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
                                           ConfirmationType::kServed));
 }
 
-TEST_F(BatAdsPromotedContentAdEventHandlerTest,
+TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        DoNotFireEventIfExceededAdsPerHourCap) {
   // Arrange
   ForcePermissionRulesForTesting();
@@ -324,7 +324,7 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
                                           ConfirmationType::kServed));
 }
 
-TEST_F(BatAdsPromotedContentAdEventHandlerTest,
+TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        FireEventIfNotExceededAdsPerDayCap) {
   // Arrange
   ForcePermissionRulesForTesting();
@@ -352,7 +352,7 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
                                          ConfirmationType::kServed));
 }
 
-TEST_F(BatAdsPromotedContentAdEventHandlerTest,
+TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        DoNotFireEventIfExceededAdsPerDayCap) {
   // Arrange
   ForcePermissionRulesForTesting();

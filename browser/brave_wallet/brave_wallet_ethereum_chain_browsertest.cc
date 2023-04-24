@@ -126,7 +126,8 @@ class TestJsonRpcServiceObserver
   }
 
   void ChainChangedEvent(const std::string& chain_id,
-                         brave_wallet::mojom::CoinType coin) override {
+                         brave_wallet::mojom::CoinType coin,
+                         const absl::optional<::url::Origin>& origin) override {
     chain_changed_called_ = true;
     EXPECT_EQ(chain_id, expected_chain_id_);
     EXPECT_EQ(coin, expected_coin_);
@@ -285,8 +286,8 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddEthereumChainApproved) {
                   ->IsShowingBubble());
   CallAndWaitForEthereumChainRequestCompleted(
       kSomeChainId, true, brave_wallet::mojom::CoinType::ETH, "");
-  GetJsonRpcService()->NotifySwitchChainRequestProcessed(
-      true, url::Origin::Create(url));
+  const url::Origin origin = url::Origin::Create(url);
+  GetJsonRpcService()->NotifySwitchChainRequestProcessed(true, origin);
   auto result_first = EvalJs(contents, kScriptWaitForEvent,
                              content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(true), result_first.value);
@@ -299,7 +300,8 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddEthereumChainApproved) {
   EXPECT_EQ(
       chain->block_explorer_urls,
       std::vector<std::string>({"https://bscscan.com/", "http://localhost/"}));
-  EXPECT_EQ(GetJsonRpcService()->GetChainId(brave_wallet::mojom::CoinType::ETH),
+  EXPECT_EQ(GetJsonRpcService()->GetChainIdSync(
+                brave_wallet::mojom::CoinType::ETH, origin),
             kSomeChainId);
 }
 
@@ -415,8 +417,8 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest,
   // Add Ethereum chain but don't switch
   CallAndWaitForEthereumChainRequestCompleted(
       "0x11", true, brave_wallet::mojom::CoinType::ETH, "");
-  GetJsonRpcService()->NotifySwitchChainRequestProcessed(
-      false, url::Origin::Create(urlB));
+  const url::Origin origin = url::Origin::Create(urlB);
+  GetJsonRpcService()->NotifySwitchChainRequestProcessed(false, origin);
   auto rejected_same_id = EvalJs(web_contentsB, kScriptWaitForEvent,
                                  content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(false), rejected_same_id.value);
@@ -425,7 +427,8 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest,
   ASSERT_FALSE(GetAllEthCustomChains().empty());
   EXPECT_EQ(GetAllEthCustomChains().front()->chain_id, "0x11");
   // But current chain should not change
-  EXPECT_EQ(GetJsonRpcService()->GetChainId(brave_wallet::mojom::CoinType::ETH),
+  EXPECT_EQ(GetJsonRpcService()->GetChainIdSync(
+                brave_wallet::mojom::CoinType::ETH, origin),
             "0x1");
 }
 
@@ -465,15 +468,16 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddDifferentChainsSwitch) {
   // Add Ethereum chain and switch
   CallAndWaitForEthereumChainRequestCompleted(
       "0x11", true, brave_wallet::mojom::CoinType::ETH, "");
-  GetJsonRpcService()->NotifySwitchChainRequestProcessed(
-      true, url::Origin::Create(urlB));
+  const url::Origin origin = url::Origin::Create(urlB);
+  GetJsonRpcService()->NotifySwitchChainRequestProcessed(true, origin);
   auto rejected_same_id = EvalJs(web_contentsB, kScriptWaitForEvent,
                                  content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(true), rejected_same_id.value);
   base::RunLoop().RunUntilIdle();
   ASSERT_FALSE(GetAllEthCustomChains().empty());
   EXPECT_EQ(GetAllEthCustomChains().front()->chain_id, "0x11");
-  EXPECT_EQ(GetJsonRpcService()->GetChainId(brave_wallet::mojom::CoinType::ETH),
+  EXPECT_EQ(GetJsonRpcService()->GetChainIdSync(
+                brave_wallet::mojom::CoinType::ETH, origin),
             "0x11");
 }
 

@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ATTESTATION_ATTESTATION_IOSX_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ATTESTATION_ATTESTATION_IOSX_H_
 
-#include <memory>
 #include <string>
 
 #include "base/values.h"
@@ -41,7 +40,7 @@ class AttestationIOS : public Attestation {
 
   void OnConfirm(ConfirmCallback callback, mojom::Result result);
 
-  std::unique_ptr<endpoint::PromotionServer> promotion_server_;
+  endpoint::PromotionServer promotion_server_;
 };
 
 }  // namespace attestation

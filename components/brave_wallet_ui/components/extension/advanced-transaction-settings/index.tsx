@@ -23,6 +23,7 @@ import Amount from '../../../utils/amount'
 export interface Props {
   onCancel: () => void
   nonce: string
+  chainId: string
   txMetaId: string
   updateUnapprovedTransactionNonce: (payload: any) => void
 }
@@ -31,6 +32,7 @@ const AdvancedTransactionSettings = (props: Props) => {
   const {
     onCancel,
     nonce,
+    chainId,
     txMetaId,
     updateUnapprovedTransactionNonce
   } = props
@@ -44,6 +46,7 @@ const AdvancedTransactionSettings = (props: Props) => {
 
   const onSave = () => {
     updateUnapprovedTransactionNonce({
+      chainId,
       txMetaId,
       nonce: customNonce && new Amount(customNonce).toHex()
     })

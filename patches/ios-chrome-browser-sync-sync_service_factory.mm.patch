@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/sync/sync_service_factory.mm b/ios/chrome/browser/sync/sync_service_factory.mm
-index 22ce364a9ab368028c077ee5fb0bf3fc7b69fa13..b1fe869ad7f90f9342a9e485eb9413c1c4cee9a9 100644
+index c160bc7ccc0ba26d2cb904e9914efb2a58d55a43..58e959379ac28e59b37baaa616ab48f87e369585 100644
 --- a/ios/chrome/browser/sync/sync_service_factory.mm
 +++ b/ios/chrome/browser/sync/sync_service_factory.mm
-@@ -148,7 +148,7 @@ std::unique_ptr<KeyedService> SyncServiceFactory::BuildServiceInstanceFor(
+@@ -154,7 +154,7 @@ std::unique_ptr<KeyedService> SyncServiceFactory::BuildServiceInstanceFor(
    init_params.debug_identifier = browser_state->GetDebugName();
  
    auto sync_service =

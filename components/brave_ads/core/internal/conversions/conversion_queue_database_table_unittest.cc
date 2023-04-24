@@ -14,16 +14,16 @@
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_unittest_constants.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::database::table {
 
-class BatAdsConversionQueueDatabaseTableTest : public UnitTestBase {
+class BraveAdsConversionQueueDatabaseTableTest : public UnitTestBase {
  protected:
   ConversionQueue database_table_;
 };
 
-TEST_F(BatAdsConversionQueueDatabaseTableTest, SaveEmptyConversionQueue) {
+TEST_F(BraveAdsConversionQueueDatabaseTableTest, SaveEmptyConversionQueue) {
   // Arrange
   const ConversionQueueItemList conversion_queue_items;
 
@@ -33,7 +33,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest, SaveEmptyConversionQueue) {
   // Assert
 }
 
-TEST_F(BatAdsConversionQueueDatabaseTableTest, SaveConversionQueue) {
+TEST_F(BraveAdsConversionQueueDatabaseTableTest, SaveConversionQueue) {
   // Arrange
 
   // Act
@@ -54,7 +54,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest, SaveConversionQueue) {
       conversion_queue_items));
 }
 
-TEST_F(BatAdsConversionQueueDatabaseTableTest,
+TEST_F(BraveAdsConversionQueueDatabaseTableTest,
        SaveDuplicateConversionQueueItems) {
   // Arrange
   ConversionQueueItemList conversion_queue_items;
@@ -84,7 +84,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
       expected_conversion_queue_items));
 }
 
-TEST_F(BatAdsConversionQueueDatabaseTableTest,
+TEST_F(BraveAdsConversionQueueDatabaseTableTest,
        SaveConversionQueueItemsInBatches) {
   // Arrange
   database_table_.SetBatchSize(2);
@@ -107,7 +107,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
       conversion_queue_items));
 }
 
-TEST_F(BatAdsConversionQueueDatabaseTableTest,
+TEST_F(BraveAdsConversionQueueDatabaseTableTest,
        GetConversionQueueItemForCreativeInstanceId) {
   // Arrange
   ConversionQueueItemList conversion_queue_items;
@@ -144,7 +144,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
           expected_conversion_queue_items));
 }
 
-TEST_F(BatAdsConversionQueueDatabaseTableTest,
+TEST_F(BraveAdsConversionQueueDatabaseTableTest,
        GetUnprocessedConversionQueueItems) {
   // Arrange
   ConversionQueueItemList conversion_queue_items;
@@ -180,7 +180,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
       expected_conversion_queue_items));
 }
 
-TEST_F(BatAdsConversionQueueDatabaseTableTest,
+TEST_F(BraveAdsConversionQueueDatabaseTableTest,
        GetSortedConversionQueueSortedByTimeInAscendingOrder) {
   // Arrange
   ConversionQueueItemList conversion_queue_items;
@@ -222,7 +222,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
       expected_conversion_queue_items));
 }
 
-TEST_F(BatAdsConversionQueueDatabaseTableTest, DeleteConversionQueueItem) {
+TEST_F(BraveAdsConversionQueueDatabaseTableTest, DeleteConversionQueueItem) {
   // Arrange
   ConversionQueueItemList conversion_queue_items;
 
@@ -259,7 +259,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest, DeleteConversionQueueItem) {
       expected_conversion_queue_items));
 }
 
-TEST_F(BatAdsConversionQueueDatabaseTableTest,
+TEST_F(BraveAdsConversionQueueDatabaseTableTest,
        DeleteInvalidConversionQueueItem) {
   // Arrange
   ConversionQueueItemList conversion_queue_items;
@@ -299,7 +299,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
       conversion_queue_items));
 }
 
-TEST_F(BatAdsConversionQueueDatabaseTableTest, UpdateConversionQueueItem) {
+TEST_F(BraveAdsConversionQueueDatabaseTableTest, UpdateConversionQueueItem) {
   // Arrange
   ConversionQueueItemList conversion_queue_items;
 
@@ -336,7 +336,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest, UpdateConversionQueueItem) {
       expected_conversion_queue_items));
 }
 
-TEST_F(BatAdsConversionQueueDatabaseTableTest,
+TEST_F(BraveAdsConversionQueueDatabaseTableTest,
        UpdateInvalidConversionQueueItem) {
   // Arrange
   ConversionQueueItemList conversion_queue_items;
@@ -376,7 +376,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
       conversion_queue_items));
 }
 
-TEST_F(BatAdsConversionQueueDatabaseTableTest, TableName) {
+TEST_F(BraveAdsConversionQueueDatabaseTableTest, TableName) {
   // Arrange
 
   // Act

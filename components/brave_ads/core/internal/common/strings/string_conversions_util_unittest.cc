@@ -8,7 +8,7 @@
 
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -18,33 +18,30 @@ constexpr char kDelimiter[] = ",";
 const std::vector<float> kTestVector = {1.2F, 2.3F, 3.4F, 4.5F, 5.6F};
 }  // namespace
 
-TEST(BatAdsStringConversionsUtilTest, TrueBoolToString) {
+TEST(BraveAdsStringConversionsUtilTest, TrueBoolToString) {
   // Arrange
 
   // Act
-  const std::string value = BoolToString(true);
 
   // Assert
-  EXPECT_EQ("true", value);
+  EXPECT_EQ("true", BoolToString(true));
 }
 
-TEST(BatAdsStringConversionsUtilTest, FalseBoolToString) {
+TEST(BraveAdsStringConversionsUtilTest, FalseBoolToString) {
   // Arrange
 
   // Act
-  const std::string value = BoolToString(false);
 
   // Assert
-  EXPECT_EQ("false", value);
+  EXPECT_EQ("false", BoolToString(false));
 }
 
-TEST(BatAdsStringConversionsUtilTest, DelimitedStringToVector) {
+TEST(BraveAdsStringConversionsUtilTest, DelimitedStringToVector) {
   // Arrange
-  const std::string delimited_string = "1.2,2.3,3.4,4.5,5.6";
 
   // Act
   const std::vector<float> vector =
-      DelimitedStringToVector(delimited_string, kDelimiter);
+      DelimitedStringToVector("1.2,2.3,3.4,4.5,5.6", kDelimiter);
 
   // Assert
   for (size_t i = 0; i < vector.size(); i++) {
@@ -52,30 +49,27 @@ TEST(BatAdsStringConversionsUtilTest, DelimitedStringToVector) {
   }
 }
 
-TEST(BatAdsStringConversionsUtilTest, VectorToDelimitedString) {
+TEST(BraveAdsStringConversionsUtilTest, VectorToDelimitedString) {
   // Arrange
 
   // Act
-  const std::string string = VectorToDelimitedString(kTestVector, kDelimiter);
-  const std::vector<float> string_vector =
-      DelimitedStringToVector(string, kDelimiter);
+  const std::vector<float> string_vector = DelimitedStringToVector(
+      VectorToDelimitedString(kTestVector, kDelimiter), kDelimiter);
 
   // Assert
-  const std::string expected_string = "1.2,2.3,3.4,4.5,5.6";
   const std::vector<float> expected_vector =
-      DelimitedStringToVector(expected_string, kDelimiter);
+      DelimitedStringToVector("1.2,2.3,3.4,4.5,5.6", kDelimiter);
   for (size_t i = 0; i < kTestVector.size(); i++) {
     EXPECT_NEAR(expected_vector[i], string_vector[i], 0.001F);
   }
 }
 
-TEST(BatAdsStringConversionsUtilTest, ReflexiveVectorToDelimitedString) {
+TEST(BraveAdsStringConversionsUtilTest, ReflexiveVectorToDelimitedString) {
   // Arrange
 
   // Act
-  const std::string string = VectorToDelimitedString(kTestVector, kDelimiter);
-  const std::vector<float> string_vector =
-      DelimitedStringToVector(string, kDelimiter);
+  const std::vector<float> string_vector = DelimitedStringToVector(
+      VectorToDelimitedString(kTestVector, kDelimiter), kDelimiter);
 
   // Assert
   for (size_t i = 0; i < kTestVector.size(); i++) {

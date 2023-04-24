@@ -79,7 +79,7 @@ absl::optional<OptedInInfo> CreateOptedIn(
   opted_in.user_data = opted_in_user_data;
 
   // Credential
-  ConfirmationInfo confirmation_copy = confirmation;
+  ConfirmationInfo confirmation_copy(confirmation);
   confirmation_copy.opted_in = opted_in;
   opted_in.credential_base64url = CreateOptedInCredential(confirmation_copy);
 
@@ -200,8 +200,8 @@ bool IsValid(const ConfirmationInfo& confirmation) {
 }
 
 void ResetConfirmations() {
-  ConfirmationStateManager::GetInstance()->reset_failed_confirmations();
-  ConfirmationStateManager::GetInstance()->Save();
+  ConfirmationStateManager::GetInstance().reset_failed_confirmations();
+  ConfirmationStateManager::GetInstance().Save();
 
   privacy::RemoveAllUnblindedPaymentTokens();
 

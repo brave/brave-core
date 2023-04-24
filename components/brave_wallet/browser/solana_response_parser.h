@@ -45,6 +45,8 @@ bool ParseGetBlockHeight(const base::Value& json_value, uint64_t* block_height);
 bool ParseGetTokenAccountsByOwner(const base::Value& json_value,
                                   std::vector<SolanaAccountInfo>* accounts);
 
+absl::optional<bool> ParseIsBlockhashValid(const base::Value& json_value);
+
 base::OnceCallback<absl::optional<std::string>(const std::string& raw_response)>
 ConverterForGetAccountInfo();
 base::OnceCallback<absl::optional<std::string>(const std::string& raw_response)>

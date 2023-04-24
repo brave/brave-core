@@ -188,7 +188,8 @@ bool ParseGetAccountInfo(const base::Value& json_value,
                          absl::optional<SolanaAccountInfo>* account_info_out) {
   DCHECK(account_info_out);
 
-  auto response = json_rpc_responses::RPCResponse::FromValue(json_value);
+  auto response =
+      json_rpc_responses::RPCResponse::FromValueDeprecated(json_value);
   if (!response)
     return false;
 
@@ -307,6 +308,20 @@ bool ParseGetTokenAccountsByOwner(const base::Value& json_value,
   }
 
   return true;
+}
+
+absl::optional<bool> ParseIsBlockhashValid(const base::Value& json_value) {
+  auto result = ParseResultDict(json_value);
+  if (!result) {
+    return absl::nullopt;
+  }
+
+  auto is_valid = result->FindBool("value");
+  if (!is_valid) {
+    return absl::nullopt;
+  }
+
+  return *is_valid;
 }
 
 base::OnceCallback<absl::optional<std::string>(const std::string& raw_response)>

@@ -9,13 +9,13 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsReconciledTransactionsUtilTest : public UnitTestBase {};
+class BraveAdsReconciledTransactionsUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsReconciledTransactionsUtilTest,
+TEST_F(BraveAdsReconciledTransactionsUtilTest,
        DidReconcileTransactionsThisMonth) {
   // Arrange
   AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
@@ -31,7 +31,7 @@ TEST_F(BatAdsReconciledTransactionsUtilTest,
   EXPECT_TRUE(DidReconcileTransactionsThisMonth(transactions));
 }
 
-TEST_F(BatAdsReconciledTransactionsUtilTest,
+TEST_F(BraveAdsReconciledTransactionsUtilTest,
        DoesNotHaveReconciledTransactionsForThisMonth) {
   // Arrange
   AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
@@ -49,7 +49,7 @@ TEST_F(BatAdsReconciledTransactionsUtilTest,
   EXPECT_FALSE(DidReconcileTransactionsThisMonth(transactions));
 }
 
-TEST_F(BatAdsReconciledTransactionsUtilTest,
+TEST_F(BraveAdsReconciledTransactionsUtilTest,
        DidReconcileTransactionsLastMonth) {
   // Arrange
   AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
@@ -67,7 +67,7 @@ TEST_F(BatAdsReconciledTransactionsUtilTest,
   EXPECT_TRUE(DidReconcileTransactionsLastMonth(transactions));
 }
 
-TEST_F(BatAdsReconciledTransactionsUtilTest,
+TEST_F(BraveAdsReconciledTransactionsUtilTest,
        DoesNotHaveReconciledTransactionsForPreviousMonth) {
   // Arrange
   AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
@@ -83,7 +83,7 @@ TEST_F(BatAdsReconciledTransactionsUtilTest,
   EXPECT_FALSE(DidReconcileTransactionsLastMonth(transactions));
 }
 
-TEST_F(BatAdsReconciledTransactionsUtilTest, DidReconcileTransaction) {
+TEST_F(BraveAdsReconciledTransactionsUtilTest, DidReconcileTransaction) {
   // Arrange
   AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
 
@@ -96,7 +96,7 @@ TEST_F(BatAdsReconciledTransactionsUtilTest, DidReconcileTransaction) {
   EXPECT_TRUE(DidReconcileTransaction(transaction));
 }
 
-TEST_F(BatAdsReconciledTransactionsUtilTest, WasTransactionNotReconciled) {
+TEST_F(BraveAdsReconciledTransactionsUtilTest, WasTransactionNotReconciled) {
   // Arrange
   AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
 
@@ -109,7 +109,7 @@ TEST_F(BatAdsReconciledTransactionsUtilTest, WasTransactionNotReconciled) {
   EXPECT_FALSE(DidReconcileTransaction(transaction));
 }
 
-TEST_F(BatAdsReconciledTransactionsUtilTest,
+TEST_F(BraveAdsReconciledTransactionsUtilTest,
        DidReconcileTransactionWithinDateRange) {
   // Arrange
   AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
@@ -124,7 +124,7 @@ TEST_F(BatAdsReconciledTransactionsUtilTest,
                                                      Now()));
 }
 
-TEST_F(BatAdsReconciledTransactionsUtilTest,
+TEST_F(BraveAdsReconciledTransactionsUtilTest,
        HasTransactionNotReconciledForDateRange) {
   // Arrange
   AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));

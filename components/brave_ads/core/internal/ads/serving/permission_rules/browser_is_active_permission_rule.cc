@@ -14,30 +14,26 @@ namespace brave_ads {
 namespace {
 
 bool DoesRespectCap() {
-  if (PlatformHelper::GetInstance().GetType() == PlatformType::kAndroid) {
-    return true;
-  }
-
-  return BrowserManager::GetInstance()->IsBrowserActive();
-}
-
-}  // namespace
-
-bool BrowserIsActivePermissionRule::ShouldAllow() {
   if (!kShouldOnlyServeAdsIfBrowserIsActive.Get()) {
     return true;
   }
 
-  if (!DoesRespectCap()) {
-    last_message_ = "Browser window is not active";
-    return false;
+  if (PlatformHelper::GetInstance().GetType() == PlatformType::kAndroid) {
+    return true;
   }
 
-  return true;
+  return BrowserManager::GetInstance().IsBrowserActive();
 }
 
-const std::string& BrowserIsActivePermissionRule::GetLastMessage() const {
-  return last_message_;
+}  // namespace
+
+base::expected<void, std::string> BrowserIsActivePermissionRule::ShouldAllow()
+    const {
+  if (!DoesRespectCap()) {
+    return base::unexpected("Browser window is not active");
+  }
+
+  return base::ok();
 }
 
 }  // namespace brave_ads

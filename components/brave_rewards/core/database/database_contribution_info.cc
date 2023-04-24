@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <map>
+#include <memory>
 #include <utility>
 
 #include "base/strings/stringprintf.h"
@@ -44,9 +45,7 @@ mojom::ReportType ConvertRewardsTypeToReportType(
 }  // namespace
 
 DatabaseContributionInfo::DatabaseContributionInfo(LedgerImpl& ledger)
-    : DatabaseTable(ledger),
-      publishers_(
-          std::make_unique<DatabaseContributionInfoPublishers>(ledger)) {}
+    : DatabaseTable(ledger), publishers_(ledger) {}
 
 DatabaseContributionInfo::~DatabaseContributionInfo() = default;
 
@@ -87,7 +86,7 @@ void DatabaseContributionInfo::InsertOrUpdate(
 
   transaction->commands.push_back(std::move(command));
 
-  publishers_->InsertOrUpdate(transaction.get(), info->Clone());
+  publishers_.InsertOrUpdate(transaction.get(), info->Clone());
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
@@ -160,8 +159,8 @@ void DatabaseContributionInfo::OnGetRecord(
       &DatabaseContributionInfo::OnGetPublishers, this, _1,
       std::make_shared<mojom::ContributionInfoPtr>(info->Clone()), callback);
 
-  publishers_->GetRecordByContributionList({info->contribution_id},
-                                           publishers_callback);
+  publishers_.GetRecordByContributionList({info->contribution_id},
+                                          publishers_callback);
 }
 
 void DatabaseContributionInfo::OnGetPublishers(
@@ -375,8 +374,8 @@ void DatabaseContributionInfo::OnGetContributionReport(
           std::move(list)),
       callback);
 
-  publishers_->GetContributionPublisherPairList(contribution_ids,
-                                                publisher_callback);
+  publishers_.GetContributionPublisherPairList(contribution_ids,
+                                               publisher_callback);
 }
 
 void DatabaseContributionInfo::OnGetContributionReportPublishers(
@@ -504,8 +503,7 @@ void DatabaseContributionInfo::OnGetList(
                     std::move(list)),
                 callback);
 
-  publishers_->GetRecordByContributionList(contribution_ids,
-                                           publisher_callback);
+  publishers_.GetRecordByContributionList(contribution_ids, publisher_callback);
 }
 
 void DatabaseContributionInfo::OnGetListPublishers(
@@ -592,8 +590,7 @@ void DatabaseContributionInfo::UpdateContributedAmount(
     const std::string& contribution_id,
     const std::string& publisher_key,
     ledger::LegacyResultCallback callback) {
-  publishers_->UpdateContributedAmount(contribution_id, publisher_key,
-                                       callback);
+  publishers_.UpdateContributedAmount(contribution_id, publisher_key, callback);
 }
 
 void DatabaseContributionInfo::FinishAllInProgressRecords(

@@ -7,37 +7,33 @@
 
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-TEST(BatAdsStringStripUtilTest, StripNonAlphaCharactersFromEmptyContent) {
+TEST(BraveAdsStringStripUtilTest, StripNonAlphaCharactersFromEmptyContent) {
   // Arrange
-  const std::string content;
 
   // Act
-  const std::string stripped_content = StripNonAlphaCharacters(content);
 
   // Assert
   const std::string expected_stripped_content;
 
-  EXPECT_EQ(expected_stripped_content, stripped_content);
+  EXPECT_EQ(expected_stripped_content, StripNonAlphaCharacters({}));
 }
 
-TEST(BatAdsStringStripUtilTest, StripNonAlphaCharactersFromWhitespace) {
+TEST(BraveAdsStringStripUtilTest, StripNonAlphaCharactersFromWhitespace) {
   // Arrange
-  const std::string content = "   ";
 
   // Act
-  const std::string stripped_content = StripNonAlphaCharacters(content);
 
   // Assert
   const std::string expected_stripped_content;
 
-  EXPECT_EQ(expected_stripped_content, stripped_content);
+  EXPECT_EQ(expected_stripped_content, StripNonAlphaCharacters("   "));
 }
 
-TEST(BatAdsStringStripUtilTest, StripNonAlphaCharacters) {
+TEST(BraveAdsStringStripUtilTest, StripNonAlphaCharacters) {
   // Arrange
   const std::string content =
       "  The quick brown fox jumps over the lazy dog. "
@@ -64,34 +60,31 @@ TEST(BatAdsStringStripUtilTest, StripNonAlphaCharacters) {
   EXPECT_EQ(expected_stripped_content, stripped_content);
 }
 
-TEST(BatAdsStringStripUtilTest,
+TEST(BraveAdsStringStripUtilTest,
      StripNonAlphaNumericCharactersFromEmptyContent) {
   // Arrange
-  const std::string content;
 
   // Act
-  const std::string stripped_content = StripNonAlphaNumericCharacters(content);
 
   // Assert
   const std::string expected_stripped_content;
 
-  EXPECT_EQ(expected_stripped_content, stripped_content);
+  EXPECT_EQ(expected_stripped_content, StripNonAlphaNumericCharacters({}));
 }
 
-TEST(BatAdsStringStripUtilTest, StripNonAlphaNumericCharactersFromWhitespace) {
+TEST(BraveAdsStringStripUtilTest,
+     StripNonAlphaNumericCharactersFromWhitespace) {
   // Arrange
-  const std::string content = "   ";
 
   // Act
-  const std::string stripped_content = StripNonAlphaNumericCharacters(content);
 
   // Assert
   const std::string expected_stripped_content;
 
-  EXPECT_EQ(expected_stripped_content, stripped_content);
+  EXPECT_EQ(expected_stripped_content, StripNonAlphaNumericCharacters("   "));
 }
 
-TEST(BatAdsStringStripUtilTest, StripNonAlphaNumericCharacters) {
+TEST(BraveAdsStringStripUtilTest, StripNonAlphaNumericCharacters) {
   // Arrange
   const std::string content =
       "  The quick brown fox jumps over the lazy dog. "

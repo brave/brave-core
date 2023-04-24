@@ -13,13 +13,13 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsHistoryItemUtilTest : public UnitTestBase {};
+class BraveAdsHistoryItemUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsHistoryItemUtilTest, BuildHistoryItem) {
+TEST_F(BraveAdsHistoryItemUtilTest, BuildHistoryItem) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);

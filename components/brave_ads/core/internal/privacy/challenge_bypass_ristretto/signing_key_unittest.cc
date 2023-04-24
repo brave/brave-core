@@ -17,66 +17,61 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/unblinded_token_unittest_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::privacy::cbr {
 
-TEST(BatAdsSigningKeyTest, FailToInitializeWithEmptyBase64) {
+TEST(BraveAdsSigningKeyTest, FailToInitializeWithEmptyBase64) {
   // Arrange
   const SigningKey signing_key("");
 
   // Act
-  const bool has_value = signing_key.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(signing_key.has_value());
 }
 
-TEST(BatAdsSigningKeyTest, FailToInitializeWithInvalidBase64) {
+TEST(BraveAdsSigningKeyTest, FailToInitializeWithInvalidBase64) {
   // Arrange
   const SigningKey signing_key(kInvalidBase64);
 
   // Act
-  const bool has_value = signing_key.has_value();
 
   // Assert
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(signing_key.has_value());
 }
 
-TEST(BatAdsSigningKeyTest, DecodeBase64) {
+TEST(BraveAdsSigningKeyTest, DecodeBase64) {
   // Arrange
 
   // Act
   const SigningKey signing_key = SigningKey::DecodeBase64(kSigningKeyBase64);
 
   // Assert
-  const bool has_value = signing_key.has_value();
-  EXPECT_TRUE(has_value);
+  EXPECT_TRUE(signing_key.has_value());
 }
 
-TEST(BatAdsSigningKeyTest, FailToDecodeEmptyBase64) {
+TEST(BraveAdsSigningKeyTest, FailToDecodeEmptyBase64) {
   // Arrange
 
   // Act
   const SigningKey signing_key = SigningKey::DecodeBase64({});
 
   // Assert
-  const bool has_value = signing_key.has_value();
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(signing_key.has_value());
 }
 
-TEST(BatAdsSigningKeyTest, FailToDecodeInvalidBase64) {
+TEST(BraveAdsSigningKeyTest, FailToDecodeInvalidBase64) {
   // Arrange
 
   // Act
   const SigningKey signing_key = SigningKey::DecodeBase64(kInvalidBase64);
 
   // Assert
-  const bool has_value = signing_key.has_value();
-  EXPECT_FALSE(has_value);
+  EXPECT_FALSE(signing_key.has_value());
 }
 
-TEST(BatAdsSigningKeyTest, EncodeBase64) {
+TEST(BraveAdsSigningKeyTest, EncodeBase64) {
   // Arrange
   const SigningKey signing_key(kSigningKeyBase64);
 
@@ -88,7 +83,7 @@ TEST(BatAdsSigningKeyTest, EncodeBase64) {
   EXPECT_EQ(kSigningKeyBase64, *encoded_base64);
 }
 
-TEST(BatAdsSigningKeyTest, Sign) {
+TEST(BraveAdsSigningKeyTest, Sign) {
   // Arrange
   const SigningKey signing_key(kSigningKeyBase64);
 
@@ -101,7 +96,7 @@ TEST(BatAdsSigningKeyTest, Sign) {
   EXPECT_EQ(GetSignedToken(), *signed_token);
 }
 
-TEST(BatAdsSigningKeyTest, FailToSignWithInvalidBlindedToken) {
+TEST(BraveAdsSigningKeyTest, FailToSignWithInvalidBlindedToken) {
   // Arrange
   const SigningKey signing_key(kSigningKeyBase64);
 
@@ -113,7 +108,7 @@ TEST(BatAdsSigningKeyTest, FailToSignWithInvalidBlindedToken) {
   EXPECT_FALSE(signed_token);
 }
 
-TEST(BatAdsSigningKeyTest, RederiveUnblindedToken) {
+TEST(BraveAdsSigningKeyTest, RederiveUnblindedToken) {
   // Arrange
   SigningKey signing_key(kSigningKeyBase64);
 
@@ -126,7 +121,7 @@ TEST(BatAdsSigningKeyTest, RederiveUnblindedToken) {
   EXPECT_EQ(GetUnblindedToken(), *unblinded_token);
 }
 
-TEST(BatAdsSigningKeyTest,
+TEST(BraveAdsSigningKeyTest,
      FailToRederiveUnblindedTokenWithInvalidTokenPreimage) {
   // Arrange
   SigningKey signing_key(kSigningKeyBase64);
@@ -139,7 +134,7 @@ TEST(BatAdsSigningKeyTest,
   EXPECT_FALSE(unblinded_token);
 }
 
-TEST(BatAdsSigningKeyTest, GetPublicKey) {
+TEST(BraveAdsSigningKeyTest, GetPublicKey) {
   // Arrange
   SigningKey signing_key(kSigningKeyBase64);
 
@@ -151,7 +146,7 @@ TEST(BatAdsSigningKeyTest, GetPublicKey) {
   EXPECT_EQ(PublicKey(kPublicKeyBase64), *public_key);
 }
 
-TEST(BatAdsSigningKeyTest, IsEqual) {
+TEST(BraveAdsSigningKeyTest, IsEqual) {
   // Arrange
   const SigningKey signing_key;
 
@@ -161,7 +156,7 @@ TEST(BatAdsSigningKeyTest, IsEqual) {
   EXPECT_EQ(signing_key, signing_key);
 }
 
-TEST(BatAdsSigningKeyTest, IsEmptyBase64Equal) {
+TEST(BraveAdsSigningKeyTest, IsEmptyBase64Equal) {
   // Arrange
   const SigningKey signing_key("");
 
@@ -171,7 +166,7 @@ TEST(BatAdsSigningKeyTest, IsEmptyBase64Equal) {
   EXPECT_EQ(signing_key, signing_key);
 }
 
-TEST(BatAdsSigningKeyTest, IsInvalidBase64Equal) {
+TEST(BraveAdsSigningKeyTest, IsInvalidBase64Equal) {
   // Arrange
   const SigningKey signing_key(kInvalidBase64);
 
@@ -181,7 +176,7 @@ TEST(BatAdsSigningKeyTest, IsInvalidBase64Equal) {
   EXPECT_EQ(signing_key, signing_key);
 }
 
-TEST(BatAdsSigningKeyTest, IsNotEqual) {
+TEST(BraveAdsSigningKeyTest, IsNotEqual) {
   // Arrange
   const SigningKey signing_key;
 
@@ -192,7 +187,7 @@ TEST(BatAdsSigningKeyTest, IsNotEqual) {
   EXPECT_NE(different_signing_key, signing_key);
 }
 
-TEST(BatAdsSigningKeyTest, OutputStream) {
+TEST(BraveAdsSigningKeyTest, OutputStream) {
   // Arrange
   const SigningKey signing_key(kSigningKeyBase64);
 

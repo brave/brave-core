@@ -6,20 +6,18 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_H_
 
-#include <memory>
 #include <string>
 #include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ref.h"
+#include "brave/components/brave_rewards/core/state/state_migration.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ledger {
 class LedgerImpl;
 
 namespace state {
-
-class StateMigration;
 
 class State {
  public:
@@ -117,7 +115,7 @@ class State {
 
  private:
   const raw_ref<LedgerImpl> ledger_;
-  std::unique_ptr<StateMigration> migration_;
+  StateMigration migration_;
 };
 
 }  // namespace state

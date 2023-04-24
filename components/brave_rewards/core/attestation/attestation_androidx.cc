@@ -15,8 +15,7 @@ namespace ledger {
 namespace attestation {
 
 AttestationAndroid::AttestationAndroid(LedgerImpl& ledger)
-    : Attestation(ledger),
-      promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)) {}
+    : Attestation(ledger), promotion_server_(ledger) {}
 
 AttestationAndroid::~AttestationAndroid() = default;
 
@@ -53,7 +52,7 @@ void AttestationAndroid::Start(const std::string& payload,
   auto url_callback =
       base::BindOnce(&AttestationAndroid::OnStart, base::Unretained(this),
                      std::move(callback));
-  promotion_server_->post_safetynet()->Request(std::move(url_callback));
+  promotion_server_.post_safetynet().Request(std::move(url_callback));
 }
 
 void AttestationAndroid::OnStart(StartCallback callback,
@@ -78,8 +77,8 @@ void AttestationAndroid::Confirm(const std::string& solution,
       base::BindOnce(&AttestationAndroid::OnConfirm, base::Unretained(this),
                      std::move(callback));
 
-  promotion_server_->put_safetynet()->Request(token, nonce,
-                                              std::move(url_callback));
+  promotion_server_.put_safetynet().Request(token, nonce,
+                                            std::move(url_callback));
 }
 
 void AttestationAndroid::OnConfirm(ConfirmCallback callback,

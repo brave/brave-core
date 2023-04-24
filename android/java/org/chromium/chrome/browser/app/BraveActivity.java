@@ -168,6 +168,7 @@ import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.share.ShareDelegate.ShareOrigin;
 import org.chromium.chrome.browser.site_settings.BraveWalletEthereumConnectedSites;
+import org.chromium.chrome.browser.speedreader.BraveSpeedReaderUtils;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.tab.TabLaunchType;
@@ -199,7 +200,6 @@ import org.chromium.components.safe_browsing.BraveSafeBrowsingApiHandler;
 import org.chromium.components.safe_browsing.SafeBrowsingApiBridge;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.user_prefs.UserPrefs;
-import org.chromium.content_public.browser.UiThreadTaskTraits;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
@@ -412,6 +412,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                     }
                 }
             }
+        } else if (id == R.id.brave_speedreader_id) {
+            enableSpeedreaderMode();
         } else {
             return false;
         }
@@ -1713,6 +1715,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         return null;
     }
 
+    private void enableSpeedreaderMode() {
+        final Tab currentTab = getActivityTab();
+        if (currentTab != null) {
+            BraveSpeedReaderUtils.enableSpeedreaderMode(currentTab);
+        }
+    }
+
     static public ChromeTabbedActivity getChromeTabbedActivity() {
         return (ChromeTabbedActivity) getActivityOfType(ChromeTabbedActivity.class);
     }
@@ -2028,7 +2037,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     // as upstream does, to keep the GmsCore process alive.
     private void executeInitSafeBrowsing(long delay) {
         // SafeBrowsingBridge.getSafeBrowsingState() has to be executed on a main thread
-        PostTask.postDelayedTask(UiThreadTaskTraits.DEFAULT, () -> {
+        PostTask.postDelayedTask(TaskTraits.UI_DEFAULT, () -> {
             if (SafeBrowsingBridge.getSafeBrowsingState() != SafeBrowsingState.NO_SAFE_BROWSING) {
                 // initSafeBrowsing could be executed on a background thread
                 PostTask.postTask(TaskTraits.USER_VISIBLE_MAY_BLOCK,

@@ -21,6 +21,8 @@ export function LimitedView () {
   const host = React.useContext(HostContext)
   const { getString, getPluralString } = React.useContext(LocaleContext)
 
+  const [requestedView, setRequestedView] =
+    React.useState(host.state.requestedView)
   const [adsEnabled, setAdsEnabled] =
     React.useState(host.state.settings.adsEnabled)
   const [publisherInfo, setPublisherInfo] =
@@ -32,6 +34,7 @@ export function LimitedView () {
     React.useState(derivedState.canConnectAccount(host.state))
 
   useHostListener(host, (state) => {
+    setRequestedView(state.requestedView)
     setAdsEnabled(state.settings.adsEnabled)
     setPublisherInfo(state.publisherInfo)
     setPublishersVisitedCount(state.publishersVisitedCount)
@@ -77,7 +80,7 @@ export function LimitedView () {
       )
     }
 
-    if (publisherInfo) {
+    if (publisherInfo && requestedView === 'inline-tip') {
       return (
         <style.connect>
           <style.connectAction>

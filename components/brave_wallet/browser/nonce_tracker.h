@@ -31,7 +31,8 @@ class NonceTracker {
   using GetNextNonceCallback =
       base::OnceCallback<void(bool success, uint256_t nonce)>;
 
-  virtual void GetNextNonce(const std::string& from,
+  virtual void GetNextNonce(const std::string& chain_id,
+                            const std::string& from,
                             GetNextNonceCallback callback) = 0;
   virtual uint256_t GetHighestContinuousFrom(
       const std::vector<std::unique_ptr<TxMeta>>& metas,
@@ -42,7 +43,8 @@ class NonceTracker {
   base::Lock* GetLock() { return &nonce_lock_; }
 
  protected:
-  absl::optional<uint256_t> GetFinalNonce(const std::string& from,
+  absl::optional<uint256_t> GetFinalNonce(const std::string& chain_id,
+                                          const std::string& from,
                                           uint256_t result);
 
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;

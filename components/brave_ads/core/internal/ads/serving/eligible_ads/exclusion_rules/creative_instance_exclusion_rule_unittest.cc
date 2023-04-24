@@ -11,13 +11,14 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsCreativeInstanceExclusionRuleTest : public UnitTestBase {};
+class BraveAdsCreativeInstanceExclusionRuleTest : public UnitTestBase {};
 
-TEST_F(BatAdsCreativeInstanceExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
+TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
+       AllowAdIfThereIsNoAdsHistory) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -27,10 +28,10 @@ TEST_F(BatAdsCreativeInstanceExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BatAdsCreativeInstanceExclusionRuleTest, AdAllowedAfter1Hour) {
+TEST_F(BraveAdsCreativeInstanceExclusionRuleTest, AdAllowedAfter1Hour) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -49,10 +50,10 @@ TEST_F(BatAdsCreativeInstanceExclusionRuleTest, AdAllowedAfter1Hour) {
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BatAdsCreativeInstanceExclusionRuleTest,
+TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
        AdAllowedAfter1HourForMultipleTypes) {
   // Arrange
   CreativeAdInfo creative_ad;
@@ -84,10 +85,10 @@ TEST_F(BatAdsCreativeInstanceExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_FALSE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BatAdsCreativeInstanceExclusionRuleTest,
+TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
        DoNotAllowTheSameAdWithin1Hour) {
   // Arrange
   CreativeAdInfo creative_ad;
@@ -107,7 +108,7 @@ TEST_F(BatAdsCreativeInstanceExclusionRuleTest,
   // Act
 
   // Assert
-  EXPECT_TRUE(exclusion_rule.ShouldExclude(creative_ad));
+  EXPECT_FALSE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
 }  // namespace brave_ads

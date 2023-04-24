@@ -12,11 +12,11 @@
 #include "brave/components/brave_ads/core/internal/ads/search_result_ad_features.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::search_result_ads {
 
-class BatAdsSearchResultAdsPerHourPermissionRuleTest : public UnitTestBase {
+class BraveAdsSearchResultAdsPerHourPermissionRuleTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -33,17 +33,17 @@ class BatAdsSearchResultAdsPerHourPermissionRuleTest : public UnitTestBase {
   AdsPerHourPermissionRule permission_rule_;
 };
 
-TEST_F(BatAdsSearchResultAdsPerHourPermissionRuleTest,
+TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
        AllowAdIfThereIsNoAdsHistory) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsSearchResultAdsPerHourPermissionRuleTest,
+TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
        AllowAdIfDoesNotExceedCap) {
   // Arrange
 
@@ -52,10 +52,10 @@ TEST_F(BatAdsSearchResultAdsPerHourPermissionRuleTest,
                  /*count*/ kMaximumAdsPerHour.Get() - 1);
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsSearchResultAdsPerHourPermissionRuleTest,
+TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
        AllowAdIfDoesNotExceedCapAfter1Hour) {
   // Arrange
   RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed,
@@ -65,10 +65,10 @@ TEST_F(BatAdsSearchResultAdsPerHourPermissionRuleTest,
   AdvanceClockBy(base::Hours(1));
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsSearchResultAdsPerHourPermissionRuleTest,
+TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
        DoNotAllowAdIfExceedsCapWithin1Hour) {
   // Arrange
   RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed,
@@ -78,7 +78,7 @@ TEST_F(BatAdsSearchResultAdsPerHourPermissionRuleTest,
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 }  // namespace brave_ads::search_result_ads

@@ -9,30 +9,30 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::notification_ads {
 
-class BatAdsNotificationAdsMinimumWaitTimePermissionRuleTest
+class BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest
     : public UnitTestBase {
  protected:
   MinimumWaitTimePermissionRule permission_rule_;
 };
 
-TEST_F(BatAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
+TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
        AllowAdIfThereIsNoAdsHistory) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
+TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
        AllowAdIfDoesNotExceedCap) {
   // Arrange
-  ads_client_mock_->SetInt64Pref(prefs::kMaximumNotificationAdsPerHour, 5);
+  ads_client_mock_.SetInt64Pref(prefs::kMaximumNotificationAdsPerHour, 5);
 
   RecordAdEvent(AdType::kNotificationAd, ConfirmationType::kServed);
 
@@ -40,13 +40,13 @@ TEST_F(BatAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
   AdvanceClockBy(base::Minutes(12));
 
   // Assert
-  EXPECT_TRUE(permission_rule_.ShouldAllow());
+  EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
-TEST_F(BatAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
+TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
        DoNotAllowAdIfExceedsCap) {
   // Arrange
-  ads_client_mock_->SetInt64Pref(prefs::kMaximumNotificationAdsPerHour, 5);
+  ads_client_mock_.SetInt64Pref(prefs::kMaximumNotificationAdsPerHour, 5);
 
   RecordAdEvent(AdType::kNotificationAd, ConfirmationType::kServed);
 
@@ -54,7 +54,7 @@ TEST_F(BatAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
   AdvanceClockBy(base::Minutes(12) - base::Milliseconds(1));
 
   // Assert
-  EXPECT_FALSE(permission_rule_.ShouldAllow());
+  EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 }  // namespace brave_ads::notification_ads

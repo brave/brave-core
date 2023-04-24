@@ -21,7 +21,7 @@ export const localeStrings = {
   learnMoreLabel: 'Learn more',
   customAmountLabel: 'Custom',
   monthlySetTitle: 'You\'re already sending monthly contributions to this creator',
-  monthlySetText: 'You can still send a one-time contribution now, and you can cancel your monthly contributions to this Creator by removing them from $1Monthly Contributions$2.',
+  monthlySetText: 'You can still send a contribution now, and you can cancel your monthly contributions to this Creator by removing them from $1Monthly Contributions$2.',
   providerMismatchTitle: 'Can\'t send your contribution',
   providerMismatchText: 'This creator is unable to receive contributions from $1.',
   providerMismatchWeb3Text: 'You can still send crypto contributions to this creator by using your Web3 wallet.',
@@ -41,7 +41,8 @@ export const localeStrings = {
   shareText: 'I earned crypto rewards with the Brave Browser, and just contributed $1 BAT of it to $2. Learn how you can support your favorite creators and sites too: https://brave.com/rewards',
   unexpectedErrorTitle: 'An unexpected error has occurred',
   unexpectedErrorText: 'Please reopen the contribution panel to try again.',
-  defaultCreatorDescription: 'Welcome! Users can support this content creator by sending them contributions. It’s a way of thanking them for making great content.'
+  defaultCreatorDescription: 'Welcome! Users can support this content creator by sending them contributions. It’s a way of thanking them for making great content.',
+  platformPublisherTitle: '$1 on $2'
 }
 
 export type StringKey = keyof typeof localeStrings

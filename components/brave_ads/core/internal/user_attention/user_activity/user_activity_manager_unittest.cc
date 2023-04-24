@@ -10,32 +10,22 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_constants.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsUserActivityManagerTest : public UnitTestBase {};
+class BraveAdsUserActivityManagerTest : public UnitTestBase {};
 
-TEST_F(BatAdsUserActivityManagerTest, HasInstance) {
-  // Arrange
-
-  // Act
-  const bool has_instance = UserActivityManager::GetInstance();
-
-  // Assert
-  EXPECT_TRUE(has_instance);
-}
-
-TEST_F(BatAdsUserActivityManagerTest, RecordInitializedAdsEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordInitializedAdsEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kInitializedAds;
 
   // Act
-  UserActivityManager::GetInstance()->RecordEvent(event_type);
+  UserActivityManager::GetInstance().RecordEvent(event_type);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Assert
@@ -48,16 +38,16 @@ TEST_F(BatAdsUserActivityManagerTest, RecordInitializedAdsEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordBrowserDidEnterForegroundEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordBrowserDidEnterForegroundEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kBrowserDidEnterForeground;
 
   // Act
-  UserActivityManager::GetInstance()->RecordEvent(event_type);
+  UserActivityManager::GetInstance().RecordEvent(event_type);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Assert
@@ -70,16 +60,16 @@ TEST_F(BatAdsUserActivityManagerTest, RecordBrowserDidEnterForegroundEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordBrowserDidEnterBackgroundEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordBrowserDidEnterBackgroundEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kBrowserDidEnterBackground;
 
   // Act
-  UserActivityManager::GetInstance()->RecordEvent(event_type);
+  UserActivityManager::GetInstance().RecordEvent(event_type);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Assert
@@ -92,17 +82,17 @@ TEST_F(BatAdsUserActivityManagerTest, RecordBrowserDidEnterBackgroundEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest,
+TEST_F(BraveAdsUserActivityManagerTest,
        RecordClickedBackOrForwardNavigationButtonsEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kClickedBackOrForwardNavigationButtons;
 
   // Act
-  UserActivityManager::GetInstance()->RecordEvent(event_type);
+  UserActivityManager::GetInstance().RecordEvent(event_type);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Assert
@@ -115,16 +105,16 @@ TEST_F(BatAdsUserActivityManagerTest,
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordClickedBookmarkEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordClickedBookmarkEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kClickedBookmark;
 
   // Act
-  UserActivityManager::GetInstance()->RecordEvent(event_type);
+  UserActivityManager::GetInstance().RecordEvent(event_type);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Assert
@@ -137,16 +127,16 @@ TEST_F(BatAdsUserActivityManagerTest, RecordClickedBookmarkEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordClickedHomePageButtonEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordClickedHomePageButtonEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kClickedHomePageButton;
 
   // Act
-  UserActivityManager::GetInstance()->RecordEvent(event_type);
+  UserActivityManager::GetInstance().RecordEvent(event_type);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Assert
@@ -159,15 +149,15 @@ TEST_F(BatAdsUserActivityManagerTest, RecordClickedHomePageButtonEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordClickedLinkEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordClickedLinkEvent) {
   // Arrange
   const UserActivityEventType event_type = UserActivityEventType::kClickedLink;
 
   // Act
-  UserActivityManager::GetInstance()->RecordEvent(event_type);
+  UserActivityManager::GetInstance().RecordEvent(event_type);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Assert
@@ -180,16 +170,16 @@ TEST_F(BatAdsUserActivityManagerTest, RecordClickedLinkEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordClickedReloadButtonEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordClickedReloadButtonEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kClickedReloadButton;
 
   // Act
-  UserActivityManager::GetInstance()->RecordEvent(event_type);
+  UserActivityManager::GetInstance().RecordEvent(event_type);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Assert
@@ -202,15 +192,15 @@ TEST_F(BatAdsUserActivityManagerTest, RecordClickedReloadButtonEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordClosedTabEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordClosedTabEvent) {
   // Arrange
   const UserActivityEventType event_type = UserActivityEventType::kClosedTab;
 
   // Act
-  UserActivityManager::GetInstance()->RecordEvent(event_type);
+  UserActivityManager::GetInstance().RecordEvent(event_type);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Assert
@@ -223,16 +213,16 @@ TEST_F(BatAdsUserActivityManagerTest, RecordClosedTabEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordFocusedOnExistingTabEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordFocusedOnExistingTabEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kTabChangedFocus;
 
   // Act
-  UserActivityManager::GetInstance()->RecordEvent(event_type);
+  UserActivityManager::GetInstance().RecordEvent(event_type);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Assert
@@ -245,16 +235,16 @@ TEST_F(BatAdsUserActivityManagerTest, RecordFocusedOnExistingTabEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordGeneratedKeywordEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordGeneratedKeywordEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kGeneratedKeyword;
 
   // Act
-  UserActivityManager::GetInstance()->RecordEvent(event_type);
+  UserActivityManager::GetInstance().RecordEvent(event_type);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Assert
@@ -267,16 +257,16 @@ TEST_F(BatAdsUserActivityManagerTest, RecordGeneratedKeywordEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordNewNavigationEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordNewNavigationEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kNewNavigation;
 
   // Act
-  UserActivityManager::GetInstance()->RecordEvent(event_type);
+  UserActivityManager::GetInstance().RecordEvent(event_type);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Assert
@@ -289,17 +279,17 @@ TEST_F(BatAdsUserActivityManagerTest, RecordNewNavigationEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest,
+TEST_F(BraveAdsUserActivityManagerTest,
        RecordOpenedLinkFromExternalApplicationEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kOpenedLinkFromExternalApplication;
 
   // Act
-  UserActivityManager::GetInstance()->RecordEvent(event_type);
+  UserActivityManager::GetInstance().RecordEvent(event_type);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Assert
@@ -312,15 +302,15 @@ TEST_F(BatAdsUserActivityManagerTest,
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordOpenedNewTabEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordOpenedNewTabEvent) {
   // Arrange
   const UserActivityEventType event_type = UserActivityEventType::kOpenedNewTab;
 
   // Act
-  UserActivityManager::GetInstance()->RecordEvent(event_type);
+  UserActivityManager::GetInstance().RecordEvent(event_type);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Assert
@@ -333,16 +323,16 @@ TEST_F(BatAdsUserActivityManagerTest, RecordOpenedNewTabEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordPlayedMediaEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordPlayedMediaEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kTabStartedPlayingMedia;
 
   // Act
-  UserActivityManager::GetInstance()->RecordEvent(event_type);
+  UserActivityManager::GetInstance().RecordEvent(event_type);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Assert
@@ -355,16 +345,16 @@ TEST_F(BatAdsUserActivityManagerTest, RecordPlayedMediaEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordStoppedPlayingMediaEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordStoppedPlayingMediaEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kTabStoppedPlayingMedia;
 
   // Act
-  UserActivityManager::GetInstance()->RecordEvent(event_type);
+  UserActivityManager::GetInstance().RecordEvent(event_type);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Assert
@@ -377,16 +367,16 @@ TEST_F(BatAdsUserActivityManagerTest, RecordStoppedPlayingMediaEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordSubmittedFormEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordSubmittedFormEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kSubmittedForm;
 
   // Act
-  UserActivityManager::GetInstance()->RecordEvent(event_type);
+  UserActivityManager::GetInstance().RecordEvent(event_type);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Assert
@@ -399,15 +389,15 @@ TEST_F(BatAdsUserActivityManagerTest, RecordSubmittedFormEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordTabUpdatedEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordTabUpdatedEvent) {
   // Arrange
   const UserActivityEventType event_type = UserActivityEventType::kTabUpdated;
 
   // Act
-  UserActivityManager::GetInstance()->RecordEvent(event_type);
+  UserActivityManager::GetInstance().RecordEvent(event_type);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Assert
@@ -420,16 +410,16 @@ TEST_F(BatAdsUserActivityManagerTest, RecordTabUpdatedEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordTypedAndSelectedNonUrlEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordTypedAndSelectedNonUrlEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kTypedAndSelectedNonUrl;
 
   // Act
-  UserActivityManager::GetInstance()->RecordEvent(event_type);
+  UserActivityManager::GetInstance().RecordEvent(event_type);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Assert
@@ -442,17 +432,17 @@ TEST_F(BatAdsUserActivityManagerTest, RecordTypedAndSelectedNonUrlEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest,
+TEST_F(BraveAdsUserActivityManagerTest,
        RecordTypedKeywordOtherThanDefaultSearchProviderEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kTypedKeywordOtherThanDefaultSearchProvider;
 
   // Act
-  UserActivityManager::GetInstance()->RecordEvent(event_type);
+  UserActivityManager::GetInstance().RecordEvent(event_type);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Assert
@@ -465,15 +455,15 @@ TEST_F(BatAdsUserActivityManagerTest,
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordTypedUrlEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordTypedUrlEvent) {
   // Arrange
   const UserActivityEventType event_type = UserActivityEventType::kTypedUrl;
 
   // Act
-  UserActivityManager::GetInstance()->RecordEvent(event_type);
+  UserActivityManager::GetInstance().RecordEvent(event_type);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Assert
@@ -486,16 +476,16 @@ TEST_F(BatAdsUserActivityManagerTest, RecordTypedUrlEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordUsedAddressBarEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordUsedAddressBarEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kUsedAddressBar;
 
   // Act
-  UserActivityManager::GetInstance()->RecordEvent(event_type);
+  UserActivityManager::GetInstance().RecordEvent(event_type);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Assert
@@ -508,16 +498,16 @@ TEST_F(BatAdsUserActivityManagerTest, RecordUsedAddressBarEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordBrowserDidBecomeActiveEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordBrowserDidBecomeActiveEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kBrowserDidBecomeActive;
 
   // Act
-  UserActivityManager::GetInstance()->RecordEvent(event_type);
+  UserActivityManager::GetInstance().RecordEvent(event_type);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Assert
@@ -530,16 +520,16 @@ TEST_F(BatAdsUserActivityManagerTest, RecordBrowserDidBecomeActiveEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, RecordBrowserDidResignActiveEvent) {
+TEST_F(BraveAdsUserActivityManagerTest, RecordBrowserDidResignActiveEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kBrowserDidResignActive;
 
   // Act
-  UserActivityManager::GetInstance()->RecordEvent(event_type);
+  UserActivityManager::GetInstance().RecordEvent(event_type);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Assert
@@ -552,63 +542,63 @@ TEST_F(BatAdsUserActivityManagerTest, RecordBrowserDidResignActiveEvent) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, GetHistoryForTimeWindow) {
+TEST_F(BraveAdsUserActivityManagerTest, GetHistoryForTimeWindow) {
   // Arrange
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kInitializedAds);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kBrowserDidBecomeActive);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kBrowserDidEnterBackground);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedBackOrForwardNavigationButtons);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedBookmark);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedHomePageButton);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedLink);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedReloadButton);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClosedTab);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTabChangedFocus);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kGeneratedKeyword);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kNewNavigation);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedLinkFromExternalApplication);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTabStartedPlayingMedia);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTabStoppedPlayingMedia);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kSubmittedForm);
 
   AdvanceClockBy(base::Hours(1));
 
   const base::Time time = Now();
 
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTabUpdated);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTypedAndSelectedNonUrl);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTypedKeywordOtherThanDefaultSearchProvider);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTypedUrl);
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kUsedAddressBar);
 
   AdvanceClockBy(base::Hours(1));
 
   // Act
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Assert
@@ -634,19 +624,19 @@ TEST_F(BatAdsUserActivityManagerTest, GetHistoryForTimeWindow) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityManagerTest, MaximumHistoryItems) {
+TEST_F(BraveAdsUserActivityManagerTest, MaximumHistoryItems) {
   // Arrange
   const UserActivityEventType event_type = UserActivityEventType::kClosedTab;
   for (int i = 0; i < kMaximumHistoryItems; i++) {
-    UserActivityManager::GetInstance()->RecordEvent(event_type);
+    UserActivityManager::GetInstance().RecordEvent(event_type);
   }
 
   // Act
-  UserActivityManager::GetInstance()->RecordEvent(
+  UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
   // Assert

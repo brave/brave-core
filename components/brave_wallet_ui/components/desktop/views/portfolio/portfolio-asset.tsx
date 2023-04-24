@@ -20,7 +20,8 @@ import {
 import Amount from '../../../../utils/amount'
 import { mojoTimeDeltaToJSDate } from '../../../../../common/mojomUtils'
 import {
-  ParsedTransaction,
+  findTransactionToken,
+  getETHSwapTransactionBuyAndSellTokens,
   sortTransactionByDate
 } from '../../../../utils/tx-utils'
 import { getBalance } from '../../../../utils/balance-utils'
@@ -38,9 +39,13 @@ import {
   braveNftDisplayOrigin,
   UpdateNftPinningStatus
 } from '../../../../nft/nft-ui-messages'
-import { auroraSupportedContractAddresses } from '../../../../utils/asset-utils'
+import {
+  auroraSupportedContractAddresses,
+  getAssetIdKey
+} from '../../../../utils/asset-utils'
 import { getLocale } from '../../../../../common/locale'
 import { stripERC20TokenImageURL } from '../../../../utils/string-utils'
+import { makeNetworkAsset } from '../../../../options/asset-options'
 
 // actions
 import { WalletPageActions } from '../../../../page/actions'
@@ -61,7 +66,7 @@ import AccountsAndTransactionsList from './components/accounts-and-transctions-l
 import { BridgeToAuroraModal } from '../../popup-modals/bridge-to-aurora-modal/bridge-to-aurora-modal'
 
 // Hooks
-import { usePricing, useTransactionParser, useMultiChainBuyAssets } from '../../../../common/hooks'
+import { usePricing, useMultiChainBuyAssets } from '../../../../common/hooks'
 import {
   useSafePageSelector,
   useSafeWalletSelector,
@@ -232,10 +237,8 @@ export const PortfolioAsset = (props: Props) => {
 
   // state
   const [filteredAssetList, setfilteredAssetList] = React.useState<UserAssetInfoType[]>(userAssetList)
-  const [hoverPrice, setHoverPrice] = React.useState<string>()
 
   // more custom hooks
-  const parseTransaction = useTransactionParser(selectedAssetsNetwork)
   const { computeFiatAmount } = usePricing(transactionSpotPrices)
   const openExplorer = useExplorer(selectedAssetsNetwork)
 
@@ -333,21 +336,38 @@ export const PortfolioAsset = (props: Props) => {
   const transactionsByNetwork = React.useMemo(() => {
     return accountsByNetwork.map((account) => {
       return transactions[account.address]
-    }).flat(1).map(parseTransaction)
+    }).flat(1)
   }, [
     accountsByNetwork,
     transactions
   ])
 
-  const selectedAssetTransactions: ParsedTransaction[] = React.useMemo(() => {
+  const selectedAssetTransactions = React.useMemo(() => {
     if (selectedAsset) {
       const filteredTransactions = transactionsByNetwork.filter((tx) => {
-        return tx && tx?.symbol === selectedAsset?.symbol
+        const token = findTransactionToken(tx, [selectedAsset])
+
+        const { sellToken, buyToken } = getETHSwapTransactionBuyAndSellTokens({
+          nativeAsset: makeNetworkAsset(selectedAssetsNetwork),
+          tokensList: [selectedAsset],
+          tx
+        })
+
+        return (
+          (token && getAssetIdKey(selectedAsset) === getAssetIdKey(token)) ||
+          (sellToken &&
+            getAssetIdKey(selectedAsset) === getAssetIdKey(sellToken)) ||
+          (buyToken && getAssetIdKey(selectedAsset) === getAssetIdKey(buyToken))
+        )
       })
       return sortTransactionByDate(filteredTransactions, 'descending')
     }
     return []
-  }, [selectedAsset, transactionsByNetwork, parseTransaction])
+  }, [
+    selectedAsset,
+    transactionsByNetwork,
+    selectedAssetsNetwork
+  ])
 
   const fullAssetBalances = React.useMemo(() => {
     if (selectedAsset?.contractAddress === '') {
@@ -460,10 +480,6 @@ export const PortfolioAsset = (props: Props) => {
     userAssetList,
     selectedTimeline
   ])
-
-  const onUpdateBalance = React.useCallback((value: number | undefined) => {
-    setHoverPrice(value ? new Amount(value).formatAsFiat(defaultCurrencies.fiat) : undefined)
-  }, [defaultCurrencies.fiat])
 
   const onNftDetailsLoad = React.useCallback(() => {
     setNftIframeLoaded(true)
@@ -743,13 +759,10 @@ export const PortfolioAsset = (props: Props) => {
             <PriceRow>
               <PriceText>
                 {
-                  hoverPrice ||
-                  (
-                    selectedAssetFiatPrice
-                      ? new Amount(selectedAssetFiatPrice.price)
-                        .formatAsFiat(defaultCurrencies.fiat)
-                      : 0.00
-                  )
+                  selectedAssetFiatPrice
+                    ? new Amount(selectedAssetFiatPrice.price)
+                      .formatAsFiat(defaultCurrencies.fiat)
+                    : 0.00
                 }
               </PriceText>
               <PercentBubble
@@ -783,14 +796,11 @@ export const PortfolioAsset = (props: Props) => {
 
         {!isNftAsset &&
           <LineChart
-            isDown={isSelectedAssetPriceDown}
-            isAsset={!!selectedAsset}
             priceData={
               selectedAsset
                 ? formattedPriceHistory
                 : priceHistory
             }
-            onUpdateBalance={onUpdateBalance}
             isLoading={
               selectedAsset
                 ? isLoading

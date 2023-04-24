@@ -20,12 +20,12 @@
 #include "content/public/common/content_client.h"
 #include "url/gurl.h"
 
-#define CreateSharedResourcesDataSource \
-  CreateSharedResourcesDataSource_ChromiumImpl
+#define PopulateSharedResourcesDataSource \
+  PopulateSharedResourcesDataSource_ChromiumImpl
 
 #include "src/content/browser/webui/shared_resources_data_source.cc"
 
-#undef CreateSharedResourcesDataSource
+#undef PopulateSharedResourcesDataSource
 
 namespace {
 
@@ -80,13 +80,11 @@ void HandleWebUIRequestCallback(
 
 namespace content {
 
-WebUIDataSource* CreateSharedResourcesDataSource() {
-  WebUIDataSource* web_ui_data_source =
-      CreateSharedResourcesDataSource_ChromiumImpl();
-  web_ui_data_source->SetRequestFilter(
+void PopulateSharedResourcesDataSource(WebUIDataSource* source) {
+  PopulateSharedResourcesDataSource_ChromiumImpl(source);
+  source->SetRequestFilter(
       base::BindRepeating(&ShouldHandleWebUIRequestCallback),
-      base::BindRepeating(&HandleWebUIRequestCallback, web_ui_data_source));
-  return web_ui_data_source;
+      base::BindRepeating(&HandleWebUIRequestCallback, source));
 }
 
 }  // namespace content

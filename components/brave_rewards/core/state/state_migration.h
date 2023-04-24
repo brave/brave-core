@@ -6,9 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_MIGRATION_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_MIGRATION_H_
 
-#include <memory>
-#include <string>
-
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/state/state_migration_v1.h"
@@ -44,20 +41,20 @@ class StateMigration {
 
   void OnMigration(ResultCallback callback, int version, mojom::Result result);
 
-  std::unique_ptr<StateMigrationV1> v1_;
-  std::unique_ptr<StateMigrationV2> v2_;
-  std::unique_ptr<StateMigrationV3> v3_;
-  std::unique_ptr<StateMigrationV4> v4_;
-  std::unique_ptr<StateMigrationV5> v5_;
-  std::unique_ptr<StateMigrationV6> v6_;
-  std::unique_ptr<StateMigrationV7> v7_;
-  std::unique_ptr<StateMigrationV8> v8_;
-  std::unique_ptr<StateMigrationV9> v9_;
-  std::unique_ptr<StateMigrationV10> v10_;
-  std::unique_ptr<StateMigrationV11> v11_;
-  std::unique_ptr<StateMigrationV12> v12_;
-  std::unique_ptr<StateMigrationV13> v13_;
   const raw_ref<LedgerImpl> ledger_;
+  StateMigrationV1 v1_;
+  StateMigrationV2 v2_;
+  StateMigrationV3 v3_;
+  StateMigrationV4 v4_;
+  StateMigrationV5 v5_;
+  StateMigrationV6 v6_;
+  StateMigrationV7 v7_;
+  StateMigrationV8 v8_;
+  StateMigrationV9 v9_;
+  StateMigrationV10 v10_;
+  StateMigrationV11 v11_;
+  StateMigrationV12 v12_;
+  StateMigrationV13 v13_;
 };
 
 }  // namespace state

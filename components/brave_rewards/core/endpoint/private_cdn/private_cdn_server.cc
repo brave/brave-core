@@ -10,13 +10,9 @@ namespace ledger {
 namespace endpoint {
 
 PrivateCDNServer::PrivateCDNServer(LedgerImpl& ledger)
-    : get_publisher_(std::make_unique<private_cdn::GetPublisher>(ledger)) {}
+    : get_publisher_(ledger) {}
 
 PrivateCDNServer::~PrivateCDNServer() = default;
-
-private_cdn::GetPublisher* PrivateCDNServer::get_publisher() const {
-  return get_publisher_.get();
-}
 
 }  // namespace endpoint
 }  // namespace ledger

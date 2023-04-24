@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_IMPL_H_
 
 #include <cstdint>
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -18,9 +17,32 @@
 #include "brave/components/brave_ads/core/history_filter_types.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/history_sort_types.h"
+#include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/account/account_observer.h"
+#include "brave/components/brave_ads/core/internal/ads/inline_content_ad_handler.h"
+#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_handler.h"
+#include "brave/components/brave_ads/core/internal/ads/notification_ad_handler.h"
+#include "brave/components/brave_ads/core/internal/ads/promoted_content_ad_handler.h"
+#include "brave/components/brave_ads/core/internal/ads/search_result_ad_handler.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog.h"
+#include "brave/components/brave_ads/core/internal/conversions/conversions.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_observer.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+#include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator.h"
+#include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_processor.h"
+#include "brave/components/brave_ads/core/internal/processors/behavioral/purchase_intent/purchase_intent_processor.h"
+#include "brave/components/brave_ads/core/internal/processors/contextual/text_classification/text_classification_processor.h"
+#include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_processor.h"
+#include "brave/components/brave_ads/core/internal/reminder/reminder.h"
+#include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
+#include "brave/components/brave_ads/core/internal/resources/behavioral/multi_armed_bandits/epsilon_greedy_bandit_resource.h"
+#include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
+#include "brave/components/brave_ads/core/internal/resources/contextual/text_classification/text_classification_resource.h"
+#include "brave/components/brave_ads/core/internal/resources/contextual/text_embedding/text_embedding_resource.h"
+#include "brave/components/brave_ads/core/internal/transfer/transfer.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer_observer.h"
+#include "brave/components/brave_ads/core/internal/user_attention/user_reactions/user_reactions.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {
@@ -29,40 +51,6 @@ class Time;
 
 namespace brave_ads {
 
-namespace privacy {
-class TokenGenerator;
-}  // namespace privacy
-
-namespace processor {
-class EpsilonGreedyBandit;
-class PurchaseIntent;
-class TextClassification;
-class TextEmbedding;
-}  // namespace processor
-
-namespace resource {
-class AntiTargeting;
-class EpsilonGreedyBandit;
-class PurchaseIntent;
-class TextClassification;
-class TextEmbedding;
-}  // namespace resource
-
-class Account;
-class GlobalState;
-class Catalog;
-class Conversions;
-class IdleDetection;
-class InlineContentAdHandler;
-class NewTabPageAdHandler;
-class NotificationAdHandler;
-class PromotedContentAd;
-class Reminder;
-class SearchResultAd;
-class SubdivisionTargeting;
-class TabManager;
-class Transfer;
-class UserReactions;
 struct AdInfo;
 struct ConversionQueueItemInfo;
 struct NotificationAdInfo;
@@ -138,10 +126,10 @@ class AdsImpl final : public Ads,
 
   AdContentLikeActionType ToggleLikeAd(base::Value::Dict value) override;
   AdContentLikeActionType ToggleDislikeAd(base::Value::Dict value) override;
-  CategoryContentOptActionType ToggleMarkToReceiveAdsForCategory(
+  CategoryContentOptActionType ToggleLikeCategory(
       const std::string& category,
       const CategoryContentOptActionType& action_type) override;
-  CategoryContentOptActionType ToggleMarkToNoLongerReceiveAdsForCategory(
+  CategoryContentOptActionType ToggleDislikeCategory(
       const std::string& category,
       const CategoryContentOptActionType& action_type) override;
   bool ToggleSaveAd(base::Value::Dict value) override;
@@ -176,41 +164,39 @@ class AdsImpl final : public Ads,
 
   bool is_initialized_ = false;
 
-  std::unique_ptr<GlobalState> global_state_;
+  GlobalState global_state_;
 
-  std::unique_ptr<Catalog> catalog_;
+  Catalog catalog_;
 
-  std::unique_ptr<privacy::TokenGenerator> token_generator_;
-  std::unique_ptr<Account> account_;
+  privacy::TokenGenerator token_generator_;
+  Account account_;
 
-  std::unique_ptr<Transfer> transfer_;
+  Transfer transfer_;
 
-  std::unique_ptr<Conversions> conversions_;
+  Conversions conversions_;
 
-  std::unique_ptr<SubdivisionTargeting> subdivision_targeting_;
+  SubdivisionTargeting subdivision_targeting_;
 
-  std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
-  std::unique_ptr<resource::EpsilonGreedyBandit>
-      epsilon_greedy_bandit_resource_;
-  std::unique_ptr<resource::PurchaseIntent> purchase_intent_resource_;
-  std::unique_ptr<resource::TextClassification> text_classification_resource_;
-  std::unique_ptr<resource::TextEmbedding> text_embedding_resource_;
+  resource::AntiTargeting anti_targeting_resource_;
+  resource::EpsilonGreedyBandit epsilon_greedy_bandit_resource_;
+  resource::PurchaseIntent purchase_intent_resource_;
+  resource::TextClassification text_classification_resource_;
+  resource::TextEmbedding text_embedding_resource_;
 
-  std::unique_ptr<processor::EpsilonGreedyBandit>
-      epsilon_greedy_bandit_processor_;
-  std::unique_ptr<processor::PurchaseIntent> purchase_intent_processor_;
-  std::unique_ptr<processor::TextClassification> text_classification_processor_;
-  std::unique_ptr<processor::TextEmbedding> text_embedding_processor_;
+  processor::EpsilonGreedyBandit epsilon_greedy_bandit_processor_;
+  processor::PurchaseIntent purchase_intent_processor_;
+  processor::TextClassification text_classification_processor_;
+  processor::TextEmbedding text_embedding_processor_;
 
-  std::unique_ptr<InlineContentAdHandler> inline_content_ad_handler_;
-  std::unique_ptr<NewTabPageAdHandler> new_tab_page_ad_handler_;
-  std::unique_ptr<NotificationAdHandler> notification_ad_handler_;
-  std::unique_ptr<PromotedContentAd> promoted_content_ad_handler_;
-  std::unique_ptr<SearchResultAd> search_result_ad_handler_;
+  InlineContentAdHandler inline_content_ad_handler_;
+  NewTabPageAdHandler new_tab_page_ad_handler_;
+  NotificationAdHandler notification_ad_handler_;
+  PromotedContentAd promoted_content_ad_handler_;
+  SearchResultAd search_result_ad_handler_;
 
-  std::unique_ptr<Reminder> reminder_;
+  Reminder reminder_;
 
-  std::unique_ptr<UserReactions> user_reactions_;
+  UserReactions user_reactions_;
 
   base::WeakPtrFactory<AdsImpl> weak_factory_{this};
 };

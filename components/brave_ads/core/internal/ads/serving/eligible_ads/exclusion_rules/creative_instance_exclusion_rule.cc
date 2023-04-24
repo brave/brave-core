@@ -38,22 +38,16 @@ std::string CreativeInstanceExclusionRule::GetUuid(
   return creative_ad.creative_instance_id;
 }
 
-bool CreativeInstanceExclusionRule::ShouldExclude(
-    const CreativeAdInfo& creative_ad) {
+base::expected<void, std::string> CreativeInstanceExclusionRule::ShouldInclude(
+    const CreativeAdInfo& creative_ad) const {
   if (!DoesRespectCap(ad_events_, creative_ad)) {
-    last_message_ = base::ReplaceStringPlaceholders(
+    return base::unexpected(base::ReplaceStringPlaceholders(
         "creativeInstanceId $1 has exceeded the creative instance frequency "
         "cap",
-        {creative_ad.creative_instance_id}, nullptr);
-
-    return true;
+        {creative_ad.creative_instance_id}, nullptr));
   }
 
-  return false;
-}
-
-const std::string& CreativeInstanceExclusionRule::GetLastMessage() const {
-  return last_message_;
+  return base::ok();
 }
 
 }  // namespace brave_ads

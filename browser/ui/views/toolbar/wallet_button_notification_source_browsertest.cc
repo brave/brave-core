@@ -10,6 +10,7 @@
 #include "base/test/bind.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -288,8 +289,11 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   {
     base::RunLoop run_loop;
     tx_service()->RejectTransaction(
-        brave_wallet::mojom::CoinType::FIL, first_tx_meta_id,
-        base::BindLambdaForTesting([&](bool result) {
+        brave_wallet::mojom::CoinType::FIL,
+        brave_wallet::GetCurrentChainId(browser()->profile()->GetPrefs(),
+                                        brave_wallet::mojom::CoinType::FIL,
+                                        absl::nullopt),
+        first_tx_meta_id, base::BindLambdaForTesting([&](bool result) {
           EXPECT_TRUE(result);
           run_loop.Quit();
         }));
@@ -306,8 +310,11 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   {
     base::RunLoop run_loop;
     tx_service()->RejectTransaction(
-        brave_wallet::mojom::CoinType::ETH, second_tx_meta_id,
-        base::BindLambdaForTesting([&](bool result) {
+        brave_wallet::mojom::CoinType::ETH,
+        brave_wallet::GetCurrentChainId(browser()->profile()->GetPrefs(),
+                                        brave_wallet::mojom::CoinType::ETH,
+                                        absl::nullopt),
+        second_tx_meta_id, base::BindLambdaForTesting([&](bool result) {
           EXPECT_TRUE(result);
           run_loop.Quit();
         }));
@@ -324,8 +331,11 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   {
     base::RunLoop run_loop;
     tx_service()->RejectTransaction(
-        brave_wallet::mojom::CoinType::SOL, third_tx_meta_id,
-        base::BindLambdaForTesting([&](bool result) {
+        brave_wallet::mojom::CoinType::SOL,
+        brave_wallet::GetCurrentChainId(browser()->profile()->GetPrefs(),
+                                        brave_wallet::mojom::CoinType::SOL,
+                                        absl::nullopt),
+        third_tx_meta_id, base::BindLambdaForTesting([&](bool result) {
           EXPECT_TRUE(result);
           run_loop.Quit();
         }));

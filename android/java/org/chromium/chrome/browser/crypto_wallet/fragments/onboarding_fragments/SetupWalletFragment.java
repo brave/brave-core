@@ -20,12 +20,12 @@ import androidx.fragment.app.FragmentActivity;
 
 import org.chromium.base.Log;
 import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
-import org.chromium.content_public.browser.UiThreadTaskTraits;
 public class SetupWalletFragment extends CryptoOnboardingFragment {
     private static final String TAG = "SetupWalletFragment";
 
@@ -66,7 +66,7 @@ public class SetupWalletFragment extends CryptoOnboardingFragment {
             checkOnBraveActivity(false, true);
             onNextPage.gotoRestorePage(true);
         });
-        PostTask.postTask(UiThreadTaskTraits.DEFAULT, () -> {
+        PostTask.postTask(TaskTraits.UI_DEFAULT, () -> {
             if (mRestartSetupAction) {
                 setupCryptoButton.performClick();
             } else if (mRestartRestoreAction) {

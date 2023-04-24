@@ -16,7 +16,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
 #include "components/variations/variations_switches.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -28,23 +28,15 @@ struct ParamInfo final {
   CommandLineSwitchInfo command_line_switch;
   bool expected_did_override_command_line_switch;
 } const kTestCases[] = {
-    {/*command_line_switch*/ {kFooBarSwitch, {}},
-     /*expected_did_override_command_line_switch*/ false},
-    {/*command_line_switch*/ {variations::switches::kFakeVariationsChannel, {}},
-     /*expected_did_override_command_line_switch*/ false},
-    {/*command_line_switch*/ {variations::switches::kFakeVariationsChannel,
-                              "FooBar"},
-     /*expected_did_override_command_line_switch*/ true},
-    {/*command_line_switch*/ {variations::switches::kVariationsOverrideCountry,
-                              {}},
-     /*expected_did_override_command_line_switch*/ false},
-    {/*command_line_switch*/ {variations::switches::kVariationsOverrideCountry,
-                              "FooBar"},
-     /*expected_did_override_command_line_switch*/ true}};
+    {{kFooBarSwitch, {}}, false},
+    {{variations::switches::kFakeVariationsChannel, {}}, false},
+    {{variations::switches::kFakeVariationsChannel, "FooBar"}, true},
+    {{variations::switches::kVariationsOverrideCountry, {}}, false},
+    {{variations::switches::kVariationsOverrideCountry, "FooBar"}, true}};
 
 }  // namespace
 
-class BatAdsDidOverrideCommandLineSwitchValuesUtilTest
+class BraveAdsDidOverrideCommandLineSwitchValuesUtilTest
     : public UnitTestBase,
       public ::testing::WithParamInterface<ParamInfo> {
  protected:
@@ -63,7 +55,7 @@ class BatAdsDidOverrideCommandLineSwitchValuesUtilTest
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-TEST_P(BatAdsDidOverrideCommandLineSwitchValuesUtilTest,
+TEST_P(BraveAdsDidOverrideCommandLineSwitchValuesUtilTest,
        DidOverrideCommandLineSwitchValues) {
   // Arrange
 
@@ -92,7 +84,7 @@ std::string TestParamToString(
 }
 
 INSTANTIATE_TEST_SUITE_P(,
-                         BatAdsDidOverrideCommandLineSwitchValuesUtilTest,
+                         BraveAdsDidOverrideCommandLineSwitchValuesUtilTest,
                          testing::ValuesIn(kTestCases),
                          TestParamToString);
 

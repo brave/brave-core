@@ -14,9 +14,9 @@
 namespace brave_ads {
 
 void ResetEligibleAds(const AdType& type) {
-  ClientStateManager::GetInstance()->ResetAllSeenAdsForType(type);
+  ClientStateManager::GetInstance().ResetAllSeenAdsForType(type);
 
-  ClientStateManager::GetInstance()->ResetAllSeenAdvertisersForType(type);
+  ClientStateManager::GetInstance().ResetAllSeenAdvertisersForType(type);
 
   ResetAdEvents(base::BindOnce([](const bool success) { CHECK(success); }));
 }

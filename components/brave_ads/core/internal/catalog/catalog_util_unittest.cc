@@ -10,15 +10,15 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BatAdsCatalogUtilTest : public UnitTestBase {};
+class BraveAdsCatalogUtilTest : public UnitTestBase {};
 
-TEST_F(BatAdsCatalogUtilTest, ResetCatalog) {
+TEST_F(BraveAdsCatalogUtilTest, ResetCatalog) {
   // Arrange
-  SetCatalogId("150a9518-4db8-4fba-b104-0c420a1d9c0c");
+  SetCatalogId(kCatalogId);
   SetCatalogVersion(1);
   SetCatalogPing(base::Hours(2));
   SetCatalogLastUpdated(Now());
@@ -27,58 +27,53 @@ TEST_F(BatAdsCatalogUtilTest, ResetCatalog) {
   ResetCatalog();
 
   // Assert
-  EXPECT_TRUE(!ads_client_mock_->HasPrefPath(prefs::kCatalogId) &&
-              !ads_client_mock_->HasPrefPath(prefs::kCatalogVersion) &&
-              !ads_client_mock_->HasPrefPath(prefs::kCatalogPing) &&
-              !ads_client_mock_->HasPrefPath(prefs::kCatalogLastUpdated));
+  EXPECT_TRUE(!ads_client_mock_.HasPrefPath(prefs::kCatalogId) &&
+              !ads_client_mock_.HasPrefPath(prefs::kCatalogVersion) &&
+              !ads_client_mock_.HasPrefPath(prefs::kCatalogPing) &&
+              !ads_client_mock_.HasPrefPath(prefs::kCatalogLastUpdated));
 }
 
-TEST_F(BatAdsCatalogUtilTest, CatalogExists) {
+TEST_F(BraveAdsCatalogUtilTest, CatalogExists) {
   // Arrange
   SetCatalogVersion(1);
 
   // Act
-  const bool does_exist = DoesCatalogExist();
 
   // Assert
-  EXPECT_TRUE(does_exist);
+  EXPECT_TRUE(DoesCatalogExist());
 }
 
-TEST_F(BatAdsCatalogUtilTest, CatalogDoesNotExist) {
+TEST_F(BraveAdsCatalogUtilTest, CatalogDoesNotExist) {
   // Arrange
   SetCatalogVersion(0);
 
   // Act
-  const bool does_exist = DoesCatalogExist();
 
   // Assert
-  EXPECT_FALSE(does_exist);
+  EXPECT_FALSE(DoesCatalogExist());
 }
 
-TEST_F(BatAdsCatalogUtilTest, CatalogHasChanged) {
+TEST_F(BraveAdsCatalogUtilTest, CatalogHasChanged) {
   // Arrange
   SetCatalogId(kCatalogId);
 
   // Act
 
   // Assert
-  const bool has_changed =
-      HasCatalogChanged("150a9518-4db8-4fba-b104-0c420a1d9c0c");
-  EXPECT_TRUE(has_changed);
+  EXPECT_TRUE(HasCatalogChanged(kAnotherCatalogId));
 }
 
-TEST_F(BatAdsCatalogUtilTest, CatalogHasNotChanged) {
+TEST_F(BraveAdsCatalogUtilTest, CatalogHasNotChanged) {
   // Arrange
   SetCatalogId(kCatalogId);
 
   // Act
 
   // Assert
-  const bool has_changed = HasCatalogChanged(kCatalogId);
-  EXPECT_FALSE(has_changed);
+  EXPECT_FALSE(HasCatalogChanged(kCatalogId));
 }
 
-TEST_F(BatAdsCatalogUtilTest, CatalogHasExpired) {
+TEST_F(BraveAdsCatalogUtilTest, CatalogHasExpired) {
   // Arrange
   SetCatalogLastUpdated(Now());
 
@@ -86,11 +81,10 @@ TEST_F(BatAdsCatalogUtilTest, CatalogHasExpired) {
   AdvanceClockBy(base::Days(1));
 
   // Assert
-  const bool has_expired = HasCatalogExpired();
-  EXPECT_TRUE(has_expired);
+  EXPECT_TRUE(HasCatalogExpired());
 }
 
-TEST_F(BatAdsCatalogUtilTest, CatalogHasNotExpired) {
+TEST_F(BraveAdsCatalogUtilTest, CatalogHasNotExpired) {
   // Arrange
   SetCatalogLastUpdated(Now());
 
@@ -98,8 +92,7 @@ TEST_F(BatAdsCatalogUtilTest, CatalogHasNotExpired) {
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
   // Assert
-  const bool has_expired = HasCatalogExpired();
-  EXPECT_FALSE(has_expired);
+  EXPECT_FALSE(HasCatalogExpired());
 }
 
 }  // namespace brave_ads

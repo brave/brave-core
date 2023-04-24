@@ -9,7 +9,11 @@ import * as S from '../general'
 import { AlertCircleIcon } from 'brave-ui/components/icons'
 import ContactSupport from '../contact-support'
 
-function PurchaseFailedPanel () {
+interface Props {
+  stateDescription?: string
+}
+
+function PurchaseFailedPanel (props: Props) {
   const [isContactSupportVisible, setContactSupportVisible] = React.useState(false)
   const closeContactSupport = () => {
     setContactSupportVisible(false)
@@ -23,13 +27,15 @@ function PurchaseFailedPanel () {
     />
   }
 
+  const title = props.stateDescription ? props.stateDescription
+                                       : getLocale('braveVpnPurchaseFailed')
   return (
     <S.Box>
       <S.PanelContent>
         <S.IconBox>
           <AlertCircleIcon color='#84889C' />
         </S.IconBox>
-        <S.Title>{getLocale('braveVpnPurchaseFailed')}</S.Title>
+        <S.Title>{title}</S.Title>
         {!isContactSupportVisible && <S.ButtonText onClick={showContactSupport}>
             {getLocale('braveVpnContactSupport')}
         </S.ButtonText>

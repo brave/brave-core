@@ -138,7 +138,7 @@ class BraveIdentityManagerTest : public testing::Test {
     init_params.primary_account_mutator =
         std::make_unique<PrimaryAccountMutatorImpl>(
             account_tracker_service.get(), token_service.get(),
-            primary_account_manager.get(), &pref_service_,
+            primary_account_manager.get(), &pref_service_, &signin_client_,
             AccountConsistencyMethod::kDisabled);
 
 #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)

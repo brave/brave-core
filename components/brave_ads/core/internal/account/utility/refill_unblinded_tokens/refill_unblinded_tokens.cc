@@ -67,7 +67,7 @@ RefillUnblindedTokens::~RefillUnblindedTokens() {
 }
 
 void RefillUnblindedTokens::MaybeRefill(const WalletInfo& wallet) {
-  if (!ConfirmationStateManager::GetInstance()->IsInitialized() ||
+  if (!ConfirmationStateManager::GetInstance().IsInitialized() ||
       is_processing_ || retry_timer_.IsRunning()) {
     return;
   }

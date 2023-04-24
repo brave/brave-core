@@ -19,7 +19,7 @@ bool WasUserActive() {
       ToUserActivityTriggers(kUserActivityTriggers.Get());
 
   const UserActivityEventList events =
-      UserActivityManager::GetInstance()->GetHistoryForTimeWindow(
+      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           kUserActivityTimeWindow.Get());
 
   return GetUserActivityScore(triggers, events) >= kUserActivityThreshold.Get();

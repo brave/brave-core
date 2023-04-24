@@ -19,7 +19,7 @@ namespace privacy {
 
 class UnblindedPaymentTokens;
 
-UnblindedPaymentTokens* GetUnblindedPaymentTokens();
+UnblindedPaymentTokens& GetUnblindedPaymentTokens();
 
 UnblindedPaymentTokenList SetUnblindedPaymentTokens(int count);
 

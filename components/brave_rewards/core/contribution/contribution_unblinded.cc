@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <memory>
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
@@ -93,13 +94,10 @@ void GetStatisticalVotingWinners(
 namespace ledger {
 namespace contribution {
 
-Unblinded::Unblinded(LedgerImpl& ledger) : ledger_(ledger) {
-  credentials_promotion_ = credential::CredentialsFactory::Create(
-      ledger, mojom::CredsBatchType::PROMOTION);
-  credentials_sku_ = credential::CredentialsFactory::Create(
-      ledger, mojom::CredsBatchType::SKU);
-  DCHECK(credentials_promotion_ && credentials_sku_);
-}
+Unblinded::Unblinded(LedgerImpl& ledger)
+    : ledger_(ledger),
+      credentials_promotion_(ledger),
+      credentials_sku_(ledger) {}
 
 Unblinded::~Unblinded() = default;
 
@@ -428,11 +426,11 @@ void Unblinded::OnProcessTokens(
 
     if (redeem.processor == mojom::ContributionProcessor::UPHOLD ||
         redeem.processor == mojom::ContributionProcessor::GEMINI) {
-      credentials_sku_->RedeemTokens(redeem, redeem_callback);
+      credentials_sku_.RedeemTokens(redeem, redeem_callback);
       return;
     }
 
-    credentials_promotion_->RedeemTokens(redeem, redeem_callback);
+    credentials_promotion_.RedeemTokens(redeem, redeem_callback);
     return;
   }
 

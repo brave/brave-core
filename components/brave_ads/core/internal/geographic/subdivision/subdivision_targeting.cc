@@ -20,11 +20,11 @@
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
+#include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/get_subdivision_url_request_builder.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/get_subdivision_url_request_builder_constants.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting_util.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/supported_subdivision_codes.h"
-#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "net/http/http_status_code.h"
 
@@ -282,7 +282,7 @@ void SubdivisionTargeting::Retry() {
 }
 
 void SubdivisionTargeting::FetchAfterDelay() {
-  const base::TimeDelta delay = GlobalState::GetInstance()->Flags().should_debug
+  const base::TimeDelta delay = ShouldDebug()
                                     ? kDebugFetchSubdivisionTargetingPing
                                     : kFetchSubdivisionTargetingPing;
 

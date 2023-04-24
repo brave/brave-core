@@ -27,6 +27,8 @@ std::string getAccountInfo(const std::string& pubkey);
 std::string getFeeForMessage(const std::string& message);
 std::string getBlockHeight();
 std::string getTokenAccountsByOwner(const std::string& pubkey);
+std::string isBlockhashValid(const std::string& blockhash,
+                             const absl::optional<std::string>& commitment);
 
 }  // namespace solana
 

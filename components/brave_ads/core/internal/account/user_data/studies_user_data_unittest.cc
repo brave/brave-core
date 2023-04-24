@@ -11,11 +11,11 @@
 #include "base/test/values_test_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::user_data {
 
-TEST(BatAdsStudiesUserDataTest, GetStudiesForNoFieldTrials) {
+TEST(BraveAdsStudiesUserDataTest, GetStudiesForNoFieldTrials) {
   // Arrange
 
   // Act
@@ -29,24 +29,18 @@ TEST(BatAdsStudiesUserDataTest, GetStudiesForNoFieldTrials) {
   EXPECT_EQ(expected_user_data, user_data);
 }
 
-TEST(BatAdsStudiesUserDataTest, GetStudies) {
+TEST(BraveAdsStudiesUserDataTest, GetStudies) {
   // Arrange
-  const std::string name_1 = "BraveAds.FooStudy";
-  const std::string group_name_1 = "GroupA";
   const scoped_refptr<base::FieldTrial> field_trial_1 =
-      base::FieldTrialList::CreateFieldTrial(name_1, group_name_1);
+      base::FieldTrialList::CreateFieldTrial("BraveAds.FooStudy", "GroupA");
   field_trial_1->group_name();
 
-  const std::string name_2 = "BraveAds.BarStudy";
-  const std::string group_name_2 = "GroupB";
   const scoped_refptr<base::FieldTrial> field_trial_2 =
-      base::FieldTrialList::CreateFieldTrial(name_2, group_name_2);
+      base::FieldTrialList::CreateFieldTrial("BraveAds.BarStudy", "GroupB");
   field_trial_2->group_name();
 
-  const std::string name_3 = "FooBarStudy";
-  const std::string group_name_3 = "GroupC";
   const scoped_refptr<base::FieldTrial> field_trial_3 =
-      base::FieldTrialList::CreateFieldTrial(name_3, group_name_3);
+      base::FieldTrialList::CreateFieldTrial("FooBarStudy", "GroupC");
   field_trial_3->group_name();
 
   ASSERT_EQ(3U, base::FieldTrialList::GetFieldTrialCount());

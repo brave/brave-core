@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/verification_signature_unittest_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::privacy::cbr {
 
@@ -18,7 +18,7 @@ namespace {
 constexpr char kMessage[] = "The quick brown fox jumps over the lazy dog";
 }  // namespace
 
-TEST(BatAdsVerificationKeyTest, Sign) {
+TEST(BraveAdsVerificationKeyTest, Sign) {
   // Arrange
   VerificationKey verification_key = GetVerificationKey();
 
@@ -31,7 +31,7 @@ TEST(BatAdsVerificationKeyTest, Sign) {
   EXPECT_EQ(GetVerificationSignature(), *verification_signature);
 }
 
-TEST(BatAdsVerificationKeyTest, Verify) {
+TEST(BraveAdsVerificationKeyTest, Verify) {
   // Arrange
   VerificationKey verification_key = GetVerificationKey();
 
@@ -40,7 +40,8 @@ TEST(BatAdsVerificationKeyTest, Verify) {
   EXPECT_TRUE(verification_key.Verify(GetVerificationSignature(), kMessage));
 }
 
-TEST(BatAdsVerificationKeyTest, FailToVerifyWithInvalidVerificationSignature) {
+TEST(BraveAdsVerificationKeyTest,
+     FailToVerifyWithInvalidVerificationSignature) {
   // Arrange
   VerificationKey verification_key = GetVerificationKey();
 

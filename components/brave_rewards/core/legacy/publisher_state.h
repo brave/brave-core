@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEGACY_PUBLISHER_STATE_H_
 
 #include <map>
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -47,7 +46,7 @@ class LegacyPublisherState {
               const std::string& data);
 
   const raw_ref<ledger::LedgerImpl> ledger_;
-  std::unique_ptr<ledger::PublisherSettingsProperties> state_;
+  ledger::PublisherSettingsProperties state_;
 };
 
 }  // namespace publisher

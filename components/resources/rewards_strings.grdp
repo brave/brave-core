@@ -34,10 +34,10 @@
     Log in to your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account
   </message>
   <message name="IDS_REWARDS_WALLET_MONTHLY_TIPS" desc="">
-    Monthly Tips
+    Monthly Contributions
   </message>
   <message name="IDS_REWARDS_WALLET_ONE_TIME_TIPS" desc="">
-    One-Time Tips
+    Contributions
   </message>
   <message name="IDS_REWARDS_WALLET_PENDING_CONTRIBUTIONS" desc="">
     Pending contributions
@@ -334,7 +334,7 @@
     Contributions
   </message>
   <message name="IDS_REWARDS_NOTIFICATION_MONTHLY_TIP_COMPLETED_TEXT" desc="">
-    Your monthly tips have been processed.
+    Your monthly contributions have been processed.
   </message>
   <message name="IDS_REWARDS_NOTIFICATION_PUBLISHER_VERIFIED_TITLE" desc="">
     Pending contribution
@@ -493,10 +493,10 @@
     Creators receive your token contributions automatically based on your engagement levels that we measure as ‘Attention’.
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_TIPPING_HEADER" desc="">
-    Say thank you with tips
+    Say thank you with contributions
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_TIPPING_TEXT" desc="">
-    Tipping is a way to personally encourage and support content or creators that you love. Get tippin!
+    Contributions are a way to personally encourage and support content or creators that you love.
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SETUP_HEADER" desc="">
     Lastly, let’s get you set up

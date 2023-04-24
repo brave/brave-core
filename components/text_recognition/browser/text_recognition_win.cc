@@ -49,12 +49,6 @@ bool GetTextFromImage(const std::string& language_code,
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
 
-  // Loads functions dynamically at runtime to prevent library dependencies.
-  if (!base::win::ResolveCoreWinRTDelayload()) {
-    VLOG(2) << "Failed loading functions from combase.dll";
-    return false;
-  }
-
   ComPtr<IOcrEngineStatics> engine_factory;
   HRESULT hr = GetActivationFactory<IOcrEngineStatics,
                                     RuntimeClass_Windows_Media_Ocr_OcrEngine>(
@@ -141,12 +135,6 @@ bool GetTextFromImage(const std::string& language_code,
 std::vector<std::string> GetAvailableRecognizerLanguages() {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
-
-  // Loads functions dynamically at runtime to prevent library dependencies.
-  if (!base::win::ResolveCoreWinRTDelayload()) {
-    VLOG(2) << "Failed loading functions from combase.dll";
-    return {};
-  }
 
   ComPtr<IOcrEngineStatics> engine_factory;
   HRESULT hr = GetActivationFactory<IOcrEngineStatics,

@@ -9,26 +9,16 @@
 
 namespace brave_ads {
 
-bool CatalogPermissionRule::ShouldAllow() {
-  return DoesRespectCap();
-}
-
-const std::string& CatalogPermissionRule::GetLastMessage() const {
-  return last_message_;
-}
-
-bool CatalogPermissionRule::DoesRespectCap() {
+base::expected<void, std::string> CatalogPermissionRule::ShouldAllow() const {
   if (!DoesCatalogExist()) {
-    last_message_ = "Catalog does not exist";
-    return false;
+    return base::unexpected("Catalog does not exist");
   }
 
   if (HasCatalogExpired()) {
-    last_message_ = "Catalog has expired";
-    return false;
+    return base::unexpected("Catalog has expired");
   }
 
-  return true;
+  return base::ok();
 }
 
 }  // namespace brave_ads

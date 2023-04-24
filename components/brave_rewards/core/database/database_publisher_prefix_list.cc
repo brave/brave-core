@@ -85,15 +85,14 @@ void DatabasePublisherPrefixList::Search(
       });
 }
 
-void DatabasePublisherPrefixList::Reset(
-    std::unique_ptr<publisher::PrefixListReader> reader,
-    ledger::LegacyResultCallback callback) {
+void DatabasePublisherPrefixList::Reset(publisher::PrefixListReader reader,
+                                        ledger::LegacyResultCallback callback) {
   if (reader_) {
     BLOG(1, "Publisher prefix list batch insert in progress");
     callback(mojom::Result::LEDGER_ERROR);
     return;
   }
-  if (reader->empty()) {
+  if (reader.empty()) {
     BLOG(0, "Cannot reset with an empty publisher prefix list");
     callback(mojom::Result::LEDGER_ERROR);
     return;
@@ -137,13 +136,13 @@ void DatabasePublisherPrefixList::InsertNext(
       [this, iter, callback](mojom::DBCommandResponsePtr response) {
         if (!response ||
             response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-          reader_ = nullptr;
+          reader_ = absl::nullopt;
           callback(mojom::Result::LEDGER_ERROR);
           return;
         }
 
         if (iter == reader_->end()) {
-          reader_ = nullptr;
+          reader_ = absl::nullopt;
           callback(mojom::Result::LEDGER_OK);
           return;
         }

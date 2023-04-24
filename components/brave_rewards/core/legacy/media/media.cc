@@ -15,9 +15,7 @@
 namespace braveledger_media {
 
 Media::Media(ledger::LedgerImpl& ledger)
-    : ledger_(ledger),
-      media_youtube_(new braveledger_media::YouTube(ledger)),
-      media_github_(new braveledger_media::GitHub(ledger)) {}
+    : ledger_(ledger), media_youtube_(ledger), media_github_(ledger) {}
 
 Media::~Media() = default;
 
@@ -42,12 +40,12 @@ void Media::ProcessMedia(const base::flat_map<std::string, std::string>& parts,
   }
 
   if (type == YOUTUBE_MEDIA_TYPE) {
-    media_youtube_->ProcessMedia(parts, *visit_data);
+    media_youtube_.ProcessMedia(parts, *visit_data);
     return;
   }
 
   if (type == GITHUB_MEDIA_TYPE) {
-    media_github_->ProcessMedia(parts, *visit_data);
+    media_github_.ProcessMedia(parts, *visit_data);
     return;
   }
 }
@@ -57,9 +55,9 @@ void Media::GetMediaActivityFromUrl(uint64_t window_id,
                                     const std::string& type,
                                     const std::string& publisher_blob) {
   if (type == YOUTUBE_MEDIA_TYPE) {
-    media_youtube_->ProcessActivityFromUrl(window_id, *visit_data);
+    media_youtube_.ProcessActivityFromUrl(window_id, *visit_data);
   } else if (type == GITHUB_MEDIA_TYPE) {
-    media_github_->ProcessActivityFromUrl(window_id, *visit_data);
+    media_github_.ProcessActivityFromUrl(window_id, *visit_data);
   } else {
     OnMediaActivityError(std::move(visit_data), type, window_id);
   }
@@ -94,7 +92,7 @@ void Media::SaveMediaInfo(const std::string& type,
                           const base::flat_map<std::string, std::string>& data,
                           ledger::PublisherInfoCallback callback) {
   if (type == GITHUB_MEDIA_TYPE) {
-    media_github_->SaveMediaInfo(data, callback);
+    media_github_.SaveMediaInfo(data, callback);
     return;
   }
 }

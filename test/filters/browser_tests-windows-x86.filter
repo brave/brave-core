@@ -14,3 +14,5 @@
 # These tests fail on x86 CI but pass locally
 -MetricIntegrationTest.LargestContentfulPaint_SubframeInput
 -SaveDesktopSnapshotTest.SaveDesktopSnapshot
+
+-PageLoadMetricsBrowserTestTerminatedPage.UkmIsRecordedWhenRenderProcessShutsDown

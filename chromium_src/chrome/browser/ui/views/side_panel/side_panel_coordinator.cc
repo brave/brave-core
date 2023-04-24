@@ -6,8 +6,10 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/views/sidebar/sidebar_side_panel_utils.h"
 #include "brave/components/sidebar/sidebar_service.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
+#include "chrome/grit/generated_resources.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace {
@@ -39,6 +41,15 @@ absl::optional<SidePanelEntry::Id> GetDefaultEntryId(Profile* profile) {
       return;                                                        \
   }
 
+// Undef upstream's to avoid redefined error.
+#undef IDS_TOOLTIP_SIDE_PANEL_HIDE
+#undef IDS_TOOLTIP_SIDE_PANEL_SHOW
+
+#define IDS_TOOLTIP_SIDE_PANEL_HIDE IDS_TOOLTIP_SIDEBAR_HIDE
+#define IDS_TOOLTIP_SIDE_PANEL_SHOW IDS_TOOLTIP_SIDEBAR_SHOW
+
 #include "src/chrome/browser/ui/views/side_panel/side_panel_coordinator.cc"
+#undef IDS_TOOLTIP_SIDE_PANEL_HIDE
+#undef IDS_TOOLTIP_SIDE_PANEL_SHOW
 #undef BRAVE_SIDE_PANEL_COORDINATOR_CREATE_HEADER
 #undef BRAVE_SIDE_PANEL_COORDINATOR_SHOW

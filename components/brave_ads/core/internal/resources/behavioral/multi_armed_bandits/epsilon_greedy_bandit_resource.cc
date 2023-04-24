@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/resources/behavioral/multi_armed_bandits/epsilon_greedy_bandit_resource.h"
 
-#include "base/check.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -14,9 +13,7 @@
 
 namespace brave_ads::resource {
 
-EpsilonGreedyBandit::EpsilonGreedyBandit(Catalog* catalog) : catalog_(catalog) {
-  DCHECK(catalog_);
-
+EpsilonGreedyBandit::EpsilonGreedyBandit(Catalog& catalog) : catalog_(catalog) {
   catalog_->AddObserver(this);
 }
 
