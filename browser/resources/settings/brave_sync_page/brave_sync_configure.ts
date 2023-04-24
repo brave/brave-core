@@ -6,13 +6,15 @@
 import './brave_sync_code_dialog.js';
 import './brave_sync_delete_account_dialog.js';
 
-import {DomRepeatEvent, PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {SyncStatus} from '/shared/settings/people_page/sync_browser_proxy.js';
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {WebUiListenerMixin, WebUiListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
+import {DomRepeatEvent, PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+
 import {BaseMixin} from '../base_mixin.js'
-import {Route,Router} from '../router.js';
+import {Route, Router} from '../router.js';
+
 import {BraveDeviceInfo, BraveSyncBrowserProxy} from './brave_sync_browser_proxy.js';
-import {SyncStatus} from '../people_page/sync_browser_proxy.js';
 import {getTemplate} from './brave_sync_configure.html.js'
 
 /**
