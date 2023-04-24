@@ -21,6 +21,7 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/ads_util.h"
 #include "brave/components/brave_ads/core/supported_subdivisions.h"
@@ -129,9 +130,13 @@ class RewardsDOMHandler
   void ToggleAdThumbDown(const base::Value::List& args);
   void OnToggleAdThumbDown(base::Value::Dict dict);
   void ToggleAdOptIn(const base::Value::List& args);
-  void OnToggleAdOptIn(const std::string& category, const int action);
+  void OnToggleAdOptIn(
+      const std::string& category,
+      const brave_ads::mojom::UserReactionType user_reaction_type);
   void ToggleAdOptOut(const base::Value::List& args);
-  void OnToggleAdOptOut(const std::string& category, const int action);
+  void OnToggleAdOptOut(
+      const std::string& category,
+      const brave_ads::mojom::UserReactionType user_reaction_type);
   void ToggleSavedAd(const base::Value::List& args);
   void OnToggleSavedAd(base::Value::Dict dict);
   void ToggleFlaggedAd(const base::Value::List& args);
@@ -1324,22 +1329,24 @@ void RewardsDOMHandler::ToggleAdOptIn(const base::Value::List& args) {
   AllowJavascript();
 
   const std::string category = args[0].GetString();
-  const int action = args[1].GetInt();
+  const int user_reaction_type = args[1].GetInt();
   ads_service_->ToggleLikeCategory(
-      category, action,
+      category,
+      static_cast<brave_ads::mojom::UserReactionType>(user_reaction_type),
       base::BindOnce(&RewardsDOMHandler::OnToggleAdOptIn,
                      weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnToggleAdOptIn(const std::string& category,
-                                        int action) {
+void RewardsDOMHandler::OnToggleAdOptIn(
+    const std::string& category,
+    const brave_ads::mojom::UserReactionType user_reaction_type) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
   base::Value::Dict value;
   value.Set("category", category);
-  value.Set("action", action);
+  value.Set("action", static_cast<int>(user_reaction_type));
   CallJavascriptFunction("brave_rewards.onToggleAdOptIn", value);
 }
 
@@ -1353,22 +1360,24 @@ void RewardsDOMHandler::ToggleAdOptOut(const base::Value::List& args) {
   AllowJavascript();
 
   const std::string category = args[0].GetString();
-  const int action = args[1].GetInt();
+  const int user_reaction_type = args[1].GetInt();
   ads_service_->ToggleDislikeCategory(
-      category, action,
+      category,
+      static_cast<brave_ads::mojom::UserReactionType>(user_reaction_type),
       base::BindOnce(&RewardsDOMHandler::OnToggleAdOptOut,
                      weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnToggleAdOptOut(const std::string& category,
-                                         int action) {
+void RewardsDOMHandler::OnToggleAdOptOut(
+    const std::string& category,
+    const brave_ads::mojom::UserReactionType user_reaction_type) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
   base::Value::Dict value;
   value.Set("category", category);
-  value.Set("action", action);
+  value.Set("action", static_cast<int>(user_reaction_type));
   CallJavascriptFunction("brave_rewards.onToggleAdOptOut", value);
 }
 

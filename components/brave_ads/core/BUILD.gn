@@ -27,7 +27,6 @@ static_library("core") {
 source_set("headers") {
   sources = [
     "ad_constants.h",
-    "ad_content_action_types.h",
     "ad_content_info.h",
     "ad_content_value_util.h",
     "ad_event_history.h",
@@ -40,7 +39,6 @@ source_set("headers") {
     "ads_client_notifier.h",
     "ads_client_notifier_observer.h",
     "ads_util.h",
-    "category_content_action_types.h",
     "category_content_info.h",
     "confirmation_type.h",
     "database.h",

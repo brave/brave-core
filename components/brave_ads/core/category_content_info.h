@@ -8,15 +8,15 @@
 
 #include <string>
 
-#include "brave/components/brave_ads/core/category_content_action_types.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/export.h"
 
 namespace brave_ads {
 
 struct ADS_EXPORT CategoryContentInfo final {
   std::string category;
-  CategoryContentOptActionType opt_action_type =
-      CategoryContentOptActionType::kNone;
+  mojom::UserReactionType user_reaction_type =
+      mojom::UserReactionType::kNeutral;
 };
 
 bool operator==(const CategoryContentInfo&, const CategoryContentInfo&);

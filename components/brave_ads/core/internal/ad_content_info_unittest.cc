@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/ad_content_info.h"
 
-#include "brave/components/brave_ads/core/ad_content_action_types.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -14,56 +13,52 @@ namespace brave_ads {
 
 class BraveAdsAdContentInfoTest : public UnitTestBase {};
 
-TEST_F(BraveAdsAdContentInfoTest, ToggleThumbUp) {
+TEST_F(BraveAdsAdContentInfoTest, ToggleFromNeutralToLikeUserReactionType) {
   // Arrange
   const AdContentInfo ad_content;
 
   // Act
-  const AdContentLikeActionType action_type =
-      ad_content.ToggleThumbUpActionType();
 
   // Assert
-  EXPECT_EQ(AdContentLikeActionType::kThumbsUp, action_type);
+  EXPECT_EQ(mojom::UserReactionType::kLike,
+            ad_content.ToggleLikeUserReactionType());
 }
 
-TEST_F(BraveAdsAdContentInfoTest, ToggleThumbUpToNetrual) {
+TEST_F(BraveAdsAdContentInfoTest, ToggleFromLikeToNeutralUserReactionType) {
   // Arrange
   AdContentInfo ad_content;
-  ad_content.like_action_type = ad_content.ToggleThumbUpActionType();
-  ASSERT_EQ(AdContentLikeActionType::kThumbsUp, ad_content.like_action_type);
+  ad_content.user_reaction_type = ad_content.ToggleLikeUserReactionType();
+  ASSERT_EQ(mojom::UserReactionType::kLike, ad_content.user_reaction_type);
 
   // Act
-  const AdContentLikeActionType like_action_type =
-      ad_content.ToggleThumbUpActionType();
 
   // Assert
-  EXPECT_EQ(AdContentLikeActionType::kNeutral, like_action_type);
+  EXPECT_EQ(mojom::UserReactionType::kNeutral,
+            ad_content.ToggleLikeUserReactionType());
 }
 
-TEST_F(BraveAdsAdContentInfoTest, ToggleThumbDown) {
+TEST_F(BraveAdsAdContentInfoTest, ToggleFromNeutralToDislikeUserReactionType) {
   // Arrange
   const AdContentInfo ad_content;
 
   // Act
-  const AdContentLikeActionType like_action_type =
-      ad_content.ToggleThumbDownActionType();
 
   // Assert
-  EXPECT_EQ(AdContentLikeActionType::kThumbsDown, like_action_type);
+  EXPECT_EQ(mojom::UserReactionType::kDislike,
+            ad_content.ToggleDislikeUserReactionType());
 }
 
-TEST_F(BraveAdsAdContentInfoTest, ToggleThumbDownToNetrual) {
+TEST_F(BraveAdsAdContentInfoTest, ToggleFromDisikeToNeutralUserReactionType) {
   // Arrange
   AdContentInfo ad_content;
-  ad_content.like_action_type = ad_content.ToggleThumbDownActionType();
-  ASSERT_EQ(AdContentLikeActionType::kThumbsDown, ad_content.like_action_type);
+  ad_content.user_reaction_type = ad_content.ToggleDislikeUserReactionType();
+  ASSERT_EQ(mojom::UserReactionType::kDislike, ad_content.user_reaction_type);
 
   // Act
-  const AdContentLikeActionType like_action_type =
-      ad_content.ToggleThumbDownActionType();
 
   // Assert
-  EXPECT_EQ(AdContentLikeActionType::kNeutral, like_action_type);
+  EXPECT_EQ(mojom::UserReactionType::kNeutral,
+            ad_content.ToggleDislikeUserReactionType());
 }
 
 }  // namespace brave_ads

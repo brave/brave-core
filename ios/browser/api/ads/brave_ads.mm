@@ -24,7 +24,6 @@
 #include "base/values.h"
 #import "brave/build/ios/mojom/cpp_transformations.h"
 #include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_ads/core/ad_content_action_types.h"
 #include "brave/components/brave_ads/core/ad_content_info.h"
 #include "brave/components/brave_ads/core/ad_content_value_util.h"
 #include "brave/components/brave_ads/core/ad_event_history.h"

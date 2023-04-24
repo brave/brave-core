@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/history/category_content_util.h"
 
-#include "brave/components/brave_ads/core/category_content_action_types.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
@@ -24,8 +24,8 @@ TEST_F(BraveAdsCategoryContentUtilTest, Build) {
   // Assert
   CategoryContentInfo expected_category_content;
   expected_category_content.category = kSegment;
-  expected_category_content.opt_action_type =
-      CategoryContentOptActionType::kNone;
+  expected_category_content.user_reaction_type =
+      mojom::UserReactionType::kNeutral;
 
   EXPECT_EQ(expected_category_content, category_content);
 }

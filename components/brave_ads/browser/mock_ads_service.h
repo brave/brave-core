@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
 namespace brave_ads {
@@ -91,9 +92,13 @@ class MockAdsService : public AdsService {
   MOCK_METHOD2(ToggleDislikeAd,
                void(base::Value::Dict, ToggleDislikeAdCallback));
   MOCK_METHOD3(ToggleLikeCategory,
-               void(const std::string&, int, ToggleLikeCategoryCallback));
+               void(const std::string&,
+                    mojom::UserReactionType,
+                    ToggleLikeCategoryCallback));
   MOCK_METHOD3(ToggleDislikeCategory,
-               void(const std::string&, int, ToggleDislikeCategoryCallback));
+               void(const std::string&,
+                    mojom::UserReactionType,
+                    ToggleDislikeCategoryCallback));
   MOCK_METHOD2(ToggleSaveAd, void(base::Value::Dict, ToggleSaveAdCallback));
   MOCK_METHOD2(ToggleMarkAdAsInappropriate,
                void(base::Value::Dict, ToggleMarkAdAsInappropriateCallback));

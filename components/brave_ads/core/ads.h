@@ -11,9 +11,7 @@
 #include <vector>
 
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
-#include "brave/components/brave_ads/core/ad_content_action_types.h"
 #include "brave/components/brave_ads/core/ads_callback.h"
-#include "brave/components/brave_ads/core/category_content_action_types.h"
 #include "brave/components/brave_ads/core/export.h"
 #include "brave/components/brave_ads/core/history_filter_types.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
@@ -157,28 +155,28 @@ class ADS_EXPORT Ads {
   virtual void RemoveAllHistory(RemoveAllHistoryCallback callback) = 0;
 
   // Called to like an advertiser. This is a toggle, so calling it again returns
-  // the setting to the neutral state. Returns |AdContentLikeActionType|
-  // containing the current state.
-  virtual AdContentLikeActionType ToggleLikeAd(base::Value::Dict value) = 0;
+  // the setting to the neutral state. Returns |UserReactionType| containing the
+  // current state.
+  virtual mojom::UserReactionType ToggleLikeAd(base::Value::Dict value) = 0;
 
   // Called to dislike an advertiser. This is a toggle, so calling it again
-  // returns the setting to the neutral state. Returns |AdContentLikeActionType|
+  // returns the setting to the neutral state. Returns |UserReactionType|
   // containing the current state.
-  virtual AdContentLikeActionType ToggleDislikeAd(base::Value::Dict value) = 0;
+  virtual mojom::UserReactionType ToggleDislikeAd(base::Value::Dict value) = 0;
 
   // Called to like a category. This is a toggle, so calling it again returns
-  // the setting to the neutral state. Returns |CategoryContentOptActionType|
-  // containing the current state.
-  virtual CategoryContentOptActionType ToggleLikeCategory(
+  // the setting to the neutral state. Returns |UserReactionType| containing the
+  // current state.
+  virtual mojom::UserReactionType ToggleLikeCategory(
       const std::string& category,
-      const CategoryContentOptActionType& action_type) = 0;
+      mojom::UserReactionType user_reaction_type) = 0;
 
   // Called to dislike a category. This is a toggle, so calling it again returns
-  // the setting to the neutral state. Returns |CategoryContentOptActionType|
-  // containing the current state.
-  virtual CategoryContentOptActionType ToggleDislikeCategory(
+  // the setting to the neutral state. Returns |UserReactionType| containing the
+  // current state.
+  virtual mojom::UserReactionType ToggleDislikeCategory(
       const std::string& category,
-      const CategoryContentOptActionType& action_type) = 0;
+      mojom::UserReactionType user_reaction_type) = 0;
 
   // Called to save an ad for later viewing. This is a toggle, so calling it
   // again removes the ad from the saved list. Returns |true| if the ad was

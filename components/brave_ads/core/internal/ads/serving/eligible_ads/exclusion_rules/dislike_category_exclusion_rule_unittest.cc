@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/dislike_category_exclusion_rule.h"
 
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
@@ -35,7 +36,7 @@ TEST_F(BraveAdsDislikeCategoryExclusionRuleTest, DoNotAllowAd) {
   creative_ad.segment = kSegment;
 
   ClientStateManager::GetInstance().ToggleDislikeCategory(
-      creative_ad.segment, CategoryContentOptActionType::kNone);
+      creative_ad.segment, mojom::UserReactionType::kNeutral);
 
   // Act
 

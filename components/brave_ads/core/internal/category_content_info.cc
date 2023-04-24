@@ -10,7 +10,7 @@ namespace brave_ads {
 bool operator==(const CategoryContentInfo& lhs,
                 const CategoryContentInfo& rhs) {
   return lhs.category == rhs.category &&
-         lhs.opt_action_type == rhs.opt_action_type;
+         lhs.user_reaction_type == rhs.user_reaction_type;
 }
 
 bool operator!=(const CategoryContentInfo& lhs,

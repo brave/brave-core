@@ -20,20 +20,16 @@ AdContentInfo& AdContentInfo::operator=(AdContentInfo&& other) noexcept =
 
 AdContentInfo::~AdContentInfo() = default;
 
-AdContentLikeActionType AdContentInfo::ToggleThumbUpActionType() const {
-  if (like_action_type == AdContentLikeActionType::kThumbsUp) {
-    return AdContentLikeActionType::kNeutral;
-  }
-
-  return AdContentLikeActionType::kThumbsUp;
+mojom::UserReactionType AdContentInfo::ToggleLikeUserReactionType() const {
+  return user_reaction_type == mojom::UserReactionType::kLike
+             ? mojom::UserReactionType::kNeutral
+             : mojom::UserReactionType::kLike;
 }
 
-AdContentLikeActionType AdContentInfo::ToggleThumbDownActionType() const {
-  if (like_action_type == AdContentLikeActionType::kThumbsDown) {
-    return AdContentLikeActionType::kNeutral;
-  }
-
-  return AdContentLikeActionType::kThumbsDown;
+mojom::UserReactionType AdContentInfo::ToggleDislikeUserReactionType() const {
+  return user_reaction_type == mojom::UserReactionType::kDislike
+             ? mojom::UserReactionType::kNeutral
+             : mojom::UserReactionType::kDislike;
 }
 
 bool operator==(const AdContentInfo& lhs, const AdContentInfo& rhs) {
@@ -45,7 +41,7 @@ bool operator==(const AdContentInfo& lhs, const AdContentInfo& rhs) {
          lhs.brand_info == rhs.brand_info &&
          lhs.brand_display_url == rhs.brand_display_url &&
          lhs.brand_url == rhs.brand_url &&
-         lhs.like_action_type == rhs.like_action_type &&
+         lhs.user_reaction_type == rhs.user_reaction_type &&
          lhs.confirmation_type == rhs.confirmation_type &&
          lhs.is_saved == rhs.is_saved && lhs.is_flagged == rhs.is_flagged;
 }
