@@ -18,17 +18,14 @@ struct UnblindedPaymentTokenInfo;
 
 struct ConfirmationInfo;
 
-// Self-destructs after calling |SuccessfullyRedeemedConfirmation| or
-// |FailedToRedeemConfirmation|.
 class RedeemOptedInConfirmation final {
  public:
   RedeemOptedInConfirmation(const RedeemOptedInConfirmation&) = delete;
   RedeemOptedInConfirmation& operator=(const RedeemOptedInConfirmation&) =
       delete;
 
-  RedeemOptedInConfirmation(RedeemOptedInConfirmation&&) noexcept = delete;
-  RedeemOptedInConfirmation& operator=(RedeemOptedInConfirmation&&) noexcept =
-      delete;
+  RedeemOptedInConfirmation(RedeemOptedInConfirmation&&) noexcept;
+  RedeemOptedInConfirmation& operator=(RedeemOptedInConfirmation&&) noexcept;
 
   ~RedeemOptedInConfirmation();
 
@@ -40,17 +37,21 @@ class RedeemOptedInConfirmation final {
   explicit RedeemOptedInConfirmation(
       base::WeakPtr<RedeemConfirmationDelegate> delegate);
 
-  void Destroy();
+  static void Redeem(RedeemOptedInConfirmation redeem_confirmation,
+                     const ConfirmationInfo& confirmation);
 
-  void Redeem(const ConfirmationInfo& confirmation);
+  static void CreateConfirmation(RedeemOptedInConfirmation redeem_confirmation,
+                                 const ConfirmationInfo& confirmation);
+  static void OnCreateConfirmation(
+      RedeemOptedInConfirmation redeem_confirmation,
+      const ConfirmationInfo& confirmation,
+      const mojom::UrlResponseInfo& url_response);
 
-  void CreateConfirmation(const ConfirmationInfo& confirmation);
-  void OnCreateConfirmation(const ConfirmationInfo& confirmation,
-                            const mojom::UrlResponseInfo& url_response);
-
-  void FetchPaymentToken(const ConfirmationInfo& confirmation);
-  void OnFetchPaymentToken(const ConfirmationInfo& confirmation,
-                           const mojom::UrlResponseInfo& url_response);
+  static void FetchPaymentToken(RedeemOptedInConfirmation redeem_confirmation,
+                                const ConfirmationInfo& confirmation);
+  static void OnFetchPaymentToken(RedeemOptedInConfirmation redeem_confirmation,
+                                  const ConfirmationInfo& confirmation,
+                                  const mojom::UrlResponseInfo& url_response);
 
   void SuccessfullyRedeemedConfirmation(
       const ConfirmationInfo& confirmation,
