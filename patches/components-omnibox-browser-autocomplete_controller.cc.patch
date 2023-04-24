@@ -1,8 +1,8 @@
 diff --git a/components/omnibox/browser/autocomplete_controller.cc b/components/omnibox/browser/autocomplete_controller.cc
-index aacd690d3934b1cb11a7fc4a06b4d12ad0a04544..8937e6da39ab330eb2bc3ee61f707caa62f00041 100644
+index 667935ca9b4497a34306b18c008a7796e4ed86f8..b3118f0e5bb02cfe06876ba70039c8ef54931c40 100644
 --- a/components/omnibox/browser/autocomplete_controller.cc
 +++ b/components/omnibox/browser/autocomplete_controller.cc
-@@ -836,6 +836,7 @@ void AutocompleteController::InitializeAsyncProviders(int provider_types) {
+@@ -832,6 +832,7 @@ void AutocompleteController::InitializeAsyncProviders(int provider_types) {
    if (provider_types & AutocompleteProvider::TYPE_SEARCH) {
      search_provider_ = new SearchProvider(provider_client_.get(), this);
      providers_.push_back(search_provider_.get());
@@ -10,9 +10,9 @@ index aacd690d3934b1cb11a7fc4a06b4d12ad0a04544..8937e6da39ab330eb2bc3ee61f707caa
    }
    // Providers run in the order they're added.  Add `HistoryURLProvider` after
    // `SearchProvider` because:
-@@ -1026,6 +1027,7 @@ void AutocompleteController::UpdateResult(
-     // Sort the matches and trim them to a small number of "best" matches.
-     result_.SortAndCull(input_, template_url_service_, preserve_default_match);
+@@ -1031,6 +1032,7 @@ void AutocompleteController::UpdateResult(
+     result_.SortAndCull(input_, template_url_service_,
+                         triggered_feature_service_, preserve_default_match);
    }
 +  BRAVE_AUTOCOMPLETE_CONTROLLER_UPDATE_RESULT
    AnnotateResultAndNotifyChanged(last_default_match,
