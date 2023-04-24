@@ -4199,20 +4199,17 @@ are declared in tools/grit/grit_rule.gni.
 
       <if expr="enable_extensions">
         <!-- Extension blocked action bubble -->
-        <message name="IDS_EXTENSION_RELOAD_PAGE_BUBBLE_HEADING" desc="Heading of the bubble to tell users that in order to run an extension, they'll need to refresh the page.">
-          Reload page to use this extension
+        <message name="IDS_EXTENSION_SITE_RELOAD_PAGE_BUBBLE_HEADING" desc="Heading of the bubble to tell users that in order to run or not run an extension, they'll need to refresh the page. Deliberately similar to IDS_PAGE_INFO_INFOBAR_TEXT, but used for an different permission setting so they are not combined. If updating the one, please update the other or consult the extensions and privacy teams.">
+          To apply your updated settings to this site, reload this page
         </message>
         <message name="IDS_EXTENSION_RELOAD_PAGE_BUBBLE_OK_BUTTON" desc="The text of the button to proceed with the page refresh for running an extension.">
           Reload
         </message>
         <message name="IDS_EXTENSION_RELOAD_PAGE_BUBBLE_ALLOW_SINGLE_EXTENSION_TITLE" desc="Title of the bubble to tell users that in order to run or block an extension, they'll need to refresh the page.">
-          Reload the page to use "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"
+          To apply your updated settings for "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" to this site, reload this page
         </message>
         <message name="IDS_EXTENSION_RELOAD_PAGE_BUBBLE_ALLOW_MULTIPLE_EXTENSIONS_TITLE" desc="Title of the bubble to tell users that in order to run or block an extension, they'll need to refresh the page.">
-          Reload the page to use these extensions
-        </message>
-        <message name="IDS_EXTENSION_RELOAD_PAGE_BUBBLE_UPDATE_PERMISSIONS_TITLE" desc="Title of the bubble to tell users that in order to apply the changes selected, they'll need to refresh the page.">
-          Reload the page to apply your changes
+          To apply your updated settings to this site for these extensions, reload this page
         </message>
       </if>
 
@@ -4716,6 +4713,9 @@ are declared in tools/grit/grit_rule.gni.
           Add remote apps to the ChromeOS launcher
         </message>
         <if expr="reven">
+          <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_ATTACHED_DEVICE_INFO" desc="Permission string for accessing information of attached devices.">
+            Read attached device information and data
+          </message>
           <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_DIAGNOSTICS" desc="Permission string for chrome.os.diagnostcs API.">
             Run ChromeOS Flex diagnostic tests
           </message>
@@ -4733,6 +4733,9 @@ are declared in tools/grit/grit_rule.gni.
           </message>
         </if>
         <if expr="not reven">
+          <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_ATTACHED_DEVICE_INFO" desc="Permission string for accessing information of attached devices.">
+            Read attached device information and data
+          </message>
           <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_DIAGNOSTICS" desc="Permission string for chrome.os.diagnostcs API.">
             Run ChromeOS diagnostic tests
           </message>
@@ -7669,16 +7672,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
             <message name="IDS_INTENT_PICKER_SELECT_AN_APP_SUBTITLE" desc="The subtitle of a dialog containing a list of installed applications. The dialog allows the user to select an app to open a web link.">
               Select an app on your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> to open this link
             </message>
-            <message name="IDS_INTENT_CHIP_IPH_CHROME_OS" desc="The text for the In-Product Help bubble for the Intent Chip on ChromeOS devices.">
-              Open websites in apps installed on your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>
-            </message>
           </then>
           <else>
             <message name="IDS_INTENT_PICKER_SELECT_AN_APP_GENERIC_SUBTITLE" desc="The subtitle of a dialog containing a list of installed applications. The dialog allows the user to select an app to open a web link.">
               Select an app on your device to open this link
-            </message>
-            <message name="IDS_INTENT_CHIP_IPH_GENERIC" desc="The text for the In-Product Help bubble for the Intent Chip.">
-              Open websites in apps installed on your device
             </message>
           </else>
         </if>
@@ -8241,9 +8238,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_PASSWORD_MANAGER_UNSYNCED_CREDENTIALS_BUBBLE_DESCRIPTION_GPM" desc="The description text of the 'save unsynced credentials' bubble.">
           Brave Password Manager couldn't save these passwords in your Brave sync chain. You can save them to this device.
-        </message>
-        <message name="IDS_PASSWORD_MANAGER_IPH_BODY_WEB_APP_PROFILE_SWITCH" desc="Body of the in Product Help for profile switching shown in the password manager web app.">
-          You can choose the profile that you want to see the passwords from
         </message>
 
         <if expr="not use_titlecase">

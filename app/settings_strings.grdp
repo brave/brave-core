@@ -57,6 +57,18 @@
     <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_DESCRIPTION" desc="Explanatory text for the link to the 'Get the most out of Brave' page.">
       This guide helps you understand your choices, so that Brave works the way you want to
     </message>
+    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_INTRO" desc="Introduction to the 'Get the most out of Brave' page.">
+      This guide helps you understand important choices you have as you use Brave. And it helps you make those choices, so that Brave works the way you want it to.
+    </message>
+    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_MORE_THAN_A_BROWSER" desc="Title of the 'More than a browser' section of the 'Get the most out of Brave' page.">
+      More than a browser
+    </message>
+    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_YOUR_DATA_IN_CHROME" desc="Title of the 'Your data in Brave' section of the 'Get the most out of Brave' page.">
+      Your data in Brave
+    </message>
+    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_BEYOND_COOKIES" desc="Title of the 'Beyond cookies' section of the 'Get the most out of Brave' page.">
+      Beyond cookies
+    </message>
   </if>
   <if expr="is_macosx">
     <message name="IDS_ABOUT_CHROME_AUTOUPDATE_ALL" desc="The 'Automatically update Brave for all users.' button in the About window.  Mac-only.">

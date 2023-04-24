@@ -889,6 +889,7 @@
   <message name="IDS_SETTINGS_DISCONNECT_GOOGLE_DRIVE" desc="Label for the checkbox which enables disconnecting from Google Drive account.">
     Disconnect Google Drive account
   </message>
+  <!-- TODO(b/276391980): Remove translateable="false" when all the strings have been defined. -->
   <message name="IDS_SETTINGS_GOOGLE_DRIVE" translateable="false" desc="Label for the settings link that takes the user to the page where they can manage their Google Drive settings.">
     Google Drive
   </message>
@@ -914,7 +915,10 @@
     Keep your files available when you're offline
   </message>
   <message name="IDS_SETTINGS_GOOGLE_DRIVE_OFFLINE_SUBTITLE" translateable="false" desc="Subtitle for the everything offline feature in Settings: Files: Google Drive.">
-    This will store your Google Drive files on this Chromebook so you can view and edit them without an internet connection. This will use about 12.2 GB leaving 96.8 GB available.
+    This will store your Google Drive files on this Chromebook so you can view and edit them without an internet connection.
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_OFFLINE_STORAGE_REQUIRED_SUBTITLE" translateable="false" desc="Subtitle to display the required and remaining space if all the google drive files are made available offline">
+    This will use about <ph name="REQUIRED_SPACE">$1<ex>12.2 GB</ex></ph> leaving <ph name="FREE_SPACE_LEFT">$2<ex>96.7 GB</ex></ph> available.
   </message>
   <message name="IDS_SETTINGS_GOOGLE_DRIVE_OFFLINE_CLEAR_TITLE" translateable="false" desc="Title for the Offline Storage row where users can clear their offline storage in Settings: Files: Google Drive.">
     Offline Storage
@@ -924,6 +928,27 @@
   </message>
   <message name="IDS_SETTINGS_GOOGLE_DRIVE_OFFLINE_CLEAR_ACTION" translateable="false" desc="Button for the Offline Storage row where users can clear their offline storage in Settings: Files: Google Drive.">
     Clear offline storage
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_TURN_OFF_BUTTON_LABEL" translateable="false" desc="Button for the confirmation dialog that spawns when attempting to turn off bulk pinning in Settings: Files: Google Drive.">
+    Turn off
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_TURN_OFF_TITLE_TEXT" translateable="false" desc="Title text for the confirmation dialog that spawns when attempting to turn off bulk pinning in Settings: Files: Google Drive.">
+    Are you sure you want to turn off automatic syncing?
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_TURN_OFF_BODY_TEXT" translateable="false" desc="Body text for the confirmation dialog that spawns when attempting to turn off bulk pinning in Settings: Files: Google Drive.">
+    New Google Drive files will no longer be synced automatically, but files that are already synced will remain available.
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_BULK_PINNING_NOT_ENOUGH_SPACE_TITLE_TEXT" translateable="false" desc="Title text for the confirmation dialog that spawns when attempting to turn on bulk pinning but the user doesn't have enough free space in Settings: Files: Google Drive.">
+    Low disk space
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_BULK_PINNING_NOT_ENOUGH_SPACE_BODY_TEXT" translateable="false" desc="Body text for the confirmation dialog that spawns when attempting to turn on bulk pinning but the user doesn't have enough free space in Settings: Files: Google Drive.">
+    Cannot enable this feature due to insufficient disk space.
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_BULK_PINNING_UNEXPECTED_ERROR_TITLE_TEXT" translateable="false" desc="Title text for the confirmation dialog that spawns when attempting to turn on bulk pinning but an unexpected error occurred in Settings: Files: Google Drive.">
+    An unexpected error occurred
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_BULK_PINNING_UNEXPECTED_ERROR_BODY_TEXT" translateable="false" desc="Body text for the confirmation dialog that spawns when attempting to turn on bulk pinning but an unexpected error occurred in Settings: Files: Google Drive.">
+    Cannot enable this feature as an unexpected error has occurred.
   </message>
   <message name="IDS_SETTINGS_DOWNLOADS_SMB_SHARES" desc="In Downloads Settings, the title of the SMB shares setting section.">
     Network file shares
@@ -963,6 +988,19 @@
   </message>
   <message name="IDS_SETTINGS_DOWNLOADS_SHARE_ADDED_SUCCESS_MESSAGE" desc="The message shown when a new SMB share is successfully mounted.">
     Share mounted successfully.
+  </message>
+  <!-- TODO(b/254586358): Finalise Office files strings -->
+  <message name="IDS_SETTINGS_OFFICE_LABEL" translateable="false" desc="Label for the Settings link that takes the user to the Office files settings.">
+    Office
+  </message>
+  <message name="IDS_SETTINGS_OFFICE_SUBPAGE_TITLE" translateable="false" desc="Title of the Office subpage.">
+    Office files
+  </message>
+  <message name="IDS_SETTINGS_ALWAYS_MOVE_OFFICE_TO_DRIVE_PREFERENCE_LABEL" translateable="false" desc="Label for the preference that allows users to always move files to Drive without asking for confirmation.">
+    Ask before moving Microsoft files to Google Drive
+  </message>
+  <message name="IDS_SETTINGS_ALWAYS_MOVE_OFFICE_TO_ONEDRIVE_PREFERENCE_LABEL" translateable="false" desc="Label for the preference that allows users to always move files to OneDrive without asking for confirmation.">
+    Ask before moving Microsoft files to OneDrive
   </message>
 
   <!-- Accessibility -->
@@ -4715,6 +4753,15 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_SET_DATE_TIME" desc="Label for the button that shows the dialog for setting the system date and time.">
     Set date and time
   </message>
+  <message name="IDS_SETTINGS_TIME_ZONE_GEOLOCATION_DIALOG_TITLE" desc="Title for the dialog, that pops up when user wants to access precise location for better time zone resolution, but the system geoocation access is disabled. This dialog asks if the user wants to enable the system geolocation access.">
+    Turn on precise location access?
+  </message>
+  <message name="IDS_SETTINGS_TIME_ZONE_GEOLOCATION_DIALOG_BODY" desc="Description text of the dialog that prompts the user to enable system geolocation access. This gives detailed explanation of the outcomes, if the user accepts the dialog.">
+    This allows apps and websites with the location permission and ChromeOS to use the location determined by your Wi-Fi or mobile networks. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_TIME_ZONE_GEOLOCATION_DIALOG_CANCEL_BUTTON" desc="Label of the cancel button, that dismisses the geolocation dialog.">
+    Cancel
+  </message>
 
   <!-- Per Device Keyboard page (OS settings) -->
   <message name="IDS_SETTINGS_BUILT_IN_KEYBOARD_NAME" desc="In Device Settings, the name of the built-in/internal keyboard device within the settings app.">
@@ -5096,6 +5143,9 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_OS_SETTINGS_PRIVACY_HUB_GEOLOCATION_TOGGLE_TITLE" desc="The title of the toggle to enable/disable geolocation from the privacy hub.">
     Location access
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_GEOLOCATION_TOGGLE_DESC" desc="The title of the toggle to enable/disable geolocation from the privacy hub.">
+    Allow apps and websites and the system time zone to use the location determined by Brave Location Service. If location access is turned off, your location may still be visible through your IP address.
   </message>
   <message name="IDS_OS_SETTINGS_HW_DATA_USAGE_TOGGLE_TITLE" desc="The label of the checkbox to enable/disable device hardware data collection and usage in ChromeOS Flex.">
     <ph name="DEVICE_OS">$1<ex>ChromeOS Flex</ex></ph> hardware support and stability

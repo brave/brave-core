@@ -1469,6 +1469,9 @@ Permissions you've already given to websites and apps may apply to this account.
         <message name="IDS_PROFILE_SWITCH_PROMO_SCREENREADER" desc="Text announced by screenreaders to explain how to switch between profiles.">
           <ph name="SHORTCUT">$1<ex>CTRL+SHIFT+M</ex></ph> can switch between Brave profiles
         </message>
+        <message name="IDS_PASSWORD_MANAGER_IPH_BODY_WEB_APP_PROFILE_SWITCH" desc="Body of the in Product Help for profile switching shown in the password manager web app.">
+          You can switch to see passwords from another Brave profile
+        </message>
       </if>
 
       <!-- Strings for full restore notifications -->
@@ -1498,6 +1501,9 @@ Permissions you've already given to websites and apps may apply to this account.
       </message>
       <message name="IDS_TAILORED_SECURITY_UNCONSENTED_PROMOTION_MESSAGE_DESCRIPTION" desc="Description shown in the message shown when a user changes their account-level tailored security setting encouraging them to enable Enhanced Safe Browsing">
         Enhanced protection does more to block phishing and malware
+      </message>
+      <message name="IDS_TAILORED_SECURITY_UNCONSENTED_PROMOTION_MESSAGE_DESCRIPTION_UPDATED" desc="Description shown in the message shown when a user changes their account-level tailored security setting encouraging them to enable Enhanced Safe Browsing">
+        Enhanced Safe Browsing does more to protect you against dangerous websites and downloads
       </message>
       <message name="IDS_TAILORED_SECURITY_UNCONSENTED_PROMOTION_MESSAGE_ACCEPT" desc="Accept button shown in the message shown when a user changes their account-level tailored security setting encouraging them to enable Enhanced Safe Browsing">
         Continue
