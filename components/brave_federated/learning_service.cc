@@ -53,14 +53,9 @@ LearningService::LearningService(
   DCHECK(!init_task_timer_);
 
   auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
-  std::string data_resource;
-
-  if (resource_bundle.IsGzipped(IDR_BRAVE_FEDERATED_CONFIG)) {
-    data_resource = resource_bundle.LoadDataResourceString(IDR_BRAVE_FEDERATED_CONFIG);
-  } else {
-    data_resource =
-        static_cast<std::string>(resource_bundle.GetRawDataResource(IDR_BRAVE_FEDERATED_CONFIG));
-  }
+  const std::string data_resource =
+      resource_bundle.GetRawDataResource(IDR_BRAVE_FEDERATED_CONFIG);
+  DCHECK(data_resource.size() > 0);
 
   // TODO: File read works, resource read does not.
   // lsc_ = std::unique_ptr<LearningServiceConfig>(

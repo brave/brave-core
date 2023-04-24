@@ -8,8 +8,6 @@ brave_grit("brave_federated_resources") {
     "grit/brave_federated_resources.h",
     "brave_federated_static.pak"
   ]
-
-  output_dir = "$root_gen_dir/brave/components/brave_federated/resources"
 }
 
 repack("resources") {
