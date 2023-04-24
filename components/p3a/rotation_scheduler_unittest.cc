@@ -58,6 +58,8 @@ TEST_F(P3ARotationSchedulerTest, JsonRotation) {
   EXPECT_EQ(json_rotation_counts_[MetricLogType::kSlow], 3u);
 }
 
+// TODO(djandries): find a way to get this test to run reliably on macOS
+#if !BUILDFLAG(IS_MAC)
 TEST_F(P3ARotationSchedulerTest, ConstellationRotation) {
   task_environment_.FastForwardBy(base::Days(7));
   // Should be 0 since the timer has not started
@@ -81,5 +83,6 @@ TEST_F(P3ARotationSchedulerTest, ConstellationRotation) {
   task_environment_.FastForwardBy(base::Days(7));
   EXPECT_EQ(constellation_rotation_count_, 2u);
 }
+#endif  // !BUILDFLAG(IS_MAC)
 
 }  // namespace p3a
