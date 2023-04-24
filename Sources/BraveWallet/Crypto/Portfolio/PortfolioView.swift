@@ -73,7 +73,6 @@ struct PortfolioView: View {
   @State private var tableInset: CGFloat = -16.0
 
   @State private var selectedToken: BraveWallet.BlockchainToken?
-  @State private var selectedNFTViewModel: NFTAssetViewModel?
   
   private var editUserAssetsButton: some View {
     Button(action: { isPresentingEditUserAssets = true }) {
@@ -89,7 +88,7 @@ struct PortfolioView: View {
         keyringStore: keyringStore,
         userAssetsStore: portfolioStore.userAssetsStore
       ) {
-        portfolioStore.update()
+        cryptoStore.updateAssets()
       }
     }
   }
@@ -164,35 +163,6 @@ struct PortfolioView: View {
         .padding(.horizontal, -8)
         .frame(maxWidth: .infinity, alignment: .leading)
       })
-      
-      if !portfolioStore.userVisibleNFTs.isEmpty {
-        Section(content: {
-          Group {
-            ForEach(portfolioStore.userVisibleNFTs) { nftAsset in
-              Button(action: {
-                selectedNFTViewModel = nftAsset
-              }) {
-                PortfolioNFTAssetView(
-                  image: NFTIconView(
-                    token: nftAsset.token,
-                    network: nftAsset.network,
-                    url: nftAsset.nftMetadata?.imageURL,
-                    shouldShowNativeTokenIcon: true
-                  ),
-                  title: nftAsset.token.nftTokenTitle,
-                  symbol: nftAsset.token.symbol,
-                  networkName: nftAsset.network.chainName,
-                  quantity: "\(nftAsset.balance)"
-                )
-              }
-            }
-            editUserAssetsButton
-          }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
-        }, header: {
-          WalletListHeaderView(title: Text(Strings.Wallet.nftsTitle))
-        })
-      }
     }
     .background(
       NavigationLink(
@@ -209,40 +179,6 @@ struct PortfolioView: View {
             )
             .onDisappear {
               cryptoStore.closeAssetDetailStore(for: token)
-            }
-          }
-        },
-        label: {
-          EmptyView()
-        })
-    )
-    .background(
-      NavigationLink(
-        isActive: Binding(
-          get: { selectedNFTViewModel != nil },
-          set: { if !$0 { selectedNFTViewModel = nil } }
-        ),
-        destination: {
-          if let nftViewModel = selectedNFTViewModel {
-            if nftViewModel.token.isErc721 || nftViewModel.token.isNft {
-              NFTDetailView(
-                nftDetailStore: cryptoStore.nftDetailStore(for: nftViewModel.token, nftMetadata: nftViewModel.nftMetadata),
-                buySendSwapDestination: buySendSwapDestination
-              ) { erc721Metadata in
-                portfolioStore.updateERC721MetadataCache(for: nftViewModel.token, metadata: erc721Metadata)
-              }
-              .onDisappear {
-                cryptoStore.closeNFTDetailStore(for: nftViewModel.token)
-              }
-            } else {
-              AssetDetailView(
-                assetDetailStore: cryptoStore.assetDetailStore(for: nftViewModel.token),
-                keyringStore: keyringStore,
-                networkStore: cryptoStore.networkStore
-              )
-              .onDisappear {
-                cryptoStore.closeAssetDetailStore(for: nftViewModel.token)
-              }
             }
           }
         },

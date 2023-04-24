@@ -50,9 +50,6 @@ class PortfolioStoreTests: XCTestCase {
     let totalBalanceValue = totalEthBalanceValue + totalSolBalanceValue
     let totalBalance = currencyFormatter.string(from: NSNumber(value: totalBalanceValue)) ?? ""
     
-    let mockERC721Metadata: NFTMetadata = .init(imageURLString: "mock.image.url", name: "mock nft name", description: "mock nft description")
-    let mockSolMetadata: NFTMetadata = .init(imageURLString: "sol.mock.image.url", name: "sol mock nft name", description: "sol mock nft description")
-    
     // setup test services
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._keyringInfo = { keyringId, completion in
@@ -191,32 +188,6 @@ class PortfolioStoreTests: XCTestCase {
         XCTAssertEqual(lastUpdatedVisibleAssets[1].decimalBalance, mockEthDecimalBalance)
         XCTAssertEqual(lastUpdatedVisibleAssets[1].price, mockEthAssetPrice.price)
         XCTAssertEqual(lastUpdatedVisibleAssets[1].history, mockEthPriceHistory)
-      }.store(in: &cancellables)
-    // test that `update()` will assign new value to `userVisibleNFTs` publisher
-    let userVisibleNFTsException = expectation(description: "update-userVisibleNFTs")
-    XCTAssertTrue(store.userVisibleNFTs.isEmpty)  // Initial state
-    store.$userVisibleNFTs
-      .dropFirst()
-      .collect(2)
-      .sink { userVisibleNFTs in
-        defer { userVisibleNFTsException.fulfill() }
-        XCTAssertEqual(userVisibleNFTs.count, 2) // empty nfts, populated nfts
-        guard let lastUpdatedVisibleNFTs = userVisibleNFTs.last else {
-          XCTFail("Unexpected test result")
-          return
-        }
-        XCTAssertEqual(lastUpdatedVisibleNFTs.count, 2)
-        XCTAssertEqual(lastUpdatedVisibleNFTs[0].token.symbol, mockSolUserAssets.last?.symbol)
-        XCTAssertEqual(lastUpdatedVisibleNFTs[0].balance, Int(mockNFTBalance))
-        
-        XCTAssertEqual(lastUpdatedVisibleNFTs[1].token.symbol, mockEthUserAssets.last?.symbol)
-        XCTAssertEqual(lastUpdatedVisibleNFTs[1].balance, Int(mockNFTBalanceWei))
-        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.nftMetadata?.imageURLString, mockSolMetadata.imageURLString)
-        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.nftMetadata?.name, mockSolMetadata.name)
-        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.nftMetadata?.description, mockSolMetadata.description)
-        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 1]?.nftMetadata?.imageURLString, mockERC721Metadata.imageURLString)
-        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 1]?.nftMetadata?.name, mockERC721Metadata.name)
-        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 1]?.nftMetadata?.description, mockERC721Metadata.description)
       }.store(in: &cancellables)
     // test that `update()` will assign new value to `balance` publisher
     let balanceException = expectation(description: "update-balance")

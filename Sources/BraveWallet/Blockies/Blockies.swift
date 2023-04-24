@@ -102,13 +102,28 @@ class Blockies {
 }
 
 struct Blockie: View {
+  enum Shape {
+    case circle
+    case rectangle
+  }
+  
   var address: String
-
-  var body: some View {
+  var shape: Shape = .circle
+  
+  private var base: some View {
     Image(uiImage: Blockies(seed: address.lowercased()).image(length: 8, scale: 16))
       .resizable()
       .blur(radius: 8, opaque: true)
-      .clipShape(Circle())
+  }
+
+  var body: some View {
+    if shape == .circle {
+      base
+        .clipShape(Circle())
+    } else {
+      base
+        .clipShape(Rectangle())
+    }
   }
 }
 
