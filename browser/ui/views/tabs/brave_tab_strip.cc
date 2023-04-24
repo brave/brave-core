@@ -203,6 +203,10 @@ void BraveTabStrip::UpdateTabContainer() {
       BraveCompoundTabContainer::kViewClassName;
   base::ScopedClosureRunner layout_lock;
   if (should_use_compound_tab_container != is_using_compound_tab_container) {
+    // Before removing any child, we should complete the 'tab closing animation'
+    // so that we don't delete views twice.
+    tab_container_->CompleteAnimationAndLayout();
+
     // Resets TabContainer to use.
     auto original_container = RemoveChildViewT(
         static_cast<TabContainer*>(base::to_address(tab_container_)));
