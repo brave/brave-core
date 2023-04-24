@@ -12,7 +12,7 @@ import { AccountButtonOptionsObjectType } from '../../../constants/types'
 import {
   OvalButton,
   OvalButtonText,
-  Icon
+  ButtonIcon
 } from './style'
 
 // Utils
@@ -33,7 +33,7 @@ export const AccountListItemOptionButton = (props: Props) => {
   return (
     <OvalButton onClick={onClick}>
       {!hideIcon &&
-        <Icon icon={option.icon} />
+        <ButtonIcon name={option.icon} />
       }
       <OvalButtonText>{getLocale(option.name)}</OvalButtonText>
     </OvalButton>

@@ -170,6 +170,7 @@ leo_icons = [
   "user-accounts.svg",
   "coins.svg",
   "more-horizontal.svg",
+  "more-vertical.svg",
   "coins-alt1.svg",
   "lock.svg",
   "safe.svg",
@@ -177,9 +178,14 @@ leo_icons = [
   "help-outline.svg",
   "launch.svg",
   "eye-off.svg",
+  "eye-on.svg",
   "graph.svg",
   "checkbox-checked.svg",
   "checkbox-unchecked.svg",
+  "edit-pencil.svg",
+  "qr-code.svg",
+  "key.svg",
+  "trash.svg",
 ]
 
 generate_grd("icons_grdp") {

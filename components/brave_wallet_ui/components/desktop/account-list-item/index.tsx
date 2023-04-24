@@ -15,6 +15,11 @@ import { AccountsTabActions } from '../../../page/reducers/accounts-tab-reducer'
 // utils
 import { reduceAddress } from '../../../utils/reduce-address'
 
+// hooks
+import {
+  useOnClickOutside
+} from '../../../common/hooks/useOnClickOutside'
+
 // types
 import {
   WalletAccountType,
@@ -27,16 +32,20 @@ import { AccountButtonOptions } from '../../../options/account-list-button-optio
 
 // components
 import { CopyTooltip } from '../../shared/copy-tooltip/copy-tooltip'
-import { AccountListItemOptionButton } from './account-list-item-option-button'
+import {
+  AccountActionsMenu
+} from '../wallet-menus/account-actions-menu'
 
 // style
 import {
   StyledWrapper,
   NameAndIcon,
   AccountCircle,
-  RightSide,
+  AccountMenuWrapper,
   HardwareIcon,
-  AccountNameRow
+  AccountNameRow,
+  AccountMenuButton,
+  AccountMenuIcon
 } from './style'
 
 import {
@@ -62,6 +71,19 @@ export const AccountListItem = ({
   // redux
   const dispatch = useDispatch()
 
+  // state
+  const [showAccountMenu, setShowAccountMenu] = React.useState<boolean>(false)
+
+  // refs
+  const accountMenuRef = React.useRef<HTMLDivElement>(null)
+
+  // hooks
+  useOnClickOutside(
+    accountMenuRef,
+    () => setShowAccountMenu(false),
+    showAccountMenu
+  )
+
   // methods
   const onSelectAccount = React.useCallback(() => {
     onClick(account)
@@ -77,16 +99,16 @@ export const AccountListItem = ({
     dispatch(AccountsTabActions.setSelectedAccount(account))
   }, [account, dispatch])
 
-  const onClickButtonOption = React.useCallback((option: AccountButtonOptionsObjectType) => () => {
-    if (option.id === 'details') {
+  const onClickButtonOption = React.useCallback((id: AccountModalTypes) => {
+    if (id === 'details') {
       onSelectAccount()
       return
     }
-    if (option.id === 'remove') {
+    if (id === 'remove') {
       onRemoveAccount()
       return
     }
-    onShowAccountsModal(option.id)
+    onShowAccountsModal(id)
   }, [onSelectAccount, onRemoveAccount, onShowAccountsModal])
 
   // memos
@@ -124,15 +146,23 @@ export const AccountListItem = ({
           </AddressAndButtonRow>
         </AccountAndAddress>
       </NameAndIcon>
-      <RightSide>
-        {buttonOptions.map((option: AccountButtonOptionsObjectType) =>
-          <AccountListItemOptionButton
-            key={option.id}
-            option={option}
-            onClick={onClickButtonOption(option)}
+      <AccountMenuWrapper
+        ref={accountMenuRef}
+      >
+        <AccountMenuButton
+          onClick={() => setShowAccountMenu(prev => !prev)}
+        >
+          <AccountMenuIcon
+            name='more-vertical'
           />
-        )}
-      </RightSide>
+        </AccountMenuButton>
+        {showAccountMenu &&
+          <AccountActionsMenu
+            onClick={onClickButtonOption}
+            options={buttonOptions}
+          />
+        }
+      </AccountMenuWrapper>
     </StyledWrapper>
   )
 }

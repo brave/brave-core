@@ -1,7 +1,7 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
@@ -36,7 +36,7 @@ import {
   ButtonIcon,
   CheckBoxRow,
   SectionTitle
-} from './style'
+} from './wellet-menus.style'
 import {
   VerticalDivider,
   VerticalSpace,
@@ -51,7 +51,7 @@ export interface Props {
   isPanel?: boolean
 }
 
-export const WalletMorePopup = (props: Props) => {
+export const WalletSettingsMenu = (props: Props) => {
   const {
     onClickViewOnBlockExplorer,
     onClickBackup,
@@ -268,4 +268,4 @@ export const WalletMorePopup = (props: Props) => {
   )
 }
 
-export default WalletMorePopup
+export default WalletSettingsMenu

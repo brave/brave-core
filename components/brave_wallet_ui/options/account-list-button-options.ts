@@ -6,45 +6,38 @@
 // Types
 import { AccountButtonOptionsObjectType } from '../constants/types'
 
-// Icons
-import QRIcon from '../assets/svg-icons/qr-code-icon.svg'
-import KeyIcon from '../assets/svg-icons/key-icon.svg'
-import PencilIcon from '../assets/svg-icons/pencil-icon.svg'
-import DetailsIcon from '../assets/svg-icons/details-icon.svg'
-import TrashIcon from '../assets/svg-icons/trash-icon.svg'
-
 export const BuyButtonOption: AccountButtonOptionsObjectType = {
   id: 'buy',
   name: 'braveWalletBuy',
-  icon: ''
+  icon: 'coins-alt1'
 }
 
 export const DepositButtonOption: AccountButtonOptionsObjectType = {
   id: 'deposit',
   name: 'braveWalletAccountsDeposit',
-  icon: QRIcon
+  icon: 'qr-code'
 }
 
 export const AccountButtonOptions: AccountButtonOptionsObjectType[] = [
   {
-    id: 'privateKey',
-    name: 'braveWalletAccountsExport',
-    icon: KeyIcon
+    id: 'details',
+    name: 'braveWalletAllowSpendDetailsButton',
+    icon: 'eye-on'
   },
-  DepositButtonOption,
   {
     id: 'edit',
     name: 'braveWalletAllowSpendEditButton',
-    icon: PencilIcon
+    icon: 'edit-pencil'
   },
   {
-    id: 'details',
-    name: 'braveWalletAllowSpendDetailsButton',
-    icon: DetailsIcon
+    id: 'privateKey',
+    name: 'braveWalletAccountsExport',
+    icon: 'key'
   },
+  DepositButtonOption,
   {
     id: 'remove',
     name: 'braveWalletAccountsRemove',
-    icon: TrashIcon
+    icon: 'trash'
   }
 ]

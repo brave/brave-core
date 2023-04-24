@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css'
+import Icon from '@brave/leo/react/icon'
 import FlashdriveIcon from '../../../assets/svg-icons/flashdrive-icon.svg'
 import { WalletButton } from '../../shared/style'
 
@@ -16,12 +18,10 @@ export const StyledWrapper = styled.div`
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
-  padding: 7px;
+  padding: 7px 0px 7px 7px;
   background-color: none;
   border-radius: 10px;
-  --show-buttons: none;
   &:hover {
-    --show-buttons: flex;
     background-color: ${(p) => p.theme.color.interactive08}15;
   }
 `
@@ -40,11 +40,8 @@ export const AccountNameRow = styled.div`
   flex-direction: row;
 `
 
-export const RightSide = styled.div`
-  display: var(--show-buttons);
-  align-items: flex-end;
-  justify-content: center;
-  flex-direction: row;
+export const AccountMenuWrapper = styled.div`
+  position: relative;
 `
 
 export const AccountCircle = styled.div<StyleProps>`
@@ -56,17 +53,11 @@ export const AccountCircle = styled.div<StyleProps>`
   margin-right: 12px;
 `
 
-export const Icon = styled.div<{
-  icon: string
-}>`
-  width: 14px;
-  height: 14px;
+export const ButtonIcon = styled(Icon)`
+  --leo-icon-size: 14px;
+  color: ${leo.color.icon.default};
   margin-left: 4px;
   margin-right: 8px;
-  background-color: ${(p) => p.theme.color.interactive07};
-  -webkit-mask-image: url(${(p) => p.icon});
-  mask-image: url(${(p) => p.icon});
-  mask-size: 100%;
 `
 
 export const OvalButton = styled(WalletButton)`
@@ -98,4 +89,20 @@ export const HardwareIcon = styled.div`
   background-color: ${(p) => p.theme.color.text02};
   -webkit-mask-image: url(${FlashdriveIcon});
   mask-image: url(${FlashdriveIcon});
+`
+
+export const AccountMenuButton = styled(WalletButton)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  outline: none;
+  background: none;
+  pointer-events: auto;
+  border: none;
+`
+
+export const AccountMenuIcon = styled(Icon)`
+  --leo-icon-size: 24px;
+  color: ${leo.color.icon.interactive};
 `
