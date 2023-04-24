@@ -12,7 +12,7 @@
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ethereum_remote_client/features.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/components/brave_ads/common/custom_notification_ads_features.h"
+#include "brave/components/brave_ads/common/custom_notification_ad_feature.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_news/common/features.h"
@@ -624,7 +624,7 @@
           "Enable Brave Ads custom push notifications",                        \
           "Enable Brave Ads custom push notifications to support rich media",  \
           kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(brave_ads::features::kCustomNotificationAds),     \
+          FEATURE_VALUE_TYPE(brave_ads::kCustomNotificationAdFeature),         \
       },                                                                       \
       {                                                                        \
           "brave-ads-allowed-to-fallback-to-custom-push-notification-ads",     \
@@ -635,7 +635,7 @@
           "notifications",                                                     \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(                                                  \
-              brave_ads::features::kAllowedToFallbackToCustomNotificationAds), \
+              brave_ads::kAllowedToFallbackToCustomNotificationAdFeature),     \
       },                                                                       \
       {                                                                        \
           "brave-sync-v2",                                                     \

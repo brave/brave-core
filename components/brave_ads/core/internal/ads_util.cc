@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/ads_util.h"
 
 #include "base/strings/string_piece.h"
-#include "brave/components/brave_ads/core/internal/ads/notification_ad_feature.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/l10n/common/ofac_sanction_util.h"
 
@@ -15,10 +14,6 @@ namespace brave_ads {
 bool IsSupportedRegion() {
   return !brave_l10n::IsISOCountryCodeOFACSanctioned(
       brave_l10n::GetDefaultISOCountryCodeString());
-}
-
-int GetDefaultBraveRewardsNotificationAdsPerHour() {
-  return kDefaultNotificationAdsPerHour.Get();
 }
 
 }  // namespace brave_ads

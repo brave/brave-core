@@ -255,8 +255,6 @@ source_set("internal") {
     "ads/new_tab_page_ad_feature.h",
     "ads/new_tab_page_ad_handler.cc",
     "ads/new_tab_page_ad_handler.h",
-    "ads/notification_ad_feature.cc",
-    "ads/notification_ad_feature.h",
     "ads/notification_ad_handler.cc",
     "ads/notification_ad_handler.h",
     "ads/notification_ad_handler_util.cc",

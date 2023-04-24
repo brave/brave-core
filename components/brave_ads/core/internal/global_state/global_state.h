@@ -22,7 +22,7 @@ class DatabaseManager;
 class DiagnosticManager;
 class GlobalStateHolder;
 class HistoryManager;
-class IdleDetection;
+class UserIdleDetection;
 class NotificationAdManager;
 class PredictorsManager;
 class TabManager;

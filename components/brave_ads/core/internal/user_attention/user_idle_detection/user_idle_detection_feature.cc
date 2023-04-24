@@ -11,7 +11,7 @@ BASE_FEATURE(kUserIdleDetectionFeature,
              "UserIdleDetection",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
-bool IsIdleDetectionFeatureEnabled() {
+bool IsUserIdleDetectionFeatureEnabled() {
   return base::FeatureList::IsEnabled(kUserIdleDetectionFeature);
 }
 

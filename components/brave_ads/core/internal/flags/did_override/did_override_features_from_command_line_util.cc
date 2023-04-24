@@ -13,11 +13,11 @@
 #include "base/containers/flat_set.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
-#include "brave/components/brave_ads/common/search_result_ad_features.h"
+#include "brave/components/brave_ads/common/notification_ad_feature.h"
+#include "brave/components/brave_ads/common/search_result_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/account/account_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/inline_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_feature.h"
-#include "brave/components/brave_ads/core/internal/ads/notification_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/promoted_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/search_result_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_feature.h"
@@ -35,7 +35,6 @@ namespace brave_ads {
 namespace {
 
 const base::Feature* const kFeatures[] = {
-    &features::kShouldTriggerSearchResultAdEvents,
     &kAccountFeature,
     &kAntiTargetingFeature,
     &kConversionsFeature,
@@ -49,6 +48,7 @@ const base::Feature* const kFeatures[] = {
     &kPromotedContentAdFeature,
     &kPurchaseIntentFeature,
     &kSearchResultAdFeature,
+    &kShouldTriggerSearchResultAdEventsFeature,
     &kTextClassificationFeature,
     &kUserActivityFeature};
 

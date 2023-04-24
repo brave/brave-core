@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/mock_ads_service.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
-#include "brave/components/brave_ads/common/search_result_ad_features.h"
+#include "brave/components/brave_ads/common/search_result_ad_feature.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -73,7 +73,7 @@ class SearchResultAdTest : public InProcessBrowserTest {
  public:
   SearchResultAdTest() {
     feature_list_.InitAndEnableFeature(
-        features::kShouldTriggerSearchResultAdEvents);
+        kShouldTriggerSearchResultAdEventsFeature);
   }
 
   void SetUpOnMainThread() override {

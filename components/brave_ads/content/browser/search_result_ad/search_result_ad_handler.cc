@@ -12,7 +12,7 @@
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
-#include "brave/components/brave_ads/common/search_result_ad_features.h"
+#include "brave/components/brave_ads/common/search_result_ad_feature.h"
 #include "brave/components/brave_ads/core/search_result_ad/search_result_ad_converting_util.h"
 #include "brave/components/brave_ads/core/search_result_ad/search_result_ad_util.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
@@ -41,7 +41,7 @@ SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
     const bool should_trigger_viewed_event) {
   if (!ads_service || !ads_service->IsEnabled() ||
       !base::FeatureList::IsEnabled(
-          features::kShouldTriggerSearchResultAdEvents) ||
+          kShouldTriggerSearchResultAdEventsFeature) ||
       !brave_search::IsAllowedHost(url)) {
     return {};
   }
