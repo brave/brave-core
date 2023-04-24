@@ -64,7 +64,7 @@ import { AccountButtonOptions } from '../../../../options/account-list-button-op
 // Hooks
 import { useScrollIntoView } from '../../../../common/hooks/use-scroll-into-view'
 import {
-  useGetNetworksQuery,
+  useGetVisibleNetworksQuery,
   useGetUserTokensRegistryQuery
 } from '../../../../common/slices/api.slice'
 import { useMultiChainSellAssets } from '../../../../common/hooks/use-multi-chain-sell-assets'
@@ -91,7 +91,7 @@ export const Account = ({
   const transactions = useUnsafeWalletSelector(WalletSelectors.transactions)
 
   // queries
-  const { data: networkList = [] } = useGetNetworksQuery()
+  const { data: networkList = [] } = useGetVisibleNetworksQuery()
   const { userVisibleTokensInfo } = useGetUserTokensRegistryQuery(undefined, {
     selectFromResult: result => ({
       userVisibleTokensInfo: selectAllUserAssetsFromQueryResult(result)
@@ -153,6 +153,11 @@ export const Account = ({
     // Since LOCALHOST's chainId is shared between coinType's
     // this check will make sure we are returning the correct
     // LOCALHOST asset for each account.
+    const hasLocalHostNetwork = networkList.some(
+      (network) =>
+        network.chainId === BraveWallet.LOCALHOST_CHAIN_ID
+        && network.coin === selectedAccount.coin
+    )
     const coinName = CoinTypesMap[selectedAccount?.coin ?? 0]
     const localHostCoins = userVisibleTokensInfo.filter((token) => token.chainId === BraveWallet.LOCALHOST_CHAIN_ID)
     const accountsLocalHost = localHostCoins.find((token) => token.symbol.toUpperCase() === coinName)
@@ -161,7 +166,14 @@ export const Account = ({
     const list =
       userVisibleTokensInfo.filter((token) => chainList.includes(token?.chainId ?? '') &&
         token.chainId !== BraveWallet.LOCALHOST_CHAIN_ID) ?? []
-    if (accountsLocalHost && (selectedAccount.keyringId !== BraveWallet.FILECOIN_KEYRING_ID)) {
+    if (
+      accountsLocalHost &&
+      hasLocalHostNetwork &&
+      (
+        selectedAccount.keyringId !==
+        BraveWallet.FILECOIN_KEYRING_ID
+      )
+    ) {
       return [...list, accountsLocalHost]
     }
     return list
