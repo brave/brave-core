@@ -76,18 +76,18 @@ TEST_P(PatchWallets, Paths) {
 
   ON_CALL(mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [status_code = status_code, body = body](
+          [response_status_code = status_code, response_body = body](
               mojom::UrlRequestPtr, client::LoadURLCallback callback) mutable {
             mojom::UrlResponse response;
-            response.status_code = status_code;
-            response.body = std::move(body);
+            response.status_code = response_status_code;
+            response.body = std::move(response_body);
             std::move(callback).Run(response);
           }));
 
   RequestFor<endpoints::PatchWallets>(&mock_ledger_impl_, "country_code")
       .Send(base::BindLambdaForTesting(
-          [expected_result = expected_result](Result&& result) {
-            EXPECT_EQ(result, expected_result);
+          [expectation = expected_result](Result&& result) {
+            EXPECT_EQ(result, expectation);
           }));
 }
 
