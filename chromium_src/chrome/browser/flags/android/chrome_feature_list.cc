@@ -9,6 +9,7 @@
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_search_conversion/features.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/debounce/common/features.h"
@@ -19,22 +20,23 @@
 #include "third_party/blink/public/common/features.h"
 
 // clang-format off
-#define kForceWebContentsDarkMode kForceWebContentsDarkMode, \
-    &brave_rewards::features::kBraveRewards,                 \
-    &brave_search_conversion::features::kOmniboxBanner,      \
-    &brave_news::features::kBraveNewsFeature,                \
-    &brave_news::features::kBraveNewsV2Feature,              \
-    &brave_vpn::features::kBraveVPNLinkSubscriptionAndroidUI,\
-    &brave_wallet::features::kNativeBraveWalletFeature,      \
-    &brave_wallet::features::kBraveWalletSolanaFeature,      \
-    &brave_wallet::features::kBraveWalletSnsFeature,         \
-    &playlist::features::kPlaylist,                          \
-    &preferences::features::kBraveBackgroundVideoPlayback,   \
-    &safe_browsing::features::kBraveAndroidSafeBrowsing,     \
-    &speedreader::kSpeedreaderFeature,                       \
-    &debounce::features::kBraveDebounce,                     \
-    &net::features::kBraveHttpsByDefault,                    \
-    &google_sign_in_permission::features::kBraveGoogleSignInPermission
+#define kForceWebContentsDarkMode kForceWebContentsDarkMode,            \
+    &brave_rewards::features::kBraveRewards,                            \
+    &brave_search_conversion::features::kOmniboxBanner,                 \
+    &brave_news::features::kBraveNewsFeature,                           \
+    &brave_news::features::kBraveNewsV2Feature,                         \
+    &brave_vpn::features::kBraveVPNLinkSubscriptionAndroidUI,           \
+    &brave_wallet::features::kNativeBraveWalletFeature,                 \
+    &brave_wallet::features::kBraveWalletSolanaFeature,                 \
+    &brave_wallet::features::kBraveWalletSnsFeature,                    \
+    &playlist::features::kPlaylist,                                     \
+    &preferences::features::kBraveBackgroundVideoPlayback,              \
+    &safe_browsing::features::kBraveAndroidSafeBrowsing,                \
+    &speedreader::kSpeedreaderFeature,                                  \
+    &debounce::features::kBraveDebounce,                                \
+    &net::features::kBraveHttpsByDefault,                               \
+    &google_sign_in_permission::features::kBraveGoogleSignInPermission, \
+    &brave_shields::features::kBraveLocalhostAccessPermission
 
 // clang-format on
 

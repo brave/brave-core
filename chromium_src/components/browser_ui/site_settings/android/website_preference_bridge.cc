@@ -6,12 +6,15 @@
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/permissions/permission_manager.h"
 
+// Default is ALLOW
 #define BACKGROUND_SYNC \
   AUTOPLAY:             \
   case ContentSettingsType::BACKGROUND_SYNC
 
-#define CLIPBOARD_READ_WRITE \
-  BRAVE_GOOGLE_SIGN_IN:      \
+// Default is ASK
+#define CLIPBOARD_READ_WRITE                        \
+  BRAVE_GOOGLE_SIGN_IN:                             \
+  case ContentSettingsType::BRAVE_LOCALHOST_ACCESS: \
   case ContentSettingsType::CLIPBOARD_READ_WRITE
 
 #include "src/components/browser_ui/site_settings/android/website_preference_bridge.cc"
