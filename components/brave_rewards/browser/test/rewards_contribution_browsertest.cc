@@ -229,8 +229,17 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
       "This month, you've visited 1 creator supported by Brave Rewards");
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/29825): Test flaky on
+// master for the mac build.
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_AutoContributionMultiplePublishers \
+  DISABLED_AutoContributionMultiplePublishers
+#else
+#define MAYBE_AutoContributionMultiplePublishers \
+  AutoContributionMultiplePublishers
+#endif  // BUILDFLAG(IS_MAC)
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
-                       AutoContributionMultiplePublishers) {
+                       MAYBE_AutoContributionMultiplePublishers) {
   rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
   rewards_service_->SetAutoContributeEnabled(true);
   context_helper_->LoadRewardsPage();
