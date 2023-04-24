@@ -43,6 +43,8 @@ class LearningServiceConfig {
     public:
         LearningServiceConfig();
         explicit LearningServiceConfig(const base::FilePath& path);
+        explicit LearningServiceConfig(const std::string data);
+        void InitServiceConfigFromJSONString(const std::string data);
         net::BackoffEntry::Policy GetReconnectPolicy();
         net::BackoffEntry::Policy GetRequestTaskPolicy();
         net::BackoffEntry::Policy GetPostResultsPolicy();

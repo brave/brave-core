@@ -62,8 +62,11 @@ LearningService::LearningService(
         static_cast<std::string>(resource_bundle.GetRawDataResource(IDR_BRAVE_FEDERATED_CONFIG));
   }
 
-  lsc_ = std::unique_ptr<LearningServiceConfig>(new LearningServiceConfig(
-    base::FilePath(FILE_PATH_LITERAL(data_resource))));
+  // TODO: File read works, resource read does not.
+  // lsc_ = std::unique_ptr<LearningServiceConfig>(
+  //   new LearningServiceConfig(base::FilePath(
+  //     FILE_PATH_LITERAL("components/brave_federated/resources/config.json"))));
+  lsc_ = std::unique_ptr<LearningServiceConfig>(new LearningServiceConfig(data_resource));
   const net::BackoffEntry::Policy reconnect_policy = lsc_->GetReconnectPolicy();
   const net::BackoffEntry::Policy request_task_policy = lsc_->GetRequestTaskPolicy();
   const net::BackoffEntry::Policy post_results_policy = lsc_->GetPostResultsPolicy();
