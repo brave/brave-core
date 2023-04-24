@@ -156,7 +156,6 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
     *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
   }
-
   if (gvt1_pattern.MatchesURL(request_url) &&
       !widevine_gvt1_pattern.MatchesURL(request_url)) {
     replacements.SetSchemeStr("https");

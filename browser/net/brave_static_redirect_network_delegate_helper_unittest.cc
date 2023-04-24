@@ -158,6 +158,25 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet3_http) {
   EXPECT_EQ(rc, net::OK);
 }
 
+TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet5_http) {
+  const GURL url(
+      "http://www.google.com/dl/release2/chrome_component/"
+      "cxpsjblnoxgjoqggdsbvujtof4_58/"
+      "khaoiebndkojlmppeemjhbpbandiljpe_58_win_advr4ucepztwtigvw3fduftsvbeq."
+      "crx3");
+  const GURL expected_url(
+      "https://redirector.brave.com/dl/release2/chrome_component/"
+      "cxpsjblnoxgjoqggdsbvujtof4_58/"
+      "khaoiebndkojlmppeemjhbpbandiljpe_58_win_advr4ucepztwtigvw3fduftsvbeq."
+      "crx3");
+
+  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  int rc =
+      OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
+  EXPECT_EQ(request_info->new_url_spec, expected_url);
+  EXPECT_EQ(rc, net::OK);
+}
+
 TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRXDownload_http) {
   const GURL url(
       "http://clients2.googleusercontent.com/crx/blobs/QgAAAC6zw0qH2DJtn"
