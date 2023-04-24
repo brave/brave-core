@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 import android.text.TextUtils;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
+import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.mojo.bindings.Callbacks;
@@ -19,14 +20,18 @@ import java.util.List;
 
 public class SelectedAccountResponsesCollector {
     private KeyringService mKeyringService;
+    private BraveWalletService mBraveWalletService;
     private List<Integer> mCoinTypes;
     private HashSet<AccountInfo> mSelectedAccountsPerCoin;
     private List<AccountInfo> mAllAccountInfos;
 
-    public SelectedAccountResponsesCollector(KeyringService keyringService, List<Integer> coinTypes,
+    public SelectedAccountResponsesCollector(KeyringService keyringService,
+            BraveWalletService braveWalletService, List<Integer> coinTypes,
             List<AccountInfo> allAccountInfos) {
         assert keyringService != null;
+        assert braveWalletService != null;
         mKeyringService = keyringService;
+        mBraveWalletService = braveWalletService;
         mCoinTypes = coinTypes;
         mAllAccountInfos = allAccountInfos;
         mSelectedAccountsPerCoin = new LinkedHashSet<>();
@@ -43,7 +48,11 @@ public class SelectedAccountResponsesCollector {
                             selectedAccountInfosPerCoinMultiResponse.singleResponseComplete, coin);
 
             accountsPermissionsContexts.add(accountContext);
-            if (CoinType.FIL != coin) {
+            if (CoinType.FIL == coin) {
+                mBraveWalletService.getChainIdForActiveOrigin(CoinType.FIL, chainId -> {
+                    mKeyringService.getFilecoinSelectedAccount(chainId, accountContext);
+                });
+            } else {
                 mKeyringService.getSelectedAccount(coin, accountContext);
             }
         }

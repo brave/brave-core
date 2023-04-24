@@ -103,7 +103,7 @@ public class KeyringModel implements KeyringServiceObserver {
     public void getDefaultAccountPerCoin(
             Callbacks.Callback1<Set<AccountInfo>> defaultAccountPerCoins) {
         synchronized (mLock) {
-            if (mKeyringService == null) {
+            if (mKeyringService == null || mBraveWalletService == null) {
                 return;
             }
             List<Integer> coins = new ArrayList<>();
@@ -114,7 +114,8 @@ public class KeyringModel implements KeyringServiceObserver {
             mKeyringService.getKeyringsInfo(mSharedData.getEnabledKeyrings(), keyringInfos -> {
                 List<AccountInfo> accountInfos =
                         WalletUtils.getAccountInfosFromKeyrings(keyringInfos);
-                new SelectedAccountResponsesCollector(mKeyringService, coins, accountInfos)
+                new SelectedAccountResponsesCollector(
+                        mKeyringService, mBraveWalletService, coins, accountInfos)
                         .getAccounts(defaultAccountPerCoin -> {
                             defaultAccountPerCoins.call(defaultAccountPerCoin);
                         });
@@ -135,10 +136,11 @@ public class KeyringModel implements KeyringServiceObserver {
                 _mAccountInfos.postValue(accountInfos);
                 _mKeyringInfosLiveData.postValue(keyringInfos);
                 if (coinType == CoinType.FIL) {
-                    mKeyringService.getFilecoinSelectedAccount(
-                            mSelectedFilecoinNetwork, accountAddress -> {
-                                updateSelectedAccountAndState(accountAddress, accountInfos);
-                            });
+                    mBraveWalletService.getChainIdForActiveOrigin(CoinType.FIL, chainId -> {
+                        mKeyringService.getFilecoinSelectedAccount(chainId, accountAddress -> {
+                            updateSelectedAccountAndState(accountAddress, accountInfos);
+                        });
+                    });
                 } else {
                     mKeyringService.getSelectedAccount(coinType, accountAddress -> {
                         updateSelectedAccountAndState(accountAddress, accountInfos);

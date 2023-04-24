@@ -360,7 +360,8 @@ public class AsyncUtils {
     }
 
     public static class GetSelectedAccountResponseContext extends SingleResponseBaseContext
-            implements KeyringService.GetSelectedAccount_Response {
+            implements KeyringService.GetSelectedAccount_Response,
+                       KeyringService.GetFilecoinSelectedAccount_Response {
         public String selectedAccount;
         public int coin;
 

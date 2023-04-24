@@ -206,7 +206,8 @@ public class CryptoModel {
 
     public void refreshTransactions() {
         synchronized (mLock) {
-            if (mKeyringService == null || mPendingTxHelper == null) {
+            if (mKeyringService == null || mPendingTxHelper == null
+                    || mBraveWalletService == null) {
                 return;
             }
             List<Integer> coins = new ArrayList<>();
@@ -218,7 +219,8 @@ public class CryptoModel {
             mKeyringService.getKeyringsInfo(mSharedData.getEnabledKeyrings(), keyringInfos -> {
                 List<AccountInfo> accountInfos =
                         WalletUtils.getAccountInfosFromKeyrings(keyringInfos);
-                new SelectedAccountResponsesCollector(mKeyringService, coins, accountInfos)
+                new SelectedAccountResponsesCollector(
+                        mKeyringService, mBraveWalletService, coins, accountInfos)
                         .getAccounts(defaultAccountPerCoin -> {
                             mPendingTxHelper.setAccountInfos(
                                     new ArrayList<>(defaultAccountPerCoin));
