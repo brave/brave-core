@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_SERVICES_BAT_ADS_BAT_ADS_SERVICE_IMPL_H_
 #define BRAVE_COMPONENTS_SERVICES_BAT_ADS_BAT_ADS_SERVICE_IMPL_H_
 
+#include <memory>
+
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
@@ -18,6 +20,10 @@ namespace bat_ads {
 
 class BatAdsServiceImpl : public mojom::BatAdsService {
  public:
+  // This constructor assumes the BatAdsServiceImpl will be bound to an
+  // externally owned receiver, such as through |mojo::MakeSelfOwnedReceiver()|.
+  BatAdsServiceImpl();
+
   explicit BatAdsServiceImpl(
       mojo::PendingReceiver<mojom::BatAdsService> receiver);
 
@@ -37,8 +43,11 @@ class BatAdsServiceImpl : public mojom::BatAdsService {
               CreateCallback callback) override;
 
  private:
-  mojo::Receiver<mojom::BatAdsService> receiver_;
+  mojo::Receiver<mojom::BatAdsService> receiver_{this};
   mojo::UniqueAssociatedReceiverSet<mojom::BatAds> associated_receivers_;
+
+  struct ScopedAllowSyncCall;
+  std::unique_ptr<ScopedAllowSyncCall> scoped_allow_sync_;
 };
 
 }  // namespace bat_ads

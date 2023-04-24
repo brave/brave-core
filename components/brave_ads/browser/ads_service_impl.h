@@ -59,6 +59,7 @@ class SimpleURLLoader;
 namespace brave_ads {
 
 class AdsTooltipsDelegate;
+class BatAdsServiceFactory;
 class Database;
 class DeviceId;
 struct NewTabPageAdInfo;
@@ -76,6 +77,7 @@ class AdsServiceImpl : public AdsService,
           adaptive_captcha_service,
       std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
       std::unique_ptr<DeviceId> device_id,
+      std::unique_ptr<BatAdsServiceFactory> bat_ads_service_factory,
       history::HistoryService* history_service,
       brave_rewards::RewardsService* rewards_service,
       brave_federated::AsyncDataStore* notification_ad_timing_data_store);
@@ -463,6 +465,8 @@ class AdsServiceImpl : public AdsService,
   const std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate_;
 
   const std::unique_ptr<DeviceId> device_id_;
+
+  const std::unique_ptr<BatAdsServiceFactory> bat_ads_service_factory_;
 
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
 
