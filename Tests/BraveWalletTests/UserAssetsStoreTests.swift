@@ -18,8 +18,12 @@ class UserAssetsStoreTests: XCTestCase {
     .sol: [.mockSolana]
   ]
   let visibleAssetsForCoins: [BraveWallet.CoinType: [BraveWallet.BlockchainToken]] = [
-    .eth: [BraveWallet.NetworkInfo.mockMainnet.nativeToken.then { $0.visible = true }, .mockERC721NFTToken.then { $0.visible = true }],
-    .sol: [BraveWallet.NetworkInfo.mockSolana.nativeToken.then { $0.visible = true }, .mockSolanaNFTToken.then { $0.visible = true }]
+    .eth: [
+      BraveWallet.NetworkInfo.mockMainnet.nativeToken.copy(asVisibleAsset: true),
+      .mockERC721NFTToken.copy(asVisibleAsset: true)],
+    .sol: [
+      BraveWallet.NetworkInfo.mockSolana.nativeToken.copy(asVisibleAsset: true),
+      .mockSolanaNFTToken.copy(asVisibleAsset: true)]
   ]
   let tokenRegistry: [BraveWallet.CoinType: [BraveWallet.BlockchainToken]] = [
     .eth: [.mockUSDCToken],

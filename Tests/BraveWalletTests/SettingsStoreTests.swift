@@ -17,7 +17,7 @@ class SettingsStoreTests: XCTestCase {
   /// Sets up TestKeyringService, TestBraveWalletService and TestTxService with some default values.
   private func setupServices() -> (BraveWallet.TestKeyringService, BraveWallet.TestBraveWalletService, BraveWallet.TestJsonRpcService, BraveWallet.TestTxService, IpfsAPI) {
     let mockAccountInfos: [BraveWallet.AccountInfo] = [.previewAccount]
-    let mockUserAssets: [BraveWallet.BlockchainToken] = [.previewToken.then { $0.visible = true }]
+    let mockUserAssets: [BraveWallet.BlockchainToken] = [.previewToken.copy(asVisibleAsset: true)]
     
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._keyringInfo = { _, completion in
