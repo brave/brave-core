@@ -1,17 +1,17 @@
 diff --git a/third_party/polymer/v3_0/BUILD.gn b/third_party/polymer/v3_0/BUILD.gn
-index accdd8fad34dcbdc28ca92fa7d3f2a730d8ffa3a..9ec0e9bc9a1e36f3d854eda4c7574fea765e9d82 100644
+index 5f4b3b4c9101bd96ad0aeba0deeda8e7b1683188..0175c1ebf83aff4e255751167a950eacfd8a3e50 100644
 --- a/third_party/polymer/v3_0/BUILD.gn
 +++ b/third_party/polymer/v3_0/BUILD.gn
-@@ -48,7 +48,7 @@ generate_grd("build_grdp") {
-     "polymer/polymer_bundled.min.js",
-   ]
+@@ -46,7 +46,7 @@ js_files = [
+   "paper-tooltip/paper-tooltip.js",
+ ]
  
--  if (is_chromeos_ash) {
-+  if (!is_android || is_chromeos_ash) {
-     input_files += [
-       "iron-dropdown/iron-dropdown.js",
-       "iron-dropdown/iron-dropdown-scroll-manager.js",
-@@ -159,7 +159,7 @@ ts_library("library") {
+-if (is_chromeos_ash) {
++if (!is_android || is_chromeos_ash) {
+   js_files += [
+     "iron-dropdown/iron-dropdown.js",
+     "iron-dropdown/iron-dropdown-scroll-manager.js",
+@@ -177,7 +177,7 @@ ts_library("library") {
      "components-chromium/polymer/polymer-legacy.d.ts",
    ]
  
