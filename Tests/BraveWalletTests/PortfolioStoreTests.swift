@@ -12,7 +12,16 @@ class PortfolioStoreTests: XCTestCase {
 
   private var cancellables: Set<AnyCancellable> = .init()
   
+  /// Test `update()` will fetch all visible user assets from all networks and display them sorted by their balance.
   func testUpdate() {
+    let mockETHBalance: Double = 0.896
+    let mockETHPrice: String = "3059.99" // ETH value = $2741.75104
+    let mockUSDCBalance: Double = 4
+    let mockUSDCPrice: String = "1" // USDC value = $4
+    let mockSOLLamportBalance: UInt64 = 3876535000 // ~3.8765 SOL
+    let mockSOLBalance: Double = 3.8765 // lamports rounded
+    let mockSOLPrice: String = "200" // SOL value = $775.30
+    
     let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
     let currencyFormatter = NumberFormatter().then { $0.numberStyle = .currency }
     
@@ -20,34 +29,52 @@ class PortfolioStoreTests: XCTestCase {
     let mockSolAccountInfos: [BraveWallet.AccountInfo] = [.mockSolAccount]
     let solNetwork: BraveWallet.NetworkInfo = .mockSolana
     let mockSolUserAssets: [BraveWallet.BlockchainToken] = [
-      BraveWallet.NetworkInfo.mockSolana.nativeToken.then { $0.visible = true },
-      .mockSpdToken.then { $0.visible = false }, // Verify non-visible assets not displayed #6386
+      BraveWallet.NetworkInfo.mockSolana.nativeToken.copy(asVisibleAsset: true),
+      .mockSpdToken, // Verify non-visible assets not displayed #6386
       .mockSolanaNFTToken
     ]
-    let mockLamportBalance: UInt64 = 3876535000 // ~3.8765 SOL
-    let mockSolDecimalBalance: Double = 3.8765 // rounded
     let mockNFTBalance: Double = 1
-    let mockSolAssetPrice: BraveWallet.AssetPrice = .init(fromAsset: "sol", toAsset: "usd", price: "200.00", assetTimeframeChange: "-57.23")
-    let mockSolPriceHistory: [BraveWallet.AssetTimePrice] = [.init(date: Date(timeIntervalSinceNow: -1000), price: "$200.00"), .init(date: Date(), price: "250.00")]
-    let totalSolBalanceValue: Double = (Double(mockSolAssetPrice.price) ?? 0) * mockSolDecimalBalance
+    let mockSOLAssetPrice: BraveWallet.AssetPrice = .init(fromAsset: "sol", toAsset: "usd", price: mockSOLPrice, assetTimeframeChange: "-57.23")
+    let mockSOLPriceHistory: [BraveWallet.AssetTimePrice] = [
+      .init(date: Date(timeIntervalSinceNow: -1000), price: mockSOLPrice),
+      .init(date: Date(), price: "250.00")
+    ]
+    let totalSolBalanceValue: Double = (Double(mockSOLAssetPrice.price) ?? 0) * mockSOLBalance
     
     // config Ethereum
     let mockEthAccountInfos: [BraveWallet.AccountInfo] = [.mockEthAccount]
     let ethNetwork: BraveWallet.NetworkInfo = .mockMainnet
     let mockEthUserAssets: [BraveWallet.BlockchainToken] = [
-      .previewToken.then { $0.visible = true },
-      .mockUSDCToken.then { $0.visible = false }, // Verify non-visible assets not displayed #6386
+      .previewToken.copy(asVisibleAsset: true),
+      .previewDaiToken, // Verify non-visible assets not displayed #6386
+      .mockUSDCToken.copy(asVisibleAsset: true),
       .mockERC721NFTToken
     ]
-    let mockEthDecimalBalance: Double = 0.0896
-    let numEthDecimals = Int(mockEthUserAssets[0].decimals)
-    let mockBalanceWei = formatter.weiString(from: 0.0896, radix: .hex, decimals: numEthDecimals) ?? ""
+    let ethBalanceWei = formatter.weiString(
+      from: mockETHBalance,
+      radix: .hex,
+      decimals: Int(BraveWallet.BlockchainToken.previewToken.decimals)
+    ) ?? ""
+    let usdcBalanceWei = formatter.weiString(
+      from: mockUSDCBalance,
+      radix: .hex,
+      decimals: Int(BraveWallet.BlockchainToken.mockUSDCToken.decimals)
+    ) ?? ""
     let mockNFTBalanceWei = formatter.weiString(from: 1, radix: .hex, decimals: 0) ?? ""
-    let mockEthAssetPrice: BraveWallet.AssetPrice = .init(fromAsset: "eth", toAsset: "usd", price: "3059.99", assetTimeframeChange: "-57.23")
-    let mockEthPriceHistory: [BraveWallet.AssetTimePrice] = [.init(date: Date(timeIntervalSinceNow: -1000), price: "$3000.00"), .init(date: Date(), price: "3059.99")]
-    let totalEthBalanceValue: Double = (Double(mockEthAssetPrice.price) ?? 0) * mockEthDecimalBalance
+    let mockETHAssetPrice: BraveWallet.AssetPrice = .init(fromAsset: "eth", toAsset: "usd", price: mockETHPrice, assetTimeframeChange: "-57.23")
+    let mockETHPriceHistory: [BraveWallet.AssetTimePrice] = [
+      .init(date: Date(timeIntervalSinceNow: -1000), price: "3000.00"),
+      .init(date: Date(), price: mockETHPrice)
+    ]
+    let mockUSDCAssetPrice: BraveWallet.AssetPrice = .init(fromAsset: "usdc", toAsset: "usd", price: mockUSDCPrice, assetTimeframeChange: "-57.23")
+    let mockUSDCPriceHistory: [BraveWallet.AssetTimePrice] = [
+      .init(date: Date(timeIntervalSinceNow: -1000), price: "0.999"),
+      .init(date: Date(), price: mockUSDCPrice)
+    ]
+    let totalEthBalanceValue: Double = (Double(mockETHAssetPrice.price) ?? 0) * mockETHBalance
+    let totalUSDCBalanceValue: Double = (Double(mockUSDCAssetPrice.price) ?? 0) * mockUSDCBalance
     
-    let totalBalanceValue = totalEthBalanceValue + totalSolBalanceValue
+    let totalBalanceValue = totalEthBalanceValue + totalSolBalanceValue + totalUSDCBalanceValue
     let totalBalance = currencyFormatter.string(from: NSNumber(value: totalBalanceValue)) ?? ""
     
     // setup test services
@@ -95,13 +122,16 @@ class PortfolioStoreTests: XCTestCase {
       }
     }
     rpcService._balance = { _, _, _, completion in
-      completion(mockBalanceWei, .success, "") // eth balance
+      completion(ethBalanceWei, .success, "") // eth balance
     }
-    rpcService._erc721TokenBalance = { _, _, _, _, completion in
+    rpcService._erc20TokenBalance = { contractAddress, _, _, completion in
+      completion(usdcBalanceWei, .success, "") // usdc balance
+    }
+    rpcService._erc721TokenBalance = { contractAddress, _, _, _, completion in
       completion(mockNFTBalanceWei, .success, "") // eth nft balance
     }
     rpcService._solanaBalance = { accountAddress, chainId, completion in
-      completion(mockLamportBalance, .success, "") // sol balance
+      completion(mockSOLLamportBalance, .success, "") // sol balance
     }
     rpcService._splTokenAccountBalance = {_, _, _, completion in
       completion("\(mockNFTBalance)", UInt8(0), "\(mockNFTBalance)", .success, "") // sol nft balance
@@ -145,14 +175,19 @@ class PortfolioStoreTests: XCTestCase {
     walletService._defaultBaseCurrency = { $0(CurrencyCode.usd.code) }
     walletService._selectedCoin = { $0(BraveWallet.CoinType.eth) }
     let assetRatioService = BraveWallet.TestAssetRatioService()
-    assetRatioService._price = { priceId, _, _, completion in
-      completion(true, [mockEthAssetPrice, mockSolAssetPrice])
+    assetRatioService._price = { priceIds, _, _, completion in
+      completion(true, [mockETHAssetPrice, mockUSDCAssetPrice, mockSOLAssetPrice])
     }
     assetRatioService._priceHistory = { priceId, _, _, completion in
-      if priceId == "sol" {
-        completion(true, mockSolPriceHistory)
-      } else {
-        completion(true, mockEthPriceHistory)
+      switch priceId {
+      case "sol":
+        completion(true, mockSOLPriceHistory)
+      case "eth":
+        completion(true, mockETHPriceHistory)
+      case "usdc":
+        completion(true, mockUSDCPriceHistory)
+      default:
+        completion(false, [])
       }
     }
     
@@ -178,16 +213,29 @@ class PortfolioStoreTests: XCTestCase {
           XCTFail("Unexpected test result")
           return
         }
-        XCTAssertEqual(lastUpdatedVisibleAssets.count, 2) // SOL on Solana mainnet, ETH on Ethereum mainnet
-        XCTAssertEqual(lastUpdatedVisibleAssets[0].token.symbol, mockSolUserAssets.first?.symbol)
-        XCTAssertEqual(lastUpdatedVisibleAssets[0].decimalBalance, mockSolDecimalBalance)
-        XCTAssertEqual(lastUpdatedVisibleAssets[0].price, mockSolAssetPrice.price)
-        XCTAssertEqual(lastUpdatedVisibleAssets[0].history, mockSolPriceHistory)
-        
-        XCTAssertEqual(lastUpdatedVisibleAssets[1].token.symbol, mockEthUserAssets.first?.symbol)
-        XCTAssertEqual(lastUpdatedVisibleAssets[1].decimalBalance, mockEthDecimalBalance)
-        XCTAssertEqual(lastUpdatedVisibleAssets[1].price, mockEthAssetPrice.price)
-        XCTAssertEqual(lastUpdatedVisibleAssets[1].history, mockEthPriceHistory)
+        // ETH on Ethereum mainnet, SOL on Solana mainnet, USDC on Ethereum mainnet
+        XCTAssertEqual(lastUpdatedVisibleAssets.count, 3)
+        // ETH
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.token.symbol,
+                       BraveWallet.BlockchainToken.previewToken.symbol)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.price,
+                       mockETHAssetPrice.price)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.history,
+                       mockETHPriceHistory)
+        // SOL
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.token.symbol,
+                       BraveWallet.BlockchainToken.mockSolToken.symbol)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.price,
+                       mockSOLAssetPrice.price)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.history,
+                       mockSOLPriceHistory)
+        // USDC first with largest balance
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 2]?.token.symbol,
+                       BraveWallet.BlockchainToken.mockUSDCToken.symbol)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 2]?.price,
+                       mockUSDCAssetPrice.price)
+        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 2]?.history,
+                       mockUSDCPriceHistory)
       }.store(in: &cancellables)
     // test that `update()` will assign new value to `balance` publisher
     let balanceException = expectation(description: "update-balance")
@@ -214,6 +262,15 @@ class PortfolioStoreTests: XCTestCase {
     store.update()
     waitForExpectations(timeout: 1) { error in
       XCTAssertNil(error)
+    }
+  }
+}
+
+extension BraveWallet.BlockchainToken {
+  /// Returns a copy of the `BlockchainToken` with the given `visible` flag.
+  func copy(asVisibleAsset isVisible: Bool) -> Self {
+    (self.copy() as! Self).then {
+      $0.visible = isVisible
     }
   }
 }

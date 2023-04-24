@@ -18,6 +18,22 @@ public struct AssetViewModel: Identifiable, Equatable {
   public var id: String {
     token.id + network.chainId
   }
+  
+  /// Sort by the fiat/value of the asset (price x balance), otherwise by balance when price is unavailable.
+  static func sortedByValue(lhs: AssetViewModel, rhs: AssetViewModel) -> Bool {
+    if let lhsPrice = Double(lhs.price),
+       let rhsPrice = Double(rhs.price) {
+      return (lhsPrice * lhs.decimalBalance) > (rhsPrice * rhs.decimalBalance)
+    } else if let lhsPrice = Double(lhs.price), (lhsPrice * lhs.decimalBalance) > 0 {
+      // lhs has a non-zero value
+      return true
+    } else if let rhsPrice = Double(rhs.price), (rhsPrice * rhs.decimalBalance) > 0 {
+      // rhs has a non-zero value
+      return false
+    }
+    // price unavailable, sort by balance
+    return lhs.decimalBalance > rhs.decimalBalance
+  }
 }
 
 struct BalanceTimePrice: DataPoint, Equatable {
@@ -157,25 +173,10 @@ public class PortfolioStore: ObservableObject {
         let sortOrder: Int
       }
       let allVisibleUserAssets = await self.walletService.allVisibleUserAssets(in: networks)
-      var updatedUserVisibleAssets: [AssetViewModel] = []
-      for networkAssets in allVisibleUserAssets {
-        for token in networkAssets.tokens {
-          if !token.isErc721 && !token.isNft {
-            updatedUserVisibleAssets.append(
-              AssetViewModel(
-                token: token,
-                network: networkAssets.network,
-                decimalBalance: totalBalancesCache[token.assetBalanceId] ?? 0,
-                price: pricesCache[token.assetRatioId.lowercased()] ?? "",
-                history: priceHistoriesCache[token.assetRatioId.lowercased()] ?? []
-              )
-            )
-          }
-        }
-      }
+      var updatedUserVisibleAssets = buildAssetViewModels(allVisibleUserAssets: allVisibleUserAssets)
       // update userVisibleAssets on display immediately with empty values. Issue #5567
       self.userVisibleAssets = updatedUserVisibleAssets
-      
+        .sorted(by: AssetViewModel.sortedByValue(lhs:rhs:))
       let keyrings = await self.keyringService.keyrings(for: WalletConstants.supportedCoinTypes)
       guard !Task.isCancelled else { return }
       typealias TokenNetworkAccounts = (token: BraveWallet.BlockchainToken, network: BraveWallet.NetworkInfo, accounts: [BraveWallet.AccountInfo])
@@ -231,23 +232,9 @@ public class PortfolioStore: ObservableObject {
       }
       
       guard !Task.isCancelled else { return }
-      updatedUserVisibleAssets.removeAll()
-      for networkAssets in allVisibleUserAssets {
-        for token in networkAssets.tokens {
-          if !token.isErc721 && !token.isNft {
-            updatedUserVisibleAssets.append(
-              AssetViewModel(
-                token: token,
-                network: networkAssets.network,
-                decimalBalance: totalBalancesCache[token.assetBalanceId] ?? 0,
-                price: pricesCache[token.assetRatioId.lowercased()] ?? "",
-                history: priceHistoriesCache[token.assetRatioId.lowercased()] ?? []
-              )
-            )
-          }
-        }
-      }
+      updatedUserVisibleAssets = buildAssetViewModels(allVisibleUserAssets: allVisibleUserAssets)
       self.userVisibleAssets = updatedUserVisibleAssets
+        .sorted(by: AssetViewModel.sortedByValue(lhs:rhs:))
       
       // Compute balance based on current prices
       let currentBalance = userVisibleAssets
@@ -273,6 +260,23 @@ public class PortfolioStore: ObservableObject {
         )
       }
       isLoadingBalances = false
+    }
+  }
+  
+  /// Builds the `AssetViewModel`s and `NFTAssetViewModel`s using the balances, price and metadata stored in their respective caches.
+  private func buildAssetViewModels(
+    allVisibleUserAssets: [NetworkAssets]
+  ) -> [AssetViewModel] {
+    allVisibleUserAssets.flatMap { networkAssets in
+      networkAssets.tokens.filter { (!$0.isErc721 && !$0.isNft) }.map { token in
+        AssetViewModel(
+          token: token,
+          network: networkAssets.network,
+          decimalBalance: totalBalancesCache[token.assetBalanceId] ?? 0,
+          price: pricesCache[token.assetRatioId.lowercased()] ?? "",
+          history: priceHistoriesCache[token.assetRatioId.lowercased()] ?? []
+        )
+      }
     }
   }
   
