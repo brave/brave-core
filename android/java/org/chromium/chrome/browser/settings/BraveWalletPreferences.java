@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.text.style.UnderlineSpan;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -22,10 +23,15 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.browser_ui.settings.TextMessagePreference;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
+import org.chromium.ui.text.NoUnderlineClickableSpan;
+import org.chromium.ui.text.SpanApplier;
 
 public class BraveWalletPreferences
         extends BravePreferenceFragment implements ConnectionErrorHandler {
@@ -35,6 +41,8 @@ public class BraveWalletPreferences
     private static final String BRAVE_WALLET_WEB3_NOTIFICATION_SWITCH = "web3_notifications_switch";
     private static final String BRAVE_WALLET_WEB3_NFT_DISCOVERY_SWITCH =
             "nft_auto_discovery_switch";
+    private static final String BRAVE_WALLET_WEB3_NFT_DISCOVERY_LEARN_MORE =
+            "nft_auto_discovery_learn_more";
     // A global preference, default state is on
     public static final String PREF_BRAVE_WALLET_WEB3_NOTIFICATIONS =
             "pref_brave_wallet_web3_notifications";
@@ -90,6 +98,18 @@ public class BraveWalletPreferences
                     mWalletModel.getCryptoModel().updateNftDiscovery((boolean) newValue);
                     return true;
                 });
+
+        TextMessagePreference learnMorePreference =
+                findPreference(BRAVE_WALLET_WEB3_NFT_DISCOVERY_LEARN_MORE);
+        var learnMoreDesc =
+                SpanApplier.applySpans(getString(R.string.settings_enable_nft_discovery_desc),
+                        new SpanApplier.SpanInfo("<LINK_1>", "</LINK_1>",
+                                new NoUnderlineClickableSpan(
+                                        requireContext(), R.color.brave_link, result -> {
+                                            TabUtils.openUrlInCustomTab(requireContext(),
+                                                    WalletConstants.NFT_DISCOVERY_LEARN_MORE_LINK);
+                                        })));
+        learnMorePreference.setSummary(learnMoreDesc);
     }
 
     @Override

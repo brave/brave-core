@@ -3879,7 +3879,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Enable NFT discovery
     </message>
     <message name="IDS_SETTINGS_ENABLE_NFT_DISCOVERY_DESC" desc="The description for enabling NFT discovery">
-      Automatically add NFTs you own to the Wallet using third party APIs. See help centre for more information.
+      Automatically add NFTs you own to the Wallet using third party APIs. <ph name="BEGIN_LINK_1">&lt;LINK_1&gt;</ph>Learn more.<ph name="END_LINK_1">&lt;/LINK_1&gt;</ph>
     </message>
   </messages>
   </release>

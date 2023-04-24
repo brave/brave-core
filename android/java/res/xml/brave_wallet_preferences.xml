@@ -37,6 +37,12 @@
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="nft_auto_discovery_switch"
         android:title="@string/settings_enable_nft_discovery_label"
-        android:summary="@string/settings_enable_nft_discovery_desc" />
+        android:summaryOn="@string/text_on"
+        android:summaryOff="@string/text_off"
+        app:allowDividerBelow="false"/>
 
+    <!-- A description with hyperlink to explain more about NFT discovery settings. -->
+    <org.chromium.components.browser_ui.settings.TextMessagePreference
+        app:icon="@drawable/ic_info"
+        android:key="nft_auto_discovery_learn_more" />
 </PreferenceScreen>
