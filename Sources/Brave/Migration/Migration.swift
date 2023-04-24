@@ -73,7 +73,7 @@ public class Migration {
   
   // Migrate from TabMO to SessionTab and SessionWindow
   public static func migrateTabStateToWebkitState(diskImageStore: DiskImageStore?) {
-    if Preferences.Migration.tabsMigrationToWebKitCompleted.value {
+    if Preferences.Migration.tabMigrationToInteractionStateCompleted.value {
       return
     }
     
@@ -89,7 +89,7 @@ public class Migration {
         _ = SessionWindow(context: context, index: 0, isPrivate: isPrivate, isSelected: true)
       }
       
-      Preferences.Migration.tabsMigrationToWebKitCompleted.value = true
+      Preferences.Migration.tabMigrationToInteractionStateCompleted.value = true
       return
     }
     
@@ -164,7 +164,7 @@ public class Migration {
                        tabId: tabId)
       }
       
-      Preferences.Migration.tabsMigrationToWebKitCompleted.value = true
+      Preferences.Migration.tabMigrationToInteractionStateCompleted.value = true
     }
   }
 
@@ -199,7 +199,7 @@ fileprivate extension Preferences {
     static let walletProviderAccountRequestCompleted =
     Option<Bool>(key: "migration.wallet-provider-account-request-completed", default: false)
 
-    static let tabsMigrationToWebKitCompleted = Option<Bool>(key: "migration.tabs-to-webkit", default: false)
+    static let tabMigrationToInteractionStateCompleted = Option<Bool>(key: "migration.tab-to-interaction-state", default: false)
   }
 
   /// Migrate a given key from `Prefs` into a specific option
