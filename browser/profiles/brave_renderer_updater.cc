@@ -122,7 +122,9 @@ void BraveRendererUpdater::UpdateRenderer(
   bool wallet_created =
       keyring_service &&
       keyring_service->IsKeyringCreated(brave_wallet::mojom::kDefaultKeyringId);
-  bool should_ignore_brave_wallet = !wallet_created || has_installed_metamask;
+  bool should_ignore_brave_wallet_for_eth =
+      !wallet_created || has_installed_metamask;
+  bool should_ignore_brave_wallet_for_sol = !wallet_created;
 
   auto default_ethereum_wallet =
       static_cast<brave_wallet::mojom::DefaultWallet>(
@@ -130,7 +132,7 @@ void BraveRendererUpdater::UpdateRenderer(
   bool brave_use_native_ethereum_wallet =
       ((default_ethereum_wallet ==
             brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension &&
-        !should_ignore_brave_wallet) ||
+        !should_ignore_brave_wallet_for_eth) ||
        default_ethereum_wallet ==
            brave_wallet::mojom::DefaultWallet::BraveWallet) &&
       is_wallet_allowed_for_context_ && brave_wallet::IsDappsSupportEnabled();
@@ -143,7 +145,7 @@ void BraveRendererUpdater::UpdateRenderer(
   bool brave_use_native_solana_wallet =
       ((default_solana_wallet ==
             brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension &&
-        !should_ignore_brave_wallet) ||
+        !should_ignore_brave_wallet_for_sol) ||
        default_solana_wallet ==
            brave_wallet::mojom::DefaultWallet::BraveWallet) &&
       is_wallet_allowed_for_context_ && brave_wallet::IsDappsSupportEnabled();

@@ -41,14 +41,6 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "ui/base/l10n/l10n_util.h"
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-#include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
-#include "chrome/browser/extensions/extension_service.h"
-#include "extensions/browser/extension_system.h"
-#include "extensions/common/extension.h"
-#include "extensions/common/extension_builder.h"
-#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
-
 using brave_wallet::mojom::SolanaProviderError;
 
 namespace {
@@ -688,36 +680,6 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, AttachIfWalletCreated) {
                   .ExtractBool());
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
 }
-
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest,
-                       DoNotAttachIfMetaMaskInstalled) {
-  auto* keyring_service =
-      brave_wallet::KeyringServiceFactory::GetServiceForContext(
-          browser()->profile());
-  keyring_service->CreateWallet("password", base::DoNothing());
-
-  scoped_refptr<const extensions::Extension> extension(
-      extensions::ExtensionBuilder("MetaMask")
-          .SetID(metamask_extension_id)
-          .Build());
-  extensions::ExtensionSystem::Get(browser()->profile())
-      ->extension_service()
-      ->AddExtension(extension.get());
-
-  brave_wallet::SetDefaultSolanaWallet(
-      browser()->profile()->GetPrefs(),
-      brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
-  ReloadAndWaitForLoadStop(browser());
-
-  std::string command = "window.solana.isBraveWallet";
-  EXPECT_TRUE(content::EvalJs(web_contents(browser()), command)
-                  .error.find("Cannot read properties of undefined") !=
-              std::string::npos);
-  EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
-}
-#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
-
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, NonWritable) {
   for (const std::string& provider : {"braveSolana", "solana"}) {
     // window.braveSolana.* and window.solana.* (methods)
