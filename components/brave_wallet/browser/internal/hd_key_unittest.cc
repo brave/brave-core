@@ -360,13 +360,13 @@ TEST(HDKeyUnitTest, SignAndVerifyAndRecover) {
   EXPECT_TRUE(key->Verify(msg_a, sig_a));
   EXPECT_TRUE(key->Verify(msg_b, sig_b));
   const std::vector<uint8_t> public_key_a =
-      key->Recover(true, msg_a, sig_a, recid_a);
+      key->RecoverCompact(true, msg_a, sig_a, recid_a);
   const std::vector<uint8_t> public_key_b =
-      key->Recover(true, msg_b, sig_b, recid_b);
+      key->RecoverCompact(true, msg_b, sig_b, recid_b);
   const std::vector<uint8_t> uncompressed_public_key_a =
-      key->Recover(false, msg_a, sig_a, recid_a);
+      key->RecoverCompact(false, msg_a, sig_a, recid_a);
   const std::vector<uint8_t> uncompressed_public_key_b =
-      key->Recover(false, msg_b, sig_b, recid_b);
+      key->RecoverCompact(false, msg_b, sig_b, recid_b);
   EXPECT_EQ(base::HexEncode(public_key_a), base::HexEncode(key->public_key_));
   EXPECT_EQ(base::HexEncode(public_key_b), base::HexEncode(key->public_key_));
   EXPECT_EQ(base::HexEncode(uncompressed_public_key_a),
@@ -385,17 +385,17 @@ TEST(HDKeyUnitTest, SignAndVerifyAndRecover) {
   EXPECT_FALSE(key->Verify(msg_a, std::vector<uint8_t>(65)));
 
   EXPECT_TRUE(IsPublicKeyEmpty(
-      key->Recover(true, std::vector<uint8_t>(31), sig_a, recid_a)));
+      key->RecoverCompact(true, std::vector<uint8_t>(31), sig_a, recid_a)));
   EXPECT_TRUE(IsPublicKeyEmpty(
-      key->Recover(true, std::vector<uint8_t>(33), sig_a, recid_a)));
+      key->RecoverCompact(true, std::vector<uint8_t>(33), sig_a, recid_a)));
   EXPECT_TRUE(IsPublicKeyEmpty(
-      key->Recover(true, msg_a, std::vector<uint8_t>(31), recid_a)));
+      key->RecoverCompact(true, msg_a, std::vector<uint8_t>(31), recid_a)));
   EXPECT_TRUE(IsPublicKeyEmpty(
-      key->Recover(true, msg_a, std::vector<uint8_t>(33), recid_a)));
-  EXPECT_TRUE(IsPublicKeyEmpty(key->Recover(true, msg_a, sig_a, -1)));
-  EXPECT_TRUE(IsPublicKeyEmpty(key->Recover(true, msg_a, sig_a, 4)));
-  EXPECT_TRUE(IsPublicKeyEmpty(key->Recover(false, msg_a, sig_a, -1)));
-  EXPECT_TRUE(IsPublicKeyEmpty(key->Recover(false, msg_a, sig_a, 4)));
+      key->RecoverCompact(true, msg_a, std::vector<uint8_t>(33), recid_a)));
+  EXPECT_TRUE(IsPublicKeyEmpty(key->RecoverCompact(true, msg_a, sig_a, -1)));
+  EXPECT_TRUE(IsPublicKeyEmpty(key->RecoverCompact(true, msg_a, sig_a, 4)));
+  EXPECT_TRUE(IsPublicKeyEmpty(key->RecoverCompact(false, msg_a, sig_a, -1)));
+  EXPECT_TRUE(IsPublicKeyEmpty(key->RecoverCompact(false, msg_a, sig_a, 4)));
 }
 
 TEST(HDKeyUnitTest, SetPrivateKey) {
@@ -627,7 +627,7 @@ TEST(HDKeyUnitTest, SignBitcoin) {
   auto signature = hdkey->SignDer(hashed);
   // https://github.com/bitcoin/bitcoin/blob/v24.0/src/test/key_tests.cpp#L141
   EXPECT_EQ(
-      HexEncodeLower(signature),
+      HexEncodeLower(*signature),
       "304402205dbbddda71772d95ce91cd2d14b592cfbc1dd0aabd6a394b6c2d377bbe59d31d"
       "022014ddda21494a4e221f0824f0b8b924c43fa43c0ad57dccdaa11f81a6bd4582f6");
 }

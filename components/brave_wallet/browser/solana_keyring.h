@@ -26,6 +26,9 @@ class SolanaKeyring : public HDKeyring {
 
   std::string ImportAccount(const std::vector<uint8_t>& keypair) override;
 
+  std::vector<uint8_t> SignMessage(const std::string& address,
+                                   const std::vector<uint8_t>& message);
+
   static absl::optional<std::string> CreateProgramDerivedAddress(
       const std::vector<std::vector<uint8_t>>& seeds,
       const std::string& program_id);

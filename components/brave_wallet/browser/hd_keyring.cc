@@ -111,17 +111,6 @@ std::string HDKeyring::EncodePrivateKeyForExport(const std::string& address) {
   return hd_key->EncodePrivateKeyForExport();
 }
 
-std::vector<uint8_t> HDKeyring::SignMessage(
-    const std::string& address,
-    const std::vector<uint8_t>& message) {
-  HDKeyBase* hd_key = GetHDKeyFromAddress(address);
-  if (!hd_key) {
-    return std::vector<uint8_t>();
-  }
-
-  return hd_key->SignCompact(message, nullptr);
-}
-
 HDKeyBase* HDKeyring::GetHDKeyFromAddress(const std::string& address) {
   const auto imported_accounts_iter = imported_accounts_.find(address);
   if (imported_accounts_iter != imported_accounts_.end()) {

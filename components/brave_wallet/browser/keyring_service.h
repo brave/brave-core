@@ -187,9 +187,9 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       const std::vector<uint8_t>& message,
       bool is_eip712 = false);
 
-  std::vector<uint8_t> SignMessage(const std::string& keyring_id,
-                                   const std::string& address,
-                                   const std::vector<uint8_t>& message);
+  std::vector<uint8_t> SignMessageBySolanaKeyring(
+      const std::string& address,
+      const std::vector<uint8_t>& message);
   bool RecoverAddressByDefaultKeyring(const std::vector<uint8_t>& message,
                                       const std::vector<uint8_t>& signature,
                                       std::string* address);
@@ -238,11 +238,13 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
 
   std::vector<std::pair<std::string, mojom::BitcoinKeyIdPtr>>
   GetBitcoinAddresses(const std::string& keyring_id, uint32_t account_index);
-  std::string GetBitcoinAddress(const std::string& keyring_id,
-                                const mojom::BitcoinKeyId& key_id);
-  std::vector<uint8_t> GetBitcoinPubkey(const std::string& keyring_id,
-                                        const mojom::BitcoinKeyId& key_id);
-  std::vector<uint8_t> SignBitcoinMessage(
+  absl::optional<std::string> GetBitcoinAddress(
+      const std::string& keyring_id,
+      const mojom::BitcoinKeyId& key_id);
+  absl::optional<std::vector<uint8_t>> GetBitcoinPubkey(
+      const std::string& keyring_id,
+      const mojom::BitcoinKeyId& key_id);
+  absl::optional<std::vector<uint8_t>> SignMessageByBitcoinKeyring(
       const std::string& keyring_id,
       const mojom::BitcoinKeyId& key_id,
       base::span<const uint8_t, 32> message);

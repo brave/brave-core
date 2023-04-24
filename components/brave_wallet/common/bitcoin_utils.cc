@@ -62,6 +62,7 @@ absl::optional<DecodedBitcoinAddress> DecodeBitcoinAddress(
     return absl::nullopt;
   }
 
+  result.address_type = BitcoinAddressType::kWitnessUnknown;
   result.witness_version = bech_result.second[0];
   result.pubkey_hash = std::move(data);
 

@@ -22,11 +22,12 @@ class BitcoinKeyring : public HDKeyring {
   BitcoinKeyring(const BitcoinKeyring&) = delete;
   BitcoinKeyring& operator=(const BitcoinKeyring&) = delete;
 
-  std::string GetAddress(const mojom::BitcoinKeyId& key_id);
+  absl::optional<std::string> GetAddress(const mojom::BitcoinKeyId& key_id);
 
-  std::vector<uint8_t> GetBitcoinPubkey(const mojom::BitcoinKeyId& key_id);
+  absl::optional<std::vector<uint8_t>> GetPubkey(
+      const mojom::BitcoinKeyId& key_id);
 
-  std::vector<uint8_t> SignBitcoinMessage(
+  absl::optional<std::vector<uint8_t>> SignMessage(
       const mojom::BitcoinKeyId& key_id,
       base::span<const uint8_t, 32> message);
 

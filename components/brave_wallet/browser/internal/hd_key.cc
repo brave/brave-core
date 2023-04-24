@@ -687,15 +687,16 @@ std::vector<uint8_t> HDKey::SignCompact(const std::vector<uint8_t>& msg,
   return sig;
 }
 
-// TODO(apaymyshev): return as base::expected
-std::vector<uint8_t> HDKey::SignDer(base::span<const uint8_t, 32> msg) {
+// TODO(apaymyshev): return as base::expected?
+absl::optional<std::vector<uint8_t>> HDKey::SignDer(
+    base::span<const uint8_t, 32> msg) {
   unsigned char extra_entropy[32] = {0};
   secp256k1_ecdsa_signature ecdsa_sig;
   if (!secp256k1_ecdsa_sign(secp256k1_ctx_, &ecdsa_sig, msg.data(),
                             private_key_.data(),
                             secp256k1_nonce_function_rfc6979, nullptr)) {
     LOG(ERROR) << __func__ << ": secp256k1_ecdsa_sign failed";
-    return {};
+    return absl::nullopt;
   }
 
   auto sig_has_low_r = [](const secp256k1_context* ctx,
@@ -716,7 +717,7 @@ std::vector<uint8_t> HDKey::SignDer(base::span<const uint8_t, 32> msg) {
             secp256k1_ctx_, &ecdsa_sig, msg.data(), private_key_.data(),
             secp256k1_nonce_function_rfc6979, extra_entropy)) {
       LOG(ERROR) << __func__ << ": secp256k1_ecdsa_sign failed";
-      return {};
+      return absl::nullopt;
     }
   }
 
@@ -724,7 +725,7 @@ std::vector<uint8_t> HDKey::SignDer(base::span<const uint8_t, 32> msg) {
   size_t sig_der_length = sig_der.size();
   if (!secp256k1_ecdsa_signature_serialize_der(secp256k1_ctx_, sig_der.data(),
                                                &sig_der_length, &ecdsa_sig)) {
-    return {};
+    return absl::nullopt;
   }
   sig_der.resize(sig_der_length);
 
@@ -761,10 +762,10 @@ bool HDKey::Verify(const std::vector<uint8_t>& msg,
   return true;
 }
 
-std::vector<uint8_t> HDKey::Recover(bool compressed,
-                                    const std::vector<uint8_t>& msg,
-                                    const std::vector<uint8_t>& sig,
-                                    int recid) {
+std::vector<uint8_t> HDKey::RecoverCompact(bool compressed,
+                                           const std::vector<uint8_t>& msg,
+                                           const std::vector<uint8_t>& sig,
+                                           int recid) {
   size_t public_key_len = compressed ? 33 : 65;
   std::vector<uint8_t> public_key(public_key_len);
   if (msg.size() != 32 || sig.size() != kCompactSignatureSize) {

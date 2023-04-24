@@ -3848,33 +3848,23 @@ TEST_F(KeyringServiceUnitTest, SignMessage) {
 
   // solana keyring doesn't exist yet
   EXPECT_TRUE(service
-                  .SignMessage(mojom::kSolanaKeyringId,
-                               "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
-                               message)
+                  .SignMessageBySolanaKeyring(
+                      "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8", message)
                   .empty());
 
   // create solana keyring
   ASSERT_TRUE(AddAccount(&service, "Account 1", mojom::CoinType::SOL));
   ASSERT_TRUE(service.IsKeyringCreated(brave_wallet::mojom::kSolanaKeyringId));
 
-  // not suppprt default keyring
-  EXPECT_TRUE(service
-                  .SignMessage(mojom::kDefaultKeyringId,
-                               "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db",
-                               message)
-                  .empty());
-
   // invalid address for Solana keyring
   EXPECT_TRUE(service
-                  .SignMessage(mojom::kSolanaKeyringId,
-                               "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db",
-                               message)
+                  .SignMessageBySolanaKeyring(
+                      "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db", message)
                   .empty());
 
   EXPECT_FALSE(service
-                   .SignMessage(mojom::kSolanaKeyringId,
-                                "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
-                                message)
+                   .SignMessageBySolanaKeyring(
+                       "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8", message)
                    .empty());
 }
 

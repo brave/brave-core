@@ -76,8 +76,9 @@ class BitcoinWalletService : public KeyedService,
                                  const std::string& keyring_id,
                                  uint32_t account_index);
 
-  std::string GetUnusedChangeAddress(const std::string& keyring_id,
-                                     uint32_t account_index);
+  absl::optional<std::string> GetUnusedChangeAddress(
+      const std::string& keyring_id,
+      uint32_t account_index);
 
   bool FillUtxoList(SendToContext& context);
   bool PickInputs(SendToContext& context);

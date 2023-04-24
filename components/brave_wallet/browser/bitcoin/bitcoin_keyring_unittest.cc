@@ -28,13 +28,13 @@ TEST(BitcoinKeyringUnitTest, TestVectors) {
                              "m/84'/0'");
 
   EXPECT_EQ(
-      base::HexEncode(keyring.GetBitcoinPubkey(BitcoinKeyId(0, 0, 0))),
+      base::HexEncode(*keyring.GetPubkey(BitcoinKeyId(0, 0, 0))),
       "0330D54FD0DD420A6E5F8D3624F5F3482CAE350F79D5F0753BF5BEEF9C2D91AF3C");
   EXPECT_EQ(
-      base::HexEncode(keyring.GetBitcoinPubkey(BitcoinKeyId(0, 0, 1))),
+      base::HexEncode(*keyring.GetPubkey(BitcoinKeyId(0, 0, 1))),
       "03E775FD51F0DFB8CD865D9FF1CCA2A158CF651FE997FDC9FEE9C1D3B5E995EA77");
   EXPECT_EQ(
-      base::HexEncode(keyring.GetBitcoinPubkey(BitcoinKeyId(0, 1, 0))),
+      base::HexEncode(*keyring.GetPubkey(BitcoinKeyId(0, 1, 0))),
       "03025324888E429AB8E3DBAF1F7802648B9CD01E9B418485C5FA4C1B9B5700E1A6");
 
   EXPECT_EQ(keyring.GetAddress(BitcoinKeyId(0, 0, 0)),
@@ -83,29 +83,29 @@ TEST(BitcoinKeyringUnitTest, GetAddress) {
             "tb1qkvjfredfz59jwvqru7a2spvugqd7dlx6e4aqvm");
 }
 
-TEST(BitcoinKeyringUnitTest, GetBitcoinPubkey) {
+TEST(BitcoinKeyringUnitTest, GetPubkey) {
   BitcoinKeyring keyring(false);
   keyring.ConstructRootHDKey(*MnemonicToSeed(kBip84TestMnemonic, ""),
                              "m/84'/0'");
 
   EXPECT_EQ(
-      base::HexEncode(keyring.GetBitcoinPubkey(BitcoinKeyId(0, 0, 0))),
+      base::HexEncode(*keyring.GetPubkey(BitcoinKeyId(0, 0, 0))),
       "0330D54FD0DD420A6E5F8D3624F5F3482CAE350F79D5F0753BF5BEEF9C2D91AF3C");
   EXPECT_EQ(
-      base::HexEncode(keyring.GetBitcoinPubkey(BitcoinKeyId(0, 0, 1))),
+      base::HexEncode(*keyring.GetPubkey(BitcoinKeyId(0, 0, 1))),
       "03E775FD51F0DFB8CD865D9FF1CCA2A158CF651FE997FDC9FEE9C1D3B5E995EA77");
   EXPECT_EQ(
-      base::HexEncode(keyring.GetBitcoinPubkey(BitcoinKeyId(0, 1, 0))),
+      base::HexEncode(*keyring.GetPubkey(BitcoinKeyId(0, 1, 0))),
       "03025324888E429AB8E3DBAF1F7802648B9CD01E9B418485C5FA4C1B9B5700E1A6");
 
   EXPECT_EQ(
-      base::HexEncode(keyring.GetBitcoinPubkey(BitcoinKeyId(1, 0, 0))),
+      base::HexEncode(*keyring.GetPubkey(BitcoinKeyId(1, 0, 0))),
       "035CE17D6438A499E0C7FEF59B43FD7B2CB6E4A31B598F6A4C20CA94854EAC9D36");
   EXPECT_EQ(
-      base::HexEncode(keyring.GetBitcoinPubkey(BitcoinKeyId(1, 0, 1))),
+      base::HexEncode(*keyring.GetPubkey(BitcoinKeyId(1, 0, 1))),
       "0366DC739A33F2C600B99927735BD2FEEA5C1D78142D2D0D3917623C4AF09E8BBC");
   EXPECT_EQ(
-      base::HexEncode(keyring.GetBitcoinPubkey(BitcoinKeyId(1, 1, 0))),
+      base::HexEncode(*keyring.GetPubkey(BitcoinKeyId(1, 1, 0))),
       "025695996D13031C54896990E6E38DB5849F5A64FA81142B452D6E23C36FD83880");
 
   BitcoinKeyring testnet_keyring(true);
@@ -113,23 +113,23 @@ TEST(BitcoinKeyringUnitTest, GetBitcoinPubkey) {
                                      "m/84'/1'");
 
   EXPECT_EQ(
-      base::HexEncode(testnet_keyring.GetBitcoinPubkey(BitcoinKeyId(0, 0, 0))),
+      base::HexEncode(*testnet_keyring.GetPubkey(BitcoinKeyId(0, 0, 0))),
       "02E7AB2537B5D49E970309AAE06E9E49F36CE1C9FEBBD44EC8E0D1CCA0B4F9C319");
   EXPECT_EQ(
-      base::HexEncode(testnet_keyring.GetBitcoinPubkey(BitcoinKeyId(0, 0, 1))),
+      base::HexEncode(*testnet_keyring.GetPubkey(BitcoinKeyId(0, 0, 1))),
       "03EEED205A69022FED4A62A02457F3699B19C06BF74BF801ACC6D9AE84BC16A9E1");
   EXPECT_EQ(
-      base::HexEncode(testnet_keyring.GetBitcoinPubkey(BitcoinKeyId(0, 1, 0))),
+      base::HexEncode(*testnet_keyring.GetPubkey(BitcoinKeyId(0, 1, 0))),
       "035D49ECCD54D0099E43676277C7A6D4625D611DA88A5DF49BF9517A7791A777A5");
 
   EXPECT_EQ(
-      base::HexEncode(testnet_keyring.GetBitcoinPubkey(BitcoinKeyId(1, 0, 0))),
+      base::HexEncode(*testnet_keyring.GetPubkey(BitcoinKeyId(1, 0, 0))),
       "024AC8DA6430EC1C3D7DB1C01EBCB26F037303A28565587B76A275CD5D286DADE0");
   EXPECT_EQ(
-      base::HexEncode(testnet_keyring.GetBitcoinPubkey(BitcoinKeyId(1, 0, 1))),
+      base::HexEncode(*testnet_keyring.GetPubkey(BitcoinKeyId(1, 0, 1))),
       "03392B97B3B3900E27431BDF516E0A5A8B6706D1827B85567FC0E45FA3109A0BC7");
   EXPECT_EQ(
-      base::HexEncode(testnet_keyring.GetBitcoinPubkey(BitcoinKeyId(1, 1, 0))),
+      base::HexEncode(*testnet_keyring.GetPubkey(BitcoinKeyId(1, 1, 0))),
       "03780B696D530DEF424B80368C5F401D12FBF7B59A56CA559AB083DFD2AF405568");
 }
 

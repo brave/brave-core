@@ -52,9 +52,6 @@ class HDKeyring {
   // base58 depends on underlying hd key)
   virtual std::string EncodePrivateKeyForExport(const std::string& address);
 
-  std::vector<uint8_t> SignMessage(const std::string& address,
-                                   const std::vector<uint8_t>& message);
-
   bool HasAddress(const std::string& addr);
 
   bool HasImportedAddress(const std::string& addr);

@@ -1759,12 +1759,12 @@ KeyringService::DecryptCipherFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
           EthAddress::FromHex(address).ToChecksumAddress());
 }
 
-std::vector<uint8_t> KeyringService::SignMessage(
-    const std::string& keyring_id,
+std::vector<uint8_t> KeyringService::SignMessageBySolanaKeyring(
     const std::string& address,
     const std::vector<uint8_t>& message) {
-  auto* keyring = GetHDKeyringById(keyring_id);
-  if (!keyring || keyring_id == mojom::kDefaultKeyringId) {
+  auto* keyring =
+      static_cast<SolanaKeyring*>(GetHDKeyringById(mojom::kSolanaKeyringId));
+  if (!keyring) {
     return std::vector<uint8_t>();
   }
 
@@ -2511,50 +2511,51 @@ KeyringService::GetBitcoinAddresses(const std::string& keyring_id,
   for (auto i = 0; i < 30; ++i) {
     auto key_id = mojom::BitcoinKeyId::New(account_index, 0, i);
     auto address = bitcoin_keyring->GetAddress(*key_id);
-    if (address.empty()) {
+    if (!address) {
       return {};
     }
-    addresses.emplace_back(address, std::move(key_id));
+    addresses.emplace_back(*address, std::move(key_id));
   }
   for (auto i = 0; i < 20; ++i) {
     auto key_id = mojom::BitcoinKeyId::New(account_index, 1, i);
     auto address = bitcoin_keyring->GetAddress(*key_id);
-    if (address.empty()) {
+    if (!address) {
       return {};
     }
-    addresses.emplace_back(address, std::move(key_id));
+    addresses.emplace_back(*address, std::move(key_id));
   }
 
   return addresses;
 }
 
-std::string KeyringService::GetBitcoinAddress(
+absl::optional<std::string> KeyringService::GetBitcoinAddress(
     const std::string& keyring_id,
     const mojom::BitcoinKeyId& key_id) {
   CHECK(IsBitcoinKeyring(keyring_id));
 
   auto* bitcoin_keyring = GetBitcoinKeyringById(keyring_id);
   if (!bitcoin_keyring) {
-    return {};
+    return absl::nullopt;
   }
 
   return bitcoin_keyring->GetAddress(key_id);
 }
 
-std::vector<uint8_t> KeyringService::GetBitcoinPubkey(
+absl::optional<std::vector<uint8_t>> KeyringService::GetBitcoinPubkey(
     const std::string& keyring_id,
     const mojom::BitcoinKeyId& key_id) {
   CHECK(IsBitcoinKeyring(keyring_id));
 
   auto* bitcoin_keyring = GetBitcoinKeyringById(keyring_id);
   if (!bitcoin_keyring) {
-    return {};
+    return absl::nullopt;
   }
 
-  return bitcoin_keyring->GetBitcoinPubkey(key_id);
+  return bitcoin_keyring->GetPubkey(key_id);
 }
 
-std::vector<uint8_t> KeyringService::SignBitcoinMessage(
+absl::optional<std::vector<uint8_t>>
+KeyringService::SignMessageByBitcoinKeyring(
     const std::string& keyring_id,
     const mojom::BitcoinKeyId& key_id,
     base::span<const uint8_t, 32> message) {
@@ -2562,10 +2563,10 @@ std::vector<uint8_t> KeyringService::SignBitcoinMessage(
 
   auto* bitcoin_keyring = GetBitcoinKeyringById(keyring_id);
   if (!bitcoin_keyring) {
-    return {};
+    return absl::nullopt;
   }
 
-  return bitcoin_keyring->SignBitcoinMessage(key_id, message);
+  return bitcoin_keyring->SignMessage(key_id, message);
 }
 
 void KeyringService::MaybeUnlockWithCommandLine() {

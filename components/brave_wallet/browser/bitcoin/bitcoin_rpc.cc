@@ -6,6 +6,8 @@
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_rpc.h"
 
 #include "base/command_line.h"
+#include "base/ranges/algorithm.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet/common/switches.h"
@@ -36,6 +38,10 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
     )");
 }
 
+bool IsAsciiAlphaNumeric(const std::string& str) {
+  return base::ranges::all_of(str, &base::IsAsciiAlphaNumeric<char>);
+}
+
 const GURL MakeGetChainHeightUrl(const GURL& base_url) {
   GURL::Replacements replacements;
   const std::string path =
@@ -48,6 +54,10 @@ const GURL MakeGetChainHeightUrl(const GURL& base_url) {
 const GURL MakeAddressHistoryUrl(const GURL& base_url,
                                  const std::string& address,
                                  const std::string& last_seen_txid) {
+  if (!IsAsciiAlphaNumeric(address) || !IsAsciiAlphaNumeric(last_seen_txid)) {
+    return GURL();
+  }
+
   GURL::Replacements replacements;
   std::string path =
       base_url.path() +

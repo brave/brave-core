@@ -84,15 +84,17 @@ class HDKey : public HDKeyBase {
   // If path is invalid, nullptr will be returned
   std::unique_ptr<HDKeyBase> DeriveChildFromPath(
       const std::string& path) override;
+  // TODO(apaymyshev): make arg and return types fixed size spans and arrays
+  // where possible.
 
   // Sign the message using private key. The msg has to be exactly 32 bytes
   // Return 64 bytes ECDSA signature when succeed, otherwise empty vector
   // if recid is not null, recovery id will be filled.
-  std::vector<uint8_t> SignCompact(const std::vector<uint8_t>& msg,
-                                   int* recid = nullptr) override;
+  std::vector<uint8_t> SignCompact(const std::vector<uint8_t>& msg, int* recid);
 
   // Sign the message using private key and return it in DER format.
-  std::vector<uint8_t> SignDer(base::span<const uint8_t, 32> msg);
+  absl::optional<std::vector<uint8_t>> SignDer(
+      base::span<const uint8_t, 32> msg);
 
   // Verify the ECDSA signature using public key. The msg has to be exactly 32
   // bytes and the sig has to be 64 bytes.
@@ -103,10 +105,10 @@ class HDKey : public HDKeyBase {
   // Recover public key from signature and message. The msg has to be exactly 32
   // bytes and the sig has to be 64 bytes.
   // Return valid public key when succeed, all zero vector otherwise
-  std::vector<uint8_t> Recover(bool compressed,
-                               const std::vector<uint8_t>& msg,
-                               const std::vector<uint8_t>& sig,
-                               int recid);
+  std::vector<uint8_t> RecoverCompact(bool compressed,
+                                      const std::vector<uint8_t>& msg,
+                                      const std::vector<uint8_t>& sig,
+                                      int recid);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(Eip1559TransactionUnitTest,

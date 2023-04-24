@@ -35,16 +35,19 @@ TEST(BitcoinUtilsUnitTest, Bip0173TestVectors2) {
     const char* address;
     const char* opcodes;  // not relevant parts of scriptpubkey.
     const char* pubkey_hash_hex;
+    BitcoinAddressType expected_type;
   } test_cases[] = {
       {
           "BC1QW508D6QEJXTDG4Y5R3ZARVARY0C5XW7KV8F3T4",
           "0014",
           "751e76e8199196d454941c45d1b3a323f1433bd6",
+          BitcoinAddressType::kWitnessV0PubkeyHash,
       },
       {
           "tb1qrp33g0q5c5txsp9arysrx4k6zdkfs4nce4xj0gdcccefvpysxf3q0sl5k7",
           "0020",
           "1863143c14c5166804bd19203356da136c985678cd4d27a1b8c6329604903262",
+          BitcoinAddressType::kWitnessV0ScriptHash,
       },
       {
           "bc1pw508d6qejxtdg4y5r3zarvary0c5xw7kw508d6qejxtdg4y5r3zarvary0c5xw7k"
@@ -52,21 +55,25 @@ TEST(BitcoinUtilsUnitTest, Bip0173TestVectors2) {
           "5128",
           "751e76e8199196d454941c45d1b3a323f1433bd6751e76e8199196d454941c45d1b3"
           "a323f1433bd6",
+          BitcoinAddressType::kWitnessUnknown,
       },
       {
           "BC1SW50QA3JX3S",
           "6002",
           "751e",
+          BitcoinAddressType::kWitnessUnknown,
       },
       {
           "bc1zw508d6qejxtdg4y5r3zarvaryvg6kdaj",
           "5210",
           "751e76e8199196d454941c45d1b3a323",
+          BitcoinAddressType::kWitnessUnknown,
       },
       {
           "tb1qqqqqp399et2xygdj5xreqhjjvcmzhxw4aywxecjdzew6hylgvsesrxh6hy",
           "0020",
           "000000c4a5cad46221b2a187905e5266362b99d5e91c6ce24d165dab93e86433",
+          BitcoinAddressType::kWitnessV0ScriptHash,
       }};
 
   for (auto& test_case : test_cases) {
@@ -79,6 +86,7 @@ TEST(BitcoinUtilsUnitTest, Bip0173TestVectors2) {
     auto decoded_address = DecodeBitcoinAddress(test_case.address, testnet);
     ASSERT_TRUE(decoded_address);
     EXPECT_EQ(decoded_address->pubkey_hash, pubkey_hash);
+    EXPECT_EQ(decoded_address->address_type, test_case.expected_type);
   }
 
   const char* invalid_test_cases[] = {
@@ -129,6 +137,20 @@ TEST(BitcoinUtilsUnitTest, DecodeBitcoinAddress) {
 
   EXPECT_FALSE(DecodeBitcoinAddress(
       "bc1qc7slrfxkknqcq2jevvvkdgvrt8080852dfjewde450xdlk4ugp7szw5tk9", true));
+
+  // Unknown witness version.
+  decoded_address =
+      DecodeBitcoinAddress("tb18gg6x4mkdqy9l7pn8mq523l7ur3uzrh4ydcgzuf", true);
+  ASSERT_TRUE(decoded_address);
+  EXPECT_EQ(base::HexEncode(decoded_address->pubkey_hash),
+            "42346AEECD010BFF0667D828A8FFDC1C7821DEA4");
+  EXPECT_EQ(decoded_address->address_type, BitcoinAddressType::kWitnessUnknown);
+  EXPECT_EQ(decoded_address->witness_version, 7u);
+
+  // Invalid size for witness v0.
+  decoded_address =
+      DecodeBitcoinAddress("bc1qgg6x4mkdqy9l7pn8mq523l7ur3uzrhsvmsnvu", false);
+  ASSERT_FALSE(decoded_address);
 }
 
 TEST(BitcoinUtilsUnitTest, PubkeyToSegwitAddress) {
@@ -136,10 +158,10 @@ TEST(BitcoinUtilsUnitTest, PubkeyToSegwitAddress) {
   ASSERT_TRUE(base::HexStringToBytes("8E89DFE173318530F8535BF0DFB206A93CC82A60",
                                      &pubkey));
 
-  EXPECT_EQ("tb1qgg6x4mkdqy9l7pn8mq523l7ur3uzrh4y4sk6k3",
-            PubkeyToSegwitAddress(pubkey, true));
   EXPECT_EQ("bc1qgg6x4mkdqy9l7pn8mq523l7ur3uzrh4ylkdfdz",
             PubkeyToSegwitAddress(pubkey, false));
+  EXPECT_EQ("tb1qgg6x4mkdqy9l7pn8mq523l7ur3uzrh4y4sk6k3",
+            PubkeyToSegwitAddress(pubkey, true));
 }
 
 }  // namespace brave_wallet

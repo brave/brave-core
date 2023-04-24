@@ -790,8 +790,7 @@ void SolanaProviderImpl::OnSignMessageRequestProcessed(
       keyring_service_->IsHardwareAccount(mojom::kSolanaKeyringId, account);
   absl::optional<std::vector<uint8_t>> sig_bytes;
   if (!is_hardware_account) {
-    sig_bytes = keyring_service_->SignMessage(mojom::kSolanaKeyringId, account,
-                                              blob_msg);
+    sig_bytes = keyring_service_->SignMessageBySolanaKeyring(account, blob_msg);
   } else if (signature && signature->is_bytes()) {
     sig_bytes = signature->get_bytes();
   }

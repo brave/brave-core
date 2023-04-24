@@ -8,14 +8,17 @@
 #include <memory>
 #include <utility>
 
+#include "base/check.h"
+
 namespace brave_wallet {
 
 BitcoinKeyring::BitcoinKeyring(bool testnet) : testnet_(testnet) {}
 
-std::string BitcoinKeyring::GetAddress(const mojom::BitcoinKeyId& key_id) {
+absl::optional<std::string> BitcoinKeyring::GetAddress(
+    const mojom::BitcoinKeyId& key_id) {
   auto key = DeriveKey(key_id);
   if (!key) {
-    return "";
+    return absl::nullopt;
   }
 
   HDKey* hd_key = static_cast<HDKey*>(key.get());
@@ -23,22 +26,22 @@ std::string BitcoinKeyring::GetAddress(const mojom::BitcoinKeyId& key_id) {
   return hd_key->GetSegwitAddress(testnet_);
 }
 
-std::vector<uint8_t> BitcoinKeyring::GetBitcoinPubkey(
+absl::optional<std::vector<uint8_t>> BitcoinKeyring::GetPubkey(
     const mojom::BitcoinKeyId& key_id) {
   auto hd_key_base = DeriveKey(key_id);
   if (!hd_key_base) {
-    return {};
+    return absl::nullopt;
   }
 
   return hd_key_base->GetPublicKeyBytes();
 }
 
-std::vector<uint8_t> BitcoinKeyring::SignBitcoinMessage(
+absl::optional<std::vector<uint8_t>> BitcoinKeyring::SignMessage(
     const mojom::BitcoinKeyId& key_id,
     base::span<const uint8_t, 32> message) {
   auto hd_key_base = DeriveKey(key_id);
   if (!hd_key_base) {
-    return {};
+    return absl::nullopt;
   }
 
   auto* hd_key = static_cast<HDKey*>(hd_key_base.get());
@@ -66,6 +69,9 @@ std::unique_ptr<HDKeyBase> BitcoinKeyring::DeriveKey(
   if (!account_key) {
     return nullptr;
   }
+
+  // TODO(apaymyshev): think if |key_id.change| should be a boolean.
+  DCHECK(key_id.change == 0 || key_id.change == 1);
 
   auto key = account_key->DeriveNormalChild(key_id.change);
   if (!key) {

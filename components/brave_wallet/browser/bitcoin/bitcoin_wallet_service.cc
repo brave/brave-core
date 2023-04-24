@@ -312,8 +312,12 @@ bool BitcoinWalletService::PickInputs(SendToContext& context) {
       continue;
     }
 
-    input.pubkey =
+    auto pubkey =
         keyring_service_->GetBitcoinPubkey(context.keyring_id, *input.key_id);
+    if (!pubkey) {
+      return false;
+    }
+    input.pubkey = std::move(*pubkey);
 
     context.amount_picked += input.prev_output.value;
     if (context.amount_picked >= context.amount + context.fee) {
@@ -359,15 +363,15 @@ bool BitcoinWalletService::PrepareOutputs(SendToContext& context) {
   }
 
   // TODO(apaymyshev): should always pick new change address.
-  std::string change_address =
+  auto change_address =
       GetUnusedChangeAddress(context.keyring_id, context.account_index);
-  if (change_address.empty()) {
+  if (!change_address) {
     return false;
   }
 
   // TODO(apaymyshev): fix copypaste with above.
   auto& change_output = context.outputs.emplace_back();
-  change_output.address = change_address;
+  change_output.address = *change_address;
   change_output.amount = context.amount_picked - context.amount - context.fee;
 
   auto decoded_change_address =
@@ -459,8 +463,13 @@ bool BitcoinWalletService::FillSignature(SendToContext& context,
   Push32AsLE(context.locktime, data);  // 9.
   Push32AsLE(kSigHashAll, data);       // 10.
 
-  input.signature = keyring_service_->SignBitcoinMessage(
-      context.keyring_id, *input.key_id, DoubleSHA256Hash(data));
+  if (auto signature = keyring_service_->SignMessageByBitcoinKeyring(
+          context.keyring_id, *input.key_id, DoubleSHA256Hash(data))) {
+    input.signature = std::move(*signature);
+  } else {
+    return false;
+  }
+
   Push8AsLE(kSigHashAll, input.signature);
   return true;
 }
@@ -614,7 +623,7 @@ void BitcoinWalletService::StartDatabaseSynchronizer(
   database_synchronizer_[network_id]->Start(addresses_to_watch);
 }
 
-std::string BitcoinWalletService::GetUnusedChangeAddress(
+absl::optional<std::string> BitcoinWalletService::GetUnusedChangeAddress(
     const std::string& keyring_id,
     uint32_t account_index) {
   // TODO(apaymyshev): this always returns first change address. Should return
