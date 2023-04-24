@@ -20,21 +20,6 @@ public struct AssetViewModel: Identifiable, Equatable {
   }
 }
 
-struct NFTAssetViewModel: Identifiable, Equatable {
-  var token: BraveWallet.BlockchainToken
-  var network: BraveWallet.NetworkInfo
-  var balance: Int
-  var nftMetadata: NFTMetadata?
-
-  public var id: String {
-    token.id + network.chainId
-  }
-  
-  static func == (lhs: NFTAssetViewModel, rhs: NFTAssetViewModel) -> Bool {
-    lhs.id == rhs.id
-  }
-}
-
 struct BalanceTimePrice: DataPoint, Equatable {
   var date: Date
   var price: Double
@@ -65,8 +50,6 @@ public class PortfolioStore: ObservableObject {
   @Published private(set) var balance: String = "$0.00"
   /// The users visible fungible tokens. NFTs are separated into `userVisibleNFTs`.
   @Published private(set) var userVisibleAssets: [AssetViewModel] = []
-  /// The users visible NFTs
-  @Published private(set) var userVisibleNFTs: [NFTAssetViewModel] = []
   /// The timeframe of the portfolio
   @Published var timeframe: BraveWallet.AssetPriceTimeframe = .oneDay {
     didSet {
@@ -114,8 +97,6 @@ public class PortfolioStore: ObservableObject {
   private var pricesCache: [String: String] = [:]
   /// Cache of priceHistories. The key is the token's `assetRatioId`.
   private var priceHistoriesCache: [String: [BraveWallet.AssetTimePrice]] = [:]
-  /// Cache of metadata for NFTs. The key is the token's `id`.
-  private var metadataCache: [String: NFTMetadata] = [:]
 
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
@@ -177,19 +158,9 @@ public class PortfolioStore: ObservableObject {
       }
       let allVisibleUserAssets = await self.walletService.allVisibleUserAssets(in: networks)
       var updatedUserVisibleAssets: [AssetViewModel] = []
-      var updatedUserVisibleNFTs: [NFTAssetViewModel] = []
       for networkAssets in allVisibleUserAssets {
         for token in networkAssets.tokens {
-          if token.isErc721 || token.isNft {
-            updatedUserVisibleNFTs.append(
-              NFTAssetViewModel(
-                token: token,
-                network: networkAssets.network,
-                balance: Int(totalBalancesCache[token.assetBalanceId] ?? 0),
-                nftMetadata: metadataCache[token.id]
-              )
-            )
-          } else {
+          if !token.isErc721 && !token.isNft {
             updatedUserVisibleAssets.append(
               AssetViewModel(
                 token: token,
@@ -204,7 +175,6 @@ public class PortfolioStore: ObservableObject {
       }
       // update userVisibleAssets on display immediately with empty values. Issue #5567
       self.userVisibleAssets = updatedUserVisibleAssets
-      self.userVisibleNFTs = updatedUserVisibleNFTs
       
       let keyrings = await self.keyringService.keyrings(for: WalletConstants.supportedCoinTypes)
       guard !Task.isCancelled else { return }
@@ -260,28 +230,11 @@ public class PortfolioStore: ObservableObject {
         self.priceHistoriesCache[key] = value
       }
       
-      // fetch nft metadata for all NFTs
-      let allNFTs = allTokens.filter { $0.isNft || $0.isErc721 }
-      let allMetadata = await rpcService.fetchNFTMetadata(tokens: allNFTs, ipfsApi: ipfsApi)
-      for (key, value) in allMetadata { // update cached values
-        metadataCache[key] = value
-      }
-      
       guard !Task.isCancelled else { return }
       updatedUserVisibleAssets.removeAll()
-      updatedUserVisibleNFTs.removeAll()
       for networkAssets in allVisibleUserAssets {
         for token in networkAssets.tokens {
-          if token.isErc721 || token.isNft {
-            updatedUserVisibleNFTs.append(
-              NFTAssetViewModel(
-                token: token,
-                network: networkAssets.network,
-                balance: Int(totalBalancesCache[token.assetBalanceId] ?? 0),
-                nftMetadata: metadataCache[token.id]
-              )
-            )
-          } else {
+          if !token.isErc721 && !token.isNft {
             updatedUserVisibleAssets.append(
               AssetViewModel(
                 token: token,
@@ -295,7 +248,6 @@ public class PortfolioStore: ObservableObject {
         }
       }
       self.userVisibleAssets = updatedUserVisibleAssets
-      self.userVisibleNFTs = updatedUserVisibleNFTs
       
       // Compute balance based on current prices
       let currentBalance = userVisibleAssets
@@ -352,13 +304,6 @@ public class PortfolioStore: ObservableObject {
       })
     }
     return priceHistories
-  }
-  
-  func updateERC721MetadataCache(for token: BraveWallet.BlockchainToken, metadata: NFTMetadata) {
-    metadataCache[token.id] = metadata
-    if let index = userVisibleNFTs.firstIndex(where: { $0.token.id == token.id }), let viewModel = userVisibleNFTs[safe: index] {
-      userVisibleNFTs[index] = NFTAssetViewModel(token: viewModel.token, network: viewModel.network, balance: viewModel.balance, nftMetadata: metadata)
-    }
   }
 }
 

@@ -185,8 +185,7 @@ struct SwapTransactionConfirmationView: View {
       }
       HStack {
         Group {
-          if let logo = network?.nativeTokenLogo,
-             let image = UIImage(named: logo, in: .module, with: nil) {
+          if let image = network?.nativeTokenLogoImage {
             Image(uiImage: image)
               .resizable()
           } else {

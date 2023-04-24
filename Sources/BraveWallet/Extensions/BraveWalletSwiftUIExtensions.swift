@@ -69,6 +69,11 @@ extension BraveWallet.NetworkInfo: Identifiable {
       return iconUrls.first
     }
   }
+  
+  public var nativeTokenLogoImage: UIImage? {
+    guard let logo = nativeTokenLogo else { return nil }
+    return UIImage(named: logo, in: .module, with: nil)
+  }
 }
 
 extension BraveWallet.SignMessageRequest {

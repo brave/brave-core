@@ -48,6 +48,7 @@ enum WebpageRequestResponse: Equatable {
 public class CryptoStore: ObservableObject {
   public let networkStore: NetworkStore
   public let portfolioStore: PortfolioStore
+  let nftStore: NFTStore
   let transactionsActivityStore: TransactionsActivityStore
   
   @Published var buySendSwapDestination: BuySendSwapDestination? {
@@ -123,6 +124,14 @@ public class CryptoStore: ObservableObject {
       swapService: swapService
     )
     self.portfolioStore = .init(
+      keyringService: keyringService,
+      rpcService: rpcService,
+      walletService: walletService,
+      assetRatioService: assetRatioService,
+      blockchainRegistry: blockchainRegistry,
+      ipfsApi: ipfsApi
+    )
+    self.nftStore = .init(
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
@@ -311,6 +320,13 @@ public class CryptoStore: ObservableObject {
     if let store = nftDetailStore, store.nft.id == nft.id {
       nftDetailStore = nil
     }
+  }
+  
+  // This will be called when users exit from edit visible asset screen
+  // so that Portfolio and NFT tabs will update assets
+  func updateAssets() {
+    portfolioStore.update()
+    nftStore.update()
   }
   
   func prepare(isInitialOpen: Bool = false) {

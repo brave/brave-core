@@ -45,7 +45,7 @@ struct AssetIconView: View {
       }
     }
     
-    if network.isNativeAsset(token), let uiImage = networkNativeTokenLogo {
+    if network.isNativeAsset(token), let uiImage = network.nativeTokenLogoImage {
       return Image(uiImage: uiImage)
     }
     
@@ -75,15 +75,8 @@ struct AssetIconView: View {
     .accessibilityHidden(true)
   }
   
-  private var networkNativeTokenLogo: UIImage? {
-    if let logo = network.nativeTokenLogo {
-      return UIImage(named: logo, in: .module, with: nil)
-    }
-    return nil
-  }
-  
   @ViewBuilder private var tokenLogo: some View {
-    if shouldShowNativeTokenIcon, !network.isNativeAsset(token), let image = networkNativeTokenLogo {
+    if shouldShowNativeTokenIcon, !network.isNativeAsset(token), let image = network.nativeTokenLogoImage {
       Image(uiImage: image)
         .resizable()
         .frame(width: min(networkSymbolLength, maxNetworkSymbolLength ?? networkSymbolLength), height: min(networkSymbolLength, maxNetworkSymbolLength ?? networkSymbolLength))
@@ -136,16 +129,10 @@ struct NFTIconView: View {
   var shouldShowNativeTokenIcon: Bool = false
   
   @ScaledMetric var length: CGFloat = 40
-  
-  private var networkNativeTokenLogo: UIImage? {
-    if let logo = network.nativeTokenLogo {
-      return UIImage(named: logo, in: .module, with: nil)
-    }
-    return nil
-  }
+  @ScaledMetric var tokenLogoLength: CGFloat = 15
   
   @ViewBuilder private var tokenLogo: some View {
-    if shouldShowNativeTokenIcon, !network.isNativeAsset(token), let image = networkNativeTokenLogo {
+    if shouldShowNativeTokenIcon, !network.isNativeAsset(token), let image = network.nativeTokenLogoImage {
       Image(uiImage: image)
         .resizable()
         .frame(width: 15, height: 15)
@@ -154,7 +141,12 @@ struct NFTIconView: View {
   
   var body: some View {
     NFTImageView(urlString: url?.absoluteString ?? "") {
-      AssetIconView(token: token, network: network, shouldShowNativeTokenIcon: shouldShowNativeTokenIcon, length: length)
+      AssetIconView(
+        token: token,
+        network: network,
+        shouldShowNativeTokenIcon: shouldShowNativeTokenIcon,
+        length: length
+      )
     }
     .cornerRadius(5)
     .frame(width: length, height: length)

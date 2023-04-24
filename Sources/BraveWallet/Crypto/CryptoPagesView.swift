@@ -188,6 +188,16 @@ private class CryptoPagesViewController: TabbedPageViewController {
         $0.title = Strings.Wallet.portfolioPageTitle
       },
       UIHostingController(
+        rootView: NFTView(
+          cryptoStore: cryptoStore,
+          keyringStore: keyringStore,
+          networkStore: cryptoStore.networkStore,
+          nftStore: cryptoStore.nftStore
+        )
+      ).then {
+        $0.title = Strings.Wallet.nftPageTitle
+      },
+      UIHostingController(
         rootView: TransactionsActivityView(
           store: cryptoStore.transactionsActivityStore,
           networkStore: cryptoStore.networkStore
