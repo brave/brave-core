@@ -104,7 +104,9 @@ public class ParsedTransactionFees {
         TxData1559 txData = txDataUnion.which() == TxDataUnion.Tag.EthTxData1559
                 ? txDataUnion.getEthTxData1559()
                 : null;
-        FilTxData filTxData = null; // TODO: add with FIL
+        final FilTxData filTxData = txDataUnion.which() == TxDataUnion.Tag.FilTxData
+                ? txDataUnion.getFilTxData()
+                : null;
         final int networkDecimals = selectedNetwork.decimals;
         final boolean isSolTransaction = SOLANA_TRANSACTION_TYPES.contains(txInfo.txType);
         final boolean isFilTransaction = filTxData != null;
