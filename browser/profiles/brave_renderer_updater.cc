@@ -55,10 +55,6 @@ BraveRendererUpdater::BraveRendererUpdater(Profile* profile)
 
 BraveRendererUpdater::~BraveRendererUpdater() = default;
 
-void BraveRendererUpdater::UpdateAllRenderersForTesting() {
-  UpdateAllRenderers();
-}
-
 void BraveRendererUpdater::InitializeRenderer(
     content::RenderProcessHost* render_process_host) {
   auto renderer_configuration = GetRendererConfiguration(render_process_host);

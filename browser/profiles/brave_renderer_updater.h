@@ -32,10 +32,6 @@ class BraveRendererUpdater : public KeyedService {
   // Initialize a newly-started renderer process.
   void InitializeRenderer(content::RenderProcessHost* render_process_host);
 
-  // TODO(cypt4): Remove this method after adding subscribtion on
-  // ExtensionRegistry and KeyringService
-  void UpdateAllRenderersForTesting();
-
  private:
   std::vector<mojo::AssociatedRemote<brave::mojom::BraveRendererConfiguration>>
   GetRendererConfigurations();

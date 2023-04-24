@@ -34,7 +34,6 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
-#include "extensions/browser/disable_reason.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
@@ -655,18 +654,15 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, ExtensionOverwrite) {
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest,
                        DoNotAttachIfNoWalletCreated) {
-  brave_wallet::SetDefaultSolanaWallet(
-      browser()->profile()->GetPrefs(),
-      brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
   auto* keyring_service =
       brave_wallet::KeyringServiceFactory::GetServiceForContext(
           browser()->profile());
   keyring_service->Reset(false);
-  BraveRendererUpdaterFactory::GetForProfile(browser()->profile())
-      ->UpdateAllRenderersForTesting();
 
-  const GURL url = https_server_.GetURL("/simple.html");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  brave_wallet::SetDefaultSolanaWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
+  ReloadAndWaitForLoadStop(browser());
 
   std::string command = "window.solana.isBraveWallet";
   EXPECT_TRUE(content::EvalJs(web_contents(browser()), command)
@@ -676,32 +672,26 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest,
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, AttachIfWalletCreated) {
-  brave_wallet::SetDefaultSolanaWallet(
-      browser()->profile()->GetPrefs(),
-      brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
   auto* keyring_service =
       brave_wallet::KeyringServiceFactory::GetServiceForContext(
           browser()->profile());
   keyring_service->CreateWallet("password", base::DoNothing());
-  BraveRendererUpdaterFactory::GetForProfile(browser()->profile())
-      ->UpdateAllRenderersForTesting();
 
-  const GURL url = https_server_.GetURL("/simple.html");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  brave_wallet::SetDefaultSolanaWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
+  ReloadAndWaitForLoadStop(browser());
 
-  std::string command = "window.solana.isBraveWallet";
-  EXPECT_FALSE(content::EvalJs(web_contents(browser()), command)
-                   .error.find("Cannot read properties of undefined") !=
-               std::string::npos);
+  constexpr char kEvalIsBraveWallet[] = "window.solana.isBraveWallet";
+  EXPECT_TRUE(content::EvalJs(web_contents(browser())->GetPrimaryMainFrame(),
+                              kEvalIsBraveWallet)
+                  .ExtractBool());
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
 }
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest,
-                       DoNotAttachIfExtensionIstalled) {
-  brave_wallet::SetDefaultSolanaWallet(
-      browser()->profile()->GetPrefs(),
-      brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
+                       DoNotAttachIfMetaMaskInstalled) {
   auto* keyring_service =
       brave_wallet::KeyringServiceFactory::GetServiceForContext(
           browser()->profile());
@@ -714,11 +704,11 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest,
   extensions::ExtensionSystem::Get(browser()->profile())
       ->extension_service()
       ->AddExtension(extension.get());
-  BraveRendererUpdaterFactory::GetForProfile(browser()->profile())
-      ->UpdateAllRenderersForTesting();
 
-  const GURL url = https_server_.GetURL("/simple.html");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  brave_wallet::SetDefaultSolanaWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
+  ReloadAndWaitForLoadStop(browser());
 
   std::string command = "window.solana.isBraveWallet";
   EXPECT_TRUE(content::EvalJs(web_contents(browser()), command)
