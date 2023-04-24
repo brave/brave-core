@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_style_views.cc b/chrome/browser/ui/views/tabs/tab_style_views.cc
-index 21b6d2f16bc22ab950d5990ec56517c35256545e..a8853d97429542d0254cf44e4aafbd56892297dd 100644
+index df9fe99de34ec905dfda46535b8ffa1a406c955b..a871b1a38651083e862b812582977002f28c1266 100644
 --- a/chrome/browser/ui/views/tabs/tab_style_views.cc
 +++ b/chrome/browser/ui/views/tabs/tab_style_views.cc
-@@ -101,6 +101,7 @@ class GM2TabStyleViews : public TabStyleViews {
+@@ -98,6 +98,7 @@ class GM2TabStyleViews : public TabStyleViews {
    double GetHoverAnimationValue() const override;
  
   private:
@@ -10,7 +10,7 @@ index 21b6d2f16bc22ab950d5990ec56517c35256545e..a8853d97429542d0254cf44e4aafbd56
    // Gets the bounds for the leading and trailing separators for a tab.
    TabStyle::SeparatorBounds GetSeparatorBounds(float scale) const;
  
-@@ -271,6 +272,7 @@ SkPath GM2TabStyleViews::GetPath(TabStyle::PathType path_type,
+@@ -268,6 +269,7 @@ SkPath GM2TabStyleViews::GetPath(TabStyle::PathType path_type,
    const ShapeModifier shape_modifier = GetShapeModifier(path_type);
    const bool extend_left_to_bottom = shape_modifier & kNoLowerLeftArc;
    const bool extend_right_to_bottom = shape_modifier & kNoLowerRightArc;
@@ -18,7 +18,7 @@ index 21b6d2f16bc22ab950d5990ec56517c35256545e..a8853d97429542d0254cf44e4aafbd56
  
    SkPath path;
  
-@@ -545,7 +547,7 @@ TabStyle::SeparatorBounds GM2TabStyleViews::GetSeparatorBounds(
+@@ -542,7 +544,7 @@ TabStyle::SeparatorBounds GM2TabStyleViews::GetSeparatorBounds(
    separator_bounds.leading =
        gfx::RectF(aligned_bounds.x() + corner_radius,
                   aligned_bounds.y() +
@@ -27,7 +27,7 @@ index 21b6d2f16bc22ab950d5990ec56517c35256545e..a8853d97429542d0254cf44e4aafbd56
                   separator_size.width(), separator_size.height());
  
    separator_bounds.trailing = separator_bounds.leading;
-@@ -935,12 +937,16 @@ void GM2TabStyleViews::PaintSeparators(gfx::Canvas* canvas) const {
+@@ -928,12 +930,16 @@ void GM2TabStyleViews::PaintSeparators(gfx::Canvas* canvas) const {
                                                     SK_AlphaOPAQUE));
    };
  
