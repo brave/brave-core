@@ -25,8 +25,13 @@ import { WalletPageActions } from '../../../../../page/actions'
 // utils
 import { getLocale } from '$web-common/locale'
 import Amount from '../../../../../utils/amount'
-import { setNftDiscoveryEnabled } from '../../../../../common/async/lib'
-import { LOCAL_STORAGE_KEYS } from '../../../../../common/constants/local-storage-keys'
+import {
+  LOCAL_STORAGE_KEYS
+} from '../../../../../common/constants/local-storage-keys'
+import {
+  useGetNftDiscoveryEnabledStatusQuery,
+  useSetNftDiscoveryEnabledMutation
+} from '../../../../../common/slices/api.slice'
 
 // components
 import SearchBar from '../../../../shared/search-bar'
@@ -74,6 +79,12 @@ export const Nfts = (props: Props) => {
   const dispatch = useDispatch()
   const { nonFungibleTokens } = useNftPin()
 
+  // queries
+  const { data: isNftAutoDiscoveryEnabled } = useGetNftDiscoveryEnabledStatusQuery()
+
+  // mutations
+  const [setNftDiscovery] = useSetNftDiscoveryEnabledMutation()
+
   // methods
   const onSearchValueChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value)
@@ -101,9 +112,9 @@ export const Nfts = (props: Props) => {
   }, [])
 
   const onConfirmNftAutoDiscovery = React.useCallback(async () => {
-    await setNftDiscoveryEnabled(true)
+    await setNftDiscovery(true)
     hideNftDiscoveryModal()
-  }, [hideNftDiscoveryModal])
+  }, [hideNftDiscoveryModal, setNftDiscovery])
 
   // memos
   const filteredNfts = React.useMemo(() => {
@@ -128,6 +139,7 @@ export const Nfts = (props: Props) => {
   const sortedNfts = React.useMemo(() => {
     return filteredNfts.sort((a, b) => a.name.localeCompare(b.name))
   }, [filteredNfts])
+
 
   return (
     <>
@@ -167,7 +179,7 @@ export const Nfts = (props: Props) => {
           onHideForm={toggleShowAddNftModal}
         />
       }
-      {showNftDiscoveryModal &&
+      {!isNftAutoDiscoveryEnabled && showNftDiscoveryModal &&
         <EnableNftDiscoveryModal
           onConfirm={onConfirmNftAutoDiscovery}
           onCancel={hideNftDiscoveryModal}
