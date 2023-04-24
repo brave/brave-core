@@ -51,17 +51,26 @@ LearningServiceConfig::LearningServiceConfig() {
 LearningServiceConfig::LearningServiceConfig(const base::FilePath& path) : LearningServiceConfig::LearningServiceConfig() {
     std::string data;
     const bool success = base::ReadFileToString(path, &data);
+    VLOG(2) << "Data: " << data;
     if (!success || data.empty()) {
         VLOG(1) << "Error in reading JSON configuration from " << path;
         return;  // return default ctor's initialisation
     }
 
+    InitServiceConfigFromJSONString(data);
+}
+
+LearningServiceConfig::LearningServiceConfig(const std::string data) : LearningServiceConfig::LearningServiceConfig() {
+    InitServiceConfigFromJSONString(data);
+}
+
+void LearningServiceConfig::InitServiceConfigFromJSONString(const std::string data) {
     const absl::optional<base::Value> root = base::JSONReader::Read(data,
                                        base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSONParserOptions::JSON_PARSE_RFC);
 
     if (!root || !root->is_dict()) {
-        VLOG(1) << "Error in configuration file (" << path << "): root is not a dict.";
+        VLOG(1) << "Error in configuration file: root is not a dict.";
         return;  // return default ctor's initialisation
     }
 
