@@ -12,23 +12,23 @@
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 #include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
 
-namespace brave_ads::ml::model {
+namespace brave_ads::ml {
 
-class Linear final {
+class LinearModel final {
  public:
-  Linear();
+  LinearModel();
 
-  explicit Linear(const std::string& model);
-  Linear(std::map<std::string, VectorData> weights,
-         std::map<std::string, double> biases);
+  explicit LinearModel(const std::string& model);
+  LinearModel(std::map<std::string, VectorData> weights,
+              std::map<std::string, double> biases);
 
-  Linear(const Linear&);
-  Linear& operator=(const Linear&);
+  LinearModel(const LinearModel&);
+  LinearModel& operator=(const LinearModel&);
 
-  Linear(Linear&&) noexcept;
-  Linear& operator=(Linear&&) noexcept;
+  LinearModel(LinearModel&&) noexcept;
+  LinearModel& operator=(LinearModel&&) noexcept;
 
-  ~Linear();
+  ~LinearModel();
 
   PredictionMap Predict(const VectorData& x) const;
 
@@ -40,6 +40,6 @@ class Linear final {
   std::map<std::string, double> biases_;
 };
 
-}  // namespace brave_ads::ml::model
+}  // namespace brave_ads::ml
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_MODEL_LINEAR_LINEAR_H_

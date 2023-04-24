@@ -11,7 +11,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
-namespace brave_ads::targeting {
+namespace brave_ads {
 
 struct PurchaseIntentSignalInfo final {
   PurchaseIntentSignalInfo();
@@ -29,6 +29,6 @@ struct PurchaseIntentSignalInfo final {
   uint16_t weight = 0;
 };
 
-}  // namespace brave_ads::targeting
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PROCESSORS_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_SIGNAL_INFO_H_

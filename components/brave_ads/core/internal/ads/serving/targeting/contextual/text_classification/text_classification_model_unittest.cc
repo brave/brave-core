@@ -14,7 +14,7 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::targeting::model {
+namespace brave_ads {
 
 class BraveAdsTextClassificationModelTest : public UnitTestBase {
  protected:
@@ -25,18 +25,18 @@ class BraveAdsTextClassificationModelTest : public UnitTestBase {
     task_environment_.RunUntilIdle();
   }
 
-  resource::TextClassification resource_;
+  TextClassificationResource resource_;
 };
 
 TEST_F(BraveAdsTextClassificationModelTest,
        DoNotGetSegmentsForUninitializedResource) {
   // Arrange
-  resource::TextClassification resource;
+  TextClassificationResource resource;
 
-  processor::TextClassification processor(resource);
+  TextClassificationProcessor processor(resource);
   processor.Process(/*text*/ "The quick brown fox jumps over the lazy dog");
 
-  const TextClassification model;
+  const TextClassificationModel model;
 
   // Act
   const SegmentList segments = model.GetSegments();
@@ -48,10 +48,10 @@ TEST_F(BraveAdsTextClassificationModelTest,
 TEST_F(BraveAdsTextClassificationModelTest, DoNotGetSegmentsForEmptyText) {
   // Arrange
   const std::string text;
-  processor::TextClassification processor(resource_);
+  TextClassificationProcessor processor(resource_);
   processor.Process(text);
 
-  const TextClassification model;
+  const TextClassificationModel model;
 
   // Act
   const SegmentList segments = model.GetSegments();
@@ -63,10 +63,10 @@ TEST_F(BraveAdsTextClassificationModelTest, DoNotGetSegmentsForEmptyText) {
 TEST_F(BraveAdsTextClassificationModelTest,
        GetSegmentsForPreviouslyClassifiedText) {
   // Arrange
-  processor::TextClassification processor(resource_);
+  TextClassificationProcessor processor(resource_);
   processor.Process(/*text*/ "Some content about technology & computing");
 
-  const TextClassification model;
+  const TextClassificationModel model;
 
   // Act
   const SegmentList segments = model.GetSegments();
@@ -140,12 +140,12 @@ TEST_F(BraveAdsTextClassificationModelTest,
       "Some content about cooking food", "Some content about finance & banking",
       "Some content about technology & computing"};
 
-  processor::TextClassification processor(resource_);
+  TextClassificationProcessor processor(resource_);
   for (const auto& text : texts) {
     processor.Process(text);
   }
 
-  const TextClassification model;
+  const TextClassificationModel model;
 
   // Act
   const SegmentList segments = model.GetSegments();
@@ -255,7 +255,7 @@ TEST_F(BraveAdsTextClassificationModelTest,
 
 TEST_F(BraveAdsTextClassificationModelTest, DoNotGetSegmentsIfNeverProcessed) {
   // Arrange
-  const TextClassification model;
+  const TextClassificationModel model;
 
   // Act
   const SegmentList segments = model.GetSegments();
@@ -264,4 +264,4 @@ TEST_F(BraveAdsTextClassificationModelTest, DoNotGetSegmentsIfNeverProcessed) {
   EXPECT_TRUE(segments.empty());
 }
 
-}  // namespace brave_ads::targeting::model
+}  // namespace brave_ads

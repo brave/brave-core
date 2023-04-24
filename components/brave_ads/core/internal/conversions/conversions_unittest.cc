@@ -1464,7 +1464,7 @@ TEST_F(BraveAdsConversionsTest, ConvertAdForRedirectChainUrl) {
 
 TEST_F(BraveAdsConversionsTest, ExtractConversionId) {
   // Arrange
-  resource::Conversions resource;
+  ConversionsResource resource;
   resource.Load();
   task_environment_.RunUntilIdle();
 
@@ -1514,7 +1514,7 @@ TEST_F(BraveAdsConversionsTest, ExtractConversionId) {
 TEST_F(BraveAdsConversionsTest,
        ExtractConversionIdWithResourcePatternFromHtml) {
   // Arrange
-  resource::Conversions resource;
+  ConversionsResource resource;
   resource.Load();
   task_environment_.RunUntilIdle();
 
@@ -1565,7 +1565,7 @@ TEST_F(BraveAdsConversionsTest,
 
 TEST_F(BraveAdsConversionsTest, ExtractConversionIdWithResourcePatternFromUrl) {
   // Arrange
-  resource::Conversions resource;
+  ConversionsResource resource;
   resource.Load();
   task_environment_.RunUntilIdle();
 

@@ -17,13 +17,13 @@
 #include "base/strings/string_piece.h"
 #include "base/strings/string_util.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_features.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_features.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_builder.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/bandit_feedback_info.h"
+#include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feedback_info.h"
 #include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_processor.h"
 #include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_segments.h"
 #include "brave/components/brave_ads/core/internal/processors/behavioral/purchase_intent/purchase_intent_processor.h"
@@ -36,24 +36,23 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::targeting {
+namespace brave_ads {
 
 namespace {
 
 constexpr char kTextClassificationFeatureName[] = "TextClassification";
 constexpr char kEpsilonGreedyBanditFeatureName[] = "EpsilonGreedyBandit";
 
-struct ModelCombinationsParamInfo final {
+struct ParamInfo final {
   bool epsilon_greedy_bandits_enabled;
   bool purchase_intent_enabled;
   bool text_classification_enabled;
   bool previously_processed;
   size_t number_of_segments;
-};
+} constexpr kTests[] = {
+    // Expected number of segments for all possible model combinations for both,
+    // never processed and previously processed state.
 
-// Expected number of segments for all possible model combinations for both,
-// never processed and previously processed state
-constexpr ModelCombinationsParamInfo kTests[] = {
     // Never processed
     {false, false, false, false, 0},
     {false, false, true, false, 0},
@@ -84,7 +83,7 @@ SegmentList GetSegmentList() {
 }
 
 void ProcessEpsilonGreedyBandit() {
-  const std::vector<processor::BanditFeedbackInfo> feedbacks = {
+  const std::vector<EpsilonGreedyBanditFeedbackInfo> feedbacks = {
       {"science", mojom::NotificationAdEventType::kClicked},
       {"science", mojom::NotificationAdEventType::kClicked},
       {"science", mojom::NotificationAdEventType::kClicked},
@@ -96,13 +95,13 @@ void ProcessEpsilonGreedyBandit() {
       {"technology & computing", mojom::NotificationAdEventType::kClicked}};
 
   for (const base::StringPiece segment : GetSegments()) {
-    processor::EpsilonGreedyBandit::Process(
+    EpsilonGreedyBanditProcessor::Process(
         {static_cast<std::string>(segment),
          mojom::NotificationAdEventType::kDismissed});
   }
 
   for (const auto& feedback : feedbacks) {
-    processor::EpsilonGreedyBandit::Process(feedback);
+    EpsilonGreedyBanditProcessor::Process(feedback);
   }
 }
 
@@ -110,26 +109,26 @@ void ProcessEpsilonGreedyBandit() {
 
 class BraveAdsTopSegmentsTest
     : public UnitTestBase,
-      public ::testing::WithParamInterface<ModelCombinationsParamInfo> {
+      public ::testing::WithParamInterface<ParamInfo> {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
 
     // We always instantitate processors even if features are disabled
     epsilon_greedy_bandit_processor_ =
-        std::make_unique<processor::EpsilonGreedyBandit>();
+        std::make_unique<EpsilonGreedyBanditProcessor>();
 
-    purchase_intent_resource_ = std::make_unique<resource::PurchaseIntent>();
+    purchase_intent_resource_ = std::make_unique<PurchaseIntentResource>();
     purchase_intent_resource_->Load();
     purchase_intent_processor_ =
-        std::make_unique<processor::PurchaseIntent>(*purchase_intent_resource_);
+        std::make_unique<PurchaseIntentProcessor>(*purchase_intent_resource_);
 
     text_classification_resource_ =
-        std::make_unique<resource::TextClassification>();
+        std::make_unique<TextClassificationResource>();
     text_classification_resource_->Load();
     task_environment_.RunUntilIdle();
     text_classification_processor_ =
-        std::make_unique<processor::TextClassification>(
+        std::make_unique<TextClassificationProcessor>(
             *text_classification_resource_);
   }
 
@@ -155,19 +154,19 @@ class BraveAdsTopSegmentsTest
     }
   }
 
-  std::unique_ptr<processor::EpsilonGreedyBandit>
+  std::unique_ptr<EpsilonGreedyBanditProcessor>
       epsilon_greedy_bandit_processor_;
-  std::unique_ptr<resource::PurchaseIntent> purchase_intent_resource_;
-  std::unique_ptr<processor::PurchaseIntent> purchase_intent_processor_;
-  std::unique_ptr<resource::TextClassification> text_classification_resource_;
-  std::unique_ptr<processor::TextClassification> text_classification_processor_;
+  std::unique_ptr<PurchaseIntentResource> purchase_intent_resource_;
+  std::unique_ptr<PurchaseIntentProcessor> purchase_intent_processor_;
+  std::unique_ptr<TextClassificationResource> text_classification_resource_;
+  std::unique_ptr<TextClassificationProcessor> text_classification_processor_;
 };
 
 TEST_P(BraveAdsTopSegmentsTest, GetSegments) {
   // Arrange
-  resource::SetEpsilonGreedyBanditEligibleSegments(GetSegmentList());
+  SetEpsilonGreedyBanditEligibleSegments(GetSegmentList());
 
-  const ModelCombinationsParamInfo param(GetParam());
+  const ParamInfo param(GetParam());
   if (param.previously_processed) {
     ProcessEpsilonGreedyBandit();
     ProcessTextClassification();
@@ -204,8 +203,7 @@ TEST_P(BraveAdsTopSegmentsTest, GetSegments) {
 
   // Act
   BuildUserModel(base::BindOnce(
-      [](const ModelCombinationsParamInfo param,
-         const targeting::UserModelInfo& user_model) {
+      [](const ParamInfo param, const UserModelInfo& user_model) {
         const SegmentList segments = GetTopChildSegments(user_model);
 
         // Assert
@@ -215,7 +213,7 @@ TEST_P(BraveAdsTopSegmentsTest, GetSegments) {
 }
 
 static std::string TestParamToString(
-    ::testing::TestParamInfo<ModelCombinationsParamInfo> test_param) {
+    ::testing::TestParamInfo<ParamInfo> test_param) {
   const std::string epsilon_greedy_bandits_enabled =
       test_param.param.epsilon_greedy_bandits_enabled
           ? "EpsilonGreedyBanditEnabledAnd"
@@ -248,7 +246,7 @@ INSTANTIATE_TEST_SUITE_P(,
 
 TEST_F(BraveAdsTopSegmentsTest, GetSegmentsForAllModelsIfPreviouslyProcessed) {
   // Arrange
-  resource::SetEpsilonGreedyBanditEligibleSegments(GetSegmentList());
+  SetEpsilonGreedyBanditEligibleSegments(GetSegmentList());
 
   ProcessEpsilonGreedyBandit();
   ProcessTextClassification();
@@ -266,7 +264,7 @@ TEST_F(BraveAdsTopSegmentsTest, GetSegmentsForAllModelsIfPreviouslyProcessed) {
       {});
 
   // Act
-  BuildUserModel(base::BindOnce([](const targeting::UserModelInfo& user_model) {
+  BuildUserModel(base::BindOnce([](const UserModelInfo& user_model) {
     const SegmentList segments = GetTopChildSegments(user_model);
 
     // Assert
@@ -286,7 +284,7 @@ TEST_F(BraveAdsTopSegmentsTest, GetSegmentsForAllModelsIfPreviouslyProcessed) {
 
 TEST_F(BraveAdsTopSegmentsTest, GetSegmentsForFieldTrialParticipationPath) {
   // Arrange
-  resource::SetEpsilonGreedyBanditEligibleSegments(GetSegmentList());
+  SetEpsilonGreedyBanditEligibleSegments(GetSegmentList());
 
   ProcessEpsilonGreedyBandit();
   ProcessTextClassification();
@@ -306,7 +304,7 @@ TEST_F(BraveAdsTopSegmentsTest, GetSegmentsForFieldTrialParticipationPath) {
   scoped_feature_list.InitWithFeatureList(std::move(feature_list));
 
   // Act
-  BuildUserModel(base::BindOnce([](const targeting::UserModelInfo& user_model) {
+  BuildUserModel(base::BindOnce([](const UserModelInfo& user_model) {
     const SegmentList segments = GetTopChildSegments(user_model);
 
     // Assert
@@ -316,4 +314,4 @@ TEST_F(BraveAdsTopSegmentsTest, GetSegmentsForFieldTrialParticipationPath) {
   }));
 }
 
-}  // namespace brave_ads::targeting
+}  // namespace brave_ads

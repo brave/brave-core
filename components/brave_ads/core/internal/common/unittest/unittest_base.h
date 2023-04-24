@@ -28,8 +28,8 @@ namespace brave_ads {
 
 using ::testing::NiceMock;
 
-class GlobalState;
 class Database;
+class GlobalState;
 
 class UnitTestBase : public AdsClientNotifier, public testing::Test {
  public:

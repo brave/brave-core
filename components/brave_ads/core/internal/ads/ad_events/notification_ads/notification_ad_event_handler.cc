@@ -12,16 +12,17 @@
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_ads::notification_ads {
+namespace brave_ads {
 
-EventHandler::EventHandler() = default;
+NotificationAdEventHandler::NotificationAdEventHandler() = default;
 
-EventHandler::~EventHandler() {
+NotificationAdEventHandler::~NotificationAdEventHandler() {
   delegate_ = nullptr;
 }
 
-void EventHandler::FireEvent(const std::string& placement_id,
-                             const mojom::NotificationAdEventType event_type) {
+void NotificationAdEventHandler::FireEvent(
+    const std::string& placement_id,
+    const mojom::NotificationAdEventType event_type) {
   DCHECK(!placement_id.empty());
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
@@ -33,7 +34,7 @@ void EventHandler::FireEvent(const std::string& placement_id,
     return FailedToFireEvent(placement_id, event_type);
   }
 
-  const auto ad_event = AdEventFactory::Build(event_type);
+  const auto ad_event = NotificationAdEventFactory::Build(event_type);
   ad_event->FireEvent(*ad);
 
   SuccessfullyFiredEvent(*ad, event_type);
@@ -41,7 +42,7 @@ void EventHandler::FireEvent(const std::string& placement_id,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void EventHandler::SuccessfullyFiredEvent(
+void NotificationAdEventHandler::SuccessfullyFiredEvent(
     const NotificationAdInfo& ad,
     const mojom::NotificationAdEventType event_type) const {
   DCHECK(mojom::IsKnownEnumValue(event_type));
@@ -78,7 +79,7 @@ void EventHandler::SuccessfullyFiredEvent(
   }
 }
 
-void EventHandler::FailedToFireEvent(
+void NotificationAdEventHandler::FailedToFireEvent(
     const std::string& placement_id,
     const mojom::NotificationAdEventType event_type) const {
   DCHECK(mojom::IsKnownEnumValue(event_type));
@@ -91,4 +92,4 @@ void EventHandler::FailedToFireEvent(
   }
 }
 
-}  // namespace brave_ads::notification_ads
+}  // namespace brave_ads

@@ -12,20 +12,20 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::targeting::model {
+namespace brave_ads {
 
 class BraveAdsPurchaseIntentModelTest : public UnitTestBase {};
 
 TEST_F(BraveAdsPurchaseIntentModelTest,
        DoNotGetSegmentsForUnitializedResource) {
   // Arrange
-  resource::PurchaseIntent resource;
-  processor::PurchaseIntent processor(resource);
+  PurchaseIntentResource resource;
+  PurchaseIntentProcessor processor(resource);
 
   const GURL url = GURL("https://www.brave.com/test?foo=bar");
   processor.Process(url);
 
-  const PurchaseIntent model;
+  const PurchaseIntentModel model;
 
   // Act
   const SegmentList segments = model.GetSegments();
@@ -36,11 +36,11 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
 
 TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsForExpiredSignals) {
   // Arrange
-  resource::PurchaseIntent resource;
+  PurchaseIntentResource resource;
   resource.Load();
   task_environment_.RunUntilIdle();
 
-  processor::PurchaseIntent processor(resource);
+  PurchaseIntentProcessor processor(resource);
 
   const GURL url_1 = GURL("https://www.brave.com/test?foo=bar");
   processor.Process(url_1);
@@ -50,7 +50,7 @@ TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsForExpiredSignals) {
   const GURL url_2 = GURL("https://www.basicattentiontoken.org/test?bar=foo");
   processor.Process(url_2);
 
-  const PurchaseIntent model;
+  const PurchaseIntentModel model;
 
   // Act
   const SegmentList segments = model.GetSegments();
@@ -61,11 +61,11 @@ TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsForExpiredSignals) {
 
 TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsIfNeverProcessed) {
   // Arrange
-  resource::PurchaseIntent resource;
+  PurchaseIntentResource resource;
   resource.Load();
   task_environment_.RunUntilIdle();
 
-  const PurchaseIntent model;
+  const PurchaseIntentModel model;
 
   // Act
   const SegmentList segments = model.GetSegments();
@@ -77,16 +77,16 @@ TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsIfNeverProcessed) {
 TEST_F(BraveAdsPurchaseIntentModelTest,
        DoNotGetSegmentsIfNeverMatchedFunnelSites) {
   // Arrange
-  resource::PurchaseIntent resource;
+  PurchaseIntentResource resource;
   resource.Load();
   task_environment_.RunUntilIdle();
 
-  processor::PurchaseIntent processor(resource);
+  PurchaseIntentProcessor processor(resource);
 
   const GURL url = GURL("https://duckduckgo.com/?q=segment+keyword+1");
   processor.Process(url);
 
-  const PurchaseIntent model;
+  const PurchaseIntentModel model;
 
   // Act
   const SegmentList segments = model.GetSegments();
@@ -97,11 +97,11 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
 
 TEST_F(BraveAdsPurchaseIntentModelTest, GetSegmentsForPreviouslyMatchedSite) {
   // Arrange
-  resource::PurchaseIntent resource;
+  PurchaseIntentResource resource;
   resource.Load();
   task_environment_.RunUntilIdle();
 
-  processor::PurchaseIntent processor(resource);
+  PurchaseIntentProcessor processor(resource);
 
   const GURL url_1 = GURL("https://www.brave.com/test?foo=bar");
   processor.Process(url_1);
@@ -111,7 +111,7 @@ TEST_F(BraveAdsPurchaseIntentModelTest, GetSegmentsForPreviouslyMatchedSite) {
 
   processor.Process(url_1);
 
-  const PurchaseIntent model;
+  const PurchaseIntentModel model;
 
   // Act
   const SegmentList segments = model.GetSegments();
@@ -124,18 +124,18 @@ TEST_F(BraveAdsPurchaseIntentModelTest, GetSegmentsForPreviouslyMatchedSite) {
 TEST_F(BraveAdsPurchaseIntentModelTest,
        GetSegmentsForPreviouslyMatchedSegmentKeywords) {
   // Arrange
-  resource::PurchaseIntent resource;
+  PurchaseIntentResource resource;
   resource.Load();
   task_environment_.RunUntilIdle();
 
-  processor::PurchaseIntent processor(resource);
+  PurchaseIntentProcessor processor(resource);
 
   const GURL url = GURL("https://duckduckgo.com/?q=segment+keyword+1&foo=bar");
   processor.Process(url);
   processor.Process(url);
   processor.Process(url);
 
-  const PurchaseIntent model;
+  const PurchaseIntentModel model;
 
   // Act
   const SegmentList segments = model.GetSegments();
@@ -148,17 +148,17 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
 TEST_F(BraveAdsPurchaseIntentModelTest,
        GetSegmentsForPreviouslyMatchedFunnelKeywords) {
   // Arrange
-  resource::PurchaseIntent resource;
+  PurchaseIntentResource resource;
   resource.Load();
   task_environment_.RunUntilIdle();
 
-  processor::PurchaseIntent processor(resource);
+  PurchaseIntentProcessor processor(resource);
 
   const GURL url =
       GURL("https://duckduckgo.com/?q=segment+keyword+1+funnel+keyword+2");
   processor.Process(url);
 
-  const PurchaseIntent model;
+  const PurchaseIntentModel model;
 
   // Act
   const SegmentList segments = model.GetSegments();
@@ -168,4 +168,4 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
   EXPECT_EQ(expected_segments, segments);
 }
 
-}  // namespace brave_ads::targeting::model
+}  // namespace brave_ads

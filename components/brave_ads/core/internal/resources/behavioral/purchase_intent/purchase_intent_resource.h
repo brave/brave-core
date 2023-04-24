@@ -10,37 +10,37 @@
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_info.h"
 #include "brave/components/brave_ads/core/internal/resources/parsing_error_or.h"
 
-namespace brave_ads::resource {
+namespace brave_ads {
 
-class PurchaseIntent final {
+class PurchaseIntentResource final {
  public:
-  PurchaseIntent();
+  PurchaseIntentResource();
 
-  PurchaseIntent(const PurchaseIntent&) = delete;
-  PurchaseIntent& operator=(const PurchaseIntent&) = delete;
+  PurchaseIntentResource(const PurchaseIntentResource&) = delete;
+  PurchaseIntentResource& operator=(const PurchaseIntentResource&) = delete;
 
-  PurchaseIntent(PurchaseIntent&&) noexcept = delete;
-  PurchaseIntent& operator=(PurchaseIntent&&) noexcept = delete;
+  PurchaseIntentResource(PurchaseIntentResource&&) noexcept = delete;
+  PurchaseIntentResource& operator=(PurchaseIntentResource&&) noexcept = delete;
 
-  ~PurchaseIntent();
+  ~PurchaseIntentResource();
 
   bool IsInitialized() const { return is_initialized_; }
 
   void Load();
 
-  const targeting::PurchaseIntentInfo* Get() const;
+  const PurchaseIntentInfo* Get() const;
 
  private:
   void OnLoadAndParseResource(
-      ParsingErrorOr<targeting::PurchaseIntentInfo> result);
+      ResourceParsingErrorOr<PurchaseIntentInfo> result);
 
   bool is_initialized_ = false;
 
-  targeting::PurchaseIntentInfo purchase_intent_;
+  PurchaseIntentInfo purchase_intent_;
 
-  base::WeakPtrFactory<PurchaseIntent> weak_factory_{this};
+  base::WeakPtrFactory<PurchaseIntentResource> weak_factory_{this};
 };
 
-}  // namespace brave_ads::resource
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_RESOURCE_H_

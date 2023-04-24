@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/choose/predict_ad.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rules_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/inline_content_ads/inline_content_ad_exclusion_rules.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
@@ -22,17 +22,18 @@
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_ads::inline_content_ads {
+namespace brave_ads {
 
-EligibleAdsV2::EligibleAdsV2(
+EligibleInlineContentAdsV2::EligibleInlineContentAdsV2(
     const SubdivisionTargeting& subdivision_targeting,
-    const resource::AntiTargeting& anti_targeting_resource)
-    : EligibleAdsBase(subdivision_targeting, anti_targeting_resource) {}
+    const AntiTargetingResource& anti_targeting_resource)
+    : EligibleInlineContentAdsBase(subdivision_targeting,
+                                   anti_targeting_resource) {}
 
-EligibleAdsV2::~EligibleAdsV2() = default;
+EligibleInlineContentAdsV2::~EligibleInlineContentAdsV2() = default;
 
-void EligibleAdsV2::GetForUserModel(
-    targeting::UserModelInfo user_model,
+void EligibleInlineContentAdsV2::GetForUserModel(
+    UserModelInfo user_model,
     const std::string& dimensions,
     GetEligibleAdsCallback<CreativeInlineContentAdList> callback) {
   BLOG(1, "Get eligible inline content ads");
@@ -40,15 +41,15 @@ void EligibleAdsV2::GetForUserModel(
   const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kInlineContentAd,
-      base::BindOnce(&EligibleAdsV2::OnGetForUserModel,
+      base::BindOnce(&EligibleInlineContentAdsV2::OnGetForUserModel,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
                      dimensions, std::move(callback)));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void EligibleAdsV2::OnGetForUserModel(
-    targeting::UserModelInfo user_model,
+void EligibleInlineContentAdsV2::OnGetForUserModel(
+    UserModelInfo user_model,
     const std::string& dimensions,
     GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
     const bool success,
@@ -63,20 +64,20 @@ void EligibleAdsV2::OnGetForUserModel(
                      std::move(callback));
 }
 
-void EligibleAdsV2::GetBrowsingHistory(
-    targeting::UserModelInfo user_model,
+void EligibleInlineContentAdsV2::GetBrowsingHistory(
+    UserModelInfo user_model,
     const AdEventList& ad_events,
     const std::string& dimensions,
     GetEligibleAdsCallback<CreativeInlineContentAdList> callback) {
   AdsClientHelper::GetInstance()->GetBrowsingHistory(
       kBrowsingHistoryMaxCount.Get(), kBrowsingHistoryDaysAgo.Get(),
-      base::BindOnce(&EligibleAdsV2::GetEligibleAds, weak_factory_.GetWeakPtr(),
-                     std::move(user_model), ad_events, dimensions,
-                     std::move(callback)));
+      base::BindOnce(&EligibleInlineContentAdsV2::GetEligibleAds,
+                     weak_factory_.GetWeakPtr(), std::move(user_model),
+                     ad_events, dimensions, std::move(callback)));
 }
 
-void EligibleAdsV2::GetEligibleAds(
-    targeting::UserModelInfo user_model,
+void EligibleInlineContentAdsV2::GetEligibleAds(
+    UserModelInfo user_model,
     const AdEventList& ad_events,
     const std::string& dimensions,
     GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
@@ -84,13 +85,13 @@ void EligibleAdsV2::GetEligibleAds(
   const database::table::CreativeInlineContentAds database_table;
   database_table.GetForDimensions(
       dimensions,
-      base::BindOnce(&EligibleAdsV2::OnGetEligibleAds,
+      base::BindOnce(&EligibleInlineContentAdsV2::OnGetEligibleAds,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
                      ad_events, browsing_history, std::move(callback)));
 }
 
-void EligibleAdsV2::OnGetEligibleAds(
-    const targeting::UserModelInfo& user_model,
+void EligibleInlineContentAdsV2::OnGetEligibleAds(
+    const UserModelInfo& user_model,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
     GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
@@ -130,7 +131,7 @@ void EligibleAdsV2::OnGetEligibleAds(
   std::move(callback).Run(/*had_opportunity*/ true, {*creative_ad});
 }
 
-CreativeInlineContentAdList EligibleAdsV2::FilterCreativeAds(
+CreativeInlineContentAdList EligibleInlineContentAdsV2::FilterCreativeAds(
     const CreativeInlineContentAdList& creative_ads,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history) {
@@ -138,9 +139,10 @@ CreativeInlineContentAdList EligibleAdsV2::FilterCreativeAds(
     return {};
   }
 
-  ExclusionRules exclusion_rules(ad_events, *subdivision_targeting_,
-                                 *anti_targeting_resource_, browsing_history);
+  InlineContentAdExclusionRules exclusion_rules(
+      ad_events, *subdivision_targeting_, *anti_targeting_resource_,
+      browsing_history);
   return ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
 }
 
-}  // namespace brave_ads::inline_content_ads
+}  // namespace brave_ads

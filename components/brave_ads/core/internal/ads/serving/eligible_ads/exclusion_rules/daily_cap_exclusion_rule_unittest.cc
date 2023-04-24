@@ -31,7 +31,7 @@ TEST_F(BraveAdsDailyCapExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   creative_ad.campaign_id = kCampaignIds[0];
   creative_ad.daily_cap = 2;
 
-  DailyCapExclusionRule exclusion_rule({});
+  const DailyCapExclusionRule exclusion_rule(/*ad_events*/ {});
 
   // Act
 
@@ -52,7 +52,7 @@ TEST_F(BraveAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
 
   ad_events.push_back(ad_event);
 
-  DailyCapExclusionRule exclusion_rule(ad_events);
+  const DailyCapExclusionRule exclusion_rule(ad_events);
 
   // Act
 
@@ -77,7 +77,7 @@ TEST_F(BraveAdsDailyCapExclusionRuleTest,
 
   ad_events.push_back(ad_event);
 
-  DailyCapExclusionRule exclusion_rule(ad_events);
+  const DailyCapExclusionRule exclusion_rule(ad_events);
 
   // Act
 
@@ -98,7 +98,7 @@ TEST_F(BraveAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCapWithin1Day) {
 
   ad_events.push_back(ad_event);
 
-  DailyCapExclusionRule exclusion_rule(ad_events);
+  const DailyCapExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
@@ -121,7 +121,7 @@ TEST_F(BraveAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCapAfter1Day) {
 
   ad_events.push_back(ad_event);
 
-  DailyCapExclusionRule exclusion_rule(ad_events);
+  const DailyCapExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Days(1));
 
@@ -145,7 +145,7 @@ TEST_F(BraveAdsDailyCapExclusionRuleTest, DoNotAllowAdIfExceedsCap) {
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
-  DailyCapExclusionRule exclusion_rule(ad_events);
+  const DailyCapExclusionRule exclusion_rule(ad_events);
 
   // Act
 

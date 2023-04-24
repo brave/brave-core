@@ -12,7 +12,7 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversion_id_pattern_info.h"
 
-namespace brave_ads::resource {
+namespace brave_ads {
 
 struct ConversionsInfo final {
   ConversionsInfo();
@@ -32,6 +32,6 @@ struct ConversionsInfo final {
   ConversionIdPatternMap id_patterns;
 };
 
-}  // namespace brave_ads::resource
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_CONVERSIONS_CONVERSIONS_INFO_H_

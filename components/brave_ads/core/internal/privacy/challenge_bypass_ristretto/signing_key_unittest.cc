@@ -55,7 +55,7 @@ TEST(BraveAdsSigningKeyTest, FailToDecodeEmptyBase64) {
   // Arrange
 
   // Act
-  const SigningKey signing_key = SigningKey::DecodeBase64({});
+  const SigningKey signing_key = SigningKey::DecodeBase64("");
 
   // Assert
   EXPECT_FALSE(signing_key.has_value());

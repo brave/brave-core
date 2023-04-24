@@ -38,7 +38,7 @@ TEST_F(BraveAdsEpsilonGreedyBanditResourceTest,
   ASSERT_TRUE(catalog_info);
 
   // Act
-  resource::EpsilonGreedyBandit resource(catalog);
+  EpsilonGreedyBanditResource resource(catalog);
   resource.LoadFromCatalog(*catalog_info);
 
   // Assert
@@ -51,7 +51,7 @@ TEST_F(BraveAdsEpsilonGreedyBanditResourceTest,
   Catalog catalog;
 
   // Act
-  resource::EpsilonGreedyBandit resource(catalog);
+  EpsilonGreedyBanditResource resource(catalog);
   resource.LoadFromCatalog(/*catalog*/ {});
 
   // Assert
@@ -64,7 +64,7 @@ TEST_F(BraveAdsEpsilonGreedyBanditResourceTest,
   Catalog catalog;
 
   // Act
-  const resource::EpsilonGreedyBandit resource(catalog);
+  const EpsilonGreedyBanditResource resource(catalog);
 
   // Assert
   EXPECT_FALSE(resource.IsInitialized());

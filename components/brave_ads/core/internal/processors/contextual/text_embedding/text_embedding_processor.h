@@ -18,24 +18,20 @@ class GURL;
 
 namespace brave_ads {
 
-namespace resource {
-class TextEmbedding;
-}  // namespace resource
+class TextEmbeddingResource;
 
-namespace processor {
-
-class TextEmbedding final : public AdsClientNotifierObserver,
-                            public TabManagerObserver {
+class TextEmbeddingProcessor final : public AdsClientNotifierObserver,
+                                     public TabManagerObserver {
  public:
-  explicit TextEmbedding(resource::TextEmbedding& resource);
+  explicit TextEmbeddingProcessor(TextEmbeddingResource& resource);
 
-  TextEmbedding(const TextEmbedding&) = delete;
-  TextEmbedding& operator=(const TextEmbedding&) = delete;
+  TextEmbeddingProcessor(const TextEmbeddingProcessor&) = delete;
+  TextEmbeddingProcessor& operator=(const TextEmbeddingProcessor&) = delete;
 
-  TextEmbedding(TextEmbedding&&) noexcept = delete;
-  TextEmbedding& operator=(TextEmbedding&&) noexcept = delete;
+  TextEmbeddingProcessor(TextEmbeddingProcessor&&) noexcept = delete;
+  TextEmbeddingProcessor& operator=(TextEmbeddingProcessor&&) noexcept = delete;
 
-  ~TextEmbedding() override;
+  ~TextEmbeddingProcessor() override;
 
   void Process(const std::string& html);
 
@@ -49,10 +45,9 @@ class TextEmbedding final : public AdsClientNotifierObserver,
                               const std::vector<GURL>& redirect_chain,
                               const std::string& content) override;
 
-  const raw_ref<resource::TextEmbedding> resource_;
+  const raw_ref<TextEmbeddingResource> resource_;
 };
 
-}  // namespace processor
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PROCESSORS_CONTEXTUAL_TEXT_EMBEDDING_TEXT_EMBEDDING_PROCESSOR_H_

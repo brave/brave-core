@@ -13,22 +13,23 @@
 #include "base/containers/flat_map.h"
 #include "base/rand_util.h"
 #include "base/ranges/algorithm.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_arm_util.h"
 #include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_arms_alias.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/multi_armed_bandits/epsilon_greedy_bandit_resource_util.h"
-namespace brave_ads::targeting::model {
+
+namespace brave_ads {
 
 namespace {
-
-constexpr size_t kTopArmCount = 3;
 
 using ArmBucketMap =
     base::flat_map</*value*/ double, std::vector<EpsilonGreedyBanditArmInfo>>;
 using ArmList = std::vector<EpsilonGreedyBanditArmInfo>;
 using ArmBucketPair = std::pair</*value*/ double, ArmList>;
 using ArmBucketList = std::vector<ArmBucketPair>;
+
+constexpr size_t kTopArmCount = 3;
 
 SegmentList ToSegmentList(const ArmList& arms) {
   SegmentList segments;
@@ -68,8 +69,7 @@ ArmBucketMap BucketSortArms(const ArmList& arms) {
 
 EpsilonGreedyBanditArmMap GetEligibleArms(
     const EpsilonGreedyBanditArmMap& arms) {
-  const SegmentList segments =
-      resource::GetEpsilonGreedyBanditEligibleSegments();
+  const SegmentList segments = GetEpsilonGreedyBanditEligibleSegments();
   if (segments.empty()) {
     return {};
   }
@@ -172,8 +172,8 @@ SegmentList GetSegmentsForArms(const EpsilonGreedyBanditArmMap& arms) {
 
 }  // namespace
 
-SegmentList EpsilonGreedyBandit::GetSegments() const {
+SegmentList EpsilonGreedyBanditModel::GetSegments() const {
   return GetSegmentsForArms(GetEpsilonGreedyBanditArms());
 }
 
-}  // namespace brave_ads::targeting::model
+}  // namespace brave_ads

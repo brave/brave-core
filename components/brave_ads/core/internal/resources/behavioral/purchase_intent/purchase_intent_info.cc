@@ -8,11 +8,11 @@
 #include <utility>
 
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
-namespace brave_ads::targeting {
+namespace brave_ads {
 
 PurchaseIntentInfo::PurchaseIntentInfo() = default;
 
@@ -145,4 +145,4 @@ PurchaseIntentInfo::CreateFromValue(const base::Value::Dict dict) {
   return purchase_intent;
 }
 
-}  // namespace brave_ads::targeting
+}  // namespace brave_ads

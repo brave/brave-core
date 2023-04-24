@@ -17,35 +17,26 @@
 
 namespace brave_ads {
 
-namespace resource {
-class AntiTargeting;
-}  // namespace resource
-
-namespace targeting {
-struct UserModelInfo;
-}  // namespace targeting
-
+class AntiTargetingResource;
+class EligibleNewTabPageAdsBase;
 class SubdivisionTargeting;
 struct NewTabPageAdInfo;
+struct UserModelInfo;
 
-namespace new_tab_page_ads {
-
-class EligibleAdsBase;
-
-class Serving final {
+class NewTabPageAdServing final {
  public:
-  Serving(const SubdivisionTargeting& subdivision_targeting,
-          const resource::AntiTargeting& anti_targeting_resource);
+  NewTabPageAdServing(const SubdivisionTargeting& subdivision_targeting,
+                      const AntiTargetingResource& anti_targeting_resource);
 
-  Serving(const Serving&) = delete;
-  Serving& operator=(const Serving&) = delete;
+  NewTabPageAdServing(const NewTabPageAdServing&) = delete;
+  NewTabPageAdServing& operator=(const NewTabPageAdServing&) = delete;
 
-  Serving(Serving&&) noexcept = delete;
-  Serving& operator=(Serving&&) noexcept = delete;
+  NewTabPageAdServing(NewTabPageAdServing&&) noexcept = delete;
+  NewTabPageAdServing& operator=(NewTabPageAdServing&&) noexcept = delete;
 
-  ~Serving();
+  ~NewTabPageAdServing();
 
-  void SetDelegate(ServingDelegate* delegate) {
+  void SetDelegate(NewTabPageAdServingDelegate* delegate) {
     DCHECK_EQ(delegate_, nullptr);
     delegate_ = delegate;
   }
@@ -56,9 +47,9 @@ class Serving final {
   bool IsSupported() const { return static_cast<bool>(eligible_ads_); }
 
   void OnBuildUserModel(MaybeServeNewTabPageAdCallback callback,
-                        const targeting::UserModelInfo& user_model);
+                        const UserModelInfo& user_model);
   void OnGetForUserModel(MaybeServeNewTabPageAdCallback callback,
-                         const targeting::UserModelInfo& user_model,
+                         const UserModelInfo& user_model,
                          bool had_opportunity,
                          const CreativeNewTabPageAdList& creative_ads);
 
@@ -66,14 +57,13 @@ class Serving final {
                MaybeServeNewTabPageAdCallback callback);
   void FailedToServeAd(MaybeServeNewTabPageAdCallback callback);
 
-  raw_ptr<ServingDelegate> delegate_ = nullptr;
+  raw_ptr<NewTabPageAdServingDelegate> delegate_ = nullptr;
 
-  std::unique_ptr<EligibleAdsBase> eligible_ads_;
+  std::unique_ptr<EligibleNewTabPageAdsBase> eligible_ads_;
 
-  base::WeakPtrFactory<Serving> weak_factory_{this};
+  base::WeakPtrFactory<NewTabPageAdServing> weak_factory_{this};
 };
 
-}  // namespace new_tab_page_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_NEW_TAB_PAGE_AD_SERVING_H_

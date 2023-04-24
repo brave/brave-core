@@ -28,7 +28,7 @@ class BraveAdsPurchaseIntentResourceTest : public UnitTestBase {};
 
 TEST_F(BraveAdsPurchaseIntentResourceTest, LoadResource) {
   // Arrange
-  resource::PurchaseIntent resource;
+  PurchaseIntentResource resource;
 
   // Act
   resource.Load();
@@ -42,7 +42,7 @@ TEST_F(BraveAdsPurchaseIntentResourceTest, DoNotLoadInvalidResource) {
   // Arrange
   CopyFileFromTestPathToTempPath(kInvalidResourceId, kResourceId);
 
-  resource::PurchaseIntent resource;
+  PurchaseIntentResource resource;
   resource.Load();
   task_environment_.RunUntilIdle();
 
@@ -54,7 +54,7 @@ TEST_F(BraveAdsPurchaseIntentResourceTest, DoNotLoadInvalidResource) {
 
 TEST_F(BraveAdsPurchaseIntentResourceTest, DoNotLoadMissingResource) {
   // Arrange
-  resource::PurchaseIntent resource;
+  PurchaseIntentResource resource;
   EXPECT_CALL(ads_client_mock_, LoadFileResource(kResourceId, _, _))
       .WillOnce(Invoke([](const std::string& /*id*/, const int /*version*/,
                           LoadFileCallback callback) {
@@ -77,7 +77,7 @@ TEST_F(BraveAdsPurchaseIntentResourceTest, DoNotLoadMissingResource) {
 
 TEST_F(BraveAdsPurchaseIntentResourceTest, IsNotInitialized) {
   // Arrange
-  resource::PurchaseIntent resource;
+  PurchaseIntentResource resource;
 
   // Act
 

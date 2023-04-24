@@ -19,7 +19,7 @@ namespace {
 
 bool HasVisitedSiteOnAntiTargetingList(
     const BrowsingHistoryList& browsing_history,
-    const resource::AntiTargetingSiteList& anti_targeting_sites) {
+    const AntiTargetingSiteList& anti_targeting_sites) {
   const auto iter = base::ranges::find_first_of(
       anti_targeting_sites, browsing_history, SameDomainOrHost);
   return iter != anti_targeting_sites.cend();
@@ -28,7 +28,7 @@ bool HasVisitedSiteOnAntiTargetingList(
 }  // namespace
 
 AntiTargetingExclusionRule::AntiTargetingExclusionRule(
-    const resource::AntiTargeting& anti_targeting_resource,
+    const AntiTargetingResource& anti_targeting_resource,
     BrowsingHistoryList browsing_history)
     : anti_targeting_resource_(anti_targeting_resource),
       browsing_history_(std::move(browsing_history)) {}

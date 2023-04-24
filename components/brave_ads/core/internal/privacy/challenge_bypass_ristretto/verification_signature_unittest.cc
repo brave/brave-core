@@ -60,7 +60,7 @@ TEST(BraveAdsVerificationSignatureTest, FailToDecodeEmptyBase64) {
 
   // Act
   const VerificationSignature verification_signature =
-      VerificationSignature::DecodeBase64({});
+      VerificationSignature::DecodeBase64("");
 
   // Assert
   EXPECT_FALSE(verification_signature.has_value());

@@ -84,11 +84,10 @@ TEST_P(BraveAdsTimeUtilTest, GetLocalTimeAsMinutes) {
       TimeFromString("November 18 2020 12:34:56", /*is_local*/ true);
 
   // Act
-  const int minutes = GetLocalTimeAsMinutes(time);
 
   // Assert
-  const int expected_minutes = (12 * base::Time::kMinutesPerHour) + 34;
-  EXPECT_EQ(expected_minutes, minutes);
+  EXPECT_EQ((12 * base::Time::kMinutesPerHour) + 34,
+            GetLocalTimeAsMinutes(time));
 }
 
 TEST_P(BraveAdsTimeUtilTest, AdjustLocalTimeToBeginningOfPreviousMonth) {

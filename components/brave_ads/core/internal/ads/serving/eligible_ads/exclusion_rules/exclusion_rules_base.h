@@ -17,25 +17,8 @@
 
 namespace brave_ads {
 
-namespace resource {
-class AntiTargeting;
-}  // namespace resource
-
-class AntiTargetingExclusionRule;
-class ConversionExclusionRule;
-class DailyCapExclusionRule;
-class DaypartExclusionRule;
-class DislikeCategoryExclusionRule;
-class DislikeExclusionRule;
-class MarkedAsInappropriateExclusionRule;
-class PerDayExclusionRule;
-class PerMonthExclusionRule;
-class PerWeekExclusionRule;
-class SplitTestExclusionRule;
+class AntiTargetingResource;
 class SubdivisionTargeting;
-class SubdivisionTargetingExclusionRule;
-class TotalMaxExclusionRule;
-class TransferredExclusionRule;
 struct CreativeAdInfo;
 
 class ExclusionRulesBase {
@@ -53,37 +36,21 @@ class ExclusionRulesBase {
  protected:
   ExclusionRulesBase(const AdEventList& ad_events,
                      const SubdivisionTargeting& subdivision_targeting,
-                     const resource::AntiTargeting& anti_targeting_resource,
+                     const AntiTargetingResource& anti_targeting_resource,
                      const BrowsingHistoryList& browsing_history);
 
-  std::vector<ExclusionRuleInterface<CreativeAdInfo>*> exclusion_rules_;
+  std::vector<std::unique_ptr<ExclusionRuleInterface<CreativeAdInfo>>>
+      exclusion_rules_;
 
   std::set<std::string> uuids_;
   bool AddToCacheIfNeeded(
       const CreativeAdInfo& creative_ad,
-      ExclusionRuleInterface<CreativeAdInfo>* exclusion_rule);
+      const std::unique_ptr<ExclusionRuleInterface<CreativeAdInfo>>&
+          exclusion_rule);
 
  private:
   bool IsCached(const CreativeAdInfo& creative_ad) const;
   void AddToCache(const std::string& uuid);
-
-  std::unique_ptr<AntiTargetingExclusionRule> anti_targeting_exclusion_rule_;
-  std::unique_ptr<ConversionExclusionRule> conversion_exclusion_rule_;
-  std::unique_ptr<DailyCapExclusionRule> daily_cap_exclusion_rule_;
-  std::unique_ptr<DaypartExclusionRule> daypart_exclusion_rule_;
-  std::unique_ptr<DislikeCategoryExclusionRule>
-      dislike_category_exclusion_rule_;
-  std::unique_ptr<DislikeExclusionRule> dislike_exclusion_rule_;
-  std::unique_ptr<MarkedAsInappropriateExclusionRule>
-      marked_as_inappropriate_exclusion_rule_;
-  std::unique_ptr<PerDayExclusionRule> per_day_exclusion_rule_;
-  std::unique_ptr<PerMonthExclusionRule> per_month_exclusion_rule_;
-  std::unique_ptr<PerWeekExclusionRule> per_week_exclusion_rule_;
-  std::unique_ptr<SplitTestExclusionRule> split_test_exclusion_rule_;
-  std::unique_ptr<SubdivisionTargetingExclusionRule>
-      subdivision_targeting_exclusion_rule_;
-  std::unique_ptr<TotalMaxExclusionRule> total_max_exclusion_rule_;
-  std::unique_ptr<TransferredExclusionRule> transferred_exclusion_rule_;
 };
 
 }  // namespace brave_ads

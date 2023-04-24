@@ -15,14 +15,13 @@
 
 namespace brave_ads {
 
-constexpr int64_t kUserActivityMissingValue = -1;
-
 int GetNumberOfTabsOpened(const UserActivityEventList& events);
 
 int GetNumberOfUserActivityEvents(const UserActivityEventList& events,
                                   UserActivityEventType event_type);
-int64_t GetTimeSinceLastUserActivityEvent(const UserActivityEventList& events,
-                                          UserActivityEventType event_type);
+base::TimeDelta GetTimeSinceLastUserActivityEvent(
+    const UserActivityEventList& events,
+    UserActivityEventType event_type);
 
 UserActivityTriggerList ToUserActivityTriggers(const std::string& param_value);
 

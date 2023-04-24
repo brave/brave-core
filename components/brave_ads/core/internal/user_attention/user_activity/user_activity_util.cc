@@ -30,17 +30,17 @@ int GetNumberOfUserActivityEvents(const UserActivityEventList& events,
       });
 }
 
-int64_t GetTimeSinceLastUserActivityEvent(const UserActivityEventList& events,
-                                          UserActivityEventType event_type) {
+base::TimeDelta GetTimeSinceLastUserActivityEvent(
+    const UserActivityEventList& events,
+    UserActivityEventType event_type) {
   const auto iter = base::ranges::find(base::Reversed(events), event_type,
                                        &UserActivityEventInfo::type);
 
   if (iter == events.crend()) {
-    return kUserActivityMissingValue;
+    return {};
   }
 
-  const base::TimeDelta time_delta = base::Time::Now() - iter->created_at;
-  return time_delta.InSeconds();
+  return base::Time::Now() - iter->created_at;
 }
 
 UserActivityTriggerList ToUserActivityTriggers(const std::string& param_value) {

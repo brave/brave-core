@@ -8,7 +8,7 @@
 
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
-namespace brave_ads::targeting {
+namespace brave_ads {
 
 struct UserModelInfo;
 
@@ -24,6 +24,6 @@ SegmentList GetTopParentLatentInterestSegments(const UserModelInfo& user_model);
 SegmentList GetTopChildPurchaseIntentSegments(const UserModelInfo& user_model);
 SegmentList GetTopParentPurchaseIntentSegments(const UserModelInfo& user_model);
 
-}  // namespace brave_ads::targeting
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_TARGETING_TOP_SEGMENTS_H_

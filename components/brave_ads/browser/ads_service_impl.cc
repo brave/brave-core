@@ -11,7 +11,6 @@
 #include "base/check.h"
 #include "base/containers/circular_deque.h"
 #include "base/containers/flat_map.h"
-#include "base/cxx17_backports.h"
 #include "base/feature_list.h"
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
@@ -1195,7 +1194,7 @@ void AdsServiceImpl::MigratePrefsVersion9To10() {
   if (ads_per_hour == -1 || ads_per_hour == 2) {
     // The user did not change the ads per hour setting from the legacy default
     // value of 2 so we should clear the preference to transition to
-    // |kDefaultNotificationAdsPerHour|
+    // |kDefaultBraveRewardsNotificationAdsPerHour|
     GetPrefService()->ClearPref(prefs::kMaximumNotificationAdsPerHour);
   }
 }
@@ -1209,7 +1208,7 @@ void AdsServiceImpl::MigratePrefsVersion10To11() {
       GetPrefService()->GetInt64(prefs::kMaximumNotificationAdsPerHour);
   if (ads_per_hour == 0 || ads_per_hour == -1) {
     // Clear the ads per hour preference to transition to
-    // |kDefaultNotificationAdsPerHour|
+    // |kDefaultBraveRewardsNotificationAdsPerHour|
     GetPrefService()->ClearPref(prefs::kMaximumNotificationAdsPerHour);
   }
 }
@@ -1282,18 +1281,15 @@ int64_t AdsServiceImpl::GetMaximumNotificationAdsPerHour() const {
       GetPrefService()->GetInt64(prefs::kMaximumNotificationAdsPerHour);
   if (ads_per_hour == -1) {
     ads_per_hour = base::GetFieldTrialParamByFeatureAsInt(
-        kFeature, "default_ads_per_hour", kDefaultNotificationAdsPerHour);
+        kFeature, "default_ads_per_hour",
+        kDefaultBraveRewardsNotificationAdsPerHour);
   }
 
-  return base::clamp(ads_per_hour,
-                     static_cast<int64_t>(kMinimumNotificationAdsPerHour),
-                     static_cast<int64_t>(kMaximumNotificationAdsPerHour));
+  return ads_per_hour;
 }
 
 void AdsServiceImpl::SetMaximumNotificationAdsPerHour(
     const int64_t ads_per_hour) {
-  DCHECK((ads_per_hour >= kMinimumNotificationAdsPerHour &&
-          ads_per_hour <= kMaximumNotificationAdsPerHour));
   SetInt64Pref(prefs::kMaximumNotificationAdsPerHour, ads_per_hour);
 }
 

@@ -60,7 +60,7 @@ TEST(BraveAdsBlindedTokenTest, FailToDecodeEmptyBase64) {
   // Arrange
 
   // Act
-  const BlindedToken blinded_token = BlindedToken::DecodeBase64({});
+  const BlindedToken blinded_token = BlindedToken::DecodeBase64("");
 
   // Assert
   EXPECT_FALSE(blinded_token.has_value());

@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_base.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_factory.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/notification_ads/notification_ad_permission_rules.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/top_segments.h"
@@ -27,27 +27,29 @@
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
-namespace brave_ads::notification_ads {
+namespace brave_ads {
 
 namespace {
 constexpr base::TimeDelta kRetryServingAdAfterDelay = base::Minutes(2);
 }  // namespace
 
-Serving::Serving(const SubdivisionTargeting& subdivision_targeting,
-                 const resource::AntiTargeting& anti_targeting_resource) {
-  eligible_ads_ = EligibleAdsFactory::Build(
-      kServingVersion.Get(), subdivision_targeting, anti_targeting_resource);
+NotificationAdServing::NotificationAdServing(
+    const SubdivisionTargeting& subdivision_targeting,
+    const AntiTargetingResource& anti_targeting_resource) {
+  eligible_ads_ = EligibleNotificationAdsFactory::Build(
+      kNotificationAdServingVersion.Get(), subdivision_targeting,
+      anti_targeting_resource);
 
   AdsClientHelper::AddObserver(this);
 }
 
-Serving::~Serving() {
+NotificationAdServing::~NotificationAdServing() {
   AdsClientHelper::RemoveObserver(this);
 
   delegate_ = nullptr;
 }
 
-void Serving::StartServingAdsAtRegularIntervals() {
+void NotificationAdServing::StartServingAdsAtRegularIntervals() {
   if (timer_.IsRunning()) {
     return;
   }
@@ -60,7 +62,7 @@ void Serving::StartServingAdsAtRegularIntervals() {
               << FriendlyDateAndTime(serve_ad_at, /*use_sentence_style*/ true));
 }
 
-void Serving::StopServingAdsAtRegularIntervals() {
+void NotificationAdServing::StopServingAdsAtRegularIntervals() {
   if (!timer_.IsRunning()) {
     return;
   }
@@ -70,7 +72,7 @@ void Serving::StopServingAdsAtRegularIntervals() {
   timer_.Stop();
 }
 
-void Serving::MaybeServeAd() {
+void NotificationAdServing::MaybeServeAd() {
   if (is_serving_) {
     BLOG(1, "Already serving notification ad");
     return;
@@ -78,7 +80,7 @@ void Serving::MaybeServeAd() {
 
   is_serving_ = true;
 
-  if (!IsServingEnabled()) {
+  if (!IsNotificationAdServingFeatureEnabled()) {
     BLOG(1, "Notification ad not served: Feature is disabled");
     FailedToServeAd();
     return;
@@ -89,32 +91,32 @@ void Serving::MaybeServeAd() {
     return FailedToServeAd();
   }
 
-  if (!PermissionRules::HasPermission()) {
+  if (!NotificationAdPermissionRules::HasPermission()) {
     BLOG(1, "Notification ad not served: Not allowed due to permission rules");
     return FailedToServeAd();
   }
 
-  targeting::BuildUserModel(
-      base::BindOnce(&Serving::OnBuildUserModel, weak_factory_.GetWeakPtr()));
+  BuildUserModel(base::BindOnce(&NotificationAdServing::OnBuildUserModel,
+                                weak_factory_.GetWeakPtr()));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void Serving::OnBuildUserModel(const targeting::UserModelInfo& user_model) {
+void NotificationAdServing::OnBuildUserModel(const UserModelInfo& user_model) {
   DCHECK(eligible_ads_);
   eligible_ads_->GetForUserModel(
-      user_model, base::BindOnce(&Serving::OnGetForUserModel,
+      user_model, base::BindOnce(&NotificationAdServing::OnGetForUserModel,
                                  weak_factory_.GetWeakPtr(), user_model));
 }
 
-void Serving::OnGetForUserModel(
-    const targeting::UserModelInfo& user_model,
+void NotificationAdServing::OnGetForUserModel(
+    const UserModelInfo& user_model,
     const bool had_opportunity,
     const CreativeNotificationAdList& creative_ads) {
   if (had_opportunity) {
     if (delegate_) {
       delegate_->OnOpportunityAroseToServeNotificationAd(
-          targeting::GetTopChildSegments(user_model));
+          GetTopChildSegments(user_model));
     }
   }
 
@@ -132,8 +134,8 @@ void Serving::OnGetForUserModel(
   ServeAd(ad);
 }
 
-void Serving::OnAdsPerHourPrefChanged() {
-  const int ads_per_hour = settings::GetMaximumNotificationAdsPerHour();
+void NotificationAdServing::OnAdsPerHourPrefChanged() {
+  const int ads_per_hour = GetMaximumNotificationAdsPerHourSetting();
   BLOG(1, "Maximum notification ads per hour changed to " << ads_per_hour);
 
   if (!ShouldServeAdsAtRegularIntervals()) {
@@ -147,12 +149,12 @@ void Serving::OnAdsPerHourPrefChanged() {
   MaybeServeAdAtNextRegularInterval();
 }
 
-void Serving::MaybeServeAdAtNextRegularInterval() {
+void NotificationAdServing::MaybeServeAdAtNextRegularInterval() {
   if (!ShouldServeAdsAtRegularIntervals()) {
     return;
   }
 
-  const int ads_per_hour = settings::GetMaximumNotificationAdsPerHour();
+  const int ads_per_hour = GetMaximumNotificationAdsPerHourSetting();
   if (ads_per_hour == 0) {
     return;
   }
@@ -164,7 +166,7 @@ void Serving::MaybeServeAdAtNextRegularInterval() {
               << FriendlyDateAndTime(serve_ad_at, /*use_sentence_style*/ true));
 }
 
-void Serving::RetryServingAdAtNextInterval() {
+void NotificationAdServing::RetryServingAdAtNextInterval() {
   if (!ShouldServeAdsAtRegularIntervals()) {
     return;
   }
@@ -174,16 +176,17 @@ void Serving::RetryServingAdAtNextInterval() {
               << FriendlyDateAndTime(serve_ad_at, /*use_sentence_style*/ true));
 }
 
-base::Time Serving::MaybeServeAdAfter(const base::TimeDelta delay) {
+base::Time NotificationAdServing::MaybeServeAdAfter(
+    const base::TimeDelta delay) {
   const base::Time serve_ad_at = base::Time::Now() + delay;
   SetServeAdAt(serve_ad_at);
 
-  return timer_.Start(
-      FROM_HERE, delay,
-      base::BindOnce(&Serving::MaybeServeAd, base::Unretained(this)));
+  return timer_.Start(FROM_HERE, delay,
+                      base::BindOnce(&NotificationAdServing::MaybeServeAd,
+                                     base::Unretained(this)));
 }
 
-void Serving::ServeAd(const NotificationAdInfo& ad) {
+void NotificationAdServing::ServeAd(const NotificationAdInfo& ad) {
   if (!ad.IsValid()) {
     BLOG(1, "Failed to serve notification ad");
     return FailedToServeAd();
@@ -212,7 +215,7 @@ void Serving::ServeAd(const NotificationAdInfo& ad) {
   MaybeServeAdAtNextRegularInterval();
 }
 
-void Serving::FailedToServeAd() {
+void NotificationAdServing::FailedToServeAd() {
   is_serving_ = false;
 
   if (delegate_) {
@@ -222,10 +225,10 @@ void Serving::FailedToServeAd() {
   RetryServingAdAtNextInterval();
 }
 
-void Serving::OnNotifyPrefDidChange(const std::string& path) {
+void NotificationAdServing::OnNotifyPrefDidChange(const std::string& path) {
   if (path == prefs::kMaximumNotificationAdsPerHour) {
     OnAdsPerHourPrefChanged();
   }
 }
 
-}  // namespace brave_ads::notification_ads
+}  // namespace brave_ads

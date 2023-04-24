@@ -23,9 +23,7 @@ struct ParamInfo final {
   bool can_show_while_browser_is_backgrounded;
   int ads_per_hour;
   bool should_serve_at_regular_intervals;
-};
-
-const ParamInfo kTests[] = {
+} constexpr kTests[] = {
     {/*is_enabled */ false, /* is_browser_active*/ false,
      /*can_show_while_browser_is_backgrounded */ false, /* ads_per_hour*/ 0,
      /*should_serve_at_regular_intervals*/ false},

@@ -85,9 +85,7 @@ TEST(BraveAdsHistorySortTest, DescendingSortOrderForEmptyHistory) {
   history = sort->Apply(history);
 
   // Assert
-  const HistoryItemList expected_history;
-
-  EXPECT_TRUE(base::ranges::equal(expected_history, history));
+  EXPECT_TRUE(history.empty());
 }
 
 TEST(BraveAdsHistorySortTest, AscendingSortOrder) {
@@ -126,8 +124,7 @@ TEST(BraveAdsHistorySortTest, AscendingSortOrderForEmptyHistory) {
   history = sort->Apply(history);
 
   // Assert
-  const HistoryItemList expected_history;
-  EXPECT_TRUE(base::ranges::equal(expected_history, history));
+  EXPECT_TRUE(history.empty());
 }
 
 }  // namespace brave_ads

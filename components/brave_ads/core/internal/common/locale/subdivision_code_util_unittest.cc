@@ -17,7 +17,7 @@ TEST(BraveAdsSubdivisionCodeUtilTest, GetCountryCode) {
   // Act
 
   // Assert
-  EXPECT_EQ("US", locale::GetCountryCode("US-CA"));
+  EXPECT_EQ("US", GetCountryCode(/*subdivision*/ "US-CA"));
 }
 
 TEST(BraveAdsSubdivisionCodeUtilTest, GetSubdivisionCode) {
@@ -26,7 +26,7 @@ TEST(BraveAdsSubdivisionCodeUtilTest, GetSubdivisionCode) {
   // Act
 
   // Assert
-  EXPECT_EQ("CA", locale::GetSubdivisionCode("US-CA"));
+  EXPECT_EQ("CA", GetSubdivisionCode(/*subdivision*/ "US-CA"));
 }
 
 }  // namespace brave_ads

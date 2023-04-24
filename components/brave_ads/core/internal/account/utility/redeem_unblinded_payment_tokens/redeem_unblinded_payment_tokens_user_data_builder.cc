@@ -25,8 +25,8 @@ RedeemUnblindedPaymentTokensUserDataBuilder::
 void RedeemUnblindedPaymentTokensUserDataBuilder::Build(
     UserDataBuilderCallback callback) const {
   base::Value::Dict user_data;
-  user_data.Merge(user_data::GetPlatform());
-  user_data.Merge(user_data::GetTotals(unblinded_payment_tokens_));
+  user_data.Merge(BuildPlatformUserData());
+  user_data.Merge(BuildTotalsUserData(unblinded_payment_tokens_));
 
   std::move(callback).Run(std::move(user_data));
 }

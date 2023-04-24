@@ -9,17 +9,17 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_feature.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::notification_ads {
+namespace brave_ads {
 
 class EmbeddingExclusionRuleTest : public UnitTestBase {
  protected:
-  EmbeddingExclusionRule exclusion_rule_;
+  const EmbeddingExclusionRule exclusion_rule_;
 };
 
 TEST_F(EmbeddingExclusionRuleTest, AllowIfNoEmbeddingV2) {
@@ -30,7 +30,7 @@ TEST_F(EmbeddingExclusionRuleTest, AllowIfNoEmbeddingV2) {
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
   params["version"] = "2";
-  enabled_features.emplace_back(notification_ads::kServingFeature, params);
+  enabled_features.emplace_back(kNotificationAdServingFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -53,7 +53,7 @@ TEST_F(EmbeddingExclusionRuleTest, AllowIfEmbeddingV2) {
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
   params["version"] = "2";
-  enabled_features.emplace_back(notification_ads::kServingFeature, params);
+  enabled_features.emplace_back(kNotificationAdServingFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -75,7 +75,7 @@ TEST_F(EmbeddingExclusionRuleTest, DisallowIfNoEmbeddingV3) {
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
   params["version"] = "3";
-  enabled_features.emplace_back(notification_ads::kServingFeature, params);
+  enabled_features.emplace_back(kNotificationAdServingFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -97,7 +97,7 @@ TEST_F(EmbeddingExclusionRuleTest, DisallowIfEmptyEmbeddingV3) {
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
   params["version"] = "3";
-  enabled_features.emplace_back(notification_ads::kServingFeature, params);
+  enabled_features.emplace_back(kNotificationAdServingFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -120,7 +120,7 @@ TEST_F(EmbeddingExclusionRuleTest, AllowIfEmbeddingV3) {
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
   params["version"] = "3";
-  enabled_features.emplace_back(notification_ads::kServingFeature, params);
+  enabled_features.emplace_back(kNotificationAdServingFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -134,4 +134,4 @@ TEST_F(EmbeddingExclusionRuleTest, AllowIfEmbeddingV3) {
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
-}  // namespace brave_ads::notification_ads
+}  // namespace brave_ads

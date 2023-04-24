@@ -9,16 +9,16 @@
 
 #include "base/strings/string_piece.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/bandit_feedback_info.h"
+#include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feedback_info.h"
 #include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_processor.h"
 #include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_segments.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/multi_armed_bandits/epsilon_greedy_bandit_resource_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::targeting::model {
+namespace brave_ads {
 
 namespace {
 
@@ -38,10 +38,10 @@ class BraveAdsEpsilonGreedyBanditModelTest : public UnitTestBase {};
 TEST_F(BraveAdsEpsilonGreedyBanditModelTest,
        GetSegmentsIfProcessorNeverInitialized) {
   // Arrange
-  resource::SetEpsilonGreedyBanditEligibleSegments(GetSegmentList());
+  SetEpsilonGreedyBanditEligibleSegments(GetSegmentList());
 
   // Act
-  const EpsilonGreedyBandit model;
+  const EpsilonGreedyBanditModel model;
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -54,10 +54,10 @@ TEST_F(BraveAdsEpsilonGreedyBanditModelTest, EligableSegmentsAreEmpty) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kEpsilonGreedyBanditFeatures, {{"epsilon_value", "0.5"}});
 
-  const processor::EpsilonGreedyBandit processor;
+  const EpsilonGreedyBanditProcessor processor;
 
   // Act
-  const EpsilonGreedyBandit model;
+  const EpsilonGreedyBanditModel model;
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -66,16 +66,16 @@ TEST_F(BraveAdsEpsilonGreedyBanditModelTest, EligableSegmentsAreEmpty) {
 
 TEST_F(BraveAdsEpsilonGreedyBanditModelTest, GetSegmentsIfNeverProcessed) {
   // Arrange
-  resource::SetEpsilonGreedyBanditEligibleSegments(GetSegmentList());
+  SetEpsilonGreedyBanditEligibleSegments(GetSegmentList());
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kEpsilonGreedyBanditFeatures, {{"epsilon_value", "0.25"}});
 
-  const processor::EpsilonGreedyBandit processor;
+  const EpsilonGreedyBanditProcessor processor;
 
   // Act
-  const EpsilonGreedyBandit model;
+  const EpsilonGreedyBanditModel model;
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -84,22 +84,22 @@ TEST_F(BraveAdsEpsilonGreedyBanditModelTest, GetSegmentsIfNeverProcessed) {
 
 TEST_F(BraveAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploration) {
   // Arrange
-  resource::SetEpsilonGreedyBanditEligibleSegments(GetSegmentList());
+  SetEpsilonGreedyBanditEligibleSegments(GetSegmentList());
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kEpsilonGreedyBanditFeatures, {{"epsilon_value", "1.0"}});
 
-  const processor::EpsilonGreedyBandit processor;
+  const EpsilonGreedyBanditProcessor processor;
 
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {/*segment*/ "travel", mojom::NotificationAdEventType::kDismissed});
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {/*segment*/ "personal finance",
        mojom::NotificationAdEventType::kClicked});
 
   // Act
-  const EpsilonGreedyBandit model;
+  const EpsilonGreedyBanditModel model;
   const SegmentList segments = model.GetSegments();
 
   // Exploration is non-deterministic, so can only verify the number of
@@ -109,7 +109,7 @@ TEST_F(BraveAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploration) {
 
 TEST_F(BraveAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploitation) {
   // Arrange
-  resource::SetEpsilonGreedyBanditEligibleSegments(GetSegmentList());
+  SetEpsilonGreedyBanditEligibleSegments(GetSegmentList());
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
@@ -117,38 +117,38 @@ TEST_F(BraveAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploitation) {
 
   // Set all values to zero by choosing a zero-reward action due to
   // optimistic initial values for arms
-  const processor::EpsilonGreedyBandit processor;
+  const EpsilonGreedyBanditProcessor processor;
   for (const base::StringPiece segment : GetSegments()) {
-    processor::EpsilonGreedyBandit::Process(
+    EpsilonGreedyBanditProcessor::Process(
         {static_cast<std::string>(segment),
          mojom::NotificationAdEventType::kDismissed});
   }
 
   const std::string segment_1 = "science";
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {segment_1, mojom::NotificationAdEventType::kClicked});
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {segment_1, mojom::NotificationAdEventType::kClicked});
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {segment_1, mojom::NotificationAdEventType::kClicked});
 
   const std::string segment_2 = "travel";
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {segment_2, mojom::NotificationAdEventType::kDismissed});
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {segment_2, mojom::NotificationAdEventType::kClicked});
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {segment_2, mojom::NotificationAdEventType::kClicked});
 
   const std::string segment_3 = "technology & computing";
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {segment_3, mojom::NotificationAdEventType::kDismissed});
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {segment_3, mojom::NotificationAdEventType::kDismissed});
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {segment_3, mojom::NotificationAdEventType::kClicked});
 
-  const EpsilonGreedyBandit model;
+  const EpsilonGreedyBanditModel model;
 
   // Act
   const SegmentList segments = model.GetSegments();
@@ -162,7 +162,7 @@ TEST_F(BraveAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploitation) {
 
 TEST_F(BraveAdsEpsilonGreedyBanditModelTest, GetSegmentsForEligibleSegments) {
   // Arrange
-  resource::SetEpsilonGreedyBanditEligibleSegments(
+  SetEpsilonGreedyBanditEligibleSegments(
       {"science", "technology & computing", "invalid_segment"});
 
   base::test::ScopedFeatureList scoped_feature_list;
@@ -171,38 +171,38 @@ TEST_F(BraveAdsEpsilonGreedyBanditModelTest, GetSegmentsForEligibleSegments) {
 
   // Set all values to zero by choosing a zero-reward action due to
   // optimistic initial values for arms
-  const processor::EpsilonGreedyBandit processor;
+  const EpsilonGreedyBanditProcessor processor;
   for (const base::StringPiece segment : GetSegments()) {
-    processor::EpsilonGreedyBandit::Process(
+    EpsilonGreedyBanditProcessor::Process(
         {static_cast<std::string>(segment),
          mojom::NotificationAdEventType::kDismissed});
   }
 
   const std::string segment_1 = "science";
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {segment_1, mojom::NotificationAdEventType::kClicked});
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {segment_1, mojom::NotificationAdEventType::kClicked});
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {segment_1, mojom::NotificationAdEventType::kClicked});
 
   const std::string segment_2 = "travel";
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {segment_2, mojom::NotificationAdEventType::kDismissed});
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {segment_2, mojom::NotificationAdEventType::kClicked});
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {segment_2, mojom::NotificationAdEventType::kClicked});
 
   const std::string segment_3 = "technology & computing";
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {segment_3, mojom::NotificationAdEventType::kDismissed});
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {segment_3, mojom::NotificationAdEventType::kDismissed});
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {segment_3, mojom::NotificationAdEventType::kClicked});
 
-  const EpsilonGreedyBandit model;
+  const EpsilonGreedyBanditModel model;
 
   // Act
   const SegmentList segments = model.GetSegments();
@@ -212,4 +212,4 @@ TEST_F(BraveAdsEpsilonGreedyBanditModelTest, GetSegmentsForEligibleSegments) {
   EXPECT_EQ(expected_segments, segments);
 }
 
-}  // namespace brave_ads::targeting::model
+}  // namespace brave_ads

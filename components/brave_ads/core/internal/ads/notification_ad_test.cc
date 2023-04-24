@@ -77,7 +77,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, DoNotServeAtRegularIntervals) {
   // Act
 
   // Assert
-  ASSERT_FALSE(notification_ads::ShouldServeAdsAtRegularIntervals());
+  ASSERT_FALSE(ShouldServeAdsAtRegularIntervals());
 }
 
 TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerServedEvent) {

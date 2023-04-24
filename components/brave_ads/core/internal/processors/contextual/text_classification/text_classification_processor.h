@@ -18,24 +18,22 @@ class GURL;
 
 namespace brave_ads {
 
-namespace resource {
-class TextClassification;
-}  // namespace resource
+class TextClassificationResource;
 
-namespace processor {
-
-class TextClassification final : public AdsClientNotifierObserver,
-                                 public TabManagerObserver {
+class TextClassificationProcessor final : public AdsClientNotifierObserver,
+                                          public TabManagerObserver {
  public:
-  explicit TextClassification(resource::TextClassification& resource);
+  explicit TextClassificationProcessor(TextClassificationResource& resource);
 
-  TextClassification(const TextClassification&) = delete;
-  TextClassification& operator=(const TextClassification&) = delete;
+  TextClassificationProcessor(const TextClassificationProcessor&) = delete;
+  TextClassificationProcessor& operator=(const TextClassificationProcessor&) =
+      delete;
 
-  TextClassification(TextClassification&&) noexcept = delete;
-  TextClassification& operator=(TextClassification&&) noexcept = delete;
+  TextClassificationProcessor(TextClassificationProcessor&&) noexcept = delete;
+  TextClassificationProcessor& operator=(
+      TextClassificationProcessor&&) noexcept = delete;
 
-  ~TextClassification() override;
+  ~TextClassificationProcessor() override;
 
   void Process(const std::string& text);
 
@@ -49,10 +47,9 @@ class TextClassification final : public AdsClientNotifierObserver,
                               const std::vector<GURL>& redirect_chain,
                               const std::string& content) override;
 
-  const raw_ref<resource::TextClassification> resource_;
+  const raw_ref<TextClassificationResource> resource_;
 };
 
-}  // namespace processor
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PROCESSORS_CONTEXTUAL_TEXT_CLASSIFICATION_TEXT_CLASSIFICATION_PROCESSOR_H_

@@ -7,13 +7,13 @@
 
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
 namespace {
 constexpr char kSegmentKey[] = "segment";
 }  // namespace
 
-base::Value::Dict GetSegment(const TransactionInfo& transaction) {
+base::Value::Dict BuildSegmentUserData(const TransactionInfo& transaction) {
   base::Value::Dict user_data;
 
   if (!transaction.segment.empty()) {
@@ -23,4 +23,4 @@ base::Value::Dict GetSegment(const TransactionInfo& transaction) {
   return user_data;
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

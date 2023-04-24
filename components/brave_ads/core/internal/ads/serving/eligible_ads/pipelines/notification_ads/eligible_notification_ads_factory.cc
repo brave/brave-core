@@ -12,26 +12,27 @@
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
-namespace brave_ads::notification_ads {
+namespace brave_ads {
 
-std::unique_ptr<EligibleAdsBase> EligibleAdsFactory::Build(
+std::unique_ptr<EligibleNotificationAdsBase>
+EligibleNotificationAdsFactory::Build(
     const int version,
     const SubdivisionTargeting& subdivision_targeting,
-    const resource::AntiTargeting& anti_targeting_resource) {
+    const AntiTargetingResource& anti_targeting_resource) {
   switch (version) {
     case 1: {
-      return std::make_unique<EligibleAdsV1>(subdivision_targeting,
-                                             anti_targeting_resource);
+      return std::make_unique<EligibleNotificationAdsV1>(
+          subdivision_targeting, anti_targeting_resource);
     }
 
     case 2: {
-      return std::make_unique<EligibleAdsV2>(subdivision_targeting,
-                                             anti_targeting_resource);
+      return std::make_unique<EligibleNotificationAdsV2>(
+          subdivision_targeting, anti_targeting_resource);
     }
 
     case 3: {
-      return std::make_unique<EligibleAdsV3>(subdivision_targeting,
-                                             anti_targeting_resource);
+      return std::make_unique<EligibleNotificationAdsV3>(
+          subdivision_targeting, anti_targeting_resource);
     }
 
     default: {
@@ -40,4 +41,4 @@ std::unique_ptr<EligibleAdsBase> EligibleAdsFactory::Build(
   }
 }
 
-}  // namespace brave_ads::notification_ads
+}  // namespace brave_ads

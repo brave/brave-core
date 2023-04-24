@@ -8,15 +8,15 @@
 
 #include "base/functional/callback.h"
 
-namespace brave_ads::targeting {
+namespace brave_ads {
 
 struct UserModelInfo;
 
 using BuildUserModelCallback =
-    base::OnceCallback<void(const targeting::UserModelInfo& user_model)>;
+    base::OnceCallback<void(const UserModelInfo& user_model)>;
 
 void BuildUserModel(BuildUserModelCallback callback);
 
-}  // namespace brave_ads::targeting
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_TARGETING_USER_MODEL_BUILDER_H_

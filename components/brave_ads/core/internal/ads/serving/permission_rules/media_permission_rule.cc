@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/media_permission_rule.h"
 
-#include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_feature.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 

@@ -12,23 +12,19 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
 class BraveAdsBuildChannelUserDataTest : public UnitTestBase {};
 
-TEST_F(BraveAdsBuildChannelUserDataTest, GetBuildChannel) {
+TEST_F(BraveAdsBuildChannelUserDataTest, BuildBuildChannelUserData) {
   // Arrange
   MockBuildChannel(BuildChannelType::kRelease);
 
   // Act
-  const base::Value::Dict user_data = GetBuildChannel();
 
   // Assert
-  const base::Value expected_user_data =
-      base::test::ParseJson(R"({"buildChannel":"release"})");
-  ASSERT_TRUE(expected_user_data.is_dict());
-
-  EXPECT_EQ(expected_user_data, user_data);
+  EXPECT_EQ(base::test::ParseJsonDict(R"({"buildChannel":"release"})"),
+            BuildBuildChannelUserData());
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

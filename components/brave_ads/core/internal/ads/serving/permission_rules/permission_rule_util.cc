@@ -7,16 +7,13 @@
 
 #include <string>
 
-#include "base/check.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_interface.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 
 namespace brave_ads {
 
-bool ShouldAllow(PermissionRuleInterface* permission_rule) {
-  DCHECK(permission_rule);
-
-  const auto result = permission_rule->ShouldAllow();
+bool ShouldAllow(const PermissionRuleInterface& permission_rule) {
+  const auto result = permission_rule.ShouldAllow();
   if (!result.has_value()) {
     BLOG(2, result.error());
     return false;

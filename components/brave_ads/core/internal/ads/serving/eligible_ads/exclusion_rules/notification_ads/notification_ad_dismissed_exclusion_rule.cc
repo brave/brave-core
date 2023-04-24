@@ -11,10 +11,10 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 
-namespace brave_ads::notification_ads {
+namespace brave_ads {
 
 namespace {
 
@@ -62,17 +62,20 @@ AdEventList FilterAdEvents(const AdEventList& ad_events,
 
 }  // namespace
 
-DismissedExclusionRule::DismissedExclusionRule(AdEventList ad_events)
+NotificationAdDismissedExclusionRule::NotificationAdDismissedExclusionRule(
+    AdEventList ad_events)
     : ad_events_(std::move(ad_events)) {}
 
-DismissedExclusionRule::~DismissedExclusionRule() = default;
+NotificationAdDismissedExclusionRule::~NotificationAdDismissedExclusionRule() =
+    default;
 
-std::string DismissedExclusionRule::GetUuid(
+std::string NotificationAdDismissedExclusionRule::GetUuid(
     const CreativeAdInfo& creative_ad) const {
   return creative_ad.campaign_id;
 }
 
-base::expected<void, std::string> DismissedExclusionRule::ShouldInclude(
+base::expected<void, std::string>
+NotificationAdDismissedExclusionRule::ShouldInclude(
     const CreativeAdInfo& creative_ad) const {
   const AdEventList filtered_ad_events =
       FilterAdEvents(ad_events_, creative_ad);
@@ -85,4 +88,4 @@ base::expected<void, std::string> DismissedExclusionRule::ShouldInclude(
   return base::ok();
 }
 
-}  // namespace brave_ads::notification_ads
+}  // namespace brave_ads

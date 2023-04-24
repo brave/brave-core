@@ -23,7 +23,7 @@ TEST_F(BraveAdsPerDayExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.per_day = 2;
 
-  PerDayExclusionRule exclusion_rule({});
+  const PerDayExclusionRule exclusion_rule(/*ad_events*/ {});
 
   // Act
 
@@ -37,7 +37,7 @@ TEST_F(BraveAdsPerDayExclusionRuleTest, AllowAdIfZero) {
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.per_day = 0;
 
-  PerDayExclusionRule exclusion_rule({});
+  const PerDayExclusionRule exclusion_rule(/*ad_events*/ {});
 
   // Act
 
@@ -58,7 +58,7 @@ TEST_F(BraveAdsPerDayExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
 
   ad_events.push_back(ad_event);
 
-  PerDayExclusionRule exclusion_rule(ad_events);
+  const PerDayExclusionRule exclusion_rule(ad_events);
 
   // Act
 
@@ -80,7 +80,7 @@ TEST_F(BraveAdsPerDayExclusionRuleTest, AllowAdIfDoesNotExceedCapAfter1Day) {
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
-  PerDayExclusionRule exclusion_rule(ad_events);
+  const PerDayExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Days(1));
 
@@ -104,7 +104,7 @@ TEST_F(BraveAdsPerDayExclusionRuleTest, DoNotAllowAdIfExceedsCapWithin1Day) {
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
-  PerDayExclusionRule exclusion_rule(ad_events);
+  const PerDayExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
@@ -128,7 +128,7 @@ TEST_F(BraveAdsPerDayExclusionRuleTest, DoNotAllowAdIfExceedsCap) {
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
-  PerDayExclusionRule exclusion_rule(ad_events);
+  const PerDayExclusionRule exclusion_rule(ad_events);
 
   // Act
 

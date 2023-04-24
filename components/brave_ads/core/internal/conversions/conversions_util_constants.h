@@ -8,11 +8,11 @@
 
 #include <cstddef>
 
-namespace brave_ads::security {
+namespace brave_ads {
 
 constexpr size_t kMinVerifiableConversionMessageLength = 1;
 constexpr size_t kMaxVerifiableConversionMessageLength = 30;
 
-}  // namespace brave_ads::security
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_CONVERSIONS_UTIL_CONSTANTS_H_

@@ -17,13 +17,14 @@
 #include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
 namespace {
 constexpr char kRotatingHashKey[] = "rotating_hash";
 }  // namespace
 
-base::Value::Dict GetRotatingHash(const TransactionInfo& transaction) {
+base::Value::Dict BuildRotatingHashUserData(
+    const TransactionInfo& transaction) {
   base::Value::Dict user_data;
 
   const auto& sys_info = GlobalState::GetInstance()->SysInfo();
@@ -44,4 +45,4 @@ base::Value::Dict GetRotatingHash(const TransactionInfo& transaction) {
   return user_data;
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

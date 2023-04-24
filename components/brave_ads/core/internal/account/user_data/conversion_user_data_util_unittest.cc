@@ -13,7 +13,7 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
 TEST(BraveAdsConversionUserDataUtilTest, GetEnvelope) {
   // Arrange
@@ -23,8 +23,9 @@ TEST(BraveAdsConversionUserDataUtilTest, GetEnvelope) {
                                /*should_use_random_guids*/ false);
 
   // Act
-  const absl::optional<security::VerifiableConversionEnvelopeInfo>
-      verifiable_conversion_envelope = GetEnvelope(conversion_queue_item);
+  const absl::optional<VerifiableConversionEnvelopeInfo>
+      verifiable_conversion_envelope =
+          MaybeBuildVerifiableConversionEnvelope(conversion_queue_item);
 
   // Assert
   EXPECT_TRUE(verifiable_conversion_envelope);
@@ -39,8 +40,9 @@ TEST(BraveAdsConversionUserDataUtilTest,
                                /*should_use_random_guids*/ false);
 
   // Act
-  const absl::optional<security::VerifiableConversionEnvelopeInfo>
-      verifiable_conversion_envelope = GetEnvelope(conversion_queue_item);
+  const absl::optional<VerifiableConversionEnvelopeInfo>
+      verifiable_conversion_envelope =
+          MaybeBuildVerifiableConversionEnvelope(conversion_queue_item);
 
   // Assert
   EXPECT_FALSE(verifiable_conversion_envelope);
@@ -55,8 +57,9 @@ TEST(BraveAdsConversionUserDataUtilTest,
                                /*should_use_random_guids*/ false);
 
   // Act
-  const absl::optional<security::VerifiableConversionEnvelopeInfo>
-      verifiable_conversion_envelope = GetEnvelope(conversion_queue_item);
+  const absl::optional<VerifiableConversionEnvelopeInfo>
+      verifiable_conversion_envelope =
+          MaybeBuildVerifiableConversionEnvelope(conversion_queue_item);
 
   // Assert
   EXPECT_FALSE(verifiable_conversion_envelope);
@@ -71,11 +74,12 @@ TEST(BraveAdsConversionUserDataUtilTest,
                                /*should_use_random_guids*/ false);
 
   // Act
-  const absl::optional<security::VerifiableConversionEnvelopeInfo>
-      verifiable_conversion_envelope = GetEnvelope(conversion_queue_item);
+  const absl::optional<VerifiableConversionEnvelopeInfo>
+      verifiable_conversion_envelope =
+          MaybeBuildVerifiableConversionEnvelope(conversion_queue_item);
 
   // Assert
   EXPECT_FALSE(verifiable_conversion_envelope);
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

@@ -7,6 +7,7 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/fl/predictors/variables/predictor_variable_constants.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_util.h"
 
@@ -36,8 +37,12 @@ std::string TimeSinceLastUserActivityEventPredictorVariable::GetValue() const {
   const UserActivityEventList events =
       UserActivityManager::GetInstance().GetHistoryForTimeWindow(kTimeWindow);
 
-  return base::NumberToString(
-      GetTimeSinceLastUserActivityEvent(events, event_type_));
+  const base::TimeDelta time_delta =
+      GetTimeSinceLastUserActivityEvent(events, event_type_);
+
+  return base::NumberToString(time_delta.is_zero()
+                                  ? kPredictorVariableMissingValue
+                                  : time_delta.InSeconds());
 }
 
 }  // namespace brave_ads

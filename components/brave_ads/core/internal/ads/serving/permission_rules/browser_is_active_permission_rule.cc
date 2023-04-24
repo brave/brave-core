@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/browser_is_active_permission_rule.h"
 
-#include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_feature.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
 

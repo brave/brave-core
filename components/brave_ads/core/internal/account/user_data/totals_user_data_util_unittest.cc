@@ -10,19 +10,19 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
-TEST(BraveAdsTotalsUserDataUtilTest, GetBucketsForNoUnblindedPaymentTokens) {
+TEST(BraveAdsTotalsUserDataUtilTest, BuildBucketsIfNoUnblindedPaymentTokens) {
   // Arrange
 
   // Act
-  const AdTypeBucketMap buckets = BuildBuckets({});
+  const AdTypeBucketMap buckets = BuildBuckets(/*unblinded_payment_tokens*/ {});
 
   // Assert
   EXPECT_TRUE(buckets.empty());
 }
 
-TEST(BraveAdsTotalsUserDataUtilTest, GetBuckets) {
+TEST(BraveAdsTotalsUserDataUtilTest, BuildBuckets) {
   // Arrange
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
       privacy::GetUnblindedPaymentTokens(2);
@@ -35,4 +35,4 @@ TEST(BraveAdsTotalsUserDataUtilTest, GetBuckets) {
   EXPECT_EQ(expected_buckets, buckets);
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

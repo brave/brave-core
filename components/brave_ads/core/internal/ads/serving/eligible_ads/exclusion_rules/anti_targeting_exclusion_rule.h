@@ -14,17 +14,14 @@
 
 namespace brave_ads {
 
-namespace resource {
-class AntiTargeting;
-}  // namespace resource
-
+class AntiTargetingResource;
 struct CreativeAdInfo;
 
 class AntiTargetingExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
   AntiTargetingExclusionRule(
-      const resource::AntiTargeting& anti_targeting_resource,
+      const AntiTargetingResource& anti_targeting_resource,
       BrowsingHistoryList browsing_history);
 
   AntiTargetingExclusionRule(const AntiTargetingExclusionRule&) = delete;
@@ -45,7 +42,7 @@ class AntiTargetingExclusionRule final
  private:
   bool DoesRespectCap(const CreativeAdInfo& creative_ad) const;
 
-  const raw_ref<const resource::AntiTargeting> anti_targeting_resource_;
+  const raw_ref<const AntiTargetingResource> anti_targeting_resource_;
 
   BrowsingHistoryList browsing_history_;
 };

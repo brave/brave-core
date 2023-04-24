@@ -28,7 +28,7 @@ class BraveAdsTextClassificationResourceTest : public UnitTestBase {};
 
 TEST_F(BraveAdsTextClassificationResourceTest, LoadResource) {
   // Arrange
-  resource::TextClassification resource;
+  TextClassificationResource resource;
 
   // Act
   resource.Load();
@@ -42,7 +42,7 @@ TEST_F(BraveAdsTextClassificationResourceTest, DoNotLoadInvalidResource) {
   // Arrange
   CopyFileFromTestPathToTempPath(kInvalidResourceId, kResourceId);
 
-  resource::TextClassification resource;
+  TextClassificationResource resource;
   resource.Load();
   task_environment_.RunUntilIdle();
 
@@ -65,7 +65,7 @@ TEST_F(BraveAdsTextClassificationResourceTest, DoNotLoadMissingResource) {
         std::move(callback).Run(std::move(file));
       }));
 
-  resource::TextClassification resource;
+  TextClassificationResource resource;
   resource.Load();
   task_environment_.RunUntilIdle();
 
@@ -77,7 +77,7 @@ TEST_F(BraveAdsTextClassificationResourceTest, DoNotLoadMissingResource) {
 
 TEST_F(BraveAdsTextClassificationResourceTest, IsNotInitialized) {
   // Arrange
-  resource::TextClassification resource;
+  TextClassificationResource resource;
 
   // Act
 

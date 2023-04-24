@@ -12,18 +12,14 @@
 
 namespace brave_ads {
 
-struct VerifiableConversionInfo;
-
-namespace security {
-
 struct VerifiableConversionEnvelopeInfo;
+struct VerifiableConversionInfo;
 
 std::string GetAlgorithm();
 
 absl::optional<VerifiableConversionEnvelopeInfo> SealEnvelope(
     const VerifiableConversionInfo& verifiable_conversion);
 
-}  // namespace security
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_CONVERSIONS_UTIL_H_

@@ -22,7 +22,7 @@ class Account;
 class Transfer;
 struct SearchResultAdInfo;
 
-class SearchResultAd final : public search_result_ads::EventHandlerDelegate {
+class SearchResultAd final : public SearchResultAdEventHandlerDelegate {
  public:
   SearchResultAd(Account& account, Transfer& transfer);
 
@@ -46,14 +46,14 @@ class SearchResultAd final : public search_result_ads::EventHandlerDelegate {
                            const std::string& placement_id,
                            mojom::SearchResultAdEventType event_type);
 
-  // search_result_ads::EventHandlerDelegate:
+  // SearchResultAdEventHandlerDelegate:
   void OnSearchResultAdViewed(const SearchResultAdInfo& ad) override;
   void OnSearchResultAdClicked(const SearchResultAdInfo& ad) override;
 
   const raw_ref<Account> account_;
   const raw_ref<Transfer> transfer_;
 
-  search_result_ads::EventHandler event_handler_;
+  SearchResultAdEventHandler event_handler_;
 
   base::circular_deque<mojom::SearchResultAdInfoPtr> ad_viewed_event_queue_;
 

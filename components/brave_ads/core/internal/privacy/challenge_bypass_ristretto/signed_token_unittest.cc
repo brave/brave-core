@@ -59,7 +59,7 @@ TEST(BraveAdsSignedTokenTest, FailToDecodeEmptyBase64) {
   // Arrange
 
   // Act
-  const SignedToken signed_token = SignedToken::DecodeBase64({});
+  const SignedToken signed_token = SignedToken::DecodeBase64("");
 
   // Assert
   EXPECT_FALSE(signed_token.has_value());

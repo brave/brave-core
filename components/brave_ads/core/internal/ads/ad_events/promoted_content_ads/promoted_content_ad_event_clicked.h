@@ -12,14 +12,12 @@ namespace brave_ads {
 
 struct PromotedContentAdInfo;
 
-namespace promoted_content_ads {
-
-class AdEventClicked final : public AdEventInterface<PromotedContentAdInfo> {
+class PromotedContentAdEventClicked final
+    : public AdEventInterface<PromotedContentAdInfo> {
  public:
   void FireEvent(const PromotedContentAdInfo& ad) override;
 };
 
-}  // namespace promoted_content_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_PROMOTED_CONTENT_ADS_PROMOTED_CONTENT_AD_EVENT_CLICKED_H_

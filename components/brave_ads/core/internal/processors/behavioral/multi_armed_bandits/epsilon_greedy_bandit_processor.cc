@@ -13,28 +13,28 @@
 #include "base/notreached.h"
 #include "base/strings/string_piece.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/bandit_feedback_info.h"
 #include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_arm_info.h"
 #include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_arm_util.h"
 #include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_arms_alias.h"
+#include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feedback_info.h"
 #include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_segments.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 
-namespace brave_ads::processor {
+namespace brave_ads {
 
 namespace {
 
 constexpr double kDefaultArmValue = 1.0;
 constexpr int kDefaultArmPulls = 0;
 
-void MaybeAddOrResetArms(targeting::EpsilonGreedyBanditArmMap* arms) {
+void MaybeAddOrResetArms(EpsilonGreedyBanditArmMap* arms) {
   DCHECK(arms);
 
-  for (const base::StringPiece value : targeting::GetSegments()) {
+  for (const base::StringPiece value : GetSegments()) {
     std::string segment = static_cast<std::string>(value);
     const auto iter = arms->find(segment);
     if (iter != arms->cend()) {
-      const targeting::EpsilonGreedyBanditArmInfo arm = iter->second;
+      const EpsilonGreedyBanditArmInfo arm = iter->second;
       if (arm.IsValid()) {
         BLOG(3, "Epsilon greedy bandit arm already exists for " << segment
                                                                 << " segment");
@@ -43,7 +43,7 @@ void MaybeAddOrResetArms(targeting::EpsilonGreedyBanditArmMap* arms) {
       }
     }
 
-    targeting::EpsilonGreedyBanditArmInfo arm;
+    EpsilonGreedyBanditArmInfo arm;
     arm.value = kDefaultArmValue;
     arm.pulls = kDefaultArmPulls;
 
@@ -54,11 +54,11 @@ void MaybeAddOrResetArms(targeting::EpsilonGreedyBanditArmMap* arms) {
   }
 }
 
-void MaybeDeleteArms(targeting::EpsilonGreedyBanditArmMap* arms) {
+void MaybeDeleteArms(EpsilonGreedyBanditArmMap* arms) {
   DCHECK(arms);
 
   for (auto iter = arms->cbegin(); iter != arms->cend();) {
-    if (base::Contains(targeting::GetSegments(), iter->first)) {
+    if (base::Contains(GetSegments(), iter->first)) {
       ++iter;
       continue;
     }
@@ -71,21 +71,19 @@ void MaybeDeleteArms(targeting::EpsilonGreedyBanditArmMap* arms) {
 }
 
 void InitializeArms() {
-  targeting::EpsilonGreedyBanditArmMap arms =
-      targeting::GetEpsilonGreedyBanditArms();
+  EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();
 
   MaybeAddOrResetArms(&arms);
 
   MaybeDeleteArms(&arms);
 
-  targeting::SetEpsilonGreedyBanditArms(arms);
+  SetEpsilonGreedyBanditArms(arms);
 
   BLOG(1, "Successfully initialized epsilon greedy bandit arms");
 }
 
 void UpdateArm(const int reward, const std::string& segment) {
-  targeting::EpsilonGreedyBanditArmMap arms =
-      targeting::GetEpsilonGreedyBanditArms();
+  EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();
   if (arms.empty()) {
     BLOG(1, "No epsilon greedy bandit arms");
     return;
@@ -98,14 +96,14 @@ void UpdateArm(const int reward, const std::string& segment) {
     return;
   }
 
-  targeting::EpsilonGreedyBanditArmInfo arm = iter->second;
+  EpsilonGreedyBanditArmInfo arm = iter->second;
   arm.pulls++;
   DCHECK_NE(0, arm.pulls);
   arm.value =
       arm.value + (1.0 / arm.pulls * (static_cast<double>(reward) - arm.value));
   iter->second = arm;
 
-  targeting::SetEpsilonGreedyBanditArms(arms);
+  SetEpsilonGreedyBanditArms(arms);
 
   BLOG(1,
        "Epsilon greedy bandit arm was updated for " << segment << " segment");
@@ -113,12 +111,13 @@ void UpdateArm(const int reward, const std::string& segment) {
 
 }  // namespace
 
-EpsilonGreedyBandit::EpsilonGreedyBandit() {
+EpsilonGreedyBanditProcessor::EpsilonGreedyBanditProcessor() {
   InitializeArms();
 }
 
 // static
-void EpsilonGreedyBandit::Process(const BanditFeedbackInfo& feedback) {
+void EpsilonGreedyBanditProcessor::Process(
+    const EpsilonGreedyBanditFeedbackInfo& feedback) {
   DCHECK(!feedback.segment.empty());
 
   const std::string segment = GetParentSegment(feedback.segment);
@@ -148,4 +147,4 @@ void EpsilonGreedyBandit::Process(const BanditFeedbackInfo& feedback) {
   BLOG(1, "Epsilon greedy bandit processed " << feedback.ad_event_type);
 }
 
-}  // namespace brave_ads::processor
+}  // namespace brave_ads

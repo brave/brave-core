@@ -14,9 +14,7 @@ namespace brave_ads {
 
 struct NotificationAdInfo;
 
-namespace notification_ads {
-
-class EventHandlerDelegate {
+class NotificationAdEventHandlerDelegate {
  public:
   // Invoked when the notification |ad| is served.
   virtual void OnNotificationAdServed(const NotificationAdInfo& ad) {}
@@ -40,10 +38,9 @@ class EventHandlerDelegate {
       const mojom::NotificationAdEventType event_type) {}
 
  protected:
-  virtual ~EventHandlerDelegate() = default;
+  virtual ~NotificationAdEventHandlerDelegate() = default;
 };
 
-}  // namespace notification_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_NOTIFICATION_ADS_NOTIFICATION_AD_EVENT_HANDLER_DELEGATE_H_

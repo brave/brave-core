@@ -32,9 +32,7 @@ class BraveAdsEmbeddingPipelineValueUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsEmbeddingPipelineValueUtilTest, FromValue) {
   // Arrange
-  const base::Value value = base::test::ParseJson(kJson);
-  const base::Value::Dict* const dict = value.GetIfDict();
-  ASSERT_TRUE(dict);
+  const base::Value::Dict value = base::test::ParseJsonDict(kJson);
 
   const std::vector<float> quick_data = {0.7481F, 0.0493F, -0.5572F};
   const std::vector<float> brown_data = {-0.0647F, 0.4511F, -0.7326F};
@@ -47,7 +45,7 @@ TEST_F(BraveAdsEmbeddingPipelineValueUtilTest, FromValue) {
 
   // Act
   absl::optional<EmbeddingPipelineInfo> pipeline =
-      EmbeddingPipelineFromValue(*dict);
+      EmbeddingPipelineFromValue(value);
   ASSERT_TRUE(pipeline);
   EmbeddingPipelineInfo embedding_pipeline = std::move(pipeline).value();
 
@@ -66,30 +64,22 @@ TEST_F(BraveAdsEmbeddingPipelineValueUtilTest, FromValue) {
 
 TEST_F(BraveAdsEmbeddingPipelineValueUtilTest, FromValueEmpty) {
   // Arrange
-  const base::Value value = base::test::ParseJson(kJsonEmpty);
-  const base::Value::Dict* const dict = value.GetIfDict();
-  ASSERT_TRUE(dict);
+  const base::Value::Dict value = base::test::ParseJsonDict(kJsonEmpty);
 
   // Act
-  const absl::optional<EmbeddingPipelineInfo> pipeline =
-      EmbeddingPipelineFromValue(*dict);
 
   // Assert
-  EXPECT_TRUE(!pipeline);
+  EXPECT_FALSE(EmbeddingPipelineFromValue(value));
 }
 
 TEST_F(BraveAdsEmbeddingPipelineValueUtilTest, FromValueMalformed) {
   // Arrange
-  const base::Value value = base::test::ParseJson(kJsonMalformed);
-  const base::Value::Dict* const dict = value.GetIfDict();
-  ASSERT_TRUE(dict);
+  const base::Value::Dict value = base::test::ParseJsonDict(kJsonMalformed);
 
   // Act
-  const absl::optional<EmbeddingPipelineInfo> pipeline =
-      EmbeddingPipelineFromValue(*dict);
 
   // Assert
-  EXPECT_TRUE(!pipeline);
+  EXPECT_FALSE(EmbeddingPipelineFromValue(value));
 }
 
 }  // namespace brave_ads::ml::pipeline

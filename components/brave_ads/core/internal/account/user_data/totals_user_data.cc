@@ -9,7 +9,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/user_data/totals_user_data_util.h"
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
 namespace {
 
@@ -18,7 +18,7 @@ constexpr char kAdFormatKey[] = "ad_format";
 
 }  // namespace
 
-base::Value::Dict GetTotals(
+base::Value::Dict BuildTotalsUserData(
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens) {
   const AdTypeBucketMap buckets = BuildBuckets(unblinded_payment_tokens);
 
@@ -40,4 +40,4 @@ base::Value::Dict GetTotals(
   return user_data;
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

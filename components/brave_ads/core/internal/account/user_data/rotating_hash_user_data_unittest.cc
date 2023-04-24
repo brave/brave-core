@@ -14,11 +14,26 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
 class BraveAdsRotatingHashUserDataTest : public UnitTestBase {};
 
-TEST_F(BraveAdsRotatingHashUserDataTest, GetRotatingHash) {
+TEST_F(BraveAdsRotatingHashUserDataTest,
+       DoNotBuildRotatingHashUserDataIfMissingDeviceId) {
+  // Arrange
+  AdvanceClockTo(TimeFromString("2 June 2022 11:00", /*is_local*/ false));
+
+  TransactionInfo transaction;
+  transaction.creative_instance_id = kCreativeInstanceId;
+
+  // Act
+  const base::Value::Dict user_data = BuildRotatingHashUserData(transaction);
+
+  // Assert
+  EXPECT_TRUE(user_data.empty());
+}
+
+TEST_F(BraveAdsRotatingHashUserDataTest, BuildRotatingHashUserData) {
   // Arrange
   auto& sys_info = GlobalState::GetInstance()->SysInfo();
   sys_info.device_id =
@@ -30,17 +45,16 @@ TEST_F(BraveAdsRotatingHashUserDataTest, GetRotatingHash) {
   transaction.creative_instance_id = kCreativeInstanceId;
 
   // Act
-  const base::Value::Dict user_data = GetRotatingHash(transaction);
 
   // Assert
-  const base::Value expected_user_data = base::test::ParseJson(
-      R"({"rotating_hash":"ooLbypB5vcA/kLjWz+w395SGG+s5M8O9IWbj/OlHuR8="})");
-  ASSERT_TRUE(expected_user_data.is_dict());
-
-  EXPECT_EQ(expected_user_data, user_data);
+  EXPECT_EQ(
+      base::test::ParseJsonDict(
+          R"({"rotating_hash":"ooLbypB5vcA/kLjWz+w395SGG+s5M8O9IWbj/OlHuR8="})"),
+      BuildRotatingHashUserData(transaction));
 }
 
-TEST_F(BraveAdsRotatingHashUserDataTest, RotatingHashMatchesBeforeNextHour) {
+TEST_F(BraveAdsRotatingHashUserDataTest,
+       BuildRotatingHashUserDataIfWithinSameHour) {
   // Arrange
   auto& sys_info = GlobalState::GetInstance()->SysInfo();
   sys_info.device_id =
@@ -50,18 +64,17 @@ TEST_F(BraveAdsRotatingHashUserDataTest, RotatingHashMatchesBeforeNextHour) {
   transaction.creative_instance_id = kCreativeInstanceId;
 
   AdvanceClockTo(TimeFromString("2 June 2022 11:000", /*is_local*/ false));
-  const base::Value::Dict user_data_before = GetRotatingHash(transaction);
+  const base::Value::Dict user_data = BuildRotatingHashUserData(transaction);
 
   // Act
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
-  const base::Value::Dict user_data_after = GetRotatingHash(transaction);
-
   // Assert
-  EXPECT_EQ(user_data_before, user_data_after);
+  EXPECT_EQ(user_data, BuildRotatingHashUserData(transaction));
 }
 
-TEST_F(BraveAdsRotatingHashUserDataTest, RotatingHashDifferentAfterNextHour) {
+TEST_F(BraveAdsRotatingHashUserDataTest,
+       BuildRotatingHashUserDataForDifferentHours) {
   // Arrange
   auto& sys_info = GlobalState::GetInstance()->SysInfo();
   sys_info.device_id =
@@ -71,19 +84,17 @@ TEST_F(BraveAdsRotatingHashUserDataTest, RotatingHashDifferentAfterNextHour) {
   transaction.creative_instance_id = kCreativeInstanceId;
 
   AdvanceClockTo(TimeFromString("2 June 2022 11:00", /*is_local*/ false));
-  const base::Value::Dict user_data_before = GetRotatingHash(transaction);
+  const base::Value::Dict user_data = BuildRotatingHashUserData(transaction);
 
   // Act
   AdvanceClockBy(base::Hours(1));
 
-  const base::Value::Dict user_data_after = GetRotatingHash(transaction);
-
   // Assert
-  EXPECT_NE(user_data_before, user_data_after);
+  EXPECT_NE(user_data, BuildRotatingHashUserData(transaction));
 }
 
 TEST_F(BraveAdsRotatingHashUserDataTest,
-       RotatingHashDifferentForSameHourNextDay) {
+       BuildRotatingHashUserDataForSameHourButDifferentDay) {
   // Arrange
   auto& sys_info = GlobalState::GetInstance()->SysInfo();
   sys_info.device_id =
@@ -93,15 +104,13 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
   transaction.creative_instance_id = kCreativeInstanceId;
 
   AdvanceClockTo(TimeFromString("2 June 2022 11:00", /*is_local*/ false));
-  const base::Value::Dict user_data_before = GetRotatingHash(transaction);
+  const base::Value::Dict user_data = BuildRotatingHashUserData(transaction);
 
   // Act
   AdvanceClockBy(base::Days(1));
 
-  const base::Value::Dict user_data_after = GetRotatingHash(transaction);
-
   // Assert
-  EXPECT_NE(user_data_before, user_data_after);
+  EXPECT_NE(user_data, BuildRotatingHashUserData(transaction));
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

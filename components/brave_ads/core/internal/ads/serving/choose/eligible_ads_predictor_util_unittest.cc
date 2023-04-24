@@ -81,7 +81,7 @@ TEST(BraveAdsEligibleAdsPredictorUtilTest,
   params["ad_predictor_weights"] = "0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0";
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(
-      {{kEligibleAdsFeature, params}}, {});
+      {{kEligibleAdFeature, params}}, {});
 
   CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
@@ -130,7 +130,7 @@ TEST(BraveAdsEligibleAdsPredictorUtilTest,
 }
 
 TEST(BraveAdsEligibleAdsPredictorUtilTest,
-     ComputePredictorScoreWithEmptyAdFeatures) {
+     ComputePredictorScoreWithEmptyAdPredictor) {
   // Arrange
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor;
 

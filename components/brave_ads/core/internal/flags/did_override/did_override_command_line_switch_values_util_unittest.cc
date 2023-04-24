@@ -27,7 +27,7 @@ constexpr char kFooBarSwitch[] = "foobar";
 struct ParamInfo final {
   CommandLineSwitchInfo command_line_switch;
   bool expected_did_override_command_line_switch;
-} const kTestCases[] = {
+} const kTests[] = {
     {{kFooBarSwitch, {}}, false},
     {{variations::switches::kFakeVariationsChannel, {}}, false},
     {{variations::switches::kFakeVariationsChannel, "FooBar"}, true},
@@ -85,7 +85,7 @@ std::string TestParamToString(
 
 INSTANTIATE_TEST_SUITE_P(,
                          BraveAdsDidOverrideCommandLineSwitchValuesUtilTest,
-                         testing::ValuesIn(kTestCases),
+                         testing::ValuesIn(kTests),
                          TestParamToString);
 
 }  // namespace brave_ads

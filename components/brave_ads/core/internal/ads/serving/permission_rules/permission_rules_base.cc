@@ -18,18 +18,18 @@ PermissionRulesBase::~PermissionRulesBase() = default;
 
 // static
 bool PermissionRulesBase::HasPermission() {
-  IssuersPermissionRule issuers_permission_rule;
-  if (!ShouldAllow(&issuers_permission_rule)) {
+  const IssuersPermissionRule issuers_permission_rule;
+  if (!ShouldAllow(issuers_permission_rule)) {
     return false;
   }
 
-  UnblindedTokensPermissionRule unblinded_tokens_permission_rule;
-  if (!ShouldAllow(&unblinded_tokens_permission_rule)) {
+  const UnblindedTokensPermissionRule unblinded_tokens_permission_rule;
+  if (!ShouldAllow(unblinded_tokens_permission_rule)) {
     return false;
   }
 
-  CommandLinePermissionRule catalog_permission_rule;
-  return ShouldAllow(&catalog_permission_rule);
+  const CommandLinePermissionRule catalog_permission_rule;
+  return ShouldAllow(catalog_permission_rule);
 }
 
 }  // namespace brave_ads

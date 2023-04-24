@@ -10,20 +10,18 @@
 
 #include "base/functional/callback_forward.h"
 #include "base/values.h"
+
 namespace brave_ads {
 
 class ConfirmationType;
 
-namespace user_data {
-
-using ConversionCallback =
+using BuildConversionUserDataCallback =
     base::OnceCallback<void(base::Value::Dict user_data)>;
 
-void GetConversion(const std::string& creative_instance_id,
-                   const ConfirmationType& confirmation_type,
-                   ConversionCallback callback);
+void BuildConversionUserData(const std::string& creative_instance_id,
+                             const ConfirmationType& confirmation_type,
+                             BuildConversionUserDataCallback callback);
 
-}  // namespace user_data
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_DATA_CONVERSION_USER_DATA_H_

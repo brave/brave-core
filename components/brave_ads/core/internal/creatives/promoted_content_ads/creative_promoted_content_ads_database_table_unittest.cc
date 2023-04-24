@@ -158,10 +158,8 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest,
   // Act
 
   // Assert
-  const CreativePromotedContentAdInfo expected_creative_ad = creative_ad_1;
-
   database_table_.GetForCreativeInstanceId(
-      expected_creative_ad.creative_instance_id,
+      creative_ad_1.creative_instance_id,
       base::BindOnce(
           [](const CreativePromotedContentAdInfo& expected_creative_ad,
              const bool success, const std::string& /*creative_instance_id*/,
@@ -169,7 +167,7 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest,
             ASSERT_TRUE(success);
             EXPECT_EQ(expected_creative_ad, creative_ad);
           },
-          expected_creative_ad));
+          creative_ad_1));
 }
 
 TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest,

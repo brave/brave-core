@@ -46,13 +46,10 @@ TEST_F(BraveAdsUnblindedPaymentTokenValueUtilTest, ToValue) {
       GetUnblindedPaymentTokens(2);
 
   // Act
-  const base::Value::List value =
-      UnblindedPaymentTokensToValue(unblinded_tokens);
 
   // Assert
-  const base::Value expected_value = base::test::ParseJson(kJson);
-
-  EXPECT_EQ(expected_value, value);
+  EXPECT_EQ(base::test::ParseJsonList(kJson),
+            UnblindedPaymentTokensToValue(unblinded_tokens));
 }
 
 TEST_F(BraveAdsUnblindedPaymentTokenValueUtilTest, ToEmptyValue) {
@@ -60,40 +57,30 @@ TEST_F(BraveAdsUnblindedPaymentTokenValueUtilTest, ToEmptyValue) {
   const UnblindedPaymentTokenList unblinded_tokens;
 
   // Act
-  const base::Value::List value =
-      UnblindedPaymentTokensToValue(unblinded_tokens);
 
   // Assert
-  const base::Value expected_value = base::test::ParseJson(kEmptyJson);
-
-  EXPECT_EQ(expected_value, value);
+  EXPECT_EQ(base::test::ParseJsonList(kEmptyJson),
+            UnblindedPaymentTokensToValue(unblinded_tokens));
 }
 
 TEST_F(BraveAdsUnblindedPaymentTokenValueUtilTest, FromValue) {
   // Arrange
-  const base::Value value = base::test::ParseJson(kJson);
-  const base::Value::List* const list = value.GetIfList();
-  ASSERT_TRUE(list);
+  const base::Value::List value = base::test::ParseJsonList(kJson);
 
   // Act
-  const UnblindedPaymentTokenList unblinded_tokens =
-      UnblindedPaymentTokensFromValue(*list);
 
   // Assert
-  const UnblindedPaymentTokenList expected_unblinded_tokens =
-      GetUnblindedPaymentTokens(2);
-  EXPECT_EQ(expected_unblinded_tokens, unblinded_tokens);
+  EXPECT_EQ(GetUnblindedPaymentTokens(2),
+            UnblindedPaymentTokensFromValue(value));
 }
 
 TEST_F(BraveAdsUnblindedPaymentTokenValueUtilTest, FromEmptyValue) {
   // Arrange
-  const base::Value value = base::test::ParseJson(kEmptyJson);
-  const base::Value::List* const list = value.GetIfList();
-  ASSERT_TRUE(list);
+  const base::Value::List value = base::test::ParseJsonList(kEmptyJson);
 
   // Act
   const UnblindedPaymentTokenList unblinded_tokens =
-      UnblindedPaymentTokensFromValue(*list);
+      UnblindedPaymentTokensFromValue(value);
 
   // Assert
   EXPECT_TRUE(unblinded_tokens.empty());

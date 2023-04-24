@@ -241,8 +241,7 @@ TEST_F(BraveAdsAccountTest, GetIssuersIfAdsAreEnabled) {
   ASSERT_TRUE(issuers);
 
   // Assert
-  const IssuersInfo expected_issuers = BuildIssuers();
-  EXPECT_EQ(expected_issuers, *issuers);
+  EXPECT_EQ(BuildIssuers(), *issuers);
 }
 
 TEST_F(BraveAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {

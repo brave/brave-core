@@ -19,36 +19,29 @@ class GURL;
 
 namespace brave_ads {
 
-namespace resource {
-class PurchaseIntent;
-}  // namespace resource
-
-namespace targeting {
+class PurchaseIntentResource;
 struct PurchaseIntentSignalInfo;
 struct PurchaseIntentSiteInfo;
-}  // namespace targeting
 
-namespace processor {
-
-class PurchaseIntent final : public AdsClientNotifierObserver,
-                             public TabManagerObserver {
+class PurchaseIntentProcessor final : public AdsClientNotifierObserver,
+                                      public TabManagerObserver {
  public:
-  explicit PurchaseIntent(resource::PurchaseIntent& resource);
+  explicit PurchaseIntentProcessor(PurchaseIntentResource& resource);
 
-  PurchaseIntent(const PurchaseIntent&) = delete;
-  PurchaseIntent& operator=(const PurchaseIntent&) = delete;
+  PurchaseIntentProcessor(const PurchaseIntentProcessor&) = delete;
+  PurchaseIntentProcessor& operator=(const PurchaseIntentProcessor&) = delete;
+  PurchaseIntentProcessor(PurchaseIntentProcessor&&) noexcept = delete;
+  PurchaseIntentProcessor& operator=(PurchaseIntentProcessor&&) noexcept =
+      delete;
 
-  PurchaseIntent(PurchaseIntent&&) noexcept = delete;
-  PurchaseIntent& operator=(PurchaseIntent&&) noexcept = delete;
-
-  ~PurchaseIntent() override;
+  ~PurchaseIntentProcessor() override;
 
   void Process(const GURL& url);
 
  private:
-  targeting::PurchaseIntentSignalInfo ExtractSignal(const GURL& url) const;
+  PurchaseIntentSignalInfo ExtractSignal(const GURL& url) const;
 
-  targeting::PurchaseIntentSiteInfo GetSite(const GURL& url) const;
+  PurchaseIntentSiteInfo GetSite(const GURL& url) const;
 
   SegmentList GetSegmentsForSearchQuery(const std::string& search_query) const;
 
@@ -63,10 +56,9 @@ class PurchaseIntent final : public AdsClientNotifierObserver,
                               const std::vector<GURL>& redirect_chain,
                               const std::string& content) override;
 
-  const raw_ref<resource::PurchaseIntent> resource_;
+  const raw_ref<PurchaseIntentResource> resource_;
 };
 
-}  // namespace processor
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PROCESSORS_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_PROCESSOR_H_

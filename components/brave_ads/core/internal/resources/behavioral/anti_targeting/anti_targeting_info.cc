@@ -8,11 +8,11 @@
 #include <utility>
 
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_features.h"
+#include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_feature.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
-namespace brave_ads::resource {
+namespace brave_ads {
 
 AntiTargetingInfo::AntiTargetingInfo() = default;
 
@@ -59,4 +59,4 @@ AntiTargetingInfo::CreateFromValue(const base::Value::Dict dict) {
   return anti_targeting;
 }
 
-}  // namespace brave_ads::resource
+}  // namespace brave_ads

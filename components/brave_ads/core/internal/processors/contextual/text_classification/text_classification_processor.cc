@@ -18,37 +18,37 @@
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "url/gurl.h"
 
-namespace brave_ads::processor {
+namespace brave_ads {
 
 namespace {
 
 std::string GetTopSegmentFromPageProbabilities(
-    const targeting::TextClassificationProbabilityMap& probabilities) {
+    const TextClassificationProbabilityMap& probabilities) {
   DCHECK(!probabilities.empty());
 
-  return base::ranges::max_element(
-             probabilities,
-             [](const targeting::SegmentProbabilityPair& lhs,
-                const targeting::SegmentProbabilityPair& rhs) {
-               return lhs.second < rhs.second;
-             })
+  return base::ranges::max_element(probabilities,
+                                   [](const SegmentProbabilityPair& lhs,
+                                      const SegmentProbabilityPair& rhs) {
+                                     return lhs.second < rhs.second;
+                                   })
       ->first;
 }
 
 }  // namespace
 
-TextClassification::TextClassification(resource::TextClassification& resource)
+TextClassificationProcessor::TextClassificationProcessor(
+    TextClassificationResource& resource)
     : resource_(resource) {
   AdsClientHelper::AddObserver(this);
   TabManager::GetInstance().AddObserver(this);
 }
 
-TextClassification::~TextClassification() {
+TextClassificationProcessor::~TextClassificationProcessor() {
   AdsClientHelper::RemoveObserver(this);
   TabManager::GetInstance().RemoveObserver(this);
 }
 
-void TextClassification::Process(const std::string& text) {
+void TextClassificationProcessor::Process(const std::string& text) {
   if (!resource_->IsInitialized()) {
     BLOG(1,
          "Failed to process text classification as resource not initialized");
@@ -58,7 +58,7 @@ void TextClassification::Process(const std::string& text) {
   const ml::pipeline::TextProcessing* const processing_pipeline =
       resource_->Get();
 
-  const targeting::TextClassificationProbabilityMap probabilities =
+  const TextClassificationProbabilityMap probabilities =
       processing_pipeline->ClassifyPage(text);
 
   if (probabilities.empty()) {
@@ -76,19 +76,19 @@ void TextClassification::Process(const std::string& text) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void TextClassification::OnNotifyLocaleDidChange(
+void TextClassificationProcessor::OnNotifyLocaleDidChange(
     const std::string& /*locale*/) {
   resource_->Load();
 }
 
-void TextClassification::OnNotifyDidUpdateResourceComponent(
+void TextClassificationProcessor::OnNotifyDidUpdateResourceComponent(
     const std::string& id) {
   if (IsValidLanguageComponentId(id)) {
     resource_->Load();
   }
 }
 
-void TextClassification::OnTextContentDidChange(
+void TextClassificationProcessor::OnTextContentDidChange(
     const int32_t /*tab_id*/,
     const std::vector<GURL>& redirect_chain,
     const std::string& content) {
@@ -115,4 +115,4 @@ void TextClassification::OnTextContentDidChange(
   Process(content);
 }
 
-}  // namespace brave_ads::processor
+}  // namespace brave_ads

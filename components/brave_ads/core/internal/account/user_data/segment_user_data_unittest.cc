@@ -11,37 +11,30 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
 class BraveAdsSegmentUserDataTest : public UnitTestBase {};
 
-TEST_F(BraveAdsSegmentUserDataTest, GetEmptySegment) {
+TEST_F(BraveAdsSegmentUserDataTest, DoNotBuildSegmentUserDataIfEmpty) {
   // Arrange
 
   // Act
-  const base::Value::Dict user_data = GetSegment({});
+  const base::Value::Dict user_data = BuildSegmentUserData(/*transactions*/ {});
 
   // Assert
-  const base::Value expected_user_data = base::test::ParseJson("{}");
-  ASSERT_TRUE(expected_user_data.is_dict());
-
-  EXPECT_EQ(expected_user_data, user_data);
+  EXPECT_TRUE(user_data.empty());
 }
 
-TEST_F(BraveAdsSegmentUserDataTest, GetSegment) {
+TEST_F(BraveAdsSegmentUserDataTest, BuildSegmentUserData) {
   // Arrange
   TransactionInfo transaction;
   transaction.segment = "untargeted";
 
   // Act
-  const base::Value::Dict user_data = GetSegment(transaction);
 
   // Assert
-  const base::Value expected_user_data =
-      base::test::ParseJson(R"({"segment":"untargeted"})");
-  ASSERT_TRUE(expected_user_data.is_dict());
-
-  EXPECT_EQ(expected_user_data, user_data);
+  EXPECT_EQ(base::test::ParseJsonDict(R"({"segment":"untargeted"})"),
+            BuildSegmentUserData(transaction));
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

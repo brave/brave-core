@@ -12,14 +12,12 @@ namespace brave_ads {
 
 struct SearchResultAdInfo;
 
-namespace search_result_ads {
-
-class AdEventClicked final : public AdEventInterface<SearchResultAdInfo> {
+class SearchResultAdEventClicked final
+    : public AdEventInterface<SearchResultAdInfo> {
  public:
   void FireEvent(const SearchResultAdInfo& ad) override;
 };
 
-}  // namespace search_result_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_SEARCH_RESULT_ADS_SEARCH_RESULT_AD_EVENT_CLICKED_H_

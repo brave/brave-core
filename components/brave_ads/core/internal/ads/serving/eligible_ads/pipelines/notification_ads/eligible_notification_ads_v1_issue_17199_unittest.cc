@@ -17,7 +17,7 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::notification_ads {
+namespace brave_ads {
 
 class BraveAdsEligibleNotificationAdsV1Issue17199Test : public UnitTestBase {
  protected:
@@ -36,15 +36,15 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Issue17199Test, GetEligibleAds) {
 
   // Act
   SubdivisionTargeting subdivision_targeting;
-  resource::AntiTargeting anti_targeting_resource;
-  EligibleAdsV1 eligible_ads(subdivision_targeting, anti_targeting_resource);
+  AntiTargetingResource anti_targeting_resource;
+  EligibleNotificationAdsV1 eligible_ads(subdivision_targeting,
+                                         anti_targeting_resource);
 
   eligible_ads.GetForUserModel(
-      targeting::BuildUserModel(
-          {/*interest_segments*/ "technology & computing-computing"},
-          /*latent_interest_segments*/ {},
-          /*purchase_intent_segments*/ {},
-          /*text_embedding_html_events*/ {}),
+      BuildUserModel({/*interest_segments*/ "technology & computing-computing"},
+                     /*latent_interest_segments*/ {},
+                     /*purchase_intent_segments*/ {},
+                     /*text_embedding_html_events*/ {}),
       base::BindOnce([](const bool had_opportunity,
                         const CreativeNotificationAdList& creative_ads) {
         EXPECT_TRUE(had_opportunity);
@@ -54,4 +54,4 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Issue17199Test, GetEligibleAds) {
   // Assert
 }
 
-}  // namespace brave_ads::notification_ads
+}  // namespace brave_ads

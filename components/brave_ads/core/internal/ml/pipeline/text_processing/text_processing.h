@@ -26,7 +26,7 @@ class TextProcessing final {
 
   TextProcessing();
   TextProcessing(TransformationVector transformations,
-                 model::Linear linear_model);
+                 LinearModel linear_model);
 
   TextProcessing(const TextProcessing&) = delete;
   TextProcessing& operator=(const TextProcessing&) = delete;
@@ -54,7 +54,7 @@ class TextProcessing final {
   std::string timestamp_;
   std::string locale_ = "en";
   TransformationVector transformations_;
-  model::Linear linear_model_;
+  LinearModel linear_model_;
 };
 
 }  // namespace brave_ads::ml::pipeline

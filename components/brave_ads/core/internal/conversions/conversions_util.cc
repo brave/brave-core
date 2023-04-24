@@ -18,7 +18,7 @@
 #include "third_party/re2/src/re2/re2.h"
 #include "tweetnacl.h"  // NOLINT
 
-namespace brave_ads::security {
+namespace brave_ads {
 
 namespace {
 
@@ -93,4 +93,4 @@ absl::optional<VerifiableConversionEnvelopeInfo> SealEnvelope(
   return envelope;
 }
 
-}  // namespace brave_ads::security
+}  // namespace brave_ads

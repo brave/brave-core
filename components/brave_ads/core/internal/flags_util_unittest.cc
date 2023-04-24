@@ -30,7 +30,7 @@ struct ParamInfo final {
   bool expected_should_debug;
   bool expected_did_override_command_line_switches;
   mojom::EnvironmentType expected_environment_type;
-} const kTestCases[] = {
+} const kTests[] = {
     // Should debug
     {{{kRewardsSwitch, "debug=true"}}, true, false, kDefaultEnvironmentType},
 
@@ -139,7 +139,7 @@ std::string TestParamToString(
 
 INSTANTIATE_TEST_SUITE_P(,
                          BraveAdsFlagsUtilTest,
-                         testing::ValuesIn(kTestCases),
+                         testing::ValuesIn(kTests),
                          TestParamToString);
 
 }  // namespace brave_ads

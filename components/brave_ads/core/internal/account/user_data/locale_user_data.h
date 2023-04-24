@@ -8,10 +8,10 @@
 
 #include "base/values.h"
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
-base::Value::Dict GetLocale();
+base::Value::Dict BuildLocaleUserData();
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_DATA_LOCALE_USER_DATA_H_

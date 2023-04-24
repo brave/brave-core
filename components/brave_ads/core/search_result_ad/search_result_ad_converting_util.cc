@@ -22,11 +22,6 @@
 
 namespace brave_ads {
 
-using mojom::ConversionInfo;
-using mojom::ConversionInfoPtr;
-using mojom::SearchResultAdInfo;
-using mojom::SearchResultAdInfoPtr;
-
 using SearchResultAdMap =
     base::flat_map</*placement_id*/ std::string, mojom::SearchResultAdInfoPtr>;
 
@@ -140,7 +135,7 @@ bool GetUrlValue(const schema_org::mojom::PropertyPtr& ad_property,
 }
 
 bool SetSearchAdProperty(const schema_org::mojom::PropertyPtr& ad_property,
-                         SearchResultAdInfo* search_result_ad) {
+                         mojom::SearchResultAdInfo* search_result_ad) {
   DCHECK(ad_property);
   DCHECK(search_result_ad);
 
@@ -187,7 +182,7 @@ bool SetSearchAdProperty(const schema_org::mojom::PropertyPtr& ad_property,
 }
 
 bool SetConversionProperty(const schema_org::mojom::PropertyPtr& ad_property,
-                           ConversionInfo* conversion) {
+                           mojom::ConversionInfo* conversion) {
   DCHECK(ad_property);
   DCHECK(conversion);
 
@@ -222,8 +217,9 @@ void ConvertEntityToSearchResultAd(const schema_org::mojom::EntityPtr& entity,
     return;
   }
 
-  SearchResultAdInfoPtr search_result_ad = SearchResultAdInfo::New();
-  ConversionInfoPtr conversion = ConversionInfo::New();
+  mojom::SearchResultAdInfoPtr search_result_ad =
+      mojom::SearchResultAdInfo::New();
+  mojom::ConversionInfoPtr conversion = mojom::ConversionInfo::New();
 
   base::flat_set<base::StringPiece> found_attributes;
   base::flat_set<base::StringPiece> found_conversion_attributes;

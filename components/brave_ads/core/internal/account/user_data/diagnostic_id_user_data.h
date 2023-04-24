@@ -8,10 +8,10 @@
 
 #include "base/values.h"
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
-base::Value::Dict GetDiagnosticId();
+base::Value::Dict BuildDiagnosticIdUserData();
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_DATA_DIAGNOSTIC_ID_USER_DATA_H_

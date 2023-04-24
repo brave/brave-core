@@ -28,7 +28,7 @@ class BraveAdsConversionsResourceTest : public UnitTestBase {};
 
 TEST_F(BraveAdsConversionsResourceTest, LoadResource) {
   // Arrange
-  resource::Conversions resource;
+  ConversionsResource resource;
 
   // Act
   resource.Load();
@@ -42,7 +42,7 @@ TEST_F(BraveAdsConversionsResourceTest, DoNotLoadInvalidResource) {
   // Arrange
   CopyFileFromTestPathToTempPath(kInvalidResourceId, kResourceId);
 
-  resource::Conversions resource;
+  ConversionsResource resource;
   resource.Load();
   task_environment_.RunUntilIdle();
 
@@ -65,7 +65,7 @@ TEST_F(BraveAdsConversionsResourceTest, DoNotLoadMissingResource) {
         std::move(callback).Run(std::move(file));
       }));
 
-  resource::Conversions resource;
+  ConversionsResource resource;
   resource.Load();
   task_environment_.RunUntilIdle();
 
@@ -77,7 +77,7 @@ TEST_F(BraveAdsConversionsResourceTest, DoNotLoadMissingResource) {
 
 TEST_F(BraveAdsConversionsResourceTest, IsNotInitialized) {
   // Arrange
-  resource::Conversions resource;
+  ConversionsResource resource;
 
   // Act
 

@@ -13,7 +13,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_embedding/text_embedding_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_embedding/text_embedding_feature.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
@@ -158,7 +158,7 @@ void TextEmbeddingHtmlEvents::PurgeStale(ResultCallback callback) const {
       "DELETE FROM %s WHERE id NOT IN (SELECT id from %s ORDER BY created_at "
       "DESC LIMIT %d)",
       GetTableName().c_str(), GetTableName().c_str(),
-      targeting::kTextEmbeddingHistorySize.Get());
+      kTextEmbeddingHistorySize.Get());
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;

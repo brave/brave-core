@@ -11,24 +11,21 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
-TEST(BraveAdsTotalsUserDataTest, GetTotalsForNoUnblindedPaymentTokens) {
+TEST(BraveAdsTotalsUserDataTest,
+     BuildTotalsUserDataIfNoUnblindedPaymentTokens) {
   // Arrange
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens;
 
   // Act
-  const base::Value::Dict user_data = GetTotals(unblinded_payment_tokens);
 
   // Assert
-  const base::Value expected_user_data =
-      base::test::ParseJson(R"({"totals":[]})");
-  ASSERT_TRUE(expected_user_data.is_dict());
-
-  EXPECT_EQ(expected_user_data, user_data);
+  EXPECT_EQ(base::test::ParseJsonDict(R"({"totals":[]})"),
+            BuildTotalsUserData(unblinded_payment_tokens));
 }
 
-TEST(BraveAdsTotalsUserDataTest, GetTotals) {
+TEST(BraveAdsTotalsUserDataTest, BuildTotalsUserData) {
   // Arrange
   privacy::UnblindedPaymentTokenList unblinded_payment_tokens;
 
@@ -53,14 +50,12 @@ TEST(BraveAdsTotalsUserDataTest, GetTotals) {
   unblinded_payment_tokens.push_back(unblinded_payment_token_4);
 
   // Act
-  const base::Value::Dict user_data = GetTotals(unblinded_payment_tokens);
 
   // Assert
-  const base::Value expected_user_data = base::test::ParseJson(
-      R"({"totals":[{"ad_format":"ad_notification","click":1,"view":2},{"ad_format":"inline_content_ad","view":1}]})");
-  ASSERT_TRUE(expected_user_data.is_dict());
-
-  EXPECT_EQ(expected_user_data, user_data);
+  EXPECT_EQ(
+      base::test::ParseJsonDict(
+          R"({"totals":[{"ad_format":"ad_notification","click":1,"view":2},{"ad_format":"inline_content_ad","view":1}]})"),
+      BuildTotalsUserData(unblinded_payment_tokens));
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

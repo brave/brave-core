@@ -10,19 +10,19 @@
 #include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversions_info.h"
 #include "brave/components/brave_ads/core/internal/resources/parsing_error_or.h"
 
-namespace brave_ads::resource {
+namespace brave_ads {
 
-class Conversions final {
+class ConversionsResource final {
  public:
-  Conversions();
+  ConversionsResource();
 
-  Conversions(const Conversions&) = delete;
-  Conversions& operator=(const Conversions&) = delete;
+  ConversionsResource(const ConversionsResource&) = delete;
+  ConversionsResource& operator=(const ConversionsResource&) = delete;
 
-  Conversions(Conversions&&) noexcept = delete;
-  Conversions& operator=(Conversions&&) noexcept = delete;
+  ConversionsResource(ConversionsResource&&) noexcept = delete;
+  ConversionsResource& operator=(ConversionsResource&&) noexcept = delete;
 
-  ~Conversions();
+  ~ConversionsResource();
 
   bool IsInitialized() const { return is_initialized_; }
 
@@ -31,15 +31,15 @@ class Conversions final {
   const ConversionsInfo* get() const { return &conversions_; }
 
  private:
-  void OnLoadAndParseResource(ParsingErrorOr<ConversionsInfo> result);
+  void OnLoadAndParseResource(ResourceParsingErrorOr<ConversionsInfo> result);
 
   bool is_initialized_ = false;
 
   ConversionsInfo conversions_;
 
-  base::WeakPtrFactory<Conversions> weak_factory_{this};
+  base::WeakPtrFactory<ConversionsResource> weak_factory_{this};
 };
 
-}  // namespace brave_ads::resource
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_CONVERSIONS_CONVERSIONS_RESOURCE_H_

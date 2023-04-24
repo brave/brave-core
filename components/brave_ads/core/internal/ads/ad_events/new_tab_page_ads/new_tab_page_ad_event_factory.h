@@ -15,15 +15,12 @@ namespace brave_ads {
 
 struct NewTabPageAdInfo;
 
-namespace new_tab_page_ads {
-
-class AdEventFactory final {
+class NewTabPageAdEventFactory final {
  public:
   static std::unique_ptr<AdEventInterface<NewTabPageAdInfo>> Build(
       mojom::NewTabPageAdEventType event_type);
 };
 
-}  // namespace new_tab_page_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_AD_EVENT_FACTORY_H_

@@ -45,12 +45,10 @@ TEST_F(BraveAdsHistoryItemValueUtilTest, FromValue) {
   // Arrange
   AdvanceClockTo(TimeFromString("22 March 2023", /*is_local*/ false));
 
-  const base::Value value = base::test::ParseJson(kJson);
-  const base::Value::List* const list = value.GetIfList();
-  ASSERT_TRUE(list);
+  const base::Value::List value = base::test::ParseJsonList(kJson);
 
   // Act
-  const HistoryItemList history_items = HistoryItemsFromValue(*list);
+  const HistoryItemList history_items = HistoryItemsFromValue(value);
 
   // Assert
   EXPECT_TRUE(base::ranges::equal(BuildHistoryItems(), history_items));
@@ -63,11 +61,10 @@ TEST_F(BraveAdsHistoryItemValueUtilTest, ToValue) {
   const HistoryItemList history_items = BuildHistoryItems();
 
   // Act
-  const base::Value::List value = HistoryItemsToValue(history_items);
 
   // Assert
-  const base::Value expected_value = base::test::ParseJson(kJson);
-  EXPECT_EQ(expected_value, value);
+  EXPECT_EQ(base::test::ParseJsonList(kJson),
+            HistoryItemsToValue(history_items));
 }
 
 }  // namespace brave_ads

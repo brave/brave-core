@@ -32,7 +32,7 @@ scoped_refptr<base::FieldTrial> CreateFieldTrial(
 
 class BraveAdsSplitTestExclusionRuleTest : public UnitTestBase {
  protected:
-  SplitTestExclusionRule exclusion_rule_;
+  const SplitTestExclusionRule exclusion_rule_;
 };
 
 TEST_F(BraveAdsSplitTestExclusionRuleTest, AllowIfNoFieldTrialAndNoAdGroup) {

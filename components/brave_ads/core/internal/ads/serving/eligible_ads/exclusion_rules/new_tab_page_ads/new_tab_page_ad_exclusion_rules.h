@@ -10,23 +10,18 @@
 
 namespace brave_ads {
 
-namespace resource {
-class AntiTargeting;
-}  // namespace resource
-
+class AntiTargetingResource;
 class SubdivisionTargeting;
 
-namespace new_tab_page_ads {
-
-class ExclusionRules final : public ExclusionRulesBase {
+class NewTabPageAdExclusionRules final : public ExclusionRulesBase {
  public:
-  ExclusionRules(const AdEventList& ad_events,
-                 const SubdivisionTargeting& subdivision_targeting,
-                 const resource::AntiTargeting& anti_targeting_resource,
-                 const BrowsingHistoryList& browsing_history);
+  NewTabPageAdExclusionRules(
+      const AdEventList& ad_events,
+      const SubdivisionTargeting& subdivision_targeting,
+      const AntiTargetingResource& anti_targeting_resource,
+      const BrowsingHistoryList& browsing_history);
 };
 
-}  // namespace new_tab_page_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_EXCLUSION_RULES_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_AD_EXCLUSION_RULES_H_

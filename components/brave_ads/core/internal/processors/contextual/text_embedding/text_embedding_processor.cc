@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_processor.h"
 
 #include "base/ranges/algorithm.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_embedding/text_embedding_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_embedding/text_embedding_feature.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
@@ -20,20 +20,20 @@
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "url/gurl.h"
 
-namespace brave_ads::processor {
+namespace brave_ads {
 
-TextEmbedding::TextEmbedding(resource::TextEmbedding& resource)
+TextEmbeddingProcessor::TextEmbeddingProcessor(TextEmbeddingResource& resource)
     : resource_(resource) {
   AdsClientHelper::AddObserver(this);
   TabManager::GetInstance().AddObserver(this);
 }
 
-TextEmbedding::~TextEmbedding() {
+TextEmbeddingProcessor::~TextEmbeddingProcessor() {
   AdsClientHelper::RemoveObserver(this);
   TabManager::GetInstance().RemoveObserver(this);
 }
 
-void TextEmbedding::Process(const std::string& html) {
+void TextEmbeddingProcessor::Process(const std::string& html) {
   if (!resource_->IsInitialized()) {
     BLOG(1, "Failed to process text embeddings as resource not initialized");
     return;
@@ -85,17 +85,19 @@ void TextEmbedding::Process(const std::string& html) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void TextEmbedding::OnNotifyLocaleDidChange(const std::string& /*locale*/) {
+void TextEmbeddingProcessor::OnNotifyLocaleDidChange(
+    const std::string& /*locale*/) {
   resource_->Load();
 }
 
-void TextEmbedding::OnNotifyDidUpdateResourceComponent(const std::string& id) {
+void TextEmbeddingProcessor::OnNotifyDidUpdateResourceComponent(
+    const std::string& id) {
   if (IsValidLanguageComponentId(id)) {
     resource_->Load();
   }
 }
 
-void TextEmbedding::OnHtmlContentDidChange(
+void TextEmbeddingProcessor::OnHtmlContentDidChange(
     const int32_t /*tab_id*/,
     const std::vector<GURL>& redirect_chain,
     const std::string& content) {
@@ -119,11 +121,11 @@ void TextEmbedding::OnHtmlContentDidChange(
     return;
   }
 
-  if (!targeting::IsTextEmbeddingEnabled()) {
+  if (!IsTextEmbeddingFeatureEnabled()) {
     return;
   }
 
   Process(content);
 }
 
-}  // namespace brave_ads::processor
+}  // namespace brave_ads

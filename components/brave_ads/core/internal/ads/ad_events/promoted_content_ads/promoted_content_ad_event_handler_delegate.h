@@ -14,9 +14,7 @@ namespace brave_ads {
 
 struct PromotedContentAdInfo;
 
-namespace promoted_content_ads {
-
-class EventHandlerDelegate {
+class PromotedContentAdEventHandlerDelegate {
  public:
   // Invoked when the promoted content |ad| is served.
   virtual void OnPromotedContentAdServed(const PromotedContentAdInfo& ad) {}
@@ -35,10 +33,9 @@ class EventHandlerDelegate {
       const mojom::PromotedContentAdEventType event_type) {}
 
  protected:
-  virtual ~EventHandlerDelegate() = default;
+  virtual ~PromotedContentAdEventHandlerDelegate() = default;
 };
 
-}  // namespace promoted_content_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_PROMOTED_CONTENT_ADS_PROMOTED_CONTENT_AD_EVENT_HANDLER_DELEGATE_H_

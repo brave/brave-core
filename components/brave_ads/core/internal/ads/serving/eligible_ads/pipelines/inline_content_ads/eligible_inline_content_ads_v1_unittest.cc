@@ -23,7 +23,7 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::inline_content_ads {
+namespace brave_ads {
 
 class BraveAdsEligibleInlineContentAdsV1Test : public UnitTestBase {
  protected:
@@ -31,14 +31,14 @@ class BraveAdsEligibleInlineContentAdsV1Test : public UnitTestBase {
     UnitTestBase::SetUp();
 
     subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
-    anti_targeting_resource_ = std::make_unique<resource::AntiTargeting>();
-    eligible_ads_ = std::make_unique<EligibleAdsV1>(*subdivision_targeting_,
-                                                    *anti_targeting_resource_);
+    anti_targeting_resource_ = std::make_unique<AntiTargetingResource>();
+    eligible_ads_ = std::make_unique<EligibleInlineContentAdsV1>(
+        *subdivision_targeting_, *anti_targeting_resource_);
   }
 
   std::unique_ptr<SubdivisionTargeting> subdivision_targeting_;
-  std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
-  std::unique_ptr<EligibleAdsV1> eligible_ads_;
+  std::unique_ptr<AntiTargetingResource> anti_targeting_resource_;
+  std::unique_ptr<EligibleInlineContentAdsV1> eligible_ads_;
 };
 
 TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForChildSegment) {
@@ -61,7 +61,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForChildSegment) {
   CreativeInlineContentAdList expected_creative_ads = {creative_ad_2};
 
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel(
+      BuildUserModel(
           /*interest_segments*/ {"technology & computing-software"},
           /*latent_interest_segments*/ {},
           /*purchase_intent_segments*/ {},
@@ -89,7 +89,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForParentSegment) {
   CreativeInlineContentAdList expected_creative_ads = {creative_ad};
 
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel(
+      BuildUserModel(
           /*interest_segments*/ {"technology & computing-software"},
           /*latent_interest_segments*/ {},
           /*purchase_intent_segments*/ {},
@@ -117,10 +117,10 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForUntargetedSegment) {
   CreativeInlineContentAdList expected_creative_ads = {creative_ad};
 
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel(/*interest_segments*/ {"finance-banking"},
-                                /*latent_interest_segments*/ {},
-                                /*purchase_intent_segments*/ {},
-                                /*text_embedding_html_events*/ {}),
+      BuildUserModel(/*interest_segments*/ {"finance-banking"},
+                     /*latent_interest_segments*/ {},
+                     /*purchase_intent_segments*/ {},
+                     /*text_embedding_html_events*/ {}),
       /*dimensions*/ "200x100",
       base::BindOnce(
           [](const CreativeInlineContentAdList& expected_creative_ads,
@@ -159,7 +159,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForMultipleSegments) {
                                                        creative_ad_3};
 
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel(
+      BuildUserModel(
           /*interest_segments*/ {"technology & computing", "food & drink"},
           /*latent_interest_segments*/ {},
           /*purchase_intent_segments*/ {},
@@ -209,10 +209,10 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test,
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({/*interest_segments*/ "UNMATCHED"},
-                                /*latent_interest_segments*/ {},
-                                /*purchase_intent_segments*/ {},
-                                /*text_embedding_html_events*/ {}),
+      BuildUserModel({/*interest_segments*/ "UNMATCHED"},
+                     /*latent_interest_segments*/ {},
+                     /*purchase_intent_segments*/ {},
+                     /*text_embedding_html_events*/ {}),
       /*dimensions*/ "200x100",
       base::BindOnce([](const bool had_opportunity,
                         const CreativeInlineContentAdList& creative_ads) {
@@ -232,11 +232,10 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test,
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel(
-          {/*interest_segments*/ "technology & computing"},
-          /*latent_interest_segments*/ {},
-          /*purchase_intent_segments*/ {},
-          /*text_embedding_html_events*/ {}),
+      BuildUserModel({/*interest_segments*/ "technology & computing"},
+                     /*latent_interest_segments*/ {},
+                     /*purchase_intent_segments*/ {},
+                     /*text_embedding_html_events*/ {}),
       /*dimensions*/ "?x?",
       base::BindOnce([](const bool had_opportunity,
                         const CreativeInlineContentAdList& creative_ads) {
@@ -269,7 +268,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, DoNotGetAdsIfAlreadySeen) {
   CreativeInlineContentAdList expected_creative_ads = {creative_ad_2};
 
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel(
+      BuildUserModel(
           {/*interest_segments*/ "technology & computing", "food & drink"},
           /*latent_interest_segments*/ {},
           /*purchase_intent_segments*/ {},
@@ -310,7 +309,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, DoNotGetPacedAds) {
   CreativeInlineContentAdList expected_creative_ads = {creative_ad_2};
 
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel(
+      BuildUserModel(
           {/*interest_segments*/ "technology & computing", "food & drink"},
           /*latent_interest_segments*/ {},
           /*purchase_intent_segments*/ {},
@@ -355,7 +354,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetPrioritizedAds) {
   CreativeInlineContentAdList expected_creative_ads = {creative_ad_1};
 
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel(
+      BuildUserModel(
           {/*interest_segments*/ "technology & computing", "food & drink"},
           /*latent_interest_segments*/ {},
           /*purchase_intent_segments*/ {},
@@ -372,4 +371,4 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetPrioritizedAds) {
           std::move(expected_creative_ads)));
 }
 
-}  // namespace brave_ads::inline_content_ads
+}  // namespace brave_ads

@@ -16,7 +16,7 @@
 
 class GURL;
 
-namespace brave_ads::resource {
+namespace brave_ads {
 
 using AntiTargetingSiteList = std::set<GURL>;
 using AntiTargetingMap =
@@ -40,6 +40,6 @@ struct AntiTargetingInfo final {
   AntiTargetingMap sites;
 };
 
-}  // namespace brave_ads::resource
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_ANTI_TARGETING_ANTI_TARGETING_INFO_H_

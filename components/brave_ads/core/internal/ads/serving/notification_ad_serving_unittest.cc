@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_delegate.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_features_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_feature_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
@@ -20,20 +20,20 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::notification_ads {
+namespace brave_ads {
 
-class BraveAdsNotificationAdServingTest : public ServingDelegate,
+class BraveAdsNotificationAdServingTest : public NotificationAdServingDelegate,
                                           public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    ForceServingVersion(1);
+    ForceNotificationAdServingVersion(1);
 
     subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
-    anti_targeting_resource_ = std::make_unique<resource::AntiTargeting>();
-    serving_ = std::make_unique<Serving>(*subdivision_targeting_,
-                                         *anti_targeting_resource_);
+    anti_targeting_resource_ = std::make_unique<AntiTargetingResource>();
+    serving_ = std::make_unique<NotificationAdServing>(
+        *subdivision_targeting_, *anti_targeting_resource_);
     serving_->SetDelegate(this);
   }
 
@@ -50,8 +50,8 @@ class BraveAdsNotificationAdServingTest : public ServingDelegate,
   void OnFailedToServeNotificationAd() override { failed_to_serve_ad_ = true; }
 
   std::unique_ptr<SubdivisionTargeting> subdivision_targeting_;
-  std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
-  std::unique_ptr<Serving> serving_;
+  std::unique_ptr<AntiTargetingResource> anti_targeting_resource_;
+  std::unique_ptr<NotificationAdServing> serving_;
 
   NotificationAdInfo ad_;
   bool opportunity_arose_to_serve_ad_ = false;
@@ -61,7 +61,7 @@ class BraveAdsNotificationAdServingTest : public ServingDelegate,
 
 TEST_F(BraveAdsNotificationAdServingTest, DoNotServeAdForUnsupportedVersion) {
   // Arrange
-  ForceServingVersion(0);
+  ForceNotificationAdServingVersion(0);
 
   // Act
   serving_->MaybeServeAd();
@@ -122,4 +122,4 @@ TEST_F(BraveAdsNotificationAdServingTest,
   EXPECT_TRUE(failed_to_serve_ad_);
 }
 
-}  // namespace brave_ads::notification_ads
+}  // namespace brave_ads

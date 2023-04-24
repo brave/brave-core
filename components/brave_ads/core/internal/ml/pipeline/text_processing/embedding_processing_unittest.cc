@@ -19,7 +19,7 @@ class BraveAdsEmbeddingProcessingTest : public UnitTestBase {};
 
 TEST_F(BraveAdsEmbeddingProcessingTest, EmbedText) {
   // Arrange
-  resource::TextEmbedding resource;
+  TextEmbeddingResource resource;
   resource.Load();
   task_environment_.RunUntilIdle();
   ASSERT_TRUE(resource.IsInitialized());

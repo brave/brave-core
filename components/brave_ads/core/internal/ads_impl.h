@@ -177,16 +177,19 @@ class AdsImpl final : public Ads,
 
   SubdivisionTargeting subdivision_targeting_;
 
-  resource::AntiTargeting anti_targeting_resource_;
-  resource::EpsilonGreedyBandit epsilon_greedy_bandit_resource_;
-  resource::PurchaseIntent purchase_intent_resource_;
-  resource::TextClassification text_classification_resource_;
-  resource::TextEmbedding text_embedding_resource_;
+  AntiTargetingResource anti_targeting_resource_;
 
-  processor::EpsilonGreedyBandit epsilon_greedy_bandit_processor_;
-  processor::PurchaseIntent purchase_intent_processor_;
-  processor::TextClassification text_classification_processor_;
-  processor::TextEmbedding text_embedding_processor_;
+  EpsilonGreedyBanditResource epsilon_greedy_bandit_resource_;
+  EpsilonGreedyBanditProcessor epsilon_greedy_bandit_processor_;
+
+  PurchaseIntentResource purchase_intent_resource_;
+  PurchaseIntentProcessor purchase_intent_processor_;
+
+  TextClassificationResource text_classification_resource_;
+  TextClassificationProcessor text_classification_processor_;
+
+  TextEmbeddingResource text_embedding_resource_;
+  TextEmbeddingProcessor text_embedding_processor_;
 
   InlineContentAdHandler inline_content_ad_handler_;
   NewTabPageAdHandler new_tab_page_ad_handler_;

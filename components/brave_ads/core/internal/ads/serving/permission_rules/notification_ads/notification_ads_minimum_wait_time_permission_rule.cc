@@ -15,14 +15,14 @@
 #include "brave/components/brave_ads/core/internal/common/time/time_constraint_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 
-namespace brave_ads::notification_ads {
+namespace brave_ads {
 
 namespace {
 
 constexpr int kMinimumWaitTimeCap = 1;
 
 bool DoesRespectCap(const std::vector<base::Time>& history) {
-  const int ads_per_hour = settings::GetMaximumNotificationAdsPerHour();
+  const int ads_per_hour = GetMaximumNotificationAdsPerHourSetting();
   if (ads_per_hour == 0) {
     return false;
   }
@@ -36,8 +36,8 @@ bool DoesRespectCap(const std::vector<base::Time>& history) {
 
 }  // namespace
 
-base::expected<void, std::string> MinimumWaitTimePermissionRule::ShouldAllow()
-    const {
+base::expected<void, std::string>
+NotificationAdMinimumWaitTimePermissionRule::ShouldAllow() const {
   if (PlatformHelper::GetInstance().IsMobile()) {
     // Ads are periodically served on mobile so they will never be served before
     // the minimum wait time has passed
@@ -54,4 +54,4 @@ base::expected<void, std::string> MinimumWaitTimePermissionRule::ShouldAllow()
   return base::ok();
 }
 
-}  // namespace brave_ads::notification_ads
+}  // namespace brave_ads

@@ -8,7 +8,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 
-namespace brave_ads::targeting {
+namespace brave_ads {
 
 base::Value::Dict PurchaseIntentSignalHistoryToValue(
     const PurchaseIntentSignalHistoryInfo& purchase_intent_signal_history) {
@@ -39,4 +39,4 @@ PurchaseIntentSignalHistoryInfo PurchaseIntentSignalHistoryFromValue(
   return {created_at, weight};
 }
 
-}  // namespace brave_ads::targeting
+}  // namespace brave_ads

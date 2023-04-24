@@ -58,7 +58,7 @@ TEST(BraveAdsPublicKeyTest, FailToDecodeEmptyBase64) {
   // Arrange
 
   // Act
-  const PublicKey public_key = PublicKey::DecodeBase64({});
+  const PublicKey public_key = PublicKey::DecodeBase64("");
 
   // Assert
   EXPECT_FALSE(public_key.has_value());

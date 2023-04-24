@@ -91,7 +91,7 @@ absl::optional<TransformationVector> ParsePipelineTransformations(
 
 // TODO(https://github.com/brave/brave-browser/issues/24941): Reduce cognitive
 // complexity.
-absl::optional<model::Linear> ParsePipelineClassifier(
+absl::optional<LinearModel> ParsePipelineClassifier(
     base::Value::Dict* classifier_value) {
   if (!classifier_value) {
     return absl::nullopt;
@@ -174,7 +174,7 @@ absl::optional<model::Linear> ParsePipelineClassifier(
     }
   }
 
-  return model::Linear(std::move(weights), std::move(specified_biases));
+  return LinearModel(std::move(weights), std::move(specified_biases));
 }
 
 }  // namespace
@@ -201,7 +201,7 @@ absl::optional<PipelineInfo> ParsePipelineValue(base::Value::Dict dict) {
     return absl::nullopt;
   }
 
-  absl::optional<model::Linear> linear_model =
+  absl::optional<LinearModel> linear_model =
       ParsePipelineClassifier(dict.FindDict("classifier"));
   if (!linear_model) {
     return absl::nullopt;

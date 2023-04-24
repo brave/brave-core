@@ -58,7 +58,7 @@ TEST(BraveAdsTokenTest, FailToDecodeEmptyBase64) {
   // Arrange
 
   // Act
-  const Token token = Token::DecodeBase64({});
+  const Token token = Token::DecodeBase64("");
 
   // Assert
   EXPECT_FALSE(token.has_value());

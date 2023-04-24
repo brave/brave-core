@@ -19,7 +19,7 @@ namespace brave_ads {
 
 class BraveAdsDaypartExclusionRuleTest : public UnitTestBase {
  protected:
-  DaypartExclusionRule exclusion_rule_;
+  const DaypartExclusionRule exclusion_rule_;
 };
 
 TEST_F(BraveAdsDaypartExclusionRuleTest, AllowIfDaypartsIsEmpty) {

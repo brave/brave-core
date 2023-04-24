@@ -43,8 +43,7 @@ base::Value::Dict ClientInfo::ToValue() const {
   for (const auto& [key, value] : purchase_intent_signal_history) {
     base::Value::List history;
     for (const auto& segment_history_item : value) {
-      history.Append(
-          targeting::PurchaseIntentSignalHistoryToValue(segment_history_item));
+      history.Append(PurchaseIntentSignalHistoryToValue(segment_history_item));
     }
     purchase_intent_dict.Set(key, std::move(history));
   }
@@ -106,7 +105,7 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
 
   if (const auto* value = root.FindDict("purchaseIntentSignalHistory")) {
     for (const auto [history_key, history_value] : *value) {
-      std::vector<targeting::PurchaseIntentSignalHistoryInfo> histories;
+      std::vector<PurchaseIntentSignalHistoryInfo> histories;
 
       const auto* segment_history_items = history_value.GetIfList();
       if (!segment_history_items) {
@@ -118,8 +117,8 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
           continue;
         }
 
-        const targeting::PurchaseIntentSignalHistoryInfo history =
-            targeting::PurchaseIntentSignalHistoryFromValue(
+        const PurchaseIntentSignalHistoryInfo history =
+            PurchaseIntentSignalHistoryFromValue(
                 segment_history_item.GetDict());
         histories.push_back(history);
       }
@@ -166,7 +165,7 @@ bool ClientInfo::FromValue(const base::Value::Dict& root) {
         continue;
       }
 
-      targeting::TextClassificationProbabilityMap new_probabilities;
+      TextClassificationProbabilityMap new_probabilities;
 
       for (const auto& probability : *probability_list) {
         const base::Value::Dict* const dict = probability.GetIfDict();

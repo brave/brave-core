@@ -8,12 +8,12 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
-namespace brave_ads::notification_ads {
+namespace brave_ads {
 
-void AdEventTimedOut::FireEvent(const NotificationAdInfo& ad) {
+void NotificationAdEventTimedOut::FireEvent(const NotificationAdInfo& ad) {
   BLOG(3, "Timed out notification ad with placement id "
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 }
 
-}  // namespace brave_ads::notification_ads
+}  // namespace brave_ads

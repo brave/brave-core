@@ -25,7 +25,7 @@
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/privacy/p2a/impressions/p2a_impression.h"
 #include "brave/components/brave_ads/core/internal/privacy/p2a/opportunities/p2a_opportunity.h"
-#include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/bandit_feedback_info.h"
+#include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feedback_info.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
 #include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection_util.h"
@@ -37,7 +37,7 @@ NotificationAdHandler::NotificationAdHandler(
     Account& account,
     Transfer& transfer,
     const SubdivisionTargeting& subdivision_targeting,
-    const resource::AntiTargeting& anti_targeting_resource)
+    const AntiTargetingResource& anti_targeting_resource)
     : account_(account),
       transfer_(transfer),
       serving_(subdivision_targeting, anti_targeting_resource) {
@@ -160,7 +160,7 @@ void NotificationAdHandler::OnNotificationAdClicked(
   account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
                     ConfirmationType::kClicked);
 
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {ad.segment, mojom::NotificationAdEventType::kClicked});
 
   SetNotificationAdEventPredictorVariable(
@@ -177,7 +177,7 @@ void NotificationAdHandler::OnNotificationAdDismissed(
   account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
                     ConfirmationType::kDismissed);
 
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {ad.segment, mojom::NotificationAdEventType::kDismissed});
 
   SetNotificationAdEventPredictorVariable(
@@ -189,7 +189,7 @@ void NotificationAdHandler::OnNotificationAdTimedOut(
     const NotificationAdInfo& ad) {
   NotificationAdTimedOut(ad.placement_id);
 
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {ad.segment, mojom::NotificationAdEventType::kTimedOut});
 
   SetNotificationAdEventPredictorVariable(
