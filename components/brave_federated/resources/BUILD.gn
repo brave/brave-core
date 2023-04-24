@@ -1,12 +1,23 @@
 import("//brave/resources/brave_grit.gni")
+import("//tools/grit/repack.gni")
 
 brave_grit("brave_federated_resources") {
   source = "static_resources.grd"
 
   outputs = [
-    "grit/brave_federated_resources.h"
+    "grit/brave_federated_resources.h",
+    "brave_federated_static.pak"
   ]
 
   output_dir = "$root_gen_dir/brave/components/brave_federated/resources"
 }
 
+repack("resources") {
+  public_deps = [ ":brave_federated_resources" ]
+
+  sources = [
+    "$root_gen_dir/brave/components/brave_federated/resources/brave_federated_static.pak"
+  ]
+
+  output = "$root_gen_dir/brave/components/brave_federated/resources/brave_federated_resources.pak"
+}
