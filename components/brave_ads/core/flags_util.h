@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_FLAGS_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_FLAGS_UTIL_H_
 
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
 
 namespace brave_ads {
 

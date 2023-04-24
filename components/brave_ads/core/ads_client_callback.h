@@ -11,7 +11,7 @@
 
 #include "base/files/file.h"
 #include "base/functional/callback.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
 #include "url/gurl.h"
 
 namespace brave_ads {

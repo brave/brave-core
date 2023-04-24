@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/conversion_builder.h"
 
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_info.h"
 
 namespace brave_ads {

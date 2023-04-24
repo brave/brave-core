@@ -7,7 +7,7 @@
 
 #include <string>
 
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/privacy/locale/country_code_util.h"
 #include "brave/components/l10n/common/locale_util.h"

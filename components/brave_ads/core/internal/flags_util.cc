@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/flags_util.h"
 
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/flags/debug/debug_command_line_switch_parser_util.h"
 #include "brave/components/brave_ads/core/internal/flags/did_override/did_override_command_line_switch_values_util.h"
 #include "brave/components/brave_ads/core/internal/flags/did_override/did_override_command_line_switches_util.h"

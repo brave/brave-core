@@ -5,7 +5,7 @@
 
 #import <Network/Network.h>
 #import <UIKit/UIKit.h>
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/ad_content_value_util.h"
 
 #import "ads_client_bridge.h"
@@ -41,7 +41,7 @@
 #include "brave/components/brave_ads/core/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
-#import "brave/ios/browser/api/ads/ads.mojom.objc+private.h"
+#import "brave/ios/browser/api/ads/brave_ads.mojom.objc+private.h"
 #import "brave/ios/browser/api/common/common_operations.h"
 #import "brave_ads.h"
 #include "build/build_config.h"

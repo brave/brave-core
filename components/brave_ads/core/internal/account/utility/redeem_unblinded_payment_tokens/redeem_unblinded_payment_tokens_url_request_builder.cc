@@ -12,7 +12,7 @@
 #include "base/json/json_writer.h"
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/token_preimage.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/verification_key.h"
