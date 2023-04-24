@@ -84,8 +84,7 @@ public final class WalletConstants {
             BraveWalletConstants.AVALANCHE_MAINNET_CHAIN_ID,
             //            BraveWalletConstants.FANTOM_MAINNET_CHAIN_ID, /* not yet supported */
             //            BraveWalletConstants.AURORA_MAINNET_CHAIN_ID, /* not yet supported */
-            //            BraveWalletConstants.FILECOIN_MAINNET, /* not yet supported */
-            BraveWalletConstants.OPTIMISM_MAINNET_CHAIN_ID,
+            BraveWalletConstants.FILECOIN_MAINNET, BraveWalletConstants.OPTIMISM_MAINNET_CHAIN_ID,
             BraveWalletConstants.ARBITRUM_MAINNET_CHAIN_ID);
 
     public static List<String> SWAP_SUPPORTED_NETWORKS =
@@ -124,15 +123,13 @@ public final class WalletConstants {
             Arrays.asList(BraveWalletConstants.GOERLI_CHAIN_ID,
                     BraveWalletConstants.SEPOLIA_CHAIN_ID, BraveWalletConstants.LOCALHOST_CHAIN_ID,
                     BraveWalletConstants.SOLANA_TESTNET, BraveWalletConstants.SOLANA_DEVNET,
-                    BraveWalletConstants.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID
-                    /*, BraveWalletConstants.FILECOIN_TESTNET*/);
-    // Todo(pav): uncomment FC when file coin is supported
+                    BraveWalletConstants.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID,
+                    BraveWalletConstants.FILECOIN_TESTNET);
 
     public static final List<Integer> SEND_TRANSACTION_TYPES = Arrays.asList(
             TransactionType.ETH_SEND, TransactionType.ERC20_TRANSFER,
             TransactionType.SOLANA_SYSTEM_TRANSFER, TransactionType.SOLANA_SPL_TOKEN_TRANSFER,
             TransactionType.SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION);
 
-    public static final List<String> UNSUPPORTED_NETWORKS = Arrays.asList(
-            BraveWalletConstants.FILECOIN_MAINNET, BraveWalletConstants.FILECOIN_TESTNET);
+    public static final List<String> UNSUPPORTED_NETWORKS = Collections.emptyList();
 }
