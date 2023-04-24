@@ -8,13 +8,13 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/model_interface.h"
 
-namespace brave_ads::targeting::model {
+namespace brave_ads {
 
-class EpsilonGreedyBandit final : public ModelInterface {
+class EpsilonGreedyBanditModel final : public ModelInterface {
  public:
   SegmentList GetSegments() const override;
 };
 
-}  // namespace brave_ads::targeting::model
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_TARGETING_BEHAVIORAL_MULTI_ARMED_BANDITS_EPSILON_GREEDY_BANDIT_MODEL_H_

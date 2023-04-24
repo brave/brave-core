@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
-#include "brave/components/brave_ads/core/internal/reminder/reminder_features.h"
+#include "brave/components/brave_ads/core/internal/reminder/reminder_feature.h"
 
 namespace brave_ads {
 

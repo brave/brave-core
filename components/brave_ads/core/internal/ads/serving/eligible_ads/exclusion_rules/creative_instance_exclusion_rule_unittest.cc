@@ -23,7 +23,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
 
-  CreativeInstanceExclusionRule exclusion_rule({});
+  const CreativeInstanceExclusionRule exclusion_rule(/*ad_events*/ {});
 
   // Act
 
@@ -43,7 +43,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest, AdAllowedAfter1Hour) {
 
   ad_events.push_back(ad_event);
 
-  CreativeInstanceExclusionRule exclusion_rule(ad_events);
+  const CreativeInstanceExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Hours(1));
 
@@ -78,7 +78,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
       creative_ad, AdType::kSearchResultAd, ConfirmationType::kServed, Now());
   ad_events.push_back(ad_event_4);
 
-  CreativeInstanceExclusionRule exclusion_rule(ad_events);
+  const CreativeInstanceExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Hours(1));
 
@@ -101,7 +101,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
 
   ad_events.push_back(ad_event);
 
-  CreativeInstanceExclusionRule exclusion_rule(ad_events);
+  const CreativeInstanceExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 

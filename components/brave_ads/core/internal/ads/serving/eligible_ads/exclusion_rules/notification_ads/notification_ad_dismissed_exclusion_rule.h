@@ -15,20 +15,22 @@ namespace brave_ads {
 
 struct CreativeAdInfo;
 
-namespace notification_ads {
-
-class DismissedExclusionRule final
+class NotificationAdDismissedExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
-  explicit DismissedExclusionRule(AdEventList ad_events);
+  explicit NotificationAdDismissedExclusionRule(AdEventList ad_events);
 
-  DismissedExclusionRule(const DismissedExclusionRule&) = delete;
-  DismissedExclusionRule& operator=(const DismissedExclusionRule&) = delete;
+  NotificationAdDismissedExclusionRule(
+      const NotificationAdDismissedExclusionRule&) = delete;
+  NotificationAdDismissedExclusionRule& operator=(
+      const NotificationAdDismissedExclusionRule&) = delete;
 
-  DismissedExclusionRule(DismissedExclusionRule&&) noexcept = delete;
-  DismissedExclusionRule& operator=(DismissedExclusionRule&&) noexcept = delete;
+  NotificationAdDismissedExclusionRule(
+      NotificationAdDismissedExclusionRule&&) noexcept = delete;
+  NotificationAdDismissedExclusionRule& operator=(
+      NotificationAdDismissedExclusionRule&&) noexcept = delete;
 
-  ~DismissedExclusionRule() override;
+  ~NotificationAdDismissedExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
 
@@ -39,7 +41,6 @@ class DismissedExclusionRule final
   AdEventList ad_events_;
 };
 
-}  // namespace notification_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_EXCLUSION_RULES_NOTIFICATION_ADS_NOTIFICATION_AD_DISMISSED_EXCLUSION_RULE_H_

@@ -17,9 +17,8 @@ TEST(BraveAdsStringStripUtilTest, StripNonAlphaCharactersFromEmptyContent) {
   // Act
 
   // Assert
-  const std::string expected_stripped_content;
-
-  EXPECT_EQ(expected_stripped_content, StripNonAlphaCharacters({}));
+  const std::string stripped_text = StripNonAlphaCharacters("");
+  EXPECT_TRUE(stripped_text.empty());
 }
 
 TEST(BraveAdsStringStripUtilTest, StripNonAlphaCharactersFromWhitespace) {
@@ -28,9 +27,8 @@ TEST(BraveAdsStringStripUtilTest, StripNonAlphaCharactersFromWhitespace) {
   // Act
 
   // Assert
-  const std::string expected_stripped_content;
-
-  EXPECT_EQ(expected_stripped_content, StripNonAlphaCharacters("   "));
+  const std::string stripped_text = StripNonAlphaCharacters("   ");
+  EXPECT_TRUE(stripped_text.empty());
 }
 
 TEST(BraveAdsStringStripUtilTest, StripNonAlphaCharacters) {
@@ -67,9 +65,8 @@ TEST(BraveAdsStringStripUtilTest,
   // Act
 
   // Assert
-  const std::string expected_stripped_content;
-
-  EXPECT_EQ(expected_stripped_content, StripNonAlphaNumericCharacters({}));
+  const std::string stripped_text = StripNonAlphaNumericCharacters("");
+  EXPECT_TRUE(stripped_text.empty());
 }
 
 TEST(BraveAdsStringStripUtilTest,
@@ -79,9 +76,8 @@ TEST(BraveAdsStringStripUtilTest,
   // Act
 
   // Assert
-  const std::string expected_stripped_content;
-
-  EXPECT_EQ(expected_stripped_content, StripNonAlphaNumericCharacters("   "));
+  const std::string stripped_text = StripNonAlphaNumericCharacters("   ");
+  EXPECT_TRUE(stripped_text.empty());
 }
 
 TEST(BraveAdsStringStripUtilTest, StripNonAlphaNumericCharacters) {

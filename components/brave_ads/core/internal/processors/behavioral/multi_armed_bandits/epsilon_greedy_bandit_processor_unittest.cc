@@ -8,8 +8,8 @@
 #include <string>
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/bandit_feedback_info.h"
 #include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_arm_util.h"
+#include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feedback_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -20,29 +20,28 @@ class BraveAdsEpsilonGreedyBanditProcessorTest : public UnitTestBase {};
 TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest, InitializeArmsFromResource) {
   // Arrange
   {
-    targeting::EpsilonGreedyBanditArmMap arms;
+    EpsilonGreedyBanditArmMap arms;
 
-    targeting::EpsilonGreedyBanditArmInfo arm_1;
+    EpsilonGreedyBanditArmInfo arm_1;
     arm_1.segment = "foo";
     arm_1.pulls = 0;
     arm_1.value = 1.0;
     arms["foo"] = arm_1;
 
-    targeting::EpsilonGreedyBanditArmInfo arm_2;
+    EpsilonGreedyBanditArmInfo arm_2;
     arm_2.segment = "bar";
     arm_2.pulls = 0;
     arm_2.value = 1.0;
     arms["bar"] = arm_2;
 
-    targeting::SetEpsilonGreedyBanditArms(arms);
+    SetEpsilonGreedyBanditArms(arms);
   }
 
   // Act
-  const processor::EpsilonGreedyBandit processor;
+  const EpsilonGreedyBanditProcessor processor;
 
   // Assert
-  const targeting::EpsilonGreedyBanditArmMap arms =
-      targeting::GetEpsilonGreedyBanditArms();
+  const EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();
 
   EXPECT_EQ(30U, arms.size());
   EXPECT_EQ(0U, arms.count("foo"));
@@ -54,16 +53,15 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest, NeverProcessed) {
   const std::string segment = "travel";  // rewards: [] => value: 1.0
 
   // Act
-  const processor::EpsilonGreedyBandit processor;
+  const EpsilonGreedyBanditProcessor processor;
 
   // Assert
-  const targeting::EpsilonGreedyBanditArmMap arms =
-      targeting::GetEpsilonGreedyBanditArms();
+  const EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();
   const auto iter = arms.find(segment);
   ASSERT_TRUE(iter != arms.cend());
-  const targeting::EpsilonGreedyBanditArmInfo arm = iter->second;
+  const EpsilonGreedyBanditArmInfo arm = iter->second;
 
-  targeting::EpsilonGreedyBanditArmInfo expected_arm;
+  EpsilonGreedyBanditArmInfo expected_arm;
   expected_arm.segment = segment;
   expected_arm.value = 1.0;
   expected_arm.pulls = 0;
@@ -77,24 +75,23 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest,
   const std::string segment = "travel";  // rewards: [0, 0, 0, 0] => value: 0.0
 
   // Act
-  const processor::EpsilonGreedyBandit processor;
-  processor::EpsilonGreedyBandit::Process(
+  const EpsilonGreedyBanditProcessor processor;
+  EpsilonGreedyBanditProcessor::Process(
       {segment, mojom::NotificationAdEventType::kDismissed});
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {segment, mojom::NotificationAdEventType::kDismissed});
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {segment, mojom::NotificationAdEventType::kTimedOut});
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {segment, mojom::NotificationAdEventType::kDismissed});
 
   // Assert
-  const targeting::EpsilonGreedyBanditArmMap arms =
-      targeting::GetEpsilonGreedyBanditArms();
+  const EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();
   const auto iter = arms.find(segment);
   ASSERT_TRUE(iter != arms.cend());
-  const targeting::EpsilonGreedyBanditArmInfo arm = iter->second;
+  const EpsilonGreedyBanditArmInfo arm = iter->second;
 
-  targeting::EpsilonGreedyBanditArmInfo expected_arm;
+  EpsilonGreedyBanditArmInfo expected_arm;
   expected_arm.segment = segment;
   expected_arm.value = 0.0;
   expected_arm.pulls = 4;
@@ -108,24 +105,23 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest,
   const std::string segment = "travel";  // rewards: [1, 0, 1, 0] => value: 0.5
 
   // Act
-  const processor::EpsilonGreedyBandit processor;
-  processor::EpsilonGreedyBandit::Process(
+  const EpsilonGreedyBanditProcessor processor;
+  EpsilonGreedyBanditProcessor::Process(
       {segment, mojom::NotificationAdEventType::kClicked});
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {segment, mojom::NotificationAdEventType::kDismissed});
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {segment, mojom::NotificationAdEventType::kClicked});
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {segment, mojom::NotificationAdEventType::kTimedOut});
 
   // Assert
-  const targeting::EpsilonGreedyBanditArmMap arms =
-      targeting::GetEpsilonGreedyBanditArms();
+  const EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();
   const auto iter = arms.find(segment);
   ASSERT_TRUE(iter != arms.cend());
-  const targeting::EpsilonGreedyBanditArmInfo arm = iter->second;
+  const EpsilonGreedyBanditArmInfo arm = iter->second;
 
-  targeting::EpsilonGreedyBanditArmInfo expected_arm;
+  EpsilonGreedyBanditArmInfo expected_arm;
   expected_arm.segment = segment;
   expected_arm.value = 0.5;
   expected_arm.pulls = 4;
@@ -139,24 +135,23 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest,
   const std::string segment = "travel";  // rewards: [1, 1, 1, 1] => value: 1.0
 
   // Act
-  const processor::EpsilonGreedyBandit processor;
-  processor::EpsilonGreedyBandit::Process(
+  const EpsilonGreedyBanditProcessor processor;
+  EpsilonGreedyBanditProcessor::Process(
       {segment, mojom::NotificationAdEventType::kClicked});
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {segment, mojom::NotificationAdEventType::kClicked});
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {segment, mojom::NotificationAdEventType::kClicked});
-  processor::EpsilonGreedyBandit::Process(
+  EpsilonGreedyBanditProcessor::Process(
       {segment, mojom::NotificationAdEventType::kClicked});
 
   // Assert
-  const targeting::EpsilonGreedyBanditArmMap arms =
-      targeting::GetEpsilonGreedyBanditArms();
+  const EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();
   const auto iter = arms.find(segment);
   ASSERT_TRUE(iter != arms.cend());
-  const targeting::EpsilonGreedyBanditArmInfo arm = iter->second;
+  const EpsilonGreedyBanditArmInfo arm = iter->second;
 
-  targeting::EpsilonGreedyBanditArmInfo expected_arm;
+  EpsilonGreedyBanditArmInfo expected_arm;
   expected_arm.segment = segment;
   expected_arm.value = 1.0;
   expected_arm.pulls = 4;
@@ -169,13 +164,12 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest, ProcessSegmentNotInResource) {
   const std::string segment = "foobar";
 
   // Act
-  const processor::EpsilonGreedyBandit processor;
-  processor::EpsilonGreedyBandit::Process(
+  const EpsilonGreedyBanditProcessor processor;
+  EpsilonGreedyBanditProcessor::Process(
       {segment, mojom::NotificationAdEventType::kTimedOut});
 
   // Assert
-  const targeting::EpsilonGreedyBanditArmMap arms =
-      targeting::GetEpsilonGreedyBanditArms();
+  const EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();
   const auto iter = arms.find(segment);
   EXPECT_TRUE(iter == arms.cend());
 }
@@ -186,18 +180,17 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest, ProcessChildSegment) {
   const std::string parent_segment = "travel";
 
   // Act
-  const processor::EpsilonGreedyBandit processor;
-  processor::EpsilonGreedyBandit::Process(
+  const EpsilonGreedyBanditProcessor processor;
+  EpsilonGreedyBanditProcessor::Process(
       {segment, mojom::NotificationAdEventType::kTimedOut});
 
   // Assert
-  const targeting::EpsilonGreedyBanditArmMap arms =
-      targeting::GetEpsilonGreedyBanditArms();
+  const EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();
   const auto iter = arms.find(parent_segment);
   ASSERT_TRUE(iter != arms.cend());
-  const targeting::EpsilonGreedyBanditArmInfo arm = iter->second;
+  const EpsilonGreedyBanditArmInfo arm = iter->second;
 
-  targeting::EpsilonGreedyBanditArmInfo expected_arm;
+  EpsilonGreedyBanditArmInfo expected_arm;
   expected_arm.segment = parent_segment;
   expected_arm.value = 0.0;
   expected_arm.pulls = 1;
@@ -209,25 +202,24 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest,
        InitializeArmsFromResourceWithEmptySegments) {
   // Arrange
   {
-    targeting::EpsilonGreedyBanditArmMap arms;
+    EpsilonGreedyBanditArmMap arms;
 
-    targeting::EpsilonGreedyBanditArmInfo arm_1;
+    EpsilonGreedyBanditArmInfo arm_1;
     arm_1.segment = "travel";
     arm_1.pulls = 0;
     arm_1.value = 1.0;
     arms["travel"] = arm_1;
 
-    targeting::EpsilonGreedyBanditArmInfo arm_2;
+    EpsilonGreedyBanditArmInfo arm_2;
     arm_2.pulls = 0;
     arm_2.value = 1.0;
     arms[""] = arm_2;
 
-    targeting::SetEpsilonGreedyBanditArms(arms);
+    SetEpsilonGreedyBanditArms(arms);
   }
 
   // Act
-  const targeting::EpsilonGreedyBanditArmMap arms =
-      targeting::GetEpsilonGreedyBanditArms();
+  const EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();
 
   // Assert
   EXPECT_EQ(1U, arms.size());

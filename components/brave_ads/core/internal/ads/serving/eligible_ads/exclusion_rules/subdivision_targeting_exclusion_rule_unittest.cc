@@ -27,7 +27,7 @@ namespace brave_ads {
 
 namespace {
 
-struct TestParam final {
+struct ParamInfo final {
   const char* country;
   const char* region;
 } constexpr kTests[] = {
@@ -65,7 +65,7 @@ struct TestParam final {
 
 class BraveAdsSubdivisionTargetingExclusionRuleTest
     : public UnitTestBase,
-      public ::testing::WithParamInterface<TestParam> {
+      public ::testing::WithParamInterface<ParamInfo> {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -79,11 +79,11 @@ class BraveAdsSubdivisionTargetingExclusionRuleTest
         *subdivision_targeting_);
   }
 
-  static std::string BuildSubdivisionCode() {
-    return locale::BuildSubdivisionCode(GetParam().country, GetParam().region);
+  static std::string BuildSubdivisionCodeForTestParam() {
+    return BuildSubdivisionCode(GetParam().country, GetParam().region);
   }
 
-  static std::string BuildOtherSubdivisionCode() {
+  static std::string BuildOtherSubdivisionCodeForTestParam() {
     const char* region = "";
 
     if (GetParam().country ==
@@ -101,7 +101,7 @@ class BraveAdsSubdivisionTargetingExclusionRuleTest
       }
     }
 
-    return locale::BuildSubdivisionCode(GetParam().country, region);
+    return BuildSubdivisionCode(GetParam().country, region);
   }
 
   void MockUrlResponse(const std::string& country, const std::string& region) {
@@ -128,7 +128,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
-  creative_ad.geo_targets = {BuildSubdivisionCode()};
+  creative_ad.geo_targets = {BuildSubdivisionCodeForTestParam()};
 
   // Act
 
@@ -164,7 +164,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
-  creative_ad.geo_targets = {BuildSubdivisionCode()};
+  creative_ad.geo_targets = {BuildSubdivisionCodeForTestParam()};
 
   // Act
 
@@ -185,8 +185,8 @@ TEST_P(
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
-  creative_ad.geo_targets = {BuildSubdivisionCode(),
-                             BuildOtherSubdivisionCode()};
+  creative_ad.geo_targets = {BuildSubdivisionCodeForTestParam(),
+                             BuildOtherSubdivisionCodeForTestParam()};
 
   // Act
 
@@ -223,7 +223,7 @@ TEST_P(
                                   true);
 
   ads_client_mock_.SetStringPref(prefs::kSubdivisionTargetingCode,
-                                 BuildSubdivisionCode());
+                                 BuildSubdivisionCodeForTestParam());
 
   MockUrlResponseForTestParam();
 
@@ -231,7 +231,7 @@ TEST_P(
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
-  creative_ad.geo_targets = {BuildSubdivisionCode()};
+  creative_ad.geo_targets = {BuildSubdivisionCodeForTestParam()};
 
   // Act
 
@@ -247,7 +247,7 @@ TEST_P(
                                   true);
 
   ads_client_mock_.SetStringPref(prefs::kSubdivisionTargetingCode,
-                                 BuildSubdivisionCode());
+                                 BuildSubdivisionCodeForTestParam());
 
   MockUrlResponseForTestParam();
 
@@ -255,8 +255,8 @@ TEST_P(
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
-  creative_ad.geo_targets = {BuildSubdivisionCode(),
-                             BuildOtherSubdivisionCode()};
+  creative_ad.geo_targets = {BuildSubdivisionCodeForTestParam(),
+                             BuildOtherSubdivisionCodeForTestParam()};
 
   // Act
 
@@ -272,7 +272,7 @@ TEST_P(
                                   true);
 
   ads_client_mock_.SetStringPref(prefs::kSubdivisionTargetingCode,
-                                 BuildSubdivisionCode());
+                                 BuildSubdivisionCodeForTestParam());
 
   MockUrlResponseForTestParam();
 
@@ -301,7 +301,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.geo_targets = {
-      locale::BuildSubdivisionCode(/*country*/ "US", /*region*/ "XX")};
+      BuildSubdivisionCode(/*country*/ "US", /*region*/ "XX")};
 
   // Assert
   EXPECT_FALSE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
@@ -321,7 +321,7 @@ TEST_P(
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.geo_targets = {
-      locale::BuildSubdivisionCode(/*country*/ "GB", /*region*/ "DEV")};
+      BuildSubdivisionCode(/*country*/ "GB", /*region*/ "DEV")};
 
   // Act
 
@@ -364,7 +364,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
-  creative_ad.geo_targets = {BuildSubdivisionCode()};
+  creative_ad.geo_targets = {BuildSubdivisionCodeForTestParam()};
 
   // Act
 
@@ -394,7 +394,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
   EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
-std::string TestParamToString(::testing::TestParamInfo<TestParam> test_param) {
+std::string TestParamToString(::testing::TestParamInfo<ParamInfo> test_param) {
   return base::ReplaceStringPlaceholders(
       "Country$1_Region$2", {test_param.param.country, test_param.param.region},
       nullptr);

@@ -12,11 +12,11 @@
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/conversion_user_data_builder.h"
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
-void GetConversion(const std::string& creative_instance_id,
-                   const ConfirmationType& confirmation_type,
-                   ConversionCallback callback) {
+void BuildConversionUserData(const std::string& creative_instance_id,
+                             const ConfirmationType& confirmation_type,
+                             BuildConversionUserDataCallback callback) {
   DCHECK(!creative_instance_id.empty());
   DCHECK_NE(ConfirmationType::kUndefined, confirmation_type);
 
@@ -24,13 +24,14 @@ void GetConversion(const std::string& creative_instance_id,
     return std::move(callback).Run(base::Value::Dict());
   }
 
-  BuildConversion(
+  BuildVerifiableConversionUserData(
       creative_instance_id,
       base::BindOnce(
-          [](ConversionCallback callback, base::Value::Dict user_data) {
+          [](BuildVerifiableConversionUserDataCallback callback,
+             base::Value::Dict user_data) {
             std::move(callback).Run(std::move(user_data));
           },
           std::move(callback)));
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

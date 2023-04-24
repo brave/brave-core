@@ -19,7 +19,7 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::notification_ads {
+namespace brave_ads {
 
 namespace {
 
@@ -33,8 +33,9 @@ NotificationAdInfo BuildAndSaveNotificationAd() {
 
 }  // namespace
 
-class BraveAdsNotificationAdEventHandlerTest : public EventHandlerDelegate,
-                                               public UnitTestBase {
+class BraveAdsNotificationAdEventHandlerTest
+    : public NotificationAdEventHandlerDelegate,
+      public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -73,7 +74,7 @@ class BraveAdsNotificationAdEventHandlerTest : public EventHandlerDelegate,
     did_fail_to_fire_event_ = true;
   }
 
-  EventHandler event_handler_;
+  NotificationAdEventHandler event_handler_;
 
   NotificationAdInfo ad_;
   bool did_serve_ad_ = false;
@@ -201,4 +202,4 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest,
       0, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kViewed));
 }
 
-}  // namespace brave_ads::notification_ads
+}  // namespace brave_ads

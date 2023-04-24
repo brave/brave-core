@@ -28,7 +28,7 @@ class BraveAdsTextEmbeddingResourceTest : public UnitTestBase {};
 
 TEST_F(BraveAdsTextEmbeddingResourceTest, LoadResource) {
   // Arrange
-  resource::TextEmbedding resource;
+  TextEmbeddingResource resource;
 
   // Act
   resource.Load();
@@ -42,7 +42,7 @@ TEST_F(BraveAdsTextEmbeddingResourceTest, DoNotLoadInvalidResource) {
   // Arrange
   CopyFileFromTestPathToTempPath(kInvalidResourceId, kResourceId);
 
-  resource::TextEmbedding resource;
+  TextEmbeddingResource resource;
   resource.Load();
   task_environment_.RunUntilIdle();
 
@@ -65,7 +65,7 @@ TEST_F(BraveAdsTextEmbeddingResourceTest, DoNotLoadMissingResource) {
         std::move(callback).Run(std::move(file));
       }));
 
-  resource::TextEmbedding resource;
+  TextEmbeddingResource resource;
   resource.Load();
   task_environment_.RunUntilIdle();
 
@@ -77,7 +77,7 @@ TEST_F(BraveAdsTextEmbeddingResourceTest, DoNotLoadMissingResource) {
 
 TEST_F(BraveAdsTextEmbeddingResourceTest, IsNotInitialized) {
   // Arrange
-  const resource::TextEmbedding resource;
+  const TextEmbeddingResource resource;
 
   // Assert
   EXPECT_FALSE(resource.IsInitialized());

@@ -21,8 +21,7 @@ namespace {
 bool DoesAdSupportSubdivisionTargetingCode(
     const CreativeAdInfo& creative_ad,
     const std::string& subdivision_targeting_code) {
-  const std::string country_code =
-      locale::GetCountryCode(subdivision_targeting_code);
+  const std::string country_code = GetCountryCode(subdivision_targeting_code);
 
   return creative_ad.geo_targets.find(subdivision_targeting_code) !=
              creative_ad.geo_targets.cend() ||

@@ -15,14 +15,14 @@
 #include "brave/components/brave_ads/core/internal/common/time/time_constraint_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 
-namespace brave_ads::notification_ads {
+namespace brave_ads {
 
 namespace {
 
 constexpr base::TimeDelta kTimeConstraint = base::Hours(1);
 
 bool DoesRespectCap(const std::vector<base::Time>& history) {
-  const int ads_per_hour = settings::GetMaximumNotificationAdsPerHour();
+  const int ads_per_hour = GetMaximumNotificationAdsPerHourSetting();
   if (ads_per_hour == 0) {
     // Never respect cap if set to 0
     return false;
@@ -34,8 +34,8 @@ bool DoesRespectCap(const std::vector<base::Time>& history) {
 
 }  // namespace
 
-base::expected<void, std::string> AdsPerHourPermissionRule::ShouldAllow()
-    const {
+base::expected<void, std::string>
+NotificationAdsPerHourPermissionRule::ShouldAllow() const {
   if (PlatformHelper::GetInstance().IsMobile()) {
     // Ads are periodically served on mobile so they will never exceed the
     // maximum ads per hour
@@ -52,4 +52,4 @@ base::expected<void, std::string> AdsPerHourPermissionRule::ShouldAllow()
   return base::ok();
 }
 
-}  // namespace brave_ads::notification_ads
+}  // namespace brave_ads

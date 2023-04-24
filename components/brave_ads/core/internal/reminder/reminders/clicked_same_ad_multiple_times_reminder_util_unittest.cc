@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/history/history_constants.h"
 #include "brave/components/brave_ads/core/internal/history/history_util.h"
-#include "brave/components/brave_ads/core/internal/reminder/reminder_features.h"
+#include "brave/components/brave_ads/core/internal/reminder/reminder_feature.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

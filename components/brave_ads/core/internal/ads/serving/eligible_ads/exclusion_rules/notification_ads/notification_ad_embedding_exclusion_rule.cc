@@ -8,17 +8,17 @@
 #include <utility>
 
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_feature.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 
-namespace brave_ads::notification_ads {
+namespace brave_ads {
 
 namespace {
 
 constexpr int kCompatibleServingVersion = 3;
 
 bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
-  if (notification_ads::kServingVersion.Get() != kCompatibleServingVersion) {
+  if (kNotificationAdServingVersion.Get() != kCompatibleServingVersion) {
     return true;
   }
 
@@ -43,4 +43,4 @@ base::expected<void, std::string> EmbeddingExclusionRule::ShouldInclude(
   return base::ok();
 }
 
-}  // namespace brave_ads::notification_ads
+}  // namespace brave_ads

@@ -26,27 +26,23 @@ class TimeDelta;
 
 namespace brave_ads {
 
-namespace resource {
-class AntiTargeting;
-}  // namespace resource
-
 class Account;
+class AntiTargetingResource;
 class SubdivisionTargeting;
 class Transfer;
 struct NotificationAdInfo;
 struct WalletInfo;
 
-class NotificationAdHandler final
-    : public AccountObserver,
-      public AdsClientNotifierObserver,
-      public BrowserManagerObserver,
-      public notification_ads::EventHandlerDelegate,
-      public notification_ads::ServingDelegate {
+class NotificationAdHandler final : public AccountObserver,
+                                    public AdsClientNotifierObserver,
+                                    public BrowserManagerObserver,
+                                    public NotificationAdEventHandlerDelegate,
+                                    public NotificationAdServingDelegate {
  public:
   NotificationAdHandler(Account& account,
                         Transfer& transfer,
                         const SubdivisionTargeting& subdivision_targeting,
-                        const resource::AntiTargeting& anti_targeting_resource);
+                        const AntiTargetingResource& anti_targeting_resource);
 
   NotificationAdHandler(const NotificationAdHandler&) = delete;
   NotificationAdHandler& operator=(const NotificationAdHandler&) = delete;
@@ -74,12 +70,12 @@ class NotificationAdHandler final
   void OnBrowserDidEnterForeground() override;
   void OnBrowserDidEnterBackground() override;
 
-  // notification_ads::ServingDelegate:
+  // NotificationAdServingDelegate:
   void OnOpportunityAroseToServeNotificationAd(
       const SegmentList& segments) override;
   void OnDidServeNotificationAd(const NotificationAdInfo& ad) override;
 
-  // notification_ads::EventHandlerDelegate:
+  // NotificationAdEventHandlerDelegate:
   void OnNotificationAdServed(const NotificationAdInfo& ad) override;
   void OnNotificationAdViewed(const NotificationAdInfo& ad) override;
   void OnNotificationAdClicked(const NotificationAdInfo& ad) override;
@@ -89,11 +85,11 @@ class NotificationAdHandler final
   const raw_ref<Account> account_;
   const raw_ref<Transfer> transfer_;
 
-  notification_ads::EventHandler event_handler_;
+  NotificationAdEventHandler event_handler_;
 
-  notification_ads::Serving serving_;
+  NotificationAdServing serving_;
 
-  const processor::EpsilonGreedyBandit epsilon_greedy_bandit_processor_;
+  const EpsilonGreedyBanditProcessor epsilon_greedy_bandit_processor_;
 };
 
 }  // namespace brave_ads

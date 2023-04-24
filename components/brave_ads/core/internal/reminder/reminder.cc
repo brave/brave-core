@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/reminder/reminder.h"
 
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
-#include "brave/components/brave_ads/core/internal/reminder/reminder_features.h"
+#include "brave/components/brave_ads/core/internal/reminder/reminder_feature.h"
 #include "brave/components/brave_ads/core/internal/reminder/reminders/clicked_same_ad_multiple_times_reminder_util.h"
 
 namespace brave_ads {
@@ -14,7 +14,7 @@ namespace brave_ads {
 namespace {
 
 void MaybeShowReminder(const HistoryItemInfo& history_item) {
-  if (!IsReminderEnabled()) {
+  if (!IsReminderFeatureEnabled()) {
     return;
   }
 

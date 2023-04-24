@@ -19,8 +19,7 @@ class Account;
 class Transfer;
 struct PromotedContentAdInfo;
 
-class PromotedContentAd final
-    : public promoted_content_ads::EventHandlerDelegate {
+class PromotedContentAd final : public PromotedContentAdEventHandlerDelegate {
  public:
   PromotedContentAd(Account& account, Transfer& transfer);
 
@@ -37,14 +36,14 @@ class PromotedContentAd final
                     mojom::PromotedContentAdEventType event_type);
 
  private:
-  // promoted_content_ads::EventHandlerDelegate:
+  // PromotedContentAdEventHandlerDelegate:
   void OnPromotedContentAdViewed(const PromotedContentAdInfo& ad) override;
   void OnPromotedContentAdClicked(const PromotedContentAdInfo& ad) override;
 
   const raw_ref<Account> account_;
   const raw_ref<Transfer> transfer_;
 
-  promoted_content_ads::EventHandler event_handler_;
+  PromotedContentAdEventHandler event_handler_;
 };
 
 }  // namespace brave_ads

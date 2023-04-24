@@ -12,9 +12,7 @@ namespace brave_ads {
 
 struct InlineContentAdInfo;
 
-namespace inline_content_ads {
-
-class ServingDelegate {
+class InlineContentAdServingDelegate {
  public:
   // Invoked when an opportunity arises to serve an inline content ad for the
   // |segments|.
@@ -28,10 +26,9 @@ class ServingDelegate {
   virtual void OnFailedToServeInlineContentAd() {}
 
  protected:
-  virtual ~ServingDelegate() = default;
+  virtual ~InlineContentAdServingDelegate() = default;
 };
 
-}  // namespace inline_content_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_INLINE_CONTENT_AD_SERVING_DELEGATE_H_

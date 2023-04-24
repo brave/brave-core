@@ -18,7 +18,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
 
-namespace brave_ads::new_tab_page_ads {
+namespace brave_ads {
 
 namespace {
 
@@ -74,15 +74,16 @@ bool ShouldDebounceAdEvent(const AdInfo& ad,
 
 }  // namespace
 
-EventHandler::EventHandler() = default;
+NewTabPageAdEventHandler::NewTabPageAdEventHandler() = default;
 
-EventHandler::~EventHandler() {
+NewTabPageAdEventHandler::~NewTabPageAdEventHandler() {
   delegate_ = nullptr;
 }
 
-void EventHandler::FireEvent(const std::string& placement_id,
-                             const std::string& creative_instance_id,
-                             const mojom::NewTabPageAdEventType event_type) {
+void NewTabPageAdEventHandler::FireEvent(
+    const std::string& placement_id,
+    const std::string& creative_instance_id,
+    const mojom::NewTabPageAdEventType event_type) {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
   if (placement_id.empty()) {
@@ -102,7 +103,7 @@ void EventHandler::FireEvent(const std::string& placement_id,
   // Brave Ads is disabled.
   if (!ShouldRewardUser() &&
       event_type == mojom::NewTabPageAdEventType::kServed &&
-      !PermissionRules::HasPermission()) {
+      !NewTabPageAdPermissionRules::HasPermission()) {
     BLOG(1, "New tab page ad: Not allowed due to permission rules");
     return FailedToFireEvent(placement_id, creative_instance_id, event_type);
   }
@@ -110,13 +111,13 @@ void EventHandler::FireEvent(const std::string& placement_id,
   const database::table::CreativeNewTabPageAds database_table;
   database_table.GetForCreativeInstanceId(
       creative_instance_id,
-      base::BindOnce(&EventHandler::OnGetForCreativeInstanceId,
+      base::BindOnce(&NewTabPageAdEventHandler::OnGetForCreativeInstanceId,
                      weak_factory_.GetWeakPtr(), placement_id, event_type));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void EventHandler::OnGetForCreativeInstanceId(
+void NewTabPageAdEventHandler::OnGetForCreativeInstanceId(
     const std::string& placement_id,
     const mojom::NewTabPageAdEventType event_type,
     const bool success,
@@ -134,21 +135,23 @@ void EventHandler::OnGetForCreativeInstanceId(
   FireEvent(ad, event_type);
 }
 
-void EventHandler::FireEvent(const NewTabPageAdInfo& ad,
-                             const mojom::NewTabPageAdEventType event_type) {
+void NewTabPageAdEventHandler::FireEvent(
+    const NewTabPageAdInfo& ad,
+    const mojom::NewTabPageAdEventType event_type) {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
   const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kNewTabPageAd,
-      base::BindOnce(&EventHandler::OnGetAdEvents, weak_factory_.GetWeakPtr(),
-                     ad, event_type));
+      base::BindOnce(&NewTabPageAdEventHandler::OnGetAdEvents,
+                     weak_factory_.GetWeakPtr(), ad, event_type));
 }
 
-void EventHandler::OnGetAdEvents(const NewTabPageAdInfo& ad,
-                                 const mojom::NewTabPageAdEventType event_type,
-                                 const bool success,
-                                 const AdEventList& ad_events) {
+void NewTabPageAdEventHandler::OnGetAdEvents(
+    const NewTabPageAdInfo& ad,
+    const mojom::NewTabPageAdEventType event_type,
+    const bool success,
+    const AdEventList& ad_events) {
   if (!success) {
     BLOG(1, "New tab page ad: Failed to get ad events");
     return FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
@@ -171,13 +174,13 @@ void EventHandler::OnGetAdEvents(const NewTabPageAdInfo& ad,
                              event_type);
   }
 
-  const auto ad_event = AdEventFactory::Build(event_type);
+  const auto ad_event = NewTabPageAdEventFactory::Build(event_type);
   ad_event->FireEvent(ad);
 
   SuccessfullyFiredEvent(ad, event_type);
 }
 
-void EventHandler::SuccessfullyFiredEvent(
+void NewTabPageAdEventHandler::SuccessfullyFiredEvent(
     const NewTabPageAdInfo& ad,
     const mojom::NewTabPageAdEventType event_type) const {
   DCHECK(mojom::IsKnownEnumValue(event_type));
@@ -204,7 +207,7 @@ void EventHandler::SuccessfullyFiredEvent(
   }
 }
 
-void EventHandler::FailedToFireEvent(
+void NewTabPageAdEventHandler::FailedToFireEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::NewTabPageAdEventType event_type) const {
@@ -220,4 +223,4 @@ void EventHandler::FailedToFireEvent(
   }
 }
 
-}  // namespace brave_ads::new_tab_page_ads
+}  // namespace brave_ads

@@ -25,7 +25,7 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
-namespace brave_ads::processor {
+namespace brave_ads {
 
 using KeywordList = std::vector</*keyword*/ std::string>;
 
@@ -34,9 +34,9 @@ namespace {
 constexpr uint16_t kPurchaseIntentDefaultSignalWeight = 1;
 
 void AppendIntentSignalToHistory(
-    const targeting::PurchaseIntentSignalInfo& purchase_intent_signal) {
+    const PurchaseIntentSignalInfo& purchase_intent_signal) {
   for (const auto& segment : purchase_intent_signal.segments) {
-    const targeting::PurchaseIntentSignalHistoryInfo history(
+    const PurchaseIntentSignalHistoryInfo history(
         purchase_intent_signal.created_at, purchase_intent_signal.weight);
 
     ClientStateManager::GetInstance()
@@ -62,18 +62,19 @@ bool IsSubset(KeywordList keywords_lhs, KeywordList keywords_rhs) {
 
 }  // namespace
 
-PurchaseIntent::PurchaseIntent(resource::PurchaseIntent& resource)
+PurchaseIntentProcessor::PurchaseIntentProcessor(
+    PurchaseIntentResource& resource)
     : resource_(resource) {
   AdsClientHelper::AddObserver(this);
   TabManager::GetInstance().AddObserver(this);
 }
 
-PurchaseIntent::~PurchaseIntent() {
+PurchaseIntentProcessor::~PurchaseIntentProcessor() {
   AdsClientHelper::RemoveObserver(this);
   TabManager::GetInstance().RemoveObserver(this);
 }
 
-void PurchaseIntent::Process(const GURL& url) {
+void PurchaseIntentProcessor::Process(const GURL& url) {
   if (!resource_->IsInitialized()) {
     BLOG(1,
          "Failed to process purchase intent signal for visited URL due to "
@@ -90,8 +91,7 @@ void PurchaseIntent::Process(const GURL& url) {
     return;
   }
 
-  const targeting::PurchaseIntentSignalInfo purchase_intent_signal =
-      ExtractSignal(url);
+  const PurchaseIntentSignalInfo purchase_intent_signal = ExtractSignal(url);
 
   if (purchase_intent_signal.segments.empty()) {
     BLOG(1, "No purchase intent matches found for visited URL");
@@ -105,9 +105,9 @@ void PurchaseIntent::Process(const GURL& url) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-targeting::PurchaseIntentSignalInfo PurchaseIntent::ExtractSignal(
+PurchaseIntentSignalInfo PurchaseIntentProcessor::ExtractSignal(
     const GURL& url) const {
-  targeting::PurchaseIntentSignalInfo purchase_intent_signal;
+  PurchaseIntentSignalInfo purchase_intent_signal;
 
   const absl::optional<std::string> search_query =
       ExtractSearchTermQueryValue(url);
@@ -121,7 +121,7 @@ targeting::PurchaseIntentSignalInfo PurchaseIntent::ExtractSignal(
           GetFunnelWeightForSearchQuery(*search_query);
     }
   } else {
-    const targeting::PurchaseIntentSiteInfo purchase_intent_site = GetSite(url);
+    const PurchaseIntentSiteInfo purchase_intent_site = GetSite(url);
 
     if (purchase_intent_site.url_netloc.is_valid()) {
       purchase_intent_signal.created_at = base::Time::Now();
@@ -133,11 +133,10 @@ targeting::PurchaseIntentSignalInfo PurchaseIntent::ExtractSignal(
   return purchase_intent_signal;
 }
 
-targeting::PurchaseIntentSiteInfo PurchaseIntent::GetSite(
-    const GURL& url) const {
-  targeting::PurchaseIntentSiteInfo purchase_intent_site;
+PurchaseIntentSiteInfo PurchaseIntentProcessor::GetSite(const GURL& url) const {
+  PurchaseIntentSiteInfo purchase_intent_site;
 
-  const targeting::PurchaseIntentInfo* const purchase_intent = resource_->Get();
+  const PurchaseIntentInfo* const purchase_intent = resource_->Get();
   DCHECK(purchase_intent);
 
   for (const auto& site : purchase_intent->sites) {
@@ -150,13 +149,13 @@ targeting::PurchaseIntentSiteInfo PurchaseIntent::GetSite(
   return purchase_intent_site;
 }
 
-SegmentList PurchaseIntent::GetSegmentsForSearchQuery(
+SegmentList PurchaseIntentProcessor::GetSegmentsForSearchQuery(
     const std::string& search_query) const {
   SegmentList segments;
 
   const KeywordList search_query_keywords = ToKeywords(search_query);
 
-  const targeting::PurchaseIntentInfo* const purchase_intent = resource_->Get();
+  const PurchaseIntentInfo* const purchase_intent = resource_->Get();
   DCHECK(purchase_intent);
 
   for (const auto& keyword : purchase_intent->segment_keywords) {
@@ -173,13 +172,13 @@ SegmentList PurchaseIntent::GetSegmentsForSearchQuery(
   return segments;
 }
 
-uint16_t PurchaseIntent::GetFunnelWeightForSearchQuery(
+uint16_t PurchaseIntentProcessor::GetFunnelWeightForSearchQuery(
     const std::string& search_query) const {
   const KeywordList search_query_keywords = ToKeywords(search_query);
 
   uint16_t max_weight = kPurchaseIntentDefaultSignalWeight;
 
-  const targeting::PurchaseIntentInfo* const purchase_intent = resource_->Get();
+  const PurchaseIntentInfo* const purchase_intent = resource_->Get();
   DCHECK(purchase_intent);
 
   for (const auto& keyword : purchase_intent->funnel_keywords) {
@@ -194,17 +193,19 @@ uint16_t PurchaseIntent::GetFunnelWeightForSearchQuery(
   return max_weight;
 }
 
-void PurchaseIntent::OnNotifyLocaleDidChange(const std::string& /*locale*/) {
+void PurchaseIntentProcessor::OnNotifyLocaleDidChange(
+    const std::string& /*locale*/) {
   resource_->Load();
 }
 
-void PurchaseIntent::OnNotifyDidUpdateResourceComponent(const std::string& id) {
+void PurchaseIntentProcessor::OnNotifyDidUpdateResourceComponent(
+    const std::string& id) {
   if (IsValidCountryComponentId(id)) {
     resource_->Load();
   }
 }
 
-void PurchaseIntent::OnTextContentDidChange(
+void PurchaseIntentProcessor::OnTextContentDidChange(
     const int32_t /*tab_id*/,
     const std::vector<GURL>& redirect_chain,
     const std::string& /*content*/) {
@@ -237,4 +238,4 @@ void PurchaseIntent::OnTextContentDidChange(
   Process(url);
 }
 
-}  // namespace brave_ads::processor
+}  // namespace brave_ads

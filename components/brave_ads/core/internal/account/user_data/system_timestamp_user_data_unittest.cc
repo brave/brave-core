@@ -12,25 +12,21 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
 class BraveAdsSystemTimestampUserDataTest : public UnitTestBase {};
 
-TEST_F(BraveAdsSystemTimestampUserDataTest, GetSystemTimestamp) {
+TEST_F(BraveAdsSystemTimestampUserDataTest, BuildSystemTimestampUserData) {
   // Arrange
-  const base::Time time =
-      TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false);
-  AdvanceClockTo(time);
+  AdvanceClockTo(
+      TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false));
 
   // Act
-  const base::Value::Dict user_data = GetSystemTimestamp();
 
   // Assert
-  const base::Value expected_user_data = base::test::ParseJson(
-      R"({"systemTimestamp":"2020-11-18T12:00:00.000Z"})");
-  ASSERT_TRUE(expected_user_data.is_dict());
-
-  EXPECT_EQ(expected_user_data, user_data);
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"({"systemTimestamp":"2020-11-18T12:00:00.000Z"})"),
+            BuildSystemTimestampUserData());
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

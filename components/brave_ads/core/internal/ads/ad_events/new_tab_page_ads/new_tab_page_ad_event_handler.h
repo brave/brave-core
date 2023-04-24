@@ -20,21 +20,20 @@ namespace brave_ads {
 struct CreativeNewTabPageAdInfo;
 struct NewTabPageAdInfo;
 
-namespace new_tab_page_ads {
-
-class EventHandler final : public EventHandlerDelegate {
+class NewTabPageAdEventHandler final : public NewTabPageAdEventHandlerDelegate {
  public:
-  EventHandler();
+  NewTabPageAdEventHandler();
 
-  EventHandler(const EventHandler&) = delete;
-  EventHandler& operator=(const EventHandler&) = delete;
+  NewTabPageAdEventHandler(const NewTabPageAdEventHandler&) = delete;
+  NewTabPageAdEventHandler& operator=(const NewTabPageAdEventHandler&) = delete;
 
-  EventHandler(EventHandler&&) noexcept = delete;
-  EventHandler& operator=(EventHandler&&) noexcept = delete;
+  NewTabPageAdEventHandler(NewTabPageAdEventHandler&&) noexcept = delete;
+  NewTabPageAdEventHandler& operator=(NewTabPageAdEventHandler&&) noexcept =
+      delete;
 
-  ~EventHandler() override;
+  ~NewTabPageAdEventHandler() override;
 
-  void SetDelegate(EventHandlerDelegate* delegate) {
+  void SetDelegate(NewTabPageAdEventHandlerDelegate* delegate) {
     DCHECK_EQ(delegate_, nullptr);
     delegate_ = delegate;
   }
@@ -63,12 +62,11 @@ class EventHandler final : public EventHandlerDelegate {
                          const std::string& creative_instance_id,
                          mojom::NewTabPageAdEventType event_type) const;
 
-  raw_ptr<EventHandlerDelegate> delegate_ = nullptr;
+  raw_ptr<NewTabPageAdEventHandlerDelegate> delegate_ = nullptr;
 
-  base::WeakPtrFactory<EventHandler> weak_factory_{this};
+  base::WeakPtrFactory<NewTabPageAdEventHandler> weak_factory_{this};
 };
 
-}  // namespace new_tab_page_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_AD_EVENT_HANDLER_H_

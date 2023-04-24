@@ -53,9 +53,8 @@ class ClientStateManager final {
 
   void AppendToPurchaseIntentSignalHistoryForSegment(
       const std::string& segment,
-      const targeting::PurchaseIntentSignalHistoryInfo& history);
-  const targeting::PurchaseIntentSignalHistoryMap&
-  GetPurchaseIntentSignalHistory() const;
+      const PurchaseIntentSignalHistoryInfo& history);
+  const PurchaseIntentSignalHistoryMap& GetPurchaseIntentSignalHistory() const;
 
   AdContentLikeActionType ToggleLikeAd(const AdContentInfo& ad_content);
   AdContentLikeActionType ToggleDislikeAd(const AdContentInfo& ad_content);
@@ -87,8 +86,8 @@ class ClientStateManager final {
   void ResetAllSeenAdvertisersForType(const AdType& type);
 
   void AppendTextClassificationProbabilitiesToHistory(
-      const targeting::TextClassificationProbabilityMap& probabilities);
-  const targeting::TextClassificationProbabilityList&
+      const TextClassificationProbabilityMap& probabilities);
+  const TextClassificationProbabilityList&
   GetTextClassificationProbabilitiesHistory() const;
 
   void RemoveAllHistory();

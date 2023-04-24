@@ -133,7 +133,7 @@ void SubdivisionTargeting::MaybeAllowForLocale(const std::string& locale) {
 
   std::string subdivision_country_code;
   if (!subdivision_code.empty()) {
-    subdivision_country_code = locale::GetCountryCode(subdivision_code);
+    subdivision_country_code = GetCountryCode(subdivision_code);
   }
   if (country_code != subdivision_country_code) {
     MaybeResetSubdivisionCodeToAutoDetect();

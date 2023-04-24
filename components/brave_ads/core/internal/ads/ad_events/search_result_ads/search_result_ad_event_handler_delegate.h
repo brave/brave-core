@@ -12,9 +12,7 @@ namespace brave_ads {
 
 struct SearchResultAdInfo;
 
-namespace search_result_ads {
-
-class EventHandlerDelegate {
+class SearchResultAdEventHandlerDelegate {
  public:
   // Invoked when the search result |ad| is served.
   virtual void OnSearchResultAdServed(const SearchResultAdInfo& ad) {}
@@ -31,10 +29,9 @@ class EventHandlerDelegate {
       const mojom::SearchResultAdEventType event_type) {}
 
  protected:
-  virtual ~EventHandlerDelegate() = default;
+  virtual ~SearchResultAdEventHandlerDelegate() = default;
 };
 
-}  // namespace search_result_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_SEARCH_RESULT_ADS_SEARCH_RESULT_AD_EVENT_HANDLER_DELEGATE_H_

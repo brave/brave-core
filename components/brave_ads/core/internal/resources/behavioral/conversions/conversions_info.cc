@@ -8,10 +8,10 @@
 #include <utility>
 
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversions_features.h"
+#include "brave/components/brave_ads/core/internal/conversions/conversions_feature.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_ads::resource {
+namespace brave_ads {
 
 ConversionsInfo::ConversionsInfo() = default;
 
@@ -70,4 +70,4 @@ base::expected<ConversionsInfo, std::string> ConversionsInfo::CreateFromValue(
   return conversion;
 }
 
-}  // namespace brave_ads::resource
+}  // namespace brave_ads

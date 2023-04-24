@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/promoted_content_ads/promoted_content_ad_event_handler_delegate.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/ads/promoted_content_ad_features.h"
+#include "brave/components/brave_ads/core/internal/ads/promoted_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -23,7 +23,7 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::promoted_content_ads {
+namespace brave_ads {
 
 namespace {
 
@@ -38,8 +38,9 @@ CreativePromotedContentAdInfo BuildAndSaveCreativeAd() {
 
 }  // namespace
 
-class BraveAdsPromotedContentAdEventHandlerTest : public EventHandlerDelegate,
-                                                  public UnitTestBase {
+class BraveAdsPromotedContentAdEventHandlerTest
+    : public PromotedContentAdEventHandlerDelegate,
+      public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -69,7 +70,7 @@ class BraveAdsPromotedContentAdEventHandlerTest : public EventHandlerDelegate,
     did_fail_to_fire_event_ = true;
   }
 
-  EventHandler event_handler_;
+  PromotedContentAdEventHandler event_handler_;
 
   PromotedContentAdInfo ad_;
   bool did_serve_ad_ = false;
@@ -282,7 +283,7 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
                    ConfirmationType::kServed, Now());
 
-  const int ads_per_hour = kMaximumAdsPerHour.Get();
+  const int ads_per_hour = kMaximumPromotedContentAdsPerHour.Get();
 
   FireAdEvents(ad_event, ads_per_hour - 1);
 
@@ -308,7 +309,7 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
                    ConfirmationType::kServed, Now());
 
-  const int ads_per_hour = kMaximumAdsPerHour.Get();
+  const int ads_per_hour = kMaximumPromotedContentAdsPerHour.Get();
 
   FireAdEvents(ad_event, ads_per_hour);
 
@@ -334,7 +335,7 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
                    ConfirmationType::kServed, Now());
 
-  const int ads_per_day = kMaximumAdsPerDay.Get();
+  const int ads_per_day = kMaximumPromotedContentAdsPerDay.Get();
 
   FireAdEvents(ad_event, ads_per_day - 1);
 
@@ -362,7 +363,7 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
                    ConfirmationType::kServed, Now());
 
-  const int ads_per_day = kMaximumAdsPerDay.Get();
+  const int ads_per_day = kMaximumPromotedContentAdsPerDay.Get();
 
   FireAdEvents(ad_event, ads_per_day);
 
@@ -380,4 +381,4 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
                                          ConfirmationType::kServed));
 }
 
-}  // namespace brave_ads::promoted_content_ads
+}  // namespace brave_ads

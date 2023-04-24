@@ -54,9 +54,9 @@ class RefillUnblindedTokens final {
   void GetSignedTokens();
   void OnGetSignedTokens(const mojom::UrlResponseInfo& url_response);
 
-  void OnDidRefillUnblindedTokens();
+  void SuccessfullyRefilledUnblindedTokens();
 
-  void OnFailedToRefillUnblindedTokens(bool should_retry);
+  void FailedToRefillUnblindedTokens(bool should_retry);
 
   void Retry();
   void OnRetry();

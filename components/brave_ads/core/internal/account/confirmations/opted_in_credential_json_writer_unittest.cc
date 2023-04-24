@@ -13,13 +13,6 @@
 
 namespace brave_ads {
 
-namespace {
-
-constexpr char kExpectedJson[] =
-    R"({"signature":"XsaQ/XqKiWfeTCjFDhkyldsx0086qu6tjgJDCKo+f7kA0eA+mdf3Ae+BjPcDDQ8JfVbVQkI5ub394qdTmE2bRw==","t":"PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgCw=="})";
-
-}  // namespace
-
 class BraveAdsOptedInCredentialJsonWriterTest : public UnitTestBase {};
 
 TEST_F(BraveAdsOptedInCredentialJsonWriterTest, WriteJson) {
@@ -35,7 +28,9 @@ TEST_F(BraveAdsOptedInCredentialJsonWriterTest, WriteJson) {
   ASSERT_TRUE(json);
 
   // Assert
-  EXPECT_EQ(kExpectedJson, *json);
+  EXPECT_EQ(
+      R"({"signature":"XsaQ/XqKiWfeTCjFDhkyldsx0086qu6tjgJDCKo+f7kA0eA+mdf3Ae+BjPcDDQ8JfVbVQkI5ub394qdTmE2bRw==","t":"PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgCw=="})",
+      *json);
 }
 
 }  // namespace brave_ads

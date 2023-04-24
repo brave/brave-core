@@ -10,7 +10,7 @@
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_delegate.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_features_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_feature_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
@@ -21,9 +21,10 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::inline_content_ads {
+namespace brave_ads {
 
-class BraveAdsInlineContentAdServingDelegate : public ServingDelegate {
+class BraveAdsInlineContentAdServingDelegate
+    : public InlineContentAdServingDelegate {
  public:
   void OnOpportunityAroseToServeInlineContentAd(
       const SegmentList& /*segments*/) override {
@@ -59,25 +60,25 @@ class BraveAdsInlineContentAdServingTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    ForceServingVersion(1);
+    ForceInlineContentAdServingVersion(1);
 
     subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
-    anti_targeting_resource_ = std::make_unique<resource::AntiTargeting>();
-    serving_ = std::make_unique<Serving>(*subdivision_targeting_,
-                                         *anti_targeting_resource_);
+    anti_targeting_resource_ = std::make_unique<AntiTargetingResource>();
+    serving_ = std::make_unique<InlineContentAdServing>(
+        *subdivision_targeting_, *anti_targeting_resource_);
     serving_->SetDelegate(&serving_delegate_);
   }
 
   std::unique_ptr<SubdivisionTargeting> subdivision_targeting_;
-  std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
-  std::unique_ptr<Serving> serving_;
+  std::unique_ptr<AntiTargetingResource> anti_targeting_resource_;
+  std::unique_ptr<InlineContentAdServing> serving_;
 
   BraveAdsInlineContentAdServingDelegate serving_delegate_;
 };
 
 TEST_F(BraveAdsInlineContentAdServingTest, DoNotServeAdForUnsupportedVersion) {
   // Arrange
-  ForceServingVersion(0);
+  ForceInlineContentAdServingVersion(0);
 
   // Act
   serving_->MaybeServeAd(
@@ -172,4 +173,4 @@ TEST_F(BraveAdsInlineContentAdServingTest,
   // Assert
 }
 
-}  // namespace brave_ads::inline_content_ads
+}  // namespace brave_ads

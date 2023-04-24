@@ -12,36 +12,37 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/user_activity_permission_rule.h"
 
-namespace brave_ads::new_tab_page_ads {
+namespace brave_ads {
 
 // static
-bool PermissionRules::HasPermission() {
+bool NewTabPageAdPermissionRules::HasPermission() {
   if (!PermissionRulesBase::HasPermission()) {
     return false;
   }
 
-  UserActivityPermissionRule user_activity_permission_rule;
-  if (!ShouldAllow(&user_activity_permission_rule)) {
+  const UserActivityPermissionRule user_activity_permission_rule;
+  if (!ShouldAllow(user_activity_permission_rule)) {
     return false;
   }
 
-  CatalogPermissionRule catalog_permission_rule;
-  if (!ShouldAllow(&catalog_permission_rule)) {
+  const CatalogPermissionRule catalog_permission_rule;
+  if (!ShouldAllow(catalog_permission_rule)) {
     return false;
   }
 
-  AdsPerDayPermissionRule ads_per_day_permission_rule;
-  if (!ShouldAllow(&ads_per_day_permission_rule)) {
+  const NewTabPageAdsPerDayPermissionRule ads_per_day_permission_rule;
+  if (!ShouldAllow(ads_per_day_permission_rule)) {
     return false;
   }
 
-  AdsPerHourPermissionRule ads_per_hour_permission_rule;
-  if (!ShouldAllow(&ads_per_hour_permission_rule)) {
+  const NewTabPageAdsPerHourPermissionRule ads_per_hour_permission_rule;
+  if (!ShouldAllow(ads_per_hour_permission_rule)) {
     return false;
   }
 
-  MinimumWaitTimePermissionRule minimum_wait_time_permission_rule;
-  return ShouldAllow(&minimum_wait_time_permission_rule);
+  const NewTabPageAdMinimumWaitTimePermissionRule
+      minimum_wait_time_permission_rule;
+  return ShouldAllow(minimum_wait_time_permission_rule);
 }
 
-}  // namespace brave_ads::new_tab_page_ads
+}  // namespace brave_ads

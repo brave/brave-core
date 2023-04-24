@@ -20,20 +20,22 @@ namespace brave_ads {
 struct CreativeInlineContentAdInfo;
 struct InlineContentAdInfo;
 
-namespace inline_content_ads {
-class EventHandler final : public EventHandlerDelegate {
+class InlineContentAdEventHandler final
+    : public InlineContentAdEventHandlerDelegate {
  public:
-  EventHandler();
+  InlineContentAdEventHandler();
 
-  EventHandler(const EventHandler&) = delete;
-  EventHandler& operator=(const EventHandler&) = delete;
+  InlineContentAdEventHandler(const InlineContentAdEventHandler&) = delete;
+  InlineContentAdEventHandler& operator=(const InlineContentAdEventHandler&) =
+      delete;
 
-  EventHandler(EventHandler&&) noexcept = delete;
-  EventHandler& operator=(EventHandler&&) noexcept = delete;
+  InlineContentAdEventHandler(InlineContentAdEventHandler&&) noexcept = delete;
+  InlineContentAdEventHandler& operator=(
+      InlineContentAdEventHandler&&) noexcept = delete;
 
-  ~EventHandler() override;
+  ~InlineContentAdEventHandler() override;
 
-  void SetDelegate(EventHandlerDelegate* delegate) {
+  void SetDelegate(InlineContentAdEventHandlerDelegate* delegate) {
     DCHECK_EQ(delegate_, nullptr);
     delegate_ = delegate;
   }
@@ -63,12 +65,11 @@ class EventHandler final : public EventHandlerDelegate {
                          const std::string& creative_instance_id,
                          mojom::InlineContentAdEventType event_type) const;
 
-  raw_ptr<EventHandlerDelegate> delegate_ = nullptr;
+  raw_ptr<InlineContentAdEventHandlerDelegate> delegate_ = nullptr;
 
-  base::WeakPtrFactory<EventHandler> weak_factory_{this};
+  base::WeakPtrFactory<InlineContentAdEventHandler> weak_factory_{this};
 };
 
-}  // namespace inline_content_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_INLINE_CONTENT_ADS_INLINE_CONTENT_AD_EVENT_HANDLER_H_

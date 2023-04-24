@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pipelines/inline_content_ads/eligible_inline_content_ads_base.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pipelines/inline_content_ads/eligible_inline_content_ads_factory.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/inline_content_ads/inline_content_ad_permission_rules.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/top_segments.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_builder.h"
@@ -23,21 +23,24 @@
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
-namespace brave_ads::inline_content_ads {
+namespace brave_ads {
 
-Serving::Serving(const SubdivisionTargeting& subdivision_targeting,
-                 const resource::AntiTargeting& anti_targeting_resource) {
-  eligible_ads_ = EligibleAdsFactory::Build(
-      kServingVersion.Get(), subdivision_targeting, anti_targeting_resource);
+InlineContentAdServing::InlineContentAdServing(
+    const SubdivisionTargeting& subdivision_targeting,
+    const AntiTargetingResource& anti_targeting_resource) {
+  eligible_ads_ = EligibleInlineContentAdsFactory::Build(
+      kInlineContentAdServingVersion.Get(), subdivision_targeting,
+      anti_targeting_resource);
 }
 
-Serving::~Serving() {
+InlineContentAdServing::~InlineContentAdServing() {
   delegate_ = nullptr;
 }
 
-void Serving::MaybeServeAd(const std::string& dimensions,
-                           MaybeServeInlineContentAdCallback callback) {
-  if (!IsServingEnabled()) {
+void InlineContentAdServing::MaybeServeAd(
+    const std::string& dimensions,
+    MaybeServeInlineContentAdCallback callback) {
+  if (!IsInlineContentAdServingFeatureEnabled()) {
     BLOG(1, "Inline content ad not served: Feature is disabled");
     return FailedToServeAd(dimensions, std::move(callback));
   }
@@ -47,31 +50,33 @@ void Serving::MaybeServeAd(const std::string& dimensions,
     return FailedToServeAd(dimensions, std::move(callback));
   }
 
-  if (!PermissionRules::HasPermission()) {
+  if (!InlineContentAdPermissionRules::HasPermission()) {
     BLOG(1,
          "Inline content ad not served: Not allowed due to permission rules");
     return FailedToServeAd(dimensions, std::move(callback));
   }
 
-  targeting::BuildUserModel(base::BindOnce(&Serving::OnBuildUserModel,
-                                           weak_factory_.GetWeakPtr(),
-                                           dimensions, std::move(callback)));
+  BuildUserModel(base::BindOnce(&InlineContentAdServing::OnBuildUserModel,
+                                weak_factory_.GetWeakPtr(), dimensions,
+                                std::move(callback)));
 }
 
-void Serving::OnBuildUserModel(const std::string& dimensions,
-                               MaybeServeInlineContentAdCallback callback,
-                               const targeting::UserModelInfo& user_model) {
+void InlineContentAdServing::OnBuildUserModel(
+    const std::string& dimensions,
+    MaybeServeInlineContentAdCallback callback,
+    const UserModelInfo& user_model) {
   DCHECK(eligible_ads_);
   eligible_ads_->GetForUserModel(
       user_model, dimensions,
-      base::BindOnce(&Serving::OnGetForUserModel, weak_factory_.GetWeakPtr(),
-                     user_model, dimensions, std::move(callback)));
+      base::BindOnce(&InlineContentAdServing::OnGetForUserModel,
+                     weak_factory_.GetWeakPtr(), user_model, dimensions,
+                     std::move(callback)));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void Serving::OnGetForUserModel(
-    const targeting::UserModelInfo& user_model,
+void InlineContentAdServing::OnGetForUserModel(
+    const UserModelInfo& user_model,
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback,
     const bool had_opportunity,
@@ -79,7 +84,7 @@ void Serving::OnGetForUserModel(
   if (had_opportunity) {
     if (delegate_) {
       delegate_->OnOpportunityAroseToServeInlineContentAd(
-          targeting::GetTopChildSegments(user_model));
+          GetTopChildSegments(user_model));
     }
   }
 
@@ -97,8 +102,9 @@ void Serving::OnGetForUserModel(
   ServeAd(ad, std::move(callback));
 }
 
-void Serving::ServeAd(const InlineContentAdInfo& ad,
-                      MaybeServeInlineContentAdCallback callback) {
+void InlineContentAdServing::ServeAd(
+    const InlineContentAdInfo& ad,
+    MaybeServeInlineContentAdCallback callback) {
   if (!ad.IsValid()) {
     BLOG(1, "Failed to serve inline content ad");
     return FailedToServeAd(ad.dimensions, std::move(callback));
@@ -128,8 +134,9 @@ void Serving::ServeAd(const InlineContentAdInfo& ad,
   std::move(callback).Run(ad.dimensions, ad);
 }
 
-void Serving::FailedToServeAd(const std::string& dimensions,
-                              MaybeServeInlineContentAdCallback callback) {
+void InlineContentAdServing::FailedToServeAd(
+    const std::string& dimensions,
+    MaybeServeInlineContentAdCallback callback) {
   if (delegate_) {
     delegate_->OnFailedToServeInlineContentAd();
   }
@@ -137,4 +144,4 @@ void Serving::FailedToServeAd(const std::string& dimensions,
   std::move(callback).Run(dimensions, /*ad*/ absl::nullopt);
 }
 
-}  // namespace brave_ads::inline_content_ads
+}  // namespace brave_ads

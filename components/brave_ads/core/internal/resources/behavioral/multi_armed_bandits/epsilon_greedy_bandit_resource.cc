@@ -11,17 +11,18 @@
 #include "brave/components/brave_ads/core/internal/resources/behavioral/multi_armed_bandits/epsilon_greedy_bandit_resource_util.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 
-namespace brave_ads::resource {
+namespace brave_ads {
 
-EpsilonGreedyBandit::EpsilonGreedyBandit(Catalog& catalog) : catalog_(catalog) {
+EpsilonGreedyBanditResource::EpsilonGreedyBanditResource(Catalog& catalog)
+    : catalog_(catalog) {
   catalog_->AddObserver(this);
 }
 
-EpsilonGreedyBandit::~EpsilonGreedyBandit() {
+EpsilonGreedyBanditResource::~EpsilonGreedyBanditResource() {
   catalog_->RemoveObserver(this);
 }
 
-void EpsilonGreedyBandit::LoadFromCatalog(const CatalogInfo& catalog) {
+void EpsilonGreedyBanditResource::LoadFromCatalog(const CatalogInfo& catalog) {
   const SegmentList segments = GetSegments(catalog);
   const SegmentList parent_segments = GetParentSegments(segments);
 
@@ -36,14 +37,15 @@ void EpsilonGreedyBandit::LoadFromCatalog(const CatalogInfo& catalog) {
 }
 
 // static
-SegmentList EpsilonGreedyBandit::Get() {
+SegmentList EpsilonGreedyBanditResource::Get() {
   return GetEpsilonGreedyBanditEligibleSegments();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void EpsilonGreedyBandit::OnDidUpdateCatalog(const CatalogInfo& catalog) {
+void EpsilonGreedyBanditResource::OnDidUpdateCatalog(
+    const CatalogInfo& catalog) {
   LoadFromCatalog(catalog);
 }
 
-}  // namespace brave_ads::resource
+}  // namespace brave_ads

@@ -11,9 +11,9 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 
-namespace brave_ads::inline_content_ads {
+namespace brave_ads {
 
-void AdEventServed::FireEvent(const InlineContentAdInfo& ad) {
+void InlineContentAdEventServed::FireEvent(const InlineContentAdInfo& ad) {
   BLOG(3, "Served inline content ad with placement id "
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
@@ -29,4 +29,4 @@ void AdEventServed::FireEvent(const InlineContentAdInfo& ad) {
              }));
 }
 
-}  // namespace brave_ads::inline_content_ads
+}  // namespace brave_ads

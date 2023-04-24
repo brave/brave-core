@@ -7,7 +7,7 @@
 
 #include <utility>
 
-namespace brave_ads::targeting {
+namespace brave_ads {
 
 PurchaseIntentSiteInfo::PurchaseIntentSiteInfo() = default;
 
@@ -43,4 +43,4 @@ bool PurchaseIntentSiteInfo::operator!=(
   return !(*this == other);
 }
 
-}  // namespace brave_ads::targeting
+}  // namespace brave_ads

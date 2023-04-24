@@ -12,14 +12,12 @@ namespace brave_ads {
 
 struct NewTabPageAdInfo;
 
-namespace new_tab_page_ads {
-
-class AdEventViewed final : public AdEventInterface<NewTabPageAdInfo> {
+class NewTabPageAdEventViewed final
+    : public AdEventInterface<NewTabPageAdInfo> {
  public:
   void FireEvent(const NewTabPageAdInfo& ad) override;
 };
 
-}  // namespace new_tab_page_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_AD_EVENT_VIEWED_H_

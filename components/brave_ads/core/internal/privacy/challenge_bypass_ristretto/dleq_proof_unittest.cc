@@ -104,7 +104,7 @@ TEST(BraveAdsDLEQProofTest, FailToDecodeEmptyBase64) {
   // Arrange
 
   // Act
-  const DLEQProof dleq_proof = DLEQProof::DecodeBase64({});
+  const DLEQProof dleq_proof = DLEQProof::DecodeBase64("");
 
   // Assert
   EXPECT_FALSE(dleq_proof.has_value());

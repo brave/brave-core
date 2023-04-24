@@ -14,9 +14,7 @@ namespace brave_ads {
 
 struct InlineContentAdInfo;
 
-namespace inline_content_ads {
-
-class EventHandlerDelegate {
+class InlineContentAdEventHandlerDelegate {
  public:
   // Invoked when the inline content |ad| is served.
   virtual void OnInlineContentAdServed(const InlineContentAdInfo& ad) {}
@@ -35,10 +33,9 @@ class EventHandlerDelegate {
       const mojom::InlineContentAdEventType event_type) {}
 
  protected:
-  virtual ~EventHandlerDelegate() = default;
+  virtual ~InlineContentAdEventHandlerDelegate() = default;
 };
 
-}  // namespace inline_content_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_INLINE_CONTENT_ADS_INLINE_CONTENT_AD_EVENT_HANDLER_DELEGATE_H_

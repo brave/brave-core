@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/choose/predict_ad.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/choose/predict_ad_embeddings.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rules_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/notification_ads/notification_ad_exclusion_rules.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
@@ -22,32 +22,33 @@
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_ads::notification_ads {
+namespace brave_ads {
 
-EligibleAdsV3::EligibleAdsV3(
+EligibleNotificationAdsV3::EligibleNotificationAdsV3(
     const SubdivisionTargeting& subdivision_targeting,
-    const resource::AntiTargeting& anti_targeting_resource)
-    : EligibleAdsBase(subdivision_targeting, anti_targeting_resource) {}
+    const AntiTargetingResource& anti_targeting_resource)
+    : EligibleNotificationAdsBase(subdivision_targeting,
+                                  anti_targeting_resource) {}
 
-EligibleAdsV3::~EligibleAdsV3() = default;
+EligibleNotificationAdsV3::~EligibleNotificationAdsV3() = default;
 
-void EligibleAdsV3::GetForUserModel(
-    targeting::UserModelInfo user_model,
+void EligibleNotificationAdsV3::GetForUserModel(
+    UserModelInfo user_model,
     GetEligibleAdsCallback<CreativeNotificationAdList> callback) {
   BLOG(1, "Get eligible notification ads");
 
   database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kNotificationAd,
-      base::BindOnce(&EligibleAdsV3::OnGetForUserModel,
+      base::BindOnce(&EligibleNotificationAdsV3::OnGetForUserModel,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
                      std::move(callback)));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void EligibleAdsV3::OnGetForUserModel(
-    targeting::UserModelInfo user_model,
+void EligibleNotificationAdsV3::OnGetForUserModel(
+    UserModelInfo user_model,
     GetEligibleAdsCallback<CreativeNotificationAdList> callback,
     const bool success,
     const AdEventList& ad_events) {
@@ -60,29 +61,30 @@ void EligibleAdsV3::OnGetForUserModel(
   GetBrowsingHistory(std::move(user_model), ad_events, std::move(callback));
 }
 
-void EligibleAdsV3::GetBrowsingHistory(
-    targeting::UserModelInfo user_model,
+void EligibleNotificationAdsV3::GetBrowsingHistory(
+    UserModelInfo user_model,
     const AdEventList& ad_events,
     GetEligibleAdsCallback<CreativeNotificationAdList> callback) {
   AdsClientHelper::GetInstance()->GetBrowsingHistory(
       kBrowsingHistoryMaxCount.Get(), kBrowsingHistoryDaysAgo.Get(),
-      base::BindOnce(&EligibleAdsV3::GetEligibleAds, weak_factory_.GetWeakPtr(),
-                     std::move(user_model), ad_events, std::move(callback)));
+      base::BindOnce(&EligibleNotificationAdsV3::GetEligibleAds,
+                     weak_factory_.GetWeakPtr(), std::move(user_model),
+                     ad_events, std::move(callback)));
 }
 
-void EligibleAdsV3::GetEligibleAds(
-    targeting::UserModelInfo user_model,
+void EligibleNotificationAdsV3::GetEligibleAds(
+    UserModelInfo user_model,
     const AdEventList& ad_events,
     GetEligibleAdsCallback<CreativeNotificationAdList> callback,
     const BrowsingHistoryList& browsing_history) {
   const database::table::CreativeNotificationAds database_table;
   database_table.GetAll(base::BindOnce(
-      &EligibleAdsV3::OnGetEligibleAds, weak_factory_.GetWeakPtr(), user_model,
-      ad_events, browsing_history, std::move(callback)));
+      &EligibleNotificationAdsV3::OnGetEligibleAds, weak_factory_.GetWeakPtr(),
+      user_model, ad_events, browsing_history, std::move(callback)));
 }
 
-void EligibleAdsV3::OnGetEligibleAds(
-    const targeting::UserModelInfo& user_model,
+void EligibleNotificationAdsV3::OnGetEligibleAds(
+    const UserModelInfo& user_model,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
     GetEligibleAdsCallback<CreativeNotificationAdList> callback,
@@ -129,7 +131,7 @@ void EligibleAdsV3::OnGetEligibleAds(
   std::move(callback).Run(/*had_opportunity*/ false, {*creative_ad});
 }
 
-CreativeNotificationAdList EligibleAdsV3::FilterCreativeAds(
+CreativeNotificationAdList EligibleNotificationAdsV3::FilterCreativeAds(
     const CreativeNotificationAdList& creative_ads,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history) {
@@ -137,9 +139,10 @@ CreativeNotificationAdList EligibleAdsV3::FilterCreativeAds(
     return {};
   }
 
-  ExclusionRules exclusion_rules(ad_events, *subdivision_targeting_,
-                                 *anti_targeting_resource_, browsing_history);
+  NotificationAdExclusionRules exclusion_rules(
+      ad_events, *subdivision_targeting_, *anti_targeting_resource_,
+      browsing_history);
   return ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
 }
 
-}  // namespace brave_ads::notification_ads
+}  // namespace brave_ads

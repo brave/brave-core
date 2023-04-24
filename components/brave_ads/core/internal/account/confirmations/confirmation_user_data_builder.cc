@@ -35,7 +35,7 @@ ConfirmationUserDataBuilder::~ConfirmationUserDataBuilder() = default;
 
 void ConfirmationUserDataBuilder::Build(
     UserDataBuilderCallback callback) const {
-  user_data::GetConversion(
+  BuildConversionUserData(
       transaction_.creative_instance_id, transaction_.confirmation_type,
       base::BindOnce(&ConfirmationUserDataBuilder::OnGetConversion,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
@@ -46,16 +46,16 @@ void ConfirmationUserDataBuilder::Build(
 void ConfirmationUserDataBuilder::OnGetConversion(
     UserDataBuilderCallback callback,
     base::Value::Dict user_data) const {
-  user_data.Merge(user_data::GetBuildChannel());
-  user_data.Merge(user_data::GetCatalog());
-  user_data.Merge(user_data::GetCreatedAtTimestamp(transaction_));
-  user_data.Merge(user_data::GetLocale());
-  user_data.Merge(user_data::GetMutated());
-  user_data.Merge(user_data::GetPlatform());
-  user_data.Merge(user_data::GetRotatingHash(transaction_));
-  user_data.Merge(user_data::GetSegment(transaction_));
-  user_data.Merge(user_data::GetStudies());
-  user_data.Merge(user_data::GetVersionNumber());
+  user_data.Merge(BuildBuildChannelUserData());
+  user_data.Merge(BuildCatalogUserData());
+  user_data.Merge(BuildCreatedAtTimestampUserData(transaction_));
+  user_data.Merge(BuildLocaleUserData());
+  user_data.Merge(BuildMutatedUserData());
+  user_data.Merge(BuildPlatformUserData());
+  user_data.Merge(BuildRotatingHashUserData(transaction_));
+  user_data.Merge(BuildSegmentUserData(transaction_));
+  user_data.Merge(BuildStudiesUserData());
+  user_data.Merge(BuildVersionNumberUserData());
 
   std::move(callback).Run(std::move(user_data));
 }

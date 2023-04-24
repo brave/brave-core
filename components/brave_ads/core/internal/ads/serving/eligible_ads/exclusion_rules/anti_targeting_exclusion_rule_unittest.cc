@@ -23,13 +23,13 @@ TEST_F(BraveAdsAntiTargetingExclusionRuleTest,
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
 
-  resource::AntiTargeting resource;
+  AntiTargetingResource resource;
 
   const BrowsingHistoryList history = {GURL("https://www.foo1.org"),
                                        GURL("https://www.brave.com"),
                                        GURL("https://www.foo2.org")};
 
-  AntiTargetingExclusionRule exclusion_rule(resource, history);
+  const AntiTargetingExclusionRule exclusion_rule(resource, history);
 
   // Act
 
@@ -42,7 +42,7 @@ TEST_F(BraveAdsAntiTargetingExclusionRuleTest, AllowIfCreativeSetDoesNotExist) {
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kMissingCreativeSetId;
 
-  resource::AntiTargeting resource;
+  AntiTargetingResource resource;
   resource.Load();
   task_environment_.RunUntilIdle();
 
@@ -50,7 +50,7 @@ TEST_F(BraveAdsAntiTargetingExclusionRuleTest, AllowIfCreativeSetDoesNotExist) {
                                        GURL("https://www.brave.com"),
                                        GURL("https://www.foo2.org")};
 
-  AntiTargetingExclusionRule exclusion_rule(resource, history);
+  const AntiTargetingExclusionRule exclusion_rule(resource, history);
 
   // Act
 
@@ -63,14 +63,14 @@ TEST_F(BraveAdsAntiTargetingExclusionRuleTest, AllowIfSiteDoesNotExist) {
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
 
-  resource::AntiTargeting resource;
+  AntiTargetingResource resource;
   resource.Load();
   task_environment_.RunUntilIdle();
 
   const BrowsingHistoryList history = {GURL("https://www.foo1.org"),
                                        GURL("https://www.foo2.org")};
 
-  AntiTargetingExclusionRule exclusion_rule(resource, history);
+  const AntiTargetingExclusionRule exclusion_rule(resource, history);
 
   // Act
 
@@ -84,14 +84,14 @@ TEST_F(BraveAdsAntiTargetingExclusionRuleTest,
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
 
-  resource::AntiTargeting resource;
+  AntiTargetingResource resource;
   resource.Load();
   task_environment_.RunUntilIdle();
 
   const BrowsingHistoryList history = {GURL("https://www.foo1.org"),
                                        GURL("https://www.brave.com")};
 
-  AntiTargetingExclusionRule exclusion_rule(resource, history);
+  const AntiTargetingExclusionRule exclusion_rule(resource, history);
 
   // Act
 

@@ -8,7 +8,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
-#include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection_features.h"
+#include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection_feature.h"
 
 namespace brave_ads {
 

@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_feature.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 
@@ -18,7 +18,7 @@ namespace brave_ads {
 
 class BraveAdsFullScreenModePermissionRuleTest : public UnitTestBase {
  protected:
-  FullScreenModePermissionRule permission_rule_;
+  const FullScreenModePermissionRule permission_rule_;
 };
 
 TEST_F(BraveAdsFullScreenModePermissionRuleTest, AllowAd) {

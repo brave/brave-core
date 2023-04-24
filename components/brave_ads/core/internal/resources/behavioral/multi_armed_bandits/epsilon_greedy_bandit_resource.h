@@ -15,19 +15,19 @@ namespace brave_ads {
 class Catalog;
 struct CatalogInfo;
 
-namespace resource {
-
-class EpsilonGreedyBandit final : public CatalogObserver {
+class EpsilonGreedyBanditResource final : public CatalogObserver {
  public:
-  explicit EpsilonGreedyBandit(Catalog& catalog);
+  explicit EpsilonGreedyBanditResource(Catalog& catalog);
 
-  EpsilonGreedyBandit(const EpsilonGreedyBandit&) = delete;
-  EpsilonGreedyBandit& operator=(const EpsilonGreedyBandit&) = delete;
+  EpsilonGreedyBanditResource(const EpsilonGreedyBanditResource&) = delete;
+  EpsilonGreedyBanditResource& operator=(const EpsilonGreedyBanditResource&) =
+      delete;
 
-  EpsilonGreedyBandit(EpsilonGreedyBandit&&) noexcept = delete;
-  EpsilonGreedyBandit& operator=(EpsilonGreedyBandit&&) noexcept = delete;
+  EpsilonGreedyBanditResource(EpsilonGreedyBanditResource&&) noexcept = delete;
+  EpsilonGreedyBanditResource& operator=(
+      EpsilonGreedyBanditResource&&) noexcept = delete;
 
-  ~EpsilonGreedyBandit() override;
+  ~EpsilonGreedyBanditResource() override;
 
   bool IsInitialized() const { return is_initialized_; }
 
@@ -44,7 +44,6 @@ class EpsilonGreedyBandit final : public CatalogObserver {
   const raw_ref<Catalog> catalog_;
 };
 
-}  // namespace resource
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_MULTI_ARMED_BANDITS_EPSILON_GREEDY_BANDIT_RESOURCE_H_

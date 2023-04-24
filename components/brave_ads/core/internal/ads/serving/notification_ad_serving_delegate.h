@@ -12,9 +12,7 @@ namespace brave_ads {
 
 struct NotificationAdInfo;
 
-namespace notification_ads {
-
-class ServingDelegate {
+class NotificationAdServingDelegate {
  public:
   // Invoked when an opportunity arises to serve a notification ad for the
   // |segments|.
@@ -28,10 +26,9 @@ class ServingDelegate {
   virtual void OnFailedToServeNotificationAd() {}
 
  protected:
-  virtual ~ServingDelegate() = default;
+  virtual ~NotificationAdServingDelegate() = default;
 };
 
-}  // namespace notification_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_NOTIFICATION_AD_SERVING_DELEGATE_H_

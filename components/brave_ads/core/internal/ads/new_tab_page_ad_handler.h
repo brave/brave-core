@@ -18,22 +18,19 @@
 
 namespace brave_ads {
 
-namespace resource {
-class AntiTargeting;
-}  // namespace resource
-
 class Account;
-class Transfer;
+class AntiTargetingResource;
 class SubdivisionTargeting;
+class Transfer;
 struct NewTabPageAdInfo;
 
-class NewTabPageAdHandler final : public new_tab_page_ads::EventHandlerDelegate,
-                                  public new_tab_page_ads::ServingDelegate {
+class NewTabPageAdHandler final : public NewTabPageAdEventHandlerDelegate,
+                                  public NewTabPageAdServingDelegate {
  public:
   NewTabPageAdHandler(Account& account,
                       Transfer& transfer,
                       const SubdivisionTargeting& subdivision_targeting,
-                      const resource::AntiTargeting& anti_targeting_resource);
+                      const AntiTargetingResource& anti_targeting_resource);
 
   NewTabPageAdHandler(const NewTabPageAdHandler&) = delete;
   NewTabPageAdHandler& operator=(const NewTabPageAdHandler&) = delete;
@@ -50,22 +47,22 @@ class NewTabPageAdHandler final : public new_tab_page_ads::EventHandlerDelegate,
                     mojom::NewTabPageAdEventType event_type);
 
  private:
-  // new_tab_page_ads::ServingDelegate:
+  // NewTabPageAdServingDelegate:
   void OnOpportunityAroseToServeNewTabPageAd(
       const SegmentList& segments) override;
   void OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) override;
 
-  // new_tab_page_ads::EventHandlerDelegate:
+  // NewTabPageAdEventHandlerDelegate:
   void OnNewTabPageAdServed(const NewTabPageAdInfo& ad) override;
   void OnNewTabPageAdViewed(const NewTabPageAdInfo& ad) override;
   void OnNewTabPageAdClicked(const NewTabPageAdInfo& ad) override;
 
-  new_tab_page_ads::EventHandler event_handler_;
+  NewTabPageAdEventHandler event_handler_;
 
   const raw_ref<Account> account_;
   const raw_ref<Transfer> transfer_;
 
-  new_tab_page_ads::Serving serving_;
+  NewTabPageAdServing serving_;
 };
 
 }  // namespace brave_ads

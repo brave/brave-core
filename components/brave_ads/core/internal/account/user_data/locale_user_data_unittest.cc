@@ -12,71 +12,59 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
 class BraveAdsLocaleUserDataTest : public UnitTestBase {};
 
-TEST_F(BraveAdsLocaleUserDataTest, GetLocaleForNonReleaseBuildChannel) {
+TEST_F(BraveAdsLocaleUserDataTest,
+       DoNotBuildLocaleUserDataForNonReleaseBuildChannel) {
   // Arrange
   MockBuildChannel(BuildChannelType::kNightly);
 
   // Act
-  const base::Value::Dict user_data = GetLocale();
+  const base::Value::Dict user_data = BuildLocaleUserData();
 
   // Assert
-  const base::Value expected_user_data = base::test::ParseJson("{}");
-  ASSERT_TRUE(expected_user_data.is_dict());
-
-  EXPECT_EQ(expected_user_data, user_data);
+  EXPECT_TRUE(user_data.empty());
 }
 
-TEST_F(BraveAdsLocaleUserDataTest, GetLocaleForReleaseBuildChannel) {
+TEST_F(BraveAdsLocaleUserDataTest, BuildLocaleUserDataForReleaseBuildChannel) {
   // Arrange
   MockBuildChannel(BuildChannelType::kRelease);
 
   // Act
-  const base::Value::Dict user_data = GetLocale();
 
   // Assert
-  const base::Value expected_user_data =
-      base::test::ParseJson(R"({"countryCode":"US"})");
-  ASSERT_TRUE(expected_user_data.is_dict());
-
-  EXPECT_EQ(expected_user_data, user_data);
+  EXPECT_EQ(base::test::ParseJsonDict(R"({"countryCode":"US"})"),
+            BuildLocaleUserData());
 }
 
-TEST_F(BraveAdsLocaleUserDataTest, GetLocaleForCountryNotInAnonymitySet) {
+TEST_F(BraveAdsLocaleUserDataTest,
+       DoNotBuildLocaleUserDataForCountryNotInAnonymitySet) {
   // Arrange
   MockBuildChannel(BuildChannelType::kRelease);
 
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_MC"};
 
   // Act
-  const base::Value::Dict user_data = GetLocale();
+  const base::Value::Dict user_data = BuildLocaleUserData();
 
   // Assert
-  const base::Value expected_user_data = base::test::ParseJson("{}");
-  ASSERT_TRUE(expected_user_data.is_dict());
-
-  EXPECT_EQ(expected_user_data, user_data);
+  EXPECT_TRUE(user_data.empty());
 }
 
 TEST_F(BraveAdsLocaleUserDataTest,
-       GetLocaleForCountryNotInAnonymitySetButShouldClassifyAsOther) {
+       BuildLocaleUserDataForCountryNotInAnonymitySetButShouldClassifyAsOther) {
   // Arrange
   MockBuildChannel(BuildChannelType::kRelease);
 
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_CX"};
 
   // Act
-  const base::Value::Dict user_data = GetLocale();
 
   // Assert
-  const base::Value expected_user_data =
-      base::test::ParseJson(R"({"countryCode":"??"})");
-  ASSERT_TRUE(expected_user_data.is_dict());
-
-  EXPECT_EQ(expected_user_data, user_data);
+  EXPECT_EQ(base::test::ParseJsonDict(R"({"countryCode":"??"})"),
+            BuildLocaleUserData());
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

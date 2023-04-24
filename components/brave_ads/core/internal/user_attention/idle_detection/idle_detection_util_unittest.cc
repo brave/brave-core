@@ -10,7 +10,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection_features.h"
+#include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection_feature.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -169,11 +169,9 @@ TEST_F(BraveAdsIdleDetectionUtilTest, UpdateIdleTimeThreshold) {
   ASSERT_TRUE(MaybeUpdateIdleTimeThreshold());
 
   // Act
-  const int idle_time_threshold =
-      ads_client_mock_.GetIntegerPref(prefs::kIdleTimeThreshold);
 
   // Assert
-  EXPECT_EQ(5, idle_time_threshold);
+  EXPECT_EQ(5, ads_client_mock_.GetIntegerPref(prefs::kIdleTimeThreshold));
 }
 
 TEST_F(BraveAdsIdleDetectionUtilTest, DoNotUpdateIdleTimeThreshold) {
@@ -194,11 +192,9 @@ TEST_F(BraveAdsIdleDetectionUtilTest, DoNotUpdateIdleTimeThreshold) {
   ASSERT_FALSE(MaybeUpdateIdleTimeThreshold());
 
   // Act
-  const int idle_time_threshold =
-      ads_client_mock_.GetIntegerPref(prefs::kIdleTimeThreshold);
 
   // Assert
-  EXPECT_EQ(10, idle_time_threshold);
+  EXPECT_EQ(10, ads_client_mock_.GetIntegerPref(prefs::kIdleTimeThreshold));
 }
 
 }  // namespace brave_ads

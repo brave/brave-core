@@ -10,7 +10,7 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::targeting {
+namespace brave_ads {
 
 namespace {
 constexpr int kSegmentsMaxCount = 3;
@@ -84,4 +84,4 @@ TEST_F(BraveAdsTopSegmentsUtilTest, GetTopParentSegmentsForEmptyUserModel) {
   EXPECT_TRUE(segments.empty());
 }
 
-}  // namespace brave_ads::targeting
+}  // namespace brave_ads

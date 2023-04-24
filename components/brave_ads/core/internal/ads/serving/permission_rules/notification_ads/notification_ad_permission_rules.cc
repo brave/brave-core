@@ -18,66 +18,67 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/user_activity_permission_rule.h"
 
-namespace brave_ads::notification_ads {
+namespace brave_ads {
 
 // static
-bool PermissionRules::HasPermission() {
+bool NotificationAdPermissionRules::HasPermission() {
   if (!PermissionRulesBase::HasPermission()) {
     return false;
   }
 
-  UserActivityPermissionRule user_activity_permission_rule;
-  if (!ShouldAllow(&user_activity_permission_rule)) {
+  const UserActivityPermissionRule user_activity_permission_rule;
+  if (!ShouldAllow(user_activity_permission_rule)) {
     return false;
   }
 
-  CatalogPermissionRule catalog_permission_rule;
-  if (!ShouldAllow(&catalog_permission_rule)) {
+  const CatalogPermissionRule catalog_permission_rule;
+  if (!ShouldAllow(catalog_permission_rule)) {
     return false;
   }
 
-  AllowNotificationsPermissionRule allow_notifications_permission_rule;
-  if (!ShouldAllow(&allow_notifications_permission_rule)) {
+  const AllowNotificationsPermissionRule allow_notifications_permission_rule;
+  if (!ShouldAllow(allow_notifications_permission_rule)) {
     return false;
   }
 
-  NetworkConnectionPermissionRule network_connection_permission_rule;
-  if (!ShouldAllow(&network_connection_permission_rule)) {
+  const NetworkConnectionPermissionRule network_connection_permission_rule;
+  if (!ShouldAllow(network_connection_permission_rule)) {
     return false;
   }
 
-  FullScreenModePermissionRule full_screen_mode_permission_rule;
-  if (!ShouldAllow(&full_screen_mode_permission_rule)) {
+  const FullScreenModePermissionRule full_screen_mode_permission_rule;
+  if (!ShouldAllow(full_screen_mode_permission_rule)) {
     return false;
   }
 
-  BrowserIsActivePermissionRule browser_is_active_permission_rule;
-  if (!ShouldAllow(&browser_is_active_permission_rule)) {
+  const BrowserIsActivePermissionRule browser_is_active_permission_rule;
+  if (!ShouldAllow(browser_is_active_permission_rule)) {
     return false;
   }
 
-  DoNotDisturbPermissionRule do_not_disturb_permission_rule;
-  if (!ShouldAllow(&do_not_disturb_permission_rule)) {
+  const DoNotDisturbPermissionRule do_not_disturb_permission_rule;
+  if (!ShouldAllow(do_not_disturb_permission_rule)) {
     return false;
   }
 
-  MediaPermissionRule media_permission_rule;
-  if (!ShouldAllow(&media_permission_rule)) {
+  const MediaPermissionRule media_permission_rule;
+  if (!ShouldAllow(media_permission_rule)) {
     return false;
   }
 
-  AdsPerDayPermissionRule ads_per_day_permission_rule;
-  if (!ShouldAllow(&ads_per_day_permission_rule)) {
+  const NotificationAdsPerDayPermissionRule ads_per_day_permission_rule;
+  if (!ShouldAllow(ads_per_day_permission_rule)) {
     return false;
   }
 
-  AdsPerHourPermissionRule ads_per_hour_permission_rule;
-  if (!ShouldAllow(&ads_per_hour_permission_rule)) {
+  const NotificationAdsPerHourPermissionRule ads_per_hour_permission_rule;
+  if (!ShouldAllow(ads_per_hour_permission_rule)) {
     return false;
   }
 
-  MinimumWaitTimePermissionRule minimum_wait_time_permission_rule;
-  return ShouldAllow(&minimum_wait_time_permission_rule);
+  const NotificationAdMinimumWaitTimePermissionRule
+      minimum_wait_time_permission_rule;
+  return ShouldAllow(minimum_wait_time_permission_rule);
 }
 
-}  // namespace brave_ads::notification_ads
+}  // namespace brave_ads

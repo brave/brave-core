@@ -17,7 +17,7 @@
 #include "brave/components/brave_ads/core/ad_info.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_feature.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager_constants.h"
@@ -154,7 +154,7 @@ const HistoryItemList& ClientStateManager::GetHistory() const {
 
 void ClientStateManager::AppendToPurchaseIntentSignalHistoryForSegment(
     const std::string& segment,
-    const targeting::PurchaseIntentSignalHistoryInfo& history) {
+    const PurchaseIntentSignalHistoryInfo& history) {
   DCHECK(is_initialized_);
 
   if (client_.purchase_intent_signal_history.find(segment) ==
@@ -172,7 +172,7 @@ void ClientStateManager::AppendToPurchaseIntentSignalHistoryForSegment(
   Save();
 }
 
-const targeting::PurchaseIntentSignalHistoryMap&
+const PurchaseIntentSignalHistoryMap&
 ClientStateManager::GetPurchaseIntentSignalHistory() const {
   DCHECK(is_initialized_);
 
@@ -471,13 +471,13 @@ void ClientStateManager::ResetAllSeenAdvertisersForType(const AdType& type) {
 }
 
 void ClientStateManager::AppendTextClassificationProbabilitiesToHistory(
-    const targeting::TextClassificationProbabilityMap& probabilities) {
+    const TextClassificationProbabilityMap& probabilities) {
   DCHECK(is_initialized_);
 
   client_.text_classification_probabilities.push_front(probabilities);
 
   const size_t maximum_entries =
-      targeting::kTextClassificationPageProbabilitiesHistorySize.Get();
+      kTextClassificationPageProbabilitiesHistorySize.Get();
   if (client_.text_classification_probabilities.size() > maximum_entries) {
     client_.text_classification_probabilities.resize(maximum_entries);
   }
@@ -485,7 +485,7 @@ void ClientStateManager::AppendTextClassificationProbabilitiesToHistory(
   Save();
 }
 
-const targeting::TextClassificationProbabilityList&
+const TextClassificationProbabilityList&
 ClientStateManager::GetTextClassificationProbabilitiesHistory() const {
   DCHECK(is_initialized_);
 

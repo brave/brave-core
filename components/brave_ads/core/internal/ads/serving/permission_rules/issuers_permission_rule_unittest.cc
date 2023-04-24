@@ -14,7 +14,7 @@ namespace brave_ads {
 
 class BraveAdsIssuersPermissionRuleTest : public UnitTestBase {
  protected:
-  IssuersPermissionRule permission_rule_;
+  const IssuersPermissionRule permission_rule_;
 };
 
 TEST_F(BraveAdsIssuersPermissionRuleTest, Issuers) {

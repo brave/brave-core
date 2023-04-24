@@ -28,19 +28,16 @@ class BraveAdsNewTabPageAdValueUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsNewTabPageAdValueUtilTest, FromValue) {
   // Arrange
-  const base::Value value = base::test::ParseJson(kJson);
-  const base::Value::Dict* const dict = value.GetIfDict();
-  ASSERT_TRUE(dict);
+  const base::Value::Dict value = base::test::ParseJsonDict(kJson);
 
   // Act
-  const NewTabPageAdInfo ad = NewTabPageAdFromValue(*dict);
 
   // Assert
   const CreativeNewTabPageAdInfo creative_ad =
       BuildCreativeNewTabPageAd(/*should_use_random_guids*/ false);
   const NewTabPageAdInfo expected_ad =
       BuildNewTabPageAd(creative_ad, kPlacementId);
-  EXPECT_EQ(expected_ad, ad);
+  EXPECT_EQ(expected_ad, NewTabPageAdFromValue(value));
 }
 
 TEST_F(BraveAdsNewTabPageAdValueUtilTest, ToValue) {
@@ -50,11 +47,9 @@ TEST_F(BraveAdsNewTabPageAdValueUtilTest, ToValue) {
   const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad, kPlacementId);
 
   // Act
-  const base::Value::Dict value = NewTabPageAdToValue(ad);
 
   // Assert
-  const base::Value expected_value = base::test::ParseJson(kJson);
-  EXPECT_EQ(expected_value, value);
+  EXPECT_EQ(base::test::ParseJsonDict(kJson), NewTabPageAdToValue(ad));
 }
 
 }  // namespace brave_ads

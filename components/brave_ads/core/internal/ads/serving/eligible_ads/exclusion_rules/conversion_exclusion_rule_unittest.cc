@@ -10,7 +10,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
@@ -35,7 +35,7 @@ TEST_F(BraveAdsConversionExclusionRuleTest,
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
 
-  ConversionExclusionRule exclusion_rule({});
+  const ConversionExclusionRule exclusion_rule(/*ad_events*/ {});
 
   // Act
 
@@ -56,7 +56,7 @@ TEST_F(BraveAdsConversionExclusionRuleTest, DoNotAllowAdIfAlreadyConverted) {
 
   ad_events.push_back(ad_event);
 
-  ConversionExclusionRule exclusion_rule(ad_events);
+  const ConversionExclusionRule exclusion_rule(ad_events);
 
   // Act
 
@@ -89,7 +89,7 @@ TEST_F(BraveAdsConversionExclusionRuleTest,
 
   ad_events.push_back(ad_event);
 
-  ConversionExclusionRule exclusion_rule(ad_events);
+  const ConversionExclusionRule exclusion_rule(ad_events);
 
   // Act
 
@@ -113,7 +113,7 @@ TEST_F(BraveAdsConversionExclusionRuleTest, AllowAdIfNotAlreadyConverted) {
 
   ad_events.push_back(ad_event);
 
-  ConversionExclusionRule exclusion_rule(ad_events);
+  const ConversionExclusionRule exclusion_rule(ad_events);
 
   // Act
 

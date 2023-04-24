@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/processors/behavioral/purchase_intent/purchase_intent_signal_info.h"
 
-namespace brave_ads::targeting {
+namespace brave_ads {
 
 PurchaseIntentSignalInfo::PurchaseIntentSignalInfo() = default;
 
@@ -23,4 +23,4 @@ PurchaseIntentSignalInfo& PurchaseIntentSignalInfo::operator=(
 
 PurchaseIntentSignalInfo::~PurchaseIntentSignalInfo() = default;
 
-}  // namespace brave_ads::targeting
+}  // namespace brave_ads

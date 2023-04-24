@@ -10,7 +10,7 @@
 
 #include "base/functional/bind.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_builder_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -23,7 +23,7 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::notification_ads {
+namespace brave_ads {
 
 class BraveAdsEligibleNotificationAdsV3Test : public UnitTestBase {
  protected:
@@ -31,14 +31,14 @@ class BraveAdsEligibleNotificationAdsV3Test : public UnitTestBase {
     UnitTestBase::SetUp();
 
     subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
-    anti_targeting_resource_ = std::make_unique<resource::AntiTargeting>();
-    eligible_ads_ = std::make_unique<EligibleAdsV3>(*subdivision_targeting_,
-                                                    *anti_targeting_resource_);
+    anti_targeting_resource_ = std::make_unique<AntiTargetingResource>();
+    eligible_ads_ = std::make_unique<EligibleNotificationAdsV3>(
+        *subdivision_targeting_, *anti_targeting_resource_);
   }
 
   std::unique_ptr<SubdivisionTargeting> subdivision_targeting_;
-  std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
-  std::unique_ptr<EligibleAdsV3> eligible_ads_;
+  std::unique_ptr<AntiTargetingResource> anti_targeting_resource_;
+  std::unique_ptr<EligibleNotificationAdsV3> eligible_ads_;
 };
 
 TEST_F(BraveAdsEligibleNotificationAdsV3Test, GetAds) {
@@ -62,7 +62,7 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test, GetAds) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel(
+      BuildUserModel(
           /*latent_interest_segments*/ {}, /*latent_interest_segments*/ {},
           /*purchase_intent_segments*/ {}, {text_embedding_event}),
       base::BindOnce(
@@ -71,7 +71,7 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test, GetAds) {
              const CreativeNotificationAdList& creative_ads) {
             // Assert
             EXPECT_FALSE(had_opportunity);
-            EXPECT_TRUE(!creative_ads.empty());
+            EXPECT_FALSE(creative_ads.empty());
 
             EXPECT_EQ(creative_ads.at(0).embedding, creative_ad_1.embedding);
           },
@@ -96,15 +96,15 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test, GetAdsForNoStoredTextEmbeddings) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel(/*latent_interest_segments*/ {},
-                                /*latent_interest_segments*/ {},
-                                /*purchase_intent_segments*/ {},
-                                /*text_embedding_html_events*/ {}),
+      BuildUserModel(/*latent_interest_segments*/ {},
+                     /*latent_interest_segments*/ {},
+                     /*purchase_intent_segments*/ {},
+                     /*text_embedding_html_events*/ {}),
       base::BindOnce([](const bool had_opportunity,
                         const CreativeNotificationAdList& creative_ads) {
         // Assert
         EXPECT_FALSE(had_opportunity);
-        EXPECT_TRUE(!creative_ads.empty());
+        EXPECT_FALSE(creative_ads.empty());
       }));
 }
 
@@ -114,7 +114,7 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test,
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
   params["version"] = "3";
-  enabled_features.emplace_back(notification_ads::kServingFeature, params);
+  enabled_features.emplace_back(kNotificationAdServingFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -131,10 +131,9 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test,
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel(/*latent_interest_segments*/ {},
-                                /*latent_interest_segments*/ {},
-                                /*purchase_intent_segments*/ {},
-                                {text_embedding_event}),
+      BuildUserModel(/*latent_interest_segments*/ {},
+                     /*latent_interest_segments*/ {},
+                     /*purchase_intent_segments*/ {}, {text_embedding_event}),
       base::BindOnce([](const bool had_opportunity,
                         const CreativeNotificationAdList& creative_ads) {
         // Assert
@@ -150,10 +149,9 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test, DoNotGetAdsIfNoEligibleAds) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel(/*latent_interest_segments*/ {},
-                                /*latent_interest_segments*/ {},
-                                /*purchase_intent_segments*/ {},
-                                {text_embedding_event}),
+      BuildUserModel(/*latent_interest_segments*/ {},
+                     /*latent_interest_segments*/ {},
+                     /*purchase_intent_segments*/ {}, {text_embedding_event}),
       base::BindOnce([](const bool had_opportunity,
                         const CreativeNotificationAdList& creative_ads) {
         // Assert
@@ -162,4 +160,4 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test, DoNotGetAdsIfNoEligibleAds) {
       }));
 }
 
-}  // namespace brave_ads::notification_ads
+}  // namespace brave_ads

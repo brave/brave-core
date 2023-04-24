@@ -11,12 +11,12 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::notification_ads {
+namespace brave_ads {
 
 class BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest
     : public UnitTestBase {
  protected:
-  MinimumWaitTimePermissionRule permission_rule_;
+  const NotificationAdMinimumWaitTimePermissionRule permission_rule_;
 };
 
 TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
@@ -57,4 +57,4 @@ TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
-}  // namespace brave_ads::notification_ads
+}  // namespace brave_ads

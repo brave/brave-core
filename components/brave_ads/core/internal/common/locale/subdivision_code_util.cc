@@ -10,24 +10,24 @@
 #include "base/check_op.h"
 #include "base/strings/string_split.h"
 
-namespace brave_ads::locale {
+namespace brave_ads {
 
-std::string GetCountryCode(const std::string& code) {
-  const std::vector<std::string> components =
-      base::SplitString(code, "-", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
+std::string GetCountryCode(const std::string& subdivision) {
+  const std::vector<std::string> components = base::SplitString(
+      subdivision, "-", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
 
   DCHECK_EQ(2U, components.size());
 
   return components.front();
 }
 
-std::string GetSubdivisionCode(const std::string& code) {
-  const std::vector<std::string> components =
-      base::SplitString(code, "-", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
+std::string GetSubdivisionCode(const std::string& subdivision) {
+  const std::vector<std::string> components = base::SplitString(
+      subdivision, "-", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
 
   DCHECK_EQ(2U, components.size());
 
   return components.back();
 }
 
-}  // namespace brave_ads::locale
+}  // namespace brave_ads

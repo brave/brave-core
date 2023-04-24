@@ -14,13 +14,6 @@
 
 namespace brave_ads {
 
-namespace {
-
-constexpr char kExpectedJson[] =
-    R"({"blindedPaymentTokens":["Ev5JE4/9TZI/5TqyN9JWfJ1To0HBwQw2rWeAPcdjX3Q="],"creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","publicKey":"RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=","transactionId":"8b742869-6e4a-490c-ac31-31b49130098a","type":"view"})";
-
-}  // namespace
-
 class BraveAdsConfirmationPayloadJsonWriterTest : public UnitTestBase {};
 
 TEST_F(BraveAdsConfirmationPayloadJsonWriterTest, WriteJson) {
@@ -35,7 +28,9 @@ TEST_F(BraveAdsConfirmationPayloadJsonWriterTest, WriteJson) {
       json::writer::WriteConfirmationPayload(*confirmation);
 
   // Assert
-  EXPECT_EQ(kExpectedJson, json);
+  EXPECT_EQ(
+      R"({"blindedPaymentTokens":["Ev5JE4/9TZI/5TqyN9JWfJ1To0HBwQw2rWeAPcdjX3Q="],"creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","publicKey":"RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=","transactionId":"8b742869-6e4a-490c-ac31-31b49130098a","type":"view"})",
+      json);
 }
 
 }  // namespace brave_ads

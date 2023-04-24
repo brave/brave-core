@@ -14,9 +14,7 @@ namespace brave_ads {
 
 struct NewTabPageAdInfo;
 
-namespace new_tab_page_ads {
-
-class EventHandlerDelegate {
+class NewTabPageAdEventHandlerDelegate {
  public:
   // Invoked when the new tab page |ad| is served.
   virtual void OnNewTabPageAdServed(const NewTabPageAdInfo& ad) {}
@@ -35,10 +33,9 @@ class EventHandlerDelegate {
       const mojom::NewTabPageAdEventType event_type) {}
 
  protected:
-  virtual ~EventHandlerDelegate() = default;
+  virtual ~NewTabPageAdEventHandlerDelegate() = default;
 };
 
-}  // namespace new_tab_page_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_AD_EVENT_HANDLER_DELEGATE_H_

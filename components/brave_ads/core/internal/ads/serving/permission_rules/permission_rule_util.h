@@ -10,7 +10,7 @@ namespace brave_ads {
 
 class PermissionRuleInterface;
 
-bool ShouldAllow(PermissionRuleInterface* permission_rule);
+bool ShouldAllow(const PermissionRuleInterface& permission_rule);
 
 }  // namespace brave_ads
 

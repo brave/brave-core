@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/conversion_user_data_builder.h"
 
 #include "base/functional/bind.h"
-#include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_unittest_util.h"
@@ -16,11 +15,11 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
 class BraveAdsConversionUserDataBuilderTest : public UnitTestBase {};
 
-TEST_F(BraveAdsConversionUserDataBuilderTest, BuildConversion) {
+TEST_F(BraveAdsConversionUserDataBuilderTest, BuildConversionUserData) {
   // Arrange
   BuildAndSaveConversionQueueItems(AdType::kNotificationAd, kConversionId,
                                    kConversionAdvertiserPublicKey,
@@ -30,16 +29,15 @@ TEST_F(BraveAdsConversionUserDataBuilderTest, BuildConversion) {
   // Act
 
   // Assert
-  BuildConversion(kCreativeInstanceId,
-                  base::BindOnce([](base::Value::Dict user_data) {
-                    const absl::optional<std::string> message =
-                        security::OpenEnvelopeForUserDataAndAdvertiserSecretKey(
-                            user_data, kConversionAdvertiserSecretKey);
-                    ASSERT_TRUE(message);
+  BuildVerifiableConversionUserData(
+      kCreativeInstanceId, base::BindOnce([](base::Value::Dict user_data) {
+        const absl::optional<std::string> message =
+            OpenEnvelopeForUserDataAndAdvertiserSecretKey(
+                user_data, kConversionAdvertiserSecretKey);
+        ASSERT_TRUE(message);
 
-                    const std::string expected_message = kConversionId;
-                    EXPECT_EQ(expected_message, *message);
-                  }));
+        EXPECT_EQ(kConversionId, *message);
+      }));
 }
 
 TEST_F(BraveAdsConversionUserDataBuilderTest,
@@ -53,15 +51,12 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
   // Act
 
   // Assert
-  BuildConversion(kMissingCreativeInstanceId,
-                  base::BindOnce([](base::Value::Dict user_data) {
-                    // Assert
-                    const base::Value expected_user_data =
-                        base::test::ParseJson("{}");
-                    ASSERT_TRUE(expected_user_data.is_dict());
-
-                    EXPECT_EQ(expected_user_data, user_data);
-                  }));
+  BuildVerifiableConversionUserData(
+      kMissingCreativeInstanceId,
+      base::BindOnce([](base::Value::Dict user_data) {
+        // Assert
+        EXPECT_TRUE(user_data.empty());
+      }));
 }
 
 TEST_F(BraveAdsConversionUserDataBuilderTest,
@@ -75,14 +70,11 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
   // Act
 
   // Assert
-  BuildConversion(
+  BuildVerifiableConversionUserData(
       kCreativeInstanceId, base::BindOnce([](base::Value::Dict user_data) {
         // Assert
-        const base::Value expected_user_data = base::test::ParseJson("{}");
-        ASSERT_TRUE(expected_user_data.is_dict());
-
-        EXPECT_EQ(expected_user_data, user_data);
+        EXPECT_TRUE(user_data.empty());
       }));
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

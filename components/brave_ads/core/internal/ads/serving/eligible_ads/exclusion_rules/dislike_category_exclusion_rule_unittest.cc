@@ -15,7 +15,7 @@ namespace brave_ads {
 
 class BraveAdsDislikeCategoryExclusionRuleTest : public UnitTestBase {
  protected:
-  DislikeCategoryExclusionRule exclusion_rule_;
+  const DislikeCategoryExclusionRule exclusion_rule_;
 };
 
 TEST_F(BraveAdsDislikeCategoryExclusionRuleTest, AllowAd) {

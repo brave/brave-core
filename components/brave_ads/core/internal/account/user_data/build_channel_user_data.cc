@@ -9,20 +9,20 @@
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
 namespace {
 constexpr char kBuildChannelKey[] = "buildChannel";
 }  // namespace
 
-base::Value::Dict GetBuildChannel() {
+base::Value::Dict BuildBuildChannelUserData() {
   base::Value::Dict user_data;
 
-  auto& build_channel = GlobalState::GetInstance()->BuildChannel();
+  const auto& build_channel = GlobalState::GetInstance()->BuildChannel();
   DCHECK(!build_channel.name.empty());
   user_data.Set(kBuildChannelKey, build_channel.name);
 
   return user_data;
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

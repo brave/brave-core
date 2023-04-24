@@ -46,13 +46,13 @@ class BraveAdsNotificationAdForMobileIntegrationTest : public UnitTestBase {
   }
 
   void ServeNextAd() {
-    ASSERT_TRUE(notification_ads::ShouldServeAdsAtRegularIntervals());
+    ASSERT_TRUE(ShouldServeAdsAtRegularIntervals());
 
     const std::string name =
         privacy::p2a::GetAdOpportunityNameForAdType(AdType::kNotificationAd);
     EXPECT_CALL(ads_client_mock_, RecordP2AEvent(name, _));
 
-    FastForwardClockTo(notification_ads::ServeAdAt());
+    FastForwardClockTo(ServeAdAt());
   }
 
   void ServeAd() {

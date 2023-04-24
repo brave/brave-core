@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_delegate.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_features.h"
+#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -23,7 +23,7 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::new_tab_page_ads {
+namespace brave_ads {
 
 namespace {
 
@@ -38,8 +38,9 @@ CreativeNewTabPageAdInfo BuildAndSaveCreativeAd() {
 
 }  // namespace
 
-class BraveAdsNewTabPageAdEventHandlerTest : public EventHandlerDelegate,
-                                             public UnitTestBase {
+class BraveAdsNewTabPageAdEventHandlerTest
+    : public NewTabPageAdEventHandlerDelegate,
+      public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -69,7 +70,7 @@ class BraveAdsNewTabPageAdEventHandlerTest : public EventHandlerDelegate,
     did_fail_to_fire_event_ = true;
   }
 
-  EventHandler event_handler_;
+  NewTabPageAdEventHandler event_handler_;
 
   NewTabPageAdInfo ad_;
   bool did_serve_ad_ = false;
@@ -238,7 +239,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
   // Arrange
   ForcePermissionRulesForTesting();
 
-  const int ads_per_hour = kMaximumAdsPerHour.Get();
+  const int ads_per_hour = kMaximumNewTabPageAdsPerHour.Get();
 
   const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo served_ad_event = BuildAdEvent(
@@ -248,7 +249,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
       creative_ad, AdType::kNewTabPageAd, ConfirmationType::kViewed, Now());
   FireAdEvents(viewed_ad_event, ads_per_hour - 1);
 
-  AdvanceClockBy(kMinimumWaitTime.Get());
+  AdvanceClockBy(kNewTabPageAdMinimumWaitTime.Get());
 
   const std::string placement_id =
       base::GUID::GenerateRandomV4().AsLowercaseString();
@@ -262,4 +263,4 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
 }
 
-}  // namespace brave_ads::new_tab_page_ads
+}  // namespace brave_ads

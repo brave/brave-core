@@ -17,7 +17,7 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
 class BraveAdsConversionUserDataTest : public UnitTestBase {};
 
@@ -31,12 +31,12 @@ TEST_F(BraveAdsConversionUserDataTest, GetForConversionConfirmationType) {
   // Act
 
   // Assert
-  GetConversion(
+  BuildConversionUserData(
       kCreativeInstanceId, ConfirmationType::kConversion,
       base::BindOnce([](base::Value::Dict user_data) {
-        const absl::optional<security::VerifiableConversionEnvelopeInfo>
+        const absl::optional<VerifiableConversionEnvelopeInfo>
             verifiable_conversion_envelope =
-                security::GetVerifiableConversionEnvelopeForUserData(user_data);
+                GetVerifiableConversionEnvelopeForUserData(user_data);
         ASSERT_TRUE(verifiable_conversion_envelope);
       }));
 }
@@ -52,14 +52,14 @@ TEST_F(BraveAdsConversionUserDataTest,
   // Act
 
   // Assert
-  GetConversion(
+  BuildConversionUserData(
       kCreativeInstanceId, ConfirmationType::kViewed,
       base::BindOnce([](base::Value::Dict user_data) {
-        const absl::optional<security::VerifiableConversionEnvelopeInfo>
+        const absl::optional<VerifiableConversionEnvelopeInfo>
             verifiable_conversion_envelope =
-                security::GetVerifiableConversionEnvelopeForUserData(user_data);
+                GetVerifiableConversionEnvelopeForUserData(user_data);
         ASSERT_FALSE(verifiable_conversion_envelope);
       }));
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

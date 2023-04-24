@@ -16,7 +16,7 @@ namespace brave_ads {
 
 class BraveAdsMarkedAsInappropriateExclusionRuleTest : public UnitTestBase {
  protected:
-  MarkedAsInappropriateExclusionRule exclusion_rule_;
+  const MarkedAsInappropriateExclusionRule exclusion_rule_;
 };
 
 TEST_F(BraveAdsMarkedAsInappropriateExclusionRuleTest, AllowAd) {

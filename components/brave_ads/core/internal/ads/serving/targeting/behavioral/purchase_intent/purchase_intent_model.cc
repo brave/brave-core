@@ -11,11 +11,11 @@
 #include <utility>
 
 #include "base/containers/adapters.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 
-namespace brave_ads::targeting::model {
+namespace brave_ads {
 
 namespace {
 
@@ -44,7 +44,7 @@ uint16_t CalculateScoreForHistory(
 
 }  // namespace
 
-SegmentList PurchaseIntent::GetSegments() const {
+SegmentList PurchaseIntentModel::GetSegments() const {
   SegmentList segments;
 
   const PurchaseIntentSignalHistoryMap& purchase_intent_signal_history =
@@ -74,4 +74,4 @@ SegmentList PurchaseIntent::GetSegments() const {
   return segments;
 }
 
-}  // namespace brave_ads::targeting::model
+}  // namespace brave_ads

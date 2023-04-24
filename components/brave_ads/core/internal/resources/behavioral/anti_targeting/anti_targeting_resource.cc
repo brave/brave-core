@@ -10,34 +10,35 @@
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_features.h"
+#include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_feature.h"
 #include "brave/components/brave_ads/core/internal/resources/country_components.h"
 #include "brave/components/brave_ads/core/internal/resources/resources_util_impl.h"
 
-namespace brave_ads::resource {
+namespace brave_ads {
 
 namespace {
 constexpr char kResourceId[] = "mkdhnfmjhklfnamlheoliekgeohamoig";
 }  // namespace
 
-AntiTargeting::AntiTargeting() {
+AntiTargetingResource::AntiTargetingResource() {
   AdsClientHelper::AddObserver(this);
 }
 
-AntiTargeting::~AntiTargeting() {
+AntiTargetingResource::~AntiTargetingResource() {
   AdsClientHelper::RemoveObserver(this);
 }
 
-void AntiTargeting::Load() {
-  LoadAndParseResource(kResourceId, kAntiTargetingResourceVersion.Get(),
-                       base::BindOnce(&AntiTargeting::OnLoadAndParseResource,
-                                      weak_factory_.GetWeakPtr()));
+void AntiTargetingResource::Load() {
+  LoadAndParseResource(
+      kResourceId, kAntiTargetingResourceVersion.Get(),
+      base::BindOnce(&AntiTargetingResource::OnLoadAndParseResource,
+                     weak_factory_.GetWeakPtr()));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void AntiTargeting::OnLoadAndParseResource(
-    ParsingErrorOr<AntiTargetingInfo> result) {
+void AntiTargetingResource::OnLoadAndParseResource(
+    ResourceParsingErrorOr<AntiTargetingInfo> result) {
   if (!result.has_value()) {
     BLOG(1, result.error());
     BLOG(1,
@@ -57,14 +58,16 @@ void AntiTargeting::OnLoadAndParseResource(
                                       << " anti-targeting resource");
 }
 
-void AntiTargeting::OnNotifyLocaleDidChange(const std::string& /*locale*/) {
+void AntiTargetingResource::OnNotifyLocaleDidChange(
+    const std::string& /*locale*/) {
   Load();
 }
 
-void AntiTargeting::OnNotifyDidUpdateResourceComponent(const std::string& id) {
+void AntiTargetingResource::OnNotifyDidUpdateResourceComponent(
+    const std::string& id) {
   if (IsValidCountryComponentId(id)) {
     Load();
   }
 }
 
-}  // namespace brave_ads::resource
+}  // namespace brave_ads

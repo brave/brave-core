@@ -10,7 +10,7 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::resource {
+namespace brave_ads {
 
 class BraveAdsEpsilonGreedyBanditResourceUtilTest : public UnitTestBase {};
 
@@ -30,11 +30,11 @@ TEST_F(BraveAdsEpsilonGreedyBanditResourceUtilTest, SetNoEligibleSegments) {
   // Arrange
 
   // Act
-  SetEpsilonGreedyBanditEligibleSegments({});
+  SetEpsilonGreedyBanditEligibleSegments(/*segments*/ {});
 
   // Assert
   const SegmentList segments = GetEpsilonGreedyBanditEligibleSegments();
   EXPECT_TRUE(segments.empty());
 }
 
-}  // namespace brave_ads::resource
+}  // namespace brave_ads

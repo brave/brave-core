@@ -14,7 +14,7 @@ namespace brave_ads {
 
 class BraveAdsUnblindedTokensPermissionRuleTest : public UnitTestBase {
  protected:
-  UnblindedTokensPermissionRule permission_rule_;
+  const UnblindedTokensPermissionRule permission_rule_;
 };
 
 TEST_F(BraveAdsUnblindedTokensPermissionRuleTest, AllowAdIfDoesNotExceedCap) {

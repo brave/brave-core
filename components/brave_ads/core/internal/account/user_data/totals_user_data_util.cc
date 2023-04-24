@@ -7,7 +7,7 @@
 
 #include <string>
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
 AdTypeBucketMap BuildBuckets(
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens) {
@@ -24,4 +24,4 @@ AdTypeBucketMap BuildBuckets(
   return buckets;
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

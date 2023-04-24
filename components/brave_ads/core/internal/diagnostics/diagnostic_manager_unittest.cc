@@ -45,7 +45,7 @@ TEST_F(BraveAdsDiagnosticManagerTest, DiagnosticManager) {
         // Assert
         ASSERT_TRUE(list);
 
-        const base::Value expected_list = base::test::ParseJson(
+        const base::Value::List expected_list = base::test::ParseJsonList(
             R"([
                 {
                   "name": "Device Id",
@@ -72,7 +72,6 @@ TEST_F(BraveAdsDiagnosticManagerTest, DiagnosticManager) {
                   "value": "Monday, July 8, 1996 at 9:25:00\u202fAM"
                 }
               ])");
-        ASSERT_TRUE(expected_list.is_list());
 
         EXPECT_EQ(expected_list, list);
       }));

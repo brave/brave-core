@@ -8,34 +8,34 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_embedding/text_embedding_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_embedding/text_embedding_feature.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_processing.h"
 #include "brave/components/brave_ads/core/internal/resources/resources_util_impl.h"
 
-namespace brave_ads::resource {
+namespace brave_ads {
 
 namespace {
 constexpr char kResourceId[] = "wtpwsrqtjxmfdwaymauprezkunxprysm";
 }  // namespace
 
-TextEmbedding::TextEmbedding() = default;
+TextEmbeddingResource::TextEmbeddingResource() = default;
 
-TextEmbedding::~TextEmbedding() = default;
+TextEmbeddingResource::~TextEmbeddingResource() = default;
 
-bool TextEmbedding::IsInitialized() const {
+bool TextEmbeddingResource::IsInitialized() const {
   return embedding_processing_.IsInitialized();
 }
 
-void TextEmbedding::Load() {
-  LoadAndParseResource(kResourceId,
-                       targeting::kTextEmbeddingResourceVersion.Get(),
-                       base::BindOnce(&TextEmbedding::OnLoadAndParseResource,
-                                      weak_factory_.GetWeakPtr()));
+void TextEmbeddingResource::Load() {
+  LoadAndParseResource(
+      kResourceId, kTextEmbeddingResourceVersion.Get(),
+      base::BindOnce(&TextEmbeddingResource::OnLoadAndParseResource,
+                     weak_factory_.GetWeakPtr()));
 }
 
-void TextEmbedding::OnLoadAndParseResource(
-    ParsingErrorOr<ml::pipeline::EmbeddingProcessing> result) {
+void TextEmbeddingResource::OnLoadAndParseResource(
+    ResourceParsingErrorOr<ml::pipeline::EmbeddingProcessing> result) {
   if (!result.has_value()) {
     BLOG(1, result.error());
     BLOG(1,
@@ -50,8 +50,8 @@ void TextEmbedding::OnLoadAndParseResource(
                                       << " text embedding resource");
 }
 
-const ml::pipeline::EmbeddingProcessing* TextEmbedding::Get() const {
+const ml::pipeline::EmbeddingProcessing* TextEmbeddingResource::Get() const {
   return &embedding_processing_;
 }
 
-}  // namespace brave_ads::resource
+}  // namespace brave_ads

@@ -17,7 +17,7 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::notification_ads {
+namespace brave_ads {
 
 class BraveAdsEligibleNotificationAdsV2Test : public UnitTestBase {
  protected:
@@ -25,14 +25,14 @@ class BraveAdsEligibleNotificationAdsV2Test : public UnitTestBase {
     UnitTestBase::SetUp();
 
     subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
-    anti_targeting_resource_ = std::make_unique<resource::AntiTargeting>();
-    eligible_ads_ = std::make_unique<EligibleAdsV2>(*subdivision_targeting_,
-                                                    *anti_targeting_resource_);
+    anti_targeting_resource_ = std::make_unique<AntiTargetingResource>();
+    eligible_ads_ = std::make_unique<EligibleNotificationAdsV2>(
+        *subdivision_targeting_, *anti_targeting_resource_);
   }
 
   std::unique_ptr<SubdivisionTargeting> subdivision_targeting_;
-  std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
-  std::unique_ptr<EligibleAdsV2> eligible_ads_;
+  std::unique_ptr<AntiTargetingResource> anti_targeting_resource_;
+  std::unique_ptr<EligibleNotificationAdsV2> eligible_ads_;
 };
 
 TEST_F(BraveAdsEligibleNotificationAdsV2Test, GetAds) {
@@ -53,15 +53,14 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test, GetAds) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({/*interest_segments*/ "foo-bar3"},
-                                /*latent_interest_segments*/ {},
-                                {"foo-bar1", "foo-bar2"},
-                                /*text_embedding_html_events*/ {}),
+      BuildUserModel({/*interest_segments*/ "foo-bar3"},
+                     /*latent_interest_segments*/ {}, {"foo-bar1", "foo-bar2"},
+                     /*text_embedding_html_events*/ {}),
       base::BindOnce([](const bool had_opportunity,
                         const CreativeNotificationAdList& creative_ads) {
         // Assert
         EXPECT_TRUE(had_opportunity);
-        EXPECT_TRUE(!creative_ads.empty());
+        EXPECT_FALSE(creative_ads.empty());
       }));
 }
 
@@ -83,15 +82,15 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test, GetAdsForNoSegments) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel(/*interest_segments*/ {},
-                                /*latent_interest_segments*/ {},
-                                /*purchase_intent_segments*/ {},
-                                /*text_embedding_html_events*/ {}),
+      BuildUserModel(/*interest_segments*/ {},
+                     /*latent_interest_segments*/ {},
+                     /*purchase_intent_segments*/ {},
+                     /*text_embedding_html_events*/ {}),
       base::BindOnce([](const bool had_opportunity,
                         const CreativeNotificationAdList& creative_ads) {
         // Assert
         EXPECT_TRUE(had_opportunity);
-        EXPECT_TRUE(!creative_ads.empty());
+        EXPECT_FALSE(creative_ads.empty());
       }));
 }
 
@@ -100,10 +99,10 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel(
-          {/*interest_segments*/ "interest-foo", "interest-bar"},
-          /*latent_interest_segments*/ {}, {"intent-foo", "intent-bar"},
-          /*text_embedding_html_events*/ {}),
+      BuildUserModel({/*interest_segments*/ "interest-foo", "interest-bar"},
+                     /*latent_interest_segments*/ {},
+                     {"intent-foo", "intent-bar"},
+                     /*text_embedding_html_events*/ {}),
       base::BindOnce([](const bool had_opportunity,
                         const CreativeNotificationAdList& creative_ads) {
         // Assert
@@ -112,4 +111,4 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
       }));
 }
 
-}  // namespace brave_ads::notification_ads
+}  // namespace brave_ads

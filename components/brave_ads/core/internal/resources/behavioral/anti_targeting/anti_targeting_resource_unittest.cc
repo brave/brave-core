@@ -28,7 +28,7 @@ class BraveAdsAntiTargetingResourceTest : public UnitTestBase {};
 
 TEST_F(BraveAdsAntiTargetingResourceTest, LoadResource) {
   // Arrange
-  resource::AntiTargeting resource;
+  AntiTargetingResource resource;
 
   // Act
   resource.Load();
@@ -42,7 +42,7 @@ TEST_F(BraveAdsAntiTargetingResourceTest, DoNotLoadInvalidResource) {
   // Arrange
   CopyFileFromTestPathToTempPath(kInvalidResourceId, kResourceId);
 
-  resource::AntiTargeting resource;
+  AntiTargetingResource resource;
   resource.Load();
   task_environment_.RunUntilIdle();
 
@@ -65,7 +65,7 @@ TEST_F(BraveAdsAntiTargetingResourceTest, DoNotLoadMissingResource) {
         std::move(callback).Run(std::move(file));
       }));
 
-  resource::AntiTargeting resource;
+  AntiTargetingResource resource;
   resource.Load();
   task_environment_.RunUntilIdle();
 
@@ -77,7 +77,7 @@ TEST_F(BraveAdsAntiTargetingResourceTest, DoNotLoadMissingResource) {
 
 TEST_F(BraveAdsAntiTargetingResourceTest, IsNotInitialized) {
   // Arrange
-  resource::AntiTargeting resource;
+  AntiTargetingResource resource;
 
   // Act
 

@@ -14,21 +14,21 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
 #include "brave/components/brave_ads/common/features.h"
-#include "brave/components/brave_ads/core/internal/account/account_features.h"
-#include "brave/components/brave_ads/core/internal/ads/inline_content_ad_features.h"
-#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_features.h"
-#include "brave/components/brave_ads/core/internal/ads/notification_ad_features.h"
-#include "brave/components/brave_ads/core/internal/ads/promoted_content_ad_features.h"
-#include "brave/components/brave_ads/core/internal/ads/search_result_ad_features.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_features.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_features.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_features.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_features.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_features.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversions_features.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_features.h"
-#include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_features.h"
+#include "brave/components/brave_ads/core/internal/account/account_feature.h"
+#include "brave/components/brave_ads/core/internal/ads/inline_content_ad_feature.h"
+#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_feature.h"
+#include "brave/components/brave_ads/core/internal/ads/notification_ad_feature.h"
+#include "brave/components/brave_ads/core/internal/ads/promoted_content_ad_feature.h"
+#include "brave/components/brave_ads/core/internal/ads/search_result_ad_feature.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_feature.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_feature.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_feature.h"
+#include "brave/components/brave_ads/core/internal/conversions/conversions_feature.h"
+#include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_feature.h"
+#include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_feature.h"
 
 namespace brave_ads {
 
@@ -36,21 +36,21 @@ namespace {
 
 const base::Feature* const kFeatures[] = {
     &features::kShouldTriggerSearchResultAdEvents,
-    &inline_content_ads::kAdsFeature,
     &kAccountFeature,
     &kAntiTargetingFeature,
     &kConversionsFeature,
-    &kEligibleAdsFeature,
+    &kEligibleAdFeature,
+    &kEpsilonGreedyBanditFeatures,
     &kExclusionRulesFeature,
+    &kInlineContentAdFeature,
+    &kNewTabPageAdFeature,
+    &kNotificationAdFeature,
     &kPermissionRulesFeature,
-    &kUserActivityFeature,
-    &new_tab_page_ads::kAdsFeature,
-    &notification_ads::kAdsFeature,
-    &promoted_content_ads::kAdsFeature,
-    &search_result_ads::kAdsFeature,
-    &targeting::kEpsilonGreedyBanditFeatures,
-    &targeting::kPurchaseIntentFeature,
-    &targeting::kTextClassificationFeature};
+    &kPromotedContentAdFeature,
+    &kPurchaseIntentFeature,
+    &kSearchResultAdFeature,
+    &kTextClassificationFeature,
+    &kUserActivityFeature};
 
 constexpr char kFeaturesSeparators[] = ",:<";
 

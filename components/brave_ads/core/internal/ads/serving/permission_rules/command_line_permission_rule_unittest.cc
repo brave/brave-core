@@ -15,7 +15,7 @@ namespace brave_ads {
 
 class BraveAdsCommandLinePermissionRuleTest : public UnitTestBase {
  protected:
-  CommandLinePermissionRule permission_rule_;
+  const CommandLinePermissionRule permission_rule_;
 };
 
 TEST_F(BraveAdsCommandLinePermissionRuleTest,

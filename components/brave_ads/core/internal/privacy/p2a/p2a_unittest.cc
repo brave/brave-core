@@ -26,12 +26,10 @@ class BraveAdsP2ATest : public UnitTestBase {};
 
 TEST_F(BraveAdsP2ATest, RecordEvent) {
   // Arrange
-  const base::Value value = base::test::ParseJson(kQuestionsAsJson);
-  const base::Value::List* const list = value.GetIfList();
-  ASSERT_TRUE(list);
+  const base::Value::List value = base::test::ParseJsonList(kQuestionsAsJson);
 
   EXPECT_CALL(ads_client_mock_,
-              RecordP2AEvent(kEventName, Eq(std::ref(*list))));
+              RecordP2AEvent(kEventName, Eq(std::ref(value))));
 
   // Act
 

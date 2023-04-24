@@ -40,7 +40,7 @@ TextProcessing& TextProcessing::operator=(TextProcessing&& other) noexcept =
 TextProcessing::~TextProcessing() = default;
 
 TextProcessing::TextProcessing(TransformationVector transformations,
-                               model::Linear linear_model)
+                               LinearModel linear_model)
     : is_initialized_(true) {
   linear_model_ = std::move(linear_model);
   transformations_ = std::move(transformations);

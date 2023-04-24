@@ -10,18 +10,13 @@
 
 namespace brave_ads {
 
-namespace security {
-struct VerifiableConversionEnvelopeInfo;
-}  // namespace security
-
 struct ConversionQueueItemInfo;
+struct VerifiableConversionEnvelopeInfo;
 
-namespace user_data {
-
-absl::optional<security::VerifiableConversionEnvelopeInfo> GetEnvelope(
+absl::optional<VerifiableConversionEnvelopeInfo>
+MaybeBuildVerifiableConversionEnvelope(
     const ConversionQueueItemInfo& conversion_queue_item);
 
-}  // namespace user_data
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_DATA_CONVERSION_USER_DATA_UTIL_H_

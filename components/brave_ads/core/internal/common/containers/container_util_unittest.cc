@@ -23,7 +23,6 @@ TEST(BraveAdsContainerUtilTest, SplitVectorIntoSingleChunk) {
 
   // Assert
   const std::vector<std::vector<std::string>>& expected_vectors = {vectors};
-
   EXPECT_EQ(expected_vectors, vectors);
 }
 
@@ -38,7 +37,6 @@ TEST(BraveAdsContainerUtilTest,
 
   // Assert
   const std::vector<std::vector<std::string>> expected_vectors = {vector};
-
   EXPECT_EQ(expected_vectors, vectors);
 }
 
@@ -54,7 +52,6 @@ TEST(BraveAdsContainerUtilTest, SplitVectorIntoMultipleEvenChunks) {
   // Assert
   const std::vector<std::vector<std::string>> expected_vectors = {
       {"item 1", "item 2", "item 3"}, {"item 4", "item 5", "item 6"}};
-
   EXPECT_EQ(expected_vectors, vectors);
 }
 
@@ -69,7 +66,6 @@ TEST(BraveAdsContainerUtilTest, SplitVectorIntoMultipleUnevenChunks) {
   // Assert
   const std::vector<std::vector<std::string>> expected_vectors = {
       {"item 1", "item 2", "item 3"}, {"item 4", "item 5"}};
-
   EXPECT_EQ(expected_vectors, vectors);
 }
 
@@ -82,7 +78,6 @@ TEST(BraveAdsContainerUtilTest, SplitEmptyVector) {
 
   // Assert
   const std::vector<std::vector<std::string>>& expected_vectors = {vectors};
-
   EXPECT_EQ(expected_vectors, vectors);
 }
 

@@ -7,11 +7,11 @@
 
 #include "base/strings/string_util.h"
 
-namespace brave_ads::locale {
+namespace brave_ads {
 
 std::string BuildSubdivisionCode(const std::string& country,
                                  const std::string& region) {
   return base::ReplaceStringPlaceholders("$1-$2", {country, region}, nullptr);
 }
 
-}  // namespace brave_ads::locale
+}  // namespace brave_ads

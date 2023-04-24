@@ -12,7 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::processor {
+namespace brave_ads {
 
 class BraveAdsTextEmbeddingProcessorUtilTest : public UnitTestBase {};
 
@@ -69,4 +69,4 @@ TEST_F(BraveAdsTextEmbeddingProcessorUtilTest, SanitizeText) {
   }
 }
 
-}  // namespace brave_ads::processor
+}  // namespace brave_ads

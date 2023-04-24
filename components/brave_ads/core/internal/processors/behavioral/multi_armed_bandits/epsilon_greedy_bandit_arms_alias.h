@@ -11,11 +11,11 @@
 #include "base/containers/flat_map.h"
 #include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_arm_info.h"
 
-namespace brave_ads::targeting {
+namespace brave_ads {
 
 using EpsilonGreedyBanditArmMap =
     base::flat_map</*segment*/ std::string, EpsilonGreedyBanditArmInfo>;
 
-}  // namespace brave_ads::targeting
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PROCESSORS_BEHAVIORAL_MULTI_ARMED_BANDITS_EPSILON_GREEDY_BANDIT_ARMS_ALIAS_H_

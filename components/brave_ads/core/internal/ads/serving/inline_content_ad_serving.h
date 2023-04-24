@@ -18,35 +18,26 @@
 
 namespace brave_ads {
 
-namespace resource {
-class AntiTargeting;
-}  // namespace resource
-
-namespace targeting {
-struct UserModelInfo;
-}  // namespace targeting
-
+class AntiTargetingResource;
+class EligibleInlineContentAdsBase;
 class SubdivisionTargeting;
 struct InlineContentAdInfo;
+struct UserModelInfo;
 
-namespace inline_content_ads {
-
-class EligibleAdsBase;
-
-class Serving final {
+class InlineContentAdServing final {
  public:
-  Serving(const SubdivisionTargeting& subdivision_targeting,
-          const resource::AntiTargeting& anti_targeting_resource);
+  InlineContentAdServing(const SubdivisionTargeting& subdivision_targeting,
+                         const AntiTargetingResource& anti_targeting_resource);
 
-  Serving(const Serving&) = delete;
-  Serving& operator=(const Serving&) = delete;
+  InlineContentAdServing(const InlineContentAdServing&) = delete;
+  InlineContentAdServing& operator=(const InlineContentAdServing&) = delete;
 
-  Serving(Serving&&) noexcept = delete;
-  Serving& operator=(Serving&&) noexcept = delete;
+  InlineContentAdServing(InlineContentAdServing&&) noexcept = delete;
+  InlineContentAdServing& operator=(InlineContentAdServing&&) noexcept = delete;
 
-  ~Serving();
+  ~InlineContentAdServing();
 
-  void SetDelegate(ServingDelegate* delegate) {
+  void SetDelegate(InlineContentAdServingDelegate* delegate) {
     DCHECK_EQ(delegate_, nullptr);
     delegate_ = delegate;
   }
@@ -59,8 +50,8 @@ class Serving final {
 
   void OnBuildUserModel(const std::string& dimensions,
                         MaybeServeInlineContentAdCallback callback,
-                        const targeting::UserModelInfo& user_model);
-  void OnGetForUserModel(const targeting::UserModelInfo& user_model,
+                        const UserModelInfo& user_model);
+  void OnGetForUserModel(const UserModelInfo& user_model,
                          const std::string& dimensions,
                          MaybeServeInlineContentAdCallback callback,
                          bool had_opportunity,
@@ -71,14 +62,13 @@ class Serving final {
   void FailedToServeAd(const std::string& dimensions,
                        MaybeServeInlineContentAdCallback callback);
 
-  raw_ptr<ServingDelegate> delegate_ = nullptr;
+  raw_ptr<InlineContentAdServingDelegate> delegate_ = nullptr;
 
-  std::unique_ptr<EligibleAdsBase> eligible_ads_;
+  std::unique_ptr<EligibleInlineContentAdsBase> eligible_ads_;
 
-  base::WeakPtrFactory<Serving> weak_factory_{this};
+  base::WeakPtrFactory<InlineContentAdServing> weak_factory_{this};
 };
 
-}  // namespace inline_content_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_INLINE_CONTENT_AD_SERVING_H_

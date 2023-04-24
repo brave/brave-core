@@ -11,23 +11,19 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
 class BraveAdsPlatformUserDataTest : public UnitTestBase {};
 
-TEST_F(BraveAdsPlatformUserDataTest, GetPlatform) {
+TEST_F(BraveAdsPlatformUserDataTest, BuildPlatformUserData) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
   // Act
-  const base::Value::Dict user_data = GetPlatform();
 
   // Assert
-  const base::Value expected_user_data =
-      base::test::ParseJson(R"({"platform":"windows"})");
-  ASSERT_TRUE(expected_user_data.is_dict());
-
-  EXPECT_EQ(expected_user_data, user_data);
+  EXPECT_EQ(base::test::ParseJsonDict(R"({"platform":"windows"})"),
+            BuildPlatformUserData());
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

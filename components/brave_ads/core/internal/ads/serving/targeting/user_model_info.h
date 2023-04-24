@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
-namespace brave_ads::targeting {
+namespace brave_ads {
 
 struct UserModelInfo final {
   UserModelInfo();
@@ -28,6 +28,6 @@ struct UserModelInfo final {
   TextEmbeddingHtmlEventList text_embedding_html_events;
 };
 
-}  // namespace brave_ads::targeting
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_TARGETING_USER_MODEL_INFO_H_

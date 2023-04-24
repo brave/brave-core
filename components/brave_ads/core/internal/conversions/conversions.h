@@ -116,7 +116,7 @@ class Conversions final : public AdsClientNotifierObserver,
 
   base::ObserverList<ConversionsObserver> observers_;
 
-  resource::Conversions resource_;
+  ConversionsResource resource_;
 
   Timer timer_;
 

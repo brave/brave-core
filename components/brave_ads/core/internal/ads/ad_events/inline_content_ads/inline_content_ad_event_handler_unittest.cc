@@ -18,7 +18,7 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::inline_content_ads {
+namespace brave_ads {
 
 namespace {
 
@@ -33,8 +33,9 @@ CreativeInlineContentAdInfo BuildAndSaveCreativeAd() {
 
 }  // namespace
 
-class BraveAdsInlineContentAdEventHandlerTest : public EventHandlerDelegate,
-                                                public UnitTestBase {
+class BraveAdsInlineContentAdEventHandlerTest
+    : public InlineContentAdEventHandlerDelegate,
+      public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
@@ -64,7 +65,7 @@ class BraveAdsInlineContentAdEventHandlerTest : public EventHandlerDelegate,
     did_fail_to_fire_event_ = true;
   }
 
-  EventHandler event_handler_;
+  InlineContentAdEventHandler event_handler_;
 
   InlineContentAdInfo ad_;
   bool did_serve_ad_ = false;
@@ -238,4 +239,4 @@ TEST_F(BraveAdsInlineContentAdEventHandlerTest,
       0, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kServed));
 }
 
-}  // namespace brave_ads::inline_content_ads
+}  // namespace brave_ads

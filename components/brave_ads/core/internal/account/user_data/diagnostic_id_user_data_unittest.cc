@@ -11,46 +11,45 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
 class BraveAdsDiagnosticIdUserDataTest : public UnitTestBase {};
 
-TEST_F(BraveAdsDiagnosticIdUserDataTest, GetDiagnosticId) {
+TEST_F(BraveAdsDiagnosticIdUserDataTest, BuildDiagnosticIdUserData) {
   // Arrange
   ads_client_mock_.SetStringPref(prefs::kDiagnosticId,
                                  "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2");
 
   // Act
-  const base::Value::Dict user_data = GetDiagnosticId();
 
   // Assert
-  const base::Value expected_user_data = base::test::ParseJson(
-      R"({"diagnosticId":"c1298fde-7fdb-401f-a3ce-0b58fe86e6e2"})");
-  ASSERT_TRUE(expected_user_data.is_dict());
-
-  EXPECT_EQ(expected_user_data, user_data);
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"({"diagnosticId":"c1298fde-7fdb-401f-a3ce-0b58fe86e6e2"})"),
+            BuildDiagnosticIdUserData());
 }
 
-TEST_F(BraveAdsDiagnosticIdUserDataTest, DoNotGetInvalidDiagnosticId) {
+TEST_F(BraveAdsDiagnosticIdUserDataTest,
+       DoNotBuildDiagnosticUserDataIfInvalid) {
   // Arrange
   ads_client_mock_.SetStringPref(prefs::kDiagnosticId, "INVALID");
 
   // Act
-  const base::Value::Dict user_data = GetDiagnosticId();
+  const base::Value::Dict user_data = BuildDiagnosticIdUserData();
 
   // Assert
   EXPECT_TRUE(user_data.empty());
 }
 
-TEST_F(BraveAdsDiagnosticIdUserDataTest, DoNotGetEmptyDiagnosticId) {
+TEST_F(BraveAdsDiagnosticIdUserDataTest,
+       DoNotBuildDiagnosticIdUserDataIfEmpty) {
   // Arrange
   ads_client_mock_.SetStringPref(prefs::kDiagnosticId, "");
 
   // Act
-  const base::Value::Dict user_data = GetDiagnosticId();
+  const base::Value::Dict user_data = BuildDiagnosticIdUserData();
 
   // Assert
   EXPECT_TRUE(user_data.empty());
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

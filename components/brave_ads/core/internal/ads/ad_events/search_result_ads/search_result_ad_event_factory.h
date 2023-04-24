@@ -15,15 +15,12 @@ namespace brave_ads {
 
 struct SearchResultAdInfo;
 
-namespace search_result_ads {
-
-class AdEventFactory final {
+class SearchResultAdEventFactory final {
  public:
   static std::unique_ptr<AdEventInterface<SearchResultAdInfo>> Build(
       mojom::SearchResultAdEventType event_type);
 };
 
-}  // namespace search_result_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_SEARCH_RESULT_ADS_SEARCH_RESULT_AD_EVENT_FACTORY_H_

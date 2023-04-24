@@ -8,34 +8,34 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_feature.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
 #include "brave/components/brave_ads/core/internal/resources/resources_util_impl.h"
 
-namespace brave_ads::resource {
+namespace brave_ads {
 
 namespace {
 constexpr char kResourceId[] = "feibnmjhecfbjpeciancnchbmlobenjn";
 }  // namespace
 
-TextClassification::TextClassification() = default;
+TextClassificationResource::TextClassificationResource() = default;
 
-TextClassification::~TextClassification() = default;
+TextClassificationResource::~TextClassificationResource() = default;
 
-bool TextClassification::IsInitialized() const {
+bool TextClassificationResource::IsInitialized() const {
   return text_processing_pipeline_.IsInitialized();
 }
 
-void TextClassification::Load() {
+void TextClassificationResource::Load() {
   LoadAndParseResource(
-      kResourceId, targeting::kTextClassificationResourceVersion.Get(),
-      base::BindOnce(&TextClassification::OnLoadAndParseResource,
+      kResourceId, kTextClassificationResourceVersion.Get(),
+      base::BindOnce(&TextClassificationResource::OnLoadAndParseResource,
                      weak_factory_.GetWeakPtr()));
 }
 
-void TextClassification::OnLoadAndParseResource(
-    ParsingErrorOr<ml::pipeline::TextProcessing> result) {
+void TextClassificationResource::OnLoadAndParseResource(
+    ResourceParsingErrorOr<ml::pipeline::TextProcessing> result) {
   if (!result.has_value()) {
     BLOG(1, result.error());
     BLOG(1, "Failed to initialize " << kResourceId
@@ -50,8 +50,8 @@ void TextClassification::OnLoadAndParseResource(
                                       << " text classification resource");
 }
 
-const ml::pipeline::TextProcessing* TextClassification::Get() const {
+const ml::pipeline::TextProcessing* TextClassificationResource::Get() const {
   return &text_processing_pipeline_;
 }
 
-}  // namespace brave_ads::resource
+}  // namespace brave_ads

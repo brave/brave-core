@@ -25,7 +25,7 @@ NewTabPageAdHandler::NewTabPageAdHandler(
     Account& account,
     Transfer& transfer,
     const SubdivisionTargeting& subdivision_targeting,
-    const resource::AntiTargeting& anti_targeting_resource)
+    const AntiTargetingResource& anti_targeting_resource)
     : account_(account),
       transfer_(transfer),
       serving_(subdivision_targeting, anti_targeting_resource) {

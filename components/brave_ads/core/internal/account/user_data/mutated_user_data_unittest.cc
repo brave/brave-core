@@ -11,42 +11,35 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
 class BraveAdsMutatedUserDataTest : public UnitTestBase {};
 
-TEST_F(BraveAdsMutatedUserDataTest, GetMutatedConfirmations) {
+TEST_F(BraveAdsMutatedUserDataTest, BuildMutatedConfirmationsUserData) {
   // Arrange
   ads_client_mock_.SetUint64Pref(
       prefs::kConfirmationsHash,
-      /*data/test/confirmations.json has a hash of 3780921521*/ 1251290873);
+      /*core/test/data/test/confirmations.json has a hash of 3780921521*/
+      1251290873);
 
   // Act
-  const base::Value::Dict user_data = GetMutated();
 
   // Assert
-  const base::Value expected_user_data =
-      base::test::ParseJson(R"({"mutated":true})");
-  ASSERT_TRUE(expected_user_data.is_dict());
-
-  EXPECT_EQ(expected_user_data, user_data);
+  EXPECT_EQ(base::test::ParseJsonDict(R"({"mutated":true})"),
+            BuildMutatedUserData());
 }
 
-TEST_F(BraveAdsMutatedUserDataTest, GetMutatedClient) {
+TEST_F(BraveAdsMutatedUserDataTest, BuildMutatedClientUserData) {
   // Arrange
   ads_client_mock_.SetUint64Pref(
       prefs::kClientHash,
-      /*data/test/client.json has a hash of 2810715844*/ 4485170182);
+      /*core/test/data/test/client.json has a hash of 2810715844*/ 4485170182);
 
   // Act
-  const base::Value::Dict user_data = GetMutated();
 
   // Assert
-  const base::Value expected_user_data =
-      base::test::ParseJson(R"({"mutated":true})");
-  ASSERT_TRUE(expected_user_data.is_dict());
-
-  EXPECT_EQ(expected_user_data, user_data);
+  EXPECT_EQ(base::test::ParseJsonDict(R"({"mutated":true})"),
+            BuildMutatedUserData());
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

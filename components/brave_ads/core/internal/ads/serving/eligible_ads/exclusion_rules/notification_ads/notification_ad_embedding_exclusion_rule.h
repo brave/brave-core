@@ -14,8 +14,6 @@ namespace brave_ads {
 
 struct CreativeAdInfo;
 
-namespace notification_ads {
-
 class EmbeddingExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
@@ -25,7 +23,6 @@ class EmbeddingExclusionRule final
       const CreativeAdInfo& creative_ad) const override;
 };
 
-}  // namespace notification_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_EXCLUSION_RULES_NOTIFICATION_ADS_NOTIFICATION_AD_EMBEDDING_EXCLUSION_RULE_H_

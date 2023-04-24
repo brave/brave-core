@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/allocation/seen_ads.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/allocation/seen_advertisers.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_constants.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rules_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/new_tab_page_ads/new_tab_page_ad_exclusion_rules.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pacing/pacing.h"
@@ -25,32 +25,33 @@
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
-namespace brave_ads::new_tab_page_ads {
+namespace brave_ads {
 
-EligibleAdsV1::EligibleAdsV1(
+EligibleNewTabPageAdsV1::EligibleNewTabPageAdsV1(
     const SubdivisionTargeting& subdivision_targeting,
-    const resource::AntiTargeting& anti_targeting_resource)
-    : EligibleAdsBase(subdivision_targeting, anti_targeting_resource) {}
+    const AntiTargetingResource& anti_targeting_resource)
+    : EligibleNewTabPageAdsBase(subdivision_targeting,
+                                anti_targeting_resource) {}
 
-EligibleAdsV1::~EligibleAdsV1() = default;
+EligibleNewTabPageAdsV1::~EligibleNewTabPageAdsV1() = default;
 
-void EligibleAdsV1::GetForUserModel(
-    targeting::UserModelInfo user_model,
+void EligibleNewTabPageAdsV1::GetForUserModel(
+    UserModelInfo user_model,
     GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) {
   BLOG(1, "Get eligible new tab page ads:");
 
   const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kNewTabPageAd,
-      base::BindOnce(&EligibleAdsV1::OnGetForUserModel,
+      base::BindOnce(&EligibleNewTabPageAdsV1::OnGetForUserModel,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
                      std::move(callback)));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void EligibleAdsV1::OnGetForUserModel(
-    targeting::UserModelInfo user_model,
+void EligibleNewTabPageAdsV1::OnGetForUserModel(
+    UserModelInfo user_model,
     GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
     const bool success,
     const AdEventList& ad_events) {
@@ -63,18 +64,19 @@ void EligibleAdsV1::OnGetForUserModel(
   GetBrowsingHistory(std::move(user_model), ad_events, std::move(callback));
 }
 
-void EligibleAdsV1::GetBrowsingHistory(
-    targeting::UserModelInfo user_model,
+void EligibleNewTabPageAdsV1::GetBrowsingHistory(
+    UserModelInfo user_model,
     const AdEventList& ad_events,
     GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) {
   AdsClientHelper::GetInstance()->GetBrowsingHistory(
       kBrowsingHistoryMaxCount.Get(), kBrowsingHistoryDaysAgo.Get(),
-      base::BindOnce(&EligibleAdsV1::GetEligibleAds, weak_factory_.GetWeakPtr(),
-                     std::move(user_model), ad_events, std::move(callback)));
+      base::BindOnce(&EligibleNewTabPageAdsV1::GetEligibleAds,
+                     weak_factory_.GetWeakPtr(), std::move(user_model),
+                     ad_events, std::move(callback)));
 }
 
-void EligibleAdsV1::GetEligibleAds(
-    targeting::UserModelInfo user_model,
+void EligibleNewTabPageAdsV1::GetEligibleAds(
+    UserModelInfo user_model,
     const AdEventList& ad_events,
     GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
     const BrowsingHistoryList& browsing_history) {
@@ -82,12 +84,12 @@ void EligibleAdsV1::GetEligibleAds(
                       std::move(callback));
 }
 
-void EligibleAdsV1::GetForChildSegments(
-    targeting::UserModelInfo user_model,
+void EligibleNewTabPageAdsV1::GetForChildSegments(
+    UserModelInfo user_model,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
     GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) {
-  const SegmentList segments = targeting::GetTopChildSegments(user_model);
+  const SegmentList segments = GetTopChildSegments(user_model);
   if (segments.empty()) {
     return GetForParentSegments(user_model, ad_events, browsing_history,
                                 std::move(callback));
@@ -101,13 +103,13 @@ void EligibleAdsV1::GetForChildSegments(
   const database::table::CreativeNewTabPageAds database_table;
   database_table.GetForSegments(
       segments,
-      base::BindOnce(&EligibleAdsV1::OnGetForChildSegments,
+      base::BindOnce(&EligibleNewTabPageAdsV1::OnGetForChildSegments,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
                      ad_events, browsing_history, std::move(callback)));
 }
 
-void EligibleAdsV1::OnGetForChildSegments(
-    const targeting::UserModelInfo& user_model,
+void EligibleNewTabPageAdsV1::OnGetForChildSegments(
+    const UserModelInfo& user_model,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
     GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
@@ -136,12 +138,12 @@ void EligibleAdsV1::OnGetForChildSegments(
   std::move(callback).Run(/*had_opportunity*/ true, eligible_creative_ads);
 }
 
-void EligibleAdsV1::GetForParentSegments(
-    const targeting::UserModelInfo& user_model,
+void EligibleNewTabPageAdsV1::GetForParentSegments(
+    const UserModelInfo& user_model,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
     GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) {
-  const SegmentList segments = targeting::GetTopParentSegments(user_model);
+  const SegmentList segments = GetTopParentSegments(user_model);
   if (segments.empty()) {
     return GetForUntargeted(ad_events, browsing_history, std::move(callback));
   }
@@ -153,12 +155,12 @@ void EligibleAdsV1::GetForParentSegments(
 
   const database::table::CreativeNewTabPageAds database_table;
   database_table.GetForSegments(
-      segments, base::BindOnce(&EligibleAdsV1::OnGetForParentSegments,
+      segments, base::BindOnce(&EligibleNewTabPageAdsV1::OnGetForParentSegments,
                                weak_factory_.GetWeakPtr(), ad_events,
                                browsing_history, std::move(callback)));
 }
 
-void EligibleAdsV1::OnGetForParentSegments(
+void EligibleNewTabPageAdsV1::OnGetForParentSegments(
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
     GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
@@ -186,7 +188,7 @@ void EligibleAdsV1::OnGetForParentSegments(
   std::move(callback).Run(/*had_opportunity*/ true, eligible_creative_ads);
 }
 
-void EligibleAdsV1::GetForUntargeted(
+void EligibleNewTabPageAdsV1::GetForUntargeted(
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
     GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) {
@@ -194,12 +196,13 @@ void EligibleAdsV1::GetForUntargeted(
 
   const database::table::CreativeNewTabPageAds database_table;
   database_table.GetForSegments(
-      {kUntargeted}, base::BindOnce(&EligibleAdsV1::OnGetForUntargeted,
-                                    weak_factory_.GetWeakPtr(), ad_events,
-                                    browsing_history, std::move(callback)));
+      {kUntargeted},
+      base::BindOnce(&EligibleNewTabPageAdsV1::OnGetForUntargeted,
+                     weak_factory_.GetWeakPtr(), ad_events, browsing_history,
+                     std::move(callback)));
 }
 
-void EligibleAdsV1::OnGetForUntargeted(
+void EligibleNewTabPageAdsV1::OnGetForUntargeted(
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
     GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
@@ -224,7 +227,7 @@ void EligibleAdsV1::OnGetForUntargeted(
   std::move(callback).Run(/*had_opportunity*/ true, eligible_creative_ads);
 }
 
-CreativeNewTabPageAdList EligibleAdsV1::FilterCreativeAds(
+CreativeNewTabPageAdList EligibleNewTabPageAdsV1::FilterCreativeAds(
     const CreativeNewTabPageAdList& creative_ads,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history) {
@@ -234,8 +237,9 @@ CreativeNewTabPageAdList EligibleAdsV1::FilterCreativeAds(
 
   CreativeNewTabPageAdList eligible_creative_ads = creative_ads;
 
-  ExclusionRules exclusion_rules(ad_events, *subdivision_targeting_,
-                                 *anti_targeting_resource_, browsing_history);
+  NewTabPageAdExclusionRules exclusion_rules(ad_events, *subdivision_targeting_,
+                                             *anti_targeting_resource_,
+                                             browsing_history);
   eligible_creative_ads = ApplyExclusionRules(
       eligible_creative_ads, last_served_ad_, &exclusion_rules);
 
@@ -250,4 +254,4 @@ CreativeNewTabPageAdList EligibleAdsV1::FilterCreativeAds(
   return PrioritizeCreativeAds(eligible_creative_ads);
 }
 
-}  // namespace brave_ads::new_tab_page_ads
+}  // namespace brave_ads

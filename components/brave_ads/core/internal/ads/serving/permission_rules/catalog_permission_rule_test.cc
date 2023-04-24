@@ -28,7 +28,7 @@ class BraveAdsCatalogPermissionRuleIntegrationTest : public UnitTestBase {
     MockUrlResponses(ads_client_mock_, url_responses);
   }
 
-  CatalogPermissionRule permission_rule_;
+  const CatalogPermissionRule permission_rule_;
 };
 
 TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest, AllowAd) {

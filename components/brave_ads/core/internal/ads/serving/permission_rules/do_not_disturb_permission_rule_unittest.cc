@@ -30,7 +30,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
     AdvanceClockBy(base::Hours(5) + base::Minutes(59));
 
     // Assert
-    DoNotDisturbPermissionRule permission_rule;
+    const DoNotDisturbPermissionRule permission_rule;
     EXPECT_FALSE(permission_rule.ShouldAllow().has_value());
   }
 
@@ -39,7 +39,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
     AdvanceClockBy(base::Minutes(1));
 
     // Assert
-    DoNotDisturbPermissionRule permission_rule;
+    const DoNotDisturbPermissionRule permission_rule;
     EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
 
@@ -48,7 +48,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
     AdvanceClockBy(base::Hours(14) + base::Minutes(59));
 
     // Assert
-    DoNotDisturbPermissionRule permission_rule;
+    const DoNotDisturbPermissionRule permission_rule;
     EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
 
@@ -57,7 +57,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
     AdvanceClockBy(base::Minutes(1));
 
     // Assert
-    DoNotDisturbPermissionRule permission_rule;
+    const DoNotDisturbPermissionRule permission_rule;
     EXPECT_FALSE(permission_rule.ShouldAllow().has_value());
   }
 }
@@ -78,7 +78,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
     AdvanceClockBy(base::Hours(5) + base::Minutes(59));
 
     // Assert
-    DoNotDisturbPermissionRule permission_rule;
+    const DoNotDisturbPermissionRule permission_rule;
     EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
 
@@ -87,7 +87,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
     AdvanceClockBy(base::Minutes(1));
 
     // Assert
-    DoNotDisturbPermissionRule permission_rule;
+    const DoNotDisturbPermissionRule permission_rule;
     EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
 
@@ -96,7 +96,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
     AdvanceClockBy(base::Hours(14) + base::Minutes(59));
 
     // Assert
-    DoNotDisturbPermissionRule permission_rule;
+    const DoNotDisturbPermissionRule permission_rule;
     EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
 
@@ -105,7 +105,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
     AdvanceClockBy(base::Minutes(1));
 
     // Assert
-    DoNotDisturbPermissionRule permission_rule;
+    const DoNotDisturbPermissionRule permission_rule;
     EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
 }
@@ -124,7 +124,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForIOS) {
     // Verify 00:00 AM
 
     // Assert
-    DoNotDisturbPermissionRule permission_rule;
+    const DoNotDisturbPermissionRule permission_rule;
     EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
 
@@ -133,7 +133,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForIOS) {
     AdvanceClockBy(base::Hours(12));
 
     // Assert
-    DoNotDisturbPermissionRule permission_rule;
+    const DoNotDisturbPermissionRule permission_rule;
     EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
 }
@@ -152,7 +152,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForMacOS) {
     // Verify 00:00 AM
 
     // Assert
-    DoNotDisturbPermissionRule permission_rule;
+    const DoNotDisturbPermissionRule permission_rule;
     EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
 
@@ -161,7 +161,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForMacOS) {
     AdvanceClockBy(base::Hours(12));
 
     // Assert
-    DoNotDisturbPermissionRule permission_rule;
+    const DoNotDisturbPermissionRule permission_rule;
     EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
 }
@@ -180,7 +180,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForWindows) {
     // Verify 00:00 AM
 
     // Assert
-    DoNotDisturbPermissionRule permission_rule;
+    const DoNotDisturbPermissionRule permission_rule;
     EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
 
@@ -189,7 +189,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForWindows) {
     AdvanceClockBy(base::Hours(12));
 
     // Assert
-    DoNotDisturbPermissionRule permission_rule;
+    const DoNotDisturbPermissionRule permission_rule;
     EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
 }
@@ -208,7 +208,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForLinux) {
     // Verify 00:00 AM
 
     // Assert
-    DoNotDisturbPermissionRule permission_rule;
+    const DoNotDisturbPermissionRule permission_rule;
     EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
 
@@ -217,7 +217,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForLinux) {
     AdvanceClockBy(base::Hours(12));
 
     // Assert
-    DoNotDisturbPermissionRule permission_rule;
+    const DoNotDisturbPermissionRule permission_rule;
     EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
 }

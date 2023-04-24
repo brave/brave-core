@@ -9,7 +9,7 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_features.h"
+#include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_feature.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*

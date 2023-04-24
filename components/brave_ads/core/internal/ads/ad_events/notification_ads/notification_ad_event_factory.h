@@ -15,15 +15,12 @@ namespace brave_ads {
 
 struct NotificationAdInfo;
 
-namespace notification_ads {
-
-class AdEventFactory final {
+class NotificationAdEventFactory final {
  public:
   static std::unique_ptr<AdEventInterface<NotificationAdInfo>> Build(
       mojom::NotificationAdEventType event_type);
 };
 
-}  // namespace notification_ads
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_NOTIFICATION_ADS_NOTIFICATION_AD_EVENT_FACTORY_H_

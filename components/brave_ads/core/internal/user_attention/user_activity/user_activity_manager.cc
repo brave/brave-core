@@ -18,7 +18,7 @@
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/page_transition_util.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_constants.h"
-#include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_features.h"
+#include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_feature.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_scoring.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_trigger_info.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_util.h"

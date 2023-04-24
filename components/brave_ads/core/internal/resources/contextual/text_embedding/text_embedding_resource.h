@@ -10,19 +10,19 @@
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_processing.h"
 #include "brave/components/brave_ads/core/internal/resources/parsing_error_or.h"
 
-namespace brave_ads::resource {
+namespace brave_ads {
 
-class TextEmbedding final {
+class TextEmbeddingResource final {
  public:
-  TextEmbedding();
+  TextEmbeddingResource();
 
-  TextEmbedding(const TextEmbedding&) = delete;
-  TextEmbedding& operator=(const TextEmbedding&) = delete;
+  TextEmbeddingResource(const TextEmbeddingResource&) = delete;
+  TextEmbeddingResource& operator=(const TextEmbeddingResource&) = delete;
 
-  TextEmbedding(TextEmbedding&&) noexcept = delete;
-  TextEmbedding& operator=(TextEmbedding&&) noexcept = delete;
+  TextEmbeddingResource(TextEmbeddingResource&&) noexcept = delete;
+  TextEmbeddingResource& operator=(TextEmbeddingResource&&) noexcept = delete;
 
-  ~TextEmbedding();
+  ~TextEmbeddingResource();
 
   bool IsInitialized() const;
 
@@ -32,13 +32,13 @@ class TextEmbedding final {
 
  private:
   void OnLoadAndParseResource(
-      ParsingErrorOr<ml::pipeline::EmbeddingProcessing> result);
+      ResourceParsingErrorOr<ml::pipeline::EmbeddingProcessing> result);
 
   ml::pipeline::EmbeddingProcessing embedding_processing_;
 
-  base::WeakPtrFactory<TextEmbedding> weak_factory_{this};
+  base::WeakPtrFactory<TextEmbeddingResource> weak_factory_{this};
 };
 
-}  // namespace brave_ads::resource
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_CONTEXTUAL_TEXT_EMBEDDING_TEXT_EMBEDDING_RESOURCE_H_

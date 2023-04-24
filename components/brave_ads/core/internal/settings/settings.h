@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SETTINGS_SETTINGS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SETTINGS_SETTINGS_H_
 
-namespace brave_ads::settings {
+namespace brave_ads {
 
-int GetMaximumNotificationAdsPerHour();
+int GetMaximumNotificationAdsPerHourSetting();
 
-}  // namespace brave_ads::settings
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SETTINGS_SETTINGS_H_

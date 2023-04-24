@@ -60,7 +60,7 @@ TEST(BraveAdsUnblindedTokenTest, FailToDecodeEmptyBase64) {
   // Arrange
 
   // Act
-  const UnblindedToken unblinded_token = UnblindedToken::DecodeBase64({});
+  const UnblindedToken unblinded_token = UnblindedToken::DecodeBase64("");
 
   // Assert
   EXPECT_FALSE(unblinded_token.has_value());

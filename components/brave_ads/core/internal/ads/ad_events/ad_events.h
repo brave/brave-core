@@ -17,12 +17,12 @@ class Time;
 
 namespace brave_ads {
 
+using AdEventCallback = base::OnceCallback<void(bool success)>;
+
 class AdType;
 class ConfirmationType;
 struct AdEventInfo;
 struct AdInfo;
-
-using AdEventCallback = base::OnceCallback<void(bool success)>;
 
 void LogAdEvent(const AdInfo& ad,
                 const ConfirmationType& confirmation_type,

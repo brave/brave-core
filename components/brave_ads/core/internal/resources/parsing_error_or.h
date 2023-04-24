@@ -10,13 +10,13 @@
 
 #include "base/types/expected.h"
 
-namespace brave_ads::resource {
+namespace brave_ads {
 
 // Helper for methods which perform file read operations to parse a json file,
 // and initiate a given type.
 template <class ValueType>
-using ParsingErrorOr = base::expected<ValueType, std::string>;
+using ResourceParsingErrorOr = base::expected<ValueType, std::string>;
 
-}  // namespace brave_ads::resource
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_PARSING_ERROR_OR_H_

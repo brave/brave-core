@@ -59,7 +59,7 @@ TEST(BraveAdsTokenPreimageTest, FailToDecodeEmptyBase64) {
   // Arrange
 
   // Act
-  const TokenPreimage token_preimage = TokenPreimage::DecodeBase64({});
+  const TokenPreimage token_preimage = TokenPreimage::DecodeBase64("");
 
   // Assert
   EXPECT_FALSE(token_preimage.has_value());

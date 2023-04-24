@@ -8,11 +8,11 @@
 
 #include <string>
 
-namespace brave_ads::locale {
+namespace brave_ads {
 
 std::string BuildSubdivisionCode(const std::string& country,
                                  const std::string& region);
 
-}  // namespace brave_ads::locale
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_LOCALE_SUBDIVISION_CODE_UNITTEST_UTIL_H_

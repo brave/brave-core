@@ -22,7 +22,7 @@
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_database_table.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversions_features.h"
+#include "brave/components/brave_ads/core/internal/conversions/conversions_feature.h"
 #include "brave/components/brave_ads/core/internal/conversions/sorts/conversions_sort_factory.h"
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"

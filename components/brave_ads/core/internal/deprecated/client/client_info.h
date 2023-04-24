@@ -39,9 +39,8 @@ struct ClientInfo final {
   HistoryItemList history_items;
   base::flat_map<std::string, std::map<std::string, bool>> seen_ads;
   base::flat_map<std::string, std::map<std::string, bool>> seen_advertisers;
-  targeting::TextClassificationProbabilityList
-      text_classification_probabilities;
-  targeting::PurchaseIntentSignalHistoryMap purchase_intent_signal_history;
+  TextClassificationProbabilityList text_classification_probabilities;
+  PurchaseIntentSignalHistoryMap purchase_intent_signal_history;
 };
 
 }  // namespace brave_ads

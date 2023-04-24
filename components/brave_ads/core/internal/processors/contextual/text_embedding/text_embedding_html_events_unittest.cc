@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
 
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_embedding/text_embedding_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_embedding/text_embedding_feature.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_info.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
@@ -58,7 +58,7 @@ TEST_F(BraveAdsTextEmbeddingHtmlEventsTest, LogEvent) {
 
 TEST_F(BraveAdsTextEmbeddingHtmlEventsTest, PurgeEvents) {
   // Arrange
-  for (int i = 0; i < targeting::kTextEmbeddingHistorySize.Get() + 4; i++) {
+  for (int i = 0; i < kTextEmbeddingHistorySize.Get() + 4; i++) {
     const ml::pipeline::TextEmbeddingInfo text_embedding = BuildTextEmbedding();
     LogTextEmbeddingHtmlEvent(
         BuildTextEmbeddingHtmlEvent(text_embedding),
@@ -77,9 +77,8 @@ TEST_F(BraveAdsTextEmbeddingHtmlEventsTest, PurgeEvents) {
 
         const size_t text_embedding_html_event_count =
             text_embedding_html_events.size();
-        EXPECT_LE(
-            text_embedding_html_event_count,
-            static_cast<size_t>(targeting::kTextEmbeddingHistorySize.Get()));
+        EXPECT_LE(text_embedding_html_event_count,
+                  static_cast<size_t>(kTextEmbeddingHistorySize.Get()));
       }));
 }
 

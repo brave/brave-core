@@ -14,22 +14,18 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
-TEST(BraveAdsVersionNumberUserDataTest, GetVersionNumber) {
+TEST(BraveAdsVersionNumberUserDataTest, BuildVersionNumberUserData) {
   // Arrange
 
   // Act
-  const base::Value::Dict user_data = GetVersionNumber();
 
   // Assert
   const std::string expected_json = base::ReplaceStringPlaceholders(
       R"({"versionNumber":"$1"})", {GetBrowserVersionNumber()}, nullptr);
-
-  const base::Value expected_user_data = base::test::ParseJson(expected_json);
-  ASSERT_TRUE(expected_user_data.is_dict());
-
-  EXPECT_EQ(expected_user_data, user_data);
+  EXPECT_EQ(base::test::ParseJsonDict(expected_json),
+            BuildVersionNumberUserData());
 }
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads

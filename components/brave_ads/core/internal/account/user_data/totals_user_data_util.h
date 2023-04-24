@@ -10,11 +10,11 @@
 
 #include "brave/components/brave_ads/core/internal/account/user_data/totals_user_data_alias.h"
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
 AdTypeBucketMap BuildBuckets(
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens);
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_DATA_TOTALS_USER_DATA_UTIL_H_

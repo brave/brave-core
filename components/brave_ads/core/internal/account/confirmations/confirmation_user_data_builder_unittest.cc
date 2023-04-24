@@ -41,9 +41,8 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
   sys_info.device_id =
       "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 
-  const base::Time time =
-      TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false);
-  AdvanceClockTo(time);
+  AdvanceClockTo(
+      TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false));
 
   TransactionInfo transaction =
       BuildTransaction(/*value*/ 0.0, ConfirmationType::kViewed);
@@ -80,9 +79,8 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
   sys_info.device_id =
       "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 
-  const base::Time time =
-      TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false);
-  AdvanceClockTo(time);
+  AdvanceClockTo(
+      TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false));
 
   TransactionInfo transaction =
       BuildTransaction(/*value*/ 0.0, ConfirmationType::kConversion);

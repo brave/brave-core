@@ -8,11 +8,11 @@
 
 #include "base/values.h"
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
 // Anything that causes a mutation (a change in the DNA of a cell).
-base::Value::Dict GetMutated();
+base::Value::Dict BuildMutatedUserData();
 
-}  // namespace brave_ads::user_data
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_DATA_MUTATED_USER_DATA_H_

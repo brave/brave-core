@@ -27,8 +27,8 @@ constexpr char kEnableAutomationSwitch[] = "enable-automation";
 struct ParamInfo final {
   CommandLineSwitchInfo command_line_switch;
   bool expected_did_override_command_line_switch;
-} const kTestCases[] = {{{kFooBarSwitch, {}}, false},
-                        {{kEnableAutomationSwitch, {}}, true}};
+} const kTests[] = {{{kFooBarSwitch, {}}, false},
+                    {{kEnableAutomationSwitch, {}}, true}};
 
 }  // namespace
 
@@ -81,7 +81,7 @@ std::string TestParamToString(
 
 INSTANTIATE_TEST_SUITE_P(,
                          BraveAdsDidOverrideCommandLineSwitchesUtilTest,
-                         testing::ValuesIn(kTestCases),
+                         testing::ValuesIn(kTests),
                          TestParamToString);
 
 }  // namespace brave_ads

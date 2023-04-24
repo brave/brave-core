@@ -10,14 +10,14 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::notification_ads {
+namespace brave_ads {
 
 namespace {
 
@@ -34,7 +34,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   creative_ad.creative_instance_id = kCreativeInstanceId;
   creative_ad.campaign_id = kCampaignIds[0];
 
-  DismissedExclusionRule exclusion_rule({});
+  const NotificationAdDismissedExclusionRule exclusion_rule(/*ad_events*/ {});
 
   // Act
 
@@ -75,7 +75,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
     AdvanceClockBy(base::Minutes(5));
   }
 
-  DismissedExclusionRule exclusion_rule(ad_events);
+  const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Days(2) -
                  (base::Minutes(5) * confirmation_types.size()) -
@@ -126,7 +126,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
                    ConfirmationType::kDismissed, Now());
   ad_events.push_back(ad_event_4);
 
-  DismissedExclusionRule exclusion_rule(ad_events);
+  const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
 
   // Act
 
@@ -166,7 +166,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
     AdvanceClockBy(base::Minutes(5));
   }
 
-  DismissedExclusionRule exclusion_rule(ad_events);
+  const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Days(2) -
                  (base::Minutes(5) * confirmation_types.size()) -
@@ -210,7 +210,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
     AdvanceClockBy(base::Minutes(5));
   }
 
-  DismissedExclusionRule exclusion_rule(ad_events);
+  const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Days(2) -
                  (base::Minutes(5) * confirmation_types.size()));
@@ -253,7 +253,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
     AdvanceClockBy(base::Minutes(5));
   }
 
-  DismissedExclusionRule exclusion_rule(ad_events);
+  const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Days(2) -
                  (base::Minutes(5) * confirmation_types.size()) -
@@ -297,7 +297,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
     AdvanceClockBy(base::Minutes(5));
   }
 
-  DismissedExclusionRule exclusion_rule(ad_events);
+  const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Days(2) -
                  (base::Minutes(5) * confirmation_types.size()));
@@ -341,7 +341,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
     AdvanceClockBy(base::Minutes(5));
   }
 
-  DismissedExclusionRule exclusion_rule(ad_events);
+  const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Days(2));
 
@@ -384,7 +384,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
     AdvanceClockBy(base::Minutes(5));
   }
 
-  DismissedExclusionRule exclusion_rule(ad_events);
+  const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Days(2) -
                  (base::Minutes(5) * confirmation_types.size()) -
@@ -427,7 +427,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
     ad_events.push_back(ad_event);
   }
 
-  DismissedExclusionRule exclusion_rule(ad_events);
+  const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
 
   // Act
 
@@ -471,7 +471,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
     AdvanceClockBy(base::Minutes(5));
   }
 
-  DismissedExclusionRule exclusion_rule(ad_events);
+  const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Days(2) -
                  (base::Minutes(5) * confirmation_types.size()) -
@@ -508,7 +508,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
     AdvanceClockBy(base::Minutes(5));
   }
 
-  DismissedExclusionRule exclusion_rule(ad_events);
+  const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Days(2) -
                  (base::Minutes(5) * confirmation_types.size()));
@@ -519,4 +519,4 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad_1).has_value());
 }
 
-}  // namespace brave_ads::notification_ads
+}  // namespace brave_ads

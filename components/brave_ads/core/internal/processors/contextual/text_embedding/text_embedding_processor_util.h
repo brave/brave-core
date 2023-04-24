@@ -8,11 +8,11 @@
 
 #include <string>
 
-namespace brave_ads::processor {
+namespace brave_ads {
 
 std::string SanitizeHtml(const std::string& html);
 std::string SanitizeText(const std::string& text);
 
-}  // namespace brave_ads::processor
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PROCESSORS_CONTEXTUAL_TEXT_EMBEDDING_TEXT_EMBEDDING_PROCESSOR_UTIL_H_
