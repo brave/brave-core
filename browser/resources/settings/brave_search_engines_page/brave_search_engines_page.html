@@ -9,6 +9,14 @@
     </settings-dropdown-menu>
   </div>
 </template>
+<template is="dom-if" if="[[shouldShowSearchSuggestToggle_()]]" restamp>
+  <settings-toggle-button id="searchSuggestToggle"
+      class="hr"
+      pref="{{prefs.search.suggest_enabled}}"
+      label="$i18n{searchSuggestPref}"
+      sub-label="$i18n{searchSuggestPrefDesc}">
+  </settings-toggle-button>
+</template>
 <if expr="enable_extensions">
 <settings-toggle-button id="webDiscoveryEnabled"
     class="cr-row"
