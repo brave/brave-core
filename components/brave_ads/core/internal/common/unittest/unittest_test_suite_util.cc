@@ -11,7 +11,7 @@
 
 namespace brave_ads {
 
-std::string GetNamespaceForCurrentTest() {
+std::string GetUuidForCurrentTest() {
   const ::testing::TestInfo* const test_info =
       ::testing::UnitTest::GetInstance()->current_test_info();
   CHECK(test_info);
@@ -22,7 +22,7 @@ std::string GetNamespaceForCurrentTest() {
 
 std::string GetUuidForCurrentTestAndValue(const std::string& value) {
   return base::ReplaceStringPlaceholders(
-      "$1:$2", {value, GetNamespaceForCurrentTest()}, nullptr);
+      "$1:$2", {value, GetUuidForCurrentTest()}, nullptr);
 }
 
 }  // namespace brave_ads

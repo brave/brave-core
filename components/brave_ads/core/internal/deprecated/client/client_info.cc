@@ -36,163 +36,171 @@ base::Value::Dict ClientInfo::ToValue() const {
 
   dict.Set("adPreferences", ad_preferences.ToValue());
 
-  base::Value::List ads_shown_history = HistoryItemsToValue(history_items);
-  dict.Set("adsShownHistory", std::move(ads_shown_history));
+  dict.Set("adsShownHistory", HistoryItemsToValue(history_items));
 
-  base::Value::Dict purchase_intent_dict;
-  for (const auto& [key, value] : purchase_intent_signal_history) {
-    base::Value::List history;
-    for (const auto& segment_history_item : value) {
-      history.Append(PurchaseIntentSignalHistoryToValue(segment_history_item));
+  base::Value::Dict purchase_intent_signal_history_dict;
+  for (const auto& [segment, history] : purchase_intent_signal_history) {
+    base::Value::List list;
+    for (const auto& item : history) {
+      list.Append(PurchaseIntentSignalHistoryToValue(item));
     }
-    purchase_intent_dict.Set(key, std::move(history));
+
+    purchase_intent_signal_history_dict.Set(segment, std::move(list));
   }
-  dict.Set("purchaseIntentSignalHistory", std::move(purchase_intent_dict));
+  dict.Set("purchaseIntentSignalHistory",
+           std::move(purchase_intent_signal_history_dict));
 
   base::Value::Dict seen_ads_dict;
-  for (const auto& [key, value] : seen_ads) {
-    base::Value::Dict ad;
-    for (const auto& [ad_key, ad_value] : value) {
-      ad.Set(ad_key, ad_value);
+  for (const auto& [ad_type, ads] : seen_ads) {
+    base::Value::Dict seen_ad_dict;
+    for (const auto& [creative_instance_id, seen_ad] : ads) {
+      seen_ad_dict.Set(creative_instance_id, seen_ad);
     }
 
-    seen_ads_dict.Set(key, std::move(ad));
+    seen_ads_dict.Set(ad_type, std::move(seen_ad_dict));
   }
   dict.Set("seenAds", std::move(seen_ads_dict));
 
-  base::Value::Dict advertisers;
-  for (const auto& [key, value] : seen_advertisers) {
-    base::Value::Dict advertiser;
-    for (const auto& [ad_key, ad_value] : value) {
-      advertiser.Set(ad_key, ad_value);
+  base::Value::Dict seen_advertisers_dict;
+  for (const auto& [ad_type, advertisers] : seen_advertisers) {
+    base::Value::Dict seen_advertiser_dict;
+    for (const auto& [advertiser_id, seen_advertiser] : advertisers) {
+      seen_advertiser_dict.Set(advertiser_id, seen_advertiser);
     }
-    advertisers.Set(key, std::move(advertiser));
-  }
-  dict.Set("seenAdvertisers", std::move(advertisers));
 
-  base::Value::List probabilities_history;
-  for (const auto& probabilities : text_classification_probabilities) {
-    base::Value::Dict classification_probabilities;
-    base::Value::List text_probabilities;
-    for (const auto& [key, value] : probabilities) {
-      base::Value::Dict prob;
-      DCHECK(!key.empty());
-      prob.Set("segment", key);
-      prob.Set("pageScore", base::NumberToString(value));
-      text_probabilities.Append(std::move(prob));
-    }
-    classification_probabilities.Set("textClassificationProbabilities",
-                                     std::move(text_probabilities));
-    probabilities_history.Append(std::move(classification_probabilities));
+    seen_advertisers_dict.Set(ad_type, std::move(seen_advertiser_dict));
   }
+  dict.Set("seenAdvertisers", std::move(seen_advertisers_dict));
+
+  base::Value::List probabilities_history_list;
+  for (const auto& item : text_classification_probabilities) {
+    base::Value::List probabilities_list;
+
+    for (const auto& [segmemt, page_score] : item) {
+      DCHECK(!segmemt.empty());
+
+      base::Value::Dict probability_dict;
+      probability_dict.Set("segment", segmemt);
+      probability_dict.Set("pageScore", base::NumberToString(page_score));
+
+      probabilities_list.Append(std::move(probability_dict));
+    }
+
+    base::Value::Dict probability_dict;
+    probability_dict.Set("textClassificationProbabilities",
+                         std::move(probabilities_list));
+    probabilities_history_list.Append(std::move(probability_dict));
+  }
+
   dict.Set("textClassificationProbabilitiesHistory",
-           std::move(probabilities_history));
+           std::move(probabilities_history_list));
+
   return dict;
 }
 
 // TODO(https://github.com/brave/brave-browser/issues/26003): Reduce cognitive
 // complexity.
-bool ClientInfo::FromValue(const base::Value::Dict& root) {
-  if (const auto* value = root.FindDict("adPreferences")) {
+bool ClientInfo::FromValue(const base::Value::Dict& dict) {
+  if (const auto* const value = dict.FindDict("adPreferences")) {
     ad_preferences.FromValue(*value);
   }
 
 #if !BUILDFLAG(IS_IOS)
-  if (const auto* value = root.FindList("adsShownHistory")) {
+  if (const auto* const value = dict.FindList("adsShownHistory")) {
     history_items = HistoryItemsFromValue(*value);
   }
 #endif
 
-  if (const auto* value = root.FindDict("purchaseIntentSignalHistory")) {
-    for (const auto [history_key, history_value] : *value) {
-      std::vector<PurchaseIntentSignalHistoryInfo> histories;
-
-      const auto* segment_history_items = history_value.GetIfList();
-      if (!segment_history_items) {
+  if (const auto* value = dict.FindDict("purchaseIntentSignalHistory")) {
+    for (const auto [segment, history] : *value) {
+      const auto* items = history.GetIfList();
+      if (!items) {
         continue;
       }
 
-      for (const auto& segment_history_item : *segment_history_items) {
-        if (!segment_history_item.is_dict()) {
+      std::vector<PurchaseIntentSignalHistoryInfo> histories;
+
+      for (const auto& item : *items) {
+        if (!item.is_dict()) {
           continue;
         }
 
-        const PurchaseIntentSignalHistoryInfo history =
-            PurchaseIntentSignalHistoryFromValue(
-                segment_history_item.GetDict());
-        histories.push_back(history);
+        histories.push_back(
+            PurchaseIntentSignalHistoryFromValue(item.GetDict()));
       }
 
-      purchase_intent_signal_history.emplace(history_key, histories);
+      purchase_intent_signal_history.emplace(segment, histories);
     }
   }
 
-  if (const auto* value = root.FindDict("seenAds")) {
-    for (const auto [list_key, list_value] : *value) {
-      if (!list_value.is_dict()) {
+  if (const auto* const value = dict.FindDict("seenAds")) {
+    for (const auto [ad_type, ads] : *value) {
+      if (!ads.is_dict()) {
         continue;
       }
 
-      for (const auto [key_seen_ads, value_seen_ads] : list_value.GetDict()) {
-        seen_ads[list_key][key_seen_ads] = value_seen_ads.GetBool();
-      }
-    }
-  }
-
-  if (const auto* value = root.FindDict("seenAdvertisers")) {
-    for (const auto [list_key, list_value] : *value) {
-      if (!list_value.is_dict()) {
-        continue;
-      }
-
-      for (const auto [key_seen_advertisers, value_seen_advertisers] :
-           list_value.GetDict()) {
-        seen_advertisers[list_key][key_seen_advertisers] =
-            value_seen_advertisers.GetBool();
+      for (const auto [creative_instance_id, seen_ad] : ads.GetDict()) {
+        DCHECK(seen_ad.is_bool());
+        seen_ads[ad_type][creative_instance_id] = seen_ad.GetBool();
       }
     }
   }
 
-  if (const auto* value =
-          root.FindList("textClassificationProbabilitiesHistory")) {
-    for (const auto& probabilities : *value) {
-      if (!probabilities.is_dict()) {
+  if (const auto* const value = dict.FindDict("seenAdvertisers")) {
+    for (const auto [ad_type, advertisers] : *value) {
+      if (!advertisers.is_dict()) {
         continue;
       }
-      const auto* probability_list =
-          probabilities.GetDict().FindList("textClassificationProbabilities");
+
+      for (const auto [advertiser_id, seen_advertiser] :
+           advertisers.GetDict()) {
+        DCHECK(seen_advertiser.is_bool());
+        seen_advertisers[ad_type][advertiser_id] = seen_advertiser.GetBool();
+      }
+    }
+  }
+
+  if (const auto* const value =
+          dict.FindList("textClassificationProbabilitiesHistory")) {
+    for (const auto& probability_history : *value) {
+      if (!probability_history.is_dict()) {
+        continue;
+      }
+
+      const auto* const probability_list =
+          probability_history.GetDict().FindList(
+              "textClassificationProbabilities");
       if (!probability_list) {
         continue;
       }
 
-      TextClassificationProbabilityMap new_probabilities;
+      TextClassificationProbabilityMap probabilities;
 
-      for (const auto& probability : *probability_list) {
-        const base::Value::Dict* const dict = probability.GetIfDict();
-        if (!dict) {
+      for (const auto& item : *probability_list) {
+        const auto* const item_dict = item.GetIfDict();
+        if (!item_dict) {
           continue;
         }
 
-        const std::string* const segment = dict->FindString("segment");
+        const std::string* const segment = item_dict->FindString("segment");
         if (!segment) {
           continue;
         }
 
         double page_score = 0.0;
-        if (const auto page_score_value_double = root.FindDouble("pageScore")) {
-          // Migrate legacy page score
-          page_score = *page_score_value_double;
-        } else if (const auto* page_score_value_string =
-                       root.FindString("pageScore")) {
+        if (const auto page_score_value = dict.FindDouble("pageScore")) {
+          page_score = *page_score_value;
+        } else if (const auto* const legacy_page_score_value =
+                       dict.FindString("pageScore")) {
           const bool success =
-              base::StringToDouble(*page_score_value_string, &page_score);
+              base::StringToDouble(*legacy_page_score_value, &page_score);
           DCHECK(success);
         }
 
-        new_probabilities.insert({*segment, page_score});
+        probabilities.insert({*segment, page_score});
       }
 
-      text_classification_probabilities.push_back(new_probabilities);
+      text_classification_probabilities.push_back(probabilities);
     }
   }
 

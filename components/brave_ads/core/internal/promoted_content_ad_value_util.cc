@@ -33,47 +33,53 @@ base::Value::Dict PromotedContentAdToValue(const PromotedContentAdInfo& ad) {
 }
 
 PromotedContentAdInfo PromotedContentAdFromValue(
-    const base::Value::Dict& root) {
+    const base::Value::Dict& dict) {
   PromotedContentAdInfo ad;
 
-  if (const auto* value = root.FindString(kTypeKey)) {
+  if (const auto* const value = dict.FindString(kTypeKey)) {
     ad.type = AdType(*value);
   }
 
-  if (const auto* value = root.FindString(kPromotedContentAdPlacementIdKey)) {
+  if (const auto* const value =
+          dict.FindString(kPromotedContentAdPlacementIdKey)) {
     ad.placement_id = *value;
   }
 
-  if (const auto* value =
-          root.FindString(kPromotedContentAdCreativeInstanceIdKey)) {
+  if (const auto* const value =
+          dict.FindString(kPromotedContentAdCreativeInstanceIdKey)) {
     ad.creative_instance_id = *value;
   }
 
-  if (const auto* value = root.FindString(kPromotedContentAdCreativeSetIdKey)) {
+  if (const auto* const value =
+          dict.FindString(kPromotedContentAdCreativeSetIdKey)) {
     ad.creative_set_id = *value;
   }
 
-  if (const auto* value = root.FindString(kPromotedContentAdCampaignIdKey)) {
+  if (const auto* const value =
+          dict.FindString(kPromotedContentAdCampaignIdKey)) {
     ad.campaign_id = *value;
   }
 
-  if (const auto* value = root.FindString(kPromotedContentAdAdvertiserIdKey)) {
+  if (const auto* const value =
+          dict.FindString(kPromotedContentAdAdvertiserIdKey)) {
     ad.advertiser_id = *value;
   }
 
-  if (const auto* value = root.FindString(kPromotedContentAdSegmentKey)) {
+  if (const auto* const value = dict.FindString(kPromotedContentAdSegmentKey)) {
     ad.segment = *value;
   }
 
-  if (const auto* value = root.FindString(kPromotedContentAdTitleKey)) {
+  if (const auto* const value = dict.FindString(kPromotedContentAdTitleKey)) {
     ad.title = *value;
   }
 
-  if (const auto* value = root.FindString(kPromotedContentAdDescriptionnKey)) {
+  if (const auto* const value =
+          dict.FindString(kPromotedContentAdDescriptionnKey)) {
     ad.description = *value;
   }
 
-  if (const auto* value = root.FindString(kPromotedContentAdTargetUrlKey)) {
+  if (const auto* const value =
+          dict.FindString(kPromotedContentAdTargetUrlKey)) {
     ad.target_url = GURL(*value);
   }
 

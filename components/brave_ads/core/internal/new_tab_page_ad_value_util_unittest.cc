@@ -28,7 +28,7 @@ class BraveAdsNewTabPageAdValueUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsNewTabPageAdValueUtilTest, FromValue) {
   // Arrange
-  const base::Value::Dict value = base::test::ParseJsonDict(kJson);
+  const base::Value::Dict dict = base::test::ParseJsonDict(kJson);
 
   // Act
 
@@ -37,7 +37,7 @@ TEST_F(BraveAdsNewTabPageAdValueUtilTest, FromValue) {
       BuildCreativeNewTabPageAd(/*should_use_random_guids*/ false);
   const NewTabPageAdInfo expected_ad =
       BuildNewTabPageAd(creative_ad, kPlacementId);
-  EXPECT_EQ(expected_ad, NewTabPageAdFromValue(value));
+  EXPECT_EQ(expected_ad, NewTabPageAdFromValue(dict));
 }
 
 TEST_F(BraveAdsNewTabPageAdValueUtilTest, ToValue) {

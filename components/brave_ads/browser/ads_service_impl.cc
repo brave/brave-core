@@ -1945,8 +1945,8 @@ void AdsServiceImpl::RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
 }
 
 void AdsServiceImpl::RecordP2AEvent(const std::string& /*name*/,
-                                    base::Value::List value) {
-  for (const auto& item : value) {
+                                    base::Value::List list) {
+  for (const auto& item : list) {
     DCHECK(item.is_string());
     RecordInWeeklyStorageAndEmitP2AHistogramAnswer(profile_->GetPrefs(),
                                                    item.GetString());

@@ -40,38 +40,41 @@ PurchaseIntentInfo::CreateFromValue(const base::Value::Dict dict) {
   }
 
   // Parsing field: "segments"
-  const base::Value::List* const incoming_segments = dict.FindList("segments");
-  if (!incoming_segments) {
+  const auto* const segments_list = dict.FindList("segments");
+  if (!segments_list) {
     return base::unexpected("Failed to load from JSON, segments missing");
   }
 
   std::vector<std::string> segments;
-  for (const auto& item : *incoming_segments) {
+  for (const auto& item : *segments_list) {
     const std::string& segment = item.GetString();
     if (segment.empty()) {
       return base::unexpected("Failed to load from JSON, empty segment found");
     }
+
     segments.push_back(segment);
   }
 
   // Parsing field: "segment_keywords"
-  const base::Value::Dict* const incoming_segment_keywords =
-      dict.FindDict("segment_keywords");
-  if (!incoming_segment_keywords) {
+  const auto* const segment_keywords_dict = dict.FindDict("segment_keywords");
+  if (!segment_keywords_dict) {
     return base::unexpected(
         "Failed to load from JSON, segment keywords missing");
   }
 
-  for (const auto [keywords, indexes] : *incoming_segment_keywords) {
+  for (const auto [keywords, indexes] : *segment_keywords_dict) {
     PurchaseIntentSegmentKeywordInfo purchase_intent_segment_keyword;
+
     purchase_intent_segment_keyword.keywords = keywords;
 
     for (const auto& index : indexes.GetList()) {
       DCHECK(index.is_int());
+
       if (static_cast<size_t>(index.GetInt()) >= segments.size()) {
         return base::unexpected(
             "Failed to load from JSON, segment keywords are ill-formed");
       }
+
       purchase_intent_segment_keyword.segments.push_back(
           segments.at(index.GetInt()));
     }
@@ -81,14 +84,13 @@ PurchaseIntentInfo::CreateFromValue(const base::Value::Dict dict) {
   }
 
   // Parsing field: "funnel_keywords"
-  const base::Value::Dict* const incoming_funnel_keywords =
-      dict.FindDict("funnel_keywords");
-  if (!incoming_funnel_keywords) {
+  const auto* const funnel_keywords_dict = dict.FindDict("funnel_keywords");
+  if (!funnel_keywords_dict) {
     return base::unexpected(
         "Failed to load from JSON, funnel keywords missing");
   }
 
-  for (const auto [keywords, weight] : *incoming_funnel_keywords) {
+  for (const auto [keywords, weight] : *funnel_keywords_dict) {
     PurchaseIntentFunnelKeywordInfo purchase_intent_funnel_keyword;
     purchase_intent_funnel_keyword.keywords = keywords;
     purchase_intent_funnel_keyword.weight = weight.GetInt();
@@ -97,44 +99,45 @@ PurchaseIntentInfo::CreateFromValue(const base::Value::Dict dict) {
   }
 
   // Parsing field: "funnel_sites"
-  const base::Value::List* const incoming_funnel_sites =
-      dict.FindList("funnel_sites");
-  if (!incoming_funnel_sites) {
+  const auto* const funnel_sites_list = dict.FindList("funnel_sites");
+  if (!funnel_sites_list) {
     return base::unexpected("Failed to load from JSON, sites missing");
   }
 
   // For each set of sites and segments
-  for (const auto& item : *incoming_funnel_sites) {
+  for (const auto& item : *funnel_sites_list) {
     if (!item.is_dict()) {
       return base::unexpected(
           "Failed to load from JSON, site set not of type dict");
     }
-    const auto& set = item.GetDict();
+    const base::Value::Dict& item_dict = item.GetDict();
 
     // Get all segments...
-    const base::Value::List* const seg_list = set.FindList("segments");
-    if (!seg_list) {
+    const auto* const funnel_site_segments_list =
+        item_dict.FindList("segments");
+    if (!funnel_site_segments_list) {
       return base::unexpected(
           "Failed to load from JSON, get site segment list as dict");
     }
 
-    std::vector<std::string> site_segments;
-    for (const auto& seg : *seg_list) {
-      DCHECK(seg.is_int());
-      site_segments.push_back(segments.at(seg.GetInt()));
+    std::vector<std::string> purchase_intent_segments;
+    for (const auto& segment : *funnel_site_segments_list) {
+      DCHECK(segment.is_int());
+      purchase_intent_segments.push_back(segments.at(segment.GetInt()));
     }
 
     // ...and for each site create info with appended segments
-    const base::Value::List* const site_list = set.FindList("sites");
-    if (!site_list) {
+    const auto* const sites_list = item_dict.FindList("sites");
+    if (!sites_list) {
       return base::unexpected(
           "Failed to load from JSON, get site list as dict");
     }
 
-    for (const auto& site : *site_list) {
+    for (const auto& site : *sites_list) {
       DCHECK(site.is_string());
+
       PurchaseIntentSiteInfo purchase_intent_site;
-      purchase_intent_site.segments = site_segments;
+      purchase_intent_site.segments = purchase_intent_segments;
       purchase_intent_site.url_netloc = GURL(site.GetString());
       purchase_intent_site.weight = 1;
 

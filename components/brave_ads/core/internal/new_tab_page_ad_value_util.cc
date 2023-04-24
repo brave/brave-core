@@ -37,10 +37,10 @@ base::Value::Dict NewTabPageAdToValue(const NewTabPageAdInfo& ad) {
     base::Value::Dict wallpaper_dict;
     wallpaper_dict.Set(kNewTabPageAdImageUrlKey, wallpaper.image_url.spec());
 
-    base::Value::Dict focal_point;
-    focal_point.Set(kNewTabPageAdFocalPointXKey, wallpaper.focal_point.x);
-    focal_point.Set(kNewTabPageAdFocalPointYKey, wallpaper.focal_point.y);
-    wallpaper_dict.Set(kNewTabPageAdFocalPointKey, std::move(focal_point));
+    base::Value::Dict focal_point_dict;
+    focal_point_dict.Set(kNewTabPageAdFocalPointXKey, wallpaper.focal_point.x);
+    focal_point_dict.Set(kNewTabPageAdFocalPointYKey, wallpaper.focal_point.y);
+    wallpaper_dict.Set(kNewTabPageAdFocalPointKey, std::move(focal_point_dict));
 
     wallpapers.Append(std::move(wallpaper_dict));
   }
@@ -49,82 +49,93 @@ base::Value::Dict NewTabPageAdToValue(const NewTabPageAdInfo& ad) {
   return dict;
 }
 
-NewTabPageAdInfo NewTabPageAdFromValue(const base::Value::Dict& root) {
+NewTabPageAdInfo NewTabPageAdFromValue(const base::Value::Dict& dict) {
   NewTabPageAdInfo ad;
 
-  if (const auto* value = root.FindString(kTypeKey)) {
+  if (const auto* const value = dict.FindString(kTypeKey)) {
     ad.type = AdType(*value);
   }
 
-  if (const auto* value = root.FindString(kNewTabPageAdPlacementIdKey)) {
+  if (const auto* const value = dict.FindString(kNewTabPageAdPlacementIdKey)) {
     ad.placement_id = *value;
   }
 
-  if (const auto* value = root.FindString(kNewTabPageAdCreativeInstanceIdKey)) {
+  if (const auto* const value =
+          dict.FindString(kNewTabPageAdCreativeInstanceIdKey)) {
     ad.creative_instance_id = *value;
   }
 
-  if (const auto* value = root.FindString(kNewTabPageAdCreativeSetIdKey)) {
+  if (const auto* const value =
+          dict.FindString(kNewTabPageAdCreativeSetIdKey)) {
     ad.creative_set_id = *value;
   }
 
-  if (const auto* value = root.FindString(kNewTabPageAdCampaignIdKey)) {
+  if (const auto* const value = dict.FindString(kNewTabPageAdCampaignIdKey)) {
     ad.campaign_id = *value;
   }
 
-  if (const auto* value = root.FindString(kNewTabPageAdAdvertiserIdKey)) {
+  if (const auto* const value = dict.FindString(kNewTabPageAdAdvertiserIdKey)) {
     ad.advertiser_id = *value;
   }
 
-  if (const auto* value = root.FindString(kNewTabPageAdSegmentKey)) {
+  if (const auto* const value = dict.FindString(kNewTabPageAdSegmentKey)) {
     ad.segment = *value;
   }
 
-  if (const auto* value = root.FindString(kNewTabPageAdCompanyNameKey)) {
+  if (const auto* const value = dict.FindString(kNewTabPageAdCompanyNameKey)) {
     ad.company_name = *value;
   }
 
-  if (const auto* value = root.FindString(kNewTabPageAdImageUrlKey)) {
+  if (const auto* const value = dict.FindString(kNewTabPageAdImageUrlKey)) {
     ad.image_url = GURL(*value);
   }
 
-  if (const auto* value = root.FindString(kNewTabPageAdAltKey)) {
+  if (const auto* const value = dict.FindString(kNewTabPageAdAltKey)) {
     ad.alt = *value;
   }
 
-  if (const auto* wallpapers = root.FindList(kNewTabPageAdWallpapersKey)) {
-    for (const auto& value : *wallpapers) {
-      const base::Value::Dict* const dict = value.GetIfDict();
-      if (!dict) {
+  if (const auto* const wallpapers_list =
+          dict.FindList(kNewTabPageAdWallpapersKey)) {
+    for (const auto& item : *wallpapers_list) {
+      const auto* const item_dict = item.GetIfDict();
+      if (!item_dict) {
         continue;
       }
 
       const std::string* const image_url =
-          dict->FindString(kNewTabPageAdImageUrlKey);
-      const base::Value::Dict* const focal_point =
-          dict->FindDict(kNewTabPageAdFocalPointKey);
-      if (!image_url || !focal_point) {
+          item_dict->FindString(kNewTabPageAdImageUrlKey);
+      if (!image_url) {
         continue;
       }
 
-      const absl::optional<int> x =
-          focal_point->FindInt(kNewTabPageAdFocalPointXKey);
-      const absl::optional<int> y =
-          focal_point->FindInt(kNewTabPageAdFocalPointYKey);
-      if (!x || !y) {
+      const auto* const focal_point_dict =
+          item_dict->FindDict(kNewTabPageAdFocalPointKey);
+      if (!focal_point_dict) {
+        continue;
+      }
+
+      const absl::optional<int> focal_point_x =
+          focal_point_dict->FindInt(kNewTabPageAdFocalPointXKey);
+      if (!focal_point_x) {
+        continue;
+      }
+
+      const absl::optional<int> focal_point_y =
+          focal_point_dict->FindInt(kNewTabPageAdFocalPointYKey);
+      if (!focal_point_y) {
         continue;
       }
 
       NewTabPageAdWallpaperInfo wallpaper;
       wallpaper.image_url = GURL(*image_url);
-      wallpaper.focal_point.x = *x;
-      wallpaper.focal_point.y = *y;
+      wallpaper.focal_point.x = *focal_point_x;
+      wallpaper.focal_point.y = *focal_point_y;
 
       ad.wallpapers.push_back(wallpaper);
     }
   }
 
-  if (const auto* value = root.FindString(kNewTabPageAdTargetUrlKey)) {
+  if (const auto* const value = dict.FindString(kNewTabPageAdTargetUrlKey)) {
     ad.target_url = GURL(*value);
   }
 

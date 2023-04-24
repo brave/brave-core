@@ -60,8 +60,8 @@ UnblindedPaymentTokenList UnblindedPaymentTokensFromValue(
   UnblindedPaymentTokenList unblinded_tokens;
 
   for (const auto& item : list) {
-    const base::Value::Dict* const dict = item.GetIfDict();
-    if (!dict) {
+    const auto* const item_dict = item.GetIfDict();
+    if (!item_dict) {
       BLOG(0, "Unblinded payment token should be a dictionary");
       continue;
     }
@@ -69,7 +69,8 @@ UnblindedPaymentTokenList UnblindedPaymentTokensFromValue(
     UnblindedPaymentTokenInfo unblinded_token;
 
     // Transaction id
-    if (const std::string* const value = dict->FindString(kTransactionIdKey)) {
+    if (const std::string* const value =
+            item_dict->FindString(kTransactionIdKey)) {
       unblinded_token.transaction_id = *value;
     } else {
       // Migrate legacy confirmations
@@ -78,7 +79,8 @@ UnblindedPaymentTokenList UnblindedPaymentTokensFromValue(
     }
 
     // Unblinded token
-    if (const std::string* const value = dict->FindString(kUnblindedTokenKey)) {
+    if (const std::string* const value =
+            item_dict->FindString(kUnblindedTokenKey)) {
       unblinded_token.value = cbr::UnblindedToken(*value);
       if (!unblinded_token.value.has_value()) {
         BLOG(0, "Invalid unblinded payment token");
@@ -90,7 +92,7 @@ UnblindedPaymentTokenList UnblindedPaymentTokensFromValue(
     }
 
     // Public key
-    if (const std::string* const value = dict->FindString(kPublicKey)) {
+    if (const std::string* const value = item_dict->FindString(kPublicKey)) {
       unblinded_token.public_key = cbr::PublicKey(*value);
       if (!unblinded_token.public_key.has_value()) {
         BLOG(0, "Invalid unblinded payment token public key");
@@ -103,12 +105,12 @@ UnblindedPaymentTokenList UnblindedPaymentTokensFromValue(
 
     // Confirmation type
     if (const std::string* const value =
-            dict->FindString(kConfirmationTypeKey)) {
+            item_dict->FindString(kConfirmationTypeKey)) {
       unblinded_token.confirmation_type = ConfirmationType(*value);
     }
 
     // Ad type
-    if (const std::string* const value = dict->FindString(kAdTypeKey)) {
+    if (const std::string* const value = item_dict->FindString(kAdTypeKey)) {
       unblinded_token.ad_type = AdType(*value);
     }
 

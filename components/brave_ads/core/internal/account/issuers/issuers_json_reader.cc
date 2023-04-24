@@ -18,13 +18,14 @@ absl::optional<IssuersInfo> ReadIssuers(const std::string& json) {
   if (!root || !root->is_dict()) {
     return absl::nullopt;
   }
+  const base::Value::Dict& dict = root->GetDict();
 
-  const absl::optional<int> ping = ParsePing(*root);
+  const absl::optional<int> ping = ParsePing(dict);
   if (!ping) {
     return absl::nullopt;
   }
 
-  const absl::optional<IssuerList> issuers = ParseIssuers(root->GetDict());
+  const absl::optional<IssuerList> issuers = ParseIssuers(dict);
   if (!issuers) {
     return absl::nullopt;
   }

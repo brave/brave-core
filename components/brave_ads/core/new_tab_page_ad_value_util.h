@@ -13,7 +13,7 @@ namespace brave_ads {
 struct NewTabPageAdInfo;
 
 base::Value::Dict NewTabPageAdToValue(const NewTabPageAdInfo& ad);
-NewTabPageAdInfo NewTabPageAdFromValue(const base::Value::Dict& root);
+NewTabPageAdInfo NewTabPageAdFromValue(const base::Value::Dict& dict);
 
 }  // namespace brave_ads
 

@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/embedding_pipeline_info.h"
 
 namespace {
@@ -22,28 +23,28 @@ constexpr char kEmbeddingsKey[] = "embeddings";
 namespace brave_ads::ml::pipeline {
 
 absl::optional<EmbeddingPipelineInfo> EmbeddingPipelineFromValue(
-    const base::Value::Dict& root) {
+    const base::Value::Dict& dict) {
   EmbeddingPipelineInfo embedding_pipeline;
 
-  if (absl::optional<int> value = root.FindInt(kVersionKey)) {
+  if (absl::optional<int> value = dict.FindInt(kVersionKey)) {
     embedding_pipeline.version = *value;
   } else {
     return absl::nullopt;
   }
 
-  if (const auto* value = root.FindString(kTimestampKey)) {
+  if (const auto* const value = dict.FindString(kTimestampKey)) {
     if (!base::Time::FromUTCString(value->c_str(), &embedding_pipeline.time)) {
       return absl::nullopt;
     }
   }
 
-  if (const auto* value = root.FindString(kLocaleKey)) {
+  if (const auto* const value = dict.FindString(kLocaleKey)) {
     embedding_pipeline.locale = *value;
   } else {
     return absl::nullopt;
   }
 
-  const auto* value = root.FindDict(kEmbeddingsKey);
+  const auto* value = dict.FindDict(kEmbeddingsKey);
   if (!value) {
     return absl::nullopt;
   }
@@ -57,11 +58,15 @@ absl::optional<EmbeddingPipelineInfo> EmbeddingPipelineFromValue(
 
     std::vector<float> embedding;
     embedding.reserve(list->size());
-    for (const base::Value& dimension_value : *list) {
-      embedding.push_back(static_cast<float>(dimension_value.GetDouble()));
+    for (const base::Value& item : *list) {
+      DCHECK(item.is_double());
+
+      embedding.push_back(static_cast<float>(item.GetDouble()));
     }
+
     embedding_pipeline.embeddings[embedding_key] =
         VectorData(std::move(embedding));
+
     embedding_pipeline.dimension =
         embedding_pipeline.embeddings[embedding_key].GetDimensionCount();
   }

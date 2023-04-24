@@ -6,9 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_IMPL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_IMPL_H_
 
-#include <cstdint>
 #include <string>
-#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
@@ -124,16 +122,17 @@ class AdsImpl final : public Ads,
                              base::Time to_time) override;
   void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
 
-  mojom::UserReactionType ToggleLikeAd(base::Value::Dict value) override;
-  mojom::UserReactionType ToggleDislikeAd(base::Value::Dict value) override;
+  mojom::UserReactionType ToggleLikeAd(const base::Value::Dict& value) override;
+  mojom::UserReactionType ToggleDislikeAd(
+      const base::Value::Dict& value) override;
   mojom::UserReactionType ToggleLikeCategory(
       const std::string& category,
       mojom::UserReactionType user_reaction_type) override;
   mojom::UserReactionType ToggleDislikeCategory(
       const std::string& category,
       mojom::UserReactionType user_reaction_type) override;
-  bool ToggleSaveAd(base::Value::Dict value) override;
-  bool ToggleMarkAdAsInappropriate(base::Value::Dict value) override;
+  bool ToggleSaveAd(const base::Value::Dict& value) override;
+  bool ToggleMarkAdAsInappropriate(const base::Value::Dict& value) override;
 
  private:
   void CreateOrOpenDatabase(InitializeCallback callback);

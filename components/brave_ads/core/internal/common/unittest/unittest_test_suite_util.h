@@ -10,8 +10,7 @@
 
 namespace brave_ads {
 
-std::string GetNamespaceForCurrentTest();
-
+std::string GetUuidForCurrentTest();
 std::string GetUuidForCurrentTestAndValue(const std::string& value);
 
 }  // namespace brave_ads

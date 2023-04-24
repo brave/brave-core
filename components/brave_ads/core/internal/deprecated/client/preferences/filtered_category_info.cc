@@ -13,8 +13,8 @@ base::Value::Dict FilteredCategoryInfo::ToValue() const {
   return dict;
 }
 
-void FilteredCategoryInfo::FromValue(const base::Value::Dict& root) {
-  if (const auto* value = root.FindString("name")) {
+void FilteredCategoryInfo::FromValue(const base::Value::Dict& dict) {
+  if (const auto* const value = dict.FindString("name")) {
     name = *value;
   }
 }

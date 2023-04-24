@@ -33,7 +33,7 @@ class BraveAdsAdContentValueUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsAdContentValueUtilTest, FromValue) {
   // Arrange
-  const base::Value::Dict value = base::test::ParseJsonDict(kJson);
+  const base::Value::Dict dict = base::test::ParseJsonDict(kJson);
 
   // Act
 
@@ -43,7 +43,7 @@ TEST_F(BraveAdsAdContentValueUtilTest, FromValue) {
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad, kPlacementId);
   const AdContentInfo expected_ad_content =
       BuildAdContent(ad, ConfirmationType::kViewed, kTitle, kDescription);
-  EXPECT_EQ(expected_ad_content, AdContentFromValue(value));
+  EXPECT_EQ(expected_ad_content, AdContentFromValue(dict));
 }
 
 TEST_F(BraveAdsAdContentValueUtilTest, ToValue) {

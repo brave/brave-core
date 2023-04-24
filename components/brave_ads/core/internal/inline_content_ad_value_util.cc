@@ -34,58 +34,64 @@ base::Value::Dict InlineContentAdToValue(const InlineContentAdInfo& ad) {
   return dict;
 }
 
-InlineContentAdInfo InlineContentAdFromValue(const base::Value::Dict& root) {
+InlineContentAdInfo InlineContentAdFromValue(const base::Value::Dict& dict) {
   InlineContentAdInfo ad;
 
-  if (const auto* value = root.FindString(kTypeKey)) {
+  if (const auto* const value = dict.FindString(kTypeKey)) {
     ad.type = AdType(*value);
   }
 
-  if (const auto* value = root.FindString(kInlineContentAdPlacementIdKey)) {
+  if (const auto* const value =
+          dict.FindString(kInlineContentAdPlacementIdKey)) {
     ad.placement_id = *value;
   }
 
-  if (const auto* value =
-          root.FindString(kInlineContentAdCreativeInstanceIdKey)) {
+  if (const auto* const value =
+          dict.FindString(kInlineContentAdCreativeInstanceIdKey)) {
     ad.creative_instance_id = *value;
   }
 
-  if (const auto* value = root.FindString(kInlineContentAdCreativeSetIdKey)) {
+  if (const auto* const value =
+          dict.FindString(kInlineContentAdCreativeSetIdKey)) {
     ad.creative_set_id = *value;
   }
 
-  if (const auto* value = root.FindString(kInlineContentAdCampaignIdKey)) {
+  if (const auto* const value =
+          dict.FindString(kInlineContentAdCampaignIdKey)) {
     ad.campaign_id = *value;
   }
 
-  if (const auto* value = root.FindString(kInlineContentAdAdvertiserIdKey)) {
+  if (const auto* const value =
+          dict.FindString(kInlineContentAdAdvertiserIdKey)) {
     ad.advertiser_id = *value;
   }
 
-  if (const auto* value = root.FindString(kInlineContentAdSegmentKey)) {
+  if (const auto* const value = dict.FindString(kInlineContentAdSegmentKey)) {
     ad.segment = *value;
   }
 
-  if (const auto* value = root.FindString(kInlineContentAdTitleKey)) {
+  if (const auto* const value = dict.FindString(kInlineContentAdTitleKey)) {
     ad.title = *value;
   }
-  if (const auto* value = root.FindString(kInlineContentAdDescriptionKey)) {
+  if (const auto* const value =
+          dict.FindString(kInlineContentAdDescriptionKey)) {
     ad.description = *value;
   }
 
-  if (const auto* value = root.FindString(kInlineContentAdImageUrlKey)) {
+  if (const auto* const value = dict.FindString(kInlineContentAdImageUrlKey)) {
     ad.image_url = GURL(*value);
   }
 
-  if (const auto* value = root.FindString(kInlineContentAdDimensionsKey)) {
+  if (const auto* const value =
+          dict.FindString(kInlineContentAdDimensionsKey)) {
     ad.dimensions = *value;
   }
 
-  if (const auto* value = root.FindString(kInlineContentAdCtaTextKey)) {
+  if (const auto* const value = dict.FindString(kInlineContentAdCtaTextKey)) {
     ad.cta_text = *value;
   }
 
-  if (const auto* value = root.FindString(kInlineContentAdTargetUrlKey)) {
+  if (const auto* const value = dict.FindString(kInlineContentAdTargetUrlKey)) {
     ad.target_url = GURL(*value);
   }
 

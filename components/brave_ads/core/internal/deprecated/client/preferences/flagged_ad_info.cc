@@ -13,8 +13,8 @@ base::Value::Dict FlaggedAdInfo::ToValue() const {
   return dict;
 }
 
-void FlaggedAdInfo::FromValue(const base::Value::Dict& root) {
-  if (const auto* value = root.FindString("creative_set_id")) {
+void FlaggedAdInfo::FromValue(const base::Value::Dict& dict) {
+  if (const auto* const value = dict.FindString("creative_set_id")) {
     creative_set_id = *value;
   }
 }

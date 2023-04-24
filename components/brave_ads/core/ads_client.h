@@ -141,7 +141,7 @@ class ADS_EXPORT AdsClient {
   // Record a P2A (Privacy Preserving Anonymous) event with |base::Value::List|
   // for the specified |name|.
   virtual void RecordP2AEvent(const std::string& name,
-                              base::Value::List value) = 0;
+                              base::Value::List list) = 0;
 
   // Add |training_sample|.
   virtual void AddTrainingSample(

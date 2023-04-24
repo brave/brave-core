@@ -43,47 +43,50 @@ base::Value::List NotificationAdsToValue(
   return list;
 }
 
-NotificationAdInfo NotificationAdFromValue(const base::Value::Dict& root) {
+NotificationAdInfo NotificationAdFromValue(const base::Value::Dict& dict) {
   NotificationAdInfo ad;
 
-  if (const auto* value = root.FindString(kTypeKey)) {
+  if (const auto* const value = dict.FindString(kTypeKey)) {
     ad.type = AdType(*value);
   }
 
-  if (const auto* value = root.FindString(kNotificationAdPlacementIdKey)) {
+  if (const auto* const value =
+          dict.FindString(kNotificationAdPlacementIdKey)) {
     ad.placement_id = *value;
   }
 
-  if (const auto* value =
-          root.FindString(kNotificationAdCreativeInstanceIdKey)) {
+  if (const auto* const value =
+          dict.FindString(kNotificationAdCreativeInstanceIdKey)) {
     ad.creative_instance_id = *value;
   }
 
-  if (const auto* value = root.FindString(kNotificationAdCreativeSetIdKey)) {
+  if (const auto* const value =
+          dict.FindString(kNotificationAdCreativeSetIdKey)) {
     ad.creative_set_id = *value;
   }
 
-  if (const auto* value = root.FindString(kNotificationAdCampaignIdKey)) {
+  if (const auto* const value = dict.FindString(kNotificationAdCampaignIdKey)) {
     ad.campaign_id = *value;
   }
 
-  if (const auto* value = root.FindString(kNotificationAdAdvertiserIdKey)) {
+  if (const auto* const value =
+          dict.FindString(kNotificationAdAdvertiserIdKey)) {
     ad.advertiser_id = *value;
   }
 
-  if (const auto* value = root.FindString(kNotificationAdSegmentKey)) {
+  if (const auto* const value = dict.FindString(kNotificationAdSegmentKey)) {
     ad.segment = *value;
   }
 
-  if (const auto* value = root.FindString(kNotificationAdTitleKey)) {
+  if (const auto* const value = dict.FindString(kNotificationAdTitleKey)) {
     ad.title = *value;
   }
 
-  if (const auto* value = root.FindString(kNotificationAdBodyKey)) {
+  if (const auto* const value = dict.FindString(kNotificationAdBodyKey)) {
     ad.body = *value;
   }
 
-  if (const auto* value = root.FindString(kNotificationAdTargetUrlKey)) {
+  if (const auto* const value = dict.FindString(kNotificationAdTargetUrlKey)) {
     ad.target_url = GURL(*value);
   }
 
@@ -95,12 +98,9 @@ base::circular_deque<NotificationAdInfo> NotificationAdsFromValue(
   base::circular_deque<NotificationAdInfo> ads;
 
   for (const auto& item : list) {
-    const auto* dict = item.GetIfDict();
-    if (!dict) {
-      continue;
+    if (const auto* const item_dict = item.GetIfDict()) {
+      ads.push_back(NotificationAdFromValue(*item_dict));
     }
-
-    ads.push_back(NotificationAdFromValue(*dict));
   }
 
   return ads;

@@ -157,12 +157,14 @@ class ADS_EXPORT Ads {
   // Called to like an advertiser. This is a toggle, so calling it again returns
   // the setting to the neutral state. Returns |UserReactionType| containing the
   // current state.
-  virtual mojom::UserReactionType ToggleLikeAd(base::Value::Dict value) = 0;
+  virtual mojom::UserReactionType ToggleLikeAd(
+      const base::Value::Dict& value) = 0;
 
   // Called to dislike an advertiser. This is a toggle, so calling it again
   // returns the setting to the neutral state. Returns |UserReactionType|
   // containing the current state.
-  virtual mojom::UserReactionType ToggleDislikeAd(base::Value::Dict value) = 0;
+  virtual mojom::UserReactionType ToggleDislikeAd(
+      const base::Value::Dict& value) = 0;
 
   // Called to like a category. This is a toggle, so calling it again returns
   // the setting to the neutral state. Returns |UserReactionType| containing the
@@ -181,12 +183,12 @@ class ADS_EXPORT Ads {
   // Called to save an ad for later viewing. This is a toggle, so calling it
   // again removes the ad from the saved list. Returns |true| if the ad was
   // saved otherwise |false|.
-  virtual bool ToggleSaveAd(base::Value::Dict value) = 0;
+  virtual bool ToggleSaveAd(const base::Value::Dict& value) = 0;
 
   // Called to mark an ad as inappropriate. This is a toggle, so calling it
   // again unmarks the ad. Returns |true| if the ad was marked otherwise
   // |false|.
-  virtual bool ToggleMarkAdAsInappropriate(base::Value::Dict value) = 0;
+  virtual bool ToggleMarkAdAsInappropriate(const base::Value::Dict& value) = 0;
 };
 
 }  // namespace brave_ads

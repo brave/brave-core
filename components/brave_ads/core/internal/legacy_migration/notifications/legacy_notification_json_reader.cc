@@ -23,13 +23,12 @@ absl::optional<base::circular_deque<NotificationAdInfo>> ReadNotificationAds(
     return absl::nullopt;
   }
 
-  const base::Value::Dict& dict = root->GetDict();
-  const auto* value = dict.FindList(kNotificationListKey);
-  if (!value) {
+  const auto* const list = root->GetDict().FindList(kNotificationListKey);
+  if (!list) {
     return absl::nullopt;
   }
 
-  return NotificationAdsFromValue(*value);
+  return NotificationAdsFromValue(*list);
 }
 
 }  // namespace brave_ads::json::reader

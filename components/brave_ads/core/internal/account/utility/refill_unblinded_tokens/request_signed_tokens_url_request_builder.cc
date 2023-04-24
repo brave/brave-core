@@ -131,8 +131,7 @@ std::string RequestSignedTokensUrlRequestBuilder::BuildBody() const {
   for (const auto& blinded_token : blinded_tokens_) {
     if (const absl::optional<std::string> blinded_token_base64 =
             blinded_token.EncodeBase64()) {
-      base::Value value = base::Value(*blinded_token_base64);
-      list.Append(std::move(value));
+      list.Append(*blinded_token_base64);
     }
   }
 

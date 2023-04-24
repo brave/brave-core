@@ -31,20 +31,20 @@ base::Value::Dict CategoryContentToValue(
   return dict;
 }
 
-CategoryContentInfo CategoryContentFromValue(const base::Value::Dict& root) {
+CategoryContentInfo CategoryContentFromValue(const base::Value::Dict& dict) {
   CategoryContentInfo category_content;
 
-  if (const std::string* value = root.FindString(kCategoryKey)) {
+  if (const std::string* value = dict.FindString(kCategoryKey)) {
     category_content.category = *value;
   }
 
-  if (const auto value = root.FindInt(kUserReactionTypeKey)) {
+  if (const auto user_reaction_type = dict.FindInt(kUserReactionTypeKey)) {
     category_content.user_reaction_type =
-        static_cast<mojom::UserReactionType>(*value);
-  } else if (const auto legacy_value =
-                 root.FindInt(kLegacyUserReactionTypeKey)) {
+        static_cast<mojom::UserReactionType>(*user_reaction_type);
+  } else if (const auto legacy_user_reaction_type =
+                 dict.FindInt(kLegacyUserReactionTypeKey)) {
     category_content.user_reaction_type =
-        static_cast<mojom::UserReactionType>(*legacy_value);
+        static_cast<mojom::UserReactionType>(*legacy_user_reaction_type);
   }
 
   return category_content;

@@ -18,34 +18,33 @@ namespace brave_ads {
 
 absl::optional<VerifiableConversionEnvelopeInfo>
 GetVerifiableConversionEnvelopeForUserData(const base::Value::Dict& user_data) {
-  const base::Value::Dict* const value =
-      user_data.FindDict(kVerifiableConversionEnvelopeKey);
-  if (!value) {
+  const auto* const dict = user_data.FindDict(kVerifiableConversionEnvelopeKey);
+  if (!dict) {
     return absl::nullopt;
   }
 
   VerifiableConversionEnvelopeInfo verifiable_conversion_envelope;
 
   const std::string* const algorithm =
-      value->FindString(kVerifiableConversionEnvelopeAlgorithmKey);
+      dict->FindString(kVerifiableConversionEnvelopeAlgorithmKey);
   if (algorithm) {
     verifiable_conversion_envelope.algorithm = *algorithm;
   }
 
   const std::string* const ciphertext =
-      value->FindString(kVerifiableConversionEnvelopeCipherTextKey);
+      dict->FindString(kVerifiableConversionEnvelopeCipherTextKey);
   if (ciphertext) {
     verifiable_conversion_envelope.ciphertext = *ciphertext;
   }
 
   const std::string* const ephemeral_public_key =
-      value->FindString(kVerifiableConversionEnvelopeEphemeralPublicKeyKey);
+      dict->FindString(kVerifiableConversionEnvelopeEphemeralPublicKeyKey);
   if (ephemeral_public_key) {
     verifiable_conversion_envelope.ephemeral_public_key = *ephemeral_public_key;
   }
 
   const std::string* const nonce =
-      value->FindString(kVerifiableConversionEnvelopeNonceKey);
+      dict->FindString(kVerifiableConversionEnvelopeNonceKey);
   if (nonce) {
     verifiable_conversion_envelope.nonce = *nonce;
   }

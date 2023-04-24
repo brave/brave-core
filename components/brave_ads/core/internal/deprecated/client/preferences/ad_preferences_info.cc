@@ -32,35 +32,35 @@ AdPreferencesInfo::~AdPreferencesInfo() = default;
 base::Value::Dict AdPreferencesInfo::ToValue() const {
   base::Value::Dict dict;
 
-  base::Value::List advertisers;
+  base::Value::List advertisers_list;
   for (const auto& advertiser : filtered_advertisers) {
-    base::Value::Dict item;
-    item.Set("id", advertiser.id);
-    advertisers.Append(std::move(item));
+    base::Value::Dict advertiser_dict;
+    advertiser_dict.Set("id", advertiser.id);
+    advertisers_list.Append(std::move(advertiser_dict));
   }
-  dict.Set("filtered_advertisers", std::move(advertisers));
+  dict.Set("filtered_advertisers", std::move(advertisers_list));
 
-  base::Value::List categories;
+  base::Value::List categories_list;
   for (const auto& category : filtered_categories) {
-    base::Value::Dict item;
-    item.Set("name", category.name);
-    categories.Append(std::move(item));
+    base::Value::Dict category_dict;
+    category_dict.Set("name", category.name);
+    categories_list.Append(std::move(category_dict));
   }
-  dict.Set("filtered_categories", std::move(categories));
+  dict.Set("filtered_categories", std::move(categories_list));
 
-  base::Value::List ads;
-  for (const auto& ad : saved_ads) {
-    base::Value::Dict item;
-    item.Set("creative_instance_id", ad.creative_instance_id);
-    ads.Append(std::move(item));
+  base::Value::List saved_ads_list;
+  for (const auto& saved_ad : saved_ads) {
+    base::Value::Dict saved_ad_dict;
+    saved_ad_dict.Set("creative_instance_id", saved_ad.creative_instance_id);
+    saved_ads_list.Append(std::move(saved_ad_dict));
   }
-  dict.Set("saved_ads", std::move(ads));
+  dict.Set("saved_ads", std::move(saved_ads_list));
 
   base::Value::List flagged_ads_list;
-  for (const auto& ad : flagged_ads) {
-    base::Value::Dict item;
-    item.Set("creative_set_id", ad.creative_set_id);
-    flagged_ads_list.Append(std::move(item));
+  for (const auto& flagged_ad : flagged_ads) {
+    base::Value::Dict flagged_ad_dict;
+    flagged_ad_dict.Set("creative_set_id", flagged_ad.creative_set_id);
+    flagged_ads_list.Append(std::move(flagged_ad_dict));
   }
   dict.Set("flagged_ads", std::move(flagged_ads_list));
 
@@ -69,15 +69,15 @@ base::Value::Dict AdPreferencesInfo::ToValue() const {
 
 // TODO(https://github.com/brave/brave-browser/issues/24939): Reduce cognitive
 // complexity.
-void AdPreferencesInfo::FromValue(const base::Value::Dict& root) {
-  if (const auto* value = root.FindList("filtered_advertisers")) {
+void AdPreferencesInfo::FromValue(const base::Value::Dict& dict) {
+  if (const auto* const value = dict.FindList("filtered_advertisers")) {
     for (const auto& item : *value) {
       if (!item.is_dict()) {
         continue;
       }
 
       const auto& advertiser = item.GetDict();
-      const auto* id = advertiser.FindString("id");
+      const auto* const id = advertiser.FindString("id");
       if (!id) {
         continue;
       }
@@ -88,14 +88,14 @@ void AdPreferencesInfo::FromValue(const base::Value::Dict& root) {
     }
   }
 
-  if (const auto* value = root.FindList("filtered_categories")) {
+  if (const auto* const value = dict.FindList("filtered_categories")) {
     for (const auto& item : *value) {
       if (!item.is_dict()) {
         continue;
       }
 
       const auto& category = item.GetDict();
-      const auto* name = category.FindString("name");
+      const auto* const name = category.FindString("name");
       if (!name) {
         continue;
       }
@@ -106,14 +106,15 @@ void AdPreferencesInfo::FromValue(const base::Value::Dict& root) {
     }
   }
 
-  if (const auto* value = root.FindList("saved_ads")) {
+  if (const auto* const value = dict.FindList("saved_ads")) {
     for (const auto& item : *value) {
       if (!item.is_dict()) {
         continue;
       }
 
       const auto& ad = item.GetDict();
-      const auto* creative_instance_id = ad.FindString("creative_instance_id");
+      const auto* const creative_instance_id =
+          ad.FindString("creative_instance_id");
       if (!creative_instance_id) {
         continue;
       }
@@ -124,14 +125,14 @@ void AdPreferencesInfo::FromValue(const base::Value::Dict& root) {
     }
   }
 
-  if (const auto* value = root.FindList("flagged_ads")) {
+  if (const auto* const value = dict.FindList("flagged_ads")) {
     for (const auto& item : *value) {
       if (!item.is_dict()) {
         continue;
       }
 
       const auto& ad = item.GetDict();
-      const auto* creative_set_id = ad.FindString("creative_set_id");
+      const auto* const creative_set_id = ad.FindString("creative_set_id");
       if (!creative_set_id) {
         continue;
       }

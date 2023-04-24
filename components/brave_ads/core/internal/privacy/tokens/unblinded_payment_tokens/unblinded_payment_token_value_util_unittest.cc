@@ -65,22 +65,22 @@ TEST_F(BraveAdsUnblindedPaymentTokenValueUtilTest, ToEmptyValue) {
 
 TEST_F(BraveAdsUnblindedPaymentTokenValueUtilTest, FromValue) {
   // Arrange
-  const base::Value::List value = base::test::ParseJsonList(kJson);
+  const base::Value::List list = base::test::ParseJsonList(kJson);
 
   // Act
 
   // Assert
   EXPECT_EQ(GetUnblindedPaymentTokens(2),
-            UnblindedPaymentTokensFromValue(value));
+            UnblindedPaymentTokensFromValue(list));
 }
 
 TEST_F(BraveAdsUnblindedPaymentTokenValueUtilTest, FromEmptyValue) {
   // Arrange
-  const base::Value::List value = base::test::ParseJsonList(kEmptyJson);
+  const base::Value::List list = base::test::ParseJsonList(kEmptyJson);
 
   // Act
   const UnblindedPaymentTokenList unblinded_tokens =
-      UnblindedPaymentTokensFromValue(value);
+      UnblindedPaymentTokensFromValue(list);
 
   // Assert
   EXPECT_TRUE(unblinded_tokens.empty());

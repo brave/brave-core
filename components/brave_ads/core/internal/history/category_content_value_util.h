@@ -14,7 +14,7 @@ struct CategoryContentInfo;
 
 base::Value::Dict CategoryContentToValue(
     const CategoryContentInfo& category_content);
-CategoryContentInfo CategoryContentFromValue(const base::Value::Dict& root);
+CategoryContentInfo CategoryContentFromValue(const base::Value::Dict& dict);
 
 }  // namespace brave_ads
 

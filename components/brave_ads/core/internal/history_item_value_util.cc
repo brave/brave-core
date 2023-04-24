@@ -53,24 +53,24 @@ base::Value::List HistoryItemToDetailRowsValue(
   return list;
 }
 
-HistoryItemInfo HistoryItemFromValue(const base::Value::Dict& root) {
+HistoryItemInfo HistoryItemFromValue(const base::Value::Dict& dict) {
   HistoryItemInfo history_item;
 
-  if (const auto* created_at_value_string = root.FindString(kCreatedAtKey)) {
+  if (const auto* created_at = dict.FindString(kCreatedAtKey)) {
     double created_at_as_double = 0.0;
-    if (base::StringToDouble(*created_at_value_string, &created_at_as_double)) {
+    if (base::StringToDouble(*created_at, &created_at_as_double)) {
       history_item.created_at = base::Time::FromDoubleT(created_at_as_double);
     }
   } else if (const auto created_at_value_double =
-                 root.FindDouble(kCreatedAtKey)) {
+                 dict.FindDouble(kCreatedAtKey)) {
     history_item.created_at = base::Time::FromDoubleT(*created_at_value_double);
   }
 
-  if (const auto* value = root.FindDict(kAdContentKey)) {
+  if (const auto* const value = dict.FindDict(kAdContentKey)) {
     history_item.ad_content = AdContentFromValue(*value);
   }
 
-  if (const auto* value = root.FindDict(kCategoryContentKey)) {
+  if (const auto* const value = dict.FindDict(kCategoryContentKey)) {
     history_item.category_content = CategoryContentFromValue(*value);
   }
 
@@ -110,13 +110,10 @@ base::Value::List HistoryItemsToUIValue(const HistoryItemList& history_items) {
 HistoryItemList HistoryItemsFromValue(const base::Value::List& list) {
   HistoryItemList history_items;
 
-  for (const auto& history_item : list) {
-    const base::Value::Dict* const dict = history_item.GetIfDict();
-    if (!dict) {
-      continue;
+  for (const auto& item : list) {
+    if (const auto* const item_dict = item.GetIfDict()) {
+      history_items.push_back(HistoryItemFromValue(*item_dict));
     }
-
-    history_items.push_back(HistoryItemFromValue(*dict));
   }
 
   return history_items;

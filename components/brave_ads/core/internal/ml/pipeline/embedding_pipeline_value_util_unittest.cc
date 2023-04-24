@@ -22,8 +22,8 @@ namespace {
 
 constexpr char kJson[] =
     R"({"locale": "EN", "timestamp": "2022-06-09 08:00:00.704847", "version": 1, "embeddings": {"quick": [0.7481, 0.0493, -0.5572], "brown": [-0.0647, 0.4511, -0.7326], "fox": [-0.9328, -0.2578, 0.0032]}})";
-constexpr char kJsonEmpty[] = "{}";
-constexpr char kJsonMalformed[] =
+constexpr char kEmptyJson[] = "{}";
+constexpr char kMalformedJson[] =
     R"({"locale": "EN", "timestamp": "2022-06-09 08:00:00.704847", "version": 1, "embeddings": {"quick": "foobar"}})";
 
 }  // namespace
@@ -32,7 +32,7 @@ class BraveAdsEmbeddingPipelineValueUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsEmbeddingPipelineValueUtilTest, FromValue) {
   // Arrange
-  const base::Value::Dict value = base::test::ParseJsonDict(kJson);
+  const base::Value::Dict dict = base::test::ParseJsonDict(kJson);
 
   const std::vector<float> quick_data = {0.7481F, 0.0493F, -0.5572F};
   const std::vector<float> brown_data = {-0.0647F, 0.4511F, -0.7326F};
@@ -45,7 +45,7 @@ TEST_F(BraveAdsEmbeddingPipelineValueUtilTest, FromValue) {
 
   // Act
   absl::optional<EmbeddingPipelineInfo> pipeline =
-      EmbeddingPipelineFromValue(value);
+      EmbeddingPipelineFromValue(dict);
   ASSERT_TRUE(pipeline);
   EmbeddingPipelineInfo embedding_pipeline = std::move(pipeline).value();
 
@@ -62,24 +62,24 @@ TEST_F(BraveAdsEmbeddingPipelineValueUtilTest, FromValue) {
   }
 }
 
-TEST_F(BraveAdsEmbeddingPipelineValueUtilTest, FromValueEmpty) {
+TEST_F(BraveAdsEmbeddingPipelineValueUtilTest, FromEmptyValue) {
   // Arrange
-  const base::Value::Dict value = base::test::ParseJsonDict(kJsonEmpty);
+  const base::Value::Dict dict = base::test::ParseJsonDict(kEmptyJson);
 
   // Act
 
   // Assert
-  EXPECT_FALSE(EmbeddingPipelineFromValue(value));
+  EXPECT_FALSE(EmbeddingPipelineFromValue(dict));
 }
 
-TEST_F(BraveAdsEmbeddingPipelineValueUtilTest, FromValueMalformed) {
+TEST_F(BraveAdsEmbeddingPipelineValueUtilTest, FromMalformedValue) {
   // Arrange
-  const base::Value::Dict value = base::test::ParseJsonDict(kJsonMalformed);
+  const base::Value::Dict dict = base::test::ParseJsonDict(kMalformedJson);
 
   // Act
 
   // Assert
-  EXPECT_FALSE(EmbeddingPipelineFromValue(value));
+  EXPECT_FALSE(EmbeddingPipelineFromValue(dict));
 }
 
 }  // namespace brave_ads::ml::pipeline

@@ -48,8 +48,8 @@ absl::optional<std::string> GetNameForIssuerType(const IssuerType type) {
   return absl::nullopt;
 }
 
-absl::optional<IssuerType> ParseIssuerType(const base::Value::Dict& value) {
-  const std::string* const name = value.FindString(kNameKey);
+absl::optional<IssuerType> ParseIssuerType(const base::Value::Dict& dict) {
+  const std::string* const name = dict.FindString(kNameKey);
   if (!name) {
     return absl::nullopt;
   }
@@ -69,26 +69,26 @@ absl::optional<IssuerType> ParseIssuerType(const base::Value::Dict& value) {
   return absl::nullopt;
 }
 
-absl::optional<PublicKeyMap> ParsePublicKeys(const base::Value::Dict& value) {
-  const base::Value::List* const list = value.FindList(kPublicKeysKey);
-  if (!list) {
+absl::optional<PublicKeyMap> ParsePublicKeys(const base::Value::Dict& dict) {
+  const auto* const public_keys_list = dict.FindList(kPublicKeysKey);
+  if (!public_keys_list) {
     return absl::nullopt;
   }
 
   PublicKeyMap public_keys;
-  for (const auto& item : *list) {
-    const base::Value::Dict* const dict = item.GetIfDict();
-    if (!dict) {
+  for (const auto& item : *public_keys_list) {
+    const auto* const item_dict = item.GetIfDict();
+    if (!item_dict) {
       return absl::nullopt;
     }
 
-    const std::string* const public_key = dict->FindString(kPublicKeyKey);
+    const std::string* const public_key = item_dict->FindString(kPublicKeyKey);
     if (!public_key) {
       return absl::nullopt;
     }
 
     const std::string* const associated_value =
-        dict->FindString(kAssociatedValueKey);
+        item_dict->FindString(kAssociatedValueKey);
     if (!associated_value) {
       return absl::nullopt;
     }
@@ -116,14 +116,16 @@ base::Value::List IssuersToValue(const IssuerList& issuers) {
 
     dict.Set(kNameKey, *name);
 
-    base::Value::List public_keys;
-    for (const auto& [key, value] : issuer.public_keys) {
+    base::Value::List public_keys_list;
+    for (const auto& [public_key, associated_value] : issuer.public_keys) {
       base::Value::Dict public_key_dict;
-      public_key_dict.Set(kPublicKeyKey, key);
-      public_key_dict.Set(kAssociatedValueKey, base::NumberToString(value));
-      public_keys.Append(std::move(public_key_dict));
+      public_key_dict.Set(kPublicKeyKey, public_key);
+      public_key_dict.Set(kAssociatedValueKey,
+                          base::NumberToString(associated_value));
+
+      public_keys_list.Append(std::move(public_key_dict));
     }
-    dict.Set(kPublicKeysKey, std::move(public_keys));
+    dict.Set(kPublicKeysKey, std::move(public_keys_list));
 
     list.Append(std::move(dict));
   }
@@ -131,22 +133,23 @@ base::Value::List IssuersToValue(const IssuerList& issuers) {
   return list;
 }
 
-absl::optional<IssuerList> ValueToIssuers(const base::Value::List& value) {
+absl::optional<IssuerList> ValueToIssuers(const base::Value::List& list) {
   IssuerList issuers;
 
-  for (const auto& item : value) {
-    if (!item.is_dict()) {
+  for (const auto& item : list) {
+    const auto* item_dict = item.GetIfDict();
+    if (!item_dict) {
       continue;
     }
 
-    const base::Value::Dict& dict = item.GetDict();
-    const absl::optional<IssuerType> issuer_type = ParseIssuerType(dict);
+    const absl::optional<IssuerType> issuer_type = ParseIssuerType(*item_dict);
     if (!issuer_type) {
       return absl::nullopt;
     }
     DCHECK_NE(IssuerType::kUndefined, *issuer_type);
 
-    const absl::optional<PublicKeyMap> public_keys = ParsePublicKeys(dict);
+    const absl::optional<PublicKeyMap> public_keys =
+        ParsePublicKeys(*item_dict);
     if (!public_keys) {
       return absl::nullopt;
     }

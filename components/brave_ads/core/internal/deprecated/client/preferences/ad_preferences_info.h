@@ -28,7 +28,7 @@ struct AdPreferencesInfo final {
   ~AdPreferencesInfo();
 
   base::Value::Dict ToValue() const;
-  void FromValue(const base::Value::Dict& root);
+  void FromValue(const base::Value::Dict& dict);
 
   std::string ToJson() const;
   bool FromJson(const std::string& json);
