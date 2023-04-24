@@ -12,7 +12,11 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_content_browser_client.h"
+#include "brave/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/browser/profiles/brave_renderer_updater.h"
+#include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -30,12 +34,21 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
+#include "extensions/browser/disable_reason.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "ui/base/l10n/l10n_util.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
+#include "chrome/browser/extensions/extension_service.h"
+#include "extensions/browser/extension_system.h"
+#include "extensions/common/extension.h"
+#include "extensions/common/extension_builder.h"
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
 using brave_wallet::mojom::SolanaProviderError;
 
@@ -532,6 +545,9 @@ class SolanaProviderRendererTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
+    brave_wallet::SetDefaultSolanaWallet(
+        browser()->profile()->GetPrefs(),
+        brave_wallet::mojom::DefaultWallet::BraveWallet);
     content::SetBrowserClientForTesting(&test_content_browser_client_);
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
@@ -636,6 +652,81 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, ExtensionOverwrite) {
       content::EvalJs(web_contents(browser()), OverwriteScript).ExtractString(),
       "test");
 }
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest,
+                       DoNotAttachIfNoWalletCreated) {
+  brave_wallet::SetDefaultSolanaWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
+  auto* keyring_service =
+      brave_wallet::KeyringServiceFactory::GetServiceForContext(
+          browser()->profile());
+  keyring_service->Reset(false);
+  BraveRendererUpdaterFactory::GetForProfile(browser()->profile())
+      ->UpdateAllRenderersForTesting();
+
+  const GURL url = https_server_.GetURL("/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  std::string command = "window.solana.isBraveWallet";
+  EXPECT_TRUE(content::EvalJs(web_contents(browser()), command)
+                  .error.find("Cannot read properties of undefined") !=
+              std::string::npos);
+  EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
+}
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, AttachIfWalletCreated) {
+  brave_wallet::SetDefaultSolanaWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
+  auto* keyring_service =
+      brave_wallet::KeyringServiceFactory::GetServiceForContext(
+          browser()->profile());
+  keyring_service->CreateWallet("password", base::DoNothing());
+  BraveRendererUpdaterFactory::GetForProfile(browser()->profile())
+      ->UpdateAllRenderersForTesting();
+
+  const GURL url = https_server_.GetURL("/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  std::string command = "window.solana.isBraveWallet";
+  EXPECT_FALSE(content::EvalJs(web_contents(browser()), command)
+                   .error.find("Cannot read properties of undefined") !=
+               std::string::npos);
+  EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
+}
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest,
+                       DoNotAttachIfExtensionIstalled) {
+  brave_wallet::SetDefaultSolanaWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
+  auto* keyring_service =
+      brave_wallet::KeyringServiceFactory::GetServiceForContext(
+          browser()->profile());
+  keyring_service->CreateWallet("password", base::DoNothing());
+
+  scoped_refptr<const extensions::Extension> extension(
+      extensions::ExtensionBuilder("MetaMask")
+          .SetID(metamask_extension_id)
+          .Build());
+  extensions::ExtensionSystem::Get(browser()->profile())
+      ->extension_service()
+      ->AddExtension(extension.get());
+  BraveRendererUpdaterFactory::GetForProfile(browser()->profile())
+      ->UpdateAllRenderersForTesting();
+
+  const GURL url = https_server_.GetURL("/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  std::string command = "window.solana.isBraveWallet";
+  EXPECT_TRUE(content::EvalJs(web_contents(browser()), command)
+                  .error.find("Cannot read properties of undefined") !=
+              std::string::npos);
+  EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
+}
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, NonWritable) {
   for (const std::string& provider : {"braveSolana", "solana"}) {

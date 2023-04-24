@@ -4,12 +4,17 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
+#include "brave/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/browser/profiles/brave_renderer_updater.h"
+#include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/constants/brave_paths.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
@@ -26,6 +31,14 @@
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
+#include "chrome/browser/extensions/extension_service.h"
+#include "extensions/browser/extension_system.h"
+#include "extensions/common/extension.h"
+#include "extensions/common/extension_builder.h"
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
 namespace {
 std::string NonWriteableScriptProperty(const std::string& property) {
@@ -81,6 +94,9 @@ class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
   }
 
   void SetUpOnMainThread() override {
+    brave_wallet::SetDefaultEthereumWallet(
+        browser()->profile()->GetPrefs(),
+        brave_wallet::mojom::DefaultWallet::BraveWallet);
     InProcessBrowserTest::SetUpOnMainThread();
 
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
@@ -184,6 +200,81 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
               std::string::npos);
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
 }
+
+IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
+                       DoNotAttachIfNoWalletCreated) {
+  brave_wallet::SetDefaultEthereumWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
+  auto* keyring_service =
+      brave_wallet::KeyringServiceFactory::GetServiceForContext(
+          browser()->profile());
+  keyring_service->Reset(false);
+  BraveRendererUpdaterFactory::GetForProfile(browser()->profile())
+      ->UpdateAllRenderersForTesting();
+
+  const GURL url = https_server_.GetURL("/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  std::string command = "window.ethereum.isBraveWallet";
+  EXPECT_TRUE(content::EvalJs(primary_main_frame(), command)
+                  .error.find("Cannot read properties of undefined") !=
+              std::string::npos);
+  EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
+}
+
+IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachIfNoWalletCreated) {
+  brave_wallet::SetDefaultEthereumWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
+  auto* keyring_service =
+      brave_wallet::KeyringServiceFactory::GetServiceForContext(
+          browser()->profile());
+  keyring_service->CreateWallet("password", base::DoNothing());
+  BraveRendererUpdaterFactory::GetForProfile(browser()->profile())
+      ->UpdateAllRenderersForTesting();
+
+  const GURL url = https_server_.GetURL("/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  std::string command = "window.ethereum.isBraveWallet";
+  EXPECT_FALSE(content::EvalJs(primary_main_frame(), command)
+                   .error.find("Cannot read properties of undefined") !=
+               std::string::npos);
+  EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
+}
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
+                       DoNotAttachIfMetamaskInstalled) {
+  brave_wallet::SetDefaultEthereumWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
+  auto* keyring_service =
+      brave_wallet::KeyringServiceFactory::GetServiceForContext(
+          browser()->profile());
+  keyring_service->CreateWallet("password", base::DoNothing());
+
+  scoped_refptr<const extensions::Extension> extension(
+      extensions::ExtensionBuilder("MetaMask")
+          .SetID(metamask_extension_id)
+          .Build());
+  extensions::ExtensionSystem::Get(browser()->profile())
+      ->extension_service()
+      ->AddExtension(extension.get());
+  BraveRendererUpdaterFactory::GetForProfile(browser()->profile())
+      ->UpdateAllRenderersForTesting();
+
+  const GURL url = https_server_.GetURL("/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  std::string command = "window.ethereum.isBraveWallet";
+  EXPECT_TRUE(content::EvalJs(primary_main_frame(), command)
+                  .error.find("Cannot read properties of undefined") !=
+              std::string::npos);
+  EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
+}
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, NonWritable) {
   const GURL url = https_server_.GetURL("/simple.html");
