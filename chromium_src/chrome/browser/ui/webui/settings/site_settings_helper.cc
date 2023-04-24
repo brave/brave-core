@@ -28,7 +28,8 @@
   {ContentSettingsType::BRAVE_SOLANA, nullptr},                    \
   {ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, nullptr},            \
   {ContentSettingsType::BRAVE_HTTPS_UPGRADE, nullptr},             \
-  {ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, nullptr},
+  {ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, nullptr},       \
+  {ContentSettingsType::BRAVE_LOCALHOST_ACCESS, nullptr},
 // clang-format on
 
 #define BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_FROM_GROUP_NAME \
@@ -36,6 +37,8 @@
     return ContentSettingsType::AUTOPLAY;                                \
   if (name == "googleSignIn")                                            \
     return ContentSettingsType::BRAVE_GOOGLE_SIGN_IN;                    \
+  if (name == "localhostAccess")                                         \
+    return ContentSettingsType::BRAVE_LOCALHOST_ACCESS;                  \
   if (name == "ethereum")                                                \
     return ContentSettingsType::BRAVE_ETHEREUM;                          \
   if (name == "solana")                                                  \
@@ -58,6 +61,9 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
     return true;
   if (type == ContentSettingsType::BRAVE_GOOGLE_SIGN_IN)
     return true;
+  if (type == ContentSettingsType::BRAVE_LOCALHOST_ACCESS) {
+    return true;
+  }
   if (type == ContentSettingsType::BRAVE_ETHEREUM)
     return true;
   if (type == ContentSettingsType::BRAVE_SOLANA)
@@ -72,6 +78,9 @@ base::StringPiece ContentSettingsTypeToGroupName(ContentSettingsType type) {
     return "autoplay";
   if (type == ContentSettingsType::BRAVE_GOOGLE_SIGN_IN)
     return "googleSignIn";
+  if (type == ContentSettingsType::BRAVE_LOCALHOST_ACCESS) {
+    return "localhostAccess";
+  }
   if (type == ContentSettingsType::BRAVE_ETHEREUM)
     return "ethereum";
   if (type == ContentSettingsType::BRAVE_SOLANA)
@@ -85,7 +94,8 @@ const std::vector<ContentSettingsType>& GetVisiblePermissionCategories() {
   static base::NoDestructor<std::vector<ContentSettingsType>> types{
       {ContentSettingsType::AUTOPLAY, ContentSettingsType::BRAVE_ETHEREUM,
        ContentSettingsType::BRAVE_SOLANA,
-       ContentSettingsType::BRAVE_GOOGLE_SIGN_IN}};
+       ContentSettingsType::BRAVE_GOOGLE_SIGN_IN,
+       ContentSettingsType::BRAVE_LOCALHOST_ACCESS}};
   static bool initialized = false;
   if (!initialized) {
     auto& base_types = GetVisiblePermissionCategories_ChromiumImpl();

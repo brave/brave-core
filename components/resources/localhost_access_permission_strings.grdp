@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <message name="IDS_LOCALHOST_ACCESS_PERMISSION_FRAGMENT" desc="Label for localhost access permission prompt.">
+    Allow access to localhost resources
+  </message>
+  <message name="IDS_LOCALHOST_ACCESS_INFOBAR_TEXT" desc="Label for localhost access permission prompt (Android).">
+    <ph name="URL">$1<ex>https://trezor.io</ex></ph> wants access to localhost resources
+  </message>
+</grit-part>

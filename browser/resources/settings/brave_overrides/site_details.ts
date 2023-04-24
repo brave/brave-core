@@ -80,6 +80,29 @@ RegisterPolymerTemplateModifications({
         }
         curChild++
       }
+      // Localhost Access feature
+      const isLocalhostAccessFeatureEnabled =
+        loadTimeData.getBoolean('isLocalhostAccessFeatureEnabled')
+      if (isLocalhostAccessFeatureEnabled) {
+        firstPermissionItem.insertAdjacentHTML(
+          'beforebegin',
+          getTrustedHTML`
+            <site-details-permission
+              category="[[contentSettingsTypesEnum_.LOCALHOST_ACCESS]]"
+              icon="settings:devices">
+            </site-details-permission>
+          `)
+        const localhostAccessSettings = templateContent.querySelector(
+          `div.list-frame > site-details-permission:nth-child(${curChild})`)
+        if (!localhostAccessSettings) {
+          console.error(
+            '[Brave Settings Overrides] Localhost access settings not found')
+        } else {
+          localhostAccessSettings.setAttribute(
+            'label', loadTimeData.getString('siteSettingsLocalhostAccess'))
+        }
+        curChild++
+      }
       const isNativeBraveWalletEnabled = loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
       if (isNativeBraveWalletEnabled) {
         firstPermissionItem.insertAdjacentHTML(

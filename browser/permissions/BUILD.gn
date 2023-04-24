@@ -1,3 +1,8 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 if (!is_android) {
   source_set("browser_tests") {
     testonly = true
@@ -6,6 +11,7 @@ if (!is_android) {
     sources = [
       "brave_wallet_permission_context_browsertest.cc",
       "google_sign_in_permission_browsertest.cc",
+      "localhost_access_permission_browsertest.cc",
       "mock_permission_lifetime_prompt.cc",
       "mock_permission_lifetime_prompt.h",
       "mock_permission_lifetime_prompt_factory.cc",
@@ -17,6 +23,7 @@ if (!is_android) {
     deps = [
       "//brave/browser",
       "//brave/browser/brave_wallet",
+      "//brave/components/brave_component_updater/browser:browser",
       "//brave/components/brave_shields/browser:browser",
       "//brave/components/brave_shields/common",
       "//brave/components/brave_wallet/browser",

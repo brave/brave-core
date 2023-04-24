@@ -185,6 +185,19 @@ void ContentSettingsRegistry::BraveInit() {
            ContentSettingsInfo::INHERIT_IN_INCOGNITO,
            ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
+  // Register localhost permission default value as Ask.
+  Register(ContentSettingsType::BRAVE_LOCALHOST_ACCESS,
+           "brave_localhost_access", CONTENT_SETTING_ASK,
+           WebsiteSettingsInfo::UNSYNCABLE,
+           /*allowlisted_schemes=*/{},
+           /*valid_settings=*/
+           {CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK, CONTENT_SETTING_ASK},
+           WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
+           WebsiteSettingsRegistry::DESKTOP |
+               WebsiteSettingsRegistry::PLATFORM_ANDROID,
+           ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE,
+           ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
+
   // Disable background sync by default (brave/brave-browser#4709)
   content_settings_info_.erase(ContentSettingsType::BACKGROUND_SYNC);
   website_settings_registry_->UnRegister(ContentSettingsType::BACKGROUND_SYNC);

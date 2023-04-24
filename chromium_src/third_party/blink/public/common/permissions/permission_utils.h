@@ -20,6 +20,7 @@
   BRAVE_ETHEREUM,                   \
   BRAVE_SOLANA,                     \
   BRAVE_GOOGLE_SIGN_IN,             \
+  BRAVE_LOCALHOST_ACCESS,             \
   NUM
 // clang-format on
 

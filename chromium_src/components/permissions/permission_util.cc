@@ -33,7 +33,9 @@
   case PermissionType::BRAVE_SOLANA:                             \
     return ContentSettingsType::BRAVE_SOLANA;                    \
   case PermissionType::BRAVE_GOOGLE_SIGN_IN:                     \
-    return ContentSettingsType::BRAVE_GOOGLE_SIGN_IN;
+    return ContentSettingsType::BRAVE_GOOGLE_SIGN_IN;            \
+  case PermissionType::BRAVE_LOCALHOST_ACCESS:                   \
+    return ContentSettingsType::BRAVE_LOCALHOST_ACCESS;
 
 #include "src/components/permissions/permission_util.cc"
 #undef PermissionUtil
@@ -51,6 +53,8 @@ std::string PermissionUtil::GetPermissionString(
       return "BraveSolana";
     case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
       return "BraveGoogleSignInPermission";
+    case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
+      return "BraveLocalhostAccessPermission";
     default:
       return PermissionUtil_ChromiumImpl::GetPermissionString(content_type);
   }
@@ -68,6 +72,10 @@ bool PermissionUtil::GetPermissionType(ContentSettingsType type,
     *out = PermissionType::BRAVE_GOOGLE_SIGN_IN;
     return true;
   }
+  if (type == ContentSettingsType::BRAVE_LOCALHOST_ACCESS) {
+    *out = PermissionType::BRAVE_LOCALHOST_ACCESS;
+    return true;
+  }
 
   return PermissionUtil_ChromiumImpl::GetPermissionType(type, out);
 }
@@ -78,6 +86,7 @@ bool PermissionUtil::IsPermission(ContentSettingsType type) {
     case ContentSettingsType::BRAVE_ETHEREUM:
     case ContentSettingsType::BRAVE_SOLANA:
     case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
+    case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
       return true;
     default:
       return PermissionUtil_ChromiumImpl::IsPermission(type);
@@ -111,6 +120,8 @@ PermissionType PermissionUtil::ContentSettingTypeToPermissionType(
       return PermissionType::BRAVE_SOLANA;
     case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
       return PermissionType::BRAVE_GOOGLE_SIGN_IN;
+    case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
+      return PermissionType::BRAVE_LOCALHOST_ACCESS;
     default:
       return PermissionUtil_ChromiumImpl::ContentSettingTypeToPermissionType(
           permission);

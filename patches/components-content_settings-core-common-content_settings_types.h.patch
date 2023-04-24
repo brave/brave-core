@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index 4eb53ed3da74c4798815bf592f01cc6fc086bd9d..af16a4139acb63a4be2a4b0a97f1b1bb6259dc49 100644
+index 4eb53ed3da74c4798815bf592f01cc6fc086bd9d..24d0e534ce035968ee5fcfc8e3c71618a80f5fd5 100644
 --- a/components/content_settings/core/common/content_settings_types.h
 +++ b/components/content_settings/core/common/content_settings_types.h
-@@ -327,6 +327,21 @@ enum class ContentSettingsType : int32_t {
+@@ -327,6 +327,22 @@ enum class ContentSettingsType : int32_t {
    // should be enabled.
    THIRD_PARTY_STORAGE_PARTITIONING,
  
@@ -21,6 +21,7 @@ index 4eb53ed3da74c4798815bf592f01cc6fc086bd9d..af16a4139acb63a4be2a4b0a97f1b1bb
 +  BRAVE_GOOGLE_SIGN_IN,
 +  BRAVE_HTTPS_UPGRADE,
 +  BRAVE_REMEMBER_1P_STORAGE,
++  BRAVE_LOCALHOST_ACCESS,
    NUM_TYPES,
  };
  

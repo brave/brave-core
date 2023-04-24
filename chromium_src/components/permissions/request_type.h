@@ -8,7 +8,7 @@
 
 #define kStorageAccess                                     \
   kStorageAccess, kWidevine, kBraveEthereum, kBraveSolana, \
-      kBraveGoogleSignInPermission
+      kBraveGoogleSignInPermission, kBraveLocalhostAccessPermission
 
 #define ContentSettingsTypeToRequestType \
   ContentSettingsTypeToRequestType_ChromiumImpl
