@@ -52,6 +52,13 @@ KeyedService* PermissionLifetimeManagerFactory::BuildServiceInstanceFor(
             context);
   }
   auto* profile = Profile::FromBrowserContext(context);
+  // The HostContentSettingsMap might be null for some irregular profiles, e.g.
+  // the System Profile.
+  auto* host_content_settings_map =
+      HostContentSettingsMapFactory::GetForProfile(profile);
+  if (!host_content_settings_map) {
+    return nullptr;
+  }
   return new permissions::PermissionLifetimeManager(
       *HostContentSettingsMapFactory::GetForProfile(context),
       profile->IsOffTheRecord() ? nullptr : profile->GetPrefs(),

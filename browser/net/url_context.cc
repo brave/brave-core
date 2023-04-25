@@ -139,24 +139,30 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
   Profile* profile = Profile::FromBrowserContext(browser_context);
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
   ctx->allow_brave_shields =
-      brave_shields::GetBraveShieldsEnabled(map, ctx->tab_origin);
-  ctx->allow_ads = brave_shields::GetAdControlType(map, ctx->tab_origin) ==
-                   brave_shields::ControlType::ALLOW;
+      map ? brave_shields::GetBraveShieldsEnabled(map, ctx->tab_origin) : true;
+  ctx->allow_ads =
+      map ? brave_shields::GetAdControlType(map, ctx->tab_origin) ==
+                brave_shields::ControlType::ALLOW
+          : false;
   // Currently, "aggressive" mode is registered as a cosmetic filtering control
   // type, even though it can also affect network blocking.
   ctx->aggressive_blocking =
-      brave_shields::GetCosmeticFilteringControlType(map, ctx->tab_origin) ==
-      brave_shields::ControlType::BLOCK;
+      map ? brave_shields::GetCosmeticFilteringControlType(
+                map, ctx->tab_origin) == brave_shields::ControlType::BLOCK
+          : false;
   ctx->allow_http_upgradable_resource =
-      !brave_shields::GetHTTPSEverywhereEnabled(map, ctx->tab_origin);
+      map ? !brave_shields::GetHTTPSEverywhereEnabled(map, ctx->tab_origin)
+          : false;
 
   // HACK: after we fix multiple creations of BraveRequestInfo we should
   // use only tab_origin. Since we recreate BraveRequestInfo during consequent
   // stages of navigation, |tab_origin| changes and so does |allow_referrers|
   // flag, which is not what we want for determining referrers.
-  ctx->allow_referrers = brave_shields::AreReferrersAllowed(
-      map,
-      ctx->redirect_source.is_empty() ? ctx->tab_origin : ctx->redirect_source);
+  ctx->allow_referrers =
+      map ? brave_shields::AreReferrersAllowed(
+                map, ctx->redirect_source.is_empty() ? ctx->tab_origin
+                                                     : ctx->redirect_source)
+          : false;
   ctx->upload_data = GetUploadData(request);
 
   ctx->browser_context = browser_context;

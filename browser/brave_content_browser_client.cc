@@ -929,6 +929,10 @@ GURL BraveContentBrowserClient::GetEffectiveURL(
   }
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
+  if (extensions::ChromeContentBrowserClientExtensionsPart::
+          AreExtensionsDisabledForProfile(profile)) {
+    return url;
+  }
   return ChromeContentBrowserClientExtensionsPart::GetEffectiveURL(profile,
                                                                    url);
 #else
@@ -1057,17 +1061,22 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
     throttles.push_back(std::move(decentralized_dns_navigation_throttle));
   }
 
-  if (std::unique_ptr<
-          content::NavigationThrottle> domain_block_navigation_throttle =
-          brave_shields::DomainBlockNavigationThrottle::MaybeCreateThrottleFor(
-              handle, g_brave_browser_process->ad_block_service(),
-              g_brave_browser_process->ad_block_service()
-                  ->custom_filters_provider(),
-              EphemeralStorageServiceFactory::GetForContext(context),
-              HostContentSettingsMapFactory::GetForProfile(
-                  Profile::FromBrowserContext(context)),
-              g_browser_process->GetApplicationLocale())) {
-    throttles.push_back(std::move(domain_block_navigation_throttle));
+  // The HostContentSettingsMap might be null for some irregular profiles, e.g.
+  // the System Profile.
+  auto* host_content_settings_map =
+      HostContentSettingsMapFactory::GetForProfile(context);
+  if (host_content_settings_map) {
+    if (std::unique_ptr<content::NavigationThrottle>
+            domain_block_navigation_throttle = brave_shields::
+                DomainBlockNavigationThrottle::MaybeCreateThrottleFor(
+                    handle, g_brave_browser_process->ad_block_service(),
+                    g_brave_browser_process->ad_block_service()
+                        ->custom_filters_provider(),
+                    EphemeralStorageServiceFactory::GetForContext(context),
+                    host_content_settings_map,
+                    g_browser_process->GetApplicationLocale())) {
+      throttles.push_back(std::move(domain_block_navigation_throttle));
+    }
   }
 
   // Debounce
@@ -1085,11 +1094,18 @@ bool PreventDarkModeFingerprinting(WebContents* web_contents,
                                    WebPreferences* prefs) {
   Profile* profile =
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
+  // The HostContentSettingsMap might be null for some irregular profiles, e.g.
+  // the System Profile.
+  auto* host_content_settings_map =
+      HostContentSettingsMapFactory::GetForProfile(profile);
+  if (!host_content_settings_map) {
+    return false;
+  }
   const GURL url = web_contents->GetLastCommittedURL();
-  const bool shields_up = brave_shields::GetBraveShieldsEnabled(
-      HostContentSettingsMapFactory::GetForProfile(profile), url);
+  const bool shields_up =
+      brave_shields::GetBraveShieldsEnabled(host_content_settings_map, url);
   auto fingerprinting_type = brave_shields::GetFingerprintingControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile), url);
+      host_content_settings_map, url);
   // https://github.com/brave/brave-browser/issues/15265
   // Always use color scheme Light if fingerprinting mode strict
   if (base::FeatureList::IsEnabled(
