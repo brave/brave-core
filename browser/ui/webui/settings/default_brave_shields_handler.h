@@ -7,23 +7,33 @@
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_DEFAULT_BRAVE_SHIELDS_HANDLER_H_
 
 #include "base/memory/raw_ptr.h"
+#include "base/scoped_observation.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
+#include "components/content_settings/core/browser/content_settings_observer.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 
 class Profile;
 
-class DefaultBraveShieldsHandler : public settings::SettingsPageUIHandler {
+class DefaultBraveShieldsHandler : public settings::SettingsPageUIHandler,
+                                   public content_settings::Observer {
  public:
-  DefaultBraveShieldsHandler() = default;
+  DefaultBraveShieldsHandler();
   DefaultBraveShieldsHandler(const DefaultBraveShieldsHandler&) = delete;
   DefaultBraveShieldsHandler& operator=(const DefaultBraveShieldsHandler&) =
       delete;
-  ~DefaultBraveShieldsHandler() override = default;
+  ~DefaultBraveShieldsHandler() override;
 
  private:
   // SettingsPageUIHandler overrides:
   void RegisterMessages() override;
   void OnJavascriptAllowed() override {}
   void OnJavascriptDisallowed() override {}
+
+  // content_settings::Observer overrides:
+  void OnContentSettingChanged(
+      const ContentSettingsPattern& primary_pattern,
+      const ContentSettingsPattern& secondary_pattern,
+      ContentSettingsTypeSet content_type_set) override;
 
   void SetAdControlType(const base::Value::List& args);
   void IsAdControlEnabled(const base::Value::List& args);
@@ -43,6 +53,9 @@ class DefaultBraveShieldsHandler : public settings::SettingsPageUIHandler {
   void GetForgetFirstPartyStorageEnabled(const base::Value::List& args);
 
   raw_ptr<Profile> profile_ = nullptr;
+
+  base::ScopedObservation<HostContentSettingsMap, content_settings::Observer>
+      content_settings_observation_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_DEFAULT_BRAVE_SHIELDS_HANDLER_H_

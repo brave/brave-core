@@ -15,12 +15,16 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "content/public/browser/web_ui.h"
 #include "url/gurl.h"
 
 using brave_shields::ControlType;
 using brave_shields::ControlTypeFromString;
 using brave_shields::ControlTypeToString;
+
+DefaultBraveShieldsHandler::DefaultBraveShieldsHandler() = default;
+DefaultBraveShieldsHandler::~DefaultBraveShieldsHandler() = default;
 
 void DefaultBraveShieldsHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());
@@ -89,6 +93,39 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
       base::BindRepeating(
           &DefaultBraveShieldsHandler::SetForgetFirstPartyStorageEnabled,
           base::Unretained(this)));
+
+  content_settings_observation_.Observe(
+      HostContentSettingsMapFactory::GetForProfile(profile_));
+}
+
+void DefaultBraveShieldsHandler::OnContentSettingChanged(
+    const ContentSettingsPattern& primary_pattern,
+    const ContentSettingsPattern& secondary_pattern,
+    ContentSettingsTypeSet content_type_set) {
+  if (!content_type_set.Contains(ContentSettingsType::COOKIES) &&
+      !content_type_set.Contains(
+          ContentSettingsType::BRAVE_COSMETIC_FILTERING) &&
+      !content_type_set.Contains(ContentSettingsType::BRAVE_TRACKERS) &&
+      !content_type_set.Contains(
+          ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES) &&
+      !content_type_set.Contains(
+          ContentSettingsType::BRAVE_FINGERPRINTING_V2) &&
+      !content_type_set.Contains(ContentSettingsType::BRAVE_SHIELDS) &&
+      !content_type_set.Contains(ContentSettingsType::BRAVE_HTTPS_UPGRADE) &&
+      !content_type_set.Contains(
+          ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE)) {
+    return;
+  }
+
+  if (primary_pattern != ContentSettingsPattern::Wildcard() &&
+      secondary_pattern != ContentSettingsPattern::Wildcard()) {
+    return;
+  }
+
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+  FireWebUIListener("brave-shields-settings-changed");
 }
 
 void DefaultBraveShieldsHandler::IsAdControlEnabled(
