@@ -468,6 +468,7 @@ test("brave_unit_tests") {
       "//brave:brave_pak_assets",
       "//chrome:chrome_android_core",
       "//chrome/android:chrome_apk_paks",
+      "//chrome/android:chrome_public_base_module_java_for_test",
       "//chrome/test/android:chrome_java_test_support_common",
       "//components/gcm_driver/instance_id/android:instance_id_driver_test_support_java",
     ]
