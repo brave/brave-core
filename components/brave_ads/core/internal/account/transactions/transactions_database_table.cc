@@ -163,7 +163,7 @@ void Transactions::Save(const TransactionList& transactions,
 
 void Transactions::GetAll(GetTransactionsCallback callback) const {
   const std::string query = base::ReplaceStringPlaceholders(
-      "SELECT id, created_at, creative_instance_id, segment, value, ad_type, "
+      "SELECT id, created_at, creative_instance_id, value, segment, ad_type, "
       "confirmation_type, reconciled_at FROM $1",
       {GetTableName()}, nullptr);
 
@@ -196,7 +196,7 @@ void Transactions::GetForDateRange(const base::Time from_time,
                                    const base::Time to_time,
                                    GetTransactionsCallback callback) const {
   const std::string query = base::ReplaceStringPlaceholders(
-      "SELECT id, created_at, creative_instance_id, segment, value, ad_type, "
+      "SELECT id, created_at, creative_instance_id, value, segment, ad_type, "
       "confirmation_type, reconciled_at FROM $1 WHERE created_at BETWEEN $2 "
       "and $3",
       {GetTableName(), TimeAsTimestampString(from_time),
@@ -328,7 +328,7 @@ std::string Transactions::BuildInsertOrUpdateQuery(
 
   return base::ReplaceStringPlaceholders(
       "INSERT OR REPLACE INTO $1 (id, created_at, creative_instance_id, "
-      "segment, value, ad_type, confirmation_type, reconciled_at) VALUES $2",
+      "value, segment, ad_type, confirmation_type, reconciled_at) VALUES $2",
       {GetTableName(), BuildBindingParameterPlaceholders(
                            /*parameters_count*/ 8, binded_parameters_count)},
       nullptr);

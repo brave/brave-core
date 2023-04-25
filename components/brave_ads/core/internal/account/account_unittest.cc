@@ -386,8 +386,8 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
   expected_transaction.id = transaction_.id;
   expected_transaction.created_at = Now();
   expected_transaction.creative_instance_id = creative_ad.creative_instance_id;
-  expected_transaction.segment = kSegment;
   expected_transaction.value = 1.0;
+  expected_transaction.segment = kSegment;
   expected_transaction.ad_type = AdType::kNotificationAd;
   expected_transaction.confirmation_type = ConfirmationType::kViewed;
   expected_transactions.push_back(expected_transaction);
@@ -424,8 +424,8 @@ TEST_F(BraveAdsAccountTest, DepositForNonCash) {
   expected_transaction.id = transaction_.id;
   expected_transaction.created_at = Now();
   expected_transaction.creative_instance_id = kCreativeInstanceId;
-  expected_transaction.segment = kSegment;
   expected_transaction.value = 0.0;
+  expected_transaction.segment = kSegment;
   expected_transaction.ad_type = AdType::kNotificationAd;
   expected_transaction.confirmation_type = ConfirmationType::kClicked;
   expected_transactions.push_back(expected_transaction);
