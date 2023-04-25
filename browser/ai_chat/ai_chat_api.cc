@@ -70,12 +70,15 @@ void AIChatAPI::QueryPrompt(ResponseCallback callback,
   base::Value::List stop_sequences;
   stop_sequences.Append("\n\nHuman:");
 
+  const auto model_name = ai_chat::features::kAIModelName.Get();
+  DCHECK(!model_name.empty());
+
   dict.Set("prompt", prompt);
   dict.Set("max_tokens_to_sample", 400);
   dict.Set("temperature", 0.7);
   dict.Set("top_k", -1);  // disabled
   dict.Set("top_p", 0.999);
-  dict.Set("model", "claude-v1");
+  dict.Set("model", model_name);
   dict.Set("stop_sequences", std::move(stop_sequences));
   dict.Set("stream", false);
 
