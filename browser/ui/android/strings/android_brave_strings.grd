@@ -575,6 +575,15 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_NEWS_SHOW" desc="Text for news source">
         Show Brave News
       </message>
+      <message name="IDS_NO_CONTENT_TITLE" desc="Text for no source card title">
+        No content
+      </message>
+      <message name="IDS_NO_CONTENT_SUBTITLE" desc="Text for no source card subtitle">
+        Brave News has no content to show.
+      </message>
+      <message name="IDS_CHOOSE_CONTENT_SOURCES" desc="Text for no source card button">
+        Choose content sources
+      </message>
       <message name="IDS_FINGERPRINTING_PROTECTION_SUMMARY" desc="Summary for fingerprinting protection.">
         Prevents browser from fingerprinting
       </message>
