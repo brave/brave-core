@@ -41,6 +41,8 @@ bool Uint8ArrayDecode(const std::string& str,
                       std::vector<uint8_t>* ret,
                       size_t len);
 
+bool IsValidCommitmentString(const std::string& commitment);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_SOLANA_UTILS_H_

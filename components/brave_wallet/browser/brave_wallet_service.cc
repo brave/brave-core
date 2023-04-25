@@ -6,7 +6,6 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 
 #include <map>
-#include <utility>
 #include <vector>
 
 #include "base/metrics/histogram_macros.h"
@@ -1314,6 +1313,9 @@ void BraveWalletService::AddSignTransactionRequest(
   }
   sign_transaction_requests_.push_back(std::move(request));
   sign_transaction_callbacks_.push_back(std::move(callback));
+  if (sign_tx_request_added_cb_for_testing_) {
+    std::move(sign_tx_request_added_cb_for_testing_).Run();
+  }
 }
 
 void BraveWalletService::AddSignAllTransactionsRequest(
@@ -1324,6 +1326,9 @@ void BraveWalletService::AddSignAllTransactionsRequest(
   }
   sign_all_transactions_requests_.push_back(std::move(request));
   sign_all_transactions_callbacks_.push_back(std::move(callback));
+  if (sign_all_txs_request_added_cb_for_testing_) {
+    std::move(sign_all_txs_request_added_cb_for_testing_).Run();
+  }
 }
 
 void BraveWalletService::AddSuggestTokenRequest(
