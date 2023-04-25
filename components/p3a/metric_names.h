@@ -177,6 +177,7 @@ constexpr inline auto kCollectedTypicalHistograms =
 
 constexpr inline auto kCollectedSlowHistograms =
   base::MakeFixedFlatSet<base::StringPiece>({
+    "Brave.Core.ProfileCount",
     "Brave.Core.UsageMonthly",
     "Brave.P3A.TestSlowMetric",
     "Brave.Rewards.TipsSent",
