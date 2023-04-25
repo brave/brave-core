@@ -94,6 +94,11 @@ TEST(RustStripHtml, NonsenseWithComments) {
   )"));
 }
 
+TEST(RustStripHtml, HtmlEntities) {
+  EXPECT_EQ("&lt;pThis is paragraph an HTML entity.",
+            Strip("&lt;p>This is paragraph an HTML entity.</p>"));
+}
+
 // ---------------------------
 // Some test data from the voca_rs project
 // https://github.com/a-merezhanyi/voca_rs/blob/master/tests/unit/strip.rs
