@@ -1003,15 +1003,13 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       env.BRAVE_CHANNEL = this.channel
     }
 
-    if (process.platform === 'win32' || (this.targetOS && this.targetOS === 'win')) {
-      if (!this.gomaServerHost || !this.gomaServerHost.endsWith('.brave.com')) {
-        env.DEPOT_TOOLS_WIN_TOOLCHAIN = '0'
-      } else {
-        // Use hermetic toolchain only internally.
-        env.DEPOT_TOOLS_WIN_TOOLCHAIN = '1'
-        env.GYP_MSVS_HASH_27370823e7 = '01b3b59461'
-        env.DEPOT_TOOLS_WIN_TOOLCHAIN_BASE_URL = 'https://brave-build-deps-public.s3.brave.com/windows-hermetic-toolchain/'
-      }
+    if (!this.gomaServerHost || !this.gomaServerHost.endsWith('.brave.com')) {
+      env.DEPOT_TOOLS_WIN_TOOLCHAIN = '0'
+    } else {
+      // Use hermetic toolchain only internally.
+      env.DEPOT_TOOLS_WIN_TOOLCHAIN = '1'
+      env.GYP_MSVS_HASH_27370823e7 = '01b3b59461'
+      env.DEPOT_TOOLS_WIN_TOOLCHAIN_BASE_URL = 'https://brave-build-deps-public.s3.brave.com/windows-hermetic-toolchain/'
     }
 
     if (this.getCachePath()) {
@@ -1030,8 +1028,18 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       }
     }
 
-    if (this.use_goma) {
-      // Vars used by autoninja to generate -j value, adjusted for Brave-specific setup.
+    if (this.gomaServerHost) {
+      env.GOMA_SERVER_HOST = this.gomaServerHost
+
+      // Disable HTTP2 proxy. According to EngFlow this has significant
+      // performance impact.
+      env.GOMACTL_USE_PROXY = 0
+
+      // Upload stats about Goma actions to the Goma backend.
+      env.GOMA_PROVIDE_INFO = true
+
+      // Vars used by autoninja to generate -j value when goma is enabled,
+      // adjusted for Brave-specific setup.
       env.NINJA_CORE_MULTIPLIER = Math.min(20, env.NINJA_CORE_MULTIPLIER || 20)
       env.NINJA_CORE_LIMIT = Math.min(160, env.NINJA_CORE_LIMIT || 160)
     }
