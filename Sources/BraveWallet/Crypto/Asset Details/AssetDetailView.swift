@@ -33,6 +33,125 @@ struct AssetDetailView: View {
 
   @Environment(\.openURL) private var openWalletURL
 
+  @ViewBuilder private var accountsBalanceView: some View {
+    Section(
+      header: WalletListHeaderView(title: Text(Strings.Wallet.accountsPageTitle)),
+      footer: Button(action: {
+        isShowingAddAccount = true
+      }) {
+        Text(Strings.Wallet.addAccountTitle)
+      }
+        .listRowInsets(.zero)
+        .buttonStyle(BraveOutlineButtonStyle(size: .small))
+        .padding(.vertical, 8)
+    ) {
+      Group {
+        if assetDetailStore.accounts.isEmpty {
+          Text(Strings.Wallet.noAccounts)
+            .redacted(reason: assetDetailStore.isLoadingAccountBalances ? .placeholder : [])
+            .shimmer(assetDetailStore.isLoadingAccountBalances)
+            .font(.footnote)
+        } else {
+          ForEach(assetDetailStore.accounts) { viewModel in
+            HStack {
+              AddressView(address: viewModel.account.address) {
+                AccountView(address: viewModel.account.address, name: viewModel.account.name)
+              }
+              let showFiatPlaceholder = viewModel.fiatBalance.isEmpty && assetDetailStore.isLoadingPrice
+              let showBalancePlaceholder = viewModel.balance.isEmpty && assetDetailStore.isLoadingAccountBalances
+              if assetDetailStore.assetDetailToken.isNft || assetDetailStore.assetDetailToken.isErc721 {
+                Text(showBalancePlaceholder ? "0 \(assetDetailStore.assetDetailToken.symbol)" : "\(viewModel.balance) \(assetDetailStore.assetDetailToken.symbol)")
+                  .redacted(reason: showBalancePlaceholder ? .placeholder : [])
+                  .shimmer(assetDetailStore.isLoadingAccountBalances)
+                  .font(.footnote)
+                  .foregroundColor(Color(.secondaryBraveLabel))
+              } else {
+                VStack(alignment: .trailing) {
+                  Text(showFiatPlaceholder ? "$0.00" : viewModel.fiatBalance)
+                    .redacted(reason: showFiatPlaceholder ? .placeholder : [])
+                    .shimmer(assetDetailStore.isLoadingPrice)
+                  Text(showBalancePlaceholder ? "0.0000 \(assetDetailStore.assetDetailToken.symbol)" : "\(viewModel.balance) \(assetDetailStore.assetDetailToken.symbol)")
+                    .redacted(reason: showBalancePlaceholder ? .placeholder : [])
+                    .shimmer(assetDetailStore.isLoadingAccountBalances)
+                }
+                .font(.footnote)
+                .foregroundColor(Color(.secondaryBraveLabel))
+              }
+            }
+          }
+        }
+      }
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
+    }
+  }
+  
+  @ViewBuilder private var transactionsView: some View {
+    Section(
+      header: WalletListHeaderView(title: Text(Strings.Wallet.transactionsTitle))
+    ) {
+      Group {
+        if assetDetailStore.transactionSummaries.isEmpty {
+          Text(Strings.Wallet.noTransactions)
+            .font(.footnote)
+        } else {
+          ForEach(assetDetailStore.transactionSummaries) { txSummary in
+            Button(action: {
+              self.transactionDetails = assetDetailStore.transactionDetailsStore(for: txSummary.txInfo)
+            }) {
+              TransactionSummaryView(summary: txSummary, displayAccountCreator: true)
+            }
+            .contextMenu {
+              if !txSummary.txHash.isEmpty {
+                Button(action: {
+                  if let baseURL = self.networkStore.selectedChain.blockExplorerUrls.first.map(URL.init(string:)),
+                     let url = baseURL?.appendingPathComponent("tx/\(txSummary.txHash)") {
+                    openWalletURL(url)
+                  }
+                }) {
+                  Label(Strings.Wallet.viewOnBlockExplorer, systemImage: "arrow.up.forward.square")
+                }
+              }
+            }
+          }
+        }
+      }
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
+    }
+  }
+  
+  private func coinMarketInfoView(_ coinMarket: BraveWallet.CoinMarket) -> some View {
+    Section {
+      HStack {
+        VStack(spacing: 10) {
+          Text("\(coinMarket.marketCapRank)")
+            .font(.title3.weight(.semibold))
+          Text(Strings.Wallet.coinMarketRank)
+            .font(.footnote)
+        }
+        Spacer()
+        VStack(spacing: 10) {
+          let computed = assetDetailStore.currencyFormatter.string(from: NSNumber(value: BraveWallet.CoinMarket.abbreviateToBillion(input: coinMarket.totalVolume))) ?? ""
+          Text("\(computed)B")
+            .font(.title3.weight(.semibold))
+          Text(Strings.Wallet.coinMarket24HVolume)
+            .font(.footnote)
+        }
+        Spacer()
+        VStack(spacing: 10) {
+          let computed = assetDetailStore.currencyFormatter.string(from: NSNumber(value: BraveWallet.CoinMarket.abbreviateToBillion(input: coinMarket.marketCap))) ?? ""
+          Text("\(computed)B")
+            .font(.title3.weight(.semibold))
+          Text(Strings.Wallet.coinMarketMarketCap)
+            .font(.footnote)
+        }
+      }
+      .foregroundColor(Color(.braveLabel))
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
+    } header: {
+      Text(Strings.Wallet.coinMarketInformation)
+    }
+  }
+  
   var body: some View {
     List {
       Section(
@@ -47,87 +166,14 @@ struct AssetDetailView: View {
         .padding(.horizontal, tableInset)  // inset grouped layout margins workaround
       ) {
       }
-      Section(
-        header: WalletListHeaderView(title: Text(Strings.Wallet.accountsPageTitle)),
-        footer: Button(action: {
-          isShowingAddAccount = true
-        }) {
-          Text(Strings.Wallet.addAccountTitle)
-        }
-        .listRowInsets(.zero)
-        .buttonStyle(BraveOutlineButtonStyle(size: .small))
-        .padding(.vertical, 8)
-      ) {
-        Group {
-          if assetDetailStore.accounts.isEmpty {
-            Text(Strings.Wallet.noAccounts)
-              .redacted(reason: assetDetailStore.isLoadingAccountBalances ? .placeholder : [])
-              .shimmer(assetDetailStore.isLoadingAccountBalances)
-              .font(.footnote)
-          } else {
-            ForEach(assetDetailStore.accounts) { viewModel in
-              HStack {
-                AddressView(address: viewModel.account.address) {
-                  AccountView(address: viewModel.account.address, name: viewModel.account.name)
-                }
-                let showFiatPlaceholder = viewModel.fiatBalance.isEmpty && assetDetailStore.isLoadingPrice
-                let showBalancePlaceholder = viewModel.balance.isEmpty && assetDetailStore.isLoadingAccountBalances
-                if assetDetailStore.token.isNft || assetDetailStore.token.isErc721 {
-                  Text(showBalancePlaceholder ? "0 \(assetDetailStore.token.symbol)" : "\(viewModel.balance) \(assetDetailStore.token.symbol)")
-                    .redacted(reason: showBalancePlaceholder ? .placeholder : [])
-                    .shimmer(assetDetailStore.isLoadingAccountBalances)
-                    .font(.footnote)
-                    .foregroundColor(Color(.secondaryBraveLabel))
-                } else {
-                  VStack(alignment: .trailing) {
-                    Text(showFiatPlaceholder ? "$0.00" : viewModel.fiatBalance)
-                      .redacted(reason: showFiatPlaceholder ? .placeholder : [])
-                      .shimmer(assetDetailStore.isLoadingPrice)
-                    Text(showBalancePlaceholder ? "0.0000 \(assetDetailStore.token.symbol)" : "\(viewModel.balance) \(assetDetailStore.token.symbol)")
-                      .redacted(reason: showBalancePlaceholder ? .placeholder : [])
-                      .shimmer(assetDetailStore.isLoadingAccountBalances)
-                  }
-                  .font(.footnote)
-                  .foregroundColor(Color(.secondaryBraveLabel))
-                }
-              }
-            }
-          }
-        }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      switch assetDetailStore.assetDetailType {
+      case .blockchainToken(_):
+        accountsBalanceView
+        transactionsView
+      case .coinMarket(let coinMarket):
+        coinMarketInfoView(coinMarket)
       }
-      Section(
-        header: WalletListHeaderView(title: Text(Strings.Wallet.transactionsTitle))
-      ) {
-        Group {
-          if assetDetailStore.transactionSummaries.isEmpty {
-            Text(Strings.Wallet.noTransactions)
-              .font(.footnote)
-          } else {
-            ForEach(assetDetailStore.transactionSummaries) { txSummary in
-              Button(action: {
-                self.transactionDetails = assetDetailStore.transactionDetailsStore(for: txSummary.txInfo)
-              }) {
-                TransactionSummaryView(summary: txSummary, displayAccountCreator: true)
-              }
-              .contextMenu {
-                if !txSummary.txHash.isEmpty {
-                  Button(action: {
-                    if let baseURL = self.networkStore.selectedChain.blockExplorerUrls.first.map(URL.init(string:)),
-                       let url = baseURL?.appendingPathComponent("tx/\(txSummary.txHash)") {
-                      openWalletURL(url)
-                    }
-                  }) {
-                    Label(Strings.Wallet.viewOnBlockExplorer, systemImage: "arrow.up.forward.square")
-                  }
-                }
-              }
-            }
-          }
-        }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
-      }
-      if !assetDetailStore.token.isNft && !assetDetailStore.token.isErc721 {
+      if !assetDetailStore.assetDetailToken.isNft && !assetDetailStore.assetDetailToken.isErc721 {
         Section {
           EmptyView()
         } header: {
@@ -143,7 +189,7 @@ struct AssetDetailView: View {
     }
     .listStyle(InsetGroupedListStyle())
     .listBackgroundColor(Color(UIColor.braveGroupedBackground))
-    .navigationTitle(assetDetailStore.token.name)
+    .navigationTitle(assetDetailStore.assetDetailToken.name)
     .navigationBarTitleDisplayMode(.inline)
     .onAppear {
       assetDetailStore.update()

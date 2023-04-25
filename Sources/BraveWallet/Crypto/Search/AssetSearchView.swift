@@ -94,12 +94,12 @@ struct AssetSearchView: View {
                       }
                     } else {
                       AssetDetailView(
-                        assetDetailStore: cryptoStore.assetDetailStore(for: assetViewModel.token),
+                        assetDetailStore: cryptoStore.assetDetailStore(for: .blockchainToken(assetViewModel.token)),
                         keyringStore: keyringStore,
                         networkStore: cryptoStore.networkStore
                       )
                       .onDisappear {
-                        cryptoStore.closeAssetDetailStore(for: assetViewModel.token)
+                        cryptoStore.closeAssetDetailStore(for: .blockchainToken(assetViewModel.token))
                       }
                     }
                   }

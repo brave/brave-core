@@ -18,6 +18,20 @@ struct AccountAssetViewModel: Identifiable {
   }
 }
 
+enum AssetDetailType: Identifiable {
+  case blockchainToken(BraveWallet.BlockchainToken)
+  case coinMarket(BraveWallet.CoinMarket)
+  
+  var id: String {
+    switch self {
+    case .blockchainToken(let token):
+      return token.tokenId
+    case .coinMarket(let coinMarket):
+      return coinMarket.id
+    }
+  }
+}
+
 class AssetDetailStore: ObservableObject {
   @Published private(set) var isInitialState: Bool = true
   @Published private(set) var isLoadingPrice: Bool = false
@@ -37,8 +51,9 @@ class AssetDetailStore: ObservableObject {
   @Published private(set) var isLoadingAccountBalances: Bool = false
   @Published private(set) var accounts: [AccountAssetViewModel] = []
   @Published private(set) var transactionSummaries: [TransactionSummary] = []
-  @Published private(set) var isBuySupported: Bool = true
-  @Published private(set) var isSwapSupported: Bool = true
+  @Published private(set) var isBuySupported: Bool = false
+  @Published private(set) var isSendSupported: Bool = false
+  @Published private(set) var isSwapSupported: Bool = false
   @Published private(set) var currencyCode: String = CurrencyCode.usd.code {
     didSet {
       currencyFormatter.currencyCode = currencyCode
@@ -62,8 +77,31 @@ class AssetDetailStore: ObservableObject {
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
   private let swapService: BraveWalletSwapService
-
-  let token: BraveWallet.BlockchainToken
+  /// A list of tokens that are supported with the current selected network for all supported
+  /// on-ramp providers.
+  private var allBuyTokensAllOptions: [BraveWallet.OnRampProvider: [BraveWallet.BlockchainToken]] = [:]
+  let assetDetailType: AssetDetailType
+  var assetDetailToken: BraveWallet.BlockchainToken {
+    switch assetDetailType {
+    case .blockchainToken(let token):
+      return token
+    case .coinMarket(let coinMarket):
+      return .init().then {
+        for tokens in allBuyTokensAllOptions.values {
+          if let matchedToken = tokens.first(where: { token in token.symbol.caseInsensitiveCompare(coinMarket.symbol) == .orderedSame }) {
+            $0.contractAddress = matchedToken.contractAddress
+            $0.coin = matchedToken.coin
+            $0.chainId = matchedToken.chainId
+            break
+          }
+        }
+        $0.coingeckoId = coinMarket.id
+        $0.logo = coinMarket.image
+        $0.symbol = coinMarket.symbol.uppercased() // ramp needs capitalized token symbol to get a valid buy url
+        $0.name = coinMarket.name
+      }
+    }
+  }
 
   init(
     assetRatioService: BraveWalletAssetRatioService,
@@ -74,7 +112,7 @@ class AssetDetailStore: ObservableObject {
     blockchainRegistry: BraveWalletBlockchainRegistry,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
     swapService: BraveWalletSwapService,
-    token: BraveWallet.BlockchainToken
+    assetDetailType: AssetDetailType
   ) {
     self.assetRatioService = assetRatioService
     self.keyringService = keyringService
@@ -84,7 +122,7 @@ class AssetDetailStore: ObservableObject {
     self.blockchainRegistry = blockchainRegistry
     self.solTxManagerProxy = solTxManagerProxy
     self.swapService = swapService
-    self.token = token
+    self.assetDetailType = assetDetailType
 
     self.keyringService.add(self)
     self.txService.add(self)
@@ -104,53 +142,105 @@ class AssetDetailStore: ObservableObject {
     Task { @MainActor in
       self.isLoadingPrice = true
       self.isLoadingChart = true
-      let coin = token.coin
-      let allNetworks = await rpcService.allNetworks(coin)
-      let selectedNetwork = await rpcService.network(coin)
-      let network = allNetworks.first(where: { $0.chainId == token.chainId }) ?? selectedNetwork
-      self.network = network
-      let rampBuyTokens = await blockchainRegistry.buyTokens(.ramp, chainId: network.chainId)
-      let sardineBuyTokens = await blockchainRegistry.buyTokens(.sardine, chainId: network.chainId)
-      let buyTokens = rampBuyTokens + sardineBuyTokens
-      self.isBuySupported = buyTokens.first(where: { $0.symbol.caseInsensitiveCompare(token.symbol) == .orderedSame }) != nil
-      self.isSwapSupported = await swapService.isSwapSupported(token.chainId)
       
-      // fetch accounts
-      let keyring = await keyringService.keyringInfo(coin.keyringId)
-      var updatedAccounts = keyring.accountInfos.map {
-        AccountAssetViewModel(account: $0, decimalBalance: 0.0, balance: "", fiatBalance: "")
-      }
-      
-      if !token.isErc721 && !token.isNft {
-        // fetch prices for the asset
-        let (_, prices) = await assetRatioService.price([token.assetRatioId], toAssets: [currencyFormatter.currencyCode, "btc"], timeframe: timeframe)
+      switch assetDetailType {
+      case .blockchainToken(let token):
+        // not come from Market tab
+        let allNetworks = await rpcService.allNetworks(token.coin)
+        let selectedNetwork = await rpcService.network(token.coin)
+        let network = allNetworks.first(where: { $0.chainId == token.chainId }) ?? selectedNetwork
+        self.network = network
+        self.isBuySupported = await self.isBuyButtonSupported(in: network, for: token.symbol)
+        self.isSendSupported = true
+        self.isSwapSupported = await swapService.isSwapSupported(token.chainId)
+        
+        // fetch accounts
+        let keyring = await keyringService.keyringInfo(token.coin.keyringId)
+        var updatedAccounts = keyring.accountInfos.map {
+          AccountAssetViewModel(account: $0, decimalBalance: 0.0, balance: "", fiatBalance: "")
+        }
+        
+        if !token.isErc721 && !token.isNft {
+          // fetch prices for the asset
+          let (prices, btcRatio, priceHistory) = await fetchPriceInfo(for: token.assetRatioId)
+          self.btcRatio = btcRatio
+          self.priceHistory = priceHistory
+          self.isLoadingPrice = false
+          self.isInitialState = false
+          self.isLoadingChart = false
+          
+          if let assetPrice = prices.first(where: { $0.toAsset.caseInsensitiveCompare(self.currencyFormatter.currencyCode) == .orderedSame }),
+             let value = Double(assetPrice.price) {
+            self.assetPriceValue = value
+            self.price = self.currencyFormatter.string(from: NSNumber(value: value)) ?? ""
+            if let deltaValue = Double(assetPrice.assetTimeframeChange) {
+              self.priceIsDown = deltaValue < 0
+              self.priceDelta = self.percentFormatter.string(from: NSNumber(value: deltaValue / 100.0)) ?? ""
+            }
+            for index in 0..<updatedAccounts.count {
+              updatedAccounts[index].fiatBalance = self.currencyFormatter.string(from: NSNumber(value: updatedAccounts[index].decimalBalance * self.assetPriceValue)) ?? ""
+            }
+          }
+        }
+        
+        self.accounts = await fetchAccountBalances(updatedAccounts, keyring: keyring, network: network)
+        let assetRatios = [token.assetRatioId.lowercased(): assetPriceValue]
+        self.transactionSummaries = await fetchTransactionSummarys(keyring: keyring, network: network, assetRatios: assetRatios)
+      case .coinMarket(let coinMarket):
+        // comes from Market tab
+        self.price = self.currencyFormatter.string(from: NSNumber(value: coinMarket.currentPrice)) ?? ""
+        self.priceDelta = self.percentFormatter.string(from: NSNumber(value: coinMarket.priceChangePercentage24h / 100.0)) ?? ""
+        self.priceIsDown = coinMarket.priceChangePercentage24h < 0
+        
+        let (_, btcRatio, priceHistory) = await self.fetchPriceInfo(for: coinMarket.id)
+        self.btcRatio = btcRatio
+        self.priceHistory = priceHistory
         self.isLoadingPrice = false
         self.isInitialState = false
-        if let assetPrice = prices.first(where: { $0.toAsset.caseInsensitiveCompare(self.currencyFormatter.currencyCode) == .orderedSame }),
-           let value = Double(assetPrice.price) {
-          self.assetPriceValue = value
-          self.price = self.currencyFormatter.string(from: NSNumber(value: value)) ?? ""
-          if let deltaValue = Double(assetPrice.assetTimeframeChange) {
-            self.priceIsDown = deltaValue < 0
-            self.priceDelta = self.percentFormatter.string(from: NSNumber(value: deltaValue / 100.0)) ?? ""
-          }
-          for index in 0..<updatedAccounts.count {
-            updatedAccounts[index].fiatBalance = self.currencyFormatter.string(from: NSNumber(value: updatedAccounts[index].decimalBalance * self.assetPriceValue)) ?? ""
-          }
-        }
-        if let assetPrice = prices.first(where: { $0.toAsset == "btc" }) {
-          self.btcRatio = "\(assetPrice.price) BTC"
-        }
-        // fetch price history for the asset
-        let (_, priceHistory) = await assetRatioService.priceHistory(token.assetRatioId, vsAsset: currencyFormatter.currencyCode, timeframe: timeframe)
         self.isLoadingChart = false
-        self.priceHistory = priceHistory
+        
+        // selected network used because we don't have `chainId` on CoinMarket
+        let selectedCoin = await self.walletService.selectedCoin()
+        let selectedNetwork = await self.rpcService.network(selectedCoin)
+        self.isBuySupported = await self.isBuyButtonSupported(in: selectedNetwork, for: coinMarket.symbol)
+        
+        // below is all not supported from Market tab
+        self.isSendSupported = false
+        self.isSwapSupported = false
+        self.accounts = []
+        self.transactionSummaries = []
       }
-      
-      self.accounts = await fetchAccountBalances(updatedAccounts, keyring: keyring, network: network)
-      let assetRatios = [token.assetRatioId.lowercased(): assetPriceValue]
-      self.transactionSummaries = await fetchTransactionSummarys(keyring: keyring, network: network, assetRatios: assetRatios)
     }
+  }
+  
+  @MainActor private func isBuyButtonSupported(in network: BraveWallet.NetworkInfo, for symbol: String) async -> Bool {
+    let buyOptions: [BraveWallet.OnRampProvider]
+    if Locale.preferredLanguages.first?.caseInsensitiveCompare("en-us") == .orderedSame {
+      buyOptions = [.ramp, .sardine, .transak]
+    } else {
+      buyOptions = [.ramp, .transak]
+    }
+    self.allBuyTokensAllOptions = await blockchainRegistry.allBuyTokens(in: network, for: buyOptions)
+    let buyTokens = allBuyTokensAllOptions.flatMap{ $0.value }
+    return buyTokens.first(where: { $0.symbol.caseInsensitiveCompare(symbol) == .orderedSame }) != nil
+  }
+  
+  // Return given token's asset prices, btc ratio and price history
+  @MainActor private func fetchPriceInfo(for tokenId: String) async -> ([BraveWallet.AssetPrice], String, [BraveWallet.AssetTimePrice]) {
+    // fetch prices for the asset
+    var assetPrices: [BraveWallet.AssetPrice] = []
+    var btcRatio = "0.0000 BTC"
+    let (_, prices) = await assetRatioService.price([tokenId], toAssets: [currencyFormatter.currencyCode, "btc"], timeframe: timeframe)
+    assetPrices = prices
+    if tokenId.caseInsensitiveCompare("bitcoin") == .orderedSame {
+      btcRatio = "1 BTC"
+    } else if let assetPrice = prices.first(where: { $0.toAsset == "btc" }) {
+      btcRatio = "\(assetPrice.price) BTC"
+    }
+    // fetch price history for the asset
+    let (_, priceHistory) = await assetRatioService.priceHistory(tokenId, vsAsset: currencyFormatter.currencyCode, timeframe: timeframe)
+    
+    return (assetPrices, btcRatio, priceHistory)
   }
   
   @MainActor private func fetchAccountBalances(
@@ -158,13 +248,16 @@ class AssetDetailStore: ObservableObject {
     keyring: BraveWallet.KeyringInfo,
     network: BraveWallet.NetworkInfo
   ) async -> [AccountAssetViewModel] {
+    guard case let .blockchainToken(token) = assetDetailType
+    else { return [] }
+
     var accountAssetViewModels = accountAssetViewModels
     isLoadingAccountBalances = true
     typealias AccountBalance = (account: BraveWallet.AccountInfo, balance: Double?)
     let tokenBalances = await withTaskGroup(of: [AccountBalance].self) { @MainActor group -> [AccountBalance] in
       for accountAssetViewModel in accountAssetViewModels {
         group.addTask { @MainActor in
-          let balance = await self.rpcService.balance(for: self.token, in: accountAssetViewModel.account, network: network)
+          let balance = await self.rpcService.balance(for: token, in: accountAssetViewModel.account, network: network)
           return [AccountBalance(accountAssetViewModel.account, balance)]
         }
       }
@@ -190,6 +283,8 @@ class AssetDetailStore: ObservableObject {
     network: BraveWallet.NetworkInfo,
     assetRatios: [String: Double]
   ) async -> [TransactionSummary] {
+    guard case let .blockchainToken(token) = assetDetailType
+    else { return [] }
     let userVisibleAssets = await walletService.userAssets(network.chainId, coin: network.coin)
     let allTokens = await blockchainRegistry.allTokens(network.chainId, coin: network.coin)
     let allTransactions = await withTaskGroup(of: [BraveWallet.TransactionInfo].self) { @MainActor group -> [BraveWallet.TransactionInfo] in
@@ -213,19 +308,19 @@ class AssetDetailStore: ObservableObject {
           guard let tokenContractAddress = tx.txDataUnion.ethTxData1559?.baseData.to else {
             return false
           }
-          return tokenContractAddress.caseInsensitiveCompare(self.token.contractAddress) == .orderedSame
+          return tokenContractAddress.caseInsensitiveCompare(token.contractAddress) == .orderedSame
         case .ethSend, .ethSwap, .other:
-          return network.symbol.caseInsensitiveCompare(self.token.symbol) == .orderedSame
+          return network.symbol.caseInsensitiveCompare(token.symbol) == .orderedSame
         case .erc721TransferFrom, .erc721SafeTransferFrom:
           guard let tokenContractAddress = tx.txDataUnion.ethTxData1559?.baseData.to else { return false }
-          return tokenContractAddress.caseInsensitiveCompare(self.token.contractAddress) == .orderedSame
+          return tokenContractAddress.caseInsensitiveCompare(token.contractAddress) == .orderedSame
         case .solanaSystemTransfer:
-          return network.symbol.caseInsensitiveCompare(self.token.symbol) == .orderedSame
+          return network.symbol.caseInsensitiveCompare(token.symbol) == .orderedSame
         case .solanaSplTokenTransfer, .solanaSplTokenTransferWithAssociatedTokenAccountCreation:
           guard let tokenContractAddress = tx.txDataUnion.solanaTxData?.splTokenMintAddress else {
             return false
           }
-          return tokenContractAddress.caseInsensitiveCompare(self.token.contractAddress) == .orderedSame
+          return tokenContractAddress.caseInsensitiveCompare(token.contractAddress) == .orderedSame
         case .erc1155SafeTransferFrom, .solanaDappSignTransaction, .solanaDappSignAndSendTransaction, .solanaSwap:
           return false
         @unknown default:

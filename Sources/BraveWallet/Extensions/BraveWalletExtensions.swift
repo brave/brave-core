@@ -316,6 +316,12 @@ extension BraveWallet.OnRampProvider {
   }
 }
 
+extension BraveWallet.CoinMarket {
+  static func abbreviateToBillion(input: Double) -> Double {
+    input / 1000000000
+  }
+}
+
 public extension String {
   /// Returns true if the string ends with a supported ENS extension.
   var endsWithSupportedENSExtension: Bool {
