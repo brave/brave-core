@@ -6,7 +6,7 @@
 #include <utility>
 
 #include "base/strings/string_piece.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/search_result_ad/search_result_ad_converting_util.h"
 #include "brave/components/brave_ads/core/search_result_ad/test_web_page_util.h"
 #include "components/schema_org/common/metadata.mojom.h"

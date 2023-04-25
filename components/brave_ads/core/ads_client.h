@@ -12,7 +12,7 @@
 
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/ads_client_callback.h"
 #include "brave/components/brave_ads/core/export.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom-forward.h"

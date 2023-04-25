@@ -7,7 +7,7 @@
 
 #include "base/check_op.h"
 #include "base/ranges/algorithm.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"

@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/common/timer/backoff_timer.h"
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"

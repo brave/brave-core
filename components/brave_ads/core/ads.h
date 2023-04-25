@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/ad_content_action_types.h"
 #include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/category_content_action_types.h"

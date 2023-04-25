@@ -10,7 +10,7 @@
 
 #include "base/check_op.h"
 #include "base/functional/callback_forward.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/ads_client_callback.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_info.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"

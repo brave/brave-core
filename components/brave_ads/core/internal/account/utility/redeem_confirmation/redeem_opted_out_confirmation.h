@@ -7,7 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REDEEM_CONFIRMATION_REDEEM_OPTED_OUT_CONFIRMATION_H_
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_confirmation_delegate.h"
 
 namespace brave_ads {

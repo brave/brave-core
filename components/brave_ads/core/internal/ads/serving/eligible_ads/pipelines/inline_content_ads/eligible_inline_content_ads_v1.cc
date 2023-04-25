@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/allocation/seen_ads.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/allocation/seen_advertisers.h"

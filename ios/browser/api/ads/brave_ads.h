@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UserNotifications/UserNotifications.h>
-#import "ads.mojom.objc.h"
+#import "brave_ads.mojom.objc.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

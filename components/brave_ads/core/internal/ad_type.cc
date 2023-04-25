@@ -7,7 +7,7 @@
 
 #include "base/check.h"
 #include "base/notreached.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 
 namespace brave_ads {
 

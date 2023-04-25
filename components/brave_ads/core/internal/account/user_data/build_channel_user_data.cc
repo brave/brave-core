@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/build_channel_user_data.h"
 
 #include "base/check.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
 namespace brave_ads {

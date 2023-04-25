@@ -12,7 +12,7 @@
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/locale/subdivision_code_util.h"

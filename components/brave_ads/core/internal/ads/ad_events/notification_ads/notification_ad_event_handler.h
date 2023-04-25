@@ -10,7 +10,7 @@
 
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/notification_ads/notification_ad_event_handler_delegate.h"
 
 namespace brave_ads {

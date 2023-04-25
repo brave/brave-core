@@ -13,7 +13,7 @@
 #include "base/memory/memory_pressure_listener.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/export.h"
 #include "sql/database.h"
 #include "sql/meta_table.h"

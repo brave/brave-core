@@ -12,7 +12,7 @@
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/common/features.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/search_result_ad/search_result_ad_converting_util.h"
 #include "brave/components/brave_ads/core/search_result_ad/search_result_ad_util.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"

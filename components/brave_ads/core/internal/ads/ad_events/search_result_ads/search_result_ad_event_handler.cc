@@ -10,8 +10,8 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
-#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/ad_info.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_builder.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_info.h"
