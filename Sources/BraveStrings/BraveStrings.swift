@@ -2027,7 +2027,7 @@ extension Strings {
     
     public static let sharedFolderSyncAutomaticallyTitle =
     NSLocalizedString("playList.sharedFolderSyncAutomaticallyTitle", tableName: "BraveShared", bundle: .module,
-                      value: "Sync playlist folders automatically",
+                      value: "Sync Playlist Folders Automatically",
                       comment: "Title of the settings option to sync folders with the server automatically, every 4 hours.")
     
     public static let sharedFolderSyncAutomaticallyDescription =

@@ -225,7 +225,7 @@ extension Preferences {
       Option<Date?>(key: "playlist.lastPlaylistFoldersSyncTime", default: nil)
     /// Sync shared folders automatically preference
     static let syncSharedFoldersAutomatically =
-      Option<Bool>(key: "playlist.syncSharedFoldersAutomatically", default: false)
+      Option<Bool>(key: "playlist.syncSharedFoldersAutomatically", default: true)
   }
     
   final public class PrivacyReports {
