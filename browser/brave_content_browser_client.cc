@@ -209,7 +209,9 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/components/playlist/browser/playlist_render_frame_browser_client.h"
 #include "brave/components/playlist/browser/playlist_service.h"
+#include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
@@ -254,6 +256,22 @@ void BindCosmeticFiltersResources(
       FROM_HERE, base::BindOnce(&BindCosmeticFiltersResourcesOnTaskRunner,
                                 std::move(receiver)));
 }
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+void BindPlaylistRenderFrameBrowserClient(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<playlist::mojom::PlaylistRenderFrameBrowserClient>
+        receiver) {
+  auto* playlist_service =
+      playlist::PlaylistServiceFactory::GetForBrowserContext(
+          frame_host->GetBrowserContext());
+  DCHECK(playlist_service);
+  mojo::MakeSelfOwnedReceiver(
+      std::make_unique<playlist::PlaylistRenderFrameBrowserClient>(
+          frame_host->GetGlobalId(), playlist_service->GetWeakPtr()),
+      std::move(receiver));
+}
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
 void MaybeBindWalletP3A(
     content::RenderFrameHost* const frame_host,
@@ -665,6 +683,11 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   content::RegisterWebUIControllerInterfaceBinder<
       brave_new_tab_page::mojom::PageHandlerFactory, BraveNewTabUI>(map);
 #endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  map->Add<playlist::mojom::PlaylistRenderFrameBrowserClient>(
+      base::BindRepeating(&BindPlaylistRenderFrameBrowserClient));
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 }
 
 bool BraveContentBrowserClient::HandleExternalProtocol(

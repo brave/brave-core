@@ -22,6 +22,7 @@
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
+
 #if BUILDFLAG(IS_ANDROID)
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #endif  // BUILDFLAG(IS_ANDROID)
@@ -42,6 +43,7 @@ class WebContents;
 class CosmeticFilteringPlaylistFlagEnabledTest;
 class PlaylistBrowserTest;
 class PlaylistRenderFrameObserverBrowserTest;
+class PlaylistDownloadRequestManagerBrowserTest;
 class PrefService;
 
 namespace playlist {
@@ -113,7 +115,9 @@ class PlaylistService : public KeyedService,
       content::WebContents* web_contents,
       blink::web_pref::WebPreferences* web_prefs);
 
-  // mojom::Service:
+  base::WeakPtr<PlaylistService> GetWeakPtr();
+
+  // mojom::PlaylistService:
   // TODO(sko) Make getters without callbacks and simplify codes in
   // PlaylistService and tests.
   void GetAllPlaylists(GetAllPlaylistsCallback callback) override;
@@ -164,10 +168,13 @@ class PlaylistService : public KeyedService,
   void AddObserver(
       mojo::PendingRemote<mojom::PlaylistServiceObserver> observer) override;
 
+  void OnMediaUpdatedFromContents(content::WebContents* contents);
+
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;
   friend class ::PlaylistBrowserTest;
   friend class ::PlaylistRenderFrameObserverBrowserTest;
+  friend class ::PlaylistDownloadRequestManagerBrowserTest;
 
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, CreatePlaylist);
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, CreatePlaylistItem);
@@ -242,6 +249,8 @@ class PlaylistService : public KeyedService,
   void NotifyPlaylistChanged(const PlaylistChangeParams& params);
   void NotifyPlaylistChanged(mojom::PlaylistEvent playlist_event,
                              const std::string& playlist_id);
+  void NotifyMediaFilesUpdated(const GURL& url,
+                               std::vector<mojom::PlaylistItemPtr> items);
 
   void UpdatePlaylistItemValue(const std::string& id, base::Value value);
   void RemovePlaylistItemValue(const std::string& id);

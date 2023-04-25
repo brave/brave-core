@@ -6,7 +6,9 @@
 package org.chromium.chrome.browser.playlist;
 
 import org.chromium.mojo.system.MojoException;
+import org.chromium.playlist.mojom.PlaylistItem;
 import org.chromium.playlist.mojom.PlaylistServiceObserver;
+import org.chromium.url.mojom.Url;
 
 public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
     public interface PlaylistServiceObserverImplDelegate {
@@ -36,6 +38,9 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
         mDelegate.onMediaFileDownloadProgressed(
                 id, totalBytes, receivedBytes, percentComplete, timeRemaining);
     }
+
+    @Override
+    public void onMediaFilesUpdated(Url pageUrl, PlaylistItem[] items) {}
 
     @Override
     public void close() {
