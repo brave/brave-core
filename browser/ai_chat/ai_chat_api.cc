@@ -13,6 +13,7 @@
 #include "base/strings/strcat.h"
 #include "brave/browser/ai_chat/buildflags.h"
 #include "brave/browser/ai_chat/constants.h"
+#include "brave/components/ai_chat/features.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -86,6 +87,7 @@ void AIChatAPI::QueryPrompt(ResponseCallback callback,
   headers.emplace("x-brave-key", BUILDFLAG(BRAVE_SERVICES_KEY));
 
   DVLOG(1) << __func__ << " Prompt: " << prompt << "\n";
+  DVLOG(1) << __func__ << " Using model: " << model_name;
 
   api_request_helper_.Request("POST",
                               GetURLWithPath(BUILDFLAG(BRAVE_AI_CHAT_ENDPOINT),
@@ -103,19 +105,17 @@ void AIChatAPI::OnGetResponse(ResponseCallback callback,
   if (!success) {
     DVLOG(1) << __func__ << " Response from API was not HTTP 200 (Received "
              << result.response_code() << ")";
-    return;
   }
 
   std::string response = result.body();
   const base::Value::Dict* dict = result.value_body().GetIfDict();
 
-  if (!dict) {
+  if (dict) {
+    if (const std::string* completion = dict->FindString("completion")) {
+      response = *completion;
+    }
+  } else {
     DVLOG(1) << __func__ << " Result dict not found\n";
-    return;
-  }
-
-  if (const std::string* completion = dict->FindString("completion")) {
-    response = *completion;
   }
 
   std::move(callback).Run(response, success);

@@ -286,7 +286,14 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
 void AIChatTabHelper::OnAPIResponse(bool contains_summary,
                                     const std::string& assistant_input,
                                     bool success) {
+  SetRequestInProgress(false);
+
   if (!success) {
+    // TODO(petemill): show error state separate from assistant message
+    AddToConversationHistory(ConversationTurn{
+        CharacterType::ASSISTANT, ConversationTurnVisibility::VISIBLE,
+        l10n_util::GetStringUTF8(IDS_CHAT_UI_API_ERROR)});
+
     return;
   }
 
@@ -299,8 +306,6 @@ void AIChatTabHelper::OnAPIResponse(bool contains_summary,
   }
 
   AddToConversationHistory(turn);
-
-  SetRequestInProgress(false);
 }
 
 void AIChatTabHelper::SetRequestInProgress(bool in_progress) {
