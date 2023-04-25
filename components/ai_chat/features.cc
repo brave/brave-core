@@ -14,6 +14,6 @@ namespace ai_chat::features {
 
 BASE_FEATURE(kAIChat, "AIChat", base::FEATURE_DISABLED_BY_DEFAULT);
 const base::FeatureParam<std::string> kAIModelName{&kAIChat, "ai_model_name",
-                                                   "claude-v1"};
+                                                   "claude-instant-v1"};
 
 }  // namespace ai_chat::features
