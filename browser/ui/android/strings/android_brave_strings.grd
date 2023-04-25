@@ -3784,22 +3784,22 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Add media
     </message>
     <message name="IDS_PLAYLIST_ONBOARDING_TITLE_1" desc="Playlist onboarding text">
-      Add videos to Brave Playlist and watch later, even offline
+      Add videos to Brave Playlist. Playback anytime. Even offline.
     </message>
     <message name="IDS_PLAYLIST_ONBOARDING_TEXT_1" desc="Playlist onboarding text">
-      Make playlists of your favorite audio and videos, and play anytime, anywhere.
+      Make playlists of your favorite content. Save mobile data. And playback ad-free.
     </message>
     <message name="IDS_PLAYLIST_ONBOARDING_TITLE_2" desc="Playlist onboarding text">
-      Out of cell range? Need to calm a crying toddler?
+      Just tap the button to add videos to a playlist
     </message>
     <message name="IDS_PLAYLIST_ONBOARDING_TEXT_2" desc="Playlist onboarding text">
-      Whether you're on the subway, a flight, or a long car trip. Playlist has you covered.
+      Stay in flow: Add videos while you browse, watch later.
     </message>
     <message name="IDS_PLAYLIST_ONBOARDING_TITLE_3" desc="Playlist onboarding text">
-      Or tap the Playlist button when it appears
+      Playback is better in Playlist
     </message>
     <message name="IDS_PLAYLIST_ONBOARDING_TEXT_3" desc="Playlist onboarding text">
-      Playlist button appears when there’s media to add. Long press it for options. You can even hide it.
+      Play in the background. Control from the lockscreen. And more…
     </message>
     <message name="IDS_PLAYLIST_OPEN_PLAYLIST" desc="Open playlist menu item text">
       Open Playlist
@@ -3872,6 +3872,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_PLAYLIST_ITEM_EXPIRED_MESSAGE" desc="Playlist item expired message text">
       Content expired. Try again in a few seconds.
+    </message>
+    <message name="IDS_PLAYLIST_EMPTY_PLAYLIST_NAME" desc="Empty playlist name message">
+      Please enter valid playlist name
     </message>
     <message name="IDS_NO_NFTS" desc="Message shown when there no NFTs in the NFT grid.">
       No NFTs here yet.

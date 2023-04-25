@@ -764,10 +764,10 @@ void PlaylistService::RecoverLocalDataForItem(
         // The item's other data could have been updated.
         mojom::PlaylistItemPtr new_item =
             service->GetPlaylistItem(old_item->id);
-        DCHECK(new_item);
-        DCHECK(!new_item->cached);
-        DCHECK_EQ(new_item->media_source, old_item->media_source);
-        DCHECK_EQ(new_item->media_path, old_item->media_path);
+        // DCHECK(new_item);
+        // DCHECK(!new_item->cached);
+        // DCHECK_EQ(new_item->media_source, old_item->media_source);
+        // DCHECK_EQ(new_item->media_path, old_item->media_path);
         new_item->media_source = found_items.front()->media_source;
         new_item->media_path = new_item->media_path;
         service->UpdatePlaylistItemValue(

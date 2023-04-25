@@ -31,6 +31,7 @@ import com.brave.playlist.util.PlaylistUtils;
 import com.brave.playlist.view.bottomsheet.MoveOrCopyToPlaylistBottomSheet;
 
 import org.chromium.base.BraveFeatureList;
+import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -280,11 +281,14 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                                 playlistItemOption.getPlaylistItemModel().getId());
                         loadPlaylist(playlistItemOption.getPlaylistId());
                     } else if (option == PlaylistOptions.RECOVER_PLAYLIST_ITEM) {
+                        Log.e("NTP", "RECOVER_PLAYLIST_ITEM : ");
                         mPlaylistService.recoverLocalDataForItem(
                                 playlistItemOption.getPlaylistItemModel().getId(), true,
-                                playlistItem
-                                -> {
-
+                                playlistItem -> {
+                                    Log.e("NTP",
+                                            "recoverLocalDataForItem : PlaylistId : "
+                                                    + playlistItem.id);
+                                    loadPlaylist(playlistItemOption.getPlaylistId());
                                 });
                     }
                 });
@@ -433,6 +437,7 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                 playlistEvent = PlaylistEventEnum.kNone;
                 break;
         }
+        Log.e("NTP", "OnEvent : PlaylistEvent : " + playlistEvent + " PlaylistId : " + playlistId);
         mPlaylistViewModel.updatePlaylistEvent(new PlaylistEventModel(playlistEvent, playlistId));
     }
 
