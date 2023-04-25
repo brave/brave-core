@@ -32,6 +32,7 @@ import { store, walletPageApiProxy } from './store'
 import walletDarkTheme from '../theme/wallet-dark'
 import walletLightTheme from '../theme/wallet-light'
 import 'emptykit.css'
+import '@brave/leo/tokens/css/variables.css'
 
 import { setIconBasePath } from '@brave/leo/react/icon'
 setIconBasePath('chrome://resources/brave-icons')
