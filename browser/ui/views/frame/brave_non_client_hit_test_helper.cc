@@ -12,11 +12,75 @@
 
 namespace brave {
 
-int NonClientHitTest(BrowserView* browser_view, const gfx::Point& point) {
-  if (!browser_view->toolbar() || !browser_view->toolbar()->GetVisible())
+int NonClientHitTest(BrowserView* browser_view,
+                     const gfx::Point& point_in_widget) {
+  if (!browser_view->toolbar() || !browser_view->toolbar()->GetVisible()) {
     return HTNOWHERE;
+  }
 
-  return views::GetHitTestComponent(browser_view->toolbar(), point);
+  int hit_test_result =
+      views::GetHitTestComponent(browser_view->toolbar(), point_in_widget);
+  if (hit_test_result == HTNOWHERE || hit_test_result == HTCLIENT) {
+    // The |point_in_widget| is out of toolbar or on toolbar's sub views.
+    return hit_test_result;
+  }
+
+  DCHECK_EQ(hit_test_result, HTCAPTION);
+  // Users are interacting with empty area in toolbar. Check if the area should
+  // be resize area for the window.
+  if (!browser_view->CanResize()) {
+    return hit_test_result;
+  }
+
+  constexpr int kResizableArea = 8;
+  const auto widget_bounds =
+      browser_view->GetWidget()->GetRootView()->GetLocalBounds();
+  auto non_resizable_area = widget_bounds;
+  non_resizable_area.Inset(kResizableArea);
+  if (non_resizable_area.Contains(point_in_widget)) {
+    return hit_test_result;
+  }
+
+  // Now we have only resizable areas.
+  if (point_in_widget.x() <= kResizableArea &&
+      point_in_widget.y() <= kResizableArea) {
+    return HTTOPLEFT;
+  }
+
+  if (point_in_widget.x() >= (widget_bounds.right() - kResizableArea) &&
+      point_in_widget.y() <= kResizableArea) {
+    return HTTOPRIGHT;
+  }
+
+  if (point_in_widget.x() <= kResizableArea &&
+      point_in_widget.y() >= (widget_bounds.bottom() - kResizableArea)) {
+    return HTBOTTOMLEFT;
+  }
+
+  if (point_in_widget.x() >= (widget_bounds.right() - kResizableArea) &&
+      point_in_widget.y() >= (widget_bounds.bottom() - kResizableArea)) {
+    return HTBOTTOMRIGHT;
+  }
+
+  if (point_in_widget.x() <= kResizableArea) {
+    return HTLEFT;
+  }
+
+  if (point_in_widget.x() >= (widget_bounds.right() - kResizableArea)) {
+    return HTRIGHT;
+  }
+
+  if (point_in_widget.y() <= kResizableArea) {
+    return HTTOP;
+  }
+
+  if (point_in_widget.y() <= (widget_bounds.bottom() - kResizableArea)) {
+    return HTBOTTOM;
+  }
+
+  NOTREACHED()
+      << "This shouldn't happen. Maybe due to inclusive/exclusive comparison?";
+  return hit_test_result;
 }
 
 }  // namespace brave
