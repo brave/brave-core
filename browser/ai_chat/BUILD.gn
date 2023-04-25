@@ -33,6 +33,7 @@ source_set("ai_chat") {
     ":buildflags",
     ":mojom",
     "//base",
+    "//brave/components/ai_chat",
     "//brave/components/api_request_helper",
     "//brave/components/constants",
     "//components/prefs",
