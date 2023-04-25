@@ -73,10 +73,9 @@ namespace {
     return nil;
   }
 
-  bssl::UniquePtr<CRYPTO_BUFFER> cert_buffer(
-      net::X509Certificate::CreateCertBufferFromBytes(base::make_span(
-          CFDataGetBytePtr(cert_data),
-          base::checked_cast<size_t>(CFDataGetLength(cert_data)))));
+  bssl::UniquePtr<CRYPTO_BUFFER> cert_buffer(net::x509_util::CreateCryptoBuffer(
+      base::make_span(CFDataGetBytePtr(cert_data),
+                      base::checked_cast<size_t>(CFDataGetLength(cert_data)))));
 
   if (!cert_buffer) {
     return nil;
@@ -98,10 +97,9 @@ namespace {
     return nil;
   }
 
-  bssl::UniquePtr<CRYPTO_BUFFER> cert_buffer(
-      net::X509Certificate::CreateCertBufferFromBytes(base::make_span(
-          CFDataGetBytePtr(cert_data),
-          base::checked_cast<size_t>(CFDataGetLength(cert_data)))));
+  bssl::UniquePtr<CRYPTO_BUFFER> cert_buffer(net::x509_util::CreateCryptoBuffer(
+      base::make_span(CFDataGetBytePtr(cert_data),
+                      base::checked_cast<size_t>(CFDataGetLength(cert_data)))));
 
   if (!cert_buffer) {
     return nil;
