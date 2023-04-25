@@ -46,7 +46,7 @@ class BitcoinWalletService : public KeyedService,
   void Bind(mojo::PendingReceiver<mojom::BitcoinWalletService> receiver);
 
   using GetAddressHistoryCallback = base::OnceCallback<void(
-      base::expected<std::vector<Transaction>, std::string>)>;
+      base::expected<std::vector<bitcoin::Transaction>, std::string>)>;
 
   void GetBitcoinAccountInfo(const std::string& network_id,
                              const std::string& keyring_id,

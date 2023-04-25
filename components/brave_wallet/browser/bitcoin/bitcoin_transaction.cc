@@ -9,7 +9,7 @@
 
 #include "base/strings/string_number_conversions.h"
 
-namespace brave_wallet {
+namespace brave_wallet::bitcoin {
 
 namespace {
 bool ReadStringTo(const base::Value::Dict& dict,
@@ -266,4 +266,4 @@ bool Transaction::operator<(const Transaction& other) const {
   return this->txid < other.txid;
 }
 
-}  // namespace brave_wallet
+}  // namespace brave_wallet::bitcoin

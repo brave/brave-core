@@ -101,7 +101,8 @@ void BitcoinDatabaseSynchronizer::OnFetchAddressHistory(
     const std::string& address,
     const uint32_t max_block_height,
     const std::string& last_seen_txid_filter,
-    base::expected<std::vector<Transaction>, std::string> transactions) {
+    base::expected<std::vector<bitcoin::Transaction>, std::string>
+        transactions) {
   if (!transactions.has_value()) {
     return;
   }

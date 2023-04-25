@@ -180,10 +180,10 @@ void BitcoinRpc::OnGetAddressHistory(const uint32_t max_block_height,
     return;
   }
 
-  std::vector<Transaction> result;
+  std::vector<bitcoin::Transaction> result;
 
   for (auto& item : *items) {
-    auto transaction = Transaction::FromRpcValue(item);
+    auto transaction = bitcoin::Transaction::FromRpcValue(item);
     if (!transaction) {
       std::move(callback).Run(base::unexpected("Invalid transaction dict"));
       return;

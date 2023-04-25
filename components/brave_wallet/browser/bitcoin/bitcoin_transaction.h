@@ -14,7 +14,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 
-namespace brave_wallet {
+namespace brave_wallet::bitcoin {
 
 struct Outpoint {
   Outpoint();
@@ -95,6 +95,6 @@ struct Transaction {
   bool operator<(const Transaction& other) const;
 };
 
-}  // namespace brave_wallet
+}  // namespace brave_wallet::bitcoin
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BITCOIN_BITCOIN_TRANSACTION_H_

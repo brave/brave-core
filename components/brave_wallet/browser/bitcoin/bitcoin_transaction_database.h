@@ -27,15 +27,15 @@ class BitcoinTransactionDatabase {
   void SetChainHeight(uint32_t chain_height);
   absl::optional<uint32_t> GetChainHeight() const;
   bool AddTransactions(const std::string& address,
-                       std::vector<Transaction> transactions);
-  std::vector<Output> GetUnspentOutputs(const std::string& address);
-  std::vector<Output> GetAllUnspentOutputs();
+                       std::vector<bitcoin::Transaction> transactions);
+  std::vector<bitcoin::Output> GetUnspentOutputs(const std::string& address);
+  std::vector<bitcoin::Output> GetAllUnspentOutputs();
   uint64_t GetBalance(const std::string& address);
 
  private:
   absl::optional<uint32_t> chain_height_;
   // TODO(apaymyshev): avoid transaction duplicates for different addresses?
-  std::map<std::string, std::set<Transaction>> transactions_;
+  std::map<std::string, std::set<bitcoin::Transaction>> transactions_;
 };
 
 }  // namespace brave_wallet

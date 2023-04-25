@@ -24,7 +24,7 @@ absl::optional<uint32_t> BitcoinTransactionDatabase::GetChainHeight() const {
 
 bool BitcoinTransactionDatabase::AddTransactions(
     const std::string& address,
-    std::vector<Transaction> transactions) {
+    std::vector<bitcoin::Transaction> transactions) {
   for (auto& tr : transactions) {
     auto txid = tr.txid;
 
@@ -37,12 +37,12 @@ bool BitcoinTransactionDatabase::AddTransactions(
   return true;
 }
 
-std::vector<Output> BitcoinTransactionDatabase::GetUnspentOutputs(
+std::vector<bitcoin::Output> BitcoinTransactionDatabase::GetUnspentOutputs(
     const std::string& address) {
-  std::map<Outpoint, const Output*> outputs;
+  std::map<bitcoin::Outpoint, const bitcoin::Output*> outputs;
 
   for (auto& item : transactions_[address]) {
-    const Transaction& tr = item;
+    const bitcoin::Transaction& tr = item;
     for (auto& o : tr.vout) {
       if (o.scriptpubkey_address != address) {
         continue;
@@ -53,7 +53,7 @@ std::vector<Output> BitcoinTransactionDatabase::GetUnspentOutputs(
   }
 
   for (auto& item : transactions_[address]) {
-    const Transaction& tr = item;
+    const bitcoin::Transaction& tr = item;
     for (auto& i : tr.vin) {
       if (i.scriptpubkey_address != address) {
         continue;
@@ -65,7 +65,7 @@ std::vector<Output> BitcoinTransactionDatabase::GetUnspentOutputs(
     }
   }
 
-  std::vector<Output> result;
+  std::vector<bitcoin::Output> result;
   for (auto& o : outputs) {
     result.push_back(*o.second);
   }
@@ -73,13 +73,14 @@ std::vector<Output> BitcoinTransactionDatabase::GetUnspentOutputs(
   return result;
 }
 
-std::vector<Output> BitcoinTransactionDatabase::GetAllUnspentOutputs() {
-  std::map<Outpoint, const Output*> outputs;
+std::vector<bitcoin::Output>
+BitcoinTransactionDatabase::GetAllUnspentOutputs() {
+  std::map<bitcoin::Outpoint, const bitcoin::Output*> outputs;
 
   for (auto& address_item : transactions_) {
     auto& address = address_item.first;
     for (auto& item : address_item.second) {
-      const Transaction& tr = item;
+      const bitcoin::Transaction& tr = item;
       for (auto& o : tr.vout) {
         if (o.scriptpubkey_address != address) {
           continue;
@@ -90,7 +91,7 @@ std::vector<Output> BitcoinTransactionDatabase::GetAllUnspentOutputs() {
     }
 
     for (auto& item : address_item.second) {
-      const Transaction& tr = item;
+      const bitcoin::Transaction& tr = item;
       for (auto& i : tr.vin) {
         if (i.scriptpubkey_address != address) {
           continue;
@@ -103,7 +104,7 @@ std::vector<Output> BitcoinTransactionDatabase::GetAllUnspentOutputs() {
     }
   }
 
-  std::vector<Output> result;
+  std::vector<bitcoin::Output> result;
   for (auto& o : outputs) {
     result.push_back(*o.second);
   }

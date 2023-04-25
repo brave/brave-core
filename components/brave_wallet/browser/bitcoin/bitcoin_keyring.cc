@@ -58,7 +58,8 @@ std::string BitcoinKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {
 }
 
 std::unique_ptr<HDKeyBase> BitcoinKeyring::DeriveAccount(uint32_t index) const {
-  // m/84'/0'/{index}'
+  // Mainnet - m/84'/0'/{index}'
+  // Testnet - m/84'/1'/{index}'
   return root_->DeriveHardenedChild(index);
 }
 
@@ -78,7 +79,8 @@ std::unique_ptr<HDKeyBase> BitcoinKeyring::DeriveKey(
     return nullptr;
   }
 
-  // m/84'/0'/{address.account}'/{address.change}/{address.index}
+  // Mainnet - m/84'/0'/{address.account}'/{address.change}/{address.index}
+  // Testnet - m/84'/1'/{address.account}'/{address.change}/{address.index}
   return key->DeriveNormalChild(key_id.index);
 }
 

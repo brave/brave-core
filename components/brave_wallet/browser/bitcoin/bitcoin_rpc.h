@@ -36,7 +36,7 @@ class BitcoinRpc {
   using GetChainHeightCallback =
       base::OnceCallback<void(base::expected<uint32_t, std::string>)>;
   using GetAddressHistoryCallback = base::OnceCallback<void(
-      base::expected<std::vector<Transaction>, std::string>)>;
+      base::expected<std::vector<bitcoin::Transaction>, std::string>)>;
   using PostTransactionCallback =
       base::OnceCallback<void(base::expected<std::string, std::string>)>;
 

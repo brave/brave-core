@@ -91,7 +91,7 @@ void PushVarSizeVector(const std::vector<uint8_t>& v,
   to.insert(to.end(), v.begin(), v.end());
 }
 
-void PushOutpoint(const brave_wallet::Outpoint& outpoint,
+void PushOutpoint(const brave_wallet::bitcoin::Outpoint& outpoint,
                   std::vector<uint8_t>& to) {
   PushVectorAsLE(outpoint.txid, to);
   Push32AsLE(outpoint.index, to);
@@ -101,23 +101,23 @@ void PushOutpoint(const brave_wallet::Outpoint& outpoint,
 
 namespace brave_wallet {
 
-struct BitcoinInput {
-  Output prev_output;  // Output we are going to spend.
-  mojom::BitcoinKeyIdPtr key_id;
-  uint32_t n_sequence = 0xfffffffd;  // TODO(apaymyshev): or 0xffffffff ?
-  std::vector<uint8_t> pubkey;
-  std::vector<uint8_t> signature;
-};
-
-struct BitcoinOutput {
-  std::string address;
-  std::vector<uint8_t> pubkey_hash;
-  std::vector<uint8_t> script_pubkey;
-  uint64_t amount = 0;
-};
-
 struct SendToContext {
  public:
+  struct TxInput {
+    bitcoin::Output prev_output;  // Output we are going to spend.
+    mojom::BitcoinKeyIdPtr key_id;
+    uint32_t n_sequence = 0xfffffffd;  // TODO(apaymyshev): or 0xffffffff ?
+    std::vector<uint8_t> pubkey;
+    std::vector<uint8_t> signature;
+  };
+
+  struct TxOutput {
+    std::string address;
+    std::vector<uint8_t> pubkey_hash;
+    std::vector<uint8_t> script_pubkey;
+    uint64_t amount = 0;
+  };
+
   std::string network_id;
   std::string keyring_id;
   uint32_t account_index;
@@ -125,9 +125,9 @@ struct SendToContext {
   uint64_t amount = 0;
   uint64_t fee = 0;
   uint64_t amount_picked = 0;
-  std::vector<Output> utxo_list;
-  std::vector<BitcoinInput> inputs;
-  std::vector<BitcoinOutput> outputs;
+  std::vector<bitcoin::Output> utxo_list;
+  std::vector<TxInput> inputs;
+  std::vector<TxOutput> outputs;
   std::vector<std::pair<std::string, mojom::BitcoinKeyIdPtr>> addresses;
   uint32_t locktime = 0;
 
@@ -297,8 +297,8 @@ bool BitcoinWalletService::PickInputs(SendToContext& context) {
   // TODO(apaymyshev): This just picks ouputs one by one and stops when picked
   // amount is GE to send amount plus fee. Needs something better than such
   // greedy strategy.
-  for (Output& utxo : context.utxo_list) {
-    BitcoinInput input;
+  for (bitcoin::Output& utxo : context.utxo_list) {
+    SendToContext::TxInput input;
     input.prev_output = utxo;
 
     for (auto& address : context.addresses) {
