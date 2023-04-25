@@ -3960,5 +3960,47 @@ extension Strings {
       value: "Ready to add some? Just tap the button below to import.",
       comment: "The description of the empty state inside NFT tab."
     )
+    public static let marketPageTitle = NSLocalizedString(
+      "wallet.marketPageTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Market",
+      comment: "The page title that will display the top 250 tokens from the market via CoinGecko"
+    )
+    public static let coinMarketInformation = NSLocalizedString(
+      "wallet.coinMarketInformation",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Information",
+      comment: "The header title of the section that display coin market information."
+    )
+    public static let coinMarketRank = NSLocalizedString(
+      "wallet.coinMarketRank",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Rank",
+      comment: "The title of the rank of this coin from market."
+    )
+    public static let coinMarket24HVolume = NSLocalizedString(
+      "wallet.coinMarket24HVolume",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "24h Volume",
+      comment: "The title of the 24h volume of this coin from market."
+    )
+    public static let coinMarketMarketCap = NSLocalizedString(
+      "wallet.coinMarketMarketCap",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Market Cap",
+      comment: "The title of the market cap of this coin from market."
+    )
+    public static let coinMarketEmptyMsg = NSLocalizedString(
+      "wallet.coinMarketEmptyMsg",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "No market information available yet",
+      comment: "The message will be displayed when there is no coin market loaded or having an error."
+    )
   }
 }

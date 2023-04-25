@@ -145,3 +145,9 @@ extension BraveWallet.OnRampCurrency: Identifiable {
     CurrencyCode.symbol(for: currencyCode)
   }
 }
+
+extension BraveWallet.CoinMarket: Identifiable {
+  var uniqueId: String {
+    "\(symbol)\(marketCapRank)"
+  }
+}

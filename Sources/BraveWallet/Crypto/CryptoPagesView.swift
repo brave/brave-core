@@ -213,6 +213,14 @@ private class CryptoPagesViewController: TabbedPageViewController {
       ).then {
         $0.title = Strings.Wallet.accountsPageTitle
       },
+      UIHostingController(
+        rootView: MarketView(
+          cryptoStore: cryptoStore,
+          keyringStore: keyringStore
+        )
+      ).then {
+        $0.title = Strings.Wallet.marketPageTitle
+      },
     ]
 
     view.addSubview(swapButton)

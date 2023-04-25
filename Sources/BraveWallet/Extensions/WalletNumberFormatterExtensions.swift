@@ -13,4 +13,19 @@ extension NumberFormatter {
       $0.currencyCode = CurrencyCode.usd.code
     }
   }
+  
+  func coinMarketPriceString(from value: Double) -> String? {
+    assert(numberStyle == .currency)
+    var decimals: Int?
+    let dp = value.decimalPlaces
+    if dp < 2 || value >= Double(10) {
+      decimals = 2
+    } else if value >= Double(1) {
+      decimals = 3
+    }
+    minimumFractionDigits = decimals ?? 0
+    maximumFractionDigits = decimals ?? 15
+    
+    return string(from: NSNumber(value: value))
+  }
 }

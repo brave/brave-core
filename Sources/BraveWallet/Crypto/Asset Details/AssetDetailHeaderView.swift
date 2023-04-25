@@ -63,7 +63,7 @@ struct AssetDetailHeaderView: View {
   
   @ViewBuilder private var actionButtons: some View {
     buySendSwapButtonsContainer
-    if assetDetailStore.token.isAuroraSupportedToken {
+    if case let .blockchainToken(token) = assetDetailStore.assetDetailType, token.isAuroraSupportedToken {
       auroraBridgeButton
     }
   }
@@ -75,29 +75,31 @@ struct AssetDetailHeaderView: View {
           action: {
             buySendSwapDestination = BuySendSwapDestination(
               kind: .buy,
-              initialToken: assetDetailStore.token
+              initialToken: assetDetailStore.assetDetailToken
             )
           }
         ) {
           Text(Strings.Wallet.buy)
         }
       }
-      Button(
-        action: {
-          buySendSwapDestination = BuySendSwapDestination(
-            kind: .send,
-            initialToken: assetDetailStore.token
-          )
+      if assetDetailStore.isSendSupported {
+        Button(
+          action: {
+            buySendSwapDestination = BuySendSwapDestination(
+              kind: .send,
+              initialToken: assetDetailStore.assetDetailToken
+            )
+          }
+        ) {
+          Text(Strings.Wallet.send)
         }
-      ) {
-        Text(Strings.Wallet.send)
       }
-      if assetDetailStore.isSwapSupported && assetDetailStore.token.isFungibleToken {
+      if assetDetailStore.isSwapSupported && assetDetailStore.assetDetailToken.isFungibleToken {
         Button(
           action: {
             buySendSwapDestination = BuySendSwapDestination(
               kind: .swap,
-              initialToken: assetDetailStore.token
+              initialToken: assetDetailStore.assetDetailToken
             )
           }
         ) {
@@ -126,9 +128,9 @@ struct AssetDetailHeaderView: View {
   }
   
   @ViewBuilder private var tokenImageNameAndNetwork: some View {
-    AssetIconView(token: assetDetailStore.token, network: assetDetailStore.network ?? networkStore.selectedChain)
+    AssetIconView(token: assetDetailStore.assetDetailToken, network: assetDetailStore.network ?? networkStore.selectedChain)
     VStack(alignment: .leading) {
-      Text(assetDetailStore.token.name)
+      Text(assetDetailStore.assetDetailToken.name)
         .fixedSize(horizontal: false, vertical: true)
         .font(.title3.weight(.semibold))
       if let chainName = assetDetailStore.network?.chainName {
@@ -140,8 +142,8 @@ struct AssetDetailHeaderView: View {
   }
 
   var body: some View {
-    VStack(alignment: assetDetailStore.token.isFungibleToken ? .center : .leading, spacing: 0) {
-      if assetDetailStore.token.isFungibleToken {
+    VStack(alignment: assetDetailStore.assetDetailToken.isFungibleToken ? .center : .leading, spacing: 0) {
+      if assetDetailStore.assetDetailToken.isFungibleToken {
         VStack(alignment: .leading) {
           if sizeCategory.isAccessibilityCategory {
             VStack(alignment: .leading) {
@@ -175,8 +177,8 @@ struct AssetDetailHeaderView: View {
           Text(
             String.localizedStringWithFormat(
               Strings.Wallet.assetDetailSubtitle,
-              assetDetailStore.token.name,
-              assetDetailStore.token.symbol)
+              assetDetailStore.assetDetailToken.name,
+              assetDetailStore.assetDetailToken.symbol)
           )
           .font(.footnote)
           .foregroundColor(Color(.secondaryBraveLabel))
@@ -208,8 +210,8 @@ struct AssetDetailHeaderView: View {
           .chartAccessibility(
             title: String.localizedStringWithFormat(
               Strings.Wallet.assetDetailSubtitle,
-              assetDetailStore.token.name,
-              assetDetailStore.token.symbol),
+              assetDetailStore.assetDetailToken.name,
+              assetDetailStore.assetDetailToken.symbol),
             dataPoints: data
           )
           .disabled(data.isEmpty)
@@ -223,20 +225,20 @@ struct AssetDetailHeaderView: View {
         .padding(16)
       } else {
         HStack {
-          AssetIconView(token: assetDetailStore.token, network: networkStore.selectedChain)
-          Text(assetDetailStore.token.nftTokenTitle)
+          AssetIconView(token: assetDetailStore.assetDetailToken, network: networkStore.selectedChain)
+          Text(assetDetailStore.assetDetailToken.nftTokenTitle)
             .fixedSize(horizontal: false, vertical: true)
             .font(.title3.weight(.semibold))
           Spacer()
         }
         .padding(16)
       }
-      if assetDetailStore.token.isFungibleToken {
+      if assetDetailStore.assetDetailToken.isFungibleToken {
         Divider()
           .padding(.bottom)
       }
       actionButtonsContainer
-        .padding(.horizontal, assetDetailStore.token.isFungibleToken ? 0 : 16)
+        .padding(.horizontal, assetDetailStore.assetDetailToken.isFungibleToken ? 0 : 16)
     }
   }
 }

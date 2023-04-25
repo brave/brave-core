@@ -50,6 +50,7 @@ public class CryptoStore: ObservableObject {
   public let portfolioStore: PortfolioStore
   let nftStore: NFTStore
   let transactionsActivityStore: TransactionsActivityStore
+  let marketStore: MarketStore
   
   @Published var buySendSwapDestination: BuySendSwapDestination? {
     didSet {
@@ -148,6 +149,12 @@ public class CryptoStore: ObservableObject {
       txService: txService,
       solTxManagerProxy: solTxManagerProxy
     )
+    self.marketStore = .init(
+      assetRatioService: assetRatioService,
+      blockchainRegistry: blockchainRegistry,
+      rpcService: rpcService,
+      walletService: walletService
+    )
     
     self.keyringService.add(self)
     self.txService.add(self)
@@ -211,8 +218,8 @@ public class CryptoStore: ObservableObject {
   }
   
   private var assetDetailStore: AssetDetailStore?
-  func assetDetailStore(for token: BraveWallet.BlockchainToken) -> AssetDetailStore {
-    if let store = assetDetailStore, store.token.id == token.id {
+  func assetDetailStore(for assetDetailType: AssetDetailType) -> AssetDetailStore {
+    if let store = assetDetailStore, store.assetDetailType.id == assetDetailType.id {
       return store
     }
     let store = AssetDetailStore(
@@ -224,14 +231,14 @@ public class CryptoStore: ObservableObject {
       blockchainRegistry: blockchainRegistry,
       solTxManagerProxy: solTxManagerProxy,
       swapService: swapService,
-      token: token
+      assetDetailType: assetDetailType
     )
     assetDetailStore = store
     return store
   }
   
-  func closeAssetDetailStore(for token: BraveWallet.BlockchainToken) {
-    if let store = assetDetailStore, store.token.id == token.id {
+  func closeAssetDetailStore(for assetDetailType: AssetDetailType) {
+    if let store = assetDetailStore, store.assetDetailType.id == assetDetailType.id {
       assetDetailStore = nil
     }
   }

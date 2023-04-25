@@ -91,4 +91,36 @@ class WeiFormatterTests: XCTestCase {
     XCTAssertNotNil(spdformatted)
     XCTAssertEqual(UInt64(spdValueString)!, spdformatted!)
   }
+  
+  func testDoubleDecimalPlaces() {
+    typealias ValueExpected = (value: Double, expected: Int)
+    let testCases: [ValueExpected] = [
+      ValueExpected(value: 1.2345, expected: 4),
+      ValueExpected(value: 12.345, expected: 3),
+      ValueExpected(value: 1.23450, expected: 4),
+      ValueExpected(value: 1.234500, expected: 4),
+      ValueExpected(value: 1.23456, expected: 5),
+      ValueExpected(value: 1.23456789, expected: 8),
+      ValueExpected(value: -1.2345, expected: 4),
+      ValueExpected(value: -1.23456, expected: 5),
+    ]
+    testCases.forEach {
+      XCTAssertEqual($0.value.decimalPlaces, $0.expected)
+    }
+  }
+  
+  func testCoinMarketPriceString() {
+    let testFormatter: NumberFormatter = .usdCurrencyFormatter
+    typealias ValueExpected = (value: Double, expected: String)
+    let testCases: [ValueExpected] = [
+      ValueExpected(value: 29399.123, expected: "$29,399.12"),
+      ValueExpected(value: 1.001, expected: "$1.001"),
+      ValueExpected(value: 0.999307, expected: "$0.999307"),
+      ValueExpected(value: 0.091685, expected: "$0.091685"),
+      ValueExpected(value: 0.00001113, expected: "$0.00001113"),
+    ]
+    testCases.forEach {
+      XCTAssertEqual(testFormatter.coinMarketPriceString(from: $0.value), $0.expected)
+    }
+  }
 }

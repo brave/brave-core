@@ -175,3 +175,17 @@ extension String {
     }
   }
 }
+
+extension Double {
+  var decimalPlaces: Int {
+    if abs(self) == Double(Int(abs(self))) {
+      return 0
+    }
+    
+    let integerString = String(Int(abs(self)))
+    let doubleString = String(Double(abs(self)))
+    let decimalCount = doubleString.count - integerString.count - 1
+    
+    return decimalCount
+  }
+}

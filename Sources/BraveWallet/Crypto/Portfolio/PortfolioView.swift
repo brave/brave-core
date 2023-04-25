@@ -173,12 +173,12 @@ struct PortfolioView: View {
         destination: {
           if let token = selectedToken {
             AssetDetailView(
-              assetDetailStore: cryptoStore.assetDetailStore(for: token),
+              assetDetailStore: cryptoStore.assetDetailStore(for: .blockchainToken(token)),
               keyringStore: keyringStore,
               networkStore: cryptoStore.networkStore
             )
             .onDisappear {
-              cryptoStore.closeAssetDetailStore(for: token)
+              cryptoStore.closeAssetDetailStore(for: .blockchainToken(token))
             }
           }
         },
