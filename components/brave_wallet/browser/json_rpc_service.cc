@@ -37,6 +37,7 @@
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/utils.h"
@@ -2650,6 +2651,47 @@ bool JsonRpcService::AddSwitchEthereumChainRequest(const std::string& chain_id,
   switch_chain_callbacks_[origin] = std::move(callback);
   switch_chain_ids_[origin] = std::move(id);
   return true;
+}
+
+void JsonRpcService::GetEthTokenSymbol(const std::string& contract_address,
+                                       const std::string& chain_id,
+                                       GetEthTokenSymbolCallback callback) {
+  auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH);
+  if (!network_url.is_valid()) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+  std::string data;
+  const std::string function_hash = GetFunctionHash("symbol()");
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnGetEthTokenSymbol,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  RequestInternal(eth::eth_call("", contract_address, "", "", "", data,
+                                kEthereumBlockTagLatest),
+                  true, network_url, std::move(internal_callback));
+}
+
+void JsonRpcService::OnGetEthTokenSymbol(GetEthTokenSymbolCallback callback,
+                                         APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  std::string symbol;
+  if (!eth::ParseStringResult(api_request_result.value_body(), &symbol)) {
+    mojom::ProviderError error;
+    std::string error_message;
+    ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
+                                           &error, &error_message);
+    std::move(callback).Run("", error, error_message);
+    return;
+  }
+  std::move(callback).Run(symbol, mojom::ProviderError::kSuccess, "");
 }
 
 void JsonRpcService::Reset() {
