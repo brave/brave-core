@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_LEDGER_FACTORY_IMPL_H_
 #define BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_LEDGER_FACTORY_IMPL_H_
 
+#include "base/memory/scoped_refptr.h"
+#include "base/task/single_thread_task_runner.h"
 #include "brave/components/services/bat_ledger/public/interfaces/ledger_factory.mojom.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
@@ -31,6 +33,16 @@ class LedgerFactoryImpl : public mojom::LedgerFactory {
       CreateLedgerCallback callback) override;
 
  private:
+  mojo::SelfOwnedAssociatedReceiverRef<mojom::Ledger>
+  CreateLedgerOnDedicatedTaskRunner(
+      mojo::PendingAssociatedReceiver<mojom::Ledger> ledger_receiver,
+      mojo::PendingAssociatedRemote<mojom::LedgerClient> ledger_client_remote,
+      scoped_refptr<base::SingleThreadTaskRunner> task_runner);
+
+  void CreateLedgerOnDedicatedTaskRunnerCallback(
+      CreateLedgerCallback callback,
+      mojo::SelfOwnedAssociatedReceiverRef<mojom::Ledger> ledger);
+
   mojo::Receiver<mojom::LedgerFactory> receiver_;
   mojo::SelfOwnedAssociatedReceiverRef<mojom::Ledger> ledger_;
 };

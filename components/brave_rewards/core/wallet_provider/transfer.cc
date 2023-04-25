@@ -9,6 +9,7 @@
 
 #include "base/guid.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/task/single_thread_task_runner.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
@@ -109,7 +110,7 @@ void Transfer::CreateTransaction(
 
   transaction->transaction_id = base::GenerateGUID();
 
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(std::move(callback), std::move(transaction)));
 }
 
