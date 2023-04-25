@@ -1,20 +1,36 @@
 diff --git a/chrome/android/chrome_public_apk_tmpl.gni b/chrome/android/chrome_public_apk_tmpl.gni
-index 28fe2423c40e908a6a22f1d24675386b4edd1378..def90d8031f9ea26a6eb583088cf55489d70af4c 100644
+index 90ea285e7a36a64190de037fb227d9a2b33c8906..0aa75372ce0812363f465c63d0750d43ea2b09a6 100644
 --- a/chrome/android/chrome_public_apk_tmpl.gni
 +++ b/chrome/android/chrome_public_apk_tmpl.gni
-@@ -312,6 +312,7 @@ template("chrome_common_apk_or_module_tmpl") {
+@@ -313,6 +313,7 @@ template("chrome_common_apk_or_module_tmpl") {
        "*ic_file_download_white*",  # Bottom edge seems misaligned.
        "*ic_lock.*",  # Bottom edge seems misaligned.
      ]
 +    resource_exclusion_exceptions += brave_resources_exclusion_exceptions
  
-     # Note most of these, with the exception of resource_exclusion_exceptions,
+     # Most of these, with the exception of resource_exclusion_exceptions,
      # are currently duplicated in system_webview_apk_tmpl.gni.
-@@ -336,6 +337,7 @@ template("chrome_common_apk_or_module_tmpl") {
+@@ -337,6 +338,7 @@ template("chrome_common_apk_or_module_tmpl") {
  
        proguard_enabled = true
        proguard_configs = [ "//chrome/android/proguard/main.flags" ]
 +      proguard_configs += [ "//brave/android/java/proguard.flags" ]
-     }
+       if (_is_monochrome) {
+         proguard_configs +=
+             [ "//android_webview/nonembedded/java/proguard.flags" ]
+@@ -731,6 +733,7 @@ template("chrome_public_apk_or_module_tmpl") {
+     add_upstream_only_deps = true
+     forward_variables_from(invoker, TESTONLY_AND_VISIBILITY)
+     forward_variables_from(invoker, "*", TESTONLY_AND_VISIBILITY)
++    deps += brave_public_apk_or_module_tmpl_deps loadable_modules = brave_public_apk_or_module_tmpl_loadable_modules
+   }
+ }
  
-     if (use_chromium_linker) {
+@@ -750,6 +753,7 @@ template("monochrome_public_common_apk_or_module_tmpl") {
+     if (!defined(is_monochrome)) {
+       is_trichrome = true
+     }
++    deps += brave_monochrome_public_apk_or_module_tmpl_deps loadable_modules = brave_monochrome_public_apk_or_module_tmpl_loadable_modules secondary_abi_loadable_modules = brave_monochrome_public_apk_or_module_tmpl_secondary_abi_loadable_modules
+   }
+ }
+ template("chrome_public_common_apk_or_module_tmpl") {
