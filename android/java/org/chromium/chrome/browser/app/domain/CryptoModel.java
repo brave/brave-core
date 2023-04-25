@@ -406,6 +406,7 @@ public class CryptoModel {
             }
             if (isFilecoinEnabled()) {
                 keyRings.add(BraveWalletConstants.FILECOIN_KEYRING_ID);
+                keyRings.add(BraveWalletConstants.FILECOIN_TESTNET_KEYRING_ID);
             }
             return keyRings.toArray(new String[0]);
         }
