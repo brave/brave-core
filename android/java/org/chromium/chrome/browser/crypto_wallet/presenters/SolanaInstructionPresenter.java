@@ -171,19 +171,19 @@ public class SolanaInstructionPresenter {
 
     public String fromPubKey() {
         if (mFromPubKey != null) return mFromPubKey;
-        mFromPubKey = getPubKeyPerParamKey(WalletConstants.SOL_DAPP_FROM_ACCOUNT);
+        mFromPubKey = getAccountPerParamKey(WalletConstants.SOL_DAPP_FROM_ACCOUNT);
         return mFromPubKey;
     }
 
     public String toPubKey() {
         if (mToPubKey != null) return mToPubKey;
-        mToPubKey = getPubKeyPerParamKey(WalletConstants.SOL_DAPP_TO_ACCOUNT);
+        mToPubKey = getAccountPerParamKey(WalletConstants.SOL_DAPP_TO_ACCOUNT);
         return mToPubKey;
     }
 
     // Returns the first found account pub key from accounts meta, corresponding to input "key" from
     // accountParams
-    public String getPubKeyPerParamKey(String key) {
+    public String getAccountPerParamKey(String key) {
         if (TextUtils.isEmpty(key)) return null;
         String pubKey = null;
         if (isAccountMetaPresent()) {
@@ -191,8 +191,18 @@ public class SolanaInstructionPresenter {
                     mSolanaInstruction.decodedData.accountParams;
             for (int i = 0; i < accountParams.length; i++) {
                 if (accountParams[i].name.equalsIgnoreCase(key)) {
-                    if (mSolanaInstruction.accountMetas.length > i) {
-                        pubKey = mSolanaInstruction.accountMetas[i].pubkey;
+                    var accountMeta = mSolanaInstruction.accountMetas;
+                    if (accountMeta.length > i) {
+                        if (accountMeta[i].addrTableLookupIndex != null) {
+                            // Do not show account public key of address table lookup account
+                            // because it might give the wrong impression to users. For example,
+                            // users might think they're sending funds to this address table lookup
+                            // account, but actually they're sending to the account pointed by the
+                            // index in this address table lookup account.
+                            pubKey = "";
+                        } else {
+                            pubKey = accountMeta[i].pubkey;
+                        }
                     }
                     return pubKey;
                 }
