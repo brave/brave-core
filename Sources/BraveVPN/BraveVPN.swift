@@ -278,6 +278,9 @@ public class BraveVPN {
         completion?(status == .success)
       }
     } else {
+      // Setting preferred protocol in order to determine which tunnel to be activated while region selection
+      GRDTransportProtocol.setUserPreferred(.wireGuard)
+      
       // New user or no credentials and have to remake them.
       helper.configureFirstTimeUser(for: .wireGuard, postCredential: nil) { success, error in
         if let error = error {
@@ -340,8 +343,17 @@ public class BraveVPN {
   }
   
   public static func changeVPNRegion(to region: GRDRegion?, completion: @escaping ((Bool) -> Void)) {
+    if isConnected {
+      helper.disconnectVPN()
+    }
+    
     helper.select(region)
-    helper.configureFirstTimeUser(with: region) { success, error in
+    
+    // The preferred tunnel has to be used for configuration
+    // Otherwise faulty configuration will be added while connecting
+    let activeTunnelProtocol = GRDTransportProtocol.getUserPreferredTransportProtocol()
+    
+    helper.configureFirstTimeUser(for: activeTunnelProtocol, with: region) { success, error in
       if success {
         Logger.module.debug("Changed VPN region to \(region?.regionName ?? "default selection")")
         completion(true)
