@@ -22,6 +22,7 @@
 #include "net/base/url_util.h"
 #include "net/cert/pki/parsed_certificate.h"
 #include "net/cert/x509_certificate.h"
+#include "net/cert/x509_util.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -137,8 +138,7 @@ absl::optional<net::ParsedCertificateList> ParseCertificatesAndCheckRoot(
       return absl::nullopt;
     }
     if (!net::ParsedCertificate::CreateAndAddToVector(
-            net::X509Certificate::CreateCertBufferFromBytes(
-                cert_val.GetBytestring()),
+            net::x509_util::CreateCryptoBuffer(cert_val.GetBytestring()),
             parse_cert_options, &cert_chain, &cert_errors)) {
       LOG(ERROR) << "Nitro verification: failed to parse certificate: "
                  << cert_errors.ToDebugString();
