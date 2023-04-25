@@ -285,6 +285,9 @@ class SolanaProviderTest : public InProcessBrowserTest {
   ~SolanaProviderTest() override = default;
 
   void SetUpOnMainThread() override {
+    brave_wallet::SetDefaultSolanaWallet(
+        browser()->profile()->GetPrefs(),
+        brave_wallet::mojom::DefaultWallet::BraveWallet);
     host_resolver()->AddRule("*", "127.0.0.1");
 
     https_server_for_files_.SetSSLConfig(
