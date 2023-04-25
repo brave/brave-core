@@ -6,27 +6,36 @@
 #include "brave/components/brave_ads/core/internal/global_state/global_state_holder.h"
 
 #include "base/check.h"
+#include "base/threading/sequence_local_storage_slot.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
 namespace brave_ads {
 
 namespace {
-GlobalState* g_global_state_instance = nullptr;
+
+GlobalState*& GetGlobalStateInstance() {
+  static base::SequenceLocalStorageSlot<GlobalState*> global_state_instance;
+  return global_state_instance.GetOrCreateValue();
+}
+
 }  // namespace
 
 GlobalStateHolder::GlobalStateHolder(GlobalState* global_state) {
-  DCHECK(!g_global_state_instance);
-  g_global_state_instance = global_state;
+  GlobalState*& global_state_instance = GetGlobalStateInstance();
+  DCHECK(!global_state_instance);
+  global_state_instance = global_state;
 }
 
 GlobalStateHolder::~GlobalStateHolder() {
-  DCHECK(g_global_state_instance);
-  g_global_state_instance = nullptr;
+  GlobalState*& global_state_instance = GetGlobalStateInstance();
+  DCHECK(global_state_instance);
+  global_state_instance = nullptr;
 }
 
 // static
 GlobalState* GlobalStateHolder::GetGlobalState() {
-  return g_global_state_instance;
+  GlobalState* global_state_instance = GetGlobalStateInstance();
+  return global_state_instance;
 }
 
 }  // namespace brave_ads
