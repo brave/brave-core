@@ -605,11 +605,6 @@ void VerticalTabStripRegionView::UpdateStateAfterDragAndDropFinished(
 
 VerticalTabStripRegionView::ScopedStateResetter
 VerticalTabStripRegionView::ExpandTabStripForDragging() {
-  if (state_ == State::kExpanded) {
-    LOG(ERROR) << __FUNCTION__ << " " << base::debug::StackTrace(20);
-    return {};
-  }
-
   auto resetter = std::make_unique<base::ScopedClosureRunner>(base::BindOnce(
       &VerticalTabStripRegionView::UpdateStateAfterDragAndDropFinished,
       weak_factory_.GetWeakPtr(), state_));
