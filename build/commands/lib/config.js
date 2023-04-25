@@ -641,30 +641,28 @@ Config.prototype.shouldSign = function () {
   return false
 }
 
-Config.prototype.prependPath = function (oldPath, addPath) {
-  let newPath = oldPath.split(path.delimiter)
-  newPath.unshift(addPath)
-  newPath = newPath.join(path.delimiter)
-  return newPath
-}
-
-Config.prototype.appendPath = function (oldPath, addPath) {
-  let newPath = oldPath.split(path.delimiter)
-  newPath.push(addPath)
-  newPath = newPath.join(path.delimiter)
-  return newPath
+Config.prototype.addToPath = function (oldPath, addPath, prepend = false) {
+  const newPath = oldPath ? oldPath.split(path.delimiter) : []
+  if (newPath.includes(addPath)) {
+    return oldPath
+  }
+  if (prepend) {
+    newPath.unshift(addPath)
+  } else {
+    newPath.push(addPath)
+  }
+  return newPath.join(path.delimiter)
 }
 
 Config.prototype.addPathToEnv = function (env, addPath, prepend = false) {
   // cmd.exe uses Path instead of PATH so just set both
-  const addToPath = prepend ? this.prependPath : this.appendPath
-  env.Path && (env.Path = addToPath(env.Path, addPath))
-  env.PATH && (env.PATH = addToPath(env.PATH, addPath))
+  env.Path && (env.Path = this.addToPath(env.Path, addPath, prepend))
+  env.PATH && (env.PATH = this.addToPath(env.PATH, addPath, prepend))
   return env
 }
 
 Config.prototype.addPythonPathToEnv = function (env, addPath) {
-  env.PYTHONPATH = this.appendPath(env.PYTHONPATH || '', addPath)
+  env.PYTHONPATH = this.addToPath(env.PYTHONPATH, addPath)
   return env
 }
 
