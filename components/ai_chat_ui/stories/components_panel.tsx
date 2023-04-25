@@ -13,11 +13,11 @@ import '@brave/leo/tokens/css/variables.css'
 
 import ThemeProvider from '$web-common/BraveCoreThemeProvider'
 import Main from '../components/main'
-import ConversationList from '../components/conversation-list'
-import InputBox from '../components/input-box'
+import ConversationList from '../components/conversation_list'
+import InputBox from '../components/input_box'
 import { useInput } from '../state/hooks'
 import { CharacterType, ConversationTurnVisibility  } from '../api/page_handler'
-import PrivacyMessage from '../components/privacy-message'
+import PrivacyMessage from '../components/privacy_message'
 
 const DATA = [
   {text: 'What is pointer compression?', characterType: CharacterType.HUMAN, visibility: ConversationTurnVisibility.VISIBLE },

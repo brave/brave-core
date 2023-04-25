@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import styles from './style.module.scss'
-import privacyGraphicUrl from '../../assets/privacy-graphic.svg'
+import privacyGraphicUrl from '../../assets/privacy_graphic.svg'
 import { getLocale } from '$web-common/locale'
 
 function PrivacyMessage () {
