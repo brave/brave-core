@@ -107,10 +107,14 @@ TipPanelBubbleHost::TipPanelBubbleHost(Browser* browser)
     : BrowserUserData<TipPanelBubbleHost>(*browser) {
   auto* coordinator = TipPanelCoordinator::FromBrowser(browser);
   DCHECK(coordinator);
-  coordinator_observation_.Observe(coordinator);
+  coordinator->AddObserver(this);
 }
 
-TipPanelBubbleHost::~TipPanelBubbleHost() = default;
+TipPanelBubbleHost::~TipPanelBubbleHost() {
+  if (auto* coordinator = TipPanelCoordinator::FromBrowser(&GetBrowser())) {
+    coordinator->RemoveObserver(this);
+  }
+}
 
 void TipPanelBubbleHost::MaybeCreateForBrowser(Browser* browser) {
   DCHECK(browser);
