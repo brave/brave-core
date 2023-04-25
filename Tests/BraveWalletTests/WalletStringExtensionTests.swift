@@ -24,6 +24,12 @@ class WalletStringExtensionTests: XCTestCase {
     let stringsHasNewlineButNoConsecutiveNewlines = "Here is one sentence.\nAnd here is another."
     XCTAssertFalse(stringsHasNewlineButNoConsecutiveNewlines.hasConsecutiveNewLines)
     
+    let stringsHasNewlineBut2ConsecutiveNewlines = "Here is one sentence.\n\nAnd here is another."
+    XCTAssertFalse(stringsHasNewlineBut2ConsecutiveNewlines.hasConsecutiveNewLines)
+    
+    let stringsHasNewlineBut3ConsecutiveNewlines = "Here is one sentence.\n\n\nAnd here is another."
+    XCTAssertTrue(stringsHasNewlineBut3ConsecutiveNewlines.hasConsecutiveNewLines)
+    
     let stringHasConsecutiveNewlines = "Main Message\n\n\n\n\nEvil payload is below"
     XCTAssertTrue(stringHasConsecutiveNewlines.hasConsecutiveNewLines)
   }

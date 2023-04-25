@@ -110,8 +110,8 @@ struct SignatureRequestView: View {
       var result = currentRequest.message
       if needPilcrowFormatted[requestIndex] == true {
         var copy = currentRequest.message
-        while copy.range(of: "\\n{2,}", options: .regularExpression) != nil {
-          if let range = copy.range(of: "\\n{2,}", options: .regularExpression) {
+        while copy.range(of: "\\n{3,}", options: .regularExpression) != nil {
+          if let range = copy.range(of: "\\n{3,}", options: .regularExpression) {
             let newlines = String(copy[range])
             result.replaceSubrange(range, with: "\n\(uuid.uuidString) <\(newlines.count)>\n")
             copy.replaceSubrange(range, with: "\n\(uuid.uuidString) <\(newlines.count)>\n")
@@ -360,7 +360,7 @@ extension String {
   
   var hasConsecutiveNewLines: Bool {
     // return true if string has two or more consecutive newline chars
-    return range(of: "\\n{2,}", options: .regularExpression) != nil
+    return range(of: "\\n{3,}", options: .regularExpression) != nil
   }
   
   var printableWithUnknownUnicode: String {
