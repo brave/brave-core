@@ -692,7 +692,8 @@ public class BraveNewTabPageLayout
                     int lastVisibleItemPosition =
                             linearLayoutManager.findLastCompletelyVisibleItemPosition();
 
-                    if (!mNtpAdapter.shouldDisplayNewsLoading()
+                    if (!mNtpAdapter.shouldDisplayNewsLoading() && mNewsItemsFeedCard != null
+                            && mNewsItemsFeedCard.size() > 0
                             && lastVisibleItemPosition > mNtpAdapter.getStatsCount()
                                             + mNtpAdapter.getTopSitesCount()
                                             + mNtpAdapter.getNewContentCount()) {
