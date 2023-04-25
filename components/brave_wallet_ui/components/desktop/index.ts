@@ -16,7 +16,6 @@ import PortfolioTransactionItem from './portfolio-transaction-item'
 import AccountListItem from './account-list-item'
 import AddButton from './add-button'
 import LockScreen from './lock-screen'
-import WalletMorePopup from './wallet-more-popup'
 import WalletBanner from './wallet-banner'
 import PopupModal from './popup-modals'
 import { AddAccountModal } from './popup-modals/add-account-modal'
@@ -49,7 +48,6 @@ export {
   PortfolioAsset,
   PortfolioOverview,
   LockScreen,
-  WalletMorePopup,
   WalletBanner,
   AccountListItem,
   PopupModal,
