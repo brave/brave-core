@@ -13,7 +13,7 @@ import WalletSubViewLayout from '../wallet-sub-view-layout'
 import { PortfolioTransactionItem } from './index'
 
 // mocks
-import { mockParsedTransactionInfo } from '../../../stories/mock-data/mock-parsed-transaction-info'
+import { mockTransactionInfo } from '../../../stories/mock-data/mock-transaction-info'
 
 export const CryptoViewWrapper = styled.div`
   display: flex;
@@ -42,7 +42,7 @@ export const _PortfolioTransactionItem: React.FC = () => {
             <PortfolioWrapper>
               <PortfolioTransactionItem
                 displayAccountName={true}
-                transaction={mockParsedTransactionInfo}
+                transaction={mockTransactionInfo}
               />
             </PortfolioWrapper>
           </CryptoViewWrapper>
