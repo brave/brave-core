@@ -338,6 +338,8 @@ class SettingsViewController: TableViewController {
         title: Strings.mediaAutoBackgrounding,
         option: Preferences.General.mediaAutoBackgrounding,
         image: UIImage(named: "background_play_settings_icon", in: .module, compatibleWith: nil)!.template),
+      .boolRow(title: Strings.blockPopups, option: Preferences.General.blockPopups,
+               image: UIImage(systemName: "macwindow")),
     ])
 
     let websiteRedirectsRow = Row(
