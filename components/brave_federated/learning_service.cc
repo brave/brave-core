@@ -52,15 +52,17 @@ LearningService::LearningService(
       eligibility_service_(eligibility_service) {
   DCHECK(!init_task_timer_);
 
+  std::string data_resource;
   auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
-  const std::string data_resource =
-      resource_bundle.GetRawDataResource(IDR_BRAVE_FEDERATED_CONFIG);
+  if (resource_bundle.IsGzipped(IDR_BRAVE_FEDERATED_CONFIG)) {
+    data_resource = resource_bundle.LoadDataResourceString(IDR_BRAVE_FEDERATED_CONFIG);
+  } else {
+    data_resource =
+        static_cast<std::string>(resource_bundle.GetRawDataResource(IDR_BRAVE_FEDERATED_CONFIG));
+  }
   DCHECK(data_resource.size() > 0);
 
-  // TODO: File read works, resource read does not.
-  // lsc_ = std::unique_ptr<LearningServiceConfig>(
-  //   new LearningServiceConfig(base::FilePath(
-  //     FILE_PATH_LITERAL("components/brave_federated/resources/config.json"))));
+
   lsc_ = std::unique_ptr<LearningServiceConfig>(new LearningServiceConfig(data_resource));
   const net::BackoffEntry::Policy reconnect_policy = lsc_->GetReconnectPolicy();
   const net::BackoffEntry::Policy request_task_policy = lsc_->GetRequestTaskPolicy();
