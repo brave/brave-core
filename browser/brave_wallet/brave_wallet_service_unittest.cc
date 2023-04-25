@@ -2615,11 +2615,11 @@ TEST_F(BraveWalletServiceUnitTest, GetBalanceScannerSupportedChains) {
       base::BindLambdaForTesting([](const std::vector<std::string>& chains) {
         std::vector<std::string> expected_chains = {
             mojom::kMainnetChainId,
-            mojom::kPolygonMainnetChainId,
-            mojom::kAvalancheMainnetChainId,
             mojom::kBinanceSmartChainMainnetChainId,
+            mojom::kPolygonMainnetChainId,
             mojom::kOptimismMainnetChainId,
             mojom::kArbitrumMainnetChainId,
+            mojom::kAvalancheMainnetChainId,
         };
         ASSERT_EQ(chains.size(), expected_chains.size());
         EXPECT_EQ(chains, expected_chains);
