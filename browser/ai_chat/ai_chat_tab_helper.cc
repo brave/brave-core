@@ -11,6 +11,7 @@
 #include "base/containers/contains.h"
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/ai_chat/ai_chat.mojom-shared.h"
 #include "brave/browser/ai_chat/constants.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/browser_context.h"
@@ -177,9 +178,31 @@ void AIChatTabHelper::RequestSummary() {
     return;
   }
 
+  auto* primary_rfh = web_contents()->GetPrimaryMainFrame();
+
+  if (!primary_rfh) {
+    // TODO(petemill): Don't allow the UI to submit requests at this state
+    LOG(ERROR) << "Summary request submitted for a WebContents without a "
+                  "primary main frame";
+    for (auto& obs : observers_) {
+      obs.OnRequestSummaryFailed();
+    }
+    return;
+  }
+
   ui::AXTreeID tree_id = web_contents()->GetPrimaryMainFrame()->GetAXTreeID();
   content::RenderFrameHost* rfh =
       content::RenderFrameHost::FromAXTreeID(tree_id);
+
+  if (!rfh) {
+    // TODO(petemill): Don't allow the UI to submit requests at this state
+    LOG(ERROR) << "Summary request submitted for a WebContents without a"
+                  "primary AXTree-associated RenderFrameHost yet";
+    for (auto& obs : observers_) {
+      obs.OnRequestSummaryFailed();
+    }
+    return;
+  }
 
   // TODO(@nullhook): Add a timeout and test this on real pages
   rfh->GetMainFrame()->RequestAXTreeSnapshot(
@@ -194,6 +217,9 @@ void AIChatTabHelper::RequestSummary() {
 void AIChatTabHelper::OnSnapshotFinished(const ui::AXTreeUpdate& snapshot) {
   ui::AXTree tree;
   if (!tree.Unserialize(snapshot)) {
+    for (auto& obs : observers_) {
+      obs.OnRequestSummaryFailed();
+    }
     return;
   }
 
