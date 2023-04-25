@@ -1637,6 +1637,10 @@ interface BraveWalletService {
   // Calling this setter should be approved by privacy review.
   SetNftDiscoveryEnabled(bool enabled);
 
+  // Returns a list of chain_ids for which GetERC20TokenBalances
+  // is supported
+  GetBalanceScannerSupportedChains() => (array<string> chain_ids);
+
   // Resets the keyring and the related preferences
   Reset();
 };
