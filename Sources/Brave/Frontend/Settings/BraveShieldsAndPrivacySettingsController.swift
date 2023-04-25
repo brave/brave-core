@@ -332,7 +332,6 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
             self.pboModeToggled(value: value)
           }
         ),
-        .boolRow(title: Strings.blockPopups, option: Preferences.General.blockPopups),
         blockMobileAnnoyancesRow,
         .boolRow(title: Strings.followUniversalLinks, option: Preferences.General.followUniversalLinks),
       ]
