@@ -203,7 +203,7 @@ class BraveVPNContactFormViewController: TableViewController {
       [weak self]
       (vc: OptionSelectionViewController<IssueType>, option: IssueType) -> Void in
       self?.dataSource.reloadCell(row: issueRow, section: section, displayText: option.displayString)
-      self?.contactForm.issue = option.displayString
+      self?.contactForm.issue = option.displayString ?? IssueType.other.displayString
     }
 
     issueRow.selection = { [weak self] in
