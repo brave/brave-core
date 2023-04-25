@@ -7,8 +7,8 @@
 
 BraveAvatarToolbarButtonDelegate::BraveAvatarToolbarButtonDelegate(
     AvatarToolbarButton* button,
-    Profile* profile)
-    : AvatarToolbarButtonDelegate(button, profile) {}
+    Browser* browser)
+    : AvatarToolbarButtonDelegate(button, browser) {}
 
 gfx::Image BraveAvatarToolbarButtonDelegate::GetGaiaAccountImage() const {
   return gfx::Image();
