@@ -14,7 +14,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace database {
 
 DatabaseMultiTables::DatabaseMultiTables(LedgerImpl& ledger)
@@ -25,7 +25,7 @@ DatabaseMultiTables::~DatabaseMultiTables() = default;
 void DatabaseMultiTables::GetTransactionReport(
     const mojom::ActivityMonth month,
     const int year,
-    ledger::GetTransactionReportCallback callback) {
+    GetTransactionReportCallback callback) {
   auto promotion_callback =
       std::bind(&DatabaseMultiTables::OnGetTransactionReportPromotion, this, _1,
                 month, year, callback);
@@ -36,7 +36,7 @@ void DatabaseMultiTables::OnGetTransactionReportPromotion(
     base::flat_map<std::string, mojom::PromotionPtr> promotions,
     const mojom::ActivityMonth month,
     const int year,
-    ledger::GetTransactionReportCallback callback) {
+    GetTransactionReportCallback callback) {
   const auto converted_month = static_cast<int>(month);
   std::vector<mojom::TransactionReportInfoPtr> list;
 
@@ -66,4 +66,4 @@ void DatabaseMultiTables::OnGetTransactionReportPromotion(
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::internal

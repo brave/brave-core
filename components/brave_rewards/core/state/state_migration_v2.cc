@@ -12,16 +12,15 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace state {
 
 StateMigrationV2::StateMigrationV2(LedgerImpl& ledger) : ledger_(ledger) {}
 
 StateMigrationV2::~StateMigrationV2() = default;
 
-void StateMigrationV2::Migrate(ledger::LegacyResultCallback callback) {
-  legacy_state_ =
-      std::make_unique<braveledger_bat_state::LegacyBatState>(*ledger_);
+void StateMigrationV2::Migrate(LegacyResultCallback callback) {
+  legacy_state_ = std::make_unique<LegacyBatState>(*ledger_);
 
   auto load_callback =
       std::bind(&StateMigrationV2::OnLoadState, this, _1, callback);
@@ -30,7 +29,7 @@ void StateMigrationV2::Migrate(ledger::LegacyResultCallback callback) {
 }
 
 void StateMigrationV2::OnLoadState(mojom::Result result,
-                                   ledger::LegacyResultCallback callback) {
+                                   LegacyResultCallback callback) {
   if (result == mojom::Result::NO_LEDGER_STATE) {
     BLOG(1, "No ledger state");
     callback(mojom::Result::LEDGER_OK);
@@ -75,4 +74,4 @@ void StateMigrationV2::OnLoadState(mojom::Result result,
 }
 
 }  // namespace state
-}  // namespace ledger
+}  // namespace brave_rewards::internal

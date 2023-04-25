@@ -110,7 +110,7 @@
 //   "tier": "other"
 // }
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace endpoint {
@@ -118,7 +118,7 @@ namespace uphold {
 
 using GetMeCallback =
     base::OnceCallback<void(mojom::Result result,
-                            const ::ledger::uphold::User& user)>;
+                            const internal::uphold::User& user)>;
 
 class GetMe {
  public:
@@ -133,7 +133,7 @@ class GetMe {
   mojom::Result CheckStatusCode(const int status_code);
 
   mojom::Result ParseBody(const std::string& body,
-                          ::ledger::uphold::User* user);
+                          internal::uphold::User* user);
 
   void OnRequest(GetMeCallback callback, mojom::UrlResponsePtr response);
 
@@ -142,6 +142,6 @@ class GetMe {
 
 }  // namespace uphold
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_UPHOLD_GET_ME_GET_ME_H_

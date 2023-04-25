@@ -17,7 +17,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 namespace uphold {
 
@@ -83,7 +83,7 @@ void GetCard::Request(const std::string& address,
 void GetCard::OnRequest(GetCardCallback callback,
                         mojom::UrlResponsePtr response) {
   DCHECK(response);
-  ledger::LogUrlResponse(__func__, *response);
+  LogUrlResponse(__func__, *response);
 
   mojom::Result result = CheckStatusCode(response->status_code);
 
@@ -99,4 +99,4 @@ void GetCard::OnRequest(GetCardCallback callback,
 
 }  // namespace uphold
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

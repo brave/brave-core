@@ -12,30 +12,30 @@
 
 // npm run test -- brave_unit_tests --filter=BitflyerUtilsTest.*
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 namespace bitflyer {
 
 class BitflyerUtilsTest : public testing::Test {};
 
 TEST(BitflyerUtilsTest, GetServerUrlDevelopment) {
-  ledger::_environment = mojom::Environment::DEVELOPMENT;
+  _environment = mojom::Environment::DEVELOPMENT;
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, base::StrCat({BUILDFLAG(BITFLYER_STAGING_URL), "/test"}));
 }
 
 TEST(BitflyerUtilsTest, GetServerUrlStaging) {
-  ledger::_environment = mojom::Environment::STAGING;
+  _environment = mojom::Environment::STAGING;
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, base::StrCat({BUILDFLAG(BITFLYER_STAGING_URL), "/test"}));
 }
 
 TEST(BitflyerUtilsTest, GetServerUrlProduction) {
-  ledger::_environment = mojom::Environment::PRODUCTION;
+  _environment = mojom::Environment::PRODUCTION;
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, "https://bitflyer.com/test");
 }
 
 }  // namespace bitflyer
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

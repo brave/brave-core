@@ -12,7 +12,7 @@
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace ledger::wallet_provider {
+namespace brave_rewards::internal::wallet_provider {
 
 Transfer::Transfer(LedgerImpl& ledger) : ledger_(ledger) {}
 
@@ -21,7 +21,7 @@ Transfer::~Transfer() = default;
 void Transfer::Run(const std::string& contribution_id,
                    const std::string& destination,
                    double amount,
-                   ledger::ResultCallback callback) const {
+                   ResultCallback callback) const {
   MaybeCreateTransaction(
       contribution_id, destination,
       // Rounding to nearest ten-thousandth (0.0001),
@@ -113,4 +113,4 @@ void Transfer::CreateTransaction(
       FROM_HERE, base::BindOnce(std::move(callback), std::move(transaction)));
 }
 
-}  // namespace ledger::wallet_provider
+}  // namespace brave_rewards::internal::wallet_provider

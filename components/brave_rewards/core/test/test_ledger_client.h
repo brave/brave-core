@@ -19,7 +19,7 @@
 #include "brave/components/brave_rewards/common/mojom/bat_ledger.mojom.h"
 #include "brave/components/brave_rewards/core/ledger_database.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 
 struct FakeEncryption {
   static std::string EncryptString(const std::string& value);
@@ -205,6 +205,6 @@ class TestLedgerClient : public mojom::LedgerClient {
   LogCallback log_callback_;
 };
 
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_TEST_TEST_LEDGER_CLIENT_H_

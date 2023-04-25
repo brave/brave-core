@@ -26,50 +26,50 @@
 
 using ::testing::_;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace bitflyer {
 
 class BitflyerUtilTest : public testing::Test {};
 
 TEST_F(BitflyerUtilTest, GetClientId) {
   // production
-  ledger::_environment = mojom::Environment::PRODUCTION;
+  _environment = mojom::Environment::PRODUCTION;
   std::string result = bitflyer::GetClientId();
   ASSERT_EQ(result, BUILDFLAG(BITFLYER_CLIENT_ID));
 
   // staging
-  ledger::_environment = mojom::Environment::STAGING;
+  _environment = mojom::Environment::STAGING;
   result = bitflyer::GetClientId();
   ASSERT_EQ(result, BUILDFLAG(BITFLYER_STAGING_CLIENT_ID));
 }
 
 TEST_F(BitflyerUtilTest, GetClientSecret) {
   // production
-  ledger::_environment = mojom::Environment::PRODUCTION;
+  _environment = mojom::Environment::PRODUCTION;
   std::string result = bitflyer::GetClientSecret();
   ASSERT_EQ(result, BUILDFLAG(BITFLYER_CLIENT_SECRET));
 
   // staging
-  ledger::_environment = mojom::Environment::STAGING;
+  _environment = mojom::Environment::STAGING;
   result = bitflyer::GetClientSecret();
   ASSERT_EQ(result, BUILDFLAG(BITFLYER_STAGING_CLIENT_SECRET));
 }
 
 TEST_F(BitflyerUtilTest, GetFeeAddress) {
   // production
-  ledger::_environment = mojom::Environment::PRODUCTION;
+  _environment = mojom::Environment::PRODUCTION;
   std::string result = bitflyer::GetFeeAddress();
   ASSERT_EQ(result, kFeeAddressProduction);
 
   // staging
-  ledger::_environment = mojom::Environment::STAGING;
+  _environment = mojom::Environment::STAGING;
   result = bitflyer::GetFeeAddress();
   ASSERT_EQ(result, kFeeAddressStaging);
 }
 
 TEST_F(BitflyerUtilTest, GetLoginUrl) {
   // production
-  ledger::_environment = mojom::Environment::PRODUCTION;
+  _environment = mojom::Environment::PRODUCTION;
   std::string result = bitflyer::GetLoginUrl("my-state", "my-code-verifier");
   ASSERT_EQ(
       result,
@@ -86,7 +86,7 @@ TEST_F(BitflyerUtilTest, GetLoginUrl) {
            "&code_challenge=5Cxs3JXozcwTeteCIu4BcTieAhEIqjn643F10PxPD_w"}));
 
   // staging
-  ledger::_environment = mojom::Environment::STAGING;
+  _environment = mojom::Environment::STAGING;
   result = bitflyer::GetLoginUrl("my-state", "my-code-verifier");
   ASSERT_EQ(
       result,
@@ -105,12 +105,12 @@ TEST_F(BitflyerUtilTest, GetLoginUrl) {
 
 TEST_F(BitflyerUtilTest, GetActivityUrl) {
   // production
-  ledger::_environment = mojom::Environment::PRODUCTION;
+  _environment = mojom::Environment::PRODUCTION;
   std::string result = bitflyer::GetActivityUrl();
   ASSERT_EQ(result, std::string(kUrlProduction) + "/ja-jp/ex/tradehistory");
 
   // staging
-  ledger::_environment = mojom::Environment::STAGING;
+  _environment = mojom::Environment::STAGING;
   result = bitflyer::GetActivityUrl();
   ASSERT_EQ(result, base::StrCat({BUILDFLAG(BITFLYER_STAGING_URL),
                                   "/ja-jp/ex/tradehistory"}));
@@ -161,19 +161,19 @@ TEST_F(BitflyerUtilTest, GetWallet) {
 
 TEST_F(BitflyerUtilTest, GenerateRandomHexString) {
   // string for testing
-  ledger::is_testing = true;
-  auto result = ledger::util::GenerateRandomHexString();
+  is_testing = true;
+  auto result = util::GenerateRandomHexString();
   ASSERT_EQ(result, "123456789");
 
   // random string
-  ledger::is_testing = false;
-  ledger::_environment = mojom::Environment::STAGING;
-  result = ledger::util::GenerateRandomHexString();
+  is_testing = false;
+  _environment = mojom::Environment::STAGING;
+  result = util::GenerateRandomHexString();
   ASSERT_EQ(result.length(), 64u);
 }
 
 TEST_F(BitflyerUtilTest, GenerateLinks) {
-  ledger::_environment = mojom::Environment::STAGING;
+  _environment = mojom::Environment::STAGING;
 
   auto wallet = mojom::ExternalWallet::New();
   wallet->address = "123123123124234234234";
@@ -213,4 +213,4 @@ TEST_F(BitflyerUtilTest, GenerateLinks) {
 }
 
 }  // namespace bitflyer
-}  // namespace ledger
+}  // namespace brave_rewards::internal

@@ -21,7 +21,7 @@
 using ::testing::_;
 using ::testing::IsEmpty;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 namespace promotion {
 
@@ -192,4 +192,4 @@ TEST_F(GetAvailableTest, ServerWrongResponse) {
 
 }  // namespace promotion
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

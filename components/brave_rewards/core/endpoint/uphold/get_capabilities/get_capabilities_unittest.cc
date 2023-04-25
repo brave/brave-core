@@ -19,10 +19,11 @@
 
 // npm run test -- brave_unit_tests --filter=GetCapabilitiesTest.*
 
-using ledger::uphold::Capabilities;
-using ::testing::_;
+namespace brave_rewards::internal {
 
-namespace ledger {
+using ::testing::_;
+using uphold::Capabilities;
+
 namespace endpoint {
 namespace uphold {
 
@@ -390,4 +391,4 @@ TEST_F(GetCapabilitiesTest, ServerReturnsUnexpectedHTTPStatus) {
 
 }  // namespace uphold
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

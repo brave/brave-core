@@ -23,7 +23,7 @@ const char kTableName[] = "publisher_info";
 
 }  // namespace
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace database {
 
 DatabasePublisherInfo::DatabasePublisherInfo(LedgerImpl& ledger)
@@ -31,9 +31,8 @@ DatabasePublisherInfo::DatabasePublisherInfo(LedgerImpl& ledger)
 
 DatabasePublisherInfo::~DatabasePublisherInfo() = default;
 
-void DatabasePublisherInfo::InsertOrUpdate(
-    mojom::PublisherInfoPtr info,
-    ledger::LegacyResultCallback callback) {
+void DatabasePublisherInfo::InsertOrUpdate(mojom::PublisherInfoPtr info,
+                                           LegacyResultCallback callback) {
   if (!info || info->id.empty()) {
     BLOG(1, "Info is empty");
     callback(mojom::Result::LEDGER_ERROR);
@@ -88,9 +87,8 @@ void DatabasePublisherInfo::InsertOrUpdate(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-void DatabasePublisherInfo::GetRecord(
-    const std::string& publisher_key,
-    ledger::GetPublisherInfoCallback callback) {
+void DatabasePublisherInfo::GetRecord(const std::string& publisher_key,
+                                      GetPublisherInfoCallback callback) {
   if (publisher_key.empty()) {
     BLOG(1, "Publisher key is empty");
     callback(mojom::Result::LEDGER_ERROR, {});
@@ -131,9 +129,8 @@ void DatabasePublisherInfo::GetRecord(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-void DatabasePublisherInfo::OnGetRecord(
-    mojom::DBCommandResponsePtr response,
-    ledger::GetPublisherInfoCallback callback) {
+void DatabasePublisherInfo::OnGetRecord(mojom::DBCommandResponsePtr response,
+                                        GetPublisherInfoCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -164,7 +161,7 @@ void DatabasePublisherInfo::OnGetRecord(
 
 void DatabasePublisherInfo::GetPanelRecord(
     mojom::ActivityInfoFilterPtr filter,
-    ledger::GetPublisherPanelInfoCallback callback) {
+    GetPublisherPanelInfoCallback callback) {
   if (!filter || filter->id.empty()) {
     BLOG(1, "Filter is empty");
     callback(mojom::Result::LEDGER_ERROR, {});
@@ -213,7 +210,7 @@ void DatabasePublisherInfo::GetPanelRecord(
 
 void DatabasePublisherInfo::OnGetPanelRecord(
     mojom::DBCommandResponsePtr response,
-    ledger::GetPublisherPanelInfoCallback callback) {
+    GetPublisherPanelInfoCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -242,7 +239,7 @@ void DatabasePublisherInfo::OnGetPanelRecord(
   callback(mojom::Result::LEDGER_OK, std::move(info));
 }
 
-void DatabasePublisherInfo::RestorePublishers(ledger::ResultCallback callback) {
+void DatabasePublisherInfo::RestorePublishers(ResultCallback callback) {
   auto transaction = mojom::DBTransaction::New();
   const std::string query = base::StringPrintf(
       "UPDATE %s SET excluded=? WHERE excluded=?", kTableName);
@@ -264,7 +261,7 @@ void DatabasePublisherInfo::RestorePublishers(ledger::ResultCallback callback) {
 }
 
 void DatabasePublisherInfo::OnRestorePublishers(
-    ledger::ResultCallback callback,
+    ResultCallback callback,
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
@@ -276,8 +273,7 @@ void DatabasePublisherInfo::OnRestorePublishers(
                                             std::move(callback));
 }
 
-void DatabasePublisherInfo::GetExcludedList(
-    ledger::GetExcludedListCallback callback) {
+void DatabasePublisherInfo::GetExcludedList(GetExcludedListCallback callback) {
   auto transaction = mojom::DBTransaction::New();
   const std::string query = base::StringPrintf(
       "SELECT pi.publisher_id, spi.status, pi.name,"
@@ -309,7 +305,7 @@ void DatabasePublisherInfo::GetExcludedList(
 
 void DatabasePublisherInfo::OnGetExcludedList(
     mojom::DBCommandResponsePtr response,
-    ledger::GetExcludedListCallback callback) {
+    GetExcludedListCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -337,4 +333,4 @@ void DatabasePublisherInfo::OnGetExcludedList(
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::internal

@@ -10,7 +10,7 @@
 
 #include <string>
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace util {
 
 // Generates a random 32-byte hex string.
@@ -23,6 +23,6 @@ std::string GeneratePKCECodeVerifier();
 std::string GeneratePKCECodeChallenge(const std::string& code_verifier);
 
 }  // namespace util
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_COMMON_RANDOM_UTIL_H_

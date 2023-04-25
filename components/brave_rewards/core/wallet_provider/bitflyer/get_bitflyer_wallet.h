@@ -8,7 +8,7 @@
 
 #include "brave/components/brave_rewards/core/wallet_provider/get_external_wallet.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace bitflyer {
@@ -24,6 +24,6 @@ class GetBitFlyerWallet : public wallet_provider::GetExternalWallet {
 };
 
 }  // namespace bitflyer
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_PROVIDER_BITFLYER_GET_BITFLYER_WALLET_H_

@@ -13,7 +13,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 namespace promotion {
 
@@ -72,10 +72,10 @@ void PostClobberedClaims::Request(base::Value::List corrupted_claims,
 void PostClobberedClaims::OnRequest(mojom::UrlResponsePtr response,
                                     PostClobberedClaimsCallback callback) {
   DCHECK(response);
-  ledger::LogUrlResponse(__func__, *response);
+  LogUrlResponse(__func__, *response);
   callback(CheckStatusCode(response->status_code));
 }
 
 }  // namespace promotion
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

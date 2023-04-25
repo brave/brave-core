@@ -13,7 +13,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 namespace rewards {
 
@@ -45,7 +45,7 @@ void GetPrefixList::Request(GetPrefixListCallback callback) {
 void GetPrefixList::OnRequest(mojom::UrlResponsePtr response,
                               GetPrefixListCallback callback) {
   DCHECK(response);
-  ledger::LogUrlResponse(__func__, *response, true);
+  LogUrlResponse(__func__, *response, true);
 
   if (CheckStatusCode(response->status_code) != mojom::Result::LEDGER_OK ||
       response->body.empty()) {
@@ -59,4 +59,4 @@ void GetPrefixList::OnRequest(mojom::UrlResponsePtr response,
 
 }  // namespace rewards
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

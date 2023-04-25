@@ -17,7 +17,7 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
 
-namespace ledger::contribution {
+namespace brave_rewards::internal::contribution {
 
 ContributionTip::ContributionTip(LedgerImpl& ledger) : ledger_(ledger) {}
 
@@ -83,4 +83,4 @@ void ContributionTip::OnQueueSaved(const std::string& queue_id,
   }
 }
 
-}  // namespace ledger::contribution
+}  // namespace brave_rewards::internal::contribution

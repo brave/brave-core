@@ -55,12 +55,6 @@ class RepeatingTimer;
 class SequencedTaskRunner;
 }  // namespace base
 
-namespace ledger {
-class Ledger;
-class LedgerDatabase;
-struct LedgerMediaPublisherInfo;
-}  // namespace ledger
-
 namespace leveldb {
 class DB;
 }  // namespace leveldb
@@ -73,6 +67,11 @@ class Profile;
 class RewardsFlagBrowserTest;
 
 namespace brave_rewards {
+
+namespace internal {
+class Ledger;
+class LedgerDatabase;
+}  // namespace internal
 
 class RewardsNotificationServiceImpl;
 class RewardsBrowserTest;
@@ -87,10 +86,10 @@ using GetTestResponseCallback = base::RepeatingCallback<void(
     std::string* response,
     base::flat_map<std::string, std::string>* headers)>;
 
-using StopLedgerCallback = base::OnceCallback<void(ledger::mojom::Result)>;
+using StopLedgerCallback = base::OnceCallback<void(mojom::Result)>;
 
 class RewardsServiceImpl : public RewardsService,
-                           public ledger::mojom::LedgerClient,
+                           public mojom::LedgerClient,
 #if BUILDFLAG(ENABLE_GREASELION)
                            public greaselion::GreaselionService::Observer,
 #endif
@@ -119,8 +118,7 @@ class RewardsServiceImpl : public RewardsService,
   void CreateRewardsWallet(const std::string& country,
                            CreateRewardsWalletCallback callback) override;
 
-  void GetUserType(
-      base::OnceCallback<void(ledger::mojom::UserType)> callback) override;
+  void GetUserType(base::OnceCallback<void(mojom::UserType)> callback) override;
 
   std::string GetCountryCode() const override;
 
@@ -142,7 +140,7 @@ class RewardsServiceImpl : public RewardsService,
                        AttestPromotionCallback callback) override;
   void GetActivityInfoList(const uint32_t start,
                            const uint32_t limit,
-                           ledger::mojom::ActivityInfoFilterPtr filter,
+                           mojom::ActivityInfoFilterPtr filter,
                            GetPublisherInfoListCallback callback) override;
 
   void GetPublishersVisitedCount(
@@ -150,9 +148,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetExcludedList(GetPublisherInfoListCallback callback) override;
 
-  void OnGetPublisherInfoList(
-      GetPublisherInfoListCallback callback,
-      std::vector<ledger::mojom::PublisherInfoPtr> list);
+  void OnGetPublisherInfoList(GetPublisherInfoListCallback callback,
+                              std::vector<mojom::PublisherInfoPtr> list);
   void OnLoad(SessionID tab_id, const GURL& url) override;
   void OnUnload(SessionID tab_id) override;
   void OnShow(SessionID tab_id) override;
@@ -186,7 +183,7 @@ class RewardsServiceImpl : public RewardsService,
   void GetPublisherBanner(const std::string& publisher_id,
                           GetPublisherBannerCallback callback) override;
   void OnPublisherBanner(GetPublisherBannerCallback callback,
-                         ledger::mojom::PublisherBannerPtr banner);
+                         mojom::PublisherBannerPtr banner);
   void RemoveRecurringTip(const std::string& publisher_key) override;
   void GetRecurringTips(GetRecurringTipsCallback callback) override;
   void SetPublisherExclude(
@@ -202,7 +199,7 @@ class RewardsServiceImpl : public RewardsService,
   p3a::ConversionMonitor* GetP3AConversionMonitor() override;
 
   void HandleFlags(const RewardsFlags& flags);
-  void SetEnvironment(ledger::mojom::Environment environment);
+  void SetEnvironment(mojom::Environment environment);
   void SetDebug(bool debug);
   void GetDebug(GetDebugCallback callback);
   void SetReconcileInterval(const int32_t interval);
@@ -219,7 +216,7 @@ class RewardsServiceImpl : public RewardsService,
   void RefreshPublisher(const std::string& publisher_key,
                         RefreshPublisherCallback callback) override;
 
-  void OnSaveRecurringTip(OnTipCallback callback, ledger::mojom::Result result);
+  void OnSaveRecurringTip(OnTipCallback callback, mojom::Result result);
 
   void SaveRecurringTip(const std::string& publisher_key,
                         double amount,
@@ -253,7 +250,7 @@ class RewardsServiceImpl : public RewardsService,
       GetPublisherInfoCallback callback) override;
 
   void SavePublisherInfo(const uint64_t window_id,
-                         ledger::mojom::PublisherInfoPtr publisher_info,
+                         mojom::PublisherInfoPtr publisher_info,
                          SavePublisherInfoCallback callback) override;
 
   void SetInlineTippingPlatformEnabled(
@@ -352,11 +349,10 @@ class RewardsServiceImpl : public RewardsService,
 
   void StartLedgerProcessIfNecessary();
 
-  void OnStopLedger(StopLedgerCallback callback,
-                    const ledger::mojom::Result result);
+  void OnStopLedger(StopLedgerCallback callback, const mojom::Result result);
 
   void OnStopLedgerForCompleteReset(SuccessCallback callback,
-                                    const ledger::mojom::Result result);
+                                    const mojom::Result result);
 
   void OnDiagnosticLogDeletedForCompleteReset(SuccessCallback callback,
                                               bool success);
@@ -370,9 +366,9 @@ class RewardsServiceImpl : public RewardsService,
   void OnPublisherStateLoaded(LoadPublisherStateCallback callback,
                               const std::string& data);
 
-  void OnRestorePublishers(const ledger::mojom::Result result);
+  void OnRestorePublishers(const mojom::Result result);
 
-  void OnRecurringTip(const ledger::mojom::Result result);
+  void OnRecurringTip(const mojom::Result result);
 
   void OnContributionSent(bool set_monthly,
                           base::OnceCallback<void(bool)> callback,
@@ -389,23 +385,23 @@ class RewardsServiceImpl : public RewardsService,
   void MaybeShowNotificationTipsPaid();
   void ShowNotificationTipsPaid(bool ac_enabled);
 
-  void OnPendingContributionRemoved(const ledger::mojom::Result result);
+  void OnPendingContributionRemoved(const mojom::Result result);
 
-  void OnRemoveAllPendingContributions(const ledger::mojom::Result result);
+  void OnRemoveAllPendingContributions(const mojom::Result result);
 
   void OnSetPublisherExclude(const std::string& publisher_key,
                              const bool exclude,
-                             const ledger::mojom::Result result);
+                             const mojom::Result result);
 
-  void OnLedgerInitialized(ledger::mojom::Result result);
+  void OnLedgerInitialized(mojom::Result result);
 
   void OnClaimPromotion(ClaimPromotionCallback callback,
-                        const ledger::mojom::Result result,
+                        const mojom::Result result,
                         const std::string& response);
 
   void AttestationAndroid(const std::string& promotion_id,
                           AttestPromotionCallback callback,
-                          const ledger::mojom::Result result,
+                          const mojom::Result result,
                           const std::string& response);
 
   void OnAttestationAndroid(
@@ -417,20 +413,18 @@ class RewardsServiceImpl : public RewardsService,
       const bool attestation_passed);
 
   // mojom::LedgerClient
-  void OnReconcileComplete(
-      ledger::mojom::Result result,
-      ledger::mojom::ContributionInfoPtr contribution) override;
+  void OnReconcileComplete(mojom::Result result,
+                           mojom::ContributionInfoPtr contribution) override;
   void OnAttestPromotion(AttestPromotionCallback callback,
-                         const ledger::mojom::Result result,
-                         ledger::mojom::PromotionPtr promotion);
+                         const mojom::Result result,
+                         mojom::PromotionPtr promotion);
   void LoadLedgerState(LoadLedgerStateCallback callback) override;
   void LoadPublisherState(LoadPublisherStateCallback callback) override;
-  void LoadURL(ledger::mojom::UrlRequestPtr request,
-               LoadURLCallback callback) override;
+  void LoadURL(mojom::UrlRequestPtr request, LoadURLCallback callback) override;
   void SetPublisherMinVisits(int visits) const override;
   void SetPublisherAllowNonVerified(bool allow) const override;
-  void OnPanelPublisherInfo(ledger::mojom::Result result,
-                            ledger::mojom::PublisherInfoPtr info,
+  void OnPanelPublisherInfo(mojom::Result result,
+                            mojom::PublisherInfoPtr info,
                             uint64_t window_id) override;
   void FetchFavIcon(const std::string& url,
                     const std::string& favicon_key,
@@ -512,7 +506,7 @@ class RewardsServiceImpl : public RewardsService,
   void IsBitFlyerRegion(IsBitFlyerRegionCallback callback) override;
 
   void PublisherListNormalized(
-      std::vector<ledger::mojom::PublisherInfoPtr> list) override;
+      std::vector<mojom::PublisherInfoPtr> list) override;
 
   void OnPublisherRegistryUpdated() override;
   void OnPublisherUpdated(const std::string& publisher_id) override;
@@ -527,10 +521,10 @@ class RewardsServiceImpl : public RewardsService,
 
   void ReconcileStampReset() override;
 
-  void RunDBTransaction(ledger::mojom::DBTransactionPtr transaction,
+  void RunDBTransaction(mojom::DBTransactionPtr transaction,
                         RunDBTransactionCallback callback) override;
 
-  void PendingContributionSaved(ledger::mojom::Result result) override;
+  void PendingContributionSaved(mojom::Result result) override;
 
   void ClearAllNotifications() override;
 
@@ -546,10 +540,10 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnRefreshPublisher(RefreshPublisherCallback callback,
                           const std::string& publisher_key,
-                          ledger::mojom::PublisherStatus status);
+                          mojom::PublisherStatus status);
 
   void OnContributeUnverifiedPublishers(
-      ledger::mojom::Result result,
+      mojom::Result result,
       const std::string& publisher_key,
       const std::string& publisher_name) override;
 
@@ -560,27 +554,27 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnRecordBackendP3AExternalWallet(GetExternalWalletResult result);
   void OnRecordBackendP3AStatsRecurring(
-      std::vector<ledger::mojom::PublisherInfoPtr> list);
+      std::vector<mojom::PublisherInfoPtr> list);
   void OnRecordBackendP3AStatsContributions(
       const size_t recurring_tip_count,
-      std::vector<ledger::mojom::ContributionInfoPtr> list);
+      std::vector<mojom::ContributionInfoPtr> list);
 
   void OnRecordBackendP3AStatsAC(bool ac_enabled);
 
   void OnGetBalanceReport(GetBalanceReportCallback callback,
-                          const ledger::mojom::Result result,
-                          ledger::mojom::BalanceReportInfoPtr report);
+                          const mojom::Result result,
+                          mojom::BalanceReportInfoPtr report);
 
   void OnGetMonthlyReport(GetMonthlyReportCallback callback,
-                          const ledger::mojom::Result result,
-                          ledger::mojom::MonthlyReportInfoPtr report);
+                          const mojom::Result result,
+                          mojom::MonthlyReportInfoPtr report);
 
   void OnRunDBTransaction(RunDBTransactionCallback callback,
-                          ledger::mojom::DBCommandResponsePtr response);
+                          mojom::DBCommandResponsePtr response);
 
   void OnGetAllPromotions(
       GetAllPromotionsCallback callback,
-      base::flat_map<std::string, ledger::mojom::PromotionPtr> promotions);
+      base::flat_map<std::string, mojom::PromotionPtr> promotions);
 
   void OnFilesDeletedForCompleteReset(SuccessCallback callback,
                                       const bool success);
@@ -592,12 +586,12 @@ class RewardsServiceImpl : public RewardsService,
   bool IsValidWalletType(const std::string& wallet_type) const;
 
   static void OnGetRewardsParameters(GetRewardsParametersCallback,
-                                     ledger::mojom::RewardsParametersPtr);
+                                     mojom::RewardsParametersPtr);
 
-  ledger::mojom::Environment GetDefaultServerEnvironment();
+  mojom::Environment GetDefaultServerEnvironment();
 
 #if BUILDFLAG(IS_ANDROID)
-  ledger::mojom::Environment GetDefaultServerEnvironmentForAndroid();
+  mojom::Environment GetDefaultServerEnvironmentForAndroid();
   safetynet_check::SafetyNetCheckRunner safetynet_check_runner_;
 #endif
 
@@ -607,9 +601,9 @@ class RewardsServiceImpl : public RewardsService,
       nullptr;  // NOT OWNED
   bool greaselion_enabled_ = false;
 #endif
-  mojo::AssociatedReceiver<ledger::mojom::LedgerClient> receiver_;
-  mojo::AssociatedRemote<ledger::mojom::Ledger> ledger_;
-  mojo::Remote<ledger::mojom::LedgerFactory> ledger_factory_;
+  mojo::AssociatedReceiver<mojom::LedgerClient> receiver_;
+  mojo::AssociatedRemote<mojom::Ledger> ledger_;
+  mojo::Remote<mojom::LedgerFactory> ledger_factory_;
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   const scoped_refptr<base::SequencedTaskRunner> json_sanitizer_task_runner_;
 
@@ -619,7 +613,7 @@ class RewardsServiceImpl : public RewardsService,
   const base::FilePath publisher_list_path_;
 
   std::unique_ptr<DiagnosticLog> diagnostic_log_;
-  base::SequenceBound<ledger::LedgerDatabase> ledger_database_;
+  base::SequenceBound<internal::LedgerDatabase> ledger_database_;
   std::unique_ptr<RewardsNotificationServiceImpl> notification_service_;
   std::unique_ptr<RewardsServiceObserver> extension_observer_;
 

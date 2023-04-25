@@ -127,7 +127,7 @@ std::string GetPublisherChannelResponse(
 
 }  // namespace
 
-namespace rewards_browsertest {
+namespace brave_rewards::test_util {
 
 RewardsBrowserTestResponse::RewardsBrowserTestResponse() = default;
 
@@ -135,7 +135,7 @@ RewardsBrowserTestResponse::~RewardsBrowserTestResponse() = default;
 
 void RewardsBrowserTestResponse::LoadMocks() {
   base::FilePath path;
-  rewards_browsertest_util::GetTestDataDir(&path);
+  test_util::GetTestDataDir(&path);
   ASSERT_TRUE(base::ReadFileToString(
       path.AppendASCII("wallet_resp.json"),
       &wallet_));
@@ -200,7 +200,7 @@ void RewardsBrowserTestResponse::LoadMocks() {
   };
 
   for (auto& key : publisher_keys) {
-    std::string prefix = ledger::publisher::GetHashPrefixRaw(key, 4);
+    std::string prefix = internal::publisher::GetHashPrefixRaw(key, 4);
     publisher_prefixes_[prefix] = key;
   }
 }
@@ -296,20 +296,19 @@ void RewardsBrowserTestResponse::Get(
         base::CompareCase::INSENSITIVE_ASCII)) {
         *response = uphold_commit_resp_;
     } else {
-      *response = rewards_browsertest_util::GetUpholdCard(
-          external_balance_,
-          rewards_browsertest_util::GetUpholdExternalAddress());
+        *response = test_util::GetUpholdCard(
+            external_balance_, test_util::GetUpholdExternalAddress());
     }
     return;
   }
 
   if (url.find("/v0/me/capabilities") != std::string::npos) {
-    *response = rewards_browsertest_util::GetUpholdCapabilities();
+    *response = test_util::GetUpholdCapabilities();
     return;
   }
 
   if (url.find("/v0/me") != std::string::npos) {
-    *response = rewards_browsertest_util::GetUpholdUser();
+    *response = test_util::GetUpholdUser();
     return;
   }
 
@@ -326,8 +325,7 @@ void RewardsBrowserTestResponse::Get(
       }
       return;
     } else if (url.find("transaction") == std::string::npos) {
-      *response = rewards_browsertest_util::GetOrderCreateResponse(
-          order_->Clone());
+      *response = test_util::GetOrderCreateResponse(order_->Clone());
     }
 
     *response_status_code = net::HTTP_CREATED;
@@ -343,7 +341,7 @@ void RewardsBrowserTestResponse::ClearRequests() {
   requests_.clear();
 }
 
-void RewardsBrowserTestResponse::SetSKUOrder(ledger::mojom::SKUOrderPtr order) {
+void RewardsBrowserTestResponse::SetSKUOrder(mojom::SKUOrderPtr order) {
   order_ = std::move(order);
 }
 
@@ -360,4 +358,4 @@ void RewardsBrowserTestResponse::SetExternalBalance(
   external_balance_ = balance;
 }
 
-}  // namespace rewards_browsertest
+}  // namespace brave_rewards::test_util

@@ -18,7 +18,7 @@
 using ::testing::_;
 using ::testing::MockFunction;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace database {
 
 class DatabaseActivityInfoTest : public ::testing::Test {
@@ -188,4 +188,4 @@ TEST_F(DatabaseActivityInfoTest, DeleteRecordOk) {
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::internal

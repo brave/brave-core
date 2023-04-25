@@ -12,7 +12,7 @@
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace contribution {
@@ -24,14 +24,14 @@ class ContributionExternalWallet {
   ~ContributionExternalWallet();
 
   void Process(const std::string& contribution_id,
-               ledger::LegacyResultCallback callback);
+               LegacyResultCallback callback);
 
   void Retry(mojom::ContributionInfoPtr contribution,
-             ledger::LegacyResultCallback callback);
+             LegacyResultCallback callback);
 
  private:
   void ContributionInfo(mojom::ContributionInfoPtr contribution,
-                        ledger::LegacyResultCallback callback);
+                        LegacyResultCallback callback);
 
   void OnAC(const mojom::Result result, const std::string& contribution_id);
 
@@ -41,15 +41,15 @@ class ContributionExternalWallet {
                              mojom::RewardsType type,
                              mojom::ContributionProcessor processor,
                              bool single_publisher,
-                             ledger::LegacyResultCallback callback);
+                             LegacyResultCallback callback);
 
   void Completed(mojom::Result result,
                  bool single_publisher,
-                 ledger::LegacyResultCallback callback);
+                 LegacyResultCallback callback);
 
   const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace contribution
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CONTRIBUTION_CONTRIBUTION_EXTERNAL_WALLET_H_

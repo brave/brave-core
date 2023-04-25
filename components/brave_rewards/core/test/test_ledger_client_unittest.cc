@@ -12,7 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=TestLedgerClientTest.*
 
-namespace ledger {
+namespace brave_rewards::internal {
 
 class TestLedgerClientTest : public testing::Test {
  protected:
@@ -29,4 +29,4 @@ TEST_F(TestLedgerClientTest, CanAccessDatabaseDirectly) {
   ASSERT_EQ(s.ColumnInt(0), 42);
 }
 
-}  // namespace ledger
+}  // namespace brave_rewards::internal

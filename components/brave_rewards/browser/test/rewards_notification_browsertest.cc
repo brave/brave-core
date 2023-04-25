@@ -28,26 +28,27 @@
 
 // npm run test -- brave_browser_tests --filter=RewardsNotificationBrowserTest.*
 
-namespace rewards_browsertest {
+namespace brave_rewards {
 
 using RewardsNotificationType =
-    brave_rewards::RewardsNotificationService::RewardsNotificationType;
+    RewardsNotificationService::RewardsNotificationType;
 
 class RewardsNotificationBrowserTest
     : public InProcessBrowserTest,
-      public brave_rewards::RewardsNotificationServiceObserver {
+      public RewardsNotificationServiceObserver {
  public:
   RewardsNotificationBrowserTest() {
-    contribution_ = std::make_unique<RewardsBrowserTestContribution>();
-    promotion_ = std::make_unique<RewardsBrowserTestPromotion>();
-    response_ = std::make_unique<RewardsBrowserTestResponse>();
+    contribution_ =
+        std::make_unique<test_util::RewardsBrowserTestContribution>();
+    promotion_ = std::make_unique<test_util::RewardsBrowserTestPromotion>();
+    response_ = std::make_unique<test_util::RewardsBrowserTestResponse>();
   }
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
     context_helper_ =
-        std::make_unique<RewardsBrowserTestContextHelper>(browser());
+        std::make_unique<test_util::RewardsBrowserTestContextHelper>(browser());
 
     // HTTP resolver
     host_resolver()->AddRule("*", "127.0.0.1");
@@ -55,14 +56,14 @@ class RewardsNotificationBrowserTest
         net::test_server::EmbeddedTestServer::TYPE_HTTPS);
     https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
     https_server_->RegisterRequestHandler(
-        base::BindRepeating(&rewards_browsertest_util::HandleRequest));
+        base::BindRepeating(&test_util::HandleRequest));
     ASSERT_TRUE(https_server_->Start());
 
     // Rewards service
     brave::RegisterPathProvider();
     auto* profile = browser()->profile();
-    rewards_service_ = static_cast<brave_rewards::RewardsServiceImpl*>(
-        brave_rewards::RewardsServiceFactory::GetForProfile(profile));
+    rewards_service_ = static_cast<RewardsServiceImpl*>(
+        RewardsServiceFactory::GetForProfile(profile));
 
     // Response mock
     base::ScopedAllowBlockingForTesting allow_blocking;
@@ -79,7 +80,7 @@ class RewardsNotificationBrowserTest
     rewards_notification_service_ = rewards_service_->GetNotificationService();
     rewards_notification_service_->AddObserver(this);
 
-    rewards_browsertest_util::SetOnboardingBypassed(browser());
+    test_util::SetOnboardingBypassed(browser());
   }
 
   void TearDown() override {
@@ -106,8 +107,8 @@ class RewardsNotificationBrowserTest
   }
 
   void OnNotificationAdded(
-      brave_rewards::RewardsNotificationService* rewards_notification_service,
-      const brave_rewards::RewardsNotificationService::RewardsNotification&
+      RewardsNotificationService* rewards_notification_service,
+      const RewardsNotificationService::RewardsNotification&
           rewards_notification) override {
     last_added_notification_ = rewards_notification;
     const auto& notifications = rewards_service_->GetAllNotifications();
@@ -125,9 +126,9 @@ class RewardsNotificationBrowserTest
   }
 
   void OnNotificationDeleted(
-      brave_rewards::RewardsNotificationService* rewards_notification_service,
-      const brave_rewards::RewardsNotificationService::RewardsNotification&
-      notification) override {
+      RewardsNotificationService* rewards_notification_service,
+      const RewardsNotificationService::RewardsNotification& notification)
+      override {
     last_deleted_notification_ = notification;
     delete_notification_ = true;
     if (wait_for_delete_notification_loop_) {
@@ -136,15 +137,12 @@ class RewardsNotificationBrowserTest
   }
 
   void OnAllNotificationsDeleted(
-      brave_rewards::RewardsNotificationService* rewards_notification_service)
-      override {
-  }
+      RewardsNotificationService* rewards_notification_service) override {}
 
   void OnGetNotification(
-      brave_rewards::RewardsNotificationService* rewards_notification_service,
-      const brave_rewards::RewardsNotificationService::RewardsNotification&
-      notification) override {
-  }
+      RewardsNotificationService* rewards_notification_service,
+      const RewardsNotificationService::RewardsNotification& notification)
+      override {}
 
   void WaitForAddNotificationCallback() {
     if (add_notification_) {
@@ -175,19 +173,16 @@ class RewardsNotificationBrowserTest
     return false;
   }
 
-  raw_ptr<brave_rewards::RewardsNotificationService>
-      rewards_notification_service_ = nullptr;
-  raw_ptr<brave_rewards::RewardsServiceImpl> rewards_service_ = nullptr;
+  raw_ptr<RewardsNotificationService> rewards_notification_service_ = nullptr;
+  raw_ptr<RewardsServiceImpl> rewards_service_ = nullptr;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
-  std::unique_ptr<RewardsBrowserTestContribution> contribution_;
-  std::unique_ptr<RewardsBrowserTestPromotion> promotion_;
-  std::unique_ptr<RewardsBrowserTestResponse> response_;
-  std::unique_ptr<RewardsBrowserTestContextHelper> context_helper_;
+  std::unique_ptr<test_util::RewardsBrowserTestContribution> contribution_;
+  std::unique_ptr<test_util::RewardsBrowserTestPromotion> promotion_;
+  std::unique_ptr<test_util::RewardsBrowserTestResponse> response_;
+  std::unique_ptr<test_util::RewardsBrowserTestContextHelper> context_helper_;
 
-  brave_rewards::RewardsNotificationService::RewardsNotification
-    last_added_notification_;
-  brave_rewards::RewardsNotificationService::RewardsNotification
-    last_deleted_notification_;
+  RewardsNotificationService::RewardsNotification last_added_notification_;
+  RewardsNotificationService::RewardsNotification last_deleted_notification_;
 
   bool add_notification_ = false;
   std::unique_ptr<base::RunLoop> wait_for_add_notification_loop_;
@@ -199,13 +194,12 @@ class RewardsNotificationBrowserTest
 IN_PROC_BROWSER_TEST_F(
     RewardsNotificationBrowserTest,
     AddGrantNotification) {
-  brave_rewards::RewardsNotificationService::RewardsNotificationArgs args;
+  RewardsNotificationService::RewardsNotificationArgs args;
   args.push_back("foo");
   args.push_back("bar");
 
   rewards_notification_service_->AddNotification(
-      brave_rewards::RewardsNotificationService::REWARDS_NOTIFICATION_GRANT,
-      args,
+      RewardsNotificationService::REWARDS_NOTIFICATION_GRANT, args,
       "rewards_notification_grant");
   WaitForAddNotificationCallback();
 
@@ -222,13 +216,12 @@ IN_PROC_BROWSER_TEST_F(
 IN_PROC_BROWSER_TEST_F(
     RewardsNotificationBrowserTest,
     AddGrantNotificationAndDeleteIt) {
-  brave_rewards::RewardsNotificationService::RewardsNotificationArgs args;
+  RewardsNotificationService::RewardsNotificationArgs args;
   args.push_back("foo");
   args.push_back("bar");
 
   rewards_notification_service_->AddNotification(
-      brave_rewards::RewardsNotificationService::REWARDS_NOTIFICATION_GRANT,
-      args,
+      RewardsNotificationService::REWARDS_NOTIFICATION_GRANT, args,
       "rewards_notification_grant");
   WaitForAddNotificationCallback();
 
@@ -248,13 +241,12 @@ IN_PROC_BROWSER_TEST_F(
 IN_PROC_BROWSER_TEST_F(
     RewardsNotificationBrowserTest,
     AddGrantNotificationAndFakeItAndDeleteIt) {
-  brave_rewards::RewardsNotificationService::RewardsNotificationArgs args;
+  RewardsNotificationService::RewardsNotificationArgs args;
   args.push_back("foo");
   args.push_back("bar");
 
   rewards_notification_service_->AddNotification(
-      brave_rewards::RewardsNotificationService::REWARDS_NOTIFICATION_GRANT,
-      args,
+      RewardsNotificationService::REWARDS_NOTIFICATION_GRANT, args,
       "rewards_notification_grant");
   WaitForAddNotificationCallback();
 
@@ -264,9 +256,8 @@ IN_PROC_BROWSER_TEST_F(
 
   rewards_notification_service_->DeleteNotification("not_valid");
   WaitForDeleteNotificationCallback();
-  EXPECT_TRUE(
-      last_deleted_notification_.type_ ==
-      brave_rewards::RewardsNotificationService::REWARDS_NOTIFICATION_INVALID);
+  EXPECT_TRUE(last_deleted_notification_.type_ ==
+              RewardsNotificationService::REWARDS_NOTIFICATION_INVALID);
 }
 
-}  // namespace rewards_browsertest
+}  // namespace brave_rewards

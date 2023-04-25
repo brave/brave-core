@@ -120,7 +120,7 @@ void TipPanelHandler::GetMonthlyContributionSet(
 
   auto fn = [](GetMonthlyContributionSetCallback callback,
                std::string publisher_id,
-               std::vector<ledger::mojom::PublisherInfoPtr> publishers) {
+               std::vector<mojom::PublisherInfoPtr> publishers) {
     for (auto& info : publishers) {
       if (info->id == publisher_id) {
         std::move(callback).Run(info->weight > 0);
@@ -141,7 +141,7 @@ void TipPanelHandler::GetExternalWallet(GetExternalWalletCallback callback) {
                GetExternalWalletResult result) {
     auto external_wallet = std::move(result).value_or(nullptr);
     if (!external_wallet ||
-        external_wallet->status == ledger::mojom::WalletStatus::kNotConnected) {
+        external_wallet->status == mojom::WalletStatus::kNotConnected) {
       return std::move(callback).Run(nullptr);
     }
     std::move(callback).Run(std::move(external_wallet));

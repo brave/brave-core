@@ -12,7 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=ClientStateTest.*
 
-namespace ledger {
+namespace brave_rewards::internal {
 
 class ClientStateTest : public ::testing::Test {
  protected:
@@ -277,4 +277,4 @@ TEST_F(ClientStateTest, FromJsonDeserializationWithMaxValues) {
   EXPECT_EQ(expected_client_properties, client_properties);
 }
 
-}  // namespace ledger
+}  // namespace brave_rewards::internal

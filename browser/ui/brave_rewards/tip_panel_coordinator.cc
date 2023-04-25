@@ -60,14 +60,13 @@ void TipPanelCoordinator::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void TipPanelCoordinator::GetUserTypeCallback(
-    const std::string& publisher_id,
-    bool inline_tip,
-    ledger::mojom::UserType user_type) {
+void TipPanelCoordinator::GetUserTypeCallback(const std::string& publisher_id,
+                                              bool inline_tip,
+                                              mojom::UserType user_type) {
   // If the user is not "connected" (i.e. if they have not linked an external
   // wallet and they are not a "legacy" anonymous user), then open the Rewards
   // panel instead.
-  if (user_type == ledger::mojom::UserType::kUnconnected) {
+  if (user_type == mojom::UserType::kUnconnected) {
     OpenRewardsPanel(&GetBrowser(), inline_tip);
     return;
   }

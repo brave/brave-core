@@ -34,7 +34,7 @@
 //   }
 // ]
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace endpoints {
@@ -66,6 +66,6 @@ class GetRecipientIDGemini final
 };
 
 }  // namespace endpoints
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_GEMINI_GET_RECIPIENT_ID_GET_RECIPIENT_ID_GEMINI_H_

@@ -12,7 +12,7 @@
 
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 
-namespace rewards_browsertest {
+namespace brave_rewards::test_util {
 
 class Request {
  public:
@@ -38,7 +38,7 @@ class RewardsBrowserTestResponse {
 
   void ClearRequests();
 
-  void SetSKUOrder(ledger::mojom::SKUOrderPtr order);
+  void SetSKUOrder(mojom::SKUOrderPtr order);
 
   void SetPromotionEmptyKey(const bool empty);
 
@@ -64,10 +64,11 @@ class RewardsBrowserTestResponse {
   std::vector<Request> requests_;
   bool empty_promotion_key_ = false;
   bool alternative_publisher_list_ = false;
-  ledger::mojom::SKUOrderPtr order_;
+  mojom::SKUOrderPtr order_;
   std::string external_balance_ = "0.0";
   std::map<std::string, std::string> publisher_prefixes_;
 };
 
-}  // namespace rewards_browsertest
+}  // namespace brave_rewards::test_util
+
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_COMMON_REWARDS_BROWSERTEST_RESPONSE_H_

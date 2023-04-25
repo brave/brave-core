@@ -11,7 +11,7 @@
 
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace database {
 
 class DatabaseBalanceReport : public DatabaseTable {
@@ -20,34 +20,34 @@ class DatabaseBalanceReport : public DatabaseTable {
   ~DatabaseBalanceReport() override;
 
   void InsertOrUpdate(mojom::BalanceReportInfoPtr info,
-                      ledger::LegacyResultCallback callback);
+                      LegacyResultCallback callback);
 
   void InsertOrUpdateList(std::vector<mojom::BalanceReportInfoPtr> list,
-                          ledger::LegacyResultCallback callback);
+                          LegacyResultCallback callback);
 
   void SetAmount(mojom::ActivityMonth month,
                  int year,
                  mojom::ReportType type,
                  double amount,
-                 ledger::LegacyResultCallback callback);
+                 LegacyResultCallback callback);
 
   void GetRecord(mojom::ActivityMonth month,
                  int year,
-                 ledger::GetBalanceReportCallback callback);
+                 GetBalanceReportCallback callback);
 
-  void GetAllRecords(ledger::GetBalanceReportListCallback callback);
+  void GetAllRecords(GetBalanceReportListCallback callback);
 
-  void DeleteAllRecords(ledger::LegacyResultCallback callback);
+  void DeleteAllRecords(LegacyResultCallback callback);
 
  private:
   void OnGetRecord(mojom::DBCommandResponsePtr response,
-                   ledger::GetBalanceReportCallback callback);
+                   GetBalanceReportCallback callback);
 
   void OnGetAllRecords(mojom::DBCommandResponsePtr response,
-                       ledger::GetBalanceReportListCallback callback);
+                       GetBalanceReportListCallback callback);
 };
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_BALANCE_REPORT_H_

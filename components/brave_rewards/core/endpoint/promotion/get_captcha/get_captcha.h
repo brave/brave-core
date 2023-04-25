@@ -24,7 +24,7 @@
 // Response body:
 // {PNG data}
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace endpoint {
@@ -54,6 +54,6 @@ class GetCaptcha {
 
 }  // namespace promotion
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PROMOTION_GET_CAPTCHA_GET_CAPTCHA_H_

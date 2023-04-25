@@ -24,7 +24,7 @@ using ::testing::TestParamInfo;
 using ::testing::TestWithParam;
 using ::testing::Values;
 
-namespace ledger::flows::test {
+namespace brave_rewards::internal::flows::test {
 using Result = endpoints::PostConnect::Result;
 
 class ConnectTestWallet : public wallet_provider::ConnectExternalWallet {
@@ -38,8 +38,7 @@ class ConnectTestWallet : public wallet_provider::ConnectExternalWallet {
  private:
   const char* WalletType() const override { return "test"; }
 
-  void Authorize(OAuthInfo&&,
-                 ledger::ConnectExternalWalletCallback callback) override {
+  void Authorize(OAuthInfo&&, ConnectExternalWalletCallback callback) override {
     OnConnect(std::move(callback), "token", "address",
               Result(post_connect_result_));
   }
@@ -339,4 +338,4 @@ INSTANTIATE_TEST_SUITE_P(
 );
 // clang-format on
 
-}  // namespace ledger::flows::test
+}  // namespace brave_rewards::internal::flows::test

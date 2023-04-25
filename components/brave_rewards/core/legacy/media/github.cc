@@ -25,9 +25,9 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace braveledger_media {
+namespace brave_rewards::internal {
 
-GitHub::GitHub(ledger::LedgerImpl& ledger) : ledger_(ledger) {}
+GitHub::GitHub(LedgerImpl& ledger) : ledger_(ledger) {}
 
 GitHub::~GitHub() = default;
 
@@ -193,9 +193,8 @@ bool GitHub::IsExcludedPath(const std::string& path) {
 
   return false;
 }
-void GitHub::ProcessActivityFromUrl(
-    uint64_t window_id,
-    const ledger::mojom::VisitData& visit_data) {
+void GitHub::ProcessActivityFromUrl(uint64_t window_id,
+                                    const mojom::VisitData& visit_data) {
   if (IsExcludedPath(visit_data.path)) {
     OnMediaActivityError(window_id);
     return;
@@ -215,7 +214,7 @@ void GitHub::ProcessActivityFromUrl(
 }
 
 void GitHub::ProcessMedia(const base::flat_map<std::string, std::string> parts,
-                          const ledger::mojom::VisitData& visit_data) {
+                          const mojom::VisitData& visit_data) {
   const std::string user_name = GetUserNameFromURL(visit_data.path);
   const std::string url = GetProfileAPIURL(user_name);
   auto iter = parts.find("duration");
@@ -231,19 +230,18 @@ void GitHub::ProcessMedia(const base::flat_map<std::string, std::string> parts,
   FetchDataFromUrl(url, callback);
 }
 
-void GitHub::OnMediaPublisherActivity(
-    ledger::mojom::Result result,
-    ledger::mojom::PublisherInfoPtr info,
-    uint64_t window_id,
-    const ledger::mojom::VisitData& visit_data,
-    const std::string& media_key) {
-  if (result != ledger::mojom::Result::LEDGER_OK &&
-      result != ledger::mojom::Result::NOT_FOUND) {
+void GitHub::OnMediaPublisherActivity(mojom::Result result,
+                                      mojom::PublisherInfoPtr info,
+                                      uint64_t window_id,
+                                      const mojom::VisitData& visit_data,
+                                      const std::string& media_key) {
+  if (result != mojom::Result::LEDGER_OK &&
+      result != mojom::Result::NOT_FOUND) {
     OnMediaActivityError(window_id);
     return;
   }
 
-  if (!info || result == ledger::mojom::Result::NOT_FOUND) {
+  if (!info || result == mojom::Result::NOT_FOUND) {
     const std::string user_name = GetUserNameFromURL(visit_data.path);
     const std::string url = GetProfileAPIURL(user_name);
 
@@ -262,22 +260,22 @@ void GitHub::OnMediaActivityError(uint64_t window_id) {
 
   DCHECK(!url.empty());
 
-  ledger::mojom::VisitData new_visit_data;
+  mojom::VisitData new_visit_data;
   new_visit_data.domain = url;
   new_visit_data.url = "https://" + url;
   new_visit_data.path = "/";
   new_visit_data.name = name;
 
   ledger_->publisher()->GetPublisherActivityFromUrl(
-      window_id, ledger::mojom::VisitData::New(new_visit_data), "");
+      window_id, mojom::VisitData::New(new_visit_data), "");
 }
 
 // Gets publisher panel info where we know that publisher info exists
 void GitHub::GetPublisherPanelInfo(uint64_t window_id,
-                                   const ledger::mojom::VisitData& visit_data,
+                                   const mojom::VisitData& visit_data,
                                    const std::string& publisher_key) {
   auto filter = ledger_->publisher()->CreateActivityFilter(
-      publisher_key, ledger::mojom::ExcludeFilter::FILTER_ALL, false,
+      publisher_key, mojom::ExcludeFilter::FILTER_ALL, false,
       ledger_->state()->GetReconcileStamp(), true, false);
   ledger_->database()->GetPanelPublisherInfo(
       std::move(filter),
@@ -286,11 +284,11 @@ void GitHub::GetPublisherPanelInfo(uint64_t window_id,
 }
 
 void GitHub::OnPublisherPanelInfo(uint64_t window_id,
-                                  const ledger::mojom::VisitData& visit_data,
+                                  const mojom::VisitData& visit_data,
                                   const std::string& publisher_key,
-                                  ledger::mojom::Result result,
-                                  ledger::mojom::PublisherInfoPtr info) {
-  if (!info || result == ledger::mojom::Result::NOT_FOUND) {
+                                  mojom::Result result,
+                                  mojom::PublisherInfoPtr info) {
+  if (!info || result == mojom::Result::NOT_FOUND) {
     const std::string user_name = GetUserNameFromURL(visit_data.path);
     const std::string url = GetProfileAPIURL(user_name);
 
@@ -303,8 +301,8 @@ void GitHub::OnPublisherPanelInfo(uint64_t window_id,
 }
 
 void GitHub::FetchDataFromUrl(const std::string& url,
-                              ledger::LegacyLoadURLCallback callback) {
-  auto request = ledger::mojom::UrlRequest::New();
+                              LegacyLoadURLCallback callback) {
+  auto request = mojom::UrlRequest::New();
   request->url = url;
   request->skip_log = true;
   ledger_->LoadURL(std::move(request), callback);
@@ -312,8 +310,8 @@ void GitHub::FetchDataFromUrl(const std::string& url,
 
 void GitHub::OnUserPage(const uint64_t duration,
                         uint64_t window_id,
-                        const ledger::mojom::VisitData& visit_data,
-                        ledger::mojom::UrlResponsePtr response) {
+                        const mojom::VisitData& visit_data,
+                        mojom::UrlResponsePtr response) {
   DCHECK(response);
   if (response->status_code != net::HTTP_OK) {
     OnMediaActivityError(window_id);
@@ -325,9 +323,9 @@ void GitHub::OnUserPage(const uint64_t duration,
   const std::string publisher_name = GetPublisherName(response->body);
   const std::string profile_picture = GetProfileImageURL(response->body);
 
-  SavePublisherInfo(
-      duration, user_id, user_name, publisher_name, profile_picture, window_id,
-      [](ledger::mojom::Result, ledger::mojom::PublisherInfoPtr) {});
+  SavePublisherInfo(duration, user_id, user_name, publisher_name,
+                    profile_picture, window_id,
+                    [](mojom::Result, mojom::PublisherInfoPtr) {});
 }
 
 void GitHub::SavePublisherInfo(const uint64_t duration,
@@ -336,19 +334,19 @@ void GitHub::SavePublisherInfo(const uint64_t duration,
                                const std::string& publisher_name,
                                const std::string& profile_picture,
                                const uint64_t window_id,
-                               ledger::PublisherInfoCallback callback) {
+                               PublisherInfoCallback callback) {
   const std::string publisher_key = GetPublisherKey(user_id);
   const std::string media_key = GetMediaKey(screen_name);
 
   if (publisher_key.empty()) {
-    callback(ledger::mojom::Result::LEDGER_ERROR, nullptr);
+    callback(mojom::Result::LEDGER_ERROR, nullptr);
     BLOG(0, "Publisher key is missing");
     return;
   }
 
   const std::string url = GetProfileURL(screen_name);
 
-  ledger::mojom::VisitData visit_data;
+  mojom::VisitData visit_data;
   visit_data.provider = GITHUB_MEDIA_TYPE;
   visit_data.url = url;
   visit_data.favicon_url = profile_picture;
@@ -358,27 +356,26 @@ void GitHub::SavePublisherInfo(const uint64_t duration,
                                   window_id, callback);
 
   if (!media_key.empty()) {
-    ledger_->database()->SaveMediaPublisherInfo(
-        media_key, publisher_key, [](const ledger::mojom::Result) {});
+    ledger_->database()->SaveMediaPublisherInfo(media_key, publisher_key,
+                                                [](const mojom::Result) {});
   }
 }
 
-void GitHub::OnMediaPublisherInfo(
-    uint64_t window_id,
-    const std::string& user_id,
-    const std::string& screen_name,
-    const std::string& publisher_name,
-    const std::string& profile_picture,
-    ledger::PublisherInfoCallback callback,
-    ledger::mojom::Result result,
-    ledger::mojom::PublisherInfoPtr publisher_info) {
-  if (result != ledger::mojom::Result::LEDGER_OK &&
-      result != ledger::mojom::Result::NOT_FOUND) {
-    callback(ledger::mojom::Result::LEDGER_ERROR, nullptr);
+void GitHub::OnMediaPublisherInfo(uint64_t window_id,
+                                  const std::string& user_id,
+                                  const std::string& screen_name,
+                                  const std::string& publisher_name,
+                                  const std::string& profile_picture,
+                                  PublisherInfoCallback callback,
+                                  mojom::Result result,
+                                  mojom::PublisherInfoPtr publisher_info) {
+  if (result != mojom::Result::LEDGER_OK &&
+      result != mojom::Result::NOT_FOUND) {
+    callback(mojom::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
-  if (!publisher_info || result == ledger::mojom::Result::NOT_FOUND) {
+  if (!publisher_info || result == mojom::Result::NOT_FOUND) {
     SavePublisherInfo(0, user_id, screen_name, publisher_name, profile_picture,
                       window_id, callback);
   } else {
@@ -388,11 +385,11 @@ void GitHub::OnMediaPublisherInfo(
   }
 }
 
-void GitHub::OnMetaDataGet(ledger::PublisherInfoCallback callback,
-                           ledger::mojom::UrlResponsePtr response) {
+void GitHub::OnMetaDataGet(PublisherInfoCallback callback,
+                           mojom::UrlResponsePtr response) {
   DCHECK(response);
   if (response->status_code != net::HTTP_OK) {
-    callback(ledger::mojom::Result::TIP_ERROR, nullptr);
+    callback(mojom::Result::TIP_ERROR, nullptr);
     return;
   }
 
@@ -409,16 +406,16 @@ void GitHub::OnMetaDataGet(ledger::PublisherInfoCallback callback,
 }
 
 void GitHub::SaveMediaInfo(const base::flat_map<std::string, std::string>& data,
-                           ledger::PublisherInfoCallback callback) {
+                           PublisherInfoCallback callback) {
   auto user_name = data.find("user_name");
   std::string url = GetProfileAPIURL(user_name->second);
 
   auto url_callback =
       std::bind(&GitHub::OnMetaDataGet, this, std::move(callback), _1);
 
-  auto request = ledger::mojom::UrlRequest::New();
+  auto request = mojom::UrlRequest::New();
   request->url = url;
   request->skip_log = true;
   ledger_->LoadURL(std::move(request), url_callback);
 }
-}  // namespace braveledger_media
+}  // namespace brave_rewards::internal

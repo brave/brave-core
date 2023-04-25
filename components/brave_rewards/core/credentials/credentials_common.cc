@@ -14,7 +14,7 @@
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace credential {
 
 CredentialsCommon::CredentialsCommon(LedgerImpl& ledger) : ledger_(ledger) {}
@@ -22,7 +22,7 @@ CredentialsCommon::CredentialsCommon(LedgerImpl& ledger) : ledger_(ledger) {}
 CredentialsCommon::~CredentialsCommon() = default;
 
 void CredentialsCommon::GetBlindedCreds(const CredentialsTrigger& trigger,
-                                        ledger::ResultCallback callback) {
+                                        ResultCallback callback) {
   const auto creds = GenerateCreds(trigger.size);
 
   if (creds.empty()) {
@@ -62,7 +62,7 @@ void CredentialsCommon::GetBlindedCreds(const CredentialsTrigger& trigger,
           mojom::Result result) { std::move(*callback).Run(result); });
 }
 
-void CredentialsCommon::BlindedCredsSaved(ledger::ResultCallback callback,
+void CredentialsCommon::BlindedCredsSaved(ResultCallback callback,
                                           mojom::Result result) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Creds batch save failed");
@@ -79,7 +79,7 @@ void CredentialsCommon::SaveUnblindedCreds(
     const mojom::CredsBatch& creds,
     const std::vector<std::string>& unblinded_encoded_creds,
     const CredentialsTrigger& trigger,
-    ledger::ResultCallback callback) {
+    ResultCallback callback) {
   std::vector<mojom::UnblindedTokenPtr> list;
   mojom::UnblindedTokenPtr unblinded;
   for (auto& cred : unblinded_encoded_creds) {
@@ -103,7 +103,7 @@ void CredentialsCommon::SaveUnblindedCreds(
       });
 }
 
-void CredentialsCommon::OnSaveUnblindedCreds(ledger::ResultCallback callback,
+void CredentialsCommon::OnSaveUnblindedCreds(ResultCallback callback,
                                              const CredentialsTrigger& trigger,
                                              mojom::Result result) {
   if (result != mojom::Result::LEDGER_OK) {
@@ -119,4 +119,4 @@ void CredentialsCommon::OnSaveUnblindedCreds(ledger::ResultCallback callback,
 }
 
 }  // namespace credential
-}  // namespace ledger
+}  // namespace brave_rewards::internal

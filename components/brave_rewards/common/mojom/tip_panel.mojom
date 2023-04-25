@@ -31,20 +31,20 @@ interface TipPanelHandler {
   GetBrowserSize() => (double width, double height);
 
   // Returns the API-provided Rewards service parameters.
-  GetRewardsParameters() => (ledger.mojom.RewardsParameters? parameters);
+  GetRewardsParameters() => (RewardsParameters? parameters);
 
   // Returns the user's available BAT balance.
-  GetBalance() => (ledger.mojom.Balance? balance);
+  GetBalance() => (Balance? balance);
 
   // Gets the banner information for requested creator.
-  GetBanner() => (ledger.mojom.PublisherBanner? banner);
+  GetBanner() => (PublisherBanner? banner);
 
   // Gets a value indicating whether a monthly contribution is currently set for
   // this creator.
   GetMonthlyContributionSet() => (bool monthly_contribution_set);
 
   // Returns the Rewards external wallet data for the user.
-  GetExternalWallet() => (ledger.mojom.ExternalWallet? external_wallet);
+  GetExternalWallet() => (ExternalWallet? external_wallet);
 
   // Sends a one-time contribution. If `set_monthly` is true and the
   // contribution is successful, then a recurring monthly tip will be scheduled.

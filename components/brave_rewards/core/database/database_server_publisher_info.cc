@@ -19,7 +19,7 @@ const char kTableName[] = "server_publisher_info";
 
 }  // namespace
 
-namespace ledger {
+namespace brave_rewards::internal {
 
 namespace database {
 
@@ -30,7 +30,7 @@ DatabaseServerPublisherInfo::~DatabaseServerPublisherInfo() = default;
 
 void DatabaseServerPublisherInfo::InsertOrUpdate(
     const mojom::ServerPublisherInfo& server_info,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (server_info.publisher_key.empty()) {
     BLOG(0, "Publisher key is empty");
     callback(mojom::Result::LEDGER_ERROR);
@@ -140,7 +140,7 @@ void DatabaseServerPublisherInfo::OnGetRecord(
 
 void DatabaseServerPublisherInfo::DeleteExpiredRecords(
     int64_t max_age_seconds,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   int64_t cutoff = util::GetCurrentTimeStamp() - max_age_seconds;
 
   auto transaction = mojom::DBTransaction::New();
@@ -165,7 +165,7 @@ void DatabaseServerPublisherInfo::DeleteExpiredRecords(
 
 void DatabaseServerPublisherInfo::OnExpiredRecordsSelected(
     mojom::DBCommandResponsePtr response,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Unable to query for expired records");
@@ -205,4 +205,4 @@ void DatabaseServerPublisherInfo::OnExpiredRecordsSelected(
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::internal

@@ -13,7 +13,7 @@
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "sql/database.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace database {
 
 const size_t kBatchLimit = 999;
@@ -37,7 +37,7 @@ int32_t GetCurrentVersion();
 int32_t GetCompatibleVersion();
 
 void OnResultCallback(mojom::DBCommandResponsePtr response,
-                      ledger::LegacyResultCallback callback);
+                      LegacyResultCallback callback);
 
 int GetIntColumn(mojom::DBRecord* record, const int index);
 
@@ -52,6 +52,6 @@ std::string GetStringColumn(mojom::DBRecord* record, const int index);
 std::string GenerateStringInCase(const std::vector<std::string>& items);
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_UTIL_H_

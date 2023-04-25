@@ -22,7 +22,7 @@
 #include "brave/components/brave_rewards/core/wallet_provider/gemini/gemini_transfer.h"
 #include "brave/components/brave_rewards/core/wallet_provider/gemini/get_gemini_wallet.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace gemini {
@@ -40,7 +40,7 @@ class Gemini {
   void StartContribution(const std::string& contribution_id,
                          mojom::ServerPublisherInfoPtr info,
                          double amount,
-                         ledger::LegacyResultCallback callback);
+                         LegacyResultCallback callback);
 
   void FetchBalance(FetchBalanceCallback callback);
 
@@ -50,9 +50,9 @@ class Gemini {
                      LegacyResultCallback);
 
   void ConnectWallet(const base::flat_map<std::string, std::string>& args,
-                     ledger::ConnectExternalWalletCallback);
+                     ConnectExternalWalletCallback);
 
-  void GetWallet(ledger::GetExternalWalletCallback);
+  void GetWallet(GetExternalWalletCallback);
 
   mojom::ExternalWalletPtr GetWallet();
 
@@ -63,7 +63,7 @@ class Gemini {
   [[nodiscard]] bool LogOutWallet();
 
  private:
-  void ContributionCompleted(ledger::LegacyResultCallback,
+  void ContributionCompleted(LegacyResultCallback,
                              const std::string& contribution_id,
                              double fee,
                              const std::string& publisher_key,
@@ -96,6 +96,6 @@ class Gemini {
 };
 
 }  // namespace gemini
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_GEMINI_GEMINI_H_

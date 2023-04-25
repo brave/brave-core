@@ -10,30 +10,30 @@
 
 // npm run test -- brave_unit_tests --filter=UpholdUtilsTest.*
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 namespace uphold {
 
 class UpholdUtilsTest : public testing::Test {};
 
 TEST(UpholdUtilsTest, GetServerUrlDevelopment) {
-  ledger::_environment = mojom::Environment::DEVELOPMENT;
+  _environment = mojom::Environment::DEVELOPMENT;
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, "https://api-sandbox.uphold.com/test");
 }
 
 TEST(UpholdUtilsTest, GetServerUrlStaging) {
-  ledger::_environment = mojom::Environment::STAGING;
+  _environment = mojom::Environment::STAGING;
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, "https://api-sandbox.uphold.com/test");
 }
 
 TEST(UpholdUtilsTest, GetServerUrlProduction) {
-  ledger::_environment = mojom::Environment::PRODUCTION;
+  _environment = mojom::Environment::PRODUCTION;
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, "https://api.uphold.com/test");
 }
 
 }  // namespace uphold
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

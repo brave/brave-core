@@ -6,7 +6,7 @@
 
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 
 RewardsServer::RewardsServer(LedgerImpl& ledger) : get_prefix_list_(ledger) {}
@@ -14,4 +14,4 @@ RewardsServer::RewardsServer(LedgerImpl& ledger) : get_prefix_list_(ledger) {}
 RewardsServer::~RewardsServer() = default;
 
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

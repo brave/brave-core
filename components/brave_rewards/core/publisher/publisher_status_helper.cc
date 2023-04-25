@@ -17,17 +17,19 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
 
+namespace brave_rewards::internal {
+
 namespace {
 
 struct PublisherStatusData {
-  ledger::mojom::PublisherStatus status;
+  mojom::PublisherStatus status;
   uint64_t updated_at;
 };
 
 using PublisherStatusMap = std::map<std::string, PublisherStatusData>;
 
 struct RefreshTaskInfo {
-  RefreshTaskInfo(ledger::LedgerImpl& ledger,
+  RefreshTaskInfo(LedgerImpl& ledger,
                   PublisherStatusMap&& status_map,
                   std::function<void(PublisherStatusMap)> callback)
       : ledger(ledger),
@@ -35,7 +37,7 @@ struct RefreshTaskInfo {
         current(map.begin()),
         callback(callback) {}
 
-  const raw_ref<ledger::LedgerImpl> ledger;
+  const raw_ref<LedgerImpl> ledger;
   PublisherStatusMap map;
   PublisherStatusMap::iterator current;
   std::function<void(PublisherStatusMap)> callback;
@@ -47,7 +49,7 @@ void RefreshNext(std::shared_ptr<RefreshTaskInfo> task_info) {
   // Find the first map element that has an expired status.
   task_info->current = std::find_if(
       task_info->current, task_info->map.end(), [&task_info](auto& key_value) {
-        ledger::mojom::ServerPublisherInfo server_info;
+        mojom::ServerPublisherInfo server_info;
         server_info.status = key_value.second.status;
         server_info.updated_at = key_value.second.updated_at;
         return task_info->ledger->publisher()->ShouldFetchServerPublisherInfo(
@@ -74,8 +76,7 @@ void RefreshNext(std::shared_ptr<RefreshTaskInfo> task_info) {
         // Fetch current publisher info.
         auto& key = task_info->current->first;
         task_info->ledger->publisher()->GetServerPublisherInfo(
-            key,
-            [task_info](ledger::mojom::ServerPublisherInfoPtr server_info) {
+            key, [task_info](mojom::ServerPublisherInfoPtr server_info) {
               // Update status map and continue looking for expired entries.
               task_info->current->second.status = server_info->status;
               ++task_info->current;
@@ -85,7 +86,7 @@ void RefreshNext(std::shared_ptr<RefreshTaskInfo> task_info) {
 }
 
 void RefreshPublisherStatusMap(
-    ledger::LedgerImpl& ledger,
+    LedgerImpl& ledger,
     PublisherStatusMap&& status_map,
     std::function<void(PublisherStatusMap)> callback) {
   RefreshNext(std::make_shared<RefreshTaskInfo>(ledger, std::move(status_map),
@@ -94,12 +95,11 @@ void RefreshPublisherStatusMap(
 
 }  // namespace
 
-namespace ledger {
 namespace publisher {
 
 void RefreshPublisherStatus(LedgerImpl& ledger,
                             std::vector<mojom::PublisherInfoPtr>&& info_list,
-                            ledger::GetRecurringTipsCallback callback) {
+                            GetRecurringTipsCallback callback) {
   PublisherStatusMap map;
   for (const auto& info : info_list) {
     map[info->id] = {info->status, info->status_updated_at};
@@ -120,7 +120,7 @@ void RefreshPublisherStatus(LedgerImpl& ledger,
 void RefreshPublisherStatus(
     LedgerImpl& ledger,
     std::vector<mojom::PendingContributionInfoPtr>&& info_list,
-    ledger::GetPendingContributionsCallback callback) {
+    GetPendingContributionsCallback callback) {
   PublisherStatusMap map;
   for (const auto& info : info_list) {
     map[info->publisher_key] = {info->status, info->status_updated_at};
@@ -140,4 +140,4 @@ void RefreshPublisherStatus(
 }
 
 }  // namespace publisher
-}  // namespace ledger
+}  // namespace brave_rewards::internal

@@ -8,7 +8,7 @@
 
 // npm run test -- brave_unit_tests --filter=ReportBalanceStateTest.*
 
-namespace ledger {
+namespace brave_rewards::internal {
 
 TEST(ReportBalanceStateTest, ToJsonSerialization) {
   // Arrange
@@ -47,4 +47,4 @@ TEST(ReportBalanceStateTest, FromJsonDeserialization) {
   EXPECT_EQ(expected_report_balance, report_balance);
 }
 
-}  // namespace ledger
+}  // namespace brave_rewards::internal

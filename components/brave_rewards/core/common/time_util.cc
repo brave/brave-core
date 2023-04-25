@@ -8,7 +8,7 @@
 #include <algorithm>
 #include "brave_base/random.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace util {
 
 mojom::ActivityMonth GetCurrentMonth() {
@@ -50,4 +50,4 @@ base::TimeDelta GetRandomizedDelayWithBackoff(base::TimeDelta delay,
 }
 
 }  // namespace util
-}  // namespace ledger
+}  // namespace brave_rewards::internal

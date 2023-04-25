@@ -17,7 +17,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace database {
 
 namespace {
@@ -33,7 +33,7 @@ DatabaseUnblindedToken::~DatabaseUnblindedToken() = default;
 
 void DatabaseUnblindedToken::InsertOrUpdateList(
     std::vector<mojom::UnblindedTokenPtr> list,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (list.empty()) {
     BLOG(1, "List is empty");
     callback(mojom::Result::LEDGER_ERROR);
@@ -141,7 +141,7 @@ void DatabaseUnblindedToken::MarkRecordListAsSpent(
     const std::vector<std::string>& ids,
     mojom::RewardsType redeem_type,
     const std::string& redeem_id,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (ids.empty()) {
     BLOG(1, "List of ids is empty");
     callback(mojom::Result::LEDGER_ERROR);
@@ -173,7 +173,7 @@ void DatabaseUnblindedToken::MarkRecordListAsSpent(
 void DatabaseUnblindedToken::MarkRecordListAsReserved(
     const std::vector<std::string>& ids,
     const std::string& redeem_id,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (ids.empty()) {
     BLOG(1, "List of ids is empty");
     callback(mojom::Result::LEDGER_ERROR);
@@ -237,7 +237,7 @@ void DatabaseUnblindedToken::MarkRecordListAsReserved(
 void DatabaseUnblindedToken::OnMarkRecordListAsReserved(
     mojom::DBCommandResponsePtr response,
     size_t expected_row_count,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -256,7 +256,7 @@ void DatabaseUnblindedToken::OnMarkRecordListAsReserved(
 
 void DatabaseUnblindedToken::MarkRecordListAsSpendable(
     const std::string& redeem_id,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (redeem_id.empty()) {
     BLOG(1, "Redeem id is empty");
     callback(mojom::Result::LEDGER_ERROR);
@@ -367,4 +367,4 @@ void DatabaseUnblindedToken::GetSpendableRecordListByBatchTypes(
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::internal

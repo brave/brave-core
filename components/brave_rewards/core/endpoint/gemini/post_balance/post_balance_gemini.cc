@@ -16,7 +16,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 namespace gemini {
 
@@ -82,7 +82,7 @@ void PostBalance::Request(const std::string& token,
 void PostBalance::OnRequest(PostBalanceCallback callback,
                             mojom::UrlResponsePtr response) {
   DCHECK(response);
-  ledger::LogUrlResponse(__func__, *response);
+  LogUrlResponse(__func__, *response);
 
   mojom::Result result = CheckStatusCode(response->status_code);
 
@@ -98,4 +98,4 @@ void PostBalance::OnRequest(PostBalanceCallback callback,
 
 }  // namespace gemini
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

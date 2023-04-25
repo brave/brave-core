@@ -42,7 +42,7 @@
 //   ]
 // }
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace endpoint {
@@ -70,6 +70,6 @@ class PostBalance {
 
 }  // namespace gemini
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_GEMINI_POST_BALANCE_POST_BALANCE_GEMINI_H_

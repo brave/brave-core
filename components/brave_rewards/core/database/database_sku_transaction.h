@@ -11,7 +11,7 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace database {
 
 enum class GetSKUTransactionError { kDatabaseError, kTransactionNotFound };
@@ -25,11 +25,11 @@ class DatabaseSKUTransaction : public DatabaseTable {
   ~DatabaseSKUTransaction() override;
 
   void InsertOrUpdate(mojom::SKUTransactionPtr info,
-                      ledger::LegacyResultCallback callback);
+                      LegacyResultCallback callback);
 
   void SaveExternalTransaction(const std::string& transaction_id,
                                const std::string& external_transaction_id,
-                               ledger::LegacyResultCallback callback);
+                               LegacyResultCallback callback);
 
   void GetRecordByOrderId(const std::string& order_id,
                           GetSKUTransactionCallback callback);
@@ -40,6 +40,6 @@ class DatabaseSKUTransaction : public DatabaseTable {
 };
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_SKU_TRANSACTION_H_

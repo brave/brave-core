@@ -12,7 +12,7 @@
 
 #include "base/functional/callback.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 
 // Converts a `OnceCallback` into an equivalent `std::function`. This adapter
 // should only be used to interface with legacy code that uses `std::function`
@@ -26,6 +26,6 @@ std::function<void(Args...)> ToLegacyCallback(
   };
 }
 
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_COMMON_LEGACY_CALLBACK_HELPERS_H_

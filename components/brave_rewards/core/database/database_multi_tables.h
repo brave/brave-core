@@ -12,7 +12,7 @@
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace database {
@@ -24,19 +24,19 @@ class DatabaseMultiTables {
 
   void GetTransactionReport(const mojom::ActivityMonth month,
                             const int year,
-                            ledger::GetTransactionReportCallback callback);
+                            GetTransactionReportCallback callback);
 
  private:
   void OnGetTransactionReportPromotion(
       base::flat_map<std::string, mojom::PromotionPtr> promotions,
       const mojom::ActivityMonth month,
       const int year,
-      ledger::GetTransactionReportCallback callback);
+      GetTransactionReportCallback callback);
 
   const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_MULTI_TABLES_H_

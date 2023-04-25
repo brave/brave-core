@@ -11,7 +11,7 @@
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace state {
@@ -21,7 +21,7 @@ class StateMigrationV12 {
   explicit StateMigrationV12(LedgerImpl& ledger);
   ~StateMigrationV12();
 
-  void Migrate(ledger::LegacyResultCallback);
+  void Migrate(LegacyResultCallback);
 
  private:
   bool MigrateExternalWallet(const std::string& wallet_type);
@@ -30,6 +30,6 @@ class StateMigrationV12 {
 };
 
 }  // namespace state
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_MIGRATION_V12_H_

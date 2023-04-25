@@ -15,7 +15,7 @@
 #include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 #include "net/http/http_status_code.h"
 
-namespace ledger::endpoints {
+namespace brave_rewards::internal::endpoints {
 using Error = PostCreateTransactionUphold::Error;
 using Result = PostCreateTransactionUphold::Result;
 
@@ -84,4 +84,4 @@ absl::optional<std::string> PostCreateTransactionUphold::Content() const {
   return json;
 }
 
-}  // namespace ledger::endpoints
+}  // namespace brave_rewards::internal::endpoints

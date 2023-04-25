@@ -12,7 +12,7 @@
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace database {
@@ -22,7 +22,7 @@ class DatabaseMigration {
   explicit DatabaseMigration(LedgerImpl& ledger);
   ~DatabaseMigration();
 
-  void Start(uint32_t table_version, ledger::LegacyResultCallback callback);
+  void Start(uint32_t table_version, LegacyResultCallback callback);
 
   static void SetTargetVersionForTesting(uint32_t version);
 
@@ -35,5 +35,5 @@ class DatabaseMigration {
 };
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_MIGRATION_H_

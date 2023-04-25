@@ -8,7 +8,7 @@
 #include "base/strings/stringprintf.h"
 #include "content/public/test/browser_test_utils.h"
 
-namespace rewards_browsertest_util {
+namespace brave_rewards::test_util {
 
 static const char kWaitForElementToAppearScript[] = R"(
     const waitForElementToAppear = (selector) => {
@@ -473,4 +473,4 @@ double GetRewardsPopupMonthlyTipValue(content::WebContents* context) {
       .ExtractDouble();
 }
 
-}  // namespace rewards_browsertest_util
+}  // namespace brave_rewards::test_util

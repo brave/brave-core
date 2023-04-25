@@ -21,7 +21,7 @@
 
 #include "wally_bip39.h"  // NOLINT
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace wallet {
 
 Wallet::Wallet(LedgerImpl& ledger)
@@ -37,7 +37,7 @@ void Wallet::CreateWalletIfNecessary(absl::optional<std::string>&& geo_country,
   create_.CreateWallet(std::move(geo_country), std::move(callback));
 }
 
-void Wallet::FetchBalance(ledger::FetchBalanceCallback callback) {
+void Wallet::FetchBalance(FetchBalanceCallback callback) {
   balance_.Fetch(std::move(callback));
 }
 
@@ -58,7 +58,7 @@ mojom::RewardsWalletPtr Wallet::GetWallet(bool* corrupted) {
     return nullptr;
   }
 
-  auto wallet = ledger::mojom::RewardsWallet::New();
+  auto wallet = mojom::RewardsWallet::New();
 
   const base::Value::Dict& dict = value->GetDict();
   const auto* payment_id = dict.FindString("payment_id");
@@ -124,4 +124,4 @@ bool Wallet::SetWallet(mojom::RewardsWalletPtr wallet) {
 }
 
 }  // namespace wallet
-}  // namespace ledger
+}  // namespace brave_rewards::internal

@@ -7,7 +7,7 @@
 
 #include <utility>
 
-namespace ledger::endpoints {
+namespace brave_rewards::internal::endpoints {
 PostCommitTransaction::PostCommitTransaction(
     LedgerImpl& ledger,
     std::string&& token,
@@ -26,4 +26,4 @@ PostCommitTransaction::PostCommitTransaction(
 
 PostCommitTransaction::~PostCommitTransaction() = default;
 
-}  // namespace ledger::endpoints
+}  // namespace brave_rewards::internal::endpoints

@@ -49,8 +49,8 @@ void ExtensionRewardsServiceObserver::OnRewardsWalletUpdated() {
 
 void ExtensionRewardsServiceObserver::OnPanelPublisherInfo(
     RewardsService* rewards_service,
-    const ledger::mojom::Result result,
-    const ledger::mojom::PublisherInfo* info,
+    const brave_rewards::mojom::Result result,
+    const brave_rewards::mojom::PublisherInfo* info,
     uint64_t windowId) {
   auto* event_router = extensions::EventRouter::Get(profile_);
   if (!event_router || !info) {
@@ -62,7 +62,7 @@ void ExtensionRewardsServiceObserver::OnPanelPublisherInfo(
   publisher.percentage = info->percent;
   publisher.status = static_cast<int>(info->status);
   publisher.excluded =
-      info->excluded == ledger::mojom::PublisherExclude::EXCLUDED;
+      info->excluded == brave_rewards::mojom::PublisherExclude::EXCLUDED;
   publisher.name = info->name;
   publisher.url = info->url;
   publisher.provider = info->provider;
@@ -79,8 +79,8 @@ void ExtensionRewardsServiceObserver::OnPanelPublisherInfo(
 
 void ExtensionRewardsServiceObserver::OnFetchPromotions(
     RewardsService* rewards_service,
-    const ledger::mojom::Result result,
-    const std::vector<ledger::mojom::PromotionPtr>& list) {
+    const brave_rewards::mojom::Result result,
+    const std::vector<brave_rewards::mojom::PromotionPtr>& list) {
   auto* event_router = extensions::EventRouter::Get(profile_);
   if (!event_router) {
     return;
@@ -110,10 +110,10 @@ void ExtensionRewardsServiceObserver::OnFetchPromotions(
 
 void ExtensionRewardsServiceObserver::OnPromotionFinished(
     RewardsService* rewards_service,
-    const ledger::mojom::Result result,
-    ledger::mojom::PromotionPtr promotion) {
+    const brave_rewards::mojom::Result result,
+    brave_rewards::mojom::PromotionPtr promotion) {
   auto* event_router = extensions::EventRouter::Get(profile_);
-  if (!event_router || result != ledger::mojom::Result::LEDGER_OK) {
+  if (!event_router || result != brave_rewards::mojom::Result::LEDGER_OK) {
     return;
   }
 
@@ -151,7 +151,7 @@ void ExtensionRewardsServiceObserver::OnAdsEnabled(
 
 void ExtensionRewardsServiceObserver::OnPendingContributionSaved(
     RewardsService* rewards_service,
-    const ledger::mojom::Result result) {
+    const brave_rewards::mojom::Result result) {
   auto* event_router = extensions::EventRouter::Get(profile_);
   if (!event_router) {
     return;
@@ -167,7 +167,7 @@ void ExtensionRewardsServiceObserver::OnPendingContributionSaved(
 
 void ExtensionRewardsServiceObserver::OnPublisherListNormalized(
     RewardsService* rewards_service,
-    std::vector<ledger::mojom::PublisherInfoPtr> list) {
+    std::vector<brave_rewards::mojom::PublisherInfoPtr> list) {
   auto* event_router = extensions::EventRouter::Get(profile_);
   if (!event_router) {
     return;
@@ -245,7 +245,7 @@ void ExtensionRewardsServiceObserver::OnRecurringTipRemoved(
 
 void ExtensionRewardsServiceObserver::OnPendingContributionRemoved(
     RewardsService* rewards_service,
-    const ledger::mojom::Result result) {
+    const brave_rewards::mojom::Result result) {
   extensions::EventRouter* event_router =
       extensions::EventRouter::Get(profile_);
   if (!event_router) {
@@ -262,11 +262,11 @@ void ExtensionRewardsServiceObserver::OnPendingContributionRemoved(
 
 void ExtensionRewardsServiceObserver::OnReconcileComplete(
     RewardsService* rewards_service,
-    const ledger::mojom::Result result,
+    const brave_rewards::mojom::Result result,
     const std::string& contribution_id,
     const double amount,
-    const ledger::mojom::RewardsType type,
-    const ledger::mojom::ContributionProcessor processor) {
+    const brave_rewards::mojom::RewardsType type,
+    const brave_rewards::mojom::ContributionProcessor processor) {
   auto* event_router = extensions::EventRouter::Get(profile_);
   if (!event_router) {
     return;

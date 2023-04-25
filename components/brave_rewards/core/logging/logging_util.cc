@@ -11,7 +11,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/logging/logging.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 
 bool ShouldLogHeader(const std::string& header) {
   const std::vector<std::string> allowed_headers{"digest", "signature",
@@ -121,4 +121,4 @@ void LogUrlResponse(const char* func,
   BLOG(9, response_headers);
 }
 
-}  // namespace ledger
+}  // namespace brave_rewards::internal

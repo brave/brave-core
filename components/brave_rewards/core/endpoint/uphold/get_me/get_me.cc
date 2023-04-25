@@ -14,7 +14,7 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 namespace uphold {
 
@@ -41,7 +41,7 @@ mojom::Result GetMe::CheckStatusCode(const int status_code) {
 }
 
 mojom::Result GetMe::ParseBody(const std::string& body,
-                               ::ledger::uphold::User* user) {
+                               internal::uphold::User* user) {
   DCHECK(user);
 
   absl::optional<base::Value> value = base::JSONReader::Read(body);
@@ -81,9 +81,9 @@ void GetMe::Request(const std::string& token, GetMeCallback callback) {
 
 void GetMe::OnRequest(GetMeCallback callback, mojom::UrlResponsePtr response) {
   DCHECK(response);
-  ledger::LogUrlResponse(__func__, *response, true);
+  LogUrlResponse(__func__, *response, true);
 
-  ::ledger::uphold::User user;
+  internal::uphold::User user;
   mojom::Result result = CheckStatusCode(response->status_code);
   if (result != mojom::Result::LEDGER_OK) {
     std::move(callback).Run(result, user);
@@ -96,4 +96,4 @@ void GetMe::OnRequest(GetMeCallback callback, mojom::UrlResponsePtr response) {
 
 }  // namespace uphold
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

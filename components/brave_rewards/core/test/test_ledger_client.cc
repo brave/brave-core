@@ -21,7 +21,7 @@
 #include "brave/components/brave_rewards/common/mojom/ledger.mojom.h"
 #include "net/http/http_status_code.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 
 std::string FakeEncryption::EncryptString(const std::string& value) {
   return "ENCRYPTED:" + value;
@@ -346,4 +346,4 @@ void TestLedgerClient::SetLogCallbackForTesting(LogCallback callback) {
   log_callback_ = std::move(callback);
 }
 
-}  // namespace ledger
+}  // namespace brave_rewards::internal

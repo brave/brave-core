@@ -13,7 +13,7 @@
 #include "base/json/values_util.h"
 #include "brave/components/brave_rewards/core/constants.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 
 namespace {
 
@@ -195,4 +195,4 @@ bool ClientProperties::FromJson(const std::string& json) {
   return FromValue(*root);
 }
 
-}  // namespace ledger
+}  // namespace brave_rewards::internal

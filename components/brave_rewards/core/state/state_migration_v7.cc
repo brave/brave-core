@@ -10,14 +10,14 @@
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace state {
 
 StateMigrationV7::StateMigrationV7(LedgerImpl& ledger) : ledger_(ledger) {}
 
 StateMigrationV7::~StateMigrationV7() = default;
 
-void StateMigrationV7::Migrate(ledger::LegacyResultCallback callback) {
+void StateMigrationV7::Migrate(LegacyResultCallback callback) {
   const std::string brave = ledger_->GetState<std::string>(kWalletBrave);
 
   if (!ledger_->state()->SetEncryptedString(kWalletBrave, brave)) {
@@ -36,4 +36,4 @@ void StateMigrationV7::Migrate(ledger::LegacyResultCallback callback) {
 }
 
 }  // namespace state
-}  // namespace ledger
+}  // namespace brave_rewards::internal

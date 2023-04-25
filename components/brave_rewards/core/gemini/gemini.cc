@@ -22,7 +22,7 @@
 #include "brave/components/brave_rewards/core/wallet_provider/gemini/get_gemini_wallet.h"
 #include "brave_base/random.h"
 
-namespace ledger::gemini {
+namespace brave_rewards::internal::gemini {
 
 Gemini::Gemini(LedgerImpl& ledger)
     : ledger_(ledger),
@@ -61,7 +61,7 @@ void Gemini::StartContribution(const std::string& contribution_id,
                                contribution_id, fee, info->publisher_key));
 }
 
-void Gemini::ContributionCompleted(ledger::LegacyResultCallback callback,
+void Gemini::ContributionCompleted(LegacyResultCallback callback,
                                    const std::string& contribution_id,
                                    double fee,
                                    const std::string& publisher_key,
@@ -128,7 +128,7 @@ void Gemini::TransferFunds(double amount,
 }
 
 void Gemini::ConnectWallet(const base::flat_map<std::string, std::string>& args,
-                           ledger::ConnectExternalWalletCallback callback) {
+                           ConnectExternalWalletCallback callback) {
   connect_wallet_.Run(args, std::move(callback));
 }
 
@@ -210,21 +210,20 @@ void Gemini::OnTransferFeeTimerElapsed(const std::string& id,
 }
 
 mojom::ExternalWalletPtr Gemini::GetWallet() {
-  return ledger::wallet::GetWallet(*ledger_, constant::kWalletGemini);
+  return wallet::GetWallet(*ledger_, constant::kWalletGemini);
 }
 
 mojom::ExternalWalletPtr Gemini::GetWalletIf(
     const std::set<mojom::WalletStatus>& statuses) {
-  return ledger::wallet::GetWalletIf(*ledger_, constant::kWalletGemini,
-                                     statuses);
+  return wallet::GetWalletIf(*ledger_, constant::kWalletGemini, statuses);
 }
 
 bool Gemini::SetWallet(mojom::ExternalWalletPtr wallet) {
-  return ledger::wallet::SetWallet(*ledger_, std::move(wallet));
+  return wallet::SetWallet(*ledger_, std::move(wallet));
 }
 
 bool Gemini::LogOutWallet() {
-  return ledger::wallet::LogOutWallet(*ledger_, constant::kWalletGemini);
+  return wallet::LogOutWallet(*ledger_, constant::kWalletGemini);
 }
 
 void Gemini::RemoveTransferFee(const std::string& contribution_id) {
@@ -240,4 +239,4 @@ void Gemini::RemoveTransferFee(const std::string& contribution_id) {
   }
 }
 
-}  // namespace ledger::gemini
+}  // namespace brave_rewards::internal::gemini

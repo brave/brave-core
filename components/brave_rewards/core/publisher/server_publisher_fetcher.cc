@@ -23,6 +23,8 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
+namespace brave_rewards::internal {
+
 namespace {
 
 constexpr size_t kQueryPrefixBytes = 2;
@@ -31,12 +33,11 @@ int64_t GetCacheExpiryInSeconds() {
   // NOTE: We are reusing the publisher prefix list refresh interval for
   // determining the cache lifetime of publisher details. At a later
   // time we may want to introduce an additional option for this value.
-  return ledger::kPublisherListRefreshInterval;
+  return kPublisherListRefreshInterval;
 }
 
 }  // namespace
 
-namespace ledger {
 namespace publisher {
 
 ServerPublisherFetcher::ServerPublisherFetcher(LedgerImpl& ledger)
@@ -139,4 +140,4 @@ void ServerPublisherFetcher::RunCallbacks(
 }
 
 }  // namespace publisher
-}  // namespace ledger
+}  // namespace brave_rewards::internal

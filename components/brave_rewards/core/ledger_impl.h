@@ -32,7 +32,8 @@
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
+
 inline mojom::Environment _environment = mojom::Environment::PRODUCTION;
 inline bool is_debug = false;
 inline bool is_testing = false;
@@ -47,9 +48,6 @@ inline constexpr uint64_t kPublisherListRefreshInterval =
 inline constexpr uint64_t kPublisherListRefreshInterval =
     3 * base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
 #endif
-}  // namespace ledger
-
-namespace ledger {
 
 class LedgerImpl : public mojom::Ledger {
  public:
@@ -281,8 +279,8 @@ class LedgerImpl : public mojom::Ledger {
   // mojom::Ledger implementation end
 
   // mojom::LedgerClient helpers begin (in the order of appearance in Mojom)
-  template <typename LoadURLCallback>
-  void LoadURL(mojom::UrlRequestPtr request, LoadURLCallback callback) {
+  template <typename Callback>
+  void LoadURL(mojom::UrlRequestPtr request, Callback callback) {
     DCHECK(request);
     if (IsShuttingDown()) {
       BLOG(1, request->url + " will not be executed as we are shutting down");
@@ -295,7 +293,7 @@ class LedgerImpl : public mojom::Ledger {
                               request->content_type, request->method));
     }
 
-    if constexpr (std::is_same_v<LoadURLCallback, ledger::LoadURLCallback>) {
+    if constexpr (std::is_same_v<Callback, LoadURLCallback>) {
       ledger_client_->LoadURL(std::move(request), std::move(callback));
     } else {
       ledger_client_->LoadURL(std::move(request),
@@ -364,11 +362,10 @@ class LedgerImpl : public mojom::Ledger {
 
   mojom::ClientInfoPtr GetClientInfo();
 
-  template <typename RunDBTransactionCallback>
+  template <typename Callback>
   void RunDBTransaction(mojom::DBTransactionPtr transaction,
-                        RunDBTransactionCallback callback) {
-    if constexpr (std::is_same_v<RunDBTransactionCallback,
-                                 ledger::RunDBTransactionCallback>) {
+                        Callback callback) {
+    if constexpr (std::is_same_v<Callback, RunDBTransactionCallback>) {
       ledger_client_->RunDBTransaction(std::move(transaction),
                                        std::move(callback));
     } else {
@@ -394,7 +391,7 @@ class LedgerImpl : public mojom::Ledger {
 
   publisher::Publisher* publisher() { return &publisher_; }
 
-  braveledger_media::Media* media() { return &media_; }
+  Media* media() { return &media_; }
 
   contribution::Contribution* contribution() { return &contribution_; }
 
@@ -451,7 +448,7 @@ class LedgerImpl : public mojom::Ledger {
 
   promotion::Promotion promotion_;
   publisher::Publisher publisher_;
-  braveledger_media::Media media_;
+  Media media_;
   contribution::Contribution contribution_;
   wallet::Wallet wallet_;
   database::Database database_;
@@ -470,6 +467,6 @@ class LedgerImpl : public mojom::Ledger {
   ReadyState ready_state_ = ReadyState::kUninitialized;
 };
 
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEDGER_IMPL_H_

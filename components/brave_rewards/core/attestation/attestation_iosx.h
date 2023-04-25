@@ -12,7 +12,7 @@
 #include "brave/components/brave_rewards/core/attestation/attestation.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotion_server.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace attestation {
@@ -44,5 +44,5 @@ class AttestationIOS : public Attestation {
 };
 
 }  // namespace attestation
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ATTESTATION_ATTESTATION_IOSX_H_

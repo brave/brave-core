@@ -21,12 +21,14 @@
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "crypto/sha2.h"
 
-using ledger::endpoints::GetRecipientIDGemini;
-using ledger::endpoints::PostConnectGemini;
-using ledger::endpoints::RequestFor;
-using ledger::wallet_provider::ConnectExternalWallet;
+namespace brave_rewards::internal {
 
-namespace ledger::gemini {
+using endpoints::GetRecipientIDGemini;
+using endpoints::PostConnectGemini;
+using endpoints::RequestFor;
+using wallet_provider::ConnectExternalWallet;
+
+namespace gemini {
 
 ConnectGeminiWallet::ConnectGeminiWallet(LedgerImpl& ledger)
     : ConnectExternalWallet(ledger), gemini_server_(ledger) {}
@@ -37,9 +39,8 @@ const char* ConnectGeminiWallet::WalletType() const {
   return constant::kWalletGemini;
 }
 
-void ConnectGeminiWallet::Authorize(
-    OAuthInfo&& oauth_info,
-    ledger::ConnectExternalWalletCallback callback) {
+void ConnectGeminiWallet::Authorize(OAuthInfo&& oauth_info,
+                                    ConnectExternalWalletCallback callback) {
   DCHECK(!oauth_info.code.empty());
 
   const auto rewards_wallet = ledger_->wallet()->GetWallet();
@@ -60,10 +61,9 @@ void ConnectGeminiWallet::Authorize(
                      std::move(callback)));
 }
 
-void ConnectGeminiWallet::OnAuthorize(
-    ledger::ConnectExternalWalletCallback callback,
-    mojom::Result result,
-    std::string&& token) {
+void ConnectGeminiWallet::OnAuthorize(ConnectExternalWalletCallback callback,
+                                      mojom::Result result,
+                                      std::string&& token) {
   if (!ledger_->gemini()->GetWalletIf({mojom::WalletStatus::kNotConnected,
                                        mojom::WalletStatus::kLoggedOut})) {
     return std::move(callback).Run(
@@ -91,7 +91,7 @@ void ConnectGeminiWallet::OnAuthorize(
 }
 
 void ConnectGeminiWallet::OnGetRecipientID(
-    ledger::ConnectExternalWalletCallback callback,
+    ConnectExternalWalletCallback callback,
     std::string&& token,
     endpoints::GetRecipientIDGemini::Result&& result) {
   if (!ledger_->gemini()->GetWalletIf({mojom::WalletStatus::kNotConnected,
@@ -120,7 +120,7 @@ void ConnectGeminiWallet::OnGetRecipientID(
 }
 
 void ConnectGeminiWallet::OnPostRecipientID(
-    ledger::ConnectExternalWalletCallback callback,
+    ConnectExternalWalletCallback callback,
     std::string&& token,
     mojom::Result result,
     std::string&& recipient_id) {
@@ -162,13 +162,12 @@ void ConnectGeminiWallet::OnPostRecipientID(
                             std::move(recipient_id)));
 }
 
-void ConnectGeminiWallet::OnPostAccount(
-    ledger::ConnectExternalWalletCallback callback,
-    std::string&& token,
-    std::string&& recipient_id,
-    mojom::Result result,
-    std::string&& linking_info,
-    std::string&& user_name) {
+void ConnectGeminiWallet::OnPostAccount(ConnectExternalWalletCallback callback,
+                                        std::string&& token,
+                                        std::string&& recipient_id,
+                                        mojom::Result result,
+                                        std::string&& linking_info,
+                                        std::string&& user_name) {
   auto wallet = ledger_->gemini()->GetWalletIf(
       {mojom::WalletStatus::kNotConnected, mojom::WalletStatus::kLoggedOut});
   if (!wallet) {
@@ -204,4 +203,6 @@ void ConnectGeminiWallet::OnPostAccount(
       .Send(std::move(on_connect));
 }
 
-}  // namespace ledger::gemini
+}  // namespace gemini
+
+}  // namespace brave_rewards::internal

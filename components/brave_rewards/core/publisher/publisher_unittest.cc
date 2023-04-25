@@ -20,7 +20,7 @@ using ::testing::_;
 
 // npm run test -- brave_unit_tests --filter=PublisherTest.*
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace publisher {
 
 class PublisherTest : public testing::Test {
@@ -193,4 +193,4 @@ TEST_F(PublisherTest, GetShareURL) {
 }
 
 }  // namespace publisher
-}  // namespace ledger
+}  // namespace brave_rewards::internal

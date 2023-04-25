@@ -21,7 +21,7 @@ using testing::Test;
 using testing::Values;
 using testing::WithParamInterface;
 
-namespace ledger::wallet {
+namespace brave_rewards::internal::wallet {
 
 mojom::ExternalWalletPtr ExternalWalletPtrFromJSON(std::string wallet_string,
                                                    std::string wallet_type);
@@ -50,7 +50,7 @@ TEST_F(WalletUtilTest, ExternalWalletPtrFromJSON) {
   EXPECT_EQ(wallet->address, "6a752063-8958-44d5-b5db-71543f18567d");
   EXPECT_EQ(wallet->one_time_string,
             "eda4c873eac72e1ecc30e77b25bb623b8b5bf99f");
-  EXPECT_EQ(wallet->status, ledger::mojom::WalletStatus::kConnected);
+  EXPECT_EQ(wallet->status, mojom::WalletStatus::kConnected);
   EXPECT_EQ(wallet->user_name, "random_user");
   EXPECT_EQ(wallet->account_url, "https://random.domain/account");
   EXPECT_EQ(wallet->login_url, "https://random.domain/login");
@@ -351,4 +351,4 @@ INSTANTIATE_TEST_SUITE_P(
 );
 // clang-format on
 
-}  // namespace ledger::wallet
+}  // namespace brave_rewards::internal::wallet

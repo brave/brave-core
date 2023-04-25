@@ -28,7 +28,7 @@ std::vector<std::string> GetList(const std::string& list_name,
 
 }  // namespace
 
-namespace ledger::endpoints {
+namespace brave_rewards::internal::endpoints {
 
 absl::optional<base::flat_map<std::string, mojom::RegionsPtr>>
 GetWalletProviderRegions(const base::Value::Dict& dict) {
@@ -48,4 +48,4 @@ GetWalletProviderRegions(const base::Value::Dict& dict) {
   return wallet_provider_regions;
 }
 
-}  // namespace ledger::endpoints
+}  // namespace brave_rewards::internal::endpoints

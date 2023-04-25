@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace database {
 
 class DatabasePublisherInfo : public DatabaseTable {
@@ -19,33 +19,33 @@ class DatabasePublisherInfo : public DatabaseTable {
   ~DatabasePublisherInfo() override;
 
   void InsertOrUpdate(mojom::PublisherInfoPtr info,
-                      ledger::LegacyResultCallback callback);
+                      LegacyResultCallback callback);
 
   void GetRecord(const std::string& publisher_key,
-                 ledger::GetPublisherInfoCallback callback);
+                 GetPublisherInfoCallback callback);
 
   void GetPanelRecord(mojom::ActivityInfoFilterPtr filter,
-                      ledger::GetPublisherPanelInfoCallback callback);
+                      GetPublisherPanelInfoCallback callback);
 
-  void RestorePublishers(ledger::ResultCallback callback);
+  void RestorePublishers(ResultCallback callback);
 
-  void GetExcludedList(ledger::GetExcludedListCallback callback);
+  void GetExcludedList(GetExcludedListCallback callback);
 
  private:
   void OnGetRecord(mojom::DBCommandResponsePtr response,
-                   ledger::GetPublisherInfoCallback callback);
+                   GetPublisherInfoCallback callback);
 
   void OnGetPanelRecord(mojom::DBCommandResponsePtr response,
-                        ledger::GetPublisherPanelInfoCallback callback);
+                        GetPublisherPanelInfoCallback callback);
 
-  void OnRestorePublishers(ledger::ResultCallback callback,
+  void OnRestorePublishers(ResultCallback callback,
                            mojom::DBCommandResponsePtr response);
 
   void OnGetExcludedList(mojom::DBCommandResponsePtr response,
-                         ledger::GetExcludedListCallback callback);
+                         GetExcludedListCallback callback);
 };
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_PUBLISHER_INFO_H_

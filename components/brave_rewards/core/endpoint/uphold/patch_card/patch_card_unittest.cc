@@ -20,7 +20,7 @@
 
 using ::testing::_;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 namespace uphold {
 
@@ -139,4 +139,4 @@ TEST_F(PatchCardTest, ServerErrorRandom) {
 
 }  // namespace uphold
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

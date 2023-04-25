@@ -11,7 +11,7 @@
 #include "brave/components/brave_rewards/core/attestation/attestation_iosx.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace attestation {
 
 AttestationIOS::AttestationIOS(LedgerImpl& ledger)
@@ -127,4 +127,4 @@ void AttestationIOS::OnConfirm(ConfirmCallback callback, mojom::Result result) {
 }
 
 }  // namespace attestation
-}  // namespace ledger
+}  // namespace brave_rewards::internal

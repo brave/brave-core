@@ -16,7 +16,7 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ledger::endpoint::gemini {
+namespace brave_rewards::internal::endpoint::gemini {
 
 PostOauth::PostOauth(LedgerImpl& ledger) : ledger_(ledger) {}
 
@@ -28,7 +28,7 @@ std::string PostOauth::GetUrl() {
 
 std::string PostOauth::GeneratePayload(const std::string& external_account_id,
                                        const std::string& code) {
-  const std::string client_id = ledger::gemini::GetClientId();
+  const std::string client_id = internal::gemini::GetClientId();
   const std::string client_secret = GetClientSecret();
   const std::string request_id = base::GenerateGUID();
 
@@ -82,7 +82,7 @@ void PostOauth::Request(const std::string& external_account_id,
 void PostOauth::OnRequest(PostOauthCallback callback,
                           mojom::UrlResponsePtr response) {
   DCHECK(response);
-  ledger::LogUrlResponse(__func__, *response, true);
+  LogUrlResponse(__func__, *response, true);
 
   mojom::Result result = CheckStatusCode(response->status_code);
   if (result != mojom::Result::LEDGER_OK) {
@@ -94,4 +94,4 @@ void PostOauth::OnRequest(PostOauthCallback callback,
   std::move(callback).Run(result, std::move(token));
 }
 
-}  // namespace ledger::endpoint::gemini
+}  // namespace brave_rewards::internal::endpoint::gemini

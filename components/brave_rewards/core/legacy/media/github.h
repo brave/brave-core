@@ -17,43 +17,40 @@
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/legacy/media/helper.h"
 
-namespace ledger {
-class LedgerImpl;
-}
+namespace brave_rewards::internal {
 
-namespace braveledger_media {
+class LedgerImpl;
 
 class GitHub {
  public:
-  explicit GitHub(ledger::LedgerImpl& ledger);
+  explicit GitHub(LedgerImpl& ledger);
 
   static std::string GetLinkType(const std::string& url);
 
   void SaveMediaInfo(const base::flat_map<std::string, std::string>& data,
-                     ledger::PublisherInfoCallback callback);
+                     PublisherInfoCallback callback);
 
   void ProcessActivityFromUrl(uint64_t window_id,
-                              const ledger::mojom::VisitData& visit_data);
+                              const mojom::VisitData& visit_data);
 
   void ProcessMedia(const base::flat_map<std::string, std::string> parts,
-                    const ledger::mojom::VisitData& visit_data);
+                    const mojom::VisitData& visit_data);
 
   ~GitHub();
 
  private:
-  void OnMediaPublisherActivity(ledger::mojom::Result result,
-                                ledger::mojom::PublisherInfoPtr info,
+  void OnMediaPublisherActivity(mojom::Result result,
+                                mojom::PublisherInfoPtr info,
                                 uint64_t window_id,
-                                const ledger::mojom::VisitData& visit_data,
+                                const mojom::VisitData& visit_data,
                                 const std::string& media_key);
 
-  void FetchDataFromUrl(const std::string& url,
-                        ledger::LegacyLoadURLCallback callback);
+  void FetchDataFromUrl(const std::string& url, LegacyLoadURLCallback callback);
 
   void OnUserPage(const uint64_t duration,
                   uint64_t window_id,
-                  const ledger::mojom::VisitData& visit_data,
-                  ledger::mojom::UrlResponsePtr response);
+                  const mojom::VisitData& visit_data,
+                  mojom::UrlResponsePtr response);
 
   void SavePublisherInfo(const uint64_t duration,
                          const std::string& user_id,
@@ -61,31 +58,31 @@ class GitHub {
                          const std::string& publisher_name,
                          const std::string& profile_picture,
                          const uint64_t window_id,
-                         ledger::PublisherInfoCallback callback);
+                         PublisherInfoCallback callback);
 
   void GetPublisherPanelInfo(uint64_t window_id,
-                             const ledger::mojom::VisitData& visit_data,
+                             const mojom::VisitData& visit_data,
                              const std::string& publisher_key);
 
   void OnPublisherPanelInfo(uint64_t window_id,
-                            const ledger::mojom::VisitData& visit_data,
+                            const mojom::VisitData& visit_data,
                             const std::string& publisher_key,
-                            ledger::mojom::Result result,
-                            ledger::mojom::PublisherInfoPtr info);
+                            mojom::Result result,
+                            mojom::PublisherInfoPtr info);
 
   void OnMediaActivityError(uint64_t window_id);
 
-  void OnMetaDataGet(ledger::PublisherInfoCallback callback,
-                     ledger::mojom::UrlResponsePtr response);
+  void OnMetaDataGet(PublisherInfoCallback callback,
+                     mojom::UrlResponsePtr response);
 
   void OnMediaPublisherInfo(uint64_t window_id,
                             const std::string& user_id,
                             const std::string& screen_name,
                             const std::string& publisher_name,
                             const std::string& profile_picture,
-                            ledger::PublisherInfoCallback callback,
-                            ledger::mojom::Result result,
-                            ledger::mojom::PublisherInfoPtr publisher_info);
+                            PublisherInfoCallback callback,
+                            mojom::Result result,
+                            mojom::PublisherInfoPtr publisher_info);
 
   static std::string GetUserNameFromURL(const std::string& path);
 
@@ -130,7 +127,7 @@ class GitHub {
   FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetJSONStringValue);
   FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetJSONIntValue);
 
-  const raw_ref<ledger::LedgerImpl> ledger_;
+  const raw_ref<LedgerImpl> ledger_;
 };
-}  // namespace braveledger_media
+}  // namespace brave_rewards::internal
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEGACY_MEDIA_GITHUB_H_

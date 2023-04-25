@@ -7,12 +7,10 @@
 
 #include "brave/components/brave_rewards/core/global_constants.h"
 
-using ledger::wallet_provider::GetExternalWallet;
-
-namespace ledger::gemini {
+namespace brave_rewards::internal::gemini {
 
 GetGeminiWallet::GetGeminiWallet(LedgerImpl& ledger)
-    : GetExternalWallet(ledger) {}
+    : wallet_provider::GetExternalWallet(ledger) {}
 
 GetGeminiWallet::~GetGeminiWallet() = default;
 
@@ -20,4 +18,4 @@ const char* GetGeminiWallet::WalletType() const {
   return constant::kWalletGemini;
 }
 
-}  // namespace ledger::gemini
+}  // namespace brave_rewards::internal::gemini

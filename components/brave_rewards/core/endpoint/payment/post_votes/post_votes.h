@@ -36,7 +36,7 @@
 // Response body:
 // {Empty}
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace endpoint {
@@ -66,6 +66,6 @@ class PostVotes {
 
 }  // namespace payment
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PAYMENT_POST_VOTES_POST_VOTES_H_

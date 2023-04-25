@@ -13,7 +13,7 @@
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/sku/sku_common.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace sku {
@@ -25,38 +25,38 @@ class SKU {
 
   void Process(const std::vector<mojom::SKUOrderItem>& items,
                const std::string& wallet_type,
-               ledger::SKUOrderCallback callback,
+               SKUOrderCallback callback,
                const std::string& contribution_id = "");
 
   void Retry(const std::string& order_id,
              const std::string& wallet_type,
-             ledger::SKUOrderCallback callback);
+             SKUOrderCallback callback);
 
  private:
   void OrderCreated(const mojom::Result result,
                     const std::string& order_id,
                     const std::string& wallet_type,
                     const std::string& contribution_id,
-                    ledger::SKUOrderCallback callback);
+                    SKUOrderCallback callback);
 
   void ContributionIdSaved(const mojom::Result result,
                            const std::string& order_id,
                            const std::string& wallet_type,
-                           ledger::SKUOrderCallback callback);
+                           SKUOrderCallback callback);
 
   void CreateTransaction(mojom::SKUOrderPtr order,
                          const std::string& wallet_type,
-                         ledger::SKUOrderCallback callback);
+                         SKUOrderCallback callback);
 
   void OnOrder(mojom::SKUOrderPtr order,
                const std::string& wallet_type,
-               ledger::SKUOrderCallback callback);
+               SKUOrderCallback callback);
 
   const raw_ref<LedgerImpl> ledger_;
   SKUCommon common_;
 };
 
 }  // namespace sku
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_SKU_SKU_H_

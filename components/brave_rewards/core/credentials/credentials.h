@@ -10,7 +10,7 @@
 #include "brave/components/brave_rewards/core/credentials/credentials_trigger.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace credential {
 
 class Credentials {
@@ -18,29 +18,29 @@ class Credentials {
   virtual ~Credentials() = default;
 
   virtual void Start(const CredentialsTrigger& trigger,
-                     ledger::ResultCallback callback) = 0;
+                     ResultCallback callback) = 0;
 
   virtual void RedeemTokens(const CredentialsRedeem& redeem,
-                            ledger::LegacyResultCallback callback) = 0;
+                            LegacyResultCallback callback) = 0;
 
  protected:
-  virtual void Blind(ledger::ResultCallback callback,
+  virtual void Blind(ResultCallback callback,
                      const CredentialsTrigger& trigger) = 0;
 
-  virtual void Claim(ledger::ResultCallback callback,
+  virtual void Claim(ResultCallback callback,
                      const CredentialsTrigger& trigger,
                      mojom::CredsBatchPtr creds) = 0;
 
-  virtual void Unblind(ledger::ResultCallback callback,
+  virtual void Unblind(ResultCallback callback,
                        const CredentialsTrigger& trigger,
                        mojom::CredsBatchPtr creds) = 0;
 
-  virtual void Completed(ledger::ResultCallback callback,
+  virtual void Completed(ResultCallback callback,
                          const CredentialsTrigger& trigger,
                          mojom::Result result) = 0;
 };
 
 }  // namespace credential
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CREDENTIALS_CREDENTIALS_H_

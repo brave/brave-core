@@ -35,7 +35,7 @@
 //   "transfer_status": "SUCCESS"
 // }
 
-namespace ledger::endpoints {
+namespace brave_rewards::internal::endpoints {
 
 class PostCommitTransactionBitFlyer;
 
@@ -61,6 +61,6 @@ class PostCommitTransactionBitFlyer final
   std::string ContentType() const override;
 };
 
-}  // namespace ledger::endpoints
+}  // namespace brave_rewards::internal::endpoints
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_BITFLYER_POST_COMMIT_TRANSACTION_POST_COMMIT_TRANSACTION_BITFLYER_H_

@@ -102,15 +102,17 @@ class RewardsDOMHandler
   void RestartBrowser(const base::Value::List& args);
   void IsInitialized(const base::Value::List& args);
   void GetUserType(const base::Value::List& args);
-  void OnGetUserType(ledger::mojom::UserType user_type);
+  void OnGetUserType(brave_rewards::mojom::UserType user_type);
   void GetRewardsParameters(const base::Value::List& args);
   void GetAutoContributeProperties(const base::Value::List& args);
   void FetchPromotions(const base::Value::List& args);
   void ClaimPromotion(const base::Value::List& args);
   void GetReconcileStamp(const base::Value::List& args);
   void SaveSetting(const base::Value::List& args);
-  void OnPublisherList(std::vector<ledger::mojom::PublisherInfoPtr> list);
-  void OnExcludedSiteList(std::vector<ledger::mojom::PublisherInfoPtr> list);
+  void OnPublisherList(
+      std::vector<brave_rewards::mojom::PublisherInfoPtr> list);
+  void OnExcludedSiteList(
+      std::vector<brave_rewards::mojom::PublisherInfoPtr> list);
   void ExcludePublisher(const base::Value::List& args);
   void RestorePublishers(const base::Value::List& args);
   void RestorePublisher(const base::Value::List& args);
@@ -137,19 +139,21 @@ class RewardsDOMHandler
   void SaveAdsSetting(const base::Value::List& args);
   void OnGetContributionAmount(double amount);
   void OnGetAutoContributeProperties(
-      ledger::mojom::AutoContributePropertiesPtr properties);
+      brave_rewards::mojom::AutoContributePropertiesPtr properties);
   void OnGetReconcileStamp(uint64_t reconcile_stamp);
   void OnAutoContributePropsReady(
-      ledger::mojom::AutoContributePropertiesPtr properties);
+      brave_rewards::mojom::AutoContributePropertiesPtr properties);
   void GetPendingContributionsTotal(const base::Value::List& args);
   void OnGetPendingContributionsTotal(double amount);
   void GetStatement(const base::Value::List& args);
   void OnGetStatement(brave_ads::mojom::StatementInfoPtr statement);
   void GetExcludedSites(const base::Value::List& args);
 
-  void OnGetRecurringTips(std::vector<ledger::mojom::PublisherInfoPtr> list);
+  void OnGetRecurringTips(
+      std::vector<brave_rewards::mojom::PublisherInfoPtr> list);
 
-  void OnGetOneTimeTips(std::vector<ledger::mojom::PublisherInfoPtr> list);
+  void OnGetOneTimeTips(
+      std::vector<brave_rewards::mojom::PublisherInfoPtr> list);
 
   void GetEnabledInlineTippingPlatforms(const base::Value::List& args);
   void SetInlineTippingPlatformEnabled(const base::Value::List& args);
@@ -157,7 +161,7 @@ class RewardsDOMHandler
 
   void GetPendingContributions(const base::Value::List& args);
   void OnGetPendingContributions(
-      std::vector<ledger::mojom::PendingContributionInfoPtr> list);
+      std::vector<brave_rewards::mojom::PendingContributionInfoPtr> list);
   void RemovePendingContribution(const base::Value::List& args);
   void RemoveAllPendingContributions(const base::Value::List& args);
   void FetchBalance(const base::Value::List& args);
@@ -173,8 +177,8 @@ class RewardsDOMHandler
 
   void OnGetBalanceReport(const uint32_t month,
                           const uint32_t year,
-                          const ledger::mojom::Result result,
-                          ledger::mojom::BalanceReportInfoPtr report);
+                          const brave_rewards::mojom::Result result,
+                          brave_rewards::mojom::BalanceReportInfoPtr report);
 
   void GetMonthlyReport(const base::Value::List& args);
 
@@ -183,11 +187,12 @@ class RewardsDOMHandler
 
   void OnGetMonthlyReport(const uint32_t month,
                           const uint32_t year,
-                          ledger::mojom::MonthlyReportInfoPtr report);
+                          brave_rewards::mojom::MonthlyReportInfoPtr report);
 
   void OnGetAllMonthlyReportIds(const std::vector<std::string>& ids);
 
-  void OnGetRewardsParameters(ledger::mojom::RewardsParametersPtr parameters);
+  void OnGetRewardsParameters(
+      brave_rewards::mojom::RewardsParametersPtr parameters);
 
   void CompleteReset(const base::Value::List& args);
 
@@ -206,29 +211,30 @@ class RewardsDOMHandler
       brave_rewards::RewardsService* rewards_service) override;
   void OnFetchPromotions(
       brave_rewards::RewardsService* rewards_service,
-      const ledger::mojom::Result result,
-      const std::vector<ledger::mojom::PromotionPtr>& list) override;
-  void OnPromotionFinished(brave_rewards::RewardsService* rewards_service,
-                           const ledger::mojom::Result result,
-                           ledger::mojom::PromotionPtr promotion) override;
+      const brave_rewards::mojom::Result result,
+      const std::vector<brave_rewards::mojom::PromotionPtr>& list) override;
+  void OnPromotionFinished(
+      brave_rewards::RewardsService* rewards_service,
+      const brave_rewards::mojom::Result result,
+      brave_rewards::mojom::PromotionPtr promotion) override;
   void OnExcludedSitesChanged(brave_rewards::RewardsService* rewards_service,
                               std::string publisher_id,
                               bool excluded) override;
   void OnReconcileComplete(
       brave_rewards::RewardsService* rewards_service,
-      const ledger::mojom::Result result,
+      const brave_rewards::mojom::Result result,
       const std::string& contribution_id,
       const double amount,
-      const ledger::mojom::RewardsType type,
-      const ledger::mojom::ContributionProcessor processor) override;
+      const brave_rewards::mojom::RewardsType type,
+      const brave_rewards::mojom::ContributionProcessor processor) override;
 
   void OnPendingContributionSaved(
       brave_rewards::RewardsService* rewards_service,
-      const ledger::mojom::Result result) override;
+      const brave_rewards::mojom::Result result) override;
 
   void OnPublisherListNormalized(
       brave_rewards::RewardsService* rewards_service,
-      std::vector<ledger::mojom::PublisherInfoPtr> list) override;
+      std::vector<brave_rewards::mojom::PublisherInfoPtr> list) override;
 
   void OnStatementChanged(
       brave_rewards::RewardsService* rewards_service) override;
@@ -241,7 +247,7 @@ class RewardsDOMHandler
 
   void OnPendingContributionRemoved(
       brave_rewards::RewardsService* rewards_service,
-      const ledger::mojom::Result result) override;
+      const brave_rewards::mojom::Result result) override;
 
   void OnExternalWalletLoggedOut() override;
 
@@ -615,7 +621,8 @@ void RewardsDOMHandler::GetUserType(const base::Value::List&) {
       &RewardsDOMHandler::OnGetUserType, weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnGetUserType(ledger::mojom::UserType user_type) {
+void RewardsDOMHandler::OnGetUserType(
+    brave_rewards::mojom::UserType user_type) {
   CallJavascriptFunction("brave_rewards.userType",
                          base::Value(static_cast<int>(user_type)));
 }
@@ -650,7 +657,7 @@ void RewardsDOMHandler::GetRewardsParameters(const base::Value::List& args) {
 }
 
 void RewardsDOMHandler::OnGetRewardsParameters(
-    ledger::mojom::RewardsParametersPtr parameters) {
+    brave_rewards::mojom::RewardsParametersPtr parameters) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -753,7 +760,7 @@ void RewardsDOMHandler::OnExternalWalletTypeUpdated(
 }
 
 void RewardsDOMHandler::OnGetAutoContributeProperties(
-    ledger::mojom::AutoContributePropertiesPtr properties) {
+    brave_rewards::mojom::AutoContributePropertiesPtr properties) {
   if (!IsJavascriptAllowed() || !properties)
     return;
 
@@ -769,8 +776,8 @@ void RewardsDOMHandler::OnGetAutoContributeProperties(
 
 void RewardsDOMHandler::OnFetchPromotions(
     brave_rewards::RewardsService* rewards_service,
-    const ledger::mojom::Result result,
-    const std::vector<ledger::mojom::PromotionPtr>& list) {
+    const brave_rewards::mojom::Result result,
+    const std::vector<brave_rewards::mojom::PromotionPtr>& list) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -829,9 +836,9 @@ void RewardsDOMHandler::ClaimPromotion(const base::Value::List& args) {
 
 void RewardsDOMHandler::OnPromotionFinished(
     brave_rewards::RewardsService* rewards_service,
-    const ledger::mojom::Result result,
-    ledger::mojom::PromotionPtr promotion) {
-  if (result != ledger::mojom::Result::LEDGER_OK) {
+    const brave_rewards::mojom::Result result,
+    brave_rewards::mojom::PromotionPtr promotion) {
+  if (result != brave_rewards::mojom::Result::LEDGER_OK) {
     return;
   }
 
@@ -870,18 +877,19 @@ void RewardsDOMHandler::GetReconcileStamp(const base::Value::List& args) {
 }
 
 void RewardsDOMHandler::OnAutoContributePropsReady(
-    ledger::mojom::AutoContributePropertiesPtr properties) {
+    brave_rewards::mojom::AutoContributePropertiesPtr properties) {
   if (!properties) {
     return;
   }
 
-  auto filter = ledger::mojom::ActivityInfoFilter::New();
-  auto pair =
-      ledger::mojom::ActivityInfoFilterOrderPair::New("ai.percent", false);
+  auto filter = brave_rewards::mojom::ActivityInfoFilter::New();
+  auto pair = brave_rewards::mojom::ActivityInfoFilterOrderPair::New(
+      "ai.percent", false);
   filter->order_by.push_back(std::move(pair));
   filter->min_duration = properties->contribution_min_time;
   filter->reconcile_stamp = properties->reconcile_stamp;
-  filter->excluded = ledger::mojom::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED;
+  filter->excluded =
+      brave_rewards::mojom::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED;
   filter->percent = 1;
   filter->non_verified = properties->contribution_non_verified;
   filter->min_visits = properties->contribution_min_visits;
@@ -1023,7 +1031,7 @@ void RewardsDOMHandler::RestorePublisher(const base::Value::List& args) {
 }
 
 void RewardsDOMHandler::OnPublisherList(
-    std::vector<ledger::mojom::PublisherInfoPtr> list) {
+    std::vector<brave_rewards::mojom::PublisherInfoPtr> list) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -1047,7 +1055,7 @@ void RewardsDOMHandler::OnPublisherList(
 }
 
 void RewardsDOMHandler::OnExcludedSiteList(
-    std::vector<ledger::mojom::PublisherInfoPtr> list) {
+    std::vector<brave_rewards::mojom::PublisherInfoPtr> list) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -1086,11 +1094,11 @@ void RewardsDOMHandler::GetAutoContributionAmount(
 
 void RewardsDOMHandler::OnReconcileComplete(
     brave_rewards::RewardsService* rewards_service,
-    const ledger::mojom::Result result,
+    const brave_rewards::mojom::Result result,
     const std::string& contribution_id,
     const double amount,
-    const ledger::mojom::RewardsType type,
-    const ledger::mojom::ContributionProcessor processor) {
+    const brave_rewards::mojom::RewardsType type,
+    const brave_rewards::mojom::ContributionProcessor processor) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -1120,7 +1128,7 @@ void RewardsDOMHandler::GetRecurringTips(const base::Value::List& args) {
 }
 
 void RewardsDOMHandler::OnGetRecurringTips(
-    std::vector<ledger::mojom::PublisherInfoPtr> list) {
+    std::vector<brave_rewards::mojom::PublisherInfoPtr> list) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -1145,7 +1153,7 @@ void RewardsDOMHandler::OnGetRecurringTips(
 }
 
 void RewardsDOMHandler::OnGetOneTimeTips(
-    std::vector<ledger::mojom::PublisherInfoPtr> list) {
+    std::vector<brave_rewards::mojom::PublisherInfoPtr> list) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -1469,7 +1477,7 @@ void RewardsDOMHandler::OnGetPendingContributionsTotal(double amount) {
 
 void RewardsDOMHandler::OnPendingContributionSaved(
     brave_rewards::RewardsService* rewards_service,
-    const ledger::mojom::Result result) {
+    const brave_rewards::mojom::Result result) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -1479,7 +1487,7 @@ void RewardsDOMHandler::OnPendingContributionSaved(
 
 void RewardsDOMHandler::OnPublisherListNormalized(
     brave_rewards::RewardsService* rewards_service,
-    std::vector<ledger::mojom::PublisherInfoPtr> list) {
+    std::vector<brave_rewards::mojom::PublisherInfoPtr> list) {
   OnPublisherList(std::move(list));
 }
 
@@ -1613,7 +1621,7 @@ void RewardsDOMHandler::GetPendingContributions(const base::Value::List& args) {
 }
 
 void RewardsDOMHandler::OnGetPendingContributions(
-    std::vector<ledger::mojom::PendingContributionInfoPtr> list) {
+    std::vector<brave_rewards::mojom::PendingContributionInfoPtr> list) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -1663,7 +1671,7 @@ void RewardsDOMHandler::RemoveAllPendingContributions(
 
 void RewardsDOMHandler::OnPendingContributionRemoved(
     brave_rewards::RewardsService* rewards_service,
-    const ledger::mojom::Result result) {
+    const brave_rewards::mojom::Result result) {
   if (IsJavascriptAllowed()) {
     CallJavascriptFunction("brave_rewards.onRemovePendingContribution",
                            base::Value(static_cast<int>(result)));
@@ -1810,8 +1818,8 @@ void RewardsDOMHandler::ReconcileStampReset() {
 void RewardsDOMHandler::OnGetBalanceReport(
     const uint32_t month,
     const uint32_t year,
-    const ledger::mojom::Result result,
-    ledger::mojom::BalanceReportInfoPtr report) {
+    const brave_rewards::mojom::Result result,
+    brave_rewards::mojom::BalanceReportInfoPtr report) {
   if (!IsJavascriptAllowed() || !report) {
     return;
   }
@@ -1850,7 +1858,7 @@ void RewardsDOMHandler::GetBalanceReport(const base::Value::List& args) {
 void RewardsDOMHandler::OnGetMonthlyReport(
     const uint32_t month,
     const uint32_t year,
-    ledger::mojom::MonthlyReportInfoPtr report) {
+    brave_rewards::mojom::MonthlyReportInfoPtr report) {
   if (!IsJavascriptAllowed() || !report) {
     return;
   }

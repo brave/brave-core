@@ -14,7 +14,7 @@
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace report {
 
 class Report {
@@ -25,36 +25,36 @@ class Report {
 
   void GetMonthly(const mojom::ActivityMonth month,
                   const int year,
-                  ledger::GetMonthlyReportCallback callback);
+                  GetMonthlyReportCallback callback);
 
-  void GetAllMonthlyIds(ledger::GetAllMonthlyReportIdsCallback callback);
+  void GetAllMonthlyIds(GetAllMonthlyReportIdsCallback callback);
 
  private:
   void OnBalance(const mojom::Result result,
                  mojom::BalanceReportInfoPtr balance_report,
                  const mojom::ActivityMonth month,
                  const uint32_t year,
-                 ledger::GetMonthlyReportCallback callback);
+                 GetMonthlyReportCallback callback);
 
   void OnTransactions(
       std::vector<mojom::TransactionReportInfoPtr> transaction_report,
       const mojom::ActivityMonth month,
       const uint32_t year,
       std::shared_ptr<mojom::MonthlyReportInfoPtr> shared_report,
-      ledger::GetMonthlyReportCallback callback);
+      GetMonthlyReportCallback callback);
 
   void OnContributions(
       std::vector<mojom::ContributionReportInfoPtr> contribution_report,
       std::shared_ptr<mojom::MonthlyReportInfoPtr> shared_report,
-      ledger::GetMonthlyReportCallback callback);
+      GetMonthlyReportCallback callback);
 
   void OnGetAllBalanceReports(std::vector<mojom::BalanceReportInfoPtr> reports,
-                              ledger::GetAllMonthlyReportIdsCallback callback);
+                              GetAllMonthlyReportIdsCallback callback);
 
   const raw_ref<LedgerImpl> ledger_;
 };
 
 }  // namespace report
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_REPORT_REPORT_H_

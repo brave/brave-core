@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 namespace bitflyer {
 
@@ -23,6 +23,6 @@ std::string GetServerUrl(const std::string& path);
 
 }  // namespace bitflyer
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_BITFLYER_BITFLYER_UTILS_H_

@@ -13,7 +13,7 @@
 #include "brave/components/brave_rewards/core/database/database_server_publisher_links.h"
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace database {
 
 class DatabaseServerPublisherBanner : public DatabaseTable {
@@ -28,21 +28,21 @@ class DatabaseServerPublisherBanner : public DatabaseTable {
                      const std::string& publisher_key_list);
 
   void GetRecord(const std::string& publisher_key,
-                 ledger::GetPublisherBannerCallback callback);
+                 GetPublisherBannerCallback callback);
 
  private:
   void OnGetRecord(mojom::DBCommandResponsePtr response,
                    const std::string& publisher_key,
-                   ledger::GetPublisherBannerCallback callback);
+                   GetPublisherBannerCallback callback);
 
   void OnGetRecordLinks(const std::map<std::string, std::string>& links,
                         const mojom::PublisherBanner& banner,
-                        ledger::GetPublisherBannerCallback callback);
+                        GetPublisherBannerCallback callback);
 
   DatabaseServerPublisherLinks links_;
 };
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_SERVER_PUBLISHER_BANNER_H_

@@ -20,7 +20,7 @@
 using ::testing::_;
 using ::testing::MockFunction;
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace endpoint {
 namespace rewards {
 
@@ -87,4 +87,4 @@ TEST_F(GetPrefixListTest, ServerBodyEmpty) {
 
 }  // namespace rewards
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::internal

@@ -9,7 +9,7 @@
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/recovery/recovery_empty_balance.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace recovery {
@@ -27,6 +27,6 @@ class Recovery {
 };
 
 }  // namespace recovery
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_RECOVERY_RECOVERY_H_

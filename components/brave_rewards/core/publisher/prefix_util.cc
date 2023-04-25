@@ -8,7 +8,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "crypto/sha2.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace publisher {
 
 const size_t kMinPrefixSize = 4;
@@ -30,4 +30,4 @@ std::string GetHashPrefixInHex(const std::string& publisher_key,
 }
 
 }  // namespace publisher
-}  // namespace ledger
+}  // namespace brave_rewards::internal

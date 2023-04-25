@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace database {
 
 class DatabaseMediaPublisherInfo : public DatabaseTable {
@@ -20,17 +20,16 @@ class DatabaseMediaPublisherInfo : public DatabaseTable {
 
   void InsertOrUpdate(const std::string& media_key,
                       const std::string& publisher_key,
-                      ledger::LegacyResultCallback callback);
+                      LegacyResultCallback callback);
 
-  void GetRecord(const std::string& media_key,
-                 ledger::PublisherInfoCallback callback);
+  void GetRecord(const std::string& media_key, PublisherInfoCallback callback);
 
  private:
   void OnGetRecord(mojom::DBCommandResponsePtr response,
-                   ledger::PublisherInfoCallback callback);
+                   PublisherInfoCallback callback);
 };
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_MEDIA_PUBLISHER_INFO_H_

@@ -22,7 +22,7 @@ using ::testing::_;
 using ::testing::TestWithParam;
 using ::testing::Values;
 
-namespace ledger::endpoints::test {
+namespace brave_rewards::internal::endpoints::test {
 using Error = GetTransactionStatusUphold::Error;
 using Result = GetTransactionStatusUphold::Result;
 
@@ -127,4 +127,4 @@ INSTANTIATE_TEST_SUITE_P(
 );
 // clang-format on
 
-}  // namespace ledger::endpoints::test
+}  // namespace brave_rewards::internal::endpoints::test

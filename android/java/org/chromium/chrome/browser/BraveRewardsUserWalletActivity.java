@@ -18,13 +18,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
+import org.chromium.brave_rewards.mojom.WalletStatus;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsExternalWallet;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveWalletProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
-import org.chromium.ledger.mojom.WalletStatus;
 
 public class BraveRewardsUserWalletActivity
         extends AsyncInitializationActivity implements View.OnClickListener {

@@ -72,7 +72,7 @@ class BrotliStreamDecoder {
 
 }  // namespace
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace util {
 
 bool DecodeBrotliString(base::StringPiece input,
@@ -112,4 +112,4 @@ bool DecodeBrotliStringWithBuffer(base::StringPiece input,
 }
 
 }  // namespace util
-}  // namespace ledger
+}  // namespace brave_rewards::internal

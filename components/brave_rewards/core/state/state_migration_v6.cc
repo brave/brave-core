@@ -13,14 +13,14 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace state {
 
 StateMigrationV6::StateMigrationV6(LedgerImpl& ledger) : ledger_(ledger) {}
 
 StateMigrationV6::~StateMigrationV6() = default;
 
-void StateMigrationV6::Migrate(ledger::LegacyResultCallback callback) {
+void StateMigrationV6::Migrate(LegacyResultCallback callback) {
   auto uphold_wallet = ledger_->GetLegacyWallet();
   ledger_->SetState(kWalletUphold, uphold_wallet);
   ledger_->client()->ClearState("external_wallets");
@@ -37,4 +37,4 @@ void StateMigrationV6::Migrate(ledger::LegacyResultCallback callback) {
 }
 
 }  // namespace state
-}  // namespace ledger
+}  // namespace brave_rewards::internal

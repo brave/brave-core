@@ -55,25 +55,23 @@ class RewardsNotificationServiceImpl
   bool Exists(RewardsNotificationID id) const override;
 
  private:
-  bool IsAds(const ledger::mojom::PromotionType promotion_type);
-  std::string GetPromotionIdPrefix(
-      const ledger::mojom::PromotionType promotion_type);
+  bool IsAds(const mojom::PromotionType promotion_type);
+  std::string GetPromotionIdPrefix(const mojom::PromotionType promotion_type);
 
   // RewardsServiceObserver impl
-  void OnFetchPromotions(
-      RewardsService* rewards_service,
-      const ledger::mojom::Result result,
-      const std::vector<ledger::mojom::PromotionPtr>& list) override;
+  void OnFetchPromotions(RewardsService* rewards_service,
+                         const mojom::Result result,
+                         const std::vector<mojom::PromotionPtr>& list) override;
   void OnPromotionFinished(RewardsService* rewards_service,
-                           const ledger::mojom::Result result,
-                           ledger::mojom::PromotionPtr promotion) override;
+                           const mojom::Result result,
+                           mojom::PromotionPtr promotion) override;
   void OnReconcileComplete(
       RewardsService* rewards_service,
-      const ledger::mojom::Result result,
+      const mojom::Result result,
       const std::string& contribution_id,
       const double amount,
-      const ledger::mojom::RewardsType type,
-      const ledger::mojom::ContributionProcessor processor) override;
+      const mojom::RewardsType type,
+      const mojom::ContributionProcessor processor) override;
 
   void TriggerOnNotificationAdded(
       const RewardsNotification& rewards_notification);

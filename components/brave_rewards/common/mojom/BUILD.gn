@@ -38,19 +38,18 @@ mojom("ledger_types") {
     {
       types = [
         {
-          mojom = "ledger.mojom.ConnectExternalWalletResult"
-          cpp =
-              "base::expected<void, ledger::mojom::ConnectExternalWalletError>"
+          mojom = "brave_rewards.mojom.ConnectExternalWalletResult"
+          cpp = "base::expected<void, mojom::ConnectExternalWalletError>"
           move_only = true
         },
         {
-          mojom = "ledger.mojom.FetchBalanceResult"
-          cpp = "base::expected<ledger::mojom::BalancePtr, ledger::mojom::FetchBalanceError>"
+          mojom = "brave_rewards.mojom.FetchBalanceResult"
+          cpp = "base::expected<mojom::BalancePtr, mojom::FetchBalanceError>"
           move_only = true
         },
         {
-          mojom = "ledger.mojom.GetExternalWalletResult"
-          cpp = "base::expected<ledger::mojom::ExternalWalletPtr, ledger::mojom::GetExternalWalletError>"
+          mojom = "brave_rewards.mojom.GetExternalWalletResult"
+          cpp = "base::expected<mojom::ExternalWalletPtr, mojom::GetExternalWalletError>"
           move_only = true
         },
       ]

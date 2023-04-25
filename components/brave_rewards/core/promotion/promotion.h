@@ -20,7 +20,7 @@
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 #include "brave/components/brave_rewards/core/promotion/promotion_transfer.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace promotion {
@@ -32,74 +32,73 @@ class Promotion {
 
   void Initialize();
 
-  void Fetch(ledger::FetchPromotionsCallback callback);
+  void Fetch(FetchPromotionsCallback callback);
 
   void Claim(const std::string& promotion_id,
              const std::string& payload,
-             ledger::ClaimPromotionCallback callback);
+             ClaimPromotionCallback callback);
 
   void Attest(const std::string& promotion_id,
               const std::string& solution,
-              ledger::AttestPromotionCallback callback);
+              AttestPromotionCallback callback);
 
   void Refresh(const bool retry_after_error);
 
-  void TransferTokens(ledger::PostSuggestionsClaimCallback callback);
+  void TransferTokens(PostSuggestionsClaimCallback callback);
 
  private:
-  void OnFetch(ledger::FetchPromotionsCallback callback,
+  void OnFetch(FetchPromotionsCallback callback,
                mojom::Result result,
                std::vector<mojom::PromotionPtr> list,
                const std::vector<std::string>& corrupted_promotions);
 
   void OnGetAllPromotions(
-      ledger::FetchPromotionsCallback callback,
+      FetchPromotionsCallback callback,
       std::vector<mojom::PromotionPtr> list,
       base::flat_map<std::string, mojom::PromotionPtr> promotions);
 
   void OnGetAllPromotionsFromDatabase(
-      ledger::FetchPromotionsCallback callback,
+      FetchPromotionsCallback callback,
       base::flat_map<std::string, mojom::PromotionPtr> promotions);
 
   void LegacyClaimedSaved(
       const mojom::Result result,
       std::shared_ptr<mojom::PromotionPtr> shared_promotion);
 
-  void OnClaimPromotion(ledger::ClaimPromotionCallback callback,
+  void OnClaimPromotion(ClaimPromotionCallback callback,
                         const std::string& payload,
                         mojom::PromotionPtr promotion);
 
-  void OnAttestPromotion(ledger::AttestPromotionCallback callback,
+  void OnAttestPromotion(AttestPromotionCallback callback,
                          const std::string& solution,
                          mojom::PromotionPtr promotion);
 
-  void OnAttestedPromotion(ledger::AttestPromotionCallback callback,
+  void OnAttestedPromotion(AttestPromotionCallback callback,
                            const std::string& promotion_id,
                            mojom::Result result);
 
-  void OnCompletedAttestation(ledger::AttestPromotionCallback callback,
+  void OnCompletedAttestation(AttestPromotionCallback callback,
                               mojom::PromotionPtr promotion);
 
-  void AttestedSaved(ledger::AttestPromotionCallback callback,
+  void AttestedSaved(AttestPromotionCallback callback,
                      mojom::PromotionPtr promotion,
                      mojom::Result result);
 
-  void Complete(ledger::AttestPromotionCallback callback,
+  void Complete(AttestPromotionCallback callback,
                 const std::string& promotion_string,
                 mojom::Result result);
 
-  void OnComplete(ledger::AttestPromotionCallback callback,
+  void OnComplete(AttestPromotionCallback callback,
                   mojom::Result result,
                   mojom::PromotionPtr promotion);
 
   void ProcessFetchedPromotions(const mojom::Result result,
                                 std::vector<mojom::PromotionPtr> promotions,
-                                ledger::FetchPromotionsCallback callback);
+                                FetchPromotionsCallback callback);
 
-  void GetCredentials(ledger::ResultCallback callback,
-                      mojom::PromotionPtr promotion);
+  void GetCredentials(ResultCallback callback, mojom::PromotionPtr promotion);
 
-  void CredentialsProcessed(ledger::ResultCallback callback,
+  void CredentialsProcessed(ResultCallback callback,
                             const std::string& promotion_id,
                             mojom::Result result);
 
@@ -128,7 +127,7 @@ class Promotion {
   void OnLastCheckTimerElapsed();
 
   const raw_ref<LedgerImpl> ledger_;
-  ledger::attestation::AttestationImpl attestation_;
+  attestation::AttestationImpl attestation_;
   PromotionTransfer transfer_;
   credential::CredentialsPromotion credentials_;
   endpoint::PromotionServer promotion_server_;
@@ -137,6 +136,6 @@ class Promotion {
 };
 
 }  // namespace promotion
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PROMOTION_PROMOTION_H_

@@ -25,7 +25,7 @@
 //
 // Response body: -
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace endpoints {
@@ -60,6 +60,6 @@ class PatchWallets final : public RequestBuilder,
 };
 
 }  // namespace endpoints
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_PATCH_WALLETS_PATCH_WALLETS_H_

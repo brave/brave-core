@@ -80,7 +80,7 @@
 //   ]
 // }
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace endpoint::uphold {
@@ -109,6 +109,6 @@ class PatchCard {
 };
 
 }  // namespace endpoint::uphold
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_UPHOLD_PATCH_CARD_PATCH_CARD_H_

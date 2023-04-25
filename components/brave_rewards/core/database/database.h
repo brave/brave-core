@@ -35,7 +35,7 @@
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/publisher/prefix_list_reader.h"
 
-namespace ledger {
+namespace brave_rewards::internal {
 class LedgerImpl;
 
 namespace database {
@@ -45,26 +45,26 @@ class Database {
   explicit Database(LedgerImpl& ledger);
   virtual ~Database();
 
-  void Initialize(ledger::LegacyResultCallback callback);
+  void Initialize(LegacyResultCallback callback);
 
-  void Close(ledger::LegacyResultCallback callback);
+  void Close(LegacyResultCallback callback);
 
   /**
    * ACTIVITY INFO
    */
   void SaveActivityInfo(mojom::PublisherInfoPtr info,
-                        ledger::LegacyResultCallback callback);
+                        LegacyResultCallback callback);
 
   void NormalizeActivityInfoList(std::vector<mojom::PublisherInfoPtr> list,
-                                 ledger::LegacyResultCallback callback);
+                                 LegacyResultCallback callback);
 
   void GetActivityInfoList(uint32_t start,
                            uint32_t limit,
                            mojom::ActivityInfoFilterPtr filter,
-                           ledger::GetActivityInfoListCallback callback);
+                           GetActivityInfoListCallback callback);
 
   void DeleteActivityInfo(const std::string& publisher_key,
-                          ledger::LegacyResultCallback callback);
+                          LegacyResultCallback callback);
 
   void GetPublishersVisitedCount(base::OnceCallback<void(int)> callback);
 
@@ -72,99 +72,96 @@ class Database {
    * BALANCE REPORT
    */
   void SaveBalanceReportInfo(mojom::BalanceReportInfoPtr info,
-                             ledger::LegacyResultCallback callback);
+                             LegacyResultCallback callback);
 
   void SaveBalanceReportInfoList(std::vector<mojom::BalanceReportInfoPtr> list,
-                                 ledger::LegacyResultCallback callback);
+                                 LegacyResultCallback callback);
 
   void SaveBalanceReportInfoItem(mojom::ActivityMonth month,
                                  int year,
                                  mojom::ReportType type,
                                  double amount,
-                                 ledger::LegacyResultCallback callback);
+                                 LegacyResultCallback callback);
 
   void GetBalanceReportInfo(mojom::ActivityMonth month,
                             int year,
-                            ledger::GetBalanceReportCallback callback);
+                            GetBalanceReportCallback callback);
 
-  void GetAllBalanceReports(ledger::GetBalanceReportListCallback callback);
+  void GetAllBalanceReports(GetBalanceReportListCallback callback);
 
-  void DeleteAllBalanceReports(ledger::LegacyResultCallback callback);
+  void DeleteAllBalanceReports(LegacyResultCallback callback);
 
   /**
    * CONTRIBUTION INFO
    */
   void SaveContributionInfo(mojom::ContributionInfoPtr info,
-                            ledger::LegacyResultCallback callback);
+                            LegacyResultCallback callback);
 
   virtual void GetContributionInfo(const std::string& contribution_id,
                                    GetContributionInfoCallback callback);
 
   void GetOneTimeTips(const mojom::ActivityMonth month,
                       const int year,
-                      ledger::GetOneTimeTipsCallback callback);
+                      GetOneTimeTipsCallback callback);
 
   void GetContributionReport(const mojom::ActivityMonth month,
                              const int year,
-                             ledger::GetContributionReportCallback callback);
+                             GetContributionReportCallback callback);
 
-  void GetNotCompletedContributions(
-      ledger::ContributionInfoListCallback callback);
+  void GetNotCompletedContributions(ContributionInfoListCallback callback);
 
   void UpdateContributionInfoStep(const std::string& contribution_id,
                                   mojom::ContributionStep step,
-                                  ledger::LegacyResultCallback callback);
+                                  LegacyResultCallback callback);
 
-  void UpdateContributionInfoStepAndCount(
-      const std::string& contribution_id,
-      mojom::ContributionStep step,
-      int32_t retry_count,
-      ledger::LegacyResultCallback callback);
+  void UpdateContributionInfoStepAndCount(const std::string& contribution_id,
+                                          mojom::ContributionStep step,
+                                          int32_t retry_count,
+                                          LegacyResultCallback callback);
 
   void UpdateContributionInfoContributedAmount(
       const std::string& contribution_id,
       const std::string& publisher_key,
-      ledger::LegacyResultCallback callback);
+      LegacyResultCallback callback);
 
-  void GetAllContributions(ledger::ContributionInfoListCallback callback);
+  void GetAllContributions(ContributionInfoListCallback callback);
 
-  void FinishAllInProgressContributions(ledger::LegacyResultCallback callback);
+  void FinishAllInProgressContributions(LegacyResultCallback callback);
 
   /**
    * CONTRIBUTION QUEUE
    */
   void SaveContributionQueue(mojom::ContributionQueuePtr info,
-                             ledger::LegacyResultCallback callback);
+                             LegacyResultCallback callback);
 
   void GetFirstContributionQueue(GetFirstContributionQueueCallback callback);
 
   void MarkContributionQueueAsComplete(const std::string& id,
-                                       ledger::LegacyResultCallback callback);
+                                       LegacyResultCallback callback);
 
   /**
    * CREDS BATCH
    */
-  void SaveCredsBatch(mojom::CredsBatchPtr info,
-                      ledger::LegacyResultCallback callback);
+  void SaveCredsBatch(mojom::CredsBatchPtr info, LegacyResultCallback callback);
 
   void GetCredsBatchByTrigger(const std::string& trigger_id,
                               const mojom::CredsBatchType trigger_type,
                               GetCredsBatchCallback callback);
 
   void SaveSignedCreds(mojom::CredsBatchPtr info,
-                       ledger::LegacyResultCallback callback);
+                       LegacyResultCallback callback);
 
   void GetAllCredsBatches(GetCredsBatchListCallback callback);
 
   void UpdateCredsBatchStatus(const std::string& trigger_id,
                               mojom::CredsBatchType trigger_type,
                               mojom::CredsBatchStatus status,
-                              ledger::LegacyResultCallback callback);
+                              LegacyResultCallback callback);
 
   void UpdateCredsBatchesStatus(const std::vector<std::string>& trigger_ids,
                                 mojom::CredsBatchType trigger_type,
                                 mojom::CredsBatchStatus status,
-                                ledger::LegacyResultCallback callback);
+                                LegacyResultCallback callback);
 
   void GetCredsBatchesByTriggers(const std::vector<std::string>& trigger_ids,
                                  GetCredsBatchListCallback callback);
@@ -175,15 +172,14 @@ class Database {
   void SaveEventLog(const std::string& key, const std::string& value);
 
   void SaveEventLogs(const std::map<std::string, std::string>& records,
-                     ledger::LegacyResultCallback callback);
+                     LegacyResultCallback callback);
 
-  void GetLastEventLogs(ledger::GetEventLogsCallback callback);
+  void GetLastEventLogs(GetEventLogsCallback callback);
 
   /**
    * EXTERNAL TRANSACTIONS
    */
-  void SaveExternalTransaction(mojom::ExternalTransactionPtr,
-                               ledger::ResultCallback);
+  void SaveExternalTransaction(mojom::ExternalTransactionPtr, ResultCallback);
 
   void GetExternalTransaction(const std::string& contribution_id,
                               const std::string& destination,
@@ -194,10 +190,10 @@ class Database {
    */
   void SaveMediaPublisherInfo(const std::string& media_key,
                               const std::string& publisher_key,
-                              ledger::LegacyResultCallback callback);
+                              LegacyResultCallback callback);
 
   void GetMediaPublisherInfo(const std::string& media_key,
-                             ledger::PublisherInfoCallback callback);
+                             PublisherInfoCallback callback);
 
   /**
    * MULTI TABLE
@@ -205,54 +201,54 @@ class Database {
    */
   void GetTransactionReport(const mojom::ActivityMonth month,
                             const int year,
-                            ledger::GetTransactionReportCallback callback);
+                            GetTransactionReportCallback callback);
 
   /**
    * PROMOTION
    */
   virtual void SavePromotion(mojom::PromotionPtr info,
-                             ledger::LegacyResultCallback callback);
+                             LegacyResultCallback callback);
 
   void GetPromotion(const std::string& id, GetPromotionCallback callback);
 
-  virtual void GetAllPromotions(ledger::GetAllPromotionsCallback callback);
+  virtual void GetAllPromotions(GetAllPromotionsCallback callback);
 
   void SavePromotionClaimId(const std::string& promotion_id,
                             const std::string& claim_id,
-                            ledger::LegacyResultCallback callback);
+                            LegacyResultCallback callback);
 
   void UpdatePromotionStatus(const std::string& promotion_id,
                              mojom::PromotionStatus status,
-                             ledger::LegacyResultCallback callback);
+                             LegacyResultCallback callback);
 
   void UpdatePromotionsStatus(const std::vector<std::string>& promotion_ids,
                               mojom::PromotionStatus status,
-                              ledger::LegacyResultCallback callback);
+                              LegacyResultCallback callback);
 
   void PromotionCredentialCompleted(const std::string& promotion_id,
-                                    ledger::LegacyResultCallback callback);
+                                    LegacyResultCallback callback);
 
   void GetPromotionList(const std::vector<std::string>& ids,
                         GetPromotionListCallback callback);
 
   void UpdatePromotionsBlankPublicKey(const std::vector<std::string>& ids,
-                                      ledger::LegacyResultCallback callback);
+                                      LegacyResultCallback callback);
 
   /**
    * PUBLISHER INFO
    */
   void SavePublisherInfo(mojom::PublisherInfoPtr publisher_info,
-                         ledger::LegacyResultCallback callback);
+                         LegacyResultCallback callback);
 
   void GetPublisherInfo(const std::string& publisher_key,
-                        ledger::GetPublisherInfoCallback callback);
+                        GetPublisherInfoCallback callback);
 
   void GetPanelPublisherInfo(mojom::ActivityInfoFilterPtr filter,
-                             ledger::GetPublisherPanelInfoCallback callback);
+                             GetPublisherPanelInfoCallback callback);
 
-  void RestorePublishers(ledger::ResultCallback callback);
+  void RestorePublishers(ResultCallback callback);
 
-  void GetExcludedList(ledger::GetExcludedListCallback callback);
+  void GetExcludedList(GetExcludedListCallback callback);
 
   /**
    * RECURRING TIPS
@@ -260,7 +256,7 @@ class Database {
 
   // DEPRECATED
   void SaveRecurringTip(mojom::RecurringTipPtr info,
-                        ledger::LegacyResultCallback callback);
+                        LegacyResultCallback callback);
 
   void SetMonthlyContribution(const std::string& publisher_id,
                               double amount,
@@ -273,10 +269,10 @@ class Database {
   void GetNextMonthlyContributionTime(
       base::OnceCallback<void(absl::optional<base::Time>)> callback);
 
-  void GetRecurringTips(ledger::GetRecurringTipsCallback callback);
+  void GetRecurringTips(GetRecurringTipsCallback callback);
 
   void RemoveRecurringTip(const std::string& publisher_key,
-                          ledger::LegacyResultCallback callback);
+                          LegacyResultCallback callback);
 
   /**
    * SERVER PUBLISHER INFO
@@ -285,13 +281,13 @@ class Database {
                                  SearchPublisherPrefixListCallback callback);
 
   void ResetPublisherPrefixList(publisher::PrefixListReader reader,
-                                ledger::LegacyResultCallback callback);
+                                LegacyResultCallback callback);
 
   void InsertServerPublisherInfo(const mojom::ServerPublisherInfo& server_info,
-                                 ledger::LegacyResultCallback callback);
+                                 LegacyResultCallback callback);
 
   void DeleteExpiredServerPublisherInfo(int64_t max_age_seconds,
-                                        ledger::LegacyResultCallback callback);
+                                        LegacyResultCallback callback);
 
   void GetServerPublisherInfo(const std::string& publisher_key,
                               GetServerPublisherInfoCallback callback);
@@ -299,12 +295,11 @@ class Database {
   /**
    * SKU ORDER
    */
-  void SaveSKUOrder(mojom::SKUOrderPtr order,
-                    ledger::LegacyResultCallback callback);
+  void SaveSKUOrder(mojom::SKUOrderPtr order, LegacyResultCallback callback);
 
   void UpdateSKUOrderStatus(const std::string& order_id,
                             mojom::SKUOrderStatus status,
-                            ledger::LegacyResultCallback callback);
+                            LegacyResultCallback callback);
 
   void GetSKUOrder(const std::string& order_id, GetSKUOrderCallback callback);
 
@@ -313,17 +308,17 @@ class Database {
 
   void SaveContributionIdForSKUOrder(const std::string& order_id,
                                      const std::string& contribution_id,
-                                     ledger::LegacyResultCallback callback);
+                                     LegacyResultCallback callback);
 
   /**
    * SKU TRANSACTION
    */
   void SaveSKUTransaction(mojom::SKUTransactionPtr transaction,
-                          ledger::LegacyResultCallback callback);
+                          LegacyResultCallback callback);
 
   void SaveSKUExternalTransaction(const std::string& transaction_id,
                                   const std::string& external_transaction_id,
-                                  ledger::LegacyResultCallback callback);
+                                  LegacyResultCallback callback);
 
   void GetSKUTransactionByOrderId(const std::string& order_id,
                                   GetSKUTransactionCallback callback);
@@ -332,19 +327,19 @@ class Database {
    * UNBLINDED TOKEN
    */
   void SaveUnblindedTokenList(std::vector<mojom::UnblindedTokenPtr> list,
-                              ledger::LegacyResultCallback callback);
+                              LegacyResultCallback callback);
 
   void MarkUnblindedTokensAsSpent(const std::vector<std::string>& ids,
                                   mojom::RewardsType redeem_type,
                                   const std::string& redeem_id,
-                                  ledger::LegacyResultCallback callback);
+                                  LegacyResultCallback callback);
 
   void MarkUnblindedTokensAsReserved(const std::vector<std::string>& ids,
                                      const std::string& redeem_id,
-                                     ledger::LegacyResultCallback callback);
+                                     LegacyResultCallback callback);
 
   void MarkUnblindedTokensAsSpendable(const std::string& redeem_id,
-                                      ledger::LegacyResultCallback callback);
+                                      LegacyResultCallback callback);
 
   void GetSpendableUnblindedTokens(GetUnblindedTokenListCallback callback);
 
@@ -378,6 +373,6 @@ class Database {
 };
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::internal
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_H_

@@ -8,7 +8,7 @@
 
 // npm run test -- brave_unit_tests --filter=DatabaseUtil.*
 
-namespace ledger {
+namespace brave_rewards::internal {
 namespace database {
 
 class DatabaseUtil : public testing::Test {};
@@ -28,4 +28,4 @@ TEST(DatabaseUtil, GenerateStringInCase) {
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::internal
