@@ -71,6 +71,7 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_news.BraveNewsControllerFactory;
 import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
 import org.chromium.chrome.browser.brave_news.CardBuilderFeedCard;
+import org.chromium.chrome.browser.brave_news.LinearLayoutManagerWrapper;
 import org.chromium.chrome.browser.brave_news.models.FeedItemCard;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
@@ -379,8 +380,8 @@ public class BraveNewTabPageLayout
         });
 
         mRecyclerView = findViewById(R.id.recyclerview);
-        LinearLayoutManager linearLayoutManager =
-                new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManagerWrapper linearLayoutManager =
+                new LinearLayoutManagerWrapper(mActivity, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.post(new Runnable() {
             @Override

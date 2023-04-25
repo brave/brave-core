@@ -14,9 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.chromium.base.Log;
 
 /*
- * Provides a custom LayoutManager to use on recyclerView to prevent an Android bug from crashing
+ * Provides a custom LayoutManager to use on recyclerView to prevent an Android bug from crashing.
+ * Check that issue and related PR for more information
+ * https://github.com/brave/brave-browser/issues/29634
  */
 public class LinearLayoutManagerWrapper extends LinearLayoutManager {
+    private static final String TAG = "LLManagerWrapper";
+
     public LinearLayoutManagerWrapper(Context context) {
         super(context);
     }
@@ -35,9 +39,11 @@ public class LinearLayoutManagerWrapper extends LinearLayoutManager {
         try {
             super.onLayoutChildren(recycler, state);
         } catch (IndexOutOfBoundsException e) {
-            e.printStackTrace();
+            Log.e(TAG, "IndexOutOfBoundsException in RecyclerView: ", e);
+            assert false;
         } catch (ClassCastException e) {
-            e.printStackTrace();
+            Log.e(TAG, "ClassCastException in RecyclerView: ", e);
+            assert false;
         }
     }
 }
