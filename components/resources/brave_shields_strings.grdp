@@ -109,8 +109,12 @@
     Block cross-site cookies
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_FORGET_FIRST_PARTY_STORAGE" desc="Menu option that would forget first party website storage.">
-    Forget me when I close the site
+  <message name="IDS_BRAVE_SHIELDS_FORGET_FIRST_PARTY_STORAGE_LABEL" desc="Shields panel toggle label that would forget first party website storage when enabled.">
+    Forget me when I close this site
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_FORGET_FIRST_PARTY_STORAGE_SUBLABEL" desc="Shields panel toggle sublabel that would forget first party website storage when enabled.">
+    Clears cookies and other site data when you close a site.
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_COOKIES_BLOCKED" desc="Menu option that would block current website cookies.">
