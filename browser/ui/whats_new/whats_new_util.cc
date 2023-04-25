@@ -61,8 +61,20 @@ absl::optional<double> GetCurrentBrowserVersion() {
 }
 
 bool DoesUserGetMajorUpdateSinceInstall() {
-  Profile* profile = ProfileManager::GetLastUsedProfile();
-  DCHECK(profile);
+  Profile* profile = ProfileManager::GetLastUsedProfileIfLoaded();
+
+  // This could happen when selected profile from profile chooser dialog is not
+  // the last active profile from previous running. As we don't know
+  // profile_created_version for this selected profile now, just return false
+  // and whats-new tab will not be shown for this launching. but that value
+  // could be get next time when this profile is selected again. This early
+  // return could be happened forever when user select another profile from
+  // profile chooser whenver launching. but I think this could be very very rare
+  // case. So, user could show whats-new tab eventually. Also this doesn't
+  // happen when profile chooser is not used even user has multiple profiles.
+  if (!profile) {
+    return false;
+  }
 
   const auto current_version = GetCurrentBrowserVersion();
   const auto profile_created_version = GetBraveMajorVersionAsDouble(
