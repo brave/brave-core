@@ -52,8 +52,15 @@ KeyedService* EphemeralStorageServiceFactory::BuildServiceInstanceFor(
           net::features::kBraveForgetFirstPartyStorage)) {
     return nullptr;
   }
+  // The HostContentSettingsMap might be null for some irregular profiles, e.g.
+  // the System Profile.
+  auto* host_content_settings_map =
+      HostContentSettingsMapFactory::GetForProfile(context);
+  if (!host_content_settings_map) {
+    return nullptr;
+  }
   return new ephemeral_storage::EphemeralStorageService(
-      context, HostContentSettingsMapFactory::GetForProfile(context));
+      context, host_content_settings_map);
 }
 
 content::BrowserContext* EphemeralStorageServiceFactory::GetBrowserContextToUse(
