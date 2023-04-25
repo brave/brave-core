@@ -24,6 +24,7 @@ class BraveWalletServiceObserverBase
   void OnDefaultBaseCryptocurrencyChanged(
       const std::string& cryptocurrency) override {}
   void OnNetworkListChanged() override {}
+  void OnDiscoverAssetsStarted() override {}
   void OnDiscoverAssetsCompleted(
       std::vector<mojom::BlockchainTokenPtr> discovered_assets) override {}
   void OnResetWallet() override {}

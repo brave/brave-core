@@ -3125,7 +3125,16 @@ void JsonRpcService::OnGetSolanaBlockHeight(
 
 void JsonRpcService::GetSolanaTokenAccountsByOwner(
     const SolanaAddress& pubkey,
+    const std::string& chain_id,
     GetSolanaTokenAccountsByOwnerCallback callback) {
+  auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::SOL);
+  if (!network_url.is_valid()) {
+    std::move(callback).Run(
+        {}, mojom::SolanaProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetSolanaTokenAccountsByOwner,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));

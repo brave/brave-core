@@ -1491,12 +1491,13 @@ class JsonRpcServiceUnitTest : public testing::Test {
 
   void TestGetSolanaTokenAccountsByOwner(
       const SolanaAddress& solana_address,
+      const std::string& chain_id,
       const std::vector<SolanaAccountInfo>& expected_token_accounts,
       mojom::SolanaProviderError expected_error,
       const std::string& expected_error_message) {
     base::RunLoop run_loop;
     json_rpc_service_->GetSolanaTokenAccountsByOwner(
-        solana_address,
+        solana_address, chain_id,
         base::BindLambdaForTesting(
             [&](const std::vector<SolanaAccountInfo>& token_accounts,
                 mojom::SolanaProviderError error,
@@ -4744,7 +4745,6 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaTokenAccountsByOwner) {
   auto expected_network_url =
       GetNetwork(mojom::kSolanaMainnet, mojom::CoinType::SOL);
 
-  // Valid
   SetInterceptor(expected_network_url, "getTokenAccountsByOwner", "", R"({
     "jsonrpc": "2.0",
     "result": {
@@ -4814,14 +4814,22 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaTokenAccountsByOwner) {
       SolanaAddress::FromBase58("4fzcQKyGFuk55uJaBZtvTHh42RBxbrZMuXzsGQvBJbwF");
   ASSERT_TRUE(solana_address);
 
-  TestGetSolanaTokenAccountsByOwner(*solana_address, expected_account_infos,
+  // Invalid chain ID yields invalid params error
+  TestGetSolanaTokenAccountsByOwner(
+      *solana_address, "999", {}, mojom::SolanaProviderError::kInvalidParams,
+      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  // Valid
+  TestGetSolanaTokenAccountsByOwner(*solana_address, mojom::kSolanaMainnet,
+                                    expected_account_infos,
                                     mojom::SolanaProviderError::kSuccess, "");
 
   // Response parsing error
   SetInterceptor(expected_network_url, "getTokenAccountsByOwner", "",
                  R"({"jsonrpc":"2.0","id":1})");
   TestGetSolanaTokenAccountsByOwner(
-      *solana_address, {}, mojom::SolanaProviderError::kParsingError,
+      *solana_address, mojom::kSolanaMainnet, {},
+      mojom::SolanaProviderError::kParsingError,
       l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 
   // JSON RPC error
@@ -4832,14 +4840,15 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaTokenAccountsByOwner) {
                        "message":"method does not exist"
                      }
                     })");
-  TestGetSolanaTokenAccountsByOwner(*solana_address, {},
+  TestGetSolanaTokenAccountsByOwner(*solana_address, mojom::kSolanaMainnet, {},
                                     mojom::SolanaProviderError::kMethodNotFound,
                                     "method does not exist");
 
   // HTTP error
   SetHTTPRequestTimeoutInterceptor();
   TestGetSolanaTokenAccountsByOwner(
-      *solana_address, {}, mojom::SolanaProviderError::kInternalError,
+      *solana_address, mojom::kSolanaMainnet, {},
+      mojom::SolanaProviderError::kInternalError,
       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 

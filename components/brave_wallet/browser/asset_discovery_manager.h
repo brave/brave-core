@@ -8,18 +8,16 @@
 
 #include <map>
 #include <memory>
+#include <queue>
 #include <string>
 #include <utility>
 #include <vector>
 
-#include "base/barrier_callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
+#include "brave/components/brave_wallet/browser/asset_discovery_task.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/brave_wallet_types.h"
-#include "brave/components/brave_wallet/common/solana_address.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 
 class PrefService;
@@ -34,12 +32,12 @@ class AssetDiscoveryManager : public mojom::KeyringServiceObserver {
  public:
   using APIRequestHelper = api_request_helper::APIRequestHelper;
   using APIRequestResult = api_request_helper::APIRequestResult;
-
-  AssetDiscoveryManager(std::unique_ptr<APIRequestHelper> api_request_helper,
-                        BraveWalletService* wallet_service,
-                        JsonRpcService* json_rpc_service,
-                        KeyringService* keyring_service,
-                        PrefService* prefs);
+  AssetDiscoveryManager(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      BraveWalletService* wallet_service,
+      JsonRpcService* json_rpc_service,
+      KeyringService* keyring_service,
+      PrefService* prefs);
 
   AssetDiscoveryManager(const AssetDiscoveryManager&) = delete;
   AssetDiscoveryManager& operator=(AssetDiscoveryManager&) = delete;
@@ -58,147 +56,33 @@ class AssetDiscoveryManager : public mojom::KeyringServiceObserver {
   void AutoLockMinutesChanged() override {}
   void SelectedAccountChanged(mojom::CoinType coin) override {}
 
-  using DiscoverAssetsCompletedCallbackForTesting =
-      base::RepeatingCallback<void(
-          std::vector<mojom::BlockchainTokenPtr> discovered_assets_for_chain)>;
-
-  // Called by frontend via BraveWalletService.
-  // Subject to client side rate limiting based on
-  // kBraveWalletLastDiscoveredAssetsAt pref value.
-  void DiscoverAssetsOnAllSupportedChainsRefresh(
-      const std::map<mojom::CoinType, std::vector<std::string>>&
-          account_addresses);
-
-  void SetSupportedChainsForTesting(
-      const std::vector<std::string> supported_chains_for_testing) {
-    supported_chains_for_testing_ = supported_chains_for_testing;
-  }
-
-  void SetDiscoverAssetsCompletedCallbackForTesting(
-      DiscoverAssetsCompletedCallbackForTesting callback) {
-    discover_assets_completed_callback_for_testing_ = std::move(callback);
-  }
-
- private:
-  friend class AssetDiscoveryManagerUnitTest;
-  FRIEND_TEST_ALL_PREFIXES(AssetDiscoveryManagerUnitTest,
-                           DiscoverAssetsOnAllSupportedChainsRefresh);
-  FRIEND_TEST_ALL_PREFIXES(AssetDiscoveryManagerUnitTest,
-                           GetAssetDiscoverySupportedEthChains);
-  FRIEND_TEST_ALL_PREFIXES(AssetDiscoveryManagerUnitTest,
-                           ParseNFTsFromSimpleHash);
-  FRIEND_TEST_ALL_PREFIXES(AssetDiscoveryManagerUnitTest, DecodeMintAddress);
-  FRIEND_TEST_ALL_PREFIXES(AssetDiscoveryManagerUnitTest,
-                           GetSimpleHashNftsByWalletUrl);
-
-  const std::vector<std::string>& GetAssetDiscoverySupportedEthChains();
-
-  void DiscoverSolAssets(const std::vector<std::string>& account_addresses,
-                         bool triggered_by_accounts_added);
-
-  void OnGetSolanaTokenAccountsByOwner(
-      base::OnceCallback<void(std::vector<SolanaAddress>)> barrier_callback,
-      const std::vector<SolanaAccountInfo>& token_accounts,
-      mojom::SolanaProviderError error,
-      const std::string& error_message);
-
-  void MergeDiscoveredSolanaAssets(
-      bool triggered_by_accounts_added,
-      const std::vector<std::vector<SolanaAddress>>&
-          all_discovered_contract_addresses);
-
-  void OnGetSolanaTokenRegistry(
-      bool triggered_by_accounts_added,
-      const base::flat_set<std::string>& discovered_contract_addresses,
-      std::vector<mojom::BlockchainTokenPtr> sol_token_registry);
-
-  void DiscoverEthAssets(const std::vector<std::string>& account_addresses,
-                         bool triggered_by_accounts_added);
-
-  void OnGetERC20TokenBalances(
-      base::OnceCallback<void(std::map<std::string, std::vector<std::string>>)>
-          barrier_callback,
-      const std::string& chain_id,
-      bool triggered_by_accounts_added,
-      const std::vector<std::string>& contract_addresses,
-      std::vector<mojom::ERC20BalanceResultPtr> balance_results,
-      mojom::ProviderError error,
-      const std::string& error_message);
-
-  void MergeDiscoveredEthAssets(
-      base::flat_map<std::string,
-                     base::flat_map<std::string, mojom::BlockchainTokenPtr>>
-          chain_id_to_contract_address_to_token,
-      bool triggered_by_accounts_added,
-      const std::vector<std::map<std::string, std::vector<std::string>>>&
-          discovered_assets);
-
-  using FetchNFTsFromSimpleHashCallback =
-      base::OnceCallback<void(std::vector<mojom::BlockchainTokenPtr> nfts)>;
-  void FetchNFTsFromSimpleHash(const std::string& account_address,
-                               const std::vector<std::string>& chain_ids,
-                               mojom::CoinType coin,
-                               FetchNFTsFromSimpleHashCallback callback);
-
-  void OnFetchNFTsFromSimpleHash(
-      std::vector<mojom::BlockchainTokenPtr> nfts_so_far,
-      mojom::CoinType coin,
-      FetchNFTsFromSimpleHashCallback callback,
-      APIRequestResult api_request_result);
-
-  void DiscoverNFTsOnAllSupportedChains(
+  // Called by frontend via BraveWalletService and when new accounts are added
+  // via the KeyringServiceObserver implementation
+  void DiscoverAssetsOnAllSupportedChains(
       const std::map<mojom::CoinType, std::vector<std::string>>&
           account_addresses,
       bool triggered_by_accounts_added);
 
-  void MergeDiscoveredNFTs(
-      bool triggered_by_accounts_added,
-      const std::vector<std::vector<mojom::BlockchainTokenPtr>>& nfts);
+  void SetQueueForTesting(
+      std::queue<std::unique_ptr<AssetDiscoveryTask>> queue) {
+    queue_ = std::move(queue);
+  }
 
-  absl::optional<std::pair<GURL, std::vector<mojom::BlockchainTokenPtr>>>
-  ParseNFTsFromSimpleHash(const base::Value& json_value, mojom::CoinType coin);
+  size_t GetQueueSizeForTesting() { return queue_.size(); }
 
-  // CompleteDiscoverAssets signals that the discover assets request has
-  // completed for a given chain_id
-  void CompleteDiscoverAssets(
-      const std::string& chain_id,
-      std::vector<mojom::BlockchainTokenPtr> discovered_assets,
-      absl::optional<mojom::ProviderError> error,
-      const std::string& error_message,
-      bool triggered_by_accounts_added);
+ private:
+  friend class AssetDiscoveryManagerUnitTest;
+  FRIEND_TEST_ALL_PREFIXES(AssetDiscoveryManagerUnitTest,
+                           GetAssetDiscoverySupportedChains);
 
-  // CompleteDiscoverAssets signals that the discover assets request has
-  // completed for a given chain_id x account_address combination.
-  void CompleteDiscoverAssets(
-      std::vector<mojom::BlockchainTokenPtr> discovered_assets,
-      bool triggered_by_accounts_added);
+  const std::map<mojom::CoinType, std::vector<std::string>>&
+  GetAssetDiscoverySupportedChains();
 
-  // Triggered by when KeyringService emits AccountsAdded event.
-  // Rate limits will be ignored.
-  void DiscoverAssetsOnAllSupportedChainsAccountsAdded(
-      mojom::CoinType coin,
-      const std::vector<std::string>& account_addresses);
+  void AddTask(const std::map<mojom::CoinType, std::vector<std::string>>&
+                   account_addresses);
+  void FinishTask();
 
-  static absl::optional<SolanaAddress> DecodeMintAddress(
-      const std::vector<uint8_t>& data);
-  static GURL GetSimpleHashNftsByWalletUrl(
-      const std::string& account_address,
-      const std::vector<std::string>& chain_ids);
-
-  // remaining_buckets_ is the number of 'buckets' of requets remaining for an
-  // in-flight DiscoverAssetsOnAllSupportedChainsRefresh call to be completed.
-  // When no call is in-flight, remaining_buckets_ is 0.  When a call is
-  // in-flight, remaining_buckets_ is > 0 and the AssetDiscoverManager will
-  // refuse to process additional  DiscoverAssetsOnAllSupportedChainsRefresh
-  // calls.
-  //
-  // DiscoverAssetsOnAllSupportedChainsAccountsAdded does not read from or write
-  // to remaining_buckets_ and thus those calls will always processed.
-  int remaining_buckets_ = 0;
-  std::vector<mojom::BlockchainTokenPtr> discovered_assets_;
-  std::vector<std::string> supported_chains_for_testing_;
-  DiscoverAssetsCompletedCallbackForTesting
-      discover_assets_completed_callback_for_testing_;
+  std::queue<std::unique_ptr<AssetDiscoveryTask>> queue_;
   std::unique_ptr<APIRequestHelper> api_request_helper_;
   raw_ptr<BraveWalletService> wallet_service_;
   raw_ptr<JsonRpcService> json_rpc_service_;
