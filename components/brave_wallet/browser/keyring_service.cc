@@ -2488,19 +2488,19 @@ void KeyringService::HasPendingUnlockRequest(
   std::move(callback).Run(HasPendingUnlockRequest());
 }
 
-std::vector<std::pair<std::string, mojom::BitcoinKeyIdPtr>>
+absl::optional<std::vector<std::pair<std::string, mojom::BitcoinKeyIdPtr>>>
 KeyringService::GetBitcoinAddresses(const std::string& keyring_id,
                                     uint32_t account_index) {
   CHECK(IsBitcoinKeyring(keyring_id));
 
   if (account_index >=
       GetDerivedAccountsNumberForKeyring(profile_prefs_, keyring_id)) {
-    return {};
+    return absl::nullopt;
   }
 
   auto* bitcoin_keyring = GetBitcoinKeyringById(keyring_id);
   if (!bitcoin_keyring) {
-    return {};
+    return absl::nullopt;
   }
 
   // TODO(apaymyshev): store used addresses indexes in prefs.
@@ -2512,7 +2512,7 @@ KeyringService::GetBitcoinAddresses(const std::string& keyring_id,
     auto key_id = mojom::BitcoinKeyId::New(account_index, 0, i);
     auto address = bitcoin_keyring->GetAddress(*key_id);
     if (!address) {
-      return {};
+      return absl::nullopt;
     }
     addresses.emplace_back(*address, std::move(key_id));
   }
@@ -2520,7 +2520,7 @@ KeyringService::GetBitcoinAddresses(const std::string& keyring_id,
     auto key_id = mojom::BitcoinKeyId::New(account_index, 1, i);
     auto address = bitcoin_keyring->GetAddress(*key_id);
     if (!address) {
-      return {};
+      return absl::nullopt;
     }
     addresses.emplace_back(*address, std::move(key_id));
   }

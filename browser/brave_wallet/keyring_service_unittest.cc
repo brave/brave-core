@@ -4482,8 +4482,7 @@ TEST_F(KeyringServiceUnitTest, BitcoinReceiveChangeAddresses) {
       service.GetKeyringInfoSync(mojom::kBitcoinKeyring84Id)->account_infos,
       testing::IsEmpty());
 
-  EXPECT_EQ(service.GetBitcoinAddresses(mojom::kBitcoinKeyring84Id, 0).size(),
-            0u);
+  EXPECT_FALSE(service.GetBitcoinAddresses(mojom::kBitcoinKeyring84Id, 0));
 
   AddBitcoinAccount(&service, "Btc Acc", mojom::kBitcoinMainnet,
                     mojom::kBitcoinKeyring84Id);
@@ -4501,21 +4500,21 @@ TEST_F(KeyringServiceUnitTest, BitcoinReceiveChangeAddresses) {
   EXPECT_EQ(btc_acc->coin, mojom::CoinType::BTC);
   EXPECT_EQ(btc_acc->keyring_id, mojom::kBitcoinKeyring84Id);
 
-  EXPECT_EQ(service.GetBitcoinAddresses(mojom::kBitcoinKeyring84Id, 0)[0].first,
-            "bc1qcr8te4kr609gcawutmrza0j4xv80jy8z306fyu");
   EXPECT_EQ(
-      service.GetBitcoinAddresses(mojom::kBitcoinKeyring84Id, 0)[0].second,
+      service.GetBitcoinAddresses(mojom::kBitcoinKeyring84Id, 0)->at(0).first,
+      "bc1qcr8te4kr609gcawutmrza0j4xv80jy8z306fyu");
+  EXPECT_EQ(
+      service.GetBitcoinAddresses(mojom::kBitcoinKeyring84Id, 0)->at(0).second,
       mojom::BitcoinKeyId::New(0, 0, 0));
 
   EXPECT_EQ(
-      service.GetBitcoinAddresses(mojom::kBitcoinKeyring84Id, 0)[30].first,
+      service.GetBitcoinAddresses(mojom::kBitcoinKeyring84Id, 0)->at(30).first,
       "bc1q8c6fshw2dlwun7ekn9qwf37cu2rn755upcp6el");
   EXPECT_EQ(
-      service.GetBitcoinAddresses(mojom::kBitcoinKeyring84Id, 0)[30].second,
+      service.GetBitcoinAddresses(mojom::kBitcoinKeyring84Id, 0)->at(30).second,
       mojom::BitcoinKeyId::New(0, 1, 0));
 
-  EXPECT_EQ(service.GetBitcoinAddresses(mojom::kBitcoinKeyring84Id, 1).size(),
-            0u);
+  EXPECT_FALSE(service.GetBitcoinAddresses(mojom::kBitcoinKeyring84Id, 1));
 }
 
 }  // namespace brave_wallet

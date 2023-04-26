@@ -230,7 +230,7 @@ mojom::BitcoinAccountInfoPtr BitcoinWalletService::GetBitcoinAccountInfoSync(
 
   auto addresses =
       keyring_service_->GetBitcoinAddresses(keyring_id, account_index);
-  if (addresses.empty()) {
+  if (!addresses) {
     NOTREACHED();
     return nullptr;
   }
@@ -238,7 +238,7 @@ mojom::BitcoinAccountInfoPtr BitcoinWalletService::GetBitcoinAccountInfoSync(
   auto account_info = mojom::BitcoinAccountInfo::New();
   account_info->name = keyring_info->account_infos[account_index]->name;
 
-  for (auto& address : addresses) {
+  for (auto& address : addresses.value()) {
     auto& info = account_info->address_infos.emplace_back(
         mojom::BitcoinAddressInfo::New());
     info->address_string = address.first;
@@ -270,6 +270,13 @@ void BitcoinWalletService::SendTo(const std::string& network_id,
     return;
   }
 
+  auto account_addresses =
+      keyring_service_->GetBitcoinAddresses(keyring_id, account_index);
+  if (!account_addresses || account_addresses->empty()) {
+    std::move(callback).Run("", "No bitcoin addresses for account");
+    return;
+  }
+
   auto context = std::make_unique<SendToContext>();
   context->network_id = network_id;
   context->keyring_id = keyring_id;
@@ -277,8 +284,7 @@ void BitcoinWalletService::SendTo(const std::string& network_id,
   context->address_to = address_to;
   context->amount = amount;
   context->fee = fee;
-  context->addresses =
-      keyring_service_->GetBitcoinAddresses(keyring_id, account_index);
+  context->addresses = std::move(*account_addresses);
   context->callback = std::move(callback);
 
   WorkOnSendTo(std::move(context));
@@ -610,13 +616,13 @@ void BitcoinWalletService::StartDatabaseSynchronizer(
 
   auto addresses =
       keyring_service_->GetBitcoinAddresses(keyring_id, account_index);
-  if (addresses.empty()) {
+  if (!addresses) {
     NOTREACHED();
     return;
   }
 
   std::vector<std::string> addresses_to_watch;
-  for (auto& a : addresses) {
+  for (auto& a : addresses.value()) {
     addresses_to_watch.push_back(a.first);
   }
 

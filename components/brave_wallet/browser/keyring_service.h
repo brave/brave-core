@@ -236,7 +236,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void HasPendingUnlockRequest(
       HasPendingUnlockRequestCallback callback) override;
 
-  std::vector<std::pair<std::string, mojom::BitcoinKeyIdPtr>>
+  absl::optional<std::vector<std::pair<std::string, mojom::BitcoinKeyIdPtr>>>
   GetBitcoinAddresses(const std::string& keyring_id, uint32_t account_index);
   absl::optional<std::string> GetBitcoinAddress(
       const std::string& keyring_id,
