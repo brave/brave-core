@@ -68,7 +68,8 @@ class UntrustedPlaylistUIConfig : public content::WebUIConfig {
   ~UntrustedPlaylistUIConfig() override = default;
 
   std::unique_ptr<content::WebUIController> CreateWebUIController(
-      content::WebUI* web_ui) override;
+      content::WebUI* web_ui,
+      const GURL& url) override;
 
   bool IsWebUIEnabled(content::BrowserContext* browser_context) override;
 };
@@ -79,7 +80,8 @@ class UntrustedPlaylistPlayerUIConfig : public content::WebUIConfig {
   ~UntrustedPlaylistPlayerUIConfig() override = default;
 
   std::unique_ptr<content::WebUIController> CreateWebUIController(
-      content::WebUI* web_ui) override;
+      content::WebUI* web_ui,
+      const GURL& url) override;
 };
 
 }  // namespace playlist

@@ -69,7 +69,8 @@ UntrustedMarketUI::UntrustedMarketUI(content::WebUI* web_ui)
 UntrustedMarketUI::~UntrustedMarketUI() = default;
 
 std::unique_ptr<content::WebUIController>
-UntrustedMarketUIConfig::CreateWebUIController(content::WebUI* web_ui) {
+UntrustedMarketUIConfig::CreateWebUIController(content::WebUI* web_ui,
+                                               const GURL& url) {
   return std::make_unique<UntrustedMarketUI>(web_ui);
 }
 
