@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.app.domain;
 
 import android.text.TextUtils;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.StringDef;
 import androidx.annotation.UiThread;
 import androidx.lifecycle.LiveData;
@@ -335,7 +336,7 @@ public class KeyringModel implements KeyringServiceObserver {
         callback.call(result);
     }
 
-    private void updateSelectedAccountAndState(String accountAddress) {
+    private void updateSelectedAccountAndState(@Nullable String accountAddress) {
         if (accountAddress == null) {
             mKeyringService.getKeyringInfo(getSelectedCoinKeyringId(mSharedData.getCoinType()),
                     keyringInfo -> { updateSelectedAccountPerOriginOrFirst(keyringInfo); });
