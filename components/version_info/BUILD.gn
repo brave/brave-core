@@ -1,3 +1,8 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/build/config.gni")
 import("//build/util/process_version.gni")
 
@@ -31,4 +36,20 @@ process_version("generate_version_info") {
     "BRAVE_CHROMIUM_VERSION=\"$chrome_version_string\"",
   ]
   output = "$target_gen_dir/version_info_values.h"
+}
+
+if (!is_ios) {
+  source_set("unit_tests") {
+    testonly = true
+
+    sources = [ "version_info_unittest.cc" ]
+
+    deps = [
+      "//base",
+      "//brave/components/version_info",
+      "//chrome/common:non_code_constants",
+      "//components/version_info",
+      "//testing/gtest",
+    ]
+  }
 }
