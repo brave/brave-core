@@ -59,17 +59,13 @@ class VerticalTabStripRootView : public views::internal::RootView {
 
     return result;
 #else
-    // On Mac, Last active browser of BrowserList is not updated in this case.
-    // So update it manually.
+    // On Mac, the parent widget doesn't get activated in this case. Then
+    // shortcut handling could malfunction. So activate it.
+    // https://github.com/brave/brave-browser/issues/29993
     auto* widget = GetWidget();
     DCHECK(widget);
     widget = widget->GetTopLevelWidget();
-
-    auto* browser_view =
-        BrowserView::GetBrowserViewForNativeWindow(widget->GetNativeWindow());
-    DCHECK(browser_view);
-
-    BrowserList::SetLastActive(browser_view->browser());
+    widget->Activate();
 
     return RootView::OnMousePressed(event);
 #endif
