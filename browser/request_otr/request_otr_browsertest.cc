@@ -317,6 +317,26 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, HistoryAfterOTRNavigation) {
   ASSERT_EQ(GetHistoryCount(), 0);
 }
 
+IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
+                       WindowOpenAfterStandardNavigation) {
+  NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
+  ASSERT_TRUE(content::ExecJs(
+      web_contents(), "window.open('notsensitive.b.com/simple.html');"));
+  ASSERT_NE(content::EvalJs(web_contents(), "window.opener"), nullptr);
+}
+
+IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, WindowOpenAfterOTRNavigation) {
+  ASSERT_TRUE(InstallMockExtension());
+
+  // Always use request-otr for sensitive sites (skipping interstitial).
+  SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kAlways);
+
+  NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
+  ASSERT_TRUE(content::ExecJs(
+      web_contents(), "window.open('notsensitive.b.com/simple.html');"));
+  ASSERT_EQ(content::EvalJs(web_contents(), "window.opener"), nullptr);
+}
+
 class RequestOTRDisabledBrowserTest : public RequestOTRBrowserTestBase {
  public:
   RequestOTRDisabledBrowserTest() {
