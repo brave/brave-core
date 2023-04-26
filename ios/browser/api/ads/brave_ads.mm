@@ -241,11 +241,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 - (void)initializeWithSysInfo:(BraveAdsSysInfo*)sysInfo
              buildChannelInfo:(BraveAdsBuildChannelInfo*)buildChannelInfo
                    completion:(void (^)(bool))completion {
-  if ([self isAdsServiceRunning]) {
-    completion(false);  // Already running
-    return;
-  }
-
   auto cppSysInfo =
       sysInfo ? sysInfo.cppObjPtr : brave_ads::mojom::SysInfo::New();
   ads->SetSysInfo(std::move(cppSysInfo));
