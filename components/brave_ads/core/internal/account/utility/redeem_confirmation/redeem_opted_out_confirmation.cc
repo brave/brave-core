@@ -23,15 +23,21 @@
 
 namespace brave_ads {
 
+RedeemOptedOutConfirmation::RedeemOptedOutConfirmation(
+    RedeemOptedOutConfirmation&&) noexcept = default;
+
+RedeemOptedOutConfirmation& RedeemOptedOutConfirmation::operator=(
+    RedeemOptedOutConfirmation&&) noexcept = default;
+
 RedeemOptedOutConfirmation::~RedeemOptedOutConfirmation() = default;
 
 // static
 void RedeemOptedOutConfirmation::CreateAndRedeem(
     base::WeakPtr<RedeemConfirmationDelegate> delegate,
     const ConfirmationInfo& confirmation) {
-  auto* redeem_confirmation =
-      new RedeemOptedOutConfirmation(std::move(delegate));
-  redeem_confirmation->Redeem(confirmation);
+  RedeemOptedOutConfirmation redeem_confirmation(std::move(delegate));
+  RedeemOptedOutConfirmation::Redeem(std::move(redeem_confirmation),
+                                     confirmation);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -42,21 +48,22 @@ RedeemOptedOutConfirmation::RedeemOptedOutConfirmation(
   delegate_ = std::move(delegate);
 }
 
-void RedeemOptedOutConfirmation::Destroy() {
-  delete this;
-}
-
-void RedeemOptedOutConfirmation::Redeem(const ConfirmationInfo& confirmation) {
+// static
+void RedeemOptedOutConfirmation::Redeem(
+    RedeemOptedOutConfirmation redeem_confirmation,
+    const ConfirmationInfo& confirmation) {
   DCHECK(IsValid(confirmation));
   DCHECK(!ShouldRewardUser());
   DCHECK(!confirmation.opted_in);
 
   BLOG(1, "Redeem opted-out confirmation");
 
-  CreateConfirmation(confirmation);
+  CreateConfirmation(std::move(redeem_confirmation), confirmation);
 }
 
+// static
 void RedeemOptedOutConfirmation::CreateConfirmation(
+    RedeemOptedOutConfirmation redeem_confirmation,
     const ConfirmationInfo& confirmation) {
   BLOG(1, "CreateConfirmation");
   BLOG(2, "POST /v3/confirmation/{transactionId}");
@@ -69,10 +76,12 @@ void RedeemOptedOutConfirmation::CreateConfirmation(
   AdsClientHelper::GetInstance()->UrlRequest(
       std::move(url_request),
       base::BindOnce(&RedeemOptedOutConfirmation::OnCreateConfirmation,
-                     base::Unretained(this), confirmation));
+                     std::move(redeem_confirmation), confirmation));
 }
 
+// static
 void RedeemOptedOutConfirmation::OnCreateConfirmation(
+    RedeemOptedOutConfirmation redeem_confirmation,
     const ConfirmationInfo& confirmation,
     const mojom::UrlResponseInfo& url_response) {
   BLOG(1, "OnCreateConfirmation");
@@ -85,11 +94,12 @@ void RedeemOptedOutConfirmation::OnCreateConfirmation(
         url_response.status_code != net::HTTP_CONFLICT &&
         url_response.status_code != net::HTTP_BAD_REQUEST &&
         url_response.status_code != net::HTTP_CREATED;
-    return FailedToRedeemConfirmation(confirmation, should_retry,
-                                      /*should_backoff*/ should_retry);
+    return redeem_confirmation.FailedToRedeemConfirmation(
+        confirmation, should_retry,
+        /*should_backoff*/ should_retry);
   }
 
-  SuccessfullyRedeemedConfirmation(confirmation);
+  redeem_confirmation.SuccessfullyRedeemedConfirmation(confirmation);
 }
 
 void RedeemOptedOutConfirmation::SuccessfullyRedeemedConfirmation(
@@ -103,8 +113,6 @@ void RedeemOptedOutConfirmation::SuccessfullyRedeemedConfirmation(
   if (delegate_) {
     delegate_->OnDidRedeemOptedOutConfirmation(confirmation);
   }
-
-  Destroy();
 }
 
 void RedeemOptedOutConfirmation::FailedToRedeemConfirmation(
@@ -121,8 +129,6 @@ void RedeemOptedOutConfirmation::FailedToRedeemConfirmation(
     delegate_->OnFailedToRedeemConfirmation(confirmation, should_retry,
                                             should_backoff);
   }
-
-  Destroy();
 }
 
 }  // namespace brave_ads

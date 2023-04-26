@@ -14,17 +14,14 @@ namespace brave_ads {
 
 struct ConfirmationInfo;
 
-// Self-destructs after calling |SuccessfullyRedeemedConfirmation| or
-// |FailedToRedeemConfirmation|.
 class RedeemOptedOutConfirmation final {
  public:
   RedeemOptedOutConfirmation(const RedeemOptedOutConfirmation&) = delete;
   RedeemOptedOutConfirmation& operator=(const RedeemOptedOutConfirmation&) =
       delete;
 
-  RedeemOptedOutConfirmation(RedeemOptedOutConfirmation&&) noexcept = delete;
-  RedeemOptedOutConfirmation& operator=(RedeemOptedOutConfirmation&&) noexcept =
-      delete;
+  RedeemOptedOutConfirmation(RedeemOptedOutConfirmation&&) noexcept;
+  RedeemOptedOutConfirmation& operator=(RedeemOptedOutConfirmation&&) noexcept;
 
   ~RedeemOptedOutConfirmation();
 
@@ -36,13 +33,15 @@ class RedeemOptedOutConfirmation final {
   explicit RedeemOptedOutConfirmation(
       base::WeakPtr<RedeemConfirmationDelegate> delegate);
 
-  void Destroy();
+  static void Redeem(RedeemOptedOutConfirmation redeem_confirmation,
+                     const ConfirmationInfo& confirmation);
 
-  void Redeem(const ConfirmationInfo& confirmation);
-
-  void CreateConfirmation(const ConfirmationInfo& confirmation);
-  void OnCreateConfirmation(const ConfirmationInfo& confirmation,
-                            const mojom::UrlResponseInfo& url_response);
+  static void CreateConfirmation(RedeemOptedOutConfirmation redeem_confirmation,
+                                 const ConfirmationInfo& confirmation);
+  static void OnCreateConfirmation(
+      RedeemOptedOutConfirmation redeem_confirmation,
+      const ConfirmationInfo& confirmation,
+      const mojom::UrlResponseInfo& url_response);
 
   void SuccessfullyRedeemedConfirmation(const ConfirmationInfo& confirmation);
   void FailedToRedeemConfirmation(const ConfirmationInfo& confirmation,
