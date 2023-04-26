@@ -719,20 +719,26 @@ void Contribution::OnResult(mojom::ContributionInfoPtr contribution,
   // transaction is completed by the provider.
   OnContributionRequestCompleted(
       queue_id, result == mojom::Result::LEDGER_OK ||
-                    result == mojom::Result::RETRY_PENDING_TRANSACTION);
+                    result == mojom::Result::RETRY_PENDING_TRANSACTION_SHORT ||
+                    result == mojom::Result::RETRY_PENDING_TRANSACTION_LONG);
 
   if (!contribution) {
     BLOG(0, "Contribution is null");
     return;
   }
 
-  if (result == mojom::Result::RETRY_SHORT) {
-    SetRetryTimer(contribution->contribution_id, base::Seconds(5));
+  if (result == mojom::Result::RETRY_PENDING_TRANSACTION_SHORT) {
+    SetRetryTimer(contribution->contribution_id, base::Seconds(10));
     return;
   }
 
-  if (result == mojom::Result::RETRY_PENDING_TRANSACTION) {
+  if (result == mojom::Result::RETRY_PENDING_TRANSACTION_LONG) {
     SetRetryTimer(contribution->contribution_id, base::Minutes(5));
+    return;
+  }
+
+  if (result == mojom::Result::RETRY_SHORT) {
+    SetRetryTimer(contribution->contribution_id, base::Seconds(5));
     return;
   }
 

@@ -90,14 +90,24 @@ INSTANTIATE_TEST_SUITE_P(
       base::unexpected(Error::kFailedToParseBody)
     },
     GetTransactionStatusUpholdParamType{
-      "HTTP_200_transaction_not_completed",
+      "HTTP_200_transaction_pending",
+      net::HTTP_OK,
+      R"(
+        {
+          "status": "processing"
+        }
+      )",
+      base::unexpected(Error::kTransactionPending)
+    },
+    GetTransactionStatusUpholdParamType{
+      "HTTP_200_unexpected_transaction_status",
       net::HTTP_OK,
       R"(
         {
           "status": "failed"
         }
       )",
-      false
+      base::unexpected(Error::kUnexpectedTransactionStatus)
     },
     GetTransactionStatusUpholdParamType{
       "HTTP_200_transaction_completed",
@@ -107,7 +117,7 @@ INSTANTIATE_TEST_SUITE_P(
           "status": "completed"
         }
       )",
-      true
+      {}
     },
     GetTransactionStatusUpholdParamType{
       "HTTP_401_access_token_expired",
