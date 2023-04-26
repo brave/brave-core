@@ -1,5 +1,5 @@
 diff --git a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
-index b283b86002cac0c35e9b855e72d6511ce78ff8eb..c2fb8cd560c27f86d3ab6225bbd1cfe106f82580 100644
+index b283b86002cac0c35e9b855e72d6511ce78ff8eb..ea1bb8cd93de31361c92ebbeebc47c652153a81c 100644
 --- a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
 +++ b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
 @@ -47,7 +47,7 @@ public class SiteSettingsCategory {
@@ -7,7 +7,7 @@ index b283b86002cac0c35e9b855e72d6511ce78ff8eb..c2fb8cd560c27f86d3ab6225bbd1cfe1
              Type.USE_STORAGE, Type.AUTO_DARK_WEB_CONTENT, Type.REQUEST_DESKTOP_SITE,
              Type.FEDERATED_IDENTITY_API, Type.THIRD_PARTY_COOKIES, Type.SITE_DATA, Type.ANTI_ABUSE,
 -            Type.NUM_ENTRIES})
-+            Type.NUM_ENTRIES, Type.AUTOPLAY, Type.BRAVE_GOOGLE_SIGN_IN})
++            Type.NUM_ENTRIES, Type.AUTOPLAY, Type.BRAVE_GOOGLE_SIGN_IN, Type.BRAVE_LOCALHOST_ACCESS})
      @Retention(RetentionPolicy.SOURCE)
      public @interface Type {
          // All updates here must also be reflected in {@link #preferenceKey(int)
@@ -15,12 +15,12 @@ index b283b86002cac0c35e9b855e72d6511ce78ff8eb..c2fb8cd560c27f86d3ab6225bbd1cfe1
          int THIRD_PARTY_COOKIES = 26;
          int SITE_DATA = 27;
          int ANTI_ABUSE = 28;
-+        int AUTOPLAY = 29; int BRAVE_GOOGLE_SIGN_IN = 30;
++        int AUTOPLAY = 29; int BRAVE_GOOGLE_SIGN_IN = 30; int BRAVE_LOCALHOST_ACCESS = 31;
          /**
           * Number of handled categories used for calculating array sizes.
           */
 -        int NUM_ENTRIES = 29;
-+        int NUM_ENTRIES = 31;
++        int NUM_ENTRIES = 32;
      }
  
      private final BrowserContextHandle mBrowserContextHandle;
