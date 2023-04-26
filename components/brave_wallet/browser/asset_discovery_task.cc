@@ -451,9 +451,9 @@ void AssetDiscoveryTask::FetchNFTsFromSimpleHash(
                      weak_ptr_factory_.GetWeakPtr(), std::move(nfts_so_far),
                      coin, std::move(callback));
 
-  api_request_helper_->Request("GET", url, "", "", true,
-                               std::move(internal_callback),
-                               MakeBraveServicesKeyHeader());
+  api_request_helper_->Request("GET", url, "", "", std::move(internal_callback),
+                               MakeBraveServicesKeyHeader(),
+                               {.auto_retry_on_network_change = true});
 }
 
 void AssetDiscoveryTask::OnFetchNFTsFromSimpleHash(
@@ -489,9 +489,9 @@ void AssetDiscoveryTask::OnFetchNFTsFromSimpleHash(
         base::BindOnce(&AssetDiscoveryTask::OnFetchNFTsFromSimpleHash,
                        weak_ptr_factory_.GetWeakPtr(), std::move(nfts_so_far),
                        coin, std::move(callback));
-    api_request_helper_->Request("GET", result.value().first, "", "", true,
-                                 std::move(internal_callback),
-                                 MakeBraveServicesKeyHeader());
+    api_request_helper_->Request(
+        "GET", result.value().first, "", "", std::move(internal_callback),
+        MakeBraveServicesKeyHeader(), {.auto_retry_on_network_change = true});
     return;
   }
 

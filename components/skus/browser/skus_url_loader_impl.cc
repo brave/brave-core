@@ -66,11 +66,10 @@ void SkusUrlLoaderImpl::BeginFetch(
           GURL(static_cast<std::string>(req.url)),
           // pass along request body
           std::string(req.body.begin(), req.body.end()), "application/json",
-          true,
           base::BindOnce(&SkusUrlLoaderImpl::OnFetchComplete,
                          base::Unretained(this), std::move(callback),
                          std::move(ctx)),
-          headers, -1u);
+          headers, {.auto_retry_on_network_change = true});
 }
 
 void SkusUrlLoaderImpl::Request(
@@ -78,13 +77,11 @@ void SkusUrlLoaderImpl::Request(
     const GURL& url,
     const std::string& payload,
     const std::string& payload_content_type,
-    bool auto_retry_on_network_change,
     api_request_helper::APIRequestHelper::ResultCallback callback,
     const base::flat_map<std::string, std::string>& headers,
-    size_t max_body_size /* = -1u */) {
+    const api_request_helper::APIRequestOptions& request_options) {
   api_request_helper_->Request(method, url, payload, payload_content_type,
-                               auto_retry_on_network_change,
-                               std::move(callback), headers, max_body_size);
+                               std::move(callback), headers, request_options);
 }
 
 void SkusUrlLoaderImpl::OnFetchComplete(

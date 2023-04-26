@@ -294,7 +294,7 @@ void SuggestionsController::EnsureSimilarityMatrixIsUpdating() {
                              "/source-suggestions/source_similarity_t10." +
                              locale + ".json");
               controller->api_request_helper_->Request(
-                  "GET", url, "", "", true,
+                  "GET", url, "", "",
                   base::BindOnce(
                       [](SuggestionsController* controller, std::string locale,
                          api_request_helper::APIRequestResult
@@ -307,7 +307,8 @@ void SuggestionsController::EnsureSimilarityMatrixIsUpdating() {
                         controller->on_current_update_complete_ =
                             std::make_unique<base::OneShotEvent>();
                       },
-                      base::Unretained(controller), locale));
+                      base::Unretained(controller), locale),
+                  {}, {.auto_retry_on_network_change = true});
             },
             base::Unretained(controller), locale));
       },
