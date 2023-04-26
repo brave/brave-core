@@ -35,8 +35,8 @@ class Conversions final : public TableInterface {
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const ConversionList& conversion);
 
-  std::string BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
-                                       const ConversionList& conversions) const;
+  std::string BuildInsertOrUpdateSql(mojom::DBCommandInfo* command,
+                                     const ConversionList& conversions) const;
 };
 
 }  // namespace brave_ads::database::table

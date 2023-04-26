@@ -41,11 +41,10 @@ class Deposits final : public TableInterface {
   void Migrate(mojom::DBTransactionInfo* transaction, int to_version) override;
 
  private:
-  std::string BuildInsertOrUpdateQuery(
-      mojom::DBCommandInfo* command,
-      const CreativeAdList& creative_ads) const;
-  std::string BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
-                                       const DepositInfo& deposit) const;
+  std::string BuildInsertOrUpdateSql(mojom::DBCommandInfo* command,
+                                     const CreativeAdList& creative_ads) const;
+  std::string BuildInsertOrUpdateSql(mojom::DBCommandInfo* command,
+                                     const DepositInfo& deposit) const;
 };
 
 }  // namespace brave_ads::database::table

@@ -36,9 +36,8 @@ class CreativeAds final : public TableInterface {
   void Migrate(mojom::DBTransactionInfo* transaction, int to_version) override;
 
  private:
-  std::string BuildInsertOrUpdateQuery(
-      mojom::DBCommandInfo* command,
-      const CreativeAdList& creative_ads) const;
+  std::string BuildInsertOrUpdateSql(mojom::DBCommandInfo* command,
+                                     const CreativeAdList& creative_ads) const;
 };
 
 }  // namespace brave_ads::database::table

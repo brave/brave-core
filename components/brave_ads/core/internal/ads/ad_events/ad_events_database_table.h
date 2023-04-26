@@ -40,8 +40,8 @@ class AdEvents final : public TableInterface {
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const AdEventList& ad_event);
 
-  std::string BuildInsertOrUpdateQuery(mojom::DBCommandInfo* command,
-                                       const AdEventList& ad_events) const;
+  std::string BuildInsertOrUpdateSql(mojom::DBCommandInfo* command,
+                                     const AdEventList& ad_events) const;
 };
 
 }  // namespace brave_ads::database::table

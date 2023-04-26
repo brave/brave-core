@@ -45,10 +45,10 @@ void RecordAdEvents(const AdType& type,
                     int count);
 
 void FireAdEvent(const AdEventInfo& ad_event);
-void FireAdEvents(const AdEventInfo& ad_event, int count);
+void FireAdEvents(const AdEventInfo& ad_event, size_t count);
 
-int GetAdEventCount(const AdType& ad_type,
-                    const ConfirmationType& confirmation_type);
+size_t GetAdEventCount(const AdType& ad_type,
+                       const ConfirmationType& confirmation_type);
 
 void ResetAdEvents(ResultAdEventsCallback callback);
 

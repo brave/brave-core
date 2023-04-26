@@ -8,10 +8,8 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/functional/bind.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
@@ -22,11 +20,11 @@ namespace {
 
 constexpr char kTableName[] = "campaigns";
 
-int BindParameters(mojom::DBCommandInfo* command,
-                   const CreativeAdList& creative_ads) {
+size_t BindParameters(mojom::DBCommandInfo* command,
+                      const CreativeAdList& creative_ads) {
   DCHECK(command);
 
-  int count = 0;
+  size_t count = 0;
 
   int index = 0;
   for (const auto& creative_ad : creative_ads) {
@@ -49,20 +47,14 @@ void MigrateToV24(mojom::DBTransactionInfo* transaction) {
 
   DropTable(transaction, "campaigns");
 
-  const std::string query =
-      "CREATE TABLE campaigns "
-      "(campaign_id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE, "
-      "start_at_timestamp TIMESTAMP NOT NULL, "
-      "end_at_timestamp TIMESTAMP NOT NULL, "
-      "daily_cap INTEGER DEFAULT 0 NOT NULL, "
-      "advertiser_id TEXT NOT NULL, "
-      "priority INTEGER NOT NULL DEFAULT 0, "
-      "ptr DOUBLE NOT NULL DEFAULT 1)";
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->command = query;
-
+  command->sql =
+      "CREATE TABLE campaigns (campaign_id TEXT NOT NULL PRIMARY KEY UNIQUE ON "
+      "CONFLICT REPLACE, start_at_timestamp TIMESTAMP NOT NULL, "
+      "end_at_timestamp TIMESTAMP NOT NULL, daily_cap INTEGER DEFAULT 0 NOT "
+      "NULL, advertiser_id TEXT NOT NULL, priority INTEGER NOT NULL DEFAULT 0, "
+      "ptr DOUBLE NOT NULL DEFAULT 1);";
   transaction->commands.push_back(std::move(command));
 }
 
@@ -71,11 +63,9 @@ void MigrateToV24(mojom::DBTransactionInfo* transaction) {
 void Campaigns::Delete(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
-  DeleteTable(transaction.get(), GetTableName());
+  DeleteTable(&*transaction, GetTableName());
 
-  AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      base::BindOnce(&OnResultCallback, std::move(callback)));
+  RunTransaction(std::move(transaction), std::move(callback));
 }
 
 void Campaigns::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
@@ -88,8 +78,7 @@ void Campaigns::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::RUN;
-  command->command = BuildInsertOrUpdateQuery(command.get(), creative_ads);
-
+  command->sql = BuildInsertOrUpdateSql(&*command, creative_ads);
   transaction->commands.push_back(std::move(command));
 }
 
@@ -115,16 +104,16 @@ void Campaigns::Migrate(mojom::DBTransactionInfo* transaction,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-std::string Campaigns::BuildInsertOrUpdateQuery(
+std::string Campaigns::BuildInsertOrUpdateSql(
     mojom::DBCommandInfo* command,
     const CreativeAdList& creative_ads) const {
   DCHECK(command);
 
-  const int binded_parameters_count = BindParameters(command, creative_ads);
+  const size_t binded_parameters_count = BindParameters(command, creative_ads);
 
   return base::ReplaceStringPlaceholders(
       "INSERT OR REPLACE INTO $1 (campaign_id, start_at_timestamp, "
-      "end_at_timestamp, daily_cap, advertiser_id, priority, ptr) VALUES $2",
+      "end_at_timestamp, daily_cap, advertiser_id, priority, ptr) VALUES $2;",
       {GetTableName(), BuildBindingParameterPlaceholders(
                            /*parameters_count*/ 7, binded_parameters_count)},
       nullptr);

@@ -11,8 +11,8 @@
 
 namespace brave_ads::database {
 
-void OnResultCallback(ResultCallback callback,
-                      mojom::DBCommandResponseInfoPtr command_response);
+void RunTransaction(mojom::DBTransactionInfoPtr transaction,
+                    ResultCallback callback);
 
 }  // namespace brave_ads::database
 

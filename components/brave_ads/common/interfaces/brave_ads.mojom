@@ -161,7 +161,7 @@ struct DBCommandInfo {
   };
 
   Type type;
-  string command;
+  string sql;
   array<DBCommandBindingInfo> bindings;
   array<RecordBindingType> record_bindings;
 };

@@ -67,7 +67,7 @@ class CreativeNotificationAds final : public TableInterface {
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const CreativeNotificationAdList& creative_ads);
 
-  std::string BuildInsertOrUpdateQuery(
+  std::string BuildInsertOrUpdateSql(
       mojom::DBCommandInfo* command,
       const CreativeNotificationAdList& creative_ads) const;
 

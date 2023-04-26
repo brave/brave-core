@@ -58,8 +58,8 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, Serve) {
         EXPECT_EQ(kDimensions, dimensions);
         EXPECT_TRUE(ad);
         EXPECT_TRUE(ad->IsValid());
-        EXPECT_EQ(1, GetAdEventCount(AdType::kInlineContentAd,
-                                     ConfirmationType::kServed));
+        EXPECT_EQ(1U, GetAdEventCount(AdType::kInlineContentAd,
+                                      ConfirmationType::kServed));
       }));
 }
 
@@ -73,7 +73,7 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerServedEvent) {
 
   // Assert
   EXPECT_EQ(
-      1, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kServed));
+      1U, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kServed));
   EXPECT_EQ(0, GetHistoryItemCount());
   EXPECT_EQ(0, GetTransactionCount());
 }
@@ -95,7 +95,7 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
 
   // Assert
   EXPECT_EQ(
-      1, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kViewed));
+      1U, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kViewed));
   EXPECT_EQ(1, GetHistoryItemCount());
   EXPECT_EQ(1, GetTransactionCount());
 }
@@ -116,11 +116,11 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerClickedEvent) {
 
   // Assert
   EXPECT_EQ(
-      1, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kServed));
+      1U, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kServed));
   EXPECT_EQ(
-      1, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kViewed));
-  EXPECT_EQ(
-      1, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kClicked));
+      1U, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kViewed));
+  EXPECT_EQ(1U, GetAdEventCount(AdType::kInlineContentAd,
+                                ConfirmationType::kClicked));
   EXPECT_EQ(2, GetHistoryItemCount());
   EXPECT_EQ(2, GetTransactionCount());
 }

@@ -191,7 +191,7 @@ void MockRunDBTransaction(AdsClientMock& mock, Database& database) {
         mojom::DBCommandResponseInfoPtr command_response =
             mojom::DBCommandResponseInfo::New();
 
-        database.RunTransaction(std::move(transaction), command_response.get());
+        database.RunTransaction(std::move(transaction), &*command_response);
 
         std::move(callback).Run(std::move(command_response));
       }));

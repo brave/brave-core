@@ -85,7 +85,7 @@ class CreativeInlineContentAds final : public TableInterface {
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const CreativeInlineContentAdList& creative_ads);
 
-  std::string BuildInsertOrUpdateQuery(
+  std::string BuildInsertOrUpdateSql(
       mojom::DBCommandInfo* command,
       const CreativeInlineContentAdList& creative_ads) const;
 

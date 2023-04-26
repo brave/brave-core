@@ -25,11 +25,25 @@ namespace {
 
 constexpr char kTableName[] = "creative_ad_conversions";
 
-int BindParameters(mojom::DBCommandInfo* command,
-                   const ConversionList& conversions) {
+void BindRecords(mojom::DBCommandInfo* command) {
   DCHECK(command);
 
-  int count = 0;
+  command->record_bindings = {
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // creative_set_id
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // type
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // url_pattern
+      mojom::DBCommandInfo::RecordBindingType::
+          STRING_TYPE,  // advertiser_public_key
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,  // observation_window
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE  // expire_at
+  };
+}
+
+size_t BindParameters(mojom::DBCommandInfo* command,
+                      const ConversionList& conversions) {
+  DCHECK(command);
+
+  size_t count = 0;
 
   int index = 0;
   for (const auto& conversion : conversions) {
@@ -74,7 +88,7 @@ void OnGetConversions(GetConversionsCallback callback,
   ConversionList conversions;
 
   for (const auto& record : command_response->result->get_records()) {
-    const ConversionInfo conversion = GetFromRecord(record.get());
+    const ConversionInfo conversion = GetFromRecord(&*record);
     conversions.push_back(conversion);
   }
 
@@ -86,21 +100,14 @@ void MigrateToV23(mojom::DBTransactionInfo* transaction) {
 
   DropTable(transaction, "ad_conversions");
 
-  const std::string query =
-      "CREATE TABLE IF NOT EXISTS creative_ad_conversions "
-      "(creative_set_id TEXT NOT NULL, "
-      "type TEXT NOT NULL, "
-      "url_pattern TEXT NOT NULL, "
-      "advertiser_public_key TEXT, "
-      "observation_window INTEGER NOT NULL, "
-      "expiry_timestamp TIMESTAMP NOT NULL, "
-      "UNIQUE(creative_set_id, type) ON CONFLICT REPLACE, "
-      "PRIMARY KEY(creative_set_id, type))";
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->command = query;
-
+  command->sql =
+      "CREATE TABLE IF NOT EXISTS creative_ad_conversions (creative_set_id "
+      "TEXT NOT NULL, type TEXT NOT NULL, url_pattern TEXT NOT NULL, "
+      "advertiser_public_key TEXT, observation_window INTEGER NOT NULL, "
+      "expiry_timestamp TIMESTAMP NOT NULL, UNIQUE(creative_set_id, type) ON "
+      "CONFLICT REPLACE, PRIMARY KEY(creative_set_id, type));";
   transaction->commands.push_back(std::move(command));
 }
 
@@ -114,35 +121,22 @@ void Conversions::Save(const ConversionList& conversions,
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
-  InsertOrUpdate(transaction.get(), conversions);
+  InsertOrUpdate(&*transaction, conversions);
 
-  AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      base::BindOnce(&OnResultCallback, std::move(callback)));
+  RunTransaction(std::move(transaction), std::move(callback));
 }
 
 void Conversions::GetAll(GetConversionsCallback callback) const {
-  const std::string query = base::ReplaceStringPlaceholders(
-      "SELECT ac.creative_set_id, ac.type, ac.url_pattern, "
-      "ac.advertiser_public_key, ac.observation_window, ac.expiry_timestamp "
-      "FROM $1 AS ac WHERE $2 < expiry_timestamp",
-      {GetTableName(), TimeAsTimestampString(base::Time::Now())}, nullptr);
+  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
-  command->command = query;
-
-  command->record_bindings = {
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // creative_set_id
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // type
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // url_pattern
-      mojom::DBCommandInfo::RecordBindingType::
-          STRING_TYPE,  // advertiser_public_key
-      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,  // observation_window
-      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE  // expire_at
-  };
-
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
+  command->sql = base::ReplaceStringPlaceholders(
+      "SELECT ac.creative_set_id, ac.type, ac.url_pattern, "
+      "ac.advertiser_public_key, ac.observation_window, ac.expiry_timestamp "
+      "FROM $1 AS ac WHERE $2 < expiry_timestamp;",
+      {GetTableName(), TimeAsTimestampString(base::Time::Now())}, nullptr);
+  BindRecords(&*command);
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
@@ -153,19 +147,14 @@ void Conversions::GetAll(GetConversionsCallback callback) const {
 void Conversions::PurgeExpired(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
-  const std::string query = base::ReplaceStringPlaceholders(
-      "DELETE FROM $1 WHERE $2 >= expiry_timestamp",
-      {GetTableName(), TimeAsTimestampString(base::Time::Now())}, nullptr);
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->command = query;
-
+  command->sql = base::ReplaceStringPlaceholders(
+      "DELETE FROM $1 WHERE $2 >= expiry_timestamp;",
+      {GetTableName(), TimeAsTimestampString(base::Time::Now())}, nullptr);
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      base::BindOnce(&OnResultCallback, std::move(callback)));
+  RunTransaction(std::move(transaction), std::move(callback));
 }
 
 std::string Conversions::GetTableName() const {
@@ -200,21 +189,20 @@ void Conversions::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::RUN;
-  command->command = BuildInsertOrUpdateQuery(command.get(), conversions);
-
+  command->sql = BuildInsertOrUpdateSql(&*command, conversions);
   transaction->commands.push_back(std::move(command));
 }
 
-std::string Conversions::BuildInsertOrUpdateQuery(
+std::string Conversions::BuildInsertOrUpdateSql(
     mojom::DBCommandInfo* command,
     const ConversionList& conversions) const {
   DCHECK(command);
 
-  const int binded_parameters_count = BindParameters(command, conversions);
+  const size_t binded_parameters_count = BindParameters(command, conversions);
 
   return base::ReplaceStringPlaceholders(
       "INSERT OR REPLACE INTO $1 (creative_set_id, type, url_pattern, "
-      "advertiser_public_key, observation_window, expiry_timestamp) VALUES $2",
+      "advertiser_public_key, observation_window, expiry_timestamp) VALUES $2;",
       {GetTableName(), BuildBindingParameterPlaceholders(
                            /*parameters_count*/ 6, binded_parameters_count)},
       nullptr);

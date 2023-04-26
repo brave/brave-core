@@ -12,6 +12,7 @@
 #include "base/functional/bind.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/containers/container_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
@@ -36,11 +37,45 @@ constexpr char kTableName[] = "creative_ad_notifications";
 
 constexpr int kDefaultBatchSize = 50;
 
-int BindParameters(mojom::DBCommandInfo* command,
-                   const CreativeNotificationAdList& creative_ads) {
+void BindRecords(mojom::DBCommandInfo* command) {
   DCHECK(command);
 
-  int count = 0;
+  command->record_bindings = {
+      mojom::DBCommandInfo::RecordBindingType::
+          STRING_TYPE,  // creative_instance_id
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // creative_set_id
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // campaign_id
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // start_at
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // end_at
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // daily_cap
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // advertiser_id
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // priority
+      mojom::DBCommandInfo::RecordBindingType::BOOL_TYPE,    // conversion
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_day
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_week
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_month
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // total_max
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // value
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // split_test_group
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // segment
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // embedding
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // geo_target
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // target_url
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // title
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // body
+      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // ptr
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // dayparts->dow
+      mojom::DBCommandInfo::RecordBindingType::
+          INT_TYPE,  // dayparts->start_minute
+      mojom::DBCommandInfo::RecordBindingType::INT_TYPE  // dayparts->end_minute
+  };
+}
+
+size_t BindParameters(mojom::DBCommandInfo* command,
+                      const CreativeNotificationAdList& creative_ads) {
+  DCHECK(command);
+
+  size_t count = 0;
 
   int index = 0;
   for (const auto& creative_ad : creative_ads) {
@@ -101,7 +136,7 @@ CreativeNotificationAdMap GroupCreativeAdsFromResponse(
   CreativeNotificationAdMap creative_ads;
 
   for (const auto& record : command_response->result->get_records()) {
-    const CreativeNotificationAdInfo creative_ad = GetFromRecord(record.get());
+    const CreativeNotificationAdInfo creative_ad = GetFromRecord(&*record);
 
     const auto iter = creative_ads.find(creative_ad.creative_instance_id);
     if (iter == creative_ads.cend()) {
@@ -183,19 +218,13 @@ void MigrateToV24(mojom::DBTransactionInfo* transaction) {
 
   DropTable(transaction, "creative_ad_notifications");
 
-  const std::string query =
-      "CREATE TABLE creative_ad_notifications "
-      "(creative_instance_id TEXT NOT NULL PRIMARY KEY UNIQUE "
-      "ON CONFLICT REPLACE, "
-      "creative_set_id TEXT NOT NULL, "
-      "campaign_id TEXT NOT NULL, "
-      "title TEXT NOT NULL, "
-      "body TEXT NOT NULL)";
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->command = query;
-
+  command->sql =
+      "CREATE TABLE creative_ad_notifications (creative_instance_id "
+      "TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE, "
+      "creative_set_id TEXT NOT NULL, campaign_id TEXT NOT NULL, "
+      "title TEXT NOT NULL, body TEXT NOT NULL);";
   transaction->commands.push_back(std::move(command));
 }
 
@@ -219,38 +248,30 @@ void CreativeNotificationAds::Save(
       SplitVector(creative_ads, batch_size_);
 
   for (const auto& batch : batches) {
-    InsertOrUpdate(transaction.get(), batch);
+    InsertOrUpdate(&*transaction, batch);
 
     const CreativeAdList creative_ads_batch(batch.cbegin(), batch.cend());
-    campaigns_database_table_.InsertOrUpdate(transaction.get(),
-                                             creative_ads_batch);
-    creative_ads_database_table_.InsertOrUpdate(transaction.get(),
+    campaigns_database_table_.InsertOrUpdate(&*transaction, creative_ads_batch);
+    creative_ads_database_table_.InsertOrUpdate(&*transaction,
                                                 creative_ads_batch);
-    dayparts_database_table_.InsertOrUpdate(transaction.get(),
-                                            creative_ads_batch);
-    deposits_database_table_.InsertOrUpdate(transaction.get(),
-                                            creative_ads_batch);
-    embeddings_database_table_.InsertOrUpdate(transaction.get(),
+    dayparts_database_table_.InsertOrUpdate(&*transaction, creative_ads_batch);
+    deposits_database_table_.InsertOrUpdate(&*transaction, creative_ads_batch);
+    embeddings_database_table_.InsertOrUpdate(&*transaction,
                                               creative_ads_batch);
-    geo_targets_database_table_.InsertOrUpdate(transaction.get(),
+    geo_targets_database_table_.InsertOrUpdate(&*transaction,
                                                creative_ads_batch);
-    segments_database_table_.InsertOrUpdate(transaction.get(),
-                                            creative_ads_batch);
+    segments_database_table_.InsertOrUpdate(&*transaction, creative_ads_batch);
   }
 
-  AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      base::BindOnce(&OnResultCallback, std::move(callback)));
+  RunTransaction(std::move(transaction), std::move(callback));
 }
 
 void CreativeNotificationAds::Delete(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
-  DeleteTable(transaction.get(), GetTableName());
+  DeleteTable(&*transaction, GetTableName());
 
-  AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      base::BindOnce(&OnResultCallback, std::move(callback)));
+  RunTransaction(std::move(transaction), std::move(callback));
 }
 
 void CreativeNotificationAds::GetForSegments(
@@ -261,7 +282,11 @@ void CreativeNotificationAds::GetForSegments(
                                    /*creative_ads*/ {});
   }
 
-  const std::string query = base::ReplaceStringPlaceholders(
+  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::READ;
+  command->sql = base::ReplaceStringPlaceholders(
       "SELECT can.creative_instance_id, can.creative_set_id, can.campaign_id, "
       "cam.start_at_timestamp, cam.end_at_timestamp, cam.daily_cap, "
       "cam.advertiser_id, cam.priority, ca.conversion, ca.per_day, "
@@ -275,52 +300,18 @@ void CreativeNotificationAds::GetForSegments(
       "can.creative_instance_id INNER JOIN geo_targets AS gt ON gt.campaign_id "
       "= can.campaign_id INNER JOIN dayparts AS dp ON dp.campaign_id = "
       "can.campaign_id WHERE s.segment IN $2 AND $3 BETWEEN "
-      "cam.start_at_timestamp AND cam.end_at_timestamp",
+      "cam.start_at_timestamp AND cam.end_at_timestamp;",
       {GetTableName(), BuildBindingParameterPlaceholder(segments.size()),
        TimeAsTimestampString(base::Time::Now())},
       nullptr);
-
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::READ;
-  command->command = query;
+  BindRecords(&*command);
 
   int index = 0;
   for (const auto& segment : segments) {
-    BindString(command.get(), index, base::ToLowerASCII(segment));
+    BindString(&*command, index, base::ToLowerASCII(segment));
     index++;
   }
 
-  command->record_bindings = {
-      mojom::DBCommandInfo::RecordBindingType::
-          STRING_TYPE,  // creative_instance_id
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // creative_set_id
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // campaign_id
-      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // start_at
-      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // end_at
-      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // daily_cap
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // advertiser_id
-      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // priority
-      mojom::DBCommandInfo::RecordBindingType::BOOL_TYPE,    // conversion
-      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_day
-      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_week
-      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_month
-      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // total_max
-      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // value
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // split_test_group
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // segment
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // embedding
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // geo_target
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // target_url
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // title
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // body
-      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // ptr
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // dayparts->dow
-      mojom::DBCommandInfo::RecordBindingType::
-          INT_TYPE,  // dayparts->start_minute
-      mojom::DBCommandInfo::RecordBindingType::INT_TYPE  // dayparts->end_minute
-  };
-
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
@@ -330,7 +321,11 @@ void CreativeNotificationAds::GetForSegments(
 
 void CreativeNotificationAds::GetAll(
     GetCreativeNotificationAdsCallback callback) const {
-  const std::string query = base::ReplaceStringPlaceholders(
+  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::READ;
+  command->sql = base::ReplaceStringPlaceholders(
       "SELECT can.creative_instance_id, can.creative_set_id, can.campaign_id, "
       "cam.start_at_timestamp, cam.end_at_timestamp, cam.daily_cap, "
       "cam.advertiser_id, cam.priority, ca.conversion, ca.per_day, "
@@ -344,44 +339,9 @@ void CreativeNotificationAds::GetAll(
       "can.creative_instance_id INNER JOIN geo_targets AS gt ON gt.campaign_id "
       "= can.campaign_id INNER JOIN dayparts AS dp ON dp.campaign_id = "
       "can.campaign_id WHERE $2 BETWEEN cam.start_at_timestamp AND "
-      "cam.end_at_timestamp",
+      "cam.end_at_timestamp;",
       {GetTableName(), TimeAsTimestampString(base::Time::Now())}, nullptr);
-
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::READ;
-  command->command = query;
-
-  command->record_bindings = {
-      mojom::DBCommandInfo::RecordBindingType::
-          STRING_TYPE,  // creative_instance_id
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // creative_set_id
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // campaign_id
-      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // start_at
-      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // end_at
-      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // daily_cap
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // advertiser_id
-      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // priority
-      mojom::DBCommandInfo::RecordBindingType::BOOL_TYPE,    // conversion
-      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_day
-      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_week
-      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_month
-      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // total_max
-      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // value
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // split_test_group
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // segment
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // embedding
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // geo_target
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // target_url
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // title
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // body
-      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // ptr
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // dayparts->dow
-      mojom::DBCommandInfo::RecordBindingType::
-          INT_TYPE,  // dayparts->start_minute
-      mojom::DBCommandInfo::RecordBindingType::INT_TYPE  // dayparts->end_minute
-  };
-
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
+  BindRecords(&*command);
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
@@ -421,25 +381,20 @@ void CreativeNotificationAds::InsertOrUpdate(
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::RUN;
-  command->command = BuildInsertOrUpdateQuery(command.get(), creative_ads);
-
+  command->sql = BuildInsertOrUpdateSql(&*command, creative_ads);
   transaction->commands.push_back(std::move(command));
 }
 
-std::string CreativeNotificationAds::BuildInsertOrUpdateQuery(
+std::string CreativeNotificationAds::BuildInsertOrUpdateSql(
     mojom::DBCommandInfo* command,
     const CreativeNotificationAdList& creative_ads) const {
   DCHECK(command);
 
-  const int binded_parameters_count = BindParameters(command, creative_ads);
+  const size_t binded_parameters_count = BindParameters(command, creative_ads);
 
   return base::ReplaceStringPlaceholders(
-      "INSERT OR REPLACE INTO $1 "
-      "(creative_instance_id, "
-      "creative_set_id, "
-      "campaign_id, "
-      "title, "
-      "body) VALUES $2",
+      "INSERT OR REPLACE INTO $1 (creative_instance_id, creative_set_id, "
+      "campaign_id, title, body) VALUES $2;",
       {GetTableName(), BuildBindingParameterPlaceholders(
                            /*parameters_count*/ 5, binded_parameters_count)},
       nullptr);

@@ -8,9 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/functional/bind.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
@@ -21,11 +19,11 @@ namespace {
 
 constexpr char kTableName[] = "segments";
 
-int BindParameters(mojom::DBCommandInfo* command,
-                   const CreativeAdList& creative_ads) {
+size_t BindParameters(mojom::DBCommandInfo* command,
+                      const CreativeAdList& creative_ads) {
   DCHECK(command);
 
-  int count = 0;
+  size_t count = 0;
 
   int index = 0;
   for (const auto& creative_ad : creative_ads) {
@@ -43,17 +41,12 @@ void MigrateToV24(mojom::DBTransactionInfo* transaction) {
 
   DropTable(transaction, "segments");
 
-  const std::string query =
-      "CREATE TABLE segments "
-      "(creative_set_id TEXT NOT NULL, "
-      "segment TEXT NOT NULL, "
-      "PRIMARY KEY (creative_set_id, segment), "
-      "UNIQUE(creative_set_id, segment) ON CONFLICT REPLACE)";
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->command = query;
-
+  command->sql =
+      "CREATE TABLE segments (creative_set_id TEXT NOT NULL, segment TEXT NOT "
+      "NULL, PRIMARY KEY (creative_set_id, segment), UNIQUE(creative_set_id, "
+      "segment) ON CONFLICT REPLACE);";
   transaction->commands.push_back(std::move(command));
 }
 
@@ -69,19 +62,16 @@ void Segments::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::RUN;
-  command->command = BuildInsertOrUpdateQuery(command.get(), creative_ads);
-
+  command->sql = BuildInsertOrUpdateSql(&*command, creative_ads);
   transaction->commands.push_back(std::move(command));
 }
 
 void Segments::Delete(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
-  DeleteTable(transaction.get(), GetTableName());
+  DeleteTable(&*transaction, GetTableName());
 
-  AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      base::BindOnce(&OnResultCallback, std::move(callback)));
+  RunTransaction(std::move(transaction), std::move(callback));
 }
 
 std::string Segments::GetTableName() const {
@@ -106,15 +96,15 @@ void Segments::Migrate(mojom::DBTransactionInfo* transaction,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-std::string Segments::BuildInsertOrUpdateQuery(
+std::string Segments::BuildInsertOrUpdateSql(
     mojom::DBCommandInfo* command,
     const CreativeAdList& creative_ads) const {
   DCHECK(command);
 
-  const int binded_parameters_count = BindParameters(command, creative_ads);
+  const size_t binded_parameters_count = BindParameters(command, creative_ads);
 
   return base::ReplaceStringPlaceholders(
-      "INSERT OR REPLACE INTO $1 (creative_set_id, segment) VALUES $2",
+      "INSERT OR REPLACE INTO $1 (creative_set_id, segment) VALUES $2;",
       {GetTableName(), BuildBindingParameterPlaceholders(
                            /*parameters_count*/ 2, binded_parameters_count)},
       nullptr);

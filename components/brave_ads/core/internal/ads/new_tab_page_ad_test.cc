@@ -48,8 +48,8 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, Serve) {
         // Assert
         EXPECT_TRUE(ad);
         EXPECT_TRUE(ad->IsValid());
-        EXPECT_EQ(1, GetAdEventCount(AdType::kNewTabPageAd,
-                                     ConfirmationType::kServed));
+        EXPECT_EQ(1U, GetAdEventCount(AdType::kNewTabPageAd,
+                                      ConfirmationType::kServed));
       }));
 }
 
@@ -61,7 +61,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerServedEvent) {
                                     mojom::NewTabPageAdEventType::kServed);
 
   // Assert
-  EXPECT_EQ(1,
+  EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
   EXPECT_EQ(0, GetHistoryItemCount());
   EXPECT_EQ(0, GetTransactionCount());
@@ -77,9 +77,9 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
                                     mojom::NewTabPageAdEventType::kViewed);
 
   // Assert
-  EXPECT_EQ(1,
+  EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
-  EXPECT_EQ(1,
+  EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
   EXPECT_EQ(1, GetHistoryItemCount());
   EXPECT_EQ(1, GetTransactionCount());
@@ -97,11 +97,11 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
                                     mojom::NewTabPageAdEventType::kClicked);
 
   // Assert
-  EXPECT_EQ(1,
+  EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
-  EXPECT_EQ(1,
+  EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
-  EXPECT_EQ(1,
+  EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kClicked));
   EXPECT_EQ(2, GetHistoryItemCount());
   EXPECT_EQ(2, GetTransactionCount());
