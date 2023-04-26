@@ -11,6 +11,7 @@ source_set("unit_tests") {
   sources = [ "user_agent_utils_unittest.cc" ]
 
   deps = [
+    "//base/test:test_support",
     "//components/embedder_support:browser_util",
     "//components/version_info",
     "//testing/gtest",
