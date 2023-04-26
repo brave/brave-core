@@ -246,9 +246,9 @@ void StarRandomnessMeta::HandleServerInfoResponse(
     ScheduleServerInfoRetry();
     return;
   }
-  absl::optional<int> epoch = parsed_value.value().FindIntKey("currentEpoch");
-  std::string* next_epoch_time_str =
-      parsed_value.value().FindStringKey("nextEpochTime");
+  base::Value::Dict& root = parsed_value->GetDict();
+  absl::optional<int> epoch = root.FindInt("currentEpoch");
+  std::string* next_epoch_time_str = root.FindString("nextEpochTime");
   if (!epoch || !next_epoch_time_str) {
     LOG(ERROR) << "StarRandomnessMeta: failed to parse server info json: "
                   "missing fields";
@@ -263,7 +263,7 @@ void StarRandomnessMeta::HandleServerInfoResponse(
     ScheduleServerInfoRetry();
     return;
   }
-  const std::string* pk_value = parsed_value.value().FindStringKey("publicKey");
+  const std::string* pk_value = root.FindString("publicKey");
   ::rust::Box<constellation::PPOPRFPublicKeyWrapper> pk =
       DecodeServerPublicKey(pk_value);
   if (pk_value != nullptr) {

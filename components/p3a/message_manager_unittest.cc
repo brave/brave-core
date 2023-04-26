@@ -10,10 +10,10 @@
 #include <set>
 #include <vector>
 
-#include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "base/time/time_to_iso8601.h"
 #include "brave/components/p3a/features.h"
@@ -214,18 +214,20 @@ class P3AMessageManagerTest : public testing::Test,
   void StoreJsonMetricInMap(const network::ResourceRequest& request,
                             bool is_p2a) {
     base::StringPiece body = ExtractBodyFromRequest(request);
-    base::Value parsed_log = *base::JSONReader::Read(body);
-    std::string metric_name = *parsed_log.FindStringKey("metric_name");
-    int metric_value = *parsed_log.FindIntKey("metric_value");
+    base::Value::Dict parsed_log = base::test::ParseJsonDict(body);
+    std::string* metric_name = parsed_log.FindString("metric_name");
+    ASSERT_TRUE(metric_name);
+    absl::optional<int> metric_value = parsed_log.FindInt("metric_value");
+    ASSERT_TRUE(metric_value);
 
     if (is_p2a) {
-      EXPECT_EQ(p2a_json_sent_metrics.find(metric_name),
+      EXPECT_EQ(p2a_json_sent_metrics.find(*metric_name),
                 p2a_json_sent_metrics.end());
-      p2a_json_sent_metrics[metric_name] = metric_value;
+      p2a_json_sent_metrics[*metric_name] = *metric_value;
     } else {
-      EXPECT_EQ(p3a_json_sent_metrics.find(metric_name),
+      EXPECT_EQ(p3a_json_sent_metrics.find(*metric_name),
                 p3a_json_sent_metrics.end());
-      p3a_json_sent_metrics[metric_name] = metric_value;
+      p3a_json_sent_metrics[*metric_name] = *metric_value;
     }
   }
 };

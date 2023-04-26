@@ -28,10 +28,10 @@ namespace {
 constexpr std::size_t kMaxRandomnessResponseSize = 131072;
 
 std::unique_ptr<rust::Vec<constellation::VecU8>> DecodeBase64List(
-    const base::Value* list) {
+    const base::Value::List& list) {
   std::unique_ptr<rust::Vec<constellation::VecU8>> result =
       std::make_unique<rust::Vec<constellation::VecU8>>();
-  for (const base::Value& list_entry : list->GetList()) {
+  for (const base::Value& list_entry : list) {
     const std::string* entry_str = list_entry.GetIfString();
     if (entry_str == nullptr) {
       LOG(ERROR) << "StarRandomnessPoints: list value is not string";
@@ -140,9 +140,10 @@ void StarRandomnessPoints::HandleRandomnessResponse(
                        nullptr, nullptr);
     return;
   }
-  const base::Value* points_value = parsed_body.value().FindListKey("points");
-  const base::Value* proofs_value = parsed_body.value().FindListKey("proofs");
-  if (points_value == nullptr) {
+  const base::Value::Dict& root = parsed_body->GetDict();
+  const base::Value::List* points = root.FindList("points");
+  const base::Value::List* proofs = root.FindList("proofs");
+  if (points == nullptr) {
     LOG(ERROR) << "StarRandomnessPoints: failed to find points list in "
                   "randomness response";
     data_callback_.Run(metric_name, epoch, std::move(randomness_request_state),
@@ -150,15 +151,15 @@ void StarRandomnessPoints::HandleRandomnessResponse(
     return;
   }
   std::unique_ptr<rust::Vec<constellation::VecU8>> points_vec =
-      DecodeBase64List(points_value);
+      DecodeBase64List(*points);
   if (points_vec == nullptr) {
     data_callback_.Run(metric_name, epoch, std::move(randomness_request_state),
                        nullptr, nullptr);
     return;
   }
   std::unique_ptr<rust::Vec<constellation::VecU8>> proofs_vec;
-  if (proofs_value != nullptr) {
-    proofs_vec = DecodeBase64List(proofs_value);
+  if (proofs != nullptr) {
+    proofs_vec = DecodeBase64List(*proofs);
     if (!proofs_vec) {
       data_callback_.Run(metric_name, epoch,
                          std::move(randomness_request_state), nullptr, nullptr);
