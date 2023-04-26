@@ -214,11 +214,11 @@ void BraveTabStrip::UpdateTabContainer() {
     if (should_use_compound_tab_container) {
       // Container should be attached before TabDragContext so that dragged
       // views can be atop container.
-      auto* brave_tab_container = AddChildViewAt(
-          std::make_unique<BraveCompoundTabContainer>(
-              raw_ref<TabContainerController>::from_ptr(this),
-              hover_card_controller_.get(), GetDragContext(), *this, this),
-          0);
+      auto* brave_tab_container =
+          AddChildViewAt(std::make_unique<BraveCompoundTabContainer>(
+                             *this, hover_card_controller_.get(),
+                             GetDragContext(), *this, this),
+                         0);
       tab_container_ = *brave_tab_container;
       layout_lock =
           base::ScopedClosureRunner(brave_tab_container->LockLayout());

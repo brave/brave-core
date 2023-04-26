@@ -22,7 +22,7 @@
 #include "ui/views/view_utils.h"
 
 BraveCompoundTabContainer::BraveCompoundTabContainer(
-    raw_ref<TabContainerController> controller,
+    TabContainerController& controller,
     TabHoverCardController* hover_card_controller,
     TabDragContextBase* drag_context,
     TabSlotController& tab_slot_controller,
