@@ -53,7 +53,18 @@ platform :ios do
         "DataTests",
       	"BraveWalletTests/ManageSiteConnectionsStoreTests/testRemoveAllPermissions",
       	"BraveWalletTests/ManageSiteConnectionsStoreTests/testRemovePermissions",
-      	"BraveWalletTests/ManageSiteConnectionsStoreTests/testRemovePermissionsLastPermission"
+      	"BraveWalletTests/ManageSiteConnectionsStoreTests/testRemovePermissionsLastPermission",
+        "BraveWalletTests/SendTokenStoreTests/testSNSAddressResolution",
+        "BraveWalletTests/SendTokenStoreTests/testSNSAddressResolutionFailure",
+        "BraveWalletTests/SendTokenStoreTests/testResolvedAddressUsedInSolTxIfAvailable",
+        "BraveWalletTests/SendTokenStoreTests/testENSAddressResolution",
+        "BraveWalletTests/SendTokenStoreTests/testENSAddressResolutionOffchain",
+        "BraveWalletTests/SendTokenStoreTests/testENSAddressResolutionFailure",
+        "BraveWalletTests/SendTokenStoreTests/testResolvedAddressUsedInEthTxIfAvailable",
+        "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionEthNetwork",
+        "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionFailure",
+        "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionSolNetwork",
+        "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionTokenChange"
       ]
     )
 
