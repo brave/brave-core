@@ -159,6 +159,8 @@ void PlaylistDownloadRequestManager::RunMediaDetector(Request request) {
       // While the request was in queue, the tab was deleted. Proceed to the
       // next request.
       in_progress_urls_count_--;
+      auto callback = std::move(callback_for_current_request_);
+      DCHECK(callback) << "Callback should be valid but we won't run this";
 
       FetchPendingRequest();
       return;
