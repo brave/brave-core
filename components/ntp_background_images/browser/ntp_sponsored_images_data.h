@@ -99,13 +99,13 @@ struct NTPSponsoredImagesData {
 
   bool IsValid() const;
 
-  void ParseCampaignsList(const base::Value& campaigns_value,
+  void ParseCampaignsList(const base::Value::List& campaigns_value,
                           const base::FilePath& installed_dir);
 
   // Parse common properties for SI & SR.
-  Campaign GetCampaignFromValue(const base::Value& value,
+  Campaign GetCampaignFromValue(const base::Value::Dict& value,
                                 const base::FilePath& installed_dir);
-  void ParseSRProperties(const base::Value& value,
+  void ParseSRProperties(const base::Value::Dict& value,
                          const base::FilePath& installed_dir);
 
   absl::optional<base::Value::Dict> GetBackgroundAt(size_t campaign_index,
