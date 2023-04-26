@@ -59,6 +59,7 @@ class BraveVPNOSConnectionAPI {
   virtual std::string GetLastConnectionError() const = 0;
   virtual BraveVPNRegionDataManager& GetRegionDataManager() = 0;
   virtual void SetSelectedRegion(const std::string& name) = 0;
+  virtual void LoadSubscriberCredentials() = 0;
 
  protected:
   BraveVPNOSConnectionAPI() = default;
@@ -67,7 +68,16 @@ class BraveVPNOSConnectionAPI {
 // Create platform specific api instance.
 // NOTE: Don't call this method directly.
 // Only BraveBrowserProcess need to use this method.
-std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNOSConnectionAPI(
+std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNConnectionAPI(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    PrefService* local_prefs,
+    version_info::Channel channel);
+std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNIKEv2ConnectionAPI(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    PrefService* local_prefs,
+    version_info::Channel channel);
+
+std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNWireguardConnectionAPI(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs,
     version_info::Channel channel);

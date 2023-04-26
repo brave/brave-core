@@ -79,15 +79,24 @@
       FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPN), \
   })
 #if BUILDFLAG(IS_WIN)
-#define BRAVE_VPN_DNS_FEATURE_ENTRIES                                    \
-  EXPAND_FEATURE_ENTRIES({                                               \
-      kBraveVPNDnsFeatureInternalName,                                   \
-      "Enable DoH for Brave VPN",                                        \
-      "Override DoH settings with Cloudflare dns if necessary to avoid " \
-      "leaking requests due to Smart Multi-Home Named Resolution",       \
-      kOsWin,                                                            \
-      FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPNDnsProtection),   \
-  })
+#define BRAVE_VPN_DNS_FEATURE_ENTRIES                                        \
+  EXPAND_FEATURE_ENTRIES(                                                    \
+      {                                                                      \
+          kBraveVPNDnsFeatureInternalName,                                   \
+          "Enable DoH for Brave VPN",                                        \
+          "Override DoH settings with Cloudflare dns if necessary to avoid " \
+          "leaking requests due to Smart Multi-Home Named Resolution",       \
+          kOsWin,                                                            \
+          FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPNDnsProtection),   \
+      },                                                                     \
+      {                                                                      \
+          kBraveVPNWireguardFeatureInternalName,                             \
+          "Enable experimental Wireguard Brave VPN service",                 \
+          "Experimental Wireguard VPN support. Not implemented yet",         \
+          kOsWin,                                                            \
+          FEATURE_VALUE_TYPE(                                                \
+              brave_vpn::features::kBraveVPNUseWireguardService),            \
+      })
 #else
 #define BRAVE_VPN_DNS_FEATURE_ENTRIES
 #endif

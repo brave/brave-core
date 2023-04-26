@@ -21,7 +21,7 @@
 #include "brave/components/brave_vpn/browser/brave_vpn_service_helper.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
-#include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api_sim.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/brave_vpn_os_connection_api_sim.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/features.h"
