@@ -34,12 +34,13 @@
 
 namespace brave_rewards::internal {
 
-inline mojom::Environment _environment = mojom::Environment::PRODUCTION;
-inline bool is_debug = false;
-inline bool is_testing = false;
-inline int state_migration_target_version_for_testing = -1;
-inline int reconcile_interval = 0;  // minutes
-inline int retry_interval = 0;      // seconds
+inline thread_local mojom::Environment _environment =
+    mojom::Environment::PRODUCTION;
+inline thread_local bool is_debug = false;
+inline thread_local bool is_testing = false;
+inline thread_local int state_migration_target_version_for_testing = -1;
+inline thread_local int reconcile_interval = 0;  // minutes
+inline thread_local int retry_interval = 0;      // seconds
 
 #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
 inline constexpr uint64_t kPublisherListRefreshInterval =

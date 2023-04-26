@@ -11,7 +11,7 @@
 
 #include "base/functional/callback.h"
 #include "base/memory/raw_ref.h"
-#include "base/task/sequenced_task_runner.h"
+#include "base/task/single_thread_task_runner.h"
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/logging/logging.h"
@@ -52,7 +52,7 @@ class RequestFor {
                     "Please make sure the error type of your endpoint has the "
                     "kFailedToCreateRequest enumerator!");
 
-      base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
           FROM_HERE,
           base::BindOnce(
               std::move(callback),
