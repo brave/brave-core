@@ -690,3 +690,6 @@
 # This test fails because we changed the behavior of the fuzzy finder to match
 # the empty string.
 -CommanderFuzzyFinder.EmptyStringDoesNotMatch
+
+# We changed the default value of media router to disabled, so the tests fail.
+-MediaDialogViewWithRemotePlaybackTest.*
