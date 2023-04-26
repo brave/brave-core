@@ -46,8 +46,6 @@ BraveVPNWireguardConnectionAPI::BraveVPNWireguardConnectionAPI(
 
 BraveVPNWireguardConnectionAPI::~BraveVPNWireguardConnectionAPI() {}
 
-void BraveVPNWireguardConnectionAPI::LoadSubscriberCredentials() {}
-
 std::string BraveVPNWireguardConnectionAPI::GetCurrentEnvironment() const {
   return local_prefs_->GetString(prefs::kBraveVPNEnvironment);
 }

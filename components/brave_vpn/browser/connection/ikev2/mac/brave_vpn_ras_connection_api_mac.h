@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_MAC_BRAVE_VPN_OS_CONNECTION_API_MAC_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_MAC_BRAVE_VPN_OS_CONNECTION_API_MAC_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_MAC_BRAVE_VPN_RAS_CONNECTION_API_MAC_H_
+#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_MAC_BRAVE_VPN_RAS_CONNECTION_API_MAC_H_
 
 #include <string>
 
-#include "brave/components/brave_vpn/browser/connection/ikev2/brave_vpn_os_connection_api_base.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/brave_vpn_ras_connection_api_base.h"
 
 namespace brave_vpn {
 
@@ -37,4 +37,4 @@ class BraveVPNOSConnectionAPIMac : public BraveVPNOSConnectionAPIBase {
 
 }  // namespace brave_vpn
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_MAC_BRAVE_VPN_OS_CONNECTION_API_MAC_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_MAC_BRAVE_VPN_RAS_CONNECTION_API_MAC_H_

@@ -57,7 +57,6 @@ class BraveVPNWireguardConnectionAPI
   std::string GetLastConnectionError() const override;
   BraveVPNRegionDataManager& GetRegionDataManager() override;
   void SetSelectedRegion(const std::string& name) override;
-  void LoadSubscriberCredentials() override;
 
   // net::NetworkChangeNotifier::NetworkChangeObserver
   void OnNetworkChanged(

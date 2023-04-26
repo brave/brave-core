@@ -59,7 +59,6 @@ class BraveVPNOSConnectionAPI {
   virtual std::string GetLastConnectionError() const = 0;
   virtual BraveVPNRegionDataManager& GetRegionDataManager() = 0;
   virtual void SetSelectedRegion(const std::string& name) = 0;
-  virtual void LoadSubscriberCredentials() = 0;
 
  protected:
   BraveVPNOSConnectionAPI() = default;

@@ -13,7 +13,7 @@
 #include "base/run_loop.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service_helper.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_manager.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/brave_vpn_os_connection_api_sim.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/brave_vpn_ras_connection_api_sim.h"
 #include "brave/components/brave_vpn/common/brave_vpn_data_types.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"

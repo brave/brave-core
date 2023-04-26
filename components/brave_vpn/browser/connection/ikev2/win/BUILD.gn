@@ -25,8 +25,8 @@ source_set("win") {
   visibility = [ "//brave/components/brave_vpn/browser/connection/*" ]
 
   sources = [
-    "brave_vpn_os_connection_api_win.cc",
-    "brave_vpn_os_connection_api_win.h",
+    "brave_vpn_ras_connection_api_win.cc",
+    "brave_vpn_ras_connection_api_win.h",
   ]
 
   deps = [

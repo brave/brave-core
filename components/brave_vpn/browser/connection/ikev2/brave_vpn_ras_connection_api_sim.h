@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_BRAVE_VPN_OS_CONNECTION_API_SIM_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_BRAVE_VPN_OS_CONNECTION_API_SIM_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_BRAVE_VPN_RAS_CONNECTION_API_SIM_H_
+#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_BRAVE_VPN_RAS_CONNECTION_API_SIM_H_
 
 #include <string>
 
 #include "base/memory/weak_ptr.h"
 #include "base/no_destructor.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/brave_vpn_os_connection_api_base.h"
+#include "brave/components/brave_vpn/browser/connection/ikev2/brave_vpn_ras_connection_api_base.h"
 
 namespace brave_vpn {
 
@@ -76,4 +76,4 @@ class BraveVPNOSConnectionAPISim : public BraveVPNOSConnectionAPIBase {
 
 }  // namespace brave_vpn
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_BRAVE_VPN_OS_CONNECTION_API_SIM_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_BRAVE_VPN_RAS_CONNECTION_API_SIM_H_
