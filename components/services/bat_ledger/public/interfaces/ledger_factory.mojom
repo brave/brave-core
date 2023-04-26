@@ -5,9 +5,11 @@
 module brave_rewards.mojom;
 
 import "brave/components/brave_rewards/common/mojom/bat_ledger.mojom";
+import "mojo/public/mojom/base/file_path.mojom";
 
 interface LedgerFactory {
   CreateLedger(
+      mojo_base.mojom.FilePath profile_path,
       pending_associated_receiver<Ledger> ledger_receiver,
       pending_associated_remote<LedgerClient> ledger_client_remote) => ();
 };
