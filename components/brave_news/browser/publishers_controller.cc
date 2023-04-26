@@ -272,9 +272,9 @@ void PublishersController::EnsurePublishersIsUpdating() {
         }
       },
       base::Unretained(this));
-  api_request_helper_->Request("GET", sources_url, "", "", true,
-                               std::move(onRequest),
-                               brave::private_cdn_headers);
+  api_request_helper_->Request("GET", sources_url, "", "", std::move(onRequest),
+                               brave::private_cdn_headers,
+                               {.auto_retry_on_network_change = true});
 }
 
 void PublishersController::UpdateDefaultLocale() {

@@ -216,8 +216,8 @@ void NftMetadataFetcher::FetchMetadata(
   auto internal_callback =
       base::BindOnce(&NftMetadataFetcher::OnGetTokenMetadataPayload,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  api_request_helper_->Request("GET", url, "", "", true,
-                               std::move(internal_callback));
+  api_request_helper_->Request("GET", url, "", "", std::move(internal_callback),
+                               {}, {.auto_retry_on_network_change = true});
 }
 
 void NftMetadataFetcher::OnSanitizeTokenMetadata(

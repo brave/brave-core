@@ -112,26 +112,9 @@ APIRequestHelper::Ticket APIRequestHelper::Request(
     const GURL& url,
     const std::string& payload,
     const std::string& payload_content_type,
-    bool auto_retry_on_network_change,
     ResultCallback callback,
     const base::flat_map<std::string, std::string>& headers,
-    size_t max_body_size /* = -1u */,
-    ResponseConversionCallback conversion_callback) {
-  return Request(method, url, payload, payload_content_type,
-                 std::move(callback),
-                 APIRequestOptions(auto_retry_on_network_change, false,
-                                   max_body_size, absl::nullopt),
-                 headers, std::move(conversion_callback));
-}
-
-APIRequestHelper::Ticket APIRequestHelper::Request(
-    const std::string& method,
-    const GURL& url,
-    const std::string& payload,
-    const std::string& payload_content_type,
-    ResultCallback callback,
     const APIRequestOptions& request_options,
-    const base::flat_map<std::string, std::string>& headers,
     ResponseConversionCallback conversion_callback) {
   auto loader = CreateLoader(method, url, payload, payload_content_type,
                              request_options.auto_retry_on_network_change,
@@ -165,14 +148,15 @@ APIRequestHelper::Ticket APIRequestHelper::Download(
     const GURL& url,
     const std::string& payload,
     const std::string& payload_content_type,
-    bool auto_retry_on_network_change,
     const base::FilePath& path,
     DownloadCallback callback,
-    const base::flat_map<std::string, std::string>& headers) {
+    const base::flat_map<std::string, std::string>& headers,
+    const APIRequestOptions& request_options) {
   auto iter = url_loaders_.insert(
       url_loaders_.begin(),
       CreateLoader({}, url, payload, payload_content_type,
-                   auto_retry_on_network_change, false /* enable_cache */,
+                   request_options.auto_retry_on_network_change,
+                   request_options.enable_cache,
                    false /*allow_http_error_result*/, headers));
   iter->get()->DownloadToFile(
       url_loader_factory_.get(),

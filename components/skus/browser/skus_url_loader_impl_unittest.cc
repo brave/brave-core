@@ -51,13 +51,13 @@ class SkusUrlLoaderImplUnitTest : public testing::Test {
     bool callback_called = false;
     base::Value response;
     skus_url_loader()->Request(
-        method, GURL(url), std::string(), std::string(), false,
+        method, GURL(url), std::string(), std::string(),
         base::BindLambdaForTesting(
             [&](api_request_helper::APIRequestResult result) {
               callback_called = true;
               response = result.value_body().Clone();
             }),
-        {}, -1u);
+        {}, {});
     base::RunLoop().RunUntilIdle();
     return response;
   }

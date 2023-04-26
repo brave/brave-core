@@ -218,8 +218,9 @@ void AssetRatioService::GetBuyUrlV1(mojom::OnRampProvider provider,
         base::StringPrintf("Basic %s", base64_credentials.c_str());
     request_headers["Authorization"] = std::move(header);
     api_request_helper_->Request("POST", sardine_token_url, payload,
-                                 "application/json", true,
-                                 std::move(internal_callback), request_headers);
+                                 "application/json",
+                                 std::move(internal_callback), request_headers,
+                                 {.auto_retry_on_network_change = true});
   } else if (provider == mojom::OnRampProvider::kTransak) {
     GURL transak_url = GURL(kTransakURL);
     transak_url =
@@ -294,10 +295,8 @@ void AssetRatioService::GetPrice(
   request_headers["x-brave-key"] = std::move(brave_key);
   api_request_helper_->Request(
       "GET", GetPriceURL(from_assets_lower, to_assets_lower, timeframe), "", "",
-      std::move(internal_callback),
-      api_request_helper::APIRequestOptions{
-          .auto_retry_on_network_change = true, .enable_cache = true},
-      request_headers);
+      std::move(internal_callback), request_headers,
+      {.auto_retry_on_network_change = true, .enable_cache = true});
 }
 
 void AssetRatioService::OnGetSardineAuthToken(
@@ -354,9 +353,8 @@ void AssetRatioService::GetPriceHistory(
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   api_request_helper_->Request(
       "GET", GetPriceHistoryURL(asset_lower, vs_asset_lower, timeframe), "", "",
-      std::move(internal_callback),
-      api_request_helper::APIRequestOptions{
-          .auto_retry_on_network_change = true, .enable_cache = true});
+      std::move(internal_callback), {},
+      {.auto_retry_on_network_change = true, .enable_cache = true});
 }
 
 void AssetRatioService::OnGetPriceHistory(GetPriceHistoryCallback callback,
@@ -392,9 +390,8 @@ void AssetRatioService::GetTokenInfo(const std::string& contract_address,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   api_request_helper_->Request(
       "GET", GetTokenInfoURL(contract_address), "", "",
-      std::move(internal_callback),
-      api_request_helper::APIRequestOptions{
-          .auto_retry_on_network_change = true, .enable_cache = true});
+      std::move(internal_callback), {},
+      {.auto_retry_on_network_change = true, .enable_cache = true});
 }
 
 void AssetRatioService::OnGetTokenInfo(GetTokenInfoCallback callback,
@@ -430,9 +427,8 @@ void AssetRatioService::GetCoinMarkets(const std::string& vs_asset,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   api_request_helper_->Request(
       "GET", GetCoinMarketsURL(vs_asset_lower, limit), "", "",
-      std::move(internal_callback),
-      api_request_helper::APIRequestOptions{
-          .auto_retry_on_network_change = true, .enable_cache = true});
+      std::move(internal_callback), {},
+      {.auto_retry_on_network_change = true, .enable_cache = true});
 }
 
 void AssetRatioService::OnGetCoinMarkets(GetCoinMarketsCallback callback,

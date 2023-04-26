@@ -40,10 +40,9 @@ class SkusUrlLoaderImpl : public SkusUrlLoader {
                const GURL& url,
                const std::string& payload,
                const std::string& payload_content_type,
-               bool auto_retry_on_network_change,
                api_request_helper::APIRequestHelper::ResultCallback callback,
                const base::flat_map<std::string, std::string>& headers,
-               size_t max_body_size /* = -1u */);
+               const api_request_helper::APIRequestOptions& request_options);
   void SetFetchCompleteCallbackForTesting(
       FetchResponseCallbackForTesting callback);
 

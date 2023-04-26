@@ -805,8 +805,8 @@ void SnsResolverTask::RequestInternal(
     RequestIntermediateCallback callback,
     ResponseConversionCallback conversion_callback) {
   api_request_helper_->Request("POST", network_url_, json_payload,
-                               "application/json", false, std::move(callback),
-                               MakeCommonJsonRpcHeaders(json_payload), -1u,
+                               "application/json", std::move(callback),
+                               MakeCommonJsonRpcHeaders(json_payload), {},
                                std::move(conversion_callback));
 }
 

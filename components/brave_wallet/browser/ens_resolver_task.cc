@@ -522,10 +522,9 @@ void EnsResolverTask::FetchOffchainData() {
 
   api_request_helper_ens_offchain_->Request(
       payload.empty() ? "GET" : "POST", offchain_url, payload,
-      "application/json", false,
+      "application/json",
       base::BindOnce(&EnsResolverTask::OnFetchOffchainDone,
-                     weak_ptr_factory_.GetWeakPtr()),
-      {}, -1u, base::NullCallback());
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void EnsResolverTask::OnFetchOffchainDone(APIRequestResult api_request_result) {
@@ -611,9 +610,8 @@ void EnsResolverTask::OnFetchOffchainCallbackDone(
 void EnsResolverTask::RequestInternal(const std::string& json_payload,
                                       RequestIntermediateCallback callback) {
   api_request_helper_->Request("POST", network_url_, json_payload,
-                               "application/json", false, std::move(callback),
-                               MakeCommonJsonRpcHeaders(json_payload), -1u,
-                               base::NullCallback());
+                               "application/json", std::move(callback),
+                               MakeCommonJsonRpcHeaders(json_payload));
 }
 
 }  // namespace brave_wallet
