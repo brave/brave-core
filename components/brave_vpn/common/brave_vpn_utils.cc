@@ -158,7 +158,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   p3a_utils::RegisterFeatureUsagePrefs(
       registry, prefs::kBraveVPNFirstUseTime, prefs::kBraveVPNLastUseTime,
-      prefs::kBraveVPNUsedSecondDay, prefs::kBraveVPNDaysInMonthUsed);
+      prefs::kBraveVPNUsedSecondDay, prefs::kBraveVPNDaysInMonthUsed, nullptr);
   RegisterVPNLocalStatePrefs(registry);
 }
 

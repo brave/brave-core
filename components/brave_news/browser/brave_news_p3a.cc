@@ -194,7 +194,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   p3a_utils::RegisterFeatureUsagePrefs(
       registry, prefs::kBraveNewsFirstSessionTime,
       prefs::kBraveNewsLastSessionTime, prefs::kBraveNewsUsedSecondDay,
-      prefs::kBraveNewsDaysInMonthUsedCount);
+      prefs::kBraveNewsDaysInMonthUsedCount, nullptr);
 }
 
 }  // namespace p3a

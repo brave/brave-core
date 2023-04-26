@@ -8,6 +8,7 @@
 #include "base/metrics/histogram_functions.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/time_period_storage/monthly_storage.h"
+#include "brave/components/time_period_storage/weekly_storage.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
@@ -16,6 +17,7 @@ namespace p3a_utils {
 namespace {
 
 constexpr int kDaysInMonthBuckets[] = {0, 1, 2, 5, 10, 15, 20, 100};
+constexpr int kDaysInWeekBuckets[] = {0, 2, 4, 6};
 
 }  // namespace
 
@@ -23,19 +25,25 @@ void RegisterFeatureUsagePrefs(PrefRegistrySimple* registry,
                                const char* first_use_time_pref_name,
                                const char* last_use_time_pref_name,
                                const char* used_second_day_pref_name,
-                               const char* days_in_month_used_pref_name) {
+                               const char* days_in_month_used_pref_name,
+                               const char* days_in_week_used_pref_name) {
   DCHECK(registry);
-  DCHECK(first_use_time_pref_name);
-  DCHECK(last_use_time_pref_name);
 
-  registry->RegisterTimePref(first_use_time_pref_name, base::Time());
-  registry->RegisterTimePref(last_use_time_pref_name, base::Time());
+  if (first_use_time_pref_name != nullptr) {
+    registry->RegisterTimePref(first_use_time_pref_name, base::Time());
+  }
+  if (last_use_time_pref_name != nullptr) {
+    registry->RegisterTimePref(last_use_time_pref_name, base::Time());
+  }
 
   if (used_second_day_pref_name != nullptr) {
     registry->RegisterBooleanPref(used_second_day_pref_name, false);
   }
   if (days_in_month_used_pref_name != nullptr) {
     registry->RegisterListPref(days_in_month_used_pref_name);
+  }
+  if (days_in_week_used_pref_name != nullptr) {
+    registry->RegisterListPref(days_in_week_used_pref_name);
   }
 }
 
@@ -88,7 +96,8 @@ void RecordFeatureNewUserReturning(PrefService* prefs,
                                    const char* last_use_time_pref_name,
                                    const char* used_second_day_pref_name,
                                    const char* histogram_name,
-                                   bool write_to_histogram) {
+                                   bool write_to_histogram,
+                                   bool active_users_only) {
   DCHECK(prefs);
   DCHECK(first_use_time_pref_name);
   DCHECK(last_use_time_pref_name);
@@ -127,6 +136,10 @@ void RecordFeatureNewUserReturning(PrefService* prefs,
     }
   }
   if (write_to_histogram) {
+    if (active_users_only && answer == 0) {
+      // Skip reporting if not an active user.
+      return;
+    }
     base::UmaHistogramExactLinear(histogram_name, answer, 5);
   }
 }
@@ -165,6 +178,27 @@ void RecordFeatureDaysInMonthUsed(PrefService* prefs,
   RecordFeatureDaysInMonthUsed(
       prefs, is_add ? base::Time::Now() : base::Time(), last_use_time_pref_name,
       days_in_month_used_pref_name, histogram_name, write_to_histogram);
+}
+
+void RecordFeatureDaysInWeekUsed(PrefService* prefs,
+                                 bool is_add,
+                                 const char* days_in_week_used_pref_name,
+                                 const char* histogram_name) {
+  DCHECK(prefs);
+  DCHECK(days_in_week_used_pref_name);
+  DCHECK(histogram_name);
+
+  WeeklyStorage storage(prefs, days_in_week_used_pref_name);
+  if (is_add) {
+    storage.ReplaceTodaysValueIfGreater(1);
+  }
+
+  auto sum = storage.GetWeeklySum();
+  if (sum == 0) {
+    return;
+  }
+
+  RecordToHistogramBucket(histogram_name, kDaysInWeekBuckets, sum);
 }
 
 void RecordFeatureLastUsageTimeMetric(PrefService* prefs,

@@ -10,6 +10,7 @@
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/playlist/browser/media_detector_component_manager.h"
@@ -26,6 +27,7 @@
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/pref_service_mock_factory.h"
 #include "components/sync_preferences/pref_service_syncable.h"
 #include "content/public/browser/browser_task_traits.h"
@@ -199,6 +201,8 @@ class PlaylistServiceUnitTest : public testing::Test {
     PlaylistServiceFactory::GetInstance();
     RegisterUserProfilePrefs(registry.get());
 
+    PlaylistServiceFactory::RegisterLocalStatePrefs(local_state_.registry());
+
     temp_dir_ = std::make_unique<base::ScopedTempDir>();
     ASSERT_TRUE(temp_dir_->CreateUniqueTempDir());
 
@@ -221,8 +225,9 @@ class PlaylistServiceUnitTest : public testing::Test {
     detector_manager_ =
         std::make_unique<MediaDetectorComponentManager>(nullptr);
     detector_manager_->SetUseLocalScriptForTesting();
-    service_ = std::make_unique<PlaylistService>(
-        profile_.get(), detector_manager_.get(), nullptr);
+    service_ = std::make_unique<PlaylistService>(profile_.get(), &local_state_,
+                                                 detector_manager_.get(),
+                                                 nullptr, base::Time::Now());
 
     // Set up embedded test server to handle fake responses.
     https_server_ = std::make_unique<net::EmbeddedTestServer>(
@@ -247,6 +252,7 @@ class PlaylistServiceUnitTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_{
       content::BrowserTaskEnvironment::IO_MAINLOOP};
 
+  TestingPrefServiceSimple local_state_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<MediaDetectorComponentManager> detector_manager_;
   std::unique_ptr<PlaylistService> service_;

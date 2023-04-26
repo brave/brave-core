@@ -85,9 +85,9 @@ base::Value::Dict GetDefaultHiddenNetworks() {
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterTimePref(kBraveWalletLastUnlockTime, base::Time());
-  p3a_utils::RegisterFeatureUsagePrefs(registry, kBraveWalletP3AFirstUnlockTime,
-                                       kBraveWalletP3ALastUnlockTime,
-                                       kBraveWalletP3AUsedSecondDay, nullptr);
+  p3a_utils::RegisterFeatureUsagePrefs(
+      registry, kBraveWalletP3AFirstUnlockTime, kBraveWalletP3ALastUnlockTime,
+      kBraveWalletP3AUsedSecondDay, nullptr, nullptr);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -178,9 +178,9 @@ void RegisterProfilePrefsForMigration(
   registry->RegisterBooleanPref(kBraveWalletUserAssetsAddIsNFTMigrated, false);
 
   // Added 11/2022
-  p3a_utils::RegisterFeatureUsagePrefs(registry, kBraveWalletP3AFirstUnlockTime,
-                                       kBraveWalletP3ALastUnlockTime,
-                                       kBraveWalletP3AUsedSecondDay, nullptr);
+  p3a_utils::RegisterFeatureUsagePrefs(
+      registry, kBraveWalletP3AFirstUnlockTime, kBraveWalletP3ALastUnlockTime,
+      kBraveWalletP3AUsedSecondDay, nullptr, nullptr);
   registry->RegisterTimePref(kBraveWalletLastUnlockTime, base::Time());
   registry->RegisterTimePref(kBraveWalletP3ALastReportTime, base::Time());
   registry->RegisterTimePref(kBraveWalletP3AFirstReportTime, base::Time());

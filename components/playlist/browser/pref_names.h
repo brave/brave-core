@@ -31,6 +31,20 @@ constexpr char kPlaylistCacheByDefault[] = "brave.playlist.cache";
 constexpr char kPlaylistDefaultSaveTargetListID[] =
     "brave.playlist.default_save_target_list_id";
 
+// Timestamp indicating first usage of playlist
+constexpr char kPlaylistFirstUsageTime[] = "brave.playlist.first_usage_time";
+
+// Timestamp indicating last usage of playlist
+constexpr char kPlaylistLastUsageTime[] = "brave.playlist.last_usage_time";
+
+// Boolean indicating if playlist was used on second day
+// on first week of usage
+constexpr char kPlaylistUsedSecondDay[] = "brave.playlist.used_second_day";
+
+// Weekly storage event list counting usages of playlist
+constexpr char kPlaylistUsageWeeklyStorage[] =
+    "brave.playlist.usage_weekly_storage";
+
 }  // namespace playlist
 
 #endif  // BRAVE_COMPONENTS_PLAYLIST_BROWSER_PREF_NAMES_H_
