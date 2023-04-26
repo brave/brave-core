@@ -20,11 +20,11 @@ constexpr char kPublicKeyKey[] = "public_key";
 constexpr char kUnblindedTokenKey[] = "unblinded_token";
 
 absl::optional<privacy::UnblindedPaymentTokenInfo> ParseUnblindedPaymentToken(
-    const base::Value& value) {
+    const base::Value::Dict& value) {
   privacy::UnblindedPaymentTokenInfo unblinded_payment_token;
 
   // Public key
-  const std::string* const public_key = value.FindStringKey(kPublicKeyKey);
+  const std::string* const public_key = value.FindString(kPublicKeyKey);
   if (!public_key) {
     return absl::nullopt;
   }
@@ -35,7 +35,7 @@ absl::optional<privacy::UnblindedPaymentTokenInfo> ParseUnblindedPaymentToken(
 
   // Unblinded token
   const std::string* const unblinded_token =
-      value.FindStringKey(kUnblindedTokenKey);
+      value.FindString(kUnblindedTokenKey);
   if (!unblinded_token) {
     return absl::nullopt;
   }
@@ -49,20 +49,16 @@ absl::optional<privacy::UnblindedPaymentTokenInfo> ParseUnblindedPaymentToken(
 }
 
 absl::optional<privacy::UnblindedPaymentTokenList>
-GetUnblindedPaymentTokensFromList(const base::Value& value) {
-  if (!value.is_list()) {
-    return absl::nullopt;
-  }
-
+GetUnblindedPaymentTokensFromList(const base::Value::List& value) {
   privacy::UnblindedPaymentTokenList unblinded_payment_tokens;
 
-  for (const auto& item : value.GetList()) {
+  for (const auto& item : value) {
     if (!item.is_dict()) {
       return absl::nullopt;
     }
 
     const absl::optional<privacy::UnblindedPaymentTokenInfo>
-        unblinded_payment_token = ParseUnblindedPaymentToken(item);
+        unblinded_payment_token = ParseUnblindedPaymentToken(item.GetDict());
     if (!unblinded_payment_token) {
       return absl::nullopt;
     }
@@ -76,9 +72,9 @@ GetUnblindedPaymentTokensFromList(const base::Value& value) {
 }  // namespace
 
 absl::optional<privacy::UnblindedPaymentTokenList> ParseUnblindedPaymentTokens(
-    const base::Value& value) {
-  const base::Value* const unblinded_payment_tokens_value =
-      value.FindListKey(kUnblindedPaymentTokenListKey);
+    const base::Value::Dict& dict) {
+  const base::Value::List* const unblinded_payment_tokens_value =
+      dict.FindList(kUnblindedPaymentTokenListKey);
   if (!unblinded_payment_tokens_value) {
     return privacy::UnblindedPaymentTokenList{};
   }

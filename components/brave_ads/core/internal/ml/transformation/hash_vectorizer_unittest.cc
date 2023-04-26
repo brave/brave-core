@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ml/transformation/hash_vectorizer.h"
 
-#include "base/json/json_reader.h"
+#include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
@@ -23,37 +23,31 @@ void RunHashingExtractorTestCase(const std::string& test_case_name) {
   // Arrange
   constexpr double kTolerance = 1e-7;
 
-  const absl::optional<std::string> json =
-      ReadFileFromTestPathToString(kHashCheck);
-  ASSERT_TRUE(json);
-
   // Act
-  const absl::optional<base::Value> root = base::JSONReader::Read(*json);
-  ASSERT_TRUE(root);
+  const base::Value::Dict root =
+      base::test::ParseJsonDictFromFile(GetTestPath().AppendASCII(kHashCheck));
 
-  const base::Value* const case_params = root->FindDictKey(test_case_name);
+  const base::Value::Dict* const case_params = root.FindDict(test_case_name);
   ASSERT_TRUE(case_params);
 
-  const std::string* const input = case_params->FindStringKey("input");
+  const std::string* const input = case_params->FindString("input");
   ASSERT_TRUE(input);
 
-  const base::Value* const idx = case_params->FindListKey("idx");
+  const base::Value::List* const idx = case_params->FindList("idx");
   ASSERT_TRUE(idx);
 
-  const base::Value* const count = case_params->FindListKey("count");
+  const base::Value::List* const count = case_params->FindList("count");
   ASSERT_TRUE(count);
 
   const HashVectorizer vectorizer;
   const std::map<unsigned, double> frequencies =
       vectorizer.GetFrequencies(*input);
-  const auto& idx_list = idx->GetList();
-  const auto& count_list = count->GetList();
 
   // Assert
-  ASSERT_EQ(frequencies.size(), idx_list.size());
+  ASSERT_EQ(frequencies.size(), idx->size());
   for (size_t i = 0; i < frequencies.size(); ++i) {
-    const base::Value& idx_val = idx_list[i];
-    const base::Value& count_val = count_list[i];
+    const base::Value& idx_val = (*idx)[i];
+    const base::Value& count_val = (*count)[i];
     EXPECT_TRUE(count_val.GetInt() - frequencies.at(idx_val.GetInt()) <
                 kTolerance);
   }
@@ -65,7 +59,7 @@ class BraveAdsHashVectorizerTest : public UnitTestBase {};
 
 TEST_F(BraveAdsHashVectorizerTest, ValidJsonScheme) {
   // Arrange
-  const absl::optional<base::Value> root = base::JSONReader::Read(
+  const base::Value::Dict root = base::test::ParseJsonDict(
       "{"
       "  \"test\": {"
       "    \"foo\": true,"
@@ -81,14 +75,10 @@ TEST_F(BraveAdsHashVectorizerTest, ValidJsonScheme) {
 
   // Act
 
-  // Assert
-  ASSERT_TRUE(root);
-  ASSERT_TRUE(root->is_dict());
-
-  const base::Value* const dict = root->FindDictKey("test");
+  const base::Value::Dict* const dict = root.FindDict("test");
   ASSERT_TRUE(dict);
 
-  const base::Value* const list = root->FindListKey("list");
+  const base::Value::List* const list = root.FindList("list");
   EXPECT_TRUE(list);
 }
 

@@ -42,18 +42,19 @@ base::expected<ConversionsInfo, std::string> ConversionsInfo::CreateFromValue(
   }
 
   for (const auto [key, value] : *conversion_id_patterns_value) {
-    if (!value.is_dict()) {
+    const base::Value::Dict* pattern = value.GetIfDict();
+    if (!pattern) {
       return base::unexpected(
           "Failed to load from JSON, conversion pattern not of type dict");
     }
 
-    const std::string* const id_pattern = value.FindStringKey("id_pattern");
+    const std::string* const id_pattern = pattern->FindString("id_pattern");
     if (!id_pattern || id_pattern->empty()) {
       return base::unexpected(
           "Failed to load from JSON, pattern id_pattern missing");
     }
 
-    const std::string* const search_in = value.FindStringKey("search_in");
+    const std::string* const search_in = pattern->FindString("search_in");
     if (!search_in || search_in->empty()) {
       return base::unexpected(
           "Failed to load from JSON, pattern search_in missing");
