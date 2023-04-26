@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/containers/flat_map.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 

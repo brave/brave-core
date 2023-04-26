@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/json/json_writer.h"
+#include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "brave/browser/ai_chat/buildflags.h"
 #include "brave/browser/ai_chat/constants.h"
@@ -42,14 +43,25 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
     )");
 }
 
-GURL GetURLWithPath(const std::string& host, const std::string& path) {
-  return GURL(base::StrCat({url::kHttpsScheme, "://", host})).Resolve(path);
-}
-
 std::string CreateJSONRequestBody(base::ValueView node) {
   std::string json;
   base::JSONWriter::Write(node, &json);
   return json;
+}
+
+const GURL GetEndpointBaseUrl() {
+  auto* endpoint = BUILDFLAG(BRAVE_AI_CHAT_ENDPOINT);
+  // Simply log if we have empty endpoint, it's probably just a local
+  // non-configured build.
+  if (strlen(endpoint) != 0) {
+    static base::NoDestructor<GURL> url{
+        base::StrCat({url::kHttpsScheme, "://", endpoint})};
+    return *url;
+  } else {
+    LOG(ERROR) << "BRAVE_AI_CHAT_ENDPOINT was empty. Must supply an AI Chat"
+                  "endpoint via build flag to use the AI Chat feature.";
+    return GURL::EmptyGURL();
+  }
 }
 
 }  // namespace
@@ -57,12 +69,32 @@ std::string CreateJSONRequestBody(base::ValueView node) {
 AIChatAPI::AIChatAPI(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : api_request_helper_(GetNetworkTrafficAnnotationTag(),
-                          url_loader_factory) {}
+                          url_loader_factory) {
+  // Validate configuration
+  const GURL api_base_url = GetEndpointBaseUrl();
+  if (!api_base_url.is_empty()) {
+    // Crash quickly if we have an invalid non-empty Url configured
+    // as a build flag
+    CHECK(api_base_url.is_valid()) << "API Url generated was invalid."
+                                      "Please check configuration parameter.";
+  }
+}
 
 AIChatAPI::~AIChatAPI() = default;
 
 void AIChatAPI::QueryPrompt(ResponseCallback callback,
                             const std::string& prompt) {
+  const GURL api_base_url = GetEndpointBaseUrl();
+  // Verify that we have a Url configured
+  if (api_base_url.is_empty()) {
+    std::move(callback).Run("", false);
+    return;
+  }
+  // Validate that the path is valid
+  GURL api_url = api_base_url.Resolve(ai_chat::kAIChatCompletionPath);
+  CHECK(api_url.is_valid())
+      << "Invalid API Url, check path: " << api_url.spec();
+
   auto internal_callback =
       base::BindOnce(&AIChatAPI::OnGetResponse, weak_ptr_factory_.GetWeakPtr(),
                      std::move(callback));
@@ -88,23 +120,6 @@ void AIChatAPI::QueryPrompt(ResponseCallback callback,
 
   DVLOG(1) << __func__ << " Prompt: " << prompt << "\n";
   DVLOG(1) << __func__ << " Using model: " << model_name;
-
-  auto* endpoint = BUILDFLAG(BRAVE_AI_CHAT_ENDPOINT);
-  if (!endpoint) {
-    LOG(ERROR) << "BRAVE_AI_CHAT_ENDPOINT was empty. Must supply an AI Chat"
-                  "endpoint via build flag to use the AI Chat API.";
-    std::move(callback).Run("", false);
-    return;
-  }
-
-  GURL api_url = GetURLWithPath(endpoint, ai_chat::kAIChatCompletionPath);
-  if (!api_url.is_valid()) {
-    LOG(ERROR) << "API Url generated was invalid. Cannot proceed with AI Chat"
-                  "API request: "
-               << api_url.spec();
-    std::move(callback).Run("", false);
-    return;
-  }
 
   api_request_helper_.Request("POST", api_url, CreateJSONRequestBody(dict),
                               "application/json", true,

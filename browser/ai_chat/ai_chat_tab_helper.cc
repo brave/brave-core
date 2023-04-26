@@ -301,12 +301,12 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
   bool contains_summary =
       turn.visibility == ConversationTurnVisibility::HIDDEN ? true : false;
 
+  SetRequestInProgress(true);
+
   ai_chat_api_->QueryPrompt(
       base::BindOnce(&AIChatTabHelper::OnAPIResponse, base::Unretained(this),
                      contains_summary),
       std::move(prompt_with_history));
-
-  SetRequestInProgress(true);
 }
 
 void AIChatTabHelper::OnAPIResponse(bool contains_summary,
