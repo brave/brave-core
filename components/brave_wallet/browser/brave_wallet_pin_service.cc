@@ -652,7 +652,7 @@ void BraveWalletPinService::ProcessTokenMetadata(
     return;
   }
 
-  auto* image_url = parsed_result->FindStringKey("image");
+  auto* image_url = parsed_result->GetDict().FindString("image");
   auto image_ipfs_url =
       image_url != nullptr ? ExtractIpfsUrl(*image_url) : absl::nullopt;
 

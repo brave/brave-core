@@ -12,10 +12,10 @@
 #include <vector>
 
 #include "base/functional/callback_helpers.h"
-#include "base/json/json_reader.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -196,9 +196,9 @@ class EthTxManagerUnitTest : public testing::Test {
                                                ->at(0)
                                                .As<network::DataElementBytes>()
                                                .AsStringPiece());
-          absl::optional<base::Value> request_value =
-              base::JSONReader::Read(request_string);
-          std::string* method = request_value->FindStringKey("method");
+          base::Value::Dict request_value =
+              base::test::ParseJsonDict(request_string);
+          std::string* method = request_value.FindString("method");
           ASSERT_TRUE(method);
 
           if (*method == "eth_estimateGas") {

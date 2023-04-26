@@ -724,7 +724,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
         continue;
       }
 
-      const std::string* id = chain.FindStringKey("chainId");
+      const std::string* id = chain.GetDict().FindString("chainId");
       if (!id || *id != chain_id) {
         continue;
       }
@@ -1966,14 +1966,14 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApproved) {
   const base::Value::List& asset_list = list->GetList();
   ASSERT_EQ(asset_list.size(), 1u);
 
-  EXPECT_EQ(*asset_list[0].FindStringKey("address"), "");
-  EXPECT_EQ(*asset_list[0].FindStringKey("name"), "symbol_name");
-  EXPECT_EQ(*asset_list[0].FindStringKey("symbol"), "symbol");
-  EXPECT_EQ(*asset_list[0].FindBoolKey("is_erc20"), false);
-  EXPECT_EQ(*asset_list[0].FindBoolKey("is_erc721"), false);
-  EXPECT_EQ(*asset_list[0].FindIntKey("decimals"), 11);
-  EXPECT_EQ(*asset_list[0].FindStringKey("logo"), "https://url1.com");
-  EXPECT_EQ(*asset_list[0].FindBoolKey("visible"), true);
+  EXPECT_EQ(*asset_list[0].GetDict().FindString("address"), "");
+  EXPECT_EQ(*asset_list[0].GetDict().FindString("name"), "symbol_name");
+  EXPECT_EQ(*asset_list[0].GetDict().FindString("symbol"), "symbol");
+  EXPECT_EQ(*asset_list[0].GetDict().FindBool("is_erc20"), false);
+  EXPECT_EQ(*asset_list[0].GetDict().FindBool("is_erc721"), false);
+  EXPECT_EQ(*asset_list[0].GetDict().FindInt("decimals"), 11);
+  EXPECT_EQ(*asset_list[0].GetDict().FindString("logo"), "https://url1.com");
+  EXPECT_EQ(*asset_list[0].GetDict().FindBool("visible"), true);
 
   callback_is_called = false;
   json_rpc_service_->AddEthereumChainRequestCompleted("0x111", true);
@@ -2029,14 +2029,14 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApprovedForOrigin) {
   const base::Value::List& asset_list = list->GetList();
   ASSERT_EQ(asset_list.size(), 1u);
 
-  EXPECT_EQ(*asset_list[0].FindStringKey("address"), "");
-  EXPECT_EQ(*asset_list[0].FindStringKey("name"), "symbol_name");
-  EXPECT_EQ(*asset_list[0].FindStringKey("symbol"), "symbol");
-  EXPECT_EQ(*asset_list[0].FindBoolKey("is_erc20"), false);
-  EXPECT_EQ(*asset_list[0].FindBoolKey("is_erc721"), false);
-  EXPECT_EQ(*asset_list[0].FindIntKey("decimals"), 11);
-  EXPECT_EQ(*asset_list[0].FindStringKey("logo"), "https://url1.com");
-  EXPECT_EQ(*asset_list[0].FindBoolKey("visible"), true);
+  EXPECT_EQ(*asset_list[0].GetDict().FindString("address"), "");
+  EXPECT_EQ(*asset_list[0].GetDict().FindString("name"), "symbol_name");
+  EXPECT_EQ(*asset_list[0].GetDict().FindString("symbol"), "symbol");
+  EXPECT_EQ(*asset_list[0].GetDict().FindBool("is_erc20"), false);
+  EXPECT_EQ(*asset_list[0].GetDict().FindBool("is_erc721"), false);
+  EXPECT_EQ(*asset_list[0].GetDict().FindInt("decimals"), 11);
+  EXPECT_EQ(*asset_list[0].GetDict().FindString("logo"), "https://url1.com");
+  EXPECT_EQ(*asset_list[0].GetDict().FindBool("visible"), true);
 
   callback_is_called = false;
   json_rpc_service_->AddEthereumChainRequestCompleted("0x111", true);

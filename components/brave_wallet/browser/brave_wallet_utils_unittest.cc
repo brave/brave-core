@@ -937,30 +937,30 @@ TEST(BraveWalletUtilsUnitTest, AddCustomNetwork) {
   const base::Value::List& asset_list1 = list1->GetList();
   ASSERT_EQ(asset_list1.size(), 1u);
 
-  EXPECT_EQ(*asset_list1[0].FindStringKey("address"), "");
-  EXPECT_EQ(*asset_list1[0].FindStringKey("name"), "symbol_name");
-  EXPECT_EQ(*asset_list1[0].FindStringKey("symbol"), "symbol");
-  EXPECT_EQ(*asset_list1[0].FindBoolKey("is_erc20"), false);
-  EXPECT_EQ(*asset_list1[0].FindBoolKey("is_erc721"), false);
-  EXPECT_EQ(*asset_list1[0].FindBoolKey("is_erc1155"), false);
-  EXPECT_EQ(*asset_list1[0].FindIntKey("decimals"), 11);
-  EXPECT_EQ(*asset_list1[0].FindStringKey("logo"), "https://url1.com");
-  EXPECT_EQ(*asset_list1[0].FindBoolKey("visible"), true);
+  EXPECT_EQ(*asset_list1[0].GetDict().FindString("address"), "");
+  EXPECT_EQ(*asset_list1[0].GetDict().FindString("name"), "symbol_name");
+  EXPECT_EQ(*asset_list1[0].GetDict().FindString("symbol"), "symbol");
+  EXPECT_EQ(*asset_list1[0].GetDict().FindBool("is_erc20"), false);
+  EXPECT_EQ(*asset_list1[0].GetDict().FindBool("is_erc721"), false);
+  EXPECT_EQ(*asset_list1[0].GetDict().FindBool("is_erc1155"), false);
+  EXPECT_EQ(*asset_list1[0].GetDict().FindInt("decimals"), 11);
+  EXPECT_EQ(*asset_list1[0].GetDict().FindString("logo"), "https://url1.com");
+  EXPECT_EQ(*asset_list1[0].GetDict().FindBool("visible"), true);
 
   const base::Value* list2 = assets_pref.FindByDottedPath("ethereum.chain_id2");
   ASSERT_TRUE(list2->is_list());
   const base::Value::List& asset_list2 = list2->GetList();
   ASSERT_EQ(asset_list2.size(), 1u);
 
-  EXPECT_EQ(*asset_list2[0].FindStringKey("address"), "");
-  EXPECT_EQ(*asset_list2[0].FindStringKey("name"), "symbol_name2");
-  EXPECT_EQ(*asset_list2[0].FindStringKey("symbol"), "symbol2");
-  EXPECT_EQ(*asset_list2[0].FindBoolKey("is_erc20"), false);
-  EXPECT_EQ(*asset_list2[0].FindBoolKey("is_erc721"), false);
-  EXPECT_EQ(*asset_list2[0].FindBoolKey("is_erc1155"), false);
-  EXPECT_EQ(*asset_list2[0].FindIntKey("decimals"), 22);
-  EXPECT_EQ(*asset_list2[0].FindStringKey("logo"), "");
-  EXPECT_EQ(*asset_list2[0].FindBoolKey("visible"), true);
+  EXPECT_EQ(*asset_list2[0].GetDict().FindString("address"), "");
+  EXPECT_EQ(*asset_list2[0].GetDict().FindString("name"), "symbol_name2");
+  EXPECT_EQ(*asset_list2[0].GetDict().FindString("symbol"), "symbol2");
+  EXPECT_EQ(*asset_list2[0].GetDict().FindBool("is_erc20"), false);
+  EXPECT_EQ(*asset_list2[0].GetDict().FindBool("is_erc721"), false);
+  EXPECT_EQ(*asset_list2[0].GetDict().FindBool("is_erc1155"), false);
+  EXPECT_EQ(*asset_list2[0].GetDict().FindInt("decimals"), 22);
+  EXPECT_EQ(*asset_list2[0].GetDict().FindString("logo"), "");
+  EXPECT_EQ(*asset_list2[0].GetDict().FindBool("visible"), true);
 
   {
     mojom::NetworkInfo chain_fil = GetTestNetworkInfo1(mojom::kFilecoinMainnet);

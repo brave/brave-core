@@ -9,10 +9,10 @@
 #include <utility>
 
 #include "base/base64.h"
-#include "base/json/json_reader.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -117,9 +117,10 @@ class SolanaTxManagerUnitTest : public testing::Test {
                                                ->at(0)
                                                .As<network::DataElementBytes>()
                                                .AsStringPiece());
-          absl::optional<base::Value> request_value =
-              base::JSONReader::Read(request_string);
-          std::string* method = request_value->FindStringKey("method");
+          base::Value::Dict request_root =
+              base::test::ParseJsonDict(request_string);
+
+          std::string* method = request_root.FindString("method");
           ASSERT_TRUE(method);
 
           if (*method == "getLatestBlockhash") {
@@ -158,11 +159,11 @@ class SolanaTxManagerUnitTest : public testing::Test {
               return;
             }
 
-            const base::Value* params_list =
-                request_value->FindListKey("params");
-            ASSERT_TRUE(params_list && params_list->GetList()[0].is_list());
+            const base::Value::List* params_list =
+                request_root.FindList("params");
+            ASSERT_TRUE(params_list && (*params_list)[0].is_list());
             const std::string* hash =
-                params_list->GetList()[0].GetList()[0].GetIfString();
+                (*params_list)[0].GetList()[0].GetIfString();
             ASSERT_TRUE(hash);
             std::string json;
 
