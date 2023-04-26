@@ -94,7 +94,8 @@ void VPNPanelUI::CreatePanelHandler(
 }
 
 std::unique_ptr<content::WebUIController>
-UntrustedVPNPanelUIConfig::CreateWebUIController(content::WebUI* web_ui) {
+UntrustedVPNPanelUIConfig::CreateWebUIController(content::WebUI* web_ui,
+                                                 const GURL& url) {
   return std::make_unique<VPNPanelUI>(web_ui);
 }
 
