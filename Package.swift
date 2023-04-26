@@ -328,7 +328,7 @@ var package = Package(
     .testTarget(name: "GrowthTests", dependencies: ["Growth", "Shared", "BraveShared", "BraveVPN"]),
     .plugin(name: "IntentBuilderPlugin", capability: .buildTool()),
     .plugin(name: "LoggerPlugin", capability: .buildTool()),
-    .plugin(name: "LeoAssetsPlugin", capability: .buildTool(), dependencies: ["LeoAssetCatalogGenerator"]),
+    .plugin(name: "LeoAssetsPlugin", capability: .buildTool()/*, dependencies: ["LeoAssetCatalogGenerator"]*/),
     .executableTarget(name: "LeoAssetCatalogGenerator")
   ],
   cxxLanguageStandard: .cxx17
