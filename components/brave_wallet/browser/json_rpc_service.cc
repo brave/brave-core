@@ -2663,8 +2663,7 @@ void JsonRpcService::GetEthTokenSymbol(const std::string& contract_address,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
-  std::string data;
-  const std::string function_hash = GetFunctionHash("symbol()");
+  const std::string data = GetFunctionHash("symbol()");
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetEthTokenSymbol,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
