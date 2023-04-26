@@ -275,10 +275,10 @@ class AdsServiceImpl : public AdsService,
   void ToggleDislikeAd(base::Value::Dict value,
                        ToggleDislikeAdCallback callback) override;
   void ToggleLikeCategory(const std::string& category,
-                          int action,
+                          mojom::UserReactionType user_reaction_type,
                           ToggleLikeCategoryCallback callback) override;
   void ToggleDislikeCategory(const std::string& category,
-                             int action,
+                             mojom::UserReactionType user_reaction_type,
                              ToggleDislikeCategoryCallback callback) override;
   void ToggleSaveAd(base::Value::Dict value,
                     ToggleSaveAdCallback callback) override;

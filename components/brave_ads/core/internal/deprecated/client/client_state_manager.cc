@@ -51,22 +51,18 @@ FilteredCategoryList::iterator FindFilteredCategory(
                             &FilteredCategoryInfo::name);
 }
 
-CategoryContentOptActionType ToggleOptInActionType(
-    const CategoryContentOptActionType action_type) {
-  if (action_type == CategoryContentOptActionType::kOptIn) {
-    return CategoryContentOptActionType::kNone;
-  }
-
-  return CategoryContentOptActionType::kOptIn;
+mojom::UserReactionType ToggleLikeUserReactionType(
+    const mojom::UserReactionType user_reaction_type) {
+  return user_reaction_type == mojom::UserReactionType::kLike
+             ? mojom::UserReactionType::kNeutral
+             : mojom::UserReactionType::kLike;
 }
 
-CategoryContentOptActionType ToggleOptOutActionType(
-    const CategoryContentOptActionType action_type) {
-  if (action_type == CategoryContentOptActionType::kOptOut) {
-    return CategoryContentOptActionType::kNone;
-  }
-
-  return CategoryContentOptActionType::kOptOut;
+mojom::UserReactionType ToggleDislikeUserReactionType(
+    const mojom::UserReactionType user_reaction_type) {
+  return user_reaction_type == mojom::UserReactionType::kDislike
+             ? mojom::UserReactionType::kNeutral
+             : mojom::UserReactionType::kDislike;
 }
 
 uint64_t GenerateHash(const std::string& value) {
@@ -179,7 +175,7 @@ ClientStateManager::GetPurchaseIntentSignalHistory() const {
   return client_.purchase_intent_signal_history;
 }
 
-AdContentLikeActionType ClientStateManager::ToggleLikeAd(
+mojom::UserReactionType ClientStateManager::ToggleLikeAd(
     const AdContentInfo& ad_content) {
   DCHECK(is_initialized_);
 
@@ -189,31 +185,31 @@ AdContentLikeActionType ClientStateManager::ToggleLikeAd(
     client_.ad_preferences.filtered_advertisers.erase(iter);
   }
 
-  const AdContentLikeActionType like_action_type =
-      ad_content.ToggleThumbUpActionType();
+  const mojom::UserReactionType user_reaction_type =
+      ad_content.ToggleLikeUserReactionType();
 
   for (auto& item : client_.history_items) {
     if (item.ad_content.advertiser_id == ad_content.advertiser_id) {
-      item.ad_content.like_action_type = like_action_type;
+      item.ad_content.user_reaction_type = user_reaction_type;
     }
   }
 
   Save();
 
-  return like_action_type;
+  return user_reaction_type;
 }
 
-AdContentLikeActionType ClientStateManager::ToggleDislikeAd(
+mojom::UserReactionType ClientStateManager::ToggleDislikeAd(
     const AdContentInfo& ad_content) {
   DCHECK(is_initialized_);
 
-  const AdContentLikeActionType like_action_type =
-      ad_content.ToggleThumbDownActionType();
+  const mojom::UserReactionType user_reaction_type =
+      ad_content.ToggleDislikeUserReactionType();
 
   const auto iter = FindFilteredAdvertiser(
       ad_content.advertiser_id, &client_.ad_preferences.filtered_advertisers);
 
-  if (like_action_type == AdContentLikeActionType::kNeutral) {
+  if (user_reaction_type == mojom::UserReactionType::kNeutral) {
     if (iter != client_.ad_preferences.filtered_advertisers.cend()) {
       client_.ad_preferences.filtered_advertisers.erase(iter);
     }
@@ -229,17 +225,16 @@ AdContentLikeActionType ClientStateManager::ToggleDislikeAd(
 
   for (auto& item : client_.history_items) {
     if (item.ad_content.advertiser_id == ad_content.advertiser_id) {
-      item.ad_content.like_action_type = like_action_type;
+      item.ad_content.user_reaction_type = user_reaction_type;
     }
   }
 
   Save();
 
-  return like_action_type;
+  return user_reaction_type;
 }
 
-AdContentLikeActionType
-ClientStateManager::GetAdContentLikeActionTypeForAdvertiser(
+mojom::UserReactionType ClientStateManager::GetUserReactionTypeForAdvertiser(
     const std::string& advertiser_id) {
   const auto iter = base::ranges::find_if(
       client_.history_items,
@@ -248,15 +243,15 @@ ClientStateManager::GetAdContentLikeActionTypeForAdvertiser(
       });
 
   if (iter == client_.history_items.cend()) {
-    return AdContentLikeActionType::kNeutral;
+    return mojom::UserReactionType::kNeutral;
   }
 
-  return iter->ad_content.like_action_type;
+  return iter->ad_content.user_reaction_type;
 }
 
-CategoryContentOptActionType ClientStateManager::ToggleLikeCategory(
+mojom::UserReactionType ClientStateManager::ToggleLikeCategory(
     const std::string& category,
-    const CategoryContentOptActionType opt_action_type) {
+    const mojom::UserReactionType user_reaction_type) {
   DCHECK(is_initialized_);
 
   const auto iter = FindFilteredCategory(
@@ -265,32 +260,32 @@ CategoryContentOptActionType ClientStateManager::ToggleLikeCategory(
     client_.ad_preferences.filtered_categories.erase(iter);
   }
 
-  const CategoryContentOptActionType toggled_opt_action_type =
-      ToggleOptInActionType(opt_action_type);
+  const mojom::UserReactionType toggled_user_reaction_type =
+      ToggleLikeUserReactionType(user_reaction_type);
 
   for (auto& item : client_.history_items) {
     if (item.category_content.category == category) {
-      item.category_content.opt_action_type = toggled_opt_action_type;
+      item.category_content.user_reaction_type = toggled_user_reaction_type;
     }
   }
 
   Save();
 
-  return toggled_opt_action_type;
+  return toggled_user_reaction_type;
 }
 
-CategoryContentOptActionType ClientStateManager::ToggleDislikeCategory(
+mojom::UserReactionType ClientStateManager::ToggleDislikeCategory(
     const std::string& category,
-    const CategoryContentOptActionType opt_action_type) {
+    const mojom::UserReactionType user_reaction_type) {
   DCHECK(is_initialized_);
 
-  const CategoryContentOptActionType toggled_opt_action_type =
-      ToggleOptOutActionType(opt_action_type);
+  const mojom::UserReactionType toggled_user_reaction_type =
+      ToggleDislikeUserReactionType(user_reaction_type);
 
   const auto iter = FindFilteredCategory(
       category, &client_.ad_preferences.filtered_categories);
 
-  if (toggled_opt_action_type == CategoryContentOptActionType::kNone) {
+  if (toggled_user_reaction_type == mojom::UserReactionType::kNeutral) {
     if (iter != client_.ad_preferences.filtered_categories.cend()) {
       client_.ad_preferences.filtered_categories.erase(iter);
     }
@@ -304,17 +299,16 @@ CategoryContentOptActionType ClientStateManager::ToggleDislikeCategory(
 
   for (auto& item : client_.history_items) {
     if (item.category_content.category == category) {
-      item.category_content.opt_action_type = toggled_opt_action_type;
+      item.category_content.user_reaction_type = toggled_user_reaction_type;
     }
   }
 
   Save();
 
-  return toggled_opt_action_type;
+  return toggled_user_reaction_type;
 }
 
-CategoryContentOptActionType
-ClientStateManager::GetCategoryContentOptActionTypeForSegment(
+mojom::UserReactionType ClientStateManager::GetUserReactionTypeForSegment(
     const std::string& segment) {
   const auto iter = base::ranges::find_if(
       client_.history_items,
@@ -323,10 +317,10 @@ ClientStateManager::GetCategoryContentOptActionTypeForSegment(
       });
 
   if (iter == client_.history_items.cend()) {
-    return CategoryContentOptActionType::kNone;
+    return mojom::UserReactionType::kNeutral;
   }
 
-  return iter->category_content.opt_action_type;
+  return iter->category_content.user_reaction_type;
 }
 
 bool ClientStateManager::ToggleSaveAd(const AdContentInfo& ad_content) {

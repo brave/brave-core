@@ -14,9 +14,9 @@ namespace brave_ads {
 namespace {
 
 constexpr char kCategoryKey[] = "category";
-constexpr char kOptActionKey[] = "optAction";
+constexpr char kUserReactionTypeKey[] = "optAction";
 
-constexpr char kLegacyOptActionKey[] = "opt_action";
+constexpr char kLegacyUserReactionTypeKey[] = "opt_action";
 
 }  // namespace
 
@@ -25,7 +25,8 @@ base::Value::Dict CategoryContentToValue(
   base::Value::Dict dict;
 
   dict.Set(kCategoryKey, category_content.category);
-  dict.Set(kOptActionKey, static_cast<int>(category_content.opt_action_type));
+  dict.Set(kUserReactionTypeKey,
+           static_cast<int>(category_content.user_reaction_type));
 
   return dict;
 }
@@ -37,12 +38,13 @@ CategoryContentInfo CategoryContentFromValue(const base::Value::Dict& root) {
     category_content.category = *value;
   }
 
-  if (const auto value = root.FindInt(kOptActionKey)) {
-    category_content.opt_action_type =
-        static_cast<CategoryContentOptActionType>(*value);
-  } else if (const auto legacy_value = root.FindInt(kLegacyOptActionKey)) {
-    category_content.opt_action_type =
-        static_cast<CategoryContentOptActionType>(*legacy_value);
+  if (const auto value = root.FindInt(kUserReactionTypeKey)) {
+    category_content.user_reaction_type =
+        static_cast<mojom::UserReactionType>(*value);
+  } else if (const auto legacy_value =
+                 root.FindInt(kLegacyUserReactionTypeKey)) {
+    category_content.user_reaction_type =
+        static_cast<mojom::UserReactionType>(*legacy_value);
   }
 
   return category_content;

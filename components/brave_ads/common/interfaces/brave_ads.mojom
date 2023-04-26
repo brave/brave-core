@@ -39,6 +39,12 @@ enum ReminderType {
   kExternalWalletConnected
 };
 
+enum UserReactionType {
+  kNeutral = 0,
+  kLike,
+  kDislike
+};
+
 enum AdType {
   kUndefined = 0,
   kNotificationAd,

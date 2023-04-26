@@ -9,8 +9,7 @@
 #include <string>
 
 #include "base/observer_list.h"
-#include "brave/components/brave_ads/core/ad_content_action_types.h"
-#include "brave/components/brave_ads/core/category_content_action_types.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/history_filter_types.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/history_sort_types.h"
@@ -64,15 +63,15 @@ class HistoryManager final {
   HistoryItemInfo Add(const SearchResultAdInfo& ad,
                       const ConfirmationType& confirmation_type) const;
 
-  AdContentLikeActionType LikeAd(const AdContentInfo& ad_content) const;
-  AdContentLikeActionType DislikeAd(const AdContentInfo& ad_content) const;
+  mojom::UserReactionType LikeAd(const AdContentInfo& ad_content) const;
+  mojom::UserReactionType DislikeAd(const AdContentInfo& ad_content) const;
 
-  CategoryContentOptActionType LikeCategory(
+  mojom::UserReactionType LikeCategory(
       const std::string& category,
-      const CategoryContentOptActionType& action_type) const;
-  CategoryContentOptActionType DislikeCategory(
+      mojom::UserReactionType user_reaction_type) const;
+  mojom::UserReactionType DislikeCategory(
       const std::string& category,
-      const CategoryContentOptActionType& action_type) const;
+      mojom::UserReactionType user_reaction_type) const;
 
   bool ToggleSaveAd(const AdContentInfo& ad_content) const;
 

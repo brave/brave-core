@@ -10,9 +10,8 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/core/ad_content_action_types.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/ads_callback.h"
-#include "brave/components/brave_ads/core/category_content_action_types.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_alias.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
@@ -56,18 +55,18 @@ class ClientStateManager final {
       const PurchaseIntentSignalHistoryInfo& history);
   const PurchaseIntentSignalHistoryMap& GetPurchaseIntentSignalHistory() const;
 
-  AdContentLikeActionType ToggleLikeAd(const AdContentInfo& ad_content);
-  AdContentLikeActionType ToggleDislikeAd(const AdContentInfo& ad_content);
-  AdContentLikeActionType GetAdContentLikeActionTypeForAdvertiser(
+  mojom::UserReactionType ToggleLikeAd(const AdContentInfo& ad_content);
+  mojom::UserReactionType ToggleDislikeAd(const AdContentInfo& ad_content);
+  mojom::UserReactionType GetUserReactionTypeForAdvertiser(
       const std::string& advertiser_id);
 
-  CategoryContentOptActionType ToggleLikeCategory(
+  mojom::UserReactionType ToggleLikeCategory(
       const std::string& category,
-      CategoryContentOptActionType action_type);
-  CategoryContentOptActionType ToggleDislikeCategory(
+      mojom::UserReactionType user_reaction_type);
+  mojom::UserReactionType ToggleDislikeCategory(
       const std::string& category,
-      CategoryContentOptActionType action_type);
-  CategoryContentOptActionType GetCategoryContentOptActionTypeForSegment(
+      mojom::UserReactionType user_reaction_type);
+  mojom::UserReactionType GetUserReactionTypeForSegment(
       const std::string& segment);
 
   bool ToggleSaveAd(const AdContentInfo& ad_content);

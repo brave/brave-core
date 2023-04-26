@@ -265,24 +265,26 @@ void AdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   DiagnosticManager::GetInstance().GetDiagnostics(std::move(callback));
 }
 
-AdContentLikeActionType AdsImpl::ToggleLikeAd(base::Value::Dict value) {
+mojom::UserReactionType AdsImpl::ToggleLikeAd(base::Value::Dict value) {
   return HistoryManager::GetInstance().LikeAd(AdContentFromValue(value));
 }
 
-AdContentLikeActionType AdsImpl::ToggleDislikeAd(base::Value::Dict value) {
+mojom::UserReactionType AdsImpl::ToggleDislikeAd(base::Value::Dict value) {
   return HistoryManager::GetInstance().DislikeAd(AdContentFromValue(value));
 }
 
-CategoryContentOptActionType AdsImpl::ToggleLikeCategory(
+mojom::UserReactionType AdsImpl::ToggleLikeCategory(
     const std::string& category,
-    const CategoryContentOptActionType& action_type) {
-  return HistoryManager::GetInstance().LikeCategory(category, action_type);
+    const mojom::UserReactionType user_reaction_type) {
+  return HistoryManager::GetInstance().LikeCategory(category,
+                                                    user_reaction_type);
 }
 
-CategoryContentOptActionType AdsImpl::ToggleDislikeCategory(
+mojom::UserReactionType AdsImpl::ToggleDislikeCategory(
     const std::string& category,
-    const CategoryContentOptActionType& action_type) {
-  return HistoryManager::GetInstance().DislikeCategory(category, action_type);
+    const mojom::UserReactionType user_reaction_type) {
+  return HistoryManager::GetInstance().DislikeCategory(category,
+                                                       user_reaction_type);
 }
 
 bool AdsImpl::ToggleSaveAd(base::Value::Dict value) {

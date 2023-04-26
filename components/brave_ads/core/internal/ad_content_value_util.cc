@@ -24,8 +24,8 @@ constexpr char kBrand[] = "brand";
 constexpr char kBrandInfo[] = "brandInfo";
 constexpr char kBrandDisplayUrl[] = "brandDisplayUrl";
 constexpr char kBrandUrl[] = "brandUrl";
-constexpr char kLikeAction[] = "likeAction";
-constexpr char kAdAction[] = "adAction";
+constexpr char kUserReactionType[] = "likeAction";
+constexpr char kEventType[] = "adAction";
 constexpr char kSavedAd[] = "savedAd";
 constexpr char kFlaggedAd[] = "flaggedAd";
 
@@ -38,8 +38,8 @@ constexpr char kLegacyAdvertiserId[] = "advertiser_id";
 constexpr char kLegacyBrandInfo[] = "brand_info";
 constexpr char kLegacyBrandDisplayUrl[] = "brand_display_url";
 constexpr char kLegacyBrandUrl[] = "brand_url";
-constexpr char kLegacyLikeAction[] = "like_action";
-constexpr char kLegacyAdAction[] = "ad_action";
+constexpr char kLegacyUserReactionType[] = "like_action";
+constexpr char kLegacyEventType[] = "ad_action";
 constexpr char kLegacySavesAd[] = "saved_ad";
 constexpr char kLegacyFlaggedAd[] = "flagged_ad";
 
@@ -59,8 +59,8 @@ base::Value::Dict AdContentToValue(const AdContentInfo& ad_content) {
   dict.Set(kBrandInfo, ad_content.brand_info);
   dict.Set(kBrandDisplayUrl, ad_content.brand_display_url);
   dict.Set(kBrandUrl, ad_content.brand_url.spec());
-  dict.Set(kLikeAction, static_cast<int>(ad_content.like_action_type));
-  dict.Set(kAdAction, ad_content.confirmation_type.ToString());
+  dict.Set(kUserReactionType, static_cast<int>(ad_content.user_reaction_type));
+  dict.Set(kEventType, ad_content.confirmation_type.ToString());
   dict.Set(kSavedAd, ad_content.is_saved);
   dict.Set(kFlaggedAd, ad_content.is_flagged);
 
@@ -146,19 +146,19 @@ AdContentInfo AdContentFromValue(const base::Value::Dict& root) {
     ad_content.brand_url = GURL(*legacy_brand_url_value);
   }
 
-  if (const auto like_action_value = root.FindInt(kLikeAction)) {
-    ad_content.like_action_type =
-        static_cast<AdContentLikeActionType>(*like_action_value);
+  if (const auto like_action_value = root.FindInt(kUserReactionType)) {
+    ad_content.user_reaction_type =
+        static_cast<mojom::UserReactionType>(*like_action_value);
   } else if (const auto legacy_like_action_value =
-                 root.FindInt(kLegacyLikeAction)) {
-    ad_content.like_action_type =
-        static_cast<AdContentLikeActionType>(*legacy_like_action_value);
+                 root.FindInt(kLegacyUserReactionType)) {
+    ad_content.user_reaction_type =
+        static_cast<mojom::UserReactionType>(*legacy_like_action_value);
   }
 
-  if (const auto* ad_action_value = root.FindString(kAdAction)) {
+  if (const auto* ad_action_value = root.FindString(kEventType)) {
     ad_content.confirmation_type = ConfirmationType(*ad_action_value);
   } else if (const auto* legacy_ad_action_value =
-                 root.FindString(kLegacyAdAction)) {
+                 root.FindString(kLegacyEventType)) {
     ad_content.confirmation_type = ConfirmationType(*legacy_ad_action_value);
   }
 

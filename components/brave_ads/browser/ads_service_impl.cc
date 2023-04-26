@@ -1508,20 +1508,22 @@ void AdsServiceImpl::ToggleDislikeAd(base::Value::Dict value,
   }
 }
 
-void AdsServiceImpl::ToggleLikeCategory(const std::string& category,
-                                        const int action,
-                                        ToggleLikeCategoryCallback callback) {
+void AdsServiceImpl::ToggleLikeCategory(
+    const std::string& category,
+    const mojom::UserReactionType user_reaction_type,
+    ToggleLikeCategoryCallback callback) {
   if (bat_ads_.is_bound()) {
-    bat_ads_->ToggleLikeCategory(category, action, std::move(callback));
+    bat_ads_->ToggleLikeCategory(category, user_reaction_type,
+                                 std::move(callback));
   }
 }
-
 void AdsServiceImpl::ToggleDislikeCategory(
     const std::string& category,
-    const int action,
+    const mojom::UserReactionType user_reaction_type,
     ToggleDislikeCategoryCallback callback) {
   if (bat_ads_.is_bound()) {
-    bat_ads_->ToggleDislikeCategory(category, action, std::move(callback));
+    bat_ads_->ToggleDislikeCategory(category, user_reaction_type,
+                                    std::move(callback));
   }
 }
 

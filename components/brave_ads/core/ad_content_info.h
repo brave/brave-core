@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_ads/core/ad_content_action_types.h"
+#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/export.h"
@@ -27,8 +27,8 @@ struct ADS_EXPORT AdContentInfo final {
 
   ~AdContentInfo();
 
-  AdContentLikeActionType ToggleThumbUpActionType() const;
-  AdContentLikeActionType ToggleThumbDownActionType() const;
+  mojom::UserReactionType ToggleLikeUserReactionType() const;
+  mojom::UserReactionType ToggleDislikeUserReactionType() const;
 
   AdType type = AdType::kUndefined;
   std::string placement_id;
@@ -41,7 +41,8 @@ struct ADS_EXPORT AdContentInfo final {
   std::string brand_info;
   std::string brand_display_url;
   GURL brand_url;
-  AdContentLikeActionType like_action_type = AdContentLikeActionType::kNeutral;
+  mojom::UserReactionType user_reaction_type =
+      mojom::UserReactionType::kNeutral;
   ConfirmationType confirmation_type = ConfirmationType::kUndefined;
   bool is_saved = false;
   bool is_flagged = false;
