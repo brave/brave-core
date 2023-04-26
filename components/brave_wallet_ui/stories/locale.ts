@@ -51,13 +51,20 @@ provideStrings({
   braveWalletTopNavMarket: 'Market',
 
   // Chart Timeline Buttons
-  braveWalletChartLive: '1H',
-  braveWalletChartOneDay: '1D',
-  braveWalletChartOneWeek: '1W',
-  braveWalletChartOneMonth: '1M',
-  braveWalletChartThreeMonths: '3M',
-  braveWalletChartOneYear: '1Y',
-  braveWalletChartAllTime: 'All',
+  braveWalletChartOneHour: '1 Hour',
+  braveWalletChartOneDay: '1 Day',
+  braveWalletChartOneWeek: '1 Week',
+  braveWalletChartOneMonth: '1 Month',
+  braveWalletChartThreeMonths: '3 Months',
+  braveWalletChartOneYear: '1 Year',
+  braveWalletChartAllTime: 'All time',
+  braveWalletChartOneHourAbbr: '1H',
+  braveWalletChartOneDayAbbr: '1D',
+  braveWalletChartOneWeekAbbr: '1W',
+  braveWalletChartOneMonthAbbr: '1M',
+  braveWalletChartThreeMonthsAbbr: '3M',
+  braveWalletChartOneYearAbbr: '1Y',
+  braveWalletChartAllTimeAbbr: 'All',
 
   // Portfolio View
   braveWalletAddCoin: 'Add Coin',

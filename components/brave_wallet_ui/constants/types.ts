@@ -194,6 +194,7 @@ export interface AppsListType {
 }
 
 export interface ChartTimelineObjectType {
+  abr: string
   name: string
   id: BraveWallet.AssetPriceTimeframe
 }

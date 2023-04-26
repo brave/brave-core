@@ -17,6 +17,11 @@ import {
 import { WalletSelectors } from '../../../../common/selectors'
 import { PageSelectors } from '../../../../page/selectors'
 
+// Hooks
+import {
+  useOnClickOutside
+} from '../../../../common/hooks/useOnClickOutside'
+
 // Constants
 import {
   BraveWallet,
@@ -24,6 +29,9 @@ import {
   SupportedTestNetworks,
   WalletRoutes
 } from '../../../../constants/types'
+import {
+  LOCAL_STORAGE_KEYS
+} from '../../../../common/constants/local-storage-keys'
 
 // actions
 import { WalletActions } from '../../../../common/actions'
@@ -50,21 +58,25 @@ import { TokenLists } from './components/token-lists/token-list'
 import {
   PortfolioOverviewChart //
 } from './components/portfolio-overview-chart/portfolio-overview-chart'
-import { ChartControlBar } from '../../chart-control-bar/chart-control-bar'
+import {
+  LineChartControlsMenu
+} from '../../wallet-menus/line-chart-controls-menu'
 import ColumnReveal from '../../../shared/animated-reveals/column-reveal'
 
 // Styled Components
 import {
-  BalanceTitle,
   BalanceText,
-  BalanceRow
+  PercentBubble,
+  FiatChange,
+  SelectTimelinButton,
+  SelectTimelinButtonIcon,
+  SelectTimelineWrapper
 } from './style'
 import {
   Column,
   Row,
-  VerticalSpace
+  HorizontalSpace
 } from '../../../shared/style'
-import { PlaceholderText } from '../../with-hide-balance-placeholder/style'
 import { useGetVisibleNetworksQuery } from '../../../../common/slices/api.slice'
 
 export const PortfolioOverview = () => {
@@ -96,10 +108,26 @@ export const PortfolioOverview = () => {
     useSafeWalletSelector(WalletSelectors.hidePortfolioGraph)
   const hidePortfolioBalances =
     useSafeWalletSelector(WalletSelectors.hidePortfolioBalances)
+  const portfolioPriceHistory =
+    useUnsafeWalletSelector(WalletSelectors.portfolioPriceHistory)
 
 
   // queries
   const { data: networks } = useGetVisibleNetworksQuery()
+
+  // state
+  const [showLineChartControlMenu, setShowLineChartControlMenu] =
+    React.useState<boolean>(false)
+
+  // refs
+  const lineChartControlMenuRef = React.useRef<HTMLDivElement>(null)
+
+  // hooks
+  useOnClickOutside(
+    lineChartControlMenuRef,
+    () => setShowLineChartControlMenu(false),
+    showLineChartControlMenu
+  )
 
   // This will scrape all the user's accounts and combine the asset balances for a single asset
   const fullAssetBalance = React.useCallback((asset: BraveWallet.BlockchainToken) => {
@@ -172,9 +200,9 @@ export const PortfolioOverview = () => {
   }, [userAssetList])
 
   // This will scrape all of the user's accounts and combine the fiat value for every asset
-  const fullPortfolioFiatBalance = React.useMemo((): string => {
+  const fullPortfolioFiatBalance = React.useMemo((): Amount => {
     if (visibleAssetOptions.length === 0) {
-      return ''
+      return new Amount('')
     }
 
     const visibleAssetFiatBalances = visibleAssetOptions
@@ -194,24 +222,62 @@ export const PortfolioOverview = () => {
     const grandTotal = visibleAssetFiatBalances.reduce(function (a, b) {
       return a.plus(b)
     })
-    return grandTotal.formatAsFiat(defaultCurrencies.fiat)
+    return grandTotal
   },
     [
       visibleAssetOptions,
-      defaultCurrencies.fiat,
       transactionSpotPrices
     ])
 
+  const formattedFullPortfolioFiatBalance = React.useMemo(() => {
+    return !fullPortfolioFiatBalance.isUndefined()
+      ? fullPortfolioFiatBalance
+        .formatAsFiat(defaultCurrencies.fiat)
+      : ''
+  }, [
+    fullPortfolioFiatBalance,
+    defaultCurrencies.fiat
+  ])
+
   const isZeroBalance = React.useMemo((): boolean => {
     // In some cases we need to check if the balance is zero
-    return parseFloat(formatAsDouble(fullPortfolioFiatBalance)) === 0
+    return parseFloat(formatAsDouble(fullPortfolioFiatBalance.format())) === 0
   }, [fullPortfolioFiatBalance])
 
+  const percentageChange = React.useMemo(() => {
+    if (portfolioPriceHistory.length !== 0) {
+      const oldestValue =
+        new Amount(portfolioPriceHistory[0].close)
+      const difference =
+        fullPortfolioFiatBalance.minus(oldestValue)
+      return `${difference.div(oldestValue).times(100).format(2)}`
+    }
+    return '0.00'
+  }, [portfolioPriceHistory, fullPortfolioFiatBalance])
+
+  const fiatValueChange = React.useMemo(() => {
+    if (portfolioPriceHistory.length !== 0) {
+      const oldestValue =
+        new Amount(portfolioPriceHistory[0].close)
+      return fullPortfolioFiatBalance
+        .minus(oldestValue)
+        .formatAsFiat(defaultCurrencies.fiat)
+    }
+    return new Amount(0).formatAsFiat(defaultCurrencies.fiat)
+  }, [defaultCurrencies.fiat, portfolioPriceHistory])
+
+  const isPortfolioDown = Number(percentageChange) < 0
 
   // methods
-  const onChangeTimeline = React.useCallback((timeline: BraveWallet.AssetPriceTimeframe) => {
-    dispatch(WalletActions.selectPortfolioTimeline(timeline))
-  }, [])
+  const onChangeTimeline = React.useCallback(
+    (id: BraveWallet.AssetPriceTimeframe) => {
+      window.localStorage.setItem(
+        LOCAL_STORAGE_KEYS.PORTFOLIO_TIME_LINE_OPTION,
+        id.toString()
+      )
+      dispatch(WalletActions.selectPortfolioTimeline(id))
+      setShowLineChartControlMenu(false)
+    }, [])
 
   const onSelectAsset = React.useCallback((asset: BraveWallet.BlockchainToken) => {
     if (asset.contractAddress === '') {
@@ -234,43 +300,85 @@ export const PortfolioOverview = () => {
   // render
   return (
     <>
-      <Column fullWidth={true} justifyContent='flex-start'>
-        <Row alignItems='flex-start' justifyContent='flex-start'>
-          <BalanceTitle>{getLocale('braveWalletBalance')}</BalanceTitle>
-        </Row>
-
-        <Row justifyContent='space-between'>
-          <Column>
-            <BalanceRow>
+      <Column
+        fullWidth={true}
+        justifyContent='flex-start'
+      >
+        <Column
+          fullWidth={true}
+          alignItems='center'
+          padding='40px 0px'
+        >
+          {formattedFullPortfolioFiatBalance !== '' ? (
+            <BalanceText>
               {hidePortfolioBalances
-                ? <PlaceholderText isBig>******</PlaceholderText>
-                : <div>
-                  <BalanceText>
-                    {fullPortfolioFiatBalance !== ''
-                      ? fullPortfolioFiatBalance
-                      : <LoadingSkeleton width={150} height={32} />
-                    }
-                  </BalanceText>
-                </div>
+                ? '******'
+                : formattedFullPortfolioFiatBalance
               }
-            </BalanceRow>
-          </Column>
-
-          <Column>
-            <BalanceRow>
-              <ChartControlBar
-                disabled={hidePortfolioGraph}
-                onSelectTimeframe={onChangeTimeline}
-                selectedTimeline={selectedPortfolioTimeline}
-                timelineOptions={ChartTimelineOptions}
-              />
-            </BalanceRow>
-          </Column>
-        </Row>
-
-        <VerticalSpace space='20px' />
+            </BalanceText>
+          ) : (
+            <Column padding='9px 0px'>
+              <LoadingSkeleton width={150} height={36} />
+            </Column>
+          )}
+          <Row
+            alignItems='center'
+            justifyContent='center'
+          >
+            {formattedFullPortfolioFiatBalance !== '' ? (
+              <>
+                <FiatChange
+                  isDown={isPortfolioDown}
+                >
+                  {hidePortfolioBalances
+                    ? '*****'
+                    : `${isPortfolioDown
+                      ? ''
+                      : '+'}${fiatValueChange}`
+                  }
+                </FiatChange>
+                <PercentBubble
+                  isDown={isPortfolioDown}
+                >
+                  {hidePortfolioBalances
+                    ? '*****'
+                    : `${isPortfolioDown
+                      ? ''
+                      : '+'}${percentageChange}%`
+                  }
+                </PercentBubble>
+              </>
+            ) : (
+              <>
+                <LoadingSkeleton width={55} height={24} />
+                <HorizontalSpace space='8px' />
+                <LoadingSkeleton width={55} height={24} />
+              </>
+            )}
+          </Row>
+        </Column>
 
         <ColumnReveal hideContent={hidePortfolioGraph}>
+          <SelectTimelineWrapper
+            ref={lineChartControlMenuRef}
+          >
+            <SelectTimelinButton
+              onClick={() => setShowLineChartControlMenu(prev => !prev)}
+            >
+              {getLocale(
+                ChartTimelineOptions[selectedPortfolioTimeline].name
+              )}
+              <SelectTimelinButtonIcon
+                isOpen={showLineChartControlMenu}
+                name='carat-down'
+              />
+            </SelectTimelinButton>
+            {showLineChartControlMenu &&
+              <LineChartControlsMenu
+                onClick={onChangeTimeline}
+              />
+            }
+          </SelectTimelineWrapper>
           <PortfolioOverviewChart
             hasZeroBalance={isZeroBalance}
           />

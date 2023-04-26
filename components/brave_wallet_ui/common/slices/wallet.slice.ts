@@ -93,7 +93,21 @@ const defaultState: WalletState = {
   portfolioPriceHistory: [],
   selectedPendingTransaction: undefined,
   isFetchingPortfolioPriceHistory: true,
-  selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe.OneDay,
+  selectedPortfolioTimeline: window
+    .localStorage
+    .getItem(
+      LOCAL_STORAGE_KEYS
+        .PORTFOLIO_TIME_LINE_OPTION
+    ) !== undefined
+    ? Number(
+      window
+        .localStorage
+        .getItem(
+          LOCAL_STORAGE_KEYS
+            .PORTFOLIO_TIME_LINE_OPTION
+        )
+    )
+    : BraveWallet.AssetPriceTimeframe.OneDay,
   transactionSpotPrices: [],
   addUserAssetError: false,
   defaultEthereumWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
