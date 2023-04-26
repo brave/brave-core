@@ -16,6 +16,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/omnibox/browser/location_bar_model.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/notification_service.h"
 #include "content/public/browser/notification_types.h"
 #include "content/public/common/url_constants.h"
@@ -57,6 +58,31 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
     EXPECT_TRUE(ui_test_utils::NavigateToURL(
         browser(), embedded_test_server()->GetURL(origin, path)));
     return WaitForLoadStop(active_contents());
+  }
+
+  // Check loading |url| in guest window is not allowed for an url.
+  void TestURLIsNotLoadedInGuestWindow(const GURL& url) {
+    Browser* guest_browser = CreateGuestBrowser();
+    TabStripModel* guest_model = guest_browser->tab_strip_model();
+
+    // Check guest window has one blank tab.
+    EXPECT_EQ("about:blank",
+              guest_model->GetActiveWebContents()->GetVisibleURL().spec());
+    EXPECT_EQ(1, guest_model->count());
+    EXPECT_EQ("about:blank", active_contents()->GetVisibleURL().spec());
+    EXPECT_EQ(1, browser()->tab_strip_model()->count());
+    // Unable to navigate expected url.
+    EXPECT_FALSE(
+        content::NavigateToURL(guest_model->GetActiveWebContents(), url));
+    auto* entry = guest_model->GetActiveWebContents()
+                      ->GetController()
+                      .GetLastCommittedEntry();
+    EXPECT_EQ(entry->GetPageType(), content::PageType::PAGE_TYPE_ERROR);
+    EXPECT_STREQ("about:blank",
+                 base::UTF16ToUTF8(
+                     browser()->location_bar_model()->GetFormattedFullURL())
+                     .c_str());
+    EXPECT_EQ(1, browser()->tab_strip_model()->count());
   }
 
   // Check loading |url| in private window is redirected to normal
@@ -249,6 +275,11 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
                        WalletPageIsNotAllowedInPrivateWindow) {
   TestURLIsNotLoadedInPrivateWindow("brave://wallet");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
+                       WalletPageIsNotAllowedInGuestWindow) {
+  TestURLIsNotLoadedInGuestWindow(GURL("brave://wallet"));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
