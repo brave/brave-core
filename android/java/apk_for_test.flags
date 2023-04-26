@@ -77,8 +77,6 @@
     *** mGoogleActivityControls;
     *** mSyncEncryption;
     *** mSyncPaymentsIntegration;
-    *** mSyncReadingList;
-    *** mSyncAutofill;
 }
 
 -keep class org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter {
