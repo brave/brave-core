@@ -1617,6 +1617,18 @@ void BraveWalletService::SetNftDiscoveryEnabled(bool enabled) {
   profile_prefs_->SetBoolean(kBraveWalletNftDiscoveryEnabled, enabled);
 }
 
+void BraveWalletService::GetBalanceScannerSupportedChains(
+    GetBalanceScannerSupportedChainsCallback callback) {
+  const auto& contract_addresses = GetEthBalanceScannerContractAddresses();
+
+  std::vector<std::string> chain_ids;
+  for (const auto& entry : contract_addresses) {
+    chain_ids.push_back(entry.first);
+  }
+
+  std::move(callback).Run(chain_ids);
+}
+
 void BraveWalletService::CancelAllSuggestedTokenCallbacks() {
   add_suggest_token_requests_.clear();
   // Reject pending suggest token requests when network changed.

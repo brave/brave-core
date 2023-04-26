@@ -227,6 +227,9 @@ class BraveWalletService : public KeyedService,
 
   void SetNftDiscoveryEnabled(bool enabled) override;
 
+  void GetBalanceScannerSupportedChains(
+      GetBalanceScannerSupportedChainsCallback callback) override;
+
   // BraveWalletServiceDelegate::Observer:
   void OnActiveOriginChanged(const mojom::OriginInfoPtr& origin_info) override;
 

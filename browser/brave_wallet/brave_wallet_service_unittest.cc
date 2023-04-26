@@ -2610,4 +2610,20 @@ TEST_F(BraveWalletServiceUnitTest, RecordGeneralUsageMetrics) {
   histogram_tester_->ExpectUniqueSample(kBraveWalletDailyHistogramName, 1, 2);
 }
 
+TEST_F(BraveWalletServiceUnitTest, GetBalanceScannerSupportedChains) {
+  service_->GetBalanceScannerSupportedChains(
+      base::BindLambdaForTesting([](const std::vector<std::string>& chains) {
+        std::vector<std::string> expected_chains = {
+            mojom::kMainnetChainId,
+            mojom::kBinanceSmartChainMainnetChainId,
+            mojom::kPolygonMainnetChainId,
+            mojom::kOptimismMainnetChainId,
+            mojom::kArbitrumMainnetChainId,
+            mojom::kAvalancheMainnetChainId,
+        };
+        ASSERT_EQ(chains.size(), expected_chains.size());
+        EXPECT_EQ(chains, expected_chains);
+      }));
+}
+
 }  // namespace brave_wallet
