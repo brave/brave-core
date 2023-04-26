@@ -32,8 +32,8 @@ TransactionInfo BuildTransaction(const double value,
   transaction.created_at = Now();
   transaction.creative_instance_id =
       base::GUID::GenerateRandomV4().AsLowercaseString();
-  transaction.segment = "untargeted";
   transaction.value = value;
+  transaction.segment = "untargeted";
   transaction.ad_type = AdType::kNotificationAd;
   transaction.confirmation_type = confirmation_type;
   transaction.reconciled_at = reconciled_at;

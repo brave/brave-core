@@ -32,8 +32,8 @@ TransactionInfo AddTransaction(const std::string& creative_instance_id,
   transaction.id = base::GUID::GenerateRandomV4().AsLowercaseString();
   transaction.created_at = base::Time::Now();
   transaction.creative_instance_id = creative_instance_id;
-  transaction.segment = segment;
   transaction.value = value;
+  transaction.segment = segment;
   transaction.ad_type = ad_type;
   transaction.confirmation_type = confirmation_type;
 
