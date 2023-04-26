@@ -10,6 +10,10 @@ declare_args() {
   brave_ai_chat_endpoint = ""
 }
 
+if (is_official_build) {
+  assert(brave_ai_chat_endpoint != "")
+}
+
 buildflag_header("buildflags") {
   header = "buildflags.h"
   flags = [ "BRAVE_AI_CHAT_ENDPOINT=\"$brave_ai_chat_endpoint\"" ]

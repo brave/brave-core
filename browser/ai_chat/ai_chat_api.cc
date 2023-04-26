@@ -89,11 +89,26 @@ void AIChatAPI::QueryPrompt(ResponseCallback callback,
   DVLOG(1) << __func__ << " Prompt: " << prompt << "\n";
   DVLOG(1) << __func__ << " Using model: " << model_name;
 
-  api_request_helper_.Request("POST",
-                              GetURLWithPath(BUILDFLAG(BRAVE_AI_CHAT_ENDPOINT),
-                                             ai_chat::kAIChatCompletionPath),
-                              CreateJSONRequestBody(dict), "application/json",
-                              true, std::move(internal_callback), headers);
+  auto* endpoint = BUILDFLAG(BRAVE_AI_CHAT_ENDPOINT);
+  if (!endpoint) {
+    LOG(ERROR) << "BRAVE_AI_CHAT_ENDPOINT was empty. Must supply an AI Chat"
+                  "endpoint via build flag to use the AI Chat API.";
+    std::move(callback).Run("", false);
+    return;
+  }
+
+  GURL api_url = GetURLWithPath(endpoint, ai_chat::kAIChatCompletionPath);
+  if (!api_url.is_valid()) {
+    LOG(ERROR) << "API Url generated was invalid. Cannot proceed with AI Chat"
+                  "API request: "
+               << api_url.spec();
+    std::move(callback).Run("", false);
+    return;
+  }
+
+  api_request_helper_.Request("POST", api_url, CreateJSONRequestBody(dict),
+                              "application/json", true,
+                              std::move(internal_callback), headers);
 
   DVLOG(1) << __func__ << " API Request sent\n";
 }
