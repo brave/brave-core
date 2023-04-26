@@ -22,7 +22,6 @@ source_set("p3a") {
     "//ios/components/webui:url_constants",
     "//ios/web/public",
     "//ios/web/public/webui",
-    "//ios/web/ui",
     "//ios/web/web_state",
     "//ios/web/web_state:web_state_impl_header",
     "//net",
