@@ -209,7 +209,7 @@ bool CoseSign1::Verify(const net::ParsedCertificateList& cert_chain) {
 
   base::StringPiece low_cert_spki;
   if (!net::asn1::ExtractSPKIFromDERCert(
-          cert_chain.front()->der_cert().AsStringPiece(), &low_cert_spki)) {
+          cert_chain.front()->der_cert().AsStringView(), &low_cert_spki)) {
     LOG(ERROR) << "COSE verification: could not extract SPKI from cert";
     return false;
   }
