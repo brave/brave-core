@@ -59,8 +59,13 @@ TEST_F(P3ARotationSchedulerTest, JsonRotation) {
 }
 
 // TODO(djandries): find a way to get this test to run reliably on macOS
-#if !BUILDFLAG(IS_MAC)
-TEST_F(P3ARotationSchedulerTest, ConstellationRotation) {
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_ConstellationRotation DISABLED_ConstellationRotation
+#else
+#define MAYBE_ConstellationRotation ConstellationRotation
+#endif
+
+TEST_F(P3ARotationSchedulerTest, MAYBE_ConstellationRotation) {
   task_environment_.FastForwardBy(base::Days(7));
   // Should be 0 since the timer has not started
   EXPECT_EQ(constellation_rotation_count_, 0u);
@@ -83,6 +88,5 @@ TEST_F(P3ARotationSchedulerTest, ConstellationRotation) {
   task_environment_.FastForwardBy(base::Days(7));
   EXPECT_EQ(constellation_rotation_count_, 2u);
 }
-#endif  // !BUILDFLAG(IS_MAC)
 
 }  // namespace p3a

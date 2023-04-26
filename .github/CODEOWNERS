@@ -89,10 +89,9 @@ browser/speedreader/ @iefremov
 components/speedreader/* @iefremov
 
 # P3A
-browser/p3a/ @iefremov
-components/brave_prochlo/ @iefremov
-components/p3a/ @iefremov
-components/weekly_storage/ @iefremov
+browser/p3a/ @brave/p3a-reviewers
+components/p3a/ @brave/p3a-reviewers
+components/time_period_storage/ @brave/p3a-reviewers
 
 # Perf predictor
 components/brave_perf_predictor/ @iefremov
