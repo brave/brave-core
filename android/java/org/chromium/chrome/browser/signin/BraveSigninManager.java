@@ -41,7 +41,7 @@ public class BraveSigninManager implements SigninManager {
     }
 
     @Override
-    public boolean isSigninSupported() {
+    public boolean isSigninSupported(boolean requireUpdatedPlayServices) {
         return false;
     }
 
