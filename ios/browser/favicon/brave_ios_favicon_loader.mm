@@ -19,7 +19,7 @@
 #include "components/favicon_base/favicon_types.h"
 #include "components/keyed_service/core/service_access_type.h"
 #include "ios/chrome/browser/favicon/favicon_service_factory.h"
-#import "ios/chrome/browser/ui/util/uikit_ui_util.h"
+#import "ios/chrome/browser/shared/ui/util/uikit_ui_util.h"
 #import "ios/chrome/common/ui/favicon/favicon_attributes.h"
 #include "ios/web/public/thread/web_thread.h"
 #include "url/gurl.h"

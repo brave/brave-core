@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 
 import java.util.concurrent.Callable;
@@ -81,7 +82,9 @@ public class BraveIntentHandler extends IntentHandler {
             return ThreadUtils.runOnUiThreadBlocking(new Callable<String>() {
                 @Override
                 public String call() {
-                    return TemplateUrlServiceFactory.get().getUrlForSearchQuery(query);
+                    return TemplateUrlServiceFactory
+                            .getForProfile(Profile.getLastUsedRegularProfile())
+                            .getUrlForSearchQuery(query);
                 }
             });
         } catch (ExecutionException e) {

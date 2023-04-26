@@ -6,13 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_NON_CLIENT_FRAME_VIEW_MAC_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_NON_CLIENT_FRAME_VIEW_MAC_H_
 
-#define PaintThemedFrame                          \
-  PaintThemedFrame_Unused() {}                    \
+#define LayoutWindowControlsOverlay               \
+  LayoutWindowControlsOverlay_Unused() {}         \
   friend class BraveBrowserNonClientFrameViewMac; \
-  void PaintThemedFrame
+  void LayoutWindowControlsOverlay
 
 #include "src/chrome/browser/ui/views/frame/browser_non_client_frame_view_mac.h"  // IWYU pragma: export
 
-#undef PaintThemedFrame
+#undef LayoutWindowControlsOverlay
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_NON_CLIENT_FRAME_VIEW_MAC_H_

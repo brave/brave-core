@@ -101,8 +101,9 @@ class BraveHistoryQuickProviderTest : public testing::Test {
     client_->set_bookmark_model(bookmarks::TestBookmarkClient::CreateModel());
 
     client_->set_in_memory_url_index(std::make_unique<InMemoryURLIndex>(
-        client_->GetBookmarkModel(), client_->GetHistoryService(), nullptr,
-        history_dir_.GetPath(), SchemeSet()));
+        client_->GetLocalOrSyncableBookmarkModel(),
+        client_->GetHistoryService(), nullptr, history_dir_.GetPath(),
+        SchemeSet()));
     client_->GetInMemoryURLIndex()->Init();
     // Block until History has processed InMemoryURLIndex initialization.
     history::BlockUntilHistoryProcessesPendingRequests(

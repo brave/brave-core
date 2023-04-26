@@ -285,8 +285,8 @@ void TorProfileServiceImpl::SetNewTorCircuit(WebContents* tab) {
   auto proxy_lookup_client =
       TorProxyLookupClient::CreateTorProxyLookupClient(std::move(callback));
   const net::SchemefulSite url_site(url);
-  const net::NetworkAnonymizationKey network_anonymization_key(url_site,
-                                                               url_site);
+  const auto network_anonymization_key =
+      net::NetworkAnonymizationKey::CreateFromFrameSite(url_site, url_site);
   storage_partition->GetNetworkContext()->LookUpProxyForURL(
       url, network_anonymization_key, std::move(proxy_lookup_client));
 }

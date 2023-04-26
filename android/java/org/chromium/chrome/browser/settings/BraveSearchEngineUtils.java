@@ -9,7 +9,7 @@ import android.content.SharedPreferences;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.search_engines.BraveTemplateUrlServiceFactory;
+import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.search_engines.settings.BraveSearchEngineAdapter;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.QuickActionSearchAndBookmarkWidgetProvider;
@@ -33,9 +33,7 @@ public class BraveSearchEngineUtils {
 
     static public void initializeBraveSearchEngineStates(Profile profile) {
         final TemplateUrlService templateUrlService =
-                BraveTemplateUrlServiceFactory.getForProfile(profile);
-        assert templateUrlService != null;
-        if (templateUrlService == null) return;
+                TemplateUrlServiceFactory.getForProfile(profile);
 
         if (!templateUrlService.isLoaded()) {
             templateUrlService.registerLoadListener(new TemplateUrlService.LoadListener() {
@@ -58,9 +56,7 @@ public class BraveSearchEngineUtils {
         if (notInitialized.equals(ContextUtils.getAppSharedPreferences().getString(
                     BraveSearchEngineAdapter.STANDARD_DSE_SHORTNAME, notInitialized))) {
             final TemplateUrlService templateUrlService =
-                    BraveTemplateUrlServiceFactory.getForProfile(profile);
-            assert templateUrlService != null;
-            if (templateUrlService == null) return;
+                    TemplateUrlServiceFactory.getForProfile(profile);
 
             TemplateUrl templateUrl = templateUrlService.getDefaultSearchEngineTemplateUrl();
             SharedPreferences.Editor sharedPreferencesEditor =
@@ -75,8 +71,8 @@ public class BraveSearchEngineUtils {
 
     static private void doInitializeBraveSearchEngineStates(Profile profile) {
         final TemplateUrlService templateUrlService =
-                BraveTemplateUrlServiceFactory.getForProfile(profile);
-        assert templateUrlService != null && templateUrlService.isLoaded();
+                TemplateUrlServiceFactory.getForProfile(profile);
+        assert templateUrlService.isLoaded();
 
         initializeDSEPrefs(profile);
         updateActiveDSE(profile);

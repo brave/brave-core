@@ -16,22 +16,27 @@
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/browser/brave_wallet/notifications/wallet_notification_service_factory.h"
 #include "brave/browser/brave_wallet/swap_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
+#include "brave/browser/misc_metrics/page_metrics_service_factory.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
+#include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/browser/sync/brave_sync_alerts_service_factory.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/brave_news/common/features.h"
+#include "brave/components/brave_perf_predictor/browser/named_third_party_registry_factory.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -75,17 +80,28 @@
 #include "brave/components/playlist/common/features.h"
 #endif
 
+#if defined(TOOLKIT_VIEWS)
+#include "brave/browser/ui/sidebar/sidebar_service_factory.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/browser/speedreader/speedreader_service_factory.h"
+#endif
+
 namespace brave {
 
 void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory::GetInstance();
   brave_ads::AdsServiceFactory::GetInstance();
   brave_federated::BraveFederatedServiceFactory::GetInstance();
+  brave_perf_predictor::NamedThirdPartyRegistryFactory::GetInstance();
   brave_rewards::RewardsServiceFactory::GetInstance();
   brave_shields::AdBlockPrefServiceFactory::GetInstance();
   debounce::DebounceServiceFactory::GetInstance();
   brave::URLSanitizerServiceFactory::GetInstance();
+  BraveRendererUpdaterFactory::GetInstance();
   SearchEngineProviderServiceFactory::GetInstance();
+  misc_metrics::PageMetricsServiceFactory::GetInstance();
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion::GreaselionServiceFactory::GetInstance();
 #endif
@@ -109,6 +125,9 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave_wallet::KeyringServiceFactory::GetInstance();
   brave_wallet::JsonRpcServiceFactory::GetInstance();
   brave_wallet::SwapServiceFactory::GetInstance();
+#if !BUILDFLAG(IS_ANDROID)
+  brave_wallet::WalletNotificationServiceFactory::GetInstance();
+#endif
   brave_wallet::TxServiceFactory::GetInstance();
   brave_wallet::BraveWalletServiceFactory::GetInstance();
 
@@ -149,6 +168,14 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
     SharedPinnedTabServiceFactory::GetInstance();
   }
+#endif
+
+#if defined(TOOLKIT_VIEWS)
+  sidebar::SidebarServiceFactory::GetInstance();
+#endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  speedreader::SpeedreaderServiceFactory::GetInstance();
 #endif
 }
 

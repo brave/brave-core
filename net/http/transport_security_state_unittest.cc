@@ -1,4 +1,4 @@
-/* Copyright 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -44,7 +44,8 @@ class TransportSecurityStateTestBase : public ::testing::Test,
   static NetworkAnonymizationKey CreateNetworkAnonymizationKey(
       const url::Origin& top_frame_origin) {
     SchemefulSite schemeful_site(top_frame_origin);
-    return NetworkAnonymizationKey(schemeful_site, schemeful_site);
+    return net::NetworkAnonymizationKey::CreateFromFrameSite(schemeful_site,
+                                                             schemeful_site);
   }
 
   void ExpectNoHSTS(TransportSecurityState* state,

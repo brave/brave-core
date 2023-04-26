@@ -7,7 +7,6 @@ import("//build/config/android/rules.gni")
 
 android_library("java") {
   sources = [
-    "BraveTemplateUrlServiceFactory.java",
     "settings/BraveBaseSearchEngineAdapter.java",
     "settings/BravePrivateSearchEnginePreference.java",
     "settings/BraveSearchEngineAdapter.java",
@@ -31,10 +30,7 @@ android_library("java") {
 }
 
 generate_jni("jni_headers") {
-  sources = [
-    "BraveTemplateUrlServiceFactory.java",
-    "settings/BraveSearchEnginePrefHelper.java",
-  ]
+  sources = [ "settings/BraveSearchEnginePrefHelper.java" ]
 }
 
 android_resources("java_resources") {

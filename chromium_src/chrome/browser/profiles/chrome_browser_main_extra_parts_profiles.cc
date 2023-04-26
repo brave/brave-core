@@ -23,8 +23,8 @@ class BraveBrowserMainExtraPartsProfiles
       const BraveBrowserMainExtraPartsProfiles&) = delete;
 
   void PreProfileInit() override {
-    ChromeBrowserMainExtraPartsProfiles::PreProfileInit();
     brave::EnsureBrowserContextKeyedServiceFactoriesBuilt();
+    ChromeBrowserMainExtraPartsProfiles::PreProfileInit();
   }
 };
 

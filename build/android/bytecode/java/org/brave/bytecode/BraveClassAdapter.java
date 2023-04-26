@@ -64,6 +64,7 @@ public class BraveClassAdapter {
         chain = new BraveReaderModeManagerClassAdapter(chain);
         chain = new BraveReturnToChromeUtilClassAdapter(chain);
         chain = new BraveSearchEngineAdapterClassAdapter(chain);
+        chain = new BraveSearchEnginePreferenceClassAdapter(chain);
         chain = new BraveSettingsLauncherImplClassAdapter(chain);
         chain = new BraveShareDelegateImplClassAdapter(chain);
         chain = new BraveSingleCategorySettingsClassAdapter(chain);
@@ -80,7 +81,6 @@ public class BraveClassAdapter {
         chain = new BraveTabUiThemeProviderClassAdapter(chain);
         chain = new BraveTabbedActivityClassAdapter(chain);
         chain = new BraveTabbedRootUiCoordinatorClassAdapter(chain);
-        chain = new BraveTemplateUrlServiceFactoryClassAdapter(chain);
         chain = new BraveThemeUtilsClassAdapter(chain);
         chain = new BraveTileViewClassAdapter(chain);
         chain = new BraveToolbarLayoutClassAdapter(chain);

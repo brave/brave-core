@@ -96,9 +96,9 @@ TEST_P(ConnectExternalWalletTest, Paths) {
 
   ConnectTestWallet(&mock_ledger_impl_, post_connect_result)
       .Run(query_parameters,
-           base::BindLambdaForTesting([expected_result = expected_result](
+           base::BindLambdaForTesting([expectation = expected_result](
                                           ConnectExternalWalletResult result) {
-             EXPECT_EQ(result, expected_result);
+             EXPECT_EQ(result, expectation);
            }));
 }
 

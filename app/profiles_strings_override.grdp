@@ -64,6 +64,10 @@
       </if>
 
     <if expr="not chromeos_lacros">
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
       </if>
 
   </if>

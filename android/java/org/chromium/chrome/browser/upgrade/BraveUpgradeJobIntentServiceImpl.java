@@ -13,12 +13,12 @@ import androidx.annotation.NonNull;
 import org.chromium.base.Callback;
 import org.chromium.base.Log;
 import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.util.SafetyNetCheck;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.content_public.browser.BrowserStartupController;
-import org.chromium.content_public.browser.UiThreadTaskTraits;
 
 public class BraveUpgradeJobIntentServiceImpl extends BraveUpgradeJobIntentService.Impl {
     private static final String TAG = "BraveUpgradeJobIntentService";
@@ -36,7 +36,7 @@ public class BraveUpgradeJobIntentServiceImpl extends BraveUpgradeJobIntentServi
 
     @Override
     protected void onHandleWork(@NonNull Intent intent) {
-        PostTask.runOrPostTask(UiThreadTaskTraits.DEFAULT, () -> {
+        PostTask.runOrPostTask(TaskTraits.UI_DEFAULT, () -> {
             BrowserStartupController.getInstance().addStartupCompletedObserver(
                     new BrowserStartupController.StartupCallback() {
                         @Override

@@ -1,8 +1,8 @@
 diff --git a/components/sync/protocol/protocol_sources.gni b/components/sync/protocol/protocol_sources.gni
-index 83bd7faf4b58d3ad5897b6ae5cec86cceeab9ebf..eba0dcb725a068a0a371933c8b2d28b28afa36dd 100644
+index 877ac183edcce22723254891503ec23dcc5209ab..08b3aa69f2662cc281340c2d9e5611fb3701d441 100644
 --- a/components/sync/protocol/protocol_sources.gni
 +++ b/components/sync/protocol/protocol_sources.gni
-@@ -78,3 +78,4 @@ sync_protocol_sources = [
+@@ -79,3 +79,4 @@ sync_protocol_sources = [
    "wifi_configuration_specifics.proto",
    "workspace_desk_specifics.proto",
  ]

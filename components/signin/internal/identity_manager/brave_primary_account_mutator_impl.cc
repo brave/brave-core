@@ -19,11 +19,13 @@ BravePrimaryAccountMutatorImpl::BravePrimaryAccountMutatorImpl(
     ProfileOAuth2TokenService* token_service,
     PrimaryAccountManager* primary_account_manager,
     PrefService* pref_service,
+    SigninClient* signin_client,
     signin::AccountConsistencyMethod account_consistency)
     : PrimaryAccountMutatorImpl(account_tracker,
                                 token_service,
                                 primary_account_manager,
                                 pref_service,
+                                signin_client,
                                 account_consistency) {}
 
 BravePrimaryAccountMutatorImpl::~BravePrimaryAccountMutatorImpl() = default;

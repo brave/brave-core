@@ -27,6 +27,7 @@
 #include "chrome/test/base/chrome_test_utils.h"
 #include "components/embedder_support/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
+#include "components/policy/core/common/policy_pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
 #include "components/spellcheck/browser/pref_names.h"
@@ -176,7 +177,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
       ntp_prefs::kNtpUseMostVisitedTiles));
 #endif
   EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
-      prefs::kHideWebStoreIcon));
+      policy::policy_prefs::kHideWebStoreIcon));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MediaRouterPrefTest) {

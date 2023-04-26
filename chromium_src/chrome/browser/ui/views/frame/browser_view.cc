@@ -15,15 +15,9 @@
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
-#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
-#include "chrome/grit/generated_resources.h"
-
-// Undef upstream's to avoid redefined error.
-#undef IDS_TOOLTIP_SIDE_PANEL_HIDE
-#undef IDS_TOOLTIP_SIDE_PANEL_SHOW
 
 #define InfoBarContainerView BraveInfoBarContainerView
 #define BrowserViewLayout BraveBrowserViewLayout
@@ -33,13 +27,9 @@
 #define SidePanel BraveSidePanel
 #define kAlignLeft kHorizontalAlignLeft
 #define kAlignRight kHorizontalAlignRight
-#define IDS_TOOLTIP_SIDE_PANEL_HIDE IDS_TOOLTIP_SIDEBAR_HIDE
-#define IDS_TOOLTIP_SIDE_PANEL_SHOW IDS_TOOLTIP_SIDEBAR_SHOW
 
 #include "src/chrome/browser/ui/views/frame/browser_view.cc"
 
-#undef IDS_TOOLTIP_SIDE_PANEL_HIDE
-#undef IDS_TOOLTIP_SIDE_PANEL_SHOW
 #undef ToolbarView
 #undef BrowserTabStripController
 #undef TabStrip

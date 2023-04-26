@@ -37,7 +37,7 @@ void AddBraveUiColorMixer(ColorProvider* provider,
   // For deprecated kColorId_ButtonEnabledColor
   mixer[kColorButtonForeground] = {dark_mode ? SK_ColorWHITE
                                              : gfx::kBraveGrey800};
-  mixer[kColorButtonForegroundChecked] = {kColorButtonForeground};
+  mixer[kColorRadioButtonForegroundChecked] = {kColorButtonForeground};
   // For deprecated kColorId_TextOnProminentButtonColor
   mixer[kColorButtonForegroundProminent] = {SK_ColorWHITE};
 

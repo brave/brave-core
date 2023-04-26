@@ -393,7 +393,7 @@ void SidebarContainerView::UpdateToolbarButtonVisibility() {
   auto has_panel_item =
       GetSidebarService(browser_)->GetDefaultPanelItem().has_value();
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
-  browser_view->toolbar()->side_panel_button()->SetVisible(
+  browser_view->toolbar()->GetSidePanelButton()->SetVisible(
       has_panel_item && show_side_panel_button_.GetValue());
 }
 

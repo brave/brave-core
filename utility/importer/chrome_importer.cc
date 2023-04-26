@@ -23,7 +23,7 @@
 #include "chrome/common/importer/importer_data_types.h"
 #include "chrome/common/importer/importer_url_row.h"
 #include "chrome/utility/importer/favicon_reencode.h"
-#include "components/os_crypt/os_crypt.h"
+#include "components/os_crypt/sync/os_crypt.h"
 #include "components/password_manager/core/browser/login_database.h"
 #include "components/password_manager/core/browser/password_form.h"
 #include "components/password_manager/core/common/password_manager_pref_names.h"
@@ -39,7 +39,7 @@
 
 #if BUILDFLAG(IS_LINUX)
 #include "chrome/grit/chromium_strings.h"
-#include "components/os_crypt/key_storage_config_linux.h"
+#include "components/os_crypt/sync/key_storage_config_linux.h"
 #endif  // BUILDFLAG(IS_LINUX)
 
 #if BUILDFLAG(IS_WIN)

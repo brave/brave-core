@@ -34,7 +34,7 @@ bool ShouldAddCopyCleanLinkItem(content::BrowserContext* context) {
 
 #undef IDS_SHARING_HUB_COPY_LINK_LABEL
 #define IDS_SHARING_HUB_COPY_LINK_LABEL GetOriginalSharingHubCopyLinkID()), \
-  &kCopyIcon, "SharingHubDesktop.CopyURLSelected");                         \
+  &kCopyIcon, "SharingHubDesktop.CopyURLSelected", IDS_LINK_COPIED);        \
   if (ShouldAddCopyCleanLinkItem(context_))                                 \
     first_party_action_list_.emplace_back(IDC_COPY_CLEAN_LINK,              \
     l10n_util::GetStringUTF16(IDS_COPY_CLEAN_LINK
