@@ -6,7 +6,11 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_GRIT_THEME_RESOURCES_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_GRIT_THEME_RESOURCES_H_
 
+#include "build/build_config.h"
+
+#if !BUILDFLAG(IS_ANDROID)
 #include "brave/grit/brave_theme_resources.h"  // IWYU pragma: export
+#endif
 
 #include "../gen/chrome/grit/theme_resources.h"  // IWYU pragma: export
 

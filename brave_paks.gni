@@ -131,21 +131,9 @@ template("brave_extra_paks") {
 #     Normal meanings.
 #
 template("brave_paks") {
-  brave_repack_percent("${target_name}_100_percent") {
-    percent = "100"
-    forward_variables_from(invoker,
-                           [
-                             "copy_data_to_bundle",
-                             "deps",
-                             "output_dir",
-                             "repack_whitelist",
-                             "visibility",
-                           ])
-  }
-
-  if (enable_hidpi) {
-    brave_repack_percent("${target_name}_200_percent") {
-      percent = "200"
+  if (!is_android) {
+    brave_repack_percent("${target_name}_100_percent") {
+      percent = "100"
       forward_variables_from(invoker,
                              [
                                "copy_data_to_bundle",
@@ -154,6 +142,20 @@ template("brave_paks") {
                                "repack_whitelist",
                                "visibility",
                              ])
+    }
+
+    if (enable_hidpi) {
+      brave_repack_percent("${target_name}_200_percent") {
+        percent = "200"
+        forward_variables_from(invoker,
+                               [
+                                 "copy_data_to_bundle",
+                                 "deps",
+                                 "output_dir",
+                                 "repack_whitelist",
+                                 "visibility",
+                               ])
+      }
     }
   }
 
@@ -173,13 +175,15 @@ template("brave_paks") {
 
   group(target_name) {
     forward_variables_from(invoker, [ "deps" ])
-    public_deps = [
-      ":${target_name}_100_percent",
-      ":${target_name}_extra",
-    ]
-    if (enable_hidpi) {
-      public_deps += [ ":${target_name}_200_percent" ]
+    public_deps = [ ":${target_name}_extra" ]
+
+    if (!is_android) {
+      public_deps += [ ":${target_name}_100_percent" ]
+      if (enable_hidpi) {
+        public_deps += [ ":${target_name}_200_percent" ]
+      }
     }
+
     if (defined(invoker.public_deps)) {
       public_deps += invoker.public_deps
     }

@@ -402,8 +402,6 @@ source_set("ui") {
   deps += [
     "//base",
     "//brave/app:command_ids",
-    "//brave/app/theme:brave_theme_resources",
-    "//brave/app/theme:brave_unscaled_resources",
     "//brave/app/vector_icons:vector_icons",
     "//brave/browser:browser_process",
     "//brave/browser:sparkle_buildflags",
@@ -553,6 +551,8 @@ source_set("ui") {
 
   if (!is_android && !is_ios) {
     deps += [
+      "//brave/app/theme:brave_theme_resources",
+      "//brave/app/theme:brave_unscaled_resources",
       "//brave/components/brave_webtorrent:static_resources",
       "//brave/components/commander/browser",
       "//brave/components/webcompat_reporter/browser",

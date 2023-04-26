@@ -1,18 +1,21 @@
-// Copyright 2019 The Brave Authors. All rights reserved.
+// Copyright (c) 2019 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
 
 #include "base/values.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "brave/grit/brave_theme_resources.h"
 #include "build/build_config.h"
 #include "chrome/grit/theme_resources.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/native_theme/native_theme.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/grit/brave_theme_resources.h"
+#endif
 
 // First, define anything that patches will rely on.
 namespace profiles {

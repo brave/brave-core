@@ -7,6 +7,8 @@ import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/resources/brave_grit.gni")
 import("//chrome/common/features.gni")
 
+assert(!is_android)
+
 brave_grit("brave_theme_resources") {
   source = "brave_theme_resources.grd"
   defines = chrome_grit_defines
