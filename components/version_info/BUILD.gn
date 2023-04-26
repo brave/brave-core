@@ -38,16 +38,18 @@ process_version("generate_version_info") {
   output = "$target_gen_dir/version_info_values.h"
 }
 
-source_set("unit_tests") {
-  testonly = true
+if (!is_ios) {
+  source_set("unit_tests") {
+    testonly = true
 
-  sources = [ "version_info_unittest.cc" ]
+    sources = [ "version_info_unittest.cc" ]
 
-  deps = [
-    "//base",
-    "//brave/components/version_info",
-    "//chrome/common:non_code_constants",
-    "//components/version_info",
-    "//testing/gtest",
-  ]
+    deps = [
+      "//base",
+      "//brave/components/version_info",
+      "//chrome/common:non_code_constants",
+      "//components/version_info",
+      "//testing/gtest",
+    ]
+  }
 }
