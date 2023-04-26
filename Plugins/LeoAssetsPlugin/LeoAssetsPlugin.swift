@@ -31,15 +31,38 @@ struct LeoAssetsPlugin: BuildToolPlugin {
       Diagnostics.error("No asset catalogs found in the target")
       return []
     }
-    
+    let scriptPath = context.package.directory.appending("Plugins/LeoAssetsPlugin/make_asset_catalog.sh")
     let outputDirectory = context.pluginWorkDirectory.appending("LeoAssets.xcassets")
     
+    // Running a macOS tool while archiving a iOS build is unfortunately broken in Xcode 14. It attempts to
+    // run the macOS tool from the wrong directory and fails to find it. One way around this is to use a
+    // precompiled version of this tool instead, but it will mean building and uploading them somewhere
+    // so for now the tool will be replaced by a bash script. We can uncomment this and add back the dep on
+    // `LeoAssetCatalogGenerator` once this is fixed in Xcode.
+//    return [
+//      .buildCommand(
+//        displayName: "Create Asset Catalog",
+//        executable: try context.tool(named: "LeoAssetCatalogGenerator").path,
+//        arguments: assetCatalogs + [leoSymbolsDirectory, outputDirectory.string],
+//        inputFiles: assetCatalogs + [leoSymbolsDirectory.appending("package.json")],
+//        outputFiles: [outputDirectory]
+//      ),
+//    ]
+    let icons = try assetCatalogs.flatMap {
+      try symbolSets(in: URL(fileURLWithPath: $0.string))
+    }.joined(separator: ",")
     return [
       .buildCommand(
         displayName: "Create Asset Catalog",
-        executable: try context.tool(named: "LeoAssetCatalogGenerator").path,
-        arguments: assetCatalogs + [leoSymbolsDirectory, outputDirectory.string],
-        inputFiles: assetCatalogs + [leoSymbolsDirectory.appending("package.json")],
+        executable: Path("/bin/zsh"),
+        arguments: [
+          scriptPath.string,
+          "-l", leoSymbolsDirectory.string,
+          "-i", icons,
+          "-o", context.pluginWorkDirectory.string
+        ],
+        inputFiles: assetCatalogs + [leoSymbolsDirectory.appending("package.json"),
+                                     scriptPath],
         outputFiles: [outputDirectory]
       ),
     ]
@@ -70,17 +93,65 @@ extension LeoAssetsPlugin: XcodeBuildToolPlugin {
       return []
     }
     
+    let scriptPath = context.xcodeProject.directory.removingLastComponent()
+      .appending("Plugins/LeoAssetsPlugin/make_asset_catalog.sh")
     let outputDirectory = context.pluginWorkDirectory.appending("LeoAssets.xcassets")
     
+    let icons = try assetCatalogs.flatMap {
+      try symbolSets(in: URL(fileURLWithPath: $0.string))
+    }.joined(separator: ",")
+    // See above comment in `createBuildCommands(context:target:)`
+//    return [
+//      .buildCommand(
+//        displayName: "Create Asset Catalog",
+//        executable: try context.tool(named: "LeoAssetCatalogGenerator").path,
+//        arguments: assetCatalogs + [leoSymbolsDirectory, outputDirectory.string],
+//        inputFiles: assetCatalogs + [leoSymbolsDirectory.appending("package.json")],
+//        outputFiles: [outputDirectory]
+//      ),
+//    ]
     return [
       .buildCommand(
         displayName: "Create Asset Catalog",
-        executable: try context.tool(named: "LeoAssetCatalogGenerator").path,
-        arguments: assetCatalogs + [leoSymbolsDirectory, outputDirectory.string],
-        inputFiles: assetCatalogs + [leoSymbolsDirectory.appending("package.json")],
+        executable: Path("/bin/zsh"),
+        arguments: [
+          scriptPath.string,
+          "-l", leoSymbolsDirectory.string,
+          "-i", icons,
+          "-o", context.pluginWorkDirectory.string
+        ],
+        inputFiles: assetCatalogs + [leoSymbolsDirectory.appending("package.json"), scriptPath],
         outputFiles: [outputDirectory]
       ),
     ]
   }
 }
 #endif
+
+extension LeoAssetsPlugin {
+  fileprivate func symbolSets(in catalog: URL) throws -> [String] {
+    let fileManager = FileManager.default
+    var symbols: [String] = []
+    guard let enumerator = fileManager.enumerator(
+      at: catalog,
+      includingPropertiesForKeys: [.isDirectoryKey, .nameKey],
+      options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants]
+    ) else { return [] }
+    while let fileURL = enumerator.nextObject() as? URL {
+      guard
+        let values = try? fileURL.resourceValues(forKeys: [.isDirectoryKey, .nameKey]),
+        let isDirectory = values.isDirectory,
+        let name = values.name,
+        isDirectory,
+        name.hasPrefix("leo"),
+        name.hasSuffix(".symbolset"),
+        !(try fileManager.contentsOfDirectory(atPath: fileURL.path)
+          .contains(where: { $0.hasSuffix("svg") }))
+      else {
+        continue
+      }
+      symbols.append(fileURL.deletingPathExtension().lastPathComponent)
+    }
+    return symbols
+  }
+}
