@@ -1968,11 +1968,11 @@ public class BrowserViewController: UIViewController {
     present(settingsNavigationController, animated: true)
   }
 
-  func popToBVC() {
+  func popToBVC(completion: (() -> Void)? = nil) {
     guard let currentViewController = navigationController?.topViewController else {
       return
     }
-    currentViewController.dismiss(animated: true, completion: nil)
+    currentViewController.dismiss(animated: true, completion: completion)
 
     if currentViewController != self {
       _ = self.navigationController?.popViewController(animated: true)
@@ -2411,8 +2411,11 @@ public class BrowserViewController: UIViewController {
 
 extension BrowserViewController {
   func didScanQRCodeWithURL(_ url: URL) {
-    popToBVC()
-    finishEditingAndSubmit(url, visitType: .typed)
+    let overlayText = URLFormatter.formatURL(url.absoluteString, formatTypes: [], unescapeOptions: [])
+
+    popToBVC() {
+      self.topToolbar.enterOverlayMode(overlayText, pasted: false, search: false)
+    }
 
     if !url.isBookmarklet && !PrivateBrowsingManager.shared.isPrivateBrowsing {
       RecentSearch.addItem(type: .qrCode, text: nil, websiteUrl: url.absoluteString)
