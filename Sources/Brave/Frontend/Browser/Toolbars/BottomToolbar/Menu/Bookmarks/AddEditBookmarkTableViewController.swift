@@ -105,7 +105,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
   }
 
   private var rootLevelFolderCell: IndentedImageTableViewCell {
-    let cell = IndentedImageTableViewCell(image: UIImage(braveSystemNamed: "leo.book.6")!).then {
+    let cell = IndentedImageTableViewCell(image: UIImage(braveSystemNamed: "leo.book.open-alternative-2")!).then {
       $0.folderName.text = self.rootFolderName
       $0.tag = SpecialCell.rootLevel.rawValue
       if case .rootLevel = saveLocation, presentationMode == .folderHierarchy {
@@ -474,7 +474,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
       // Folders with children folders have a different icon
       let hasChildrenFolders = indentedFolder.folder.children?.contains(where: { $0.isFolder })
       if indentedFolder.folder.parent == nil {
-        cell.customImage.image = UIImage(braveSystemNamed: "leo.book.6")
+        cell.customImage.image = UIImage(braveSystemNamed: "leo.book.open-alternative-2")
       } else {
         cell.customImage.image = UIImage(braveSystemNamed: hasChildrenFolders == true ? "leo.folder.open-o" : "leo.folder")
       }

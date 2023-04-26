@@ -22,7 +22,7 @@ class MenuItemFactory {
     var icon: Image {
       switch self {
         case .bookmarks:
-          return Image(braveSystemName: "leo.book.6")
+          return Image(braveSystemName: "leo.book.open-alternative-2")
         case .downloads:
           return Image(braveSystemName: "leo.download")
         case .history:
