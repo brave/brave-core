@@ -471,10 +471,11 @@ void SidebarService::LoadSidebarItems() {
   auto* preference = prefs_->FindPreference(kSidebarItems);
   if (!preference->IsDefaultValue()) {
     const auto& items = preference->GetValue()->GetList();
-    for (const auto& item : items) {
+    for (const auto& entry : items) {
+      const auto& item = entry.GetDict();
       DVLOG(2) << "load: " << item.DebugString();
       SidebarItem::Type type;
-      if (const auto type_value = item.FindIntKey(kSidebarItemTypeKey)) {
+      if (const auto type_value = item.FindInt(kSidebarItemTypeKey)) {
         type = static_cast<SidebarItem::Type>(*type_value);
       } else {
         continue;
@@ -482,7 +483,7 @@ void SidebarService::LoadSidebarItems() {
       // Always use latest properties for built-in type item.
       if (type == SidebarItem::Type::kTypeBuiltIn) {
         const auto built_in_type_value =
-            item.FindIntKey(kSidebarItemBuiltInItemTypeKey);
+            item.FindInt(kSidebarItemBuiltInItemTypeKey);
         if (!built_in_type_value.has_value()) {
           VLOG(1) << "built-in item did not have a type: "
                   << item.DebugString();
@@ -504,7 +505,7 @@ void SidebarService::LoadSidebarItems() {
       }
       // Deserialize custom item
       std::string url;
-      if (const auto* value = item.FindStringKey(kSidebarItemURLKey)) {
+      if (const auto* value = item.FindString(kSidebarItemURLKey)) {
         url = *value;
       } else {
         continue;
@@ -512,7 +513,7 @@ void SidebarService::LoadSidebarItems() {
       // Open in panel for custom items is not yet supported
       bool open_in_panel = false;
       std::string title;
-      if (const auto* value = item.FindStringKey(kSidebarItemTitleKey)) {
+      if (const auto* value = item.FindString(kSidebarItemTitleKey)) {
         title = *value;
       }
       items_.push_back(SidebarItem::Create(
