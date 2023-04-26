@@ -13,7 +13,7 @@ specific_include_rules = {
   "hash_utils\.cc": [
     "+brave/third_party/bitcoin-core/src/src/crypto/ripemd160.h",
   ],
-  "brave_wallet_types.h": [
+  "brave_wallet_types\.h": [
     "+boost/multiprecision/cpp_int.hpp",
   ],
 }

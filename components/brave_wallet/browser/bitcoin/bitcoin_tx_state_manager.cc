@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/notreached.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -23,6 +24,7 @@ BitcoinTxStateManager::~BitcoinTxStateManager() = default;
 std::string BitcoinTxStateManager::GetTxPrefPathPrefix(
     const absl::optional<std::string>& chain_id) {
   // TODO(apaymyshev): implement
+  NOTIMPLEMENTED();
 
   return "";
 }
@@ -34,6 +36,7 @@ mojom::CoinType BitcoinTxStateManager::GetCoinType() const {
 std::unique_ptr<TxMeta> BitcoinTxStateManager::ValueToTxMeta(
     const base::Value::Dict& value) {
   // TODO(apaymyshev): implement
+  NOTIMPLEMENTED();
 
   return nullptr;
 }

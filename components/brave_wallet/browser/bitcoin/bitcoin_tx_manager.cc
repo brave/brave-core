@@ -40,12 +40,14 @@ void BitcoinTxManager::AddUnapprovedTransaction(
     const absl::optional<std::string>& group_id,
     AddUnapprovedTransactionCallback callback) {
   // TODO(apaymyshev): implement
+  NOTIMPLEMENTED();
 }
 
 void BitcoinTxManager::ApproveTransaction(const std::string& chain_id,
                                           const std::string& tx_meta_id,
                                           ApproveTransactionCallback callback) {
   // TODO(apaymyshev): implement
+  NOTIMPLEMENTED();
 }
 
 void BitcoinTxManager::GetAllTransactionInfo(
@@ -62,12 +64,14 @@ void BitcoinTxManager::SpeedupOrCancelTransaction(
     const std::string& tx_meta_id,
     bool cancel,
     SpeedupOrCancelTransactionCallback callback) {
+  // TODO(apaymyshev): implement
   NOTIMPLEMENTED();
 }
 
 void BitcoinTxManager::RetryTransaction(const std::string& chain_id,
                                         const std::string& tx_meta_id,
                                         RetryTransactionCallback callback) {
+  // TODO(apaymyshev): implement
   NOTIMPLEMENTED();
 }
 
@@ -76,6 +80,7 @@ void BitcoinTxManager::GetTransactionMessageToSign(
     const std::string& tx_meta_id,
     GetTransactionMessageToSignCallback callback) {
   // TODO(apaymyshev): implement
+  NOTIMPLEMENTED();
 }
 
 void BitcoinTxManager::Reset() {
@@ -89,6 +94,7 @@ mojom::CoinType BitcoinTxManager::GetCoinType() const {
 void BitcoinTxManager::UpdatePendingTransactions(
     const absl::optional<std::string>& chain_id) {
   // TODO(apaymyshev): implement
+  NOTIMPLEMENTED();
 }
 
 }  // namespace brave_wallet
