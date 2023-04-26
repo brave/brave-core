@@ -81,7 +81,7 @@ function LineChart ({
       <LoadingOverlay isLoading={isLoading}>
         <LoadIcon />
       </LoadingOverlay>
-      <ResponsiveContainer width='99%' height='99%'>
+      <ResponsiveContainer width='100%' height='99%'>
         <AreaChart
           data={chartData}
           margin={{ top: 5, left: 0, right: 0, bottom: 0 }}

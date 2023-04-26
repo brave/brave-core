@@ -50,13 +50,22 @@ export const PriceText = styled.span`
   color: ${(p) => p.theme.color.text01};
 `
 
-export const ButtonRow = styled.div<{ noMargin?: boolean }>`
+export const ButtonRow = styled.div<
+  {
+    noMargin?: boolean,
+    horizontalPadding?: number
+  }>`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
   width: 100%;
   margin: ${(p) => p.noMargin ? '0px' : '20px 0px'};
+  padding: 0px ${(p) =>
+    p.horizontalPadding !== undefined
+      ? p.horizontalPadding
+      : 0
+  }px;
 `
 
 export const BalanceRow = styled.div<{ gap?: string }>`
@@ -228,12 +237,20 @@ export const CoinGeckoText = styled.span`
   margin: 15px 0px;
 `
 
-export const FilterTokenRow = styled.div`
+export const FilterTokenRow = styled.div<
+  {
+    horizontalPadding?: number
+  }>`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
   gap: 14px;
+  padding: 0px ${(p) =>
+    p.horizontalPadding !== undefined
+      ? p.horizontalPadding
+      : 0
+  }px;
 `
 
 export const NftMultimedia = styled.iframe<{ visible?: boolean }>`

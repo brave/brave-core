@@ -56,6 +56,7 @@ interface Props {
   enableScroll?: boolean
   maxListHeight?: string
   estimatedItemSize: number
+  horizontalPadding?: number
 }
 
 export const TokenLists = ({
@@ -67,7 +68,8 @@ export const TokenLists = ({
   maxListHeight,
   hideAssetFilter,
   hideAccountFilter,
-  hideAutoDiscovery
+  hideAutoDiscovery,
+  horizontalPadding
 }: Props) => {
   // routing
   const history = useHistory()
@@ -210,7 +212,7 @@ export const TokenLists = ({
   // render
   return (
     <>
-      <FilterTokenRow>
+      <FilterTokenRow horizontalPadding={horizontalPadding}>
 
         <Column flex={1} style={{ minWidth: '25%' }} alignItems='flex-start'>
           <SearchBar
@@ -234,7 +236,14 @@ export const TokenLists = ({
 
       {enableScroll
         ? (
-          <ScrollableColumn maxHeight={maxListHeight}>
+          <ScrollableColumn
+            maxHeight={maxListHeight}
+            padding={
+              `0px ${horizontalPadding !== undefined
+                ? horizontalPadding
+                : 0}px`
+            }
+          >
             {listUi}
           </ScrollableColumn>
         )
@@ -242,7 +251,9 @@ export const TokenLists = ({
       }
 
       {!hideAddButton &&
-        <ButtonRow>
+        <ButtonRow
+          horizontalPadding={horizontalPadding}
+        >
           <AddButton
             buttonType='secondary'
             onSubmit={showAddAssetsModal}
