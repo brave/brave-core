@@ -21,7 +21,7 @@ void BraveFilterRequest(ClientDownloadRequest* request) {
   for (int i = 0; i < request->archived_binary_size(); i++) {
     ClientDownloadRequest_ArchivedBinary* archived_binary =
         request->mutable_archived_binary(i);
-    archived_binary->clear_file_basename();
+    archived_binary->clear_file_path();
   }
 }
 
