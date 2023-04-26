@@ -79,7 +79,9 @@ mojom::Result PostOrder::ParseBody(
     return mojom::Result::LEDGER_ERROR;
   }
 
-  const auto* id = dictionary->FindStringKey("id");
+  const base::Value::Dict& dict = dictionary->GetDict();
+
+  const auto* id = dict.FindString("id");
   if (id) {
     order->order_id = *id;
   }
@@ -89,7 +91,7 @@ mojom::Result PostOrder::ParseBody(
     return mojom::Result::LEDGER_ERROR;
   }
 
-  const auto* total_amount = dictionary->FindStringKey("totalPrice");
+  const auto* total_amount = dict.FindString("totalPrice");
   if (total_amount) {
     const bool success =
         base::StringToDouble(*total_amount, &order->total_amount);
@@ -98,46 +100,47 @@ mojom::Result PostOrder::ParseBody(
     }
   }
 
-  const auto* merchant_id = dictionary->FindStringKey("merchantId");
+  const auto* merchant_id = dict.FindString("merchantId");
   if (merchant_id) {
     order->merchant_id = *merchant_id;
   }
 
-  const auto* location = dictionary->FindStringKey("location");
+  const auto* location = dict.FindString("location");
   if (location) {
     order->location = *location;
   }
 
   order->status = mojom::SKUOrderStatus::PENDING;
 
-  auto* items = dictionary->FindListKey("items");
+  auto* items = dict.FindList("items");
   if (!items) {
     return mojom::Result::LEDGER_OK;
   }
 
-  if (items->GetList().size() != order_items.size()) {
+  if (items->size() != order_items.size()) {
     BLOG(0, "Invalid JSON");
     return mojom::Result::LEDGER_ERROR;
   }
 
   int count = 0;
-  for (auto& item : items->GetList()) {
+  for (auto& value : *items) {
+    const base::Value::Dict& item = value.GetDict();
     auto order_item = mojom::SKUOrderItem::New();
     order_item->order_id = order->order_id;
     order_item->sku = order_items[count].sku;
     order_item->type = order_items[count].type;
 
-    const auto* order_item_id = item.FindStringKey("id");
+    const auto* order_item_id = item.FindString("id");
     if (order_item_id) {
       order_item->order_item_id = *order_item_id;
     }
 
-    const auto quantity = item.FindIntKey("quantity");
+    const auto quantity = item.FindInt("quantity");
     if (quantity) {
       order_item->quantity = *quantity;
     }
 
-    const auto* price = item.FindStringKey("price");
+    const auto* price = item.FindString("price");
     if (price) {
       const bool success = base::StringToDouble(*price, &order_item->price);
       if (!success) {
@@ -145,12 +148,12 @@ mojom::Result PostOrder::ParseBody(
       }
     }
 
-    const auto* name = item.FindStringKey("name");
+    const auto* name = item.FindString("name");
     if (name) {
       order_item->name = *name;
     }
 
-    const auto* description = item.FindStringKey("description");
+    const auto* description = item.FindString("description");
     if (description) {
       order_item->description = *description;
     }

@@ -9,7 +9,6 @@
 
 #include "base/base64.h"
 #include "base/functional/callback_helpers.h"
-#include "base/json/json_reader.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
@@ -3209,8 +3208,8 @@ TEST_F(KeyringServiceUnitTest, SignTransactionByFilecoinKeyring) {
         "Type": 1
       }
     })";
-  EXPECT_EQ(base::JSONReader::Read(*result),
-            base::JSONReader::Read(expected_result));
+  EXPECT_EQ(base::test::ParseJsonDict(*result),
+            base::test::ParseJsonDict(expected_result));
 }
 
 TEST_F(KeyringServiceUnitTest, AddFilecoinAccounts) {
@@ -3901,14 +3900,14 @@ class KeyringServiceAccountDiscoveryUnitTest : public KeyringServiceUnitTest {
                                          ->at(0)
                                          .As<network::DataElementBytes>()
                                          .AsStringPiece());
-    absl::optional<base::Value> request_value =
-        base::JSONReader::Read(request_string);
-    if (*request_value->GetDict().FindString("method") ==
-        "eth_getTransactionCount") {
-      base::Value* params = request_value->FindListKey("params");
-      EXPECT_TRUE(params);
-      std::string* address = params->GetList()[0].GetIfString();
-      EXPECT_TRUE(address);
+    base::Value::Dict dict = base::test::ParseJsonDict(request_string);
+    std::string* method = dict.FindString("method");
+    ASSERT_TRUE(method);
+    if (*method == "eth_getTransactionCount") {
+      base::Value::List* params = dict.FindList("params");
+      ASSERT_TRUE(params);
+      std::string* address = (*params)[0].GetIfString();
+      ASSERT_TRUE(address);
 
       if (transaction_count_callback_) {
         url_loader_factory().AddResponse(

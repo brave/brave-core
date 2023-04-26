@@ -101,7 +101,8 @@ absl::optional<Publishers> ParseCombinedPublisherList(
 void ParseDirectPublisherList(const base::Value::Dict& direct_feeds_pref_dict,
                               std::vector<mojom::PublisherPtr>* publishers) {
   for (const auto&& [key, value] : direct_feeds_pref_dict) {
-    if (!value.is_dict()) {
+    const base::Value::Dict* root = value.GetIfDict();
+    if (!root) {
       // Handle unknown value type
       LOG(ERROR) << "Found unknown dictionary pref value for"
                     "Brave News direct feeds at the pref path: "
@@ -111,8 +112,7 @@ void ParseDirectPublisherList(const base::Value::Dict& direct_feeds_pref_dict,
     }
     VLOG(1) << "Found direct feed in prefs: " << key;
 
-    GURL feed_source(
-        *value.FindStringKey(prefs::kBraveNewsDirectFeedsKeySource));
+    GURL feed_source(*root->FindString(prefs::kBraveNewsDirectFeedsKeySource));
     if (!feed_source.is_valid()) {
       // This is worth error logging because we shouldn't
       // get in to this state due to validation at the
@@ -128,7 +128,7 @@ void ParseDirectPublisherList(const base::Value::Dict& direct_feeds_pref_dict,
     publisher->feed_source = feed_source;
     publisher->publisher_id = key;
     publisher->publisher_name =
-        *value.FindStringKey(prefs::kBraveNewsDirectFeedsKeyTitle);
+        *root->FindString(prefs::kBraveNewsDirectFeedsKeyTitle);
     publisher->type = mojom::PublisherType::DIRECT_SOURCE;
     // This is always true for direct feeds, reserved property for
     // "combined source" feeds, and perhaps marking a direct feed

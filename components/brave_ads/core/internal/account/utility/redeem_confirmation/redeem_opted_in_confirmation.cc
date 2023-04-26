@@ -187,18 +187,19 @@ void RedeemOptedInConfirmation::OnFetchPaymentToken(
   }
 
   // Parse JSON response
-  const absl::optional<base::Value> root =
+  const absl::optional<base::Value> parsed_json =
       base::JSONReader::Read(url_response.body);
-  if (!root || !root->is_dict()) {
+  if (!parsed_json || !parsed_json->is_dict()) {
     BLOG(3, "Failed to parse response: " << url_response.body);
     return redeem_confirmation.FailedToRedeemConfirmation(
         confirmation,
         /*should_retry*/ true,
         /*should_backoff*/ true);
   }
+  const base::Value::Dict& root = parsed_json->GetDict();
 
   // Get id
-  const std::string* const id = root->FindStringKey("id");
+  const std::string* const id = root.FindString("id");
   if (!id) {
     BLOG(0, "Response is missing id");
     return redeem_confirmation.FailedToRedeemConfirmation(
@@ -219,7 +220,7 @@ void RedeemOptedInConfirmation::OnFetchPaymentToken(
   }
 
   // Get payment token
-  const base::Value* const payment_token = root->FindDictKey("paymentToken");
+  const base::Value::Dict* const payment_token = root.FindDict("paymentToken");
   if (!payment_token) {
     BLOG(1, "Response is missing paymentToken");
     return redeem_confirmation.FailedToRedeemConfirmation(
@@ -230,7 +231,7 @@ void RedeemOptedInConfirmation::OnFetchPaymentToken(
 
   // Get public key
   const std::string* const public_key_base64 =
-      payment_token->FindStringKey("publicKey");
+      payment_token->FindString("publicKey");
   if (!public_key_base64) {
     BLOG(0, "Response is missing paymentToken/publicKey");
     return redeem_confirmation.FailedToRedeemConfirmation(
@@ -261,7 +262,7 @@ void RedeemOptedInConfirmation::OnFetchPaymentToken(
 
   // Get batch dleq proof
   const std::string* const batch_dleq_proof_base64 =
-      payment_token->FindStringKey("batchProof");
+      payment_token->FindString("batchProof");
   if (!batch_dleq_proof_base64) {
     BLOG(0, "Response is missing paymentToken/batchProof");
     return redeem_confirmation.FailedToRedeemConfirmation(
@@ -280,8 +281,8 @@ void RedeemOptedInConfirmation::OnFetchPaymentToken(
   }
 
   // Get signed tokens
-  const base::Value* const signed_tokens_list =
-      payment_token->FindListKey("signedTokens");
+  const base::Value::List* const signed_tokens_list =
+      payment_token->FindList("signedTokens");
   if (!signed_tokens_list) {
     BLOG(0, "Response is missing paymentToken/signedTokens");
     return redeem_confirmation.FailedToRedeemConfirmation(
@@ -291,7 +292,7 @@ void RedeemOptedInConfirmation::OnFetchPaymentToken(
   }
 
   std::vector<privacy::cbr::SignedToken> signed_tokens;
-  for (const auto& item : signed_tokens_list->GetList()) {
+  for (const auto& item : *signed_tokens_list) {
     const std::string& signed_token_base64 = item.GetString();
     const privacy::cbr::SignedToken signed_token =
         privacy::cbr::SignedToken(signed_token_base64);

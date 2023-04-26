@@ -54,7 +54,7 @@ void EthSignTypedDataHelper::FindAllDependencyTypes(
   known_types->emplace(anchor_type_name, anchor_type->Clone());
 
   for (const auto& field : *anchor_type) {
-    const std::string* type = field.FindStringKey("type");
+    const std::string* type = field.GetDict().FindString("type");
     if (type) {
       auto type_split = base::SplitString(*type, "[", base::KEEP_WHITESPACE,
                                           base::SPLIT_WANT_ALL);
@@ -77,8 +77,9 @@ std::string EthSignTypedDataHelper::EncodeType(
   std::string result = base::StrCat({type_name, "("});
 
   for (size_t i = 0; i < type.GetList().size(); ++i) {
-    const std::string* type_str = type.GetList()[i].FindStringKey("type");
-    const std::string* name_str = type.GetList()[i].FindStringKey("name");
+    const base::Value::Dict& root = type.GetList()[i].GetDict();
+    const std::string* type_str = root.FindString("type");
+    const std::string* name_str = root.FindString("name");
     if (!type_str || !name_str) {
       return std::string();
     }

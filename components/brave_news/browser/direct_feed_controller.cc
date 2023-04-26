@@ -147,7 +147,7 @@ bool DirectFeedController::AddDirectFeedPref(
     }
 
     const auto* existing_url =
-        value.FindStringKey(prefs::kBraveNewsDirectFeedsKeySource);
+        value.GetDict().FindString(prefs::kBraveNewsDirectFeedsKeySource);
     if (GURL(*existing_url) == feed_url.spec()) {
       // It's a duplicate.
       return false;
