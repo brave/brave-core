@@ -1,0 +1,13 @@
+diff --git a/content/browser/renderer_host/render_frame_host_impl.cc b/content/browser/renderer_host/render_frame_host_impl.cc
+index 246c29c9eae0348c4a8c7e778bf3b13616589418..4832ecc442533694aff52c209872bc4a6ad0f37b 100644
+--- a/content/browser/renderer_host/render_frame_host_impl.cc
++++ b/content/browser/renderer_host/render_frame_host_impl.cc
+@@ -7723,7 +7723,7 @@ void RenderFrameHostImpl::CreateNewWindow(
+   }
+ 
+   if (IsCredentialless() || IsNestedWithinFencedFrame() ||
+-      CoopSuppressOpener(/*opener=*/this)) {
++      CoopSuppressOpener(/*opener=*/this) || no_javascript_access) {
+     params->opener_suppressed = true;
+     // TODO(https://crbug.com/1060691) This should be applied to all
+     // popups opened with noopener.
