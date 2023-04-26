@@ -16,8 +16,8 @@
 #include "brave/browser/resources/settings/grit/brave_settings_resources.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/browser/ui/webui/settings/brave_adblock_handler.h"
 #include "brave/browser/ui/webui/settings/brave_appearance_handler.h"
@@ -68,8 +68,8 @@
 
 using ntp_background_images::ViewCounterServiceFactory;
 
-BraveSettingsUI::BraveSettingsUI(content::WebUI *web_ui,
-                                 const std::string &host)
+BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
+                                 const std::string& host)
     : SettingsUI(web_ui) {
   web_ui->AddMessageHandler(
       std::make_unique<settings::MetricsReportingHandler>());
@@ -99,13 +99,18 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI *web_ui,
 BraveSettingsUI::~BraveSettingsUI() = default;
 
 // static
-void BraveSettingsUI::AddResources(content::WebUIDataSource *html_source,
-                                   Profile *profile) {
+void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
+                                   Profile* profile) {
   for (size_t i = 0; i < kBraveSettingsResourcesSize; ++i) {
     html_source->AddResourcePath(kBraveSettingsResources[i].path,
                                  kBraveSettingsResources[i].id);
   }
 
+  // These resource files are generated from the files in
+  // brave/components/commands/browser/resources
+  // They are generated separately so they can use React and our Leo
+  // components, and the React DOM is mounted inside a Web Component, so it
+  // doesn't interfere with the Polymer tree/styles.
   if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
     for (size_t i = 0; i < kCommandsGeneratedSize; ++i) {
       html_source->AddResourcePath(kCommandsGenerated[i].path,
@@ -118,7 +123,7 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource *html_source,
       "braveProductVersion",
       version_info::GetBraveVersionWithoutChromiumMajorVersion());
   NavigationBarDataProvider::Initialize(html_source, profile);
-  if (auto *service = ViewCounterServiceFactory::GetForProfile(profile)) {
+  if (auto* service = ViewCounterServiceFactory::GetForProfile(profile)) {
     service->InitializeWebUIDataSource(html_source);
   }
   html_source->AddBoolean(
@@ -167,13 +172,13 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource *html_source,
 }
 
 // static
-bool &BraveSettingsUI::ShouldDisableCSPForTesting() {
+bool& BraveSettingsUI::ShouldDisableCSPForTesting() {
   static bool disable_csp = false;
   return disable_csp;
 }
 
 // static
-bool &BraveSettingsUI::ShouldExposeElementsForTesting() {
+bool& BraveSettingsUI::ShouldExposeElementsForTesting() {
   static bool expose_elements = false;
   return expose_elements;
 }
