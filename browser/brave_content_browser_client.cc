@@ -33,7 +33,6 @@
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/skus/skus_service_factory.h"
-#include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_rewards/browser/rewards_protocol_handler.h"
 #include "brave/components/brave_search/browser/brave_search_default_host.h"

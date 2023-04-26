@@ -18,7 +18,6 @@
 #include "base/functional/callback_helpers.h"
 #include "base/hash/hash.h"
 #include "base/logging.h"
-#include "base/metrics/field_trial_params.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
@@ -40,7 +39,8 @@
 #include "brave/components/brave_ads/browser/reminder_util.h"
 #include "brave/components/brave_ads/browser/service_sandbox_type.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/common/constants.h"
-#include "brave/components/brave_ads/common/features.h"
+#include "brave/components/brave_ads/common/custom_notification_ad_feature.h"
+#include "brave/components/brave_ads/common/notification_ad_feature.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/ad_constants.h"
 #include "brave/components/brave_ads/core/ads_util.h"
@@ -106,8 +106,6 @@ constexpr unsigned int kMaximumNumberOfTimesToRetryNetworkRequests = 1;
 constexpr int kHttpUpgradeRequiredStatusResponseCode = 426;
 
 constexpr char kNotificationAdUrlPrefix[] = "https://www.brave.com/ads/?";
-
-BASE_FEATURE(kFeature, "NotificationAds", base::FEATURE_ENABLED_BY_DEFAULT);
 
 int GetDataResourceId(const std::string& name) {
   if (name == data::resource::kCatalogJsonSchemaFilename) {
@@ -751,7 +749,7 @@ void AdsServiceImpl::ProcessIdleState(const ui::IdleState idle_state,
 }
 
 bool AdsServiceImpl::CheckIfCanShowNotificationAds() {
-  if (!features::IsNotificationAdsEnabled()) {
+  if (!IsNotificationAdFeatureEnabled()) {
     VLOG(1) << "Notification not made: Ad notifications feature is disabled";
     return false;
   }
@@ -768,18 +766,18 @@ bool AdsServiceImpl::ShouldShowCustomNotificationAds() {
       NotificationHelper::GetInstance()->CanShowNotifications();
 
   bool can_fallback_to_custom_notification_ads =
-      features::CanFallbackToCustomNotificationAds();
+      kCanFallbackToCustomNotificationAds.Get();
   if (!can_fallback_to_custom_notification_ads) {
     ClearPref(prefs::kNotificationAdDidFallbackToCustom);
   } else {
     const bool allowed_to_fallback_to_custom_notification_ads =
-        features::IsAllowedToFallbackToCustomNotificationAdsEnabled();
+        IsAllowedToFallbackToCustomNotificationAdFeatureEnabled();
     if (!allowed_to_fallback_to_custom_notification_ads) {
       can_fallback_to_custom_notification_ads = false;
     }
   }
 
-  const bool should_show = features::IsCustomNotificationAdsEnabled();
+  const bool should_show = IsCustomNotificationAdFeatureEnabled();
 
   const bool should_fallback =
       !can_show_native_notifications && can_fallback_to_custom_notification_ads;
@@ -801,7 +799,7 @@ void AdsServiceImpl::StartNotificationAdTimeOutTimer(
   }
 #endif
 
-  const int timeout_in_seconds = features::NotificationAdTimeout();
+  const int timeout_in_seconds = kNotificationAdTimeout.Get();
   if (timeout_in_seconds == 0) {
     // Never time out
     return;
@@ -1283,9 +1281,7 @@ int64_t AdsServiceImpl::GetMaximumNotificationAdsPerHour() const {
   int64_t ads_per_hour =
       GetPrefService()->GetInt64(prefs::kMaximumNotificationAdsPerHour);
   if (ads_per_hour == -1) {
-    ads_per_hour = base::GetFieldTrialParamByFeatureAsInt(
-        kFeature, "default_ads_per_hour",
-        kDefaultBraveRewardsNotificationAdsPerHour);
+    ads_per_hour = kDefaultNotificationAdsPerHour.Get();
   }
 
   return ads_per_hour;

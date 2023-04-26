@@ -7,9 +7,8 @@
 
 #include <cstdint>
 
-#include "brave/components/brave_ads/common/constants.h"
+#include "brave/components/brave_ads/common/notification_ad_feature.h"
 #include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_ads/core/internal/ads/notification_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 
 namespace brave_ads {

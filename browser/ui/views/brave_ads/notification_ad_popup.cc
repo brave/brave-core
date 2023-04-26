@@ -15,7 +15,7 @@
 #include "brave/browser/ui/views/brave_ads/notification_ad_popup_widget.h"
 #include "brave/browser/ui/views/brave_ads/notification_ad_view.h"
 #include "brave/browser/ui/views/brave_ads/notification_ad_view_factory.h"
-#include "brave/components/brave_ads/common/features.h"
+#include "brave/components/brave_ads/common/custom_notification_ad_feature.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
@@ -70,7 +70,7 @@ SkColor GetLightModeBackgroundColor() {
 
 SkColor GetDarkModeBackgroundColor() {
   const std::string color_param =
-      features::NotificationAdDarkModeBackgroundColor();
+      kCustomNotificationAdDarkModeBackgroundColor.Get();
 
   SkColor bg_color;
   if (!RgbStringToSkColor(color_param, &bg_color)) {
@@ -336,13 +336,13 @@ gfx::Point NotificationAdPopup::GetDefaultOriginForSize(const gfx::Size& size) {
   // Calculate position
   const double width = static_cast<double>(display_bounds.width());
   const double normalized_display_coordinate_x =
-      features::NotificationAdNormalizedDisplayCoordinateX();
+      kCustomNotificationAdNormalizedDisplayCoordinateX.Get();
   int x = static_cast<int>(width * normalized_display_coordinate_x);
   x -= size.width() / 2.0;
 
   const double height = static_cast<double>(display_bounds.height());
   const double normalized_display_coordinate_y =
-      features::NotificationAdNormalizedDisplayCoordinateY();
+      kCustomNotificationAdNormalizedDisplayCoordinateY.Get();
   int y = static_cast<int>(height * normalized_display_coordinate_y);
   y -= size.height() / 2.0;
 
@@ -353,8 +353,8 @@ gfx::Point NotificationAdPopup::GetDefaultOriginForSize(const gfx::Size& size) {
   bounds.AdjustToFit(display_work_area);
 
   // Apply insets
-  const gfx::Vector2d insets(features::NotificationAdInsetX(),
-                             features::NotificationAdInsetY());
+  const gfx::Vector2d insets(kCustomNotificationAdInsetX.Get(),
+                             kCustomNotificationAdInsetY.Get());
   bounds += insets;
 
   // Adjust to fit display work area
@@ -462,7 +462,7 @@ void NotificationAdPopup::FadeIn() {
   animation_state_ = AnimationState::kFadeIn;
 
   const base::TimeDelta fade_duration =
-      base::Milliseconds(features::NotificationAdFadeDuration());
+      base::Milliseconds(kCustomNotificationAdFadeDuration.Get());
   animation_->SetDuration(fade_duration);
 
   StartAnimation();
@@ -472,7 +472,7 @@ void NotificationAdPopup::FadeOut() {
   animation_state_ = AnimationState::kFadeOut;
 
   const base::TimeDelta fade_duration =
-      base::Milliseconds(features::NotificationAdFadeDuration());
+      base::Milliseconds(kCustomNotificationAdFadeDuration.Get());
   animation_->SetDuration(fade_duration);
 
   StartAnimation();

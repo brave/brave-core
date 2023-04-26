@@ -13,11 +13,11 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/common/features.h"
+#include "brave/components/brave_ads/common/notification_ad_feature.h"
+#include "brave/components/brave_ads/common/search_result_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/account/account_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/inline_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_feature.h"
-#include "brave/components/brave_ads/core/internal/ads/notification_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/promoted_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/search_result_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_feature.h"
@@ -57,7 +57,7 @@ struct ParamInfo final {
     {{::switches::kEnableFeatures, kConversionsFeature.name}, true},
     {{::switches::kEnableFeatures, kEligibleAdFeature.name}, true},
     {{::switches::kEnableFeatures,
-      features::kShouldTriggerSearchResultAdEvents.name},
+      kShouldTriggerSearchResultAdEventsFeature.name},
      true},
     {{::switches::kEnableFeatures, kInlineContentAdFeature.name}, true},
     {{::switches::kEnableFeatures, kNewTabPageAdFeature.name}, true},
@@ -96,7 +96,7 @@ struct ParamInfo final {
     {{variations::switches::kForceFieldTrialParams, kEligibleAdFeature.name},
      true},
     {{variations::switches::kForceFieldTrialParams,
-      features::kShouldTriggerSearchResultAdEvents.name},
+      kShouldTriggerSearchResultAdEventsFeature.name},
      true},
     {{variations::switches::kForceFieldTrialParams,
       kInlineContentAdFeature.name},

@@ -8,10 +8,16 @@ import("//mojo/public/tools/bindings/mojom.gni")
 static_library("common") {
   sources = [
     "constants.h",
-    "features.cc",
-    "features.h",
+    "custom_notification_ad_constants.h",
+    "custom_notification_ad_feature.cc",
+    "custom_notification_ad_feature.h",
+    "notification_ad_constants.h",
+    "notification_ad_feature.cc",
+    "notification_ad_feature.h",
     "pref_names.cc",
     "pref_names.h",
+    "search_result_ad_feature.cc",
+    "search_result_ad_feature.h",
   ]
 
   deps = [ "//base" ]

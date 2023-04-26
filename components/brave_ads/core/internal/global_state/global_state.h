@@ -22,7 +22,7 @@ class DatabaseManager;
 class DiagnosticManager;
 class GlobalStateHolder;
 class HistoryManager;
-class IdleDetection;
+class UserIdleDetection;
 class NotificationAdManager;
 class PredictorsManager;
 class TabManager;
@@ -76,7 +76,7 @@ class GlobalState final {
   std::unique_ptr<DatabaseManager> database_manager_;
   std::unique_ptr<DiagnosticManager> diagnostic_manager_;
   std::unique_ptr<HistoryManager> history_manager_;
-  std::unique_ptr<IdleDetection> idle_detection_;
+  std::unique_ptr<UserIdleDetection> user_idle_detection_;
   std::unique_ptr<NotificationAdManager> notification_ad_manager_;
   std::unique_ptr<PredictorsManager> predictors_manager_;
   std::unique_ptr<TabManager> tab_manager_;
