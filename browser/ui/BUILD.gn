@@ -451,7 +451,6 @@ source_set("ui") {
     "//brave/components/brave_wallet/browser:pref_names",
     "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wayback_machine/buildflags",
-    "//brave/components/brave_webtorrent:static_resources",
     "//brave/components/constants",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
     "//brave/components/de_amp/common",
@@ -554,6 +553,7 @@ source_set("ui") {
 
   if (!is_android && !is_ios) {
     deps += [
+      "//brave/components/brave_webtorrent:static_resources",
       "//brave/components/commander/browser",
       "//brave/components/webcompat_reporter/browser",
       "//brave/components/webcompat_reporter/ui:generated_resources",
