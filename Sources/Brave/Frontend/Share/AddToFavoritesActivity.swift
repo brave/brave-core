@@ -5,8 +5,9 @@
 import Foundation
 import Shared
 import UIKit
+import SwiftUI
 
-class AddToFavoritesActivity: UIActivity {
+class AddToFavoritesActivity: UIActivity, MenuActivity {
   fileprivate let callback: () -> Void
 
   init(callback: @escaping () -> Void) {
@@ -18,7 +19,11 @@ class AddToFavoritesActivity: UIActivity {
   }
 
   override var activityImage: UIImage? {
-    return UIImage(named: "add_to_favorites_share_action", in: .module, compatibleWith: nil)!
+    return UIImage(braveSystemNamed: "leo.widget.generic")?.applyingSymbolConfiguration(.init(scale: .large))
+  }
+  
+  var menuImage: Image {
+    Image(braveSystemName: "leo.widget.generic")
   }
 
   override func perform() {

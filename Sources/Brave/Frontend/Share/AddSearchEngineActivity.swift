@@ -6,8 +6,9 @@
 import Foundation
 import Shared
 import UIKit
+import SwiftUI
 
-class AddSearchEngineActivity: UIActivity {
+class AddSearchEngineActivity: UIActivity, MenuActivity {
   fileprivate let callback: () -> Void
 
   init(callback: @escaping () -> Void) {
@@ -19,7 +20,11 @@ class AddSearchEngineActivity: UIActivity {
   }
 
   override var activityImage: UIImage? {
-    return UIImage(named: "AddSearch", in: .module, compatibleWith: nil)!.template
+    return UIImage(braveSystemNamed: "leo.search.zoom-in")?.applyingSymbolConfiguration(.init(scale: .large))
+  }
+  
+  var menuImage: Image {
+    Image(braveSystemName: "leo.search.zoom-in")
   }
 
   override func perform() {

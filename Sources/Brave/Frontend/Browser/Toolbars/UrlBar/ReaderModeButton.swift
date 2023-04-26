@@ -12,7 +12,7 @@ class ReaderModeButton: UIButton {
   override init(frame: CGRect) {
     super.init(frame: frame)
     adjustsImageWhenHighlighted = false
-    setImage(UIImage(braveSystemNamed: "leo.list"), for: .normal)
+    setImage(UIImage(braveSystemNamed: "leo.product.readermode"), for: .normal)
     updateIconSize()
   }
 
@@ -57,7 +57,7 @@ class ReaderModeButton: UIButton {
       compatibleWith: .init(preferredContentSizeCategory: sizeCategory)
     ).pointSize
     setPreferredSymbolConfiguration(
-      .init(pointSize: pointSize, weight: .regular, scale: .large),
+      .init(pointSize: pointSize, weight: .regular, scale: .medium),
       forImageIn: .normal
     )
   }

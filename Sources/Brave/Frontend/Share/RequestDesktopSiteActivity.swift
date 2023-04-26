@@ -5,8 +5,9 @@
 import Foundation
 import Shared
 import UIKit
+import SwiftUI
 
-class RequestDesktopSiteActivity: UIActivity {
+class RequestDesktopSiteActivity: UIActivity, MenuActivity {
   private weak var tab: Tab?
   fileprivate let callback: () -> Void
 
@@ -18,9 +19,17 @@ class RequestDesktopSiteActivity: UIActivity {
   override var activityTitle: String? {
     tab?.isDesktopSite == true ? Strings.appMenuViewMobileSiteTitleString : Strings.appMenuViewDesktopSiteTitleString
   }
+  
+  private var imageName: String {
+    tab?.isDesktopSite == true ? "leo.smartphone" : "leo.monitor"
+  }
 
   override var activityImage: UIImage? {
-    tab?.isDesktopSite == true ? UIImage(named: "shareRequestMobileSite", in: .module, compatibleWith: nil)! : UIImage(named: "shareRequestDesktopSite", in: .module, compatibleWith: nil)!
+    UIImage(braveSystemNamed: imageName)?.applyingSymbolConfiguration(.init(scale: .large))
+  }
+  
+  var menuImage: Image {
+    Image(braveSystemName: imageName)
   }
 
   override func perform() {

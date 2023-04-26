@@ -9,6 +9,7 @@ import Shared
 import BraveShared
 import Growth
 import os.log
+import DesignSystem
 
 class AddEditBookmarkTableViewController: UITableViewController {
 
@@ -104,7 +105,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
   }
 
   private var rootLevelFolderCell: IndentedImageTableViewCell {
-    let cell = IndentedImageTableViewCell(image: UIImage(named: "menu_bookmarks", in: .module, compatibleWith: nil)!.template).then {
+    let cell = IndentedImageTableViewCell(image: UIImage(braveSystemNamed: "leo.book.6")!).then {
       $0.folderName.text = self.rootFolderName
       $0.tag = SpecialCell.rootLevel.rawValue
       if case .rootLevel = saveLocation, presentationMode == .folderHierarchy {
@@ -116,7 +117,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
   }
 
   private var favoritesCell: IndentedImageTableViewCell {
-    let cell = IndentedImageTableViewCell(image: UIImage(named: "menu_favorites", in: .module, compatibleWith: nil)!.template).then {
+    let cell = IndentedImageTableViewCell(image: UIImage(braveSystemNamed: "leo.heart.outline")!).then {
       $0.folderName.text = Strings.favoritesRootLevelCellTitle
       $0.tag = SpecialCell.favorites.rawValue
       if case .favorites = saveLocation, presentationMode == .folderHierarchy {
@@ -128,7 +129,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
   }
 
   private var addNewFolderCell: IndentedImageTableViewCell {
-    let cell = IndentedImageTableViewCell(image: UIImage(named: "menu_new_folder", in: .module, compatibleWith: nil)!.template)
+    let cell = IndentedImageTableViewCell(image: UIImage(braveSystemNamed: "leo.folder.new")!)
 
     cell.folderName.text = Strings.addFolderActionCellTitle
     cell.accessoryType = .disclosureIndicator
@@ -448,7 +449,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
       case .rootLevel: return rootLevelFolderCell
       case .favorites: return favoritesCell
       case .folder(let folder):
-        let cell = IndentedImageTableViewCell(image: UIImage(named: "menu_folder", in: .module, compatibleWith: nil)!.template)
+        let cell = IndentedImageTableViewCell(image: UIImage(braveSystemNamed: "leo.folder")!)
         cell.folderName.text = folder.title
         cell.tag = folderCellTag
         return cell
@@ -473,9 +474,9 @@ class AddEditBookmarkTableViewController: UITableViewController {
       // Folders with children folders have a different icon
       let hasChildrenFolders = indentedFolder.folder.children?.contains(where: { $0.isFolder })
       if indentedFolder.folder.parent == nil {
-        cell.customImage.image = UIImage(named: "menu_bookmarks", in: .module, compatibleWith: nil)!.template
+        cell.customImage.image = UIImage(braveSystemNamed: "leo.book.6")
       } else {
-        cell.customImage.image = (hasChildrenFolders == true ? UIImage(named: "menu_folder_open", in: .module, compatibleWith: nil)! : UIImage(named: "menu_folder", in: .module, compatibleWith: nil)!).template
+        cell.customImage.image = UIImage(braveSystemNamed: hasChildrenFolders == true ? "leo.folder.open-o" : "leo.folder")
       }
 
       if let folder = saveLocation.getFolder, folder.objectID == indentedFolder.folder.objectID {

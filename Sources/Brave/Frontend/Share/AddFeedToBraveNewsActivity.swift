@@ -6,8 +6,9 @@
 import Foundation
 import Shared
 import UIKit
+import SwiftUI
 
-class AddFeedToBraveNewsActivity: UIActivity {
+class AddFeedToBraveNewsActivity: UIActivity, MenuActivity {
   fileprivate let callback: () -> Void
 
   init(callback: @escaping () -> Void) {
@@ -19,7 +20,11 @@ class AddFeedToBraveNewsActivity: UIActivity {
   }
 
   override var activityImage: UIImage? {
-    return UIImage(named: "settings-brave-today", in: .module, compatibleWith: nil)!
+    UIImage(braveSystemNamed: "leo.rss")?.applyingSymbolConfiguration(.init(scale: .large))
+  }
+  
+  var menuImage: Image {
+    Image(braveSystemName: "leo.rss")
   }
 
   override func perform() {

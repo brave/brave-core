@@ -168,7 +168,7 @@ extension WidgetShortcut {
     case .scanQRCode:
       return Image(braveSystemName: "leo.qr.code")
     case .braveNews:
-      return Image(braveSystemName: "leo.newspaper")
+      return Image(braveSystemName: "leo.product.brave-news")
     @unknown default:
       assertionFailure()
       return Image(systemName: "xmark.octagon")
