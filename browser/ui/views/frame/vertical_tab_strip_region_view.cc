@@ -589,14 +589,28 @@ void VerticalTabStripRegionView::SetState(State state) {
   PreferredSizeChanged();
 }
 
+void VerticalTabStripRegionView::UpdateStateAfterDragAndDropFinished(
+    State original_state) {
+  DCHECK_NE(original_state, State::kExpanded)
+      << "As per ExpandTabStripForDragging(), this shouldn't happen";
+
+  if (tabs::utils::IsFloatingVerticalTabsEnabled(browser_) &&
+      IsMouseHovered()) {
+    SetState(State::kFloating);
+    return;
+  }
+
+  SetState(State::kCollapsed);
+}
+
 VerticalTabStripRegionView::ScopedStateResetter
 VerticalTabStripRegionView::ExpandTabStripForDragging() {
   if (state_ == State::kExpanded)
     return {};
 
-  auto resetter = std::make_unique<base::ScopedClosureRunner>(
-      base::BindOnce(&VerticalTabStripRegionView::SetState,
-                     weak_factory_.GetWeakPtr(), State::kCollapsed));
+  auto resetter = std::make_unique<base::ScopedClosureRunner>(base::BindOnce(
+      &VerticalTabStripRegionView::UpdateStateAfterDragAndDropFinished,
+      weak_factory_.GetWeakPtr(), state_));
 
   SetState(State::kExpanded);
   // In this case, we dont' wait for the widget bounds to be changed so that
@@ -777,8 +791,18 @@ void VerticalTabStripRegionView::OnBoundsChanged(
     return;
   }
 
-  if (previous_bounds.size() != size())
+  if (previous_bounds.size() != size()) {
+    if (GetAvailableWidthForTabContainer() != tab_strip()->width()) {
+      // During/After the drag and drop session, tab strip container might have
+      // ignored Layout() request. As the container bounds changed, we should
+      // force it to layout.
+      // https://github.com/brave/brave-browser/issues/29941
+      tab_strip()->tab_container_->InvalidateIdealBounds();
+      tab_strip()->tab_container_->CompleteAnimationAndLayout();
+    }
+
     ScrollActiveTabToBeVisible();
+  }
 
 #if DCHECK_IS_ON()
   if (auto width = GetContentsBounds().width(); width) {

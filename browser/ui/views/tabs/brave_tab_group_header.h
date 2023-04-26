@@ -22,6 +22,7 @@ class BraveTabGroupHeader : public TabGroupHeader {
   ~BraveTabGroupHeader() override;
 
   // TabGroupHeader:
+  void AddedToWidget() override;
   void VisualsChanged() override;
   void Layout() override;
 

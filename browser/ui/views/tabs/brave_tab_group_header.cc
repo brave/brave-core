@@ -14,7 +14,10 @@
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/background.h"
+#include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/controls/label.h"
+#include "ui/views/widget/widget.h"
+#include "ui/views/widget/widget_delegate.h"
 
 namespace {
 
@@ -39,6 +42,25 @@ SkColor GetGroupBackgroundColorForVerticalTabs(
 }  // namespace
 
 BraveTabGroupHeader::~BraveTabGroupHeader() = default;
+
+void BraveTabGroupHeader::AddedToWidget() {
+  TabGroupHeader::AddedToWidget();
+  if (!ShouldShowVerticalTabs()) {
+    return;
+  }
+
+  if (editor_bubble_tracker_.is_open()) {
+    auto* bubble_delegate = editor_bubble_tracker_.widget()
+                                ->widget_delegate()
+                                ->AsBubbleDialogDelegate();
+    DCHECK(bubble_delegate);
+    // Technically, this can happen when tab strip's orientation changes
+    // with the editor bubble open. It re-parents the widget which can cause
+    // DCHECK failure. We should call SetAnchorView again to reset
+    // the anchor widget.
+    bubble_delegate->SetAnchorView(this);
+  }
+}
 
 void BraveTabGroupHeader::VisualsChanged() {
   TabGroupHeader::VisualsChanged();
