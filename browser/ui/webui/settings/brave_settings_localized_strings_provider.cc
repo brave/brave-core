@@ -32,6 +32,7 @@
 #include "components/google/core/common/google_util.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
+#include "components/signin/public/base/signin_pref_names.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "extensions/buildflags/buildflags.h"
 #include "extensions/common/extension_urls.h"
