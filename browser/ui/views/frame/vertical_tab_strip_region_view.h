@@ -105,6 +105,8 @@ class VerticalTabStripRegionView : public views::View,
 
   void UpdateStateAfterDragAndDropFinished(State original_state);
 
+  void OnShowVerticalTabsPrefChanged();
+
   void UpdateLayout(bool in_destruction = false);
 
   void UpdateTabSearchButtonVisibility();
