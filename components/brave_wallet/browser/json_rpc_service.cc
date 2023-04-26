@@ -3138,10 +3138,8 @@ void JsonRpcService::GetSolanaTokenAccountsByOwner(
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetSolanaTokenAccountsByOwner,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  // TODO(darkdh): bug, this only works on mainnet currently
   RequestInternal(
-      solana::getTokenAccountsByOwner(pubkey.ToBase58()), true,
-      GetNetworkURL(prefs_, mojom::kSolanaMainnet, mojom::CoinType::SOL),
+      solana::getTokenAccountsByOwner(pubkey.ToBase58()), true, network_url,
       std::move(internal_callback),
       base::BindOnce(&ConvertMultiUint64InObjectArrayToString, "/result/value",
                      "/account",
