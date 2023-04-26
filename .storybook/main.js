@@ -7,5 +7,5 @@ module.exports = {
     '@storybook/addon-knobs',
     '@storybook/addon-essentials'
   ],
-  staticDirs: [{ from: '../node_modules/@brave/leo/icons', to: '/icons' }]
+  staticDirs: [{ from: '../node_modules/@brave/leo/icons', to: 'icons/' }]
 }
