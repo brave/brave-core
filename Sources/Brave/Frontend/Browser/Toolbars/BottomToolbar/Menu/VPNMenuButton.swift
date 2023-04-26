@@ -80,7 +80,7 @@ struct VPNMenuButton: View {
   var body: some View {
     HStack {
       MenuItemHeaderView(
-        icon: UIImage(named: "vpn_menu_icon", in: .module, compatibleWith: nil)!.template,
+        icon: Image(braveSystemName: "leo.product.vpn"),
         title: description == nil ? "Brave VPN" : Strings.OptionsMenu.braveVPNItemTitle,
         subtitle: description)
       Spacer()

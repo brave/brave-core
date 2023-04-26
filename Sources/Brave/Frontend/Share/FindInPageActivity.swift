@@ -5,8 +5,9 @@
 import Foundation
 import Shared
 import UIKit
+import SwiftUI
 
-class FindInPageActivity: UIActivity {
+class FindInPageActivity: UIActivity, MenuActivity {
   fileprivate let callback: () -> Void
 
   init(callback: @escaping () -> Void) {
@@ -18,7 +19,11 @@ class FindInPageActivity: UIActivity {
   }
 
   override var activityImage: UIImage? {
-    return UIImage(named: "shareFindInPage", in: .module, compatibleWith: nil)!
+    return UIImage(braveSystemNamed: "leo.search")?.applyingSymbolConfiguration(.init(scale: .large))
+  }
+  
+  var menuImage: Image {
+    Image(braveSystemName: "leo.search")
   }
 
   override func perform() {

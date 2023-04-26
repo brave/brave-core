@@ -7,9 +7,10 @@ import Foundation
 import Shared
 import WebKit
 import os.log
+import SwiftUI
 
 /// An activity that will create a PDF of a given web page
-class CreatePDFActivity: UIActivity {
+class CreatePDFActivity: UIActivity, MenuActivity {
   private let callback: () -> Void
 
   init(callback: @escaping () -> Void) {
@@ -22,7 +23,11 @@ class CreatePDFActivity: UIActivity {
   }
 
   override var activityImage: UIImage? {
-    UIImage(systemName: "doc", withConfiguration: UIImage.SymbolConfiguration(scale: .large))
+    UIImage(braveSystemNamed: "leo.file")?.applyingSymbolConfiguration(.init(scale: .large))
+  }
+  
+  var menuImage: Image {
+    Image(braveSystemName: "leo.file")
   }
 
   override func perform() {

@@ -5,6 +5,8 @@
 
 import UIKit
 import BraveStrings
+import DesignSystem
+import SwiftUI
 
 class MenuItemFactory {
   enum MenuItemType {
@@ -17,24 +19,24 @@ class MenuItemFactory {
     case talk
     case wallet(subtitle: String? = nil)
     
-    var icon: UIImage {
+    var icon: Image {
       switch self {
         case .bookmarks:
-          return UIImage(named: "menu_bookmarks", in: .module, compatibleWith: nil)!.template
+          return Image(braveSystemName: "leo.book.6")
         case .downloads:
-          return UIImage(named: "menu-downloads", in: .module, compatibleWith: nil)!.template
+          return Image(braveSystemName: "leo.download")
         case .history:
-          return UIImage(named: "menu-history", in: .module, compatibleWith: nil)!.template
+          return Image(braveSystemName: "leo.history")
         case .news:
-          return UIImage(named: "menu_brave_news", in: .module, compatibleWith: nil)!.template
+          return Image(braveSystemName: "leo.product.brave-news")
         case .playlist:
-          return UIImage(named: "playlist_menu", in: .module, compatibleWith: nil)!.template
+          return Image(braveSystemName: "leo.product.playlist")
         case .settings:
-          return UIImage(named: "menu-settings", in: .module, compatibleWith: nil)!.template
+          return Image(braveSystemName: "leo.settings")
         case .talk:
-          return UIImage(named: "menu-brave-talk", in: .module, compatibleWith: nil)!.template
+          return Image(braveSystemName: "leo.product.brave-talk")
         case .wallet(_):
-          return UIImage(named: "menu-crypto", in: .module, compatibleWith: nil)!.template
+          return Image(braveSystemName: "leo.product.brave-wallet")
       }
     }
     

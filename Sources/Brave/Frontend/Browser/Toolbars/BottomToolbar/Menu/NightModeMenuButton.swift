@@ -18,7 +18,7 @@ struct NightModeMenuButton: View {
   var body: some View {
     HStack {
       MenuItemHeaderView(
-        icon: UIImage(systemName: nightMode.value ? "moon.fill" : "moon")?.template ?? UIImage(),
+        icon: Image(braveSystemName: "leo.theme.dark"),
         title: Strings.NightMode.settingsTitle)
       Spacer()
       Toggle("", isOn: $nightMode.value)

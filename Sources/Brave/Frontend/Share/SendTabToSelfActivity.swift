@@ -6,8 +6,9 @@
 import Foundation
 import Shared
 import UIKit
+import SwiftUI
 
-class SendTabToSelfActivity: UIActivity {
+class SendTabToSelfActivity: UIActivity, MenuActivity {
   fileprivate let callback: () -> Void
 
   init(callback: @escaping () -> Void) {
@@ -19,7 +20,11 @@ class SendTabToSelfActivity: UIActivity {
   }
 
   override var activityImage: UIImage? {
-    return UIImage(systemName: "laptopcomputer.and.iphone")
+    return UIImage(braveSystemNamed: "leo.smartphone.laptop")?.applyingSymbolConfiguration(.init(scale: .large))
+  }
+  
+  var menuImage: Image {
+    Image(braveSystemName: "leo.smartphone.laptop")
   }
 
   override func perform() {

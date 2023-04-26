@@ -247,20 +247,20 @@ extension BrowserViewController {
             }
             .animation(.default, value: playlistItemAdded)
           }
-          MenuItemButton(icon: UIImage(named: "nav-share", in: .module, compatibleWith: nil)!.template, title: Strings.shareWithMenuItem) {
+          MenuItemButton(icon: Image(braveSystemName: "leo.share.browser"), title: Strings.shareWithMenuItem) {
             browserViewController.dismiss(animated: true)
             browserViewController.tabToolbarDidPressShare()
           }
           NightModeMenuButton(dismiss: {
             browserViewController.dismiss(animated: true)
           })
-          MenuItemButton(icon: UIImage(named: "menu-add-bookmark", in: .module, compatibleWith: nil)!.template, title: Strings.addToMenuItem) {
+          MenuItemButton(icon: Image(braveSystemName: "leo.browser.bookmark-add"), title: Strings.addToMenuItem) {
             browserViewController.dismiss(animated: true) {
               browserViewController.openAddBookmark()
             }
           }
-          ForEach(activities, id: \.activityTitle) { activity in
-            MenuItemButton(icon: activity.activityImage?.template ?? UIImage(), title: activity.activityTitle ?? "") {
+          ForEach(activities.compactMap({ $0 as? MenuActivity }), id: \.activityTitle) { activity in
+            MenuItemButton(icon: activity.menuImage, title: activity.activityTitle ?? "") {
               browserViewController.dismiss(animated: true) {
                 activity.perform()
               }
