@@ -57,9 +57,9 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerViewedEvents) {
 
   // Assert
   EXPECT_EQ(
-      2, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
+      2U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
   EXPECT_EQ(
-      2, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
+      2U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
   EXPECT_EQ(2, GetHistoryItemCount());
   EXPECT_EQ(2, GetTransactionCount());
 }
@@ -93,9 +93,9 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerQueuedViewedEvents) {
   }
 
   EXPECT_EQ(
-      2, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
+      2U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
   EXPECT_EQ(
-      1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
+      1U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
   EXPECT_EQ(1, GetHistoryItemCount());
   EXPECT_EQ(1, GetTransactionCount());
 
@@ -104,9 +104,9 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerQueuedViewedEvents) {
 
   // Assert
   EXPECT_EQ(
-      2, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
+      2U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
   EXPECT_EQ(
-      2, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
+      2U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
   EXPECT_EQ(2, GetHistoryItemCount());
   EXPECT_EQ(2, GetTransactionCount());
 }
@@ -127,11 +127,11 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerClickedEvent) {
 
   // Assert
   EXPECT_EQ(
-      1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
+      1U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
   EXPECT_EQ(
-      1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
+      1U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
   EXPECT_EQ(
-      1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kClicked));
+      1U, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kClicked));
   EXPECT_EQ(2, GetHistoryItemCount());
   EXPECT_EQ(2, GetTransactionCount());
 }

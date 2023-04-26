@@ -123,14 +123,14 @@ void FireAdEvent(const AdEventInfo& ad_event) {
              base::BindOnce([](const bool success) { CHECK(success); }));
 }
 
-void FireAdEvents(const AdEventInfo& ad_event, const int count) {
-  for (int i = 0; i < count; i++) {
+void FireAdEvents(const AdEventInfo& ad_event, const size_t count) {
+  for (size_t i = 0; i < count; i++) {
     FireAdEvent(ad_event);
   }
 }
 
-int GetAdEventCount(const AdType& ad_type,
-                    const ConfirmationType& confirmation_type) {
+size_t GetAdEventCount(const AdType& ad_type,
+                       const ConfirmationType& confirmation_type) {
   const std::vector<base::Time> ad_events =
       GetAdEventHistory(ad_type, confirmation_type);
   return ad_events.size();
@@ -138,7 +138,7 @@ int GetAdEventCount(const AdType& ad_type,
 
 void ResetAdEvents(ResultAdEventsCallback callback) {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-  database::DeleteTable(transaction.get(), "ad_events");
+  database::DeleteTable(&*transaction, "ad_events");
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),

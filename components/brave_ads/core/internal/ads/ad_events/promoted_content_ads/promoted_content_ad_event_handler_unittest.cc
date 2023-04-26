@@ -100,10 +100,10 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest, FireViewedEvent) {
   const PromotedContentAdInfo expected_ad =
       BuildPromotedContentAd(creative_ad, kPlacementId);
   EXPECT_EQ(expected_ad, ad_);
-  EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
-                               ConfirmationType::kServed));
-  EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
-                               ConfirmationType::kViewed));
+  EXPECT_EQ(1U, GetAdEventCount(AdType::kPromotedContentAd,
+                                ConfirmationType::kServed));
+  EXPECT_EQ(1U, GetAdEventCount(AdType::kPromotedContentAd,
+                                ConfirmationType::kViewed));
 }
 
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
@@ -124,10 +124,10 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
                            mojom::PromotedContentAdEventType::kViewed);
 
   // Assert
-  EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
-                               ConfirmationType::kServed));
-  EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
-                               ConfirmationType::kViewed));
+  EXPECT_EQ(1U, GetAdEventCount(AdType::kPromotedContentAd,
+                                ConfirmationType::kServed));
+  EXPECT_EQ(1U, GetAdEventCount(AdType::kPromotedContentAd,
+                                ConfirmationType::kViewed));
 }
 
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest, FireClickedEvent) {
@@ -154,12 +154,12 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest, FireClickedEvent) {
   const PromotedContentAdInfo expected_ad =
       BuildPromotedContentAd(creative_ad, kPlacementId);
   EXPECT_EQ(expected_ad, ad_);
-  EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
-                               ConfirmationType::kServed));
-  EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
-                               ConfirmationType::kViewed));
-  EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
-                               ConfirmationType::kClicked));
+  EXPECT_EQ(1U, GetAdEventCount(AdType::kPromotedContentAd,
+                                ConfirmationType::kServed));
+  EXPECT_EQ(1U, GetAdEventCount(AdType::kPromotedContentAd,
+                                ConfirmationType::kViewed));
+  EXPECT_EQ(1U, GetAdEventCount(AdType::kPromotedContentAd,
+                                ConfirmationType::kClicked));
 }
 
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
@@ -172,8 +172,8 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
                            mojom::PromotedContentAdEventType::kClicked);
 
   // Assert
-  EXPECT_EQ(0, GetAdEventCount(AdType::kPromotedContentAd,
-                               ConfirmationType::kClicked));
+  EXPECT_EQ(0U, GetAdEventCount(AdType::kPromotedContentAd,
+                                ConfirmationType::kClicked));
 }
 
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
@@ -195,12 +195,12 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
                            mojom::PromotedContentAdEventType::kClicked);
 
   // Assert
-  EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
-                               ConfirmationType::kServed));
-  EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
-                               ConfirmationType::kViewed));
-  EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
-                               ConfirmationType::kClicked));
+  EXPECT_EQ(1U, GetAdEventCount(AdType::kPromotedContentAd,
+                                ConfirmationType::kServed));
+  EXPECT_EQ(1U, GetAdEventCount(AdType::kPromotedContentAd,
+                                ConfirmationType::kViewed));
+  EXPECT_EQ(1U, GetAdEventCount(AdType::kPromotedContentAd,
+                                ConfirmationType::kClicked));
 }
 
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
@@ -216,8 +216,8 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
   EXPECT_FALSE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
-  EXPECT_EQ(0, GetAdEventCount(AdType::kPromotedContentAd,
-                               ConfirmationType::kServed));
+  EXPECT_EQ(0U, GetAdEventCount(AdType::kPromotedContentAd,
+                                ConfirmationType::kServed));
 }
 
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
@@ -233,8 +233,8 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
   EXPECT_FALSE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
-  EXPECT_EQ(0, GetAdEventCount(AdType::kPromotedContentAd,
-                               ConfirmationType::kViewed));
+  EXPECT_EQ(0U, GetAdEventCount(AdType::kPromotedContentAd,
+                                ConfirmationType::kViewed));
 }
 
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
@@ -251,8 +251,8 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
   EXPECT_FALSE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
-  EXPECT_EQ(0, GetAdEventCount(AdType::kPromotedContentAd,
-                               ConfirmationType::kViewed));
+  EXPECT_EQ(0U, GetAdEventCount(AdType::kPromotedContentAd,
+                                ConfirmationType::kViewed));
 }
 
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
@@ -269,8 +269,8 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
   EXPECT_FALSE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
-  EXPECT_EQ(0, GetAdEventCount(AdType::kPromotedContentAd,
-                               ConfirmationType::kViewed));
+  EXPECT_EQ(0U, GetAdEventCount(AdType::kPromotedContentAd,
+                                ConfirmationType::kViewed));
 }
 
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
@@ -283,7 +283,7 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
                    ConfirmationType::kServed, Now());
 
-  const int ads_per_hour = kMaximumPromotedContentAdsPerHour.Get();
+  const size_t ads_per_hour = kMaximumPromotedContentAdsPerHour.Get();
 
   FireAdEvents(ad_event, ads_per_hour - 1);
 
@@ -309,7 +309,7 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
                    ConfirmationType::kServed, Now());
 
-  const int ads_per_hour = kMaximumPromotedContentAdsPerHour.Get();
+  const size_t ads_per_hour = kMaximumPromotedContentAdsPerHour.Get();
 
   FireAdEvents(ad_event, ads_per_hour);
 
@@ -335,7 +335,7 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
                    ConfirmationType::kServed, Now());
 
-  const int ads_per_day = kMaximumPromotedContentAdsPerDay.Get();
+  const size_t ads_per_day = kMaximumPromotedContentAdsPerDay.Get();
 
   FireAdEvents(ad_event, ads_per_day - 1);
 
@@ -363,7 +363,7 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
                    ConfirmationType::kServed, Now());
 
-  const int ads_per_day = kMaximumPromotedContentAdsPerDay.Get();
+  const size_t ads_per_day = kMaximumPromotedContentAdsPerDay.Get();
 
   FireAdEvents(ad_event, ads_per_day);
 

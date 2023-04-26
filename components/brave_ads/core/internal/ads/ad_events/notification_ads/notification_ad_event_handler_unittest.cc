@@ -102,7 +102,7 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireServedEvent) {
   EXPECT_FALSE(did_fail_to_fire_event_);
   EXPECT_EQ(ad, ad_);
   EXPECT_EQ(
-      1, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kServed));
+      1U, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kServed));
 }
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireViewedEvent) {
@@ -122,7 +122,7 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireViewedEvent) {
   EXPECT_FALSE(did_fail_to_fire_event_);
   EXPECT_EQ(ad, ad_);
   EXPECT_EQ(
-      1, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kViewed));
+      1U, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kViewed));
 }
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireClickedEvent) {
@@ -142,7 +142,7 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireClickedEvent) {
   EXPECT_FALSE(did_fail_to_fire_event_);
   EXPECT_EQ(ad, ad_);
   EXPECT_EQ(
-      1, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kClicked));
+      1U, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kClicked));
 }
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireDismissedEvent) {
@@ -161,8 +161,8 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireDismissedEvent) {
   EXPECT_FALSE(did_time_out_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
   EXPECT_EQ(ad, ad_);
-  EXPECT_EQ(1, GetAdEventCount(AdType::kNotificationAd,
-                               ConfirmationType::kDismissed));
+  EXPECT_EQ(1U, GetAdEventCount(AdType::kNotificationAd,
+                                ConfirmationType::kDismissed));
 }
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireTimedOutEvent) {
@@ -199,7 +199,7 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest,
   EXPECT_FALSE(did_time_out_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
   EXPECT_EQ(
-      0, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kViewed));
+      0U, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kViewed));
 }
 
 }  // namespace brave_ads

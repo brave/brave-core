@@ -75,7 +75,7 @@ class CreativeNewTabPageAds final : public TableInterface {
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const CreativeNewTabPageAdList& creative_ads);
 
-  std::string BuildInsertOrUpdateQuery(
+  std::string BuildInsertOrUpdateSql(
       mojom::DBCommandInfo* command,
       const CreativeNewTabPageAdList& creative_ads) const;
 

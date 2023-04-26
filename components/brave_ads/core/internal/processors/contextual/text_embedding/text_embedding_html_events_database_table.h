@@ -38,7 +38,7 @@ class TextEmbeddingHtmlEvents final : public TableInterface {
       mojom::DBTransactionInfo* transaction,
       const TextEmbeddingHtmlEventList& text_embedding_html_events);
 
-  std::string BuildInsertOrUpdateQuery(
+  std::string BuildInsertOrUpdateSql(
       mojom::DBCommandInfo* command,
       const TextEmbeddingHtmlEventList& text_embedding_html_events) const;
 };

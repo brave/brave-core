@@ -48,9 +48,8 @@ class Transactions final : public TableInterface {
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const TransactionList& transactions);
 
-  std::string BuildInsertOrUpdateQuery(
-      mojom::DBCommandInfo* command,
-      const TransactionList& transactions) const;
+  std::string BuildInsertOrUpdateSql(mojom::DBCommandInfo* command,
+                                     const TransactionList& transactions) const;
 };
 
 }  // namespace brave_ads::database::table

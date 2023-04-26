@@ -48,10 +48,10 @@ TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerViewedEvent) {
       mojom::PromotedContentAdEventType::kViewed);
 
   // Assert
-  EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
-                               ConfirmationType::kServed));
-  EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
-                               ConfirmationType::kViewed));
+  EXPECT_EQ(1U, GetAdEventCount(AdType::kPromotedContentAd,
+                                ConfirmationType::kServed));
+  EXPECT_EQ(1U, GetAdEventCount(AdType::kPromotedContentAd,
+                                ConfirmationType::kViewed));
   EXPECT_EQ(1, GetHistoryItemCount());
   EXPECT_EQ(1, GetTransactionCount());
 }
@@ -71,12 +71,12 @@ TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerClickedEvent) {
       mojom::PromotedContentAdEventType::kClicked);
 
   // Assert
-  EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
-                               ConfirmationType::kServed));
-  EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
-                               ConfirmationType::kViewed));
-  EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
-                               ConfirmationType::kClicked));
+  EXPECT_EQ(1U, GetAdEventCount(AdType::kPromotedContentAd,
+                                ConfirmationType::kServed));
+  EXPECT_EQ(1U, GetAdEventCount(AdType::kPromotedContentAd,
+                                ConfirmationType::kViewed));
+  EXPECT_EQ(1U, GetAdEventCount(AdType::kPromotedContentAd,
+                                ConfirmationType::kClicked));
   EXPECT_EQ(2, GetHistoryItemCount());
   EXPECT_EQ(2, GetTransactionCount());
 }

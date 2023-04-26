@@ -94,9 +94,9 @@ TEST_F(BraveAdsInlineContentAdEventHandlerTest, FireViewedEvent) {
       BuildInlineContentAd(creative_ad, kPlacementId);
   EXPECT_EQ(expected_ad, ad_);
   EXPECT_EQ(
-      1, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kServed));
+      1U, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kServed));
   EXPECT_EQ(
-      1, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kViewed));
+      1U, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kViewed));
 }
 
 TEST_F(BraveAdsInlineContentAdEventHandlerTest,
@@ -115,9 +115,9 @@ TEST_F(BraveAdsInlineContentAdEventHandlerTest,
 
   // Assert
   EXPECT_EQ(
-      1, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kServed));
+      1U, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kServed));
   EXPECT_EQ(
-      1, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kViewed));
+      1U, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kViewed));
 }
 
 TEST_F(BraveAdsInlineContentAdEventHandlerTest, FireClickedEvent) {
@@ -142,11 +142,11 @@ TEST_F(BraveAdsInlineContentAdEventHandlerTest, FireClickedEvent) {
       BuildInlineContentAd(creative_ad, kPlacementId);
   EXPECT_EQ(expected_ad, ad_);
   EXPECT_EQ(
-      1, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kServed));
+      1U, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kServed));
   EXPECT_EQ(
-      1, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kViewed));
-  EXPECT_EQ(
-      1, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kClicked));
+      1U, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kViewed));
+  EXPECT_EQ(1U, GetAdEventCount(AdType::kInlineContentAd,
+                                ConfirmationType::kClicked));
 }
 
 TEST_F(BraveAdsInlineContentAdEventHandlerTest,
@@ -159,8 +159,8 @@ TEST_F(BraveAdsInlineContentAdEventHandlerTest,
                            mojom::InlineContentAdEventType::kClicked);
 
   // Assert
-  EXPECT_EQ(
-      0, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kClicked));
+  EXPECT_EQ(0U, GetAdEventCount(AdType::kInlineContentAd,
+                                ConfirmationType::kClicked));
 }
 
 TEST_F(BraveAdsInlineContentAdEventHandlerTest,
@@ -181,11 +181,11 @@ TEST_F(BraveAdsInlineContentAdEventHandlerTest,
 
   // Assert
   EXPECT_EQ(
-      1, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kServed));
+      1U, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kServed));
   EXPECT_EQ(
-      1, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kViewed));
-  EXPECT_EQ(
-      1, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kClicked));
+      1U, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kViewed));
+  EXPECT_EQ(1U, GetAdEventCount(AdType::kInlineContentAd,
+                                ConfirmationType::kClicked));
 }
 
 TEST_F(BraveAdsInlineContentAdEventHandlerTest,
@@ -202,7 +202,7 @@ TEST_F(BraveAdsInlineContentAdEventHandlerTest,
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
   EXPECT_EQ(
-      0, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kServed));
+      0U, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kServed));
 }
 
 TEST_F(BraveAdsInlineContentAdEventHandlerTest,
@@ -219,7 +219,7 @@ TEST_F(BraveAdsInlineContentAdEventHandlerTest,
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
   EXPECT_EQ(
-      0, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kServed));
+      0U, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kServed));
 }
 
 TEST_F(BraveAdsInlineContentAdEventHandlerTest,
@@ -236,7 +236,7 @@ TEST_F(BraveAdsInlineContentAdEventHandlerTest,
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
   EXPECT_EQ(
-      0, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kServed));
+      0U, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kServed));
 }
 
 }  // namespace brave_ads

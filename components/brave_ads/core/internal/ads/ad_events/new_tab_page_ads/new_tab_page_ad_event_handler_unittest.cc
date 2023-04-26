@@ -98,7 +98,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerTest, FireViewedEvent) {
   const NewTabPageAdInfo expected_ad =
       BuildNewTabPageAd(creative_ad, kPlacementId);
   EXPECT_EQ(expected_ad, ad_);
-  EXPECT_EQ(1,
+  EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
@@ -119,7 +119,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
                            mojom::NewTabPageAdEventType::kViewed);
 
   // Assert
-  EXPECT_EQ(1,
+  EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
 }
 
@@ -144,7 +144,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerTest, FireClickedEvent) {
   const NewTabPageAdInfo expected_ad =
       BuildNewTabPageAd(creative_ad, kPlacementId);
   EXPECT_EQ(expected_ad, ad_);
-  EXPECT_EQ(1,
+  EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kClicked));
 }
 
@@ -158,7 +158,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
                            mojom::NewTabPageAdEventType::kClicked);
 
   // Assert
-  EXPECT_EQ(0,
+  EXPECT_EQ(0U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kClicked));
 }
 
@@ -179,7 +179,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
                            mojom::NewTabPageAdEventType::kClicked);
 
   // Assert
-  EXPECT_EQ(1,
+  EXPECT_EQ(1U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kClicked));
 }
 
@@ -196,7 +196,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
   EXPECT_FALSE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
-  EXPECT_EQ(0,
+  EXPECT_EQ(0U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
 }
 
@@ -213,7 +213,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
   EXPECT_FALSE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
-  EXPECT_EQ(0,
+  EXPECT_EQ(0U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
 }
 
@@ -230,7 +230,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
   EXPECT_FALSE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
-  EXPECT_EQ(0,
+  EXPECT_EQ(0U,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
 }
 
@@ -239,7 +239,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
   // Arrange
   ForcePermissionRulesForTesting();
 
-  const int ads_per_hour = kMaximumNewTabPageAdsPerHour.Get();
+  const size_t ads_per_hour = kMaximumNewTabPageAdsPerHour.Get();
 
   const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo served_ad_event = BuildAdEvent(

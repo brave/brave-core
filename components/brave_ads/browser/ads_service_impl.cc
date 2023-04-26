@@ -245,6 +245,9 @@ bool MigrateConfirmationStateOnFileTaskRunner(const base::FilePath& path) {
 mojom::DBCommandResponseInfoPtr RunDBTransactionOnFileTaskRunner(
     mojom::DBTransactionInfoPtr transaction,
     Database* database) {
+  DCHECK(transaction);
+  DCHECK(database);
+
   mojom::DBCommandResponseInfoPtr command_response =
       mojom::DBCommandResponseInfo::New();
 

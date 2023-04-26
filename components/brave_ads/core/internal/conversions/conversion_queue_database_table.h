@@ -60,7 +60,7 @@ class ConversionQueue final : public TableInterface {
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const ConversionQueueItemList& conversion_queue_items);
 
-  std::string BuildInsertOrUpdateQuery(
+  std::string BuildInsertOrUpdateSql(
       mojom::DBCommandInfo* command,
       const ConversionQueueItemList& conversion_queue_items) const;
 

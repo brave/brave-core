@@ -15,11 +15,11 @@ namespace brave_ads::database {
 
 namespace {
 
-std::string BuildInsertQuery(const std::string& from,
-                             const std::string& to,
-                             const std::vector<std::string>& from_columns,
-                             const std::vector<std::string>& to_columns,
-                             const std::string& group_by) {
+std::string BuildInsertSql(const std::string& from,
+                           const std::string& to,
+                           const std::vector<std::string>& from_columns,
+                           const std::vector<std::string>& to_columns,
+                           const std::string& group_by) {
   DCHECK(!from.empty());
   DCHECK(!to.empty());
   DCHECK_NE(from, to);
@@ -43,14 +43,11 @@ void CreateTableIndex(mojom::DBTransactionInfo* transaction,
   DCHECK(!table_name.empty());
   DCHECK(!key.empty());
 
-  const std::string query = base::ReplaceStringPlaceholders(
-      "CREATE INDEX IF NOT EXISTS $1_$2_index ON $3 ($4)",
-      {table_name, key, table_name, key}, nullptr);
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->command = query;
-
+  command->sql = base::ReplaceStringPlaceholders(
+      "CREATE INDEX IF NOT EXISTS $1_$2_index ON $3 ($4);",
+      {table_name, key, table_name, key}, nullptr);
   transaction->commands.push_back(std::move(command));
 }
 
@@ -59,15 +56,10 @@ void DropTable(mojom::DBTransactionInfo* transaction,
   DCHECK(transaction);
   DCHECK(!table_name.empty());
 
-  const std::string query = base::ReplaceStringPlaceholders(
-      "PRAGMA foreign_keys = off; DROP TABLE IF EXISTS $1; PRAGMA foreign_keys "
-      "= on;",
-      {table_name}, nullptr);
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->command = query;
-
+  command->sql = base::ReplaceStringPlaceholders("DROP TABLE IF EXISTS $1;",
+                                                 {table_name}, nullptr);
   transaction->commands.push_back(std::move(command));
 }
 
@@ -76,13 +68,10 @@ void DeleteTable(mojom::DBTransactionInfo* transaction,
   DCHECK(transaction);
   DCHECK(!table_name.empty());
 
-  const std::string query =
-      base::ReplaceStringPlaceholders("DELETE FROM $1", {table_name}, nullptr);
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->command = query;
-
+  command->sql =
+      base::ReplaceStringPlaceholders("DELETE FROM $1;", {table_name}, nullptr);
   transaction->commands.push_back(std::move(command));
 }
 
@@ -101,21 +90,14 @@ void CopyTableColumns(mojom::DBTransactionInfo* transaction,
   DCHECK(!to_columns.empty());
   DCHECK_EQ(from_columns.size(), to_columns.size());
 
-  std::string query = "PRAGMA foreign_keys = off;";
-
-  query += BuildInsertQuery(from, to, from_columns, to_columns, group_by);
-
-  if (should_drop) {
-    query += base::ReplaceStringPlaceholders("DROP TABLE $1;", {from}, nullptr);
-  }
-
-  query += "PRAGMA foreign_keys = on;";
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->command = query;
-
+  command->sql = BuildInsertSql(from, to, from_columns, to_columns, group_by);
   transaction->commands.push_back(std::move(command));
+
+  if (should_drop) {
+    DropTable(transaction, from);
+  }
 }
 
 void CopyTableColumns(mojom::DBTransactionInfo* transaction,
@@ -142,13 +124,10 @@ void RenameTable(mojom::DBTransactionInfo* transaction,
   DCHECK(!to.empty());
   DCHECK_NE(from, to);
 
-  const std::string query = base::ReplaceStringPlaceholders(
-      "ALTER TABLE $1 RENAME TO $2", {from, to}, nullptr);
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->command = query;
-
+  command->sql = base::ReplaceStringPlaceholders("ALTER TABLE $1 RENAME TO $2;",
+                                                 {from, to}, nullptr);
   transaction->commands.push_back(std::move(command));
 }
 
