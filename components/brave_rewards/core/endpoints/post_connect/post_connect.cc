@@ -12,6 +12,7 @@
 #include "brave/components/brave_rewards/core/common/request_util.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
 
@@ -153,12 +154,8 @@ ConnectExternalWalletResult PostConnect::ToConnectExternalWalletResult(
   return {};
 }
 
-PostConnect::PostConnect(LedgerImpl& ledger) : RequestBuilder(ledger) {}
-
-PostConnect::~PostConnect() = default;
-
 absl::optional<std::string> PostConnect::Url() const {
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = ledger().wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Rewards wallet is null!");
     return absl::nullopt;
@@ -172,7 +169,7 @@ absl::optional<std::string> PostConnect::Url() const {
 
 absl::optional<std::vector<std::string>> PostConnect::Headers(
     const std::string& content) const {
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = ledger().wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Rewards wallet is null!");
     return absl::nullopt;

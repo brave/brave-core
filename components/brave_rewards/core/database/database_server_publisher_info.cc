@@ -10,6 +10,7 @@
 #include "brave/components/brave_rewards/core/database/database_server_publisher_info.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 
 using std::placeholders::_1;
 
@@ -19,14 +20,7 @@ const char kTableName[] = "server_publisher_info";
 
 }  // namespace
 
-namespace brave_rewards::internal {
-
-namespace database {
-
-DatabaseServerPublisherInfo::DatabaseServerPublisherInfo(LedgerImpl& ledger)
-    : DatabaseTable(ledger), banner_(ledger) {}
-
-DatabaseServerPublisherInfo::~DatabaseServerPublisherInfo() = default;
+namespace brave_rewards::internal::database {
 
 void DatabaseServerPublisherInfo::InsertOrUpdate(
     const mojom::ServerPublisherInfo& server_info,
@@ -55,7 +49,7 @@ void DatabaseServerPublisherInfo::InsertOrUpdate(
   transaction->commands.push_back(std::move(command));
   banner_.InsertOrUpdate(transaction.get(), server_info);
 
-  ledger_->RunDBTransaction(std::move(transaction),
+  ledger().RunDBTransaction(std::move(transaction),
                             std::bind(&OnResultCallback, _1, callback));
 }
 
@@ -106,7 +100,7 @@ void DatabaseServerPublisherInfo::OnGetRecordBanner(
       std::bind(&DatabaseServerPublisherInfo::OnGetRecord, this, _1,
                 publisher_key, *banner, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseServerPublisherInfo::OnGetRecord(
@@ -160,7 +154,7 @@ void DatabaseServerPublisherInfo::DeleteExpiredRecords(
       std::bind(&DatabaseServerPublisherInfo::OnExpiredRecordsSelected, this,
                 _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), select_callback);
+  ledger().RunDBTransaction(std::move(transaction), select_callback);
 }
 
 void DatabaseServerPublisherInfo::OnExpiredRecordsSelected(
@@ -200,9 +194,8 @@ void DatabaseServerPublisherInfo::OnExpiredRecordsSelected(
 
   transaction->commands.push_back(std::move(command));
 
-  ledger_->RunDBTransaction(std::move(transaction),
+  ledger().RunDBTransaction(std::move(transaction),
                             std::bind(&OnResultCallback, _1, callback));
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

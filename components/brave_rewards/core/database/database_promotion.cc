@@ -14,22 +14,17 @@
 #include "brave/components/brave_rewards/core/database/database_promotion.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
 const char kTableName[] = "promotion";
 
 }  // namespace
-
-DatabasePromotion::DatabasePromotion(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
-
-DatabasePromotion::~DatabasePromotion() = default;
 
 void DatabasePromotion::InsertOrUpdate(mojom::PromotionPtr info,
                                        LegacyResultCallback callback) {
@@ -70,7 +65,7 @@ void DatabasePromotion::InsertOrUpdate(mojom::PromotionPtr info,
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePromotion::GetRecord(const std::string& id,
@@ -114,7 +109,7 @@ void DatabasePromotion::GetRecord(const std::string& id,
   auto transaction_callback =
       std::bind(&DatabasePromotion::OnGetRecord, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePromotion::OnGetRecord(mojom::DBCommandResponsePtr response,
@@ -186,7 +181,7 @@ void DatabasePromotion::GetAllRecords(GetAllPromotionsCallback callback) {
   auto transaction_callback =
       std::bind(&DatabasePromotion::OnGetAllRecords, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePromotion::OnGetAllRecords(mojom::DBCommandResponsePtr response,
@@ -249,7 +244,7 @@ void DatabasePromotion::SaveClaimId(const std::string& promotion_id,
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePromotion::UpdateStatus(const std::string& promotion_id,
@@ -276,7 +271,7 @@ void DatabasePromotion::UpdateStatus(const std::string& promotion_id,
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePromotion::UpdateRecordsStatus(const std::vector<std::string>& ids,
@@ -303,7 +298,7 @@ void DatabasePromotion::UpdateRecordsStatus(const std::vector<std::string>& ids,
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePromotion::CredentialCompleted(const std::string& promotion_id,
@@ -333,7 +328,7 @@ void DatabasePromotion::CredentialCompleted(const std::string& promotion_id,
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePromotion::GetRecords(const std::vector<std::string>& ids,
@@ -377,7 +372,7 @@ void DatabasePromotion::GetRecords(const std::vector<std::string>& ids,
   auto transaction_callback =
       std::bind(&DatabasePromotion::OnGetRecords, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabasePromotion::OnGetRecords(mojom::DBCommandResponsePtr response,
@@ -440,8 +435,7 @@ void DatabasePromotion::UpdateRecordsBlankPublicKey(
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

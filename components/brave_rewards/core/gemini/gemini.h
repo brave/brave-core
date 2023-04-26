@@ -14,7 +14,6 @@
 
 #include "base/containers/flat_map.h"
 #include "base/functional/callback_forward.h"
-#include "base/memory/raw_ref.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/endpoint/gemini/gemini_server.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
@@ -22,16 +21,13 @@
 #include "brave/components/brave_rewards/core/wallet_provider/gemini/gemini_transfer.h"
 #include "brave/components/brave_rewards/core/wallet_provider/gemini/get_gemini_wallet.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace gemini {
+namespace brave_rewards::internal::gemini {
 
 using FetchBalanceCallback = base::OnceCallback<void(mojom::Result, double)>;
 
 class Gemini {
  public:
-  explicit Gemini(LedgerImpl& ledger);
+  Gemini();
 
   ~Gemini();
 
@@ -87,7 +83,6 @@ class Gemini {
 
   void RemoveTransferFee(const std::string& contribution_id);
 
-  const raw_ref<LedgerImpl> ledger_;
   ConnectGeminiWallet connect_wallet_;
   GetGeminiWallet get_wallet_;
   GeminiTransfer transfer_;
@@ -95,7 +90,6 @@ class Gemini {
   std::map<std::string, base::OneShotTimer> transfer_fee_timers_;
 };
 
-}  // namespace gemini
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::gemini
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_GEMINI_GEMINI_H_

@@ -17,20 +17,20 @@ namespace payment {
 class PaymentUtilTest : public testing::Test {};
 
 TEST(PaymentUtilTest, GetServerUrlDevelopment) {
-  _environment = mojom::Environment::DEVELOPMENT;
+  ledger().SetEnvironment(mojom::Environment::DEVELOPMENT);
   const std::string url = GetServerUrl("/test");
   const std::string expected_url = "";
   ASSERT_EQ(url, "https://payment.rewards.brave.software/test");
 }
 
 TEST(PaymentUtilTest, GetServerUrlStaging) {
-  _environment = mojom::Environment::STAGING;
+  ledger().SetEnvironment(mojom::Environment::STAGING);
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, "https://payment.rewards.bravesoftware.com/test");
 }
 
 TEST(PaymentUtilTest, GetServerUrlProduction) {
-  _environment = mojom::Environment::PRODUCTION;
+  ledger().SetEnvironment(mojom::Environment::PRODUCTION);
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, "https://payment.rewards.brave.com/test");
 }

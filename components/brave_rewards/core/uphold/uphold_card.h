@@ -12,10 +12,7 @@
 #include "brave/components/brave_rewards/common/mojom/ledger.mojom.h"
 #include "brave/components/brave_rewards/core/endpoint/uphold/uphold_server.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace uphold {
+namespace brave_rewards::internal::uphold {
 
 const char kCardName[] = "Brave Browser";
 
@@ -24,10 +21,6 @@ using CreateCardCallback =
 
 class UpholdCard {
  public:
-  explicit UpholdCard(LedgerImpl& ledger);
-
-  ~UpholdCard();
-
   void CreateBATCardIfNecessary(const std::string& access_token,
                                 CreateCardCallback);
 
@@ -49,6 +42,5 @@ class UpholdCard {
   endpoint::UpholdServer uphold_server_;
 };
 
-}  // namespace uphold
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::uphold
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_UPHOLD_UPHOLD_CARD_H_

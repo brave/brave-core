@@ -14,34 +14,15 @@
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/publisher/publisher_status_helper.h"
 
 using std::placeholders::_1;
 
 namespace brave_rewards::internal {
 
-LedgerImpl::LedgerImpl(
-    mojo::PendingAssociatedRemote<mojom::LedgerClient> ledger_client_remote)
-    : ledger_client_(std::move(ledger_client_remote)),
-      promotion_(*this),
-      publisher_(*this),
-      media_(*this),
-      contribution_(*this),
-      wallet_(*this),
-      database_(*this),
-      report_(*this),
-      state_(*this),
-      api_(*this),
-      recovery_(*this),
-      bitflyer_(*this),
-      gemini_(*this),
-      uphold_(*this) {
-  DCHECK(base::ThreadPoolInstance::Get());
-  set_ledger_client_for_logging(ledger_client_.get());
-}
-
 LedgerImpl::~LedgerImpl() {
-  set_ledger_client_for_logging(nullptr);
+  VLOG(0) << "~LedgerImpl()";
 }
 
 // mojom::Ledger implementation begin (in the order of appearance in Mojom)
@@ -56,47 +37,47 @@ void LedgerImpl::Initialize(InitializeCallback callback) {
 }
 
 void LedgerImpl::SetEnvironment(mojom::Environment environment) {
-  DCHECK(IsUninitialized() || is_testing);
-  _environment = environment;
+  DCHECK(IsUninitialized() || is_testing_);
+  environment_ = environment;
 }
 
 void LedgerImpl::SetDebug(bool debug) {
-  DCHECK(IsUninitialized() || is_testing);
-  is_debug = debug;
+  DCHECK(IsUninitialized() || is_testing_);
+  is_debug_ = debug;
 }
 
 void LedgerImpl::SetReconcileInterval(int32_t interval) {
-  DCHECK(IsUninitialized() || is_testing);
-  reconcile_interval = interval;
+  DCHECK(IsUninitialized() || is_testing_);
+  reconcile_interval_ = interval;
 }
 
 void LedgerImpl::SetRetryInterval(int32_t interval) {
-  DCHECK(IsUninitialized() || is_testing);
-  retry_interval = interval;
+  DCHECK(IsUninitialized() || is_testing_);
+  retry_interval_ = interval;
 }
 
 void LedgerImpl::SetTesting() {
-  is_testing = true;
+  is_testing_ = true;
 }
 
 void LedgerImpl::SetStateMigrationTargetVersionForTesting(int32_t version) {
-  state_migration_target_version_for_testing = version;
+  state_migration_target_version_for_testing_ = version;
 }
 
 void LedgerImpl::GetEnvironment(GetEnvironmentCallback callback) {
-  std::move(callback).Run(_environment);
+  std::move(callback).Run(environment_);
 }
 
 void LedgerImpl::GetDebug(GetDebugCallback callback) {
-  std::move(callback).Run(is_debug);
+  std::move(callback).Run(is_debug_);
 }
 
 void LedgerImpl::GetReconcileInterval(GetReconcileIntervalCallback callback) {
-  std::move(callback).Run(reconcile_interval);
+  std::move(callback).Run(reconcile_interval_);
 }
 
 void LedgerImpl::GetRetryInterval(GetRetryIntervalCallback callback) {
-  std::move(callback).Run(retry_interval);
+  std::move(callback).Run(retry_interval_);
 }
 
 void LedgerImpl::CreateRewardsWallet(const std::string& country,
@@ -249,7 +230,7 @@ void LedgerImpl::OnForeground(uint32_t tab_id, uint64_t current_time) {
   // When performing automated testing, ignore changes in browser window
   // activation. When running tests in parallel, activation changes can
   // interfere with AC calculations on some platforms.
-  if (is_testing) {
+  if (is_testing_) {
     return;
   }
 
@@ -268,7 +249,7 @@ void LedgerImpl::OnBackground(uint32_t tab_id, uint64_t current_time) {
   // When performing automated testing, ignore changes in browser window
   // activation. When running tests in parallel, activation changes can
   // interfere with AC calculations on some platforms.
-  if (is_testing) {
+  if (is_testing_) {
     return;
   }
 
@@ -799,6 +780,12 @@ bool LedgerImpl::IsShuttingDown() const {
 
 bool LedgerImpl::IsUninitialized() const {
   return ready_state_ == ReadyState::kUninitialized;
+}
+
+LedgerImpl::LedgerImpl(
+    mojo::PendingAssociatedRemote<mojom::LedgerClient> remote)
+    : ledger_client_(std::move(remote)) {
+  VLOG(0) << "LedgerImpl()";
 }
 
 bool LedgerImpl::IsReady() const {

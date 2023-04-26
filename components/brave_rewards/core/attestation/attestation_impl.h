@@ -11,14 +11,11 @@
 
 #include "brave/components/brave_rewards/core/attestation/attestation.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace attestation {
+namespace brave_rewards::internal::attestation {
 
 class AttestationImpl : public Attestation {
  public:
-  explicit AttestationImpl(LedgerImpl& ledger);
+  AttestationImpl();
   ~AttestationImpl() override;
 
   void Start(const std::string& payload, StartCallback callback) override;
@@ -29,7 +26,6 @@ class AttestationImpl : public Attestation {
   std::unique_ptr<Attestation> platform_instance_;
 };
 
-}  // namespace attestation
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::attestation
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ATTESTATION_ATTESTATION_IMPL_H_

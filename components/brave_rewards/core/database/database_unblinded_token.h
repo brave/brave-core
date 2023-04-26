@@ -11,17 +11,13 @@
 
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 using GetUnblindedTokenListCallback =
     std::function<void(std::vector<mojom::UnblindedTokenPtr>)>;
 
-class DatabaseUnblindedToken : public DatabaseTable {
+class DatabaseUnblindedToken {
  public:
-  explicit DatabaseUnblindedToken(LedgerImpl& ledger);
-  ~DatabaseUnblindedToken() override;
-
   void InsertOrUpdateList(std::vector<mojom::UnblindedTokenPtr> list,
                           LegacyResultCallback callback);
 
@@ -55,7 +51,6 @@ class DatabaseUnblindedToken : public DatabaseTable {
                                   LegacyResultCallback callback);
 };
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_UNBLINDED_TOKEN_H_

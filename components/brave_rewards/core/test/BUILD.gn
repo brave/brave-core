@@ -19,7 +19,6 @@ source_set("test") {
     "//brave/components/brave_rewards/core/database/database_activity_info_unittest.cc",
     "//brave/components/brave_rewards/core/database/database_balance_report_info_unittest.cc",
     "//brave/components/brave_rewards/core/database/database_migration_unittest.cc",
-    "//brave/components/brave_rewards/core/database/database_mock.cc",
     "//brave/components/brave_rewards/core/database/database_mock.h",
     "//brave/components/brave_rewards/core/database/database_publisher_prefix_list_unittest.cc",
     "//brave/components/brave_rewards/core/database/database_util_unittest.cc",

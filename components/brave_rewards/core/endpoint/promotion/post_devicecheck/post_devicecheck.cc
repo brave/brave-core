@@ -11,25 +11,20 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
-
-PostDevicecheck::PostDevicecheck(LedgerImpl& ledger) : ledger_(ledger) {}
-
-PostDevicecheck::~PostDevicecheck() = default;
+namespace brave_rewards::internal::endpoint::promotion {
 
 std::string PostDevicecheck::GetUrl() {
   return GetServerUrl("/v1/devicecheck/attestations");
 }
 
 std::string PostDevicecheck::GeneratePayload(const std::string& key) {
-  const auto wallet = ledger_->wallet()->GetWallet();
+  const auto wallet = ledger().wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
     return "";
@@ -94,7 +89,7 @@ void PostDevicecheck::Request(const std::string& key,
   request->content = GeneratePayload(key);
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  ledger().LoadURL(std::move(request), std::move(url_callback));
 }
 
 void PostDevicecheck::OnRequest(PostDevicecheckCallback callback,
@@ -114,6 +109,4 @@ void PostDevicecheck::OnRequest(PostDevicecheckCallback callback,
   std::move(callback).Run(result, nonce);
 }
 
-}  // namespace promotion
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::promotion

@@ -10,15 +10,10 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "net/http/http_status_code.h"
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
-
-PutSafetynet::PutSafetynet(LedgerImpl& ledger) : ledger_(ledger) {}
-
-PutSafetynet::~PutSafetynet() = default;
+namespace brave_rewards::internal::endpoint::promotion {
 
 std::string PutSafetynet::GetUrl(const std::string& nonce) {
   const std::string path =
@@ -71,7 +66,7 @@ void PutSafetynet::Request(const std::string& token,
   request->content = GeneratePayload(token);
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::PUT;
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  ledger().LoadURL(std::move(request), std::move(url_callback));
 }
 
 void PutSafetynet::OnRequest(PutSafetynetCallback callback,
@@ -81,6 +76,4 @@ void PutSafetynet::OnRequest(PutSafetynetCallback callback,
   std::move(callback).Run(CheckStatusCode(response->status_code));
 }
 
-}  // namespace promotion
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::promotion

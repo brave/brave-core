@@ -9,11 +9,6 @@
 
 namespace brave_rewards::internal::uphold {
 
-GetUpholdWallet::GetUpholdWallet(LedgerImpl& ledger)
-    : wallet_provider::GetExternalWallet(ledger) {}
-
-GetUpholdWallet::~GetUpholdWallet() = default;
-
 const char* GetUpholdWallet::WalletType() const {
   return constant::kWalletUphold;
 }

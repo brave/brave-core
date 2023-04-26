@@ -21,15 +21,11 @@
 //
 // Response body: -
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoints {
+namespace brave_rewards::internal::endpoints {
 
 class PostConnectBitflyer final : public PostConnect {
  public:
-  PostConnectBitflyer(LedgerImpl& ledger, std::string&& linking_info);
-  ~PostConnectBitflyer() override;
+  explicit PostConnectBitflyer(std::string&& linking_info);
 
  private:
   absl::optional<std::string> Content() const override;
@@ -39,7 +35,6 @@ class PostConnectBitflyer final : public PostConnect {
   std::string linking_info_;
 };
 
-}  // namespace endpoints
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoints
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_POST_CONNECT_BITFLYER_POST_CONNECT_BITFLYER_H_

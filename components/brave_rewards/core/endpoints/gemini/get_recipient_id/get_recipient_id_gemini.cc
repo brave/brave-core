@@ -10,6 +10,7 @@
 #include "base/json/json_reader.h"
 #include "brave/components/brave_rewards/core/gemini/gemini_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoints {
@@ -62,11 +63,8 @@ Result GetRecipientIDGemini::ProcessResponse(
   }
 }
 
-GetRecipientIDGemini::GetRecipientIDGemini(LedgerImpl& ledger,
-                                           std::string&& token)
-    : RequestBuilder(ledger), token_(std::move(token)) {}
-
-GetRecipientIDGemini::~GetRecipientIDGemini() = default;
+GetRecipientIDGemini::GetRecipientIDGemini(std::string&& token)
+    : token_(std::move(token)) {}
 
 absl::optional<std::string> GetRecipientIDGemini::Url() const {
   return endpoint::gemini::GetApiServerUrl("/v1/payments/recipientIds");

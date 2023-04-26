@@ -19,21 +19,21 @@ namespace promotion {
 class PromotionsUtilTest : public testing::Test {};
 
 TEST(PromotionsUtilTest, GetServerUrlDevelopment) {
-  _environment = mojom::Environment::DEVELOPMENT;
+  ledger().SetEnvironment(mojom::Environment::DEVELOPMENT);
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url,
             base::StrCat({BUILDFLAG(REWARDS_GRANT_DEV_ENDPOINT), "/test"}));
 }
 
 TEST(PromotionsUtilTest, GetServerUrlStaging) {
-  _environment = mojom::Environment::STAGING;
+  ledger().SetEnvironment(mojom::Environment::STAGING);
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url,
             base::StrCat({BUILDFLAG(REWARDS_GRANT_STAGING_ENDPOINT), "/test"}));
 }
 
 TEST(PromotionsUtilTest, GetServerUrlProduction) {
-  _environment = mojom::Environment::PRODUCTION;
+  ledger().SetEnvironment(mojom::Environment::PRODUCTION);
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url,
             base::StrCat({BUILDFLAG(REWARDS_GRANT_PROD_ENDPOINT), "/test"}));

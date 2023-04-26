@@ -9,6 +9,7 @@
 
 #include "base/json/json_reader.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 #include "net/http/http_status_code.h"
 
@@ -47,10 +48,7 @@ Result PostOAuthUphold::ProcessResponse(const mojom::UrlResponse& response) {
   }
 }
 
-PostOAuthUphold::PostOAuthUphold(LedgerImpl& ledger, std::string&& code)
-    : RequestBuilder(ledger), code_(std::move(code)) {}
-
-PostOAuthUphold::~PostOAuthUphold() = default;
+PostOAuthUphold::PostOAuthUphold(std::string&& code) : code_(std::move(code)) {}
 
 absl::optional<std::string> PostOAuthUphold::Url() const {
   return endpoint::uphold::GetServerUrl("/oauth2/token");

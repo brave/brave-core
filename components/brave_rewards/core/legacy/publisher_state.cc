@@ -12,13 +12,7 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace brave_rewards::internal {
-namespace publisher {
-
-LegacyPublisherState::LegacyPublisherState(LedgerImpl& ledger)
-    : ledger_(ledger) {}
-
-LegacyPublisherState::~LegacyPublisherState() = default;
+namespace brave_rewards::internal::publisher {
 
 uint64_t LegacyPublisherState::GetPublisherMinVisitTime() const {
   return state_.min_page_time_before_logging_a_visit;
@@ -33,7 +27,7 @@ bool LegacyPublisherState::GetPublisherAllowNonVerified() const {
 }
 
 void LegacyPublisherState::Load(LegacyResultCallback callback) {
-  ledger_->client()->LoadPublisherState(
+  ledger().client()->LoadPublisherState(
       base::BindOnce(&LegacyPublisherState::OnLoad, base::Unretained(this),
                      std::move(callback)));
 }
@@ -78,5 +72,4 @@ void LegacyPublisherState::GetAllBalanceReports(
   }
 }
 
-}  // namespace publisher
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::publisher

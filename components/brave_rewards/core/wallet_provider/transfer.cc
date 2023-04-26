@@ -11,10 +11,9 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 
 namespace brave_rewards::internal::wallet_provider {
-
-Transfer::Transfer(LedgerImpl& ledger) : ledger_(ledger) {}
 
 Transfer::~Transfer() = default;
 
@@ -36,7 +35,7 @@ void Transfer::MaybeCreateTransaction(
     const std::string& destination,
     const std::string& amount,
     MaybeCreateTransactionCallback callback) const {
-  ledger_->database()->GetExternalTransaction(
+  ledger().database()->GetExternalTransaction(
       contribution_id, destination,
       base::BindOnce(&Transfer::OnGetExternalTransaction,
                      base::Unretained(this), std::move(callback),
@@ -85,7 +84,7 @@ void Transfer::SaveExternalTransaction(
       &Transfer::OnSaveExternalTransaction, base::Unretained(this),
       std::move(callback), transaction->Clone());
 
-  ledger_->database()->SaveExternalTransaction(
+  ledger().database()->SaveExternalTransaction(
       std::move(transaction), std::move(on_save_external_transaction));
 }
 
@@ -109,8 +108,7 @@ void Transfer::CreateTransaction(
 
   transaction->transaction_id = base::GenerateGUID();
 
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(std::move(callback), std::move(transaction)));
+  std::move(callback).Run(std::move(transaction));
 }
 
 }  // namespace brave_rewards::internal::wallet_provider

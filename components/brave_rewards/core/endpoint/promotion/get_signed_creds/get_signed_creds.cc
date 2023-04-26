@@ -11,15 +11,10 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "net/http/http_status_code.h"
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace promotion {
-
-GetSignedCreds::GetSignedCreds(LedgerImpl& ledger) : ledger_(ledger) {}
-
-GetSignedCreds::~GetSignedCreds() = default;
+namespace brave_rewards::internal::endpoint::promotion {
 
 std::string GetSignedCreds::GetUrl(const std::string& promotion_id,
                                    const std::string& claim_id) {
@@ -101,7 +96,7 @@ void GetSignedCreds::Request(const std::string& promotion_id,
 
   auto request = mojom::UrlRequest::New();
   request->url = GetUrl(promotion_id, claim_id);
-  ledger_->LoadURL(std::move(request), std::move(url_callback));
+  ledger().LoadURL(std::move(request), std::move(url_callback));
 }
 
 void GetSignedCreds::OnRequest(GetSignedCredsCallback callback,
@@ -121,6 +116,4 @@ void GetSignedCreds::OnRequest(GetSignedCredsCallback callback,
   std::move(callback).Run(result, mojom::CredsBatch::New(batch));
 }
 
-}  // namespace promotion
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::promotion

@@ -10,14 +10,9 @@
 #include "base/json/json_writer.h"
 #include "brave/components/brave_rewards/core/attestation/attestation_androidx.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 
-namespace brave_rewards::internal {
-namespace attestation {
-
-AttestationAndroid::AttestationAndroid(LedgerImpl& ledger)
-    : Attestation(ledger), promotion_server_(ledger) {}
-
-AttestationAndroid::~AttestationAndroid() = default;
+namespace brave_rewards::internal::attestation {
 
 void AttestationAndroid::ParseClaimSolution(const std::string& response,
                                             std::string* token,
@@ -92,5 +87,4 @@ void AttestationAndroid::OnConfirm(ConfirmCallback callback,
   std::move(callback).Run(mojom::Result::LEDGER_OK);
 }
 
-}  // namespace attestation
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::attestation

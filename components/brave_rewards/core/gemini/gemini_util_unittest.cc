@@ -36,62 +36,62 @@ class GeminiUtilTest
           std::tuple<mojom::Environment, mojom::WalletStatus>> {};
 
 TEST_F(GeminiUtilTest, GetClientId) {
-  _environment = mojom::Environment::PRODUCTION;
+  ledger().SetEnvironment(mojom::Environment::PRODUCTION);
   EXPECT_EQ(GetClientId(), BUILDFLAG(GEMINI_PRODUCTION_CLIENT_ID));
 
-  _environment = mojom::Environment::STAGING;
+  ledger().SetEnvironment(mojom::Environment::STAGING);
   EXPECT_EQ(GetClientId(), BUILDFLAG(GEMINI_SANDBOX_CLIENT_ID));
 
-  _environment = mojom::Environment::DEVELOPMENT;
+  ledger().SetEnvironment(mojom::Environment::DEVELOPMENT);
   EXPECT_EQ(GetClientId(), BUILDFLAG(GEMINI_SANDBOX_CLIENT_ID));
 }
 
 TEST_F(GeminiUtilTest, GetClientSecret) {
-  _environment = mojom::Environment::PRODUCTION;
+  ledger().SetEnvironment(mojom::Environment::PRODUCTION);
   EXPECT_EQ(GetClientSecret(), BUILDFLAG(GEMINI_PRODUCTION_CLIENT_SECRET));
 
-  _environment = mojom::Environment::STAGING;
+  ledger().SetEnvironment(mojom::Environment::STAGING);
   EXPECT_EQ(GetClientSecret(), BUILDFLAG(GEMINI_SANDBOX_CLIENT_SECRET));
 
-  _environment = mojom::Environment::DEVELOPMENT;
+  ledger().SetEnvironment(mojom::Environment::DEVELOPMENT);
   EXPECT_EQ(GetClientSecret(), BUILDFLAG(GEMINI_SANDBOX_CLIENT_SECRET));
 }
 
 TEST_F(GeminiUtilTest, GetFeeAddress) {
-  _environment = mojom::Environment::PRODUCTION;
+  ledger().SetEnvironment(mojom::Environment::PRODUCTION);
   EXPECT_EQ(GetFeeAddress(), BUILDFLAG(GEMINI_PRODUCTION_FEE_ADDRESS));
 
-  _environment = mojom::Environment::STAGING;
+  ledger().SetEnvironment(mojom::Environment::STAGING);
   EXPECT_EQ(GetFeeAddress(), BUILDFLAG(GEMINI_SANDBOX_FEE_ADDRESS));
 
-  _environment = mojom::Environment::DEVELOPMENT;
+  ledger().SetEnvironment(mojom::Environment::DEVELOPMENT);
   EXPECT_EQ(GetFeeAddress(), BUILDFLAG(GEMINI_SANDBOX_FEE_ADDRESS));
 }
 
 TEST_F(GeminiUtilTest, GetApiServerUrl) {
-  _environment = mojom::Environment::PRODUCTION;
+  ledger().SetEnvironment(mojom::Environment::PRODUCTION);
   EXPECT_EQ(endpoint::gemini::GetApiServerUrl("/test"),
             base::StrCat({BUILDFLAG(GEMINI_PRODUCTION_API_URL), "/test"}));
 
-  _environment = mojom::Environment::STAGING;
+  ledger().SetEnvironment(mojom::Environment::STAGING);
   EXPECT_EQ(endpoint::gemini::GetApiServerUrl("/test"),
             base::StrCat({BUILDFLAG(GEMINI_SANDBOX_API_URL), "/test"}));
 
-  _environment = mojom::Environment::DEVELOPMENT;
+  ledger().SetEnvironment(mojom::Environment::DEVELOPMENT);
   EXPECT_EQ(endpoint::gemini::GetApiServerUrl("/test"),
             base::StrCat({BUILDFLAG(GEMINI_SANDBOX_API_URL), "/test"}));
 }
 
 TEST_F(GeminiUtilTest, GetOauthServerUrl) {
-  _environment = mojom::Environment::PRODUCTION;
+  ledger().SetEnvironment(mojom::Environment::PRODUCTION);
   EXPECT_EQ(endpoint::gemini::GetOauthServerUrl("/test"),
             base::StrCat({BUILDFLAG(GEMINI_PRODUCTION_OAUTH_URL), "/test"}));
 
-  _environment = mojom::Environment::STAGING;
+  ledger().SetEnvironment(mojom::Environment::STAGING);
   EXPECT_EQ(endpoint::gemini::GetOauthServerUrl("/test"),
             base::StrCat({BUILDFLAG(GEMINI_SANDBOX_OAUTH_URL), "/test"}));
 
-  _environment = mojom::Environment::DEVELOPMENT;
+  ledger().SetEnvironment(mojom::Environment::DEVELOPMENT);
   EXPECT_EQ(endpoint::gemini::GetOauthServerUrl("/test"),
             base::StrCat({BUILDFLAG(GEMINI_SANDBOX_OAUTH_URL), "/test"}));
 }

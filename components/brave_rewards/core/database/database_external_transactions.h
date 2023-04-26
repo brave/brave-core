@@ -19,11 +19,8 @@ using GetExternalTransactionCallback =
     base::OnceCallback<void(base::expected<mojom::ExternalTransactionPtr,
                                            GetExternalTransactionError>)>;
 
-class DatabaseExternalTransactions : public DatabaseTable {
+class DatabaseExternalTransactions {
  public:
-  explicit DatabaseExternalTransactions(LedgerImpl& ledger);
-  ~DatabaseExternalTransactions() override;
-
   void Insert(mojom::ExternalTransactionPtr, ResultCallback);
   void GetTransaction(const std::string& contribution_id,
                       const std::string& destination,

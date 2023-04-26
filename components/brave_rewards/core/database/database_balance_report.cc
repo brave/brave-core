@@ -11,6 +11,7 @@
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 
 using std::placeholders::_1;
 
@@ -48,11 +49,6 @@ std::string GetTypeColumn(mojom::ReportType type) {
 
 namespace database {
 
-DatabaseBalanceReport::DatabaseBalanceReport(LedgerImpl& ledger)
-    : DatabaseTable(ledger) {}
-
-DatabaseBalanceReport::~DatabaseBalanceReport() = default;
-
 void DatabaseBalanceReport::InsertOrUpdate(mojom::BalanceReportInfoPtr info,
                                            LegacyResultCallback callback) {
   if (!info || info->id.empty()) {
@@ -85,7 +81,7 @@ void DatabaseBalanceReport::InsertOrUpdate(mojom::BalanceReportInfoPtr info,
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseBalanceReport::InsertOrUpdateList(
@@ -123,7 +119,7 @@ void DatabaseBalanceReport::InsertOrUpdateList(
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseBalanceReport::SetAmount(mojom::ActivityMonth month,
@@ -166,7 +162,7 @@ void DatabaseBalanceReport::SetAmount(mojom::ActivityMonth month,
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseBalanceReport::GetRecord(mojom::ActivityMonth month,
@@ -218,7 +214,7 @@ void DatabaseBalanceReport::GetRecord(mojom::ActivityMonth month,
   auto transaction_callback =
       std::bind(&DatabaseBalanceReport::OnGetRecord, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 void DatabaseBalanceReport::OnGetRecord(mojom::DBCommandResponsePtr response,
                                         GetBalanceReportCallback callback) {
@@ -275,7 +271,7 @@ void DatabaseBalanceReport::GetAllRecords(
   auto transaction_callback =
       std::bind(&DatabaseBalanceReport::OnGetAllRecords, this, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseBalanceReport::OnGetAllRecords(
@@ -319,7 +315,7 @@ void DatabaseBalanceReport::DeleteAllRecords(LegacyResultCallback callback) {
 
   auto transaction_callback = std::bind(&OnResultCallback, _1, callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger().RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 }  // namespace database

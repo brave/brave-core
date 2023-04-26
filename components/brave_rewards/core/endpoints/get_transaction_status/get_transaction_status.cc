@@ -9,14 +9,9 @@
 
 namespace brave_rewards::internal::endpoints {
 
-GetTransactionStatus::GetTransactionStatus(LedgerImpl& ledger,
-                                           std::string&& token,
+GetTransactionStatus::GetTransactionStatus(std::string&& token,
                                            std::string&& transaction_id)
-    : RequestBuilder(ledger),
-      token_(std::move(token)),
-      transaction_id_(std::move(transaction_id)) {}
-
-GetTransactionStatus::~GetTransactionStatus() = default;
+    : token_(std::move(token)), transaction_id_(std::move(transaction_id)) {}
 
 mojom::UrlMethod GetTransactionStatus::Method() const {
   return mojom::UrlMethod::GET;

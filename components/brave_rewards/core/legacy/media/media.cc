@@ -9,15 +9,11 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/legacy/media/media.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
 #include "build/build_config.h"
 
 namespace brave_rewards::internal {
-
-Media::Media(LedgerImpl& ledger)
-    : ledger_(ledger), media_youtube_(ledger), media_github_(ledger) {}
-
-Media::~Media() = default;
 
 // static
 std::string Media::GetLinkType(const std::string& url,
@@ -84,7 +80,7 @@ void Media::OnMediaActivityError(mojom::VisitDataPtr visit_data,
   visit_data->path = "/";
   visit_data->name = name;
 
-  ledger_->publisher()->GetPublisherActivityFromUrl(window_id,
+  ledger().publisher()->GetPublisherActivityFromUrl(window_id,
                                                     std::move(visit_data), "");
 }
 

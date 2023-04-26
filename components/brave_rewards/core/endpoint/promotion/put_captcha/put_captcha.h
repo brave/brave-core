@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // PUT /v1/captchas/{captcha_id}
@@ -38,19 +37,12 @@
 //   "code": 401
 // }
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
-namespace promotion {
+namespace brave_rewards::internal::endpoint::promotion {
 
 using PutCaptchaCallback = base::OnceCallback<void(mojom::Result)>;
 
 class PutCaptcha {
  public:
-  explicit PutCaptcha(LedgerImpl& ledger);
-  ~PutCaptcha();
-
   void Request(const int x,
                const int y,
                const std::string& captcha_id,
@@ -64,12 +56,8 @@ class PutCaptcha {
   mojom::Result CheckStatusCode(const int status_code);
 
   void OnRequest(PutCaptchaCallback callback, mojom::UrlResponsePtr response);
-
-  const raw_ref<LedgerImpl> ledger_;
 };
 
-}  // namespace promotion
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::promotion
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PROMOTION_PUT_CAPTCHA_PUT_CAPTCHA_H_

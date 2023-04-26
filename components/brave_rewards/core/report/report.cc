@@ -11,17 +11,13 @@
 #include "base/strings/string_split.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/report/report.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace brave_rewards::internal {
-namespace report {
-
-Report::Report(LedgerImpl& ledger) : ledger_(ledger) {}
-
-Report::~Report() = default;
+namespace brave_rewards::internal::report {
 
 void Report::GetMonthly(const mojom::ActivityMonth month,
                         const int year,
@@ -29,7 +25,7 @@ void Report::GetMonthly(const mojom::ActivityMonth month,
   auto balance_callback =
       std::bind(&Report::OnBalance, this, _1, _2, month, year, callback);
 
-  ledger_->database()->GetBalanceReportInfo(month, year, balance_callback);
+  ledger().database()->GetBalanceReportInfo(month, year, balance_callback);
 }
 
 void Report::OnBalance(const mojom::Result result,
@@ -51,7 +47,7 @@ void Report::OnBalance(const mojom::Result result,
       std::make_shared<mojom::MonthlyReportInfoPtr>(std::move(monthly_report)),
       callback);
 
-  ledger_->database()->GetTransactionReport(month, year, transaction_callback);
+  ledger().database()->GetTransactionReport(month, year, transaction_callback);
 }
 
 void Report::OnTransactions(
@@ -71,7 +67,7 @@ void Report::OnTransactions(
   auto contribution_callback =
       std::bind(&Report::OnContributions, this, _1, shared_report, callback);
 
-  ledger_->database()->GetContributionReport(month, year,
+  ledger().database()->GetContributionReport(month, year,
                                              contribution_callback);
 }
 
@@ -116,7 +112,7 @@ void Report::GetAllMonthlyIds(GetAllMonthlyReportIdsCallback callback) {
   auto balance_reports_callback =
       std::bind(&Report::OnGetAllBalanceReports, this, _1, callback);
 
-  ledger_->database()->GetAllBalanceReports(balance_reports_callback);
+  ledger().database()->GetAllBalanceReports(balance_reports_callback);
 }
 
 void Report::OnGetAllBalanceReports(
@@ -138,5 +134,4 @@ void Report::OnGetAllBalanceReports(
   callback(ids);
 }
 
-}  // namespace report
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::report

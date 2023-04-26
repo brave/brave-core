@@ -9,23 +9,16 @@
 #include "brave/components/brave_rewards/core/endpoint/rewards/get_prefix_list/get_prefix_list.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
-namespace brave_rewards::internal {
-class LedgerImpl;
-
-namespace endpoint {
+namespace brave_rewards::internal::endpoint {
 
 class RewardsServer {
  public:
-  explicit RewardsServer(LedgerImpl& ledger);
-  ~RewardsServer();
-
   rewards::GetPrefixList& get_prefix_list() { return get_prefix_list_; }
 
  private:
   rewards::GetPrefixList get_prefix_list_;
 };
 
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_REWARDS_REWARDS_SERVER_H_
