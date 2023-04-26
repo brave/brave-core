@@ -45,8 +45,7 @@ constexpr SkColor kIconColor = SkColorSetRGB(0xf0, 0xf2, 0xff);
 constexpr SkColor kTextColor = SK_ColorWHITE;
 constexpr int kIconSize = 12;
 
-void OnTorProfileCreated(GURL onion_location, Profile* profile) {
-  Browser* browser = chrome::FindTabbedBrowser(profile, false);
+void OnTorProfileCreated(GURL onion_location, Browser* browser) {
   if (!browser)
     return;
   content::OpenURLParams open_tor(onion_location, content::Referrer(),

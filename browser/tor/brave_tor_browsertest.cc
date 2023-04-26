@@ -136,9 +136,11 @@ class BraveTorTest : public InProcessBrowserTest {
     base::RunLoop loop;
     Profile* tor_profile = nullptr;
     TorProfileManager::SwitchToTorProfile(
-        browser()->profile(), base::BindLambdaForTesting([&](Profile* p) {
-          tor_profile = p;
+        browser()->profile(), base::BindLambdaForTesting([&](Browser* browser) {
           loop.Quit();
+
+          ASSERT_TRUE(browser);
+          tor_profile = browser->profile();
         }));
     loop.Run();
     return tor_profile;
