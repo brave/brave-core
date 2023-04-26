@@ -15,13 +15,9 @@
  public:                          \
   // #define BRAVE_NEW_TAB_BUTTON_H_
 
-#define GetBorderPath virtual GetBorderPath
-#define GetCornerRadius virtual GetCornerRadius
 #define PaintFill virtual PaintFill
 #include "src/chrome/browser/ui/views/tabs/new_tab_button.h"  // IWYU pragma: export
 #undef PaintFill
-#undef GetCornerRadius
-#undef GetBorderPath
 #undef BRAVE_NEW_TAB_BUTTON_H_
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_NEW_TAB_BUTTON_H_
