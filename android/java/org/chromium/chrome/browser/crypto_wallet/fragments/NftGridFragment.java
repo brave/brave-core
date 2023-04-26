@@ -11,6 +11,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,9 +55,14 @@ import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.PortfolioHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.chrome.browser.custom_layout.AutoFitVerticalGridLayoutManager;
+import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.util.LiveDataUtil;
+import org.chromium.chrome.browser.util.TabUtils;
+import org.chromium.ui.text.NoUnderlineClickableSpan;
+import org.chromium.ui.text.SpanApplier;
 import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
@@ -64,12 +71,14 @@ import java.util.List;
 
 public class NftGridFragment extends Fragment implements OnWalletListItemClick {
     private static final String TAG = "NftGridFragment";
+    private static final String SHOW_NFT_DISCOVERY_DIALOG = "nft_discovery_dialog";
     private static final float NFT_ITEM_WIDTH_DP = 180;
 
     private WalletModel mWalletModel;
     private PortfolioModel mPortfolioModel;
     private List<PortfolioModel.NftDataModel> mNftDataModels;
     private NetworkSelectorModel mNetworkSelectionModel;
+    private boolean mCanRunOnceWhenResumed;
 
     private List<NetworkInfo> mAllNetworkInfos;
     private PortfolioHelper mPortfolioHelper;
@@ -100,6 +109,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "onCreate " + e);
         }
+        mCanRunOnceWhenResumed = true;
     }
 
     @Nullable
@@ -119,6 +129,22 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         });
         setUpObservers();
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (JavaUtils.anyNull(mWalletModel) || !mCanRunOnceWhenResumed
+                || !SharedPreferencesManager.getInstance().readBoolean(
+                        SHOW_NFT_DISCOVERY_DIALOG, true))
+            return;
+
+        mWalletModel.getCryptoModel().isNftDiscoveryEnabled(isNftDiscoveryEnabled -> {
+            if (!isNftDiscoveryEnabled) {
+                showNftDiscoveryDialog();
+                mCanRunOnceWhenResumed = false;
+            }
+        });
     }
 
     @Override
@@ -179,12 +205,12 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
                                     .setMessage(getString(
                                             R.string.brave_wallet_create_account_description,
                                             networkInfo.symbolName))
-                                    .setPositiveButton(R.string.wallet_action_yes,
+                                    .setPositiveButton(R.string.brave_action_yes,
                                             (dialog, which) -> {
                                                 setPositiveButtonAccountCreation(networkInfo);
                                             })
                                     .setNegativeButton(
-                                            R.string.wallet_action_no, (dialog, which) -> {
+                                            R.string.brave_action_no, (dialog, which) -> {
                                                 setNegativeButtonAccountCreation(dialog);
                                             });
                     builder.show();
@@ -198,6 +224,47 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         TextView editVisibleNft = view.findViewById(R.id.edit_visible_nfts);
         mRvNft = view.findViewById(R.id.rv_nft);
         editVisibleNft.setOnClickListener(v -> { showEditVisibleDialog(); });
+    }
+
+    private void showNftDiscoveryDialog() {
+        if (JavaUtils.anyNull(mWalletModel)) return;
+
+        var nftDiscoveryDesc = SpanApplier.applySpans(
+                getString(R.string.brave_wallet_enable_nft_autodiscovery_modal_description),
+                new SpanApplier.SpanInfo("<LINK_1>", "</LINK_1>", new UnderlineSpan()),
+                new SpanApplier.SpanInfo("<LINK_2>", "</LINK_2>",
+                        new NoUnderlineClickableSpan(
+                                requireContext(), R.color.brave_link, result -> {
+                                    TabUtils.openUrlInCustomTab(requireContext(),
+                                            WalletConstants.NFT_DISCOVERY_LEARN_MORE_LINK);
+                                })));
+
+        MaterialAlertDialogBuilder nftDiscoveryDialogBuilder = new MaterialAlertDialogBuilder(
+                requireContext(), R.style.BraveWalletAlertDialogTheme);
+
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_alert_template, null);
+        TextView title = dialogView.findViewById(R.id.dialog_tv_title);
+        TextView message = dialogView.findViewById(R.id.dialog_tv_msg);
+        Button cancelBtn = dialogView.findViewById(R.id.dialog_wallet_btn_negative);
+        Button enableBtn = dialogView.findViewById(R.id.dialog_wallet_btn_positive);
+
+        title.setText(R.string.brave_wallet_enable_nft_autodiscovery_modal_header);
+        message.setMovementMethod(LinkMovementMethod.getInstance());
+        message.setText(nftDiscoveryDesc);
+        enableBtn.setText(R.string.brave_action_enable);
+        nftDiscoveryDialogBuilder.setView(dialogView);
+        var dialog = nftDiscoveryDialogBuilder.create();
+
+        enableBtn.setOnClickListener(v -> {
+            dialog.dismiss();
+            mWalletModel.getCryptoModel().updateNftDiscovery(true);
+            SharedPreferencesManager.getInstance().writeBoolean(SHOW_NFT_DISCOVERY_DIALOG, false);
+        });
+        cancelBtn.setOnClickListener(v -> {
+            dialog.dismiss();
+            SharedPreferencesManager.getInstance().writeBoolean(SHOW_NFT_DISCOVERY_DIALOG, false);
+        });
+        dialog.show();
     }
 
     private void openNetworkSelection() {
