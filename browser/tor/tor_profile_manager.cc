@@ -44,7 +44,7 @@ TorProfileManager& TorProfileManager::GetInstance() {
 // static
 void TorProfileManager::SwitchToTorProfile(
     Profile* original_profile,
-    base::OnceCallback<void(Profile*)> callback) {
+    base::OnceCallback<void(Browser*)> callback) {
   Profile* tor_profile =
       TorProfileManager::GetInstance().GetTorProfile(original_profile);
   profiles::OpenBrowserWindowForProfile(

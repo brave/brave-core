@@ -128,8 +128,8 @@ bool HasAlreadyOpenedTorWindow(Profile* profile) {
 // to handle additional |use_new_tab| param.
 void OnTorProfileCreated(const GURL& link_url,
                          bool use_new_tab,
-                         Profile* profile) {
-  Browser* browser = chrome::FindLastActiveWithProfile(profile);
+                         Browser* browser) {
+  CHECK(browser);
   /* |ui::PAGE_TRANSITION_TYPED| is used rather than
      |ui::PAGE_TRANSITION_LINK| since this ultimately opens the link in
      another browser. This parameter is used within the tab strip model of
