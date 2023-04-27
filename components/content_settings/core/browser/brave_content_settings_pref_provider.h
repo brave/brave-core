@@ -47,12 +47,11 @@ class BravePrefProvider : public PrefProvider,
       ContentSettingsType content_type,
       bool incognito) const override;
 
-  // calls superclass directly
-  bool SetWebsiteSettingForTest(const ContentSettingsPattern& primary_pattern,
+  // Stores to Pref directly.
+  void SetWebsiteSettingForTest(const ContentSettingsPattern& primary_pattern,
                                 const ContentSettingsPattern& secondary_pattern,
                                 ContentSettingsType content_type,
-                                base::Value&& value,
-                                const ContentSettingConstraints& constraints);
+                                base::Value&& value);
 
  private:
   friend class BravePrefProviderTest;

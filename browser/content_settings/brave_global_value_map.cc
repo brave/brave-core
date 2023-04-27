@@ -19,7 +19,7 @@ BraveGlobalValueMap::~BraveGlobalValueMap() = default;
 
 std::unique_ptr<RuleIterator> BraveGlobalValueMap::GetRuleIterator(
     ContentSettingsType content_type) const {
-  if (content_settings::IsShieldsContentSettingsType(content_type))
+  if (content_settings::IsBraveContentSettingsType(content_type))
     return nullptr;
   return GlobalValueMap::GetRuleIterator(content_type);
 }

@@ -36,7 +36,7 @@ class BraveBrowsingDataRemoverDelegate
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveBrowsingDataRemoverDelegateTest,
-                           ShieldsSettingsClearTest);
+                           BraveSettingsClearTest);
 
   // ChromeBrowsingDataRemoverDelegate overrides:
   void RemoveEmbedderData(const base::Time& delete_begin,
@@ -47,7 +47,7 @@ class BraveBrowsingDataRemoverDelegate
                           base::OnceCallback<void(uint64_t)> callback)
                           override;
 
-  void ClearShieldsSettings(base::Time begin_time, base::Time end_time);
+  void ClearBraveContentSettings(base::Time begin_time, base::Time end_time);
 #if BUILDFLAG(ENABLE_IPFS)
   void ClearIPFSCache();
   void WaitForIPFSRepoGC(base::Process process);

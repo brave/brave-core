@@ -32,7 +32,7 @@ std::string GetIPFSLearnMoreURL(const GURL& url) {
 
 bool ChromePageInfoDelegate::BraveShouldShowPermission(
     ContentSettingsType type) {
-  if ((content_settings::IsShieldsContentSettingsType(type) ||
+  if ((content_settings::IsBraveContentSettingsType(type) ||
        type == ContentSettingsType::GEOLOCATION) &&
       GetProfile()->IsTor()) {
     return false;

@@ -5,133 +5,40 @@
 
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 
-#include <algorithm>
-
 #include "base/containers/contains.h"
-#include "base/no_destructor.h"
-#include "base/notreached.h"
-#include "base/strings/string_number_conversions.h"
-#include "base/values.h"
-#include "brave/components/brave_shields/common/brave_shield_constants.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
-#include "url/gurl.h"
+#include "base/containers/fixed_flat_set.h"
 
+namespace content_settings {
 namespace {
 
-bool CanPatternBeConvertedToWildcardSchemeAndPort(
-    const ContentSettingsPattern& pattern) {
-  // 1. Wildcard is already in the desired state.
-  // 2. Our firstParty placeholder shouldn't be converted.
-  // 3. Patterns that have file:// scheme.
-  // 4. We only want to convert patterns that have a specific host, so something
-  // like "http://*:80/*" should be left alone.
-  if (pattern == ContentSettingsPattern::Wildcard() ||
-      pattern == ContentSettingsPattern::FromString("https://firstParty/*") ||
-      pattern.GetScheme() == ContentSettingsPattern::SCHEME_FILE ||
-      pattern.MatchesAllHosts() || pattern.GetHost().empty())
-    return false;
-  // Check for the case when the scheme is wildcard, but the port isn't.
-  if (pattern.GetScheme() == ContentSettingsPattern::SCHEME_WILDCARD) {
-    GURL check_for_port_url("http://" + pattern.ToString());
-    return check_for_port_url.has_port();
-  }
-  GURL url(pattern.ToString());
-  if (!url.is_valid() || url.is_empty() || !url.has_host())
-    return false;
-  if (url.has_scheme())
-    return !ContentSettingsPattern::IsNonWildcardDomainNonPortScheme(
-        url.scheme_piece());
-  return url.has_port();
-}
+constexpr auto kBraveContentSettingsTypes =
+    base::MakeFixedFlatSet<ContentSettingsType>({
+        ContentSettingsType::BRAVE_ADS,
+        ContentSettingsType::BRAVE_COSMETIC_FILTERING,
+        ContentSettingsType::BRAVE_TRACKERS,
+        ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
+        ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+        ContentSettingsType::BRAVE_SHIELDS,
+        ContentSettingsType::BRAVE_REFERRERS,
+        ContentSettingsType::BRAVE_COOKIES,
+        ContentSettingsType::BRAVE_SPEEDREADER,
+        ContentSettingsType::BRAVE_ETHEREUM,
+        ContentSettingsType::BRAVE_SOLANA,
+        ContentSettingsType::BRAVE_GOOGLE_SIGN_IN,
+        ContentSettingsType::BRAVE_HTTPS_UPGRADE,
+        ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
+        ContentSettingsType::BRAVE_LOCALHOST_ACCESS,
+    });
 
 }  // namespace
 
-namespace content_settings {
-
-const std::vector<ContentSettingsType>& GetShieldsContentSettingsTypes() {
-  static const base::NoDestructor<std::vector<ContentSettingsType>>
-      kShieldsContentSettingsTypes({
-          ContentSettingsType::BRAVE_ADS,
-          ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-          ContentSettingsType::BRAVE_TRACKERS,
-          ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
-          ContentSettingsType::BRAVE_FINGERPRINTING_V2,
-          ContentSettingsType::BRAVE_SHIELDS,
-          ContentSettingsType::BRAVE_REFERRERS,
-          ContentSettingsType::BRAVE_COOKIES,
-      });
-
-  return *kShieldsContentSettingsTypes;
+base::span<const ContentSettingsType> GetBraveContentSettingsTypes() {
+  return base::make_span(kBraveContentSettingsTypes.begin(),
+                         kBraveContentSettingsTypes.end());
 }
 
-std::string GetShieldsContentTypeName(const ContentSettingsType& content_type) {
-  switch (content_type) {
-    case ContentSettingsType::BRAVE_ADS:
-      return brave_shields::kAds;
-    case ContentSettingsType::BRAVE_COSMETIC_FILTERING:
-      return brave_shields::kCosmeticFiltering;
-    case ContentSettingsType::BRAVE_TRACKERS:
-      return brave_shields::kTrackers;
-    case ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES:
-      return brave_shields::kHTTPUpgradableResources;
-    case ContentSettingsType::BRAVE_FINGERPRINTING_V2:
-      return brave_shields::kFingerprintingV2;
-    case ContentSettingsType::BRAVE_SHIELDS:
-      return brave_shields::kBraveShields;
-    case ContentSettingsType::BRAVE_REFERRERS:
-      return brave_shields::kReferrers;
-    case ContentSettingsType::BRAVE_COOKIES:
-      return brave_shields::kCookies;
-    default:
-      NOTREACHED();
-      return std::string();
-  }
-}
-
-bool IsShieldsContentSettingsType(const ContentSettingsType& content_type) {
-  return base::Contains(GetShieldsContentSettingsTypes(), content_type);
-}
-
-bool IsShieldsContentSettingsTypeName(const std::string& content_type_name) {
-  for (auto content_type : GetShieldsContentSettingsTypes()) {
-    if (GetShieldsContentTypeName(content_type) == content_type_name)
-      return true;
-  }
-  return false;
-}
-
-absl::optional<ContentSettingsPattern> ConvertPatternToWildcardSchemeAndPort(
-    const ContentSettingsPattern& pattern) {
-  if (!CanPatternBeConvertedToWildcardSchemeAndPort(pattern))
-    return absl::nullopt;
-  DCHECK(!pattern.GetHost().empty());
-  absl::optional<ContentSettingsPattern> new_pattern =
-      ContentSettingsPattern::FromString("*://" + pattern.GetHost() + "/*");
-  return new_pattern;
-}
-
-// Returns the full path in the user preferences store to the Brave Shields
-// setting identified by it's name (i.e. |name|).
-std::string GetShieldsSettingUserPrefsPath(const std::string& name) {
-  return std::string("profile.content_settings.exceptions.").append(name);
-}
-
-// Extract a SessionModel from |dict[key]|. Will return
-// SessionModel::Durable if no model exists.
-content_settings::SessionModel GetSessionModelFromDictionary(
-    const base::Value::Dict& dict,
-    const char* key) {
-  absl::optional<int> model_int = dict.FindInt(key);
-  if (!model_int.has_value() ||
-      (model_int >
-       static_cast<int>(content_settings::SessionModel::kMaxValue)) ||
-      (model_int < 0)) {
-    model_int = 0;
-  }
-
-  content_settings::SessionModel session_model =
-      static_cast<content_settings::SessionModel>(model_int.value());
-  return session_model;
+bool IsBraveContentSettingsType(const ContentSettingsType& content_type) {
+  return base::Contains(kBraveContentSettingsTypes, content_type);
 }
 
 }  // namespace content_settings

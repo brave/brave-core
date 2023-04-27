@@ -8,11 +8,9 @@
 #include <memory>
 #include <utility>
 
-#include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/json/values_util.h"
 #include "base/logging.h"
-#include "base/no_destructor.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
@@ -20,6 +18,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/content_settings/core/browser/brave_content_settings_migration_utils.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
@@ -27,7 +26,6 @@
 #include "components/content_settings/core/browser/content_settings_info.h"
 #include "components/content_settings/core/browser/content_settings_pref.h"
 #include "components/content_settings/core/browser/content_settings_registry.h"
-#include "components/content_settings/core/browser/website_settings_registry.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_types.h"
@@ -35,12 +33,15 @@
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
-#include "content/public/browser/browser_task_traits.h"
-#include "content/public/browser/browser_thread.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace content_settings {
+
+using migration_utils::ConvertPatternToWildcardSchemeAndPort;
+using migration_utils::GetPreM88ShieldsContentSettingsTypes;
+using migration_utils::GetSessionModelFromDictionary;
+using migration_utils::GetShieldsSettingUserPrefsPath;
+using migration_utils::IsPreM88ShieldsContentSettingsTypeName;
 
 namespace {
 
@@ -257,8 +258,9 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
           shields_preference_name = resource_identifier;
 
         // Protect against non registered paths (unlikely, but possible).
-        if (!IsShieldsContentSettingsTypeName(shields_preference_name))
+        if (!IsPreM88ShieldsContentSettingsTypeName(shields_preference_name)) {
           continue;
+        }
 
         // Drop a "global" value of brave shields, that actually shouldn't exist
         // at all since we don't have any global toggle for this.
@@ -316,8 +318,9 @@ void BravePrefProvider::MigrateShieldsSettingsV1ToV2() {
     return;
 
   // All sources in Brave-specific ContentSettingsType(s) we want to migrate.
-  for (const auto& content_type : GetShieldsContentSettingsTypes())
+  for (const auto& content_type : GetPreM88ShieldsContentSettingsTypes()) {
     MigrateShieldsSettingsV1ToV2ForOneType(content_type);
+  }
 
   // ContentSettingsType::JAVASCRIPT.
   MigrateShieldsSettingsV1ToV2ForOneType(ContentSettingsType::JAVASCRIPT);
@@ -548,15 +551,14 @@ bool BravePrefProvider::SetWebsiteSetting(
                                    constraints);
 }
 
-bool BravePrefProvider::SetWebsiteSettingForTest(
+void BravePrefProvider::SetWebsiteSettingForTest(
     const ContentSettingsPattern& primary_pattern,
     const ContentSettingsPattern& secondary_pattern,
     ContentSettingsType content_type,
-    base::Value&& value,
-    const ContentSettingConstraints& constraints) {
-  return PrefProvider::SetWebsiteSetting(primary_pattern, secondary_pattern,
-                                         content_type, std::move(value),
-                                         constraints);
+    base::Value&& value) {
+  GetPref(content_type)
+      ->SetWebsiteSetting(primary_pattern, secondary_pattern, std::move(value),
+                          {});
 }
 
 bool BravePrefProvider::SetWebsiteSettingInternal(
@@ -565,33 +567,16 @@ bool BravePrefProvider::SetWebsiteSettingInternal(
     ContentSettingsType content_type,
     base::Value&& in_value,
     const ContentSettingConstraints& constraints) {
-  // PrefProvider ignores default settings so handle them here for shields
-  if (content_settings::IsShieldsContentSettingsType(content_type) &&
+  if (content_settings::IsBraveContentSettingsType(content_type) &&
       primary_pattern == ContentSettingsPattern::Wildcard() &&
       secondary_pattern == ContentSettingsPattern::Wildcard()) {
-    if (content_type == ContentSettingsType::BRAVE_COOKIES) {
-      // Default value for BRAVE_COOKIES handled in chromium code. This value
-      // based on default COOKIES value (which provided by DefaultPrefProvider)
-      // and kCookieControlsMode pref (default value in
-      // brave::SetDefaultThirdPartyCookieBlockValue).
-      return false;
-    }
-
-    base::Time modified_time =
-        store_last_modified_ ? base::Time::Now() : base::Time();
-
-    base::Time last_visited = constraints.track_last_visit_for_autoexpiration
-                                  ? GetCoarseVisitedTime(base::Time::Now())
-                                  : base::Time();
-
+    // Cleanup any existing Default rule and Pass the storage to
+    // DefaultPrefProvider. BravePrefProvider doesn't need to handle default
+    // values.
     GetPref(content_type)
-        ->SetWebsiteSetting(primary_pattern, secondary_pattern,
-                            std::move(in_value),
-                            {.last_modified = modified_time,
-                             .last_visited = last_visited,
-                             .expiration = constraints.expiration,
-                             .session_model = constraints.session_model});
-    return true;
+        ->SetWebsiteSetting(primary_pattern, secondary_pattern, base::Value(),
+                            {});
+    return false;
   }
 
   if (content_type == ContentSettingsType::BRAVE_FINGERPRINTING_V2 &&

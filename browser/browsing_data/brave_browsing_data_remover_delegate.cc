@@ -60,7 +60,7 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
   // resource ids with plugins type. but we use plugins type to store our
   // shields settings with non-empty resource ids.
   if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_CONTENT_SETTINGS)
-    ClearShieldsSettings(delete_begin, delete_end);
+    ClearBraveContentSettings(delete_begin, delete_end);
 
 #if BUILDFLAG(ENABLE_IPFS)
   if (remove_mask & content::BrowsingDataRemover::DATA_TYPE_CACHE)
@@ -75,7 +75,7 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
   }
 }
 
-void BraveBrowsingDataRemoverDelegate::ClearShieldsSettings(
+void BraveBrowsingDataRemoverDelegate::ClearBraveContentSettings(
     base::Time begin_time,
     base::Time end_time) {
   if (begin_time.is_null() && (end_time.is_null() || end_time.is_max())) {
@@ -89,7 +89,7 @@ void BraveBrowsingDataRemoverDelegate::ClearShieldsSettings(
   auto* provider =
       static_cast<content_settings::BravePrefProvider*>(map->GetPrefProvider());
   for (const auto& content_type :
-       content_settings::GetShieldsContentSettingsTypes()) {
+       content_settings::GetBraveContentSettingsTypes()) {
     ContentSettingsForOneType settings;
     map->GetSettingsForOneType(content_type, &settings);
     for (const ContentSettingPatternSource& setting : settings) {

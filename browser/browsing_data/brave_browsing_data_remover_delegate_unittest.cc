@@ -9,10 +9,7 @@
 #include <string>
 #include <utility>
 
-#include "base/functional/bind.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
-#include "brave/components/brave_shields/common/brave_shield_constants.h"
-#include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -37,15 +34,23 @@ class BraveBrowsingDataRemoverDelegateTest : public testing::Test {
         profile()->GetBrowsingDataRemoverDelegate());
   }
 
-  int GetShieldsSettingsCount() {
-    int shields_settings_count = 0;
-    for (const auto& content_type :
-         content_settings::GetShieldsContentSettingsTypes()) {
+  static std::vector<ContentSettingsType> GetExpectedTypesToBeRemoved() {
+    std::vector<ContentSettingsType> types_to_remove;
+    for (int32_t type = static_cast<int32_t>(ContentSettingsType::BRAVE_START);
+         type < static_cast<int32_t>(ContentSettingsType::NUM_TYPES); ++type) {
+      types_to_remove.push_back(static_cast<ContentSettingsType>(type));
+    }
+    return types_to_remove;
+  }
+
+  base::flat_map<ContentSettingsType, size_t> GetBraveSettingsCount() {
+    base::flat_map<ContentSettingsType, size_t> count_per_type;
+    for (const auto& content_type : GetExpectedTypesToBeRemoved()) {
       ContentSettingsForOneType settings;
       map()->GetSettingsForOneType(content_type, &settings);
-      shields_settings_count += settings.size();
+      count_per_type[content_type] = settings.size();
     }
-    return shields_settings_count;
+    return count_per_type;
   }
 
  private:
@@ -55,33 +60,42 @@ class BraveBrowsingDataRemoverDelegateTest : public testing::Test {
   scoped_refptr<HostContentSettingsMap> map_;
 };
 
-TEST_F(BraveBrowsingDataRemoverDelegateTest, ShieldsSettingsClearTest) {
+TEST_F(BraveBrowsingDataRemoverDelegateTest, BraveSettingsClearTest) {
   const GURL kBraveURL("https://www.brave.com");
   const GURL kBatURL("https://basicattentiontoken.org");
   const GURL kGoogleURL("https://www.google.com");
   const GURL kAbcURL("https://www.abc.com");
 
   // defaults
-  int start_count = GetShieldsSettingsCount();
+  //size_t start_count = GetBraveSettingsCount();
 
-  // Three settings are added.
-  map()->SetContentSettingDefaultScope(
-      kBraveURL, GURL(), ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
-      CONTENT_SETTING_ALLOW);
-  map()->SetContentSettingDefaultScope(
-      kBatURL, GURL(), ContentSettingsType::BRAVE_FINGERPRINTING_V2,
-      CONTENT_SETTING_ALLOW);
+  const auto initial_count = GetBraveSettingsCount();
+
+  const auto& types_to_be_removed = GetExpectedTypesToBeRemoved();
+  for (const ContentSettingsType type : types_to_be_removed) {
+    map()->SetContentSettingDefaultScope(kBraveURL, GURL(), type,
+                                         CONTENT_SETTING_ALLOW);
+  }
   map()->SetContentSettingCustomScope(
       brave_shields::GetPatternFromURL(kGoogleURL),
       ContentSettingsPattern::Wildcard(), ContentSettingsType::JAVASCRIPT,
       CONTENT_SETTING_BLOCK);
 
-  const base::Time kNow = base::Time::Now();
-  const base::Time k1DaysOld = kNow - base::Days(1);
-
   // Check current shields settings count is the defaults plus 2 and zero after
   // clearing 1 day time range.
-  EXPECT_EQ(2 + start_count, GetShieldsSettingsCount());
-  delegate()->ClearShieldsSettings(k1DaysOld, kNow);
-  EXPECT_EQ(start_count, GetShieldsSettingsCount());
+  for (const auto& type_count : GetBraveSettingsCount()) {
+    const ContentSettingsType content_type = type_count.first;
+    EXPECT_EQ(initial_count.at(content_type) + 1u, type_count.second)
+        << static_cast<int32_t>(content_type);
+  }
+
+  const base::Time end_time = base::Time::Now();
+  const base::Time begin_time = end_time - base::Days(1);
+  delegate()->ClearBraveContentSettings(begin_time, end_time);
+
+  for (const auto& type_count : GetBraveSettingsCount()) {
+    const ContentSettingsType content_type = type_count.first;
+    EXPECT_EQ(initial_count.at(content_type), type_count.second)
+        << static_cast<int32_t>(content_type);
+  }
 }

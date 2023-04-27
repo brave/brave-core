@@ -11,6 +11,7 @@
 #include "base/values.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/content_settings/core/browser/brave_content_settings_migration_utils.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "chrome/test/base/testing_profile.h"
@@ -29,6 +30,11 @@
 #include "url/gurl.h"
 
 namespace content_settings {
+
+using migration_utils::GetPreM88ShieldsContentSettingsTypes;
+using migration_utils::GetPreM88ShieldsContentTypeName;
+using migration_utils::GetSessionModelFromDictionary;
+using migration_utils::GetShieldsSettingUserPrefsPath;
 
 namespace {
 
@@ -174,11 +180,11 @@ class ShieldsCookieSetting : public ShieldsSetting {
         prefs_(prefs) {}
 
   void RollbackShieldsCookiesVersion() {
-    base::Value::Dict shieldsCookies =
+    base::Value::Dict shields_cookies =
         prefs_->GetDict("profile.content_settings.exceptions.shieldsCookiesV3")
             .Clone();
     prefs_->Set("profile.content_settings.exceptions.shieldsCookies",
-                base::Value(std::move(shieldsCookies)));
+                base::Value(std::move(shields_cookies)));
     prefs_->ClearPref("profile.content_settings.exceptions.shieldsCookiesV3");
   }
 
@@ -221,7 +227,7 @@ class ShieldsFingerprintingSetting : public ShieldsSetting {
     provider_->SetWebsiteSettingForTest(
         pattern, ContentSettingsPattern::Wildcard(),
         ContentSettingsType::BRAVE_FINGERPRINTING_V2,
-        ContentSettingToValue(setting), {});
+        ContentSettingToValue(setting));
   }
 
   void SetPreMigrationSettingsWithSecondary(
@@ -231,7 +237,7 @@ class ShieldsFingerprintingSetting : public ShieldsSetting {
     provider_->SetWebsiteSettingForTest(
         pattern, secondary_pattern,
         ContentSettingsType::BRAVE_FINGERPRINTING_V2,
-        ContentSettingToValue(setting), {});
+        ContentSettingToValue(setting));
   }
 };
 
@@ -559,10 +565,10 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromResourceIDs) {
   provider.MigrateShieldsSettingsFromResourceIds();
 
   // Check migration for all the settings has been properly done.
-  for (auto content_type : GetShieldsContentSettingsTypes()) {
+  for (auto content_type : GetPreM88ShieldsContentSettingsTypes()) {
     const auto& brave_shields_dict =
         pref_service->GetDict(GetShieldsSettingUserPrefsPath(
-            GetShieldsContentTypeName(content_type)));
+            GetPreM88ShieldsContentTypeName(content_type)));
 
     if (content_type == ContentSettingsType::BRAVE_SHIELDS) {
       // We only changed the value of BRAVE_SHIELDS in www.brave.com.
@@ -613,10 +619,10 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromUnknownSettings) {
 
   // New Shields-specific content settings types should have been created due to
   // the migration, but all should be empty since only invalid data was fed.
-  for (auto content_type : GetShieldsContentSettingsTypes()) {
+  for (auto content_type : GetPreM88ShieldsContentSettingsTypes()) {
     const auto& brave_shields_dict =
         pref_service->GetDict(GetShieldsSettingUserPrefsPath(
-            GetShieldsContentTypeName(content_type)));
+            GetPreM88ShieldsContentTypeName(content_type)));
     EXPECT_TRUE(brave_shields_dict.empty());
   }
 
@@ -685,9 +691,9 @@ TEST_F(BravePrefProviderTest, EnsureNoWildcardEntries) {
   shields_enabled_settings.CheckSettingsAreDefault(example_url);
   // Set wildcard entry
   auto pattern = ContentSettingsPattern::Wildcard();
-  provider.SetWebsiteSetting(pattern, pattern,
-                             ContentSettingsType::BRAVE_SHIELDS,
-                             base::Value(CONTENT_SETTING_ALLOW), {});
+  provider.SetWebsiteSettingForTest(pattern, pattern,
+                                    ContentSettingsType::BRAVE_SHIELDS,
+                                    base::Value(CONTENT_SETTING_ALLOW));
   // Verify global has changed
   shields_enabled_settings.CheckSettingsWouldAllow(example_url);
   // Remove wildcards
