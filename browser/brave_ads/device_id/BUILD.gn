@@ -14,8 +14,6 @@ source_set("device_id") {
     sources += [ "device_id_impl_linux.cc" ]
   } else if (is_mac) {
     sources += [ "device_id_impl_mac.cc" ]
-  } else if (is_ios) {
-    sources += [ "device_id_impl_ios.cc" ]
   } else if (is_android) {
     sources += [ "device_id_impl_android.cc" ]
   } else if (is_win) {
