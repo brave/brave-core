@@ -76,6 +76,7 @@
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
 #include "brave/browser/request_otr/request_otr_tab_helper.h"
+#include "brave/components/request_otr/common/features.h"
 #endif
 
 namespace brave {
@@ -150,7 +151,10 @@ void AttachTabHelpers(content::WebContents* web_contents) {
     ntp_background_images::NTPTabHelper::CreateForWebContents(web_contents);
     misc_metrics::PageMetricsTabHelper::CreateForWebContents(web_contents);
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
-    RequestOTRTabHelper::CreateForWebContents(web_contents);
+    if (base::FeatureList::IsEnabled(
+            request_otr::features::kBraveRequestOTRTab)) {
+      RequestOTRTabHelper::CreateForWebContents(web_contents);
+    }
 #endif
   }
 }

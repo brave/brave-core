@@ -11,7 +11,7 @@
 namespace request_otr {
 namespace features {
 
-BASE_DECLARE_FEATURE(kBraveRequestOTR);
+BASE_DECLARE_FEATURE(kBraveRequestOTRTab);
 
 }  // namespace features
 }  // namespace request_otr

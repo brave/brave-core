@@ -14,8 +14,8 @@ namespace features {
 // request-OTR ('off-the-record') list, or any server that responds with a
 // 'X-Request-OTR: 1' HTTP header, and present a security interstitial with
 // choice to proceed normally or in an off-the-record context.
-BASE_FEATURE(kBraveRequestOTR,
-             "BraveRequestOTR",
+BASE_FEATURE(kBraveRequestOTRTab,
+             "BraveRequestOTRTab",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace features

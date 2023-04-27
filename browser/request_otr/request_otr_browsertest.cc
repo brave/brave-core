@@ -59,7 +59,7 @@ class TestObserver : public infobars::InfoBarManager::Observer {
 
 }  // namespace
 
-using request_otr::features::kBraveRequestOTR;
+using request_otr::features::kBraveRequestOTRTab;
 
 namespace request_otr {
 
@@ -170,7 +170,7 @@ class RequestOTRBrowserTest : public RequestOTRBrowserTestBase {
  public:
   RequestOTRBrowserTest() {
     feature_list_.InitWithFeatures(
-        {kBraveRequestOTR, net::features::kBraveFirstPartyEphemeralStorage},
+        {kBraveRequestOTRTab, net::features::kBraveFirstPartyEphemeralStorage},
         {});
   }
 
@@ -289,6 +289,8 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
   infobar_manager->RemoveObserver(&observer);
 }
 
+// Check that a URL affected by both include and exclude rules is properly
+// excluded.
 IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, IncludeExclude) {
   ASSERT_TRUE(InstallMockExtension());
   SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kAsk);
@@ -301,14 +303,20 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, IncludeExclude) {
   ASSERT_FALSE(IsShowingInterstitial());
 }
 
-IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, HistoryAfterStandardNavigation) {
+// Check that URLs are added to history after navigation. (This is a sanity
+// check.)
+IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
+                       HistoryRecordedAfterNonOTRNavigation) {
   ASSERT_EQ(GetHistoryCount(), 0);
   NavigateTo(
       embedded_test_server()->GetURL("notsensitive.b.com", "/simple.html"));
   ASSERT_EQ(GetHistoryCount(), 1);
 }
 
-IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, HistoryAfterOTRNavigation) {
+// Now check that URLs are not added to history after navigation in
+// Request-OTR-tab mode.
+IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
+                       HistoryNotRecordedAfterOTRNavigation) {
   ASSERT_TRUE(InstallMockExtension());
 
   ASSERT_EQ(GetHistoryCount(), 0);
@@ -318,14 +326,23 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, HistoryAfterOTRNavigation) {
 }
 
 IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
-                       WindowOpenAfterStandardNavigation) {
+                       WindowOpenAfterStandardNavigationCrossOrigin) {
   NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
   ASSERT_TRUE(content::ExecJs(
       web_contents(), "window.open('notsensitive.b.com/simple.html');"));
   ASSERT_NE(content::EvalJs(web_contents(), "window.opener"), nullptr);
 }
 
-IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, WindowOpenAfterOTRNavigation) {
+IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
+                       WindowOpenAfterStandardNavigationSameOrigin) {
+  NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
+  ASSERT_TRUE(
+      content::ExecJs(web_contents(), "window.open('a.com/simple.html');"));
+  ASSERT_NE(content::EvalJs(web_contents(), "window.opener"), nullptr);
+}
+
+IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
+                       WindowOpenAfterOTRNavigationCrossOrigin) {
   ASSERT_TRUE(InstallMockExtension());
 
   // Always use request-otr for sensitive sites (skipping interstitial).
@@ -337,19 +354,84 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, WindowOpenAfterOTRNavigation) {
   ASSERT_EQ(content::EvalJs(web_contents(), "window.opener"), nullptr);
 }
 
+IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
+                       WindowOpenAfterOTRNavigationSameOrigin) {
+  ASSERT_TRUE(InstallMockExtension());
+
+  // Always use request-otr for sensitive sites (skipping interstitial).
+  SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kAlways);
+
+  NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
+  ASSERT_TRUE(
+      content::ExecJs(web_contents(), "window.open('a.com/simple.html');"));
+  ASSERT_EQ(content::EvalJs(web_contents(), "window.opener"), nullptr);
+}
+
+// Define a subclass that disables the feature so we can ensure that nothing
+// happens when the feature is disabled through runtime flags.
 class RequestOTRDisabledBrowserTest : public RequestOTRBrowserTestBase {
  public:
   RequestOTRDisabledBrowserTest() {
-    feature_list_.InitAndDisableFeature(kBraveRequestOTR);
+    feature_list_.InitAndDisableFeature(kBraveRequestOTRTab);
   }
 
  private:
   base::test::ScopedFeatureList feature_list_;
 };
 
-class RequestOTR1PESBrowserTest : public RequestOTRBrowserTest {
+// Ensure that we do not show the Request-OTR-tab interstitial if the runtime
+// feature flag is disabled.
+IN_PROC_BROWSER_TEST_F(RequestOTRDisabledBrowserTest,
+                       DoNotShowInterstitialIfFeatureDisabled) {
+  InstallMockExtension();
+  SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kAsk);
+  GURL url1 = embedded_test_server()->GetURL("sensitive.a.com", "/simple.html");
+  NavigateTo(url1);
+  ASSERT_FALSE(IsShowingInterstitial());
+}
+
+// Ensure that we do not show the Request-OTR-tab infobar if the runtime
+// feature flag is disabled.
+IN_PROC_BROWSER_TEST_F(RequestOTRDisabledBrowserTest,
+                       DoNotShowInfobarIfFeatureDisabled) {
+  InstallMockExtension();
+  auto* model = browser()->tab_strip_model();
+  auto* contents = model->GetActiveWebContents();
+  auto* infobar_manager =
+      infobars::ContentInfoBarManager::FromWebContents(contents);
+  TestObserver observer;
+  // Set up expectation that an infobar will NOT appear later.
+  EXPECT_CALL(observer, OnInfoBarAdded(_)).Times(0);
+  infobar_manager->AddObserver(&observer);
+
+  SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kAlways);
+  GURL url = embedded_test_server()->GetURL("sensitive.a.com", "/simple.html");
+  NavigateTo(url);
+
+  // Request-OTR infobar should never appear, because the user requested to
+  // proceed normally, so we should not be in off-the-record mode.
+  infobar_manager->RemoveObserver(&observer);
+}
+
+// URLs should be added to history after navigation, even if Request-OTR
+// preference is set to 'always' and URL matches a sensitive site from the
+// configuration file, because the runtime feature flag is disabled.
+IN_PROC_BROWSER_TEST_F(RequestOTRDisabledBrowserTest,
+                       HistoryRecordedIfFeatureDisabled) {
+  InstallMockExtension();
+
+  ASSERT_EQ(GetHistoryCount(), 0);
+  SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kAlways);
+  NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
+  ASSERT_EQ(GetHistoryCount(), 1);
+}
+
+// Define a subclass that sets up an HTTPS server and serves data from a
+// different directory in order to reuse service worker scripts from upstream
+// tests.
+class RequestOTRServiceWorkerBrowserTest : public RequestOTRBrowserTest {
  public:
-  RequestOTR1PESBrowserTest()
+  RequestOTRServiceWorkerBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
   void SetUp() override {
@@ -397,7 +479,8 @@ class RequestOTR1PESBrowserTest : public RequestOTRBrowserTest {
   net::EmbeddedTestServer https_server_;
 };
 
-IN_PROC_BROWSER_TEST_F(RequestOTR1PESBrowserTest, ServiceWorkerUnavailable) {
+IN_PROC_BROWSER_TEST_F(RequestOTRServiceWorkerBrowserTest,
+                       ServiceWorkerUnavailable) {
   ASSERT_TRUE(InstallMockExtension());
 
   // Always use request-otr for sensitive sites (skipping interstitial).
@@ -409,7 +492,8 @@ IN_PROC_BROWSER_TEST_F(RequestOTR1PESBrowserTest, ServiceWorkerUnavailable) {
   ASSERT_FALSE(content::ExecJs(web_contents(), "setup();"));
 }
 
-IN_PROC_BROWSER_TEST_F(RequestOTR1PESBrowserTest, ServiceWorkerAvailable) {
+IN_PROC_BROWSER_TEST_F(RequestOTRServiceWorkerBrowserTest,
+                       ServiceWorkerAvailable) {
   ASSERT_TRUE(InstallMockExtension());
 
   // Never use request-otr mode for sensitive sites.

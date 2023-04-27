@@ -10,8 +10,8 @@
 
 #include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
+#include "brave/components/request_otr/browser/request_otr_blocking_page.h"
 #include "brave/components/request_otr/browser/request_otr_controller_client.h"
-#include "brave/components/request_otr/browser/request_otr_page.h"
 #include "brave/components/request_otr/browser/request_otr_service.h"
 #include "brave/components/request_otr/browser/request_otr_tab_storage.h"
 #include "brave/components/request_otr/common/features.h"
@@ -38,19 +38,21 @@ RequestOTRNavigationThrottle::MaybeCreateThrottleFor(
     ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
     PrefService* pref_service,
     const std::string& locale) {
-  if (!request_otr_service || !ephemeral_storage_service || !pref_service) {
-    return nullptr;
-  }
+  DCHECK(pref_service);
 
   // If 'request off-the-record' feature is disabled or ephemeral storage
   // is disabled, don't bother creating throttle.
-  if (!base::FeatureList::IsEnabled(request_otr::features::kBraveRequestOTR)) {
+  if (!base::FeatureList::IsEnabled(
+          request_otr::features::kBraveRequestOTRTab)) {
     return nullptr;
   }
+  DCHECK(request_otr_service);
+
   if (!base::FeatureList::IsEnabled(
           net::features::kBraveFirstPartyEphemeralStorage)) {
     return nullptr;
   }
+  DCHECK(ephemeral_storage_service);
 
   // Don't block subframes.
   if (!navigation_handle->IsInMainFrame()) {

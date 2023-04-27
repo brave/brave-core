@@ -40,6 +40,9 @@ void RequestOTRTabHelper::DidFinishNavigation(
 
   RequestOTRTabStorage* storage =
       RequestOTRTabStorage::GetOrCreate(web_contents());
+  // GetOrCreate should only return null if the runtime flag is disabled, and
+  // this tab helper should never even be created if the runtime flag is
+  // disabled, so a null here is bad news.
   DCHECK(storage);
   if (!storage) {
     return;

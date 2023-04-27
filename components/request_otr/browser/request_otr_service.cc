@@ -26,7 +26,7 @@ RequestOTRService::~RequestOTRService() = default;
 void RequestOTRService::OnRulesReady(const std::string& json_content) {
   auto parsed_rules = RequestOTRRule::ParseRules(json_content);
   if (!parsed_rules.has_value()) {
-    LOG(WARNING) << parsed_rules.error();
+    DVLOG(1) << "Error: no rules parsed. " << parsed_rules.error();
     return;
   }
   rules_.clear();

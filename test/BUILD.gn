@@ -1104,11 +1104,7 @@ test("brave_browser_tests") {
   }
 
   if (enable_request_otr) {
-    sources += [ "//brave/browser/request_otr/request_otr_browsertest.cc" ]
-    deps += [
-      "//brave/components/request_otr/browser",
-      "//brave/components/request_otr/common",
-    ]
+    deps += [ "//brave/browser/request_otr:browser_tests" ]
   }
 
   if (enable_custom_background) {

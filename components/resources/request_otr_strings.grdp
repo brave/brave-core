@@ -16,7 +16,7 @@
     Don't ask me again
   </message>
   <message name="IDS_REQUEST_OTR_NEVER_ASK_AGAIN_EXPLANATION" desc="The text for the request OTR interstitial never ask label.">
-    You can change this later in Brave Settings &gt; Privacy and Security
+    You can change this later in Brave Settings in the Privacy and Security section
   </message>
   <message name="IDS_REQUEST_OTR_PROCEED_OTR_BUTTON" desc="The text for the proceed off-the-record button on the request OTR interstitial page.">
     Proceed Off-The-Record

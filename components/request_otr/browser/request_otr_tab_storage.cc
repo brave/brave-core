@@ -10,6 +10,7 @@
 #include "base/containers/flat_map.h"
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
+#include "brave/components/request_otr/common/features.h"
 #include "content/public/browser/web_contents.h"
 
 namespace request_otr {
@@ -22,6 +23,10 @@ RequestOTRTabStorage::~RequestOTRTabStorage() = default;
 // static
 RequestOTRTabStorage* RequestOTRTabStorage::GetOrCreate(
     content::WebContents* web_contents) {
+  if (!base::FeatureList::IsEnabled(
+          request_otr::features::kBraveRequestOTRTab)) {
+    return nullptr;
+  }
   RequestOTRTabStorage* storage = FromWebContents(web_contents);
   if (!storage) {
     CreateForWebContents(web_contents);

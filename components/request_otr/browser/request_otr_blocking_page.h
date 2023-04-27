@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_REQUEST_OTR_BROWSER_REQUEST_OTR_PAGE_H_
-#define BRAVE_COMPONENTS_REQUEST_OTR_BROWSER_REQUEST_OTR_PAGE_H_
+#ifndef BRAVE_COMPONENTS_REQUEST_OTR_BROWSER_REQUEST_OTR_BLOCKING_PAGE_H_
+#define BRAVE_COMPONENTS_REQUEST_OTR_BROWSER_REQUEST_OTR_BLOCKING_PAGE_H_
 
 #include <memory>
 #include <string>
@@ -59,4 +59,4 @@ class RequestOTRBlockingPage
 
 }  // namespace request_otr
 
-#endif  // BRAVE_COMPONENTS_REQUEST_OTR_BROWSER_REQUEST_OTR_PAGE_H_
+#endif  // BRAVE_COMPONENTS_REQUEST_OTR_BROWSER_REQUEST_OTR_BLOCKING_PAGE_H_

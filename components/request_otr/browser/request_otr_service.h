@@ -24,6 +24,8 @@ class PrefRegistrySimple;
 
 namespace request_otr {
 
+// Manage Request-OTR-tab ruleset and provide an API for navigation throttles to
+// call to determine if a URL is included in the ruleset.
 class RequestOTRService : public KeyedService,
                           public RequestOTRComponentInstallerPolicy::Observer {
  public:
@@ -42,11 +44,6 @@ class RequestOTRService : public KeyedService,
   void OnRulesReady(const std::string&) override;
 
   bool ShouldBlock(const GURL& url) const;
-  // const std::vector<std::unique_ptr<RequestOTRRule>>& rules() const {
-  //   return rules_;
-  // }
-  // const base::flat_set<std::string>& host_cache() const { return host_cache_;
-  // }
 
  private:
   std::vector<std::unique_ptr<RequestOTRRule>> rules_;

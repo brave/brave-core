@@ -301,7 +301,8 @@ BraveBrowserProcessImpl::debounce_component_installer() {
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
 request_otr::RequestOTRComponentInstallerPolicy*
 BraveBrowserProcessImpl::request_otr_component_installer() {
-  if (!base::FeatureList::IsEnabled(request_otr::features::kBraveRequestOTR)) {
+  if (!base::FeatureList::IsEnabled(
+          request_otr::features::kBraveRequestOTRTab)) {
     return nullptr;
   }
   if (!request_otr_component_installer_) {

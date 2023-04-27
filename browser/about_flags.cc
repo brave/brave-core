@@ -140,12 +140,12 @@
   IF_BUILDFLAG(                                                               \
       ENABLE_REQUEST_OTR,                                                     \
       EXPAND_FEATURE_ENTRIES({                                                \
-          "brave-request-otr",                                                \
-          "Enable Request-OTR",                                               \
+          "brave-request-otr-tab",                                            \
+          "Enable Request-OTR Tab",                                           \
           "Suggest going off-the-record when visiting potentially sensitive " \
           "URLs",                                                             \
           kOsDesktop,                                                         \
-          FEATURE_VALUE_TYPE(request_otr::features::kBraveRequestOTR),        \
+          FEATURE_VALUE_TYPE(request_otr::features::kBraveRequestOTRTab),     \
       }))
 
 #define BRAVE_MODULE_FILENAME_PATCH                                           \

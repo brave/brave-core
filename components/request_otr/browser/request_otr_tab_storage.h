@@ -22,8 +22,8 @@ class EphemeralStorageService;
 
 namespace request_otr {
 
-// A short-lived, per tab storage for Request-OTR interstitials, that stores a
-// flag while proceeding so a new interstitial is not shown immediately,
+// Per-tab storage for Request-OTR interstitials, that stores a flag
+// while proceeding so a new interstitial is not shown immediately,
 // and stores the result of the user's request.
 class RequestOTRTabStorage
     : public content::WebContentsUserData<RequestOTRTabStorage> {

@@ -41,7 +41,8 @@ RequestOTRServiceFactory::~RequestOTRServiceFactory() = default;
 KeyedService* RequestOTRServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   // Don't create service is request_otr feature is disabled
-  if (!base::FeatureList::IsEnabled(request_otr::features::kBraveRequestOTR)) {
+  if (!base::FeatureList::IsEnabled(
+          request_otr::features::kBraveRequestOTRTab)) {
     return nullptr;
   }
 
