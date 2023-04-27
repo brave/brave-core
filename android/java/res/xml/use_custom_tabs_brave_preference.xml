@@ -8,7 +8,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="use_custom_tabs"
-        android:title="@string/prefs_use_custom_tabs"
+        android:title="@string/prefs_use_custom_tabs_title"
         android:summaryOn="@string/text_on"
         android:summaryOff="@string/text_off" />
 </PreferenceScreen>

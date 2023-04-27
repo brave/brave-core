@@ -26,7 +26,7 @@ public class BraveCustomTabsPreference extends BravePreferenceFragment
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        getActivity().setTitle(R.string.prefs_use_custom_tabs);
+        getActivity().setTitle(R.string.prefs_use_custom_tabs_title);
         SettingsUtils.addPreferencesFromResource(this, R.xml.use_custom_tabs_brave_preference);
 
         ChromeSwitchPreference pref = (ChromeSwitchPreference) findPreference(

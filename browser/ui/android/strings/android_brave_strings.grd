@@ -1299,8 +1299,11 @@ Are you sure you want to do this?
       <message name="IDS_YOU_CAN_SUPPORT_CREATORS" desc="Text description for banner on NTP.">
         You can support web creators with tokens.\nEarn tokens by viewing privacy-respecting ads.
       </message>
-      <message name="IDS_PREFS_USE_CUSTOM_TABS" desc="Title for closing all tabs closes brave in controls section">
-        Open tabs in Custom Tabs
+      <message name="IDS_PREFS_USE_CUSTOM_TABS_TITLE" desc="Title for use custom tabs section">
+        Open external links in Brave webview
+      </message>
+      <message name="IDS_PREFS_USE_CUSTOM_TABS_TEXT" desc="Text for use custom tabs section">
+        Opens links from other apps in a Brave webview. Note: Brave must be set as your default browser.
       </message>
       <message name="IDS_BRAVE_UI_WALLET_BUTTON_LOGGED_OUT" desc="Brave rewards panel logged out state text">
         Logged out

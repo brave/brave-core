@@ -129,7 +129,8 @@
         android:key="use_custom_tabs"
         android:order="20"
         android:icon="@drawable/ic_custom_tabs"
-        android:title="@string/prefs_use_custom_tabs"/>
+        android:title="@string/prefs_use_custom_tabs_title"
+        android:summary="@string/prefs_use_custom_tabs_text"/>
     <Preference
         android:fragment="org.chromium.chrome.browser.language.settings.BraveLanguageSettings"
         android:key="brave_languages"
