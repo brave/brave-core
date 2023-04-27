@@ -2693,6 +2693,55 @@ void JsonRpcService::OnGetEthTokenSymbol(GetEthTokenSymbolCallback callback,
   std::move(callback).Run(symbol, mojom::ProviderError::kSuccess, "");
 }
 
+void JsonRpcService::GetEthTokenDecimals(const std::string& contract_address,
+                                         const std::string& chain_id,
+                                         GetEthTokenDecimalsCallback callback) {
+  auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH);
+  if (!network_url.is_valid()) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+  const std::string data = GetFunctionHash("decimals()");
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnGetEthTokenDecimals,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  RequestInternal(eth::eth_call("", contract_address, "", "", "", data,
+                                kEthereumBlockTagLatest),
+                  true, network_url, std::move(internal_callback));
+}
+
+void JsonRpcService::OnGetEthTokenDecimals(
+    GetEthTokenDecimalsCallback callback,
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  auto result = eth::ParseEthCall(api_request_result.value_body());
+  if (!result) {
+    mojom::ProviderError error;
+    std::string error_message;
+    ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
+                                           &error, &error_message);
+    std::move(callback).Run("", error, error_message);
+    return;
+  }
+
+  const auto& args = eth::DecodeEthCallResponse(*result, {"uint8"});
+  if (args == absl::nullopt) {
+    std::move(callback).Run("", mojom::ProviderError::kParsingError,
+                            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+    return;
+  }
+
+  std::move(callback).Run(args->at(0), mojom::ProviderError::kSuccess, "");
+}
+
 void JsonRpcService::Reset() {
   ClearJsonRpcServiceProfilePrefs(prefs_);
 

@@ -1182,6 +1182,11 @@ interface JsonRpcService {
                                                  ProviderError error,
                                                  string error_message);
 
+  // Fetches decimals of an ERC20 or ERC721 token.
+  GetEthTokenDecimals(string chain_id,
+                      string contract_address) => (string symbol,
+                                                   ProviderError error,
+                                                   string error_message);
   // Solana JSON RPCs
   // https://docs.solana.com/developing/clients/jsonrpc-api
 
