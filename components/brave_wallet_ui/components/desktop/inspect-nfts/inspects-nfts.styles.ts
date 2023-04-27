@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css'
 
 // styles
 import { WalletButton } from '../../shared/style'
@@ -23,6 +24,7 @@ export const InspectNftsWrapper = styled.div`
   bottom: 0;
   min-width: 100vw;
   min-height: 100vh;
+  min-height: -webkit-fill-available;
   overflow-x: hidden;
   background-image: url(${Background});
   background-size: cover;
@@ -99,6 +101,13 @@ export const NftCountHeading = styled.h1`
 
 export const PinNftsButton = styled(ActionButton)`
   margin: 32px;
+  
+  &:disabled {
+    color: ${leo.color.white};
+    opacity: 0.5;
+    background-color: ${leo.color.dark.gray[30]};
+    cursor: default;
+  }
 `
 
 export const InfoSubHeading = styled.h6`
