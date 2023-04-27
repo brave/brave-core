@@ -24,8 +24,6 @@
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 
-class PrefService;
-
 namespace brave_wallet {
 class BitcoinTransactionDatabase;
 class BitcoinDatabaseSynchronizer;
@@ -37,16 +35,11 @@ class BitcoinWalletService : public KeyedService,
  public:
   BitcoinWalletService(
       KeyringService* keyring_service,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      PrefService* prefs,
-      PrefService* local_state_prefs);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~BitcoinWalletService() override;
 
   mojo::PendingRemote<mojom::BitcoinWalletService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::BitcoinWalletService> receiver);
-
-  using GetAddressHistoryCallback = base::OnceCallback<void(
-      base::expected<std::vector<bitcoin::Transaction>, std::string>)>;
 
   void GetBitcoinAccountInfo(const std::string& network_id,
                              const std::string& keyring_id,
@@ -89,7 +82,7 @@ class BitcoinWalletService : public KeyedService,
                                    base::Value transaction);
   bool FillSignature(SendToContext& context, uint32_t input_index);
   bool FillSignatures(SendToContext& context);
-  bool FillTransaction(SendToContext& context);
+  bool SerializeTransaction(SendToContext& context);
   void PostTransaction(std::unique_ptr<SendToContext> context);
   void OnPostTransaction(std::unique_ptr<SendToContext> context,
                          base::expected<std::string, std::string> result);
@@ -102,9 +95,6 @@ class BitcoinWalletService : public KeyedService,
       database_synchronizer_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   mojo::ReceiverSet<mojom::BitcoinWalletService> receivers_;
-  // TODO(apaymyshev): need prefs_ and local_state_prefs_ here?
-  const raw_ptr<PrefService> prefs_ = nullptr;
-  const raw_ptr<PrefService> local_state_prefs_ = nullptr;
   std::unique_ptr<BitcoinRpc> bitcoin_rpc_;
   base::WeakPtrFactory<BitcoinWalletService> weak_ptr_factory_{this};
 };

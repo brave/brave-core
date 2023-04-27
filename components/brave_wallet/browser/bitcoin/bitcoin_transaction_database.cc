@@ -22,8 +22,7 @@ void FindUnspentOutputs(const std::string& address,
 
   // Search for outpoints to address and save them.
   for (const auto& tx : transactions) {
-    const bitcoin::Transaction& tr = tx;
-    for (const auto& o : tr.vout) {
+    for (const auto& o : tx.vout) {
       if (o.scriptpubkey_address != address) {
         continue;
       }
@@ -34,8 +33,7 @@ void FindUnspentOutputs(const std::string& address,
 
   // Consider ouptpoints for inputs from address as spent and remove them.
   for (const auto& tx : transactions) {
-    const bitcoin::Transaction& tr = tx;
-    for (const auto& i : tr.vin) {
+    for (const auto& i : tx.vin) {
       if (i.scriptpubkey_address != address) {
         continue;
       }
@@ -70,12 +68,10 @@ bool BitcoinTransactionDatabase::AddTransactions(
     const std::string& address,
     std::vector<bitcoin::Transaction> transactions) {
   for (auto& tr : transactions) {
-    auto txid = tr.txid;
-
     // TODO(apaymyshev): should check that transaction with same txid in set
     // fully matches incoming one?
 
-    transactions_[address].insert(tr);
+    transactions_[address].insert(std::move(tr));
   }
 
   return true;

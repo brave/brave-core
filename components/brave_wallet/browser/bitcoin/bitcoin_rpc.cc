@@ -92,7 +92,8 @@ GURL BaseRpcUrl(const std::string& network_id) {
                          ? "/api/"
                          : "/testnet/api/";
 
-  return GURL(base::StrCat({"https://", host, path}));
+  return GURL(base::StrCat(
+      {url::kHttpsScheme, url::kStandardSchemeSeparator, host, path}));
 }
 
 absl::optional<std::string> ConvertPlainIntToJsonArray(

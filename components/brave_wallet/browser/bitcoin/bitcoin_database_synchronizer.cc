@@ -38,9 +38,9 @@ void BitcoinDatabaseSynchronizer::Start(
 
 void BitcoinDatabaseSynchronizer::AddWatchAddresses(
     const std::vector<std::string>& addresses) {
-  auto current_height = database_->GetChainHeight();
+  const auto& current_height = database_->GetChainHeight();
 
-  for (auto& a : addresses) {
+  for (const auto& a : addresses) {
     if (addresses_.contains(a)) {
       continue;
     }
@@ -62,7 +62,7 @@ void BitcoinDatabaseSynchronizer::FetchChainHeight() {
 void BitcoinDatabaseSynchronizer::OnFetchChainHeight(
     base::expected<uint32_t, std::string> height) {
   if (height.has_value()) {
-    auto current_height = database_->GetChainHeight();
+    const auto& current_height = database_->GetChainHeight();
     database_->SetChainHeight(height.value());
 
     // New block in chain - update transactions history for all watched
@@ -75,7 +75,7 @@ void BitcoinDatabaseSynchronizer::OnFetchChainHeight(
 
 void BitcoinDatabaseSynchronizer::SyncAllAddresses() {
   if (auto max_block_height = database_->GetChainHeight()) {
-    for (auto& a : addresses_) {
+    for (const auto& a : addresses_) {
       SyncAddress(a.first, max_block_height.value());
     }
   }

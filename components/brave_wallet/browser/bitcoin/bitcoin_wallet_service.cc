@@ -14,7 +14,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/sys_byteorder.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_database_synchronizer.h"
@@ -23,10 +22,13 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
-#include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace {
+
+// We use version 2 per
+// https://github.com/bitcoin/bips/blob/master/bip-0068.mediawiki#specification
+constexpr uint32_t kTransactionsVersion = 2;
 constexpr uint32_t kSigHashAll = 1;
 
 std::vector<std::string> BitcoinKeyringsForNetwork(
@@ -70,6 +72,7 @@ void PushVectorAsLE(const std::vector<uint8_t>& v, std::vector<uint8_t>& to) {
   to.insert(to.end(), v.rbegin(), v.rend());
 }
 
+// https://developer.bitcoin.org/reference/transactions.html#compactsize-unsigned-integers
 void PushVarInt(uint64_t i, std::vector<uint8_t>& to) {
   if (i < 0xfd) {
     Push8AsLE(i, to);
@@ -106,7 +109,8 @@ struct SendToContext {
   struct TxInput {
     bitcoin::Output prev_output;  // Output we are going to spend.
     mojom::BitcoinKeyIdPtr key_id;
-    uint32_t n_sequence = 0xfffffffd;  // TODO(apaymyshev): or 0xffffffff ?
+    // https://github.com/bitcoin/bitcoin/blob/v24.0/src/wallet/spend.cpp#L945
+    uint32_t n_sequence = 0xfffffffd;
     std::vector<uint8_t> pubkey;
     std::vector<uint8_t> signature;
   };
@@ -131,7 +135,7 @@ struct SendToContext {
   std::vector<std::pair<std::string, mojom::BitcoinKeyIdPtr>> addresses;
   uint32_t locktime = 0;
 
-  std::vector<uint8_t> transaction;
+  std::vector<uint8_t> serialized_transaction;
 
   mojom::BitcoinWalletService::SendToCallback callback;
 
@@ -143,7 +147,7 @@ struct SendToContext {
     return base::ranges::all_of(
         inputs, [](auto& input) { return !input.signature.empty(); });
   }
-  bool TransactionReady() { return !transaction.empty(); }
+  bool IsTransactionSerialized() { return !serialized_transaction.empty(); }
 
   void ReplyFailure(const std::string& error) {
     std::move(callback).Run("", error);
@@ -152,12 +156,8 @@ struct SendToContext {
 
 BitcoinWalletService::BitcoinWalletService(
     KeyringService* keyring_service,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* prefs,
-    PrefService* local_state_prefs)
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : keyring_service_(keyring_service),
-      prefs_(prefs),
-      local_state_prefs_(local_state_prefs),
       bitcoin_rpc_(std::make_unique<BitcoinRpc>(url_loader_factory)) {
   for (auto* network_id : {
            // TODO(apaymyshev): support mainnet mojom::kBitcoinMainnet,
@@ -228,7 +228,7 @@ mojom::BitcoinAccountInfoPtr BitcoinWalletService::GetBitcoinAccountInfoSync(
     return nullptr;
   }
 
-  auto addresses =
+  const auto& addresses =
       keyring_service_->GetBitcoinAddresses(keyring_id, account_index);
   if (!addresses) {
     NOTREACHED();
@@ -238,15 +238,15 @@ mojom::BitcoinAccountInfoPtr BitcoinWalletService::GetBitcoinAccountInfoSync(
   auto account_info = mojom::BitcoinAccountInfo::New();
   account_info->name = keyring_info->account_infos[account_index]->name;
 
-  for (auto& address : addresses.value()) {
-    auto& info = account_info->address_infos.emplace_back(
+  for (const auto& address : addresses.value()) {
+    const auto& info = account_info->address_infos.emplace_back(
         mojom::BitcoinAddressInfo::New());
     info->address_string = address.first;
     info->key_id = address.second.Clone();
 
-    auto outputs = transaction_database_[network_id]->GetUnspentOutputs(
+    const auto& outputs = transaction_database_[network_id]->GetUnspentOutputs(
         info->address_string);
-    for (auto& o : outputs) {
+    for (const auto& o : outputs) {
       info->utxo_list.push_back(mojom::BitcoinUnspentOutput::New(
           o.outpoint.txid, o.outpoint.index, o.value));
       info->balance += o.value;
@@ -307,7 +307,7 @@ bool BitcoinWalletService::PickInputs(SendToContext& context) {
     SendToContext::TxInput input;
     input.prev_output = utxo;
 
-    for (auto& address : context.addresses) {
+    for (const auto& address : context.addresses) {
       if (utxo.scriptpubkey_address == address.first) {
         input.key_id = address.second->Clone();
         break;
@@ -369,7 +369,7 @@ bool BitcoinWalletService::PrepareOutputs(SendToContext& context) {
   }
 
   // TODO(apaymyshev): should always pick new change address.
-  auto change_address =
+  const auto& change_address =
       GetUnusedChangeAddress(context.keyring_id, context.account_index);
   if (!change_address) {
     return false;
@@ -404,22 +404,22 @@ bool BitcoinWalletService::PrepareOutputs(SendToContext& context) {
 
 bool PushHashPrevouts(SendToContext& context, std::vector<uint8_t>& to) {
   std::vector<uint8_t> data;
-  for (auto& input : context.inputs) {
+  for (const auto& input : context.inputs) {
     PushOutpoint(input.prev_output.outpoint, data);
   }
 
-  auto double_hash = DoubleSHA256Hash(data);
+  const auto& double_hash = DoubleSHA256Hash(data);
   to.insert(to.end(), double_hash.begin(), double_hash.end());
   return true;
 }
 
 void PushHashSequence(SendToContext& context, std::vector<uint8_t>& to) {
   std::vector<uint8_t> data;
-  for (auto& input : context.inputs) {
+  for (const auto& input : context.inputs) {
     Push32AsLE(input.n_sequence, data);
   }
 
-  auto double_hash = DoubleSHA256Hash(data);
+  const auto& double_hash = DoubleSHA256Hash(data);
   to.insert(to.end(), double_hash.begin(), double_hash.end());
 }
 
@@ -429,22 +429,21 @@ void PushScriptCode(SendToContext& context,
   CHECK_LT(input_index, context.inputs.size());
 
   to.insert(to.end(), {0x19, 0x76, 0xa9, 0x14});
-  auto pubkey_hash = Hash160(context.inputs[input_index].pubkey);
+  const auto& pubkey_hash = Hash160(context.inputs[input_index].pubkey);
   to.insert(to.end(), pubkey_hash.begin(), pubkey_hash.end());
   to.insert(to.end(), {0x88, 0xac});
 }
 
 void PushHashOutputs(SendToContext& context, std::vector<uint8_t>& to) {
   std::vector<uint8_t> data;
-  for (auto& output : context.outputs) {
+  for (const auto& output : context.outputs) {
     Push64AsLE(output.amount, data);
     PushVarInt(output.script_pubkey.size(), data);
     data.insert(data.end(), output.script_pubkey.begin(),
                 output.script_pubkey.end());
   }
-  LOG(ERROR) << base::HexEncode(data);
 
-  auto double_hash = DoubleSHA256Hash(data);
+  const auto& double_hash = DoubleSHA256Hash(data);
   to.insert(to.end(), double_hash.begin(), double_hash.end());
 }
 
@@ -492,7 +491,7 @@ bool BitcoinWalletService::FillSignatures(SendToContext& context) {
 
 void PushInputs(SendToContext& context, std::vector<uint8_t>& to) {
   PushVarInt(context.inputs.size(), to);
-  for (auto& input : context.inputs) {
+  for (const auto& input : context.inputs) {
     PushOutpoint(input.prev_output.outpoint, to);
     // TODO(apaymsyhev): support script for non-segwit transactions.
     PushVarInt(0, to);
@@ -502,7 +501,7 @@ void PushInputs(SendToContext& context, std::vector<uint8_t>& to) {
 
 void PushOutputs(SendToContext& context, std::vector<uint8_t>& to) {
   PushVarInt(context.outputs.size(), to);
-  for (auto& output : context.outputs) {
+  for (const auto& output : context.outputs) {
     Push64AsLE(output.amount, to);
     PushVarInt(output.script_pubkey.size(), to);
     to.insert(to.end(), output.script_pubkey.begin(),
@@ -511,7 +510,7 @@ void PushOutputs(SendToContext& context, std::vector<uint8_t>& to) {
 }
 
 void PushWitnesses(SendToContext& context, std::vector<uint8_t>& to) {
-  for (auto& input : context.inputs) {
+  for (const auto& input : context.inputs) {
     // TODO(apaymyshev): only supports P2WPKH. Should support everything else.
     PushVarInt(2, to);
 
@@ -520,18 +519,18 @@ void PushWitnesses(SendToContext& context, std::vector<uint8_t>& to) {
   }
 }
 
-bool BitcoinWalletService::FillTransaction(SendToContext& context) {
+// https://github.com/bitcoin/bips/blob/master/bip-0144.mediawiki#specification
+bool BitcoinWalletService::SerializeTransaction(SendToContext& context) {
   std::vector<uint8_t> data;
-  Push32AsLE(2, data);  // version
-  Push8AsLE(0, data);   // marker
-  Push8AsLE(1, data);   // flag
+  Push32AsLE(kTransactionsVersion, data);  // version
+  Push8AsLE(0, data);                      // marker
+  Push8AsLE(1, data);                      // flag
   PushInputs(context, data);
   PushOutputs(context, data);
   PushWitnesses(context, data);
   Push32AsLE(context.locktime, data);
 
-  context.transaction = std::move(data);
-  LOG(ERROR) << base::HexEncode(context.transaction);
+  context.serialized_transaction = std::move(data);
 
   return true;
 }
@@ -539,7 +538,7 @@ bool BitcoinWalletService::FillTransaction(SendToContext& context) {
 void BitcoinWalletService::PostTransaction(
     std::unique_ptr<SendToContext> context) {
   auto network_id = context->network_id;
-  auto transaction = context->transaction;
+  const auto transaction = context->serialized_transaction;
 
   bitcoin_rpc_->PostTransaction(
       network_id, transaction,
@@ -570,7 +569,7 @@ void BitcoinWalletService::WorkOnSendTo(
     }
 
     // TODO(apymyshev): random shift locktime
-    // https://github.com/bitcoin/bitcoin/blob/df73c23f5fac031cc9b2ec06a74275db5ea322e3/src/wallet/wallet.cpp#L2595-L2600
+    // https://github.com/bitcoin/bitcoin/blob/v24.0/src/wallet/spend.cpp#L739-L747
     context->locktime = height.value();
   }
 
@@ -598,8 +597,8 @@ void BitcoinWalletService::WorkOnSendTo(
     }
   }
 
-  if (!context->TransactionReady()) {
-    if (!FillTransaction(*context)) {
+  if (!context->IsTransactionSerialized()) {
+    if (!SerializeTransaction(*context)) {
       return context->ReplyFailure("Couldn't serizalize transaction");
     }
   }
