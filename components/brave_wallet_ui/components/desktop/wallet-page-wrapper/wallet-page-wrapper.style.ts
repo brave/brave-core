@@ -41,7 +41,8 @@ export const LayoutCardWrapper = styled.div<{
 
 export const ContainerCard = styled.div<
   {
-    cardOverflow?: 'auto' | 'hidden' | 'visible'
+    cardOverflow?: 'auto' | 'hidden' | 'visible',
+    noPadding?: boolean
   }>`
   display: flex;
   flex-direction: column;
@@ -51,7 +52,7 @@ export const ContainerCard = styled.div<
   box-sizing: border-box;
   justify-content: flex-start;
   align-items: center;
-  padding: 20px;
+  padding: ${(p) => p.noPadding ? 0 : 20}px;
   width: 100%;
   min-height: ${minCardHeight}px;
   max-height: calc(100vh - 132px);

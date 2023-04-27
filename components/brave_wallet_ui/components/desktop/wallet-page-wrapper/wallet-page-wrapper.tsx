@@ -111,6 +111,7 @@ export const WalletPageWrapper = (props: Props) => {
           >
             <ContainerCard
               cardOverflow={cardOverflow}
+              noPadding={walletLocation === WalletRoutes.Portfolio}
             >
               {children}
             </ContainerCard>

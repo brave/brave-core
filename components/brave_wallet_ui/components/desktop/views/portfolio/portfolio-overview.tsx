@@ -389,6 +389,7 @@ export const PortfolioOverview = () => {
         networks={networks || []}
         estimatedItemSize={58}
         enableScroll={true}
+        horizontalPadding={20}
         renderToken={({ item, viewMode }) =>
           viewMode === 'list'
             ? <PortfolioAssetItem
