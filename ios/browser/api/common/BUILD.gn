@@ -16,7 +16,9 @@ source_set("common") {
 
   deps = [
     "//base",
+    "//brave/components/version_info",
     "//net",
+    "//ui/base",
     "//url",
   ]
 

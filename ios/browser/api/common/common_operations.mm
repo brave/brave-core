@@ -7,6 +7,8 @@
 #include <vector>
 #include "base/logging.h"
 #include "base/strings/sys_string_conversions.h"
+#include "brave/components/version_info/version_info.h"
+#include "ui/base/device_form_factor.h"
 
 @interface BraveCommonOperations () {
   scoped_refptr<base::SequencedTaskRunner> _taskRunner;
@@ -64,6 +66,24 @@
   return std::string([NSUUID UUID].UUIDString.UTF8String);
 }
 
+- (NSString*)userAgentUnifiedPlatform {
+  // Unified platform should match Chromium format for phone and tablet
+  if (ui::GetDeviceFormFactor() == ui::DEVICE_FORM_FACTOR_PHONE) {
+    return @"iPhone; CPU iPhone OS 14_0 like Mac OS X";
+  }
+  return @"iPad; CPU iPad OS 14_0 like Mac OS X";
+}
+
+- (NSString*)userAgentProductAndVersion {
+  // Product should match Chromium format
+  return [NSString
+      stringWithFormat:
+          @"Chrome/%@",
+          [NSString
+              stringWithUTF8String:version_info::GetBraveChromiumVersionNumber()
+                                       .c_str()]];
+}
+
 - (void)loadURLRequest:(const std::string&)url
                headers:(const std::vector<std::string>&)headers
                content:(const std::string&)content
@@ -91,6 +111,16 @@
 
   if (self.customUserAgent != nil && self.customUserAgent.length > 0) {
     [request setValue:self.customUserAgent forHTTPHeaderField:@"User-Agent"];
+  } else {
+    // Example Chromium user agent: "Mozilla/5.0 (iPhone; CPU iPhone OS 14_0
+    // like Mac OS X) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/1.2.3.4
+    // Safari/537.36"
+    NSString* userAgent = [NSString
+        stringWithFormat:@"Mozilla/5.0 (%@) AppleWebKit/537.36 (KHTML, like "
+                         @"Gecko) %@ Safari/537.36",
+                         [self userAgentUnifiedPlatform],
+                         [self userAgentProductAndVersion]];
+    [request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
   }
 
   if (content_type.length() > 0) {
