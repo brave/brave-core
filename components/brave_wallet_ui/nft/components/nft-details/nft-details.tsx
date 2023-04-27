@@ -51,7 +51,6 @@ import {
 } from './nft-details-styles'
 import { NftMultimedia } from '../nft-multimedia/nft-multimedia'
 import { MultimediaWrapper } from '../nft-content/nft-content-styles'
-import { CreateNetworkIcon } from '../../../components/shared'
 import { Row } from '../../../components/shared/style'
 import CopyTooltip from '../../../components/shared/copy-tooltip/copy-tooltip'
 import { NftPinningStatus } from '../../../components/desktop/nft-pinning-status/nft-pinning-status'
@@ -109,7 +108,6 @@ export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError,
               <DetailColumn>
                 {selectedAsset.isErc721 &&
                   <NftStandard>
-                    <CreateNetworkIcon network={tokenNetwork} size='small' />
                     ERC-721
                   </NftStandard>
                 }
