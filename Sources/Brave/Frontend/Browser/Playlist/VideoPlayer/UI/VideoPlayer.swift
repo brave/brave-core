@@ -189,10 +189,6 @@ class VideoView: UIView, VideoTrackerBarDelegate {
     fatalError("init(coder:) has not been implemented")
   }
 
-  deinit {
-    detachLayer()
-  }
-
   override func layoutSubviews() {
     super.layoutSubviews()
 
@@ -664,14 +660,6 @@ class VideoView: UIView, VideoTrackerBarDelegate {
         )
       }
     }
-  }
-
-  func detachLayer() {
-    playerStatusObserver = nil
-
-    staticImageView.layer.removeFromSuperlayer()
-    playerLayer?.removeFromSuperlayer()
-    playerLayer?.player = nil
   }
 
   func play() {
