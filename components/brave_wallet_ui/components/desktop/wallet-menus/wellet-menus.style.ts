@@ -8,7 +8,11 @@ import * as leo from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
 import { WalletButton, Text } from '../../shared/style'
 
-export const StyledWrapper = styled.div<{ yPosition?: number }>`
+export const StyledWrapper = styled.div<
+  {
+    yPosition?: number,
+    right?: number
+  }>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,17 +23,24 @@ export const StyledWrapper = styled.div<{ yPosition?: number }>`
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
   position: absolute;
   top: ${(p) => p.yPosition !== undefined ? p.yPosition : 35}px;
-  right: 15px;
+  right: ${(p) => p.right !== undefined ? p.right : 0}px;
   z-index: 20;
  `
 
-export const PopupButton = styled(WalletButton)`
+export const PopupButton = styled(WalletButton) <
+  {
+    minWidth?: number
+  }>`
   display: flex;
   align-items: center;
   justify-content: flex-start;
   text-align: left;
   cursor: pointer;
-  width: 220px;
+  min-width: ${(p) =>
+    p.minWidth !== undefined
+      ? p.minWidth
+      : 220
+  }px;
   border-radius: 8px;
   outline: none;
   border: none;

@@ -8,9 +8,19 @@ import styled from 'styled-components'
 export const RevealableContentContainer = styled.div<{ hideContent?: boolean }>`
   --scroll-offset: ${(p) => p?.hideContent ? '-400px' : '0px'};
   width: 100%;
-  overflow: hidden;
   white-space: nowrap;
-  overflow: hidden;
+  overflow: ${(p) =>
+    p.hideContent
+      ? 'hidden'
+      : 'unset'
+  };
+  opacity: ${(p) =>
+    p.hideContent
+      ? 0
+      : 1
+  };
+  transition: opacity .3s ease-in-out;
+  transition-delay: .3s;
   height: auto;
 `
 
@@ -19,7 +29,6 @@ export const RevealableContentColumn = styled.div`
   flex-direction: column;
   margin-top: var(--scroll-offset);
   transition: margin-top .3s ease-in-out;
-  overflow: hidden;
   white-space: nowrap;
-  overflow: hidden;
+  align-items: center;
 `

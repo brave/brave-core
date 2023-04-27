@@ -47,7 +47,7 @@ export const ChartControlBar = React.memo(({
               isSelected={selectedTimeline === t.id}
               disabled={disabled}
             >
-              {getLocale(t.name)}
+              {getLocale(t.abr)}
             </ButtonText>
           </StyledButton>
         )}

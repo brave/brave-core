@@ -159,7 +159,10 @@ export const WalletSettingsMenu = (props: Props) => {
   }, [onClosePopup])
 
   return (
-    <StyledWrapper yPosition={yPosition}>
+    <StyledWrapper
+      yPosition={yPosition}
+      right={15}
+    >
 
       <PopupButton onClick={lockWallet}>
         <ButtonIcon name='lock' />

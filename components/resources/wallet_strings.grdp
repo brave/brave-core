@@ -66,13 +66,20 @@
   <message name="IDS_BRAVE_WALLET_TOP_NAV_N_F_T_S" desc="NFTs top nav button">NFTs</message>
   <message name="IDS_BRAVE_WALLET_TOP_NAV_ACCOUNTS" desc="Accounts top nav button">Accounts</message>
   <message name="IDS_BRAVE_WALLET_TOP_NAV_MARKET" desc="Accounts top nav button">Market</message>
-  <message name="IDS_BRAVE_WALLET_CHART_LIVE" desc="Chart control bar 1H button">1H</message>
-  <message name="IDS_BRAVE_WALLET_CHART_ONE_DAY" desc="Chart control bar 1D button">1D</message>
-  <message name="IDS_BRAVE_WALLET_CHART_ONE_WEEK" desc="Chart control bar 1W button">1W</message>
-  <message name="IDS_BRAVE_WALLET_CHART_ONE_MONTH" desc="Chart control bar 1M button">1M</message>
-  <message name="IDS_BRAVE_WALLET_CHART_THREE_MONTHS" desc="Chart control bar 3M button">3M</message>
-  <message name="IDS_BRAVE_WALLET_CHART_ONE_YEAR" desc="Chart control bar 1Y button">1Y</message>
-  <message name="IDS_BRAVE_WALLET_CHART_ALL_TIME" desc="Chart control bar All button">All</message>
+  <message name="IDS_BRAVE_WALLET_CHART_ONE_HOUR" desc="Chart control 1 Hour">1 Hour</message>
+  <message name="IDS_BRAVE_WALLET_CHART_ONE_DAY" desc="Chart control 1 Day">1 Day</message>
+  <message name="IDS_BRAVE_WALLET_CHART_ONE_WEEK" desc="Chart control 1 Week">1 Week</message>
+  <message name="IDS_BRAVE_WALLET_CHART_ONE_MONTH" desc="Chart control 1 Month">1 Month</message>
+  <message name="IDS_BRAVE_WALLET_CHART_THREE_MONTHS" desc="Chart control 3 Months">3 Months</message>
+  <message name="IDS_BRAVE_WALLET_CHART_ONE_YEAR" desc="Chart control 1 Year">1 Year</message>
+  <message name="IDS_BRAVE_WALLET_CHART_ALL_TIME" desc="Chart control All time">All time</message>
+  <message name="IDS_BRAVE_WALLET_CHART_ONE_HOUR_ABBR" desc="Chart control 1 Hour abbreviated">1H</message>
+  <message name="IDS_BRAVE_WALLET_CHART_ONE_DAY_ABBR" desc="Chart control 1 Day abbreviated">1D</message>
+  <message name="IDS_BRAVE_WALLET_CHART_ONE_WEEK_ABBR" desc="Chart control 1 Week abbreviated">1W</message>
+  <message name="IDS_BRAVE_WALLET_CHART_ONE_MONTH_ABBR" desc="Chart control 1 Month abbreviated">1M</message>
+  <message name="IDS_BRAVE_WALLET_CHART_THREE_MONTHS_ABBR" desc="Chart control 3 Months abbreviated">3M</message>
+  <message name="IDS_BRAVE_WALLET_CHART_ONE_YEAR_ABBR" desc="Chart control 1 Year abbreviated">1Y</message>
+  <message name="IDS_BRAVE_WALLET_CHART_ALL_TIME_ABBR" desc="Chart control All time abbreviated">All</message>
   <message name="IDS_BRAVE_WALLET_ADD_COIN" desc="Portfolio Add Coin button">Add Coin</message>
   <message name="IDS_BRAVE_WALLET_BALANCE" desc="Portfolio Balance title">Balance</message>
   <message name="IDS_BRAVE_WALLET_PORTFOLIO_ASSET_NETWORK_DESCRIPTION" desc="Portfolio Asset Item Network Description"><ph name="SYMBOL"><ex>BAT</ex>$1</ph> on <ph name="NETWORK"><ex>Ethereum Mainnet</ex>$2</ph></message>

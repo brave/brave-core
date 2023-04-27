@@ -6,30 +6,37 @@ import { ChartTimelineObjectType } from '../constants/types'
 
 export const ChartTimelineOptions: ChartTimelineObjectType[] = [
   {
-    name: 'braveWalletChartLive',
+    abr: 'braveWalletChartOneHourAbbr',
+    name: 'braveWalletChartOneHour',
     id: 0
   },
   {
+    abr: 'braveWalletChartOneDayAbbr',
     name: 'braveWalletChartOneDay',
     id: 1
   },
   {
+    abr: 'braveWalletChartOneWeekAbbr',
     name: 'braveWalletChartOneWeek',
     id: 2
   },
   {
+    abr: 'braveWalletChartOneMonthAbbr',
     name: 'braveWalletChartOneMonth',
     id: 3
   },
   {
+    abr: 'braveWalletChartThreeMonthsAbbr',
     name: 'braveWalletChartThreeMonths',
     id: 4
   },
   {
+    abr: 'braveWalletChartOneYearAbbr',
     name: 'braveWalletChartOneYear',
     id: 5
   },
   {
+    abr: 'braveWalletChartAllTimeAbbr',
     name: 'braveWalletChartAllTime',
     id: 6
   }

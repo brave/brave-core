@@ -93,7 +93,6 @@ import {
   NetworkDescription,
   NftMultimedia,
   PercentBubble,
-  PercentText,
   PriceRow,
   PriceText,
   StyledWrapper,
@@ -204,10 +203,10 @@ export const PortfolioAsset = (props: Props) => {
   const userAssetList = React.useMemo(() => {
     const allAssets = userVisibleTokensInfo.map(
       (asset) =>
-        ({
-          asset: asset,
-          assetBalance: fullAssetBalance(asset)
-        } as UserAssetInfoType)
+      ({
+        asset: asset,
+        assetBalance: fullAssetBalance(asset)
+      } as UserAssetInfoType)
     )
     // By default we dont show any testnetwork assets
     if (selectedNetworkFilter.chainId === AllNetworksOption.chainId) {
@@ -438,9 +437,9 @@ export const PortfolioAsset = (props: Props) => {
     let ignore = false
     if (nftMetadata?.imageURL) {
       areSupportedForPinning([nftMetadata?.imageURL]).then(
-        (v) => {if (!ignore) setNftPinnable(v)})
+        (v) => { if (!ignore) setNftPinnable(v) })
       extractIpfsUrl(nftMetadata?.imageURL).then(
-        (v) => {if (!ignore) setIpfsImageUrl(v)})
+        (v) => { if (!ignore) setIpfsImageUrl(v) })
     }
     return () => {
       ignore = true
@@ -762,7 +761,7 @@ export const PortfolioAsset = (props: Props) => {
                   selectedAssetFiatPrice
                     ? new Amount(selectedAssetFiatPrice.price)
                       .formatAsFiat(defaultCurrencies.fiat)
-                    : 0.00
+                    : '0.00'
                 }
               </PriceText>
               <PercentBubble
@@ -771,14 +770,12 @@ export const PortfolioAsset = (props: Props) => {
                 <ArrowIcon
                   isDown={isSelectedAssetPriceDown}
                 />
-                <PercentText>
-                  {
-                    selectedAssetFiatPrice
-                      ? Number(selectedAssetFiatPrice.assetTimeframeChange)
-                        .toFixed(2)
-                      : 0.00
-                  }%
-                </PercentText>
+                {
+                  selectedAssetFiatPrice
+                    ? Number(selectedAssetFiatPrice.assetTimeframeChange)
+                      .toFixed(2)
+                    : '0.00'
+                }%
               </PercentBubble>
             </PriceRow>
 
