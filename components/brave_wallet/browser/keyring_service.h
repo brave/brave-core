@@ -15,6 +15,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/account_discovery_manager.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/password_encryptor.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -35,6 +36,7 @@ class OneShotTimer;
 namespace brave_wallet {
 
 class BitcoinKeyring;
+class AccountDiscoveryManager;
 class EthTransaction;
 class FilTransaction;
 class KeyringServiceUnitTest;
@@ -170,6 +172,8 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
                                        uint256_t chain_id);
   absl::optional<std::string> SignTransactionByFilecoinKeyring(
       FilTransaction* tx);
+  absl::optional<std::string> GetDiscoveryAddress(std::string keyring_id,
+                                                  int index);
 
   struct SignatureWithError {
     SignatureWithError();
@@ -204,7 +208,9 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       const std::vector<uint8_t>& ciphertext,
       const std::string& address);
 
-  void AddAccountsWithDefaultName(size_t number);
+  virtual void AddAccountsWithDefaultName(const mojom::CoinType& coin_type,
+                                          const std::string& keyring_id,
+                                          size_t number);
 
   bool IsLocked(const std::string& keyring_id) const;
   bool IsLockedSync() const;
@@ -235,6 +241,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
                              GetChecksumEthAddressCallback callback) override;
   void HasPendingUnlockRequest(
       HasPendingUnlockRequestCallback callback) override;
+  absl::optional<size_t> GetAccountsNumber(const std::string& keyring_id);
 
   absl::optional<std::vector<std::pair<std::string, mojom::BitcoinKeyIdPtr>>>
   GetBitcoinAddresses(const std::string& keyring_id, uint32_t account_index);
@@ -283,6 +290,10 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceAccountDiscoveryUnitTest,
                            AccountDiscovery);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceAccountDiscoveryUnitTest,
+                           SolAccountDiscovery);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceAccountDiscoveryUnitTest,
+                           FilAccountDiscovery);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceAccountDiscoveryUnitTest,
                            StopsOnError);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceAccountDiscoveryUnitTest,
                            ManuallyAddAccount);
@@ -324,8 +335,6 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   absl::optional<std::string> AddAccountForKeyring(
       const std::string& keyring_id,
       const std::string& account_name);
-  void AddDiscoveryAccountsForKeyring(size_t discovery_account_index,
-                                      int attempts_left);
   void OnAutoLockFired();
   HDKeyring* GetHDKeyringById(const std::string& keyring_id) const;
   BitcoinKeyring* GetBitcoinKeyringById(const std::string& keyring_id) const;
@@ -385,11 +394,6 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
                                  const std::string& address);
   void RemoveSelectedAccountForCoin(mojom::CoinType coin,
                                     const std::string& keyring_id);
-  void OnGetTransactionCount(size_t discovery_account_index,
-                             int attempts_left,
-                             uint256_t result,
-                             mojom::ProviderError error,
-                             const std::string& error_message);
 
   void AddHardwareAccounts(std::vector<mojom::HardwareWalletAccountPtr> info,
                            const std::string keyring_id);
@@ -410,7 +414,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   mojo::RemoteSet<mojom::KeyringServiceObserver> observers_;
   mojo::ReceiverSet<mojom::KeyringService> receivers_;
 
-  base::WeakPtrFactory<KeyringService> discovery_weak_factory_{this};
+  std::unique_ptr<AccountDiscoveryManager> account_discovery_manager_;
 
   KeyringService(const KeyringService&) = delete;
   KeyringService& operator=(const KeyringService&) = delete;
