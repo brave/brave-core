@@ -3,6 +3,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+assert(enable_brave_vpn)
+assert(!is_android)
+
 source_set("ikev2") {
   sources = [
     "brave_vpn_ras_connection_api_base.cc",

@@ -74,7 +74,6 @@ class BraveVPNOSConnectionAPIBase
   BraveVpnAPIRequest* GetAPIRequest();
   std::string GetCurrentEnvironment() const;
   void UpdateAndNotifyConnectionStateChange(mojom::ConnectionState state);
-  bool IsCancelConnecting() const { return cancel_connecting_; }
 
   // Subclass should call below callbacks whenever corresponding event happens.
   void OnCreated();
