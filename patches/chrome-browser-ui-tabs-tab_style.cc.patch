@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tabs/tab_style.cc b/chrome/browser/ui/tabs/tab_style.cc
-index b2ddba63297d04ae49c6526c3bb2e53b0bb30b21..ca5b14db1ad835f43bf13276f9879daa552ebf8e 100644
+index b764cb80282dd321a3f7d68a7d3b9673b85162ba..ba14f94d448ee6817f3123f3aa3600c9f579aec2 100644
 --- a/chrome/browser/ui/tabs/tab_style.cc
 +++ b/chrome/browser/ui/tabs/tab_style.cc
-@@ -16,7 +16,7 @@ constexpr int kSeparatorThickness = 1;
+@@ -17,7 +17,7 @@ constexpr int kChromeRefreshSeparatorThickness = 2;
  
  // Returns the height of the separator between tabs.
  int GetSeparatorHeight() {

@@ -1,8 +1,8 @@
 diff --git a/ui/webui/resources/tools/build_webui.gni b/ui/webui/resources/tools/build_webui.gni
-index e6226e72c836169002e5ebe414297c4746983fb8..6b89ddc642dfc33672f054bb31ebe9bdd82e2385 100644
+index 3b3b1902d5c8fff0c36c63f64334f21106a1d8c3..c360a3a35f3f785b325b137d28b3b203b933f46f 100644
 --- a/ui/webui/resources/tools/build_webui.gni
 +++ b/ui/webui/resources/tools/build_webui.gni
-@@ -174,6 +174,7 @@ template("build_webui") {
+@@ -175,6 +175,7 @@ template("build_webui") {
        enable_removal_comments = enable_source_maps
      }
      in_files = ts_files
@@ -10,7 +10,7 @@ index e6226e72c836169002e5ebe414297c4746983fb8..6b89ddc642dfc33672f054bb31ebe9bd
    }
  
    if (enable_source_maps) {
-@@ -218,6 +219,7 @@ template("build_webui") {
+@@ -219,6 +220,7 @@ template("build_webui") {
        if (defined(invoker.css_files)) {
          in_files += invoker.css_files
        }
@@ -18,7 +18,7 @@ index e6226e72c836169002e5ebe414297c4746983fb8..6b89ddc642dfc33672f054bb31ebe9bd
      }
    }
  
-@@ -244,6 +246,7 @@ template("build_webui") {
+@@ -245,6 +247,7 @@ template("build_webui") {
            }
          }
        }
