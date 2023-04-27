@@ -1042,7 +1042,7 @@
     Note: IPFS daemon may be started for the pinning purposes so your local node will share cached data and pinned NFTs to the IPFS network.
   </message>
   <message name="IDS_SETTINGS_WALLET_RESET" desc="Reset wallet settings item text">
-    Reset Brave Wallet
+    Reset and clear wallet data
   </message>
   <message name="IDS_SETTINGS_CLEAR_PINNED_NFT" desc="Clear pinned NFTs item text">
     Clear pinned NFTs
