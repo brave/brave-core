@@ -14,6 +14,7 @@
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
+#include "net/base/load_flags.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
@@ -54,13 +55,21 @@ class ApiRequestHelperUnitTest : public testing::Test {
 
   void SetInterceptor(const std::string& expected_method,
                       const GURL& expected_url,
-                      const std::string& content_to_respond) {
+                      const std::string& content_to_respond,
+                      bool enable_cache) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [&, expected_method, expected_url,
-         content_to_respond](const network::ResourceRequest& request) {
+        [&, expected_method, expected_url, content_to_respond,
+         enable_cache](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
           EXPECT_EQ(request.url, expected_url);
           EXPECT_EQ(request.method, expected_method);
+          if (enable_cache) {
+            EXPECT_EQ(request.load_flags, net::LOAD_DO_NOT_SAVE_COOKIES);
+          } else {
+            EXPECT_EQ(request.load_flags, net::LOAD_DO_NOT_SAVE_COOKIES |
+                                              net::LOAD_BYPASS_CACHE |
+                                              net::LOAD_DISABLE_CACHE);
+          }
           url_loader_factory_.AddResponse(request.url.spec(),
                                           content_to_respond);
         }));
@@ -85,7 +94,8 @@ class ApiRequestHelperUnitTest : public testing::Test {
                    const int expected_http_code = 200,
                    const int expected_error_code = net::OK,
                    APIRequestHelper::ResponseConversionCallback
-                       conversion_callback = base::NullCallback()) {
+                       conversion_callback = base::NullCallback(),
+                   bool enable_cache = false) {
     GURL network_url("http://localhost/");
 
     APIRequestResult expected_result(
@@ -94,10 +104,11 @@ class ApiRequestHelperUnitTest : public testing::Test {
     base::MockCallback<APIRequestHelper::ResultCallback> callback;
     EXPECT_CALL(callback, Run(MatchesAPIRequestResult(&expected_result)));
 
-    SetInterceptor("POST", network_url, server_raw_response);
-    api_request_helper_->Request("POST", network_url, "", "application/json",
-                                 false, callback.Get(), {}, -1u,
-                                 std::move(conversion_callback));
+    SetInterceptor("POST", network_url, server_raw_response, enable_cache);
+    api_request_helper_->Request(
+        "POST", network_url, "", "application/json", callback.Get(),
+        APIRequestOptions(false, enable_cache, -1u, absl::nullopt), {},
+        std::move(conversion_callback));
     base::RunLoop().RunUntilIdle();
   }
 
@@ -178,6 +189,13 @@ TEST_F(ApiRequestHelperUnitTest, Is2XXResponseCode) {
       APIRequestResult(300, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
   EXPECT_FALSE(
       APIRequestResult(500, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+}
+
+TEST_F(ApiRequestHelperUnitTest, EnableCache) {
+  SendRequest("{}", "{}", base::Value(base::Value::Type::DICT), 200, net::OK,
+              base::NullCallback(), false);
+  SendRequest("{}", "{}", base::Value(base::Value::Type::DICT), 200, net::OK,
+              base::NullCallback(), true);
 }
 
 }  // namespace api_request_helper

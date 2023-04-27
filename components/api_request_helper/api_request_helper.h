@@ -75,6 +75,7 @@ class APIRequestResult {
 
 struct APIRequestOptions {
   bool auto_retry_on_network_change = false;
+  bool enable_cache = false;
   size_t max_body_size = -1u;
   absl::optional<base::TimeDelta> timeout;
 };
@@ -100,6 +101,10 @@ class APIRequestHelper {
   // into string before validating the response. For these purposes
   // conversion_callback is added which receives raw response and can perform
   // necessary conversions.
+  //
+  // This method will be deprecated soon, please use the one underneath with
+  // APIRequestOption parameter.
+  // https://github.com/brave/brave-browser/issues/29611
   Ticket Request(
       const std::string& method,
       const GURL& url,
@@ -143,6 +148,7 @@ class APIRequestHelper {
       const std::string& payload,
       const std::string& payload_content_type,
       bool auto_retry_on_network_change,
+      bool enable_cache,
       bool allow_http_error_result,
       const base::flat_map<std::string, std::string>& headers);
 
