@@ -29,7 +29,6 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
   fileprivate weak var tab: Tab?
   public weak var delegate: PlaylistScriptHandlerDelegate?
   private var url: URL?
-  private var playlistItems = Set<String>()
   private var urlObserver: NSObjectProtocol?
   private var asset: AVURLAsset?
   private static let queue = DispatchQueue(label: "com.playlisthelper.queue", qos: .userInitiated)
@@ -45,8 +44,6 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
         guard let self = self, let url = change.newValue else { return }
         if self.url != url {
           self.url = url
-          self.playlistItems = Set<String>()
-
           self.asset?.cancelLoading()
           self.asset = nil
 
@@ -122,12 +119,6 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
       return
     }
     
-    if item.detected && handler.playlistItems.contains(item.src) {
-      return
-    }
-    
-    handler.playlistItems.insert(item.src)
-    
     // Copy the item but use the web-view's title and location instead, if available
     // This is due to a iFrames security
     item = PlaylistInfo(name: item.name,
@@ -201,15 +192,11 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
 
       Logger.module.debug("Playlist Item Updated")
 
-      if !self.playlistItems.contains(item.src) {
-        self.playlistItems.insert(item.src)
-
-        if let delegate = self.delegate {
-          if detected {
-            delegate.updatePlaylistURLBar(tab: self.tab, state: .existingItem, item: item)
-          } else {
-            delegate.showPlaylistToast(tab: self.tab, state: .existingItem, item: item)
-          }
+      if let delegate = self.delegate {
+        if detected {
+          delegate.updatePlaylistURLBar(tab: self.tab, state: .existingItem, item: item)
+        } else {
+          delegate.showPlaylistToast(tab: self.tab, state: .existingItem, item: item)
         }
       }
     }
