@@ -21,6 +21,7 @@
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "chrome/browser/password_manager/password_store_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -299,6 +300,19 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
   // Load the Welcome page.
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://welcome")));
   WaitForTimeout(kMaxTimeoutPerLoadedURL);
+
+  // Add a password to the password manager.
+  password_manager::PasswordStoreInterface* password_store =
+      PasswordStoreFactory::GetForProfile(browser()->profile(),
+                                          ServiceAccessType::IMPLICIT_ACCESS)
+          .get();
+  password_manager::PasswordForm signin_form;
+  signin_form.signon_realm = "https://www.facebook.com/";
+  signin_form.url = GURL("https://www.facebook.com/");
+  signin_form.action = GURL("https://www.facebook.com/");
+  signin_form.username_value = u"john";
+  signin_form.password_value = u"password1";
+  password_store->AddLogin(signin_form);
 
   // Load the NTP to check requests made from the JS widgets.
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://newtab")));
