@@ -79,10 +79,8 @@ class FrequencyQuery {
     var tabList = [Site]()
         
     for tab in tabs {
-        
       if PrivateBrowsingManager.shared.isPrivateBrowsing {
         if let url = tab.url, url.isWebPage(), !(InternalURL(url)?.isAboutHomeURL ?? false) {
-          
           if let selectedTabID = tabManager.selectedTab?.id, selectedTabID == tab.id {
             continue
           }
@@ -90,20 +88,13 @@ class FrequencyQuery {
           tabList.append(Site(url: url.absoluteString, title: tab.displayTitle, siteType: .tab, tabID: tab.id.uuidString))
         }
       } else {
-        var tabURL: URL?
-        
-        if let url = tab.url {
-          tabURL = url
-        } else if let fetchedTab = SessionTab.from(tabId: tab.id){
-          tabURL = fetchedTab.url
-        }
-        
+        let tabURL = tab.url ?? SessionTab.from(tabId: tab.id)?.url
         if let url = tabURL, url.isWebPage(), !(InternalURL(url)?.isAboutHomeURL ?? false) {
           if let selectedTabID = tabManager.selectedTab?.id, selectedTabID == tab.id {
             continue
           }
           
-          tabList.append(Site(url: url.absoluteString, title: tab.title, siteType: .tab, tabID: tab.id.uuidString))
+          tabList.append(Site(url: url.absoluteString, title: tab.displayTitle, siteType: .tab, tabID: tab.id.uuidString))
         }
       }
     }

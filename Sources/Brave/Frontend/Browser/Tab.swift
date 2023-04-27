@@ -464,6 +464,9 @@ class Tab: NSObject {
         syncTab?.setTitle(title)
         return title
       } else if let tab = SessionTab.from(tabId: id) {
+        if tab.title.isEmpty {
+          return Strings.Hotkey.newTabTitle
+        }
         syncTab?.setTitle(tab.title)
         return tab.title
       }
