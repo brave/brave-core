@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-index da66e3d12a2ac1be98b6e23b684487db9a3d276b..76f89340a9c879dd225375c40e2009e7ed520d33 100644
+index 4e270f6af030a0aa239266f9fa1fe57d0593cc9c..31979f49263555169a32114fd6314ba8d29857b6 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
 @@ -13,6 +13,7 @@
@@ -18,7 +18,7 @@ index da66e3d12a2ac1be98b6e23b684487db9a3d276b..76f89340a9c879dd225375c40e2009e7
  <if expr="_google_chrome">
  <if expr="chromeos_ash">
      <!-- Ash Browser settings show a link to the OS settings instead. -->
-@@ -36,6 +38,7 @@
+@@ -35,6 +37,7 @@
          on-click="onMetricsReportingLinkClick_" external>
      </cr-link-row>
  </if><!-- chromeos -->
@@ -26,7 +26,7 @@ index da66e3d12a2ac1be98b6e23b684487db9a3d276b..76f89340a9c879dd225375c40e2009e7
  <if expr="not chromeos_ash">
      <settings-toggle-button id="metricsReportingControl"
          class="hr"
-@@ -51,13 +54,14 @@
+@@ -50,13 +53,14 @@
        </template>
      </settings-toggle-button>
  </if><!-- not chromeos -->
@@ -42,7 +42,7 @@ index da66e3d12a2ac1be98b6e23b684487db9a3d276b..76f89340a9c879dd225375c40e2009e7
  <if expr="_google_chrome">
  <if expr="not chromeos_ash">
      <settings-toggle-button id="spellCheckControl"
-@@ -109,6 +113,7 @@
+@@ -107,6 +111,7 @@
        </settings-toggle-button>
      </template>
  
@@ -50,7 +50,7 @@ index da66e3d12a2ac1be98b6e23b684487db9a3d276b..76f89340a9c879dd225375c40e2009e7
      <template is="dom-if" if="[[showSignoutDialog_]]" restamp>
        <settings-signout-dialog sync-status="[[syncStatus]]"
            on-close="onSignoutDialogClosed_">
-@@ -126,3 +131,4 @@
+@@ -124,3 +129,4 @@
            on-close="onRelaunchDialogClose"></relaunch-confirmation-dialog>
      </template>
  </if>

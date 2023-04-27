@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index b49f2f7d44fb8542f6a0848982d809300e17e990..2596245e33bda3beab5d3424cdabf2e9381dc9af 100644
+index e3dae9f65cf6eddde44ecbf7d4dc61eb3b8b76da..347313c23ac40043f4fa0498951e51c34692e18d 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
 @@ -185,6 +185,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
@@ -10,7 +10,7 @@ index b49f2f7d44fb8542f6a0848982d809300e17e990..2596245e33bda3beab5d3424cdabf2e9
  };
  
  static_assert(std::size(kContentSettingsTypeGroupNames) ==
-@@ -373,6 +374,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+@@ -443,6 +444,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(base::StringPiece name) {

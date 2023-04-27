@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/BUILD.gn b/chrome/browser/resources/settings/BUILD.gn
-index 9fefe083d0348362b73b4aad570cd7425f33d5bc..30618080b17aca80f94a484e458b2b5ff290b63d 100644
+index 8c34f24ad81300560aeaa49932c09a40b9f76429..bd80c86f38ea08bb10380115b388bbccd901eb96 100644
 --- a/chrome/browser/resources/settings/BUILD.gn
 +++ b/chrome/browser/resources/settings/BUILD.gn
-@@ -459,4 +459,5 @@ build_webui("build") {
+@@ -455,4 +455,5 @@ build_webui("build") {
    }
  
    enable_source_maps = enable_webui_inline_sourcemaps

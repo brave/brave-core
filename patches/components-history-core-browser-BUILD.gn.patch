@@ -1,5 +1,5 @@
 diff --git a/components/history/core/browser/BUILD.gn b/components/history/core/browser/BUILD.gn
-index 50eab86bb45b55017187463c27b13bb7ee11e2b5..bd3a6a67ec9b412434d1f42b28cb2ec7f159dca8 100644
+index 8db9ac9378ea2f979ab7a8e6beb33987a704c795..7f3682b60eda9def297efdacb1f198281f996946 100644
 --- a/components/history/core/browser/BUILD.gn
 +++ b/components/history/core/browser/BUILD.gn
 @@ -155,6 +155,7 @@ static_library("browser") {
