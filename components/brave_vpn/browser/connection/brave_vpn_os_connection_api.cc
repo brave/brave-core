@@ -21,17 +21,15 @@ std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNConnectionAPI(
   if (base::FeatureList::IsEnabled(features::kBraveVPNUseWireguardService)) {
     return CreateBraveVPNWireguardConnectionAPI(url_loader_factory, local_prefs,
                                                 channel);
-  } else {
+  }
+#endif
+
+#if BUILDFLAG(IS_ANDROID)
+  // Android doesn't use connection api.
+  return nullptr;
+#else
     return CreateBraveVPNIKEv2ConnectionAPI(url_loader_factory, local_prefs,
                                             channel);
-  }
-#elif BUILDFLAG(IS_MAC)
-  return CreateBraveVPNIKEv2ConnectionAPI(url_loader_factory, local_prefs,
-                                          channel);
-#else
-  // To avoid complicated build flag checking, provide empty implementation on
-  // android.
-  return nullptr;
 #endif
 }
 
