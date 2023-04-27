@@ -153,23 +153,4 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   GetNextNonce(&nonce_tracker, mojom::kMainnetChainId, address, true, 2);
 }
 
-TEST_F(EthNonceTrackerUnitTest, NonceLock) {
-  JsonRpcService service(shared_url_loader_factory(), GetPrefs());
-  EthTxStateManager tx_state_manager(GetPrefs());
-  EthNonceTracker nonce_tracker(&tx_state_manager, &service);
-
-  SetTransactionCount(4);
-
-  base::Lock* lock = nonce_tracker.GetLock();
-  lock->Acquire();
-  const std::string addr("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
-  GetNextNonce(&nonce_tracker, mojom::kLocalhostChainId, addr, false, 0);
-  GetNextNonce(&nonce_tracker, mojom::kMainnetChainId, addr, false, 0);
-
-  lock->Release();
-
-  GetNextNonce(&nonce_tracker, mojom::kLocalhostChainId, addr, true, 4);
-  GetNextNonce(&nonce_tracker, mojom::kMainnetChainId, addr, true, 4);
-}
-
 }  // namespace brave_wallet

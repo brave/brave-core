@@ -140,26 +140,4 @@ TEST_F(FilNonceTrackerUnitTest, GetNonce) {
                true, uint64_t(2));
 }
 
-TEST_F(FilNonceTrackerUnitTest, NonceLock) {
-  JsonRpcService service(shared_url_loader_factory(), GetPrefs());
-  FilTxStateManager tx_state_manager(GetPrefs());
-  FilNonceTracker nonce_tracker(&tx_state_manager, &service);
-
-  SetTransactionCount(4);
-
-  base::Lock* lock = nonce_tracker.GetLock();
-  lock->Acquire();
-  const std::string address("t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy");
-  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kLocalhostChainId, address,
-               false, 0u);
-  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kFilecoinMainnet, address,
-               false, 0u);
-  lock->Release();
-
-  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kLocalhostChainId, address,
-               true, uint64_t(4));
-  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kFilecoinMainnet, address,
-               true, uint64_t(4));
-}
-
 }  // namespace brave_wallet

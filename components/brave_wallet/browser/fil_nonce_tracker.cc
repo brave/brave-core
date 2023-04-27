@@ -70,7 +70,7 @@ void FilNonceTracker::OnGetNetworkNonce(const std::string& chain_id,
     return;
   }
   auto nonce = GetFinalNonce(chain_id, from, network_nonce);
-  std::move(callback).Run(nonce.has_value(), nonce.has_value() ? *nonce : 0);
+  std::move(callback).Run(true, nonce);
 }
 
 }  // namespace brave_wallet
