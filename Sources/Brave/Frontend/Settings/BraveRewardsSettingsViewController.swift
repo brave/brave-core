@@ -40,8 +40,7 @@ class BraveRewardsSettingsViewController: TableViewController {
               self.rewards.isEnabled = isOn
             }),
             cellClass: MultilineSubtitleCell.self)
-        ],
-        footer: .title(Strings.Rewards.settingsFooterMessage)
+        ]
       )
     ]
 

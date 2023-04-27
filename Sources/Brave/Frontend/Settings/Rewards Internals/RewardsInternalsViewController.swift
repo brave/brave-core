@@ -162,10 +162,10 @@ struct RewardsInternalsBasicInfoGenerator: RewardsInternalsFileGenerator {
     }
 
     let data: [String: Any] = [
-      "Wallet Info": [
+      "Rewards Profile Info": [
         "Key Info Seed": "\(info.isKeyInfoSeedValid ? "Valid" : "Invalid")",
-        "Wallet Payment ID": info.paymentId,
-        "Wallet Creation Date": builder.dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(info.bootStamp))),
+        "Rewards Payment ID": info.paymentId,
+        "Rewards Profile Creation Date": builder.dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(info.bootStamp))),
       ],
       "Device Info": [
         "DeviceCheck Status": DCDevice.current.isSupported ? "Supported" : "Not supported",
