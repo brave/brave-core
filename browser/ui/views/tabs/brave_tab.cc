@@ -184,8 +184,9 @@ void BraveTab::UpdateIconVisibility() {
               controller()->GetBrowser());
       // When floating mode enabled, we don't show close button as the tab strip
       // will be expanded as soon as mouse hovers onto the tab.
-      showing_close_button_ = !can_enter_floating_mode && is_active;
-      showing_icon_ = !showing_close_button_;
+      showing_close_button_ =
+          !showing_alert_indicator_ && !can_enter_floating_mode && is_active;
+      showing_icon_ = !showing_alert_indicator_ && !showing_close_button_;
     }
   }
 }
