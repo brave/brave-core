@@ -469,7 +469,7 @@ extension Tab: BraveWalletEventsListener {
       asFunction: false
     )
     
-    let coin = await walletService.selectedCoin()
+    let coin: BraveWallet.CoinType = .eth
     let accounts = await keyringService.keyringInfo(coin.keyringId).accountInfos.map(\.address)
     let selectedAccount = valueOrUndefined(await self.allowedAccounts(coin, accounts: accounts).1.first)
     await webView.evaluateSafeJavaScript(
