@@ -23,7 +23,6 @@ std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNWireguardConnectionAPI(
     PrefService* local_prefs,
     version_info::Channel channel);
 
-
 std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNConnectionAPI(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs,
@@ -39,8 +38,8 @@ std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNConnectionAPI(
   // Android doesn't use connection api.
   return nullptr;
 #else
-    return CreateBraveVPNIKEv2ConnectionAPI(url_loader_factory, local_prefs,
-                                            channel);
+  return CreateBraveVPNIKEv2ConnectionAPI(url_loader_factory, local_prefs,
+                                          channel);
 #endif
 }
 

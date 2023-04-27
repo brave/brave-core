@@ -80,26 +80,23 @@
   })
 #if BUILDFLAG(IS_WIN)
 #define BRAVE_VPN_WIREGUARD_FEATURE_ENTRIES                                  \
-  EXPAND_FEATURE_ENTRIES(                                                    \
-      {                                                                      \
-          kBraveVPNWireguardFeatureInternalName,                             \
-          "Enable experimental Wireguard Brave VPN service",                 \
-          "Experimental Wireguard VPN support. Not implemented yet",         \
-          kOsWin,                                                            \
-          FEATURE_VALUE_TYPE(                                                \
-              brave_vpn::features::kBraveVPNUseWireguardService),            \
-      })
+  EXPAND_FEATURE_ENTRIES({                                                   \
+      kBraveVPNWireguardFeatureInternalName,                                 \
+      "Enable experimental Wireguard Brave VPN service",                     \
+      "Experimental Wireguard VPN support. Not implemented yet",             \
+      kOsWin,                                                                \
+      FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPNUseWireguardService), \
+  })
 
-#define BRAVE_VPN_DNS_FEATURE_ENTRIES                                        \
-  EXPAND_FEATURE_ENTRIES(                                                    \
-      {                                                                      \
-          kBraveVPNDnsFeatureInternalName,                                   \
-          "Enable DoH for Brave VPN",                                        \
-          "Override DoH settings with Cloudflare dns if necessary to avoid " \
-          "leaking requests due to Smart Multi-Home Named Resolution",       \
-          kOsWin,                                                            \
-          FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPNDnsProtection),   \
-      })
+#define BRAVE_VPN_DNS_FEATURE_ENTRIES                                    \
+  EXPAND_FEATURE_ENTRIES({                                               \
+      kBraveVPNDnsFeatureInternalName,                                   \
+      "Enable DoH for Brave VPN",                                        \
+      "Override DoH settings with Cloudflare dns if necessary to avoid " \
+      "leaking requests due to Smart Multi-Home Named Resolution",       \
+      kOsWin,                                                            \
+      FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPNDnsProtection),   \
+  })
 #else
 #define BRAVE_VPN_DNS_FEATURE_ENTRIES
 #define BRAVE_VPN_WIREGUARD_FEATURE_ENTRIES
