@@ -2976,8 +2976,11 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_BUTTON" desc="Change network panel button">
       Switch network
     </message>
-    <message name="IDS_ENABLE_TAB_GROUPS_TITLE" desc="Menu item for grouping Tabs automatically.">
-      Enable Tab Group auto creation
+    <message name="IDS_ENABLE_TAB_GROUPS_TITLE" desc="Menu item for grouping Tabs automatically title.">
+      Only open links in current tab group
+    </message>
+    <message name="IDS_ENABLE_TAB_GROUPS_TEXT" desc="Menu item for grouping Tabs automatically text.">
+      Automatically opens all links in the current tab group
     </message>
     <message name="IDS_DAPPS_MENU_LOCK_WALLET" desc="Menu item Lock Wallet on DApps Panel">
       Lock Wallet
