@@ -27,6 +27,7 @@
 #include "brave/components/version_info/version_info.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/system_network_context_manager.h"
+#include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/common/channel_info.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -96,8 +97,11 @@ net::NetworkTrafficAnnotationTag AnonymousStatsAnnotation() {
 
 }  // anonymous namespace
 
-BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service)
-    : pref_service_(pref_service), testing_url_loader_factory_(nullptr) {
+BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service,
+                                     ProfileManager* profile_manager)
+    : pref_service_(pref_service),
+      profile_manager_(profile_manager),
+      testing_url_loader_factory_(nullptr) {
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
   if (command_line.HasSwitch(switches::kBraveStatsUpdaterServer)) {
@@ -112,10 +116,18 @@ BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service)
   general_browser_usage_p3a_ =
       std::make_unique<misc_metrics::GeneralBrowserUsage>(pref_service);
 
+  if (profile_manager != nullptr) {
+    g_browser_process->profile_manager()->AddObserver(this);
+  }
+
   Start();
 }
 
-BraveStatsUpdater::~BraveStatsUpdater() = default;
+BraveStatsUpdater::~BraveStatsUpdater() {
+  if (profile_manager_ != nullptr) {
+    g_browser_process->profile_manager()->RemoveObserver(this);
+  }
+}
 
 void BraveStatsUpdater::Start() {
   // Startup timer, only initiated once we've checked for a promo
@@ -310,6 +322,11 @@ bool BraveStatsUpdater::HasDoneThresholdPing() {
 void BraveStatsUpdater::DisableThresholdPing() {
   pref_service_->SetBoolean(kThresholdCheckMade, true);
   pref_service_->ClearPref(kThresholdQuery);
+}
+
+void BraveStatsUpdater::OnProfileAdded(Profile* profile) {
+  general_browser_usage_p3a_->ReportProfileCount(
+      g_browser_process->profile_manager()->GetNumberOfProfiles());
 }
 
 void BraveStatsUpdater::QueueServerPing() {

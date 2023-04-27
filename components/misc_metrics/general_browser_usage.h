@@ -8,7 +8,7 @@
 
 #include <memory>
 
-#include "base/timer/timer.h"
+#include "base/timer/wall_clock_timer.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -17,6 +17,7 @@ class ISOWeeklyStorage;
 namespace misc_metrics {
 
 extern const char kWeeklyUseHistogramName[];
+extern const char kProfileCountHistogramName[];
 
 class GeneralBrowserUsage {
  public:
@@ -28,12 +29,18 @@ class GeneralBrowserUsage {
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
+  void ReportProfileCount(size_t count);
+
  private:
+  void ReportWeeklyUse();
+
+  void SetUpUpdateTimer();
+
   void Update();
 
   std::unique_ptr<ISOWeeklyStorage> usage_storage_;
 
-  base::RepeatingTimer report_timer_;
+  base::WallClockTimer report_timer_;
 };
 
 }  // namespace misc_metrics
