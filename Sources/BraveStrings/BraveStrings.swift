@@ -3623,14 +3623,14 @@ extension Strings {
 extension Strings {
   public struct RewardsInternals {
     public static let title = NSLocalizedString("RewardsInternalsTitle", tableName: "BraveShared", bundle: .module, value: "Rewards Internals", comment: "'Rewards' as in 'Brave Rewards'")
-    public static let walletInfoHeader = NSLocalizedString("RewardsInternalsWalletInfoHeader", tableName: "BraveShared", bundle: .module, value: "Wallet Info", comment: "")
+    public static let walletInfoHeader = NSLocalizedString("RewardsInternalsWalletInfoHeader", tableName: "BraveShared", bundle: .module, value: "Rewards Profile Info", comment: "")
     public static let legacyWalletInfoHeader = NSLocalizedString("RewardsInternalsLegacyWalletInfoHeader", tableName: "BraveShared", bundle: .module, value: "Legacy Wallet Info", comment: "")
     public static let legacyWalletHasTransferrableBalance = NSLocalizedString("RewardsInternalsLegacyWalletHasTransferrableBalance", tableName: "BraveShared", bundle: .module, value: "Has Transferrable Balance", comment: "")
     public static let keyInfoSeed = NSLocalizedString("RewardsInternalsKeyInfoSeed", tableName: "BraveShared", bundle: .module, value: "Key Info Seed", comment: "")
     public static let valid = NSLocalizedString("RewardsInternalsValid", tableName: "BraveShared", bundle: .module, value: "Valid", comment: "")
     public static let invalid = NSLocalizedString("RewardsInternalsInvalid", tableName: "BraveShared", bundle: .module, value: "Invalid", comment: "")
-    public static let walletPaymentID = NSLocalizedString("RewardsInternalsWalletPaymentID", tableName: "BraveShared", bundle: .module, value: "Wallet Payment ID", comment: "")
-    public static let walletCreationDate = NSLocalizedString("RewardsInternalsWalletCreationDate", tableName: "BraveShared", bundle: .module, value: "Wallet Creation Date", comment: "")
+    public static let walletPaymentID = NSLocalizedString("RewardsInternalsWalletPaymentID", tableName: "BraveShared", bundle: .module, value: "Rewards Payment ID", comment: "")
+    public static let walletCreationDate = NSLocalizedString("RewardsInternalsWalletCreationDate", tableName: "BraveShared", bundle: .module, value: "Rewards Profile Creation Date", comment: "")
     public static let deviceInfoHeader = NSLocalizedString("RewardsInternalsDeviceInfoHeader", tableName: "BraveShared", bundle: .module, value: "Device Info", comment: "")
     public static let status = NSLocalizedString("RewardsInternalsStatus", tableName: "BraveShared", bundle: .module, value: "Status", comment: "")
     public static let supported = NSLocalizedString("RewardsInternalsSupported", tableName: "BraveShared", bundle: .module, value: "Supported", comment: "")
@@ -3688,14 +3688,14 @@ extension Strings {
     public static let shareInternalsTitle = NSLocalizedString("RewardsInternalsShareInternalsTitle", tableName: "BraveShared", bundle: .module, value: "Share Rewards Internals", comment: "'Rewards' as in 'Brave Rewards'")
     public static let share = NSLocalizedString("RewardsInternalsShare", tableName: "BraveShared", bundle: .module, value: "Share", comment: "")
     public static let sharableBasicTitle = NSLocalizedString("RewardsInternalsSharableBasicTitle", tableName: "BraveShared", bundle: .module, value: "Basic Info", comment: "")
-    public static let sharableBasicDescription = NSLocalizedString("RewardsInternalsSharableBasicDescription", tableName: "BraveShared", bundle: .module, value: "Wallet, device & balance info (always shared)", comment: "")
+    public static let sharableBasicDescription = NSLocalizedString("RewardsInternalsSharableBasicDescription", tableName: "BraveShared", bundle: .module, value: "Rewards profile, device & balance info (always shared)", comment: "")
     public static let sharableLogsDescription = NSLocalizedString("RewardsInternalsSharableLogsDescription", tableName: "BraveShared", bundle: .module, value: "Rewards specific logging", comment: "")
     public static let sharablePromotionsDescription = NSLocalizedString("RewardsInternalsSharablePromotionsDescription", tableName: "BraveShared", bundle: .module, value: "Any BAT promotions you have claimed or have pending from Ads or Grants", comment: "")
     public static let sharableContributionsDescription = NSLocalizedString("RewardsInternalsSharableContributionsDescription", tableName: "BraveShared", bundle: .module, value: "Any contributions made to publishers through tipping or auto-contribute", comment: "")
     public static let sharableDatabaseTitle = NSLocalizedString("RewardsInternalsSharableDatabaseTitle", tableName: "BraveShared", bundle: .module, value: "Rewards Database", comment: "")
     public static let sharableDatabaseDescription = NSLocalizedString("RewardsInternalsSharableDatabaseDescription", tableName: "BraveShared", bundle: .module, value: "The internal data store", comment: "")
     public static let sharingWarningTitle = NSLocalizedString("RewardsInternalsSharingWarningTitle", tableName: "BraveShared", bundle: .module, value: "Warning", comment: "")
-    public static let sharingWarningMessage = NSLocalizedString("RewardsInternalsSharingWarningMessage", tableName: "BraveShared", bundle: .module, value: "Data on this page may be sensitive. Treat them as you would your wallet private keys. Be careful who you share them with.", comment: "")
+    public static let sharingWarningMessage = NSLocalizedString("RewardsInternalsSharingWarningMessage", tableName: "BraveShared", bundle: .module, value: "Data on these pages may be sensitive. Be careful who you share them with.", comment: "")
   }
 }
 
@@ -3736,10 +3736,6 @@ extension Strings {
     )
     public static let settingsToggleMessage = NSLocalizedString("rewards.settingsToggleMessage", tableName: "BraveShared", bundle: .module,
       value: "Support content creators and publishers automatically by enabling Brave Private Ads. Brave Private Ads are privacy-respecting ads that give back to content creators.",
-      comment: ""
-    )
-    public static let settingsFooterMessage = NSLocalizedString("rewards.settingsFooterMessage", tableName: "BraveShared", bundle: .module,
-      value: "Brave Rewards payouts are temporarily unavailable on this device. Transfer your existing wallet funds to a desktop wallet to keep your tokens.",
       comment: ""
     )
     public static let onProviderText = NSLocalizedString("OnProviderText", tableName: "BraveShared", bundle: .module, value: "on %@", comment: "This is a suffix statement. example: SomeChannel on Twitter")
