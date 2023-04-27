@@ -24,15 +24,15 @@ base::Value::Dict BuildTotalsUserData(
 
   base::Value::List list;
   for (const auto& [ad_format, confirmations] : buckets) {
-    base::Value::Dict total;
+    base::Value::Dict dict;
 
-    total.Set(kAdFormatKey, ad_format);
+    dict.Set(kAdFormatKey, ad_format);
 
     for (const auto& [confirmation_type, count] : confirmations) {
-      total.Set(confirmation_type, count);
+      dict.Set(confirmation_type, count);
     }
 
-    list.Append(std::move(total));
+    list.Append(std::move(dict));
   }
 
   base::Value::Dict user_data;

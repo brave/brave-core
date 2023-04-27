@@ -53,28 +53,25 @@ bool IsMutated(const std::string& value) {
 
 base::Value::Dict GetFailedConfirmationsAsDictionary(
     const ConfirmationList& confirmations) {
-  base::Value::Dict dict;
-
   base::Value::List list;
+
   for (const auto& confirmation : confirmations) {
     DCHECK(IsValid(confirmation));
 
-    base::Value::Dict confirmation_dict;
+    base::Value::Dict dict;
 
-    confirmation_dict.Set("transaction_id", confirmation.transaction_id);
+    dict.Set("transaction_id", confirmation.transaction_id);
 
-    confirmation_dict.Set("creative_instance_id",
-                          confirmation.creative_instance_id);
+    dict.Set("creative_instance_id", confirmation.creative_instance_id);
 
-    confirmation_dict.Set("type", confirmation.type.ToString());
+    dict.Set("type", confirmation.type.ToString());
 
-    confirmation_dict.Set("ad_type", confirmation.ad_type.ToString());
+    dict.Set("ad_type", confirmation.ad_type.ToString());
 
-    confirmation_dict.Set(
-        "timestamp_in_seconds",
-        base::NumberToString(confirmation.created_at.ToDoubleT()));
+    dict.Set("timestamp_in_seconds",
+             base::NumberToString(confirmation.created_at.ToDoubleT()));
 
-    confirmation_dict.Set("created", confirmation.was_created);
+    dict.Set("created", confirmation.was_created);
 
     if (confirmation.opted_in) {
       // Token
@@ -83,7 +80,7 @@ base::Value::Dict GetFailedConfirmationsAsDictionary(
       if (!token_base64) {
         continue;
       }
-      confirmation_dict.Set("payment_token", *token_base64);
+      dict.Set("payment_token", *token_base64);
 
       // Blinded token
       const absl::optional<std::string> blinded_token_base64 =
@@ -91,7 +88,7 @@ base::Value::Dict GetFailedConfirmationsAsDictionary(
       if (!blinded_token_base64) {
         continue;
       }
-      confirmation_dict.Set("blinded_payment_token", *blinded_token_base64);
+      dict.Set("blinded_payment_token", *blinded_token_base64);
 
       // Unblinded token
       base::Value::Dict unblinded_token;
@@ -113,23 +110,22 @@ base::Value::Dict GetFailedConfirmationsAsDictionary(
           confirmation.opted_in->unblinded_token.signature;
       unblinded_token.Set("signature", *signature);
 
-      confirmation_dict.Set("token_info", std::move(unblinded_token));
+      dict.Set("token_info", std::move(unblinded_token));
 
       // User data
-      confirmation_dict.Set("user_data",
-                            confirmation.opted_in->user_data.fixed.Clone());
+      dict.Set("user_data", confirmation.opted_in->user_data.fixed.Clone());
 
       // Credential
       if (!confirmation.opted_in->credential_base64url) {
         continue;
       }
-      confirmation_dict.Set("credential",
-                            *confirmation.opted_in->credential_base64url);
+      dict.Set("credential", *confirmation.opted_in->credential_base64url);
     }
 
-    list.Append(std::move(confirmation_dict));
+    list.Append(std::move(dict));
   }
 
+  base::Value::Dict dict;
   dict.Set("failed_confirmations", std::move(list));
 
   return dict;
@@ -233,11 +229,10 @@ absl::optional<OptedInInfo> ConfirmationStateManager::GetOptedIn(
   }
 
   // Unblinded token
-  if (const base::Value::Dict* const unblinded_token =
-          dict.FindDict("token_info")) {
+  if (const auto* const unblinded_token_dict = dict.FindDict("token_info")) {
     // Value
     if (const std::string* const value =
-            unblinded_token->FindString("unblinded_token")) {
+            unblinded_token_dict->FindString("unblinded_token")) {
       opted_in.unblinded_token.value = privacy::cbr::UnblindedToken(*value);
     } else {
       return absl::nullopt;
@@ -245,7 +240,7 @@ absl::optional<OptedInInfo> ConfirmationStateManager::GetOptedIn(
 
     // Public key
     if (const std::string* const value =
-            unblinded_token->FindString("public_key")) {
+            unblinded_token_dict->FindString("public_key")) {
       opted_in.unblinded_token.public_key = privacy::cbr::PublicKey(*value);
     } else {
       return absl::nullopt;
@@ -253,7 +248,7 @@ absl::optional<OptedInInfo> ConfirmationStateManager::GetOptedIn(
 
     // Signature
     if (const std::string* const value =
-            unblinded_token->FindString("signature")) {
+            unblinded_token_dict->FindString("signature")) {
       opted_in.unblinded_token.signature = *value;
     } else {
       const absl::optional<std::string> unblinded_token_base64 =
@@ -274,7 +269,7 @@ absl::optional<OptedInInfo> ConfirmationStateManager::GetOptedIn(
   }
 
   // User data (opted_in.user_data.dynamic is recreated when redeeming a token)
-  if (const base::Value::Dict* const value = dict.FindDict("user_data")) {
+  if (const auto* const value = dict.FindDict("user_data")) {
     opted_in.user_data.fixed = value->Clone();
   } else {
     return absl::nullopt;
@@ -296,19 +291,17 @@ bool ConfirmationStateManager::GetFailedConfirmationsFromDictionary(
   DCHECK(confirmations);
 
   // Confirmations
-  const base::Value::List* const failed_confirmations =
-      dict.FindList("failed_confirmations");
-  if (!failed_confirmations) {
+  const auto* const list = dict.FindList("failed_confirmations");
+  if (!list) {
     BLOG(0, "Failed confirmations dictionary missing failed confirmations");
     return false;
   }
 
   ConfirmationList new_failed_confirmations;
 
-  for (const auto& failed_confirmation : *failed_confirmations) {
-    const base::Value::Dict* const failed_confirmation_dict =
-        failed_confirmation.GetIfDict();
-    if (!failed_confirmation_dict) {
+  for (const auto& item : *list) {
+    const auto* const item_dict = item.GetIfDict();
+    if (!item_dict) {
       BLOG(0, "Confirmation should be a dictionary");
       continue;
     }
@@ -317,7 +310,7 @@ bool ConfirmationStateManager::GetFailedConfirmationsFromDictionary(
 
     // Transaction id
     if (const std::string* const value =
-            failed_confirmation_dict->FindString("transaction_id")) {
+            item_dict->FindString("transaction_id")) {
       confirmation.transaction_id = *value;
     } else {
       // Migrate legacy confirmations
@@ -327,7 +320,7 @@ bool ConfirmationStateManager::GetFailedConfirmationsFromDictionary(
 
     // Creative instance id
     if (const std::string* const value =
-            failed_confirmation_dict->FindString("creative_instance_id")) {
+            item_dict->FindString("creative_instance_id")) {
       confirmation.creative_instance_id = *value;
     } else {
       BLOG(0, "Missing confirmation creative instance id");
@@ -335,8 +328,7 @@ bool ConfirmationStateManager::GetFailedConfirmationsFromDictionary(
     }
 
     // Type
-    if (const std::string* const value =
-            failed_confirmation_dict->FindString("type")) {
+    if (const std::string* const value = item_dict->FindString("type")) {
       confirmation.type = ConfirmationType(*value);
     } else {
       BLOG(0, "Missing confirmation type");
@@ -344,8 +336,7 @@ bool ConfirmationStateManager::GetFailedConfirmationsFromDictionary(
     }
 
     // Ad type
-    if (const std::string* const value =
-            failed_confirmation_dict->FindString("ad_type")) {
+    if (const std::string* const value = item_dict->FindString("ad_type")) {
       confirmation.ad_type = AdType(*value);
     } else {
       // Migrate legacy confirmations, this value is not used right now so safe
@@ -355,7 +346,7 @@ bool ConfirmationStateManager::GetFailedConfirmationsFromDictionary(
 
     // Created at
     if (const std::string* const value =
-            failed_confirmation_dict->FindString("timestamp_in_seconds")) {
+            item_dict->FindString("timestamp_in_seconds")) {
       double timestamp_as_double;
       if (!base::StringToDouble(*value, &timestamp_as_double)) {
         continue;
@@ -365,12 +356,11 @@ bool ConfirmationStateManager::GetFailedConfirmationsFromDictionary(
     }
 
     // Was created
-    const absl::optional<bool> was_created =
-        failed_confirmation_dict->FindBool("created");
+    const absl::optional<bool> was_created = item_dict->FindBool("created");
     confirmation.was_created = was_created.value_or(true);
 
     // Opted-in
-    confirmation.opted_in = GetOptedIn(*failed_confirmation_dict);
+    confirmation.opted_in = GetOptedIn(*item_dict);
 
     if (!IsValid(confirmation)) {
       BLOG(0, "Invalid confirmation");
@@ -466,29 +456,24 @@ bool ConfirmationStateManager::FromJson(const std::string& json) {
 
 bool ConfirmationStateManager::ParseFailedConfirmationsFromDictionary(
     const base::Value::Dict& dict) {
-  const base::Value::Dict* const confirmations = dict.FindDict("confirmations");
-  if (!confirmations) {
+  const auto* const confirmations_dict = dict.FindDict("confirmations");
+  if (!confirmations_dict) {
     return false;
   }
 
-  if (!GetFailedConfirmationsFromDictionary(*confirmations,
-                                            &failed_confirmations_)) {
-    return false;
-  }
-
-  return true;
+  return GetFailedConfirmationsFromDictionary(*confirmations_dict,
+                                              &failed_confirmations_);
 }
 
 bool ConfirmationStateManager::ParseUnblindedTokensFromDictionary(
     const base::Value::Dict& dict) {
-  const base::Value::List* const unblinded_tokens =
-      dict.FindList("unblinded_tokens");
-  if (!unblinded_tokens) {
+  const auto* const list = dict.FindList("unblinded_tokens");
+  if (!list) {
     return false;
   }
 
   privacy::UnblindedTokenList filtered_unblinded_tokens =
-      privacy::UnblindedTokensFromValue(*unblinded_tokens);
+      privacy::UnblindedTokensFromValue(*list);
 
   if (!filtered_unblinded_tokens.empty()) {
     DCHECK(wallet_.IsValid());
@@ -514,14 +499,13 @@ bool ConfirmationStateManager::ParseUnblindedTokensFromDictionary(
 
 bool ConfirmationStateManager::ParseUnblindedPaymentTokensFromDictionary(
     const base::Value::Dict& dict) {
-  const base::Value::List* const unblinded_tokens =
-      dict.FindList("unblinded_payment_tokens");
-  if (!unblinded_tokens) {
+  const auto* const list = dict.FindList("unblinded_payment_tokens");
+  if (!list) {
     return false;
   }
 
   unblinded_payment_tokens_.SetTokens(
-      privacy::UnblindedPaymentTokensFromValue(*unblinded_tokens));
+      privacy::UnblindedPaymentTokensFromValue(*list));
 
   return true;
 }

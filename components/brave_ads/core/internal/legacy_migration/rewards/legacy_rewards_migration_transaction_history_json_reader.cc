@@ -18,13 +18,7 @@ absl::optional<TransactionList> ReadTransactionHistory(
     return absl::nullopt;
   }
 
-  const absl::optional<TransactionList> transaction_history =
-      ParseTransactionHistory(root->GetDict());
-  if (!transaction_history) {
-    return absl::nullopt;
-  }
-
-  return *transaction_history;
+  return ParseTransactionHistory(root->GetDict());
 }
 
 }  // namespace brave_ads::rewards::json::reader

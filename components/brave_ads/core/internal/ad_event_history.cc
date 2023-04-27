@@ -9,6 +9,7 @@
 #include "base/containers/extend.h"
 #include "base/containers/flat_map.h"
 #include "base/ranges/algorithm.h"
+#include "base/strings/strcat.h"
 #include "base/time/time.h"
 
 namespace brave_ads {
@@ -17,7 +18,7 @@ namespace {
 
 std::string GetTypeId(const std::string& ad_type,
                       const std::string& confirmation_type) {
-  return ad_type + confirmation_type;
+  return base::StrCat({ad_type, confirmation_type});
 }
 
 void PurgeHistoryOlderThan(std::vector<base::Time>* history,

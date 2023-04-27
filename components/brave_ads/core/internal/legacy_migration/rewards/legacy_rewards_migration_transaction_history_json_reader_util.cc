@@ -22,14 +22,14 @@ constexpr char kRedemptionValueKey[] = "estimated_redemption_value";
 constexpr char kConfirmationTypeKey[] = "confirmation_type";
 
 absl::optional<TransactionInfo> ParseTransaction(
-    const base::Value::Dict& value) {
+    const base::Value::Dict& dict) {
   TransactionInfo transaction;
 
   // Id
   transaction.id = base::GUID::GenerateRandomV4().AsLowercaseString();
 
   // Created at
-  const std::string* const created_at = value.FindString(kCreatedAtKey);
+  const std::string* const created_at = dict.FindString(kCreatedAtKey);
   if (!created_at) {
     return absl::nullopt;
   }
@@ -42,7 +42,7 @@ absl::optional<TransactionInfo> ParseTransaction(
 
   // Value
   const absl::optional<double> redemption_value =
-      value.FindDouble(kRedemptionValueKey);
+      dict.FindDouble(kRedemptionValueKey);
   if (!redemption_value) {
     return absl::nullopt;
   }
@@ -50,7 +50,7 @@ absl::optional<TransactionInfo> ParseTransaction(
 
   // Confirmation type
   const std::string* const confirmation_type =
-      value.FindString(kConfirmationTypeKey);
+      dict.FindString(kConfirmationTypeKey);
   if (!confirmation_type) {
     return absl::nullopt;
   }
@@ -83,15 +83,13 @@ absl::optional<TransactionList> GetTransactionsFromList(
 }  // namespace
 
 absl::optional<TransactionList> ParseTransactionHistory(
-    const base::Value::Dict& value) {
-  const base::Value::Dict* const transaction_history =
-      value.FindDict(kTransactionHistoryKey);
+    const base::Value::Dict& dict) {
+  const auto* const transaction_history = dict.FindDict(kTransactionHistoryKey);
   if (!transaction_history) {
     return TransactionList{};
   }
 
-  const base::Value::List* const list =
-      transaction_history->FindList(kTransactionListKey);
+  const auto* const list = transaction_history->FindList(kTransactionListKey);
   if (!list) {
     return absl::nullopt;
   }

@@ -26,34 +26,34 @@ constexpr char kPublicKeyKey[] = "publicKey";
 }  // namespace
 
 std::string WriteConfirmationPayload(const ConfirmationInfo& confirmation) {
-  base::Value::Dict payload;
+  base::Value::Dict dict;
 
-  payload.Set(kTransactionIdKey, confirmation.transaction_id);
+  dict.Set(kTransactionIdKey, confirmation.transaction_id);
 
-  payload.Set(kCreativeInstanceIdKey, confirmation.creative_instance_id);
+  dict.Set(kCreativeInstanceIdKey, confirmation.creative_instance_id);
 
-  payload.Set(kTypeKey, confirmation.type.ToString());
+  dict.Set(kTypeKey, confirmation.type.ToString());
 
   if (confirmation.opted_in) {
-    base::Value::List blinded_tokens;
+    base::Value::List list;
     if (const absl::optional<std::string> value =
             confirmation.opted_in->blinded_token.EncodeBase64()) {
-      blinded_tokens.Append(*value);
+      list.Append(*value);
     }
-    payload.Set(kBlindedTokensKey, std::move(blinded_tokens));
+    dict.Set(kBlindedTokensKey, std::move(list));
 
     if (const absl::optional<std::string> value =
             confirmation.opted_in->unblinded_token.public_key.EncodeBase64()) {
-      payload.Set(kPublicKeyKey, *value);
+      dict.Set(kPublicKeyKey, *value);
     }
 
-    payload.Merge(confirmation.opted_in->user_data.dynamic.Clone());
+    dict.Merge(confirmation.opted_in->user_data.dynamic.Clone());
 
-    payload.Merge(confirmation.opted_in->user_data.fixed.Clone());
+    dict.Merge(confirmation.opted_in->user_data.fixed.Clone());
   }
 
   std::string json;
-  CHECK(base::JSONWriter::Write(payload, &json));
+  CHECK(base::JSONWriter::Write(dict, &json));
   return json;
 }
 

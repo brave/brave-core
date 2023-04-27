@@ -26,7 +26,7 @@ base::Value::Dict PurchaseIntentSignalHistoryToValue(
 PurchaseIntentSignalHistoryInfo PurchaseIntentSignalHistoryFromValue(
     const base::Value::Dict& dict) {
   base::Time created_at;
-  if (const auto* value = dict.FindString("timestamp_in_seconds")) {
+  if (const auto* const value = dict.FindString("timestamp_in_seconds")) {
     double value_as_double = 0;
     if (base::StringToDouble(*value, &value_as_double)) {
       created_at = base::Time::FromDoubleT(value_as_double);

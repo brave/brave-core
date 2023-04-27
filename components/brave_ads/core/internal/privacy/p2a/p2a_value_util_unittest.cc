@@ -30,10 +30,10 @@ TEST(BraveAdsP2AValueUtilTest, NoQuestionsToValue) {
   // Arrange
 
   // Act
-  const base::Value::List value = QuestionsToValue({});
+  const base::Value::List list = QuestionsToValue({});
 
   // Assert
-  EXPECT_TRUE(value.empty());
+  EXPECT_TRUE(list.empty());
 }
 
 }  // namespace brave_ads::privacy::p2a

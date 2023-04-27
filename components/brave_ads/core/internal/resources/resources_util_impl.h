@@ -42,15 +42,11 @@ base::expected<T, std::string> ReadFileAndParseResourceOnBackgroundThread(
     }
 
     root = base::JSONReader::Read(content);
-    if (!root) {
+    if (!root || !root->is_dict()) {
       return base::unexpected("Failed to parse json");
     }
     // `content` can be up to 10 MB, so we keep the scope of this object to this
     // block to release its memory as soon as possible.
-  }
-
-  if (!root->is_dict()) {
-    return base::unexpected("JSON is not a dictionary");
   }
 
   return T::CreateFromValue(std::move(root).value().TakeDict());

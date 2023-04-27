@@ -15,7 +15,7 @@ namespace brave_ads {
 
 struct SavedAdInfo final {
   base::Value::Dict ToValue() const;
-  void FromValue(const base::Value::Dict& root);
+  void FromValue(const base::Value::Dict& dict);
 
   std::string creative_instance_id;
 };

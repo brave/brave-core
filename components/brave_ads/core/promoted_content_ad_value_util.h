@@ -13,7 +13,7 @@ namespace brave_ads {
 struct PromotedContentAdInfo;
 
 base::Value::Dict PromotedContentAdToValue(const PromotedContentAdInfo& ad);
-PromotedContentAdInfo PromotedContentAdFromValue(const base::Value::Dict& root);
+PromotedContentAdInfo PromotedContentAdFromValue(const base::Value::Dict& dict);
 
 }  // namespace brave_ads
 

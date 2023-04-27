@@ -21,7 +21,7 @@ bool DidOverrideCommandLineSwitches() {
       base::CommandLine::ForCurrentProcess();
 
   return base::ranges::any_of(kSwitches,
-                              [command_line](const auto* switch_string) {
+                              [command_line](const auto* const switch_string) {
                                 DCHECK(switch_string);
                                 return command_line->HasSwitch(switch_string);
                               });

@@ -30,15 +30,21 @@ struct ClientInfo final {
   ~ClientInfo();
 
   base::Value::Dict ToValue() const;
-  bool FromValue(const base::Value::Dict& root);
+  bool FromValue(const base::Value::Dict& dict);
 
   std::string ToJson() const;
   bool FromJson(const std::string& json);
 
   AdPreferencesInfo ad_preferences;
   HistoryItemList history_items;
-  base::flat_map<std::string, std::map<std::string, bool>> seen_ads;
-  base::flat_map<std::string, std::map<std::string, bool>> seen_advertisers;
+  base::flat_map<
+      /*ad_type*/ std::string,
+      std::map</*creative_instance_id*/ std::string, /*seen_ad*/ bool>>
+      seen_ads;
+  base::flat_map<
+      /*ad_type*/ std::string,
+      std::map</*advertiser_id*/ std::string, /*seen_advertiser*/ bool>>
+      seen_advertisers;
   TextClassificationProbabilityList text_classification_probabilities;
   PurchaseIntentSignalHistoryMap purchase_intent_signal_history;
 };

@@ -20,19 +20,19 @@ namespace brave_ads {
 
 namespace {
 
-constexpr uint16_t kCurrentSchemaVersion = 1;
-constexpr char kSchemaVersionPath[] = "schemaVersion";
-constexpr char kResourcePath[] = "resources";
-constexpr char kResourceIdPath[] = "id";
-constexpr char kResourceFilenamePath[] = "filename";
-constexpr char kResourceVersionPath[] = "version";
+constexpr int kCurrentSchemaVersion = 1;
+constexpr char kSchemaVersionKey[] = "schemaVersion";
+constexpr char kResourcesKey[] = "resources";
+constexpr char kResourceIdKey[] = "id";
+constexpr char kResourceFilenameKey[] = "filename";
+constexpr char kResourceVersionKey[] = "version";
 
 constexpr char kComponentName[] = "Brave Ads Resources (%s)";
 
 constexpr base::FilePath::CharType kManifestFile[] =
     FILE_PATH_LITERAL("resources.json");
 
-std::string GetIndex(const std::string& id, int version) {
+std::string GetResourceKey(const std::string& id, int version) {
   return id + base::NumberToString(version);
 }
 
@@ -71,7 +71,7 @@ void ResourceComponent::NotifyDidUpdateResourceComponent(
 
 absl::optional<base::FilePath> ResourceComponent::GetPath(const std::string& id,
                                                           const int version) {
-  const std::string index = GetIndex(id, version);
+  const std::string index = GetResourceKey(id, version);
   const auto iter = resources_.find(index);
   if (iter == resources_.cend()) {
     return absl::nullopt;
@@ -146,16 +146,16 @@ void ResourceComponent::OnComponentReady(const std::string& component_id,
 void ResourceComponent::OnGetManifest(const std::string& component_id,
                                       const base::FilePath& install_dir,
                                       const std::string& json) {
-  VLOG(8) << "resource manifest: " << json;
+  VLOG(8) << "Resource manifest JSON: " << json;
 
-  absl::optional<base::Value> manifest = base::JSONReader::Read(json);
-  if (!manifest) {
-    VLOG(1) << "Failed to parse resource manifest";
+  const absl::optional<base::Value> root = base::JSONReader::Read(json);
+  if (!root || !root->is_dict()) {
+    VLOG(1) << "Failed to parse resource json";
     return;
   }
+  const base::Value::Dict& dict = root->GetDict();
 
-  const absl::optional<int> schema_version =
-      manifest->FindIntPath(kSchemaVersionPath);
+  const absl::optional<int> schema_version = dict.FindInt(kSchemaVersionKey);
   if (!schema_version) {
     VLOG(1) << "Resource schema version is missing";
     return;
@@ -166,50 +166,55 @@ void ResourceComponent::OnGetManifest(const std::string& component_id,
     return;
   }
 
-  const base::Value* const resource_values =
-      manifest->FindListPath(kResourcePath);
-  if (!resource_values) {
-    VLOG(1) << "No resources found";
+  const auto* const resources_list = dict.FindList(kResourcesKey);
+  if (!resources_list) {
+    VLOG(1) << "Resource is missing";
     return;
   }
 
-  for (const auto& resource_value : resource_values->GetList()) {
-    ResourceInfo resource;
+  for (const auto& item : *resources_list) {
+    const auto* item_dict = item.GetIfDict();
+    if (!item_dict) {
+      VLOG(1) << "Failed to parse resource manifest";
+      return;
+    }
 
-    const std::string* const id =
-        resource_value.FindStringPath(kResourceIdPath);
-    if (!id) {
+    const std::string* const resource_id =
+        item_dict->FindString(kResourceIdKey);
+    if (!resource_id) {
       VLOG(1) << "Resource id is missing";
       continue;
     }
-    resource.id = *id;
 
-    const absl::optional<int> version =
-        resource_value.FindIntPath(kResourceVersionPath);
+    const absl::optional<int> version = item_dict->FindInt(kResourceVersionKey);
     if (!version) {
-      VLOG(1) << *id << " resource version is missing";
+      VLOG(1) << *resource_id << " resource version is missing";
       continue;
     }
+
+    const std::string* const filename =
+        item_dict->FindString(kResourceFilenameKey);
+    if (!filename) {
+      VLOG(1) << *resource_id << " resource filename is missing";
+      continue;
+    }
+
+    ResourceInfo resource;
+    resource.id = *resource_id;
     resource.version = *version;
+    resource.path = install_dir.AppendASCII(*filename);
 
-    const std::string* const path =
-        resource_value.FindStringPath(kResourceFilenamePath);
-    if (!path) {
-      VLOG(1) << *id << " resource path is missing";
-      continue;
-    }
-    resource.path = install_dir.AppendASCII(*path);
-
-    const std::string index = GetIndex(resource.id, resource.version);
-    auto iter = resources_.find(index);
+    const std::string resource_key =
+        GetResourceKey(resource.id, resource.version);
+    auto iter = resources_.find(resource_key);
     if (iter != resources_.cend()) {
-      VLOG(1) << "Updating resource " << resource.id << " version "
+      VLOG(1) << "Updating " << resource.id << " resource to version "
               << resource.version;
       iter->second = resource;
     } else {
-      VLOG(1) << "Adding resource " << resource.id << " version "
+      VLOG(1) << "Adding " << resource.id << " resource version "
               << resource.version;
-      resources_.insert({index, resource});
+      resources_.insert({resource_key, resource});
     }
   }
 

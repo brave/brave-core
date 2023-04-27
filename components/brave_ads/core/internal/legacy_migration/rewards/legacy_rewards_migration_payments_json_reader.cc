@@ -17,12 +17,7 @@ absl::optional<PaymentList> ReadPayments(const std::string& json) {
     return absl::nullopt;
   }
 
-  const absl::optional<PaymentList> payments = ParsePayments(root->GetDict());
-  if (!payments) {
-    return absl::nullopt;
-  }
-
-  return *payments;
+  return ParsePayments(root->GetDict());
 }
 
 }  // namespace brave_ads::rewards::json::reader

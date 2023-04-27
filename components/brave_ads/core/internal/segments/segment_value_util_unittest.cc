@@ -36,15 +36,15 @@ TEST(BraveAdsSegmentValueUtilTest, NoSegmentsToValue) {
   // Arrange
 
   // Act
-  const base::Value::List value = SegmentsToValue({});
+  const base::Value::List list = SegmentsToValue({});
 
   // Assert
-  EXPECT_TRUE(value.empty());
+  EXPECT_TRUE(list.empty());
 }
 
 TEST(BraveAdsSegmentValueUtilTest, SegmentsFromValue) {
   // Arrange
-  const base::Value::List value = base::test::ParseJsonList(kSegmentsAsJson);
+  const base::Value::List list = base::test::ParseJsonList(kSegmentsAsJson);
 
   // Act
 
@@ -52,15 +52,15 @@ TEST(BraveAdsSegmentValueUtilTest, SegmentsFromValue) {
   const SegmentList expected_segments = {"technology & computing",
                                          "personal finance-banking",
                                          "food & drink-restaurants"};
-  EXPECT_EQ(expected_segments, SegmentsFromValue(value));
+  EXPECT_EQ(expected_segments, SegmentsFromValue(list));
 }
 
 TEST(BraveAdsSegmentValueUtilTest, NoSegmentsFromValue) {
   // Arrange
-  const base::Value::List value = base::test::ParseJsonList(kNoSegmentsAsJson);
+  const base::Value::List list = base::test::ParseJsonList(kNoSegmentsAsJson);
 
   // Act
-  const SegmentList segments = SegmentsFromValue(value);
+  const SegmentList segments = SegmentsFromValue(list);
 
   // Assert
   EXPECT_TRUE(segments.empty());

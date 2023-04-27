@@ -23,12 +23,12 @@ class BraveAdsCategoryContentValueUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsCategoryContentValueUtilTest, FromValue) {
   // Arrange
-  const base::Value::Dict value = base::test::ParseJsonDict(kJson);
+  const base::Value::Dict dict = base::test::ParseJsonDict(kJson);
 
   // Act
 
   // Assert
-  EXPECT_EQ(BuildCategoryContent(kSegment), CategoryContentFromValue(value));
+  EXPECT_EQ(BuildCategoryContent(kSegment), CategoryContentFromValue(dict));
 }
 
 TEST_F(BraveAdsCategoryContentValueUtilTest, ToValue) {

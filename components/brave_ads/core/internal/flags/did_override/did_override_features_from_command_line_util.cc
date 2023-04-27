@@ -77,7 +77,7 @@ base::flat_set<std::string> ParseCommandLineSwitches() {
 bool DidOverrideFeaturesFromCommandLine() {
   const auto brave_ads_features = ParseCommandLineSwitches();
   return base::ranges::any_of(kFeatures, [&brave_ads_features](
-                                             const auto* feature) {
+                                             const auto* const feature) {
     DCHECK(feature);
 
     return base::FeatureList::GetInstance()->IsFeatureOverriddenFromCommandLine(

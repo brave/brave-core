@@ -57,7 +57,7 @@ TEST_F(BraveAdsNotificationAdValueUtilTest, ToListValue) {
 
 TEST_F(BraveAdsNotificationAdValueUtilTest, FromValue) {
   // Arrange
-  const base::Value::Dict value = base::test::ParseJsonDict(kJson);
+  const base::Value::Dict dict = base::test::ParseJsonDict(kJson);
 
   // Act
 
@@ -66,12 +66,12 @@ TEST_F(BraveAdsNotificationAdValueUtilTest, FromValue) {
       BuildCreativeNotificationAd(/*should_use_random_guids*/ false);
   const NotificationAdInfo expected_ad =
       BuildNotificationAd(creative_ad, kPlacementId);
-  EXPECT_EQ(expected_ad, NotificationAdFromValue(value));
+  EXPECT_EQ(expected_ad, NotificationAdFromValue(dict));
 }
 
 TEST_F(BraveAdsNotificationAdValueUtilTest, FromListValue) {
   // Arrange
-  const base::Value::List value = base::test::ParseJsonList(kListJson);
+  const base::Value::List list = base::test::ParseJsonList(kListJson);
 
   // Act
 
@@ -81,7 +81,7 @@ TEST_F(BraveAdsNotificationAdValueUtilTest, FromListValue) {
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad, kPlacementId);
   const base::circular_deque<NotificationAdInfo> expected_ads = {ad, ad};
   EXPECT_TRUE(
-      base::ranges::equal(expected_ads, NotificationAdsFromValue(value)));
+      base::ranges::equal(expected_ads, NotificationAdsFromValue(list)));
 }
 
 }  // namespace brave_ads

@@ -16,12 +16,12 @@ constexpr char kIssuersKey[] = "issuers";
 
 }  // namespace
 
-absl::optional<int> ParsePing(const base::Value& value) {
-  return value.FindIntKey(kPingKey);
+absl::optional<int> ParsePing(const base::Value::Dict& dict) {
+  return dict.FindInt(kPingKey);
 }
 
-absl::optional<IssuerList> ParseIssuers(const base::Value::Dict& value) {
-  const base::Value::List* const list = value.FindList(kIssuersKey);
+absl::optional<IssuerList> ParseIssuers(const base::Value::Dict& dict) {
+  const auto* const list = dict.FindList(kIssuersKey);
   if (!list) {
     return absl::nullopt;
   }

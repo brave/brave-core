@@ -15,7 +15,7 @@ namespace brave_ads {
 
 struct FilteredCategoryInfo final {
   base::Value::Dict ToValue() const;
-  void FromValue(const base::Value::Dict& root);
+  void FromValue(const base::Value::Dict& dict);
 
   std::string name;
 };

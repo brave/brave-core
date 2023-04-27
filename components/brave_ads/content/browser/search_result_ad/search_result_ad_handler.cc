@@ -116,9 +116,9 @@ void SearchResultAdHandler::OnRetrieveSearchResultAdEntities(
 
   std::vector<std::string> placement_ids;
   if (search_result_ads_ && should_trigger_viewed_event_) {
-    base::ranges::transform(*search_result_ads_,
-                            std::back_inserter(placement_ids),
-                            [](const auto& value) { return value.first; });
+    base::ranges::transform(
+        *search_result_ads_, std::back_inserter(placement_ids),
+        [](const auto& search_result_ad) { return search_result_ad.first; });
   }
 
   std::move(callback).Run(std::move(placement_ids));

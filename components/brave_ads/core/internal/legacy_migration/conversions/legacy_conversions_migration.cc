@@ -48,34 +48,34 @@ void SuccessfullyMigrated(InitializeCallback callback) {
 absl::optional<ConversionQueueItemInfo> GetFromDictionary(
     const base::Value::Dict& dict) {
   // Timestamp
-  const std::string* const timestamp_value = dict.FindString(kTimestampKey);
-  if (!timestamp_value) {
+  const std::string* const timestamp = dict.FindString(kTimestampKey);
+  if (!timestamp) {
     return absl::nullopt;
   }
 
-  double timestamp;
-  if (!base::StringToDouble(*timestamp_value, &timestamp)) {
+  double timestamp_as_double;
+  if (!base::StringToDouble(*timestamp, &timestamp_as_double)) {
     return absl::nullopt;
   }
 
   // Creative set id
-  const std::string* const creative_set_id_value =
-      dict.FindString(kCreativeSetIdKey);
-  if (!creative_set_id_value) {
+  const std::string* const creative_set_id = dict.FindString(kCreativeSetIdKey);
+  if (!creative_set_id) {
     return absl::nullopt;
   }
 
   // Creative instance id
-  const auto* creative_instance_id_value =
+  const auto* const creative_instance_id =
       dict.FindString(kCreativeInstanceIdKey);
-  if (!creative_instance_id_value) {
+  if (!creative_instance_id) {
     return absl::nullopt;
   }
 
   ConversionQueueItemInfo conversion_queue_item;
-  conversion_queue_item.creative_set_id = *creative_set_id_value;
-  conversion_queue_item.creative_instance_id = *creative_instance_id_value;
-  conversion_queue_item.process_at = base::Time::FromDoubleT(timestamp);
+  conversion_queue_item.creative_set_id = *creative_set_id;
+  conversion_queue_item.creative_instance_id = *creative_instance_id;
+  conversion_queue_item.process_at =
+      base::Time::FromDoubleT(timestamp_as_double);
 
   return conversion_queue_item;
 }
@@ -85,13 +85,13 @@ absl::optional<ConversionQueueItemList> GetFromList(
   ConversionQueueItemList conversion_queue_items;
 
   for (const auto& item : list) {
-    const base::Value::Dict* const dict = item.GetIfDict();
-    if (!dict) {
+    const auto* const item_dict = item.GetIfDict();
+    if (!item_dict) {
       return absl::nullopt;
     }
 
     const absl::optional<ConversionQueueItemInfo> conversion_queue_item =
-        GetFromDictionary(*dict);
+        GetFromDictionary(*item_dict);
     if (!conversion_queue_item) {
       return absl::nullopt;
     }
@@ -107,9 +107,8 @@ absl::optional<ConversionQueueItemList> FromJson(const std::string& json) {
   if (!root || !root->is_dict()) {
     return absl::nullopt;
   }
-  const base::Value::Dict& dict = root->GetDict();
 
-  const base::Value::List* const list = dict.FindList(kListKey);
+  const auto* const list = root->GetDict().FindList(kListKey);
   if (!list) {
     return absl::nullopt;
   }

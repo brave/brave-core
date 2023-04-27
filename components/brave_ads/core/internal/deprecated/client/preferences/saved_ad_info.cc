@@ -13,8 +13,8 @@ base::Value::Dict SavedAdInfo::ToValue() const {
   return dict;
 }
 
-void SavedAdInfo::FromValue(const base::Value::Dict& root) {
-  if (const auto* value = root.FindString("uuid")) {
+void SavedAdInfo::FromValue(const base::Value::Dict& dict) {
+  if (const auto* const value = dict.FindString("uuid")) {
     creative_instance_id = *value;
   }
 }

@@ -28,7 +28,7 @@ class BraveAdsInlineContentAdValueUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsInlineContentAdValueUtilTest, FromValue) {
   // Arrange
-  const base::Value::Dict value = base::test::ParseJsonDict(kJson);
+  const base::Value::Dict dict = base::test::ParseJsonDict(kJson);
 
   // Act
 
@@ -37,7 +37,7 @@ TEST_F(BraveAdsInlineContentAdValueUtilTest, FromValue) {
       BuildCreativeInlineContentAd(/*should_use_random_guids*/ false);
   const InlineContentAdInfo expected_ad =
       BuildInlineContentAd(creative_ad, kPlacementId);
-  EXPECT_EQ(expected_ad, InlineContentAdFromValue(value));
+  EXPECT_EQ(expected_ad, InlineContentAdFromValue(dict));
 }
 
 TEST_F(BraveAdsInlineContentAdValueUtilTest, ToValue) {

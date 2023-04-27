@@ -45,10 +45,10 @@ TEST_F(BraveAdsHistoryItemValueUtilTest, FromValue) {
   // Arrange
   AdvanceClockTo(TimeFromString("22 March 2023", /*is_local*/ false));
 
-  const base::Value::List value = base::test::ParseJsonList(kJson);
+  const base::Value::List list = base::test::ParseJsonList(kJson);
 
   // Act
-  const HistoryItemList history_items = HistoryItemsFromValue(value);
+  const HistoryItemList history_items = HistoryItemsFromValue(list);
 
   // Assert
   EXPECT_TRUE(base::ranges::equal(BuildHistoryItems(), history_items));

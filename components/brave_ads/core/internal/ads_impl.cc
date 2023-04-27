@@ -13,37 +13,23 @@
 #include "brave/components/brave_ads/core/ad_content_value_util.h"
 #include "brave/components/brave_ads/core/ad_info.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
-#include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
-#include "brave/components/brave_ads/core/internal/ads/inline_content_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_info.h"
-#include "brave/components/brave_ads/core/internal/conversions/conversions.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_manager.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/conversions/legacy_conversions_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/notifications/legacy_notification_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration.h"
-#include "brave/components/brave_ads/core/internal/processors/behavioral/purchase_intent/purchase_intent_processor.h"
-#include "brave/components/brave_ads/core/internal/processors/contextual/text_classification/text_classification_processor.h"
-#include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_processor.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/multi_armed_bandits/epsilon_greedy_bandit_resource.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
-#include "brave/components/brave_ads/core/internal/resources/contextual/text_classification/text_classification_resource.h"
-#include "brave/components/brave_ads/core/internal/resources/contextual/text_embedding/text_embedding_resource.h"
 #include "brave/components/brave_ads/core/internal/studies/studies_util.h"
-#include "brave/components/brave_ads/core/internal/transfer/transfer.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
-#include "brave/components/brave_ads/core/internal/user_attention/user_reactions/user_reactions.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
 namespace brave_ads {
@@ -264,11 +250,12 @@ void AdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   DiagnosticManager::GetInstance().GetDiagnostics(std::move(callback));
 }
 
-mojom::UserReactionType AdsImpl::ToggleLikeAd(base::Value::Dict value) {
+mojom::UserReactionType AdsImpl::ToggleLikeAd(const base::Value::Dict& value) {
   return HistoryManager::GetInstance().LikeAd(AdContentFromValue(value));
 }
 
-mojom::UserReactionType AdsImpl::ToggleDislikeAd(base::Value::Dict value) {
+mojom::UserReactionType AdsImpl::ToggleDislikeAd(
+    const base::Value::Dict& value) {
   return HistoryManager::GetInstance().DislikeAd(AdContentFromValue(value));
 }
 
@@ -286,11 +273,11 @@ mojom::UserReactionType AdsImpl::ToggleDislikeCategory(
                                                        user_reaction_type);
 }
 
-bool AdsImpl::ToggleSaveAd(base::Value::Dict value) {
+bool AdsImpl::ToggleSaveAd(const base::Value::Dict& value) {
   return HistoryManager::GetInstance().ToggleSaveAd(AdContentFromValue(value));
 }
 
-bool AdsImpl::ToggleMarkAdAsInappropriate(base::Value::Dict value) {
+bool AdsImpl::ToggleMarkAdAsInappropriate(const base::Value::Dict& value) {
   return HistoryManager::GetInstance().ToggleMarkAdAsInappropriate(
       AdContentFromValue(value));
 }
