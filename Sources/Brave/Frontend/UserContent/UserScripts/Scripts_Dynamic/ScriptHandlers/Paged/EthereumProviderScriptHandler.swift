@@ -128,7 +128,7 @@ class EthereumProviderScriptHandler: TabContentScript {
         replyHandler(nil, "Invalid args")
         return
       }
-      provider.request(requestPayload, completion: handleResponse)
+      provider.sendAsync(requestPayload, completion: handleResponse)
     case .send:
       struct SendPayload {
         var method: String
@@ -148,8 +148,7 @@ class EthereumProviderScriptHandler: TabContentScript {
       
       if sendPayload.method.isEmpty {
         if let params = sendPayload.params, params.tag != .null {
-          // Same as sendAsync
-          provider.request(params, completion: handleResponse)
+          provider.sendAsync(params, completion: handleResponse)
         } else {
           // Empty method with no params is not valid
           replyHandler(nil, "Invalid args")
