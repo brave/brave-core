@@ -7,6 +7,7 @@
 
 #include <sstream>
 
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/blinded_token_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/challenge_bypass_ristretto_unittest_constants.h"
@@ -27,7 +28,9 @@ constexpr char kDLEQProofBase64[] =
     R"(8vp0QItdO24oqOZB8m8rCB85VUftBhnpZ8kDovYP9AvvlaEpwDFbTi72B1ZEJmumS5TazlWlLBlI4HrWDCMvDg==)";
 }  // namespace
 
-TEST(BraveAdsDLEQProofTest, FailToInitialize) {
+class BraveAdsDLEQProofTest : public UnitTestBase {};
+
+TEST_F(BraveAdsDLEQProofTest, FailToInitialize) {
   // Arrange
   const DLEQProof dleq_proof;
 
@@ -37,7 +40,7 @@ TEST(BraveAdsDLEQProofTest, FailToInitialize) {
   EXPECT_FALSE(dleq_proof.has_value());
 }
 
-TEST(BraveAdsDLEQProofTest, FailToInitializeWithEmptyBase64) {
+TEST_F(BraveAdsDLEQProofTest, FailToInitializeWithEmptyBase64) {
   // Arrange
   const DLEQProof dleq_proof("");
 
@@ -47,7 +50,7 @@ TEST(BraveAdsDLEQProofTest, FailToInitializeWithEmptyBase64) {
   EXPECT_FALSE(dleq_proof.has_value());
 }
 
-TEST(BraveAdsDLEQProofTest, FailToInitializeWithInvalidBase64) {
+TEST_F(BraveAdsDLEQProofTest, FailToInitializeWithInvalidBase64) {
   // Arrange
   const DLEQProof dleq_proof(kInvalidBase64);
 
@@ -57,7 +60,7 @@ TEST(BraveAdsDLEQProofTest, FailToInitializeWithInvalidBase64) {
   EXPECT_FALSE(dleq_proof.has_value());
 }
 
-TEST(BraveAdsDLEQProofTest, FailToInitializeWithInvalidBlindedToken) {
+TEST_F(BraveAdsDLEQProofTest, FailToInitializeWithInvalidBlindedToken) {
   // Arrange
   const DLEQProof dleq_proof(GetInvalidBlindedToken(), GetSignedToken(),
                              GetSigningKey());
@@ -68,7 +71,7 @@ TEST(BraveAdsDLEQProofTest, FailToInitializeWithInvalidBlindedToken) {
   EXPECT_FALSE(dleq_proof.has_value());
 }
 
-TEST(BraveAdsDLEQProofTest, FailToInitializeWithInvalidSignedToken) {
+TEST_F(BraveAdsDLEQProofTest, FailToInitializeWithInvalidSignedToken) {
   // Arrange
   const DLEQProof dleq_proof(GetBlindedToken(), GetInvalidSignedToken(),
                              GetSigningKey());
@@ -79,7 +82,7 @@ TEST(BraveAdsDLEQProofTest, FailToInitializeWithInvalidSignedToken) {
   EXPECT_FALSE(dleq_proof.has_value());
 }
 
-TEST(BraveAdsDLEQProofTest, FailToInitializeWithInvalidSigningKey) {
+TEST_F(BraveAdsDLEQProofTest, FailToInitializeWithInvalidSigningKey) {
   // Arrange
   const DLEQProof dleq_proof(GetBlindedToken(), GetSignedToken(),
                              GetInvalidSigningKey());
@@ -90,7 +93,7 @@ TEST(BraveAdsDLEQProofTest, FailToInitializeWithInvalidSigningKey) {
   EXPECT_FALSE(dleq_proof.has_value());
 }
 
-TEST(BraveAdsDLEQProofTest, DecodeBase64) {
+TEST_F(BraveAdsDLEQProofTest, DecodeBase64) {
   // Arrange
 
   // Act
@@ -100,7 +103,7 @@ TEST(BraveAdsDLEQProofTest, DecodeBase64) {
   EXPECT_TRUE(dleq_proof.has_value());
 }
 
-TEST(BraveAdsDLEQProofTest, FailToDecodeEmptyBase64) {
+TEST_F(BraveAdsDLEQProofTest, FailToDecodeEmptyBase64) {
   // Arrange
 
   // Act
@@ -110,7 +113,7 @@ TEST(BraveAdsDLEQProofTest, FailToDecodeEmptyBase64) {
   EXPECT_FALSE(dleq_proof.has_value());
 }
 
-TEST(BraveAdsDLEQProofTest, FailToDecodeInvalidBase64) {
+TEST_F(BraveAdsDLEQProofTest, FailToDecodeInvalidBase64) {
   // Arrange
 
   // Act
@@ -120,7 +123,7 @@ TEST(BraveAdsDLEQProofTest, FailToDecodeInvalidBase64) {
   EXPECT_FALSE(dleq_proof.has_value());
 }
 
-TEST(BraveAdsDLEQProofTest, EncodeBase64) {
+TEST_F(BraveAdsDLEQProofTest, EncodeBase64) {
   // Arrange
   const DLEQProof dleq_proof(kDLEQProofBase64);
 
@@ -132,7 +135,7 @@ TEST(BraveAdsDLEQProofTest, EncodeBase64) {
   EXPECT_EQ(kDLEQProofBase64, *encoded_base64);
 }
 
-TEST(BraveAdsDLEQProofTest, FailToEncodeBase64WhenUninitialized) {
+TEST_F(BraveAdsDLEQProofTest, FailToEncodeBase64WhenUninitialized) {
   // Arrange
   const DLEQProof dleq_proof;
 
@@ -143,7 +146,7 @@ TEST(BraveAdsDLEQProofTest, FailToEncodeBase64WhenUninitialized) {
   EXPECT_FALSE(encoded_base64);
 }
 
-TEST(BraveAdsDLEQProofTest, Verify) {
+TEST_F(BraveAdsDLEQProofTest, Verify) {
   // Arrange
   DLEQProof dleq_proof(kDLEQProofBase64);
 
@@ -154,7 +157,7 @@ TEST(BraveAdsDLEQProofTest, Verify) {
       dleq_proof.Verify(GetBlindedToken(), GetSignedToken(), GetPublicKey()));
 }
 
-TEST(BraveAdsDLEQProofTest, FailToVerifyWhenUninitialized) {
+TEST_F(BraveAdsDLEQProofTest, FailToVerifyWhenUninitialized) {
   // Arrange
   DLEQProof dleq_proof;
 
@@ -165,7 +168,7 @@ TEST(BraveAdsDLEQProofTest, FailToVerifyWhenUninitialized) {
       dleq_proof.Verify(GetBlindedToken(), GetSignedToken(), GetPublicKey()));
 }
 
-TEST(BraveAdsDLEQProofTest, FailToVerifyWithInvalidBlindedToken) {
+TEST_F(BraveAdsDLEQProofTest, FailToVerifyWithInvalidBlindedToken) {
   // Arrange
   DLEQProof dleq_proof(kDLEQProofBase64);
 
@@ -176,7 +179,7 @@ TEST(BraveAdsDLEQProofTest, FailToVerifyWithInvalidBlindedToken) {
                                  GetPublicKey()));
 }
 
-TEST(BraveAdsDLEQProofTest, FailToVerifyWithInvalidSignedToken) {
+TEST_F(BraveAdsDLEQProofTest, FailToVerifyWithInvalidSignedToken) {
   // Arrange
   DLEQProof dleq_proof(kDLEQProofBase64);
 
@@ -187,7 +190,7 @@ TEST(BraveAdsDLEQProofTest, FailToVerifyWithInvalidSignedToken) {
                                  GetPublicKey()));
 }
 
-TEST(BraveAdsDLEQProofTest, FailToVerifyWithMismatchingPublicKey) {
+TEST_F(BraveAdsDLEQProofTest, FailToVerifyWithMismatchingPublicKey) {
   // Arrange
   DLEQProof dleq_proof(kDLEQProofBase64);
 
@@ -198,7 +201,7 @@ TEST(BraveAdsDLEQProofTest, FailToVerifyWithMismatchingPublicKey) {
                                  GetMismatchingPublicKey()));
 }
 
-TEST(BraveAdsDLEQProofTest, FailToVerifyWithInvalidPublicKey) {
+TEST_F(BraveAdsDLEQProofTest, FailToVerifyWithInvalidPublicKey) {
   // Arrange
   DLEQProof dleq_proof(kDLEQProofBase64);
 
@@ -209,7 +212,7 @@ TEST(BraveAdsDLEQProofTest, FailToVerifyWithInvalidPublicKey) {
                                  GetInvalidPublicKey()));
 }
 
-TEST(BraveAdsDLEQProofTest, IsEqual) {
+TEST_F(BraveAdsDLEQProofTest, IsEqual) {
   // Arrange
   const DLEQProof dleq_proof(kDLEQProofBase64);
 
@@ -219,7 +222,7 @@ TEST(BraveAdsDLEQProofTest, IsEqual) {
   EXPECT_EQ(dleq_proof, dleq_proof);
 }
 
-TEST(BraveAdsDLEQProofTest, IsEqualWhenUninitialized) {
+TEST_F(BraveAdsDLEQProofTest, IsEqualWhenUninitialized) {
   // Arrange
   const DLEQProof dleq_proof;
 
@@ -229,7 +232,7 @@ TEST(BraveAdsDLEQProofTest, IsEqualWhenUninitialized) {
   EXPECT_EQ(dleq_proof, dleq_proof);
 }
 
-TEST(BraveAdsDLEQProofTest, IsEmptyBase64Equal) {
+TEST_F(BraveAdsDLEQProofTest, IsEmptyBase64Equal) {
   // Arrange
   const DLEQProof dleq_proof("");
 
@@ -239,7 +242,7 @@ TEST(BraveAdsDLEQProofTest, IsEmptyBase64Equal) {
   EXPECT_EQ(dleq_proof, dleq_proof);
 }
 
-TEST(BraveAdsDLEQProofTest, IsInvalidBase64Equal) {
+TEST_F(BraveAdsDLEQProofTest, IsInvalidBase64Equal) {
   // Arrange
   const DLEQProof dleq_proof(kInvalidBase64);
 
@@ -249,7 +252,7 @@ TEST(BraveAdsDLEQProofTest, IsInvalidBase64Equal) {
   EXPECT_EQ(dleq_proof, dleq_proof);
 }
 
-TEST(BraveAdsDLEQProofTest, IsNotEqual) {
+TEST_F(BraveAdsDLEQProofTest, IsNotEqual) {
   // Arrange
   const DLEQProof dleq_proof(kDLEQProofBase64);
 
@@ -260,7 +263,7 @@ TEST(BraveAdsDLEQProofTest, IsNotEqual) {
   EXPECT_NE(different_dleq_proof, dleq_proof);
 }
 
-TEST(BraveAdsDLEQProofTest, OutputStream) {
+TEST_F(BraveAdsDLEQProofTest, OutputStream) {
   // Arrange
   const DLEQProof dleq_proof(kDLEQProofBase64);
 
@@ -272,7 +275,7 @@ TEST(BraveAdsDLEQProofTest, OutputStream) {
   EXPECT_EQ(kDLEQProofBase64, ss.str());
 }
 
-TEST(BraveAdsDLEQProofTest, OutputStreamWhenUninitialized) {
+TEST_F(BraveAdsDLEQProofTest, OutputStreamWhenUninitialized) {
   // Arrange
   const DLEQProof dleq_proof;
 

@@ -7,6 +7,7 @@
 
 #include <sstream>
 
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/challenge_bypass_ristretto_unittest_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -14,7 +15,9 @@
 
 namespace brave_ads::privacy::cbr {
 
-TEST(BraveAdsSignedTokenTest, FailToInitialize) {
+class BraveAdsSignedTokenTest : public UnitTestBase {};
+
+TEST_F(BraveAdsSignedTokenTest, FailToInitialize) {
   // Arrange
   const SignedToken signed_token;
 
@@ -24,7 +27,7 @@ TEST(BraveAdsSignedTokenTest, FailToInitialize) {
   EXPECT_FALSE(signed_token.has_value());
 }
 
-TEST(BraveAdsSignedTokenTest, FailToInitializeWithEmptyBase64) {
+TEST_F(BraveAdsSignedTokenTest, FailToInitializeWithEmptyBase64) {
   // Arrange
   const SignedToken signed_token("");
 
@@ -34,7 +37,7 @@ TEST(BraveAdsSignedTokenTest, FailToInitializeWithEmptyBase64) {
   EXPECT_FALSE(signed_token.has_value());
 }
 
-TEST(BraveAdsSignedTokenTest, FailToInitializeWithInvalidBase64) {
+TEST_F(BraveAdsSignedTokenTest, FailToInitializeWithInvalidBase64) {
   // Arrange
   const SignedToken signed_token(kInvalidBase64);
 
@@ -44,7 +47,7 @@ TEST(BraveAdsSignedTokenTest, FailToInitializeWithInvalidBase64) {
   EXPECT_FALSE(signed_token.has_value());
 }
 
-TEST(BraveAdsSignedTokenTest, DecodeBase64) {
+TEST_F(BraveAdsSignedTokenTest, DecodeBase64) {
   // Arrange
 
   // Act
@@ -55,7 +58,7 @@ TEST(BraveAdsSignedTokenTest, DecodeBase64) {
   EXPECT_TRUE(signed_token.has_value());
 }
 
-TEST(BraveAdsSignedTokenTest, FailToDecodeEmptyBase64) {
+TEST_F(BraveAdsSignedTokenTest, FailToDecodeEmptyBase64) {
   // Arrange
 
   // Act
@@ -65,7 +68,7 @@ TEST(BraveAdsSignedTokenTest, FailToDecodeEmptyBase64) {
   EXPECT_FALSE(signed_token.has_value());
 }
 
-TEST(BraveAdsSignedTokenTest, FailToDecodeInvalidBase64) {
+TEST_F(BraveAdsSignedTokenTest, FailToDecodeInvalidBase64) {
   // Arrange
 
   // Act
@@ -75,7 +78,7 @@ TEST(BraveAdsSignedTokenTest, FailToDecodeInvalidBase64) {
   EXPECT_FALSE(signed_token.has_value());
 }
 
-TEST(BraveAdsSignedTokenTest, EncodeBase64) {
+TEST_F(BraveAdsSignedTokenTest, EncodeBase64) {
   // Arrange
   const SignedToken signed_token(kSignedTokenBase64);
 
@@ -88,7 +91,7 @@ TEST(BraveAdsSignedTokenTest, EncodeBase64) {
   EXPECT_EQ(kSignedTokenBase64, *encoded_base64);
 }
 
-TEST(BraveAdsSignedTokenTest, FailToEncodeBase64WhenUninitialized) {
+TEST_F(BraveAdsSignedTokenTest, FailToEncodeBase64WhenUninitialized) {
   // Arrange
   const SignedToken signed_token;
 
@@ -100,7 +103,7 @@ TEST(BraveAdsSignedTokenTest, FailToEncodeBase64WhenUninitialized) {
   EXPECT_FALSE(encoded_base64);
 }
 
-TEST(BraveAdsSignedTokenTest, IsEqual) {
+TEST_F(BraveAdsSignedTokenTest, IsEqual) {
   // Arrange
   const SignedToken signed_token(kSignedTokenBase64);
 
@@ -110,7 +113,7 @@ TEST(BraveAdsSignedTokenTest, IsEqual) {
   EXPECT_EQ(signed_token, signed_token);
 }
 
-TEST(BraveAdsSignedTokenTest, IsEqualWhenUninitialized) {
+TEST_F(BraveAdsSignedTokenTest, IsEqualWhenUninitialized) {
   // Arrange
   const SignedToken signed_token;
 
@@ -120,7 +123,7 @@ TEST(BraveAdsSignedTokenTest, IsEqualWhenUninitialized) {
   EXPECT_EQ(signed_token, signed_token);
 }
 
-TEST(BraveAdsSignedTokenTest, IsEmptyBase64Equal) {
+TEST_F(BraveAdsSignedTokenTest, IsEmptyBase64Equal) {
   // Arrange
   const SignedToken signed_token("");
 
@@ -130,7 +133,7 @@ TEST(BraveAdsSignedTokenTest, IsEmptyBase64Equal) {
   EXPECT_EQ(signed_token, signed_token);
 }
 
-TEST(BraveAdsSignedTokenTest, IsInvalidBase64Equal) {
+TEST_F(BraveAdsSignedTokenTest, IsInvalidBase64Equal) {
   // Arrange
   const SignedToken signed_token(kInvalidBase64);
 
@@ -140,7 +143,7 @@ TEST(BraveAdsSignedTokenTest, IsInvalidBase64Equal) {
   EXPECT_EQ(signed_token, signed_token);
 }
 
-TEST(BraveAdsSignedTokenTest, IsNotEqual) {
+TEST_F(BraveAdsSignedTokenTest, IsNotEqual) {
   // Arrange
   const SignedToken signed_token(kSignedTokenBase64);
 
@@ -151,7 +154,7 @@ TEST(BraveAdsSignedTokenTest, IsNotEqual) {
   EXPECT_NE(different_signed_token, signed_token);
 }
 
-TEST(BraveAdsSignedTokenTest, OutputStream) {
+TEST_F(BraveAdsSignedTokenTest, OutputStream) {
   // Arrange
   const SignedToken signed_token(kSignedTokenBase64);
 
@@ -163,7 +166,7 @@ TEST(BraveAdsSignedTokenTest, OutputStream) {
   EXPECT_EQ(kSignedTokenBase64, ss.str());
 }
 
-TEST(BraveAdsSignedTokenTest, OutputStreamWhenUninitialized) {
+TEST_F(BraveAdsSignedTokenTest, OutputStreamWhenUninitialized) {
   // Arrange
   const SignedToken signed_token;
 

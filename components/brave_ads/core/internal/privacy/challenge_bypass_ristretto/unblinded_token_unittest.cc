@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/challenge_bypass_ristretto_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/token_preimage.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/token_preimage_unittest_util.h"
@@ -15,7 +16,9 @@
 
 namespace brave_ads::privacy::cbr {
 
-TEST(BraveAdsUnblindedTokenTest, FailToInitialize) {
+class BraveAdsUnblindedTokenTest : public UnitTestBase {};
+
+TEST_F(BraveAdsUnblindedTokenTest, FailToInitialize) {
   // Arrange
   const UnblindedToken unblinded_token;
 
@@ -25,7 +28,7 @@ TEST(BraveAdsUnblindedTokenTest, FailToInitialize) {
   EXPECT_FALSE(unblinded_token.has_value());
 }
 
-TEST(BraveAdsUnblindedTokenTest, FailToInitializeWithEmptyBase64) {
+TEST_F(BraveAdsUnblindedTokenTest, FailToInitializeWithEmptyBase64) {
   // Arrange
   const UnblindedToken unblinded_token("");
 
@@ -35,7 +38,7 @@ TEST(BraveAdsUnblindedTokenTest, FailToInitializeWithEmptyBase64) {
   EXPECT_FALSE(unblinded_token.has_value());
 }
 
-TEST(BraveAdsUnblindedTokenTest, FailToInitializeWithInvalidBase64) {
+TEST_F(BraveAdsUnblindedTokenTest, FailToInitializeWithInvalidBase64) {
   // Arrange
   const UnblindedToken unblinded_token(kInvalidBase64);
 
@@ -45,7 +48,7 @@ TEST(BraveAdsUnblindedTokenTest, FailToInitializeWithInvalidBase64) {
   EXPECT_FALSE(unblinded_token.has_value());
 }
 
-TEST(BraveAdsUnblindedTokenTest, DecodeBase64) {
+TEST_F(BraveAdsUnblindedTokenTest, DecodeBase64) {
   // Arrange
 
   // Act
@@ -56,7 +59,7 @@ TEST(BraveAdsUnblindedTokenTest, DecodeBase64) {
   EXPECT_TRUE(unblinded_token.has_value());
 }
 
-TEST(BraveAdsUnblindedTokenTest, FailToDecodeEmptyBase64) {
+TEST_F(BraveAdsUnblindedTokenTest, FailToDecodeEmptyBase64) {
   // Arrange
 
   // Act
@@ -66,7 +69,7 @@ TEST(BraveAdsUnblindedTokenTest, FailToDecodeEmptyBase64) {
   EXPECT_FALSE(unblinded_token.has_value());
 }
 
-TEST(BraveAdsUnblindedTokenTest, FailToDecodeInvalidBase64) {
+TEST_F(BraveAdsUnblindedTokenTest, FailToDecodeInvalidBase64) {
   // Arrange
 
   // Act
@@ -77,7 +80,7 @@ TEST(BraveAdsUnblindedTokenTest, FailToDecodeInvalidBase64) {
   EXPECT_FALSE(unblinded_token.has_value());
 }
 
-TEST(BraveAdsUnblindedTokenTest, EncodeBase64) {
+TEST_F(BraveAdsUnblindedTokenTest, EncodeBase64) {
   // Arrange
   const UnblindedToken unblinded_token(kUnblindedTokenBase64);
 
@@ -90,7 +93,7 @@ TEST(BraveAdsUnblindedTokenTest, EncodeBase64) {
   EXPECT_EQ(kUnblindedTokenBase64, *encoded_base64);
 }
 
-TEST(BraveAdsUnblindedTokenTest, FailToEncodeBase64WhenUninitialized) {
+TEST_F(BraveAdsUnblindedTokenTest, FailToEncodeBase64WhenUninitialized) {
   // Arrange
   const UnblindedToken unblinded_token;
 
@@ -102,7 +105,7 @@ TEST(BraveAdsUnblindedTokenTest, FailToEncodeBase64WhenUninitialized) {
   EXPECT_FALSE(encoded_base64);
 }
 
-TEST(BraveAdsUnblindedTokenTest, IsEqual) {
+TEST_F(BraveAdsUnblindedTokenTest, IsEqual) {
   // Arrange
   const UnblindedToken unblinded_token(kUnblindedTokenBase64);
 
@@ -112,7 +115,7 @@ TEST(BraveAdsUnblindedTokenTest, IsEqual) {
   EXPECT_EQ(unblinded_token, unblinded_token);
 }
 
-TEST(BraveAdsUnblindedTokenTest, IsEqualWhenUninitialized) {
+TEST_F(BraveAdsUnblindedTokenTest, IsEqualWhenUninitialized) {
   // Arrange
   const UnblindedToken unblinded_token;
 
@@ -122,7 +125,7 @@ TEST(BraveAdsUnblindedTokenTest, IsEqualWhenUninitialized) {
   EXPECT_EQ(unblinded_token, unblinded_token);
 }
 
-TEST(BraveAdsUnblindedTokenTest, IsEmptyBase64Equal) {
+TEST_F(BraveAdsUnblindedTokenTest, IsEmptyBase64Equal) {
   // Arrange
   const UnblindedToken unblinded_token("");
 
@@ -132,7 +135,7 @@ TEST(BraveAdsUnblindedTokenTest, IsEmptyBase64Equal) {
   EXPECT_EQ(unblinded_token, unblinded_token);
 }
 
-TEST(BraveAdsUnblindedTokenTest, IsInvalidBase64Equal) {
+TEST_F(BraveAdsUnblindedTokenTest, IsInvalidBase64Equal) {
   // Arrange
   const UnblindedToken unblinded_token(kInvalidBase64);
 
@@ -142,7 +145,7 @@ TEST(BraveAdsUnblindedTokenTest, IsInvalidBase64Equal) {
   EXPECT_EQ(unblinded_token, unblinded_token);
 }
 
-TEST(BraveAdsUnblindedTokenTest, IsNotEqual) {
+TEST_F(BraveAdsUnblindedTokenTest, IsNotEqual) {
   // Arrange
   const UnblindedToken unblinded_token(kUnblindedTokenBase64);
 
@@ -153,7 +156,7 @@ TEST(BraveAdsUnblindedTokenTest, IsNotEqual) {
   EXPECT_NE(different_blinded_token, unblinded_token);
 }
 
-TEST(BraveAdsUnblindedTokenTest, OutputStream) {
+TEST_F(BraveAdsUnblindedTokenTest, OutputStream) {
   // Arrange
   const UnblindedToken unblinded_token(kUnblindedTokenBase64);
 
@@ -165,7 +168,7 @@ TEST(BraveAdsUnblindedTokenTest, OutputStream) {
   EXPECT_EQ(kUnblindedTokenBase64, ss.str());
 }
 
-TEST(BraveAdsUnblindedTokenTest, OutputStreamWhenUninitialized) {
+TEST_F(BraveAdsUnblindedTokenTest, OutputStreamWhenUninitialized) {
   // Arrange
   const UnblindedToken unblinded_token;
 
@@ -177,7 +180,7 @@ TEST(BraveAdsUnblindedTokenTest, OutputStreamWhenUninitialized) {
   EXPECT_TRUE(ss.str().empty());
 }
 
-TEST(BraveAdsUnUnblindedTokenTest, DeriveVerificationKey) {
+TEST_F(BraveAdsUnblindedTokenTest, DeriveVerificationKey) {
   // Arrange
   const UnblindedToken unblinded_token(kUnblindedTokenBase64);
 
@@ -189,8 +192,8 @@ TEST(BraveAdsUnUnblindedTokenTest, DeriveVerificationKey) {
   EXPECT_TRUE(verification_key);
 }
 
-TEST(BraveAdsUnUnblindedTokenTest,
-     FailToDeriveVerificationKeyWhenUninitialized) {
+TEST_F(BraveAdsUnblindedTokenTest,
+       FailToDeriveVerificationKeyWhenUninitialized) {
   // Arrange
   const UnblindedToken unblinded_token;
 
@@ -202,8 +205,8 @@ TEST(BraveAdsUnUnblindedTokenTest,
   EXPECT_FALSE(verification_key);
 }
 
-TEST(BraveAdsUnUnblindedTokenTest,
-     FailToDeriveVerificationKeyWithInvalidUnblindedToken) {
+TEST_F(BraveAdsUnblindedTokenTest,
+       FailToDeriveVerificationKeyWithInvalidUnblindedToken) {
   // Arrange
   const UnblindedToken unblinded_token(kInvalidBase64);
 
@@ -215,7 +218,7 @@ TEST(BraveAdsUnUnblindedTokenTest,
   EXPECT_FALSE(verification_key);
 }
 
-TEST(BraveAdsUnblindedTokenTest, GetTokenPreimage) {
+TEST_F(BraveAdsUnblindedTokenTest, GetTokenPreimage) {
   // Arrange
   const UnblindedToken unblinded_token(kUnblindedTokenBase64);
 
@@ -228,7 +231,7 @@ TEST(BraveAdsUnblindedTokenTest, GetTokenPreimage) {
   EXPECT_EQ(GetTokenPreimage(), *token_preimage);
 }
 
-TEST(BraveAdsUnblindedTokenTest, FailToGetTokenPreimageWhenUninitialized) {
+TEST_F(BraveAdsUnblindedTokenTest, FailToGetTokenPreimageWhenUninitialized) {
   // Arrange
   const UnblindedToken unblinded_token;
 
@@ -240,8 +243,8 @@ TEST(BraveAdsUnblindedTokenTest, FailToGetTokenPreimageWhenUninitialized) {
   EXPECT_FALSE(token_preimage);
 }
 
-TEST(BraveAdsUnblindedTokenTest,
-     FailToGetTokenPreimageWithInvalidUnblindedToken) {
+TEST_F(BraveAdsUnblindedTokenTest,
+       FailToGetTokenPreimageWithInvalidUnblindedToken) {
   // Arrange
   const UnblindedToken unblinded_token(kInvalidBase64);
 
