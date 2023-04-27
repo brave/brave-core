@@ -183,7 +183,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/ai_chat/ai_chat.mojom.h"
 #include "brave/browser/new_tab/new_tab_shows_navigation_throttle.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
@@ -195,6 +194,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/commands_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
+#include "brave/components/ai_chat/ai_chat.mojom.h"
 #include "brave/components/ai_chat/ai_chat_utils.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"

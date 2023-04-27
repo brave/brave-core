@@ -9,8 +9,8 @@
 #include <utility>
 #include <vector>
 
-#include "brave/browser/ai_chat/constants.h"
-#include "brave/browser/ai_chat/pref_names.h"
+#include "brave/components/ai_chat/constants.h"
+#include "brave/components/ai_chat/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/prefs/pref_service.h"

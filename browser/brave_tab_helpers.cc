@@ -41,8 +41,8 @@
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/ai_chat/ai_chat_tab_helper.h"
 #include "brave/browser/ui/brave_shields_data_controller.h"
+#include "brave/components/ai_chat/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/ai_chat_utils.h"
 #include "chrome/browser/ui/thumbnails/thumbnail_tab_helper.h"
 #endif

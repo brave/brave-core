@@ -675,12 +675,12 @@ source_set("ui") {
   if (!is_android) {
     deps += [
       "//brave/app:brave_generated_resources_grit",
-      "//brave/browser/ai_chat",
-      "//brave/browser/ai_chat:mojom",
       "//brave/browser/brave_wallet",
       "//brave/browser/resources/settings:resources",
       "//brave/browser/ui/bookmark",
       "//brave/common/importer",
+      "//brave/components/ai_chat",
+      "//brave/components/ai_chat:mojom",
       "//brave/components/ai_chat_ui:generated_resources",
       "//brave/components/brave_adaptive_captcha",
       "//brave/components/brave_new_tab_ui:generated_resources",

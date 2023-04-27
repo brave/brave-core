@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ai_chat/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/ai_chat_tab_helper.h"
 
 #include <queue>
 #include <utility>
@@ -11,8 +11,8 @@
 #include "base/containers/contains.h"
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/ai_chat/ai_chat.mojom-shared.h"
-#include "brave/browser/ai_chat/constants.h"
+#include "brave/components/ai_chat/ai_chat.mojom-shared.h"
+#include "brave/components/ai_chat/constants.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"

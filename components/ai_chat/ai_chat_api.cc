@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ai_chat/ai_chat_api.h"
+#include "brave/components/ai_chat/ai_chat_api.h"
 
 #include <base/containers/flat_map.h>
 
@@ -12,8 +12,8 @@
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
-#include "brave/browser/ai_chat/buildflags.h"
-#include "brave/browser/ai_chat/constants.h"
+#include "brave/components/ai_chat/buildflags.h"
+#include "brave/components/ai_chat/constants.h"
 #include "brave/components/ai_chat/features.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
