@@ -30,10 +30,6 @@ extension PlaylistViewController: AVPictureInPictureControllerDelegate {
   }
 
   func pictureInPictureControllerDidStopPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
-    if UIDevice.isIpad {
-      attachPlayerView()
-    }
-
     PlaylistCarplayManager.shared.playlistController = nil
   }
 
@@ -51,17 +47,8 @@ extension PlaylistViewController: AVPictureInPictureControllerDelegate {
     if let restorationController = PlaylistCarplayManager.shared.playlistController {
       restorationController.modalPresentationStyle = .fullScreen
       guard let browserViewController = view.window == nil ? PlaylistCarplayManager.shared.browserController : self.currentScene?.browserViewController else {
-
-        if UIDevice.isIpad {
-          attachPlayerView()
-        }
-
         completionHandler(true)
         return
-      }
-
-      if UIDevice.isIpad {
-        attachPlayerView()
       }
 
       // There is a case when the user can manually present the PlaylistController through 3-dot menu

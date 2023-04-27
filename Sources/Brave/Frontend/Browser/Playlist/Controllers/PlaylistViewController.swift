@@ -21,7 +21,6 @@ import os.log
 // MARK: PlaylistViewControllerDelegate
 protocol PlaylistViewControllerDelegate: AnyObject {
   func attachPlayerView()
-  func detachPlayerView()
   func onSidePanelStateChanged()
   func onFullscreen()
   func onExitFullscreen()
@@ -118,14 +117,6 @@ class PlaylistViewController: UIViewController {
     listController.stopLoadingSharedPlaylist()
     assetLoadingStateObservers.removeAll()
     assetStateObservers.removeAll()
-
-    // If this controller is retained in app-delegate for Picture-In-Picture support
-    // then we need to re-attach the player layer
-    // and deallocate it.
-    if UIDevice.isIpad {
-      playerView.attachLayer(player: player)
-    }
-
     PlaylistCarplayManager.shared.playlistController = nil
   }
 
@@ -534,11 +525,6 @@ extension PlaylistViewController: PlaylistViewControllerDelegate {
     playerView.attachLayer(player: player)
   }
 
-  func detachPlayerView() {
-    playerView.delegate = nil
-    playerView.detachLayer()
-  }
-
   func onSidePanelStateChanged() {
     detailController.onSidePanelStateChanged()
   }
@@ -730,10 +716,6 @@ extension PlaylistViewController: VideoViewDelegate {
         player.pictureInPictureController?.delegate = nil
         player.pictureInPictureController?.stopPictureInPicture()
         player.stop()
-
-        if UIDevice.isIpad {
-          playerView.attachLayer(player: player)
-        }
         PlaylistCarplayManager.shared.playlistController = nil
         return
       }

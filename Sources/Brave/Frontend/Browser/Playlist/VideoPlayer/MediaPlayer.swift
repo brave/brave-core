@@ -343,10 +343,6 @@ class MediaPlayer: NSObject {
     playerLayer.player = player
     return playerLayer
   }
-
-  func detachLayer() {
-    playerLayer.player = nil
-  }
   
   func addTimeObserver(interval: Int, onTick: @escaping (CMTime) -> Void) -> Any {
     let interval = CMTimeMake(value: Int64(interval), timescale: 1000)
@@ -459,36 +455,6 @@ extension MediaPlayer {
 extension MediaPlayer {
   /// Registers basic notifications
   private func registerNotifications() {
-    Publishers.Zip(
-      NotificationCenter.default.publisher(for: UIScene.didEnterBackgroundNotification),
-      NotificationCenter.default.publisher(for: UIApplication.didEnterBackgroundNotification)
-    )
-    .sink { [weak self] _ in
-      guard let self = self else { return }
-
-      if let pictureInPictureController = self.pictureInPictureController,
-        pictureInPictureController.isPictureInPictureActive {
-        return
-      }
-
-      self.detachLayer()
-    }.store(in: &notificationObservers)
-
-    Publishers.Zip(
-      NotificationCenter.default.publisher(for: UIScene.didActivateNotification),
-      NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)
-    )
-    .sink { [weak self] _ in
-      guard let self = self else { return }
-
-      if let pictureInPictureController = self.pictureInPictureController,
-        pictureInPictureController.isPictureInPictureActive {
-        return
-      }
-
-      self.attachLayer()
-    }.store(in: &notificationObservers)
-
     NotificationCenter.default.publisher(for: AVAudioSession.interruptionNotification, object: AVAudioSession.sharedInstance())
       .sink { [weak self] notification in
 
