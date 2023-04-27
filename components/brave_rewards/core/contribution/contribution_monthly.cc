@@ -78,6 +78,8 @@ void ContributionMonthly::OnNextContributionDateAdvanced(
            publisher->status == mojom::PublisherStatus::NOT_VERIFIED;
   });
 
+  BLOG(1, "Sending " << publishers.size() << " monthly contributions");
+
   for (const auto& item : publishers) {
     auto publisher = mojom::ContributionQueuePublisher::New();
     publisher->publisher_key = item->id;
