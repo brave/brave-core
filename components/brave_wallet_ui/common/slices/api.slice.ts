@@ -2039,7 +2039,7 @@ export function createWalletApi (
         }
       ),
       transactionStatusChanged: mutation<
-        undefined,
+        true, // success
         Pick<SerializableTransactionInfo, 'txStatus' | 'id' | 'chainId'> & {
           fromAddress: string
           coinType: BraveWallet.CoinType
@@ -2048,7 +2048,7 @@ export function createWalletApi (
         queryFn: async () => {
           // no-op
           // uses 'invalidateTags' to handle data refresh
-          return { data: undefined }
+          return { data: true }
         },
         invalidatesTags: (res, err, arg) => {
           const txTags = [
