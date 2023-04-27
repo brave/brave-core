@@ -288,49 +288,22 @@ public class KeyringModel implements KeyringServiceObserver {
 
     public void addAccount(String accountName, @CoinType.EnumType int coinType,
             Callbacks.Callback1<Boolean> callback) {
-        final AccountInfo[] accountInfoArray =
-                WalletUtils.getAccountInfosFromKeyrings(_mKeyringInfosLiveData.getValue())
-                        .toArray(new AccountInfo[0]);
-        mKeyringService.addAccount(accountName, coinType, result -> {
-            handleAddAccountResult(result, accountInfoArray, coinType, callback);
-        });
+        mKeyringService.addAccount(
+                accountName, coinType, result -> { handleAddAccountResult(result, callback); });
     }
 
     public void addFilecoinAccount(String accountName, @FilecoinNetworkType String filecoinNetwork,
             Callbacks.Callback1<Boolean> callback) {
-        final AccountInfo[] accountInfoArray =
-                WalletUtils.getAccountInfosFromKeyrings(_mKeyringInfosLiveData.getValue())
-                        .toArray(new AccountInfo[0]);
         mSelectedFilecoinNetwork = filecoinNetwork;
-        mKeyringService.addFilecoinAccount(accountName, mSelectedFilecoinNetwork, result -> {
-            handleAddAccountResult(result, accountInfoArray, CoinType.FIL, callback);
-        });
+        mKeyringService.addFilecoinAccount(accountName, mSelectedFilecoinNetwork,
+                result -> { handleAddAccountResult(result, callback); });
     }
 
     public void isWalletLocked(Callbacks.Callback1<Boolean> callback) {
         mKeyringService.isLocked(isWalletLocked -> callback.call(isWalletLocked));
     }
 
-    private void handleAddAccountResult(boolean result, AccountInfo[] accountInfoArray,
-            @CoinType.EnumType int coinType, Callbacks.Callback1<Boolean> callback) {
-        if (result) {
-            boolean hasExistingAccountType = false;
-            for (AccountInfo accountInfo : accountInfoArray) {
-                hasExistingAccountType = (accountInfo.coin == coinType);
-                if (hasExistingAccountType) break;
-            }
-            if (!hasExistingAccountType) {
-                mKeyringService.getKeyringInfo(
-                        getSelectedCoinKeyringId(coinType), updatedKeyringInfo -> {
-                            for (AccountInfo accountInfo : updatedKeyringInfo.accountInfos) {
-                                if (accountInfo.coin == coinType) {
-                                    setSelectedAccount(accountInfo.address, coinType);
-                                    break;
-                                }
-                            }
-                        });
-            }
-        }
+    private void handleAddAccountResult(boolean result, Callbacks.Callback1<Boolean> callback) {
         mCryptoSharedActions.updateCoinType();
         mCryptoSharedActions.onNewAccountAdded();
         callback.call(result);
