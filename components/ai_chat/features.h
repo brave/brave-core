@@ -16,6 +16,8 @@ namespace ai_chat::features {
 BASE_DECLARE_FEATURE(kAIChat);
 extern const base::FeatureParam<std::string> kAIModelName;
 
+bool IsAIChatEnabled();
+
 }  // namespace ai_chat::features
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_FEATURES_H_

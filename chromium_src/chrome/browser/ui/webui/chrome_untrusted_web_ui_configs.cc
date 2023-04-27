@@ -17,7 +17,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
-#include "brave/components/ai_chat/ai_chat_utils.h"
+#include "brave/components/ai_chat/features.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -50,7 +50,7 @@ void RegisterChromeUntrustedWebUIConfigs() {
       std::make_unique<trezor::UntrustedTrezorUIConfig>());
   content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
       std::make_unique<nft::UntrustedNftUIConfig>());
-  if (ai_chat::IsAIChatEnabled()) {
+  if (ai_chat::features::IsAIChatEnabled()) {
     content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
         std::make_unique<UntrustedChatUIConfig>());
   }

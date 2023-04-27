@@ -43,6 +43,9 @@ class AIChatTabHelper : public content::WebContentsObserver,
   bool IsRequestInProgress() { return is_request_in_progress_; }
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
+
+  // Retrieves the AXTree of the mainframe and sends it to
+  // the AIChat API for summarization
   void RequestSummary();
 
  private:

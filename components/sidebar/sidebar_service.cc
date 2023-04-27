@@ -19,7 +19,7 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
-#include "brave/components/ai_chat/ai_chat_utils.h"
+#include "brave/components/ai_chat/features.h"
 #include "brave/components/brave_wallet/common/common_util.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -646,7 +646,7 @@ SidebarItem SidebarService::GetBuiltInItemForType(
       return SidebarItem();
     }
     case SidebarItem::BuiltInItemType::kChatUI:
-      if (ai_chat::IsAIChatEnabled()) {
+      if (ai_chat::features::IsAIChatEnabled()) {
         return SidebarItem::Create(
             brave_l10n::GetLocalizedResourceUTF16String(IDS_CHAT_UI_TITLE),
             SidebarItem::Type::kTypeBuiltIn,

@@ -195,7 +195,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/components/ai_chat/ai_chat.mojom.h"
-#include "brave/components/ai_chat/ai_chat_utils.h"
+#include "brave/components/ai_chat/features.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
@@ -536,7 +536,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
     registry.ForWebUI<commands::CommandsUI>()
         .Add<commands::mojom::CommandsService>();
   }
-  if (ai_chat::IsAIChatEnabled()) {
+  if (ai_chat::features::IsAIChatEnabled()) {
     registry.ForWebUI<AIChatUI>().Add<ai_chat::mojom::PageHandler>();
   }
 #endif
@@ -670,7 +670,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   content::RegisterWebUIControllerInterfaceBinder<
       brave_rewards::mojom::TipPanelHandlerFactory, brave_rewards::TipPanelUI>(
       map);
-  if (ai_chat::IsAIChatEnabled()) {
+  if (ai_chat::features::IsAIChatEnabled()) {
     content::RegisterWebUIControllerInterfaceBinder<ai_chat::mojom::PageHandler,
                                                     AIChatUI>(map);
   }

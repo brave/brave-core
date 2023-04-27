@@ -15,6 +15,9 @@ enum ConversationTurnVisibility {
   HIDDEN
 };
 
+// Represents a single turn in a conversation.
+// The character type defines which party initiated the turn in the conversation
+// The text attribute contains the actual content of the turn, which can be a message, statement, or question, among others
 struct ConversationTurn {
   CharacterType character_type;
   ConversationTurnVisibility visibility;

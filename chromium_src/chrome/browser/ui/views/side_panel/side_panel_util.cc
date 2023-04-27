@@ -6,7 +6,7 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_util.h"
 #include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_coordinator.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
-#include "brave/components/ai_chat/ai_chat_utils.h"
+#include "brave/components/ai_chat/features.h"
 #include "brave/components/playlist/common/features.h"
 
 #define PopulateGlobalEntries PopulateGlobalEntries_ChromiumImpl
@@ -25,7 +25,7 @@ void SidePanelUtil::PopulateGlobalEntries(Browser* browser,
         ->CreateAndRegisterEntry(global_registry);
   }
 
-  if (ai_chat::IsAIChatEnabled()) {
+  if (ai_chat::features::IsAIChatEnabled()) {
     AIChatSidePanelCoordinator::GetOrCreateForBrowser(browser)
         ->CreateAndRegisterEntry(global_registry);
   }
