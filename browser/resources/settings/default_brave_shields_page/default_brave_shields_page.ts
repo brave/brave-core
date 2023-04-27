@@ -10,13 +10,14 @@ import { PolymerElement } from '//resources/polymer/v3_0/polymer/polymer_bundled
 import '//resources/cr_elements/md_select.css.js';
 import { DefaultBraveShieldsBrowserProxyImpl } from './default_brave_shields_browser_proxy.js';
 import {Router, RouteObserverMixin} from '../router.js';
+import { WebUiListenerMixin } from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
 
 import {loadTimeData} from '../i18n_setup.js';
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
 import {PrefsMixin} from '../prefs/prefs_mixin.js';
 import {getTemplate} from './default_brave_shields_page.html.js'
 
-const BraveShieldsPageBase = I18nMixin(PrefsMixin(RouteObserverMixin(PolymerElement)))
+const BraveShieldsPageBase = WebUiListenerMixin(I18nMixin(PrefsMixin(RouteObserverMixin(PolymerElement))))
 
 /**
 * 'settings-default-brave-shields-page' is the settings page containing brave's
@@ -48,18 +49,11 @@ class BraveShieldsPage extends BraveShieldsPageBase {
           readOnly: true,
           type: Array,
           value: function () {
-            let types = [
+            return [
                 { value: 'block', name: loadTimeData.getString('blockAllCookies') },
                 { value: 'block_third_party', name: loadTimeData.getString('block3rdPartyCookies') },
                 { value: 'allow', name: loadTimeData.getString('allowAllCookies') }
             ];
-            if (loadTimeData.getBoolean('isForgetFirstPartyStorageFeatureEnabled')) {
-              // Insert after 'block'.
-              types.splice(1, 0, {
-                value: 'forget_first_party', name: loadTimeData.getString('forgetFirstPartyCookies')
-              });
-            }
-            return types;
           }
       },
       fingerprintingControlTypes_: {
@@ -112,6 +106,18 @@ class BraveShieldsPage extends BraveShieldsPageBase {
       isHttpsByDefaultEnabled_: {
         type: Boolean,
         value: loadTimeData.getBoolean('isHttpsByDefaultEnabled')
+      },
+      isForgetFirstPartyStorageFeatureEnabled_: {
+        type: Boolean,
+        value: loadTimeData.getBoolean('isForgetFirstPartyStorageFeatureEnabled')
+      },
+      isForgetFirstPartyStorageEnabled_: {
+        type: Object,
+        value: {
+          key: '',
+          type: chrome.settingsPrivate.PrefType.BOOLEAN,
+          value: false,
+        }
       }
     }
   }
@@ -121,13 +127,28 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   ready () {
     super.ready()
 
-    this.onAdControlChange_ = this.onAdControlChange_.bind(this)
-    this.onCookieControlChange_ = this.onCookieControlChange_.bind(this)
-    this.onFingerprintingControlChange_ = this.onFingerprintingControlChange_.bind(this)
-    this.onHTTPSEverywhereControlChange_ = this.onHTTPSEverywhereControlChange_.bind(this)
-    this.onHttpsUpgradeControlChange_ =
-      this.onHttpsUpgradeControlChange_.bind(this)
-    this.onNoScriptControlChange_ = this.onNoScriptControlChange_.bind(this)
+    this.onShieldsSettingsChanged_()
+
+    this.addWebUiListener('brave-shields-settings-changed',
+      () => { this.onShieldsSettingsChanged_() })
+  }
+
+  /** @protected */
+  currentRouteChanged() {
+    const router = Router.getInstance()
+    this.isAdBlockRoute_ = (router.getCurrentRoute() == router.getRoutes().SHIELDS_ADBLOCK)
+  }
+
+  onAdblockPageClick_() {
+    const router = Router.getInstance();
+    router.navigateTo(router.getRoutes().SHIELDS_ADBLOCK);
+  }
+
+  controlEqual_ (val1, val2) {
+    return val1 === val2
+  }
+
+  onShieldsSettingsChanged_ () {
     Promise.all([this.browserProxy_.isAdControlEnabled(), this.browserProxy_.isFirstPartyCosmeticFilteringEnabled()])
       .then(([adControlEnabled, hide1pContent]) => {
       if (adControlEnabled) {
@@ -149,21 +170,14 @@ class BraveShieldsPage extends BraveShieldsPageBase {
     this.browserProxy_.getHttpsUpgradeControlType().then(value => {
       this.httpsUpgradeControlType_ = value
     })
-  }
 
-  /** @protected */
-  currentRouteChanged() {
-    const router = Router.getInstance()
-    this.isAdBlockRoute_ = (router.getCurrentRoute() == router.getRoutes().SHIELDS_ADBLOCK)
-  }
-
-  onAdblockPageClick_() {
-    const router = Router.getInstance();
-    router.navigateTo(router.getRoutes().SHIELDS_ADBLOCK);
-  }
-
-  controlEqual_ (val1, val2) {
-    return val1 === val2
+    this.browserProxy_.getForgetFirstPartyStorageEnabled().then(value => {
+      this.isForgetFirstPartyStorageEnabled_ = {
+        key: '',
+        type: chrome.settingsPrivate.PrefType.BOOLEAN,
+        value: value,
+      }
+    })
   }
 
   onAdControlChange_ () {
@@ -192,6 +206,12 @@ class BraveShieldsPage extends BraveShieldsPageBase {
 
   onNoScriptControlChange_ () {
     this.browserProxy_.setNoScriptControlType(this.$.noScriptControlType.checked)
+  }
+
+  onForgetFirstPartyStorageToggleChange_ () {
+    this.browserProxy_.setForgetFirstPartyStorageEnabled(
+      this.$.forgetFirstPartyStorageControlType.checked
+    )
   }
 }
 

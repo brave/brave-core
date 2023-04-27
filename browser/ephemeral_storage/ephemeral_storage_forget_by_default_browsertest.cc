@@ -5,7 +5,9 @@
 
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
 
+#include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -19,6 +21,8 @@
 using content::RenderFrameHost;
 using content::WebContents;
 
+namespace ephemeral_storage {
+
 class EphemeralStorageForgetByDefaultBrowserTest
     : public EphemeralStorageBrowserTest {
  public:
@@ -28,6 +32,31 @@ class EphemeralStorageForgetByDefaultBrowserTest
         {{"BraveForgetFirstPartyStorageKeepAliveTimeInSeconds", "2"}});
   }
   ~EphemeralStorageForgetByDefaultBrowserTest() override = default;
+
+  void SetAndCheckValuesInFrames(WebContents* web_contents,
+                                 std::string storage_value,
+                                 std::string cookie_value) {
+    SetValuesInFrames(web_contents, storage_value, cookie_value);
+
+    ValuesFromFrames first_party_values = GetValuesFromFrames(web_contents);
+    EXPECT_EQ(storage_value, first_party_values.main_frame.local_storage);
+    EXPECT_EQ(storage_value, first_party_values.iframe_1.local_storage);
+    EXPECT_EQ(storage_value, first_party_values.iframe_2.local_storage);
+
+    EXPECT_EQ(storage_value, first_party_values.main_frame.session_storage);
+    EXPECT_EQ(storage_value, first_party_values.iframe_1.session_storage);
+    EXPECT_EQ(storage_value, first_party_values.iframe_2.session_storage);
+
+    EXPECT_EQ(cookie_value, first_party_values.main_frame.cookies);
+    EXPECT_EQ(cookie_value, first_party_values.iframe_1.cookies);
+    EXPECT_EQ(cookie_value, first_party_values.iframe_2.cookies);
+  }
+
+  size_t FireCleanupTimersForTesting() {
+    return EphemeralStorageServiceFactory::GetInstance()
+        ->GetForContext(browser()->profile())
+        ->FireCleanupTimersForTesting();
+  }
 
  protected:
   base::test::ScopedFeatureList scoped_feature_list_;
@@ -42,30 +71,13 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
           a_site_ephemeral_storage_url_),
       brave_shields::ControlType::BLOCK_THIRD_PARTY);
 
-  brave_shields::SetCookieControlType(
-      content_settings(), browser()->profile()->GetPrefs(),
-      brave_shields::ControlType::FORGET_FIRST_PARTY,
-      a_site_ephemeral_storage_url_);
+  brave_shields::SetForgetFirstPartyStorageEnabled(
+      content_settings(), true, a_site_ephemeral_storage_url_);
 
   WebContents* first_party_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);
 
   // We set a value in the page where all the frames are first-party.
-  SetValuesInFrames(first_party_tab, "a.com", "from=a.com");
-
-  {
-    ValuesFromFrames first_party_values = GetValuesFromFrames(first_party_tab);
-    EXPECT_EQ("a.com", first_party_values.main_frame.local_storage);
-    EXPECT_EQ("a.com", first_party_values.iframe_1.local_storage);
-    EXPECT_EQ("a.com", first_party_values.iframe_2.local_storage);
-
-    EXPECT_EQ("a.com", first_party_values.main_frame.session_storage);
-    EXPECT_EQ("a.com", first_party_values.iframe_1.session_storage);
-    EXPECT_EQ("a.com", first_party_values.iframe_2.session_storage);
-
-    EXPECT_EQ("from=a.com", first_party_values.main_frame.cookies);
-    EXPECT_EQ("from=a.com", first_party_values.iframe_1.cookies);
-    EXPECT_EQ("from=a.com", first_party_values.iframe_2.cookies);
-  }
+  SetAndCheckValuesInFrames(first_party_tab, "a.com", "from=a.com");
 
   // After keepalive values should be cleared.
   ASSERT_TRUE(
@@ -76,6 +88,99 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
 
   ExpectValuesFromFramesAreEmpty(FROM_HERE,
                                  GetValuesFromFrames(first_party_tab));
+}
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
+                       ForgetFirstPartyOnSubdomain) {
+  EXPECT_EQ(
+      brave_shields::GetCookieControlType(
+          content_settings(),
+          CookieSettingsFactory::GetForProfile(browser()->profile()).get(),
+          a_site_ephemeral_storage_url_),
+      brave_shields::ControlType::BLOCK_THIRD_PARTY);
+
+  brave_shields::SetForgetFirstPartyStorageEnabled(
+      content_settings(), true, a_site_ephemeral_storage_url_);
+
+  const GURL sub_a_site_ephemeral_storage_url =
+      https_server_.GetURL("sub.a.com", "/ephemeral_storage.html");
+  WebContents* first_party_tab =
+      LoadURLInNewTab(sub_a_site_ephemeral_storage_url);
+
+  // We set a value in the page where all the frames are first-party.
+  SetAndCheckValuesInFrames(first_party_tab, "a.com", "from=a.com");
+
+  // After keepalive values should be cleared.
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_));
+  WaitForCleanupAfterKeepAlive();
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(),
+                                           sub_a_site_ephemeral_storage_url));
+
+  ExpectValuesFromFramesAreEmpty(FROM_HERE,
+                                 GetValuesFromFrames(first_party_tab));
+}
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
+                       ForgetFirstPartyOnRootDomainIfEnabledOnSubdomain) {
+  const GURL sub_a_site_ephemeral_storage_url =
+      https_server_.GetURL("sub.a.com", "/ephemeral_storage.html");
+  EXPECT_EQ(
+      brave_shields::GetCookieControlType(
+          content_settings(),
+          CookieSettingsFactory::GetForProfile(browser()->profile()).get(),
+          sub_a_site_ephemeral_storage_url),
+      brave_shields::ControlType::BLOCK_THIRD_PARTY);
+
+  brave_shields::SetForgetFirstPartyStorageEnabled(
+      content_settings(), true, sub_a_site_ephemeral_storage_url);
+
+  WebContents* first_party_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);
+
+  // We set a value in the page where all the frames are first-party.
+  SetAndCheckValuesInFrames(first_party_tab, "a.com", "from=a.com");
+
+  // After keepalive values should be cleared.
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_));
+  WaitForCleanupAfterKeepAlive();
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
+
+  ExpectValuesFromFramesAreEmpty(FROM_HERE,
+                                 GetValuesFromFrames(first_party_tab));
+}
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
+                       DontForgetIfSubdomainIsOpened) {
+  const GURL sub_a_site_ephemeral_storage_url =
+      https_server_.GetURL("sub.a.com", "/ephemeral_storage.html");
+  EXPECT_EQ(
+      brave_shields::GetCookieControlType(
+          content_settings(),
+          CookieSettingsFactory::GetForProfile(browser()->profile()).get(),
+          sub_a_site_ephemeral_storage_url),
+      brave_shields::ControlType::BLOCK_THIRD_PARTY);
+
+  brave_shields::SetForgetFirstPartyStorageEnabled(
+      content_settings(), true, sub_a_site_ephemeral_storage_url);
+
+  WebContents* sub_first_party_tab =
+      LoadURLInNewTab(sub_a_site_ephemeral_storage_url);
+
+  // We set a value in the page where all the frames are first-party.
+  EXPECT_EQ(0u, GetAllCookies().size());
+  SetAndCheckValuesInFrames(sub_first_party_tab, "sub.a.com", "from=sub.a.com");
+  EXPECT_EQ(1u, GetAllCookies().size());
+
+  ASSERT_TRUE(LoadURLInNewTab(a_site_ephemeral_storage_url_));
+
+  // Navigate sub.a.com. After keepalive values should not be cleared.
+  ASSERT_TRUE(content::NavigateToURL(sub_first_party_tab,
+                                     b_site_ephemeral_storage_url_));
+  WaitForCleanupAfterKeepAlive();
+
+  EXPECT_EQ(1u, GetAllCookies().size());
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
@@ -90,19 +195,13 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
           a_site_ephemeral_storage_url_),
       brave_shields::ControlType::BLOCK_THIRD_PARTY);
 
-  brave_shields::SetCookieControlType(
-      content_settings(), browser()->profile()->GetPrefs(),
-      brave_shields::ControlType::FORGET_FIRST_PARTY,
-      a_site_ephemeral_storage_url_);
+  brave_shields::SetForgetFirstPartyStorageEnabled(
+      content_settings(), true, a_site_ephemeral_storage_url_);
 
-  EXPECT_EQ(
-      brave_shields::GetCookieControlType(
-          HostContentSettingsMapFactory::GetForProfile(
-              incognito_browser->profile()),
-          CookieSettingsFactory::GetForProfile(incognito_browser->profile())
-              .get(),
-          a_site_ephemeral_storage_url_),
-      brave_shields::ControlType::FORGET_FIRST_PARTY);
+  EXPECT_TRUE(brave_shields::GetForgetFirstPartyStorageEnabled(
+      HostContentSettingsMapFactory::GetForProfile(
+          incognito_browser->profile()),
+      a_site_ephemeral_storage_url_));
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(incognito_browser,
                                            a_site_ephemeral_storage_url_));
@@ -110,23 +209,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
       incognito_browser->tab_strip_model()->GetActiveWebContents();
 
   // We set a value in the page where all the frames are first-party.
-  SetValuesInFrames(incognito_web_contents, "a.com", "from=a.com");
-
-  {
-    ValuesFromFrames first_party_values =
-        GetValuesFromFrames(incognito_web_contents);
-    EXPECT_EQ("a.com", first_party_values.main_frame.local_storage);
-    EXPECT_EQ("a.com", first_party_values.iframe_1.local_storage);
-    EXPECT_EQ("a.com", first_party_values.iframe_2.local_storage);
-
-    EXPECT_EQ("a.com", first_party_values.main_frame.session_storage);
-    EXPECT_EQ("a.com", first_party_values.iframe_1.session_storage);
-    EXPECT_EQ("a.com", first_party_values.iframe_2.session_storage);
-
-    EXPECT_EQ("from=a.com", first_party_values.main_frame.cookies);
-    EXPECT_EQ("from=a.com", first_party_values.iframe_1.cookies);
-    EXPECT_EQ("from=a.com", first_party_values.iframe_2.cookies);
-  }
+  SetAndCheckValuesInFrames(incognito_web_contents, "a.com", "from=a.com");
 
   // After keepalive values should be cleared.
   ASSERT_TRUE(ui_test_utils::NavigateToURL(incognito_browser,
@@ -141,14 +224,10 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
                        NavigationCookiesAreCleared) {
-  brave_shields::SetCookieControlType(
-      content_settings(), browser()->profile()->GetPrefs(),
-      brave_shields::ControlType::FORGET_FIRST_PARTY,
-      a_site_ephemeral_storage_url_);
-  brave_shields::SetCookieControlType(
-      content_settings(), browser()->profile()->GetPrefs(),
-      brave_shields::ControlType::FORGET_FIRST_PARTY,
-      b_site_ephemeral_storage_url_);
+  brave_shields::SetForgetFirstPartyStorageEnabled(
+      content_settings(), true, a_site_ephemeral_storage_url_);
+  brave_shields::SetForgetFirstPartyStorageEnabled(
+      content_settings(), true, b_site_ephemeral_storage_url_);
 
   const GURL a_site_set_cookie_url = https_server_.GetURL(
       "a.com", "/set-cookie?name=acom;path=/;SameSite=None;Secure;Max-Age=600");
@@ -203,9 +282,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
   const GURL a_site_set_cookie_url(
       "https://a.com/set-cookie?name=acom;path=/"
       ";SameSite=None;Secure;Max-Age=600");
-  brave_shields::SetCookieControlType(
-      content_settings(), browser()->profile()->GetPrefs(),
-      brave_shields::ControlType::FORGET_FIRST_PARTY, a_site_set_cookie_url);
+  brave_shields::SetForgetFirstPartyStorageEnabled(content_settings(), true,
+                                                   a_site_set_cookie_url);
 
   // Cookies should NOT exist for a.com.
   EXPECT_EQ(0u, GetAllCookies().size());
@@ -222,15 +300,46 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
                        ForgetFirstPartyAfterRestart) {
+  EXPECT_EQ(1u, FireCleanupTimersForTesting());
   EXPECT_EQ(0u, GetAllCookies().size());
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
+                       PRE_DontForgetFirstPartyIfSubDomainIsOpened) {
+  const GURL a_site_set_cookie_url(
+      "https://a.com/set-cookie?name=acom;path=/"
+      ";SameSite=None;Secure;Max-Age=600");
+  brave_shields::SetForgetFirstPartyStorageEnabled(content_settings(), true,
+                                                   a_site_set_cookie_url);
+
+  // Cookies should NOT exist for a.com.
+  EXPECT_EQ(0u, GetAllCookies().size());
+
+  EXPECT_TRUE(LoadURLInNewTab(a_site_set_cookie_url));
+
+  // Cookies SHOULD exist for a.com.
+  EXPECT_EQ(1u, GetAllCookies().size());
+
+  // Navigate to b.com to activate a deferred cleanup for a.com.
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_));
+
+  // Open sub.a.com in another tab to stop the deferred cleanup for a.com.
+  const GURL sub_a_site_ephemeral_storage_url =
+      https_server_.GetURL("sub.a.com", "/ephemeral_storage.html");
+  EXPECT_TRUE(LoadURLInNewTab(sub_a_site_ephemeral_storage_url));
+}
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
+                       DontForgetFirstPartyIfSubDomainIsOpened) {
+  EXPECT_EQ(0u, FireCleanupTimersForTesting());
+  EXPECT_EQ(1u, GetAllCookies().size());
+}
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
                        DisabledShieldsDontForgetFirstParty) {
-  brave_shields::SetCookieControlType(
-      content_settings(), browser()->profile()->GetPrefs(),
-      brave_shields::ControlType::FORGET_FIRST_PARTY,
-      a_site_ephemeral_storage_url_);
+  brave_shields::SetForgetFirstPartyStorageEnabled(
+      content_settings(), true, a_site_ephemeral_storage_url_);
   brave_shields::SetBraveShieldsEnabled(content_settings(), false,
                                         a_site_ephemeral_storage_url_);
 
@@ -273,7 +382,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
 }
 
 class EphemeralStorageForgetByDefaultIsDefaultBrowserTest
-    : public EphemeralStorageBrowserTest {
+    : public EphemeralStorageForgetByDefaultBrowserTest {
  public:
   EphemeralStorageForgetByDefaultIsDefaultBrowserTest() {
     scoped_feature_list_.InitAndEnableFeatureWithParameters(
@@ -292,12 +401,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultIsDefaultBrowserTest,
   const GURL a_site_set_cookie_url(
       "https://a.com/set-cookie?name=acom;path=/"
       ";SameSite=None;Secure;Max-Age=600");
-  EXPECT_EQ(
-      brave_shields::GetCookieControlType(
-          content_settings(),
-          CookieSettingsFactory::GetForProfile(browser()->profile()).get(),
-          a_site_set_cookie_url),
-      brave_shields::ControlType::FORGET_FIRST_PARTY);
+  EXPECT_TRUE(brave_shields::GetForgetFirstPartyStorageEnabled(
+      content_settings(), a_site_set_cookie_url));
 
   // Cookies should NOT exist for a.com.
   EXPECT_EQ(0u, GetAllCookies().size());
@@ -314,6 +419,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultIsDefaultBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultIsDefaultBrowserTest,
                        ForgetFirstPartyAfterRestart) {
+  EXPECT_EQ(1u, FireCleanupTimersForTesting());
   EXPECT_EQ(0u, GetAllCookies().size());
 }
 
@@ -346,15 +452,10 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultDisabledBrowserTest,
   const GURL a_site_set_cookie_url(
       "https://a.com/set-cookie?name=acom;path=/"
       ";SameSite=None;Secure;Max-Age=600");
-  brave_shields::SetCookieControlType(
-      content_settings(), browser()->profile()->GetPrefs(),
-      brave_shields::ControlType::FORGET_FIRST_PARTY, a_site_set_cookie_url);
-  EXPECT_EQ(
-      brave_shields::GetCookieControlType(
-          content_settings(),
-          CookieSettingsFactory::GetForProfile(browser()->profile()).get(),
-          a_site_set_cookie_url),
-      brave_shields::ControlType::FORGET_FIRST_PARTY);
+  brave_shields::SetForgetFirstPartyStorageEnabled(content_settings(), true,
+                                                   a_site_set_cookie_url);
+  EXPECT_TRUE(brave_shields::GetForgetFirstPartyStorageEnabled(
+      content_settings(), a_site_set_cookie_url));
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultDisabledBrowserTest,
@@ -388,15 +489,10 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultDisabledBrowserTest,
   const GURL a_site_set_cookie_url(
       "https://a.com/set-cookie?name=acom;path=/"
       ";SameSite=None;Secure;Max-Age=600");
-  brave_shields::SetCookieControlType(
-      content_settings(), browser()->profile()->GetPrefs(),
-      brave_shields::ControlType::FORGET_FIRST_PARTY, a_site_set_cookie_url);
-  EXPECT_EQ(
-      brave_shields::GetCookieControlType(
-          content_settings(),
-          CookieSettingsFactory::GetForProfile(browser()->profile()).get(),
-          a_site_set_cookie_url),
-      brave_shields::ControlType::FORGET_FIRST_PARTY);
+  brave_shields::SetForgetFirstPartyStorageEnabled(content_settings(), true,
+                                                   a_site_set_cookie_url);
+  EXPECT_TRUE(brave_shields::GetForgetFirstPartyStorageEnabled(
+      content_settings(), a_site_set_cookie_url));
 
   ASSERT_TRUE(LoadURLInNewTab(a_site_set_cookie_url));
   EXPECT_EQ(1u, GetAllCookies().size());
@@ -417,3 +513,5 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultDisabledBrowserTest,
 
   EXPECT_EQ(1u, GetAllCookies().size());
 }
+
+}  // namespace ephemeral_storage

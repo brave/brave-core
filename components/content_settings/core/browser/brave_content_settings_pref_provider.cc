@@ -14,6 +14,7 @@
 #include "base/logging.h"
 #include "base/no_destructor.h"
 #include "base/ranges/algorithm.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/task/bind_post_task.h"
 #include "base/task/sequenced_task_runner.h"
@@ -372,8 +373,8 @@ void BravePrefProvider::MigrateShieldsSettingsV2ToV3() {
     // Replace first party placeholder with actual pattern
     if (new_rule.primary_pattern == first_party) {
       new_rule.primary_pattern =
-          content_settings::CreateShieldsCookiesDomainPattern(
-              new_rule.secondary_pattern);
+          content_settings::CreateDomainPattern(GURL(base::StrCat(
+              {"https://" + new_rule.secondary_pattern.GetHost() + "/"})));
     }
     new_rules.push_back(std::move(new_rule));
   }

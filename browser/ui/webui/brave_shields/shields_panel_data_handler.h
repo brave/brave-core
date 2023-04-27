@@ -50,6 +50,7 @@ class ShieldsPanelDataHandler
   void SetIsNoScriptsEnabled(bool is_enabled) override;
   void SetHTTPSEverywhereEnabled(bool is_enabled) override;
   void SetBraveShieldsEnabled(bool is_enabled) override;
+  void SetForgetFirstPartyStorageEnabled(bool is_enabled) override;
   void OpenWebCompatWindow() override;
   void UpdateFavicon() override;
   void AllowScriptsOnce(const std::vector<std::string>& origins) override;

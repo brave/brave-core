@@ -7,19 +7,14 @@
 
 #include <memory>
 
-#include "base/debug/dump_without_crashing.h"
 #include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/notreached.h"
-#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
-#include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_shields/common/pref_names.h"
-#include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
-#include "brave/components/debounce/common/features.h"
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -28,13 +23,14 @@
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/browser/browser_thread.h"
-#include "content/public/browser/web_contents.h"
 #include "content/public/common/referrer.h"
 #include "net/base/features.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
 #include "url/origin.h"
+
+#if !DCHECK_IS_ON()
+#include "base/debug/dump_without_crashing.h"
+#endif
 
 using content::Referrer;
 
@@ -140,10 +136,7 @@ class BraveCookieRules {
 }  // namespace
 
 ContentSettingsPattern GetPatternFromURL(const GURL& url) {
-  DCHECK(url.is_empty() ? url.possibly_invalid_spec() == "" : url.is_valid());
-  if (url.is_empty() && url.possibly_invalid_spec() == "")
-    return ContentSettingsPattern::Wildcard();
-  return ContentSettingsPattern::FromString("*://" + url.host() + "/*");
+  return content_settings::CreateHostPattern(url);
 }
 
 std::string ControlTypeToString(ControlType type) {
@@ -154,8 +147,6 @@ std::string ControlTypeToString(ControlType type) {
       return "block";
     case ControlType::BLOCK_THIRD_PARTY:
       return "block_third_party";
-    case ControlType::FORGET_FIRST_PARTY:
-      return "forget_first_party";
     case ControlType::DEFAULT:
       return "default";
     default:
@@ -171,8 +162,6 @@ ControlType ControlTypeFromString(const std::string& string) {
     return ControlType::BLOCK;
   } else if (string == "block_third_party") {
     return ControlType::BLOCK_THIRD_PARTY;
-  } else if (string == "forget_first_party") {
-    return ControlType::FORGET_FIRST_PARTY;
   } else if (string == "default") {
     return ControlType::DEFAULT;
   } else {
@@ -440,7 +429,6 @@ void SetCookieControlType(HostContentSettingsMap* map,
                                       CONTENT_SETTING_BLOCK);
         break;
       case ControlType::BLOCK_THIRD_PARTY:
-      case ControlType::FORGET_FIRST_PARTY:
         map->SetDefaultContentSetting(ContentSettingsType::COOKIES,
                                       CONTENT_SETTING_ALLOW);
         profile_state->SetInteger(
@@ -450,14 +438,6 @@ void SetCookieControlType(HostContentSettingsMap* map,
         break;
       default:
         NOTREACHED() << "Invalid ControlType for cookies";
-    }
-    if (base::FeatureList::IsEnabled(
-            net::features::kBraveForgetFirstPartyStorage)) {
-      const ContentSetting setting = type == ControlType::FORGET_FIRST_PARTY
-                                         ? CONTENT_SETTING_BLOCK
-                                         : CONTENT_SETTING_ALLOW;
-      map->SetDefaultContentSetting(
-          ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, setting);
     }
     return;
   }
@@ -469,7 +449,6 @@ void SetCookieControlType(HostContentSettingsMap* map,
 
   switch (type) {
     case ControlType::BLOCK_THIRD_PARTY:
-    case ControlType::FORGET_FIRST_PARTY:
       // general-rule:
       map->SetContentSettingCustomScope(
           ContentSettingsPattern::Wildcard(), patterns.host_pattern,
@@ -495,15 +474,6 @@ void SetCookieControlType(HostContentSettingsMap* map,
     case ControlType::DEFAULT:
       NOTREACHED() << "Invalid ControlType for cookies";
   }
-  if (base::FeatureList::IsEnabled(
-          net::features::kBraveForgetFirstPartyStorage)) {
-    const ContentSetting setting = type == ControlType::FORGET_FIRST_PARTY
-                                       ? CONTENT_SETTING_BLOCK
-                                       : CONTENT_SETTING_ALLOW;
-    map->SetContentSettingCustomScope(
-        patterns.host_pattern, ContentSettingsPattern::Wildcard(),
-        ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, setting);
-  }
 }
 
 ControlType GetCookieControlType(
@@ -522,14 +492,6 @@ ControlType GetCookieControlType(
   if (result.general_setting() == CONTENT_SETTING_ALLOW)
     return ControlType::ALLOW;
   if (result.first_party_setting() != CONTENT_SETTING_BLOCK) {
-    if (base::FeatureList::IsEnabled(
-            net::features::kBraveForgetFirstPartyStorage)) {
-      if (map->GetContentSetting(
-              url, url, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE) ==
-          CONTENT_SETTING_BLOCK) {
-        return ControlType::FORGET_FIRST_PARTY;
-      }
-    }
     return ControlType::BLOCK_THIRD_PARTY;
   }
   return ControlType::BLOCK;
@@ -787,6 +749,37 @@ ControlType GetNoScriptControlType(HostContentSettingsMap* map,
 
   return setting == CONTENT_SETTING_ALLOW ? ControlType::ALLOW
                                           : ControlType::BLOCK;
+}
+
+void SetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
+                                       bool is_enabled,
+                                       const GURL& url,
+                                       PrefService* local_state) {
+  auto primary_pattern = content_settings::CreateDomainPattern(url);
+
+  if (!primary_pattern.IsValid()) {
+    return;
+  }
+
+  // Reset legacy host pattern.
+  auto legacy_host_pattern = content_settings::CreateHostPattern(url);
+  map->SetContentSettingCustomScope(
+      legacy_host_pattern, ContentSettingsPattern::Wildcard(),
+      ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, CONTENT_SETTING_DEFAULT);
+
+  map->SetContentSettingCustomScope(
+      primary_pattern, ContentSettingsPattern::Wildcard(),
+      ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
+      is_enabled ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW);
+  RecordShieldsSettingChanged(local_state);
+}
+
+bool GetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
+                                       const GURL& url) {
+  ContentSetting setting = map->GetContentSetting(
+      url, url, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE);
+
+  return setting == CONTENT_SETTING_BLOCK;
 }
 
 bool IsSameOriginNavigation(const GURL& referrer, const GURL& target_url) {

@@ -57,6 +57,8 @@ class EphemeralStorageService : public KeyedService {
   void FirstPartyStorageAreaNotInUse(const url::Origin& origin);
 
  private:
+  friend class EphemeralStorageForgetByDefaultBrowserTest;
+
   void OnCanEnable1PESForUrl(const GURL& url,
                              base::OnceCallback<void(bool)> on_ready,
                              bool can_enable_1pes);
@@ -70,12 +72,15 @@ class EphemeralStorageService : public KeyedService {
   void CleanupFirstPartyStorageAreaByTimer(const url::Origin& origin);
   void CleanupFirstPartyStorageArea(const url::Origin& origin);
 
+  size_t FireCleanupTimersForTesting();
+
   raw_ptr<content::BrowserContext> context_ = nullptr;
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
   // These patterns are removed on service Shutdown.
   base::flat_set<ContentSettingsPattern> patterns_to_cleanup_on_shutdown_;
 
   base::TimeDelta first_party_storage_areas_keep_alive_;
+  base::TimeDelta first_party_storage_startup_cleanup_delay_;
   std::map<url::Origin, std::unique_ptr<base::OneShotTimer>>
       first_party_storage_areas_to_cleanup_;
 

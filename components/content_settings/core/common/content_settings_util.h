@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_CONTENT_SETTINGS_CORE_COMMON_CONTENT_SETTINGS_UTIL_H_
 
 #include "components/content_settings/core/common/content_settings.h"
-#include "components/content_settings/core/common/content_settings_types.h"
 
 namespace content_settings {
 
@@ -18,8 +17,11 @@ struct ShieldsCookiesPatterns {
 
 ShieldsCookiesPatterns CreateShieldsCookiesPatterns(const GURL& url);
 
-ContentSettingsPattern CreateShieldsCookiesDomainPattern(
-    ContentSettingsPattern host_pattern);
+// Create "*://hostname/*" patern.
+ContentSettingsPattern CreateHostPattern(const GURL& url);
+
+// Create "*://[*.]etldp1_hostname/*" patern.
+ContentSettingsPattern CreateDomainPattern(const GURL& url);
 
 }  // namespace content_settings
 

@@ -44,6 +44,7 @@ interface DataHandler {
   SetIsNoScriptsEnabled(bool is_enabled);
   SetHTTPSEverywhereEnabled(bool is_enabled);
   SetBraveShieldsEnabled(bool is_enabled);
+  SetForgetFirstPartyStorageEnabled(bool is_enabled);
   OpenWebCompatWindow();
   UpdateFavicon();
   AllowScriptsOnce(array<string> origins);
@@ -55,7 +56,6 @@ struct SiteBlockInfo {
   int32 total_blocked_resources;
   bool is_brave_shields_enabled;
   bool is_brave_shields_managed;
-  bool is_forget_first_party_storage_feature_enabled;
   url.mojom.Url favicon_url;
   array<url.mojom.Url> ads_list;
   array<url.mojom.Url> http_redirects_list;
@@ -71,6 +71,7 @@ struct SiteSettings {
   bool is_https_everywhere_enabled;
   HttpsUpgradeMode https_upgrade_mode;
   bool is_noscript_enabled;
+  bool is_forget_first_party_storage_enabled;
 };
 
 enum AdBlockMode {
@@ -87,7 +88,6 @@ enum FingerprintMode {
 
 enum CookieBlockMode {
   CROSS_SITE_BLOCKED,
-  FORGET_FIRST_PARTY,
   BLOCKED,
   ALLOW
 };

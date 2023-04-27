@@ -11,16 +11,6 @@
 
 namespace content_settings {
 
-namespace {
-ContentSettingsPattern CreateHostPattern(const GURL& url) {
-  DCHECK(url.is_empty() ? url.possibly_invalid_spec() == "" : url.is_valid());
-  if (url.is_empty() && url.possibly_invalid_spec() == "")
-    return ContentSettingsPattern::Wildcard();
-  return ContentSettingsPattern::FromString("*://" + url.host() + "/*");
-}
-
-}  // namespace
-
 // To control cookies block mode on given |url| in brave shields we need:
 //
 //   |host_pattern| is *://url.host()/*
@@ -54,21 +44,31 @@ ShieldsCookiesPatterns CreateShieldsCookiesPatterns(const GURL& url) {
     result.domain_pattern = result.host_pattern;
     return result;
   }
-  result.domain_pattern =
-      CreateShieldsCookiesDomainPattern(result.host_pattern);
+  result.domain_pattern = CreateDomainPattern(url);
   return result;
 }
 
-ContentSettingsPattern CreateShieldsCookiesDomainPattern(
-    ContentSettingsPattern host_pattern) {
-  DCHECK(!host_pattern.GetHost().empty());
+ContentSettingsPattern CreateHostPattern(const GURL& url) {
+  DCHECK(url.is_empty() ? url.possibly_invalid_spec() == "" : url.is_valid());
+  if (url.is_empty() && url.possibly_invalid_spec() == "") {
+    return ContentSettingsPattern::Wildcard();
+  }
+
+  return ContentSettingsPattern::FromString(
+      base::StrCat({"*://", url.host(), "/*"}));
+}
+
+ContentSettingsPattern CreateDomainPattern(const GURL& url) {
+  DCHECK(url.is_empty() ? url.possibly_invalid_spec() == "" : url.is_valid());
+  if (url.is_empty() && url.possibly_invalid_spec() == "") {
+    return ContentSettingsPattern::Wildcard();
+  }
 
   auto domain = net::registry_controlled_domains::GetDomainAndRegistry(
-      host_pattern.GetHost(),
-      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+      url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
   if (domain.empty()) {
     // IP Address.
-    return host_pattern;
+    return CreateHostPattern(url);
   }
 
   return ContentSettingsPattern::FromString(
