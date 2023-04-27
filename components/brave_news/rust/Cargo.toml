@@ -11,7 +11,6 @@ feed-rs = { git = "https://github.com/feed-rs/feed-rs", rev = "f88f21a65f9974999
 log = "0.4.14"
 lazy_static = "1.4.0"
 regex = "1.5.5"
-voca_rs = "1.15.2"
 
 [lib]
 name = "brave_news_cxx"

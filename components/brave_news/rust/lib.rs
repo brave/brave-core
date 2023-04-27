@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 extern crate feed_rs;
+
 use feed_rs::parser;
 use lazy_static::lazy_static;
 use regex::Regex;
@@ -26,8 +27,68 @@ mod ffi {
     }
 
     extern "Rust" {
+        fn strip_html(subject: &str) -> String;
         fn parse_feed_bytes(source: &[u8], output: &mut FeedData) -> bool;
     }
+}
+
+// Note: This function isn't likely to be perfect, but it does guarantee that
+// there will be no HTML tags in the output (as it strips both '<' and '>' from
+// from the output).
+fn strip_html(subject: &str) -> String {
+    let mut output = String::with_capacity(subject.len());
+    let mut depth_tag = 0;
+    let mut depth_comment = 0;
+
+    // We want to know the last 3 characters so we can see if they were --> for
+    // closing a comment.
+    let last_chars_size = 3;
+    let mut last_chars = String::with_capacity(last_chars_size);
+    let mut iterator = subject.chars();
+
+    while let Some(c) = iterator.next() {
+        // Only store the last characters if they're one of the ones we're
+        // interested in.
+        if c == '-' || c == '>' {
+            last_chars.push(c);
+            if last_chars.len() > last_chars_size {
+                last_chars = last_chars.chars().skip(1).collect();
+            }
+        } else {
+            last_chars.clear();
+        }
+
+        if c == '<' {
+            let is_comment = iterator.as_str().get(..3).map_or(false, |s| s == "!--");
+            if is_comment {
+                depth_comment += 1;
+            } else if depth_comment == 0 {
+                depth_tag += 1;
+            }
+            continue;
+        }
+
+        if c == '>' {
+            if depth_comment > 0 {
+                if last_chars == "-->" {
+                    // If this was the close for a comment, reduce our comment depth.
+                    depth_comment -= 1
+                }
+            } else if depth_tag > 0 {
+                // Only reduce our tag depth if we aren't in a comment
+                depth_tag -= 1;
+            }
+            continue;
+        }
+
+        if depth_comment > 0 || depth_tag > 0 {
+            continue;
+        }
+
+        output.push(c);
+    }
+
+    output
 }
 
 fn parse_feed_bytes(source: &[u8], output: &mut ffi::FeedData) -> bool {
@@ -44,11 +105,8 @@ fn parse_feed_bytes(source: &[u8], output: &mut ffi::FeedData) -> bool {
     }
     // Parsing was successful, convert to FeedData
     let feed = feed_result.unwrap();
-    output.title = if let Some(title) = feed.title {
-        voca_rs::strip::strip_tags(&title.content)
-    } else {
-        String::new()
-    };
+    output.title =
+        if let Some(title) = feed.title { strip_html(&title.content) } else { String::new() };
     for feed_item_data in feed.entries {
         // Check we can make a valid entry
         if feed_item_data.links.is_empty()
@@ -111,14 +169,14 @@ fn parse_feed_bytes(source: &[u8], output: &mut ffi::FeedData) -> bool {
         }
         let feed_item = ffi::FeedItem {
             id: feed_item_data.id,
-            title: voca_rs::strip::strip_tags(
+            title: strip_html(
                 &(if feed_item_data.title.is_some() {
                     feed_item_data.title.unwrap().content
                 } else {
                     summary.clone()
                 }),
             ),
-            description: voca_rs::strip::strip_tags(&summary),
+            description: strip_html(&summary),
             image_url,
             destination_url: feed_item_data.links[0].href.clone(),
             published_timestamp: feed_item_data.published.map_or(0, |date| date.timestamp()),
