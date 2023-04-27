@@ -100,13 +100,12 @@
   <message name="IDS_SETTINGS_ANTI_ABUSE_DESCRIPTION" desc="The label used for the anti-abuse site settings description.">
     Sites you visit can verify that you're a real profile and not a bot
   </message>
-  <message name="IDS_SETTINGS_ANTI_ABUSE_WHEN_ON_SECTION_ONE" desc="A description that informs users how their browsing could be helped by the anti-abuse features.">
+  <message name="IDS_SETTINGS_ANTI_ABUSE_WHEN_ON_SECTION_TWO" desc="A description that informs users how the anti-abuse features work.">
+    As you keep browsing, sites can check with Brave and verify with a previous site you've visited that you're likely a real profile
+  </message>
+  <message name="IDS_SETTINGS_ANTI_ABUSE_WHEN_ON_SECTION_THREE" desc="A description that informs users how their browsing could be helped by the anti-abuse features.">
     Browsing is faster because a site is less likely to ask you to verify you're a real profile
   </message>
-  <message name="IDS_SETTINGS_ANTI_ABUSE_THINGS_TO_CONSIDER_SECTION_ONE" desc="A description that informs users that site can save info with Brave when the anti-abuse features are enabled.">
-    A site you visit can save info with Brave that validates you're not a bot. As you keep browsing, sites can check with Brave and verify with a previous site you've visited that you're likely a real profile
-  </message>
-
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_SPAM_AND_FRAUD_SUMMARY" desc="The description of card 3 of 3. * “help”: This API is one way that sites can fight fraud. Don’t suggest that sites must use this API to fight fraud. * “distinguish bots from profiles”: This touches on just one aspect of fraud but we hope it helps the user understand the purpose of this API, and that is to distinguish real users from malicious players.">
     Help sites fight fraud and distinguish bots from profiles
   </message>

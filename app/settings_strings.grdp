@@ -358,8 +358,11 @@
   <message name="IDS_PASSWORDS_PAGE_EXPORT_AUTHENTICATION_PROMPT_BIOMETRIC_SUFFIX" desc="Shown after 'Brave is trying to ' (or in some languages, 'Brave wants to ') in a dialog message. Text for the dialog box that prompts the user for the biometric authentication before exporting passwords to a file.">
     export passwords
   </message>
-  <message name="IDS_SETTINGS_AUTOFILL" desc="Name of the settings page which allows managing passwords, payment methods and addresses settings.">
-    Autofill
+  <message name="IDS_SETTINGS_AUTOFILL_AND_PASSWORDS" desc="Name of the settings page which allows managing passwords, payment methods and addresses settings.">
+    Autofill and passwords
+  </message>
+  <message name="IDS_PASSWORDS_PAGE_IMPORT_AUTHENTICATION_PROMPT_BIOMETRIC_SUFFIX" desc="Shown after 'Brave is trying to ' (or in some languages, 'Brave wants to ') in a dialog message. Text for the dialog box that prompts the user for the biometric authentication before replacing passwords during Import.">
+    replace existing passwords
   </message>
   <message name="IDS_SETTINGS_GOOGLE_PAYMENTS" desc="Label used to differentiate when an address or credit card entry comes from Google Pay. This should follow the casing of the 'Google Pay' brand. 'Google Pay' should not be translated as it is the product name.">
     Google Pay
@@ -1810,17 +1813,20 @@
   <message name="IDS_SETTINGS_ANTI_ABUSE_WHEN_ON_HEADER" desc="The header used for the section that informs users of the anti-abuse features.">
     When on
   </message>
-  <message name="IDS_SETTINGS_ANTI_ABUSE_WHEN_ON_SECTION_ONE" desc="A description that informs users how their browsing could be helped by the anti-abuse features.">
-    Browsing is faster because a site is less likely to ask you to verify you're a real profile
+  <message name="IDS_SETTINGS_ANTI_ABUSE_WHEN_ON_SECTION_ONE" desc="A description that informs users that Brave saves a small amount of data when the anti-abuse features are enabled.">
+    A site you visit can save a small amount of info with Brave, mainly to validate you're not a bot
   </message>
-  <message name="IDS_SETTINGS_ANTI_ABUSE_WHEN_ON_SECTION_TWO" desc="A description that informs users that the anti-abuse features do not reveal their browsing history.">
-    This setting works without identifying you or allowing sites to see your browsing history
+  <message name="IDS_SETTINGS_ANTI_ABUSE_WHEN_ON_SECTION_TWO" desc="A description that informs users how the anti-abuse features work.">
+    As you keep browsing, sites can check with Brave and verify with a previous site you've visited that you're likely a real profile
+  </message>
+  <message name="IDS_SETTINGS_ANTI_ABUSE_WHEN_ON_SECTION_THREE" desc="A description that informs users how their browsing could be helped by the anti-abuse features.">
+    Browsing is faster because a site is less likely to ask you to verify you're a real profile
   </message>
   <message name="IDS_SETTINGS_ANTI_ABUSE_THINGS_TO_CONSIDER_HEADER" desc="The header used for the section that informs users of additional things to consider when the anti-abuse features are enabled.">
     Things to consider
   </message>
-  <message name="IDS_SETTINGS_ANTI_ABUSE_THINGS_TO_CONSIDER_SECTION_ONE" desc="A description that informs users that site can save info with Brave when the anti-abuse features are enabled.">
-    A site you visit can save info with Brave that validates you're not a bot. As you keep browsing, sites can check with Brave and verify with a previous site you've visited that you're likely a real profile
+  <message name="IDS_SETTINGS_ANTI_ABUSE_THINGS_TO_CONSIDER_SECTION_ONE" desc="A description that informs users that the anti-abuse features do not reveal their browsing history.">
+    This setting works without identifying you or allowing sites to see your browsing history, though sites can share a small amount of info as part of the verification
   </message>
 
   <!-- Privacy Sandbox -->
@@ -2923,6 +2929,9 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_SYSTEM_SITE_LIST_EDIT_HEADER" desc="The header name for a list of files that the user has granted edit permissions from the File System Access API.">
     Edit
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_SYSTEM_SITE_LIST_REMOVE_GRANT_LABEL" desc="A label that represents removing a site's permission to access a file or folder, previously granted access from the File System Access API.">
+    Remove grant
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_SYSTEM_SITE_LIST_VIEW_HEADER" desc="The header name for a list of files that the user has granted view permissions from the File System Access API.">
     View
@@ -4114,6 +4123,18 @@
   </message>
   <message name="IDS_SETTINGS_NO_HID_DEVICES_FOUND" desc="Explanation for not showing HID devices in site settings.">
     No HID devices found
+  </message>
+  <message name="IDS_SETTINGS_RESET_BLUETOOTH_CONFIRMATION" desc="Text for the dialog that warns about resetting all permissions for all Bluetooth devices.">
+    Reset all Bluetooth device permissions?
+  </message>
+  <message name="IDS_SETTINGS_RESET_HID_CONFIRMATION" desc="Text for the dialog that warns about resetting all permissions for all HID devices.">
+    Reset all HID device permissions?
+  </message>
+  <message name="IDS_SETTINGS_RESET_SERIAL_PORTS_CONFIRMATION" desc="Text for the dialog that warns about resetting all permissions for all serial ports.">
+    Reset all Serial port permisions?
+  </message>
+  <message name="IDS_SETTINGS_RESET_USB_CONFIRMATION" desc="Text for the dialog that warns about resetting all permissions for all USB devices.">
+    Reset all USB device permissions?
   </message>
   <message name="IDS_SETTINGS_ADD_SITE_TITLE" desc="Title for the Add Site dialog">
     Add a site

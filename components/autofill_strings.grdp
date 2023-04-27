@@ -168,7 +168,7 @@
   </if>
 
   <message name="IDS_AUTOFILL_IPH_EXTERNAL_ACCOUNT_PROFILE_SUGGESTION" desc="IPH bubble for a suggestion item with an account profile that was created somewhere outside Brave (e.g. Google Pay)." formatter_data="android_java">
-    You can now use addresses from your Brave sync chain.
+    You can now use addresses from your Brave sync chain
   </message>
 
   <!-- Autofill suggestion label separator -->
@@ -216,9 +216,6 @@
   <message name="IDS_AUTOFILL_ENABLE_CREDIT_CARDS_TOGGLE_SUBLABEL" desc="Sublabel for a toggle that allows users to control whether credit cards should be saved and forms should be autofilled with it." formatter_data="android_java">
     Fills in payment forms with your saved payment methods
   </message>
-  <message name="IDS_AUTOFILL_EDIT_ACCOUNT_ADDRESS_SOURCE_NOTICE" desc="The footer message in the 'Add/Edit address' dialog warning the user that this address is stored in their account.">
-    This address is saved in your Brave sync chain (<ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>). You can use address across Brave products on any device.
-  </message>
   <message name="IDS_AUTOFILL_DELETE_ACCOUNT_ADDRESS_SOURCE_NOTICE" desc="The notice/warning for the user before the address deletion." formatter_data="android_java">
     This address will be deleted from your Brave sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>
   </message>
@@ -229,25 +226,25 @@
     This address will be deleted from this device
   </message>
   <message name="IDS_AUTOFILL_SAVE_IN_ACCOUNT_MESSAGE_ADDRESS_SOURCE_NOTICE" desc="The notice/warning message for the user that this address is going to be stored in their account.">
-    In your Brave sync chain <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>
+    In your Brave sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>
   </message>
   <message name="IDS_AUTOFILL_SAVE_IN_ACCOUNT_MESSAGE_ADDRESS_MIGRATION_SOURCE_NOTICE" desc="The notice/warning message for the user that this address is going to be migrated in their account.">
-    You can use it across Brave products
+    You will be able to use it across Brave products
   </message>
   <message name="IDS_AUTOFILL_ADDRESS_ALREADY_SAVED_IN_ACCOUNT_SOURCE_NOTICE" desc="The footer message used to notify user that their address is stored in their account." formatter_data="android_java">
-    You can use saved addresses across Brave products. This address is saved in your Brave sync chain (<ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>).
+    You can use saved addresses across Brave products. This address is saved in your Brave sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>.
   </message>
   <message name="IDS_AUTOFILL_ADDRESS_WILL_BE_SAVED_IN_ACCOUNT_SOURCE_NOTICE" desc="The footer message used to notify user that their address will be saved in their account." formatter_data="android_java">
-    You can use saved addresses across Brave products. This address will be saved in your Brave sync chain (<ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>).
-  </message>
-  <message name="IDS_AUTOFILL_ADDRESS_WILL_BE_MIGRATED_TO_ACCOUNT_SOURCE_NOTICE" desc="The description message used to notify the user that their address will be migrated to their account." formatter_data="android_java">
-    This address is saved only to Brave. To use it across Brave products, save it in your Brave sync chain, (<ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>).
+    You can use saved addresses across Brave products. This address will be saved in your Brave sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>.
   </message>
   <message name="IDS_AUTOFILL_EDIT_ADDRESS_REQUIRED_FIELD_FORM_ERROR" desc="The form error message shown to the user in case of a single required field missing.">
     A required field is empty. Fill it before saving.
   </message>
   <message name="IDS_AUTOFILL_EDIT_ADDRESS_REQUIRED_FIELDS_FORM_ERROR" desc="The form error message shown to the user in case of multiple required fields missing.">
     Some required fields are empty. Fill them before saving.
+  </message>
+  <message name="IDS_AUTOFILL_LOCAL_ADDRESS_ICON_A11Y_LABEL" desc="The a11y label for the 'no-cloud' address icon in Settings.">
+    Address is available only on this device
   </message>
   <if expr="not is_ios">
     <then>
@@ -383,6 +380,27 @@
   </message>
   <message name="IDS_AUTOFILL_MIGRATE_ADDRESS_PROMPT_CANCEL_BUTTON_LABEL" desc="Label of the Cancel button in the prompt that offers the user to migrate an existing address profile in their Brave account." meaning="Don't migrate this address">
     No thanks
+  </message>
+  <message name="IDS_AUTOFILL_SAVE_IN_ACCOUNT_PROMPT_ADDRESS_SOURCE_NOTICE" desc="The footer message in the 'Save address' prompt informing the user that this address will be stored in their account.">
+    You can use saved addresses across Brave products. This address will be saved in your Brave sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>.
+  </message>
+  <message name="IDS_AUTOFILL_UPDATE_PROMPT_ACCOUNT_ADDRESS_SOURCE_NOTICE" desc="The footer message in the 'Update address' prompt informing the user that this address is stored in their account.">
+    You can use saved addresses across Brave products. This address is saved in your Brave sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>.
+  </message>
+  <message name="IDS_AUTOFILL_SYNCABLE_PROFILE_MIGRATION_PROMPT_NOTICE" desc="The syncable profile prompt body text.">
+    This address is currently saved to Brave. To use it across Brave products, save it in your Brave sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>.
+  </message>
+  <message name="IDS_AUTOFILL_LOCAL_PROFILE_MIGRATION_PROMPT_NOTICE" desc="The local profile prompt body text.">
+    This address is currently saved to this device. To use it across Brave products, save it in your Brave sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>.
+  </message>
+  <message name="IDS_AUTOFILL_SAVE_PROMPT_ADDRESS_SECTION_A11Y_LABEL" desc="The 'Save address' prompt address summary section a11y announcement, accompanied with a label to make it clear that the content being read is an address.">
+    Address: <ph name="ADDRESS">$1<ex>345 Spear street</ex></ph>.
+  </message>
+  <message name="IDS_AUTOFILL_SAVE_PROMPT_PHONE_SECTION_A11Y_LABEL" desc="The 'Save address' phone number section a11y announcement, accompanied with a label to make it clear that the content being read is a phone number.">
+    Phone number: <ph name="PHONE">$1<ex>+49 105 807 202 55</ex></ph>.
+  </message>
+  <message name="IDS_AUTOFILL_SAVE_PROMPT_EMAIL_SECTION_A11Y_LABEL" desc="The 'Save address' email section a11y announcement, accompanied with a label to make it clear that the content being read is an email.">
+    Email: <ph name="EMAIL">$1<ex>alexpark@gmai.com</ex></ph>.
   </message>
   <!-- Used on Android: -->
   <if expr="is_android">
