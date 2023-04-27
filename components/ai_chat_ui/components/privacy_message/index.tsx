@@ -19,6 +19,8 @@ function PrivacyMessage () {
       <section>
         <b>{getLocale('aboutTitle')}</b>
         <p>{getLocale('aboutDescription')}</p>
+        <p>{getLocale('aboutDescription_2')}</p>
+        <p>{getLocale('aboutNote')}</p>
       </section>
     </div>
   )

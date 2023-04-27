@@ -12,11 +12,17 @@
   <message name="IDS_CHAT_UI_SUMMARIZE_BUTTON_LABEL" desc="Label for button to summarize the current page's content">
     Summarize
   </message>
-  <message name="IDS_CHAT_UI_ABOUT_TITLE" desc="A one-liner title to describe what ChatUI is">
+  <message name="IDS_CHAT_UI_ABOUT_TITLE" desc="A concise title that summarizes the purpose of AIChat">
     About Brave AI
   </message>
-   <message name="IDS_CHAT_UI_ABOUT_DESCRIPTION" desc="A paragraph to describe what ChatUI is">
-    Brave AI is a series of machine-learning powered tools built into both the Brave browser (e.g. in sidebar) and Brave Search (e.g. in the search results page). Brave AI can generate useful summaries of content you're reading or summary answers to your search queries, and a chat-like interface to ask follow-up questions.
+   <message name="IDS_CHAT_UI_ABOUT_DESCRIPTION" desc="An outlining the functioning of AIChat">
+    The Brave AI Chat feature summarizes the content of a webpage you browse and includes a chat interface that allows you to make follow-up inquiries of the summarized content for that page.
+  </message>
+  <message name="IDS_CHAT_UI_ABOUT_DESCRIPTION_2" desc="An outlining the functioning of AIChat (cont)">
+    The summarized page and any questions you ask of the Chat feature are sent to the servers of an external API partner (no identifiers are sent with that query).
+  </message>
+  <message name="IDS_CHAT_UI_ABOUT_NOTE" desc="An advisory statement that notifies users of potentially confidential data shared with AIChat">
+    Please ensure that the page content and any follow-up inquiries do not contain personal or sensitive information. The accuracy of summaries and inquiry responses is not guaranteed and so you should not rely on any text related to health, personal safety or financial matters.
   </message>
   <message name="IDS_CHAT_UI_PLACEHOLDER_LABEL" desc="Placeholder text for an input box allowing users to send messages to the AI service">
     Ask Brave AI
