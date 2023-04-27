@@ -339,4 +339,35 @@ extension TransactionSummary {
     )
   }
 }
+
+extension BraveWallet.CoinMarket {
+  static var mockCoinMarketBitcoin: BraveWallet.CoinMarket {
+    .init(
+      id: "bitcoin",
+      symbol: "btc",
+      name: "Bitcoin",
+      image: "https://assets.cgproxy.brave.com/coins/images/1/large/bitcoin.png?1547033579",
+      marketCap: 547558353670,
+      marketCapRank: 1,
+      currentPrice: 28324,
+      priceChange24h: 163.96,
+      priceChangePercentage24h: 0.58225,
+      totalVolume: 30825602847
+    )
+  }
+  static var mockCoinMarketEth: BraveWallet.CoinMarket {
+    .init(
+      id: "ethereum",
+      symbol: "eth",
+      name: "Ethereum",
+      image: "https://assets.cgproxy.brave.com/coins/images/279/large/ethereum.png?1595348880",
+      marketCap: 223719056533,
+      marketCapRank: 2,
+      currentPrice: 1860.57,
+      priceChange24h: -4.2550480604149925,
+      priceChangePercentage24h: -0.22817,
+      totalVolume: 15998007227
+    )
+  }
+}
 #endif

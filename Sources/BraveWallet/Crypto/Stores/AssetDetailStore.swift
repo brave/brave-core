@@ -221,7 +221,7 @@ class AssetDetailStore: ObservableObject {
       buyOptions = [.ramp, .transak]
     }
     self.allBuyTokensAllOptions = await blockchainRegistry.allBuyTokens(in: network, for: buyOptions)
-    let buyTokens = allBuyTokensAllOptions.flatMap{ $0.value }
+    let buyTokens = allBuyTokensAllOptions.flatMap { $0.value }
     return buyTokens.first(where: { $0.symbol.caseInsensitiveCompare(symbol) == .orderedSame }) != nil
   }
   
