@@ -726,7 +726,7 @@ extension Strings {
       "wallet.settingsResetButtonTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Reset Brave Wallet",
+      value: "Reset and Clear Wallet Data",
       comment: "The title of a button that will reset the wallet. As in to erase the users wallet from the device"
     )
     public static let settingsResetWalletAlertTitle = NSLocalizedString(
