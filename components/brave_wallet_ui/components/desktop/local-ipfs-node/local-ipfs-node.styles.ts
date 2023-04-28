@@ -18,6 +18,7 @@ export const RunNodeWrapper = styled.div`
   bottom: 0;
   min-width: 100vw;
   min-height: 100vh;
+  min-height: -webkit-fill-available;
   background-image: url(${Background});
   background-size: cover;
   background-repeat: no-repeat;
@@ -217,33 +218,6 @@ export const CheckNftsButton = styled(WalletButton)`
   outline: none;
   border: none;
   margin-top: 37px;
-`
-
-export const BenefitHeading = styled.p`
-  display: flex;
-  align-self: flex-start;
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 20px;
-  color: #ffffff;
-  padding: 0;
-  margin: 0 0 15px 0;
-`
-
-export const BenefitsList = styled.ul`
-  margin: 0%;
-
-  li {
-    font-family: 'Poppins';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 24px;
-    color: #aeb1c2;
-    margin-bottom: 8px;
-  }
 `
 
 export const NftIllustration = styled.img`
