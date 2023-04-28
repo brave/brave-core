@@ -474,8 +474,9 @@ export const getETHSwapTransactionBuyAndSellTokens = ({
 
   const buyToken = fillTokens[fillTokens.length - 1]
   const buyAmountWei = new Amount(minBuyAmountArg)
-  const buyAmount = buyAmountWei
-    .divideByDecimals(buyToken.decimals)
+  const buyAmount = buyToken
+    ? buyAmountWei.divideByDecimals(buyToken.decimals)
+    : Amount.empty()
 
   return {
     buyToken,

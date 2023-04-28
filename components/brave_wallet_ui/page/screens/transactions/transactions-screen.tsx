@@ -9,7 +9,6 @@ import { useHistory } from 'react-router'
 // types
 import {
   BraveWallet,
-  SerializableTransactionInfo,
   WalletAccountType,
   WalletRoutes
 } from '../../../constants/types'
@@ -21,10 +20,8 @@ import { AllAccountsOption } from '../../../options/account-filter-options'
 // utils
 import { getLocale } from 'brave-ui'
 import {
-  AccountInfoEntity,
   accountInfoEntityAdaptor,
-  accountInfoEntityAdaptorInitialState,
-  selectAllAccountInfosFromQuery
+  accountInfoEntityAdaptorInitialState
 } from '../../../common/slices/entities/account-info.entity'
 import {
   selectAllUserAssetsFromQueryResult,
@@ -42,9 +39,9 @@ import {
 import {
   useGetAccountInfosRegistryQuery,
   useGetNetworksRegistryQuery,
-  useLazyGetTransactionsQuery,
   useGetUserTokensRegistryQuery,
-  useGetTokensRegistryQuery
+  useGetTokensRegistryQuery,
+  useGetTransactionsQuery,
 } from '../../../common/slices/api.slice'
 
 // components
@@ -71,7 +68,6 @@ interface Params {
   address?: string | null
   chainId?: string | null
   chainCoinType?: BraveWallet.CoinType | null
-  transactionId?: string | null
 }
 
 const txListItemSkeletonProps: LoadingSkeletonStyleProps = {
@@ -86,23 +82,17 @@ export const TransactionsScreen: React.FC = () => {
 
   // state
   const [searchValue, setSearchValue] = React.useState<string>('')
-  const [txInfos, setTxInfos] = React.useState<SerializableTransactionInfo[]>(
-    []
-  )
-  const [isLoadingTxsList, setIsLoadingTxsList] = React.useState<boolean>(false)
 
   // route params
   const {
     address,
     chainId,
-    transactionId,
     chainCoinType
   } = React.useMemo(() => {
     const searchParams = new URLSearchParams(history.location.search)
     return {
       address: searchParams.get('address'),
       chainId: searchParams.get('chainId'),
-      transactionId: searchParams.get('transactionId'),
       chainCoinType:
         Number(searchParams.get('chainCoinType')) || BraveWallet.CoinType.ETH
     }
@@ -111,14 +101,13 @@ export const TransactionsScreen: React.FC = () => {
   // queries
   const {
     data: accountInfosRegistry = accountInfoEntityAdaptorInitialState,
-    isLoading: isLoadingAccounts,
-    accounts
-  } = useGetAccountInfosRegistryQuery(undefined, {
-    selectFromResult: res => ({
-      ...res,
-      accounts: selectAllAccountInfosFromQuery(res)
-    })
-  })
+    isLoading: isLoadingAccounts
+  } = useGetAccountInfosRegistryQuery(undefined)
+  const foundAccountFromParam = address
+    ? accountInfosRegistry.entities[
+        accountInfoEntityAdaptor.selectId({ address })
+      ]
+    : undefined
 
   const { data: knownTokensList } = useGetTokensRegistryQuery(undefined, {
     selectFromResult: (res) => ({
@@ -137,11 +126,8 @@ export const TransactionsScreen: React.FC = () => {
     }
   )
 
-  const [fetchTransactions] = useLazyGetTransactionsQuery()
-
   const { data: networksRegistry } = useGetNetworksRegistryQuery()
 
-  // computed / memos
   const specificNetworkFromParam =
     chainId &&
     chainId !== AllNetworksOption.chainId &&
@@ -161,82 +147,30 @@ export const TransactionsScreen: React.FC = () => {
       : specificNetworkFromParam
     : undefined
 
-  const isLoadingDeps = isLoadingAccounts
-
-  const foundAccountFromParam = address ? accountInfosRegistry.entities[
-    accountInfoEntityAdaptor.selectId({ address })
-  ] : undefined
-
-  const fetchTxsForAccounts = React.useCallback((accounts: Array<Pick<AccountInfoEntity, 'address' | 'coin'>>) => {
-    setIsLoadingTxsList(true)
-
-    Promise.all(
-      accounts.map(({ coin, address }) => {
-        return fetchTransactions({
-          address: address,
-          coinType: coin,
-          chainId:
-            foundNetworkFromParam?.chainId === AllNetworksOption.chainId
-              ? null
-              : foundNetworkFromParam?.chainId || null
-        }).unwrap()
-      }
-    ))
-    .then(txInfos => {
-      setTxInfos(txInfos.flat())
-      setIsLoadingTxsList(false)
-    })
-    .catch(error => {
-      console.error(error)
-      // stop loading if a error other than empty tokens list was thrown
-      if (!error?.toString().includes('Unable to fetch Tokens Registry')) {
-        setIsLoadingTxsList(false)
-        return
-      }
-      // retry when browser is idle
-      requestIdleCallback(() => {
-        fetchTxsForAccounts(accounts)
-      })
-    })
-  }, [
-    fetchTransactions,
-    foundNetworkFromParam?.chainId
-  ])
-
-  React.useEffect(() => {
-    if (isLoadingDeps) {
-      return
-    }
-
-    if (
-      foundAccountFromParam?.address &&
-      foundAccountFromParam?.coin !== undefined
-    ) {
-      fetchTxsForAccounts([{
-        address: foundAccountFromParam.address,
-        coin: foundAccountFromParam.coin
-      }])
-      return
-    }
-
-    // get txs for all accounts
-    fetchTxsForAccounts(accounts)
-  }, [
-    isLoadingDeps,
-    fetchTxsForAccounts,
-    foundAccountFromParam?.address,
-    foundAccountFromParam?.coin
-  ])
+  const { data: txsForSelectedChain = [], isLoading: isLoadingTxsList } =
+    useGetTransactionsQuery(
+      foundAccountFromParam
+        ? {
+            address: foundAccountFromParam.address,
+            coinType: foundAccountFromParam.coin,
+            chainId: chainId !== AllNetworksOption.chainId ? chainId : null
+          }
+        : {
+            address: null,
+            chainId:
+              foundNetworkFromParam?.chainId === AllNetworksOption.chainId
+                ? null
+                : foundNetworkFromParam?.chainId || null,
+            coinType:
+              foundNetworkFromParam?.chainId !== AllNetworksOption.chainId
+                ? foundNetworkFromParam?.coin || null
+                : null
+          }
+    )
 
   const combinedTokensList = React.useMemo(() => {
     return userTokensList.concat(knownTokensList)
   }, [userTokensList, knownTokensList])
-
-  const txsForSelectedChain = React.useMemo(() => {
-    return chainId && chainId !== AllNetworksOption.chainId
-      ? txInfos.filter(tx => tx.chainId === chainId)
-      : txInfos
-  }, [chainId, txInfos])
 
   const combinedTokensListForSelectedChain = React.useMemo(() => {
     return chainId && chainId !== AllNetworksOption.chainId
@@ -282,12 +216,11 @@ export const TransactionsScreen: React.FC = () => {
           address: address || undefined,
           // reset chains filter on account select
           chainId: AllNetworksOption.chainId,
-          chainCoinType: coin,
-          transactionId
+          chainCoinType: coin
         })
       )
     },
-    [history, transactionId]
+    [history]
   )
 
   const onSelectNetwork = React.useCallback(
@@ -296,16 +229,15 @@ export const TransactionsScreen: React.FC = () => {
         updatePageParams({
           address: foundAccountFromParam?.address || AllAccountsOption.id,
           chainId,
-          chainCoinType: coin,
-          transactionId
+          chainCoinType: coin
         })
       )
     },
-    [history, foundAccountFromParam?.address, transactionId]
+    [history, foundAccountFromParam?.address]
   )
 
   // render
-  if (isLoadingDeps) {
+  if (isLoadingAccounts || isLoadingTxsList) {
     return <Column fullHeight>
       <LoadingIcon opacity={100} size='50px' color='interactive05' />
     </Column>
@@ -386,7 +318,6 @@ export default TransactionsScreen
 const updatePageParams = ({
   address,
   chainId,
-  transactionId,
   chainCoinType
 }: Params) => {
   const params = new URLSearchParams()
@@ -395,9 +326,6 @@ const updatePageParams = ({
   }
   if (chainId) {
     params.append('chainId', chainId)
-  }
-  if (transactionId) {
-    params.append('transactionId', transactionId)
   }
   if (chainCoinType) {
     params.append('chainCoinType', chainCoinType.toString())
