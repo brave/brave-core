@@ -15,6 +15,9 @@ brave_env::set_brave_env() {
       *:file:*)
         return 0
         ;;
+      *)
+        return 1 # NOT sourced.
+        ;;
       esac
     else
       case ${0##*/} in

@@ -12,10 +12,10 @@ function Set-BraveEnv() {
     $customArgs
   )
   $scriptPath = $invocation.MyCommand.Path
-  $isSourced = $invocation.InvocationName -eq '.' -or $invocation.Line -eq ''
+  $isScriptSourced = $invocation.InvocationName -eq '.' -or $invocation.Line -eq ''
 
   # Do nothing if the script wasn't sourced.
-  if (-not $isSourced) {
+  if (-not $isScriptSourced) {
     Write-Output "Please source the script: . $(Resolve-Path -Relative -LiteralPath $scriptPath) $customArgs"
     return
   }
@@ -36,7 +36,7 @@ function Set-BraveEnv() {
       $key = $envMatches.Matches[0].Groups[1].Value
       $value = $envMatches.Matches[0].Groups[2].Value
       if (-not $value) {
-        Remove-Item -Path Env:\$key
+        Remove-Item -Path Env:\$key -ErrorAction SilentlyContinue
       }
       else {
         Set-Item -Path Env:\$key -Value "$value"
