@@ -173,8 +173,7 @@ public class Utils {
     public static final BigInteger MAX_UINT256 =
             BigInteger.ONE.shiftLeft(256).subtract(BigInteger.ONE);
 
-    // TODO(djandries): Add Filecoin when implemented
-    public static int[] P3ACoinTypes = {CoinType.ETH, CoinType.SOL};
+    public static int[] P3ACoinTypes = {CoinType.ETH, CoinType.SOL, CoinType.FIL};
 
     private static final int CLEAR_CLIPBOARD_INTERVAL = 60000; // In milliseconds
 
