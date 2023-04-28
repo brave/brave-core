@@ -475,7 +475,7 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/omnibox/LocationBarMediator",
                 "shouldShowDeleteButton", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/tasks/ReturnToChromeUtil",
-                "shouldShowTabSwitcher", true, boolean.class, long.class));
+                "shouldShowTabSwitcher", true, boolean.class, long.class, boolean.class));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",
                 "getUrlForCustomTab", true, String.class, Intent.class));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",
