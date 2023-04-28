@@ -21,6 +21,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_item_added_feedback_bubble.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
 #include "brave/components/l10n/common/localization_util.h"
+#include "brave/components/playlist/common/features.h"
 #include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "brave/components/sidebar/sidebar_service.h"
@@ -425,13 +426,38 @@ void SidebarItemsContentsView::UpdateItemViewStateAt(size_t index,
   }
 
   if (sidebar::IsBuiltInType(item)) {
+    item_view->SetImage(views::Button::STATE_NORMAL,
+                        GetImageForBuiltInItems(item.built_in_item_type, active,
+                                                /* disabled= */ false));
     item_view->SetImage(
-        views::Button::STATE_NORMAL,
-        GetImageForBuiltInItems(item.built_in_item_type, active));
-    item_view->SetImage(views::Button::STATE_HOVERED,
-                        GetImageForBuiltInItems(item.built_in_item_type, true));
-    item_view->SetImage(views::Button::STATE_PRESSED,
-                        GetImageForBuiltInItems(item.built_in_item_type, true));
+        views::Button::STATE_HOVERED,
+        GetImageForBuiltInItems(item.built_in_item_type, /* focus= */ true,
+                                /* disabled= */ false));
+    item_view->SetImage(
+        views::Button::STATE_PRESSED,
+        GetImageForBuiltInItems(item.built_in_item_type, /* focus= */ true,
+                                /* disabled= */ false));
+
+    item_view->SetImage(
+        views::Button::STATE_DISABLED,
+        GetImageForBuiltInItems(item.built_in_item_type, /* focus= */ false,
+                                /* disabled= */ true));
+
+    if (base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
+        browser_->profile()->IsOffTheRecord()) {
+      // We don't support Playlist on OTR profile. As SidebarService is shared
+      // regardless of profile type, we should remove it here.
+      // TODO(sko) If we have another item disabled on OTR profile, we should
+      // make a property in SidebarItem.
+      auto is_playlist = [](const auto& item) {
+        return item.built_in_item_type ==
+               sidebar::SidebarItem::BuiltInItemType::kPlaylist;
+      };
+
+      if (is_playlist(item) && item_view->GetEnabled()) {
+        item_view->SetEnabled(false);
+      }
+    }
   }
 }
 
@@ -455,10 +481,12 @@ void SidebarItemsContentsView::OnItemPressed(const views::View* item,
 
 gfx::ImageSkia SidebarItemsContentsView::GetImageForBuiltInItems(
     sidebar::SidebarItem::BuiltInItemType type,
-    bool focused) const {
+    bool focused,
+    bool disabled) const {
   SkColor base_button_color = SK_ColorWHITE;
   if (const ui::ColorProvider* color_provider = GetColorProvider()) {
-    base_button_color = color_provider->GetColor(kColorSidebarButtonBase);
+    base_button_color = color_provider->GetColor(
+        disabled ? kColorSidebarAddButtonDisabled : kColorSidebarButtonBase);
   }
   constexpr int kBuiltInIconSize = 16;
   int focused_image_resource = -1;
