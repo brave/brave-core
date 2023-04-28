@@ -148,8 +148,8 @@ public class SolanaInstructionPresenter {
                     twoLineItemDataSources.add(new TwoLineItemText(
                             resources.getString(
                                     R.string.brave_wallet_solana_address_lookup_table_index),
-                            String.valueOf(
-                                    accountPresenter.solanaAccountMeta.addrTableLookupIndex.val)));
+                            String.valueOf(Byte.toUnsignedInt(
+                                    accountPresenter.solanaAccountMeta.addrTableLookupIndex.val))));
                 }
             }
         }
