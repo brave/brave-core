@@ -38,6 +38,15 @@ void TestingBraveBrowserProcess::DeleteInstance() {
   delete browser_process;
 }
 
+// static
+void TestingBraveBrowserProcess::StartTearDown() {}
+
+// static
+void TestingBraveBrowserProcess::TearDownAndDeleteInstance() {
+  TestingBraveBrowserProcess::StartTearDown();
+  TestingBraveBrowserProcess::DeleteInstance();
+}
+
 TestingBraveBrowserProcess::TestingBraveBrowserProcess() = default;
 
 TestingBraveBrowserProcess::~TestingBraveBrowserProcess() = default;
