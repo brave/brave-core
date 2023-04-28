@@ -139,10 +139,10 @@ public class SolanaInstructionPresenter {
                 if (!accountPresenter.solanaAccountMeta.isSigner) {
                     var prependedTableIndexSubTitle = JavaUtils.concatStrings(
                             System.getProperty(WalletConstants.LINE_SEPARATOR),
+                            accountPresenter.mLocalizeAccountHeader,
                             resources.getString(
-                                    R.string.brave_wallet_solana_address_lookup_table_account),
-                            accountPresenter.mPubKey);
-                    twoLineItemText.setSubTitle(prependedTableIndexSubTitle);
+                                    R.string.brave_wallet_solana_address_lookup_table_account));
+                    twoLineItemText.setTitle(prependedTableIndexSubTitle);
                 }
                 if (!accountPresenter.solanaAccountMeta.isSigner) {
                     twoLineItemDataSources.add(new TwoLineItemText(
