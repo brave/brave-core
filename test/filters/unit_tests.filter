@@ -282,6 +282,13 @@
 -SupervisedUserGoogleAuthNavigationThrottleTest.NavigationForValidSignedinSupervisedUsers
 -SupervisedUserURLFilterExtensionsTest.ChromeWebstoreURLsAreAlwaysAllowed
 
+# These tests dcheck because we modify the download bubble behavior with regards
+# to dangerous downloads.
+-DownloadDisplayControllerTest.GetProgressItemsAllComplete
+-DownloadDisplayControllerTest.InitialState_NewLastDownload
+-DownloadDisplayControllerTest.InitialState_OldLastDownload
+-DownloadDisplayControllerTest.UpdateToolbarButtonState_OnCompleteItemCreated
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.*
