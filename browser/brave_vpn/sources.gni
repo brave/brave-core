@@ -28,6 +28,7 @@ if (enable_brave_vpn) {
     brave_browser_brave_vpn_deps += [
       "//brave/app:brave_generated_resources_grit",
       "//brave/browser:browser_process",
+      "//brave/components/brave_vpn/browser/connection/common/win",
       "//brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper:common",
       "//chrome/common:constants",
       "//net",

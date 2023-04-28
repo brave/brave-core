@@ -11,22 +11,14 @@
 #include "base/logging.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/win/registry.h"
+#include "brave/components/brave_vpn/browser/connection/common/win/scoped_sc_handle.h"
+#include "brave/components/brave_vpn/browser/connection/common/win/utils.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/brave_vpn_helper_constants.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/scoped_sc_handle.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "chrome/install_static/install_modes.h"
 #include "chrome/install_static/install_util.h"
 
 namespace brave_vpn {
-
-namespace {
-
-HRESULT HRESULTFromLastError() {
-  const auto error_code = ::GetLastError();
-  return (error_code != NO_ERROR) ? HRESULT_FROM_WIN32(error_code) : E_FAIL;
-}
-
-}  // namespace
 
 bool IsBraveVPNHelperServiceInstalled() {
   ScopedScHandle scm(::OpenSCManager(nullptr, nullptr, SC_MANAGER_CONNECT));

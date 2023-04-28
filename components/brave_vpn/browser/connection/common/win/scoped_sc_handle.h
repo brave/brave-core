@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_WIN_BRAVE_VPN_HELPER_SCOPED_SC_HANDLE_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_WIN_BRAVE_VPN_HELPER_SCOPED_SC_HANDLE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_COMMON_WIN_SCOPED_SC_HANDLE_H_
+#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_COMMON_WIN_SCOPED_SC_HANDLE_H_
 
 #include "base/types/expected.h"
 #include "base/win/scoped_handle.h"
@@ -39,4 +39,4 @@ using ScopedScHandle =
     base::win::GenericScopedHandle<ScHandleTraits,
                                    base::win::DummyVerifierTraits>;
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_IKEV2_WIN_BRAVE_VPN_HELPER_SCOPED_SC_HANDLE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_COMMON_WIN_SCOPED_SC_HANDLE_H_

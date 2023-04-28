@@ -12,7 +12,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/synchronization/waitable_event.h"
 #include "base/synchronization/waitable_event_watcher.h"
-#include "brave/components/brave_vpn/browser/connection/ikev2/win/brave_vpn_helper/scoped_sc_handle.h"
+#include "brave/components/brave_vpn/browser/connection/common/win/scoped_sc_handle.h"
 
 class ServiceWatcher {
  public:

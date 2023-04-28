@@ -29,7 +29,6 @@ config("winver") {
 
 source_set("common") {
   sources = [
-    "scoped_sc_handle.h",
     "service_constants.cc",
     "service_constants.h",
   ]
@@ -61,6 +60,7 @@ executable("brave_vpn_wireguard_service") {
     ":version_resources",
     "//base",
     "//base:base_static",
+    "//brave/components/brave_vpn/browser/connection/common/win",
     "//build/win:default_exe_manifest",
     "//chrome/install_static:install_static_util",
     "//chrome/installer/util:with_no_strings",
