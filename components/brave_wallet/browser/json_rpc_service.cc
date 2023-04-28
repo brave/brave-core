@@ -2667,9 +2667,8 @@ void JsonRpcService::GetEthTokenSymbol(const std::string& contract_address,
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetEthTokenSymbol,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  RequestInternal(eth::eth_call("", contract_address, "", "", "", data,
-                                kEthereumBlockTagLatest),
-                  true, network_url, std::move(internal_callback));
+  RequestInternal(eth::eth_call(contract_address, data), true, network_url,
+                  std::move(internal_callback));
 }
 
 void JsonRpcService::OnGetEthTokenSymbol(GetEthTokenSymbolCallback callback,
@@ -2707,9 +2706,8 @@ void JsonRpcService::GetEthTokenDecimals(const std::string& contract_address,
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetEthTokenDecimals,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  RequestInternal(eth::eth_call("", contract_address, "", "", "", data,
-                                kEthereumBlockTagLatest),
-                  true, network_url, std::move(internal_callback));
+  RequestInternal(eth::eth_call(contract_address, data), true, network_url,
+                  std::move(internal_callback));
 }
 
 void JsonRpcService::OnGetEthTokenDecimals(

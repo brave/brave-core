@@ -1184,7 +1184,7 @@ interface JsonRpcService {
 
   // Fetches decimals of an ERC20 or ERC721 token.
   GetEthTokenDecimals(string chain_id,
-                      string contract_address) => (string symbol,
+                      string contract_address) => (string decimals,
                                                    ProviderError error,
                                                    string error_message);
   // Solana JSON RPCs

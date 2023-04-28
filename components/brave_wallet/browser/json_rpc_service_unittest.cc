@@ -665,7 +665,7 @@ constexpr char kJsonRpcResponseTemplate[] = R"({
       "result":"$1"
   })";
 
-std::string formatJsonRpcResponse(const std::string& value) {
+std::string FormatJsonRpcResponse(const std::string& value) {
   return base::ReplaceStringPlaceholders(kJsonRpcResponseTemplate, {value},
                                          nullptr);
 }
@@ -6654,7 +6654,7 @@ TEST_F(JsonRpcServiceUnitTest, GetEthTokenSymbol) {
       "0000000000000000000000000000000000000000000000000000000000000003"
       "4241540000000000000000000000000000000000000000000000000000000000";
   SetInterceptor(GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
-                 "eth_call", "", formatJsonRpcResponse(bat_symbol_result));
+                 "eth_call", "", FormatJsonRpcResponse(bat_symbol_result));
   TestGetEthTokenSymbol("0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
                         mojom::kMainnetChainId, "BAT",
                         mojom::ProviderError::kSuccess, "");
@@ -6691,7 +6691,7 @@ TEST_F(JsonRpcServiceUnitTest, GetEthTokenDecimals) {
       "0x"
       "0000000000000000000000000000000000000000000000000000000000000012";
   SetInterceptor(GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
-                 "eth_call", "", formatJsonRpcResponse(bat_decimals_result));
+                 "eth_call", "", FormatJsonRpcResponse(bat_decimals_result));
   TestGetEthTokenDecimals("0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
                           mojom::kMainnetChainId, "0x12",
                           mojom::ProviderError::kSuccess, "");
