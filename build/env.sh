@@ -53,7 +53,7 @@ brave_env::set_brave_env() {
       if [[ -z "$val" ]]; then
         unset $key
       else
-        if [[ "$key" =~ ^(PATH|PYTHONPATH)$ && "$(uname -s)" =~ ^MINGW ]]; then
+        if [[ "$key" =~ ^(PATH|PYTHONPATH)$ && "$(uname -s)" =~ ^(MINGW|CYGWIN) ]]; then
           val=$(cygpath -p "$val")
         fi
         export $key="$val"
