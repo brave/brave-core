@@ -47,7 +47,10 @@ import { LocalIpfsNodeScreen } from '../../local-ipfs-node/local-ipfs-node'
 import { InspectNftsScreen } from '../../inspect-nfts/inspect-nfts'
 import { WalletPageActions } from '../../../../page/actions'
 import { useNftPin } from '../../../../common/hooks/nft-pin'
-import { BannerWrapper } from '../../../shared/style'
+import {
+  BannerWrapper,
+  Column
+} from '../../../shared/style'
 import { NftIpfsBanner } from '../../nft-ipfs-banner/nft-ipfs-banner'
 import { useSafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../../common/selectors'
@@ -200,7 +203,13 @@ const CryptoView = (props: Props) => {
       <Switch>
         {/* Portfolio */}
         <Route path={WalletRoutes.AddAssetModal} exact>{/* Show portfolio overview in background */}
-          {banners}
+          <Column
+            fullWidth={true}
+            padding='20px 20px 0px 20px'
+          >
+            {banners}
+            {ipfsBanner}
+          </Column>
           <PortfolioOverview />
         </Route>
 
@@ -209,8 +218,13 @@ const CryptoView = (props: Props) => {
         </Route>
 
         <Route path={WalletRoutes.Portfolio}>
-          {banners}
-          {ipfsBanner}
+          <Column
+            fullWidth={true}
+            padding='20px 20px 0px 20px'
+          >
+            {banners}
+            {ipfsBanner}
+          </Column>
           <PortfolioOverview />
         </Route>
 
