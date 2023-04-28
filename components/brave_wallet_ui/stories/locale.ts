@@ -882,7 +882,7 @@ provideStrings({
   braveWalletNftPinningBannerLearnMore: 'Learn more',
   braveWalletNftPinningInspectHeading: '$1 out of $2 are available!',
   braveWalletNftPinningUnableToPin: 'Unable to pin',
-  braveWalletNftPinningNodeRunningStatus: 'You\’re running IPFS node',
+  braveWalletNftPinningNodeRunningStatus: 'You\’re running an IPFS node',
   braveWalletNftPinningNodeNotRunningStatus: 'Local IPFS node is not running',
   braveWalletNftPinningStatusPinned: 'Pinned to your local IPFS node.',
   braveWalletNftPinningStatusPinning: 'NFT data is being pinned to your local IPFS node.',
