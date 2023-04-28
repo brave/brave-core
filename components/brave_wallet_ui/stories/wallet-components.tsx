@@ -145,9 +145,11 @@ export const _NftIpfsBanner = () => {
   }, [])
 
   return (
-    <div style={{ width: '855px' }}>
-      {showBanner && <NftIpfsBanner onDismiss={onDismiss} />}
-    </div>
+    <WalletPageStory>
+      <div style={{ width: '855px' }}>
+        {showBanner && <NftIpfsBanner onDismiss={onDismiss} />}
+      </div>
+    </WalletPageStory>
   )
 }
 
@@ -161,9 +163,11 @@ export const _LocalIpfsScreen = () => {
   }
 
   return (
-    <LocalIpfsNodeScreen
-      onClose={onClose}
-    />
+    <WalletPageStory>
+      <LocalIpfsNodeScreen
+        onClose={onClose}
+      />
+    </WalletPageStory>
   )
 }
 

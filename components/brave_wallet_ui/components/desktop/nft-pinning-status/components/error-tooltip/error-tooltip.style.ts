@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css'
 
 export const StyledWrapper = styled.div`
   position: absolute;
@@ -11,14 +12,15 @@ export const StyledWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   z-index: 3;
-  background-color: #FFFFFF;
+  background-color: ${leo.color.white};
   @media (prefers-color-scheme: dark) {
-    background-color: #000000
+    background-color: ${leo.color.black}
   }
   width: 280px;
   border-radius: 6px;
   bottom: 30px;
   right: -10px;
+  box-shadow: ${leo.effect.elevation['03']};
 `
 
 export const TooltipContent = styled.div`
@@ -26,10 +28,7 @@ export const TooltipContent = styled.div`
   padding: 24px;
   width: 100%;
   height: 100%;
-  color: #1D1F25;
-  @media (prefers-color-scheme: dark) {
-    color: #ECEFF2
-  }
+  color: ${leo.color.text.primary};
 `
 
 export const Heading = styled.p`
@@ -65,7 +64,10 @@ export const ArrowDown = styled.div`
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
   position: absolute;
-  border-top: 8px solid #000000;
+  border-top: 8px solid ${leo.color.white};
+  @media (prefers-color-scheme: dark) {
+    border-top: 8px solid ${leo.color.black};
+  }
   position: absolute;
   right: 50%;
   bottom: -8px;
