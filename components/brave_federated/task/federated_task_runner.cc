@@ -34,7 +34,7 @@ absl::optional<TaskResult> FederatedTaskRunner::Run() {
     }
     if (model_->GetBatchSize() > training_data_.size()) {
       VLOG(1) << "Batch size (" << model_->GetBatchSize()
-              << ") < training dataset size(" << training_data_.size() << ")" ;
+              << ") < training dataset size(" << training_data_.size() << ")";
       return absl::nullopt;
     }
 
@@ -46,7 +46,7 @@ absl::optional<TaskResult> FederatedTaskRunner::Run() {
     }
     if (model_->GetBatchSize() > test_data_.size()) {
       VLOG(1) << "Batch size (" << model_->GetBatchSize()
-              << ") < Test dataset size(" << test_data_.size() << ")" ;
+              << ") < Test dataset size(" << test_data_.size() << ")";
       return absl::nullopt;
     }
 

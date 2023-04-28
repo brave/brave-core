@@ -122,9 +122,7 @@ repack("resources") {
 
   if (!is_android) {
     deps += [ "//brave/components/brave_federated/resources" ]
-    sources += [
-      "$root_gen_dir/brave/components/brave_federated/resources/brave_federated_resources.pak",
-    ]
+    sources += [ "$root_gen_dir/brave/components/brave_federated/resources/brave_federated_resources.pak" ]
   }
 
   if (ethereum_remote_client_enabled) {
