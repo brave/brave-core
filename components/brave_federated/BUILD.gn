@@ -51,9 +51,9 @@ static_library("brave_federated") {
   public_deps = [ "public/interfaces" ]
 
   deps = [
-    "//brave/components/brave_stats/browser",
     "//brave/components/brave_federated/resources",
     "//brave/components/brave_federated/resources:brave_federated_resources",
+    "//brave/components/brave_stats/browser",
     "//brave/components/p3a:p3a",
     "//brave/components/version_info",
     "//brave/third_party/flower",

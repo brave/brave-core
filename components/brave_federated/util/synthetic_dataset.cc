@@ -47,7 +47,7 @@ SyntheticDataset::SyntheticDataset(std::vector<std::vector<float>> weights,
     xs[j][3] = cos(time_index * 2.0 * M_PI / 144.0);
   }
 
-  std::default_random_engine generator(base::RandDouble());
+  base::RandomBitGenerator generator;
   for (int i = 4; i < num_features; i++) {
     std::normal_distribution<float> normal_i(mean_x[i], cov_x[i]);
     for (size_t j = 0; j < size; j++) {

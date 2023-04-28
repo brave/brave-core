@@ -1,3 +1,8 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/resources/brave_grit.gni")
 import("//tools/grit/repack.gni")
 
@@ -6,16 +11,14 @@ brave_grit("brave_federated_resources") {
 
   outputs = [
     "grit/brave_federated_resources.h",
-    "brave_federated_static.pak"
+    "brave_federated_static.pak",
   ]
 }
 
 repack("resources") {
   public_deps = [ ":brave_federated_resources" ]
 
-  sources = [
-    "$root_gen_dir/brave/components/brave_federated/resources/brave_federated_static.pak"
-  ]
+  sources = [ "$root_gen_dir/brave/components/brave_federated/resources/brave_federated_static.pak" ]
 
   output = "$root_gen_dir/brave/components/brave_federated/resources/brave_federated_resources.pak"
 }

@@ -8,17 +8,18 @@
 #include <utility>
 #include <vector>
 
+#include "base/check_op.h"
+#include "base/files/file_util.h"
 #include "base/logging.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
-#include "base/files/file_util.h"
 #include "brave/components/brave_federated/communication_adapter.h"
+#include "brave/components/brave_federated/config_utils.h"
 #include "brave/components/brave_federated/eligibility_service.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_federated/resources/grit/brave_federated_resources.h"
 #include "brave/components/brave_federated/task/federated_task_runner.h"
-#include "brave/components/brave_federated/config_utils.h"
 #include "brave/components/brave_federated/task/model.h"
 #include "brave/components/brave_federated/task/typing.h"
 #include "brave/components/brave_federated/util/synthetic_dataset.h"
@@ -55,23 +56,26 @@ LearningService::LearningService(
   std::string data_resource;
   auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
   if (resource_bundle.IsGzipped(IDR_BRAVE_FEDERATED_CONFIG)) {
-    data_resource = resource_bundle.LoadDataResourceString(IDR_BRAVE_FEDERATED_CONFIG);
-  } else {
     data_resource =
-        static_cast<std::string>(resource_bundle.GetRawDataResource(IDR_BRAVE_FEDERATED_CONFIG));
+        resource_bundle.LoadDataResourceString(IDR_BRAVE_FEDERATED_CONFIG);
+  } else {
+    data_resource = static_cast<std::string>(
+        resource_bundle.GetRawDataResource(IDR_BRAVE_FEDERATED_CONFIG));
   }
-  DCHECK(data_resource.size() > 0);
+  DCHECK_GT(data_resource.size(), 0U);
 
-
-  lsc_ = std::unique_ptr<LearningServiceConfig>(new LearningServiceConfig(data_resource));
+  lsc_ = std::make_unique<LearningServiceConfig>(data_resource);
   const net::BackoffEntry::Policy reconnect_policy = lsc_->GetReconnectPolicy();
-  const net::BackoffEntry::Policy request_task_policy = lsc_->GetRequestTaskPolicy();
-  const net::BackoffEntry::Policy post_results_policy = lsc_->GetPostResultsPolicy();
+  const net::BackoffEntry::Policy request_task_policy =
+      lsc_->GetRequestTaskPolicy();
+  const net::BackoffEntry::Policy post_results_policy =
+      lsc_->GetPostResultsPolicy();
   model_spec_ = std::make_unique<ModelSpec>(lsc_->GetModelSpec());
 
-  communication_adapter_ =
-      std::make_unique<CommunicationAdapter>(url_loader_factory_, reconnect_policy, request_task_policy);
-  post_results_policy_ = std::make_unique<const net::BackoffEntry::Policy>(post_results_policy);
+  communication_adapter_ = std::make_unique<CommunicationAdapter>(
+      url_loader_factory_, reconnect_policy, request_task_policy);
+  post_results_policy_ =
+      std::make_unique<const net::BackoffEntry::Policy>(post_results_policy);
   post_results_backoff_entry_ =
       std::make_unique<net::BackoffEntry>(post_results_policy_.get());
 
@@ -158,7 +162,8 @@ void LearningService::HandleTasksOrReconnect(TaskList tasks, int reconnect) {
 
   model_spec_->learning_rate = lr;
 
-  if (static_cast<int>(task.GetParameters().at(0).size()) != model_spec_->num_params &&
+  if (static_cast<int>(task.GetParameters().at(0).size()) !=
+          model_spec_->num_params &&
       task.GetParameters().at(1).size() != 1U) {
     VLOG(2) << "Task specifies a different model size than the client";
     return;
