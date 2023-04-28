@@ -12,10 +12,10 @@
 #undef DownloadDisplayController
 
 void DownloadDisplayController::UpdateToolbarButtonState(
-    std::vector<std::unique_ptr<DownloadUIModel>>& all_models) {
-  DownloadDisplayControllerChromium::UpdateToolbarButtonState(all_models);
+    const DownloadDisplayController::AllDownloadUIModelsInfo& info) {
+  DownloadDisplayControllerChromium::UpdateToolbarButtonState(info);
 
-  if (all_models.empty()) {
+  if (info.all_models_size == 0) {
     return;
   }
 
@@ -25,7 +25,11 @@ void DownloadDisplayController::UpdateToolbarButtonState(
 
   // Show toolbar if there's at least one in-progress download item.
   // Upstream doesn't show toolbar button when only dangerous files are
-  // in-progress.
+  // in-progress. We cannot use AllDownloadUIModelsInfo's in_progress_count
+  // here because it doesn't include dangerous files.
+  std::vector<DownloadUIModel::DownloadUIModelPtr> all_models;
+  bubble_controller_->update_service()->GetAllModelsToDisplay(all_models);
+  DCHECK(!all_models.empty());
   for (const auto& model : all_models) {
     if (model->GetState() == download::DownloadItem::IN_PROGRESS) {
       ShowToolbarButton();
