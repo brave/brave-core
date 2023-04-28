@@ -659,6 +659,17 @@ class JsonRpcEnpointHandler {
   std::vector<SolRpcCallHandler*> sol_rpc_call_handlers_;
 };
 
+constexpr char kJsonRpcResponseTemplate[] = R"({
+      "jsonrpc":"2.0",
+      "id":1,
+      "result":"$1"
+  })";
+
+std::string FormatJsonRpcResponse(const std::string& value) {
+  return base::ReplaceStringPlaceholders(kJsonRpcResponseTemplate, {value},
+                                         nullptr);
+}
+
 }  // namespace
 
 class JsonRpcServiceUnitTest : public testing::Test {
@@ -1267,6 +1278,44 @@ class JsonRpcServiceUnitTest : public testing::Test {
               EXPECT_EQ(error_message, expected_error_message);
               run_loop.Quit();
             }));
+    run_loop.Run();
+  }
+
+  void TestGetEthTokenSymbol(const std::string& contract_address,
+                             const std::string& chain_id,
+                             const std::string& expected_symbol,
+                             mojom::ProviderError expected_error,
+                             const std::string& expected_error_message) {
+    base::RunLoop run_loop;
+    json_rpc_service_->GetEthTokenSymbol(
+        contract_address, chain_id,
+        base::BindLambdaForTesting([&](const std::string& symbol,
+                                       mojom::ProviderError error,
+                                       const std::string& error_message) {
+          EXPECT_EQ(symbol, expected_symbol);
+          EXPECT_EQ(error, expected_error);
+          EXPECT_EQ(error_message, expected_error_message);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
+  void TestGetEthTokenDecimals(const std::string& contract_address,
+                               const std::string& chain_id,
+                               const std::string& expected_decimals,
+                               mojom::ProviderError expected_error,
+                               const std::string& expected_error_message) {
+    base::RunLoop run_loop;
+    json_rpc_service_->GetEthTokenDecimals(
+        contract_address, chain_id,
+        base::BindLambdaForTesting([&](const std::string& decimals,
+                                       mojom::ProviderError error,
+                                       const std::string& error_message) {
+          EXPECT_EQ(decimals, expected_decimals);
+          EXPECT_EQ(error, expected_error);
+          EXPECT_EQ(error_message, expected_error_message);
+          run_loop.Quit();
+        }));
     run_loop.Run();
   }
 
@@ -6582,6 +6631,82 @@ TEST_F(JsonRpcServiceUnitTest, GetEthNftStandard) {
   TestGetEthNftStandard("0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",
                         mojom::kMainnetChainId, interfaces, absl::nullopt,
                         mojom::ProviderError::kSuccess, "");
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetEthTokenSymbol) {
+  // Invalid chain ID yields invalid params
+  TestGetEthTokenSymbol(
+      "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "", "",
+      mojom::ProviderError::kInvalidParams,
+      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  // Valid inputs but request times out yields internal error
+  SetHTTPRequestTimeoutInterceptor();
+  TestGetEthTokenSymbol("0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+                        mojom::kMainnetChainId, "",
+                        mojom::ProviderError::kInternalError,
+                        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+
+  // Valid
+  const std::string bat_symbol_result =
+      "0x"
+      "0000000000000000000000000000000000000000000000000000000000000020"
+      "0000000000000000000000000000000000000000000000000000000000000003"
+      "4241540000000000000000000000000000000000000000000000000000000000";
+  SetInterceptor(GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
+                 "eth_call", "", FormatJsonRpcResponse(bat_symbol_result));
+  TestGetEthTokenSymbol("0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+                        mojom::kMainnetChainId, "BAT",
+                        mojom::ProviderError::kSuccess, "");
+
+  // Response parsing error yields parsing error
+  SetInterceptor(GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
+                 "eth_call", "", R"({
+      "jsonrpc": "2.0",
+      "id": 1,
+      "result": "0xinvalid"
+  })");
+  TestGetEthTokenSymbol("0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+                        mojom::kMainnetChainId, "",
+                        mojom::ProviderError::kParsingError,
+                        l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetEthTokenDecimals) {
+  // Invalid chain ID yields invalid params
+  TestGetEthTokenDecimals(
+      "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "", "",
+      mojom::ProviderError::kInvalidParams,
+      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  // Valid inputs but request times out yields internal error
+  SetHTTPRequestTimeoutInterceptor();
+  TestGetEthTokenDecimals("0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+                          mojom::kMainnetChainId, "",
+                          mojom::ProviderError::kInternalError,
+                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+
+  // Valid
+  const std::string bat_decimals_result =
+      "0x"
+      "0000000000000000000000000000000000000000000000000000000000000012";
+  SetInterceptor(GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
+                 "eth_call", "", FormatJsonRpcResponse(bat_decimals_result));
+  TestGetEthTokenDecimals("0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+                          mojom::kMainnetChainId, "0x12",
+                          mojom::ProviderError::kSuccess, "");
+
+  // Response parsing error yields parsing error
+  SetInterceptor(GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
+                 "eth_call", "", R"({
+      "jsonrpc": "2.0",
+      "id": 1,
+      "result": "0xinvalid"
+  })");
+  TestGetEthTokenDecimals("0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+                          mojom::kMainnetChainId, "",
+                          mojom::ProviderError::kParsingError,
+                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 }
 
 }  // namespace brave_wallet

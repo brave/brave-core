@@ -1176,6 +1176,17 @@ interface JsonRpcService {
   // Obtains the quantity of ERC1155 tokens a user has
   GetERC1155TokenBalance(string contract_address, string token_id, string account_address, string chain_id) => (string balance, ProviderError error, string error_message);
 
+  // Fetches symbol of an ERC20 or ERC721 token.
+  GetEthTokenSymbol(string chain_id,
+                    string contract_address) => (string symbol,
+                                                 ProviderError error,
+                                                 string error_message);
+
+  // Fetches decimals of an ERC20 or ERC721 token.
+  GetEthTokenDecimals(string chain_id,
+                      string contract_address) => (string decimals,
+                                                   ProviderError error,
+                                                   string error_message);
   // Solana JSON RPCs
   // https://docs.solana.com/developing/clients/jsonrpc-api
 

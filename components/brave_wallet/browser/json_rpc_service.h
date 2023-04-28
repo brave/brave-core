@@ -409,6 +409,14 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                            mojom::ProviderError error,
                            const std::string& error_message);
 
+  void GetEthTokenSymbol(const std::string& contract_address,
+                         const std::string& chain_id,
+                         GetEthTokenSymbolCallback callback) override;
+
+  void GetEthTokenDecimals(const std::string& contract_address,
+                           const std::string& chain_id,
+                           GetEthTokenDecimalsCallback callback) override;
+
   using SwitchEthereumChainRequestCallback =
       base::OnceCallback<void(mojom::ProviderError error,
                               const std::string& error_message)>;
@@ -631,6 +639,11 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void OnGetSupportsInterface(GetSupportsInterfaceCallback callback,
                               APIRequestResult api_request_result);
 
+  void OnGetEthTokenSymbol(GetEthTokenSymbolCallback callback,
+                           APIRequestResult api_request_result);
+
+  void OnGetEthTokenDecimals(GetEthTokenDecimalsCallback callback,
+                             APIRequestResult api_request_result);
   // Solana
   void OnGetSolanaBalance(GetSolanaBalanceCallback callback,
                           APIRequestResult api_request_result);
