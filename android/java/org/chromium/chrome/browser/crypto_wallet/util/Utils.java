@@ -1665,7 +1665,7 @@ public class Utils {
                 drawableId = R.drawable.ic_sol_asset_icon;
                 break;
             case CoinType.FIL:
-                // TODO(sergz): Add FIL asset icon
+                drawableId = R.drawable.ic_fil_asset_icon;
                 break;
             default:
                 drawableId = R.drawable.ic_eth;
