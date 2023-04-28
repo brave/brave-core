@@ -328,6 +328,7 @@ interface PanelHandlerFactory {
                      pending_receiver<JsonRpcService> json_rpc_service,
                      pending_receiver<BitcoinWalletService> bitcoin_wallet_service,
                      pending_receiver<SwapService> swap_service,
+                     pending_receiver<SimulationService> simulation_service,
                      pending_receiver<AssetRatioService> asset_ratio_service,
                      pending_receiver<KeyringService> keyring_service,
                      pending_receiver<BlockchainRegistry> blockchain_registry,
@@ -1333,7 +1334,7 @@ interface TxServiceObserver {
   // Fired when a transaction is updated
   OnTransactionStatusChanged(TransactionInfo tx_info);
 
-  // Fired when service is reseted
+  // Fired when service is reset
   OnTxServiceReset();
 };
 
@@ -1663,17 +1664,17 @@ interface BraveWalletService {
   GetPendingSignMessageRequests() => (array<SignMessageRequest> requests);
 
   GetPendingSignTransactionRequests() => (array<SignTransactionRequest> requests);
-  // Used for UI notifying native when the user apprrove/reject sign
+  // Used for UI notifying native when the user approve/reject sign
   // transaction request.
   NotifySignTransactionRequestProcessed(bool approved, int32 id, ByteArrayStringUnion? signature, string? error);
 
   GetPendingSignAllTransactionsRequests() => (array<SignAllTransactionsRequest> requests);
-  // Used for UI notifying native when the user apprrove/reject sign all
+  // Used for UI notifying native when the user approve/reject sign all
   // transactions request.
   NotifySignAllTransactionsRequestProcessed(bool approved, int32 id,
       array<ByteArrayStringUnion>? signatures, string? error);
 
-  // Used for UI notifying native when the user apprrove/reject add suggest
+  // Used for UI notifying native when the user approve/reject add suggest
   // token requests.
   NotifyAddSuggestTokenRequestsProcessed(bool approved, array<string> contract_addresses);
   // Obtain the pending add suggest token requests for current chain, will be
@@ -1913,4 +1914,255 @@ struct OnRampCurrency {
   string currency_code;
   string currency_name;
   array<OnRampProvider> providers;
+};
+
+union SolanaTransactionRequestUnion {
+  SignTransactionRequest sign_transaction_request;
+  SignAllTransactionsRequest sign_all_transactions_request;
+  TransactionInfo transaction_info;
+};
+
+// Common Blowfish types for both EVM and Solana.
+struct BlowfishPrice {
+  string source;
+  string last_updated_at;
+  string dollar_value_per_token;
+};
+
+struct BlowfishWarning {
+  string severity;
+  string kind;
+  string message;
+};
+
+// Blowfish types specific to EVM.
+struct BlowfishEVMError {
+  string kind;
+  string human_readable_error;
+};
+
+struct BlowfishEVMContract {
+  string address;
+  string kind;
+};
+
+struct BlowfishEVMAmount {
+  string before;
+  string after;
+};
+
+struct BlowfishEVMAsset {
+  string address;
+  string symbol;
+  string name;
+  int32 decimals;
+  bool verified;
+  array<string> lists;
+  string? image_url;
+  BlowfishPrice? price;
+};
+
+struct BlowfishEVMMetadata {
+  string raw_image_url;
+};
+
+struct BlowfishERC20TransferData {
+  BlowfishEVMContract contract;
+  BlowfishEVMAmount amount;
+  BlowfishEVMAsset asset;
+};
+
+struct BlowfishERC20ApprovalData {
+  BlowfishEVMContract contract;
+  BlowfishEVMContract owner;
+  BlowfishEVMContract spender;
+  BlowfishEVMAmount amount;
+  BlowfishEVMAsset asset;
+};
+
+struct BlowfishNativeAssetTransferData {
+  BlowfishEVMAmount amount;
+  BlowfishEVMAsset asset;
+  BlowfishEVMContract contract;
+};
+
+struct BlowfishERC721TransferData {
+  BlowfishEVMAmount amount;
+  BlowfishEVMContract contract;
+  BlowfishEVMMetadata metadata;
+  string name;
+  string symbol;
+  string? token_id;
+  BlowfishPrice? asset_price;
+};
+
+struct BlowfishERC721ApprovalData {
+  BlowfishEVMAmount amount;
+  BlowfishEVMContract contract;
+  BlowfishEVMMetadata metadata;
+  string name;
+  BlowfishEVMContract owner;
+  BlowfishEVMContract spender;
+  string symbol;
+  string? token_id;
+  BlowfishPrice? asset_price;
+};
+
+struct BlowfishERC721ApprovalForAllData {
+  BlowfishEVMAmount amount;
+  BlowfishEVMContract contract;
+  string name;
+  BlowfishEVMContract owner;
+  BlowfishEVMContract spender;
+  string symbol;
+  BlowfishPrice? asset_price;
+};
+
+struct BlowfishERC1155TransferData {
+  BlowfishEVMAmount amount;
+  BlowfishEVMContract contract;
+  BlowfishEVMMetadata metadata;
+  string? token_id;
+  BlowfishPrice? asset_price;
+};
+
+struct BlowfishERC1155ApprovalForAllData {
+  BlowfishEVMAmount amount;
+  BlowfishEVMContract contract;
+  BlowfishEVMContract owner;
+  BlowfishEVMContract spender;
+  BlowfishPrice? asset_price;
+};
+
+union BlowfishEVMStateChangeRawInfoDataUnion {
+  BlowfishERC20TransferData erc20_transfer_data;
+  BlowfishERC20ApprovalData erc20_approval_data;
+  BlowfishNativeAssetTransferData native_asset_transfer_data;
+  BlowfishERC721TransferData erc721_transfer_data;
+  BlowfishERC721ApprovalData erc721_approval_data;
+  BlowfishERC721ApprovalForAllData erc721_approval_for_all_data;
+  BlowfishERC1155TransferData erc1155_transfer_data;
+  BlowfishERC1155ApprovalForAllData erc1155_approval_for_all_data;
+};
+
+struct BlowfishEVMStateChangeRawInfo {
+  string kind;
+  BlowfishEVMStateChangeRawInfoDataUnion data;
+};
+
+struct BlowfishEVMStateChange {
+  string human_readable_diff;
+  BlowfishEVMStateChangeRawInfo raw_info;
+};
+
+struct EVMSimulationResults {
+  BlowfishEVMError? error;
+  array<BlowfishEVMStateChange> expected_state_changes;
+};
+
+struct EVMSimulationResponse {
+  string action;
+  EVMSimulationResults simulation_results;
+  array<BlowfishWarning> warnings;
+};
+
+// Blowfish types specific to Solana.
+struct BlowfishSolanaError {
+  string kind;
+  string human_readable_error;
+};
+
+struct BlowfishSolanaDiff {
+  string sign;
+  uint64 digits;
+};
+
+struct BlowfishSolanaStakeAuthorities {
+  string staker;
+  string withdrawer;
+};
+
+struct BlowfishSOLTransferData {
+  string symbol;
+  string name;
+  int32 decimals;
+  BlowfishSolanaDiff diff;
+};
+
+struct BlowfishSPLTransferData {
+  string symbol;
+  string name;
+  string mint;
+  int32 decimals;
+  BlowfishSolanaDiff diff;
+  uint64 supply;
+  string metaplex_token_standard;
+  BlowfishPrice? asset_price;
+};
+
+struct BlowfishSPLApprovalData {
+  string delegate;
+  string mint;
+  string symbol;
+  string name;
+  int32 decimals;
+  BlowfishSolanaDiff diff;
+  uint64 supply;
+  string metaplex_token_standard;
+  BlowfishPrice? asset_price;
+};
+
+struct BlowfishSOLStakeAuthorityChangeData {
+  string stake_account;
+  BlowfishSolanaStakeAuthorities curr_authorities;
+  BlowfishSolanaStakeAuthorities future_authorities;
+  string symbol;
+  string name;
+  int32 decimals;
+  uint64 sol_staked;
+};
+
+union BlowfishSolanaStateChangeRawInfoDataUnion {
+  BlowfishSOLTransferData sol_transfer_data;
+  BlowfishSPLTransferData spl_transfer_data;
+  BlowfishSPLApprovalData spl_approval_data;
+  BlowfishSOLStakeAuthorityChangeData sol_stake_authority_change_data;
+};
+
+struct BlowfishSolanaStateChangeRawInfo {
+  string kind;
+  BlowfishSolanaStateChangeRawInfoDataUnion data;
+};
+
+struct BlowfishSolanaStateChange {
+  string human_readable_diff;
+  string suggested_color;
+  BlowfishSolanaStateChangeRawInfo raw_info;
+};
+
+struct SolanaSimulationResults {
+  bool is_recent_blockhash_expired;
+  array<BlowfishSolanaStateChange> expected_state_changes;
+  BlowfishSolanaError? error;
+};
+
+struct SolanaSimulationResponse {
+  string action;
+  array<BlowfishWarning> warnings;
+  SolanaSimulationResults simulation_results;
+};
+
+// Implements transaction and message scanning functionality through the
+// Blowfish API.
+interface SimulationService {
+  HasTransactionScanSupport(string chain_id, CoinType coin) => (bool result);
+
+  HasMessageScanSupport(string chain_id, CoinType coin) => (bool result);
+
+  ScanEVMTransaction(TransactionInfo tx_info, string language)
+    => (EVMSimulationResponse? response, string error_response, string error_string);
+
+  ScanSolanaTransaction(SolanaTransactionRequestUnion request,
+                        string language)
+    => (SolanaSimulationResponse? response, string error_response, string error_string);
 };

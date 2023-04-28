@@ -17,6 +17,7 @@
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/notifications/wallet_notification_service_factory.h"
+#include "brave/browser/brave_wallet/simulation_service_factory.h"
 #include "brave/browser/brave_wallet/swap_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
@@ -132,6 +133,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave_wallet::KeyringServiceFactory::GetInstance();
   brave_wallet::JsonRpcServiceFactory::GetInstance();
   brave_wallet::SwapServiceFactory::GetInstance();
+  brave_wallet::SimulationServiceFactory::GetInstance();
 #if !BUILDFLAG(IS_ANDROID)
   brave_wallet::WalletNotificationServiceFactory::GetInstance();
 #endif
