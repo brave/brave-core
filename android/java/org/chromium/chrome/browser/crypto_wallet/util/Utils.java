@@ -1631,6 +1631,14 @@ public class Utils {
                 });
     }
 
+    /**
+     * Gets P3A networks (i.e. networks with chain Id contained in {@link
+     * WalletConstants.KNOWN_TEST_CHAIN_IDS)} excluding testnet chains by default. Testnet chain
+     * counting can be enabled using the switch
+     * `--p3a-count-wallet-test-networks`.
+     * @param allNetworks Given network list that will be filtered.
+     * @param callback Callback containing a filtered list of P3A networks.
+     */
     public static void getP3ANetworks(
             List<NetworkInfo> allNetworks, Callbacks.Callback1<List<NetworkInfo>> callback) {
         ArrayList<NetworkInfo> relevantNetworks = new ArrayList<NetworkInfo>();
