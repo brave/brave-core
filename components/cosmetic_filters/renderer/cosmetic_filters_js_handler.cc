@@ -218,7 +218,7 @@ void CosmeticFiltersJSHandler::HiddenClassIdSelectors(
 }
 
 bool CosmeticFiltersJSHandler::OnIsFirstParty(const std::string& url_string) {
-  const auto url = GURL(url_string);
+  const auto url = url_.Resolve(url_string);
   if (!url.is_valid())
     return false;
 
