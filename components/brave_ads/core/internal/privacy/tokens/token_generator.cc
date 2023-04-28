@@ -10,10 +10,10 @@
 
 namespace brave_ads::privacy {
 
-std::vector<cbr::Token> TokenGenerator::Generate(const int count) const {
+std::vector<cbr::Token> TokenGenerator::Generate(const size_t count) const {
   std::vector<cbr::Token> tokens;
 
-  for (int i = 0; i < count; i++) {
+  for (size_t i = 0; i < count; i++) {
     const cbr::Token token;
     DCHECK(token.has_value());
     tokens.push_back(token);

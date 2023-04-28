@@ -133,13 +133,13 @@ double ComputePredictorScore(const AdPredictorInfo<T>& ad_predictor) {
   if (ad_predictor.ad_last_seen_hours_ago <= base::Time::kHoursPerDay) {
     score += ad_predictor_weights.at(kAdLastSeenHoursAgoIndex) *
              ad_predictor.ad_last_seen_hours_ago /
-             double{base::Time::kHoursPerDay};
+             static_cast<double>(base::Time::kHoursPerDay);
   }
 
   if (ad_predictor.advertiser_last_seen_hours_ago <= base::Time::kHoursPerDay) {
     score += ad_predictor_weights.at(kAdvertiserLastSeenHoursAgoIndex) *
              ad_predictor.advertiser_last_seen_hours_ago /
-             double{base::Time::kHoursPerDay};
+             static_cast<double>(base::Time::kHoursPerDay);
   }
 
   if (ad_predictor.creative_ad.priority > 0) {

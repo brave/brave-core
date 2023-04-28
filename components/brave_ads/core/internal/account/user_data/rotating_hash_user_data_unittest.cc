@@ -49,7 +49,7 @@ TEST_F(BraveAdsRotatingHashUserDataTest, BuildRotatingHashUserData) {
   // Assert
   EXPECT_EQ(
       base::test::ParseJsonDict(
-          R"({"rotating_hash":"ooLbypB5vcA/kLjWz+w395SGG+s5M8O9IWbj/OlHuR8="})"),
+          R"({"rotating_hash":"j9D7eKSoPLYNfxkG2Mx+SbgKJ9hcKg1QwDB8B5qxlpk="})"),
       BuildRotatingHashUserData(transaction));
 }
 
@@ -63,7 +63,7 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
   TransactionInfo transaction;
   transaction.creative_instance_id = kCreativeInstanceId;
 
-  AdvanceClockTo(TimeFromString("2 June 2022 11:000", /*is_local*/ false));
+  AdvanceClockTo(TimeFromString("2 June 2022 11:00", /*is_local*/ false));
   const base::Value::Dict user_data = BuildRotatingHashUserData(transaction);
 
   // Act

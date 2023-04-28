@@ -78,7 +78,7 @@ class BraveAdsTimeUtilTest : public UnitTestBase,
   }
 };
 
-TEST_P(BraveAdsTimeUtilTest, GetLocalTimeAsMinutes) {
+TEST_P(BraveAdsTimeUtilTest, GetLocalTimeInMinutes) {
   // Arrange
   const base::Time time =
       TimeFromString("November 18 2020 12:34:56", /*is_local*/ true);
@@ -87,7 +87,7 @@ TEST_P(BraveAdsTimeUtilTest, GetLocalTimeAsMinutes) {
 
   // Assert
   EXPECT_EQ((12 * base::Time::kMinutesPerHour) + 34,
-            GetLocalTimeAsMinutes(time));
+            GetLocalTimeInMinutes(time));
 }
 
 TEST_P(BraveAdsTimeUtilTest, AdjustLocalTimeToBeginningOfPreviousMonth) {

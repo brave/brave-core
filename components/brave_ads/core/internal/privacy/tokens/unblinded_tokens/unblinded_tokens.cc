@@ -16,7 +16,7 @@ UnblindedTokens::UnblindedTokens() = default;
 UnblindedTokens::~UnblindedTokens() = default;
 
 const UnblindedTokenInfo& UnblindedTokens::GetToken() const {
-  DCHECK_NE(Count(), 0);
+  DCHECK_NE(Count(), 0U);
 
   return unblinded_tokens_.front();
 }
@@ -69,7 +69,7 @@ bool UnblindedTokens::TokenExists(const UnblindedTokenInfo& unblinded_token) {
   return base::Contains(unblinded_tokens_, unblinded_token);
 }
 
-int UnblindedTokens::Count() const {
+size_t UnblindedTokens::Count() const {
   return unblinded_tokens_.size();
 }
 

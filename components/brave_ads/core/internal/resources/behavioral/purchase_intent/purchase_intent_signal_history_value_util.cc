@@ -18,7 +18,7 @@ base::Value::Dict PurchaseIntentSignalHistoryToValue(
            base::NumberToString(
                purchase_intent_signal_history.created_at.ToDoubleT()));
 
-  dict.Set("weight", int{purchase_intent_signal_history.weight});
+  dict.Set("weight", purchase_intent_signal_history.weight);
 
   return dict;
 }
@@ -33,8 +33,7 @@ PurchaseIntentSignalHistoryInfo PurchaseIntentSignalHistoryFromValue(
     }
   }
 
-  const uint16_t weight =
-      static_cast<uint16_t>(dict.FindInt("weight").value_or(0));
+  const int weight = dict.FindInt("weight").value_or(0);
 
   return {created_at, weight};
 }

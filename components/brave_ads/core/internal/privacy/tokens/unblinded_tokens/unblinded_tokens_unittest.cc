@@ -75,7 +75,7 @@ TEST_F(BraveAdsUnblindedTokensTest, AddTokens) {
   unblinded_tokens.AddTokens({tokens.at(1)});
 
   // Assert
-  EXPECT_EQ(2, unblinded_tokens.Count());
+  EXPECT_EQ(2U, unblinded_tokens.Count());
 }
 
 TEST_F(BraveAdsUnblindedTokensTest, AddEmptyTokens) {
@@ -100,7 +100,7 @@ TEST_F(BraveAdsUnblindedTokensTest, DoNotAddDuplicateTokens) {
   unblinded_tokens.AddTokens({unblinded_token});
 
   // Assert
-  EXPECT_EQ(1, unblinded_tokens.Count());
+  EXPECT_EQ(1U, unblinded_tokens.Count());
 }
 
 TEST_F(BraveAdsUnblindedTokensTest, RemoveToken) {
@@ -185,7 +185,7 @@ TEST_F(BraveAdsUnblindedTokensTest, Count) {
   // Act
 
   // Assert
-  EXPECT_EQ(3, unblinded_tokens.Count());
+  EXPECT_EQ(3U, unblinded_tokens.Count());
 }
 
 TEST_F(BraveAdsUnblindedTokensTest, IsEmpty) {

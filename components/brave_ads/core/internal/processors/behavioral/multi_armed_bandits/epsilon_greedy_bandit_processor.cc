@@ -82,7 +82,7 @@ void InitializeArms() {
   BLOG(1, "Successfully initialized epsilon greedy bandit arms");
 }
 
-void UpdateArm(const int reward, const std::string& segment) {
+void UpdateArm(const double reward, const std::string& segment) {
   EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();
   if (arms.empty()) {
     BLOG(1, "No epsilon greedy bandit arms");
@@ -99,8 +99,7 @@ void UpdateArm(const int reward, const std::string& segment) {
   EpsilonGreedyBanditArmInfo arm = iter->second;
   arm.pulls++;
   DCHECK_NE(0, arm.pulls);
-  arm.value =
-      arm.value + (1.0 / arm.pulls * (static_cast<double>(reward) - arm.value));
+  arm.value = arm.value + (1.0 / arm.pulls * (reward - arm.value));
   iter->second = arm;
 
   SetEpsilonGreedyBanditArms(arms);
@@ -128,12 +127,12 @@ void EpsilonGreedyBanditProcessor::Process(
   switch (ad_event_type) {
     case mojom::NotificationAdEventType::kTimedOut:
     case mojom::NotificationAdEventType::kDismissed: {
-      UpdateArm(/*reward*/ 0, segment);
+      UpdateArm(/*reward*/ 0.0, segment);
       break;
     }
 
     case mojom::NotificationAdEventType::kClicked: {
-      UpdateArm(/*reward*/ 1, segment);
+      UpdateArm(/*reward*/ 1.0, segment);
       break;
     }
 

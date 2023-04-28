@@ -75,10 +75,8 @@ TEST_F(BraveAdsTextEmbeddingHtmlEventsTest, PurgeEvents) {
          const TextEmbeddingHtmlEventList& text_embedding_html_events) {
         ASSERT_TRUE(success);
 
-        const size_t text_embedding_html_event_count =
-            text_embedding_html_events.size();
-        EXPECT_LE(text_embedding_html_event_count,
-                  static_cast<size_t>(kTextEmbeddingHistorySize.Get()));
+        EXPECT_LE(static_cast<int>(text_embedding_html_events.size()),
+                  kTextEmbeddingHistorySize.Get());
       }));
 }
 

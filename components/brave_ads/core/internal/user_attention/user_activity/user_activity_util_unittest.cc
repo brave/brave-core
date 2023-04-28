@@ -27,7 +27,7 @@ TEST_F(BraveAdsUserActivityUtilTest, NoTabsOpened) {
   // Act
 
   // Assert
-  EXPECT_EQ(0, GetNumberOfTabsOpened(events));
+  EXPECT_EQ(0U, GetNumberOfTabsOpened(events));
 }
 
 TEST_F(BraveAdsUserActivityUtilTest, TabsOpened) {
@@ -53,7 +53,7 @@ TEST_F(BraveAdsUserActivityUtilTest, TabsOpened) {
   // Act
 
   // Assert
-  EXPECT_EQ(2, GetNumberOfTabsOpened(events));
+  EXPECT_EQ(2U, GetNumberOfTabsOpened(events));
 }
 
 TEST_F(BraveAdsUserActivityUtilTest, GetNumberOfUserActivityEvents) {
@@ -84,8 +84,8 @@ TEST_F(BraveAdsUserActivityUtilTest, GetNumberOfUserActivityEvents) {
   // Act
 
   // Assert
-  EXPECT_EQ(2, GetNumberOfUserActivityEvents(
-                   events, UserActivityEventType::kClickedLink));
+  EXPECT_EQ(2U, GetNumberOfUserActivityEvents(
+                    events, UserActivityEventType::kClickedLink));
 }
 
 TEST_F(BraveAdsUserActivityUtilTest,
@@ -101,8 +101,8 @@ TEST_F(BraveAdsUserActivityUtilTest,
   // Act
 
   // Assert
-  EXPECT_EQ(0, GetNumberOfUserActivityEvents(
-                   events, UserActivityEventType::kClosedTab));
+  EXPECT_EQ(0U, GetNumberOfUserActivityEvents(
+                    events, UserActivityEventType::kClosedTab));
 }
 
 TEST_F(BraveAdsUserActivityUtilTest,
@@ -115,8 +115,8 @@ TEST_F(BraveAdsUserActivityUtilTest,
   // Act
 
   // Assert
-  EXPECT_EQ(0, GetNumberOfUserActivityEvents(
-                   events, UserActivityEventType::kClosedTab));
+  EXPECT_EQ(0U, GetNumberOfUserActivityEvents(
+                    events, UserActivityEventType::kClosedTab));
 }
 
 TEST_F(BraveAdsUserActivityUtilTest, GetTimeSinceLastUserActivityEvent) {

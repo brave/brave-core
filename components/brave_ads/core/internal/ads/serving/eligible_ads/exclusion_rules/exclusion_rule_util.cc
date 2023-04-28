@@ -16,8 +16,8 @@ bool DoesRespectCampaignCap(const CreativeAdInfo& creative_ad,
                             const AdEventList& ad_events,
                             const ConfirmationType& confirmation_type,
                             const base::TimeDelta time_constraint,
-                            const int cap) {
-  const int count = base::ranges::count_if(
+                            const size_t cap) {
+  const size_t count = base::ranges::count_if(
       ad_events, [&creative_ad, &confirmation_type,
                   time_constraint](const AdEventInfo& ad_event) {
         return ad_event.confirmation_type == confirmation_type &&
@@ -32,8 +32,8 @@ bool DoesRespectCreativeSetCap(const CreativeAdInfo& creative_ad,
                                const AdEventList& ad_events,
                                const ConfirmationType& confirmation_type,
                                const base::TimeDelta time_constraint,
-                               const int cap) {
-  const int count = base::ranges::count_if(
+                               const size_t cap) {
+  const size_t count = base::ranges::count_if(
       ad_events, [&creative_ad, &confirmation_type,
                   time_constraint](const AdEventInfo& ad_event) {
         return ad_event.confirmation_type == confirmation_type &&
@@ -48,8 +48,8 @@ bool DoesRespectCreativeCap(const CreativeAdInfo& creative_ad,
                             const AdEventList& ad_events,
                             const ConfirmationType& confirmation_type,
                             const base::TimeDelta time_constraint,
-                            const int cap) {
-  const int count = base::ranges::count_if(
+                            const size_t cap) {
+  const size_t count = base::ranges::count_if(
       ad_events, [&creative_ad, &confirmation_type,
                   time_constraint](const AdEventInfo& ad_event) {
         return ad_event.confirmation_type == confirmation_type &&

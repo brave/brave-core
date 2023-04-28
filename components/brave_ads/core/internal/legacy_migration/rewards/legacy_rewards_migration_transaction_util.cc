@@ -31,7 +31,8 @@ TransactionList GetUnreconciledTransactionsForDateRange(
   }
 
   const TransactionList unreconciled_transactions(
-      transactions.cend() - unblinded_payment_token_count, transactions.cend());
+      transactions.cend() - static_cast<int>(unblinded_payment_token_count),
+      transactions.cend());
 
   return GetTransactionsForDateRange(unreconciled_transactions, from_time,
                                      to_time);

@@ -26,7 +26,7 @@ class TokenGeneratorMock : public TokenGenerator {
 
   ~TokenGeneratorMock() override;
 
-  MOCK_METHOD(std::vector<cbr::Token>, Generate, (const int count), (const));
+  MOCK_METHOD(std::vector<cbr::Token>, Generate, (const size_t count), (const));
 };
 
 }  // namespace brave_ads::privacy

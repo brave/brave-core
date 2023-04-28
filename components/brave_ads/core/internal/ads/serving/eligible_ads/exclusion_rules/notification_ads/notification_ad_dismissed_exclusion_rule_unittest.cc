@@ -43,7 +43,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
-       AllowAdWithSameCampaignIdWithin2DaysIfDismissed) {
+       AllowAdWithSameCampaignIdWithin2DaysIfDismissedOnce) {
   // Arrange
   base::FieldTrialParams params;
   params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
@@ -77,10 +77,6 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 
   const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
 
-  AdvanceClockBy(base::Days(2) -
-                 (base::Minutes(5) * confirmation_types.size()) -
-                 base::Milliseconds(1));
-
   // Act
 
   // Assert
@@ -88,7 +84,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
-       AllowAdWithSameCampaignIdWithin2DaysIfDismissedForMultipleTypes) {
+       AllowAdWithSameCampaignIdWithin2DaysIfDismissedOnceForMultipleTypes) {
   // Arrange
   base::FieldTrialParams params;
   params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
@@ -167,10 +163,6 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   }
 
   const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
-
-  AdvanceClockBy(base::Days(2) -
-                 (base::Minutes(5) * confirmation_types.size()) -
-                 base::Milliseconds(1));
 
   // Act
 
@@ -254,10 +246,6 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   }
 
   const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
-
-  AdvanceClockBy(base::Days(2) -
-                 (base::Minutes(5) * confirmation_types.size()) -
-                 base::Milliseconds(1));
 
   // Act
 
@@ -386,10 +374,6 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 
   const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
 
-  AdvanceClockBy(base::Days(2) -
-                 (base::Minutes(5) * confirmation_types.size()) -
-                 base::Milliseconds(1));
-
   // Act
 
   // Assert
@@ -397,7 +381,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
-       AllowAdWithSameCampaignIdIfClickedThenDismissedTwiceWithin0Seconds) {
+       AllowAdWithSameCampaignIdIfClickedThenDismissedTwiceWhenDisabled) {
   // Arrange
   base::FieldTrialParams params;
   params["should_exclude_ad_if_dismissed_within_time_window"] = "0s";
@@ -472,10 +456,6 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   }
 
   const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
-
-  AdvanceClockBy(base::Days(2) -
-                 (base::Minutes(5) * confirmation_types.size()) -
-                 base::Milliseconds(1));
 
   // Act
 

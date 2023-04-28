@@ -18,7 +18,7 @@ class TokenGeneratorInterface {
  public:
   virtual ~TokenGeneratorInterface() = default;
 
-  virtual std::vector<cbr::Token> Generate(int count) const = 0;
+  virtual std::vector<cbr::Token> Generate(size_t count) const = 0;
 };
 
 }  // namespace brave_ads::privacy

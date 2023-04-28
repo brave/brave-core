@@ -35,7 +35,7 @@ class UnblindedPaymentTokens final {
 
   bool TokenExists(const UnblindedPaymentTokenInfo& unblinded_payment_token);
 
-  int Count() const;
+  size_t Count() const;
 
   bool IsEmpty() const;
 

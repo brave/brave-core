@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_PIPELINE_TEXT_PROCESSING_TEXT_PROCESSING_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_PIPELINE_TEXT_PROCESSING_TEXT_PROCESSING_H_
 
-#include <cstdint>
 #include <memory>
 #include <string>
 
@@ -50,7 +49,7 @@ class TextProcessing final {
  private:
   bool is_initialized_ = false;
 
-  uint16_t version_ = 0;
+  int version_ = 0;
   std::string timestamp_;
   std::string locale_ = "en";
   TransformationVector transformations_;

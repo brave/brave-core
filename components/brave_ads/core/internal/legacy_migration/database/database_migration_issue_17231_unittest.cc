@@ -547,7 +547,8 @@ TEST_F(BraveAdsDatabaseMigrationIssue17231Test, ConversionsDatabase) {
       expected_conversion.creative_set_id = creative_set_ids.at(i);
       expected_conversion.type = types.at(i);
       expected_conversion.url_pattern = url_patterns.at(i);
-      expected_conversion.observation_window = observation_windows.at(i);
+      expected_conversion.observation_window =
+          base::Days(observation_windows.at(i));
       expected_conversion.expire_at =
           base::Time::FromDoubleT(expiry_timestamps.at(i));
       expected_conversions.push_back(expected_conversion);

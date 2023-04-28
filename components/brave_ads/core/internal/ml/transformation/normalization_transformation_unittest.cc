@@ -58,7 +58,7 @@ TEST_F(BraveAdsNormalizationTransformationTest, NormalizationTest) {
 
 TEST_F(BraveAdsNormalizationTransformationTest, ChainingTest) {
   // Arrange
-  constexpr int kDefaultBucketCount = 10'000;
+  constexpr size_t kDefaultBucketCount = 10'000;
   constexpr char kTestString[] = "TINY";
 
   TransformationVector chain;

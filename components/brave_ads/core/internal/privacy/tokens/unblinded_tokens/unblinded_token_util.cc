@@ -77,7 +77,7 @@ bool UnblindedTokensIsEmpty() {
   return ConfirmationStateManager::GetInstance().GetUnblindedTokens().IsEmpty();
 }
 
-int UnblindedTokenCount() {
+size_t UnblindedTokenCount() {
   return ConfirmationStateManager::GetInstance().GetUnblindedTokens().Count();
 }
 

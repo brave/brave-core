@@ -57,7 +57,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
   int index = 0;
   for (const auto& creative_ad : creative_ads) {
     BindString(command, index++, creative_ad.creative_instance_id);
-    BindBool(command, index++, creative_ad.conversion);
+    BindBool(command, index++, creative_ad.has_conversion);
     BindInt(command, index++, creative_ad.per_day);
     BindInt(command, index++, creative_ad.per_week);
     BindInt(command, index++, creative_ad.per_month);
@@ -78,7 +78,7 @@ CreativeAdInfo GetFromRecord(mojom::DBRecordInfo* record) {
   CreativeAdInfo creative_ad;
 
   creative_ad.creative_instance_id = ColumnString(record, 0);
-  creative_ad.conversion = ColumnBool(record, 1);
+  creative_ad.has_conversion = ColumnBool(record, 1);
   creative_ad.per_day = ColumnInt(record, 2);
   creative_ad.per_week = ColumnInt(record, 3);
   creative_ad.per_month = ColumnInt(record, 4);

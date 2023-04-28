@@ -8,7 +8,8 @@
 namespace brave_ads {
 
 bool operator==(const CatalogDaypartInfo& lhs, const CatalogDaypartInfo& rhs) {
-  return lhs.dow == rhs.dow && lhs.start_minute == rhs.start_minute &&
+  return lhs.days_of_week == rhs.days_of_week &&
+         lhs.start_minute == rhs.start_minute &&
          lhs.end_minute == rhs.end_minute;
 }
 

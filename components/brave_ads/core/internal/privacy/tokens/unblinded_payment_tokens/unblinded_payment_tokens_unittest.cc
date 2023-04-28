@@ -80,7 +80,7 @@ TEST_F(BraveAdsUnblindedPaymentTokensTest, AddTokens) {
   unblinded_payment_tokens.AddTokens({tokens.at(1)});
 
   // Assert
-  EXPECT_EQ(2, unblinded_payment_tokens.Count());
+  EXPECT_EQ(2U, unblinded_payment_tokens.Count());
 }
 
 TEST_F(BraveAdsUnblindedPaymentTokensTest, AddEmptyTokens) {
@@ -106,7 +106,7 @@ TEST_F(BraveAdsUnblindedPaymentTokensTest, DoNotAddDuplicateTokens) {
   unblinded_payment_tokens.AddTokens({unblinded_payment_token});
 
   // Assert
-  EXPECT_EQ(1, unblinded_payment_tokens.Count());
+  EXPECT_EQ(1U, unblinded_payment_tokens.Count());
 }
 
 TEST_F(BraveAdsUnblindedPaymentTokensTest, RemoveToken) {
@@ -195,7 +195,7 @@ TEST_F(BraveAdsUnblindedPaymentTokensTest, Count) {
   // Act
 
   // Assert
-  EXPECT_EQ(3, unblinded_payment_tokens.Count());
+  EXPECT_EQ(3U, unblinded_payment_tokens.Count());
 }
 
 TEST_F(BraveAdsUnblindedPaymentTokensTest, IsEmpty) {

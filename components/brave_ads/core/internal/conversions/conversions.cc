@@ -37,19 +37,16 @@ namespace brave_ads {
 
 namespace {
 
-constexpr int64_t kConvertAfterSeconds =
-    base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
-constexpr int64_t kDebugConvertAfterSeconds =
-    10 * base::Time::kSecondsPerMinute;
-constexpr int64_t kExpiredConvertAfterSeconds =
-    1 * base::Time::kSecondsPerMinute;
+constexpr base::TimeDelta kConvertAfter = base::Days(1);
+constexpr base::TimeDelta kDebugConvertAfter = base::Minutes(10);
+constexpr base::TimeDelta kConvertExpiredAfter = base::Minutes(1);
+
 constexpr char kSearchInUrl[] = "url";
 
-bool HasObservationWindowForAdEventExpired(const int observation_window,
-                                           const AdEventInfo& ad_event) {
-  const base::Time time = base::Time::Now() - base::Days(observation_window);
-
-  return time >= ad_event.created_at;
+bool HasObservationWindowForAdEventExpired(
+    const base::TimeDelta observation_window,
+    const AdEventInfo& ad_event) {
+  return ad_event.created_at < base::Time::Now() - observation_window;
 }
 
 bool ShouldConvertAdEvent(const AdEventInfo& ad_event) {
@@ -396,8 +393,11 @@ void Conversions::AddItemToQueue(
   conversion_queue_item.advertiser_public_key =
       verifiable_conversion.public_key;
   conversion_queue_item.ad_type = ad_event.type;
+
   const auto rand_delay = static_cast<int64_t>(brave_base::random::Geometric(
-      ShouldDebug() ? kDebugConvertAfterSeconds : kConvertAfterSeconds));
+      ShouldDebug() ? kDebugConvertAfter.InSecondsF()
+                    : kConvertAfter.InSecondsF()));
+
   conversion_queue_item.process_at =
       base::Time::Now() + base::Seconds(rand_delay);
 
@@ -540,7 +540,7 @@ void Conversions::StartTimer(
     delay = conversion_queue_item.process_at - now;
   } else {
     const auto rand_delay = static_cast<int64_t>(
-        brave_base::random::Geometric(kExpiredConvertAfterSeconds));
+        brave_base::random::Geometric(kConvertExpiredAfter.InSecondsF()));
     delay = base::Seconds(rand_delay);
   }
 

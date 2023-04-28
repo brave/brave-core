@@ -29,7 +29,7 @@ bool UnblindedPaymentTokenExists(
 
 bool UnblindedPaymentTokensIsEmpty();
 
-int UnblindedPaymentTokenCount();
+size_t UnblindedPaymentTokenCount();
 
 }  // namespace brave_ads::privacy
 

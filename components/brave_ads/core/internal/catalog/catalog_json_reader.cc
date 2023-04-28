@@ -49,11 +49,11 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
   for (const auto& campaign_node : document["campaigns"].GetArray()) {
     CatalogCampaignInfo campaign;
     campaign.campaign_id = campaign_node["campaignId"].GetString();
-    campaign.priority = campaign_node["priority"].GetUint();
+    campaign.priority = campaign_node["priority"].GetInt();
     campaign.ptr = campaign_node["ptr"].GetDouble();
     campaign.start_at = campaign_node["startAt"].GetString();
     campaign.end_at = campaign_node["endAt"].GetString();
-    campaign.daily_cap = campaign_node["dailyCap"].GetUint();
+    campaign.daily_cap = campaign_node["dailyCap"].GetInt();
     campaign.advertiser_id = campaign_node["advertiserId"].GetString();
 
     // Geo targets
@@ -67,7 +67,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
     // Dayparts
     for (const auto& daypart_node : campaign_node["dayParts"].GetArray()) {
       CatalogDaypartInfo daypart;
-      daypart.dow = daypart_node["dow"].GetString();
+      daypart.days_of_week = daypart_node["dow"].GetString();
       daypart.start_minute = daypart_node["startMinute"].GetInt();
       daypart.end_minute = daypart_node["endMinute"].GetInt();
       campaign.dayparts.push_back(daypart);
@@ -84,10 +84,10 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
       CatalogCreativeSetInfo creative_set;
       creative_set.creative_set_id =
           creative_set_node["creativeSetId"].GetString();
-      creative_set.per_day = creative_set_node["perDay"].GetUint();
-      creative_set.per_week = creative_set_node["perWeek"].GetUint();
-      creative_set.per_month = creative_set_node["perMonth"].GetUint();
-      creative_set.total_max = creative_set_node["totalMax"].GetUint();
+      creative_set.per_day = creative_set_node["perDay"].GetInt();
+      creative_set.per_week = creative_set_node["perWeek"].GetInt();
+      creative_set.per_month = creative_set_node["perMonth"].GetInt();
+      creative_set.total_max = creative_set_node["totalMax"].GetInt();
 
       const std::string value = creative_set_node["value"].GetString();
       const bool success = base::StringToDouble(value, &creative_set.value);
@@ -135,20 +135,19 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
         conversion.type = conversion_node["type"].GetString();
         conversion.url_pattern = conversion_node["urlPattern"].GetString();
         conversion.observation_window =
-            conversion_node["observationWindow"].GetInt();
+            base::Days(conversion_node["observationWindow"].GetInt());
 
         if (conversion_node.HasMember("conversionPublicKey")) {
           conversion.advertiser_public_key =
               conversion_node["conversionPublicKey"].GetString();
         }
 
-        base::Time end_at_time;
-        if (!base::Time::FromUTCString(campaign.end_at.c_str(), &end_at_time)) {
+        base::Time end_at;
+        if (!base::Time::FromUTCString(campaign.end_at.c_str(), &end_at)) {
           continue;
         }
 
-        conversion.expire_at =
-            end_at_time + base::Days(conversion.observation_window);
+        conversion.expire_at = end_at + conversion.observation_window;
 
         creative_set.conversions.push_back(conversion);
       }
@@ -171,7 +170,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative.type.code = code;
           creative.type.name = type["name"].GetString();
           creative.type.platform = type["platform"].GetString();
-          creative.type.version = type["version"].GetUint64();
+          creative.type.version = type["version"].GetInt();
 
           // Payload
           const auto payload = creative_node["payload"].GetObject();
@@ -194,7 +193,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative.type.code = code;
           creative.type.name = type["name"].GetString();
           creative.type.platform = type["platform"].GetString();
-          creative.type.version = type["version"].GetUint64();
+          creative.type.version = type["version"].GetInt();
 
           // Payload
           const auto payload = creative_node["payload"].GetObject();
@@ -226,7 +225,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative.type.code = code;
           creative.type.name = type["name"].GetString();
           creative.type.platform = type["platform"].GetString();
-          creative.type.version = type["version"].GetUint64();
+          creative.type.version = type["version"].GetInt();
 
           // Payload
           const auto payload = creative_node["payload"].GetObject();
@@ -270,7 +269,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative.type.code = code;
           creative.type.name = type["name"].GetString();
           creative.type.platform = type["platform"].GetString();
-          creative.type.version = type["version"].GetUint64();
+          creative.type.version = type["version"].GetInt();
 
           // Payload
           const auto payload = creative_node["payload"].GetObject();

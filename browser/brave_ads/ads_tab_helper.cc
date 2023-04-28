@@ -139,10 +139,8 @@ void AdsTabHelper::DidFinishNavigation(
   // This should eventually be fixed in crbug.com/617904.
   if (tab_not_restored && (navigation_handle->HasUserGesture() ||
                            !navigation_handle->IsRendererInitiated())) {
-    const int32_t page_transition =
-        static_cast<int32_t>(navigation_handle->GetPageTransition());
-
-    ads_service_->NotifyUserGestureEventTriggered(page_transition);
+    ads_service_->NotifyUserGestureEventTriggered(
+        navigation_handle->GetPageTransition());
   }
 
   redirect_chain_ = navigation_handle->GetRedirectChain();

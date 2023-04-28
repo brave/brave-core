@@ -5,9 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/daypart_exclusion_rule.h"
 
-#include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/daypart_exclusion_rule_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
@@ -19,10 +19,17 @@ namespace brave_ads {
 
 class BraveAdsDaypartExclusionRuleTest : public UnitTestBase {
  protected:
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    AdvanceClockTo(TimeFromString("Sun, 19 Mar 2023 05:35",
+                                  /*is_local*/ true));  // Hello Rory!!!
+  }
+
   const DaypartExclusionRule exclusion_rule_;
 };
 
-TEST_F(BraveAdsDaypartExclusionRuleTest, AllowIfDaypartsIsEmpty) {
+TEST_F(BraveAdsDaypartExclusionRuleTest, AllowWhenNoDayparts) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -33,21 +40,16 @@ TEST_F(BraveAdsDaypartExclusionRuleTest, AllowIfDaypartsIsEmpty) {
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsDaypartExclusionRuleTest, AllowIfRightDayAndHours) {
+TEST_F(BraveAdsDaypartExclusionRuleTest, AllowIfMatchesDayOfWeekAndTimeSlot) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
 
-  base::Time::Exploded exploded;
-  Now().LocalExplode(&exploded);
-  const int current_time =
-      base::Time::kMinutesPerHour * exploded.hour + exploded.minute;
-
-  CreativeDaypartInfo daypart_1;
-  daypart_1.dow = base::NumberToString(exploded.day_of_week);
-  daypart_1.start_minute = current_time - base::Time::kMinutesPerHour;
-  daypart_1.end_minute = current_time + base::Time::kMinutesPerHour;
-  creative_ad.dayparts.push_back(daypart_1);
+  CreativeDaypartInfo daypart;
+  daypart.days_of_week = "0";  // Sunday
+  daypart.start_minute = GetMinutes(/*hours*/ 5, /*minutes*/ 35);
+  daypart.end_minute = GetMinutes(/*hours*/ 5, /*minutes*/ 35);
+  creative_ad.dayparts.push_back(daypart);
 
   // Act
 
@@ -55,55 +57,45 @@ TEST_F(BraveAdsDaypartExclusionRuleTest, AllowIfRightDayAndHours) {
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsDaypartExclusionRuleTest, AllowForMultipleDays) {
+TEST_F(BraveAdsDaypartExclusionRuleTest,
+       AllowIfMatchesDayOfWeekAndTimeSlotWhenMultipleDaysOfWeek) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
 
-  base::Time::Exploded exploded;
-  Now().LocalExplode(&exploded);
-  const int current_time =
-      base::Time::kMinutesPerHour * exploded.hour + exploded.minute;
-
-  CreativeDaypartInfo daypart_1;
-  daypart_1.start_minute = current_time - base::Time::kMinutesPerHour;
-  daypart_1.end_minute = current_time + base::Time::kMinutesPerHour;
-  creative_ad.dayparts.push_back(daypart_1);
+  CreativeDaypartInfo daypart;
+  daypart.days_of_week = "0123456";
+  daypart.start_minute = GetMinutes(/*hours*/ 5, /*minutes*/ 35);
+  daypart.end_minute = GetMinutes(/*hours*/ 5, /*minutes*/ 35);
+  creative_ad.dayparts.push_back(daypart);
 
   // Act
 
   // Assert
 }
 
-TEST_F(BraveAdsDaypartExclusionRuleTest, AllowIfOneMatchExists) {
+TEST_F(BraveAdsDaypartExclusionRuleTest,
+       AllowIfMatchesDayOfWeekAndTimeSlotWhenMultipleTimeSlots) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
 
-  base::Time::Exploded exploded;
-  Now().LocalExplode(&exploded);
-  const int current_time =
-      base::Time::kMinutesPerHour * exploded.hour + exploded.minute;
-  const std::string tomorrow_dow =
-      base::NumberToString((exploded.day_of_week + 1) % 7);
-  const std::string current_dow = base::NumberToString(exploded.day_of_week);
-
   CreativeDaypartInfo daypart_1;
-  daypart_1.dow = tomorrow_dow;
-  daypart_1.start_minute = current_time - 2 * base::Time::kMinutesPerHour;
-  daypart_1.end_minute = current_time - base::Time::kMinutesPerHour;
+  daypart_1.days_of_week = "1";  // Monday
+  daypart_1.start_minute = GetMinutes(/*hours*/ 0, /*minutes*/ 0);
+  daypart_1.end_minute = GetMinutes(/*hours*/ 4, /*minutes*/ 35);
   creative_ad.dayparts.push_back(daypart_1);
 
   CreativeDaypartInfo daypart_2;
-  daypart_2.dow = tomorrow_dow;
-  daypart_2.start_minute = current_time + 2 * base::Time::kMinutesPerHour;
-  daypart_2.end_minute = current_time + 3 * base::Time::kMinutesPerHour;
+  daypart_2.days_of_week = "23";  // Tuesday and Wednesday
+  daypart_2.start_minute = GetMinutes(/*hours*/ 4, /*minutes*/ 36);
+  daypart_2.end_minute = GetMinutes(/*hours*/ 23, /*minutes*/ 59);
   creative_ad.dayparts.push_back(daypart_2);
 
   CreativeDaypartInfo daypart_3;
-  daypart_3.dow = current_dow;
-  daypart_3.start_minute = current_time - base::Time::kMinutesPerHour;
-  daypart_3.end_minute = current_time + base::Time::kMinutesPerHour;
+  daypart_3.days_of_week = "0";  // Sunday
+  daypart_3.start_minute = GetMinutes(/*hours*/ 0, /*minutes*/ 0);
+  daypart_3.end_minute = GetMinutes(/*hours*/ 5, /*minutes*/ 35);
   creative_ad.dayparts.push_back(daypart_3);
 
   // Act
@@ -112,35 +104,28 @@ TEST_F(BraveAdsDaypartExclusionRuleTest, AllowIfOneMatchExists) {
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsDaypartExclusionRuleTest, DisallowIfNoMatches) {
+TEST_F(BraveAdsDaypartExclusionRuleTest,
+       DisallowWhenMatchingDayOfWeekButOutsideTimeSlot) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
 
-  base::Time::Exploded exploded;
-  Now().LocalExplode(&exploded);
-  const int current_time =
-      base::Time::kMinutesPerHour * exploded.hour + exploded.minute;
-  const std::string tomorrow_dow =
-      base::NumberToString((exploded.day_of_week + 1) % 7);
-  const std::string current_dow = base::NumberToString(exploded.day_of_week);
-
   CreativeDaypartInfo daypart_1;
-  daypart_1.dow = tomorrow_dow;
-  daypart_1.start_minute = current_time - 2 * base::Time::kMinutesPerHour;
-  daypart_1.end_minute = current_time - base::Time::kMinutesPerHour;
+  daypart_1.days_of_week = "1";  // Monday
+  daypart_1.start_minute = GetMinutes(/*hours*/ 0, /*minutes*/ 0);
+  daypart_1.end_minute = GetMinutes(/*hours*/ 4, /*minutes*/ 35);
   creative_ad.dayparts.push_back(daypart_1);
 
   CreativeDaypartInfo daypart_2;
-  daypart_2.dow = tomorrow_dow;
-  daypart_2.start_minute = current_time + 2 * base::Time::kMinutesPerHour;
-  daypart_2.end_minute = current_time + 3 * base::Time::kMinutesPerHour;
+  daypart_2.days_of_week = "0";  // Sunday
+  daypart_2.start_minute = GetMinutes(/*hours*/ 0, /*minutes*/ 0);
+  daypart_2.end_minute = GetMinutes(/*hours*/ 5, /*minutes*/ 34);
   creative_ad.dayparts.push_back(daypart_2);
 
   CreativeDaypartInfo daypart_3;
-  daypart_3.dow = current_dow;
-  daypart_3.start_minute = current_time + base::Time::kMinutesPerHour;
-  daypart_3.end_minute = current_time + 2 * base::Time::kMinutesPerHour;
+  daypart_3.days_of_week = "0";  // Sunday
+  daypart_3.start_minute = GetMinutes(/*hours*/ 5, /*minutes*/ 36);
+  daypart_3.end_minute = GetMinutes(/*hours*/ 23, /*minutes*/ 59);
   creative_ad.dayparts.push_back(daypart_3);
 
   // Act
@@ -149,23 +134,16 @@ TEST_F(BraveAdsDaypartExclusionRuleTest, DisallowIfNoMatches) {
   EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsDaypartExclusionRuleTest, DisallowIfWrongDay) {
+TEST_F(BraveAdsDaypartExclusionRuleTest, DisallowForWrongDayOfWeek) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
 
-  base::Time::Exploded exploded;
-  Now().LocalExplode(&exploded);
-  const int current_time =
-      base::Time::kMinutesPerHour * exploded.hour + exploded.minute;
-  const std::string tomorrow_dow =
-      base::NumberToString((exploded.day_of_week + 1) % 7);
-
-  CreativeDaypartInfo daypart_1;
-  daypart_1.dow = tomorrow_dow;
-  daypart_1.start_minute = current_time - 2 * base::Time::kMinutesPerHour;
-  daypart_1.end_minute = current_time - base::Time::kMinutesPerHour;
-  creative_ad.dayparts.push_back(daypart_1);
+  CreativeDaypartInfo daypart;
+  daypart.days_of_week = "2";  // Tuesday
+  daypart.start_minute = GetMinutes(/*hours*/ 0, /*minutes*/ 0);
+  daypart.end_minute = GetMinutes(/*hours*/ 23, /*minutes*/ 59);
+  creative_ad.dayparts.push_back(daypart);
 
   // Act
 
@@ -173,22 +151,23 @@ TEST_F(BraveAdsDaypartExclusionRuleTest, DisallowIfWrongDay) {
   EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsDaypartExclusionRuleTest, DisallowIfWrongHours) {
+TEST_F(BraveAdsDaypartExclusionRuleTest,
+       DisallowWhenMatchingDayOfWeekButOutsideCuspOfTimeSlot) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
 
-  base::Time::Exploded exploded;
-  Now().LocalExplode(&exploded);
-  const int current_time =
-      base::Time::kMinutesPerHour * exploded.hour + exploded.minute;
-  const std::string current_dow = base::NumberToString(exploded.day_of_week);
-
   CreativeDaypartInfo daypart_1;
-  daypart_1.dow = current_dow;
-  daypart_1.start_minute = current_time - base::Time::kMinutesPerHour;
-  daypart_1.end_minute = current_time - base::Time::kMinutesPerHour;
+  daypart_1.days_of_week = "0";  // Sunday
+  daypart_1.start_minute = GetMinutes(/*hours*/ 0, /*minutes*/ 0);
+  daypart_1.end_minute = GetMinutes(/*hours*/ 5, /*minutes*/ 34);
   creative_ad.dayparts.push_back(daypart_1);
+
+  CreativeDaypartInfo daypart_2;
+  daypart_2.days_of_week = "0";  // Sunday
+  daypart_2.start_minute = GetMinutes(/*hours*/ 5, /*minutes*/ 36);
+  daypart_2.end_minute = GetMinutes(/*hours*/ 23, /*minutes*/ 59);
+  creative_ad.dayparts.push_back(daypart_2);
 
   // Act
 

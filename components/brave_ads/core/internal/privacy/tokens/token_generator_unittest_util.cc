@@ -46,7 +46,7 @@ std::vector<cbr::Token> GetTokens(const int count) {
       R"(gvcXM8vhu0i1Ro3LF9YeIwvyx/9skD4NMC/uyn3op5505WhAQ+r/Moahe+Mn5G4+sqZnN0ZcNirLtn20w1pL7HnH8vDklsHVTSun69Xut7Nz3qQ+x5EO8e5KH+WpynAC)",
       R"(PwIGVD9KMEgn36L8hc6Y6PAbhxRtxqFa1VN2FcYN1/einCyCWyMAMJpdpprwjeAur3CmJaBYL3YRTgFeZow9WqSU5G/Kuw9AHnZUCsjRa5IyKab4EoEphCJ94Cnp+q8A)"};
 
-  const int modulo = tokens_base64.size();
+  const size_t modulo = tokens_base64.size();
 
   std::vector<cbr::Token> tokens;
 

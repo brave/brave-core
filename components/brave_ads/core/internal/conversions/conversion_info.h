@@ -33,7 +33,7 @@ struct ConversionInfo final {
   std::string type;
   std::string url_pattern;
   std::string advertiser_public_key;
-  int observation_window = 0;
+  base::TimeDelta observation_window;
   base::Time expire_at;
 };
 

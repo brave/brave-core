@@ -33,9 +33,9 @@ base::Time Timer::Start(const base::Location& location,
 base::Time Timer::StartWithPrivacy(const base::Location& location,
                                    const base::TimeDelta delay,
                                    base::OnceClosure user_task) {
-  auto rand_delay_in_seconds =
-      static_cast<int64_t>(brave_base::random::Geometric(delay.InSeconds()));
-  rand_delay_in_seconds = std::max(int64_t{1}, rand_delay_in_seconds);
+  const int64_t rand_delay_in_seconds = std::max(
+      int64_t{1},
+      static_cast<int64_t>(brave_base::random::Geometric(delay.InSecondsF())));
 
   return Start(location, base::Seconds(rand_delay_in_seconds),
                std::move(user_task));

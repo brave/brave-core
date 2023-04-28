@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_ANTI_TARGETING_ANTI_TARGETING_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_ANTI_TARGETING_ANTI_TARGETING_INFO_H_
 
-#include <cstdint>
 #include <map>
 #include <set>
 #include <string>
@@ -36,7 +35,7 @@ struct AntiTargetingInfo final {
   static base::expected<AntiTargetingInfo, std::string> CreateFromValue(
       base::Value::Dict dict);
 
-  uint16_t version = 0;
+  int version = 0;
   AntiTargetingMap sites;
 };
 

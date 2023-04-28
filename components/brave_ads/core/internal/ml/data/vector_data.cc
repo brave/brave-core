@@ -31,7 +31,7 @@ constexpr double kMinimumVectorLength = 1e-7;
 class VectorDataStorage {
  public:
   VectorDataStorage() = default;
-  VectorDataStorage(const int dimension_count,
+  VectorDataStorage(const size_t dimension_count,
                     std::vector<uint32_t> points,
                     std::vector<float> values)
       : dimension_count_(dimension_count),
@@ -52,10 +52,10 @@ class VectorDataStorage {
 
   std::vector<float>& values() { return values_; }
   const std::vector<float>& values() const { return values_; }
-  int DimensionCount() const { return dimension_count_; }
+  size_t DimensionCount() const { return dimension_count_; }
 
  private:
-  int dimension_count_ = 0;
+  size_t dimension_count_ = 0;
   std::vector<uint32_t> points_;
   std::vector<float> values_;
 };
@@ -77,10 +77,10 @@ VectorData::VectorData(VectorData&& vector_data) noexcept
 VectorData::VectorData(std::vector<float> data) : Data(DataType::kVector) {
   data.shrink_to_fit();
   storage_ = std::make_unique<VectorDataStorage>(
-      static_cast<int>(data.size()), std::vector<uint32_t>(), std::move(data));
+      data.size(), std::vector<uint32_t>(), std::move(data));
 }
 
-VectorData::VectorData(int dimension_count,
+VectorData::VectorData(const size_t dimension_count,
                        const std::map<uint32_t, double>& data)
     : Data(DataType::kVector) {
   std::vector<uint32_t> points(data.size());
@@ -204,17 +204,17 @@ bool VectorData::IsEmpty() const {
   return GetDimensionCount() == 0;
 }
 
-int VectorData::GetDimensionCount() const {
+size_t VectorData::GetDimensionCount() const {
   return storage_->DimensionCount();
 }
 
-int VectorData::GetNonZeroElementCount() const {
+size_t VectorData::GetNonZeroElementCount() const {
   if (IsEmpty()) {
     return 0;
   }
 
-  return static_cast<int>(base::ranges::count_if(
-      storage_->values(), [](const float value) { return value != 0; }));
+  return base::ranges::count_if(storage_->values(),
+                                [](const float value) { return value != 0; });
 }
 
 const std::vector<float>& VectorData::GetData() const {

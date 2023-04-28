@@ -159,8 +159,7 @@ void NotificationAdServing::MaybeServeAdAtNextRegularInterval() {
     return;
   }
 
-  const base::TimeDelta delay =
-      base::Seconds(base::Time::kSecondsPerHour / ads_per_hour);
+  const base::TimeDelta delay = base::Hours(1) / ads_per_hour;
   const base::Time serve_ad_at = MaybeServeAdAfter(delay);
   BLOG(1, "Maybe serve notification ad "
               << FriendlyDateAndTime(serve_ad_at, /*use_sentence_style*/ true));

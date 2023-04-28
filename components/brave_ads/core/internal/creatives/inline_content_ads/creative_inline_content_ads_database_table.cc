@@ -66,7 +66,8 @@ void BindRecords(mojom::DBCommandInfo* command) {
       mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // dimensions
       mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // cta_text
       mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // ptr
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // dayparts->dow
+      mojom::DBCommandInfo::RecordBindingType::
+          STRING_TYPE,  // dayparts->days_of_week
       mojom::DBCommandInfo::RecordBindingType::
           INT_TYPE,  // dayparts->start_minute
       mojom::DBCommandInfo::RecordBindingType::INT_TYPE  // dayparts->end_minute
@@ -109,7 +110,7 @@ CreativeInlineContentAdInfo GetFromRecord(mojom::DBRecordInfo* record) {
   creative_ad.daily_cap = ColumnInt(record, 5);
   creative_ad.advertiser_id = ColumnString(record, 6);
   creative_ad.priority = ColumnInt(record, 7);
-  creative_ad.conversion = ColumnBool(record, 8);
+  creative_ad.has_conversion = ColumnBool(record, 8);
   creative_ad.per_day = ColumnInt(record, 9);
   creative_ad.per_week = ColumnInt(record, 10);
   creative_ad.per_month = ColumnInt(record, 11);
@@ -127,7 +128,7 @@ CreativeInlineContentAdInfo GetFromRecord(mojom::DBRecordInfo* record) {
   creative_ad.ptr = ColumnDouble(record, 23);
 
   CreativeDaypartInfo daypart;
-  daypart.dow = ColumnString(record, 24);
+  daypart.days_of_week = ColumnString(record, 24);
   daypart.start_minute = ColumnInt(record, 25);
   daypart.end_minute = ColumnInt(record, 26);
   creative_ad.dayparts.push_back(daypart);

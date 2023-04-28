@@ -70,7 +70,7 @@ PurchaseIntentInfo::CreateFromValue(const base::Value::Dict dict) {
     for (const auto& index : indexes.GetList()) {
       DCHECK(index.is_int());
 
-      if (static_cast<size_t>(index.GetInt()) >= segments.size()) {
+      if (index.GetInt() >= static_cast<int>(segments.size())) {
         return base::unexpected(
             "Failed to load from JSON, segment keywords are ill-formed");
       }

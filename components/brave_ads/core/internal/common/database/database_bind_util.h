@@ -20,13 +20,13 @@ std::string BuildBindingParameterPlaceholders(size_t parameters_count,
 
 void Bind(sql::Statement* statement,
           const mojom::DBCommandBindingInfo& binding);
-void BindNull(mojom::DBCommandInfo* command, int index);
-void BindInt(mojom::DBCommandInfo* command, int index, int32_t value);
-void BindInt64(mojom::DBCommandInfo* command, int index, int64_t value);
-void BindDouble(mojom::DBCommandInfo* command, int index, double value);
-void BindBool(mojom::DBCommandInfo* command, int index, bool value);
+void BindNull(mojom::DBCommandInfo* command, int32_t index);
+void BindInt(mojom::DBCommandInfo* command, int32_t index, int32_t value);
+void BindInt64(mojom::DBCommandInfo* command, int32_t index, int64_t value);
+void BindDouble(mojom::DBCommandInfo* command, int32_t index, double value);
+void BindBool(mojom::DBCommandInfo* command, int32_t index, bool value);
 void BindString(mojom::DBCommandInfo* command,
-                int index,
+                int32_t index,
                 const std::string& value);
 
 }  // namespace brave_ads::database

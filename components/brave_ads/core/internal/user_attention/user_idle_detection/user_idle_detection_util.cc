@@ -29,16 +29,15 @@ bool MaybeUpdateIdleTimeThreshold() {
   const int last_idle_time_threshold =
       AdsClientHelper::GetInstance()->GetIntegerPref(prefs::kIdleTimeThreshold);
 
-  const base::TimeDelta idle_time_threshold = kIdleTimeThreshold.Get();
+  const int idle_time_threshold =
+      static_cast<int>(kIdleTimeThreshold.Get().InSeconds());
 
-  const int idle_time_threshold_as_int =
-      static_cast<int>(idle_time_threshold.InSeconds());
-  if (idle_time_threshold_as_int == last_idle_time_threshold) {
+  if (idle_time_threshold == last_idle_time_threshold) {
     return false;
   }
 
   AdsClientHelper::GetInstance()->SetIntegerPref(prefs::kIdleTimeThreshold,
-                                                 idle_time_threshold_as_int);
+                                                 idle_time_threshold);
 
   return true;
 }

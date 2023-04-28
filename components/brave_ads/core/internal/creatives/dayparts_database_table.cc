@@ -29,7 +29,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
   for (const auto& creative_ad : creative_ads) {
     for (const auto& daypart : creative_ad.dayparts) {
       BindString(command, index++, creative_ad.campaign_id);
-      BindString(command, index++, daypart.dow);
+      BindString(command, index++, daypart.days_of_week);
       BindInt(command, index++, daypart.start_minute);
       BindInt(command, index++, daypart.end_minute);
 

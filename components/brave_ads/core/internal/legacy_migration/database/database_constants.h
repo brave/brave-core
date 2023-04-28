@@ -6,12 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_LEGACY_MIGRATION_DATABASE_DATABASE_CONSTANTS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_LEGACY_MIGRATION_DATABASE_DATABASE_CONSTANTS_H_
 
-#include <cstdint>
-
 namespace brave_ads::database {
 
-constexpr int32_t kVersion = 27;
-constexpr int32_t kCompatibleVersion = 27;
+constexpr int kVersion = 27;
+constexpr int kCompatibleVersion = 27;
 
 }  // namespace brave_ads::database
 

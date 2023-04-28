@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CAMPAIGN_CREATIVE_SET_CREATIVE_CATALOG_TYPE_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CAMPAIGN_CREATIVE_SET_CREATIVE_CATALOG_TYPE_INFO_H_
 
-#include <cstdint>
 #include <string>
 
 namespace brave_ads {
@@ -28,7 +27,7 @@ struct CatalogTypeInfo final {
   std::string code;
   std::string name;
   std::string platform;
-  uint64_t version = 0;
+  int version = 0;
 };
 
 }  // namespace brave_ads
