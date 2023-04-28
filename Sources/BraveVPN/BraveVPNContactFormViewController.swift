@@ -13,6 +13,7 @@ import UIKit
 import BraveUI
 import os.log
 import BraveStrings
+import GuardianConnect
 
 class BraveVPNContactFormViewController: TableViewController {
 
@@ -24,6 +25,7 @@ class BraveVPNContactFormViewController: TableViewController {
 
   private struct ContactForm {
     var hostname: String?
+    var tunnelProtocol: String?
     var subscriptionType: String?
     var receipt: String?
     var appVersion: String?
@@ -75,6 +77,23 @@ class BraveVPNContactFormViewController: TableViewController {
               }
             })))
 
+    // MARK: TunnelProtocol
+    let userPreferredTunnelProtocol = GRDTransportProtocol.getUserPreferredTransportProtocol()
+    let transportProtocol = GRDTransportProtocol.prettyTransportProtocolString(for: userPreferredTunnelProtocol)
+    let tunnelProtocolRow =
+      Row(
+        text: Strings.VPN.protocolPickerTitle, detailText: transportProtocol,
+        accessory: .view(
+          SwitchAccessoryView(
+            initialValue: false,
+            valueChange: { [weak self] isOn in
+              if isOn {
+                self?.contactForm.tunnelProtocol = transportProtocol
+              } else {
+                self?.contactForm.tunnelProtocol = nil
+              }
+            })), cellClass: MultilineSubtitleCell.self)
+    
     // MARK: SubscriptionType
     let subscriptionType = BraveVPN.subscriptionName
     let subscriptionTypeRow =
@@ -189,8 +208,8 @@ class BraveVPNContactFormViewController: TableViewController {
             })), cellClass: MultilineSubtitleCell.self)
 
     var section = Section(rows: [
-      hostnameRow, subscriptionTypeRow, receiptRow, appVersionRow,
-      timezoneRow, networkTypeRow, carrierRow, errorLogs,
+      hostnameRow, tunnelProtocolRow, subscriptionTypeRow, receiptRow,
+      appVersionRow, timezoneRow, networkTypeRow, carrierRow, errorLogs
     ])
 
     // MARK: Issue
@@ -279,6 +298,11 @@ class BraveVPNContactFormViewController: TableViewController {
     if let hostname = contactForm.hostname {
       body.append(Strings.VPN.contactFormHostname)
       body.append("\n\(hostname)\n\n")
+    }
+    
+    if let tunnelProtocol = contactForm.tunnelProtocol {
+      body.append(Strings.VPN.protocolPickerTitle)
+      body.append("\n\(tunnelProtocol)\n\n")
     }
 
     if let subcriptionType = contactForm.subscriptionType {

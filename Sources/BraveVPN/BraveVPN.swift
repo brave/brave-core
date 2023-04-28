@@ -16,6 +16,7 @@ public class BraveVPN {
   private static let housekeepingApi = GRDHousekeepingAPI()
   private static let helper = GRDVPNHelper.sharedInstance()
   private static let serverManager = GRDServerManager()
+  private static let tunnelManager = GRDTunnelManager()
   
   public static let iapObserver = IAPObserver()
 
@@ -278,11 +279,14 @@ public class BraveVPN {
         completion?(status == .success)
       }
     } else {
-      // Setting preferred protocol in order to determine which tunnel to be activated while region selection
+      // Setting User preferred Transport Protocol to WireGuard
+      // In order to easily fetch and change in settings later
       GRDTransportProtocol.setUserPreferred(.wireGuard)
       
       // New user or no credentials and have to remake them.
-      helper.configureFirstTimeUser(for: .wireGuard, postCredential: nil) { success, error in
+      helper.configureFirstTimeUser(
+        for: GRDTransportProtocol.getUserPreferredTransportProtocol(),
+        postCredential: nil) { success, error in
         if let error = error {
           logAndStoreError("configureFirstTimeUserPostCredential \(error)")
         } else {
@@ -306,6 +310,36 @@ public class BraveVPN {
 
     connectToVPN() { status in
       completion?(status)
+    }
+  }
+  
+  public static func changePreferredTransportProtocol(with transportProtocol: TransportProtocol, completion: ((Bool) -> Void)? = nil) {
+    helper.forceDisconnectVPNIfNecessary()
+    GRDVPNHelper.clearVpnConfiguration()
+    
+    GRDTransportProtocol.setUserPreferred(transportProtocol)
+
+    // New user or no credentials and have to remake them.
+    helper.configureFirstTimeUser(for: transportProtocol, postCredential: nil) { success, error in
+      if let error = error {
+        logAndStoreError("Change Preferred transport FirstTimeUserPostCredential \(error)")
+      } else {
+        removeConfigurationFromPreferences(for: transportProtocol)
+      }
+      
+      reconnectPending = false
+      completion?(success)
+    }
+    
+    func removeConfigurationFromPreferences(for transportProtocol: TransportProtocol) {
+      switch transportProtocol {
+      case .wireGuard:
+        helper.ikev2VPNManager.removeFromPreferences()
+      case .ikEv2:
+        tunnelManager.removeTunnel()
+      default:
+        return
+      }
     }
   }
 
