@@ -265,15 +265,7 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest,
   ui_test_utils::WaitForBrowserToClose(brave_browser);
 }
 
-// Temporarily disable the test on MacOS until
-// https://github.com/brave/brave-browser/issues/29823 is fixed.
-#if BUILDFLAG(IS_MAC)
-#define MAYBE_TestWithDownload DISABLED_TestWithDownload
-#else
-#define MAYBE_TestWithDownload TestWithDownload
-#endif
-IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest,
-                       MAYBE_TestWithDownload) {
+IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest, TestWithDownload) {
 // On macOS, download in-progress warning is not shown for normal profile window
 // closing as it can still continue after window is closed.
 // However, private profile window works like normal window of other platforms.
