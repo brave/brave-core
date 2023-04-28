@@ -148,12 +148,19 @@ void DatabaseRecurringTip::GetNextMonthlyContributionTime(
   auto transaction = mojom::DBTransaction::New();
 
   auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
+  command->command = base::StringPrintf(
+      "UPDATE %s SET next_contribution_at = ? "
+      "WHERE next_contribution_at IS NULL",
+      kTableName);
+  BindInt64(command.get(), 0, ledger_->state()->GetReconcileStamp());
+  transaction->commands.push_back(std::move(command));
+
+  command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::READ;
   command->command = base::StringPrintf(
-      "SELECT MIN(COALESCE(next_contribution_at, ?)) FROM %s", kTableName);
+      "SELECT MIN(next_contribution_at) FROM %s", kTableName);
   command->record_bindings = {mojom::DBCommand::RecordBindingType::INT64_TYPE};
-  BindInt64(command.get(), 0, ledger_->state()->GetReconcileStamp());
-
   transaction->commands.push_back(std::move(command));
 
   auto on_completed =
