@@ -48,7 +48,7 @@ brave_env::set_brave_env() {
   local gen_env_output=$(npm run --silent --prefix "$script_dir/.." gen_env)
 
   # Set/unset environment variables. Vars to unset use `var=` syntax.
-  while IFS=$'\n' read line; do
+  while IFS=$'\n' read -r line; do
     if [[ $line =~ ^([^=]+)=(.*)$ ]]; then
       if [[ "$1" == "-v" ]]; then
         echo $line
@@ -60,6 +60,9 @@ brave_env::set_brave_env() {
       if [[ -z "$val" ]]; then
         unset $key
       else
+        if [[ "$key" =~ ^(PATH|PYTHONPATH)$ && "$(uname -s)" =~ ^MINGW ]]; then
+          val=$(cygpath -p "$val")
+        fi
         export $key="$val"
       fi
     fi
