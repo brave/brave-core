@@ -10,14 +10,13 @@ import "ocidl.idl";
 ]
 interface IBraveWireguardManager : IUnknown
 {
-  HRESULT EnableVpn([in, string] const WCHAR* config,
-    [out] DWORD* last_error);
+  HRESULT EnableVpn([in, string] const WCHAR* config, [out] DWORD* last_error);
 
   HRESULT DisableVpn([out] DWORD* last_error);
 
   HRESULT GenerateKeypair([out] BSTR* public_key,
-      [out] BSTR* private_key,
-    [out] DWORD* last_error);
+                          [out] BSTR* private_key,
+                          [out] DWORD* last_error);
 };
 
 [
