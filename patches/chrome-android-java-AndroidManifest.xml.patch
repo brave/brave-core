@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 34578efef4913e5040ba1bf6c13c206360eb89db..a0d7757bdd6635deaf82cada86c718bd0540545c 100644
+index 34578efef4913e5040ba1bf6c13c206360eb89db..05cab8dda6c50d4e9121a8bfe3b9a8d5171e99d3 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -28,6 +28,7 @@ by a child template that "extends" this file.
@@ -87,11 +87,3 @@ index 34578efef4913e5040ba1bf6c13c206360eb89db..a0d7757bdd6635deaf82cada86c718bd
          {% block extra_application_definitions %}
          {% endblock %}
        {% endmacro %}
-@@ -1279,6 +1295,7 @@ by a child template that "extends" this file.
-           android:value="allow_front_facing_motion_tracking_6dof," />
-       {% endblock base_application_extra_arcore_definitions %}
- 
-+        <meta-data android:name="com.google.ar.core.min_apk_version" android:value="221020000"/><activity android:name="com.google.ar.core.InstallActivity" android:configChanges="keyboardHidden|orientation|screenSize" android:excludeFromRecents="true" android:exported="false" android:launchMode="singleTop" android:theme="@android:style/Theme.Material.Light.Dialog.Alert" />
-       {% endif %}
- 
-       <!-- Cast support -->
