@@ -59,7 +59,7 @@ GetVerifiableConversionEnvelopeForUserData(const base::Value::Dict& user_data) {
 absl::optional<std::string> OpenEnvelope(
     const VerifiableConversionEnvelopeInfo& verifiable_conversion_envelope,
     const std::string& advertiser_secret_key_base64) {
-  DCHECK(!advertiser_secret_key_base64.empty());
+  CHECK(!advertiser_secret_key_base64.empty());
 
   if (!verifiable_conversion_envelope.IsValid()) {
     return absl::nullopt;

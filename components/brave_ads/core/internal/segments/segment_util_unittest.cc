@@ -164,26 +164,6 @@ TEST_F(BraveAdsSegmentUtilTest,
   EXPECT_FALSE(ShouldFilterSegment("foo-bar"));
 }
 
-TEST_F(BraveAdsSegmentUtilTest, MatchParentSegments) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  EXPECT_TRUE(MatchParentSegments("technology & computing-windows",
-                                  "technology & computing-linux"));
-}
-
-TEST_F(BraveAdsSegmentUtilTest, ParentSegmentsDoNotMatch) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  EXPECT_FALSE(
-      MatchParentSegments("business-banking", "technology & computing-linux"));
-}
-
 TEST_F(BraveAdsSegmentUtilTest, HasChildSegment) {
   // Arrange
 

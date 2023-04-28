@@ -27,37 +27,31 @@ namespace {
 constexpr double kDefaultArmValue = 1.0;
 constexpr int kDefaultArmPulls = 0;
 
-void MaybeAddOrResetArms(EpsilonGreedyBanditArmMap* arms) {
-  DCHECK(arms);
-
+void MaybeAddOrResetArms(EpsilonGreedyBanditArmMap& arms) {
   for (const base::StringPiece value : GetSegments()) {
     std::string segment = static_cast<std::string>(value);
-    const auto iter = arms->find(segment);
-    if (iter != arms->cend()) {
-      const EpsilonGreedyBanditArmInfo arm = iter->second;
-      if (arm.IsValid()) {
-        BLOG(3, "Epsilon greedy bandit arm already exists for " << segment
-                                                                << " segment");
+    const auto iter = arms.find(segment);
+    if (iter != arms.cend()) {
+      BLOG(3, "Epsilon greedy bandit arm already exists for " << segment
+                                                              << " segment");
 
-        continue;
-      }
+      continue;
     }
 
     EpsilonGreedyBanditArmInfo arm;
+    arm.segment = segment;
     arm.value = kDefaultArmValue;
     arm.pulls = kDefaultArmPulls;
 
-    arms->insert_or_assign(std::move(segment), arm);
-
     BLOG(2,
          "Epsilon greedy bandit arm was added for " << segment << " segment");
+
+    arms.insert_or_assign(std::move(segment), arm);
   }
 }
 
-void MaybeDeleteArms(EpsilonGreedyBanditArmMap* arms) {
-  DCHECK(arms);
-
-  for (auto iter = arms->cbegin(); iter != arms->cend();) {
+void MaybeDeleteArms(EpsilonGreedyBanditArmMap& arms) {
+  for (auto iter = arms.cbegin(); iter != arms.cend();) {
     if (base::Contains(GetSegments(), iter->first)) {
       ++iter;
       continue;
@@ -66,16 +60,16 @@ void MaybeDeleteArms(EpsilonGreedyBanditArmMap* arms) {
     BLOG(2, "Epsilon greedy bandit arm was deleted for " << iter->first
                                                          << " segment ");
 
-    iter = arms->erase(iter);
+    iter = arms.erase(iter);
   }
 }
 
 void InitializeArms() {
   EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();
 
-  MaybeAddOrResetArms(&arms);
+  MaybeAddOrResetArms(arms);
 
-  MaybeDeleteArms(&arms);
+  MaybeDeleteArms(arms);
 
   SetEpsilonGreedyBanditArms(arms);
 

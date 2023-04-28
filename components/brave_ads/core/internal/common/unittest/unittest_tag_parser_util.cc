@@ -98,9 +98,7 @@ std::vector<std::string> ParseTagsForText(const std::string& text) {
 }
 
 void ReplaceTagsForText(const std::vector<std::string>& tags,
-                        std::string* out_text) {
-  CHECK(out_text);
-
+                        std::string& text) {
   for (const auto& tag : tags) {
     const std::vector<std::string> components = base::SplitString(
         tag, ":", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
@@ -122,17 +120,14 @@ void ReplaceTagsForText(const std::vector<std::string>& tags,
     const std::string enclosed_tag =
         base::ReplaceStringPlaceholders("<$1>", {tag}, nullptr);
     const std::string escaped_enclosed_tag = RE2::QuoteMeta(enclosed_tag);
-    RE2::Replace(out_text, escaped_enclosed_tag, value);
+    RE2::Replace(&text, escaped_enclosed_tag, value);
   }
 }
 
 }  // namespace
 
-void ParseAndReplaceTags(std::string* out_text) {
-  CHECK(out_text);
-
-  const std::vector<std::string> tags = ParseTagsForText(*out_text);
-  ReplaceTagsForText(tags, out_text);
+void ParseAndReplaceTags(std::string& text) {
+  ReplaceTagsForText(ParseTagsForText(text), text);
 }
 
 }  // namespace brave_ads

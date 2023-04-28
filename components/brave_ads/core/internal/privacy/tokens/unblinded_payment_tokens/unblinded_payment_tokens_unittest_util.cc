@@ -34,11 +34,11 @@ UnblindedPaymentTokenInfo CreateUnblindedPaymentToken(
 
   unblinded_payment_token.value =
       cbr::UnblindedToken(unblinded_payment_token_base64);
-  DCHECK(unblinded_payment_token.value.has_value());
+  CHECK(unblinded_payment_token.value.has_value());
 
   unblinded_payment_token.public_key =
       cbr::PublicKey("RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=");
-  DCHECK(unblinded_payment_token.public_key.has_value());
+  CHECK(unblinded_payment_token.public_key.has_value());
 
   unblinded_payment_token.confirmation_type = ConfirmationType::kViewed;
 

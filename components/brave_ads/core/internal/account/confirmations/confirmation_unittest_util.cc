@@ -33,7 +33,7 @@ namespace {
 absl::optional<OptedInInfo> CreateOptedIn(
     const ConfirmationInfo& confirmation,
     const OptedInUserDataInfo& opted_in_user_data) {
-  DCHECK(ShouldRewardUser());
+  CHECK(ShouldRewardUser());
 
   OptedInInfo opted_in;
 
@@ -94,11 +94,11 @@ absl::optional<ConfirmationInfo> CreateConfirmation(
     const ConfirmationType& confirmation_type,
     const AdType& ad_type,
     const OptedInUserDataInfo& opted_in_user_data) {
-  DCHECK(!created_at.is_null());
-  DCHECK(!transaction_id.empty());
-  DCHECK(!creative_instance_id.empty());
-  DCHECK_NE(ConfirmationType::kUndefined, confirmation_type);
-  DCHECK_NE(AdType::kUndefined, ad_type);
+  CHECK(!created_at.is_null());
+  CHECK(!transaction_id.empty());
+  CHECK(!creative_instance_id.empty());
+  CHECK_NE(ConfirmationType::kUndefined, confirmation_type);
+  CHECK_NE(AdType::kUndefined, ad_type);
 
   ConfirmationInfo confirmation;
   confirmation.transaction_id = transaction_id;
