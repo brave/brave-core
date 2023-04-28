@@ -96,17 +96,6 @@ public class DappsModel implements KeyringServiceObserver {
                             }
                         });
                     });
-        } else if (coinType == CoinType.FIL) {
-            mKeyringService.getKeyringInfo(
-                    AssetUtils.getKeyringForCoinType(coinType), keyringInfo -> {
-                        mBraveWalletService.getChainIdForActiveOrigin(CoinType.FIL, chainId -> {
-                            mKeyringService.getFilecoinSelectedAccount(chainId, accountAddress -> {
-                                callback.call(new Pair<>(
-                                        Utils.findAccount(keyringInfo.accountInfos, accountAddress),
-                                        Arrays.asList(keyringInfo.accountInfos)));
-                            });
-                        });
-                    });
         } else {
             callback.call(new Pair<>(null, Collections.emptyList()));
         }
