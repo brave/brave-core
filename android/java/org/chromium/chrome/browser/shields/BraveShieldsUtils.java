@@ -15,8 +15,7 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.task.AsyncTask;
-import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
-import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.net.ChromiumNetworkAdapter;
 import org.chromium.net.NetworkTrafficAnnotationTag;
 
@@ -32,14 +31,13 @@ import java.util.Arrays;
 import java.util.List;
 
 public class BraveShieldsUtils {
-	private static final String TAG = "Shields";
-	private static final String httpUrl = "https://laptop-updates.brave.com/1/webcompat";
-        public static final String PREF_SHIELDS_TOOLTIP = "shields_tooltip";
-        public static boolean isTooltipShown;
+    private static final String TAG = "Shields";
+    public static final String PREF_SHIELDS_TOOLTIP = "shields_tooltip";
+    public static boolean isTooltipShown;
 
-        public interface BraveShieldsCallback {
-            void braveShieldsSubmitted();
-        }
+    public interface BraveShieldsCallback {
+        void braveShieldsSubmitted();
+    }
 
         public static boolean hasShieldsTooltipShown(String tooltipType) {
             SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
@@ -55,14 +53,16 @@ public class BraveShieldsUtils {
 
         public static class BraveShieldsWorkerTask extends AsyncTask<Void> {
             private String mDomain;
+            private String mApiKey;
 
-            public BraveShieldsWorkerTask(String domain) {
+            public BraveShieldsWorkerTask(String domain, String apiKey) {
                 mDomain = domain;
+                mApiKey = apiKey;
             }
 
             @Override
             protected Void doInBackground() {
-                sendBraveShieldsFeedback(mDomain);
+                sendBraveShieldsFeedback(mDomain, mApiKey);
                 return null;
             }
 
@@ -74,17 +74,16 @@ public class BraveShieldsUtils {
             }
         }
 
-        private static void sendBraveShieldsFeedback(String domain) {
+        private static void sendBraveShieldsFeedback(String domain, String apiKey) {
+            assert BraveConfig.WEBCOMPAT_REPORT_ENDPOINT != null
+                    && !BraveConfig.WEBCOMPAT_REPORT_ENDPOINT.isEmpty();
+
             Context context = ContextUtils.getApplicationContext();
             StringBuilder sb = new StringBuilder();
 
-            Profile mProfile = Profile.getLastUsedRegularProfile();
-            NTPBackgroundImagesBridge mNTPBackgroundImagesBridge =
-                    NTPBackgroundImagesBridge.getInstance(mProfile);
-
             HttpURLConnection urlConnection = null;
             try {
-                URL url = new URL(httpUrl);
+                URL url = new URL(BraveConfig.WEBCOMPAT_REPORT_ENDPOINT);
                 urlConnection = (HttpURLConnection) ChromiumNetworkAdapter.openConnection(
                         url, NetworkTrafficAnnotationTag.MISSING_TRAFFIC_ANNOTATION);
                 urlConnection.setDoOutput(true);
@@ -95,16 +94,17 @@ public class BraveShieldsUtils {
 
                 JSONObject jsonParam = new JSONObject();
                 jsonParam.put("domain", domain);
-                jsonParam.put("api_key", mNTPBackgroundImagesBridge.getReferralApiKey());
+                jsonParam.put("api_key", apiKey);
 
                 OutputStream outputStream = urlConnection.getOutputStream();
                 byte[] input = jsonParam.toString().getBytes(StandardCharsets.UTF_8.toString());
+
                 outputStream.write(input, 0, input.length);
                 outputStream.flush();
                 outputStream.close();
 
-                int HttpResult = urlConnection.getResponseCode();
-                if (HttpResult == HttpURLConnection.HTTP_OK) {
+                int httpResult = urlConnection.getResponseCode();
+                if (httpResult == HttpURLConnection.HTTP_OK) {
                     BufferedReader br = new BufferedReader(new InputStreamReader(
                             urlConnection.getInputStream(), StandardCharsets.UTF_8.toString()));
                     String line = null;
