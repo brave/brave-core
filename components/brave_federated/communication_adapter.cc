@@ -26,6 +26,9 @@ namespace brave_federated {
 
 namespace {
 
+// Maximum size of the federated server response in bytes.
+const int kMaxFederatedServerResponseSizeBytes = 1024 * 1024;  // 1 MB
+
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("federated_learning", R"(
         semantics {
@@ -61,12 +64,13 @@ CommunicationAdapter::CommunicationAdapter(
     const net::BackoffEntry::Policy reconnect_policy,
     const net::BackoffEntry::Policy request_task_policy)
     : url_loader_factory_(std::move(url_loader_factory)) {
-  reconnect_policy_ = std::make_unique<const net::BackoffEntry::Policy>(reconnect_policy);
+  reconnect_policy_ =
+      std::make_unique<const net::BackoffEntry::Policy>(reconnect_policy);
   reconnect_backoff_entry_ =
       std::make_unique<net::BackoffEntry>(reconnect_policy_.get());
 
-  request_task_policy_ = std::make_unique<const net::BackoffEntry::Policy>(
-      request_task_policy);
+  request_task_policy_ =
+      std::make_unique<const net::BackoffEntry::Policy>(request_task_policy);
   request_task_backoff_entry_ =
       std::make_unique<net::BackoffEntry>(request_task_policy_.get());
 }
@@ -89,10 +93,11 @@ void CommunicationAdapter::GetTasks(GetTaskCallback callback) {
   url_loader_ = network::SimpleURLLoader::Create(
       std::move(request), GetNetworkTrafficAnnotationTag());
   url_loader_->AttachStringForUpload(payload, "application/protobuf");
-  url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+  url_loader_->DownloadToString(
       url_loader_factory_.get(),
       base::BindOnce(&CommunicationAdapter::OnGetTasks,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+                     weak_factory_.GetWeakPtr(), std::move(callback)),
+      kMaxFederatedServerResponseSizeBytes);
 }
 
 void CommunicationAdapter::OnGetTasks(
@@ -150,10 +155,11 @@ void CommunicationAdapter::PostTaskResult(TaskResult result,
   url_loader_ = network::SimpleURLLoader::Create(
       std::move(request), GetNetworkTrafficAnnotationTag());
   url_loader_->AttachStringForUpload(payload, "application/protobuf");
-  url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+  url_loader_->DownloadToString(
       url_loader_factory_.get(),
       base::BindOnce(&CommunicationAdapter::OnPostTaskResult,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+                     weak_factory_.GetWeakPtr(), std::move(callback)),
+      kMaxFederatedServerResponseSizeBytes);
 }
 
 void CommunicationAdapter::OnPostTaskResult(
