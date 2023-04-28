@@ -1692,10 +1692,8 @@ public class Utils {
                 result = Utils.fromHexWei(balance, decimals);
                 break;
             case CoinType.SOL:
-                result = Utils.fromWei(balance, decimals);
-                break;
             case CoinType.FIL:
-                // TODO(sergz): Add FIL asset balance
+                result = Utils.fromWei(balance, decimals);
                 break;
             default:
                 result = Utils.fromHexWei(balance, decimals);
