@@ -1675,26 +1675,6 @@ public class Utils {
         return drawableId;
     }
 
-    public static String getKeyringForCoinType(int coinType) {
-        String keyring = BraveWalletConstants.DEFAULT_KEYRING_ID;
-        switch (coinType) {
-            case CoinType.ETH:
-                keyring = BraveWalletConstants.DEFAULT_KEYRING_ID;
-                break;
-            case CoinType.SOL:
-                keyring = BraveWalletConstants.SOLANA_KEYRING_ID;
-                break;
-            case CoinType.FIL:
-                keyring = BraveWalletConstants.FILECOIN_KEYRING_ID;
-                break;
-            default:
-                keyring = BraveWalletConstants.DEFAULT_KEYRING_ID;
-                break;
-        }
-
-        return keyring;
-    }
-
     // TODO(sergz): Move getCoinIcon, getKeyringForCoinType, getBalanceForCoinType
     // to some kind of a separate Utils file that is related to diff networks only
     public static double getBalanceForCoinType(int coinType, int decimals, String balance) {
