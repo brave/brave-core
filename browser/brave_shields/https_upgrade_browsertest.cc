@@ -12,7 +12,8 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/interstitials/security_interstitial_page_test_utils.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ssl/https_only_mode_upgrade_interceptor.h"
+#include "chrome/browser/ssl/https_upgrades_interceptor.h"
+#include "chrome/common/chrome_features.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "components/prefs/pref_service.h"
@@ -42,22 +43,36 @@ enum class PageResult { kHttp, kHttps, kInterstitial };
 struct TestCase {
   bool init_secure;
   const char* domain;
+  const char* path;
   ControlType control_type;
   PageResult expected_result;
 };
 
+constexpr char kSimple[] = "/simple.html";
+// Nonexistent page results in a 404:
+constexpr char kNonexistent[] = "/nonexistent.html";
+
 constexpr TestCase kTestCases[] = {
-    {false, "insecure1.test", ControlType::ALLOW, PageResult::kHttp},
-    {false, "insecure2.test", ControlType::BLOCK_THIRD_PARTY,
+    {false, "insecure1.test", kSimple, ControlType::ALLOW, PageResult::kHttp},
+    {false, "insecure2.test", kSimple, ControlType::BLOCK_THIRD_PARTY,
      PageResult::kHttp},
-    {false, "insecure3.test", ControlType::BLOCK, PageResult::kInterstitial},
-    {false, "upgradable1.test", ControlType::ALLOW, PageResult::kHttp},
-    {false, "upgradable2.test", ControlType::BLOCK_THIRD_PARTY,
+    {false, "insecure3.test", kSimple, ControlType::BLOCK,
+     PageResult::kInterstitial},
+    {false, "broken1.test", kNonexistent, ControlType::ALLOW,
+     PageResult::kHttp},
+    {false, "broken2.test", kNonexistent, ControlType::BLOCK_THIRD_PARTY,
+     PageResult::kHttp},
+    {false, "broken3.test", kNonexistent, ControlType::BLOCK,
+     PageResult::kInterstitial},
+    {false, "upgradable1.test", kSimple, ControlType::ALLOW, PageResult::kHttp},
+    {false, "upgradable2.test", kSimple, ControlType::BLOCK_THIRD_PARTY,
      PageResult::kHttps},
-    {false, "upgradable3.test", ControlType::BLOCK, PageResult::kHttps},
-    {true, "secure1.test", ControlType::ALLOW, PageResult::kHttps},
-    {true, "secure2.test", ControlType::BLOCK_THIRD_PARTY, PageResult::kHttps},
-    {true, "secure3.test", ControlType::BLOCK, PageResult::kHttps}};
+    {false, "upgradable3.test", kSimple, ControlType::BLOCK,
+     PageResult::kHttps},
+    {true, "secure1.test", kSimple, ControlType::ALLOW, PageResult::kHttps},
+    {true, "secure2.test", kSimple, ControlType::BLOCK_THIRD_PARTY,
+     PageResult::kHttps},
+    {true, "secure3.test", kSimple, ControlType::BLOCK, PageResult::kHttps}};
 
 base::FilePath GetTestDataDir() {
   return base::FilePath(FILE_PATH_LITERAL("net/data/url_request_unittest"));
@@ -71,7 +86,8 @@ class HttpsUpgradeBrowserTest : public PlatformBrowserTest {
   ~HttpsUpgradeBrowserTest() override = default;
 
   void SetUp() override {
-    feature_list_.InitAndEnableFeature(kBraveHttpsByDefault);
+    feature_list_.InitWithFeatures(
+        {features::kHttpsFirstModeV2, kBraveHttpsByDefault}, {});
     PlatformBrowserTest::SetUp();
   }
 
@@ -102,10 +118,8 @@ class HttpsUpgradeBrowserTest : public PlatformBrowserTest {
     ASSERT_TRUE(http_server_.Start());
     ASSERT_TRUE(https_server_.Start());
 
-    HttpsOnlyModeUpgradeInterceptor::SetHttpsPortForTesting(
-        https_server()->port());
-    HttpsOnlyModeUpgradeInterceptor::SetHttpPortForTesting(
-        http_server()->port());
+    HttpsUpgradesInterceptor::SetHttpsPortForTesting(https_server()->port());
+    HttpsUpgradesInterceptor::SetHttpPortForTesting(http_server()->port());
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -138,15 +152,19 @@ class HttpsUpgradeBrowserTest : public PlatformBrowserTest {
                  << "test_case.control_type: " << test_case.control_type);
     GURL initial_url =
         test_case.init_secure
-            ? https_server()->GetURL(test_case.domain, "/simple.html")
-            : http_server()->GetURL(test_case.domain, "/simple.html");
+            ? https_server()->GetURL(test_case.domain, test_case.path)
+            : http_server()->GetURL(test_case.domain, test_case.path);
     brave_shields::SetBraveShieldsEnabled(ContentSettings(), shields_enabled,
                                           initial_url, nullptr);
     brave_shields::SetHttpsUpgradeControlType(
         ContentSettings(), test_case.control_type,
         global_setting ? GURL() : initial_url,
         g_browser_process->local_state());
-    AttemptToNavigateToURL(initial_url);
+    // Run navigation twice to ensure that the behavior doesn't
+    // change after first run.
+    for (int i = 0; i < 2; ++i) {
+      AttemptToNavigateToURL(initial_url);
+    }
     return initial_url;
   }
 
@@ -195,7 +213,7 @@ IN_PROC_BROWSER_TEST_F(HttpsUpgradeBrowserTest, CheckUpgrades) {
         GURL final_url =
             (test_case.expected_result == PageResult::kHttp ? http_server()
                                                             : https_server())
-                ->GetURL(test_case.domain, "/simple.html");
+                ->GetURL(test_case.domain, test_case.path);
         EXPECT_EQ(final_url, Contents()->GetLastCommittedURL());
       }
     }
