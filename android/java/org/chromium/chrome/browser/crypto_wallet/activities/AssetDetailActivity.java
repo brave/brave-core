@@ -317,7 +317,7 @@ public class AssetDetailActivity
                 new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
         if (JavaUtils.anyNull(mWalletModel, mAssetNetwork)) return;
         mWalletModel.getKeyringModel().getKeyringPerId(
-                AssetUtils.getKeyringForCoinType(mCoinType), keyringInfo -> {
+                AssetUtils.getKeyringForChainId(mChainId), keyringInfo -> {
                     if (keyringInfo == null) return;
                     mAccountInfos = keyringInfo.accountInfos;
                     WalletListItemModel thisAssetItemModel = new WalletListItemModel(
@@ -414,7 +414,10 @@ public class AssetDetailActivity
         if (walletListItemModel.getAccountInfo() != null) {
             accountDetailActivityIntent.putExtra(
                     Utils.COIN_TYPE, walletListItemModel.getAccountInfo().coin);
+            accountDetailActivityIntent.putExtra(
+                    Utils.KEYRING_ID, walletListItemModel.getAccountInfo().keyringId);
         }
+
         startActivityForResult(accountDetailActivityIntent, Utils.ACCOUNT_REQUEST_CODE);
     }
 

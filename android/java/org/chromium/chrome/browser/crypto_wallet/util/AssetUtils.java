@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 import static java.util.stream.Collectors.toMap;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
@@ -23,6 +24,8 @@ import java.util.function.Function;
 import java.util.stream.IntStream;
 
 public class AssetUtils {
+    private static final String TAG = "AssetUtils";
+
     public static String AURORA_SUPPORTED_CONTRACT_ADDRESSES[] = {
             "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9", // AAVE
             "0xaaaaaa20d9e0e2461697782ef11675f668207961", // AURORA
@@ -105,24 +108,55 @@ public class AssetUtils {
                 && chainId.equals(BraveWalletConstants.MAINNET_CHAIN_ID);
     }
 
-    public static String getKeyringForCoinType(int coinType) {
-        String keyring = BraveWalletConstants.DEFAULT_KEYRING_ID;
+    public static String getKeyringForChainId(String chainId) {
+        switch (chainId) {
+            case BraveWalletConstants.MAINNET_CHAIN_ID:
+            case BraveWalletConstants.GOERLI_CHAIN_ID:
+            case BraveWalletConstants.SEPOLIA_CHAIN_ID:
+                return BraveWalletConstants.DEFAULT_KEYRING_ID;
+
+            case BraveWalletConstants.SOLANA_MAINNET:
+            case BraveWalletConstants.SOLANA_TESTNET:
+            case BraveWalletConstants.SOLANA_DEVNET:
+                return BraveWalletConstants.SOLANA_KEYRING_ID;
+
+            case BraveWalletConstants.FILECOIN_MAINNET:
+            case BraveWalletConstants.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID:
+                return BraveWalletConstants.FILECOIN_KEYRING_ID;
+
+            case BraveWalletConstants.FILECOIN_TESTNET:
+            case BraveWalletConstants.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID:
+                return BraveWalletConstants.FILECOIN_TESTNET_KEYRING_ID;
+
+            default:
+                throw new IllegalStateException(
+                        String.format("No keyring found for chain Id %s.", chainId));
+        }
+    }
+
+    /**
+     * Gets keyring Id only for coin types Ethereum and Solana.
+     * @param coinType Coin type Ethereum or Solana.
+     * @return Keyring Id for coin tpye. If coin type does not belong to Ethereum or Solana it
+     *         defaults to {@link BraveWalletConstants.DEFAULT_KEYRING_ID}.
+     */
+    public static String getKeyringForEthOrSolOnly(int coinType) {
         switch (coinType) {
             case CoinType.ETH:
-                keyring = BraveWalletConstants.DEFAULT_KEYRING_ID;
-                break;
+                return BraveWalletConstants.DEFAULT_KEYRING_ID;
             case CoinType.SOL:
-                keyring = BraveWalletConstants.SOLANA_KEYRING_ID;
-                break;
+                return BraveWalletConstants.SOLANA_KEYRING_ID;
             case CoinType.FIL:
-                keyring = BraveWalletConstants.FILECOIN_KEYRING_ID;
-                break;
+                Log.e(TAG,
+                        "Keyring Id for Filecoin cannot be obtained by coin type. Returning default keyring Id. Consider using the method \"AssetUtils.getKeyringForChainId(chainId)\".");
+                return BraveWalletConstants.DEFAULT_KEYRING_ID;
             default:
-                keyring = BraveWalletConstants.DEFAULT_KEYRING_ID;
-                break;
+                Log.e(TAG,
+                        String.format(
+                                "Keyring Id for coin type %d cannot be found. Returning default keyring Id.",
+                                coinType));
+                return BraveWalletConstants.DEFAULT_KEYRING_ID;
         }
-
-        return keyring;
     }
 
     public static @CoinType.EnumType int getCoinForKeyring(String keyringId) {

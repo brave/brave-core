@@ -74,7 +74,7 @@ public class DappsModel implements KeyringServiceObserver {
             Callbacks.Callback1<Pair<AccountInfo, List<AccountInfo>>> callback) {
         if (coinType == CoinType.ETH || coinType == CoinType.SOL) {
             mKeyringService.getKeyringInfo(
-                    AssetUtils.getKeyringForCoinType(coinType), keyringInfo -> {
+                    AssetUtils.getKeyringForEthOrSolOnly(coinType), keyringInfo -> {
                         mKeyringService.getSelectedAccount(coinType, accountAddress -> {
                             if (coinType == CoinType.SOL) {
                                 // only the selected account is used for solana dapps

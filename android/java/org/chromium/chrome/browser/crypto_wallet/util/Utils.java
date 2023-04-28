@@ -164,6 +164,7 @@ public class Utils {
     public static final String ASSET_LOGO = "assetLogo";
     public static final String ASSET_DECIMALS = "assetDecimals";
     public static final String CHAIN_ID = "chainId";
+    public static final String KEYRING_ID = "keyringId";
     public static final String IS_FROM_DAPPS = "isFromDapps";
     public static final String RESTART_WALLET_ACTIVITY = "restartWalletActivity";
     public static final String RESTART_WALLET_ACTIVITY_SETUP = "restartWalletActivitySetup";
@@ -1682,7 +1683,7 @@ public class Utils {
         return drawableId;
     }
 
-    // TODO(sergz): Move getCoinIcon, getKeyringForCoinType, getBalanceForCoinType
+    // TODO(sergz): Move getCoinIcon, getKeyringForEthOrSolOnly, getBalanceForCoinType
     // to some kind of a separate Utils file that is related to diff networks only
     public static double getBalanceForCoinType(int coinType, int decimals, String balance) {
         double result = 0.0d;

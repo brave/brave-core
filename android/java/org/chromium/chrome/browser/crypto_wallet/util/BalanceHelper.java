@@ -228,36 +228,36 @@ public class BalanceHelper {
                                 AsyncUtils.GetBlockchainTokensBalancesResponseContext>();
 
                 for (int coinType : Utils.P3ACoinTypes) {
-                    keyringService.getKeyringInfo(AssetUtils.getKeyringForCoinType(coinType), keyringInfo -> {
-                        for (NetworkInfo network : sortedNetworks.get(coinType)) {
-                            TokenUtils.getUserOrAllTokensFiltered(braveWalletService,
-                                    blockchainRegistry, network, coinType, TokenUtils.TokenType.ALL,
-                                    true, tokens -> {
-                                        AsyncUtils.GetNativeAssetsBalancesResponseContext
-                                                getNativeAssetsBalancesContext =
-                                                new AsyncUtils
-                                                        .GetNativeAssetsBalancesResponseContext(
+                    for (NetworkInfo network : sortedNetworks.get(coinType)) {
+                        keyringService.getKeyringInfo(
+                                AssetUtils.getKeyringForChainId(network.chainId), keyringInfo -> {
+                                    TokenUtils.getUserOrAllTokensFiltered(braveWalletService,
+                                            blockchainRegistry, network, coinType,
+                                            TokenUtils.TokenType.ALL, true, tokens -> {
+                                                AsyncUtils.GetNativeAssetsBalancesResponseContext
+                                                        getNativeAssetsBalancesContext =
+                                                        new AsyncUtils.GetNativeAssetsBalancesResponseContext(
                                                                 multiResponse
                                                                         .singleResponseComplete);
-                                        getNativeAssetsBalances(jsonRpcService, network,
-                                                keyringInfo.accountInfos,
-                                                getNativeAssetsBalancesContext);
-                                        nativeAssetsBalancesResponses.add(
-                                                getNativeAssetsBalancesContext);
-                                        AsyncUtils.GetBlockchainTokensBalancesResponseContext
-                                                getBlockchainTokensBalancesContext =
-                                                new AsyncUtils
-                                                        .GetBlockchainTokensBalancesResponseContext(
+                                                getNativeAssetsBalances(jsonRpcService, network,
+                                                        keyringInfo.accountInfos,
+                                                        getNativeAssetsBalancesContext);
+                                                nativeAssetsBalancesResponses.add(
+                                                        getNativeAssetsBalancesContext);
+                                                AsyncUtils
+                                                        .GetBlockchainTokensBalancesResponseContext
+                                                                getBlockchainTokensBalancesContext =
+                                                        new AsyncUtils.GetBlockchainTokensBalancesResponseContext(
                                                                 multiResponse
                                                                         .singleResponseComplete);
-                                        getBlockchainTokensBalances(jsonRpcService, network,
-                                                keyringInfo.accountInfos, tokens,
-                                                getBlockchainTokensBalancesContext);
-                                        blockchainTokensBalancesResponses.add(
-                                                getBlockchainTokensBalancesContext);
-                                    });
-                        }
-                    });
+                                                getBlockchainTokensBalances(jsonRpcService, network,
+                                                        keyringInfo.accountInfos, tokens,
+                                                        getBlockchainTokensBalancesContext);
+                                                blockchainTokensBalancesResponses.add(
+                                                        getBlockchainTokensBalancesContext);
+                                            });
+                                });
+                    }
                 }
 
                 multiResponse.setWhenAllCompletedAction(() -> {

@@ -274,7 +274,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         if (JavaUtils.anyNull(mWalletModel)) return;
         var selectedNetwork = mWalletModel.getNetworkModel().getNetwork(mTxInfo.chainId);
         networkName.setText(selectedNetwork.chainName);
-        keyringService.getKeyringInfo(AssetUtils.getKeyringForCoinType(mCoinType), keyringInfo -> {
+        keyringService.getKeyringInfo(AssetUtils.getKeyringForChainId(selectedNetwork.chainId), keyringInfo -> {
             final AccountInfo[] accounts = keyringInfo.accountInfos;
             // First fill in data that does not require remote queries
             TokenUtils.getAllTokensFiltered(getBraveWalletService(), getBlockchainRegistry(),

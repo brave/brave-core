@@ -64,6 +64,7 @@ public class AccountDetailActivity
 
     private String mAddress;
     private String mName;
+    private String mKeyringId;
     private boolean mIsImported;
     private int mCoinType;
     private TextView mAccountText;
@@ -83,6 +84,10 @@ public class AccountDetailActivity
             mName = getIntent().getStringExtra(Utils.NAME);
             mIsImported = getIntent().getBooleanExtra(Utils.ISIMPORTED, false);
             mCoinType = getIntent().getIntExtra(Utils.COIN_TYPE, CoinType.ETH);
+            mKeyringId = getIntent().getStringExtra(Utils.KEYRING_ID);
+            if (mKeyringId == null) {
+                mKeyringId = BraveWalletConstants.DEFAULT_KEYRING_ID;
+            }
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -121,6 +126,7 @@ public class AccountDetailActivity
                 addAccountActivityIntent.putExtra(Utils.NAME, mName);
                 addAccountActivityIntent.putExtra(Utils.ISIMPORTED, mIsImported);
                 addAccountActivityIntent.putExtra(Utils.ISUPDATEACCOUNT, true);
+                addAccountActivityIntent.putExtra(Utils.KEYRING_ID, mKeyringId);
                 CryptoAccountTypeInfo cryptoAccountTypeInfo;
                 // TODO(sergz): Add other networks here
                 if (mCoinType == CoinType.FIL) {
@@ -179,29 +185,32 @@ public class AccountDetailActivity
 
     private void fetchAccountInfo(NetworkInfo selectedNetwork) {
         assert mKeyringService != null;
-        mKeyringService.getKeyringInfo(AssetUtils.getKeyringForCoinType(mCoinType), keyringInfo -> {
-            if (keyringInfo == null || mWalletModel == null) {
-                return;
-            }
+        mKeyringService.getKeyringInfo(
+                AssetUtils.getKeyringForChainId(selectedNetwork.chainId), keyringInfo -> {
+                    if (keyringInfo == null || mWalletModel == null) {
+                        return;
+                    }
 
-            AccountInfo[] allAccountInfos = keyringInfo.accountInfos;
-            LiveDataUtil.observeOnce(
-                    mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks,
-                    allNetworks -> {
-                        Utils.getTxExtraInfo(new WeakReference<>(this), TokenUtils.TokenType.ALL,
-                                allNetworks, selectedNetwork, allAccountInfos, null, false,
-                                (assetPrices, fullTokenList, nativeAssetsBalances,
-                                        blockchainTokensBalances) -> {
-                                    for (AccountInfo accountInfo : allAccountInfos) {
-                                        if (accountInfo.address.equals(mAddress)
-                                                && accountInfo.name.equals(mName)) {
-                                            AccountInfo[] accountInfos = new AccountInfo[1];
-                                            accountInfos[0] = accountInfo;
-                                            WalletListItemModel thisAccountItemModel =
-                                                    new WalletListItemModel(
-                                                            Utils.getCoinIcon(mCoinType), mName,
-                                                            mAddress, null, null, mIsImported);
-                                            Utils.setUpTransactionList(this, accountInfos,
+                    AccountInfo[] accounts = keyringInfo.accountInfos;
+                    LiveDataUtil.observeOnce(
+                            mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks,
+                            allNetworks -> {
+                                Utils.getTxExtraInfo(new WeakReference<>(this),
+                                        TokenUtils.TokenType.ALL, allNetworks, selectedNetwork,
+                                        accounts, null, false,
+                                        (assetPrices, fullTokenList, nativeAssetsBalances,
+                                                blockchainTokensBalances) -> {
+                                            for (AccountInfo accountInfo : accounts) {
+                                                if (accountInfo.address.equals(mAddress)
+                                                        && accountInfo.name.equals(mName)) {
+                                                    AccountInfo[] accountInfos = new AccountInfo[1];
+                                                    accountInfos[0] = accountInfo;
+                                                    WalletListItemModel thisAccountItemModel =
+                                                            new WalletListItemModel(
+                                                                    Utils.getCoinIcon(mCoinType),
+                                                                    mName, mAddress, null, null,
+                                                                    mIsImported);
+                                                    Utils.setUpTransactionList(this, accountInfos,
                                                     allNetworks, thisAccountItemModel, assetPrices,
                                                     fullTokenList, nativeAssetsBalances,
                                                     blockchainTokensBalances, selectedNetwork,
@@ -209,12 +218,12 @@ public class AccountDetailActivity
                                                         showTransactionList(
                                                                 walletListItemModelList);
                                                     });
-                                            break;
-                                        }
-                                    }
-                                });
-                    });
-        });
+                                                    break;
+                                                }
+                                            }
+                                        });
+                            });
+                });
     }
 
     private void showTransactionList(List<WalletListItemModel> walletListItemModelList) {
@@ -306,7 +315,7 @@ public class AccountDetailActivity
         accountInfo.name = mName;
         accountInfo.isImported = mIsImported;
         accountInfo.coin = mCoinType;
-        accountInfo.keyringId = AssetUtils.getKeyringForCoinType(mCoinType);
+        accountInfo.keyringId = mKeyringId;
         return accountInfo;
     }
 

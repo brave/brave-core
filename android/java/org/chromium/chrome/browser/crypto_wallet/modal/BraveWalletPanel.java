@@ -100,7 +100,7 @@ public class BraveWalletPanel implements DialogInterface {
         }
         mSelectedAccount = accountInfo;
         mBraveWalletPanelServices.getKeyringService().getKeyringInfo(
-                AssetUtils.getKeyringForCoinType(mSelectedAccount.coin), keyringInfo -> {
+                mSelectedAccount.keyringId, keyringInfo -> {
                     if (keyringInfo != null) {
                         mAccountInfos = keyringInfo.accountInfos;
                     }

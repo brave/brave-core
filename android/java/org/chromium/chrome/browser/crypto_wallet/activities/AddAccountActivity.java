@@ -49,6 +49,7 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
 
     private String mAddress;
     private String mName;
+    private String mKeyringId;
     private boolean mIsUpdate;
     private boolean mIsImported;
     private EditText mPrivateKeyControl;
@@ -67,6 +68,7 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
         if (intent != null) {
             mAddress = intent.getStringExtra(Utils.ADDRESS);
             mName = intent.getStringExtra(Utils.NAME);
+            mKeyringId = intent.getStringExtra(Utils.KEYRING_ID);
             mIsImported = intent.getBooleanExtra(Utils.ISIMPORTED, false);
             mIsUpdate = intent.getBooleanExtra(Utils.ISUPDATEACCOUNT, false);
             mCryptoAccountTypeInfo = (CryptoAccountTypeInfo) intent.getSerializableExtra(ACCOUNT);
@@ -155,7 +157,7 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
         btnAdd.setOnClickListener(v -> {
             if (mKeyringService == null) return;
             if (mIsUpdate) {
-                updateAccountName(coinType);
+                updateAccountName(mKeyringId);
             } else if (!TextUtils.isEmpty(mPrivateKeyControl.getText().toString())) {
                 importAccount(coinType);
             } else {
@@ -242,8 +244,7 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
         }
     }
 
-    private void updateAccountName(@CoinType.EnumType int coinType) {
-        String keyring = AssetUtils.getKeyringForCoinType(coinType);
+    private void updateAccountName(String keyring) {
         String accountName = mAddAccountText.getText().toString();
 
         if (mIsImported) {
