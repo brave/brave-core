@@ -234,7 +234,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {
                                                true);
 #endif
 
-  // Pre-condition: Window title is "hidden" by default on vertical tabs
+  // Pre-condition: Window title visibility differs per platform
 #if BUILDFLAG(IS_WIN)
   constexpr bool kWindowTitleVisibleByDefault = true;
 #else
