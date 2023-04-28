@@ -182,8 +182,8 @@ void AIChatTabHelper::RequestSummary() {
 
   if (!primary_rfh) {
     // TODO(petemill): Don't allow the UI to submit requests at this state
-    LOG(ERROR) << "Summary request submitted for a WebContents without a "
-                  "primary main frame";
+    VLOG(1) << "Summary request submitted for a WebContents without a "
+               "primary main frame";
     for (auto& obs : observers_) {
       obs.OnRequestSummaryFailed();
     }
@@ -196,8 +196,8 @@ void AIChatTabHelper::RequestSummary() {
 
   if (!rfh) {
     // TODO(petemill): Don't allow the UI to submit requests at this state
-    LOG(ERROR) << "Summary request submitted for a WebContents without a"
-                  "primary AXTree-associated RenderFrameHost yet";
+    VLOG(1) << "Summary request submitted for a WebContents without a"
+               "primary AXTree-associated RenderFrameHost yet";
     for (auto& obs : observers_) {
       obs.OnRequestSummaryFailed();
     }
