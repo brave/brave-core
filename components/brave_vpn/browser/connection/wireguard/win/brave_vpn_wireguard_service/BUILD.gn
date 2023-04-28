@@ -52,7 +52,6 @@ executable("brave_vpn_wireguard_service") {
     "main.cc",
     "service_main.cc",
     "service_main.h",
-    "service_main.h",
     "service_utils.cc",
     "service_utils.h",
   ]
