@@ -1,8 +1,8 @@
 diff --git a/services/network/cors/cors_url_loader.cc b/services/network/cors/cors_url_loader.cc
-index d49c6c673d5539ab911279cf6cb7020bc048680a..10abe6d4e5ba72307a5c78b741bb97f02e4a5cf3 100644
+index 1574159e1e426e82350bdce0c8c1de87c3f37c86..adf3d5e173489818e370d50951e898223cf0cf98 100644
 --- a/services/network/cors/cors_url_loader.cc
 +++ b/services/network/cors/cors_url_loader.cc
-@@ -687,6 +687,7 @@ void CorsURLLoader::StartRequest() {
+@@ -690,6 +690,7 @@ void CorsURLLoader::StartRequest() {
        (fetch_cors_flag_ ||
         (request_.method != net::HttpRequestHeaders::kGetMethod &&
          request_.method != net::HttpRequestHeaders::kHeadMethod))) {
