@@ -10,6 +10,7 @@ import Preferences
 import BraveUI
 import os.log
 import BraveShared
+import GuardianConnect
 
 public class BraveVPNSettingsViewController: TableViewController {
 
@@ -28,6 +29,7 @@ public class BraveVPNSettingsViewController: TableViewController {
   private let serverSectionId = "server"
   private let hostCellId = "host"
   private let locationCellId = "location"
+  private let protocolCellId = "protocol"
   private let resetCellId = "reset"
   private let vpnStatusSectionCellId = "vpnStatus"
 
@@ -133,33 +135,46 @@ public class BraveVPNSettingsViewController: TableViewController {
     
     let location = BraveVPN.serverLocation ?? "-"
     
-    let serverSection =
-    Section(header: .title(Strings.VPN.settingsServerSection),
-            rows: [Row(text: Strings.VPN.settingsServerHost, detailText: hostname, uuid: hostCellId),
-                   Row(text: Strings.VPN.settingsServerLocation, detailText: location,
-                       uuid: locationCellId),
-                   Row(text: Strings.VPN.settingsChangeLocation,
-                       selection: { [unowned self] in
-      self.selectServerTapped()
-    },
-                       cellClass: ButtonCell.self),
-                   Row(text: Strings.VPN.settingsResetConfiguration,
-                       selection: { [unowned self] in
-      self.resetConfigurationTapped()
-    },
-                       cellClass: ButtonCell.self, uuid: resetCellId)],
-            uuid: serverSectionId)
+    let userPreferredTunnelProtocol = GRDTransportProtocol.getUserPreferredTransportProtocol()
+    let transportProtocol = GRDTransportProtocol.prettyTransportProtocolString(for: userPreferredTunnelProtocol)
+
+    let serverSection = Section(
+      header: .title(Strings.VPN.settingsServerSection),
+      rows: [Row(text: Strings.VPN.settingsServerHost, detailText: hostname, uuid: hostCellId),
+             Row(text: Strings.VPN.settingsServerLocation,
+                 detailText: location,
+                 selection: { [unowned self] in
+                    self.selectServerTapped()
+                 },
+                 accessory: .disclosureIndicator,
+                 uuid: locationCellId),
+             Row(text: Strings.VPN.settingsTransportProtocol,
+                 detailText: transportProtocol,
+                 selection: { [unowned self] in
+                    self.selectProtocolTapped()
+                 },
+                 accessory: .disclosureIndicator,
+                 uuid: protocolCellId),
+             Row(text: Strings.VPN.settingsResetConfiguration,
+                 selection: { [unowned self] in
+                    self.resetConfigurationTapped()
+                 },
+                 cellClass: ButtonCell.self, uuid: resetCellId)],
+      uuid: serverSectionId)
     
-    let techSupportSection = Section(rows:
-                                      [Row(text: Strings.VPN.settingsContactSupport, selection: { [unowned self] in
-      self.sendContactSupportEmail()
-    }, accessory: .disclosureIndicator, cellClass: ButtonCell.self)])
+    let techSupportSection = Section(
+      rows: [Row(text: Strings.VPN.settingsContactSupport,
+                 selection: { [unowned self] in
+                   self.sendContactSupportEmail()
+                 },
+                 accessory: .disclosureIndicator)])
     
-    let termsSection = Section(rows:
-                                [Row(text: Strings.VPN.settingsFAQ, selection: { [unowned self] in
-      self.openURL?(.brave.braveVPNFaq)
-      
-    }, accessory: .disclosureIndicator, cellClass: ButtonCell.self)])
+    let termsSection = Section(
+      rows: [Row(text: Strings.VPN.settingsFAQ,
+                 selection: { [unowned self] in
+                   self.openURL?(.brave.braveVPNFaq)
+                 },
+                 cellClass: ButtonCell.self)])
     
     dataSource.sections = [vpnStatusSection,
                            subscriptionSection,
@@ -269,6 +284,11 @@ public class BraveVPNSettingsViewController: TableViewController {
     }
 
     let vc = BraveVPNRegionPickerViewController()
+    navigationController?.pushViewController(vc, animated: true)
+  }
+  
+  private func selectProtocolTapped() {
+    let vc = BraveVPNProtocolPickerViewController()
     navigationController?.pushViewController(vc, animated: true)
   }
 

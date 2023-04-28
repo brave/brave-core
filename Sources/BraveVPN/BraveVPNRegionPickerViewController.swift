@@ -10,10 +10,7 @@ import Lottie
 import NetworkExtension
 import GuardianConnect
 
-class BraveVPNRegionPickerViewController: UIViewController {
-
-  private var overlayView: UIView?
-  private let tableView: UITableView = .init(frame: .zero, style: .insetGrouped)
+class BraveVPNRegionPickerViewController: BraveVPNPickerViewController {
   private let regionList: [GRDRegion]
 
   private enum Section: Int, CaseIterable {
@@ -21,49 +18,15 @@ class BraveVPNRegionPickerViewController: UIViewController {
     case regionList
   }
 
-  deinit {
-    NotificationCenter.default.removeObserver(self)
-  }
-
   /// This group monitors vpn connection status.
   private var dispatchGroup: DispatchGroup?
   private var vpnRegionChangeSuccess = false
 
-  private var isLoading: Bool = false {
-    didSet {
-      overlayView?.removeFromSuperview()
-
-      navigationItem.hidesBackButton = isLoading
-
-      // Prevent dismissing the modal by swipe when the VPN is being configured
-      navigationController?.isModalInPresentation = isLoading
-
-      if !isLoading { return }
-
-      let overlay = UIView().then {
-        $0.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        let activityIndicator = UIActivityIndicatorView().then { indicator in
-          indicator.startAnimating()
-          indicator.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        }
-
-        $0.addSubview(activityIndicator)
-      }
-
-      view.addSubview(overlay)
-      overlay.snp.makeConstraints {
-        $0.edges.equalToSuperview()
-      }
-
-      overlayView = overlay
-    }
-  }
-
-  init() {
+  override init() {
     self.regionList = BraveVPN.regions
       .sorted { $0.displayName < $1.displayName }
 
-    super.init(nibName: nil, bundle: nil)
+    super.init()
   }
 
   @available(*, unavailable)
@@ -74,18 +37,11 @@ class BraveVPNRegionPickerViewController: UIViewController {
 
     tableView.delegate = self
     tableView.dataSource = self
-    tableView.register(VPNRegionCell.self)
     
-    NotificationCenter.default.addObserver(self, selector: #selector(vpnConfigChanged(notification:)),
-                                           name: .NEVPNStatusDidChange, object: nil)
-
-    view.addSubview(tableView)
-    tableView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
-    }
+    super.viewDidLoad()
   }
 
-  @objc private func vpnConfigChanged(notification: NSNotification) {
+  override func vpnConfigChanged(notification: NSNotification) {
     guard let connection = notification.object as? NEVPNConnection else { return }
 
     if connection.status == .connected {
@@ -94,15 +50,12 @@ class BraveVPNRegionPickerViewController: UIViewController {
       dispatchGroup = nil
     }
   }
-
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    tableView.reloadData()
-  }
 }
 
 // MARK: - UITableView Data Source & Delegate
+
 extension BraveVPNRegionPickerViewController: UITableViewDelegate, UITableViewDataSource {
+  
   func numberOfSections(in tableView: UITableView) -> Int {
     Section.allCases.count
   }
@@ -167,22 +120,9 @@ extension BraveVPNRegionPickerViewController: UITableViewDelegate, UITableViewDa
     BraveVPN.changeVPNRegion(to: newRegion) { [weak self] success in
       guard let self = self else { return }
 
-      func _showError() {
-        DispatchQueue.main.async {
-          let alert = AlertController(title: Strings.VPN.regionPickerErrorTitle,
-                                      message: Strings.VPN.regionPickerErrorMessage,
-                                      preferredStyle: .alert)
-          let okAction = UIAlertAction(title: Strings.OKString, style: .default) { _ in
-            self.dismiss(animated: true)
-          }
-          alert.addAction(okAction)
-
-          self.present(alert, animated: true)
-        }
-      }
-
       if !success {
-        _showError()
+        self.showErrorAlert(title: Strings.VPN.regionPickerErrorTitle,
+                            message: Strings.VPN.regionPickerErrorMessage)
       }
 
       // Changing vpn server settings takes lot of time,
@@ -202,37 +142,13 @@ extension BraveVPNRegionPickerViewController: UITableViewDelegate, UITableViewDa
         if self.vpnRegionChangeSuccess {
 
           self.dismiss(animated: true) {
-            self.showSuccessAlert()
+            self.showSuccessAlert(text: Strings.VPN.regionSwitchSuccessPopupText)
           }
         } else {
-          _showError()
+          self.showErrorAlert(title: Strings.VPN.regionPickerErrorTitle,
+                              message: Strings.VPN.regionPickerErrorMessage)
         }
       }
     }
-  }
-
-  private func showSuccessAlert() {
-    let animation = AnimationView(name: "vpncheckmark", bundle: .module).then {
-      $0.bounds = CGRect(x: 0, y: 0, width: 300, height: 200)
-      $0.contentMode = .scaleAspectFill
-      $0.play()
-    }
-    
-    let popup = AlertPopupView(imageView: animation,
-                               title: Strings.VPN.regionSwitchSuccessPopupText, message: "",
-                               titleWeight: .semibold, titleSize: 18,
-                               dismissHandler: { true })
-    
-    popup.showWithType(showType: .flyUp, autoDismissTime: 1.5)
-  }
-}
-
-private class VPNRegionCell: UITableViewCell, TableViewReusable {
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: .value1, reuseIdentifier: reuseIdentifier)
-  }
-  @available(*, unavailable)
-  required init(coder: NSCoder) {
-    fatalError()
   }
 }
