@@ -1,5 +1,11 @@
+# Copyright (c) 2018 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//components/gcm_driver/config.gni")
+import("//extensions/buildflags/buildflags.gni")
 
 source_set("profiles") {
   # Remove when https://github.com/brave/brave-browser/issues/10648 is resolved
@@ -41,6 +47,10 @@ source_set("profiles") {
     "//mojo/public/cpp/bindings",
     "//ui/base",
   ]
+
+  if (enable_extensions) {
+    deps += [ "//extensions/common" ]
+  }
 
   if (use_gcm_from_platform) {
     deps += [ "//brave/browser/gcm_driver" ]

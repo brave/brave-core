@@ -12,7 +12,11 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_content_browser_client.h"
+#include "brave/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/browser/profiles/brave_renderer_updater.h"
+#include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -525,6 +529,9 @@ class SolanaProviderRendererTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
+    brave_wallet::SetDefaultSolanaWallet(
+        browser()->profile()->GetPrefs(),
+        brave_wallet::mojom::DefaultWallet::BraveWallet);
     content::SetBrowserClientForTesting(&test_content_browser_client_);
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
@@ -630,6 +637,42 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, ExtensionOverwrite) {
       "test");
 }
 
+IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest,
+                       DoNotAttachIfNoWalletCreated) {
+  auto* keyring_service =
+      brave_wallet::KeyringServiceFactory::GetServiceForContext(
+          browser()->profile());
+  keyring_service->Reset(false);
+
+  brave_wallet::SetDefaultSolanaWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
+  ReloadAndWaitForLoadStop(browser());
+
+  std::string command = "window.solana.isBraveWallet";
+  EXPECT_TRUE(content::EvalJs(web_contents(browser()), command)
+                  .error.find("Cannot read properties of undefined") !=
+              std::string::npos);
+  EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
+}
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, AttachIfWalletCreated) {
+  auto* keyring_service =
+      brave_wallet::KeyringServiceFactory::GetServiceForContext(
+          browser()->profile());
+  keyring_service->CreateWallet("password", base::DoNothing());
+
+  brave_wallet::SetDefaultSolanaWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
+  ReloadAndWaitForLoadStop(browser());
+
+  constexpr char kEvalIsBraveWallet[] = "window.solana.isBraveWallet";
+  EXPECT_TRUE(content::EvalJs(web_contents(browser())->GetPrimaryMainFrame(),
+                              kEvalIsBraveWallet)
+                  .ExtractBool());
+  EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
+}
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, NonWritable) {
   for (const std::string& provider : {"braveSolana", "solana"}) {
     // window.braveSolana.* and window.solana.* (methods)
