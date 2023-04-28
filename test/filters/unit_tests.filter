@@ -686,3 +686,7 @@
 # This test crashes because AutocompleteClassifier called when TabStripModel
 # was not initialized in test.
 -RenderViewContextMenuPrefsTest.ShowAllPasswordsIncognito
+
+
+# We changed the default value of media router to disabled, so the tests fail.
+-MediaDialogViewWithRemotePlaybackTest.*
