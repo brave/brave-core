@@ -167,6 +167,7 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2036503787657622020">Slå på lesemodus</translation>
 <translation id="5226458915125328323">Innstillinger for hurtiglesing</translation>
 <translation id="8591883849678260674">Vis original</translation>
+<translation id="1969654232209826429">min. lest</translation>
 <translation id="6284218950354553099">Automatisk ping dagsforbruk til Brave</translation>
 <translation id="5288333155754958121">Denne anonyme, private pingen gjør at Brave kan estimere antall aktive brukere.</translation>
 <translation id="1872784258300710671">Brave bruker helt privat produktdiagnostikk til å beregne den totale bruken av visse funksjoner</translation>
@@ -190,16 +191,16 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
         Du kan lese <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>hvordan du laster ned <ph name="END_LINK_BUILD_INSTRUCTIONS"/> den spesifikke <ph name="BEGIN_LINK_SOURCE_CODE"/>kildekoden som ble brukt til å lage dette eksemplaret<ph name="END_LINK_SOURCE_CODE"/>, og bygge den selv.</translation>
 <translation id="4474155171896946103">Bokmerk alle fanene</translation>
 <translation id="3987546108749866209">Bruk vertikale faner</translation>
-<translation id="5860254591544742609">Vis tittelfelt</translation>
-<translation id="399928467800528208">Flytende modus ved mouseover</translation>
 <translation id="1904394285866191268">{NUM_TABS,plural, =1{Kutt lyden for fanen}other{Kutt lyden for fanene}}</translation>
 <translation id="5179127818058486126">{NUM_TABS,plural, =1{Slå på lyden for fanen}other{Slå på lyden for fanene}}</translation>
+<translation id="2289567621059034186">Ny fane nedenfor</translation>
+<translation id="3228962656492373217">Lukk faner nedenfor</translation>
 <translation id="2336228925368920074">Legg inn bokmerke for alle åpne faner</translation>
 <translation id="2523967823495420116">Bruk vertikale faner</translation>
-<translation id="8888603463702767599">Vis tittelfelt</translation>
-<translation id="2058818256505091369">Flytende modus ved mouseover</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{Kutt lyden for fanen}other{Kutt lyden for fanene}}</translation>
 <translation id="2120478168904746065">{NUM_TABS,plural, =1{Slå på lyden for fanen}other{Slå på lyden for fanene}}</translation>
+<translation id="4405580203042711503">Ny fane nedenfor</translation>
+<translation id="5611474372949142946">Lukk faner nedenfor</translation>
 <translation id="3704707436873245822">Kopier tekst fra bilde</translation>
 <translation id="5268098808165185458">Kopierer tekst fra bilde …</translation>
 <translation id="4046485130884276245">Tekst kopiert fra bilde</translation>
@@ -238,6 +239,10 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2307973900865360088">Behold i Dock</translation>
 <translation id="961012016278832836">Microsoft Edge Legacy</translation>
 <translation id="6436994631426134065">importert fra <ph name="BROWSER_NAME"/>.</translation>
+<translation id="1386966479075994683">Utvid faner</translation>
+<translation id="480565261566115689">Minimer faner</translation>
+<translation id="7194343495483122559">Utvid faner</translation>
+<translation id="1199054713803577378">Minimer faner</translation>
 <translation id="9156965752763025780">Endringene dine trer i kraft neste gang du starter Brave.</translation>
 <translation id="7179921470347911571">Start på nytt nå</translation>
 <translation id="4472575034687746823">Kom i gang</translation>
@@ -279,7 +284,7 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2970343821770026391">Instrumentbord</translation>
 <translation id="3719826155360621982">Startside</translation>
 <translation id="5448570825852364919">Tom side</translation>
-<translation id="5919424224662539292">Tilpass bakgrunnsbildet og widgeten som fremkommer på 'ny fane'-siden</translation>
+<translation id="8244387390464017490">Tilpass ny faneside</translation>
 <translation id="7461924472993315131">Fest</translation>
 <translation id="7506648566440714944">Brave er allerede festet</translation>
 <translation id="239275665037555969">Dock</translation>
@@ -311,6 +316,7 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3357319404342882895">Strengt</translation>
 <translation id="8823559166155093873">Blokkering av informasjonskapsler</translation>
 <translation id="5770288601196774623">Kun kryssider</translation>
+<translation id="6795317840397506736">Glem som standard</translation>
 <translation id="3587482841069643663">Alle</translation>
 <translation id="7390783310074170337">Standard visning</translation>
 <translation id="130615081792797568">Enkel visning</translation>
@@ -337,7 +343,7 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4182731739150761577">Vis hele listen</translation>
 <translation id="1340263054776016283">Skriv inn filterliste-nettadressen</translation>
 <translation id="8578397014396032341">Innholdsfiltre</translation>
-<translation id="6821903322090655051">Brave Rewards er deaktivert</translation>
+<translation id="5567412479632285879">Brave Rewards er deaktivert</translation>
 <translation id="413570371620795359">Åpne Belønninger-panelet for å aktivere og komme i gang</translation>
 <translation id="3849957491997306859">Automatisk oppdaget</translation>
 <translation id="8798099450830957504">Standard</translation>
@@ -352,7 +358,6 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7286722244752781970">Minste sidetid før du registrering av et besøk</translation>
 <translation id="4424486208397124985">Minimumsbesøk for utgivers relevans</translation>
 <translation id="6248554379744796526">Vis ikke-verifiserte nettsteder på listen</translation>
-<translation id="5510618543889994434">Tillat bidrag for videoer</translation>
 <translation id="924777189963477634">Ved å slå på automatisk bidrag samtykker du til <ph name="BEGIN_LINK_TOS"/>vilkårene for bruk<ph name="END_LINK_TOS"/> og <ph name="BEGIN_LINK_PP"/>retningslinjene for personvern<ph name="END_LINK_PP"/>.</translation>
 <translation id="6333347122924254968">Vis Brave Rewards-ikonet i adresselinjen</translation>
 <translation id="7483857210736407752">Vis Tips-knapp på nettsider</translation>
@@ -498,17 +503,30 @@ Hvis du bestemmer deg for at du vil begynne å bruke Sync igjen, må du opprette
 <translation id="1658670175365815312">Brave bytter til .onion-versjonen av nettsider når dette er tilgjengelig, og åpner automatisk alle .onion-domener i et Tor-vindu.</translation>
 <translation id="2896916411183256228">Bruker WebTorrent til å vise torrents direkte i nettleseren. Støtter torrent-filer og magnetlenker.</translation>
 <translation id="5249433283143453448">Bruk Widevine digital rights management (DRM)-komponentet for å se på beskyttet strømmevideo og annet innhold i nettleseren.</translation>
+<translation id="1314131187310290315">Manifest v2-utvidelser</translation>
+<translation id="2488433650767270565">Følgende Manifest v2-utvidelser fjernes fra Chrome Web Store, men støttes fortsatt i Brave. Trykk på bryteren for å laste ned og installere, eller for å avinstallere.</translation>
+<translation id="578671172657727816">Aktiver NoScript™</translation>
+<translation id="9068475464170522036">NoScript er en Manifest V2-utvidelse som lar deg blokkere og avblokkere enkeltskript som kjører eller forsøker å kjøre på en gitt side.</translation>
+<translation id="1394592156621788100">Aktiver uBlock Origin™</translation>
+<translation id="2638983091068889519">uBlock Origin er en Manifest V2-utvidelse som gir avanserte brukere kraftige verktøy for innholdsblokkering med en rekke alternativer.</translation>
+<translation id="3909078036552544838">Aktiver uMatrix™</translation>
+<translation id="8796148218203577506">uMatrix er en Manifest V2-utvidelse som leverer en pek-og-klikk matrisebasert brannmur, med mange personvernstyrkende verktøy.</translation>
+<translation id="2385774023523989298">Aktiver AdGuard™</translation>
+<translation id="188228077840632890">AdGuard er en Manifest V2-utvidelse med annonseblokkering, foreldrekontroller og muligheten for integrasjon med andre AdGuard-tjenester.</translation>
 <translation id="8137559199583651773">Administrer utvidelser</translation>
 <translation id="7013485839273047434">Få flere utvidelser</translation>
 <translation id="4954512758656527938">Standard Ethereum-lommebok</translation>
 <translation id="7701023802820268122">Standard Solana-lommebok</translation>
 <translation id="8488282162676695335">Brave-lommebok</translation>
 <translation id="2356070529366658676">Spør</translation>
-<translation id="7701040980221191251">Ingen</translation>
+<translation id="6942354363301686374">Utvidelser (ingen backup)</translation>
 <translation id="1274962333945373242">Kryptolommebøker (avviklet)</translation>
+<translation id="702381242110464396">Utvidelser (Brave Wallet-fallback)</translation>
 <translation id="4718664830805652430">Standard basisvaluta</translation>
 <translation id="7992507032049865603">Standard basiskryptovaluta</translation>
 <translation id="1834467296210148203">Vis Brave Wallet-ikonet i sidefelt</translation>
+<translation id="7568430944629653319">Aktiver NFT-oppdagelse</translation>
+<translation id="970496996377628529">Legg automatisk til NFT-er du eier, i Brave-lommeboken med tredjeparts-API-er.</translation>
 <translation id="8239147115686034860">Lås Brave-lommeboken automatisk</translation>
 <translation id="414639769490080648">Antall minutter før Brave-lommeboken automatisk låses</translation>
 <translation id="856371974127598760">Lommeboknettverk</translation>
@@ -518,10 +536,15 @@ Hvis du bestemmer deg for at du vil begynne å bruke Sync igjen, må du opprette
 <translation id="464460032678285850">NFT-er som legges til i Brave-lommeboken, kan automatisk festes til den lokale IPFS-noden.
 Merk: IPFS-daemon kan startes for at denne funksjonen skal fungere, så den lokale noden din vil dele bufrede data og festede NFT-er med IPFS-nettverket.</translation>
 <translation id="4993345308607970390">Tilbakestill Brave-lommeboken</translation>
+<translation id="5887022857624190239">Fjern festede NFT-er</translation>
+<translation id="204584113330893805">Festede NFT-er har IPFS-nettverket som vert når den lokale IPFS-noden startes.
+Du har <ph name="NFT_COUNT"/> festede NFT-er akkurat nå.</translation>
 <translation id="9216386092464743272">Er du sikker på at du vil tilbakestille all informasjon om transaksjoner og nonce fra lommeboken? Dette alternativet brukes som regel av utviklere som kjører på en lokal testserver. Skriv inn «<ph name="CONFIRMATION_PHRASE"/>» for å bekrefte.</translation>
 <translation id="6369495274982305511">Er du sikker på at du vil tilbakestille lommeboken? Om lommeboken din ikke er sikkerhetskopiert, vil tilbakestilling føre til at du mister alle kontodata (inkludert eventuelle tilknyttede midler). Skriv "<ph name="CONFIRMATION_PHRASE"/>" for å bekrefte.</translation>
+<translation id="4248533222660842025">Er du sikker på at du vil fjerne de festede NFT-ene? Noen av dem kan gå tapt for alltid hvis det ikke er noen andre verter i IPFS-nettverket. Skriv inn «<ph name="CONFIRMATION_PHRASE"/>» for å bekrefte.</translation>
 <translation id="3752403403443723332">Lommeboken er tilbakestilt.</translation>
 <translation id="594766067816395072">Transaksjonsinformasjonen i lommeboken er tilbakestilt.</translation>
+<translation id="1615009913945115836">De festede NFT-ene dine er tilbakestilt.</translation>
 <translation id="1426410128494586442">Ja</translation>
 <translation id="4226543734057230801">Ethereum-nettverk</translation>
 <translation id="3504157706952484145">Filecoin-nettverk</translation>

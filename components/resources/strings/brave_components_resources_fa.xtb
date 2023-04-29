@@ -207,15 +207,14 @@
 <translation id="7577100371127227294">انعام ماهانه</translation>
 <translation id="178390304006113804">انعام‌های دوره‌ای ماهانه را تنظیم کنید تا بتوانید به‌طور مداوم از پدیدآورندگان مورد‌ علاقه‌تان حمایت کنید.</translation>
 <translation id="3302159320447117425">هنوز انعام ماهانه‌ای تنظیم نشده است.</translation>
+<translation id="564837702459183199">مشارکت بعدی</translation>
 <translation id="4898632353264854950">همان‌طور که مرور می‌کنید، سایت‌ها نشان داده می‌شوند</translation>
 <translation id="3024485967181749006">مجموع انعام در این ماه</translation>
-<translation id="8183455888546367148">مجموع انعام‌های ماهانه این ماه</translation>
 <translation id="4153752809523809915">امروز به پدیدآورنده محبوبتان انعام داده‌اید؟</translation>
 <translation id="7286722244752781970">حداقل زمان صفحهْ قبل از ثبت بازدید</translation>
 <translation id="4424486208397124985">حداقل بازدید برای ربط ناشر</translation>
 <translation id="5421369907811917952">سایر تنظیمات</translation>
 <translation id="6248554379744796526">نشان دادن سایت‌های تأییدنشده در فهرست</translation>
-<translation id="5510618543889994434">مجاز کردن کمک‌ها برای ویدیوها</translation>
 <translation id="8933202740471878108">۱ بازدید</translation>
 <translation id="354797634123275103">۵ بازدید</translation>
 <translation id="3583700907990488238">۱۰ بازدید</translation>
@@ -224,7 +223,6 @@
 <translation id="8610523985422563960">۱ دقیقه</translation>
 <translation id="2807328214759298515">حداکثر تا</translation>
 <translation id="7483857210736407752">نمایش دکمه «انعام» در سایت‌ها</translation>
-<translation id="7583327070390027131">تاریخ انعام‌های ماهانه بعدی</translation>
 <translation id="6231182869178328516">به‌تازگی با استفاده از مرورگر Brave، به <ph name="NAME"/> انعام دادم. این مورد را در https://brave.com/tips بررسی کنید.</translation>
 <translation id="5916536234616514390">عاشق این هستم که <ph name="HASHTAG"/>Brave اجازه می‌دهد از پدیدآورندگان پشتیبانی کنم! همین الان با BAT به <ph name="NAME"/> با <ph name="HASHTAG2"/> انعام دادم. اگر تا <ph name="DATE"/> در  https://creators.brave.com تأیید کند، BAT به او تعلق می‌گیرد!</translation>
 <translation id="8404935570206006581">انعام با Brave</translation>
@@ -638,6 +636,7 @@
 <translation id="8797999629784150206">هرزمان خواستید، می‌توانید <ph name="SITE_PERMISSIONS"/> را تغییر دهید. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">مجوز سایت</translation>
 <translation id="4355784577209159847">مجاز کردن استفاده از کوکی‌های شخصی ثالث برای «ورود به سیستم Google» قدیمی</translation>
+<translation id="5770656036486891920"><ph name="URL"/> می‌خواهد از کوکی‌های شخص ثالث برای Google Sign-In قدیمی استفاده کند</translation>
 <translation id="7717357606512850995">بررسی وضعیت</translation>
 <translation id="7306880305145342514">تبریک می‌گوییم! پاداش‌های <ph name="MONTH"/> شما آماده هستند!</translation>
 <translation id="3007207731685398329">پاداش‌های <ph name="AMOUNT"/><ph name="MONTH"/> شما ظرف <ph name="DAYS"/> ارائه خواهند شد</translation>
@@ -659,6 +658,7 @@
       =1 {این ماه، از # پدیدآورنده Brave Rewards بازدید کرده‌اید}
       other {این ماه، از # پدیدآورنده Brave Rewards بازدید کرده‌اید}
     }</translation>
+<translation id="6067959437127691361">استفاده از پاداش‌های Brave، به حمایت از تولیدکنندگان محتوا کمک می‌کند و به شما اجازه دریافت توکن توجه اولیه را می‌دهد.</translation>
 <translation id="1187367336925051518"><ph name="MONTH"/> پاداش‌ها: <ph name="AMOUNT"/></translation>
 <translation id="3274366539954332481">پاداش‌های تبلیغات <ph name="MONTH"/> شما آماده هستند!</translation>
 <translation id="7861645265922445992">مطالبه پاداش‌ها</translation>
@@ -690,7 +690,6 @@
 <translation id="6965382102122355670">قبول</translation>
 <translation id="6727102863431372879">تنظیم</translation>
 <translation id="8853725596990766789">تغییر مقدار</translation>
-<translation id="6067959437127691361">استفاده از Brave Rewards، به حمایت از پدیدآورندگان محتوی کمک می‌کند و به شما اجازه دریافت BAT می‌دهد.</translation>
 <translation id="1609556006143307897">شما به حمایت از پدیدآورندگان محتوی کمک می‌کنید</translation>
 <translation id="6605147707233193230">کمک به حمایت از پدیدآورندگان محتوی را فعال کنید</translation>
 <translation id="5430495762768325224">درباره BAT بیشتر بدانید</translation>
@@ -784,6 +783,7 @@
 <translation id="9161147058107529840">پارامتر شیء واحد مورد انتظار</translation>
 <translation id="1875861420974447980">این شناسه زنجیره در حال حاضر استفاده می‌شود</translation>
 <translation id="167698752210114155">خطایی داخلی رخ داده است</translation>
+<translation id="7497827357097190289">Blockhash نامعتبر است یا قابل تأیید نیست</translation>
 <translation id="8945668490056243760">نوع اشتراک پشتیبانی نمی‌شود</translation>
 <translation id="2326876601333401685">از این روش RPC پشتیبانی نمی‌شود.</translation>
 <translation id="1128992132632883337">خطای تجزیه پاسخ رخ داده است</translation>
@@ -867,6 +867,7 @@
 <translation id="570080709303714420">نصف</translation>
 <translation id="2784548701748328827">حداکثر</translation>
 <translation id="2329227154184107678">سفارش بررسی</translation>
+<translation id="3220443877821207794">ارسال نظر</translation>
 <translation id="8530071505111489657">توکن‌های ناموجود</translation>
 <translation id="615791330696335475">جستجوی توکن بر اساس نام</translation>
 <translation id="5009335307032488349">جستجوی NFT بر اساس نام، شناسه</translation>
@@ -1091,9 +1092,20 @@
 <translation id="4460220693591349571">نوع عملکرد</translation>
 <translation id="838933475572692615">اطلاعات Hex</translation>
 <translation id="2240831799756994975">بایت</translation>
-<translation id="4874303883488468190">انتخاب حساب(ها)</translation>
-<translation id="2018472018751735678">آدرس حساب‌های مجاز خود را مشاهده کنید (الزامی)</translation>
-<translation id="7029403458170657879">اتصال به با کیف پول Brave</translation>
+<translation id="6760823167126275974">کیف پول را متصل کنید</translation>
+<translation id="716009557505091365">یا متصل کنید با:</translation>
+<translation id="7242985059140288348">این برنامه قادر خواهد بود:</translation>
+<translation id="7352133688029686231">این برنامه قادر نخواهد بود:</translation>
+<translation id="1647328658385235886">موجودی و فعالیت کیف پول را بررسی کنید</translation>
+<translation id="3295962112184461868">برای تأییدیه تراکنش‌های مالی و امضاءها درخواست کنید</translation>
+<translation id="6096892345597202096">آدرس کیف پول مجاز خود را مشاهده کنید</translation>
+<translation id="496578987299869780">وجوه را بدون اجازه خودتان منتقل کنید</translation>
+<translation id="3226586788973641582">مطمئن شوید که به این سایت اعتماد دارید.</translation>
+<translation id="6837278005487143422">مدت‌زمان مجوز</translation>
+<translation id="1903637466604153314">تا‌زمانی‌که این سایت را ببندم</translation>
+<translation id="4324239559624557455">برای 24 ساعت</translation>
+<translation id="9139452553033760558">برای 1 هفته</translation>
+<translation id="1658834457013045127">برای همیشه</translation>
 <translation id="2770851145415891830">کیف پول‌های رمزارز موجود شناسایی شدند</translation>
 <translation id="2237759620789871865">اگر ترجیح می‌دهد که وارد کردن را رد کنید و به تجربه «کیف پول‌های رمز ارز» قدیمی ادامه دهید، کافی است به <ph name="LINK_BEFORE"/>تنظیمات<ph name="LINK_AFTER"/> مرورگر Brave بروید و پیش‌فرض را به «کیف پول‌های رمزارز» برگردانید. همچنین می‌توانید وارد کنید، کیف پول Brave جدید را امتحان کنید و هر زمان خواستید به تنظیمات قبلی برگردید.</translation>
 <translation id="5590175005414413980">گذرواژه کیف پول‌های رمزارز موجود خود را برای وارد کردن به کیف پول Brave وارد کنید. از روشی سریع‌تر و ایمن‌تر برای مدیریت دارایی‌های رمزارز و تعامل با Web3 DApps بهره‌مند شوید.</translation>
@@ -1169,7 +1181,9 @@
 <translation id="8585995109882455949">چطور می‌توانم آدرس درست را پیدا کنم؟</translation>
 <translation id="8395402412470376435">Brave کاربران را اعتبارسنجی می‌کند و از ارسال وجوه به آدرس اشتباه به دلیل حروف بزرگ نادرست جلوگیری می‌کند. این یک فرایند «جمع‌آزما» برای تأیید معتبر بودن یک آدرس اتریوم است.</translation>
 <translation id="4583433813614292221">1. مشاهده کنید</translation>
+<translation id="8061317754447191238">از etherscan دیدن کنید و آدرس کیف پولی را که می‌خواهید به آن توکن ارسال کنید، جای‌گذاری کنید. سپس وارد شوید</translation>
 <translation id="5393164213211430081">2. آدرس ETH را کپی و وارد کنید</translation>
+<translation id="8306108469060304141">آدرس صحیح را کپی و وارد کنید. متوجه می‌شوید که برخی از کاراکترها به‌درستی تبدیل شده‌اند.</translation>
 <translation id="2378355054306959991">به کمک بیشتری نیاز دارید؟</translation>
 <translation id="862585889767884824">به</translation>
 <translation id="9106265941552476098">رد کردن <ph name="TRANSACTION_LENGTH"/>تراکنش</translation>
@@ -1209,7 +1223,6 @@
 <translation id="1904295039023858291">توکن استاندارد</translation>
 <translation id="9033453977881595182">شناسه توکن</translation>
 <translation id="6332387008245531841">آدرس قرارداد</translation>
-<translation id="6717502994710534866">CID</translation>
 <translation id="2351120707525742989">مکان یا آدرس تصویر</translation>
 <translation id="2962388922926051374">درخواست مربوط به روش «eth_chainId» در <ph name="URL"/> انجام نشد</translation>
 <translation id="8325036459845654666">این شبکه قبلاً افزوده شده است.</translation>
@@ -1226,14 +1239,11 @@
 <translation id="5133421763709317473">هیچ دارایی منطبق با جستجو یا فیلتر یافت نشد</translation>
 <translation id="7383613643114466279">این دارایی توسط کیف پول Brave پشتیبانی نمی‌شود</translation>
 <translation id="6423985584914773314">آدرس FIL معتبر نیست</translation>
-<translation id="3898731124813934210">خرید با Wyre</translation>
 <translation id="5522073372365069684">خرید با Ramp</translation>
 <translation id="6153197326949684688">فروش با <ph name="OFFRAMP_PROVIDER"/></translation>
-<translation id="6097502401711916278">حداقل مبلغ باید <ph name="FIAT_AMOUNT"/> یا بیشتر باشد.</translation>
 <translation id="7902920577183739843">با Sardine خرید کنید</translation>
 <translation id="6534275647567011533">خرید با Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">با Visa یا Mastercard رمزارز بخرید.</translation>
@@ -1510,18 +1520,17 @@
 <translation id="2227702748249086756">امکان واکشی تخمین هزینه وجود ندارد.</translation>
 <translation id="5361710044667743492">چرا موجود نیست؟</translation>
 <translation id="3668838456083358569">برخی از داده‌های NFT در سرور متمرکز مانند AWS‏، Google Cloud و غیره ذخیره می‌شوند. در این حالت، پین کردن داده‌های NFT شما به شبکه IPFS ممکن نیست.</translation>
-<translation id="1293258969121701010">با اجرای IPFS در رایانه خود می‌توانید:</translation>
-<translation id="4568942135611119076">اطمینان حاصل کنید که داده‌های NFT شما آنلاین باقی می‌مانند و نمی‌توان آن‌ها را دستکاری کرد.</translation>
-<translation id="4915883034746438977">با استفاده از شناسه محتوا (CID) از یک داده نادرست، محتوا را بگیرید.</translation>
-<translation id="1373647012698032676">در اثبات اصالت شرکت کنید و شبکه IPFS را غنی و سالم کنید.</translation>
-<translation id="1806204385270226865">NFTهای من را همیشه آنلاین نگه دارید</translation>
-<translation id="4323376551843624309">پین کردن NFT را فعال کنید</translation>
-<translation id="6501331923135442324">گامی بزرگ برای تبدیل شدن به بخشی از وب 3</translation>
-<translation id="5361073938927187534">گره IPFS را اجرا کنید و NFTهای خود را همیشه آنلاین نگه دارید</translation>
-<translation id="1060267371223703324">بررسی کنید که کدام NFTهای من را می‌توان پین کرد</translation>
-<translation id="2641083452974145848">اکنون می‌توانید IPFS خود را اجرا کنید و بخشی از وب 3 باشید. داده‌های NFT شما برای همیشه آنلاین می‌مانند و نمی‌توان آنها را دستکاری کرد.</translation>
-<translation id="4460927368826360904">شما در حال اجرای گره IPFS را هستید. فایل در حال واکشی به گره IPFS محلی است.</translation>
-<translation id="2260350263892668490"><ph name="PINNED"/> NFT از مجموع <ph name="PINNABLE"/> NFT با موفقیت به IPFS پین شده است.</translation>
+<translation id="4225753478505258806">اما سیستم فایل InterPlanetary برای عملکرد به شرکت‌کنندگان فردی نیاز دارد. سیستم فایل InterPlanetary را در کامپیوتر خود اجرا کنید تا:</translation>
+<translation id="7674069205559000521">به سرعت و در دسترس بودن شبکه کمک کنید</translation>
+<translation id="7775229731579227782">امنیت NFT‌های خود را افزایش دهید</translation>
+<translation id="2319971828691864975">با سیستم فایل InterPlanetary شروع کنید</translation>
+<translation id="7906328323880284538">ایمن‌ترین راه برای میزبانی NFTها</translation>
+<translation id="166206715890914321">یک گره سیستم فایل InterPlanetary را اجرا کنید تا NFT‌های خود را برای همیشه آنلاین نگه دارید</translation>
+<translation id="8913523138550521467">سیستم فایل InterPlanetary یک جایگزین فوق امن برای میزبانی وب سنتی است. به‌جای تکیه بر یک میزبان واحد، سیستم فایل InterPlanetary هزاران نفر را قادر می‌سازد (که "گره‌ها" را اجرا می‌کنند) برای ذخیره محتوا با هم کار کنند. و تا زمانی که یک نفر یک کپی داشته باشد، یک فایل هرگز نمی‌تواند ناپدید شود. "پین کردن" NFT‌های خود به سیستم فایل InterPlanetary - و اجرای گره سیستم فایل InterPlanetary خود - بهترین راه برای ایمن‌سازی NFT های شما است.</translation>
+<translation id="9160750213078764355">ببینید کدام‌یک از NFT‌های من واجد‌شرایط هستند</translation>
+<translation id="6671461082721702724">اکنون می‌توانید سیستم فایل InterPlanetary خود را اجرا کنید و بخشی از وب 3 باشید. داده‌های NFT شما برای همیشه آنلاین می‌مانند.</translation>
+<translation id="654964147165509548">NFTها در حال پین به گره سیستم فایل InterPlanetary محلی هستند.</translation>
+<translation id="4910182786472608576"><ph name="PINNED"/> NFTهای پشیتیبانی‌شده در حال پین به گره سیستم فایل InterPlanetary محلی هستند.</translation>
 <translation id="1474962961180773583"><ph name="PINNABLE"/> مورد از <ph name="TOTAL"/> مورد در دسترس است!</translation>
 <translation id="6852656829524945421">پین کردن امکان‌پذیر نیست.</translation>
 <translation id="7698019251444927442">شما در حال اجرای گره IPFS هستید</translation>
@@ -1529,10 +1538,15 @@
 <translation id="7527548209942671618">به گره IPFS محلی شما پین شده است</translation>
 <translation id="5659058832308365026">داده‌های NFT به گره IPFS محلی شما پین می‌شوند</translation>
 <translation id="4919133452617704550">نمی‌توان به گره IPFS محلی شما پین کرد</translation>
+<translation id="4220102684162429566">شایع‌ترین دلایل:</translation>
+<translation id="451509325309455">NFT دارای مشکلات آدرس اینترنتی فراداده غیر از سیستم فایل InterPlanetary است</translation>
+<translation id="3827697793483899711">مشکلات گره داخلی سیستم فایل InterPlanetary</translation>
+<translation id="1992846713609432783">فضای کافی در گره محلی وجود ندارد</translation>
 <translation id="3225624966527491351">وارد کردن NFT</translation>
 <translation id="9085765419770918643">هنوز هیچ NFTای در اینجا نیست.</translation>
 <translation id="8445532667841598737">برای اضافه کردن مقداری NFT آماده هستید؟ برای وارد کردن کافی است روی دکمه زیر کلیک کنید.</translation>
 <translation id="9136462955850040542">سازگار با NFTها در سولانا (SPL) و اتریوم (ERC-721).</translation>
+<translation id="849880459530751909">NFT را ویرایش کنید</translation>
 <translation id="3155170474926428993">راه‌انداز تور</translation>
 <translation id="3745016858329272300">اطلاعات عمومی</translation>
 <translation id="4045404575593562245">رویدادهای کنترل Tor</translation>
@@ -1609,6 +1623,9 @@
 <translation id="9204041448536398473">تنظیمات عمومی سپرها</translation>
 <translation id="2108334320919763866">تنظیمات پیش‌فرض سراسری</translation>
 <translation id="3440043456924990296">تنظیمات مدیریت‌شده توسط سازمان</translation>
+<translation id="7053983685419859001">مسدود کنید</translation>
+<translation id="5716230673298034837">همه را مجاز کنید</translation>
+<translation id="5279600392753459966">همه را مسدود کنید</translation>
 <translation id="4516904298421534459">فیلتر کردن فهرست‌ها</translation>
 <translation id="3570081523466826008">ارتقاء اتصال‌ها به HTTPS</translation>
 <translation id="131231380815754440">فعال کردن HTTPS</translation>
@@ -1619,6 +1636,7 @@
 <translation id="8593054718053894081">مسدود کردن فعالانه ردیاب‌ها و آگهی‌ها</translation>
 <translation id="7384778069178817075">مجاز بودن همه ردیاب‌ها و آگهی‌ها</translation>
 <translation id="4941539331405513605">مسدود کردن کوکی‌های بین سایتی</translation>
+<translation id="2749284154880331639">کوکی‌های شخص اول را فراموش کنید</translation>
 <translation id="6883611015375728278">مسدود کردن همه کوکی‌ها</translation>
 <translation id="5657156137487675418">مجاز کردن همه کوکی‌ها</translation>
 <translation id="8366221601425141146">اثر انگشت مسدود شده است</translation>
@@ -1633,6 +1651,7 @@
 <translation id="7194012750329511146">«سپرهای Brave»
 <ph name="NUMBER"/> ردیاب‌،‌ آگهی و موارد دیگر مسدود شد</translation>
 <translation id="4292121526390005808">اسکریپت‌های مسدود</translation>
+<translation id="5046271170844958713">اسکریپت‌های مجاز</translation>
 <translation id="264682546981571963">از اعلامیه های رضایت کوکی خسته شده اید؟</translation>
 <translation id="4986297793092101884">Brave قبلاً کوکی‌های شخص ثالث را مسدود می‌کند. همچنین می‌توانیم اعلامیه‌های رضایت کوکی را مسدود کنیم.</translation>
 <translation id="535688588637568715">بله، اعلامیه‌های رضایت کوکی را مسدود کنید</translation>
@@ -1669,6 +1688,7 @@
 <translation id="1305433007676951913"><ph name="PRODUCT_NAME"/>به سرور<ph name="REGION_NAME"/> متصل نشد. می‌توانید دوباره تلاش کنید یا مورد دیگری را انتخاب کنید.</translation>
 <translation id="1024255913009642477">قبلاً VPN خریده‌اید؟</translation>
 <translation id="8814357473522731680">تحت پشتیبانی</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">تاریخ انقضا</translation>
 <translation id="1691256669639196606">مدیریت اشتراک</translation>
 <translation id="434523916398030617">پشتیبانی فنی مخاطب</translation>

@@ -167,6 +167,7 @@
 <translation id="2036503787657622020">রীডার মোড চালু করুন</translation>
 <translation id="5226458915125328323">স্পীডরিডার সেটিংস</translation>
 <translation id="8591883849678260674">আসল দেখুন</translation>
+<translation id="1969654232209826429">ন্যূন. রিড</translation>
 <translation id="6284218950354553099">স্বয়ংক্রিয়ভাবে Brave-এ প্রতিদিনের ব্যবহারের পিং পাঠান</translation>
 <translation id="5288333155754958121">এই নামবিহীন, গোপন পিংটি Brave-কে সক্রিয় ব্যবহারকারী অনুমান করতে দেয়।</translation>
 <translation id="1872784258300710671">নির্দিষ্ট কিছু বৈশিষ্ট্যের সামগ্রিক ব্যবহার অনুমান করতে Brave সম্পূর্ণরূপে ব্যক্তিগত পণ্য বিশ্লেষক ব্যবহার করে</translation>
@@ -190,16 +191,16 @@
 আপনি <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>নিজের জন্য কিভাবে ডাউনলোড ও গঠন করতে হয় সে সংক্রান্ত নির্দেশনাটি পড়তে পারেন<ph name="END_LINK_BUILD_INSTRUCTIONS"/> সুনির্দিষ্ট <ph name="BEGIN_LINK_SOURCE_CODE"/>সোর্স কোড ব্যবহার করা হয়েছে এই কপিটি তৈরি করতে<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">সব কটি ট্যাব বুকমার্ক করুন...</translation>
 <translation id="3987546108749866209">ভার্টিকাল ট্যাব ব্যবহার করুন</translation>
-<translation id="5860254591544742609">টাইটেল বার দেখান</translation>
-<translation id="399928467800528208">মাউসওভারে ফ্লোট করুন</translation>
 <translation id="1904394285866191268">{NUM_TABS,plural, =1{ট্যাব মিউট করুন}one{ট্যাব মিউট করুন}other{ট্যাব মিউট করুন}}</translation>
 <translation id="5179127818058486126">{NUM_TABS,plural, =1{ট্যাব আনমিউট করুন}one{ট্যাব আনমিউট করুন}other{ট্যাব আনমিউট করুন}}</translation>
+<translation id="2289567621059034186">নীচে নতুন ট্যাব</translation>
+<translation id="3228962656492373217">নীচে ট্যাবগুলো বন্ধ করুন</translation>
 <translation id="2336228925368920074">সকল ট্যাব বুকমার্ক করুন...</translation>
 <translation id="2523967823495420116">ভার্টিকাল ট্যাব ব্যবহার করুন</translation>
-<translation id="8888603463702767599">টাইটেল বার দেখান</translation>
-<translation id="2058818256505091369">মাউসওভারে ফ্লোট করুন</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{ট্যাব মিউট করুন}one{ট্যাব মিউট করুন}other{ট্যাব মিউট করুন}}</translation>
 <translation id="2120478168904746065">{NUM_TABS,plural, =1{ট্যাব আনমিউট করুন}one{ট্যাব আনমিউট করুন}other{ট্যাব আনমিউট করুন}}</translation>
+<translation id="4405580203042711503">নীচে নতুন ট্যাব</translation>
+<translation id="5611474372949142946">নীচে ট্যাবগুলো বন্ধ করুন</translation>
 <translation id="3704707436873245822">ছবি থেকে টেক্সট কপি করুন</translation>
 <translation id="5268098808165185458">ছবি থেকে টেক্সট কপি করা হচ্ছে...</translation>
 <translation id="4046485130884276245">ছবি থেকে টেক্সট কপি করা হয়েছে</translation>
@@ -238,6 +239,10 @@
 <translation id="2307973900865360088">ডকে রাখুন</translation>
 <translation id="961012016278832836">Microsoft Edge লেগ্যাসি</translation>
 <translation id="6436994631426134065"><ph name="BROWSER_NAME"/> থেকে আমদানি করা হয়েছে।</translation>
+<translation id="1386966479075994683">ট্যাবগুলো সম্প্রসারণ করুন</translation>
+<translation id="480565261566115689">ট্যাবগুলো ছোট করুন</translation>
+<translation id="7194343495483122559">ট্যাবগুলো সম্প্রসারণ করুন</translation>
+<translation id="1199054713803577378">ট্যাবগুলো ছোট করুন</translation>
 <translation id="9156965752763025780">আপনার পরিবর্তনগুলি পরবর্তী সময় আপনি Brave আবার চালু হলে ফলপ্রদ হবে৷</translation>
 <translation id="7179921470347911571">এখনই রিলঞ্চ করুন</translation>
 <translation id="4472575034687746823">শুরু করুন</translation>
@@ -279,7 +284,7 @@
 <translation id="2970343821770026391">ড্যাশবোর্ড</translation>
 <translation id="3719826155360621982">হোমপেজ</translation>
 <translation id="5448570825852364919">খালি পাতা</translation>
-<translation id="5919424224662539292">পটভূমি চিত্র কাস্টমাইজ করুন এবং নতুন ট্যাব পৃষ্ঠায় প্রদর্শিত উইজেটগুলি</translation>
+<translation id="8244387390464017490">নতুন ট্যাব পৃষ্ঠা কাস্টমাইজ করুন</translation>
 <translation id="7461924472993315131">পিন</translation>
 <translation id="7506648566440714944">Brave ইতিমধ্যেই পিন করা হয়েছে</translation>
 <translation id="239275665037555969">ডক</translation>
@@ -311,6 +316,7 @@
 <translation id="3357319404342882895">সঠিক</translation>
 <translation id="8823559166155093873">কুকি-গুলি অবরুদ্ধ করুন</translation>
 <translation id="5770288601196774623">শুধুমাত্র ক্রস-সাইট</translation>
+<translation id="6795317840397506736">ডিফল্ট অনুযায়ী ভুলে যাওয়া</translation>
 <translation id="3587482841069643663">সকল</translation>
 <translation id="7390783310074170337">ডিফল্ট ভিউ</translation>
 <translation id="130615081792797568">সহজ ভিউ</translation>
@@ -337,7 +343,7 @@
 <translation id="4182731739150761577">সম্পূর্ণ ইতিহাস দেখান</translation>
 <translation id="1340263054776016283">ফিল্টারের লিস্ট URL দেখুন</translation>
 <translation id="8578397014396032341">কনটেন্ট ফিল্টার</translation>
-<translation id="6821903322090655051">Brave পুরষ্কার অক্ষম করা আছে</translation>
+<translation id="5567412479632285879">Brave পুরস্কার নিষ্ক্রিয় করা আছে</translation>
 <translation id="413570371620795359">চালু করে শুরু করতে পুরস্কারের প্যানেল খুলুন</translation>
 <translation id="3849957491997306859">স্বয়ংক্রিয়ভাবে সনাক্ত হয়েছে</translation>
 <translation id="8798099450830957504">ডিফল্ট</translation>
@@ -352,7 +358,6 @@
 <translation id="7286722244752781970">একটি সাক্ষাত লগ করার জন্য প্রয়োজন ন্যুনতম পেজ টাইম</translation>
 <translation id="4424486208397124985">প্রকাশকের প্রাসঙ্গিকতার জন্য ন্যুনতম সাক্ষাত</translation>
 <translation id="6248554379744796526">তালিকাতে অ-যাচাইকৃত সাইটগুলি দেখান</translation>
-<translation id="5510618543889994434">ভিডিওতে অবদান করার অনুমতি দিন</translation>
 <translation id="924777189963477634">স্বয়ংক্রিয় অবদান চালু করে, আপনি <ph name="BEGIN_LINK_TOS"/>পরিষেবার শর্তাবলী<ph name="END_LINK_TOS"/> এবং <ph name="BEGIN_LINK_PP"/>গোপনীয়তা নীতি<ph name="END_LINK_PP"/>-র সাথে সম্মত হন।</translation>
 <translation id="6333347122924254968">Brave রিওয়ার্ডগুলো দেখাতে বলছে</translation>
 <translation id="7483857210736407752">সাইটগুলিতে টিপ বোতামগুলি দেখান</translation>
@@ -498,17 +503,30 @@
 <translation id="1658670175365815312">একটি ওয়েবসাইটের .onion সংস্করণ উপলভ্য হলে Brave সেটি খুলবে এবং স্বয়ংক্রিয়ভাবে একটি Tor উইন্ডোতে সমস্ত .onion ডোমেইন খুলবে।</translation>
 <translation id="2896916411183256228">সরাসরি ব্রাউজারে torrents প্রদর্শন করতে WebTorrent ব্যবহার করে। torrent ফাইলগুলি এবং magnet লিঙ্কগুলিকে সমর্থন করে।</translation>
 <translation id="5249433283143453448">ব্রাউজারে সুরক্ষিত ভিডিও স্ট্রিমিং এবং অন্যান্য সামগ্রী দেখতে ওয়াইডওয়াইন ডিজিটাল রাইটস ম্যানেজমেন্ট (ডিআরএম) উপাদান ব্যবহার করুন।</translation>
+<translation id="1314131187310290315">ম্যানিফেস্ট V2 এক্সটেনশন</translation>
+<translation id="2488433650767270565">নিম্নলিখিত ম্যানিফেস্ট V2 এক্সটেনশন Chrome ওয়েব স্টোর থেকে সরিয়ে দেওয়া হবে কিন্তু তখনও Brave-এ সমর্থিত থাকবে। ডাউনলোড করে ইনস্টল করতে অথবা আনইনস্টল করতে টগল করুন।</translation>
+<translation id="578671172657727816">NoScript™ সক্রিয় করুন</translation>
+<translation id="9068475464170522036">NoScript হল একটি ম্যানিফেস্ট V2 এক্সটেনশন যা আপনাকে একটি প্রদত্ত পৃষ্ঠায় স্বতন্ত্র স্ক্রিপ্ট চালানো বা চালানোর চেষ্টা ব্লক এবং আনব্লক করার সুযোগ দেয়।</translation>
+<translation id="1394592156621788100">uBlock Origin™ সক্রিয় করুন</translation>
+<translation id="2638983091068889519">uBlock Origin হল একটি ম্যানিফেস্ট V2 এক্সটেনশন যা উন্নত ব্যবহারকারীদের অনেক ধরনের বিকল্প সহ শক্তিশালী কনটেন্ট ব্লক করার টুল প্রদান করে।</translation>
+<translation id="3909078036552544838">uMatrix™ সক্রিয় করুন</translation>
+<translation id="8796148218203577506">uMatrix হল একটি ম্যানিফেস্ট V2 এক্সটেনশন যা গোপনীয়তা-সম্প্রসারণকারী অনেক টুল সহ পয়েন্ট-ও-ক্লিক ম্যাট্রিক্স ভিত্তিক ফায়ারওয়াল প্রদান করে।</translation>
+<translation id="2385774023523989298">AdGuard™ সক্রিয় করুন</translation>
+<translation id="188228077840632890">AdGuard হল একটি ম্যানিফেস্ট V2 এক্সটেনশন যা ব্লকিং, পেরেন্টাল নিয়ন্ত্রণের বিকল্প দেয় এবং অন্যান্য AdGuard পরিষেবার অফারিংগুলোর সাথে একত্রীকরণের সুযোগ দেয়।</translation>
 <translation id="8137559199583651773">এক্সটেনশনগুলি পরিচালনা করুন</translation>
 <translation id="7013485839273047434">আরও এক্সটেনশনগুলি পান</translation>
 <translation id="4954512758656527938">ডিফল্ট ইথেরিয়াম ওয়ালেট</translation>
 <translation id="7701023802820268122">ডিফল্ট Solana ওয়ালেট</translation>
 <translation id="8488282162676695335">Brave ওয়ালেট</translation>
 <translation id="2356070529366658676">জিজ্ঞাসা করুন</translation>
-<translation id="7701040980221191251">কিছুই নয়</translation>
+<translation id="6942354363301686374">এক্সটেনশন (কোনও পিছিয়ে যাওয়ার সুযোগ নেই)</translation>
 <translation id="1274962333945373242">ক্রিপ্টো ওয়ালেট (অপ্রচলিত)</translation>
+<translation id="702381242110464396">এক্সটেনশন (Brave ওয়ালেটে পিছিয়ে যাওয়ার সুযোগ)</translation>
 <translation id="4718664830805652430">ডিফল্ট বেস মুদ্রা</translation>
 <translation id="7992507032049865603">ডিফল্ট বেস ক্রিপ্টোকারেন্সি</translation>
 <translation id="1834467296210148203">টুলবারে Brave ওয়ালেট আইকন দেখান</translation>
+<translation id="7568430944629653319">NFT আবিষ্কার সক্রিয় করুন</translation>
+<translation id="970496996377628529">তৃতীয় পক্ষের APIগুলো ব্যবহার করে স্বয়ংক্রিয়ভাবে ওয়ালেটে NFTগুলো আপনার যোগ করুন।</translation>
 <translation id="8239147115686034860">স্বয়ংক্রিয়ভাবে Brave ওয়ালেট লক করুন</translation>
 <translation id="414639769490080648">Brave ওয়ালেট স্বয়ং স্বয়ংক্রিয়ভাবে লক না হওয়া অবধি অপেক্ষারত মিনিটের সংখ্যা</translation>
 <translation id="856371974127598760">ওয়ালেট নেটওয়ার্ক</translation>
@@ -518,10 +536,15 @@
 <translation id="464460032678285850">Brave ওয়ালেটে যুক্ত হওয়া NFTগুলি স্বয়ংক্রিয়ভাবে স্থানীয় IPFS নোডে পিন হতে পারে।
     দ্রষ্টব্য: পিন করার জন্য IPFS ডেমন শুরু করা হতে পারে তাই আপনার স্থানীয় নোড IPFS নেটওয়ার্কে ক্যাশে ডেটা এবং পিন করা NFTগুলি শেয়ার করবে।</translation>
 <translation id="4993345308607970390">Brave ওয়ালেট রিসেট করুন</translation>
+<translation id="5887022857624190239">পিন করা NFTগুলো সাফ করুন</translation>
+<translation id="204584113330893805">যখন স্থানীয় IPFS নোড লঞ্চ করা হয় তখন পিন করা NFTগুলো IPFS নেটওয়ারকে হোস্ট করা হয়।
+    এই মুহূর্তে আপনার কাছে <ph name="NFT_COUNT"/>টি পিন করা NFT আছে।</translation>
 <translation id="9216386092464743272">আপনি কি আপনার ওয়ালেটের সব লেনদেন এবং বর্তমান তথ্য রিসেট করার বিষয়ে নিশ্চিত? এই বিকল্পটি বেশিরভাগ ক্ষেত্রে একটি স্থানীয় টেস্ট সার্ভার চালনাকারী ডেভেলপাররা ব্যবহার করেন। নিশ্চিত করতে "<ph name="CONFIRMATION_PHRASE"/>" টাইপ করুন।</translation>
 <translation id="6369495274982305511">আপনি কি আপনার ওয়ালেট রিসেট করার বিষয়ে নিশ্চিত? যদি আপনার ওয়ালেটের ব্যাক আপ নেওয়া না হয় তাহলে রিসেট করার ফলে আপনি সমস্ত অ্যাকাউন্টের ডেটা (যেকোনো সংশ্লিষ্ট তহবিল সহ) হারাবেন। নিশ্চিত করতে "<ph name="CONFIRMATION_PHRASE"/>" টাইপ করুন।</translation>
+<translation id="4248533222660842025">আপনি কি নিশ্চিতভাবে আপনার পিন করা NFTগুলো সাফ করতে চান? কিছু NFT চিরকালের মতো হারিয়ে যেতে পারে যদি অন্য কোনও হোস্টার IPFS নেটওয়ার্কে থাকে। নিশ্চিত করতে "<ph name="CONFIRMATION_PHRASE"/>" টাইপ করুন।</translation>
 <translation id="3752403403443723332">আপনার ওয়ালেট রিসেট করা হয়েছে।</translation>
 <translation id="594766067816395072">আপনার ওয়ালেটের লেনদেন রিসেট করা হয়েছে।</translation>
+<translation id="1615009913945115836">আপনার পিন করা NFTগুলো রিসেট করা হয়েছে।</translation>
 <translation id="1426410128494586442">হ্যাঁ</translation>
 <translation id="4226543734057230801">Ethereum নেটওয়ার্ক</translation>
 <translation id="3504157706952484145">Filecoin নেটওয়ার্ক</translation>

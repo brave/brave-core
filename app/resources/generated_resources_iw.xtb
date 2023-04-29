@@ -30,6 +30,7 @@
 <translation id="1022669824195822609">המכשיר שלך מנוהל על ידי <ph name="DOMAIN"/>. לאדמינים יש גישה לנתונים של כל פרופיל במכשיר הזה.</translation>
 <translation id="1026655690966755180">הוספת יציאה</translation>
 <translation id="1026822031284433028">טעינת תמונה</translation>
+<translation id="1026959648338730078">‏Windows Hello או מפתח אבטחה חיצוני</translation>
 <translation id="2827036307300942234">‏כדי שהדפים שבהם מבקרים ייטענו מהר יותר, Brave טוען מראש דפים שיש סיכוי גבוה שייפתחו.</translation>
 <translation id="1028700151766901954">‏סיבה: תכונת LBS נשארת ב-<ph name="DEFAULT_OPEN_BROWSER"/> כברירת מחדל.</translation>
 <translation id="1029317248976101138">התקרבות לתצוגה</translation>
@@ -50,6 +51,8 @@
 <translation id="1042248468362992359">כדי להשתמש בנקודה לשיתוף אינטרנט, צריך להפעיל את חבילת הגלישה. <ph name="BEGIN_LINK_LEARN_MORE"/>מידע נוסף<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="1043505821207197890">‏משהו השתבש. השדרוג של Linux עשוי להיות חלקי בלבד. אפשר לבדוק ביומנים לקבלת מידע נוסף. היומנים נשמרו ב'קבצים' &gt; 'הקבצים שלי' &gt; <ph name="LOG_FILE"/></translation>
 <translation id="104419033123549300">סגנון מיפוי המקשים</translation>
+<translation id="1046219820096501039">‏<ph name="BEGIN_PARAGRAPH1"/>שליחה אוטומטית של דוחות ממכשירי ChromeOS עוזרת לנו לקבוע את סדר העדיפויות של התיקונים והשיפורים ב-ChromeOS. הדוחות האלה יכולים לכלול מידע כמו נסיבות הקריסה של ChromeOS, התכונות שבהן השתמשת והצריכה האופיינית של הזיכרון. אם גם סנכרון האפליקציות מופעל, המערכת תאסוף נתוני אבחון ושימוש אחרים של האפליקציות, כולל אפליקציות ל-Android ואפליקציות אינטרנט.<ph name="END_PARAGRAPH1"/>
+    <ph name="BEGIN_PARAGRAPH2"/>תמיד אפשר להעניק או לבטל את ההרשאה לשליחת הדוחות האלה בהגדרות מכשיר ChromeOS של הילד או הילדה שלך. מנהלי דומיין יכולים לשנות את ההגדרה הזו במסוף Admin.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="104710386808485638">‏האם להפעיל מחדש את Linux?</translation>
 <translation id="1047431265488717055">העתקת ט&amp;קסט קישור</translation>
 <translation id="1048286738600630630">תצוגות</translation>
@@ -71,6 +74,7 @@
 <translation id="1061130374843955397">טוב לראות אותך ב-<ph name="DEVICE_TYPE"/></translation>
 <translation id="1061373870045429865">‏יש ליצור קוד QR לקישור הזה</translation>
 <translation id="1061904396131502319">עוד מעט זמן להפסקה</translation>
+<translation id="1062407476771304334">החלפה</translation>
 <translation id="1062628064301375934">רוצה לעזור לנו לשפר את הפרטיות באינטרנט?</translation>
 <translation id="1067048845568873861">נוצר</translation>
 <translation id="3983904244054509097">‏כדי לשפר את הבטיחות, אפשר להצפין את הסיסמאות במכשיר שלך לפני שהן נשמרות בחשבון Brave</translation>
@@ -168,7 +172,6 @@
 <translation id="9125982323641182972">‏תכונות חכמות של Brave</translation>
 <translation id="1147322039136785890">עכשיו התור של <ph name="SUPERVISED_USER_NAME"/></translation>
 <translation id="1147991416141538220">כדי לבקש גישה, צריך לפנות למנהל של המכשיר הזה.</translation>
-<translation id="1148063863818152153">‏מספר ה-EID של המכשיר</translation>
 <translation id="1148624853678088576">הכל מוכן!</translation>
 <translation id="1149401351239820326">חודש פקיעת התוקף</translation>
 <translation id="1149483087970735785">טכנולוגיה מסייעת</translation>
@@ -206,11 +209,13 @@
 <translation id="7425564871384359440">‏כדי לנקות את נתוני הגלישה מכל המכשירים המסונכרנים ומחשבון Brave שלך, <ph name="BEGIN_LINK"/>יש להיכנס להגדרות הסנכרון<ph name="END_LINK"/>.</translation>
 <translation id="1175131936083782305">התכונה הזו הושבתה על ידי האדמין.</translation>
 <translation id="1175364870820465910">הדפסה…</translation>
+<translation id="1175914831232945926">ספרות</translation>
 <translation id="1176471985365269981">לא מורשים לערוך קבצים או תיקיות במכשיר</translation>
 <translation id="1177863135347784049">מותאם אישית</translation>
 <translation id="1178581264944972037">השהיה</translation>
 <translation id="117916940443676133">מפתח האבטחה שלך אינו מוגן באמצעות קוד אימות. כדי לנהל את פרטי הכניסה, צריך תחילה ליצור קוד אימות.</translation>
 <translation id="1181037720776840403">הסרה</translation>
+<translation id="1181366777303791449">ב-<ph name="MAIN_FRAME_ETLD_PLUS_ONE"/></translation>
 <translation id="1183237619868651138">לא ניתן להתקין את <ph name="EXTERNAL_CRX_FILE"/> במטמון המקומי.</translation>
 <translation id="1184709369107246085">‏לאפליקציה <ph name="APPLICATION_NAME"/> נדרשת כתובת URL תקינה של <ph name="APPLICATION_NAME"/>.</translation>
 <translation id="1185924365081634987">כדאי גם לנסות <ph name="GUEST_SIGNIN_LINK_START"/>לגלוש כאורח<ph name="GUEST_SIGNIN_LINK_END"/> כדי לתקן את שגיאת הרשת הזו.</translation>
@@ -243,12 +248,14 @@
 <translation id="1201564082781748151">ניתן לשחזר את הנתונים המקומיים במקרה שהסיסמה נשכחה</translation>
 <translation id="1202116106683864634">בחרת למחוק את מפתח הגישה הזה. להמשיך?</translation>
 <translation id="1202596434010270079">‏אפליקציית "קיוסק" עודכנה. יש להסיר את התקן ה-USB.</translation>
+<translation id="1202892408424955784">מוצרים במעקב</translation>
 <translation id="120368089816228251">תו מוזיקלי</translation>
 <translation id="1203942045716040624">עובד משותף: <ph name="SCRIPT_URL"/></translation>
 <translation id="1211769675100312947">קיצורי הדרך מנוהלים על-ידך</translation>
 <translation id="1213254615020057352">‏שליחת מידע לגבי אופן השימוש בנתונים וניתוח הביצועים. כדי לתרום לשיפור חוויית המשתמש של הילד/ה ב-Android, אפשר לשלוח אל Brave באופן אוטומטי נתוני אבחון, נתוני מכשיר ונתוני שימוש באפליקציות. הנתונים האלה לא ישמשו כדי לזהות את הילד/ה שלך, והם יעזרו לנו לשמור על היציבות של המערכת ושל האפליקציות ולבצע שיפורים אחרים. חלק מהנתונים הנצברים יעזרו גם לשפר את האפליקציות של Brave וכן יעזרו לשותפים של Brave, כמו מפתחים של Android. ההגדרה הזו נאכפת על-ידי הבעלים. ייתכן שהבעלים יבחרו לשלוח אל Brave נתוני אבחון ונתוני שימוש של המכשיר. אם ההגדרה 'פעילות באתרי אינטרנט ובאפליקציות נוספים' הופעלה עבור הילד/ה שלך, ייתכן שהנתונים יישמרו בחשבון Brave שלהם.</translation>
 <translation id="1213726621272705156">לא יוצגו לך יותר כרטיסים בדף הזה</translation>
 <translation id="121384500095351701">לא ניתן להוריד את הקובץ הזה בצורה מאובטחת</translation>
+<translation id="1214004433265298541">אישור מהאדמין עם ההרשאה לראות פרטי כניסה אל <ph name="DOMAIN"/></translation>
 <translation id="1215411991991485844">נוסף יישום רקע חדש</translation>
 <translation id="1216542092748365687">הסרה של טביעת אצבע</translation>
 <translation id="1216891999012841486">מידע נוסף על תיקון של שגיאות עדכון</translation>
@@ -287,6 +294,9 @@
 <translation id="1243436884219965846">בדיקת הסיסמאות</translation>
 <translation id="1244265436519979884">‏מתבצע כעת שחזור של Linux</translation>
 <translation id="1244303850296295656">שגיאת תוסף</translation>
+<translation id="124479667302995853">‏<ph name="BEGIN_PARAGRAPH1"/>שליחה אוטומטית של דוחות ממכשירי ChromeOS עוזרת לנו לקבוע את סדר העדיפויות של התיקונים והשיפורים ב-ChromeOS. הדוחות האלה יכולים לכלול מידע כמו נסיבות הקריסה של ChromeOS, התכונות שבהן השתמשת, הצריכה האופיינית של הזיכרון ונתוני אבחון ושימוש של אפליקציות ל-Android. חלק מהנתונים הנצברים יעזרו גם לשפר את האפליקציות של Brave וכן יעזרו לשותפים של Brave, כמו מפתחים של Android. אם גם סנכרון האפליקציות מופעל, המערכת תאסוף נתוני אבחון ושימוש אחרים של האפליקציות, כולל אפליקציות ל-Android ואפליקציות אינטרנט.<ph name="END_PARAGRAPH1"/>
+    <ph name="BEGIN_PARAGRAPH2"/>תמיד אפשר להעניק או לבטל את ההרשאה לשליחת הדוחות האלה בהגדרות של מכשיר ChromeOS. מנהלי דומיין יכולים לשנות את ההגדרה הזו במסוף Admin.<ph name="END_PARAGRAPH2"/>
+    <ph name="BEGIN_PARAGRAPH3"/>אם ההגדרה 'פעילות באינטרנט ובאפליקציות' פועלת בחשבון Brave שלך, יכול להיות שנתוני Android יישמרו בחשבון Brave שלך. אפשר להציג או למחוק את הנתונים ולשנות את הגדרות החשבון בכתובת account.google.com.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="1245628370644070008">שחזור הנתונים המקומיים</translation>
 <translation id="1246863218384630739">‏לא ניתן היה להתקין את <ph name="VM_NAME"/>: כתובת ה-URL של התמונה החזירה קוד שגיאה <ph name="HTTP_ERROR"/>. יש לפנות למנהל המערכת.</translation>
 <translation id="1247372569136754018">מיקרופון (פנימי)</translation>
@@ -296,6 +306,7 @@
 <translation id="1251578593170406502">מתבצעת סריקה של רשתות נתונים סלולריות…</translation>
 <translation id="125220115284141797">ברירת מחדל</translation>
 <translation id="1252987234827889034">אירעה שגיאה בפרופיל</translation>
+<translation id="1253664522045778676">לוחצים על תוצאה והדף נפתח בכרטיסייה הנוכחית</translation>
 <translation id="1254593899333212300">חיבור אינטרנט ישיר</translation>
 <translation id="1257336506558170607">ייצוא האישור שנבחר</translation>
 <translation id="1258491128795710625">מה חדש</translation>
@@ -323,6 +334,7 @@
 <translation id="1278859221870828664">‏בדיקת השירותים והאפליקציות של Google Play</translation>
 <translation id="127946606521051357">מכשיר בקרבת מקום מנסה לבצע שיתוף</translation>
 <translation id="1280965841156951489">אישור לערוך קבצים</translation>
+<translation id="1282311502488501110">אני לא רוצה להיכנס</translation>
 <translation id="1282465000333679776">שיתוף האודיו של המערכת</translation>
 <translation id="1284277788676816155">אין לאפשר שמירת נתונים</translation>
 <translation id="1285320974508926690">איני רוצה לקבל תרגום של אתר זה</translation>
@@ -347,6 +359,7 @@
 <translation id="1303671224831497365">‏לא נמצאו התקני Bluetooth</translation>
 <translation id="130491383855577612">‏החלפת הקבצים והאפליקציות של Linux הושלמה בהצלחה</translation>
 <translation id="1306390193749326011">נפסיק להציג לך <ph name="MODULE_NAME"/> בדף הזה.</translation>
+<translation id="1306518237408758433">פתיחה של <ph name="BOOKMARK_TITLE"/></translation>
 <translation id="1306606229401759371">שינוי הגדרות</translation>
 <translation id="1307165550267142340">קוד האימות שלך נוצר</translation>
 <translation id="1307431692088049276">אין צורך לשאול אותי שוב</translation>
@@ -373,7 +386,9 @@
 <translation id="1331977651797684645">זה הייתי אני.</translation>
 <translation id="1333489022424033687">ייתכן שתכונות מסוימות ב-<ph name="ORIGIN"/> לא יפעלו עד שיוסרו נתונים שאתרים אחרים אחסנו במכשיר שלך</translation>
 <translation id="1333965224356556482">לא לאפשר לאתרים לראות את המיקום שלך</translation>
+<translation id="1335282218035876586">‏לא יתקבלו יותר עדכוני אבטחה ותוכנה במכשיר Chromebook שלך. מומלץ לשדרג את מכשיר Chromebook כדי ליהנות מהחוויה הטובה ביותר.</translation>
 <translation id="133535873114485416">קלט מועדף</translation>
+<translation id="1335437153193710305">אפשר לבחור את הפרופיל שממנו יוצגו הסיסמאות</translation>
 <translation id="1335929031622236846">רישום המכשיר שלך</translation>
 <translation id="1336902454946927954">מפתח האבטחה נעול מאחר שאי אפשר לזהות את טביעת האצבע שלך. כדי לבטל את הנעילה, יש להזין את קוד האימות.</translation>
 <translation id="1338631221631423366">מתבצעת התאמה…</translation>
@@ -436,6 +451,7 @@
 <translation id="1393283411312835250">שמש ועננים</translation>
 <translation id="1395730723686586365">המעדכן הופעל</translation>
 <translation id="1395832189806039783">הדגשה של פריט באמצעות מיקוד המקלדת</translation>
+<translation id="1396120028054416908">חזרה אל <ph name="FOLDER_TITLE"/></translation>
 <translation id="1396139853388185343">אירעה שגיאה בהגדרת המדפסת</translation>
 <translation id="1396963298126346194">הזנת שם משתמש או סיסמה שגויים</translation>
 <translation id="1397500194120344683">אין מכשירים שיכולים להתחבר. <ph name="LINK_BEGIN"/>מידע נוסף<ph name="LINK_END"/></translation>
@@ -487,6 +503,7 @@
 <translation id="1427269577154060167">מדינה</translation>
 <translation id="142765311413773645">פג תוקף הרישיון של <ph name="APP_NAME"/></translation>
 <translation id="1428373049397869723">‏יש לך אפשרות לפתוח ולערוך קבצים נתמכים באמצעות האפליקציה הזו מתוך Finder או באמצעות אפליקציות אחרות. כדי לקבוע אילו קבצים יפתחו את האפליקציה הזו כברירת מחדל, <ph name="BEGIN_LINK"/>כאן אפשר לקרוא איך להגדיר אפליקציות כברירת מחדל במכשיר שלך<ph name="END_LINK"/>.</translation>
+<translation id="1428657116642077141">שמרת הערה לגבי סיסמה באתר הזה. כדי להציג את הסיסמה, צריך לבחור באפשרות 'ניהול הסיסמאות' בסרגל הכתובות והחיפוש.</translation>
 <translation id="1428770807407000502">לכבות את הסנכרון?</translation>
 <translation id="1429300045468813835">הכול נוקה</translation>
 <translation id="1430915738399379752">הדפסה</translation>
@@ -533,6 +550,7 @@
 <translation id="1470084204649225129">{NUM_TABS,plural, =1{הוספת הכרטיסייה לקבוצה חדשה}one{הוספת כרטיסיות לקבוצה חדשה}two{הוספת כרטיסיות לקבוצה חדשה}other{הוספת כרטיסיות לקבוצה חדשה}}</translation>
 <translation id="1470350905258700113">שימוש במכשיר הזה</translation>
 <translation id="1470946456740188591">‏כדי להפעיל או להשבית או הגלישה באמצעות סמן הטקסט, אפשר להשתמש במקשי הקיצור Ctrl+Search+7</translation>
+<translation id="1471034383866732283">למצב הקריאה יש בעיה באיתור התוכן הראשי בדף הזה</translation>
 <translation id="1472675084647422956">הצגת יותר מידע</translation>
 <translation id="1473223074251193484">‏קביעת ההגדרות האישיות לשיתוף אינטרנט בין מכשירים (tethering)</translation>
 <translation id="1474785664565228650">‏השינוי בהגדרת המיקרופון מחייב הפעלה מחדש של Parallels Desktop. יש להפעיל מחדש את Parallels Desktop כדי להמשיך.</translation>
@@ -555,10 +573,13 @@
 <translation id="1485015260175968628">יכולה כעת:</translation>
 <translation id="1485141095922496924">גרסה <ph name="PRODUCT_VERSION"/> (<ph name="PRODUCT_CHANNEL"/>) <ph name="PRODUCT_MODIFIER"/> <ph name="PRODUCT_VERSION_BITS"/></translation>
 <translation id="1486096554574027028">חיפוש בסיסמאות</translation>
+<translation id="1486486872607808064">‏צריך לסרוק את קוד ה-QR הזה באמצעות מצלמה במכשיר שבו רוצים ליצור מפתח גישה עבור <ph name="APP_NAME"/></translation>
 <translation id="1487335504823219454">מופעל - הגדרות מותאמות אישית</translation>
 <translation id="1493892686965953381">בהמתנה ל-<ph name="LOAD_STATE_PARAMETER"/>...</translation>
 <translation id="1494349716233667318">אתרים יכולים לבקש הרשאה להשתמש בגופנים שמותקנים במכשיר</translation>
+<translation id="1494429729245089920">המכונה הווירטואלית '<ph name="VM_NAME"/>' קיימת, אבל נראה שהיא לא מכונה וירטואלית תקינה מסוג <ph name="APP_NAME"/>. צריך לפנות לאדמין.</translation>
 <translation id="1495677929897281669">חזרה לכרטיסייה</translation>
+<translation id="1498498210836053409">השבתת ההקשה ביד אחת במהלך עריכת טקסט (הקשה חכמה ביד אחת)</translation>
 <translation id="1500297251995790841">מכשיר לא ידוע [<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>]</translation>
 <translation id="6440894523770886280">‏מידע נוסף על אפליקציות Brave שלא נתמכות</translation>
 <translation id="1501480321619201731">מחיקת קבוצה</translation>
@@ -567,6 +588,7 @@
 <translation id="1504551620756424144">‏התיקיות המשותפות זמינות ב-Windows בספרייה <ph name="BASE_DIR"/>.</translation>
 <translation id="1505494256539862015">לייצא את הסיסמאות</translation>
 <translation id="1506061864768559482">מנוע חיפוש</translation>
+<translation id="1506187449813838456">הגברת גובה הצליל</translation>
 <translation id="1507170440449692343">דף זה נחסם לגישה למצלמה שלך.</translation>
 <translation id="1507246803636407672">&amp;התעלמות</translation>
 <translation id="1509163368529404530">&amp;שחזור הקבוצה</translation>
@@ -606,9 +628,11 @@
 <translation id="15373452373711364">סמן עכבר גדול</translation>
 <translation id="1540605929960647700">הפעלת מצב הדגמה</translation>
 <translation id="1541346352678737112">לא נמצאה רשת</translation>
+<translation id="154198613844929213">{0,plural, =0{נתוני הגלישה יימחקו עכשיו}=1{נתוני הגלישה יימחקו בעוד: שנייה אחת}one{נתוני הגלישה יימחקו בעוד: # שניות}two{נתוני הגלישה יימחקו בעוד: # שניות}other{נתוני הגלישה יימחקו בעוד: # שניות}}</translation>
 <translation id="1542137295869176367">לא ניתן לעדכן את פרטי הכניסה שלך</translation>
 <translation id="1542514202066550870">‏הכרטיסייה הזו מציגה תוכן VR במשקפי VR.</translation>
 <translation id="1543284117603151572">‏ייבוא מ-Edge</translation>
+<translation id="1543538514740974167">רוצה להגיע לכאן מהר יותר?</translation>
 <translation id="1544588554445317666">אפשר לנסות להשתמש בשם קובץ קצר יותר או לשמור את הקובץ בתיקייה אחרת</translation>
 <translation id="1545177026077493356">מצב קיוסק אוטומטי</translation>
 <translation id="1545749641540134597">‏סריקת קוד QR</translation>
@@ -672,6 +696,7 @@
 <translation id="1596286373007273895">זמין</translation>
 <translation id="1596709061955594992">‏ה-Bluetooth כבוי. צריך להפעיל את ה-Bluetooth כדי להציג את המכשירים הזמינים.</translation>
 <translation id="1596780725094407793">– כולל תת-דומיינים</translation>
+<translation id="1597852076552089763">אפשרויות לסימניות</translation>
 <translation id="1598163867407640634">יש לך אפשרות להשתמש באתר <ph name="SITE_ETLD_PLUS_ONE"/> עם החשבון <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
 <translation id="1598233202702788831">מנהל המערכת השבית את העדכונים.</translation>
 <translation id="1600857548979126453">להיכנס לניפוי הבאגים העורפי של הדף</translation>
@@ -713,6 +738,7 @@
 <translation id="1623723619460186680">הפחתה של פליטת אור כחול</translation>
 <translation id="1624599281783425761">המוכר <ph name="MERCHANT"/> לא יוצג לך שוב</translation>
 <translation id="1624863973697515675">המכשיר שלך לא מסוגל לטפל בקובץ הזה כי הוא גדול מדי. אפשר לנסות להוריד אותו במכשיר אחר</translation>
+<translation id="1625392885029341270">פילטר כחול-צהוב (טריטנומליה)</translation>
 <translation id="1627276047960621195">מתארי קבצים</translation>
 <translation id="1627408615528139100">הקובץ כבר הורד</translation>
 <translation id="1628948239858170093">לסרוק את הקובץ לפני שפותחים אותו?</translation>
@@ -751,6 +777,7 @@
 <translation id="164936512206786300">‏ביטול הצמדה של התקן Bluetooth</translation>
 <translation id="1651008383952180276">עליך להזין אותו ביטוי סיסמה פעמיים</translation>
 <translation id="1652326691684645429">הפעלה של 'שיתוף בקרבת מקום'</translation>
+<translation id="1654580009054503925">אין הרשאה להציג בקשות</translation>
 <translation id="1656528038316521561">שקיפות רקע</translation>
 <translation id="4711067597921221305">‏רוצה לעזור לנו לשפר את <ph name="PRODUCT_NAME"/> על ידי שליחה אוטומטית של נתוני שימוש ודוחות קריסה אל Brave?</translation>
 <translation id="1657937299377480641">כדי להיכנס מחדש לצורך גישה למקורות מידע חינוכיים, יש לבקש הרשאה מהורה</translation>
@@ -775,7 +802,6 @@
 <translation id="1679810534535368772">לצאת?</translation>
 <translation id="167983332380191032">‏שירות הניהול שלח שגיאת HTTP.</translation>
 <translation id="167997285881077031">‏הגדרות קול של המרת טקסט לדיבור (TTS)</translation>
-<translation id="1680841347983561661">‏אפשר לנסות שוב להפעיל את Google Play בעוד כמה דקות.</translation>
 <translation id="1680849702532889074">‏קרתה שגיאה במהלך ההתקנה של אפליקציית Linux.</translation>
 <translation id="16815041330799488">אין להתיר לאתרים לגשת לטקסט ותמונות שהועתקו ללוח</translation>
 <translation id="1682696837763999627">סמן עכבר גדול</translation>
@@ -852,6 +878,7 @@
 <translation id="1744108098763830590">דף רקע</translation>
 <translation id="1745732479023874451">ניהול אנשי קשר</translation>
 <translation id="1748283190377208783">{0,plural, =1{unused plural form}one{לפתוח ולערוך # קבצים באפליקציית האינטרנט הזו?}two{לפתוח ולערוך # קבצים באפליקציית האינטרנט הזו?}other{לפתוח ולערוך # קבצים באפליקציית האינטרנט הזו?}}</translation>
+<translation id="1748329107062243374">שימוש במפתח גישה מ-<ph name="DEVICE_NAME"/> כדי להיכנס אל <ph name="WEBSITE"/></translation>
 <translation id="1901235742643584247">‏אפשר לשמור את הסיסמה הזו בחשבון Brave או רק במכשיר</translation>
 <translation id="1749733017156547309">נדרשת סיסמה</translation>
 <translation id="1750172676754093297">אי אפשר לשמור טביעות אצבעות במפתח האבטחה שלך</translation>
@@ -874,6 +901,7 @@
 <translation id="1766575458646819543">התבצעה יציאה ממסך מלא</translation>
 <translation id="2780099046045177382">‏אפשר לשמור סיסמאות בצורה בטוחה בחשבון Brave, כך שלאחר מכן לא יהיה יותר צורך להקליד אותן ידנית</translation>
 <translation id="1767043563165955993">‏שימוש באפליקציות ל-Android</translation>
+<translation id="1767508543310534319">הד של סימני פיסוק</translation>
 <translation id="1768212860412467516">שליחת משוב בנושא <ph name="EXPERIMENT_NAME"/>.</translation>
 <translation id="1768278914020124551">אופס! נתקלנו בבעיה ביצירת קשר עם שרת ההתחברות. יש לבדוק את חיבור הרשת ואת שם הדומיין ולאחר מכן לנסות שוב.</translation>
 <translation id="1769104665586091481">פתיחת קישור &amp;בחלון חדש</translation>
@@ -910,6 +938,8 @@
 <translation id="1796588414813960292">תכונות שצריכות צלילים לא יפעלו</translation>
 <translation id="1797117170091578105">‏אפשר לשחק באמצעות המקלדת של Chromebook. ניתן להתאים אישית את המקשים לפעולות ספציפיות.</translation>
 <translation id="1800502858278951817">לא התקבלה בקשה מתוסף כלשהו לקרוא ולשנות את <ph name="SITE_NAME"/></translation>
+<translation id="180203835522132923">‏מקש החיפוש + O, ואז W</translation>
+<translation id="1802457294427928325">‏שינוי ההתנהגות של מקשי הפונקציה (F) לפעולות בשורה העליונה של ChromeOS</translation>
 <translation id="1802624026913571222">מעבר למצב שינה כשסוגרים את הכיסוי</translation>
 <translation id="1802687198411089702">הדף לא מגיב. אפשר לחכות או לצאת.</translation>
 <translation id="1803531841600994172">שפת היעד של התרגום</translation>
@@ -1030,6 +1060,7 @@
 <translation id="1886996562706621347">התרה לאתרים לבקש להפוך למטפלי ברירת המחדל עבור פרוטוקולים (מומלץ)</translation>
 <translation id="1887442540531652736">שגיאת כניסה</translation>
 <translation id="1887597546629269384">‏יש לומר שוב "Hey Brave"</translation>
+<translation id="1889091146873278175">‏כדי להציג תוצאות חיפוש נוספות בחלונית צדדית, לוחצים על הלחצן 'G'</translation>
 <translation id="189035593835762169">תנאים והגבלות</translation>
 <translation id="1891362123137972260">נפח האחסון בדיסק כמעט נגמר. יש לפנות מקום בשטח האחסון בדיסק.</translation>
 <translation id="189210018541388520">פתיחת מסך מלא</translation>
@@ -1054,6 +1085,7 @@
 <translation id="1915073950770830761">Canary</translation>
 <translation id="1915307458270490472">ניתוק</translation>
 <translation id="1915734383465415025">מספר החנות</translation>
+<translation id="1916260783734263714">הכרטיסייה הנוכחית</translation>
 <translation id="1916502483199172559">דמות ברירת מחדל אדומה</translation>
 <translation id="1918141783557917887">&amp;קטן יותר</translation>
 <translation id="1919872106782726755">כדי להגדיר טביעת אצבע, על הילד או הילדה לגעת בחיישן טביעות האצבע שבפינה הימנית העליונה של המקלדת, ליד לחצן ההפעלה. נתוני טביעות האצבע של הילד או הילדה נשמרים באופן מאובטח ואף פעם לא נשלחים ממכשיר ה-<ph name="DEVICE_TYPE"/> הזה.</translation>
@@ -1108,6 +1140,7 @@
 <translation id="1966649499058910679">הדגשה של כל מילה בזמן שהיא נאמרת</translation>
 <translation id="1967970931040389207">הפעלת הנקודה לשיתוף אינטרנט</translation>
 <translation id="1969011864782743497">‏<ph name="DEVICE_NAME"/>‏ (USB)</translation>
+<translation id="1969550816138571473">הטקסט בהכנה</translation>
 <translation id="1969654639948595766">‏יומני טקסט של WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
 <translation id="1972325230031091483">מהירות הגלישה תגבר כי התוכן ייטען באופן יזום, על סמך הביקור הנוכחי שלך בדף האינטרנט</translation>
 <translation id="197288927597451399">שמירה</translation>
@@ -1129,6 +1162,7 @@
 <translation id="1987317783729300807">חשבונות</translation>
 <translation id="1987574314042117472">בחירה והתקנה של האפליקציות הפופולריות</translation>
 <translation id="1988259784461813694">דרישה</translation>
+<translation id="1988733631391393183">‏בתפריטי ChromeVox יוצגו פקודות בכתב ברייל</translation>
 <translation id="1989112275319619282">עיון</translation>
 <translation id="1989903373608997757">להשתמש תמיד</translation>
 <translation id="1990046457226896323">הסתיימה ההורדה של קובצי הדיבור</translation>
@@ -1142,6 +1176,7 @@
 <translation id="5123795870522389058">‏כדי להתחבר למכשיר, נדרשת ל-Brave הרשאה להשתמש ב-Bluetooth</translation>
 <translation id="1997616988432401742">האישורים שלך</translation>
 <translation id="1999115740519098545">כשפותחים את הדפדפן</translation>
+<translation id="5656706212323941398">‏אל מנהל הסיסמאות של Brave‏ <ph name="SEPARATOR"/> <ph name="ACCOUNT"/></translation>
 <translation id="2002109485265116295">זמן אמת</translation>
 <translation id="2003130567827682533">‏כדי להפעיל נתונים של '<ph name="NAME"/>', יש להתחבר תחילה לרשת Wi-Fi</translation>
 <translation id="2004697686368036666">ייתכן שתכונות באתרים מסוימים לא יפעלו</translation>
@@ -1164,6 +1199,7 @@
 <translation id="2023167225947895179">‏ייתכן שיהיה קל לנחש את ה-PIN</translation>
 <translation id="202352106777823113">ההורדה נמשכה זמן רב מדי, והיא נעצרה על ידי הרשת.</translation>
 <translation id="2024195579772565064">מחיקת מנוע החיפוש</translation>
+<translation id="202500043506723828">EID</translation>
 <translation id="2025632980034333559"><ph name="APP_NAME"/> קרס. יש ללחוץ על בלון זה כדי לטעון מחדש את התוסף.</translation>
 <translation id="2028449514182362831">תכונות שצריכות חיישני תנועה לא יפעלו</translation>
 <translation id="202918510990975568">יש להזין את הסיסמה כדי לקבוע את הגדרות האבטחה ולהיכנס לחשבון</translation>
@@ -1182,6 +1218,7 @@
 <translation id="2039464276165755892">הסתרת תוכן ההתראות כשהמערכת מזהה אדם נוסף</translation>
 <translation id="2040460856718599782">אופס! משהו השתבש במהלך ניסיון האימות שלך. יש לבדוק שוב את פרטי הכניסה שלך ולנסות שוב.</translation>
 <translation id="2040894699575719559">המיקום נחסם</translation>
+<translation id="2041246176170574368">‏בקרוב לא יהיו יותר עדכוני אבטחה. אפשר לחסוך 50$ או יותר על מכשיר Chromebook חדש.</translation>
 <translation id="2042279886444479655">פרופילים פעילים</translation>
 <translation id="2044014337866019681">עליך לוודא שהחשבון המאומת הוא <ph name="ACCOUNT"/> כדי לבטל את נעילת הפעילות.</translation>
 <translation id="204497730941176055">‏שם תבנית אישור של Microsoft</translation>
@@ -1190,13 +1227,12 @@
 <translation id="2045969484888636535">‏המשך לחסום קובצי Cookie</translation>
 <translation id="204622017488417136">‏המכשיר שלך יוחזר לגרסה הקודמת המותקנת של Brave. כל חשבונות המשתמשים והנתונים המקומיים יוסרו. לא ניתן לבטל פעולה זו.</translation>
 <translation id="2046702855113914483">ראמן</translation>
-<translation id="2046770133657639077">‏הצגת מספר ה-EID של המכשיר</translation>
 <translation id="204706822916043810">המערכת בודקת את המכונה הווירטואלית</translation>
 <translation id="2048182445208425546">גישה לתנועת הרשת שלך</translation>
 <translation id="2048554637254265991">שגיאה בהפעלת מנהל המאגר. יש לנסות שוב.</translation>
 <translation id="2048653237708779538">הפעולה לא זמינה</translation>
 <translation id="204914487372604757">יצירת קיצור דרך</translation>
-<translation id="2050339315714019657">לאורך</translation>
+<translation id="2050339315714019657">דיוקן</translation>
 <translation id="2051555741181591333">השבתה אוטומטית של הנקודה לשיתוף אינטרנט</translation>
 <translation id="2052572566310583903">מותקנת במכשירים אחרים שלך</translation>
 <translation id="2053105195397337973">אנחנו בוחנים דרכים חדשות להגביל את יכולת המעקב ולעזור לאתרים למנוע ספאם פרסומי והונאות.</translation>
@@ -1210,12 +1246,14 @@
 <translation id="2060375639911876205">‏הסרת פרופיל של eSIM</translation>
 <translation id="2061366302742593739">אין מה להציג</translation>
 <translation id="206308717637808771">כשכל החלונות נסגרים, הנתונים נמחקים. אופן הטיפול בנתונים זהה לאופן הטיפול באתר הזה</translation>
+<translation id="2063623149012168328">הוספת קיצור דרך אל <ph name="BRAND"/></translation>
 <translation id="4782664866169793230">‏Brave נשלט על-ידי תוכנת בדיקה אוטומטית.</translation>
 <translation id="2071393345806050157">אין קובץ יומן מקומי.</translation>
 <translation id="2071692954027939183">ההתראות נחסמו באופן אוטומטי כי ברוב המקרים לא נתת הרשאה להציג אותן</translation>
 <translation id="2073148037220830746">{NUM_EXTENSIONS,plural, =1{יש ללחוץ כדי להתקין את התוסף}one{יש ללחוץ כדי להתקין את התוספים האלה}two{יש ללחוץ כדי להתקין את התוספים האלה}other{יש ללחוץ כדי להתקין את התוספים האלה}}</translation>
 <translation id="2073496667646280609">יכול להיות שאין מספיק מקום אחסון פנוי במכשיר או במיקום שנבחר לגיבוי. כדאי לנסות לפנות מקום או לבחור מיקום אחר.</translation>
 <translation id="2073505299004274893">אפשר להזין עד <ph name="CHARACTER_LIMIT"/> תווים</translation>
+<translation id="2074060876831574159">‏הסיסמאות השמורות יופיעו כאן.  &lt;a target='_blank' href='chrome://password-manager/'&gt;ייבוא סיסמאות&lt;/a&gt;</translation>
 <translation id="2075474481720804517">%<ph name="BATTERY_PERCENTAGE"/> סוללה</translation>
 <translation id="2076269580855484719">הסתרת פלאגין זה</translation>
 <translation id="2076672359661571384">בינוני (מומלץ)</translation>
@@ -1231,6 +1269,7 @@
 <translation id="208634871997892083">‏VPN מופעל תמיד</translation>
 <translation id="2087822576218954668">הדפסה: <ph name="PRINT_NAME"/></translation>
 <translation id="2088092308059522196">הרישום אפשרי רק לאחר התקנה של <ph name="DEVICE_OS"/>.</translation>
+<translation id="2088564884469682888">‏TrackPoint מובנה</translation>
 <translation id="2089090684895656482">פחות</translation>
 <translation id="208928984520943006">כדי לעבור למסך הבית בכל שלב, מחליקים כלפי מעלה מתחתית המסך.</translation>
 <translation id="2618024864038703735">‏גלישה בטוחה עם Brave</translation>
@@ -1239,6 +1278,7 @@
 <translation id="2090165459409185032">‏כדי לשחזר את המידע מהחשבון, יש לעבור אל: google.com/accounts/recovery</translation>
 <translation id="2090507354966565596">חיבור באופן אוטומטי עם ההתחברות</translation>
 <translation id="2090876986345970080">הגדרה של אבטחת מערכת</translation>
+<translation id="2091887806945687916">צליל</translation>
 <translation id="2092356157625807382">‏<ph name="BEGIN_H3"/>תכונות לניפוי באגים<ph name="END_H3"/>
       <ph name="BR"/>
       יש לך אפשרות להפעיל תכונות לניפוי באגים במכשיר ChromeOS כדי להתקין ולבדוק קוד מותאם אישית במכשיר שלך. כך ניתן:<ph name="BR"/>
@@ -1270,13 +1310,13 @@
 <translation id="2105809836724866556">ההסתרה של <ph name="MODULE_TITLE"/> בוצעה</translation>
 <translation id="2108349519800154983">{COUNT,plural, =1{מספר טלפון}one{# מספרי טלפון}two{# מספרי טלפון}other{# מספרי טלפון}}</translation>
 <translation id="2110941575868943054">‏יש הרשאה לאתר מכשירי Bluetooth</translation>
-<translation id="2111158890826137380">‏מצטערים, משהו השתבש. יש לשלוח משוב ולציין ‎#bruschetta בתיאור. קוד השגיאה הוא <ph name="ERROR"/>.</translation>
 <translation id="211144231511833662">ניקוי הסוגים</translation>
 <translation id="2111670510994270194">כרטיסייה חדשה מצד ימין</translation>
 <translation id="2112554630428445878">שלום, <ph name="USERNAME"/></translation>
 <translation id="21133533946938348">הצמדת כרטיסייה</translation>
 <translation id="2113479184312716848">פתיחת &amp;קובץ...</translation>
 <translation id="2113921862428609753">גישה לפרטי רשות</translation>
+<translation id="2114148807864221167">הדגשת הטקסט שרוצים להציג במצב קריאה</translation>
 <translation id="2114326799768592691">טעינה מחדש של ה&amp;מסגרת</translation>
 <translation id="2114413269775311385">‏יש להשתמש בחשבון הזה עם אפליקציות ל-Android. אפשר לקבוע את ההרשאות לאפליקציות ל-Android ב<ph name="LINK_BEGIN"/>הגדרות האפליקציות<ph name="LINK_END"/>.</translation>
 <translation id="2114820389966440614">כאן ניתן לעיין באלבום 'המיטב מהזמן האחרון' ובזיכרונות נוספים</translation>
@@ -1422,6 +1462,7 @@
 <translation id="2235344399760031203">‏קובצי cookie של צד שלישי חסומים</translation>
 <translation id="2238379619048995541">נתוני מצב תדירות</translation>
 <translation id="2241053333139545397">לקרוא ולשנות את הנתונים שלך במספר אתרים</translation>
+<translation id="2241242047787527912">לכל מקש שמופיע בהמשך, בוחרים את הפעולה שרוצים שהוא יבצע</translation>
 <translation id="2241634353105152135">פעם אחת בלבד</translation>
 <translation id="2242687258748107519">פרטי קובץ</translation>
 <translation id="2245603955208828424">שימוש במקשי החיצים כדי לעבור על פריטים, אות אחרי אות</translation>
@@ -1459,14 +1500,17 @@
     <ph name="BEGIN_PARAGRAPH2"/>אין אפשרות לבטל את ההתקנה לאחר שהחלה.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="2270627217422354837">החלפת נתונים עם כל מכשיר בדומיינים: <ph name="DOMAINS"/></translation>
 <translation id="2270666014403455717">הקצאת מתג לפעולה "בחירה"</translation>
+<translation id="2271986192355138465">כך מתקינים אפליקציות אינטרנט</translation>
 <translation id="2272430695183451567">הוקצו אפס מתגים</translation>
 <translation id="2272570998639520080">כוס מרטיני</translation>
+<translation id="2272830751703114341">כדי לשנות את אופן הפעולה של המקשים בשורה העליונה, יש להפעיל את מקש המערכת/מרכז האפליקציות</translation>
 <translation id="2273119997271134996">בעיה עם יציאות הווידאו באביזר העגינה</translation>
 <translation id="2274840746523584236">‏יש לטעון את Chromebook</translation>
 <translation id="2276503375879033601">הוספת יישומים</translation>
 <translation id="2276910256003242519">מתבצע ניקוי נתונים…</translation>
 <translation id="2278562042389100163">פתיחת חלון דפדפן</translation>
 <translation id="2278668501808246459">המערכת מפעילה את מנהל המאגר</translation>
+<translation id="2279051792571591988">שחזור ברירות מחדל</translation>
 <translation id="2280486287150724112">שוליים ימניים</translation>
 <translation id="2281863813036651454">הלחצן השמאלי בעכבר</translation>
 <translation id="2282146716419988068">‏תהליך GPU</translation>
@@ -1614,6 +1658,7 @@
 <translation id="2383825469508278924">שינוי המיפוי של מקשי המקלדת, מקשי הפונקציות ועוד</translation>
 <translation id="2387052489799050037">מעבר לדף הבית</translation>
 <translation id="2387602571959163792"><ph name="DESK_NAME"/> (הנוכחי)</translation>
+<translation id="2390226379317200116">אפשר להוסיף הערה או דעה על הדף הזה כדי לקרוא אותן מאוחר יותר.</translation>
 <translation id="2390347491606624519">‏לא ניתן להתחבר לשרת proxy, יש להיכנס שוב</translation>
 <translation id="2390782873446084770">‏סנכרון Wi-Fi</translation>
 <translation id="2391419135980381625">גופן רגיל</translation>
@@ -1675,6 +1720,7 @@
 <translation id="244641233057214044">קשור לחיפוש שלך</translation>
 <translation id="2448312741937722512">סוג</translation>
 <translation id="2448810255793562605">סריקה אוטומטית של גישה באמצעות מתג</translation>
+<translation id="2450021089947420533">תהליכים</translation>
 <translation id="2450223707519584812">‏לא תהיה אפשרות להוסיף משתמשים מפני שהמפתחות של Brave API חסרים. לפרטים, יש לעבור אל <ph name="DETAILS_URL"/>.</translation>
 <translation id="2450849356604136918">אין תצוגות פעילות</translation>
 <translation id="2451298179137331965">2x</translation>
@@ -1685,6 +1731,7 @@
 <translation id="2454247629720664989">מילת מפתח</translation>
 <translation id="2454524890947537054">לאשר את הבקשה לגבי האתר?</translation>
 <translation id="245650153866130664">כדי לרענן כרטיס באופן אוטומטי, יש לסמן את האפשרות "שמירת סיסמה". הסיסמה תישמר במכשיר שלך בלבד.</translation>
+<translation id="2456794251167091176">הייבוא הושלם</translation>
 <translation id="2456827790665612305">ביטול המעקב אחרי האתר</translation>
 <translation id="2457246892030921239"><ph name="APP_NAME"/> רוצה להעתיק קבצים מ-<ph name="VOLUME_NAME"/>.</translation>
 <translation id="2457842160081795172">בערוץ <ph name="CHANNEL_NAME"/> כרגע</translation>
@@ -1731,6 +1778,7 @@
 <translation id="2490481887078769936">'<ph name="FILE_NAME"/>' הוסר מהרשימה</translation>
 <translation id="249113932447298600">מצטערים, המכשיר <ph name="DEVICE_LABEL"/> אינו נתמך בשלב זה.</translation>
 <translation id="2492461744635776704">המערכת מכינה את בקשת החתימה על אישור</translation>
+<translation id="249330843868392562">פתיחת ההגדרות של המרת טקסט לדיבור</translation>
 <translation id="2495524171012645395">מתכונים שצפית בהם לאחרונה</translation>
 <translation id="2496180316473517155">היסטוריית גלישה</translation>
 <translation id="2497229222757901769">מהירות עכבר</translation>
@@ -1747,9 +1795,9 @@
 <translation id="2502719318159902502">גישה מלאה</translation>
 <translation id="2505324914378689427">{SCREEN_INDEX,plural, =1{מסך #}one{מסך #}two{מסך #}other{מסך #}}</translation>
 <translation id="2505402373176859469"><ph name="RECEIVED_AMOUNT"/> מתוך <ph name="TOTAL_SIZE"/></translation>
-<translation id="2505669838803949807">‏מספר ה-EID של המכשיר הוא <ph name="EID_NUMBER"/>. נציג משירות הלקוחות יכול להשתמש במספר ה-EID כדי לעזור לך להפעיל את השירות.</translation>
 <translation id="250704661983564564">פריסת מסכים</translation>
 <translation id="2507253002925770350">הכרטיס הוסר</translation>
+<translation id="2507491234071975894">רמקול</translation>
 <translation id="2508428939232952663">‏חשבון בחנות Google Play</translation>
 <translation id="2509495747794740764">שיעור קנה המידה חייב להיות מספר בין 10 ל-200.</translation>
 <translation id="2509566264613697683">8x</translation>
@@ -1807,6 +1855,7 @@
 <translation id="25568951186001797">‏Fenced Frame‏: <ph name="FENCEDFRAME_SITE"/></translation>
 <translation id="2558569818338050235">היסטוריית הגלישה שלך משפיעה על המודעות שמוצגות לך</translation>
 <translation id="2559889124253841528">שמירה במכשיר</translation>
+<translation id="2561211427862644160">אפשר לראות כאן את כל הסימניות שלך</translation>
 <translation id="2564520396658920462">‏הפעלת JavaScript דרך AppleScript מושבתת. כדי להפעיל את האפשרות הזו, מסרגל התפריטים יש לעבור אל 'תצוגה' &gt; 'מפתח' &gt; 'התרת JavaScript מאירועי Apple'. מידע נוסף זמין בכתובת https://support.google.com/chrome/?p=applescript</translation>
 <translation id="2564653188463346023">בדיקת איות משופרת</translation>
 <translation id="2568774940984945469">גורם מכיל של סרגל המידע</translation>
@@ -1888,9 +1937,6 @@
 <translation id="2642111877055905627">כדורגל</translation>
 <translation id="2643064289437760082">תמיד אפשר למחוק את נתוני המדידה של ביצועי המודעות על ידי מחיקה של נתוני הגלישה</translation>
 <translation id="2643698698624765890">אפשר לנהל את התוספים שלך באמצעות לחיצה על 'תוספים' בתפריט 'חלון'.</translation>
-<translation id="2643887015830197688">‏הניווטים ישודרגו ל-HTTPS ותוצג אזהרה לפני שטוענים אתרים שלא תומכים ב-HTTPS.
-
-    לא ניתן לשנות את ההגדרה הזו כי ההגנה המתקדמת מופעלת.</translation>
 <translation id="2645047101481282803">המכשיר שלך מנוהל על ידי <ph name="PROFILE_NAME"/></translation>
 <translation id="2645388244376970260">מתבצעת העברה של הכרטיסייה הזו אל <ph name="DEVICE_NAME"/></translation>
 <translation id="2645435784669275700">ChromeOS</translation>
@@ -1930,6 +1976,7 @@
 <translation id="2673135533890720193">לקרוא את היסטוריית הגלישה שלך</translation>
 <translation id="2674764818721168631">כבוי</translation>
 <translation id="2675570801872027281">‏אירעה שגיאה בהסרת Bruschetta. אפשר לנסות שוב.</translation>
+<translation id="267708982776801183">פילטר אדום-ירוק (אדום חלש, פרוטנומליה)</translation>
 <translation id="2678063897982469759">הפעלה מחדש</translation>
 <translation id="2678100101831051676">‏לא ניתן להעביר (cast).</translation>
 <translation id="268053382412112343">הי&amp;סטוריה</translation>
@@ -1944,6 +1991,7 @@
 <translation id="2690024944919328218">הצגת אפשרויות שפה</translation>
 <translation id="2691385045260836588">דגם</translation>
 <translation id="2691440343905273290">שינוי הגדרות הקלט</translation>
+<translation id="2692503699962701720">שינוי גובה הצליל כשמזכירים סוגים שונים של רכיבים וטקסט מעוצב</translation>
 <translation id="2693176596243495071">אופס. אירעה שגיאה לא ידועה. כדאי לנסות שוב מאוחר יותר, או לפנות אל מנהל המערכת אם הבעיה ממשיכה.</translation>
 <translation id="2698147581454716013">‏זהו מכשיר שמגיע בחבילה ולא ניתן לרשום אותו לשדרוג של מכשירים לחתימה דיגיטלית ושל Kiosk.</translation>
 <translation id="2699911226086014512">פעולת קוד האימות נכשלה עם הקוד <ph name="RETRIES"/>.</translation>
@@ -1961,7 +2009,6 @@
 <translation id="2710101514844343743">מידע על אופן השימוש בנתונים וניתוח הביצועים</translation>
 <translation id="271033894570825754">חדש</translation>
 <translation id="2711073837061989559">תקופות ניסיון</translation>
-<translation id="2712207122921938368">יצירת מפתח גישה במכשיר אחר</translation>
 <translation id="2713106313042589954">השבתת המצלמה</translation>
 <translation id="2713444072780614174">לבן</translation>
 <translation id="2714180132046334502">רקע כהה</translation>
@@ -1984,6 +2031,7 @@
 <translation id="272741954544380994">חיפוש התמונה באמצעות <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="2727633948226935816">אני לא רוצה לקבל עוד תזכורת</translation>
 <translation id="2727712005121231835">גודל ממשי</translation>
+<translation id="2727744317940422214">‏מצטערים, משהו השתבש. יש לשלוח משוב ולציין ‎#bruschetta בתיאור. קוד השגיאה הוא <ph name="ERROR"/>. הניקוי נכשל. יכול להיות שצריך לבצע ניקוי ידני.</translation>
 <translation id="8988766505821653206">‏אני רוצה גם לנקות את נתוני הגלישה (<ph name="URL"/>). פעולה זו עשויה לנתק אותך מ-Brave.com.
 <ph name="LEARN_MORE"/></translation>
 <translation id="1880711225003762469">‏ב-Brave מחפשים דרכים חדשות לצמצם את המעקב ולהגביר אפילו יותר את הבטיחות שלך בזמן הגלישה. מערכת Brave גם מבצעת <ph name="ESTIMATE_INTERESTS_LINK"/> ויש לך אפשרות לנהל אותם. אחר כך, לאתרים שביקרת בהם יש אפשרות לבקש מ-Brave את תחומי העניין שלך כדי להציג לך מודעות לפיהם.</translation>
@@ -2246,9 +2294,11 @@
 <translation id="2947605845283690091">הגלישה באינטרנט צריכה להיות מהירה. כדאי להקדיש כמה רגעים כדי <ph name="BEGIN_LINK"/>לבדוק עכשיו את התוספים<ph name="END_LINK"/>.</translation>
 <translation id="2948300991547862301">מעבר אל <ph name="PAGE_TITLE"/></translation>
 <translation id="29488703364906173">דפדפן אינטרנט מהיר, פשוט ובטוח, המותאם לאינטרנט המודרני.</translation>
+<translation id="2948873690143673075">להסיר את המינוי הזה?</translation>
 <translation id="2949289451367477459">‏שימוש במיקום. מתן רשות לשירותים עם הרשאות מיקום להשתמש במיקום המכשיר הזה. Brave עשויה לאסוף מדי פעם נתוני מיקום ולהשתמש בהם באופן אנונימי כדי לשפר את דיוק המיקום ושירותים מבוססי-מיקום. <ph name="BEGIN_LINK1"/>מידע נוסף<ph name="END_LINK1"/></translation>
 <translation id="2950666755714083615">אני רוצה להירשם</translation>
 <translation id="2953019166882260872">יש לחבר את הטלפון באמצעות כבל</translation>
+<translation id="2953210795988451570">‏אין יותר עדכוני אבטחה. מומלץ לשדרג למכשיר Chromebook חדש.</translation>
 <translation id="2953218713108551165">לאתר <ph name="SITE"/> אין הרשאה לשלוח התראות. תוצג בקשה נוספת בביקור הבא שלך.</translation>
 <translation id="2956070239128776395">הקטע מוצב בתוך קבוצה: <ph name="ERROR_LINE"/></translation>
 <translation id="2958721676848865875">אזהרת 'אריזת תוסף'</translation>
@@ -2270,6 +2320,7 @@
 <translation id="2975628416524344939">‏ניהול של התקני HID</translation>
 <translation id="2975761176769946178">‏נדרשת כתובת URL</translation>
 <translation id="2976557544729462544">יש מכשירים שיפעלו בצורה נכונה או מיטבית רק אם הגנת הגישה לנתונים תושבת.</translation>
+<translation id="2976756276046118477">פילטר אדום-ירוק (ירוק חלש, דוטרנומליה)</translation>
 <translation id="2977480621796371840">הסרה מהקבוצה</translation>
 <translation id="2979639724566107830">פתיחה בחלון חדש</translation>
 <translation id="2981113813906970160">הצגת סמן עכבר גדול</translation>
@@ -2302,12 +2353,14 @@
 <translation id="3003967365858406397">‏ה-<ph name="PHONE_NAME"/> ייצור חיבור Wi-Fi פרטי.</translation>
 <translation id="3005574332301273731">לא להציג</translation>
 <translation id="3006881078666935414">אין נתוני שימוש</translation>
+<translation id="3007410324195400631">הוספת הערות על הדף הזה</translation>
 <translation id="3007771295016901659">שכפול הכרטיסייה</translation>
 <translation id="3008232374986381779">‏הפעלת כלים, עורכים וסביבות פיתוח משולבות (IDE) של Linux ב-<ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>מידע נוסף<ph name="LINK_END"/></translation>
 <translation id="3008272652534848354">איפוס הרשאות</translation>
 <translation id="3008694618228964140">{NUM_DAYS,plural, =1{‏לפי הדרישה של <ph name="MANAGER"/>, עליך להתחבר היום לרשת Wi-Fi כדי להוריד עדכון. ניתן גם לבצע את ההורדה דרך חיבור עם חיוב לפי שימוש בנתונים (עשויים לחול חיובים).}one{‏לפי דרישת <ph name="MANAGER"/>, עליך להתחבר ל-Wi-Fi ולהוריד עדכון לפני המועד האחרון. ניתן גם לבצע את ההורדה דרך חיבור עם חיוב לפי שימוש בנתונים (עשויים לחול חיובים).}two{‏לפי דרישת <ph name="MANAGER"/>, עליך להתחבר ל-Wi-Fi ולהוריד עדכון לפני המועד האחרון. ניתן גם לבצע את ההורדה דרך חיבור עם חיוב לפי שימוש בנתונים (עשויים לחול חיובים).}other{‏לפי דרישת <ph name="MANAGER"/>, עליך להתחבר ל-Wi-Fi ולהוריד עדכון לפני המועד האחרון. ניתן גם לבצע את ההורדה דרך חיבור עם חיוב לפי שימוש בנתונים (עשויים לחול חיובים).}}</translation>
 <translation id="3009178788565917040">פלט</translation>
 <translation id="3009300415590184725">בטוח שברצונך לבטל את תהליך ההתקנה של שירות הנתונים לנייד?</translation>
+<translation id="3009352964623081324">‏מקש החיפוש + O, ואז S. אפשר להשתמש במקשי הקיצור האלה לצורך התקנה, ניהול והתאמה אישית של קולות.</translation>
 <translation id="3009779501245596802">מסדי נתונים שנוספו לאינדקס</translation>
 <translation id="3010234549896186761">{COUNT,plural, =0{הסיסמאות נראות חזקות}=1{יש סיסמה חלשה אחת ({COUNT})}one{יש {COUNT} סיסמאות חלשות}two{יש {COUNT} סיסמאות חלשות}other{יש {COUNT} סיסמאות חלשות}}</translation>
 <translation id="3010279545267083280">הסיסמה נמחקה</translation>
@@ -2403,11 +2456,13 @@
 <translation id="3088128611727407543">פרופיל האפליקציה בהכנה...</translation>
 <translation id="3088325635286126843">&amp;שינוי שם...</translation>
 <translation id="3089137131053189723">החיפוש נוקה</translation>
+<translation id="3090227230165225418">הכרזה על התראות הורדה</translation>
 <translation id="3090589793601454425">אין להעביר</translation>
 <translation id="3090819949319990166">‏לא ניתן להעתיק קובץ crx חיצוני ל-<ph name="TEMP_CRX_FILE"/>.</translation>
 <translation id="3090871774332213558">"<ph name="DEVICE_NAME"/>" מותאם</translation>
 <translation id="3093714882666365141">‏לא לאפשר לאתרים להתקין מעבדי handler לתשלומים</translation>
 <translation id="3094141017404513551">כך תופרד פעילות הגלישה שלך מהפעילות של <ph name="EXISTING_USER"/></translation>
+<translation id="3094521107841754472">המחיר השתנה מ-<ph name="PREVIOUS_PRICE"/> ל-<ph name="CURRENT_PRICE"/>.</translation>
 <translation id="3095871294753148861">סימניות, סיסמאות ונתוני דפדפן אחרים מסונכרנים עם החשבון הראשי.</translation>
 <translation id="3099836255427453137">{NUM_EXTENSIONS,plural, =1{תוסף אחד שעשוי להיות מזיק כבוי עכשיו. אפשר גם להסיר אותו.}one{{NUM_EXTENSIONS} תוספים שעשויים להיות מזיקים כבויים עכשיו. אפשר גם להסיר אותם.}two{{NUM_EXTENSIONS} תוספים שעשויים להיות מזיקים כבויים עכשיו. אפשר גם להסיר אותם.}other{{NUM_EXTENSIONS} תוספים שעשויים להיות מזיקים כבויים עכשיו. אפשר גם להסיר אותם.}}</translation>
 <translation id="3101126716313987672">עמעום תאורת המסך</translation>
@@ -2427,10 +2482,10 @@
 <translation id="3115147772012638511">בהמתנה למטמון...</translation>
 <translation id="3115580024857770654">כיווץ הכול</translation>
 <translation id="8322945005389987780">‏ניהול השפה בחשבון Brave</translation>
+<translation id="3117138513108032865">‏הניווטים ישודרגו ל-HTTPS ותוצג אזהרה לפני שטוענים אתרים שלא תומכים ב-HTTPS. לא ניתן לשנות את ההגדרה הזו כי ההגנה המתקדמת מופעלת.</translation>
 <translation id="3117362587799608430">אביזר העגינה אינו תואם באופן מלא</translation>
 <translation id="3117791853215125017">{COUNT,plural, =1{לא ניתן היה לשלוח <ph name="ATTACHMENTS"/> אל <ph name="DEVICE_NAME"/>}one{לא ניתן היה לשלוח <ph name="ATTACHMENTS"/> אל <ph name="DEVICE_NAME"/>}two{לא ניתן היה לשלוח <ph name="ATTACHMENTS"/> אל <ph name="DEVICE_NAME"/>}other{לא ניתן היה לשלוח <ph name="ATTACHMENTS"/> אל <ph name="DEVICE_NAME"/>}}</translation>
 <translation id="3118319026408854581">עזרה של <ph name="PRODUCT_NAME"/></translation>
-<translation id="3118654181216384296">‏אפשר לנסות שוב להפעיל את Linux בעוד כמה רגעים.</translation>
 <translation id="3119948370277171654">‏איזה תוכן או כתובת URL העברת?</translation>
 <translation id="3122464029669770682">CPU</translation>
 <translation id="3122496702278727796">יצירת ספריית נתונים נכשלה</translation>
@@ -2439,12 +2494,9 @@
 <translation id="3126026824346185272">Ctrl</translation>
 <translation id="3127860049873093642">‏כדי להימנע מבעיות בטעינה ובביצועים, יש להשתמש במתאם מתח תואם של Dell, או מסוג USB-C.</translation>
 <translation id="3127862849166875294">‏שינוי הגודל של שטח האחסון של Linux בכונן</translation>
-<translation id="3127882968243210659">‏כדי להפעיל את Google Play, עליך לגבות את הנתונים ולאפס את ה-Chromebook הזה להגדרות היצרן על פי דרישת <ph name="MANAGER"/>.</translation>
 <translation id="3129173833825111527">שוליים שמאליים</translation>
-<translation id="3129215702932019810">אירעה שגיאה בהפעלת האפליקציה</translation>
 <translation id="3130528281680948470">יתבצע איפוס של המכשיר שלך וכל חשבונות המשתמשים והנתונים המקומיים יוסרו ממנו. לא ניתן לבטל פעולה זו.</translation>
 <translation id="3130863904455712965">היסטוריה ועוד</translation>
-<translation id="3130966412954727147">אתרים שמבקרים בהם יכולים לאמת שמדובר במשתמש אמיתי ולא בבוט.</translation>
 <translation id="313205617302240621">שכחת את הסיסמה?</translation>
 <translation id="3132277757485842847">‏לא הצלחנו לשמור על החיבור לטלפון שלך. יש לוודא שהטלפון נמצא בקרבת מקום, אינו נעול, ושה-Bluetooth וה-Wi-Fi פועלים.</translation>
 <translation id="3132896062549112541">כלל</translation>
@@ -2503,6 +2555,7 @@
 <translation id="3193695589337931419">כלי איסוף של אותות במערכת</translation>
 <translation id="3194786596445804250">‏הצגת פרטים על חסימת קובצי cookie של צדדים שלישיים</translation>
 <translation id="3197453258332670132">בלחיצה ימנית או בלחיצה ארוכה, יוצג מידע שקשור לטקסט שבחרת</translation>
+<translation id="3198804549162832936">פתיחת הקישור בגרסה החדשה של <ph name="APP"/></translation>
 <translation id="3199127022143353223">שרתים</translation>
 <translation id="3200061262156232574">בעגלת הקניות שלך</translation>
 <translation id="3201237270673604992">סדר אלפביתי יורד</translation>
@@ -2511,6 +2564,7 @@
 <translation id="3202173864863109533">האודיו בכרטיסייה זו מושתק.</translation>
 <translation id="3202578601642193415">החדש ביותר</translation>
 <translation id="3204648577100496185">יכול להיות שיוסרו מהמכשיר נתונים המשויכים לאפליקציה הזו</translation>
+<translation id="3207960819495026254">מסומן בסימנייה</translation>
 <translation id="3208321278970793882">אפליקציה</translation>
 <translation id="3208584281581115441">בדיקה עכשיו</translation>
 <translation id="3208703785962634733">לא מאושר</translation>
@@ -2540,6 +2594,7 @@
 <translation id="3242289508736283383">‏במצב קיוסק של ChromeOS, יש להתקין אפליקציות עם מאפיין המניפסט 'kiosk_only'</translation>
 <translation id="3242665648857227438">‏בפרופיל הזה נעשה שימוש בהגדרות לשרת proxy של ChromeOS.</translation>
 <translation id="3243017971870859287">‏קריאת מספרים סידוריים של מכשירי ChromeOS Flex והרכיבים</translation>
+<translation id="324366796737464147">סינון רעשים</translation>
 <translation id="3244294424315804309">המשך השתקת הצלילים</translation>
 <translation id="324849028894344899"><ph name="WINDOW_TITLE"/> - שגיאת רשת</translation>
 <translation id="3248902735035392926">חשוב להתנהל בצורה בטוחה. כדאי להקדיש כמה רגעים כדי <ph name="BEGIN_LINK"/>לבדוק עכשיו את התוספים<ph name="END_LINK"/></translation>
@@ -2550,7 +2605,6 @@
 <translation id="3254084468305910013">{COUNT,plural, =0{לא נמצאו בעיות אבטחה}=1{נמצאה בעיית אבטחה אחת ({COUNT})}one{נמצאו {COUNT} בעיות אבטחה}two{נמצאו {COUNT} בעיות אבטחה}other{נמצאו {COUNT} בעיות אבטחה}}</translation>
 <translation id="3254451942070605467">מתבצעת הורדה לקובץ <ph name="FILE_NAME"/>, נשארו <ph name="PERCENT_REMAINING"/>%</translation>
 <translation id="3254516606912442756">זיהוי אוטומטי של אזור הזמן מושבת</translation>
-<translation id="6005783180842007825">‏פותחים את Brave בטלפון Android, עוברים אל "הגדרות &gt; סיסמאות &gt; שימוש בטלפון כמפתח אבטחה" ופועלים לפי ההוראות.</translation>
 <translation id="3255355328033513170">‏כל הנתונים שאוחסנו על-ידי <ph name="SITE_GROUP_NAME"/>, או על ידי אתרים הנכללים בקבוצה, יימחקו. גם קובצי cookie יימחקו. תבוצע יציאה מהאתרים האלה, גם בכרטיסיות פתוחות.</translation>
 <translation id="3257733480216378006">רוצה לאשר את <ph name="EXTENSIONS_REQUESTING_ACCESS_COUNT"/>?</translation>
 <translation id="3259723213051400722">אפשר לנסות שוב.</translation>
@@ -2585,6 +2639,7 @@
 <translation id="328119399589609861">שליטה בגישה של המכשיר למיקרופון, למצלמה ועוד</translation>
 <translation id="3281892622610078515">קבצים ותוכנות שיש להעביר להסגר:</translation>
 <translation id="3282210178675490297">המערכת משתפת כרטיסייה עם האפליקציה <ph name="APP_NAME"/></translation>
+<translation id="3284050785966252943">תצוגה מקדימה למילוי אוטומטי של מטא-נתונים</translation>
 <translation id="3285322247471302225">כרטיסייה &amp;חדשה</translation>
 <translation id="3285500645985761267">אישור לאתרים קשורים לראות את הפעילות שלך בקבוצה</translation>
 <translation id="328571385944182268">לשמור את הסיסמאות?</translation>
@@ -2630,6 +2685,7 @@
 <translation id="3317678681329786349">לא ניתן להשתמש בדף זה במצלמה ובמיקרופון</translation>
 <translation id="3319306431415395200">תרגום הטקסט בתמונה באמצעות <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="3320630259304269485">גלישה בטוחה (הגנה מאתרים מסוכנים) והגדרות אבטחה אחרות</translation>
+<translation id="3321460131042519426">הפעלת גלישת שורות</translation>
 <translation id="3323521181261657960">בונוס! קיבלת עוד זמן מסך</translation>
 <translation id="9044258386077615750">‏שינויים שיבוצעו כאן יחולו רק בדפדפן Brave. כדי לבצע שינויים בהגדרות של דפדפן Brave Lacros, עליך לפתוח את דפדפן Brave Lacros ולעבור להגדרות.</translation>
 <translation id="3325804108816646710">מתבצע חיפוש של פרופילים זמינים…</translation>
@@ -2685,6 +2741,7 @@
 <translation id="3378627645871606983">‏ההרשאות שניתנות ל-Steam חלות על כל האפליקציות והמשחקים של Steam.</translation>
 <translation id="337920581046691015"><ph name="PRODUCT_NAME"/> יותקן.</translation>
 <translation id="3380365263193509176">שגיאה לא ידועה</translation>
+<translation id="3380831556454930637">האפליקציה <ph name="APP_NAME"/> הוגדרה על ידי האדמין שלך כך שתפעל כשמתחברים למערכת ההפעלה</translation>
 <translation id="3382073616108123819">אופס! המערכת לא הצליחה לקבוע את המזהים של מכשיר זה.</translation>
 <translation id="3382200254148930874">הפיקוח מופסק...</translation>
 <translation id="338323348408199233">‏חסימה של תנועת גולשים ללא VPN</translation>
@@ -2697,6 +2754,7 @@
 <translation id="3388094447051599208">מגש הפלט כמעט מלא</translation>
 <translation id="3388788256054548012">הקובץ הזה מוצפן. צריך לבקש מהבעלים שלו לפענח אותו.</translation>
 <translation id="3390013585654699824">פרטי האפליקציה</translation>
+<translation id="3390530051434634135">הערה: <ph name="NOTE"/></translation>
 <translation id="404326254653176440">‏ניתוח מסמכים ב-Brave</translation>
 <translation id="3393582007140394275">‏לא ניתן להעביר (cast) את המסך.</translation>
 <translation id="3394850431319394743">אתרים שמורשים להשתמש במזהים כדי להפעיל תוכן מוגן</translation>
@@ -2757,6 +2815,8 @@
 <translation id="3441653493275994384">מסך</translation>
 <translation id="3441663102605358937">יש להיכנס שוב לחשבון <ph name="ACCOUNT"/> כדי לאמת אותו.</translation>
 <translation id="3338111307694111747">‏מתן הרשאה ל-Brave להשתמש בנתוני החומרה כדי לעזור בשיפור של <ph name="DEVICE_OS"/>. במקרה של סירוב, הנתונים האלה עדיין יישלחו אל Brave כדי לקבוע מועדים נכונים לעדכונים, אבל הם לא נשמרים ולא נעשה בהם שום שימוש אחר.</translation>
+<translation id="3443744348829035122">פג הזמן הקצוב במסגרת <ph name="BRAND"/></translation>
+<translation id="3443754338602062261">כבר שמרת סיסמאות לחשבונות האלה ב<ph name="BRAND"/>. אם אחת מהסיסמאות הבאות תיובא, היא תחליף את הסיסמה הקיימת.</translation>
 <translation id="3444726579402183581">ל-<ph name="ORIGIN"/> תהיה הרשאה לצפות בקובץ <ph name="FILENAME"/></translation>
 <translation id="3205145910764160561">‏תשובות מהירות מ-Brave Assistant</translation>
 <translation id="3445288400492335833"><ph name="MINUTES"/> דק'</translation>
@@ -2928,6 +2988,7 @@
 <translation id="360180734785106144">להציע תכונות חדשות כשהן זמינות</translation>
 <translation id="3602290021589620013">תצוגה מקדימה</translation>
 <translation id="3602870520245633055">הדפסה וסריקה</translation>
+<translation id="3602894439067790744">הקראת מספרים בתור</translation>
 <translation id="3603622770190368340">השגת אישור רשת</translation>
 <translation id="3605156246402033687">{COUNT,plural, =1{חשבון אחד ({COUNT}) משתמש באותה סיסמה}one{{COUNT} חשבונות משתמשים באותה סיסמה}two{{COUNT} חשבונות משתמשים באותה סיסמה}other{{COUNT} חשבונות משתמשים באותה סיסמה}}</translation>
 <translation id="3605780360466892872">מר מכופתר</translation>
@@ -2948,6 +3009,7 @@
 <translation id="3618286417582819036">מצטערים, אירעה שגיאה</translation>
 <translation id="3619115746895587757">קפוצ'ינו</translation>
 <translation id="3620136223548713675">מיקום גאוגרפי</translation>
+<translation id="3621202678540785336">קלט</translation>
 <translation id="3621807901162200696">‏עזרה בשיפור התכונות והביצועים של ChromeOS</translation>
 <translation id="362266093274784978">{COUNT,plural, =1{אפליקציה}one{# אפליקציות}two{# אפליקציות}other{# אפליקציות}}</translation>
 <translation id="362333465072914957">‏בהמתנה להנפקת אישור על ידי ה-CA</translation>
@@ -2983,7 +3045,6 @@
 <translation id="3647654707956482440">אי אפשר להשתמש בקישור הזה. יש לבדוק אם הקישור מכיל שגיאות הקלדה או להשתמש בקישור אחר ולנסות שוב.</translation>
 <translation id="3647998456578545569">{COUNT,plural, =1{<ph name="ATTACHMENTS"/> התקבל מהמכשיר <ph name="DEVICE_NAME"/>}one{<ph name="ATTACHMENTS"/> התקבלו מהמכשיר <ph name="DEVICE_NAME"/>}two{<ph name="ATTACHMENTS"/> התקבלו מהמכשיר <ph name="DEVICE_NAME"/>}other{<ph name="ATTACHMENTS"/> התקבלו מהמכשיר <ph name="DEVICE_NAME"/>}}</translation>
 <translation id="3648348069317717750">המערכת זיהתה את <ph name="USB_DEVICE_NAME"/></translation>
-<translation id="2305261982089259173">‏אתר כלשהו שמבקרים בו יכול לשמור פרטים ב-Brave כדי לאמת שמדובר במשתמש אמיתי. במהלך הגלישה, אתרים אחרים יכולים לבדוק ב-Brave ולאמת שסביר להניח שמדובר במשתמש מהימן, לפי פרטים מהאתר הראשון.</translation>
 <translation id="3650753875413052677">שגיאה בהרשמה</translation>
 <translation id="3650845953328929506">העלאת היומן בהמתנה.</translation>
 <translation id="3650952250015018111">הענקת גישה ל-"<ph name="APP_NAME"/>":</translation>
@@ -2997,6 +3058,7 @@
 <translation id="3659550105763988702">עליך להשתמש במפתח הגישה שלך עבור <ph name="APP_NAME"/></translation>
 <translation id="3659929705630080526">הזנת קוד גישה שגוי יותר מדי פעמים. עליך לנסות שוב מאוחר יותר</translation>
 <translation id="3660234220361471169">לא אמין</translation>
+<translation id="3661297433172569100">{NUM_PASSWORDS,plural, =1{נמצאה סיסמה אחת קיימת}one{נמצאו {NUM_PASSWORDS} סיסמאות קיימות}two{נמצאו {NUM_PASSWORDS} סיסמאות קיימות}other{נמצאו {NUM_PASSWORDS} סיסמאות קיימות}}</translation>
 <translation id="3664511988987167893">סמל התוסף</translation>
 <translation id="2334029754052191847">‏Brave זיהה שחלק מההגדרות שלך נפגמו על ידי תכנית אחרת ואיפס אותן לברירות המחדל המקוריות.</translation>
 <translation id="3665919494326051362">הגרסה הנוכחית היא <ph name="CURRENT_VERSION"/></translation>
@@ -3012,6 +3074,7 @@
 <translation id="3677959414150797585">כולל אפליקציות, דפי אינטרנט ועוד. המערכת שולחת נתונים סטטיסטיים כדי לשפר את ההצעות רק אם בחרת לשתף נתוני שימוש במכשיר.</translation>
 <translation id="3678156199662914018">תוסף: <ph name="EXTENSION_NAME"/></translation>
 <translation id="3678188444105291936">‏דפים שיוצגו בחלון זה לא יופיעו בהיסטוריית הדפדפן ולא ישאירו במחשב עקבות מסוגים אחרים, כגון קובצי Cookie, לאחר היציאה. קבצים שיורדו וסימניות שייווצרו לא יישמרו.</translation>
+<translation id="3679126865530709868">לוח מגע מובנה</translation>
 <translation id="368019053277764111">פתיחת החיפוש בחלונית הצדדית</translation>
 <translation id="3680683624079082902">‏קול של המרת טקסט לדיבור (TTS)</translation>
 <translation id="3681311097828166361">תודה על המשוב. כרגע אינך מחובר לאינטרנט, כך שהדוח שלך יישלח מאוחר יותר.</translation>
@@ -3033,6 +3096,7 @@
 <translation id="369489984217678710">סיסמאות ונתוני כניסה אחרים</translation>
 <translation id="369522892592566391">{NUM_FILES,plural, =0{בדיקות האבטחה הסתיימו. הנתונים שלך יועלו.}=1{בדיקות האבטחה הסתיימו. הקובץ שלך יועלה.}one{בדיקות האבטחה הסתיימו. הקבצים שלך יועלו.}two{בדיקות האבטחה הסתיימו. הקבצים שלך יועלו.}other{בדיקות האבטחה הסתיימו. הקבצים שלך יועלו.}}</translation>
 <translation id="3698471669415859717">הבדיקה הושלמה!</translation>
+<translation id="3698825735945432002">סוג הפילטר</translation>
 <translation id="3699624789011381381">כתובת אימייל</translation>
 <translation id="3699920817649120894">להשבית את הסנכרון וההתאמה האישית?</translation>
 <translation id="3700888195348409686">מציג (<ph name="PAGE_ORIGIN"/>)</translation>
@@ -3077,11 +3141,13 @@
 <translation id="3728188878314831180">שיקוף התראות מהטלפון</translation>
 <translation id="3728681439294129328">הגדרת כתובת הרשת</translation>
 <translation id="3729506734996624908">אתרים מורשים</translation>
+<translation id="3729957991398443677">כדי להציג את הסיסמה או להוסיף הערה לגביה, צריך לבחור באפשרות 'ניהול הסיסמאות' בסרגל הכתובות והחיפוש</translation>
 <translation id="3730076362938942381">אפליקציה לכתיבה עם סטיילוס</translation>
 <translation id="3732078975418297900">שגיאה בשורה <ph name="ERROR_LINE"/></translation>
 <translation id="3732530910372558017">קוד האימות יכול להיות באורך של 63 תווים לכל היותר</translation>
 <translation id="565625983765378675">‏הצגת מידע קשור על ידי Brave Assistant</translation>
 <translation id="3733296813637058299">‏נתקין את האפליקציות האלו בשבילך. אפליקציות נוספות בשביל <ph name="DEVICE_TYPE"/> זמינות בחנות Play.</translation>
+<translation id="3735039640698208086">בהשמעת אודיו...</translation>
 <translation id="3735740477244556633">מיון לפי</translation>
 <translation id="3738632186060045350">הנתונים של <ph name="DEVICE_TYPE"/> יימחקו בתוך 24 שעות</translation>
 <translation id="3738924763801731196"><ph name="OID"/>:</translation>
@@ -3090,14 +3156,15 @@
 <translation id="3742235229730461951">פריסת מקלדת בקוריאנית</translation>
 <translation id="3742666961763734085">לא ניתן למצוא יחידה ארגונית בשם הזה. יש לנסות שוב.</translation>
 <translation id="3743842571276656710">צריך להזין קוד אימות כדי ליצור התאמה עם <ph name="DEVICE_NAME"/></translation>
+<translation id="3744219658596020825">הסיסמאות שלך לא יובאו</translation>
 <translation id="3747077776423672805">‏כדי להסיר אפליקציות, צריך לעבור אל 'הגדרות' &gt; 'חנות Google Play' &gt; 'ניהול העדפות Android' &gt;'אפליקציות' או 'מנהל אפליקציות'. לאחר מכן צריך להקיש על האפליקציה שרוצים להסיר (ייתכן שיהיה צורך להחליק ימינה או שמאלה כדי למצוא את האפליקציה). לסיום, יש להקיש על 'הסרת התקנה' או 'השבתה'.</translation>
-<translation id="3747603683749989726">להפעיל את האבטחה המשופרת?</translation>
 <translation id="3748424433435232460">כבר שמורה במכשיר הזה סיסמה לחשבון הזה</translation>
 <translation id="3748706263662799310">דיווח על באג</translation>
 <translation id="3749724428455457489">מידע נוסף על הצעות למודעות מאתרים</translation>
 <translation id="1722111786667858719">‏מערכת Brave שמרה את הסיסמה שלך במכשיר הזה, אבל יש לך אפשרות לשמור אותה בחשבון Brave במקום. לאחר מכן, כל הסיסמאות שבחשבון Brave שלך יהיו זמינות גם כשיהיה לך חיבור לחשבון.</translation>
 <translation id="3752253558646317685">כדי לשמור את טביעת האצבע, על הילד או הילדה להרים ולהחזיר את האצבע כמה פעמים</translation>
 <translation id="3753033997400164841">מאחסנים סיסמה פעם אחת. משתמשים בה בכל מקום.</translation>
+<translation id="3753142252662437130">פילטרים של צבעים</translation>
 <translation id="3755411799582650620">ה-<ph name="PHONE_NAME"/> יכול כעת לבטל גם את הנעילה של <ph name="DEVICE_TYPE"/> זה.</translation>
 <translation id="375636864092143889">האתר משתמש במיקרופון</translation>
 <translation id="3756485814916578707">העברת המסך מתבצעת</translation>
@@ -3135,6 +3202,7 @@
 <translation id="3778868487658107119">‏אפשר לשאול אותו שאלות ולומר לו לבצע פעולות. העוזר הפרטי של Brave מוכן תמיד לסייע לך.</translation>
 <translation id="3780542776224651912">ל<ph name="BRAND"/> אין אפשרות לבדוק אם הסיסמאות שלך נחשפו בפרצות באבטחת מידע. כדאי לנסות שוב מאוחר יותר.</translation>
 <translation id="3781742599892759500">‏גישה של Linux למיקרופון</translation>
+<translation id="3783725005098956899">הצגת היומן</translation>
 <translation id="3783889407390048282">‏עליך לפנות מקום כדי לא לאבד את הגישה ל-Android.</translation>
 <translation id="3784472333786002075">‏קובצי cookie הם קבצים שנוצרים על ידי אתרים. יש שני סוגים של קובצי cookie: קובצי cookie של צד ראשון נוצרים על ידי האתר שנכנסת אליו. האתר מופיע בסרגל הכתובות. קובצי cookie של צד שלישי נוצרים על-ידי אתרים אחרים. האתרים האלה הם הבעלים של חלק מהתוכן בדף האינטרנט שנכנסת אליו, כמו מודעות או תמונות.</translation>
 <translation id="3785308913036335955">הצגת קיצור דרך אל יישומים</translation>
@@ -3147,6 +3215,7 @@
 <translation id="3790417903123637354">משהו השתבש. יש לנסות שוב בהמשך</translation>
 <translation id="379082410132524484">תוקף הכרטיס שלך פג</translation>
 <translation id="3792973596468118484"><ph name="NUM_EXTENSIONS"/> תוספים</translation>
+<translation id="3794792524918736965">‏הפעלת Windows Hello</translation>
 <translation id="379500251094592809">‏כדי להשתמש ב'שיתוף בקרבת מקום', יש לוודא ששני המכשירים אינם נעולים, שהם קרובים זה לזה ושבשניהם מופעל Bluetooth. אם השיתוף נעשה עם Chromebook שאינו רשום באנשי הקשר שלך, יש לוודא שהופעלו הרשאות הגישה בקרבת מקום (יש לפתוח את אזור הסטטוס באמצעות בחירה בשעה ואז להפעיל את הרשאות הגישה בקרבת מקום). <ph name="LINK_BEGIN"/>מידע נוסף<ph name="LINK_END"/></translation>
 <translation id="379509625511193653">כבוי</translation>
 <translation id="3795766489237825963">הפעלת האנימציות</translation>
@@ -3157,7 +3226,6 @@
 <translation id="3798632811625902122">‏מכשיר ה-Bluetooth <ph name="DEVICE"/> מבקש הרשאה לבצע התאמה.</translation>
 <translation id="3798670284305777884">רמקול (פנימי)</translation>
 <translation id="3799128412641261490">הגדרות גישה באמצעות מתג</translation>
-<translation id="3800030395703848668">הצגת האפשרויות ברשימה</translation>
 <translation id="3800806661949714323">הצגת הכול (מומלץ)</translation>
 <translation id="3800828618615365228">‏תנאים נוספים של Brave ו-ChromeOS</translation>
 <translation id="3802486193901166966">אין צורך בהרשאות מיוחדות או הרשאות גישה נוספות לאתרים כדי להשתמש בתוסף הזה</translation>
@@ -3223,6 +3291,7 @@
 <translation id="3844888638014364087">האמוג'י נוסף</translation>
 <translation id="3846116211488856547">‏אפשר להוריד כלים לפיתוח אתרים, אפליקציות Android ועוד. התקנת Linux תוריד נתונים בנפח של <ph name="DOWNLOAD_SIZE"/>.</translation>
 <translation id="3847319713229060696">סיוע לשיפור האבטחה באינטרנט לטובת כולם</translation>
+<translation id="3850172593216628215">‏אין יותר עדכוני אבטחה. אפשר לחסוך 50$ או יותר על מכשיר Chromebook חדש.</translation>
 <translation id="385051799172605136">חזרה</translation>
 <translation id="3851428669031642514">טעינה של סקריפטים לא בטוחים</translation>
 <translation id="3852215160863921508">סיוע בקלט</translation>
@@ -3290,6 +3359,7 @@
 <translation id="39103738135459590">קוד הפעלה</translation>
 <translation id="3911824782900911339">דף 'כרטיסייה חדשה'</translation>
 <translation id="3914173277599553213">נדרש</translation>
+<translation id="3914568430265141791">פתיחת התיקייה <ph name="FOLDER_TITLE"/></translation>
 <translation id="3915280005470252504">חיפוש קולי</translation>
 <translation id="3916233823027929090">בדיקות האבטחה הסתיימו</translation>
 <translation id="3916445069167113093">סוג קובץ זה עלול לגרום נזק למחשב שלך. האם ברצונך לשמור את <ph name="FILE_NAME"/> בכל מקרה?</translation>
@@ -3348,6 +3418,7 @@
 <translation id="3957079323242030166">‏נתוני גיבוי אינם נחשבים כחלק ממכסת האחסון ב-Drive.</translation>
 <translation id="3957844511978444971">‏יש להקיש על "אישור" כדי לאשר את בחירת ההגדרות האלה של שירותי Brave.</translation>
 <translation id="3958088479270651626">ייבוא סימניות והגדרות</translation>
+<translation id="3958110062351175311">יש הרשאה להציג בקשות בסרגל הכלים</translation>
 <translation id="3960566196862329469">ONC</translation>
 <translation id="3961005895395968120">עוד פעולות לגבי <ph name="IBAN_DESCRIPTION"/></translation>
 <translation id="3962119236270174787">הגנה רגילה מפני אתרים, הורדות ותוספים שידועים כמסוכנים</translation>
@@ -3389,6 +3460,7 @@
 <translation id="3987544746655539083">להמשיך לחסום – האתר לא יקבל גישה למיקום שלך</translation>
 <translation id="3987938432087324095">זה לא היה ברור.</translation>
 <translation id="3987993985790029246">העתקת קישור</translation>
+<translation id="3988488665753590964">כוונון התצוגה של הצבעים במסך</translation>
 <translation id="3988996860813292272">בחירת אזור זמן</translation>
 <translation id="399179161741278232">מיובאות</translation>
 <translation id="3992008114154328194">מתבצעת הורדה לקובץ <ph name="FILE_NAME"/>,‏ <ph name="STATUS"/></translation>
@@ -3410,6 +3482,7 @@
 <translation id="4014432863917027322">לתקן את '<ph name="EXTENSION_NAME"/>'?</translation>
 <translation id="4015163439792426608">מותקנים אצלך תוספים? אפשר <ph name="BEGIN_LINK"/>לנהל את התוספים<ph name="END_LINK"/> בקלות במקום אחד.</translation>
 <translation id="4017225831995090447">‏צריך ליצור קוד QR לקישור הזה</translation>
+<translation id="4017301767967283353">‏אם הרשת הזו תוסר, יוסרו גם המינוי ל-Passpoint והרשתות המשויכות אליו. <ph name="LINK_BEGIN"/>מידע נוסף<ph name="LINK_END"/></translation>
 <translation id="4019983356493507433">עריכה של רשימת הסימניות</translation>
 <translation id="4020327272915390518">תפריט אפשרויות</translation>
 <translation id="4021279097213088397">‏–</translation>
@@ -3420,12 +3493,12 @@
 <translation id="4022426551683927403">&amp;הוספה למילון</translation>
 <translation id="4025039777635956441">השתקת האתרים שנבחרו</translation>
 <translation id="402707738228916911">התקבלה הוראה של <ph name="AUTHORIZE_INSTRUCTION_NAME"/></translation>
+<translation id="4027569221211770437">תיקיית <ph name="FOLDER_TITLE"/></translation>
 <translation id="4027958407426528157">פתיחת אתרים באפליקציות שמותקנות ב-<ph name="DEVICE_TYPE"/></translation>
 <translation id="4028467762035011525">הוספה של שיטות קלט</translation>
 <translation id="4029556917477724407">חזרה מהדף <ph name="PAGE_TITLE"/></translation>
 <translation id="4031179711345676612">ניתן להשתמש במיקרופון בדף זה</translation>
 <translation id="4031527940632463547">החיישנים חסומים</translation>
-<translation id="4033415645631238123">‏אי אפשר יותר להיכנס באמצעות Smart Lock. אפשר להמשיך לבטל את נעילת המכשיר באמצעות Smart Lock.</translation>
 <translation id="4033471457476425443">הוספת תיקייה חדשה</translation>
 <translation id="5267915042712078903">‏הפעולה הזו תמחק באופן סופי את נתוני הגלישה במכשיר הזה. יכול להיות שיש אפליקציות אחרות ב-<ph name="DEVICE_TYPE"/> שלך שמחוברות לחשבונות Brave שבפרופיל הזה. כדי להסיר את החשבונות האלה, צריך להיכנס אל <ph name="BEGIN_LINK"/><ph name="SETTING_SECTION"/> &gt; <ph name="ACCOUNTS_SECTION"/><ph name="END_LINK"/>.</translation>
 <translation id="4033963223187371752">באתרים מאובטחים מוטמע לפעמים תוכן לא מאובטח, כמו תמונות או מסגרות של אתרים</translation>
@@ -3443,7 +3516,6 @@
 <translation id="4044612648082411741">יש להזין את סיסמת האישור</translation>
 <translation id="4044708573046946214">סיסמת נעילת מסך</translation>
 <translation id="404493185430269859">מנוע החיפוש המוגדר כברירת מחדל</translation>
-<translation id="4045180775310929593">כאן מוסיפים הערות…</translation>
 <translation id="4046013316139505482">לתוספים האלה לא דרושה יכולת לראות את המידע באתר הזה ולשנות אותו.</translation>
 <translation id="4046123991198612571">הרצועה הבאה</translation>
 <translation id="4047345532928475040">לא זמין</translation>
@@ -3476,6 +3548,7 @@
 <translation id="4077917118009885966">מודעות חסומות באתר הזה</translation>
 <translation id="4077919383365622693">‏המערכת תמחק את כל הנתונים וקובצי ה-cookie שנשמרו על ידי <ph name="SITE"/>.</translation>
 <translation id="4078738236287221428">תמיד</translation>
+<translation id="4078903002989614318">אפשרויות למיון ולרשימה</translation>
 <translation id="4079140982534148664">שימוש בבדיקת איות משופרת</translation>
 <translation id="4084682180776658562">סימנייה</translation>
 <translation id="4084835346725913160">סגירת <ph name="TAB_NAME"/></translation>
@@ -3604,6 +3677,7 @@
 <translation id="4205157409548006256">‏אירעה שגיאה במהלך ההגדרה של Linux.</translation>
 <translation id="4206144641569145248">חייזר</translation>
 <translation id="4206323443866416204">דוח משוב</translation>
+<translation id="4206585797409671301">יש הרשאה להציג בקשות</translation>
 <translation id="4207932031282227921">‏נשלחה בקשת הרשאה, יש ללחוץ על F6 כדי להשיב</translation>
 <translation id="4208390505124702064">חיפוש ב-<ph name="SITE_NAME"/></translation>
 <translation id="4209092469652827314">גדול</translation>
@@ -3619,6 +3693,7 @@
 <translation id="4217571870635786043">הכתבה</translation>
 <translation id="4218081191298393750">צריך ללחוץ על סמל הרמקול כדי להשתיק את הכרטיסייה הזו</translation>
 <translation id="4220648711404560261">קרתה שגיאה בזמן ההפעלה.</translation>
+<translation id="4222917615373664617">המעקב אחר מחירים מופעל. המחיר הוא <ph name="CURRENT_PRICE"/>.</translation>
 <translation id="4223845867739585293">יצירה של מפתח גישה</translation>
 <translation id="4225397296022057997">בכל האתרים</translation>
 <translation id="4228209296591583948">{NUM_EXTENSIONS,plural, =1{אסור להתקין את התוסף הזה}one{אסור להתקין את חלק מהתוספים האלה}two{אסור להתקין את חלק מהתוספים האלה}other{אסור להתקין את חלק מהתוספים האלה}}</translation>
@@ -3672,6 +3747,7 @@
 <translation id="4274667386947315930">פרטי כניסה</translation>
 <translation id="4274673989874969668">לאחר יציאה מאתרים, ייתכן שפעולות סנכרון שלהם ימשיכו כדי להשלים משימות, כמו העלאת תמונות או שליחת הודעות צ'אט</translation>
 <translation id="4275291496240508082">הפעלת צליל</translation>
+<translation id="4275397969489577657">הפעלת רישום ביומן של אירועים בסטרימינג</translation>
 <translation id="4275830172053184480">הפעלת המכשיר מחדש</translation>
 <translation id="4277434192562187284">‏מקור להגדרות XML</translation>
 <translation id="4278390842282768270">מותר</translation>
@@ -3681,7 +3757,6 @@
 <translation id="4280325816108262082">אם המכשיר מושבת או שאינו בשימוש, הוא ינותק באופן אוטומטי</translation>
 <translation id="4281844954008187215">תנאי שירות</translation>
 <translation id="4282196459431406533">‏Smart Lock מופעל</translation>
-<translation id="4284755288573763878">להשבית את האבטחה המשופרת?</translation>
 <translation id="4284903252249997120">‏הקראה וקורא המסך ChromeVox</translation>
 <translation id="4285418559658561636">עדכון סיסמה</translation>
 <translation id="4285498937028063278">ביטול הצמדה</translation>
@@ -3711,6 +3786,7 @@
 <translation id="4309420042698375243">‏‎<ph name="NUM_KILOBYTES"/>K ‏‎(<ph name="NUM_KILOBYTES_LIVE"/>K בשימוש)‎‎</translation>
 <translation id="4310132194679586591">כדי לפתוח את הקישור הזה, עליך לבחור אפליקציה במכשיר שלך</translation>
 <translation id="4310139701823742692">‏פורמט הקובץ שגוי. יש לבדוק את קובץ ה-PPD ולנסות שוב.</translation>
+<translation id="4310496734563057511">‏אם המכשיר הזה משותף עם אחרים, יש לך אפשרות להפעיל את Windows Hello כדי לאמת את זהותך בכל שימוש בסיסמה שמורה</translation>
 <translation id="431076611119798497">&amp;פרטים</translation>
 <translation id="4311284648179069796">אין הרשאה לקרוא ולשנות</translation>
 <translation id="3047737257561987312">{COUNT,plural, =1{‏חשבון Brave אחד}one{‏<ph name="EXTRA_ACCOUNTS"/> חשבונות Brave}two{‏<ph name="EXTRA_ACCOUNTS"/> חשבונות Brave}other{‏<ph name="EXTRA_ACCOUNTS"/> חשבונות Brave}}</translation>
@@ -3752,6 +3828,7 @@
 <translation id="4354073718307267720">תוצג שאלה כשאתר ירצה ליצור מפה בתלת ממד של הסביבה שלך או לעקוב אחר מיקום המצלמה</translation>
 <translation id="4354344420232759511">אתרים שבהם ביקרת יופיעו כאן</translation>
 <translation id="435527878592612277">בחירת התמונה שלך</translation>
+<translation id="4356100841225547054">כיבוי השמע</translation>
 <translation id="1762859572661747715">‏כדי לשפר את האבחון של בעיות בחיבור Bluetooth, גוגלרים יכולים לכלול יומני Bluetooth נוספים בדוחות המשוב שלהם. כשמסמנים את האפשרות הזו, הדוח יכלול את יומני btsnoop ו-HCI מהסשן הנוכחי, שיעברו ניקוי כדי להסיר כמה שיותר פרטים אישיים מזהים (PII). הגישה ליומנים האלה תוגבל למנהלים של קבוצת מוצרי ChromeOS ב-Listnr. היומנים יימחקו לצמיתות לאחר 90 ימים.</translation>
 <translation id="4358643842961018282">המכשיר שלך מעודכן</translation>
 <translation id="4359408040881008151">הותקן מפני שיש תוספים התלויים בו.</translation>
@@ -3774,6 +3851,7 @@
 <translation id="4376226992615520204">שירות המיקום כבוי</translation>
 <translation id="4377058670119819762">ניתן לגלול ימינה ושמאלה בשורת הכרטיסיות כשהיא מלאה.</translation>
 <translation id="4377363674125277448">הייתה בעיה באישור השרת.</translation>
+<translation id="437809255587011096">תיאור קולי של עיצוב טקסט</translation>
 <translation id="4378154925671717803">טלפון</translation>
 <translation id="4378308539633073595">גלילה קדימה</translation>
 <translation id="4378551569595875038">התחברות...</translation>
@@ -3871,6 +3949,7 @@
 <translation id="4452898361839215358">‏או לבחור קובץ PPD חדש. <ph name="LINK_BEGIN"/>מידע נוסף<ph name="LINK_END"/></translation>
 <translation id="4453430595102511050">יש לגעת בחיישן טביעות האצבע שבפינה הימנית העליונה של המקלדת. נתוני טביעות האצבע נשמרים באופן מאובטח ואף פעם לא נשלחים ממכשיר <ph name="DEVICE_TYPE"/>.</translation>
 <translation id="4453946976636652378">אפשר לחפש ב-<ph name="SEARCH_ENGINE_NAME"/> או להקליד כתובת אתר</translation>
+<translation id="4457472090507035117">בחירת הקול המוגדר כרגע:</translation>
 <translation id="4458535500699390320">בזמן שהכרטיסייה לא הייתה פעילה, במסגרת מצב החיסכון בזיכרון התפנה זיכרון בשביל משימות אחרות. תמיד אפשר לשנות זאת בהגדרות.</translation>
 <translation id="4459169140545916303">שימוש אחרון: לפני <ph name="DEVICE_LAST_ACTIVATED_TIME"/> ימים</translation>
 <translation id="4460014764210899310">פיזור הקבוצה</translation>
@@ -4059,6 +4138,7 @@
 <translation id="4622051949285931942">להשבית את כל העדכונים האוטומטיים?</translation>
 <translation id="4623167406982293031">יש לאמת את החשבון</translation>
 <translation id="4623189117674524348">‏המערכת לא הצליחה לאמת את הגישה של המכשיר הזה לממשק ה-API.</translation>
+<translation id="6245652993408932202">‏במנהל הסיסמאות של Brave‏ <ph name="SEPARATOR"/> <ph name="ACCOUNT"/></translation>
 <translation id="4625078469366263107">הפעלת האפליקציה</translation>
 <translation id="4627427111733173920">‏קובצי Cookie נחסמו</translation>
 <translation id="4627442949885028695">המשך במכשיר אחר</translation>
@@ -4158,9 +4238,11 @@
 <translation id="4708849949179781599">יציאה מ-<ph name="PRODUCT_NAME"/></translation>
 <translation id="4711638718396952945">שחזור הגדרות</translation>
 <translation id="4713409221649555176">כשכל החלונות נסגרים, מתבצעת מחיקה</translation>
+<translation id="4715631922189108923">עריכת שם המשתמש</translation>
 <translation id="47158868804223727">לוחצים על שם הקבוצה כדי להרחיב או לכווץ אותה</translation>
 <translation id="4716483597559580346">‏ביצוע Powerwash להגברת האבטחה</translation>
 <translation id="471759229191973607">שינוי העיצוב</translation>
+<translation id="4718564115458102525">לא זוהתה מקלדת</translation>
 <translation id="4722735765955348426">הסיסמה של <ph name="USERNAME"/></translation>
 <translation id="4722920479021006856"><ph name="APP_NAME"/> משתף את המסך שלך.</translation>
 <translation id="4722989931633062466">לא מורשים להציג בקשות כניסה של צד שלישי</translation>
@@ -4170,7 +4252,6 @@
 <translation id="4726710355753484204">‏כדי להתקרב, מקישים על Ctrl‏ + Alt + העלאת רמת הבהירות.
 כדי להתרחק, מקישים על Ctrl‏ +Alt + הורדת רמת הבהירות.</translation>
 <translation id="4726710629007580002">הופיעו אזהרות בעת הניסיון להתקין תוסף זה:</translation>
-<translation id="472738079453283624">מוצרים</translation>
 <translation id="4727847987444062305">גלישה מנוהלת כאורח</translation>
 <translation id="4728558894243024398">פלטפורמה</translation>
 <translation id="4730492586225682674">ההערה האחרונה שנכתבה במסך הנעילה עם סטיילוס</translation>
@@ -4219,7 +4300,6 @@
 <translation id="477647109558161443">יצירת קיצור דרך בשולחן העבודה</translation>
 <translation id="4776594120007763294">כדי להוסיף דף לקריאה במועד מאוחר יותר, לוחצים על הלחצן</translation>
 <translation id="4777458362738635055">משתמשים אחרים במכשיר הזה יכולים להשתמש ברשת הזו</translation>
-<translation id="477781522763920796">ההגדרה הזו פועלת ללא זיהוי שלך ובלי לתת לאתרים גישה להיסטוריית הגלישה.</translation>
 <translation id="4777825441726637019">‏חנות Play</translation>
 <translation id="4777943778632837590">הגדרת שרתי שמות של הרשת</translation>
 <translation id="4779083564647765204">מרחק מתצוגה</translation>
@@ -4258,10 +4338,13 @@
 <translation id="4811212958317149293">סריקה אוטומטית של מקלדת גישה באמצעות מתג</translation>
 <translation id="4811503964269049987">קיבוץ הכרטיסיות שנבחרו</translation>
 <translation id="4813512666221746211">שגיאת רשת</translation>
+<translation id="4814114628197290459">‏מחיקת מספר IBAN</translation>
 <translation id="4814378367953456825">יש לתת שם לטביעת האצבע הזו</translation>
 <translation id="481574578487123132">מכשירים מקושרים</translation>
 <translation id="4816097470512964351"><ph name="DEVICE"/>, פרטים</translation>
 <translation id="4816336393325437908">{COUNT,plural, =1{סימנייה אחת נמחקה}one{סימנייה {COUNT} נמחקה}two{{COUNT} סימניות נמחקו}other{{COUNT} סימניות נמחקו}}</translation>
+<translation id="4816900689218414104">יצירת מפתח גישה בטלפון או בטאבלט</translation>
+<translation id="4819323978093861656">{0,plural, =0{כל הדפדפנים ייסגרו עכשיו}=1{כל הדפדפנים ייסגרו בעוד: שנייה אחת}one{כל הדפדפנים ייסגרו בעוד: # שניות}two{כל הדפדפנים ייסגרו בעוד: # שניות}other{כל הדפדפנים ייסגרו בעוד: # שניות}}</translation>
 <translation id="8655084398729487585">‏התראות של Brave Assistant</translation>
 <translation id="4820236583224459650">הגדרה ככרטיס פעיל</translation>
 <translation id="4821935166599369261">&amp;יצירת פרופילים מופעלת</translation>
@@ -4293,6 +4376,7 @@
 <translation id="4841741146571978176">המכונה הווירטואלית הנדרשת לא קיימת. יש לנסות להגדיר מכונה מסוג <ph name="VM_TYPE"/> כדי להמשיך</translation>
 <translation id="4842976633412754305">דף זה מנסה לטעון סקריפטים ממקורות שאינם מאומתים.</translation>
 <translation id="4844333629810439236">מקלדות אחרות</translation>
+<translation id="1695183303756299564">‏כדי להציג את הסיסמאות גם כשלא משתמשים ב-Brave או ב-Android, נכנסים לחשבון בכתובת &lt;a target='_blank' href='<ph name="LINK"/>'&gt;passwords.google.com&lt;/a&gt;</translation>
 <translation id="484462545196658690">אוטומטי</translation>
 <translation id="6195403640086187022">‏כדי לשפר את הבטיחות, כדאי להצפין את הסיסמאות במכשיר שלך לפני שהן נשמרות במנהל הסיסמאות של Brave</translation>
 <translation id="4846628405149428620">בחירת המיקום לשמירת שינויים על ידי האתר הזה</translation>
@@ -4308,6 +4392,7 @@
 <translation id="4854317507773910281">בחירת חשבון הורה לשליחת בקשת אישור</translation>
 <translation id="485480310608090163">עוד הגדרות והרשאות</translation>
 <translation id="4858913220355269194">מסי</translation>
+<translation id="486213875233855629">הופעלה השתקה על ידי האדמין</translation>
 <translation id="4862642413395066333">‏חתימה על תגובות OCSP</translation>
 <translation id="4863702650881330715">הגדלת התאימות</translation>
 <translation id="4863769717153320198">‏נראה כמו <ph name="WIDTH"/> x <ph name="HEIGHT"/> (ברירת מחדל)</translation>
@@ -4334,6 +4419,7 @@
 <translation id="4878653975845355462">מנהל המערכת השבית את הרקעים המותאמים אישית</translation>
 <translation id="4878718769565915065">הוספה של טביעת אצבע אל מפתח האבטחה הזה נכשלה</translation>
 <translation id="4879491255372875719">אוטומטי (ברירת מחדל)</translation>
+<translation id="4880315242806573837">‏בקרוב לא יהיו יותר עדכוני אבטחה. מומלץ לשדרג למכשיר Chromebook חדש.</translation>
 <translation id="4880827082731008257">חיפוש בהיסטוריה</translation>
 <translation id="4881062916686771679">הקובץ הזה מכיל תוכנה זדונית שעלולה לפגוע בחשבונות האישיים או בחשבונות שלך ברשתות החברתיות, כולל <ph name="USER_EMAIL"/></translation>
 <translation id="4881685975363383806">אין צורך להזכיר לי בפעם הבאה</translation>
@@ -4440,6 +4526,7 @@
 <translation id="4975771730019223894">תיוג אפליקציות</translation>
 <translation id="4977882548591990850"><ph name="CHARACTER_LIMIT"/>/<ph name="CHARACTER_COUNT"/></translation>
 <translation id="4977942889532008999">אישור גישה</translation>
+<translation id="4979263087381759787">אפשרויות למפתחים</translation>
 <translation id="4980805016576257426">התוסף הזה מכיל תוכנה זדונית.</translation>
 <translation id="6298472828264321822">‏כדי לנקות את נתוני הגלישה מכל המכשירים המסונכרנים ומחשבון Brave שלך, <ph name="BEGIN_LINK"/>יש לבצע כניסה<ph name="END_LINK"/>.</translation>
 <translation id="6814280300414171363">‏אפשר לבחור מה לסנכרן בכל שלב דרך ההגדרות. Brave עשויה להתאים אישית את החיפוש ושירותים נוספים על סמך ההיסטוריה שלך.</translation>
@@ -4474,6 +4561,7 @@
 <translation id="5018207570537526145">פתיחת אתר התוסף</translation>
 <translation id="5018526990965779848">‏שליחת מידע לגבי אופן השימוש בנתונים וניתוח הביצועים. כדי לתרום לשיפור חוויית השימוש ב-Android, אפשר לשלוח אל Brave באופן אוטומטי נתוני אבחון, נתוני מכשיר ונתוני שימוש באפליקציות. הנתונים האלה יעזרו לשמור על היציבות של המערכת ושל האפליקציות ולבצע שיפורים אחרים. חלק מהנתונים הנצברים יעזרו גם לשפר את האפליקציות של Brave וכן יעזרו לשותפים של Brave, כמו מפתחים של Android. אם הופעלה ההגדרה 'פעילות באתרי אינטרנט ובאפליקציות נוספים', ייתכן שהנתונים יישמרו בחשבון Brave שלך.</translation>
 <translation id="5020008942039547742">בחירת חלון אחר</translation>
+<translation id="5020651427400641814">הפעלה של תיעוד דיבור</translation>
 <translation id="5021750053540820849">עדיין לא מעודכן</translation>
 <translation id="5024511550058813796">תהיה לך גישה להיסטוריה שלך בכל המכשירים המסונכרנים, כך שתהיה לך אפשרות להמשיך מהמקום שבו הפסקת.</translation>
 <translation id="5026492829171796515">‏יש להיכנס לחשבון כדי להוסיף חשבון Brave</translation>
@@ -4491,6 +4579,7 @@
 <translation id="5034000993065629381">יש לפנות לאדמין</translation>
 <translation id="5037676449506322593">הכול</translation>
 <translation id="5038818366306248416">בחרת בעבר לא לתת הרשאה לשום תוסף ב‑<ph name="ORIGIN"/></translation>
+<translation id="5039071832298038564">פרטי הרשת של המכשיר</translation>
 <translation id="1246634473640425087">‏הצגה וניהול של סיסמאות שמורות בחשבון Brave</translation>
 <translation id="5039804452771397117">זה בסדר</translation>
 <translation id="5040262127954254034">פרטיות</translation>
@@ -4563,6 +4652,7 @@
 <translation id="5108967062857032718">‏הגדרות - הסרת אפליקציות Android</translation>
 <translation id="5109044022078737958">מיה</translation>
 <translation id="5109816792918100764">הסרת <ph name="LANGUAGE_NAME"/></translation>
+<translation id="5111326646107464148">פתיחת הקבוצה בחלון חדש</translation>
 <translation id="5111692334209731439">&amp;מנהל הסימניות</translation>
 <translation id="5111794652433847656">אין מפתחות גישה עבור <ph name="APP_NAME"/> במכשיר הזה</translation>
 <translation id="5112577000029535889">&amp;כלים עבור מפתחים</translation>
@@ -4585,6 +4675,7 @@
 <translation id="5127620150973591153">מזהה חיבור בטוח: <ph name="TOKEN"/></translation>
 <translation id="5127805178023152808">סנכרון כבוי</translation>
 <translation id="5127881134400491887">ניהול חיבורי רשת</translation>
+<translation id="5127986747308934633">האדמין שולט במכשיר שלך</translation>
 <translation id="512903556749061217">מחובר</translation>
 <translation id="5130080518784460891">Eten</translation>
 <translation id="5130675701626084557">לא ניתן היה להוריד את הפרופיל. יש לנסות שוב מאוחר יותר או לפנות לספק לקבלת עזרה.</translation>
@@ -4666,6 +4757,7 @@
 <translation id="520621735928254154">שגיאה בייבוא האישור</translation>
 <translation id="5207949376430453814">הדגשה של סמן הטקסט</translation>
 <translation id="520840839826327499">‏<ph name="SERVICE_NAME"/> רוצה לוודא שמכשיר ה-ChromeOS שלך כשיר.</translation>
+<translation id="5208926629108082192">פרטי הרשת הסלולרית של המכשיר</translation>
 <translation id="5208988882104884956">חצי רוחב</translation>
 <translation id="5247681254378595620">‏ניתן להתיר הצגה של בועה קופצת בממשק העליון של Brave כדי לחפש בכרטיסיות הפתוחות.</translation>
 <translation id="5209320130288484488">לא נמצאו מכשירים</translation>
@@ -4682,6 +4774,7 @@
 <translation id="5225463052809312700">הפעלת המצלמה</translation>
 <translation id="5227679487546032910">דמות ברירת מחדל כחלחלה</translation>
 <translation id="5228579091201413441">הפעלת סנכרון</translation>
+<translation id="5229337741799419985">ההגדרה הזו פועלת ללא זיהוי שלך ובלי לתת לאתרים גישה להיסטוריית הגלישה</translation>
 <translation id="5230516054153933099">חלון</translation>
 <translation id="5233019165164992427">‏יציאת ניפוי באגים של NaCl</translation>
 <translation id="5233231016133573565">זיהוי תהליך</translation>
@@ -4732,6 +4825,7 @@
 <translation id="5275352920323889391">כלב</translation>
 <translation id="527605719918376753">השתקת כרטיסייה</translation>
 <translation id="527605982717517565">‏לאפשר תמיד JavaScript ב-<ph name="HOST"/></translation>
+<translation id="5276288422515364908">‏החל מ<ph name="MONTH_AND_YEAR"/> לא יתקבלו יותר עדכוני אבטחה ותוכנה למכשיר Chromebook הזה. מומלץ לשדרג את מכשיר Chromebook כדי ליהנות מהחוויה הטובה ביותר.</translation>
 <translation id="5276357196618041410">לא ניתן לשמור את ההגדרה בלי להתחבר לחשבון</translation>
 <translation id="5277127016695466621">הצגת החלונית הצדדית</translation>
 <translation id="5278823018825269962">מזהה סטטוס</translation>
@@ -4840,6 +4934,7 @@
 <translation id="5372579129492968947">ביטול הצמדת התוסף</translation>
 <translation id="5372632722660566343">המשך ללא חשבון</translation>
 <translation id="3568445333244015435">‏כדי להשתמש ב'שיתוף בקרבת מקום' עם אנשי הקשר האלה, יש להוסיף להם את כתובת האימייל שמשויכת לחשבון Brave שלהם.</translation>
+<translation id="5375577102295339548">אתרים יכולים לעזור לאמת שלא מדובר בבוט</translation>
 <translation id="5376094717770783089">בקשות הגישה</translation>
 <translation id="5376169624176189338">יש ללחוץ כדי לחזור, ללחוץ ולהחזיק כדי לראות את ההיסטוריה</translation>
 <translation id="5376931455988532197">הקובץ גדול מדי</translation>
@@ -4874,6 +4969,9 @@
 <translation id="5408750356094797285">שינוי מרחק התצוגה: <ph name="PERCENT"/></translation>
 <translation id="8701791090100080864">‏מחשבון Brave שלך</translation>
 <translation id="5411022484772257615">לא ניתן היה להשלים את ההרשמה לשימוש בית ספרי</translation>
+<translation id="5411856344659127989">‏כדי להוסיף חשבון של מישהו אחר, <ph name="LINK_BEGIN"/>יש להוסיף משתמש חדש<ph name="LINK_END"/> אל <ph name="DEVICE_TYPE"/>.
+
+יכול להיות שהרשאות שכבר נתת לאתרים ולאפליקציות יחולו על החשבון הזה. יש לך גם אפשרות לנהל את חשבונות Brave <ph name="SETTINGS_LINK_BEGIN"/>בהגדרות<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="5413640305322530561">מידע נוסף על נתוני השימוש וניתוח הביצועים</translation>
 <translation id="5414198321558177633">מתבצע רענון של רשימת הפרופילים. הפעולה עשויה להימשך מספר דקות.</translation>
 <translation id="5414566801737831689">קריאה של סמלי האתרים שבהם מבקרים</translation>
@@ -4899,6 +4997,7 @@
 <translation id="5432145523462851548">הצגה של <ph name="FILE_NAME"/> בתיקייה</translation>
 <translation id="543338862236136125">עריכת סיסמה</translation>
 <translation id="5434065355175441495">‏הצפנת RSA של PKCS #1</translation>
+<translation id="5435274640623994081">הפעלת רישום ביומן של צלילי התראה</translation>
 <translation id="5435779377906857208">לאשר תמיד ל-<ph name="HOST"/> גישה למיקום</translation>
 <translation id="5436492226391861498">‏בהמתנה ל-Proxy Tunnel...</translation>
 <translation id="5436510242972373446">חיפוש ב-<ph name="SITE_NAME"/>:</translation>
@@ -5046,6 +5145,9 @@
 <translation id="5559311991468302423">מחיקת הכתובת</translation>
 <translation id="55601339223879446">שינוי גבולות שולחן העבודה שלך בצג</translation>
 <translation id="5561162485081632007">מזהה אירועים מסוכנים כשהם מתרחשים ומזהיר אותך על כך</translation>
+<translation id="5561488201985846671">‏<ph name="BEGIN_PARAGRAPH1"/>שליחה אוטומטית של דוחות ממכשירי ChromeOS עוזרת לנו לקבוע את סדר העדיפויות של התיקונים והשיפורים ב-ChromeOS. הדוחות האלה יכולים לכלול מידע כמו נסיבות הקריסה של ChromeOS, התכונות שבהן השתמשת, הצריכה האופיינית של הזיכרון ונתוני אבחון ושימוש של אפליקציות ל-Android. חלק מהנתונים הנצברים יעזרו גם לשפר את האפליקציות של Brave וכן יעזרו לשותפים של Brave, כמו מפתחים של Android. אם גם סנכרון האפליקציות מופעל, המערכת תאסוף נתוני אבחון ושימוש אחרים של האפליקציות, כולל אפליקציות ל-Android ואפליקציות אינטרנט.<ph name="END_PARAGRAPH1"/>
+    <ph name="BEGIN_PARAGRAPH2"/>תמיד אפשר להעניק או לבטל את ההרשאה לשליחת הדוחות האלה בהגדרות מכשיר ChromeOS של הילד או הילדה שלך. מנהלי דומיין יכולים לשנות את ההגדרה הזו במסוף Admin.<ph name="END_PARAGRAPH2"/>
+    <ph name="BEGIN_PARAGRAPH4"/>אם ההגדרה 'פעילות באינטרנט ובאפליקציות' פועלת בחשבון Brave של הילד או הילדה שלך, יכול להיות שהנתונים שלהם יישמרו בחשבון Brave שלהם. כדי להכיר טוב יותר את ההגדרות האלה ולדעת איך לשנות אותן, אפשר לעבור לכתובת families.google.com.<ph name="END_PARAGRAPH4"/></translation>
 <translation id="5562781907504170924">‏הכרטיסייה הזו מחוברת להתקן Bluetooth.</translation>
 <translation id="556321030400250233">קובץ מקומי או משותף</translation>
 <translation id="6363797201514053536">‏אפשר לחפש ב-Brave או להקליד כתובת אתר</translation>
@@ -5167,6 +5269,7 @@
 <translation id="5678550637669481956">ניתנה הרשאה לקריאה וכתיבה ב-<ph name="VOLUME_NAME"/>.</translation>
 <translation id="5678821117681811450">מתבצעת שליחה אל <ph name="WEB_DRIVE"/></translation>
 <translation id="5678955352098267522">קריאת הנתונים שלך באתר <ph name="WEBSITE_1"/></translation>
+<translation id="5679785611070310751">‏החל מ<ph name="MONTH_AND_YEAR"/> לא יתקבלו יותר עדכוני אבטחה למכשיר Chromebook הזה. זה הזמן לשדרג אותו כדי לקבל את גרסאות התוכנה והאבטחה העדכניות. בכפוף לתנאי המבצע.</translation>
 <translation id="5680050361008726776">להסיר את "<ph name="ESIM_PROFILE_NAME"/>"?</translation>
 <translation id="5683806393796685434">יש להזין את קוד ההפעלה</translation>
 <translation id="5684181005476681636">‏פרטי Wi-Fi</translation>
@@ -5214,6 +5317,7 @@
 <translation id="5723508132121499792">אין יישומים פועלים ברקע</translation>
 <translation id="5724642200346111167">נתונים מאתרים נמחקים מהמכשיר כשסוגרים את כל החלונות</translation>
 <translation id="5727728807527375859">‏תוספים, Brave Apps ועיצובים עלולים לפגוע במחשב שלך. להמשיך?</translation>
+<translation id="5728235544432023605">אין תגובה מסשן ההעברה. צריך להפסיק את הסשן דרך <ph name="DEVICE_NAME"/>.</translation>
 <translation id="5728450728039149624">‏אפשרויות נעילת מסך ב-Smart Lock</translation>
 <translation id="5729712731028706266">&amp;הצגה</translation>
 <translation id="5731247495086897348">הד&amp;בקה ומעבר אל</translation>
@@ -5241,7 +5345,6 @@
 <translation id="5751345516399502412">‏בדיקת המוּכנוּת לשיתוף אינטרנט (tethering)</translation>
 <translation id="5755022574660047665">‏זיכרונות מ-Google Photos</translation>
 <translation id="5756163054456765343">מרכז עזרה</translation>
-<translation id="5757375109985023827">בחירת כרטיסייה לתצוגה מקדימה</translation>
 <translation id="5758631781033351321">רשימת הקריאה זמינה כאן</translation>
 <translation id="5759728514498647443">ניתן להשתמש ב-<ph name="APP_NAME"/> כדי לקרוא מסמכים ששולחים להדפסה באמצעות <ph name="APP_NAME"/>.</translation>
 <translation id="5762787084360227629">‏הזנת פרטי חשבון Brave</translation>
@@ -5287,6 +5390,7 @@
 <translation id="5794700615121138172">‏תיקיות משותפות של Linux</translation>
 <translation id="7397305826909094212">‏יציאה מכל אפליקציות Brave</translation>
 <translation id="5797521893972859201">יתבצע ניקוי של ההיסטוריה שבתיבת החיפוש</translation>
+<translation id="5797934230382081317">‏כך מתחילים להשתמש במנהל הסיסמאות ב-&lt;a target='_blank' href='<ph name="LINK_ANDROID"/>'&gt;Android&lt;/a&gt; וב-&lt;a target='_blank' href='<ph name="LINK_IOS"/>'&gt;iOS&lt;/a&gt;.</translation>
 <translation id="5798079537501238810">‏אתרים מורשים להתקין רכיבי handler של תשלומים</translation>
 <translation id="579915268381781820">מפתח האבטחה שלך הוסר.</translation>
 <translation id="5799478978078236781">אפשר לקבל טיפים, מידע על מבצעים ועדכונים בנוגע ל-<ph name="DEVICE_TYPE"/> ולשתף משוב.</translation>
@@ -5298,6 +5402,7 @@
 <translation id="5804241973901381774">הרשאות</translation>
 <translation id="5804259315582798390">נכשלה ההפעלה של שחזור הנתונים המקומיים</translation>
 <translation id="5805268472388605531">כדי לראות סימנים דיאקריטיים ותווים מיוחדים, יש להקיש הקשה ארוכה על מקשי המקלדת</translation>
+<translation id="5805354171420804923">בחלונית הצדדית החדשה אפשר להשוות בין תוצאות חיפוש מהר יותר</translation>
 <translation id="5805697420284793859">מנהל החלונות</translation>
 <translation id="5806447147478173900">נפח האחסון הכולל שבשימוש של האתרים המוצגים: <ph name="TOTAL_USAGE"/></translation>
 <translation id="5806773519584576205">0° (ברירת מחדל)</translation>
@@ -5312,6 +5417,7 @@
 <translation id="8750665647536322704">‏להעביר סיסמאות מהמכשיר הזה לחשבון Brave?</translation>
 <translation id="5817918615728894473">התאמה</translation>
 <translation id="5821565227679781414">יצירת קיצור דרך</translation>
+<translation id="5824976764713185207">הקראת הדף באופן אוטומטי אחרי שהטעינה שלו מסתיימת</translation>
 <translation id="5825412242012995131">מופעל (מומלץ)</translation>
 <translation id="5826395379250998812">יש לחבר את ה-<ph name="DEVICE_TYPE"/> לטלפון. <ph name="LINK_BEGIN"/>מידע נוסף<ph name="LINK_END"/></translation>
 <translation id="5826993284769733527">שקוף למחצה</translation>
@@ -5328,7 +5434,6 @@
 <translation id="583431638776747">האתר לא היה זמין</translation>
 <translation id="5834581999798853053">נותרו בערך <ph name="TIME"/> דקות</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - הקלטה במצלמה או במיקרופון</translation>
-<translation id="5835625581856809102">‏יש לסרוק את קוד ה-QR הזה באמצעות המכשיר שבו ברצונך ליצור מפתח גישה עבור <ph name="APP_NAME"/></translation>
 <translation id="583673505367439042">אתרים יכולים לבקש הרשאה לערוך קבצים ותיקיות במכשיר שלך</translation>
 <translation id="5836999627049108525">שפת המקור לתרגום</translation>
 <translation id="583756221537636748">כיסוי</translation>
@@ -5338,6 +5443,7 @@
 <translation id="5841270259333717135">‏הגדרת Ethernet</translation>
 <translation id="5842497610951477805">‏הפעלה של Bluetooth</translation>
 <translation id="5844574845205796324">קבלת הצעות לתוכן חדש ומעניין</translation>
+<translation id="5845424750482472447">{COUNT,plural, =1{מפתח אחד שמופה מחדש}one{{COUNT} מפתחות שמופו מחדש}two{{COUNT} מפתחות שמופו מחדש}other{{COUNT} מפתחות שמופו מחדש}}</translation>
 <translation id="5846200638699387931">שגיאה בתחביר המציין את הקשר: <ph name="ERROR_LINE"/></translation>
 <translation id="5846455742152785308">ללא צל</translation>
 <translation id="5846504156837627898">ניהול של הרשאות האתר</translation>
@@ -5354,6 +5460,7 @@
 <translation id="5857090052475505287">תיקייה חדשה</translation>
 <translation id="5857171483910641802">קיצורי הדרך מוצעים על סמך אתרים שאליהם נכנסת בתדירות גבוהה</translation>
 <translation id="5857675236236529683">בזמנך החופשי, רשימת הקריאה שלך נמצאת כאן</translation>
+<translation id="5857693745746757503">‏משדרגים היום וחוסכים 50$ או יותר על מכשיר Chromebook חדש</translation>
 <translation id="5858490737742085133">Terminal</translation>
 <translation id="585979798156957858">‏מקש Meta חיצוני</translation>
 <translation id="5860033963881614850">כבוי</translation>
@@ -5371,6 +5478,7 @@
 <translation id="586567932979200359">מתבצעת הפעלה של <ph name="PRODUCT_NAME"/> מתמונת הדיסק שלו. התקנתו במחשב מאפשרת לך להפעיל אותו ללא תמונת הדיסק, ומבטיחה שיישאר מעודכן.</translation>
 <translation id="6538479075382111079">‏שליחת דוחות קריסה וסטטיסטיקת שימוש אל Brave באופן אוטומטי</translation>
 <translation id="5867841422488265304">יש להזין ביטוי לחיפוש או כתובת אינטרנט</translation>
+<translation id="5868434909835797817">המיקרופון כבוי במכשיר</translation>
 <translation id="5869029295770560994">בסדר, הבנתי</translation>
 <translation id="5869522115854928033">סיסמאות שמורות</translation>
 <translation id="5870086504539785141">סגירת תפריט הנגישות</translation>
@@ -5382,7 +5490,6 @@
 <translation id="5877584842898320529">המדפסת שבחרת אינה זמינה או שאינה מותקנת כראוי. <ph name="BR"/> יש לבדוק את המדפסת או לנסות לבחור מדפסת אחרת.</translation>
 <translation id="5878945009165002849">חסימה של בקשות כניסה משירותי זיהוי</translation>
 <translation id="5881710783061958569">אם שינית את הסיסמה הזו, יש לערוך את הסיסמה השמורה ב-<ph name="BRAND"/> כך שהיא תתאים לסיסמה החדשה שלך.</translation>
-<translation id="5882449899683447569">משהו השתבש והסיסמאות שלך לא יובאו.</translation>
 <translation id="5882919346125742463">רשתות מוכרות</translation>
 <translation id="5883356647197510494">ההרשאות הבאות נחסמו אוטומטית: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/></translation>
 <translation id="5884447826201752041">התאמה אישית לכל תוסף</translation>
@@ -5399,7 +5506,7 @@
 <translation id="5895335062901455404">‏הפעילות וההעדפות השמורות שלך יהיו מוכנות בכל מכשיר ChromeOS Flex לאחר הכניסה באמצעות חשבון Brave. יש לך אפשרות לבחור מה לסנכרן בהגדרות.</translation>
 <translation id="589541317545606110">חיפוש בדף באמצעות <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="5896436821193322561">אין אישור</translation>
-<translation id="5900186025777217044">‏התכונה Smart Lock שונתה</translation>
+<translation id="5899860758576822363">‏הפעלה בעוצמת שמע נמוכה כשתוסף ה-ChromeVox מקריא</translation>
 <translation id="5900243355162006650">‏ההגדרות האישיות לשיתוף אינטרנט בין מכשירים (tethering):</translation>
 <translation id="8907706281008466056">‏תמונת פרופיל Brave</translation>
 <translation id="590036993063074298">פרטי האיכות של שיקוף המסך</translation>
@@ -5461,6 +5568,7 @@
 <translation id="5945002094477276055">‏הקובץ <ph name="FILE_NAME"/> עלול להיות מסוכן. לשלוח אותו לשירות הגלישה הבטוחה של Brave לצורך סריקה?</translation>
 <translation id="5945363896952315544">אין מקום לטביעות אצבע נוספות במפתח האבטחה שלך. כדי להוסיף טביעת אצבע חדשה, קודם צריך למחוק אחת מהקיימות.</translation>
 <translation id="5946591249682680882">מזהה דיווח <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
+<translation id="5948476936444935795">ביטול הייבוא</translation>
 <translation id="5948536763493709626">‏יש לחבר מקלדת או עכבר, או להמשיך בהגדרה באמצעות מסך המגע. אם ברצונך להשתמש במכשירי Bluetooth, עליך לוודא שהמכשירים מוכנים להתאמה.</translation>
 <translation id="5949544233750246342">לא ניתן לנתח את הקובץ</translation>
 <translation id="5951303645598168883"><ph name="ORIGIN"/> רוצה להשתמש בגופנים מקומיים</translation>
@@ -5512,6 +5620,7 @@
 <translation id="5993508466487156420">{NUM_SITES,plural, =1{הושלמה הבדיקה של אתר אחד}one{הושלמה הבדיקה של {NUM_SITES} אתרים}two{הושלמה הבדיקה של {NUM_SITES} אתרים}other{הושלמה הבדיקה של {NUM_SITES} אתרים}}</translation>
 <translation id="5997337190805127100">מידע נוסף על גישה לאתרים</translation>
 <translation id="5998458948782718639">עזרה בשיפור של המילוי האוטומטי</translation>
+<translation id="5999630716831179808">קולות</translation>
 <translation id="6000758707621254961"><ph name="RESULT_COUNT"/> תוצאות בשביל '<ph name="SEARCH_TEXT"/>'</translation>
 <translation id="6001839398155993679">קדימה!</translation>
 <translation id="6002122790816966947">המכשירים שלך</translation>
@@ -5663,6 +5772,7 @@
 <translation id="6124698108608891449">האתר הזה צריך הרשאות נוספות.</translation>
 <translation id="6125479973208104919">יהיה עליך להוסיף את החשבון שלך ב-<ph name="DEVICE_TYPE"/> פעם נוספת.</translation>
 <translation id="6126601353087978360">יש להזין את המשוב שלך כאן:</translation>
+<translation id="6127292407256937949">השמע פעיל. כיבוי השמע.</translation>
 <translation id="7089529486065491663">‏הנתונים שבחרת הוסרו מ-Brave ומהמכשירים המסונכרנים. ייתכן שבכתובת <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> עדיין יתאפשר לך לגשת לסוגים אחרים של היסטוריית גלישה בחשבון Brave, כמו חיפושים ופעילות משירותים אחרים של Brave.</translation>
 <translation id="6129938384427316298">‏הערה לאישור Netscape</translation>
 <translation id="6129953537138746214">רווח</translation>
@@ -5713,6 +5823,7 @@
 <translation id="6177412385419165772">מתבצעת הסרה…</translation>
 <translation id="6178664161104547336">בחירת אישור</translation>
 <translation id="6178682841350631965">פרטי הכניסה שלך עודכנו</translation>
+<translation id="6179893151569852357">‏המרת מקשי הפונקציה (F) למקשים בשורה העליונה של ChromeOS</translation>
 <translation id="6180510783007738939">כלי השורה</translation>
 <translation id="6180550893222597997">באיזה מפתח גישה ברצונך להשתמש עבור <ph name="APP_NAME"/>?</translation>
 <translation id="6181431612547969857">ההורדה נחסמה</translation>
@@ -5732,6 +5843,7 @@
 <translation id="6200151268994853226">ניהול התוספים</translation>
 <translation id="6201608810045805374">להסיר את החשבון הזה?</translation>
 <translation id="6202304368170870640">קוד האימות מאפשר להיכנס למכשיר או לבטל את נעילתו.</translation>
+<translation id="6203247599828309566">שמרת הערה לגבי סיסמה באתר הזה. כדי להציג אותה, צריך ללחוץ על סמל המפתח.</translation>
 <translation id="6205314730813004066">פרטיות בפרסום</translation>
 <translation id="6206199626856438589">תבוצע יציאה מהאתרים המוצגים, כולל מהכרטיסיות הפתוחות</translation>
 <translation id="6206311232642889873">העת&amp;קת תמונה</translation>
@@ -5749,6 +5861,7 @@
 <translation id="6212168817037875041">כיבוי המסך</translation>
 <translation id="6212752530110374741">שליחת קישור באימייל</translation>
 <translation id="621470880408090483">‏לא לאפשר לאתרים להתחבר למכשירי Bluetooth</translation>
+<translation id="6215039389782910006">{1,plural, =1{כדי להגן על הסיסמאות, <ph name="BRAND"/> ננעל לאחר דקה אחת של חוסר פעילות}one{כדי להגן על הסיסמאות, <ph name="BRAND"/> ננעל לאחר # דקות של חוסר פעילות}two{כדי להגן על הסיסמאות, <ph name="BRAND"/> ננעל לאחר # דקות של חוסר פעילות}other{כדי להגן על הסיסמאות, <ph name="BRAND"/> ננעל לאחר # דקות של חוסר פעילות}}</translation>
 <translation id="6216239400972191926">אתרים ואפליקציות שנדחו</translation>
 <translation id="6216601812881225442">‏אי אפשר לשנות את הגודל של הקונטיינר. כדי לשנות את הנפח שמוקצה מראש ל-Linux, יש לגבות ולאחר מכן לשחזר בקונטיינר חדש.</translation>
 <translation id="6216696360484424239">כניסה אוטומטית</translation>
@@ -5762,7 +5875,6 @@
 <translation id="6227002569366039565">מקישים על |<ph name="ACCELERATOR"/>| כדי להתמקד בבועה הזו, ומקישים שוב כדי להתמקד ברכיב שאליו היא מפנה.</translation>
 <translation id="6227280783235722609">תוסף</translation>
 <translation id="6229849828796482487">‏ניתוק רשת ה-Wi-Fi</translation>
-<translation id="6230165830166519105">רוצה לנסות דרך אחרת?</translation>
 <translation id="6231782223312638214">מוצע</translation>
 <translation id="6231881193380278751">‏יש להוסיף פרמטר שאילתה בכתובת האתר כדי לרענן את הדף באופן אוטומטי: chrome://device-log/?refresh=&lt;sec&gt;</translation>
 <translation id="6232017090690406397">סוללה</translation>
@@ -5810,6 +5922,7 @@
 <translation id="6268252012308737255">פתיחה באמצעות <ph name="APP"/></translation>
 <translation id="6270391203985052864">אתרים יכולים לבקש לשלוח התראות</translation>
 <translation id="6270770586500173387">שליחת <ph name="BEGIN_LINK1"/>פרטי מערכת ויישומים<ph name="END_LINK1"/>, כמו גם <ph name="BEGIN_LINK2"/>מדדים<ph name="END_LINK2"/></translation>
+<translation id="6270896861225278704">כרטיס התהליכים</translation>
 <translation id="6271348838875430303">התיקון בוטל</translation>
 <translation id="6273677812470008672">איכות</translation>
 <translation id="6274202259872570803">הקלטת מסך</translation>
@@ -5844,6 +5957,7 @@
 <translation id="6301300352769835063">‏מתן הרשאה ל-Brave להשתמש בנתוני החומרה כדי לעזור בשיפור של <ph name="DEVICE_OS"/>. אם לא מעניקים הרשאה, הנתונים האלה עדיין נשלחים אל Brave כדי לקבוע מהם העדכונים המתאימים, אבל הנתונים לא נשמרים ולא נעשה בהם שימוש אחר. מידע נוסף זמין בכתובת g.co/flex/HWDataCollection.</translation>
 <translation id="630292539633944562">הצעות מידע אישי</translation>
 <translation id="6305607932814307878">מדיניות גלובלית:</translation>
+<translation id="6305702903308659374">‏הפעלה בעוצמת שמע רגילה גם אם מכשיר ה-ChromeVox מקריא</translation>
 <translation id="6305909198255586420">יש לבצע את ההתקנה עם הפרופיל הראשי</translation>
 <translation id="630750887748244481">‏ההגדרה 'הרשאות לאתרים, לאפליקציות ולתוספים' הושבתה ב-Brave על ידי ההורה שלך. ההוספה של התוסף הזה אסורה.</translation>
 <translation id="6307990684951724544">המערכת עמוסה</translation>
@@ -5877,7 +5991,6 @@
 <translation id="6331818708794917058">‏אתרים יכולים לבקש הרשאה להתחבר אל מכשירי MIDI</translation>
 <translation id="8329196515830093443">‏הקובץ יישלח אל Brave לניפוי באגים</translation>
 <translation id="6333170995003625229">לא ניתן לאמת את כתובת האימייל או את הסיסמה שלך. יש לנסות להיכנס שוב.</translation>
-<translation id="6335920438823100346">‏כדי להפעיל את Linux, עליך לגבות את הנתונים ולאפס את ה-Chromebook הזה להגדרות המקוריות על פי דרישה של <ph name="MANAGER"/>.</translation>
 <translation id="6336038146639916978">‏ניפוי באגים באמצעות ADB הושבת על-ידי <ph name="MANAGER"/>. פעולה זו תאפס את <ph name="DEVICE_TYPE"/> בתוך 24 שעות. כדאי לגבות קבצים שברצונך לשמור.</translation>
 <translation id="6338968693068997776">‏הוספת התקן USB</translation>
 <translation id="6339668969738228384">יצירת פרופיל חדש בשביל <ph name="USER_EMAIL_ADDRESS"/></translation>
@@ -5911,6 +6024,7 @@
 <translation id="636850387210749493">‏הרשמה ל-Enterprise</translation>
 <translation id="6370021412472292592">לא ניתן היה לטעון את המניפסט.</translation>
 <translation id="637135143619858508">גדול</translation>
+<translation id="6372856076511744743">מיפוי מחדש של מקשי המקלדת</translation>
 <translation id="6374077068638737855">Iceweasel</translation>
 <translation id="6374469231428023295">ניסיון נוסף</translation>
 <translation id="6374635887697228982">רוצה לקבל הנחות?</translation>
@@ -5930,6 +6044,7 @@
 <translation id="6388429472088318283">חיפוש שפות</translation>
 <translation id="6388577073199278153">אין גישה לחשבון הנייד שלך</translation>
 <translation id="6390020764191254941">העברת כרטיסייה לחלון חדש</translation>
+<translation id="6391131092053186625">‏ה-IMEI של המכשיר הוא <ph name="IMEI_NUMBER"/>. המספר הזה יכול לשמש להפעלת השירות.</translation>
 <translation id="6393156038355142111">הצעת סיסמה חזקה</translation>
 <translation id="6393550101331051049">מורשים להציג תוכן לא מאובטח</translation>
 <translation id="6395423953133416962">שליחת <ph name="BEGIN_LINK1"/>פרטי מערכת<ph name="END_LINK1"/> ו<ph name="BEGIN_LINK2"/>ערכים<ph name="END_LINK2"/></translation>
@@ -5962,6 +6077,7 @@
 <translation id="6418160186546245112">המערכת חוזרת לגרסה המותקנת הקודמת של <ph name="IDS_SHORT_PRODUCT_NAME"/></translation>
 <translation id="6418481728190846787">הסרה לצמיתות של גישה עבור כל היישומים</translation>
 <translation id="6418511932144861495">התקנה של עדכון קריטי</translation>
+<translation id="641867537956679916">האדמין שלך התחבר כדי לבדוק בעיה. ניתן יהיה להמשיך להשתמש במכשיר לאחר שהאדמין יחזיר לך את השליטה.</translation>
 <translation id="641899100123938294">סריקה לחיפוש מכשירים חדשים</translation>
 <translation id="6419239627403237650">מהאתר הנוכחי</translation>
 <translation id="6419524191360800346">‏יש עדכון ל-Debian 11 (‏Bullseye)</translation>
@@ -6022,8 +6138,10 @@
 <translation id="6468485451923838994">גופנים</translation>
 <translation id="6468773105221177474"><ph name="FILE_COUNT"/> קבצים</translation>
 <translation id="6469557521904094793">הפעלת רשת סלולרית</translation>
+<translation id="6469702164109431067">סיסמאות ומפתחות גישה</translation>
 <translation id="6470823736074966819">השתקת ההתראות</translation>
 <translation id="6472893788822429178">הצגת לחצן 'דף הבית'</translation>
+<translation id="7701779303735687764">{COUNT,plural, =1{‏סיסמה אחת ({COUNT}) שמורה רק במכשיר הזה. כדי להשתמש בה במכשירים האחרים, &lt;a target='_blank' href='chrome://password-manager/'&gt;עליך לשמור אותה בחשבון Brave שלך&lt;/a&gt;.}one{‏{COUNT} סיסמאות שמורות רק במכשיר הזה. כדי להשתמש בהן במכשירים האחרים, &lt;a target='_blank' href='chrome://password-manager/'&gt;עליך לשמור אותן בחשבון Brave שלך&lt;/a&gt;.}two{‏{COUNT} סיסמאות שמורות רק במכשיר הזה. כדי להשתמש בהן במכשירים האחרים, &lt;a target='_blank' href='chrome://password-manager/'&gt;עליך לשמור אותן בחשבון Brave שלך&lt;/a&gt;.}other{‏{COUNT} סיסמאות שמורות רק במכשיר הזה. כדי להשתמש בהן במכשירים האחרים, &lt;a target='_blank' href='chrome://password-manager/'&gt;עליך לשמור אותן בחשבון Brave שלך&lt;/a&gt;.}}</translation>
 <translation id="6474498546677193336">‏לא ניתן לבטל את השיתוף כי אפליקציה משתמשת בתיקייה הזו. השיתוף של התיקייה הזו יבוטל בכיבוי הבא של Linux.</translation>
 <translation id="6474884162850599008">‏ניתוק חשבון Google Drive</translation>
 <translation id="6475294023568239942">‏עליך לפנות נפח אחסון או לשנות בהגדרות את גודל הנפח המיועד ל-Linux</translation>
@@ -6124,6 +6242,7 @@
 <translation id="6562117348069327379">אחסון יומני מערכת בספרייה 'הורדות'.</translation>
 <translation id="656293578423618167">הנתיב או שם הקובץ ארוך מדי. יש לשמור אותו בשם קצר יותר או במיקום אחר.</translation>
 <translation id="6568283005472142698">חיפוש בכרטיסיות</translation>
+<translation id="6570622975915850879">שימוש במכשיר אחר</translation>
 <translation id="65711204837946324">נדרשת הרשאה כדי להוריד</translation>
 <translation id="6571533309669248172">עיצוב טקסט</translation>
 <translation id="6571772921213691236">עריכה נתוני הכניסה</translation>
@@ -6170,7 +6289,6 @@
 <translation id="6597331566371766302">מנהל המערכת חסם את התקנת התוספים הבאים:</translation>
 <translation id="6601262427770154296">ניהול המילונים של המשתמש</translation>
 <translation id="6601612474695404578">‏באתרים מסוימים נעשה שימוש בקובצי cookie של צד שלישי כדי לטעון את דפי האתר. אם אתר מסוים לא פועל, אפשר לנסות לאשר את השימוש בקובצי cookie.</translation>
-<translation id="6602581642873576447">הפחתת הספאם וההונאות מושבתת</translation>
 <translation id="6602937173026466876">גישה למדפסות שלך</translation>
 <translation id="6602956230557165253">אפשר להשתמש במקש החצים השמאלי והימני כדי לנווט.</translation>
 <translation id="6603185457265641428">מחליטים אם לסנכרן את ההיסטוריה</translation>
@@ -6286,6 +6404,7 @@
 <translation id="2137027215992384054">‏אם מאפשרים שימוש בקובצי cookie, יכול להיות ש-Brave ישתמש בהם במהלך טעינה מראש.</translation>
 <translation id="6710213216561001401">הקודם</translation>
 <translation id="6710394144992407503">בדיקה של שגיאות איות תוך כדי הקלדה של טקסט בדפי אינטרנט</translation>
+<translation id="671226373742585927">‏כדי לסגור את החלונית הצדדית, לוחצים על הלחצן 'X'</translation>
 <translation id="6712943853047024245">כבר שמרת סיסמה עם שם המשתמש הזה לאתר <ph name="WEBSITE"/></translation>
 <translation id="6713233729292711163">הוספת פרופיל עבודה</translation>
 <translation id="6713668088933662563">אין להציע לתרגם את השפות האלה אף פעם</translation>
@@ -6347,6 +6466,7 @@
 <translation id="677646486571529447">הוספת הערה</translation>
 <translation id="6776589734354015877">נהנים מתכונות נוספות</translation>
 <translation id="6776729248872343918">הפעלת ההתאמה המהירה</translation>
+<translation id="677778081766640955">‏יש ללחוץ לחיצה ארוכה על המקש כדי לעבור בין מקשי הפונקציה (F) לפעולות ב-Chrome OS</translation>
 <translation id="6777817260680419853">הפניה לכתובת אתר אחרת נחסמה</translation>
 <translation id="6779092717724412415">כדי ליצור הדגשה דומה, בוחרים טקסט כלשהו ולוחצים לחיצה ימנית.</translation>
 <translation id="6779447100905857289">עגלות הקניות שלך</translation>
@@ -6370,6 +6490,7 @@
 <translation id="6790428901817661496">הפעלה</translation>
 <translation id="6790497603648687708"><ph name="EXTENSION_NAME"/> נוסף מרחוק</translation>
 <translation id="6793879402816827484">↓ <ph name="STATUS"/></translation>
+<translation id="679486139907144816">‏כדי להיכנס לאתר הזה עם מפתח גישה, צריך להפעיל את Windows Hello בהגדרות. אחר כך יש לחזור לאתר הזה ולנסות שוב.</translation>
 <translation id="6795371939514004514">בעזרת סריקות אוטומטיות אפשר לעבור אוטומטית בין פריטים שמופיעים במסך. כשפריט כלשהו מודגש, מקישים על "בחירה" כדי להפעיל אותו.</translation>
 <translation id="6795884519221689054">פנדה</translation>
 <translation id="6796509790850723820">עיבוד</translation>
@@ -6509,6 +6630,7 @@
 <translation id="8347080852065577355">‏הנתונים שלך יסונכרנו בכל דפדפני Brave שבהם הפעלת את הסנכרון עם החשבון הזה. <ph name="LINK_BEGIN"/>בהגדרות של ChromeOS<ph name="LINK_END"/> ניתן לראות את אפשרויות הסנכרון של ChromeOS.</translation>
 <translation id="6903590427234129279">פתיחת כל החלונות (<ph name="URL_COUNT"/>)</translation>
 <translation id="6903907808598579934">הפעלת הסנכרון</translation>
+<translation id="6903916726032521638">חיפוש של <ph name="QUERY_CLUSTER_NAME"/></translation>
 <translation id="6904344821472985372">ביטול גישה לקבצים</translation>
 <translation id="6904655473976120856">כדי לצאת, צריך ללחוץ על לחצן האפליקציה</translation>
 <translation id="6007499659428028662">{NUM_MINS,plural, =1{‏כדי להגן על הסיסמאות, מנהל הסיסמאות של Brave ננעל לאחר דקה אחת של חוסר פעילות}one{‏כדי להגן על הסיסמאות, מנהל הסיסמאות של Brave ננעל לאחר {NUM_MINS} דקות של חוסר פעילות}two{‏כדי להגן על הסיסמאות, מנהל הסיסמאות של Brave ננעל לאחר {NUM_MINS} דקות של חוסר פעילות}other{‏כדי להגן על הסיסמאות, מנהל הסיסמאות של Brave ננעל לאחר {NUM_MINS} דקות של חוסר פעילות}}</translation>
@@ -6536,7 +6658,6 @@
 <translation id="6925127338315966709">בחרת להוסיף פרופיל מנוהל לדפדפן הזה. למנהל המערכת שלך יש שליטה על הפרופיל וגישה לנתונים שלו. ניתן לסנכרן את הסימניות, ההיסטוריה, הסיסמאות והגדרות אחרות עם חשבון שלך, והן ינוהלו ידי מנהל המערכת.</translation>
 <translation id="6929126689972602640">‏בחשבונות בית ספריים, אין תמיכה באמצעי בקרת הורים. כדי להוסיף חשבון בית ספרי לצורך גישה אל Brave Classroom ואתרים אחרים למטלות לימודיות, תחילה יש להיכנס באמצעות החשבון האישי של הילד או הילדה. ניתן להוסיף את החשבון הבית ספרי בשלב מאוחר יותר בהגדרה.</translation>
 <translation id="7557633564943867584">Okay Brave</translation>
-<translation id="6930036377490597025">מפתח אבטחה חיצוני או חיישן מובנה</translation>
 <translation id="6930161297841867798">{NUM_EXTENSIONS,plural, =1{בקשת הארכה נדחתה}one{# בקשות הארכה נדחו}two{# בקשות הארכה נדחו}other{# בקשות הארכה נדחו}}</translation>
 <translation id="6931690462168617033">עוצמת הלחיצה</translation>
 <translation id="6935286146439255109">חסר מגש נייר</translation>
@@ -6672,6 +6793,7 @@
 <translation id="7039326228527141150">‏גישה למכשירי USB של <ph name="VENDOR_NAME"/></translation>
 <translation id="7039912931802252762">‏כניסה של כרטיס חכם של Microsoft </translation>
 <translation id="7039951224110875196">‏יצירת חשבון Brave לילד או לילדה</translation>
+<translation id="7039968672732182060">‏לא יתקבלו יותר עדכוני אבטחה במכשיר Chromebook שלך. זה הזמן לשדרג אותו כדי לקבל את גרסאות התוכנה והאבטחה העדכניות. בכפוף לתנאי המבצע.</translation>
 <translation id="7041405817194720353">בוצעה הסרה של <ph name="PERMISSION_1"/>,‏ <ph name="PERMISSION_2"/> ועוד <ph name="COUNT"/></translation>
 <translation id="7042116641003232070">יש לאתר הזה הרשאה לשמור נתונים במכשיר שלך</translation>
 <translation id="7043108582968290193">סיימת. לא נמצאו יותר אפליקציות שאינן תואמות.</translation>
@@ -6681,8 +6803,8 @@
 <translation id="7044606776288350625">נתוני סנכרון</translation>
 <translation id="7047059339731138197">בחירת רקע</translation>
 <translation id="7049293980323620022">להשאיר את הקובץ?</translation>
+<translation id="70496770794393383">טבלה של הסיסמאות שנשמרו</translation>
 <translation id="7050037487872780845">הגדרה לא תקינה של נקודה לשיתוף אינטרנט</translation>
-<translation id="7050519587566342213">הגלישה חלקה יותר כי סביר יותר שהמהימנות שלך מאומתת באתרים שונים.</translation>
 <translation id="7051551856857948729">‏הסתרת ערך IBAN</translation>
 <translation id="7052237160939977163">שליחת נתוני מעקב אחר ביצועים</translation>
 <translation id="7053983685419859001">חסימה</translation>
@@ -6825,6 +6947,7 @@
 <translation id="720715819012336933">{NUM_PAGES,plural, =1{יציאה מהדף}one{יציאה מהדפים}two{יציאה מהדפים}other{יציאה מהדפים}}</translation>
 <translation id="7207457272187520234">‏שליחת מידע לגבי אופן השימוש בנתונים וניתוח הביצועים. המכשיר הזה שולח עכשיו אל Brave באופן אוטומטי נתוני אבחון, נתוני מכשיר ונתוני שימוש באפליקציות. הנתונים האלה יעזרו לשמור על היציבות של המערכת ושל האפליקציות ולבצע שיפורים אחרים. חלק מהנתונים הנצברים יעזרו גם לשפר את האפליקציות של Brave וכן יעזרו לשותפים של Brave, כמו מפתחים של Android. ההגדרה הזו נאכפת על-ידי הבעלים. אם הופעלה ההגדרה 'פעילות באפליקציות ובאתרי אינטרנט נוספים', ייתכן שהנתונים יישמרו בחשבון Brave שלך.</translation>
 <translation id="7207631048330366454">חיפוש אפליקציות</translation>
+<translation id="7210257969463271891">אפליקציות האינטרנט שמתקינים יופיעו כאן</translation>
 <translation id="6900636661477276859">‏צריך לבחור קובץ CSV כדי לייבא סיסמאות למנהל הסיסמאות של Brave במכשיר הזה</translation>
 <translation id="7210499381659830293">מדפסות בתוסף</translation>
 <translation id="7211783048245131419">עוד לא הוקצו מתגים.</translation>
@@ -6855,7 +6978,6 @@
 <translation id="7235737137505019098">במפתח האבטחה שלך אין מספיק מקום לחשבונות נוספים.</translation>
 <translation id="7235873936132740888">אתרים יכולים לבצע משימות מיוחדות כשלוחצים על קישורים מסוגים מסוימים, כמו יצירת הודעה חדשה בתוכנת האימייל או הוספת אירועים חדשים ליומן הזמין באינטרנט</translation>
 <translation id="7238609589076576185">הוזן סימן דיאקריטי.</translation>
-<translation id="7696367864393687">‏מנהל הסיסמאות של Brave ‏<ph name="SEPARATOR"/> <ph name="ACCOUNT"/></translation>
 <translation id="7239108166256782787">ההעברה בוטלה על ידי <ph name="DEVICE_NAME"/></translation>
 <translation id="7240339475467890413">להתחבר לנקודה חדשה לשיתוף אינטרנט?</translation>
 <translation id="7241389281993241388">יש להיכנס אל <ph name="TOKEN_NAME"/> כדי לייבא את אישור הלקוח.</translation>
@@ -6887,6 +7009,7 @@
 <translation id="7258225044283673131">האפליקציה לא מגיבה. כדי לסגור את האפליקציה, יש לבחור באפשרות "אילוץ סגירה".</translation>
 <translation id="7260186537988033909">הרישום של מכשיר השילוט והקיוסק הושלם</translation>
 <translation id="4957342254208357193">‏במכשיר Android עשויה להופיע הגדרה דומה. אם מדידת המודעות מופעלת ב-Brave ובמכשיר Android, לחברה מסוימת עשויה להיות הרשאה למדוד את רמת האפקטיביות של מודעה כלשהי באתרים שבהם מבקרים ובאפליקציות שבהן משתמשים.</translation>
+<translation id="7261612856573623172">קול ברירת המחדל של המרת טקסט לדיבור</translation>
 <translation id="7262004276116528033">שירות הכניסה הזה מתארח ב-<ph name="SAML_DOMAIN"/>.</translation>
 <translation id="7263162347647986485">{NUM_SITES,plural, =1{ההרשאות הוסרו לאתר אחד}one{ההרשאות הוסרו ל-{NUM_SITES} אתרים}two{ההרשאות הוסרו ל-{NUM_SITES} אתרים}other{ההרשאות הוסרו ל-{NUM_SITES} אתרים}}</translation>
 <translation id="7264695323040866038">להשתמש תמיד באפליקציה <ph name="APP"/> לפתיחה של קישורים נתמכים באינטרנט?</translation>
@@ -6896,10 +7019,11 @@
 <translation id="7268127947535186412">ההגדרה הזו מנוהלת על ידי הבעלים של המכשיר.</translation>
 <translation id="7269229526547981029">הפרופיל הזה מנוהל על ידי <ph name="PROFILE_MANAGER"/>. יצירת פרופיל חדש לחשבון <ph name="USER_EMAIL_ADDRESS"/> נדרשת על ידי <ph name="ACCOUNT_MANAGER"/>.</translation>
 <translation id="7269736181983384521">שימוש בחבילת הגלישה לשיתוף בקרבת מקום</translation>
+<translation id="7271278495464744706">הפעלת תיאורים מפורטים</translation>
 <translation id="7272674038937250585">לא סופק תיאור</translation>
 <translation id="7273110280511444812">בוצע חיבור לאחרונה ב-<ph name="DATE"/></translation>
-<translation id="7273921429569738933">הפחתת הספאם וההונאות פועלת</translation>
 <translation id="727441411541283857"><ph name="PERCENTAGE"/>% - ‏<ph name="TIME"/> עד טעינה מלאה</translation>
+<translation id="727595954130325265">לקנייה</translation>
 <translation id="727952162645687754">שגיאה בהורדה</translation>
 <translation id="1484912962860902625">‏אירעה שגיאה בזמן ש-Brave חיפש תוכנות מזיקות</translation>
 <translation id="7280649757394340890">הגדרות קול של המרת טקסט לדיבור</translation>
@@ -6971,6 +7095,7 @@
 <translation id="735361434055555355">‏מתבצעת התקנה של Linux...</translation>
 <translation id="7354120289251608189">עכשיו אפשר לשנות את המראה של הדפדפן מתי שרוצים.</translation>
 <translation id="7356908624372060336">יומני רשת</translation>
+<translation id="7357271391997763660">להריץ את בדיקת הסיסמאות?</translation>
 <translation id="735745346212279324">‏VPN מנותק</translation>
 <translation id="7358324924540718595">הזיכרונות שהוסתרו להיום</translation>
 <translation id="7358338787722390626">סגירת החיפוש בחלונית הצדדית</translation>
@@ -7039,6 +7164,7 @@
 <translation id="7409735910987429903">אתרים עשויים להציג חלונות קופצים עם מודעות, או להשתמש בהפניות אוטומטיות כדי להוביל אותך לאתרים שלא כדאי לבקר בהם</translation>
 <translation id="7409854300652085600">הסימניות יובאו.</translation>
 <translation id="7410344089573941623">לבקש ממני רשות אם <ph name="HOST"/> רוצה גישה למצלמה ולמיקרופון</translation>
+<translation id="7410421966064092098">אתרים לא יכולים לעזור לאמת שלא מדובר בבוט</translation>
 <translation id="7410852728357935715">העברה למכשיר</translation>
 <translation id="7411614333737930931">יש להפעיל מחדש את המכשיר ולנסות שוב</translation>
 <translation id="741204030948306876">כן, אני רוצה</translation>
@@ -7097,6 +7223,7 @@
 <translation id="7457831169406914076">{COUNT,plural, =1{קישור}one{# קישורים}two{# קישורים}other{# קישורים}}</translation>
 <translation id="8944680893327873975">‏נעשה שימוש בבדיקת האיות של חיפוש Brave. הטקסט המוקלד בדפדפן נשלח אל Brave.</translation>
 <translation id="7458715171471938198">לשחזר את האפליקציות?</translation>
+<translation id="7458933488302148148">כדאי לבדוק את הסיסמאות השמורות כדי להגביר את האבטחה ולשמור על הבטיחות באינטרנט</translation>
 <translation id="7460045493116006516">העיצוב הנוכחי</translation>
 <translation id="7461924472993315131">הצמדה</translation>
 <translation id="746216226901520237">‏בפעם הבאה, הטלפון יבטל את הנעילה של <ph name="DEVICE_TYPE"/>. אפשר להשבית את Smart Lock דרך ההגדרות.</translation>
@@ -7145,6 +7272,7 @@
 <translation id="7503191893372251637">‏סוג אישור Netscape</translation>
 <translation id="7503985202154027481">תיעוד של ביקורך באתר יישמר במפתח האבטחה שלך.</translation>
 <translation id="750509436279396091">פתיחת תיקיית ההורדות</translation>
+<translation id="7505149250476994901">יש לומר "גדולה" אחרי האות</translation>
 <translation id="7505717542095249632">הסתרה של <ph name="MERCHANT"/></translation>
 <translation id="7506093026325926984">הסיסמה הזו תישמר במכשיר הזה</translation>
 <translation id="7506130076368211615">הגדרת רשת חדשה</translation>
@@ -7162,6 +7290,7 @@
 <translation id="7516981202574715431"><ph name="APP_NAME"/> בהשהיה</translation>
 <translation id="752098910262610337">הצגת קיצורי דרך</translation>
 <translation id="7522255036471229694">‏יש לומר "Hey Brave"</translation>
+<translation id="7523117833414447032">בהקראת אותיות רישיות</translation>
 <translation id="7523585675576642403">שינוי שם הפרופיל</translation>
 <translation id="7525067979554623046">יצירה</translation>
 <translation id="7526658513669652747">{NUM_DOWNLOADS,plural, =1{עוד פריט אחד}one{עוד {NUM_DOWNLOADS} פריטים}two{עוד {NUM_DOWNLOADS} פריטים}other{עוד {NUM_DOWNLOADS} פריטים}}</translation>
@@ -7201,6 +7330,7 @@
 <translation id="7559719679815339381">יש להמתין....מתבצע עדכון של אפליקצית הקיוסק. אין להסיר את הדיסק און קי.</translation>
 <translation id="7560756177962144929">סנכרון של <ph name="DEVICE_TYPE"/></translation>
 <translation id="7561196759112975576">תמיד</translation>
+<translation id="7561759921596375678">הפעלת השמע</translation>
 <translation id="7561982940498449837">סגירת התפריט</translation>
 <translation id="756445078718366910">פתיחת חלון דפדפן</translation>
 <translation id="7564847347806291057">סיום התהליך</translation>
@@ -7218,6 +7348,8 @@
 <translation id="7575272930307342804">פקדים לניווט</translation>
 <translation id="7576690715254076113">איסוף</translation>
 <translation id="7576976045740938453">התרחשה בעיה שקשורה לחשבון מצב ההדגמה.</translation>
+<translation id="7577048250795121670">‏<ph name="BEGIN_PARAGRAPH1"/>שליחה אוטומטית של דוחות ממכשירי ChromeOS עוזרת לנו לקבוע את סדר העדיפויות של התיקונים והשיפורים ב-ChromeOS. הדוחות האלה יכולים לכלול מידע כמו נסיבות הקריסה של ChromeOS, התכונות שבהן השתמשת והצריכה האופיינית של הזיכרון. אם גם סנכרון האפליקציות מופעל, המערכת תאסוף נתוני אבחון ושימוש אחרים של האפליקציות, כולל אפליקציות ל-Android ואפליקציות אינטרנט.<ph name="END_PARAGRAPH1"/>
+    <ph name="BEGIN_PARAGRAPH2"/>תמיד אפשר להעניק או לבטל את ההרשאה לשליחת הדוחות האלה בהגדרות של מכשיר Brave. מנהלי דומיין יכולים לשנות את ההגדרה הזו במסוף Admin.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="7578137152457315135">הגדרות של טביעות אצבעות</translation>
 <translation id="7578692661782707876">יש להזין את קוד האימות שלך.</translation>
 <translation id="7581007437437492586">יש להגדיר את המדיניות כראוי</translation>
@@ -7229,6 +7361,7 @@
 <translation id="8201192017531062522">‏Brave ימשיך לפעול כל עוד יש אפליקציות Brave פתוחות.</translation>
 <translation id="758895749110326677">‏אפשר לעזור לנו להשתפר בתחום הגיימינג במכשירי Chromebook</translation>
 <translation id="7589461650300748890">היי! זהירות.</translation>
+<translation id="7592060599656252486">חלק</translation>
 <translation id="7593653750169415785">האפשרות חסומה באופן אוטומטי כי בחרת בעבר שלא לתת הרשאה להצגת הודעות כמה פעמים</translation>
 <translation id="7594725637786616550">‏יש לבצע Powerwash כדי לאתחל את ה-<ph name="DEVICE_TYPE"/> שלך, כך שיהיה כמו מכשיר חדש.</translation>
 <translation id="7595453277607160340">‏כדי להשתמש באפליקציות של Android ולוודא שה-<ph name="DEVICE_TYPE"/> ימשיך לפעול כראוי, צריך להיכנס שוב ולעדכן.</translation>
@@ -7241,6 +7374,7 @@
 <translation id="7602079150116086782">אין כרטיסיות ממכשירים אחרים</translation>
 <translation id="7602173054665172958">ניהול הדפסה</translation>
 <translation id="7603785829538808504">האתרים ברשימה הבאה פועלים לפי הגדרה מותאמת אישית</translation>
+<translation id="7604543761927773395">{NUM_PASSWORDS,plural, =1{סיסמה אחת לא יובאה}one{{NUM_PASSWORDS} סיסמאות לא יובאו}two{{NUM_PASSWORDS} סיסמאות לא יובאו}other{{NUM_PASSWORDS} סיסמאות לא יובאו}}</translation>
 <translation id="7605594153474022051">הסנכרון לא עובד</translation>
 <translation id="7606248551867844312">אישור החיתוך</translation>
 <translation id="7606560865764296217">השהיית האנימציה</translation>
@@ -7390,6 +7524,7 @@
 <translation id="7718490543420739837">מקלדת שמופיעה במסך, הכתבה, גישה באמצעות מתג ועוד</translation>
 <translation id="7719367874908701697">מרחק מתצוגה בדף</translation>
 <translation id="7719588063158526969">שם המכשיר ארוך מדי</translation>
+<translation id="7721105961977907890"><ph name="WEBSITE"/>, פרטים נוספים</translation>
 <translation id="7721179060400456005">חלונות יכולים לסובב את התצוגות</translation>
 <translation id="7721237513035801311"><ph name="SWITCH"/> (<ph name="DEVICE_TYPE"/>)</translation>
 <translation id="7721258531237831532">הארגון שלך דורש פרופיל</translation>
@@ -7434,8 +7569,10 @@
 <translation id="7758450972308449809">התאמת הגבולות של התצוגה</translation>
 <translation id="7760004034676677601">האם זהו דף הפתיחה שציפית לראות?</translation>
 <translation id="7762024824096060040">לא ניתן להשתמש בחשבון הזה</translation>
+<translation id="7762243782113123335">‏מצטערים, משהו השתבש. יש לשלוח משוב ולציין ‎#bruschetta בתיאור. קוד השגיאה הוא <ph name="ERROR"/>.</translation>
 <translation id="7764225426217299476">הוספת כתובת</translation>
 <translation id="7764256770584298012"><ph name="DOWNLOAD_RECEIVED"/> מ-<ph name="DOWNLOAD_DOMAIN"/></translation>
+<translation id="7764527477537408401">פתיחת הקבוצה בחלון חדש</translation>
 <translation id="7765158879357617694">העברה</translation>
 <translation id="7765507180157272835">‏נדרשים Bluetooth ו-Wi-Fi</translation>
 <translation id="7766082757934713382">המתג הזה עוזר לצמצם את השימוש בחבילת הגלישה על ידי הרשת, על ידי השהיית העדכונים האוטומטיים של האפליקציה והמערכת.</translation>
@@ -7488,6 +7625,7 @@
 <translation id="780301667611848630">לא תודה</translation>
 <translation id="7804072833593604762">הכרטיסייה נסגרה</translation>
 <translation id="7805768142964895445">סטטוס</translation>
+<translation id="7805906048382884326">סגירת הטיפ</translation>
 <translation id="7807067443225230855">‏חיפוש ו-Assistant</translation>
 <translation id="7807117920154132308">‏נראה שכבר התבצעה הגדרה של Brave Assistant על ידי <ph name="SUPERVISED_USER_NAME"/> במכשיר אחר. באמצעות הפעלה של הקשר המסך, ל<ph name="SUPERVISED_USER_NAME"/> תהיה אפשרות להפיק יותר תועלת מ-Assistant במכשיר הזה.</translation>
 <translation id="7807711621188256451">התרה תמיד ל-<ph name="HOST"/> לגשת למצלמה שלך</translation>
@@ -7498,6 +7636,7 @@
 <translation id="7817361223956157679">‏המקלדת שמופיעה במסך לא עובדת עדיין באפליקציות Linux</translation>
 <translation id="7818135753970109980">עיצוב חדש נוסף (<ph name="EXTENSION_NAME"/>)</translation>
 <translation id="7819605256207059717">נחסם על ידי הארגון שלך</translation>
+<translation id="7820400255539998692">יש למחוק את <ph name="FILENAME"/> כדי שמשתמשים אחרים במכשיר לא יוכלו לראות את הסיסמאות שלך</translation>
 <translation id="7820561748632634942">להקצות עוד מתגים?</translation>
 <translation id="782057141565633384">העתקת כתובת &amp;סרטון</translation>
 <translation id="7824864914877854148">אירעה שגיאה ולא ניתן להשלים את הגיבוי</translation>
@@ -7519,6 +7658,7 @@
 <translation id="7838971600045234625">{COUNT,plural, =1{בוצעה שליחה של <ph name="ATTACHMENTS"/> אל <ph name="DEVICE_NAME"/>}one{בוצעה שליחה של <ph name="ATTACHMENTS"/> אל <ph name="DEVICE_NAME"/>}two{בוצעה שליחה של <ph name="ATTACHMENTS"/> אל <ph name="DEVICE_NAME"/>}other{בוצעה שליחה של <ph name="ATTACHMENTS"/> אל <ph name="DEVICE_NAME"/>}}</translation>
 <translation id="7839051173341654115">הצגה/גיבוי של מדיה</translation>
 <translation id="7839192898639727867">מזהה מפתח של נושא אישור</translation>
+<translation id="7839696104613959439">עיבוד בחירת הרשת</translation>
 <translation id="7842062217214609161">ללא קיצור דרך</translation>
 <translation id="7842692330619197998">‏אם צריך ליצור חשבון חדש, ניתן לעשות זאת בכתובת g.co/BraveEnterpriseAccount.</translation>
 <translation id="784273751836026224">‏הסרה של Linux</translation>
@@ -7558,6 +7698,7 @@
 <translation id="5801450813341024983">‏רקעים של Brave</translation>
 <translation id="7876027585589532670">לא ניתן לערוך את קיצור הדרך</translation>
 <translation id="7877451762676714207">שגיאת שרת לא ידועה. יש לנסות שוב או לפנות למנהל השרת.</translation>
+<translation id="7878945852730162014">ניהול הקבצים בזמן ההורדה, ופתיחת הקבצים בסיום ההורדה</translation>
 <translation id="7879478708475862060">עקוב אחר שיטת הקלט</translation>
 <translation id="7879631849810108578">קיצור הדרך הוגדר: <ph name="IDS_SHORT_SET_COMMAND"/></translation>
 <translation id="7880823633812189969">הנתונים המקומיים יימחקו אחרי הפעלה מחדש</translation>
@@ -7611,6 +7752,7 @@
 <translation id="7921347341284348270">אין לך אפשרות לצפות בהתראות של הטלפון בחשבון המנוהל הזה. כדאי לנסות שוב מחשבון אחר. <ph name="LINK_BEGIN"/>מידע נוסף<ph name="LINK_END"/></translation>
 <translation id="7922606348470480702">תוסף אחד</translation>
 <translation id="7923564237306226146">‏השדרוג של Linux הושלם</translation>
+<translation id="7924075559900107275">מועמד לתמיכה לטווח ארוך</translation>
 <translation id="7924358170328001543">שגיאה בהעברת היציאה</translation>
 <translation id="7925108652071887026">נתוני מילוי אוטומטי</translation>
 <translation id="792514962475806987">רמת זום במצב מעוגן:</translation>
@@ -7634,6 +7776,7 @@
 <translation id="7940265372707990269">מיון לפי <ph name="SORT_TYPE"/></translation>
 <translation id="7941179291434537290">‏המוּכנוּת לשיתוף אינטרנט (tethering):</translation>
 <translation id="7942349550061667556">אדום</translation>
+<translation id="7943349879009553083">האפשרות לא זמינה במצב אורח</translation>
 <translation id="7943368935008348579">‏הורדת קובצי ה-PDF</translation>
 <translation id="7943837619101191061">הוספת מיקום...</translation>
 <translation id="7944772052836377867">כדי לסנכרן צריך לאמת את הזהות שלך</translation>
@@ -7647,6 +7790,7 @@
 <translation id="7950629216186736592">‏סיבות: ב-LBS יש תמיכה רק בכתובות URL עם הקידומת http://‎,‏ https://‎ ו-file://‎.</translation>
 <translation id="6504904675770402423">‏כדי להוסיף או לנהל אמצעי תשלום של Google Pay, יש לעבור אל <ph name="BEGIN_LINK"/>חשבון Brave<ph name="END_LINK"/>.</translation>
 <translation id="795130320946928025">השבתת הכרטיס הווירטואלי</translation>
+<translation id="795240231873601803">הרשמה לארגון באמצעות חשבון לצורכי עבודה וחשבון בית ספרי</translation>
 <translation id="7952708427581814389">אתרים יכולים לבקש הרשאה לראות טקסט ותמונות בלוח העריכה</translation>
 <translation id="795282463722894016">השחזור הושלם</translation>
 <translation id="7952904276017482715">המזהה הצפוי הוא "<ph name="EXPECTED_ID"/>", אך המזהה היה "<ph name="NEW_ID"/>"</translation>
@@ -7706,6 +7850,7 @@
 <translation id="8002274832045662704">הגדרה מתקדמת של המדפסת</translation>
 <translation id="8002670234429879764">המדפסת <ph name="PRINTER_NAME"/> לא זמינה יותר</translation>
 <translation id="8004092996156083991">אם הסיסמאות שלך ייחשפו לאחרים, אנחנו נודיע לך.</translation>
+<translation id="8004507136466386272">מילים</translation>
 <translation id="8004582292198964060">דפדפן</translation>
 <translation id="8005600846065423578">התרה תמיד ל-<ph name="HOST"/> לגשת ללוח</translation>
 <translation id="8006630792898017994">‏מקש הרווח או Tab</translation>
@@ -7726,8 +7871,10 @@
 <translation id="8023133589013344428">‏ניהול השפות בהגדרות של ChromeOS Flex</translation>
 <translation id="8023801379949507775">עדכון תוספים</translation>
 <translation id="8025151549289123443">מסך הנעילה וכניסה לחשבון</translation>
+<translation id="8025291188699172126">מידע על העדכונים</translation>
 <translation id="8026334261755873520">ניקוי נתוני גלישה</translation>
 <translation id="8026471514777758216">כל המכשירים שלך</translation>
+<translation id="8027581147000338959">פתיחה בחלון חדש</translation>
 <translation id="8028060951694135607">‏שחזור מפתח של Microsoft</translation>
 <translation id="8028803902702117856">הקובץ <ph name="FILE_NAME"/> בהורדה, <ph name="SIZE"/></translation>
 <translation id="8028993641010258682">גודל</translation>
@@ -7751,7 +7898,6 @@
 <translation id="8044899503464538266">איטי</translation>
 <translation id="5462539695964427820">‏הסנכרון הושבת באמצעות מרכז השליטה של Brave.</translation>
 <translation id="8045923671629973368">‏יש להזין מזהה אפליקציה או כתובת URL של חנות אינטרנט</translation>
-<translation id="8046132381940444654">‏נציג משירות הלקוחות יכול להשתמש במספר ה-EID הזה כדי לעזור לך להפעיל את השירות</translation>
 <translation id="4526044389175164254">‏העברה לחשבון Brave</translation>
 <translation id="804786196054284061">הסכם רישיון למשתמש קצה</translation>
 <translation id="8048728378294435881">כדאי לגבות את הנתונים כדי להשתמש בהם בכל מכשיר</translation>
@@ -7768,6 +7914,7 @@
 <translation id="8053390638574070785">טעינת הדף מחדש</translation>
 <translation id="8054517699425078995">קובץ מסוג זה יכול לפגוע במכשיר שלך. האם לשמור את <ph name="FILE_NAME"/> בכל זאת?</translation>
 <translation id="8054563304616131773">יש להזין כתובת אימייל חוקית</translation>
+<translation id="8054609631325628928">המספרים האלה יכולים לשמש להפעלת השירות</translation>
 <translation id="8054883179223321715">זמין עבור אתרי וידאו מסוימים</translation>
 <translation id="8054921503121346576">‏מקלדת USB מחוברת</translation>
 <translation id="8057414620575339583">חיפוש בצד הדף</translation>
@@ -7822,6 +7969,7 @@
 <translation id="8097959162767603171">‏מנהל המערכת צריך קודם לאשר את התנאים וההגבלות ברשימת מכשירי Brave שבמסוף ה-Admin.</translation>
 <translation id="8098156986344908134">להתקין את <ph name="DEVICE_OS"/> ולמחוק את הכונן הקשיח?</translation>
 <translation id="8098616321286360457">נדרש חיבור לאינטרנט</translation>
+<translation id="8100230553590752325">שימוש בסיסמאות השמורות בכל מכשיר</translation>
 <translation id="810068641062493918"><ph name="LANGUAGE"/> נבחרה. כדי לבטל את הבחירה, יש ללחוץ על 'חיפוש' ועל מקש הרווח.</translation>
 <translation id="8100972288595615768">לנקות את הנתונים ואת ההרשאות לאתר <ph name="SITE_NAME"/>?</translation>
 <translation id="8101409298456377967">ניתן ליצור, לנהל ולשמור סיסמאות כדי להיכנס בקלות לאתרים ולאפליקציות. <ph name="BEGIN_LINK"/>מידע נוסף<ph name="END_LINK"/></translation>
@@ -7830,7 +7978,6 @@
 <translation id="8102139037507939978">‏הסרה של פרטים אישיים מזהים מהקובץ system_logs.txt.</translation>
 <translation id="810362914482827094">חיפוש מפתחות גישה</translation>
 <translation id="8104088837833760645">‏הורדת פרופיל eSIM</translation>
-<translation id="8105368624971345109">כיבוי</translation>
 <translation id="8107015733319732394">‏ההתקנה של חנות Google Play במכשיר <ph name="DEVICE_TYPE"/> מתבצעת. ייתכן שההתקנה תימשך כמה דקות.</translation>
 <translation id="810728361871746125">רזולוציית מסך</translation>
 <translation id="8108526232944491552">{COUNT,plural, =0{‏אין קובצי cookie של צד שלישי}=1{‏קובץ cookie אחד של צד שלישי נחסם}one{‏# קובצי cookie של צד שלישי נחסמו}two{‏# קובצי cookie של צד שלישי נחסמו}other{‏# קובצי cookie של צד שלישי נחסמו}}</translation>
@@ -7849,6 +7996,7 @@
 <translation id="81238879832906896">פרח צהוב ולבן</translation>
 <translation id="8123975449645947908">גלילה אחורה</translation>
 <translation id="8124313775439841391">‏ONC מנוהל</translation>
+<translation id="8129265306888404830">‏כדי להשתמש בכתובת האימייל של הארגון שלך (<ph name="EMAIL_DOMAIN"/>), עליך להירשם לארגון. אם המכשיר הזה מיועד לשימוש אישי, עליך להיכנס באמצעות חשבון Brave האישי.</translation>
 <translation id="813082847718468539">הצגת נתוני אתר</translation>
 <translation id="8131740175452115882">אישור</translation>
 <translation id="8133297578569873332">‏סביר – FM</translation>
@@ -7912,6 +8060,7 @@
 <translation id="8182412589359523143">כדי למחוק את כל הנתונים ממכשיר <ph name="DEVICE_TYPE"/> זה, <ph name="BEGIN_LINK"/>יש ללחוץ כאן<ph name="END_LINK"/>.</translation>
 <translation id="8182664696082410784"><ph name="REASON"/>
     לדעתי לא צריך לחסום את האתר הזה.</translation>
+<translation id="8183703640399301650">‏ה-EID של המכשיר הוא <ph name="EID_NUMBER"/> וה-IMEI של המכשיר הוא <ph name="IMEI_NUMBER"/>. המספרים האלה יכולים לשמש להפעלת השירות.</translation>
 <translation id="8184288427634747179">מעבר אל <ph name="AVATAR_NAME"/></translation>
 <translation id="8184318863960255706">מידע נוסף</translation>
 <translation id="8184472985242519288">אחיד</translation>
@@ -7922,9 +8071,11 @@
 <translation id="8189750580333936930">ארגז חול לפרטיות</translation>
 <translation id="8191230140820435481">לנהל את היישומים, התוספים והעיצובים שלך</translation>
 <translation id="8192944472786724289">האפליקציה <ph name="APP_NAME"/> מבקשת הרשאה לשתף את המסך שלך.</translation>
+<translation id="8193195501228940758">הסרת <ph name="WEBSITE"/></translation>
 <translation id="8193953846147532858"><ph name="BEGIN_LINK"/>המכשירים שלך<ph name="END_LINK"/> · <ph name="EMAIL"/></translation>
 <translation id="8195027750202970175">גודל בדיסק</translation>
 <translation id="8195191503358432289">הוספת סיסמה</translation>
+<translation id="8195265224453131880">עוצמה</translation>
 <translation id="8197673340773315084">יש להוסיף שם או תווית, כמו 'עבודה' או 'אישי'</translation>
 <translation id="8198456017687137612">העברת הכרטיסייה</translation>
 <translation id="8199300056570174101">מאפייני רשת (שירות) ומכשיר</translation>
@@ -7935,6 +8086,7 @@
 <translation id="8203732864715032075">המערכת שולחת לך התראות ומגדירה את המחשב הזה כברירת מחדל לשליחת ההודעות. <ph name="LINK_BEGIN"/>מידע נוסף<ph name="LINK_END"/></translation>
 <translation id="8205432712228803050">המסכים והציוד ההיקפי עשויים לעבור איפוס לזמן קצר. כדי שהשינוי הזה ייכנס לתוקף, יש לנתק את הציוד ההיקפי ולחבר אותו מחדש.</translation>
 <translation id="820568752112382238">האתרים שאליהם נכנסת בתדירות הגבוהה ביותר</translation>
+<translation id="8206267832882844324">עריכת ההערה</translation>
 <translation id="8206745257863499010">בלוז</translation>
 <translation id="8206859287963243715">סלולארי</translation>
 <translation id="8207404892907560325">בחירת מפתח גישה</translation>
@@ -7993,6 +8145,7 @@
 <translation id="8255212965098517578">התמונות, ההתראות והאפליקציות מהזמן האחרון</translation>
 <translation id="8256319818471787266">נבחן</translation>
 <translation id="8257950718085972371">המשך לחסום גישה למצלמה</translation>
+<translation id="8258027225380843424">הייבוא הושלם בהצלחה.</translation>
 <translation id="8260864402787962391">עכבר</translation>
 <translation id="8261506727792406068">מחיקה</translation>
 <translation id="8263336784344783289">כאן נותנים שם לקבוצה</translation>
@@ -8169,6 +8322,7 @@
 <translation id="8419098111404128271">תוצאות לחיפוש "<ph name="SEARCH_TEXT"/>"</translation>
 <translation id="8420308167132684745">עריכת ערכים במילון</translation>
 <translation id="8421361468937925547">כתוביות מיידיות (באנגלית בלבד)</translation>
+<translation id="8422748173858722634">IMEI</translation>
 <translation id="8422787418163030046">המגש חסר</translation>
 <translation id="8424250197845498070">נחסם על ידי ההגנה המתקדמת</translation>
 <translation id="8425213833346101688">שינוי</translation>
@@ -8198,6 +8352,7 @@
 <translation id="8448729345478502352">הגדלה או הקטנה של פריטים במסך</translation>
 <translation id="8449008133205184768">הדבקה והתאמה של סגנון</translation>
 <translation id="8449036207308062757">ניהול האחסון</translation>
+<translation id="8449836157089738489">פתיחת הכול בקבוצת כרטיסיות חדשה</translation>
 <translation id="845702320058262034">‏לא ניתן להתחבר. יש לוודא שה-Bluetooth של הטלפון מופעל.</translation>
 <translation id="8457451314607652708">ייבוא סימניות</translation>
 <translation id="8458341576712814616">קיצור דרך</translation>
@@ -8222,8 +8377,10 @@
 <translation id="8471959340398751476">ההנחות כבויות. ניתן להפעיל אותן בתפריט ההתאמה האישית</translation>
 <translation id="8472563193954285009">{COUNT,plural, =0{הסיסמאות שלך ייחודיות}=1{יש סיסמה אחת ({COUNT}) בשימוש חוזר}one{יש {COUNT} סיסמאות בשימוש חוזר}two{יש {COUNT} סיסמאות בשימוש חוזר}other{יש {COUNT} סיסמאות בשימוש חוזר}}</translation>
 <translation id="8472623782143987204">גיבוי חומרה</translation>
+<translation id="8473540203671727883">הקראת הטקסט שנמצא מתחת לסמן של העכבר</translation>
 <translation id="8473863474539038330">כתובות ועוד</translation>
 <translation id="2015014930243978107">‏תוכנה אחרת במחשב שלך הוסיפה תוסף שעשוי לשנות את אופן הפעולה של Brave.</translation>
+<translation id="8476408756881832830">‏אני רוצה להשהות את ההשמעה כשתוסף ה-ChromeVox מקריא</translation>
 <translation id="8476491056950015181">‏<ph name="BEGIN_PARAGRAPH1"/>שליחה אוטומטית של דוחות ממכשירי ChromeOS עוזרת לנו לקבוע את סדר העדיפויות של התיקונים והשיפורים ב-ChromeOS. הדוחות האלה יכולים לכלול מידע כמו נסיבות הקריסה של ChromeOS, התכונות שבהן השתמשת, הצריכה האופיינית של הזיכרון ונתוני אבחון ושימוש של אפליקציות ל-Android. חלק מהנתונים הנצברים יעזרו גם לשפר את האפליקציות של Brave וכן יעזרו לשותפים של Brave, כמו מפתחים של Android.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>תמיד אפשר להעניק או לבטל את ההרשאה לשליחת הדוחות האלה בהגדרות מכשיר ChromeOS של הילד או הילדה שלך. מנהלי דומיין יכולים לשנות את ההגדרה הזו במסוף Admin.<ph name="END_PARAGRAPH2"/>
     <ph name="BEGIN_PARAGRAPH4"/>אם ההגדרה 'פעילות באינטרנט ובאפליקציות' פועלת בחשבון Brave של הילד או הילדה שלך, יכול להיות שהנתונים שלהם יישמרו בחשבון Brave שלהם. כדי להכיר טוב יותר את ההגדרות האלה ולדעת איך לשנות אותן, אפשר לעבור לכתובת families.google.com.<ph name="END_PARAGRAPH4"/></translation>
@@ -8264,12 +8421,14 @@
 <translation id="8513108775083588393">סיבוב אוטומטי</translation>
 <translation id="8514746246728959655">יש לנסות מפתח אבטחה שונה</translation>
 <translation id="8514955299594277296">אין הרשאה לאתרים לשמור נתונים במכשיר (לא מומלץ)</translation>
+<translation id="8517759303731677493">עריכה…</translation>
 <translation id="8519895319663397036">‏לא ניתן לייבא את הסיסמאות. גודל הקובץ צריך להיות פחות מ-150KB.</translation>
 <translation id="8523493869875972733">שמירת השינויים</translation>
 <translation id="8523849605371521713">נוסף על-ידי מדיניות</translation>
 <translation id="4483547786985740455">‏שמירת כרטיסים בחשבון Brave</translation>
 <translation id="8525306231823319788">מסך מלא</translation>
 <translation id="8526813720153458066">SSH</translation>
+<translation id="8527228059738193856">רמקולים</translation>
 <translation id="8528074251912154910">הוספת שפות</translation>
 <translation id="8528479410903501741">‏שמירת מספר IBAN</translation>
 <translation id="8528962588711550376">תהליך הכניסה מתבצע.</translation>
@@ -8407,6 +8566,7 @@
 <translation id="8654151524613148204">הקובץ גדול מכדי שהמחשב שלך יוכל לטפל בו. מצטערים.</translation>
 <translation id="8655295600908251630">ערוץ</translation>
 <translation id="8655972064210167941">הכניסה נכשלה מפני שלא ניתן היה לאמת את הסיסמה. יש לפנות למנהל המערכת או לנסות שוב.</translation>
+<translation id="8656888282555543604">הפעלת רישום ברייל ביומן</translation>
 <translation id="8657393004602556571">רוצה למחוק את המשוב?</translation>
 <translation id="8662671328352114214">התחברות לרשת <ph name="TYPE"/></translation>
 <translation id="8662733268723715832">נראה שהפעולה נמשכת יותר זמן מהצפוי. יש לך אפשרות לדלג או להמתין עד סיום הפעולה.</translation>
@@ -8441,6 +8601,7 @@
 <translation id="8678538439778360739">‏הנתונים הוצפנו באמצעות ביטוי הסיסמה שלך לסנכרון בשעה <ph name="TIME"/>. הנתונים המוצפנים לא כוללים אמצעי תשלום וכתובות מ-Google Pay.</translation>
 <translation id="8678582529642151449">הכרטיסיות לא יתכווצו</translation>
 <translation id="8678933587484842200">איך להפעיל את האפליקציה הזו?</translation>
+<translation id="8679054765393461130">‏לפי הרשימה של עיבוד בחירת הרשת, יופעל Wi-Fi לסריקות בתדירות גבוהה. יכול להיות שתהיה לכך השפעה על הביצועים ברשת ה-Wi-Fi.</translation>
 <translation id="4251909665067750757">‏יש להיכנס כדי לקבל גישה אל הסימניות, ההיסטוריה, הסיסמאות והגדרות נוספות בכל המכשירים שברשותך. בנוסף, תחובר אוטומטית אל שירותי Brave.</translation>
 <translation id="8681886425883659911">הצגת המודעות חסומה באתרים שידוע שמוצגות בהם מודעות שמפריעות או מודעות מטעות</translation>
 <translation id="8682730193597992579">המדפסת <ph name="PRINTER_NAME"/> מחוברת ומוכנה</translation>
@@ -8506,6 +8667,7 @@
 <translation id="8740247629089392745">‏אפשר להעביר את ה-Chromebook הזה אל <ph name="SUPERVISED_USER_NAME"/>. ההתקנה כמעט הסתיימה. מיד ניתן יהיה לחקור ולהתנסות.</translation>
 <translation id="8740672167979365981">‏נדרש עדכון של ChromeOS Flex</translation>
 <translation id="8741944563400125534">מדריך להגדרת גישה באמצעות מתג</translation>
+<translation id="8742395827132970586">ההתקנה נכשלה. מתבצע ניקוי</translation>
 <translation id="8742998548129056176">‏זהו מידע כללי בנוגע למכשיר ולאופן השימוש בו (כמו רמת הסוללה, פעילות המערכת, פעילות באפליקציות ושגיאות). הנתונים ישמשו כדי לשפר את Android. חלק מהמידע הנצבר יעזור גם לשפר אפליקציות של Brave וכן יעזור לשותפים של Brave (למשל למפתחים של Android) לשפר את האפליקציות והמוצרים שלהם.</translation>
 <translation id="8744641000906923997">Romaji</translation>
 <translation id="8745034592125932220">אין לאתר הזה הרשאה לשמור נתונים במכשיר שלך</translation>
@@ -8525,6 +8687,7 @@
           &lt;p&gt;באפשרותך עדיין לבצע הגדרת תצורה באמצעות שורת הפקודה. אפשר לעיין בקטע &lt;code&gt;man<ph name="PRODUCT_BINARY_NAME"/>&lt;/code&gt; לקבלת מידע נוסף על סימונים ומשתנים סביבתיים.&lt;/p&gt;</translation>
 <translation id="8755175579224030324">ביצוע משימות הקשורות לאבטחה עבור הארגון. למשל, ניהול אישורים ומפתחות המאוחסנים במכשיר</translation>
 <translation id="8755376271068075440">&amp;גדול יותר</translation>
+<translation id="8755584192133371929">בחירת כרטיסייה לשיתוף</translation>
 <translation id="875604634276263540">‏כתובת ה-URL של התמונה לא תקינה</translation>
 <translation id="8756969031206844760">לעדכן את הסיסמה?</translation>
 <translation id="8757203080302669031">‏הכרטיסייה הזו מבצעת סריקה באופן פעיל כדי לאתר התקני Bluetooth.</translation>
@@ -8534,6 +8697,7 @@
 <translation id="8762886931014513155">צריך לעדכן את ה-<ph name="DEVICE_TYPE"/></translation>
 <translation id="8763927697961133303">‏התקן USB</translation>
 <translation id="8766796754185931010">Kotoeri</translation>
+<translation id="8767069439158587614">הצגת כל החיפושים של <ph name="QUERY_CLUSTER_NAME"/></translation>
 <translation id="4570609078116869893">‏עדכון אוטומטי של Brave אצל כל המשתמשים</translation>
 <translation id="8770406935328356739">ספריית הבסיס של תוסף</translation>
 <translation id="8771300903067484968">רקע דף הפתיחה עבר איפוס לרקע ברירת המחדל.</translation>
@@ -8625,12 +8789,14 @@
 <translation id="8846163936679269230">‏איפוס הפרופילים של ה-eSIM</translation>
 <translation id="8846239054091760429">אודיו במונו, הפעלה, כתוביות מיידיות ועוד</translation>
 <translation id="8847988622838149491">USB</translation>
+<translation id="8848963863312877204">ההורדות שלך נמצאות כאן</translation>
 <translation id="8849001918648564819">מוסתר</translation>
 <translation id="8849219423513870962">‏ביטול ההסרה של פרופיל ה-eSIM שנקרא <ph name="PROFILE_NAME"/></translation>
 <translation id="8849262417389398097"><ph name="CHECKED"/> מתוך <ph name="CHECKING"/></translation>
 <translation id="8850251000316748990">עוד אפשרויות...</translation>
 <translation id="885246833287407341">‏ארגומנטים של פונקציות API</translation>
 <translation id="8853586775156634952">הכרטיס הזה יישמר רק במכשיר זה</translation>
+<translation id="4501044136594402900">‏מנהל הסיסמאות של Brave באינטרנט</translation>
 <translation id="8854745870658584490">מקש הקיצור של הבחירה</translation>
 <translation id="8855977033756560989">‏מכשיר Chromebook Enterprise הזה מגיע עם שדרוג ל-Brave Enterprise כחלק מהחבילה. כדי ליהנות מהיכולות הארגוניות של המכשיר, מומלץ לרשום אותו עם חשבון אדמין של Brave.</translation>
 <translation id="8856028055086294840">שחזור אפליקציות ודפים</translation>
@@ -8658,6 +8824,7 @@
 <translation id="8871974300055371298">הגדרות תוכן</translation>
 <translation id="8872155268274985541">נמצא קובץ מניפסט לא חוקי לעדכון חיצוני של קיוסק. העדכון של אפליקציית הקיוסק נכשל. יש להסיר את הדיסק און קי.</translation>
 <translation id="8872506776304248286">פתח ביישום</translation>
+<translation id="8872774989979382243">השמע כבוי. הפעלת השמע.</translation>
 <translation id="8872777911145321141">תוצג שאלה כשאתר ירצה להשתמש במכשירי המציאות המדומה ובנתוני המציאות המדומה שלך (מומלץ)</translation>
 <translation id="887292602123626481">מידע נוסף על מנועי חיפוש שמוגדרים כברירת מחדל</translation>
 <translation id="8874341931345877644">‏העברה (cast) למכשיר:</translation>
@@ -8725,6 +8892,9 @@
 <translation id="894360074127026135">‏הגברה בינלאומית של Netscape</translation>
 <translation id="8943937581166190941">‏תוסף כלשהו משתמש בהתקן HID</translation>
 <translation id="8944099748578356325">אפשרות זו גורמת לפריקה מהירה יותר של הסוללה (כרגע %<ph name="BATTERY_PERCENTAGE"/>)</translation>
+<translation id="8944725102565796255">‏רוצה להשתמש בחשבון הזה באופן חד-פעמי? אפשר <ph name="GUEST_LINK_BEGIN"/>להשתמש במכשיר כאורח<ph name="GUEST_LINK_END"/>. כדי להוסיף חשבון של מישהו אחר, <ph name="LINK_BEGIN"/>יש להוסיף משתמש חדש<ph name="LINK_END"/> אל <ph name="DEVICE_TYPE"/>.
+
+יכול להיות שהרשאות שכבר נתת לאתרים ולאפליקציות יחולו על החשבון הזה. יש לך גם אפשרות לנהל את חשבונות Brave <ph name="SETTINGS_LINK_BEGIN"/>בהגדרות<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="8945274638472141382">גודל סמלים</translation>
 <translation id="8946359700442089734">תכונות לניפוי באגים לא הופעלו באופן מלא במכשיר <ph name="IDS_SHORT_PRODUCT_NAME"/> זה.</translation>
 <translation id="894763922177556086">איכות טובה</translation>
@@ -8784,6 +8954,7 @@
 <translation id="8993945059918628059">יש לגעת עם האצבע בחיישן טביעות האצבע. נתוני טביעות האצבע נשמרים באופן מאובטח ואף פעם לא נשלחים ממכשיר <ph name="DEVICE_TYPE"/>.</translation>
 <translation id="899403249577094719">‏כתובת אתר בסיסית של אישור Netscape</translation>
 <translation id="7113572760575285642">‏ה-Brave שלך, בכל מקום</translation>
+<translation id="899671834467367922">יש להתחבר כמשתמש אחר כדי להציג את ההערות ולהוסיף הערות בדף הזה.</translation>
 <translation id="8998078711690114234">סוג הקובץ הזה עלול להיות מסוכן. יש לשמור את הקובץ רק אם האתר <ph name="ORIGIN"/> מהימן</translation>
 <translation id="8999560016882908256">שגיאה בתחביר של קטע: <ph name="ERROR_LINE"/></translation>
 <translation id="9000185763019430629">יש לגעת בחיישן טביעות האצבע שבצד ימין של <ph name="DEVICE_TYPE"/>. נתוני טביעות האצבע נשמרים באופן מאובטח ואף פעם לא נשלחים ממכשיר <ph name="DEVICE_TYPE"/>.</translation>
@@ -8796,6 +8967,7 @@
 <translation id="9008828754342192581">בחרת בעבר לתת הרשאה לכל התוספים ב‑<ph name="ORIGIN"/></translation>
 <translation id="9009369504041480176">בטעינה (%<ph name="PROGRESS_PERCENT"/>)...</translation>
 <translation id="9009708085379296446">האם התכוונת לשנות את הדף הזה?</translation>
+<translation id="9010845741772269259">הוספת אמצעי תשלום</translation>
 <translation id="9011163749350026987">הצגה תמיד של הסמל</translation>
 <translation id="9011262023858991985">הכרטיסייה הזו מועברת</translation>
 <translation id="9011393886518328654">נתוני גרסה</translation>
@@ -8822,8 +8994,6 @@
 <translation id="9026731007018893674">הורדה</translation>
 <translation id="9026852570893462412">הפעולה עשויה להימשך מספר דקות. מתבצעת הורדה של המכונה הווירטואלית.</translation>
 <translation id="9027459031423301635">פתיחת קישור בכרטיסייה &amp;חדשה</translation>
-<translation id="9027707169256972235">הסרה</translation>
-<translation id="9029667986262585240">השבתת בחשבון שלך את הגרסה המשופרת של הגלישה הבטוחה.</translation>
 <translation id="9030515284705930323">‏הארגון שלך לא הפעיל את חנות Google Play בחשבון שלך. למידע נוסף, יש לפנות למנהל המערכת.</translation>
 <translation id="9030754204056345429">מהיר יותר</translation>
 <translation id="9030785788945687215">Gmail</translation>
@@ -8885,7 +9055,7 @@
 <translation id="907779190626433918">יש להשתמש בסיסמה ייחודית לכל אתר או אפליקציה. אם מישהו יגלה סיסמה שהשתמשת בה במקומות שונים, הוא יוכל להשתמש בה כדי להיכנס גם לשאר החשבונות שלך.</translation>
 <translation id="9078193189520575214">השינויים מתבצעים…</translation>
 <translation id="9078316009970372699">השבתה של שיתוף אינטרנט מיידי בין מכשירים</translation>
-<translation id="9078842827190780028">תוצאת חיפוש נוספות מוצגות בחלונית הצדדית</translation>
+<translation id="9078546160009814724">שם המשתמש: <ph name="USERNAME"/></translation>
 <translation id="9079267182985899251">בקרוב לא תהיה יותר תמיכה באפשרות זו. כדי להציג כרטיסייה יש להשתמש ב-<ph name="GOOGLE_MEET"/>.</translation>
 <translation id="9080175821499742274">במסגרת מצב החיסכון בזיכרון מתפנה זיכרון שמוקצה לכרטיסיות לא פעילות לשימוש בכרטיסיות פעילות ובאפליקציות אחרות.</translation>
 <translation id="2512721839479084080">‏הערכת תחומי העניין שלך – Brave יכול להעריך את תחומי העניין שלך</translation>
@@ -8904,6 +9074,7 @@
 <translation id="9094859731829297286">‏האם להקצות שטח דיסק קבוע בשביל Linux?</translation>
 <translation id="9094982973264386462">הסרה</translation>
 <translation id="9095364055741191097">לא ניתן לשחזר את הנתונים המקומיים</translation>
+<translation id="9096776523567481218">לא הותקנה באופן מקומי</translation>
 <translation id="9099220545925418560">על סמך היסטוריית הגלישה שלך. ההגדרה הזו מושבתת.</translation>
 <translation id="9100416672768993722">‏כדי לעבור לשיטת הקלט שבה נעשה שימוש לאחרונה, יש להקיש על <ph name="BEGIN_SHORTCUT"/><ph name="BEGIN_CTRL"/>Ctrl<ph name="END_CTRL"/><ph name="SEPARATOR"/><ph name="BEGIN_SPACE"/>רווח<ph name="END_SPACE"/><ph name="END_SHORTCUT"/></translation>
 <translation id="9100765901046053179">הגדרות מתקדמות</translation>
@@ -8948,6 +9119,7 @@
 <translation id="9131209053278896908">כאן יופיעו אתרים חסומים</translation>
 <translation id="9131487537093447019">‏שליחת הודעות למכשירי Bluetooth וקבלת הודעות מהם.</translation>
 <translation id="913383674572270194">{NUM_BOOKMARKS,plural, =1{סימנייה אחת}one{# סימניות}two{# סימניות}other{# סימניות}}</translation>
+<translation id="9133985615769429248">אם המכשיר הזה משותף עם אחרים, יש לך אפשרות להשתמש בנעילת המסך כדי לאמת את זהותך בכל שימוש בסיסמה שמורה</translation>
 <translation id="9134066738478820307">אתרים מורשים להשתמש במזהים כדי להפעיל תוכן מוגן</translation>
 <translation id="913411432238655354">שחזור האפליקציות במהלך ההפעלה</translation>
 <translation id="9137013805542155359">הצגת מקור</translation>
@@ -8967,6 +9139,11 @@
 <translation id="9150045010208374699">להשתמש במצלמה</translation>
 <translation id="9150079578948279438">לא ניתן היה להסיר את הפרופיל. יש לנסות שוב, או לפנות לספק לקבלת תמיכה טכנית.</translation>
 <translation id="9150860646299915960">‏שדרוג הקונטיינר של Linux</translation>
+<translation id="9151249085738989067">‏החלפת הקול של ChromeVox באופן אוטומטי על סמך השפה</translation>
+<translation id="3764102008770467630">‏מוצגים דפים שביקרת בהם והצעות לחיפושים כדי שיהיה קל לחזור לפעילות האחרונה שלך בתהליכים ב-Brave.
+        <ph name="BREAK"/>
+        <ph name="BREAK"/>
+        ניתן לנהל את ההגדרות דרך התפריט בכרטיס או לראות עוד אפשרויות ב'התאמה אישית של Brave'.</translation>
 <translation id="9154194610265714752">עודכן</translation>
 <translation id="91568222606626347">יצירת מקש קיצור...</translation>
 <translation id="9157096865782046368">0.8 שניות</translation>
@@ -8988,6 +9165,7 @@
 <translation id="916964310188958970">למה ההצעה הזאת הופיעה?</translation>
 <translation id="9170048603158555829">Thunderbolt</translation>
 <translation id="9170061643796692986">הגדרת הרשאות הגישה הנוכחית היא 'כל אנשי הקשר'</translation>
+<translation id="9170766151357647548">‏ה-EID של המכשיר הוא <ph name="EID_NUMBER"/>. המספר הזה יכול לשמש להפעלת השירות.</translation>
 <translation id="9170848237812810038">&amp;ביטול</translation>
 <translation id="2060128809251156338">‏תוכנית אחרת במחשב שלך הוסיפה עיצוב שעשוי לשנות את אופן הפעולה של Brave.</translation>
 <translation id="917350715406657904">הגעת למגבלת הזמן שנקבעה על ידי ההורה שלך לאפליקציה <ph name="APP_NAME"/>. מחר אפשר יהיה להשתמש בה למשך <ph name="TIME_LIMIT"/>.</translation>
@@ -8998,6 +9176,7 @@
 <translation id="9179524979050048593">הצגת שם המשתמש במסך הכניסה</translation>
 <translation id="9180281769944411366">‏הפעולה עשויה להימשך מספר דקות. מתבצעת הפעלה של הקונטיינר של Linux.</translation>
 <translation id="9180380851667544951">האתר רשאי לשתף את המסך</translation>
+<translation id="9180847522826713506">כדי להציג את הסיסמה או להוסיף הערה לגביה, צריך ללחוץ על סמל המפתח</translation>
 <translation id="9182556968660520230">לא לאפשר לאתרים להפעיל תוכן מוגן</translation>
 <translation id="3898880815710426825">‏Brave מוחק באופן אוטומטי אתרים שנוספו לפני יותר מ-4 שבועות. אתר שמבקרים בו פעם נוספת עשוי להופיע שוב ברשימה. אפשר גם לחסום את האפשרות של אתרים להציע מודעות.</translation>
 <translation id="918352324374649435">{COUNT,plural, =1{אפליקציה}one{# אפליקציות}two{# אפליקציות}other{# אפליקציות}}</translation>
@@ -9006,7 +9185,6 @@
 <translation id="9188732951356337132">‏שליחה של נתוני אבחון ונתונים על השימוש. המכשיר הזה שולח עכשיו אל Brave באופן אוטומטי נתוני אבחון ונתונים לגבי השימוש במכשיר ובאפליקציות. נתונים אלה לא ישמשו כדי לזהות את הילד/ה שלך, והם יעזרו לשמור על יציבות המערכת והאפליקציות, כמו גם לביצוע שיפורים אחרים. חלק מהנתונים הנצברים יעזרו גם לאפליקציות ולשותפים של Brave, כמו מפתחי Android. אם הופעלה בשביל הילד/ה שלך האפשרות 'פעילות באתרי אינטרנט ובאפליקציות נוספים', ייתכן שהנתונים יישמרו בחשבון Brave שלו/ה. <ph name="BEGIN_LINK2"/>מידע נוסף<ph name="END_LINK2"/></translation>
 <translation id="9192019773545828776">‏אפשר להאזין לקורא מסך קולי כדי להשתמש במכשיר בלי להסתכל במסך. ניתן לקבל משוב ברייל ממכשיר מחובר. כדי להפעיל או להשבית את ChromeVox, מקישים על Ctrl‏ + Alt‏ + Z. כדי לנווט, מקישים על מקש החיפוש + חץ שמאלה או חץ ימינה. כדי לבחור (להפעיל), מקישים על מקש החיפוש + מקש הרווח.</translation>
 <translation id="919686179725692564">מידע נוסף על גיבוי האפליקציות שלך</translation>
-<translation id="9198090666959937775">‏שימוש בטלפון Android כמפתח אבטחה</translation>
 <translation id="9199503643457729322">אפשר ללחוץ על הלחצן הזה כדי לצאת מהמדריך בנושא פרטיות.</translation>
 <translation id="9200339982498053969">ל-<ph name="ORIGIN"/> תהיה הרשאה לערוך את הקבצים בתיקייה <ph name="FOLDERNAME"/></translation>
 <translation id="920045321358709304">חיפוש ב-<ph name="SEARCH_ENGINE"/></translation>
@@ -9020,7 +9198,6 @@
 <translation id="9206889157914079472">כתיבת הערות באמצעות סטיילוס במסך הנעילה</translation>
 <translation id="9209563766569767417">‏המערכת בודקת את הגדרות הקונטיינר של Linux</translation>
 <translation id="9209689095351280025">‏אתרים לא יכולים להשתמש בקובצי cookie שעוקבים אחריך באינטרנט</translation>
-<translation id="9211177926627870898">נדרש עדכון</translation>
 <translation id="9214520840402538427">אופס! תם הזמן הקצוב לאתחול של מאפייני זמן ההתקנה. יש לפנות אל נציג התמיכה שלך.</translation>
 <translation id="9214695392875603905">קאפקייק</translation>
 <translation id="9215293857209265904">"<ph name="EXTENSION_NAME"/>" נוסף</translation>
@@ -9032,9 +9209,9 @@
 <translation id="9220723036554088545">להעלות קובץ</translation>
 <translation id="9220820413868316583">צריך להרים את האצבע ולנסות שוב.</translation>
 <translation id="142389341645668510">‏התאמה אישית של Brave</translation>
-<translation id="9222839025964079645">סיסמאות שלא יובאו (<ph name="COUNT"/>)</translation>
 <translation id="923467487918828349">הצגת הכול</translation>
 <translation id="924818813611903184">‏ניהול שפות בהגדרות ChromeOS</translation>
+<translation id="925270020047573546">המכשיר הזה לא תומך בהעברת אודיו במחשב.</translation>
 <translation id="929117907539171075">המערכת תמחק גם נתונים שנשמרו במצב אופליין באפליקציה מותקנת</translation>
 <translation id="930268624053534560">חותמות זמן מפורטות</translation>
 <translation id="930893132043726269">הנדידה פועלת</translation>
@@ -9120,6 +9297,7 @@
 <translation id="5786139852593193364">חלון 'גלישה בסתר' חדש</translation>
 <translation id="8929921524852843330">&amp;לשונית פרטית חדשה</translation>
 <translation id="7973394300052703468">חלון &amp;נסתר חדש</translation>
+<translation id="8428257636009471988">בקר בחנות מקוונת</translation>
 <translation id="6395403722585816044">ההורדה בוצעה במצב גלישה בסתר</translation>
 <translation id="6216189820029634282">לצאת בכל זאת ממצב גלישה בסתר?</translation>
 <translation id="4132775938064605501">לצאת בכל זאת ממצב גלישה בסתר?</translation>
@@ -9136,6 +9314,7 @@
 <translation id="8808478386290700967">חנות אינטרנטית</translation>
 <translation id="8261378640211443080">התוסף הזה לא רשום ב<ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> וייתכן שנוסף ללא ידיעתך.</translation>
 <translation id="2361296898422164385">צפו בזכרונות של החשבונות המועדפים שלכם ועוד</translation>
+<translation id="371025421736749522">פתח בחלון פרטי</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (גלישה בסתר)</translation>
 <translation id="263189163883089157">אפשר לגלוש בפרטיות בעזרת חלון גלישה בסתר</translation>
 <translation id="5263632074804780211">חלון גלישה בסתר מאפשר לגלוש בלי לשמור את היסטוריית הגלישה</translation>
@@ -9188,6 +9367,9 @@
 other {{COUNT} החלונות הפרטיים שלך לא ייפתחו מחדש לאחר הפעלה מחדש}}</translation>
 <translation id="5840822070878669614">‏פתח את חנות האינטרנט של Brave</translation>
 <translation id="383007806262310953">הצג את סרגל הסימניות</translation>
+<translation id="8419047244705220515">אתרים שבהם אתה מבקר יכולים לאמת שאתה פרופיל אמיתי ולא בוט</translation>
+<translation id="1261003378239130478">הגלישה מהירה יותר מכיוון שאתר פחות יבקש ממך לאמת שאתה פרופיל אמיתי</translation>
+<translation id="8054370448755526778">אתר שאתה מבקר בו יכול לשמור מידע עם Brave שמאמת שאתה לא בוט. בזמן שאתה ממשיך לגלוש, אתרים יכולים לבדוק עם Brave ולוודא עם אתר קודם שבו ביקרת שאתה כנראה פרופיל אמיתי</translation>
 <translation id="4390099071040105838">עוזרים לאתרים להילחם בהונאות ולהבדיל בין בוטים לבין פרופילים</translation>
 <translation id="2651321868067161122">אסימוני מצב פרטי מאפשרים לאתרים להתמודד עם ספאם והונאות ולהבחין בין בוטים לפרופילים.</translation>
 <translation id="4514706758841043687">כשגרסאות הניסיון פעילות, אסימוני מצב פרטי מאפשרים לאתרים להתמודד עם ספאם והונאות ולהבחין בין בוטים לפרופילים.</translation>

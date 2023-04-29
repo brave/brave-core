@@ -139,6 +139,10 @@
 <translation id="7459000603787995422">Izejot aizvērt cilnes</translation>
 <translation id="4448697385961650078">Bloķēt izsekotājus un reklāmas</translation>
 <translation id="2448893613530489637">Novērš izsekotāju un reklāmu ielādi un attēlošanu tīmekļa vietnēs</translation>
+<translation id="1025207378813960343">Pārliecinieties, ka vietņu savienojumi ir droši.</translation>
+<translation id="6686219838158572786">Visiem savienojumiem pieprasīt izmantot HTTPS (stingrais režīms)</translation>
+<translation id="4221284400051835823">Kad vien iespējams, atjaunināt uz HTTPS (pēc noklusējuma)</translation>
+<translation id="4690906712010847708">Neatjaunināt savienojumus uz HTTPS (atspējots)</translation>
 <translation id="1680858055899097121">Nesaglabāt cilnes pārlūkošanas sesiju starplaikos</translation>
 <translation id="7142548388914389999">Atļaut privātuma nodrošināšanas produktu analīzi (P3A)</translation>
 <translation id="5254037869598726291">Anonimizēta P3A informācija palīdz Brave noteikt vispārējo lietošanas apmēru un ļauj uzlabot populāras funkcijas.</translation>
@@ -151,6 +155,10 @@
 <translation id="410351446219883937">Automātiskā atskaņošana</translation>
 <translation id="7445411102860286510">Atļaut vietnēm automātiski atskaņot videoklipus ar izslēgtu skaņu (ieteicams)</translation>
 <translation id="7837721118676387834">Atļaut automātisku atskaņošanu videoklipiem ar izslēgtu skaņu konkrētā vietnē.</translation>
+<translation id="4206299587103092719">Pierakstīšanās ar Google</translation>
+<translation id="9110294136812584522">Vietnes var lūgt izmantot pierakstīšanos ar Google, izmantojot trešo personu sīkfailus</translation>
+<translation id="2903783737778379345">Neatļaut pierakstīšanos ar Google, izmantojot trešo personu sīkfailus</translation>
+<translation id="6880817299303842099">Atļauts izmantot trešo personu sīkfailus, lai pierakstītos ar Google</translation>
 <translation id="181905442828471321">Brave aizsargu globālie noklusējumi</translation>
 <translation id="2675679258824361492">Citi privātuma iestatījumi</translation>
 <translation id="8026334261755873520">Notīrīt pārlūkošanas datus</translation>
@@ -212,7 +220,7 @@
 <translation id="5441565662498481293">Jūs automātiski nosūtāt dzeramnaudu:</translation>
 <translation id="1628742278973105368">Jūsu pirmā ikmēneša dzeramnauda tiks nosūtīta:</translation>
 <translation id="1642952941091001113">Šis satura veidotājs vēl nav reģistrējies ziedojumu saņemšanai no Brave lietotājiem. Mēs turpināsim mēģināt veikt ziedojumu, līdz tas tiks apstiprināts vai būs pagājušas 90 dienas.</translation>
-<translation id="635752162765375187">PIEZĪME: šis satura veidotājs šobrīd nav konfigurējis dzeramnaudas saņemšanu no jūsu Rewards depozitārā maka pakalpojuma. Jebkāda dzeramnauda, ko nosūtīsiet, paliks jūsu makā apstrādē, un jauns maksājuma mēģinājums tiks automātiski veikts 90 dienas.</translation>
+<translation id="8228150955416632026">Jūs esat pieslēdzies <ph name="WALLET_PROVIDER"/>, bet šis satura veidotājs ir pieslēdzies <ph name="SUPPORTED_WALLET_PROVIDER"/>. Tas nozīmē, ka jūsu dzeramnauda nevar nonākt pie šī satura veidotāja. Pagaidām jebkura jūsu nosūtītā dzeramnauda netiks nosūtīta, bet 90 dienas notiks tās automātiskas nosūtīšanas mēģinājumi.</translation>
 <translation id="1910721550319506122">Sveicināti!</translation>
 <translation id="2734870894159530879">Piesakieties <ph name="WALLET_PROVIDER"/>, lai apskatītu savu atlikumu</translation>
 <translation id="5830114181292529917">Jūs varat atbalstīt šo vietni, nosūtot dzeramnaudu. Tādējādi varat pateikties par lieliska satura radīšanu.</translation>
@@ -275,7 +283,7 @@
 <translation id="7090325819305486658">Datu preferences</translation>
 <translation id="1680065323266179640">Dzēst sinhronizēto kontu</translation>
 <translation id="3792563952903751704">Dzēšot kontu, jūsu šifrētie dati no Brave serveriem tiks noņemti un tiks atspējota sinhronizēšana visās jūsu pieslēgtajās ierīcēs. Taču dati, kas atrodas pašās ierīcēs, netiks dzēsti.
-  Šī dzēšana ir neatgriezeniska, un nav nekādu iespēju atjaunot datus. Ja izlemsiet atkal sākt izmantot sinhronizēšanu, jums būs jāveido jauns konts un atkal jāpievieno katra ierīce.</translation>
+  Konts tiek izdzēsts neatgriezeniski, un nav nekādu iespēju atjaunot datus. Ja vēlēsieties atsākt sinhronizēšanu, jums būs jāveido jauns konts un atkal jāpievieno katra ierīce.</translation>
 <translation id="9064376100690171155">Dzēst kontu neatgriezeniski</translation>
 <translation id="2740516568641790390">Sinhronizācijas konts tika veiksmīgi dzēsts</translation>
 <translation id="7006136453627651236">Neizdevās dzēst sinhronizācijas kontu</translation>
@@ -610,6 +618,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="4522570452068850558">Informācija</translation>
 <translation id="3995184924764722477">Konta informācija</translation>
 <translation id="8967036623785635603">Rediģēt redzamos līdzekļus</translation>
+<translation id="8475984867371585028">Rediģēt redzamos NFT</translation>
 <translation id="5050890334032852465">Saglabāt konta skatīšanās sarakstu</translation>
 <translation id="7755766175599167100">Meklēt žetonus</translation>
 <translation id="3835223348537121988">Bilance:</translation>
@@ -1046,4 +1055,78 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="1776742005329298234">No <ph name="DUE_DATE"/> mēs vairs neatbalstīsim esošos virtuālos BAT atlikumus. Izveido savienojumu ar depozitāro kontu pirms šī datuma, lai mēs varētu pārskaitīt tavu nopelnīto atlikumu uz tavu depozitāro kontu, tas tiks zaudēts.</translation>
 <translation id="5089752671190341407">Jums vēl ir laiks, lai nodotu savu vBAT saviem iecienītākajiem satura radītājiem.</translation>
 <translation id="171158953146804144">No <ph name="DUE_DATE"/> mēs vairs neatbalstīsim esošos virtuālos BAT atlikumus. Diemžēl tavā reģionā (<ph name="REGION"/>) nav depozitāriju, lai varētu izņemt ienākumus. Līdz šim datumam varēsi nodot savus ienākumus saviem iecienītākajiem satura radītājiem.</translation>
+<translation id="8949422576126100041">Aplūkot lapu ar ātro lasītāju?</translation>
+<translation id="591648995518106347">Automātiski ielādē atbilstošos rakstus lasītāja režīmā</translation>
+<translation id="5062934803872044756"><ph name="SYMBOL"/> iekš <ph name="NETWORK"/></translation>
+<translation id="295620834661738195">Brave atskaņošanas saraksts</translation>
+<translation id="4850886885716139402">Skatīt</translation>
+<translation id="7392941176393379100">Pievienots "<ph name="PLAYLIST_NAME"/>"</translation>
+<translation id="8289472222022674331">Pārvalda jūsu atskaņošanas saraksta datus</translation>
+<translation id="7650602357673790368">Pēc noklusējuma atskaņošanas saraksts automātiski saglabās saturu jūsu ierīcē atskaņošanai bezsaistē (gan privātos, gan kopīgos atskaņošanas sarakstos). Ja jums nav Wi-Fi savienojuma, automātiskai saglabāšanai tiks izmantoti jūsu mobilā tīkla dati. Lai mainītu šo noklusējuma iestatījumu, dodieties uz iestatījumiem.</translation>
+<translation id="5900576657906675258">Pievienot vienumu atskaņošanas sarakstam</translation>
+<translation id="349846214503465941">Iespējot atskaņošanas sarakstu</translation>
+<translation id="1309636029062006520">Izveidot mīļāko audio un video materiālu atskaņošanas sarakstus un atskaņot tos jebkurā vietā un laikā.</translation>
+<translation id="7899390017499980820">Poga "Pievienot atskaņošanas sarakstam"</translation>
+<translation id="6901152954398668317">Rādīt vai paslēpt pogu "Pievienot atskaņošanas sarakstam", lai ātri pievienotu vai noņemtu multividi.</translation>
+<translation id="8404028031709373707">Automātiska atskaņošana</translation>
+<translation id="597781019681241649">Iespējo automātisku atskaņošanu, kad ir atvērts atskaņošanas saraksts.</translation>
+<translation id="2625554376218216118">Sākt atskaņošanu no vietas, kur beidzu</translation>
+<translation id="2953730196265332002">Automātiski sinhronizēt visas izmaiņas, kuras satura veidotājs ir veicis kopīgotajā atskaņošanas sarakstā.</translation>
+<translation id="3561815498111282415">Automātiski saglabāt bezsaistei</translation>
+<translation id="1832424694374124654">Jaunus atskaņošanas saraksta vienumus automātiski saglabā jūsu ierīcē, lai jūs tos varat atskaņot, kad nav interneta savienojuma.</translation>
+<translation id="8103022210423023846">Automātiska saglabāšana ieslēgta</translation>
+<translation id="3926329432879804185">Automātiska saglabāšana izslēgta</translation>
+<translation id="7768812595186089508">Automātiski saglabāt tikai tad, kad ir Wi-Fi savienojums</translation>
+<translation id="5939518447894949180">Atiestatīt</translation>
+<translation id="8199028711686989861">Izņemt visus video no atskaņošanas saraksta, ieskaitot tos, kas saglabāti bezsaistes režīmam.</translation>
+<translation id="5916664084637901428">Iesl.</translation>
+<translation id="5860033963881614850">Izsl.</translation>
+<translation id="2920568868625746681">Tikai Wi-Fi</translation>
+<translation id="4590997608186539865">Atskaņošanas saraksts</translation>
+<translation id="7525067979554623046">Izveidot</translation>
+<translation id="5491049004699827548">Izveidot pirmo atskaņošanas sarakstu</translation>
+<translation id="5319108110887582146">Izveidojiet iecienītāko audio un video materiālu atskaņošanas sarakstu un atskaņojiet to jebkurā vietā un laikā. Pat esot bezsaistē.</translation>
+<translation id="6802849415466883498">Izveidot atskaņošanas sarakstu</translation>
+<translation id="8525248723479742219">Atskaņot vēlāk</translation>
+<translation id="7453007860684252933">Pārlūkot un pievienot</translation>
+<translation id="9014883386413828317">Pievienojiet savu iecienītāko saturu. Meklējiet ( + ) pogu ekrāna apakšā, labajā pusē.</translation>
+<translation id="5928669500312007783">Pārlūkot multividi</translation>
+<translation id="8152485753254079984">Jauns atskaņošanas saraksts</translation>
+<translation id="9130105487623071247">Atskaņošanas saraksta nosaukums</translation>
+<translation id="726581235416249619">Atskaņošanas saraksts bez nosaukuma</translation>
+<translation id="1456254983411148628">Noņemt datus</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/> atlasīts(-i)</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/> vienums(-i)</translation>
+<translation id="2317629745818459803">Atskaņot visus</translation>
+<translation id="7544853251252956727">Sajaukt</translation>
+<translation id="2881339830231736485">Atskaņots nesen</translation>
+<translation id="7636458383879257005">Pieskarieties, turiet nospiestu vai velciet</translation>
+<translation id="8120600068258956006">Pievienot atskaņošanas sarakstam</translation>
+<translation id="39991094779686024">Atskaņošanas saraksti</translation>
+<translation id="1710072605877822603">Pievienot multividi</translation>
+<translation id="903678009070770568">Pievienojiet video Brave atskaņošanas sarakstam un noskatieties vēlāk, pat esot bezsaistē</translation>
+<translation id="3063627607780392015">Esat ārpus uztveršanas zonas? Jānomierina raudošs bērns?</translation>
+<translation id="2041014734809158138">Metro, lidmašīnā vai garā izbraucienā ar auto. Jūs izglābs atskaņošanas saraksts.</translation>
+<translation id="7287143275037417932">Vai pieskarieties pie atskaņošanas saraksta pogas, kad tā parādās</translation>
+<translation id="6959838938954098206">Atskaņošanas saraksta poga parādās, kad nav multivides, ko pievienot. Turiet nospiestu, lai redzētu iespējas. Jūs to varat pat paslēpt.</translation>
+<translation id="3620862810055853183">Atvērt atskaņošanas sarakstu</translation>
+<translation id="3861012838874771868">Atvērt atskaņošanas saraksta iestatījumus</translation>
+<translation id="5220099266891491416">Paslēpt atskaņošanas saraksta pogu</translation>
+<translation id="7416347631175891923">Izmēģināt!</translation>
+<translation id="1173894706177603556">Pārdēvēt</translation>
+<translation id="1620612903815671893">Noņemt atskaņošanas saraksta bezsaistes datus</translation>
+<translation id="3261711068865275261">Noņemt visus bezsaistes datus</translation>
+<translation id="6653691766801349738">Saglabāt atskaņošanas sarakstu izmantošanai bezsaistē</translation>
+<translation id="8708086574143054053">Saglabāt visus atskaņošanas sarakstus izmantošanai bezsaistē</translation>
+<translation id="3596306474342941843">Dzēst atskaņošanas sarakstu</translation>
+<translation id="7765158879357617694">Pārvietot</translation>
+<translation id="3803384303807438047">Dzēst vienuma bezsaistes datus</translation>
+<translation id="4195643157523330669">Atvērt jaunā cilnē</translation>
+<translation id="4243710787042215766">Atvērt inkognito cilnē</translation>
+<translation id="8261506727792406068">Dzēst</translation>
+<translation id="377872456482681602">Lūdzu, vispirms atlasiet vienumus</translation>
+<translation id="6172429305139364624">Atskaņošanas saraksta vienums nav kešatmiņā. Lūdzu, saglabājiet vienumu kešatmiņā izmantošanai bezsaistes režīmā.</translation>
+<translation id="3631131732607750008">Satura laiks ir beidzies. Mēģiniet vēlreiz pēc dažām sekundēm.</translation>
+<translation id="9085765419770918643">Šeit vēl nav NFT.</translation>
+<translation id="8445532667841598737">Vai esat gatavs pievienot? Vienkārši noklikšķiniet uz pogas, lai importētu.</translation>
 </translationbundle>

@@ -139,6 +139,10 @@
 <translation id="7459000603787995422">Tutup tab semasa keluar</translation>
 <translation id="4448697385961650078">Sekat iklan &amp; penjejak</translation>
 <translation id="2448893613530489637">Menghalang penjejak &amp; iklan daripada dimuatkan dan dipaparkan di laman web</translation>
+<translation id="1025207378813960343">Pastikan sambungan ke laman web selamat.</translation>
+<translation id="6686219838158572786">Memerlukan semua sambungan menggunakan HTTPS (tegas)</translation>
+<translation id="4221284400051835823">Tingkatkan kepada HTTPS pada bila-bila masa (lalai)</translation>
+<translation id="4690906712010847708">Jangan tingkatkan sambungan kepada HTTPS (dinyahdayakan)</translation>
 <translation id="1680858055899097121">Jangan kekalkan tab antara sesi pelayaran</translation>
 <translation id="7142548388914389999">Benarkan analitik produk pengekalan privasi (P3A)</translation>
 <translation id="5254037869598726291">Maklumat P3A tanpa nama membantu Brave menganggarkan penggunaan keseluruhan, dan memastikan kami’ meningkatkan ciri popular.</translation>
@@ -151,6 +155,10 @@
 <translation id="410351446219883937">Automain</translation>
 <translation id="7445411102860286510">Benarkan tapak untuk memainkan video yang diredam secara automatik (disyorkan)</translation>
 <translation id="7837721118676387834">Benarkan video yang diredamkan dimainkan secara automatik untuk tapak web tertentu.</translation>
+<translation id="4206299587103092719">Log Masuk Google</translation>
+<translation id="9110294136812584522">Tapak boleh meminta penggunaan Log Masuk Google lama melalui kuki pihak ketiga</translation>
+<translation id="2903783737778379345">Jangan benarkan Log Masuk Google lama melalui kuki pihak ketiga</translation>
+<translation id="6880817299303842099">Dibenarkan menggunakan kuki pihak ketiga untuk Log Masuk Google lama</translation>
 <translation id="181905442828471321">Lalai global perisai Brave</translation>
 <translation id="2675679258824361492">Tetapan privasi lain</translation>
 <translation id="8026334261755873520">Kosongkan data semakan imbas</translation>
@@ -212,7 +220,7 @@
 <translation id="5441565662498481293">Anda menghantar tip secara automatik kepada:</translation>
 <translation id="1628742278973105368">Tip bulanan pertama anda akan dihantar pada:</translation>
 <translation id="1642952941091001113">Pencipta ini belum mendaftar untuk menerima sumbangan daripada pengguna Brave. Kami akan teruskan cuba memberikan sumbangan sehingga mereka mengesahkan, atau hingga 90 hari berlalu.</translation>
-<translation id="635752162765375187">PERHATIAN: Pencipta ini tidak dikonfigurasikan untuk menerima tip daripada perkhidmatan dompet penjagaan Rewards anda buat masa ini. Sebarang tip yang anda terima akan kekal  menunggu dan cuba semula secara automatik selama 90 hari.</translation>
+<translation id="8228150955416632026">Anda bersambung dengan <ph name="WALLET_PROVIDER"/>, tetapi pencipta ini bersambung dengan <ph name="SUPPORTED_WALLET_PROVIDER"/>. Maksudnya, petua anda tidak dapat disampaikan kepada pencipta ini. Buat masa ini, sebarang petua yang anda buat akan kekal menunggu dan mencuba semula secara automatik selama 90 hari.</translation>
 <translation id="1910721550319506122">Selamat Datang!</translation>
 <translation id="2734870894159530879">Log masuk ke <ph name="WALLET_PROVIDER"/> untuk melihat baki anda</translation>
 <translation id="5830114181292529917">Anda boleh menyokong laman ini dengan menghantar tip. Tindakan ini merupakan cara menghargai mereka atas penghasilan kandungan yang menarik.</translation>
@@ -610,6 +618,7 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="4522570452068850558">Butiran</translation>
 <translation id="3995184924764722477">Butiran Akaun</translation>
 <translation id="8967036623785635603">Edit aset yang kelihatan</translation>
+<translation id="8475984867371585028">Edit NFT boleh dilihat</translation>
 <translation id="5050890334032852465">Simpan senarai tonton akaun</translation>
 <translation id="7755766175599167100">Cari token</translation>
 <translation id="3835223348537121988">Baki:</translation>
@@ -1046,4 +1055,78 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="1776742005329298234">Pada <ph name="DUE_DATE"/>, kami akan menghentikan sokongan untuk baki BAT maya sedia ada. Sambungkan akaun penjagaan sebelum tarikh ini supaya kami boleh memindahkan baki anda yang diperoleh ke akaun penjagaan anda. Jika tidak, baki anda akan hilang.</translation>
 <translation id="5089752671190341407">Anda masih mempunyai masa untuk menyumbangkan vBAT anda kepada pencipta kegemaran anda</translation>
 <translation id="171158953146804144">Pada <ph name="DUE_DATE"/>, kami akan menghentikan sokongan untuk baki BAT maya sedia ada. Malangnya, tiada penjaga yang tersedia di rantau anda (<ph name="REGION"/>) untuk mengeluarkan pendapatan anda. Sementara itu, anda masih boleh menyumbang kepada pencipta kegemaran anda.</translation>
+<translation id="8949422576126100041">Paparkan halaman dengan Speedreader?</translation>
+<translation id="591648995518106347">Memuatkan artikel layak secara automatik dalam mod pembaca</translation>
+<translation id="5062934803872044756"><ph name="SYMBOL"/> pada <ph name="NETWORK"/></translation>
+<translation id="295620834661738195">Senarai Main Brave</translation>
+<translation id="4850886885716139402">Lihat</translation>
+<translation id="7392941176393379100">Ditambahkan pada '<ph name="PLAYLIST_NAME"/>'</translation>
+<translation id="8289472222022674331">Mengurus data senarai main anda</translation>
+<translation id="7650602357673790368">Secara lalai, Senarai Main akan menyimpan kandungan secara automatik pada peranti anda untuk main semula luar talian (pada senarai main peribadi &amp; dan juga senarai main kongsi). Jika anda tidak bersambung dengan WiFi, penyimpanan automatik akan menggunakan data selular anda.\n\nUntuk mengubah ciri lalai ini, gunakan tetapan.</translation>
+<translation id="5900576657906675258">Tambahkan item pada Senarai Main</translation>
+<translation id="349846214503465941">Dayakan Senarai Main</translation>
+<translation id="1309636029062006520">Buat senarai main bagi audio dan video kegemaran anda dan mainkan pada bila-bila masa, di mana jua.</translation>
+<translation id="7899390017499980820">Tambahkan pada butang Senarai Main</translation>
+<translation id="6901152954398668317">Tunjukkan atau sembunyikan butang "Tambahkan pada Senarai Main" untuk akses pantas bagi menambah atau mengalih keluar media.</translation>
+<translation id="8404028031709373707">Main Auto</translation>
+<translation id="597781019681241649">Dayakan main automatik apabila Senarai Main dibuka.</translation>
+<translation id="2625554376218216118">Mulakan Main Semula Dari Kedudukan Terakhir</translation>
+<translation id="2953730196265332002">Segerakkan sebarang perubahan yang dibuat oleh pencipta pada senarai main kongsi secara automatik.</translation>
+<translation id="3561815498111282415">Simpan Auto untuk Luar Talian</translation>
+<translation id="1832424694374124654">Simpan item senarai main baharu secara automatik pada peranti anda supaya anda boleh memainkan tanpa sambungan Internet.</translation>
+<translation id="8103022210423023846">Simpan Automatik HIDUP</translation>
+<translation id="3926329432879804185">Simpan Automatik MATI</translation>
+<translation id="7768812595186089508">Simpan Automatik hanya apabila bersambung dengan Wi-Fi</translation>
+<translation id="5939518447894949180">Tetapkan semula</translation>
+<translation id="8199028711686989861">Alih keluar semua video daripada Senarai Main, termasuk simpanan mod luar talian.</translation>
+<translation id="5916664084637901428">Hidupkan</translation>
+<translation id="5860033963881614850">Matikan</translation>
+<translation id="2920568868625746681">Wi-Fi Sahaja</translation>
+<translation id="4590997608186539865">Senarai Main</translation>
+<translation id="7525067979554623046">Cipta</translation>
+<translation id="5491049004699827548">Cipta senarai main pertama anda</translation>
+<translation id="5319108110887582146">Buat senarai main bagi audio dan video kegemaran anda dan mainkan pada bila-bila masa, di mana jua, walaupun di luar talian.</translation>
+<translation id="6802849415466883498">Cipta Senarai Main</translation>
+<translation id="8525248723479742219">Main Kemudian</translation>
+<translation id="7453007860684252933">Semak imbas dan tambah</translation>
+<translation id="9014883386413828317">Tambah kandungan kegemaran anda. Cari butang ( + ) di sebelah kanan bahagian bawah skrin anda.</translation>
+<translation id="5928669500312007783">Semak imbas untuk mencari media</translation>
+<translation id="8152485753254079984">Senarai main baharu</translation>
+<translation id="9130105487623071247">Nama senarai main</translation>
+<translation id="726581235416249619">Senarai main tidak bertajuk</translation>
+<translation id="1456254983411148628">Alih Keluar Data</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/> Terpilih</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/> item</translation>
+<translation id="2317629745818459803">Mainkan Semua</translation>
+<translation id="7544853251252956727">Rombak</translation>
+<translation id="2881339830231736485">Dimainkan terkini</translation>
+<translation id="7636458383879257005">Ketik, tekan lama atau seret</translation>
+<translation id="8120600068258956006">Tambahkan pada Senarai Main</translation>
+<translation id="39991094779686024">Senarai Main</translation>
+<translation id="1710072605877822603">Tambah media</translation>
+<translation id="903678009070770568">Tambahkan video pada Senarai Main Brave dan tonton kemudian, walaupun di luar talian.</translation>
+<translation id="3063627607780392015">Di luar liputan rangkaian? Perlu menenangkan anak kecil yang menangis?</translation>
+<translation id="2041014734809158138">Sama ada ada berada di dalam kereta api bawah tanah, di dalam pesawat atau dalam perjalanan jauh. Senarai Main sedia menemani anda.</translation>
+<translation id="7287143275037417932">Atau ketik butang Senarai Main apabila ia terpapar</translation>
+<translation id="6959838938954098206">Butang Senarai Main terpapar apabila terdapat media untuk ditambah. Tekan lama butang itu untuk melihat pilihan. Anda boleh juga menyembunyikannya.</translation>
+<translation id="3620862810055853183">Buka Senarai Main</translation>
+<translation id="3861012838874771868">Buka Tetapan Senarai Main</translation>
+<translation id="5220099266891491416">Sembunyikan butang Senarai Main</translation>
+<translation id="7416347631175891923">Cubalah!</translation>
+<translation id="1173894706177603556">Namakan semula</translation>
+<translation id="1620612903815671893">Alih keluar data luar talian senarai main</translation>
+<translation id="3261711068865275261">Alih keluar semua data luar talian</translation>
+<translation id="6653691766801349738">Kekalkan senarai main untuk kegunaan luar talian</translation>
+<translation id="8708086574143054053">Kekalkan semua senarai main untuk kegunaan luar talian</translation>
+<translation id="3596306474342941843">Padam senarai main</translation>
+<translation id="7765158879357617694">Alih</translation>
+<translation id="3803384303807438047">Padam data luar talian item</translation>
+<translation id="4195643157523330669">Buka dalam tab baharu</translation>
+<translation id="4243710787042215766">Buka di dalam tab sulit</translation>
+<translation id="8261506727792406068">Padam</translation>
+<translation id="377872456482681602">Sila pilih item terlebih dahulu</translation>
+<translation id="6172429305139364624">Item senarai main tidak dicache.\nSila cachekan item untuk mod luar talian.</translation>
+<translation id="3631131732607750008">Kandungan tamat tempoh. Cuba lagi dalam masa beberapa saat.</translation>
+<translation id="9085765419770918643">Belum ada NFT di sini.</translation>
+<translation id="8445532667841598737">Sedia untuk menambahkan beberapa data? Hanya klik butang di bawah untuk pengimportan.</translation>
 </translationbundle>

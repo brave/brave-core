@@ -168,6 +168,7 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="2036503787657622020">Activar modo de lectura</translation>
 <translation id="5226458915125328323">Configuración do lector de velocidade</translation>
 <translation id="8591883849678260674">Ver orixinal</translation>
+<translation id="1969654232209826429">min. lidos</translation>
 <translation id="6284218950354553099">Enviar automaticamente estatísticas de uso diario a Brave</translation>
 <translation id="5288333155754958121">Esta información anónima só permite que Brave estime os usuarios activos.</translation>
 <translation id="1872784258300710671">Brave usa analíticas de produtos completamente privadas para estimar o uso global de certas funcións</translation>
@@ -191,16 +192,16 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
        Pode ler <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/> instrucións sobre como descargar e construír para ti mesmo<ph name="END_LINK_BUILD_INSTRUCTIONS"/> o código <ph name="BEGIN_LINK_SOURCE_CODE"/>source específico usado para crear esta copia<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Engadir todas as pestanas a marcadores...</translation>
 <translation id="3987546108749866209">Usar separadores verticais</translation>
-<translation id="5860254591544742609">Mostrar barra de título</translation>
-<translation id="399928467800528208">Expandir ao pasar o rato</translation>
 <translation id="1904394285866191268">{NUM_TABS, plural, =1 {Silenciar # lapela} other {Silenciar # lapelas}}</translation>
 <translation id="5179127818058486126">{NUM_TABS, plural, =1 {Activar o son dunha lapela} other {Activar o son de # lapelas}}</translation>
+<translation id="2289567621059034186">Nova pestana debaixo</translation>
+<translation id="3228962656492373217">Pechar pestanas debaixo</translation>
 <translation id="2336228925368920074">Engadir todas as pestanas a marcadores...</translation>
 <translation id="2523967823495420116">Usar separadores verticais</translation>
-<translation id="8888603463702767599">Mostrar barra de título</translation>
-<translation id="2058818256505091369">Expandir ao pasar o rato</translation>
 <translation id="3785071023202624850">{NUM_TABS, plural, =1 {Silenciar # lapela} other {Silenciar # lapelas}}</translation>
 <translation id="2120478168904746065">{NUM_TABS, plural, =1 {Activar o son dunha lapela} other {Activar o son de # lapelas}}</translation>
+<translation id="4405580203042711503">Nova pestana debaixo</translation>
+<translation id="5611474372949142946">Pechar pestanas debaixo</translation>
 <translation id="3704707436873245822">Copiar texto de imaxe</translation>
 <translation id="5268098808165185458">Copiando texto de imaxe…</translation>
 <translation id="4046485130884276245">Texto copiado de imaxe</translation>
@@ -239,6 +240,10 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="2307973900865360088">Manter no Dock</translation>
 <translation id="961012016278832836">Versións anteriores de Microsoft Edge</translation>
 <translation id="6436994631426134065">Importado desde <ph name="BROWSER_NAME"/>.</translation>
+<translation id="1386966479075994683">Despregar pestanas</translation>
+<translation id="480565261566115689">Minimizar pestanas</translation>
+<translation id="7194343495483122559">Despregar pestanas</translation>
+<translation id="1199054713803577378">Minimizar pestanas</translation>
 <translation id="9156965752763025780">Os cambios aplicaranse a próxima vez que reinicies Brave.</translation>
 <translation id="7179921470347911571">Relanzamento agora</translation>
 <translation id="4472575034687746823">Comezar</translation>
@@ -280,7 +285,7 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="2970343821770026391">Panel de control</translation>
 <translation id="3719826155360621982">Páxina de inicio</translation>
 <translation id="5448570825852364919">Páxina en branco</translation>
-<translation id="5919424224662539292">Personaliza a imaxe de fondo e os widgets que aparecen na páxina do novo separador</translation>
+<translation id="8244387390464017490">Personalizar páxina de nova pestana</translation>
 <translation id="7461924472993315131">Fixar</translation>
 <translation id="7506648566440714944">Brave xa está fixado</translation>
 <translation id="239275665037555969">Dock</translation>
@@ -312,6 +317,7 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="3357319404342882895">Estrito</translation>
 <translation id="8823559166155093873">Bloquear as cookies</translation>
 <translation id="5770288601196774623">Só sitios cruzados</translation>
+<translation id="6795317840397506736">Esquecer de modo predeterminado</translation>
 <translation id="3587482841069643663">Todos</translation>
 <translation id="7390783310074170337">Vista predeterminada</translation>
 <translation id="130615081792797568">Vista simple</translation>
@@ -338,7 +344,7 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="4182731739150761577">Mostrar a lista completa</translation>
 <translation id="1340263054776016283">Introduce o URL da lista de filtros</translation>
 <translation id="8578397014396032341">Filtros de contido</translation>
-<translation id="6821903322090655051">As recompensas de Brave están desactivadas.</translation>
+<translation id="5567412479632285879">As recompensas de Brave están desactivadas.</translation>
 <translation id="413570371620795359">Abre o panel de recompensas para activalo e comezar</translation>
 <translation id="3849957491997306859">Detectado automaticamente</translation>
 <translation id="8798099450830957504">Predeterminado</translation>
@@ -353,7 +359,6 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="7286722244752781970">Tempo mínimo da páxina antes de iniciar a visita</translation>
 <translation id="4424486208397124985">Visitas mínimas por relevancia de editor</translation>
 <translation id="6248554379744796526">Amosar sitios non verificados na lista</translation>
-<translation id="5510618543889994434">Permitir as contribucións para vídeos</translation>
 <translation id="924777189963477634">Ao activar a Contribución automática, aceptas as <ph name="BEGIN_LINK_TOS"/>Condicións de servizo<ph name="END_LINK_TOS"/> e a <ph name="BEGIN_LINK_PP"/>Política de privacidade<ph name="END_LINK_PP"/>.</translation>
 <translation id="6333347122924254968">Mostrar a icona de Recompensas de Brave na barra de enderezos</translation>
 <translation id="7483857210736407752">Amosar botóns de dar propina nos sitios</translation>
@@ -499,17 +504,30 @@ volver usar Sincronización, terás que crear unha conta nova e volver engadir o
 <translation id="1658670175365815312">Brave cambiará á versión .onion dun sitio web cando estea dispoñible e abrirá automaticamente todos os dominios .onion nunha ventá Tor.</translation>
 <translation id="2896916411183256228">Emprega WebTorrent para amosar torrents directamente no navegador. Admite ficheiros de torrent e ligazóns magnéticas.</translation>
 <translation id="5249433283143453448">Emprega a xestión de dereitos dixitais (DRM) de Widevine para ver vídeos de transmisión protexida e demais contido no navegador.</translation>
+<translation id="1314131187310290315">Extensións de Manifest V2</translation>
+<translation id="2488433650767270565">As seguintes extensións de Manifest V2 eliminaranse de Chrome Web Store, pero aínda se admiten en Brave. Activa ou desactiva a opción para descargar e instalar, ou para desinstalar.</translation>
+<translation id="578671172657727816">Activar NoScript™</translation>
+<translation id="9068475464170522036">NoScript é unha extensión Manifest V2 que che permite bloquear e desbloquear guións individuais que se executan ou intentan executar nunha determinada páxina.</translation>
+<translation id="1394592156621788100">Activar uBlock Origin™</translation>
+<translation id="2638983091068889519">uBlock Origin é unha extensión de Manifest V2 que ofrece ferramentas potentes de bloqueo de contido con moitas opcións para usuarios avanzados.</translation>
+<translation id="3909078036552544838">Activar uMatrix™</translation>
+<translation id="8796148218203577506">uMatrix é unha extensión de Manifest V2 que ofrece un firewall baseado na matriz de apuntar e facer clic, con moitas ferramentas para mellorar a privacidade.</translation>
+<translation id="2385774023523989298">Activar AdGuard™</translation>
+<translation id="188228077840632890">AdGuard é unha extensión de Manifest V2 que ofrece bloqueo de anuncios, opcións de control parental e integración con outras ofertas de servizos de AdGuard.</translation>
 <translation id="8137559199583651773">Xestionar extensións</translation>
 <translation id="7013485839273047434">Conseguir máis extensións</translation>
 <translation id="4954512758656527938">Carteira predeterminada de Ethereum</translation>
 <translation id="7701023802820268122">Carteira predeterminada de Solana</translation>
 <translation id="8488282162676695335">Carteira Brave</translation>
 <translation id="2356070529366658676">Preguntar</translation>
-<translation id="7701040980221191251">Ningunha</translation>
+<translation id="6942354363301686374">Extensións (sen alternativas)</translation>
 <translation id="1274962333945373242">Carteiras de criptomoedas (obsoletas)</translation>
+<translation id="702381242110464396">Extensións (alternativa de Carteira de Brave)</translation>
 <translation id="4718664830805652430">Divisa base predeterminada</translation>
 <translation id="7992507032049865603">Criptomoeda base predeterminada</translation>
 <translation id="1834467296210148203">Mostrar icona de Brave Wallet na barra de ferramentas</translation>
+<translation id="7568430944629653319">Activar descubrimento de NFT</translation>
+<translation id="970496996377628529">Engade automaticamente os NFT que posúes á carteira mediante API de terceiros.</translation>
 <translation id="8239147115686034860">Bloquear Brave Wallet automaticamente</translation>
 <translation id="414639769490080648">Número de minutos que é preciso agardar para que Brave Wallet se bloquee automaticamente</translation>
 <translation id="856371974127598760">Redes de carteiras</translation>
@@ -519,10 +537,15 @@ volver usar Sincronización, terás que crear unha conta nova e volver engadir o
 <translation id="464460032678285850">É posible que os NFT que se engaden a Brave Wallet se fixen automaticamente no nó de IPFS local.
     Nota: É posible que se inicie o daemon de IPFS para fixar coa finalidade de que o teu nó local comparta datos almacenados na caché e NFT fixados na rede IPFS.</translation>
 <translation id="4993345308607970390">Restablecer carteira de Brave</translation>
+<translation id="5887022857624190239">Borrar NFT fixados</translation>
+<translation id="204584113330893805">Os NFT fixados están aloxados na rede IPFS cando se inicia o nodo IPFS local.
+    Tes <ph name="NFT_COUNT"/> NFT fixados neste momento.</translation>
 <translation id="9216386092464743272">Seguro que queres restablecer toda a información sobre transaccións e valores nonce da túa carteira? Esta opción adoitan escollela os programadores que teñen un servidor de proba local. Escribe "<ph name="CONFIRMATION_PHRASE"/>" para confirmar.</translation>
 <translation id="6369495274982305511">Seguro que queres restablecer a túa carteira? Se non tes unha copia de seguridade da túa carteira, restablecela provocará que perdas todos os datos da conta (incluídos todos os fondos asociados). Escribe "<ph name="CONFIRMATION_PHRASE"/>" para confirmar.</translation>
+<translation id="4248533222660842025">Seguro que queres borrar os NFT fixados? Algúns dos NFT poden perderse para sempre se non hai outros fornecedores de servizos de host na rede IPFS. Escribe "<ph name="CONFIRMATION_PHRASE"/>" para confirmar.</translation>
 <translation id="3752403403443723332">Restableceuse a túa carteira.</translation>
 <translation id="594766067816395072">Restableceuse a información sobre as transaccións da túa carteira.</translation>
+<translation id="1615009913945115836">Restablecéronse os NFT fixados.</translation>
 <translation id="1426410128494586442">Si</translation>
 <translation id="4226543734057230801">Redes de Ethereum</translation>
 <translation id="3504157706952484145">Redes de Filecoin</translation>

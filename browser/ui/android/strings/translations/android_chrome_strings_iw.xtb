@@ -33,6 +33,7 @@
 <translation id="1173894706177603556">שינוי שם</translation>
 <translation id="1177863135347784049">מותאם אישית</translation>
 <translation id="1181037720776840403">הסרה</translation>
+<translation id="1181366777303791449">ב-<ph name="MAIN_FRAME_ETLD_PLUS_ONE"/></translation>
 <translation id="1193729455103054076">רוצה להשתמש בסיסמה החזקה?</translation>
 <translation id="1197267115302279827">העברת סימניות</translation>
 <translation id="1201402288615127009">הבא</translation>
@@ -111,7 +112,6 @@
 <translation id="1513858653616922153">מחיקת סיסמה</translation>
 <translation id="1514552811327923157">ההודעה לגבי ארגז החול לפרטיות נפתחה בגובה מלא</translation>
 <translation id="1521774566618522728">סנכרון אחרון: היום</translation>
-<translation id="1538801903729528855">חוויה קולית טובה יותר באינטרנט</translation>
 <translation id="8090895580117672212">‏כדי לנהל את חשבון Brave, יש להקיש על הלחצן "ניהול החשבון"</translation>
 <translation id="1549000191223877751">העברה לחלון האחר</translation>
 <translation id="1705567146636171298">‏כדאי לעדכן את Brave</translation>
@@ -157,14 +157,12 @@
 <translation id="1900260903084164610">לחיצה על המשך תתפרש כהסכמה ל<ph name="BEGIN_TOS_LINK"/>תנאים ולהגבלות<ph name="END_TOS_LINK"/></translation>
 <translation id="6893464351226208429">‏כתובות ה-URL שנכנסת אליהן נשמרות בחשבון Brave</translation>
 <translation id="1910950723001426294">רשימת אפשרויות השיתוף סגורה.</translation>
-<translation id="1918175104945982129">‏ההסכמה לחיפוש קולי של Assistant בממשק משתמש נפתחה בחצי גובה</translation>
 <translation id="7021823858304886493">‏התרת כניסה אל Brave</translation>
 <translation id="1922362554271624559">שפות מוצעות</translation>
 <translation id="1925021887439448749">יש להזין כתובת אינטרנט מותאמת אישית</translation>
 <translation id="1928696683969751773">עדכונים</translation>
 <translation id="1875543012935658554">‏יש לפתוח מחדש את Brave.</translation>
 <translation id="1933845786846280168">הכרטיסייה שנבחרה</translation>
-<translation id="193571872656840963">הכרת תודה ליוצר/ת</translation>
 <translation id="1943432128510653496">שמירת סיסמאות</translation>
 <translation id="1952172573699511566">אתרים יציגו טקסט בשפה המועדפת שלך, כשזה אפשרי.</translation>
 <translation id="1959679933317802873">בהמתנה לתוכן</translation>
@@ -191,7 +189,6 @@
 <translation id="2065944887543506430">{FILE_COUNT,plural, =1{הורדה אחת נכשלה}one{# הורדות נכשלו}two{# הורדות נכשלו}other{# הורדות נכשלו}}</translation>
 <translation id="2067805253194386918">טקסט</translation>
 <translation id="2068748236079642969">לצפייה בסרטון הבא</translation>
-<translation id="2074143993849053708">‏ההסכמה לחיפוש קולי של Assistant בממשק משתמש נסגרה</translation>
 <translation id="2079545284768500474">ביטול הפעולה</translation>
 <translation id="2082238445998314030">תוצאה <ph name="RESULT_NUMBER"/> מתוך <ph name="TOTAL_RESULTS"/></translation>
 <translation id="2096012225669085171">סנכרון והתאמה אישית במכשירים שונים</translation>
@@ -201,7 +198,6 @@
 <translation id="2122601567107267586">לא ניתן היה לפתוח את היישום</translation>
 <translation id="2132122640199389833">הסרת כל המכשירים המקושרים</translation>
 <translation id="213279576345780926">הכרטיסייה "<ph name="TAB_TITLE"/>" נסגרה</translation>
-<translation id="6659395979197839222">‏השימוש ב-Brave מבטא הסכמה <ph name="BEGIN_TOS_LINK"/>לתנאים ולהגבלות של Brave<ph name="END_TOS_LINK"/> ו<ph name="BEGIN_ATOS_LINK"/>לתנאים ולהגבלות הנוספים של Brave ו-ChromeOS<ph name="END_ATOS_LINK"/>.</translation>
 <translation id="2139186145475833000">הוספה לדף הבית</translation>
 <translation id="2141396931810938595">על סמך השימוש שלך</translation>
 <translation id="6516933364477884970">‏בחירת המידע לשיתוף עם Brave. המדדים שנקבל ממך ישמשו לשיפור התכונות, הביצועים והיציבות של Brave.</translation>
@@ -250,12 +246,10 @@
 <translation id="2439153523196674349">תצוגה מקדימה של <ph name="SITE_NAME"/></translation>
 <translation id="2450083983707403292">להתחיל שוב את ההורדה של <ph name="FILE_NAME"/>?</translation>
 <translation id="2453860139492968684">סיום</translation>
-<translation id="2459390580524506445">חיפוש קולי משופר</translation>
 <translation id="2461822463642141190">כרגע</translation>
 <translation id="2542068854151299295">‏כדי להפיק את המרב מ-Brave, עליך להיכנס לחשבון</translation>
 <translation id="247737702124049222">התכונה 'תיאורי תמונות' מופעלת</translation>
 <translation id="2482878487686419369">התראות</translation>
-<translation id="6361779936989026201">‏Brave Assistant ב-Brave</translation>
 <translation id="2496180316473517155">היסטוריית גלישה</translation>
 <translation id="2497852260688568942">מנהל המערכת שלך השבית את הסנכרון</translation>
 <translation id="7229462727772664332">‏ב-Brave יוצגו סטטוס הכניסה שלך ל-<ph name="SITE_NAME"/>, נתוני הגלישה ונתוני האתר</translation>
@@ -279,6 +273,7 @@
 <translation id="2324920234469020158">‏פעולה זו תמחק את קובצי ה-Cookie, את המטמון ונתונים אחרים של אתרים ש-Brave לא מחשיב כחשובים.</translation>
 <translation id="2587052924345400782">יש גרסה חדשה יותר</translation>
 <translation id="2593272815202181319">רוחב אחיד</translation>
+<translation id="2603212228005142861">צריך להיכנס לחשבון כדי לנהל את ההעדפות</translation>
 <translation id="2604446170045642109">בהגדרות, יש לך אפשרות לכבות את העיצוב הכהה באתרים.</translation>
 <translation id="2612676031748830579">מספר הכרטיס</translation>
 <translation id="2625189173221582860">הסיסמה הועתקה</translation>
@@ -300,7 +295,6 @@
 <translation id="2718846868787000099">כדי שנוכל להציג תוכן בשפות המועדפות עליך, ההעדפות שלך גלויות לאתרים שביקרת בהם</translation>
 <translation id="2722945394406572875">ההודעה לגבי ארגז החול לפרטיות נסגרה</translation>
 <translation id="2723001399770238859">אודיו</translation>
-<translation id="2732063072010454421">אפשר ליהנות מחוויה טובה יותר בחיפוש קולי</translation>
 <translation id="2760989362628427051">עיצוב כהה מופעל כשבמכשיר פועלת האפשרות 'עיצוב כהה' או 'חיסכון בסוללה'</translation>
 <translation id="2762000892062317888">ברגע זה</translation>
 <translation id="276969039800130567">מחובר באמצעות חשבון <ph name="USER_EMAIL_ADDRESS"/>.</translation>
@@ -362,7 +356,6 @@
 <translation id="3027644380269727216">על סמך הפעילות שלך באתר מסוים. ההגדרה הזו פועלת.</translation>
 <translation id="3029276696788198026">ללא טעינה מראש</translation>
 <translation id="3029704984691124060">ביטויי הסיסמה אינם תואמים</translation>
-<translation id="3031225630520268969">‏הסכמה לחיפוש קולי של Assistant בממשק משתמש</translation>
 <translation id="3036750288708366620"><ph name="BEGIN_LINK"/>קבלת עזרה<ph name="END_LINK"/></translation>
 <translation id="3037177537145227281">המחיר במעקב</translation>
 <translation id="3251012123600267109">‏יוצגו הודעות לצורך כניסה אל Brave</translation>
@@ -419,7 +412,6 @@
 <translation id="1793814306828610181">‏סרטוני הסבר על השימוש ב-Brave</translation>
 <translation id="3290249595466894471">בנוסף, נשלחת דגימה קטנה שכוללת דפים, הורדות, פעילות של תוספים ופרטי מערכת כדי לאתר איומים חדשים</translation>
 <translation id="3293181007446299124">היסטוריית הגלישה נשמרת באופן פרטי במכשיר, והדוחות נשלחים לאחר השהיה כדי להגן על הפרטיות שלך.</translation>
-<translation id="3297344142967351106">האסיסטנט</translation>
 <translation id="3303414029551471755">האם להוריד את התוכן?</translation>
 <translation id="3305795716056605962">תרגום הדפים באמצעות הלחצן 'אפשרויות נוספות'</translation>
 <translation id="3319664549618064419">כדאי לעבור לאתר שמותאם למחשב כדי לשפר את תצוגת האתר</translation>
@@ -471,6 +463,7 @@
 <translation id="3587596251841506391">סיוע לשיפור האבטחה באינטרנט</translation>
 <translation id="3597179440835065298">קבלת הצעות טובות יותר</translation>
 <translation id="3602290021589620013">תצוגה מקדימה</translation>
+<translation id="360901359071773787">למחוק את 15 הדקות האחרונות?</translation>
 <translation id="3616113530831147358">אודיו</translation>
 <translation id="3622349720008044802">ניהול החלונות</translation>
 <translation id="3631987586758005671">השיתוף עם <ph name="DEVICE_NAME"/> מתבצע</translation>
@@ -544,7 +537,6 @@
 <translation id="409109920254068737">‏יש לך אפשרות להשתמש בטאבלט הזה כדי להיכנס לחשבון במכשיר שמוצג בו קוד ה-QR הזה.</translation>
 <translation id="4095146165863963773">למחוק נתוני יישומים?</translation>
 <translation id="4096227151372679484">תהליך שמירת הסימניות שפתוחות בחצי הגובה</translation>
-<translation id="673197144963363525">‏אם שולחים אלינו נתוני שימוש ודוחות קריסה, עוזרים לשפר את Brave.</translation>
 <translation id="4101475238162928417">אפשר לבצע סנכרון כדי לעדכן את הסיסמאות, הסימניות ונתונים נוספים במכשירים אחרים שלך</translation>
 <translation id="410351446219883937">הפעלה אוטומטית</translation>
 <translation id="8112581848375017126">‏אנחנו בודקים תכונות חדשות ב-Brave שמאפשרות לאתרים לספק את אותה חוויית הגלישה תוך שימוש בפחות פרטים אישיים</translation>
@@ -574,11 +566,9 @@
 <translation id="4250229828105606438">צילום מסך</translation>
 <translation id="4256782883801055595">רישיונות קוד פתוח</translation>
 <translation id="4105986395895210872">‏<ph name="BEGIN_BOLD"/>באילו נתונים נעשה שימוש:<ph name="END_BOLD"/> היסטוריית הגלישה – תיעוד האתרים שביקרת בהם באמצעות Brave במכשיר הזה.</translation>
-<translation id="4263656433980196874">‏ההסכמה לחיפוש קולי של Assistant בממשק משתמש נפתחה בגובה מלא</translation>
 <translation id="4269820728363426813">העתקת כתובת של קישור</translation>
 <translation id="4283102315569707115">לבקש אתרים שמותאמים למחשב כברירת מחדל?</translation>
 <translation id="4291407919474070700">‏<ph name="BEGIN_LINK"/>להפעלת נעילת המסך בהגדרות Android<ph name="END_LINK"/></translation>
-<translation id="6299940168852877221">‏השימוש ב-Brave מבטא הסכמה <ph name="BEGIN_TOS_LINK"/>לתנאים ולהגבלות של Brave<ph name="END_TOS_LINK"/> ו<ph name="BEGIN_ATOS_LINK"/>לתנאים ולהגבלות הנוספים של Brave ו-ChromeOS<ph name="END_ATOS_LINK"/>. גם <ph name="BEGIN_PRIVACY_LINK"/>מדיניות הפרטיות<ph name="END_PRIVACY_LINK"/> חלה.</translation>
 <translation id="4298388696830689168">אתרים מקושרים</translation>
 <translation id="4303044213806199882">‎chrome_screenshot_<ph name="CURRENT_TIMESTAMP_MS"/>‎</translation>
 <translation id="4307992518367153382">היסודות</translation>
@@ -618,6 +608,7 @@
 
 ייתכן שבכתובת <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> יש סוגים אחרים של היסטוריית גלישה בחשבון Brave, כמו חיפושים ופעילות משירותי Brave אחרים.</translation>
 <translation id="452750746583162491">סקירת הנתונים המסונכרנים</translation>
+<translation id="4528638190900283934">כדאי להיכנס לחשבון כדי ליהנות מתכונות נוספות</translation>
 <translation id="4532845899244822526">בחירת תיקייה</translation>
 <translation id="4554077758708533499">‏הטלפון מחובר באמצעות כבל USB</translation>
 <translation id="4558311620361989323">קיצורי דרך בדפי אינטרנט</translation>
@@ -666,7 +657,6 @@
 <translation id="4769095993849849966">שם הקובץ החדש</translation>
 <translation id="4778653490315793244">עדיין אין פריטים להצגה</translation>
 <translation id="4787736314074622408">רוצה למחוק את <ph name="ITEM_TITLE"/>?</translation>
-<translation id="4791358705705538979">עוזרת להשלים משימות, כמו תשלום בקופה, באינטרנט</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
 <translation id="4802417911091824046">‏הצפנה באמצעות ביטוי סיסמה לא כוללת אמצעי תשלום וכתובות מ-Google Pay
 
@@ -748,7 +738,6 @@
 <translation id="5161254044473106830">יש להזין כותרת</translation>
 <translation id="5170568018924773124">הצגה בתיקייה</translation>
 <translation id="5171045022955879922">טקסט או כתובת אתר לחיפוש</translation>
-<translation id="517734441743343109">‏לחיצה על המשך תתפרש כהסכמתך <ph name="BEGIN_TOS_LINK"/>לתנאים ולהגבלות<ph name="END_TOS_LINK"/> ול<ph name="BEGIN_PRIVACY_LINK"/>מדיניות\u00A0הפרטיות<ph name="END_PRIVACY_LINK"/>.</translation>
 <translation id="8445059357334030806">‏פתיחה ב-Brave</translation>
 <translation id="5191251636205085390">‏מידע על טכנולוגיות חדשות שמיועדות להחליף קובצי cookie של צד שלישי והוראות לשליטה בהן.</translation>
 <translation id="5193988420012215838">הועתק אל הלוח</translation>
@@ -806,6 +795,7 @@
 <translation id="5517095782334947753">יש לך סימניות, היסטוריה, סיסמאות והגדרות נוספות מ-<ph name="FROM_ACCOUNT"/>.</translation>
 <translation id="300369155175407115">‏כשגרסאות הניסיון פעילות, ובמקרים שבהם צורפת באופן אקראי לגרסת ניסיון פעילה ב-Brave, היסטוריית הגלישה שלך משפיעה על המודעות שמוצגות לך ועל תחומי העניין המשוערים שמופיעים בהמשך. כדי להגן על הפרטיות שלך, מתבצעת ב-Brave מחיקה של תחומי העניין שלך על בסיס מתחלף מדי חודש.</translation>
 <translation id="5524843473235508879">הפניה לכתובת אתר אחרת נחסמה.</translation>
+<translation id="554297709083131118">נתוני הגלישה מ-15 הדקות האחרונות יימחקו</translation>
 <translation id="5548606607480005320">בדיקת אבטחה</translation>
 <translation id="5555525474779371165">בחירת סוג ההגנה במסגרת 'גלישה בטוחה'</translation>
 <translation id="5556459405103347317">טעינה מחדש</translation>
@@ -816,7 +806,6 @@
 <translation id="5578795271662203820">חיפוש התמונה הזו ב-<ph name="SEARCH_ENGINE"/></translation>
 <translation id="5581519193887989363">אפשר לבחור מה לסנכרן בכל שלב דרך <ph name="BEGIN_LINK1"/>ההגדרות<ph name="END_LINK1"/>.</translation>
 <translation id="5590372121997663538">אני רוצה להשאיר את החיבור פעיל במחשב הזה</translation>
-<translation id="6157610782452852023">‏Brave Assistant יכולה להשלים עבורך פעולות באתרים שונים</translation>
 <translation id="5620163320393916465">אין סיסמאות שמורות</translation>
 <translation id="5620928963363755975">איתור הקבצים והדפים שלך ב'הורדות' דרך הלחצן 'אפשרויות נוספות'</translation>
 <translation id="562289928968387744">ניהול התגובות</translation>
@@ -874,7 +863,6 @@
 <translation id="5876496397064130037">הפעלת המשימה המשיכה</translation>
 <translation id="5604589745019948682">‏כדי לעקוב אחר אתר כלשהו, עוברים אליו, פותחים את תפריט Brave ומקישים על 'מעקב'.</translation>
 <translation id="5879072387416556377">קבלת הצעות טובות יותר</translation>
-<translation id="1985257319311245640">‏אם מכירים כתובות של אתרים, Brave Assistant יכולה לעזור להשלים משימות. ניתן להשבית את Assistant דרך ההגדרות של Brave.</translation>
 <translation id="5916664084637901428">פועל</translation>
 <translation id="5919204609460789179">יש לעדכן את <ph name="PRODUCT_NAME"/> כדי להתחיל סנכרון</translation>
 <translation id="5938820472109305350">הוספה של תחום העניין '<ph name="INTEREST"/>'</translation>
@@ -895,6 +883,7 @@
 <translation id="6002122790816966947">המכשירים שלך</translation>
 <translation id="6005538289190791541">הצעה לסיסמה</translation>
 <translation id="6011308810877101166">שיפור של ההצעות לחיפוש</translation>
+<translation id="6026538407078977628">הרחבה למסך מלא</translation>
 <translation id="6039379616847168523">מעבר לכרטיסייה הבאה</translation>
 <translation id="6040143037577758943">סגירה</translation>
 <translation id="604124094241169006">אוטומטי</translation>
@@ -1058,6 +1047,7 @@
 <translation id="6824899148643461612">הכרטיסייה, <ph name="TAB_TITLE"/>, נבחרה</translation>
 <translation id="6828070228333235514">הפסקת המעקב אחר מחירים</translation>
 <translation id="6830728435402077660">לא מאובטח</translation>
+<translation id="6831043979455480757">תרגום</translation>
 <translation id="6833996806551876956">תקופת ניסיון של ארגז חול של הגדרות פרטיות</translation>
 <translation id="6836206421467243968">שחזור של קבוצת הכרטיסיות <ph name="TITLE_OF_GROUP"/> כקבוצת כרטיסיות חדשה ברקע.</translation>
 <translation id="6846298663435243399">הטעינה מתבצעת...</translation>
@@ -1161,6 +1151,7 @@
 <translation id="7435356471928173109">מנהל המערכת כיבה את התכונה הזו</translation>
 <translation id="6234515504547364178">‏יציאה מ-Brave</translation>
 <translation id="3699067418237091329">‏הפעולה תוציא אותך מרוב האתרים אבל לא מחשבון Brave שלך.</translation>
+<translation id="7453810262525006706">כיווץ לחלונית צדדית</translation>
 <translation id="7454641608352164238">אין מספיק מקום</translation>
 <translation id="7455988709578031708">על סמך היסטוריית הגלישה שלך. ההגדרה הזו פועלת.</translation>
 <translation id="7456774706094330779">טעינה מורחבת מראש</translation>
@@ -1218,17 +1209,16 @@
 <translation id="7707922173985738739">שימוש בחבילת הגלישה</translation>
 <translation id="7709094866268987903">תחומי עניין שהסרת יופיעו כאן</translation>
 <translation id="7709918231054955894">הצגת כל הכרטיסיות</translation>
+<translation id="772434085369393266">‏הניווטים ישודרגו ל-HTTPS ותוצג אזהרה לפני שטוענים אתרים שלא תומכים ב-HTTPS. לא ניתן לשנות את ההגדרה הזו כי ההגנה המתקדמת מופעלת.</translation>
 <translation id="7725024127233776428">הדפים שהוספת לסימניות מופיעים כאן</translation>
 <translation id="7757787379047923882">הטקסט שותף דרך <ph name="DEVICE_NAME"/></translation>
 <translation id="7762668264895820836">‏כרטיס SD <ph name="SD_CARD_NUMBER"/></translation>
-<translation id="9101995357058996048">‏כדי לקבל תכונות נוספות ואת האבטחה החזקה ביותר של Brave, עליך להיכנס לחשבון</translation>
 <translation id="7764225426217299476">הוספת כתובת</translation>
 <translation id="7772032839648071052">אישור משפט-סיסמה</translation>
 <translation id="7772375229873196092">סגירת <ph name="APP_NAME"/></translation>
 <translation id="7774809984919390718">{PAYMENT_METHOD,plural, =1{‏<ph name="PAYMENT_METHOD_PREVIEW"/>‎\u2026‎ ו-<ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/> נוסף}one{‏<ph name="PAYMENT_METHOD_PREVIEW"/>‎\u2026‎ ו-<ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/> נוספים}two{‏<ph name="PAYMENT_METHOD_PREVIEW"/>‎\u2026‎ ו-<ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/> נוספים}other{‏<ph name="PAYMENT_METHOD_PREVIEW"/>‎\u2026‎ ו-<ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/> נוספים}}</translation>
 <translation id="7778840695157240389">בהמשך יהיו פה סיפורים חדשים</translation>
 <translation id="7703329426540523149">‏כדי להגן עליך באפליקציות של Brave, הנתונים האלה מקושרים באופן זמני לחשבון Brave שלך. ההגנה הזו פעילה רק אם נכנסים לחשבון.</translation>
-<translation id="4885054029571583374">‏שירות Brave Assistant מספק חוויה קולית טובה יותר במהלך חיפוש ברשת והתעניינות באתרים שפתחת. שירות Brave Assistant יקבל את כתובת האתרים ואת התוכן של אתרים שהשתמשת בהם.</translation>
 <translation id="7791543448312431591">הוספה</translation>
 <translation id="7798392620021911922">שוחזרו <ph name="TAB_COUNT"/> כרטיסיות</translation>
 <translation id="780301667611848630">לא תודה</translation>
@@ -1238,6 +1228,7 @@
 <translation id="78270725016672455">התקבלה מהמחשב בקשה לרשום את המכשיר הזה לצורך כניסה לאתר</translation>
 <translation id="7844171778363018843">אין נתונים שנבחרו לסנכרון</translation>
 <translation id="7068829570137757602">‏שירותי Brave</translation>
+<translation id="7847228556075070294">‏היסטוריה, קובצי cookie ונתונים אחרים שנמחקו</translation>
 <translation id="784934925303690534">טווח זמן</translation>
 <translation id="7851858861565204677">מכשירים אחרים</translation>
 <translation id="7853202427316060426">פעילות</translation>
@@ -1290,6 +1281,7 @@
 <translation id="2317945146070194624">‏פתיחה בכרטיסייה חדשה של Brave</translation>
 <translation id="8062594758852531064">טעינה מורחבת מראש:</translation>
 <translation id="8063895661287329888">הוספת הסימנייה נכשלה.</translation>
+<translation id="8066816452984416180">הוספה מהירה של הדף הזה לסימניות. ניתן לערוך את קיצור הדרך הזה בלחיצה ארוכה.</translation>
 <translation id="806745655614357130">שמירת הנתונים שלי בנפרד</translation>
 <translation id="8073388330009372546">פתיחת התמונה בכרטיסייה חדשה</translation>
 <translation id="8076492880354921740">כרטיסיות</translation>
@@ -1319,6 +1311,7 @@
 <translation id="8216351761227087153">צפייה</translation>
 <translation id="8218622182176210845">ניהול החשבון</translation>
 <translation id="8223642481677794647">תפריט כרטיס הפיד</translation>
+<translation id="8236097722223016103">הוספה לסימניות</translation>
 <translation id="8250920743982581267">מסמכים</translation>
 <translation id="8255617931166444521">‏אתרים יכולים להשתמש בקובצי ה-cookie רק כדי לראות את פעילות הגלישה שלך שמתבצעת בהם בלבד, ולא באתרים אחרים</translation>
 <translation id="2876689296031086375">‏מפני שהדפים שנטענים מראש מוצפנים, Brave לא תקבל מידע על תוכן הדף שנטען מראש. שרתי Brave יגלו אילו אתרים נטענים מראש באופן פרטי. המידע הזה משמש רק לטעינה מראש של הדפים והוא לא מקושר למידע אחר מחשבון Brave שלך.</translation>
@@ -1412,6 +1405,7 @@
 <translation id="869891660844655955">תאריך תפוגה</translation>
 <translation id="8699120352855309748">אין להציג את ההצעה לתרגם את השפות האלה</translation>
 <translation id="8712637175834984815">הבנתי</translation>
+<translation id="8723453889042591629">תרגום מהיר של הדף הזה. ניתן לערוך את קיצור הדרך הזה בלחיצה ארוכה.</translation>
 <translation id="8725066075913043281">ניסיון חוזר</translation>
 <translation id="8746155870861185046">שיתוף של הטקסט המודגש</translation>
 <translation id="874726034427945498">אחרי סנכרון הכרטיסיות וההיסטוריה יתקבלו הצעות טובות יותר בסרגל הכתובות</translation>
@@ -1449,7 +1443,6 @@
 <translation id="8922289737868596582">כדי להשתמש בדפים במצב אופליין, אפשר להוריד אותם דרך הלחצן 'אפשרויות נוספות'</translation>
 <translation id="8924575305646776101"><ph name="BEGIN_LINK"/>מידע נוסף<ph name="END_LINK"/></translation>
 <translation id="892496902842311796"><ph name="LANG"/> מוכנה לשימוש</translation>
-<translation id="6894658278639191411">‏כדי לעזור לך להשלים משימות, Brave תקבל את כתובות ה-URL והתוכן של אתרים שבהם נעשה שימוש ב-Assistant, וכן את המידע שנשלח דרך Assistant. ייתכן שהמידע הזה יישמר בחשבון Brave שלך. ניתן להשבית את Assistant דרך ההגדרות של Brave.</translation>
 <translation id="1174893863889683998">‏האם להסיר את הפעילות שלך ב-Brave מ'שימוש חכם בדיגיטל'?</translation>
 <translation id="8942627711005830162">פתיחה בחלון האחר</translation>
 <translation id="8945143127965743188"><ph name="LANG"/> - לא ניתן היה להוריד את השפה הזו. יש לנסות שוב מאוחר יותר.</translation>
@@ -1461,6 +1454,7 @@
 <translation id="8987736167266086032">המשך מהנקודה שבה הפסקת</translation>
 <translation id="5320085753638900910">‏היסטוריית הגלישה שלך משפיעה על המודעות שמוצגות לך ועל תחומי העניין המשוערים שמופיעים בהמשך. כדי להגן על הפרטיות שלך, מתבצעת ב-Brave מחיקה אוטומטית של תחומי העניין שלך על בסיס מתחלף מדי חודש. תחומי עניין שלא הוסרו עוברים רענון.</translation>
 <translation id="8996847606757455498">בחירת ספק אחר</translation>
+<translation id="8998289560386111590">לא זמין במכשיר שלך</translation>
 <translation id="3275122921244685452">‏בחרת להיכנס עם חשבון המנוהל על-ידי <ph name="MANAGED_DOMAIN"/> ולהעניק למנהל שלו שליטה על הנתונים שלך ב-Brave. הנתונים שלך ישויכו לצמיתות אל החשבון הזה. יציאה מ-Brave תמחק את הנתונים שלך מהמכשיר הזה, אבל הם יישארו בחשבון Brave.</translation>
 <translation id="9022774213089566801">אתרים עם ביקורים תכופים</translation>
 <translation id="9022871169049522985">אתרים ומפרסמים יכולים למדוד את ביצועי המודעות שלהם</translation>
