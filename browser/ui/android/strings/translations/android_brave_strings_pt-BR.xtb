@@ -139,6 +139,10 @@
 <translation id="7459000603787995422">Fechar as guias ao sair</translation>
 <translation id="4448697385961650078">Bloquear rastreadores e anúncios</translation>
 <translation id="2448893613530489637">Impede que rastreadores e anúncios sejam carregados e exibidos em páginas da web</translation>
+<translation id="1025207378813960343">Certifique-se de que as conexões com os sites são seguras.</translation>
+<translation id="6686219838158572786">Exigir que todas as conexões usem HTTPS (estrito)</translation>
+<translation id="4221284400051835823">Atualizar para HTTPS sempre que possível (padrão)</translation>
+<translation id="4690906712010847708">Não atualizar as conexões para HTTPS (desativado)</translation>
 <translation id="1680858055899097121">Não mantenha abas entre as sessões de navegação</translation>
 <translation id="7142548388914389999">Permitir a análise de produtos com preservação da privacidade (P3A)</translation>
 <translation id="5254037869598726291">As informações anônimas de P3A ajudam o Brave a estimar o uso geral e a garantir que estamos melhorando os recursos populares.</translation>
@@ -151,6 +155,10 @@
 <translation id="410351446219883937">Reprodução automática</translation>
 <translation id="7445411102860286510">Permite que os sites mostrem vídeos sem som automaticamente (recomendado)</translation>
 <translation id="7837721118676387834">Permite que um determinado site mostre vídeos sem som automaticamente.</translation>
+<translation id="4206299587103092719">Login do Google</translation>
+<translation id="9110294136812584522">Os sites podem pedir para usar o Google Sign-In herdado por meio de cookies de terceiros</translation>
+<translation id="2903783737778379345">Não permitir login herdado do Google por meio de cookies de terceiros</translation>
+<translation id="6880817299303842099">Permitido o uso de cookies de terceiros para o Google Sign-In herdado</translation>
 <translation id="181905442828471321">Padrões globais do Brave Shields</translation>
 <translation id="2675679258824361492">Outras configurações de privacidade</translation>
 <translation id="8026334261755873520">Limpar dados de navegação</translation>
@@ -212,7 +220,7 @@
 <translation id="5441565662498481293">Você está automaticamente enviando uma contribuição para:</translation>
 <translation id="1628742278973105368">Sua primeira contribuição mensal será enviada em:</translation>
 <translation id="1642952941091001113">Este criador ainda não se inscreveu para receber contribuições de usuários do Brave. Continuaremos tentando contribuir até que ele seja verificado ou até que passem 90 dias.</translation>
-<translation id="635752162765375187">OBSERVAÇÃO: no momento, este criador não está configurado para receber doações do serviço de carteira custodial das suas Recompensas. Qualquer doação que você fizer ficará pendente, e novas tentativas serão realizadas automaticamente por 90 dias.</translation>
+<translation id="8228150955416632026">Você está conectado a <ph name="WALLET_PROVIDER"/>, mas este criador está conectado a <ph name="SUPPORTED_WALLET_PROVIDER"/>. Isso significa que sua dica não pode chegar a esse criador. Por enquanto, qualquer dica que você der ficará pendente e será repetida automaticamente por 90 dias.</translation>
 <translation id="1910721550319506122">Bem-vindo!</translation>
 <translation id="2734870894159530879">Faça login no <ph name="WALLET_PROVIDER"/> para ver seu saldo</translation>
 <translation id="5830114181292529917">Você pode apoiar este site enviando uma contribuição. É uma forma de agradecer ao site por criar conteúdo de qualidade.</translation>
@@ -610,6 +618,7 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="4522570452068850558">Detalhes</translation>
 <translation id="3995184924764722477">Detalhes da Conta</translation>
 <translation id="8967036623785635603">Editar ativos visíveis</translation>
+<translation id="8475984867371585028">Editar NFTs visíveis</translation>
 <translation id="5050890334032852465">Salvar lista de interesses de contas</translation>
 <translation id="7755766175599167100">Pesquisar tokens</translation>
 <translation id="3835223348537121988">Saldo:</translation>
@@ -1046,4 +1055,78 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="1776742005329298234">A <ph name="DUE_DATE"/>, iremos descontinuar o suporte do saldo virtual de BAT. Associe uma conta de salvaguarda antes desta data para podermos transferir o seu saldo atual; caso contrário, ele será perdido.</translation>
 <translation id="5089752671190341407">Você ainda tem tempo de contribuir com seu vBAT para seus criadores favoritos</translation>
 <translation id="171158953146804144">A <ph name="DUE_DATE"/>, iremos descontinuar o suporte do saldo virtual de BAT. Infelizmente, não existem opções de salvaguarda na sua região (<ph name="REGION"/>) para as quais possamos transferir o seu saldo. Até lá, ainda pode contribuir para os seus criadores favoritos.</translation>
+<translation id="8949422576126100041">Ver página com Speedreader?</translation>
+<translation id="591648995518106347">Carrega automaticamente artigos qualificados no modo leitor</translation>
+<translation id="5062934803872044756"><ph name="SYMBOL"/> em <ph name="NETWORK"/></translation>
+<translation id="295620834661738195">Playlist do Brave</translation>
+<translation id="4850886885716139402">Visualizar</translation>
+<translation id="7392941176393379100">Adicionado a '<ph name="PLAYLIST_NAME"/>'</translation>
+<translation id="8289472222022674331">Gerenciando seus dados de lista de reprodução</translation>
+<translation id="7650602357673790368">Por padrão, a lista de reprodução salvará automaticamente o conteúdo em seu dispositivo para reprodução off-line (em ambas as listas de reprodução privadas e compartilhadas). Se você não estiver usando Wi-Fi, o salvamento automático usará seus dados de celular.\n\nPara alterar esse padrão, use as configurações.</translation>
+<translation id="5900576657906675258">Adicionar item à lista de reprodução</translation>
+<translation id="349846214503465941">Habilitar a lista de reprodução</translation>
+<translation id="1309636029062006520">Crie listas de reprodução com seus áudios e vídeos favoritos e reproduza a qualquer hora e em qualquer lugar.</translation>
+<translation id="7899390017499980820">Adicionar ao botão da lista de reprodução</translation>
+<translation id="6901152954398668317">Mostre ou oculte o botão "Adicionar à lista de reprodução" para acesso rápido para adicionar ou remover mídia.</translation>
+<translation id="8404028031709373707">Reprodução automática</translation>
+<translation id="597781019681241649">Ativa a reprodução automática quando a lista de reprodução é aberta.</translation>
+<translation id="2625554376218216118">Iniciar a reprodução de onde parei</translation>
+<translation id="2953730196265332002">Sincronize automaticamente todas as alterações feitas pelo criador em uma lista de reprodução compartilhada.</translation>
+<translation id="3561815498111282415">Salvamento automático para uso off-line</translation>
+<translation id="1832424694374124654">Salva automaticamente os novos itens da lista de reprodução em seu dispositivo para que você possa reproduzi-los sem uma conexão com a Internet.</translation>
+<translation id="8103022210423023846">Auto-salvar LIGADO</translation>
+<translation id="3926329432879804185">Auto-salvar DESLIGADO</translation>
+<translation id="7768812595186089508">Auto-salvar automaticamente apenas quando conectado ao Wi-Fi</translation>
+<translation id="5939518447894949180">Redefinir</translation>
+<translation id="8199028711686989861">Remova todos os vídeos da lista de reprodução, incluindo o armazenamento no modo off-line.</translation>
+<translation id="5916664084637901428">Ativado</translation>
+<translation id="5860033963881614850">Desativada</translation>
+<translation id="2920568868625746681">Somente Wi-Fi</translation>
+<translation id="4590997608186539865">Playlist</translation>
+<translation id="7525067979554623046">Criar</translation>
+<translation id="5491049004699827548">Crie sua primeira lista de reprodução</translation>
+<translation id="5319108110887582146">Crie uma lista de reprodução com seus áudios e vídeos favoritos e reproduza a qualquer hora e em qualquer lugar. Mesmo off-line.</translation>
+<translation id="6802849415466883498">Criar uma lista de reprodução</translation>
+<translation id="8525248723479742219">Reproduzir mais tarde</translation>
+<translation id="7453007860684252933">Navegar e adicionar</translation>
+<translation id="9014883386413828317">Adicione seu conteúdo favorito. Procure o botão (+) na parte inferior direita da tela.</translation>
+<translation id="5928669500312007783">Procurar mídia</translation>
+<translation id="8152485753254079984">Lista de reprodução nova</translation>
+<translation id="9130105487623071247">Nome da lista de reprodução</translation>
+<translation id="726581235416249619">Lista de reprodução sem título</translation>
+<translation id="1456254983411148628">Remover os dados</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/> Selecionado</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/> itens</translation>
+<translation id="2317629745818459803">Reproduzir tudo</translation>
+<translation id="7544853251252956727">Ordem aleatória</translation>
+<translation id="2881339830231736485">Reproduzido recentemente</translation>
+<translation id="7636458383879257005">Tocar, pressionar e seguar ou arrastar</translation>
+<translation id="8120600068258956006">Adicionar à lista de reprodução</translation>
+<translation id="39991094779686024">Playlists</translation>
+<translation id="1710072605877822603">Adicionar a mídia</translation>
+<translation id="903678009070770568">Adicione vídeos à lista de reprodução Brave e assista mais tarde, mesmo offline</translation>
+<translation id="3063627607780392015">Fora do alcance da célula? Precisa acalmar uma criança chorando?</translation>
+<translation id="2041014734809158138">Seja no metrô, em um voo ou em uma longa viagem de carro. A lista de reprodução cobre você.</translation>
+<translation id="7287143275037417932">Ou toque no botão da lista de reprodução quando ele aparecer</translation>
+<translation id="6959838938954098206">O botão da lista de reprodução aparece quando há mídia para adicionar. Pressione e segure para opções. Você pode até mesmo escondê-lo.</translation>
+<translation id="3620862810055853183">Abrir playlist</translation>
+<translation id="3861012838874771868">Abrir as configurações da lista de reprodução</translation>
+<translation id="5220099266891491416">Ocultar botão da lista de reprodução</translation>
+<translation id="7416347631175891923">Experimente!</translation>
+<translation id="1173894706177603556">Renomear</translation>
+<translation id="1620612903815671893">Remover dados off-line da lista de reprodução</translation>
+<translation id="3261711068865275261">Remover todos os dados off-line</translation>
+<translation id="6653691766801349738">Manter lista de reprodução para uso off-line</translation>
+<translation id="8708086574143054053">Manter todas as listas de reprodução para uso off-line</translation>
+<translation id="3596306474342941843">Excluir a lista de reprodução</translation>
+<translation id="7765158879357617694">Mover</translation>
+<translation id="3803384303807438047">Excluir os dados off-line do item</translation>
+<translation id="4195643157523330669">Abrir em uma nova guia</translation>
+<translation id="4243710787042215766">Abrir aba privada</translation>
+<translation id="8261506727792406068">Excluir</translation>
+<translation id="377872456482681602">Selecione os itens primeiro</translation>
+<translation id="6172429305139364624">O item da lista de reprodução não está armazenado em cache.\nFavor armazenar o item em cache para o modo off-line.</translation>
+<translation id="3631131732607750008">O conteúdo expirou. Tente novamente em alguns segundos.</translation>
+<translation id="9085765419770918643">Ainda não há NFTs aqui.</translation>
+<translation id="8445532667841598737">Pronto para adicionar alguns? Basta clicar no botão abaixo para importar.</translation>
 </translationbundle>

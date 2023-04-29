@@ -139,6 +139,10 @@
 <translation id="7459000603787995422">Zapri zavihke ob izhodu</translation>
 <translation id="4448697385961650078">Blokiraj sledilnike in oglase</translation>
 <translation id="2448893613530489637">Onemogoči sledilcem &amp; oglaševanje, da bi se spletne strani lahko naložile in prikazale</translation>
+<translation id="1025207378813960343">Zagotovite, da so povezave s spletnimi mesti varne.</translation>
+<translation id="6686219838158572786">Zahtevajte, da vse povezave uporabljajo HTTPS (strogo)</translation>
+<translation id="4221284400051835823">Nadgradite na HTTPS, kadar koli je to mogoče (privzeto)</translation>
+<translation id="4690906712010847708">Ne nadgradite povezav na HTTPS (onemogočeno)</translation>
 <translation id="1680858055899097121">Ne ohranjaj zavihkov med sejami brskanja</translation>
 <translation id="7142548388914389999">Dovoli analitiko izdelkov, ki varuje zasebnost (P3A)</translation>
 <translation id="5254037869598726291">Anonimizirani podatki P3A pomagajo Braveu oceniti splošno uporabo in zagotoviti, da izboljšujemo priljubljene funkcije.</translation>
@@ -151,6 +155,10 @@
 <translation id="410351446219883937">Samodejno predvajanje</translation>
 <translation id="7445411102860286510">Dovoli spletnim mestom samodejno predvajanje videoposnetkov z izklopljenim zvokom (priporočljivo)</translation>
 <translation id="7837721118676387834">Dovoli samodejno predvajanje videoposnetkov z izklopljenim zvokom za določeno spletno mesto.</translation>
+<translation id="4206299587103092719">Prijava v Google</translation>
+<translation id="9110294136812584522">Spletna mesta lahko prek piškotkov tretjih oseb zahtevajo uporabo stare prijave v Google</translation>
+<translation id="2903783737778379345">Spletnim mestom ne dovolite stare prijave v Google</translation>
+<translation id="6880817299303842099">Uporabo piškotkov tretjih oseb za stare prijave v Google je dovoljena</translation>
 <translation id="181905442828471321">Globalne privzete vrednosti za Brave shields</translation>
 <translation id="2675679258824361492">Druge nastavitve zasebnosti</translation>
 <translation id="8026334261755873520">Izbriši podatke brskanja</translation>
@@ -212,7 +220,7 @@
 <translation id="5441565662498481293">Samodejno pošiljate donacijo prejemniku:</translation>
 <translation id="1628742278973105368">Vaša prva mesečna donacija bo poslana dne:</translation>
 <translation id="1642952941091001113">Ta ustvarjalec se še ni vpisal za prejem prispevkov od uporabnikov Brave. Vaš brskalnik bo nadaljeval s poskušanjem dodelitve prispevkov, dokler se ne potrdijo ali preteče 90 dni.</translation>
-<translation id="635752162765375187">OPOMBA: Ta ustvarjalec trenutno ni konfiguriran za prejemanje napitnin iz storitve denarnice za nagrajevanje. Vsak napitek, ki ga boste dali, bo ostal v pričakovanju in se bo samodejno ponovil 90 dni.</translation>
+<translation id="8228150955416632026">Vi ste povezani z <ph name="WALLET_PROVIDER"/>, ta ustvarjalec pa je povezan z <ph name="SUPPORTED_WALLET_PROVIDER"/>. To pomeni, da vaša donacija ne more priti do tega ustvarjalca. Zaenkrat bo vsaka donacija, ki jo boste dodelili, ostala na čakanju, sistem pa jo bo poskušal dodeliti še 90 dni.</translation>
 <translation id="1910721550319506122">Dobrodošli!</translation>
 <translation id="2734870894159530879">Za ogled stanja se prijavite v <ph name="WALLET_PROVIDER"/></translation>
 <translation id="5830114181292529917">To spletno stran lahko podprete z donacijo. S tem se lahko na nek način zahvalite za odlično vsebino, ki jo ustvarjajo.</translation>
@@ -610,6 +618,7 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="4522570452068850558">Podrobnosti</translation>
 <translation id="3995184924764722477">Podrobnosti računa</translation>
 <translation id="8967036623785635603">Uredi vidna sredstva</translation>
+<translation id="8475984867371585028">Uredite vidne NFT-je</translation>
 <translation id="5050890334032852465">Shrani seznam za spremljanje računa</translation>
 <translation id="7755766175599167100">Išči žetone</translation>
 <translation id="3835223348537121988">Stanje:</translation>
@@ -1040,10 +1049,84 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="4071347720273751665">Kot kaže, ste vnesli naslov ENS. Za razrešitev te zahteve se bomo morali obrniti na tretjo osebo, ki bo morda lahko videla vaš naslov IP in domeno.<ph name="LEARN_MORE"/>.</translation>
 <translation id="4096049525705855774">Uporabite domeno ENS izven verige</translation>
 <translation id="4982630604810554641">Iskanje domene ...</translation>
-<translation id="4159738248012488342">Prosimo, izberite znesek za napitnino</translation>
+<translation id="4159738248012488342">Prosimo, izberite znesek za donacijo</translation>
 <translation id="3586775666459823714">NFT-ji</translation>
 <translation id="707569835145765061">Zahtevano dejanje: povežite skrbniški račun, sicer bo vaš vBAT izgubljen</translation>
 <translation id="1776742005329298234">Dne <ph name="DUE_DATE"/> bomo ukinili podporo za obstoječa virtualna stanja BAT. Povežite skrbniški račun pred tem datumom, da bomo lahko vaše zasluženo stanje prenesli na vaš skrbniški račun, sicer bo vaše stanje izgubljeno.</translation>
 <translation id="5089752671190341407">Še vedno imate čas, da svoj vBAT prispevate svojim najljubšim ustvarjalcem</translation>
 <translation id="171158953146804144">Dne <ph name="DUE_DATE"/> bomo ukinili podporo za obstoječa virtualna stanja BAT. Na žalost v vaši regiji ni razpoložljivih skrbnikov (<ph name="REGION"/>), ki bi lahko dvignili vaš zaslužek. Do takrat lahko še vedno prispevate svojim najljubšim ustvarjalcem.</translation>
+<translation id="8949422576126100041">Ogled strani s programom Speedreader?</translation>
+<translation id="591648995518106347">Samodejno naloži ustrezne članke v načinu za branje</translation>
+<translation id="5062934803872044756"><ph name="SYMBOL"/> na <ph name="NETWORK"/></translation>
+<translation id="295620834661738195">Seznam predvajanja Brave</translation>
+<translation id="4850886885716139402">Pogled</translation>
+<translation id="7392941176393379100">Dodano v '<ph name="PLAYLIST_NAME"/>'</translation>
+<translation id="8289472222022674331">Upravljanje podatkov seznama predvajanja</translation>
+<translation id="7650602357673790368">Seznam predvajanja bo privzeto samodejno shranil vsebino v vašo napravo za predvajanje brez povezave (na zasebnih in skupnih seznamih predvajanja). Če nimate povezave Wi-Fi, bo samodejno shranjevanje uporabilo vaše mobilne podatke.\n\nČe želite spremeniti to privzeto nastavitev, uporabite nastavitve.</translation>
+<translation id="5900576657906675258">Dodaj element na seznam predvajanja</translation>
+<translation id="349846214503465941">Omogoči seznam predvajanja</translation>
+<translation id="1309636029062006520">Ustvarite sezname predvajanja svojih najljubših zvokov in videoposnetkov ter jih predvajajte kadar koli in kjer koli.</translation>
+<translation id="7899390017499980820">Gumb Dodaj na seznam predvajanja</translation>
+<translation id="6901152954398668317">Pokaži ali skrij gumb »Dodaj na seznam predvajanja« za hiter dostop do dodajanja ali odstranjevanja medijev.</translation>
+<translation id="8404028031709373707">Samodejno predvajanje</translation>
+<translation id="597781019681241649">Omogoča samodejno predvajanje, ko se odpre seznam predvajanja.</translation>
+<translation id="2625554376218216118">Začni predvajanje, kjer sem končal</translation>
+<translation id="2953730196265332002">Samodejno sinhroniziraj vse spremembe, ki jih je ustvarjalec naredil na skupnem seznamu predvajanja.</translation>
+<translation id="3561815498111282415">Samodejno shranjevanje za način brez povezave</translation>
+<translation id="1832424694374124654">Samodejno shrani nove elemente seznama predvajanja v vašo napravo, tako da lahko predvajate brez internetne povezave.</translation>
+<translation id="8103022210423023846">Samodejno shranjevanje je VKLOPLJENO</translation>
+<translation id="3926329432879804185">Samodejno shranjevanje je IZKLOPLJENO</translation>
+<translation id="7768812595186089508">Samodejno shrani le, ko je vzpostavljena povezava Wi-Fi</translation>
+<translation id="5939518447894949180">Ponastavi</translation>
+<translation id="8199028711686989861">Odstranite vse videoposnetke s seznama predvajanja, vključno s shranjevanjem v načinu brez povezave.</translation>
+<translation id="5916664084637901428">Vklop</translation>
+<translation id="5860033963881614850">Izklop</translation>
+<translation id="2920568868625746681">Samo WiFi</translation>
+<translation id="4590997608186539865">Seznam predvajanja</translation>
+<translation id="7525067979554623046">Ustvari</translation>
+<translation id="5491049004699827548">Ustvarite svoj prvi seznam predvajanja</translation>
+<translation id="5319108110887582146">Ustvarite seznam predvajanja svojih najljubših zvokov in videoposnetkov ter jih predvajajte kadar koli in kjer koli. Tudi brez povezave.</translation>
+<translation id="6802849415466883498">Ustvari seznam predvajanja</translation>
+<translation id="8525248723479742219">Predvajaj kasneje</translation>
+<translation id="7453007860684252933">Prebrskaj in dodaj</translation>
+<translation id="9014883386413828317">Dodajte svojo najljubšo vsebino. Poiščite gumb ( + ) v spodnjem desnem delu zaslona.</translation>
+<translation id="5928669500312007783">Pobrskajte po medijih</translation>
+<translation id="8152485753254079984">Nov seznam predvajanja</translation>
+<translation id="9130105487623071247">Ime seznama predvajanja</translation>
+<translation id="726581235416249619">Neimenovan seznam predvajanja</translation>
+<translation id="1456254983411148628">Odstrani podatke</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/> Izbrano</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/> elementov</translation>
+<translation id="2317629745818459803">Predvajaj vse</translation>
+<translation id="7544853251252956727">Naključno predvajanje</translation>
+<translation id="2881339830231736485">Pred kratkim predvajano</translation>
+<translation id="7636458383879257005">Dotaknite se, pritisnite in držite ali povlecite</translation>
+<translation id="8120600068258956006">Dodaj na seznam predvajanja</translation>
+<translation id="39991094779686024">Seznami predvajanja</translation>
+<translation id="1710072605877822603">Dodaj medije</translation>
+<translation id="903678009070770568">Videoposnetke dodajte na Seznam predvajanja Brave in si jih oglejte pozneje, tudi brez povezave</translation>
+<translation id="3063627607780392015">Nimate mobilnega signala? Morate pomiriti jokajočega dojenčka?</translation>
+<translation id="2041014734809158138">Ne glede na to, ali ste na podzemni železnici, letalu ali dolgem potovanju z avtomobilom. Seznam predvajanja bo na voljo.</translation>
+<translation id="7287143275037417932">Ali tapnite gumb Seznam predvajanja, ko se prikaže</translation>
+<translation id="6959838938954098206">Gumb seznama predvajanja se prikaže, ko so na voljo mediji, ki jih je treba dodati. Držite ga za prikaz možnosti. Lahko ga celo skrijete.</translation>
+<translation id="3620862810055853183">Odpri seznam predvajanja</translation>
+<translation id="3861012838874771868">Odpri nastavitve seznama predvajanja</translation>
+<translation id="5220099266891491416">Gumb Skrij seznam predvajanja</translation>
+<translation id="7416347631175891923">Poskusite!</translation>
+<translation id="1173894706177603556">Preimenuj</translation>
+<translation id="1620612903815671893">Odstrani podatke brez povezave s seznama predvajanja</translation>
+<translation id="3261711068865275261">Odstranite vse podatke brez povezave</translation>
+<translation id="6653691766801349738">Ohrani seznam predvajanja za uporabo brez povezave</translation>
+<translation id="8708086574143054053">Ohrani vse sezname predvajanja za uporabo brez povezave</translation>
+<translation id="3596306474342941843">Izbriši seznam predvajanja</translation>
+<translation id="7765158879357617694">Premakni</translation>
+<translation id="3803384303807438047">Izbriši podatke brez povezave elementa</translation>
+<translation id="4195643157523330669">Odpri v novem zavihku</translation>
+<translation id="4243710787042215766">Odpri v zavihku brez beleženja zgodovine</translation>
+<translation id="8261506727792406068">Izbriši</translation>
+<translation id="377872456482681602">Najprej izberite elemente</translation>
+<translation id="6172429305139364624">Element seznama predvajanja ni predpomnjen.\nProsimo, predpomnite element za način brez povezave.</translation>
+<translation id="3631131732607750008">Vsebina je potekla. Poskusite ponovno čez nekaj sekund.</translation>
+<translation id="9085765419770918643">Podatkov NFTs še ni.</translation>
+<translation id="8445532667841598737">Ste pripravljeni na dodajanje podatkov? Preprosto kliknite spodnji gumb za uvoz.</translation>
 </translationbundle>

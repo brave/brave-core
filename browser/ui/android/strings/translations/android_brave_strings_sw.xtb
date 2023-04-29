@@ -17,10 +17,10 @@
 <translation id="5867854497245948308">Asante kwa majibu yako!</translation>
 <translation id="4935400164159327304">Tufahamishe jinsi tunavyoweza kuboresha Brave.</translation>
 <translation id="915758461293673891">Kiasi cha bahashishi:</translation>
-<translation id="1420756770787071946">Mfadhili muundaji huyu</translation>
+<translation id="1420756770787071946">Mfadhili mtayarishi huyu</translation>
 <translation id="4147995007712611681">Umeweka bahashishi inayosubiri!</translation>
-<translation id="8966035543003363155">Taarifa za Brave hufanya hali kuwa rahisi zaidi</translation>
-<translation id="7662771815233894695">Dhibiti vipakuliwa, pata vianzio, angalia takwimu za matumizi ya kila wiki na zaidi.</translation>
+<translation id="8966035543003363155">Arifa za Brave hufanya hali kuwa rahisi zaidi</translation>
+<translation id="7662771815233894695">Dhibiti vipakuliwa, pata tokeni, angalia takwimu za matumizi ya kila wiki na zaidi.</translation>
 <translation id="4265429476391459783">Hupati Zawadi au kupokea Ripoti za Faragha</translation>
 <translation id="1305714751384738456">Hupati Zawadi za Brave</translation>
 <translation id="1483391942610220726">Hupokei Ripoti za Faragha</translation>
@@ -28,10 +28,10 @@
 <translation id="8618359751943259593">Washa taarifa tena ikiwa ungependa kuendelea kupata BAT.</translation>
 <translation id="760355165169399836">Washa taarifa tena ikiwa ungependa kuendelea kupokea ripoti za faragha za kila wiki.</translation>
 <translation id="6268959058971634697">Hupati Zawadi</translation>
-<translation id="1088637159642753509">Wezesha taarifa za kifaa ili kupata Zawadi za Brave na kuona Ripoti za Faragha.</translation>
-<translation id="312404770066229090">Wezesha taarifa za kifaa ili kupata Zawadi za Brave.</translation>
-<translation id="2241529840361230499">Wezesha taarifa za kifaa ili kupata Ripoti za Faragha za Brave.</translation>
-<translation id="4930155581888391118">Wezesha taarifa kutoka kwa Brave ili kupata Zawadi za Brave.</translation>
+<translation id="1088637159642753509">Wezesha taarifa za kifaa ili upate Zawadi za Brave na uone Ripoti za Faragha.</translation>
+<translation id="312404770066229090">Wezesha taarifa za kifaa ili upate Zawadi za Brave.</translation>
+<translation id="2241529840361230499">Wezesha taarifa za kifaa ili upate Ripoti za Faragha za Brave.</translation>
+<translation id="4930155581888391118">Wezesha taarifa kutoka kwa Brave ili upate Zawadi za Brave.</translation>
 <translation id="325187916104529570">Fungua Mipangilio na uwashe taarifa za kifaa za Matangazo ya Brave.</translation>
 <translation id="5744802588121897886">Washa taarifa za Brave</translation>
 <translation id="7307834434086582547">Washa/Zima Ulinzi wa Brave</translation>
@@ -40,7 +40,7 @@
 <translation id="3570081523466826008">Boresha miunganisho kuwa HTTPS</translation>
 <translation id="5153702175393349577">Tarehe inayofuata ya bahashishi</translation>
 <translation id="8979401359137062629">Kumbuka:</translation>
-<translation id="7277134233385925078">Pangilia zawadi ya kila mwezi</translation>
+<translation id="7277134233385925078">Weka zawadi ya kila mwezi</translation>
 <translation id="3765933240178364575">Kiasi cha bahashishi ya wakati mmoja</translation>
 <translation id="1101015459918930887">Bahashishi yako inaweza kuchukua dakika kadhaa kuchakatwa</translation>
 <translation id="4088764345615745058">Kiasi cha bahshishi maalum</translation>
@@ -139,6 +139,10 @@
 <translation id="7459000603787995422">Futa vichupo unapofunga</translation>
 <translation id="4448697385961650078">Zuia vifuatiliaji na matangazo</translation>
 <translation id="2448893613530489637">Huzuia vifuatiliaji na matangazo kupakia na kuonekana katika kurasa za wavuti</translation>
+<translation id="1025207378813960343">Hakikisha miunganisho ya tovuti ni salama.</translation>
+<translation id="6686219838158572786">Hitaji miunganisho yote itumie HTTPS (shuruti)</translation>
+<translation id="4221284400051835823">Pandisha hadi HTTPS kila inapowezekana (chaguo-msingi)</translation>
+<translation id="4690906712010847708">Usipandishe miunganisho hadi HTTPS (imezimwa)</translation>
 <translation id="1680858055899097121">Usisitize vichupo kati ya vipindi vya kuvinjari</translation>
 <translation id="7142548388914389999">Ruhusu changanuzi za bidhaa za kulinda faragha (P3A)</translation>
 <translation id="5254037869598726291">Maelezo ya P3A yasiyotambulisha husaidia Brave kukadiria matumizi ya jumla na kuhakikisha kuwa tunaboresha vipengele maarufu.</translation>
@@ -151,6 +155,10 @@
 <translation id="410351446219883937">Kucheza kiotomatiki</translation>
 <translation id="7445411102860286510">Ruhusu tovuti zicheze video kiotomatiki bila sauti (inapendekezwa)</translation>
 <translation id="7837721118676387834">Ruhusu uchezaji wa video kiotomatiki bila sauti kwenye tovuti mahususi.</translation>
+<translation id="4206299587103092719">Kuingia Katika Akaunti ya Google</translation>
+<translation id="9110294136812584522">Tovuti zinaweza kuomba kutumia Kuingia asili kwa Google kupitia vidakuzi vya wahusika wengine</translation>
+<translation id="2903783737778379345">Usiruhusu Kuingia asili kwa Google kupitia vidakuzi vya wahusika wengine</translation>
+<translation id="6880817299303842099">Inaruhusiwa kutumia vidakuzi vya wahusika wengine kwa ajili ya Kuingia asili kwa Google</translation>
 <translation id="181905442828471321">Machaguo msingi ya jumla ya ngao za Brave</translation>
 <translation id="2675679258824361492">Mipangilio mingine ya faragha</translation>
 <translation id="8026334261755873520">Futa data ya kuvinjari</translation>
@@ -212,7 +220,7 @@
 <translation id="5441565662498481293">Unatuma zawadi kiotomatiki kwa:</translation>
 <translation id="1628742278973105368">Zawadi yako ya kwanza kwa kila mwezi itatumwa mnamo:</translation>
 <translation id="1642952941091001113">Muundaji huyu bado hajajisajili kupokea michango kutoka kwa watumiaji wa Brave. Tutaendelea kujaribu kuchangia hadi athibitishe, au hadi siku 90 zikamilike.</translation>
-<translation id="635752162765375187">KUMBUKA: Muundaji huyu bado hajasanidiwa kupokea bahashishi kutoka kwa huduma yako ya usimamizi wa pochi ya Zawadi kwa sasa. Bahashishi yoyote unayotoa itaendelea kusubiri na kujaribu upya kiotomatiki kwa siku 90.</translation>
+<translation id="8228150955416632026">Umeunganishwa kwenye <ph name="WALLET_PROVIDER"/>, lakini mtayarishaji huyu ameunganishwa kwenye<ph name="SUPPORTED_WALLET_PROVIDER"/>. Hii inamaanisha bahashishi yako haiwezi kumfikia mtayarishi huyu. Kwa sasa, bahashishi yoyote unayotoa itaendelea kusubiri na kujaribu tena kiotomatiki kwa siku 90.</translation>
 <translation id="1910721550319506122">Karibu!</translation>
 <translation id="2734870894159530879">Ingia kwenye <ph name="WALLET_PROVIDER"/> ili uone salio lako</translation>
 <translation id="5830114181292529917">Unaweza kufadhili tovuti hii kwa kutuma bahashishi. Ni njia ya kuishukuru kwa kuunda maudhui bora.</translation>
@@ -610,6 +618,7 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="4522570452068850558">Maelezo</translation>
 <translation id="3995184924764722477">Maelezo ya Akaunti</translation>
 <translation id="8967036623785635603">Hariri rasilimali zinazoonekana</translation>
+<translation id="8475984867371585028">Hariri NFT zinazoonekana</translation>
 <translation id="5050890334032852465">Hifadhi orodha kaguzi ya akaunti</translation>
 <translation id="7755766175599167100">Tafuta tokeni</translation>
 <translation id="3835223348537121988">Salio:</translation>
@@ -1046,4 +1055,78 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="1776742005329298234">Mnamo <ph name="DUE_DATE"/>, tutasitisha msaada kwa masalio ya BAT ya mtandaoni yaliyopo. Unganisha akaunti ya msimamizi kabla ya tarehe hii ili tuweze kuhamisha salio lako hadi kwenye akaunti yako ya msimamizi, vinginevyo salio lako litapotea.</translation>
 <translation id="5089752671190341407">Bado una muda wa kuchangia vBAT yako kwa waundaji unaopenda.</translation>
 <translation id="171158953146804144">Mnamo <ph name="DUE_DATE"/>, tutasitisha msaada kwa masalio ya BAT ya mtandaoni yaliyopo. Kwa bahati mbaya, hakuna wasimamizi katika eneo lako (<ph name="REGION"/>) ili kutoa mapato yako. Kabla ya wakati huo, bado unaweza kuchangia waundaji unaopenda.</translation>
+<translation id="8949422576126100041">Je, ungependa kutazama ukurasa kwa Speedreader?</translation>
+<translation id="591648995518106347">Hupakia kiotomatiki makala yanayostahiki katika hali ya msomaji</translation>
+<translation id="5062934803872044756"><ph name="SYMBOL"/> kwenye<ph name="NETWORK"/></translation>
+<translation id="295620834661738195">Orodha ya Kucheza ya Brave</translation>
+<translation id="4850886885716139402">Mwonekano</translation>
+<translation id="7392941176393379100">Imeongezwa kwenye '<ph name="PLAYLIST_NAME"/>'</translation>
+<translation id="8289472222022674331">Kudhibiti data ya orodha yako ya kucheza</translation>
+<translation id="7650602357673790368">Kwa chaguo-msingi, Orodha ya Kucheza itahifadhi kiotomatiki maudhui kwenye kifaa chako kwa ajili ya kucheza nje ya mtandao (kwenye orodha za kucheza za faragha na zinazoshirikiwa). Ikiwa haujaunganishwa kwenye WiFi, uhifadhi otomatiki utatumia data yako ya mtandao ya simu. Ili kubadilisha chaguo-msingi hili, tumia mipangilio.</translation>
+<translation id="5900576657906675258">Ongeza kipengee katika Orodha ya kucheza</translation>
+<translation id="349846214503465941">Wezesha Orodha ya kucheza</translation>
+<translation id="1309636029062006520">Tengeneza orodha za kucheza za sauti na video uzipendazo, na ucheze wakati wowote, mahali popote.</translation>
+<translation id="7899390017499980820">Ongeza katika kitufe cha Orodha ya kucheza</translation>
+<translation id="6901152954398668317">Onyesha au ufiche kitufe cha "Ongeza kwenye Orodha ya kucheza" kwa ufikiaji wa haraka wa kuongeza au kuondoa midia.</translation>
+<translation id="8404028031709373707">Kucheza Otomatiki</translation>
+<translation id="597781019681241649">Huwezesha kucheza otomatiki wakati Orodha ya kucheza imefunguliwa.</translation>
+<translation id="2625554376218216118">Anza Kucheza Kutoka Nilikoachia</translation>
+<translation id="2953730196265332002">Sawazisha kiotomatiki mabadiliko yoyote ambayo mtayarishaji alifanya kwenye orodha ya kucheza inayoshirikiwa.</translation>
+<translation id="3561815498111282415">Hifadhi Kiotomatiki kwa matumizi ya Nje ya Mtandao</translation>
+<translation id="1832424694374124654">Huhifadhi kiotomatiki vipengee vipya vya orodha ya kucheza kwenye kifaa chako ili uweze kucheza bila muunganisho wa intaneti.</translation>
+<translation id="8103022210423023846">Kuhifadhi Kiotomatiki Kumewashwa</translation>
+<translation id="3926329432879804185">Kuhifadhi Kiotomatiki Kumezimwa</translation>
+<translation id="7768812595186089508">Hifadhi Kiotomatiki wakati umeunganishwa kwenye Wi-Fi tu</translation>
+<translation id="5939518447894949180">Weka upya</translation>
+<translation id="8199028711686989861">Ondoa video zote kwenye Orodha ya kucheza, ikiwa ni pamoja na hifadhi ya hali ya nje ya mtandao.</translation>
+<translation id="5916664084637901428">Imewashwa</translation>
+<translation id="5860033963881614850">Kimezimwa</translation>
+<translation id="2920568868625746681">Wifi Tu</translation>
+<translation id="4590997608186539865">Orodha ya Kucheza</translation>
+<translation id="7525067979554623046">Unda</translation>
+<translation id="5491049004699827548">Unda orodha yako ya kwanza ya kucheza</translation>
+<translation id="5319108110887582146">Tengeneza orodha ya kucheza ya sauti na video zako uzipendazo na ucheze wakati wowote, mahali popote. Hata nje ya mtandao.</translation>
+<translation id="6802849415466883498">Unda Orodha ya Kucheza</translation>
+<translation id="8525248723479742219">Cheza Baadaye</translation>
+<translation id="7453007860684252933">Vinjari na uongeze</translation>
+<translation id="9014883386413828317">Ongeza maudhui unayopenda. Tafuta kitufe cha ( +) katika sehemu ya chini ya kulia ya skrini yako.</translation>
+<translation id="5928669500312007783">Vinjari midia</translation>
+<translation id="8152485753254079984">Orodha mpya ya kucheza</translation>
+<translation id="9130105487623071247">Jina la orodha ya kucheza</translation>
+<translation id="726581235416249619">Orodha ya kucheza isiyo na jina</translation>
+<translation id="1456254983411148628">Ondoa Data</translation>
+<translation id="2365883822666964139">Umeteua <ph name="NUMBER"/></translation>
+<translation id="8617390509150638117">Vipengee <ph name="NUMBER"/></translation>
+<translation id="2317629745818459803">Cheza Zote</translation>
+<translation id="7544853251252956727">Changanya</translation>
+<translation id="2881339830231736485">Zilizochezwa hivi karibuni</translation>
+<translation id="7636458383879257005">Gusa, bonyeza na ushikilie kwa muda, au buruta</translation>
+<translation id="8120600068258956006">Ongeza kwenye Orodha ya Kucheza</translation>
+<translation id="39991094779686024">Orodha za kucheza</translation>
+<translation id="1710072605877822603">Ongeza midia</translation>
+<translation id="903678009070770568">Ongeza video kwenye Orodha ya Kucheza ya Brave na utazame baadaye, hata nje ya mtandao</translation>
+<translation id="3063627607780392015">Je, huwezi kuunganishwa kwa simu? Je, unahitaji kumtuliza mtoto anayelia?</translation>
+<translation id="2041014734809158138">Iwe uko kwenye treni, safari ya ndege, au safari ndefu ya gari. Orodha ya kucheza inatimiza mahitaji yako.</translation>
+<translation id="7287143275037417932">Au gusa kitufe cha Orodha ya Kucheza kinapoonekana</translation>
+<translation id="6959838938954098206">Kitufe cha orodha ya kucheza huonekana wakati kuna midia ya kuongeza. Bonyeza kwa muda mrefu kwa machaguo. Unaweza hata kukificha.</translation>
+<translation id="3620862810055853183">Fungua Orodha ya Kucheza</translation>
+<translation id="3861012838874771868">Fungua Mipangilio ya Orodha ya Kucheza</translation>
+<translation id="5220099266891491416">Ficha kitufe cha orodha ya kucheza</translation>
+<translation id="7416347631175891923">Ijaribu!</translation>
+<translation id="1173894706177603556">Ipe jina jipya</translation>
+<translation id="1620612903815671893">Ondoa data ya nje ya mtandao ya orodha ya kucheza</translation>
+<translation id="3261711068865275261">Ondoa data yote ya nje ya mtandao</translation>
+<translation id="6653691766801349738">Hifadhi orodha ya kucheza kwa matumizi ya nje ya mtandao</translation>
+<translation id="8708086574143054053">Hifadhi orodha zote za kucheza kwa matumizi ya nje ya mtandao</translation>
+<translation id="3596306474342941843">Futa orodha ya kucheza</translation>
+<translation id="7765158879357617694">Sogeza</translation>
+<translation id="3803384303807438047">Futa data ya nje ya mtandao ya kipengee</translation>
+<translation id="4195643157523330669">Fungua katika kichupo kipya</translation>
+<translation id="4243710787042215766">Open in private tab</translation>
+<translation id="8261506727792406068">Futa</translation>
+<translation id="377872456482681602">Tafadhali chagua vipengee kwanza</translation>
+<translation id="6172429305139364624">Kipengee cha orodha ya kucheza hakijahifadhiwa kwenye hifadhi ya muda.\nTafadhali hifadhi kipengee kwa muda kwa ajili ya hali ya nje ya mtandao.</translation>
+<translation id="3631131732607750008">Muda wa kuwepo wa maudhui umeisha. Jaribu tena baada ya sekunde chache.</translation>
+<translation id="9085765419770918643">Hakuna NFT hapa bado.</translation>
+<translation id="8445532667841598737">Je, uko tayari kuongeza baadhi? Bofya tu kitufe kilicho hapa chini ili kuhamisha.</translation>
 </translationbundle>

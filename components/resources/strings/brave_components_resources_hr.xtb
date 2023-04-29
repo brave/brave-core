@@ -207,15 +207,14 @@
 <translation id="7577100371127227294">Mjesečne napojnice</translation>
 <translation id="178390304006113804">Postavite ponavljajuće mjesečne napojnice za kontinuirano podržavanje omiljenih autora.</translation>
 <translation id="3302159320447117425">Još nema postavljenih mjesečnih napojnica.</translation>
+<translation id="564837702459183199">Sljedeći doprinos</translation>
 <translation id="4898632353264854950">Mrežna mjesta pojavljuju se dok pregledavate</translation>
 <translation id="3024485967181749006">Ukupno napojnica u ovom mjesecu</translation>
-<translation id="8183455888546367148">Ukupno mjesečnih napojnica ovog mjeseca</translation>
 <translation id="4153752809523809915">Jeste li danas dali napojnicu omiljenom autoru?</translation>
 <translation id="7286722244752781970">Minimalno vrijeme provedeno na stranici prije evidentiranja posjeta</translation>
 <translation id="4424486208397124985">Minimalni broj posjeta da bi se izdavač smatrao relevantnim</translation>
 <translation id="5421369907811917952">Ostale postavke</translation>
 <translation id="6248554379744796526">Pokaži neprovjerena mrežna mjesta na popisu</translation>
-<translation id="5510618543889994434">Dopusti davanje doprinosa za videozapise</translation>
 <translation id="8933202740471878108">1 posjet</translation>
 <translation id="354797634123275103">5 posjeta</translation>
 <translation id="3583700907990488238">10 posjeta</translation>
@@ -224,7 +223,6 @@
 <translation id="8610523985422563960">Jedna minuta</translation>
 <translation id="2807328214759298515">Do</translation>
 <translation id="7483857210736407752">Prikaži gumbe za napojnice na mrežnim mjestima</translation>
-<translation id="7583327070390027131">Datum sljedećih mjesečnih napojnica</translation>
 <translation id="6231182869178328516">Upravo sam dao/la napojnicu <ph name="NAME"/> uporabom preglednika Brave. Provjerite na mrežnoj stranici: https://brave.com/tips.</translation>
 <translation id="5916536234616514390">Obožavam što mi <ph name="HASHTAG"/>Brave omogućuje da podržavam stvaratelje! Upravo sam dao napojnicu <ph name="NAME"/> s <ph name="HASHTAG2"/>BAT-om. Ako potvrde na stranici https://creators.brave.com prije <ph name="DATE"/>, BAT je njihov!</translation>
 <translation id="8404935570206006581">Nagradite uslugom Brave</translation>
@@ -638,6 +636,7 @@
 <translation id="8797999629784150206">Možete promijeniti <ph name="SITE_PERMISSIONS"/> u bilo kojem trenutku. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">dopuštenje za mrežno mjesto</translation>
 <translation id="4355784577209159847">Dozvoli upotrebu kolačića treće strane za starije izdanje prijave putem platforme Google</translation>
+<translation id="5770656036486891920"><ph name="URL"/> želi upotrebljavati kolačiće treće strane za starije prijave putem platforme Google</translation>
 <translation id="7717357606512850995">Provjeri status</translation>
 <translation id="7306880305145342514">Čestitamo! Stigle su vaše nagrade za <ph name="MONTH"/>!</translation>
 <translation id="3007207731685398329">Vaše nagrade od <ph name="AMOUNT"/> za<ph name="MONTH"/> stižu za <ph name="DAYS"/></translation>
@@ -659,6 +658,7 @@
       =1 {Ovaj ste mjesec posjetili # stvaratelja kojeg podržava značajka Nagrade Brave}
       other {Ovaj ste mjesec posjetili # stvaratelja koje podržava značajka Nagrade Brave}
     }</translation>
+<translation id="6067959437127691361">Upotrebom značajke Nagrade Brave podražavaju se stvaratelji sadržaja i omogućuje vam se zarađivanje tokena BAT.</translation>
 <translation id="1187367336925051518"><ph name="MONTH"/> Nagrade: <ph name="AMOUNT"/></translation>
 <translation id="3274366539954332481">Stigle su vaše Nagrade za Oglase za <ph name="MONTH"/>!</translation>
 <translation id="7861645265922445992">Zatraži Nagrade</translation>
@@ -691,7 +691,6 @@
 <translation id="6965382102122355670">U redu</translation>
 <translation id="6727102863431372879">Postavi</translation>
 <translation id="8853725596990766789">Promijeni iznos</translation>
-<translation id="6067959437127691361">Upotrebom značajke Nagrade Brave podražavaju se stvaratelji sadržaja i omogućuje vam se zarađivanje tokena BAT.</translation>
 <translation id="1609556006143307897">Pomažete u podržavanju stvaratelja sadržaja</translation>
 <translation id="6605147707233193230">Uključite kako biste podržavali stvaratelje sadržaja</translation>
 <translation id="5430495762768325224">Saznajte više o tokenima BAT</translation>
@@ -787,6 +786,7 @@
 <translation id="9161147058107529840">Očekivani pojedinačni parametar objekta.</translation>
 <translation id="1875861420974447980">Ovaj ID lanca je u upotrebi</translation>
 <translation id="167698752210114155">Došlo je do pogreške</translation>
+<translation id="7497827357097190289">Ključ za blokiranje nije važeći ili se ne može potvrditi</translation>
 <translation id="8945668490056243760">Nepodržana vrsta pretplate</translation>
 <translation id="2326876601333401685">Ova metoda RPC nije podržana.</translation>
 <translation id="1128992132632883337">Pojavila se pogreška raščlanjivanja odgovora</translation>
@@ -870,6 +870,7 @@
 <translation id="570080709303714420">POLOVICA</translation>
 <translation id="2784548701748328827">MAKS.</translation>
 <translation id="2329227154184107678">Pregledaj narudžbu</translation>
+<translation id="3220443877821207794">Pregledaj slanje</translation>
 <translation id="8530071505111489657">Nema dostupnih tokena</translation>
 <translation id="615791330696335475">Pretraži tokene po nazivu</translation>
 <translation id="5009335307032488349">Pretraži NFT po nazivu, identifikacijskoj oznaci</translation>
@@ -1094,9 +1095,20 @@
 <translation id="4460220693591349571">VRSTA FUNKCIJE</translation>
 <translation id="838933475572692615">PODATCI ZA HEX</translation>
 <translation id="2240831799756994975">BAJTOVI</translation>
-<translation id="4874303883488468190">Odaberi račun/e</translation>
-<translation id="2018472018751735678">Pregledajte adrese svojih dopuštenih računa (obvezno)</translation>
-<translation id="7029403458170657879">Poveži se s novčanikom preglednika Brave</translation>
+<translation id="6760823167126275974">Poveži novčanik</translation>
+<translation id="716009557505091365">ili se poveži s:</translation>
+<translation id="7242985059140288348">Ova će aplikacija moći:</translation>
+<translation id="7352133688029686231">Neće moći:</translation>
+<translation id="1647328658385235886">Provjerite stanje i aktivnost novčanika</translation>
+<translation id="3295962112184461868">Zatražite odobrenje za transakcije i potpise</translation>
+<translation id="6096892345597202096">Pogledajte svoju dopuštenu adresu novčanika</translation>
+<translation id="496578987299869780">Premještanje sredstava bez vašeg dopuštenja</translation>
+<translation id="3226586788973641582">Budite sigurni da imate povjerenje u ovu stranicu.</translation>
+<translation id="6837278005487143422">Trajanje dopuštenja</translation>
+<translation id="1903637466604153314">Dok ne zatvorim ovo mrežno mjesto</translation>
+<translation id="4324239559624557455">24 sata</translation>
+<translation id="9139452553033760558">1 tjedan</translation>
+<translation id="1658834457013045127">Zauvijek</translation>
 <translation id="2770851145415891830">Otkriveni postojeći kriptonovčanici</translation>
 <translation id="2237759620789871865">Ako biste radije preskočili uvoz i zadržali stare kriptovalutne novčanike, idite na <ph name="LINK_BEFORE"/>Postavke<ph name="LINK_AFTER"/> preglednika Brave i promijenite zadano natrag na kriptovalutne novčanike. Također možete uvesti, isprobati novi novčanik Brave Wallet i vratiti natrag u bilo kojem trenutku.</translation>
 <translation id="5590175005414413980">Upišite lozinku svojih postojećih novčanika za kriptovalute za uvoz u novčanik Brave Wallet. Uživajte u bržem i sigurnijem načinu upravljanja kriptoimovinom i upotrijebite decentralizirane aplikacije Web3.</translation>
@@ -1172,7 +1184,9 @@
 <translation id="8585995109882455949">Kako mogu pronaći pravu adresu?</translation>
 <translation id="8395402412470376435">Brave za korisnike provjerava i sprječava slanje sredstava na pogrešnu adresu zbog netočne upotrebe malih i velikih slova. Riječ je o postupku „kontrolni zbroj” za provjeravanje je li adresa Ethereum valjana.</translation>
 <translation id="4583433813614292221">1. Posjetite</translation>
+<translation id="8061317754447191238">Posjetite Etherscan i zalijepite adresu novčanika na koji želite poslati tokene. Zatim pritisnite Enter</translation>
 <translation id="5393164213211430081">2. Kopirajte i upišite adresu ETH-a</translation>
+<translation id="8306108469060304141">Kopirajte i unesite točnu adresu. Možete vidjeti da su neki znakovi ispravno pretvoreni.</translation>
 <translation id="2378355054306959991">I dalje vam treba pomoć?</translation>
 <translation id="862585889767884824">od</translation>
 <translation id="9106265941552476098">Odbij transakcije <ph name="TRANSACTION_LENGTH"/></translation>
@@ -1212,7 +1226,6 @@
 <translation id="1904295039023858291">Standardni token</translation>
 <translation id="9033453977881595182">Identifikacijska oznaka tokena</translation>
 <translation id="6332387008245531841">Ugovorena adresa</translation>
-<translation id="6717502994710534866">CID</translation>
 <translation id="2351120707525742989">Lokacija ili adresa slike</translation>
 <translation id="2962388922926051374">Zahtjev za metodom „eth_chainId” na <ph name="URL"/> neuspješan</translation>
 <translation id="8325036459845654666">Mreža već dodana.</translation>
@@ -1229,14 +1242,11 @@
 <translation id="5133421763709317473">Nije pronađena nikakva imovina koja odgovara pretraživanju ili filtru</translation>
 <translation id="7383613643114466279">Ova se imovina ne podržava Novčanikom Brave</translation>
 <translation id="6423985584914773314">Nevaljana adresa FIL</translation>
-<translation id="3898731124813934210">Kupi uslugom Wyre</translation>
 <translation id="5522073372365069684">Kupi uslugom Ramp</translation>
 <translation id="6153197326949684688">Prodaj pomoću <ph name="OFFRAMP_PROVIDER"/></translation>
-<translation id="6097502401711916278">Najmanji iznos mora biti <ph name="FIAT_AMOUNT"/> ili više.</translation>
 <translation id="7902920577183739843">Kupujte sa značajkom Sardine</translation>
 <translation id="6534275647567011533">Kupi uslugom Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Kupite kriptovalute karticom Visa ili Mastercard.</translation>
@@ -1513,18 +1523,17 @@
 <translation id="2227702748249086756">Nije moguće dohvatiti procjene naknada</translation>
 <translation id="5361710044667743492">Zašto nije dostupno?</translation>
 <translation id="3668838456083358569">Neki se podaci NFT pohranjuju na centraliziranom poslužitelju kao što je AWS, Google Cloud itd. U tom slučaju, ne možete prikvačiti svoje podatke NFT mreži IPFS.</translation>
-<translation id="1293258969121701010">Pokretanjem IPFS-a na računalu možete:</translation>
-<translation id="4568942135611119076">Pobrinuti se da vaši podaci NFT ostanu na mreži i da ih nitko ne može neovlašteno upotrebljavati.</translation>
-<translation id="4915883034746438977">Dobiti sadržaj natrag upotrebom identifikatora sadržaja (CID) iz netočnog podatka.</translation>
-<translation id="1373647012698032676">Sudjelovati u potvrđivanju autentičnosti i doprinositi da mreža IPFS postane bogatija i zdravija.</translation>
-<translation id="1806204385270226865">Drži moje NFT-ove uvijek na mreži</translation>
-<translation id="4323376551843624309">Omogući prikvačivanje NFT-a</translation>
-<translation id="6501331923135442324">Veliki korak k uključivanju u web3</translation>
-<translation id="5361073938927187534">Pokreni čvor IPFS-a i zadrži NFT-ove na mreži</translation>
-<translation id="1060267371223703324">Provjeri koje NFT-ove mogu prikvačiti</translation>
-<translation id="2641083452974145848">Sada možete pokrenuti IPFS i biti dio koncepta web 3. Vaši podaci NFT ostaju na mreži zauvijek i nitko ne može njima neovlašteno upravljati.</translation>
-<translation id="4460927368826360904">Pokrenuli ste čvor IPFS-a. Datoteka se dohvaća za lokalni čvor IPFS-a.</translation>
-<translation id="2260350263892668490"><ph name="PINNED"/> od <ph name="PINNABLE"/> NFT-a/NFT-ova uspješno je prikvačeno na IPFS.</translation>
+<translation id="4225753478505258806">No da bi IPFS funkcionirao, potrebni su pojedinačni sudionici. Pokrenite IPFS na računalu radi:</translation>
+<translation id="7674069205559000521">pridonošenja brzini i dostupnosti mreže</translation>
+<translation id="7775229731579227782">povećanja sigurnosti NFT-ova</translation>
+<translation id="2319971828691864975">Počni upotrebljavati IPFS</translation>
+<translation id="7906328323880284538">Najsigurniji način za hostiranje NFT-ova</translation>
+<translation id="166206715890914321">Pokretanje čvora IPFS-a za čuvanje NFT-ova zauvijek na mreži</translation>
+<translation id="8913523138550521467">IPFS je super sigurna alternativa tradicionalnom mrežnom hostiranju. Umjesto da se oslanja na jednog domaćina, IPFS omogućuje tisućama pojedinaca (koji pokreću „čvorove”) da rade zajedno na pohrani sadržaja. Sve dok jedna osoba ima kopiju, datoteka nikada ne može nestati. „Prikvačivanje” vaših NFT-ova na IPFS i pokretanje vlastitog čvora IPFS-a najbolji je način da zaštitite svoje NFT-ove.</translation>
+<translation id="9160750213078764355">Pogledaj koji moji NFT-ovi ispunjavaju uvjete</translation>
+<translation id="6671461082721702724">Sada možete pokrenuti IPFS i biti dio weba 3. Podaci o NFT-u ostat će zauvijek na mreži.</translation>
+<translation id="654964147165509548">NFT-ovi se prikvačuju na vaš lokalni čvor za IPFS.</translation>
+<translation id="4910182786472608576">Sljedeći broj NFT-ova prikvačen je na vaš lokalni čvor za IPFS: <ph name="PINNED"/>.</translation>
 <translation id="1474962961180773583">Dostupno: <ph name="PINNABLE"/> od <ph name="TOTAL"/>!</translation>
 <translation id="6852656829524945421">Nije moguće prikvačiti</translation>
 <translation id="7698019251444927442">Pokrenuli ste čvor IPFS</translation>
@@ -1532,10 +1541,15 @@
 <translation id="7527548209942671618">Prikvačen na vaš lokalni čvor IPFS</translation>
 <translation id="5659058832308365026">U tijeku je prikvačivanje podataka NFT na vaš lokalni čvor IPFS</translation>
 <translation id="4919133452617704550">Nije moguće prikvačiti na vaš lokalni čvor IPFS</translation>
+<translation id="4220102684162429566">Najčešći razlozi:</translation>
+<translation id="451509325309455">NFT ima problema s URL-om metapodataka koji nisu IPFS</translation>
+<translation id="3827697793483899711">Unutarnji problemi s čvorom IPFS-a</translation>
+<translation id="1992846713609432783">Nema dovoljno prostora na lokalnom čvoru</translation>
 <translation id="3225624966527491351">Uvezi NFT</translation>
 <translation id="9085765419770918643">Ovdje još nema NFT-ova.</translation>
 <translation id="8445532667841598737">Želite li dodati još? Kliknite na gumb u nastavku za uvoženje.</translation>
 <translation id="9136462955850040542">Kompatibilno s NFT-ovima na platformama Solana (SPL) i Ethereum (ERC-721).</translation>
+<translation id="849880459530751909">Uređivanje NFT-a</translation>
 <translation id="3155170474926428993">Pokretač funkcije Tor</translation>
 <translation id="3745016858329272300">Opće informacije</translation>
 <translation id="4045404575593562245">Događaji kontrole Tor</translation>
@@ -1612,6 +1626,9 @@
 <translation id="9204041448536398473">Postavke globalnog štita</translation>
 <translation id="2108334320919763866">Zadane globalne postavke</translation>
 <translation id="3440043456924990296">Postavkama upravlja organizacija</translation>
+<translation id="7053983685419859001">Blokiraj</translation>
+<translation id="5716230673298034837">Dopusti sve</translation>
+<translation id="5279600392753459966">Blokiraj sve</translation>
 <translation id="4516904298421534459">Popisi filtara</translation>
 <translation id="3570081523466826008">Nadogradi veze na HTTPS</translation>
 <translation id="131231380815754440">Omogući HTTPS</translation>
@@ -1622,6 +1639,7 @@
 <translation id="8593054718053894081">Agresivno blokiraj elemente za praćenje i oglase</translation>
 <translation id="7384778069178817075">Dopusti sve elemente za praćenje i oglase</translation>
 <translation id="4941539331405513605">Blokiraj kolačiće na više mjesta</translation>
+<translation id="2749284154880331639">Zaboravi kolačiće prve strane</translation>
 <translation id="6883611015375728278">Blokiraj sve kolačiće</translation>
 <translation id="5657156137487675418">Dopusti sve kolačiće</translation>
 <translation id="8366221601425141146">Blokirano pritiskanje prstima</translation>
@@ -1636,6 +1654,7 @@
 <translation id="7194012750329511146">Štitovi Brave
 Blokirano <ph name="NUMBER"/> element/a/ata za praćenje, oglas/a i više</translation>
 <translation id="4292121526390005808">Blokirane skripte</translation>
+<translation id="5046271170844958713">Dozvoljene skripte</translation>
 <translation id="264682546981571963">Je li vam dosta obavijesti o pristanku na kolačiće?</translation>
 <translation id="4986297793092101884">Brave već blokira kolačiće trećih strana. Također možemo blokirati obavijesti o pristanku na kolačiće.</translation>
 <translation id="535688588637568715">Da, blokiraj obavijesti o pristanku na kolačiće</translation>
@@ -1672,6 +1691,7 @@ Blokirano <ph name="NUMBER"/> element/a/ata za praćenje, oglas/a i više</trans
 <translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> ne može se povezati s poslužiteljem <ph name="REGION_NAME"/>. Možete pokušati ponovno ili odabrati drugi.</translation>
 <translation id="1024255913009642477">Već ste kupili VPN?</translation>
 <translation id="8814357473522731680">Omogućuje</translation>
+<translation id="3960619311638643872">VPN preglednika Brave</translation>
 <translation id="5747552184818312860">Istječe</translation>
 <translation id="1691256669639196606">Upravljaj pretplatom</translation>
 <translation id="434523916398030617">Obrati se tehničkoj podršci</translation>

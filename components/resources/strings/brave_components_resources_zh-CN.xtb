@@ -207,15 +207,14 @@
 <translation id="7577100371127227294">每月赏金</translation>
 <translation id="178390304006113804">设置定期每月打赏金额，以便你可以持续支持你最喜爱的创作者。</translation>
 <translation id="3302159320447117425">尚未设置每月打赏金额。</translation>
+<translation id="564837702459183199">下一次贡献</translation>
 <translation id="4898632353264854950">在您浏览时站点会出现</translation>
 <translation id="3024485967181749006">本月总打赏金额</translation>
-<translation id="8183455888546367148">本月的每月打赏总额</translation>
 <translation id="4153752809523809915">您今天给喜爱的内容作者打赏了吗？</translation>
 <translation id="7286722244752781970">登录访问前最短页面时间</translation>
 <translation id="4424486208397124985">发布者相关性的最低访问量</translation>
 <translation id="5421369907811917952">其他设置</translation>
 <translation id="6248554379744796526">显示列表中未经验证的站点</translation>
-<translation id="5510618543889994434">允许打赏视频</translation>
 <translation id="8933202740471878108">访问量为 1 次</translation>
 <translation id="354797634123275103">访问量为5次</translation>
 <translation id="3583700907990488238">访问量为10次</translation>
@@ -224,7 +223,6 @@
 <translation id="8610523985422563960">1 分钟</translation>
 <translation id="2807328214759298515">高达</translation>
 <translation id="7483857210736407752">在网站上显示提示按钮</translation>
-<translation id="7583327070390027131">下个月打赏日期</translation>
 <translation id="6231182869178328516">我最近使用 Brave 浏览器打赏了 <ph name="NAME"/>。快来 https://brave.com/tips 看看吧。</translation>
 <translation id="5916536234616514390">让我很开心的是 <ph name="HASHTAG"/>Brave 让我可以支持创作者！刚刚用 <ph name="HASHTAG2"/>BAT 给 <ph name="NAME"/> 发送了消费。如果对方在 <ph name="DATE"/>前在 https://creators.brave.com 进行验证，那么 BAT 就是他们的！</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
@@ -638,6 +636,7 @@
 <translation id="8797999629784150206">你可以随时更改你的 <ph name="SITE_PERMISSIONS"/> 。<ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">网站许可</translation>
 <translation id="4355784577209159847">允许使用第三方 cookie 的传统 Google 登录</translation>
+<translation id="5770656036486891920"><ph name="URL"/>希望使用第三方 cookie 进行传统 Google 登录</translation>
 <translation id="7717357606512850995">检查状态</translation>
 <translation id="7306880305145342514">恭喜！您的<ph name="MONTH"/>奖励已到账！</translation>
 <translation id="3007207731685398329">您的 <ph name="AMOUNT"/> <ph name="MONTH"/> 奖励将于 <ph name="DAYS"/>后到账</translation>
@@ -659,6 +658,7 @@
       =1 {本月您访问了# 个 Brave 奖励支持的创作者}
       other {本月您访问了# 个 Brave 奖励支持的创作者}
  }</translation>
+<translation id="6067959437127691361">使用 Brave 奖励有助于支持内容创作者，并帮您赚取 BAT。</translation>
 <translation id="1187367336925051518"><ph name="MONTH"/>奖励：<ph name="AMOUNT"/></translation>
 <translation id="3274366539954332481">您的<ph name="MONTH"/>广告奖励已到账！</translation>
 <translation id="7861645265922445992">领取奖励</translation>
@@ -690,7 +690,6 @@
 <translation id="6965382102122355670">确定</translation>
 <translation id="6727102863431372879">设定</translation>
 <translation id="8853725596990766789">更改金额</translation>
-<translation id="6067959437127691361">使用 Brave 奖励有助于支持内容创作者，并帮您赚取 BAT。</translation>
 <translation id="1609556006143307897">您正在支持內容創作者</translation>
 <translation id="6605147707233193230">開啟以立即支持內容創作者</translation>
 <translation id="5430495762768325224">了解更多关于 BAT 的信息</translation>
@@ -784,6 +783,7 @@ other {# 个广告/小时}
 <translation id="9161147058107529840">预期的单个对象参数。</translation>
 <translation id="1875861420974447980">此链 ID 已有人使用</translation>
 <translation id="167698752210114155">发生了一个内部的错误</translation>
+<translation id="7497827357097190289">Blockhash 无效或无法验证</translation>
 <translation id="8945668490056243760">不支持的订阅类型</translation>
 <translation id="2326876601333401685">不支持这种 RPC 方法。</translation>
 <translation id="1128992132632883337">出现响应解析错误</translation>
@@ -867,6 +867,7 @@ other {# 个广告/小时}
 <translation id="570080709303714420">一半</translation>
 <translation id="2784548701748328827">最大</translation>
 <translation id="2329227154184107678">审核订单</translation>
+<translation id="3220443877821207794">发送评论</translation>
 <translation id="8530071505111489657">没有可用代币</translation>
 <translation id="615791330696335475">按名称搜索代币</translation>
 <translation id="5009335307032488349">按名称、id 搜索 NFT</translation>
@@ -1091,9 +1092,20 @@ other {# 个广告/小时}
 <translation id="4460220693591349571">功能类型</translation>
 <translation id="838933475572692615">HEX 数据</translation>
 <translation id="2240831799756994975">字节</translation>
-<translation id="4874303883488468190">选择账户</translation>
-<translation id="2018472018751735678">查看您的已允许账户的地址（必填）</translation>
-<translation id="7029403458170657879">关联 Brave 钱包</translation>
+<translation id="6760823167126275974">连接钱包</translation>
+<translation id="716009557505091365">或连接：</translation>
+<translation id="7242985059140288348">这个应用程序将能够：</translation>
+<translation id="7352133688029686231">它将无法：</translation>
+<translation id="1647328658385235886">检查钱包余额和活动</translation>
+<translation id="3295962112184461868">请求批准交易和签字</translation>
+<translation id="6096892345597202096">查看您允许的钱包地址</translation>
+<translation id="496578987299869780">未经您的允许转移资金</translation>
+<translation id="3226586788973641582">确保您信任这个网站。</translation>
+<translation id="6837278005487143422">权限期限</translation>
+<translation id="1903637466604153314">直到我关闭这个网站</translation>
+<translation id="4324239559624557455">24 小时</translation>
+<translation id="9139452553033760558">1 周</translation>
+<translation id="1658834457013045127">始终</translation>
 <translation id="2770851145415891830">检测到现有的加密货币钱包</translation>
 <translation id="2237759620789871865">如果您想跳过导入，保留旧的 Crypto Wallets 体验，只需浏览到 Brave 浏览器<ph name="LINK_BEFORE"/>设置<ph name="LINK_AFTER"/>并将默认值更改为 Crypto Wallets。您还可以导入、尝试新的 Brave 钱包，并随时改回来。</translation>
 <translation id="5590175005414413980">输入您现有的加密货币钱包的密码即可导入 Brave 钱包。享受更快、更安全的方式来管理加密资产并与 Web3 DApps 交互。</translation>
@@ -1169,7 +1181,9 @@ other {# 个广告/小时}
 <translation id="8585995109882455949">该如何找到正确的地址？</translation>
 <translation id="8395402412470376435">Brave 验证并防止用户由于大写不正确而将资金发送到错误的地址。这是一个“检查和”过程，用于验证它是一个有效的 ETH 地址。</translation>
 <translation id="4583433813614292221">1. 访问</translation>
+<translation id="8061317754447191238">访问 etherscan 并粘贴您想要发送代币的钱包地址。然后输入</translation>
 <translation id="5393164213211430081">2. 复制并输入 ETH 地址</translation>
+<translation id="8306108469060304141">复制并输入正确的地址。您可以看到一些字符已被正确转换。</translation>
 <translation id="2378355054306959991">需要更多帮助？</translation>
 <translation id="862585889767884824">/</translation>
 <translation id="9106265941552476098">拒绝 <ph name="TRANSACTION_LENGTH"/> 交易</translation>
@@ -1209,7 +1223,6 @@ other {# 个广告/小时}
 <translation id="1904295039023858291">代币标准</translation>
 <translation id="9033453977881595182">代币 ID</translation>
 <translation id="6332387008245531841">合约地址</translation>
-<translation id="6717502994710534866">CID</translation>
 <translation id="2351120707525742989">图像位置或地址</translation>
 <translation id="2962388922926051374">在 <ph name="URL"/> 上请求方法“eth_chainId”失败</translation>
 <translation id="8325036459845654666">已添加此网络。</translation>
@@ -1226,14 +1239,11 @@ other {# 个广告/小时}
 <translation id="5133421763709317473">未找到与搜索词或过滤器匹配的资产</translation>
 <translation id="7383613643114466279">Brave Wallet 不支持此资产</translation>
 <translation id="6423985584914773314">此 FIL 地址无效</translation>
-<translation id="3898731124813934210">用 Wyre 购买</translation>
 <translation id="5522073372365069684">用 Ramp 购买</translation>
 <translation id="6153197326949684688">以<ph name="OFFRAMP_PROVIDER"/>出售</translation>
-<translation id="6097502401711916278">最低金额必须是 <ph name="FIAT_AMOUNT"/> 或更多。</translation>
 <translation id="7902920577183739843">用 Sardine 购买</translation>
 <translation id="6534275647567011533">用 Transak 购买</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">用 Visa 或 Mastercard 购买加密货币。</translation>
@@ -1510,18 +1520,17 @@ other {# 个广告/小时}
 <translation id="2227702748249086756">无法获取费用估算</translation>
 <translation id="5361710044667743492">为什么不可用？</translation>
 <translation id="3668838456083358569">部分 NFT 数据存储在 AWS、谷歌 Cloud 等集中式服务器上。在这种情况下，无法将 NFT 数据固定到 IPFS 网络。</translation>
-<translation id="1293258969121701010">通过在您的计算机上运行 IPFS，您可以:</translation>
-<translation id="4568942135611119076">确保您的 NFT 数据保持在线，并且不能被篡改。</translation>
-<translation id="4915883034746438977">使用内容标识符(CID)从不正确的数据中获取内容。</translation>
-<translation id="1373647012698032676">参与真实性证明，使 IPFS 网络丰富健康。</translation>
-<translation id="1806204385270226865">保持我的 NFT 始终在线</translation>
-<translation id="4323376551843624309">启用 NFT 固定</translation>
-<translation id="6501331923135442324">这是迈向 web3 的一大步</translation>
-<translation id="5361073938927187534">运行 IPFS 节点并保持 NFT 始终在线</translation>
-<translation id="1060267371223703324">检查我的哪些 NFT 可以固定</translation>
-<translation id="2641083452974145848">现在您可以运行您的 IPFS 并成为 web 3 的一部分。您的 NFT 数据将永远在线，无法被篡改。</translation>
-<translation id="4460927368826360904">您正在运行 IPFS 节点。文件正在读取到本地 IPFS 节点。</translation>
-<translation id="2260350263892668490"><ph name="PINNABLE"/> NFT 中的<ph name="PINNED"/>已成功固定到 IPFS。</translation>
+<translation id="4225753478505258806">但 IPFS 需要个体参与者来发挥作用。在您的计算机上运行 IPFS 以：</translation>
+<translation id="7674069205559000521">有助于网络的速度和可用性</translation>
+<translation id="7775229731579227782">提高 NFT 的安全性</translation>
+<translation id="2319971828691864975">使用 IPFS</translation>
+<translation id="7906328323880284538">托管 NFT 最安全的方式</translation>
+<translation id="166206715890914321">运行 IPFS 节点，使 NFT 始终在线</translation>
+<translation id="8913523138550521467">IPFS 是传统网络主机的一个超级安全的替代品。IPFS 不依赖于单一的主机，而是使成千上万的个人（运行“节点”）共同合作来存储内容。只要有一个人拥有一份副本，一个文件就始终不会消失。将您的 NFT 固定在 IPFS 上，并运行您自己的 IPFS 节点，是保护您的 NFT 的最佳方式。</translation>
+<translation id="9160750213078764355">看看我的哪些 NFT 符合资格</translation>
+<translation id="6671461082721702724">现在您可以运行您的 IPFS 并成为 web 3 的一部分。您的 NFT 数据将永远在线。</translation>
+<translation id="654964147165509548">NFT 已固定到本地 IPFS 节点。</translation>
+<translation id="4910182786472608576"><ph name="PINNED"/>支持的 NFT 固定到您的本地 IPFS 节点。</translation>
 <translation id="1474962961180773583"><ph name="TOTAL"/>中的<ph name="PINNABLE"/>可用了！</translation>
 <translation id="6852656829524945421">无法固定</translation>
 <translation id="7698019251444927442">您正在运行 IPFS 节点</translation>
@@ -1529,10 +1538,15 @@ other {# 个广告/小时}
 <translation id="7527548209942671618">固定到本地 IPFS 节点</translation>
 <translation id="5659058832308365026">NFT 数据被固定到本地 IPFS 节点</translation>
 <translation id="4919133452617704550">无法固定到本地 IPFS 节点</translation>
+<translation id="4220102684162429566">最常见的原因：</translation>
+<translation id="451509325309455">NFT 存在非 IPFS 元数据 URL 问题</translation>
+<translation id="3827697793483899711">内部 IPFS 节点问题</translation>
+<translation id="1992846713609432783">本地节点空间不足</translation>
 <translation id="3225624966527491351">导入 NFT</translation>
 <translation id="9085765419770918643">这里还没有 NFT。</translation>
 <translation id="8445532667841598737">准备好添加内容了吗？只需点击下面的按钮即可导入。</translation>
 <translation id="9136462955850040542">兼容 Solana (SPL)和 Ethereum (ERC-721)上的 NFT。</translation>
+<translation id="849880459530751909">编辑 NFT</translation>
 <translation id="3155170474926428993">Tor 启动器</translation>
 <translation id="3745016858329272300">基本信息</translation>
 <translation id="4045404575593562245">Tor 控制活动</translation>
@@ -1609,6 +1623,9 @@ other {# 个来源}
 <translation id="9204041448536398473">盾牌全局设置</translation>
 <translation id="2108334320919763866">全局默认值</translation>
 <translation id="3440043456924990296">由组织管理的设置</translation>
+<translation id="7053983685419859001">禁止</translation>
+<translation id="5716230673298034837">允许所有</translation>
+<translation id="5279600392753459966">拦截所有</translation>
 <translation id="4516904298421534459">过滤列表</translation>
 <translation id="3570081523466826008">升级连接为 HTTPS</translation>
 <translation id="131231380815754440">启用 HTTPS</translation>
@@ -1619,6 +1636,7 @@ other {# 个来源}
 <translation id="8593054718053894081">积极阻止跟踪器和广告</translation>
 <translation id="7384778069178817075">允许所有跟踪器和广告</translation>
 <translation id="4941539331405513605">阻止跨站点 cookie</translation>
+<translation id="2749284154880331639">忘记第一方 cookies</translation>
 <translation id="6883611015375728278">拦截所有 cookies</translation>
 <translation id="5657156137487675418">允许所有 cookies</translation>
 <translation id="8366221601425141146">指纹被屏蔽</translation>
@@ -1633,6 +1651,7 @@ other {# 个来源}
 <translation id="7194012750329511146">Brave Shields
 <ph name="NUMBER"/> 个跟踪器、广告及更多项目已被阻止</translation>
 <translation id="4292121526390005808">已拦截脚本</translation>
+<translation id="5046271170844958713">允许脚本</translation>
 <translation id="264682546981571963">厌倦了 cookie 同意通知？</translation>
 <translation id="4986297793092101884">Brave 已经阻止了第三方 cookie。我们也可以阻止 cookie 同意通知。</translation>
 <translation id="535688588637568715">是的，阻止 cookie 同意通知</translation>
@@ -1669,6 +1688,7 @@ other {# 个来源}
 <translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> 无法连接到 <ph name="REGION_NAME"/> 服务器。您可以再试一次，也可以选择其他服务器。</translation>
 <translation id="1024255913009642477">已经购买了 VPN？</translation>
 <translation id="8814357473522731680">技术支持：</translation>
+<translation id="3960619311638643872">Brave 的 VPN</translation>
 <translation id="5747552184818312860">到期时间</translation>
 <translation id="1691256669639196606">管理订阅</translation>
 <translation id="434523916398030617">联系技术支持</translation>

@@ -207,15 +207,14 @@
 <translation id="7577100371127227294">Maandelijkse tips</translation>
 <translation id="178390304006113804">Stel herhalende maandelijkse bijdragen in, zodat je je favoriete ontwikkelaars kunt blijven steunen.</translation>
 <translation id="3302159320447117425">Er zijn nog geen maandelijkse bijdragen ingesteld.</translation>
+<translation id="564837702459183199">Volgende bijdrage</translation>
 <translation id="4898632353264854950">Tijdens het browsen verschijnen er websites.</translation>
 <translation id="3024485967181749006">Totale aantal fooien voor deze maand</translation>
-<translation id="8183455888546367148">Totaal aantal bijdragen van deze maand</translation>
 <translation id="4153752809523809915">Heb je vandaag al je favoriete maker van content een tip gegeven?</translation>
 <translation id="7286722244752781970">Minimum tijd op pagina voordat een bezoek wordt geregistreerd</translation>
 <translation id="4424486208397124985">Minimum aantal bezoeken voor relevantie uitgever</translation>
 <translation id="5421369907811917952">Andere instellingen</translation>
 <translation id="6248554379744796526">Niet-geverifieerde sites in lijst weergeven</translation>
-<translation id="5510618543889994434">Sta bijdragen aan video's toe</translation>
 <translation id="8933202740471878108">1 bezoek</translation>
 <translation id="354797634123275103">5 bezoeken</translation>
 <translation id="3583700907990488238">10 bezoeken</translation>
@@ -224,7 +223,6 @@
 <translation id="8610523985422563960">1 minuut</translation>
 <translation id="2807328214759298515">Tot</translation>
 <translation id="7483857210736407752">Fooiknoppen weergeven op sites</translation>
-<translation id="7583327070390027131">Datum volgende maandelijkse bijdrage</translation>
 <translation id="6231182869178328516">Ik heb <ph name="NAME"/> zojuist een fooi gegeven via de Brave Browser. Ontdek meer op https://brave.com/tips.</translation>
 <translation id="5916536234616514390">Geweldig dat ik met <ph name="HASHTAG"/>Brave makers kan steunen! Heb net <ph name="NAME"/> een fooi gegeven met <ph name="HASHTAG2"/>BAT. Die kan via vóór <ph name="DATE"/> via https://creators.brave.com verifiëren om de BAT te innen.</translation>
 <translation id="8404935570206006581">FooiVanBrave</translation>
@@ -638,6 +636,7 @@
 <translation id="8797999629784150206">U kunt uw <ph name="SITE_PERMISSIONS"/> op ieder moment wijzigen. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">site rechten</translation>
 <translation id="4355784577209159847">Geef toestemming voor cookies van derden bij een verouderd Google-inlogproces</translation>
+<translation id="5770656036486891920"><ph name="URL"/> wil cookies van derden gebruiken voor een verouderd Google-inlogproces.</translation>
 <translation id="7717357606512850995">Status controleren</translation>
 <translation id="7306880305145342514">Gefeliciteerd! Uw beloningen voor <ph name="MONTH"/> zijn er!</translation>
 <translation id="3007207731685398329">Uw beloningen voor <ph name="MONTH"/> ter waarde van <ph name="AMOUNT"/> zijn er over <ph name="DAYS"/></translation>
@@ -659,6 +658,7 @@
       =1 {U hebt deze maand # ontwikkelaar bezocht die wordt ondersteund via Brave Beloningen}
       other {U hebt deze maand # ontwikkelaars bezocht die worden ondersteund via Brave Beloningen}
     }</translation>
+<translation id="6067959437127691361">Brave Beloningen helpt contentontwikkelaars te ondersteunen en u kunt er BAT mee verdienen.</translation>
 <translation id="1187367336925051518">Beloningen van <ph name="MONTH"/>: <ph name="AMOUNT"/></translation>
 <translation id="3274366539954332481">Uw advertentiebeloningen voor <ph name="MONTH"/> zijn er!</translation>
 <translation id="7861645265922445992">Beloningen claimen</translation>
@@ -690,7 +690,6 @@
 <translation id="6965382102122355670">OK</translation>
 <translation id="6727102863431372879">Instellen</translation>
 <translation id="8853725596990766789">Aantal veranderen</translation>
-<translation id="6067959437127691361">Brave Beloningen helpt contentontwikkelaars te ondersteunen en u kunt er BAT mee verdienen.</translation>
 <translation id="1609556006143307897">U helpt contentontwikkelaars te ondersteunen</translation>
 <translation id="6605147707233193230">Inschakelen om contentontwikkelaars te helpen ondersteunen</translation>
 <translation id="5430495762768325224">Meer informatie over BAT</translation>
@@ -784,6 +783,7 @@
 <translation id="9161147058107529840">Eén verwacht, objectparameter.</translation>
 <translation id="1875861420974447980">Deze keten-ID wordt momenteel gebruikt</translation>
 <translation id="167698752210114155">Er is een interne fout opgetreden</translation>
+<translation id="7497827357097190289">Blockhash is ongeldig of kan niet worden gevalideerd</translation>
 <translation id="8945668490056243760">Niet-ondersteund abonnementstype</translation>
 <translation id="2326876601333401685">Deze RPC-methode wordt niet ondersteund.</translation>
 <translation id="1128992132632883337">Er is een fout opgetreden bij parseren van het antwoord</translation>
@@ -867,6 +867,7 @@
 <translation id="570080709303714420">HELFT</translation>
 <translation id="2784548701748328827">MAXIMAAL</translation>
 <translation id="2329227154184107678">Order controleren</translation>
+<translation id="3220443877821207794">Beoordeling verzonden</translation>
 <translation id="8530071505111489657">Geen tokens beschikbaar</translation>
 <translation id="615791330696335475">Zoek token op naam</translation>
 <translation id="5009335307032488349">Zoek NFT op naam, ID</translation>
@@ -1091,9 +1092,20 @@
 <translation id="4460220693591349571">FUNCTIETYPE</translation>
 <translation id="838933475572692615">HEX-GEGEVENS</translation>
 <translation id="2240831799756994975">BYTES</translation>
-<translation id="4874303883488468190">Account(s) selecteren</translation>
-<translation id="2018472018751735678">Bekijk de adressen van uw toegestane accounts (verplicht)</translation>
-<translation id="7029403458170657879">Verbinden met Brave-wallet</translation>
+<translation id="6760823167126275974">Wallet koppelen</translation>
+<translation id="716009557505091365">of koppelen met:</translation>
+<translation id="7242985059140288348">Deze app kan:</translation>
+<translation id="7352133688029686231">De app kan niet:</translation>
+<translation id="1647328658385235886">Controleer het saldo op en de activiteit van de wallet</translation>
+<translation id="3295962112184461868">Vraag om goedkeuring voor transacties en handtekeningen</translation>
+<translation id="6096892345597202096">Bekijk uw toegestane wallet-adres</translation>
+<translation id="496578987299869780">Verplaats geld zonder dat uw toestemming nodig is</translation>
+<translation id="3226586788973641582">Zorg ervoor dat u deze site vertrouwt.</translation>
+<translation id="6837278005487143422">Duur van toestemming</translation>
+<translation id="1903637466604153314">Totdat ik deze site sluit</translation>
+<translation id="4324239559624557455">24 uur</translation>
+<translation id="9139452553033760558">1 week</translation>
+<translation id="1658834457013045127">Altijd</translation>
 <translation id="2770851145415891830">Bestaande cryptowallets gedetecteerd</translation>
 <translation id="2237759620789871865">Als je het importeren liever wilt overslaan en de oude cryptowalletervaring wilt houden, navigeer je naar de <ph name="LINK_BEFORE"/>instellingen<ph name="LINK_AFTER"/> van de Brave-browser en stel je cryptowallets weer als standaard in. Je kunt ook importeren, de nieuwe Brave-wallet uitproberen en teruggaan wanneer je wilt.</translation>
 <translation id="5590175005414413980">Voer je bestaande cryptowallet-wachtwoord in om naar Brave Wallet te importeren. Profiteer van een snellere en veiligere manier om crypto-assets te beheren en om met Web3 DApps te communiceren.</translation>
@@ -1169,7 +1181,9 @@
 <translation id="8585995109882455949">Hoe kan ik het juiste adres vinden?</translation>
 <translation id="8395402412470376435">Brave valideert en voorkomt dat gebruikers geld naar het verkeerde adres sturen door onjuist hoofdlettergebruik. Dit is een "controlesom"-proces om te verifiëren dat het een geldig Ethereum-adres is.</translation>
 <translation id="4583433813614292221">1. Ga naar</translation>
+<translation id="8061317754447191238">Bezoek Etherscan en plak het juiste wallet-adres om tokens te verzenden. Vul daarna dit in:</translation>
 <translation id="5393164213211430081">2. Kopieer en voer het ETH-adres in</translation>
+<translation id="8306108469060304141">Kopieer het juiste adres en voer het in. U ziet dat sommige tekens juist zijn geconverteerd.</translation>
 <translation id="2378355054306959991">Meer hulp nodig?</translation>
 <translation id="862585889767884824">of</translation>
 <translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/> transacties weigeren</translation>
@@ -1209,7 +1223,6 @@
 <translation id="1904295039023858291">Tokenstandaard</translation>
 <translation id="9033453977881595182">Token-ID</translation>
 <translation id="6332387008245531841">Contractadres</translation>
-<translation id="6717502994710534866">CID</translation>
 <translation id="2351120707525742989">Locatie of adres van afbeelding</translation>
 <translation id="2962388922926051374">Aanvraag voor de methode 'eth_chainId' op <ph name="URL"/> is mislukt</translation>
 <translation id="8325036459845654666">Dit netwerk is al toegevoegd.</translation>
@@ -1226,14 +1239,11 @@
 <translation id="5133421763709317473">Geen activa gevonden die overeenkomen met een zoekopdracht of filter</translation>
 <translation id="7383613643114466279">Dit activum wordt niet ondersteund door de Brave-wallet</translation>
 <translation id="6423985584914773314">Geen geldig FIL-adres</translation>
-<translation id="3898731124813934210">Kopen met Wyre</translation>
 <translation id="5522073372365069684">Kopen met Ramp</translation>
 <translation id="6153197326949684688">Verkopen met <ph name="OFFRAMP_PROVIDER"/></translation>
-<translation id="6097502401711916278">Het minimumbedrag moet <ph name="FIAT_AMOUNT"/> of meer bedragen.</translation>
 <translation id="7902920577183739843">Kopen met Sardine</translation>
 <translation id="6534275647567011533">Kopen met Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Koop crypto met Visa of Mastercard.</translation>
@@ -1510,18 +1520,17 @@
 <translation id="2227702748249086756">Kan schatting van kosten niet ophalen</translation>
 <translation id="5361710044667743492">Waarom niet beschikbaar?</translation>
 <translation id="3668838456083358569">Sommige NFT-data worden opgeslagen op een centrale server zoals AWS, Google Cloud, etc. In dat geval is het niet mogelijk om uw NFT-data vast te zetten op het IPFS-netwerk.</translation>
-<translation id="1293258969121701010">Door IPFS op uw computer te activeren, kunt u:</translation>
-<translation id="4568942135611119076">Ervoor zorgen dat uw NFT-data online blijven en dat er niet mee gefraudeerd kan worden.</translation>
-<translation id="4915883034746438977">Content herstellen van incorrecte data met behulp van contentidentificatie (CID).</translation>
-<translation id="1373647012698032676">Deelnemen aan het bewijs van authenticiteit en het IPFS-netwerk rijk en gezond maken.</translation>
-<translation id="1806204385270226865">Houd mijn NFT's altijd online</translation>
-<translation id="4323376551843624309">Vastzetten NFT inschakelen</translation>
-<translation id="6501331923135442324">Een grote stap in de richting van web3</translation>
-<translation id="5361073938927187534">Activeer IPFS-node en houd uw NFT's altijd online</translation>
-<translation id="1060267371223703324">Controleer welke van mijn NFT's vastgezet kunnen worden</translation>
-<translation id="2641083452974145848">U kunt nu uw IPFS activeren en deel uitmaken van web3. Uw NFT-data zullen voor altijd online zijn en er kan nooit mee worden gefraudeerd.</translation>
-<translation id="4460927368826360904">U heeft een actieve IPFS-node. Het bestand wordt opgehaald en naar de lokale IPFS-node gebracht.</translation>
-<translation id="2260350263892668490"><ph name="PINNED"/> van de <ph name="PINNABLE"/> NFT's zijn vastgezet op IPFS.</translation>
+<translation id="4225753478505258806">Maar IPFS heeft individuele deelnemers nodig om te kunnen functioneren. Voer IPFS op uw computer uit om:</translation>
+<translation id="7674069205559000521">Draag bij aan de snelheid en beschikbaarheid van het netwerk</translation>
+<translation id="7775229731579227782">Verbeter de beveiliging van uw NFT's</translation>
+<translation id="2319971828691864975">Ga aan de slag met IPFS</translation>
+<translation id="7906328323880284538">De veiligste manier om NFT's te hosten</translation>
+<translation id="166206715890914321">Voer een IPFS-node uit om uw NFT's altijd online te houden</translation>
+<translation id="8913523138550521467">IPFS is een heel veilig alternatief voor traditionele webhosting. In plaats van een enkele host te gebruiken, schakelt IPFS duizenden afzonderlijke hosts (die 'nodes' uitvoeren) in die met elkaar samenwerken om content op te slaan. En zolang één persoon een kopie heeft, kan een bestand nooit verdwijnen. Uw NFT's aan IPFS 'vastmaken', en uw eigen IPFS-node uitvoeren, is de beste manier om uw NFT's te beveiligen.</translation>
+<translation id="9160750213078764355">Bekijk welke van mijn NFT's in aanmerking komen</translation>
+<translation id="6671461082721702724">Nu kunt u uw IPFS uitvoeren en deel uitmaken van web 3. Uw NFT-gegevens blijven altijd online staan.</translation>
+<translation id="654964147165509548">NFT's worden vastgemaakt aan uw lokale IPFS-node.</translation>
+<translation id="4910182786472608576">NFT's die worden ondersteund door <ph name="PINNED"/> worden vastgemaakt aan uw lokale IPFS-node.</translation>
 <translation id="1474962961180773583"><ph name="PINNABLE"/> van de <ph name="TOTAL"/> zijn beschikbaar!</translation>
 <translation id="6852656829524945421">Kan niet vastzetten</translation>
 <translation id="7698019251444927442">U heeft een actieve IPFS-node</translation>
@@ -1529,10 +1538,15 @@
 <translation id="7527548209942671618">Vastgezet op uw lokale IPFS-node</translation>
 <translation id="5659058832308365026">NFT-data worden vastgezet op uw lokale IPFS-node</translation>
 <translation id="4919133452617704550">Kan niet worden vastgezet op uw lokale IPFS-node</translation>
+<translation id="4220102684162429566">Meest voorkomende redenen:</translation>
+<translation id="451509325309455">NFT heeft niet-IPFS-gerelateerde URL-problemen met metagegevens</translation>
+<translation id="3827697793483899711">Interne IPFS-nodeproblemen</translation>
+<translation id="1992846713609432783">Niet genoeg ruimte beschikbaar op lokale node</translation>
 <translation id="3225624966527491351">NFT importeren</translation>
 <translation id="9085765419770918643">Hier zijn nog geen NFT's.</translation>
 <translation id="8445532667841598737">Bent u er klaar voor om NFT's te gaan toevoegen? Klik dan op de onderstaande knop om ze te importeren.</translation>
 <translation id="9136462955850040542">Compatibel met NFT's op Solana (SPL) en Ethereum (ERC-721).</translation>
+<translation id="849880459530751909">NFT bewerken</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Algemene informatie</translation>
 <translation id="4045404575593562245">Tor-controlegebeurtenissen</translation>
@@ -1609,6 +1623,9 @@
 <translation id="9204041448536398473">Algemene Schilden-instellingen</translation>
 <translation id="2108334320919763866">Algemene standaardinstellingen</translation>
 <translation id="3440043456924990296">Instellingen die worden beheerd door de organisatie</translation>
+<translation id="7053983685419859001">Blokkeren</translation>
+<translation id="5716230673298034837">Alles toestaan</translation>
+<translation id="5279600392753459966">Alles blokkeren</translation>
 <translation id="4516904298421534459">Lijsten filteren</translation>
 <translation id="3570081523466826008">Upgrade verbindingen naar HTTPS</translation>
 <translation id="131231380815754440">HTTPS inschakelen</translation>
@@ -1619,6 +1636,7 @@
 <translation id="8593054718053894081">Trackers en advertenties op agressieve wijze blokkeren</translation>
 <translation id="7384778069178817075">Laat alle trackers &amp; advertenties toe</translation>
 <translation id="4941539331405513605">Cross-site cookies blokkeren</translation>
+<translation id="2749284154880331639">Eigen cookies niet onthouden</translation>
 <translation id="6883611015375728278">Blokkeer alle cookies</translation>
 <translation id="5657156137487675418">Sta alle cookies toe</translation>
 <translation id="8366221601425141146">Fingerprinting geblokkeerd</translation>
@@ -1633,6 +1651,7 @@
 <translation id="7194012750329511146">Brave Shields
 <ph name="NUMBER"/> Trackers, advertenties en meer geblokkeerd</translation>
 <translation id="4292121526390005808">Geblokkeerde scripts</translation>
+<translation id="5046271170844958713">Toegestane scripts</translation>
 <translation id="264682546981571963">Heeft u genoeg van meldingen over toestemming voor cookies?</translation>
 <translation id="4986297793092101884">Brave blokkeert al cookies van derden. We kunnen ook de kennisgevingen over cookietoestemming blokkeren.</translation>
 <translation id="535688588637568715">Ja, kennisgevingen over cookietoestemming blokkeren</translation>
@@ -1669,6 +1688,7 @@
 <translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> kan geen verbinding maken met de server in <ph name="REGION_NAME"/>. Probeer het opnieuw of kies een andere server.</translation>
 <translation id="1024255913009642477">Heb je al VPN gekocht?</translation>
 <translation id="8814357473522731680">Mogelijk gemaakt door</translation>
+<translation id="3960619311638643872">Brave-VPN</translation>
 <translation id="5747552184818312860">Verloopt</translation>
 <translation id="1691256669639196606">Abonnement beheren</translation>
 <translation id="434523916398030617">Neem contact op met de technische ondersteuning</translation>
