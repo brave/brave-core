@@ -3,25 +3,25 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
- import * as ChatUI from 'gen/brave/browser/ai_chat/ai_chat.mojom.m.js'
+ import * as AIChatUI from 'gen/brave/components/ai_chat/ai_chat.mojom.m.js'
 
  // Provide access to all the generated types
- export * from 'gen/brave/browser/ai_chat/ai_chat.mojom.m.js'
+ export * from 'gen/brave/components/ai_chat/ai_chat.mojom.m.js'
 
  interface API {
-   pageHandler: ChatUI.PageHandlerRemote
-   callbackRouter: ChatUI.ChatUIPageCallbackRouter
+   pageHandler: AIChatUI.PageHandlerRemote
+   callbackRouter: AIChatUI.ChatUIPageCallbackRouter
  }
 
  let apiInstance: API
 
  class PageHandlerAPI implements API {
-   pageHandler: ChatUI.PageHandlerRemote
-   callbackRouter: ChatUI.ChatUIPageCallbackRouter
+   pageHandler: AIChatUI.PageHandlerRemote
+   callbackRouter: AIChatUI.ChatUIPageCallbackRouter
 
    constructor () {
-     this.pageHandler = ChatUI.PageHandler.getRemote()
-     this.callbackRouter = new ChatUI.ChatUIPageCallbackRouter()
+     this.pageHandler = AIChatUI.PageHandler.getRemote()
+     this.callbackRouter = new AIChatUI.ChatUIPageCallbackRouter()
      this.pageHandler.setClientPage(this.callbackRouter.$.bindNewPipeAndPassRemote())
    }
  }

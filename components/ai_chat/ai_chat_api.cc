@@ -122,8 +122,8 @@ void AIChatAPI::QueryPrompt(ResponseCallback callback,
   DVLOG(1) << __func__ << " Using model: " << model_name;
 
   api_request_helper_.Request("POST", api_url, CreateJSONRequestBody(dict),
-                              "application/json", true,
-                              std::move(internal_callback), headers);
+                              "application/json", std::move(internal_callback),
+                              headers);
 
   DVLOG(1) << __func__ << " API Request sent\n";
 }
