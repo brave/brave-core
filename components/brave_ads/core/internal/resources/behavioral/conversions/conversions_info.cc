@@ -38,7 +38,7 @@ base::expected<ConversionsInfo, std::string> ConversionsInfo::CreateFromValue(
       dict.FindDict("conversion_id_patterns");
   if (!conversion_id_patterns_dict) {
     return base::unexpected(
-        "Failed to load from JSON, conversion patterns missing");
+        "Failed to load from JSON, conversion id patterns missing");
   }
 
   for (const auto [url_pattern, conversion_id_pattern] :
@@ -48,7 +48,7 @@ base::expected<ConversionsInfo, std::string> ConversionsInfo::CreateFromValue(
 
     if (!conversion_id_pattern_dict) {
       return base::unexpected(
-          "Failed to load from JSON, conversion pattern not of type dict");
+          "Failed to load from JSON, conversion id pattern not of type dict");
     }
 
     const std::string* const id_pattern =

@@ -101,14 +101,14 @@ PurchaseIntentInfo::CreateFromValue(const base::Value::Dict dict) {
   // Parsing field: "funnel_sites"
   const auto* const funnel_sites_list = dict.FindList("funnel_sites");
   if (!funnel_sites_list) {
-    return base::unexpected("Failed to load from JSON, sites missing");
+    return base::unexpected("Failed to load from JSON, funnel sites missing");
   }
 
   // For each set of sites and segments
   for (const auto& item : *funnel_sites_list) {
     if (!item.is_dict()) {
       return base::unexpected(
-          "Failed to load from JSON, site set not of type dict");
+          "Failed to load from JSON, funnel site not of type dict");
     }
     const base::Value::Dict& item_dict = item.GetDict();
 
@@ -117,7 +117,7 @@ PurchaseIntentInfo::CreateFromValue(const base::Value::Dict dict) {
         item_dict.FindList("segments");
     if (!funnel_site_segments_list) {
       return base::unexpected(
-          "Failed to load from JSON, get site segment list as dict");
+          "Failed to load from JSON, funnel site segments not of tyoe list");
     }
 
     std::vector<std::string> purchase_intent_segments;
@@ -130,7 +130,7 @@ PurchaseIntentInfo::CreateFromValue(const base::Value::Dict dict) {
     const auto* const sites_list = item_dict.FindList("sites");
     if (!sites_list) {
       return base::unexpected(
-          "Failed to load from JSON, get site list as dict");
+          "Failed to load from JSON, sites site not of tyoe list");
     }
 
     for (const auto& site : *sites_list) {
