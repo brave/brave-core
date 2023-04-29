@@ -27,7 +27,9 @@
           <ph name="PROXIES_TITLE"/>
           va “proksi-serversiz” yoki “to‘g‘ridan-to‘g‘ri” sozlamalaridan biri
           belgilanganligiga ishonch xosil qiling.</translation>
+<translation id="2765022094254723779">Brave paydo boʻlishida boshqa <ph name="BEGIN_LINK_OSS"/>ochiq kodli dastur<ph name="END_LINK_OSS"/> taʼminotining katta oʻrni bor.</translation>
 <translation id="9156965752763025780">O‘zgartirishlar Brave qaytadan ishga tushirilganda kuchga kiradi.</translation>
+<translation id="6477625882876869143">Brave paydo boʻlishida <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> ochiq kodli dastur loyihasining katta oʻrni bor.</translation>
 <translation id="4068928808254189629">Bu yerga o‘ting
           Brave menyusi &gt;
           <ph name="SETTINGS_TITLE"/>

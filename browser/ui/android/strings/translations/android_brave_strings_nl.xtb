@@ -139,6 +139,10 @@
 <translation id="7459000603787995422">Tabbladen sluiten bij afsluiten</translation>
 <translation id="4448697385961650078">Blokkeer trackers &amp; advertenties</translation>
 <translation id="2448893613530489637">Hiermee wordt voorkomen dat trackers &amp; advertenties op webpagina's worden getoond</translation>
+<translation id="1025207378813960343">Zorg ervoor dat de verbindingen met websites veilig zijn.</translation>
+<translation id="6686219838158572786">Alle verbindingen moeten HTTPS gebruiken (streng)</translation>
+<translation id="4221284400051835823">Gebruik HTTPS indien dit mogelijk is (standaard)</translation>
+<translation id="4690906712010847708">Waardeer verbindingen niet op naar HTTPS (uitgeschakeld)</translation>
 <translation id="1680858055899097121">Blijf niet tussen tabbladen doorbladeren.</translation>
 <translation id="7142548388914389999">Productanalyse met privacybescherming (P3A) toestaan</translation>
 <translation id="5254037869598726291">Op basis van geanonimiseerde P3A-gegevens kan Brave het algemene gebruik schatten en kunnen we populaire functies verbeteren.</translation>
@@ -151,6 +155,10 @@
 <translation id="410351446219883937">Automatisch afspelen</translation>
 <translation id="7445411102860286510">Sites toestaan gedempte video's automatisch af te spelen (aanbevolen)</translation>
 <translation id="7837721118676387834">Automatisch afspelen van gedempte video's toestaan voor een specifieke site.</translation>
+<translation id="4206299587103092719">Aanmelden met Google</translation>
+<translation id="9110294136812584522">Sites kunnen via cookies van derden vragen om een verouderd Google-inlogproces te gebruiken</translation>
+<translation id="2903783737778379345">Geef geen toestemming voor het gebruik van een verouderd Google-inlogproces via cookies van derden</translation>
+<translation id="6880817299303842099">Toestemming voor het gebruik van een verouderd Google-inlogproces via cookies van derden</translation>
 <translation id="181905442828471321">Standaardinstellingen van Brave Shields</translation>
 <translation id="2675679258824361492">Andere privacy-instellingen</translation>
 <translation id="8026334261755873520">Browsegegevens wissen</translation>
@@ -212,7 +220,7 @@
 <translation id="5441565662498481293">Je stuurt automatisch een fooi naar:</translation>
 <translation id="1628742278973105368">Je eerste maandelijkse tip wordt verzonden op:</translation>
 <translation id="1642952941091001113">Deze maker heeft zich nog niet aangemeld om bijdragen van Brave-gebruikers te ontvangen. We blijven proberen bij te dragen tot ze verifiëren of tot 90 dagen zijn verstreken.</translation>
-<translation id="635752162765375187">OPMERKING: deze maker is momenteel nog niet geconfigureerd voor het ontvangen van fooi uit uw beheerde Beloningen-wallet. Alle fooien die u stuurt, blijven in uw wallet in behandeling. Na 90 dagen wordt automatisch opnieuw geprobeerd om de fooi te verzenden.</translation>
+<translation id="8228150955416632026">U bent verbonden met <ph name="WALLET_PROVIDER"/>, maar deze maker is verbonden met <ph name="SUPPORTED_WALLET_PROVIDER"/>. Dit betekent dat de maker uw fooi niet kan ontvangen. Voorlopig blijven alle fooien die u stuurt in behandeling. We proberen ze de komende 90 dagen opnieuw te verwerken.</translation>
 <translation id="1910721550319506122">Welkom!</translation>
 <translation id="2734870894159530879">Log in bij <ph name="WALLET_PROVIDER"/> om uw saldo te bekijken</translation>
 <translation id="5830114181292529917">U kunt deze site steunen door een bijdrage te verzenden. Dit is een blijk van waardering voor het maken van goede content.</translation>
@@ -610,6 +618,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="4522570452068850558">Details</translation>
 <translation id="3995184924764722477">Accountgegevens</translation>
 <translation id="8967036623785635603">Zichtbare assets bewerken</translation>
+<translation id="8475984867371585028">Zichtbare NFT's bewerken</translation>
 <translation id="5050890334032852465">Sla je account-opvolglijst op.</translation>
 <translation id="7755766175599167100">Tokens zoeken</translation>
 <translation id="3835223348537121988">Saldo:</translation>
@@ -1046,4 +1055,78 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="1776742005329298234">Op <ph name="DUE_DATE"/> beëindigen we de ondersteuning voor bestaand virtueel BAT-saldo. Koppel vóór deze datum een beheerdersaccount, zodat we uw verdiende saldo kunnen overschrijven naar uw beheerdersaccount. Als u dit niet doet, gaat uw saldo verloren.</translation>
 <translation id="5089752671190341407">Er is nog steeds tijd om een bijdrage in vBAT te leveren aan uw favoriete ontwikkelaars</translation>
 <translation id="171158953146804144">Op <ph name="DUE_DATE"/> beëindigen we de ondersteuning voor bestaand virtueel BAT-saldo. Er zijn helaas geen beschikbare beheerders in uw regio (<ph name="REGION"/>) om uw verdiensten op te nemen. U kunt tot die tijd blijven bijdragen aan uw favoriete ontwikkelaars.</translation>
+<translation id="8949422576126100041">Pagina bekijken met Speedreader?</translation>
+<translation id="591648995518106347">Laadt automatisch artikelen in de lezermodus</translation>
+<translation id="5062934803872044756"><ph name="SYMBOL"/> op <ph name="NETWORK"/></translation>
+<translation id="295620834661738195">Brave-playlist</translation>
+<translation id="4850886885716139402">Weergave</translation>
+<translation id="7392941176393379100">Toegevoegd aan '<ph name="PLAYLIST_NAME"/>'</translation>
+<translation id="8289472222022674331">Uw playlistgegevens beheren</translation>
+<translation id="7650602357673790368">Playlist slaat automatisch content op op uw apparaat voor offline afspelen (op zowel privé- als op gedeelde playlists). Als u niet verbonden bent met wifi, dan maakt automatisch opslaan gebruik van mobiele gegevens.\n\nOm deze standaardinstelling te wijzigen, gaat u naar Instellingen.</translation>
+<translation id="5900576657906675258">Item toevoegen aan playlist</translation>
+<translation id="349846214503465941">Playlist inschakelen</translation>
+<translation id="1309636029062006520">Maak playlists van uw favoriete audio en video's en speel ze altijd, overal af.</translation>
+<translation id="7899390017499980820">Toevoegen aan Playlist-knop</translation>
+<translation id="6901152954398668317">De knop 'Toevoegen aan Playlist' tonen of verbergen voor het snel toevoegen en verwijderen van media.</translation>
+<translation id="8404028031709373707">Automatisch afspelen</translation>
+<translation id="597781019681241649">Schakelt automatisch afspelen in wanneer Playlist is geopend.</translation>
+<translation id="2625554376218216118">Begin met afspelen vanaf waar ik ben gebleven</translation>
+<translation id="2953730196265332002">Synchroniseer automatisch wijzigingen die de maker heeft aangebracht in een gedeelde playlist.</translation>
+<translation id="3561815498111282415">Automatisch opslaan voor offline gebruik</translation>
+<translation id="1832424694374124654">Slaat nieuwe playlist-items automatisch op op uw apparaat, zodat u ze kunt afspelen zonder internetverbinding.</translation>
+<translation id="8103022210423023846">Automatisch opslaan AAN</translation>
+<translation id="3926329432879804185">Automatisch opslaan UIT</translation>
+<translation id="7768812595186089508">Alleen automatisch opslaan bij verbinding met wifi</translation>
+<translation id="5939518447894949180">Resetten</translation>
+<translation id="8199028711686989861">Verwijder alle video's uit Playlist, inclusief opslag van de offline modus.</translation>
+<translation id="5916664084637901428">On</translation>
+<translation id="5860033963881614850">Off</translation>
+<translation id="2920568868625746681">Alleen via wifi</translation>
+<translation id="4590997608186539865">Playlist</translation>
+<translation id="7525067979554623046">Maken</translation>
+<translation id="5491049004699827548">Maak uw eerste playlist</translation>
+<translation id="5319108110887582146">Maak een playlist met uw favoriete audio en video's en speel deze altijd en overal af. Zelfs offline.</translation>
+<translation id="6802849415466883498">Een playlist maken</translation>
+<translation id="8525248723479742219">Later afspelen</translation>
+<translation id="7453007860684252933">Browsen en toevoegen</translation>
+<translation id="9014883386413828317">Voeg uw favoriete content toe. Zoek naar de ( + )-knop onderaan in uw scherm.</translation>
+<translation id="5928669500312007783">Browsen door media</translation>
+<translation id="8152485753254079984">Nieuwe playlist</translation>
+<translation id="9130105487623071247">Naam van playlist</translation>
+<translation id="726581235416249619">Naamloze playlist</translation>
+<translation id="1456254983411148628">Gegevens verwijderen</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/> geselecteerd</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/> items</translation>
+<translation id="2317629745818459803">Alles afspelen</translation>
+<translation id="7544853251252956727">Shuffle</translation>
+<translation id="2881339830231736485">Recentelijk afgespeeld</translation>
+<translation id="7636458383879257005">Tik, houd ingedrukt, of sleep</translation>
+<translation id="8120600068258956006">Toevoegen aan playlist</translation>
+<translation id="39991094779686024">Playlists</translation>
+<translation id="1710072605877822603">Media toevoegen</translation>
+<translation id="903678009070770568">Voeg video's toe aan Brave Playlist en bekijk ze later, zelfs offline</translation>
+<translation id="3063627607780392015">Geen bereik? Moet u een huilende peuter kalmeren?</translation>
+<translation id="2041014734809158138">Of u nu in de metro bent, in het vliegtuig zit of een lange autorit maakt, met Playlist zit u altijd goed.</translation>
+<translation id="7287143275037417932">Of tik op de Playlist-knop wanneer deze in beeld komt</translation>
+<translation id="6959838938954098206">De Playlist-knop wordt altijd getoond wanneer er media is om toe te voegen. Om opties te zien houdt u de knop wat langer ingedrukt. U kunt deze zelfs verbergen.</translation>
+<translation id="3620862810055853183">Playlist openen</translation>
+<translation id="3861012838874771868">Playlist-instellingen openen</translation>
+<translation id="5220099266891491416">Playlist-knop verbergen</translation>
+<translation id="7416347631175891923">Probeer het!</translation>
+<translation id="1173894706177603556">Naam wijzigen</translation>
+<translation id="1620612903815671893">Offline gegevens van playlists verwijderen</translation>
+<translation id="3261711068865275261">Alle offline gegevens verwijderen</translation>
+<translation id="6653691766801349738">Playlist bewaren voor offline gebruik</translation>
+<translation id="8708086574143054053">Alles playlists bewaren voor offline gebruik</translation>
+<translation id="3596306474342941843">Playlist verwijderen</translation>
+<translation id="7765158879357617694">Verplaatsen</translation>
+<translation id="3803384303807438047">Offline gegevens van item verwijderen</translation>
+<translation id="4195643157523330669">Openen op nieuw tabblad</translation>
+<translation id="4243710787042215766">Openen in privétabblad</translation>
+<translation id="8261506727792406068">Verwijder</translation>
+<translation id="377872456482681602">Selecteer eerst items</translation>
+<translation id="6172429305139364624">Het playlist-item bevindt zich niet in de cache.\nPlaats het item in de cache voor de offline modus.</translation>
+<translation id="3631131732607750008">Content is verlopen. Probeer het over een paar seconden opnieuw.</translation>
+<translation id="9085765419770918643">Hier zijn nog geen NFT's.</translation>
+<translation id="8445532667841598737">Bent u er klaar voor om NFT's te gaan toevoegen? Klik dan op de onderstaande knop om ze te importeren.</translation>
 </translationbundle>

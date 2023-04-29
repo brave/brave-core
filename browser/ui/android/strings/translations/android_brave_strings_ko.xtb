@@ -139,6 +139,10 @@
 <translation id="7459000603787995422">나갈 때 탭 닫기</translation>
 <translation id="4448697385961650078">트래커 &amp; 광고 차단</translation>
 <translation id="2448893613530489637">웹페이지를 로드하여 표시할 때 트래커 및 광고 차단</translation>
+<translation id="1025207378813960343">철저한 보안으로 웹사이트를 연결합니다.</translation>
+<translation id="6686219838158572786">모든 연결에 HTTPS를 사용해야 함(엄격)</translation>
+<translation id="4221284400051835823">가능하면 HTTPS로 업그레이드(기본)</translation>
+<translation id="4690906712010847708">연결을 HTTPS로 업그레이드하지 않음(비활성)</translation>
 <translation id="1680858055899097121">브라우징 세션 간에 탭을 유지하지 마십시오</translation>
 <translation id="7142548388914389999">프라이버시 보호 제품 분석(P3A) 허용</translation>
 <translation id="5254037869598726291">익명 P3A 정보는 Brave가 총체적인 사용 패턴을 평가하여 인기 기능을 개선하는 데 도움이 됩니다.</translation>
@@ -151,6 +155,10 @@
 <translation id="410351446219883937">자동재생</translation>
 <translation id="7445411102860286510">사이트에서 음소거된 동영상을 자동재생하도록 허용(권장)</translation>
 <translation id="7837721118676387834">특정 사이트에서 음소거된 동영상이 자동재생되도록 허용합니다.</translation>
+<translation id="4206299587103092719">Google 로그인</translation>
+<translation id="9110294136812584522">사이트가 타사 쿠키를 통해 레거시 Google 로그인을 사용할지 물어볼 수 있도록 허용</translation>
+<translation id="2903783737778379345">타사 쿠키를 통한 레거시 Google 로그인 허용 안 함</translation>
+<translation id="6880817299303842099">레거시 Google 로그인에 타사 쿠키 사용 허용됨</translation>
 <translation id="181905442828471321">Brave Shields 전역 기본값</translation>
 <translation id="2675679258824361492">기타 프라이버시 설정</translation>
 <translation id="8026334261755873520">인터넷 사용 기록 삭제</translation>
@@ -212,7 +220,7 @@
 <translation id="5441565662498481293">귀하께서는 다음 사용자에게 자동으로 팁을 보내고 있습니다:</translation>
 <translation id="1628742278973105368">귀하의 첫번째 월갑 팁이 다음 날짜에 송금될 예정입니다:</translation>
 <translation id="1642952941091001113">아직 가입하지 않아 Brave 사용자로부터 후원금을 받을 수 없는 제작자입니다. 제작자가 확인되거나 90일이 경과될 때까지 브라우저에서 계속 후원을 시도합니다.</translation>
-<translation id="635752162765375187">참고: 아직 구성되지 않아 회원님의 Rewards 보호관리 월렛에서 팁을 받을 수 없는 제작자입니다. 보내신 모든 팁은 보류 중인 상태로 남고, 90일간 자동으로 재시도합니다.</translation>
+<translation id="8228150955416632026">귀하는 <ph name="WALLET_PROVIDER"/>에 연결되었지만 이 제작자는 <ph name="SUPPORTED_WALLET_PROVIDER"/>에 연결되어 있습니다. 그래서 이 제작자에게 팁이 도달하지 못합니다. 보내신 모든 팁은 보류 중인 상태로 남고, 90일간 자동으로 재시도합니다.</translation>
 <translation id="1910721550319506122">환영합니다!</translation>
 <translation id="2734870894159530879"><ph name="WALLET_PROVIDER"/> 에 로그인하여 잔액 확인</translation>
 <translation id="5830114181292529917">팁을 보내서 이 사이트를 지원할 수 있습니다. 훌륭한 콘텐츠를 만드는 분들에게 감사를 전하세요.</translation>
@@ -610,6 +618,7 @@
 <translation id="4522570452068850558">세부 정보</translation>
 <translation id="3995184924764722477">계정 상세보기</translation>
 <translation id="8967036623785635603">가시 자산 편집</translation>
+<translation id="8475984867371585028">표시되는 NFT 편집</translation>
 <translation id="5050890334032852465">계정 주시목록 저장</translation>
 <translation id="7755766175599167100">토큰 검색</translation>
 <translation id="3835223348537121988">잔액:</translation>
@@ -1046,4 +1055,78 @@
 <translation id="1776742005329298234"><ph name="DUE_DATE"/> 부로, 기존 가상 BAT 잔액 지원이 중단됩니다. 이 날짜 이전에 보호관리 계정을 연결하시면 적립되어 있는 잔액을 보호관리 계정으로 이전해드릴 수 있으나, 이를 원치 않으시면 잔액이 소실됩니다.</translation>
 <translation id="5089752671190341407">아직은 vBAT를 마음에 드는 제작자에게 기부할 시간이 충분함</translation>
 <translation id="171158953146804144"><ph name="DUE_DATE"/> 부로, 기존 가상 BAT 잔액 지원이 중단됩니다. 안타깝지만 현재 계신 지역(<ph name="REGION"/>)에서는 사용 가능한 보호관리 서비스가 없어 적립액을 인출할 수 없습니다. 이 날짜 전까지는 마음에 드는 제작자에게 기부하실 수 있습니다.</translation>
+<translation id="8949422576126100041">페이지를 스피드리더로 보시겠습니까?</translation>
+<translation id="591648995518106347">적격 기사를 리더 모드에서 자동 로드</translation>
+<translation id="5062934803872044756"><ph name="SYMBOL"/> - <ph name="NETWORK"/></translation>
+<translation id="295620834661738195">Brave 재생목록</translation>
+<translation id="4850886885716139402">보기</translation>
+<translation id="7392941176393379100">'<ph name="PLAYLIST_NAME"/>'에 추가됨</translation>
+<translation id="8289472222022674331">재생목록 데이터 관리</translation>
+<translation id="7650602357673790368">재생목록이 기본적으로 콘텐츠를 오프라인 재생을 위해 기기에 자동 저장합니다(비공개 및 공유 재생목록 모두). Wi-Fi에 연결되어 있지 않으면 자동 저장이 셀룰러 데이터를 사용합니다.\n\n기본값을 변경하려면 설정으로 이동하세요.</translation>
+<translation id="5900576657906675258">재생목록에 항목 추가</translation>
+<translation id="349846214503465941">재생목록 활성화</translation>
+<translation id="1309636029062006520">좋아하는 오디오 및 비디오 재생목록을 만들어 언제 어디서든 재생 가능합니다.</translation>
+<translation id="7899390017499980820">재생목록에 추가 버튼</translation>
+<translation id="6901152954398668317">미디어를 빠르게 추가/제거할 수 있는 "재생목록에 추가" 버튼을 표시하거나 숨깁니다.</translation>
+<translation id="8404028031709373707">자동 재생</translation>
+<translation id="597781019681241649">재생목록이 열렸을 때의 자동 재생을 활성화합니다.</translation>
+<translation id="2625554376218216118">중단한 위치에서 재생 시작</translation>
+<translation id="2953730196265332002">제작자가 공유 재생 목록에 변경한 내용을 자동 동기화합니다.</translation>
+<translation id="3561815498111282415">오프라인용으로 자동 저장</translation>
+<translation id="1832424694374124654">새 재생목록 항목을 기기에 자동 저장하여 인터넷 연결이 끊어진 상태에서도 재생할 수 있습니다.</translation>
+<translation id="8103022210423023846">자동 재생 켜짐</translation>
+<translation id="3926329432879804185">자동 재생 꺼짐</translation>
+<translation id="7768812595186089508">Wi-Fi에 연결되었을 때에만 자동 저장</translation>
+<translation id="5939518447894949180">초기화</translation>
+<translation id="8199028711686989861">오프라인 모드 저장소를 포함한 재생목록에서 모든 비디오를 제거합니다.</translation>
+<translation id="5916664084637901428">사용</translation>
+<translation id="5860033963881614850">사용 안함</translation>
+<translation id="2920568868625746681">Wi-Fi에서만</translation>
+<translation id="4590997608186539865">재생목록</translation>
+<translation id="7525067979554623046">만들기</translation>
+<translation id="5491049004699827548">첫 재생목록을 만드세요</translation>
+<translation id="5319108110887582146">좋아하는 오디오 및 비디오 재생목록을 만들어 심지어 오프라인일 때도 언제 어디서든 재생하세요.</translation>
+<translation id="6802849415466883498">재생목록 만들기</translation>
+<translation id="8525248723479742219">나중에 재생</translation>
+<translation id="7453007860684252933">찾아보고 추가</translation>
+<translation id="9014883386413828317">마음에 드는 콘텐츠를 추가하세요. 화면 오른쪽 하단 ( + ) 버튼을 찾아 이용하면 됩니다.</translation>
+<translation id="5928669500312007783">미디어 찾아보기</translation>
+<translation id="8152485753254079984">새 재생목록</translation>
+<translation id="9130105487623071247">재생목록 이름</translation>
+<translation id="726581235416249619">무제 재생목록</translation>
+<translation id="1456254983411148628">데이터 제거</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/>개 선택됨</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/>개 항목</translation>
+<translation id="2317629745818459803">모두 재생</translation>
+<translation id="7544853251252956727">셔플</translation>
+<translation id="2881339830231736485">최근 재생함</translation>
+<translation id="7636458383879257005">탭하기, 길게 누르기, 끌기</translation>
+<translation id="8120600068258956006">재생목록에 추가</translation>
+<translation id="39991094779686024">재생목록</translation>
+<translation id="1710072605877822603">미디어 추가</translation>
+<translation id="903678009070770568">Brave 재생목록에 비디오를 추가하여 나중에 오프라인에서도 시청하세요</translation>
+<translation id="3063627607780392015">신호가 잡히지 않는데 우는 아이를 달래야 할 상황인가요?</translation>
+<translation id="2041014734809158138">비행기에 탑승하거나 신호가 극히 미약한 지역에 있어도 재생목록이 있으면 걱정 없습니다.</translation>
+<translation id="7287143275037417932">재생목록 버튼이 표시되면 탭하세요.</translation>
+<translation id="6959838938954098206">추가할 미디어가 있을 때 재생목록 버튼이 표시됩니다. 길게 누르면 옵션을 열 수 있습니다. 완전히 숨길 수도 있습니다.</translation>
+<translation id="3620862810055853183">재생목록 열기</translation>
+<translation id="3861012838874771868">재생목록 설정 열기</translation>
+<translation id="5220099266891491416">재생목록 버튼 숨기기</translation>
+<translation id="7416347631175891923">사용해보세요!</translation>
+<translation id="1173894706177603556">이름 바꾸기</translation>
+<translation id="1620612903815671893">재생목록 오프라인 데이터 제거</translation>
+<translation id="3261711068865275261">모든 오프라인 데이터 제거</translation>
+<translation id="6653691766801349738">오프라인 사용을 위해 재생목록 유지</translation>
+<translation id="8708086574143054053">오프라인 사용을 위해 모든 재생목록 유지</translation>
+<translation id="3596306474342941843">재생목록 삭제</translation>
+<translation id="7765158879357617694">이동</translation>
+<translation id="3803384303807438047">항목의 오프라인 데이터 삭제</translation>
+<translation id="4195643157523330669">새 탭에서 열기</translation>
+<translation id="4243710787042215766">비공개 탭에서 열기</translation>
+<translation id="8261506727792406068">삭제</translation>
+<translation id="377872456482681602">먼저 항목 선택</translation>
+<translation id="6172429305139364624">재생목록 항목이 캐시되어 있지 않습니다.\n오프라인 모드에서 사용하려면 항목을 캐시하세요.</translation>
+<translation id="3631131732607750008">콘텐츠가 만료되었습니다. 몇 초 후 다시 시도하세요.</translation>
+<translation id="9085765419770918643">아직 여기 NFT가 없습니다.</translation>
+<translation id="8445532667841598737">추가할 준비가 되셨나요? 아래 버튼을 클릭하면 가져옵니다.</translation>
 </translationbundle>

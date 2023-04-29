@@ -207,15 +207,14 @@
 <translation id="7577100371127227294">Tip bulanan</translation>
 <translation id="178390304006113804">Sediakan tip bulanan berulang supaya anda boleh menyokong pencipta kegemaran anda secara berterusan.</translation>
 <translation id="3302159320447117425">Tiada tip bulanan yang disediakan lagi.</translation>
+<translation id="564837702459183199">Sumbangan seterusnya</translation>
 <translation id="4898632353264854950">Laman akan muncul ketika anda mengimbas</translation>
 <translation id="3024485967181749006">Jumlah tip bulan ini</translation>
-<translation id="8183455888546367148">Jumlah tip bulanan bulan ini</translation>
 <translation id="4153752809523809915">Sudahkan anda tip pencipta kandungan kegemaran anda hari ini?</translation>
 <translation id="7286722244752781970">Masa halaman minimum sebelum mengelog ke laman</translation>
 <translation id="4424486208397124985">Kunjungan minimum untuk kerelevanan penerbit</translation>
 <translation id="5421369907811917952">Tetapan lain</translation>
 <translation id="6248554379744796526">Tunjukkan laman web yang tidak disahkan dalam senarai</translation>
-<translation id="5510618543889994434">Benarkan sumbangan untuk video</translation>
 <translation id="8933202740471878108">1 visit</translation>
 <translation id="354797634123275103">5 kunjungan</translation>
 <translation id="3583700907990488238">10 kunjungan</translation>
@@ -224,7 +223,6 @@
 <translation id="8610523985422563960">1 minit</translation>
 <translation id="2807328214759298515">Hingga</translation>
 <translation id="7483857210736407752">Tunjukkan butang Petua pada tapak</translation>
-<translation id="7583327070390027131">Tarikh tip bulanan seterusnya</translation>
 <translation id="6231182869178328516">Saya baru memberikan tip kepada <ph name="NAME"/> menggunakan Pelayar Brave. Cubalah di https://brave.com/tips.</translation>
 <translation id="5916536234616514390">Saya suka kerana <ph name="HASHTAG"/>Brave membolehkan saya menyokong pencipta! Hanya berikan tip <ph name="NAME"/> dengan <ph name="HASHTAG2"/>BAT. Jika mereka mengesahkan di https://creators.brave.com sebelum <ph name="DATE"/>, BAT tersebut adalah milik mereka!</translation>
 <translation id="8404935570206006581">BerikanTipDenganBrave</translation>
@@ -638,6 +636,7 @@
 <translation id="8797999629784150206">Anda boleh menukar <ph name="SITE_PERMISSIONS"/> anda pada bila-bila masa sahaja. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">kebenaran laman web</translation>
 <translation id="4355784577209159847">Benarkan penggunaan kuki pihak ketiga untuk Log Masuk Google lama</translation>
+<translation id="5770656036486891920"><ph name="URL"/> mahu menggunakan kuki pihak ketiga untuk Log Masuk Google yang lama</translation>
 <translation id="7717357606512850995">Periksa status</translation>
 <translation id="7306880305145342514">Tahniah! Ganjaran <ph name="MONTH"/> anda telah tiba!</translation>
 <translation id="3007207731685398329">Ganjaran <ph name="AMOUNT"/> <ph name="MONTH"/> anda akan tiba dalam tempoh <ph name="DAYS"/></translation>
@@ -659,6 +658,7 @@
       =1 {Bulan ini, anda telah melawat # orang pencipta yang disokong oleh Ganjaran Brave}
       other {Bulan ini, anda telah melawat # orang pencipta yang disokong oleh Ganjaran Brave}
     }</translation>
+<translation id="6067959437127691361">Tindakan menggunakan Ganjaran Brave dapat menyokong pencipta kandungan dan membolehkan anda memperoleh BAT</translation>
 <translation id="1187367336925051518"><ph name="MONTH"/> Ganjaran: <ph name="AMOUNT"/></translation>
 <translation id="3274366539954332481">Ad Rewards <ph name="MONTH"/> anda ada di sini!</translation>
 <translation id="7861645265922445992">Tuntut Ganjaran</translation>
@@ -690,7 +690,6 @@
 <translation id="6965382102122355670">OK</translation>
 <translation id="6727102863431372879">Tetapkan</translation>
 <translation id="8853725596990766789">Tukar jumlah</translation>
-<translation id="6067959437127691361">Tindakan menggunakan Ganjaran Brave dapat menyokong pencipta kandungan dan membolehkan anda memperoleh BAT</translation>
 <translation id="1609556006143307897">Anda membantu menyokong pencipta kandungan</translation>
 <translation id="6605147707233193230">Hidupkan untuk membantu menyokong pencipta kandungan</translation>
 <translation id="5430495762768325224">Ketahui lebih lanjut tentang BAT</translation>
@@ -784,6 +783,7 @@
 <translation id="9161147058107529840">Dijangka tunggal, parameter objek.</translation>
 <translation id="1875861420974447980">ID Rantai ini digunakan pada masa ini</translation>
 <translation id="167698752210114155">Satu ralat dalaman telah berlaku</translation>
+<translation id="7497827357097190289">Blockhash tidak sah atau tidak boleh disahkan</translation>
 <translation id="8945668490056243760">Jenis langganan tidak disokong</translation>
 <translation id="2326876601333401685">Kaedah RPC ini tidak disokong.</translation>
 <translation id="1128992132632883337">Ralat penghuraian respons telah berlaku</translation>
@@ -867,6 +867,7 @@
 <translation id="570080709303714420">SEPARUH</translation>
 <translation id="2784548701748328827">MAKS</translation>
 <translation id="2329227154184107678">Semak pesanan</translation>
+<translation id="3220443877821207794">Ulasan telah dihantar</translation>
 <translation id="8530071505111489657">Tiada token yang tersedia</translation>
 <translation id="615791330696335475">Cari token mengikut nama</translation>
 <translation id="5009335307032488349">Cari NFT mengikut nama, id</translation>
@@ -1091,9 +1092,20 @@
 <translation id="4460220693591349571">JENIS FUNGSI</translation>
 <translation id="838933475572692615">DATA HEX</translation>
 <translation id="2240831799756994975">BAIT</translation>
-<translation id="4874303883488468190">Pilih akaun</translation>
-<translation id="2018472018751735678">Lihat alamat akaun yang telah dibenarkan (perlu)</translation>
-<translation id="7029403458170657879">Sambungkan dengan Brave Wallet</translation>
+<translation id="6760823167126275974">Sambungkan dompet</translation>
+<translation id="716009557505091365">atau bersambung dengan:</translation>
+<translation id="7242985059140288348">Apl ini akan boleh:</translation>
+<translation id="7352133688029686231">Apl tidak akan dapat:</translation>
+<translation id="1647328658385235886">Menyemak baki dan aktiviti dompet</translation>
+<translation id="3295962112184461868">Meminta kelulusan untuk transaksi dan tandatangan</translation>
+<translation id="6096892345597202096">Memaparkan alamat dompet yang dibenarkan</translation>
+<translation id="496578987299869780">Memindahkan dana tanpa keizinan anda.</translation>
+<translation id="3226586788973641582">Memastikan anda mempercayai laman ini.</translation>
+<translation id="6837278005487143422">Tempoh kebenaran</translation>
+<translation id="1903637466604153314">Sehingga saya menutup laman ini</translation>
+<translation id="4324239559624557455">Selama 24 jam</translation>
+<translation id="9139452553033760558">Selama 1 minggu</translation>
+<translation id="1658834457013045127">Selama-lamanya</translation>
 <translation id="2770851145415891830">Dompet kripto sedia ada dikesan</translation>
 <translation id="2237759620789871865">Sekiranya anda mahu melangkau import dan mengekalkan pengalaman Crypto Wallets yang terdahulu, hanya perlu navigasi ke Brave Browser <ph name="LINK_BEFORE"/>Tetapan<ph name="LINK_AFTER"/> dan tukar lalai kembali kepada Crypto Wallets. Anda juga boleh mengimport, mencuba Dompet Brave yang baharu, dan menukar kembali pada bila-bila masa.</translation>
 <translation id="5590175005414413980">Masukkan kata laluan dompet kripto anda yang sedia ada untuk mengimport ke Dompet Brave. Nikmati cara yang lebih pantas dan selamat untuk mengurus aset kripto dan berinteraksi melalui Web3 DApps.</translation>
@@ -1169,7 +1181,9 @@
 <translation id="8585995109882455949">Bagaimanakah boleh saya dapatkan alamat yang betul?</translation>
 <translation id="8395402412470376435">Brave mengesahkan dan menghalang pengguna daripada menghantar dana ke alamat yang salah disebabkan oleh penulisan jenis huruf yang salah. Ini merupakan proses "semakan" bagi mengesahkan itu alamat Ethereum yang sah.</translation>
 <translation id="4583433813614292221">1. Lawati</translation>
+<translation id="8061317754447191238">Lawati etherscan dan tampalkan alamat dompet yang mahu anda hantar token. Kemudian 'enter'</translation>
 <translation id="5393164213211430081">2. Salin dan masukkan alamat ETH</translation>
+<translation id="8306108469060304141">Salin dan masukkan alamat yang betul. Anda boleh melihat beberapa aksara telah ditukar dengan betul.</translation>
 <translation id="2378355054306959991">Perlukan bantuan lanjut?</translation>
 <translation id="862585889767884824">daripada</translation>
 <translation id="9106265941552476098">Tolak <ph name="TRANSACTION_LENGTH"/> transaksi</translation>
@@ -1209,7 +1223,6 @@
 <translation id="1904295039023858291">Standard token</translation>
 <translation id="9033453977881595182">ID Token</translation>
 <translation id="6332387008245531841">Alamat kontrak</translation>
-<translation id="6717502994710534866">CID</translation>
 <translation id="2351120707525742989">Lokasi atau alamat imej</translation>
 <translation id="2962388922926051374">Permintaan kaedah 'eth_chainId' di <ph name="URL"/> telah gagal</translation>
 <translation id="8325036459845654666">Rangkaian ini telah ditambah.</translation>
@@ -1226,14 +1239,11 @@
 <translation id="5133421763709317473">Tiada aset yang sepadan dengan carian atau penapis ditemukan</translation>
 <translation id="7383613643114466279">Aset ini tidak disokong oleh Dompet Brave</translation>
 <translation id="6423985584914773314">Bukan alamat FIL yang sah</translation>
-<translation id="3898731124813934210">Beli dengan Wyre</translation>
 <translation id="5522073372365069684">Beli dengan Ramp</translation>
 <translation id="6153197326949684688">Jual dengan <ph name="OFFRAMP_PROVIDER"/></translation>
-<translation id="6097502401711916278">Jumlah minimum mestilah sekurang-kurangnya <ph name="FIAT_AMOUNT"/>.</translation>
 <translation id="7902920577183739843">Beli dengan Sardin</translation>
 <translation id="6534275647567011533">Beli dengan Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardin</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Beli kripto dengan Visa atau Mastercard.</translation>
@@ -1510,18 +1520,17 @@
 <translation id="2227702748249086756">Tidak berjaya mendapatkan anggaran yuran</translation>
 <translation id="5361710044667743492">Mengapakah tidak tersedia?</translation>
 <translation id="3668838456083358569">Sesetengah data NFT disimpan dalam pelayan terpusat seperti AWS, Google Cloud dll. Dalam hal ini, tiada pilihan disediakan untuk menyematkan data NFt anda pada rangkaian IPFS.</translation>
-<translation id="1293258969121701010">Dengan menjalankan IPFS pada komputer anda, anda boleh:</translation>
-<translation id="4568942135611119076">Memastikan data NFT anda kekal dalam talian dan data ini tidak boleh diusik.</translation>
-<translation id="4915883034746438977">Dapatkan semula kandungan menggunakan pengenal pasti kandungan (CID) daripada data yang salah.</translation>
-<translation id="1373647012698032676">Penyertaan dalam bukti ketulenan akan menjadikan rangkaian IPFS kaya dan sihat.</translation>
-<translation id="1806204385270226865">Sentiasa kekalkan NFT saya dalam talian</translation>
-<translation id="4323376551843624309">Dayakan semat NFT</translation>
-<translation id="6501331923135442324">Langkah besar ke arah menyertai web3</translation>
-<translation id="5361073938927187534">Jalankan nod IPFS dan sentiasa kekalkan NFT anda dalam talian</translation>
-<translation id="1060267371223703324">Semak jenis NFT saya yang boleh disematkan</translation>
-<translation id="2641083452974145848">Kini anda boleh menjalankan IPFS anda dan menyertai web 3. Data NFT anda akan kekal dalam talian selama-lamanya dan tidak boleh diusik.</translation>
-<translation id="4460927368826360904">Anda sedang menjalankan nod IPFS. Fail sedang dihantar ke nod IPFS setempat.</translation>
-<translation id="2260350263892668490"><ph name="PINNED"/> daripada <ph name="PINNABLE"/> NFT telah berjaya disematkan pada IPFS.</translation>
+<translation id="4225753478505258806">Tetapi IPFS memerlukan penyertaan individu untuk berfungsi. Jalankan IPFS pada komputer anda untuk:</translation>
+<translation id="7674069205559000521">Mainkan peranan demi kelajuan dan ketersediaan rangkaian</translation>
+<translation id="7775229731579227782">Tingkatkan keselamatan NFT anda</translation>
+<translation id="2319971828691864975">Mulakan dengan IPFS</translation>
+<translation id="7906328323880284538">Kaedah paling selamat untuk menganjurkan NFT</translation>
+<translation id="166206715890914321">Jalankan nod IPFS agar NFT anda sentiasa dalam talian</translation>
+<translation id="8913523138550521467">IPFS ialah alternatif yang sangat selamat bagi pengehosan Web tradisional. Selain bergantung pada satu hos, IPFS membolehkan ribuan individu (yang menjalankan "nod") untuk bekerjasama bagi menyimpan kandungan. Selagi seseorang mempunyai salinan, fail tidak akan hilang. "Menyematkan" NFT anda pada IPFS—dan menjalankan nod IPFS anda sendiri—merupakan cara yang paling sesuai untuk keselamatan NFT anda.</translation>
+<translation id="9160750213078764355">Lihat jenis NFT saya yang layak</translation>
+<translation id="6671461082721702724">Kini anda boleh menjalankan IPFS anda dan menyertai web 3. Data NFT anda akan kekal dalam talian selama-lamanya.</translation>
+<translation id="654964147165509548">NFT sedang disematkan pada nod IPFS setempat anda.</translation>
+<translation id="4910182786472608576">NFT disokong <ph name="PINNED"/> disematkan pada nod IPFS setempat anda.</translation>
 <translation id="1474962961180773583"><ph name="PINNABLE"/> daripada <ph name="TOTAL"/> tersedia!</translation>
 <translation id="6852656829524945421">Tidak dapat disematkan</translation>
 <translation id="7698019251444927442">Anda sedang menjalankan nod IPFS</translation>
@@ -1529,10 +1538,15 @@
 <translation id="7527548209942671618">Disematkan pada nod IPFS tempatan anda</translation>
 <translation id="5659058832308365026">Data NFT sedang disematkan pada nod IPFS setempat anda</translation>
 <translation id="4919133452617704550">Tidak boleh disematkan pada nod IPFS setempat anda</translation>
+<translation id="4220102684162429566">Sebab paling lazim:</translation>
+<translation id="451509325309455">NFT mempunyai masalah url metadata bukan IPFS</translation>
+<translation id="3827697793483899711">Masalah nod IPFS dalaman</translation>
+<translation id="1992846713609432783">Tiada ruang yang mencukupi pada nod setempat</translation>
 <translation id="3225624966527491351">Import NFT</translation>
 <translation id="9085765419770918643">Belum ada NFT di sini.</translation>
 <translation id="8445532667841598737">Sedia untuk menambahkan beberapa data? Hanya klik butang di bawah untuk pengimportan.</translation>
 <translation id="9136462955850040542">Serasi dengan NFT di Solana (SPL) dan Ethereum (ERC-721).</translation>
+<translation id="849880459530751909">Edit NFT</translation>
 <translation id="3155170474926428993">Pelancar Tor</translation>
 <translation id="3745016858329272300">Maklumat Umum</translation>
 <translation id="4045404575593562245">Acara Kawalan Tor</translation>
@@ -1609,6 +1623,9 @@
 <translation id="9204041448536398473">Tetapan Perisai Global</translation>
 <translation id="2108334320919763866">Lalai global</translation>
 <translation id="3440043456924990296">Tetapan yang diurus oleh organisasi</translation>
+<translation id="7053983685419859001">Halang</translation>
+<translation id="5716230673298034837">Benarkan semua</translation>
+<translation id="5279600392753459966">Halang semua</translation>
 <translation id="4516904298421534459">Senarai penapis</translation>
 <translation id="3570081523466826008">Naik taraf sambungan kepada HTTPS</translation>
 <translation id="131231380815754440">Aktifkan HTTPS</translation>
@@ -1619,6 +1636,7 @@
 <translation id="8593054718053894081">Sekat penjejak &amp; iklan secara tegas</translation>
 <translation id="7384778069178817075">Benarkan semua penjejak &amp; iklan</translation>
 <translation id="4941539331405513605">Sekat kuki merentas laman</translation>
+<translation id="2749284154880331639">Lupakan kuki pihak pertama</translation>
 <translation id="6883611015375728278">Sekat semua kuki</translation>
 <translation id="5657156137487675418">Benarkan semua kuki</translation>
 <translation id="8366221601425141146">Pengecapan jari disekat</translation>
@@ -1633,6 +1651,7 @@
 <translation id="7194012750329511146">Brave Shields
 <ph name="NUMBER"/> Penjejak, iklan, dan pelbagai lagi disekat</translation>
 <translation id="4292121526390005808">Halang skrip</translation>
+<translation id="5046271170844958713">Skrip yang dibenarkan</translation>
 <translation id="264682546981571963">Bosan dengan notis persetujuan kuki?</translation>
 <translation id="4986297793092101884">Brave sudah menyekat kuki pihak ketiga. Kami juga boleh menyekat notis persetujuan kuki.</translation>
 <translation id="535688588637568715">Ya, sekat notis persetujuan kuki</translation>
@@ -1669,6 +1688,7 @@
 <translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> tidak dapat bersambung dengan pelayan <ph name="REGION_NAME"/>. Anda boleh cuba semula atau pilih pelayan lain.</translation>
 <translation id="1024255913009642477">Telah membeli VPN?</translation>
 <translation id="8814357473522731680">Dikuasakan oleh</translation>
+<translation id="3960619311638643872">VPN Brave</translation>
 <translation id="5747552184818312860">Tamat tempoh</translation>
 <translation id="1691256669639196606">Urus langganan</translation>
 <translation id="434523916398030617">Hubungi sokongan teknikal</translation>

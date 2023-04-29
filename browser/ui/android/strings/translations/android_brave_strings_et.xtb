@@ -139,6 +139,10 @@
 <translation id="7459000603787995422">Sulge kaardid väljumisel</translation>
 <translation id="4448697385961650078">Blokeeri jälgijad ja reklaamid</translation>
 <translation id="2448893613530489637">Takistab veebilehtedel jälitajate ja reklaamide laadimist ning kuvamist</translation>
+<translation id="1025207378813960343">Veenduge, et ühendused veebisaitidega oleksid turvalised.</translation>
+<translation id="6686219838158572786">Nõua, et kõik ühendused kasutaksid HTTPS-i (range)</translation>
+<translation id="4221284400051835823">Võimaluse korral täienda alati HTTPS-ile (vaikimisi)</translation>
+<translation id="4690906712010847708">Ära täienda ühendusi HTTPS-ile (keelatud)</translation>
 <translation id="1680858055899097121">Ära säilita kaarte sirvimissessioonide vältel</translation>
 <translation id="7142548388914389999">Võimalda privaatsust säilitav tooteanalüüs (P3A)</translation>
 <translation id="5254037869598726291">Anonüümitud P3A teave aitab Brave'il hinnata üldist kasutust ja tagada, et parandame menukaid funktsioone.</translation>
@@ -151,6 +155,10 @@
 <translation id="410351446219883937">Automaatesitus</translation>
 <translation id="7445411102860286510">Luba saitidel vaigistatud videoid automaatselt esitada (soovitatav)</translation>
 <translation id="7837721118676387834">Lubage vaigistatud videote automaatne esitamine konkreetsel saidil.</translation>
+<translation id="4206299587103092719">Google’i sisselogimine</translation>
+<translation id="9110294136812584522">Saidid võivad küsida Google’i pärandsisselogimise kasutamist kolmanda osapoole küpsiste kaudu</translation>
+<translation id="2903783737778379345">Blokeeri Google’i pärandsisselogimise kasutamine kolmanda osapoole küpsiste kaudu</translation>
+<translation id="6880817299303842099">Kolmanda osapoole küpsiste kasutamine Google’i pärandsisselogimiseks on lubatud</translation>
 <translation id="181905442828471321">Brave'i kaitsete globaalsed vaikeväärtused</translation>
 <translation id="2675679258824361492">Muud privaatsusseaded</translation>
 <translation id="8026334261755873520">Sirvimisandmete kustutamine</translation>
@@ -212,7 +220,7 @@
 <translation id="5441565662498481293">Saadate automaatselt preemiaid:</translation>
 <translation id="1628742278973105368">Teie esimene igakuine preemia saadetakse:</translation>
 <translation id="1642952941091001113">See looja ei ole end veel Brave'i kasutajate maksete vastuvõtmiseks registreerinud. Jätkame panustamiskatseid, kuni ta kinnitab või kuni 90 päeva möödumiseni.</translation>
-<translation id="635752162765375187">MÄRKUS: see looja ei ole praegu konfigureeritud teie Preemiate kolmanda osapoole rahakotiteenuse kaudu preemiaid saama. Kõik saadetud preemiad jäävad ootele ja neid proovitakse 90 päeva jooksul automaatselt uuesti saata.</translation>
+<translation id="8228150955416632026">Olete ühendatud teenusepakkujaga <ph name="WALLET_PROVIDER"/>, kuid see looja on ühendatud teenusepakkujaga <ph name="SUPPORTED_WALLET_PROVIDER"/>. See tähendab, et teie saadetud preemia ei jõua selle loojani. Praegu jäävad kõik teie saadetud preemiad ootele ja neid proovitakse 90 päeva jooksul automaatselt uuesti saata.</translation>
 <translation id="1910721550319506122">Tere tulemast!</translation>
 <translation id="2734870894159530879">Oma saldo vaatamiseks logige sisse platvormile <ph name="WALLET_PROVIDER"/></translation>
 <translation id="5830114181292529917">Võite toetada seda veebisaiti preemia saatmisega. Nii saate tegijaid suurepärase sisu loomise eest tänada.</translation>
@@ -610,6 +618,7 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="4522570452068850558">Üksikasjad</translation>
 <translation id="3995184924764722477">Konto üksikasjad</translation>
 <translation id="8967036623785635603">Nähtavate varade muutmine</translation>
+<translation id="8475984867371585028">Nähtavate NFT-de muutmine</translation>
 <translation id="5050890334032852465">Salvesta konto vaatamisloend</translation>
 <translation id="7755766175599167100">Otsi tokeneid</translation>
 <translation id="3835223348537121988">Saldo:</translation>
@@ -1046,4 +1055,78 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="1776742005329298234">Seisuga <ph name="DUE_DATE"/> lõpetame olemasolevate virtuaalsete BAT-i saldode toetamise. Ühendage enne seda kuupäeva hallatav konto, et saaksime kanda teie teenitud saldo hallatavale kontole, vastasel korral läheb saldo kaduma.</translation>
 <translation id="5089752671190341407">Teil on veel aega oma lemmikloojate toetamiseks vBAT-iga</translation>
 <translation id="171158953146804144">Seisuga <ph name="DUE_DATE"/> lõpetame olemasolevate virtuaalsete BAT-i saldode toetamise. Kahjuks ei ole teie piirkonnas (<ph name="REGION"/>) ühtegi andmevaldajat, kelle kaudu saaks tulu välja võtta. Seni saate endiselt oma lemmikloojatele annetada.</translation>
+<translation id="8949422576126100041">Kas kuvada leht kiirlugejaga?</translation>
+<translation id="591648995518106347">Sobivad artiklid laaditakse automaatselt lugejarežiimis</translation>
+<translation id="5062934803872044756"><ph name="SYMBOL"/> kohas <ph name="NETWORK"/></translation>
+<translation id="295620834661738195">Brave’i esitusloend</translation>
+<translation id="4850886885716139402">Kuva</translation>
+<translation id="7392941176393379100">Lisatud esitusloendisse „<ph name="PLAYLIST_NAME"/>'</translation>
+<translation id="8289472222022674331">Teie esitusloendi andmete haldamine</translation>
+<translation id="7650602357673790368">Vaikimisi salvestab esitusloend automaatselt sisu võrguühenduseta taasesituseks teie seadmesse (nii privaatsete kui ka jagatud esitusloendite korral). Kui te ei ole Wi-Fi-võrku ühendatud, kasutatakse automaatseks salvestamiseks teie mobiilandmesidet.\n\nSaate seda vaikeseadet muuta seadetes.</translation>
+<translation id="5900576657906675258">Lisa üksus esitusloendisse</translation>
+<translation id="349846214503465941">Luba esitusloend</translation>
+<translation id="1309636029062006520">Koostage oma lemmikmuusikast ja -videotest esitusloendeid ning esitage neid igal ajal, kõikjal.</translation>
+<translation id="7899390017499980820">Nupp Lisa esitusloendisse</translation>
+<translation id="6901152954398668317">Kuvage või peitke nupp „Lisa esitusloendisse“, et kiiresti meediat lisada või eemaldada.</translation>
+<translation id="8404028031709373707">Automaatesitus</translation>
+<translation id="597781019681241649">Lubab esitusloendi avamisel automaatesituse.</translation>
+<translation id="2625554376218216118">Alusta taasesitust sealt, kus pooleli jäi</translation>
+<translation id="2953730196265332002">Sünkroonib looja tehtud muudatused automaatselt jagatud esitusloendisse.</translation>
+<translation id="3561815498111282415">Salvesta automaatselt võrguühenduseta kasutamiseks</translation>
+<translation id="1832424694374124654">Salvestab esitusloendi uued üksused automaatselt teie seadmesse, et saaksite neid esitada ilma internetiühenduseta.</translation>
+<translation id="8103022210423023846">Automaatne salvestamine SEES</translation>
+<translation id="3926329432879804185">Automaatne salvestamine VÄLJAS</translation>
+<translation id="7768812595186089508">Salvesta automaatselt ainult siis, kui on loodud Wi-Fi-ühendus</translation>
+<translation id="5939518447894949180">Lähtesta</translation>
+<translation id="8199028711686989861">Eemaldage kõik videod esitusloendist, sh võrguühenduseta režiimi salvestusruumist.</translation>
+<translation id="5916664084637901428">Sees</translation>
+<translation id="5860033963881614850">Väljas</translation>
+<translation id="2920568868625746681">Ainult Wi-Fi</translation>
+<translation id="4590997608186539865">Esitusloend</translation>
+<translation id="7525067979554623046">Loo</translation>
+<translation id="5491049004699827548">Looge oma esimene esitusloend</translation>
+<translation id="5319108110887582146">Koostage oma lemmikmuusikast ja -videotest esitusloend ning esitage seda igal ajal, kõikjal. Isegi võrguühenduseta.</translation>
+<translation id="6802849415466883498">Loo esitusloend</translation>
+<translation id="8525248723479742219">Esita hiljem</translation>
+<translation id="7453007860684252933">Sirvi ja lisa</translation>
+<translation id="9014883386413828317">Lisage oma lemmiksisu. Leidke ekraani alumises parempoolses osas üles nupp (+).</translation>
+<translation id="5928669500312007783">Sirvi meediat</translation>
+<translation id="8152485753254079984">Uus esitusloend</translation>
+<translation id="9130105487623071247">Esitusloendi nimi</translation>
+<translation id="726581235416249619">Pealkirjata esitusloend</translation>
+<translation id="1456254983411148628">Eemalda andmed</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/> valitud</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/> üksust</translation>
+<translation id="2317629745818459803">Esita kõik</translation>
+<translation id="7544853251252956727">Esita juhuslikus järjekorras</translation>
+<translation id="2881339830231736485">Hiljuti esitatud</translation>
+<translation id="7636458383879257005">Puuduta, vajuta pikalt või lohista</translation>
+<translation id="8120600068258956006">Lisa esitusloendisse</translation>
+<translation id="39991094779686024">Esitusloendid</translation>
+<translation id="1710072605877822603">Lisa meediat</translation>
+<translation id="903678009070770568">Lisage Brave’i esitusloendisse videoid ja vaadake neid hiljem, isegi võrguühenduseta.</translation>
+<translation id="3063627607780392015">Kas olete levialast väljas? Kas soovite rahustada nutvat last?</translation>
+<translation id="2041014734809158138">Olenemata sellest, kas olete metroos, lennukis või pikal autoreisil, saate oma esitusloendit alati kuulata.</translation>
+<translation id="7287143275037417932">Või puudutage esitusloendi nuppu, kui see kuvatakse</translation>
+<translation id="6959838938954098206">Esitusloendi nupp kuvatakse siis, kui on meediat, mida lisada. Vajutage pikalt suvandite kuvamiseks. Saate nupu isegi peita.</translation>
+<translation id="3620862810055853183">Ava esitusloend</translation>
+<translation id="3861012838874771868">Ava esitusloendi seaded</translation>
+<translation id="5220099266891491416">Peida esitusloendi nupp</translation>
+<translation id="7416347631175891923">Proovige järele!</translation>
+<translation id="1173894706177603556">Muuda nime</translation>
+<translation id="1620612903815671893">Eemalda esitusloendi võrguühenduseta andmed</translation>
+<translation id="3261711068865275261">Eemalda kõik võrguühenduseta andmed</translation>
+<translation id="6653691766801349738">Säilita esitusloend võrguühenduseta kasutamiseks</translation>
+<translation id="8708086574143054053">Säilita kõik esitusloendid võrguühenduseta kasutamiseks</translation>
+<translation id="3596306474342941843">Kustuta esitusloend</translation>
+<translation id="7765158879357617694">Liiguta</translation>
+<translation id="3803384303807438047">Kustuta üksuse võrguühenduseta andmed</translation>
+<translation id="4195643157523330669">Ava uuel &amp;vahelehel</translation>
+<translation id="4243710787042215766">Avage privaatses vahelehes</translation>
+<translation id="8261506727792406068">Kustuta</translation>
+<translation id="377872456482681602">Valige esmalt üksused</translation>
+<translation id="6172429305139364624">Esitusloendi üksust ei ole vahemällu salvestatud.\nLisage üksus võrguühenduseta režiimi jaoks vahemällu.</translation>
+<translation id="3631131732607750008">Sisu aegus. Proovige mõne sekundi pärast uuesti.</translation>
+<translation id="9085765419770918643">Siin pole veel NFT-sid.</translation>
+<translation id="8445532667841598737">Kas olete valmis mõned lisama? Klõpsake importimiseks allolevat nuppu.</translation>
 </translationbundle>

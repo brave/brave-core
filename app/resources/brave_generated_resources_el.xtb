@@ -167,6 +167,7 @@
 <translation id="2036503787657622020">Ενεργοποίηση λειτουργίας ανάγνωσης</translation>
 <translation id="5226458915125328323">Ρυθμίσεις Speedreader</translation>
 <translation id="8591883849678260674">Δείτε το πρωτότυπο</translation>
+<translation id="1969654232209826429">λ. ανάγνωση</translation>
 <translation id="6284218950354553099">Αυτόματη καθημερινή αποστολή Ping στο Brave</translation>
 <translation id="5288333155754958121">Αυτό το ανώνυμο, ιδιωτικό ping επιτρέπει στο Brave να εκτιμήσει τους ενεργούς χρήστες.</translation>
 <translation id="1872784258300710671">Το Brave χρησιμοποιεί εντελώς ιδιωτική ανάλυση προϊόντος για να εκτιμήσει τη συνολική χρήση ορισμένων χαρακτηριστικών</translation>
@@ -190,16 +191,16 @@
         Μπορείτε να διαβάσετε <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>οδηγίες σχετικά με τον τρόπο λήψης και κατασκευής για εσάς<ph name="END_LINK_BUILD_INSTRUCTIONS"/> τον συγκεκριμένο <ph name="BEGIN_LINK_SOURCE_CODE"/>πηγαίο κώδικα που χρησιμοποιήθηκε για τη δημιουργία αυτού του αντιγράφου<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Δημιουργία σελιδοδείκτη για όλες τις καρτέλες...</translation>
 <translation id="3987546108749866209">Χρήση κατακόρυφων καρτελών</translation>
-<translation id="5860254591544742609">Εμφάνιση γραμμής τίτλου</translation>
-<translation id="399928467800528208">Αιώρηση με πέρασμα του ποντικιού από πάνω</translation>
 <translation id="1904394285866191268">{NUM_TABS,plural, =1{Σίγαση καρτέλας}other{Σίγαση καρτελών}}</translation>
 <translation id="5179127818058486126">{NUM_TABS,plural, =1{Κατάργηση σίγασης καρτέλας}other{Κατάργηση σίγασης καρτελών}}</translation>
+<translation id="2289567621059034186">Νέα καρτέλα παρακάτω</translation>
+<translation id="3228962656492373217">Κλείσιμο των παρακάτω καρτελών</translation>
 <translation id="2336228925368920074">Δημιουργία σελιδοδείκτη για όλες τις καρτέλες...</translation>
 <translation id="2523967823495420116">Χρήση κατακόρυφων καρτελών</translation>
-<translation id="8888603463702767599">Εμφάνιση γραμμής τίτλου</translation>
-<translation id="2058818256505091369">Αιώρηση με πέρασμα του ποντικιού από πάνω</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{Σίγαση καρτέλας}other{Σίγαση καρτελών}}</translation>
 <translation id="2120478168904746065">{NUM_TABS,plural, =1{Κατάργηση σίγασης καρτέλας}other{Κατάργηση σίγασης καρτελών}}</translation>
+<translation id="4405580203042711503">Νέα καρτέλα παρακάτω</translation>
+<translation id="5611474372949142946">Κλείσιμο των παρακάτω καρτελών</translation>
 <translation id="3704707436873245822">Αντιγραφή κειμένου από εικόνα</translation>
 <translation id="5268098808165185458">Αντιγράφεται κείμενο από εικόνα...</translation>
 <translation id="4046485130884276245">Αντιγράφηκε κείμενο από εικόνα</translation>
@@ -238,6 +239,10 @@
 <translation id="2307973900865360088">Διατήρηση στο παράθυρο</translation>
 <translation id="961012016278832836">Microsoft Edge παλαιού τύπου</translation>
 <translation id="6436994631426134065">Εισήχθηκε από<ph name="BROWSER_NAME"/>.</translation>
+<translation id="1386966479075994683">Ανάπτυξη καρτελών</translation>
+<translation id="480565261566115689">Ελαχιστοποίηση καρτελών</translation>
+<translation id="7194343495483122559">Ανάπτυξη καρτελών</translation>
+<translation id="1199054713803577378">Ελαχιστοποίηση καρτελών</translation>
 <translation id="9156965752763025780">Οι αλλαγές που πραγματοποιήσατε θα ισχύσουν την επόμενη φορά που θα εκκινήσετε το Brave.</translation>
 <translation id="7179921470347911571">Επανεκκίνηση τώρα</translation>
 <translation id="4472575034687746823">Έναρξη</translation>
@@ -279,7 +284,7 @@
 <translation id="2970343821770026391">Πίνακας ελέγχου</translation>
 <translation id="3719826155360621982">Αρχική σελίδα</translation>
 <translation id="5448570825852364919">Κενή σελίδα</translation>
-<translation id="5919424224662539292">Προσαρμόστε την εικόνα του φόντου και τα γραφικά στοιχεία που εμφανίζονται στη σελίδα νέας καρτέλας</translation>
+<translation id="8244387390464017490">Εξατομίκευση της σελίδας νέας καρτέλας</translation>
 <translation id="7461924472993315131">Καρφίτσωμα</translation>
 <translation id="7506648566440714944">Το Brave έχει καρφιτσωθεί ήδη</translation>
 <translation id="239275665037555969">Παράθυρο</translation>
@@ -311,6 +316,7 @@
 <translation id="3357319404342882895">Αυστηρό</translation>
 <translation id="8823559166155093873">Αποκλεισμός Cookies</translation>
 <translation id="5770288601196774623">Μόνο μεταξύ ιστότοπων</translation>
+<translation id="6795317840397506736">Διαγραφή από προεπιλογή</translation>
 <translation id="3587482841069643663">Όλα</translation>
 <translation id="7390783310074170337">Προεπιλεγμένη προβολή</translation>
 <translation id="130615081792797568">Απλή προβολή</translation>
@@ -337,7 +343,7 @@
 <translation id="4182731739150761577">Προβολή πλήρους λίστας</translation>
 <translation id="1340263054776016283">Εισαγάγετε τη διεύθυνση URL της λίστας φίλτρων</translation>
 <translation id="8578397014396032341">Φιλτράρισμα περιεχομένου</translation>
-<translation id="6821903322090655051">Οι Ανταμοιβές Brave έχουν απενεργοποιηθεί</translation>
+<translation id="5567412479632285879">Οι Ανταμοιβές του Brave είναι απενεργοποιημένες</translation>
 <translation id="413570371620795359">Ανοίξτε το πλαίσιο Ανταμοιβών για να το ενεργοποιήσετε και να ξεκινήσετε</translation>
 <translation id="3849957491997306859">Εντοπίστηκε αυτόματα</translation>
 <translation id="8798099450830957504">Προεπιλογή</translation>
@@ -352,7 +358,6 @@
 <translation id="7286722244752781970">Ελάχιστος χρόνος παραμονής στη σελίδα πριν καταγραφεί μία επίσκεψη</translation>
 <translation id="4424486208397124985">Ελάχιστες επισκέψεις για να θεωρείται συναφής ο εκδότης</translation>
 <translation id="6248554379744796526">Εμφάνιση μη επαληθευμένων ιστότοπων σε λίστα</translation>
-<translation id="5510618543889994434">Να επιτρέπονται οι συνεισφορές για βίντεο</translation>
 <translation id="924777189963477634">Ενεργοποιώντας την Αυτόματη Συνεισφορά, συμφωνείτε με τους <ph name="BEGIN_LINK_TOS"/>Όρους παροχής υπηρεσιών<ph name="END_LINK_TOS"/> και την <ph name="BEGIN_LINK_PP"/>Πολιτική απορρήτου<ph name="END_LINK_PP"/>.</translation>
 <translation id="6333347122924254968">Εμφάνιση εικονιδίου Ανταμοιβές Brave στη γραμμή διευθύνσεων</translation>
 <translation id="7483857210736407752">Εμφάνιση κουμπιού "Συμβουλή" σε ιστοτόπους.</translation>
@@ -498,17 +503,30 @@
 <translation id="1658670175365815312">Το Brave θα μεταβαίνει στην έκδοση .onion ενός ιστοτόπου όταν είναι διαθέσιμος και θα ανοίγει αυτόματα όλους τους τομείς .onion σε ένα παράθυρο Tor.</translation>
 <translation id="2896916411183256228">Χρησιμοποιεί το WebTorrent για την εμφάνιση torrents απευθείας στο πρόγραμμα περιήγησης. Υποστηρίζει αρχεία torrent και συνδέσμους magnet.</translation>
 <translation id="5249433283143453448">Χρησιμοποιήστε το στοιχείο διαχείρισης ψηφιακών δικαιωμάτων (DRM) Widevine για να προβάλετε προστατευμένο βίντεο streaming και άλλο περιεχόμενο στο πρόγραμμα περιήγησης.</translation>
+<translation id="1314131187310290315">Επεκτάσεις Manifest V2</translation>
+<translation id="2488433650767270565">Οι ακόλουθες επεκτάσεις Manifest V2 θα καταργηθούν από το Chrome Web Store, αλλά θα εξακολουθούν να υποστηρίζονται από το Brave. Εναλλαγή για λήψη και εγκατάσταση ή για απεγκατάσταση.</translation>
+<translation id="578671172657727816">Ενεργοποίηση NoScript™</translation>
+<translation id="9068475464170522036">Το NoScript είναι μια επέκταση Manifest V2 που σας επιτρέπει να κάνετε αποκλεισμό ή κατάργηση αποκλεισμού μεμονωμένων δεσμών ενεργειών που εκτελούνται ή επιχειρούν να εκτελεστούν σε μια συγκεκριμένη σελίδα.</translation>
+<translation id="1394592156621788100">Ενεργοποίηση uBlock Origin™</translation>
+<translation id="2638983091068889519">Το uBlock Origin είναι μια επέκταση Manifest V2 που παρέχει ισχυρά εργαλεία αποκλεισμού περιεχομένου με πολλές επιλογές για προχωρημένους χρήστες.</translation>
+<translation id="3909078036552544838">Ενεργοποίηση uMatrix™</translation>
+<translation id="8796148218203577506">Το uMatrix είναι μια επέκταση Manifest V2 που παρέχει τείχος προστασίας βάσει πίνακα με τοποθέτηση δείκτη ποντικιού και κλικ, με πολλά εργαλεία βελτίωσης απορρήτου.</translation>
+<translation id="2385774023523989298">Ενεργοποίηση AdGuard™</translation>
+<translation id="188228077840632890">Το AdGuard είναι μια επέκταση Manifest V2 που παρέχει αποκλεισμό διαφημίσεων, επιλογές γονικού ελέγχου και ενσωμάτωση άλλων παροχών υπηρεσιών AdGuard.</translation>
 <translation id="8137559199583651773">Διαχείριση επεκτάσεων</translation>
 <translation id="7013485839273047434">Λάβετε περισσότερες επεκτάσεις</translation>
 <translation id="4954512758656527938">Προεπιλεγμένο πορτοφόλι Ethereum</translation>
 <translation id="7701023802820268122">Προεπιλεγμένο πορτοφόλι Solana</translation>
 <translation id="8488282162676695335">Πορτοφόλι Brave</translation>
 <translation id="2356070529366658676">Να ερωτηθώ</translation>
-<translation id="7701040980221191251">Καμία</translation>
+<translation id="6942354363301686374">Επεκτάσεις (χωρίς μετάπτωση)</translation>
 <translation id="1274962333945373242">Crypto Wallets (Καταργημένο)</translation>
+<translation id="702381242110464396">Επεκτάσεις (μετάπτωση Πορτοφολιού Brave)</translation>
 <translation id="4718664830805652430">Προεπιλεγμένο νόμισμα βάσης</translation>
 <translation id="7992507032049865603">Προεπιλεγμένο κρυπτονόμισμα βάσης</translation>
 <translation id="1834467296210148203">Εμφάνιση του εικονιδίου του Πορτοφολιού Brave στη γραμμή εργαλείων</translation>
+<translation id="7568430944629653319">Ενεργοποίηση NFT discovery</translation>
+<translation id="970496996377628529">Προσθέστε αυτόματα NFT που σας ανήκουν στο Πορτοφόλι με χρήση  API τρίτου μέρους.</translation>
 <translation id="8239147115686034860">Αυτόματο κλείδωμα του Πορτοφολιού Brave</translation>
 <translation id="414639769490080648">Ο αριθμός των λεπτών για αναμονή έως ότου το Πορτοφόλι Brave κλειδωθεί αυτόματα</translation>
 <translation id="856371974127598760">Δίκτυα πορτοφολιού</translation>
@@ -518,10 +536,15 @@
 <translation id="464460032678285850">Τα NFT που προστίθενται στο Πορτοφόλι Brave μπορούν να καρφιτσωθούν αυτόματα στον τοπικό κόμβο IPFS.
     Σημείωση: Το IPFS daemon μπορεί να ξεκινήσει για λόγους καρφιτσώματος, έτσι ώστε ο τοπικός σας κόμβος να κοινοποιεί δεδομένα κρυφής μνήμης και καρφιτσωμένα NFT στο δίκτυο IPFS.</translation>
 <translation id="4993345308607970390">Επαναφορά Πορτοφολιού Brave</translation>
+<translation id="5887022857624190239">Διαγραφή καρφιτσωμένων NFT</translation>
+<translation id="204584113330893805">Τα καρφιτσωμένα NFT φιλοξενούνται στο δίκτυο IPFS όταν ξεκινάει ο τοπικός κόμβος IPFS.
+Αυτήν τη στιγμή, έχετε <ph name="NFT_COUNT"/> καρφιτσωμένα NFT.</translation>
 <translation id="9216386092464743272">Είστε βέβαιοι ότι θέλετε να επαναφέρετε όλες τις πληροφορίες συναλλαγών και nonce στο πορτοφόλι σας; Αυτή η επιλογή χρησιμοποιείται κυρίως από προγραμματιστές που εκτελούν έναν τοπικό δοκιμαστικό διακομιστή. Πληκτρολογήστε "<ph name="CONFIRMATION_PHRASE"/>" για επιβεβαίωση.</translation>
 <translation id="6369495274982305511">Σίγουρα θέλετε να επαναφέρετε το πορτοφόλι σας; Αν δεν υπάρχει αντίγραφο ασφαλείας για το πορτοφόλι σας, η επαναφορά θα προκαλέσει την απώλεια όλων των δεδομένων (συμπεριλαμβανομένων των συνδεδεμένων κεφαλαίων). Πληκτρολογήστε "<ph name="CONFIRMATION_PHRASE"/>" για επιβεβαίωση.</translation>
+<translation id="4248533222660842025">Είστε βέβαιοι ότι θέλετε να διαγράψετε όλα τα καρφιτσωμένα NFT; Ορισμένα NFT μπορεί να χαθούν για πάντα αν δεν υπάρχουν άλλοι κεντρικοί υπολογιστές στο δίκτυο IPFS. Πληκτρολογήστε "<ph name="CONFIRMATION_PHRASE"/>" για επιβεβαίωση.</translation>
 <translation id="3752403403443723332">Έγινε επαναφορά του πορτοφολιού σας.</translation>
 <translation id="594766067816395072">Έγινε επαναφορά των πληροφοριών συναλλαγών του πορτοφολιού σας.</translation>
+<translation id="1615009913945115836">Έγινε επαναφορά των καρφιτσωμένων NFT.</translation>
 <translation id="1426410128494586442">Ναι</translation>
 <translation id="4226543734057230801">Δίκτυα Ethereum</translation>
 <translation id="3504157706952484145">Δίκτυα Filecoin</translation>

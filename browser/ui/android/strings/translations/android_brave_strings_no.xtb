@@ -139,6 +139,10 @@
 <translation id="7459000603787995422">Lukk faner ved avslutning</translation>
 <translation id="4448697385961650078">Blokker sporere og annonser</translation>
 <translation id="2448893613530489637">Forhindrer sporere og annonser fra å lastes inn og vises på nettsider</translation>
+<translation id="1025207378813960343">Sjekk at tilkoblingene til nettsider er sikre.</translation>
+<translation id="6686219838158572786">Krev at alle tilkoblinger bruker HTTPS (strengt)</translation>
+<translation id="4221284400051835823">Oppgrader til HTTPS når det er mulig (standard)</translation>
+<translation id="4690906712010847708">Ikke oppgrader tilkoblinger til HTTPS (deaktivert)</translation>
 <translation id="1680858055899097121">Ikke behold faner på tvers av surfeøkter</translation>
 <translation id="7142548388914389999">Tillat produktanalyse som ivaretar personvern (P3A)</translation>
 <translation id="5254037869598726291">Anonymisert P3A-informasjon hjelper Brave med å anslå den totale bruken, og sikrer at vi forbedrer populære funksjoner.</translation>
@@ -151,6 +155,10 @@
 <translation id="410351446219883937">Autoavspilling</translation>
 <translation id="7445411102860286510">Gi nettsteder tillatelse til automatisk avspilling av videoer med kuttet lyd (anbefales)</translation>
 <translation id="7837721118676387834">Tillat automatisk avspilling av videoer med dempet lyd for et bestemt nettsted.</translation>
+<translation id="4206299587103092719">Google-pålogging</translation>
+<translation id="9110294136812584522">Nettsider kan be om å bruke den eldre Google-påloggingsløsningen via tredjeparts informasjonskapsler.</translation>
+<translation id="2903783737778379345">Ikke tillat innlogging via den eldre Google-påloggingsløsningen via tredjeparts informasjonskapsler</translation>
+<translation id="6880817299303842099">Tillatt bruk av tredjepartscookies for gammel Google-pålogging</translation>
 <translation id="181905442828471321">Globale standarder for Brave-skjold</translation>
 <translation id="2675679258824361492">Andre innstillinger for personvern</translation>
 <translation id="8026334261755873520">Slett nettleserdata</translation>
@@ -212,7 +220,7 @@
 <translation id="5441565662498481293">Du sender automatisk et tips til:</translation>
 <translation id="1628742278973105368">Ditt første månedlige tips sendes:</translation>
 <translation id="1642952941091001113">Denne innholdsskaperen har ennå ikke registrert seg for å motta bidrag fra Brave-brukere. Vi fortsetter å prøve å bidra frem til de bekrefter, eller til det har gått 90 dager.</translation>
-<translation id="635752162765375187">MERK: Denne innholdsskaperen har ikke konfigurert kontoen til å motta tips fra Belønninger-lommebøker. Eventuell tips du gir, kommer til å få ventestatus. Vi prøver å overføre tipsen automatisk i 90 dager.</translation>
+<translation id="8228150955416632026">Du er koblet til <ph name="WALLET_PROVIDER"/>, men denne innholdsskaperen er koblet til <ph name="SUPPORTED_WALLET_PROVIDER"/>. Dette betyr at tipsen din ikke kan komme frem til denne innholdsskaperen. Inntil videre vil tipsen du gir, ha ventestatus og prøve på nytt om 90 dager.</translation>
 <translation id="1910721550319506122">Velkommen!</translation>
 <translation id="2734870894159530879">Logg inn på <ph name="WALLET_PROVIDER"/> for å se saldoen din.</translation>
 <translation id="5830114181292529917">Du kan støtte denne nettsiden ved å sende tips. Det er en måte å takke dem på for å skape flott innhold.</translation>
@@ -610,6 +618,7 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="4522570452068850558">Detaljer</translation>
 <translation id="3995184924764722477">Kontodetaljer</translation>
 <translation id="8967036623785635603">Endre synlige ressurser</translation>
+<translation id="8475984867371585028">Endre synlige NFT-er</translation>
 <translation id="5050890334032852465">Lagre kontoliste</translation>
 <translation id="7755766175599167100">Søk etter tokener</translation>
 <translation id="3835223348537121988">Saldo:</translation>
@@ -1046,4 +1055,78 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="1776742005329298234"><ph name="DUE_DATE"/> avvikler vi støtten for eksisterende virtuelle BAT-saldoer. Tilknytt en partnerkonto før denne datoen, slik at vi kan overføre den opptjente saldoen din til partnerkontoen – hvis ikke går saldoen tapt.</translation>
 <translation id="5089752671190341407">Du har fortsatt tid til å gi vBAT til innholdsskapere du liker</translation>
 <translation id="171158953146804144"><ph name="DUE_DATE"/> avvikler vi støtten for eksisterende virtuelle BAT-saldoer. Dessverre er det ingen tilgjengelige partnere i din region (<ph name="REGION"/>) inntektene dine kan overføres til. Frem til da kan du fortsatt gi bidrag til innholdsskapere du liker.</translation>
+<translation id="8949422576126100041">Vil du vise siden med Speedreader?</translation>
+<translation id="591648995518106347">Laster automatisk inn kvalifiserte artikler i lesermodus</translation>
+<translation id="5062934803872044756"><ph name="SYMBOL"/> i <ph name="NETWORK"/></translation>
+<translation id="295620834661738195">Brave-spilleliste</translation>
+<translation id="4850886885716139402">Visning</translation>
+<translation id="7392941176393379100">Lagt til i '<ph name="PLAYLIST_NAME"/>'</translation>
+<translation id="8289472222022674331">Administrerer spillelisteopplysningene dine</translation>
+<translation id="7650602357673790368">Som standard vil Playlist autolagre innhold på enheten din for offline-avspilling (i både private og delte spillelister). Hvis du ikke er på wifi, vil autolagring bruke mobildata.\n\nDenne standardinnstillingen kan endres i innstillingene dine.</translation>
+<translation id="5900576657906675258">Legg til i spilleliste</translation>
+<translation id="349846214503465941">Aktiver spillelisten</translation>
+<translation id="1309636029062006520">Lag spillelister med videoer og musikk, og spill dem av når som helst, hvor som helst.</translation>
+<translation id="7899390017499980820">Legg til i spillelisten-knapp</translation>
+<translation id="6901152954398668317">Vis eller skjul «Legg til i spilleliste»-knappen for å legge til eller fjerne medier raskt.</translation>
+<translation id="8404028031709373707">Autoplay</translation>
+<translation id="597781019681241649">Aktiverer autoplay når Spillelisten åpnes</translation>
+<translation id="2625554376218216118">Start avspillingen der jeg sluttet</translation>
+<translation id="2953730196265332002">Synkroniser automatisk eventuelle endringer innholdsskaperen har gjort, til en delt spilleliste.</translation>
+<translation id="3561815498111282415">Autolagring for offline-bruk</translation>
+<translation id="1832424694374124654">Lagrer automatisk nye spilleliste-elementer til enheten din, så du kan spille dem av uten å være koblet til internett.</translation>
+<translation id="8103022210423023846">Autolagring PÅ</translation>
+<translation id="3926329432879804185">Autolagring AV</translation>
+<translation id="7768812595186089508">Autolagring kun når tilkoblet til wifi</translation>
+<translation id="5939518447894949180">Tilbakestill</translation>
+<translation id="8199028711686989861">Fjern alle videoer fra Spillelisten, inkludert de som er lagret offline</translation>
+<translation id="5916664084637901428">På</translation>
+<translation id="5860033963881614850">Av</translation>
+<translation id="2920568868625746681">Kun wifi</translation>
+<translation id="4590997608186539865">Spilleliste</translation>
+<translation id="7525067979554623046">Opprett</translation>
+<translation id="5491049004699827548">Lag din første spilleliste</translation>
+<translation id="5319108110887582146">Lag en spilleliste av favorittmusikken og -videoene og spill dem når du vil – også uten nett.</translation>
+<translation id="6802849415466883498">Lag en spilleliste</translation>
+<translation id="8525248723479742219">Spill senere</translation>
+<translation id="7453007860684252933">Søk og legg til</translation>
+<translation id="9014883386413828317">Legg til favorittinnholdet ditt. Se etter (+)-knappen nederst til høyre på skjermen.</translation>
+<translation id="5928669500312007783">Søk etter media</translation>
+<translation id="8152485753254079984">Ny spilleliste</translation>
+<translation id="9130105487623071247">Navn på spillelisten</translation>
+<translation id="726581235416249619">Spilleliste uten navn</translation>
+<translation id="1456254983411148628">Fjern data</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/> valgt</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/> elementer</translation>
+<translation id="2317629745818459803">Spill alle</translation>
+<translation id="7544853251252956727">Spill i tilfeldig rekkefølge</translation>
+<translation id="2881339830231736485">Nylig spilt</translation>
+<translation id="7636458383879257005">Trykk, hold inne eller dra</translation>
+<translation id="8120600068258956006">Legg til i spilleliste</translation>
+<translation id="39991094779686024">Spillelister</translation>
+<translation id="1710072605877822603">Legg til media</translation>
+<translation id="903678009070770568">Legg til videoer i Brave-spillelisten, og se på dem senere – også uten nett</translation>
+<translation id="3063627607780392015">Uten mobildekning og trenger å roe ned et krakilsk barn?</translation>
+<translation id="2041014734809158138">Uansett om du er på banen, et fly eller på biltur – Spillelisten vår er her for deg.</translation>
+<translation id="7287143275037417932">Eller trykk på Spilleliste-knappen når den vises</translation>
+<translation id="6959838938954098206">Spilleliste-knappen vises når du kan legge til medier. Hold inne for å se alternativer. Du kan også skjule den.</translation>
+<translation id="3620862810055853183">Åpne Spilleliste</translation>
+<translation id="3861012838874771868">Åpne innstillingene for Spilleliste</translation>
+<translation id="5220099266891491416">Skjul Spilleliste-knappen</translation>
+<translation id="7416347631175891923">Prøv!</translation>
+<translation id="1173894706177603556">Gi nytt navn</translation>
+<translation id="1620612903815671893">Fjern offline-data fra spillelisten</translation>
+<translation id="3261711068865275261">Fjern alle offline-data</translation>
+<translation id="6653691766801349738">Behold spillelisten til bruk offline</translation>
+<translation id="8708086574143054053">Behold alle spillelistene til bruk offline</translation>
+<translation id="3596306474342941843">Slett spillelisten</translation>
+<translation id="7765158879357617694">Flytt</translation>
+<translation id="3803384303807438047">Slett offline-dataene for elementet</translation>
+<translation id="4195643157523330669">Åpne i ny fane</translation>
+<translation id="4243710787042215766">Åpne i privat fane</translation>
+<translation id="8261506727792406068">Slett</translation>
+<translation id="377872456482681602">Velg elementer først</translation>
+<translation id="6172429305139364624">Spilleliste-elementet er ikke bufret.\nBufre elementet for offline-modus.</translation>
+<translation id="3631131732607750008">Innholdet har utløpt. Prøv på nytt om noen sekunder.</translation>
+<translation id="9085765419770918643">Ingen NFT-er her ennå.</translation>
+<translation id="8445532667841598737">Klar til å legge til noen? Bare klikk nedenfor for å importere.</translation>
 </translationbundle>

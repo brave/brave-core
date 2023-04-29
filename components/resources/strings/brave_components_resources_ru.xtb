@@ -207,15 +207,14 @@
 <translation id="7577100371127227294">Месячные платежи</translation>
 <translation id="178390304006113804">Настройте ежемесячные платежи, чтобы поддерживать любимых авторов.</translation>
 <translation id="3302159320447117425">Ежемесячные платежи еще не настроены.</translation>
+<translation id="564837702459183199">Следующее пожертвование</translation>
 <translation id="4898632353264854950">Сайты будут появляться при просмотре</translation>
 <translation id="3024485967181749006">Общая сумма чаевых за этот месяц</translation>
-<translation id="8183455888546367148">Общая сумма ежемесячных платежей в этом месяце</translation>
 <translation id="4153752809523809915">Вы сегодня уже дали чаевые за ваш любимый контент?</translation>
 <translation id="7286722244752781970">Минимальное время создания страницы до регистрации посещения</translation>
 <translation id="4424486208397124985">Минимальное количество посещений для релевантности издателя</translation>
 <translation id="5421369907811917952">Другие настройки</translation>
 <translation id="6248554379744796526">Показывать в списке сайты, не прошедшие верификацию</translation>
-<translation id="5510618543889994434">Разрешить взносы для видео</translation>
 <translation id="8933202740471878108">1 посещение</translation>
 <translation id="354797634123275103">5 посещений</translation>
 <translation id="3583700907990488238">10 посещений</translation>
@@ -224,7 +223,6 @@
 <translation id="8610523985422563960">1 минута</translation>
 <translation id="2807328214759298515">До</translation>
 <translation id="7483857210736407752">Показывать кнопки чаевых на сайтах</translation>
-<translation id="7583327070390027131">Следующая дата ежемесячного платежа</translation>
 <translation id="6231182869178328516">Я только что поддержал(а) <ph name="NAME"/> через браузер Brave. Узнать больше можно на https://brave.com/tips.</translation>
 <translation id="5916536234616514390">Здорово, что <ph name="HASHTAG"/>Brave дает мне возможность поддерживать авторов! Только что пользователю <ph name="NAME"/> переведены от меня токены <ph name="HASHTAG2"/>BAT. Чтобы получить их, автору нужно подтвердить профиль на сайте https://creators.brave.com до <ph name="DATE"/>.</translation>
 <translation id="8404935570206006581">ЧаевыеСBrave</translation>
@@ -638,6 +636,7 @@
 <translation id="8797999629784150206">Вы можете в любой момент изменить <ph name="SITE_PERMISSIONS"/>. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">разрешение сайта</translation>
 <translation id="4355784577209159847">Разрешить использование сторонних файлов cookie для устаревшей системы входа с аккаунтом Google</translation>
+<translation id="5770656036486891920">Сайт <ph name="URL"/> запрашивает разрешение на использование сторонних файлов cookie для устаревшей системы входа Google</translation>
 <translation id="7717357606512850995">Проверить статус</translation>
 <translation id="7306880305145342514">Вам начислено вознаграждение за <ph name="MONTH"/>!</translation>
 <translation id="3007207731685398329">Вознаграждение за <ph name="MONTH"/> в размере <ph name="AMOUNT"/> будет перечислено вам через <ph name="DAYS"/>.</translation>
@@ -661,6 +660,7 @@
       many {В этом месяце вы посетили # авторов, которых поддерживает сервис "Brave Награды"}
       other {В этом месяце вы посетили # автора, которого поддерживает сервис "Brave Награды"}
     }</translation>
+<translation id="6067959437127691361">Используя Brave Награды, вы поддерживаете авторов и можете зарабатывать BAT.</translation>
 <translation id="1187367336925051518">Вознаграждения за <ph name="MONTH"/>: <ph name="AMOUNT"/></translation>
 <translation id="3274366539954332481">Вы получили вознаграждения за просмотр рекламы в следующем месяце: <ph name="MONTH"/>.</translation>
 <translation id="7861645265922445992">Получить вознаграждения</translation>
@@ -692,7 +692,6 @@
 <translation id="6965382102122355670">ОК</translation>
 <translation id="6727102863431372879">Установить</translation>
 <translation id="8853725596990766789">Изменить сумму</translation>
-<translation id="6067959437127691361">Используя Brave Награды, вы поддерживаете авторов и можете зарабатывать BAT.</translation>
 <translation id="1609556006143307897">Вы помогаете поддерживать создателей контента</translation>
 <translation id="6605147707233193230">Включите, если хотите поддерживать создателей контента</translation>
 <translation id="5430495762768325224">Узнайте больше о BAT</translation>
@@ -788,6 +787,7 @@
 <translation id="9161147058107529840">Ожидается одиночный параметр объекта.</translation>
 <translation id="1875861420974447980">Этот идентификатор уже используется.</translation>
 <translation id="167698752210114155">Произошла внутренняя ошибка.</translation>
+<translation id="7497827357097190289">Хэш блока недействителен или не может быть проверен</translation>
 <translation id="8945668490056243760">Неподдерживаемый тип подписки</translation>
 <translation id="2326876601333401685">Метод RPC не поддерживается.</translation>
 <translation id="1128992132632883337">Ошибка обработки ответа.</translation>
@@ -871,6 +871,7 @@
 <translation id="570080709303714420">ПОЛОВИНА</translation>
 <translation id="2784548701748328827">МАКС</translation>
 <translation id="2329227154184107678">Проверить ордер</translation>
+<translation id="3220443877821207794">Подтвердить отправку</translation>
 <translation id="8530071505111489657">Нет токенов</translation>
 <translation id="615791330696335475">Поиск токенов по названию</translation>
 <translation id="5009335307032488349">Поиск NFT по идентификатору и названию</translation>
@@ -1095,9 +1096,20 @@
 <translation id="4460220693591349571">ТИП ФУНКЦИИ</translation>
 <translation id="838933475572692615">ШЕСТНАДЦАТЕРИЧНЫЕ ДАННЫЕ</translation>
 <translation id="2240831799756994975">БАЙТЫ</translation>
-<translation id="4874303883488468190">Выбор аккаунтов</translation>
-<translation id="2018472018751735678">Просматривайте адреса ваших разрешенных аккаунтов (обязательно)</translation>
-<translation id="7029403458170657879">Подключите кошелек Brave</translation>
+<translation id="6760823167126275974">Подключить кошелек</translation>
+<translation id="716009557505091365">или подключить с помощью:</translation>
+<translation id="7242985059140288348">Это приложение сможет:</translation>
+<translation id="7352133688029686231">Оно не сможет:</translation>
+<translation id="1647328658385235886">Видеть баланс кошелька и активность</translation>
+<translation id="3295962112184461868">Запрашивать одобрение транзакций и подписей</translation>
+<translation id="6096892345597202096">Видеть адрес вашего разрешенного кошелька</translation>
+<translation id="496578987299869780">Осуществлять перевод средств без вашего разрешения</translation>
+<translation id="3226586788973641582">Убедитесь, что этот сайт безопасен.</translation>
+<translation id="6837278005487143422">Срок действия разрешения</translation>
+<translation id="1903637466604153314">Пока я не закрою этот сайт</translation>
+<translation id="4324239559624557455">На 24 часа</translation>
+<translation id="9139452553033760558">На 1 неделю</translation>
+<translation id="1658834457013045127">Навсегда</translation>
 <translation id="2770851145415891830">У вас уже есть криптокошельки</translation>
 <translation id="2237759620789871865">Если вы хотите пропустить импорт и использовать старые криптокошельки, перейдите в <ph name="LINK_BEFORE"/>Настройки<ph name="LINK_AFTER"/> браузера Brave и поменяйте параметр по умолчанию на «Криптокошельки». Кроме того, вы можете импортировать данные, попробовать новую версию Brave Wallet, а затем вернуть прежние настройки.</translation>
 <translation id="5590175005414413980">Если у вас уже есть криптокошельки, импортируйте их в Brave Кошелек, указав пароль. Это позволит быстрее и безопаснее управлять своими криптоактивами, а также взаимодействовать с приложениями DApps на базе Web3.</translation>
@@ -1173,7 +1185,9 @@
 <translation id="8585995109882455949">Как найти правильный адрес?</translation>
 <translation id="8395402412470376435">Brave проводит проверку и не позволяет пользователям отправлять средства на неправильный адрес, в котором использован неверный регистр букв. Это процесс «контрольной суммы» для подтверждения того, что это действительный адрес Ethereum.</translation>
 <translation id="4583433813614292221">1. Посетите сайт</translation>
+<translation id="8061317754447191238">Перейдите на Etherscan и вставьте адрес кошелька, на который вы хотите отправить токены. Затем нажмите Enter</translation>
 <translation id="5393164213211430081">2. Скопируйте и введите адрес ETH</translation>
+<translation id="8306108469060304141">Скопируйте и вставьте правильный адрес. Обратите внимание, что некоторые символы были сконвертированы корректно.</translation>
 <translation id="2378355054306959991">Нужна помощь?</translation>
 <translation id="862585889767884824">of</translation>
 <translation id="9106265941552476098">Отклонить транзакции: <ph name="TRANSACTION_LENGTH"/></translation>
@@ -1213,7 +1227,6 @@
 <translation id="1904295039023858291">Стандарт токена</translation>
 <translation id="9033453977881595182">ID токена</translation>
 <translation id="6332387008245531841">Адрес контракта</translation>
-<translation id="6717502994710534866">CID</translation>
 <translation id="2351120707525742989">Расположение или адрес изображения</translation>
 <translation id="2962388922926051374">Запрос метода eth_chainId для <ph name="URL"/> не выполнен.</translation>
 <translation id="8325036459845654666">Эта сеть уже добавлена.</translation>
@@ -1230,14 +1243,11 @@
 <translation id="5133421763709317473">Активы, соответствующие поиску или фильтру, не найдены</translation>
 <translation id="7383613643114466279">Этот актив не поддерживается Brave Кошельком</translation>
 <translation id="6423985584914773314">Недействительный адрес FIL.</translation>
-<translation id="3898731124813934210">Купить через Wyre</translation>
 <translation id="5522073372365069684">Купить через Ramp</translation>
 <translation id="6153197326949684688">Продать с помощью <ph name="OFFRAMP_PROVIDER"/></translation>
-<translation id="6097502401711916278">Минимальная сумма должна быть от <ph name="FIAT_AMOUNT"/>.</translation>
 <translation id="7902920577183739843">Купить с помощью Sardine</translation>
 <translation id="6534275647567011533">Купить с помощью Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Покупайте криптовалюту с помощью карт Visa или Mastercard.</translation>
@@ -1514,18 +1524,17 @@
 <translation id="2227702748249086756">Не удается расчитать ориентировочную стоимость услуг</translation>
 <translation id="5361710044667743492">Почему недоступно?</translation>
 <translation id="3668838456083358569">Некоторые NFT-данные хранятся на централизованных серверах, таких как AWS, Google Cloud и т. д. В этом случае не получится привязать NFT-данные к IPFS-сети.</translation>
-<translation id="1293258969121701010">Запустив IPFS на своем компьютере, вы можете:</translation>
-<translation id="4568942135611119076">Быть уверены, что ваши данные NFT остаются онлайн и их невозможно подделать.</translation>
-<translation id="4915883034746438977">Извлекать содержимое из неверных данных с помощью идентификатора содержимого (CID).</translation>
-<translation id="1373647012698032676">Участвовать в подтверждении подлинности и сделать IPFS-сеть развитой и безопасной.</translation>
-<translation id="1806204385270226865">Следить за тем, чтобы мои NFT всегда были онлайн</translation>
-<translation id="4323376551843624309">Включить прикрепление NFT</translation>
-<translation id="6501331923135442324">Значительный шаг на пути к тому, чтобы стать частью web3</translation>
-<translation id="5361073938927187534">Запустите IPFS- узел и следите за тем, чтобы ваши NFT всегда оставались онлайн</translation>
-<translation id="1060267371223703324">Проверить, какие из моих NFT могут быть прикреплены</translation>
-<translation id="2641083452974145848">Теперь вы можете запустить свою систему IPFS и стать частью web 3. Ваши NFT-данные останутся в сети навсегда, и их нельзя будет подделать.</translation>
-<translation id="4460927368826360904">Вы запустили IPFS-узел. Файл передается на локальный IPFS-узел.</translation>
-<translation id="2260350263892668490"><ph name="PINNED"/> из <ph name="PINNABLE"/> NFT прикреплены к IPFS.</translation>
+<translation id="4225753478505258806">Но для работы IPFS необходимы отдельные участники. Запустите IPFS на своем компьютере, чтобы:</translation>
+<translation id="7674069205559000521">Повысить скорость сети и обеспечить ее доступность</translation>
+<translation id="7775229731579227782">Улучшить уровень защиты ваших NFT</translation>
+<translation id="2319971828691864975">Начало работы с IPFS</translation>
+<translation id="7906328323880284538">Самый безопасный способ хранения NFT</translation>
+<translation id="166206715890914321">Запустите IPFS- узел, чтобы ваши NFT всегда оставались онлайн</translation>
+<translation id="8913523138550521467">IPFS является супербезопасной альтернативой традиционного веб-хостинга. Вместо того чтобы полагаться на один хост, IPFS позволяет тысячам людей (которые запускают «узлы») сотрудничать в хранении контента. И пока у кого-то есть сохраненная копия, файл никогда не исчезнет из сети. «Прикрепление» ваших NFT к IPFS и запуск собственного IPFS-узла — это лучший способ защитить ваши NFT.</translation>
+<translation id="9160750213078764355">Узнать, какие из моих NFT подходят</translation>
+<translation id="6671461082721702724">Теперь вы можете запустить свою систему IPFS и стать частью web 3. Ваши NFT-данные будут всегда онлайн.</translation>
+<translation id="654964147165509548">NFT прикрепляются к локальному IPFS-узлу.</translation>
+<translation id="4910182786472608576"><ph name="PINNED"/> поддерживаемых NFT прикреплены к вашему локальному узлу IPFS.</translation>
 <translation id="1474962961180773583">Доступны <ph name="PINNABLE"/> из <ph name="TOTAL"/>!</translation>
 <translation id="6852656829524945421">Не удается прикрепить</translation>
 <translation id="7698019251444927442">Вы запустили IPFS-узел</translation>
@@ -1533,10 +1542,15 @@
 <translation id="7527548209942671618">Прикреплено к локальному IPFS-узлу</translation>
 <translation id="5659058832308365026">NFT-данные прикрепляются к локальному IPFS-узлу</translation>
 <translation id="4919133452617704550">Невозможно прикрепить к локальному IPFS-узлу</translation>
+<translation id="4220102684162429566">Наиболее распространенные причины:</translation>
+<translation id="451509325309455">У NFT есть проблемы с URL метаданных, не связанных с IPFS</translation>
+<translation id="3827697793483899711">Проблемы с внутренним узлом IPFS</translation>
+<translation id="1992846713609432783">Недостаточно места на локальном узле</translation>
 <translation id="3225624966527491351">Импортировать NFT</translation>
 <translation id="9085765419770918643">Здесь еще нет NFT.</translation>
 <translation id="8445532667841598737">Хотите добавить? Просто нажмите кнопку ниже для импорта.</translation>
 <translation id="9136462955850040542">Совместимость с NFT на Solana (SPL) и Ethereum (ERC-721).</translation>
+<translation id="849880459530751909">Изменить NFT</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Общая информация</translation>
 <translation id="4045404575593562245">События контроля Tor</translation>
@@ -1615,6 +1629,9 @@ other {# источника}
 <translation id="9204041448536398473">Общие настройки Щита</translation>
 <translation id="2108334320919763866">Глобальная защита по умолчанию</translation>
 <translation id="3440043456924990296">Настройки, которыми управляет организация</translation>
+<translation id="7053983685419859001">Блокировать</translation>
+<translation id="5716230673298034837">Разрешить все</translation>
+<translation id="5279600392753459966">Заблокировать все</translation>
 <translation id="4516904298421534459">Списки фильтров</translation>
 <translation id="3570081523466826008">Подключаться по HTTPS</translation>
 <translation id="131231380815754440">Включить HTTPS</translation>
@@ -1625,6 +1642,7 @@ other {# источника}
 <translation id="8593054718053894081">Полностью блокировать трекеры и рекламу</translation>
 <translation id="7384778069178817075">Разрешить все трекеры и рекламу</translation>
 <translation id="4941539331405513605">Блокировать межсайтовые cookie</translation>
+<translation id="2749284154880331639">Удалить собственные файлы cookie</translation>
 <translation id="6883611015375728278">Блокировать все cookie</translation>
 <translation id="5657156137487675418">Разрешить все cookie</translation>
 <translation id="8366221601425141146">Сбор цифровых отпечатков заблокирован</translation>
@@ -1639,6 +1657,7 @@ other {# источника}
 <translation id="7194012750329511146">Brave Щит
 Заблокировано трекеров и рекламных объявлений: <ph name="NUMBER"/></translation>
 <translation id="4292121526390005808">Заблокированные скрипты</translation>
+<translation id="5046271170844958713">Скриптов разрешено</translation>
 <translation id="264682546981571963">Устали от уведомлений о согласии на использование файлов cookie?</translation>
 <translation id="4986297793092101884">Brave уже блокирует сторонние файлы cookie. Но мы можем избавить вас и от уведомлений о согласии на использование файлов cookie.</translation>
 <translation id="535688588637568715">Да, блокировать уведомления о согласии на использование файлов cookie</translation>
@@ -1675,6 +1694,7 @@ other {# источника}
 <translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> не удалось подключиться к серверу в регионе<ph name="REGION_NAME"/>. Попробуйте позже или выберите другой сервер.</translation>
 <translation id="1024255913009642477">У вас уже есть VPN?</translation>
 <translation id="8814357473522731680">Технологии</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">Срок действия</translation>
 <translation id="1691256669639196606">Управление подпиской</translation>
 <translation id="434523916398030617">Связаться с технической поддержкой</translation>

@@ -207,15 +207,14 @@
 <translation id="7577100371127227294">Monatliche Trinkgelder</translation>
 <translation id="178390304006113804">Richten Sie wiederkehrende monatliche Trinkgelder ein, damit Sie Ihre Lieblingsersteller kontinuierlich unterstützen können.</translation>
 <translation id="3302159320447117425">Noch keine monatlichen Trinkgelder erstellt.</translation>
+<translation id="564837702459183199">Nächster Beitrag</translation>
 <translation id="4898632353264854950">Während Sie browsen, werden hier nach und nach Seiten angezeigt</translation>
 <translation id="3024485967181749006">Gesamte Trinkgelder diesen Monat</translation>
-<translation id="8183455888546367148">Gesamte Trinkgelder in diesem Monat</translation>
 <translation id="4153752809523809915">Haben Sie Ihrem Lieblings-Content-Creator heute schon ein Trinkgeld spendiert?</translation>
 <translation id="7286722244752781970">Minimale Seitenzeit vor der Anmeldung eines Besuchs</translation>
 <translation id="4424486208397124985">Mindestbesuche für Herausgeberrelevanz</translation>
 <translation id="5421369907811917952">Weitere Einstellungen</translation>
 <translation id="6248554379744796526">Liste noch nicht bestätigter Seiten anzeigen</translation>
-<translation id="5510618543889994434">Beiträge zu Videos zulassen</translation>
 <translation id="8933202740471878108">1 Besuch</translation>
 <translation id="354797634123275103">5 Besuche</translation>
 <translation id="3583700907990488238">10 Besuche</translation>
@@ -224,7 +223,6 @@
 <translation id="8610523985422563960">1 Minute</translation>
 <translation id="2807328214759298515">Bis zu</translation>
 <translation id="7483857210736407752">Trinkgeld-Schaltflächen auf Websites anzeigen</translation>
-<translation id="7583327070390027131">Nächstes monatliches Datum für Trinkgeld</translation>
 <translation id="6231182869178328516">Ich habe gerade <ph name="NAME"/> mit dem Brave-Browser ein Trinkgeld gegeben. Sehen Sie es sich unter https://brave.com/tips an.</translation>
 <translation id="5916536234616514390">Ich liebe es, dass ich mit <ph name="HASHTAG"/>Brave Ersteller unterstützen kann! Ich habe eben <ph name="HASHTAG2"/> TFA als Trinkgeld für <ph name="NAME"/> vergeben. Wenn sich der Ersteller vor dem <ph name="DATE"/> unter https://creators.brave.com verifiziert, gehören die TFA ihm!</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
@@ -638,6 +636,7 @@
 <translation id="8797999629784150206">Sie können Ihre <ph name="SITE_PERMISSIONS"/> jederzeit ändern. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">Site-Berechtigung</translation>
 <translation id="4355784577209159847">Verwendung von Drittanbieter-Cookies für die alte Google-Anmeldung zulassen</translation>
+<translation id="5770656036486891920"><ph name="URL"/> möchte Drittanbieter-Cookies für alte Google-Anmeldung nutzen</translation>
 <translation id="7717357606512850995">Status überprüfen</translation>
 <translation id="7306880305145342514">Glückwunsch! Ihre Belohnungen für <ph name="MONTH"/> sind angekommen!</translation>
 <translation id="3007207731685398329">Ihre <ph name="AMOUNT"/> <ph name="MONTH"/> Rewards kommen in <ph name="DAYS"/> an</translation>
@@ -659,6 +658,7 @@
       =1 {Diesen Monat haben Sie # Ersteller besucht, der von Brave-Belohnungen unterstützt wird}
       other {Diesen Monat haben Sie # Ersteller besucht, die von Brave-Belohnungen unterstützt werden}
     }</translation>
+<translation id="6067959437127691361">Mit Brave-Belohnungen unterstützen Sie die Ersteller von Inhalten und können BAT verdienen.</translation>
 <translation id="1187367336925051518"><ph name="MONTH"/>-Belohnungen: <ph name="AMOUNT"/></translation>
 <translation id="3274366539954332481">Ihre Belohnungen für Anzeigen im <ph name="MONTH"/> sind angekommen!</translation>
 <translation id="7861645265922445992">Belohnungen in Anspruch nehmen</translation>
@@ -690,7 +690,6 @@
 <translation id="6965382102122355670">Ok</translation>
 <translation id="6727102863431372879">Festlegen</translation>
 <translation id="8853725596990766789">Betrag ändern</translation>
-<translation id="6067959437127691361">Mit Brave-Belohnungen unterstützen Sie die Ersteller von Inhalten und können BAT verdienen.</translation>
 <translation id="1609556006143307897">Sie unterstützen Content-Ersteller.</translation>
 <translation id="6605147707233193230">Aktiveren Sie diese Funktion, um Content-Ersteller zu unterstützen.</translation>
 <translation id="5430495762768325224">Weitere Informationen zu BAT</translation>
@@ -784,6 +783,7 @@
 <translation id="9161147058107529840">Einfacher Objektparameter erwartet.</translation>
 <translation id="1875861420974447980">Diese Ketten-ID ist momentan in Verwendung.</translation>
 <translation id="167698752210114155">Es ist ein interner Fehler aufgetreten</translation>
+<translation id="7497827357097190289">Blockhash ist ungültig oder kann nicht überprüft werden</translation>
 <translation id="8945668490056243760">Nicht unterstützter Abonnementtyp</translation>
 <translation id="2326876601333401685">Diese RPC-Methode wird nicht unterstützt.</translation>
 <translation id="1128992132632883337">Beim Analysieren der Antwort ist ein Fehler aufgetreten</translation>
@@ -867,6 +867,7 @@
 <translation id="570080709303714420">HÄLFTE</translation>
 <translation id="2784548701748328827">MAX.</translation>
 <translation id="2329227154184107678">Auftrag prüfen</translation>
+<translation id="3220443877821207794">Senden überprüfen</translation>
 <translation id="8530071505111489657">Keine Token verfügbar</translation>
 <translation id="615791330696335475">Token nach Namen suchen</translation>
 <translation id="5009335307032488349">NFT nach Namen, ID suchen</translation>
@@ -1091,9 +1092,20 @@
 <translation id="4460220693591349571">FUNKTIONSTYP</translation>
 <translation id="838933475572692615">HEX DATA</translation>
 <translation id="2240831799756994975">BYTES</translation>
-<translation id="4874303883488468190">Konto/Konten auswählen</translation>
-<translation id="2018472018751735678">Sehen Sie sich die Adressen Ihrer erlaubten Konten an (erforderlich)</translation>
-<translation id="7029403458170657879">Mit Brave Wallet verbinden</translation>
+<translation id="6760823167126275974">Wallet verknüpfen</translation>
+<translation id="716009557505091365">oder verbinden mit:</translation>
+<translation id="7242985059140288348">Diese App kann:</translation>
+<translation id="7352133688029686231">Sie kann nicht:</translation>
+<translation id="1647328658385235886">Saldo und Aktivität des Wallets überprüfen</translation>
+<translation id="3295962112184461868">Genehmigung für Transaktionen und Signaturen anfordern</translation>
+<translation id="6096892345597202096">Ihre erlaubten Wallet-Adressen anzeigen</translation>
+<translation id="496578987299869780">Mittel ohne Ihre Erlaubnis bewegen</translation>
+<translation id="3226586788973641582">Sie müssen dieser Seite vertrauen.</translation>
+<translation id="6837278005487143422">Dauer der Erlaubnis</translation>
+<translation id="1903637466604153314">Bis ich diese Seite schließe</translation>
+<translation id="4324239559624557455">Für 24 Stunden</translation>
+<translation id="9139452553033760558">Für eine Woche</translation>
+<translation id="1658834457013045127">Für immer</translation>
 <translation id="2770851145415891830">Vorhandene Krypto-Wallets erkannt</translation>
 <translation id="2237759620789871865">Wenn Sie den Import lieber überspringen möchten und die alte Krypto-Wallet-Erfahrung beibehalten möchten, navigieren Sie einfach zum Brave Browser <ph name="LINK_BEFORE"/>Settings<ph name="LINK_AFTER"/> und ändern Sie die Standardeinstellung zurück auf Krypto-Wallets. Sie können auch importieren und die neue Brave Wallet ausprobieren. Sie können jederzeit zurückwechseln.</translation>
 <translation id="5590175005414413980">Geben Sie Ihr bestehendes Krypto-Wallet-Passwort ein, um es in Brave Wallet zu importieren. Genießen Sie eine schnellere und sicherere Möglichkeit, Krypto-Assets zu verwalten und mit Web3 DApps zu interagieren.</translation>
@@ -1169,7 +1181,9 @@
 <translation id="8585995109882455949">Wie finde ich die richtige Adresse?</translation>
 <translation id="8395402412470376435">Brave validiert und verhindert, dass Benutzer Gelder aufgrund falscher Großschreibung an die falsche Adresse senden. Dies ist ein „Prüfsummen“-Prozess, um zu verifizieren, dass es sich um eine gültige Ethereum-Adresse handelt.</translation>
 <translation id="4583433813614292221">1. Website aufrufen</translation>
+<translation id="8061317754447191238">Besuchen Sie Etherscan und fügen Sie die Adresse des Wallets ein, an das Sie Token senden möchten. Drücken Sie dann die Eingabetaste.</translation>
 <translation id="5393164213211430081">2. ETH-Adresse kopieren und eingeben</translation>
+<translation id="8306108469060304141">Kopieren und geben Sie die korrekte Adresse ein. Sie sehen, dass einige Zeichen korrekt konvertiert wurden.</translation>
 <translation id="2378355054306959991">Benötigen Sie mehr Hilfe?</translation>
 <translation id="862585889767884824">von</translation>
 <translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/> Transaktionen ablehnen</translation>
@@ -1209,7 +1223,6 @@
 <translation id="1904295039023858291">Token-Standard</translation>
 <translation id="9033453977881595182">Token-ID</translation>
 <translation id="6332387008245531841">Vertragsadresse</translation>
-<translation id="6717502994710534866">CID</translation>
 <translation id="2351120707525742989">Bildort oder Adresse</translation>
 <translation id="2962388922926051374">Anforderung für Methode „eth_chainId“ auf <ph name="URL"/> fehlgeschlagen</translation>
 <translation id="8325036459845654666">Dieses Netzwerk wurde bereits hinzugefügt.</translation>
@@ -1226,14 +1239,11 @@
 <translation id="5133421763709317473">Keine Assets gefunden, die der Suche oder dem Filter entsprechen</translation>
 <translation id="7383613643114466279">Dieses Asset wird von der Brave-Wallet nicht unterstützt.</translation>
 <translation id="6423985584914773314">Keine gültige FIL-Adresse</translation>
-<translation id="3898731124813934210">Mit Wyre kaufen</translation>
 <translation id="5522073372365069684">Mit Ramp kaufen</translation>
 <translation id="6153197326949684688">Verkaufen mit <ph name="OFFRAMP_PROVIDER"/></translation>
-<translation id="6097502401711916278">Der Mindestbetrag muss mindestens <ph name="FIAT_AMOUNT"/> oder mehr betragen.</translation>
 <translation id="7902920577183739843">Mit Sardine kaufen</translation>
 <translation id="6534275647567011533">Mit Transak kaufen</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Kryptowährung mit Visa oder Mastercard kaufen.</translation>
@@ -1510,18 +1520,17 @@
 <translation id="2227702748249086756">Gebührenschätzungen können nicht abgerufen werden</translation>
 <translation id="5361710044667743492">Warum sind sie nicht verfügbar?</translation>
 <translation id="3668838456083358569">Einige der NFT-Daten werden auf zentralisierten Servern wie AWS, Google Cloud usw. gespeichert. In diesem Fall ist es nicht möglich, Ihre NFT-Daten an das IPFS-Netzwerk anzuheften.</translation>
-<translation id="1293258969121701010">Indem Sie IPFS auf deinem Computer ausführen, können Sie:</translation>
-<translation id="4568942135611119076">Sicherstellen, dass Ihre NFT-Daten online bleiben und nicht manipuliert werden können.</translation>
-<translation id="4915883034746438977">Inhalte zurückholen, indem Sie die Inhaltskennung (content identifier, CID) aus falschen Daten verwenden.</translation>
-<translation id="1373647012698032676">Am Echtheitsnachweis teilnehmen und das IPFS-Netzwerk reichhaltig und gesund gestalten.</translation>
-<translation id="1806204385270226865">Meine NFTs immer online behalten</translation>
-<translation id="4323376551843624309">NFT-Anheften aktivieren</translation>
-<translation id="6501331923135442324">Ein großer Schritt, um Teil von Web 3 zu werden</translation>
-<translation id="5361073938927187534">Den IPFS-Knoten immer ausführen und NFTs immer online halten</translation>
-<translation id="1060267371223703324">Überprüfen, welche meiner NFTs angeheftet werden können</translation>
-<translation id="2641083452974145848">Ab sofort können Sie Ihr IPFS ausführen und Teil von Web 3 sein. Ihre NFT-Daten bleiben für immer online und können nicht manipuliert werden.</translation>
-<translation id="4460927368826360904">Sie führen den IPFS-Knoten aus. Die Datei wird auf den lokalen IPFS-Knoten übertragen.</translation>
-<translation id="2260350263892668490"><ph name="PINNED"/> von <ph name="PINNABLE"/> NFTs wurden erfolgreich an IPFS angeheftet.</translation>
+<translation id="4225753478505258806">IPFS benötigt jedoch individuelle Teilnehmer, damit es funktioniert. Führen Sie IPFS auf Ihrem Computer aus, um:</translation>
+<translation id="7674069205559000521">Zur Geschwindigkeit und Verfügbarkeit des Netzwerks beizutragen</translation>
+<translation id="7775229731579227782">Die Sicherheit Ihrer NFTs zu erhöhen</translation>
+<translation id="2319971828691864975">Erste Schritte mit IPFS zu unternehmen</translation>
+<translation id="7906328323880284538">Die sicherste Art, NFTs zu hosten</translation>
+<translation id="166206715890914321">Führen Sie einen IPFS-Knoten aus, um Ihre NFTs für immer online zu halten</translation>
+<translation id="8913523138550521467">IPFS ist eine extrem sichere Alternative zu herkömmlichem Web-Hosting. Statt sich auf einen einzelnen Host zu verlassen, ermöglicht es IPFS tausenden Personen (die "Knoten" ausführen), zur Speicherung von Inhalten zusammenzuarbeiten. Solange eine Person über eine Kopie verfügt, kann eine Datei nicht verschwinden. "Anheften" Ihres NFT an IPFS und Ausführen Ihres eigenen IPFS-Knotens ist die beste Art, Ihre NFTs zu sichern.</translation>
+<translation id="9160750213078764355">Ansehen, welche meiner NFTs berechtigt sind</translation>
+<translation id="6671461082721702724">Ab sofort können Sie Ihr IPFS ausführen und Teil von Web 3 sein. Ihre NFT-Daten bleiben für immer online.</translation>
+<translation id="654964147165509548">NFTs werden an Ihren lokalen IPFS-Knoten angeheftet.</translation>
+<translation id="4910182786472608576">NFTs mit <ph name="PINNED"/>-Unterstützung werden an Ihren IPFS-Knoten geheftet.</translation>
 <translation id="1474962961180773583"><ph name="PINNABLE"/> von <ph name="TOTAL"/> sind verfügbar!</translation>
 <translation id="6852656829524945421">Kann nicht angeheftet werden</translation>
 <translation id="7698019251444927442">Sie führen den IPFS-Knoten aus</translation>
@@ -1529,10 +1538,15 @@
 <translation id="7527548209942671618">An Ihren lokalen IPFS-Knoten angeheftet</translation>
 <translation id="5659058832308365026">NFT-Daten werden an Ihren lokalen IPFS-Knoten angeheftet</translation>
 <translation id="4919133452617704550">Kann nicht an Ihren lokalen IPFS-Knoten angeheftet werden</translation>
+<translation id="4220102684162429566">Häufigste Ursachen:</translation>
+<translation id="451509325309455">NFT hat url-Probleme mit nicht-IPFS-Metadaten</translation>
+<translation id="3827697793483899711">Interne Probleme mit IPFS-Knoten</translation>
+<translation id="1992846713609432783">Nicht genug Platz im lokalen Knoten</translation>
 <translation id="3225624966527491351">NFT importieren</translation>
 <translation id="9085765419770918643">Es gibt noch keine NFTs hier.</translation>
 <translation id="8445532667841598737">Bereit, einige hinzuzufügen? Klicken Sie zum Importieren einfach auf die untenstehende Schaltfläche.</translation>
 <translation id="9136462955850040542">Kompatibel mit NFTs auf Solana (SPL) und Ethereum (ERC-721).</translation>
+<translation id="849880459530751909">NFT bearbeiten</translation>
 <translation id="3155170474926428993">Tor-Startprogramm</translation>
 <translation id="3745016858329272300">Allgemeine Information</translation>
 <translation id="4045404575593562245">Tor Kontroll Ereignisse</translation>
@@ -1609,6 +1623,9 @@
 <translation id="9204041448536398473">Globale Shield-Einstellungen</translation>
 <translation id="2108334320919763866">Globale Standardeinstellungen</translation>
 <translation id="3440043456924990296">Von Organisation verwaltete Einstellungen</translation>
+<translation id="7053983685419859001">Ablehnen</translation>
+<translation id="5716230673298034837">Alle erlauben</translation>
+<translation id="5279600392753459966">Alle blockieren</translation>
 <translation id="4516904298421534459">Listen filtern</translation>
 <translation id="3570081523466826008">Verbindungen auf HTTPS upgraden</translation>
 <translation id="131231380815754440">HTTPS aktivieren</translation>
@@ -1619,6 +1636,7 @@
 <translation id="8593054718053894081">Aggressives Blockieren von Trackern &amp; Anzeigen</translation>
 <translation id="7384778069178817075">Alle Tracker &amp; Werbung zulassen</translation>
 <translation id="4941539331405513605">Cross-Site-Cookies blockieren</translation>
+<translation id="2749284154880331639">Erstanbieter-Cookies entfernen</translation>
 <translation id="6883611015375728278">Alle Cookies blockieren</translation>
 <translation id="5657156137487675418">Alle Cookies erlauben</translation>
 <translation id="8366221601425141146">Fingerprinting blockiert</translation>
@@ -1633,6 +1651,7 @@
 <translation id="7194012750329511146">Brave Schutz
 hat <ph name="NUMBER"/> Tracker, Anzeigen und mehr blockiert</translation>
 <translation id="4292121526390005808">Blockierte Skripte</translation>
+<translation id="5046271170844958713">Erlaubte Skripte</translation>
 <translation id="264682546981571963">Keine Lust mehr auf Cookie-Einwilligungshinweise?</translation>
 <translation id="4986297793092101884">Brave blockiert bereits Cookies von Drittanbietern. Wir können auch Cookie-Einwilligungshinweise blockieren.</translation>
 <translation id="535688588637568715">Ja, Cookie-Einwilligungshinweise blockieren</translation>
@@ -1669,6 +1688,7 @@ hat <ph name="NUMBER"/> Tracker, Anzeigen und mehr blockiert</translation>
 <translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> konnte keine Verbindung zum <ph name="REGION_NAME"/>-Server herstellen. Sie können es später erneut versuchen oder einen anderen wählen.</translation>
 <translation id="1024255913009642477">Haben Sie bereits VPN erworben?</translation>
 <translation id="8814357473522731680">Powered by</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">Ablaufdatum</translation>
 <translation id="1691256669639196606">Abonnement verwalten</translation>
 <translation id="434523916398030617">Technischen Support kontaktieren</translation>
