@@ -15,47 +15,6 @@ namespace brave_ads {
 
 class BraveAdsUserActivityUtilTest : public UnitTestBase {};
 
-TEST_F(BraveAdsUserActivityUtilTest, NoTabsOpened) {
-  // Arrange
-  UserActivityManager::GetInstance().RecordEvent(
-      UserActivityEventType::kClickedLink);
-
-  const UserActivityEventList events =
-      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
-          base::Minutes(30));
-
-  // Act
-
-  // Assert
-  EXPECT_EQ(0U, GetNumberOfTabsOpened(events));
-}
-
-TEST_F(BraveAdsUserActivityUtilTest, TabsOpened) {
-  // Arrange
-  UserActivityManager::GetInstance().RecordEvent(
-      UserActivityEventType::kClickedLink);
-
-  AdvanceClockBy(base::Minutes(30));
-
-  UserActivityManager::GetInstance().RecordEvent(
-      UserActivityEventType::kClickedLink);
-  UserActivityManager::GetInstance().RecordEvent(
-      UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::GetInstance().RecordEvent(
-      UserActivityEventType::kClosedTab);
-  UserActivityManager::GetInstance().RecordEvent(
-      UserActivityEventType::kOpenedNewTab);
-
-  const UserActivityEventList events =
-      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
-          base::Minutes(30));
-
-  // Act
-
-  // Assert
-  EXPECT_EQ(2U, GetNumberOfTabsOpened(events));
-}
-
 TEST_F(BraveAdsUserActivityUtilTest, GetNumberOfUserActivityEvents) {
   // Arrange
   UserActivityManager::GetInstance().RecordEvent(

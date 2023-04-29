@@ -16,12 +16,6 @@
 
 namespace brave_ads {
 
-size_t GetNumberOfTabsOpened(const UserActivityEventList& events) {
-  return base::ranges::count_if(events, [](const UserActivityEventInfo& event) {
-    return event.type == UserActivityEventType::kOpenedNewTab;
-  });
-}
-
 size_t GetNumberOfUserActivityEvents(const UserActivityEventList& events,
                                      UserActivityEventType event_type) {
   return base::ranges::count_if(

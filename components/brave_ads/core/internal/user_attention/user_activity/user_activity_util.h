@@ -14,8 +14,6 @@
 
 namespace brave_ads {
 
-size_t GetNumberOfTabsOpened(const UserActivityEventList& events);
-
 size_t GetNumberOfUserActivityEvents(const UserActivityEventList& events,
                                      UserActivityEventType event_type);
 base::TimeDelta GetTimeSinceLastUserActivityEvent(
