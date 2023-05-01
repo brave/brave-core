@@ -47,6 +47,7 @@
 
 # The tests listed below are disabled because sharedStorage is not enabled in
 # Brave
+-All/BrowsingDataModelBrowserTest.SharedStorageAccessReportedCorrectly/*
 -All/SharedStorageChromeBrowserTest.*
 -All/SharedStorageFencedFrameChromeBrowserTest.FencedFrameNavigateTop_BudgetWithdrawal/*
 -All/SharedStorageFencedFrameChromeBrowserTest.TwoFencedFrames_DifferentURNs_EachNavigateOnce_BudgetWithdrawalTwice/*
@@ -88,7 +89,7 @@
 # `document.prerendering === unknown`
 -OmniboxPrerenderDefaultPrerender2BrowserTest.PrerenderFunctionsCheckWithDefaultFlag
 
-# This test fails because kPrerender2 feature is disabled.
+# These tests fail because kPrerender2 feature is disabled.
 -NoCancelSearchPreloadUnifiedBrowserTest.SuggestionChangeAfterStartPrerender
 -NoCancelSearchPreloadUnifiedFallbackBrowserTest.OpenPrefetchedResponseInBackgroundedTab
 -NoCancelSearchPreloadUnifiedFallbackBrowserTest.ServingToPrerenderingUntilCompletion
@@ -179,6 +180,8 @@
 -PrefetchProxyPrerenderBrowserTest.*
 -PrerenderAutofillTest.*
 -PrerenderBookmarkBarNavigationTest.PrerenderActivation
+-PrerenderBookmarkBarOnHoverNavigationTest.PrerenderActivation
+-PrerenderBookmarkBarOnPressedNavigationTest.PrerenderActivation
 -PrerenderBrowserTest.*
 -PrerenderDownloadTest.*
 -PrerenderFileSystemAccessBrowserTest.*
@@ -219,20 +222,22 @@
 -WebuiLoadTimerPrerenderTest.*
 -ZoomControllerForPrerenderingTest.*
 
-# This test fails because we intentionally disable trust tokens via
+# These tests fail because we intentionally disable trust tokens via
 # network::features::kPrivateStateTokens
+-All/BrowsingDataModelBrowserTest.TrustTokenIssuance/*
 -BrowsingDataModelBrowserTest.TrustTokenIssuance
 
-# This test fails because we disable Browsing Topics (and Trust Tokens, and
+# These tests fail because we disable Browsing Topics (and Trust Tokens, and
 # Fledge, and Interest Groups, etc.)
--BrowsingDataModelBrowserTest.AttributionReportingAccessReportedCorrectly
--BrowsingDataModelBrowserTest.AuctionWinReportedCorrectly
--BrowsingDataModelBrowserTest.TopicsAccessReportedCorrectly
+-BrowsingDataModelBrowserTest.AttributionReportingAccessReportedCorrectly/*
+-BrowsingDataModelBrowserTest.AuctionWinReportedCorrectly/*
+-BrowsingDataModelBrowserTest.TopicsAccessReportedCorrectly/*
 
 # These tests fail because we intentionally disable direct/raw sockets via
 # policy::policy_prefs::kIsolatedAppsDeveloperModeAllowed. See
 # https://github.com/brave/brave-browser/issues/11546 for additional
 # information.
+-All/BrowsingDataModelBrowserTest.IsolatedWebAppUsageInDefaultStoragePartitionModel/*
 -BorderlessIsolatedWebAppBrowserTest.*
 -BrowsingDataModelBrowserTest.IsolatedWebAppUsageInDefaultStoragePartitionModel
 -ChromeDirectSocketsTcpApiTest.TcpReadWrite
@@ -249,10 +254,12 @@
 -IsolatedWebAppBrowserServiceWorkerTest.ServiceWorkerPartitioned
 -IsolatedWebAppsDeveloperModeAllowedPolicyTest.MockTcp/0
 -IsolatedWebAppsDeveloperModeAllowedPolicyTest.MockUdp/0
+-IsolatedWebAppErrorPageTest.SetsCorrectMessageForErrorCode
+-IsolatedWebAppErrorPageTest.UsesWebAppErrorPage
 -WebAppTagIsolatedWebAppTest.IsolatedWebAppTaskCreated
 -WebAppTagIsolatedWebAppTest.IsolatedWebAppTaskTitleFallbackToAppName
 
-# This test fails because we've already implemented similar changes to prevent
+# These tests fail because we've already implemented similar changes to prevent
 # language fingerprinting, regardless of the feature flag state
 -DisableFeatureReduceAcceptLanguageBrowserTest.NoAcceptLanguageHeader
 -SameOriginReduceAcceptLanguageOTBrowserTest.IframeRequestOriginTrial
@@ -447,8 +454,8 @@
 
 # These tests fail because we intentionally disable
 # blink::features::kAdInterestGroupAPI
--BrowsingDataModelBrowserTest.InterestGroupsAccessReportedCorrectly
--BrowsingDataModelBrowserTest.InterestGroupsHandledCorrectly
+-BrowsingDataModelBrowserTest.InterestGroupsAccessReportedCorrectly/*
+-BrowsingDataModelBrowserTest.InterestGroupsHandledCorrectly/*
 -InterestGroupFledgeOnBrowserTest.*
 -InterestGroupPermissionsBrowserTest.*
 -InterestGroupPermissionsPrivacySandbox3BrowserTest.*
@@ -493,7 +500,7 @@
 # These tests time out because IdentityManager never loads refresh tokens
 -DisallowManagedProfileSignoutFeature/UserPolicySigninServiceTest.*
 
-# This test fails with the following error:
+# These tests fail with the following error:
 #  Terminating render process for bad Mojo message: Received bad user message:
 # No binder found for interface brave_private_new_tab.mojom.PageHandler for the
 # frame/document scope
@@ -518,9 +525,9 @@
 # These tests fail on CI but pass locally
 -DeviceChooserExtensionBrowserTests/DeviceChooserExtensionBrowserTest.ChooserAnchoredToExtensionIcon/WebHid
 -DeviceChooserExtensionBrowserTests/DeviceChooserExtensionBrowserTest.ChooserAnchoredToExtensionIcon/WebUsb
--InstallFromManifestCommandTest.SuccessCrossOriginManifest
--InstallFromManifestCommandTest.SuccessNewInstall
--InstallFromManifestCommandTest.SuccessWithManifestId
+-InstallPreloadedVerifiedAppCommandTest.SuccessCrossOriginManifest
+-InstallPreloadedVerifiedAppCommandTest.SuccessNewInstall
+-InstallPreloadedVerifiedAppCommandTest.SuccessWithManifestId
 -MetricIntegrationTest.FirstInputDelay
 -MetricIntegrationTest.LargestContentfulPaint
 -WebAppTabStripBrowserTest.TabbedModeMediaCSS
