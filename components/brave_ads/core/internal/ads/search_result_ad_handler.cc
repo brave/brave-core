@@ -105,14 +105,16 @@ void SearchResultAd::OnFireAdViewedEvent(
   MaybeTriggerAdViewedEventFromQueue();
 }
 
-void SearchResultAd::OnSearchResultAdViewed(const SearchResultAdInfo& ad) {
+void SearchResultAd::OnDidFireSearchResultAdViewedEvent(
+    const SearchResultAdInfo& ad) {
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
   account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
                     ConfirmationType::kViewed);
 }
 
-void SearchResultAd::OnSearchResultAdClicked(const SearchResultAdInfo& ad) {
+void SearchResultAd::OnDidFireSearchResultAdClickedEvent(
+    const SearchResultAdInfo& ad) {
   transfer_->SetLastClickedAd(ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);

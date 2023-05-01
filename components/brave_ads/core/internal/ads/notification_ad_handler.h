@@ -75,11 +75,16 @@ class NotificationAdHandler final : public AccountObserver,
   void OnDidServeNotificationAd(const NotificationAdInfo& ad) override;
 
   // NotificationAdEventHandlerDelegate:
-  void OnNotificationAdServed(const NotificationAdInfo& ad) override;
-  void OnNotificationAdViewed(const NotificationAdInfo& ad) override;
-  void OnNotificationAdClicked(const NotificationAdInfo& ad) override;
-  void OnNotificationAdDismissed(const NotificationAdInfo& ad) override;
-  void OnNotificationAdTimedOut(const NotificationAdInfo& ad) override;
+  void OnDidFireNotificationAdServedEvent(
+      const NotificationAdInfo& ad) override;
+  void OnDidFireNotificationAdViewedEvent(
+      const NotificationAdInfo& ad) override;
+  void OnDidFireNotificationAdClickedEvent(
+      const NotificationAdInfo& ad) override;
+  void OnDidFireNotificationAdDismissedEvent(
+      const NotificationAdInfo& ad) override;
+  void OnDidFireNotificationAdTimedOutEvent(
+      const NotificationAdInfo& ad) override;
 
   const raw_ref<Account> account_;
   const raw_ref<Transfer> transfer_;

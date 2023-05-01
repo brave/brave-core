@@ -283,17 +283,17 @@ void SearchResultAdEventHandler::SuccessfullyFiredEvent(
   if (delegate_) {
     switch (event_type) {
       case mojom::SearchResultAdEventType::kServed: {
-        delegate_->OnSearchResultAdServed(ad);
+        delegate_->OnDidFireSearchResultAdServedEvent(ad);
         break;
       }
 
       case mojom::SearchResultAdEventType::kViewed: {
-        delegate_->OnSearchResultAdViewed(ad);
+        delegate_->OnDidFireSearchResultAdViewedEvent(ad);
         break;
       }
 
       case mojom::SearchResultAdEventType::kClicked: {
-        delegate_->OnSearchResultAdClicked(ad);
+        delegate_->OnDidFireSearchResultAdClickedEvent(ad);
         break;
       }
     }
@@ -313,7 +313,7 @@ void SearchResultAdEventHandler::FailedToFireEvent(
               << " and creative instance id " << ad.creative_instance_id);
 
   if (delegate_) {
-    delegate_->OnSearchResultAdEventFailed(ad, event_type);
+    delegate_->OnFailedToFireSearchResultAdEvent(ad, event_type);
   }
 
   std::move(callback).Run(/*success*/ false, ad.placement_id, event_type);

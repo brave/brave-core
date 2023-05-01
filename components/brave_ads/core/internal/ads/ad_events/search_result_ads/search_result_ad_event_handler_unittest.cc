@@ -75,22 +75,25 @@ class BraveAdsSearchResultAdEventHandlerTest
                           const mojom::SearchResultAdEventType event_type) {}));
   }
 
-  void OnSearchResultAdServed(const SearchResultAdInfo& ad) override {
+  void OnDidFireSearchResultAdServedEvent(
+      const SearchResultAdInfo& ad) override {
     ad_ = ad;
     did_serve_ad_ = true;
   }
 
-  void OnSearchResultAdViewed(const SearchResultAdInfo& ad) override {
+  void OnDidFireSearchResultAdViewedEvent(
+      const SearchResultAdInfo& ad) override {
     ad_ = ad;
     did_view_ad_ = true;
   }
 
-  void OnSearchResultAdClicked(const SearchResultAdInfo& ad) override {
+  void OnDidFireSearchResultAdClickedEvent(
+      const SearchResultAdInfo& ad) override {
     ad_ = ad;
     did_click_ad_ = true;
   }
 
-  void OnSearchResultAdEventFailed(
+  void OnFailedToFireSearchResultAdEvent(
       const SearchResultAdInfo& /*ad*/,
       const mojom::SearchResultAdEventType /*event_type*/) override {
     did_fail_to_fire_event_ = true;

@@ -202,16 +202,14 @@ void NotificationAdServing::ServeAd(const NotificationAdInfo& ad) {
               << "  body: " << ad.body << "\n"
               << "  targetUrl: " << ad.target_url);
 
+  is_serving_ = false;
+
   DCHECK(eligible_ads_);
   eligible_ads_->SetLastServedAd(ad);
-
-  is_serving_ = false;
 
   if (delegate_) {
     delegate_->OnDidServeNotificationAd(ad);
   }
-
-  MaybeServeAdAtNextRegularInterval();
 }
 
 void NotificationAdServing::FailedToServeAd() {

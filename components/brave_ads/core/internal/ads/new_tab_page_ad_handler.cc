@@ -61,18 +61,21 @@ void NewTabPageAdHandler::OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) {
                mojom::NewTabPageAdEventType::kServed);
 }
 
-void NewTabPageAdHandler::OnNewTabPageAdServed(const NewTabPageAdInfo& ad) {
+void NewTabPageAdHandler::OnDidFireNewTabPageAdServedEvent(
+    const NewTabPageAdInfo& ad) {
   ClientStateManager::GetInstance().UpdateSeenAd(ad);
 }
 
-void NewTabPageAdHandler::OnNewTabPageAdViewed(const NewTabPageAdInfo& ad) {
+void NewTabPageAdHandler::OnDidFireNewTabPageAdViewedEvent(
+    const NewTabPageAdInfo& ad) {
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
   account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
                     ConfirmationType::kViewed);
 }
 
-void NewTabPageAdHandler::OnNewTabPageAdClicked(const NewTabPageAdInfo& ad) {
+void NewTabPageAdHandler::OnDidFireNewTabPageAdClickedEvent(
+    const NewTabPageAdInfo& ad) {
   transfer_->SetLastClickedAd(ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);

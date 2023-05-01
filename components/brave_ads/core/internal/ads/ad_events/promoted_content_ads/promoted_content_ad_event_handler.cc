@@ -190,17 +190,17 @@ void PromotedContentAdEventHandler::SuccessfullyFiredEvent(
 
   switch (event_type) {
     case mojom::PromotedContentAdEventType::kServed: {
-      delegate_->OnPromotedContentAdServed(ad);
+      delegate_->OnDidFirePromotedContentAdServedEvent(ad);
       break;
     }
 
     case mojom::PromotedContentAdEventType::kViewed: {
-      delegate_->OnPromotedContentAdViewed(ad);
+      delegate_->OnDidFirePromotedContentAdViewedEvent(ad);
       break;
     }
 
     case mojom::PromotedContentAdEventType::kClicked: {
-      delegate_->OnPromotedContentAdClicked(ad);
+      delegate_->OnDidFirePromotedContentAdClickedEvent(ad);
       break;
     }
   }
@@ -217,8 +217,8 @@ void PromotedContentAdEventHandler::FailedToFireEvent(
               << " and creative instance id " << creative_instance_id);
 
   if (delegate_) {
-    delegate_->OnPromotedContentAdEventFailed(placement_id,
-                                              creative_instance_id, event_type);
+    delegate_->OnFailedToFirePromotedContentAdEvent(
+        placement_id, creative_instance_id, event_type);
   }
 }
 

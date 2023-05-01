@@ -191,17 +191,17 @@ void NewTabPageAdEventHandler::SuccessfullyFiredEvent(
 
   switch (event_type) {
     case mojom::NewTabPageAdEventType::kServed: {
-      delegate_->OnNewTabPageAdServed(ad);
+      delegate_->OnDidFireNewTabPageAdServedEvent(ad);
       break;
     }
 
     case mojom::NewTabPageAdEventType::kViewed: {
-      delegate_->OnNewTabPageAdViewed(ad);
+      delegate_->OnDidFireNewTabPageAdViewedEvent(ad);
       break;
     }
 
     case mojom::NewTabPageAdEventType::kClicked: {
-      delegate_->OnNewTabPageAdClicked(ad);
+      delegate_->OnDidFireNewTabPageAdClickedEvent(ad);
       break;
     }
   }
@@ -218,8 +218,8 @@ void NewTabPageAdEventHandler::FailedToFireEvent(
               << " and creative instance id " << creative_instance_id);
 
   if (delegate_) {
-    delegate_->OnNewTabPageAdEventFailed(placement_id, creative_instance_id,
-                                         event_type);
+    delegate_->OnFailedToFireNewTabPageAdEvent(
+        placement_id, creative_instance_id, event_type);
   }
 }
 

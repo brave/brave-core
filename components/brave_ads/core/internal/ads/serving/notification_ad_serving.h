@@ -52,6 +52,7 @@ class NotificationAdServing final : public AdsClientNotifierObserver {
   void StopServingAdsAtRegularIntervals();
 
   void MaybeServeAd();
+  void MaybeServeAdAtNextRegularInterval();
 
  private:
   bool IsSupported() const { return bool{eligible_ads_}; }
@@ -63,7 +64,6 @@ class NotificationAdServing final : public AdsClientNotifierObserver {
 
   void OnAdsPerHourPrefChanged();
 
-  void MaybeServeAdAtNextRegularInterval();
   void RetryServingAdAtNextInterval();
   base::Time MaybeServeAdAfter(base::TimeDelta delay);
 

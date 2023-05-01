@@ -17,23 +17,28 @@ struct NotificationAdInfo;
 class NotificationAdEventHandlerDelegate {
  public:
   // Invoked when the notification |ad| is served.
-  virtual void OnNotificationAdServed(const NotificationAdInfo& ad) {}
+  virtual void OnDidFireNotificationAdServedEvent(
+      const NotificationAdInfo& ad) {}
 
   // Invoked when the notification |ad| is viewed.
-  virtual void OnNotificationAdViewed(const NotificationAdInfo& ad) {}
+  virtual void OnDidFireNotificationAdViewedEvent(
+      const NotificationAdInfo& ad) {}
 
   // Invoked when the notification |ad| is clicked.
-  virtual void OnNotificationAdClicked(const NotificationAdInfo& ad) {}
+  virtual void OnDidFireNotificationAdClickedEvent(
+      const NotificationAdInfo& ad) {}
 
   // Invoked when the notification |ad| is dismissed.
-  virtual void OnNotificationAdDismissed(const NotificationAdInfo& ad) {}
+  virtual void OnDidFireNotificationAdDismissedEvent(
+      const NotificationAdInfo& ad) {}
 
   // Invoked when the notification |ad| times out.
-  virtual void OnNotificationAdTimedOut(const NotificationAdInfo& ad) {}
+  virtual void OnDidFireNotificationAdTimedOutEvent(
+      const NotificationAdInfo& ad) {}
 
   // Invoked when the notification |ad| event fails for |placement_id| and
   // |event_type|.
-  virtual void OnNotificationAdEventFailed(
+  virtual void OnFailedToFireNotificationAdEvent(
       const std::string& placement_id,
       const mojom::NotificationAdEventType event_type) {}
 

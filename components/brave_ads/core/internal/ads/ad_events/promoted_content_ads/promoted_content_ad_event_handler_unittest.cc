@@ -48,22 +48,25 @@ class BraveAdsPromotedContentAdEventHandlerTest
     event_handler_.SetDelegate(this);
   }
 
-  void OnPromotedContentAdServed(const PromotedContentAdInfo& ad) override {
+  void OnDidFirePromotedContentAdServedEvent(
+      const PromotedContentAdInfo& ad) override {
     ad_ = ad;
     did_serve_ad_ = true;
   }
 
-  void OnPromotedContentAdViewed(const PromotedContentAdInfo& ad) override {
+  void OnDidFirePromotedContentAdViewedEvent(
+      const PromotedContentAdInfo& ad) override {
     ad_ = ad;
     did_view_ad_ = true;
   }
 
-  void OnPromotedContentAdClicked(const PromotedContentAdInfo& ad) override {
+  void OnDidFirePromotedContentAdClickedEvent(
+      const PromotedContentAdInfo& ad) override {
     ad_ = ad;
     did_click_ad_ = true;
   }
 
-  void OnPromotedContentAdEventFailed(
+  void OnFailedToFirePromotedContentAdEvent(
       const std::string& /*placement_id*/,
       const std::string& /*creative_instance_id*/,
       const mojom::PromotedContentAdEventType /*event_type*/) override {

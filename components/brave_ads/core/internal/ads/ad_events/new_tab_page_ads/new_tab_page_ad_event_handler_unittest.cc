@@ -48,22 +48,22 @@ class BraveAdsNewTabPageAdEventHandlerTest
     event_handler_.SetDelegate(this);
   }
 
-  void OnNewTabPageAdServed(const NewTabPageAdInfo& ad) override {
+  void OnDidFireNewTabPageAdServedEvent(const NewTabPageAdInfo& ad) override {
     ad_ = ad;
     did_serve_ad_ = true;
   }
 
-  void OnNewTabPageAdViewed(const NewTabPageAdInfo& ad) override {
+  void OnDidFireNewTabPageAdViewedEvent(const NewTabPageAdInfo& ad) override {
     ad_ = ad;
     did_view_ad_ = true;
   }
 
-  void OnNewTabPageAdClicked(const NewTabPageAdInfo& ad) override {
+  void OnDidFireNewTabPageAdClickedEvent(const NewTabPageAdInfo& ad) override {
     ad_ = ad;
     did_click_ad_ = true;
   }
 
-  void OnNewTabPageAdEventFailed(
+  void OnFailedToFireNewTabPageAdEvent(
       const std::string& /*placement_id*/,
       const std::string& /*creative_instance_id*/,
       const mojom::NewTabPageAdEventType /*event_type*/) override {
