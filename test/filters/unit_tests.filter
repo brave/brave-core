@@ -32,7 +32,9 @@
 -ExtensionActionViewControllerFeatureWithPermittedSitesUnitTest.GetHoverCardStatus
 -ExtensionActionViewControllerGrayscaleTest.*
 -ExtensionActionViewControllerUnitTest.*
+-ExtensionActionViewControllerWithSidePanelUnitTest.*
 -ExtensionMenuItemViewTest.*
+-HighEfficiencyChipViewDiscardedTabTreatmentDisabledTest.ShouldNotExpandWhenFeatureIsDisabled
 -HighEfficiencyChipViewTest.*
 -HistoryClustersPageHandlerTest.OpenUrlsInTabGroup
 -HistoryClustersPageHandlerCartTest.CheckClusterHasCart
@@ -171,6 +173,7 @@
 -BrowserSigninDetectorServiceTest.LateObservation
 -CreateChooserTitleTest.ExtensionsFrameTree
 -DIPSDatabaseHistogramTest.*
+-DIPSGetSitesToClearTest.*
 -DIPSServiceHistogramTest.*
 -DIPSServiceStateRemovalTest.*
 -GetSitesToClearTest.*
@@ -270,7 +273,6 @@
 -ContentAnalysisDelegateResultHandlingTest.Test/8
 -ManagementUIHandlerTests.ThreatReportingInfo
 
-
 # These fail because we disable safe browsing enhanced protection.
 -All/ClientSideDetectionServiceTest.GetNumReportTestESB/1
 -All/ClientSideDetectionServiceTest.GetNumReportTestESB/3
@@ -291,6 +293,21 @@
 -DownloadDisplayControllerTest.InitialState_NewLastDownload
 -DownloadDisplayControllerTest.InitialState_OldLastDownload
 -DownloadDisplayControllerTest.UpdateToolbarButtonState_OnCompleteItemCreated
+
+# This test fails because we override the support article URL to point to our
+# own support article
+-WebHidExtensionFeatureEnabledBrowserTest.HidConnectionTracker
+
+# This test crashes because AutocompleteClassifier called when TabStripModel
+# was not initialized in test.
+-RenderViewContextMenuPrefsTest.ShowAllPasswordsIncognito
+
+# This test fails because we changed the behavior of the fuzzy finder to match
+# the empty string.
+-CommanderFuzzyFinder.EmptyStringDoesNotMatch
+
+# We changed the default value of media router to disabled, so the tests fail.
+-MediaDialogViewWithRemotePlaybackTest.*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
@@ -700,14 +717,3 @@
 -WebUsbServiceImplTest.*
 -WellKnownChangePasswordNavigationThrottleTest.*
 -ZipFileInstallerTest.*
-
-# This test crashes because AutocompleteClassifier called when TabStripModel
-# was not initialized in test.
--RenderViewContextMenuPrefsTest.ShowAllPasswordsIncognito
-
-# This test fails because we changed the behavior of the fuzzy finder to match
-# the empty string.
--CommanderFuzzyFinder.EmptyStringDoesNotMatch
-
-# We changed the default value of media router to disabled, so the tests fail.
--MediaDialogViewWithRemotePlaybackTest.*
