@@ -50,8 +50,8 @@ export const ChartBalance = styled.span`
   font-family: Poppins;
   font-style: normal;
   font-weight: 600;
-  font-size: 11px;
-  line-height: 16px;
+  font-size: 14px;
+  line-height: 24px;
   color: ${leo.color.text.primary};
 `
 
