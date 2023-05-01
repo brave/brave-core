@@ -69,7 +69,7 @@ struct AccountActivityView: View {
                 image: AssetIconView(
                   token: asset.token,
                   network: asset.network,
-                  shouldShowNativeTokenIcon: true
+                  shouldShowNetworkIcon: true
                 ),
                 title: asset.token.name,
                 symbol: asset.token.symbol,
@@ -91,7 +91,7 @@ struct AccountActivityView: View {
                   token: nftAsset.token,
                   network: nftAsset.network,
                   url: nftAsset.nftMetadata?.imageURL,
-                  shouldShowNativeTokenIcon: true
+                  shouldShowNetworkIcon: true
                 ),
                 title: nftAsset.token.nftTokenTitle,
                 symbol: nftAsset.token.symbol,

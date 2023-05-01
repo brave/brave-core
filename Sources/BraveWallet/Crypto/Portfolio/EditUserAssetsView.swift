@@ -39,13 +39,13 @@ private struct EditTokenView: View {
             token: assetStore.token,
             network: assetStore.network,
             url: nftMetadata?.imageURL,
-            shouldShowNativeTokenIcon: true
+            shouldShowNetworkIcon: true
           )
         } else {
           AssetIconView(
             token: assetStore.token,
             network: assetStore.network,
-            shouldShowNativeTokenIcon: true
+            shouldShowNetworkIcon: true
           )
         }
         VStack(alignment: .leading) {

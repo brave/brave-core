@@ -136,7 +136,7 @@ struct PortfolioView: View {
                 image: AssetIconView(
                   token: asset.token,
                   network: asset.network,
-                  shouldShowNativeTokenIcon: true
+                  shouldShowNetworkIcon: true
                 ),
                 title: asset.token.name,
                 symbol: asset.token.symbol,

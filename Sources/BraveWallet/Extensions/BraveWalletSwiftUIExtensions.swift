@@ -20,6 +20,19 @@ extension BraveWallet.TransactionInfo: Identifiable {
   // Already has `id` property
 }
 
+public enum AssetImageName: String {
+  case ethereum = "eth-asset-icon"
+  case solana = "sol-asset-icon"
+  case filecoin = "filecoin-asset-icon"
+  case polygon = "matic"
+  case binance = "bnb-asset-icon"
+  case celo = "celo"
+  case avalanche = "avax"
+  case fantom = "fantom"
+  case aurora = "aurora"
+  case optimism = "optimism"
+}
+
 extension BraveWallet.NetworkInfo: Identifiable {
   public var id: String {
     chainId
@@ -33,7 +46,7 @@ extension BraveWallet.NetworkInfo: Identifiable {
     .init(
       contractAddress: "",
       name: symbolName,
-      logo: nativeTokenLogo ?? "",
+      logo: nativeTokenLogoName ?? "",
       isErc20: false,
       isErc721: false,
       isErc1155: false,
@@ -48,31 +61,65 @@ extension BraveWallet.NetworkInfo: Identifiable {
     )
   }
   
-  public var nativeTokenLogo: String? {
-    if symbol.caseInsensitiveCompare("ETH") == .orderedSame {
-      return "eth-asset-icon"
-    } else if symbol.caseInsensitiveCompare("SOL") == .orderedSame {
-      return "sol-asset-icon"
-    } else if symbol.caseInsensitiveCompare("FIL") == .orderedSame {
-      return "filecoin-asset-icon"
-    } else if chainId.caseInsensitiveCompare(BraveWallet.PolygonMainnetChainId) == .orderedSame {
-      return "matic"
-    } else if chainId.caseInsensitiveCompare(BraveWallet.BinanceSmartChainMainnetChainId) == .orderedSame {
-      return "bnb-asset-icon"
-    } else if chainId.caseInsensitiveCompare(BraveWallet.CeloMainnetChainId) == .orderedSame {
-      return "celo"
-    } else if chainId.caseInsensitiveCompare(BraveWallet.AvalancheMainnetChainId) == .orderedSame {
-      return "avax"
-    } else if chainId.caseInsensitiveCompare(BraveWallet.FantomMainnetChainId) == .orderedSame {
-      return "fantom"
+  public var nativeTokenLogoName: String? {
+    if let logoBySymbol = assetIconNameBySymbol(symbol) {
+      return logoBySymbol
+    } else if let logoByChainId = assetIconNameByChainId(chainId) {
+      return logoByChainId
     } else {
       return iconUrls.first
     }
   }
   
   public var nativeTokenLogoImage: UIImage? {
-    guard let logo = nativeTokenLogo else { return nil }
+    guard let logo = nativeTokenLogoName else { return nil }
     return UIImage(named: logo, in: .module, with: nil)
+  }
+  
+  public var networkLogoName: String? {
+    return assetIconNameByChainId(chainId) ?? iconUrls.first
+  }
+  
+  public var networkLogoImage: UIImage? {
+    guard let logo = networkLogoName else { return nil }
+    return UIImage(named: logo, in: .module, with: nil)
+  }
+  
+  private func assetIconNameByChainId(_ chainId: String) -> String? {
+    if chainId.caseInsensitiveCompare(BraveWallet.MainnetChainId) == .orderedSame || chainId.caseInsensitiveCompare(BraveWallet.GoerliChainId) == .orderedSame || chainId.caseInsensitiveCompare(BraveWallet.SepoliaChainId) == .orderedSame {
+      return AssetImageName.ethereum.rawValue
+    } else if chainId.caseInsensitiveCompare(BraveWallet.SolanaMainnet) == .orderedSame || chainId.caseInsensitiveCompare(BraveWallet.SolanaDevnet) == .orderedSame || chainId.caseInsensitiveCompare(BraveWallet.SolanaTestnet) == .orderedSame {
+      return AssetImageName.solana.rawValue
+    } else if chainId.caseInsensitiveCompare(BraveWallet.FilecoinMainnet) == .orderedSame || chainId.caseInsensitiveCompare(BraveWallet.FilecoinTestnet) == .orderedSame || chainId.caseInsensitiveCompare(BraveWallet.FilecoinEthereumMainnetChainId) == .orderedSame || chainId.caseInsensitiveCompare(BraveWallet.FilecoinEthereumTestnetChainId) == .orderedSame {
+      return AssetImageName.filecoin.rawValue
+    } else if chainId.caseInsensitiveCompare(BraveWallet.PolygonMainnetChainId) == .orderedSame {
+      return AssetImageName.polygon.rawValue
+    } else if chainId.caseInsensitiveCompare(BraveWallet.BinanceSmartChainMainnetChainId) == .orderedSame {
+      return AssetImageName.binance.rawValue
+    } else if chainId.caseInsensitiveCompare(BraveWallet.CeloMainnetChainId) == .orderedSame {
+      return AssetImageName.celo.rawValue
+    } else if chainId.caseInsensitiveCompare(BraveWallet.AvalancheMainnetChainId) == .orderedSame {
+      return AssetImageName.avalanche.rawValue
+    } else if chainId.caseInsensitiveCompare(BraveWallet.FantomMainnetChainId) == .orderedSame {
+      return AssetImageName.fantom.rawValue
+    } else if chainId.caseInsensitiveCompare(BraveWallet.AuroraMainnetChainId) == .orderedSame {
+      return AssetImageName.aurora.rawValue
+    } else if chainId.caseInsensitiveCompare(BraveWallet.OptimismMainnetChainId) == .orderedSame {
+      return AssetImageName.optimism.rawValue
+    } else {
+      return nil
+    }
+  }
+  
+  private func assetIconNameBySymbol(_ symbol: String) -> String? {
+    if symbol.caseInsensitiveCompare("ETH") == .orderedSame {
+      return AssetImageName.ethereum.rawValue
+    } else if symbol.caseInsensitiveCompare("SOL") == .orderedSame {
+      return AssetImageName.solana.rawValue
+    } else if symbol.caseInsensitiveCompare("FIL") == .orderedSame {
+      return AssetImageName.filecoin.rawValue
+    }
+    return nil
   }
 }
 

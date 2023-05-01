@@ -114,13 +114,13 @@ struct AssetSearchView: View {
                         token: assetViewModel.token,
                         network: assetViewModel.network,
                         url: allNFTMetadata[assetViewModel.token.id]?.imageURL,
-                        shouldShowNativeTokenIcon: true
+                        shouldShowNetworkIcon: true
                       )
                     } else {
                       AssetIconView(
                         token: assetViewModel.token,
                         network: assetViewModel.network,
-                        shouldShowNativeTokenIcon: true
+                        shouldShowNetworkIcon: true
                       )
                     }
                   }
