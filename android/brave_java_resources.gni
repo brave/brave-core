@@ -996,7 +996,6 @@ brave_java_resources = [
   "java/res/xml/quick_action_search_and_bookmark_widget_info.xml",
   "java/res/xml/sns_preferences.xml",
   "java/res/xml/unstoppable_domains_preferences.xml",
-  "java/res/xml/use_custom_tabs_brave_preference.xml",
 ]
 
 brave_base_module_resources =

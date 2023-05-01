@@ -1299,8 +1299,11 @@ Are you sure you want to do this?
       <message name="IDS_YOU_CAN_SUPPORT_CREATORS" desc="Text description for banner on NTP.">
         You can support web creators with tokens.\nEarn tokens by viewing privacy-respecting ads.
       </message>
-      <message name="IDS_PREFS_USE_CUSTOM_TABS" desc="Title for closing all tabs closes brave in controls section">
-        Open tabs in Custom Tabs
+      <message name="IDS_PREFS_USE_CUSTOM_TABS_TITLE" desc="Title for use custom tabs section">
+        Open external links in Brave
+      </message>
+      <message name="IDS_PREFS_USE_CUSTOM_TABS_TEXT" desc="Text for use custom tabs section">
+        Opens links from other apps in a Brave webview. Note: Brave must be set as your default browser.
       </message>
       <message name="IDS_BRAVE_UI_WALLET_BUTTON_LOGGED_OUT" desc="Brave rewards panel logged out state text">
         Logged out
@@ -2976,8 +2979,11 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_BUTTON" desc="Change network panel button">
       Switch network
     </message>
-    <message name="IDS_ENABLE_TAB_GROUPS_TITLE" desc="Menu item for grouping Tabs automatically.">
-      Enable Tab Group auto creation
+    <message name="IDS_ENABLE_TAB_GROUPS_TITLE" desc="Menu item for grouping Tabs automatically title.">
+      Only open links in current tab group
+    </message>
+    <message name="IDS_ENABLE_TAB_GROUPS_TEXT" desc="Menu item for grouping Tabs automatically text.">
+      Automatically opens all links in the current tab group
     </message>
     <message name="IDS_DAPPS_MENU_LOCK_WALLET" desc="Menu item Lock Wallet on DApps Panel">
       Lock Wallet

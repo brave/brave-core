@@ -124,12 +124,19 @@
         android:order="28"
         android:icon="@drawable/ic_rate"
         android:title="@string/prefs_rate_brave"/>
-    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="use_custom_tabs"
+        android:order="20"
+        android:icon="@drawable/ic_custom_tabs"
+        android:title="@string/prefs_use_custom_tabs_title"
+        android:summary="@string/prefs_use_custom_tabs_text"/>
+    <!-- <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.chrome.browser.settings.BraveCustomTabsPreference"
         android:key="use_custom_tabs"
         android:order="20"
         android:icon="@drawable/ic_custom_tabs"
-        android:title="@string/prefs_use_custom_tabs"/>
+        android:title="@string/prefs_use_custom_tabs_title"
+        android:summary="@string/prefs_use_custom_tabs_text"/> -->
     <Preference
         android:fragment="org.chromium.chrome.browser.language.settings.BraveLanguageSettings"
         android:key="brave_languages"
