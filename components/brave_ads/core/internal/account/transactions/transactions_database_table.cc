@@ -247,6 +247,20 @@ std::string Transactions::GetTableName() const {
   return kTableName;
 }
 
+void Transactions::Create(mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      "CREATE TABLE transactions (id TEXT NOT NULL PRIMARY KEY "
+      "UNIQUE ON CONFLICT REPLACE, created_at TIMESTAMP NOT NULL, "
+      "creative_instance_id TEXT, value DOUBLE NOT NULL, segment TEXT, ad_type "
+      "TEXT NOT NULL, confirmation_type TEXT NOT NULL, reconciled_at "
+      "TIMESTAMP);";
+  transaction->commands.push_back(std::move(command));
+}
+
 void Transactions::Migrate(mojom::DBTransactionInfo* transaction,
                            const int to_version) {
   DCHECK(transaction);

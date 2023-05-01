@@ -33,6 +33,7 @@ struct AdEventInfo final {
   std::string creative_set_id;
   std::string creative_instance_id;
   std::string advertiser_id;
+  std::string segment;
   base::Time created_at;
 };
 

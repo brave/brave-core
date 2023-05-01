@@ -254,6 +254,43 @@ void MigrateToV26(mojom::DBTransactionInfo* transaction) {
   RenameTable(transaction, "conversion_queue_temp", "conversion_queue");
 }
 
+void MigrateToV28(mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+
+  // Create a temporary table with renamed |timestamp| to |process_at| column
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      "CREATE TABLE conversion_queue_temp (id INTEGER PRIMARY KEY "
+      "AUTOINCREMENT NOT NULL, ad_type TEXT, campaign_id TEXT, creative_set_id "
+      "TEXT NOT NULL, creative_instance_id TEXT NOT NULL, advertiser_id TEXT, "
+      "segment TEXT, conversion_id TEXT, advertiser_public_key TEXT, "
+      "process_at TIMESTAMP NOT NULL, was_processed INTEGER DEFAULT 0);";
+  transaction->commands.push_back(std::move(command));
+
+  // Copy columns to temporary table
+  const std::vector<std::string> from_columns = {
+      "ad_type",         "campaign_id",
+      "creative_set_id", "creative_instance_id",
+      "advertiser_id",   "segment",
+      "conversion_id",   "advertiser_public_key",
+      "timestamp",       "was_processed"};
+
+  const std::vector<std::string> to_columns = {
+      "ad_type",         "campaign_id",
+      "creative_set_id", "creative_instance_id",
+      "advertiser_id",   "segment",
+      "conversion_id",   "advertiser_public_key",
+      "process_at",      "was_processed"};
+
+  CopyTableColumns(transaction, "conversion_queue", "conversion_queue_temp",
+                   from_columns, to_columns,
+                   /*should_drop*/ true);
+
+  // Rename temporary table
+  RenameTable(transaction, "conversion_queue_temp", "conversion_queue");
+}
+
 }  // namespace
 
 ConversionQueue::ConversionQueue() : batch_size_(kDefaultBatchSize) {}
@@ -316,8 +353,8 @@ void ConversionQueue::GetAll(GetConversionQueueCallback callback) const {
   command->sql = base::ReplaceStringPlaceholders(
       "SELECT cq.ad_type, cq.campaign_id, cq.creative_set_id, "
       "cq.creative_instance_id, cq.advertiser_id, cq.segment, "
-      "cq.conversion_id, cq.advertiser_public_key, cq.timestamp, "
-      "cq.was_processed FROM $1 AS cq ORDER BY timestamp ASC;",
+      "cq.conversion_id, cq.advertiser_public_key, cq.process_at, "
+      "cq.was_processed FROM $1 AS cq ORDER BY process_at ASC;",
       {GetTableName()}, nullptr);
   BindRecords(&*command);
   transaction->commands.push_back(std::move(command));
@@ -335,9 +372,9 @@ void ConversionQueue::GetUnprocessed(
   command->sql = base::ReplaceStringPlaceholders(
       "SELECT cq.ad_type, cq.campaign_id, cq.creative_set_id, "
       "cq.creative_instance_id, cq.advertiser_id, cq.segment, "
-      "cq.conversion_id, cq.advertiser_public_key, cq.timestamp, "
+      "cq.conversion_id, cq.advertiser_public_key, cq.process_at, "
       "cq.was_processed FROM $1 AS cq WHERE was_processed == 0 ORDER BY "
-      "timestamp ASC;",
+      "process_at ASC;",
       {GetTableName()}, nullptr);
   BindRecords(&*command);
   transaction->commands.push_back(std::move(command));
@@ -361,9 +398,9 @@ void ConversionQueue::GetForCreativeInstanceId(
   command->sql = base::ReplaceStringPlaceholders(
       "SELECT cq.ad_type, cq.campaign_id, cq.creative_set_id, "
       "cq.creative_instance_id, cq.advertiser_id, cq.segment, "
-      "cq.conversion_id, cq.advertiser_public_key, cq.timestamp, "
+      "cq.conversion_id, cq.advertiser_public_key, cq.process_at, "
       "cq.was_processed FROM $1 AS cq WHERE cq.creative_instance_id = '$2' "
-      "ORDER BY timestamp ASC;",
+      "ORDER BY process_at ASC;",
       {GetTableName(), creative_instance_id}, nullptr);
   BindRecords(&*command);
   transaction->commands.push_back(std::move(command));
@@ -376,6 +413,20 @@ void ConversionQueue::GetForCreativeInstanceId(
 
 std::string ConversionQueue::GetTableName() const {
   return kTableName;
+}
+
+void ConversionQueue::Create(mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      "CREATE TABLE conversion_queue (id INTEGER PRIMARY KEY AUTOINCREMENT NOT "
+      "NULL, ad_type TEXT, campaign_id TEXT, creative_set_id TEXT NOT NULL, "
+      "creative_instance_id TEXT NOT NULL, advertiser_id TEXT, segment TEXT, "
+      "conversion_id TEXT, advertiser_public_key TEXT, process_at TIMESTAMP "
+      "NOT NULL, was_processed INTEGER DEFAULT 0);";
+  transaction->commands.push_back(std::move(command));
 }
 
 void ConversionQueue::Migrate(mojom::DBTransactionInfo* transaction,
@@ -405,6 +456,11 @@ void ConversionQueue::Migrate(mojom::DBTransactionInfo* transaction,
 
     case 26: {
       MigrateToV26(transaction);
+      break;
+    }
+
+    case 28: {
+      MigrateToV28(transaction);
       break;
     }
 
@@ -442,7 +498,7 @@ std::string ConversionQueue::BuildInsertOrUpdateSql(
   return base::ReplaceStringPlaceholders(
       "INSERT OR REPLACE INTO $1 (ad_type, campaign_id, creative_set_id, "
       "creative_instance_id, advertiser_id, segment, conversion_id, "
-      "advertiser_public_key, timestamp, was_processed) VALUES $2;",
+      "advertiser_public_key, process_at, was_processed) VALUES $2;",
       {GetTableName(), BuildBindingParameterPlaceholders(
                            /*parameters_count*/ 10, binded_parameters_count)},
       nullptr);

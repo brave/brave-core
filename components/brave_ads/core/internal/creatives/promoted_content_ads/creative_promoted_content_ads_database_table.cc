@@ -311,10 +311,10 @@ void CreativePromotedContentAds::GetForCreativeInstanceId(
       "cam.daily_cap, cam.advertiser_id, cam.priority, ca.conversion, "
       "ca.per_day, ca.per_week, ca.per_month, ca.total_max, ca.value, "
       "s.segment, gt.geo_target, ca.target_url, cpca.title, cpca.description, "
-      "cam.ptr, dp.dow, dp.start_minute, dp.end_minute FROM $1 AS cpca INNER "
-      "JOIN campaigns AS cam ON cam.campaign_id = cpca.campaign_id INNER JOIN "
-      "segments AS s ON s.creative_set_id = cpca.creative_set_id INNER JOIN "
-      "creative_ads AS ca ON ca.creative_instance_id = "
+      "cam.ptr, dp.days_of_week, dp.start_minute, dp.end_minute FROM $1 AS "
+      "cpca INNER JOIN campaigns AS cam ON cam.campaign_id = cpca.campaign_id "
+      "INNER JOIN segments AS s ON s.creative_set_id = cpca.creative_set_id "
+      "INNER JOIN creative_ads AS ca ON ca.creative_instance_id = "
       "cpca.creative_instance_id INNER JOIN geo_targets AS gt ON "
       "gt.campaign_id = cpca.campaign_id INNER JOIN dayparts AS dp ON "
       "dp.campaign_id = cpca.campaign_id WHERE cpca.creative_instance_id = "
@@ -347,10 +347,10 @@ void CreativePromotedContentAds::GetForSegments(
       "cam.daily_cap, cam.advertiser_id, cam.priority, ca.conversion, "
       "ca.per_day, ca.per_week, ca.per_month, ca.total_max, ca.value, "
       "s.segment, gt.geo_target, ca.target_url, cpca.title, cpca.description, "
-      "cam.ptr, dp.dow, dp.start_minute, dp.end_minute FROM $1 AS cpca INNER "
-      "JOIN campaigns AS cam ON cam.campaign_id = cpca.campaign_id INNER JOIN "
-      "segments AS s ON s.creative_set_id = cpca.creative_set_id INNER JOIN "
-      "creative_ads AS ca ON ca.creative_instance_id = "
+      "cam.ptr, dp.days_of_week, dp.start_minute, dp.end_minute FROM $1 AS "
+      "cpca INNER JOIN campaigns AS cam ON cam.campaign_id = cpca.campaign_id "
+      "INNER JOIN segments AS s ON s.creative_set_id = cpca.creative_set_id "
+      "INNER JOIN creative_ads AS ca ON ca.creative_instance_id = "
       "cpca.creative_instance_id INNER JOIN geo_targets AS gt ON "
       "gt.campaign_id = cpca.campaign_id INNER JOIN dayparts AS dp ON "
       "dp.campaign_id = cpca.campaign_id WHERE s.segment IN $2 AND $3 BETWEEN "
@@ -385,10 +385,10 @@ void CreativePromotedContentAds::GetAll(
       "cam.daily_cap, cam.advertiser_id, cam.priority, ca.conversion, "
       "ca.per_day, ca.per_week, ca.per_month, ca.total_max, ca.value, "
       "s.segment, gt.geo_target, ca.target_url, cpca.title, cpca.description, "
-      "cam.ptr, dp.dow, dp.start_minute, dp.end_minute FROM $1 AS cpca INNER "
-      "JOIN campaigns AS cam ON cam.campaign_id = cpca.campaign_id INNER JOIN "
-      "segments AS s ON s.creative_set_id = cpca.creative_set_id INNER JOIN "
-      "creative_ads AS ca ON ca.creative_instance_id = "
+      "cam.ptr, dp.days_of_week, dp.start_minute, dp.end_minute FROM $1 AS "
+      "cpca INNER JOIN campaigns AS cam ON cam.campaign_id = cpca.campaign_id "
+      "INNER JOIN segments AS s ON s.creative_set_id = cpca.creative_set_id "
+      "INNER JOIN creative_ads AS ca ON ca.creative_instance_id = "
       "cpca.creative_instance_id INNER JOIN geo_targets AS gt ON "
       "gt.campaign_id = cpca.campaign_id INNER JOIN dayparts AS dp ON "
       "dp.campaign_id = cpca.campaign_id WHERE $2 BETWEEN "
@@ -403,6 +403,19 @@ void CreativePromotedContentAds::GetAll(
 
 std::string CreativePromotedContentAds::GetTableName() const {
   return kTableName;
+}
+
+void CreativePromotedContentAds::Create(mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      "CREATE TABLE creative_promoted_content_ads "
+      "(creative_instance_id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT "
+      "REPLACE, creative_set_id TEXT NOT NULL, campaign_id TEXT NOT NULL, "
+      "title TEXT NOT NULL, description TEXT NOT NULL);";
+  transaction->commands.push_back(std::move(command));
 }
 
 void CreativePromotedContentAds::Migrate(mojom::DBTransactionInfo* transaction,

@@ -389,6 +389,7 @@ void Conversions::AddItemToQueue(
   conversion_queue_item.creative_set_id = ad_event.creative_set_id;
   conversion_queue_item.creative_instance_id = ad_event.creative_instance_id;
   conversion_queue_item.advertiser_id = ad_event.advertiser_id;
+  conversion_queue_item.segment = ad_event.segment;
   conversion_queue_item.conversion_id = verifiable_conversion.id;
   conversion_queue_item.advertiser_public_key =
       verifiable_conversion.public_key;

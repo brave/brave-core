@@ -163,6 +163,19 @@ std::string TextEmbeddingHtmlEvents::GetTableName() const {
   return kTableName;
 }
 
+void TextEmbeddingHtmlEvents::Create(mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      "CREATE TABLE text_embedding_html_events (id "
+      "INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, created_at "
+      "TIMESTAMP NOT NULL, locale TEXT NOT NULL, hashed_text_base64 "
+      "TEXT NOT NULL UNIQUE, embedding TEXT NOT NULL);";
+  transaction->commands.push_back(std::move(command));
+}
+
 void TextEmbeddingHtmlEvents::Migrate(mojom::DBTransactionInfo* transaction,
                                       const int to_version) {
   DCHECK(transaction);

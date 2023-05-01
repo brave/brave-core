@@ -335,7 +335,7 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
       "cam.daily_cap, cam.advertiser_id, cam.priority, ca.conversion, "
       "ca.per_day, ca.per_week, ca.per_month, ca.total_max, ca.value, "
       "s.segment, gt.geo_target, ca.target_url, cntpa.company_name, "
-      "cntpa.image_url, cntpa.alt, cam.ptr, dp.dow, dp.start_minute, "
+      "cntpa.image_url, cntpa.alt, cam.ptr, dp.days_of_week, dp.start_minute, "
       "dp.end_minute, wp.image_url, wp.focal_point_x, wp.focal_point_y FROM $1 "
       "AS cntpa INNER JOIN campaigns AS cam ON cam.campaign_id = "
       "cntpa.campaign_id INNER JOIN segments AS s ON s.creative_set_id = "
@@ -373,7 +373,7 @@ void CreativeNewTabPageAds::GetForSegments(
       "cam.daily_cap, cam.advertiser_id, cam.priority, ca.conversion, "
       "ca.per_day, ca.per_week, ca.per_month, ca.total_max, ca.value, "
       "s.segment, gt.geo_target, ca.target_url, cntpa.company_name, "
-      "cntpa.image_url, cntpa.alt, cam.ptr, dp.dow, dp.start_minute, "
+      "cntpa.image_url, cntpa.alt, cam.ptr, dp.days_of_week, dp.start_minute, "
       "dp.end_minute, wp.image_url, wp.focal_point_x, wp.focal_point_y FROM $1 "
       "AS cntpa INNER JOIN campaigns AS cam ON cam.campaign_id = "
       "cntpa.campaign_id INNER JOIN segments AS s ON s.creative_set_id = "
@@ -414,7 +414,7 @@ void CreativeNewTabPageAds::GetAll(
       "cam.daily_cap, cam.advertiser_id, cam.priority, ca.conversion, "
       "ca.per_day, ca.per_week, ca.per_month, ca.total_max, ca.value, "
       "s.segment, gt.geo_target, ca.target_url, cntpa.company_name, "
-      "cntpa.image_url, cntpa.alt, cam.ptr, dp.dow, dp.start_minute, "
+      "cntpa.image_url, cntpa.alt, cam.ptr, dp.days_of_week, dp.start_minute, "
       "dp.end_minute, wp.image_url, wp.focal_point_x, wp.focal_point_y FROM $1 "
       "AS cntpa INNER JOIN campaigns AS cam ON cam.campaign_id = "
       "cntpa.campaign_id INNER JOIN segments AS s ON s.creative_set_id = "
@@ -435,6 +435,20 @@ void CreativeNewTabPageAds::GetAll(
 
 std::string CreativeNewTabPageAds::GetTableName() const {
   return kTableName;
+}
+
+void CreativeNewTabPageAds::Create(mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      "CREATE TABLE creative_new_tab_page_ads "
+      "(creative_instance_id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT "
+      "REPLACE, creative_set_id TEXT NOT NULL, campaign_id TEXT NOT NULL, "
+      "company_name TEXT NOT NULL, image_url TEXT NOT NULL, alt TEXT NOT "
+      "NULL);";
+  transaction->commands.push_back(std::move(command));
 }
 
 void CreativeNewTabPageAds::Migrate(mojom::DBTransactionInfo* transaction,

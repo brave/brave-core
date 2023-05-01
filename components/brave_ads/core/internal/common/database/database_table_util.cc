@@ -18,8 +18,7 @@ namespace {
 std::string BuildInsertSql(const std::string& from,
                            const std::string& to,
                            const std::vector<std::string>& from_columns,
-                           const std::vector<std::string>& to_columns,
-                           const std::string& group_by) {
+                           const std::vector<std::string>& to_columns) {
   DCHECK(!from.empty());
   DCHECK(!to.empty());
   DCHECK_NE(from, to);
@@ -28,9 +27,9 @@ std::string BuildInsertSql(const std::string& from,
   DCHECK_EQ(from_columns.size(), to_columns.size());
 
   return base::ReplaceStringPlaceholders(
-      "INSERT INTO $1 ($2) SELECT $3 FROM $4 $5;",
+      "INSERT INTO $1 ($2) SELECT $3 FROM $4;",
       {to, base::JoinString(to_columns, ", "),
-       base::JoinString(from_columns, ", "), from, group_by},
+       base::JoinString(from_columns, ", "), from},
       nullptr);
 }
 
@@ -80,8 +79,7 @@ void CopyTableColumns(mojom::DBTransactionInfo* transaction,
                       const std::string& to,
                       const std::vector<std::string>& from_columns,
                       const std::vector<std::string>& to_columns,
-                      const bool should_drop,
-                      const std::string& group_by) {
+                      const bool should_drop) {
   DCHECK(transaction);
   DCHECK(!from.empty());
   DCHECK(!to.empty());
@@ -92,7 +90,7 @@ void CopyTableColumns(mojom::DBTransactionInfo* transaction,
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->sql = BuildInsertSql(from, to, from_columns, to_columns, group_by);
+  command->sql = BuildInsertSql(from, to, from_columns, to_columns);
   transaction->commands.push_back(std::move(command));
 
   if (should_drop) {
@@ -104,16 +102,8 @@ void CopyTableColumns(mojom::DBTransactionInfo* transaction,
                       const std::string& from,
                       const std::string& to,
                       const std::vector<std::string>& columns,
-                      const bool should_drop,
-                      const std::string& group_by) {
-  DCHECK(transaction);
-  DCHECK(!from.empty());
-  DCHECK(!to.empty());
-  DCHECK_NE(from, to);
-  DCHECK(!columns.empty());
-
-  return CopyTableColumns(transaction, from, to, columns, columns, should_drop,
-                          group_by);
+                      const bool should_drop) {
+  return CopyTableColumns(transaction, from, to, columns, columns, should_drop);
 }
 
 void RenameTable(mojom::DBTransactionInfo* transaction,

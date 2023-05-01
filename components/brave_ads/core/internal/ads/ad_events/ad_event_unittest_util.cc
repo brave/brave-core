@@ -39,6 +39,7 @@ AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
   ad_event.creative_set_id = creative_ad.creative_set_id;
   ad_event.creative_instance_id = creative_ad.creative_instance_id;
   ad_event.advertiser_id = creative_ad.advertiser_id;
+  ad_event.segment = creative_ad.segment;
   ad_event.created_at = created_at;
 
   return ad_event;
@@ -62,6 +63,7 @@ AdEventInfo BuildAdEvent(const AdInfo& ad,
   ad_event.creative_set_id = ad.creative_set_id;
   ad_event.creative_instance_id = ad.creative_instance_id;
   ad_event.advertiser_id = ad.advertiser_id;
+  ad_event.segment = ad.segment;
   ad_event.created_at = created_at;
 
   return ad_event;
@@ -85,6 +87,7 @@ AdEventInfo BuildAdEvent(const std::string& placement_id,
   ad_event.creative_set_id = creative_set_id;
   ad_event.creative_instance_id = kCreativeInstanceId;
   ad_event.advertiser_id = kAdvertiserId;
+  ad_event.segment = kSegment;
   ad_event.created_at = Now();
 
   return ad_event;

@@ -93,6 +93,22 @@ std::string CreativeNewTabPageAdWallpapers::GetTableName() const {
   return kTableName;
 }
 
+void CreativeNewTabPageAdWallpapers::Create(
+    mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      "CREATE TABLE creative_new_tab_page_ad_wallpapers "
+      "(creative_instance_id TEXT NOT NULL, image_url TEXT NOT NULL, "
+      "focal_point_x INT NOT NULL, focal_point_y INT NOT NULL, PRIMARY KEY "
+      "(creative_instance_id, image_url, focal_point_x, focal_point_y), "
+      "UNIQUE(creative_instance_id, image_url, focal_point_x, focal_point_y) "
+      "ON CONFLICT REPLACE);";
+  transaction->commands.push_back(std::move(command));
+}
+
 void CreativeNewTabPageAdWallpapers::Migrate(
     mojom::DBTransactionInfo* transaction,
     const int to_version) {

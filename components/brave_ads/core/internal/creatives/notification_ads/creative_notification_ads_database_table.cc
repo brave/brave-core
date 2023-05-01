@@ -293,15 +293,15 @@ void CreativeNotificationAds::GetForSegments(
       "cam.advertiser_id, cam.priority, ca.conversion, ca.per_day, "
       "ca.per_week, ca.per_month, ca.total_max, ca.value, ca.split_test_group, "
       "s.segment, e.embedding, gt.geo_target, ca.target_url, can.title, "
-      "can.body, cam.ptr, dp.dow, dp.start_minute, dp.end_minute FROM $1 AS "
-      "can INNER JOIN campaigns AS cam ON cam.campaign_id = can.campaign_id "
-      "INNER JOIN segments AS s ON s.creative_set_id = can.creative_set_id "
-      "LEFT JOIN embeddings AS e ON e.creative_set_id = can.creative_set_id "
-      "INNER JOIN creative_ads AS ca ON ca.creative_instance_id = "
-      "can.creative_instance_id INNER JOIN geo_targets AS gt ON gt.campaign_id "
-      "= can.campaign_id INNER JOIN dayparts AS dp ON dp.campaign_id = "
-      "can.campaign_id WHERE s.segment IN $2 AND $3 BETWEEN "
-      "cam.start_at_timestamp AND cam.end_at_timestamp;",
+      "can.body, cam.ptr, dp.days_of_week, dp.start_minute, dp.end_minute FROM "
+      "$1 AS can INNER JOIN campaigns AS cam ON cam.campaign_id = "
+      "can.campaign_id INNER JOIN segments AS s ON s.creative_set_id = "
+      "can.creative_set_id LEFT JOIN embeddings AS e ON e.creative_set_id = "
+      "can.creative_set_id INNER JOIN creative_ads AS ca ON "
+      "ca.creative_instance_id = can.creative_instance_id INNER JOIN "
+      "geo_targets AS gt ON gt.campaign_id = can.campaign_id INNER JOIN "
+      "dayparts AS dp ON dp.campaign_id = can.campaign_id WHERE s.segment IN "
+      "$2 AND $3 BETWEEN cam.start_at_timestamp AND cam.end_at_timestamp;",
       {GetTableName(), BuildBindingParameterPlaceholder(segments.size()),
        TimeAsTimestampString(base::Time::Now())},
       nullptr);
@@ -332,15 +332,15 @@ void CreativeNotificationAds::GetAll(
       "cam.advertiser_id, cam.priority, ca.conversion, ca.per_day, "
       "ca.per_week, ca.per_month, ca.total_max, ca.value, ca.split_test_group, "
       "s.segment, e.embedding, gt.geo_target, ca.target_url, can.title, "
-      "can.body, cam.ptr, dp.dow, dp.start_minute, dp.end_minute FROM $1 AS "
-      "can INNER JOIN campaigns AS cam ON cam.campaign_id = can.campaign_id "
-      "INNER JOIN segments AS s ON s.creative_set_id = can.creative_set_id "
-      "LEFT JOIN embeddings AS e ON e.creative_set_id = can.creative_set_id "
-      "INNER JOIN creative_ads AS ca ON ca.creative_instance_id = "
-      "can.creative_instance_id INNER JOIN geo_targets AS gt ON gt.campaign_id "
-      "= can.campaign_id INNER JOIN dayparts AS dp ON dp.campaign_id = "
-      "can.campaign_id WHERE $2 BETWEEN cam.start_at_timestamp AND "
-      "cam.end_at_timestamp;",
+      "can.body, cam.ptr, dp.days_of_week, dp.start_minute, dp.end_minute FROM "
+      "$1 AS can INNER JOIN campaigns AS cam ON cam.campaign_id = "
+      "can.campaign_id INNER JOIN segments AS s ON s.creative_set_id = "
+      "can.creative_set_id LEFT JOIN embeddings AS e ON e.creative_set_id = "
+      "can.creative_set_id INNER JOIN creative_ads AS ca ON "
+      "ca.creative_instance_id = can.creative_instance_id INNER JOIN "
+      "geo_targets AS gt ON gt.campaign_id = can.campaign_id INNER JOIN "
+      "dayparts AS dp ON dp.campaign_id = can.campaign_id WHERE $2 BETWEEN "
+      "cam.start_at_timestamp AND cam.end_at_timestamp;",
       {GetTableName(), TimeAsTimestampString(base::Time::Now())}, nullptr);
   BindRecords(&*command);
   transaction->commands.push_back(std::move(command));
@@ -351,6 +351,20 @@ void CreativeNotificationAds::GetAll(
 
 std::string CreativeNotificationAds::GetTableName() const {
   return kTableName;
+}
+
+void CreativeNotificationAds::Create(mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      "CREATE TABLE creative_ad_notifications "
+      "(creative_instance_id "
+      "TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE, "
+      "creative_set_id TEXT NOT NULL, campaign_id TEXT NOT NULL, "
+      "title TEXT NOT NULL, body TEXT NOT NULL);";
+  transaction->commands.push_back(std::move(command));
 }
 
 void CreativeNotificationAds::Migrate(mojom::DBTransactionInfo* transaction,

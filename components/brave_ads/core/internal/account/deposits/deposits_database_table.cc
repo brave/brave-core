@@ -102,11 +102,9 @@ void MigrateToV24(mojom::DBTransactionInfo* transaction) {
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "CREATE TABLE IF NOT EXISTS deposits "
-      "(creative_instance_id TEXT NOT NULL, "
-      "value DOUBLE NOT NULL, "
-      "expire_at TIMESTAMP NOT NULL, "
-      "PRIMARY KEY (creative_instance_id), "
+      "CREATE TABLE IF NOT EXISTS deposits (creative_instance_id "
+      "TEXT NOT NULL, value DOUBLE NOT NULL, expire_at TIMESTAMP "
+      "NOT NULL, PRIMARY KEY (creative_instance_id), "
       "UNIQUE(creative_instance_id) ON CONFLICT REPLACE);";
   transaction->commands.push_back(std::move(command));
 }
@@ -191,6 +189,19 @@ std::string Deposits::GetTableName() const {
   return kTableName;
 }
 
+void Deposits::Create(mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      "CREATE TABLE deposits (creative_instance_id TEXT NOT NULL, "
+      "value DOUBLE NOT NULL, expire_at TIMESTAMP NOT NULL, PRIMARY "
+      "KEY (creative_instance_id), UNIQUE(creative_instance_id) ON "
+      "CONFLICT REPLACE);";
+  transaction->commands.push_back(std::move(command));
+}
+
 void Deposits::Migrate(mojom::DBTransactionInfo* transaction,
                        const int to_version) {
   DCHECK(transaction);
@@ -198,10 +209,6 @@ void Deposits::Migrate(mojom::DBTransactionInfo* transaction,
   switch (to_version) {
     case 24: {
       MigrateToV24(transaction);
-      break;
-    }
-
-    default: {
       break;
     }
   }

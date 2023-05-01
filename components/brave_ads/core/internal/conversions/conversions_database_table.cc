@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/conversions/conversions_database_table.h"
 
 #include <utility>
+#include <vector>
 
 #include "base/check.h"
 #include "base/functional/bind.h"
@@ -112,6 +113,39 @@ void MigrateToV23(mojom::DBTransactionInfo* transaction) {
   transaction->commands.push_back(std::move(command));
 }
 
+void MigrateToV28(mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+
+  // Create a temporary table with renamed |expire_at| column.
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      "CREATE TABLE creative_ad_conversions_temp (creative_set_id TEXT NOT "
+      "NULL, type TEXT NOT NULL, url_pattern TEXT NOT NULL, "
+      "advertiser_public_key TEXT, observation_window INTEGER NOT NULL, "
+      "expire_at TIMESTAMP NOT NULL, UNIQUE(creative_set_id, type) ON CONFLICT "
+      "REPLACE, PRIMARY KEY(creative_set_id, type));";
+  transaction->commands.push_back(std::move(command));
+
+  // Copy columns to temporary table.
+  const std::vector<std::string> from_columns = {
+      "creative_set_id",    "type",
+      "url_pattern",        "advertiser_public_key",
+      "observation_window", "expiry_timestamp"};
+
+  const std::vector<std::string> to_columns = {
+      "creative_set_id",    "type",     "url_pattern", "advertiser_public_key",
+      "observation_window", "expire_at"};
+
+  CopyTableColumns(transaction, "creative_ad_conversions",
+                   "creative_ad_conversions_temp", from_columns, to_columns,
+                   /*should_drop*/ true);
+
+  // Rename temporary table.
+  RenameTable(transaction, "creative_ad_conversions_temp",
+              "creative_ad_conversions");
+}
+
 }  // namespace
 
 void Conversions::Save(const ConversionList& conversions,
@@ -134,8 +168,8 @@ void Conversions::GetAll(GetConversionsCallback callback) const {
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::ReplaceStringPlaceholders(
       "SELECT ac.creative_set_id, ac.type, ac.url_pattern, "
-      "ac.advertiser_public_key, ac.observation_window, ac.expiry_timestamp "
-      "FROM $1 AS ac WHERE $2 < expiry_timestamp;",
+      "ac.advertiser_public_key, ac.observation_window, ac.expire_at FROM $1 "
+      "AS ac WHERE $2 < expire_at;",
       {GetTableName(), TimeAsTimestampString(base::Time::Now())}, nullptr);
   BindRecords(&*command);
   transaction->commands.push_back(std::move(command));
@@ -151,7 +185,7 @@ void Conversions::PurgeExpired(ResultCallback callback) const {
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql = base::ReplaceStringPlaceholders(
-      "DELETE FROM $1 WHERE $2 >= expiry_timestamp;",
+      "DELETE FROM $1 WHERE $2 >= expire_at;",
       {GetTableName(), TimeAsTimestampString(base::Time::Now())}, nullptr);
   transaction->commands.push_back(std::move(command));
 
@@ -162,6 +196,19 @@ std::string Conversions::GetTableName() const {
   return kTableName;
 }
 
+void Conversions::Create(mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      "CREATE TABLE creative_ad_conversions (creative_set_id "
+      "TEXT NOT NULL, type TEXT NOT NULL, url_pattern TEXT NOT NULL, "
+      "advertiser_public_key TEXT, observation_window INTEGER NOT NULL, "
+      "expire_at TIMESTAMP NOT NULL, UNIQUE(creative_set_id, type) ON CONFLICT "
+      "REPLACE, PRIMARY KEY(creative_set_id, type));";
+  transaction->commands.push_back(std::move(command));
+}
+
 void Conversions::Migrate(mojom::DBTransactionInfo* transaction,
                           const int to_version) {
   DCHECK(transaction);
@@ -169,6 +216,11 @@ void Conversions::Migrate(mojom::DBTransactionInfo* transaction,
   switch (to_version) {
     case 23: {
       MigrateToV23(transaction);
+      break;
+    }
+
+    case 28: {
+      MigrateToV28(transaction);
       break;
     }
 
@@ -203,7 +255,7 @@ std::string Conversions::BuildInsertOrUpdateSql(
 
   return base::ReplaceStringPlaceholders(
       "INSERT OR REPLACE INTO $1 (creative_set_id, type, url_pattern, "
-      "advertiser_public_key, observation_window, expiry_timestamp) VALUES $2;",
+      "advertiser_public_key, observation_window, expire_at) VALUES $2;",
       {GetTableName(), BuildBindingParameterPlaceholders(
                            /*parameters_count*/ 6, binded_parameters_count)},
       nullptr);

@@ -81,6 +81,18 @@ std::string Embeddings::GetTableName() const {
   return kTableName;
 }
 
+void Embeddings::Create(mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      "CREATE TABLE embeddings (creative_set_id TEXT NOT NULL, "
+      "embedding TEXT NOT NULL, PRIMARY KEY (creative_set_id), "
+      "UNIQUE(creative_set_id) ON CONFLICT REPLACE);";
+  transaction->commands.push_back(std::move(command));
+}
+
 void Embeddings::Migrate(mojom::DBTransactionInfo* transaction,
                          const int to_version) {
   DCHECK(transaction);
