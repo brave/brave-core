@@ -12,14 +12,28 @@ import { BraveWallet } from '../../../constants/types'
 import { WalletActions } from '../../actions'
 import type WalletApiProxy from '../../wallet_api_proxy'
 
+// utils
+import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
+import { deserializeTransaction } from '../../../utils/model-serialization-utils'
+
 // mocks
 import { mockWalletState } from '../../../stories/mock-data/mock-wallet-state'
 import { mockedMnemonic } from '../../../stories/mock-data/user-accounts'
-import { mockAccount, mockFilecoinMainnetNetwork, mockSolanaMainnetNetwork } from '../../constants/mocks'
+import {
+  mockAccount,
+  mockEthAccountInfo,
+  mockFilecoinAccountInfo,
+  mockFilecoinMainnetNetwork,
+  mockSolanaAccountInfo,
+  mockSolanaMainnetNetwork
+} from '../../constants/mocks'
 import { mockEthMainnet, mockNetworks } from '../../../stories/mock-data/mock-networks'
 import { mockAccountAssetOptions } from '../../../stories/mock-data/mock-asset-options'
-import { mockTransactionInfo } from '../../../stories/mock-data/mock-transaction-info'
-import { deserializeTransaction } from '../../../utils/model-serialization-utils'
+import {
+  mockFilSendTransaction,
+  mockTransactionInfo,
+  mockedErc20ApprovalTransaction
+} from '../../../stories/mock-data/mock-transaction-info'
 
 export const makeMockedStoreWithSpy = () => {
   const store = createStore(combineReducers({
@@ -47,6 +61,7 @@ export interface WalletApiDataOverrides {
   chainIdsForCoins?: Record<BraveWallet.CoinType, string>
   networks?: BraveWallet.NetworkInfo[]
   defaultBaseCurrency?: string
+  transactionInfos?: BraveWallet.TransactionInfo[]
 }
 
 export class MockedWalletApiProxy {
@@ -55,6 +70,11 @@ export class MockedWalletApiProxy {
   defaultBaseCurrency: string = 'usd'
   selectedCoin: BraveWallet.CoinType = BraveWallet.CoinType.ETH
   selectedAccountAddress: string = mockAccount.address
+  accountInfos: BraveWallet.AccountInfo[] = [
+    mockEthAccountInfo,
+    mockSolanaAccountInfo,
+    mockFilecoinAccountInfo
+  ]
 
   chainIdsForCoins: Record<BraveWallet.CoinType, string> = {
     [BraveWallet.CoinType.ETH]: BraveWallet.MAINNET_CHAIN_ID,
@@ -114,6 +134,12 @@ export class MockedWalletApiProxy {
     sources: []
   }
 
+  transactionInfos: BraveWallet.TransactionInfo[] = [
+    deserializeTransaction(mockTransactionInfo),
+    mockFilSendTransaction as BraveWallet.TransactionInfo,
+    deserializeTransaction(mockedErc20ApprovalTransaction)
+  ]
+
   constructor (overrides?: WalletApiDataOverrides | undefined) {
     this.applyOverrides(overrides)
   }
@@ -130,6 +156,7 @@ export class MockedWalletApiProxy {
     this.networks = overrides.networks ?? this.networks
     this.defaultBaseCurrency =
       overrides.defaultBaseCurrency ?? this.defaultBaseCurrency
+    this.transactionInfos = overrides.transactionInfos ?? this.transactionInfos
   }
 
   blockchainRegistry: Partial<
@@ -331,20 +358,7 @@ export class MockedWalletApiProxy {
     getWalletInfo: async () => {
       return {
         walletInfo: {
-          accountInfos: [
-            {
-              hardware: {
-                deviceId: mockAccount.deviceId || '',
-                path: '',
-                vendor: ''
-              },
-              isImported: mockAccount.accountType !== 'Primary',
-              address: mockAccount.address,
-              coin: mockAccount.coin,
-              keyringId: mockAccount.keyringId,
-              name: mockAccount.name
-            }
-          ],
+          accountInfos: this.accountInfos,
           favoriteApps: [],
           isSolanaEnabled: true,
           isFilecoinEnabled: true,
@@ -359,9 +373,31 @@ export class MockedWalletApiProxy {
   }
 
   txService: Partial<InstanceType<typeof BraveWallet.TxServiceInterface>> = {
-    getAllTransactionInfo: async (coinType, from) => {
+    getAllTransactionInfo: async (coinType, chainId, from) => {
       return {
-        transactionInfos: [deserializeTransaction(mockTransactionInfo)]
+        transactionInfos: this.transactionInfos.filter((tx) => {
+          // return all txs if filters are null
+          if (coinType === null && chainId === null && from === null) {
+            return true
+          }
+
+          if (from && coinType !== null) {
+            const txCoinType = getCoinFromTxDataUnion(tx.txDataUnion)
+
+            return (
+              // match from address + cointype
+              txCoinType === coinType &&
+              tx.fromAddress === from &&
+              // match chain id (if set)
+              (chainId !== null ? tx.chainId === chainId : true)
+            )
+          }
+
+          return (
+            // match chain id
+            chainId !== null ? tx.chainId === chainId : true
+          )
+        })
       }
     }
   }

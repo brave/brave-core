@@ -268,52 +268,45 @@ export const invalidatesUnknownErrors = () => <
 ): ['UNKNOWN_ERROR'] => ['UNKNOWN_ERROR']
 
 export const TX_CACHE_TAGS = {
-  LISTS: (
-    coin: BraveWallet.CoinType,
-    fromAddress: string | null,
+  ID: (txId: BraveWallet.TransactionInfo['id']) => ({
+    type: 'Transactions' as const,
+    id: txId
+  }),
+  IDS: (txIds: Array<BraveWallet.TransactionInfo['id']>) =>
+    txIds.map((id) => TX_CACHE_TAGS.ID(id)),
+  FOR_COIN_TYPE: (coinType: BraveWallet.CoinType) =>
+    ({
+      type: 'Transactions',
+      id: `coinType: ${coinType}`
+    } as const),
+  FOR_CHAIN_ID: (chainId: string) =>
+    ({
+      type: 'Transactions',
+      id: `chainId: ${chainId}`
+    } as const),
+  FROM_ADDRESS: (address: string) =>
+    ({
+      type: 'Transactions',
+      id: `fromAddress: ${address}`
+    } as const),
+  TXS_LIST: {
+    type: 'Transactions' as const,
+    id: `LIST`
+  },
+  LISTS: ({
+    chainId,
+    coin,
+    fromAddress
+  }: {
     chainId: string | null
-  ) =>
+    coin: BraveWallet.CoinType | null
+    fromAddress: string | null
+  }) =>
     [
-      {
-        type: 'Transactions',
-        id: `coin: ${coin}`
-      } as const,
-      ...(fromAddress
-        ? [
-            {
-              type: 'Transactions',
-              id: `fromAddress: ${fromAddress}`
-            } as const
-          ]
-        : []),
-      ...(chainId
-        ? [
-            {
-              type: 'Transactions',
-              id: `chainId: ${chainId}`
-            } as const
-          ]
-        : []),
-    ] as const,
-  ID: (
-    tx: Pick<BraveWallet.TransactionInfo, 'id'> & {
-      chainId?: string | null
-      fromAddress?: string | null
-    },
-    txCoinType: BraveWallet.CoinType | null
-  ) =>
-    [
-      {
-        type: 'Transactions',
-        id: tx.id
-      },
-      ...(txCoinType
-        ? TX_CACHE_TAGS.LISTS(
-            txCoinType,
-            tx.fromAddress || null,
-            tx.chainId || null
-          )
-        : (['Transactions'] as const))
+      TX_CACHE_TAGS.TXS_LIST,
+      ...(coin !== null ? [TX_CACHE_TAGS.FOR_COIN_TYPE(coin)] : []),
+      ...(fromAddress ? [TX_CACHE_TAGS.FROM_ADDRESS(fromAddress)] : []),
+      ...(chainId ? [TX_CACHE_TAGS.FOR_CHAIN_ID(chainId)] : [])
     ] as const
 } as const
 
