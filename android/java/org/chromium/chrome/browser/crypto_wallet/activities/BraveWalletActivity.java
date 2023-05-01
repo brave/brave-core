@@ -11,7 +11,6 @@ import static org.chromium.chrome.browser.crypto_wallet.util.Utils.RESTORE_WALLE
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.UNLOCK_WALLET_ACTION;
 
 import android.os.Build;
-import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +21,6 @@ import android.widget.ImageView;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
@@ -71,7 +69,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     private View mCryptoOnboardingLayout;
     private View cryptoOnboardingLayout;
     private ImageView mPendingTxNotification;
-    private ImageView mSwapButton;
+    private ImageView mBuySendSwapButton;
     private ViewPager cryptoWalletOnboardingViewPager;
     private CryptoFragmentPageAdapter mCryptoFragmentPageAdapter;
     private ModalDialogManager mModalDialogManager;
@@ -125,12 +123,12 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                 ContextCompat.getDrawable(this, R.drawable.ic_baseline_more_vert_24));
         setSupportActionBar(mToolbar);
 
-        mSwapButton = findViewById(R.id.swap_button);
+        mBuySendSwapButton = findViewById(R.id.buy_send_swap_button);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             // For Android 7 and above use vector images for send/swap button.
             // For Android 5 and 6 it is a bitmap specified in activity_brave_wallet.xml.
-            mSwapButton.setImageResource(R.drawable.ic_swap_icon);
-            mSwapButton.setBackgroundResource(R.drawable.ic_swap_bg);
+            mBuySendSwapButton.setImageResource(R.drawable.ic_swap_icon);
+            mBuySendSwapButton.setBackgroundResource(R.drawable.ic_swap_bg);
         }
 
         try {
@@ -140,7 +138,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
             Log.e(TAG, "triggerLayoutInflation " + e);
         }
 
-        mSwapButton.setOnClickListener(v -> {
+        mBuySendSwapButton.setOnClickListener(v -> {
             assert mJsonRpcService != null;
             LiveDataUtil.observeOnce(
                     mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork,
@@ -250,7 +248,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         mShowBiometricPrompt = true;
         mCryptoLayout.setVisibility(View.GONE);
         mPendingTxNotification.setVisibility(View.GONE);
-        mSwapButton.setVisibility(View.GONE);
+        mBuySendSwapButton.setVisibility(View.GONE);
         mCryptoOnboardingLayout.setVisibility(View.VISIBLE);
         if (type == ONBOARDING_FIRST_PAGE_ACTION) {
             SetupWalletFragment setupWalletFragment =
@@ -343,7 +341,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        if (mSwapButton != null) mSwapButton.setVisibility(View.VISIBLE);
+        if (mBuySendSwapButton != null) mBuySendSwapButton.setVisibility(View.VISIBLE);
 
         if (mKeyringService != null)
             mKeyringService.isWalletBackedUp(backed_up -> {
@@ -377,7 +375,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         mCryptoOnboardingLayout.setVisibility(View.VISIBLE);
         mCryptoLayout.setVisibility(View.GONE);
         mPendingTxNotification.setVisibility(View.GONE);
-        mSwapButton.setVisibility(View.GONE);
+        mBuySendSwapButton.setVisibility(View.GONE);
 
         List<NavigationItem> navigationItems = new ArrayList<>();
         addBackupWalletSequence(navigationItems);
