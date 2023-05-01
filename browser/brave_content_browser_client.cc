@@ -670,7 +670,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   content::RegisterWebUIControllerInterfaceBinder<
       brave_rewards::mojom::TipPanelHandlerFactory, brave_rewards::TipPanelUI>(
       map);
-  if (ai_chat::features::IsAIChatEnabled()) {
+  if (ai_chat::features::IsAIChatEnabled() &&
+      !render_frame_host->GetBrowserContext()->IsTor()) {
     content::RegisterWebUIControllerInterfaceBinder<ai_chat::mojom::PageHandler,
                                                     AIChatUI>(map);
   }
