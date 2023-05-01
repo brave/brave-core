@@ -418,7 +418,6 @@ public class BraveMainPreferencesBase
     }
 
     private void updateSummaries() {
-        updateSummary(PREF_USE_CUSTOM_TABS, BraveCustomTabsPreference.getPreferenceSummary());
         updateSummary(PREF_BRAVE_STATS, BraveStatsPreferences.getPreferenceSummary());
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK)

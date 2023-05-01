@@ -1300,7 +1300,7 @@ Are you sure you want to do this?
         You can support web creators with tokens.\nEarn tokens by viewing privacy-respecting ads.
       </message>
       <message name="IDS_PREFS_USE_CUSTOM_TABS_TITLE" desc="Title for use custom tabs section">
-        Open external links in Brave webview
+        Open external links in Brave
       </message>
       <message name="IDS_PREFS_USE_CUSTOM_TABS_TEXT" desc="Text for use custom tabs section">
         Opens links from other apps in a Brave webview. Note: Brave must be set as your default browser.
