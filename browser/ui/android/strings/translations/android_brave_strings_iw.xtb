@@ -139,6 +139,10 @@
 <translation id="7459000603787995422">סגור כרטיסיות ביציאה</translation>
 <translation id="4448697385961650078">חסום עוקבים &amp; פרסומות</translation>
 <translation id="2448893613530489637">מניעת טעינת תוכנות מעקב ופרסומות</translation>
+<translation id="1025207378813960343">ודא שהחיבורים לאתרים מאובטחים.</translation>
+<translation id="6686219838158572786">דרוש מכל החיבורים להשתמש ב-HTTPS (קפדנית)</translation>
+<translation id="4221284400051835823">שדרג ל-HTTPS במידת האפשר (ברירת מחדל)</translation>
+<translation id="4690906712010847708">אל תשדרג חיבורים ל-HTTPS (מושבת)</translation>
 <translation id="1680858055899097121">אל תשמר כרטיסיות בין הפעלות גלישה</translation>
 <translation id="7142548388914389999">אפשר ניתוח מוצרים השומר על פרטיות (P3A)</translation>
 <translation id="5254037869598726291">מידע P3A אנונימי מסייע ל-Brave להעריך את השימוש הכולל, ולוודא שאנחנו’re משפרים את התכונות הפופולריות.</translation>
@@ -151,6 +155,10 @@
 <translation id="410351446219883937">הפעלה אוטומטית</translation>
 <translation id="7445411102860286510">אתרים יוכלו להפעיל באופן אוטומטי סרטונים מושתקים (מומלץ)</translation>
 <translation id="7837721118676387834">אפשר הפעלה אוטומטית של סרטונים מושתקים באתר ספציפי.</translation>
+<translation id="4206299587103092719">כניסה ב-Google</translation>
+<translation id="9110294136812584522">אתרים יכולים לבקש להשתמש בכניסה מדור קודם של Google באמצעות קובצי Cookie של צד שלישי</translation>
+<translation id="2903783737778379345">אל תאפשר כניסה של Google מדור קודם באמצעות קובצי Cookie של צד שלישי</translation>
+<translation id="6880817299303842099">מותר להשתמש בקובצי Cookie של צד שלישי לצורך כניסה מדור קודם של Google</translation>
 <translation id="181905442828471321">הגדרות ברירת מחדל של Brave Shields</translation>
 <translation id="2675679258824361492">הגדרות פרטיות אחרות</translation>
 <translation id="8026334261755873520">ניקוי נתוני גלישה</translation>
@@ -212,7 +220,7 @@
 <translation id="5441565662498481293">את/ה שולח/ת אוטומטי טיפ אל:</translation>
 <translation id="1628742278973105368">הטיפ החודשי הראשון שלך יישלח ב-</translation>
 <translation id="1642952941091001113">יוצר זה טרם נרשם לקבלת תרומות ממשתמשי Brave. אנו נמשיך לנסות לתרום עד שהם יאמתו, או עד שיחלפו 90 יום.</translation>
-<translation id="635752162765375187">לתשומך לבך: יוצר זה אינו מוגדר כעת באפשרות לקבל טיפים משירות ארנק המשמורת שלך ב-Rewards. כל טיפ שינתן על ידך יישאר בהמתנה עד לניסיון נוסף אוטומטי למשך 90 יום.</translation>
+<translation id="8228150955416632026">אתה מחובר ל-<ph name="WALLET_PROVIDER"/>, אבל היוצר הזה מחובר ל-<ph name="SUPPORTED_WALLET_PROVIDER"/>. זה אומר שהטיפ שלך לא יכול להגיע ליוצר הזה. לעת עתה, כל טיפ שתיתן יישאר בהמתנה וינסה שוב אוטומטית למשך 90 יום.</translation>
 <translation id="1910721550319506122">ברוכים הבאים!</translation>
 <translation id="2734870894159530879">עליך להתחבר אל <ph name="WALLET_PROVIDER"/> כדי לראות את היתרה שלך</translation>
 <translation id="5830114181292529917">אתם יכולים לתמוך באתר זה על ידי שליחת טיפ. זו דרך להודות להם על יצירת תוכן נהדר.</translation>
@@ -611,6 +619,7 @@
 <translation id="4522570452068850558">פרטים</translation>
 <translation id="3995184924764722477">פרטי חשבון</translation>
 <translation id="8967036623785635603">ערוך נכסים גלויים</translation>
+<translation id="8475984867371585028">ערוך NFT גלויים</translation>
 <translation id="5050890334032852465">שמור רשימת צפייה של החשבון</translation>
 <translation id="7755766175599167100">חפש אסימונים</translation>
 <translation id="3835223348537121988">יתרה:</translation>
@@ -1048,4 +1057,78 @@
 <translation id="1776742005329298234">בתאריך <ph name="DUE_DATE"/> אנו נפסיק את התמיכה ביתרות BAT וירטואליות הקיימות. יש לחבר חשבון משמורת לפני תאריך זה כדי לאפשר לנו להעביר את היתרה שהרווחת לחשבון משמורת שלך, אחרת היתרה שלך תבוטל.</translation>
 <translation id="5089752671190341407">נותר עדיין זמן כדי לתרום את ה-vBAT שלך ליוצרים האהובים עליך</translation>
 <translation id="171158953146804144">בתאריך <ph name="DUE_DATE"/> אנו נפסיק את התמיכה ביתרות BAT וירטואליות הקיימות. לצערנו לא קיימים אפוטרופוסים זמינים באזור שלך (<ph name="REGION"/>) כדי למשוך את הרווחים שלך. עד למועד שצוין תוכל עדיין לתרום ליוצרים האהובים עליך.</translation>
+<translation id="8949422576126100041">לצפות בעמוד עם Speedreader?</translation>
+<translation id="591648995518106347">טוען באופן אוטומטי מאמרים כשירים במצב קורא</translation>
+<translation id="5062934803872044756"><ph name="SYMBOL"/>על<ph name="NETWORK"/></translation>
+<translation id="295620834661738195">רשימת השמעה Brave</translation>
+<translation id="4850886885716139402">הצג</translation>
+<translation id="7392941176393379100">נוסף ל-'<ph name="PLAYLIST_NAME"/>'</translation>
+<translation id="8289472222022674331">ניהול נתוני רשימת ההשמעה שלך</translation>
+<translation id="7650602357673790368">כברירת מחדל, רשימת השמעה תשמור אוטומטית תוכן במכשיר שלך לצורך השמעה במצב לא מקוון (גם ברשימות השמעה פרטיות וגם ברשימות משותפות). אם אינך מחובר ל-WiFi, השמירה האוטומטית תשתמש בנתונים הסלולריים שלך.\n\nכדי לשנות את ברירת המחדל הזו, השתמש בהגדרות.</translation>
+<translation id="5900576657906675258">הוסף פריט לרשימת השמעה</translation>
+<translation id="349846214503465941">אפשר רשימת השמעה</translation>
+<translation id="1309636029062006520">צור רשימות השמעה של האודיו והסרטונים המועדפים עליך, והפעל בכל זמן ובכל מקום.</translation>
+<translation id="7899390017499980820">כפתור הוסף לרשימת השמעה</translation>
+<translation id="6901152954398668317">הצג או הסתר כפתור "הוסף לרשימת השמעה" לגישה מהירה להוספה או הסרה של מדיה.</translation>
+<translation id="8404028031709373707">נגינה אוטומטית</translation>
+<translation id="597781019681241649">מאפשר הפעלה אוטומטית כאשר רשימת השמעה נפתחת.</translation>
+<translation id="2625554376218216118">התחל את ההשמעה מאיפה שהפסקתי</translation>
+<translation id="2953730196265332002">סנכרן אוטומטית כל שינוי יוצר ביצע לרשימת ההשמעה המשותפת.</translation>
+<translation id="3561815498111282415">שמירה אוטומטית למצב לא מקוון</translation>
+<translation id="1832424694374124654">שומר אוטומטית פריטי רשימת השמעה חדשים במכשיר שלך כדי שתוכל לשחק ללא חיבור לאינטרנט.</translation>
+<translation id="8103022210423023846">תכונת השמירה האוטומטית מופעלת</translation>
+<translation id="3926329432879804185">תכונת השמירה האוטומטית כבויה</translation>
+<translation id="7768812595186089508">שמירה אוטומטית רק כאשר מחובר ל-Wi-Fi</translation>
+<translation id="5939518447894949180">אפס</translation>
+<translation id="8199028711686989861">הסר את כל הסרטונים מרשימת ההשמעה, כולל אחסון במצב לא מקוון.</translation>
+<translation id="5916664084637901428">פועל</translation>
+<translation id="5860033963881614850">כבוי</translation>
+<translation id="2920568868625746681">רשת אלחוטית בלבד</translation>
+<translation id="4590997608186539865">רשימת השמעה</translation>
+<translation id="7525067979554623046">צור</translation>
+<translation id="5491049004699827548">צור את רשימת ההשמעה הראשונה שלך</translation>
+<translation id="5319108110887582146">צור רשימת השמעה של האודיו והסרטונים המועדפים עליך והפעל בכל זמן ובכל מקום. אפילו במצב לא מקוון.</translation>
+<translation id="6802849415466883498">צור רשימת השמעה</translation>
+<translation id="8525248723479742219">נגן מאוחר יותר</translation>
+<translation id="7453007860684252933">עיין והוסף</translation>
+<translation id="9014883386413828317">הוסף את התוכן המועדף עליך. חפש את הלחצן (+) בחלק הימני התחתון של המסך.</translation>
+<translation id="5928669500312007783">עיין במדיה</translation>
+<translation id="8152485753254079984">רשימת השמעה חדשה</translation>
+<translation id="9130105487623071247">שם רשימת השמעה</translation>
+<translation id="726581235416249619">רשימת השמעה ללא שם</translation>
+<translation id="1456254983411148628">הסר נתונים</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/>נבחר</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/>פריטים</translation>
+<translation id="2317629745818459803">נגן הכל</translation>
+<translation id="7544853251252956727">ערבוב</translation>
+<translation id="2881339830231736485">נוגן לאחרונה</translation>
+<translation id="7636458383879257005">הקש, לחץ לחיצה ארוכה או גרור</translation>
+<translation id="8120600068258956006">הוסף לרשימת השמעה</translation>
+<translation id="39991094779686024">רשימות השמעה</translation>
+<translation id="1710072605877822603">הוסף מדיה</translation>
+<translation id="903678009070770568">הוסף סרטונים לרשימת השמעה Brave וצפה מאוחר יותר, אפילו במצב לא מקוון</translation>
+<translation id="3063627607780392015">מחוץ לטווח קליטה? צריכים להרגיע פעוט בוכה?</translation>
+<translation id="2041014734809158138">בין אם אתה ברכבת התחתית, בטיסה או בנסיעה ארוכה ברכב. רשימת ההשמעה זמינה עבורך.</translation>
+<translation id="7287143275037417932">או הקש על הלחצן רשימת השמעה כשהוא מופיע</translation>
+<translation id="6959838938954098206">לחצן רשימת השמעה מופיע כאשר יש מדיה להוסיף. לחץ לחיצה ארוכה על האפשרויות. אתה יכול אפילו להסתיר את זה.</translation>
+<translation id="3620862810055853183">פתח את רשימת ההשמעה</translation>
+<translation id="3861012838874771868">פתח את הגדרות רשימת השמעה</translation>
+<translation id="5220099266891491416">כפתור הסתר רשימת השמעה</translation>
+<translation id="7416347631175891923">נסה זאת</translation>
+<translation id="1173894706177603556">שנה שם</translation>
+<translation id="1620612903815671893">הסר נתוני רשימת השמעה לא מקוונת</translation>
+<translation id="3261711068865275261">הסר את כל הנתונים הלא מקוונים</translation>
+<translation id="6653691766801349738">שמור רשימת השמעה לשימוש לא מקוון</translation>
+<translation id="8708086574143054053">שמור את כל הפלייליסטים לשימוש לא מקוון</translation>
+<translation id="3596306474342941843">מחק רשימת השמעה</translation>
+<translation id="7765158879357617694">העבר</translation>
+<translation id="3803384303807438047">מחק את הנתונים הלא מקוונים של הפריט</translation>
+<translation id="4195643157523330669">פתח בכרטיסייה חדשה</translation>
+<translation id="4243710787042215766">פתח בכרטיסייה פרטית</translation>
+<translation id="8261506727792406068">מחיקה</translation>
+<translation id="377872456482681602">אנא בחר פריטים תחילה</translation>
+<translation id="6172429305139364624">פריט רשימת ההשמעה אינו שמור.\nאנא שמור את הפריט במצב לא מקוון.</translation>
+<translation id="3631131732607750008">תוקף התוכן פג. נסה שוב בעוד מספר שניות.</translation>
+<translation id="9085765419770918643">אין כאן עדיין NFTs.</translation>
+<translation id="8445532667841598737">מוכן להוסיף כמה? פשוט לחץ על הלחצן למטה כדי לייבא.</translation>
 </translationbundle>

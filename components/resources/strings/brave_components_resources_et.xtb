@@ -207,15 +207,14 @@
 <translation id="7577100371127227294">Igakuised preemiad</translation>
 <translation id="178390304006113804">Seadistage korduvad igakuised preemiad, et saaksite oma lemmikloojaid pidevalt toetada.</translation>
 <translation id="3302159320447117425">Igakuiseid preemiaid pole veel seadistatud.</translation>
+<translation id="564837702459183199">Järgmine panus</translation>
 <translation id="4898632353264854950">Veebisaidid ilmuvad sirvimise ajal</translation>
 <translation id="3024485967181749006">Sellel kuul antud preemiad</translation>
-<translation id="8183455888546367148">Igakuised preemiaid kokku sel kuul</translation>
 <translation id="4153752809523809915">Kas premeerisite täna oma lemmiksisuloojat?</translation>
 <translation id="7286722244752781970">Minimaalne külastusaeg, millest alates külastust logitakse</translation>
 <translation id="4424486208397124985">Minimaalne külastuste arv, millest alates väljaandjat välja tuuakse</translation>
 <translation id="5421369907811917952">Muud seaded</translation>
 <translation id="6248554379744796526">Näidake kinnitamata veebilehti loendis</translation>
-<translation id="5510618543889994434">Luba annetused videote eest</translation>
 <translation id="8933202740471878108">1 külastus</translation>
 <translation id="354797634123275103">5 külastust</translation>
 <translation id="3583700907990488238">10 külastust</translation>
@@ -224,7 +223,6 @@
 <translation id="8610523985422563960">1 minut</translation>
 <translation id="2807328214759298515">Kuni</translation>
 <translation id="7483857210736407752">Kuva saitidel preemianupud</translation>
-<translation id="7583327070390027131">Igakuiste preemiate järgmine kuupäev</translation>
 <translation id="6231182869178328516">Premeerisin Brave Browseriga just kasutajat <ph name="NAME"/>. Uuri selle kohta lehelt https://brave.com/tips.</translation>
 <translation id="5916536234616514390">Nii tore, et <ph name="HASHTAG"/>Brave laseb loojaid toetada! Andsin just praegu kasutajale <ph name="NAME"/> <ph name="HASHTAG2"/>BAT-i. Kui ta kinnitab veebisaidil https://creators.brave.com enne <ph name="DATE"/>, kuulub BAT talle.</translation>
 <translation id="8404935570206006581">Premeeri Brave’iga</translation>
@@ -638,6 +636,7 @@
 <translation id="8797999629784150206">Saate oma <ph name="SITE_PERMISSIONS"/> alati muuta. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">saidiluba</translation>
 <translation id="4355784577209159847">Luba Google’i pärandsisselogimiseks kasutada kolmanda osapoole küpsiseid</translation>
+<translation id="5770656036486891920"><ph name="URL"/> soovib Google’i pärandsisselogimiseks kasutada kolmanda osapoole küpsiseid</translation>
 <translation id="7717357606512850995">Kontrolli olekut</translation>
 <translation id="7306880305145342514">Palju õnne! Teie preemiad on kohal (kuu: <ph name="MONTH"/>)!</translation>
 <translation id="3007207731685398329">Teie preemiasumma <ph name="AMOUNT"/> (kuu: <ph name="MONTH"/>) saabub <ph name="DAYS"/> jooksul</translation>
@@ -659,6 +658,7 @@
       =1 {Sel kuul olete külastanud # Brave'i Preemiate toetatud loojat}
       other {Sel kuul olete külastanud # Brave'i Preemiate toetatud loojat}
     }</translation>
+<translation id="6067959437127691361">Brave'i Preemiate kasutamine aitab toetada sisuloojaid ja võimaldab teil teenida BAT-i.</translation>
 <translation id="1187367336925051518">Kuu <ph name="MONTH"/> preemiad: <ph name="AMOUNT"/></translation>
 <translation id="3274366539954332481">Teie reklaamide preemiad kuu <ph name="MONTH"/> eest on laekunud!</translation>
 <translation id="7861645265922445992">Võta preemiad vastu</translation>
@@ -690,7 +690,6 @@
 <translation id="6965382102122355670">OK</translation>
 <translation id="6727102863431372879">Sea</translation>
 <translation id="8853725596990766789">Muuda summat</translation>
-<translation id="6067959437127691361">Brave'i Preemiate kasutamine aitab toetada sisuloojaid ja võimaldab teil teenida BAT-i.</translation>
 <translation id="1609556006143307897">Aitate toetada sisuloojaid</translation>
 <translation id="6605147707233193230">Lülitage sisse, et aidata toetada sisuloojaid</translation>
 <translation id="5430495762768325224">Lisateave BAT-i kohta</translation>
@@ -784,6 +783,7 @@
 <translation id="9161147058107529840">Oodatakse ühte objektparameetrit.</translation>
 <translation id="1875861420974447980">See ahela ID on praegu kasutusel</translation>
 <translation id="167698752210114155">Ilmnes sisemine tõrge</translation>
+<translation id="7497827357097190289">Ploki räsi on kehtetu või seda ei saa valideerida</translation>
 <translation id="8945668490056243760">Toetuseta tellimuse tüüp</translation>
 <translation id="2326876601333401685">Seda RPC meetodit ei toetata.</translation>
 <translation id="1128992132632883337">Vastuse sõelumisel ilmnes tõrge</translation>
@@ -867,6 +867,7 @@
 <translation id="570080709303714420">POOL</translation>
 <translation id="2784548701748328827">MAX</translation>
 <translation id="2329227154184107678">Vaadake tellimus üle</translation>
+<translation id="3220443877821207794">Vaata saatmine üle</translation>
 <translation id="8530071505111489657">Tokeneid pole saadaval</translation>
 <translation id="615791330696335475">Otsi tokenit nime järgi</translation>
 <translation id="5009335307032488349">Otsi NFT-d nime, ID järgi</translation>
@@ -1091,9 +1092,20 @@
 <translation id="4460220693591349571">FUNKTSIOONI TÜÜP</translation>
 <translation id="838933475572692615">KUUETEISTKÜMNENDANDMED</translation>
 <translation id="2240831799756994975">BAIDID</translation>
-<translation id="4874303883488468190">Valige konto(d)</translation>
-<translation id="2018472018751735678">Vaadake oma lubatud kontode aadresse (kohustuslik)</translation>
-<translation id="7029403458170657879">Ühendamine Brave'i rahakotiga</translation>
+<translation id="6760823167126275974">Ühenda rahakott</translation>
+<translation id="716009557505091365">või ühendage järgmisega:</translation>
+<translation id="7242985059140288348">See rakendus saab teha järgmist:</translation>
+<translation id="7352133688029686231">See ei saa teha järgmist:</translation>
+<translation id="1647328658385235886">Rahakoti saldo ja toimingute kontrollimine</translation>
+<translation id="3295962112184461868">Tehingute ja allkirjade jaoks heakskiidu taotlemine</translation>
+<translation id="6096892345597202096">Teie lubatud rahakoti aadressi vaatamine</translation>
+<translation id="496578987299869780">Vahendite liigutamine ilma teie loata</translation>
+<translation id="3226586788973641582">Veenduge, et usaldate seda saiti.</translation>
+<translation id="6837278005487143422">Loa kestus</translation>
+<translation id="1903637466604153314">Saidi sulgemiseni</translation>
+<translation id="4324239559624557455">24 tundi</translation>
+<translation id="9139452553033760558">1 nädal</translation>
+<translation id="1658834457013045127">Igavesti</translation>
 <translation id="2770851145415891830">Tuvastati olemasolevad krüptorahakotid</translation>
 <translation id="2237759620789871865">Kui soovite importimise vahele jätta ja säilitada vana krüptorahakoti, siis navigeerige lihtsalt Brave'i brauseri <ph name="LINK_BEFORE"/>seadetesse<ph name="LINK_AFTER"/> ja määrake vaikeseadistuseks jälle krüptorahakott. Võite ka importida, proovida uut Brave'i rahakotti ja igal ajal tagasi vahetada.</translation>
 <translation id="5590175005414413980">Brave'i rahakotti importimiseks sisestage oma olemasoleva krüptorahakoti parool. Saate nautida kiiremat ja turvalisemat krüptovarade haldamise viisi ning suhelda Web 3 detsentraliseeritud rakenduste abil.</translation>
@@ -1169,7 +1181,9 @@
 <translation id="8585995109882455949">Kuidas ma leian õige aadressi?</translation>
 <translation id="8395402412470376435">Brave vaatab aadressid üle ja takistab kasutajatel vahendite saatmist valele aadressile, näiteks valesti kirjutamise tõttu. See on kontrollsumma protsess, mis kontrollib, kas tegemist on kehtiva Ethereumi aadressiga.</translation>
 <translation id="4583433813614292221">1. Külastage</translation>
+<translation id="8061317754447191238">Külastage Etherscani ja kleepige rahakoti aadress, millele soovite tokeneid saata. Seejärel vajutage sisestusklahvi.</translation>
 <translation id="5393164213211430081">2. Kopeerige ja sisestage ETH aadress</translation>
+<translation id="8306108469060304141">Kopeerige ja sisestage õige aadress. Näete, et mõned tähemärgid teisendati õigesti.</translation>
 <translation id="2378355054306959991">Kas vajate veel abi?</translation>
 <translation id="862585889767884824">/</translation>
 <translation id="9106265941552476098">Lükka tagasi <ph name="TRANSACTION_LENGTH"/> tehingut.</translation>
@@ -1209,7 +1223,6 @@
 <translation id="1904295039023858291">Tokeni standard</translation>
 <translation id="9033453977881595182">Tokeni ID</translation>
 <translation id="6332387008245531841">Lepinguaadress</translation>
-<translation id="6717502994710534866">CID</translation>
 <translation id="2351120707525742989">Pildi asukoht või aadress</translation>
 <translation id="2962388922926051374">Meetodi „eth_chainId“ päring veebilehel <ph name="URL"/> nurjus</translation>
 <translation id="8325036459845654666">See võrk on juba lisatud.</translation>
@@ -1226,14 +1239,11 @@
 <translation id="5133421763709317473">Otsingule või filtrile vastavaid varasid ei leitud</translation>
 <translation id="7383613643114466279">Brave'i rahakott ei toeta seda vara.</translation>
 <translation id="6423985584914773314">Ei ole kehtiv FIL-i aadress</translation>
-<translation id="3898731124813934210">Osta Wyre kaudu</translation>
 <translation id="5522073372365069684">Osta Rampi kaudu</translation>
 <translation id="6153197326949684688">Müüge pakkujaga <ph name="OFFRAMP_PROVIDER"/></translation>
-<translation id="6097502401711916278">Miinimumsumma peab olema vähemalt <ph name="FIAT_AMOUNT"/>.</translation>
 <translation id="7902920577183739843">Osta Sardine'i kaudu</translation>
 <translation id="6534275647567011533">Osta Transaki kaudu</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Krüpto ostmine Visa või Mastercardi abil.</translation>
@@ -1510,18 +1520,17 @@
 <translation id="2227702748249086756">Tasuhinnanguid ei saa tuua</translation>
 <translation id="5361710044667743492">Miks pole saadaval?</translation>
 <translation id="3668838456083358569">Osasid NFT andmeid talletatakse keskserverites, nagu AWS, Google Cloud jne. Sellistel juhtudel ei saa teie NFT andmeid IPFS-võrku kinnitada.</translation>
-<translation id="1293258969121701010">IPFS-i käitamisega oma arvutis saate teha järgmist.</translation>
-<translation id="4568942135611119076">Veenduda, et teie NFT andmed püsivad võrgus ja neid ei saa võltsida.</translation>
-<translation id="4915883034746438977">Saada ebaõigetest andmetest sisu identifikaatoriga (CID) sisu tagasi.</translation>
-<translation id="1373647012698032676">Esitada ehtsuse tõendeid ning muuta IPFS-i võrgustik rikkalikuks ja terveks.</translation>
-<translation id="1806204385270226865">Hoia mu NFT-d alati võrgus</translation>
-<translation id="4323376551843624309">Luba NFT kinnitamine</translation>
-<translation id="6501331923135442324">Suur samm edasi Web3 osaks saamisel</translation>
-<translation id="5361073938927187534">Käitage IPFS-i sõlme ja hoidke oma NFT-d alati võrgus</translation>
-<translation id="1060267371223703324">Kontrollige, milliseid NFT-sid saab kinnitada</translation>
-<translation id="2641083452974145848">Nüüd saate käitada oma IPFS-i ja olla osa Web3-st. Teie NFT andmed on alati võrgus ja neid ei saa võltsida.</translation>
-<translation id="4460927368826360904">Käitate IPFS-i sõlme. Faili tuuakse kohalikku IPFS-i sõlme.</translation>
-<translation id="2260350263892668490"><ph name="PINNED"/> NFT-d<ph name="PINNABLE"/>-st on edukalt IPFS-i kinnitatud.</translation>
+<translation id="4225753478505258806">Kuid IPFS vajab toimimiseks individuaalseid osalejaid. Käitage IPFS-i oma arvutis, et:</translation>
+<translation id="7674069205559000521">Panustada võrgu kiirusesse ja saadavusse</translation>
+<translation id="7775229731579227782">Suurendada oma NFT-de turvalisust</translation>
+<translation id="2319971828691864975">Alustada IPFS-i kasutamist</translation>
+<translation id="7906328323880284538">Ohutuim viis NFT-de hostimiseks</translation>
+<translation id="166206715890914321">Käitage IPFS-i sõlme, et hoida oma NFT-d igavesti võrgus</translation>
+<translation id="8913523138550521467">IPFS on tavapärase veebihostimise üliturvaline alternatiiv. IPFS võimaldab ühele hostile tuginemise asemel tuhandetel inimestel (kes käitavad sõlmi) sisu salvestamiseks koostööd teha. Seni kuni ühel inimesel on failist koopia, ei saa see fail kunagi kaotsi minna. NFT-de kinnitamine IPFS-i külge ja oma IPFS-i sõlmede käitamine on parim viis oma NFT-de turvalisuse tagamiseks.</translation>
+<translation id="9160750213078764355">Vaata, millised mu NFT-dest on sobivad</translation>
+<translation id="6671461082721702724">Nüüd saate käitada oma IPFS-i ja olla osa Web3-st. Teie NFT andmed on alati võrgus.</translation>
+<translation id="654964147165509548">NFT-sid kinnitatakse teie kohalikule IPFS-i sõlmele.</translation>
+<translation id="4910182786472608576"><ph name="PINNED"/> toetatud NFT-d kinnitatakse teie kohalikule IPFS-i sõlmele.</translation>
 <translation id="1474962961180773583"><ph name="PINNABLE"/> <ph name="TOTAL"/>-st on saadaval!</translation>
 <translation id="6852656829524945421">Ei saa kinnitada</translation>
 <translation id="7698019251444927442">Käitate IPFS-i sõlme</translation>
@@ -1529,10 +1538,15 @@
 <translation id="7527548209942671618">Kinnitatud teie kohalikule IPFS-i sõlmele</translation>
 <translation id="5659058832308365026">NFT andmeid kinnitatakse teie kohalikule IPFS-i sõlmele</translation>
 <translation id="4919133452617704550">Ei saa teie kohalikule IPFS-i sõlmele kinnitada</translation>
+<translation id="4220102684162429566">Kõige tavalisemad põhjused:</translation>
+<translation id="451509325309455">NFT-l on mitte-IPFS-i metaandmete URL-iga seotud probleemid</translation>
+<translation id="3827697793483899711">Sisemised IPFS-i sõlme probleemid</translation>
+<translation id="1992846713609432783">Kohalikus sõlmes pole piisavalt ruumi</translation>
 <translation id="3225624966527491351">Impordi NFT</translation>
 <translation id="9085765419770918643">Siin pole veel NFT-sid.</translation>
 <translation id="8445532667841598737">Kas olete valmis mõned lisama? Klõpsake importimiseks allolevat nuppu.</translation>
 <translation id="9136462955850040542">Ühildub NFT-dega Solanas (SPL) ja Ethereumis (ERC-721).</translation>
+<translation id="849880459530751909">Muuda NFT-d</translation>
 <translation id="3155170474926428993">Tor'i käivitaja</translation>
 <translation id="3745016858329272300">Üldine teave</translation>
 <translation id="4045404575593562245">Tori juhtelemendid</translation>
@@ -1608,6 +1622,9 @@
 <translation id="9204041448536398473">Globaalse kaitse seaded</translation>
 <translation id="2108334320919763866">Üldised vaikeväärtused</translation>
 <translation id="3440043456924990296">Seadistust haldab organisatsioon</translation>
+<translation id="7053983685419859001">Blokeeri</translation>
+<translation id="5716230673298034837">Luba kõik</translation>
+<translation id="5279600392753459966">Blokeeri kõik</translation>
 <translation id="4516904298421534459">Filtriloendid</translation>
 <translation id="3570081523466826008">Täienda ühendusi HTTPS-ile</translation>
 <translation id="131231380815754440">Luba HTTPS</translation>
@@ -1618,6 +1635,7 @@
 <translation id="8593054718053894081">Blokeeri jälgijad ja reklaamid agressiivselt</translation>
 <translation id="7384778069178817075">Luba kõik jälgijad ja reklaamid</translation>
 <translation id="4941539331405513605">Blokeeri lehtedevahelised küpsised</translation>
+<translation id="2749284154880331639">Unusta kolmanda osapoole küpsised</translation>
 <translation id="6883611015375728278">Blokeeri kõik küpsisefailid</translation>
 <translation id="5657156137487675418">Luba kõik küpsised</translation>
 <translation id="8366221601425141146">Seadmetuvastus blokeeritud</translation>
@@ -1632,6 +1650,7 @@
 <translation id="7194012750329511146">Brave'i Kaitsed
 <ph name="NUMBER"/> blokeeritud jälgijat, reklaami ja muud</translation>
 <translation id="4292121526390005808">Blokeeritud skriptid</translation>
+<translation id="5046271170844958713">Kolmanda osapoole seadme tuvastamine on blokeeritud</translation>
 <translation id="264682546981571963">Olete küpsistega nõustumise teadetest tüdinud?</translation>
 <translation id="4986297793092101884">Brave blokeerib juba kolmandate osaliste küpsised. Võime blokeerida ka küpsistega nõustumise teated.</translation>
 <translation id="535688588637568715">Jah, blokeeri küpsistega nõustumise teated</translation>
@@ -1668,6 +1687,7 @@
 <translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> ei saanud luua ühendust<ph name="REGION_NAME"/> serveriga. Võite proovida uuesti või valida mõne muu.</translation>
 <translation id="1024255913009642477">Kas VPN on juba ostetud?</translation>
 <translation id="8814357473522731680">Platvorm:</translation>
+<translation id="3960619311638643872">Brave'i VPN</translation>
 <translation id="5747552184818312860">Aegub</translation>
 <translation id="1691256669639196606">Tellimuse haldamine</translation>
 <translation id="434523916398030617">Võtke ühendust tehnilise toega</translation>

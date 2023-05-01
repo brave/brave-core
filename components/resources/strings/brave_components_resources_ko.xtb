@@ -207,15 +207,14 @@
 <translation id="7577100371127227294">월간 팁</translation>
 <translation id="178390304006113804">반복 월간 팁을 설정하면 마음에 드는 제작자에게 지속적인 도움을 줄 수 있습니다.</translation>
 <translation id="3302159320447117425">아직 설정된 월간 팁이 없습니다.</translation>
+<translation id="564837702459183199">다음 후원</translation>
 <translation id="4898632353264854950">여러분이 검색하면 인터넷 사이트가 나타납니다</translation>
 <translation id="3024485967181749006">이번 달 팁 총계</translation>
-<translation id="8183455888546367148">이번 달 월간 팁 총액</translation>
 <translation id="4153752809523809915">오늘 좋아하는 콘텐츠 제작자에게 팁을 주셨습니까?</translation>
 <translation id="7286722244752781970">방문을 로그하기 전의 최소 페이지 시간</translation>
 <translation id="4424486208397124985">출판자 접합성을 위한 최소 방문 수</translation>
 <translation id="5421369907811917952">기타 설정</translation>
 <translation id="6248554379744796526">목록에서 비인증 사이트 표시</translation>
-<translation id="5510618543889994434">동영상에 기부 허용</translation>
 <translation id="8933202740471878108">1개의 방문</translation>
 <translation id="354797634123275103">5개의 방문</translation>
 <translation id="3583700907990488238">10개의 방문</translation>
@@ -224,7 +223,6 @@
 <translation id="8610523985422563960">1분</translation>
 <translation id="2807328214759298515">최대</translation>
 <translation id="7483857210736407752">사이트상에 팁 버튼 표시</translation>
-<translation id="7583327070390027131">다음 월간 팁 날짜</translation>
 <translation id="6231182869178328516">Brave 브라우저를 이용해 <ph name="NAME"/>에게 팁으로 주었습니다. https://brave.com/tips에서 확인해 보세요.</translation>
 <translation id="5916536234616514390"><ph name="HASHTAG"/>Brave 덕분에 제작자를 지원할 수 있어 정말 좋습니다! <ph name="NAME"/> 님에게 <ph name="HASHTAG2"/>BAT 팁을 드렸죠. 받은 분이 <ph name="DATE"/>까지 https://creators.brave.com 페이지에서 검증받으면 BAT가 지급됩니다!</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
@@ -638,6 +636,7 @@
 <translation id="8797999629784150206">언제든 <ph name="SITE_PERMISSIONS"/>을 변경할 수 있습니다. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">사이트 권한</translation>
 <translation id="4355784577209159847">기존 Google 로그인에 타사 쿠키 사용 허용</translation>
+<translation id="5770656036486891920">레거시 Google 로그인을 위해 <ph name="URL"/>에서 제3자 쿠키를 사용하려고 합니다.</translation>
 <translation id="7717357606512850995">상태 확인</translation>
 <translation id="7306880305145342514">축하합니다! <ph name="MONTH"/> 리워드가 도착했습니다!</translation>
 <translation id="3007207731685398329"><ph name="AMOUNT"/> <ph name="MONTH"/> 리워드 도착 예정, <ph name="DAYS"/> 후</translation>
@@ -659,6 +658,7 @@
       =1 {이번 달 Brave Rewards의 지원을 받는 제작자 #명을 방문하셨습니다.}
       other {이번 달 Brave Rewards의 지원을 받는 제작자 #명을 방문하셨습니다.}
     }</translation>
+<translation id="6067959437127691361">Brave Rewards를 사용하면 콘텐츠 제작자를 지원하고 BAT도 적립받을 수 있습니다.</translation>
 <translation id="1187367336925051518"><ph name="MONTH"/> 리워드: <ph name="AMOUNT"/></translation>
 <translation id="3274366539954332481">귀하의 <ph name="MONTH"/> 광고 리워드입니다!</translation>
 <translation id="7861645265922445992">리워드 받기</translation>
@@ -690,7 +690,6 @@
 <translation id="6965382102122355670">확인</translation>
 <translation id="6727102863431372879">설정</translation>
 <translation id="8853725596990766789">금액 변경</translation>
-<translation id="6067959437127691361">Brave Rewards를 사용하면 콘텐츠 제작자를 지원하고 BAT도 적립받을 수 있습니다.</translation>
 <translation id="1609556006143307897">콘텐츠 제작자를 지원하고 계십니다.</translation>
 <translation id="6605147707233193230">콘텐츠 제작자를 지원하려면 켜세요.</translation>
 <translation id="5430495762768325224">BAT에 대해 자세히 알아보기</translation>
@@ -784,6 +783,7 @@
 <translation id="9161147058107529840">객체 매개변수가 한 개 있어야 합니다.</translation>
 <translation id="1875861420974447980">현재 사용 중인 체인 ID</translation>
 <translation id="167698752210114155">내부 오류 발생</translation>
+<translation id="7497827357097190289">블록해시가 유효하지 않거나 검증할 수 없음</translation>
 <translation id="8945668490056243760">미지원 구독 유형</translation>
 <translation id="2326876601333401685">지원되지 않는 RPC 메서드입니다.</translation>
 <translation id="1128992132632883337">응답 파싱 오류 발생</translation>
@@ -867,6 +867,7 @@
 <translation id="570080709303714420">절반</translation>
 <translation id="2784548701748328827">최대</translation>
 <translation id="2329227154184107678">주문 검토</translation>
+<translation id="3220443877821207794">검토 보내기</translation>
 <translation id="8530071505111489657">가능한 토큰 없음</translation>
 <translation id="615791330696335475">이름으로 토큰 검색</translation>
 <translation id="5009335307032488349">이름, ID로 NFT 검색</translation>
@@ -1091,9 +1092,20 @@
 <translation id="4460220693591349571">기능 유형</translation>
 <translation id="838933475572692615">헥스 데이터</translation>
 <translation id="2240831799756994975">바이트</translation>
-<translation id="4874303883488468190">계정 선택</translation>
-<translation id="2018472018751735678">허용된 계정의 주소 보기(필수)</translation>
-<translation id="7029403458170657879">Brave 월렛으로 연결</translation>
+<translation id="6760823167126275974">월렛 연결</translation>
+<translation id="716009557505091365">다음과 연결:</translation>
+<translation id="7242985059140288348">이 앱이 할 수 있는 것:</translation>
+<translation id="7352133688029686231">할 수 없는 것:</translation>
+<translation id="1647328658385235886">월렛 잔액 및 활동 확인</translation>
+<translation id="3295962112184461868">트랜잭션 및 서명 승인 요청</translation>
+<translation id="6096892345597202096">허용된 월렛 주소 조회</translation>
+<translation id="496578987299869780">사용자의 허가 없이도 자금 이동</translation>
+<translation id="3226586788973641582">신뢰할 수 있는 사이트인지 확인하세요.</translation>
+<translation id="6837278005487143422">권한 기간</translation>
+<translation id="1903637466604153314">사이트를 닫을 때까지</translation>
+<translation id="4324239559624557455">24시간</translation>
+<translation id="9139452553033760558">1주</translation>
+<translation id="1658834457013045127">영구적으로</translation>
 <translation id="2770851145415891830">기존 암호화폐 월렛 감지됨</translation>
 <translation id="2237759620789871865">가져오기를 건너뛰고 기존 암호화폐 월렛 경험을 유지하려면 Brave 브라우저 <ph name="LINK_BEFORE"/>설정<ph name="LINK_AFTER"/>으로 이동하여 기본값을 암호화폐 월렛으로 변경하세요. 언제든지 새 Brave 월렛을 가져와 사용해보거나 되돌릴 수 있습니다.</translation>
 <translation id="5590175005414413980">기존 암호화폐 월렛 비밀번호를 입력하면 Brave 계정으로 가져옵니다. 더욱 빠르고 안전하게 암호화폐 자산을 관리하고 Web3 DApps를 이용하세요.</translation>
@@ -1169,7 +1181,9 @@
 <translation id="8585995109882455949">정확한 주소를 확인하는 방법</translation>
 <translation id="8395402412470376435">Brave는 부정확한 대소문자로 인해 잘못된 주소로 사용자가 송금하지 않도록 검증하여 사고를 미연에 방지합니다. 이 "체크섬" 프로세스로 유효한 이더리움 주소인지 확인합니다.</translation>
 <translation id="4583433813614292221">1. 방문하기</translation>
+<translation id="8061317754447191238">이더스캔을 방문하여 토큰을 보낼 월렛 주소를 붙여넣고 다음을 입력하세요.</translation>
 <translation id="5393164213211430081">2. ETH 주소 복사 후 입력</translation>
+<translation id="8306108469060304141">정확한 주소를 복사해 입력하세요. 일부 문자가 제대로 변환되었음을 볼 수 있습니다.</translation>
 <translation id="2378355054306959991">도움이 필요하신가요?</translation>
 <translation id="862585889767884824">~의</translation>
 <translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/> 트랜잭션 거부</translation>
@@ -1209,7 +1223,6 @@
 <translation id="1904295039023858291">토큰 표준</translation>
 <translation id="9033453977881595182">토큰 ID</translation>
 <translation id="6332387008245531841">컨트랙트 주소</translation>
-<translation id="6717502994710534866">CID</translation>
 <translation id="2351120707525742989">이미지 위치 및 주소</translation>
 <translation id="2962388922926051374"><ph name="URL"/>에서 수단 'eth_chainId' 요청 실패</translation>
 <translation id="8325036459845654666">이미 추가된 네트워크입니다.</translation>
@@ -1226,14 +1239,11 @@
 <translation id="5133421763709317473">검색어 또는 필터와 일치하는 자산 없음</translation>
 <translation id="7383613643114466279">Brave 월렛이 지원하지 않는 자산</translation>
 <translation id="6423985584914773314">유효한 FIL 주소 아님</translation>
-<translation id="3898731124813934210">Wyre로 구매</translation>
 <translation id="5522073372365069684">Ramp로 구매</translation>
 <translation id="6153197326949684688"><ph name="OFFRAMP_PROVIDER"/>로 판매</translation>
-<translation id="6097502401711916278">최소 금액은 <ph name="FIAT_AMOUNT"/> 이상이어야 합니다.</translation>
 <translation id="7902920577183739843">Sardine으로 구매</translation>
 <translation id="6534275647567011533">Transak으로 구매</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Visa 또는 Mastercard로 암호화폐를 구입할 수 있습니다.</translation>
@@ -1510,18 +1520,17 @@
 <translation id="2227702748249086756">예상 수수료를 가져올 수 없음</translation>
 <translation id="5361710044667743492">사용 가능하지 않은 이유</translation>
 <translation id="3668838456083358569">몇몇 NFT 데이터는 AWS, Google Cloud 등의 중앙집중식 서버에 저장되어 있습니다. 이 경우에는 NFT 데이터를 IPFS 네트워크에 고정할 수 없습니다.</translation>
-<translation id="1293258969121701010">컴퓨터상에서 IPFS를 실행하면:</translation>
-<translation id="4568942135611119076">NFT 데이터가 온라인으로 유지되며 변조할 수 없습니다.</translation>
-<translation id="4915883034746438977">부정확한 데이터에서 콘텐츠 식별자(CID)를 사용하여 콘텐츠를 되찾아 옵니다.</translation>
-<translation id="1373647012698032676">진품 증명에 참여하고 IPFS 네트워크를 풍성하고 건강하게 만드는 데 일조합니다.</translation>
-<translation id="1806204385270226865">내 NFT 온라인 유지</translation>
-<translation id="4323376551843624309">NFT 고정 활성화</translation>
-<translation id="6501331923135442324">Web3의 진전을 위한 큰 발걸음</translation>
-<translation id="5361073938927187534">IPFS 노드를 실행하고 내 NFT를 항시 온라인 유지</translation>
-<translation id="1060267371223703324">고정 가능한 내 NFT 확인</translation>
-<translation id="2641083452974145848">이제 IPFS를 실행하여 Web3에 기여하실 수 있습니다. NFT가 영원히 온라인 유지되면서 변조할 수 없게 됩니다.</translation>
-<translation id="4460927368826360904">IPFS 노드를 실행하고 계십니다. 파일을 로컬 IPFS 노드로 가져오고 있습니다.</translation>
-<translation id="2260350263892668490"><ph name="PINNED"/>/<ph name="PINNABLE"/>개의 NFT가 성공적으로 IPFS에 고정되었습니다.</translation>
+<translation id="4225753478505258806">IPFS 기능이 구동되려면 개별 참여자임이 필요합니다. 다음 기능을 이용하려면 컴퓨터에서 IPFS를 실행하세요.</translation>
+<translation id="7674069205559000521">네트워크 속도 및 가용성에 기여</translation>
+<translation id="7775229731579227782">NFT 보안 강화</translation>
+<translation id="2319971828691864975">IPFS 시작하기</translation>
+<translation id="7906328323880284538">NFT를 호스팅할 수 있는 가장 안전한 방법</translation>
+<translation id="166206715890914321">IPFS 노드를 실행하고 내 NFT를 영원히 온라인 유지</translation>
+<translation id="8913523138550521467">IPFS는 재래식 웹 호스팅보다 압도적으로 보안이 뛰어난 대체재입니다. IPFS는 단일 호스트에 의존하지 않고 수많은 개별 참여자("노드" 실행자)를 활용하여 함께 콘텐츠를 보관합니다. 단 한 명이라도 사본이 있다면 파일이 절대 소실되지 않습니다. NFT를 IPFS에 "고정"하고 직접 IPFS 노드를 실행하는 것이 NFT 보안에 가장 좋습니다.</translation>
+<translation id="9160750213078764355">내 NFT 중 어떤 것이 적격인지 확인</translation>
+<translation id="6671461082721702724">이제 IPFS를 실행하여 Web3에 기여하실 수 있습니다. NFT가 영원히 온라인 유지됩니다.</translation>
+<translation id="654964147165509548">NFT가 로컬 IPFS 노드에 고정되고 있는 중.</translation>
+<translation id="4910182786472608576"><ph name="PINNED"/> 지원 NFT가 로컬 IPFS 노드에 고정되고 있는 중.</translation>
 <translation id="1474962961180773583"><ph name="PINNABLE"/>/<ph name="TOTAL"/>개 가능합니다!</translation>
 <translation id="6852656829524945421">고정할 수 없음</translation>
 <translation id="7698019251444927442">IPFS 노드 실행 중</translation>
@@ -1529,10 +1538,15 @@
 <translation id="7527548209942671618">로컬 IPFS 노드에 고정됨</translation>
 <translation id="5659058832308365026">NFT 데이터가 로컬 IPFS 노드에 고정되고 있는 중</translation>
 <translation id="4919133452617704550">로컬 IPFS 노드에 고정할 수 없음</translation>
+<translation id="4220102684162429566">가장 일반적인 이유:</translation>
+<translation id="451509325309455">NFT에 비IPFS 메타데이터 URL 문제가 있음</translation>
+<translation id="3827697793483899711">내부 IPFS 노드 문제</translation>
+<translation id="1992846713609432783">로컬 노드에 공간 부족</translation>
 <translation id="3225624966527491351">NFT 가져오기</translation>
 <translation id="9085765419770918643">아직 여기 NFT가 없습니다.</translation>
 <translation id="8445532667841598737">추가할 준비가 되셨나요? 아래 버튼을 클릭하면 가져옵니다.</translation>
 <translation id="9136462955850040542">Solana(SPL) 및 이더리움(ERC-721)상의 NFT와 호환.</translation>
+<translation id="849880459530751909">NFT 편집</translation>
 <translation id="3155170474926428993">Tor 런처</translation>
 <translation id="3745016858329272300">일반 정보</translation>
 <translation id="4045404575593562245">Tor 제어 이벤트</translation>
@@ -1609,6 +1623,9 @@
 <translation id="9204041448536398473">전역 Shield 설정</translation>
 <translation id="2108334320919763866">전역 기본값</translation>
 <translation id="3440043456924990296">조직이 관리하는 설정</translation>
+<translation id="7053983685419859001">차단</translation>
+<translation id="5716230673298034837">모두 허용하기</translation>
+<translation id="5279600392753459966">모두 차단하기</translation>
 <translation id="4516904298421534459">필터 목록</translation>
 <translation id="3570081523466826008">HTTPS 연결 업그레이드</translation>
 <translation id="131231380815754440">HTTPS 활성화</translation>
@@ -1619,6 +1636,7 @@
 <translation id="8593054718053894081">트래커 및 광고 공격적으로 차단</translation>
 <translation id="7384778069178817075">모든 트래커 &amp; 광고 허용</translation>
 <translation id="4941539331405513605">교차 사이트 쿠키 차단</translation>
+<translation id="2749284154880331639">제1자 쿠키 저장 안 함</translation>
 <translation id="6883611015375728278">모든 쿠키 차단</translation>
 <translation id="5657156137487675418">모든 쿠키 허용</translation>
 <translation id="8366221601425141146">지문 인식 차단됨</translation>
@@ -1633,6 +1651,7 @@
 <translation id="7194012750329511146">Brave Shields
 <ph name="NUMBER"/> 트래커, 광고 등 차단</translation>
 <translation id="4292121526390005808">차단된 스크립트</translation>
+<translation id="5046271170844958713">허용된 스크립트</translation>
 <translation id="264682546981571963">쿠키 동의 문구를 보면 지치시지요?</translation>
 <translation id="4986297793092101884">Brave는 타사 쿠키를 기본으로 차단합니다. 쿠키 동의 문구도 차단할 수 있습니다.</translation>
 <translation id="535688588637568715">예, 쿠키 동의 문구 차단</translation>
@@ -1669,6 +1688,7 @@
 <translation id="1305433007676951913"><ph name="PRODUCT_NAME"/>이 <ph name="REGION_NAME"/> 서버에 연결할 수 없습니다. 다시 시도하거나 다른 서버를 선택하세요.</translation>
 <translation id="1024255913009642477">VPN을 이미 구매하셨습니까?</translation>
 <translation id="8814357473522731680">제공 -</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">만료</translation>
 <translation id="1691256669639196606">구독 관리</translation>
 <translation id="434523916398030617">기술 지원팀에 문의</translation>

@@ -167,6 +167,7 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="2036503787657622020">Zapnutí režimu čtečky</translation>
 <translation id="5226458915125328323">Nastavení rychlého čtení</translation>
 <translation id="8591883849678260674">Zobrazit originál</translation>
+<translation id="1969654232209826429">min. čtení</translation>
 <translation id="6284218950354553099">Automatické odesílání denního pingu do služby Brave</translation>
 <translation id="5288333155754958121">Tento anonymní, soukromý ping umožňuje společnosti Brave odhadnout počet aktivních uživatelů.</translation>
 <translation id="1872784258300710671">Brave používá zcela soukromé produktové analýzy pro odhad celkového využití určitých funkcí</translation>
@@ -190,16 +191,16 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
         Můžete si sami přečíst <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>pokyny ke způsobu stahování a tvorby<ph name="END_LINK_BUILD_INSTRUCTIONS"/> specifického <ph name="BEGIN_LINK_SOURCE_CODE"/>zdrojového kódu používaného k vytváření této kopie<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Přidat do záložek všechny karty...</translation>
 <translation id="3987546108749866209">Používat vertikální karty</translation>
-<translation id="5860254591544742609">Zobrazit lištu s názvem</translation>
-<translation id="399928467800528208">Obnovit přejetím myší</translation>
 <translation id="1904394285866191268">{NUM_TABS,plural, =1{Vypnout zvuk karty}few{Vypnout zvuk karet}many{Vypnout zvuk karet}other{Vypnout zvuk karet}}</translation>
 <translation id="5179127818058486126">{NUM_TABS,plural, =1{Zapnout zvuk karty}few{Zapnout zvuk karet}many{Zapnout zvuk karet}other{Zapnout zvuk karet}}</translation>
+<translation id="2289567621059034186">Nová karta níže</translation>
+<translation id="3228962656492373217">Zavřít karty níže</translation>
 <translation id="2336228925368920074">Přidat do záložek všechny karty...</translation>
 <translation id="2523967823495420116">Používat vertikální karty</translation>
-<translation id="8888603463702767599">Zobrazit lištu s názvem</translation>
-<translation id="2058818256505091369">Obnovit přejetím myší</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{Vypnout zvuk karty}few{Vypnout zvuk karet}many{Vypnout zvuk karet}other{Vypnout zvuk karet}}</translation>
 <translation id="2120478168904746065">{NUM_TABS,plural, =1{Zapnout zvuk karty}few{Zapnout zvuk karet}many{Zapnout zvuk karet}other{Zapnout zvuk karet}}</translation>
+<translation id="4405580203042711503">Nová karta níže</translation>
+<translation id="5611474372949142946">Zavřít karty níže</translation>
 <translation id="3704707436873245822">Kopírovat text z obrázku</translation>
 <translation id="5268098808165185458">Probíhá kopírování textu z obrázku...</translation>
 <translation id="4046485130884276245">Text zkopírovaný z obrázku</translation>
@@ -238,6 +239,10 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="2307973900865360088">Ponechat v Docku</translation>
 <translation id="961012016278832836">Microsoft Edge Legacy</translation>
 <translation id="6436994631426134065">Importováno z <ph name="BROWSER_NAME"/>.</translation>
+<translation id="1386966479075994683">Rozbalit karty</translation>
+<translation id="480565261566115689">Minimalizovat karty</translation>
+<translation id="7194343495483122559">Rozbalit karty</translation>
+<translation id="1199054713803577378">Minimalizovat karty</translation>
 <translation id="9156965752763025780">Změny se projeví po příštím restartu prohlížeče Brave.</translation>
 <translation id="7179921470347911571">Znovu spustit</translation>
 <translation id="4472575034687746823">Začít</translation>
@@ -279,7 +284,7 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="2970343821770026391">Ovládací panel</translation>
 <translation id="3719826155360621982">Úvodní stránka</translation>
 <translation id="5448570825852364919">Prázdná stránka</translation>
-<translation id="5919424224662539292">Přizpůsobte si obrázek na pozadí a widgety, které se zobrazí na stránce nové karty</translation>
+<translation id="8244387390464017490">Přizpůsobit stránku nové karty</translation>
 <translation id="7461924472993315131">Připnout</translation>
 <translation id="7506648566440714944">Brave je již připnutý</translation>
 <translation id="239275665037555969">Dock</translation>
@@ -311,6 +316,7 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="3357319404342882895">Striktní</translation>
 <translation id="8823559166155093873">Blokovat cookies</translation>
 <translation id="5770288601196774623">Pouze napříč stránkami</translation>
+<translation id="6795317840397506736">Výchozí nastavení – zapomenout</translation>
 <translation id="3587482841069643663">Vše</translation>
 <translation id="7390783310074170337">Výchozí zobrazení</translation>
 <translation id="130615081792797568">Jednoduché zobrazení</translation>
@@ -337,7 +343,7 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="4182731739150761577">Zobrazit celý seznam</translation>
 <translation id="1340263054776016283">Zadejte odkaz na seznam filtrů</translation>
 <translation id="8578397014396032341">Filtry obsahu</translation>
-<translation id="6821903322090655051">Odměny Brave jsou vypnuté</translation>
+<translation id="5567412479632285879">Odměny Brave jsou vypnuté</translation>
 <translation id="413570371620795359">Otevřete panel Odměny pro aktivaci a začněte</translation>
 <translation id="3849957491997306859">Automatické rozpoznání</translation>
 <translation id="8798099450830957504">Výchozí</translation>
@@ -352,7 +358,6 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="7286722244752781970">Minimální doba přítomnosti na stránce před započítáním návštěvy</translation>
 <translation id="4424486208397124985">Minimální počet návštěv pro relevanci autora</translation>
 <translation id="6248554379744796526">Zobrazit neověřené stránky v seznamu</translation>
-<translation id="5510618543889994434">Povolit příspěvky k videím</translation>
 <translation id="924777189963477634">Zapnutím funkce automatického přispívání souhlasíte s <ph name="BEGIN_LINK_TOS"/>Podmínkami služby<ph name="END_LINK_TOS"/> a <ph name="BEGIN_LINK_PP"/>Zásadami ochrany osobních údajů<ph name="END_LINK_PP"/></translation>
 <translation id="6333347122924254968">Zobrazit ikonu Odměny Brave v adresním řádku</translation>
 <translation id="7483857210736407752">Zobrazovat na stránkách tlačítka s příspěvky</translation>
@@ -498,17 +503,30 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="1658670175365815312">Brave se přepne na verzi webu .onion, jakmile bude k dispozici, a automaticky otevře všechny domény .onion v okně Tor.</translation>
 <translation id="2896916411183256228">Používá WebTorrent k zobrazení torrentů přímo v prohlížeči. Podporuje torrentové soubory a odkazy magnet.</translation>
 <translation id="5249433283143453448">Používat k prohlížení chráněného streamovaného videa a dalšího obsahu v prohlížeči komponent Widevine pro správu digitálních práv (DRM).</translation>
+<translation id="1314131187310290315">Rozšíření Manifest V2</translation>
+<translation id="2488433650767270565">Následující Manifest V2 rozšíření budou odstraněna z webového obchodu Chrome, ale v Brave budou nadále podporována. Přepnutím je stáhnete a nainstalujete nebo odinstalujete.</translation>
+<translation id="578671172657727816">Zapnout NoScript™</translation>
+<translation id="9068475464170522036">NoScript je Manifest V2 rozšíření, které umožňuje blokovat nebo povolit jednotlivé skripty spuštěné nebo pokoušející se spustit na dané stránce.</translation>
+<translation id="1394592156621788100">Zapnout uBlock Origin™</translation>
+<translation id="2638983091068889519">uBlock Origin je Manifest V2 rozšíření, které nabízí výkonné nástroje pro blokování obsahu s mnoha možnostmi pro pokročilé uživatele.</translation>
+<translation id="3909078036552544838">Zapnout uMatrix™</translation>
+<translation id="8796148218203577506">uMatrix je Manifest V2 rozšíření, které nabízí bránu firewall s myší ovládaným maticovým nastavením s mnoha nástroji pro zvýšení ochrany soukromí.</translation>
+<translation id="2385774023523989298">Zapnout AdGuard™</translation>
+<translation id="188228077840632890">AdGuard je Manifest V2 rozšíření, které nabízí blokování reklam, možnosti rodičovské kontroly a integraci s dalšími službami AdGuard.</translation>
 <translation id="8137559199583651773">Správa rozšíření</translation>
 <translation id="7013485839273047434">Získejte další rozšíření</translation>
 <translation id="4954512758656527938">Základní peněženka Ethereum</translation>
 <translation id="7701023802820268122">Základní peněženka Solana</translation>
 <translation id="8488282162676695335">Peněženka Brave</translation>
 <translation id="2356070529366658676">Zeptat se</translation>
-<translation id="7701040980221191251">Žádné</translation>
+<translation id="6942354363301686374">Rozšíření (bez náhradního řešení)</translation>
 <translation id="1274962333945373242">Kryptopeněženky (zastaralé)</translation>
+<translation id="702381242110464396">Rozšíření (náhradní řešení Brave Wallet)</translation>
 <translation id="4718664830805652430">Výchozí základní měna</translation>
 <translation id="7992507032049865603">Výchozí základní kryptoměna</translation>
 <translation id="1834467296210148203">Zobrazit ikonu peněženky Brave na liště nástrojů</translation>
+<translation id="7568430944629653319">Zapnout zjišťování NFT</translation>
+<translation id="970496996377628529">Automaticky přidávat NFT, které vlastníte, do peněženky pomocí rozhraní API třetích stran.</translation>
 <translation id="8239147115686034860">Automatické zamykání peněženky Brave Wallet</translation>
 <translation id="414639769490080648">Počet minut, po kterých se peněženka Brave automaticky uzamkne.</translation>
 <translation id="856371974127598760">Sítě k dispozici</translation>
@@ -518,10 +536,15 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="464460032678285850">NFT, které jsou přidány do peněženky Brave, mohou být automaticky připnuty do místního uzlu IPFS.
     Poznámka: IPFS daemon může být spuštěn pro účely připnutí, aby váš místní uzel sdílel data z mezipaměti a připnutá NFT do sítě IPFS.</translation>
 <translation id="4993345308607970390">Resetovat peněženku Brave</translation>
+<translation id="5887022857624190239">Vymazat připnuté NFT</translation>
+<translation id="204584113330893805">Připnuté NFT jsou po spuštění místního uzlu IPFS hostovány v síti IPFS.
+    Počet připnutých NFT je v tuto chvíli <ph name="NFT_COUNT"/>.</translation>
 <translation id="9216386092464743272">Určitě chcete obnovit všechny transakce peněženky a informace o nonce? Tuto možnost většinou používají vývojáři provozující místní testovací server. Pro potvrzení napište „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
 <translation id="6369495274982305511">Určitě chcete obnovit peněženku? Pokud vaše peněženka není zálohovaná, obnovení způsobí ztrátu všech údajů o účtu (včetně všech přidružených prostředků). Pro potvrzení napište „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
+<translation id="4248533222660842025">Určitě si přejete vymazat připnuté NFT? Některé z NFT mohou být navždy ztraceny, pokud v síti IPFS není žádná jiná kopie. Pro potvrzení zadejte "<ph name="CONFIRMATION_PHRASE"/>".</translation>
 <translation id="3752403403443723332">Vaše peněženka byla resetována.</translation>
 <translation id="594766067816395072">Informace o transakcích vaší peněženky byly resetovány.</translation>
+<translation id="1615009913945115836">Vaše připnuté NFT byly resetovány.</translation>
 <translation id="1426410128494586442">Ano</translation>
 <translation id="4226543734057230801">Sítě Ethereum</translation>
 <translation id="3504157706952484145">Sítě Filecoin</translation>
