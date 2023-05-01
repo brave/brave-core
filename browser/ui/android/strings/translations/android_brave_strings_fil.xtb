@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="fil">
+<translation id="3478449063771497234">Naka-disable ang mga notification</translation>
+<translation id="7466579932043491502">Posibleng hindi gumana ang Mga Reward ng Brave habang naka-disable ang mga notification.</translation>
+<translation id="4259212006412783790">I-ON</translation>
+<translation id="6112331814131703370">I-block ang Mga Abisong 'Lumipat sa App'</translation>
 <translation id="4744921452903670666">Sabihin sa amin ang iyong saloobin!</translation>
 <translation id="2524310205387880526">Bigyan ng rating ang Brave</translation>
 <translation id="4104400246019119780">Salamat!</translation>
@@ -135,6 +139,10 @@
 <translation id="7459000603787995422">Isara ang mga tab sa paglabas</translation>
 <translation id="4448697385961650078">I-block ang mga tracker at ad</translation>
 <translation id="2448893613530489637">Hadlangan ang trackers at ads na mag-load at lumabas sa mga webpage</translation>
+<translation id="1025207378813960343">Tiyaking secure ang mga koneksyon sa mga website.</translation>
+<translation id="6686219838158572786">Kailangan ang lahat ng koneksyon para magamit ang HTTPS (mahigpit)</translation>
+<translation id="4221284400051835823">Mag-upgrade sa HTTPS kapag posible (mahigpit)</translation>
+<translation id="4690906712010847708">Huwag i-upgrade ang mga koneksyon sa HTTPS (naka-disable)</translation>
 <translation id="1680858055899097121">Huwag magpapanatili ng mga tab sa sesyon ng pag-browse</translation>
 <translation id="7142548388914389999">Payagan ang privacy-preserving product analytics (P3A)</translation>
 <translation id="5254037869598726291">Nakakatulong ang na-anonymize na impormasyon ng P3A sa Brave na matantya ang pangkalahatang paggamit, at matiyak na napapahusay namin ang mga kilalang feature</translation>
@@ -147,6 +155,10 @@
 <translation id="410351446219883937">I-autoplay</translation>
 <translation id="7445411102860286510">Payagan ang mga site na awtomatikong mag-play ng mga naka-mute na video (inirerekomenda)</translation>
 <translation id="7837721118676387834">Payagan ang pag-autoplay ng mga naka-mute na video para sa isang partikular na site.</translation>
+<translation id="4206299587103092719">Google Sign-In</translation>
+<translation id="9110294136812584522">Puwede hilingin ng Sites na gamitin ang legacy na Google Sign-In sa pamamagitan ng third-party na cookies</translation>
+<translation id="2903783737778379345">Huwag payagan ang legacy na Google Sign-In sa pamamagitan ng third-party na cookies</translation>
+<translation id="6880817299303842099">Pinapayagang gumamit ng third-party na cookies para sa legacy na Google Sign-In</translation>
 <translation id="181905442828471321">Mga global default ng Brave shields</translation>
 <translation id="2675679258824361492">Iba pang mga setting sa privacy</translation>
 <translation id="8026334261755873520">I-clear ang data sa pag-browse</translation>
@@ -208,7 +220,7 @@
 <translation id="5441565662498481293">Awtomatiko kang nagpapadala ng tip kay:</translation>
 <translation id="1628742278973105368">Ang una mong buwanang tip ay ipapadala sa:</translation>
 <translation id="1642952941091001113">Hindi pa nagsa-sign up ang creator na ito para makatanggap ng mga ambag mula sa mga user ng Brave. Patuloy naming susubukang mag-ambag hanggang sa mag-verify siya o hanggang sa lumipas ang 90 araw.</translation>
-<translation id="635752162765375187">TANDAAN: Kasalukuyang hindi pa na-configure ang creator na ito para tumanggap ng mga tip mula sa iyong Rewards custodial wallet service. Mananatiling nakabinbin ang anumang tip na ibibigay mo at awtomatikong susubukan ulit sa loob ng 90 araw.</translation>
+<translation id="8228150955416632026">Nakakonekta ka sa <ph name="WALLET_PROVIDER"/>, pero nakakonekta ang creator na ito sa <ph name="SUPPORTED_WALLET_PROVIDER"/>. Ibig sabihin, hindi makakarating sa creator na ito ang iyong tip. Sa ngayon, mananatiling nakabinbin ang anumang tip na gagawin mo at awtomatiko itong susubukan ulit sa loob ng 90 araw.</translation>
 <translation id="1910721550319506122">Welcome!</translation>
 <translation id="2734870894159530879">Mag-log in sa <ph name="WALLET_PROVIDER"/> para makita ang iyong balanse</translation>
 <translation id="5830114181292529917">Puwede mong suportahan ang site na ito sa pamamagitan ng pagpapadala ng tip. Paraan ito ng pasasalamat sa kanila dahil sa paggawa ng magandang content.</translation>
@@ -606,9 +618,11 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="4522570452068850558">Mga Detalye</translation>
 <translation id="3995184924764722477">Mga Detalye ng Account</translation>
 <translation id="8967036623785635603">I-edit ang mga nakikitang asset</translation>
+<translation id="8475984867371585028">I-edit ang mga nakikitang NFT</translation>
 <translation id="5050890334032852465">I-save ang watchlist ng account</translation>
 <translation id="7755766175599167100">Mga token ng paghahanap</translation>
 <translation id="3835223348537121988">Balanse:</translation>
+<translation id="3956169227169516344">Pumili ng Paraan ng Pagbili</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="3784455785234192852">Lock</translation>
 <translation id="8796429300536029044">Detalye ng NFT</translation>
@@ -622,8 +636,10 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="414639769490080648">Ang bilang ng minutong hihintayin hanggang awtomatikong ma-lock ang Brave Wallet</translation>
 <translation id="4993345308607970390">I-reset ang Brave Wallet</translation>
 <translation id="4322846864135539519">Sigurado ka bang gusto mong i-reset ang iyong wallet? Kung hindi naka-back up ang iyong Brave Wallet, mawawala ang lahat ng data ng iyong account kapag nag-reset (kabilang ang anumang nauugnay na pondo). I-type ang "<ph name="CONFIRMATION_PHRASE"/>" para kumpirmahin.</translation>
+<translation id="6915083716464390008">Pumili ng isa sa mga sumusnod na opsyon</translation>
 <translation id="7667423728712601865">Bumili ng crypto gamit ang Visa o Mastercard.</translation>
 <translation id="3101839349578102016">Instant na bumili gamit ang iyong bank account. Mas mabababang fee.</translation>
+<translation id="7269640984027668973">Bumili sa <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">I-clear ang transaksyon &amp; impormasyon ng nonce</translation>
 <translation id="5693968582510626466">Ang pag-clear sa mga transaksyon ay maaaring makatutulong sa mga developer o kapag nag-ayos ng katayuan sa isang local server</translation>
 <translation id="5421107279168565467">Sigurado ka bang gusto mong i-reset ang transaksyon at impormasyon ng nonce? Ang option na ito ay kadalasang ginagamit ng mga developer na nagpapatakbo ng local test server. I-type ang "<ph name="CONFIRMATION_PHRASE"/>" para kumpirmahin.</translation>
@@ -1039,4 +1055,78 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="1776742005329298234">Sa <ph name="DUE_DATE"/>, ititigil na namin ang pagsuporta sa mga umiiral na virtual BAT balance. Ikonekta ang isang custodial account bago ang petsang ito para mai-transfer namin ang naipon mong balance sa iyong custodial account, kung hindi, mawawala ang balance mo.</translation>
 <translation id="5089752671190341407">May panahon ka pa para iambag ang iyong vBAT sa mga paborito mong creator</translation>
 <translation id="171158953146804144">Sa <ph name="DUE_DATE"/>, ititigil na namin ang pagsuporta sa mga umiiral na virtual BAT balance. Sa kasamaang palad, walang available na custodian sa lugar mo (<ph name="REGION"/>) para i-withdraw ang mga ipon mo. Samantala, puwede ka pa ring mag-ambag sa iyong mga paboritong creator.</translation>
+<translation id="8949422576126100041">Tingnan ang page gamit ang Speedreader?</translation>
+<translation id="591648995518106347">Awtomatikong nilo-load ang mga kwalipikadong artikulo sa reader mode</translation>
+<translation id="5062934803872044756"><ph name="SYMBOL"/> sa <ph name="NETWORK"/></translation>
+<translation id="295620834661738195">Brave Playlist</translation>
+<translation id="4850886885716139402">View</translation>
+<translation id="7392941176393379100">Idinagdag sa '<ph name="PLAYLIST_NAME"/>'</translation>
+<translation id="8289472222022674331">Pamahalaan ang data ng iyong playlist</translation>
+<translation id="7650602357673790368">Bilang default, awtomatikong magse-save ang Playlist ng content sa iyong device para sa offline na pag-playback (sa mga pribado at nakabahaging playlist). Kung hindi ka gumagamit ng WiFi, gagamitin ng awtomatikong pag-save ang iyong cellular data.\n\nPara baguhin ang default na ito, gamitin ang mga setting.</translation>
+<translation id="5900576657906675258">Magdagdag ng item sa Playlist</translation>
+<translation id="349846214503465941">I-enable ang Playlist</translation>
+<translation id="1309636029062006520">Gumawa ng mga playlist ng iyong paboritong audio at mga video, at i-play ito kahit kailan, kahit saan.</translation>
+<translation id="7899390017499980820">Button na Idagdag sa Playlist</translation>
+<translation id="6901152954398668317">Ipakita o itago ang button na "Idagdag sa Playlist" para sa mabilis na pag-access para magdagdag o mag-alis ng media.</translation>
+<translation id="8404028031709373707">Awtomatikong Pag-play</translation>
+<translation id="597781019681241649">Ine-enable ang awtomatikong pag-play kapag nakabukas ang Playlist.</translation>
+<translation id="2625554376218216118">Simulan ang Pag-playback Kung Saan Ako Huminto</translation>
+<translation id="2953730196265332002">Awtomatikong i-sync ang anumang pagbabagong ginawa ng creator sa nakabahaging playlist.</translation>
+<translation id="3561815498111282415">Awtomatikong I-save para sa Offline</translation>
+<translation id="1832424694374124654">Awtomatikong sine-save ang mga bagong item sa playlist sa iyong device para ma-play mo nang walang koneksyon sa internet.</translation>
+<translation id="8103022210423023846">NAKA-ON ang Awtomatikong Pag-save</translation>
+<translation id="3926329432879804185">NAKA-OFF ang Awtomatikong Pag-save</translation>
+<translation id="7768812595186089508">Awtomatikong I-save lang kapag nakakonekta sa Wi-Fi</translation>
+<translation id="5939518447894949180">I-reset</translation>
+<translation id="8199028711686989861">Alisin ang lahat ng video sa Playlist, kasama ang storage ng offline mode.</translation>
+<translation id="5916664084637901428">Naka-on</translation>
+<translation id="5860033963881614850">Naka-off</translation>
+<translation id="2920568868625746681">WiFi Lang</translation>
+<translation id="4590997608186539865">Playlist</translation>
+<translation id="7525067979554623046">Gumawa</translation>
+<translation id="5491049004699827548">Gawin ang una mong playlist</translation>
+<translation id="5319108110887582146">Gumawa ng playlist ng iyong paboritong audio at mga video kahit kailan, kahit saan. Kahit offline.</translation>
+<translation id="6802849415466883498">Gumawa ng Playlist</translation>
+<translation id="8525248723479742219">I-play sa Ibang Pagkakataon</translation>
+<translation id="7453007860684252933">Mag-browse at magdagdag</translation>
+<translation id="9014883386413828317">Idagdag ang iyong paboritong content. Hanapin ang button na ( + ) sa ibabang bahagi sa kanan ng iyong screen.</translation>
+<translation id="5928669500312007783">Mag-browse ng media</translation>
+<translation id="8152485753254079984">Bagong playlist</translation>
+<translation id="9130105487623071247">Pangalan ng playlist</translation>
+<translation id="726581235416249619">Walang pamagat na playlist</translation>
+<translation id="1456254983411148628">Alisin ang Data</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/> ang Pinili</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/> (na) item</translation>
+<translation id="2317629745818459803">I-play Lahat</translation>
+<translation id="7544853251252956727">I-shuffle</translation>
+<translation id="2881339830231736485">Kamakailang na-play</translation>
+<translation id="7636458383879257005">I-tap, pindutin nang matagal, o i-drag</translation>
+<translation id="8120600068258956006">Idagdag sa Playlist</translation>
+<translation id="39991094779686024">Mga Playlist</translation>
+<translation id="1710072605877822603">Magdagdag ng media</translation>
+<translation id="903678009070770568">Magdagdag ng mga video sa Brave Playlist at panoorin sa ibang pagkakataon, kahit offline</translation>
+<translation id="3063627607780392015">Walang signal ng cellphone? Kailangang magpatahan ng toddler?</translation>
+<translation id="2041014734809158138">Nasa subway ka man, nasa eroplano, o mahabang pagbiyahe sa kotse, ang Playlist ang bahala sa iyo.</translation>
+<translation id="7287143275037417932">O kaya ay i-tap ang button ng Playlist kapag lumabas ito</translation>
+<translation id="6959838938954098206">Lalabas ang button ng Playlist kapag may media na idaragdag. Pindutin ito nang matagal para sa mga opsyon. Puwede mo rin itong itago.</translation>
+<translation id="3620862810055853183">Buksan ang Playlist</translation>
+<translation id="3861012838874771868">Buksan ang Mga Setting ng Playlist</translation>
+<translation id="5220099266891491416">Itago ang button ng Playlist</translation>
+<translation id="7416347631175891923">Subukan ito!</translation>
+<translation id="1173894706177603556">Pangalanang muli</translation>
+<translation id="1620612903815671893">Alisin ang offline na data ng playlist</translation>
+<translation id="3261711068865275261">Alisin ang lahat ng offline na data</translation>
+<translation id="6653691766801349738">Panatilihin ang playlist para sa offline na paggamit</translation>
+<translation id="8708086574143054053">Panatilihin ang lahat ng playlist para sa offline na paggamit</translation>
+<translation id="3596306474342941843">I-delete ang playlist</translation>
+<translation id="7765158879357617694">Ilipat</translation>
+<translation id="3803384303807438047">I-delete ang offline na data ng item</translation>
+<translation id="4195643157523330669">Buksan sa bagong tab</translation>
+<translation id="4243710787042215766">Buksan sa pribadong tab</translation>
+<translation id="8261506727792406068">I-delete</translation>
+<translation id="377872456482681602">Pumili muna ng mga item</translation>
+<translation id="6172429305139364624">Hindi naka-cache ang item sa playlist.\nPaki-cache ang item para sa offline mode.</translation>
+<translation id="3631131732607750008">Nag-expire ang content. Subukan ulit pagkalipas ng ilang segundo.</translation>
+<translation id="9085765419770918643">Wala pang NFT dito.</translation>
+<translation id="8445532667841598737">Handa nang magdagdag? I-click lang ang button sa ibaba para mag-import.</translation>
 </translationbundle>

@@ -139,6 +139,10 @@
 <translation id="7459000603787995422">Registerkarten beim Beenden schließen</translation>
 <translation id="4448697385961650078">Tracker &amp; Werbung blockieren</translation>
 <translation id="2448893613530489637">Verhindert, dass Tracker und Werbung auf Websites geladen und angezeigt werden</translation>
+<translation id="1025207378813960343">Stellen Sie sicher, dass die Verbindungen zu Webseiten sicher sind.</translation>
+<translation id="6686219838158572786">Alle Verbindungen müssen HTTPS verwenden (streng)</translation>
+<translation id="4221284400051835823">Wann immer möglich auf HTTPS upgraden (Standard)</translation>
+<translation id="4690906712010847708">Verbindungen nicht auf HTTPS upgraden (deaktiviert)</translation>
 <translation id="1680858055899097121">Registerkarten zwischen Browsersitzungen nicht beibehalten</translation>
 <translation id="7142548388914389999">Erlaubt Produktanalyse, die den Datenschutz respektiert (P3A)</translation>
 <translation id="5254037869598726291">Mit anonymisierten P3A-Informationen kann Brave die Gesamtnutzung einschätzen und sicherstellen, dass wir beliebte Funktionen verbessern.</translation>
@@ -151,6 +155,10 @@
 <translation id="410351446219883937">Autoplay</translation>
 <translation id="7445411102860286510">Automatische Wiedergabe stummgeschalteter Videos auf Websites zulassen (empfohlen)</translation>
 <translation id="7837721118676387834">Automatische Wiedergabe stummgeschalteter Videos für eine bestimmte Website zulassen.</translation>
+<translation id="4206299587103092719">Google-Anmeldung</translation>
+<translation id="9110294136812584522">Websites können über Cookies von Drittanbietern darum bitten, die alte Google-Anmeldung verwenden zu dürfen</translation>
+<translation id="2903783737778379345">Alte Google-Anmeldung über Cookies von Drittanbietern nicht zulassen</translation>
+<translation id="6880817299303842099">Berechtigt, Cookies von Drittanbietern für die alte Google-Anmeldung zu verwenden</translation>
 <translation id="181905442828471321">Globale Standardwerte für Brave Schutz</translation>
 <translation id="2675679258824361492">Andere Datenschutzeinstellungen</translation>
 <translation id="8026334261755873520">Browserdaten löschen</translation>
@@ -212,7 +220,7 @@
 <translation id="5441565662498481293">Sie senden automatisch Trinkgeld an:</translation>
 <translation id="1628742278973105368">Das erste monatliche Trinkgeld wird gesendet am:</translation>
 <translation id="1642952941091001113">Dieser Ersteller hat sich noch nicht registriert, um Beiträge von Brave-Nutzern zu erhalten. Wir werden weiter versuchen, Beiträge weiterzugeben, bis der Ersteller sich registriert hat oder bis 90 Tage vergangen sind.</translation>
-<translation id="635752162765375187">HINWEIS: Dieser Ersteller ist derzeit nicht dafür konfiguriert, Trinkgelder von Ihrem Belohnungs-Guthabenservice zu erhalten. Alle Trinkgelder, die Sie abgeben, bleiben ausstehend und der Vorgang wird automatisch 90 Tage lang erneut versucht.</translation>
+<translation id="8228150955416632026">Sie sind mit <ph name="WALLET_PROVIDER"/> verbunden, aber dieser Ersteller ist mit <ph name="SUPPORTED_WALLET_PROVIDER"/> verbunden. Das bedeutet, dass dieser Ersteller Ihr Trinkgeld nicht erhalten kann. Im Moment bleibt jedes Trinkgeld, das Sie geben, ausstehend und wird automatisch 90 Tage lang wiederholt.</translation>
 <translation id="1910721550319506122">Willkommen!</translation>
 <translation id="2734870894159530879">Anmelden, um <ph name="WALLET_PROVIDER"/> Ihren Kontostand zu sehen</translation>
 <translation id="5830114181292529917">Sie können diese Website mit einem Trinkgeld unterstützen und sich dadurch für die tollen Inhalte erkenntlich zeigen.</translation>
@@ -610,6 +618,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="4522570452068850558">Details</translation>
 <translation id="3995184924764722477">Accountdetails</translation>
 <translation id="8967036623785635603">Sichtbare Assets bearbeiten</translation>
+<translation id="8475984867371585028">Sichtbare NFTs bearbeiten</translation>
 <translation id="5050890334032852465">Konto-Überwachungsliste speichern</translation>
 <translation id="7755766175599167100">Token suchen</translation>
 <translation id="3835223348537121988">Guthaben:</translation>
@@ -1046,4 +1055,78 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="1776742005329298234">Am <ph name="DUE_DATE"/> werden wir die Unterstützung für bestehende virtuelle BAT-Guthaben einstellen. Verknüpfen Sie vor diesem Datum ein Depotkonto, damit wir Ihr verdientes Guthaben auf Ihr Depotkonto übertragen können. Andernfalls geht Ihr Guthaben verloren.</translation>
 <translation id="5089752671190341407">Sie haben noch Zeit, mit Ihren vBAT Ihre Lieblingsersteller zu unterstützen</translation>
 <translation id="171158953146804144">Am <ph name="DUE_DATE"/> werden wir die Unterstützung für bestehende virtuelle BAT-Guthaben einstellen. Leider gibt es in Ihrer Region (<ph name="REGION"/>) keine Depotbanken, bei denen Sie Ihre Einnahmen abheben könnten. Bis dahin können Sie Ihre Lieblingsersteller weiterhin mit Beiträgen unterstützen.</translation>
+<translation id="8949422576126100041">Seite mit Speedreader anzeigen?</translation>
+<translation id="591648995518106347">Berechtigte Artikel automatisch im Lesemodus laden</translation>
+<translation id="5062934803872044756"><ph name="SYMBOL"/> im <ph name="NETWORK"/></translation>
+<translation id="295620834661738195">Brave Playlist</translation>
+<translation id="4850886885716139402">Anzeigen</translation>
+<translation id="7392941176393379100">Zu '<ph name="PLAYLIST_NAME"/>' hinzugefügt</translation>
+<translation id="8289472222022674331">Verwaltung Ihrer Playlist-Daten</translation>
+<translation id="7650602357673790368">Standardmäßig speichert die Playlist Inhalte auf Ihrem Gerät, damit sie offline wiedergegeben werden können (sowohl auf privaten als auch auf freigegebenen Playlists). Wenn Sie nicht im WLAN sind, nutzt die automatische Speicherung Ihr mobiles Datenvolumen.\n\nSie können diesen Standard in den Einstellungen ändern.</translation>
+<translation id="5900576657906675258">Element zur Playlist hinzufügen</translation>
+<translation id="349846214503465941">Playlist aktivieren</translation>
+<translation id="1309636029062006520">Erstellen Sie Playlists aus Ihren liebsten Audios und Videos und spielen Sie sie überall und jederzeit ab.</translation>
+<translation id="7899390017499980820">Schaltfläche „Zur Playlist hinzufügen“</translation>
+<translation id="6901152954398668317">Schaltfläche "Zur Playlist hinzufügen" für schnellen Zugriff und zum Hinzufügen oder Entfernen von Medien anzeigen oder ausblenden.</translation>
+<translation id="8404028031709373707">Automatische Wiedergabe</translation>
+<translation id="597781019681241649">Aktiviert automatische Wiedergabe, wenn eine Playlist geöffnet wird.</translation>
+<translation id="2625554376218216118">Wiedergabe vom letzten Punkt fortsetzen</translation>
+<translation id="2953730196265332002">Alle Änderungen des Erstellers an einer freigegebenen Playlist automatisch synchronisieren.</translation>
+<translation id="3561815498111282415">Automatisch offline speichern</translation>
+<translation id="1832424694374124654">Speichert neue Playlist-Elemente automatisch auf Ihrem Gerät, damit sie ohne Internetverbindung wiedergegeben werden können.</translation>
+<translation id="8103022210423023846">Automatische Speicherung EIN</translation>
+<translation id="3926329432879804185">Automatische Speicherung AUS</translation>
+<translation id="7768812595186089508">Automatische Speicherung nur bei WLAN-Verbindung</translation>
+<translation id="5939518447894949180">Zurücksetzen</translation>
+<translation id="8199028711686989861">Alle Videos aus Playlist löschen, einschließlich Speicherung im Offline-Modus.</translation>
+<translation id="5916664084637901428">An</translation>
+<translation id="5860033963881614850">Aus</translation>
+<translation id="2920568868625746681">Nur WLAN</translation>
+<translation id="4590997608186539865">Playlist</translation>
+<translation id="7525067979554623046">Erstellen</translation>
+<translation id="5491049004699827548">Erstellen Sie Ihre erste Playlist</translation>
+<translation id="5319108110887582146">Erstellen Sie eine Playlist aus Ihren liebsten Audios und Videos und spielen Sie sie überall und jederzeit ab. Sogar offline.</translation>
+<translation id="6802849415466883498">Playlist erstellen</translation>
+<translation id="8525248723479742219">Später abspielen</translation>
+<translation id="7453007860684252933">Durchsuchen und hinzufügen</translation>
+<translation id="9014883386413828317">Fügen Sie Ihre Lieblingsinhalte hinzu. Achten Sie auf die Schaltfläche (+) im rechten unteren Bereich des Bildschirms.</translation>
+<translation id="5928669500312007783">Nach Medien suchen</translation>
+<translation id="8152485753254079984">Neue Playlist</translation>
+<translation id="9130105487623071247">Name der Playlist</translation>
+<translation id="726581235416249619">Unbenannte Playlist</translation>
+<translation id="1456254983411148628">Daten entfernen</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/> ausgewählt</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/> Elemente</translation>
+<translation id="2317629745818459803">Alle wiedergeben</translation>
+<translation id="7544853251252956727">Zufallsmix</translation>
+<translation id="2881339830231736485">Kürzlich wiedergegeben</translation>
+<translation id="7636458383879257005">Tippen, gedrückt halten oder ziehen</translation>
+<translation id="8120600068258956006">Zur Playlist hinzufügen</translation>
+<translation id="39991094779686024">Playlisten</translation>
+<translation id="1710072605877822603">Medien hinzufügen</translation>
+<translation id="903678009070770568">Videos zur Brave-Playlist hinzufügen und später ansehen, auch offline</translation>
+<translation id="3063627607780392015">Sind Sie außerhalb des Netzbereichs? Müssen Sie ein schreiendes Kleinkind beruhigen?</translation>
+<translation id="2041014734809158138">Egal ob Sie in der U-Bahn, im Flugzeug oder auf einer langen Autofahrt sind, die Playlist ist für Sie da.</translation>
+<translation id="7287143275037417932">Oder tippen Sie auf die Schaltfläche Playlist, wenn sie angezeigt wird.</translation>
+<translation id="6959838938954098206">Die Schaltfläche Playlist wird angezeigt, wenn Medien hinzugefügt werden können. Halten Sie sie gedrückt, um Optionen anzuzeigen. Sie können Sie auch ausblenden.</translation>
+<translation id="3620862810055853183">Playlist öffnen</translation>
+<translation id="3861012838874771868">Playlist-Einstellungen öffnen</translation>
+<translation id="5220099266891491416">Schaltfläche Playlist ausblenden</translation>
+<translation id="7416347631175891923">Probieren Sie es!</translation>
+<translation id="1173894706177603556">Umbenennen</translation>
+<translation id="1620612903815671893">Offlinedaten der Playlist entfernen</translation>
+<translation id="3261711068865275261">Alle Offline-Daten entfernen</translation>
+<translation id="6653691766801349738">Playlist für Offline-Nutzung behalten</translation>
+<translation id="8708086574143054053">Alle Playlists für Offline-Nutzung behalten</translation>
+<translation id="3596306474342941843">Playlist löschen</translation>
+<translation id="7765158879357617694">Verschieben</translation>
+<translation id="3803384303807438047">Offline-Daten des Elements löschen</translation>
+<translation id="4195643157523330669">In neuem Tab öffnen</translation>
+<translation id="4243710787042215766">In privater Registerkarte öffnen</translation>
+<translation id="8261506727792406068">Löschen</translation>
+<translation id="377872456482681602">Bitte wählen Sie zuerst Elemente aus</translation>
+<translation id="6172429305139364624">Playlist-Element wird nicht zwischengespeichert.\nBitte zwischenspeichern Sie das Element zur Offline-Nutzung.</translation>
+<translation id="3631131732607750008">Inhalt abgelaufen. Versuchen Sie es in ein paar Sekunden erneut.</translation>
+<translation id="9085765419770918643">Es gibt noch keine NFTs hier.</translation>
+<translation id="8445532667841598737">Bereit, einige hinzuzufügen? Klicken Sie zum Importieren einfach auf die untenstehende Schaltfläche.</translation>
 </translationbundle>

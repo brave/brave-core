@@ -27,7 +27,9 @@
           &gt;
           <ph name="PROXIES_TITLE"/>
           và đảm bảo cấu hình của bạn được đặt thành "không có proxy" hoặc "trực tiếp".</translation>
+<translation id="2765022094254723779">Brave cũng được cung cấp thông qua <ph name="BEGIN_LINK_OSS"/>phần mềm nguồn mở<ph name="END_LINK_OSS"/> khác.</translation>
 <translation id="9156965752763025780">Các thay đổi của bạn sẽ có hiệu lực vào lần tới khi bạn chạy lại Brave.</translation>
+<translation id="6477625882876869143">Brave được cung cấp thông qua dự án nguồn mở <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/>.</translation>
 <translation id="4068928808254189629">Chuyển đến
           menu Brave &gt;
           <ph name="SETTINGS_TITLE"/>

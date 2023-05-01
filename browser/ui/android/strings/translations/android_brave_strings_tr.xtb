@@ -139,6 +139,10 @@
 <translation id="7459000603787995422">Çıkışta sekmeleri kapat</translation>
 <translation id="4448697385961650078">İzleyicileri &amp; reklamları engelle</translation>
 <translation id="2448893613530489637">Web sayfalarında izleyicilerin &amp; reklamların yüklenmesini ve gösterilmesini önler</translation>
+<translation id="1025207378813960343">Web sitelerin bağlantılarının güvenli olduğundan emin ol.</translation>
+<translation id="6686219838158572786">Tüm bağlantıların HTTPS kullanmasını zorunlu kıl (katı)</translation>
+<translation id="4221284400051835823">Mümkün olduğunda HTTPS'ye yükselt (varsayılan)</translation>
+<translation id="4690906712010847708">Bağlantıları HTTPS'e yükseltme (devre dışı)</translation>
 <translation id="1680858055899097121">Göz atma oturumları arasında sekmeleri açık bırakmayın</translation>
 <translation id="7142548388914389999">Gizlilik korumalı ürün analizine izin ver (P3A)</translation>
 <translation id="5254037869598726291">Anonimleştirilmiş P3A bilgisi, Brave'in genel kullanımı tahmin etmesine yardımcı olur ve popüler özellikleri geliştirmeye devam etmemizi garanti eder.</translation>
@@ -151,6 +155,10 @@
 <translation id="410351446219883937">Otomatik oynatma</translation>
 <translation id="7445411102860286510">Sitelerin, sesi kapatılmış videoları otomatik olarak oynatmasına izin ver (önerilen)</translation>
 <translation id="7837721118676387834">Belirli bir sitenin, sesi kapatılmış videoları otomatik olarak oynatmasına izin verin.</translation>
+<translation id="4206299587103092719">Google Oturum Açma</translation>
+<translation id="9110294136812584522">Siteler üçüncü taraf çerezler aracılığıyla eski Google Oturum Açma'yı kullanmak isteyebilir</translation>
+<translation id="2903783737778379345">Üçüncü taraf çerezler aracılığıyla eski Google Oturum Açma'ya izin verme</translation>
+<translation id="6880817299303842099">Eski Google Oturum Açma için üçüncü taraf çerezlerin kullanımına izin verilir</translation>
 <translation id="181905442828471321">Brave kalkanları genel varsayılanları</translation>
 <translation id="2675679258824361492">Diğer gizlilik ayarları</translation>
 <translation id="8026334261755873520">Tarama verilerini temizle</translation>
@@ -212,7 +220,7 @@
 <translation id="5441565662498481293">Otomatik olarak bir bahşiş gönderiyorsunuz:</translation>
 <translation id="1628742278973105368">İlk aylık bahşişiniz şu tarihte gönderilecek:</translation>
 <translation id="1642952941091001113">Bu oluşturucu, Brave kullanıcılarından katkı almak için henüz kaydolmadı. Kendisi doğrulama yapana veya 90 gün geçene kadar katkı yapmayı deneyeceğiz.</translation>
-<translation id="635752162765375187">NOT: Bu oluşturucu şu an Ödüller korumalı cüzdan hizmetinizden bahşiş alacak şekilde yapılandırılmadı. Gönderdiğiniz bütün bahşişler beklemede kalacak ve 90 gün boyunca otomatik olarak yeniden denenecektir.</translation>
+<translation id="8228150955416632026"><ph name="WALLET_PROVIDER"/> öğesine bağlandınız fakat bu oluşturucu <ph name="SUPPORTED_WALLET_PROVIDER"/> öğesine bağlı. Bu durum, bu oluşturucuya bahşiş veremeyeceğiniz anlamına geliyor. Şimdilik, verdiğiniz herhangi bir bahşiş beklemede kalacak ve 90 gün boyunca otomatik olarak tekrar denenecek.</translation>
 <translation id="1910721550319506122">Hoş geldiniz!</translation>
 <translation id="2734870894159530879">Bakiyenizi görmek için <ph name="WALLET_PROVIDER"/> giriş yapın.</translation>
 <translation id="5830114181292529917">Bahşiş göndererek bu siteyi destekleyebilirsiniz. Bu, harika içerikler için onlara teşekkür etmenin bir yoludur.</translation>
@@ -611,6 +619,7 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="4522570452068850558">Detaylar</translation>
 <translation id="3995184924764722477">Hesap Detayları</translation>
 <translation id="8967036623785635603">Görünür varlıkları düzenle</translation>
+<translation id="8475984867371585028">Görünür NFT'leri düzenle</translation>
 <translation id="5050890334032852465">Hesap izleme listesini kaydet</translation>
 <translation id="7755766175599167100">Belirteçler ara</translation>
 <translation id="3835223348537121988">Bakiye:</translation>
@@ -1047,4 +1056,78 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="1776742005329298234"><ph name="DUE_DATE"/> tarihinde, mevcut BAT bakiyeleri için destek vermeyi durduracağız. Kazandığınız bakiyenizi korumalı hesabınıza aktarabilmemiz için bu tarihten önce bir korumalı hesap bağlayın, aksi takdirde bakiyenizi kaybedersiniz.</translation>
 <translation id="5089752671190341407">Favori oluşturucularınıza vBAT bağışı yapmak için hala zamanınız var</translation>
 <translation id="171158953146804144"><ph name="DUE_DATE"/> tarihinde, mevcut BAT bakiyeleri için destek vermeyi durduracağız. Ne yazık ki bölgenizde (<ph name="REGION"/>) kazancınızı çekebileceğiniz kullanılabilir korumalı hesaplar mevcut değil. O zamana kadar, favori oluşturucularınıza destek vermeye devam edebilirsiniz.</translation>
+<translation id="8949422576126100041">Sayfa Speedreader ile görüntülensin mi?</translation>
+<translation id="591648995518106347">Uygun makaleleri otomatik olarak okuyucu moduna yükler</translation>
+<translation id="5062934803872044756"><ph name="NETWORK"/> üzerinde <ph name="SYMBOL"/></translation>
+<translation id="295620834661738195">Brave Oynatma Listesi</translation>
+<translation id="4850886885716139402">Görüntüle</translation>
+<translation id="7392941176393379100">Şuna eklendi: "<ph name="PLAYLIST_NAME"/>"</translation>
+<translation id="8289472222022674331">Oynatma listesi verilerinizin yönetimi</translation>
+<translation id="7650602357673790368">Varsayılan olarak, Oynatma Listesi çevrimdışı oynatma (gizli ve paylaşılan çalma listelerinde) için içerikleri otomatik olarak cihazınıza kaydedecektir. WiFi'ye bağlı değilseniz, otomatik kaydetme hücresel verilerinizi kullanacaktır.\n\nBu varsayılan özelliği değiştirmek için ayarları kullanın.</translation>
+<translation id="5900576657906675258">Oynatma Listesine öğe ekle</translation>
+<translation id="349846214503465941">Oynatma Listesini etkinleştir</translation>
+<translation id="1309636029062006520">Favori ses ve videolarınızdan bir oynatma listesi oluşturun ve dilediğiniz yerde, dilediğiniz zaman oynatın.</translation>
+<translation id="7899390017499980820">Oynatma Listesi Düğmesine Ekle</translation>
+<translation id="6901152954398668317">Medya eklemek veya kaldırmak üzere hızlı erişim için "Oynatma Listesine Ekle" düğmesini göster veya gizle.</translation>
+<translation id="8404028031709373707">Otomatik Oynat</translation>
+<translation id="597781019681241649">Oynatma Listesi açıldığında otomatik oynatmayı etkinleştirir.</translation>
+<translation id="2625554376218216118">Oynatmayı Kaldığım Yerden Başlat</translation>
+<translation id="2953730196265332002">Oluşturucunun paylaşılan oynatma listesinde yaptığı tüm değişiklikleri otomatik olarak senkronize eder.</translation>
+<translation id="3561815498111282415">Çevrimdışı kullanım için Otomatik Kaydet</translation>
+<translation id="1832424694374124654">Oynatma listesi öğelerinizi otomatik olarak cihazınıza kaydeder, böylece internet bağlantısı olmadan bunları oynatabilirsiniz.</translation>
+<translation id="8103022210423023846">Otomatik Kaydet AÇIK</translation>
+<translation id="3926329432879804185">Otomatik Kaydet KAPALI</translation>
+<translation id="7768812595186089508">Yalnızca Wi-Fi'ye bağlıyken Otomatik Kaydet</translation>
+<translation id="5939518447894949180">Reset</translation>
+<translation id="8199028711686989861">Çevrimdışı mod depolama alanı dahil olmak üzere tüm videoları Oynatma Listesinden kaldır.</translation>
+<translation id="5916664084637901428">Açık</translation>
+<translation id="5860033963881614850">Kapalı</translation>
+<translation id="2920568868625746681">Yalnızca WiFi</translation>
+<translation id="4590997608186539865">Oynatma listesi</translation>
+<translation id="7525067979554623046">Yarat</translation>
+<translation id="5491049004699827548">İlk oynatma listenizi oluşturun</translation>
+<translation id="5319108110887582146">Favori ses ve videolarınızdan oluşan bir oynatma listesi oluşturun ve dilediğiniz zaman, dilediğiniz yerde oynatın. Buna çevrimdışı da dahildir.</translation>
+<translation id="6802849415466883498">Oynatma Listesi oluştur</translation>
+<translation id="8525248723479742219">Daha Sonra Oynat</translation>
+<translation id="7453007860684252933">Göz at ve ekle</translation>
+<translation id="9014883386413828317">Favori içeriklerinizi ekleyin. Ekranınızın sağ alt köşesinde yer alan ( + ) düğmesini arayın.</translation>
+<translation id="5928669500312007783">Medya için göz at</translation>
+<translation id="8152485753254079984">Yeni oynatma listesi</translation>
+<translation id="9130105487623071247">Oynatma listesi adı</translation>
+<translation id="726581235416249619">Adsız oynatma listesi</translation>
+<translation id="1456254983411148628">Verileri Kaldır</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/> Seçildi</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/> öğe</translation>
+<translation id="2317629745818459803">Tümünü Oynat</translation>
+<translation id="7544853251252956727">Karıştır</translation>
+<translation id="2881339830231736485">Son oynatılanlar</translation>
+<translation id="7636458383879257005">Dokunun, uzun basın veya sürükleyin</translation>
+<translation id="8120600068258956006">Oynatma Listesine ekle</translation>
+<translation id="39991094779686024">Oynatma listeleri</translation>
+<translation id="1710072605877822603">Medya ekle</translation>
+<translation id="903678009070770568">Brave Oynatma Listesine videolar ekleyin ve çevrimdışı da dahil olmak üzere daha sonra izleyin</translation>
+<translation id="3063627607780392015">Telefonunuz mu çekmiyor? Ağlayan bebeğinizi sakinleştirmeniz mi gerekiyor?</translation>
+<translation id="2041014734809158138">İster metroda, ister uçakta, ister uzun bir araba yolculuğunda olun, Oynatma Listesi yardımınıza koşar.</translation>
+<translation id="7287143275037417932">Veya göründüğünde Oynatma Listesi düğmesine dokunun</translation>
+<translation id="6959838938954098206">Oynatma Listesi düğmesi, eklenecek medya olduğunda görünür. Seçenekleri görmek için uzun basın. İsterseniz gizleyebilirsiniz.</translation>
+<translation id="3620862810055853183">Oynatma Listesi Aç</translation>
+<translation id="3861012838874771868">Oynatma Listesi Ayarlarını Aç</translation>
+<translation id="5220099266891491416">Oynatma Listesi Düğmesini Gizle</translation>
+<translation id="7416347631175891923">Deneyin!</translation>
+<translation id="1173894706177603556">Yeniden adlandır</translation>
+<translation id="1620612903815671893">Çevrimdışı oynatma listesi verilerini kaldır</translation>
+<translation id="3261711068865275261">Tüm çevrimdışı verileri kaldır</translation>
+<translation id="6653691766801349738">Oynatma listesini çevrimdışı kullanım için tut</translation>
+<translation id="8708086574143054053">Tüm oynatma listelerini çevrimdışı kullanım için tut</translation>
+<translation id="3596306474342941843">Oynatma listesini sil</translation>
+<translation id="7765158879357617694">Taşı</translation>
+<translation id="3803384303807438047">Öğenin çevrimdışı verilerini sil</translation>
+<translation id="4195643157523330669">Yeni sekmede aç</translation>
+<translation id="4243710787042215766">Gizli sekmede aç</translation>
+<translation id="8261506727792406068">Sil</translation>
+<translation id="377872456482681602">Lütfen önce öğeleri seçin</translation>
+<translation id="6172429305139364624">Oynatma listesi verileri önbelleğe alınmamış.\nLütfen çevrimdışı mod için öğeyi önbelleğe alın.</translation>
+<translation id="3631131732607750008">İçeriğin süresi doldu. Birkaç saniye içinde tekrar deneyin.</translation>
+<translation id="9085765419770918643">Burada henüz NFT yok.</translation>
+<translation id="8445532667841598737">Eklemeye hazır mısınız? İçe aktarmak için sadece aşağıdaki düğmeye tıklayın.</translation>
 </translationbundle>

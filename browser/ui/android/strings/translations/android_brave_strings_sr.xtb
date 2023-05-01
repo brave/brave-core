@@ -139,6 +139,10 @@
 <translation id="7459000603787995422">Zatvorite kartice pri izlazu</translation>
 <translation id="4448697385961650078">Blokiraj tragače &amp; oglase</translation>
 <translation id="2448893613530489637">Sprečava oglase &amp; tragača da se učitaju i pojavljuju na veb-sajtovima</translation>
+<translation id="1025207378813960343">Osigurava da su veze sa veb-sajtovima bezbedne.</translation>
+<translation id="6686219838158572786">Zahteva da sve veze koriste HTTPS (strogo)</translation>
+<translation id="4221284400051835823">Nadogradnja na HTTPS kad god je moguće (standardno)</translation>
+<translation id="4690906712010847708">Ne nadograđivati veze na HTTPS (onemogućeno)</translation>
 <translation id="1680858055899097121">Ne zadržavaj kartice između sesija pregledanja</translation>
 <translation id="7142548388914389999">Dopušta analitiku proizvoda koji čuva privatnost (P3A)</translation>
 <translation id="5254037869598726291">Anonimizovane P3A informacije pomažu kompaniji Brave da proceni ukupnu upotrebu popularnih karakteristika i da zasigura njihovo unapređenje.</translation>
@@ -151,6 +155,10 @@
 <translation id="410351446219883937">Аутоплеј</translation>
 <translation id="7445411102860286510">Дозволи сајтовима да аутоматски пуштају видео снимке са искљученим звуком (препоручено)</translation>
 <translation id="7837721118676387834">Дозволите аутоплеј за видео снимке са искљученим звуком за одређени сајт.</translation>
+<translation id="4206299587103092719">Google prijavljivanje</translation>
+<translation id="9110294136812584522">Veb-sajtovi mogu zatražiti da se koristi zastarelo prijavljivanje na Google preko kolačića treće strane</translation>
+<translation id="2903783737778379345">Ne dozvolite zastarelo prijavljivanje na Google preko kolačića treće strane</translation>
+<translation id="6880817299303842099">Dozvoljena je upotreba kolačića trećih strana za zastarelo prijavljivanje na Google</translation>
 <translation id="181905442828471321">Brave štiti globalne podrazumevane vrednosti</translation>
 <translation id="2675679258824361492">Ostala podešavanja privatnosti</translation>
 <translation id="8026334261755873520">Обришите податке прегледања</translation>
@@ -212,7 +220,7 @@
 <translation id="5441565662498481293">Ne šaljete automatski napojnicu ka:</translation>
 <translation id="1628742278973105368">Vaša prva mesečna napojnica će biti poslata na:</translation>
 <translation id="1642952941091001113">Ovaj kreator se još nije prijavio za primanje doprinosa od strane Brave korisnika. I dalje ćemo pokušavati da doprinesemo dok oni ne potvrde, ili dok ne prođe 90 dana.</translation>
-<translation id="635752162765375187">NAPOMENA: Ovaj kreator trenutno nije konfigurisan za primanje napojnica iz usluge novčanika za  nagrade pod vašim nadzorom. Sve napojnice koje pošaljete ostaće na čekanju i ponovno slanje će se automatski pokušati u roku od 90 dana.</translation>
+<translation id="8228150955416632026">Povezani ste na <ph name="WALLET_PROVIDER"/>, ali ovaj autor je povezan na <ph name="SUPPORTED_WALLET_PROVIDER"/>. To znači da vaša napojnica ne može da stigne do ovog autora. Za sada će svaka napojnica koju date ostati na čekanju i automatski će se ponavljati pokušaj njenog dostavljanja tokom narednih 90 dana.</translation>
 <translation id="1910721550319506122">Dobro došli!</translation>
 <translation id="2734870894159530879">Prijavite se na <ph name="WALLET_PROVIDER"/> da biste videli svoj saldo</translation>
 <translation id="5830114181292529917">Slanjem napojnica možete pružiti podršku ovom sajtu. To je način da mu se zahvalite što je napravio sjajan sadržaj.</translation>
@@ -610,6 +618,7 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="4522570452068850558">Detalji</translation>
 <translation id="3995184924764722477">Detalji naloga</translation>
 <translation id="8967036623785635603">Izmenite vidljiva sredstva</translation>
+<translation id="8475984867371585028">Izmenite vidljive NFT tokene</translation>
 <translation id="5050890334032852465">Sačuvajte listu za pregled naloga</translation>
 <translation id="7755766175599167100">Pretražite tokene</translation>
 <translation id="3835223348537121988">Bilans:</translation>
@@ -1046,4 +1055,78 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="1776742005329298234">Dana <ph name="DUE_DATE"/> , ukidamo podršku za postojeće virtuelne BAT bilanse. Povežite skrbnički račun pre ovog datuma kako bismo mogli da prenesemo vaše zarađeno stanje na vaš skrbnički račun, inače će vaše stanje biti izgubljeno.</translation>
 <translation id="5089752671190341407">Još uvek imate vremena da doprinesete svojim vBAT-om svojim omiljenim kreatorima</translation>
 <translation id="171158953146804144">Dana <ph name="DUE_DATE"/>, ukidamo podršku za postojeće virtuelne BAT bilanse. Nažalost, u vašem regionu nema dostupnih skrbnika (<ph name="REGION"/>) za povlačenje vaše zarade. Do tada još uvek možete da date doprinos svojim omiljenim kreatorima.</translation>
+<translation id="8949422576126100041">Želite li da prikažete stranicu pomoću režima Speedreader?</translation>
+<translation id="591648995518106347">Automatski učitava članke kod kojih je to moguće u režimu čitača</translation>
+<translation id="5062934803872044756"><ph name="SYMBOL"/> na <ph name="NETWORK"/></translation>
+<translation id="295620834661738195">Brave lista za reprodukovanje</translation>
+<translation id="4850886885716139402">Приказ</translation>
+<translation id="7392941176393379100">Dodato je na '<ph name="PLAYLIST_NAME"/>'</translation>
+<translation id="8289472222022674331">Upravljanje podacima liste za reprodukovanje</translation>
+<translation id="7650602357673790368">Standardno je podešeno da lista za reprodukovanje automatski čuva sadržaj na vašem uređaju radi oflajn reprodukovanja (na privatnim i na deljenim listama za reprodukovanje). Ako niste povezani na Wi-Fi, automatsko čuvanje će koristiti vaše mobilne podatke.\n\nDa biste promenili ovo standardno podešavanje, koristite podešavanja.</translation>
+<translation id="5900576657906675258">Dodaj stavku na listu za reprodukovanje</translation>
+<translation id="349846214503465941">Omogući listu za reprodukovanje</translation>
+<translation id="1309636029062006520">Napravite liste za reprodukovanje omiljenih audio i video sadržaja i reprodukujte ih bilo kada, bilo gde.</translation>
+<translation id="7899390017499980820">Dugme „Dodaj na listu za reprodukovanje“</translation>
+<translation id="6901152954398668317">Prikazuje ili sakriva dugme „Dodaj na listu za reprodukovanje“ za brzi pristup dodavanju ili uklanjanju medija.</translation>
+<translation id="8404028031709373707">Automatsko reprodukovanje</translation>
+<translation id="597781019681241649">Omogućuje automatsku reprodukciju kada se otvori lista za reprodukovanje.</translation>
+<translation id="2625554376218216118">Započni reprodukovanje tamo gde sam stao</translation>
+<translation id="2953730196265332002">Automatski sinhronizuje sve promene koje autor napravi na deljenoj listi za reprodukovanje.</translation>
+<translation id="3561815498111282415">Automatsko čuvanje za oflajn korišćenje</translation>
+<translation id="1832424694374124654">Automatski čuva na vašem uređaju nove stavke na listi za reprodukovanje, tako da ih možete reprodukovati iako niste povezani sa internetom.</translation>
+<translation id="8103022210423023846">Automatsko čuvanje UKLJUČENO</translation>
+<translation id="3926329432879804185">Automatsko čuvanje ISKLJUČENO</translation>
+<translation id="7768812595186089508">Automatsko čuvanje samo kada postoji Wi-Fi veza</translation>
+<translation id="5939518447894949180">Ресетуј</translation>
+<translation id="8199028711686989861">Uklanja sve video sadržaje sa liste za reprodukovanje, uključujući i memoriju za oflajn režim.</translation>
+<translation id="5916664084637901428">Укључено</translation>
+<translation id="5860033963881614850">Isključeno</translation>
+<translation id="2920568868625746681">Samo Wi-Fi</translation>
+<translation id="4590997608186539865">Lista za reprodukovanje</translation>
+<translation id="7525067979554623046">Направи</translation>
+<translation id="5491049004699827548">Napravite svoju prvu listu za reprodukovanje</translation>
+<translation id="5319108110887582146">Napravite listu za reprodukovanje omiljenih audio i video sadržaja i reprodukujte ih bilo kada, bilo gde. Čak i kada ste oflajn.</translation>
+<translation id="6802849415466883498">Napravi listu za reprodukovanje</translation>
+<translation id="8525248723479742219">Reprodukuj kasnije</translation>
+<translation id="7453007860684252933">Pregledajte i dodajte</translation>
+<translation id="9014883386413828317">Dodajte svoj omiljeni sadržaj. Potražite dugme (+) u donjem desnom uglu ekrana.</translation>
+<translation id="5928669500312007783">Pregledajte medije</translation>
+<translation id="8152485753254079984">Nova lista za reprodukovanje</translation>
+<translation id="9130105487623071247">Naziv liste za reprodukovanje</translation>
+<translation id="726581235416249619">Lista za reprodukovanje bez naslova</translation>
+<translation id="1456254983411148628">Ukloni podatke</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/> Izabrano</translation>
+<translation id="8617390509150638117">Broj stavki: <ph name="NUMBER"/></translation>
+<translation id="2317629745818459803">Reprodukuj sve</translation>
+<translation id="7544853251252956727">Пусти насумично</translation>
+<translation id="2881339830231736485">Nedavno reprodukovano</translation>
+<translation id="7636458383879257005">Dodirnite, pritisnite i zadržite ili prevucite</translation>
+<translation id="8120600068258956006">Dodaj na listu za reprodukovanje</translation>
+<translation id="39991094779686024">Liste za reprodukovanje</translation>
+<translation id="1710072605877822603">Dodaj medije</translation>
+<translation id="903678009070770568">Dodajte video sadržaje na Brave listu za reprodukovanje i gledajte ih kasnije, čak i kada ste oflajn</translation>
+<translation id="3063627607780392015">Ostali ste bez mobilnog signala? Treba da umirite detence koje plače?</translation>
+<translation id="2041014734809158138">Bilo da se vozite metroom, avionom ili dugo putujete automobilom, lista za reprodukovanje ima sve što vam je potrebno.</translation>
+<translation id="7287143275037417932">Ili dodirnite dugme za listu za reprodukovanje kada se ono pojavi</translation>
+<translation id="6959838938954098206">Dugme za listu za reprodukovanje se pojavljuje kada ima medija za dodavanje. Pritisnite i zadržite da biste videli opcije. Možete i da ga sakrijete.</translation>
+<translation id="3620862810055853183">Otvori listu za reprodukovanje</translation>
+<translation id="3861012838874771868">Otvori podešavanja liste za reprodukovanje</translation>
+<translation id="5220099266891491416">Sakrij dugme za listu za reprodukovanje</translation>
+<translation id="7416347631175891923">Isprobajte!</translation>
+<translation id="1173894706177603556">Преименуј</translation>
+<translation id="1620612903815671893">Ukloni oflajn podatke liste za reprodukovanje</translation>
+<translation id="3261711068865275261">Ukloni sve oflajn podatke</translation>
+<translation id="6653691766801349738">Zadrži listu za reprodukovanje za oflajn korišćenje</translation>
+<translation id="8708086574143054053">Zadrži sve liste za reprodukovanje za oflajn korišćenje</translation>
+<translation id="3596306474342941843">Izbriši listu za reprodukovanje</translation>
+<translation id="7765158879357617694">Премести</translation>
+<translation id="3803384303807438047">Izbriši oflajn podatke stavke</translation>
+<translation id="4195643157523330669">Отвори у новој картици</translation>
+<translation id="4243710787042215766">Otvori u privatnoj kartici</translation>
+<translation id="8261506727792406068">Избриши</translation>
+<translation id="377872456482681602">Prvo izaberite stavke</translation>
+<translation id="6172429305139364624">Stavka liste za reprodukovanje nije keširana.\nKeširajte stavku za oflajn režim.</translation>
+<translation id="3631131732607750008">Sadržaj je istekao. Pokušajte ponovo za nekoliko sekundi.</translation>
+<translation id="9085765419770918643">Ovde još nema NFT.</translation>
+<translation id="8445532667841598737">Da li ste spremni da dodate neke? Samo kliknite na donje dugme za uvoz.</translation>
 </translationbundle>

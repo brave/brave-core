@@ -56,10 +56,19 @@
 <translation id="2515126961943087659">Bat விளம்பரங்கள் சேவை</translation>
 <translation id="6040143037577758943">மூடு</translation>
 <translation id="1516554614404600536">பிரேவ் கருவிக்குறிப்பு</translation>
+<translation id="4375473250631001683">பக்கப்பட்டைப் படவுருவை மறை</translation>
+<translation id="2613033293035359003">பக்கப்பட்டையை மறை</translation>
+<translation id="4233010476457917696">பக்கப்பட்டையைக் காட்டு</translation>
+<translation id="7829322605042304637">பக்கப்பட்டைப் படவுருவை மறை</translation>
+<translation id="7349915168363514678">பக்கப்பட்டையை மறை</translation>
+<translation id="5404213409401164238">பக்கப்பட்டையைக் காட்டு</translation>
 <translation id="9149866541089851383">மாற்று...</translation>
 <translation id="1181037720776840403">நீக்கு</translation>
 <translation id="4002066346123236978">தலைப்பு</translation>
 <translation id="7400418766976504921">உரலி</translation>
+<translation id="5877900074358050101">பக்கப்பட்டை உருப்படி தலைப்பு</translation>
+<translation id="1613695740874407223">பக்கப்பட்டை உருப்படி உரலி</translation>
+<translation id="4877147287319222750">பக்கப்பட்டையில் சேர்</translation>
 <translation id="8981254605840444865">அமைப்புகளை காட்டு</translation>
 <translation id="59174027418879706">செயலாக்கப்பட்டது</translation>
 <translation id="4176463684765177261">முடக்கப்பட்டது</translation>
@@ -95,6 +104,7 @@
 <translation id="9156965752763025780">அடுத்த முறை நீங்கள் Brave ஐ மீண்டும் தொடங்கும்போது உங்கள் மாற்றங்கள் செயல்படும்.</translation>
 <translation id="7179921470347911571">இப்போது மறுயேவு</translation>
 <translation id="4472575034687746823">தொடங்குக</translation>
+<translation id="8081858229109418493">சுயவிவரப் பெயரும் படவுருவும்</translation>
 <translation id="6786747875388722282">நீட்டிப்புகள்</translation>
 <translation id="984275831282074731">பேமெண்ட் முறைகள்</translation>
 <translation id="2044383478723007273">பிரேவ் நிறங்கள்</translation>
@@ -103,11 +113,20 @@
 <translation id="1360441190790440400">லினக்ஸ் போன்றே</translation>
 <translation id="1336940801687497203">விண்டோஸ் போன்றே</translation>
 <translation id="8721331068159819483">macOS போன்றே</translation>
+<translation id="2396127686705429331">நூற்குறிகள் பொத்தானைக் காட்டு</translation>
 <translation id="2814998458708016836">அகன்ற முகவரி பட்டையை பயன்படுத்து</translation>
+<translation id="4109670531935487117">முகவரிப்பட்டையில் தன்னிரப்புப் பரிந்துரைகளைக் காட்டு</translation>
 <translation id="2858138569776157458">பிரபலமானவை</translation>
+<translation id="7859704718976024901">உலாவல் வரலாறு</translation>
 <translation id="8820817407110198400">புத்தகக்குறிகள்</translation>
+<translation id="2245286910966863912">முகவரிப்பட்டையில் பிரேவ் செய்திகள் பொத்தானைக் காட்டு</translation>
 <translation id="383007806262310953">புக்மார்க்ஸ் பட்டியைக் காட்டு</translation>
+<translation id="3416468988018290825">எப்போதும் முழு உரலிகளைக் காட்டு</translation>
+<translation id="5529693968082667490">தாவல் தேடல் பொத்தானைக் காட்டு</translation>
+<translation id="2422927186524098759">பக்கப்பட்டை</translation>
+<translation id="832432428796481785">பக்கப்பட்டைப் பொத்தானைக் காட்டு</translation>
 <translation id="7781069478569868053">புது தாவல் பக்கம்</translation>
+<translation id="1988804048511540801">புது தாவல் பக்கம் காட்டுவதாவது</translation>
 <translation id="2970343821770026391">முகப்பலகம்</translation>
 <translation id="3719826155360621982">முகப்புப்பக்கம்</translation>
 <translation id="5448570825852364919">வெற்று பக்கம்</translation>
@@ -132,7 +151,8 @@
 <translation id="2433507940547922241">தோற்றம்</translation>
 <translation id="6112368337882254910">தானாக-பங்களி</translation>
 <translation id="7286722244752781970">வருகையை பதிவு செய்வதற்கு முன் குறைந்தபட்ச பக்க நேரம்</translation>
-<translation id="5510618543889994434">காணொளிகளுக்கு பங்களிப்பை அனுமதி</translation>
+<translation id="6333347122924254968">முகவரிப்பட்டையில் பிரேவ் வெகுமதிகள் படவுருவைக் காட்டு</translation>
+<translation id="7483857210736407752">துணுக்குதவி்ப் பொத்தான்களைத் தளங்களில் காட்டு</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="9185018653595759199">சமூக ஊடகம் தடுத்தல்</translation>
 <translation id="863171915776379000">முகநூல் உள்நுழைவுகள் மற்றும் உட்பதித்த இடுகைகளை அனுமதி</translation>
@@ -178,7 +198,6 @@
 <translation id="7013485839273047434">மேலும் நீட்டிப்புகளை பெறு</translation>
 <translation id="8488282162676695335">பிரேவ் பணப்பை</translation>
 <translation id="2356070529366658676">கேள்</translation>
-<translation id="7701040980221191251">எதுவுமில்லை</translation>
 <translation id="1834467296210148203">கருவிப்பட்டையில் பிரேவ் பணப்பை படவுருவை காட்டு</translation>
 <translation id="8239147115686034860">தானாக பிரேவ் பணப்பையைப் பூட்டு</translation>
 <translation id="414639769490080648">பிரேவ் பணப்பை தானாக பூட்டப்படும் வரை காத்திருக்க வேண்டிய நிமிடங்கள்</translation>
@@ -194,4 +213,5 @@
 <translation id="8275038454117074363">இறக்குமதி செய்</translation>
 <translation id="3654980960391973513">உருவாக்கு</translation>
 <translation id="3411013544209536575">உதவிக் குறிப்புக்கள்</translation>
+<translation id="7984721311211272523">தாவல் ஒலிப்பெருக்கிப் படவுருகளில் ஒலியடக்குச் செயல்பாட்டை முடக்கு</translation>
 </translationbundle>
