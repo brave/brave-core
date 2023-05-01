@@ -121,20 +121,31 @@ if (is_win) {
       outputs = [ "$root_out_dir/presigned_binaries/setup.exe" ]
       deps = [ "//chrome/installer/setup:setup" ]
     }
+    sign("signed_brave_exe") {
+      sources = [ "$root_out_dir/brave.exe" ]
+      outputs = [ "$root_out_dir/presigned_binaries/brave.exe" ]
+      deps = [ "//brave/build/win:copy_exe" ]
+    }
+    sign("signed_chrome_dll") {
+      sources = [ "$root_out_dir/chrome.dll" ]
+      outputs = [ "$root_out_dir/presigned_binaries/chrome.dll" ]
+      deps = [ "//chrome:chrome_dll" ]
+    }
   }
 
   group("mini_installer_dependencies") {
     deps = [ ":brave" ]
     if (!skip_signing) {
-      deps += [ ":signed_setup_exe" ]
-      if (enable_widevine) {
+      deps += [
+        ":signed_brave_exe",
+        ":signed_chrome_dll",
+        ":signed_setup_exe",
+      ]
+      if (enable_widevine && enable_cdm_host_verification) {
         deps += [
-          "//brave/browser/widevine:signed_brave_exe",
-          "//brave/browser/widevine:signed_chrome_dll",
+          "//brave/browser/widevine:brave_exe_sig",
+          "//brave/browser/widevine:chrome_dll_sig",
         ]
-        if (enable_cdm_host_verification) {
-          deps += [ "//brave/browser/widevine:sig_files" ]
-        }
       }
     }
   }

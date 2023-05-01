@@ -89,19 +89,7 @@ source_set("browser_tests") {
   ]
 }
 
-if (is_win) {
-  sign("signed_brave_exe") {
-    sources = [ "$root_out_dir/brave.exe" ]
-    outputs = [ "$root_out_dir/presigned_binaries/brave.exe" ]
-    deps = [ "//brave/build/win:copy_exe" ]
-  }
-
-  sign("signed_chrome_dll") {
-    sources = [ "$root_out_dir/chrome.dll" ]
-    outputs = [ "$root_out_dir/presigned_binaries/chrome.dll" ]
-    deps = [ "//chrome:chrome_dll" ]
-  }
-
+if (is_win && !skip_signing) {
   template("sig_file") {
     assert(defined(invoker.flags), "Need flags in $target_name.")
     action(target_name) {
@@ -129,25 +117,16 @@ if (is_win) {
       ]
     }
   }
-
   sig_file("brave_exe_sig") {
     flags = "1"
     sources = [ "$root_out_dir/presigned_binaries/brave.exe" ]
     outputs = [ "$root_out_dir/brave.exe.sig" ]
-    deps = [ ":signed_brave_exe" ]
+    deps = [ "//brave:signed_brave_exe" ]
   }
-
   sig_file("chrome_dll_sig") {
     flags = "0"
     sources = [ "$root_out_dir/presigned_binaries/chrome.dll" ]
     outputs = [ "$root_out_dir/chrome.dll.sig" ]
-    deps = [ ":signed_chrome_dll" ]
-  }
-
-  group("sig_files") {
-    deps = [
-      ":brave_exe_sig",
-      ":chrome_dll_sig",
-    ]
+    deps = [ "//brave:signed_chrome_dll" ]
   }
 }

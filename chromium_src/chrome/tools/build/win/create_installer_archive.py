@@ -75,9 +75,8 @@ def CreateArchiveFile(original_function, options, staging_dir, current_version,
     # actually two-tuple build numbers y.z, not four-tuple version numbers
     # w.x.y.z.
     current_version_full = BuildVersion()
-    SignAndCopyPreSignedBinaries(options.skip_signing, options.enable_widevine,
-                                 options.output_dir, staging_dir,
-                                 current_version_full)
+    SignAndCopyPreSignedBinaries(options.skip_signing, options.output_dir,
+                                 staging_dir, current_version_full)
     return original_function(options, staging_dir, current_version,
                              prev_version)
 
@@ -118,16 +117,15 @@ def CopyExtensionLocalization(extension_name, locales_src_dir_path, config,
             g_archive_inputs.append(candidate)
 
 
-def SignAndCopyPreSignedBinaries(skip_signing, enable_widevine, output_dir,
-                                 staging_dir, current_version):
+def SignAndCopyPreSignedBinaries(skip_signing, output_dir, staging_dir,
+                                 current_version):
     if not skip_signing:
         sign_binaries(staging_dir)
-        if enable_widevine:
-            # Copy files that already were signed into the staging directory.
-            # This is important to make sure that their associated .sig files,
-            # which contain their signature, remain valid.
-            src_dir = os.path.join(output_dir, 'presigned_binaries')
-            chrome_dir = os.path.join(staging_dir, CHROME_DIR)
-            version_dir = os.path.join(chrome_dir, current_version)
-            shutil.copy(os.path.join(src_dir, 'brave.exe'), chrome_dir)
-            shutil.copy(os.path.join(src_dir, 'chrome.dll'), version_dir)
+        # Copy pre-signed files into the staging directory. This is important
+        # when Widevine host verification is enabled, because it ensures that
+        # the associated .sig files remain valid.
+        src_dir = os.path.join(output_dir, 'presigned_binaries')
+        chrome_dir = os.path.join(staging_dir, CHROME_DIR)
+        version_dir = os.path.join(chrome_dir, current_version)
+        shutil.copy(os.path.join(src_dir, 'brave.exe'), chrome_dir)
+        shutil.copy(os.path.join(src_dir, 'chrome.dll'), version_dir)
