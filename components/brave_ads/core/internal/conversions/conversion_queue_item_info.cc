@@ -5,7 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_info.h"
 
-#include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
+#include <limits>
+
+#include "base/numerics/ranges.h"
 
 namespace brave_ads {
 
@@ -25,6 +27,10 @@ ConversionQueueItemInfo& ConversionQueueItemInfo::operator=(
 
 ConversionQueueItemInfo::~ConversionQueueItemInfo() = default;
 
+// TODO(https://github.com/brave/brave-browser/issues/23087):
+// |base::IsApproximatelyEqual| can be removed for timestamp comparisons once
+// timestamps are persisted using |ToDeltaSinceWindowsEpoch| and
+// |FromDeltaSinceWindowsEpoch| in microseconds.
 bool ConversionQueueItemInfo::operator==(
     const ConversionQueueItemInfo& other) const {
   return ad_type == other.ad_type &&
@@ -34,7 +40,9 @@ bool ConversionQueueItemInfo::operator==(
          advertiser_id == other.advertiser_id && segment == other.segment &&
          conversion_id == other.conversion_id &&
          advertiser_public_key == other.advertiser_public_key &&
-         DoubleEquals(process_at.ToDoubleT(), other.process_at.ToDoubleT()) &&
+         base::IsApproximatelyEqual(process_at.ToDoubleT(),
+                                    other.process_at.ToDoubleT(),
+                                    std::numeric_limits<double>::epsilon()) &&
          was_processed == other.was_processed;
 }
 

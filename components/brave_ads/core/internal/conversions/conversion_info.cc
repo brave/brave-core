@@ -5,7 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/conversion_info.h"
 
-#include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
+#include <limits>
+
+#include "base/numerics/ranges.h"
 
 namespace brave_ads {
 
@@ -23,12 +25,18 @@ ConversionInfo& ConversionInfo::operator=(ConversionInfo&& other) noexcept =
 
 ConversionInfo::~ConversionInfo() = default;
 
+// TODO(https://github.com/brave/brave-browser/issues/23087):
+// |base::IsApproximatelyEqual| can be removed for timestamp comparisons once
+// timestamps are persisted using |ToDeltaSinceWindowsEpoch| and
+// |FromDeltaSinceWindowsEpoch| in microseconds.
 bool ConversionInfo::operator==(const ConversionInfo& other) const {
   return creative_set_id == other.creative_set_id && type == other.type &&
          url_pattern == other.url_pattern &&
          observation_window == other.observation_window &&
          advertiser_public_key == other.advertiser_public_key &&
-         DoubleEquals(expire_at.ToDoubleT(), other.expire_at.ToDoubleT());
+         base::IsApproximatelyEqual(expire_at.ToDoubleT(),
+                                    other.expire_at.ToDoubleT(),
+                                    std::numeric_limits<double>::epsilon());
 }
 
 bool ConversionInfo::operator!=(const ConversionInfo& other) const {

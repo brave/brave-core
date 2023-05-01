@@ -5,14 +5,11 @@
 
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_event_info.h"
 
-#include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
-
 namespace brave_ads {
 
 bool operator==(const UserActivityEventInfo& lhs,
                 const UserActivityEventInfo& rhs) {
-  return lhs.type == rhs.type &&
-         DoubleEquals(lhs.created_at.ToDoubleT(), rhs.created_at.ToDoubleT());
+  return lhs.type == rhs.type && lhs.created_at == rhs.created_at;
 }
 
 bool operator!=(const UserActivityEventInfo& lhs,

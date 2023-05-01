@@ -5,13 +5,14 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_feature_util.h"
 
+#include <limits>
 #include <numeric>
 #include <vector>
 
+#include "base/numerics/ranges.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_alias.h"
-#include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
 
 namespace brave_ads {
 
@@ -21,22 +22,23 @@ AdPredictorWeightList ToAdPredictorWeights(const std::string& param_value) {
 
   AdPredictorWeightList weights;
   for (const auto& component : components) {
-    double value_as_double;
-    if (!base::StringToDouble(component, &value_as_double)) {
+    double weight;
+    if (!base::StringToDouble(component, &weight)) {
       return {};
     }
 
-    if (DoubleIsLess(value_as_double, 0)) {
+    if (weight < 0.0 &&
+        !base::IsApproximatelyEqual(weight, 0.0,
+                                    std::numeric_limits<double>::epsilon())) {
       return {};
     }
 
-    weights.push_back(value_as_double);
+    weights.push_back(weight);
   }
 
-  const double sum =
-      std::accumulate(weights.cbegin(), weights.cend(),
-                      static_cast<decltype(weights)::value_type>(0));
-  if (DoubleIsLessEqual(sum, 0)) {
+  const double sum = std::accumulate(weights.cbegin(), weights.cend(), 0.0);
+  if (sum <= 0.0 || base::IsApproximatelyEqual(
+                        sum, 0.0, std::numeric_limits<double>::epsilon())) {
     return {};
   }
 

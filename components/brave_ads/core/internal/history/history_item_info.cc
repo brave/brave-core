@@ -5,12 +5,19 @@
 
 #include "brave/components/brave_ads/core/history_item_info.h"
 
-#include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
+#include <limits>
+
+#include "base/numerics/ranges.h"
 
 namespace brave_ads {
 
+// TODO(https://github.com/brave/brave-browser/issues/27893):
+// |base::IsApproximatelyEqual| can be removed for timestamp comparisons once
+// timestamps are persisted using |base::ValueToTime| and |base::TimeToValue|.
 bool operator==(const HistoryItemInfo& lhs, const HistoryItemInfo& rhs) {
-  return DoubleEquals(lhs.created_at.ToDoubleT(), rhs.created_at.ToDoubleT()) &&
+  return base::IsApproximatelyEqual(lhs.created_at.ToDoubleT(),
+                                    rhs.created_at.ToDoubleT(),
+                                    std::numeric_limits<double>::epsilon()) &&
          lhs.ad_content == rhs.ad_content &&
          lhs.category_content == rhs.category_content;
 }
