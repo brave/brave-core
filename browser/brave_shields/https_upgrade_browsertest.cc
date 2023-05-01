@@ -53,26 +53,24 @@ constexpr char kSimple[] = "/simple.html";
 constexpr char kNonexistent[] = "/nonexistent.html";
 
 constexpr TestCase kTestCases[] = {
-    {false, "insecure1.test", kSimple, ControlType::ALLOW, PageResult::kHttp},
-    {false, "insecure2.test", kSimple, ControlType::BLOCK_THIRD_PARTY,
+    {false, "insecure1.com", kSimple, ControlType::ALLOW, PageResult::kHttp},
+    {false, "insecure2.com", kSimple, ControlType::BLOCK_THIRD_PARTY,
      PageResult::kHttp},
-    {false, "insecure3.test", kSimple, ControlType::BLOCK,
+    {false, "insecure3.com", kSimple, ControlType::BLOCK,
      PageResult::kInterstitial},
-    {false, "broken1.test", kNonexistent, ControlType::ALLOW,
+    {false, "broken1.com", kNonexistent, ControlType::ALLOW, PageResult::kHttp},
+    {false, "broken2.com", kNonexistent, ControlType::BLOCK_THIRD_PARTY,
      PageResult::kHttp},
-    {false, "broken2.test", kNonexistent, ControlType::BLOCK_THIRD_PARTY,
-     PageResult::kHttp},
-    {false, "broken3.test", kNonexistent, ControlType::BLOCK,
+    {false, "broken3.com", kNonexistent, ControlType::BLOCK,
      PageResult::kInterstitial},
-    {false, "upgradable1.test", kSimple, ControlType::ALLOW, PageResult::kHttp},
-    {false, "upgradable2.test", kSimple, ControlType::BLOCK_THIRD_PARTY,
+    {false, "upgradable1.com", kSimple, ControlType::ALLOW, PageResult::kHttp},
+    {false, "upgradable2.com", kSimple, ControlType::BLOCK_THIRD_PARTY,
      PageResult::kHttps},
-    {false, "upgradable3.test", kSimple, ControlType::BLOCK,
+    {false, "upgradable3.com", kSimple, ControlType::BLOCK, PageResult::kHttps},
+    {true, "secure1.com", kSimple, ControlType::ALLOW, PageResult::kHttps},
+    {true, "secure2.com", kSimple, ControlType::BLOCK_THIRD_PARTY,
      PageResult::kHttps},
-    {true, "secure1.test", kSimple, ControlType::ALLOW, PageResult::kHttps},
-    {true, "secure2.test", kSimple, ControlType::BLOCK_THIRD_PARTY,
-     PageResult::kHttps},
-    {true, "secure3.test", kSimple, ControlType::BLOCK, PageResult::kHttps}};
+    {true, "secure3.com", kSimple, ControlType::BLOCK, PageResult::kHttps}};
 
 base::FilePath GetTestDataDir() {
   return base::FilePath(FILE_PATH_LITERAL("net/data/url_request_unittest"));
@@ -100,7 +98,7 @@ class HttpsUpgradeBrowserTest : public PlatformBrowserTest {
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
 
-    // Set up "insecure.test" as a hostname with an SSL error. kHttps upgrades
+    // Set up "insecure.com" as a hostname with an SSL error. kHttps upgrades
     // to this host will fail, (or fall back in some cases).
     scoped_refptr<net::X509Certificate> cert(https_server_.GetCertificate());
     net::CertVerifyResult verify_result;
@@ -108,7 +106,7 @@ class HttpsUpgradeBrowserTest : public PlatformBrowserTest {
     verify_result.verified_cert = cert;
     verify_result.cert_status = net::CERT_STATUS_COMMON_NAME_INVALID;
     for (const std::string& host :
-         {"insecure1.test", "insecure2.test", "insecure3.test"}) {
+         {"insecure1.com", "insecure2.com", "insecure3.com"}) {
       mock_cert_verifier_.mock_cert_verifier()->AddResultForCertAndHost(
           cert, host, verify_result, net::ERR_CERT_INVALID);
     }
@@ -250,8 +248,8 @@ IN_PROC_BROWSER_TEST_F(HttpsUpgradeBrowserTest_FlagDisabled, CheckUpgrades) {
 
 IN_PROC_BROWSER_TEST_F(HttpsUpgradeBrowserTest, IsolateSettings) {
   // Test host URLs.
-  GURL host1("https://example1.test");
-  GURL host2("https://example2.test");
+  GURL host1("https://example1.com");
+  GURL host2("https://example2.com");
 
   // Test profiles
   Profile* normal_profile = chrome_test_utils::GetProfile(this);
