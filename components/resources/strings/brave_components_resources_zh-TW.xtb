@@ -207,15 +207,14 @@
 <translation id="7577100371127227294">每月小費</translation>
 <translation id="178390304006113804">設定每月固定小費，持續支持您最愛的創作者。</translation>
 <translation id="3302159320447117425">尚未設定每月小費。</translation>
+<translation id="564837702459183199">下一次貢獻</translation>
 <translation id="4898632353264854950">您似乎將要瀏覽的網站</translation>
 <translation id="3024485967181749006">本月總小費</translation>
-<translation id="8183455888546367148">本月小費總額</translation>
 <translation id="4153752809523809915">您今天給您最愛的內容創作者小費了嗎？</translation>
 <translation id="7286722244752781970">紀錄一次造訪前的最少頁面時間</translation>
 <translation id="4424486208397124985">攸關發布者的最低瀏覽數</translation>
 <translation id="5421369907811917952">其它設定</translation>
 <translation id="6248554379744796526">在清單中顯示未經驗證的網站</translation>
-<translation id="5510618543889994434">允許對影片捐獻</translation>
 <translation id="8933202740471878108">1 次造訪</translation>
 <translation id="354797634123275103">5 次造訪</translation>
 <translation id="3583700907990488238">10 次造訪</translation>
@@ -224,7 +223,6 @@
 <translation id="8610523985422563960">1 分鐘</translation>
 <translation id="2807328214759298515">高達</translation>
 <translation id="7483857210736407752">在網站上顯示「小費」按鈕</translation>
-<translation id="7583327070390027131">下次給每月小費的日期</translation>
 <translation id="6231182869178328516">我剛剛使用 Brave Browser 打賞 <ph name="NAME"/>。到https://brave.com/tips 看看吧。</translation>
 <translation id="5916536234616514390">我喜歡 <ph name="HASHTAG"/>Brave 讓我支持創作者！我剛支付 <ph name="HASHTAG2"/>BAT 的小費給 <ph name="NAME"/>。如果對方在 <ph name="DATE"/>前於 https://creators.brave.com 完成驗證，就能該筆小費！</translation>
 <translation id="8404935570206006581">Brave 小費</translation>
@@ -638,6 +636,7 @@
 <translation id="8797999629784150206">您可隨時變更您的<ph name="SITE_PERMISSIONS"/>。<ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">網站權限</translation>
 <translation id="4355784577209159847">允許使用第三方 cookie 進行舊版 Google 登入</translation>
+<translation id="5770656036486891920"><ph name="URL"/> 想要使用第三方 Cookie 進行舊版 Google 登入</translation>
 <translation id="7717357606512850995">查看狀態</translation>
 <translation id="7306880305145342514">恭喜！您的 <ph name="MONTH"/>獎勵已入帳！</translation>
 <translation id="3007207731685398329">您 <ph name="AMOUNT"/> 的 <ph name="MONTH"/>獎勵將在 <ph name="DAYS"/>內入帳</translation>
@@ -659,6 +658,7 @@
       =1 {這個月您已造訪 # 個 Brave Rewards 支持的創作者}
       other {這個月您已造訪 # 個 Brave Rewards 支持的創作者}
     }</translation>
+<translation id="6067959437127691361">使用 Brave Rewards 不僅能支持內容創作者，還可賺取 BAT。</translation>
 <translation id="1187367336925051518"><ph name="MONTH"/>獎勵：<ph name="AMOUNT"/></translation>
 <translation id="3274366539954332481">您的 <ph name="MONTH"/>廣告獎勵已入帳！</translation>
 <translation id="7861645265922445992">領取獎勵</translation>
@@ -690,7 +690,6 @@
 <translation id="6965382102122355670">確定</translation>
 <translation id="6727102863431372879">設定</translation>
 <translation id="8853725596990766789">變更金額</translation>
-<translation id="6067959437127691361">使用 Brave Rewards 不僅能支持內容創作者，還可賺取 BAT。</translation>
 <translation id="1609556006143307897">您正在支持內容創作者</translation>
 <translation id="6605147707233193230">開啟以立即支持內容創作者</translation>
 <translation id="5430495762768325224">深入瞭解 BAT</translation>
@@ -784,6 +783,7 @@
 <translation id="9161147058107529840">預期的單一物件參數。</translation>
 <translation id="1875861420974447980">此鏈 ID 已有人使用</translation>
 <translation id="167698752210114155">發生內部錯誤</translation>
+<translation id="7497827357097190289">區塊雜湊無效或無法驗證</translation>
 <translation id="8945668490056243760">不支援的訂閱類型</translation>
 <translation id="2326876601333401685">不支援這種 RPC 方法。</translation>
 <translation id="1128992132632883337">發生回應剖析錯誤</translation>
@@ -867,6 +867,7 @@
 <translation id="570080709303714420">一半</translation>
 <translation id="2784548701748328827">最大</translation>
 <translation id="2329227154184107678">檢視順序</translation>
+<translation id="3220443877821207794">審查傳送</translation>
 <translation id="8530071505111489657">無可用的代幣</translation>
 <translation id="615791330696335475">依名稱搜尋代幣</translation>
 <translation id="5009335307032488349">依名稱和 ID 搜尋 NFT</translation>
@@ -1091,9 +1092,20 @@
 <translation id="4460220693591349571">功能類型</translation>
 <translation id="838933475572692615">十六進位資料</translation>
 <translation id="2240831799756994975">位元組</translation>
-<translation id="4874303883488468190">選取帳戶</translation>
-<translation id="2018472018751735678">查看您的允許帳戶之地址（必填）</translation>
-<translation id="7029403458170657879">連線 Brave 錢包</translation>
+<translation id="6760823167126275974">連結錢包</translation>
+<translation id="716009557505091365">或連結以下項目：</translation>
+<translation id="7242985059140288348">此應用程式將能夠：</translation>
+<translation id="7352133688029686231">但它將無法：</translation>
+<translation id="1647328658385235886">查看錢包餘額和活動</translation>
+<translation id="3295962112184461868">要求核准交易和簽章</translation>
+<translation id="6096892345597202096">檢視您允許的錢包位址</translation>
+<translation id="496578987299869780">在未經您的許可下挪動資金</translation>
+<translation id="3226586788973641582">請確定您信任此網站。</translation>
+<translation id="6837278005487143422">權限持續時間</translation>
+<translation id="1903637466604153314">直到關閉此網站</translation>
+<translation id="4324239559624557455">24 小時</translation>
+<translation id="9139452553033760558">1 週</translation>
+<translation id="1658834457013045127">永久</translation>
 <translation id="2770851145415891830">偵測到現有加密幣錢包</translation>
 <translation id="2237759620789871865">如果您想跳過匯入，而保留舊的 Crypto Wallets 體驗，只需導覽到 Brave 瀏覽器的<ph name="LINK_BEFORE"/>設定<ph name="LINK_AFTER"/>，將預設值變更回 Crypto Wallets。您亦可匯入、嘗試新的 Brave 錢包，以及隨時變更回來。</translation>
 <translation id="5590175005414413980">輸入您現有的加密貨幣錢包密碼，以匯入 Brave 錢包。以更快速、更安全的方式管理加密貨幣資產，並與 Web3 DApps 互動。</translation>
@@ -1169,7 +1181,9 @@
 <translation id="8585995109882455949">如何找到正確位址？</translation>
 <translation id="8395402412470376435">Brave 會驗證並防止使用者因大小寫錯誤，而匯款至錯誤位址。這屬於「總和檢查碼」程序，用於驗證位址是否為有效的以太坊位址。</translation>
 <translation id="4583433813614292221">1. 造訪</translation>
+<translation id="8061317754447191238">前往 Etherscan，然後貼上您要傳送代幣的錢包位址。接著按下 Enter</translation>
 <translation id="5393164213211430081">2. 複製並輸入 ETH 位址</translation>
+<translation id="8306108469060304141">複製並輸入正確的位址。您可以看到部分字元已正確轉換。</translation>
 <translation id="2378355054306959991">需要更多協助嗎？</translation>
 <translation id="862585889767884824">of</translation>
 <translation id="9106265941552476098">拒絕 <ph name="TRANSACTION_LENGTH"/> 交易</translation>
@@ -1209,7 +1223,6 @@
 <translation id="1904295039023858291">代幣標準</translation>
 <translation id="9033453977881595182">代幣 ID</translation>
 <translation id="6332387008245531841">合約位址</translation>
-<translation id="6717502994710534866">CID</translation>
 <translation id="2351120707525742989">圖片位置或位址</translation>
 <translation id="2962388922926051374">在 <ph name="URL"/> 上要求方法「eth_chainId」失敗</translation>
 <translation id="8325036459845654666">此網路已新增。</translation>
@@ -1226,14 +1239,11 @@
 <translation id="5133421763709317473">找不到與搜尋字詞或篩選條件相符的資產</translation>
 <translation id="7383613643114466279">Brave 錢包不支援此資產</translation>
 <translation id="6423985584914773314">此 FIL 地址無效</translation>
-<translation id="3898731124813934210">以 Wyre 購買</translation>
 <translation id="5522073372365069684">以 Ramp 購買</translation>
 <translation id="6153197326949684688">透過 <ph name="OFFRAMP_PROVIDER"/> 銷售</translation>
-<translation id="6097502401711916278">最低金額不得低於 <ph name="FIAT_AMOUNT"/>。</translation>
 <translation id="7902920577183739843">以 Sardine 購買</translation>
 <translation id="6534275647567011533">以 Transak 購買</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">使用 Visa 或 Mastercard 購買加密貨幣。</translation>
@@ -1510,18 +1520,17 @@
 <translation id="2227702748249086756">無法擷取預估費用</translation>
 <translation id="5361710044667743492">為什麼無法使用？</translation>
 <translation id="3668838456083358569">部分 NFT 資料儲存於 AWS、Google Cloud 等集中式伺服器。在此情況下無法將您的 NFT 資料固定至 IPFS 網路。</translation>
-<translation id="1293258969121701010">在電腦上執行 IPFS 可讓您：</translation>
-<translation id="4568942135611119076">確保您的 NFT 資料在線上且無法竄改。</translation>
-<translation id="4915883034746438977">使用內容識別碼 (CID) 從錯誤資料中找回內容。</translation>
-<translation id="1373647012698032676">取得正版證明，讓 IPFS 網路更加豐富健全。</translation>
-<translation id="1806204385270226865">讓我的 NFT 永遠在線上</translation>
-<translation id="4323376551843624309">啟用 NFT 固定</translation>
-<translation id="6501331923135442324">往加入 Web3 邁出一大步</translation>
-<translation id="5361073938927187534">執行 IPFS 節點並讓您的 NFT 永遠在線上</translation>
-<translation id="1060267371223703324">檢查我的哪些 NFT 可以固定</translation>
-<translation id="2641083452974145848">現在您可以執行 IPFS 並加入 Web3。您的 NFT 資料會永遠在線上且無法竄改。</translation>
-<translation id="4460927368826360904">您正在執行 IPFS 節點。系統正在將檔案擷取至本機 IPFS 節點。</translation>
-<translation id="2260350263892668490"><ph name="PINNED"/> 個 NFT 已成功固定至 IPFS，共 <ph name="PINNABLE"/> 個。</translation>
+<translation id="4225753478505258806">但 IPFS 需要個別參與者才能作用。請在您的電腦上執行 IPFS，以便：</translation>
+<translation id="7674069205559000521">為網路的速度和可用性帶來助益</translation>
+<translation id="7775229731579227782">提高您的 NFT 安全性</translation>
+<translation id="2319971828691864975">開始使用 IPFS</translation>
+<translation id="7906328323880284538">最安全的 NFT 代管方式</translation>
+<translation id="166206715890914321">執行 IPFS 節點，讓您的 NFT 永遠在線上</translation>
+<translation id="8913523138550521467">IPFS 是極為安全的傳統 Web 代管替代方案。有別於仰賴單一主機，IPFS 可讓數以千計的個人 (執行「節點」的使用者) 一起共同儲存內容。只要使用者擁有複本，檔案就永遠不會消失。將您的 NFT「釘選」到 IPFS，並且執行您自己的 IPFS 節點，這是保護 NFT 的最佳方式。</translation>
+<translation id="9160750213078764355">查看我有哪些 NFT 符合資格</translation>
+<translation id="6671461082721702724">現在，您可以執行 IPFS 並加入 Web 3。您的 NFT 資料會永遠在線上。</translation>
+<translation id="654964147165509548">NFT 會釘選到您的本機 IPFS 節點。</translation>
+<translation id="4910182786472608576"><ph name="PINNED"/> 支援的 NFT 會釘選到您的本機 IPFS 節點。</translation>
 <translation id="1474962961180773583"><ph name="PINNABLE"/> 個可用，共 <ph name="TOTAL"/> 個！</translation>
 <translation id="6852656829524945421">無法固定</translation>
 <translation id="7698019251444927442">您正在執行 IPFS 節點</translation>
@@ -1529,10 +1538,15 @@
 <translation id="7527548209942671618">已固定至您的本機 IPFS 節點</translation>
 <translation id="5659058832308365026">正在將 NFT 資料固定至您的本機 IPFS 節點</translation>
 <translation id="4919133452617704550">無法固定至您的本機 IPFS 節點</translation>
+<translation id="4220102684162429566">最常見的原因：</translation>
+<translation id="451509325309455">NFT 具有非 IPFS 中繼資料 URL 問題</translation>
+<translation id="3827697793483899711">內部 IPFS 節點問題</translation>
+<translation id="1992846713609432783">本機節點的空間不足</translation>
 <translation id="3225624966527491351">匯入 NFT</translation>
 <translation id="9085765419770918643">此處目前沒有任何 NFT。</translation>
 <translation id="8445532667841598737">準備好新增 NFT 了嗎？按下方按鈕即可匯入。</translation>
 <translation id="9136462955850040542">與 Solana (SPL) 和以太坊 (ERC-721) 的 NFT 相容。</translation>
+<translation id="849880459530751909">編輯 NFT</translation>
 <translation id="3155170474926428993">Tor 啟動程式</translation>
 <translation id="3745016858329272300">一般資訊</translation>
 <translation id="4045404575593562245">Tor 控制事件</translation>
@@ -1609,6 +1623,9 @@
 <translation id="9204041448536398473">全域防護設定</translation>
 <translation id="2108334320919763866">全域預設值</translation>
 <translation id="3440043456924990296">由組織管理的設定</translation>
+<translation id="7053983685419859001">封鎖</translation>
+<translation id="5716230673298034837">全部允許</translation>
+<translation id="5279600392753459966">全部封鎖</translation>
 <translation id="4516904298421534459">篩選清單</translation>
 <translation id="3570081523466826008">升級連線至 HTTPS</translation>
 <translation id="131231380815754440">啟用 HTTPS</translation>
@@ -1619,6 +1636,7 @@
 <translation id="8593054718053894081">積極封鎖追蹤程式和廣告</translation>
 <translation id="7384778069178817075">允許所有追蹤器與廣告</translation>
 <translation id="4941539331405513605">封鎖跨網站 cookies</translation>
+<translation id="2749284154880331639">移除第一方 Cookie</translation>
 <translation id="6883611015375728278">阻擋所有 cookies</translation>
 <translation id="5657156137487675418">允許所有 cookie</translation>
 <translation id="8366221601425141146">採集指紋封鎖了</translation>
@@ -1633,6 +1651,7 @@
 <translation id="7194012750329511146">Brave Shields
 已封鎖 <ph name="NUMBER"/> 個追蹤程式、廣告等項目</translation>
 <translation id="4292121526390005808">封鎖 scripts</translation>
+<translation id="5046271170844958713">允許 scripts</translation>
 <translation id="264682546981571963">不想再收到 Cookie 同意通知了嗎？</translation>
 <translation id="4986297793092101884">Brave 已經封鎖了第三方 Cookie。我們也可以封鎖 Cookie 同意通知。</translation>
 <translation id="535688588637568715">是，封鎖 Cookie 同意通知</translation>
@@ -1669,6 +1688,7 @@
 <translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> 無法與 <ph name="REGION_NAME"/> 伺服器連線。您可以再試一次，也可以選擇其他伺服器。</translation>
 <translation id="1024255913009642477">已購買 VPN？</translation>
 <translation id="8814357473522731680">技術來自</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">有效期限</translation>
 <translation id="1691256669639196606">管理訂閱</translation>
 <translation id="434523916398030617">聯絡技術支援</translation>

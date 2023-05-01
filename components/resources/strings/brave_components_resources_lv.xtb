@@ -207,15 +207,14 @@
 <translation id="7577100371127227294">Ikmēneša dzeramnaudas</translation>
 <translation id="178390304006113804">Iestatiet periodiskas ikmēneša dzeramnaudas, lai varētu pastāvīgi atbalstīt savus iecienītākos satura veidotājus.</translation>
 <translation id="3302159320447117425">Ikmēneša dzeramnaudas vēl nav iestatītas.</translation>
+<translation id="564837702459183199">Nākamā iemaksa</translation>
 <translation id="4898632353264854950">Vietnes parādīsies pārlūkojot</translation>
 <translation id="3024485967181749006">Kopējā dzeramnauda šomēnes</translation>
-<translation id="8183455888546367148">Kopējās ikmēneša dzeramnaudas šomēnes</translation>
 <translation id="4153752809523809915">Vai šodien esat iedevis/-usi dzeramnaudu savam iecienītajam satura veidotājam?</translation>
 <translation id="7286722244752781970">Minimālais laiks lapā pirms apmeklējuma reģistrēšanas</translation>
 <translation id="4424486208397124985">Minimālais apmeklējumu skaits publicētāja būtiskumam</translation>
 <translation id="5421369907811917952">Citi iestatījumi</translation>
 <translation id="6248554379744796526">Parādīt nepārbaudītās vietnes sarakstā</translation>
-<translation id="5510618543889994434">Atļaut ziedot videoklipiem</translation>
 <translation id="8933202740471878108">1 apmeklējums</translation>
 <translation id="354797634123275103">5 apmeklējumi</translation>
 <translation id="3583700907990488238">10 apmeklējumi</translation>
@@ -224,7 +223,6 @@
 <translation id="8610523985422563960">1 minūte</translation>
 <translation id="2807328214759298515">Līdz</translation>
 <translation id="7483857210736407752">Rādīt dzeramnaudas pogas vietnēs</translation>
-<translation id="7583327070390027131">Nākamās ikmēneša dzeramnaudas datums</translation>
 <translation id="6231182869178328516">Es tikko samaksāju dzeramnaudu lietotājam <ph name="NAME"/>, kurš lieto Brave pārlūkprogrammu. Apskatiet to tīmekļa vietnē: https://brave.com/tips.</translation>
 <translation id="5916536234616514390">Man patīk, ka <ph name="HASHTAG"/>Brave ļauj man atbalstīt izstrādātājus! Es tikko iedevu dzeramnaudu <ph name="NAME"/> ar <ph name="HASHTAG2"/>BAT. Ja viņš verificē https://creators.brave.com līdz <ph name="DATE"/>, viņam būs pieejams BAT!</translation>
 <translation id="8404935570206006581">Sūtiet dzeramnaudu ar Brave</translation>
@@ -638,6 +636,7 @@
 <translation id="8797999629784150206">Jūs varat nomainīt savas <ph name="SITE_PERMISSIONS"/> jebkurā laikā. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">vietnes atļauja</translation>
 <translation id="4355784577209159847">Atļaut izmantot trešo personu sīkfailus, lai pierakstītos ar Google</translation>
+<translation id="5770656036486891920"><ph name="URL"/> vēlas izmantot trešo pušu sīkfailus, lai varētu pierakstīties ar Google Sign-In</translation>
 <translation id="7717357606512850995">Pārbaudīt statusu</translation>
 <translation id="7306880305145342514">Apsveicam! Jūsu <ph name="MONTH"/> atlīdzības ir pieejamas!</translation>
 <translation id="3007207731685398329">Jūsu <ph name="AMOUNT"/><ph name="MONTH"/> atlīdzības būs pieejamas pēc <ph name="DAYS"/></translation>
@@ -659,6 +658,7 @@
       =1 {Šomēnes jūs esat apmeklējis # Brave balvu atbalstītu satura veidotāju}
       other {Šomēnes jūs esat apmeklējis # Brave balvu atbalstītus satura veidotājus}
     }</translation>
+<translation id="6067959437127691361">Brave balvu izmantošana palīdz atbalstīt satura veidotājus un ļauj jums nopelnīt BAT.</translation>
 <translation id="1187367336925051518"><ph name="MONTH"/> Rewards: <ph name="AMOUNT"/></translation>
 <translation id="3274366539954332481">Jūsu <ph name="MONTH"/> Ad Rewards ir klāt!</translation>
 <translation id="7861645265922445992">Pieprasīt balvas</translation>
@@ -690,7 +690,6 @@
 <translation id="6965382102122355670">Labi</translation>
 <translation id="6727102863431372879">Iestatīt</translation>
 <translation id="8853725596990766789">Mainīt summu</translation>
-<translation id="6067959437127691361">Brave balvu izmantošana palīdz atbalstīt satura veidotājus un ļauj jums nopelnīt BAT.</translation>
 <translation id="1609556006143307897">Jūs palīdzat atbalstīt satura veidotājus</translation>
 <translation id="6605147707233193230">Ieslēdziet, lai palīdzētu atbalstīt satura veidotājus</translation>
 <translation id="5430495762768325224">Uzzināt vairāk par BAT</translation>
@@ -784,6 +783,7 @@
 <translation id="9161147058107529840">Jābūt vienam objekta parametram.</translation>
 <translation id="1875861420974447980">Pašreiz tiek izmantots šis ķēdes ID</translation>
 <translation id="167698752210114155">Radās iekšēja kļūda</translation>
+<translation id="7497827357097190289">Blockhash nav derīgs vai to nevar pārbaudīt</translation>
 <translation id="8945668490056243760">Neatbalstīts abonementa veids</translation>
 <translation id="2326876601333401685">Šī RPC metode netiek atbalstīta.</translation>
 <translation id="1128992132632883337">Radās atbildes analīzes kļūda</translation>
@@ -867,6 +867,7 @@
 <translation id="570080709303714420">PUSI</translation>
 <translation id="2784548701748328827">VISU</translation>
 <translation id="2329227154184107678">Pārskatīt pieprasījumu</translation>
+<translation id="3220443877821207794">Pārlūkot nosūtīto</translation>
 <translation id="8530071505111489657">Nav pieejamu marķieru</translation>
 <translation id="615791330696335475">Meklēt marķieri pēc nosaukuma</translation>
 <translation id="5009335307032488349">Meklēt NFT pēc nosaukuma, id</translation>
@@ -1091,9 +1092,20 @@
 <translation id="4460220693591349571">FUNKCIJAS VEIDS</translation>
 <translation id="838933475572692615">HEX DATI</translation>
 <translation id="2240831799756994975">BAITI</translation>
-<translation id="4874303883488468190">Atlasīt kontu(-us)</translation>
-<translation id="2018472018751735678">Skatiet atļauto kontu adreses (obligāti)</translation>
-<translation id="7029403458170657879">Izveidojiet savienojumu ar Brave maku</translation>
+<translation id="6760823167126275974">Pievienot maku</translation>
+<translation id="716009557505091365">vai pieslēgties ar:</translation>
+<translation id="7242985059140288348">Šī lietotne varēs:</translation>
+<translation id="7352133688029686231">Tā nevarēs:</translation>
+<translation id="1647328658385235886">Pārbaudiet maka bilanci un aktivitāti</translation>
+<translation id="3295962112184461868">Pieprasīt apstiprinājumu darījumiem un parakstiem</translation>
+<translation id="6096892345597202096">Aplūkot savas atļautās maka adreses</translation>
+<translation id="496578987299869780">Pārvietot līdzekļus bez jūsu atļaujas</translation>
+<translation id="3226586788973641582">Pārliecinieties, ka uzticaties šai vietnei.</translation>
+<translation id="6837278005487143422">Atļaujas ilgums</translation>
+<translation id="1903637466604153314">Kamēr neaizveru šo vietni</translation>
+<translation id="4324239559624557455">24 stundas</translation>
+<translation id="9139452553033760558">1 nedēļu</translation>
+<translation id="1658834457013045127">Vienmēr</translation>
 <translation id="2770851145415891830">Konstatēti esoši kriptovalūtas maki</translation>
 <translation id="2237759620789871865">Ja jūs vēlaties izlaist importēšanu un saglabāt iepriekšējo kriptovalūtas maciņu, atveriet Brave pārlūka <ph name="LINK_BEFORE"/>Iestatījumus<ph name="LINK_AFTER"/> un mainiet noklusējumu uz kriptovalūtas maciņiem. Jūs varat arī importēt, izmantojot jauno Brave maciņu un mainīt to jebkurā laikā.</translation>
 <translation id="5590175005414413980">Ievadiet esošo kriptovalūtas maku paroli, lai importētu to Brave makā. Izbaudiet ātrāku un drošāku veidu, kā pārvaldīt kriptovalūtu līdzekļus un mijiedarboties ar tīmekļa 3 DApps.</translation>
@@ -1169,7 +1181,9 @@
 <translation id="8585995109882455949">Kā atrast pareizo adresi?</translation>
 <translation id="8395402412470376435">Lai novērstu to, ka lietotāji nepareizi lietotu burtu dēļ nosūtītu līdzekļus uz nepareizu adresi, Brave veic pārbaudi. Tas ir "kontrolsummas" process, lai pārbaudītu, ka adrese ir derīga Ethereum adrese.</translation>
 <translation id="4583433813614292221">1. Apmeklē</translation>
+<translation id="8061317754447191238">Apmeklēt etherscan un ielīmēt maka adresi, kur vēlaties nosūtīt marķierus. Tad ievadiet</translation>
 <translation id="5393164213211430081">2. Nokopē un ievadi ETH adresi</translation>
+<translation id="8306108469060304141">Nokopējiet un ievadiet pareizo adresi. Jūs redzēsiet, ka dažas rakstzīmes ir konvertētas pareizi.</translation>
 <translation id="2378355054306959991">Palīdzība nepieciešama vēl?</translation>
 <translation id="862585889767884824">no</translation>
 <translation id="9106265941552476098">Noraidīt <ph name="TRANSACTION_LENGTH"/> darījumus</translation>
@@ -1209,7 +1223,6 @@
 <translation id="1904295039023858291">Marķiera standarts</translation>
 <translation id="9033453977881595182">Marķiera ID</translation>
 <translation id="6332387008245531841">Līguma adrese</translation>
-<translation id="6717502994710534866">CID</translation>
 <translation id="2351120707525742989">Attēla atrašanās vieta vai adrese</translation>
 <translation id="2962388922926051374">Pieprasījums metodei 'eth_chainId' vietnē <ph name="URL"/> neizdevās</translation>
 <translation id="8325036459845654666">Šis tīkls jau ir pievienots.</translation>
@@ -1226,14 +1239,11 @@
 <translation id="5133421763709317473">Nav atrasts neviens līdzeklis, kas atbilst meklēšanai vai filtram</translation>
 <translation id="7383613643114466279">Brave maks neatbalsta šo aktīvu</translation>
 <translation id="6423985584914773314">Nederīga FIL adrese</translation>
-<translation id="3898731124813934210">Pirkt ar Wyre</translation>
 <translation id="5522073372365069684">Pirkt ar Ramp</translation>
 <translation id="6153197326949684688">Pārdodiet ar <ph name="OFFRAMP_PROVIDER"/></translation>
-<translation id="6097502401711916278">Minimālajai summai ir jābūt <ph name="FIAT_AMOUNT"/> vai vairāk.</translation>
 <translation id="7902920577183739843">Pirkt ar Sardine</translation>
 <translation id="6534275647567011533">Pirkt ar Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
-<translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Pirkt kripto ar Visa vai Mastercard.</translation>
@@ -1510,18 +1520,17 @@
 <translation id="2227702748249086756">Nevarēja ienest prognozēto maksu</translation>
 <translation id="5361710044667743492">Kāpēc nav pieejams?</translation>
 <translation id="3668838456083358569">Daži NFT dati tiek glabāti centralizētā serverī, piemēram, AWS, Google Cloud u. c. Tādā gadījumā jūsu NFT datus IPFS tīklam piepraust nevar.</translation>
-<translation id="1293258969121701010">Palaižot IPFS savā datorā, jūs varat:</translation>
-<translation id="4568942135611119076">Nodrošināt, ka jūsu NFT dati paliek tiešsaistē un tajos nevar iejaukties.</translation>
-<translation id="4915883034746438977">Izmantojot nepareizu datu satura identifikatoru (CID), atgūt saturu.</translation>
-<translation id="1373647012698032676">Piedalieties autentiskuma pierādīšanā un padariet IPFS tīklu bagātīgu un veselīgu.</translation>
-<translation id="1806204385270226865">Vienmēr glabāt manus NFT tiešsaistē</translation>
-<translation id="4323376551843624309">Iespējot NFT piespraušanu</translation>
-<translation id="6501331923135442324">Liels solis ceļā uz pievienošanos web3</translation>
-<translation id="5361073938927187534">Palaidiet IPFS mezglu un vienmēr turiet savus NFT tiešsaistē</translation>
-<translation id="1060267371223703324">Pārbaudīt, kurus no maniem NFT var piespraust</translation>
-<translation id="2641083452974145848">Tagad varat palaist savu IPFS un būt daļa no web3. Jūsu NFT dati vienmēr būs tiešsaistē, un tajos nevarēs iejaukties.</translation>
-<translation id="4460927368826360904">Jūs palaidāt IPFS mezglu. Fails tiek ienests vietējā IPFS mezglā.</translation>
-<translation id="2260350263892668490"><ph name="PINNED"/> no <ph name="PINNABLE"/> NFT ir veiksmīgi piesprausti IPFS.</translation>
+<translation id="4225753478505258806">Lai darbotos, IPFS nepieciešami individuāli dalībnieki. Palaidiet IPFS savā datorā, lai:</translation>
+<translation id="7674069205559000521">uzlabotu tīkla ātrumu un pieejamību</translation>
+<translation id="7775229731579227782">palielinātu jūsu NFT drošību</translation>
+<translation id="2319971828691864975">Sāciet ar IPFS</translation>
+<translation id="7906328323880284538">Drošākais veids, lai viesotu NFT</translation>
+<translation id="166206715890914321">Palaist IPFS mezglu, lai savus NFT vienmēr turētu tiešsaistē</translation>
+<translation id="8913523138550521467">IPFS ir īpaši droša alternatīva tradicionālajai tīmekļa viesošanai. Tā vietā, lai paļautos uz vienu viesotāju, IPFS satura glabāšanā ļauj sadarboties tūkstošiem personu (kuri darbina "mezglus"). Un, kamēr vien kopija būs vienai personai, fails nevar pazust. Piespraust savus NFT pie IPFS un palaist savu IPFS mezglu ir labākais veids, kā aizsargāt savus NFT.</translation>
+<translation id="9160750213078764355">Skatīt, kuri no maniem NFT ir piemēroti</translation>
+<translation id="6671461082721702724">Tagad jūs varat palaist savu IPFS un būt daļa no web 3. Jūsu NFT dati vienmēr būs tiešsaistē.</translation>
+<translation id="654964147165509548">NFT tiek piesprausti pie jūsu vietējā IPFS mezgla.</translation>
+<translation id="4910182786472608576"><ph name="PINNED"/> atbalstītie NFT ir piesprausti pie jūsu vietējā IPFS mezgla.</translation>
 <translation id="1474962961180773583">Ir pieejami <ph name="PINNABLE"/> no <ph name="TOTAL"/>!</translation>
 <translation id="6852656829524945421">Nevarēja piespraust</translation>
 <translation id="7698019251444927442">Jūs esat palaidis IPFS mezglu</translation>
@@ -1529,10 +1538,15 @@
 <translation id="7527548209942671618">Piesprausts jūsu vietējam IPFS mezglam</translation>
 <translation id="5659058832308365026">NFT dati tiek sprausti pie jūsu vietējā IPFS mezgla</translation>
 <translation id="4919133452617704550">Nevar piespraust pie jūsu vietējā IPFS mezgla</translation>
+<translation id="4220102684162429566">Biežākie iemesli:</translation>
+<translation id="451509325309455">NFT ir ar IPFS metadatiem nesaistītas URL problēmas</translation>
+<translation id="3827697793483899711">Iekšējā IPFS mezgla problēmas</translation>
+<translation id="1992846713609432783">Nepietiek vietas vietējā mezglā</translation>
 <translation id="3225624966527491351">Importēt NFT</translation>
 <translation id="9085765419770918643">Šeit vēl nav NFT.</translation>
 <translation id="8445532667841598737">Vai esat gatavs pievienot? Vienkārši noklikšķiniet uz pogas, lai importētu.</translation>
 <translation id="9136462955850040542">Saderīgs ar Solana (SPL) un Ethereum (ERC-721) esošajiem NFT.</translation>
+<translation id="849880459530751909">Rediģēt NFT</translation>
 <translation id="3155170474926428993">Tor palaidējs</translation>
 <translation id="3745016858329272300">Vispārīga informācija</translation>
 <translation id="4045404575593562245">Tor kontroles notikumi</translation>
@@ -1569,7 +1583,7 @@
 <translation id="254100925533869330">Nav satura</translation>
 <translation id="7172792761509429092">Brave News nav satura, ko rādīt.</translation>
 <translation id="1771307734839364850">Izvēlies satura avotus</translation>
-<translation id="939305735877869636">Brave Software</translation>
+<translation id="939305735877869636">Brave</translation>
 <translation id="6261915643960475695">Bizness</translation>
 <translation id="8265589281845759879">Auto</translation>
 <translation id="7577010593836079522">Kultūra</translation>
@@ -1609,6 +1623,9 @@
 <translation id="9204041448536398473">Globālie aizsarga iestatījumi</translation>
 <translation id="2108334320919763866">Globālie noklusējuma iestatījumi</translation>
 <translation id="3440043456924990296">Organizācijas pārvaldītie iestatījumi</translation>
+<translation id="7053983685419859001">Bloķēt</translation>
+<translation id="5716230673298034837">Atļaut visus</translation>
+<translation id="5279600392753459966">Bloķēt visus</translation>
 <translation id="4516904298421534459">Filtru saraksti</translation>
 <translation id="3570081523466826008">Jaunināt savienojumus uz HTTPS</translation>
 <translation id="131231380815754440">Iespējot HTTPS</translation>
@@ -1619,6 +1636,7 @@
 <translation id="8593054718053894081">Agresīvi bloķēt izsekotājus un reklāmas</translation>
 <translation id="7384778069178817075">Atļaut visus izsekotājus un reklāmas</translation>
 <translation id="4941539331405513605">Bloķēt starpvietņu sīkfailus</translation>
+<translation id="2749284154880331639">Aizmirst trešo pušu sīkfailus</translation>
 <translation id="6883611015375728278">Bloķēt visus sīkfailus</translation>
 <translation id="5657156137487675418">Atļaut visus sīkfailus</translation>
 <translation id="8366221601425141146">Pirkstu nospiedumu ņemšana bloķēta</translation>
@@ -1633,6 +1651,7 @@
 <translation id="7194012750329511146">Brave aizsargi
 Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="4292121526390005808">Bloķētie skripti</translation>
+<translation id="5046271170844958713">Atļautie skripti</translation>
 <translation id="264682546981571963">Vai jums apnikuši sīkfailu piekrišanas paziņojumi?</translation>
 <translation id="4986297793092101884">Brave jau bloķē trešo personu sīkfailus. Mēs varam bloķēt arī paziņojumus par piekrišanu sīkfailiem.</translation>
 <translation id="535688588637568715">Jā, bloķēt paziņojumus par piekrišanu sīkfailiem</translation>
@@ -1669,6 +1688,7 @@ Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> nevarēja pievienoties <ph name="REGION_NAME"/> serverim. Varat mēģināt vēlreiz vai izvēlēties citu.</translation>
 <translation id="1024255913009642477">Vai jūs jau iegādājāties VPN?</translation>
 <translation id="8814357473522731680">Nodrošina</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="5747552184818312860">Termiņš</translation>
 <translation id="1691256669639196606">Pārvaldīt abonementu</translation>
 <translation id="434523916398030617">Sazināties ar tehnisko atbalstu</translation>

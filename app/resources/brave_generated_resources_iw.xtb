@@ -167,6 +167,7 @@
 <translation id="2036503787657622020">הפעל מצב קורא</translation>
 <translation id="5226458915125328323">הגדרות Speedreader</translation>
 <translation id="8591883849678260674">צפה במקור</translation>
+<translation id="1969654232209826429">קריאה מינימלית</translation>
 <translation id="6284218950354553099">שלח PING של שימוש יומי ל-Brave</translation>
 <translation id="5288333155754958121">PING אנונימי, פרטי זה מאפשר ל-Brave להעריך את המשתמשים הפעילים.</translation>
 <translation id="1872784258300710671">Brave משתמש באנליטיקות מוצר פרטיות לחלוטין כדי להעריך את השימוש הכולל בתכונות מסוימות</translation>
@@ -189,16 +190,16 @@
 <translation id="191143826155037518">Brave זמין עבורך תחת <ph name="BEGIN_LINK_MPL"/> הרישיון הציבורי של מוזילה 2.0<ph name="END_LINK_MPL"/> (MPL) אשר כולל <ph name="BEGIN_LINK_OSS"/> תוכנת קוד פתוח<ph name="END_LINK_OSS"/> תחת מגוון רישיונות אחרים. באפשרותך לקרוא <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/> הנחיות כיצד להוריד ולבנות בעצמך<ph name="END_LINK_BUILD_INSTRUCTIONS"/> את <ph name="BEGIN_LINK_SOURCE_CODE"/>קוד המקור הספציפי בו נעשה שימוש כדי ליצור עותק זה <ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">צור סימניה לכל הכרטיסיות...</translation>
 <translation id="3987546108749866209">השתמשו בכרטיסיות אנכיות</translation>
-<translation id="5860254591544742609">הצגת שורת הכותרת</translation>
-<translation id="399928467800528208">הדגשה לאחר מעבר עם העכבר</translation>
 <translation id="1904394285866191268">{NUM_TABS,plural, =1{השתקת הכרטיסייה}two{השתקת הכרטיסיות}many{השתקת הכרטיסיות}other{השתקת הכרטיסיות}}</translation>
 <translation id="5179127818058486126">{NUM_TABS,plural, =1{ביטול השתקת הכרטיסייה}two{ביטול השתקת הכרטיסיות}many{ביטול השתקת הכרטיסיות}other{ביטול השתקת הכרטיסיות}}</translation>
+<translation id="2289567621059034186">כרטיסייה חדשה מטה</translation>
+<translation id="3228962656492373217">סגור כרטיסיות מטה</translation>
 <translation id="2336228925368920074">צור סימניה לכל הכרטיסיות...</translation>
 <translation id="2523967823495420116">השתמשו בכרטיסיות אנכיות</translation>
-<translation id="8888603463702767599">הצגת שורת הכותרת</translation>
-<translation id="2058818256505091369">הדגשה לאחר מעבר עם העכבר</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{השתקת הכרטיסייה}two{השתקת הכרטיסיות}many{השתקת הכרטיסיות}other{השתקת הכרטיסיות}}</translation>
 <translation id="2120478168904746065">{NUM_TABS,plural, =1{ביטול השתקת הכרטיסייה}two{ביטול השתקת הכרטיסיות}many{ביטול השתקת הכרטיסיות}other{ביטול השתקת הכרטיסיות}}</translation>
+<translation id="4405580203042711503">כרטיסה חדשה מטה</translation>
+<translation id="5611474372949142946">סגור כרטיסיות מטה</translation>
 <translation id="3704707436873245822">העתקת טקסט מתוך תמונה</translation>
 <translation id="5268098808165185458">מעתיק טקסט מתוך תמונה...</translation>
 <translation id="4046485130884276245">הועתק טקסט מתוך תמונה</translation>
@@ -237,6 +238,10 @@
 <translation id="2307973900865360088">שמירה בעגינה</translation>
 <translation id="961012016278832836">Microsoft Edge Legacy</translation>
 <translation id="6436994631426134065">יובא מ-<ph name="BROWSER_NAME"/>.</translation>
+<translation id="1386966479075994683">הרחב כרטיסיות</translation>
+<translation id="480565261566115689">מזער כרטיסיות</translation>
+<translation id="7194343495483122559">הרחב כרטיסיות</translation>
+<translation id="1199054713803577378">מזער כרטיסיות</translation>
 <translation id="9156965752763025780">‏השינויים שביצעת ייכנסו לתוקף בפעם הבאה שתפעיל מחדש את Brave‏.</translation>
 <translation id="7179921470347911571">הפעלה מחדש כעת</translation>
 <translation id="4472575034687746823">תחילת העבודה</translation>
@@ -278,7 +283,7 @@
 <translation id="2970343821770026391">דשבורד</translation>
 <translation id="3719826155360621982">דף הבית</translation>
 <translation id="5448570825852364919">עמוד ריק</translation>
-<translation id="5919424224662539292">התאם אישית את תמונת הרקע והיישומונים המופיעים בעמוד הלשונית החדשה</translation>
+<translation id="8244387390464017490">התאם אישית את דף הכרטיסייה החדשה</translation>
 <translation id="7461924472993315131">הצמד</translation>
 <translation id="7506648566440714944">Brave כבר נעוץ</translation>
 <translation id="239275665037555969">עגינה</translation>
@@ -310,6 +315,7 @@
 <translation id="3357319404342882895">חמור</translation>
 <translation id="8823559166155093873">חסימת קובצי עוגיות</translation>
 <translation id="5770288601196774623">מרובה-אתרים בלבד</translation>
+<translation id="6795317840397506736">שכח כברירת מחדל</translation>
 <translation id="3587482841069643663">הכל</translation>
 <translation id="7390783310074170337">תצוגת ברירת מחדל</translation>
 <translation id="130615081792797568">תצוגה רגילה</translation>
@@ -336,7 +342,7 @@
 <translation id="4182731739150761577">הצג רשימה מלאה</translation>
 <translation id="1340263054776016283">יש להזין את כתובת האתר של רשימת הסינון</translation>
 <translation id="8578397014396032341">מסנני תוכן</translation>
-<translation id="6821903322090655051">Brave Rewards מושבתים</translation>
+<translation id="5567412479632285879">Brave Rewards מושבתים</translation>
 <translation id="413570371620795359">פתח לוח תגמולים כדי לאפשר ולהתחיל לעבוד</translation>
 <translation id="3849957491997306859">זוהה אוטומטית</translation>
 <translation id="8798099450830957504">ברירת מחדל</translation>
@@ -351,7 +357,6 @@
 <translation id="7286722244752781970">זמן מינימלי בדף לפני כניסה שנרשמת כביקור</translation>
 <translation id="4424486208397124985">מספר כניסות מינימלי עבור רלוונטיות של אתר</translation>
 <translation id="6248554379744796526">הצג ברשימה אתרים לא מאומתים</translation>
-<translation id="5510618543889994434">אפשר תרומות לסרטונים</translation>
 <translation id="924777189963477634">על ידי הפעלת Auto-Contribute הינכם מסכימים <ph name="BEGIN_LINK_TOS"/>לתנאי השירות<ph name="END_LINK_TOS"/> <ph name="BEGIN_LINK_PP"/>ומדיניות הפרטיות<ph name="END_LINK_PP"/>.</translation>
 <translation id="6333347122924254968">הצג את סמליל פרסי Brave בשורת הכתובת</translation>
 <translation id="7483857210736407752">הצג כפתורי טיפ באתרים</translation>
@@ -497,17 +502,30 @@
 <translation id="1658670175365815312">Brave עוברת לגרסת .onion כשהדבר אפשרי, ופותחת אוטומטית את כל הדומיינים עם סיומת .onion בחלון Tor.</translation>
 <translation id="2896916411183256228">משתמש ב-WebTorrent להצגת טורנטים ישירות בדפדפן. תומך בקבצי torrent וקישורי מגנט.</translation>
 <translation id="5249433283143453448">השתמש/י ברכיב ניהול זכויות דיגיטלית (DRM) Widevine כדי לצפות בסרטון מוגן ובתכנים אחרים בדפדפן.</translation>
+<translation id="1314131187310290315">הרחבות V2 Manifest</translation>
+<translation id="2488433650767270565">ההרחבות הבאות של Manifest V2 יוסרו מחנות האינטרנט של Chrome, אך עדיין נתמכות ב-Brave. החלף כדי להוריד ולהתקין, או כדי להסיר את ההתקנה.</translation>
+<translation id="578671172657727816">לְאַפשֵׁר NoScript™</translation>
+<translation id="9068475464170522036">NoScript היא הרחבה Manifest V2 המאפשרת לך לחסום ולבטל חסימה של סקריפטים בודדים הפועלים או מנסים לפעול בדף נתון.</translation>
+<translation id="1394592156621788100">לְאַפשֵׁר uBlock Origin™</translation>
+<translation id="2638983091068889519">uBlock Origin היא תוסף Manifest V2 המספק כלים רבי עוצמה לחסימת תוכן עם הרבה אפשרויות למשתמשים מתקדמים.</translation>
+<translation id="3909078036552544838">לְאַפשֵׁר uMatrix™</translation>
+<translation id="8796148218203577506">uMatrix היא תוסף Manifest V2 המספק חומת אש מבוססת מטריצות הצבע ולחץ, עם כלים רבים לשיפור הפרטיות.</translation>
+<translation id="2385774023523989298">לְאַפשֵׁר AdGuard™</translation>
+<translation id="188228077840632890">AdGuard הוא תוסף Manifest V2 המספק חסימת מודעות, אפשרויות בקרת הורים ושילוב עם הצעות שירות אחרות של AdGuard.</translation>
 <translation id="8137559199583651773">נהל תוספים</translation>
 <translation id="7013485839273047434">קבל/י הרחבות נוספות</translation>
 <translation id="4954512758656527938">ארנק ברירת המחדל של Ethereum</translation>
 <translation id="7701023802820268122">ארנק ברירת המחדל של Solana</translation>
 <translation id="8488282162676695335">ארנק Brave</translation>
 <translation id="2356070529366658676">שאל</translation>
-<translation id="7701040980221191251">ללא</translation>
+<translation id="6942354363301686374">הרחבות (ללא ניתוק)</translation>
 <translation id="1274962333945373242">ארנקי קריפטו (מבוטלת)</translation>
+<translation id="702381242110464396">הרחבות (החלפה של ארנק Brave)</translation>
 <translation id="4718664830805652430">ברירת המחדל של מטבע הבסיס</translation>
 <translation id="7992507032049865603">ברירת המחדל של מטבע קריפטו בסיסי</translation>
 <translation id="1834467296210148203">הצג את סמל Brave Wallet בסרגל הכלים</translation>
+<translation id="7568430944629653319">אפשר גילוי NFT</translation>
+<translation id="970496996377628529">הוסף אוטומטית NFTs שבבעלותך לארנק באמצעות ממשקי API של צד שלישי.</translation>
 <translation id="8239147115686034860">נעילה אוטומטית של Brave Wallet</translation>
 <translation id="414639769490080648">מספר הדקות להמתנה עד שה-Brave Wallet יינעל אוטומטית</translation>
 <translation id="856371974127598760">Wallet Networks</translation>
@@ -516,10 +534,15 @@
 <translation id="4440478655766953083">הצמד NFTs באופן אוטומטי</translation>
 <translation id="464460032678285850">NFTs שנוספו לארנק Brave עשויים להיות מוצמדים אוטומטית לצומת IPFS המקומי. הערה: ייתכן שהדמון IPFS יופעל למטרות ההצמדה כך שהצומת המקומי שלך ישתף נתונים מאוחסנים במטמון ו-NFT מוצמדים לרשת IPFS.</translation>
 <translation id="4993345308607970390">איפוס ארנק Brave</translation>
+<translation id="5887022857624190239">נקה NFT מוצמדים</translation>
+<translation id="204584113330893805">NFTs מוצמדים מתארחים לרשת IPFS כאשר צומת IPFS מקומי מופעל. יש לך
+     <ph name="NFT_COUNT"/> מכשירי NFT מוצמדים כרגע.</translation>
 <translation id="9216386092464743272">האם אתם בטוחים שברצונכם לאפס את כל עסקאות הארנק שלכם ומידע על חוסר? אפשרות זו משמשת בעיקר מפתחים המפעילים שרת בדיקה מקומי. הקלידו "<ph name="CONFIRMATION_PHRASE"/>לאישור.</translation>
 <translation id="6369495274982305511">בטוח שברצונך לאפס את הארנק שלך? אם אין גיבוי לארנק שלך, האיפוס יגרום לך לאבד את כל נתוני החשבון (כולל את כל הכספים המשויכים). הקלד " <ph name="CONFIRMATION_PHRASE"/>" כדי לאשר.</translation>
+<translation id="4248533222660842025">האם אתה בטוח שברצונך למחוק את ה-NFTs המוצמדים שלך? חלקם עלולים ללכת לאיבוד לנצח אם אין מארחים אחרים ברשת ה-IPFS. הקלד"<ph name="CONFIRMATION_PHRASE"/>" כדי לאשר.</translation>
 <translation id="3752403403443723332">הארנק שלכם אופס.</translation>
 <translation id="594766067816395072">פרטי העסקאות בארנקכם אופסו.</translation>
+<translation id="1615009913945115836">ה-NFT המוצמדים שלך אופסו.</translation>
 <translation id="1426410128494586442">כן</translation>
 <translation id="4226543734057230801">רשתות Ethereum</translation>
 <translation id="3504157706952484145">רשתות Filecoin</translation>

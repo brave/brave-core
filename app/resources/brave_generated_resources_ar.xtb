@@ -167,6 +167,7 @@
 <translation id="2036503787657622020">تفعيل وضع القارئ</translation>
 <translation id="5226458915125328323">إعدادات Speedreader</translation>
 <translation id="8591883849678260674">عرض الصفحة الأصلية</translation>
+<translation id="1969654232209826429">ق للقراءة</translation>
 <translation id="6284218950354553099">الإرسال التلقائي لأداة البينج للاستخدام اليومي إلى Brave</translation>
 <translation id="5288333155754958121">يتيح هذا أمر البينج المجهول والخاص لـ Brave تقدير المستخدمين النشطين.</translation>
 <translation id="1872784258300710671">يستخدم Brave تحليلات المنتج الخاصة بالكامل لتقدير الاستخدام الكلي لبعض الميزات</translation>
@@ -190,16 +191,16 @@
         يمكنك قراءة <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>التعليمات حول كيفية تنزيل وبناء<ph name="END_LINK_BUILD_INSTRUCTIONS"/> <ph name="BEGIN_LINK_SOURCE_CODE"/> التعليمات البرمجية الأصلية المحددة المستخدمة لإنشاء هذه النسخة<ph name="END_LINK_SOURCE_CODE"/> لنفسك.</translation>
 <translation id="4474155171896946103">وضع إشارات على كل علامات التبويب...</translation>
 <translation id="3987546108749866209">استخدام علامات تبويب عمودية</translation>
-<translation id="5860254591544742609">عرض شريط العناوين</translation>
-<translation id="399928467800528208">التنقل عند تحريك الفأرة</translation>
 <translation id="1904394285866191268">{NUM_TABS,plural, =1{كتم صوت علامة تبويب واحدة}zero{كتم صوت علامات التبويب}two{كتم صوت علامتيِّ التبويب}few{كتم صوت علامات التبويب}many{كتم صوت علامات التبويب}other{كتم صوت علامات التبويب}}</translation>
 <translation id="5179127818058486126">{NUM_TABS,plural, =1{إعادة صوت علامة تبويب واحدة}zero{إعادة صوت علامات التبويب}two{إعادة صوت علامتيِّ التبويب}few{إعادة صوت علامات التبويب}many{إعادة صوت علامات التبويب}other{إعادة صوت علامات التبويب}}</translation>
+<translation id="2289567621059034186">علامة تبويب جديدة أدناه</translation>
+<translation id="3228962656492373217">إغلاق علامات التبويب أدناه</translation>
 <translation id="2336228925368920074">وضع إشارة على جميع علامات التبويب...</translation>
 <translation id="2523967823495420116">استخدام علامات تبويب عمودية</translation>
-<translation id="8888603463702767599">عرض شريط العناوين</translation>
-<translation id="2058818256505091369">التنقل عند تحريك الفأرة</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{كتم صوت علامة تبويب واحدة}zero{كتم صوت علامات التبويب}two{كتم صوت علامتيِّ التبويب}few{كتم صوت علامات التبويب}many{كتم صوت علامات التبويب}other{كتم صوت علامات التبويب}}</translation>
 <translation id="2120478168904746065">{NUM_TABS,plural, =1{إعادة صوت علامة تبويب واحدة}zero{إعادة صوت علامات التبويب}two{إعادة صوت علامتيِّ التبويب}few{إعادة صوت علامات التبويب}many{إعادة صوت علامات التبويب}other{إعادة صوت علامات التبويب}}</translation>
+<translation id="4405580203042711503">علامة تبويب جديدة أدناه</translation>
+<translation id="5611474372949142946">إغلاق علامات التبويب أدناه</translation>
 <translation id="3704707436873245822">نسخ النص من الصورة</translation>
 <translation id="5268098808165185458">جارٍ نسخ النص من الصورة...</translation>
 <translation id="4046485130884276245">تم نسخ النص من الصورة</translation>
@@ -238,6 +239,10 @@
 <translation id="2307973900865360088">حفظ في المرسى</translation>
 <translation id="961012016278832836">Microsoft Edge Legacy</translation>
 <translation id="6436994631426134065">تم الاستيراد من <ph name="BROWSER_NAME"/>.</translation>
+<translation id="1386966479075994683">توسيع علامات التبويب</translation>
+<translation id="480565261566115689">تصغير علامات التبويب</translation>
+<translation id="7194343495483122559">توسيع علامات التبويب</translation>
+<translation id="1199054713803577378">تصغير علامات التبويب</translation>
 <translation id="9156965752763025780">‏ستسري التغييرات في المرة التالية التي تعيد فيها تشغيل Brave.</translation>
 <translation id="7179921470347911571">أعد التشغيل الآن</translation>
 <translation id="4472575034687746823">الخطوات الأولى</translation>
@@ -279,7 +284,7 @@
 <translation id="2970343821770026391">لوحة التحكم</translation>
 <translation id="3719826155360621982">الصفحة الرئيسية</translation>
 <translation id="5448570825852364919">صفحة فارغة</translation>
-<translation id="5919424224662539292">قم بتخصيص صورة الخلفية وعناصر واجهة المستخدم التي تظهر في صفحة علامة التبويب الجديدة</translation>
+<translation id="8244387390464017490">تخصيص صفحة علامة تبويب جديدة</translation>
 <translation id="7461924472993315131">تثبيت</translation>
 <translation id="7506648566440714944">يتم تثبيت Brave بالفعل</translation>
 <translation id="239275665037555969">المرسى</translation>
@@ -311,6 +316,7 @@
 <translation id="3357319404342882895">صارم</translation>
 <translation id="8823559166155093873">حجب ملفات تعريف الارتباط</translation>
 <translation id="5770288601196774623">فقط عبر الموقع</translation>
+<translation id="6795317840397506736">تجاهل افتراضيًا</translation>
 <translation id="3587482841069643663">الكل</translation>
 <translation id="7390783310074170337">العرض الافتراضي</translation>
 <translation id="130615081792797568">عرض بسيط</translation>
@@ -337,7 +343,7 @@
 <translation id="4182731739150761577">عرض القائمة بالكامل</translation>
 <translation id="1340263054776016283">أدخل عنوان URL لقائمة عامل التصفية</translation>
 <translation id="8578397014396032341">عوامل تصفية المحتوى</translation>
-<translation id="6821903322090655051">تم تعطيل Brave Rewards</translation>
+<translation id="5567412479632285879">تم تعطيل Brave Rewards</translation>
 <translation id="413570371620795359">فتح لوحة المكافآت للتمكين والبدء</translation>
 <translation id="3849957491997306859">يجري الكشف عنه بشكل تلقائي</translation>
 <translation id="8798099450830957504">التلقائي</translation>
@@ -352,7 +358,6 @@
 <translation id="7286722244752781970">الحد الأدنى لوقت الصفحة قبل تسجيل الزيارة</translation>
 <translation id="4424486208397124985">الحد الأدنى من الزيارات من أجل صلة الناشر</translation>
 <translation id="6248554379744796526">اعرض المواقع التي لم يتم التحقق منها في القائمة</translation>
-<translation id="5510618543889994434">السماح بالمساهمات لمقاطع الفيديو</translation>
 <translation id="924777189963477634">من خلال تشغيل المساهمة التلقائية، فإنك توافق على <ph name="BEGIN_LINK_TOS"/>شروط الخدمة <ph name="END_LINK_TOS"/> و <ph name="BEGIN_LINK_PP"/> سياسة الخصوصية <ph name="END_LINK_PP"/></translation>
 <translation id="6333347122924254968">إظهار رمز "مكافآت متصفح Brave" في شريط العنواين</translation>
 <translation id="7483857210736407752">عرض أزرار التلميح على المواقع</translation>
@@ -498,17 +503,30 @@
 <translation id="1658670175365815312">سيتحوّل Brave إلى إصدار .onion للموقع الإلكتروني في نافذة Tor عند يكون متاحًا ويفتح تلقائيًا جميع نطاقات .onion في نافذة Tor.</translation>
 <translation id="2896916411183256228">استخدم WebTorrent لعرض ملفات التورنت مباشرة في المتصفح. تدعم ملفات التورنت والروابط المغناطيسية.</translation>
 <translation id="5249433283143453448">استخدم مكون Widevine لإدارة الحقوق الرقمية (DRM) لعرض دفق الفيديو المحمي والمحتويات الأخرى في المستعرض.</translation>
+<translation id="1314131187310290315">إضافات Manifest V2</translation>
+<translation id="2488433650767270565">ستتم إزالة إضافات Manifest V2 التالية من متجر Chrome على الويب، ولكنها ستظل مدعومة في Brave. قم بالتبديل لتنزيلها وتثبيتها أو لإلغاء التثبيت.</translation>
+<translation id="578671172657727816">تمكين NoScript™</translation>
+<translation id="9068475464170522036">NoScript هو  إضافات Manifest V2 تسمح لك بحظر وإلغاء حظر البرامج النصية الفردية التي تعمل أو تحاول تشغيلها على صفحة معينة.</translation>
+<translation id="1394592156621788100">تمكين uBlock Origin™</translation>
+<translation id="2638983091068889519">uBlock Origin هو إضافات Manifest V2 توفر أدوات قوية لحظر المحتوى مع الكثير من الخيارات للمستخدمين المتقدمين.</translation>
+<translation id="3909078036552544838">تمكين uMatrix™</translation>
+<translation id="8796148218203577506">uMatrix هو إضافات Manifest V2 توفر جدار حماية قائم على المصفوفة بالإشارة والنقر، مع العديد من أدوات تحسين الخصوصية.</translation>
+<translation id="2385774023523989298">تمكين AdGuard™</translation>
+<translation id="188228077840632890">AdGuard هو إضافات Manifest V2 توفر حظر الإعلانات وخيارات الرقابة الأصلية والتكامل مع عروض خدمة AdGuard الأخرى.</translation>
 <translation id="8137559199583651773">إدارة الإضافات</translation>
 <translation id="7013485839273047434">احصل على المزيد من الإضافات</translation>
 <translation id="4954512758656527938">محفظة Ethereum الافتراضية</translation>
 <translation id="7701023802820268122">محفظة Solana الافتراضية</translation>
 <translation id="8488282162676695335">محفظة Brave</translation>
 <translation id="2356070529366658676">طلب</translation>
-<translation id="7701040980221191251">بلا</translation>
+<translation id="6942354363301686374">الإضافات (لا يوجد بديل احتياطي)</translation>
 <translation id="1274962333945373242">محافظ العملات المشفرة (مهملة)</translation>
+<translation id="702381242110464396">الإضافات (بديل احتياطي لمحفظة Brave)</translation>
 <translation id="4718664830805652430">العملة الأساسية الافتراضية</translation>
 <translation id="7992507032049865603">العملة المشفرة الأساسية الافتراضية</translation>
 <translation id="1834467296210148203">إظهار رمز Brave Wallet على شريط الأدوات</translation>
+<translation id="7568430944629653319">تمكين اكتشاف الرمز المميز غير القابل للاستبدال</translation>
+<translation id="970496996377628529">أضف الرموز المميزة غير قابل للاستبدال التي تملكها بشكل تلقائي إلى المحفظة باستخدام واجهات برمجة التطبيقات التابعة لجهات خارجية.</translation>
 <translation id="8239147115686034860">قفل Brave Wallet تلقائيًا</translation>
 <translation id="414639769490080648">عدد دقائق الانتظار حتى يتم قفل Brave Wallet تلقائيًا</translation>
 <translation id="856371974127598760">شبكات المحفظة</translation>
@@ -518,10 +536,15 @@
 <translation id="464460032678285850">قد يتم تثبيت الرموز المميزة غير قابلة للاستبدال (NFT) التي تتم إضافتها إلى Brave Wallet تلقائيًا في عقدة IPFS المحلية.
  ملاحظة: قد يتم بدء تشغيل البرنامج الخفي IPFS لأغراض التثبيت بحيث تشارك العقدة المحلية البيانات المخزنة مؤقتًا والرموز المميزة غير قابلة للاستبدال (NFT) المثبتة على شبكة IPFS.</translation>
 <translation id="4993345308607970390">إعادة تعيين محفظة Brave</translation>
+<translation id="5887022857624190239">مسح الرموز المميزة غير القابلة للاستبدال المثبتة</translation>
+<translation id="204584113330893805">تتم استضافة الرموز المميزة غير القابلة للاستبدال المثبتة على شبكة IPFS عند تشغيل عقدة IPFS المحلية.
+    لديك <ph name="NFT_COUNT"/> من الرموز المميزة غير القابلة للاستبدال المثبّتة في الوقت الحالي.</translation>
 <translation id="9216386092464743272">هل أنت متأكد من أنك تريد إعادة ضبط جميع تداولات محفظتك ومعلومات الرقم السري؟ يستخدم هذا الخيار في الغالب من قبل المطورين الذين يقومون بتشغيل خادم اختبار محلي. اكتب "<ph name="CONFIRMATION_PHRASE"/>" للتأكيد.</translation>
 <translation id="6369495274982305511">هل أنت متأكد أنك تريد إعادة ضبط محفظتك؟ إذا لم يتم نسخ محفظتك احتياطيًا، فستؤدي إعادة التعيين إلى فقد جميع بيانات الحساب (بما في ذلك أي أموال مرتبطة). اكتب "<ph name="CONFIRMATION_PHRASE"/>" للتأكيد.</translation>
+<translation id="4248533222660842025">هل أنت متأكد من أنك تريد مسح الرموز المميزة غير القابلة للاستبدال المثبّتة؟ قد تُفقد بعض الرموز المميزة غير القابلة للاستبدال إلى الأبد إذا لم يوجد مستضيفون آخرون في شبكة IPFS. اكتب "<ph name="CONFIRMATION_PHRASE"/>" للتأكيد.</translation>
 <translation id="3752403403443723332">تم إعادة ضبط محفظتك</translation>
 <translation id="594766067816395072">تمت إعادة ضبط معلومات تداولات محفظتك.</translation>
+<translation id="1615009913945115836">تمت إعادة تعيين الرموز المميزة غير القابلة للاستبدال المُثبّتة الخاصة بك.</translation>
 <translation id="1426410128494586442">نعم</translation>
 <translation id="4226543734057230801">شبكات الإيثيريوم</translation>
 <translation id="3504157706952484145">شبكات Filecoin</translation>
