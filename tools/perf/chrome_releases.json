@@ -6,8 +6,8 @@
   "100.0.4896.46": {"url": "https://dl.google.com/release2/chrome/d6t7uc36wtapqylvl3x2ekglsq_100.0.4896.46/100.0.4896.46_chrome_installer.exe"},
   "100.0.4896.56": {"url": "https://dl.google.com/release2/chrome/h3lzewmzpbsnis7wqww2zcki3y_100.0.4896.56/100.0.4896.56_chrome_installer.exe"},
   "100.0.4896.60": {"url": "https://dl.google.com/release2/chrome/adk7ykd4m3hxmsbdd7g6j5pjn7gq_100.0.4896.60/100.0.4896.60_chrome_installer.exe"},
-  "101.0.4951.15": {"url": "http://dl.google.com/release2/chrome/e2k5pta4jpg7l7btgpbqbdylm4_101.0.4951.15/101.0.4951.15_chrome_installer.exe"},
-  "101.0.4951.26": {"url": "http://dl.google.com/release2/chrome/acccw4bs5ssird7xryhfelciqi_101.0.4951.26/101.0.4951.26_chrome_installer.exe"},
+  "101.0.4951.15": {"url": "https://dl.google.com/release2/chrome/e2k5pta4jpg7l7btgpbqbdylm4_101.0.4951.15/101.0.4951.15_chrome_installer.exe"},
+  "101.0.4951.26": {"url": "https://dl.google.com/release2/chrome/acccw4bs5ssird7xryhfelciqi_101.0.4951.26/101.0.4951.26_chrome_installer.exe"},
   "101.0.4951.34": {"url": "https://dl.google.com/release2/chrome/oalppmwx4lb3hw3kpgfbrlwr2u_101.0.4951.34/101.0.4951.34_chrome_installer.exe"},
   "101.0.4951.41": {"url": "https://dl.google.com/release2/chrome/adhsa4gplkf573nizk5shcj4dsfq_101.0.4951.41/101.0.4951.41_chrome_installer.exe"},
   "101.0.4951.54": {"url": "https://dl.google.com/release2/chrome/m4ugl2oo7k3e3c7k3m4c6g43uu_101.0.4951.54/101.0.4951.54_chrome_installer.exe"},
@@ -32,5 +32,8 @@
   "109.0.5414.120": {"url": "https://dl.google.com/release2/chrome/czao2hrvpk5wgqrkz4kks5r734_109.0.5414.120/109.0.5414.120_chrome_installer.exe"},
   "110.0.5481.104": {"url": "https://dl.google.com/release2/chrome/acul64cchfvvq4is5vc4icaz2yma_110.0.5481.104/110.0.5481.104_chrome_installer.exe"},
   "111.0.5563.64": {"url": "https://dl.google.com/release2/chrome/acloivxamphk5drkmvyazfpfb3kq_111.0.5563.64/111.0.5563.64_chrome_installer.exe"},
-  "112.0.5615.20": {"url": "http://dl.google.com/release2/chrome/iy65x4whpid5izwd2hcp66ehk4_112.0.5615.20/112.0.5615.20_chrome_installer.exe"}
+  "112.0.5615.20": {"url": "https://dl.google.com/release2/chrome/iy65x4whpid5izwd2hcp66ehk4_112.0.5615.20/112.0.5615.20_chrome_installer.exe"},
+  "112.0.5615.50": {"url": "https://dl.google.com/release2/chrome/alqo5mt5gnkjmd5dl2b6ca74ve_112.0.5615.50/112.0.5615.50_chrome_installer.exe"},
+  "112.0.5615.138": {"url": "https://dl.google.com/release2/chrome/wyescrl2iyc6pdqgxpdlxncdu_112.0.5615.138/112.0.5615.138_chrome_installer.exe"},
+  "113.0.5672.63": {"url": "https://dl.google.com/release2/chrome/kh3izh656qcyneaxk63bczq2na_113.0.5672.63/113.0.5672.63_chrome_installer.exe"}
 }
