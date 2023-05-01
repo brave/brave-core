@@ -51,36 +51,10 @@ struct NetworkIcon: View {
   
   private typealias NetworkImageInfo = (iconName: String, grayscale: Bool)
   private var networkImageInfo: NetworkImageInfo? {
-    switch network.chainId {
-    case BraveWallet.MainnetChainId:
-      return ("eth-asset-icon", false)
-    case BraveWallet.GoerliChainId,
-      BraveWallet.SepoliaChainId:
-      return ("eth-asset-icon", true)
-    case BraveWallet.SolanaMainnet:
-      return ("sol-asset-icon", false)
-    case BraveWallet.SolanaTestnet, BraveWallet.SolanaDevnet:
-      return ("sol-asset-icon", true)
-    case BraveWallet.FilecoinMainnet:
-      return ("filecoin-asset-icon", false)
-    case BraveWallet.FilecoinTestnet:
-      return ("filecoin-asset-icon", true)
-    case BraveWallet.PolygonMainnetChainId:
-      return ("matic", false)
-    case BraveWallet.BinanceSmartChainMainnetChainId:
-      return ("bnb-asset-icon", false)
-    case BraveWallet.CeloMainnetChainId:
-      return ("celo", false)
-    case BraveWallet.AvalancheMainnetChainId:
-      return ("avax", false)
-    case BraveWallet.FantomMainnetChainId:
-      return ("fantom", false)
-    case BraveWallet.OptimismMainnetChainId:
-      return ("optimism", false)
-    case BraveWallet.AuroraMainnetChainId:
-      return ("aurora", false)
-    default:
-      return nil
+    let isGrayscale = WalletConstants.supportedTestNetworkChainIds.contains(network.chainId)
+    if let imageName = network.networkLogoName {
+      return (imageName, isGrayscale)
     }
+    return nil
   }
 }

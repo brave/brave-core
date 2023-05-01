@@ -223,7 +223,7 @@ struct SwapTransactionConfirmationView: View {
           AssetIconView(
             token: token,
             network: network,
-            shouldShowNativeTokenIcon: true,
+            shouldShowNetworkIcon: true,
             length: assetIconSize,
             maxLength: maxAssetIconSize,
             networkSymbolLength: assetNetworkIconSize,
