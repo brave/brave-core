@@ -40,6 +40,15 @@ export default class SolanaLedgerBridgeKeyring extends LedgerBridgeKeyring imple
     if (!result.success) {
       return result
     }
+    // The root path does not support an index
+    if (scheme === SolDerivationPaths.Bip44Root) {
+      return this.getAccountsFromDevice(
+        [this.getPathForIndex(0, scheme)],
+        false,
+        scheme
+      )
+    }
+
     from = (from >= 0) ? from : 0
     const paths = []
     const addZeroPath = (from > 0 || to < 0)
@@ -47,6 +56,7 @@ export default class SolanaLedgerBridgeKeyring extends LedgerBridgeKeyring imple
       // Add zero address to calculate device id.
       paths.push(this.getPathForIndex(0, scheme))
     }
+
     for (let i = from; i <= to; i++) {
       paths.push(this.getPathForIndex(i, scheme))
     }
@@ -128,6 +138,9 @@ export default class SolanaLedgerBridgeKeyring extends LedgerBridgeKeyring imple
   }
 
   private readonly getPathForIndex = (index: number, scheme: SolDerivationPaths): string => {
+    if (scheme === SolDerivationPaths.Bip44Root) {
+      return `44'/501`
+    }
     if (scheme === SolDerivationPaths.LedgerLive) {
       return `44'/501'/${index}'`
     }

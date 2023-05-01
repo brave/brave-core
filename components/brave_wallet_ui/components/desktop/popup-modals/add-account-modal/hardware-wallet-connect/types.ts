@@ -24,7 +24,8 @@ export const HardwareWalletDerivationPathsMapping = {
 // TODO(apaymyshev): strings below need localization.
 export const SolHardwareWalletDerivationPathLocaleMapping = {
   [SolDerivationPaths.Default]: 'Default',
-  [SolDerivationPaths.LedgerLive]: 'Ledger Live'
+  [SolDerivationPaths.LedgerLive]: 'Ledger Live',
+  [SolDerivationPaths.Bip44Root]: 'Bip44 Root'
 }
 
 export interface HardwareWalletConnectOpts {
