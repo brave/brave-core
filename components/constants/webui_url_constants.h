@@ -68,5 +68,7 @@ extern const char kPlaylistPlayerURL[];
 extern const char kSpeedreaderPanelURL[];
 extern const char kSpeedreaderPanelHost[];
 extern const char kCommandsHost[];
+extern const char kChatUIURL[];
+extern const char kChatUIHost[];
 
 #endif  // BRAVE_COMPONENTS_CONSTANTS_WEBUI_URL_CONSTANTS_H_

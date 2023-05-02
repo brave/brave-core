@@ -128,6 +128,8 @@ brave_chrome_browser_deps = [
   "//brave/browser/ui",
   "//brave/browser/ui/tabs",
   "//brave/common",
+  "//brave/components/ai_chat",
+  "//brave/components/ai_chat:mojom",
   "//brave/components/brave_ads/browser",
   "//brave/components/brave_ads/common",
   "//brave/components/brave_component_updater/browser",

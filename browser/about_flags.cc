@@ -40,6 +40,10 @@
 #include "net/base/features.h"
 #include "third_party/blink/public/common/features.h"
 
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/components/ai_chat/features.h"
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/features.h"
 #endif
@@ -378,6 +382,19 @@
   })
 #else
 #define BRAVE_SHARED_PINNED_TABS
+#endif
+
+#if !BUILDFLAG(IS_ANDROID)
+#define BRAVE_AI_CHAT                                          \
+  EXPAND_FEATURE_ENTRIES({                                     \
+      "brave-ai-chat",                                         \
+      "Brave AI Chat",                                         \
+      "Summarize articles and engage in conversation with AI", \
+      kOsWin | kOsMac | kOsLinux,                              \
+      FEATURE_VALUE_TYPE(ai_chat::features::kAIChat),          \
+  })
+#else
+#define BRAVE_AI_CHAT
 #endif
 
 // Keep the last item empty.
@@ -791,6 +808,7 @@
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
   BRAVE_SHARED_PINNED_TABS                                                     \
+  BRAVE_AI_CHAT                                                                \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 
 namespace flags_ui {

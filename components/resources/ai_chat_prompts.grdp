@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <message name="IDS_AI_CHAT_SUMMARIZE_PROMPT" translateable="false" desc="Default prompt for summarization">
+    Write a concise summary and always respond in bullet points:
+    <ph name="TEXT">$1</ph>
+  </message>
+</grit-part>

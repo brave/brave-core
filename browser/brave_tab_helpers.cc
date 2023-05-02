@@ -42,6 +42,8 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_shields_data_controller.h"
+#include "brave/components/ai_chat/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/features.h"
 #include "chrome/browser/ui/thumbnails/thumbnail_tab_helper.h"
 #endif
 
@@ -86,6 +88,9 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   BraveBookmarkTabHelper::CreateForWebContents(web_contents);
   brave_shields::BraveShieldsDataController::CreateForWebContents(web_contents);
   ThumbnailTabHelper::CreateForWebContents(web_contents);
+  if (ai_chat::features::IsAIChatEnabled()) {
+    AIChatTabHelper::CreateForWebContents(web_contents);
+  }
 #endif
 
   brave_rewards::RewardsTabHelper::CreateForWebContents(web_contents);

@@ -20,6 +20,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_edit_item_bubble_delegate_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_added_feedback_bubble.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
+#include "brave/components/ai_chat/features.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/sidebar/pref_names.h"
@@ -443,6 +444,17 @@ void SidebarItemsContentsView::UpdateItemViewStateAt(size_t index,
         GetImageForBuiltInItems(item.built_in_item_type, /* focus= */ false,
                                 /* disabled= */ true));
 
+    if (ai_chat::features::IsAIChatEnabled() && browser_->profile()->IsTor()) {
+      auto is_ai_chat = [](const auto& item) {
+        return item.built_in_item_type ==
+               sidebar::SidebarItem::BuiltInItemType::kChatUI;
+      };
+
+      if (is_ai_chat(item) && item_view->GetEnabled()) {
+        item_view->SetEnabled(false);
+      }
+    }
+
     if (base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
         browser_->profile()->IsOffTheRecord()) {
       // We don't support Playlist on OTR profile. As SidebarService is shared
@@ -515,6 +527,10 @@ gfx::ImageSkia SidebarItemsContentsView::GetImageForBuiltInItems(
       break;
     case sidebar::SidebarItem::BuiltInItemType::kPlaylist: {
       return gfx::CreateVectorIcon(kMediaToolbarButtonIcon, kBuiltInIconSize,
+                                   base_button_color);
+    }
+    case sidebar::SidebarItem::BuiltInItemType::kChatUI: {
+      return gfx::CreateVectorIcon(kSidebarChatIcon, kBuiltInIconSize,
                                    base_button_color);
     }
     case sidebar::SidebarItem::BuiltInItemType::kNone:
