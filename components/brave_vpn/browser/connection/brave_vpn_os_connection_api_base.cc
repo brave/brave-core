@@ -30,8 +30,18 @@ BraveVPNOSConnectionAPIBase::BraveVPNOSConnectionAPIBase(
     version_info::Channel channel)
     : target_vpn_entry_name_(GetBraveVPNEntryName(channel)),
       local_prefs_(local_prefs),
-      url_loader_factory_(url_loader_factory) {
-  DCHECK(url_loader_factory && local_prefs);
+      url_loader_factory_(url_loader_factory),
+      region_data_manager_(url_loader_factory_, local_prefs_) {
+  DCHECK(url_loader_factory_ && local_prefs_);
+
+  // Safe to use Unretained here because |region_data_manager_| is owned
+  // instance.
+  region_data_manager_.set_selected_region_changed_callback(base::BindRepeating(
+      &BraveVPNOSConnectionAPIBase::NotifySelectedRegionChanged,
+      base::Unretained(this)));
+  region_data_manager_.set_region_data_ready_callback(
+      base::BindRepeating(&BraveVPNOSConnectionAPIBase::NotifyRegionDataReady,
+                          base::Unretained(this)));
   net::NetworkChangeNotifier::AddNetworkChangeObserver(this);
 }
 
@@ -64,6 +74,33 @@ void BraveVPNOSConnectionAPIBase::ResetConnectionState() {
 
 std::string BraveVPNOSConnectionAPIBase::GetLastConnectionError() const {
   return last_connection_error_;
+}
+
+BraveVPNRegionDataManager& BraveVPNOSConnectionAPIBase::GetRegionDataManager() {
+  return region_data_manager_;
+}
+
+void BraveVPNOSConnectionAPIBase::SetSelectedRegion(const std::string& name) {
+  // TODO(simonhong): Can remove this when UI block region changes while
+  // operation is in-progress.
+  // Don't allow region change while operation is in-progress.
+  auto connection_state = GetConnectionState();
+  if (connection_state == ConnectionState::DISCONNECTING ||
+      connection_state == ConnectionState::CONNECTING) {
+    VLOG(2) << __func__ << ": Current state: " << connection_state
+            << " : prevent changing selected region while previous operation "
+               "is in-progress";
+    // This is workaround to prevent UI changes seleted region.
+    // Early return by notify again with current region name.
+    NotifySelectedRegionChanged(region_data_manager_.GetSelectedRegion());
+    return;
+  }
+
+  region_data_manager_.SetSelectedRegion(name);
+
+  // As new selected region is used, |connection_info_| for previous selected
+  // should be cleared.
+  ResetConnectionInfo();
 }
 
 bool BraveVPNOSConnectionAPIBase::IsInProgress() const {
@@ -121,9 +158,9 @@ void BraveVPNOSConnectionAPIBase::Connect() {
   }
 
   // If user doesn't select region explicitely, use default device region.
-  std::string target_region_name = GetSelectedRegion();
+  std::string target_region_name = region_data_manager_.GetSelectedRegion();
   if (target_region_name.empty()) {
-    target_region_name = GetDeviceRegion();
+    target_region_name = region_data_manager_.GetDeviceRegion();
     VLOG(2) << __func__ << " : start connecting with valid default_region: "
             << target_region_name;
   }
@@ -324,14 +361,6 @@ BraveVpnAPIRequest* BraveVPNOSConnectionAPIBase::GetAPIRequest() {
   return api_request_.get();
 }
 
-std::string BraveVPNOSConnectionAPIBase::GetDeviceRegion() const {
-  return local_prefs_->GetString(prefs::kBraveVPNDeviceRegion);
-}
-
-std::string BraveVPNOSConnectionAPIBase::GetSelectedRegion() const {
-  return local_prefs_->GetString(prefs::kBraveVPNSelectedRegion);
-}
-
 std::string BraveVPNOSConnectionAPIBase::GetCurrentEnvironment() const {
   return local_prefs_->GetString(prefs::kBraveVPNEnvironment);
 }
@@ -464,6 +493,19 @@ const BraveVPNConnectionInfo& BraveVPNOSConnectionAPIBase::connection_info()
 
 mojom::ConnectionState BraveVPNOSConnectionAPIBase::GetConnectionState() const {
   return connection_state_;
+}
+
+void BraveVPNOSConnectionAPIBase::NotifyRegionDataReady(bool ready) const {
+  for (auto& obs : observers_) {
+    obs.OnRegionDataReady(ready);
+  }
+}
+
+void BraveVPNOSConnectionAPIBase::NotifySelectedRegionChanged(
+    const std::string& name) const {
+  for (auto& obs : observers_) {
+    obs.OnSelectedRegionChanged(name);
+  }
 }
 
 }  // namespace brave_vpn

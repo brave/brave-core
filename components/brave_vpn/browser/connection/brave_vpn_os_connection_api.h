@@ -24,6 +24,8 @@ class PrefService;
 
 namespace brave_vpn {
 
+class BraveVPNRegionDataManager;
+
 // Interface for managing OS' vpn connection.
 class BraveVPNOSConnectionAPI {
  public:
@@ -32,6 +34,9 @@ class BraveVPNOSConnectionAPI {
   class Observer : public base::CheckedObserver {
    public:
     virtual void OnConnectionStateChanged(mojom::ConnectionState state) = 0;
+    // false when fetching region data is failed.
+    virtual void OnRegionDataReady(bool success) = 0;
+    virtual void OnSelectedRegionChanged(const std::string& region_name) = 0;
 
    protected:
     ~Observer() override = default;
@@ -52,6 +57,8 @@ class BraveVPNOSConnectionAPI {
   // Returns user friendly error string if existed.
   // Otherwise returns empty.
   virtual std::string GetLastConnectionError() const = 0;
+  virtual BraveVPNRegionDataManager& GetRegionDataManager() = 0;
+  virtual void SetSelectedRegion(const std::string& name) = 0;
 
  protected:
   BraveVPNOSConnectionAPI() = default;
