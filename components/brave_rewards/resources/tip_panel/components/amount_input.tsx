@@ -155,16 +155,17 @@ export function AmountInput (props: Props) {
         </style.customInput>
       )
     }
+
     if (exchangePrimary) {
       const value = selectedOption.value() * props.exchangeRate
       return (
-        <style.primaryAmount>
+        <style.primaryAmount onClick={onCustomClick}>
           {exchangeAmountFormatter.format(value)}
         </style.primaryAmount>
       )
     }
     return (
-      <style.primaryAmount>
+      <style.primaryAmount onClick={onCustomClick}>
         {batAmountFormatter.format(selectedOption.value())}
       </style.primaryAmount>
     )
