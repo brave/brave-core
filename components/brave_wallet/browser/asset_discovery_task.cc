@@ -783,8 +783,12 @@ AssetDiscoveryTask::ParseNFTsFromSimpleHash(const base::Value& json_value,
       }
       token->is_erc721 = true;
     } else {  // mojom::CoinType::SOL
-      // Solana NFTs must be "NonFungible"
-      if (!base::EqualsCaseInsensitiveASCII(*type, "NonFungible")) {
+      // Solana NFTs must be "NonFungible", "NonFungibleEdition", or
+      // "ProgrammableNonFungible"
+      if (!(base::EqualsCaseInsensitiveASCII(*type, "NonFungible") ||
+            base::EqualsCaseInsensitiveASCII(*type, "NonFungibleEdition") ||
+            base::EqualsCaseInsensitiveASCII(*type,
+                                             "ProgrammableNonFungible"))) {
         continue;
       }
       token->is_erc721 = false;

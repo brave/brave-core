@@ -1287,7 +1287,7 @@ TEST_F(AssetDiscoveryTaskUnitTest, ParseNFTsFromSimpleHash) {
   ASSERT_TRUE(result);
   EXPECT_EQ(result->second.size(), 1u);
 
-  // 1 SOL NFT
+  // 1 SOL NFT (NonFungible)
   json = R"({
     "next": null,
     "previous": null,
@@ -1332,6 +1332,106 @@ TEST_F(AssetDiscoveryTaskUnitTest, ParseNFTsFromSimpleHash) {
   EXPECT_EQ(result->second[0]->is_erc1155, false);
   EXPECT_EQ(result->second[0]->is_nft, true);
   EXPECT_EQ(result->second[0]->symbol, "Y00T");
+  EXPECT_EQ(result->second[0]->decimals, 0);
+  EXPECT_EQ(result->second[0]->visible, true);
+  EXPECT_EQ(result->second[0]->token_id, "");
+  EXPECT_EQ(result->second[0]->coingecko_id, "");
+  EXPECT_EQ(result->second[0]->chain_id, mojom::kSolanaMainnet);
+  EXPECT_EQ(result->second[0]->coin, mojom::CoinType::SOL);
+
+  // 1 SOL NFT (NonFungibleEdition)
+  json = R"({
+    "next": null,
+    "previous": null,
+    "nfts": [
+      {
+        "nft_id": "solana.g9qugQPwCsw6JEUEXSJ2ngQ7TTqzdv69pDGfDaQ2oCe",
+        "chain": "solana",
+        "contract_address": "g9qugQPwCsw6JEUEXSJ2ngQ7TTqzdv69pDGfDaQ2oCe",
+        "token_id": null,
+        "name": "Boba Guys @ Solana Clubhouse",
+        "description": "Sign-up for early access to the Boba Guys Passport",
+        "image_url": "https://cdn.simplehash.com/assets/a3a7c3232c42963d747054c08dd219c795cf76c3b6fbdc77d5de9baa50e1a174.jpg",
+        "contract": {
+          "type": "NonFungibleEdition",
+          "name": "Boba Guys @ Solana Clubhouse",
+          "symbol": "BGSC"
+        },
+        "collection": {
+          "spam_score": 0
+        }
+      }
+    ]
+  })";
+  json_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(json_value);
+  result = asset_discovery_task_->ParseNFTsFromSimpleHash(*json_value,
+                                                          mojom::CoinType::SOL);
+  ASSERT_TRUE(result);
+  EXPECT_EQ(result->second.size(), 1u);
+  EXPECT_EQ(result->second[0]->contract_address,
+            "g9qugQPwCsw6JEUEXSJ2ngQ7TTqzdv69pDGfDaQ2oCe");
+  EXPECT_EQ(result->second[0]->name, "Boba Guys @ Solana Clubhouse");
+  EXPECT_EQ(
+      result->second[0]->logo,
+      "https://cdn.simplehash.com/assets/"
+      "a3a7c3232c42963d747054c08dd219c795cf76c3b6fbdc77d5de9baa50e1a174.jpg");
+  EXPECT_EQ(result->second[0]->is_erc20, false);
+  EXPECT_EQ(result->second[0]->is_erc721, false);
+  EXPECT_EQ(result->second[0]->is_erc1155, false);
+  EXPECT_EQ(result->second[0]->is_nft, true);
+  EXPECT_EQ(result->second[0]->symbol, "BGSC");
+  EXPECT_EQ(result->second[0]->decimals, 0);
+  EXPECT_EQ(result->second[0]->visible, true);
+  EXPECT_EQ(result->second[0]->token_id, "");
+  EXPECT_EQ(result->second[0]->coingecko_id, "");
+  EXPECT_EQ(result->second[0]->chain_id, mojom::kSolanaMainnet);
+  EXPECT_EQ(result->second[0]->coin, mojom::CoinType::SOL);
+
+  // 1 SOL NFT (ProgrammableNonFungible)
+  json = R"({
+    "next": null,
+    "previous": null,
+    "nfts": [
+      {
+        "nft_id": "solana.BHWBJ7XtBqJJbg9SrAUH4moeF8VpJo3WXyDh6vc1qqLG",
+        "chain": "solana",
+        "contract_address": "BHWBJ7XtBqJJbg9SrAUH4moeF8VpJo3WXyDh6vc1qqLG",
+        "token_id": null,
+        "name": "Mad Lads #8752",
+        "description": "Fock it.",
+        "image_url": "https://cdn.simplehash.com/assets/6fa3b325fd715c0b967988ad76c668b9cf41acb7aeff646ab4135095afd1dea5.png",
+        "contract": {
+          "type": "ProgrammableNonFungible",
+          "name": "Mad Lad #8752",
+          "symbol": "MAD",
+          "deployed_by": null,
+          "deployed_via_contract": null
+        },
+        "collection": {
+          "spam_score": 0
+        }
+      }
+    ]
+  })";
+  json_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(json_value);
+  result = asset_discovery_task_->ParseNFTsFromSimpleHash(*json_value,
+                                                          mojom::CoinType::SOL);
+  ASSERT_TRUE(result);
+  EXPECT_EQ(result->second.size(), 1u);
+  EXPECT_EQ(result->second[0]->contract_address,
+            "BHWBJ7XtBqJJbg9SrAUH4moeF8VpJo3WXyDh6vc1qqLG");
+  EXPECT_EQ(result->second[0]->name, "Mad Lads #8752");
+  EXPECT_EQ(
+      result->second[0]->logo,
+      "https://cdn.simplehash.com/assets/"
+      "6fa3b325fd715c0b967988ad76c668b9cf41acb7aeff646ab4135095afd1dea5.png");
+  EXPECT_EQ(result->second[0]->is_erc20, false);
+  EXPECT_EQ(result->second[0]->is_erc721, false);
+  EXPECT_EQ(result->second[0]->is_erc1155, false);
+  EXPECT_EQ(result->second[0]->is_nft, true);
+  EXPECT_EQ(result->second[0]->symbol, "MAD");
   EXPECT_EQ(result->second[0]->decimals, 0);
   EXPECT_EQ(result->second[0]->visible, true);
   EXPECT_EQ(result->second[0]->token_id, "");
