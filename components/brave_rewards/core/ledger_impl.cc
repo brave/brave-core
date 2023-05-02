@@ -256,6 +256,13 @@ void LedgerImpl::OnForeground(uint32_t tab_id, uint64_t current_time) {
     return;
   }
 
+  // When performing automated testing, ignore changes in browser window
+  // activation. When running tests in parallel, activation changes can
+  // interfere with AC calculations on some platforms.
+  if (is_testing) {
+    return;
+  }
+
   if (last_shown_tab_id_ != tab_id) {
     return;
   }
@@ -265,6 +272,13 @@ void LedgerImpl::OnForeground(uint32_t tab_id, uint64_t current_time) {
 
 void LedgerImpl::OnBackground(uint32_t tab_id, uint64_t current_time) {
   if (!IsReady()) {
+    return;
+  }
+
+  // When performing automated testing, ignore changes in browser window
+  // activation. When running tests in parallel, activation changes can
+  // interfere with AC calculations on some platforms.
+  if (is_testing) {
     return;
   }
 

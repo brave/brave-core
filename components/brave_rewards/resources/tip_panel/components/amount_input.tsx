@@ -104,6 +104,13 @@ export function AmountInput (props: Props) {
     return updatedAmount
   }
 
+  function onCustomInputMounted (elem: HTMLElement | null) {
+    // Expose a programmatic way to update the value in browser tests.
+    if (elem) {
+      elem[Symbol.for('updateCustomAmountForTesting')] = updateCustomAmount
+    }
+  }
+
   function onCustomAmountChange (event: React.FormEvent<HTMLInputElement>) {
     updateCustomAmount(event.currentTarget.value)
   }
@@ -146,6 +153,7 @@ export function AmountInput (props: Props) {
           <input
             type='text'
             value={customAmountText}
+            ref={onCustomInputMounted}
             onChange={onCustomAmountChange}
             onBlur={onCustomAmountBlur}
             onFocus={onFocus}

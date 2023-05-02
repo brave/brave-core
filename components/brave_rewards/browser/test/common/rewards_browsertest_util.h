@@ -48,6 +48,8 @@ void NavigateToPublisherPage(
 
 void WaitForLedgerStop(RewardsServiceImpl* rewards_service);
 
+void WaitForAutoContributeVisitTime();
+
 void CreateRewardsWallet(RewardsServiceImpl* rewards_service,
                          const std::string& country = "US");
 
