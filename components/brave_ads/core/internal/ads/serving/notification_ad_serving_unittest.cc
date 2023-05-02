@@ -12,6 +12,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
@@ -78,7 +79,7 @@ TEST_F(BraveAdsNotificationAdServingTest, ServeAd) {
 
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
-  SaveCreativeAds({creative_ad});
+  database::SaveCreativeNotificationAds({creative_ad});
 
   // Act
   serving_->MaybeServeAd();
@@ -111,7 +112,7 @@ TEST_F(BraveAdsNotificationAdServingTest,
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
-  SaveCreativeAds({creative_ad});
+  database::SaveCreativeNotificationAds({creative_ad});
 
   // Act
   serving_->MaybeServeAd();

@@ -5,21 +5,12 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
 
-#include "base/check.h"
-#include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
-
-void SaveCreativeAds(const CreativeInlineContentAdList& creative_ads) {
-  database::table::CreativeInlineContentAds database_table;
-  database_table.Save(
-      creative_ads, base::BindOnce([](const bool success) { CHECK(success); }));
-}
 
 CreativeInlineContentAdList BuildCreativeInlineContentAds(const int count) {
   CreativeInlineContentAdList creative_ads;

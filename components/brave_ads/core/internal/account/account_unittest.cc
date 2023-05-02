@@ -25,6 +25,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_mock.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
@@ -370,7 +371,7 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
 
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ false);
-  SaveCreativeAds({creative_ad});
+  database::SaveCreativeNotificationAds({creative_ad});
 
   // Act
   account_->Deposit(creative_ad.creative_instance_id, AdType::kNotificationAd,
@@ -448,7 +449,7 @@ TEST_F(BraveAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
 
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ false);
-  SaveCreativeAds({creative_ad});
+  database::SaveCreativeNotificationAds({creative_ad});
 
   // Act
   account_->Deposit(kMissingCreativeInstanceId, AdType::kNotificationAd,

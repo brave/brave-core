@@ -13,6 +13,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_container_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -28,7 +29,7 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
   // Arrange
 
   // Act
-  SaveCreativeAds({});
+  database::SaveCreativeInlineContentAds({});
 
   // Assert
 }
@@ -40,7 +41,7 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
       BuildCreativeInlineContentAds(/*count*/ 2);
 
   // Act
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeInlineContentAds(creative_ads);
 
   // Assert
   database_table_.GetAll(base::BindOnce(
@@ -62,7 +63,7 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
       BuildCreativeInlineContentAds(/*count*/ 3);
 
   // Act
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeInlineContentAds(creative_ads);
 
   // Assert
   database_table_.GetAll(base::BindOnce(
@@ -84,10 +85,10 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
       BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   creative_ads.push_back(creative_ad);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeInlineContentAds(creative_ads);
 
   // Act
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeInlineContentAds(creative_ads);
 
   // Assert
   database_table_.GetAll(base::BindOnce(
@@ -123,7 +124,7 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
   creative_ad_3.dimensions = "150x150";
   creative_ads.push_back(creative_ad_3);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeInlineContentAds(creative_ads);
 
   // Act
 
@@ -155,7 +156,7 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
       BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   creative_ads.push_back(creative_ad_2);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeInlineContentAds(creative_ads);
 
   // Act
 
@@ -178,7 +179,7 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
   const CreativeInlineContentAdList creative_ads =
       BuildCreativeInlineContentAds(/*count*/ 1);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeInlineContentAds(creative_ads);
 
   // Act
 
@@ -198,7 +199,7 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
   const CreativeInlineContentAdList creative_ads =
       BuildCreativeInlineContentAds(/*count*/ 1);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeInlineContentAds(creative_ads);
 
   // Act
 
@@ -218,7 +219,7 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
   const CreativeInlineContentAdList creative_ads =
       BuildCreativeInlineContentAds(/*count*/ 1);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeInlineContentAds(creative_ads);
 
   // Act
 
@@ -252,7 +253,7 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
   creative_ad_3.segment = "automobiles";
   creative_ads.push_back(creative_ad_3);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeInlineContentAds(creative_ads);
 
   // Act
 
@@ -290,7 +291,7 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
   creative_ad_2.end_at = DistantFuture();
   creative_ads.push_back(creative_ad_2);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeInlineContentAds(creative_ads);
 
   // Act
   AdvanceClockBy(base::Hours(1));
@@ -323,7 +324,7 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
   creative_ad_2.segment = "food & drink";
   creative_ads.push_back(creative_ad_2);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeInlineContentAds(creative_ads);
 
   // Act
 

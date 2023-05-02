@@ -12,6 +12,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
@@ -49,7 +50,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test, GetAds) {
   creative_ad_2.segment = "foo-bar3";
   creative_ads.push_back(creative_ad_2);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeInlineContentAds(creative_ads);
 
   // Act
   eligible_ads_->GetForUserModel(
@@ -79,7 +80,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test, GetAdsForNoSegments) {
   creative_ad_2.segment = "foo-bar";
   creative_ads.push_back(creative_ad_2);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeInlineContentAds(creative_ads);
 
   // Act
   eligible_ads_->GetForUserModel(

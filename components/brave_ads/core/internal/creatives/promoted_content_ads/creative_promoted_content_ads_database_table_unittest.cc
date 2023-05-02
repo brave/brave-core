@@ -13,6 +13,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_container_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ad_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -29,7 +30,7 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest,
   // Arrange
 
   // Act
-  SaveCreativeAds({});
+  database::SaveCreativePromotedContentAds({});
 
   // Assert
 }
@@ -41,7 +42,7 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest,
       BuildCreativePromotedContentAds(/*count*/ 2);
 
   // Act
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativePromotedContentAds(creative_ads);
 
   // Assert
   database_table_.GetAll(base::BindOnce(
@@ -63,7 +64,7 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest,
       BuildCreativePromotedContentAds(/*count*/ 3);
 
   // Act
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativePromotedContentAds(creative_ads);
 
   // Assert
   database_table_.GetAll(base::BindOnce(
@@ -85,10 +86,10 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest,
       BuildCreativePromotedContentAd(/*should_use_random_guids*/ true);
   creative_ads.push_back(creative_ad);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativePromotedContentAds(creative_ads);
 
   // Act
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativePromotedContentAds(creative_ads);
 
   // Assert
   database_table_.GetAll(base::BindOnce(
@@ -120,7 +121,7 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest, GetForSegments) {
   creative_ad_3.segment = "food & drink";
   creative_ads.push_back(creative_ad_3);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativePromotedContentAds(creative_ads);
 
   // Act
 
@@ -153,7 +154,7 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest,
       BuildCreativePromotedContentAd(/*should_use_random_guids*/ true);
   creative_ads.push_back(creative_ad_2);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativePromotedContentAds(creative_ads);
 
   // Act
 
@@ -176,7 +177,7 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest,
   const CreativePromotedContentAdList creative_ads =
       BuildCreativePromotedContentAds(/*count*/ 1);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativePromotedContentAds(creative_ads);
 
   // Act
 
@@ -195,7 +196,7 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest,
   const CreativePromotedContentAdList creative_ads =
       BuildCreativePromotedContentAds(/*count*/ 1);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativePromotedContentAds(creative_ads);
 
   // Act
 
@@ -215,7 +216,7 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest,
   const CreativePromotedContentAdList creative_ads =
       BuildCreativePromotedContentAds(/*count*/ 1);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativePromotedContentAds(creative_ads);
 
   // Act
 
@@ -249,7 +250,7 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest,
   creative_ad_3.segment = "automobiles";
   creative_ads.push_back(creative_ad_3);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativePromotedContentAds(creative_ads);
 
   // Act
 
@@ -286,7 +287,7 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest,
   creative_ad_2.end_at = DistantFuture();
   creative_ads.push_back(creative_ad_2);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativePromotedContentAds(creative_ads);
 
   // Act
   AdvanceClockBy(base::Hours(1));
@@ -319,7 +320,7 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest,
   creative_ad_2.segment = "food & drink";
   creative_ads.push_back(creative_ad_2);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativePromotedContentAds(creative_ads);
 
   // Act
 

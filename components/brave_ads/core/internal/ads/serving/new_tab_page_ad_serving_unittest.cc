@@ -13,6 +13,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
@@ -98,7 +99,7 @@ TEST_F(BraveAdsNewTabPageAdServingTest, ServeAd) {
 
   const CreativeNewTabPageAdInfo creative_ad =
       BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
-  SaveCreativeAds({creative_ad});
+  database::SaveCreativeNewTabPageAds({creative_ad});
 
   // Act
   serving_->MaybeServeAd(base::BindOnce(
@@ -121,7 +122,7 @@ TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdIfMissingWallpapers) {
   CreativeNewTabPageAdInfo creative_ad =
       BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
   creative_ad.wallpapers.clear();
-  SaveCreativeAds({creative_ad});
+  database::SaveCreativeNewTabPageAds({creative_ad});
 
   // Act
   serving_->MaybeServeAd(base::BindOnce(
@@ -158,7 +159,7 @@ TEST_F(BraveAdsNewTabPageAdServingTest,
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad =
       BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
-  SaveCreativeAds({creative_ad});
+  database::SaveCreativeNewTabPageAds({creative_ad});
 
   // Act
   serving_->MaybeServeAd(base::BindOnce(

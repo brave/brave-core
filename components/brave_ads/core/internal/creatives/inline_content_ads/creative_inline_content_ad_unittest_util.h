@@ -10,8 +10,6 @@
 
 namespace brave_ads {
 
-void SaveCreativeAds(const CreativeInlineContentAdList& creative_ads);
-
 CreativeInlineContentAdList BuildCreativeInlineContentAds(int count);
 CreativeInlineContentAdInfo BuildCreativeInlineContentAd(
     bool should_use_random_guids);

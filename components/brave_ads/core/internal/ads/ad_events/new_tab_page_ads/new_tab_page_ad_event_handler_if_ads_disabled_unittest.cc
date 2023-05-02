@@ -19,6 +19,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
 
@@ -32,7 +33,7 @@ CreativeNewTabPageAdInfo BuildAndSaveCreativeAd() {
   CreativeNewTabPageAdInfo creative_ad =
       BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
 
-  SaveCreativeAds({creative_ad});
+  database::SaveCreativeNewTabPageAds({creative_ad});
 
   return creative_ad;
 }
