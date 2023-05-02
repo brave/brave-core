@@ -18,6 +18,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -94,6 +95,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static int TYPE_NEWS_OPTIN = 5;
     private static int TYPE_NEWS_LOADING = 6;
     private static int TYPE_NEWS = 7;
+    private static int TYPE_NEWS_NO_CONTENT_SOURCES = 8;
 
     private static final int ONE_ITEM_SPACE = 1;
     private static final int TWO_ITEMS_SPACE = 2;
@@ -256,8 +258,8 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                                 LinearLayout.LayoutParams.WRAP_CONTENT);
 
-                int extraMarginForNews = (mIsDisplayNewsOptin || shouldDisplayNewsLoading()
-                                                 || (mIsDisplayNews && mNewsItems.size() > 0))
+                int extraMarginForNews =
+                        (mIsDisplayNewsOptin || shouldDisplayNewsLoading() || mIsDisplayNews)
                         ? dpToPx(mActivity, 30)
                         : 0;
 
@@ -324,6 +326,21 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             newsItem.getCardType());
                 }
             }
+        } else if (holder instanceof NoSourcesViewHolder) {
+            NoSourcesViewHolder noSourcesViewHolder = (NoSourcesViewHolder) holder;
+
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            int margin = dpToPx(mActivity, 30);
+            layoutParams.setMargins(margin, 0, margin, margin);
+
+            noSourcesViewHolder.itemView.setLayoutParams(layoutParams);
+
+            noSourcesViewHolder.btnChooseContent.setOnClickListener(view -> {
+                if (mActivity instanceof BraveActivity) {
+                    ((BraveActivity) mActivity).openBraveNewsSettings();
+                }
+            });
         }
     }
 
@@ -335,8 +352,14 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (mIsDisplayNewsOptin) {
             return statsCount + topSitesCount + TWO_ITEMS_SPACE + newsLoadingCount;
         } else if (mIsDisplayNews) {
+            int newsCount = 0;
+            if (mNewsItems.size() > 0) {
+                newsCount = mNewsItems.size();
+            } else if (newsLoadingCount == 0) {
+                newsCount = 1;
+            }
             return statsCount + topSitesCount + ONE_ITEM_SPACE + getNewContentCount()
-                    + newsLoadingCount + mNewsItems.size();
+                    + newsLoadingCount + newsCount;
         } else {
             return statsCount + topSitesCount + ONE_ITEM_SPACE + newsLoadingCount;
         }
@@ -374,6 +397,11 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                            .inflate(R.layout.news_loading, parent, false);
             return new NewsLoadingViewHolder(view);
 
+        } else if (viewType == TYPE_NEWS_NO_CONTENT_SOURCES) {
+            view = LayoutInflater.from(parent.getContext())
+                           .inflate(R.layout.brave_news_no_sources, parent, false);
+            return new NoSourcesViewHolder(view);
+
         } else {
             view = LayoutInflater.from(parent.getContext())
                            .inflate(R.layout.brave_news_row, parent, false);
@@ -401,6 +429,8 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else if (position == statsCount + topSitesCount + ONE_ITEM_SPACE
                 && shouldDisplayNewsLoading() && !mIsNewContent) {
             return TYPE_NEWS_LOADING;
+        } else if (!shouldDisplayNewsLoading() && mNewsItems.size() == 0) {
+            return TYPE_NEWS_NO_CONTENT_SOURCES;
         } else {
             return TYPE_NEWS;
         }
@@ -652,6 +682,15 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         NewsViewHolder(View itemView) {
             super(itemView);
             this.linearLayout = (LinearLayout) itemView.findViewById(R.id.card_layout);
+        }
+    }
+
+    public static class NoSourcesViewHolder extends RecyclerView.ViewHolder {
+        Button btnChooseContent;
+
+        NoSourcesViewHolder(View itemView) {
+            super(itemView);
+            this.btnChooseContent = (Button) itemView.findViewById(R.id.btn_choose_content);
         }
     }
 }
