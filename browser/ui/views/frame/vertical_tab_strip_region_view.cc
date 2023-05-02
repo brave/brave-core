@@ -13,12 +13,14 @@
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_search_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/components/sidebar/sidebar_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
@@ -535,8 +537,9 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
   auto* prefs = browser_->profile()->GetOriginalProfile()->GetPrefs();
   show_vertical_tabs_.Init(
       brave_tabs::kVerticalTabsEnabled, prefs,
-      base::BindRepeating(&VerticalTabStripRegionView::UpdateLayout,
-                          base::Unretained(this), false));
+      base::BindRepeating(
+          &VerticalTabStripRegionView::OnShowVerticalTabsPrefChanged,
+          base::Unretained(this)));
   UpdateLayout();
 
   collapsed_pref_.Init(
@@ -690,6 +693,21 @@ void VerticalTabStripRegionView::Layout() {
                   scroll_contents_view_->GetPreferredSize().height())});
   }
   UpdateTabSearchButtonVisibility();
+}
+
+void VerticalTabStripRegionView::OnShowVerticalTabsPrefChanged() {
+  auto* profile = browser_->profile()->GetOriginalProfile();
+  auto* sidebar_service =
+      sidebar::SidebarServiceFactory::GetForProfile(profile);
+  DCHECK(sidebar_service);
+
+  if (*show_vertical_tabs_) {
+    sidebar_service->MoveSidebarToRightTemporarily();
+  } else {
+    sidebar_service->RestoreSidebarAlignmentIfNeeded();
+  }
+
+  UpdateLayout(/* in_destruction= */ false);
 }
 
 void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
