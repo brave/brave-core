@@ -27,6 +27,10 @@ class NET_EXPORT EphemeralStorageOriginUtils {
       const url::Origin& origin);
 };
 
+NET_EXPORT bool IsOnion(const GURL& url);
+
+NET_EXPORT bool IsLocalhostOrOnion(const GURL& url);
+
 }  // namespace net
 
 #endif  // BRAVE_CHROMIUM_SRC_NET_BASE_URL_UTIL_H_

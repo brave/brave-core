@@ -38,4 +38,12 @@ EphemeralStorageOriginUtils::GetNonceForEphemeralStorageKeying(
   return origin.nonce_->raw_token();
 }
 
+bool IsOnion(const GURL& url) {
+  return IsSubdomainOf(url.host(), "onion");
+}
+
+bool IsLocalhostOrOnion(const GURL& url) {
+  return IsLocalhost(url) || IsOnion(url);
+}
+
 }  // namespace net
