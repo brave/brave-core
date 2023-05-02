@@ -15,7 +15,7 @@ namespace {
 constexpr char kStudyPrefixTag[] = "BraveAds.";
 }  // namespace
 
-base::FieldTrial::ActiveGroups GetActiveFieldTrialGroupsForActiveStudies() {
+base::FieldTrial::ActiveGroups GetActiveFieldTrialStudyGroups() {
   base::FieldTrial::ActiveGroups active_field_trial_groups;
   base::FieldTrialList::GetActiveFieldTrialGroups(&active_field_trial_groups);
 
@@ -34,7 +34,7 @@ base::FieldTrial::ActiveGroups GetActiveFieldTrialGroupsForActiveStudies() {
 
 void LogActiveStudies() {
   const base::FieldTrial::ActiveGroups active_field_trial_groups =
-      GetActiveFieldTrialGroupsForActiveStudies();
+      GetActiveFieldTrialStudyGroups();
   if (active_field_trial_groups.empty()) {
     BLOG(1, "No active studies");
     return;
