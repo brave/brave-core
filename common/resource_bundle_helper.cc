@@ -68,8 +68,8 @@ void InitializeResourceBundle() {
 #if BUILDFLAG(IS_ANDROID)
   ui::BraveLoadMainAndroidPackFile("assets/brave_resources.pak",
                                    base::FilePath());
-  ui::BraveLoadBrave100PercentPackFile("assets/brave_100_percent.pak",
-                                       base::FilePath());
+  // brave_100_percent.pak is excluded now from the Android build because
+  // its resources are not used
 #else
   auto& rb = ui::ResourceBundle::GetSharedInstance();
   rb.AddDataPackFromPath(GetResourcesPakFilePath(), ui::kScaleFactorNone);

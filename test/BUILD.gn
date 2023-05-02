@@ -92,7 +92,6 @@ test("brave_unit_tests") {
 
   sources = [
     "//brave/browser/brave_content_browser_client_unittest.cc",
-    "//brave/browser/brave_resources_util_unittest.cc",
     "//brave/browser/brave_stats/brave_stats_updater_unittest.cc",
     "//brave/browser/browsing_data/brave_browsing_data_remover_delegate_unittest.cc",
     "//brave/browser/download/brave_download_item_model_unittest.cc",
@@ -166,7 +165,6 @@ test("brave_unit_tests") {
     ":test_support",
     "//brave/app:command_ids",
     "//brave/app:unit_tests",
-    "//brave/app/theme:brave_theme_resources_grit",
     "//brave/base:base_unittests",
     "//brave/browser",
     "//brave/browser:unit_tests",
@@ -367,6 +365,7 @@ test("brave_unit_tests") {
     sources += [
       "../utility/importer/chrome_importer_unittest.cc",
       "//brave/app/brave_command_line_helper_unittest.cc",
+      "//brave/browser/brave_resources_util_unittest.cc",
       "//brave/browser/ntp_background/ntp_background_prefs_unittest.cc",
       "//brave/browser/profiles/brave_profile_manager_unittest.cc",
       "//brave/browser/resources/settings/brandcode_config_fetcher_unittest.cc",
@@ -407,6 +406,7 @@ test("brave_unit_tests") {
     ]
     deps += [
       "//brave/app:brave_generated_resources_grit",
+      "//brave/app/theme:brave_theme_resources_grit",
       "//brave/browser/download/bubble:unit_tests",
       "//brave/browser/renderer_context_menu/test:unit_tests",
       "//brave/browser/ui/bookmark",
@@ -485,7 +485,6 @@ test("brave_unit_tests") {
       "$root_gen_dir/chrome/android/chrome_apk_paks/chrome_100_percent.pak",
       "$root_gen_dir/chrome/android/chrome_apk_paks/locales/en-US.pak",
       "$root_gen_dir/chrome/android/chrome_apk_paks/resources.pak",
-      "$root_out_dir/brave_100_percent.pak",
       "$root_out_dir/brave_resources.pak",
       "//brave/components/brave_perf_predictor/resources/entities-httparchive-nostats.json",
     ]
@@ -700,7 +699,6 @@ test("brave_browser_tests") {
     "//brave/browser/brave_ads/search_result_ad/search_result_ad_browsertest.cc",
     "//brave/browser/brave_content_browser_client_browsertest.cc",
     "//brave/browser/brave_prefs_browsertest.cc",
-    "//brave/browser/brave_resources_browsertest.cc",
     "//brave/browser/brave_scheme_load_browsertest.cc",
     "//brave/browser/brave_search/brave_search_browsertest.cc",
     "//brave/browser/brave_shields/ad_block_service_browsertest.cc",
@@ -808,8 +806,6 @@ test("brave_browser_tests") {
     "//brave/app:brave_generated_resources_grit",
     "//brave/app:browser_tests",
     "//brave/app:command_ids",
-    "//brave/app/theme:brave_theme_resources_grit",
-    "//brave/app/theme:brave_unscaled_resources_grit",
     "//brave/browser",
     "//brave/browser/autoplay:browser_tests",
     "//brave/browser/brave_news:browser_tests",
@@ -1092,8 +1088,13 @@ test("brave_browser_tests") {
   }
 
   if (!is_android) {
-    sources += [ "//brave/browser/ui/views/toolbar/wallet_button_notification_source_browsertest.cc" ]
+    sources += [
+      "//brave/browser/brave_resources_browsertest.cc",
+      "//brave/browser/ui/views/toolbar/wallet_button_notification_source_browsertest.cc",
+    ]
     deps += [
+      "//brave/app/theme:brave_theme_resources_grit",
+      "//brave/app/theme:brave_unscaled_resources_grit",
       "//brave/browser/sharing_hub:browser_tests",
       "//brave/browser/ui/commander:browser_tests",
       "//brave/browser/ui/whats_new:browser_test",
@@ -1128,7 +1129,6 @@ test("brave_browser_tests") {
     android_manifest_dep = ":brave_browser_tests_manifest"
 
     data = [
-      "$root_out_dir/brave_100_percent.pak",
       "$root_out_dir/brave_resources.pak",
       "$root_gen_dir/chrome/android/chrome_apk_paks/chrome_100_percent.pak",
       "$root_gen_dir/chrome/android/chrome_apk_paks/locales/en-US.pak",
