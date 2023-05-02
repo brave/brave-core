@@ -609,7 +609,8 @@ TEST(HDKeyUnitTest, GetSegwitAddress) {
   // TODO(apaymyshev): support P2WSH.
 }
 
-TEST(HDKeyUnitTest, SignBitcoin) {
+// TODO(apaymyshev): Consider more tests. Also test R grinding.
+TEST(HDKeyUnitTest, SignDer) {
   std::vector<uint8_t> private_key_bytes;
   ASSERT_TRUE(base::HexStringToBytes(
       "12b004fff7f4b69ef8650e767f18f11ede158148b425660723b9f9a66e61f747",

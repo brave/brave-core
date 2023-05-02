@@ -35,7 +35,7 @@ constexpr char kMasterSecret[] = "Bitcoin seed";
 constexpr size_t kSHA512Length = 64;
 constexpr uint32_t kHardenedOffset = 0x80000000;
 constexpr size_t kSerializationLength = 78;
-constexpr size_t kSignatureSize = 72;
+constexpr size_t kMaxDerSignatureSize = 72;
 
 bool UTCPasswordVerification(const std::string& derived_key,
                              const std::vector<uint8_t>& ciphertext,
@@ -721,7 +721,7 @@ absl::optional<std::vector<uint8_t>> HDKey::SignDer(
     }
   }
 
-  std::vector<uint8_t> sig_der(kSignatureSize);
+  std::vector<uint8_t> sig_der(kMaxDerSignatureSize);
   size_t sig_der_length = sig_der.size();
   if (!secp256k1_ecdsa_signature_serialize_der(secp256k1_ctx_, sig_der.data(),
                                                &sig_der_length, &ecdsa_sig)) {

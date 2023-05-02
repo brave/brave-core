@@ -125,7 +125,7 @@ void BitcoinRpc::GetChainHeight(const std::string& network_id,
   // Response comes as a plain integer which is not accepted by json sanitizer.
   // Wrap response into a json array.
   auto conversion_callback = base::BindOnce(&ConvertPlainIntToJsonArray);
-  RequestInternal(true, MakeGetChainHeightUrl(BaseRpcUrl(network_id)),
+  RequestInternal(MakeGetChainHeightUrl(BaseRpcUrl(network_id)),
                   std::move(internal_callback), std::move(conversion_callback));
 }
 
@@ -138,7 +138,7 @@ void BitcoinRpc::OnGetChainHeight(GetChainHeightCallback callback,
 
   auto* list = api_request_result.value_body().GetIfList();
   if (!list) {
-    std::move(callback).Run(base::unexpected("Json response is not an arary"));
+    std::move(callback).Run(base::unexpected("Json response is not an array"));
     return;
   }
 
@@ -160,7 +160,6 @@ void BitcoinRpc::GetAddressHistory(const std::string& network_id,
       &BitcoinRpc::OnGetAddressHistory, weak_ptr_factory_.GetWeakPtr(),
       max_block_height, std::move(callback));
   RequestInternal(
-      true,
       MakeAddressHistoryUrl(BaseRpcUrl(network_id), address, last_seen_txid),
       std::move(internal_callback));
 }
@@ -175,7 +174,7 @@ void BitcoinRpc::OnGetAddressHistory(const uint32_t max_block_height,
 
   auto* items = api_request_result.value_body().GetIfList();
   if (!items) {
-    std::move(callback).Run(base::unexpected("Json response is not an arary"));
+    std::move(callback).Run(base::unexpected("Json response is not an array"));
     return;
   }
 
@@ -209,8 +208,9 @@ void BitcoinRpc::PostTransaction(const std::string& network_id,
   auto conversion_callback = base::BindOnce(&ConvertPlainStringToJsonArray);
   api_request_helper_->Request(net::HttpRequestHeaders::kPostMethod,
                                MakePostTransactionUrl(BaseRpcUrl(network_id)),
-                               payload, "", true, std::move(internal_callback),
-                               {}, -1u, std::move(conversion_callback));
+                               payload, "", std::move(internal_callback), {},
+                               {.auto_retry_on_network_change = true},
+                               std::move(conversion_callback));
 }
 
 void BitcoinRpc::OnPostTransaction(PostTransactionCallback callback,
@@ -222,7 +222,7 @@ void BitcoinRpc::OnPostTransaction(PostTransactionCallback callback,
 
   auto* list = api_request_result.value_body().GetIfList();
   if (!list) {
-    std::move(callback).Run(base::unexpected("Json response is not an arary"));
+    std::move(callback).Run(base::unexpected("Json response is not an array"));
     return;
   }
 
@@ -236,15 +236,14 @@ void BitcoinRpc::OnPostTransaction(PostTransactionCallback callback,
 }
 
 void BitcoinRpc::RequestInternal(
-    bool auto_retry_on_network_change,
     const GURL& request_url,
     RequestIntermediateCallback callback,
     APIRequestHelper::ResponseConversionCallback conversion_callback) {
   DCHECK(request_url.is_valid());
 
   api_request_helper_->Request(net::HttpRequestHeaders::kGetMethod, request_url,
-                               "", "", auto_retry_on_network_change,
-                               std::move(callback), {}, -1u,
+                               "", "", std::move(callback), {},
+                               {.auto_retry_on_network_change = true},
                                std::move(conversion_callback));
 }
 

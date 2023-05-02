@@ -754,13 +754,13 @@ interface KeyringService {
 
   // Adds an account to the keyring.
   // For filecoin strictly use AddFilecoinAccount.
-  AddAccount(string accountName, CoinType coin) => (bool success);
+  AddAccount(string account_name, CoinType coin) => (bool success);
 
   // Adds an account to the filecoin(keyring is choosed by network).
-  AddFilecoinAccount(string accountName, string fileCoinNetwork) => (bool success);
+  AddFilecoinAccount(string account_name, string filecoin_network) => (bool success);
 
   // Adds bitcoin account.
-  AddBitcoinAccount(string accountName, string network_id, string keyring_id) => (bool success);
+  AddBitcoinAccount(string account_name, string network_id, string keyring_id) => (bool success);
 
   // Encodes the private key for exporting.
   EncodePrivateKeyForExport(string address, string password, CoinType coin)

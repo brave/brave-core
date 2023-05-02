@@ -54,8 +54,7 @@ class BitcoinRpc {
                        PostTransactionCallback callback);
 
  private:
-  void RequestInternal(bool auto_retry_on_network_change,
-                       const GURL& request_url,
+  void RequestInternal(const GURL& request_url,
                        RequestIntermediateCallback callback,
                        APIRequestHelper::ResponseConversionCallback
                            conversion_callback = base::NullCallback());
