@@ -5,7 +5,7 @@
 
 import { createAction } from 'redux-act'
 
-import { ConnectionState, Region, ProductUrls } from '../api/panel_browser_api'
+import { ConnectionState, Region, ProductUrls, PurchasedState } from '../api/panel_browser_api'
 
 export type ToggleRegionSelectorPayload = {
   isSelectingRegion: boolean
@@ -34,18 +34,23 @@ export type selectedRegionPayload = {
   region: Region
 }
 
+export type purchasedStatePayload = {
+  state: PurchasedState,
+  stateDescription?: string
+}
+
 export const connect = createAction('connect')
 export const disconnect = createAction('disconnect')
 export const connectionFailed = createAction('connectionFailed')
 export const initialize = createAction('initialize')
 export const purchaseConfirmed = createAction('purchaseConfirmed')
 export const purchaseExpired = createAction('purchaseExpired')
-export const purchaseFailed = createAction('purchaseFailed')
 export const showSellView = createAction('showSellView')
 export const showLoadingView = createAction('showLoadingView')
 export const resetConnectionState = createAction('resetConnectionState')
-export const showSubscriptionInvalidView = createAction('showSubscriptionInvalidView')
 
+export const purchaseFailed =
+  createAction<purchasedStatePayload>('purchaseFailed')
 export const initialized = createAction<initializedPayload>('initialized')
 export const showMainView = createAction<showMainViewPayload>('showMainView')
 export const toggleRegionSelector = createAction<ToggleRegionSelectorPayload>('toggleRegionSelector', (isSelectingRegion) => ({ isSelectingRegion }))

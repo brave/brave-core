@@ -74,7 +74,7 @@ class BraveVpnService :
 
   std::string GetCurrentEnvironment() const;
   bool is_purchased_user() const {
-    return purchased_state_ == mojom::PurchasedState::PURCHASED;
+    return GetPurchasedInfoSync().state == mojom::PurchasedState::PURCHASED;
   }
   void BindInterface(mojo::PendingReceiver<mojom::ServiceHandler> receiver);
   void ReloadPurchasedState();
@@ -182,8 +182,11 @@ class BraveVpnService :
   void InitP3A();
   void OnP3AInterval();
 
-  mojom::PurchasedState GetPurchasedStateSync() const;
-  void SetPurchasedState(const std::string& env, mojom::PurchasedState state);
+  mojom::PurchasedInfo GetPurchasedInfoSync() const;
+  void SetPurchasedState(
+      const std::string& env,
+      mojom::PurchasedState state,
+      const absl::optional<std::string>& description = absl::nullopt);
   void SetCurrentEnvironment(const std::string& env);
   void EnsureMojoConnected();
   void OnMojoConnectionError();
@@ -219,7 +222,7 @@ class BraveVpnService :
   base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
       skus_service_getter_;
   mojo::Remote<skus::mojom::SkusService> skus_service_;
-  absl::optional<mojom::PurchasedState> purchased_state_;
+  absl::optional<mojom::PurchasedInfo> purchased_state_;
   mojo::RemoteSet<mojom::ServiceObserver> observers_;
   std::unique_ptr<BraveVpnAPIRequest> api_request_;
   base::RepeatingTimer p3a_timer_;

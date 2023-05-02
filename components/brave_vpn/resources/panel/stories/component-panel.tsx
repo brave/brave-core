@@ -13,7 +13,6 @@ import * as S from './style'
 import { ConnectionState } from '../api/panel_browser_api'
 import { mockRegionList } from './mock-data/region-list'
 import ErrorPanel from '../components/error-panel'
-import InvalidSubscription from '../components/error-subscription-failed-panel'
 import SelectRegionList from '../components/select-region-list'
 import MainPanel from '../components/main-panel'
 import SellPanel from '../components/sell-panel'
@@ -63,14 +62,6 @@ export const _Error = () => {
   return (
     <S.PanelFrame>
       <ErrorPanel showContactSupport={() => {}} />
-    </S.PanelFrame>
-  )
-}
-
-export const _InvalidSubscription = () => {
-  return (
-    <S.PanelFrame>
-      <InvalidSubscription />
     </S.PanelFrame>
   )
 }

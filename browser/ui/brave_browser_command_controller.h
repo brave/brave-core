@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_BROWSER_COMMAND_CONTROLLER_H_
 #define BRAVE_BROWSER_UI_BRAVE_BROWSER_COMMAND_CONTROLLER_H_
 
+#include <string>
+
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -60,7 +62,9 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   // brave_vpn::BraveVPNServiceObserver overrides:
-  void OnPurchasedStateChanged(brave_vpn::mojom::PurchasedState state) override;
+  void OnPurchasedStateChanged(
+      brave_vpn::mojom::PurchasedState state,
+      const absl::optional<std::string>& description) override;
 #endif
 
   void InitBraveCommandState();

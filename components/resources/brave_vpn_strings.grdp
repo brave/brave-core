@@ -124,6 +124,18 @@
     Edit payment method
   </message>
 
+  <message name="IDS_BRAVE_VPN_PURCHASE_CREDENTIALS_EXPIRED" desc="Message to show when credentials expired">
+    Credentials expiry date elapsed.
+  </message>
+
+  <message name="IDS_BRAVE_VPN_PURCHASE_CREDENTIALS_FETCH_FAILED" desc="Message to show when credentials cannot be loaded">
+    Unable to load credentials.
+  </message>
+
+  <message name="IDS_BRAVE_VPN_PURCHASE_TOKEN_NOT_VALID " desc="Message to show when token is not valid">
+    Token no longer valid.
+  </message>
+
   <message name="IDS_BRAVE_VPN_PAYMENT_FAILURE" desc="Title to show payment failure has occured from the server">
     Edit payment method
   </message>
