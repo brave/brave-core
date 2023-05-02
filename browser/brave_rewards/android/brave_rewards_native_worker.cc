@@ -661,6 +661,13 @@ void BraveRewardsNativeWorker::ResetTheWholeState(JNIEnv* env) {
                      weak_factory_.GetWeakPtr()));
 }
 
+void BraveRewardsNativeWorker::OnCompleteReset(const bool success) {
+  JNIEnv* env = base::android::AttachCurrentThread();
+
+  Java_BraveRewardsNativeWorker_onCompleteReset(
+      env, weak_java_brave_rewards_native_worker_.get(env), success);
+}
+
 void BraveRewardsNativeWorker::OnResetTheWholeState(const bool success) {
   JNIEnv* env = base::android::AttachCurrentThread();
 

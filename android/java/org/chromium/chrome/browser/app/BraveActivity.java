@@ -887,19 +887,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
         PrefChangeRegistrar mPrefChangeRegistrar = new PrefChangeRegistrar();
         mPrefChangeRegistrar.addObserver(BravePref.SCHEDULED_CAPTCHA_ID, this);
-        mPrefChangeRegistrar.addObserver(BravePref.ENABLED, new PrefChangeRegistrar.PrefObserver() {
-            @Override
-            public void onPreferenceChange() {
-                Log.e("NTP",
-                        "BravePref.ENABLED : "
-                                + UserPrefs.get(Profile.getLastUsedRegularProfile())
-                                          .getBoolean(BravePref.ENABLED));
-                if (!UserPrefs.get(Profile.getLastUsedRegularProfile())
-                                .getBoolean(BravePref.ENABLED)) {
-                    BraveRewardsHelper.resetRewards();
-                }
-            }
-        });
 
         if (UserPrefs.get(Profile.getLastUsedRegularProfile())
                         .getInteger(BravePref.SCHEDULED_CAPTCHA_FAILED_ATTEMPTS)
