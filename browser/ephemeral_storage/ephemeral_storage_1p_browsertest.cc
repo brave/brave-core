@@ -414,6 +414,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
   CloseWebContents(site_a_tab_network_cookies);
   CloseWebContents(site_a_tab);
   http_request_monitor_.Clear();
+  WaitForCleanupAfterKeepAlive();
 
   // Load a.com tab again.
   WebContents* site_a_tab2 = LoadURLInNewTab(a_site_ephemeral_storage_url_);
@@ -452,6 +453,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
   ExpectValuesFromFramesAreEmpty(FROM_HERE, GetValuesFromFrames(site_b_tab));
 
   CloseWebContents(site_a_tab);
+  WaitForCleanupAfterKeepAlive();
 
   // Load a.com tab again, expect non-ephemeral values are kept.
   site_a_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);

@@ -761,12 +761,6 @@ void SetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
     return;
   }
 
-  // Reset legacy host pattern.
-  auto legacy_host_pattern = content_settings::CreateHostPattern(url);
-  map->SetContentSettingCustomScope(
-      legacy_host_pattern, ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, CONTENT_SETTING_DEFAULT);
-
   map->SetContentSettingCustomScope(
       primary_pattern, ContentSettingsPattern::Wildcard(),
       ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,

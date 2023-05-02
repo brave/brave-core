@@ -70,11 +70,6 @@ BASE_FEATURE(kBraveForgetFirstPartyStorage,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 const base::FeatureParam<int>
-    kBraveForgetFirstPartyStorageKeepAliveTimeInSeconds = {
-        &kBraveForgetFirstPartyStorage,
-        "BraveForgetFirstPartyStorageKeepAliveTimeInSeconds", 30};
-
-const base::FeatureParam<int>
     kBraveForgetFirstPartyStorageStartupCleanupDelayInSeconds = {
         &kBraveForgetFirstPartyStorage,
         "BraveForgetFirstPartyStorageStartupCleanupDelayInSeconds", 5};

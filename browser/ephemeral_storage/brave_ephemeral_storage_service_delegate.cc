@@ -1,0 +1,77 @@
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/ephemeral_storage/brave_ephemeral_storage_service_delegate.h"
+
+#include <utility>
+
+#include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
+#include "content/public/browser/browser_context.h"
+#include "content/public/browser/browsing_data_filter_builder.h"
+#include "content/public/browser/browsing_data_remover.h"
+#include "content/public/browser/dom_storage_context.h"
+#include "net/base/features.h"
+
+namespace ephemeral_storage {
+
+BraveEphemeralStorageServiceDelegate::BraveEphemeralStorageServiceDelegate(
+    content::BrowserContext* context,
+    scoped_refptr<content_settings::CookieSettings> cookie_settings)
+    : context_(context), cookie_settings_(std::move(cookie_settings)) {
+  DCHECK(context_);
+  DCHECK(cookie_settings_);
+}
+
+BraveEphemeralStorageServiceDelegate::~BraveEphemeralStorageServiceDelegate() =
+    default;
+
+void BraveEphemeralStorageServiceDelegate::CleanupTLDEphemeralArea(
+    const TLDEphemeralAreaKey& key) {
+  DVLOG(1) << __func__ << " " << key.first << " " << key.second;
+  auto* storage_partition = context_->GetStoragePartition(key.second);
+  if (!storage_partition) {
+    return;
+  }
+  auto filter = network::mojom::CookieDeletionFilter::New();
+  filter->ephemeral_storage_domain = key.first;
+  storage_partition->GetCookieManagerForBrowserProcess()->DeleteCookies(
+      std::move(filter), base::NullCallback());
+  for (const auto& opaque_origin :
+       cookie_settings_->TakeEphemeralStorageOpaqueOrigins(key.first)) {
+    storage_partition->GetDOMStorageContext()->DeleteLocalStorage(
+        blink::StorageKey::CreateFirstParty(opaque_origin), base::DoNothing());
+  }
+}
+
+void BraveEphemeralStorageServiceDelegate::CleanupFirstPartyStorageArea(
+    const std::string& registerable_domain) {
+  DVLOG(1) << __func__ << " " << registerable_domain;
+  DCHECK(base::FeatureList::IsEnabled(
+      net::features::kBraveForgetFirstPartyStorage));
+
+  content::BrowsingDataRemover::DataType data_to_remove =
+      content::BrowsingDataRemover::DATA_TYPE_COOKIES |
+      content::BrowsingDataRemover::DATA_TYPE_CACHE |
+      content::BrowsingDataRemover::DATA_TYPE_MEDIA_LICENSES |
+      content::BrowsingDataRemover::DATA_TYPE_DOM_STORAGE |
+      content::BrowsingDataRemover::DATA_TYPE_ATTRIBUTION_REPORTING |
+      content::BrowsingDataRemover::DATA_TYPE_PRIVACY_SANDBOX |
+      content::BrowsingDataRemover::DATA_TYPE_PRIVACY_SANDBOX_INTERNAL |
+      chrome_browsing_data_remover::DATA_TYPE_SITE_DATA;
+
+  content::BrowsingDataRemover::OriginType origin_type =
+      content::BrowsingDataRemover::ORIGIN_TYPE_UNPROTECTED_WEB |
+      content::BrowsingDataRemover::ORIGIN_TYPE_PROTECTED_WEB;
+
+  auto filter_builder = content::BrowsingDataFilterBuilder::Create(
+      content::BrowsingDataFilterBuilder::Mode::kDelete);
+  filter_builder->AddRegisterableDomain(registerable_domain);
+
+  content::BrowsingDataRemover* remover = context_->GetBrowsingDataRemover();
+  remover->RemoveWithFilter(base::Time(), base::Time::Max(), data_to_remove,
+                            origin_type, std::move(filter_builder));
+}
+
+}  // namespace ephemeral_storage

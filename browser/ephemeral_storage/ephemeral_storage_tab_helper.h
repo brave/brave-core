@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/browser/ephemeral_storage/first_party_storage_lifetime.h"
+#include "brave/browser/ephemeral_storage/tld_ephemeral_lifetime.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/session_storage_namespace.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -36,8 +36,6 @@ class EphemeralStorageTabHelper
   explicit EphemeralStorageTabHelper(content::WebContents* web_contents);
   ~EphemeralStorageTabHelper() override;
 
-  static void SetKeepAliveTimeDelayForTesting(const base::TimeDelta& time);
-
  private:
   friend class content::WebContentsUserData<EphemeralStorageTabHelper>;
 
@@ -46,20 +44,11 @@ class EphemeralStorageTabHelper
       content::NavigationHandle* navigation_handle) override;
   void WebContentsDestroyed() override;
 
-  void ClearEphemeralLifetimeKeepalive(
-      const content::TLDEphemeralLifetimeKey& key);
-
   void CreateEphemeralStorageAreasForDomainAndURL(const std::string& new_domain,
                                                   const GURL& new_url);
-  void CreateFirstPartyStorageLifetime(const std::string& new_domain,
-                                       const GURL& new_url);
 
   scoped_refptr<content::SessionStorageNamespace> session_storage_namespace_;
-  scoped_refptr<content::TLDEphemeralLifetime> tld_ephemeral_lifetime_;
-  scoped_refptr<FirstPartyStorageLifetime> first_party_storage_lifetime_;
-
-  std::vector<scoped_refptr<content::TLDEphemeralLifetime>>
-      keep_alive_tld_ephemeral_lifetime_list_;
+  scoped_refptr<TLDEphemeralLifetime> tld_ephemeral_lifetime_;
 
   base::WeakPtrFactory<EphemeralStorageTabHelper> weak_factory_{this};
 

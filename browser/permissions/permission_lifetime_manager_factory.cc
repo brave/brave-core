@@ -8,8 +8,8 @@
 #include <memory>
 #include <utility>
 
+#include "brave/browser/permissions/permission_origin_lifetime_monitor_impl.h"
 #include "brave/components/permissions/permission_lifetime_manager.h"
-#include "brave/components/permissions/permission_origin_lifetime_monitor_impl.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"

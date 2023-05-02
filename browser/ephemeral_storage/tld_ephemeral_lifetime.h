@@ -1,30 +1,30 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_TLD_EPHEMERAL_LIFETIME_H_
-#define BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_TLD_EPHEMERAL_LIFETIME_H_
+#ifndef BRAVE_BROWSER_EPHEMERAL_STORAGE_TLD_EPHEMERAL_LIFETIME_H_
+#define BRAVE_BROWSER_EPHEMERAL_STORAGE_TLD_EPHEMERAL_LIFETIME_H_
 
 #include <string>
 #include <utility>
 #include <vector>
 
-#include "base/containers/flat_map.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/weak_ptr.h"
-#include "content/common/content_export.h"
+#include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
+#include "content/public/browser/storage_partition_config.h"
 #include "url/origin.h"
 
 namespace content {
 
 class BrowserContext;
-class SessionStorageNamespace;
-class StoragePartition;
-class StoragePartition;
-class WebContents;
+
+}  // namespace content
+
+namespace ephemeral_storage {
 
 // TLD storage is keyed by the BrowserContext (profile) and the TLD-specific
 // security domain.
@@ -36,40 +36,27 @@ using TLDEphemeralLifetimeKey =
 // TLDEphemeralLifetimeKey. When the last top-level frame holding a reference
 // is destroyed or navigates to a new storage domain, storage will be
 // cleared.
-//
-// TODO(mrobinson): Have this class also manage ephemeral local storage and
-// take care of handing out new instances of session storage.
-class CONTENT_EXPORT TLDEphemeralLifetime
-    : public base::RefCounted<TLDEphemeralLifetime> {
+class TLDEphemeralLifetime : public base::RefCounted<TLDEphemeralLifetime> {
  public:
   using OnDestroyCallback = base::OnceCallback<void(const std::string&)>;
 
-  class Delegate {
-   public:
-    virtual ~Delegate() = default;
-
-    // Should return opaque origins which were used for keying ephemeral
-    // storages during the ephemeral TLD lifetime. These origins are used to
-    // cleanup storages.
-    virtual std::vector<url::Origin> TakeEphemeralStorageOpaqueOrigins(
-        const std::string& ephemeral_storage_domain) = 0;
-  };
-
-  TLDEphemeralLifetime(const TLDEphemeralLifetimeKey& key,
-                       StoragePartition* storage_partition,
-                       std::unique_ptr<Delegate> delegate);
-  static TLDEphemeralLifetime* Get(BrowserContext* browser_context,
+  TLDEphemeralLifetime(
+      const TLDEphemeralLifetimeKey& key,
+      const content::StoragePartitionConfig& storage_partition_config);
+  static TLDEphemeralLifetime* Get(content::BrowserContext* browser_context,
                                    const std::string& storage_domain);
   static scoped_refptr<TLDEphemeralLifetime> GetOrCreate(
-      BrowserContext* browser_context,
-      StoragePartition* storage_partition,
+      content::BrowserContext* browser_context,
       const std::string& storage_domain,
-      std::unique_ptr<Delegate> delegate);
+      const content::StoragePartitionConfig& storage_partition_config);
 
   // Add a callback to a callback list to be called on destruction.
   void RegisterOnDestroyCallback(OnDestroyCallback callback);
 
   const TLDEphemeralLifetimeKey& key() const { return key_; }
+  const content::StoragePartitionConfig& storage_partition_config() const {
+    return storage_partition_config_;
+  }
 
  private:
   friend class RefCounted<TLDEphemeralLifetime>;
@@ -78,13 +65,13 @@ class CONTENT_EXPORT TLDEphemeralLifetime
   static TLDEphemeralLifetime* Get(const TLDEphemeralLifetimeKey& key);
 
   TLDEphemeralLifetimeKey key_;
-  raw_ptr<StoragePartition> storage_partition_ = nullptr;
-  std::unique_ptr<Delegate> delegate_;
+  base::WeakPtr<EphemeralStorageService> ephemeral_storage_service_;
+  const content::StoragePartitionConfig storage_partition_config_;
   std::vector<OnDestroyCallback> on_destroy_callbacks_;
 
   base::WeakPtrFactory<TLDEphemeralLifetime> weak_factory_{this};
 };
 
-}  // namespace content
+}  // namespace ephemeral_storage
 
-#endif  // BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_TLD_EPHEMERAL_LIFETIME_H_
+#endif  // BRAVE_BROWSER_EPHEMERAL_STORAGE_TLD_EPHEMERAL_LIFETIME_H_
