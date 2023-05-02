@@ -233,20 +233,35 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {
   browser()->profile()->GetPrefs()->SetBoolean(prefs::kUseCustomChromeFrame,
                                                true);
 #endif
-  // Pre-condition: Window title is "hidden" by default on vertical tabs
-  ASSERT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));
-  ASSERT_FALSE(tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser()));
-  ASSERT_FALSE(browser_view()->ShouldShowWindowTitle());
-  ASSERT_FALSE(IsWindowTitleViewVisible());
 
-  // Show window title bar
-  brave::ToggleWindowTitleVisibilityForVerticalTabs(browser());
-  browser_non_client_frame_view()->Layout();
-  EXPECT_TRUE(tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser()));
-  EXPECT_TRUE(browser_view()->ShouldShowWindowTitle());
-  EXPECT_GE(browser_non_client_frame_view()->GetTopInset(/*restored=*/false),
-            0);
-  EXPECT_TRUE(IsWindowTitleViewVisible());
+  // Pre-condition: Window title visibility differs per platform
+#if BUILDFLAG(IS_WIN)
+  constexpr bool kWindowTitleVisibleByDefault = true;
+#else
+  constexpr bool kWindowTitleVisibleByDefault = false;
+#endif
+
+  ASSERT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));
+  ASSERT_EQ(kWindowTitleVisibleByDefault,
+            tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser()));
+  ASSERT_EQ(kWindowTitleVisibleByDefault,
+            browser_view()->ShouldShowWindowTitle());
+  ASSERT_EQ(kWindowTitleVisibleByDefault, IsWindowTitleViewVisible());
+
+  auto check_if_window_title_gets_visible = [&]() {
+    // Show window title bar
+    brave::ToggleWindowTitleVisibilityForVerticalTabs(browser());
+    browser_non_client_frame_view()->Layout();
+    EXPECT_TRUE(tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser()));
+    EXPECT_TRUE(browser_view()->ShouldShowWindowTitle());
+    EXPECT_GE(browser_non_client_frame_view()->GetTopInset(/*restored=*/false),
+              0);
+    EXPECT_TRUE(IsWindowTitleViewVisible());
+  };
+
+  if constexpr (!kWindowTitleVisibleByDefault) {
+    check_if_window_title_gets_visible();
+  }
 
   // Hide window title bar
   brave::ToggleWindowTitleVisibilityForVerticalTabs(browser());
@@ -260,6 +275,10 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {
             browser_non_client_frame_view()->GetTopInset(/*restored=*/false));
 #endif
   EXPECT_FALSE(IsWindowTitleViewVisible());
+
+  if constexpr (kWindowTitleVisibleByDefault) {
+    check_if_window_title_gets_visible();
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, NewTabVisibility) {
