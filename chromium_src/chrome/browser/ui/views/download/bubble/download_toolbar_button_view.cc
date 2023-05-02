@@ -18,9 +18,11 @@ SkRect AdjustRingBounds(const gfx::RectF& ring_bounds);
 
 #define RectFToSkRect(ring_bounds) AdjustRingBounds(ring_bounds)
 #define DownloadToolbarButtonView DownloadToolbarButtonViewChromium
+#define FromVectorIcon(icon, color) FromVectorIcon(icon, color, 16)
 
 #include "src/chrome/browser/ui/views/download/bubble/download_toolbar_button_view.cc"
 
+#undef FromVectorIcon
 #undef DownloadToolbarButtonView
 #undef RectFToSkRect
 

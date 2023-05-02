@@ -79,9 +79,9 @@ const gfx::VectorIcon& SpeedreaderIconView::GetVectorIcon() const {
   const DistillState state = GetDistillState();
   if (state == DistillState::kSpeedreaderMode ||
       state == DistillState::kSpeedreaderOnDisabledPage) {
-    return kBraveSpeedreaderModeIcon;
+    return kLeoProductSpeedreaderIcon;
   } else {
-    return kBraveReaderModeIcon;
+    return kLeoProductReadermodeIcon;
   }
 }
 
