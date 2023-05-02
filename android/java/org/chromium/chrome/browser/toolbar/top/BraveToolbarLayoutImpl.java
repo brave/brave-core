@@ -664,13 +664,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private void findMediaFiles(Tab tab) {
         if (isPlaylistEnabledByPrefsAndFlags() && mPlaylistService != null) {
             hidePlaylistButton();
-            mPlaylistService.findMediaFilesFromActiveTab(
-                    (url, playlistItems)
-                            -> {
-                                    // if (playlistItems.length > 0) {
-                                    //     showPlaylistButton(tab.getUrl().getSpec());
-                                    // }
-                            });
+            mPlaylistService.findMediaFilesFromActiveTab((url, playlistItems) -> {});
         }
     }
 
