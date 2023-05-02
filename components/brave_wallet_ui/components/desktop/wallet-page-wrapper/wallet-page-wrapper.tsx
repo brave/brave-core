@@ -70,11 +70,11 @@ export const WalletPageWrapper = (props: Props) => {
   const showNavigationAndHeader =
     isWalletCreated && !isWalletLocked &&
     (
-      walletLocation.includes(WalletRoutes.Portfolio) ||
+      walletLocation.includes(WalletRoutes.PortfolioAssets) ||
+      walletLocation.includes(WalletRoutes.PortfolioNFTs) ||
       walletLocation.includes(WalletRoutes.Accounts) ||
       walletLocation.includes(WalletRoutes.Market) ||
       walletLocation.includes(WalletRoutes.Activity) ||
-      walletLocation.includes(WalletRoutes.Nfts) ||
       walletLocation.includes(WalletRoutes.Send) ||
       walletLocation.includes(WalletRoutes.Swap) ||
       walletLocation.includes(WalletRoutes.FundWalletPageStart) ||
@@ -83,6 +83,10 @@ export const WalletPageWrapper = (props: Props) => {
 
   const headerTitle = AllNavOptions.find((option) =>
     walletLocation.includes(option.route))?.name ?? ''
+
+  const noCardPadding =
+    walletLocation === WalletRoutes.PortfolioAssets ||
+    walletLocation === WalletRoutes.PortfolioNFTs
 
   return (
     <>
@@ -111,7 +115,7 @@ export const WalletPageWrapper = (props: Props) => {
           >
             <ContainerCard
               cardOverflow={cardOverflow}
-              noPadding={walletLocation === WalletRoutes.Portfolio}
+              noPadding={noCardPadding}
             >
               {children}
             </ContainerCard>

@@ -97,7 +97,7 @@ export const Container = () => {
     if (sessionRoute) {
       history.push(sessionRoute)
     } else {
-      history.push(WalletRoutes.Portfolio)
+      history.push(WalletRoutes.PortfolioAssets)
     }
   }, [inputValue, sessionRoute])
 
@@ -131,9 +131,9 @@ export const Container = () => {
       walletLocation.includes(WalletRoutes.Backup) ||
       walletLocation.includes(WalletRoutes.DepositFundsPageStart) ||
       walletLocation.includes(WalletRoutes.FundWalletPageStart) ||
-      walletLocation.includes(WalletRoutes.Portfolio) ||
+      walletLocation.includes(WalletRoutes.PortfolioAssets) ||
+      walletLocation.includes(WalletRoutes.PortfolioNFTs) ||
       walletLocation.includes(WalletRoutes.Market) ||
-      walletLocation.includes(WalletRoutes.Nfts) ||
       walletLocation.includes(WalletRoutes.Swap) ||
       walletLocation.includes(WalletRoutes.Send) ||
       walletLocation.includes(WalletRoutes.LocalIpfsNode ||
@@ -154,9 +154,9 @@ export const Container = () => {
         walletLocation.includes(WalletRoutes.FundWalletPage) ||
         walletLocation.includes(WalletRoutes.LocalIpfsNode) ||
         walletLocation.includes(WalletRoutes.InspectNfts) ||
-        walletLocation.includes(WalletRoutes.Portfolio) ||
+        walletLocation.includes(WalletRoutes.PortfolioAssets) ||
+        walletLocation.includes(WalletRoutes.PortfolioNFTs) ||
         walletLocation.includes(WalletRoutes.Market) ||
-        walletLocation.includes(WalletRoutes.Nfts) ||
         walletLocation.includes(WalletRoutes.Activity) ||
         walletLocation.includes(WalletRoutes.Accounts)
       ) {
@@ -304,9 +304,9 @@ export const Container = () => {
                     walletLocation !== WalletRoutes.InspectNfts
                   }
                   cardOverflow={
-                    walletLocation === WalletRoutes.Portfolio ||
+                    walletLocation === WalletRoutes.PortfolioAssets ||
                       walletLocation === WalletRoutes.Activity ||
-                      walletLocation === WalletRoutes.Nfts
+                      walletLocation === WalletRoutes.PortfolioNFTs
                       ? 'visible'
                       : 'hidden'
                   }
@@ -325,7 +325,7 @@ export const Container = () => {
             }
 
             {isWalletLocked && <Redirect to={WalletRoutes.Unlock} />}
-            {!isWalletLocked && <Redirect to={WalletRoutes.Portfolio} />}
+            {!isWalletLocked && <Redirect to={WalletRoutes.PortfolioAssets} />}
           </Switch>
         }
       </Switch>

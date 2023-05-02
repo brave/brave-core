@@ -39,7 +39,6 @@ import { MarketView } from '../market'
 import { Accounts } from '../accounts/accounts'
 import { Account } from '../accounts/account'
 import { AddAccountModal } from '../../popup-modals/add-account-modal/add-account-modal'
-import { NftView } from '../nfts/nft-view'
 import { ConfirmPasswordModal } from '../../popup-modals/confirm-password-modal/confirm-password-modal'
 import { AccountSettingsModal } from '../../popup-modals/account-settings-modal/account-settings-modal'
 import TransactionsScreen from '../../../../page/screens/transactions/transactions-screen'
@@ -105,7 +104,7 @@ const CryptoView = (props: Props) => {
     if (showModal) {
       history.push(`${WalletRoutes.AddAssetModal}`)
     } else {
-      history.push(`${WalletRoutes.Portfolio}`)
+      history.push(`${WalletRoutes.PortfolioAsset}`)
     }
   }, [])
 
@@ -127,14 +126,14 @@ const CryptoView = (props: Props) => {
   )
 
   const onClose = React.useCallback(() => {
-    history.push(WalletRoutes.Nfts)
+    history.push(WalletRoutes.PortfolioNFTs)
   }, [])
 
   const onBack = React.useCallback(() => {
     if (location.key) {
       history.goBack()
     } else {
-      history.push(WalletRoutes.Nfts)
+      history.push(WalletRoutes.PortfolioNFTs)
     }
   }, [location.key])
 
@@ -210,7 +209,9 @@ const CryptoView = (props: Props) => {
             {banners}
             {ipfsBanner}
           </Column>
-          <PortfolioOverview />
+          <PortfolioOverview
+            onToggleShowIpfsBanner={onToggleShowIpfsBanner}
+          />
         </Route>
 
         <Route path={WalletRoutes.PortfolioAsset} exact>
@@ -225,7 +226,9 @@ const CryptoView = (props: Props) => {
             {banners}
             {ipfsBanner}
           </Column>
-          <PortfolioOverview />
+          <PortfolioOverview
+            onToggleShowIpfsBanner={onToggleShowIpfsBanner}
+          />
         </Route>
 
         {/* Accounts */}
@@ -258,13 +261,6 @@ const CryptoView = (props: Props) => {
           />
         </Route>
 
-        {/* NFTs */}
-        <Route path={WalletRoutes.Nfts} exact={true}>
-          {banners}
-          {ipfsBanner}
-          <NftView onToggleShowIpfsBanner={onToggleShowIpfsBanner} />
-        </Route>
-
         {/* Transactions */}
         <Route path={WalletRoutes.Activity} exact={true}>
           {banners}
@@ -277,7 +273,7 @@ const CryptoView = (props: Props) => {
           exact={true}
           render={(props) => isNftPinningFeatureEnabled
             ? <LocalIpfsNodeScreen onClose={onClose} {...props} />
-            : <Redirect to={WalletRoutes.Portfolio} />
+            : <Redirect to={WalletRoutes.PortfolioAssets} />
           }
         />
 
@@ -287,11 +283,11 @@ const CryptoView = (props: Props) => {
           exact={true}
           render={(props) => isNftPinningFeatureEnabled
             ? <InspectNftsScreen onClose={onClose} onBack={onBack} {...props} />
-            : <Redirect to={WalletRoutes.Portfolio} />
+            : <Redirect to={WalletRoutes.PortfolioAssets} />
           }
         />
 
-        <Redirect to={sessionRoute || WalletRoutes.Portfolio} />
+        <Redirect to={sessionRoute || WalletRoutes.PortfolioAssets} />
 
       </Switch>
 

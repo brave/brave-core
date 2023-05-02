@@ -108,7 +108,7 @@ export const RestoreWallet = () => {
       isLegacy: isLegacyWallet,
       completeWalletSetup: true
     }))
-    history.push(WalletRoutes.Portfolio)
+    history.push(WalletRoutes.PortfolioAssets)
   }, [recoveryPhrase, password, isLegacyWallet])
 
   const handleRecoveryPhraseChanged = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {

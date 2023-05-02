@@ -16,6 +16,7 @@ export const FilterTokenRow = styled.div`
   width: 100%;
   gap: 14px;
   position: relative;
+  padding: 0px 20px;
 `
 
 export const NftGrid = styled.div`
@@ -24,7 +25,6 @@ export const NftGrid = styled.div`
   grid-gap: 25px;
   box-sizing: border-box;
   width: 100%;
-  padding-top: 10px;
   @media screen and (max-width: 700px) {
     grid-template-columns: repeat(3, 1fr);
   }

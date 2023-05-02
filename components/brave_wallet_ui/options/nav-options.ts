@@ -14,16 +14,16 @@ export const BuySendSwapDepositOptions: NavOption[] = [
     route: WalletRoutes.FundWalletPageStart
   },
   {
-    id: 'swap',
-    name: 'braveWalletSwap',
-    icon: 'currency-exchange',
-    route: WalletRoutes.Swap
-  },
-  {
     id: 'send',
     name: 'braveWalletSend',
     icon: 'send',
     route: WalletRoutes.Send
+  },
+  {
+    id: 'swap',
+    name: 'braveWalletSwap',
+    icon: 'currency-exchange',
+    route: WalletRoutes.Swap
   },
   {
     id: 'deposit',
@@ -52,12 +52,6 @@ export const NavOptions: NavOption[] = [
     icon: 'coins',
     route: WalletRoutes.Portfolio
   },
-  {
-    id: 'nfts',
-    name: 'braveWalletTopNavNFTS',
-    icon: 'grid04',
-    route: WalletRoutes.Nfts
-  },
   ActivityNavOption,
   {
     id: 'accounts',
@@ -77,4 +71,19 @@ export const AllNavOptions: NavOption[] = [
   ...NavOptions,
   ...BuySendSwapDepositOptions,
   ActivityNavOption
+]
+
+export const PortfolioNavOptions: NavOption[] = [
+  {
+    id: 'assets',
+    name: 'braveWalletAccountsAssets',
+    icon: 'coins',
+    route: WalletRoutes.PortfolioAssets
+  },
+  {
+    id: 'nfts',
+    name: 'braveWalletTopNavNFTS',
+    icon: 'grid04',
+    route: WalletRoutes.PortfolioNFTs
+  },
 ]

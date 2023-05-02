@@ -7,6 +7,12 @@ import * as React from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 
+import {
+  Route,
+  Switch,
+  Redirect
+} from 'react-router-dom'
+
 // selectors
 import {
   useSafeWalletSelector,
@@ -49,11 +55,14 @@ import { formatAsDouble } from '../../../../utils/string-utils'
 import { ChartTimelineOptions } from '../../../../options/chart-timeline-options'
 import { AllNetworksOption } from '../../../../options/network-filter-options'
 import { AllAccountsOption } from '../../../../options/account-filter-options'
+import { PortfolioNavOptions } from '../../../../options/nav-options'
 
 // Components
 import { LoadingSkeleton } from '../../../shared'
+import {
+  SegmentedControl
+} from '../../../shared/segmented-control/segmented-control'
 import { PortfolioAssetItem } from '../../'
-import { NFTGridViewItem } from './components/nft-grid-view/nft-grid-view-item'
 import { TokenLists } from './components/token-lists/token-list'
 import {
   PortfolioOverviewChart //
@@ -62,6 +71,7 @@ import {
   LineChartControlsMenu
 } from '../../wallet-menus/line-chart-controls-menu'
 import ColumnReveal from '../../../shared/animated-reveals/column-reveal'
+import { NftView } from '../nfts/nft-view'
 
 // Styled Components
 import {
@@ -70,7 +80,8 @@ import {
   FiatChange,
   SelectTimelinButton,
   SelectTimelinButtonIcon,
-  SelectTimelineWrapper
+  SelectTimelineWrapper,
+  ControlsRow
 } from './style'
 import {
   Column,
@@ -79,7 +90,11 @@ import {
 } from '../../../shared/style'
 import { useGetVisibleNetworksQuery } from '../../../../common/slices/api.slice'
 
-export const PortfolioOverview = () => {
+interface Props {
+  onToggleShowIpfsBanner: () => void
+}
+
+export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
   // routing
   const history = useHistory()
 
@@ -281,10 +296,27 @@ export const PortfolioOverview = () => {
 
   const onSelectAsset = React.useCallback((asset: BraveWallet.BlockchainToken) => {
     if (asset.contractAddress === '') {
-      history.push(`${WalletRoutes.Portfolio}/${asset.chainId}/${asset.symbol}`)
+      history.push(
+        `${WalletRoutes.PortfolioAssets //
+        }/${asset.chainId //
+        }/${asset.symbol}`
+      )
       return
     }
-    history.push(`${WalletRoutes.Portfolio}/${asset.chainId}/${asset.contractAddress}/${asset.tokenId}`)
+    if (asset.isErc721 || asset.isNft || asset.isErc1155) {
+      history.push(
+        `${WalletRoutes.PortfolioNFTs //
+        }/${asset.chainId //
+        }/${asset.contractAddress //
+        }/${asset.tokenId}`
+      )
+    } else {
+      history.push(
+        `${WalletRoutes.PortfolioAssets //
+        }/${asset.chainId //
+        }/${asset.contractAddress}`
+      )
+    }
     dispatch(WalletPageActions.selectAsset({ asset, timeFrame: selectedTimeline }))
     if ((asset.isErc721 || asset.isNft) && nftMetadata) {
       // reset nft metadata
@@ -384,28 +416,48 @@ export const PortfolioOverview = () => {
           />
         </ColumnReveal>
       </Column>
-      <TokenLists
-        userAssetList={userAssetList}
-        networks={networks || []}
-        estimatedItemSize={58}
-        enableScroll={true}
-        horizontalPadding={20}
-        renderToken={({ item, viewMode }) =>
-          viewMode === 'list'
-            ? <PortfolioAssetItem
-              action={() => onSelectAsset(item.asset)}
-              key={getAssetIdKey(item.asset)}
-              assetBalance={item.assetBalance}
-              token={item.asset}
-              hideBalances={hidePortfolioBalances}
-            />
-            : <NFTGridViewItem
-              key={`${item.asset.tokenId}-${item.asset.contractAddress}`}
-              token={item.asset}
-              onSelectAsset={() => onSelectAsset(item.asset)}
-            />
-        }
-      />
+
+      <ControlsRow padding='24px 0px'>
+        <SegmentedControl
+          navOptions={PortfolioNavOptions}
+          width={384}
+        />
+      </ControlsRow>
+
+      <Switch>
+        <Route path={WalletRoutes.PortfolioAssets} exact>
+          <TokenLists
+            userAssetList={userAssetList}
+            networks={networks || []}
+            estimatedItemSize={58}
+            enableScroll={true}
+            horizontalPadding={20}
+            renderToken={({ item }) =>
+              <PortfolioAssetItem
+                action={() => onSelectAsset(item.asset)}
+                key={getAssetIdKey(item.asset)}
+                assetBalance={item.assetBalance}
+                token={item.asset}
+                hideBalances={hidePortfolioBalances}
+              />
+            }
+          />
+        </Route>
+
+        <Route path={WalletRoutes.PortfolioNFTs} exact>
+          <NftView
+            onToggleShowIpfsBanner={onToggleShowIpfsBanner}
+          />
+        </Route>
+
+        <Route
+          path={WalletRoutes.Portfolio}
+          exact={true}
+          render={() => <Redirect to={WalletRoutes.PortfolioAssets} />
+          }
+        />
+
+      </Switch>
 
     </>
   )

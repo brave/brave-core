@@ -547,7 +547,7 @@ export const PortfolioAsset = (props: Props) => {
     }))
     if (showHideTokenModel) setShowHideTokenModal(false)
     if (showTokenDetailsModal) setShowTokenDetailsModal(false)
-    history.push(WalletRoutes.Portfolio)
+    history.push(WalletRoutes.PortfolioAssets)
   }, [selectedAsset, showTokenDetailsModal, fullTokenList])
 
   const onViewOnExplorer = React.useCallback(() => {
@@ -705,7 +705,7 @@ export const PortfolioAsset = (props: Props) => {
 
   // asset not found
   if (!selectedAssetFromParams) {
-    return <Redirect to={WalletRoutes.Portfolio} />
+    return <Redirect to={WalletRoutes.PortfolioAssets} />
   }
 
   // render
@@ -813,10 +813,11 @@ export const PortfolioAsset = (props: Props) => {
           />
         }
         {!isNftAsset &&
-          <ButtonRow noMargin={true}>
+          <ButtonRow>
             {isReduxSelectedAssetBuySupported &&
               <BridgeToAuroraButton
                 onClick={onSelectBuy}
+                noBottomMargin={true}
               >
                 {getLocale('braveWalletBuy')}
               </BridgeToAuroraButton>
@@ -824,6 +825,7 @@ export const PortfolioAsset = (props: Props) => {
             {isSelectedAssetDepositSupported &&
               <BridgeToAuroraButton
                 onClick={onSelectDeposit}
+                noBottomMargin={true}
               >
                 {getLocale('braveWalletAccountsDeposit')}
               </BridgeToAuroraButton>
@@ -831,6 +833,7 @@ export const PortfolioAsset = (props: Props) => {
             {isSelectedAssetBridgeSupported &&
               <BridgeToAuroraButton
                 onClick={onBridgeToAuroraButton}
+                noBottomMargin={true}
               >
                 {getLocale('braveWalletBridgeToAuroraButton')}
               </BridgeToAuroraButton>

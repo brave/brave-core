@@ -39,9 +39,6 @@ import usePricing from '../../../../../../common/hooks/pricing'
 import { Column, ScrollableColumn } from '../../../../../shared/style'
 import {
   ButtonRow,
-  DividerText,
-  SubDivider,
-  Spacer,
   FilterTokenRow
 } from '../../style'
 
@@ -118,19 +115,16 @@ export const TokenLists = ({
     })
   }, [searchValue, visibleTokens])
 
-  const [fungibleTokens, nonFungibleTokens] = React.useMemo(
-    () => {
-      let fungible = []
-      let nonFungible = []
-      for (const token of filteredAssetList) {
-        if (token.asset.isErc721 || token.asset.isNft) {
-          nonFungible.push(token)
-        } else {
-          fungible.push(token)
-        }
-      }
-      return [fungible, nonFungible]
-    },
+  const fungibleTokens = React.useMemo(() => {
+    return filteredAssetList
+      .filter(
+        (token) => !(
+          token.asset.isErc721 ||
+          token.asset.isNft ||
+          token.asset.isErc1155
+        )
+      )
+  },
     [filteredAssetList]
   )
 
@@ -182,21 +176,10 @@ export const TokenLists = ({
       {!assetAutoDiscoveryCompleted && !hideAutoDiscovery &&
         <PortfolioAssetItemLoadingSkeleton />
       }
-      {nonFungibleTokens.length !== 0 &&
-        <>
-          <Column fullWidth={true} alignItems='flex-start'>
-            <Spacer />
-            <DividerText>{getLocale('braveWalletTopNavNFTS')}</DividerText>
-            <SubDivider />
-          </Column>
-          {nonFungibleTokens.map((token, index) => renderToken({ index, item: token, viewMode: 'list' }))}
-        </>
-      }
     </>
   }, [
     sortedFungibleTokensList,
     renderToken,
-    nonFungibleTokens,
     assetAutoDiscoveryCompleted,
     hideAutoDiscovery
   ])

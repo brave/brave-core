@@ -91,7 +91,12 @@ export const Nfts = (props: Props) => {
   }, [])
 
   const onSelectAsset = React.useCallback((asset: BraveWallet.BlockchainToken) => {
-    history.push(`${WalletRoutes.Portfolio}/${asset.chainId}/${asset.contractAddress}/${asset.tokenId}`)
+    history.push(
+      `${WalletRoutes.PortfolioNFTs //
+      }/${asset.chainId //
+      }/${asset.contractAddress //
+      }/${asset.tokenId}`
+    )
     // reset nft metadata
     dispatch(WalletPageActions.updateNFTMetadata(undefined))
   }, [dispatch])
@@ -159,10 +164,10 @@ export const Nfts = (props: Props) => {
           <AddIcon />
         </AddButton>
       </FilterTokenRow>
-      {sortedNfts.length === 0
-        ? <NftsEmptyState onImportNft={toggleShowAddNftModal} />
-        : <ScrollableColumn>
-          <NftGrid>
+      <ScrollableColumn padding='10px 20px 20px 20px'>
+        {sortedNfts.length === 0
+          ? <NftsEmptyState onImportNft={toggleShowAddNftModal} />
+          : <NftGrid>
             {sortedNfts.map(nft => (
               <NFTGridViewItem
                 key={`${nft.tokenId}-${nft.contractAddress}`}
@@ -171,8 +176,8 @@ export const Nfts = (props: Props) => {
               />
             ))}
           </NftGrid>
-        </ScrollableColumn>
-      }
+        }
+      </ScrollableColumn>
       {showAddNftModal &&
         <AddOrEditNftModal
           onClose={toggleShowAddNftModal}

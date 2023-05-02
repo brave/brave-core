@@ -52,10 +52,27 @@ const AssetsPanel = (props: Props) => {
       chainId: string
     ) => () => {
       if (contractAddress === '') {
-        routeToAssetDetails(`brave://wallet${WalletRoutes.Portfolio}/${chainId}/${symbol}`)
+        routeToAssetDetails(
+          `brave://wallet${WalletRoutes.PortfolioAssets //
+          }/${chainId //
+          }/${symbol}`
+        )
         return
       }
-      routeToAssetDetails(`brave://wallet${WalletRoutes.Portfolio}/${chainId}/${contractAddress}/${tokenId}`)
+      if (tokenId !== '') {
+        routeToAssetDetails(
+          `brave://wallet${WalletRoutes.PortfolioNFTs //
+          }/${chainId //
+          }/${contractAddress //
+          }/${tokenId}`
+        )
+        return
+      }
+      routeToAssetDetails(
+        `brave://wallet${WalletRoutes.PortfolioAssets //
+        }/${chainId //
+        }/${contractAddress}`
+      )
     }, [routeToAssetDetails])
 
   return (
