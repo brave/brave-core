@@ -676,8 +676,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     private void showPlaylistButton(PlaylistItem[] items) {
         try {
-            // org.chromium.url.mojom.Url contentUrl = new org.chromium.url.mojom.Url();
-            // contentUrl.url = url;
             ViewGroup viewGroup =
                     BraveActivity.getBraveActivity().getWindow().getDecorView().findViewById(
                             android.R.id.content);
@@ -689,10 +687,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         if (playlistOptionsModel.getOptionType() == PlaylistOptions.ADD_MEDIA) {
                             int mediaCount = SharedPreferencesManager.getInstance().readInt(
                                     PlaylistPreferenceUtils.ADD_MEDIA_COUNT);
-                            if (mediaCount <= 2) {
-                                SharedPreferencesManager.getInstance().writeInt(
-                                        PlaylistPreferenceUtils.ADD_MEDIA_COUNT, mediaCount + 1);
-                            }
                             if (mediaCount == 2) {
                                 PlaylistWarningDialogListener playlistWarningDialogListener =
                                         new PlaylistWarningDialogListener() {
@@ -782,12 +776,21 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
         mPlaylistService.addMediaFiles(
                 items, ConstantUtils.DEFAULT_PLAYLIST, shouldCacheMediaFilesForPlaylist());
+        int mediaCount = SharedPreferencesManager.getInstance().readInt(
+                PlaylistPreferenceUtils.ADD_MEDIA_COUNT);
+        if (mediaCount < 3) {
+            SharedPreferencesManager.getInstance().writeInt(
+                    PlaylistPreferenceUtils.ADD_MEDIA_COUNT, mediaCount + 1);
+        }
     }
 
-    private void addMediaToPlaylist(org.chromium.url.mojom.Url contentUrl, ViewGroup viewGroup) {
+    private void addMediaToPlaylist() {
         if (mPlaylistService == null) {
             return;
         }
+        Tab currentTab = getToolbarDataProvider().getTab();
+        org.chromium.url.mojom.Url contentUrl = new org.chromium.url.mojom.Url();
+        contentUrl.url = currentTab.getUrl().getSpec();
         mPlaylistService.addMediaFilesFromPageToPlaylist(
                 ConstantUtils.DEFAULT_PLAYLIST, contentUrl, shouldCacheMediaFilesForPlaylist());
     }
