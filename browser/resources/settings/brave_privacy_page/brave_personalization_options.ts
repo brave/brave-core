@@ -3,13 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {SettingsToggleButtonElement} from '/shared/settings/controls/settings_toggle_button.js';
 import {WebUiListenerMixin, WebUiListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
+import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+
 import {BaseMixin} from '../base_mixin.js'
-import {BravePrivacyBrowserProxy, BravePrivacyBrowserProxyImpl} from './brave_privacy_page_browser_proxy.js'
 import {loadTimeData} from '../i18n_setup.js';
-import {SettingsToggleButtonElement} from '../controls/settings_toggle_button.js';
+
 import {getTemplate} from './brave_personalization_options.html.js'
+import {BravePrivacyBrowserProxy, BravePrivacyBrowserProxyImpl} from './brave_privacy_page_browser_proxy.js'
 
 const SettingsBravePersonalizationOptionsBase =
   WebUiListenerMixin(BaseMixin(PolymerElement)) as {
