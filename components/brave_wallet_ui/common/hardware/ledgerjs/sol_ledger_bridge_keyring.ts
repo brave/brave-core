@@ -139,7 +139,7 @@ export default class SolanaLedgerBridgeKeyring extends LedgerBridgeKeyring imple
 
   private readonly getPathForIndex = (index: number, scheme: SolDerivationPaths): string => {
     if (scheme === SolDerivationPaths.Bip44Root) {
-      return `44'/501`
+      return `44'/501'`
     }
     if (scheme === SolDerivationPaths.LedgerLive) {
       return `44'/501'/${index}'`
