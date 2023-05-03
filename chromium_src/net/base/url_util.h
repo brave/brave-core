@@ -1,6 +1,7 @@
-// Copyright 2013 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #ifndef BRAVE_CHROMIUM_SRC_NET_BASE_URL_UTIL_H_
 #define BRAVE_CHROMIUM_SRC_NET_BASE_URL_UTIL_H_
@@ -26,6 +27,10 @@ class NET_EXPORT EphemeralStorageOriginUtils {
   static const base::UnguessableToken& GetNonceForEphemeralStorageKeying(
       const url::Origin& origin);
 };
+
+NET_EXPORT bool IsOnion(const GURL& url);
+
+NET_EXPORT bool IsLocalhostOrOnion(const GURL& url);
 
 }  // namespace net
 
