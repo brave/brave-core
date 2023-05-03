@@ -47,7 +47,7 @@ extern const char kAnonTransferChecked[];
 extern const char kVersion[];
 extern const char kMinVisitTime[];
 extern const char kMinVisits[];
-extern const char kAllowNonVerified[];
+extern const char kAllowNonVerified[];        // DEPRECATED
 extern const char kAllowVideoContribution[];  // DEPRECATED
 extern const char kScoreA[];
 extern const char kScoreB[];

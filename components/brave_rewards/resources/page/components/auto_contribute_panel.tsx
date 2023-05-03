@@ -18,7 +18,6 @@ import {
 } from './settings_panel'
 
 import { ModalContribute } from '../../ui/components'
-import { ToggleButton } from '../../shared/components/toggle_button'
 import { NewTabLink } from '../../shared/components/new_tab_link'
 import { PublisherLink } from './publisher_link'
 import { TrashIcon } from './icons/trash_icon'
@@ -35,7 +34,6 @@ export function AutoContributePanel () {
   const data = useRewardsData((state) => ({
     contributionMinTime: state.contributionMinTime,
     contributionMinVisits: state.contributionMinVisits,
-    contributionNonVerified: state.contributionNonVerified,
     contributionMonthly: state.contributionMonthly,
     parameters: state.parameters,
     enabledContribute: state.enabledContribute,
@@ -85,10 +83,6 @@ export function AutoContributePanel () {
     return (event: React.FormEvent<HTMLSelectElement>) => {
       actions.onSettingSave(key, Number(event.currentTarget.value) || 0)
     }
-  }
-
-  const settingToggleHandler = (key: string) => {
-    return (enabled: boolean) => { actions.onSettingSave(key, enabled) }
   }
 
   function renderTable (maxRows?: number) {
@@ -197,12 +191,6 @@ export function AutoContributePanel () {
             <option value='5'>{getString('contributionVisit5')}</option>
             <option value='10'>{getString('contributionVisit10')}</option>
           </select>
-        </PanelItem>
-        <PanelItem label={getString('contributionShowNonVerified')}>
-          <ToggleButton
-            checked={data.contributionNonVerified}
-            onChange={settingToggleHandler('contributionNonVerified')}
-          />
         </PanelItem>
       </>
     )

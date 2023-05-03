@@ -46,7 +46,6 @@ using GetAutoContributePropertiesCallback =
     base::OnceCallback<void(mojom::AutoContributePropertiesPtr)>;
 using GetPublisherMinVisitTimeCallback = base::OnceCallback<void(int)>;
 using GetPublisherMinVisitsCallback = base::OnceCallback<void(int)>;
-using GetPublisherAllowNonVerifiedCallback = base::OnceCallback<void(bool)>;
 using GetAutoContributeEnabledCallback = base::OnceCallback<void(bool)>;
 using GetReconcileStampCallback = base::OnceCallback<void(uint64_t)>;
 using GetPendingContributionsTotalCallback = base::OnceCallback<void(double)>;
@@ -204,9 +203,6 @@ class RewardsService : public KeyedService {
   virtual void GetPublisherMinVisits(
       GetPublisherMinVisitsCallback callback) = 0;
   virtual void SetPublisherMinVisits(int visits) const = 0;
-  virtual void GetPublisherAllowNonVerified(
-      GetPublisherAllowNonVerifiedCallback callback) = 0;
-  virtual void SetPublisherAllowNonVerified(bool allow) const = 0;
   virtual void SetAutoContributionAmount(double amount) const = 0;
   virtual void GetAutoContributeEnabled(
       GetAutoContributeEnabledCallback callback) = 0;

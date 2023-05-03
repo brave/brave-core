@@ -216,8 +216,6 @@ OBJC_EXPORT
 - (void)setMinimumVisitDuration:(int)minimumVisitDuration;
 /// The minimum number of visits before a publisher is added
 - (void)setMinimumNumberOfVisits:(int)minimumNumberOfVisits;
-/// Whether or not to allow auto contributions to unverified publishers
-- (void)setAllowUnverifiedPublishers:(bool)allowUnverifiedPublishers;
 /// The auto-contribute amount
 - (void)setContributionAmount:(double)contributionAmount;
 /// Whether or not the user will automatically contribute

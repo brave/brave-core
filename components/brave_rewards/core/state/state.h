@@ -38,10 +38,6 @@ class State {
 
   int GetPublisherMinVisits();
 
-  void SetPublisherAllowNonVerified(const bool allow);
-
-  bool GetPublisherAllowNonVerified();
-
   void SetScoreValues(double a, double b);
 
   void GetScoreValues(double* a, double* b);

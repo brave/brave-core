@@ -575,11 +575,6 @@ void RewardsDOMHandler::InitPrefChangeRegistrar() {
       base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      brave_rewards::prefs::kAllowNonVerified,
-      base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
-                          base::Unretained(this)));
-
-  pref_change_registrar_.Add(
       brave_rewards::prefs::kInlineTipButtonsEnabled,
       base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
                           base::Unretained(this)));
@@ -774,7 +769,6 @@ void RewardsDOMHandler::OnGetAutoContributeProperties(
   values.Set("contributionMinTime",
              static_cast<int>(properties->contribution_min_time));
   values.Set("contributionMinVisits", properties->contribution_min_visits);
-  values.Set("contributionNonVerified", properties->contribution_non_verified);
 
   CallJavascriptFunction("brave_rewards.autoContributeProperties", values);
 }
@@ -896,7 +890,6 @@ void RewardsDOMHandler::OnAutoContributePropsReady(
   filter->excluded =
       brave_rewards::mojom::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED;
   filter->percent = 1;
-  filter->non_verified = properties->contribution_non_verified;
   filter->min_visits = properties->contribution_min_visits;
 
   rewards_service_->GetActivityInfoList(
@@ -992,10 +985,6 @@ void RewardsDOMHandler::SaveSetting(const base::Value::List& args) {
       }
 
       rewards_service_->SetPublisherMinVisits(int_value);
-    }
-
-    if (key == "contributionNonVerified") {
-      rewards_service_->SetPublisherAllowNonVerified(value == "true");
     }
 
     if (key == "enabledContribute") {

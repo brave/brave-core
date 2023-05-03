@@ -127,8 +127,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_NUMBER;
   (*s_brave_allowlist)[brave_rewards::prefs::kMinVisits] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
-  (*s_brave_allowlist)[brave_rewards::prefs::kAllowNonVerified] =
-      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[brave_rewards::prefs::kInlineTipButtonsEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[brave_rewards::prefs::kInlineTipRedditEnabled] =

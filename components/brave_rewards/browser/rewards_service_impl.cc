@@ -1570,23 +1570,6 @@ void RewardsServiceImpl::SetPublisherMinVisits(int visits) const {
   ledger_->SetPublisherMinVisits(visits);
 }
 
-void RewardsServiceImpl::GetPublisherAllowNonVerified(
-    GetPublisherAllowNonVerifiedCallback callback) {
-  if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback), false);
-  }
-
-  ledger_->GetPublisherAllowNonVerified(std::move(callback));
-}
-
-void RewardsServiceImpl::SetPublisherAllowNonVerified(bool allow) const {
-  if (!Connected()) {
-    return;
-  }
-
-  ledger_->SetPublisherAllowNonVerified(allow);
-}
-
 void RewardsServiceImpl::SetAutoContributionAmount(const double amount) const {
   if (!Connected()) {
     return;

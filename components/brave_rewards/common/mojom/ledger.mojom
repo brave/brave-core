@@ -136,7 +136,6 @@ struct AutoContributeProperties {
   double amount;
   uint64 contribution_min_time;
   int32 contribution_min_visits;
-  bool contribution_non_verified;
   uint64 reconcile_stamp;
 };
 

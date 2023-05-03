@@ -166,8 +166,6 @@ class RewardsServiceImpl : public RewardsService,
   void GetPublisherMinVisitTime(
       GetPublisherMinVisitTimeCallback callback) override;
   void GetPublisherMinVisits(GetPublisherMinVisitsCallback callback) override;
-  void GetPublisherAllowNonVerified(
-      GetPublisherAllowNonVerifiedCallback callback) override;
   void RestorePublishers() override;
   void GetBalanceReport(
       const uint32_t month,
@@ -422,7 +420,6 @@ class RewardsServiceImpl : public RewardsService,
   void LoadPublisherState(LoadPublisherStateCallback callback) override;
   void LoadURL(mojom::UrlRequestPtr request, LoadURLCallback callback) override;
   void SetPublisherMinVisits(int visits) const override;
-  void SetPublisherAllowNonVerified(bool allow) const override;
   void OnPanelPublisherInfo(mojom::Result result,
                             mojom::PublisherInfoPtr info,
                             uint64_t window_id) override;
