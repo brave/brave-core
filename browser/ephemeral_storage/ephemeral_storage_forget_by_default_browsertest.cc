@@ -27,10 +27,25 @@ class EphemeralStorageForgetByDefaultBrowserTest
     : public EphemeralStorageBrowserTest {
  public:
   EphemeralStorageForgetByDefaultBrowserTest() {
+    const testing::TestInfo* info =
+        testing::UnitTest::GetInstance()->current_test_info();
+    constexpr base::StringPiece kDefaultKeepAliveTimeoutTests[] = {
+        "PRE_DontForgetFirstPartyIfSubDomainIsOpened",
+        "DontForgetFirstPartyIfSubDomainIsOpened",
+        "PRE_ForgetFirstPartyAfterRestart",
+        "ForgetFirstPartyAfterRestart",
+    };
+
+    base::FieldTrialParams feature_params;
+    if (!base::Contains(kDefaultKeepAliveTimeoutTests, info->name())) {
+      feature_params.emplace(
+          "BraveForgetFirstPartyStorageKeepAliveTimeInSeconds", "2");
+    }
+
     scoped_feature_list_.InitAndEnableFeatureWithParameters(
-        net::features::kBraveForgetFirstPartyStorage,
-        {{"BraveForgetFirstPartyStorageKeepAliveTimeInSeconds", "2"}});
+        net::features::kBraveForgetFirstPartyStorage, feature_params);
   }
+
   ~EphemeralStorageForgetByDefaultBrowserTest() override = default;
 
   void SetAndCheckValuesInFrames(WebContents* web_contents,
@@ -387,8 +402,7 @@ class EphemeralStorageForgetByDefaultIsDefaultBrowserTest
   EphemeralStorageForgetByDefaultIsDefaultBrowserTest() {
     scoped_feature_list_.InitAndEnableFeatureWithParameters(
         net::features::kBraveForgetFirstPartyStorage,
-        {{"BraveForgetFirstPartyStorageKeepAliveTimeInSeconds", "2"},
-         {"BraveForgetFirstPartyStorageByDefault", "true"}});
+        {{"BraveForgetFirstPartyStorageByDefault", "true"}});
   }
   ~EphemeralStorageForgetByDefaultIsDefaultBrowserTest() override = default;
 
