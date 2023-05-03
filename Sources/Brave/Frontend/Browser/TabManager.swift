@@ -523,6 +523,7 @@ class TabManager: NSObject {
 
     if let request = request {
       tab.loadRequest(request)
+      tab.url = request.url
     } else if !isPopup {
       tab.loadRequest(PrivilegedRequest(url: TabManager.ntpInteralURL) as URLRequest)
       tab.url = TabManager.ntpInteralURL
@@ -901,7 +902,11 @@ class TabManager: NSObject {
     for savedTab in savedTabs {
       let tabURL = savedTab.url
       // Provide an empty request to prevent a new tab from loading the home screen
-      let tab = addTab(URLRequest(url: tabURL),
+      let request = InternalURL.isValid(url: tabURL) ?
+                      PrivilegedRequest(url: tabURL) as URLRequest :
+                      URLRequest(url: tabURL)
+        
+      let tab = addTab(request,
                        flushToDisk: false,
                        zombie: true,
                        id: savedTab.tabId,

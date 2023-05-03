@@ -147,7 +147,10 @@ extension SessionTab {
   
   public static func update(tabId: UUID, interactionState: Data, title: String, url: URL) {
     DataController.perform { context in
-      guard let sessionTab = Self.from(tabId: tabId, in: context) else { return }
+      guard let sessionTab = Self.from(tabId: tabId, in: context) else {
+        Logger.module.error("Error: SessionTab.update missing managed object")
+        return
+      }
       sessionTab.interactionState = interactionState
       sessionTab.title = title
       sessionTab.url = url
@@ -166,7 +169,7 @@ extension SessionTab {
     DataController.perform { context in
       for (index, tabId) in tabIds.enumerated() {
         guard let tab = Self.from(tabId: tabId, in: context) else {
-          Logger.module.error("Error: SessionTab missing managed object")
+          Logger.module.error("Error: SessionTab.updateScreenshot missing managed object")
           continue
         }
         tab.index = Int32(index)
@@ -176,12 +179,14 @@ extension SessionTab {
   
   public static func updateAll(tabs: [(tabId: UUID, interactionState: Data, title: String, url: URL)]) {
     DataController.performOnMainContext { context in
-      for (index, tab) in tabs.enumerated() {
-        guard let sessionTab = Self.from(tabId: tab.tabId, in: context) else { return }
+      for tab in tabs {
+        guard let sessionTab = Self.from(tabId: tab.tabId, in: context) else {
+          Logger.module.error("Error: SessionTab.updateAll missing managed object")
+          continue
+        }
         sessionTab.interactionState = tab.interactionState
         sessionTab.title = tab.title
         sessionTab.url = tab.url
-        sessionTab.index = Int32(index)
       }
       
       do {
