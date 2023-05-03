@@ -30,6 +30,9 @@ int GetCollectionTimerIntervalInSeconds();
 int GetMockTaskDurationInSeconds();
 bool MockCollectionRequests();
 
+// Ad Timing Local Data Collection
+bool IsAdTimingLocalDataCollectionEnabled();
+
 }  // namespace brave_federated::features
 
 #endif  // BRAVE_COMPONENTS_BRAVE_FEDERATED_FEATURES_H_
