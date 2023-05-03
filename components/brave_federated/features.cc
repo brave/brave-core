@@ -60,6 +60,11 @@ const char kFieldTrialParameterMockCollectionRequests[] =
     "mock_collection_requests";
 const bool kDefaultMockCollectionRequests = false;
 
+const char kFieldTrialParameterAdTimingLocalDataCollectionEnabled[] =
+    "ad_timing_local_data_collection_enabled";
+
+const bool kDefaultAdTimingLocalDataCollectionEnabled = false;
+
 }  // namespace
 
 BASE_FEATURE(kFederatedLearning,
@@ -138,6 +143,13 @@ bool MockCollectionRequests() {
   return GetFieldTrialParamByFeatureAsBool(
       kFederatedLearning, kFieldTrialParameterMockCollectionRequests,
       kDefaultMockCollectionRequests);
+}
+
+bool IsAdTimingLocalDataCollectionEnabled() {
+  return GetFieldTrialParamByFeatureAsBool(
+      kFederatedLearning,
+      kFieldTrialParameterAdTimingLocalDataCollectionEnabled,
+      kDefaultAdTimingLocalDataCollectionEnabled);
 }
 
 }  // namespace brave_federated::features
