@@ -29,13 +29,11 @@ PlaylistMediaFileDownloadManager::DownloadJob::~DownloadJob() = default;
 
 PlaylistMediaFileDownloadManager::PlaylistMediaFileDownloadManager(
     content::BrowserContext* context,
-    Delegate* delegate,
-    const base::FilePath& base_dir)
-    : base_dir_(base_dir), delegate_(delegate) {
+    Delegate* delegate)
+    : delegate_(delegate) {
   DCHECK(delegate_) << "We don't consider where |delegate| is null";
-  // TODO(pilgrim) dynamically set file extensions based on format.
-  media_file_downloader_ = std::make_unique<PlaylistMediaFileDownloader>(
-      this, context, kMediaFileName);
+  media_file_downloader_ =
+      std::make_unique<PlaylistMediaFileDownloader>(this, context);
 }
 
 PlaylistMediaFileDownloadManager::~PlaylistMediaFileDownloadManager() = default;
@@ -88,8 +86,9 @@ void PlaylistMediaFileDownloadManager::TryStartingDownloadTask() {
 
   if (!pause_download_for_testing_) {
     VLOG(2) << __func__ << ": " << current_job_->item->name;
-    media_file_downloader_->DownloadMediaFileForPlaylistItem(current_job_->item,
-                                                             base_dir_);
+    media_file_downloader_->DownloadMediaFileForPlaylistItem(
+        current_job_->item,
+        delegate_->GetMediaPathForPlaylistItemItem(current_job_->item->id));
   }
 }
 

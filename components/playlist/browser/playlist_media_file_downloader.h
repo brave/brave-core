@@ -68,8 +68,7 @@ class PlaylistMediaFileDownloader
   };
 
   PlaylistMediaFileDownloader(Delegate* delegate,
-                              content::BrowserContext* context,
-                              base::FilePath::StringType media_file_name);
+                              content::BrowserContext* context);
   ~PlaylistMediaFileDownloader() override;
 
   PlaylistMediaFileDownloader(const PlaylistMediaFileDownloader&) = delete;
@@ -118,10 +117,8 @@ class PlaylistMediaFileDownloader
                                      download::DownloadItem::Observer>
       download_item_observation_{this};
 
-  const base::FilePath::StringType media_file_name_;
-
   // All below variables are only for playlist creation.
-  base::FilePath playlist_dir_path_;
+  base::FilePath destination_path_;
   mojom::PlaylistItemPtr current_item_;
 
   // true when this class is working for playlist now.

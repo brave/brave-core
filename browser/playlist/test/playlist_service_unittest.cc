@@ -767,6 +767,26 @@ TEST_F(PlaylistServiceUnitTest, RemoveAndRestoreLocalData) {
   }));
 }
 
+TEST_F(PlaylistServiceUnitTest, MediaFileExtension) {
+  auto* service = playlist_service();
+  base::FilePath media_path;
+  EXPECT_TRUE(service->GetMediaPath("foo", &media_path));
+  // The default extension is mp4
+  EXPECT_EQ(media_path.Extension(), FILE_PATH_LITERAL(".mp4"));
+
+  // When an item has url with file extension, the destination file path should
+  // have the same extension.
+  const auto* id = "extension-with-param";
+  auto dummy_item = mojom::PlaylistItem::New();
+  dummy_item->id = id;
+  dummy_item->media_source = GURL("https://foo.bar.com/baz.m3u8?q=123&w=456");
+  service->UpdatePlaylistItemValue(
+      id, base::Value(ConvertPlaylistItemToValue(dummy_item)));
+
+  EXPECT_TRUE(service->GetMediaPath(id, &media_path));
+  EXPECT_EQ(media_path.Extension(), FILE_PATH_LITERAL(".m3u8"));
+}
+
 TEST_F(PlaylistServiceUnitTest, AddItemsToList) {
   auto* service = playlist_service();
 

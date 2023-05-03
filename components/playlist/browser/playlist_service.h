@@ -209,14 +209,12 @@ class PlaylistService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, ResetAll);
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest,
                            CleanUpOrphanedPlaylistItemDirs);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, MediaFileExtension);
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceWithFakeUAUnitTest,
                            ShouldAlwaysGetMediaFromBackgroundWebContents);
 
   void AddObserverForTest(PlaylistServiceObserver* observer);
   void RemoveObserverForTest(PlaylistServiceObserver* observer);
-
-  // KeyedService overrides:
-  void Shutdown() override;
 
   // Finds media files from |contents| or |url| and adds them to given
   // |playlist_id|.
@@ -228,17 +226,12 @@ class PlaylistService : public KeyedService,
                               bool cache,
                               std::vector<mojom::PlaylistItemPtr> items);
 
-  bool IsValidPlaylistItem(const std::string& id) override;
-
-  // PlaylistThumbnailDownloader::Delegate overrides:
-  // Called when thumbnail image file is downloaded.
-  void OnThumbnailDownloaded(const std::string& id,
-                             const base::FilePath& path) override;
-
   // Returns true when we should try getting media from a background web
   // contents that is different from the given |contents|.
   bool ShouldGetMediaFromBackgroundWebContents(
       content::WebContents* contents) const;
+
+  bool HasPlaylistItem(const std::string& id) const;
 
   void CreatePlaylistItem(const mojom::PlaylistItemPtr& item, bool cache);
   void DownloadThumbnail(const mojom::PlaylistItemPtr& item);
@@ -324,6 +317,19 @@ class PlaylistService : public KeyedService,
                                    DownloadMediaFileCallback callback,
                                    mojom::PlaylistItemPtr item,
                                    const std::string& media_file_path);
+
+  // KeyedService overrides:
+  void Shutdown() override;
+
+  // PlaylistMediaFileDownloadManager::Delegate
+  bool IsValidPlaylistItem(const std::string& id) override;
+  base::FilePath GetMediaPathForPlaylistItemItem(
+      const std::string& id) override;
+
+  // PlaylistThumbnailDownloader::Delegate overrides:
+  // Called when thumbnail image file is downloaded.
+  void OnThumbnailDownloaded(const std::string& id,
+                             const base::FilePath& path) override;
 
   std::unique_ptr<Delegate> delegate_;
 

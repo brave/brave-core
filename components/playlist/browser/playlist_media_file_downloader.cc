@@ -53,13 +53,11 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTagForURLLoad() {
 
 PlaylistMediaFileDownloader::PlaylistMediaFileDownloader(
     Delegate* delegate,
-    content::BrowserContext* context,
-    base::FilePath::StringType media_file_name)
+    content::BrowserContext* context)
     : delegate_(delegate),
       url_loader_factory_(
           context->content::BrowserContext::GetDefaultStoragePartition()
-              ->GetURLLoaderFactoryForBrowserProcess()),
-      media_file_name_(media_file_name) {}
+              ->GetURLLoaderFactoryForBrowserProcess()) {}
 
 PlaylistMediaFileDownloader::~PlaylistMediaFileDownloader() {
   ResetDownloadStatus();
@@ -132,7 +130,7 @@ void PlaylistMediaFileDownloader::DetachCachedFile(
 
 void PlaylistMediaFileDownloader::DownloadMediaFileForPlaylistItem(
     const mojom::PlaylistItemPtr& item,
-    const base::FilePath& base_dir) {
+    const base::FilePath& destination) {
   DCHECK(!in_progress_);
 
   ResetDownloadStatus();
@@ -164,7 +162,7 @@ void PlaylistMediaFileDownloader::DownloadMediaFileForPlaylistItem(
   DCHECK(download::GetIOTaskRunner()) << "This should be set by embedder";
 
   if (GURL media_url(current_item_->media_source); media_url.is_valid()) {
-    playlist_dir_path_ = base_dir.AppendASCII(current_item_->id);
+    destination_path_ = destination;
     DownloadMediaFile(media_url);
   } else {
     DVLOG(2) << __func__ << ": media file is empty";
@@ -208,7 +206,7 @@ void PlaylistMediaFileDownloader::OnDownloadUpdated(
 
   if (item->IsDone()) {
     ScheduleToDetachCachedFile(item);
-    OnMediaFileDownloaded(playlist_dir_path_.Append(media_file_name_));
+    OnMediaFileDownloaded(destination_path_);
     return;
   }
 }
@@ -222,10 +220,9 @@ void PlaylistMediaFileDownloader::OnDownloadRemoved(
 void PlaylistMediaFileDownloader::DownloadMediaFile(const GURL& url) {
   DVLOG(2) << __func__ << ": " << url.spec();
 
-  const base::FilePath file_path = playlist_dir_path_.Append(media_file_name_);
   auto params = std::make_unique<download::DownloadUrlParameters>(
       url, GetNetworkTrafficAnnotationTagForURLLoad());
-  params->set_file_path(file_path);
+  params->set_file_path(destination_path_);
   params->set_guid(current_item_->id);
   params->set_transient(true);
   params->set_require_safety_checks(false);
@@ -267,7 +264,7 @@ base::SequencedTaskRunner* PlaylistMediaFileDownloader::task_runner() {
 void PlaylistMediaFileDownloader::ResetDownloadStatus() {
   in_progress_ = false;
   current_item_.reset();
-  playlist_dir_path_.clear();
+  destination_path_.clear();
 }
 
 }  // namespace playlist
