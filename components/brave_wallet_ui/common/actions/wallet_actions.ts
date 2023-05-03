@@ -102,4 +102,6 @@ export const {
   setRemovedFungibleTokenIds,
   setRemovedNonFungibleTokenIds,
   setHidePortfolioNFTsTab
+  setRemovedNonFungibleTokenIds,
+  setRemovedNonFungibleTokens
 } = WalletActions

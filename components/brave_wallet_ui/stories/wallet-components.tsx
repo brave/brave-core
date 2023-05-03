@@ -18,12 +18,14 @@ import { LocalIpfsNodeScreen } from '../components/desktop/local-ipfs-node/local
 import { InspectNftsScreen } from '../components/desktop/inspect-nfts/inspect-nfts'
 import WalletPageStory from './wrappers/wallet-page-story-wrapper'
 import { mockErc721Token, mockNetwork, mockNftPinningStatus } from '../common/constants/mocks'
+import { mockNFTMetadata } from './mock-data/mock-nft-metadata'
 import { NftPinningStatus } from '../components/desktop/nft-pinning-status/nft-pinning-status'
 import { NftsEmptyState } from '../components/desktop/views/nfts/components/nfts-empty-state/nfts-empty-state'
 import { EnableNftDiscoveryModal } from '../components/desktop/popup-modals/enable-nft-discovery-modal/enable-nft-discovery-modal'
 import { NftScreen } from '../nft/components/nft-details/nft-screen'
 import { ContainerCard, LayoutCardWrapper } from '../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
-import { mockNFTMetadata } from './mock-data/mock-nft-metadata'
+import { NFTGridViewItem } from '../components/desktop/views/portfolio/components/nft-grid-view/nft-grid-view-item'
+import { TabOption, Tabs } from '../components/shared/tabs/tabs'
 import { AutoDiscoveryEmptyState } from '../components/desktop/views/nfts/components/auto-discovery-empty-state/auto-discovery-empty-state'
 
 export default {
@@ -262,4 +264,36 @@ export const _AutoDiscoveryEmptyState = () => {
 
 _AutoDiscoveryEmptyState.story = {
   title: 'NFT Auto Discovery Empty State'
+}
+
+export const _NFTGridViewItem = () => {
+  return (
+    <WalletPageStory>
+      <NFTGridViewItem
+        isHidden={false}
+        token={mockErc721Token}
+        onSelectAsset={() => {}}
+      />
+    </WalletPageStory>
+  )
+}
+
+export const _Tabs = () => {
+  const options: TabOption[] = [
+    {
+      id: 'nfts',
+      label: 'NFTs',
+      labelSummary: '10'
+    },
+    {
+      id: 'hidden',
+      label: 'Hidden'
+    }
+  ]
+  return (
+    <Tabs
+      options={options}
+      onSelect={(option) => console.log(option)}
+    />
+  )
 }

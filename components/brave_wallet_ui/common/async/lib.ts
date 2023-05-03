@@ -496,7 +496,11 @@ export function refreshVisibleTokenInfo (targetNetwork?: BraveWallet.NetworkInfo
     const userVisibleTokensInfo = visibleAssets
       .flat(1)
       .filter(token => !removedAssetIds.includes(getAssetIdKey(token)))
+    const removedNfts = visibleAssets
+      .flat(1)
+      .filter(token => removedAssetIds.includes(getAssetIdKey(token)))
     await dispatch(WalletActions.setVisibleTokensInfo(userVisibleTokensInfo))
+    await dispatch(WalletActions.setRemovedNonFungibleTokens(removedNfts))
     const nfts = userVisibleTokensInfo.filter((asset) => asset.isErc721 || asset.isNft)
     dispatch(WalletPageActions.getNftsPinningStatus(nfts))
   }

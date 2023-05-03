@@ -855,6 +855,11 @@ provideStrings({
   braveNftsTabEmptyStateHeading: 'No NFTs here yet.',
   braveNftsTabEmptyStateSubHeading: 'Ready to add some? Just click the button below to import.',
   braveNftsTabEmptyStateDisclaimer: 'Compatible with NFTs on Solana (SPL) and Ethereum (ERC-721).',
+  braveNftsTab: 'NFTs',
+  braveNftsTabHidden: 'Hidden',
+  braveNftsTabHide: 'Hide',
+  braveNftsTabUnhide: 'Unhide',
+  braveNftsTabEdit: 'Edit',
 
   // Add asset tabs
   braveWalletAddAssetTokenTabTitle: 'Token',

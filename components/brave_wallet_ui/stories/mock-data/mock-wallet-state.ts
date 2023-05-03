@@ -316,5 +316,7 @@ export const mockWalletState: WalletState = {
   hidePortfolioGraph: false,
   removedFungibleTokenIds: [],
   removedNonFungibleTokenIds: [],
+  removedNonFungibleTokens: []
+  removedNonFungibleTokenIds: [],
   hidePortfolioNFTsTab: false
 }
