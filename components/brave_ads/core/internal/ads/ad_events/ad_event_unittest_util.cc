@@ -105,7 +105,7 @@ void RecordAdEvent(const AdType& type,
 void RecordAdEvents(const AdType& type,
                     const ConfirmationType& confirmation_type,
                     const int count) {
-  DCHECK_GT(count, 0);
+  CHECK_GT(count, 0);
 
   const std::string& id = GetInstanceId();
   const std::string ad_type_as_string = type.ToString();

@@ -18,7 +18,7 @@ VerificationKey GetVerificationKey() {
   const UnblindedToken unblinded_token = GetUnblindedToken();
   const absl::optional<VerificationKey> verification_key =
       unblinded_token.DeriveVerificationKey();
-  DCHECK(verification_key);
+  CHECK(verification_key);
   return *verification_key;
 }
 

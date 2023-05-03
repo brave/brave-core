@@ -99,14 +99,14 @@ absl::optional<mojom::UrlResponseInfo> GetNextUrlResponseForRequest(
 
   std::string response_body = url_response->second;
   if (ShouldReadResponseBodyFromFile(response_body)) {
-    const std::string filename = ParseFilenameFromResponseBody(response_body);
-    const base::FilePath file_path = GetTestPath().AppendASCII(filename);
+    const base::FilePath file_path =
+        GetTestPath().AppendASCII(ParseFilenameFromResponseBody(response_body));
     if (!base::ReadFileToString(file_path, &response_body)) {
       NOTREACHED() << file_path << " not found";
       return absl::nullopt;
     }
 
-    ParseAndReplaceTags(&response_body);
+    ParseAndReplaceTags(response_body);
   }
 
   return mojom::UrlResponseInfo(url_request->url, url_response->first,

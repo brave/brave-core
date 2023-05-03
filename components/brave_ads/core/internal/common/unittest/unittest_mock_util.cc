@@ -135,7 +135,7 @@ void MockGetBrowsingHistory(AdsClientMock& mock,
       .WillByDefault(
           Invoke([history](const size_t max_count, const size_t /*days_ago*/,
                            GetBrowsingHistoryCallback callback) {
-            DCHECK_LE(history.size(), max_count);
+            CHECK_LE(history.size(), max_count);
 
             std::move(callback).Run(history);
           }));

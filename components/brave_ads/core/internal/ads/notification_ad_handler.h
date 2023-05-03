@@ -17,7 +17,6 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_delegate.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager_observer.h"
-#include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_processor.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
 namespace base {
@@ -88,8 +87,6 @@ class NotificationAdHandler final : public AccountObserver,
   NotificationAdEventHandler event_handler_;
 
   NotificationAdServing serving_;
-
-  const EpsilonGreedyBanditProcessor epsilon_greedy_bandit_processor_;
 };
 
 }  // namespace brave_ads

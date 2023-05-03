@@ -10,7 +10,7 @@
 
 namespace brave_ads {
 
-void ParseAndReplaceTags(std::string* out_text);
+void ParseAndReplaceTags(std::string& text);
 
 }  // namespace brave_ads
 

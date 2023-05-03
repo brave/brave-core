@@ -56,9 +56,9 @@ base::Value::List HistoryItemToDetailRowsValue(
 HistoryItemInfo HistoryItemFromValue(const base::Value::Dict& dict) {
   HistoryItemInfo history_item;
 
-  if (const auto* created_at = dict.FindString(kCreatedAtKey)) {
+  if (const auto* const value = dict.FindString(kCreatedAtKey)) {
     double created_at_as_double = 0.0;
-    if (base::StringToDouble(*created_at, &created_at_as_double)) {
+    if (base::StringToDouble(*value, &created_at_as_double)) {
       history_item.created_at = base::Time::FromDoubleT(created_at_as_double);
     }
   } else if (const auto created_at_value_double =

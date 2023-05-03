@@ -34,7 +34,7 @@ base::Value::Dict CategoryContentToValue(
 CategoryContentInfo CategoryContentFromValue(const base::Value::Dict& dict) {
   CategoryContentInfo category_content;
 
-  if (const std::string* value = dict.FindString(kCategoryKey)) {
+  if (const auto* value = dict.FindString(kCategoryKey)) {
     category_content.category = *value;
   }
 

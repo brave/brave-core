@@ -214,15 +214,14 @@ absl::optional<OptedInInfo> ConfirmationStateManager::GetOptedIn(
   OptedInInfo opted_in;
 
   // Token
-  if (const std::string* const value = dict.FindString("payment_token")) {
+  if (const auto* const value = dict.FindString("payment_token")) {
     opted_in.token = privacy::cbr::Token(*value);
   } else {
     return absl::nullopt;
   }
 
   // Blinded token
-  if (const std::string* const value =
-          dict.FindString("blinded_payment_token")) {
+  if (const auto* const value = dict.FindString("blinded_payment_token")) {
     opted_in.blinded_token = privacy::cbr::BlindedToken(*value);
   } else {
     return absl::nullopt;
@@ -231,7 +230,7 @@ absl::optional<OptedInInfo> ConfirmationStateManager::GetOptedIn(
   // Unblinded token
   if (const auto* const unblinded_token_dict = dict.FindDict("token_info")) {
     // Value
-    if (const std::string* const value =
+    if (const auto* const value =
             unblinded_token_dict->FindString("unblinded_token")) {
       opted_in.unblinded_token.value = privacy::cbr::UnblindedToken(*value);
     } else {
@@ -239,7 +238,7 @@ absl::optional<OptedInInfo> ConfirmationStateManager::GetOptedIn(
     }
 
     // Public key
-    if (const std::string* const value =
+    if (const auto* const value =
             unblinded_token_dict->FindString("public_key")) {
       opted_in.unblinded_token.public_key = privacy::cbr::PublicKey(*value);
     } else {
@@ -247,7 +246,7 @@ absl::optional<OptedInInfo> ConfirmationStateManager::GetOptedIn(
     }
 
     // Signature
-    if (const std::string* const value =
+    if (const auto* const value =
             unblinded_token_dict->FindString("signature")) {
       opted_in.unblinded_token.signature = *value;
     } else {
@@ -276,7 +275,7 @@ absl::optional<OptedInInfo> ConfirmationStateManager::GetOptedIn(
   }
 
   // Credential
-  if (const std::string* const value = dict.FindString("credential")) {
+  if (const auto* const value = dict.FindString("credential")) {
     opted_in.credential_base64url = *value;
   } else {
     return absl::nullopt;
@@ -309,8 +308,7 @@ bool ConfirmationStateManager::GetFailedConfirmationsFromDictionary(
     ConfirmationInfo confirmation;
 
     // Transaction id
-    if (const std::string* const value =
-            item_dict->FindString("transaction_id")) {
+    if (const auto* const value = item_dict->FindString("transaction_id")) {
       confirmation.transaction_id = *value;
     } else {
       // Migrate legacy confirmations
@@ -319,7 +317,7 @@ bool ConfirmationStateManager::GetFailedConfirmationsFromDictionary(
     }
 
     // Creative instance id
-    if (const std::string* const value =
+    if (const auto* const value =
             item_dict->FindString("creative_instance_id")) {
       confirmation.creative_instance_id = *value;
     } else {
@@ -328,7 +326,7 @@ bool ConfirmationStateManager::GetFailedConfirmationsFromDictionary(
     }
 
     // Type
-    if (const std::string* const value = item_dict->FindString("type")) {
+    if (const auto* const value = item_dict->FindString("type")) {
       confirmation.type = ConfirmationType(*value);
     } else {
       BLOG(0, "Missing confirmation type");
@@ -336,7 +334,7 @@ bool ConfirmationStateManager::GetFailedConfirmationsFromDictionary(
     }
 
     // Ad type
-    if (const std::string* const value = item_dict->FindString("ad_type")) {
+    if (const auto* const value = item_dict->FindString("ad_type")) {
       confirmation.ad_type = AdType(*value);
     } else {
       // Migrate legacy confirmations, this value is not used right now so safe
@@ -345,7 +343,7 @@ bool ConfirmationStateManager::GetFailedConfirmationsFromDictionary(
     }
 
     // Created at
-    if (const std::string* const value =
+    if (const auto* const value =
             item_dict->FindString("timestamp_in_seconds")) {
       double timestamp_as_double;
       if (!base::StringToDouble(*value, &timestamp_as_double)) {

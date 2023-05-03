@@ -49,7 +49,7 @@ absl::optional<std::string> ReadFileFromTestPathAndParseTagsToString(
     return absl::nullopt;
   }
 
-  ParseAndReplaceTags(&(*content));
+  ParseAndReplaceTags(*content);
 
   return *content;
 }

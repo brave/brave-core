@@ -62,8 +62,7 @@ UnblindedTokenList UnblindedTokensFromValue(const base::Value::List& list) {
     UnblindedTokenInfo unblinded_token;
 
     // Unblinded token
-    if (const std::string* const value =
-            item_dict->FindString(kUnblindedTokenKey)) {
+    if (const auto* const value = item_dict->FindString(kUnblindedTokenKey)) {
       unblinded_token.value = cbr::UnblindedToken(*value);
       if (!unblinded_token.value.has_value()) {
         BLOG(0, "Invalid unblinded token");
@@ -75,7 +74,7 @@ UnblindedTokenList UnblindedTokensFromValue(const base::Value::List& list) {
     }
 
     // Public key
-    if (const std::string* const value = item_dict->FindString(kPublicKey)) {
+    if (const auto* const value = item_dict->FindString(kPublicKey)) {
       unblinded_token.public_key = cbr::PublicKey(*value);
       if (!unblinded_token.public_key.has_value()) {
         BLOG(0, "Invalid unblinded token public key");
@@ -87,7 +86,7 @@ UnblindedTokenList UnblindedTokensFromValue(const base::Value::List& list) {
     }
 
     // Signature
-    if (const std::string* const value = item_dict->FindString(kSignature)) {
+    if (const auto* const value = item_dict->FindString(kSignature)) {
       unblinded_token.signature = *value;
     } else {
       BLOG(0, "Missing unblinded token signature");
