@@ -495,19 +495,44 @@ pub unsafe extern "C" fn engine_hidden_class_id_selectors(
         .into_raw()
 }
 
+/// Converts a list in adblock syntax to its corresponding iOS content-blocking
+/// syntax. `truncated` will be set to indicate whether or not some rules had to
+/// be removed to avoid iOS's maximum rule count limit.
 #[cfg(feature = "ios")]
 #[no_mangle]
-pub unsafe extern "C" fn convert_rules_to_content_blocking(rules: *const c_char) -> *mut c_char {
+pub unsafe extern "C" fn convert_rules_to_content_blocking(
+    rules: *const c_char,
+    truncated: *mut bool,
+) -> *mut c_char {
     use adblock::lists::{ParseOptions, RuleTypes};
+
+    /// This value corresponds to `maxRuleCount` here:
+    /// https://github.com/WebKit/WebKit/blob/4a2df13be2253f64d8da58b794d74347a3742652/Source/WebCore/contentextensions/ContentExtensionParser.cpp#L299
+    const MAX_CB_LIST_SIZE: usize = 150000;
+
     let rules = CStr::from_ptr(rules).to_str().unwrap_or_else(|_| {
         eprintln!("Failed to parse filter list with invalid UTF-8 content");
         ""
     });
     let mut filter_set = adblock::lists::FilterSet::new(true);
-    filter_set.add_filter_list(&rules, ParseOptions { rule_types: RuleTypes::NetworkOnly, ..Default::default() });
-    // `unwrap` is safe here because `into_content_blocking` only panics if the `FilterSet` was not
-    // created in debug mode
-    let (cb_rules, _) = filter_set.into_content_blocking().unwrap();
+    filter_set.add_filter_list(
+        &rules,
+        ParseOptions { rule_types: RuleTypes::NetworkOnly, ..Default::default() },
+    );
+    // `unwrap` is safe here because `into_content_blocking` only panics if the
+    // `FilterSet` was not created in debug mode
+    let (mut cb_rules, _) = filter_set.into_content_blocking().unwrap();
+    let rules_len = cb_rules.len();
+    if rules_len > MAX_CB_LIST_SIZE {
+        // Note that the last rule is always the first-party document exception rule,
+        // which we want to keep. Otherwise, we can arbitrarily truncate rules
+        // before that to ensure that the list can actually compile.
+        cb_rules.swap(rules_len - 1, MAX_CB_LIST_SIZE - 1);
+        cb_rules.truncate(MAX_CB_LIST_SIZE);
+        *truncated = true;
+    } else {
+        *truncated = false;
+    }
     CString::new(serde_json::to_string(&cb_rules).unwrap_or_else(|_| "".into()))
         .expect("Error: CString::new()")
         .into_raw()

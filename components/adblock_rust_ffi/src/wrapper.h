@@ -44,7 +44,7 @@ bool ADBLOCK_EXPORT SetDomainResolver(DomainResolverCallback resolver);
 
 #if BUILDFLAG(IS_IOS)
 const std::string ADBLOCK_EXPORT
-ConvertRulesToContentBlockingRules(const std::string& rules);
+ConvertRulesToContentBlockingRules(const std::string& rules, bool* truncated);
 #endif
 
 typedef ADBLOCK_EXPORT struct FilterListMetadata {

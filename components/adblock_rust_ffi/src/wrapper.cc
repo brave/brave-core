@@ -17,9 +17,10 @@ bool SetDomainResolver(DomainResolverCallback resolver) {
 }
 
 #if BUILDFLAG(IS_IOS)
-const std::string ConvertRulesToContentBlockingRules(const std::string& rules) {
+const std::string ConvertRulesToContentBlockingRules(const std::string& rules,
+                                                     bool* truncated) {
   char* content_blocking_json =
-      convert_rules_to_content_blocking(rules.c_str());
+      convert_rules_to_content_blocking(rules.c_str(), truncated);
   const std::string result = std::string(content_blocking_json);
   c_char_buffer_destroy(content_blocking_json);
   return result;
