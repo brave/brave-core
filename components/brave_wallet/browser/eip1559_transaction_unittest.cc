@@ -141,7 +141,7 @@ TEST(Eip1559TransactionUnitTest, GetSignedTransactionAndHash) {
 
     int recid;
     const std::vector<uint8_t> signature =
-        key.Sign(tx.GetMessageToSign(), &recid);
+        key.SignCompact(tx.GetMessageToSign(), &recid);
     tx.ProcessSignature(signature, recid);
     EXPECT_EQ(tx.GetSignedTransaction(), entry.signed_tx);
     EXPECT_EQ(tx.GetTransactionHash(), entry.hash);

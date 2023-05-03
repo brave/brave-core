@@ -74,8 +74,10 @@ std::unique_ptr<KeyedService> TxServiceFactory::BuildServiceInstanceFor(
       JsonRpcServiceFactory::GetServiceForState(browser_state);
   auto* keyring_service =
       KeyringServiceFactory::GetServiceForState(browser_state);
-  std::unique_ptr<TxService> tx_service(new TxService(
-      json_rpc_service, keyring_service, browser_state->GetPrefs()));
+  // TODO(apaymyshev): support bitcoin for ios.
+  std::unique_ptr<TxService> tx_service(
+      new TxService(json_rpc_service, /*bitcoin_wallet_service=*/nullptr,
+                    keyring_service, browser_state->GetPrefs()));
   return tx_service;
 }
 

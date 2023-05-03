@@ -231,6 +231,7 @@ export interface WalletState {
   hasInitialized: boolean
   isFilecoinEnabled: boolean
   isSolanaEnabled: boolean
+  isBitcoinEnabled: boolean
   isWalletCreated: boolean
   isWalletLocked: boolean
   favoriteApps: BraveWallet.AppItem[]
@@ -345,6 +346,7 @@ export interface WalletInfoBase {
   accountInfos: BraveWallet.AccountInfo[]
   isFilecoinEnabled: boolean
   isSolanaEnabled: boolean
+  isBitcoinEnabled: boolean
   isNftPinningFeatureEnabled: boolean
   isPanelV2FeatureEnabled: boolean
 }
@@ -805,6 +807,9 @@ export enum WalletRoutes {
   // send
   Send = '/send',
 
+  // dev bitcoin screen
+  DevBitcoin = '/dev-bitcoin',
+
   // NFT Pining
   LocalIpfsNode = '/crypto/local-ipfs-node',
   InspectNfts = '/crypto/inspect-nfts'
@@ -999,6 +1004,7 @@ export type NavIDTypes =
   | 'deposit'
   | 'activity'
   | 'portfolio'
+  | 'bitcoinSandbox'
   | 'nfts'
   | 'market'
   | 'accounts'
@@ -1046,3 +1052,13 @@ export type DAppPermissionDurationOption = {
 export type DAppConnectedPermissionsOption = {
   name: string
 }
+
+const BitcoinKeyringTypes = [
+  BraveWallet.BITCOIN_KEYRING84_ID, BraveWallet.BITCOIN_KEYRING84_TEST_ID
+] as const
+export type BitcoinKeyring = typeof BitcoinKeyringTypes[number]
+
+const BitcoinNetworkTypes = [
+    BraveWallet.BITCOIN_MAINNET, BraveWallet.BITCOIN_TESTNET
+] as const
+export type BitcoinNetwork = typeof BitcoinNetworkTypes[number]

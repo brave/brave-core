@@ -54,7 +54,8 @@ import {
 } from '../constants/action_types'
 import {
   AddAccountPayloadType,
-  AddFilecoinAccountPayloadType
+  AddFilecoinAccountPayloadType,
+  AddBitcoinAccountPayloadType
 } from '../../page/constants/action_types'
 import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
 
@@ -78,6 +79,7 @@ const defaultState: WalletState = {
   hasInitialized: false,
   isFilecoinEnabled: false,
   isSolanaEnabled: false,
+  isBitcoinEnabled: false,
   isWalletCreated: false,
   isWalletLocked: true,
   favoriteApps: [],
@@ -260,6 +262,8 @@ export const WalletAsyncActions = {
   // alias for keyringService.addFilecoinAccount
   addFilecoinAccount:
     createAction<AddFilecoinAccountPayloadType>('addFilecoinAccount'),
+  addBitcoinAccount:
+    createAction<AddBitcoinAccountPayloadType>('addBitcoinAccount'),
   getOnRampCurrencies: createAction('getOnRampCurrencies'),
   autoLockMinutesChanged: createAction('autoLockMinutesChanged'), // No reducer or API logic for this (UNUSED)
   updateTokenPinStatus: createAction<BraveWallet.BlockchainToken>('updateTokenPinStatus')
@@ -319,6 +323,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.isWalletCreated = payload.isWalletCreated
         state.isFilecoinEnabled = payload.isFilecoinEnabled
         state.isSolanaEnabled = payload.isSolanaEnabled
+        state.isBitcoinEnabled = payload.isBitcoinEnabled
         state.isWalletLocked = payload.isWalletLocked
         state.favoriteApps = payload.favoriteApps
         state.accounts = accounts

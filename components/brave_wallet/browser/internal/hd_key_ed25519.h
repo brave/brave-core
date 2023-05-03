@@ -38,8 +38,7 @@ class HDKeyEd25519 : public HDKeyBase {
   // If path contains normal index, nullptr will be returned
   std::unique_ptr<HDKeyBase> DeriveChildFromPath(
       const std::string& path) override;
-  std::vector<uint8_t> Sign(const std::vector<uint8_t>& msg,
-                            int* recid = nullptr) override;
+  std::vector<uint8_t> Sign(const std::vector<uint8_t>& msg);
   bool Verify(const std::vector<uint8_t>& msg,
               const std::vector<uint8_t>& sig) override;
 

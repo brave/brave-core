@@ -73,7 +73,7 @@ class SolanaTxManagerUnitTest : public testing::Test {
         std::make_unique<JsonRpcService>(shared_url_loader_factory_, &prefs_);
     keyring_service_ = std::make_unique<KeyringService>(json_rpc_service_.get(),
                                                         &prefs_, &local_state_);
-    tx_service_ = std::make_unique<TxService>(json_rpc_service_.get(),
+    tx_service_ = std::make_unique<TxService>(json_rpc_service_.get(), nullptr,
                                               keyring_service_.get(), &prefs_);
     CreateWallet();
     AddAccount();

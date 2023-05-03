@@ -530,6 +530,21 @@ class KeyringServiceUnitTest : public testing::Test {
     return success;
   }
 
+  static bool AddBitcoinAccount(KeyringService* service,
+                                const std::string& account_name,
+                                const std::string& network_id,
+                                const std::string& keyring_id) {
+    bool success = false;
+    base::RunLoop run_loop;
+    service->AddBitcoinAccount(account_name, network_id, keyring_id,
+                               base::BindLambdaForTesting([&](bool v) {
+                                 success = v;
+                                 run_loop.Quit();
+                               }));
+    run_loop.Run();
+    return success;
+  }
+
   static void UpdateNameForHardwareAccount(KeyringService* service,
                                            const std::string& address,
                                            const std::string& account_name,
@@ -3833,33 +3848,23 @@ TEST_F(KeyringServiceUnitTest, SignMessage) {
 
   // solana keyring doesn't exist yet
   EXPECT_TRUE(service
-                  .SignMessage(mojom::kSolanaKeyringId,
-                               "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
-                               message)
+                  .SignMessageBySolanaKeyring(
+                      "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8", message)
                   .empty());
 
   // create solana keyring
   ASSERT_TRUE(AddAccount(&service, "Account 1", mojom::CoinType::SOL));
   ASSERT_TRUE(service.IsKeyringCreated(brave_wallet::mojom::kSolanaKeyringId));
 
-  // not suppprt default keyring
-  EXPECT_TRUE(service
-                  .SignMessage(mojom::kDefaultKeyringId,
-                               "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db",
-                               message)
-                  .empty());
-
   // invalid address for Solana keyring
   EXPECT_TRUE(service
-                  .SignMessage(mojom::kSolanaKeyringId,
-                               "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db",
-                               message)
+                  .SignMessageBySolanaKeyring(
+                      "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db", message)
                   .empty());
 
   EXPECT_FALSE(service
-                   .SignMessage(mojom::kSolanaKeyringId,
-                                "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
-                                message)
+                   .SignMessageBySolanaKeyring(
+                       "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8", message)
                    .empty());
 }
 
@@ -4474,24 +4479,18 @@ TEST_F(KeyringServiceUnitTest, BitcoinReceiveChangeAddresses) {
       "brave", false));
 
   EXPECT_THAT(
-      service.GetKeyringInfoSync(mojom::kBitcoinKeyringId)->account_infos,
+      service.GetKeyringInfoSync(mojom::kBitcoinKeyring84Id)->account_infos,
       testing::IsEmpty());
 
-  EXPECT_EQ(service.GetBitcoinReceivingAddress(mojom::kBitcoinKeyringId, 0, 0),
-            absl::nullopt);
-  EXPECT_EQ(service.GetBitcoinChangeAddress(mojom::kBitcoinKeyringId, 0, 0),
-            absl::nullopt);
-  EXPECT_EQ(service.GetBitcoinReceivingAddress(mojom::kBitcoinKeyringId, 1, 0),
-            absl::nullopt);
-  EXPECT_EQ(service.GetBitcoinChangeAddress(mojom::kBitcoinKeyringId, 1, 0),
-            absl::nullopt);
+  EXPECT_FALSE(service.GetBitcoinAddresses(mojom::kBitcoinKeyring84Id, 0));
 
-  AddAccount(&service, "Btc Acc", mojom::CoinType::BTC);
+  AddBitcoinAccount(&service, "Btc Acc", mojom::kBitcoinMainnet,
+                    mojom::kBitcoinKeyring84Id);
 
   EXPECT_THAT(
-      service.GetKeyringInfoSync(mojom::kBitcoinKeyringId)->account_infos,
+      service.GetKeyringInfoSync(mojom::kBitcoinKeyring84Id)->account_infos,
       testing::SizeIs(1u));
-  auto btc_acc = service.GetKeyringInfoSync(mojom::kBitcoinKeyringId)
+  auto btc_acc = service.GetKeyringInfoSync(mojom::kBitcoinKeyring84Id)
                      ->account_infos[0]
                      ->Clone();
   EXPECT_EQ(btc_acc->address, "bc1ql5f64jdzjsvgehlpxvdgm9ygp0xta7xpnueh03");
@@ -4499,16 +4498,23 @@ TEST_F(KeyringServiceUnitTest, BitcoinReceiveChangeAddresses) {
   EXPECT_FALSE(btc_acc->is_imported);
   EXPECT_FALSE(btc_acc->hardware);
   EXPECT_EQ(btc_acc->coin, mojom::CoinType::BTC);
-  EXPECT_EQ(btc_acc->keyring_id, mojom::kBitcoinKeyringId);
+  EXPECT_EQ(btc_acc->keyring_id, mojom::kBitcoinKeyring84Id);
 
-  EXPECT_EQ(service.GetBitcoinReceivingAddress(mojom::kBitcoinKeyringId, 0, 0),
-            "bc1qcr8te4kr609gcawutmrza0j4xv80jy8z306fyu");
-  EXPECT_EQ(service.GetBitcoinChangeAddress(mojom::kBitcoinKeyringId, 0, 0),
-            "bc1q8c6fshw2dlwun7ekn9qwf37cu2rn755upcp6el");
-  EXPECT_EQ(service.GetBitcoinReceivingAddress(mojom::kBitcoinKeyringId, 1, 0),
-            absl::nullopt);
-  EXPECT_EQ(service.GetBitcoinChangeAddress(mojom::kBitcoinKeyringId, 1, 0),
-            absl::nullopt);
+  EXPECT_EQ(
+      service.GetBitcoinAddresses(mojom::kBitcoinKeyring84Id, 0)->at(0).first,
+      "bc1qcr8te4kr609gcawutmrza0j4xv80jy8z306fyu");
+  EXPECT_EQ(
+      service.GetBitcoinAddresses(mojom::kBitcoinKeyring84Id, 0)->at(0).second,
+      mojom::BitcoinKeyId::New(0, 0, 0));
+
+  EXPECT_EQ(
+      service.GetBitcoinAddresses(mojom::kBitcoinKeyring84Id, 0)->at(30).first,
+      "bc1q8c6fshw2dlwun7ekn9qwf37cu2rn755upcp6el");
+  EXPECT_EQ(
+      service.GetBitcoinAddresses(mojom::kBitcoinKeyring84Id, 0)->at(30).second,
+      mojom::BitcoinKeyId::New(0, 1, 0));
+
+  EXPECT_FALSE(service.GetBitcoinAddresses(mojom::kBitcoinKeyring84Id, 1));
 }
 
 }  // namespace brave_wallet

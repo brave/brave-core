@@ -15,6 +15,7 @@ import { walletApi } from './slices/api.slice'
 export class WalletApiProxy {
   walletHandler = new BraveWallet.WalletHandlerRemote()
   jsonRpcService = new BraveWallet.JsonRpcServiceRemote()
+  bitcoinWalletService = new BraveWallet.BitcoinWalletServiceRemote()
   swapService = new BraveWallet.SwapServiceRemote()
   assetRatioService = new BraveWallet.AssetRatioServiceRemote()
 

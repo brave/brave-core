@@ -10,7 +10,6 @@
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
-#include "brave/components/brave_wallet/common/hex_utils.h"
 
 namespace brave_wallet {
 
@@ -34,8 +33,9 @@ bool EthereumKeyring::RecoverAddress(const std::vector<uint8_t>& message,
                                      std::string* address) {
   CHECK(address);
   // A compact ECDSA signature (recovery id byte + 64 bytes).
-  if (signature.size() != 65)
+  if (signature.size() != kCompactSignatureSize + 1) {
     return false;
+  }
 
   std::vector<uint8_t> signature_only = signature;
   uint8_t v = signature_only.back();
@@ -56,7 +56,7 @@ bool EthereumKeyring::RecoverAddress(const std::vector<uint8_t>& message,
   // y is even and 0x03 if y is odd.
   HDKey key;
   std::vector<uint8_t> public_key =
-      key.Recover(false, hash, signature_only, recid);
+      key.RecoverCompact(false, hash, signature_only, recid);
   if (public_key.size() != 65) {
     VLOG(1) << "public key should be 65 bytes";
     return false;
@@ -79,23 +79,25 @@ std::vector<uint8_t> EthereumKeyring::SignMessage(
     const std::vector<uint8_t>& message,
     uint256_t chain_id,
     bool is_eip712) {
-  HDKeyBase* hd_key = GetHDKeyFromAddress(address);
-  if (!hd_key)
+  HDKey* hd_key = static_cast<HDKey*>(GetHDKeyFromAddress(address));
+  if (!hd_key) {
     return std::vector<uint8_t>();
+  }
 
   std::vector<uint8_t> hash;
   if (!is_eip712) {
     hash = GetMessageHash(message);
   } else {
     // eip712 hash is Keccak
-    if (message.size() != 32)
+    if (message.size() != 32) {
       return std::vector<uint8_t>();
+    }
 
     hash = message;
   }
 
   int recid;
-  std::vector<uint8_t> signature = hd_key->Sign(hash, &recid);
+  std::vector<uint8_t> signature = hd_key->SignCompact(hash, &recid);
   uint8_t v =
       static_cast<uint8_t>(chain_id ? recid + chain_id * 2 + 35 : recid + 27);
   signature.push_back(v);
@@ -106,19 +108,21 @@ std::vector<uint8_t> EthereumKeyring::SignMessage(
 void EthereumKeyring::SignTransaction(const std::string& address,
                                       EthTransaction* tx,
                                       uint256_t chain_id) {
-  HDKeyBase* hd_key = GetHDKeyFromAddress(address);
-  if (!hd_key || !tx)
+  HDKey* hd_key = static_cast<HDKey*>(GetHDKeyFromAddress(address));
+  if (!hd_key || !tx) {
     return;
+  }
 
   const std::vector<uint8_t> message = tx->GetMessageToSign(chain_id);
   int recid;
-  const std::vector<uint8_t> signature = hd_key->Sign(message, &recid);
+  const std::vector<uint8_t> signature = hd_key->SignCompact(message, &recid);
   tx->ProcessSignature(signature, recid, chain_id);
 }
 
 std::string EthereumKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {
-  if (!hd_key_base)
+  if (!hd_key_base) {
     return std::string();
+  }
   HDKey* hd_key = static_cast<HDKey*>(hd_key_base);
   const std::vector<uint8_t> public_key = hd_key->GetUncompressedPublicKey();
   // trim the header byte 0x04
@@ -134,12 +138,14 @@ bool EthereumKeyring::GetPublicKeyFromX25519_XSalsa20_Poly1305(
     const std::string& address,
     std::string* key) {
   HDKey* hd_key = static_cast<HDKey*>(GetHDKeyFromAddress(address));
-  if (!hd_key)
+  if (!hd_key) {
     return false;
+  }
   const std::vector<uint8_t> public_key =
       hd_key->GetPublicKeyFromX25519_XSalsa20_Poly1305();
-  if (public_key.empty())
+  if (public_key.empty()) {
     return false;
+  }
   *key = base::Base64Encode(public_key);
   return true;
 }
@@ -152,8 +158,9 @@ EthereumKeyring::DecryptCipherFromX25519_XSalsa20_Poly1305(
     const std::vector<uint8_t>& ciphertext,
     const std::string& address) {
   HDKey* hd_key = static_cast<HDKey*>(GetHDKeyFromAddress(address));
-  if (!hd_key)
+  if (!hd_key) {
     return absl::nullopt;
+  }
   return hd_key->DecryptCipherFromX25519_XSalsa20_Poly1305(
       version, nonce, ephemeral_public_key, ciphertext);
 }

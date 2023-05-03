@@ -6,10 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_HASH_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_HASH_UTILS_H_
 
+#include <array>
 #include <string>
 #include <vector>
 
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
+#include "crypto/sha2.h"
 
 namespace brave_wallet {
 
@@ -27,6 +29,13 @@ eth_abi::Bytes4 GetFunctionHashBytes4(const std::string& input);
 // Used for converting domain names in the classic format (ex: brave.crypto) to
 // an ERC-721 token for ENS and Unstoppable Domains.
 eth_abi::Bytes32 Namehash(const std::string& name);
+
+// sha256(sha256(input))
+std::array<uint8_t, crypto::kSHA256Length> DoubleSHA256Hash(
+    base::span<const uint8_t> input);
+
+// ripemd160(sha256(input))
+std::vector<uint8_t> Hash160(base::span<const uint8_t> input);
 
 }  // namespace brave_wallet
 

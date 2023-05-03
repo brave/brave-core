@@ -12,8 +12,6 @@
 #include <vector>
 
 #include "base/containers/flat_set.h"
-#include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/gtest_util.h"
@@ -22,8 +20,6 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
@@ -500,8 +496,9 @@ TEST(BraveWalletUtilsUnitTest, GetAllCustomChainsTest) {
 
     mojom::NetworkInfo chain2 = GetTestNetworkInfo2();
     chain2.coin = coin;
-    if (coin != mojom::CoinType::ETH)
+    if (coin != mojom::CoinType::ETH) {
       chain2.is_eip1559 = false;
+    }
     values.push_back(NetworkInfoToValue(chain2));
     UpdateCustomNetworks(&prefs, std::move(values), coin);
 
@@ -664,8 +661,9 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkURLTest) {
   for (const auto& chain : GetAllKnownChains(&prefs, mojom::CoinType::ETH)) {
     // Brave proxies should have infura key added to path.
     GURL rpc_url(chain->rpc_endpoints.front());
-    if (base::EndsWith(rpc_url.host(), "brave.com"))
+    if (base::EndsWith(rpc_url.host(), "brave.com")) {
       rpc_url = AddInfuraProjectId(rpc_url);
+    }
 
     EXPECT_EQ(rpc_url,
               GetNetworkURL(&prefs, chain->chain_id, mojom::CoinType::ETH));
@@ -987,8 +985,9 @@ TEST(BraveWalletUtilsUnitTest, CustomNetworkMatchesKnownNetwork) {
 
   auto get_polygon_from_all = [&] {
     for (const auto& chain : GetAllChains(&prefs, mojom::CoinType::ETH)) {
-      if (chain->chain_id == mojom::kPolygonMainnetChainId)
+      if (chain->chain_id == mojom::kPolygonMainnetChainId) {
         return chain.Clone();
+      }
     }
     return mojom::NetworkInfoPtr();
   };
@@ -1254,6 +1253,57 @@ TEST(BraveWalletUtilsUnitTest, MakeOriginInfo) {
   EXPECT_NE(url::Origin(), empty_origin_info->origin);
   EXPECT_EQ("null", empty_origin_info->origin_spec);
   EXPECT_EQ("", empty_origin_info->e_tld_plus_one);
+}
+
+TEST(BraveWalletUtilsUnitTest, IsFilecoinKeyringId) {
+  EXPECT_TRUE(IsFilecoinKeyringId(mojom::kFilecoinKeyringId));
+  EXPECT_TRUE(IsFilecoinKeyringId(mojom::kFilecoinTestnetKeyringId));
+
+  EXPECT_FALSE(IsFilecoinKeyringId(mojom::kDefaultKeyringId));
+  EXPECT_FALSE(IsFilecoinKeyringId(mojom::kSolanaKeyringId));
+  EXPECT_FALSE(IsFilecoinKeyringId(mojom::kBitcoinKeyring84Id));
+  EXPECT_FALSE(IsFilecoinKeyringId(""));
+  EXPECT_FALSE(IsFilecoinKeyringId("abc"));
+}
+
+TEST(BraveWalletUtilsUnitTest, IsBitcoinKeyring) {
+  EXPECT_TRUE(IsBitcoinKeyring(mojom::kBitcoinKeyring84Id));
+  EXPECT_TRUE(IsBitcoinKeyring(mojom::kBitcoinKeyring84TestId));
+
+  EXPECT_FALSE(IsBitcoinKeyring(mojom::kDefaultKeyringId));
+  EXPECT_FALSE(IsBitcoinKeyring(mojom::kSolanaKeyringId));
+  EXPECT_FALSE(IsBitcoinKeyring(mojom::kFilecoinKeyringId));
+  EXPECT_FALSE(IsBitcoinKeyring(""));
+  EXPECT_FALSE(IsBitcoinKeyring("abc"));
+}
+
+TEST(BraveWalletUtilsUnitTest, IsBitcoinNetwork) {
+  EXPECT_TRUE(IsBitcoinNetwork(mojom::kBitcoinMainnet));
+  EXPECT_TRUE(IsBitcoinNetwork(mojom::kBitcoinTestnet));
+
+  EXPECT_FALSE(IsBitcoinNetwork(mojom::kMainnetChainId));
+  EXPECT_FALSE(IsBitcoinNetwork(mojom::kFilecoinMainnet));
+  EXPECT_FALSE(IsBitcoinNetwork(mojom::kSolanaMainnet));
+  EXPECT_FALSE(IsBitcoinNetwork(""));
+  EXPECT_FALSE(IsBitcoinNetwork("abc"));
+}
+
+TEST(BraveWalletUtilsUnitTest, IsValidBitcoinNetworkKeyringPair) {
+  EXPECT_TRUE(IsValidBitcoinNetworkKeyringPair(mojom::kBitcoinMainnet,
+                                               mojom::kBitcoinKeyring84Id));
+  EXPECT_TRUE(IsValidBitcoinNetworkKeyringPair(mojom::kBitcoinTestnet,
+                                               mojom::kBitcoinKeyring84TestId));
+
+  EXPECT_FALSE(IsValidBitcoinNetworkKeyringPair(mojom::kBitcoinTestnet,
+                                                mojom::kBitcoinKeyring84Id));
+  EXPECT_FALSE(IsValidBitcoinNetworkKeyringPair(
+      mojom::kBitcoinMainnet, mojom::kBitcoinKeyring84TestId));
+  EXPECT_FALSE(
+      IsValidBitcoinNetworkKeyringPair("", mojom::kBitcoinKeyring84TestId));
+  EXPECT_FALSE(IsValidBitcoinNetworkKeyringPair(mojom::kBitcoinMainnet, ""));
+  EXPECT_FALSE(
+      IsValidBitcoinNetworkKeyringPair("abc", mojom::kBitcoinKeyring84TestId));
+  EXPECT_FALSE(IsValidBitcoinNetworkKeyringPair(mojom::kBitcoinMainnet, "abc"));
 }
 
 TEST(BraveWalletUtilsUnitTest, GetActiveEndpointUrl) {

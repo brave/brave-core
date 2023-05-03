@@ -362,6 +362,7 @@ export class MockedWalletApiProxy {
           favoriteApps: [],
           isSolanaEnabled: true,
           isFilecoinEnabled: true,
+          isBitcoinEnabled: true,
           isWalletBackedUp: true,
           isWalletCreated: true,
           isWalletLocked: false,

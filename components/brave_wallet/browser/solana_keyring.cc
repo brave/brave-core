@@ -50,6 +50,18 @@ std::string SolanaKeyring::ImportAccount(const std::vector<uint8_t>& keypair) {
   return address;
 }
 
+std::vector<uint8_t> SolanaKeyring::SignMessage(
+    const std::string& address,
+    const std::vector<uint8_t>& message) {
+  HDKeyEd25519* hd_key =
+      static_cast<HDKeyEd25519*>(GetHDKeyFromAddress(address));
+  if (!hd_key) {
+    return std::vector<uint8_t>();
+  }
+
+  return hd_key->Sign(message);
+}
+
 std::string SolanaKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {
   if (!hd_key_base)
     return std::string();

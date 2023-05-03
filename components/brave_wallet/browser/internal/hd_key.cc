@@ -15,15 +15,13 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "base/sys_byteorder.h"
+#include "brave/components/brave_wallet/common/bitcoin_utils.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
-#include "brave/third_party/bitcoin-core/src/src/bech32.h"
-#include "brave/third_party/bitcoin-core/src/src/crypto/ripemd160.h"
 #include "brave/third_party/bitcoin-core/src/src/secp256k1/include/secp256k1_recovery.h"
-#include "brave/third_party/bitcoin-core/src/src/util/strencodings.h"
 #include "brave/vendor/bat-native-tweetnacl/tweetnacl.h"
 #include "crypto/encryptor.h"
-#include "crypto/sha2.h"
 #include "crypto/symmetric_key.h"
 #include "third_party/boringssl/src/include/openssl/hmac.h"
 
@@ -37,6 +35,7 @@ constexpr char kMasterSecret[] = "Bitcoin seed";
 constexpr size_t kSHA512Length = 64;
 constexpr uint32_t kHardenedOffset = 0x80000000;
 constexpr size_t kSerializationLength = 78;
+constexpr size_t kMaxDerSignatureSize = 72;
 
 bool UTCPasswordVerification(const std::string& derived_key,
                              const std::vector<uint8_t>& ciphertext,
@@ -60,8 +59,9 @@ bool UTCDecryptPrivateKey(const std::string& derived_key,
                           const std::vector<uint8_t>& iv,
                           std::vector<uint8_t>* private_key,
                           size_t dklen) {
-  if (!private_key)
+  if (!private_key) {
     return false;
+  }
   std::unique_ptr<SymmetricKey> decryption_key =
       SymmetricKey::Import(SymmetricKey::AES, derived_key.substr(0, dklen / 2));
   if (!decryption_key) {
@@ -85,22 +85,6 @@ bool UTCDecryptPrivateKey(const std::string& derived_key,
   }
 
   return true;
-}
-
-std::vector<uint8_t> Hash160(const std::vector<uint8_t>& input) {
-  // BoringSSL in chromium doesn't have ripemd implementation built in BUILD.gn
-  // only header
-  std::vector<uint8_t> result(CRIPEMD160::OUTPUT_SIZE);
-
-  std::array<uint8_t, crypto::kSHA256Length> sha256hash =
-      crypto::SHA256Hash(input);
-  DCHECK(!sha256hash.empty());
-
-  CRIPEMD160()
-      .Write(sha256hash.data(), sha256hash.size())
-      .Finalize(result.data());
-
-  return result;
 }
 
 }  // namespace
@@ -196,8 +180,9 @@ std::unique_ptr<HDKey> HDKey::GenerateFromExtendedKey(const std::string& key) {
 // static
 std::unique_ptr<HDKey> HDKey::GenerateFromPrivateKey(
     const std::vector<uint8_t>& private_key) {
-  if (private_key.size() != 32)
+  if (private_key.size() != 32) {
     return nullptr;
+  }
   std::unique_ptr<HDKey> hd_key = std::make_unique<HDKey>();
   hd_key->SetPrivateKey(private_key);
   return hd_key;
@@ -331,8 +316,9 @@ std::unique_ptr<HDKey> HDKey::GenerateFromV3UTC(const std::string& password,
   }
 
   if (!UTCPasswordVerification(derived_key->key(), ciphertext_bytes, *mac,
-                               *dklen))
+                               *dklen)) {
     return nullptr;
+  }
 
   const auto* cipher = crypto->FindString("cipher");
   if (!cipher) {
@@ -425,17 +411,8 @@ std::string HDKey::GetPublicExtendedKey(
   return Serialize(version, public_key_);
 }
 
-// https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki#segwit-address-format
-std::string HDKey::GetSegwitAddress() const {
-  auto hash160 = Hash160(public_key_);
-  std::vector<unsigned char> input;
-  input.reserve(33);   // 1 + (160 / 5)
-  input.push_back(0);  // the witness version
-  ConvertBits<8, 5, true>([&](unsigned char c) { input.push_back(c); },
-                          hash160.begin(), hash160.end());
-
-  // TODO(apaymyshev): support testnet
-  return bech32::Encode("bc", input);
+std::string HDKey::GetSegwitAddress(bool testnet) const {
+  return PubkeyToSegwitAddress(public_key_, testnet);
 }
 
 std::vector<uint8_t> HDKey::GetUncompressedPublicKey() const {
@@ -462,8 +439,9 @@ std::vector<uint8_t> HDKey::GetPublicKeyFromX25519_XSalsa20_Poly1305() const {
   std::vector<uint8_t> public_key(public_key_len);
   const uint8_t* private_key_ptr = private_key_.data();
   if (crypto_scalarmult_curve25519_tweet_base(public_key.data(),
-                                              private_key_ptr) != 0)
+                                              private_key_ptr) != 0) {
     return std::vector<uint8_t>();
+  }
   return public_key;
 }
 
@@ -474,16 +452,20 @@ HDKey::DecryptCipherFromX25519_XSalsa20_Poly1305(
     const std::vector<uint8_t>& ephemeral_public_key,
     const std::vector<uint8_t>& ciphertext) const {
   // Only x25519-xsalsa20-poly1305 is supported by MM at the time of writing
-  if (version != "x25519-xsalsa20-poly1305")
+  if (version != "x25519-xsalsa20-poly1305") {
     return absl::nullopt;
-  if (nonce.size() != crypto_box_curve25519xsalsa20poly1305_tweet_NONCEBYTES)
+  }
+  if (nonce.size() != crypto_box_curve25519xsalsa20poly1305_tweet_NONCEBYTES) {
     return absl::nullopt;
+  }
   if (ephemeral_public_key.size() !=
-      crypto_box_curve25519xsalsa20poly1305_tweet_PUBLICKEYBYTES)
+      crypto_box_curve25519xsalsa20poly1305_tweet_PUBLICKEYBYTES) {
     return absl::nullopt;
+  }
   if (private_key_.size() !=
-      crypto_box_curve25519xsalsa20poly1305_tweet_SECRETKEYBYTES)
+      crypto_box_curve25519xsalsa20poly1305_tweet_SECRETKEYBYTES) {
     return absl::nullopt;
+  }
 
   std::vector<uint8_t> padded_ciphertext = ciphertext;
   padded_ciphertext.insert(padded_ciphertext.begin(), crypto_box_BOXZEROBYTES,
@@ -492,8 +474,9 @@ HDKey::DecryptCipherFromX25519_XSalsa20_Poly1305(
   const uint8_t* private_key_ptr = private_key_.data();
   if (crypto_box_open(padded_plaintext.data(), padded_ciphertext.data(),
                       padded_ciphertext.size(), nonce.data(),
-                      ephemeral_public_key.data(), private_key_ptr) != 0)
+                      ephemeral_public_key.data(), private_key_ptr) != 0) {
     return absl::nullopt;
+  }
   std::vector<uint8_t> plaintext(
       padded_plaintext.cbegin() + crypto_box_ZEROBYTES,
       padded_plaintext.cend());
@@ -664,8 +647,9 @@ std::unique_ptr<HDKeyBase> HDKey::DeriveChildFromPath(const std::string& path) {
   return hd_key;
 }
 
-std::vector<uint8_t> HDKey::Sign(const std::vector<uint8_t>& msg, int* recid) {
-  std::vector<uint8_t> sig(64);
+std::vector<uint8_t> HDKey::SignCompact(const std::vector<uint8_t>& msg,
+                                        int* recid) {
+  std::vector<uint8_t> sig(kCompactSignatureSize);
   if (msg.size() != 32) {
     LOG(ERROR) << __func__ << ": message length should be 32";
     return sig;
@@ -703,9 +687,56 @@ std::vector<uint8_t> HDKey::Sign(const std::vector<uint8_t>& msg, int* recid) {
   return sig;
 }
 
+// TODO(apaymyshev): return as base::expected?
+absl::optional<std::vector<uint8_t>> HDKey::SignDer(
+    base::span<const uint8_t, 32> msg) {
+  unsigned char extra_entropy[32] = {0};
+  secp256k1_ecdsa_signature ecdsa_sig;
+  if (!secp256k1_ecdsa_sign(secp256k1_ctx_, &ecdsa_sig, msg.data(),
+                            private_key_.data(),
+                            secp256k1_nonce_function_rfc6979, nullptr)) {
+    LOG(ERROR) << __func__ << ": secp256k1_ecdsa_sign failed";
+    return absl::nullopt;
+  }
+
+  auto sig_has_low_r = [](const secp256k1_context* ctx,
+                          const secp256k1_ecdsa_signature* sig) {
+    uint8_t compact_sig[kCompactSignatureSize] = {};
+    secp256k1_ecdsa_signature_serialize_compact(ctx, compact_sig, sig);
+
+    return compact_sig[0] < 0x80;
+  };
+
+  // Grind R https://github.com/bitcoin/bitcoin/pull/13666
+  uint32_t extra_entropy_counter = 0;
+  while (!sig_has_low_r(secp256k1_ctx_, &ecdsa_sig)) {
+    (*reinterpret_cast<uint32_t*>(extra_entropy)) =
+        base::ByteSwapToLE32(++extra_entropy_counter);
+
+    if (!secp256k1_ecdsa_sign(
+            secp256k1_ctx_, &ecdsa_sig, msg.data(), private_key_.data(),
+            secp256k1_nonce_function_rfc6979, extra_entropy)) {
+      LOG(ERROR) << __func__ << ": secp256k1_ecdsa_sign failed";
+      return absl::nullopt;
+    }
+  }
+
+  std::vector<uint8_t> sig_der(kMaxDerSignatureSize);
+  size_t sig_der_length = sig_der.size();
+  if (!secp256k1_ecdsa_signature_serialize_der(secp256k1_ctx_, sig_der.data(),
+                                               &sig_der_length, &ecdsa_sig)) {
+    return absl::nullopt;
+  }
+  sig_der.resize(sig_der_length);
+
+  // TODO(apaymyshev): verify signature?
+
+  return sig_der;
+}
+
 bool HDKey::Verify(const std::vector<uint8_t>& msg,
                    const std::vector<uint8_t>& sig) {
-  if (msg.size() != 32 || sig.size() != 64) {
+  if (msg.size() != 32 || sig.size() != kCompactSignatureSize) {
     LOG(ERROR) << __func__ << ": message or signature length is invalid";
     return false;
   }
@@ -731,13 +762,13 @@ bool HDKey::Verify(const std::vector<uint8_t>& msg,
   return true;
 }
 
-std::vector<uint8_t> HDKey::Recover(bool compressed,
-                                    const std::vector<uint8_t>& msg,
-                                    const std::vector<uint8_t>& sig,
-                                    int recid) {
+std::vector<uint8_t> HDKey::RecoverCompact(bool compressed,
+                                           const std::vector<uint8_t>& msg,
+                                           const std::vector<uint8_t>& sig,
+                                           int recid) {
   size_t public_key_len = compressed ? 33 : 65;
   std::vector<uint8_t> public_key(public_key_len);
-  if (msg.size() != 32 || sig.size() != 64) {
+  if (msg.size() != 32 || sig.size() != kCompactSignatureSize) {
     LOG(ERROR) << __func__ << ": message or signature length is invalid";
     return public_key;
   }

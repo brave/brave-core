@@ -253,8 +253,8 @@ TEST(HDKeyEd25519UnitTest, SignAndVerify) {
   auto key = HDKeyEd25519::GenerateFromSeed(bytes);
   const std::vector<uint8_t> msg_a(32, 0x00);
   const std::vector<uint8_t> msg_b(32, 0x08);
-  const std::vector<uint8_t> sig_a = key->Sign(msg_a, nullptr);
-  const std::vector<uint8_t> sig_b = key->Sign(msg_b, nullptr);
+  const std::vector<uint8_t> sig_a = key->Sign(msg_a);
+  const std::vector<uint8_t> sig_b = key->Sign(msg_b);
 
   EXPECT_TRUE(key->Verify(msg_a, sig_a));
   EXPECT_TRUE(key->Verify(msg_b, sig_b));

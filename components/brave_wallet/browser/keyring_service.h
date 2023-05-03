@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/gtest_prod_util.h"
@@ -16,7 +17,6 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/password_encryptor.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -34,6 +34,7 @@ class OneShotTimer;
 
 namespace brave_wallet {
 
+class BitcoinKeyring;
 class EthTransaction;
 class FilTransaction;
 class KeyringServiceUnitTest;
@@ -98,11 +99,19 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void AddAccount(const std::string& account_name,
                   mojom::CoinType coin,
                   AddAccountCallback callback) override;
+  void AddAccount(const std::string& account_name,
+                  mojom::CoinType coin,
+                  const std::string& keyring_id,
+                  AddAccountCallback callback);
 
   // Adds an account to the filecoin(keyring is choosed by network).
   void AddFilecoinAccount(const std::string& account_name,
                           const std::string& network,
                           AddAccountCallback callback) override;
+  void AddBitcoinAccount(const std::string& account_name,
+                         const std::string& network_id,
+                         const std::string& keyring_id,
+                         AddBitcoinAccountCallback callback) override;
 
   void EncodePrivateKeyForExport(
       const std::string& address,
@@ -178,9 +187,9 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       const std::vector<uint8_t>& message,
       bool is_eip712 = false);
 
-  std::vector<uint8_t> SignMessage(const std::string& keyring_id,
-                                   const std::string& address,
-                                   const std::vector<uint8_t>& message);
+  std::vector<uint8_t> SignMessageBySolanaKeyring(
+      const std::string& address,
+      const std::vector<uint8_t>& message);
   bool RecoverAddressByDefaultKeyring(const std::vector<uint8_t>& message,
                                       const std::vector<uint8_t>& signature,
                                       std::string* address);
@@ -227,14 +236,18 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void HasPendingUnlockRequest(
       HasPendingUnlockRequestCallback callback) override;
 
-  absl::optional<std::string> GetBitcoinReceivingAddress(
+  absl::optional<std::vector<std::pair<std::string, mojom::BitcoinKeyIdPtr>>>
+  GetBitcoinAddresses(const std::string& keyring_id, uint32_t account_index);
+  absl::optional<std::string> GetBitcoinAddress(
       const std::string& keyring_id,
-      uint32_t account_index,
-      uint32_t receiving_index);
-  absl::optional<std::string> GetBitcoinChangeAddress(
+      const mojom::BitcoinKeyId& key_id);
+  absl::optional<std::vector<uint8_t>> GetBitcoinPubkey(
       const std::string& keyring_id,
-      uint32_t account_index,
-      uint32_t change_index);
+      const mojom::BitcoinKeyId& key_id);
+  absl::optional<std::vector<uint8_t>> SignMessageByBitcoinKeyring(
+      const std::string& keyring_id,
+      const mojom::BitcoinKeyId& key_id,
+      base::span<const uint8_t, 32> message);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, GetOrCreateNonceForKeyring);
@@ -315,6 +328,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
                                       int attempts_left);
   void OnAutoLockFired();
   HDKeyring* GetHDKeyringById(const std::string& keyring_id) const;
+  BitcoinKeyring* GetBitcoinKeyringById(const std::string& keyring_id) const;
   std::vector<mojom::AccountInfoPtr> GetHardwareAccountsSync(
       const std::string& keyring_id) const;
   // Address will be returned when success

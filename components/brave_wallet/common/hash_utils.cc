@@ -15,7 +15,9 @@
 #include "base/strings/string_split.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "brave/third_party/bitcoin-core/src/src/crypto/ripemd160.h"
 #include "brave/third_party/ethash/src/include/ethash/keccak.h"
+#include "crypto/sha2.h"
 
 namespace brave_wallet {
 namespace {
@@ -70,6 +72,25 @@ eth_abi::Bytes32 Namehash(const std::string& name) {
     hash = KeccakHashBytes32(ConcatArrays(hash, label_hash));
   }
   return hash;
+}
+
+std::array<uint8_t, crypto::kSHA256Length> DoubleSHA256Hash(
+    base::span<const uint8_t> input) {
+  return crypto::SHA256Hash(crypto::SHA256Hash(input));
+}
+
+std::vector<uint8_t> Hash160(base::span<const uint8_t> input) {
+  std::vector<uint8_t> result(CRIPEMD160::OUTPUT_SIZE);
+
+  std::array<uint8_t, crypto::kSHA256Length> sha256hash =
+      crypto::SHA256Hash(input);
+  DCHECK(!sha256hash.empty());
+
+  CRIPEMD160()
+      .Write(sha256hash.data(), sha256hash.size())
+      .Finalize(result.data());
+
+  return result;
 }
 
 }  // namespace brave_wallet
