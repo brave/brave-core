@@ -28,7 +28,8 @@ class DownloadDisplayController : public DownloadDisplayControllerChromium {
   using DownloadDisplayControllerChromium::DownloadDisplayControllerChromium;
 
  private:
-  void UpdateToolbarButtonState(const AllDownloadUIModelsInfo& info) override;
+  void UpdateToolbarButtonState(
+      std::vector<std::unique_ptr<DownloadUIModel>>& all_models) override;
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_DOWNLOAD_BUBBLE_DOWNLOAD_DISPLAY_CONTROLLER_H_
