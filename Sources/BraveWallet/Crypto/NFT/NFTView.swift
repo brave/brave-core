@@ -38,7 +38,7 @@ struct NFTView: View {
       Text(Strings.Wallet.editVisibleAssetsButtonTitle)
         .multilineTextAlignment(.center)
         .font(.footnote.weight(.semibold))
-        .foregroundColor(Color(.braveBlurple))
+        .foregroundColor(Color(.braveBlurpleTint))
         .frame(maxWidth: .infinity)
     }
     .sheet(isPresented: $isPresentingEditUserAssets) {
