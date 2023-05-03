@@ -40,9 +40,15 @@ void AntiTargetingResource::Load() {
 void AntiTargetingResource::OnLoadAndParseResource(
     ResourceParsingErrorOr<AntiTargetingInfo> result) {
   if (!result.has_value()) {
-    BLOG(1, result.error());
-    BLOG(1,
-         "Failed to initialize " << kResourceId << " anti-targeting resource");
+    BLOG(0, "Failed to initialize "
+                << kResourceId << " anti-targeting resource (" << result.error()
+                << ")");
+    is_initialized_ = false;
+    return;
+  }
+
+  if (result.value().version == 0) {
+    BLOG(7, kResourceId << " anti-targeting resource does not exist");
     is_initialized_ = false;
     return;
   }

@@ -30,7 +30,7 @@ template <typename T>
 base::expected<T, std::string> ReadFileAndParseResourceOnBackgroundThread(
     base::File file) {
   if (!file.IsValid()) {
-    return base::unexpected("File is not valid");
+    return base::ok(T{});
   }
 
   absl::optional<base::Value> root;
@@ -41,12 +41,12 @@ base::expected<T, std::string> ReadFileAndParseResourceOnBackgroundThread(
     std::string content;
     const base::ScopedFILE scoped_file(base::FileToFILE(std::move(file), "rb"));
     if (!base::ReadStreamToString(scoped_file.get(), &content)) {
-      return base::unexpected("Couldn't read file");
+      return base::unexpected("Failed to read file");
     }
 
     root = base::JSONReader::Read(content);
     if (!root || !root->is_dict()) {
-      return base::unexpected("Failed to parse JSON");
+      return base::unexpected("Invalid JSON");
     }
   }
 

@@ -45,9 +45,14 @@ void TextClassificationResource::Load() {
 void TextClassificationResource::OnLoadAndParseResource(
     ResourceParsingErrorOr<ml::pipeline::TextProcessing> result) {
   if (!result.has_value()) {
-    BLOG(1, result.error());
-    BLOG(1, "Failed to initialize " << kResourceId
-                                    << " text classification resource");
+    BLOG(0, "Failed to initialize " << kResourceId
+                                    << " text classification resource ("
+                                    << result.error() << ")");
+    return;
+  }
+
+  if (!result.value().IsInitialized()) {
+    BLOG(7, kResourceId << " text classification resource does not exist");
     return;
   }
 
