@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/app_controller_mac.mm b/chrome/browser/app_controller_mac.mm
+index 8463c92b822ddd3d8aca9795b4145c536346597e..8d4b45e3d0db698720c01ccacc4672ddb77d476e 100644
+--- a/chrome/browser/app_controller_mac.mm
++++ b/chrome/browser/app_controller_mac.mm
+@@ -1103,7 +1103,7 @@ class AppControllerNativeThemeObserver : public ui::NativeThemeObserver {
+   }
+ 
+   auto it = _profileBookmarkMenuBridgeMap.find(profilePath);
+-  if (it != _profileBookmarkMenuBridgeMap.end() &&
++  if (it != _profileBookmarkMenuBridgeMap.end() && !isOffTheRecord &&
+       (!base::FeatureList::IsEnabled(features::kDestroyProfileOnBrowserClose) ||
+        (it->second->GetProfile() && !isOffTheRecord))) {
+     // Clean up the dangling Profile* in |_profileBookmarkMenuBridgeMap|.
