@@ -35,6 +35,9 @@ class TipPanelDialogView : public WebUIBubbleDialogView {
                      const absl::optional<gfx::Rect>& anchor_rect)
       : WebUIBubbleDialogView(anchor_view, contents_wrapper, anchor_rect) {
     SetArrow(views::BubbleBorder::TOP_CENTER);
+    SetPaintClientToLayer(true);
+    set_use_round_corners(true);
+    set_corner_radius(16);
   }
 
   // views::Widget:
