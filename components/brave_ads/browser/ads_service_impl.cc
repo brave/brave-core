@@ -33,11 +33,11 @@
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 #include "brave/components/brave_ads/browser/ads_storage_cleanup.h"
+#include "brave/components/brave_ads/browser/bat_ads_service_factory.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_ads/browser/device_id.h"
 #include "brave/components/brave_ads/browser/frequency_capping_helper.h"
 #include "brave/components/brave_ads/browser/reminder_util.h"
-#include "brave/components/brave_ads/browser/service_sandbox_type.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/common/constants.h"
 #include "brave/components/brave_ads/common/custom_notification_ad_feature.h"
 #include "brave/components/brave_ads/common/notification_ad_feature.h"
@@ -58,7 +58,6 @@
 #include "brave/components/brave_rewards/common/mojom/ledger.mojom.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
-#include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/notifications/notification_display_service.h"
@@ -75,8 +74,6 @@
 #include "brave/components/brave_ads/browser/ads_tooltips_delegate.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/browser/browser_thread.h"
-#include "content/public/browser/service_process_host.h"
 #include "content/public/browser/storage_partition.h"
 #include "net/base/network_change_notifier.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -302,6 +299,7 @@ AdsServiceImpl::AdsServiceImpl(
         adaptive_captcha_service,
     std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
     std::unique_ptr<DeviceId> device_id,
+    std::unique_ptr<BatAdsServiceFactory> bat_ads_service_factory,
     history::HistoryService* history_service,
     brave_rewards::RewardsService* rewards_service,
     brave_federated::AsyncDataStore* notification_ad_timing_data_store)
@@ -310,6 +308,7 @@ AdsServiceImpl::AdsServiceImpl(
       adaptive_captcha_service_(adaptive_captcha_service),
       ads_tooltips_delegate_(std::move(ads_tooltips_delegate)),
       device_id_(std::move(device_id)),
+      bat_ads_service_factory_(std::move(bat_ads_service_factory)),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
@@ -405,14 +404,9 @@ void AdsServiceImpl::MaybeStartBatAdsService() {
 }
 
 void AdsServiceImpl::StartBatAdsService() {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(!bat_ads_service_.is_bound());
 
-  content::ServiceProcessHost::Launch(
-      bat_ads_service_.BindNewPipeAndPassReceiver(),
-      content::ServiceProcessHost::Options()
-          .WithDisplayName(IDS_SERVICE_BAT_ADS)
-          .Pass());
+  bat_ads_service_ = bat_ads_service_factory_->Launch();
 
   bat_ads_service_.set_disconnect_handler(base::BindOnce(
       &AdsServiceImpl::RestartBatAdsServiceAfterDelay, AsWeakPtr()));
