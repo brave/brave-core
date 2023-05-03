@@ -28,6 +28,8 @@ import com.google.android.material.tabs.TabLayout;
 import org.chromium.base.ActivityState;
 import org.chromium.base.ApplicationStatus;
 import org.chromium.base.Log;
+import org.chromium.brave_wallet.mojom.BraveWalletConstants;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -139,20 +141,17 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         }
 
         mBuySendSwapButton.setOnClickListener(v -> {
-            assert mJsonRpcService != null;
-            LiveDataUtil.observeOnce(
-                    mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork,
-                    defaultNetwork -> {
-                        LiveDataUtil.observeOnce(
-                                mWalletModel.getCryptoModel().mIsSwapEnabled, isSwapSupported -> {
-                                    SwapBottomSheetDialogFragment swapBottomSheetDialogFragment =
-                                            SwapBottomSheetDialogFragment.newInstance(
-                                                    isSwapSupported);
-                                    swapBottomSheetDialogFragment.setNetwork(defaultNetwork);
-                                    swapBottomSheetDialogFragment.show(getSupportFragmentManager(),
-                                            SwapBottomSheetDialogFragment.TAG_FRAGMENT);
-                                });
-                    });
+            NetworkInfo ethNetwork = null;
+            // Always show buy send swap with ETH
+            if (mWalletModel != null) {
+                ethNetwork = mWalletModel.getNetworkModel().getNetwork(
+                        BraveWalletConstants.MAINNET_CHAIN_ID);
+            }
+            SwapBottomSheetDialogFragment swapBottomSheetDialogFragment =
+                    SwapBottomSheetDialogFragment.newInstance();
+            swapBottomSheetDialogFragment.setNetwork(ethNetwork);
+            swapBottomSheetDialogFragment.show(
+                    getSupportFragmentManager(), SwapBottomSheetDialogFragment.TAG_FRAGMENT);
         });
 
         mPendingTxNotification = findViewById(R.id.pending_tx_notification);
