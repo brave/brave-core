@@ -182,7 +182,8 @@ const char kResetProfileSettingsLearnMoreURL[] =
     "360017903152-How-do-I-reset-Brave-settings-to-default-";
 
 const char kSafeBrowsingHelpCenterURL[] =
-    "https://support.brave.com/";
+    "https://support.brave.com/hc/en-us/articles/"
+    "15222663599629-Safe-Browsing-in-Brave";
 
 const char kSafetyTipHelpCenterURL[] =
     "https://support.brave.com/";
