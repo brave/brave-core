@@ -36,13 +36,13 @@ bool ConvertCoseSignatureToDER(const std::vector<uint8_t>& input,
   }
 
   BIGNUM* r_comp = BN_bin2bn(input.data(), kSignatureComponentSize, nullptr);
-  DCHECK(r_comp);
+  CHECK(r_comp);
   BIGNUM* s_comp = BN_bin2bn(input.data() + kSignatureComponentSize,
                              kSignatureComponentSize, nullptr);
-  DCHECK(s_comp);
+  CHECK(s_comp);
 
   ECDSA_SIG* ecdsa_sig = ECDSA_SIG_new();
-  DCHECK(ecdsa_sig);
+  CHECK(ecdsa_sig);
 
   if (ECDSA_SIG_set0(ecdsa_sig, r_comp, s_comp) != 1) {
     LOG(ERROR) << "COSE: Failed to construct ECDSA SIG struct";
@@ -53,7 +53,7 @@ bool ConvertCoseSignatureToDER(const std::vector<uint8_t>& input,
   }
 
   CBB sig_cbb;
-  DCHECK_EQ(CBB_init(&sig_cbb, 0), 1);
+  CHECK_EQ(CBB_init(&sig_cbb, 0), 1);
 
   if (ECDSA_SIG_marshal(&sig_cbb, ecdsa_sig) != 1) {
     LOG(ERROR) << "COSE: Failed to marshal ECDSA SIG struct";
@@ -91,7 +91,7 @@ bool CoseSign1::DecodeFromBytes(const std::vector<uint8_t>& data) {
                       *(cbor_config.error_code_out));
     return false;
   }
-  DCHECK(decoded_val.has_value());
+  CHECK(decoded_val.has_value());
 
   if (!decoded_val->is_array() || decoded_val->GetArray().size() != 4) {
     LOG(ERROR) << "COSE: root decoded cbor is not array, or has incorrect size";
@@ -117,7 +117,7 @@ bool CoseSign1::DecodeFromBytes(const std::vector<uint8_t>& data) {
                       *(cbor_config.error_code_out));
     return false;
   }
-  DCHECK(protected_decoded_val.has_value());
+  CHECK(protected_decoded_val.has_value());
 
   if (!protected_decoded_val->is_map()) {
     LOG(ERROR) << "COSE: protected value is not a map";
@@ -163,7 +163,7 @@ bool CoseSign1::DecodeFromBytes(const std::vector<uint8_t>& data) {
                << cbor::Reader::ErrorCodeToString(*cbor_config.error_code_out);
     return false;
   }
-  DCHECK(payload_dec_val.has_value());
+  CHECK(payload_dec_val.has_value());
   payload_ = payload_dec_val->Clone();
 
   const cbor::Value& signature_val = cose_arr[3];
@@ -177,10 +177,10 @@ bool CoseSign1::DecodeFromBytes(const std::vector<uint8_t>& data) {
 }
 
 bool CoseSign1::Verify(const net::ParsedCertificateList& cert_chain) {
-  DCHECK_GT(cert_chain.size(), 1U);
+  CHECK_GT(cert_chain.size(), 1U);
 
   net::der::GeneralizedTime time_now;
-  DCHECK(net::der::EncodeTimeAsGeneralizedTime(base::Time::Now(), &time_now));
+  CHECK(net::der::EncodeTimeAsGeneralizedTime(base::Time::Now(), &time_now));
 
   net::CertPathErrors cert_path_errors;
 
@@ -205,7 +205,7 @@ bool CoseSign1::Verify(const net::ParsedCertificateList& cert_chain) {
 
   absl::optional<std::vector<uint8_t>> encoded_sig_data =
       cbor::Writer::Write(sig_data);
-  DCHECK(encoded_sig_data.has_value());
+  CHECK(encoded_sig_data.has_value());
 
   base::StringPiece low_cert_spki;
   if (!net::asn1::ExtractSPKIFromDERCert(

@@ -11,6 +11,7 @@
 #include "base/containers/flat_map.h"
 #include "base/time/time.h"
 #include "brave/components/p3a/metric_log_type.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace p3a {
@@ -21,6 +22,9 @@ struct P3AConfig {
   bool randomize_upload_interval = true;
   // Interval between rotations, only used for testing from the command line.
   base::flat_map<MetricLogType, base::TimeDelta> json_rotation_intervals;
+
+  // Fake STAR epoch for testing purposes.
+  absl::optional<uint8_t> fake_star_epoch = absl::nullopt;
 
   // Endpoint for uploading P3A metrics in JSON format
   GURL p3a_json_upload_url;

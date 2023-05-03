@@ -148,11 +148,9 @@ void MessageManager::DoConstellationRotation() {
     return;
   }
   constellation_prep_scheduler_->Stop();
-  constellation_prep_log_store_->ResetUploadStamps();
   VLOG(2) << "MessageManager doing Constellation rotation at "
           << base::Time::Now();
   constellation_helper_->UpdateRandomnessServerInfo();
-  delegate_->OnRotation(MetricLogType::kTypical, true);
 }
 
 void MessageManager::OnLogUploadComplete(bool is_ok,
@@ -206,7 +204,14 @@ void MessageManager::OnRandomnessServerInfoReady(
   if (server_info == nullptr || !features::IsConstellationEnabled()) {
     return;
   }
-  VLOG(2) << "MessageManager::OnRandomnessServerInfoReady";
+  VLOG(2) << "MessageManager::OnRandomnessServerInfoReady; epoch change = "
+          << server_info->epoch_change_detected;
+  if (server_info->epoch_change_detected) {
+    // a detected epoch change means that we can rotate
+    // the preparation store
+    constellation_prep_log_store_->ResetUploadStamps();
+    delegate_->OnRotation(MetricLogType::kTypical, true);
+  }
   constellation_send_log_store_->SetCurrentEpoch(server_info->current_epoch);
   constellation_send_log_store_->LoadPersistedUnsentLogs();
   constellation_prep_scheduler_->Start();

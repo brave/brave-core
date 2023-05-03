@@ -123,7 +123,7 @@ bool ConstellationHelper::ConstructFinalMessage(
     const rust::Vec<constellation::VecU8>& resp_proofs,
     std::string* output) {
   auto* rnd_server_info = rand_meta_manager_.GetCachedRandomnessServerInfo();
-  DCHECK(rnd_server_info);
+  CHECK(rnd_server_info);
   auto msg_res = constellation::construct_message(
       resp_points, resp_proofs, *randomness_request_state,
       resp_proofs.empty() ? *null_public_key_ : *rnd_server_info->public_key,

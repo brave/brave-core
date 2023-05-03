@@ -57,6 +57,13 @@ OBJC_EXPORT const BraveCoreSwitchKey
 /// Expected value: A number (in seconds)
 OBJC_EXPORT const BraveCoreSwitchKey
     BraveCoreSwitchKeyP3ASlowRotationIntervalSeconds NS_SWIFT_NAME(p3aSlowRotationIntervalSeconds);  // NOLINT
+/// For specifying a fake STAR epoch, for the purpose of
+/// triggering the transmission of encrypted measurements before they are
+/// due to be sent, for testing purposes.
+///
+/// Expected value: An 8-bit unsigned integer
+OBJC_EXPORT const BraveCoreSwitchKey
+    BraveCoreSwitchKeyP3AFakeStarEpoch NS_SWIFT_NAME(p3aFakeStarEpoch);  // NOLINT
 /// Overrides the P3A JSON backend URL.
 ///
 /// Expected value: A URL string
