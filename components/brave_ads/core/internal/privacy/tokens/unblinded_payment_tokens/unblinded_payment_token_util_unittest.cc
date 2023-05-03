@@ -90,7 +90,7 @@ TEST_F(BraveAdsUnblindedPaymentTokenUtilTest, UnblindedPaymentTokenCount) {
   // Act
 
   // Assert
-  EXPECT_EQ(3, UnblindedPaymentTokenCount());
+  EXPECT_EQ(3U, UnblindedPaymentTokenCount());
 }
 
 }  // namespace brave_ads::privacy

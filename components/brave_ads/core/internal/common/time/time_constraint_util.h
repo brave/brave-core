@@ -18,7 +18,7 @@ namespace brave_ads {
 bool DoesHistoryRespectRollingTimeConstraint(
     const std::vector<base::Time>& history,
     base::TimeDelta time_constraint,
-    int cap);
+    size_t cap);
 
 }  // namespace brave_ads
 

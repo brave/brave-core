@@ -6,9 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_ADS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_ADS_H_
 
-#include <cstdint>
 #include <string>
-#include <vector>
 
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/ads_callback.h"

@@ -29,7 +29,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr uint64_t kMaximumEntriesPerSegmentInPurchaseIntentSignalHistory = 100;
+constexpr size_t kMaximumEntriesPerSegmentInPurchaseIntentSignalHistory = 100;
 
 FilteredAdvertiserList::iterator FindFilteredAdvertiser(
     const std::string& advertiser_id,

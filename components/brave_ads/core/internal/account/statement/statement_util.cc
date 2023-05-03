@@ -39,11 +39,12 @@ double GetEarningsForLastMonth(const TransactionList& transactions) {
   return GetReconciledEarningsForLastMonth(transactions);
 }
 
-int GetAdsReceivedThisMonth(const TransactionList& transactions) {
+int32_t GetAdsReceivedThisMonth(const TransactionList& transactions) {
   const base::Time from_time = GetLocalTimeAtBeginningOfThisMonth();
   const base::Time to_time = GetLocalTimeAtEndOfThisMonth();
 
-  return GetAdsReceivedForDateRange(transactions, from_time, to_time);
+  return static_cast<int32_t>(
+      GetAdsReceivedForDateRange(transactions, from_time, to_time));
 }
 
 }  // namespace brave_ads

@@ -31,7 +31,7 @@ bool CreativeAdInfo::operator==(const CreativeAdInfo& other) const {
          DoubleEquals(end_at.ToDoubleT(), other.end_at.ToDoubleT()) &&
          daily_cap == other.daily_cap && advertiser_id == other.advertiser_id &&
          priority == other.priority && DoubleEquals(ptr, other.ptr) &&
-         conversion == other.conversion && per_day == other.per_day &&
+         has_conversion == other.has_conversion && per_day == other.per_day &&
          per_week == other.per_week && per_month == other.per_month &&
          total_max == other.total_max && DoubleEquals(value, other.value) &&
          split_test_group == other.split_test_group &&

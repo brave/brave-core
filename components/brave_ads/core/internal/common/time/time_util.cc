@@ -104,12 +104,14 @@ base::Time GetLocalMidnight(const base::Time time) {
   return CorrectLocalMidnightForDaylightSaving(midnight, exploded.day_of_month);
 }
 
-int GetLocalTimeAsMinutes(const base::Time time) {
+int GetLocalTimeInMinutes(const base::Time time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
   DCHECK(exploded.HasValidValues());
 
-  return (exploded.hour * base::Time::kMinutesPerHour) + exploded.minute;
+  const base::TimeDelta time_delta =
+      base::Hours(exploded.hour) + base::Minutes(exploded.minute);
+  return time_delta.InMinutes();
 }
 
 base::Time AdjustLocalTimeToBeginningOfPreviousMonth(const base::Time time) {

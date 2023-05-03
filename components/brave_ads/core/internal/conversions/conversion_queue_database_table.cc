@@ -63,8 +63,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
     BindString(command, index++, conversion_queue_item.conversion_id);
     BindString(command, index++, conversion_queue_item.advertiser_public_key);
     BindDouble(command, index++, conversion_queue_item.process_at.ToDoubleT());
-    BindInt(command, index++,
-            static_cast<int>(conversion_queue_item.was_processed));
+    BindBool(command, index++, conversion_queue_item.was_processed);
 
     count++;
   }

@@ -294,6 +294,8 @@ source_set("internal") {
     "ads/serving/eligible_ads/exclusion_rules/daily_cap_exclusion_rule.h",
     "ads/serving/eligible_ads/exclusion_rules/daypart_exclusion_rule.cc",
     "ads/serving/eligible_ads/exclusion_rules/daypart_exclusion_rule.h",
+    "ads/serving/eligible_ads/exclusion_rules/daypart_exclusion_rule_util.cc",
+    "ads/serving/eligible_ads/exclusion_rules/daypart_exclusion_rule_util.h",
     "ads/serving/eligible_ads/exclusion_rules/dislike_category_exclusion_rule.cc",
     "ads/serving/eligible_ads/exclusion_rules/dislike_category_exclusion_rule.h",
     "ads/serving/eligible_ads/exclusion_rules/dislike_exclusion_rule.cc",

@@ -30,11 +30,11 @@ namespace brave_ads {
 namespace {
 
 constexpr base::TimeDelta kRetryAfter = base::Minutes(1);
+
 constexpr base::TimeDelta kExpiredNextTokenRedemptionAfter = base::Minutes(1);
-constexpr int64_t kNextTokenRedemptionAfterSeconds =
-    24 * base::Time::kSecondsPerHour;
-constexpr int64_t kDebugNextTokenRedemptionAfterSeconds =
-    25 * base::Time::kSecondsPerMinute;
+
+constexpr base::TimeDelta kNextTokenRedemptionAfter = base::Days(1);
+constexpr base::TimeDelta kDebugNextTokenRedemptionAfter = base::Minutes(25);
 
 base::TimeDelta CalculateTokenRedemptionDelay() {
   const base::Time next_token_redemption_at =
@@ -55,15 +55,13 @@ base::TimeDelta CalculateTokenRedemptionDelay() {
 }
 
 base::Time CalculateNextTokenRedemptionDate() {
-  const base::Time now = base::Time::Now();
-
-  const int64_t delay = ShouldDebug() ? kDebugNextTokenRedemptionAfterSeconds
-                                      : kNextTokenRedemptionAfterSeconds;
+  const base::TimeDelta delay = ShouldDebug() ? kDebugNextTokenRedemptionAfter
+                                              : kNextTokenRedemptionAfter;
 
   const auto rand_delay =
-      static_cast<int64_t>(brave_base::random::Geometric(delay));
+      static_cast<int64_t>(brave_base::random::Geometric(delay.InSecondsF()));
 
-  return now + base::Seconds(rand_delay);
+  return base::Time::Now() + base::Seconds(rand_delay);
 }
 
 }  // namespace

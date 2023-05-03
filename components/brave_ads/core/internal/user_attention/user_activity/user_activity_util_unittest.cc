@@ -15,47 +15,6 @@ namespace brave_ads {
 
 class BraveAdsUserActivityUtilTest : public UnitTestBase {};
 
-TEST_F(BraveAdsUserActivityUtilTest, NoTabsOpened) {
-  // Arrange
-  UserActivityManager::GetInstance().RecordEvent(
-      UserActivityEventType::kClickedLink);
-
-  const UserActivityEventList events =
-      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
-          base::Minutes(30));
-
-  // Act
-
-  // Assert
-  EXPECT_EQ(0, GetNumberOfTabsOpened(events));
-}
-
-TEST_F(BraveAdsUserActivityUtilTest, TabsOpened) {
-  // Arrange
-  UserActivityManager::GetInstance().RecordEvent(
-      UserActivityEventType::kClickedLink);
-
-  AdvanceClockBy(base::Minutes(30));
-
-  UserActivityManager::GetInstance().RecordEvent(
-      UserActivityEventType::kClickedLink);
-  UserActivityManager::GetInstance().RecordEvent(
-      UserActivityEventType::kOpenedNewTab);
-  UserActivityManager::GetInstance().RecordEvent(
-      UserActivityEventType::kClosedTab);
-  UserActivityManager::GetInstance().RecordEvent(
-      UserActivityEventType::kOpenedNewTab);
-
-  const UserActivityEventList events =
-      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
-          base::Minutes(30));
-
-  // Act
-
-  // Assert
-  EXPECT_EQ(2, GetNumberOfTabsOpened(events));
-}
-
 TEST_F(BraveAdsUserActivityUtilTest, GetNumberOfUserActivityEvents) {
   // Arrange
   UserActivityManager::GetInstance().RecordEvent(
@@ -84,8 +43,8 @@ TEST_F(BraveAdsUserActivityUtilTest, GetNumberOfUserActivityEvents) {
   // Act
 
   // Assert
-  EXPECT_EQ(2, GetNumberOfUserActivityEvents(
-                   events, UserActivityEventType::kClickedLink));
+  EXPECT_EQ(2U, GetNumberOfUserActivityEvents(
+                    events, UserActivityEventType::kClickedLink));
 }
 
 TEST_F(BraveAdsUserActivityUtilTest,
@@ -101,8 +60,8 @@ TEST_F(BraveAdsUserActivityUtilTest,
   // Act
 
   // Assert
-  EXPECT_EQ(0, GetNumberOfUserActivityEvents(
-                   events, UserActivityEventType::kClosedTab));
+  EXPECT_EQ(0U, GetNumberOfUserActivityEvents(
+                    events, UserActivityEventType::kClosedTab));
 }
 
 TEST_F(BraveAdsUserActivityUtilTest,
@@ -115,8 +74,8 @@ TEST_F(BraveAdsUserActivityUtilTest,
   // Act
 
   // Assert
-  EXPECT_EQ(0, GetNumberOfUserActivityEvents(
-                   events, UserActivityEventType::kClosedTab));
+  EXPECT_EQ(0U, GetNumberOfUserActivityEvents(
+                    events, UserActivityEventType::kClosedTab));
 }
 
 TEST_F(BraveAdsUserActivityUtilTest, GetTimeSinceLastUserActivityEvent) {

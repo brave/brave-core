@@ -10,6 +10,7 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_util.h"
+#include "base/time/time.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
@@ -51,7 +52,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
     BindString(command, index++, conversion.type);
     BindString(command, index++, conversion.url_pattern);
     BindString(command, index++, conversion.advertiser_public_key);
-    BindInt(command, index++, conversion.observation_window);
+    BindInt(command, index++, conversion.observation_window.InDays());
     BindDouble(command, index++, conversion.expire_at.ToDoubleT());
 
     count++;
@@ -69,7 +70,7 @@ ConversionInfo GetFromRecord(mojom::DBRecordInfo* record) {
   conversion.type = ColumnString(record, 1);
   conversion.url_pattern = ColumnString(record, 2);
   conversion.advertiser_public_key = ColumnString(record, 3);
-  conversion.observation_window = ColumnInt(record, 4);
+  conversion.observation_window = base::Days(ColumnInt(record, 4));
   conversion.expire_at = base::Time::FromDoubleT(ColumnDouble(record, 5));
 
   return conversion;

@@ -275,7 +275,7 @@ TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
   redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(/*wallet*/ {});
 
   // Assert
-  EXPECT_EQ(1, privacy::GetUnblindedPaymentTokens().Count());
+  EXPECT_EQ(1U, privacy::GetUnblindedPaymentTokens().Count());
 }
 
 TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {

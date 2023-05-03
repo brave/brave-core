@@ -26,7 +26,7 @@ class VectorData final : public Data {
 
   // Make a "sparse" DataVector using points from |data|.
   // double is used for backward compatibility with the current code.
-  VectorData(int dimension_count, const std::map<uint32_t, double>& data);
+  VectorData(size_t dimension_count, const std::map<uint32_t, double>& data);
 
   // Explicit copy assignment && move operators is required because the class
   // inherits const member type_ that cannot be copied by default
@@ -49,8 +49,8 @@ class VectorData final : public Data {
   void Normalize();
 
   bool IsEmpty() const;
-  int GetDimensionCount() const;
-  int GetNonZeroElementCount() const;
+  size_t GetDimensionCount() const;
+  size_t GetNonZeroElementCount() const;
   float GetNorm() const;
 
   const std::vector<float>& GetData() const;

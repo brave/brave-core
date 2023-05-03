@@ -11,7 +11,7 @@ namespace brave_ads {
 
 PurchaseIntentSignalHistoryInfo::PurchaseIntentSignalHistoryInfo(
     const base::Time created_at,
-    const uint16_t weight)
+    const int weight)
     : created_at(created_at), weight(weight) {}
 
 bool operator==(const PurchaseIntentSignalHistoryInfo& lhs,

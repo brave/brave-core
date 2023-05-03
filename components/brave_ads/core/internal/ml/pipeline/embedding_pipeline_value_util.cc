@@ -67,8 +67,8 @@ absl::optional<EmbeddingPipelineInfo> EmbeddingPipelineFromValue(
     embedding_pipeline.embeddings[embedding_key] =
         VectorData(std::move(embedding));
 
-    embedding_pipeline.dimension =
-        embedding_pipeline.embeddings[embedding_key].GetDimensionCount();
+    embedding_pipeline.dimension = static_cast<int>(
+        embedding_pipeline.embeddings[embedding_key].GetDimensionCount());
   }
 
   if (embedding_pipeline.dimension == 1) {

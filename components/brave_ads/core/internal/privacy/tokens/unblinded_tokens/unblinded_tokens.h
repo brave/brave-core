@@ -35,7 +35,7 @@ class UnblindedTokens final {
 
   bool TokenExists(const UnblindedTokenInfo& unblinded_token);
 
-  int Count() const;
+  size_t Count() const;
 
   bool IsEmpty() const;
 

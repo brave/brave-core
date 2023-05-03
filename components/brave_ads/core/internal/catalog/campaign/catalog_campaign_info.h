@@ -30,11 +30,11 @@ struct CatalogCampaignInfo final {
   bool operator!=(const CatalogCampaignInfo&) const;
 
   std::string campaign_id;
-  unsigned int priority = 0;
+  int priority = 0;
   double ptr = 0.0;
   std::string start_at;
   std::string end_at;
-  unsigned int daily_cap = 0;
+  int daily_cap = 0;
   std::string advertiser_id;
   CatalogCreativeSetList creative_sets;
   CatalogDaypartList dayparts;

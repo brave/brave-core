@@ -6,20 +6,20 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/daypart_exclusion_rule.h"
 
 #include "base/ranges/algorithm.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/calendar/calendar_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/creative_daypart_info.h"
 
 namespace brave_ads {
 
 namespace {
 
 bool MatchDayOfWeek(const CreativeDaypartInfo& daypart,
-                    const std::string& day_of_week) {
-  return daypart.dow.find(day_of_week) != std::string::npos;
+                    const char day_of_week) {
+  return daypart.days_of_week.find(day_of_week) != std::string::npos;
 }
 
 bool MatchTimeSlot(const CreativeDaypartInfo& daypart, const int minutes) {
@@ -34,16 +34,15 @@ bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
 
   const base::Time now = base::Time::Now();
 
-  const int local_time_as_minutes = GetLocalTimeAsMinutes(now);
+  const int local_time_in_minutes = GetLocalTimeInMinutes(now);
 
   const int day_of_week = GetDayOfWeek(now, /*is_local*/ true);
-  const std::string day_of_week_as_string = base::NumberToString(day_of_week);
 
   return base::ranges::any_of(
-      creative_ad.dayparts, [day_of_week_as_string, local_time_as_minutes](
-                                const CreativeDaypartInfo& daypart) {
-        return MatchDayOfWeek(daypart, day_of_week_as_string) &&
-               MatchTimeSlot(daypart, local_time_as_minutes);
+      creative_ad.dayparts,
+      [day_of_week, local_time_in_minutes](const CreativeDaypartInfo& daypart) {
+        return MatchDayOfWeek(daypart, static_cast<char>('0' + day_of_week)) &&
+               MatchTimeSlot(daypart, local_time_in_minutes);
       });
 }
 

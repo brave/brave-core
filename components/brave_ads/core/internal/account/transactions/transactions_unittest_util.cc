@@ -46,13 +46,13 @@ TransactionInfo BuildTransaction(const double value,
   return BuildTransaction(value, confirmation_type, base::Time());
 }
 
-int GetTransactionCount() {
-  int count = 0;
+size_t GetTransactionCount() {
+  size_t count = 0;
 
   GetTransactionsForDateRange(
       DistantPast(), DistantFuture(),
       base::BindOnce(
-          [](int* count, const bool success,
+          [](size_t* count, const bool success,
              const TransactionList& transactions) mutable {
             CHECK(success);
             *count = transactions.size();

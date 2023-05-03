@@ -45,9 +45,7 @@ void CheckConversionAttributes(
   EXPECT_EQ(search_result_ad->conversion->type, "value6");
   EXPECT_EQ(search_result_ad->conversion->url_pattern, "value7");
   EXPECT_EQ(search_result_ad->conversion->advertiser_public_key, "value8");
-  EXPECT_EQ(
-      static_cast<size_t>(search_result_ad->conversion->observation_window),
-      1U);
+  EXPECT_EQ(search_result_ad->conversion->observation_window, 1);
 }
 
 }  // namespace

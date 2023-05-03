@@ -16,10 +16,10 @@
 namespace brave_ads {
 
 struct PurchaseIntentSignalHistoryInfo final {
-  PurchaseIntentSignalHistoryInfo(base::Time created_at, uint16_t weight);
+  PurchaseIntentSignalHistoryInfo(base::Time created_at, int weight);
 
   base::Time created_at;
-  uint16_t weight = 0;
+  int weight = 0;
 };
 
 bool operator==(const PurchaseIntentSignalHistoryInfo&,

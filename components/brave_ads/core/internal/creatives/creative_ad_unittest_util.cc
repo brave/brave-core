@@ -58,7 +58,7 @@ CreativeAdInfo BuildCreativeAd(const bool should_use_random_guids) {
   creative_ad.split_test_group = "";
 
   creative_ad.dayparts = {
-      {.dow = "0123456", .start_minute = 0, .end_minute = 1439}};
+      {.days_of_week = "0123456", .start_minute = 0, .end_minute = 1439}};
 
   creative_ad.geo_targets = {"US"};
 

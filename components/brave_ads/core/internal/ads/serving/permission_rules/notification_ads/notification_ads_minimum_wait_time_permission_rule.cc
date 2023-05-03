@@ -27,11 +27,9 @@ bool DoesRespectCap(const std::vector<base::Time>& history) {
     return false;
   }
 
-  const base::TimeDelta time_constraint =
-      base::Seconds(base::Time::kSecondsPerHour / ads_per_hour);
-
-  return DoesHistoryRespectRollingTimeConstraint(history, time_constraint,
-                                                 kMinimumWaitTimeCap);
+  return DoesHistoryRespectRollingTimeConstraint(
+      history, /*time_constraint*/ base::Hours(1) / ads_per_hour,
+      kMinimumWaitTimeCap);
 }
 
 }  // namespace

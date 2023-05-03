@@ -43,14 +43,14 @@ namespace {
 
 constexpr base::TimeDelta kRetryAfter = base::Seconds(15);
 
-constexpr int kMinimumUnblindedTokens = 20;
-constexpr int kMaximumUnblindedTokens = 50;
+constexpr size_t kMinimumUnblindedTokens = 20;
+constexpr size_t kMaximumUnblindedTokens = 50;
 
 bool ShouldRefillUnblindedTokens() {
   return privacy::UnblindedTokenCount() < kMinimumUnblindedTokens;
 }
 
-int CalculateAmountOfTokensToRefill() {
+size_t CalculateAmountOfTokensToRefill() {
   return kMaximumUnblindedTokens - privacy::UnblindedTokenCount();
 }
 
@@ -123,7 +123,7 @@ void RefillUnblindedTokens::RequestSignedTokens() {
   BLOG(1, "RequestSignedTokens");
   BLOG(2, "POST /v3/confirmation/token/{paymentId}");
 
-  const int count = CalculateAmountOfTokensToRefill();
+  const size_t count = CalculateAmountOfTokensToRefill();
   tokens_ = token_generator_->Generate(count);
 
   blinded_tokens_ = privacy::cbr::BlindTokens(tokens_);

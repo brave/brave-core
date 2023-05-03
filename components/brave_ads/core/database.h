@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_DATABASE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_DATABASE_H_
 
-#include <cstdint>
 #include <memory>
 
 #include "base/files/file_path.h"
@@ -37,8 +36,8 @@ class ADS_EXPORT Database final {
 
  private:
   mojom::DBCommandResponseInfo::StatusType Initialize(
-      int32_t version,
-      int32_t compatible_version,
+      int version,
+      int compatible_version,
       mojom::DBCommandResponseInfo* command_response);
 
   mojom::DBCommandResponseInfo::StatusType Execute(
@@ -50,8 +49,8 @@ class ADS_EXPORT Database final {
       mojom::DBCommandInfo* command,
       mojom::DBCommandResponseInfo* command_response);
 
-  mojom::DBCommandResponseInfo::StatusType Migrate(int32_t version,
-                                                   int32_t compatible_version);
+  mojom::DBCommandResponseInfo::StatusType Migrate(int version,
+                                                   int compatible_version);
 
   void OnErrorCallback(int error, sql::Statement* statement);
 

@@ -175,9 +175,8 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
   conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion.type = "postview";
   conversion.url_pattern = "https://www.brave.com/1/*";
-  conversion.observation_window = 30;
-  conversion.expire_at =
-      DistantFuture() + base::Days(conversion.observation_window);
+  conversion.observation_window = base::Days(30);
+  conversion.expire_at = DistantFuture() + conversion.observation_window;
   conversions.push_back(conversion);
 
   // Creative Sets
@@ -208,13 +207,13 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
   CatalogDaypartList catalog_dayparts;
 
   CatalogDaypartInfo catalog_daypart_1;
-  catalog_daypart_1.dow = "012";
+  catalog_daypart_1.days_of_week = "012";
   catalog_daypart_1.start_minute = 0;
   catalog_daypart_1.end_minute = 1439;
   catalog_dayparts.push_back(catalog_daypart_1);
 
   CatalogDaypartInfo catalog_daypart_2;
-  catalog_daypart_2.dow = "345";
+  catalog_daypart_2.days_of_week = "345";
   catalog_daypart_2.start_minute = 1'000;
   catalog_daypart_2.end_minute = 1'200;
   catalog_dayparts.push_back(catalog_daypart_2);
@@ -374,9 +373,8 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
   conversion.creative_set_id = "741cd2ba-3100-45f2-be1e-acedd24e0067";
   conversion.type = "postclick";
   conversion.url_pattern = "https://www.brave.com/2/*";
-  conversion.observation_window = 7;
-  conversion.expire_at =
-      DistantFuture() + base::Days(conversion.observation_window);
+  conversion.observation_window = base::Days(7);
+  conversion.expire_at = DistantFuture() + conversion.observation_window;
   conversions.push_back(conversion);
 
   // Creative Sets
@@ -405,10 +403,8 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
   // Dayparts
   CatalogDaypartList catalog_dayparts;
 
-  CatalogDaypartInfo catalog_daypart;
-  catalog_daypart.dow = "0123456";
-  catalog_daypart.start_minute = 0;
-  catalog_daypart.end_minute = 1439;
+  CatalogDaypartInfo catalog_daypart = {
+      .days_of_week = "0123456", .start_minute = 0, .end_minute = 1439};
   catalog_dayparts.push_back(catalog_daypart);
 
   // Geo Targets

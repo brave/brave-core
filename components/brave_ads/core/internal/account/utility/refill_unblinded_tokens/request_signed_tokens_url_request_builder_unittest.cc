@@ -32,7 +32,7 @@ std::vector<privacy::cbr::Token> GetTokens(const int count) {
       R"(YbH2x8oMkQrPR0uX6h8LrcgXSrPlSg60FFfp8V+GM8eiCQTwPJ643kilmlKU/qNZM3e28Hw3W4GPAELnm/YxFzG6qJ4B1wVTBdl/myIa0M3QIdoOn2//+JH2u4jRtIgN)",
       R"(0/KAtyvRoYLhsQnwu4McuG7pglpDpi2BXQi//FwGu8m/O+iTh1Lijzpt2RCnotGh0Wid9efnojrYQH5NJv9GYOhUDX7yYHVjUorc6y6SkUaO1aATc42RciRQ0cmuQFQC)"};
 
-  const int modulo = tokens_base64.size();
+  const size_t modulo = tokens_base64.size();
 
   std::vector<privacy::cbr::Token> tokens;
   for (int i = 0; i < count; i++) {

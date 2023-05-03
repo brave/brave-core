@@ -48,7 +48,7 @@ TEST_F(BraveAdsAdsReceivedUtilTest, GetAdsReceivedForDateRange) {
   // Act
 
   // Assert
-  EXPECT_EQ(2, GetAdsReceivedForDateRange(transactions, from_time, to_time));
+  EXPECT_EQ(2U, GetAdsReceivedForDateRange(transactions, from_time, to_time));
 }
 
 TEST_F(BraveAdsAdsReceivedUtilTest, DoNotGetAdsReceivedForDateRange) {
@@ -73,7 +73,7 @@ TEST_F(BraveAdsAdsReceivedUtilTest, DoNotGetAdsReceivedForDateRange) {
   // Act
 
   // Assert
-  EXPECT_EQ(0, GetAdsReceivedForDateRange(transactions, from_time, to_time));
+  EXPECT_EQ(0U, GetAdsReceivedForDateRange(transactions, from_time, to_time));
 }
 
 TEST_F(BraveAdsAdsReceivedUtilTest, GetAdsReceivedForNoTransactions) {
@@ -86,7 +86,7 @@ TEST_F(BraveAdsAdsReceivedUtilTest, GetAdsReceivedForNoTransactions) {
   // Act
 
   // Assert
-  EXPECT_EQ(0, GetAdsReceivedForDateRange(transactions, from_time, to_time));
+  EXPECT_EQ(0U, GetAdsReceivedForDateRange(transactions, from_time, to_time));
 }
 
 }  // namespace brave_ads

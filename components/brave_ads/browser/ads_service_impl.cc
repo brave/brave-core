@@ -99,7 +99,7 @@ namespace {
 
 constexpr base::TimeDelta kRestartBatAdsServiceDelay = base::Seconds(10);
 
-constexpr unsigned int kMaximumNumberOfTimesToRetryNetworkRequests = 1;
+constexpr int kMaximumNumberOfTimesToRetryNetworkRequests = 1;
 constexpr int kHttpUpgradeRequiredStatusResponseCode = 426;
 
 constexpr char kNotificationAdUrlPrefix[] = "https://www.brave.com/ads/?";

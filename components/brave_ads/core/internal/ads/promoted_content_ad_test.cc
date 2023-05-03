@@ -52,8 +52,8 @@ TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerViewedEvent) {
                                 ConfirmationType::kServed));
   EXPECT_EQ(1U, GetAdEventCount(AdType::kPromotedContentAd,
                                 ConfirmationType::kViewed));
-  EXPECT_EQ(1, GetHistoryItemCount());
-  EXPECT_EQ(1, GetTransactionCount());
+  EXPECT_EQ(1U, GetHistoryItemCount());
+  EXPECT_EQ(1U, GetTransactionCount());
 }
 
 TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerClickedEvent) {
@@ -77,8 +77,8 @@ TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerClickedEvent) {
                                 ConfirmationType::kViewed));
   EXPECT_EQ(1U, GetAdEventCount(AdType::kPromotedContentAd,
                                 ConfirmationType::kClicked));
-  EXPECT_EQ(2, GetHistoryItemCount());
-  EXPECT_EQ(2, GetTransactionCount());
+  EXPECT_EQ(2U, GetHistoryItemCount());
+  EXPECT_EQ(2U, GetTransactionCount());
 }
 
 }  // namespace brave_ads

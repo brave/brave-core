@@ -18,7 +18,7 @@ T PrioritizeCreativeAds(const T& creative_ads) {
     return {};
   }
 
-  const base::flat_map<unsigned int, T> buckets =
+  const base::flat_map<int, T> buckets =
       SortCreativeAdsIntoPrioritizedBuckets(creative_ads);
   if (buckets.empty()) {
     return {};

@@ -16,14 +16,6 @@
 
 namespace brave_ads::database::table {
 
-namespace {
-
-base::Time CalculateExpireAtTime(const int observation_window) {
-  return Now() + base::Days(observation_window);
-}
-
-}  // namespace
-
 class BraveAdsConversionsDatabaseTableTest : public UnitTestBase {
  protected:
   Conversions database_table_;
@@ -51,18 +43,16 @@ TEST_F(BraveAdsConversionsDatabaseTableTest, SaveConversions) {
   conversion_1.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion_1.type = "postview";
   conversion_1.url_pattern = "https://www.brave.com/*";
-  conversion_1.observation_window = 3;
-  conversion_1.expire_at =
-      CalculateExpireAtTime(conversion_1.observation_window);
+  conversion_1.observation_window = base::Days(3);
+  conversion_1.expire_at = Now() + conversion_1.observation_window;
   conversions.push_back(conversion_1);
 
   ConversionInfo conversion_2;
   conversion_2.creative_set_id = "eaa6224a-46a4-4c48-9c2b-c264c0067f04";
   conversion_2.type = "postclick";
   conversion_2.url_pattern = "https://www.brave.com/signup/*";
-  conversion_2.observation_window = 30;
-  conversion_2.expire_at =
-      CalculateExpireAtTime(conversion_2.observation_window);
+  conversion_2.observation_window = base::Days(30);
+  conversion_2.expire_at = Now() + conversion_2.observation_window;
   conversions.push_back(conversion_2);
 
   // Act
@@ -86,8 +76,8 @@ TEST_F(BraveAdsConversionsDatabaseTableTest, DoNotSaveDuplicateConversion) {
   conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion.type = "postview";
   conversion.url_pattern = "https://www.brave.com/*";
-  conversion.observation_window = 3;
-  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversion.observation_window = base::Days(3);
+  conversion.expire_at = Now() + conversion.observation_window;
   conversions.push_back(conversion);
 
   SaveConversions(conversions);
@@ -113,27 +103,24 @@ TEST_F(BraveAdsConversionsDatabaseTableTest, PurgeExpiredConversions) {
   conversion_1.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion_1.type = "postview";
   conversion_1.url_pattern = "https://www.brave.com/*";
-  conversion_1.observation_window = 7;
-  conversion_1.expire_at =
-      CalculateExpireAtTime(conversion_1.observation_window);
+  conversion_1.observation_window = base::Days(7);
+  conversion_1.expire_at = Now() + conversion_1.observation_window;
   conversions.push_back(conversion_1);
 
   ConversionInfo conversion_2;  // Should be purged
   conversion_2.creative_set_id = "eaa6224a-46a4-4c48-9c2b-c264c0067f04";
   conversion_2.type = "postclick";
   conversion_2.url_pattern = "https://www.brave.com/signup/*";
-  conversion_2.observation_window = 3;
-  conversion_2.expire_at =
-      CalculateExpireAtTime(conversion_2.observation_window);
+  conversion_2.observation_window = base::Days(3);
+  conversion_2.expire_at = Now() + conversion_2.observation_window;
   conversions.push_back(conversion_2);
 
   ConversionInfo conversion_3;
   conversion_3.creative_set_id = "8e9f0c2f-1640-463c-902d-ca711789287f";
   conversion_3.type = "postview";
   conversion_3.url_pattern = "https://www.brave.com/*";
-  conversion_3.observation_window = 30;
-  conversion_3.expire_at =
-      CalculateExpireAtTime(conversion_3.observation_window);
+  conversion_3.observation_window = base::Days(30);
+  conversion_3.expire_at = Now() + conversion_3.observation_window;
   conversions.push_back(conversion_3);
 
   SaveConversions(conversions);
@@ -164,9 +151,8 @@ TEST_F(BraveAdsConversionsDatabaseTableTest,
   conversion_1.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion_1.type = "postview";
   conversion_1.url_pattern = "https://www.brave.com/1";
-  conversion_1.observation_window = 3;
-  conversion_1.expire_at =
-      CalculateExpireAtTime(conversion_1.observation_window);
+  conversion_1.observation_window = base::Days(3);
+  conversion_1.expire_at = Now() + conversion_1.observation_window;
   conversions.push_back(conversion_1);
 
   SaveConversions(conversions);
@@ -176,9 +162,8 @@ TEST_F(BraveAdsConversionsDatabaseTableTest,
   conversion_2.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion_2.type = "postview";
   conversion_2.url_pattern = "https://www.brave.com/2";
-  conversion_2.observation_window = 30;
-  conversion_2.expire_at =
-      CalculateExpireAtTime(conversion_2.observation_window);
+  conversion_2.observation_window = base::Days(30);
+  conversion_2.expire_at = Now() + conversion_2.observation_window;
   conversions.push_back(conversion_2);
 
   SaveConversions(conversions);

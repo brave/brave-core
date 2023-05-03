@@ -170,7 +170,7 @@ TEST_F(BraveAdsRefillUnblindedTokensTest, RefillUnblindedTokens) {
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_EQ(50, privacy::UnblindedTokenCount());
+  EXPECT_EQ(50U, privacy::UnblindedTokenCount());
 }
 
 TEST_F(BraveAdsRefillUnblindedTokensTest,
@@ -224,7 +224,7 @@ TEST_F(BraveAdsRefillUnblindedTokensTest,
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_EQ(0, privacy::UnblindedTokenCount());
+  EXPECT_EQ(0U, privacy::UnblindedTokenCount());
 }
 
 TEST_F(BraveAdsRefillUnblindedTokensTest, IssuersPublicKeyMismatch) {
@@ -264,7 +264,7 @@ TEST_F(BraveAdsRefillUnblindedTokensTest, IssuersPublicKeyMismatch) {
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_EQ(0, privacy::UnblindedTokenCount());
+  EXPECT_EQ(0U, privacy::UnblindedTokenCount());
 }
 
 TEST_F(BraveAdsRefillUnblindedTokensTest, InvalidIssuersFormat) {
@@ -290,7 +290,7 @@ TEST_F(BraveAdsRefillUnblindedTokensTest, InvalidIssuersFormat) {
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_EQ(0, privacy::UnblindedTokenCount());
+  EXPECT_EQ(0U, privacy::UnblindedTokenCount());
 }
 
 TEST_F(BraveAdsRefillUnblindedTokensTest, InvalidWallet) {
@@ -315,7 +315,7 @@ TEST_F(BraveAdsRefillUnblindedTokensTest, InvalidWallet) {
   refill_unblinded_tokens_->MaybeRefill(/*wallet*/ {});
 
   // Assert
-  EXPECT_EQ(0, privacy::UnblindedTokenCount());
+  EXPECT_EQ(0U, privacy::UnblindedTokenCount());
 }
 
 TEST_F(BraveAdsRefillUnblindedTokensTest,
@@ -420,7 +420,7 @@ TEST_F(BraveAdsRefillUnblindedTokensTest,
   FastForwardClockToNextPendingTask();
 
   // Assert
-  EXPECT_EQ(50, privacy::UnblindedTokenCount());
+  EXPECT_EQ(50U, privacy::UnblindedTokenCount());
 }
 
 TEST_F(BraveAdsRefillUnblindedTokensTest, RequestSignedTokensMissingNonce) {
@@ -455,7 +455,7 @@ TEST_F(BraveAdsRefillUnblindedTokensTest, RequestSignedTokensMissingNonce) {
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_EQ(0, privacy::UnblindedTokenCount());
+  EXPECT_EQ(0U, privacy::UnblindedTokenCount());
 }
 
 TEST_F(BraveAdsRefillUnblindedTokensTest,
@@ -565,7 +565,7 @@ TEST_F(BraveAdsRefillUnblindedTokensTest,
   FastForwardClockToNextPendingTask();
 
   // Assert
-  EXPECT_EQ(50, privacy::UnblindedTokenCount());
+  EXPECT_EQ(50U, privacy::UnblindedTokenCount());
 }
 
 TEST_F(BraveAdsRefillUnblindedTokensTest, GetSignedTokensInvalidResponse) {
@@ -610,7 +610,7 @@ TEST_F(BraveAdsRefillUnblindedTokensTest, GetSignedTokensInvalidResponse) {
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_EQ(0, privacy::UnblindedTokenCount());
+  EXPECT_EQ(0U, privacy::UnblindedTokenCount());
 }
 
 TEST_F(BraveAdsRefillUnblindedTokensTest, GetSignedTokensMissingPublicKey) {
@@ -711,7 +711,7 @@ TEST_F(BraveAdsRefillUnblindedTokensTest, GetSignedTokensMissingPublicKey) {
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_EQ(0, privacy::UnblindedTokenCount());
+  EXPECT_EQ(0U, privacy::UnblindedTokenCount());
 }
 
 TEST_F(BraveAdsRefillUnblindedTokensTest,
@@ -813,7 +813,7 @@ TEST_F(BraveAdsRefillUnblindedTokensTest,
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_EQ(0, privacy::UnblindedTokenCount());
+  EXPECT_EQ(0U, privacy::UnblindedTokenCount());
 }
 
 TEST_F(BraveAdsRefillUnblindedTokensTest, GetSignedTokensMissingSignedTokens) {
@@ -863,7 +863,7 @@ TEST_F(BraveAdsRefillUnblindedTokensTest, GetSignedTokensMissingSignedTokens) {
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_EQ(0, privacy::UnblindedTokenCount());
+  EXPECT_EQ(0U, privacy::UnblindedTokenCount());
 }
 
 TEST_F(BraveAdsRefillUnblindedTokensTest, GetInvalidSignedTokens) {
@@ -965,7 +965,7 @@ TEST_F(BraveAdsRefillUnblindedTokensTest, GetInvalidSignedTokens) {
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_EQ(0, privacy::UnblindedTokenCount());
+  EXPECT_EQ(0U, privacy::UnblindedTokenCount());
 }
 
 TEST_F(BraveAdsRefillUnblindedTokensTest,
@@ -996,7 +996,7 @@ TEST_F(BraveAdsRefillUnblindedTokensTest,
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_EQ(50, privacy::UnblindedTokenCount());
+  EXPECT_EQ(50U, privacy::UnblindedTokenCount());
 }
 
 TEST_F(BraveAdsRefillUnblindedTokensTest, RefillIfBelowTheMinimumThreshold) {
@@ -1081,7 +1081,7 @@ TEST_F(BraveAdsRefillUnblindedTokensTest, RefillIfBelowTheMinimumThreshold) {
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_EQ(50, privacy::UnblindedTokenCount());
+  EXPECT_EQ(50U, privacy::UnblindedTokenCount());
 }
 
 }  // namespace brave_ads

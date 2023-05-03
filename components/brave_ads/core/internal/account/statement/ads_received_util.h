@@ -14,9 +14,9 @@ class Time;
 
 namespace brave_ads {
 
-int GetAdsReceivedForDateRange(const TransactionList& transactions,
-                               base::Time from_time,
-                               base::Time to_time);
+size_t GetAdsReceivedForDateRange(const TransactionList& transactions,
+                                  base::Time from_time,
+                                  base::Time to_time);
 
 }  // namespace brave_ads
 

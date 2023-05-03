@@ -87,7 +87,7 @@ TEST_F(BraveAdsUnblindedTokenUtilTest, UnblindedTokenCount) {
   // Act
 
   // Assert
-  EXPECT_EQ(3, UnblindedTokenCount());
+  EXPECT_EQ(3U, UnblindedTokenCount());
 }
 
 TEST_F(BraveAdsUnblindedTokenUtilTest, IsValid) {

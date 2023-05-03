@@ -102,7 +102,7 @@ std::string RequestSignedTokensUrlRequestBuilder::BuildSignatureHeaderValue(
   std::string concatenated_header;
   std::string concatenated_message;
 
-  unsigned int index = 0;
+  size_t index = 0;
   for (const auto& [header, value] : headers) {
     if (index != 0) {
       concatenated_header += " ";

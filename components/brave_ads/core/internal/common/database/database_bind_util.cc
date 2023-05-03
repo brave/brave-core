@@ -76,7 +76,7 @@ void Bind(sql::Statement* statement,
   }
 }
 
-void BindNull(mojom::DBCommandInfo* command, const int_fast16_t index) {
+void BindNull(mojom::DBCommandInfo* command, const int32_t index) {
   DCHECK(command);
 
   mojom::DBCommandBindingInfoPtr binding = mojom::DBCommandBindingInfo::New();
@@ -87,7 +87,7 @@ void BindNull(mojom::DBCommandInfo* command, const int_fast16_t index) {
 }
 
 void BindInt(mojom::DBCommandInfo* command,
-             const int index,
+             const int32_t index,
              const int32_t value) {
   DCHECK(command);
 
@@ -99,7 +99,7 @@ void BindInt(mojom::DBCommandInfo* command,
 }
 
 void BindInt64(mojom::DBCommandInfo* command,
-               const int index,
+               const int32_t index,
                const int64_t value) {
   DCHECK(command);
 
@@ -111,7 +111,7 @@ void BindInt64(mojom::DBCommandInfo* command,
 }
 
 void BindDouble(mojom::DBCommandInfo* command,
-                const int index,
+                const int32_t index,
                 const double value) {
   DCHECK(command);
 
@@ -123,7 +123,7 @@ void BindDouble(mojom::DBCommandInfo* command,
 }
 
 void BindBool(mojom::DBCommandInfo* command,
-              const int index,
+              const int32_t index,
               const bool value) {
   DCHECK(command);
 
@@ -135,7 +135,7 @@ void BindBool(mojom::DBCommandInfo* command,
 }
 
 void BindString(mojom::DBCommandInfo* command,
-                const int index,
+                const int32_t index,
                 const std::string& value) {
   DCHECK(command);
 
