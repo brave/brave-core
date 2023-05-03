@@ -43,7 +43,7 @@ TransactionInfo BuildTransaction(const double value,
 
 TransactionInfo BuildTransaction(const double value,
                                  const ConfirmationType& confirmation_type) {
-  return BuildTransaction(value, confirmation_type, base::Time());
+  return BuildTransaction(value, confirmation_type, DistantPast());
 }
 
 size_t GetTransactionCount() {
