@@ -8,9 +8,11 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_feature.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversions_info.h"
+#include "brave/components/brave_ads/core/internal/resources/country_components.h"
 #include "brave/components/brave_ads/core/internal/resources/resources_util_impl.h"
 
 namespace brave_ads {
@@ -19,9 +21,13 @@ namespace {
 constexpr char kResourceId[] = "nnqccijfhvzwyrxpxwjrpmynaiazctqb";
 }  // namespace
 
-ConversionsResource::ConversionsResource() = default;
+ConversionsResource::ConversionsResource() {
+  AdsClientHelper::AddObserver(this);
+}
 
-ConversionsResource::~ConversionsResource() = default;
+ConversionsResource::~ConversionsResource() {
+  AdsClientHelper::RemoveObserver(this);
+}
 
 void ConversionsResource::Load() {
   LoadAndParseResource(
@@ -29,6 +35,8 @@ void ConversionsResource::Load() {
       base::BindOnce(&ConversionsResource::OnLoadAndParseResource,
                      weak_factory_.GetWeakPtr()));
 }
+
+///////////////////////////////////////////////////////////////////////////////
 
 void ConversionsResource::OnLoadAndParseResource(
     ResourceParsingErrorOr<ConversionsInfo> result) {
@@ -40,14 +48,26 @@ void ConversionsResource::OnLoadAndParseResource(
   }
 
   BLOG(1, "Successfully loaded " << kResourceId << " conversions resource");
-  conversions_ = std::move(result).value();
 
-  BLOG(1, "Parsed conversions resource version " << conversions_.version);
+  conversions_ = std::move(result).value();
 
   is_initialized_ = true;
 
-  BLOG(1,
-       "Successfully initialized " << kResourceId << " conversions resource");
+  BLOG(1, "Successfully initialized " << kResourceId
+                                      << " conversions resource version "
+                                      << kConversionsResourceVersion.Get());
+}
+
+void ConversionsResource::OnNotifyLocaleDidChange(
+    const std::string& /*locale*/) {
+  Load();
+}
+
+void ConversionsResource::OnNotifyDidUpdateResourceComponent(
+    const std::string& id) {
+  if (IsValidCountryComponentId(id)) {
+    Load();
+  }
 }
 
 }  // namespace brave_ads

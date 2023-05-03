@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 
@@ -23,8 +22,7 @@ class PurchaseIntentResource;
 struct PurchaseIntentSignalInfo;
 struct PurchaseIntentSiteInfo;
 
-class PurchaseIntentProcessor final : public AdsClientNotifierObserver,
-                                      public TabManagerObserver {
+class PurchaseIntentProcessor final : public TabManagerObserver {
  public:
   explicit PurchaseIntentProcessor(PurchaseIntentResource& resource);
 
@@ -46,10 +44,6 @@ class PurchaseIntentProcessor final : public AdsClientNotifierObserver,
   SegmentList GetSegmentsForSearchQuery(const std::string& search_query) const;
 
   uint16_t GetFunnelWeightForSearchQuery(const std::string& search_query) const;
-
-  // AdsClientNotifierObserver:
-  void OnNotifyLocaleDidChange(const std::string& locale) override;
-  void OnNotifyDidUpdateResourceComponent(const std::string& id) override;
 
   // TabManagerObserver:
   void OnTextContentDidChange(int32_t tab_id,

@@ -6,13 +6,16 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_RESOURCE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_RESOURCE_H_
 
+#include <string>
+
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_info.h"
-#include "brave/components/brave_ads/core/internal/resources/parsing_error_or.h"
+#include "brave/components/brave_ads/core/internal/resources/resource_parsing_error_or.h"
 
 namespace brave_ads {
 
-class PurchaseIntentResource final {
+class PurchaseIntentResource final : public AdsClientNotifierObserver {
  public:
   PurchaseIntentResource();
 
@@ -22,17 +25,21 @@ class PurchaseIntentResource final {
   PurchaseIntentResource(PurchaseIntentResource&&) noexcept = delete;
   PurchaseIntentResource& operator=(PurchaseIntentResource&&) noexcept = delete;
 
-  ~PurchaseIntentResource();
+  ~PurchaseIntentResource() override;
 
   bool IsInitialized() const { return is_initialized_; }
 
   void Load();
 
-  const PurchaseIntentInfo* Get() const;
+  const PurchaseIntentInfo& get() const { return purchase_intent_; }
 
  private:
   void OnLoadAndParseResource(
       ResourceParsingErrorOr<PurchaseIntentInfo> result);
+
+  // AdsClientNotifierObserver:
+  void OnNotifyLocaleDidChange(const std::string& locale) override;
+  void OnNotifyDidUpdateResourceComponent(const std::string& id) override;
 
   bool is_initialized_ = false;
 

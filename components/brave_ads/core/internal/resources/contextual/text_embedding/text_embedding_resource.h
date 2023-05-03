@@ -6,13 +6,16 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_CONTEXTUAL_TEXT_EMBEDDING_TEXT_EMBEDDING_RESOURCE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_CONTEXTUAL_TEXT_EMBEDDING_TEXT_EMBEDDING_RESOURCE_H_
 
+#include <string>
+
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_processing.h"
-#include "brave/components/brave_ads/core/internal/resources/parsing_error_or.h"
+#include "brave/components/brave_ads/core/internal/resources/resource_parsing_error_or.h"
 
 namespace brave_ads {
 
-class TextEmbeddingResource final {
+class TextEmbeddingResource final : public AdsClientNotifierObserver {
  public:
   TextEmbeddingResource();
 
@@ -22,17 +25,23 @@ class TextEmbeddingResource final {
   TextEmbeddingResource(TextEmbeddingResource&&) noexcept = delete;
   TextEmbeddingResource& operator=(TextEmbeddingResource&&) noexcept = delete;
 
-  ~TextEmbeddingResource();
+  ~TextEmbeddingResource() override;
 
   bool IsInitialized() const;
 
   void Load();
 
-  const ml::pipeline::EmbeddingProcessing* Get() const;
+  const ml::pipeline::EmbeddingProcessing& get() const {
+    return embedding_processing_;
+  }
 
  private:
   void OnLoadAndParseResource(
       ResourceParsingErrorOr<ml::pipeline::EmbeddingProcessing> result);
+
+  // AdsClientNotifierObserver:
+  void OnNotifyLocaleDidChange(const std::string& locale) override;
+  void OnNotifyDidUpdateResourceComponent(const std::string& id) override;
 
   ml::pipeline::EmbeddingProcessing embedding_processing_;
 

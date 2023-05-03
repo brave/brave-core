@@ -16,7 +16,6 @@
 #include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
@@ -27,7 +26,6 @@
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversions_info.h"
-#include "brave/components/brave_ads/core/internal/resources/country_components.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave_base/random.h"
 #include "third_party/re2/src/re2/re2.h"
@@ -202,12 +200,10 @@ ConversionList SortConversions(const ConversionList& conversions) {
 }  // namespace
 
 Conversions::Conversions() {
-  AdsClientHelper::AddObserver(this);
   TabManager::GetInstance().AddObserver(this);
 }
 
 Conversions::~Conversions() {
-  AdsClientHelper::RemoveObserver(this);
   TabManager::GetInstance().RemoveObserver(this);
 }
 
@@ -574,21 +570,11 @@ void Conversions::NotifyConversionFailed(
   }
 }
 
-void Conversions::OnNotifyLocaleDidChange(const std::string& /*locale*/) {
-  resource_.Load();
-}
-
-void Conversions::OnNotifyDidUpdateResourceComponent(const std::string& id) {
-  if (IsValidCountryComponentId(id)) {
-    resource_.Load();
-  }
-}
-
 void Conversions::OnHtmlContentDidChange(
     const int32_t /*tab_id*/,
     const std::vector<GURL>& redirect_chain,
     const std::string& content) {
-  MaybeConvert(redirect_chain, content, resource_.get()->id_patterns);
+  MaybeConvert(redirect_chain, content, resource_.get().id_patterns);
 }
 
 }  // namespace brave_ads

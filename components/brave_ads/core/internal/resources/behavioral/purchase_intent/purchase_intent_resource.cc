@@ -11,6 +11,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_info.h"
+#include "brave/components/brave_ads/core/internal/resources/country_components.h"
 #include "brave/components/brave_ads/core/internal/resources/resources_util_impl.h"
 
 namespace brave_ads {
@@ -19,9 +20,13 @@ namespace {
 constexpr char kResourceId[] = "bejenkminijgplakmkmcgkhjjnkelbld";
 }  // namespace
 
-PurchaseIntentResource::PurchaseIntentResource() = default;
+PurchaseIntentResource::PurchaseIntentResource() {
+  AdsClientHelper::AddObserver(this);
+}
 
-PurchaseIntentResource::~PurchaseIntentResource() = default;
+PurchaseIntentResource::~PurchaseIntentResource() {
+  AdsClientHelper::RemoveObserver(this);
+}
 
 void PurchaseIntentResource::Load() {
   LoadAndParseResource(
@@ -29,6 +34,8 @@ void PurchaseIntentResource::Load() {
       base::BindOnce(&PurchaseIntentResource::OnLoadAndParseResource,
                      weak_factory_.GetWeakPtr()));
 }
+
+///////////////////////////////////////////////////////////////////////////////
 
 void PurchaseIntentResource::OnLoadAndParseResource(
     ResourceParsingErrorOr<PurchaseIntentInfo> result) {
@@ -41,19 +48,26 @@ void PurchaseIntentResource::OnLoadAndParseResource(
   }
 
   BLOG(1, "Successfully loaded " << kResourceId << " purchase intent resource");
-  purchase_intent_ = std::move(result).value();
 
-  BLOG(1,
-       "Parsed purchase intent resource version " << purchase_intent_.version);
+  purchase_intent_ = std::move(result).value();
 
   is_initialized_ = true;
 
   BLOG(1, "Successfully initialized " << kResourceId
-                                      << " purchase intent resource");
+                                      << " purchase intent resource version "
+                                      << kPurchaseIntentResourceVersion.Get());
 }
 
-const PurchaseIntentInfo* PurchaseIntentResource::Get() const {
-  return &purchase_intent_;
+void PurchaseIntentResource::OnNotifyLocaleDidChange(
+    const std::string& /*locale*/) {
+  Load();
+}
+
+void PurchaseIntentResource::OnNotifyDidUpdateResourceComponent(
+    const std::string& id) {
+  if (IsValidCountryComponentId(id)) {
+    Load();
+  }
 }
 
 }  // namespace brave_ads

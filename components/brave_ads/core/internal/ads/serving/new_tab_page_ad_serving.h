@@ -44,7 +44,7 @@ class NewTabPageAdServing final {
   void MaybeServeAd(MaybeServeNewTabPageAdCallback callback);
 
  private:
-  bool IsSupported() const { return static_cast<bool>(eligible_ads_); }
+  bool IsSupported() const { return bool{eligible_ads_}; }
 
   void OnBuildUserModel(MaybeServeNewTabPageAdCallback callback,
                         const UserModelInfo& user_model);

@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/processors/behavioral/purchase_intent/purchase_intent_processor.h"
 
 #include <cstdint>
+#include <memory>
 
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_model.h"
@@ -20,16 +21,30 @@
 
 namespace brave_ads {
 
-class BraveAdsPurchaseIntentProcessorTest : public UnitTestBase {};
+class BraveAdsPurchaseIntentProcessorTest : public UnitTestBase {
+ protected:
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    resource_ = std::make_unique<PurchaseIntentResource>();
+  }
+
+  bool LoadResource() {
+    resource_->Load();
+    task_environment_.RunUntilIdle();
+    return resource_->IsInitialized();
+  }
+
+  std::unique_ptr<PurchaseIntentResource> resource_;
+};
 
 TEST_F(BraveAdsPurchaseIntentProcessorTest,
        DoNotProcessIfResourceIsNotInitialized) {
   // Arrange
-  PurchaseIntentResource resource;
 
   // Act
   const GURL url = GURL("https://www.brave.com/test?foo=bar");
-  PurchaseIntentProcessor processor(resource);
+  PurchaseIntentProcessor processor(*resource_);
   processor.Process(url);
 
   // Assert
@@ -41,13 +56,11 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest,
 
 TEST_F(BraveAdsPurchaseIntentProcessorTest, DoNotProcessForInvalidUrl) {
   // Arrange
-  PurchaseIntentResource resource;
-  resource.Load();
-  task_environment_.RunUntilIdle();
+  ASSERT_TRUE(LoadResource());
 
   // Act
   const GURL url = GURL("invalid_url");
-  PurchaseIntentProcessor processor(resource);
+  PurchaseIntentProcessor processor(*resource_);
   processor.Process(url);
 
   // Assert
@@ -59,9 +72,7 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, DoNotProcessForInvalidUrl) {
 
 TEST_F(BraveAdsPurchaseIntentProcessorTest, NeverProcessed) {
   // Arrange
-  PurchaseIntentResource resource;
-  resource.Load();
-  task_environment_.RunUntilIdle();
+  ASSERT_TRUE(LoadResource());
 
   // Act
   const PurchaseIntentModel model;
@@ -76,13 +87,11 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, NeverProcessed) {
 
 TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessUrl) {
   // Arrange
-  PurchaseIntentResource resource;
-  resource.Load();
-  task_environment_.RunUntilIdle();
+  ASSERT_TRUE(LoadResource());
 
   // Act
   const GURL url = GURL("https://www.brave.com/test?foo=bar");
-  PurchaseIntentProcessor processor(resource);
+  PurchaseIntentProcessor processor(*resource_);
   processor.Process(url);
 
   // Assert
@@ -101,12 +110,10 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessUrl) {
 
 TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingUrls) {
   // Arrange
-  PurchaseIntentResource resource;
-  resource.Load();
-  task_environment_.RunUntilIdle();
+  ASSERT_TRUE(LoadResource());
 
   // Act
-  PurchaseIntentProcessor processor(resource);
+  PurchaseIntentProcessor processor(*resource_);
 
   const GURL url = GURL("https://www.brave.com/test?foo=bar");
   processor.Process(url);
@@ -132,12 +139,10 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingUrls) {
 
 TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueUrls) {
   // Arrange
-  PurchaseIntentResource resource;
-  resource.Load();
-  task_environment_.RunUntilIdle();
+  ASSERT_TRUE(LoadResource());
 
   // Act
-  PurchaseIntentProcessor processor(resource);
+  PurchaseIntentProcessor processor(*resource_);
 
   const base::Time now_1 = Now();
   const GURL url_1 = GURL("https://www.brave.com/test?foo=bar");
@@ -168,12 +173,10 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueUrls) {
 
 TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingKeywords) {
   // Arrange
-  PurchaseIntentResource resource;
-  resource.Load();
-  task_environment_.RunUntilIdle();
+  ASSERT_TRUE(LoadResource());
 
   // Act
-  PurchaseIntentProcessor processor(resource);
+  PurchaseIntentProcessor processor(*resource_);
 
   const base::Time now_1 = Now();
   const GURL url_1 =
@@ -204,12 +207,10 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingKeywords) {
 
 TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueKeywords) {
   // Arrange
-  PurchaseIntentResource resource;
-  resource.Load();
-  task_environment_.RunUntilIdle();
+  ASSERT_TRUE(LoadResource());
 
   // Act
-  PurchaseIntentProcessor processor(resource);
+  PurchaseIntentProcessor processor(*resource_);
 
   const base::Time now_1 = Now();
   const GURL url_1 =
@@ -239,12 +240,10 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueKeywords) {
 
 TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessSegmentAndFunnelKeywords) {
   // Arrange
-  PurchaseIntentResource resource;
-  resource.Load();
-  task_environment_.RunUntilIdle();
+  ASSERT_TRUE(LoadResource());
 
   // Act
-  PurchaseIntentProcessor processor(resource);
+  PurchaseIntentProcessor processor(*resource_);
 
   const GURL url =
       GURL("https://duckduckgo.com/?q=segment+keyword+1+funnel+keyword+2");
@@ -254,13 +253,10 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessSegmentAndFunnelKeywords) {
   const PurchaseIntentSignalHistoryMap& history =
       ClientStateManager::GetInstance().GetPurchaseIntentSignalHistory();
 
-  const base::Time now = Now();
-  const uint16_t weight = 3;
-
   const PurchaseIntentSignalHistoryMap expected_history = {
       {"segment 1",
        {
-           PurchaseIntentSignalHistoryInfo(now, weight),
+           PurchaseIntentSignalHistoryInfo(Now(), /*weight*/ 3),
        }}};
 
   EXPECT_TRUE(base::ranges::equal(expected_history, history));

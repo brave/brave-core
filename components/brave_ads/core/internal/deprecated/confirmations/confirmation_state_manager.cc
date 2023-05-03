@@ -38,7 +38,7 @@ namespace brave_ads {
 namespace {
 
 uint64_t GenerateHash(const std::string& value) {
-  return static_cast<uint64_t>(base::PersistentHash(value));
+  return uint64_t{base::PersistentHash(value)};
 }
 
 void SetHash(const std::string& value) {
