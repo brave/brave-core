@@ -138,10 +138,9 @@ struct UnlockWalletView: View {
         if !keyringStore.lockedManually && !attemptedBiometricsUnlock && keyringStore.defaultKeyring.isLocked && UIApplication.shared.isProtectedDataAvailable {
           attemptedBiometricsUnlock = true
           fillPasswordFromKeychain()
-        } else {
-          // only focus field if not auto-filling via biometrics, and user did not manually lock
-          isPasswordFieldFocused = !keyringStore.lockedManually
         }
+        // only focus field if user did not manually lock
+        isPasswordFieldFocused = !keyringStore.lockedManually
       }
     }
   }
