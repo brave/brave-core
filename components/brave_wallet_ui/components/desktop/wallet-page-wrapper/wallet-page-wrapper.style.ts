@@ -6,7 +6,7 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 
-const minCardHeight = 595
+const minCardHeight = 531
 
 export const Wrapper = styled.div<{ noPadding?: boolean }>`
   position: fixed;

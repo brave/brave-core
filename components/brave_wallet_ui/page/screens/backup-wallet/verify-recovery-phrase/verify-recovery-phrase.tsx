@@ -73,7 +73,7 @@ export const VerifyRecoveryPhrase = () => {
   }, [])
 
   const onSkipBackup = React.useCallback(() => {
-    history.push(WalletRoutes.Portfolio)
+    history.push(WalletRoutes.PortfolioAssets)
   }, [])
 
   const onNextStep = React.useCallback(() => {
@@ -83,7 +83,7 @@ export const VerifyRecoveryPhrase = () => {
     dispatch(WalletPageActions.walletBackupComplete())
     history.push(isOnboarding
       ? WalletRoutes.OnboardingComplete
-      : WalletRoutes.Portfolio
+      : WalletRoutes.PortfolioAssets
     )
   }, [isOnboarding])
 

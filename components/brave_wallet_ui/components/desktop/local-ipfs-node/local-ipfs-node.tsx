@@ -67,7 +67,7 @@ export const LocalIpfsNodeScreen = (props: Props) => {
     if (!isAutoPinEnabled) {
       dispatch(WalletPageActions.setAutoPinEnabled(true))
     }
-    history.push(WalletRoutes.Nfts)
+    history.push(WalletRoutes.PortfolioNFTs)
   }, [isAutoPinEnabled])
 
   return (

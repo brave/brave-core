@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
 import { ArrowUpIcon } from 'brave-ui/components/icons'
-import { AssetIconProps, AssetIconFactory, WalletButton } from '../../../shared/style'
+import { AssetIconProps, AssetIconFactory, WalletButton, Row } from '../../../shared/style'
 import More from '../../../extension/assets/actions.svg'
 
 export const StyledWrapper = styled.div`
@@ -275,7 +275,10 @@ export const NftMultimedia = styled.iframe<{ visible?: boolean }>`
   margin-top: 16px;
 `
 
-export const BridgeToAuroraButton = styled(WalletButton)`
+export const BridgeToAuroraButton = styled(WalletButton) <
+  {
+    noBottomMargin?: boolean
+  }>`
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -293,7 +296,7 @@ export const BridgeToAuroraButton = styled(WalletButton)`
   background-color: ${(p) => p.theme.palette.blurple500};
   color: ${(p) => p.theme.palette.white};
   border: none;
-  margin-bottom: 32px;
+  margin-bottom: ${(p) => p.noBottomMargin ? 0 : 32}px;
   margin-right: 10px;
 `
 
@@ -353,4 +356,9 @@ export const SelectTimelinButtonIcon = styled(Icon) <
       ? 'rotate(180deg)'
       : 'unset'
   };
+`
+
+export const ControlsRow = styled(Row)`
+  box-shadow: 0px -1px 1px rgba(0, 0, 0, 0.02);
+  border-radius: 16px;
 `

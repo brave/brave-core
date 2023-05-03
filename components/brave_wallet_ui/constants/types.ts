@@ -751,9 +751,6 @@ export enum WalletRoutes {
   DepositFundsPageStart = '/crypto/deposit-funds',
   DepositFundsPage = '/crypto/deposit-funds/:tokenId?',
 
-  // NFTs
-  Nfts = '/crypto/nfts',
-
   // market
   Market = '/crypto/market',
   MarketSub = '/crypto/market/:chainIdOrMarketSymbol?',
@@ -790,8 +787,14 @@ export enum WalletRoutes {
 
   // portfolio
   Portfolio = '/crypto/portfolio',
-  PortfolioAsset = '/crypto/portfolio/:chainIdOrMarketSymbol/:contractOrSymbol?/:tokenId?',
-  PortfolioSub = '/crypto/portfolio/:chainIdOrMarketSymbol?',
+  PortfolioAssets = '/crypto/portfolio/assets',
+  PortfolioNFTs = '/crypto/portfolio/nfts',
+  PortfolioAsset = '/crypto/portfolio/' +
+  ':assetsOrNfts/' +
+  ':chainIdOrMarketSymbol/' +
+  ':contractOrSymbol?/' +
+  ':tokenId?',
+  PortfolioSub = '/crypto/portfolio/:assetsOrNfts/:chainIdOrMarketSymbol?',
 
   // portfolio asset modals
   AddAssetModal = '/crypto/portfolio/add-asset',
@@ -999,6 +1002,7 @@ export type NavIDTypes =
   | 'nfts'
   | 'market'
   | 'accounts'
+  | 'assets'
 
 export interface NavOption {
   id: NavIDTypes

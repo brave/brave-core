@@ -13,7 +13,6 @@ export const StyledWrapper = styled.div<{
   height: 130px;
   min-height: 130px;
   max-height: 130px;
-  margin-bottom: 30px;
   box-sizing: border-box;
   position: relative;
   z-index: 9;
