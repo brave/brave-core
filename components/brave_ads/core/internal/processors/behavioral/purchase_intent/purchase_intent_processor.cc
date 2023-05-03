@@ -9,7 +9,6 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_strip_util.h"
@@ -20,7 +19,6 @@
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_site_info.h"
-#include "brave/components/brave_ads/core/internal/resources/country_components.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
@@ -65,12 +63,10 @@ bool IsSubset(KeywordList keywords_lhs, KeywordList keywords_rhs) {
 PurchaseIntentProcessor::PurchaseIntentProcessor(
     PurchaseIntentResource& resource)
     : resource_(resource) {
-  AdsClientHelper::AddObserver(this);
   TabManager::GetInstance().AddObserver(this);
 }
 
 PurchaseIntentProcessor::~PurchaseIntentProcessor() {
-  AdsClientHelper::RemoveObserver(this);
   TabManager::GetInstance().RemoveObserver(this);
 }
 
@@ -136,10 +132,7 @@ PurchaseIntentSignalInfo PurchaseIntentProcessor::ExtractSignal(
 PurchaseIntentSiteInfo PurchaseIntentProcessor::GetSite(const GURL& url) const {
   PurchaseIntentSiteInfo purchase_intent_site;
 
-  const PurchaseIntentInfo* const purchase_intent = resource_->Get();
-  DCHECK(purchase_intent);
-
-  for (const auto& site : purchase_intent->sites) {
+  for (const auto& site : resource_->get().sites) {
     if (SameDomainOrHost(url, site.url_netloc)) {
       purchase_intent_site = site;
       break;
@@ -155,10 +148,7 @@ SegmentList PurchaseIntentProcessor::GetSegmentsForSearchQuery(
 
   const KeywordList search_query_keywords = ToKeywords(search_query);
 
-  const PurchaseIntentInfo* const purchase_intent = resource_->Get();
-  DCHECK(purchase_intent);
-
-  for (const auto& keyword : purchase_intent->segment_keywords) {
+  for (const auto& keyword : resource_->get().segment_keywords) {
     // Intended behavior relies on early return from list traversal and
     // implicitely on the ordering of |segment_keywords_| to ensure specific
     // segments are matched over general segments, e.g. "audi a6" segments
@@ -178,10 +168,7 @@ uint16_t PurchaseIntentProcessor::GetFunnelWeightForSearchQuery(
 
   uint16_t max_weight = kPurchaseIntentDefaultSignalWeight;
 
-  const PurchaseIntentInfo* const purchase_intent = resource_->Get();
-  DCHECK(purchase_intent);
-
-  for (const auto& keyword : purchase_intent->funnel_keywords) {
+  for (const auto& keyword : resource_->get().funnel_keywords) {
     const KeywordList keywords = ToKeywords(keyword.keywords);
 
     if (IsSubset(search_query_keywords, keywords) &&
@@ -191,18 +178,6 @@ uint16_t PurchaseIntentProcessor::GetFunnelWeightForSearchQuery(
   }
 
   return max_weight;
-}
-
-void PurchaseIntentProcessor::OnNotifyLocaleDidChange(
-    const std::string& /*locale*/) {
-  resource_->Load();
-}
-
-void PurchaseIntentProcessor::OnNotifyDidUpdateResourceComponent(
-    const std::string& id) {
-  if (IsValidCountryComponentId(id)) {
-    resource_->Load();
-  }
 }
 
 void PurchaseIntentProcessor::OnTextContentDidChange(

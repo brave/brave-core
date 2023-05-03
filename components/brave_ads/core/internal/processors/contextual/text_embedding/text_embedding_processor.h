@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 
 class GURL;
@@ -20,8 +19,7 @@ namespace brave_ads {
 
 class TextEmbeddingResource;
 
-class TextEmbeddingProcessor final : public AdsClientNotifierObserver,
-                                     public TabManagerObserver {
+class TextEmbeddingProcessor final : public TabManagerObserver {
  public:
   explicit TextEmbeddingProcessor(TextEmbeddingResource& resource);
 
@@ -36,10 +34,6 @@ class TextEmbeddingProcessor final : public AdsClientNotifierObserver,
   void Process(const std::string& html);
 
  private:
-  // AdsClientNotifierObserver:
-  void OnNotifyLocaleDidChange(const std::string& locale) override;
-  void OnNotifyDidUpdateResourceComponent(const std::string& id) override;
-
   // TabManagerObserver:
   void OnHtmlContentDidChange(int32_t tab_id,
                               const std::vector<GURL>& redirect_chain,

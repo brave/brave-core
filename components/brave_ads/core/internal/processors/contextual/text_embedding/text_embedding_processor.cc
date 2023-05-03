@@ -7,7 +7,6 @@
 
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_embedding/text_embedding_feature.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_util.h"
@@ -16,7 +15,6 @@
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_processor_util.h"
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_embedding/text_embedding_resource.h"
-#include "brave/components/brave_ads/core/internal/resources/language_components.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "url/gurl.h"
 
@@ -24,12 +22,10 @@ namespace brave_ads {
 
 TextEmbeddingProcessor::TextEmbeddingProcessor(TextEmbeddingResource& resource)
     : resource_(resource) {
-  AdsClientHelper::AddObserver(this);
   TabManager::GetInstance().AddObserver(this);
 }
 
 TextEmbeddingProcessor::~TextEmbeddingProcessor() {
-  AdsClientHelper::RemoveObserver(this);
   TabManager::GetInstance().RemoveObserver(this);
 }
 
@@ -45,11 +41,8 @@ void TextEmbeddingProcessor::Process(const std::string& html) {
     return;
   }
 
-  const ml::pipeline::EmbeddingProcessing* const processing_pipeline =
-      resource_->Get();
   const ml::pipeline::TextEmbeddingInfo text_embedding =
-      processing_pipeline->EmbedText(text);
-
+      resource_->get().EmbedText(text);
   if (text_embedding.embedding.empty()) {
     BLOG(1, "Embedding is empty");
     return;
@@ -84,18 +77,6 @@ void TextEmbeddingProcessor::Process(const std::string& html) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
-void TextEmbeddingProcessor::OnNotifyLocaleDidChange(
-    const std::string& /*locale*/) {
-  resource_->Load();
-}
-
-void TextEmbeddingProcessor::OnNotifyDidUpdateResourceComponent(
-    const std::string& id) {
-  if (IsValidLanguageComponentId(id)) {
-    resource_->Load();
-  }
-}
 
 void TextEmbeddingProcessor::OnHtmlContentDidChange(
     const int32_t /*tab_id*/,

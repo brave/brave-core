@@ -48,14 +48,14 @@ void AntiTargetingResource::OnLoadAndParseResource(
   }
 
   BLOG(1, "Successfully loaded " << kResourceId << " anti-targeting resource");
-  anti_targeting_ = std::move(result).value();
 
-  BLOG(1, "Parsed anti-targeting resource version " << anti_targeting_.version);
+  anti_targeting_ = std::move(result).value();
 
   is_initialized_ = true;
 
   BLOG(1, "Successfully initialized " << kResourceId
-                                      << " anti-targeting resource");
+                                      << " anti-targeting resource version "
+                                      << kAntiTargetingResourceVersion.Get());
 }
 
 void AntiTargetingResource::OnNotifyLocaleDidChange(

@@ -35,18 +35,19 @@ base::expected<T, std::string> ReadFileAndParseResourceOnBackgroundThread(
 
   absl::optional<base::Value> root;
   {
+    // |content| can be up to 10 MB, so we keep the scope of this object to this
+    // block to release its memory as soon as possible.
+
     std::string content;
-    const base::ScopedFILE stream(base::FileToFILE(std::move(file), "rb"));
-    if (!base::ReadStreamToString(stream.get(), &content)) {
+    const base::ScopedFILE scoped_file(base::FileToFILE(std::move(file), "rb"));
+    if (!base::ReadStreamToString(scoped_file.get(), &content)) {
       return base::unexpected("Couldn't read file");
     }
 
     root = base::JSONReader::Read(content);
     if (!root || !root->is_dict()) {
-      return base::unexpected("Failed to parse json");
+      return base::unexpected("Failed to parse JSON");
     }
-    // `content` can be up to 10 MB, so we keep the scope of this object to this
-    // block to release its memory as soon as possible.
   }
 
   return T::CreateFromValue(std::move(root).value().TakeDict());

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_classification/text_classification_resource.h"
 
+#include <memory>
 #include <string>
 #include <utility>
 
@@ -24,32 +25,40 @@ namespace {
 constexpr char kResourceId[] = "feibnmjhecfbjpeciancnchbmlobenjn";
 }  // namespace
 
-class BraveAdsTextClassificationResourceTest : public UnitTestBase {};
+class BraveAdsTextClassificationResourceTest : public UnitTestBase {
+ protected:
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    resource_ = std::make_unique<TextClassificationResource>();
+  }
+
+  bool LoadResource() {
+    resource_->Load();
+    task_environment_.RunUntilIdle();
+    return resource_->IsInitialized();
+  }
+
+  std::unique_ptr<TextClassificationResource> resource_;
+};
 
 TEST_F(BraveAdsTextClassificationResourceTest, LoadResource) {
   // Arrange
-  TextClassificationResource resource;
 
   // Act
-  resource.Load();
-  task_environment_.RunUntilIdle();
 
   // Assert
-  EXPECT_TRUE(resource.IsInitialized());
+  EXPECT_TRUE(LoadResource());
 }
 
 TEST_F(BraveAdsTextClassificationResourceTest, DoNotLoadInvalidResource) {
   // Arrange
   CopyFileFromTestPathToTempPath(kInvalidResourceId, kResourceId);
 
-  TextClassificationResource resource;
-  resource.Load();
-  task_environment_.RunUntilIdle();
-
   // Act
 
   // Assert
-  EXPECT_FALSE(resource.IsInitialized());
+  EXPECT_FALSE(LoadResource());
 }
 
 TEST_F(BraveAdsTextClassificationResourceTest, DoNotLoadMissingResource) {
@@ -65,24 +74,19 @@ TEST_F(BraveAdsTextClassificationResourceTest, DoNotLoadMissingResource) {
         std::move(callback).Run(std::move(file));
       }));
 
-  TextClassificationResource resource;
-  resource.Load();
-  task_environment_.RunUntilIdle();
-
   // Act
 
   // Assert
-  EXPECT_FALSE(resource.IsInitialized());
+  EXPECT_FALSE(LoadResource());
 }
 
 TEST_F(BraveAdsTextClassificationResourceTest, IsNotInitialized) {
   // Arrange
-  TextClassificationResource resource;
 
   // Act
 
   // Assert
-  EXPECT_FALSE(resource.IsInitialized());
+  EXPECT_FALSE(resource_->IsInitialized());
 }
 
 }  // namespace brave_ads

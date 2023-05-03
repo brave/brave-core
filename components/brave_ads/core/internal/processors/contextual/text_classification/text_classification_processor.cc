@@ -7,14 +7,12 @@
 
 #include "base/check.h"
 #include "base/ranges/algorithm.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_classification/text_classification_resource.h"
-#include "brave/components/brave_ads/core/internal/resources/language_components.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "url/gurl.h"
 
@@ -39,12 +37,10 @@ std::string GetTopSegmentFromPageProbabilities(
 TextClassificationProcessor::TextClassificationProcessor(
     TextClassificationResource& resource)
     : resource_(resource) {
-  AdsClientHelper::AddObserver(this);
   TabManager::GetInstance().AddObserver(this);
 }
 
 TextClassificationProcessor::~TextClassificationProcessor() {
-  AdsClientHelper::RemoveObserver(this);
   TabManager::GetInstance().RemoveObserver(this);
 }
 
@@ -55,12 +51,8 @@ void TextClassificationProcessor::Process(const std::string& text) {
     return;
   }
 
-  const ml::pipeline::TextProcessing* const processing_pipeline =
-      resource_->Get();
-
   const TextClassificationProbabilityMap probabilities =
-      processing_pipeline->ClassifyPage(text);
-
+      resource_->get().ClassifyPage(text);
   if (probabilities.empty()) {
     BLOG(1, "Text not classified as not enough content");
     return;
@@ -75,18 +67,6 @@ void TextClassificationProcessor::Process(const std::string& text) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
-void TextClassificationProcessor::OnNotifyLocaleDidChange(
-    const std::string& /*locale*/) {
-  resource_->Load();
-}
-
-void TextClassificationProcessor::OnNotifyDidUpdateResourceComponent(
-    const std::string& id) {
-  if (IsValidLanguageComponentId(id)) {
-    resource_->Load();
-  }
-}
 
 void TextClassificationProcessor::OnTextContentDidChange(
     const int32_t /*tab_id*/,

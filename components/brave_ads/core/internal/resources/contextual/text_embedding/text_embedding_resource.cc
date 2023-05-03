@@ -11,6 +11,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_embedding/text_embedding_feature.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_processing.h"
+#include "brave/components/brave_ads/core/internal/resources/language_components.h"
 #include "brave/components/brave_ads/core/internal/resources/resources_util_impl.h"
 
 namespace brave_ads {
@@ -19,9 +20,13 @@ namespace {
 constexpr char kResourceId[] = "wtpwsrqtjxmfdwaymauprezkunxprysm";
 }  // namespace
 
-TextEmbeddingResource::TextEmbeddingResource() = default;
+TextEmbeddingResource::TextEmbeddingResource() {
+  AdsClientHelper::AddObserver(this);
+}
 
-TextEmbeddingResource::~TextEmbeddingResource() = default;
+TextEmbeddingResource::~TextEmbeddingResource() {
+  AdsClientHelper::RemoveObserver(this);
+}
 
 bool TextEmbeddingResource::IsInitialized() const {
   return embedding_processing_.IsInitialized();
@@ -34,6 +39,8 @@ void TextEmbeddingResource::Load() {
                      weak_factory_.GetWeakPtr()));
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
 void TextEmbeddingResource::OnLoadAndParseResource(
     ResourceParsingErrorOr<ml::pipeline::EmbeddingProcessing> result) {
   if (!result.has_value()) {
@@ -42,16 +49,26 @@ void TextEmbeddingResource::OnLoadAndParseResource(
          "Failed to initialize " << kResourceId << " text embedding resource");
     return;
   }
+
   BLOG(1, "Successfully loaded " << kResourceId << " text embedding resource");
 
   embedding_processing_ = std::move(result).value();
 
   BLOG(1, "Successfully initialized " << kResourceId
-                                      << " text embedding resource");
+                                      << " text embedding resource version "
+                                      << kTextEmbeddingResourceVersion.Get());
 }
 
-const ml::pipeline::EmbeddingProcessing* TextEmbeddingResource::Get() const {
-  return &embedding_processing_;
+void TextEmbeddingResource::OnNotifyLocaleDidChange(
+    const std::string& /*locale*/) {
+  Load();
+}
+
+void TextEmbeddingResource::OnNotifyDidUpdateResourceComponent(
+    const std::string& id) {
+  if (IsValidLanguageComponentId(id)) {
+    Load();
+  }
 }
 
 }  // namespace brave_ads
