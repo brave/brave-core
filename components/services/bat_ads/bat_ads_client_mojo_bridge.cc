@@ -22,6 +22,7 @@ BatAdsClientMojoBridge::BatAdsClientMojoBridge(
     mojo::PendingReceiver<mojom::BatAdsClientNotifier> client_notifier)
     : notifier_impl_(std::move(client_notifier)) {
   bat_ads_client_.Bind(std::move(client_info));
+  bat_ads_client_.reset_on_disconnect();
 }
 
 BatAdsClientMojoBridge::~BatAdsClientMojoBridge() = default;
@@ -247,6 +248,11 @@ std::string BatAdsClientMojoBridge::LoadDataResource(const std::string& name) {
 void BatAdsClientMojoBridge::RunDBTransaction(
     brave_ads::mojom::DBTransactionInfoPtr transaction,
     brave_ads::RunDBTransactionCallback callback) {
+  if (!bat_ads_client_.is_bound()) {
+    std::move(callback).Run(brave_ads::mojom::DBCommandResponseInfoPtr());
+    return;
+  }
+
   bat_ads_client_->RunDBTransaction(std::move(transaction),
                                     std::move(callback));
 }

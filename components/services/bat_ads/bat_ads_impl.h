@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/task/sequenced_task_runner.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-forward.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
@@ -111,8 +112,10 @@ class BatAdsImpl : public mojom::BatAds {
       ToggleMarkAdAsInappropriateCallback callback) override;
 
  private:
-  std::unique_ptr<BatAdsClientMojoBridge> bat_ads_client_mojo_proxy_;
-  std::unique_ptr<brave_ads::Ads> ads_;
+  brave_ads::Ads* GetAds();
+
+  class AdsInstance;
+  std::unique_ptr<AdsInstance, base::OnTaskRunnerDeleter> ads_instance_;
 };
 
 }  // namespace bat_ads

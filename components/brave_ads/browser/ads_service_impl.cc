@@ -413,6 +413,9 @@ void AdsServiceImpl::StartBatAdsService() {
       bat_ads_.BindNewEndpointAndPassReceiver(),
       bat_ads_client_notifier_.BindNewPipeAndPassReceiver(),
       base::BindOnce(&AdsServiceImpl::OnBatAdsServiceCreated, AsWeakPtr()));
+
+  bat_ads_.reset_on_disconnect();
+  bat_ads_client_notifier_.reset_on_disconnect();
 }
 
 void AdsServiceImpl::RestartBatAdsServiceAfterDelay() {
