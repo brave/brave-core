@@ -76,7 +76,7 @@ bool IssuerExistsForType(const IssuerType issuer_type) {
 
   const absl::optional<IssuerInfo> issuer =
       GetIssuerForType(*issuers, issuer_type);
-  return static_cast<bool>(issuer);
+  return bool{issuer};
 }
 
 absl::optional<IssuerInfo> GetIssuerForType(const IssuersInfo& issuers,
