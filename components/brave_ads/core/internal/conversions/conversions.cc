@@ -49,10 +49,17 @@ bool HasObservationWindowForAdEventExpired(
 
 bool ShouldConvertAdEvent(const AdEventInfo& ad_event) {
   if (ad_event.type == AdType::kInlineContentAd) {
+    // Only convert post clicks for inline content ads for opted-out and
+    // opted-in users.
     return ad_event.confirmation_type != ConfirmationType::kViewed;
   }
 
-  // Do not convert if the user has not joined rewards for all other ad types
+  if (ad_event.type == AdType::kSearchResultAd) {
+    // Always convert search result ads for both opted-out and opted-in users.
+    return true;
+  }
+
+  // Only convert for opted-in users for all other ad types.
   return ShouldRewardUser();
 }
 

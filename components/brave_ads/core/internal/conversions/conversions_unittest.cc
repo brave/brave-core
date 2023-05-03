@@ -739,8 +739,7 @@ TEST_F(BraveAdsConversionsTest,
                      std::move(conversion)));
 }
 
-TEST_F(BraveAdsConversionsTest,
-       DoNotConvertViewedSearchResultAdWhenAdsAreDisabled) {
+TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdWhenAdsAreDisabled) {
   // Arrange
   ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
@@ -771,12 +770,18 @@ TEST_F(BraveAdsConversionsTest,
       {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
-      condition,
-      base::BindOnce([](const bool success, const AdEventList& ad_events) {
-        ASSERT_TRUE(success);
+      condition, base::BindOnce(
+                     [](const ConversionInfo& conversion, const bool success,
+                        const AdEventList& ad_events) {
+                       ASSERT_TRUE(success);
 
-        EXPECT_TRUE(ad_events.empty());
-      }));
+                       EXPECT_EQ(1U, ad_events.size());
+
+                       const AdEventInfo& ad_event = ad_events.front();
+                       EXPECT_EQ(conversion.creative_set_id,
+                                 ad_event.creative_set_id);
+                     },
+                     std::move(conversion)));
 }
 
 TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdWhenAdsAreEnabled) {
@@ -823,7 +828,7 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdWhenAdsAreEnabled) {
 }
 
 TEST_F(BraveAdsConversionsTest,
-       DoNotConvertClickedSearchResultAdWhenAdsAreDisabled) {
+       ConvertClickedSearchResultAdWhenAdsAreDisabled) {
   // Arrange
   ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
@@ -857,12 +862,18 @@ TEST_F(BraveAdsConversionsTest,
       {conversion.creative_set_id}, nullptr);
 
   ad_events_database_table_.GetIf(
-      condition,
-      base::BindOnce([](const bool success, const AdEventList& ad_events) {
-        ASSERT_TRUE(success);
+      condition, base::BindOnce(
+                     [](const ConversionInfo& conversion, const bool success,
+                        const AdEventList& ad_events) {
+                       ASSERT_TRUE(success);
 
-        EXPECT_TRUE(ad_events.empty());
-      }));
+                       EXPECT_EQ(1U, ad_events.size());
+
+                       const AdEventInfo& ad_event = ad_events.front();
+                       EXPECT_EQ(conversion.creative_set_id,
+                                 ad_event.creative_set_id);
+                     },
+                     std::move(conversion)));
 }
 
 TEST_F(BraveAdsConversionsTest, ConvertClickedSearchResultAdWhenAdsAreEnabled) {
@@ -1147,7 +1158,7 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertAdIfConversionDoesNotExist) {
 }
 
 TEST_F(BraveAdsConversionsTest,
-       DoNotConvertAdWhenThereIsConversionHistoryForTheSameCreativeSet) {
+       DoNotConvertIfAnotherAdConvertedInTheSameCreativeSet) {
   // Arrange
   ConversionList conversions;
 
@@ -1195,7 +1206,7 @@ TEST_F(BraveAdsConversionsTest,
 }
 
 TEST_F(BraveAdsConversionsTest,
-       DoNotConvertAdWhenUrlDoesNotMatchConversionIdPattern) {
+       DoNotConvertAdIfUrlDoesNotMatchConversionIdPattern) {
   // Arrange
   ConversionList conversions;
 
@@ -1232,8 +1243,7 @@ TEST_F(BraveAdsConversionsTest,
       }));
 }
 
-TEST_F(BraveAdsConversionsTest,
-       ConvertAdWhenTheConversionIsOnTheCuspOfExpiring) {
+TEST_F(BraveAdsConversionsTest, ConvertAdIfConversionIsOnTheCuspOfExpiring) {
   // Arrange
   ConversionList conversions;
 
@@ -1278,7 +1288,7 @@ TEST_F(BraveAdsConversionsTest,
                      std::move(conversion)));
 }
 
-TEST_F(BraveAdsConversionsTest, DoNotConvertAdWhenTheConversionHasExpired) {
+TEST_F(BraveAdsConversionsTest, DoNotConvertAdIfTheConversionHasExpired) {
   // Arrange
   ConversionList conversions;
 
@@ -1317,7 +1327,7 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertAdWhenTheConversionHasExpired) {
       }));
 }
 
-TEST_F(BraveAdsConversionsTest, ConvertAdForRedirectChainIntermediateUrl) {
+TEST_F(BraveAdsConversionsTest, ConvertAdIfIntermediateUrlIsInRedirectChain) {
   // Arrange
   ConversionList conversions;
 
@@ -1362,7 +1372,7 @@ TEST_F(BraveAdsConversionsTest, ConvertAdForRedirectChainIntermediateUrl) {
                      std::move(conversion)));
 }
 
-TEST_F(BraveAdsConversionsTest, ConvertAdForRedirectChainOriginalUrl) {
+TEST_F(BraveAdsConversionsTest, ConvertAdIfOriginalUrlIsInRedirectChain) {
   // Arrange
   ConversionList conversions;
 
@@ -1407,7 +1417,7 @@ TEST_F(BraveAdsConversionsTest, ConvertAdForRedirectChainOriginalUrl) {
                      std::move(conversion)));
 }
 
-TEST_F(BraveAdsConversionsTest, ConvertAdForRedirectChainUrl) {
+TEST_F(BraveAdsConversionsTest, ConvertAdIfUrlIsInRedirectChain) {
   // Arrange
   ConversionList conversions;
 
