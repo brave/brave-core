@@ -12,10 +12,12 @@
 #include "brave/components/brave_shields/browser/test_filters_provider.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/constants/brave_paths.h"
+#include "brave/browser/brave_browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_test_util.h"
+#include "brave/components/localhost_permission_allowlist/browser/localhost_permission_allowlist_service.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -58,6 +60,8 @@ class LocalhostAccessBrowserTest : public InProcessBrowserTest {
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
     current_browser_ = InProcessBrowserTest::browser();
+    std::string comment_in_allowlist = "!b.com";
+    g_brave_browser_process->localhost_permission_allowlist_service()->SetTestHosts({kTestEmbeddingDomain, comment_in_allowlist});
 
     // Embedding website server
     https_server_ = std::make_unique<net::EmbeddedTestServer>(
@@ -417,7 +421,7 @@ IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, ServiceWorker) {
 }
 
 // Test that localhost connections blocked by adblock are still blocked without
-// permission prompt, and exceptioned domains cause permission prompt.
+// permission prompt.
 IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, AdblockRule) {
   // Add adblock rule to block localhost.
   std::string test_domain = "localhost";
@@ -426,6 +430,17 @@ IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, AdblockRule) {
   auto rule = base::StrCat({"||", test_domain, "^"});
   AddAdblockRule(rule);
   // The image won't show up because of adblock rule.
+  CheckNoPromptFlow(false, target_url);
+}
+
+// Test that localhost connections from host not on allowlist
+// are blocked without permission prompt.
+IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, HostNotOnAllowlist) {
+  std::string test_domain = "localhost";
+  // Note: we're also testing that comments are handled correctly here
+  // because we inserted !b.com into the allowlist.
+  embedding_url_ = https_server_->GetURL("b.com", kSimplePage);
+  const auto& target_url = localhost_server_->GetURL(test_domain, "/logo.png");
   CheckNoPromptFlow(false, target_url);
 }
 
