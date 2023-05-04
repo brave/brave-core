@@ -339,6 +339,7 @@
     "sinon": "7.5.0",
     "style-loader": "0.23.1",
     "styled-components": "5.3.9",
+    "teamcity-service-messages": "^0.1.14",
     "terser": "5.16.2",
     "trezor-connect": "8.2.6-extended",
     "ts-jest": "26.5.6",

@@ -9,7 +9,7 @@ const config = require('./config')
 const fs = require('fs-extra')
 const crypto = require('crypto')
 const l10nUtil = require('./l10nUtil')
-const Log = require('./sync/logging')
+const Log = require('./logging')
 const assert = require('assert')
 
 const mergeWithDefault = (options) => {
@@ -18,7 +18,7 @@ const mergeWithDefault = (options) => {
 
 async function applyPatches() {
   const GitPatcher = require('./gitPatcher')
-  Log.progress('Applying patches...')
+  Log.progressStart('apply patches')
   // Always detect if we need to apply patches, since user may have modified
   // either chromium source files, or .patch files manually
   const coreRepoPath = config.braveCoreDir
@@ -53,12 +53,12 @@ async function applyPatches() {
   Log.allPatchStatus(allPatchStatus, 'Chromium')
 
   const hasPatchError = allPatchStatus.some(p => p.error)
-  Log.progress('Done applying patches.')
   // Exit on error in any patch
   if (hasPatchError) {
     Log.error('Exiting as not all patches were successful!')
     process.exit(1)
   }
+  Log.progressFinish('apply patches')
 }
 
 const isOverrideNewer = (original, override) => {
@@ -208,7 +208,7 @@ const util = {
   },
 
   updateBranding: () => {
-    console.log('update branding...')
+    Log.progressStart('update branding')
     const chromeComponentsDir = path.join(config.srcDir, 'components')
     const braveComponentsDir = path.join(config.braveCoreDir, 'components')
     const chromeAppDir = path.join(config.srcDir, 'chrome', 'app')
@@ -410,10 +410,11 @@ const util = {
       })
       removeUnlistedAndroidResources(braveOverwrittenFiles)
     }
+    Log.progressFinish('update branding')
   },
 
   touchOverriddenChromiumSrcFiles: () => {
-    console.log('touch original files overridden by chromium_src...')
+    Log.progressStart('touch original files overridden by chromium_src')
 
     // Return true when original file of |file| should be touched.
     const applyFileFilter = (file) => {
@@ -445,10 +446,11 @@ const util = {
         }
       }
     })
+    Log.progressFinish('touch original files overridden by chromium_src')
   },
 
   touchOverriddenVectorIconFiles: () => {
-    console.log('touch original vector icon files overridden by brave/vector_icons...')
+    Log.progressStart('touch original vector icon files overridden by brave/vector_icons')
 
     // Return true when original file of |file| should be touched.
     const applyFileFilter = (file) => {
@@ -470,11 +472,14 @@ const util = {
         updateFileUTimesIfOverrideIsNewer(overriddenFile, braveVectorIconFile)
       }
     })
+    Log.progressFinish('touch original vector icon files overridden by brave/vector_icons')
   },
 
   touchOverriddenFiles: () => {
-    util.touchOverriddenChromiumSrcFiles()
-    util.touchOverriddenVectorIconFiles()
+    Log.progressScope('touch overridden files', () => {
+      util.touchOverriddenChromiumSrcFiles()
+      util.touchOverriddenVectorIconFiles()
+    })
   },
 
   // Chromium compares pre-installed midl files and generated midl files from IDL during the build to check integrity.
@@ -483,13 +488,14 @@ const util = {
   // After checking, pre-installed files are copied to gen dir and they are used to compile.
   // So, this copying in every build doesn't affect compile performance.
   updateMidlFiles: () => {
-    console.log('update midl files...')
-    for (const source of ["google_update", "brave"]) {
-      fs.copySync(
-        path.join(config.braveCoreDir, 'win_build_output', 'midl', source),
-        path.join(config.srcDir,
-                  'third_party', 'win_build_output', 'midl', source))
-    }
+    Log.progressScope('update midl files', () => {
+      for (const source of ["google_update", "brave"]) {
+        fs.copySync(
+          path.join(config.braveCoreDir, 'win_build_output', 'midl', source),
+          path.join(config.srcDir,
+                    'third_party', 'win_build_output', 'midl', source))
+      }
+    })
   },
 
   buildNativeRedirectCC: (options = config.defaultOptions) => {
@@ -504,8 +510,7 @@ const util = {
       return
     }
 
-    console.log('building native redirect_cc...')
-
+    Log.progressStart('build redirect_cc')
     gnArgs = {
       'import("//brave/tools/redirect_cc/args.gni")': null,
       use_goma: config.use_goma,
@@ -517,6 +522,7 @@ const util = {
     util.run('gn', ['gen', config.nativeRedirectCCDir, '--args="' + buildArgsStr + '"'], options)
 
     util.buildTarget('brave/tools/redirect_cc', mergeWithDefault({outputDir: config.nativeRedirectCCDir}))
+    Log.progressFinish('build redirect_cc')
   },
 
   runGnGen: (options) => {
@@ -549,19 +555,20 @@ const util = {
   },
 
   generateNinjaFiles: (options = config.defaultOptions) => {
-    util.buildNativeRedirectCC()
+    Log.progressScope('generate ninja files', () => {
+      util.buildNativeRedirectCC()
 
-    console.log('generating ninja files...')
-
-    if (process.platform === 'win32') {
-      util.updateMidlFiles()
-    }
-    util.runGnGen(options)
+      if (process.platform === 'win32') {
+        util.updateMidlFiles()
+      }
+      util.runGnGen(options)
+    })
   },
 
   buildTarget: (target = config.buildTarget, options = config.defaultOptions) => {
     const buildId = crypto.randomUUID()
-    console.log('building ' + target + ' (id=' + buildId + ') ...')
+    const progressMessage = 'build ' + target + ' (id=' + buildId + ')'
+    Log.progressStart(progressMessage)
 
     let num_compile_failure = 1
     if (config.ignore_compile_failure)
@@ -575,6 +582,9 @@ const util = {
 
     const use_goma_online = config.use_goma && !config.goma_offline
     if (use_goma_online) {
+      if (config.isCI) {
+        Log.progressStart('goma pre build')
+      }
       assert(config.gomaServerHost !== undefined && config.gomaServerHost != null, 'goma server host must be set')
 
       // This skips the auth check and make this call instant if compiler_proxy is already running.
@@ -591,21 +601,27 @@ const util = {
         }
         util.run('goma_ctl', ['ensure_start'], options)
       }
-    }
 
-    if (config.isCI && use_goma_online) {
-      util.run('goma_ctl', ['showflags'], options)
-      util.run('goma_ctl', ['stat'], options)
+      if (config.isCI) {
+        util.run('goma_ctl', ['showflags'], options)
+        util.run('goma_ctl', ['stat'], options)
+        Log.progressFinish('goma pre build')
+      }
     }
 
     // Setting `AUTONINJA_BUILD_ID` allows tracing Goma remote execution which helps with
     // debugging issues (e.g., slowness or remote-failures).
     options.env.AUTONINJA_BUILD_ID = buildId
-    util.run('autoninja', ninjaOpts, options)
+    Log.progressScope(`ninja ${target} ${config.buildConfig}`, () => {
+      util.run('autoninja', ninjaOpts, options)
+    })
 
     if (config.isCI && use_goma_online) {
-      util.run('goma_ctl', ['stat'], options)
+      Log.progressScope('goma post build', () => {
+        util.run('goma_ctl', ['stat'], options)
+      })
     }
+    Log.progressFinish(progressMessage)
   },
 
   generateXcodeWorkspace: (options = config.defaultOptions) => {

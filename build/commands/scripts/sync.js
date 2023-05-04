@@ -8,7 +8,7 @@ const program = require('commander')
 const path = require('path')
 const config = require('../lib/config')
 const util = require('../lib/util')
-const Log = require('../lib/sync/logging')
+const Log = require('../lib/logging')
 const chalk = require('chalk')
 
 program
@@ -29,7 +29,7 @@ function maybeInstallDepotTools(options = config.defaultOptions) {
   options.cwd = config.braveCoreDir
 
   if (!fs.existsSync(config.depotToolsDir)) {
-    Log.progress('Install Depot Tools...')
+    Log.progressStart('install depot_tools')
     fs.mkdirSync(config.depotToolsDir)
     util.run(
         'git',
@@ -39,7 +39,7 @@ function maybeInstallDepotTools(options = config.defaultOptions) {
           '.'
         ],
         options)
-    Log.progress('Done Depot Tools...')
+    Log.progressFinish('install depot_tools')
   }
 
   const ninjaLogCfgPath = path.join(config.depotToolsDir, 'ninjalog.cfg');
@@ -242,31 +242,27 @@ async function RunCommand() {
     program.delete_unused_deps = true
   }
 
-  Log.progress('Running gclient sync...')
+  Log.progressStart('gclient sync')
   const didSyncChromium = syncChromium(program)
   if (!didSyncChromium || program.delete_unused_deps) {
     // If no Chromium sync was done, run sync inside `brave` to sync Brave DEPS.
     syncBrave(program)
   }
-  Log.progress('...gclient sync done.')
+  Log.progressFinish('gclient sync')
 
   await util.applyPatches()
 
   if (!program.nohooks) {
-    Log.progress('Running gclient runhooks...')
+    Log.progressStart('gclient runhooks')
     // Run hooks for the root .gclient, this will include Chromium and Brave
     // hooks. Don't cache the result, just always rerun this step, because it's
     // pretty quick in a no-op scenario.
     util.runGClient(['runhooks'])
-    Log.progress('...gclient runhooks done.')
+    Log.progressFinish('gclient runhooks')
   }
 }
 
-Log.progress('Brave Browser Sync starting')
 RunCommand()
-.then(() => {
-  Log.progress('Brave Browser Sync complete')
-})
 .catch((err) => {
   Log.error('Brave Browser Sync ERROR:')
   console.error(err)
