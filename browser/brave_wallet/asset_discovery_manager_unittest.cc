@@ -164,12 +164,12 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
   void TestDiscoverAssetsOnAllSupportedChains(
       const std::map<mojom::CoinType, std::vector<std::string>>&
           account_addresses,
-      bool triggered_by_accounts_added,
+      bool bypass_rate_limit,
       bool expect_events_fired,
       const std::vector<std::string>& expected_token_contract_addresses,
       size_t expected_ending_queue_size = 0u) {
     asset_discovery_manager_->DiscoverAssetsOnAllSupportedChains(
-        account_addresses, triggered_by_accounts_added);
+        account_addresses, bypass_rate_limit);
     if (expect_events_fired) {
       wallet_service_observer_->WaitForOnDiscoverAssetsCompleted(
           expected_token_contract_addresses);

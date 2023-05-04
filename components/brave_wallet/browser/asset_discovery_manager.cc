@@ -67,9 +67,8 @@ AssetDiscoveryManager::~AssetDiscoveryManager() = default;
 void AssetDiscoveryManager::DiscoverAssetsOnAllSupportedChains(
     const std::map<mojom::CoinType, std::vector<std::string>>&
         account_addresses,
-    bool triggered_by_accounts_added) {
-  if (triggered_by_accounts_added) {
-    // Always add asset discovery when an account is added
+    bool bypass_rate_limit) {
+  if (bypass_rate_limit) {
     AddTask(account_addresses);
     return;
   }

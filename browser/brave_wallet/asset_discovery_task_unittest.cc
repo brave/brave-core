@@ -22,6 +22,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
@@ -1614,7 +1615,8 @@ TEST_F(AssetDiscoveryTaskUnitTest, DiscoverNFTs) {
   GURL url;
 
   // Empty addresses yields empty expected_contract_addresses
-  wallet_service_->SetNftDiscoveryEnabled(true);
+  GetPrefs()->SetBoolean(kBraveWalletNftDiscoveryEnabled, true);
+
   TestDiscoverNFTsOnAllSupportedChains(chain_ids, addresses,
                                        expected_contract_addresses);
 
@@ -1648,11 +1650,11 @@ TEST_F(AssetDiscoveryTaskUnitTest, DiscoverNFTs) {
   expected_contract_addresses.push_back(
       "0x1111111111111111111111111111111111111111");
   // First test nothing is discovered when NFT discovery is not enabled.
-  wallet_service_->SetNftDiscoveryEnabled(false);
+  GetPrefs()->SetBoolean(kBraveWalletNftDiscoveryEnabled, false);
   TestDiscoverNFTsOnAllSupportedChains(chain_ids, addresses, {});
 
   // Enable and verify 1 ETH address yields 1 discovered NFT
-  wallet_service_->SetNftDiscoveryEnabled(true);
+  GetPrefs()->SetBoolean(kBraveWalletNftDiscoveryEnabled, true);
   TestDiscoverNFTsOnAllSupportedChains(chain_ids, addresses,
                                        expected_contract_addresses);
 

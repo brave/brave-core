@@ -1623,6 +1623,11 @@ void BraveWalletService::Base58Encode(
 }
 
 void BraveWalletService::DiscoverAssetsOnAllSupportedChains() {
+  DiscoverAssetsOnAllSupportedChains(false);
+}
+
+void BraveWalletService::DiscoverAssetsOnAllSupportedChains(
+    bool bypass_rate_limit) {
   std::map<mojom::CoinType, std::vector<std::string>> addresses;
   // Fetch ETH addresses
   mojom::KeyringInfoPtr keyring_info = keyring_service_->GetKeyringInfoSync(
@@ -1643,8 +1648,8 @@ void BraveWalletService::DiscoverAssetsOnAllSupportedChains() {
   addresses[mojom::CoinType::SOL] = std::move(sol_account_addresses);
 
   // Discover assets owned by the SOL and ETH addresses on all supported chains
-  asset_discovery_manager_->DiscoverAssetsOnAllSupportedChains(addresses,
-                                                               false);
+  asset_discovery_manager_->DiscoverAssetsOnAllSupportedChains(
+      addresses, bypass_rate_limit);
 }
 
 void BraveWalletService::GetNftDiscoveryEnabled(
@@ -1655,6 +1660,11 @@ void BraveWalletService::GetNftDiscoveryEnabled(
 
 void BraveWalletService::SetNftDiscoveryEnabled(bool enabled) {
   profile_prefs_->SetBoolean(kBraveWalletNftDiscoveryEnabled, enabled);
+
+  // Asset discovery is immediately run when NFT discovery is enabled
+  if (enabled) {
+    DiscoverAssetsOnAllSupportedChains(true);
+  }
 }
 
 void BraveWalletService::GetBalanceScannerSupportedChains(
