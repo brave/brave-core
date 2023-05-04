@@ -6,18 +6,18 @@
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
 #include "base/test/thread_test_helper.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/test_filters_provider.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/browser/brave_browser_process.h"
+#include "brave/components/localhost_permission_allowlist/browser/localhost_permission_allowlist_service.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_test_util.h"
-#include "brave/components/localhost_permission_allowlist/browser/localhost_permission_allowlist_service.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -61,7 +61,8 @@ class LocalhostAccessBrowserTest : public InProcessBrowserTest {
     host_resolver()->AddRule("*", "127.0.0.1");
     current_browser_ = InProcessBrowserTest::browser();
     std::string comment_in_allowlist = "!b.com";
-    g_brave_browser_process->localhost_permission_allowlist_service()->SetTestHosts({kTestEmbeddingDomain, comment_in_allowlist});
+    g_brave_browser_process->localhost_permission_allowlist_service()
+        ->SetTestHosts({kTestEmbeddingDomain, comment_in_allowlist});
 
     // Embedding website server
     https_server_ = std::make_unique<net::EmbeddedTestServer>(
