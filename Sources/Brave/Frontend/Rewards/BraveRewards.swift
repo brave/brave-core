@@ -28,12 +28,8 @@ public class BraveRewards: NSObject {
 
   private let configuration: Configuration
 
-  init(configuration: Configuration, buildChannel: BraveAds.BuildChannelInfo?) {
+  init(configuration: Configuration) {
     self.configuration = configuration
-
-    if let channel = buildChannel {
-      BraveAds.buildChannelInfo = channel
-    }
 
     ads = BraveAds(stateStoragePath: configuration.storageURL.appendingPathComponent("ads").path)
 
@@ -122,7 +118,7 @@ public class BraveRewards: NSObject {
       Preferences.Rewards.rewardsToggledOnce.value = true
       createWalletIfNeeded { [weak self] in
         guard let self = self else { return }
-        self.ledger?.isAutoContributeEnabled = newValue
+        self.ledger?.setAutoContributeEnabled(newValue)
         let wasEnabled = self.ads.isEnabled
         self.ads.isEnabled = newValue
         if !wasEnabled && newValue {

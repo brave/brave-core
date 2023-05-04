@@ -173,10 +173,10 @@ extension BrowserViewController {
   func setupLedger() {
     guard let ledger = rewards.ledger else { return }
     // Update defaults
-    ledger.minimumVisitDuration = 8
-    ledger.minimumNumberOfVisits = 1
-    ledger.allowUnverifiedPublishers = false
-    ledger.contributionAmount = Double.greatestFiniteMagnitude
+    ledger.setMinimumVisitDuration(8)
+    ledger.setMinimumNumberOfVisits(1)
+    ledger.setAllowUnverifiedPublishers(false)
+    ledger.setContributionAmount(Double.greatestFiniteMagnitude)
 
     // Create ledger observer
     let rewardsObserver = LedgerObserver(ledger: ledger)
@@ -194,8 +194,10 @@ extension BrowserViewController {
       self?.claimPendingPromotions()
     }
     rewardsObserver.fetchedPanelPublisher = { [weak self] publisher, tabId in
-      guard let self = self, self.isViewLoaded, let tab = self.tabManager.selectedTab, tab.rewardsId == tabId else { return }
-      self.publisher = publisher
+      DispatchQueue.main.async {
+        guard let self = self, self.isViewLoaded, let tab = self.tabManager.selectedTab, tab.rewardsId == tabId else { return }
+        self.publisher = publisher
+      }
     }
 
     promotionFetchTimer = Timer.scheduledTimer(

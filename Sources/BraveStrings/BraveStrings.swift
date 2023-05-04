@@ -3650,7 +3650,6 @@ extension Strings {
     public static let title = NSLocalizedString("RewardsInternalsTitle", tableName: "BraveShared", bundle: .module, value: "Rewards Internals", comment: "'Rewards' as in 'Brave Rewards'")
     public static let walletInfoHeader = NSLocalizedString("RewardsInternalsWalletInfoHeader", tableName: "BraveShared", bundle: .module, value: "Rewards Profile Info", comment: "")
     public static let legacyWalletInfoHeader = NSLocalizedString("RewardsInternalsLegacyWalletInfoHeader", tableName: "BraveShared", bundle: .module, value: "Legacy Wallet Info", comment: "")
-    public static let legacyWalletHasTransferrableBalance = NSLocalizedString("RewardsInternalsLegacyWalletHasTransferrableBalance", tableName: "BraveShared", bundle: .module, value: "Has Transferrable Balance", comment: "")
     public static let keyInfoSeed = NSLocalizedString("RewardsInternalsKeyInfoSeed", tableName: "BraveShared", bundle: .module, value: "Key Info Seed", comment: "")
     public static let valid = NSLocalizedString("RewardsInternalsValid", tableName: "BraveShared", bundle: .module, value: "Valid", comment: "")
     public static let invalid = NSLocalizedString("RewardsInternalsInvalid", tableName: "BraveShared", bundle: .module, value: "Invalid", comment: "")
@@ -3764,91 +3763,6 @@ extension Strings {
       comment: ""
     )
     public static let onProviderText = NSLocalizedString("OnProviderText", tableName: "BraveShared", bundle: .module, value: "on %@", comment: "This is a suffix statement. example: SomeChannel on Twitter")
-    public static let transferNoLongerAvailableWarningMessage = NSLocalizedString("rewards.transferNoLongerAvailableWarningMessage", tableName: "BraveShared", bundle: .module,
-      value: "Please use the wallet transfer by March 13, 2021. Wallet transfer will no longer be available after March 13.",
-      comment: ""
-    )
-    public static let legacyWalletTransferStatusShortformInvalid = NSLocalizedString("rewards.legacyWalletTransferStatusShortformInvalid", tableName: "BraveShared", bundle: .module,
-      value: "Invalid",
-      comment: "Invalid as in: stating that the status of the users transfer is invalid"
-    )
-    public static let legacyWalletTransferStatusButtonInvalidTitle = NSLocalizedString("rewards.legacyWalletTransferStatusButtonInvalidTitle", tableName: "BraveShared", bundle: .module,
-      value: "Your legacy wallet transfer is invalid",
-      comment: ""
-    )
-    public static let legacyWalletTransferStatusInvalidTitle = NSLocalizedString("rewards.legacyWalletTransferStatusInvalidTitle", tableName: "BraveShared", bundle: .module,
-      value: "Transfer Invalid",
-      comment: "Title shown above body of text explaining that their transfer is invalid"
-    )
-    public static let legacyWalletTransferStatusInvalidBody = NSLocalizedString("rewards.legacyWalletTransferStatusInvalidBody", tableName: "BraveShared", bundle: .module,
-      value: "Your legacy wallet transfer is invalid and cannot be completed",
-      comment: ""
-    )
-    public static let legacyWalletTransferStatusShortformPending = NSLocalizedString("rewards.legacyWalletTransferStatusShortformPending", tableName: "BraveShared", bundle: .module,
-      value: "Pending",
-      comment: "Pending as in: stating that the status of the users transfer is pending"
-    )
-    public static let legacyWalletTransferStatusButtonPendingTitle = NSLocalizedString("rewards.legacyWalletTransferStatusButtonPendingTitle", tableName: "BraveShared", bundle: .module,
-      value: "Your legacy wallet transfer status is pending",
-      comment: ""
-    )
-    public static let legacyWalletTransferStatusPendingTitle = NSLocalizedString("rewards.legacyWalletTransferStatusPendingTitle", tableName: "BraveShared", bundle: .module,
-      value: "Transfer Pending",
-      comment: "Title shown above body of text explaining that their transfer is pending"
-    )
-    public static let legacyWalletTransferStatusPendingBody = NSLocalizedString("rewards.legacyWalletTransferStatusPendingBody", tableName: "BraveShared", bundle: .module,
-      value: "Your legacy wallet transfer status is pending and should begin processing shortly.",
-      comment: ""
-    )
-    public static let legacyWalletTransferStatusShortformInProgress = NSLocalizedString("rewards.legacyWalletTransferStatusShortformInProgress", tableName: "BraveShared", bundle: .module,
-      value: "In Progress",
-      comment: "In Progress as in: stating that the status of the users transfer is in progress"
-    )
-    public static let legacyWalletTransferStatusButtonInProgressTitle = NSLocalizedString("rewards.legacyWalletTransferStatusButtonInProgressTitle", tableName: "BraveShared", bundle: .module,
-      value: "Your legacy wallet transfer is in progress",
-      comment: ""
-    )
-    public static let legacyWalletTransferStatusInProgressTitle = NSLocalizedString("rewards.legacyWalletTransferStatusInProgressTitle", tableName: "BraveShared", bundle: .module,
-      value: "Transfer In-Progress",
-      comment: "Title shown above body of text explaining that their transfer is in progress"
-    )
-    public static let legacyWalletTransferStatusInProgressBody = NSLocalizedString("rewards.legacyWalletTransferStatusInProgressBody", tableName: "BraveShared", bundle: .module,
-      value: "Your legacy wallet transfer is in-progress and may take several minutes to complete.",
-      comment: ""
-    )
-    public static let legacyWalletTransferStatusShortformDelayed = NSLocalizedString("rewards.legacyWalletTransferStatusShortformDelayed", tableName: "BraveShared", bundle: .module,
-      value: "Delayed",
-      comment: "Delayed as in: stating that the status of the users transfer is in delayed"
-    )
-    public static let legacyWalletTransferStatusButtonDelayedTitle = NSLocalizedString("rewards.legacyWalletTransferStatusButtonDelayedTitle", tableName: "BraveShared", bundle: .module,
-      value: "Your legacy wallet transfer has been delayed…",
-      comment: ""
-    )
-    public static let legacyWalletTransferStatusDelayedTitle = NSLocalizedString("rewards.legacyWalletTransferStatusDelayedTitle", tableName: "BraveShared", bundle: .module,
-      value: "Transfer Delayed",
-      comment: "Title shown above body of text explaining that their transfer is delayed"
-    )
-    public static let legacyWalletTransferStatusDelayedBody = NSLocalizedString("rewards.legacyWalletTransferStatusDelayedBody", tableName: "BraveShared", bundle: .module,
-      value: "Your legacy wallet transfer has been delayed and may take several minutes to resume.",
-      comment: ""
-    )
-    public static let legacyWalletTransferStatusShortformCompleted = NSLocalizedString("rewards.legacyWalletTransferStatusShortformCompleted", tableName: "BraveShared", bundle: .module,
-      value: "Completed!",
-      comment: "Completed as in: stating that the status of the users transfer is in completed"
-    )
-    public static let legacyWalletTransferStatusButtonCompletedTitle = NSLocalizedString("rewards.legacyWalletTransferStatusButtonCompletedTitle", tableName: "BraveShared", bundle: .module,
-      value: "Your legacy wallet transfer has completed!",
-      comment: ""
-    )
-    public static let legacyWalletTransferStatusCompletedTitle = NSLocalizedString("rewards.legacyWalletTransferStatusCompletedTitle", tableName: "BraveShared", bundle: .module,
-      value: "Transfer Completed!",
-      comment: "Title shown above body of text explaining that their transfer is completed"
-    )
-    public static let legacyWalletTransferStatusCompletedBody = NSLocalizedString("rewards.legacyWalletTransferStatusCompletedBody", tableName: "BraveShared", bundle: .module,
-      value: "Your legacy wallet transfer is done! Your existing balance may still take several minutes to appear on your desktop Brave Rewards wallet.",
-      comment: ""
-    )
-
     public static let braveTalkRewardsOptInTitle =
       NSLocalizedString(
         "rewards.braveTalkRewardsOptInTitle",

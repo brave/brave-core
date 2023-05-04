@@ -38,10 +38,10 @@ class KeyringStoreTests: XCTestCase {
     
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._addObserver = { _ in }
-    rpcService._chainId = { $1(currentChainId) }
-    rpcService._network = { $1(currentNetwork) }
+    rpcService._chainIdForOrigin = { $2(currentChainId) }
+    rpcService._network = { $2(currentNetwork) }
     
-    rpcService._setNetwork = { _, _, completion in
+    rpcService._setNetwork = { _, _, _, completion in
       completion(true)
     }
     

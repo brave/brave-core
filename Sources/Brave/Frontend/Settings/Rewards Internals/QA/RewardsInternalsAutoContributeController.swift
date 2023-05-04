@@ -10,7 +10,8 @@ import BraveUI
 class RewardsInternalsAutoContributeController: UITableViewController {
 
   let ledger: BraveLedger
-  private var publishers: [Ledger.PublisherInfo] = []
+  private var publishers: [BraveCore.BraveRewards.PublisherInfo] = []
+  private var autocontributeProperties: BraveCore.BraveRewards.AutoContributeProperties?
   private let percentFormatter = NumberFormatter().then {
     $0.numberStyle = .percent
   }
@@ -41,6 +42,10 @@ class RewardsInternalsAutoContributeController: UITableViewController {
       self.publishers = list
       self.tableView.reloadData()
     }
+    ledger.fetchAutoContributeProperties { [weak self] properties in
+      self?.autocontributeProperties = properties
+      self?.tableView.reloadData()
+    }
   }
 
   override func numberOfSections(in tableView: UITableView) -> Int {
@@ -67,7 +72,7 @@ class RewardsInternalsAutoContributeController: UITableViewController {
     switch indexPath.section {
     case 0:
       cell.textLabel?.text = "Next Contribution Date"
-      if let reconcileStamp = ledger.autoContributeProperties?.reconcileStamp {
+      if let reconcileStamp = autocontributeProperties?.reconcileStamp {
         let date = Date(timeIntervalSince1970: TimeInterval(reconcileStamp))
         cell.detailTextLabel?.text = dateFormatter.string(from: date)
       } else {

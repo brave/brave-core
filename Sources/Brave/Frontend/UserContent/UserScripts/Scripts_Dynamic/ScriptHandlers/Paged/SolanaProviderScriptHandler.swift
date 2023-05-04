@@ -250,7 +250,8 @@ class SolanaProviderScriptHandler: TabContentScript {
       return (nil, buildErrorJson(status: .invalidParams, errorMessage: "Invalid args"))
     }
     let param = createSignTransactionParam(serializedMessage: serializedMessage, signatures: signatures)
-    let (status, errorMessage, serializedTx) = await provider.signTransaction(param)
+    // TODO: Wallet #7211 - `version` needs returned to DApp.
+    let (status, errorMessage, serializedTx, version) = await provider.signTransaction(param)
     guard status == .success else {
       return (nil, buildErrorJson(status: status, errorMessage: errorMessage))
     }
@@ -280,7 +281,8 @@ class SolanaProviderScriptHandler: TabContentScript {
     guard !params.isEmpty else {
       return (nil, buildErrorJson(status: .invalidParams, errorMessage: "Invalid args"))
     }
-    let (status, errorMessage, serializedTxs) = await provider.signAllTransactions(params)
+    // TODO: Wallet #7211 - `versions` needs returned to DApp.
+    let (status, errorMessage, serializedTxs, versions) = await provider.signAllTransactions(params)
     guard status == .success else {
       return (nil, buildErrorJson(status: status, errorMessage: errorMessage))
     }

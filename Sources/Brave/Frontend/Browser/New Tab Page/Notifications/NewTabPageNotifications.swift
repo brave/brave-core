@@ -30,7 +30,7 @@ class NewTabPageNotifications {
 
     let state = BrandedImageCalloutState.getState(
       adsEnabled: rewards.ads.isEnabled,
-      adsAvailableInRegion: BraveAds.isCurrentLocaleSupported(),
+      adsAvailableInRegion: BraveAds.isSupportedRegion(),
       isSponsoredImage: isShowingSponseredImage
     )
     return .brandedImages(state: state)

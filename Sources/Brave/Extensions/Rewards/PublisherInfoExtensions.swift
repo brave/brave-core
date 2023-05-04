@@ -29,10 +29,10 @@ extension ProviderDisplayString {
   }
 }
 
-extension Ledger.PublisherInfo: ProviderDisplayString {}
-extension Ledger.PendingContributionInfo: ProviderDisplayString {}
+extension BraveCore.BraveRewards.PublisherInfo: ProviderDisplayString {}
+extension BraveCore.BraveRewards.PendingContributionInfo: ProviderDisplayString {}
 
-extension Ledger.PublisherInfo {
+extension BraveCore.BraveRewards.PublisherInfo {
   /// The display name to show when showing Publisher names (example: "X on GitHub", "Y on
   /// YouTube", or "reddit.com" for publishers that dont have individual content providers)
   var displayName: String {

@@ -185,7 +185,7 @@ public class SendTokenStore: ObservableObject {
         // don't set prefilled token if it belongs to a network we don't know
         return
       }
-      let success = await rpcService.setNetwork(networkForToken.chainId, coin: networkForToken.coin)
+      let success = await rpcService.setNetwork(networkForToken.chainId, coin: networkForToken.coin, origin: nil)
       if success {
         self.selectedSendToken = prefilledToken
       }
@@ -202,7 +202,7 @@ public class SendTokenStore: ObservableObject {
       self.isLoading = true
       defer { self.isLoading = false }
       var coin = await self.walletService.selectedCoin()
-      var network = await self.rpcService.network(coin)
+      var network = await self.rpcService.network(coin, origin: nil)
       await validatePrefilledToken(on: &network) // network may change
       coin = network.coin // in case network changed
       // fetch user assets
@@ -467,7 +467,7 @@ public class SendTokenStore: ObservableObject {
     let sendToAddress = resolvedAddress ?? sendAddress
 
     isMakingTx = true
-    rpcService.network(.eth) { [weak self] network in
+    rpcService.network(.eth, origin: nil) { [weak self] network in
       guard let self = self else { return }
       if network.isNativeAsset(token) {
         let baseData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: sendToAddress, value: "0x\(weiHexString)", data: .init(), signOnly: false, signedTransaction: nil)
@@ -533,7 +533,7 @@ public class SendTokenStore: ObservableObject {
     
     let sendToAddress = resolvedAddress ?? sendAddress
 
-    rpcService.network(.sol) { [weak self] network in
+    rpcService.network(.sol, origin: nil) { [weak self] network in
       guard let self = self else { return }
       if network.isNativeAsset(token) {
         self.solTxManagerProxy.makeSystemProgramTransferTxData(
@@ -552,7 +552,8 @@ public class SendTokenStore: ObservableObject {
         }
       } else {
         self.solTxManagerProxy.makeTokenProgramTransferTxData(
-          token.contractAddress,
+          network.chainId,
+          splTokenMintAddress: token.contractAddress,
           fromWalletAddress: fromAddress,
           toWalletAddress: sendToAddress,
           amount: amount
@@ -612,7 +613,7 @@ extension SendTokenStore: BraveWalletKeyringServiceObserver {
 }
 
 extension SendTokenStore: BraveWalletJsonRpcServiceObserver {
-  public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType) {
+  public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType, origin: URLOrigin?) {
     selectedSendToken = nil
     selectedSendTokenBalance = nil
     if coin != .eth { // if changed to ethereum coin network, address is still valid

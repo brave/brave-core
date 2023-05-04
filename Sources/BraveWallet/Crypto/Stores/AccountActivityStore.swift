@@ -187,7 +187,7 @@ class AccountActivityStore: ObservableObject {
       self.userVisibleAssets = updatedUserVisibleAssets
       self.userVisibleNFTs = updatedUserVisibleNFTs
       
-      let selectedNetworkForAccountCoin = await rpcService.network(coin)
+      let selectedNetworkForAccountCoin = await rpcService.network(coin, origin: nil)
       let assetRatios = self.userVisibleAssets.reduce(into: [String: Double](), {
         $0[$1.token.assetRatioId.lowercased()] = Double($1.price)
       })
@@ -208,10 +208,13 @@ class AccountActivityStore: ObservableObject {
     allTokens: [BraveWallet.BlockchainToken],
     assetRatios: [String: Double]
   ) async -> [TransactionSummary] {
-    let transactions = await txService.allTransactionInfo(account.coin, from: account.address)
+    let transactions = await txService.allTransactionInfo(account.coin, chainId: network.chainId, from: account.address)
     var solEstimatedTxFees: [String: UInt64] = [:]
     if account.coin == .sol {
-      solEstimatedTxFees = await solTxManagerProxy.estimatedTxFees(for: transactions.map(\.id))
+      solEstimatedTxFees = await solTxManagerProxy.estimatedTxFees(
+        chainId: network.chainId,
+        for: transactions.map(\.id)
+      )
     }
     let unknownTokenContractAddresses = transactions
       .flatMap { $0.tokenContractAddresses }
@@ -303,7 +306,7 @@ extension AccountActivityStore: BraveWalletKeyringServiceObserver {
 }
 
 extension AccountActivityStore: BraveWalletJsonRpcServiceObserver {
-  func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType) {
+  func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType, origin: URLOrigin?) {
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
       // Handle small gap between chain changing and txController having the correct chain Id
       self.update()
@@ -349,6 +352,9 @@ extension AccountActivityStore: BraveWalletBraveWalletServiceObserver {
   }
   
   func onDefaultSolanaWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
+  }
+  
+  public func onDiscoverAssetsStarted() {
   }
   
   func onDiscoverAssetsCompleted(_ discoveredAssets: [BraveWallet.BlockchainToken]) {

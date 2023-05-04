@@ -300,7 +300,7 @@ import XCTest
     
     let provider: BraveWallet.TestSolanaProvider = .init()
     provider._signTransaction = { _, completion in
-      completion(.internalError, "Internal error", [])
+      completion(.internalError, "Internal error", [], .legacy)
     }
     let tab = Tab(configuration: .init())
     let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
@@ -335,7 +335,7 @@ import XCTest
     
     let provider: BraveWallet.TestSolanaProvider = .init()
     provider._signTransaction = { [kSerializedTx] _, completion in
-      completion(.success, "", kSerializedTx.map(NSNumber.init(value:)))
+      completion(.success, "", kSerializedTx.map(NSNumber.init(value:)), .legacy)
     }
     let tab = Tab(configuration: .init())
     let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
@@ -368,7 +368,7 @@ import XCTest
     
     let provider: BraveWallet.TestSolanaProvider = .init()
     provider._signAllTransactions = { _, completion in
-      completion(.internalError, "Internal error", [])
+      completion(.internalError, "Internal error", [], [])
     }
     let tab = Tab(configuration: .init())
     let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
@@ -403,7 +403,8 @@ import XCTest
     
     let provider: BraveWallet.TestSolanaProvider = .init()
     provider._signAllTransactions = { [kSerializedTx] _, completion in
-      completion(.success, "", [kSerializedTx.map(NSNumber.init(value:))])
+      // TODO: Wallet #7211 - `versions` needs included in test.
+      completion(.success, "", [kSerializedTx.map(NSNumber.init(value:))], [])
     }
     let tab = Tab(configuration: .init())
     let solProviderHelper = SolanaProviderScriptHandler(tab: tab)

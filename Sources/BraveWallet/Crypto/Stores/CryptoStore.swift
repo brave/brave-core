@@ -375,8 +375,12 @@ public class CryptoStore: ObservableObject {
   @MainActor
   func fetchPendingTransactions() async -> [BraveWallet.TransactionInfo] {
     let allKeyrings = await keyringService.keyrings(for: WalletConstants.supportedCoinTypes)
-
-    return await txService.pendingTransactions(for: allKeyrings)
+    var selectedChainIdForCoinTypes: [BraveWallet.CoinType: [String]] = [:]
+    for coin in WalletConstants.supportedCoinTypes {
+      let selectedNetwork = await rpcService.network(coin, origin: nil)
+      selectedChainIdForCoinTypes[coin] = [selectedNetwork.chainId]
+    }
+    return await txService.pendingTransactions(chainIdsForCoin: selectedChainIdForCoinTypes, for: allKeyrings)
   }
 
   @MainActor
@@ -536,7 +540,7 @@ extension CryptoStore: BraveWalletKeyringServiceObserver {
 }
 
 extension CryptoStore: BraveWalletJsonRpcServiceObserver {
-  public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType) {
+  public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType, origin: URLOrigin?) {
     // if user had just changed networks, there is a potential race condition
     // blocking presenting pendingRequest here, as Network Selection might still be on screen
     // by delaying here instead of at present we only delay after chain changes (#6750)

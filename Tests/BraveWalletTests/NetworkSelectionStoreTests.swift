@@ -40,12 +40,12 @@ import Preferences
     
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._addObserver = { _ in }
-    rpcService._chainId = { $1(currentChainId) }
-    rpcService._network = { $1(currentNetwork) }
+    rpcService._chainIdForOrigin = { $2(currentChainId) }
+    rpcService._network = { $2(currentNetwork) }
     rpcService._allNetworks = { [weak self] coinType, completion in
       completion(self?.allNetworks[coinType, default: []] ?? [])
     }
-    rpcService._setNetwork = { _, _, completion in
+    rpcService._setNetwork = { chainId, coin, origin, completion in
       completion(true)
     }
     rpcService._customNetworks = { $1([]) }

@@ -15,15 +15,12 @@ import DeviceCheck
 class RewardsInternalsDebugViewController: TableViewController {
 
   private let ledger: BraveLedger
-  private var internalsInfo: Ledger.RewardsInternalsInfo?
+  private var internalsInfo: BraveCore.BraveRewards.RewardsInternalsInfo?
   private var transferrableTokens: Double = 0.0
 
   init(ledger: BraveLedger) {
     self.ledger = ledger
     super.init(style: .insetGrouped)
-    ledger.rewardsInternalInfo { info in
-      self.internalsInfo = info
-    }
   }
 
   @available(*, unavailable)
@@ -36,8 +33,19 @@ class RewardsInternalsDebugViewController: TableViewController {
 
     title = Strings.RewardsInternals.title
 
-    guard let info = internalsInfo else { return }
+    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(tappedShare)).then {
+      $0.accessibilityLabel = Strings.RewardsInternals.shareInternalsTitle
+    }
 
+    ledger.rewardsInternalInfo { info in
+      self.internalsInfo = info
+      self.reloadSections()
+    }
+  }
+  
+  func reloadSections() {
+    guard let info = internalsInfo else { return }
+    
     let dateFormatter = DateFormatter().then {
       $0.dateStyle = .short
     }
@@ -46,11 +54,7 @@ class RewardsInternalsDebugViewController: TableViewController {
       $0.minimumFractionDigits = 1
       $0.maximumFractionDigits = 3
     }
-
-    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(tappedShare)).then {
-      $0.accessibilityLabel = Strings.RewardsInternals.shareInternalsTitle
-    }
-
+    
     var sections: [Static.Section] = [
       .init(
         header: .title(Strings.RewardsInternals.walletInfoHeader),
@@ -68,7 +72,7 @@ class RewardsInternalsDebugViewController: TableViewController {
         ]
       ),
     ]
-
+    
     if let balance = ledger.balance {
       let keyMaps = [
         "anonymous": Strings.RewardsInternals.anonymous,
@@ -87,7 +91,7 @@ class RewardsInternalsDebugViewController: TableViewController {
         )
       )
     }
-
+    
     sections.append(
       .init(
         rows: [
@@ -112,7 +116,7 @@ class RewardsInternalsDebugViewController: TableViewController {
         ]
       )
     )
-
+    
     dataSource.sections = sections
   }
 

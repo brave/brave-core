@@ -27,8 +27,8 @@ extension BraveCoreSwitchKey {
       return "Typical Rotation Interval"
     case .p3aExpressRotationIntervalSeconds:
       return "Express Rotation Interval"
-    case .p3aUploadServerURL:
-      return "Upload Server URL"
+    case .p3aJsonUploadServerURL:
+      return "Json Upload Server URL"
     case .enableFeatures:
       return "Enable Features"
     default:
@@ -269,9 +269,9 @@ struct BraveCoreDebugSwitchesView: View {
             SwitchContainer(.p3aUploadIntervalSeconds)
           }
           NavigationLink {
-            BasicStringInputView(coreSwitch: .p3aUploadServerURL, hint: "Overrides the P3A cloud backend URL.")
+            BasicStringInputView(coreSwitch: .p3aJsonUploadServerURL, hint: "Overrides the P3A cloud backend URL.")
           } label: {
-            SwitchContainer(.p3aUploadServerURL)
+            SwitchContainer(.p3aJsonUploadServerURL)
           }
           NavigationLink {
             BasicStringInputView(coreSwitch: .p3aTypicalRotationIntervalSeconds, hint: "Interval in seconds between restarting the uploading process for all gathered values")

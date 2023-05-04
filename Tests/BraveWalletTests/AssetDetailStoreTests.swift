@@ -41,7 +41,7 @@ class AssetDetailStoreTests: XCTestCase {
       $1([.mockMainnet])
     }
     rpcService._network = {
-      $1(.mockMainnet)
+      $2(.mockMainnet)
     }
     rpcService._balance = { _, _, _, completion in
       completion(ethBalanceWei, .success, "")
@@ -58,7 +58,7 @@ class AssetDetailStoreTests: XCTestCase {
     
     let txService = BraveWallet.TestTxService()
     txService._allTransactionInfo = {
-      $2([.previewConfirmedSend])
+      $3([.previewConfirmedSend])
     }
     txService._addObserver = { _ in }
     
@@ -72,7 +72,7 @@ class AssetDetailStoreTests: XCTestCase {
     
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
     solTxManagerProxy._estimatedTxFee = {
-      $1(UInt64(0.1), .success, "")
+      $2(UInt64(0.1), .success, "")
     }
     
     let swapService = BraveWallet.TestSwapService()
@@ -242,7 +242,7 @@ class AssetDetailStoreTests: XCTestCase {
     let formattedEthBalance = currencyFormatter.string(from: NSNumber(value: mockEthBalance)) ?? ""
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._network = {
-      $1(.mockMainnet)
+      $2(.mockMainnet)
     }
     rpcService._balance = { _, _, _, completion in
       completion(ethBalanceWei, .success, "")

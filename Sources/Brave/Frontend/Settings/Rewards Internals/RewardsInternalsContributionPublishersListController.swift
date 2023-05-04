@@ -9,8 +9,8 @@ import Static
 import Shared
 
 class RewardsInternalsContributionPublishersListController: TableViewController {
-  private let publishers: [Ledger.ContributionPublisher]
-  init(publishers: [Ledger.ContributionPublisher]) {
+  private let publishers: [BraveCore.BraveRewards.ContributionPublisher]
+  init(publishers: [BraveCore.BraveRewards.ContributionPublisher]) {
     self.publishers = publishers
     super.init(style: .grouped)
   }

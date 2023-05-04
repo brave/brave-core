@@ -147,7 +147,7 @@ class AssetDetailStore: ObservableObject {
       case .blockchainToken(let token):
         // not come from Market tab
         let allNetworks = await rpcService.allNetworks(token.coin)
-        let selectedNetwork = await rpcService.network(token.coin)
+        let selectedNetwork = await rpcService.network(token.coin, origin: nil)
         let network = allNetworks.first(where: { $0.chainId == token.chainId }) ?? selectedNetwork
         self.network = network
         self.isBuySupported = await self.isBuyButtonSupported(in: network, for: token.symbol)
@@ -201,7 +201,7 @@ class AssetDetailStore: ObservableObject {
         
         // selected network used because we don't have `chainId` on CoinMarket
         let selectedCoin = await self.walletService.selectedCoin()
-        let selectedNetwork = await self.rpcService.network(selectedCoin)
+        let selectedNetwork = await self.rpcService.network(selectedCoin, origin: nil)
         self.isBuySupported = await self.isBuyButtonSupported(in: selectedNetwork, for: coinMarket.symbol)
         
         // below is all not supported from Market tab
@@ -290,7 +290,11 @@ class AssetDetailStore: ObservableObject {
     let allTransactions = await withTaskGroup(of: [BraveWallet.TransactionInfo].self) { @MainActor group -> [BraveWallet.TransactionInfo] in
       for account in keyring.accountInfos {
         group.addTask { @MainActor in
-          await self.txService.allTransactionInfo(network.coin, from: account.address)
+          await self.txService.allTransactionInfo(
+            network.coin,
+            chainId: network.chainId,
+            from: account.address
+          )
         }
       }
       return await group.reduce([BraveWallet.TransactionInfo](), { partialResult, prior in
@@ -299,7 +303,10 @@ class AssetDetailStore: ObservableObject {
     }
     var solEstimatedTxFees: [String: UInt64] = [:]
     if token.coin == .sol {
-      solEstimatedTxFees = await solTxManagerProxy.estimatedTxFees(for: allTransactions.map(\.id))
+      solEstimatedTxFees = await solTxManagerProxy.estimatedTxFees(
+        chainId: network.chainId,
+        for: allTransactions.map(\.id)
+      )
     }
     return allTransactions
       .filter { tx in
@@ -423,8 +430,12 @@ extension AssetDetailStore: BraveWalletBraveWalletServiceObserver {
   func onDefaultSolanaWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
   }
   
+  func onDiscoverAssetsStarted() {
+  }
+  
   func onDiscoverAssetsCompleted(_ discoveredAssets: [BraveWallet.BlockchainToken]) {
   }
+
   func onResetWallet() {
   }
 }

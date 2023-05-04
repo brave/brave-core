@@ -50,7 +50,7 @@ class TransactionsActivityStoreTests: XCTestCase {
     }
     
     let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._network = { coin, completion in
+    rpcService._network = { coin, _, completion in
       if coin == .sol {
         completion(.mockSolana)
       } else {
@@ -76,12 +76,12 @@ class TransactionsActivityStoreTests: XCTestCase {
     
     let txService = BraveWallet.TestTxService()
     txService._addObserver = { _ in }
-    txService._allTransactionInfo = { coin, accountAddress, completion in
+    txService._allTransactionInfo = { coin, accountAddress, _, completion in
       completion(self.transactions[coin] ?? [])
     }
     
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
-    solTxManagerProxy._estimatedTxFee = { $1(UInt64(1), .success, "") }
+    solTxManagerProxy._estimatedTxFee = { $2(UInt64(1), .success, "") }
     
     let store = TransactionsActivityStore(
       keyringService: keyringService,
