@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PROCESSORS_BEHAVIORAL_MULTI_ARMED_BANDITS_EPSILON_GREEDY_BANDIT_ARM_INFO_H_
 
 #include <string>
+#include <vector>
 
 namespace brave_ads {
 
@@ -20,6 +21,8 @@ struct EpsilonGreedyBanditArmInfo final {
   double value = 0.0;
   int pulls = 0;
 };
+
+using EpsilonGreedyBanditArmList = std::vector<EpsilonGreedyBanditArmInfo>;
 
 }  // namespace brave_ads
 
