@@ -13,6 +13,7 @@
 #include "base/command_line.h"
 #include "base/logging.h"
 #include "base/notreached.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -1709,8 +1710,8 @@ void KeyringService::AddAccountsWithDefaultName(
     } else if (coin_type == mojom::CoinType::SOL) {
       prefix = "Solana ";
     }
-    auto add_result =
-        AddAccountForKeyring(keyring_id, prefix + GetAccountName(i));
+    auto add_result = AddAccountForKeyring(
+        keyring_id, base::StrCat({prefix, GetAccountName(i)}));
     if (add_result) {
       account_infos.push_back(add_result.value());
     }

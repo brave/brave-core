@@ -82,11 +82,16 @@ void AccountDiscoveryManager::AddDiscoveryAccount(
         base::BindOnce(&AccountDiscoveryManager::OnEthGetTransactionCount,
                        weak_ptr_factory_.GetWeakPtr(), std::move(context)));
   } else if (context->coin_type == mojom::CoinType::SOL) {
+    // We use balance for Solana account discovery since pratically
+    // getSignaturesForAddress method could work not properly sometimes when
+    // node losts bigtable connection
     json_rpc_service_->GetSolanaBalance(
         addr.value(), chain_id,
         base::BindOnce(&AccountDiscoveryManager::OnResolveSolanaAccountBalance,
                        weak_ptr_factory_.GetWeakPtr(), std::move(context)));
   } else if (context->coin_type == mojom::CoinType::FIL) {
+    // We use balance for Filecoin account discovery since proper method is
+    // limited https://github.com/filecoin-project/lotus/issues/9728
     json_rpc_service_->GetBalance(
         addr.value(), coin_type, chain_id,
         base::BindOnce(&AccountDiscoveryManager::OnResolveAccountBalance,

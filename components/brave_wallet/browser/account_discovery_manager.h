@@ -19,6 +19,10 @@
 
 namespace brave_wallet {
 
+// Start account discovery process. Consecutively look for accounts with at
+// least one transaction. Add such ones and all missing previous ones(so no
+// gaps). Stop discovering when there are 20 consecutive accounts with no
+// transactions.
 class AccountDiscoveryManager {
  public:
   AccountDiscoveryManager(JsonRpcService* rpc_service,

@@ -208,9 +208,9 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       const std::vector<uint8_t>& ciphertext,
       const std::string& address);
 
-  virtual void AddAccountsWithDefaultName(const mojom::CoinType& coin_type,
-                                          const std::string& keyring_id,
-                                          size_t number);
+  void AddAccountsWithDefaultName(const mojom::CoinType& coin_type,
+                                  const std::string& keyring_id,
+                                  size_t number);
 
   bool IsLocked(const std::string& keyring_id) const;
   bool IsLockedSync() const;
