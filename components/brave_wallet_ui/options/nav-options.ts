@@ -40,9 +40,32 @@ const ActivityNavOption: NavOption = {
   route: WalletRoutes.Activity
 }
 
-export const PanelNavOptions: NavOption[] = [
+// We can remove this once we go live with Panel 2.0
+export const PanelNavOptionsOld: NavOption[] = [
   ...BuySendSwapDepositOptions,
   ActivityNavOption
+]
+
+export const PanelNavOptions: NavOption[] = [
+  {
+    id: 'portfolio',
+    name: 'braveWalletTopNavPortfolio',
+    icon: 'coins',
+    route: WalletRoutes.Portfolio
+  },
+  ActivityNavOption,
+  {
+    id: 'accounts',
+    name: 'braveWalletTopNavAccounts',
+    icon: 'user-accounts',
+    route: WalletRoutes.Accounts
+  },
+  {
+    id: 'market',
+    name: 'braveWalletTopNavMarket',
+    icon: 'discover',
+    route: WalletRoutes.Market
+  }
 ]
 
 export const NavOptions: NavOption[] = [

@@ -6,6 +6,7 @@
 import styled from 'styled-components'
 import Icon from '@brave/leo/react/icon'
 import { WalletButton, Text } from '../../../shared/style'
+import { layoutSmallWidth } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const StyledButton = styled(WalletButton) <{ isSelected?: boolean }>`
   display: flex;
@@ -32,7 +33,18 @@ export const StyledButton = styled(WalletButton) <{ isSelected?: boolean }>`
   &:last-child {
     margin-bottom: 0px;
   }
-  transition-duration: inherit;
+  transition-duration: 0.1s;
+  transition-timing-function: ease;
+  @media screen and (max-width: ${layoutSmallWidth}px) {
+    padding: 6px 0px 3px 0px;
+    width: 100%;
+    flex-direction: column;
+    margin-bottom: 0px;
+    margin-right: 8px;
+    &:last-child {
+      margin-right: 0px;
+    }
+  }
 `
 
 export const ButtonIcon = styled(Icon)`
@@ -40,10 +52,17 @@ export const ButtonIcon = styled(Icon)`
   color: var(--nav-button-color);
   margin-right: var(--icon-margin-right);
   transition-duration: inherit;
+  transition-timing-function: inherit;
 `
 
 export const ButtonText = styled(Text)`
   color: var(--nav-button-color);
   display: var(--display-text);
   transition-duration: inherit;
+  transition-timing-function: inherit;
+  @media screen and (max-width: ${layoutSmallWidth}px) {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+  }
 `

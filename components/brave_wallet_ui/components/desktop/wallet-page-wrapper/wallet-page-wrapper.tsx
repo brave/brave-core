@@ -37,13 +37,13 @@ import {
   BackgroundGradientTopLayer,
   BackgroundGradientMiddleLayer,
   BackgroundGradientBottomLayer,
-  BlockForHeight
+  BlockForHeight,
+  FeatureRequestButtonWrapper
 } from './wallet-page-wrapper.style'
 
 export interface Props {
   wrapContentInBox?: boolean
   cardWidth?: number
-  cardOverflow?: 'auto' | 'hidden' | 'visible'
   noPadding?: boolean
   hideBackground?: boolean
   children?: React.ReactNode
@@ -53,7 +53,6 @@ export const WalletPageWrapper = (props: Props) => {
   const {
     children,
     cardWidth,
-    cardOverflow,
     noPadding,
     wrapContentInBox,
     hideBackground
@@ -106,16 +105,16 @@ export const WalletPageWrapper = (props: Props) => {
           <WalletNav isSwap={walletLocation === WalletRoutes.Swap} />
         }
         {!isWalletLocked &&
-          <FeatureRequestButton />
+          <FeatureRequestButtonWrapper>
+            <FeatureRequestButton />
+          </FeatureRequestButtonWrapper>
         }
         <BlockForHeight />
         {wrapContentInBox ? (
-          <LayoutCardWrapper
-            maxWidth={cardWidth}
-          >
+          <LayoutCardWrapper>
             <ContainerCard
-              cardOverflow={cardOverflow}
               noPadding={noCardPadding}
+              maxWidth={cardWidth}
             >
               {children}
             </ContainerCard>

@@ -261,7 +261,6 @@ export const Container = () => {
                 <WalletPageWrapper
                   wrapContentInBox={true}
                   cardWidth={456}
-                  cardOverflow='visible'
                 >
                   <FundWalletScreen />
                 </WalletPageWrapper>
@@ -273,7 +272,6 @@ export const Container = () => {
                 <WalletPageWrapper
                   wrapContentInBox={true}
                   cardWidth={456}
-                  cardOverflow='visible'
                 >
                   <DepositFundsScreen />
                 </WalletPageWrapper>
@@ -312,13 +310,6 @@ export const Container = () => {
                   wrapContentInBox={
                     walletLocation !== WalletRoutes.LocalIpfsNode &&
                     walletLocation !== WalletRoutes.InspectNfts
-                  }
-                  cardOverflow={
-                    walletLocation === WalletRoutes.PortfolioAssets ||
-                      walletLocation === WalletRoutes.Activity ||
-                      walletLocation === WalletRoutes.PortfolioNFTs
-                      ? 'visible'
-                      : 'hidden'
                   }
                 >
                   <CryptoView

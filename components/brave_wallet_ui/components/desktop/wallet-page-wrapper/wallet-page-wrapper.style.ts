@@ -7,6 +7,10 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 
 const minCardHeight = 531
+const maxCardWidth = 768
+export const layoutSmallWidth = 983
+export const layoutPanelWidth = 660
+export const layoutTopPosition = 68
 
 export const Wrapper = styled.div<{ noPadding?: boolean }>`
   position: fixed;
@@ -19,32 +23,43 @@ export const Wrapper = styled.div<{ noPadding?: boolean }>`
   align-items: center;
   justify-content: flex-start;
   overflow: hidden;
-  overflow-y: auto;
   z-index: 10;
   padding: ${(p) => p.noPadding ? '0px' : '100px 0px'};
 `
 
-export const LayoutCardWrapper = styled.div<{
-  maxWidth?: number,
-}>`
+export const LayoutCardWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
   justify-content: flex-start;
   align-items: center;
-  top: 100px;
-  bottom: 32px;
+  top: ${layoutTopPosition}px;
+  bottom: 0px;
   position: absolute;
   width: 100%;
-  max-width: ${(p) => p.maxWidth ? p.maxWidth : 700}px;
+  transition-duration: 0.5s;
+  transition-timing-function: ease;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-bottom: 32px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  @media screen and (max-width: ${layoutSmallWidth}px) {
+    bottom: 67px;
+    padding: 0px 32px 32px 32px;
+  }
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    padding: 0px;
+  }
 `
 
 export const ContainerCard = styled.div<
   {
-    cardOverflow?: 'auto' | 'hidden' | 'visible',
-    noPadding?: boolean
+    noPadding?: boolean,
+    maxWidth?: number,
   }>`
   display: flex;
+  flex: none;
   flex-direction: column;
   background-color: ${(p) => p.theme.color.background02};
   border-radius: 24px;
@@ -55,11 +70,15 @@ export const ContainerCard = styled.div<
   padding: ${(p) => p.noPadding ? 0 : 20}px;
   width: 100%;
   min-height: ${minCardHeight}px;
-  max-height: calc(100vh - 132px);
-  overflow-y: ${(p) => p.cardOverflow ?? 'hidden'};
+  max-width: ${(p) => p.maxWidth ? p.maxWidth : maxCardWidth}px;
   position: relative;
-  @media screen and (max-width: 700px) {
+  transition-duration: inherit;
+  transition-timing-function: inherit;
+  @media screen and (max-width: ${layoutSmallWidth}px) {
     width: 100%;
+  }
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    border-radius: 24px 24px 0px 0px;
   }
 `
 
@@ -156,10 +175,17 @@ export const BackgroundGradientBottomLayer = styled.div`
 `
 
 export const BlockForHeight = styled.div`
-  top: 100px;
+  top: ${layoutTopPosition}px;
   width: 1px;
   height: calc(${minCardHeight}px + 30px);
   display: flex;
   position: absolute;
   left: 0px;
+`
+
+export const FeatureRequestButtonWrapper = styled.div`
+  display: flex;
+  @media screen and (max-width: ${layoutSmallWidth}px) {
+    display: none;
+  }
 `

@@ -161,7 +161,6 @@ export const WalletSettingsMenu = (props: Props) => {
   return (
     <StyledWrapper
       yPosition={yPosition}
-      right={15}
     >
 
       <PopupButton onClick={lockWallet}>

@@ -51,7 +51,6 @@ export const SettingsButton = styled(StyledButton)`
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
   height: 40px;
   width: 40px;
-  margin-right: 16px;
   &:hover {
     background-color: ${leo.color.container.interactiveBackground};
   }

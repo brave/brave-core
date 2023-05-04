@@ -430,7 +430,6 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
             userAssetList={userAssetList}
             networks={networks || []}
             estimatedItemSize={58}
-            enableScroll={true}
             horizontalPadding={20}
             renderToken={({ item }) =>
               <PortfolioAssetItem
