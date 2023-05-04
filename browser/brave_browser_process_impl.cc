@@ -31,11 +31,13 @@
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/browser/brave_farbling_service.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_sync/network_time_helper.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/debounce/browser/debounce_component_installer.h"
 #include "brave/components/debounce/common/features.h"
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
+#include "brave/components/localhost_permission_allowlist/browser/localhost_permission_allowlist_service.h"
 #include "brave/components/misc_metrics/menu_metrics.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/buildflags.h"
@@ -212,6 +214,11 @@ void BraveBrowserProcessImpl::StartBraveServices() {
     https_upgrade_exceptions_service();
   }
 
+  if (base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveLocalhostAccessPermission)) {
+    localhost_permission_allowlist_service();
+  }
+
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion_download_service();
 #endif
@@ -262,6 +269,15 @@ BraveBrowserProcessImpl::https_upgrade_exceptions_service() {
             local_data_files_service());
   }
   return https_upgrade_exceptions_service_.get();
+}
+
+localhost_permission_allowlist::LocalhostPermissionAllowlistService*
+BraveBrowserProcessImpl::localhost_permission_allowlist_service() {
+  if (!localhost_permission_allowlist_service_) {
+    localhost_permission_allowlist_service_ = localhost_permission_allowlist::
+        LocalhostPermissionAllowlistServiceFactory(local_data_files_service());
+  }
+  return localhost_permission_allowlist_service_.get();
 }
 
 #if BUILDFLAG(ENABLE_GREASELION)

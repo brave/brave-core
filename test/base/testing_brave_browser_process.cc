@@ -74,6 +74,11 @@ TestingBraveBrowserProcess::https_upgrade_exceptions_service() {
   return nullptr;
 }
 
+localhost_permission_allowlist::LocalhostPermissionAllowlistService*
+TestingBraveBrowserProcess::localhost_permission_allowlist_service() {
+  return nullptr;
+}
+
 brave_shields::HTTPSEverywhereService*
 TestingBraveBrowserProcess::https_everywhere_service() {
   NOTREACHED();
