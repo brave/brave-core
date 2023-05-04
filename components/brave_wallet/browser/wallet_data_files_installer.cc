@@ -85,6 +85,21 @@ void OnSanitizedChainList(data_decoder::JsonSanitizer::Result result) {
   BlockchainRegistry::GetInstance()->UpdateChainList(std::move(chains));
 }
 
+void OnSanitizedDappLists(data_decoder::JsonSanitizer::Result result) {
+  DappListMap lists;
+  if (!result.has_value()) {
+    VLOG(1) << "DappLists JSON validation error:" << result.error();
+    return;
+  }
+
+  if (!ParseDappLists(*result, &lists)) {
+    VLOG(1) << "Can't parse dapp lists.";
+    return;
+  }
+
+  BlockchainRegistry::GetInstance()->UpdateDappList(std::move(lists));
+}
+
 void HandleParseTokenList(base::FilePath absolute_install_dir,
                           const std::string& filename,
                           mojom::CoinType coin_type) {
@@ -113,6 +128,20 @@ void HandleParseChainList(base::FilePath absolute_install_dir,
 
   data_decoder::JsonSanitizer::Sanitize(std::move(chain_list_json),
                                         base::BindOnce(&OnSanitizedChainList));
+}
+
+void HandleParseDappList(base::FilePath absolute_install_dir,
+                         const std::string& filename) {
+  const base::FilePath dapp_lists_json_path =
+      absolute_install_dir.AppendASCII(filename);
+  std::string dapp_lists_json;
+  if (!base::ReadFileToString(dapp_lists_json_path, &dapp_lists_json)) {
+    LOG(ERROR) << "Can't read dapp lists file: " << filename;
+    return;
+  }
+
+  data_decoder::JsonSanitizer::Sanitize(std::move(dapp_lists_json),
+                                        base::BindOnce(&OnSanitizedDappLists));
 }
 
 void ParseTokenListAndUpdateRegistry(const base::FilePath& install_dir) {
@@ -146,6 +175,20 @@ void ParseChainListAndUpdateRegistry(const base::FilePath& install_dir) {
   }
 
   HandleParseChainList(absolute_install_dir, "chainlist.json");
+}
+
+void ParseDappListsAndUpdateRegistry(const base::FilePath& install_dir) {
+  // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
+  // absolute paths to avoid unexpected failure. base::MakeAbsoluteFilePath()
+  // requires IO so it can only be done in this function.
+  const base::FilePath absolute_install_dir =
+      base::MakeAbsoluteFilePath(install_dir);
+
+  if (absolute_install_dir.empty()) {
+    LOG(ERROR) << "Failed to get absolute install path.";
+  }
+
+  HandleParseDappList(absolute_install_dir, "dapp-lists.json");
 }
 
 }  // namespace
@@ -215,6 +258,9 @@ void WalletDataFilesInstallerPolicy::ComponentReady(
 
   sequenced_task_runner_->PostTask(
       FROM_HERE, base::BindOnce(&ParseChainListAndUpdateRegistry, path));
+
+  sequenced_task_runner_->PostTask(
+      FROM_HERE, base::BindOnce(&ParseDappListsAndUpdateRegistry, path));
 }
 
 bool WalletDataFilesInstallerPolicy::VerifyInstallation(

@@ -269,4 +269,188 @@ TEST(ParseChainListUnitTest, ParseChainList) {
   EXPECT_FALSE(chain2->is_eip1559);
 }
 
+TEST(ParseDappListsUnitTest, ParseDappLists) {
+  const std::string dapp_list = R"({
+    "ethereum": {
+      "success": true,
+      "chain": "ethereum",
+      "category": null,
+      "range": "30d",
+      "top": 10,
+      "results": [
+        {
+          "dappId": 7000,
+          "name": "Uniswap V3",
+          "description": "A protocol for trading and automated liquidity provision on Ethereum.",
+          "fullDescription": "<p>Uniswap v3 introduces:</p>\n<ul>\n  <li><strong>Concentrated liquidity,</strong> giving individual LPs granular control over what price ranges their capital is allocated to. Individual positions are aggregated together into a single pool, forming one combined curve for users to trade against</li>\n  <li><strong>Multiple fee tiers</strong> , allowing LPs to be appropriately compensated for taking on varying degrees of risk</li>\n</ul>\n<p>These features make Uniswap v3 <strong>the most flexible and efficient AMM ever designed</strong>:</p>\n<ul>\n  <li>LPs can provide liquidity with <strong>up to 4000x capital efficiency</strong> relative to Uniswap v2, earning <strong>higher returns on their capital</strong></li>\n  <li>Capital efficiency paves the way for low-slippage <strong>trade execution that can surpass both centralized exchanges and stablecoin-focused AMMs</strong></li>\n  <li>LPs can significantly <strong>increase their exposure to preferred assets</strong> and <strong>reduce their downside risk</strong></li>\n  <li>LPs can sell one asset for another by adding liquidity to a price range entirely above or below the market price, approximating <strong>a fee-earning limit order that executes along a smooth curve</strong></li>\n</ul>",
+          "logo": "https://dashboard-assets.dappradar.com/document/7000/uniswapv3-dapp-defi-ethereum-logo_7f71f0c5a1cd26a3e3ffb9e8fb21b26b.png",
+          "link": "https://dappradar.com/ethereum/exchanges/uniswap-v3",
+          "website": "https://app.uniswap.org/#/swap",
+          "chains": [
+            "ethereum",
+            "polygon",
+            "optimism",
+            "celo",
+            "arbitrum",
+            "binance-smart-chain"
+          ],
+          "categories": [
+            "exchanges"
+          ],
+          "socialLinks": [
+            {
+              "title": "blog",
+              "url": "https://uniswap.org/blog/",
+              "type": "blog"
+            },
+            {
+              "title": "discord",
+              "url": "https://discord.com/invite/FCfyBSbCU5",
+              "type": "discord"
+            },
+            {
+              "title": "github",
+              "url": "https://github.com/Uniswap",
+              "type": "github"
+            },
+            {
+              "title": "reddit",
+              "url": "https://www.reddit.com/r/UniSwap/",
+              "type": "reddit"
+            },
+            {
+              "title": "twitter",
+              "url": "https://twitter.com/Uniswap",
+              "type": "twitter"
+            }
+          ],
+          "metrics": {
+            "transactions": 2348167,
+            "uaw": 387445,
+            "volume": 65982226285.39,
+            "balance": 1904817795.53
+          }
+        }
+      ]
+    },
+    "solana": {
+      "success": true,
+      "chain": "solana",
+      "category": null,
+      "range": "30d",
+      "top": 10,
+      "results": [
+        {
+          "dappId": 20419,
+          "name": "GameTrade Market",
+          "description": "Discover, buy, sell and trade in-game NFTs",
+          "fullDescription": "<p><strong>GameTrade Market is an easy-to-use Web3 gaming marketplace and social network for gamers.</strong></p>\n<p>- <strong>Social media tools</strong></p>\n<p>Messaging, news feed, referral programs. Great networking capabilities for finding friends and clients.</p>\n<p>- <strong>Game database</strong> For each game, there is a detailed description along with screenshots, gameplay videos, community reviews.</p>\n<p>- <strong>Multiple blockchain support</strong></p>\n<p>Games and tokens based on dozens of different blockchains.</p>\n<p>- <strong>Custom game coins</strong></p>\n<p>Exchange in-game currencies and native blockchain coins on the built-in crypto exchange.</p>\n<p>- <strong>Swap and Rent</strong></p>\n<p>New possibilities for the in-game NFT economies: swap and rent.</p>\n<p>- <strong>Community</strong></p>\n<p>User reputation, game reviews, item comments, user-generated game guides .</p>",
+          "logo": "https://dashboard-assets.dappradar.com/document/20419/gametrademarket-dapp-marketplaces-matic-logo_e3e698e60ebd9bfe8ed1421bb41b890d.png",
+          "link": "https://dappradar.com/solana/marketplaces/gametrade-market-2",
+          "website": "https://gametrade.market/",
+          "chains": [
+            "polygon",
+            "solana",
+            "binance-smart-chain"
+          ],
+          "categories": [
+            "marketplaces"
+          ],
+          "socialLinks": [
+            {
+              "title": "discord",
+              "url": "https://discord.gg/gametrade",
+              "type": "discord"
+            },
+            {
+              "title": "medium",
+              "url": "https://gametrademarket.medium.com/",
+              "type": "medium"
+            },
+            {
+              "title": "twitter",
+              "url": "https://twitter.com/GameTradeMarket",
+              "type": "twitter"
+            },
+            {
+              "title": "youtube",
+              "url": "https://www.youtube.com/channel/UCAoMHO4zQaiT-vxWOVk8IjA/videos",
+              "type": "youtube"
+            }
+          ],
+          "metrics": {
+            "transactions": 401926,
+            "uaw": 354495,
+            "volume": 8949.83,
+            "balance": 3.81
+          }
+        }
+      ]
+    }
+  })";
+
+  // Parse the dapp list
+  DappListMap dapp_list_map;
+  EXPECT_TRUE(ParseDappLists(dapp_list, &dapp_list_map));
+
+  // There should be two lists, one for Ethereum and one for Solana
+  ASSERT_EQ(2u, dapp_list_map.size());
+
+  // There should be one dapp in the Ethereum list
+  auto it = dapp_list_map.find(
+      GetTokenListKey(mojom::CoinType::ETH, mojom::kMainnetChainId));
+  EXPECT_TRUE(it != dapp_list_map.end());
+  const auto& eth_dapp_list = it->second;
+  EXPECT_EQ(eth_dapp_list.size(), 1u);
+  const auto& eth_dapp = eth_dapp_list[0];
+  EXPECT_EQ(eth_dapp->name, "Uniswap V3");
+  EXPECT_EQ(
+      eth_dapp->description,
+      "A protocol for trading and automated liquidity provision on Ethereum.");
+  EXPECT_EQ(
+      eth_dapp->logo,
+      "https://dashboard-assets.dappradar.com/document/7000/"
+      "uniswapv3-dapp-defi-ethereum-logo_7f71f0c5a1cd26a3e3ffb9e8fb21b26b.png");
+  EXPECT_EQ(eth_dapp->website, "https://app.uniswap.org/#/swap");
+  EXPECT_EQ(eth_dapp->categories.size(), 1u);
+  EXPECT_EQ(eth_dapp->categories[0], "exchanges");
+  EXPECT_EQ(eth_dapp->chains.size(), 6u);
+  EXPECT_EQ(eth_dapp->chains[0], "ethereum");
+  EXPECT_EQ(eth_dapp->chains[1], "polygon");
+  EXPECT_EQ(eth_dapp->chains[2], "optimism");
+  EXPECT_EQ(eth_dapp->chains[3], "celo");
+  EXPECT_EQ(eth_dapp->chains[4], "arbitrum");
+  EXPECT_EQ(eth_dapp->chains[5], "binance-smart-chain");
+  EXPECT_EQ(eth_dapp->transactions, 2348167u);
+  EXPECT_EQ(eth_dapp->uaw, 387445u);
+  EXPECT_DOUBLE_EQ(eth_dapp->volume, 65982226285.39);
+  EXPECT_DOUBLE_EQ(eth_dapp->balance, 1904817795.53);
+
+  // There should be one dapp in the Solana list
+  auto it_s = dapp_list_map.find(
+      GetTokenListKey(mojom::CoinType::SOL, mojom::kSolanaMainnet));
+  EXPECT_TRUE(it_s != dapp_list_map.end());
+  const auto& sol_dapp_list = it_s->second;
+  EXPECT_EQ(sol_dapp_list.size(), 1u);
+  const auto& sol_dapp = sol_dapp_list[0];
+  EXPECT_EQ(sol_dapp->name, "GameTrade Market");
+  EXPECT_EQ(sol_dapp->description,
+            "Discover, buy, sell and trade in-game NFTs");
+  EXPECT_EQ(sol_dapp->logo,
+            "https://dashboard-assets.dappradar.com/document/20419/"
+            "gametrademarket-dapp-marketplaces-matic-logo_"
+            "e3e698e60ebd9bfe8ed1421bb41b890d.png");
+  EXPECT_EQ(sol_dapp->website, "https://gametrade.market/");
+  EXPECT_EQ(sol_dapp->categories.size(), 1u);
+  EXPECT_EQ(sol_dapp->categories[0], "marketplaces");
+  EXPECT_EQ(sol_dapp->chains.size(), 3u);
+  EXPECT_EQ(sol_dapp->chains[0], "polygon");
+  EXPECT_EQ(sol_dapp->chains[1], "solana");
+  EXPECT_EQ(sol_dapp->chains[2], "binance-smart-chain");
+  EXPECT_EQ(sol_dapp->transactions, 401926u);
+  EXPECT_EQ(sol_dapp->uaw, 354495u);
+  EXPECT_DOUBLE_EQ(sol_dapp->volume, 8949.83);
+  EXPECT_DOUBLE_EQ(sol_dapp->balance, 3.81);
+}
+
 }  // namespace brave_wallet

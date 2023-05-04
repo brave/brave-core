@@ -50,6 +50,10 @@ void BlockchainRegistry::UpdateChainList(ChainList chains) {
   chain_list_ = std::move(chains);
 }
 
+void BlockchainRegistry::UpdateDappList(DappListMap dapp_lists) {
+  dapp_lists_ = std::move(dapp_lists);
+}
+
 void BlockchainRegistry::GetTokenByAddress(const std::string& chain_id,
                                            mojom::CoinType coin,
                                            const std::string& address,

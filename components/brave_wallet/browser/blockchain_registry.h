@@ -33,6 +33,7 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
   void UpdateTokenList(const std::string key,
                        std::vector<mojom::BlockchainTokenPtr> list);
   void UpdateChainList(ChainList chains);
+  void UpdateDappList(DappListMap dapp_lists);
 
   mojom::BlockchainTokenPtr GetTokenByAddress(const std::string& chain_id,
                                               mojom::CoinType coin,
@@ -72,6 +73,7 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
 
   TokenListMap token_list_map_;
   ChainList chain_list_;
+  DappListMap dapp_lists_;
   friend struct base::DefaultSingletonTraits<BlockchainRegistry>;
 
   BlockchainRegistry();

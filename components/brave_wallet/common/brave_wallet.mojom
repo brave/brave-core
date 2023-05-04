@@ -438,6 +438,19 @@ struct CoinMarket {
   double total_volume;
 };
 
+struct Dapp {
+  string name;
+  string description;
+  string logo;
+  string website;
+  array<string> chains;
+  array<string> categories;
+  uint32 transactions;
+  uint32 uaw;
+  double volume;
+  double balance;
+};
+
 // Structs to model 0x (swap) HTTP API interactions
 // Docs: https://docs.0x.org/0x-api-swap
 struct SwapParams {

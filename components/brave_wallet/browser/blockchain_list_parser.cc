@@ -9,6 +9,7 @@
 
 #include "base/json/json_reader.h"
 #include "base/logging.h"
+#include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -16,10 +17,78 @@
 
 namespace {
 
+constexpr char kDappRadarSolanaId[] = "solana";
+constexpr char kDappRadarEthereumId[] = "ethereum";
+constexpr char kDappRadarPolygonId[] = "polygon";
+constexpr char kDappRadarBinanceSmartChainId[] = "binance-smart-chain";
+constexpr char kDappRadarOptimismId[] = "optimism";
+constexpr char kDappRadarAuroraId[] = "aurora";
+constexpr char kDappRadarAvalancheId[] = "avalanche";
+constexpr char kDappRadarFantomId[] = "fantom";
+
+absl::optional<std::tuple<brave_wallet::mojom::CoinType, std::string>>
+DappRadarChainIdToCoinAndChainId(const std::string& dapp_radar_chain_id) {
+  static base::NoDestructor<base::flat_map<
+      std::string, std::tuple<brave_wallet::mojom::CoinType, std::string>>>
+      chain_id_lookup({
+          {kDappRadarEthereumId,
+           {brave_wallet::mojom::CoinType::ETH,
+            brave_wallet::mojom::kMainnetChainId}},
+          {kDappRadarSolanaId,
+           {brave_wallet::mojom::CoinType::SOL,
+            brave_wallet::mojom::kSolanaMainnet}},
+          {kDappRadarPolygonId,
+           {brave_wallet::mojom::CoinType::ETH,
+            brave_wallet::mojom::kPolygonMainnetChainId}},
+          {kDappRadarBinanceSmartChainId,
+           {brave_wallet::mojom::CoinType::ETH,
+            brave_wallet::mojom::kBinanceSmartChainMainnetChainId}},
+          {kDappRadarOptimismId,
+           {brave_wallet::mojom::CoinType::ETH,
+            brave_wallet::mojom::kOptimismMainnetChainId}},
+          {kDappRadarAuroraId,
+           {brave_wallet::mojom::CoinType::ETH,
+            brave_wallet::mojom::kArbitrumMainnetChainId}},
+          {kDappRadarAvalancheId,
+           {brave_wallet::mojom::CoinType::ETH,
+            brave_wallet::mojom::kAvalancheMainnetChainId}},
+          {kDappRadarFantomId,
+           {brave_wallet::mojom::CoinType::ETH,
+            brave_wallet::mojom::kFantomMainnetChainId}},
+      });
+  if (!chain_id_lookup->contains(dapp_radar_chain_id)) {
+    return absl::nullopt;
+  }
+
+  return chain_id_lookup->at(dapp_radar_chain_id);
+}
+
 bool ParseResultFromDict(const base::Value::Dict* response_dict,
                          const std::string& key,
                          std::string* output_val) {
   auto* val = response_dict->FindString(key);
+  if (!val) {
+    return false;
+  }
+  *output_val = *val;
+  return true;
+}
+
+bool ParseIntResultFromDict(const base::Value::Dict* response_dict,
+                            const std::string& key,
+                            uint32_t* output_val) {
+  auto val = response_dict->FindInt(key);
+  if (!val) {
+    return false;
+  }
+  *output_val = *val;
+  return true;
+}
+
+bool ParseDoubleResultFromDict(const base::Value::Dict* response_dict,
+                               const std::string& key,
+                               double* output_val) {
+  auto val = response_dict->FindDouble(key);
   if (!val) {
     return false;
   }
@@ -261,6 +330,244 @@ bool ParseChainList(const std::string& json, ChainList* result) {
     network->coin = mojom::CoinType::ETH;
 
     result->push_back(std::move(network));
+  }
+
+  return true;
+}
+
+bool ParseDappLists(const std::string& json, DappListMap* dapp_list) {
+  DCHECK(dapp_list);
+
+  // {
+  //   "ethereum": {
+  //     "success": true,
+  //     "chain": "ethereum",
+  //     "category": null,
+  //     "range": "30d",
+  //     "top": 10,
+  //     "results": [
+  //       {
+  //         "dappId": 7000,
+  //         "name": "Uniswap V3",
+  //         "description": "A protocol for trading and automated liquidity
+  //         provision on Ethereum.", "fullDescription": "<p>Uniswap v3
+  //         introduces:</p>\n<ul>\n  <li><strong>Concentrated
+  //         liquidity,</strong> giving individual LPs granular control over
+  //         what price ranges their capital is allocated to. Individual
+  //         positions are aggregated together into a single pool, forming one
+  //         combined curve for users to trade against</li>\n
+  //         <li><strong>Multiple fee tiers</strong> , allowing LPs to be
+  //         appropriately compensated for taking on varying degrees of
+  //         risk</li>\n</ul>\n<p>These features make Uniswap v3 <strong>the
+  //         most flexible and efficient AMM ever designed</strong>:</p>\n<ul>\n
+  //         <li>LPs can provide liquidity with <strong>up to 4000x capital
+  //         efficiency</strong> relative to Uniswap v2, earning <strong>higher
+  //         returns on their capital</strong></li>\n  <li>Capital efficiency
+  //         paves the way for low-slippage <strong>trade execution that can
+  //         surpass both centralized exchanges and stablecoin-focused
+  //         AMMs</strong></li>\n  <li>LPs can significantly <strong>increase
+  //         their exposure to preferred assets</strong> and <strong>reduce
+  //         their downside risk</strong></li>\n  <li>LPs can sell one asset for
+  //         another by adding liquidity to a price range entirely above or
+  //         below the market price, approximating <strong>a fee-earning limit
+  //         order that executes along a smooth curve</strong></li>\n</ul>",
+  //         "logo":
+  //         "https://dashboard-assets.dappradar.com/document/7000/uniswapv3-dapp-defi-ethereum-logo_7f71f0c5a1cd26a3e3ffb9e8fb21b26b.png",
+  //         "link": "https://dappradar.com/ethereum/exchanges/uniswap-v3",
+  //         "website": "https://app.uniswap.org/#/swap",
+  //         "chains": [
+  //           "ethereum",
+  //           "polygon",
+  //           "optimism",
+  //           "celo",
+  //           "arbitrum",
+  //           "binance-smart-chain"
+  //         ],
+  //         "categories": [
+  //           "exchanges"
+  //         ],
+  //         "socialLinks": [
+  //           {
+  //             "title": "blog",
+  //             "url": "https://uniswap.org/blog/",
+  //             "type": "blog"
+  //           },
+  //           {
+  //             "title": "discord",
+  //             "url": "https://discord.com/invite/FCfyBSbCU5",
+  //             "type": "discord"
+  //           },
+  //           {
+  //             "title": "github",
+  //             "url": "https://github.com/Uniswap",
+  //             "type": "github"
+  //           },
+  //           {
+  //             "title": "reddit",
+  //             "url": "https://www.reddit.com/r/UniSwap/",
+  //             "type": "reddit"
+  //           },
+  //           {
+  //             "title": "twitter",
+  //             "url": "https://twitter.com/Uniswap",
+  //             "type": "twitter"
+  //           }
+  //         ],
+  //         "metrics": {
+  //           "transactions": 2348167,
+  //           "uaw": 387445,
+  //           "volume": 65982226285.39,
+  //           "balance": 1904817795.53
+  //         }
+  //       }
+  //     ]
+  //   },
+  //   "solana": {
+  //     "success": true,
+  //     "chain": "solana",
+  //     "category": null,
+  //     "range": "30d",
+  //     "top": 10,
+  //     "results": [
+  //       {
+  //         "dappId": 20419,
+  //         "name": "GameTrade Market",
+  //         "description": "Discover, buy, sell and trade in-game NFTs",
+  //         "fullDescription": "<p><strong>GameTrade Market is an easy-to-use
+  //         Web3 gaming marketplace and social network for
+  //         gamers.</strong></p>\n<p>- <strong>Social media
+  //         tools</strong></p>\n<p>Messaging, news feed, referral programs.
+  //         Great networking capabilities for finding friends and
+  //         clients.</p>\n<p>- <strong>Game database</strong> For each game,
+  //         there is a detailed description along with screenshots, gameplay
+  //         videos, community reviews.</p>\n<p>- <strong>Multiple blockchain
+  //         support</strong></p>\n<p>Games and tokens based on dozens of
+  //         different blockchains.</p>\n<p>- <strong>Custom game
+  //         coins</strong></p>\n<p>Exchange in-game currencies and native
+  //         blockchain coins on the built-in crypto exchange.</p>\n<p>-
+  //         <strong>Swap and Rent</strong></p>\n<p>New possibilities for the
+  //         in-game NFT economies: swap and rent.</p>\n<p>-
+  //         <strong>Community</strong></p>\n<p>User reputation, game reviews,
+  //         item comments, user-generated game guides .</p>", "logo":
+  //         "https://dashboard-assets.dappradar.com/document/20419/gametrademarket-dapp-marketplaces-matic-logo_e3e698e60ebd9bfe8ed1421bb41b890d.png",
+  //         "link":
+  //         "https://dappradar.com/solana/marketplaces/gametrade-market-2",
+  //         "website": "https://gametrade.market/",
+  //         "chains": [
+  //           "polygon",
+  //           "solana",
+  //           "binance-smart-chain"
+  //         ],
+  //         "categories": [
+  //           "marketplaces"
+  //         ],
+  //         "socialLinks": [
+  //           {
+  //             "title": "discord",
+  //             "url": "https://discord.gg/gametrade",
+  //             "type": "discord"
+  //           },
+  //           {
+  //             "title": "medium",
+  //             "url": "https://gametrademarket.medium.com/",
+  //             "type": "medium"
+  //           },
+  //           {
+  //             "title": "twitter",
+  //             "url": "https://twitter.com/GameTradeMarket",
+  //             "type": "twitter"
+  //           },
+  //           {
+  //             "title": "youtube",
+  //             "url":
+  //             "https://www.youtube.com/channel/UCAoMHO4zQaiT-vxWOVk8IjA/videos",
+  //             "type": "youtube"
+  //           }
+  //         ],
+  //         "metrics": {
+  //           "transactions": 401926,
+  //           "uaw": 354495,
+  //           "volume": 8949.83,
+  //           "balance": 3.81
+  //         }
+  //       }
+  //     ]
+  //   }
+  // }
+
+  absl::optional<base::Value> records_v =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                       base::JSONParserOptions::JSON_PARSE_RFC);
+  if (!records_v || !records_v->is_dict()) {
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const auto& response_dict = records_v->GetDict();
+  for (const auto chain_dapp_list_pair : response_dict) {
+    const auto& dapp_radar_chain_id = chain_dapp_list_pair.first;
+    const auto* dapp_list_value = chain_dapp_list_pair.second.GetIfDict();
+    if (!dapp_list_value) {
+      return false;
+    }
+
+    if (auto* results_list = dapp_list_value->FindList("results")) {
+      for (auto& item : *results_list) {
+        auto dapp = mojom::Dapp::New();
+        if (auto* dappDict = item.GetIfDict()) {
+          if (!ParseResultFromDict(dappDict, "name", &dapp->name) ||
+              !ParseResultFromDict(dappDict, "description",
+                                   &dapp->description) ||
+              !ParseResultFromDict(dappDict, "logo", &dapp->logo) ||
+              !ParseResultFromDict(dappDict, "website", &dapp->website)) {
+            continue;
+          }
+
+          // Parse chains
+          if (auto* chains_list = dappDict->FindList("chains")) {
+            for (const auto& chain : *chains_list) {
+              if (chain.is_string()) {
+                dapp->chains.push_back(chain.GetString());
+              }
+            }
+          }
+
+          // Parse categories
+          if (auto* categories_list = dappDict->FindList("categories")) {
+            for (const auto& category : *categories_list) {
+              if (category.is_string()) {
+                dapp->categories.push_back(category.GetString());
+              }
+            }
+          }
+
+          // Parse metrics
+          if (auto* metrics_dict = dappDict->FindDict("metrics")) {
+            if (!ParseIntResultFromDict(metrics_dict, "transactions",
+                                        &dapp->transactions) ||
+                !ParseIntResultFromDict(metrics_dict, "uaw", &dapp->uaw) ||
+                !ParseDoubleResultFromDict(metrics_dict, "volume",
+                                           &dapp->volume) ||
+                !ParseDoubleResultFromDict(metrics_dict, "balance",
+                                           &dapp->balance)) {
+              continue;
+            }
+          }
+
+          // Determine the correct key, then add parsed dapp to the dapp_list
+          absl::optional<std::tuple<mojom::CoinType, std::string>>
+              coin_and_chain_id_result =
+                  DappRadarChainIdToCoinAndChainId(dapp_radar_chain_id);
+          if (!coin_and_chain_id_result) {
+            continue;
+          }
+          mojom::CoinType coin = std::get<0>(*coin_and_chain_id_result);
+          std::string chain_id = std::get<1>(*coin_and_chain_id_result);
+          std::string key = GetTokenListKey(coin, chain_id);
+          (*dapp_list)[key].push_back(std::move(dapp));
+        }
+      }
+    }
   }
 
   return true;
