@@ -54,7 +54,10 @@ import org.chromium.chrome.browser.crypto_wallet.util.AssetsPricesHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.BalanceHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
+import org.chromium.components.embedder_support.util.BraveUrlConstants;
+import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.ui.base.DeviceFormFactor;
+import org.chromium.url.GURL;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -90,7 +93,11 @@ public class BraveWalletPanel implements DialogInterface {
     private AccountInfo mSelectedAccount;
     private NetworkInfo mSelectedNetwork;
     private final Observer<AccountInfo> mAccountInfoObserver = accountInfo -> {
-        if (accountInfo == null) return;
+        if (accountInfo == null) {
+            mBtnConnectedStatus.setVisibility(View.GONE);
+            mCvSolConnectionStatus.setVisibility(View.GONE);
+            return;
+        }
         mSelectedAccount = accountInfo;
         mBraveWalletPanelServices.getKeyringService().getKeyringInfo(
                 AssetUtils.getKeyringForCoinType(mSelectedAccount.coin), keyringInfo -> {
@@ -344,8 +351,24 @@ public class BraveWalletPanel implements DialogInterface {
             mBtnConnectedStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
         } else {
             mCvSolConnectionStatus.setVisibility(View.GONE);
-            mBtnConnectedStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                    isConnected ? R.drawable.ic_check_white : 0, 0, 0, 0);
+            try {
+                BraveActivity activity = BraveActivity.getBraveActivity();
+                mBtnConnectedStatus.setVisibility(View.GONE);
+                if (activity.getActivityTab() != null) {
+                    GURL lastCommittedUrl =
+                            activity.getActivityTab().getWebContents().getLastCommittedUrl();
+                    if (!lastCommittedUrl.getScheme().equals(BraveUrlConstants.BRAVE_SCHEME)
+                            && !lastCommittedUrl.getScheme().equals(UrlConstants.CHROME_SCHEME)
+                            && !lastCommittedUrl.getScheme().equals(
+                                    UrlConstants.CHROME_NATIVE_SCHEME)) {
+                        mBtnConnectedStatus.setVisibility(View.VISIBLE);
+                        mBtnConnectedStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                                isConnected ? R.drawable.ic_check_white : 0, 0, 0, 0);
+                    }
+                }
+            } catch (BraveActivity.BraveActivityNotFoundException e) {
+                Log.e(TAG, "updateConnectedState " + e);
+            }
         }
     }
 
