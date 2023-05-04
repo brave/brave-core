@@ -1,16 +1,16 @@
 diff --git a/ios/chrome/browser/prefs/browser_prefs.mm b/ios/chrome/browser/prefs/browser_prefs.mm
-index aa7a28e5105ea7245eae3f56080c84a8d610a894..a6689750f6917261dd4b52704d238bf1f2e3c698 100644
+index dec58a72bdbed2a725c3ffa1465f34f146d06863..b7742f259cbad920734690caeae49ee620aa7729 100644
 --- a/ios/chrome/browser/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/prefs/browser_prefs.mm
-@@ -236,6 +236,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
-   // Preferences related to tab grid.
-   // Default to 0 which is the unassigned value.
-   registry->RegisterIntegerPref(prefs::kInactiveTabsTimeThreshold, 0);
+@@ -239,6 +239,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+ 
+   registry->RegisterIntegerPref(prefs::kIosSyncSegmentsNewTabPageDisplayCount,
+                                 0);
 +  BRAVE_REGISTER_LOCAL_STATE_PREFS
  }
  
  void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -389,6 +390,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -392,6 +393,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
    ntp_snippets::prefs::RegisterProfilePrefsForMigrationApril2023(registry);
  
    registry->RegisterBooleanPref(kDeprecatedReadingListHasUnseenEntries, false);
@@ -18,9 +18,11 @@ index aa7a28e5105ea7245eae3f56080c84a8d610a894..a6689750f6917261dd4b52704d238bf1
  }
  
  // This method should be periodically pruned of year+ old migrations.
-@@ -465,4 +467,5 @@ void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
- 
-   // Added 04/2023.
-   ntp_snippets::prefs::MigrateObsoleteProfilePrefsApril2023(prefs);
+@@ -421,6 +423,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* prefs) {
+   if (prefs->FindPreference(kTrialPrefName)) {
+     prefs->ClearPref(kTrialPrefName);
+   }
 +  BRAVE_MIGRATE_OBSOLETE_BROWSER_STATE_PREFS
  }
+ 
+ // This method should be periodically pruned of year+ old migrations.

@@ -1,10 +1,10 @@
 diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index 4eb53ed3da74c4798815bf592f01cc6fc086bd9d..24d0e534ce035968ee5fcfc8e3c71618a80f5fd5 100644
+index 60afa8e0c3bb97fe2866eb6a8c81723d06c03a1f..04dd187409188fd79e74c1f465dff3eb7342f640 100644
 --- a/components/content_settings/core/common/content_settings_types.h
 +++ b/components/content_settings/core/common/content_settings_types.h
-@@ -327,6 +327,22 @@ enum class ContentSettingsType : int32_t {
-   // should be enabled.
-   THIRD_PARTY_STORAGE_PARTITIONING,
+@@ -330,6 +330,22 @@ enum class ContentSettingsType : int32_t {
+   // Used to indicate whether HTTPS-First Mode is enabled on the hostname.
+   HTTPS_ENFORCED,
  
 +  BRAVE_START,
 +  BRAVE_ADS = BRAVE_START,
