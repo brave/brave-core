@@ -23,6 +23,7 @@
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/renderer/resource_helper.h"
 #include "brave/components/constants/brave_paths.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -40,6 +41,12 @@
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "ui/base/l10n/l10n_util.h"
+
+// IDR_BRAVE_WALLET_SOLANA_WEB3_JS_FOR_TEST is excluded from Android build to
+// save space. Ensure this test is not build on Android. If it will be required
+// to run these tests on Android, include again
+// IDR_BRAVE_WALLET_SOLANA_WEB3_JS_FOR_TEST
+static_assert(!BUILDFLAG(IS_ANDROID));
 
 using brave_wallet::mojom::SolanaProviderError;
 
