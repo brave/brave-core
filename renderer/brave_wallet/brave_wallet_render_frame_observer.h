@@ -6,8 +6,6 @@
 #ifndef BRAVE_RENDERER_BRAVE_WALLET_BRAVE_WALLET_RENDER_FRAME_OBSERVER_H_
 #define BRAVE_RENDERER_BRAVE_WALLET_BRAVE_WALLET_RENDER_FRAME_OBSERVER_H_
 
-#include <memory>
-
 #include "brave/common/brave_renderer_configuration.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/renderer/js_ethereum_provider.h"
