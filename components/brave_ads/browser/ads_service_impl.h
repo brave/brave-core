@@ -108,15 +108,17 @@ class AdsServiceImpl : public AdsService,
   void StartBatAdsService();
   void RestartBatAdsServiceAfterDelay();
   void CancelRestartBatAdsService();
+  bool ShouldProceedInitialization(size_t current_start_number) const;
 
-  void OnBatAdsServiceCreated();
-  void OnInitializeBasePathDirectory(bool success);
-  void Initialize();
+  void OnBatAdsServiceCreated(size_t current_start_number);
+  void OnInitializeBasePathDirectory(size_t current_start_number, bool success);
+  void Initialize(size_t current_start_number);
   void InitializeDatabase();
 
   bool ShouldRewardUser() const;
-  void InitializeRewardsWallet();
-  void OnInitializeRewardsWallet(brave_rewards::mojom::RewardsWalletPtr wallet);
+  void InitializeRewardsWallet(size_t current_start_number);
+  void OnInitializeRewardsWallet(size_t current_start_number,
+                                 brave_rewards::mojom::RewardsWalletPtr wallet);
   void InitializeBatAds();
   void OnInitializeBatAds(bool success);
 
@@ -430,6 +432,11 @@ class AdsServiceImpl : public AdsService,
   bool did_cleanup_on_first_run_ = false;
   bool needs_browser_upgrade_to_serve_ads_ = false;
   bool is_upgrading_from_pre_brave_ads_build_ = false;
+  // Brave Ads Service starts count is needed to avoid possible double Brave Ads
+  // initialization.
+  // TODO(https://github.com/brave/brave-browser/issues/30247): Refactor Brave
+  // Ads startup logic.
+  size_t service_starts_count_ = 0;
 
   PrefChangeRegistrar pref_change_registrar_;
 

@@ -412,7 +412,8 @@ void AdsServiceImpl::StartBatAdsService() {
       bat_ads_client_.BindNewEndpointAndPassRemote(),
       bat_ads_.BindNewEndpointAndPassReceiver(),
       bat_ads_client_notifier_.BindNewPipeAndPassReceiver(),
-      base::BindOnce(&AdsServiceImpl::OnBatAdsServiceCreated, AsWeakPtr()));
+      base::BindOnce(&AdsServiceImpl::OnBatAdsServiceCreated, AsWeakPtr(),
+                     ++service_starts_count_));
 
   bat_ads_.reset_on_disconnect();
   bat_ads_client_notifier_.reset_on_disconnect();
@@ -436,7 +437,17 @@ void AdsServiceImpl::CancelRestartBatAdsService() {
   }
 }
 
-void AdsServiceImpl::OnBatAdsServiceCreated() {
+bool AdsServiceImpl::ShouldProceedInitialization(
+    size_t current_start_number) const {
+  return bat_ads_service_.is_bound() &&
+         service_starts_count_ == current_start_number;
+}
+
+void AdsServiceImpl::OnBatAdsServiceCreated(const size_t current_start_number) {
+  if (!ShouldProceedInitialization(current_start_number)) {
+    return;
+  }
+
   SetSysInfo();
 
   SetBuildChannel();
@@ -447,19 +458,25 @@ void AdsServiceImpl::OnBatAdsServiceCreated() {
       FROM_HERE,
       base::BindOnce(&EnsureBaseDirectoryExistsOnFileTaskRunner, base_path_),
       base::BindOnce(&AdsServiceImpl::OnInitializeBasePathDirectory,
-                     AsWeakPtr()));
+                     AsWeakPtr(), current_start_number));
 }
 
-void AdsServiceImpl::OnInitializeBasePathDirectory(const bool success) {
+void AdsServiceImpl::OnInitializeBasePathDirectory(
+    const size_t current_start_number,
+    const bool success) {
   if (!success) {
     VLOG(1) << "Failed to initialize " << base_path_ << " directory";
     return Shutdown();
   }
 
-  Initialize();
+  Initialize(current_start_number);
 }
 
-void AdsServiceImpl::Initialize() {
+void AdsServiceImpl::Initialize(const size_t current_start_number) {
+  if (!ShouldProceedInitialization(current_start_number)) {
+    return;
+  }
+
   InitializeDatabase();
 
   BackgroundHelper::GetInstance()->AddObserver(this);
@@ -468,7 +485,7 @@ void AdsServiceImpl::Initialize() {
 
   RegisterResourceComponentsForDefaultLocale();
 
-  InitializeRewardsWallet();
+  InitializeRewardsWallet(current_start_number);
 }
 
 void AdsServiceImpl::InitializeDatabase() {
@@ -482,13 +499,20 @@ bool AdsServiceImpl::ShouldRewardUser() const {
   return IsEnabled();
 }
 
-void AdsServiceImpl::InitializeRewardsWallet() {
+void AdsServiceImpl::InitializeRewardsWallet(
+    const size_t current_start_number) {
   rewards_service_->GetRewardsWallet(
-      base::BindOnce(&AdsServiceImpl::OnInitializeRewardsWallet, AsWeakPtr()));
+      base::BindOnce(&AdsServiceImpl::OnInitializeRewardsWallet, AsWeakPtr(),
+                     current_start_number));
 }
 
 void AdsServiceImpl::OnInitializeRewardsWallet(
+    const size_t current_start_number,
     brave_rewards::mojom::RewardsWalletPtr wallet) {
+  if (!ShouldProceedInitialization(current_start_number)) {
+    return;
+  }
+
   if (!bat_ads_.is_bound()) {
     return;
   }
