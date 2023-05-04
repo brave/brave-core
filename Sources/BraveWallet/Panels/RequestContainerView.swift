@@ -58,6 +58,7 @@ struct RequestContainerView<DismissContent: ToolbarContent>: View {
               requests: requests,
               keyringStore: keyringStore,
               cryptoStore: cryptoStore,
+              networkStore: cryptoStore.networkStore,
               onDismiss: onDismiss
             )
           case let .getEncryptionPublicKey(request):
