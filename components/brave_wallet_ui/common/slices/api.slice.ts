@@ -797,7 +797,10 @@ export function createWalletApi (
       //
       // Prices
       //
-      getTokenSpotPrice: query<AssetPriceById, GetBlockchainTokenIdArg>({
+      getTokenSpotPrice: query<
+        AssetPriceById,
+        GetBlockchainTokenIdArg & { symbol: string }
+      >({
         queryFn: async (tokenArg, { dispatch }, extraOptions, baseQuery) => {
           try {
             const { assetRatioService } = baseQuery(undefined).data
@@ -1026,8 +1029,7 @@ export function createWalletApi (
                 chainId: tokenArg.chainId,
                 contractAddress: tokenArg.contractAddress,
                 isErc721: tokenArg.isErc721,
-                tokenId: tokenArg.tokenId,
-                symbol: tokenArg.symbol
+                tokenId: tokenArg.tokenId
               })
             ).unwrap()
 
@@ -1373,7 +1375,6 @@ export function createWalletApi (
                       contractAddress: asset.contractAddress,
                       isErc721: asset.isErc721,
                       isNft: asset.isNft,
-                      symbol: asset.symbol,
                       tokenId: asset.tokenId
                     }
                   })

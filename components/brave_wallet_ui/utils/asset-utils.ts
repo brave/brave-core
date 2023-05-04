@@ -157,7 +157,6 @@ export type GetBlockchainTokenIdArg = Pick<
   | 'chainId'
   | 'contractAddress'
   | 'isErc721'
-  | 'symbol'
   | 'tokenId'
 >
 
@@ -167,8 +166,8 @@ export type GetBlockchainTokenIdArg = Pick<
  */
 export const getAssetIdKey = (asset: GetBlockchainTokenIdArg) => {
   return asset.isErc721
-    ? `${asset.contractAddress}-${asset.symbol}-${asset.tokenId}-${asset.chainId}`
-    : `${asset.contractAddress}-${asset.symbol}-${asset.chainId}`
+    ? `${asset.contractAddress}-${asset.tokenId}-${asset.chainId}`
+    : `${asset.contractAddress}-${asset.chainId}`
 }
 
 /**

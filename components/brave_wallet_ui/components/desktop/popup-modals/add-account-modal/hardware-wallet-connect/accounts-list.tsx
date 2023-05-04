@@ -307,7 +307,6 @@ function AccountListItem({
           contractAddress: balanceAsset?.contractAddress || '',
           isErc721: balanceAsset?.isErc721 || false,
           isNft: balanceAsset?.isNft || false,
-          symbol: balanceAsset?.symbol || '',
           tokenId: balanceAsset?.tokenId || ''
         }
       },

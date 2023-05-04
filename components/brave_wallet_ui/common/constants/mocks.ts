@@ -23,7 +23,7 @@ type EIP1559SerializableTransactionInfo = SerializableTransactionInfo & {
 export const getMockedTransactionInfo =
   (): EIP1559SerializableTransactionInfo => {
     return {
-      chainId: '1337',
+      chainId: BraveWallet.LOCALHOST_CHAIN_ID,
       id: '1',
       fromAddress: '0x8b52c24d6e2600bdb8dbb6e8da849ed38ab7e81f',
       txHash: '',
@@ -40,7 +40,7 @@ export const getMockedTransactionInfo =
             signOnly: false,
             signedTransaction: undefined
           },
-          chainId: '1337',
+          chainId: BraveWallet.LOCALHOST_CHAIN_ID,
           maxPriorityFeePerGas: '',
           maxFeePerGas: '',
           gasEstimation: undefined
