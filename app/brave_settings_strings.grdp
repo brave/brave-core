@@ -500,6 +500,24 @@
   <message name="IDS_BRAVE_DIAGNOSTIC_REPORTS_PREF_DESC" desc="The description of the checkbox to enable/disable sending diagnostic reports (crashes, hangs).">
     Help improve Brave's product stability by automatically sending diagnostic reports when the Brave Browser crashes or freezes.
   </message>
+  <!-- Request OTR -->
+  <if expr="enable_request_otr">
+    <message name="IDS_SETTINGS_REQUEST_OTR_LABEL" desc="Request OTR setting label">
+      Go Off-The-Record when visiting sensitive sites
+    </message>
+    <message name="IDS_SETTINGS_REQUEST_OTR_SUB_LABEL" desc="Request OTR setting sub-label">
+      Learn more
+    </message>
+    <message name="IDS_SETTINGS_REQUEST_OTR_DEFAULT" desc="Select value">
+      Ask
+    </message>
+    <message name="IDS_SETTINGS_REQUEST_OTR_ALWAYS" desc="Select value">
+      Always
+    </message>
+    <message name="IDS_SETTINGS_REQUEST_OTR_NEVER" desc="Select value">
+      Never
+    </message>
+  </if>
 
   <!-- Settings / Privacy and security / Clear Browsing Data dialog -->
   <message name="IDS_SETTINGS_BRAVE_ON_EXIT" desc="Clear Browsing Data dialog On exit tab label">

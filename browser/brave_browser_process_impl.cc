@@ -87,6 +87,11 @@
 #include "chrome/browser/ui/browser_list.h"
 #endif
 
+#if BUILDFLAG(ENABLE_REQUEST_OTR)
+#include "brave/components/request_otr/browser/request_otr_component_installer.h"
+#include "brave/components/request_otr/common/features.h"
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
 #endif
@@ -188,17 +193,19 @@ void BraveBrowserProcessImpl::PostDestroyThreads() {
 
 brave_component_updater::BraveComponent::Delegate*
 BraveBrowserProcessImpl::brave_component_updater_delegate() {
-  if (!brave_component_updater_delegate_)
+  if (!brave_component_updater_delegate_) {
     brave_component_updater_delegate_ =
         std::make_unique<brave::BraveComponentUpdaterDelegate>();
+  }
 
   return brave_component_updater_delegate_.get();
 }
 
 ProfileManager* BraveBrowserProcessImpl::profile_manager() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!created_profile_manager_)
+  if (!created_profile_manager_) {
     CreateProfileManager();
+  }
   return profile_manager_.get();
 }
 
@@ -216,6 +223,9 @@ void BraveBrowserProcessImpl::StartBraveServices() {
   greaselion_download_service();
 #endif
   debounce_component_installer();
+#if BUILDFLAG(ENABLE_REQUEST_OTR)
+  request_otr_component_installer();
+#endif
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader_rewriter_service();
 #endif
@@ -277,8 +287,9 @@ BraveBrowserProcessImpl::greaselion_download_service() {
 
 debounce::DebounceComponentInstaller*
 BraveBrowserProcessImpl::debounce_component_installer() {
-  if (!base::FeatureList::IsEnabled(debounce::features::kBraveDebounce))
+  if (!base::FeatureList::IsEnabled(debounce::features::kBraveDebounce)) {
     return nullptr;
+  }
   if (!debounce_component_installer_) {
     debounce_component_installer_ =
         std::make_unique<debounce::DebounceComponentInstaller>(
@@ -286,6 +297,22 @@ BraveBrowserProcessImpl::debounce_component_installer() {
   }
   return debounce_component_installer_.get();
 }
+
+#if BUILDFLAG(ENABLE_REQUEST_OTR)
+request_otr::RequestOTRComponentInstallerPolicy*
+BraveBrowserProcessImpl::request_otr_component_installer() {
+  if (!base::FeatureList::IsEnabled(
+          request_otr::features::kBraveRequestOTRTab)) {
+    return nullptr;
+  }
+  if (!request_otr_component_installer_) {
+    request_otr_component_installer_ =
+        std::make_unique<request_otr::RequestOTRComponentInstallerPolicy>(
+            local_data_files_service());
+  }
+  return request_otr_component_installer_.get();
+}
+#endif
 
 brave::URLSanitizerComponentInstaller*
 BraveBrowserProcessImpl::URLSanitizerComponentInstaller() {
@@ -309,10 +336,11 @@ BraveBrowserProcessImpl::https_everywhere_service() {
 
 brave_component_updater::LocalDataFilesService*
 BraveBrowserProcessImpl::local_data_files_service() {
-  if (!local_data_files_service_)
+  if (!local_data_files_service_) {
     local_data_files_service_ =
         brave_component_updater::LocalDataFilesServiceFactory(
             brave_component_updater_delegate());
+  }
   return local_data_files_service_.get();
 }
 
@@ -328,8 +356,9 @@ void BraveBrowserProcessImpl::OnBraveDarkModeChanged() {
 
 #if BUILDFLAG(ENABLE_TOR)
 tor::BraveTorClientUpdater* BraveBrowserProcessImpl::tor_client_updater() {
-  if (tor_client_updater_)
+  if (tor_client_updater_) {
     return tor_client_updater_.get();
+  }
 
   base::FilePath user_data_dir;
   base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
@@ -392,9 +421,10 @@ BraveBrowserProcessImpl::brave_referrals_service() {
 }
 
 brave_stats::BraveStatsUpdater* BraveBrowserProcessImpl::brave_stats_updater() {
-  if (!brave_stats_updater_)
+  if (!brave_stats_updater_) {
     brave_stats_updater_ = std::make_unique<brave_stats::BraveStatsUpdater>(
         local_state(), g_browser_process->profile_manager());
+  }
   return brave_stats_updater_.get();
 }
 
@@ -440,8 +470,9 @@ BraveBrowserProcessImpl::speedreader_rewriter_service() {
 
 #if BUILDFLAG(ENABLE_IPFS)
 ipfs::BraveIpfsClientUpdater* BraveBrowserProcessImpl::ipfs_client_updater() {
-  if (ipfs_client_updater_)
+  if (ipfs_client_updater_) {
     return ipfs_client_updater_.get();
+  }
 
   base::FilePath user_data_dir;
   base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
@@ -455,8 +486,9 @@ ipfs::BraveIpfsClientUpdater* BraveBrowserProcessImpl::ipfs_client_updater() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 brave_vpn::BraveVPNOSConnectionAPI*
 BraveBrowserProcessImpl::brave_vpn_os_connection_api() {
-  if (brave_vpn_os_connection_api_)
+  if (brave_vpn_os_connection_api_) {
     return brave_vpn_os_connection_api_.get();
+  }
 
   brave_vpn_os_connection_api_ = brave_vpn::CreateBraveVPNConnectionAPI(
       shared_url_loader_factory(), local_state(), chrome::GetChannel());
@@ -465,15 +497,17 @@ BraveBrowserProcessImpl::brave_vpn_os_connection_api() {
 #endif
 
 brave::BraveFarblingService* BraveBrowserProcessImpl::brave_farbling_service() {
-  if (!brave_farbling_service_)
+  if (!brave_farbling_service_) {
     brave_farbling_service_ = std::make_unique<brave::BraveFarblingService>();
+  }
   return brave_farbling_service_.get();
 }
 
 misc_metrics::MenuMetrics* BraveBrowserProcessImpl::menu_metrics() {
 #if !BUILDFLAG(IS_ANDROID)
-  if (!menu_metrics_)
+  if (!menu_metrics_) {
     menu_metrics_ = std::make_unique<misc_metrics::MenuMetrics>(local_state());
+  }
 #endif
   return menu_metrics_.get();
 }

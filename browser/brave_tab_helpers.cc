@@ -23,6 +23,7 @@
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -71,6 +72,11 @@
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/browser/web_discovery/web_discovery_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_REQUEST_OTR)
+#include "brave/browser/request_otr/request_otr_tab_helper.h"
+#include "brave/components/request_otr/common/features.h"
 #endif
 
 namespace brave {
@@ -144,6 +150,12 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   if (!web_contents->GetBrowserContext()->IsOffTheRecord()) {
     ntp_background_images::NTPTabHelper::CreateForWebContents(web_contents);
     misc_metrics::PageMetricsTabHelper::CreateForWebContents(web_contents);
+#if BUILDFLAG(ENABLE_REQUEST_OTR)
+    if (base::FeatureList::IsEnabled(
+            request_otr::features::kBraveRequestOTRTab)) {
+      RequestOTRTabHelper::CreateForWebContents(web_contents);
+    }
+#endif
   }
 }
 
