@@ -17,11 +17,6 @@ typedef void (^RequestPermissionsCallback)(
     BraveWalletRequestPermissionsError error,
     NSArray<NSString*>* _Nullable allowedAccounts);
 
-typedef void (^IsAccountAllowedCallback)(bool allowed);
-
-typedef void (^GetAllowedAccountsCallback)(bool success,
-                                           NSArray<NSString*>* accounts);
-
 OBJC_EXPORT
 @protocol BraveWalletProviderDelegate
 - (bool)isTabVisible;
@@ -33,12 +28,10 @@ OBJC_EXPORT
 - (void)requestPermissions:(BraveWalletCoinType)type
                   accounts:(NSArray<NSString*>*)accounts
                 completion:(RequestPermissionsCallback)completion;
-- (void)isAccountAllowed:(BraveWalletCoinType)type
-                 account:(NSString*)account
-              completion:(IsAccountAllowedCallback)completion;
-- (void)getAllowedAccounts:(BraveWalletCoinType)type
+- (bool)isAccountAllowed:(BraveWalletCoinType)type account:(NSString*)account;
+- (bool)getAllowedAccounts:(BraveWalletCoinType)type
                   accounts:(NSArray<NSString*>*)accounts
-                completion:(GetAllowedAccountsCallback)completion;
+                   results:(NSArray<NSString*>*)results;
 - (bool)isPermissionDenied:(BraveWalletCoinType)type;
 - (void)addSolanaConnectedAccount:(NSString*)account;
 - (void)removeSolanaConnectedAccount:(NSString*)account;

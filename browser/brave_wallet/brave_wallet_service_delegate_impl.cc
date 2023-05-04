@@ -227,9 +227,8 @@ url::Origin BraveWalletServiceDelegateImpl::GetActiveOriginInternal() {
                   : url::Origin();
 }
 
-void BraveWalletServiceDelegateImpl::GetActiveOrigin(
-    GetActiveOriginCallback callback) {
-  std::move(callback).Run(MakeOriginInfo(GetActiveOriginInternal()));
+mojom::OriginInfoPtr BraveWalletServiceDelegateImpl::GetActiveOrigin() {
+  return MakeOriginInfo(GetActiveOriginInternal());
 }
 
 void BraveWalletServiceDelegateImpl::ClearWalletUIStoragePartition() {

@@ -13,7 +13,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
-#include "base/scoped_observation.h"
 #include "brave/browser/brave_wallet/external_wallets_importer.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -63,7 +62,7 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate,
                           const url::Origin& origin,
                           IsPermissionDeniedCallback callback) override;
 
-  void GetActiveOrigin(GetActiveOriginCallback callback) override;
+  mojom::OriginInfoPtr GetActiveOrigin() override;
 
   void ClearWalletUIStoragePartition() override;
 

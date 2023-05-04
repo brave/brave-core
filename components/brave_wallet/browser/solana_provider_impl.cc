@@ -112,11 +112,11 @@ void SolanaProviderImpl::Connect(absl::optional<base::Value::Dict> arg,
     return;
   }
 
-  delegate_->IsAccountAllowed(
-      mojom::CoinType::SOL, *account,
-      base::BindOnce(&SolanaProviderImpl::ContinueConnect,
-                     weak_factory_.GetWeakPtr(), is_eagerly_connect, *account,
-                     std::move(callback)));
+  const bool allowed =
+      delegate_->IsAccountAllowed(mojom::CoinType::SOL, *account);
+
+  ContinueConnect(is_eagerly_connect, *account, std::move(callback), allowed);
+
   // To show wallet icon on android if wallet is unlocked
   delegate_->WalletInteractionDetected();
 }

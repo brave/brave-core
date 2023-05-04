@@ -65,11 +65,10 @@ class BraveWalletPermissionContext : public PermissionContextBase {
       content::WebContents* web_contents);
   static void Cancel(content::WebContents* web_contents);
 
-  static void GetAllowedAccounts(
+  static absl::optional<std::vector<std::string>> GetAllowedAccounts(
       blink::PermissionType permission,
       content::RenderFrameHost* rfh,
-      const std::vector<std::string>& addresses,
-      base::OnceCallback<void(bool, const std::vector<std::string>&)> callback);
+      const std::vector<std::string>& addresses);
 
   // We will only check global setting and setting per origin since we won't
   // write block rule per address on an origin.

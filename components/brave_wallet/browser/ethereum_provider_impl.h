@@ -114,10 +114,6 @@ class EthereumProviderImpl final
                         base::Value::Dict domain,
                         RequestCallback callback,
                         base::Value id);
-  void ContinueGetAllowedAccounts(
-      bool include_accounts_when_locked,
-      GetAllowedAccountsCallback callback,
-      brave_wallet::mojom::KeyringInfoPtr keyring_info);
   void OnGetAllowedAccounts(bool include_accounts_when_locked,
                             bool keyring_locked,
                             const absl::optional<std::string>& selected_account,
@@ -341,20 +337,6 @@ class EthereumProviderImpl final
                                   base::Value id,
                                   const std::string& method,
                                   const url::Origin& origin);
-  void ContinueRequestEthereumPermissionsKeyringInfo(
-      RequestCallback callback,
-      base::Value id,
-      const std::string& method,
-      const url::Origin& origin,
-      brave_wallet::mojom::KeyringInfoPtr keyring_info);
-  void ContinueRequestEthereumPermissions(
-      RequestCallback callback,
-      base::Value id,
-      const std::string& method,
-      const url::Origin& origin,
-      const std::vector<std::string>& requested_accounts,
-      bool success,
-      const std::vector<std::string>& allowed_accounts);
   void OnRequestEthereumPermissions(
       RequestCallback callback,
       base::Value id,

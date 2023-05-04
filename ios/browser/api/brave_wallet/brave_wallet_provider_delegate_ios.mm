@@ -66,41 +66,31 @@ void BraveWalletProviderDelegateBridge::RequestPermissions(
                    completion:completion];
 }
 
-void BraveWalletProviderDelegateBridge::IsAccountAllowed(
+bool BraveWalletProviderDelegateBridge::IsAccountAllowed(
     mojom::CoinType type,
-    const std::string& account,
-    IsAccountAllowedCallback callback) {
-  auto completion = [callback = std::make_shared<decltype(callback)>(
-                         std::move(callback))](bool allowed) {
-    if (!callback) {
-      return;
-    }
-    std::move(*callback).Run(allowed);
-  };
-  [bridge_ isAccountAllowed:static_cast<BraveWalletCoinType>(type)
-                    account:base::SysUTF8ToNSString(account)
-                 completion:completion];
+    const std::string& account) {
+  return [bridge_ isAccountAllowed:static_cast<BraveWalletCoinType>(type)
+                           account:base::SysUTF8ToNSString(account)];
 }
 
-void BraveWalletProviderDelegateBridge::GetAllowedAccounts(
+absl::optional<std::vector<std::string>>
+BraveWalletProviderDelegateBridge::GetAllowedAccounts(
     mojom::CoinType type,
-    const std::vector<std::string>& accounts,
-    GetAllowedAccountsCallback callback) {
-  auto completion =
-      [callback = std::make_shared<decltype(callback)>(std::move(callback))](
-          bool success, NSArray<NSString*>* results) {
-        if (!callback) {
-          return;
-        }
-        std::vector<std::string> v;
-        for (NSString* result in results) {
-          v.push_back(base::SysNSStringToUTF8(result));
-        }
-        std::move(*callback).Run(success, v);
-      };
-  [bridge_ getAllowedAccounts:static_cast<BraveWalletCoinType>(type)
-                     accounts:brave::vector_to_ns(accounts)
-                   completion:completion];
+    const std::vector<std::string>& accounts) {
+  NSArray<NSString*>* results;
+  bool success =
+      [bridge_ getAllowedAccounts:static_cast<BraveWalletCoinType>(type)
+                         accounts:brave::vector_to_ns(accounts)
+                          results:results];
+  if (!success) {
+    return absl::nullopt;
+  }
+
+  std::vector<std::string> v;
+  for (NSString* result in results) {
+    v.push_back(base::SysNSStringToUTF8(result));
+  }
+  return v;
 }
 
 bool BraveWalletProviderDelegateBridge::IsPermissionDenied(

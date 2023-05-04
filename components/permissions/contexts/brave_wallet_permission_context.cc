@@ -206,28 +206,25 @@ void BraveWalletPermissionContext::RequestPermissions(
 }
 
 // static
-void BraveWalletPermissionContext::GetAllowedAccounts(
+absl::optional<std::vector<std::string>>
+BraveWalletPermissionContext::GetAllowedAccounts(
     blink::PermissionType permission,
     content::RenderFrameHost* rfh,
-    const std::vector<std::string>& addresses,
-    base::OnceCallback<void(bool, const std::vector<std::string>&)> callback) {
+    const std::vector<std::string>& addresses) {
   if (!rfh) {
-    std::move(callback).Run(false, std::vector<std::string>());
-    return;
+    return absl::nullopt;
   }
 
   // Fail if there is no last committed URL yet
   auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
   if (web_contents->GetPrimaryMainFrame()->GetLastCommittedURL().is_empty()) {
-    std::move(callback).Run(true, std::vector<std::string>());
-    return;
+    return std::vector<std::string>();
   }
 
   content::PermissionControllerDelegate* delegate =
       web_contents->GetBrowserContext()->GetPermissionControllerDelegate();
   if (!delegate) {
-    std::move(callback).Run(false, std::vector<std::string>());
-    return;
+    return absl::nullopt;
   }
 
   const ContentSettingsType content_settings_type =
@@ -249,7 +246,7 @@ void BraveWalletPermissionContext::GetAllowedAccounts(
     }
   }
 
-  std::move(callback).Run(true, allowed_accounts);
+  return allowed_accounts;
 }
 
 // static
