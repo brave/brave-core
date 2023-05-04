@@ -123,7 +123,7 @@ public class KeyringModel implements KeyringServiceObserver {
             if (mKeyringService == null) {
                 return;
             }
-            mKeyringService.getKeyringInfo(getSelectedCoinKeyringId(chainId),
+            mKeyringService.getKeyringInfo(getSelectedCoinKeyringId(coinType, chainId),
                     keyringInfo -> { _mSelectedCoinKeyringInfoLiveData.postValue(keyringInfo); });
             mKeyringService.getKeyringsInfo(mSharedData.getEnabledKeyrings(), keyringInfos -> {
                 final List<AccountInfo> accountInfos =
@@ -231,7 +231,7 @@ public class KeyringModel implements KeyringServiceObserver {
     }
 
     public KeyringInfo getKeyringInfo() {
-        return getSelectedCoinKeyringInfo(mSharedData.getChainId());
+        return getSelectedCoinKeyringInfo(mSharedData.getCoinType(), mSharedData.getChainId());
     }
 
     public void resetService(KeyringService keyringService, BraveWalletService braveWalletService) {
@@ -306,23 +306,26 @@ public class KeyringModel implements KeyringServiceObserver {
 
     private void updateSelectedAccountAndState(@Nullable String accountAddress) {
         if (accountAddress == null) {
-            mKeyringService.getKeyringInfo(getSelectedCoinKeyringId(mSharedData.getChainId()),
+            mKeyringService.getKeyringInfo(
+                    getSelectedCoinKeyringId(mSharedData.getCoinType(), mSharedData.getChainId()),
                     keyringInfo -> { updateSelectedAccountPerOriginOrFirst(keyringInfo); });
         } else {
             update();
         }
     }
 
-    private KeyringInfo getSelectedCoinKeyringInfo(String chainId) {
-        String selectedCoinKeyringId = getSelectedCoinKeyringId(chainId);
+    private KeyringInfo getSelectedCoinKeyringInfo(
+            @CoinType.EnumType int coinType, @Nullable String chainId) {
+        String selectedCoinKeyringId = getSelectedCoinKeyringId(coinType, chainId);
         for (KeyringInfo keyringInfo : _mKeyringInfosLiveData.getValue()) {
             if (keyringInfo.id.equals(selectedCoinKeyringId)) return keyringInfo;
         }
         return null;
     }
 
-    private String getSelectedCoinKeyringId(String chainId) {
-        return AssetUtils.getKeyringForChainId(chainId);
+    private String getSelectedCoinKeyringId(
+            @CoinType.EnumType int coinType, @Nullable String chainId) {
+        return AssetUtils.getKeyring(coinType, chainId);
     }
 
     @Override

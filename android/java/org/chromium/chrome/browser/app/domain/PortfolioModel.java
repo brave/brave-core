@@ -170,7 +170,8 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
                                     });
                         } else {
                             mKeyringService.getKeyringInfo(
-                                    AssetUtils.getKeyringForChainId(selectedNetwork.chainId),
+                                    AssetUtils.getKeyring(
+                                            selectedNetwork.coin, selectedNetwork.chainId),
                                     keyringInfo -> {
                                         mPortfolioHelper =
                                                 new PortfolioHelper(braveWalletBaseActivity,

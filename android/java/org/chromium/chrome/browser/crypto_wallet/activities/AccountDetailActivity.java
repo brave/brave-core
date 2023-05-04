@@ -186,7 +186,8 @@ public class AccountDetailActivity
     private void fetchAccountInfo(NetworkInfo selectedNetwork) {
         assert mKeyringService != null;
         mKeyringService.getKeyringInfo(
-                AssetUtils.getKeyringForChainId(selectedNetwork.chainId), keyringInfo -> {
+                AssetUtils.getKeyring(selectedNetwork.coin, selectedNetwork.chainId),
+                keyringInfo -> {
                     if (keyringInfo == null || mWalletModel == null) {
                         return;
                     }

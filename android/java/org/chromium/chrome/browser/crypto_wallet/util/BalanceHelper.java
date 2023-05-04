@@ -259,7 +259,7 @@ public class BalanceHelper {
                     blockchainTokensBalancesResponses) {
         for (NetworkInfo network : networks) {
             keyringService.getKeyringInfo(
-                    AssetUtils.getKeyringForChainId(network.chainId), keyringInfo -> {
+                    AssetUtils.getKeyring(network.coin, network.chainId), keyringInfo -> {
                         TokenUtils.getUserOrAllTokensFiltered(braveWalletService,
                                 blockchainRegistry, network, coinType, TokenUtils.TokenType.ALL,
                                 true, tokens -> {

@@ -10,6 +10,8 @@ import static java.util.stream.Collectors.toMap;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.CoinType;
@@ -108,29 +110,23 @@ public class AssetUtils {
                 && chainId.equals(BraveWalletConstants.MAINNET_CHAIN_ID);
     }
 
-    public static String getKeyringForChainId(String chainId) {
-        switch (chainId) {
-            case BraveWalletConstants.MAINNET_CHAIN_ID:
-            case BraveWalletConstants.GOERLI_CHAIN_ID:
-            case BraveWalletConstants.SEPOLIA_CHAIN_ID:
-                return BraveWalletConstants.DEFAULT_KEYRING_ID;
+    public static String getKeyring(@CoinType.EnumType int coinType, @Nullable String chainId) {
+        if (coinType == CoinType.FIL) {
+            switch (chainId) {
+                case BraveWalletConstants.FILECOIN_MAINNET:
+                case BraveWalletConstants.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID:
+                    return BraveWalletConstants.FILECOIN_KEYRING_ID;
 
-            case BraveWalletConstants.SOLANA_MAINNET:
-            case BraveWalletConstants.SOLANA_TESTNET:
-            case BraveWalletConstants.SOLANA_DEVNET:
-                return BraveWalletConstants.SOLANA_KEYRING_ID;
+                case BraveWalletConstants.FILECOIN_TESTNET:
+                case BraveWalletConstants.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID:
+                    return BraveWalletConstants.FILECOIN_TESTNET_KEYRING_ID;
 
-            case BraveWalletConstants.FILECOIN_MAINNET:
-            case BraveWalletConstants.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID:
-                return BraveWalletConstants.FILECOIN_KEYRING_ID;
-
-            case BraveWalletConstants.FILECOIN_TESTNET:
-            case BraveWalletConstants.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID:
-                return BraveWalletConstants.FILECOIN_TESTNET_KEYRING_ID;
-
-            default:
-                throw new IllegalStateException(
-                        String.format("No keyring found for chain Id %s.", chainId));
+                default:
+                    throw new IllegalStateException(
+                            String.format("No keyring found for chain Id %s.", chainId));
+            }
+        } else {
+            return getKeyringForEthOrSolOnly(coinType);
         }
     }
 
@@ -148,7 +144,7 @@ public class AssetUtils {
                 return BraveWalletConstants.SOLANA_KEYRING_ID;
             case CoinType.FIL:
                 Log.e(TAG,
-                        "Keyring Id for Filecoin cannot be obtained by coin type. Returning default keyring Id. Consider using the method \"AssetUtils.getKeyringForChainId(chainId)\".");
+                        "Keyring Id for Filecoin cannot be obtained by coin type. Returning default keyring Id. Consider using the method \"AssetUtils.getKeyring(coinType, chainId)\".");
                 return BraveWalletConstants.DEFAULT_KEYRING_ID;
             default:
                 Log.e(TAG,
