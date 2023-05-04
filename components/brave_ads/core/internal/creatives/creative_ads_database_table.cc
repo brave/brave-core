@@ -237,6 +237,21 @@ std::string CreativeAds::GetTableName() const {
   return kTableName;
 }
 
+void CreativeAds::Create(mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      "CREATE TABLE creative_ads (creative_instance_id TEXT NOT "
+      "NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE, conversion INTEGER NOT "
+      "NULL DEFAULT 0, per_day INTEGER NOT NULL DEFAULT 0, per_week INTEGER "
+      "NOT NULL DEFAULT 0, per_month INTEGER NOT NULL DEFAULT 0, total_max "
+      "INTEGER NOT NULL DEFAULT 0, value DOUBLE NOT NULL DEFAULT 0, "
+      "split_test_group TEXT, target_url TEXT NOT NULL);";
+  transaction->commands.push_back(std::move(command));
+}
+
 void CreativeAds::Migrate(mojom::DBTransactionInfo* transaction,
                           const int to_version) {
   DCHECK(transaction);

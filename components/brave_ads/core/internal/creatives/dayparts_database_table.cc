@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/dayparts_database_table.h"
 
 #include <utility>
+#include <vector>
 
 #include "base/check.h"
 #include "base/strings/string_util.h"
@@ -55,6 +56,35 @@ void MigrateToV24(mojom::DBTransactionInfo* transaction) {
   transaction->commands.push_back(std::move(command));
 }
 
+void MigrateToV28(mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+
+  // Create a temporary table with renamed |expire_at| column.
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      "CREATE TABLE dayparts_temp (campaign_id TEXT NOT NULL, days_of_week "
+      "TEXT NOT NULL, start_minute INT NOT NULL, end_minute INT NOT NULL, "
+      "PRIMARY KEY (campaign_id, days_of_week, start_minute, end_minute), "
+      "UNIQUE(campaign_id, days_of_week, start_minute, end_minute) ON CONFLICT "
+      "REPLACE);";
+  transaction->commands.push_back(std::move(command));
+
+  // Copy columns to temporary table.
+  const std::vector<std::string> from_columns = {"campaign_id", "dow",
+                                                 "start_minute", "end_minute"};
+
+  const std::vector<std::string> to_columns = {"campaign_id", "days_of_week",
+                                               "start_minute", "end_minute"};
+
+  CopyTableColumns(transaction, "dayparts", "dayparts_temp", from_columns,
+                   to_columns,
+                   /*should_drop*/ true);
+
+  // Rename temporary table.
+  RenameTable(transaction, "dayparts_temp", "dayparts");
+}
+
 }  // namespace
 
 void Dayparts::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
@@ -83,6 +113,20 @@ std::string Dayparts::GetTableName() const {
   return kTableName;
 }
 
+void Dayparts::Create(mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      "CREATE TABLE dayparts (campaign_id TEXT NOT NULL, "
+      "days_of_week TEXT NOT NULL, start_minute INT NOT NULL, end_minute INT "
+      "NOT NULL, PRIMARY KEY (campaign_id, days_of_week, start_minute, "
+      "end_minute), UNIQUE(campaign_id, days_of_week, start_minute, "
+      "end_minute) ON CONFLICT REPLACE);";
+  transaction->commands.push_back(std::move(command));
+}
+
 void Dayparts::Migrate(mojom::DBTransactionInfo* transaction,
                        const int to_version) {
   DCHECK(transaction);
@@ -90,6 +134,11 @@ void Dayparts::Migrate(mojom::DBTransactionInfo* transaction,
   switch (to_version) {
     case 24: {
       MigrateToV24(transaction);
+      break;
+    }
+
+    case 28: {
+      MigrateToV28(transaction);
       break;
     }
 
@@ -109,8 +158,8 @@ std::string Dayparts::BuildInsertOrUpdateSql(
   const size_t binded_parameters_count = BindParameters(command, creative_ads);
 
   return base::ReplaceStringPlaceholders(
-      "INSERT OR REPLACE INTO $1 (campaign_id, dow, start_minute, end_minute) "
-      "VALUES $2;",
+      "INSERT OR REPLACE INTO $1 (campaign_id, days_of_week, start_minute, "
+      "end_minute) VALUES $2;",
       {GetTableName(), BuildBindingParameterPlaceholders(
                            /*parameters_count*/ 4, binded_parameters_count)},
       nullptr);

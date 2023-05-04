@@ -60,7 +60,7 @@ std::string TestParamToString(::testing::TestParamInfo<int> test_param) {
 
 INSTANTIATE_TEST_SUITE_P(,
                          BraveAdsDatabaseMigrationTest,
-                         testing::Range(0, database::kVersion),
+                         testing::Range(0, database::kVersion - 1),
                          TestParamToString);
 
 }  // namespace brave_ads

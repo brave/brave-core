@@ -985,11 +985,10 @@ TEST_F(BraveAdsConversionsTest, ConvertMultipleAds) {
             EXPECT_EQ(2U, ad_events.size());
 
             const ConversionInfo& conversion_1 = conversions.at(0);
-            const AdEventInfo& ad_event_1 = ad_events.at(1);
+            const AdEventInfo& ad_event_1 = ad_events.at(0);
             EXPECT_EQ(conversion_1.creative_set_id, ad_event_1.creative_set_id);
-
             const ConversionInfo& conversion_2 = conversions.at(1);
-            const AdEventInfo& ad_event_2 = ad_events.at(0);
+            const AdEventInfo& ad_event_2 = ad_events.at(1);
             EXPECT_EQ(conversion_2.creative_set_id, ad_event_2.creative_set_id);
           },
           std::move(conversions)));

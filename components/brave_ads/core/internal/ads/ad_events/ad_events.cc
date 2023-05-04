@@ -33,6 +33,7 @@ void LogAdEvent(const AdInfo& ad,
   ad_event.creative_set_id = ad.creative_set_id;
   ad_event.creative_instance_id = ad.creative_instance_id;
   ad_event.advertiser_id = ad.advertiser_id;
+  ad_event.segment = ad.segment;
   ad_event.created_at = base::Time::Now();
 
   LogAdEvent(ad_event, std::move(callback));

@@ -69,6 +69,7 @@ class CreativeNewTabPageAds final : public TableInterface {
 
   std::string GetTableName() const override;
 
+  void Create(mojom::DBTransactionInfo* transaction) override;
   void Migrate(mojom::DBTransactionInfo* transaction, int to_version) override;
 
  private:

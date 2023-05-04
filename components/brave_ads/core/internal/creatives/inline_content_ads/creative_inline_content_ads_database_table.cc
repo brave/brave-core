@@ -342,8 +342,8 @@ void CreativeInlineContentAds::GetForCreativeInstanceId(
       "ca.per_day, ca.per_week, ca.per_month, ca.total_max, ca.value, "
       "ca.split_test_group, s.segment, gt.geo_target, ca.target_url, "
       "cbna.title, cbna.description, cbna.image_url, cbna.dimensions, "
-      "cbna.cta_text, cam.ptr, dp.dow, dp.start_minute, dp.end_minute FROM $1 "
-      "AS cbna INNER JOIN campaigns AS cam ON cam.campaign_id = "
+      "cbna.cta_text, cam.ptr, dp.days_of_week, dp.start_minute, dp.end_minute "
+      "FROM $1 AS cbna INNER JOIN campaigns AS cam ON cam.campaign_id = "
       "cbna.campaign_id INNER JOIN segments AS s ON s.creative_set_id = "
       "cbna.creative_set_id INNER JOIN creative_ads AS ca ON "
       "ca.creative_instance_id = cbna.creative_instance_id INNER JOIN "
@@ -380,11 +380,11 @@ void CreativeInlineContentAds::GetForSegmentsAndDimensions(
       "ca.per_day, ca.per_week, ca.per_month, ca.total_max, ca.value, "
       "ca.split_test_group, s.segment, gt.geo_target, ca.target_url, "
       "cbna.title, cbna.description, cbna.image_url, cbna.dimensions, "
-      "cbna.cta_text, cam.ptr, dp.dow, dp.start_minute, dp.end_minute FROM $1 "
-      "AS cbna INNER JOIN campaigns AS cam ON cam.campaign_id = "
-      "cbna.campaign_id INNER JOIN segments AS s ON s.creative_set_id = "
-      "cbna.creative_set_id INNER JOIN creative_ads AS ca ON "
-      "ca.creative_instance_id = cbna.creative_instance_id INNER JOIN "
+      "cbna.cta_text, cam.ptr, dp.days_of_week, dp.start_minute, "
+      "dp.end_minute FROM $1 AS cbna INNER JOIN campaigns AS cam ON "
+      "cam.campaign_id = cbna.campaign_id INNER JOIN segments AS s ON "
+      "s.creative_set_id = cbna.creative_set_id INNER JOIN creative_ads AS ca "
+      "ON ca.creative_instance_id = cbna.creative_instance_id INNER JOIN "
       "geo_targets AS gt ON gt.campaign_id = cbna.campaign_id INNER JOIN "
       "dayparts AS dp ON dp.campaign_id = cbna.campaign_id WHERE s.segment IN "
       "$2 AND cbna.dimensions = '$3' AND $4 BETWEEN cam.start_at_timestamp AND "
@@ -425,8 +425,8 @@ void CreativeInlineContentAds::GetForDimensions(
       "ca.per_day, ca.per_week, ca.per_month, ca.total_max, ca.value, "
       "ca.split_test_group, s.segment, gt.geo_target, ca.target_url, "
       "cbna.title, cbna.description, cbna.image_url, cbna.dimensions, "
-      "cbna.cta_text, cam.ptr, dp.dow, dp.start_minute, dp.end_minute FROM $1 "
-      "AS cbna INNER JOIN campaigns AS cam ON cam.campaign_id = "
+      "cbna.cta_text, cam.ptr, dp.days_of_week, dp.start_minute, dp.end_minute "
+      "FROM $1 AS cbna INNER JOIN campaigns AS cam ON cam.campaign_id = "
       "cbna.campaign_id INNER JOIN segments AS s ON s.creative_set_id = "
       "cbna.creative_set_id INNER JOIN creative_ads AS ca ON "
       "ca.creative_instance_id = cbna.creative_instance_id INNER JOIN "
@@ -456,8 +456,8 @@ void CreativeInlineContentAds::GetAll(
       "ca.per_day, ca.per_week, ca.per_month, ca.total_max, ca.value, "
       "ca.split_test_group, s.segment, gt.geo_target, ca.target_url, "
       "cbna.title, cbna.description, cbna.image_url, cbna.dimensions, "
-      "cbna.cta_text, cam.ptr, dp.dow, dp.start_minute, dp.end_minute FROM $1 "
-      "AS cbna INNER JOIN campaigns AS cam ON cam.campaign_id = "
+      "cbna.cta_text, cam.ptr, dp.days_of_week, dp.start_minute, dp.end_minute "
+      "FROM $1 AS cbna INNER JOIN campaigns AS cam ON cam.campaign_id = "
       "cbna.campaign_id INNER JOIN segments AS s ON s.creative_set_id = "
       "cbna.creative_set_id INNER JOIN creative_ads AS ca ON "
       "ca.creative_instance_id = cbna.creative_instance_id INNER JOIN "
@@ -474,6 +474,20 @@ void CreativeInlineContentAds::GetAll(
 
 std::string CreativeInlineContentAds::GetTableName() const {
   return kTableName;
+}
+
+void CreativeInlineContentAds::Create(mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      "CREATE TABLE creative_inline_content_ads "
+      "(creative_instance_id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT "
+      "REPLACE, creative_set_id TEXT NOT NULL, campaign_id TEXT NOT NULL, "
+      "title TEXT NOT NULL, description TEXT NOT NULL, image_url TEXT NOT "
+      "NULL, dimensions TEXT NOT NULL, cta_text TEXT NOT NULL);";
+  transaction->commands.push_back(std::move(command));
 }
 
 void CreativeInlineContentAds::Migrate(mojom::DBTransactionInfo* transaction,

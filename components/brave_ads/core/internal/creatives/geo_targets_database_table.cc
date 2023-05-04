@@ -80,6 +80,18 @@ std::string GeoTargets::GetTableName() const {
   return kTableName;
 }
 
+void GeoTargets::Create(mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      "CREATE TABLE geo_targets (campaign_id TEXT NOT NULL, geo_target TEXT "
+      "NOT NULL, PRIMARY KEY (campaign_id, geo_target), UNIQUE(campaign_id, "
+      "geo_target) ON CONFLICT REPLACE);";
+  transaction->commands.push_back(std::move(command));
+}
+
 void GeoTargets::Migrate(mojom::DBTransactionInfo* transaction,
                          const int to_version) {
   DCHECK(transaction);

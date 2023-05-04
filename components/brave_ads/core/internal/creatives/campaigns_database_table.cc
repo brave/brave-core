@@ -86,6 +86,20 @@ std::string Campaigns::GetTableName() const {
   return kTableName;
 }
 
+void Campaigns::Create(mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      "CREATE TABLE campaigns (campaign_id TEXT NOT NULL PRIMARY "
+      "KEY UNIQUE ON CONFLICT REPLACE, start_at_timestamp TIMESTAMP NOT NULL, "
+      "end_at_timestamp TIMESTAMP NOT NULL, daily_cap INTEGER DEFAULT 0 NOT "
+      "NULL, advertiser_id TEXT NOT NULL, priority INTEGER NOT NULL DEFAULT 0, "
+      "ptr DOUBLE NOT NULL DEFAULT 1);";
+  transaction->commands.push_back(std::move(command));
+}
+
 void Campaigns::Migrate(mojom::DBTransactionInfo* transaction,
                         const int to_version) {
   DCHECK(transaction);
