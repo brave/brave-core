@@ -5,12 +5,15 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ad_unittest_util.h"
 
+#include "base/check_op.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ad_info.h"
 
 namespace brave_ads {
 
 CreativePromotedContentAdList BuildCreativePromotedContentAds(const int count) {
+  CHECK_GT(count, 0);
+
   CreativePromotedContentAdList creative_ads;
 
   for (int i = 0; i < count; i++) {

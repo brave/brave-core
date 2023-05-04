@@ -11,11 +11,15 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_build_channel_types.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+#include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_mock.h"
+#include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_unittest_util.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
+
+using ::testing::NiceMock;
 
 namespace {
 
@@ -28,18 +32,24 @@ constexpr char kExpectedContent[] =
 }  // namespace
 
 class BraveAdsCreateOptedOutConfirmationUrlRequestBuilderTest
-    : public UnitTestBase {};
+    : public UnitTestBase {
+ protected:
+  NiceMock<privacy::TokenGeneratorMock> token_generator_mock_;
+};
 
 TEST_F(BraveAdsCreateOptedOutConfirmationUrlRequestBuilderTest, BuildUrl) {
   // Arrange
   ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
+  MockBuildChannel(BuildChannelType::kRelease);
+
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kStaging;
 
-  MockBuildChannel(BuildChannelType::kRelease);
+  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 
-  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  const absl::optional<ConfirmationInfo> confirmation =
+      BuildConfirmation(&token_generator_mock_);
   ASSERT_TRUE(confirmation);
   CreateOptedOutConfirmationUrlRequestBuilder url_request_builder(
       *confirmation);

@@ -23,9 +23,7 @@
 
 namespace brave_ads {
 
-using ::testing::_;
 using ::testing::NiceMock;
-using ::testing::Return;
 
 class BraveAdsConfirmationUtilTest : public UnitTestBase {
  protected:
@@ -36,10 +34,9 @@ TEST_F(BraveAdsConfirmationUtilTest, CreateConfirmationForNonOptedInUser) {
   // Arrange
   ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
-  privacy::SetUnblindedTokens(/*count*/ 1);
+  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 
-  ON_CALL(token_generator_mock_, Generate(_))
-      .WillByDefault(Return(privacy::GetTokens(/*count*/ 1)));
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const TransactionInfo transaction =
       BuildTransaction(/*value*/ 0.0, ConfirmationType::kViewed);
@@ -68,10 +65,9 @@ TEST_F(BraveAdsConfirmationUtilTest, IsNotValidForNonOptedInUser) {
 
 TEST_F(BraveAdsConfirmationUtilTest, CreateConfirmationForOptedInUser) {
   // Arrange
-  privacy::SetUnblindedTokens(/*count*/ 1);
+  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 
-  ON_CALL(token_generator_mock_, Generate(_))
-      .WillByDefault(Return(privacy::GetTokens(/*count*/ 1)));
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const TransactionInfo transaction =
       BuildTransaction(/*value*/ 0.0, ConfirmationType::kViewed);
@@ -89,8 +85,7 @@ TEST_F(BraveAdsConfirmationUtilTest, CreateConfirmationForOptedInUser) {
 
 TEST_F(BraveAdsConfirmationUtilTest, FailToCreateConfirmationForOptedInUser) {
   // Arrange
-  ON_CALL(token_generator_mock_, Generate(_))
-      .WillByDefault(Return(privacy::GetTokens(/*count*/ 1)));
+  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 
   const TransactionInfo transaction =
       BuildTransaction(/*value*/ 0.0, ConfirmationType::kViewed);
@@ -116,11 +111,13 @@ TEST_F(BraveAdsConfirmationUtilTest, IsNotValidForOptedInUser) {
 
 TEST_F(BraveAdsConfirmationUtilTest, ResetConfirmations) {
   // Arrange
-  privacy::SetUnblindedTokens(/*count*/ 2);
+  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 
+  privacy::SetUnblindedTokens(/*count*/ 2);
   privacy::SetUnblindedPaymentTokens(/*count*/ 1);
 
-  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  const absl::optional<ConfirmationInfo> confirmation =
+      BuildConfirmation(&token_generator_mock_);
   ASSERT_TRUE(confirmation);
   ConfirmationStateManager::GetInstance().AppendFailedConfirmation(
       *confirmation);

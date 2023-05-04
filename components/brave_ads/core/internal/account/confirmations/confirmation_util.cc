@@ -137,6 +137,8 @@ absl::optional<ConfirmationInfo> CreateConfirmation(
   }
   confirmation.opted_in = opted_in;
 
+  DCHECK(IsValid(confirmation));
+
   return confirmation;
 }
 

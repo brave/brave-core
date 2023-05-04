@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
 
+#include "base/check.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
@@ -13,6 +14,8 @@
 namespace brave_ads {
 
 CreativeInlineContentAdList BuildCreativeInlineContentAds(const int count) {
+  CHECK_GT(count, 0);
+
   CreativeInlineContentAdList creative_ads;
 
   for (int i = 0; i < count; i++) {

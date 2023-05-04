@@ -15,10 +15,7 @@ Token GetToken() {
 }
 
 std::vector<Token> GetTokens() {
-  std::vector<Token> tokens;
-  const Token token = GetToken();
-  tokens.push_back(token);
-  return tokens;
+  return {GetToken()};
 }
 
 Token GetInvalidToken() {
@@ -26,10 +23,7 @@ Token GetInvalidToken() {
 }
 
 std::vector<Token> GetInvalidTokens() {
-  std::vector<Token> tokens;
-  const Token token = GetInvalidToken();
-  tokens.push_back(token);
-  return tokens;
+  return {GetInvalidToken()};
 }
 
 }  // namespace brave_ads::privacy::cbr

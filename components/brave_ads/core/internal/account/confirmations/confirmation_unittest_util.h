@@ -6,15 +6,20 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATION_UNITTEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATION_UNITTEST_UTIL_H_
 
+#include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_interface.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
 struct ConfirmationInfo;
+struct TransactionInfo;
 
-// TODO(https://github.com/brave/brave-browser/issues/25205): Deprecate and
-// instead use a mocked |TokenGenerator| and |CreateConfirmation|.
-absl::optional<ConfirmationInfo> BuildConfirmation();
+absl::optional<ConfirmationInfo> BuildConfirmation(
+    privacy::TokenGeneratorInterface* token_generator,
+    const TransactionInfo& transaction);
+
+absl::optional<ConfirmationInfo> BuildConfirmation(
+    privacy::TokenGeneratorInterface* token_generator);
 
 }  // namespace brave_ads
 

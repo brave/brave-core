@@ -36,9 +36,7 @@
 
 namespace brave_ads {
 
-using ::testing::_;
 using ::testing::NiceMock;
-using ::testing::Return;
 
 class BraveAdsAccountTest : public AccountObserver, public UnitTestBase {
  protected:
@@ -86,6 +84,7 @@ class BraveAdsAccountTest : public AccountObserver, public UnitTestBase {
   }
 
   NiceMock<privacy::TokenGeneratorMock> token_generator_mock_;
+
   std::unique_ptr<Account> account_;
 
   bool wallet_was_created_ = false;
@@ -188,9 +187,9 @@ TEST_F(BraveAdsAccountTest, GetWallet) {
 
 TEST_F(BraveAdsAccountTest, GetIssuersWhenWalletIsCreated) {
   // Arrange
-  privacy::SetUnblindedTokens(/*count*/ 50);
-
   MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
+
+  privacy::SetUnblindedTokens(/*count*/ 50);
 
   // Act
   account_->SetWallet(kWalletPaymentId, kWalletRecoverySeed);
@@ -210,11 +209,11 @@ TEST_F(BraveAdsAccountTest, GetIssuersWhenWalletIsCreated) {
 TEST_F(BraveAdsAccountTest,
        DoNotGetIssuersWhenWalletIsCreatedIfIssuersAlreadyExist) {
   // Arrange
-  privacy::SetUnblindedTokens(/*count*/ 50);
+  BuildAndSetIssuers();
 
   MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
 
-  BuildAndSetIssuers();
+  privacy::SetUnblindedTokens(/*count*/ 50);
 
   // Act
   account_->SetWallet(kWalletPaymentId, kWalletRecoverySeed);
@@ -321,6 +320,10 @@ TEST_F(BraveAdsAccountTest, DoNotGetIssuersFromInvalidResponse) {
 
 TEST_F(BraveAdsAccountTest, DepositForCash) {
   // Arrange
+  BuildAndSetIssuers();
+
+  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
+
   const URLResponseMap url_responses = {
       {// Create confirmation request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/"
@@ -362,11 +365,6 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
           )"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  BuildAndSetIssuers();
-
-  ON_CALL(token_generator_mock_, Generate(_))
-      .WillByDefault(Return(privacy::GetTokens(/*count*/ 1)));
-
   privacy::SetUnblindedTokens(/*count*/ 1);
 
   const CreativeNotificationAdInfo creative_ad =
@@ -406,8 +404,7 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
 
 TEST_F(BraveAdsAccountTest, DepositForNonCash) {
   // Arrange
-  ON_CALL(token_generator_mock_, Generate(_))
-      .WillByDefault(Return(privacy::GetTokens(/*count*/ 1)));
+  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 
   privacy::SetUnblindedTokens(/*count*/ 1);
 
@@ -444,8 +441,7 @@ TEST_F(BraveAdsAccountTest, DepositForNonCash) {
 
 TEST_F(BraveAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
   // Arrange
-  ON_CALL(token_generator_mock_, Generate(_))
-      .WillByDefault(Return(privacy::GetTokens(/*count*/ 1)));
+  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ false);

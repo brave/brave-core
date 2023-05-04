@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 
+#include "base/check.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
@@ -12,6 +13,8 @@
 namespace brave_ads {
 
 CreativeNotificationAdList BuildCreativeNotificationAds(const int count) {
+  CHECK_GT(count, 0);
+
   CreativeNotificationAdList creative_ads;
 
   for (int i = 0; i < count; i++) {

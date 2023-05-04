@@ -13,6 +13,8 @@
 #include "brave/components/brave_ads/core/internal/common/net/http/http_status_code.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
+#include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_mock.h"
+#include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_unittest_util.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -30,14 +32,17 @@ class BraveAdsRedeemOptedOutConfirmationTest : public UnitTestBase {
     ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
   }
 
-  NiceMock<RedeemConfirmationDelegateMock> redeem_confirmation_delegate_mock_;
+  NiceMock<privacy::TokenGeneratorMock> token_generator_mock_;
 
+  NiceMock<RedeemConfirmationDelegateMock> redeem_confirmation_delegate_mock_;
   base::WeakPtrFactory<RedeemConfirmationDelegateMock>
       confirmation_delegate_weak_factory_{&redeem_confirmation_delegate_mock_};
 };
 
 TEST_F(BraveAdsRedeemOptedOutConfirmationTest, Redeem) {
   // Arrange
+  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
+
   const URLResponseMap url_responses = {
       {// Create confirmation request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a",
@@ -52,7 +57,8 @@ TEST_F(BraveAdsRedeemOptedOutConfirmationTest, Redeem) {
           )"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  const absl::optional<ConfirmationInfo> confirmation =
+      BuildConfirmation(&token_generator_mock_);
   ASSERT_TRUE(confirmation);
 
   // Act
@@ -76,13 +82,16 @@ TEST_F(BraveAdsRedeemOptedOutConfirmationTest, Redeem) {
 TEST_F(BraveAdsRedeemOptedOutConfirmationTest,
        DoNotRetryRedeemingForHttpBadRequestResponse) {
   // Arrange
+  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
+
   const URLResponseMap url_responses = {
       {// Create confirmation request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a",
        {{net::HTTP_BAD_REQUEST, /*response_body*/ {}}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  const absl::optional<ConfirmationInfo> confirmation =
+      BuildConfirmation(&token_generator_mock_);
   ASSERT_TRUE(confirmation);
 
   // Act
@@ -108,13 +117,16 @@ TEST_F(BraveAdsRedeemOptedOutConfirmationTest,
 TEST_F(BraveAdsRedeemOptedOutConfirmationTest,
        DoNotRetryRedeemingForHttpConflictResponse) {
   // Arrange
+  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
+
   const URLResponseMap url_responses = {
       {// Create confirmation request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a",
        {{net::HTTP_CONFLICT, /*response_body*/ {}}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  const absl::optional<ConfirmationInfo> confirmation =
+      BuildConfirmation(&token_generator_mock_);
   ASSERT_TRUE(confirmation);
 
   // Act
@@ -140,13 +152,16 @@ TEST_F(BraveAdsRedeemOptedOutConfirmationTest,
 TEST_F(BraveAdsRedeemOptedOutConfirmationTest,
        DoNotRetryReemingForHttpCreatedResponse) {
   // Arrange
+  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
+
   const URLResponseMap url_responses = {
       {// Create confirmation request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a",
        {{net::HTTP_CREATED, /*response_body*/ {}}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  const absl::optional<ConfirmationInfo> confirmation =
+      BuildConfirmation(&token_generator_mock_);
   ASSERT_TRUE(confirmation);
 
   // Act
@@ -171,13 +186,16 @@ TEST_F(BraveAdsRedeemOptedOutConfirmationTest,
 
 TEST_F(BraveAdsRedeemOptedOutConfirmationTest, RetryRedeeming) {
   // Arrange
+  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
+
   const URLResponseMap url_responses = {
       {// Create confirmation request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a",
        {{net::HTTP_INTERNAL_SERVER_ERROR, /*response_body*/ {}}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  const absl::optional<ConfirmationInfo> confirmation =
+      BuildConfirmation(&token_generator_mock_);
   ASSERT_TRUE(confirmation);
 
   // Act

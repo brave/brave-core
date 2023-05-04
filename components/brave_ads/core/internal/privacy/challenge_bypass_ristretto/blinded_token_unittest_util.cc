@@ -15,10 +15,7 @@ BlindedToken GetBlindedToken() {
 }
 
 std::vector<BlindedToken> GetBlindedTokens() {
-  std::vector<BlindedToken> blinded_tokens;
-  const BlindedToken blinded_token = GetBlindedToken();
-  blinded_tokens.push_back(blinded_token);
-  return blinded_tokens;
+  return {GetBlindedToken()};
 }
 
 BlindedToken GetInvalidBlindedToken() {
@@ -26,10 +23,7 @@ BlindedToken GetInvalidBlindedToken() {
 }
 
 std::vector<BlindedToken> GetInvalidBlindedTokens() {
-  std::vector<BlindedToken> blinded_tokens;
-  const BlindedToken blinded_token = GetInvalidBlindedToken();
-  blinded_tokens.push_back(blinded_token);
-  return blinded_tokens;
+  return {GetInvalidBlindedToken()};
 }
 
 }  // namespace brave_ads::privacy::cbr
