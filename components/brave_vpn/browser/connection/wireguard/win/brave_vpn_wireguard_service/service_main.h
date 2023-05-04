@@ -6,10 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_SERVICE_MAIN_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_SERVICE_MAIN_H_
 
-#include <windows.h>
+#include <wrl/client.h>
 
 #include "base/functional/callback.h"
 #include "base/no_destructor.h"
+#include "base/win/windows_types.h"
 
 namespace brave_vpn {
 
@@ -67,8 +68,8 @@ class ServiceMain {
   int (ServiceMain::*run_routine_)();
 
   // Identifier of registered class objects used for unregistration.
-  DWORD cookies_[1];
-  SERVICE_STATUS_HANDLE service_status_handle_;
+  DWORD cookies_[1] = {};
+  SERVICE_STATUS_HANDLE service_status_handle_ = nullptr;
   SERVICE_STATUS service_status_;
   base::OnceClosure quit_;
 };

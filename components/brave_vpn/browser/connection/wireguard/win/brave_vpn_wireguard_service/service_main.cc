@@ -15,7 +15,6 @@
 
 #include <atlsecurity.h>
 #include <sddl.h>
-#include <windows.h>
 #include <wrl/module.h>
 #include <type_traits>
 #include <utility>

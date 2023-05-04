@@ -9,8 +9,6 @@
 #include <wrl/implements.h>
 #include <wrl/module.h>
 
-#include <windows.h>
-
 #include "base/win/windows_types.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/brave_wireguard_manager_idl.h"
 

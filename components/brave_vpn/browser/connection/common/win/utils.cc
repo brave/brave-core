@@ -5,6 +5,10 @@
 
 #include "brave/components/brave_vpn/browser/connection/common/win/utils.h"
 
+#include <wrl/client.h>
+
+#include "base/win/windows_types.h"
+
 namespace brave_vpn {
 
 HRESULT HRESULTFromLastError() {

@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/brave_wireguard_manager.h"
 
-#include <windows.h>
-
 #include "base/logging.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/service_main.h"

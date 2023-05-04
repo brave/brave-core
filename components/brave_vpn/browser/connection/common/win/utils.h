@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_COMMON_WIN_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_COMMON_WIN_UTILS_H_
 
-#include <Windows.h>
+#include "base/win/windows_types.h"
 
 namespace brave_vpn {
 HRESULT HRESULTFromLastError();

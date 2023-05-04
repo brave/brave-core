@@ -6,8 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_SERVICE_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_WIN_BRAVE_VPN_WIREGUARD_SERVICE_SERVICE_UTILS_H_
 
-#include <windows.h>
+#include <wrl/client.h>
 #include <string>
+
+#include "base/win/windows_types.h"
 
 namespace brave_vpn {
 
