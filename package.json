@@ -45,7 +45,8 @@
     "update_symlink": "node ./build/commands/scripts/commands.js update_symlink",
     "build_fuzzer": "node ./build/commands/scripts/commands.js build_fuzzer",
     "fuzzer": "node ./build/commands/scripts/commands.js run_fuzzer",
-    "perf_tests": "node ./build/commands/scripts/commands.js run_perf_tests"
+    "perf_tests": "node ./build/commands/scripts/commands.js run_perf_tests",
+    "gen_env": "node ./build/commands/scripts/genEnv.js"
   },
   "repository": {
     "type": "git",
