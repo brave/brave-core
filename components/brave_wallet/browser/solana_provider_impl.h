@@ -14,6 +14,7 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -31,7 +32,7 @@ class SolanaTransaction;
 class TxService;
 
 class SolanaProviderImpl final : public mojom::SolanaProvider,
-                                 public mojom::KeyringServiceObserver,
+                                 public KeyringServiceObserverBase,
                                  public mojom::TxServiceObserver {
  public:
   using RequestPermissionsError = mojom::RequestPermissionsError;
@@ -140,18 +141,9 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
       const std::vector<std::vector<uint8_t>>& serialized_tx,
       const std::vector<mojom::SolanaMessageVersion>& versions);
 
-  // mojom::KeyringServiceObserver
-  void KeyringCreated(const std::string& keyring_id) override {}
-  void KeyringRestored(const std::string& keyring_id) override {}
-  void KeyringReset() override {}
-  void Locked() override {}
+  // mojom::KeyringServiceObserverBase:
   void Unlocked() override;
-  void BackedUp() override {}
-  void AccountsChanged() override {}
-  void AccountsAdded(mojom::CoinType coin,
-                     const std::vector<std::string>& addresses) override {}
-  void AutoLockMinutesChanged() override {}
-  void SelectedAccountChanged(mojom::CoinType coin) override;
+  void SelectedDappAccountChangedForCoin(mojom::CoinType coin) override;
 
   // mojom::TxServiceObserver
   void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx_info) override {}
@@ -171,8 +163,8 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
   raw_ptr<TxService> tx_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
-  mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
-      keyring_observer_receiver_{this};
+  mojo::Receiver<mojom::KeyringServiceObserver> keyring_observer_receiver_{
+      this};
   mojo::Receiver<mojom::TxServiceObserver> tx_observer_receiver_{this};
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
   base::WeakPtrFactory<SolanaProviderImpl> weak_factory_;

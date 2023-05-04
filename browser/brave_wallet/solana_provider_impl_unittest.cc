@@ -38,6 +38,7 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/permissions/permission_request_manager.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_web_contents_factory.h"
 #include "content/test/test_web_contents.h"
@@ -57,6 +58,7 @@ constexpr char kEncodedSerializedMsg[] =
     "UxtUCXVBexiK";
 constexpr char kHardwareAccountAddr[] =
     "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw";
+constexpr char kSelectedAccount[] = "selected_account";
 
 class TestEventsListener : public mojom::SolanaEventsListener {
  public:
@@ -216,15 +218,17 @@ class SolanaProviderImplUnitTest : public testing::Test {
     std::vector<mojom::HardwareWalletAccountPtr> hw_accounts;
     hw_accounts.push_back(mojom::HardwareWalletAccount::New(
         address, "m/44'/501'/0'/0", "name 1", "Ledger", "device1",
-        mojom::CoinType::SOL, absl::nullopt));
+        mojom::CoinType::SOL, mojom::kSolanaKeyringId));
 
     keyring_service_->AddHardwareAccounts(std::move(hw_accounts));
   }
 
-  void SetSelectedAccount(const std::string& address, mojom::CoinType coin) {
+  void SetSelectedAccount(const std::string& keyring_id,
+                          const std::string& address) {
     base::RunLoop run_loop;
     keyring_service_->SetSelectedAccount(
-        address, coin, base::BindLambdaForTesting([&run_loop](bool success) {
+        keyring_id, address,
+        base::BindLambdaForTesting([&run_loop](bool success) {
           EXPECT_TRUE(success);
           run_loop.Quit();
         }));
@@ -259,7 +263,8 @@ class SolanaProviderImplUnitTest : public testing::Test {
     bool success;
     base::RunLoop run_loop;
     keyring_service_->RemoveHardwareAccount(
-        address, mojom::CoinType::SOL, base::BindLambdaForTesting([&](bool v) {
+        mojom::CoinType::SOL, mojom::kSolanaKeyringId, address,
+        base::BindLambdaForTesting([&](bool v) {
           success = v;
           run_loop.Quit();
         }));
@@ -505,7 +510,7 @@ TEST_F(SolanaProviderImplUnitTest, Connect) {
   CreateWallet();
   AddAccount();
   std::string address = GetAddressByIndex(0);
-  SetSelectedAccount(address, mojom::CoinType::SOL);
+  SetSelectedAccount(mojom::kSolanaKeyringId, address);
 
   mojom::SolanaProviderError error;
   std::string error_message;
@@ -585,7 +590,7 @@ TEST_F(SolanaProviderImplUnitTest, EagerlyConnect) {
   CreateWallet();
   AddAccount();
   std::string address = GetAddressByIndex(0);
-  SetSelectedAccount(address, mojom::CoinType::SOL);
+  SetSelectedAccount(mojom::kSolanaKeyringId, address);
 
   Navigate(GURL("https://brave.com"));
   mojom::SolanaProviderError error;
@@ -651,8 +656,9 @@ TEST_F(SolanaProviderImplUnitTest, ConnectWithNoSolanaAccount) {
       [&]() { account_creation_callback_called = true; }));
   // No solana account
   CreateWallet();
-  keyring_service_->RemoveSelectedAccountForCoin(mojom::CoinType::SOL,
-                                                 mojom::kSolanaKeyringId);
+  keyring_service_->SetPrefForKeyring(
+      user_prefs::UserPrefs::Get(browser_context()), kSelectedAccount,
+      base::Value(std::string()), mojom::kSolanaKeyringId);
   account = Connect(absl::nullopt, &error, &error_message);
   EXPECT_TRUE(account.empty());
   EXPECT_EQ(error, mojom::SolanaProviderError::kInternalError);
@@ -678,7 +684,7 @@ TEST_F(SolanaProviderImplUnitTest, Disconnect) {
   CreateWallet();
   AddAccount();
   std::string address = GetAddressByIndex(0);
-  SetSelectedAccount(address, mojom::CoinType::SOL);
+  SetSelectedAccount(mojom::kSolanaKeyringId, address);
 
   Navigate(GURL("https://brave.com"));
   AddSolanaPermission(GetOrigin(), address);
@@ -697,7 +703,7 @@ TEST_F(SolanaProviderImplUnitTest,
   AddHardwareAccount(kHardwareAccountAddr);
   EXPECT_FALSE(observer_->AccountChangedFired());
 
-  SetSelectedAccount(kHardwareAccountAddr, mojom::CoinType::SOL);
+  SetSelectedAccount(mojom::kSolanaKeyringId, kHardwareAccountAddr);
   EXPECT_TRUE(observer_->AccountChangedFired());
   observer_->Reset();
 
@@ -723,7 +729,7 @@ TEST_F(SolanaProviderImplUnitTest, AccountChangedEvent) {
   EXPECT_FALSE(observer_->AccountChangedFired());
 
   std::string address = GetAddressByIndex(0);
-  SetSelectedAccount(address, mojom::CoinType::SOL);
+  SetSelectedAccount(mojom::kSolanaKeyringId, address);
   EXPECT_TRUE(observer_->AccountChangedFired());
   // since it is not connected, account is empty
   EXPECT_TRUE(observer_->GetAccount().empty());
@@ -739,21 +745,21 @@ TEST_F(SolanaProviderImplUnitTest, AccountChangedEvent) {
   AddAccount();
   EXPECT_FALSE(observer_->AccountChangedFired());
 
-  SetSelectedAccount(GetAddressByIndex(1), mojom::CoinType::SOL);
+  SetSelectedAccount(mojom::kSolanaKeyringId, GetAddressByIndex(1));
   EXPECT_TRUE(observer_->AccountChangedFired());
   // since it is not connected, account is empty
   EXPECT_TRUE(observer_->GetAccount().empty());
 
   observer_->Reset();
   // now switch back to the account just connected
-  SetSelectedAccount(address, mojom::CoinType::SOL);
+  SetSelectedAccount(mojom::kSolanaKeyringId, address);
   EXPECT_TRUE(observer_->AccountChangedFired());
   EXPECT_EQ(observer_->GetAccount(), address);
 
   observer_->Reset();
   // select non SOL account
   std::string eth_address = GetAddressByIndex(0, mojom::kDefaultKeyringId);
-  SetSelectedAccount(eth_address, mojom::CoinType::ETH);
+  SetSelectedAccount(mojom::kDefaultKeyringId, eth_address);
   EXPECT_FALSE(observer_->AccountChangedFired());
 }
 
@@ -789,7 +795,7 @@ TEST_F(SolanaProviderImplUnitTest, SignMessage) {
   CreateWallet();
   AddAccount();
   std::string address = GetAddressByIndex(0);
-  SetSelectedAccount(address, mojom::CoinType::SOL);
+  SetSelectedAccount(mojom::kSolanaKeyringId, address);
   GURL url("https://brave.com");
   Navigate(url);
 
@@ -860,7 +866,7 @@ TEST_F(SolanaProviderImplUnitTest, SignMessage_Hardware) {
 
   CreateWallet();
   AddHardwareAccount(kHardwareAccountAddr);
-  SetSelectedAccount(kHardwareAccountAddr, mojom::CoinType::SOL);
+  SetSelectedAccount(mojom::kSolanaKeyringId, kHardwareAccountAddr);
   Navigate(GURL("https://brave.com"));
 
   AddSolanaPermission(GetOrigin(), kHardwareAccountAddr);
@@ -937,7 +943,7 @@ TEST_F(SolanaProviderImplUnitTest, SignTransactionAPIs) {
   CreateWallet();
   AddAccount();
   std::string address = GetAddressByIndex(0);
-  SetSelectedAccount(address, mojom::CoinType::SOL);
+  SetSelectedAccount(mojom::kSolanaKeyringId, address);
   Navigate(GURL("https://brave.com"));
 
   // Disconnected state will be rejcted.
@@ -977,7 +983,7 @@ TEST_F(SolanaProviderImplUnitTest, SignTransactionAPIs) {
 TEST_F(SolanaProviderImplUnitTest, SignTransactionAPIs_Hardware) {
   CreateWallet();
   AddHardwareAccount(kHardwareAccountAddr);
-  SetSelectedAccount(kHardwareAccountAddr, mojom::CoinType::SOL);
+  SetSelectedAccount(mojom::kSolanaKeyringId, kHardwareAccountAddr);
   Navigate(GURL("https://brave.com"));
   AddSolanaPermission(GetOrigin(), kHardwareAccountAddr);
   Connect(absl::nullopt, nullptr, nullptr);

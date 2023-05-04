@@ -244,12 +244,17 @@ export function makeETHSendTransaction (
   func: (
     payload: SendEthTransactionParams
   ) => Promise<{ success: boolean, txMetaId: string, errorMessage: string }>,
-  hasEIP1559Support: boolean
+  network: BraveWallet.NetworkInfo | undefined,
+  fromAccount: WalletAccountType | undefined
 ) {
-  async function sendTransaction (params: ETHSendTransactionParams) {
+  async function sendTransaction(params: ETHSendTransactionParams) {
+    if (!network || !fromAccount)
+      return;
+
     const { errorMessage } = await func({
+      network,
+      fromAccount,
       ...params,
-      hasEIP1559Support,
       coin: BraveWallet.CoinType.ETH
     })
 
@@ -296,10 +301,19 @@ export function makeSOLSendTransaction (
   return sendTransaction
 }
 
-export function makeSwitchAccount () {
-  async function switchAccount (account: WalletAccount) {
+export function makeSwitchAccount(accounts: WalletAccountType[]) {
+  async function switchAccount(account: WalletAccount) {
     const { keyringService } = getAPIProxy()
-    await keyringService.setSelectedAccount(account.address, account.coin)
+
+    // TODO(apaymyshev): swap's WalletAccount should somehow provide
+    // corresponding instance of BraveWallet.AccountInfo
+    const keyringId = accounts.find(
+      (acc) => acc.address === account.address
+    )?.keyringId
+
+    if (keyringId) {
+      await keyringService.setSelectedAccount(keyringId, account.address)
+    }
   }
 
   return switchAccount

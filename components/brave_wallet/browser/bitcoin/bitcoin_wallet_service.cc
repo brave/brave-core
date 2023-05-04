@@ -638,8 +638,7 @@ absl::optional<std::string> BitcoinWalletService::GetUnusedChangeAddress(
 }
 
 void BitcoinWalletService::AccountsAdded(
-    mojom::CoinType coin,
-    const std::vector<std::string>& addresses) {
+    std::vector<mojom::AccountInfoPtr> accounts) {
   // TODO(apaymyshev): need keyring_id here.
 }
 

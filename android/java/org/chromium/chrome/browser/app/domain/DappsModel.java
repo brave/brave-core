@@ -316,13 +316,16 @@ public class DappsModel implements KeyringServiceObserver {
     public void accountsChanged() {}
 
     @Override
-    public void accountsAdded(int coin, String[] addresses) {}
+    public void accountsAdded(AccountInfo[] addedAccounts) {}
 
     @Override
     public void autoLockMinutesChanged() {}
 
     @Override
-    public void selectedAccountChanged(int coin) {}
+    public void selectedAccountChanged(AccountInfo selectedAccount) {}
+
+    @Override
+    public void selectedDappAccountChangedForCoin(int coin) {}
 
     @Override
     public void onConnectionError(MojoException e) {}

@@ -16,6 +16,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/browser/eth_block_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_logs_tracker.h"
+#include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -35,14 +36,13 @@ class JsonRpcService;
 class KeyringService;
 class TxService;
 
-class EthereumProviderImpl final
-    : public mojom::EthereumProvider,
-      public mojom::JsonRpcServiceObserver,
-      public mojom::TxServiceObserver,
-      public brave_wallet::mojom::KeyringServiceObserver,
-      public content_settings::Observer,
-      public EthBlockTracker::Observer,
-      public EthLogsTracker::Observer {
+class EthereumProviderImpl final : public mojom::EthereumProvider,
+                                   public mojom::JsonRpcServiceObserver,
+                                   public mojom::TxServiceObserver,
+                                   public KeyringServiceObserverBase,
+                                   public content_settings::Observer,
+                                   public EthBlockTracker::Observer,
+                                   public EthLogsTracker::Observer {
  public:
   using RequestPermissionsError = mojom::RequestPermissionsError;
 
@@ -267,18 +267,10 @@ class EthereumProviderImpl final
                                      mojom::ByteArrayStringUnionPtr signature,
                                      const absl::optional<std::string>& error);
 
-  // KeyringServiceObserver
-  void KeyringCreated(const std::string& keyring_id) override {}
-  void KeyringRestored(const std::string& keyring_id) override {}
-  void KeyringReset() override {}
+  // KeyringServiceObserverBase:
   void Locked() override;
   void Unlocked() override;
-  void BackedUp() override {}
-  void AccountsChanged() override {}
-  void AccountsAdded(mojom::CoinType coin,
-                     const std::vector<std::string>& addresses) override {}
-  void AutoLockMinutesChanged() override {}
-  void SelectedAccountChanged(mojom::CoinType coin) override;
+  void SelectedDappAccountChangedForCoin(mojom::CoinType coin) override;
 
   void CommonRequestOrSendAsync(base::ValueView input_value,
                                 RequestCallback request_callback,

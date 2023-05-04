@@ -74,13 +74,14 @@ export class WalletApiProxy {
         store.dispatch(WalletActions.accountsChanged())
       },
       accountsAdded: function () {
-        // TODO: Handle this event.
       },
       autoLockMinutesChanged: function () {
         store.dispatch(WalletActions.autoLockMinutesChanged())
       },
-      selectedAccountChanged: function (coin: BraveWallet.CoinType) {
-        store.dispatch(WalletActions.selectedAccountChanged({ coin }))
+      selectedAccountChanged: function (selectedAccount: BraveWallet.AccountInfo) {
+        store.dispatch(WalletActions.selectedAccountChanged({ selectedAccount }))
+      },
+      selectedDappAccountChangedForCoin: function (coin: BraveWallet.CoinType) {
       }
     })
     this.keyringService.addObserver(keyringServiceObserverReceiver.$.bindNewPipeAndPassRemote())

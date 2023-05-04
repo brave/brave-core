@@ -153,6 +153,7 @@ public class Utils {
     public static final String BRAVE_SUPPORT_URL = "https://support.brave.com";
     public static final String ADDRESS = "address";
     public static final String NAME = "name";
+    public static final String KEYRING_ID = "keyringId";
     public static final String COIN_TYPE = "coinType";
     public static final String ISIMPORTED = "isImported";
     public static final String ISUPDATEACCOUNT = "isUpdateAccount";

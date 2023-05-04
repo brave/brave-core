@@ -131,8 +131,8 @@ void WalletPanelUI::CreatePanelHandler(
   panel_handler_ = std::make_unique<WalletPanelHandler>(
       std::move(panel_receiver), this, active_web_contents_,
       std::move(deactivation_callback_));
-  wallet_handler_ =
-      std::make_unique<WalletHandler>(std::move(wallet_receiver), profile);
+  wallet_handler_ = std::make_unique<brave_wallet::WalletHandler>(
+      std::move(wallet_receiver), profile);
 
   brave_wallet::JsonRpcServiceFactory::BindForContext(
       profile, std::move(json_rpc_service_receiver));

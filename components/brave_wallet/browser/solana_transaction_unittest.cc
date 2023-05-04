@@ -93,7 +93,16 @@ class SolanaTransactionUnitTest : public testing::Test {
   }
 
   void SetSelectedAccount(const std::string& address) {
-    keyring_service()->SetSelectedAccountForCoin(mojom::CoinType::SOL, address);
+    bool success = false;
+    base::RunLoop run_loop;
+    keyring_service()->SetSelectedAccount(
+        mojom::kSolanaKeyringId, address,
+        base::BindLambdaForTesting([&](bool v) {
+          success = v;
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    ASSERT_TRUE(success);
     ASSERT_EQ(
         keyring_service()->GetSelectedAccount(mojom::CoinType::SOL).value(),
         address);

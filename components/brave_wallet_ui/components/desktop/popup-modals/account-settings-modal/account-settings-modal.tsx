@@ -30,7 +30,9 @@ import { AccountButtonOptions } from '../../../../options/account-list-button-op
 
 // types
 import {
-  BraveWallet
+  BraveKeyrings,
+  BraveWallet,
+  UpdateAccountNamePayloadType
 } from '../../../../constants/types'
 
 // components
@@ -90,13 +92,13 @@ export const AccountSettingsModal = () => {
 
   // methods
   const onViewPrivateKey = React.useCallback(async (
+    keyringId: BraveKeyrings,
     address: string,
-    coin: BraveWallet.CoinType
   ) => {
     const { privateKey } = await keyringService.encodePrivateKeyForExport(
+      keyringId,
       address,
-      password,
-      coin
+      password
     )
     if (isMounted) {
       return setPrivateKey(privateKey)
@@ -120,7 +122,8 @@ export const AccountSettingsModal = () => {
   const onSubmitUpdateName = React.useCallback(() => {
     if (selectedAccount) {
       const isDerived = selectedAccount.accountType === 'Primary'
-      const payload = {
+      const payload: UpdateAccountNamePayloadType = {
+        keyringId: selectedAccount.keyringId,
         address: selectedAccount.address,
         name: accountName,
         isDerived: isDerived
@@ -158,8 +161,8 @@ export const AccountSettingsModal = () => {
     setIsCorrectPassword(true)
 
     onViewPrivateKey(
-      selectedAccount?.address ?? '',
-      selectedAccount?.coin
+      selectedAccount?.keyringId ?? '',
+      selectedAccount?.address ?? ''
     )
   }
 

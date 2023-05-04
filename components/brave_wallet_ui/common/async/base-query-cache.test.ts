@@ -48,24 +48,24 @@ describe('BaseQueryCache', () => {
   })
 
   it('should cache accounts after fetching', async () => {
-    const getWalletInfoSpy = jest.spyOn(
-      getMockedAPIProxy().walletHandler,
-      'getWalletInfo'
+    const getAllAcountsSpy = jest.spyOn(
+      getMockedAPIProxy().keyringService,
+      'getAllAccounts'
     )
-    expect(getWalletInfoSpy).toHaveBeenCalledTimes(0)
+    expect(getAllAcountsSpy).toHaveBeenCalledTimes(0)
 
     const cache = new BaseQueryCache()
 
     // access the uncached registry
     const accounts = await cache.getAccountsRegistry()
     expect(accounts).toBeDefined()
-    expect(getWalletInfoSpy).toHaveBeenCalledTimes(1)
+    expect(getAllAcountsSpy).toHaveBeenCalledTimes(1)
 
     // re-access the registry, this time from cache
     const cachedAccounts = await cache.getAccountsRegistry()
     expect(cachedAccounts).toBeDefined()
     // no additional calls made
-    expect(getWalletInfoSpy).toHaveBeenCalledTimes(1)
+    expect(getAllAcountsSpy).toHaveBeenCalledTimes(1)
 
     // clear the cache manually
     cache.clearWalletInfo()
@@ -73,53 +73,53 @@ describe('BaseQueryCache', () => {
     // access again, repopulating cache with fresh value
     const reCachedAccounts = await cache.getAccountsRegistry()
     expect(reCachedAccounts).toBeDefined()
-    expect(getWalletInfoSpy).toHaveBeenCalledTimes(2)
+    expect(getAllAcountsSpy).toHaveBeenCalledTimes(2)
 
     // reset spy
-    getWalletInfoSpy.mockReset();
-    getWalletInfoSpy.mockRestore();
+    getAllAcountsSpy.mockReset();
+    getAllAcountsSpy.mockRestore();
   })
 
-  it('should cache selected account address after fetching', async () => {
-    const getSelectedCoinSpy = jest.spyOn(
-      getMockedAPIProxy().braveWalletService,
-      'getSelectedCoin'
-    )
-    const getSelectedAccountSpy = jest.spyOn(
+  it('should cache selected account after fetching', async () => {
+    const getAllAcountsSpy = jest.spyOn(
       getMockedAPIProxy().keyringService,
-      'getSelectedAccount'
+      'getAllAccounts'
     )
-    expect(getSelectedCoinSpy).toHaveBeenCalledTimes(0)
-    expect(getSelectedAccountSpy).toHaveBeenCalledTimes(0)
+    expect(getAllAcountsSpy).toHaveBeenCalledTimes(0)
 
     const cache = new BaseQueryCache()
 
-    // access the uncached address
-    const selectedAccountAddress = await cache.getSelectedAccountAddress()
-    expect(selectedAccountAddress).toBe(mockAccount.address)
-    expect(getSelectedCoinSpy).toHaveBeenCalledTimes(1)
+    // access the uncached account
+    const selectedAccount = await cache.getSelectedAccount()
+    expect(selectedAccount).toStrictEqual(mockAccount)
+    expect(getAllAcountsSpy).toHaveBeenCalledTimes(1)
 
     // re-access the address, this time from cache
-    const cachedAccountAddress = await cache.getSelectedAccountAddress()
-    expect(cachedAccountAddress).toBe(mockAccount.address)
+    const cachedAccount = await cache.getSelectedAccount()
+    expect(cachedAccount).toStrictEqual(mockAccount)
     // no additional calls made
-    expect(getSelectedCoinSpy).toHaveBeenCalledTimes(1)
-    expect(getSelectedAccountSpy).toHaveBeenCalledTimes(1)
+    expect(getAllAcountsSpy).toHaveBeenCalledTimes(1)
 
     // clear the cache manually
     cache.clearSelectedAccount()
 
     // access again, repopulating cache with fresh value
-    const reCachedAccountAddress = await cache.getSelectedAccountAddress()
-    expect(reCachedAccountAddress).toBeDefined()
-    expect(getSelectedCoinSpy).toHaveBeenCalledTimes(2)
-    expect(getSelectedAccountSpy).toHaveBeenCalledTimes(2)
+    const reCachedAccount = await cache.getSelectedAccount()
+    expect(reCachedAccount).toBeDefined()
+    // cached walletInfo is used.
+    expect(getAllAcountsSpy).toHaveBeenCalledTimes(1)
+
+    // clearing wallet info also clears selected account
+    cache.clearWalletInfo();
+
+    // access again, repopulating cache with fresh value
+    expect(await cache.getSelectedAccount()).toBeDefined()
+    // walletInfo is refreshed.
+    expect(getAllAcountsSpy).toHaveBeenCalledTimes(2)
 
     // reset spies
-    getSelectedCoinSpy.mockReset();
-    getSelectedCoinSpy.mockRestore();
-    getSelectedAccountSpy.mockReset();
-    getSelectedAccountSpy.mockRestore();
+    getAllAcountsSpy.mockReset();
+    getAllAcountsSpy.mockRestore();
   })
 
   it('should cache networks after fetching', async () => {

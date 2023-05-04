@@ -8,7 +8,7 @@ import { createStore, combineReducers } from 'redux'
 import { createWalletReducer } from '../../slices/wallet.slice'
 
 // types
-import { BraveWallet } from '../../../constants/types'
+import { BraveKeyrings, BraveWallet } from '../../../constants/types'
 import { WalletActions } from '../../actions'
 import type WalletApiProxy from '../../wallet_api_proxy'
 
@@ -78,7 +78,6 @@ type TokenBalanceRegistry = Record<
 
 export interface WalletApiDataOverrides {
   selectedCoin?: BraveWallet.CoinType
-  selectedAccountAddress?: string
   chainIdsForCoins?: Record<BraveWallet.CoinType, string>
   networks?: BraveWallet.NetworkInfo[]
   defaultBaseCurrency?: string
@@ -95,12 +94,14 @@ export class MockedWalletApiProxy {
 
   defaultBaseCurrency: string = 'usd'
   selectedCoin: BraveWallet.CoinType = BraveWallet.CoinType.ETH
-  selectedAccountAddress: string = mockAccount.address
   accountInfos: BraveWallet.AccountInfo[] = [
+    mockAccount,
     mockEthAccountInfo,
     mockSolanaAccountInfo,
     mockFilecoinAccountInfo
   ]
+
+  selectedAccountIndex = 0
 
   chainIdsForCoins: Record<BraveWallet.CoinType, string> = {
     [BraveWallet.CoinType.ETH]: BraveWallet.MAINNET_CHAIN_ID,
@@ -197,8 +198,6 @@ export class MockedWalletApiProxy {
       return
     }
 
-    this.selectedAccountAddress =
-      overrides.selectedAccountAddress ?? this.selectedAccountAddress
     this.selectedCoin = overrides.selectedCoin ?? this.selectedCoin
     this.chainIdsForCoins = overrides.chainIdsForCoins ?? this.chainIdsForCoins
     this.networks = overrides.networks ?? this.networks
@@ -303,7 +302,15 @@ export class MockedWalletApiProxy {
     InstanceType<typeof BraveWallet.KeyringServiceInterface>
   > = {
     getSelectedAccount: async () => {
-      return { address: this.selectedAccountAddress }
+      return { address: this.accountInfos[this.selectedAccountIndex].address }
+    },
+    getAllAccounts: async () => {
+      return {
+        allAccounts: {
+          accounts: this.accountInfos,
+          selectedIndex: this.selectedAccountIndex
+        }
+      }
     },
     validatePassword: async (password: string) => ({
       result: password === 'password'
@@ -313,9 +320,9 @@ export class MockedWalletApiProxy {
       alert('wallet locked')
     },
     encodePrivateKeyForExport: async (
+      keyringId: BraveKeyrings,
       address: string,
-      password: string,
-      coin: number
+      password: string
     ) =>
       password === 'password'
         ? { privateKey: 'secret-private-key' }
@@ -511,11 +518,9 @@ export class MockedWalletApiProxy {
   walletHandler: Partial<
     InstanceType<typeof BraveWallet.WalletHandlerInterface>
   > = {
-    getWalletInfo: async () => {
+    getWalletInfo: async (): Promise<{ walletInfo: BraveWallet.WalletInfo }> => {
       return {
         walletInfo: {
-          accountInfos: this.accountInfos,
-          favoriteApps: [],
           isSolanaEnabled: true,
           isFilecoinEnabled: true,
           isBitcoinEnabled: true,

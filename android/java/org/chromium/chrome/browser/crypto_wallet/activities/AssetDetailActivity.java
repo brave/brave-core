@@ -401,6 +401,8 @@ public class AssetDetailActivity
         if (walletListItemModel.getAccountInfo() != null) {
             accountDetailActivityIntent.putExtra(
                     Utils.COIN_TYPE, walletListItemModel.getAccountInfo().coin);
+            accountDetailActivityIntent.putExtra(
+                    Utils.KEYRING_ID, walletListItemModel.getAccountInfo().keyringId);
         }
         startActivityForResult(accountDetailActivityIntent, Utils.ACCOUNT_REQUEST_CODE);
     }

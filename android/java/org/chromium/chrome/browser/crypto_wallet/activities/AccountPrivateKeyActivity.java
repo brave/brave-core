@@ -47,6 +47,7 @@ public class AccountPrivateKeyActivity extends BraveWalletBaseActivity {
     private String mAddress;
     private String mPasswordFromBiometric;
     private int mCoinType;
+    private String mKeyringId;
     private boolean mIsPrivateKeyShown;
     private boolean mIsPasswordEntered;
     private TextView mWalletTitle;
@@ -62,8 +63,9 @@ public class AccountPrivateKeyActivity extends BraveWalletBaseActivity {
         setContentView(R.layout.activity_account_private_key);
 
         if (getIntent() != null) {
-            mAddress = getIntent().getStringExtra(Utils.ADDRESS);
             mCoinType = getIntent().getIntExtra(Utils.COIN_TYPE, CoinType.ETH);
+            mKeyringId = getIntent().getStringExtra(Utils.KEYRING_ID);
+            mAddress = getIntent().getStringExtra(Utils.ADDRESS);
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -115,7 +117,7 @@ public class AccountPrivateKeyActivity extends BraveWalletBaseActivity {
                         ? mWalletPassword.getText().toString()
                         : mPasswordFromBiometric;
                 mKeyringService.encodePrivateKeyForExport(
-                        mAddress, passwordToUse, mCoinType, (privateKey) -> {
+                        mKeyringId, mAddress, passwordToUse, (privateKey) -> {
                             if (privateKey.isEmpty()) {
                                 showPasswordRelatedControls(true);
                                 mWalletPassword.setError(

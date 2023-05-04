@@ -24,7 +24,7 @@ export type ChainChangedEventPayloadType = {
 }
 
 export type SelectedAccountChangedPayloadType = {
-  coin: BraveWallet.CoinType
+  selectedAccount: BraveWallet.AccountInfo
 }
 
 export type IsEip1559Changed = {

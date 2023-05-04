@@ -232,7 +232,7 @@ export const usePendingTransactions = () => {
         isCurrentAllowanceUnlimited: false
       }
     }
-    
+
     const currentTokenAllowance = new Amount(erc20AllowanceResult)
       .divideByDecimals(transactionDetails.decimals)
       .format()
@@ -249,16 +249,26 @@ export const usePendingTransactions = () => {
   React.useEffect(() => {
     const interval = setInterval(() => {
       if (transactionInfo) {
-        dispatch(WalletActions.refreshGasEstimates(transactionInfo))
+        dispatch(
+          WalletActions.refreshGasEstimates({
+            network: transactionsNetwork,
+            txInfo: transactionInfo
+          })
+        )
       }
     }, 15000)
 
     if (transactionInfo) {
-      dispatch(WalletActions.refreshGasEstimates(transactionInfo))
+      dispatch(
+        WalletActions.refreshGasEstimates({
+          network: transactionsNetwork,
+          txInfo: transactionInfo
+        })
+      )
     }
 
     return () => clearInterval(interval) // cleanup on component unmount
-  }, [transactionInfo])
+  }, [transactionInfo, transactionsNetwork])
 
   React.useEffect(
     () => {

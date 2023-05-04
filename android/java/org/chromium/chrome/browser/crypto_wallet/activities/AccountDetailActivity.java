@@ -65,6 +65,7 @@ public class AccountDetailActivity
     private String mName;
     private boolean mIsImported;
     private int mCoinType;
+    private String mKeyringId;
     private TextView mAccountText;
     private ExecutorService mExecutor;
     private Handler mHandler;
@@ -78,10 +79,11 @@ public class AccountDetailActivity
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
         if (getIntent() != null) {
+            mCoinType = getIntent().getIntExtra(Utils.COIN_TYPE, CoinType.ETH);
+            mKeyringId = getIntent().getStringExtra(Utils.KEYRING_ID);
             mAddress = getIntent().getStringExtra(Utils.ADDRESS);
             mName = getIntent().getStringExtra(Utils.NAME);
             mIsImported = getIntent().getBooleanExtra(Utils.ISIMPORTED, false);
-            mCoinType = getIntent().getIntExtra(Utils.COIN_TYPE, CoinType.ETH);
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -104,9 +106,10 @@ public class AccountDetailActivity
             public void onClick(View v) {
                 Intent accountDetailsWithQrActivityIntent =
                         new Intent(AccountDetailActivity.this, AccountDetailsWithQrActivity.class);
+                accountDetailsWithQrActivityIntent.putExtra(Utils.COIN_TYPE, mCoinType);
+                accountDetailsWithQrActivityIntent.putExtra(Utils.KEYRING_ID, mKeyringId);
                 accountDetailsWithQrActivityIntent.putExtra(Utils.ADDRESS, mAddress);
                 accountDetailsWithQrActivityIntent.putExtra(Utils.NAME, mName);
-                accountDetailsWithQrActivityIntent.putExtra(Utils.COIN_TYPE, mCoinType);
                 startActivity(accountDetailsWithQrActivityIntent);
             }
         });

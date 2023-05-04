@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
+#include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -50,7 +51,7 @@ enum class JSProviderAnswer {
 };
 
 // Reports BraveWallet related P3A data
-class BraveWalletP3A : public mojom::KeyringServiceObserver,
+class BraveWalletP3A : public KeyringServiceObserverBase,
                        public mojom::BraveWalletP3A {
  public:
   BraveWalletP3A(BraveWalletService* wallet_service,
@@ -80,18 +81,8 @@ class BraveWalletP3A : public mojom::KeyringServiceObserver,
   void ReportTransactionSent(mojom::CoinType coin, bool new_send) override;
   void RecordActiveWalletCount(int count, mojom::CoinType coin_type) override;
 
-  // KeyringServiceObserver
+  // KeyringServiceObserverBase:
   void KeyringCreated(const std::string& keyring_id) override;
-  void KeyringRestored(const std::string& keyring_id) override {}
-  void KeyringReset() override {}
-  void Locked() override {}
-  void Unlocked() override {}
-  void BackedUp() override {}
-  void AccountsChanged() override {}
-  void AccountsAdded(mojom::CoinType coin,
-                     const std::vector<std::string>& addresses) override {}
-  void AutoLockMinutesChanged() override {}
-  void SelectedAccountChanged(mojom::CoinType coin) override {}
 
  private:
   void MigrateUsageProfilePrefsToLocalState();

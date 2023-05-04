@@ -74,7 +74,7 @@ class WalletPanelUI : public ui::MojoBubbleWebUIController,
           brave_wallet_ipfs_service_receiver) override;
 
   std::unique_ptr<WalletPanelHandler> panel_handler_;
-  std::unique_ptr<WalletHandler> wallet_handler_;
+  std::unique_ptr<brave_wallet::WalletHandler> wallet_handler_;
   raw_ptr<content::WebContents> active_web_contents_ = nullptr;
 
   base::RepeatingCallback<void(bool)> deactivation_callback_;

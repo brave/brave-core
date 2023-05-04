@@ -62,8 +62,7 @@ class BitcoinWalletService : public KeyedService,
 
  private:
   // KeyringServiceObserverBase:
-  void AccountsAdded(mojom::CoinType coin,
-                     const std::vector<std::string>& addresses) override;
+  void AccountsAdded(std::vector<mojom::AccountInfoPtr> accounts) override;
 
   void StartDatabaseSynchronizer(const std::string& network_id,
                                  const std::string& keyring_id,

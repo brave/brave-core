@@ -859,7 +859,8 @@ void SolanaProviderImpl::Unlocked() {
   }
 }
 
-void SolanaProviderImpl::SelectedAccountChanged(mojom::CoinType coin) {
+void SolanaProviderImpl::SelectedDappAccountChangedForCoin(
+    mojom::CoinType coin) {
   if (!events_listener_.is_bound() || coin != mojom::CoinType::SOL) {
     return;
   }

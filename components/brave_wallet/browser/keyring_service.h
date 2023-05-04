@@ -18,6 +18,8 @@
 #include "brave/components/brave_wallet/browser/account_discovery_manager.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/password_encryptor.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -116,9 +118,9 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
                          AddBitcoinAccountCallback callback) override;
 
   void EncodePrivateKeyForExport(
+      const std::string& keyring_id,
       const std::string& address,
       const std::string& password,
-      mojom::CoinType coin,
       EncodePrivateKeyForExportCallback callback) override;
   void ImportAccount(const std::string& account_name,
                      const std::string& private_key,
@@ -134,23 +136,27 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
                              ImportFilecoinAccountCallback callback) override;
   void AddHardwareAccounts(
       std::vector<mojom::HardwareWalletAccountPtr> info) override;
-  void RemoveHardwareAccount(const std::string& address,
-                             mojom::CoinType coin,
+  void RemoveHardwareAccount(mojom::CoinType coin,
+                             const std::string& keyring_id,
+                             const std::string& address,
                              RemoveHardwareAccountCallback callback) override;
-  void RemoveImportedAccount(const std::string& address,
+  void RemoveImportedAccount(mojom::CoinType coin,
+                             const std::string& keyring_id,
+                             const std::string& address,
                              const std::string& password,
-                             mojom::CoinType coin,
                              RemoveImportedAccountCallback callback) override;
   void IsWalletBackedUp(IsWalletBackedUpCallback callback) override;
   void NotifyWalletBackupComplete() override;
   void GetKeyringsInfo(const std::vector<std::string>& keyrings,
                        GetKeyringsInfoCallback callback) override;
+  std::vector<mojom::KeyringInfoPtr> GetKeyringsInfoSync(
+      const std::vector<std::string>& keyrings);
   mojom::KeyringInfoPtr GetKeyringInfoSync(const std::string& keyring_id);
   void GetKeyringInfo(const std::string& keyring_id,
                       GetKeyringInfoCallback callback) override;
-  void SetHardwareAccountName(const std::string& address,
+  void SetHardwareAccountName(const std::string& keyring_id,
+                              const std::string& address,
                               const std::string& name,
-                              mojom::CoinType coin,
                               SetHardwareAccountNameCallback callback) override;
   void SetKeyringDerivedAccountName(
       const std::string& keyring_id,
@@ -223,12 +229,14 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void AddObserver(
       ::mojo::PendingRemote<mojom::KeyringServiceObserver> observer) override;
   void NotifyUserInteraction() override;
+  void GetAllAccounts(GetAllAccountsCallback callback) override;
+  mojom::AllAccountsInfoPtr GetAllAccountsSync();
   void GetSelectedAccount(mojom::CoinType coin,
                           GetSelectedAccountCallback callback) override;
   void GetFilecoinSelectedAccount(const std::string& net,
                                   GetSelectedAccountCallback callback) override;
-  void SetSelectedAccount(const std::string& address,
-                          mojom::CoinType coin,
+  void SetSelectedAccount(const std::string& keyring_id,
+                          const std::string& address,
                           SetSelectedAccountCallback callback) override;
   void GetAutoLockMinutes(GetAutoLockMinutesCallback callback) override;
   void SetAutoLockMinutes(int32_t minutes,
@@ -312,29 +320,9 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   friend class FilTxManagerUnitTest;
   friend class KeyringServiceUnitTest;
   friend class AssetDiscoveryManagerUnitTest;
-  friend class SolanaTransactionUnitTest;
 
-  absl::optional<std::string> FindImportedFilecoinKeyringId(
-      const std::string& address) const;
-  absl::optional<std::string> FindBasicFilecoinKeyringId(
-      const std::string& address) const;
-  absl::optional<std::string> FindHardwareFilecoinKeyringId(
-      const std::string& address) const;
-  absl::optional<std::string> FindFilecoinKeyringId(
-      const std::string& address) const;
-
-  std::string GetImportedKeyringId(mojom::CoinType coin_type,
-                                   const std::string& address) const;
-  std::string GetKeyringId(mojom::CoinType coin_type,
-                           const std::string& address) const;
-  std::string GetKeyringIdForNetwork(mojom::CoinType coin_type,
-                                     const std::string& network) const;
-  std::string GetHardwareKeyringId(mojom::CoinType coin_type,
-                                   const std::string& address) const;
-
-  absl::optional<std::string> AddAccountForKeyring(
-      const std::string& keyring_id,
-      const std::string& account_name);
+  mojom::AccountInfoPtr AddAccountForKeyring(const std::string& keyring_id,
+                                             const std::string& account_name);
   void OnAutoLockFired();
   HDKeyring* GetHDKeyringById(const std::string& keyring_id) const;
   BitcoinKeyring* GetBitcoinKeyringById(const std::string& keyring_id) const;
@@ -350,9 +338,9 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
 
   std::vector<mojom::AccountInfoPtr> GetAccountInfosForKeyring(
       const std::string& id) const;
-  bool UpdateNameForHardwareAccountSync(const std::string& address,
-                                        const std::string& name,
-                                        mojom::CoinType coin);
+  bool UpdateNameForHardwareAccountSync(const std::string& keyring_id,
+                                        const std::string& address,
+                                        const std::string& name);
   std::string GetMnemonicForKeyringImpl(const std::string& keyring_id);
 
   std::vector<uint8_t> GetOrCreateNonceForKeyring(const std::string& id,
@@ -382,23 +370,22 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void MaybeMigratePBKDF2Iterations(const std::string& password);
 
   void NotifyAccountsChanged();
-  void NotifyAccountsAdded(mojom::CoinType coin,
-                           const std::vector<std::string>& account_infos);
+  void NotifyAccountsAdded(const mojom::AccountInfo& added_account);
+  void NotifyAccountsAdded(
+      const std::vector<mojom::AccountInfoPtr>& added_accounts);
   void StopAutoLockTimer();
   void ResetAutoLockTimer();
   void OnAutoLockPreferenceChanged();
-  void NotifySelectedAccountChanged(mojom::CoinType coin);
-  bool SetSelectedAccountForCoinSilently(mojom::CoinType coin,
-                                         const std::string& address);
-  void SetSelectedAccountForCoin(mojom::CoinType coin,
-                                 const std::string& address);
-  void RemoveSelectedAccountForCoin(mojom::CoinType coin,
-                                    const std::string& keyring_id);
-
-  void AddHardwareAccounts(std::vector<mojom::HardwareWalletAccountPtr> info,
-                           const std::string keyring_id);
+  void NotifySelectedAccountChanged(const mojom::AccountInfo& selected_account);
+  void NotifySelectedDappAccountChangedForCoin(mojom::CoinType coin);
+  bool SetSelectedAccountInternalSilently(
+      const mojom::AccountInfo& selected_account);
 
   bool ValidatePasswordInternal(const std::string& password);
+  void HandleMaybeSelectedAccountRemoved(mojom::CoinType coin,
+                                         const std::string& keyring_id,
+                                         const std::string& address);
+  mojom::AccountInfoPtr SelectFallbackAccount();
   void MaybeUnlockWithCommandLine();
 
   std::unique_ptr<base::OneShotTimer> auto_lock_timer_;

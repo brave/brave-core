@@ -197,7 +197,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment
                     }
                     if (CoinType.SOL != account.coin) {
                         getKeyringService().setSelectedAccount(
-                                account.address, account.coin, setSuccess -> {});
+                                account.keyringId, account.address, setSuccess -> {});
                     }
                     updateAccounts();
                 });
@@ -221,7 +221,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment
                         AccountInfo accountInfo = it.next();
                         if (!accountInfo.address.equals(account.address)) {
                             getKeyringService().setSelectedAccount(
-                                    accountInfo.address, accountInfo.coin, setSuccess -> {});
+                                    accountInfo.keyringId, accountInfo.address, setSuccess -> {});
                             break;
                         }
                     }
@@ -231,7 +231,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment
 
     @Override
     public void switchAccount(AccountInfo account) {
-        getKeyringService().setSelectedAccount(account.address, account.coin, setSuccess -> {
+        getKeyringService().setSelectedAccount(account.keyringId, account.address, setSuccess -> {
             if (setSuccess) {
                 updateAccounts();
             }

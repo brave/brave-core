@@ -294,16 +294,6 @@ export const mockWalletState: WalletState = {
   selectedNetworkFilter: AllNetworksOptionDefault,
   selectedAssetFilter: HighToLowAssetsFilterOption.id,
   selectedAccountFilter: AllAccountsOption.id,
-  defaultAccounts: [
-    {
-      address: mockAccount.address,
-      coin: mockAccount.coin,
-      name: mockAccount.name,
-      isImported: false,
-      hardware: undefined,
-      keyringId: 'default'
-    }
-  ],
   onRampCurrencies: mockCurrencies,
   selectedCurrency: mockCurrency,
   passwordAttempts: 0,

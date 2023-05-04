@@ -4,16 +4,17 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { createReducer, createAction } from 'redux-act'
-import { WalletAccountType, AccountModalTypes, BraveWallet } from '../../constants/types'
+import { WalletAccountType, AccountModalTypes, BraveKeyrings, BraveWallet } from '../../constants/types'
 
 export interface AccountsTabState {
   selectedAccount: WalletAccountType | undefined
   showAccountModal: boolean
   accountModalType: AccountModalTypes
   accountToRemove: {
+    coin: BraveWallet.CoinType
+    keyringId: BraveKeyrings
     address: string
     hardware: boolean
-    coin: BraveWallet.CoinType
     name: string
   } | undefined
 }
@@ -30,9 +31,10 @@ export const AccountsTabActions = {
   setShowAccountModal: createAction<boolean>('setShowAccountModal'),
   setAccountModalType: createAction<AccountModalTypes>('setAccountModalType'),
   setAccountToRemove: createAction<{
+    coin: BraveWallet.CoinType
+    keyringId: BraveKeyrings
     address: string
     hardware: boolean
-    coin: BraveWallet.CoinType
     name: string
   } | undefined>('setAccountToRemove')
 }
@@ -73,9 +75,10 @@ export const createAccountsTabReducer = (initialState: AccountsTabState) => {
   reducer.on(AccountsTabActions.setAccountToRemove, (
     state: AccountsTabState,
     payload: {
+      coin: BraveWallet.CoinType
+      keyringId: BraveKeyrings
       address: string
       hardware: boolean
-      coin: BraveWallet.CoinType
       name: string
     } | undefined
   ): AccountsTabState => {

@@ -229,7 +229,7 @@ export function shouldReportTransactionP3A (
     BraveWallet.TransactionInfo | SerializableTransactionInfo,
     'txType'
   >,
-  network: BraveWallet.NetworkInfo,
+  chainId: string,
   coin: BraveWallet.CoinType
 ) {
   if (
@@ -240,7 +240,7 @@ export function shouldReportTransactionP3A (
     const countTestNetworks = loadTimeData.getBoolean(
       BraveWallet.P3A_COUNT_TEST_NETWORKS_LOAD_TIME_KEY
     )
-    return countTestNetworks || !SupportedTestNetworks.includes(network.chainId)
+    return countTestNetworks || !SupportedTestNetworks.includes(chainId)
   }
   return false
 }

@@ -272,10 +272,11 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     run_loop.Run();
   }
 
-  void SetSelectedAccount(const std::string& address, mojom::CoinType coin) {
+  void SetSelectedAccount(const std::string& keyring_id,
+                          const std::string& address) {
     base::RunLoop run_loop;
     keyring_service_->SetSelectedAccount(
-        address, coin, base::BindLambdaForTesting([&](bool success) {
+        keyring_id, address, base::BindLambdaForTesting([&](bool success) {
           ASSERT_TRUE(success);
           run_loop.Quit();
         }));
@@ -894,7 +895,7 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, SelectedAddress) {
 
   // Changing the selected account doesn't change selectedAddress property
   // because it's not allowed yet.
-  SetSelectedAccount(from(1), mojom::CoinType::ETH);
+  SetSelectedAccount(mojom::kDefaultKeyringId, from(1));
   EXPECT_EQ(EvalJs(web_contents(), "getSelectedAddress()",
                    content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                 .ExtractString(),

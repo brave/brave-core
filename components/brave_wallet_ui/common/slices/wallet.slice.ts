@@ -11,8 +11,6 @@ import {
   PortfolioTokenHistoryAndInfo,
   WalletAccountType,
   WalletState,
-  WalletInfoBase,
-  WalletInfo,
   DefaultCurrencies,
   GetPriceReturnInfo,
   GetNativeAssetBalancesPayload,
@@ -24,7 +22,10 @@ import {
   SPLTransferFromParams,
   SerializableTransactionInfo,
   SerializableOriginInfo,
-  NetworkFilterType
+  NetworkFilterType,
+  RefreshGasEstimatesParams,
+  BraveKeyrings,
+  WalletInitializedPayload
 } from '../../constants/types'
 import {
   AddSitePermissionPayloadType,
@@ -65,7 +66,8 @@ import { sortTransactionByDate } from '../../utils/tx-utils'
 import Amount from '../../utils/amount'
 import {
   createTokenBalanceRegistryKey,
-  getAccountType
+  getAccountType,
+  findSelectedAccount
 } from '../../utils/account-utils'
 import { parseJSONFromLocalStorage } from '../../utils/local-storage-utils'
 
@@ -134,7 +136,6 @@ const defaultState: WalletState = {
   transactionProviderErrorRegistry: {},
   isLoadingCoinMarketData: true,
   coinMarketData: [],
-  defaultAccounts: [] as BraveWallet.AccountInfo[],
   selectedNetworkFilter: parseJSONFromLocalStorage('PORTFOLIO_NETWORK_FILTER_OPTION', AllNetworksOptionDefault),
   selectedAssetFilter: window.localStorage.getItem(LOCAL_STORAGE_KEYS.PORTFOLIO_ASSET_FILTER_OPTION) || HighToLowAssetsFilterOption.id,
   selectedAccountFilter: window.localStorage.getItem(LOCAL_STORAGE_KEYS.PORTFOLIO_ACCOUNT_FILTER_OPTION) || AllAccountsOption.id,
@@ -221,7 +222,7 @@ export const WalletAsyncActions = {
   rejectTransaction:
     createAction<SerializableTransactionInfo>('rejectTransaction'),
   rejectAllTransactions: createAction('rejectAllTransactions'),
-  refreshGasEstimates: createAction<SerializableTransactionInfo>(
+  refreshGasEstimates: createAction<RefreshGasEstimatesParams>(
     'refreshGasEstimates'
   ),
   updateUnapprovedTransactionGasFields:
@@ -313,39 +314,36 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.hasIncorrectPassword = payload
       },
 
-      initialized (state: WalletState, { payload }: PayloadAction<WalletInfo>) {
-        const accounts = payload.accountInfos.map(
+      initialized(state: WalletState, { payload }: PayloadAction<WalletInitializedPayload>) {
+        const { walletInfo, allAccountsInfo } = payload
+        const accounts = allAccountsInfo.accounts.map(
           (info: BraveWallet.AccountInfo, idx: number): WalletAccountType => {
             return {
+              ...info,
+              keyringId: info.keyringId as BraveKeyrings,
               id: `${idx + 1}`,
-              name: info.name,
-              address: info.address,
               accountType: getAccountType(info),
               deviceId: info.hardware ? info.hardware.deviceId : '',
               tokenBalanceRegistry: {},
               nativeBalanceRegistry: {},
-              coin: info.coin,
-              keyringId: info.keyringId
             }
           }
         )
 
-        const selectedAccount = payload.selectedAccount
-          ? accounts.find((account) => account.address.toLowerCase() === payload.selectedAccount.toLowerCase()) ?? accounts[0]
-          : accounts[0]
         state.hasInitialized = true
-        state.isWalletCreated = payload.isWalletCreated
-        state.isFilecoinEnabled = payload.isFilecoinEnabled
-        state.isSolanaEnabled = payload.isSolanaEnabled
-        state.isBitcoinEnabled = payload.isBitcoinEnabled
-        state.isWalletLocked = payload.isWalletLocked
-        state.favoriteApps = payload.favoriteApps
+
         state.accounts = accounts
-        state.isWalletBackedUp = payload.isWalletBackedUp
-        state.selectedAccount = selectedAccount
+        state.selectedAccount = accounts[allAccountsInfo.selectedIndex]
+
+        state.isWalletCreated = walletInfo.isWalletCreated
+        state.isFilecoinEnabled = walletInfo.isFilecoinEnabled
+        state.isSolanaEnabled = walletInfo.isSolanaEnabled
+        state.isBitcoinEnabled = walletInfo.isBitcoinEnabled
+        state.isWalletLocked = walletInfo.isWalletLocked
+        state.isWalletBackedUp = walletInfo.isWalletBackedUp
         state.isNftPinningFeatureEnabled =
-          payload.isNftPinningFeatureEnabled
-        state.isPanelV2FeatureEnabled = payload.isPanelV2FeatureEnabled
+          walletInfo.isNftPinningFeatureEnabled
+        state.isPanelV2FeatureEnabled = walletInfo.isPanelV2FeatureEnabled
       },
 
       nativeAssetBalancesUpdated (state: WalletState, { payload }: PayloadAction<GetNativeAssetBalancesPayload>) {
@@ -357,12 +355,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
           })
         })
 
-        // Refresh selectedAccount object
-        const selectedAccount = state.accounts.find(
-          account => account.address.toLowerCase() === state.selectedAccount?.address.toLowerCase()
-        ) ?? state.selectedAccount
-
-        state.selectedAccount = selectedAccount
+        state.selectedAccount = findSelectedAccount(state.selectedAccount, state.accounts)
       },
 
       newUnapprovedTxAdded (state: WalletState, { payload }: PayloadAction<NewUnapprovedTxAdded>) {
@@ -451,10 +444,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
       selectCurrency (state: WalletState, { payload }: PayloadAction<BraveWallet.OnRampCurrency>) {
         state.selectedCurrency = payload
-      },
-
-      setDefaultAccounts (state: WalletState, { payload }: PayloadAction<BraveWallet.AccountInfo[]>) {
-        state.defaultAccounts = payload
       },
 
       setGasEstimates (state: WalletState, { payload }: PayloadAction<BraveWallet.GasEstimation1559>) {
@@ -553,12 +542,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
           })
         })
 
-        // Refresh selectedAccount object
-        const selectedAccount = state.accounts.find(
-          account => account.address.toLowerCase() === state.selectedAccount?.address.toLowerCase()
-        ) ?? state.selectedAccount
-
-        state.selectedAccount = selectedAccount
+        state.selectedAccount = findSelectedAccount(state.selectedAccount, state.accounts)
       },
 
       unapprovedTxUpdated (state: WalletState, { payload }: PayloadAction<UnapprovedTxUpdated>) {
@@ -587,13 +571,15 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
           : pendingTransactions[index]
       },
 
-      refreshAccountInfo (state: WalletState, { payload }: PayloadAction<WalletInfoBase>) {
+      refreshAccountNames (state: WalletState, { payload }: PayloadAction<BraveWallet.AllAccountsInfo>) {
         state.accounts.forEach(account => {
-          const info = payload.accountInfos.find(info => account.address === info.address)
+          const info = payload.accounts.find(info => account.address === info.address)
           if (info) {
             account.name = info.name
           }
         })
+
+        state.selectedAccount = findSelectedAccount(state.selectedAccount, state.accounts)
       }
     },
     extraReducers (builder) {

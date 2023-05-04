@@ -1359,7 +1359,8 @@ void EthereumProviderImpl::OnTransactionStatusChanged(
   add_tx_ids_.erase(tx_meta_id);
 }
 
-void EthereumProviderImpl::SelectedAccountChanged(mojom::CoinType coin) {
+void EthereumProviderImpl::SelectedDappAccountChangedForCoin(
+    mojom::CoinType coin) {
   if (coin != mojom::CoinType::ETH) {
     return;
   }

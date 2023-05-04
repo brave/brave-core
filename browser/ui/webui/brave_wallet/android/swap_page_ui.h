@@ -64,7 +64,7 @@ class SwapPageUI : public ui::MojoWebUIController,
           ipfs_service_receiver) override;
 
   std::unique_ptr<SwapPageHandler> page_handler_;
-  std::unique_ptr<WalletHandler> wallet_handler_;
+  std::unique_ptr<brave_wallet::WalletHandler> wallet_handler_;
 
   mojo::Receiver<brave_wallet::mojom::PageHandlerFactory>
       page_factory_receiver_{this};

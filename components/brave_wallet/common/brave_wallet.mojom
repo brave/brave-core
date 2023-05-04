@@ -394,6 +394,7 @@ interface PageHandler {
   ShowApprovePanelUI();
 };
 
+// TODO(apaymyshev): remove favorite apps ui
 struct AppItem {
   string description;
   string icon;
@@ -580,7 +581,7 @@ struct HardwareWalletAccount {
   string hardware_vendor;
   string device_id;
   CoinType coin;
-  string? network;
+  string keyring_id;
 };
 
 struct HardwareInfo {
@@ -598,6 +599,11 @@ struct AccountInfo {
   string keyring_id;
 };
 
+struct AllAccountsInfo {
+  array<AccountInfo> accounts;
+  uint32 selected_index;
+};
+
 struct KeyringInfo {
   string id;
   bool is_keyring_created;
@@ -607,28 +613,20 @@ struct KeyringInfo {
 };
 
 struct WalletInfo {
-  bool isWalletCreated;
-  bool isWalletLocked;
-  array<AppItem> favoriteApps;
-  bool isWalletBackedUp;
-  array<AccountInfo> accountInfos;
-  bool isFilecoinEnabled;
-  bool isSolanaEnabled;
-  bool isBitcoinEnabled;
-  bool isNftPinningFeatureEnabled;
-  bool IsPanelV2FeatureEnabled;
+  bool is_wallet_created;
+  bool is_wallet_locked;
+  bool is_wallet_backed_up;
+  bool is_filecoin_enabled;
+  bool is_solana_enabled;
+  bool is_bitcoin_enabled;
+  bool is_nft_pinning_feature_enabled;
+  bool is_panel_v2_feature_enabled;
 };
 
 // Browser-side handler for common panel / page things
 interface WalletHandler {
   // Obtains basic information about the wallet that is needed for first render
   GetWalletInfo() => (WalletInfo walletInfo);
-
-  // Adds a favorite app to the apps list
-  AddFavoriteApp(AppItem appItem);
-
-  // Removes a favorite app to the apps list
-  RemoveFavoriteApp(AppItem appItem);
 };
 
 struct BlockchainToken {
@@ -678,13 +676,19 @@ interface KeyringServiceObserver {
   AccountsChanged();
 
   // Fired when accounts are added
-  AccountsAdded(CoinType coin, array<string> addresses);
+  AccountsAdded(array<AccountInfo> added_accounts);
 
   // Fired when the autolock setting changes
   AutoLockMinutesChanged();
 
-  // Fired when the selected account setting changes
-  SelectedAccountChanged(CoinType coin);
+  // Fired when the wallet's selected account changes, i.e
+  // KeyringService.GetAllAccounts() may result with different selected account.
+  SelectedAccountChanged(AccountInfo selected_account);
+
+  // Fired when the selected DApp account changes for a coin, i.e
+  // KeyringService.GetSelectedAccount(coin) may produce new result.
+  // Only ETH and SOL are supported.
+  SelectedDappAccountChangedForCoin(CoinType coin);
 };
 
 enum OnRampProvider {
@@ -763,7 +767,7 @@ interface KeyringService {
   AddBitcoinAccount(string account_name, string network_id, string keyring_id) => (bool success);
 
   // Encodes the private key for exporting.
-  EncodePrivateKeyForExport(string address, string password, CoinType coin)
+  EncodePrivateKeyForExport(string keyring_id, string address, string password)
     => (string privateKey);
 
   // Imports an account with a specific private key to the corresponding keyring
@@ -781,7 +785,7 @@ interface KeyringService {
     => (bool success, string address);
 
   // Removes an imported account
-  RemoveImportedAccount(string address, string password, CoinType coin) => (bool success);
+  RemoveImportedAccount(CoinType coin, string keyring_id, string address, string password) => (bool success);
 
   // Determines if the keyring has been backed up
   IsWalletBackedUp() => (bool backed_up);
@@ -804,26 +808,31 @@ interface KeyringService {
   SetKeyringImportedAccountName(string keyring_id, string address, string name) => (bool success);
 
   // Sets the account name for a hardware account
-  SetHardwareAccountName(string address, string name, CoinType coin) => (bool success);
+  SetHardwareAccountName(string keyring_id, string address, string name) => (bool success);
 
   // Adds hardware accounts
   AddHardwareAccounts(array<HardwareWalletAccount> info);
 
   // Removes a hardware account
-  RemoveHardwareAccount(string address, CoinType coin) => (bool success);
+  RemoveHardwareAccount(CoinType coin, string keyring_id, string address) => (bool success);
 
   // Informs the user that user interaction occurred so auto-lock doesn't occur
   NotifyUserInteraction();
 
+  // Returns list of all accounts and selected index of one of them.
+  GetAllAccounts() => (AllAccountsInfo all_accounts);
+
+  // DEPRECATED.
   // Obtains the selected account
   // For filecoin strictly use GetFilecoinSelectedAccount
   GetSelectedAccount(CoinType coin) => (string? address);
 
+  // DEPRECATED.
   // Obtains the selected filecoin account
   GetFilecoinSelectedAccount(string network) => (string? address);
 
   // Sets the selected account
-  SetSelectedAccount(string address, CoinType coin) => (bool success);
+  SetSelectedAccount(string keyring_id, string address) => (bool success);
 
   // Obtains the number of minutes that the keyring will auto-lock in
   GetAutoLockMinutes() => (int32 minutes);
