@@ -9,19 +9,19 @@ import BraveCore
 #if DEBUG
 
 class MockEthTxManagerProxy: BraveWalletEthTxManagerProxy {
-  func setGasPriceAndLimitForUnapprovedTransaction(_ txMetaId: String, gasPrice: String, gasLimit: String, completion: @escaping (Bool) -> Void) {
+  func setGasPriceAndLimitForUnapprovedTransaction(_ chainId: String, txMetaId: String, gasPrice: String, gasLimit: String, completion: @escaping (Bool) -> Void) {
     completion(false)
   }
 
-  func setGasFeeAndLimitForUnapprovedTransaction(_ txMetaId: String, maxPriorityFeePerGas: String, maxFeePerGas: String, gasLimit: String, completion: @escaping (Bool) -> Void) {
+  func setGasFeeAndLimitForUnapprovedTransaction(_ chainId: String, txMetaId: String, maxPriorityFeePerGas: String, maxFeePerGas: String, gasLimit: String, completion: @escaping (Bool) -> Void) {
     completion(false)
   }
 
-  func setDataForUnapprovedTransaction(_ txMetaId: String, data: [NSNumber], completion: @escaping (Bool) -> Void) {
+  func setDataForUnapprovedTransaction(_ chainId: String, txMetaId: String, data: [NSNumber], completion: @escaping (Bool) -> Void) {
     completion(false)
   }
 
-  func setNonceForUnapprovedTransaction(_ txMetaId: String, nonce: String, completion: @escaping (Bool) -> Void) {
+  func setNonceForUnapprovedTransaction(_ chainId: String, txMetaId: String, nonce: String, completion: @escaping (Bool) -> Void) {
     completion(false)
   }
 
@@ -37,15 +37,15 @@ class MockEthTxManagerProxy: BraveWalletEthTxManagerProxy {
     completion(false, .init())
   }
 
-  func gasEstimation1559(_ completion: @escaping (BraveWallet.GasEstimation1559?) -> Void) {
+  func gasEstimation1559(_ chainId: String, completion: @escaping (BraveWallet.GasEstimation1559?) -> Void) {
     completion(nil)
   }
 
-  func nonce(forHardwareTransaction txMetaId: String, completion: @escaping (String?) -> Void) {
+  func nonce(forHardwareTransaction chainId: String, txMetaId: String, completion: @escaping (String?) -> Void) {
     completion(nil)
   }
 
-  func processHardwareSignature(_ txMetaId: String, v: String, r: String, s: String, completion: @escaping (Bool, BraveWallet.ProviderError, String) -> Void) {
+  func processHardwareSignature(_ chainId: String, txMetaId: String, v: String, r: String, s: String, completion: @escaping (Bool, BraveWallet.ProviderError, String) -> Void) {
     completion(false, .internalError, "Error Message")
   }
   

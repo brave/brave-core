@@ -8,7 +8,7 @@ import BraveCore
 import Static
 import Shared
 
-extension Ledger.PromotionStatus {
+extension BraveCore.BraveRewards.PromotionStatus {
   fileprivate var displayText: String {
     let s = Strings.RewardsInternals.self
     switch self {
@@ -22,7 +22,7 @@ extension Ledger.PromotionStatus {
     }
   }
 }
-extension Ledger.PromotionType {
+extension BraveCore.BraveRewards.PromotionType {
   fileprivate var displayText: String {
     switch self {
     case .ugp: return "UGP"

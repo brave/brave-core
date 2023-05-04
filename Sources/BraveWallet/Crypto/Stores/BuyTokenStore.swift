@@ -82,7 +82,7 @@ public class BuyTokenStore: ObservableObject {
         // don't set prefilled token if it belongs to a network we don't know
         return
       }
-      let success = await rpcService.setNetwork(networkForToken.chainId, coin: networkForToken.coin)
+      let success = await rpcService.setNetwork(networkForToken.chainId, coin: networkForToken.coin, origin: nil)
       if success {
         self.selectedNetwork = networkForToken
         self.selectedBuyToken = prefilledToken
@@ -166,7 +166,7 @@ public class BuyTokenStore: ObservableObject {
     }
     
     let coin = await walletService.selectedCoin()
-    selectedNetwork = await rpcService.network(coin)
+    selectedNetwork = await rpcService.network(coin, origin: nil)
     await validatePrefilledToken(on: selectedNetwork) // selectedNetwork may change
     await fetchBuyTokens(network: selectedNetwork)
     
@@ -188,7 +188,7 @@ public class BuyTokenStore: ObservableObject {
 }
 
 extension BuyTokenStore: BraveWalletJsonRpcServiceObserver {
-  public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType) {
+  public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType, origin: URLOrigin?) {
     Task {
       await updateInfo()
     }

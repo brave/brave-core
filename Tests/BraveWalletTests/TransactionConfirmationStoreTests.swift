@@ -13,8 +13,11 @@ import BraveCore
   private var cancellables: Set<AnyCancellable> = .init()
   
   private func setupStore(
-    network: BraveWallet.NetworkInfo = .mockGoerli,
-    accountInfos: [BraveWallet.AccountInfo] = [],
+    selectedNetworkForCoinType: [BraveWallet.CoinType: BraveWallet.NetworkInfo] = [
+      .eth : BraveWallet.NetworkInfo.mockMainnet,
+      .sol : BraveWallet.NetworkInfo.mockSolana
+    ],
+    accountInfos: [BraveWallet.AccountInfo] = [.mockEthAccount, .mockSolAccount],
     allTokens: [BraveWallet.BlockchainToken] = [],
     transactions: [BraveWallet.TransactionInfo] = [],
     gasEstimation: BraveWallet.GasEstimation1559 = .init(),
@@ -31,17 +34,21 @@ import BraveCore
       completion(true, [mockEthAssetPrice, mockSolAssetPrice])
     }
     let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._chainId = { $1(network.chainId) }
-    rpcService._network = { $1(network) }
+    rpcService._chainIdForOrigin = { coin, origin, completion in
+      completion(selectedNetworkForCoinType[coin]?.chainId ?? BraveWallet.MainnetChainId)
+    }
+    rpcService._network = { coin, origin, completion in
+      completion(selectedNetworkForCoinType[coin] ?? .mockMainnet)
+    }
     rpcService._balance = { _, _, _, completion in
       completion(mockBalanceWei, .success, "")
     }
-    rpcService._erc20TokenAllowance = { _, _, _, completion in
+    rpcService._erc20TokenAllowance = { _, _, _, _, completion in
       completion("16345785d8a0000", .success, "") // 0.1000
     }
     let txService = BraveWallet.TestTxService()
     txService._addObserver = { _ in }
-    txService._allTransactionInfo = { _, _, completion in
+    txService._allTransactionInfo = { _, _, _, completion in
       completion(transactions)
     }
     let blockchainRegistry = BraveWallet.TestBlockchainRegistry()
@@ -56,19 +63,19 @@ import BraveCore
     walletService._addObserver = { _ in }
     walletService._selectedCoin = { $0(BraveWallet.CoinType.eth) }
     let ethTxManagerProxy = BraveWallet.TestEthTxManagerProxy()
-    ethTxManagerProxy._gasEstimation1559 = { completion in
+    ethTxManagerProxy._gasEstimation1559 = { _, completion in
       completion(gasEstimation)
     }
     ethTxManagerProxy._makeErc20ApproveData = { _, _, completion in
       completion(makeErc20ApproveDataSuccess, [])
     }
-    ethTxManagerProxy._setDataForUnapprovedTransaction = { _, _, completion in
+    ethTxManagerProxy._setDataForUnapprovedTransaction = { _, _, _, completion in
       completion(setDataForUnapprovedTransactionSuccess)
     }
     let keyringService = BraveWallet.TestKeyringService()
-    keyringService._keyringInfo = { _, completion in
+    keyringService._keyringInfo = { id, completion in
       let keyring: BraveWallet.KeyringInfo = .init(
-        id: BraveWallet.DefaultKeyringId,
+        id: id,
         isKeyringCreated: true,
         isLocked: false,
         isBackedUp: true,
@@ -77,7 +84,7 @@ import BraveCore
     }
     
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
-    solTxManagerProxy._estimatedTxFee = { $1(0, .success, "") }
+    solTxManagerProxy._estimatedTxFee = { $2(0, .success, "") }
     
     return TransactionConfirmationStore(
       assetRatioService: assetRatioService,
@@ -101,7 +108,6 @@ import BraveCore
     }
     let mockGasEstimation: BraveWallet.GasEstimation1559 = .init()
     let store = setupStore(
-      network: .mockSolana,
       accountInfos: [.mockSolAccount],
       allTokens: mockAllTokens,
       transactions: mockTransactions,
@@ -161,7 +167,6 @@ import BraveCore
     }
     let mockGasEstimation: BraveWallet.GasEstimation1559 = .init()
     let store = setupStore(
-      network: .mockSolana,
       accountInfos: [.mockSolAccount],
       allTokens: mockAllTokens,
       transactions: mockTransactions,
@@ -221,7 +226,7 @@ import BraveCore
     }
     let mockGasEstimation: BraveWallet.GasEstimation1559 = .init()
     let store = setupStore(
-      accountInfos: [.previewAccount],
+      accountInfos: [.mockEthAccount],
       allTokens: mockAllTokens,
       transactions: mockTransactions,
       gasEstimation: mockGasEstimation
@@ -282,7 +287,7 @@ import BraveCore
     }
     let mockGasEstimation: BraveWallet.GasEstimation1559 = .init()
     let store = setupStore(
-      accountInfos: [.previewAccount],
+      accountInfos: [.mockEthAccount],
       allTokens: mockAllTokens,
       transactions: mockTransactions,
       gasEstimation: mockGasEstimation,
@@ -301,7 +306,7 @@ import BraveCore
     
     let editExpectation = expectation(description: "edit allowance")
     store.editAllowance(
-      txMetaId: mockTransaction.id,
+      transaction: mockTransaction,
       spenderAddress: mockTransaction.txArgs[safe: 0] ?? "",
       amount: "0x0",
       completion: { success in
@@ -323,7 +328,7 @@ import BraveCore
     }
     let mockGasEstimation: BraveWallet.GasEstimation1559 = .init()
     let store = setupStore(
-      accountInfos: [.previewAccount],
+      accountInfos: [.mockEthAccount],
       allTokens: mockAllTokens,
       transactions: mockTransactions,
       gasEstimation: mockGasEstimation,
@@ -343,7 +348,7 @@ import BraveCore
     
     let editExpectation = expectation(description: "edit allowance")
     store.editAllowance(
-      txMetaId: mockTransaction.id,
+      transaction: mockTransaction,
       spenderAddress: mockTransaction.txArgs[safe: 0] ?? "",
       amount: "0x0",
       completion: { success in
@@ -365,7 +370,7 @@ import BraveCore
     }
     let mockGasEstimation: BraveWallet.GasEstimation1559 = .init()
     let store = setupStore(
-      accountInfos: [.previewAccount],
+      accountInfos: [.mockEthAccount],
       allTokens: mockAllTokens,
       transactions: mockTransactions,
       gasEstimation: mockGasEstimation,
@@ -385,7 +390,7 @@ import BraveCore
     
     let editExpectation = expectation(description: "edit allowance")
     store.editAllowance(
-      txMetaId: mockTransaction.id,
+      transaction: mockTransaction,
       spenderAddress: mockTransaction.txArgs[safe: 0] ?? "",
       amount: "0x0",
       completion: { success in

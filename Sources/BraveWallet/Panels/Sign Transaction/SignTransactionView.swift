@@ -334,7 +334,8 @@ struct SignTransaction_Previews: PreviewProvider {
         fromAddress: BraveWallet.AccountInfo.previewAccount.address,
         txData: .init(),
         rawMessage: .init(),
-        coin: .sol
+        coin: .sol,
+        chainId: BraveWallet.SolanaMainnet
       )]),
       cryptoStore: .previewStore,
       onDismiss: {}

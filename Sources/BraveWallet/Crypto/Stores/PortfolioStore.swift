@@ -318,7 +318,7 @@ extension PortfolioStore: BraveWalletJsonRpcServiceObserver {
   public func onAddEthereumChainRequestCompleted(_ chainId: String, error: String) {
   }
 
-  public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType) {
+  public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType, origin: URLOrigin?) {
     update()
   }
 }
@@ -376,6 +376,10 @@ extension PortfolioStore: BraveWalletBraveWalletServiceObserver {
   }
   
   public func onDefaultSolanaWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
+  }
+  
+  public func onDiscoverAssetsStarted() {
+    isLoadingDiscoverAssets = true
   }
   
   public func onDiscoverAssetsCompleted(_ discoveredAssets: [BraveWallet.BlockchainToken]) {

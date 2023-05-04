@@ -64,7 +64,7 @@ class TransactionDetailsStore: ObservableObject {
   func update() {
     Task { @MainActor in
       let coin = transaction.coin
-      let network = await rpcService.network(coin)
+      let network = await rpcService.network(coin, origin: nil)
       self.network = network
       let keyring = await keyringService.keyringInfo(coin.keyringId)
       var allTokens: [BraveWallet.BlockchainToken] = await blockchainRegistry.allTokens(network.chainId, coin: network.coin) + tokenInfoCache.map(\.value)
@@ -93,7 +93,7 @@ class TransactionDetailsStore: ObservableObject {
       }
       var solEstimatedTxFee: UInt64?
       if transaction.coin == .sol {
-        (solEstimatedTxFee, _, _) = await solanaTxManagerProxy.estimatedTxFee(transaction.id)
+        (solEstimatedTxFee, _, _) = await solanaTxManagerProxy.estimatedTxFee(network.chainId, txMetaId: transaction.id)
       }
       guard let parsedTransaction = transaction.parsedTransaction(
         network: network,

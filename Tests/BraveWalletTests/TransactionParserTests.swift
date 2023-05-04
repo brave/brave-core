@@ -37,11 +37,13 @@ class TransactionParserTests: XCTestCase {
   private let tokens: [BraveWallet.BlockchainToken] = [
     .previewToken, .previewDaiToken, .mockUSDCToken, .mockSolToken, .mockSpdToken, .mockSolanaNFTToken
   ]
-  let assetRatios: [String: Double] = ["eth": 1,
-                                       "dai": 2,
-                                       "usdc": 3,
-                                       "sol": 20,
-                                       "spd": 15]
+  let assetRatios: [String: Double] = [
+    "eth": 1,
+    BraveWallet.BlockchainToken.previewDaiToken.assetRatioId.lowercased(): 2,
+    BraveWallet.BlockchainToken.mockUSDCToken.assetRatioId.lowercased(): 3,
+    "sol": 20,
+    BraveWallet.BlockchainToken.mockSpdToken.assetRatioId.lowercased(): 15
+  ]
   
   func testEthSendTransaction() {
     let network: BraveWallet.NetworkInfo = .mockMainnet
@@ -663,10 +665,16 @@ class TransactionParserTests: XCTestCase {
       instructions: [
         .init(
           programId: "",
-          accountMetas: [.init(pubkey: "", isSigner: false, isWritable: false)],
+          accountMetas: [
+            .init(pubkey: "", addrTableLookupIndex: nil, isSigner: false, isWritable: false)
+          ],
           data: [],
           decodedData: nil)
       ],
+      version: .legacy,
+      messageHeader: .init(),
+      staticAccountKeys: [],
+      addressTableLookups: [],
       send: .init(maxRetries: .init(maxRetries: 1), preflightCommitment: nil, skipPreflight: nil),
       signTransactionParam: nil
     )
@@ -753,10 +761,16 @@ class TransactionParserTests: XCTestCase {
       instructions: [
         .init(
           programId: "",
-          accountMetas: [.init(pubkey: "", isSigner: false, isWritable: false)],
+          accountMetas: [
+            .init(pubkey: "", addrTableLookupIndex: nil, isSigner: false, isWritable: false)
+          ],
           data: [],
           decodedData: nil)
       ],
+      version: .legacy,
+      messageHeader: .init(),
+      staticAccountKeys: [],
+      addressTableLookups: [],
       send: .init(maxRetries: .init(maxRetries: 1), preflightCommitment: nil, skipPreflight: nil),
       signTransactionParam: nil
     )
@@ -830,10 +844,16 @@ class TransactionParserTests: XCTestCase {
       instructions: [
         .init(
           programId: "",
-          accountMetas: [.init(pubkey: "", isSigner: false, isWritable: false)],
+          accountMetas: [
+            .init(pubkey: "", addrTableLookupIndex: nil, isSigner: false, isWritable: false)
+          ],
           data: [],
           decodedData: nil)
       ],
+      version: .legacy,
+      messageHeader: .init(),
+      staticAccountKeys: [],
+      addressTableLookups: [],
       send: .init(maxRetries: .init(maxRetries: 1), preflightCommitment: nil, skipPreflight: nil),
       signTransactionParam: nil
     )
@@ -898,8 +918,8 @@ class TransactionParserTests: XCTestCase {
     let transferInstruction = BraveWallet.SolanaInstruction(
       programId: BraveWallet.SolanaSystemProgramId,
       accountMetas: [
-        .init(pubkey: fromPubkey, isSigner: false, isWritable: false),
-        .init(pubkey: toPubkey, isSigner: false, isWritable: false)
+        .init(pubkey: fromPubkey, addrTableLookupIndex: nil, isSigner: false, isWritable: false),
+        .init(pubkey: toPubkey, addrTableLookupIndex: nil, isSigner: false, isWritable: false)
       ],
       data: [],
       decodedData: .init(
@@ -925,11 +945,11 @@ class TransactionParserTests: XCTestCase {
     let withdrawNonceAccountInstruction = BraveWallet.SolanaInstruction(
       programId: BraveWallet.SolanaSystemProgramId,
       accountMetas: [
-        .init(pubkey: fromPubkey, isSigner: false, isWritable: false),
-        .init(pubkey: toPubkey, isSigner: false, isWritable: false),
-        .init(pubkey: "SysvarRecentB1ockHashes11111111111111111111", isSigner: false, isWritable: false),
-        .init(pubkey: "SysvarRent111111111111111111111111111111111", isSigner: false, isWritable: false),
-        .init(pubkey: toPubkey, isSigner: false, isWritable: false),
+        .init(pubkey: fromPubkey, addrTableLookupIndex: nil, isSigner: false, isWritable: false),
+        .init(pubkey: toPubkey, addrTableLookupIndex: nil, isSigner: false, isWritable: false),
+        .init(pubkey: "SysvarRecentB1ockHashes11111111111111111111", addrTableLookupIndex: nil, isSigner: false, isWritable: false),
+        .init(pubkey: "SysvarRent111111111111111111111111111111111", addrTableLookupIndex: nil, isSigner: false, isWritable: false),
+        .init(pubkey: toPubkey, addrTableLookupIndex: nil, isSigner: false, isWritable: false),
       ],
       data: [],
       decodedData: .init(
@@ -964,8 +984,8 @@ class TransactionParserTests: XCTestCase {
     let createAccountInstruction = BraveWallet.SolanaInstruction(
       programId: BraveWallet.SolanaSystemProgramId,
       accountMetas: [
-        .init(pubkey: fromPubkey, isSigner: false, isWritable: false),
-        .init(pubkey: toPubkey, isSigner: false, isWritable: false),
+        .init(pubkey: fromPubkey, addrTableLookupIndex: nil, isSigner: false, isWritable: false),
+        .init(pubkey: toPubkey, addrTableLookupIndex: nil, isSigner: false, isWritable: false),
       ],
       data: [],
       decodedData: .init(
@@ -998,8 +1018,8 @@ class TransactionParserTests: XCTestCase {
     let createAccountWithSeedInstruction = BraveWallet.SolanaInstruction(
       programId: BraveWallet.SolanaSystemProgramId,
       accountMetas: [
-        .init(pubkey: fromPubkey, isSigner: false, isWritable: false),
-        .init(pubkey: toPubkey, isSigner: false, isWritable: false),
+        .init(pubkey: fromPubkey, addrTableLookupIndex: nil, isSigner: false, isWritable: false),
+        .init(pubkey: toPubkey, addrTableLookupIndex: nil, isSigner: false, isWritable: false),
       ],
       data: [],
       decodedData: .init(

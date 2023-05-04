@@ -66,7 +66,9 @@ class PortfolioStoreTests: XCTestCase {
       .init(date: Date(timeIntervalSinceNow: -1000), price: "3000.00"),
       .init(date: Date(), price: mockETHPrice)
     ]
-    let mockUSDCAssetPrice: BraveWallet.AssetPrice = .init(fromAsset: "usdc", toAsset: "usd", price: mockUSDCPrice, assetTimeframeChange: "-57.23")
+    let mockUSDCAssetPrice: BraveWallet.AssetPrice = .init(
+      fromAsset: BraveWallet.BlockchainToken.mockUSDCToken.assetRatioId,
+      toAsset: "usd", price: mockUSDCPrice, assetTimeframeChange: "-57.23")
     let mockUSDCPriceHistory: [BraveWallet.AssetTimePrice] = [
       .init(date: Date(timeIntervalSinceNow: -1000), price: "0.999"),
       .init(date: Date(), price: mockUSDCPrice)
@@ -184,7 +186,7 @@ class PortfolioStoreTests: XCTestCase {
         completion(true, mockSOLPriceHistory)
       case "eth":
         completion(true, mockETHPriceHistory)
-      case "usdc":
+      case BraveWallet.BlockchainToken.mockUSDCToken.assetRatioId:
         completion(true, mockUSDCPriceHistory)
       default:
         completion(false, [])

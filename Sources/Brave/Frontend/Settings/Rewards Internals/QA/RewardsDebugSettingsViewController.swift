@@ -267,7 +267,7 @@ class RewardsDebugSettingsViewController: TableViewController {
 
   private func fetchAndClaimPromotions() async {
     guard let ledger = rewards.ledger else { return }
-    let activePromotions: [Ledger.Promotion] = await withCheckedContinuation { c in
+    let activePromotions: [BraveCore.BraveRewards.Promotion] = await withCheckedContinuation { c in
       ledger.fetchPromotions { promotions in
         c.resume(returning: promotions.filter { $0.status == .active })
       }

@@ -110,7 +110,7 @@ struct EditPermissionsView: View {
       
       Button(action: {
         confirmationStore.editAllowance(
-          txMetaId: activeTransaction.id,
+          transaction: activeTransaction,
           spenderAddress: activeTransaction.txArgs[safe: 0] ?? "",
           amount: customAllowanceAmountInWei) { success in
             if success {

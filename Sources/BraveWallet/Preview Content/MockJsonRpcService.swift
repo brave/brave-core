@@ -19,7 +19,7 @@ class MockJsonRpcService: BraveWalletJsonRpcService {
   private var networkURL: URL?
   private var observers: NSHashTable<BraveWalletJsonRpcServiceObserver> = .weakObjects()
   
-  func chainId(_ coin: BraveWallet.CoinType, completion: @escaping (String) -> Void) {
+  func chainId(forOrigin coin: BraveWallet.CoinType, origin: URLOrigin, completion: @escaping (String) -> Void) {
     completion(chainId)
   }
   
@@ -31,7 +31,7 @@ class MockJsonRpcService: BraveWalletJsonRpcService {
     completion(networkURL?.absoluteString ?? "")
   }
   
-  func network(_ coin: BraveWallet.CoinType, completion: @escaping (BraveWallet.NetworkInfo) -> Void) {
+  func network(_ coin: BraveWallet.CoinType, origin: URLOrigin?, completion: @escaping (BraveWallet.NetworkInfo) -> Void) {
     completion(networks.first(where: { $0.chainId == self.chainId }) ?? .init())
   }
   
@@ -48,7 +48,7 @@ class MockJsonRpcService: BraveWalletJsonRpcService {
     completion([.init(contractAddress: "", balance: "10")], .success, "")
   }
   
-  func request(_ jsonPayload: String, autoRetryOnNetworkChange: Bool, id: MojoBase.Value, coin: BraveWallet.CoinType, completion: @escaping (MojoBase.Value, MojoBase.Value, Bool, String, Bool) -> Void) {
+  func request(_ chainId: String, jsonPayload: String, autoRetryOnNetworkChange: Bool, id: MojoBase.Value, coin: BraveWallet.CoinType, completion: @escaping (MojoBase.Value, MojoBase.Value, Bool, String, Bool) -> Void) {
     completion(.init(), .init(), true, "", false)
   }
   
@@ -68,12 +68,12 @@ class MockJsonRpcService: BraveWalletJsonRpcService {
     completion(networks)
   }
   
-  func setNetwork(_ chainId: String, coin: BraveWallet.CoinType, completion: @escaping (Bool) -> Void) {
+  func setNetwork(_ chainId: String, coin: BraveWallet.CoinType, origin: URLOrigin?, completion: @escaping (Bool) -> Void) {
     self.chainId = chainId
     completion(true)
   }
   
-  func erc20TokenAllowance(_ contract: String, ownerAddress: String, spenderAddress: String, completion: @escaping (String, BraveWallet.ProviderError, String) -> Void) {
+  func erc20TokenAllowance(_ contract: String, ownerAddress: String, spenderAddress: String, chainId: String, completion: @escaping (String, BraveWallet.ProviderError, String) -> Void) {
     completion("", .disconnected, "Error Message")
   }
   
@@ -213,6 +213,25 @@ class MockJsonRpcService: BraveWalletJsonRpcService {
   
   func ensGetContentHash(_ domain: String, completion: @escaping ([NSNumber], Bool, BraveWallet.ProviderError, String) -> Void) {
     completion([], false, .internalError, "Error Message")
+  }
+  
+  func defaultChainId(_ coin: BraveWallet.CoinType, completion: @escaping (String) -> Void) {
+    switch coin {
+    case .eth:
+      completion(BraveWallet.MainnetChainId)
+    case .sol:
+      completion(BraveWallet.SolanaMainnet)
+    case .fil:
+      completion(BraveWallet.FilecoinMainnet)
+    case .btc:
+      fallthrough
+    @unknown default:
+      completion("")
+    }
+  }
+  
+  func networkUrl(_ coin: BraveWallet.CoinType, origin: URLOrigin?, completion: @escaping (String) -> Void) {
+    completion("")
   }
   
   func isSolanaBlockhashValid(_ chainId: String, blockhash: String, commitment: String?, completion: @escaping (Bool, BraveWallet.SolanaProviderError, String) -> Void) {

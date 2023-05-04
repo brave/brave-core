@@ -195,7 +195,7 @@ public class TransactionConfirmationStore: ObservableObject {
     }
     let coinsForTransactions: Set<BraveWallet.CoinType> = .init(unapprovedTxs.map(\.coin))
     for coin in coinsForTransactions {
-      let network = await rpcService.network(coin)
+      let network = await rpcService.network(coin, origin: nil)
       let userVisibleTokens = await walletService.userAssets(network.chainId, coin: coin)
       await fetchAssetRatios(for: userVisibleTokens)
     }
@@ -213,7 +213,7 @@ public class TransactionConfirmationStore: ObservableObject {
       
       let coin = transaction.coin
       let keyring = await keyringService.keyringInfo(coin.keyringId)
-      let network = await rpcService.network(coin)
+      let network = await rpcService.network(coin, origin: nil)
       let allTokens = await blockchainRegistry.allTokens(network.chainId, coin: coin) + tokenInfoCache.map(\.value)
       let userVisibleTokens = await walletService.userAssets(network.chainId, coin: coin)
       let solEstimatedTxFee: UInt64? = solEstimatedTxFeeCache[transaction.id]
@@ -301,7 +301,12 @@ public class TransactionConfirmationStore: ObservableObject {
     }
     
     let formatter = WeiFormatter(decimalFormatStyle: .balance)
-    let (allowance, _, _) = await rpcService.erc20TokenAllowance(details.token?.contractAddress(in: selectedChain) ?? "", ownerAddress: parsedTransaction.fromAddress, spenderAddress: details.spenderAddress)
+    let (allowance, _, _) = await rpcService.erc20TokenAllowance(
+      details.token?.contractAddress(in: selectedChain) ?? "",
+      ownerAddress: parsedTransaction.fromAddress,
+      spenderAddress: details.spenderAddress,
+      chainId: parsedTransaction.transaction.chainId
+    )
     let allowanceString = formatter.decimalString(for: allowance.removingHexPrefix, radix: .hex, decimals: Int(details.token?.decimals ?? selectedChain.decimals)) ?? ""
     currentAllowanceCache[parsedTransaction.transaction.id] = allowanceString
     updateTransaction(with: activeTransaction, shouldFetchCurrentAllowance: false, shouldFetchGasTokenBalance: false)
@@ -322,7 +327,7 @@ public class TransactionConfirmationStore: ObservableObject {
     for transactions: [BraveWallet.TransactionInfo]
   ) async {
     let coin = await walletService.selectedCoin()
-    let network = await rpcService.network(coin)
+    let network = await rpcService.network(coin, origin: nil)
     let userVisibleTokens = await walletService.userAssets(network.chainId, coin: network.coin)
     let allTokens = await blockchainRegistry.allTokens(network.chainId, coin: network.coin)
     let unknownTokenContractAddresses = transactions.flatMap(\.tokenContractAddresses)
@@ -343,7 +348,7 @@ public class TransactionConfirmationStore: ObservableObject {
     for transactions: [BraveWallet.TransactionInfo]
   ) async {
     for transaction in transactions where transaction.coin == .sol {
-      let (solEstimatedTxFee, _, _) = await solTxManagerProxy.estimatedTxFee(transaction.id)
+      let (solEstimatedTxFee, _, _) = await solTxManagerProxy.estimatedTxFee(transaction.chainId, txMetaId: transaction.id)
       self.solEstimatedTxFeeCache[transaction.id] = solEstimatedTxFee
     }
     updateTransaction(with: activeTransaction, shouldFetchCurrentAllowance: false, shouldFetchGasTokenBalance: false)
@@ -528,12 +533,20 @@ public class TransactionConfirmationStore: ObservableObject {
   
   @MainActor private func fetchAllTransactions() async -> [BraveWallet.TransactionInfo] {
     let allKeyrings = await keyringService.keyrings(for: WalletConstants.supportedCoinTypes)
-    
-    return await txService.allTransactions(for: allKeyrings)
+    var selectedChainIdForCoinTypes: [BraveWallet.CoinType: [String]] = [:]
+    for coin in WalletConstants.supportedCoinTypes {
+      let selectedNetwork = await rpcService.network(coin, origin: nil)
+      selectedChainIdForCoinTypes[coin] = [selectedNetwork.chainId]
+    }
+    return await txService.pendingTransactions(chainIdsForCoin: selectedChainIdForCoinTypes, for: allKeyrings)
   }
 
   func confirm(transaction: BraveWallet.TransactionInfo, completion: @escaping (_ error: String?) -> Void) {
-    txService.approveTransaction(transaction.coin, txMetaId: transaction.id) { [weak self] success, error, message in
+    txService.approveTransaction(
+      transaction.coin,
+      chainId: transaction.chainId,
+      txMetaId: transaction.id
+    ) { [weak self] success, error, message in
       // As desktop, we only care about eth provider error or solana
       // provider error (plus we haven't start supporting filecoin)
       if error.tag == .providerError {
@@ -546,7 +559,11 @@ public class TransactionConfirmationStore: ObservableObject {
   }
 
   func reject(transaction: BraveWallet.TransactionInfo, completion: @escaping (Bool) -> Void) {
-    txService.rejectTransaction(transaction.coin, txMetaId: transaction.id) { success in
+    txService.rejectTransaction(
+      transaction.coin,
+      chainId: transaction.chainId,
+      txMetaId: transaction.id
+    ) { success in
       completion(success)
     }
   }
@@ -562,7 +579,8 @@ public class TransactionConfirmationStore: ObservableObject {
       transaction.isEIP1559Transaction,
       "Use updateGasFeeAndLimits(for:gasPrice:gasLimit:) for standard transactions")
     ethTxManagerProxy.setGasFeeAndLimitForUnapprovedTransaction(
-      transaction.id,
+      transaction.chainId,
+      txMetaId: transaction.id,
       maxPriorityFeePerGas: maxPriorityFeePerGas,
       maxFeePerGas: maxFeePerGas,
       gasLimit: gasLimit
@@ -581,7 +599,8 @@ public class TransactionConfirmationStore: ObservableObject {
       !transaction.isEIP1559Transaction,
       "Use updateGasFeeAndLimits(for:maxPriorityFeePerGas:maxFeePerGas:gasLimit:) for EIP-1559 transactions")
     ethTxManagerProxy.setGasPriceAndLimitForUnapprovedTransaction(
-      transaction.id,
+    transaction.chainId,
+    txMetaId: transaction.id,
       gasPrice: gasPrice,
       gasLimit: gasLimit
     ) { success in
@@ -594,7 +613,11 @@ public class TransactionConfirmationStore: ObservableObject {
     nonce: String,
     completion: @escaping ((Bool) -> Void)
   ) {
-    ethTxManagerProxy.setNonceForUnapprovedTransaction(transaction.id, nonce: nonce) { success in
+    ethTxManagerProxy.setNonceForUnapprovedTransaction(
+      transaction.chainId,
+      txMetaId: transaction.id,
+      nonce: nonce
+    ) { success in
       // not going to refresh unapproved transactions since the tx observer will be
       // notified `onTransactionStatusChanged` and `onUnapprovedTxUpdated`
       // `transactions` list will be refreshed there.
@@ -603,7 +626,7 @@ public class TransactionConfirmationStore: ObservableObject {
   }
   
   func editAllowance(
-    txMetaId: String,
+    transaction: BraveWallet.TransactionInfo,
     spenderAddress: String,
     amount: String,
     completion: @escaping (Bool) -> Void
@@ -614,7 +637,11 @@ public class TransactionConfirmationStore: ObservableObject {
         completion(false)
         return
       }
-      self.ethTxManagerProxy.setDataForUnapprovedTransaction(txMetaId, data: data) { success in
+      self.ethTxManagerProxy.setDataForUnapprovedTransaction(
+        transaction.chainId,
+        txMetaId: transaction.id,
+        data: data
+      ) { success in
         // not going to refresh unapproved transactions since the tx observer will be
         // notified `onTransactionStatusChanged` and `onUnapprovedTxUpdated`
         // `transactions` list will be refreshed there.
@@ -708,6 +735,9 @@ extension TransactionConfirmationStore: BraveWalletBraveWalletServiceObserver {
   }
   
   public func onDefaultSolanaWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
+  }
+  
+  public func onDiscoverAssetsStarted() {
   }
   
   public func onDiscoverAssetsCompleted(_ discoveredAssets: [BraveWallet.BlockchainToken]) {

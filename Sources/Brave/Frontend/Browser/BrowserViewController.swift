@@ -214,7 +214,7 @@ public class BrowserViewController: UIViewController {
   var promotionFetchTimer: Timer?
   private var notificationsHandler: AdsNotificationHandler?
   let notificationsPresenter = BraveNotificationsPresenter()
-  var publisher: Ledger.PublisherInfo?
+  var publisher: BraveCore.BraveRewards.PublisherInfo?
 
   let vpnProductInfo = VPNProductInfo()
 
@@ -282,15 +282,11 @@ public class BrowserViewController: UIViewController {
     
     let configuration: BraveRewards.Configuration = .current()
 
-    let buildChannel = BraveAds.BuildChannelInfo().then {
-      $0.name = AppConstants.buildChannel.rawValue
-      $0.isRelease = AppConstants.buildChannel == .release
-    }
     Self.migrateAdsConfirmations(for: configuration)
     legacyWallet = Self.legacyWallet(for: configuration)
     if let wallet = legacyWallet {
       // Legacy ledger is disabled by default
-      wallet.isAutoContributeEnabled = false
+      wallet.setAutoContributeEnabled(false)
       // Ensure we remove any pending contributions or recurring tips from the legacy wallet
       wallet.removeAllPendingContributions { _ in }
       wallet.listRecurringTips { publishers in
@@ -301,7 +297,7 @@ public class BrowserViewController: UIViewController {
     }
 
     // Initialize Rewards
-    self.rewards = BraveRewards(configuration: configuration, buildChannel: buildChannel)
+    self.rewards = BraveRewards(configuration: configuration)
 
     // Initialize TabManager
     self.tabManager = TabManager(

@@ -15,7 +15,7 @@ class MockTxService: BraveWalletTxService {
     .previewConfirmedSwap
   ]
   
-  func transactionInfo(_ coinType: BraveWallet.CoinType, txMetaId: String, completion: @escaping (BraveWallet.TransactionInfo?) -> Void) {
+  func transactionInfo(_ coinType: BraveWallet.CoinType, chainId: String, txMetaId: String, completion: @escaping (BraveWallet.TransactionInfo?) -> Void) {
     completion(txs.first(where: { $0.id == txMetaId }))
   }
 
@@ -23,10 +23,10 @@ class MockTxService: BraveWalletTxService {
     completion(true, "txMetaId", "")
   }
 
-  func rejectTransaction(_ coinType: BraveWallet.CoinType, txMetaId: String, completion: @escaping (Bool) -> Void) {
+  func rejectTransaction(_ coinType: BraveWallet.CoinType, chainId: String, txMetaId: String, completion: @escaping (Bool) -> Void) {
   }
 
-  func allTransactionInfo(_ coinType: BraveWallet.CoinType, from: String, completion: @escaping ([BraveWallet.TransactionInfo]) -> Void) {
+  func allTransactionInfo(_ coinType: BraveWallet.CoinType, chainId: String?, from: String?, completion: @escaping ([BraveWallet.TransactionInfo]) -> Void) {
     completion(txs.map { tx in
       tx.txStatus = .unapproved
       return tx
@@ -36,11 +36,11 @@ class MockTxService: BraveWalletTxService {
   func add(_ observer: BraveWalletTxServiceObserver) {
   }
 
-  func speedupOrCancelTransaction(_ coinType: BraveWallet.CoinType, txMetaId: String, cancel: Bool, completion: @escaping (Bool, String, String) -> Void) {
+  func speedupOrCancelTransaction(_ coinType: BraveWallet.CoinType, chainId: String, txMetaId: String, cancel: Bool, completion: @escaping (Bool, String, String) -> Void) {
     completion(false, "", "Error Message")
   }
 
-  func retryTransaction(_ coinType: BraveWallet.CoinType, txMetaId: String, completion: @escaping (Bool, String, String) -> Void) {
+  func retryTransaction(_ coinType: BraveWallet.CoinType, chainId: String, txMetaId: String, completion: @escaping (Bool, String, String) -> Void) {
     completion(false, "", "Error Message")
   }
 
@@ -50,16 +50,12 @@ class MockTxService: BraveWalletTxService {
   
   func reset() {
   }
-
-  func transactionMessage(toSign coinType: BraveWallet.CoinType, txMetaId: String, completion: @escaping (BraveWallet.MessageToSignUnion?) -> Void) {
+  
+  func transactionMessage(toSign coinType: BraveWallet.CoinType, chainId: String, txMetaId: String, completion: @escaping (BraveWallet.MessageToSignUnion?) -> Void) {
     completion(BraveWallet.MessageToSignUnion(messageStr: "Mock transaction message"))
   }
-  
-  func transactionMessage(toSign coinType: BraveWallet.CoinType, txMetaId: String, completion: @escaping (String?) -> Void) {
-    completion("Mock transaction message")
-  }
 
-  func approveTransaction(_ coinType: BraveWallet.CoinType, txMetaId: String, completion: @escaping (Bool, BraveWallet.ProviderErrorUnion, String) -> Void) {
+  func approveTransaction(_ coinType: BraveWallet.CoinType, chainId: String, txMetaId: String, completion: @escaping (Bool, BraveWallet.ProviderErrorUnion, String) -> Void) {
     completion(false, .init(providerError: .internalError), "Error Message")
   }
 }

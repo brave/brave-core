@@ -29,9 +29,11 @@ class AccountActivityStoreTests: XCTestCase {
   let tokenRegistry: [BraveWallet.CoinType: [BraveWallet.BlockchainToken]] = [:]
   let mockAssetPrices: [BraveWallet.AssetPrice] = [
     .init(fromAsset: "eth", toAsset: "usd", price: "3059.99", assetTimeframeChange: "-57.23"),
-    .init(fromAsset: "usdc", toAsset: "usd", price: "1.00", assetTimeframeChange: "-57.23"),
+    .init(fromAsset: BraveWallet.BlockchainToken.mockUSDCToken.assetRatioId,
+          toAsset: "usd", price: "1.00", assetTimeframeChange: "-57.23"),
     .init(fromAsset: "sol", toAsset: "usd", price: "2.00", assetTimeframeChange: "-57.23"),
-    .init(fromAsset: "spd", toAsset: "usd", price: "0.50", assetTimeframeChange: "-57.23")
+    .init(fromAsset: BraveWallet.BlockchainToken.mockSpdToken.assetRatioId.lowercased(),
+          toAsset: "usd", price: "0.50", assetTimeframeChange: "-57.23")
   ]
   let transactions: [BraveWallet.CoinType: [BraveWallet.TransactionInfo]] = [
     .eth: [.previewConfirmedSend, .previewConfirmedSwap],
@@ -54,7 +56,7 @@ class AccountActivityStoreTests: XCTestCase {
 
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._addObserver = { _ in }
-    rpcService._network = { coin, completion in
+    rpcService._network = { coin, _, completion in
       completion(selectedNetwork)
     }
     rpcService._allNetworks = { coin, completion in
@@ -116,12 +118,12 @@ class AccountActivityStoreTests: XCTestCase {
     
     let txService = BraveWallet.TestTxService()
     txService._addObserver = { _ in }
-    txService._allTransactionInfo = { coin, _, completion in
+    txService._allTransactionInfo = { coin, _, _, completion in
       completion(self.transactions[coin] ?? [])
     }
     
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
-    solTxManagerProxy._estimatedTxFee = { $1(0, .success, "") }
+    solTxManagerProxy._estimatedTxFee = { $2(0, .success, "") }
     
     let ipfsApi = TestIpfsAPI()
 

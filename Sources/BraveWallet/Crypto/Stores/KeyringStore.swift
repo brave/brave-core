@@ -276,7 +276,7 @@ public class KeyringStore: ObservableObject {
     completion: ((Bool, String) -> Void)? = nil
   ) {
     if coin == .fil {
-      rpcService.network(.fil) { [self] defaultNetwork in
+      rpcService.network(.fil, origin: nil) { [self] defaultNetwork in
         let networkId = defaultNetwork.chainId.caseInsensitiveCompare(BraveWallet.FilecoinMainnet) == .orderedSame ? BraveWallet.FilecoinMainnet : BraveWallet.FilecoinTestnet
         keyringService.importFilecoinAccount(name, privateKey: privateKey, network: networkId) { success, address in
           completion?(success, address)
@@ -381,8 +381,8 @@ extension KeyringStore: BraveWalletKeyringServiceObserver {
       walletService.setSelectedCoin(coinType)
       if previouslySelectedCoin != coinType || selectedAccount.coin != coinType {
         // update network here in case NetworkStore is closed.
-        let network = await rpcService.network(coinType)
-        await rpcService.setNetwork(network.chainId, coin: coinType)
+        let network = await rpcService.network(coinType, origin: nil)
+        await rpcService.setNetwork(network.chainId, coin: coinType, origin: nil)
       }
       updateKeyringInfo()
     }
@@ -430,7 +430,7 @@ extension KeyringStore: BraveWalletKeyringServiceObserver {
 }
 
 extension KeyringStore: BraveWalletJsonRpcServiceObserver {
-  public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType) {
+  public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType, origin: URLOrigin?) {
     Task { @MainActor in // This observer will take care of selected account update caused by network switching
       let accountAddress = await keyringService.selectedAccount(coin)
       let keyring = await keyringService.keyringInfo(coin.keyringId)

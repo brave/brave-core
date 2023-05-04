@@ -31,7 +31,7 @@ class BuyTokenStoreTests: XCTestCase {
     blockchainRegistry._onRampCurrencies = { $0(mockOnRampCurrencies) }
     
     let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._network = { $1(selectedNetwork) }
+    rpcService._network = { $2(selectedNetwork) }
     rpcService._allNetworks = { coin, completion in
       completion([selectedNetwork])
     }
@@ -78,14 +78,14 @@ class BuyTokenStoreTests: XCTestCase {
     var selectedNetwork: BraveWallet.NetworkInfo = .mockMainnet
     let (blockchainRegistry, rpcService, walletService, assetRatioService) = setupServices()
     walletService._selectedCoin = { $0(selectedCoin) }
-    rpcService._network = { coin, completion in
+    rpcService._network = { coin, origin, completion in
       completion(selectedNetwork)
     }
     rpcService._allNetworks = { coin, completion in
       completion(coin == .eth ? [.mockMainnet] : [.mockSolana])
     }
     // simulate network switch when `setNetwork` is called
-    rpcService._setNetwork = { chainId, coin, completion in
+    rpcService._setNetwork = { chainId, coin, origin, completion in
       XCTAssertEqual(chainId, BraveWallet.SolanaMainnet) // verify network switched to SolanaMainnet
       selectedCoin = coin
       selectedNetwork = coin == .eth ? .mockMainnet : .mockSolana
