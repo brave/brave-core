@@ -342,20 +342,10 @@ class EthereumProviderImplUnitTest : public testing::Test {
 
   std::vector<std::string> GetAllowedAccounts(
       bool include_accounts_when_locked) {
-    std::vector<std::string> allowed_accounts;
-    base::RunLoop run_loop;
-    provider()->GetAllowedAccounts(
-        include_accounts_when_locked,
-        base::BindLambdaForTesting([&](const std::vector<std::string>& accounts,
-                                       mojom::ProviderError error,
-                                       const std::string& error_message) {
-          allowed_accounts = accounts;
-          EXPECT_EQ(error, mojom::ProviderError::kSuccess);
-          EXPECT_TRUE(error_message.empty());
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-    return allowed_accounts;
+    const auto allowed_accounts =
+        provider()->GetAllowedAccounts(include_accounts_when_locked);
+    EXPECT_TRUE(allowed_accounts);
+    return *allowed_accounts;
   }
 
   std::pair<bool, base::Value> CommonRequestOrSendAsync(
@@ -1691,9 +1681,7 @@ TEST_F(EthereumProviderImplUnitTest, SignMessage) {
               &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
-  EXPECT_EQ(error_message,
-            l10n_util::GetStringFUTF8(IDS_WALLET_ETH_SIGN_NOT_AUTHED,
-                                      base::ASCIIToUTF16(address)));
+  EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
 
   // No permission
   const std::vector<std::string> addresses = GetAddresses();
@@ -1702,9 +1690,7 @@ TEST_F(EthereumProviderImplUnitTest, SignMessage) {
               &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
-  EXPECT_EQ(error_message,
-            l10n_util::GetStringFUTF8(IDS_WALLET_ETH_SIGN_NOT_AUTHED,
-                                      base::ASCIIToUTF16(addresses[0])));
+  EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
   GURL url("https://brave.com");
   Navigate(url);
   AddEthereumPermission(GetOrigin());
@@ -1730,9 +1716,7 @@ TEST_F(EthereumProviderImplUnitTest, SignMessage) {
               &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
-  EXPECT_EQ(error_message,
-            l10n_util::GetStringFUTF8(IDS_WALLET_ETH_SIGN_NOT_AUTHED,
-                                      base::ASCIIToUTF16(addresses[0])));
+  EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
 }
 
 TEST_F(EthereumProviderImplUnitTest, RecoverAddress) {
@@ -1854,9 +1838,7 @@ TEST_F(EthereumProviderImplUnitTest, SignTypedMessage) {
                    domain.Clone(), &signature, &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
-  EXPECT_EQ(error_message,
-            l10n_util::GetStringFUTF8(IDS_WALLET_ETH_SIGN_NOT_AUTHED,
-                                      base::ASCIIToUTF16(address)));
+  EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
 
   // No permission
   const std::vector<std::string> addresses = GetAddresses();
@@ -1866,9 +1848,7 @@ TEST_F(EthereumProviderImplUnitTest, SignTypedMessage) {
                    &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
-  EXPECT_EQ(error_message,
-            l10n_util::GetStringFUTF8(IDS_WALLET_ETH_SIGN_NOT_AUTHED,
-                                      base::ASCIIToUTF16(addresses[0])));
+  EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
   GURL url("https://brave.com");
   Navigate(url);
   AddEthereumPermission(GetOrigin());
@@ -1911,9 +1891,7 @@ TEST_F(EthereumProviderImplUnitTest, SignTypedMessage) {
                    &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
-  EXPECT_EQ(error_message,
-            l10n_util::GetStringFUTF8(IDS_WALLET_ETH_SIGN_NOT_AUTHED,
-                                      base::ASCIIToUTF16(addresses[0])));
+  EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
 }
 
 TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
@@ -2640,13 +2618,13 @@ TEST_F(EthereumProviderImplUnitTest, GetEncryptionPublicKey) {
   EXPECT_EQ(mojom::ProviderError::kSuccess, error);
   EXPECT_TRUE(error_message.empty());
 
-  // Locked should give invalid params error
+  // Locked should give unathorized error
   std::string from_address = from();
   Lock();
   GetEncryptionPublicKey(from_address, true, &key, &error, &error_message);
   EXPECT_TRUE(key.empty());
-  EXPECT_EQ(mojom::ProviderError::kInvalidParams, error);
-  EXPECT_FALSE(error_message.empty());
+  EXPECT_EQ(mojom::ProviderError::kUnauthorized, error);
+  EXPECT_EQ(l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED), error_message);
 
   // Unlocked and user rejected
   Unlock();
@@ -2656,12 +2634,12 @@ TEST_F(EthereumProviderImplUnitTest, GetEncryptionPublicKey) {
   EXPECT_EQ(l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST),
             error_message);
 
-  // Address without permissions gives the invalid params error
+  // Address without permissions gives the unathorized error
   AddAccount();
   GetEncryptionPublicKey(from(1), true, &key, &error, &error_message);
   EXPECT_TRUE(key.empty());
-  EXPECT_EQ(mojom::ProviderError::kInvalidParams, error);
-  EXPECT_FALSE(error_message.empty());
+  EXPECT_EQ(mojom::ProviderError::kUnauthorized, error);
+  EXPECT_EQ(l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED), error_message);
 
   // Invalid address gives the invalid params error
   GetEncryptionPublicKey("", true, &key, &error, &error_message);
@@ -2731,14 +2709,14 @@ TEST_F(EthereumProviderImplUnitTest, Decrypt) {
     EXPECT_FALSE(error_message.empty()) << " case: " << error_case;
   }
 
-  // Locked should give invalid params error
+  // Locked should give unauthorized error
   std::string from_address = from();
   Lock();
   Decrypt(valid_pi_json, from_address, true, &unsafe_message, &error,
           &error_message);
   EXPECT_TRUE(unsafe_message.empty());
-  EXPECT_EQ(mojom::ProviderError::kInvalidParams, error);
-  EXPECT_FALSE(error_message.empty());
+  EXPECT_EQ(mojom::ProviderError::kUnauthorized, error);
+  EXPECT_EQ(l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED), error_message);
 
   // Unlocked and user rejected
   Unlock();
@@ -2749,13 +2727,13 @@ TEST_F(EthereumProviderImplUnitTest, Decrypt) {
   EXPECT_EQ(l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST),
             error_message);
 
-  // Address without permissions gives the invalid params error
+  // Address without permissions gives the unauthorized error
   AddAccount();
   Decrypt(valid_pi_json, from(1), true, &unsafe_message, &error,
           &error_message);
   EXPECT_TRUE(unsafe_message.empty());
-  EXPECT_EQ(mojom::ProviderError::kInvalidParams, error);
-  EXPECT_FALSE(error_message.empty());
+  EXPECT_EQ(mojom::ProviderError::kUnauthorized, error);
+  EXPECT_EQ(l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED), error_message);
 
   // Invalid address gives the invalid params error
   Decrypt(valid_pi_json, "", true, &unsafe_message, &error, &error_message);

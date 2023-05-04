@@ -17,7 +17,6 @@
   <message name="IDS_WALLET_INVALID_MNEMONIC_ERROR" desc="The text for invalid mnemonic being imported error">The mnemonic being imported is not valid for Brave Wallet</message>
   <message name="IDS_WALLET_ALREADY_IN_PROGRESS_ERROR" desc="The text of the response for wallet_(add|switch)EthereumChain call for existing request">A request is already in progress</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_NO_TX_DATA" desc="The text of the response for eth_sendTransaction">Transaction data is missing</message>
-  <message name="IDS_WALLET_ETH_SEND_TRANSACTION_FROM_NOT_AUTHED" desc="The text of the response for eth_sendTransaction">'from' is not authorized to send transactions</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_TO_OR_DATA" desc="Transaction data is not validated">Transaction data 'to' or 'data' must be specified</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_NONCE_INVALID" desc="Transaction data is not validated">Transaction data 'nonce' is not valid</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_GAS_PRICE_INVALID" desc="Transaction data is not validated">Transaction data 'gasPrice' is not valid</message>
@@ -34,7 +33,6 @@
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_GET_GAS_FEES_FAILED" desc="Failed to get gas fees">Failed to get the gas fees for EIP-1559 transaction</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_USER_REJECTED" desc="The text of the response for eth_sendTransaction">User rejected the transaction</message>
   <message name="IDS_WALLET_SEND_TRANSACTION_ERROR" desc="The text of the response for eth_sendTransaction or Solana sendTransaction">Error processing the transaction</message>
-  <message name="IDS_WALLET_ETH_SIGN_NOT_AUTHED" desc="The text of the response for eth_sign">'<ph name="VALUE">$1<ex>1</ex></ph>' is not authorized to sign message</message>
   <message name="IDS_WALLET_SIGN_TRANSACTION_ERROR" desc="Failed to sign transaction">Failed to sign transaction</message>
   <message name="IDS_WALLET_ETH_INVALID_CHAIN_ID_RPC" desc="Invalid Chain ID response">Invalid chain ID response from RPC service</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_FROM_EMPTY" desc="Transaction data is not validated">Transaction data 'from' must be specified</message>

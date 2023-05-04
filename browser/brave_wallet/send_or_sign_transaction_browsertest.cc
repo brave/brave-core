@@ -829,8 +829,7 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, InvalidAddress) {
     EXPECT_EQ(EvalJs(web_contents(), "getSendOrSignTransactionError()",
                      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                   .ExtractString(),
-              l10n_util::GetStringUTF8(
-                  IDS_WALLET_ETH_SEND_TRANSACTION_FROM_NOT_AUTHED));
+              l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
   }
 }
 
@@ -859,8 +858,7 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, NoEthPermission) {
     EXPECT_EQ(EvalJs(web_contents(), "getSendOrSignTransactionError()",
                      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                   .ExtractString(),
-              l10n_util::GetStringUTF8(
-                  IDS_WALLET_ETH_SEND_TRANSACTION_FROM_NOT_AUTHED));
+              l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
   }
 }
 

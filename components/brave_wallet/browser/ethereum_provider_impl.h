@@ -44,10 +44,6 @@ class EthereumProviderImpl final
       public EthBlockTracker::Observer,
       public EthLogsTracker::Observer {
  public:
-  using GetAllowedAccountsCallback =
-      base::OnceCallback<void(const std::vector<std::string>& accounts,
-                              mojom::ProviderError error,
-                              const std::string& error_message)>;
   using RequestPermissionsError = mojom::RequestPermissionsError;
 
   EthereumProviderImpl(const EthereumProviderImpl&) = delete;
@@ -66,8 +62,8 @@ class EthereumProviderImpl final
                           RequestCallback callback,
                           base::Value id);
   void Web3ClientVersion(RequestCallback callback, base::Value id);
-  void GetAllowedAccounts(bool include_accounts_when_locked,
-                          GetAllowedAccountsCallback callback);
+  absl::optional<std::vector<std::string>> GetAllowedAccounts(
+      bool include_accounts_when_locked);
   void AddEthereumChain(const std::string& json_payload,
                         RequestCallback callback,
                         base::Value id);
@@ -114,19 +110,10 @@ class EthereumProviderImpl final
                         base::Value::Dict domain,
                         RequestCallback callback,
                         base::Value id);
-  void OnGetAllowedAccounts(bool include_accounts_when_locked,
-                            bool keyring_locked,
-                            const absl::optional<std::string>& selected_account,
-                            GetAllowedAccountsCallback callback,
-                            bool success,
-                            const std::vector<std::string>& accounts);
   void OnContinueGetAllowedAccounts(RequestCallback callback,
                                     base::Value id,
                                     const std::string& method,
-                                    const url::Origin& origin,
-                                    const std::vector<std::string>& accounts,
-                                    mojom::ProviderError error,
-                                    const std::string& error_message);
+                                    bool include_accounts_when_locked);
 
   // Used for wallet_watchAsset.
   // It will prompt an UI for user to confirm, and add the token into user's
@@ -222,25 +209,6 @@ class EthereumProviderImpl final
                                          bool success,
                                          const std::string& tx_meta_id,
                                          const std::string& error_message);
-  void ContinueAddAndApproveTransaction(
-      RequestCallback callback,
-      base::Value id,
-      mojom::TxDataPtr tx_data,
-      const std::string& from,
-      const url::Origin& origin,
-      const std::vector<std::string>& allowed_accounts,
-      mojom::ProviderError error,
-      const std::string& error_message);
-
-  void ContinueAddAndApprove1559TransactionWithAccounts(
-      RequestCallback callback,
-      base::Value id,
-      mojom::TxData1559Ptr tx_data,
-      const std::string& from,
-      const url::Origin& origin,
-      const std::vector<std::string>& allowed_accounts,
-      mojom::ProviderError error,
-      const std::string& error_message);
   void ContinueSignMessage(const std::string& address,
                            const std::string& domain,
                            const std::string& message,
@@ -249,11 +217,7 @@ class EthereumProviderImpl final
                            const absl::optional<std::string>& primary_hash,
                            bool is_eip712,
                            RequestCallback callback,
-                           base::Value id,
-                           const url::Origin& origin,
-                           const std::vector<std::string>& allowed_accounts,
-                           mojom::ProviderError error,
-                           const std::string& error_message);
+                           base::Value id);
   bool CheckAccountAllowed(const std::string& account,
                            const std::vector<std::string>& allowed_accounts);
   void UpdateKnownAccounts();
@@ -280,19 +244,6 @@ class EthereumProviderImpl final
                                         const std::string& address,
                                         const url::Origin& origin,
                                         data_decoder::JsonSanitizer::Result);
-  void ContinueDecryptWithAllowedAccounts(
-      RequestCallback callback,
-      base::Value id,
-      const std::string& version,
-      const std::vector<uint8_t>& nonce,
-      const std::vector<uint8_t>& ephemeral_public_key,
-      const std::vector<uint8_t>& ciphertext,
-      const std::string& address,
-      const url::Origin& origin,
-      const std::vector<std::string>& allowed_accounts,
-      mojom::ProviderError error,
-      const std::string& error_message);
-
   void OnGetNetworkAndDefaultKeyringInfo(
       RequestCallback callback,
       base::Value id,
