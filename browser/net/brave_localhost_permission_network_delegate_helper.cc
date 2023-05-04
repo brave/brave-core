@@ -37,8 +37,7 @@ void OnPermissionRequestStatus(
 
 bool IsLocalhostRequest(const GURL& request_url,
                         const GURL& request_initiator_url) {
-  return request_initiator_url.is_valid() && request_url.is_valid() &&
-         net::IsLocalhost(request_url) &&
+  return net::IsLocalhost(request_url) &&
          !net::IsLocalhost(request_initiator_url);
 }
 
@@ -86,9 +85,17 @@ int OnBeforeURLRequest_LocalhostPermissionWork(
   const auto& request_initiator_url = ctx->initiator_url;
   const auto& request_url = ctx->request_url;
 
+  const bool is_request_url_valid = request_url.is_valid() && !request_url.is_empty();
+  const bool is_request_initiator_url_valid = request_initiator_url.is_valid() && !request_initiator_url.is_empty() && request_initiator_url.has_host();
+
   // If the following info isn't available, then there's not much we can do.
-  if (request_url.is_empty() || request_initiator_url.is_empty() ||
-      !request_initiator_url.has_host()) {
+  if (!is_request_url_valid || !is_request_initiator_url_valid) {
+    return net::OK;
+  }
+
+  // We don't want to block requests from extensions, because
+  // we don't currently do that via adblock.
+  if (request_initiator_url.SchemeIs(content_settings::kExtensionScheme)) {
     return net::OK;
   }
 
