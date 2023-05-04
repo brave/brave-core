@@ -89,14 +89,14 @@ bool ConstellationLogStore::has_staged_log() const {
 }
 
 const std::string& ConstellationLogStore::staged_log() const {
-  CHECK(staged_entry_key_);
-  CHECK(!staged_log_.empty());
+  DCHECK(staged_entry_key_);
+  DCHECK(!staged_log_.empty());
 
   return staged_log_;
 }
 
 std::string ConstellationLogStore::staged_log_type() const {
-  CHECK(staged_entry_key_);
+  DCHECK(staged_entry_key_);
   if (base::StartsWith(staged_entry_key_->histogram_name, "Brave.P2A",
                        base::CompareCase::SENSITIVE)) {
     return kP2AUploadType;
@@ -121,7 +121,7 @@ absl::optional<uint64_t> ConstellationLogStore::staged_log_user_id() const {
 
 void ConstellationLogStore::StageNextLog() {
   // Stage the next item.
-  CHECK(has_unsent_logs());
+  DCHECK(has_unsent_logs());
   uint64_t rand_idx = base::RandGenerator(unsent_entries_.size());
   staged_entry_key_ =
       std::make_unique<LogKey>(*(unsent_entries_.begin() + rand_idx));

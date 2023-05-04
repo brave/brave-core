@@ -36,13 +36,22 @@ bool ConvertCoseSignatureToDER(const std::vector<uint8_t>& input,
   }
 
   BIGNUM* r_comp = BN_bin2bn(input.data(), kSignatureComponentSize, nullptr);
-  CHECK(r_comp);
+  if (!r_comp) {
+    return false;
+  }
   BIGNUM* s_comp = BN_bin2bn(input.data() + kSignatureComponentSize,
                              kSignatureComponentSize, nullptr);
-  CHECK(s_comp);
+  if (!s_comp) {
+    BN_free(r_comp);
+    return false;
+  }
 
   ECDSA_SIG* ecdsa_sig = ECDSA_SIG_new();
-  CHECK(ecdsa_sig);
+  if (!ecdsa_sig) {
+    BN_free(r_comp);
+    BN_free(s_comp);
+    return false;
+  }
 
   if (ECDSA_SIG_set0(ecdsa_sig, r_comp, s_comp) != 1) {
     LOG(ERROR) << "COSE: Failed to construct ECDSA SIG struct";
@@ -53,7 +62,10 @@ bool ConvertCoseSignatureToDER(const std::vector<uint8_t>& input,
   }
 
   CBB sig_cbb;
-  CHECK_EQ(CBB_init(&sig_cbb, 0), 1);
+  if (CBB_init(&sig_cbb, 0) != 1) {
+    ECDSA_SIG_free(ecdsa_sig);
+    return false;
+  }
 
   if (ECDSA_SIG_marshal(&sig_cbb, ecdsa_sig) != 1) {
     LOG(ERROR) << "COSE: Failed to marshal ECDSA SIG struct";
@@ -91,9 +103,9 @@ bool CoseSign1::DecodeFromBytes(const std::vector<uint8_t>& data) {
                       *(cbor_config.error_code_out));
     return false;
   }
-  CHECK(decoded_val.has_value());
 
-  if (!decoded_val->is_array() || decoded_val->GetArray().size() != 4) {
+  if (!decoded_val.has_value() || !decoded_val->is_array() ||
+      decoded_val->GetArray().size() != 4) {
     LOG(ERROR) << "COSE: root decoded cbor is not array, or has incorrect size";
     return false;
   }
@@ -117,9 +129,8 @@ bool CoseSign1::DecodeFromBytes(const std::vector<uint8_t>& data) {
                       *(cbor_config.error_code_out));
     return false;
   }
-  CHECK(protected_decoded_val.has_value());
 
-  if (!protected_decoded_val->is_map()) {
+  if (!protected_decoded_val.has_value() || !protected_decoded_val->is_map()) {
     LOG(ERROR) << "COSE: protected value is not a map";
     return false;
   }
@@ -156,14 +167,14 @@ bool CoseSign1::DecodeFromBytes(const std::vector<uint8_t>& data) {
 
   absl::optional<cbor::Value> payload_dec_val =
       cbor::Reader::Read(payload_encoded_.GetBytestring(), cbor_config);
-  if (cbor_config.error_code_out != nullptr &&
-      *cbor_config.error_code_out !=
-          cbor::Reader::DecoderError::CBOR_NO_ERROR) {
+  if (!payload_dec_val.has_value() ||
+      (cbor_config.error_code_out != nullptr &&
+       *cbor_config.error_code_out !=
+           cbor::Reader::DecoderError::CBOR_NO_ERROR)) {
     LOG(ERROR) << "COSE: failed to read payload cbor: "
                << cbor::Reader::ErrorCodeToString(*cbor_config.error_code_out);
     return false;
   }
-  CHECK(payload_dec_val.has_value());
   payload_ = payload_dec_val->Clone();
 
   const cbor::Value& signature_val = cose_arr[3];

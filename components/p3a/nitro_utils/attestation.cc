@@ -36,8 +36,8 @@ namespace {
 
 constexpr char kHashPrefix[] = "sha256:";
 constexpr size_t kHashPrefixLength = 7;
-// sha256 hash len + hash prefix len
-constexpr size_t kUserDataMinLength = 32 + kHashPrefixLength;
+constexpr size_t kSHA256HashLength = 32;
+constexpr size_t kUserDataMinLength = kSHA256HashLength + kHashPrefixLength;
 constexpr size_t kAttestationBodyMaxSize = 16384;
 constexpr net::SHA256HashValue kAWSRootCertFP{
     .data = {0x64, 0x1A, 0x03, 0x21, 0xA3, 0xE2, 0x44, 0xEF, 0xE4, 0x56, 0x46,
@@ -103,7 +103,7 @@ bool VerifyUserDataKey(scoped_refptr<net::X509Certificate> server_cert,
       net::X509Certificate::CalculateFingerprint256(server_cert->cert_buffer());
   if (memcmp(server_cert_fp.data,
              user_data_it->second.GetBytestring().data() + kHashPrefixLength,
-             32) != 0) {
+             kSHA256HashLength) != 0) {
     LOG(ERROR)
         << "Nitro verification: server cert fp does not match user data fp, "
         << "user data = "
@@ -208,8 +208,7 @@ void ParseAndVerifyDocument(
 
   const network::mojom::URLResponseHead* response_info =
       url_loader->ResponseInfo();
-  CHECK(response_info);
-  if (!response_info->ssl_info.has_value() ||
+  if (!response_info || !response_info->ssl_info.has_value() ||
       response_info->ssl_info->cert == nullptr) {
     LOG(ERROR) << "Nitro verification: ssl info is missing from response info";
     std::move(result_callback).Run(scoped_refptr<net::X509Certificate>());
