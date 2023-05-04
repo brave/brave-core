@@ -22,7 +22,7 @@
         std::move(callback).Run({});                                          \
         return;                                                               \
       }                                                                       \
-      http_interstitial_enabled_ = brave_shields::ShouldForceHttps(           \
+      http_interstitial_enabled_by_pref_ = brave_shields::ShouldForceHttps(   \
           map, tentative_resource_request.url);                               \
     }                                                                         \
     MaybeCreateLoader_ChromiumImpl(tentative_resource_request,                \
