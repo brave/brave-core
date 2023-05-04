@@ -79,7 +79,7 @@ void AssetDiscoveryManager::DiscoverAssetsOnAllSupportedChains(
     return;
   }
 
-  // Check if request should be rate limited throttled based on last
+  // Check if request should be throttled based on
   // kBraveWalletLastDiscoveredAssetsAt
   const base::Time assets_last_discovered_at =
       prefs_->GetTime(kBraveWalletLastDiscoveredAssetsAt);
