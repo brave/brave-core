@@ -12,6 +12,7 @@ struct SignatureRequestView: View {
   var requests: [BraveWallet.SignMessageRequest]
   @ObservedObject var keyringStore: KeyringStore
   var cryptoStore: CryptoStore
+  @ObservedObject var networkStore: NetworkStore
   
   var onDismiss: () -> Void
 
@@ -34,6 +35,10 @@ struct SignatureRequestView: View {
   
   private var account: BraveWallet.AccountInfo {
     keyringStore.allAccounts.first(where: { $0.address == currentRequest.address }) ?? keyringStore.selectedAccount
+  }
+  
+  private var network: BraveWallet.NetworkInfo? {
+    networkStore.allChains.first(where: { $0.chainId == currentRequest.chainId })
   }
   
   /// Request display text, used as fallback.
@@ -130,21 +135,28 @@ struct SignatureRequestView: View {
     requests: [BraveWallet.SignMessageRequest],
     keyringStore: KeyringStore,
     cryptoStore: CryptoStore,
+    networkStore: NetworkStore,
     onDismiss: @escaping () -> Void
   ) {
     assert(!requests.isEmpty)
     self.requests = requests
     self.keyringStore = keyringStore
     self.cryptoStore = cryptoStore
+    self.networkStore = networkStore
     self.onDismiss = onDismiss
   }
   
   var body: some View {
     ScrollView(.vertical) {
       VStack {
-        if requests.count > 1 {
-          HStack {
-            Spacer()
+        HStack {
+          if let network {
+            Text(network.chainName)
+              .font(.callout)
+              .foregroundColor(Color(.braveLabel))
+          }
+          Spacer()
+          if requests.count > 1 {
             Text(String.localizedStringWithFormat(Strings.Wallet.transactionCount, requestIndex + 1, requests.count))
               .fontWeight(.semibold)
             Button(action: next) {
@@ -388,6 +400,7 @@ struct SignatureRequestView_Previews: PreviewProvider {
       requests: [.previewRequest],
       keyringStore: .previewStoreWithWalletCreated,
       cryptoStore: .previewStore,
+      networkStore: .previewStore,
       onDismiss: { }
     )
   }

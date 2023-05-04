@@ -9,6 +9,7 @@ import SwiftUI
 
 class SignTransactionRequestUnion {
   let id: Int32
+  let chainId: String
   let originInfo: BraveWallet.OriginInfo
   let coin: BraveWallet.CoinType
   let fromAddress: String
@@ -17,6 +18,7 @@ class SignTransactionRequestUnion {
   
   init(
     id: Int32,
+    chainId: String,
     originInfo: BraveWallet.OriginInfo,
     coin: BraveWallet.CoinType,
     fromAddress: String,
@@ -24,6 +26,7 @@ class SignTransactionRequestUnion {
     rawMessage: [BraveWallet.ByteArrayStringUnion]
   ) {
     self.id = id
+    self.chainId = chainId
     self.originInfo = originInfo
     self.coin = coin
     self.fromAddress = fromAddress
@@ -47,7 +50,6 @@ struct SignTransactionView: View {
   
   @State private var txIndex: Int = 0
   @State private var showWarning: Bool = true
-  @State private var network: BraveWallet.NetworkInfo?
   @Environment(\.sizeCategory) private var sizeCategory
   @Environment(\.colorScheme) private var colorScheme
   @Environment(\.openURL) private var openWalletURL
@@ -72,6 +74,7 @@ struct SignTransactionView: View {
       self.normalizedRequests = requests.map {
         SignTransactionRequestUnion(
           id: $0.id,
+          chainId: $0.chainId,
           originInfo: $0.originInfo,
           coin: $0.coin,
           fromAddress: $0.fromAddress,
@@ -83,6 +86,7 @@ struct SignTransactionView: View {
       self.normalizedRequests = requests.map {
         SignTransactionRequestUnion(
           id: $0.id,
+          chainId: $0.chainId,
           originInfo: $0.originInfo,
           coin: $0.coin,
           fromAddress: $0.fromAddress,
@@ -104,6 +108,10 @@ struct SignTransactionView: View {
   
   private var currentRequest: SignTransactionRequestUnion {
     normalizedRequests[txIndex]
+  }
+  
+  private var network: BraveWallet.NetworkInfo? {
+    networkStore.allChains.first(where: { $0.chainId == currentRequest.chainId })
   }
 
   private func instructionsDisplayString() -> String {
@@ -298,9 +306,6 @@ struct SignTransactionView: View {
       Color(.braveErrorBackground)
         .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
     )
-    .onAppear {
-      updateNetwork()
-    }
   }
   
   private func next() {
@@ -308,16 +313,6 @@ struct SignTransactionView: View {
       txIndex += 1
     } else {
       txIndex = 0
-    }
-    updateNetwork()
-  }
-  
-  private func updateNetwork() {
-    Task { @MainActor in
-      if currentRequest.coin != self.network?.coin {
-        self.network = nil // hide network while we fetch network for new coin type
-      }
-      self.network = await networkStore.selectedNetwork(for: currentRequest.coin)
     }
   }
 }
