@@ -24,8 +24,9 @@ AssetRatioServiceFactory* AssetRatioServiceFactory::GetInstance() {
 // static
 mojo::PendingRemote<mojom::AssetRatioService>
 AssetRatioServiceFactory::GetForContext(content::BrowserContext* context) {
-  if (!IsAllowedForContext(context))
+  if (!IsAllowedForContext(context)) {
     return mojo::PendingRemote<mojom::AssetRatioService>();
+  }
 
   return static_cast<AssetRatioService*>(
              GetInstance()->GetServiceForBrowserContext(context, true))

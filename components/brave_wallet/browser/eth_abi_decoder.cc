@@ -41,8 +41,9 @@ namespace {
 // specified offset. The parsed value is NOT prefixed by "0x".
 absl::optional<std::string> GetArgFromData(const std::vector<uint8_t>& input,
                                            size_t offset) {
-  if (offset > input.size() || input.size() - offset < 32)
+  if (offset > input.size() || input.size() - offset < 32) {
     return absl::nullopt;
+  }
 
   return HexEncodeLower(input.data() + offset, 32);
 }
@@ -59,8 +60,9 @@ absl::optional<std::string> GetArgFromData(const std::vector<uint8_t>& input,
 absl::optional<std::string> GetAddressFromData(
     const std::vector<uint8_t>& input,
     size_t offset) {
-  if (offset > input.size() || input.size() - offset < 32)
+  if (offset > input.size() || input.size() - offset < 32) {
     return absl::nullopt;
+  }
 
   return "0x" + HexEncodeLower(input.data() + offset + 12, 20);
 }
@@ -115,8 +117,9 @@ absl::optional<std::string> GetUintHexFromData(
 absl::optional<std::string> GetBoolFromData(const std::vector<uint8_t>& input,
                                             size_t offset) {
   auto value = GetUintFromData<uint8_t>(input, offset);
-  if (!value)
+  if (!value) {
     return absl::nullopt;
+  }
 
   if (value == static_cast<uint8_t>(0)) {
     return "false";
@@ -137,15 +140,18 @@ absl::optional<std::string> GetBytesHexFromData(
     const std::vector<uint8_t>& input,
     size_t offset) {
   auto pointer = GetUintFromData<size_t>(input, offset);
-  if (!pointer)
+  if (!pointer) {
     return absl::nullopt;
+  }
 
   auto bytes_len = GetUintFromData<size_t>(input, *pointer);
-  if (!bytes_len)
+  if (!bytes_len) {
     return absl::nullopt;
+  }
 
-  if (input.size() < static_cast<uint256_t>(*pointer) + 32 + *bytes_len)
+  if (input.size() < static_cast<uint256_t>(*pointer) + 32 + *bytes_len) {
     return absl::nullopt;
+  }
   return "0x" + HexEncodeLower(input.data() + *pointer + 32, *bytes_len);
 }
 
@@ -159,19 +165,22 @@ absl::optional<std::string> GetAddressArrayFromData(
     const std::vector<uint8_t>& input,
     size_t offset) {
   auto pointer = GetUintFromData<size_t>(input, offset);
-  if (!pointer)
+  if (!pointer) {
     return absl::nullopt;
+  }
 
   auto array_len = GetUintFromData<size_t>(input, *pointer);
-  if (!array_len)
+  if (!array_len) {
     return absl::nullopt;
+  }
 
   size_t array_offset = *pointer + 32;
   std::string arg = "0x";
   for (size_t i = 0; i < *array_len; i++) {
     auto value = GetAddressFromData(input, array_offset);
-    if (!value)
+    if (!value) {
       return absl::nullopt;
+    }
     base::StrAppend(&arg, {value->substr(2)});
     array_offset += 32;
   }
@@ -198,40 +207,46 @@ absl::optional<std::string> GetAddressArrayFromData(
 absl::optional<std::vector<std::string>> UniswapEncodedPathDecode(
     const std::string& encoded_path) {
   std::vector<uint8_t> data;
-  if (!PrefixedHexStringToBytes(encoded_path, &data))
+  if (!PrefixedHexStringToBytes(encoded_path, &data)) {
     return absl::nullopt;
+  }
   size_t offset = 0;
   std::vector<std::string> path;
 
   // The path should be long enough to encode a single-hop swap.
   // 43 = 20(address) + 3(fee) + 20(address)
-  if (data.size() < 43)
+  if (data.size() < 43) {
     return absl::nullopt;
+  }
 
   // Parse first hop address.
   path.push_back("0x" + HexEncodeLower(data.data(), 20));
   offset += 20;
 
   while (true) {
-    if (offset == data.size())
+    if (offset == data.size()) {
       break;
+    }
 
     // Parse the pool fee, and ignore.
-    if (data.size() - offset < 3)
+    if (data.size() - offset < 3) {
       return absl::nullopt;
+    }
 
     offset += 3;
 
     // Parse next hop.
-    if (data.size() - offset < 20)
+    if (data.size() - offset < 20) {
       return absl::nullopt;
+    }
     path.push_back("0x" + HexEncodeLower(data.data() + offset, 20));
     offset += 20;
   }
 
   // Require a minimum of 2 addresses for a single-hop swap.
-  if (path.size() < 2)
+  if (path.size() < 2) {
     return absl::nullopt;
+  }
 
   return path;
 }
@@ -274,16 +289,18 @@ ABIDecode(const std::vector<std::string>& types,
       value = GetArgFromData(data, offset);
     }
 
-    if (!value)
+    if (!value) {
       return absl::nullopt;
+    }
 
     // On encountering a dynamic type, we extract the reference to the start
     // of the tail section of the calldata.
     if ((type == "bytes" || type == "string" || base::EndsWith(type, "[]")) &&
         calldata_tail == 0) {
       auto pointer = GetUintFromData<size_t>(data, offset);
-      if (!pointer)
+      if (!pointer) {
         return absl::nullopt;
+      }
 
       calldata_tail = *pointer;
     }

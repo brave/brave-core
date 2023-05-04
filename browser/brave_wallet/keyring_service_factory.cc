@@ -25,8 +25,9 @@ KeyringServiceFactory* KeyringServiceFactory::GetInstance() {
 // static
 mojo::PendingRemote<mojom::KeyringService> KeyringServiceFactory::GetForContext(
     content::BrowserContext* context) {
-  if (!IsAllowedForContext(context))
+  if (!IsAllowedForContext(context)) {
     return mojo::PendingRemote<mojom::KeyringService>();
+  }
 
   return static_cast<KeyringService*>(
              GetInstance()->GetServiceForBrowserContext(context, true))

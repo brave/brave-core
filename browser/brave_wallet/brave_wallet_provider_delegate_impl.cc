@@ -28,8 +28,9 @@ namespace {
 bool IsAccountAllowed(const std::vector<std::string>& allowed_accounts,
                       const std::string& account) {
   for (const auto& allowed_account : allowed_accounts) {
-    if (base::CompareCaseInsensitiveASCII(account, allowed_account) == 0)
+    if (base::CompareCaseInsensitiveASCII(account, allowed_account) == 0) {
       return true;
+    }
   }
   return false;
 }
@@ -116,8 +117,9 @@ void BraveWalletProviderDelegateImpl::ShowWalletOnboarding() {
 void BraveWalletProviderDelegateImpl::ShowAccountCreation(
     mojom::CoinType type) {
   auto keyring_id = CoinTypeToKeyringId(type, absl::nullopt);
-  if (keyring_id)
+  if (keyring_id) {
     ::brave_wallet::ShowAccountCreation(web_contents_, *keyring_id);
+  }
 }
 
 void BraveWalletProviderDelegateImpl::GetAllowedAccounts(
@@ -203,32 +205,38 @@ bool BraveWalletProviderDelegateImpl::IsPermissionDenied(mojom::CoinType type) {
 
 void BraveWalletProviderDelegateImpl::AddSolanaConnectedAccount(
     const std::string& account) {
-  if (!web_contents_)
+  if (!web_contents_) {
     return;
+  }
   auto* tab_helper =
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_);
-  if (tab_helper)
+  if (tab_helper) {
     tab_helper->AddSolanaConnectedAccount(host_id_, account);
+  }
 }
 
 void BraveWalletProviderDelegateImpl::RemoveSolanaConnectedAccount(
     const std::string& account) {
-  if (!web_contents_)
+  if (!web_contents_) {
     return;
+  }
   auto* tab_helper =
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_);
-  if (tab_helper)
+  if (tab_helper) {
     tab_helper->RemoveSolanaConnectedAccount(host_id_, account);
+  }
 }
 
 bool BraveWalletProviderDelegateImpl::IsSolanaAccountConnected(
     const std::string& account) {
-  if (!web_contents_)
+  if (!web_contents_) {
     return false;
+  }
   auto* tab_helper =
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_);
-  if (!tab_helper)
+  if (!tab_helper) {
     return false;
+  }
 
   return tab_helper->IsSolanaAccountConnected(host_id_, account);
 }
@@ -241,21 +249,25 @@ void BraveWalletProviderDelegateImpl::WebContentsDestroyed() {
 void BraveWalletProviderDelegateImpl::RenderFrameHostChanged(
     content::RenderFrameHost* old_host,
     content::RenderFrameHost* new_host) {
-  if (!old_host || old_host != content::RenderFrameHost::FromID(host_id_))
+  if (!old_host || old_host != content::RenderFrameHost::FromID(host_id_)) {
     return;
+  }
   auto* tab_helper =
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_);
-  if (tab_helper)
+  if (tab_helper) {
     tab_helper->ClearSolanaConnectedAccounts(host_id_);
+  }
 }
 
 void BraveWalletProviderDelegateImpl::PrimaryPageChanged(content::Page& page) {
-  if (!web_contents_)
+  if (!web_contents_) {
     return;
+  }
   auto* tab_helper =
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_);
-  if (tab_helper)
+  if (tab_helper) {
     tab_helper->ClearSolanaConnectedAccounts(host_id_);
+  }
 }
 
 }  // namespace brave_wallet

@@ -23,8 +23,9 @@ namespace {
 
 absl::optional<std::string> ReadFileToString(const base::FilePath& path) {
   std::string contents;
-  if (!base::ReadFileToString(path, &contents))
+  if (!base::ReadFileToString(path, &contents)) {
     return absl::optional<std::string>();
+  }
   return contents;
 }
 
@@ -81,12 +82,15 @@ void BlockchainImagesSource::OnGotImageFile(GotDataCallback callback,
 
 std::string BlockchainImagesSource::GetMimeType(const GURL& url) {
   const std::string path = URLDataSource::URLToRequestPath(url);
-  if (base::EndsWith(path, ".png", base::CompareCase::INSENSITIVE_ASCII))
+  if (base::EndsWith(path, ".png", base::CompareCase::INSENSITIVE_ASCII)) {
     return "image/png";
-  if (base::EndsWith(path, ".gif", base::CompareCase::INSENSITIVE_ASCII))
+  }
+  if (base::EndsWith(path, ".gif", base::CompareCase::INSENSITIVE_ASCII)) {
     return "image/gif";
-  if (base::EndsWith(path, ".jpg", base::CompareCase::INSENSITIVE_ASCII))
+  }
+  if (base::EndsWith(path, ".jpg", base::CompareCase::INSENSITIVE_ASCII)) {
     return "image/jpg";
+  }
   return "image/svg+xml";
 }
 

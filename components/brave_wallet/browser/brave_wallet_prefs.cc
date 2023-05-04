@@ -260,8 +260,9 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
         prefs->GetInteger(kBraveWalletWeb3ProviderDeprecated));
     mojom::DefaultWallet default_wallet =
         mojom::DefaultWallet::BraveWalletPreferExtension;
-    if (provider == mojom::DefaultWallet::None)
+    if (provider == mojom::DefaultWallet::None) {
       default_wallet = mojom::DefaultWallet::None;
+    }
     prefs->SetInteger(kDefaultEthereumWallet, static_cast<int>(default_wallet));
     prefs->ClearPref(kBraveWalletWeb3ProviderDeprecated);
   }
@@ -270,8 +271,9 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
         prefs->GetInteger(kDefaultWalletDeprecated));
     mojom::DefaultWallet default_wallet =
         mojom::DefaultWallet::BraveWalletPreferExtension;
-    if (provider == mojom::DefaultWallet::None)
+    if (provider == mojom::DefaultWallet::None) {
       default_wallet = mojom::DefaultWallet::None;
+    }
     prefs->SetInteger(kDefaultEthereumWallet, static_cast<int>(default_wallet));
     prefs->ClearPref(kDefaultWalletDeprecated);
   }

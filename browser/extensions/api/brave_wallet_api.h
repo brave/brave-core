@@ -13,8 +13,7 @@ class Profile;
 namespace extensions {
 namespace api {
 
-class BraveWalletReadyFunction :
-    public ExtensionFunction {
+class BraveWalletReadyFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveWallet.ready", UNKNOWN)
 

@@ -38,12 +38,14 @@ absl::optional<std::vector<uint8_t>> ExtractGatewayResult(
     return absl::nullopt;
   }
   auto* data = json_value.GetDict().FindString("data");
-  if (!data)
+  if (!data) {
     return absl::nullopt;
+  }
 
   std::vector<uint8_t> result;
-  if (!PrefixedHexStringToBytes(*data, &result))
+  if (!PrefixedHexStringToBytes(*data, &result)) {
     return absl::nullopt;
+  }
   return result;
 }
 
@@ -69,11 +71,13 @@ EnsResolverTaskError MakeInvalidParamsError() {
 
 std::string GetParent(const std::string& domain) {
   DCHECK(domain == "eth" || base::EndsWith(domain, ".eth"));
-  if (domain == "eth")
+  if (domain == "eth") {
     return "";
+  }
   std::size_t dot_pos = domain.find('.');
-  if (dot_pos == std::string::npos)
+  if (dot_pos == std::string::npos) {
     return "";
+  }
   return domain.substr(dot_pos + 1);
 }
 
@@ -135,8 +139,9 @@ absl::optional<OffchainLookupData> OffchainLookupData::ExtractFromJson(
   }
 
   auto* error_data = json_value.GetDict().FindStringByDottedPath("error.data");
-  if (!error_data)
+  if (!error_data) {
     return absl::nullopt;
+  }
 
   auto bytes = PrefixedHexStringToBytes(*error_data);
   if (!bytes) {
@@ -153,8 +158,9 @@ absl::optional<OffchainLookupData> OffchainLookupData::ExtractFromEthAbiPayload(
 
   // error OffchainLookup(address sender, string[] urls, bytes callData,
   // bytes4 callbackFunction, bytes extraData)
-  if (!base::ranges::equal(selector, kOffchainLookupSelector))
+  if (!base::ranges::equal(selector, kOffchainLookupSelector)) {
     return absl::nullopt;
+  }
   auto sender = eth_abi::ExtractAddressFromTuple(args, 0);
   auto urls = eth_abi::ExtractStringArrayFromTuple(args, 1);
   auto call_data = eth_abi::ExtractBytesFromTuple(args, 2);

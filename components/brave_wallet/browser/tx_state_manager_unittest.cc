@@ -175,8 +175,9 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
     meta.set_from("0x3333333333333333333333333333333333333333");
     meta.set_id(base::NumberToString(i));
     if (i % 2 == 0) {
-      if (i % 4 == 0)
+      if (i % 4 == 0) {
         meta.set_from(addr1);
+      }
       if (i % 6 == 0) {
         meta.set_chain_id(mojom::kMainnetChainId);
       } else {
@@ -184,8 +185,9 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
       }
       meta.set_status(mojom::TransactionStatus::Confirmed);
     } else {
-      if (i % 5 == 0)
+      if (i % 5 == 0) {
         meta.set_from(addr2);
+      }
       if (i % 7 == 0) {
         meta.set_chain_id(mojom::kMainnetChainId);
       } else {

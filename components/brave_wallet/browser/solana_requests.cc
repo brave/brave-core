@@ -36,13 +36,16 @@ std::string sendTransaction(
   configuration.Set("encoding", "base64");
 
   if (options) {
-    if (options->max_retries)
+    if (options->max_retries) {
       configuration.Set("maxRetries",
                         base::NumberToString(*options->max_retries));
-    if (options->preflight_commitment)
+    }
+    if (options->preflight_commitment) {
       configuration.Set("preflightCommitment", *options->preflight_commitment);
-    if (options->skip_preflight)
+    }
+    if (options->skip_preflight) {
       configuration.Set("skipPreflight", *options->skip_preflight);
+    }
   }
 
   params.Append(std::move(configuration));
@@ -61,8 +64,9 @@ std::string getSignatureStatuses(
     const std::vector<std::string>& tx_signatures) {
   base::Value::List params;
   base::Value::List tx_signatures_value;
-  for (const auto& tx_signature : tx_signatures)
+  for (const auto& tx_signature : tx_signatures) {
     tx_signatures_value.Append(tx_signature);
+  }
   params.Append(std::move(tx_signatures_value));
 
   // Solana node will search its ledger cache for any signatures not found in

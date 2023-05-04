@@ -52,8 +52,9 @@ content::WebContents* GetWebContentsFromTabId(Browser** browser,
     for (int index = 0; index < tab_strip_model->count(); ++index) {
       content::WebContents* contents = tab_strip_model->GetWebContentsAt(index);
       if (sessions::SessionTabHelper::IdForTab(contents).id() == tab_id) {
-        if (browser)
+        if (browser) {
           *browser = target_browser;
+        }
         return contents;
       }
     }

@@ -62,8 +62,9 @@ mojom::BlockchainTokenPtr BlockchainRegistry::GetTokenByAddress(
     mojom::CoinType coin,
     const std::string& address) {
   const auto key = GetTokenListKey(coin, chain_id);
-  if (!token_list_map_.contains(key))
+  if (!token_list_map_.contains(key)) {
     return nullptr;
+  }
 
   const auto& tokens = token_list_map_[key];
   auto token_it = base::ranges::find_if(

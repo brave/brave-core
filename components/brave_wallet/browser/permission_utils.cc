@@ -28,8 +28,9 @@ constexpr char kAddrPattern[] = "addr%3D([[:alnum:]]{1,128})";
 bool AddAccountToHost(const url::Origin& old_origin,
                       const std::string& account,
                       url::Origin* new_origin) {
-  if (old_origin.opaque() || account.empty() || !new_origin)
+  if (old_origin.opaque() || account.empty() || !new_origin) {
     return false;
+  }
 
   GURL::Replacements replacements;
   std::string new_host = base::StrCat({old_origin.host(), account});
@@ -54,10 +55,11 @@ void ExtractAddresses(permissions::RequestType type,
   re2::StringPiece input(origin_string);
   std::string match;
   re2::RE2* regex;
-  if (type == permissions::RequestType::kBraveEthereum)
+  if (type == permissions::RequestType::kBraveEthereum) {
     regex = kEthAddrRegex.get();
-  else
+  } else {
     regex = kAddrRegex.get();
+  }
   while (re2::RE2::FindAndConsume(&input, *regex, &match)) {
     address_queue->push(match);
   }
@@ -72,8 +74,9 @@ bool ParseRequestingOriginInternal(permissions::RequestType type,
                                    std::string* account,
                                    std::queue<std::string>* address_queue) {
   if (origin.opaque() || (type != permissions::RequestType::kBraveEthereum &&
-                          type != permissions::RequestType::kBraveSolana))
+                          type != permissions::RequestType::kBraveSolana)) {
     return false;
+  }
 
   std::string scheme_host_group;
   std::string address_group;
@@ -81,14 +84,15 @@ bool ParseRequestingOriginInternal(permissions::RequestType type,
 
   // Validate input format.
   std::string pattern;
-  if (type == permissions::RequestType::kBraveEthereum)
+  if (type == permissions::RequestType::kBraveEthereum) {
     pattern = sub_req_format ? "(.*)(0x[[:xdigit:]]{40})(:[0-9]+)*"
                              : "(.*)%7Baddr%3D0x[[:xdigit:]]{40}(%"
                                "26addr%3D0x[[:xdigit:]]{40})*%7D(:[0-9]+)*";
-  else
+  } else {
     pattern = sub_req_format ? "(.*)__([[:alnum:]]{1,128})(:[0-9]+)*"
                              : "(.*)%7Baddr%3D[[:alnum:]]{1,128}(%"
                                "26addr%3D[[:alnum:]]{1,128})*%7D(:[0-9]+)*";
+  }
   RE2 full_pattern(pattern);
   if (!re2::RE2::FullMatch(origin.Serialize(), full_pattern, &scheme_host_group,
                            &address_group, &port_group)) {
@@ -127,8 +131,9 @@ bool GetConcatOriginFromWalletAddresses(
   std::string addresses_suffix = "{";
   for (auto it = addresses.begin(); it != addresses.end(); it++) {
     base::StrAppend(&addresses_suffix, {"addr=", *it});
-    if (it != addresses.end() - 1)
+    if (it != addresses.end() - 1) {
       addresses_suffix += "&";
+    }
   }
   addresses_suffix += "}";
 
@@ -148,8 +153,9 @@ bool ParseRequestingOrigin(permissions::RequestType type,
                            const url::Origin& origin,
                            url::Origin* requesting_origin,
                            std::queue<std::string>* address_queue) {
-  if (address_queue && !address_queue->empty())
+  if (address_queue && !address_queue->empty()) {
     return false;
+  }
   return ParseRequestingOriginInternal(type, origin, false /* sub_req_format */,
                                        requesting_origin, nullptr /* account */,
                                        address_queue);
@@ -160,14 +166,16 @@ bool GetSubRequestOrigin(permissions::RequestType type,
                          const std::string& account,
                          url::Origin* new_origin) {
   if (type != permissions::RequestType::kBraveEthereum &&
-      type != permissions::RequestType::kBraveSolana)
+      type != permissions::RequestType::kBraveSolana) {
     return false;
+  }
   std::string account_with_separater;
-  if (type == permissions::RequestType::kBraveEthereum)
+  if (type == permissions::RequestType::kBraveEthereum) {
     account_with_separater = account;
-  else
+  } else {
     account_with_separater =
         account.empty() ? account : base::StrCat({"__", account});
+  }
 
   return AddAccountToHost(old_origin, account_with_separater, new_origin);
 }

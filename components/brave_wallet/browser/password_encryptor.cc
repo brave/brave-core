@@ -28,8 +28,9 @@ PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
     base::span<const uint8_t> salt,
     size_t iterations,
     size_t key_size_in_bits) {
-  if (key_size_in_bits != 128 && key_size_in_bits != 256)
+  if (key_size_in_bits != 128 && key_size_in_bits != 256) {
     return nullptr;
+  }
 
   size_t key_size_in_bytes = key_size_in_bits / 8;
 

@@ -34,8 +34,9 @@ bool EthPendingTxTracker::UpdatePendingTransactions(
     std::set<std::string>* pending_chain_ids) {
   CHECK(pending_chain_ids);
   base::Lock* nonce_lock = nonce_tracker_->GetLock();
-  if (!nonce_lock->Try())
+  if (!nonce_lock->Try()) {
     return false;
+  }
 
   auto pending_transactions = tx_state_manager_->GetTransactionsByStatus(
       chain_id, mojom::TransactionStatus::Submitted, absl::nullopt);
@@ -74,11 +75,13 @@ void EthPendingTxTracker::OnGetTxReceipt(const std::string& chain_id,
                                          TransactionReceipt receipt,
                                          mojom::ProviderError error,
                                          const std::string& error_message) {
-  if (error != mojom::ProviderError::kSuccess)
+  if (error != mojom::ProviderError::kSuccess) {
     return;
+  }
   base::Lock* nonce_lock = nonce_tracker_->GetLock();
-  if (!nonce_lock->Try())
+  if (!nonce_lock->Try()) {
     return;
+  }
 
   std::unique_ptr<EthTxMeta> meta = tx_state_manager_->GetEthTx(chain_id, id);
   if (!meta) {
@@ -102,8 +105,9 @@ void EthPendingTxTracker::OnGetNetworkNonce(const std::string& chain_id,
                                             uint256_t result,
                                             mojom::ProviderError error,
                                             const std::string& error_message) {
-  if (error != mojom::ProviderError::kSuccess)
+  if (error != mojom::ProviderError::kSuccess) {
     return;
+  }
 
   network_nonce_map_[address][chain_id] = result;
 }
@@ -120,8 +124,9 @@ bool EthPendingTxTracker::IsNonceTaken(const EthTxMeta& meta) {
     auto* eth_confirmed_transaction =
         static_cast<EthTxMeta*>(confirmed_transaction.get());
     if (eth_confirmed_transaction->tx()->nonce() == meta.tx()->nonce() &&
-        eth_confirmed_transaction->id() != meta.id())
+        eth_confirmed_transaction->id() != meta.id()) {
       return true;
+    }
   }
   return false;
 }
@@ -142,8 +147,9 @@ bool EthPendingTxTracker::ShouldTxDropped(const EthTxMeta& meta) {
     if (network_nonce_map_per_chain_id->second.empty()) {
       network_nonce_map_.erase(hex_address);
     }
-    if (meta.tx()->nonce() < network_nonce)
+    if (meta.tx()->nonce() < network_nonce) {
       return true;
+    }
   }
 
   const std::string tx_hash = meta.tx_hash();
@@ -161,8 +167,9 @@ bool EthPendingTxTracker::ShouldTxDropped(const EthTxMeta& meta) {
 }
 
 void EthPendingTxTracker::DropTransaction(TxMeta* meta) {
-  if (!meta)
+  if (!meta) {
     return;
+  }
   tx_state_manager_->DeleteTx(meta->chain_id(), meta->id());
 }
 

@@ -52,8 +52,7 @@ base::Value::Dict MakeSelectValue(const std::u16string& name,
 namespace extensions {
 namespace api {
 
-ExtensionFunction::ResponseAction
-BraveWalletReadyFunction::Run() {
+ExtensionFunction::ResponseAction BraveWalletReadyFunction::Run() {
   if (browser_context()->IsTor()) {
     return RespondNow(Error("Not available in Tor context"));
   }
@@ -74,8 +73,7 @@ ExtensionFunction::ResponseAction BraveWalletNotifyWalletUnlockFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-ExtensionFunction::ResponseAction
-BraveWalletLoadUIFunction::Run() {
+ExtensionFunction::ResponseAction BraveWalletLoadUIFunction::Run() {
   auto* service = GetEthereumRemoteClientService(browser_context());
   // If the extension is already ready, respond right away
   if (service->IsCryptoWalletsReady()) {
@@ -102,8 +100,7 @@ BraveWalletShouldPromptForSetupFunction::Run() {
   return RespondNow(WithArguments(should_prompt));
 }
 
-ExtensionFunction::ResponseAction
-BraveWalletGetWalletSeedFunction::Run() {
+ExtensionFunction::ResponseAction BraveWalletGetWalletSeedFunction::Run() {
   // make sure the passed in enryption key is 32 bytes.
   absl::optional<brave_wallet::GetWalletSeed::Params> params =
       brave_wallet::GetWalletSeed::Params::Create(args());
@@ -126,27 +123,23 @@ BraveWalletGetWalletSeedFunction::Run() {
   return RespondNow(WithArguments(base::Value(blob)));
 }
 
-ExtensionFunction::ResponseAction
-BraveWalletGetProjectIDFunction::Run() {
+ExtensionFunction::ResponseAction BraveWalletGetProjectIDFunction::Run() {
   std::string project_id = extensions::GetInfuraProjectID();
   return RespondNow(WithArguments(project_id));
 }
 
-ExtensionFunction::ResponseAction
-BraveWalletGetBraveKeyFunction::Run() {
+ExtensionFunction::ResponseAction BraveWalletGetBraveKeyFunction::Run() {
   std::string brave_key = extensions::GetBraveKey();
   return RespondNow(WithArguments(brave_key));
 }
 
-ExtensionFunction::ResponseAction
-BraveWalletResetWalletFunction::Run() {
+ExtensionFunction::ResponseAction BraveWalletResetWalletFunction::Run() {
   auto* service = GetEthereumRemoteClientService(browser_context());
   service->ResetCryptoWallets();
   return RespondNow(NoArguments());
 }
 
-ExtensionFunction::ResponseAction
-BraveWalletGetWeb3ProviderFunction::Run() {
+ExtensionFunction::ResponseAction BraveWalletGetWeb3ProviderFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto default_wallet =
       ::brave_wallet::GetDefaultEthereumWallet(profile->GetPrefs());

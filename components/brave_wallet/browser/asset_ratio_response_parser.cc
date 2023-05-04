@@ -150,13 +150,15 @@ bool ParseAssetPriceHistory(const base::Value& json_value,
     const auto& price_value = *(++it);
 
     // Check whether date_value is convertible to a double first.
-    if (!date_value.is_double() && !date_value.is_int())
+    if (!date_value.is_double() && !date_value.is_int()) {
       return false;
+    }
     double date_dbl = date_value.GetDouble();
 
     // Check whether price_value is convertible to a double first.
-    if (!price_value.is_double() && !price_value.is_int())
+    if (!price_value.is_double() && !price_value.is_int()) {
       return false;
+    }
     double price = price_value.GetDouble();
 
     base::Time date = base::Time::FromJsTime(date_dbl);

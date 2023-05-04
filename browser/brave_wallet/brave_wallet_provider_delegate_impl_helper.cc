@@ -22,13 +22,15 @@ base::OnceCallback<void()> g_account_creation_callback_for_testing;
 namespace brave_wallet {
 
 void ShowPanel(content::WebContents* web_contents) {
-  if (!web_contents)
+  if (!web_contents) {
     return;
+  }
 
   auto* tab_helper =
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents);
-  if (tab_helper)
+  if (tab_helper) {
     tab_helper->ShowBubble();
+  }
 }
 
 void ShowWalletOnboarding(content::WebContents* web_contents) {

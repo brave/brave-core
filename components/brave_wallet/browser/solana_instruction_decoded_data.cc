@@ -31,23 +31,27 @@ SolanaInstructionDecodedData::FromMojom(
     const std::string& program_id,
     const mojom::DecodedSolanaInstructionDataPtr& mojom_decoded_data) {
   SolanaInstructionDecodedData decoded_data;
-  if (!mojom_decoded_data)
+  if (!mojom_decoded_data) {
     return absl::nullopt;
+  }
 
   if (program_id != mojom::kSolanaSystemProgramId &&
-      program_id != mojom::kSolanaTokenProgramId)
+      program_id != mojom::kSolanaTokenProgramId) {
     return absl::nullopt;
+  }
 
   if (program_id == mojom::kSolanaSystemProgramId) {
     if (mojom_decoded_data->instruction_type >
-        static_cast<uint32_t>(mojom::SolanaSystemInstruction::kMaxValue))
+        static_cast<uint32_t>(mojom::SolanaSystemInstruction::kMaxValue)) {
       return absl::nullopt;
+    }
     decoded_data.sys_ins_type = static_cast<mojom::SolanaSystemInstruction>(
         mojom_decoded_data->instruction_type);
   } else {  // token program
     if (mojom_decoded_data->instruction_type >
-        static_cast<uint32_t>(mojom::SolanaTokenInstruction::kMaxValue))
+        static_cast<uint32_t>(mojom::SolanaTokenInstruction::kMaxValue)) {
       return absl::nullopt;
+    }
     decoded_data.token_ins_type = static_cast<mojom::SolanaTokenInstruction>(
         mojom_decoded_data->instruction_type);
   }
@@ -68,8 +72,9 @@ SolanaInstructionDecodedData::FromMojom(
 
 mojom::DecodedSolanaInstructionDataPtr SolanaInstructionDecodedData::ToMojom()
     const {
-  if (!IsValid())
+  if (!IsValid()) {
     return nullptr;
+  }
 
   std::vector<mojom::SolanaInstructionParamPtr> mojom_params;
   uint32_t ins_type;
@@ -122,21 +127,26 @@ SolanaInstructionDecodedData::FromValue(const base::Value::Dict& value) {
   }
 
   const base::Value::List* param_list = value.FindList("params");
-  if (!param_list)
+  if (!param_list) {
     return absl::nullopt;
+  }
   for (const auto& param_value : *param_list) {
-    if (!param_value.is_dict())
+    if (!param_value.is_dict()) {
       return absl::nullopt;
+    }
     const auto* name = param_value.GetDict().FindString("name");
-    if (!name)
+    if (!name) {
       return absl::nullopt;
+    }
     const auto* localized_name =
         param_value.GetDict().FindString("localized_name");
-    if (!localized_name)
+    if (!localized_name) {
       return absl::nullopt;
+    }
     const auto* value_local = param_value.GetDict().FindString("value");
-    if (!value_local)
+    if (!value_local) {
       return absl::nullopt;
+    }
 
     mojom::SolanaInstructionParamType type =
         mojom::SolanaInstructionParamType::kUnknown;
@@ -154,15 +164,18 @@ SolanaInstructionDecodedData::FromValue(const base::Value::Dict& value) {
   const base::Value::List* account_param_list =
       value.FindList("account_params");
   for (const auto& param_value : *account_param_list) {
-    if (!param_value.is_dict())
+    if (!param_value.is_dict()) {
       return absl::nullopt;
+    }
     const auto* name = param_value.GetDict().FindString("name");
-    if (!name)
+    if (!name) {
       return absl::nullopt;
+    }
     const auto* localized_name =
         param_value.GetDict().FindString("localized_name");
-    if (!localized_name)
+    if (!localized_name) {
       return absl::nullopt;
+    }
     decoded_data.account_params.emplace_back(
         std::make_pair(*name, *localized_name));
   }
@@ -172,17 +185,20 @@ SolanaInstructionDecodedData::FromValue(const base::Value::Dict& value) {
 
 absl::optional<base::Value::Dict> SolanaInstructionDecodedData::ToValue()
     const {
-  if (!IsValid())
+  if (!IsValid()) {
     return absl::nullopt;
+  }
 
   base::Value::Dict dict;
-  if (sys_ins_type)
+  if (sys_ins_type) {
     dict.Set("sys_ins_type",
              base::NumberToString(static_cast<uint32_t>(*sys_ins_type)));
+  }
 
-  if (token_ins_type)
+  if (token_ins_type) {
     dict.Set("token_ins_type",
              base::NumberToString(static_cast<uint32_t>(*token_ins_type)));
+  }
 
   base::Value::List param_list;
   for (const auto& param : params) {

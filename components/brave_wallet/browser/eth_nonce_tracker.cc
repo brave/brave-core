@@ -52,8 +52,9 @@ uint256_t EthNonceTracker::GetHighestContinuousFrom(
     auto* eth_meta = static_cast<EthTxMeta*>(meta.get());
     DCHECK(
         eth_meta->tx()->nonce());  // Not supposed to happen for a submitted tx.
-    if (eth_meta->tx()->nonce().value() == highest)
+    if (eth_meta->tx()->nonce().value() == highest) {
       highest++;
+    }
   }
   return highest;
 }

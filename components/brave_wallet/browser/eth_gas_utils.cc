@@ -41,21 +41,24 @@ bool GetSuggested1559Fees(const std::vector<std::string>& base_fee_per_gas,
   CHECK(suggested_base_fee_per_gas);
 
   // Not enough info to determine values
-  if (base_fee_per_gas.empty())
+  if (base_fee_per_gas.empty()) {
     return false;
+  }
 
   // "pending" is the last element in base_fee_per_gas
   // "latest" is the 2nd last element in base_fee_per_gas
   std::string pending_base_fee_per_gas = base_fee_per_gas.back();
   uint256_t pending_base_fee_per_gas_uint;
   if (!HexValueToUint256(pending_base_fee_per_gas,
-                         &pending_base_fee_per_gas_uint))
+                         &pending_base_fee_per_gas_uint)) {
     return false;
+  }
 
   // We use "double" math and this is unlikely to get hit, so return false
   // if the value is too big.
-  if (pending_base_fee_per_gas_uint > kMaxSafeIntegerUint64)
+  if (pending_base_fee_per_gas_uint > kMaxSafeIntegerUint64) {
     return false;
+  }
 
   // Compiler crashes without these 2 casts :(
   double pending_base_fee_per_gas_dbl =
@@ -76,8 +79,9 @@ bool GetSuggested1559Fees(const std::vector<std::string>& base_fee_per_gas,
   *high_priority_fee = fallback_priority_fee;
 
   // Leave it at fallback values if no reward info is passed
-  if (reward.size() == 0)
+  if (reward.size() == 0) {
     return true;
+  }
 
   std::vector<uint256_t> priority_fee_uints[3];
   uint256_t* priority_fees[3] = {low_priority_fee, avg_priority_fee,

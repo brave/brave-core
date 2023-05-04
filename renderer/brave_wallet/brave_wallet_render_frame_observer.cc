@@ -37,9 +37,10 @@ void BraveWalletRenderFrameObserver::DidStartNavigation(
 bool BraveWalletRenderFrameObserver::IsPageValid() {
   // There could be empty, invalid and "about:blank" URLs,
   // they should fallback to the main frame rules
-  if (url_.is_empty() || !url_.is_valid() || url_.spec() == "about:blank")
+  if (url_.is_empty() || !url_.is_valid() || url_.spec() == "about:blank") {
     url_ = url::Origin(render_frame()->GetWebFrame()->GetSecurityOrigin())
                .GetURL();
+  }
   return url_.SchemeIsHTTPOrHTTPS();
 }
 
@@ -70,8 +71,9 @@ void BraveWalletRenderFrameObserver::DidFinishLoad() {
 }
 
 void BraveWalletRenderFrameObserver::DidClearWindowObject() {
-  if (!CanCreateProvider())
+  if (!CanCreateProvider()) {
     return;
+  }
 
   auto dynamic_params = get_dynamic_params_callback_.Run();
   if (!dynamic_params.brave_use_native_solana_wallet &&

@@ -30,8 +30,9 @@ bool SolanaAddress::operator!=(const SolanaAddress& other) const {
 // static
 absl::optional<SolanaAddress> SolanaAddress::FromBytes(
     base::span<const uint8_t> bytes) {
-  if (bytes.size() != kSolanaPubkeySize)
+  if (bytes.size() != kSolanaPubkeySize) {
     return absl::nullopt;
+  }
 
   return SolanaAddress(bytes);
 }
@@ -39,8 +40,9 @@ absl::optional<SolanaAddress> SolanaAddress::FromBytes(
 // static
 absl::optional<SolanaAddress> SolanaAddress::FromBytes(
     std::vector<uint8_t> bytes) {
-  if (bytes.size() != kSolanaPubkeySize)
+  if (bytes.size() != kSolanaPubkeySize) {
     return absl::nullopt;
+  }
 
   return SolanaAddress(std::move(bytes));
 }
@@ -49,8 +51,9 @@ absl::optional<SolanaAddress> SolanaAddress::FromBytes(
 absl::optional<SolanaAddress> SolanaAddress::FromBase58(
     const std::string& base58_string) {
   std::vector<uint8_t> bytes;
-  if (!Base58Decode(base58_string, &bytes, kSolanaPubkeySize))
+  if (!Base58Decode(base58_string, &bytes, kSolanaPubkeySize)) {
     return absl::nullopt;
+  }
 
   return SolanaAddress(std::move(bytes));
 }

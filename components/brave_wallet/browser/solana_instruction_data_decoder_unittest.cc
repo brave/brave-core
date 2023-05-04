@@ -65,8 +65,9 @@ class SolanaInstructionDecoderTest : public testing::Test {
     // Skip when testing typescript impl without passing the optional key
     // because the padded 32 bytes of 0 for the public key are ignored and
     // won't be checked.
-    if (skip_byte_checks)
+    if (skip_byte_checks) {
       return;
+    }
     for (size_t i = 0; i < data.size(); ++i) {
       EXPECT_FALSE(Decode(std::vector<uint8_t>(data.begin(), data.begin() + i),
                           mojom::kSolanaTokenProgramId));

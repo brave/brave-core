@@ -51,8 +51,9 @@ void FilBlockTracker::OnGetFilBlockHeight(const std::string& chain_id,
                                           uint64_t latest_height,
                                           mojom::FilecoinProviderError error,
                                           const std::string& error_message) {
-  if (callback)
+  if (callback) {
     std::move(callback).Run(latest_height, error, error_message);
+  }
 
   if (error != mojom::FilecoinProviderError::kSuccess) {
     VLOG(1) << __FUNCTION__ << ": Failed to get latest height, error: "
@@ -63,8 +64,9 @@ void FilBlockTracker::OnGetFilBlockHeight(const std::string& chain_id,
     return;
   }
   latest_height_map_[chain_id] = latest_height;
-  for (auto& observer : observers_)
+  for (auto& observer : observers_) {
     observer.OnLatestHeightUpdated(chain_id, latest_height);
+  }
 }
 
 void FilBlockTracker::AddObserver(FilBlockTracker::Observer* observer) {

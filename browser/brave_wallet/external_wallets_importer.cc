@@ -97,8 +97,9 @@ std::string GetLegacyCryptoWalletsPassword(const std::string& password,
   for (size_t i = 0; i < salt_str->size(); ++i) {
     base_icu::UChar32 code_point;
     if (base::ReadUnicodeCharacter(salt_str->data(), salt_str->size(), &i,
-                                   &code_point))
+                                   &code_point)) {
       ++character_count;
+    }
   }
 
   std::vector<uint8_t> master_key(*hash_len);
@@ -204,30 +205,35 @@ void ExternalWalletsImporter::OnCryptoWalletsLoaded(InitCallback callback) {
 
 bool ExternalWalletsImporter::IsCryptoWalletsInstalledInternal() const {
   if (!extensions::ExtensionPrefs::Get(context_)->HasPrefForExtension(
-          ethereum_remote_client_extension_id))
+          ethereum_remote_client_extension_id)) {
     return false;
+  }
   return true;
 }
 
 bool ExternalWalletsImporter::IsExternalWalletInstalled() const {
-  if (is_external_wallet_installed_for_testing_)
+  if (is_external_wallet_installed_for_testing_) {
     return true;
+  }
   if (type_ == mojom::ExternalWalletType::CryptoWallets) {
 #if !BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
     return false;
 #endif
-    if (!IsCryptoWalletsInstalledInternal())
+    if (!IsCryptoWalletsInstalledInternal()) {
       return false;
+    }
   } else if (type_ == mojom::ExternalWalletType::MetaMask) {
-    if (!GetMetaMask())
+    if (!GetMetaMask()) {
       return false;
+    }
   }
   return true;
 }
 
 bool ExternalWalletsImporter::IsExternalWalletInitialized() const {
-  if (!IsInitialized())
+  if (!IsInitialized()) {
     return false;
+  }
   return storage_data_->FindByDottedPath("data.KeyringController") != nullptr;
 }
 
@@ -262,15 +268,17 @@ void ExternalWalletsImporter::GetImportInfo(
 
 const Extension* ExternalWalletsImporter::GetCryptoWallets() const {
   ExtensionRegistry* registry = ExtensionRegistry::Get(context_);
-  if (!registry)
+  if (!registry) {
     return nullptr;
+  }
   return registry->GetInstalledExtension(ethereum_remote_client_extension_id);
 }
 
 const Extension* ExternalWalletsImporter::GetMetaMask() const {
   ExtensionRegistry* registry = ExtensionRegistry::Get(context_);
-  if (!registry)
+  if (!registry) {
     return nullptr;
+  }
   return registry->GetInstalledExtension(metamask_extension_id);
 }
 
@@ -401,8 +409,9 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
       std::move(callback).Run(false, ImportInfo(), ImportError::kJsonError);
       return;
     }
-    if (*type != "HD Key Tree")
+    if (*type != "HD Key Tree") {
       continue;
+    }
     const std::string* str_mnemonic =
         keyring.FindStringByDottedPath("data.mnemonic");
     // data.mnemonic is not string, try utf8 encoded byte array
@@ -411,8 +420,9 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
       std::vector<uint8_t> utf8_encoded_mnemonic;
       if (list) {
         for (const auto& item : *list) {
-          if (!item.is_int())
+          if (!item.is_int()) {
             break;
+          }
           utf8_encoded_mnemonic.push_back(item.GetInt());
         }
       }

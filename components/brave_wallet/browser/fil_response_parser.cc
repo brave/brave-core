@@ -20,18 +20,22 @@ absl::optional<std::string> ParseFilGetBalance(const base::Value& json_value) {
 
 absl::optional<uint64_t> ParseFilGetTransactionCount(
     const base::Value& json_value) {
-  if (json_value.is_none())
+  if (json_value.is_none()) {
     return absl::nullopt;
+  }
 
   auto count_string = ParseSingleStringResult(json_value);
-  if (!count_string)
+  if (!count_string) {
     return absl::nullopt;
-  if (count_string->empty())
+  }
+  if (count_string->empty()) {
     return absl::nullopt;
+  }
 
   uint64_t count = 0;
-  if (!base::StringToUint64(*count_string, &count))
+  if (!base::StringToUint64(*count_string, &count)) {
     return absl::nullopt;
+  }
   return count;
 }
 
@@ -40,19 +44,24 @@ bool ParseFilEstimateGas(const base::Value& json_value,
                          std::string* gas_fee_cap,
                          int64_t* gas_limit) {
   auto result = ParseResultDict(json_value);
-  if (!result)
+  if (!result) {
     return false;
+  }
   auto* limit = result->FindString("GasLimit");
-  if (!limit)
+  if (!limit) {
     return false;
+  }
   auto* premium = result->FindString("GasPremium");
-  if (!premium)
+  if (!premium) {
     return false;
+  }
   auto* fee_cap = result->FindString("GasFeeCap");
-  if (!fee_cap)
+  if (!fee_cap) {
     return false;
-  if (!base::StringToInt64(*limit, gas_limit))
+  }
+  if (!base::StringToInt64(*limit, gas_limit)) {
     return false;
+  }
   *gas_fee_cap = *fee_cap;
   *gas_premium = *premium;
   return true;
@@ -60,8 +69,9 @@ bool ParseFilEstimateGas(const base::Value& json_value,
 
 bool ParseFilGetChainHead(const base::Value& json_value, uint64_t* height) {
   auto result = ParseResultDict(json_value);
-  if (!height || !result)
+  if (!height || !result) {
     return false;
+  }
   auto* height_value = result->FindString("Height");
   if (!height_value) {
     return false;
@@ -79,8 +89,9 @@ bool ParseFilStateSearchMsgLimited(const base::Value& json_value,
     return false;
   }
   auto* cid_value = result->FindStringByDottedPath("Message./");
-  if (!cid_value || cid != *cid_value)
+  if (!cid_value || cid != *cid_value) {
     return false;
+  }
   auto* code_value = result->FindStringByDottedPath("Receipt.ExitCode");
   if (!code_value) {
     return false;
@@ -91,12 +102,14 @@ bool ParseFilStateSearchMsgLimited(const base::Value& json_value,
 bool ParseSendFilecoinTransaction(const base::Value& json_value,
                                   std::string* cid) {
   auto result = ParseResultDict(json_value);
-  if (!cid || !result)
+  if (!cid || !result) {
     return false;
+  }
 
   auto* cid_value = result->FindString("/");
-  if (!cid_value)
+  if (!cid_value) {
     return false;
+  }
   *cid = *cid_value;
   return true;
 }

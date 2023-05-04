@@ -204,8 +204,9 @@ class BraveWalletEthereumChainTest : public InProcessBrowserTest {
   std::unique_ptr<net::test_server::HttpResponse> HandleChainRequest(
       const net::test_server::HttpRequest& request) {
     GURL absolute_url = https_server_->GetURL(request.relative_url);
-    if (absolute_url.path() != "/rpc")
+    if (absolute_url.path() != "/rpc") {
       return nullptr;
+    }
     std::map<std::string, std::string> params;
     ExtractParameters(absolute_url.query(), &params);
     auto http_response =
@@ -229,8 +230,9 @@ class BraveWalletEthereumChainTest : public InProcessBrowserTest {
     }
     std::string rpc_query("rpc=" + EncodeQuery(rpc.spec()));
     GURL::Replacements replacements;
-    if (!query.empty())
+    if (!query.empty()) {
       rpc_query += "&" + query;
+    }
     replacements.SetQueryStr(rpc_query);
     auto url =
         https_server()->GetURL(host, "/brave_wallet_ethereum_chain.html");

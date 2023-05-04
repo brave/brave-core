@@ -50,13 +50,15 @@ base::flat_map<std::string, std::string> MakeCommonJsonRpcHeaders(
   base::flat_map<std::string, std::string> request_headers;
   std::string id, method, params;
   if (GetEthJsonRequestInfo(json_payload, nullptr, &method, &params)) {
-    if (net::HttpUtil::IsValidHeaderValue(method))
+    if (net::HttpUtil::IsValidHeaderValue(method)) {
       request_headers["X-Eth-Method"] = method;
+    }
     if (method == kEthGetBlockByNumber) {
       std::string cleaned_params;
       base::RemoveChars(params, "\" []", &cleaned_params);
-      if (net::HttpUtil::IsValidHeaderValue(cleaned_params))
+      if (net::HttpUtil::IsValidHeaderValue(cleaned_params)) {
         request_headers["X-eth-get-block"] = cleaned_params;
+      }
     } else if (method == kEthBlockNumber) {
       request_headers["X-Eth-Block"] = "true";
     }

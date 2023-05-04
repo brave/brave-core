@@ -39,8 +39,9 @@ std::string SolanaKeyring::ImportAccount(const std::vector<uint8_t>& keypair) {
       keypair.begin(), keypair.begin() + kSolanaPrikeySize);
   std::unique_ptr<HDKeyEd25519> hd_key =
       HDKeyEd25519::GenerateFromPrivateKey(private_key);
-  if (!hd_key)
+  if (!hd_key) {
     return std::string();
+  }
 
   const std::string address = GetAddressInternal(hd_key.get());
   if (!AddImportedAddress(address, std::move(hd_key))) {
@@ -63,8 +64,9 @@ std::vector<uint8_t> SolanaKeyring::SignMessage(
 }
 
 std::string SolanaKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {
-  if (!hd_key_base)
+  if (!hd_key_base) {
     return std::string();
+  }
   HDKeyEd25519* hd_key = static_cast<HDKeyEd25519*>(hd_key_base);
   return hd_key->GetBase58EncodedPublicKey();
 }
@@ -78,8 +80,9 @@ absl::optional<std::string> SolanaKeyring::CreateProgramDerivedAddress(
   const std::string pda_marker = "ProgramDerivedAddress";
 
   std::vector<uint8_t> program_id_bytes;
-  if (!Base58Decode(program_id, &program_id_bytes, kSolanaPubkeySize))
+  if (!Base58Decode(program_id, &program_id_bytes, kSolanaPubkeySize)) {
     return absl::nullopt;
+  }
 
   if (seeds.size() > kMaxSeeds) {
     return absl::nullopt;
@@ -125,8 +128,9 @@ absl::optional<std::string> SolanaKeyring::FindProgramDerivedAddress(
 
     auto address = CreateProgramDerivedAddress(seeds_with_bump, program_id);
     if (address) {
-      if (ret_bump_seed)
+      if (ret_bump_seed) {
         *ret_bump_seed = bump_seed[0];
+      }
 
       return address;
     }

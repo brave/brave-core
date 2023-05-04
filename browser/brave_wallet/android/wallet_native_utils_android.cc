@@ -24,8 +24,9 @@ static void JNI_WalletNativeUtils_ResetWallet(
 
   auto* brave_wallet_service =
       brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile);
-  if (brave_wallet_service)
+  if (brave_wallet_service) {
     brave_wallet_service->Reset();
+  }
 }
 
 static jboolean JNI_WalletNativeUtils_IsUnstoppableDomainsTld(

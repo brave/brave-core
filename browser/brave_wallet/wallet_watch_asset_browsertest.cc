@@ -105,8 +105,9 @@ class WalletWatchAssetBrowserTest : public InProcessBrowserTest {
         mojom::CoinType::ETH,
         base::BindLambdaForTesting(
             [&](std::vector<mojom::BlockchainTokenPtr> tokens) {
-              for (const auto& token : tokens)
+              for (const auto& token : tokens) {
                 tokens_out.push_back(token.Clone());
+              }
               run_loop.Quit();
             }));
     run_loop.Run();

@@ -25,8 +25,9 @@ SwapServiceFactory* SwapServiceFactory::GetInstance() {
 // static
 mojo::PendingRemote<mojom::SwapService> SwapServiceFactory::GetForContext(
     content::BrowserContext* context) {
-  if (!IsAllowedForContext(context))
+  if (!IsAllowedForContext(context)) {
     return mojo::PendingRemote<mojom::SwapService>();
+  }
 
   return static_cast<SwapService*>(
              GetInstance()->GetServiceForBrowserContext(context, true))

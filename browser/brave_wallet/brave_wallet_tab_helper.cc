@@ -28,8 +28,9 @@ BraveWalletTabHelper::BraveWalletTabHelper(content::WebContents* web_contents)
 
 BraveWalletTabHelper::~BraveWalletTabHelper() {
 #if !BUILDFLAG(IS_ANDROID)
-  if (IsShowingBubble())
+  if (IsShowingBubble()) {
     CloseBubble();
+  }
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
 
@@ -37,8 +38,9 @@ void BraveWalletTabHelper::AddSolanaConnectedAccount(
     const content::GlobalRenderFrameHostId& id,
     const std::string& account) {
   base::flat_set<std::string> connection_set;
-  if (solana_connected_accounts_.contains(id))
+  if (solana_connected_accounts_.contains(id)) {
     connection_set = solana_connected_accounts_.at(id);
+  }
   connection_set.insert(account);
   solana_connected_accounts_[id] = std::move(connection_set);
 }
@@ -46,8 +48,9 @@ void BraveWalletTabHelper::AddSolanaConnectedAccount(
 void BraveWalletTabHelper::RemoveSolanaConnectedAccount(
     const content::GlobalRenderFrameHostId& id,
     const std::string& account) {
-  if (!solana_connected_accounts_.contains(id))
+  if (!solana_connected_accounts_.contains(id)) {
     return;
+  }
   auto connection_set = solana_connected_accounts_.at(id);
   connection_set.erase(account);
   solana_connected_accounts_[id] = std::move(connection_set);
@@ -56,8 +59,9 @@ void BraveWalletTabHelper::RemoveSolanaConnectedAccount(
 bool BraveWalletTabHelper::IsSolanaAccountConnected(
     const content::GlobalRenderFrameHostId& id,
     const std::string& account) {
-  if (!solana_connected_accounts_.contains(id))
+  if (!solana_connected_accounts_.contains(id)) {
     return false;
+  }
   auto connection_set = solana_connected_accounts_.at(id);
   return connection_set.contains(account);
 }
@@ -69,8 +73,9 @@ void BraveWalletTabHelper::ClearSolanaConnectedAccounts(
 
 #if !BUILDFLAG(IS_ANDROID)
 void BraveWalletTabHelper::SetCloseOnDeactivate(bool close) {
-  if (wallet_bubble_manager_delegate_)
+  if (wallet_bubble_manager_delegate_) {
     wallet_bubble_manager_delegate_->CloseOnDeactivate(close);
+  }
   close_on_deactivate_for_testing_ = close;
 }
 
@@ -82,16 +87,18 @@ void BraveWalletTabHelper::ShowBubble() {
   wallet_bubble_manager_delegate_ =
       WalletBubbleManagerDelegate::Create(&GetWebContents(), GetBubbleURL());
   wallet_bubble_manager_delegate_->ShowBubble();
-  if (show_bubble_callback_for_testing_)
+  if (show_bubble_callback_for_testing_) {
     std::move(show_bubble_callback_for_testing_).Run();
+  }
 }
 
 void BraveWalletTabHelper::ShowApproveWalletBubble() {
   // If the Wallet page is open, then it will try to open the UI.
   // But the user may have already had the panel UI opened.
   // We want to avoid a hiding / showing of the panel in that case.
-  if (IsShowingBubble())
+  if (IsShowingBubble()) {
     return;
+  }
   wallet_bubble_manager_delegate_ = WalletBubbleManagerDelegate::Create(
       &GetWebContents(), GetApproveBubbleURL());
   wallet_bubble_manager_delegate_->ShowBubble();
@@ -102,8 +109,9 @@ void BraveWalletTabHelper::CloseBubble() {
     is_showing_bubble_for_testing_ = false;
     return;
   }
-  if (wallet_bubble_manager_delegate_)
+  if (wallet_bubble_manager_delegate_) {
     wallet_bubble_manager_delegate_->CloseBubble();
+  }
 }
 
 bool BraveWalletTabHelper::IsShowingBubble() {
@@ -133,8 +141,9 @@ GURL BraveWalletTabHelper::GetBubbleURL() {
       (manager->Requests()[0]->request_type() !=
            permissions::RequestType::kBraveEthereum &&
        manager->Requests()[0]->request_type() !=
-           permissions::RequestType::kBraveSolana))
+           permissions::RequestType::kBraveSolana)) {
     return webui_url;
+  }
 
   // Handle ConnectWithSite (ethereum permission) request.
   std::vector<std::string> accounts;

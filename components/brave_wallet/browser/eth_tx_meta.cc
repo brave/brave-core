@@ -74,8 +74,9 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
     std::tie(tx_type, tx_params, tx_args) = *tx_info;
   }
   absl::optional<std::string> signed_transaction;
-  if (tx_->IsSigned())
+  if (tx_->IsSigned()) {
     signed_transaction = tx_->GetSignedTransaction();
+  }
 
   return mojom::TransactionInfo::New(
       id_, from_, tx_hash_,

@@ -48,11 +48,13 @@ bool IsValidNetwork(const std::string& network) {
 }
 
 absl::optional<mojom::FilecoinAddressProtocol> ToProtocol(char input) {
-  if ((input - '0') == static_cast<int>(mojom::FilecoinAddressProtocol::BLS))
+  if ((input - '0') == static_cast<int>(mojom::FilecoinAddressProtocol::BLS)) {
     return mojom::FilecoinAddressProtocol::BLS;
+  }
   if ((input - '0') ==
-      static_cast<int>(mojom::FilecoinAddressProtocol::SECP256K1))
+      static_cast<int>(mojom::FilecoinAddressProtocol::SECP256K1)) {
     return mojom::FilecoinAddressProtocol::SECP256K1;
+  }
   return absl::nullopt;
 }
 
@@ -91,21 +93,25 @@ bool FilAddress::operator!=(const FilAddress& other) const {
 // static
 FilAddress FilAddress::FromAddress(const std::string& address) {
   if (address.size() != kAddressSizeBLS &&
-      address.size() != kAddressSizeSecp256K)
+      address.size() != kAddressSizeSecp256K) {
     return FilAddress();
+  }
 
   auto protocol = ToProtocol(address[1]);
-  if (!protocol)
+  if (!protocol) {
     return FilAddress();
+  }
 
   std::string network{address[0]};
-  if (!IsValidNetwork(network))
+  if (!IsValidNetwork(network)) {
     return FilAddress();
+  }
 
   std::string payload_decoded{
       base32::Base32Decode(base::ToUpperASCII(address.substr(2)))};
-  if (payload_decoded.empty())
+  if (payload_decoded.empty()) {
     return FilAddress();
+  }
 
   std::string payload_string{
       payload_decoded.substr(0, payload_decoded.size() - kChecksumSize)};
@@ -121,13 +127,16 @@ FilAddress FilAddress::FromUncompressedPublicKey(
     const std::vector<uint8_t>& uncompressed_public_key,
     mojom::FilecoinAddressProtocol protocol,
     const std::string& network) {
-  if (protocol != mojom::FilecoinAddressProtocol::SECP256K1)
+  if (protocol != mojom::FilecoinAddressProtocol::SECP256K1) {
     return FilAddress();
-  if (uncompressed_public_key.empty())
+  }
+  if (uncompressed_public_key.empty()) {
     return FilAddress();
+  }
   auto payload = BlakeHash(uncompressed_public_key, kHashLengthSecp256K);
-  if (!payload || payload->empty())
+  if (!payload || payload->empty()) {
     return FilAddress();
+  }
   return FromPayload(*payload, protocol, network);
 }
 
@@ -138,14 +147,17 @@ FilAddress FilAddress::FromUncompressedPublicKey(
 FilAddress FilAddress::FromPayload(const std::vector<uint8_t>& payload,
                                    mojom::FilecoinAddressProtocol protocol,
                                    const std::string& network) {
-  if (!IsValidNetwork(network))
+  if (!IsValidNetwork(network)) {
     return FilAddress();
+  }
   if (protocol == mojom::FilecoinAddressProtocol::SECP256K1) {
-    if (payload.size() != kHashLengthSecp256K)
+    if (payload.size() != kHashLengthSecp256K) {
       return FilAddress();
+    }
   } else if (protocol == mojom::FilecoinAddressProtocol::BLS) {
-    if (payload.size() != kPublicKeySizeBLS)
+    if (payload.size() != kPublicKeySizeBLS) {
       return FilAddress();
+    }
   }
   return FilAddress(payload, protocol, network);
 }
@@ -173,14 +185,16 @@ bool FilAddress::IsValidAddress(const std::string& address) {
 // only added to an address when encoding to a string.
 // Addresses following the ID Protocol do not have a checksum.
 std::string FilAddress::EncodeAsString() const {
-  if (bytes_.empty())
+  if (bytes_.empty()) {
     return std::string();
+  }
   std::vector<uint8_t> payload_hash(bytes_);
   std::vector<uint8_t> checksum(bytes_);
   checksum.insert(checksum.begin(), static_cast<int>(protocol_));
   auto checksum_hash = BlakeHash(checksum, kChecksumSize);
-  if (!checksum_hash)
+  if (!checksum_hash) {
     return std::string();
+  }
   payload_hash.insert(payload_hash.end(), checksum_hash->begin(),
                       checksum_hash->end());
   std::string input(payload_hash.begin(), payload_hash.end());

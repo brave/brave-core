@@ -20,15 +20,17 @@ bool ParseResultFromDict(const base::Value::Dict* response_dict,
                          const std::string& key,
                          std::string* output_val) {
   auto* val = response_dict->FindString(key);
-  if (!val)
+  if (!val) {
     return false;
+  }
   *output_val = *val;
   return true;
 }
 
 std::string EmptyIfNull(const std::string* str) {
-  if (str)
+  if (str) {
     return *str;
+  }
   return "";
 }
 
@@ -87,17 +89,19 @@ bool ParseTokenList(const std::string& json,
 
     absl::optional<bool> is_erc20_opt =
         blockchain_token_value->FindBool("erc20");
-    if (is_erc20_opt)
+    if (is_erc20_opt) {
       blockchain_token->is_erc20 = *is_erc20_opt;
-    else
+    } else {
       blockchain_token->is_erc20 = false;
+    }
 
     absl::optional<bool> is_erc721_opt =
         blockchain_token_value->FindBool("erc721");
-    if (is_erc721_opt)
+    if (is_erc721_opt) {
       blockchain_token->is_erc721 = *is_erc721_opt;
-    else
+    } else {
       blockchain_token->is_erc721 = false;
+    }
 
     blockchain_token->is_nft = blockchain_token->is_erc721;
 
@@ -114,10 +118,11 @@ bool ParseTokenList(const std::string& json,
 
     absl::optional<int> decimals_opt =
         blockchain_token_value->FindInt("decimals");
-    if (decimals_opt)
+    if (decimals_opt) {
       blockchain_token->decimals = *decimals_opt;
-    else
+    } else {
       continue;
+    }
 
     // chain_id is only optional for ETH mainnet token lists.
     blockchain_token->chain_id = "0x1";
@@ -193,17 +198,20 @@ bool ParseChainList(const std::string& json, ChainList* result) {
   for (const auto& list_item : *chain_list) {
     auto network = mojom::NetworkInfo::New();
     auto* chain_item = list_item.GetIfDict();
-    if (!chain_item)
+    if (!chain_item) {
       continue;
+    }
 
     int chain_id = chain_item->FindInt("chainId").value_or(0);
-    if (!chain_id)
+    if (!chain_id) {
       continue;
+    }
     network->chain_id = base::StringPrintf("0x%x", chain_id);
 
     network->chain_name = EmptyIfNull(chain_item->FindString("name"));
-    if (network->chain_name.empty())
+    if (network->chain_name.empty()) {
       continue;
+    }
 
     if (auto* block_explorer_list = chain_item->FindList("explorers")) {
       for (auto& item : *block_explorer_list) {
@@ -216,8 +224,9 @@ bool ParseChainList(const std::string& json, ChainList* result) {
         }
       }
     }
-    if (network->block_explorer_urls.empty())
+    if (network->block_explorer_urls.empty()) {
       continue;
+    }
 
     if (auto* rpc_list = chain_item->FindList("rpc")) {
       for (auto& item : *rpc_list) {
@@ -228,23 +237,27 @@ bool ParseChainList(const std::string& json, ChainList* result) {
         }
       }
     }
-    if (network->rpc_endpoints.empty())
+    if (network->rpc_endpoints.empty()) {
       continue;
+    }
     network->active_rpc_endpoint_index =
         GetFirstValidChainURLIndex(network->rpc_endpoints);
 
     network->symbol = EmptyIfNull(
         chain_item->FindStringByDottedPath("nativeCurrency.symbol"));
-    if (network->symbol.empty())
+    if (network->symbol.empty()) {
       continue;
+    }
     network->symbol_name =
         EmptyIfNull(chain_item->FindStringByDottedPath("nativeCurrency.name"));
-    if (network->symbol_name.empty())
+    if (network->symbol_name.empty()) {
       continue;
+    }
     network->decimals =
         chain_item->FindIntByDottedPath("nativeCurrency.decimals").value_or(0);
-    if (network->decimals == 0)
+    if (network->decimals == 0) {
       continue;
+    }
     network->coin = mojom::CoinType::ETH;
 
     result->push_back(std::move(network));

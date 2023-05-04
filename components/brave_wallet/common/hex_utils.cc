@@ -21,8 +21,9 @@ std::string ToHex(const std::string& data) {
 }
 
 std::string ToHex(base::span<const uint8_t> data) {
-  if (data.empty())
+  if (data.empty()) {
     return "0x0";
+  }
   return "0x" + base::ToLowerASCII(base::HexEncode(data));
 }
 
@@ -133,11 +134,13 @@ bool HexValueToUint256(const std::string& hex_input, uint256_t* out) {
 }
 
 bool HexValueToInt256(const std::string& hex_input, int256_t* out) {
-  if (!out)
+  if (!out) {
     return false;
+  }
   uint256_t val;
-  if (!HexValueToUint256(hex_input, &val))
+  if (!HexValueToUint256(hex_input, &val)) {
     return false;
+  }
   // This is the same as ~val + 1
   // To convert a positive number into a negative number, using the two’s
   // complement representation, invert all of the bits of the number + 1
@@ -165,26 +168,30 @@ bool PrefixedHexStringToBytes(const std::string& input,
                               std::vector<uint8_t>* bytes) {
   CHECK(bytes);
   bytes->clear();
-  if (!IsValidHexString(input))
+  if (!IsValidHexString(input)) {
     return false;
+  }
   if (input.size() == 2) {
     // Valid hex string of size 2 must be "0x"
     DCHECK_EQ(input, "0x");
     return true;
   }
   std::string hex_substr = input.substr(2);
-  if (hex_substr.length() % 2 == 1)
+  if (hex_substr.length() % 2 == 1) {
     hex_substr = "0" + hex_substr;
-  if (!base::HexStringToBytes(hex_substr, bytes))
+  }
+  if (!base::HexStringToBytes(hex_substr, bytes)) {
     return false;
+  }
   return true;
 }
 
 absl::optional<std::vector<uint8_t>> PrefixedHexStringToBytes(
     const std::string& input) {
   std::vector<uint8_t> result;
-  if (!PrefixedHexStringToBytes(input, &result))
+  if (!PrefixedHexStringToBytes(input, &result)) {
     return absl::nullopt;
+  }
 
   return result;
 }

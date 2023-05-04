@@ -28,8 +28,9 @@ absl::optional<std::string> EncodeJupiterTransactionParams(
   absl::optional<std::string> associated_token_account =
       SolanaKeyring::GetAssociatedTokenAccount(
           params->output_mint, brave_wallet::kSolanaFeeRecipient);
-  if (!associated_token_account)
+  if (!associated_token_account) {
     return absl::nullopt;
+  }
 
   // If the if-condition below is false, associated_token_account is unused,
   // but the originating call to SolanaKeyring::GetAssociatedTokenAccount()

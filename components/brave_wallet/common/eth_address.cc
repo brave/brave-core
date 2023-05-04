@@ -53,8 +53,9 @@ EthAddress EthAddress::FromPublicKey(const std::vector<uint8_t>& public_key) {
 
 // static
 EthAddress EthAddress::FromHex(const std::string& input) {
-  if (!IsValidAddress(input))
+  if (!IsValidAddress(input)) {
     return EthAddress();
+  }
 
   std::vector<uint8_t> bytes;
   if (!PrefixedHexStringToBytes(input, &bytes)) {
@@ -67,8 +68,9 @@ EthAddress EthAddress::FromHex(const std::string& input) {
 
 // static
 EthAddress EthAddress::FromBytes(base::span<const uint8_t> bytes) {
-  if (bytes.size() != kAddressLength)
+  if (bytes.size() != kAddressLength) {
     return EthAddress();
+  }
   return EthAddress(bytes);
 }
 

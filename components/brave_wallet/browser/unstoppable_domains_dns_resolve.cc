@@ -34,8 +34,9 @@ static_assert(std::size(kRecordKeys) ==
 }  // namespace
 
 GURL ResolveUrl(const std::vector<std::string>& response) {
-  if (response.size() != GetRecordKeys().size())
+  if (response.size() != GetRecordKeys().size()) {
     return GURL();
+  }
 
   // TODO(jocelyn): Do not fallback to the set redirect URL if dns.A or
   // dns.AAAA is not empty once we support the classical DNS records case.
