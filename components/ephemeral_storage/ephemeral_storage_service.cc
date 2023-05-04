@@ -236,7 +236,12 @@ void EphemeralStorageService::CleanupFirstPartyStorageArea(
   content::BrowsingDataRemover* remover = context_->GetBrowsingDataRemover();
   content::BrowsingDataRemover::DataType data_to_remove =
       content::BrowsingDataRemover::DATA_TYPE_COOKIES |
-      content::BrowsingDataRemover::DATA_TYPE_DOM_STORAGE;
+      content::BrowsingDataRemover::DATA_TYPE_CACHE |
+      content::BrowsingDataRemover::DATA_TYPE_MEDIA_LICENSES |
+      content::BrowsingDataRemover::DATA_TYPE_DOM_STORAGE |
+      content::BrowsingDataRemover::DATA_TYPE_ATTRIBUTION_REPORTING |
+      content::BrowsingDataRemover::DATA_TYPE_PRIVACY_SANDBOX |
+      content::BrowsingDataRemover::DATA_TYPE_PRIVACY_SANDBOX_INTERNAL;
   content::BrowsingDataRemover::OriginType origin_type =
       content::BrowsingDataRemover::ORIGIN_TYPE_UNPROTECTED_WEB |
       content::BrowsingDataRemover::ORIGIN_TYPE_PROTECTED_WEB;
