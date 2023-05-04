@@ -13,6 +13,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 #if BUILDFLAG(IS_WIN)
     {kAppBoundEncryptionMetrics, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
+    {kBookmarkTriggerForPrerender2, base::FEATURE_DISABLED_BY_DEFAULT},
 #if !BUILDFLAG(IS_ANDROID)
     {kCopyLinkToText, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
@@ -21,7 +22,9 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     // Google has asked embedders not to enforce these pins:
     // https://groups.google.com/a/chromium.org/g/embedder-dev/c/XsNTwEiN1lI/m/TMXh-ZvOAAAJ
     {kKeyPinningComponentUpdater, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kOmniboxTriggerForPrerender2, base::FEATURE_DISABLED_BY_DEFAULT},
     {kOmniboxTriggerForNoStatePrefetch, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kSupportSearchSuggestionForPrerender2, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace features
