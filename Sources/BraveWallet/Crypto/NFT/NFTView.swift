@@ -94,7 +94,7 @@ struct NFTView: View {
     }) {
       HStack {
         Text(nftStore.networkFilter.title)
-        Image(braveSystemName: "brave.text.alignleft")
+        Image(braveSystemName: "leo.list")
       }
       .font(.footnote.weight(.medium))
       .foregroundColor(Color(.braveBlurpleTint))
