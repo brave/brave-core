@@ -15,7 +15,7 @@
 namespace brave_ads {
 
 using URLResponsePair =
-    std::pair</*status_response_code*/ int, /*response_body*/ std::string>;
+    std::pair</*response_status_code*/ int, /*response_body*/ std::string>;
 using URLResponseList = std::vector<URLResponsePair>;
 using URLResponseMap = base::flat_map</*path*/ std::string, URLResponseList>;
 

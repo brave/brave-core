@@ -50,7 +50,8 @@ absl::optional<OptedInInfo> CreateOptedIn(
   OptedInInfo opted_in;
 
   // Token
-  const std::vector<privacy::cbr::Token> tokens = token_generator->Generate(1);
+  const std::vector<privacy::cbr::Token> tokens =
+      token_generator->Generate(/*count*/ 1);
   DCHECK(!tokens.empty());
   opted_in.token = tokens.front();
 

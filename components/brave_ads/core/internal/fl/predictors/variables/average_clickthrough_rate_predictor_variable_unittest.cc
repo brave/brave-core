@@ -24,7 +24,8 @@ class BraveAdsAverageClickthroughRatePredictorVariableTest
 TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest, GetDataType) {
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
-      std::make_unique<AverageClickthroughRatePredictorVariable>(base::Days(7));
+      std::make_unique<AverageClickthroughRatePredictorVariable>(
+          /*time_window*/ base::Days(7));
 
   // Act
 
@@ -37,7 +38,8 @@ TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest,
        GetValueForNoHistory) {
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
-      std::make_unique<AverageClickthroughRatePredictorVariable>(base::Days(1));
+      std::make_unique<AverageClickthroughRatePredictorVariable>(
+          /*time_window*/ base::Days(1));
 
   // Act
 
@@ -49,7 +51,8 @@ TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest,
        GetValueAfterExceedingTimeWindow) {
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
-      std::make_unique<AverageClickthroughRatePredictorVariable>(base::Days(1));
+      std::make_unique<AverageClickthroughRatePredictorVariable>(
+          /*time_window*/ base::Days(1));
 
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ false);
@@ -71,7 +74,8 @@ TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest,
        GetValueForNoClicks) {
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
-      std::make_unique<AverageClickthroughRatePredictorVariable>(base::Days(1));
+      std::make_unique<AverageClickthroughRatePredictorVariable>(
+          /*time_window*/ base::Days(1));
 
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ false);
@@ -89,7 +93,8 @@ TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest,
        GetValueForOneClick) {
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
-      std::make_unique<AverageClickthroughRatePredictorVariable>(base::Days(1));
+      std::make_unique<AverageClickthroughRatePredictorVariable>(
+          /*time_window*/ base::Days(1));
 
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ false);
@@ -108,7 +113,8 @@ TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest,
        GetValueForMoreThanOneClick) {
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
-      std::make_unique<AverageClickthroughRatePredictorVariable>(base::Days(1));
+      std::make_unique<AverageClickthroughRatePredictorVariable>(
+          /*time_window*/ base::Days(1));
 
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ false);
@@ -127,7 +133,8 @@ TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest,
 TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest, GetValue) {
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
-      std::make_unique<AverageClickthroughRatePredictorVariable>(base::Days(1));
+      std::make_unique<AverageClickthroughRatePredictorVariable>(
+          /*time_window*/ base::Days(1));
 
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ false);

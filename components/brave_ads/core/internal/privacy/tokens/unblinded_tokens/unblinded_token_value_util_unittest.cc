@@ -38,7 +38,7 @@ class BraveAdsUnblindedTokenValueUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsUnblindedTokenValueUtilTest, ToValue) {
   // Arrange
-  const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(2);
+  const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(/*count*/ 2);
 
   // Act
 

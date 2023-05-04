@@ -57,7 +57,7 @@ TEST_F(BraveAdsTransferTest, DoNotTransferAdIfUrlIsMissingHTTPOrHTTPSScheme) {
       /*is_incognito*/ false);
 
   // Act
-  transfer_->MaybeTransferAd(1, {GURL("brave.com")});
+  transfer_->MaybeTransferAd(/*tab_id*/ 1, {GURL("brave.com")});
   AdvanceClockBy(base::Seconds(10));
 
   // Assert
@@ -78,7 +78,7 @@ TEST_F(BraveAdsTransferTest,
       /*is_incognito*/ false);
 
   // Act
-  transfer_->MaybeTransferAd(1, {GURL("brave.com")});
+  transfer_->MaybeTransferAd(/*tab_id*/ 1, {GURL("brave.com")});
   AdvanceClockBy(base::Seconds(10));
 
   // Assert
@@ -97,10 +97,10 @@ TEST_F(BraveAdsTransferTest, DoNotTransferAdIfTheSameAdIsAlreadyTransferring) {
       /*is_visible*/ true,
       /*is_incognito*/ false);
 
-  transfer_->MaybeTransferAd(1, {GURL("https://brave.com")});
+  transfer_->MaybeTransferAd(/*tab_id*/ 1, {GURL("https://brave.com")});
 
   // Act
-  transfer_->MaybeTransferAd(1, {GURL("https://brave.com")});
+  transfer_->MaybeTransferAd(/*tab_id*/ 1, {GURL("https://brave.com")});
 
   FastForwardClockBy(base::Seconds(10));
 
@@ -120,7 +120,7 @@ TEST_F(BraveAdsTransferTest, TransferAdIfAnotherAdIsAlreadyTransferring) {
       /*is_visible*/ true,
       /*is_incognito*/ false);
 
-  transfer_->MaybeTransferAd(1, {GURL("https://foobar.com")});
+  transfer_->MaybeTransferAd(/*tab_id*/ 1, {GURL("https://foobar.com")});
 
   NotifyTabDidChange(
       /*id*/ 1, /*redirect_chain*/ {GURL("https://foobar.com")},
@@ -133,7 +133,7 @@ TEST_F(BraveAdsTransferTest, TransferAdIfAnotherAdIsAlreadyTransferring) {
       /*is_incognito*/ false);
 
   // Act
-  transfer_->MaybeTransferAd(2, {GURL("https://brave.com")});
+  transfer_->MaybeTransferAd(/*tab_id*/ 2, {GURL("https://brave.com")});
 
   FastForwardClockBy(base::Seconds(10));
 
@@ -155,7 +155,7 @@ TEST_F(BraveAdsTransferTest,
       /*is_incognito*/ false);
 
   // Act
-  transfer_->MaybeTransferAd(1, {GURL("https://brave.com")});
+  transfer_->MaybeTransferAd(/*tab_id*/ 1, {GURL("https://brave.com")});
 
   FastForwardClockBy(base::Seconds(10));
 
@@ -176,7 +176,7 @@ TEST_F(BraveAdsTransferTest, FailToTransferAdIfNotVisible) {
       /*is_incognito*/ false);
 
   // Act
-  transfer_->MaybeTransferAd(1, {GURL("https://brave.com")});
+  transfer_->MaybeTransferAd(/*tab_id*/ 1, {GURL("https://brave.com")});
 
   FastForwardClockBy(base::Seconds(10));
 
@@ -197,7 +197,7 @@ TEST_F(BraveAdsTransferTest,
       /*is_visible*/ true,
       /*is_incognito*/ false);
 
-  transfer_->MaybeTransferAd(1, {GURL("https://brave.com")});
+  transfer_->MaybeTransferAd(/*tab_id*/ 1, {GURL("https://brave.com")});
 
   // Act
   NotifyTabDidChange(
