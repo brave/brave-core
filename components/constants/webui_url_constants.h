@@ -12,6 +12,7 @@
 extern const char kAdblockHost[];
 extern const char kAdblockInternalsHost[];
 extern const char kAdblockJS[];
+extern const char kSkusInternalsHost[];
 #if BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
 extern const char kIPFSWebUIHost[];
 extern const char kIPFSWebUIURL[];
