@@ -44,7 +44,7 @@ namespace {
 constexpr base::TimeDelta kRetryAfter = base::Seconds(15);
 
 constexpr size_t kMinimumUnblindedTokens = 20;
-constexpr size_t kMaximumUnblindedTokens = 50;
+constexpr size_t kMaximumUnblindedTokens = 21;
 
 bool ShouldRefillUnblindedTokens() {
   return privacy::UnblindedTokenCount() < kMinimumUnblindedTokens;

@@ -856,6 +856,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     @Override
     public void onPreferenceChange() {
+        String captchaID = UserPrefs.get(Profile.getLastUsedRegularProfile())
+                                   .getString(BravePref.SCHEDULED_CAPTCHA_ID);
+        String paymentID = UserPrefs.get(Profile.getLastUsedRegularProfile())
+                                   .getString(BravePref.SCHEDULED_CAPTCHA_PAYMENT_ID);
+        Log.e("adaptive captcha", "captchaID : " + captchaID + " Payment ID : " + paymentID);
         maybeSolveAdaptiveCaptcha();
     }
 
