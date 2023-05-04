@@ -22,6 +22,15 @@ import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveLocalState;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
+import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils.GetBalanceResponseBaseContext;
+import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils.GetBalanceResponseContext;
+import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils.GetBlockchainTokensBalancesResponseContext;
+import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils.GetErc20TokenBalanceResponseContext;
+import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils.GetErc721TokenBalanceResponseContext;
+import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils.GetNativeAssetsBalancesResponseContext;
+import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils.GetSolanaBalanceResponseContext;
+import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils.GetSplTokenAccountBalanceResponseContext;
+import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils.MultiResponseHandler;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.mojo.bindings.Callbacks;
@@ -46,10 +55,9 @@ public class BalanceHelper {
         if (jsonRpcService == null) return;
         HashMap<String, Double> nativeAssetsBalances = new HashMap<String, Double>();
 
-        AsyncUtils.MultiResponseHandler balancesMultiResponse =
-                new AsyncUtils.MultiResponseHandler(accountInfos.length);
-        ArrayList<AsyncUtils.GetBalanceResponseBaseContext> contexts =
-                new ArrayList<AsyncUtils.GetBalanceResponseBaseContext>();
+        MultiResponseHandler balancesMultiResponse = new MultiResponseHandler(accountInfos.length);
+        ArrayList<GetBalanceResponseBaseContext> contexts =
+                new ArrayList<GetBalanceResponseBaseContext>();
 
         // Native balances
         for (AccountInfo accountInfo : accountInfos) {
@@ -57,19 +65,17 @@ public class BalanceHelper {
 
             // Get CoinType SOL balances
             if (selectedNetwork.coin == CoinType.SOL) {
-                AsyncUtils.GetSolanaBalanceResponseContext context =
-                        addBalanceResponseContext(contexts,
-                                new AsyncUtils.GetSolanaBalanceResponseContext(
-                                        balancesMultiResponse.singleResponseComplete),
-                                accountInfo.address, null);
+                GetSolanaBalanceResponseContext context = addBalanceResponseContext(contexts,
+                        new GetSolanaBalanceResponseContext(
+                                balancesMultiResponse.singleResponseComplete),
+                        accountInfo.address, null);
                 jsonRpcService.getSolanaBalance(
                         accountInfo.address, selectedNetwork.chainId, context);
             } else if (accountInfo.coin == CoinType.FIL) {
                 // TODO: FIL placeholder
             } else {
-                AsyncUtils.GetBalanceResponseContext context = addBalanceResponseContext(contexts,
-                        new AsyncUtils.GetBalanceResponseContext(
-                                balancesMultiResponse.singleResponseComplete),
+                GetBalanceResponseContext context = addBalanceResponseContext(contexts,
+                        new GetBalanceResponseContext(balancesMultiResponse.singleResponseComplete),
                         accountInfo.address, null);
                 jsonRpcService.getBalance(
                         accountInfo.address, accountInfo.coin, selectedNetwork.chainId, context);
@@ -78,7 +84,7 @@ public class BalanceHelper {
 
         balancesMultiResponse.setWhenAllCompletedAction(() -> {
             final int networkDecimals = selectedNetwork.decimals;
-            for (AsyncUtils.GetBalanceResponseBaseContext context : contexts) {
+            for (GetBalanceResponseBaseContext context : contexts) {
                 Double nativeAssetBalance = (context.error == ProviderError.SUCCESS)
                         ? Utils.getBalanceForCoinType(
                                 selectedNetwork.coin, networkDecimals, context.balance)
@@ -108,10 +114,10 @@ public class BalanceHelper {
         }
         tokens = tokensList.toArray(new BlockchainToken[0]);
 
-        AsyncUtils.MultiResponseHandler balancesMultiResponse =
-                new AsyncUtils.MultiResponseHandler(accountInfos.length * tokens.length);
-        ArrayList<AsyncUtils.GetBalanceResponseBaseContext> contexts =
-                new ArrayList<AsyncUtils.GetBalanceResponseBaseContext>();
+        MultiResponseHandler balancesMultiResponse =
+                new MultiResponseHandler(accountInfos.length * tokens.length);
+        ArrayList<GetBalanceResponseBaseContext> contexts =
+                new ArrayList<GetBalanceResponseBaseContext>();
 
         // Token balances
         for (AccountInfo accountInfo : accountInfos) {
@@ -121,18 +127,18 @@ public class BalanceHelper {
                 if (accountInfo.coin == CoinType.ETH) {
                     if (selectedNetwork.chainId.equals(token.chainId)) {
                         if (token.isErc721) {
-                            AsyncUtils.GetErc721TokenBalanceResponseContext context =
+                            GetErc721TokenBalanceResponseContext context =
                                     addBalanceResponseContext(contexts,
-                                            new AsyncUtils.GetErc721TokenBalanceResponseContext(
+                                            new GetErc721TokenBalanceResponseContext(
                                                     balancesMultiResponse.singleResponseComplete),
                                             accountInfo.address, token);
                             jsonRpcService.getErc721TokenBalance(token.contractAddress,
                                     token.tokenId != null ? token.tokenId : "", accountInfo.address,
                                     token.chainId, context);
                         } else {
-                            AsyncUtils.GetErc20TokenBalanceResponseContext context =
+                            GetErc20TokenBalanceResponseContext context =
                                     addBalanceResponseContext(contexts,
-                                            new AsyncUtils.GetErc20TokenBalanceResponseContext(
+                                            new GetErc20TokenBalanceResponseContext(
                                                     balancesMultiResponse.singleResponseComplete),
                                             accountInfo.address, token);
                             jsonRpcService.getErc20TokenBalance(token.contractAddress,
@@ -141,9 +147,9 @@ public class BalanceHelper {
                     }
                 } else if (accountInfo.coin == CoinType.SOL) {
                     if (selectedNetwork.chainId.equals(token.chainId)) {
-                        AsyncUtils.GetSplTokenAccountBalanceResponseContext context =
+                        GetSplTokenAccountBalanceResponseContext context =
                                 addBalanceResponseContext(contexts,
-                                        new AsyncUtils.GetSplTokenAccountBalanceResponseContext(
+                                        new GetSplTokenAccountBalanceResponseContext(
                                                 balancesMultiResponse.singleResponseComplete),
                                         accountInfo.address, token);
                         jsonRpcService.getSplTokenAccountBalance(
@@ -156,7 +162,7 @@ public class BalanceHelper {
         }
 
         balancesMultiResponse.setWhenAllCompletedAction(() -> {
-            for (AsyncUtils.GetBalanceResponseBaseContext context : contexts) {
+            for (GetBalanceResponseBaseContext context : contexts) {
                 final String tokenKey = Utils.tokenToString(context.userAsset);
                 final int decimals = (context.userAsset.decimals != 0 || context.userAsset.isErc721)
                         ? context.userAsset.decimals
@@ -215,57 +221,28 @@ public class BalanceHelper {
                 HashMap<Integer, ArrayList<NetworkInfo>> sortedNetworks =
                         filterAndSortNetworksP3A(relevantNetworks, selectedNetwork);
                 int numNetworks = 0;
-                for (int coinType : Utils.P3ACoinTypes)
+                for (int coinType : Utils.P3ACoinTypes) {
                     numNetworks += sortedNetworks.get(coinType).size();
+                }
 
-                AsyncUtils.MultiResponseHandler multiResponse =
-                        new AsyncUtils.MultiResponseHandler(numNetworks * 2);
-                ArrayList<AsyncUtils.GetNativeAssetsBalancesResponseContext>
-                        nativeAssetsBalancesResponses =
-                                new ArrayList<AsyncUtils.GetNativeAssetsBalancesResponseContext>();
-                ArrayList<AsyncUtils.GetBlockchainTokensBalancesResponseContext>
-                        blockchainTokensBalancesResponses = new ArrayList<
-                                AsyncUtils.GetBlockchainTokensBalancesResponseContext>();
+                MultiResponseHandler multiResponse = new MultiResponseHandler(numNetworks * 2);
+                ArrayList<GetNativeAssetsBalancesResponseContext> nativeAssetsBalancesResponses =
+                        new ArrayList<GetNativeAssetsBalancesResponseContext>();
+                ArrayList<GetBlockchainTokensBalancesResponseContext>
+                        blockchainTokensBalancesResponses =
+                                new ArrayList<GetBlockchainTokensBalancesResponseContext>();
 
                 for (int coinType : Utils.P3ACoinTypes) {
-                    for (NetworkInfo network : sortedNetworks.get(coinType)) {
-                        keyringService.getKeyringInfo(
-                                AssetUtils.getKeyringForChainId(network.chainId), keyringInfo -> {
-                                    TokenUtils.getUserOrAllTokensFiltered(braveWalletService,
-                                            blockchainRegistry, network, coinType,
-                                            TokenUtils.TokenType.ALL, true, tokens -> {
-                                                AsyncUtils.GetNativeAssetsBalancesResponseContext
-                                                        getNativeAssetsBalancesContext =
-                                                        new AsyncUtils.GetNativeAssetsBalancesResponseContext(
-                                                                multiResponse
-                                                                        .singleResponseComplete);
-                                                getNativeAssetsBalances(jsonRpcService, network,
-                                                        keyringInfo.accountInfos,
-                                                        getNativeAssetsBalancesContext);
-                                                nativeAssetsBalancesResponses.add(
-                                                        getNativeAssetsBalancesContext);
-                                                AsyncUtils
-                                                        .GetBlockchainTokensBalancesResponseContext
-                                                                getBlockchainTokensBalancesContext =
-                                                        new AsyncUtils.GetBlockchainTokensBalancesResponseContext(
-                                                                multiResponse
-                                                                        .singleResponseComplete);
-                                                getBlockchainTokensBalances(jsonRpcService, network,
-                                                        keyringInfo.accountInfos, tokens,
-                                                        getBlockchainTokensBalancesContext);
-                                                blockchainTokensBalancesResponses.add(
-                                                        getBlockchainTokensBalancesContext);
-                                            });
-                                });
-                    }
+                    processP3ACoinNetworks(coinType, sortedNetworks.get(coinType), keyringService,
+                            jsonRpcService, braveWalletService, blockchainRegistry, multiResponse,
+                            nativeAssetsBalancesResponses, blockchainTokensBalancesResponses);
                 }
 
                 multiResponse.setWhenAllCompletedAction(() -> {
-                    updateActiveAddresses(
-                            nativeAssetsBalancesResponses.toArray(
-                                    new AsyncUtils.GetNativeAssetsBalancesResponseContext[0]),
+                    updateActiveAddresses(nativeAssetsBalancesResponses.toArray(
+                                                  new GetNativeAssetsBalancesResponseContext[0]),
                             blockchainTokensBalancesResponses.toArray(
-                                    new AsyncUtils.GetBlockchainTokensBalancesResponseContext[0]),
+                                    new GetBlockchainTokensBalancesResponseContext[0]),
                             activeAddresses);
                     callback.call(activeAddresses);
                 });
@@ -273,10 +250,50 @@ public class BalanceHelper {
         }
     }
 
-    private static <T extends AsyncUtils.GetBalanceResponseBaseContext> T addBalanceResponseContext(
-            ArrayList<AsyncUtils.GetBalanceResponseBaseContext> contexts, T context,
-            String accountAddress, BlockchainToken token) {
-        context.accountAddress = accountAddress.toLowerCase(Locale.getDefault());
+    private static void processP3ACoinNetworks(int coinType, List<NetworkInfo> networks,
+            KeyringService keyringService, JsonRpcService jsonRpcService,
+            BraveWalletService braveWalletService, BlockchainRegistry blockchainRegistry,
+            MultiResponseHandler multiResponse,
+            ArrayList<GetNativeAssetsBalancesResponseContext> nativeAssetsBalancesResponses,
+            ArrayList<GetBlockchainTokensBalancesResponseContext>
+                    blockchainTokensBalancesResponses) {
+        for (NetworkInfo network : networks) {
+            keyringService.getKeyringInfo(
+                    AssetUtils.getKeyringForChainId(network.chainId), keyringInfo -> {
+                        TokenUtils.getUserOrAllTokensFiltered(braveWalletService,
+                                blockchainRegistry, network, coinType, TokenUtils.TokenType.ALL,
+                                true, tokens -> {
+                                    AccountInfo[] accountInfoArray = keyringInfo.accountInfos;
+
+                                    // Assets balances.
+                                    GetNativeAssetsBalancesResponseContext
+                                            getNativeAssetsBalancesContext =
+                                                    new GetNativeAssetsBalancesResponseContext(
+                                                            multiResponse.singleResponseComplete);
+                                    getNativeAssetsBalances(jsonRpcService, network,
+                                            accountInfoArray, getNativeAssetsBalancesContext);
+                                    nativeAssetsBalancesResponses.add(
+                                            getNativeAssetsBalancesContext);
+
+                                    // Tokens balances.
+                                    GetBlockchainTokensBalancesResponseContext
+                                            getBlockchainTokensBalancesContext =
+                                                    new GetBlockchainTokensBalancesResponseContext(
+                                                            multiResponse.singleResponseComplete);
+                                    getBlockchainTokensBalances(jsonRpcService, network,
+                                            accountInfoArray, tokens,
+                                            getBlockchainTokensBalancesContext);
+                                    blockchainTokensBalancesResponses.add(
+                                            getBlockchainTokensBalancesContext);
+                                });
+                    });
+        }
+    }
+
+    private static <T extends GetBalanceResponseBaseContext> T addBalanceResponseContext(
+            ArrayList<GetBalanceResponseBaseContext> contexts, T context, String accountAddress,
+            BlockchainToken token) {
+        context.accountAddress = accountAddress.toLowerCase(Locale.ENGLISH);
         if (token != null) context.userAsset = token;
         contexts.add(context);
         return context;
@@ -307,19 +324,16 @@ public class BalanceHelper {
     }
 
     public static void updateActiveAddresses(
-            AsyncUtils.GetNativeAssetsBalancesResponseContext[] nativeAssetsBalancesResponses,
-            AsyncUtils
-                    .GetBlockchainTokensBalancesResponseContext[] blockchainTokensBalancesResponses,
+            GetNativeAssetsBalancesResponseContext[] nativeAssetsBalancesResponses,
+            GetBlockchainTokensBalancesResponseContext[] blockchainTokensBalancesResponses,
             HashMap<Integer, HashSet<String>> activeAddresses) {
-        for (AsyncUtils.GetNativeAssetsBalancesResponseContext ctx :
-                nativeAssetsBalancesResponses) {
+        for (GetNativeAssetsBalancesResponseContext ctx : nativeAssetsBalancesResponses) {
             for (Map.Entry<String, Double> nativeEntry : ctx.nativeAssetsBalances.entrySet()) {
                 if (nativeEntry.getValue() > 0.0d)
                     activeAddresses.get(ctx.coinType).add(nativeEntry.getKey());
             }
         }
-        for (AsyncUtils.GetBlockchainTokensBalancesResponseContext ctx :
-                blockchainTokensBalancesResponses) {
+        for (GetBlockchainTokensBalancesResponseContext ctx : blockchainTokensBalancesResponses) {
             for (Map.Entry<String, HashMap<String, Double>> accEntry :
                     ctx.blockchainTokensBalances.entrySet()) {
                 for (Map.Entry<String, Double> tokenEntry : accEntry.getValue().entrySet()) {

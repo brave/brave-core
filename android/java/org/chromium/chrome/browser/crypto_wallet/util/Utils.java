@@ -1554,7 +1554,7 @@ public class Utils {
      * Gets tokens, prices and balances, all at the same time for a given token type.
      * See {@link TokenUtils.TokenType}.
      *
-     * @param activityRef Weak reference to Brave Wallet base a ctivity.
+     * @param activityRef Weak reference to Brave Wallet base activity.
      * @param tokenType Token type used for filtering (e.g. {@code TokenType.NON_NFTS}).
      * @param allNetworks List of all networks, used to log P3A records.
      * @param selectedNetwork Currently selected network.
