@@ -27,6 +27,11 @@ class P3ARotationSchedulerTest : public testing::Test {
 
  protected:
   void SetUp() override {
+    base::Time future_mock_time;
+    if (base::Time::FromString("2050-01-07", &future_mock_time)) {
+      task_environment_.AdvanceClock(future_mock_time - base::Time::Now());
+    }
+
     scheduler_ = std::make_unique<RotationScheduler>(
         local_state_, &config_,
         base::BindLambdaForTesting(
