@@ -60,9 +60,10 @@ class LocalhostAccessBrowserTest : public InProcessBrowserTest {
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
     current_browser_ = InProcessBrowserTest::browser();
-    std::string comment_in_allowlist = "!b.com";
+    std::string comment_in_allowlist = "!b.com\n";
+    auto domains = comment_in_allowlist + kTestEmbeddingDomain;
     g_brave_browser_process->localhost_permission_allowlist_service()
-        ->SetTestHosts({kTestEmbeddingDomain, comment_in_allowlist});
+        ->OnDATFileDataReady(domains);
 
     // Embedding website server
     https_server_ = std::make_unique<net::EmbeddedTestServer>(
@@ -452,7 +453,7 @@ IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest,
   std::string test_domain = "localhost";
   // Clear out the allowlist.
   g_brave_browser_process->localhost_permission_allowlist_service()
-      ->SetTestHosts({});
+      ->OnDATFileDataReady("");
   embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
   const auto& target_url = localhost_server_->GetURL(test_domain, "/logo.png");
   SetCurrentStatus(ContentSetting::CONTENT_SETTING_ALLOW);

@@ -17,6 +17,7 @@
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_observer.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
 #define LOCALHOST_PERMISSION_ALLOWLIST_TXT_FILE \
   "localhost-permission-allow-list.txt"
@@ -44,6 +45,12 @@ void LocalhostPermissionAllowlistService::LoadLocalhostPermissionAllowlist(
                      weak_factory_.GetWeakPtr()));
 }
 
+std::string GetDomain(const GURL& url) {
+  return net::registry_controlled_domains::GetDomainAndRegistry(
+      url.host(), net::registry_controlled_domains::PrivateRegistryFilter::
+                      EXCLUDE_PRIVATE_REGISTRIES);
+}
+
 void LocalhostPermissionAllowlistService::OnDATFileDataReady(
     const std::string& contents) {
   if (contents.empty()) {
@@ -58,7 +65,9 @@ void LocalhostPermissionAllowlistService::OnDATFileDataReady(
     if (line[0] == '!') {
       continue;
     }
-    allowed_hosts_.insert(std::move(line));
+    // Construct a GURL from the line, and store the eTLD+1.
+    const auto url = GURL("https://" + std::move(line));
+    allowed_domains_.insert(GetDomain(url));
   }
   is_ready_ = true;
   return;
@@ -71,8 +80,9 @@ bool LocalhostPermissionAllowlistService::CanAskForLocalhostPermission(
     // by default do the more privacy-friendly thing.
     return false;
   }
-  // Allow asking for permission only if the host is on the list.
-  return base::Contains(allowed_hosts_, url.host());
+  // Allow asking for permission only if the URL
+  // matches an eTLD+1 on the allowlist.
+  return base::Contains(allowed_domains_, GetDomain(url));
 }
 
 // implementation of LocalDataFilesObserver
@@ -84,7 +94,7 @@ void LocalhostPermissionAllowlistService::OnComponentReady(
 }
 
 LocalhostPermissionAllowlistService::~LocalhostPermissionAllowlistService() {
-  allowed_hosts_.clear();
+  allowed_domains_.clear();
 }
 
 std::unique_ptr<LocalhostPermissionAllowlistService>

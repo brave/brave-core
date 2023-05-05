@@ -30,15 +30,11 @@ class LocalhostPermissionAllowlistService
 
   bool CanAskForLocalhostPermission(const GURL& url);
   ~LocalhostPermissionAllowlistService() override;
-  void SetTestHosts(std::set<std::string> allowed_hosts) {
-    allowed_hosts_ = allowed_hosts;
-    is_ready_ = true;
-  }
   void OnDATFileDataReady(const std::string& contents);
 
  private:
   void LoadLocalhostPermissionAllowlist(const base::FilePath& install_dir);
-  std::set<std::string> allowed_hosts_;
+  std::set<std::string> allowed_domains_;
   bool is_ready_ = false;
   base::WeakPtrFactory<LocalhostPermissionAllowlistService> weak_factory_{this};
 };
