@@ -47,11 +47,10 @@ constexpr base::FeatureParam<bool> kShouldSupportMultipleDisplays{
     &kCustomNotificationAdFeature, "should_support_multiple_displays",
     kDefaultShouldSupportMultipleDisplays};
 
-// Set to true to attach custom notification ads to a browser window
-constexpr base::FeatureParam<bool>
-    kShouldAttachCustomNotificationAdToBrowserWindow{
-        &kCustomNotificationAdFeature, "should_attach_to_browser_window",
-        kDefaultShouldAttachNotificationAdToBrowserWindow};
+// Set to true to use the same z-order as the browser window
+constexpr base::FeatureParam<bool> kUseSameZOrderAsBrowserWindow{
+    &kCustomNotificationAdFeature, "use_same_z_order_as_browser_window",
+    kDefaultUseSameZOrderAsBrowserWindow};
 
 // Ad notification normalized display coordinate for the x component should be
 // between 0.0 and 1.0; coordinates outside this range will be adjusted to fit

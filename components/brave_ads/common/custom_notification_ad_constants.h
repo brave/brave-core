@@ -22,10 +22,10 @@ constexpr int kDefaultNotificationAdFadeDuration = 200;
 constexpr char kDefaultNotificationAdDarkModeBackgroundColor[] = "202327";
 
 // Do not support multiple displays by default
-constexpr bool kDefaultShouldSupportMultipleDisplays = false;
+constexpr bool kDefaultShouldSupportMultipleDisplays = true;
 
-// Do not attach custom notification ad to a browser window by default
-constexpr bool kDefaultShouldAttachNotificationAdToBrowserWindow = false;
+// Use the same z-order as the browser window by default
+constexpr bool kDefaultUseSameZOrderAsBrowserWindow = true;
 
 // Default ad notification normalized display coordinate
 #if BUILDFLAG(IS_WIN)
