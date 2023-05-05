@@ -172,6 +172,8 @@ program
   .option('--use_goma [arg]', 'whether to use Goma for building', JSON.parse)
   .option('--goma_offline', 'use offline mode for goma')
   .option('--force_gn_gen', 'always run gn gen')
+  .option('--android_aab_to_apk',
+    'applies an aab to apk conversion to the output aab')
   .arguments('[build_config]')
   .action(createDist)
 

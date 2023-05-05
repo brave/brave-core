@@ -194,6 +194,7 @@ const Config = function () {
   this.goma_offline = false
   this.use_libfuzzer = false
   this.brave_ai_chat_endpoint = getNPMConfig(['brave_ai_chat_endpoint']) || ''
+  this.androidAabToApk = false
 
   if (process.env.GOMA_DIR !== undefined) {
     this.realGomaDir = process.env.GOMA_DIR
@@ -521,6 +522,7 @@ Config.prototype.buildArgs = function () {
       // it to 'pac'.
       args.arm_control_flow_integrity = 'pac'
     }
+    args.android_aab_to_apk = this.androidAabToApk
 
     // These do not exist on android
     // TODO - recheck
@@ -720,6 +722,9 @@ Config.prototype.update = function (options) {
     }
     if (options.android_override_version_name) {
       this.androidOverrideVersionName = options.android_override_version_name
+    }
+    if (options.android_aab_to_apk) {
+      this.androidAabToApk = options.android_aab_to_apk
     }
   }
 
