@@ -1,12 +1,12 @@
 diff --git a/components/sync/driver/sync_service_impl.h b/components/sync/driver/sync_service_impl.h
-index bcfafe1580ad1b3ab0012921b021b8b75dcc54af..710b14b8dd0edd28ae100cc8e9dca401dd16d8f1 100644
+index 5f1f01c25bc7c2d2f36142679dc7d23303c04957..e806c8bd2bd9408ed0de4b9426cbdad9fa12b619 100644
 --- a/components/sync/driver/sync_service_impl.h
 +++ b/components/sync/driver/sync_service_impl.h
-@@ -238,6 +238,7 @@ class SyncServiceImpl : public SyncService,
+@@ -244,6 +244,7 @@ class SyncServiceImpl : public SyncService,
+   bool IsSyncFeatureConsideredRequested() const override;
  
-   SyncClient* GetSyncClientForTest();
- 
-+  BRAVE_SYNC_SERVICE_IMPL_H_
   private:
++  BRAVE_SYNC_SERVICE_IMPL_H_
    enum UnrecoverableErrorReason {
      ERROR_REASON_ENGINE_INIT_FAILURE,
+     ERROR_REASON_ACTIONABLE_ERROR,
