@@ -8,10 +8,10 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 import static java.util.stream.Collectors.toMap;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.CoinType;
