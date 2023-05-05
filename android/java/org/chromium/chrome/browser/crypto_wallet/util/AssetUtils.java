@@ -123,7 +123,7 @@ public class AssetUtils {
 
                 default:
                     throw new IllegalStateException(
-                            String.format("No keyring found for chain Id %s.", chainId));
+                            String.format("No Filecoin keyring found for chain Id %s.", chainId));
             }
         } else {
             return getKeyringForEthOrSolOnly(coinType);
