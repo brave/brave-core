@@ -2928,6 +2928,17 @@ extension Strings {
       NSLocalizedString("vpn.sessionExpiredDismissButton", tableName: "BraveShared", bundle: .module,
         value: "Dismiss",
         comment: "Dismiss button to close the alert showing that the vpn session has expired")
+    
+    public static let vpnRegionSelectorButtonTitle =
+      NSLocalizedString("vpn.vpnRegionSelectorButtonTitle", tableName: "BraveShared", bundle: .module,
+        value: "VPN Region",
+        comment: "Button title for VPN region selection in menu")
+    
+    public static let vpnRegionSelectorButtonSubTitle =
+      NSLocalizedString("vpn.vpnRegionSelectorButtonSubTitle", tableName: "BraveShared", bundle: .module,
+        value: "Current Setting: %@",
+        comment: "Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic")
+    
   }
 }
 

@@ -12,10 +12,11 @@ import Data
 import BraveWallet
 import BraveCore
 import os.log
+import BraveVPN
 
 extension BrowserViewController {
   func featuresMenuSection(_ menuController: MenuViewController) -> some View {
-    VStack(spacing: 0) {
+    VStack(alignment: .leading, spacing: 5) {
       VPNMenuButton(
         vpnProductInfo: self.vpnProductInfo,
         displayVPNDestination: { [unowned self] vc in
@@ -33,6 +34,13 @@ extension BrowserViewController {
           self?.openURLInNewTab(url, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing,
                                isPrivileged: false)
         })
+      
+      // Region Button is populated without current selected detail title for features menu
+      RegionMenuButton(vpnRegionInfo: BraveVPN.activatedRegion, settingTitleEnabled: false, regionSelectAction: {
+        let vc = BraveVPNRegionPickerViewController()
+        (self.presentedViewController as? MenuViewController)?
+          .pushInnerMenu(vc)
+      })
     }
   }
 
@@ -65,6 +73,15 @@ extension BrowserViewController {
                                isPrivileged: false)
         }
       )
+      
+      // Region Button is populated including the details for privacy feature menu
+      RegionMenuButton(vpnRegionInfo: BraveVPN.activatedRegion, regionSelectAction: {
+        let vc = BraveVPNRegionPickerViewController()
+        (self.presentedViewController as? MenuViewController)?
+          .pushInnerMenu(vc)
+      })
+      
+      Divider()
 
       MenuItemFactory.button(for: .playlist(subtitle: Strings.OptionsMenu.bravePlaylistItemDescription)) { [weak self] in
         guard let self = self else { return }

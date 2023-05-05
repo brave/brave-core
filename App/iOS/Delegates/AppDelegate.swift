@@ -166,10 +166,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // Set the Safari UA for browsing.
     setUserAgent()
+    
     // Moving Brave VPN v1 users to v2 type of credentials.
     // This is a light operation, can be called at every launch without troubles.
     BraveVPN.migrateV1Credentials()
 
+    // Fetching details of GRDRegion for Automatic Region selection
+    BraveVPN.fetchLastUsedRegionDetail()
+    
     // Start the keyboard helper to monitor and cache keyboard state.
     KeyboardHelper.defaultHelper.startObserving()
     DynamicFontHelper.defaultHelper.startObserving()

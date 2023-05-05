@@ -10,7 +10,7 @@ import Lottie
 import NetworkExtension
 import GuardianConnect
 
-class BraveVPNRegionPickerViewController: BraveVPNPickerViewController {
+public class BraveVPNRegionPickerViewController: BraveVPNPickerViewController {
   private let regionList: [GRDRegion]
 
   private enum Section: Int, CaseIterable {
@@ -22,7 +22,7 @@ class BraveVPNRegionPickerViewController: BraveVPNPickerViewController {
   private var dispatchGroup: DispatchGroup?
   private var vpnRegionChangeSuccess = false
 
-  override init() {
+  public override init() {
     self.regionList = BraveVPN.regions
       .sorted { $0.displayName < $1.displayName }
 
@@ -32,7 +32,7 @@ class BraveVPNRegionPickerViewController: BraveVPNPickerViewController {
   @available(*, unavailable)
   required init?(coder: NSCoder) { fatalError() }
 
-  override func viewDidLoad() {
+  public override func viewDidLoad() {
     title = Strings.VPN.regionPickerTitle
 
     tableView.delegate = self
@@ -56,15 +56,15 @@ class BraveVPNRegionPickerViewController: BraveVPNPickerViewController {
 
 extension BraveVPNRegionPickerViewController: UITableViewDelegate, UITableViewDataSource {
   
-  func numberOfSections(in tableView: UITableView) -> Int {
+  public func numberOfSections(in tableView: UITableView) -> Int {
     Section.allCases.count
   }
 
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     section == Section.automatic.rawValue ? 1 : regionList.count
   }
 
-  func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+  public func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
     if section == Section.automatic.rawValue {
       return Strings.VPN.regionPickerAutomaticDescription
     }
@@ -72,7 +72,7 @@ extension BraveVPNRegionPickerViewController: UITableViewDelegate, UITableViewDa
     return nil
   }
 
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+  public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(for: indexPath) as VPNRegionCell
     cell.accessoryType = .none
 
@@ -96,7 +96,7 @@ extension BraveVPNRegionPickerViewController: UITableViewDelegate, UITableViewDa
     return cell
   }
 
-  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+  public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
     guard let region = regionList[safe: indexPath.row] else { return }
 
@@ -143,6 +143,7 @@ extension BraveVPNRegionPickerViewController: UITableViewDelegate, UITableViewDa
 
           self.dismiss(animated: true) {
             self.showSuccessAlert(text: Strings.VPN.regionSwitchSuccessPopupText)
+            BraveVPN.fetchLastUsedRegionDetail()
           }
         } else {
           self.showErrorAlert(title: Strings.VPN.regionPickerErrorTitle,
