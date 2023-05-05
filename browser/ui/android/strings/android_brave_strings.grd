@@ -3642,7 +3642,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_SPEEDREADER_MESSAGE_BUTTON" desc="The label for the button to enable speedreader on current page.">
       Enable
     </message>
-    <message name="IDS_ENABLE_SPEEDREADER_TITLE" desc="Title for preference that enables or disables Speedreader." translateable="false">
+    <message name="IDS_ENABLE_SPEEDREADER_TITLE" desc="Title for preference that enables or disables Speedreader.">
       Enable Speedreader
     </message>
     <message name="IDS_ENABLE_SPEEDREADER_SUMMARY" desc="Summary for preference that enables or disables Speedreader">
