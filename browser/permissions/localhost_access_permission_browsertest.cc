@@ -60,10 +60,8 @@ class LocalhostAccessBrowserTest : public InProcessBrowserTest {
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
     current_browser_ = InProcessBrowserTest::browser();
-    std::string comment_in_allowlist = "!b.com\n";
-    auto domains = comment_in_allowlist + kTestEmbeddingDomain;
     g_brave_browser_process->localhost_permission_allowlist_service()
-        ->OnDATFileDataReady(domains);
+        ->OnDATFileDataReady(kTestEmbeddingDomain);
 
     // Embedding website server
     https_server_ = std::make_unique<net::EmbeddedTestServer>(
@@ -435,21 +433,24 @@ IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, AdblockRule) {
   CheckNoPromptFlow(false, target_url);
 }
 
-// Test that localhost connections from host not on allowlist
+// Test that localhost connections from website not on allowlist
 // are blocked without permission prompt.
-IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, HostNotOnAllowlist) {
+IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, WebsiteNotOnAllowlist) {
   std::string test_domain = "localhost";
   // Note: we're also testing that comments are handled correctly here
-  // because we inserted !b.com into the allowlist.
+  // because we inserted #b.com into the allowlist.
+  g_brave_browser_process->localhost_permission_allowlist_service()
+      ->OnDATFileDataReady(
+          base::StrCat({kTestEmbeddingDomain, "\n", "#b.com"}));
   embedding_url_ = https_server_->GetURL("b.com", kSimplePage);
   const auto& target_url = localhost_server_->GetURL(test_domain, "/logo.png");
   CheckNoPromptFlow(false, target_url);
 }
 
-// Test that manually adding a host to the site permission exceptions
-// allows connections to localhost from that host.
+// Test that manually adding a website to the site permission exceptions
+// allows connections to localhost from that eTLD+1.
 IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest,
-                       HostNotOnAllowlistButManuallyAdded) {
+                       WebsiteNotOnAllowlistButManuallyAdded) {
   std::string test_domain = "localhost";
   // Clear out the allowlist.
   g_brave_browser_process->localhost_permission_allowlist_service()
@@ -461,6 +462,18 @@ IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest,
   InsertImage(target_url.spec(), true);
   // No prompt though.
   EXPECT_EQ(0, prompt_factory()->show_count());
+}
+
+// Test that different hosts under the same eTLD+1 can prompt.
+IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, WebsitePartOfETLDP1) {
+  std::string test_domain = "localhost";
+  embedding_url_ = https_server_->GetURL(
+      base::StrCat({"test1.", kTestEmbeddingDomain}), kSimplePage);
+  const auto& target_url = localhost_server_->GetURL(test_domain, "/logo.png");
+  CheckAskAndAcceptFlow(target_url);
+  embedding_url_ = https_server_->GetURL(
+      base::StrCat({"test2.", kTestEmbeddingDomain}), kSimplePage);
+  CheckAskAndAcceptFlow(target_url, 1);
 }
 
 // Test that localhost connections blocked by adblock are still blocked without

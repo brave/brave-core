@@ -60,9 +60,9 @@ void LocalhostPermissionAllowlistService::OnDATFileDataReady(
   std::vector<std::string> lines = base::SplitString(
       contents, "\n", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
   for (const auto& line : lines) {
-    // Ignore lines starting with !.
+    // Ignore lines starting with #.
     // Used for comments.
-    if (line[0] == '!') {
+    if (line[0] == '#') {
       continue;
     }
     // Construct a GURL from the line, and store the eTLD+1.
