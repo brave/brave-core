@@ -410,6 +410,21 @@ class Tab: NSObject {
     deleteWebView()
     deleteNewTabPageController()
     contentScriptManager.helpers.removeAll()
+    
+    // A number of mojo-powered core objects have to be deconstructed on the same
+    // thread they were constructed
+    var mojoObjects: [Any?] = [
+      faviconDriver,
+      walletEthProvider,
+      walletSolProvider,
+      walletKeyringService
+    ]
+    
+    DispatchQueue.main.async {
+      // Reference inside to retain it, supress warnings by reading/writing
+      _ = mojoObjects
+      mojoObjects = []
+    }
   }
 
   var loading: Bool {
