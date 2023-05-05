@@ -71,10 +71,6 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
                            ConnectWithNoSolanaAccount);
 
   bool IsAccountConnected(const std::string& account);
-  void ContinueConnect(bool is_eagerly_connect,
-                       const std::string& selected_account,
-                       ConnectCallback callback,
-                       bool is_selected_account_allowed);
   void OnConnect(
       const std::string& requested_account,
       ConnectCallback callback,

@@ -382,7 +382,7 @@ void EthereumProviderImpl::SignMessage(const std::string& address,
     message_str = ToHex(message_str);
   }
 
-  ContinueSignMessage(EthAddress::FromHex(address).ToChecksumAddress(), "",
+  SignMessageInternal(EthAddress::FromHex(address).ToChecksumAddress(), "",
                       message_str, std::move(message_bytes), absl::nullopt,
                       absl::nullopt, false, std::move(callback), std::move(id));
 }
@@ -643,13 +643,13 @@ void EthereumProviderImpl::SignTypedMessage(
     return RejectInvalidParams(std::move(id), std::move(callback));
   }
 
-  ContinueSignMessage(
+  SignMessageInternal(
       EthAddress::FromHex(address).ToChecksumAddress(), domain_string, message,
       std::move(*message_to_sign), base::HexEncode(domain_hash),
       base::HexEncode(primary_hash), true, std::move(callback), std::move(id));
 }
 
-void EthereumProviderImpl::ContinueSignMessage(
+void EthereumProviderImpl::SignMessageInternal(
     const std::string& address,
     const std::string& domain,
     const std::string& message,
@@ -853,8 +853,8 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(
   }
 
   if (method == kEthAccounts || method == kEthCoinbase) {
-    OnContinueGetAllowedAccounts(std::move(callback), std::move(id), method,
-                                 false);
+    GetAllowedAccountsInternal(std::move(callback), std::move(id), method,
+                               false);
   } else if (method == kEthRequestAccounts) {
     RequestEthereumPermissions(std::move(callback), std::move(id), method,
                                delegate_->GetOrigin());
@@ -1005,8 +1005,8 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(
     RequestEthereumPermissions(std::move(callback), std::move(id), method,
                                delegate_->GetOrigin());
   } else if (method == kGetPermissionsMethod) {
-    OnContinueGetAllowedAccounts(std::move(callback), std::move(id), method,
-                                 true);
+    GetAllowedAccountsInternal(std::move(callback), std::move(id), method,
+                               true);
   } else if (method == kWeb3ClientVersion) {
     Web3ClientVersion(std::move(callback), std::move(id));
   } else if (method == kEthSubscribe) {
@@ -1216,7 +1216,7 @@ EthereumProviderImpl::GetAllowedAccounts(bool include_accounts_when_locked) {
   return filtered_accounts;
 }
 
-void EthereumProviderImpl::OnContinueGetAllowedAccounts(
+void EthereumProviderImpl::GetAllowedAccountsInternal(
     RequestCallback callback,
     base::Value id,
     const std::string& method,

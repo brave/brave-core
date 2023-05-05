@@ -110,10 +110,10 @@ class EthereumProviderImpl final
                         base::Value::Dict domain,
                         RequestCallback callback,
                         base::Value id);
-  void OnContinueGetAllowedAccounts(RequestCallback callback,
-                                    base::Value id,
-                                    const std::string& method,
-                                    bool include_accounts_when_locked);
+  void GetAllowedAccountsInternal(RequestCallback callback,
+                                  base::Value id,
+                                  const std::string& method,
+                                  bool include_accounts_when_locked);
 
   // Used for wallet_watchAsset.
   // It will prompt an UI for user to confirm, and add the token into user's
@@ -209,7 +209,7 @@ class EthereumProviderImpl final
                                          bool success,
                                          const std::string& tx_meta_id,
                                          const std::string& error_message);
-  void ContinueSignMessage(const std::string& address,
+  void SignMessageInternal(const std::string& address,
                            const std::string& domain,
                            const std::string& message,
                            std::vector<uint8_t>&& message_to_sign,
