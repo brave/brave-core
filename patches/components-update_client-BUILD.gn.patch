@@ -1,5 +1,5 @@
 diff --git a/components/update_client/BUILD.gn b/components/update_client/BUILD.gn
-index c6bc908372c5ebcf066197e82e7aabe461da540c..de2afe16a0871aff87ffba8e879a823573dab983 100644
+index 2530b021fb6908f8c6ec734268b50b982bbaccc1..5f4dc73c8fc696e90cf3c3d386f4b65bd740d1be 100644
 --- a/components/update_client/BUILD.gn
 +++ b/components/update_client/BUILD.gn
 @@ -196,6 +196,8 @@ static_library("update_client") {
@@ -10,4 +10,4 @@ index c6bc908372c5ebcf066197e82e7aabe461da540c..de2afe16a0871aff87ffba8e879a8235
 +  deps += brave_components_update_client_deps public_deps = brave_components_update_client_public_deps
  }
  
- static_library("test_support") {
+ source_set("test_support") {
