@@ -287,12 +287,18 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
     }
   }
   
-  public static func updateItems(_ items: [PlaylistInfo], folderUUID: String? = nil, completion: (() -> Void)? = nil) {
+  public static func updateItems(_ items: [PlaylistInfo], folderUUID: String? = nil, newETag: String? = nil, completion: (() -> Void)? = nil) {
     DataController.perform(context: .new(inMemory: false), save: false) { context in
       let uuids = items.compactMap({ $0.tagId })
       let existingItems = PlaylistItem.all(where: NSPredicate(format: "uuid IN %@", uuids), context: context) ?? []
       let existingUUIDs = existingItems.compactMap({ $0.uuid })
       let newItems = items.filter({ !existingUUIDs.contains($0.tagId) })
+      let folder = PlaylistFolder.getFolder(uuid: folderUUID ?? PlaylistFolder.savedFolderUUID,
+                                            context: context)
+      
+      if let eTag = newETag {
+        folder?.sharedFolderETag = eTag
+      }
       
       existingItems.forEach { existingItem in
         items.forEach { item in
@@ -303,6 +309,7 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
             existingItem.duration = item.duration
             existingItem.mimeType = item.mimeType
             existingItem.mediaSrc = item.src
+            existingItem.playlistFolder = folder
           }
         }
       }
@@ -318,7 +325,7 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
                                         mediaSrc: item.src)
         playlistItem.order = item.order
         playlistItem.uuid = item.tagId
-        playlistItem.playlistFolder = PlaylistFolder.getFolder(uuid: folderUUID ?? PlaylistFolder.savedFolderUUID, context: context)
+        playlistItem.playlistFolder = folder
       }
       
       PlaylistItem.reorderItems(context: context)

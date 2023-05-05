@@ -265,7 +265,7 @@ class PlaylistMediaStreamer {
         }
 
         if let response = response as? HTTPURLResponse, response.statusCode == 302 || response.statusCode >= 200 && response.statusCode <= 299 {
-          if let contentType = response.allHeaderFields["Content-Type"] as? String {
+          if let contentType = response.value(forHTTPHeaderField: "Content-Type") {
             completion(contentType)
             return
           } else {

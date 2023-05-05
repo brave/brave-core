@@ -582,9 +582,9 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
 
       // Detect based on Content-Type header.
       if detectedFileExtension == nil,
-        let contentType = response.allHeaderFields["Content-Type"] as? String,
-        let detectedExtension = PlaylistMimeTypeDetector(mimeType: contentType).fileExtension {
-        detectedFileExtension = detectedExtension
+         let contentType = response.value(forHTTPHeaderField: "Content-Type"),
+         let detectedExtension = PlaylistMimeTypeDetector(mimeType: contentType).fileExtension {
+          detectedFileExtension = detectedExtension
       }
 
       // Detect based on Data.

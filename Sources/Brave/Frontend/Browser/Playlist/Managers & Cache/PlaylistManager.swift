@@ -735,7 +735,7 @@ extension PlaylistManager {
   @MainActor
   static func syncSharedFolder(sharedFolderUrl: String) async throws {
     guard let folder = PlaylistFolder.getSharedFolder(sharedFolderUrl: sharedFolderUrl),
-          let folderId = folder.sharedFolderId else {
+          let folderId = folder.uuid else {
       return
     }
     
@@ -749,7 +749,7 @@ extension PlaylistManager {
     
     if !newItems.isEmpty {
       await withCheckedContinuation { continuation in
-        PlaylistItem.updateItems(Array(newItems), folderUUID: folderId) {
+        PlaylistItem.updateItems(Array(newItems), folderUUID: folderId, newETag: model.eTag) {
           continuation.resume()
         }
       }

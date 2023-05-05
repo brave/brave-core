@@ -114,7 +114,7 @@ struct PlaylistSharedFolderNetwork {
     let (data, response) = try await executeRequest(method: "GET", headers: [:])
     var model = try JSONDecoder().decode(PlaylistSharedFolderModel.self, from: data)
     model.folderUrl = folderUrl
-    model.eTag = response.allHeaderFields["ETag"] as? String
+    model.eTag = response.value(forHTTPHeaderField: "ETag")
     return model
   }
   
