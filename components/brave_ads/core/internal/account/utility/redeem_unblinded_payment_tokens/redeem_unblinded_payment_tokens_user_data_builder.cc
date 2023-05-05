@@ -10,7 +10,7 @@
 #include "base/functional/callback.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/platform_user_data.h"
-#include "brave/components/brave_ads/core/internal/account/user_data/totals_user_data.h"
+#include "brave/components/brave_ads/core/internal/account/user_data/summary_user_data.h"
 
 namespace brave_ads {
 
@@ -26,7 +26,7 @@ void RedeemUnblindedPaymentTokensUserDataBuilder::Build(
     UserDataBuilderCallback callback) const {
   base::Value::Dict user_data;
   user_data.Merge(BuildPlatformUserData());
-  user_data.Merge(BuildTotalsUserData(unblinded_payment_tokens_));
+  user_data.Merge(BuildSummaryUserData(unblinded_payment_tokens_));
 
   std::move(callback).Run(std::move(user_data));
 }
