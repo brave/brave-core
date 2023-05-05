@@ -10,7 +10,7 @@ import Lottie
 import NetworkExtension
 import GuardianConnect
 
-class BraveVPNPickerViewController: UIViewController {
+public class BraveVPNPickerViewController: UIViewController {
 
   private var overlayView: UIView?
   let tableView: UITableView = .init(frame: .zero, style: .insetGrouped)
@@ -49,14 +49,14 @@ class BraveVPNPickerViewController: UIViewController {
     }
   }
 
-  init() {
+  public init() {
     super.init(nibName: nil, bundle: nil)
   }
 
   @available(*, unavailable)
   required init?(coder: NSCoder) { fatalError() }
 
-  override func viewDidLoad() {
+  public override func viewDidLoad() {
     tableView.register(VPNRegionCell.self)
     
     NotificationCenter.default.addObserver(self, selector: #selector(vpnConfigChanged(notification:)),
@@ -68,7 +68,7 @@ class BraveVPNPickerViewController: UIViewController {
     }
   }
 
-  override func viewWillAppear(_ animated: Bool) {
+  public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     tableView.reloadData()
   }

@@ -24,6 +24,10 @@ public class BraveVPN {
   /// This list is not static and should be refetched every now and then.
   static var regions: [GRDRegion] = []
   
+  /// Record last used region
+  /// It is used to hold details of the region when automatic selection is used
+  static var lastKnownRegion: GRDRegion?
+  
   // Non translatable
   private static let connectionName = "Brave Firewall + VPN"
 
@@ -292,9 +296,15 @@ public class BraveVPN {
         } else {
           helper.ikev2VPNManager.removeFromPreferences()
         }
-        
-        reconnectPending = false
-        completion?(success)
+         
+        // First time user will connect automatic region - detail is pulled
+        fetchLastUsedRegionDetail() { _, _ in
+          reconnectPending = false
+          DispatchQueue.main.async {  
+            completion?(success)
+          }
+        }
+      
       }
     }
   }
@@ -364,6 +374,12 @@ public class BraveVPN {
   /// Returns currently chosen region. Returns nil if automatic region is selected.
   public static var selectedRegion: GRDRegion? {
     helper.selectedRegion
+  }
+  
+  /// Return the region last activated with the details
+  /// It will give region details for automatic
+  public static var activatedRegion: GRDRegion? {
+    helper.selectedRegion ?? lastKnownRegion
   }
   
   /// Switched to use an automatic region, region closest to user location.
@@ -492,6 +508,32 @@ public class BraveVPN {
             Preferences.VPN.vpnWorksInBackgroundNotificationShowed.value = true
           }
         }
+      }
+    }
+  }
+  
+  /// The function that fetched the last used region details from timezones
+  /// It used to get details of Region when Automatic Region is used
+  /// Otherwise the region detail items will be empty
+  /// - Parameter completion: completion block that returns region with details or error
+  public static func fetchLastUsedRegionDetail(_ completion: ((GRDRegion?, Bool) -> Void)? = nil) {
+    switch vpnState {
+    case .expired, .notPurchased:
+      break
+    case .purchased(_):
+      housekeepingApi.requestTimeZonesForRegions { timeZones, success, responseStatusCode in
+        guard success, let timeZones = timeZones else {
+          logAndStoreError(
+            "Failed to get timezones while fetching region: \(responseStatusCode)",
+            printToConsole: true)
+          completion?(nil, false)
+          
+          return
+        }
+        
+        let region = GRDServerManager.localRegion(fromTimezones: timeZones)
+        completion?(region, true)
+        lastKnownRegion = region
       }
     }
   }
