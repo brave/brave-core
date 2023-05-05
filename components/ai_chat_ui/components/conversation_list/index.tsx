@@ -8,7 +8,6 @@ import classnames from 'classnames'
 
 import styles from './style.module.scss'
 import { ConversationTurn, CharacterType } from '../../api/page_handler'
-import { getLocale } from '$web-common/locale'
 
 interface ConversationListProps {
   list: ConversationTurn[]
@@ -23,19 +22,12 @@ const elementScrollBehavior: ScrollIntoViewOptions = {
 function ConversationList (props: ConversationListProps) {
   // Scroll the last conversation item in to view when entries are added.
   const lastConversationEntryElementRef = React.useRef<HTMLDivElement>(null)
-  const loadingElementRef = React.useRef<HTMLDivElement>(null)
+
   React.useEffect(() => {
     if (!props.list.length && !props.isLoading) {
       return
     }
-    if (props.isLoading) {
-      if (!loadingElementRef.current) {
-        console.error('Conversation loading element did not exist when expected')
-      } else {
-        loadingElementRef.current.scrollIntoView(elementScrollBehavior)
-      }
-      return
-    }
+
     if (!lastConversationEntryElementRef.current) {
       console.error('Conversation entry element did not exist when expected')
     } else {
@@ -52,6 +44,7 @@ function ConversationList (props: ConversationListProps) {
         })
 
         const isLastEntry = (id === (props.list.length - 1))
+        const isLoading = isLastEntry && props.isLoading
         const elementRef = isLastEntry
           ? lastConversationEntryElementRef
           : null
@@ -60,18 +53,11 @@ function ConversationList (props: ConversationListProps) {
           <div key={id} ref={elementRef} className={turnClass}>
             <p>
               {turn.text}
+              {isLoading && <span className={styles.caret}/>}
             </p>
           </div>
         )
       })}
-      {props.isLoading && (
-        <div className={styles.turnAI} ref={loadingElementRef}>
-          <p>
-            {getLocale('loadingLabel')}
-            <span className={styles.caret}/>
-          </p>
-        </div>
-      )}
     </div>
   )
 }

@@ -150,6 +150,25 @@ void AIChatTabHelper::AddToConversationHistory(const ConversationTurn& turn) {
   }
 }
 
+void AIChatTabHelper::UpdateLastEntryInConversationHistory(
+    const std::string& updated_text) {
+  ConversationTurn& prev_turn = chat_history_.back();
+
+  if (prev_turn.character_type != CharacterType::ASSISTANT) {
+    AddToConversationHistory({CharacterType::ASSISTANT,
+                              ConversationTurnVisibility::VISIBLE,
+                              updated_text});
+    return;
+  }
+
+  prev_turn.text = updated_text;
+
+  // Trigger an observer update to refresh the UI.
+  for (auto& obs : observers_) {
+    obs.OnHistoryUpdate();
+  }
+}
+
 void AIChatTabHelper::SetArticleSummaryString(const std::string& text) {
   article_summary_ = text;
 }
@@ -286,8 +305,8 @@ void AIChatTabHelper::CleanUp() {
   chat_history_.clear();
   article_summary_.clear();
   article_text_.clear();
-  SetRequestInProgress(false);
 
+  // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {
     obs.OnHistoryUpdate();
   }
@@ -308,55 +327,57 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
 
   DCHECK(ai_chat_api_);
 
-  SetRequestInProgress(true);
-
   // Assuming a hidden conversation has a summary prompt,
   // the incoming response is expected to include the AI-generated summary.
   // TODO(nullhook): Improve this heuristic, as it may or may not be true.
   bool is_summarize_prompt =
-      turn.visibility == ConversationTurnVisibility::INTERNAL ? true : false;
+      turn.visibility == ConversationTurnVisibility::HIDDEN ? true : false;
 
   ai_chat_api_->QueryPrompt(
-      base::BindOnce(&AIChatTabHelper::OnAPIResponse, base::Unretained(this),
-                     is_summarize_prompt),
+      base::BindRepeating(&AIChatTabHelper::OnAPIStreamDataReceived,
+                          base::Unretained(this)),
+      base::BindOnce(&AIChatTabHelper::OnAPIStreamDataComplete,
+                     base::Unretained(this), is_summarize_prompt),
       std::move(prompt_with_history));
 }
 
-void AIChatTabHelper::OnAPIResponse(bool contains_summary,
-                                    const std::string& assistant_input,
-                                    bool success) {
-  SetRequestInProgress(false);
+bool AIChatTabHelper::IsRequestInProgress() {
+  DCHECK(ai_chat_api_);
 
-  if (!success) {
+  return ai_chat_api_->IsRequestInProgress();
+}
+
+void AIChatTabHelper::OnAPIStreamDataReceived(const std::string& text) {
+  UpdateLastEntryInConversationHistory(text);
+
+  // Trigger an observer update to refresh the UI.
+  for (auto& obs : observers_) {
+    obs.OnAPIRequestInProgress(IsRequestInProgress());
+  }
+}
+
+void AIChatTabHelper::OnAPIStreamDataComplete(bool is_summarize_prompt,
+                                              bool success,
+                                              int response_code) {
+  if (is_summarize_prompt && success) {
+    SetArticleSummaryString(chat_history_.back().text);
+  }
+
+  if (!success || response_code != 200) {
     // TODO(petemill): show error state separate from assistant message
     AddToConversationHistory(ConversationTurn{
         CharacterType::ASSISTANT, ConversationTurnVisibility::VISIBLE,
         l10n_util::GetStringUTF8(IDS_CHAT_UI_API_ERROR)});
-
-    return;
   }
 
-  ConversationTurn turn = {CharacterType::ASSISTANT,
-                           ConversationTurnVisibility::VISIBLE,
-                           assistant_input};
-
-  if (contains_summary && !assistant_input.empty()) {
-    SetArticleSummaryString(assistant_input);
-  }
-
-  AddToConversationHistory(turn);
-}
-
-void AIChatTabHelper::SetRequestInProgress(bool in_progress) {
-  is_request_in_progress_ = in_progress;
-
+  // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {
     obs.OnAPIRequestInProgress(IsRequestInProgress());
   }
 }
 
 void AIChatTabHelper::PrimaryPageChanged(content::Page& page) {
-  // TODO(nullhook): Cancel inflight API requests
+  // TODO(nullhook): Cancel inflight API request
   CleanUp();
 }
 

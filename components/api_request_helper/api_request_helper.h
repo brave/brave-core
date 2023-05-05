@@ -17,12 +17,14 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
+#include "services/network/public/cpp/simple_url_loader.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace network {
 class SharedURLLoaderFactory;
 class SimpleURLLoader;
+class SimpleURLLoaderStreamConsumer;
 }  // namespace network
 
 namespace api_request_helper {
@@ -94,7 +96,6 @@ class APIRequestHelper {
   using ResponseConversionCallback =
       base::OnceCallback<absl::optional<std::string>(
           const std::string& raw_response)>;
-
   // Each response is expected in json format and will be validated through
   // JsonSanitizer. In cases where json contains values that are not supported
   // by the standard base/json parser it is necessary to convert such values
@@ -110,6 +111,18 @@ class APIRequestHelper {
       const base::flat_map<std::string, std::string>& headers = {},
       const APIRequestOptions& request_options = {},
       ResponseConversionCallback conversion_callback = base::NullCallback());
+
+  Ticket Request(const std::string& method,
+                 const GURL& url,
+                 const std::string& payload,
+                 const std::string& payload_content_type,
+                 network::SimpleURLLoaderStreamConsumer* consumer,
+                 const base::flat_map<std::string, std::string>& headers = {},
+                 const APIRequestOptions& request_options = {},
+                 network::SimpleURLLoader::OnResponseStartedCallback
+                     on_response_started_cb = base::NullCallback(),
+                 network::SimpleURLLoader::DownloadProgressCallback
+                     download_progress_cb = base::NullCallback());
 
   using DownloadCallback = base::OnceCallback<void(
       base::FilePath,

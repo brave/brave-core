@@ -43,6 +43,7 @@ source_set("ai_chat") {
     "//components/prefs",
     "//content/public/browser",
     "//net/traffic_annotation",
+    "//services/data_decoder/public/cpp",
     "//services/network/public/cpp",
     "//third_party/abseil-cpp:absl",
     "//ui/base",
