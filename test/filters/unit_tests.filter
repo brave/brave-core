@@ -218,21 +218,6 @@
 # groups
 -All/TabGroupViewsTest.UnderlineBoundsWhenTabsAreNotVisible/1
 
-# These tests are disabled because of turning the performance features on.
-# Re-enable when performance features are enabled by default from upstream.
-# performance_manager::features::kBatterySaverModeAvailable
--AppMenuModelTest.DisabledPerformanceItem
--CLSUkmPageLoadMetricsObserverTest.BeforeInputOrScroll*
--DownloadBubbleRowViewTest.UpdateTimeFromCompletedDownload
--ExtensionsSitePermissionsPageViewUnitTest.*
--ExtensionsToolbarControlsWithPermittedSitesUnitTest.RequestAccessButtonVisibilityOnPermittedSites
--HighEfficiencyModeTest.*
--OfflinePreviewsUKMPageLoadMetricsObserverTest.OfflinePreviewReported
--PageDiscardingHelperTest.*
--UkmPageLoadMetricsObserverWithMockTimeTest.LargestContentfulPaintRecordOnHidden
--UrgentPageDiscardingPolicyTest.DiscardOnCriticalPressure
--UrgentPageDiscardingPolicyTest.NoDiscardOnModeratePressure
-
 # Isolated Web Apps (IWAs) use web bundles which we don't support.
 -All/InstallIsolatedWebAppCommandBundleTest.*
 -All/IsolatedWebAppURLLoaderFactorySignedWebBundleTest.*

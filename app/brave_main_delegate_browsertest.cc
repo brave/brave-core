@@ -248,7 +248,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
     &features::kWinrtGeolocationImplementation,
 #endif
 #if !BUILDFLAG(IS_ANDROID)
-    &performance_manager::features::kBatterySaverModeAvailable,
     &performance_manager::features::kHeuristicMemorySaver,
     &safe_browsing::kDownloadBubble,
     &safe_browsing::kDownloadBubbleV2,
