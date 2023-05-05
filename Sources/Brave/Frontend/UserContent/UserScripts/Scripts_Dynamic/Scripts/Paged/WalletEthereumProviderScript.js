@@ -18,8 +18,11 @@ if (window.isSecureContext) {
         "args": JSON.stringify(payload)
       })
       .then(resolve, (errorJSON) => {
+        /* remove `Error: ` prefix. errorJSON=`Error: {code: 1, errorMessage: "Internal error"}` */
+        const errorJSONString = new String(errorJSON);
+        const errorJSONStringSliced = errorJSONString.slice(errorJSONString.indexOf('{'));
         try {
-          reject(JSON.parse(errorJSON))
+          reject(JSON.parse(errorJSONStringSliced))
         } catch(e) {
           reject(errorJSON)
         }
