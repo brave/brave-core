@@ -5,8 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/catalog_creative_set_info.h"
 
+#include <limits>
+
+#include "base/numerics/ranges.h"
 #include "base/ranges/algorithm.h"
-#include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
 
 namespace brave_ads {
@@ -31,7 +33,9 @@ bool CatalogCreativeSetInfo::operator==(
     const CatalogCreativeSetInfo& other) const {
   return creative_set_id == other.creative_set_id && per_day == other.per_day &&
          per_week == other.per_week && per_month == other.per_month &&
-         total_max == other.total_max && DoubleEquals(value, other.value) &&
+         total_max == other.total_max &&
+         base::IsApproximatelyEqual(value, other.value,
+                                    std::numeric_limits<double>::epsilon()) &&
          split_test_group == other.split_test_group &&
          embedding == other.embedding && segments == other.segments &&
          oses == other.oses &&

@@ -5,13 +5,17 @@
 
 #include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_arm_info.h"
 
-#include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
+#include <limits>
+
+#include "base/numerics/ranges.h"
 
 namespace brave_ads {
 
 bool EpsilonGreedyBanditArmInfo::operator==(
     const EpsilonGreedyBanditArmInfo& other) const {
-  return segment == other.segment && DoubleEquals(value, other.value) &&
+  return segment == other.segment &&
+         base::IsApproximatelyEqual(value, other.value,
+                                    std::numeric_limits<double>::epsilon()) &&
          pulls == other.pulls;
 }
 

@@ -5,7 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 
-#include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
+#include <limits>
+
+#include "base/numerics/ranges.h"
 
 namespace brave_ads {
 
@@ -14,9 +16,14 @@ PurchaseIntentSignalHistoryInfo::PurchaseIntentSignalHistoryInfo(
     const int weight)
     : created_at(created_at), weight(weight) {}
 
+// TODO(https://github.com/brave/brave-browser/issues/27893):
+// |base::IsApproximatelyEqual| can be removed for timestamp comparisons once
+// timestamps are persisted using |base::ValueToTime| and |base::TimeToValue|.
 bool operator==(const PurchaseIntentSignalHistoryInfo& lhs,
                 const PurchaseIntentSignalHistoryInfo& rhs) {
-  return DoubleEquals(lhs.created_at.ToDoubleT(), rhs.created_at.ToDoubleT()) &&
+  return base::IsApproximatelyEqual(lhs.created_at.ToDoubleT(),
+                                    rhs.created_at.ToDoubleT(),
+                                    std::numeric_limits<double>::epsilon()) &&
          lhs.weight == rhs.weight;
 }
 
