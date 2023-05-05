@@ -254,15 +254,12 @@ void Publisher::SaveVisitInternal(const mojom::PublisherStatus status,
       static_cast<uint64_t>(ledger_->state()->GetPublisherMinVisitTime());
 
   // for new visits that are excluded or are not long enough or ac is off
-  bool allow_non_verified = ledger_->state()->GetPublisherAllowNonVerified();
   bool min_duration_new = duration < min_visit_time && !ignore_time;
   bool min_duration_ok = duration > min_visit_time || ignore_time;
-  bool verified_new = !allow_non_verified && !is_verified;
-  bool verified_old = allow_non_verified || is_verified;
 
   if ((new_publisher || updated_publisher) &&
       (excluded || !ledger_->state()->GetAutoContributeEnabled() ||
-       min_duration_new || verified_new)) {
+       min_duration_new || !is_verified)) {
     panel_info = publisher_info->Clone();
 
     auto publisher_info_saved_callback =
@@ -270,7 +267,7 @@ void Publisher::SaveVisitInternal(const mojom::PublisherStatus status,
 
     ledger_->database()->SavePublisherInfo(std::move(publisher_info),
                                            publisher_info_saved_callback);
-  } else if (!excluded && min_duration_ok && verified_old) {
+  } else if (!excluded && min_duration_ok && is_verified) {
     if (first_visit) {
       publisher_info->visits += 1;
     }
@@ -497,8 +494,7 @@ void Publisher::synopsisNormalizerInternal(
 void Publisher::SynopsisNormalizer() {
   auto filter =
       CreateActivityFilter("", mojom::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED,
-                           true, ledger_->state()->GetReconcileStamp(),
-                           ledger_->state()->GetPublisherAllowNonVerified(),
+                           true, ledger_->state()->GetReconcileStamp(), false,
                            ledger_->state()->GetPublisherMinVisits());
   ledger_->database()->GetActivityInfoList(
       0, 0, std::move(filter),

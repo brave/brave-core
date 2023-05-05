@@ -41,7 +41,6 @@ declare namespace Rewards {
     contributionMinTime: number
     contributionMinVisits: number
     contributionMonthly: number
-    contributionNonVerified: boolean
     currentCountryCode: string
     enabledAds: boolean
     enabledAdsMigrated: boolean

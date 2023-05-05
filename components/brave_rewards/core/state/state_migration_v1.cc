@@ -60,9 +60,6 @@ void StateMigrationV1::OnLoadState(mojom::Result result,
   ledger_->SetState(
       kMinVisits, static_cast<int>(legacy_publisher_->GetPublisherMinVisits()));
 
-  ledger_->SetState(kAllowNonVerified,
-                    legacy_publisher_->GetPublisherAllowNonVerified());
-
   std::vector<mojom::BalanceReportInfoPtr> reports;
   legacy_publisher_->GetAllBalanceReports(&reports);
   if (!reports.empty()) {

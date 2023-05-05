@@ -135,7 +135,6 @@ void LedgerImpl::GetAutoContributeProperties(
   props->amount = state()->GetAutoContributionAmount();
   props->contribution_min_time = state()->GetPublisherMinVisitTime();
   props->contribution_min_visits = state()->GetPublisherMinVisits();
-  props->contribution_non_verified = state()->GetPublisherAllowNonVerified();
   props->reconcile_stamp = state()->GetReconcileStamp();
   std::move(callback).Run(std::move(props));
 }
@@ -155,15 +154,6 @@ void LedgerImpl::GetPublisherMinVisits(GetPublisherMinVisitsCallback callback) {
   }
 
   std::move(callback).Run(state()->GetPublisherMinVisits());
-}
-
-void LedgerImpl::GetPublisherAllowNonVerified(
-    GetPublisherAllowNonVerifiedCallback callback) {
-  if (!IsReady()) {
-    return std::move(callback).Run(false);
-  }
-
-  std::move(callback).Run(state()->GetPublisherAllowNonVerified());
 }
 
 void LedgerImpl::GetAutoContributeEnabled(
@@ -351,10 +341,6 @@ void LedgerImpl::SetPublisherMinVisitTime(int duration_in_seconds) {
 
 void LedgerImpl::SetPublisherMinVisits(int visits) {
   WhenReady([this, visits]() { state()->SetPublisherMinVisits(visits); });
-}
-
-void LedgerImpl::SetPublisherAllowNonVerified(bool allow) {
-  WhenReady([this, allow]() { state()->SetPublisherAllowNonVerified(allow); });
 }
 
 void LedgerImpl::SetAutoContributionAmount(double amount) {

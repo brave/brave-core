@@ -983,12 +983,6 @@ static const auto kOneDay =
   }];
 }
 
-- (void)setAllowUnverifiedPublishers:(bool)allowUnverifiedPublishers {
-  [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
-    ledger->SetPublisherAllowNonVerified(allowUnverifiedPublishers);
-  }];
-}
-
 - (void)setContributionAmount:(double)contributionAmount {
   [self postLedgerTask:^(brave_rewards::internal::LedgerImpl* ledger) {
     ledger->SetAutoContributionAmount(contributionAmount);

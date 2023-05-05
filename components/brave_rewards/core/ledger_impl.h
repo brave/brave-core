@@ -96,9 +96,6 @@ class LedgerImpl : public mojom::Ledger {
 
   void GetPublisherMinVisits(GetPublisherMinVisitsCallback callback) override;
 
-  void GetPublisherAllowNonVerified(
-      GetPublisherAllowNonVerifiedCallback callback) override;
-
   void GetAutoContributeEnabled(
       GetAutoContributeEnabledCallback callback) override;
 
@@ -142,8 +139,6 @@ class LedgerImpl : public mojom::Ledger {
   void SetPublisherMinVisitTime(int duration_in_seconds) override;
 
   void SetPublisherMinVisits(int visits) override;
-
-  void SetPublisherAllowNonVerified(bool allow) override;
 
   void SetAutoContributionAmount(double amount) override;
 

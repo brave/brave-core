@@ -16,7 +16,6 @@ export function defaultState (): Rewards.State {
     contributionMinTime: 8,
     contributionMinVisits: 1,
     contributionMonthly: 0,
-    contributionNonVerified: true,
     reconcileStamp: 0,
     ui: {
       modalConnect: false,

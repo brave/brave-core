@@ -113,27 +113,17 @@ void RewardsBrowserTestContextHelper::VisitPublisher(const GURL& url,
   test_util::WaitForElementToAppear(contents,
                                     "[data-test-id=auto-contribute-table]");
 
-  // Make sure site appears in auto-contribute table
-  test_util::WaitForElementToEqual(
-      contents, "[data-test-id='ac_link_" + publisher + "']", publisher);
-
   if (verified) {
+    // Make sure site appears in auto-contribute table
+    test_util::WaitForElementToEqual(
+        contents, "[data-test-id='ac_link_" + publisher + "']", publisher);
+
     // A verified site has two images associated with it, the site's
     // favicon and the verified icon
     content::EvalJsResult js_result = EvalJs(
         contents,
         "document.querySelector(\"[data-test-id='ac_link_" +
         publisher + "']\").getElementsByTagName('svg').length === 1;",
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END);
-    EXPECT_TRUE(js_result.ExtractBool());
-  } else {
-    // An unverified site has one image associated with it, the site's
-    // favicon
-    content::EvalJsResult js_result = EvalJs(
-        contents,
-        "document.querySelector(\"[data-test-id='ac_link_" +
-        publisher + "']\").getElementsByTagName('svg').length === 0;",
         content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
         content::ISOLATED_WORLD_ID_CONTENT_END);
     EXPECT_TRUE(js_result.ExtractBool());

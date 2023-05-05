@@ -192,16 +192,6 @@ int State::GetPublisherMinVisits() {
   return ledger_->GetState<int>(kMinVisits);
 }
 
-void State::SetPublisherAllowNonVerified(const bool allow) {
-  ledger_->database()->SaveEventLog(kAllowNonVerified, std::to_string(allow));
-  ledger_->SetState(kAllowNonVerified, allow);
-  ledger_->publisher()->SynopsisNormalizer();
-}
-
-bool State::GetPublisherAllowNonVerified() {
-  return ledger_->GetState<bool>(kAllowNonVerified);
-}
-
 void State::SetScoreValues(double a, double b) {
   ledger_->database()->SaveEventLog(kScoreA, std::to_string(a));
   ledger_->database()->SaveEventLog(kScoreB, std::to_string(b));

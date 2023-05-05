@@ -44,8 +44,6 @@ interface Ledger {
 
   GetPublisherMinVisits() => (int32 min_visits);
 
-  GetPublisherAllowNonVerified() => (bool allowed);
-
   GetAutoContributeEnabled() => (bool auto_contribute);
 
   GetReconcileStamp() => (uint64 reconcile_stamp);
@@ -82,8 +80,6 @@ interface Ledger {
   SetPublisherMinVisitTime(int32 duration_in_seconds);
 
   SetPublisherMinVisits(int32 visits);
-
-  SetPublisherAllowNonVerified(bool allow);
 
   SetAutoContributionAmount(double amount);
 
