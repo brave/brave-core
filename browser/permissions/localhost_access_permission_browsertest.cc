@@ -445,6 +445,23 @@ IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, HostNotOnAllowlist) {
   CheckNoPromptFlow(false, target_url);
 }
 
+// Test that manually adding a host to the site permission exceptions
+// allows connections to localhost from that host.
+IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest,
+                       HostNotOnAllowlistButManuallyAdded) {
+  std::string test_domain = "localhost";
+  // Clear out the allowlist.
+  g_brave_browser_process->localhost_permission_allowlist_service()
+      ->SetTestHosts({});
+  embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
+  const auto& target_url = localhost_server_->GetURL(test_domain, "/logo.png");
+  SetCurrentStatus(ContentSetting::CONTENT_SETTING_ALLOW);
+  // Load subresource, should succeed.
+  InsertImage(target_url.spec(), true);
+  // No prompt though.
+  EXPECT_EQ(0, prompt_factory()->show_count());
+}
+
 // Test that localhost connections blocked by adblock are still blocked without
 // permission prompt, and exceptioned domains cause permission prompt.
 IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, AdblockRuleException) {
