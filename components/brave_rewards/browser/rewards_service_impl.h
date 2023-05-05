@@ -24,6 +24,7 @@
 #include "base/sequence_checker.h"
 #include "base/threading/sequence_bound.h"
 #include "base/time/time.h"
+#include "base/timer/wall_clock_timer.h"
 #include "base/values.h"
 #include "brave/components/brave_rewards/browser/diagnostic_log.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
@@ -51,7 +52,6 @@
 
 namespace base {
 class OneShotTimer;
-class RepeatingTimer;
 class SequencedTaskRunner;
 }  // namespace base
 
@@ -548,12 +548,11 @@ class RewardsServiceImpl : public RewardsService,
   void ConnectionClosed();
 
   void RecordBackendP3AStats();
+  void RecordBackendP3AStatsWithDelay();
+  void OnP3ADailyTimer();
 
   void OnRecordBackendP3AExternalWallet(GetExternalWalletResult result);
-  void OnRecordBackendP3AStatsRecurring(
-      std::vector<mojom::PublisherInfoPtr> list);
   void OnRecordBackendP3AStatsContributions(
-      const size_t recurring_tip_count,
       std::vector<mojom::ContributionInfoPtr> list);
 
   void OnRecordBackendP3AStatsAC(bool ac_enabled);
@@ -628,7 +627,7 @@ class RewardsServiceImpl : public RewardsService,
   int ledger_state_target_version_for_testing_ = -1;
   bool resetting_rewards_ = false;
   int persist_log_level_ = 0;
-  base::RepeatingTimer p3a_daily_timer_;
+  base::WallClockTimer p3a_daily_timer_;
   base::OneShotTimer p3a_tip_report_timer_;
 
   GetTestResponseCallback test_response_callback_;

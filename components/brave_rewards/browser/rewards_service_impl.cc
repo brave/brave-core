@@ -398,9 +398,6 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
   }
 
   if (key == brave_ads::prefs::kEnabled) {
-    p3a::UpdateAdsStateOnPreferenceChange(profile_->GetPrefs(),
-                                          brave_ads::prefs::kEnabled);
-
     bool ads_enabled =
         profile_->GetPrefs()->GetBoolean(brave_ads::prefs::kEnabled);
 
@@ -836,11 +833,10 @@ void RewardsServiceImpl::OnLedgerInitialized(mojom::Result result) {
     ready_->Signal();
   }
 
-  RecordBackendP3AStats();
+  RecordBackendP3AStatsWithDelay();
   p3a_daily_timer_.Start(
-      FROM_HERE, kP3ADailyReportInterval,
-      base::BindRepeating(&RewardsServiceImpl::RecordBackendP3AStats,
-                          AsWeakPtr()));
+      FROM_HERE, base::Time::Now() + kP3ADailyReportInterval,
+      base::BindOnce(&RewardsServiceImpl::OnP3ADailyTimer, AsWeakPtr()));
 
   for (auto& observer : observers_) {
     observer.OnRewardsInitialized(this);
@@ -893,7 +889,6 @@ void RewardsServiceImpl::OnLedgerStateLoaded(
   if (state.second.is_dict()) {
     // Record stats.
     RecordBackendP3AStats();
-    p3a::MaybeRecordInitialAdsState(profile_->GetPrefs());
   }
   if (state.first.empty()) {
     p3a::RecordNoWalletCreatedForAllMetrics();
@@ -1808,6 +1803,8 @@ void RewardsServiceImpl::OnContributionSent(
     }
   }
 
+  RecordBackendP3AStatsWithDelay();
+
   std::move(callback).Run(success);
 }
 
@@ -2097,11 +2094,7 @@ void RewardsServiceImpl::OnTip(const std::string& publisher_key,
                          mojom::Result::LEDGER_ERROR);
   }
 
-  // Update "tips sent" metric.
-  // Use delay to ensure tip is confirmed when counting.
-  p3a_tip_report_timer_.Start(
-      FROM_HERE, kP3ATipReportDelay,
-      base::BindOnce(&RewardsServiceImpl::RecordBackendP3AStats, AsWeakPtr()));
+  RecordBackendP3AStatsWithDelay();
 
   if (recurring) {
     return SaveRecurringTip(publisher_key, amount, std::move(callback));
@@ -2451,6 +2444,21 @@ void RewardsServiceImpl::RecordBackendP3AStats() {
       &RewardsServiceImpl::OnRecordBackendP3AExternalWallet, AsWeakPtr()));
 }
 
+void RewardsServiceImpl::RecordBackendP3AStatsWithDelay() {
+  // Update "tips sent" metric.
+  // Use delay to ensure tip is confirmed when counting.
+  p3a_tip_report_timer_.Start(
+      FROM_HERE, kP3ATipReportDelay,
+      base::BindOnce(&RewardsServiceImpl::RecordBackendP3AStats, AsWeakPtr()));
+}
+
+void RewardsServiceImpl::OnP3ADailyTimer() {
+  RecordBackendP3AStats();
+  p3a_daily_timer_.Start(
+      FROM_HERE, base::Time::Now() + kP3ADailyReportInterval,
+      base::BindOnce(&RewardsServiceImpl::OnP3ADailyTimer, AsWeakPtr()));
+}
+
 void RewardsServiceImpl::OnRecordBackendP3AExternalWallet(
     GetExternalWalletResult result) {
   if (!Connected()) {
@@ -2465,37 +2473,26 @@ void RewardsServiceImpl::OnRecordBackendP3AExternalWallet(
     return;
   }
 
-  ledger_->GetRecurringTips(base::BindOnce(
-      &RewardsServiceImpl::OnRecordBackendP3AStatsRecurring, AsWeakPtr()));
-}
-
-void RewardsServiceImpl::OnRecordBackendP3AStatsRecurring(
-    std::vector<mojom::PublisherInfoPtr> list) {
-  if (!Connected()) {
-    return;
-  }
-
-  ledger_->GetAllContributions(
-      base::BindOnce(&RewardsServiceImpl::OnRecordBackendP3AStatsContributions,
-                     AsWeakPtr(), list.size()));
+  ledger_->GetAllContributions(base::BindOnce(
+      &RewardsServiceImpl::OnRecordBackendP3AStatsContributions, AsWeakPtr()));
 }
 
 void RewardsServiceImpl::OnRecordBackendP3AStatsContributions(
-    size_t recurring_tip_count,
     std::vector<mojom::ContributionInfoPtr> list) {
-  size_t onetime_tip_count = 0;
+  size_t tip_count = 0;
 
   base::Time now = base::Time::Now();
   for (const auto& contribution : list) {
-    if (contribution->type == mojom::RewardsType::ONE_TIME_TIP) {
+    if (contribution->type == mojom::RewardsType::ONE_TIME_TIP ||
+        contribution->type == mojom::RewardsType::RECURRING_TIP) {
       if (now - base::Time::FromTimeT(contribution->created_at) <
           kP3AMonthlyReportingPeriod) {
-        onetime_tip_count++;
+        tip_count++;
       }
     }
   }
 
-  p3a::RecordTipsSent(onetime_tip_count + recurring_tip_count);
+  p3a::RecordTipsSent(tip_count);
 
   GetAutoContributeEnabled(base::BindOnce(
       &RewardsServiceImpl::OnRecordBackendP3AStatsAC, AsWeakPtr()));

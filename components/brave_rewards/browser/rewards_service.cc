@@ -95,4 +95,12 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(prefs::kWalletCreationEnvironment, -1);
 }
 
+// static
+void RewardsService::RegisterProfilePrefsForMigration(
+    PrefRegistrySimple* registry) {
+  // Added 05/2023
+  registry->RegisterBooleanPref(prefs::kAdsWereDisabled, false);
+  registry->RegisterBooleanPref(prefs::kHasAdsP3AState, false);
+}
+
 }  // namespace brave_rewards
