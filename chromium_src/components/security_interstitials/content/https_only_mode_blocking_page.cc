@@ -5,11 +5,14 @@
 
 #include "components/security_interstitials/content/https_only_mode_blocking_page.h"
 
+// Avoid modifying `OpenUrlInNewForegroundTab` definition.
+#include "components/security_interstitials/content/security_interstitial_controller_client.h"
+
 namespace security_interstitials {
 
 namespace {
 const char kBraveLearnMoreLink[] =
-    "https://support.brave.com/hc/en-us/articles/9809690466061";
+    "https://support.brave.com/hc/en-us/articles/15513090104717";
 }  // namespace
 
 }  // namespace security_interstitials
