@@ -250,10 +250,10 @@ public class BalanceHelper {
         }
     }
 
-    private static void processP3ACoinNetworks(int coinType, List<NetworkInfo> networks,
-            KeyringService keyringService, JsonRpcService jsonRpcService,
-            BraveWalletService braveWalletService, BlockchainRegistry blockchainRegistry,
-            MultiResponseHandler multiResponse,
+    private static void processP3ACoinNetworks(@CoinType.EnumType int coinType,
+            List<NetworkInfo> networks, KeyringService keyringService,
+            JsonRpcService jsonRpcService, BraveWalletService braveWalletService,
+            BlockchainRegistry blockchainRegistry, MultiResponseHandler multiResponse,
             ArrayList<GetNativeAssetsBalancesResponseContext> nativeAssetsBalancesResponses,
             ArrayList<GetBlockchainTokensBalancesResponseContext>
                     blockchainTokensBalancesResponses) {
