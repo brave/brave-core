@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useSelector } from 'react-redux'
 
 // hooks
 import { usePendingTransactions } from '../../../../common/hooks/use-pending-transaction'
@@ -12,20 +11,12 @@ import { usePendingTransactions } from '../../../../common/hooks/use-pending-tra
 // components
 import EditGas, { MaxPriorityPanels } from '../../edit-gas/edit-gas'
 
-// selectors
-import { WalletSelectors } from '../../../../common/selectors'
-
 interface Props {
   onCancel: () => void
 }
 
 export function EditPendingTransactionGas (props: Props) {
   const { onCancel } = props
-
-  // redux
-  const transactionInfo = useSelector(
-    WalletSelectors.selectedPendingTransaction
-  )
 
   const [suggestedSliderStep, setSuggestedSliderStep] = React.useState<string>('1')
   const [maxPriorityPanel, setMaxPriorityPanel] = React.useState<MaxPriorityPanels>(
@@ -37,16 +28,17 @@ export function EditPendingTransactionGas (props: Props) {
     updateUnapprovedTransactionGasFields,
     baseFeePerGas,
     findAssetPrice,
-    transactionsNetwork
+    transactionsNetwork,
+    selectedPendingTransaction
   } = usePendingTransactions()
 
-  if (!transactionInfo || !transactionsNetwork) {
+  if (!selectedPendingTransaction || !transactionsNetwork) {
     return null
   }
 
   return (
     <EditGas
-      transactionInfo={transactionInfo}
+      transactionInfo={selectedPendingTransaction}
       onCancel={onCancel}
       networkSpotPrice={findAssetPrice(transactionsNetwork.symbol, '', transactionsNetwork.chainId)}
       selectedNetwork={transactionsNetwork}
