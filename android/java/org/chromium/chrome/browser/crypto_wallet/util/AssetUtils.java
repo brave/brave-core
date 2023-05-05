@@ -136,7 +136,7 @@ public class AssetUtils {
      * @return Keyring Id for coin tpye. If coin type does not belong to Ethereum or Solana it
      *         defaults to {@link BraveWalletConstants.DEFAULT_KEYRING_ID}.
      */
-    public static String getKeyringForEthOrSolOnly(int coinType) {
+    public static String getKeyringForEthOrSolOnly(@CoinType.EnumType int coinType) {
         switch (coinType) {
             case CoinType.ETH:
                 return BraveWalletConstants.DEFAULT_KEYRING_ID;
