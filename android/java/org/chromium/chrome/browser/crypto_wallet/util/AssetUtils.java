@@ -114,11 +114,9 @@ public class AssetUtils {
         if (coinType == CoinType.FIL) {
             switch (chainId) {
                 case BraveWalletConstants.FILECOIN_MAINNET:
-                case BraveWalletConstants.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID:
                     return BraveWalletConstants.FILECOIN_KEYRING_ID;
 
                 case BraveWalletConstants.FILECOIN_TESTNET:
-                case BraveWalletConstants.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID:
                     return BraveWalletConstants.FILECOIN_TESTNET_KEYRING_ID;
 
                 default:
