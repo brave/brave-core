@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { EntityId } from '@reduxjs/toolkit'
+import { EntityId, Store } from '@reduxjs/toolkit'
 import { createApi } from '@reduxjs/toolkit/query/react'
 
 // types
@@ -84,6 +84,16 @@ import {
   makeSerializableTransaction
 } from '../../utils/model-serialization-utils'
 import { addLogoToToken } from '../async/lib'
+import { WalletPanelApiProxy } from '../../panel/wallet_panel_api_proxy'
+import { WalletPageApiProxy } from '../../page/wallet_page_api_proxy'
+import { PanelActions } from '../../panel/actions'
+import {
+  dialogErrorFromLedgerErrorCode,
+  signLedgerEthereumTransaction,
+  signLedgerFilecoinTransaction,
+  signLedgerSolanaTransaction,
+  signTrezorTransaction
+} from '../async/hardware'
 
 export type AssetPriceById = BraveWallet.AssetPrice & {
   id: EntityId
@@ -94,7 +104,10 @@ export type AssetPriceById = BraveWallet.AssetPrice & {
  * A function to return the ref to either the main api proxy, or a mocked proxy
  * @returns function that returns an ApiProxy instance
  */
-let apiProxyFetcher = () => getAPIProxy()
+let apiProxyFetcher = () =>
+  getAPIProxy() as WalletApiProxy &
+    Partial<WalletPanelApiProxy> &
+    Partial<WalletPageApiProxy>
 
 /**
  * Assigns a function to use for fetching the walletApiProxy
@@ -2157,6 +2170,185 @@ export function createWalletApi (
         invalidatesTags: (res, err, arg) =>
           err ? ['UNKNOWN_ERROR'] : [TX_CACHE_TAGS.ID(arg.id)]
       }),
+      approveHardwareTransaction: mutation<
+        { success: boolean },
+        SerializableTransactionInfo
+      >({
+        queryFn: async (txInfo, store, extraOptions, baseQuery) => {
+          try {
+            const { data, cache } = baseQuery(undefined)
+            const apiProxy = data
+
+            const accountsRegistry = await cache.getAccountsRegistry()
+            const foundAccount = accountsRegistry.entities[txInfo.fromAddress]
+
+            if (!foundAccount?.hardware) {
+              return {
+                error:
+                  'failed to approve hardware transaction - ' +
+                  `account not found or is not hardware: ${txInfo.fromAddress}`
+              }
+            }
+
+            const hardwareAccount: BraveWallet.HardwareInfo =
+              foundAccount.hardware
+
+            if (apiProxy instanceof WalletPanelApiProxy) {
+              navigateToConnectHardwareWallet(apiProxy, store)
+            }
+
+            if (hardwareAccount.vendor === BraveWallet.LEDGER_HARDWARE_VENDOR) {
+              let success, error, code
+              switch (foundAccount.coin) {
+                case BraveWallet.CoinType.ETH:
+                  ;({ success, error, code } =
+                    await signLedgerEthereumTransaction(
+                      apiProxy,
+                      hardwareAccount.path,
+                      txInfo,
+                      foundAccount.coin
+                    ))
+                  break
+                case BraveWallet.CoinType.FIL:
+                  ;({ success, error, code } =
+                    await signLedgerFilecoinTransaction(
+                      apiProxy,
+                      txInfo,
+                      foundAccount.coin
+                    ))
+                  break
+                case BraveWallet.CoinType.SOL:
+                  ;({ success, error, code } =
+                    await signLedgerSolanaTransaction(
+                      apiProxy,
+                      hardwareAccount.path,
+                      txInfo,
+                      foundAccount.coin
+                    ))
+                  break
+                default:
+                  await store.dispatch(PanelActions.navigateToMain())
+                  return {
+                    error: `unsupported coin type for hardware approval`
+                  }
+              }
+              if (success) {
+                store.dispatch(PanelActions.setSelectedTransaction(txInfo))
+                store.dispatch(PanelActions.navigateTo('transactionDetails'))
+                apiProxy.panelHandler?.setCloseOnDeactivate(true)
+                return {
+                  data: { success: true }
+                }
+              }
+
+              if (code !== undefined) {
+                if (code === 'unauthorized') {
+                  store.dispatch(
+                    PanelActions.setHardwareWalletInteractionError(code)
+                  )
+                  return {
+                    error: code
+                  }
+                }
+
+                const deviceError = dialogErrorFromLedgerErrorCode(code)
+                if (deviceError === 'transactionRejected') {
+                  await store.dispatch(
+                    walletApi.endpoints.rejectTransaction.initiate({
+                      chainId: txInfo.chainId,
+                      coinType: getCoinFromTxDataUnion(txInfo.txDataUnion),
+                      id: txInfo.id
+                    })
+                  )
+                  store.dispatch(PanelActions.navigateToMain())
+                  return {
+                    data: { success: true }
+                  }
+                }
+
+                store.dispatch(
+                  PanelActions.setHardwareWalletInteractionError(deviceError)
+                )
+                return {
+                  error: deviceError
+                }
+              }
+
+              if (error) {
+                // TODO: handle non-device errors
+                console.log(error)
+                store.dispatch(PanelActions.navigateToMain())
+
+                return {
+                  error:
+                    typeof error === 'object'
+                      ? JSON.stringify(error)
+                      : error || 'unknown error'
+                }
+              }
+            } else if (
+              hardwareAccount.vendor === BraveWallet.TREZOR_HARDWARE_VENDOR
+            ) {
+              const { success, error, deviceError } =
+                await signTrezorTransaction(
+                  apiProxy,
+                  hardwareAccount.path,
+                  txInfo
+                )
+              if (success) {
+                store.dispatch(PanelActions.setSelectedTransaction(txInfo))
+                store.dispatch(PanelActions.navigateTo('transactionDetails'))
+                apiProxy.panelHandler?.setCloseOnDeactivate(true)
+                // By default the focus is moved to the browser window
+                // automatically when Trezor popup closed which triggers an
+                // OnDeactivate event that would close the wallet panel because
+                // of the above API call. However, there could be times that
+                // the above call happens after OnDeactivate event, so the
+                // wallet panel would stay open after Trezor popup closed. As a
+                // workaround, we manually set the focus back to wallet panel
+                // here so it would trigger another OnDeactivate event when
+                // user clicks outside of the wallet panel.
+                apiProxy.panelHandler?.focus()
+                return {
+                  data: { success: true }
+                }
+              }
+
+              if (deviceError === 'deviceBusy') {
+                // do nothing as the operation is already in progress
+                return {
+                  data: { success: true }
+                }
+              }
+
+              console.log(error)
+              store.dispatch(
+                walletApi.endpoints.rejectTransaction.initiate({
+                  chainId: txInfo.chainId,
+                  coinType: getCoinFromTxDataUnion(txInfo.txDataUnion),
+                  id: txInfo.id
+                })
+              )
+              store.dispatch(PanelActions.navigateToMain())
+              return {
+                data: { success: false }
+              }
+            }
+
+            store.dispatch(PanelActions.navigateToMain())
+
+            return {
+              data: { success: true }
+            }
+          } catch (error) {
+            return {
+              error: `Unable to approve hardware transaction: ${error}`
+            }
+          }
+        },
+        invalidatesTags: (res, err, arg) =>
+          err ? ['UNKNOWN_ERROR'] : [TX_CACHE_TAGS.ID(arg.id)]
+      }),
       rejectTransaction: mutation<
         { success: boolean },
         Pick<BraveWallet.TransactionInfo, 'id' | 'chainId'> & {
@@ -2759,18 +2951,19 @@ export const {
   // hooks
   useAddUserTokenMutation,
   useApproveERC20AllowanceMutation,
+  useApproveHardwareTransactionMutation,
   useApproveTransactionMutation,
   useCancelTransactionMutation,
   useGetAccountInfosRegistryQuery,
   useGetAccountTokenCurrentBalanceQuery,
   useGetAddressByteCodeQuery,
-  useGetTransactionsQuery,
   useGetCombinedTokenBalanceForAllAccountsQuery,
   useGetDefaultAccountAddressesQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetERC721MetadataQuery,
   useGetGasEstimation1559Query,
   useGetNetworksRegistryQuery,
+  useGetNftDiscoveryEnabledStatusQuery,
   useGetSelectedAccountAddressQuery,
   useGetSelectedChainQuery,
   useGetSelectedPendingTransactionIdQuery,
@@ -2779,15 +2972,13 @@ export const {
   useGetTokenBalancesForChainIdQuery,
   useGetTokenSpotPriceQuery,
   useGetTokensRegistryQuery,
+  useGetTransactionsQuery,
   useGetUserTokensRegistryQuery,
-  useGetNftDiscoveryEnabledStatusQuery,
-  useSetNftDiscoveryEnabledMutation,
   useInvalidateTransactionsCacheMutation,
   useIsEip1559ChangedMutation,
   useLazyGetAccountInfosRegistryQuery,
   useLazyGetAccountTokenCurrentBalanceQuery,
   useLazyGetAddressByteCodeQuery,
-  useLazyGetTransactionsQuery,
   useLazyGetCombinedTokenBalanceForAllAccountsQuery,
   useLazyGetDefaultAccountAddressesQuery,
   useLazyGetDefaultFiatCurrencyQuery,
@@ -2802,6 +2993,7 @@ export const {
   useLazyGetTokenBalancesForChainIdQuery,
   useLazyGetTokenSpotPriceQuery,
   useLazyGetTokensRegistryQuery,
+  useLazyGetTransactionsQuery,
   useLazyGetUserTokensRegistryQuery,
   useNewUnapprovedTxAddedMutation,
   usePrefetch,
@@ -2821,6 +3013,7 @@ export const {
   useSendTransactionMutation,
   useSetDefaultFiatCurrencyMutation,
   useSetNetworkMutation,
+  useSetNftDiscoveryEnabledMutation,
   useSetSelectedAccountMutation,
   useSetSelectedCoinMutation,
   useSpeedupTransactionMutation,
@@ -3105,4 +3298,23 @@ async function fetchUserAssetsForNetwork (
   }
 
   return tokenList
+}
+
+// panel internals
+function navigateToConnectHardwareWallet(
+  api: WalletPanelApiProxy,
+  store: Pick<Store, 'dispatch' | 'getState'>
+) {
+  api.panelHandler.setCloseOnDeactivate(false)
+
+  const selectedPanel: string = store.getState()?.panel?.selectedPanel
+
+  if (selectedPanel === 'connectHardwareWallet') {
+    return
+  }
+
+  store.dispatch(PanelActions.navigateTo('connectHardwareWallet'))
+  store.dispatch(
+    PanelActions.setHardwareWalletInteractionError(undefined)
+  )
 }

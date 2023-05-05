@@ -6,7 +6,7 @@
 import WalletApiProxy from '../common/wallet_api_proxy'
 import { BraveWallet } from '../constants/types'
 
-class WalletPanelApiProxy extends WalletApiProxy {
+export class WalletPanelApiProxy extends WalletApiProxy {
   callbackRouter = new BraveWallet.PageCallbackRouter()
   panelHandler = new BraveWallet.PanelHandlerRemote()
 
