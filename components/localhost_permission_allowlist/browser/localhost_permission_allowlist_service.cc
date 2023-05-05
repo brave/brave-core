@@ -18,7 +18,8 @@
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_observer.h"
 
-#define LOCALHOST_PERMISSION_ALLOWLIST_TXT_FILE "localhost-permission-allow-list.txt"
+#define LOCALHOST_PERMISSION_ALLOWLIST_TXT_FILE \
+  "localhost-permission-allow-list.txt"
 #define LOCALHOST_PERMISSION_ALLOWLIST_TXT_FILE_VERSION "1"
 
 namespace localhost_permission_allowlist {
@@ -63,7 +64,8 @@ void LocalhostPermissionAllowlistService::OnDATFileDataReady(
   return;
 }
 
-bool LocalhostPermissionAllowlistService::CanAskForLocalhostPermission(const GURL& url) {
+bool LocalhostPermissionAllowlistService::CanAskForLocalhostPermission(
+    const GURL& url) {
   if (!is_ready_) {
     // We don't have the allowlist loaded yet;
     // by default do the more privacy-friendly thing.

@@ -30,7 +30,10 @@ class LocalhostPermissionAllowlistService
 
   bool CanAskForLocalhostPermission(const GURL& url);
   ~LocalhostPermissionAllowlistService() override;
-  void SetTestHosts(std::set<std::string> allowed_hosts) { allowed_hosts_ = allowed_hosts; is_ready_ = true; }
+  void SetTestHosts(std::set<std::string> allowed_hosts) {
+    allowed_hosts_ = allowed_hosts;
+    is_ready_ = true;
+  }
   void OnDATFileDataReady(const std::string& contents);
 
  private:
