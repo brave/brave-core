@@ -48,7 +48,7 @@ void NotificationAdPopupWidget::InitWidget(
   } else {
     params.shadow_type = views::Widget::InitParams::ShadowType::kNone;
 
-    if (kShouldAttachCustomNotificationAdToBrowserWindow.Get()) {
+    if (kUseSameZOrderAsBrowserWindow.Get()) {
       params.z_order = ui::ZOrderLevel::kNormal;
       params.parent = browser_native_view;
     } else {

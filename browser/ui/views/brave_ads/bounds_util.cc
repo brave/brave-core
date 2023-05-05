@@ -60,7 +60,7 @@ void AdjustBoundsAndSnapToFitWorkAreaForNativeView(views::Widget* widget,
 
   gfx::NativeView native_view = widget->GetNativeView();
   gfx::Rect work_area;
-  if (kShouldAttachCustomNotificationAdToBrowserWindow.Get()) {
+  if (kUseSameZOrderAsBrowserWindow.Get()) {
     if (widget->parent()) {
       native_view = widget->parent()->GetNativeView();
     }
