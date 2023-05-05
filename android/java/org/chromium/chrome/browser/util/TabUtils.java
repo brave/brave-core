@@ -42,6 +42,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabLaunchType;
+import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 import org.chromium.chrome.browser.toolbar.LocationBarModel;
 import org.chromium.components.bookmarks.BookmarkId;
 import org.chromium.content_public.browser.LoadUrlParams;
@@ -215,7 +216,9 @@ public class TabUtils {
             if (braveActivity.getTabModelSelector() != null
                     && braveActivity.getActivityTab() != null) {
                 braveActivity.getTabModelSelector().openNewTab(new LoadUrlParams(url),
-                        TabLaunchType.FROM_LONGPRESS_BACKGROUND_IN_GROUP,
+                        BraveTabUiFeatureUtilities.isBraveTabGroupsEnabled()
+                                ? TabLaunchType.FROM_LONGPRESS_BACKGROUND_IN_GROUP
+                                : TabLaunchType.FROM_LONGPRESS_BACKGROUND,
                         braveActivity.getActivityTab(), isIncognito);
             }
         } catch (BraveActivity.BraveActivityNotFoundException e) {
