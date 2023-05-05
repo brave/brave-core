@@ -13,10 +13,15 @@
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_opted_in_confirmation_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/url_request_builders/create_opted_in_confirmation_url_request_builder_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/url_request_builders/create_opted_in_confirmation_url_request_builder_util.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/url_request_builders/fetch_payment_token_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
@@ -36,6 +41,7 @@
 
 namespace brave_ads {
 
+using ::testing::_;
 using ::testing::NiceMock;
 
 class BraveAdsAccountTest : public AccountObserver, public UnitTestBase {
@@ -114,7 +120,6 @@ TEST_F(BraveAdsAccountTest, SetWallet) {
 
 TEST_F(BraveAdsAccountTest, SetWalletWithEmptyPaymentId) {
   // Arrange
-  MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
 
   // Act
   account_->SetWallet(/*payment_id*/ {}, kWalletRecoverySeed);
@@ -128,7 +133,6 @@ TEST_F(BraveAdsAccountTest, SetWalletWithEmptyPaymentId) {
 
 TEST_F(BraveAdsAccountTest, SetWalletWithInvalidRecoverySeed) {
   // Arrange
-  MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
 
   // Act
   account_->SetWallet(kWalletPaymentId, kInvalidWalletRecoverySeed);
@@ -142,7 +146,6 @@ TEST_F(BraveAdsAccountTest, SetWalletWithInvalidRecoverySeed) {
 
 TEST_F(BraveAdsAccountTest, SetWalletWithEmptyRecoverySeed) {
   // Arrange
-  MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
 
   // Act
   account_->SetWallet(kWalletPaymentId, /*recovery_seed*/ "");
@@ -187,7 +190,9 @@ TEST_F(BraveAdsAccountTest, GetWallet) {
 
 TEST_F(BraveAdsAccountTest, GetIssuersWhenWalletIsCreated) {
   // Arrange
-  MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
+  const URLResponseMap url_responses = {
+      {BuildIssuersUrlPath(), {{net::HTTP_OK, BuildIssuersUrlResponseBody()}}}};
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   privacy::SetUnblindedTokens(/*count*/ 50);
 
@@ -211,8 +216,6 @@ TEST_F(BraveAdsAccountTest,
   // Arrange
   BuildAndSetIssuers();
 
-  MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
-
   privacy::SetUnblindedTokens(/*count*/ 50);
 
   // Act
@@ -232,7 +235,9 @@ TEST_F(BraveAdsAccountTest,
 
 TEST_F(BraveAdsAccountTest, GetIssuersIfAdsAreEnabled) {
   // Arrange
-  MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
+  const URLResponseMap url_responses = {
+      {BuildIssuersUrlPath(), {{net::HTTP_OK, BuildIssuersUrlResponseBody()}}}};
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   account_->Process();
 
@@ -248,7 +253,7 @@ TEST_F(BraveAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
   // Arrange
   ads_client_mock_.SetBooleanPref(prefs::kEnabled, false);
 
-  MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
+  EXPECT_CALL(ads_client_mock_, UrlRequest(_, _)).Times(0);
 
   account_->Process();
 
@@ -263,7 +268,83 @@ TEST_F(BraveAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
 
 TEST_F(BraveAdsAccountTest, DoNotGetInvalidIssuers) {
   // Arrange
-  MockUrlResponses(ads_client_mock_, GetInvalidIssuersUrlResponses());
+  const URLResponseMap url_responses = {
+      {BuildIssuersUrlPath(), {{net::HTTP_OK, /*response_body*/ R"(
+          {
+            "ping": 7200000,
+            "issuers": [
+              {
+                "name": "confirmations",
+                "publicKeys": [
+                  {
+                    "publicKey": "bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=",
+                    "associatedValue": ""
+                  },
+                  {
+                    "publicKey": "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=",
+                    "associatedValue": ""
+                  },
+                  {
+                    "publicKey": "6Orbju/jPQQGldu/MVyBi2wXKz8ynHIcdsbCWc9gGHQ=",
+                    "associatedValue": ""
+                  },
+                  {
+                    "publicKey": "ECEKAGeRCNmAWimTs7fo0tTMcg8Kcmoy8w+ccOSYXT8=",
+                    "associatedValue": ""
+                  },
+                  {
+                    "publicKey": "xp9WArE+RkSt579RCm6EhdmcW4RfS71kZHMgXpwgZyI=",
+                    "associatedValue": ""
+                  },
+                  {
+                    "publicKey": "AE7e4Rh38yFmnyLyPYcyWKT//zLOsEEX+WdLZqvJxH0=",
+                    "associatedValue": ""
+                  },
+                  {
+                    "publicKey": "HjID7G6LRrcRu5ezW0nLZtEARIBnjpaQFKTHChBuJm8=",
+                    "associatedValue": ""
+                  }
+                ]
+              },
+              {
+                "name": "payments",
+                "publicKeys": [
+                  {
+                    "publicKey": "JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=",
+                    "associatedValue": "0.0"
+                  },
+                  {
+                    "publicKey": "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=",
+                    "associatedValue": "0.1"
+                  },
+                  {
+                    "publicKey": "XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=",
+                    "associatedValue": "0.1"
+                  },
+                  {
+                    "publicKey": "wAcnJtb34Asykf+2jrTWrjFiaTqilklZ6bxLyR3LyFo=",
+                    "associatedValue": "0.1"
+                  },
+                  {
+                    "publicKey": "ZvzeYOT1geUQXfOsYXBxZj/H26IfiBUVodHl51j68xI=",
+                    "associatedValue": "0.1"
+                  },
+                  {
+                    "publicKey": "JlOezORiqLkFkvapoNRGWcMH3/g09/7M2UPEwMjRpFE=",
+                    "associatedValue": "0.1"
+                  },
+                  {
+                    "publicKey": "hJP1nDjTdHcVDw347oH0XO+XBPPh5wZA2xWZE8QUSSA=",
+                    "associatedValue": "0.1"
+                  },
+                  {
+                    "publicKey": "+iyhYDv7W6cuFAD1tzsJIEQKEStTX9B/Tt62tqt+tG0=",
+                    "associatedValue": "0.1"
+                  }
+                ]
+              }
+            ]
+          })"}}}};
 
   account_->Process();
 
@@ -278,14 +359,12 @@ TEST_F(BraveAdsAccountTest, DoNotGetInvalidIssuers) {
 
 TEST_F(BraveAdsAccountTest, DoNotGetMissingIssuers) {
   // Arrange
-  const URLResponseMap url_responses = {{// Get issuers request
-                                         "/v3/issuers/",
-                                         {{net::HTTP_OK, /*response_body*/ R"(
-                                          {
-                                            "ping": 7200000,
-                                            "issuers": []
-                                          }
-                                         )"}}}};
+  const URLResponseMap url_responses = {
+      {BuildIssuersUrlPath(), {{net::HTTP_OK, /*response_body*/ R"(
+          {
+            "ping": 7200000,
+            "issuers": []
+          })"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   account_->Process();
@@ -302,9 +381,7 @@ TEST_F(BraveAdsAccountTest, DoNotGetMissingIssuers) {
 TEST_F(BraveAdsAccountTest, DoNotGetIssuersFromInvalidResponse) {
   // Arrange
   const URLResponseMap url_responses = {
-      {// Get issuers request
-       "/v3/issuers/",
-       {{net::HTTP_OK, /*response_body*/ "INVALID"}}}};
+      {BuildIssuersUrlPath(), {{net::HTTP_OK, /*response_body*/ "{INVALID}"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   account_->Process();
@@ -325,44 +402,11 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
   MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 
   const URLResponseMap url_responses = {
-      {// Create confirmation request
-       "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/"
-       "eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVR"
-       "xeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidG"
-       "VzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjM"
-       "C1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIs"
-       "XCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVUR"
-       "yR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYm"
-       "JmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TW"
-       "GpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3"
-       "Zz09In0=",
-       {{net::HTTP_CREATED, /*response_body*/ R"(
-            {
-              "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
-              "createdAt" : "2020-04-20T10:27:11.717Z",
-              "type" : "view",
-              "modifiedAt" : "2020-04-20T10:27:11.717Z",
-              "creativeInstanceId" : "546fe7b0-5047-4f28-a11c-81f14edcf0f6"
-            }
-          )"}}},
-      {// Fetch payment token request
-       "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken",
-       {{net::HTTP_OK, /*response_body*/ R"(
-            {
-              "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
-              "createdAt" : "2020-04-20T10:27:11.717Z",
-              "type" : "view",
-              "modifiedAt" : "2020-04-20T10:27:11.736Z",
-              "creativeInstanceId" : "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-              "paymentToken" : {
-                "publicKey" : "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=",
-                "batchProof" : "FWTZ5fOYITYlMWMYaxg254QWs+Pmd0dHzoor0mzIlQ8tWHagc7jm7UVJykqIo+ZSM+iK29mPuWJxPHpG4HypBw==",
-                "signedTokens" : [
-                  "DHe4S37Cn1WaTbCC+ytiNTB2s5H0vcLzVcRgzRoO3lU="
-                ]
-              }
-            }
-          )"}}}};
+      {BuildCreateOptedInConfirmationUrlPath(
+           kTransactionId, kCreateOptedInConfirmationCredential),
+       {{net::HTTP_CREATED, BuildCreateOptedInConfirmationUrlResponseBody()}}},
+      {BuildFetchPaymentTokenUrlPath(kTransactionId),
+       {{net::HTTP_OK, BuildFetchPaymentTokenUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   privacy::SetUnblindedTokens(/*count*/ 1);

@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/conversions/conversions_database_table.h"
 
 #include "base/functional/bind.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "net/http/http_status_code.h"
@@ -22,8 +23,7 @@ class BraveAdsConversionsDatabaseTableIntegrationTest : public UnitTestBase {
 
   void SetUpMocks() override {
     const URLResponseMap url_responses = {
-        {// Fetch catalog request
-         "/v9/catalog",
+        {BuildCatalogUrlPath(),
          {{net::HTTP_OK, /*response_body*/ "/catalog.json"}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
   }

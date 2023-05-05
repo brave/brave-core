@@ -51,7 +51,7 @@ class Catalog final : public DatabaseManagerObserver {
 
   base::ObserverList<CatalogObserver> observers_;
 
-  bool is_processing_ = false;
+  bool is_fetching_ = false;
 
   Timer timer_;
   BackoffTimer retry_timer_;

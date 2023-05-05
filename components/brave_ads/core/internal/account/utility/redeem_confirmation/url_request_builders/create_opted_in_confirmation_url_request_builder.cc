@@ -9,10 +9,11 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/strings/string_util.h"
+#include "base/strings/strcat.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_payload_json_writer.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_util.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/url_request_builders/create_opted_in_confirmation_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
 #include "url/gurl.h"
 
@@ -36,8 +37,6 @@ CreateOptedInConfirmationUrlRequestBuilder::
     : confirmation_(std::move(confirmation)) {
   DCHECK(IsValid(confirmation_));
 }
-
-// POST /v3/confirmation/{transactionId}/{credential}
 
 mojom::UrlRequestInfoPtr CreateOptedInConfirmationUrlRequestBuilder::Build() {
   mojom::UrlRequestInfoPtr url_request = mojom::UrlRequestInfo::New();
@@ -63,9 +62,9 @@ GURL CreateOptedInConfirmationUrlRequestBuilder::BuildUrl() const {
   const std::string credential_base64_url =
       *confirmation_.opted_in->credential_base64url;
 
-  const std::string spec = base::ReplaceStringPlaceholders(
-      "$1/v3/confirmation/$2/$3",
-      {url_host, confirmation_.transaction_id, credential_base64_url}, nullptr);
+  const std::string spec = base::StrCat(
+      {url_host, BuildCreateOptedInConfirmationUrlPath(
+                     confirmation_.transaction_id, credential_base64_url)});
 
   return GURL(spec);
 }

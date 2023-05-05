@@ -24,7 +24,7 @@ UnblindedTokens& GetUnblindedTokens() {
 UnblindedTokenList SetUnblindedTokens(const int count) {
   CHECK_GT(count, 0);
 
-  UnblindedTokenList unblinded_tokens = GetUnblindedTokens(count);
+  UnblindedTokenList unblinded_tokens = BuildUnblindedTokens(count);
   GetUnblindedTokens().SetTokens(unblinded_tokens);
   return unblinded_tokens;
 }
@@ -64,7 +64,7 @@ UnblindedTokenList CreateUnblindedTokens(
   return unblinded_tokens;
 }
 
-UnblindedTokenList GetUnblindedTokens(const int count) {
+UnblindedTokenList BuildUnblindedTokens(const int count) {
   CHECK_GT(count, 0);
 
   const WalletInfo& wallet = GetWalletForTesting();
@@ -97,8 +97,8 @@ UnblindedTokenList GetUnblindedTokens(const int count) {
   return unblinded_tokens;
 }
 
-UnblindedTokenInfo GetUnblindedToken() {
-  const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(/*count*/ 1);
+UnblindedTokenInfo BuildUnblindedToken() {
+  const UnblindedTokenList unblinded_tokens = BuildUnblindedTokens(/*count*/ 1);
   CHECK(!unblinded_tokens.empty());
   return unblinded_tokens.front();
 }

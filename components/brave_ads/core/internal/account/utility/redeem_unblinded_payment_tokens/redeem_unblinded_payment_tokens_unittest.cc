@@ -9,7 +9,10 @@
 
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate_mock.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
+#include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
@@ -45,29 +48,14 @@ class BraveAdsRedeemUnblindedPaymentTokensTest : public UnitTestBase {
 TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest, RedeemUnblindedPaymentTokens) {
   // Arrange
   const URLResponseMap url_responses = {
-      {// Redeem unblinded payment tokens request
-       "/v3/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7",
-       {{net::HTTP_OK, /*response_body*/ R"(
-            {
-              "payload": "{"paymentId":"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7"}",
-              "paymentCredentials": [
-                {
-                  "credential": {
-                    "signature": "J6Lnoz1Ho5P4YDkcufA+WKUdR4C4f8QJARaT3Cko8RZ6dc777od9NQEaetU+xK3LXmQtmA6jfIUcLR3SCIJl0g==",
-                    "t": "Z0GXil+GIQLOSSLHJV78jUE8cMxtwXtoROmv3uW8Qecpvx7L076GNI3TN44uF4uleOo2ZTpeKHzM2eeFHO2K6w=="
-                  },
-                  "publicKey": "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU="
-                }
-              ]
-            }
-          )"}}}};
+      {BuildRedeemUnblindedPaymentTokensUrlPath(
+           /*payment_id*/ kWalletPaymentId),
+       {{net::HTTP_OK, BuildRedeemUnblindedPaymentTokensUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   ads_client_mock_.SetTimePref(prefs::kNextTokenRedemptionAt, Now());
 
-  const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
-      privacy::GetUnblindedPaymentTokens(/*count*/ 1);
-  privacy::GetUnblindedPaymentTokens().SetTokens(unblinded_payment_tokens);
+  privacy::SetUnblindedPaymentTokens(/*count*/ 1);
 
   // Act
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
@@ -101,48 +89,21 @@ TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest,
        RedeemUnblindedPaymentTokensMultipleTimes) {
   // Arrange
   const URLResponseMap url_responses = {
-      {// Redeem unblinded payment tokens request
-       "/v3/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7",
-       {{net::HTTP_OK, /*response_body*/ R"(
-            {
-              "payload": "{"paymentId":"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7"}",
-              "paymentCredentials": [
-                {
-                  "credential": {
-                    "signature": "J6Lnoz1Ho5P4YDkcufA+WKUdR4C4f8QJARaT3Cko8RZ6dc777od9NQEaetU+xK3LXmQtmA6jfIUcLR3SCIJl0g==",
-                    "t": "Z0GXil+GIQLOSSLHJV78jUE8cMxtwXtoROmv3uW8Qecpvx7L076GNI3TN44uF4uleOo2ZTpeKHzM2eeFHO2K6w=="
-                  },
-                  "publicKey": "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU="
-                }
-              ]
-            }
-          )"},
-        {net::HTTP_OK, /*response_body*/ R"(
-            {
-              "payload": "{"paymentId":"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7"}",
-              "paymentCredentials": [
-                {
-                  "credential": {
-                    "signature": "J6Lnoz1Ho5P4YDkcufA+WKUdR4C4f8QJARaT3Cko8RZ6dc777od9NQEaetU+xK3LXmQtmA6jfIUcLR3SCIJl0g==",
-                    "t": "Z0GXil+GIQLOSSLHJV78jUE8cMxtwXtoROmv3uW8Qecpvx7L076GNI3TN44uF4uleOo2ZTpeKHzM2eeFHO2K6w=="
-                  },
-                  "publicKey": "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU="
-                }
-              ]
-            }
-          )"}}}};
+      {BuildRedeemUnblindedPaymentTokensUrlPath(
+           /*payment_id*/ kWalletPaymentId),
+       {{net::HTTP_OK, BuildRedeemUnblindedPaymentTokensUrlResponseBody()},
+        {net::HTTP_OK, BuildRedeemUnblindedPaymentTokensUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   ads_client_mock_.SetTimePref(prefs::kNextTokenRedemptionAt, Now());
 
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
-      privacy::GetUnblindedPaymentTokens(/*count*/ 1);
-  privacy::GetUnblindedPaymentTokens().SetTokens(unblinded_payment_tokens);
+      privacy::SetUnblindedPaymentTokens(/*count*/ 1);
 
   // Act
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnDidRedeemUnblindedPaymentTokens(_))
-      .Times(0);
+      .Times(2);
 
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnFailedToRedeemUnblindedPaymentTokens())
@@ -150,7 +111,7 @@ TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest,
 
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnDidScheduleNextUnblindedPaymentTokensRedemption(_))
-      .Times(0);
+      .Times(2);
 
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnWillRetryRedeemingUnblindedPaymentTokens(_))
@@ -162,7 +123,12 @@ TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest,
 
   const WalletInfo wallet = GetWalletForTesting();
   redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);
-  redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);
+
+  FastForwardClockToNextPendingTask();
+
+  privacy::GetUnblindedPaymentTokens().SetTokens(unblinded_payment_tokens);
+
+  FastForwardClockToNextPendingTask();
 
   // Assert
   EXPECT_EQ(1U, GetPendingTaskCount());
@@ -171,29 +137,14 @@ TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest,
 TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
   // Arrange
   const URLResponseMap url_responses = {
-      {// Redeem unblinded payment tokens request
-       "/v3/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7",
-       {{net::HTTP_OK, /*response_body*/ R"(
-            {
-              "payload": "{"paymentId":"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7"}",
-              "paymentCredentials": [
-                {
-                  "credential": {
-                    "signature": "J6Lnoz1Ho5P4YDkcufA+WKUdR4C4f8QJARaT3Cko8RZ6dc777od9NQEaetU+xK3LXmQtmA6jfIUcLR3SCIJl0g==",
-                    "t": "Z0GXil+GIQLOSSLHJV78jUE8cMxtwXtoROmv3uW8Qecpvx7L076GNI3TN44uF4uleOo2ZTpeKHzM2eeFHO2K6w=="
-                  },
-                  "publicKey": "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU="
-                }
-              ]
-            }
-          )"}}}};
+      {BuildRedeemUnblindedPaymentTokensUrlPath(
+           /*payment_id*/ kWalletPaymentId),
+       {{net::HTTP_OK, BuildRedeemUnblindedPaymentTokensUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   ads_client_mock_.SetTimePref(prefs::kNextTokenRedemptionAt, Now());
 
-  const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
-      privacy::GetUnblindedPaymentTokens(/*count*/ 1);
-  privacy::GetUnblindedPaymentTokens().SetTokens(unblinded_payment_tokens);
+  privacy::SetUnblindedPaymentTokens(/*count*/ 1);
 
   // Act
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
@@ -225,33 +176,14 @@ TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
 
 TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
   // Arrange
-  const URLResponseMap url_responses = {
-      {// Redeem unblinded payment tokens request
-       "/v3/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7",
-       {{net::HTTP_OK, /*response_body*/ R"(
-            {
-              "payload": "{"paymentId":"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7"}",
-              "paymentCredentials": [
-                {
-                  "credential": {
-                    "signature": "J6Lnoz1Ho5P4YDkcufA+WKUdR4C4f8QJARaT3Cko8RZ6dc777od9NQEaetU+xK3LXmQtmA6jfIUcLR3SCIJl0g==",
-                    "t": "Z0GXil+GIQLOSSLHJV78jUE8cMxtwXtoROmv3uW8Qecpvx7L076GNI3TN44uF4uleOo2ZTpeKHzM2eeFHO2K6w=="
-                  },
-                  "publicKey": "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU="
-                }
-              ]
-            }
-          )"}}}};
-  MockUrlResponses(ads_client_mock_, url_responses);
-
   ads_client_mock_.SetTimePref(prefs::kNextTokenRedemptionAt, Now());
 
-  const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
-      privacy::GetUnblindedPaymentTokens(/*count*/ 1);
-  privacy::GetUnblindedPaymentTokens().SetTokens(unblinded_payment_tokens);
+  privacy::SetUnblindedPaymentTokens(/*count*/ 1);
 
   // Act
   const InSequence seq;
+
+  EXPECT_CALL(ads_client_mock_, UrlRequest(_, _)).Times(0);
 
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnFailedToRedeemUnblindedPaymentTokens());
@@ -280,28 +212,11 @@ TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
 
 TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
   // Arrange
-  const URLResponseMap url_responses = {
-      {// Redeem unblinded payment tokens request
-       "/v3/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7",
-       {{net::HTTP_OK, /*response_body*/ R"(
-            {
-              "payload": "{"paymentId":"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7"}",
-              "paymentCredentials": [
-                {
-                  "credential": {
-                    "signature": "J6Lnoz1Ho5P4YDkcufA+WKUdR4C4f8QJARaT3Cko8RZ6dc777od9NQEaetU+xK3LXmQtmA6jfIUcLR3SCIJl0g==",
-                    "t": "Z0GXil+GIQLOSSLHJV78jUE8cMxtwXtoROmv3uW8Qecpvx7L076GNI3TN44uF4uleOo2ZTpeKHzM2eeFHO2K6w=="
-                  },
-                  "publicKey": "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU="
-                }
-              ]
-            }
-          )"}}}};
-  MockUrlResponses(ads_client_mock_, url_responses);
-
   ads_client_mock_.SetTimePref(prefs::kNextTokenRedemptionAt, Now());
 
   // Act
+  EXPECT_CALL(ads_client_mock_, UrlRequest(_, _)).Times(0);
+
   EXPECT_CALL(redeem_unblinded_payment_tokens_delegate_mock_,
               OnDidRedeemUnblindedPaymentTokens(_))
       .Times(0);
@@ -333,30 +248,16 @@ TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
 TEST_F(BraveAdsRedeemUnblindedPaymentTokensTest, Retry) {
   // Arrange
   const URLResponseMap url_responses = {
-      {// Redeem unblinded payment tokens request
-       "/v3/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7",
-       {{net::HTTP_NOT_FOUND, /*response_body*/ {}},
-        {net::HTTP_OK, /*response_body*/ R"(
-            {
-              "payload": "{"paymentId":"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7"}",
-              "paymentCredentials": [
-                {
-                  "credential": {
-                    "signature": "J6Lnoz1Ho5P4YDkcufA+WKUdR4C4f8QJARaT3Cko8RZ6dc777od9NQEaetU+xK3LXmQtmA6jfIUcLR3SCIJl0g==",
-                    "t": "Z0GXil+GIQLOSSLHJV78jUE8cMxtwXtoROmv3uW8Qecpvx7L076GNI3TN44uF4uleOo2ZTpeKHzM2eeFHO2K6w=="
-                  },
-                  "publicKey": "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU="
-                }
-              ]
-            }
-          )"}}}};
+      {BuildRedeemUnblindedPaymentTokensUrlPath(
+           /*payment_id*/ kWalletPaymentId),
+       {{net::HTTP_NOT_FOUND,
+         /*response_body*/ net::GetHttpReasonPhrase(net::HTTP_NOT_FOUND)},
+        {net::HTTP_OK, BuildRedeemUnblindedPaymentTokensUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   ads_client_mock_.SetTimePref(prefs::kNextTokenRedemptionAt, Now());
 
-  const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
-      privacy::GetUnblindedPaymentTokens(/*count*/ 1);
-  privacy::GetUnblindedPaymentTokens().SetTokens(unblinded_payment_tokens);
+  privacy::SetUnblindedPaymentTokens(/*count*/ 1);
 
   // Act
   const InSequence seq;

@@ -9,9 +9,10 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/strings/string_util.h"
+#include "base/strings/strcat.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_util.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/url_request_builders/fetch_payment_token_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
 #include "url/gurl.h"
 
@@ -22,8 +23,6 @@ FetchPaymentTokenUrlRequestBuilder::FetchPaymentTokenUrlRequestBuilder(
     : confirmation_(std::move(confirmation)) {
   DCHECK(IsValid(confirmation_));
 }
-
-// GET /v3/confirmation/{transactionId}/paymentToken
 
 mojom::UrlRequestInfoPtr FetchPaymentTokenUrlRequestBuilder::Build() {
   mojom::UrlRequestInfoPtr url_request = mojom::UrlRequestInfo::New();
@@ -40,9 +39,8 @@ GURL FetchPaymentTokenUrlRequestBuilder::BuildUrl() const {
                                    ? GetAnonymousSearchUrlHost()
                                    : GetAnonymousUrlHost();
 
-  const std::string spec = base::ReplaceStringPlaceholders(
-      "$1/v3/confirmation/$2/paymentToken",
-      {url_host, confirmation_.transaction_id}, nullptr);
+  const std::string spec = base::StrCat(
+      {url_host, BuildFetchPaymentTokenUrlPath(confirmation_.transaction_id)});
 
   return GURL(spec);
 }

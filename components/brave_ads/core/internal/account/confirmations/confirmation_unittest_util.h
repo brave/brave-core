@@ -17,7 +17,6 @@ struct TransactionInfo;
 absl::optional<ConfirmationInfo> BuildConfirmation(
     privacy::TokenGeneratorInterface* token_generator,
     const TransactionInfo& transaction);
-
 absl::optional<ConfirmationInfo> BuildConfirmation(
     privacy::TokenGeneratorInterface* token_generator);
 

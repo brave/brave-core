@@ -14,6 +14,7 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_json_reader.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_builder.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
@@ -55,10 +56,9 @@ void Issuers::MaybeFetch() {
 void Issuers::Fetch() {
   DCHECK(!is_fetching_);
 
-  is_fetching_ = true;
+  BLOG(1, "FetchIssuers" << BuildIssuersUrlPath());
 
-  BLOG(1, "FetchIssuers");
-  BLOG(2, "GET /v3/issuers/");
+  is_fetching_ = true;
 
   IssuersUrlRequestBuilder url_request_builder;
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -75,6 +75,8 @@ void Issuers::OnFetch(const mojom::UrlResponseInfo& url_response) {
 
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
+
+  is_fetching_ = false;
 
   if (url_response.status_code != net::HTTP_OK) {
     return FailedToFetchIssuers(/*should_retry*/ true);
@@ -93,8 +95,6 @@ void Issuers::OnFetch(const mojom::UrlResponseInfo& url_response) {
 void Issuers::SuccessfullyFetchedIssuers(const IssuersInfo& issuers) {
   StopRetrying();
 
-  is_fetching_ = false;
-
   if (delegate_) {
     delegate_->OnDidFetchIssuers(issuers);
   }
@@ -104,8 +104,6 @@ void Issuers::SuccessfullyFetchedIssuers(const IssuersInfo& issuers) {
 
 void Issuers::FailedToFetchIssuers(const bool should_retry) {
   BLOG(0, "Failed to fetch issuers");
-
-  is_fetching_ = false;
 
   if (delegate_) {
     delegate_->OnFailedToFetchIssuers();

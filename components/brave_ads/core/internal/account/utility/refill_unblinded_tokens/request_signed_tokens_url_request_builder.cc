@@ -16,6 +16,7 @@
 #include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/internal/account/utility/refill_unblinded_tokens/request_signed_tokens_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
 #include "url/gurl.h"
@@ -46,8 +47,6 @@ RequestSignedTokensUrlRequestBuilder::RequestSignedTokensUrlRequestBuilder(
 RequestSignedTokensUrlRequestBuilder::~RequestSignedTokensUrlRequestBuilder() =
     default;
 
-// POST /v3/confirmation/token/{paymentId}
-
 mojom::UrlRequestInfoPtr RequestSignedTokensUrlRequestBuilder::Build() {
   mojom::UrlRequestInfoPtr url_request = mojom::UrlRequestInfo::New();
   url_request->url = BuildUrl();
@@ -63,9 +62,9 @@ mojom::UrlRequestInfoPtr RequestSignedTokensUrlRequestBuilder::Build() {
 ///////////////////////////////////////////////////////////////////////////////
 
 GURL RequestSignedTokensUrlRequestBuilder::BuildUrl() const {
-  const std::string spec = base::ReplaceStringPlaceholders(
-      "$1/v3/confirmation/token/$2",
-      {GetNonAnonymousUrlHost(), wallet_.payment_id}, nullptr);
+  const std::string spec =
+      base::StrCat({GetNonAnonymousUrlHost(),
+                    BuildRequestSignedTokensUrlPath(wallet_.payment_id)});
   return GURL(spec);
 }
 
@@ -121,8 +120,9 @@ std::string RequestSignedTokensUrlRequestBuilder::BuildSignatureHeaderValue(
     return {};
   }
 
-  return R"(keyId="primary",algorithm="ed25519",headers=")" +
-         concatenated_header + R"(",signature=")" + *signature_base64 + R"(")";
+  return base::ReplaceStringPlaceholders(
+      R"(keyId="primary",algorithm="ed25519",headers="$1",signature="$2")",
+      {concatenated_header, *signature_base64}, nullptr);
 }
 
 std::string RequestSignedTokensUrlRequestBuilder::BuildBody() const {

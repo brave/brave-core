@@ -15,7 +15,6 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_mock.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_util.h"
-#include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 
@@ -60,16 +59,13 @@ TEST_F(BraveAdsAccountUtilTest, ResetRewards) {
   MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 
   privacy::SetUnblindedTokens(/*count*/ 1);
+  privacy::SetUnblindedPaymentTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation =
       BuildConfirmation(&token_generator_mock_, transaction);
   ASSERT_TRUE(confirmation);
   ConfirmationStateManager::GetInstance().AppendFailedConfirmation(
       *confirmation);
-
-  const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
-      privacy::GetUnblindedPaymentTokens(/*count*/ 1);
-  privacy::GetUnblindedPaymentTokens().AddTokens(unblinded_payment_tokens);
 
   // Act
   ResetRewards(base::BindOnce([](const bool success) {

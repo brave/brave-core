@@ -10,6 +10,8 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_confirmation_delegate_mock.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/url_request_builders/create_opted_out_confirmation_url_request_builder_util.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/net/http/http_status_code.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
@@ -44,17 +46,8 @@ TEST_F(BraveAdsRedeemOptedOutConfirmationTest, Redeem) {
   MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 
   const URLResponseMap url_responses = {
-      {// Create confirmation request
-       "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a",
-       {{net::kHttpImATeapot, /*response_body*/ R"(
-            {
-              "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
-              "createdAt" : "2020-04-20T10:27:11.717Z",
-              "type" : "view",
-              "modifiedAt" : "2020-04-20T10:27:11.717Z",
-              "creativeInstanceId" : "546fe7b0-5047-4f28-a11c-81f14edcf0f6"
-            }
-          )"}}}};
+      {BuildCreateOptedOutConfirmationUrlPath(kTransactionId),
+       {{net::kHttpImATeapot, /*response_body*/ "418 I'm a teapot"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const absl::optional<ConfirmationInfo> confirmation =
@@ -85,9 +78,9 @@ TEST_F(BraveAdsRedeemOptedOutConfirmationTest,
   MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 
   const URLResponseMap url_responses = {
-      {// Create confirmation request
-       "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a",
-       {{net::HTTP_BAD_REQUEST, /*response_body*/ {}}}}};
+      {BuildCreateOptedOutConfirmationUrlPath(kTransactionId),
+       {{net::HTTP_BAD_REQUEST,
+         /*response_body*/ net::GetHttpReasonPhrase(net::HTTP_BAD_REQUEST)}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const absl::optional<ConfirmationInfo> confirmation =
@@ -120,9 +113,9 @@ TEST_F(BraveAdsRedeemOptedOutConfirmationTest,
   MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 
   const URLResponseMap url_responses = {
-      {// Create confirmation request
-       "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a",
-       {{net::HTTP_CONFLICT, /*response_body*/ {}}}}};
+      {BuildCreateOptedOutConfirmationUrlPath(kTransactionId),
+       {{net::HTTP_CONFLICT,
+         /*response_body*/ net::GetHttpReasonPhrase(net::HTTP_CONFLICT)}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const absl::optional<ConfirmationInfo> confirmation =
@@ -155,9 +148,9 @@ TEST_F(BraveAdsRedeemOptedOutConfirmationTest,
   MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 
   const URLResponseMap url_responses = {
-      {// Create confirmation request
-       "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a",
-       {{net::HTTP_CREATED, /*response_body*/ {}}}}};
+      {BuildCreateOptedOutConfirmationUrlPath(kTransactionId),
+       {{net::HTTP_CREATED,
+         /*response_body*/ net::GetHttpReasonPhrase(net::HTTP_CREATED)}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const absl::optional<ConfirmationInfo> confirmation =
@@ -189,9 +182,10 @@ TEST_F(BraveAdsRedeemOptedOutConfirmationTest, RetryRedeeming) {
   MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 
   const URLResponseMap url_responses = {
-      {// Create confirmation request
-       "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a",
-       {{net::HTTP_INTERNAL_SERVER_ERROR, /*response_body*/ {}}}}};
+      {BuildCreateOptedOutConfirmationUrlPath(kTransactionId),
+       {{net::HTTP_INTERNAL_SERVER_ERROR,
+         /*response_body*/ net::GetHttpReasonPhrase(
+             net::HTTP_INTERNAL_SERVER_ERROR)}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const absl::optional<ConfirmationInfo> confirmation =

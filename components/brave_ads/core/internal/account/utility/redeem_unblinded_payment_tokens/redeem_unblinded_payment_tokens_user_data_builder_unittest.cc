@@ -23,11 +23,8 @@ TEST_F(BraveAdsRedeemUnblindedPaymentTokensUserDataBuilderTest, BuildUserData) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
-  const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
-      privacy::GetUnblindedPaymentTokens(/*count*/ 2);
-
   const RedeemUnblindedPaymentTokensUserDataBuilder user_data_builder(
-      unblinded_payment_tokens);
+      privacy::BuildUnblindedPaymentTokens(/*count*/ 2));
 
   // Act
   user_data_builder.Build(base::BindOnce([](base::Value::Dict user_data) {

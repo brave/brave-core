@@ -97,8 +97,6 @@ RedeemUnblindedPaymentTokensUrlRequestBuilder::
 RedeemUnblindedPaymentTokensUrlRequestBuilder::
     ~RedeemUnblindedPaymentTokensUrlRequestBuilder() = default;
 
-// PUT /v3/confirmation/payment/{paymentId}
-
 mojom::UrlRequestInfoPtr
 RedeemUnblindedPaymentTokensUrlRequestBuilder::Build() {
   mojom::UrlRequestInfoPtr url_request = mojom::UrlRequestInfo::New();

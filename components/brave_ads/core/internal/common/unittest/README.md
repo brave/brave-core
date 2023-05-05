@@ -82,7 +82,7 @@ Inline responses can contain `<time:period>` tags for mocking timestamps, where 
     const URLResponseMap url_responses = {
       "/foo/bar", {
         {
-          net::HTTP_OK, "An example response with a <time:+7 days> timestamp"
+          net::HTTP_OK, "An example response with a timestamp <time:+7 days> in the not too distant future"
         }
       }
     }
@@ -91,7 +91,7 @@ Inline responses can contain `<time:period>` tags for mocking timestamps, where 
 
 `distant_past` is equivalent to `base::Time()` and `distant_future` is defined as `Tuesday, 19 January 2038 03:14:07` in UTC.
 
-You can add multiple responses per request, which will be returned in the specified order, i.e.
+You can add one or more responses per request, which will be returned in the given order, then will wrap back to the first response after mocking the last, i.e.
 
     const URLResponseMap url_responses = {
       "/foo/bar", {
@@ -106,7 +106,7 @@ You can add multiple responses per request, which will be returned in the specif
     {
       "/baz", {
         {
-           net::HTTP_IM_A_TEAPOT, "A cup of tea a day keeps worries away."
+           net::HTTP_IM_A_TEAPOT, "Keep Calm & Drink Tea! L. Masinter, 1 April 1998"
         }
       }
     }
@@ -127,4 +127,4 @@ You can add multiple responses per request, which will be returned in the specif
 | Browsing history  | vector<GURL>  |  | `MockGetBrowsingHistory(ads_client_mock_, {GURL("https://foo.com"), GURL("https://bar.com")});`  |
 | Mock URL responses  | URLResponseMap  |  | See [mocking server responses](#mocking-server-responses)  |
 
-See `UnitTestBase::MockDefaultPrefs` for default prefs.
+See [unittest_mock_util.h](unittest_mock_util.h) and `UnitTestBase::MockDefaultPrefs` for default prefs.

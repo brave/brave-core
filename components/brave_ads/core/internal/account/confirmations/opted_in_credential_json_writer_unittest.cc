@@ -17,14 +17,11 @@ class BraveAdsOptedInCredentialJsonWriterTest : public UnitTestBase {};
 
 TEST_F(BraveAdsOptedInCredentialJsonWriterTest, WriteJson) {
   // Arrange
-  const privacy::UnblindedTokenList unblinded_tokens =
-      privacy::GetUnblindedTokens(/*count*/ 1);
-  ASSERT_TRUE(!unblinded_tokens.empty());
-  const privacy::UnblindedTokenInfo& unblinded_token = unblinded_tokens.front();
 
   // Act
   const absl::optional<std::string> json = json::writer::WriteOptedInCredential(
-      unblinded_token, /*payload*/ "definition: the weight of a payload");
+      privacy::BuildUnblindedToken(),
+      /*payload*/ "definition: the weight of a payload");
   ASSERT_TRUE(json);
 
   // Assert

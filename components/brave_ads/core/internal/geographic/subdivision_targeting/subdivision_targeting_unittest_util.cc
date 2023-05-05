@@ -9,27 +9,11 @@
 
 namespace brave_ads {
 
-namespace {
-
-std::string BuildUrlResponseBody(const std::string& country,
-                                 const std::string& region) {
-  return base::ReplaceStringPlaceholders(R"({"country":"$1", "region":"$2"})",
-                                         {country, region}, nullptr);
-}
-
-}  // namespace
-
-URLResponsePair BuildSubdivisionTargetingUrlResponse(
-    const net::HttpStatusCode response_status_code,
+std::string BuildSubdivisionTargetingUrlResponseBody(
     const std::string& country,
     const std::string& region) {
-  return {response_status_code, BuildUrlResponseBody(country, region)};
-}
-
-URLResponsePair BuildSubdivisionTargetingUrlResponse(
-    const net::HttpStatusCode response_status_code,
-    const std::string& response_body) {
-  return {response_status_code, response_body};
+  return base::ReplaceStringPlaceholders(R"({"country":"$1", "region":"$2"})",
+                                         {country, region}, nullptr);
 }
 
 }  // namespace brave_ads

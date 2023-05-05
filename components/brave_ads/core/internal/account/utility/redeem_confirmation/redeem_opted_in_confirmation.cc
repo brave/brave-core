@@ -127,7 +127,6 @@ void RedeemOptedInConfirmation::FetchPaymentToken(
     RedeemOptedInConfirmation redeem_confirmation,
     const ConfirmationInfo& confirmation) {
   BLOG(1, "FetchPaymentToken");
-  BLOG(2, "GET /v3/confirmation/{transactionId}/paymentToken");
 
   FetchPaymentTokenUrlRequestBuilder url_request_builder(confirmation);
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();

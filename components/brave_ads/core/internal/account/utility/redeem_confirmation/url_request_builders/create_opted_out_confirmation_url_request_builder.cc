@@ -9,10 +9,11 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/strings/string_util.h"
+#include "base/strings/strcat.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_payload_json_writer.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_util.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/url_request_builders/create_opted_out_confirmation_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
 #include "url/gurl.h"
 
@@ -37,8 +38,6 @@ CreateOptedOutConfirmationUrlRequestBuilder::
   DCHECK(IsValid(confirmation_));
 }
 
-// POST /v3/confirmation/{transactionId}/{credential}
-
 mojom::UrlRequestInfoPtr CreateOptedOutConfirmationUrlRequestBuilder::Build() {
   mojom::UrlRequestInfoPtr url_request = mojom::UrlRequestInfo::New();
   url_request->url = BuildUrl();
@@ -56,9 +55,10 @@ GURL CreateOptedOutConfirmationUrlRequestBuilder::BuildUrl() const {
   const std::string url_host = confirmation_.ad_type == AdType::kSearchResultAd
                                    ? GetAnonymousSearchUrlHost()
                                    : GetAnonymousUrlHost();
-  const std::string spec = base::ReplaceStringPlaceholders(
-      "$1/v3/confirmation/$2", {url_host, confirmation_.transaction_id},
-      nullptr);
+
+  const std::string spec = base::StrCat(
+      {url_host,
+       BuildCreateOptedOutConfirmationUrlPath(confirmation_.transaction_id)});
 
   return GURL(spec);
 }

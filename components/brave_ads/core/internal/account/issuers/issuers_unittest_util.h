@@ -6,23 +6,20 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_ISSUERS_UNITTEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_ISSUERS_UNITTEST_UTIL_H_
 
-#include "brave/components/brave_ads/core/internal/account/issuers/public_key_alias.h"
+#include <string>
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_url_response_alias.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/public_key_alias.h"
 
 namespace brave_ads {
 
 struct IssuersInfo;
 
-URLResponseMap GetValidIssuersUrlResponses();
-URLResponseMap GetInvalidIssuersUrlResponses();
+std::string BuildIssuersUrlResponseBody();
 
 IssuersInfo BuildIssuers(int ping,
                          const PublicKeyMap& confirmations_public_keys,
                          const PublicKeyMap& payments_public_keys);
-
 IssuersInfo BuildIssuers();
-
 void BuildAndSetIssuers();
 
 }  // namespace brave_ads

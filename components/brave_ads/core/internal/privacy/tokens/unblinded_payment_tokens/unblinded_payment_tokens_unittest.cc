@@ -19,7 +19,7 @@ TEST_F(BraveAdsUnblindedPaymentTokensTest, GetToken) {
   // Arrange
   // Arrange
   const UnblindedPaymentTokenList tokens =
-      GetUnblindedPaymentTokens(/*count*/ 2);
+      BuildUnblindedPaymentTokens(/*count*/ 2);
   ASSERT_EQ(2U, tokens.size());
 
   UnblindedPaymentTokens unblinded_payment_tokens;
@@ -35,12 +35,12 @@ TEST_F(BraveAdsUnblindedPaymentTokensTest, GetToken) {
 TEST_F(BraveAdsUnblindedPaymentTokensTest, GetAllTokens) {
   // Arrange
   UnblindedPaymentTokens unblinded_payment_tokens;
-  unblinded_payment_tokens.SetTokens(GetUnblindedPaymentTokens(/*count*/ 2));
+  unblinded_payment_tokens.SetTokens(BuildUnblindedPaymentTokens(/*count*/ 2));
 
   // Act
 
   // Assert
-  EXPECT_EQ(GetUnblindedPaymentTokens(/*count*/ 2),
+  EXPECT_EQ(BuildUnblindedPaymentTokens(/*count*/ 2),
             unblinded_payment_tokens.GetAllTokens());
 }
 
@@ -49,10 +49,10 @@ TEST_F(BraveAdsUnblindedPaymentTokensTest, SetTokens) {
   UnblindedPaymentTokens unblinded_payment_tokens;
 
   // Act
-  unblinded_payment_tokens.SetTokens(GetUnblindedPaymentTokens(/*count*/ 2));
+  unblinded_payment_tokens.SetTokens(BuildUnblindedPaymentTokens(/*count*/ 2));
 
   // Assert
-  EXPECT_EQ(GetUnblindedPaymentTokens(/*count*/ 2),
+  EXPECT_EQ(BuildUnblindedPaymentTokens(/*count*/ 2),
             unblinded_payment_tokens.GetAllTokens());
 }
 
@@ -70,7 +70,7 @@ TEST_F(BraveAdsUnblindedPaymentTokensTest, SetEmptyTokens) {
 TEST_F(BraveAdsUnblindedPaymentTokensTest, AddTokens) {
   // Arrange
   const UnblindedPaymentTokenList tokens =
-      GetUnblindedPaymentTokens(/*count*/ 2);
+      BuildUnblindedPaymentTokens(/*count*/ 2);
   ASSERT_EQ(2U, tokens.size());
 
   UnblindedPaymentTokens unblinded_payment_tokens;
@@ -97,7 +97,7 @@ TEST_F(BraveAdsUnblindedPaymentTokensTest, AddEmptyTokens) {
 TEST_F(BraveAdsUnblindedPaymentTokensTest, DoNotAddDuplicateTokens) {
   // Arrange
   const UnblindedPaymentTokenInfo unblinded_payment_token =
-      GetUnblindedPaymentToken();
+      BuildUnblindedPaymentToken();
 
   UnblindedPaymentTokens unblinded_payment_tokens;
   unblinded_payment_tokens.AddTokens({unblinded_payment_token});
@@ -112,7 +112,7 @@ TEST_F(BraveAdsUnblindedPaymentTokensTest, DoNotAddDuplicateTokens) {
 TEST_F(BraveAdsUnblindedPaymentTokensTest, RemoveToken) {
   // Arrange
   const UnblindedPaymentTokenList tokens =
-      GetUnblindedPaymentTokens(/*count*/ 2);
+      BuildUnblindedPaymentTokens(/*count*/ 2);
   ASSERT_EQ(2U, tokens.size());
 
   UnblindedPaymentTokens unblinded_payment_tokens;
@@ -132,7 +132,7 @@ TEST_F(BraveAdsUnblindedPaymentTokensTest, RemoveToken) {
 TEST_F(BraveAdsUnblindedPaymentTokensTest, RemoveTokens) {
   // Arrange
   const UnblindedPaymentTokenList tokens =
-      GetUnblindedPaymentTokens(/*count*/ 3);
+      BuildUnblindedPaymentTokens(/*count*/ 3);
   ASSERT_EQ(3U, tokens.size());
 
   UnblindedPaymentTokens unblinded_payment_tokens;
@@ -153,7 +153,7 @@ TEST_F(BraveAdsUnblindedPaymentTokensTest, RemoveTokens) {
 TEST_F(BraveAdsUnblindedPaymentTokensTest, RemoveAllTokens) {
   // Arrange
   UnblindedPaymentTokens unblinded_payment_tokens;
-  unblinded_payment_tokens.SetTokens(GetUnblindedPaymentTokens(/*count*/ 2));
+  unblinded_payment_tokens.SetTokens(BuildUnblindedPaymentTokens(/*count*/ 2));
 
   // Act
   unblinded_payment_tokens.RemoveAllTokens();
@@ -165,7 +165,7 @@ TEST_F(BraveAdsUnblindedPaymentTokensTest, RemoveAllTokens) {
 TEST_F(BraveAdsUnblindedPaymentTokensTest, TokenDoesExist) {
   // Arrange
   const UnblindedPaymentTokenInfo unblinded_payment_token =
-      GetUnblindedPaymentToken();
+      BuildUnblindedPaymentToken();
 
   UnblindedPaymentTokens unblinded_payment_tokens;
   unblinded_payment_tokens.SetTokens({unblinded_payment_token});
@@ -184,13 +184,13 @@ TEST_F(BraveAdsUnblindedPaymentTokensTest, TokenDoesNotExist) {
 
   // Assert
   EXPECT_FALSE(
-      unblinded_payment_tokens.TokenExists(GetUnblindedPaymentToken()));
+      unblinded_payment_tokens.TokenExists(BuildUnblindedPaymentToken()));
 }
 
 TEST_F(BraveAdsUnblindedPaymentTokensTest, Count) {
   // Arrange
   UnblindedPaymentTokens unblinded_payment_tokens;
-  unblinded_payment_tokens.SetTokens(GetUnblindedPaymentTokens(/*count*/ 3));
+  unblinded_payment_tokens.SetTokens(BuildUnblindedPaymentTokens(/*count*/ 3));
 
   // Act
 
@@ -210,11 +210,8 @@ TEST_F(BraveAdsUnblindedPaymentTokensTest, IsEmpty) {
 
 TEST_F(BraveAdsUnblindedPaymentTokensTest, IsNotEmpty) {
   // Arrange
-  const UnblindedPaymentTokenInfo unblinded_payment_token =
-      GetUnblindedPaymentToken();
-
   UnblindedPaymentTokens unblinded_payment_tokens;
-  unblinded_payment_tokens.SetTokens({unblinded_payment_token});
+  unblinded_payment_tokens.SetTokens(BuildUnblindedPaymentTokens(/*count*/ 1));
 
   // Act
 

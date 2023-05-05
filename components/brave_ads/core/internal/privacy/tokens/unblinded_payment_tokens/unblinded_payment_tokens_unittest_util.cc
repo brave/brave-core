@@ -22,7 +22,7 @@ UnblindedPaymentTokenList SetUnblindedPaymentTokens(const int count) {
   CHECK_GT(count, 0);
 
   UnblindedPaymentTokenList unblinded_payment_tokens =
-      GetUnblindedPaymentTokens(count);
+      BuildUnblindedPaymentTokens(count);
   GetUnblindedPaymentTokens().SetTokens(unblinded_payment_tokens);
   return unblinded_payment_tokens;
 }
@@ -78,7 +78,7 @@ UnblindedPaymentTokenList CreateUnblindedPaymentTokens(
   return unblinded_payment_tokens;
 }
 
-UnblindedPaymentTokenList GetUnblindedPaymentTokens(const int count) {
+UnblindedPaymentTokenList BuildUnblindedPaymentTokens(const int count) {
   CHECK_GT(count, 0);
 
   const std::vector<std::string> unblinded_payment_tokens_base64 = {
@@ -109,9 +109,9 @@ UnblindedPaymentTokenList GetUnblindedPaymentTokens(const int count) {
   return unblinded_payment_tokens;
 }
 
-UnblindedPaymentTokenInfo GetUnblindedPaymentToken() {
+UnblindedPaymentTokenInfo BuildUnblindedPaymentToken() {
   const UnblindedPaymentTokenList unblinded_payment_tokens =
-      GetUnblindedPaymentTokens(/*count*/ 1);
+      BuildUnblindedPaymentTokens(/*count*/ 1);
   CHECK(!unblinded_payment_tokens.empty());
   return unblinded_payment_tokens.front();
 }
