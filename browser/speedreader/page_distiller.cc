@@ -66,8 +66,8 @@ void PageDistiller::StartDistill(DistillContentCallback callback) {
     constexpr const char16_t kScript[] = uR"js( extractText() )js";
     web_contents_->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
         kScript,
-        base::BindOnce(&PageDistiller::OnGetText,
-                       weak_factory_.GetWeakPtr(), std::move(callback)),
+        base::BindOnce(&PageDistiller::OnGetText, weak_factory_.GetWeakPtr(),
+                       std::move(callback)),
         ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   } else {
     constexpr const char16_t kScript[] =

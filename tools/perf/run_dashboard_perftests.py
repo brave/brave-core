@@ -59,7 +59,7 @@ def main():
   common_options.local_run = args.local_run
 
   if len(config.runners) != 1:
-    print( config.runners)
+    print(config.runners)
     raise RuntimeError('Only one configuration should be specified.')
 
   configurations = perf_test_runner.SpawnConfigurationsFromTargetList(

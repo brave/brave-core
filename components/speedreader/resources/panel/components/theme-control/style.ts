@@ -27,7 +27,7 @@ export const Box = styled.div`
   }
 
   .icon-box {
-    grid-area: 1 / 1 / 2 / 2; 
+    grid-area: 1 / 1 / 2 / 2;
 
     display: flex;
     align-items: center;
@@ -41,7 +41,7 @@ export const Box = styled.div`
   }
 
   .mark {
-    grid-area: 1 / 1 / 2 / 2; 
+    grid-area: 1 / 1 / 2 / 2;
     width: 16px;
     height: 16px;
     align-self: center;

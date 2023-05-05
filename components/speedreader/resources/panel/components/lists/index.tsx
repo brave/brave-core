@@ -132,7 +132,7 @@ export function MainButtonsList(props: MainButtonsListProps) {
             isSelected={props.activeButton === entry.type}
             onClick={handleClick.bind(this, entry.type)}
           >
-            {<entry.svgIcon/>}
+            {<entry.svgIcon />}
           </Option>
         )
       })}
@@ -180,7 +180,9 @@ export function FontSizeList(props: FontSizeListProps) {
   }
 
   const updateSize = (action: ActionType) => {
-    const newSize = action === ActionType.Dec ? props.currentSize - 10 : props.currentSize + 10
+    const newSize = action === ActionType.Dec ?
+      props.currentSize - 10 : props.currentSize + 10
+
     if (newSize >= FontSize.MIN_VALUE && newSize <= FontSize.MAX_VALUE) {
       props.onClick?.(newSize)
       return
@@ -237,8 +239,10 @@ export function PlaybackList(props: PlaybackListProps) {
       </Option>
       <Option
         inGroup={true}
-        isSelected={false}        
-        onClick={() => { props.onClick?.(props.isPlaying ? Playback.Stop : Playback.Play) }}
+        isSelected={false}
+        onClick={() => {
+          props.onClick?.(props.isPlaying ? Playback.Stop : Playback.Play)
+        }}
       >
         <div>
           {props.isPlaying ? <StopSVG /> : <PlaySVG />}
@@ -265,10 +269,12 @@ export function PlaybackSpeedList(props: PlaybackSpeedListProps) {
     Inc,
     Dec
   }
-  
+
   const updateSpeed = (action: ActionType) => {
-    const newSpeed = action === ActionType.Dec ? props.speed - 10 : props.speed + 10
-    if (newSpeed >= PlaybackSpeed.MIN_VALUE && newSpeed <= PlaybackSpeed.MAX_VALUE) {
+    const newSpeed = action === ActionType.Dec ?
+      props.speed - 10 : props.speed + 10
+    if (newSpeed >= PlaybackSpeed.MIN_VALUE &&
+        newSpeed <= PlaybackSpeed.MAX_VALUE) {
       props.onClick?.(newSpeed)
       return
     }

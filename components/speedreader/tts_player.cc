@@ -5,10 +5,12 @@
 
 #include "brave/components/speedreader/tts_player.h"
 
+#include <algorithm>
+#include <utility>
+
 #include "content/public/browser/tts_controller.h"
 #include "content/public/browser/tts_utterance.h"
 #include "content/public/browser/web_contents.h"
-
 
 namespace speedreader {
 
@@ -185,21 +187,21 @@ void TtsPlayer::Controller::OnTtsEvent(content::TtsUtterance* utterance,
         reading_position_ = 0;
         reading_start_position_ = 0;
       }
-    break;
+      break;
     case content::TtsEventType::TTS_EVENT_RESUME:
     case content::TtsEventType::TTS_EVENT_START:
       for (auto& o : owner_->observers_) {
         o.OnReadingStart(playing_web_contents_);
       }
-    break;
+      break;
     case content::TtsEventType::TTS_EVENT_PAUSE:
       for (auto& o : owner_->observers_) {
         o.OnReadingPause(playing_web_contents_);
       }
-    break;
+      break;
     case content::TTS_EVENT_SENTENCE:
     case content::TTS_EVENT_MARKER:
-    break;
+      break;
   }
 }
 

@@ -6,7 +6,9 @@
 #ifndef BRAVE_COMPONENTS_SPEEDREADER_TTS_PLAYER_H_
 #define BRAVE_COMPONENTS_SPEEDREADER_TTS_PLAYER_H_
 
+#include <memory>
 #include <string>
+#include <utility>
 
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"

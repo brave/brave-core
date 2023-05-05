@@ -24,4 +24,3 @@ bool ReaderModePanelView::HandleContextMenu(
   // Ignore context menu.
   return true;
 }
-

@@ -10,6 +10,7 @@
 #include "base/command_line.h"
 #include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/common/speedreader_toolbar.mojom.h"
 #include "brave/components/speedreader/speedreader_pref_names.h"
@@ -227,7 +228,7 @@ std::string SpeedreaderService::GetThemeName() const {
 }
 
 std::string SpeedreaderService::GetFontSizeName() const {
-  return std::to_string(static_cast<int>(GetSiteSettings().fontSize));
+  return base::NumberToString(static_cast<int>(GetSiteSettings().fontSize));
 }
 
 std::string SpeedreaderService::GetFontFamilyName() const {

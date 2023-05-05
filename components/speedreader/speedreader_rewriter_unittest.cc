@@ -62,7 +62,8 @@ class SpeedreaderRewriterTestBase : public ::testing::Test {
 #if DCHECK_IS_ON()
     if (!check) {
       const auto out_path =
-          current_process_dir_.AppendASCII(filename).AddExtensionASCII("actual");
+          current_process_dir_.AppendASCII(filename).AddExtensionASCII(
+              "actual");
       base::WriteFile(out_path, expected_content);
     }
 #endif

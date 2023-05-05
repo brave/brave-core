@@ -52,7 +52,7 @@ export const _Main = () => {
         ttsSettings={ttsSettings}
         onThemeChange={() => {}}
         onFontSizeChange={() => {}}
-        onFontFamilyChange={() => {}}        
+        onFontFamilyChange={() => {}}
         onToggleChange={() => {}}
         onTtsSpeedChange={()=> {}}
         onTtsVoiceChange={()=> {}}

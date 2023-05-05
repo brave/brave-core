@@ -32,7 +32,7 @@ static_library("speedreader") {
     "speedreader_util.cc",
     "speedreader_util.h",
     "tts_player.cc",
-    "tts_player.h"
+    "tts_player.h",
   ]
 
   deps = [

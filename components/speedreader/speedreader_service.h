@@ -22,13 +22,12 @@ namespace speedreader {
 class SpeedreaderService : public KeyedService {
  public:
   class Observer : public base::CheckedObserver {
-    public:
-     virtual void OnSiteSettingsChanged(
-         const mojom::SiteSettings& site_settings) {}
-     virtual void OnTtsSettingsChanged(const mojom::TtsSettings& tts_settings) {
-     }
+   public:
+    virtual void OnSiteSettingsChanged(
+        const mojom::SiteSettings& site_settings) {}
+    virtual void OnTtsSettingsChanged(const mojom::TtsSettings& tts_settings) {}
 
-    protected:
+   protected:
     ~Observer() override = default;
   };
 
@@ -50,7 +49,7 @@ class SpeedreaderService : public KeyedService {
   mojom::SiteSettings GetSiteSettings() const;
 
   void SetTtsSettings(const mojom::TtsSettings& tts_settings);
-  mojom::TtsSettings GetTtsSettings() const;  
+  mojom::TtsSettings GetTtsSettings() const;
 
   std::string GetThemeName() const;
   std::string GetFontSizeName() const;

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BROWSER_UI_VIEWS_SPEEDREADER_READER_MODE_PANEL_VIEW_H_
-#define BROWSER_UI_VIEWS_SPEEDREADER_READER_MODE_PANEL_VIEW_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_SPEEDREADER_READER_MODE_PANEL_VIEW_H_
+#define BRAVE_BROWSER_UI_VIEWS_SPEEDREADER_READER_MODE_PANEL_VIEW_H_
 
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/context_menu_params.h"
@@ -22,4 +22,4 @@ class ReaderModePanelView : public views::WebView {
                          const content::ContextMenuParams& params) override;
 };
 
-#endif  // BROWSER_UI_VIEWS_SPEEDREADER_READER_MODE_PANEL_VIEW_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_SPEEDREADER_READER_MODE_PANEL_VIEW_H_
