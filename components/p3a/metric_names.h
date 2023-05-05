@@ -193,6 +193,7 @@ constexpr inline auto kCollectedExpressHistograms =
   base::MakeFixedFlatSet<base::StringPiece>({
     "Brave.Core.UsageDaily",
     "Brave.Rewards.EnabledInstallationTime",
+    "Brave.Today.IsEnabled",
     "Brave.Wallet.UsageDaily"
 });
 
@@ -207,6 +208,7 @@ constexpr inline auto kEphemeralHistograms =
     "Brave.Rewards.InlineTipTrigger",
     "Brave.Rewards.TipsSent",
     "Brave.Rewards.ToolbarButtonTrigger",
+    "Brave.Today.IsEnabled",
     "Brave.Wallet.UsageDaily",
     "Brave.Wallet.UsageMonthly",
     "Brave.Wallet.UsageWeekly"

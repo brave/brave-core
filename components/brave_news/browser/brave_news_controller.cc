@@ -116,12 +116,12 @@ BraveNewsController::BraveNewsController(
   // Set up preference listeners
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(
-      prefs::kNewTabPageShowToday,
-      base::BindRepeating(&BraveNewsController::ConditionallyStartOrStopTimer,
+      prefs::kBraveNewsOptedIn,
+      base::BindRepeating(&BraveNewsController::OnOptInChange,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      prefs::kBraveNewsOptedIn,
-      base::BindRepeating(&BraveNewsController::ConditionallyStartOrStopTimer,
+      prefs::kNewTabPageShowToday,
+      base::BindRepeating(&BraveNewsController::OnOptInChange,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
       prefs::kBraveNewsChannels,
@@ -619,6 +619,11 @@ void BraveNewsController::CheckForFeedsUpdate() {
 void BraveNewsController::Prefetch() {
   VLOG(1) << "PREFETCHING: ensuring feed has been retrieved";
   feed_controller_.EnsureFeedIsCached();
+}
+
+void BraveNewsController::OnOptInChange() {
+  p3a::RecordOptInChange(prefs_);
+  ConditionallyStartOrStopTimer();
 }
 
 void BraveNewsController::ConditionallyStartOrStopTimer() {

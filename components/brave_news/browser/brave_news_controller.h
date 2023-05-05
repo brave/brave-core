@@ -136,6 +136,7 @@ class BraveNewsController : public KeyedService,
   void OnPublishersUpdated(brave_news::PublishersController*) override;
 
  private:
+  void OnOptInChange();
   void ConditionallyStartOrStopTimer();
   void CheckForFeedsUpdate();
   void CheckForPublishersUpdate();

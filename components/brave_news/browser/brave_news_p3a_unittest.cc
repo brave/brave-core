@@ -395,5 +395,18 @@ TEST_F(BraveNewsP3ATest, TestNewUserReturningNotFollowingDay) {
   histogram_tester_.ExpectBucketCount(kNewUserReturningHistogramName, 1, 1);
 }
 
+TEST_F(BraveNewsP3ATest, TestIsEnabled) {
+  PrefService* prefs = GetPrefs();
+
+  prefs->SetBoolean(prefs::kBraveNewsOptedIn, true);
+  prefs->SetBoolean(prefs::kNewTabPageShowToday, true);
+  RecordOptInChange(prefs);
+  histogram_tester_.ExpectUniqueSample(kIsEnabledHistogramName, 1, 1);
+
+  prefs->SetBoolean(prefs::kNewTabPageShowToday, false);
+  RecordOptInChange(prefs);
+  histogram_tester_.ExpectBucketCount(kIsEnabledHistogramName, 0, 1);
+}
+
 }  // namespace p3a
 }  // namespace brave_news

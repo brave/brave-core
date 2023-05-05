@@ -21,6 +21,27 @@
 namespace brave_news {
 namespace p3a {
 
+constexpr char kDaysInMonthUsedCountHistogramName[] =
+    "Brave.Today.DaysInMonthUsedCount";
+constexpr char kWeeklySessionCountHistogramName[] =
+    "Brave.Today.WeeklySessionCount";
+constexpr char kWeeklyMaxCardVisitsHistogramName[] =
+    "Brave.Today.WeeklyMaxCardVisitsCount";
+constexpr char kWeeklyMaxCardViewsHistogramName[] =
+    "Brave.Today.WeeklyMaxCardViewsCount";
+constexpr char kTotalCardViewsHistogramName[] =
+    "Brave.Today.WeeklyTotalCardViews";
+constexpr char kWeeklyDisplayAdsViewedHistogramName[] =
+    "Brave.Today.WeeklyDisplayAdsViewedCount";
+constexpr char kDirectFeedsTotalHistogramName[] =
+    "Brave.Today.DirectFeedsTotal";
+constexpr char kWeeklyAddedDirectFeedsHistogramName[] =
+    "Brave.Today.WeeklyAddedDirectFeedsCount";
+constexpr char kLastUsageTimeHistogramName[] = "Brave.Today.LastUsageTime";
+constexpr char kNewUserReturningHistogramName[] =
+    "Brave.Today.NewUserReturning";
+constexpr char kIsEnabledHistogramName[] = "Brave.Today.IsEnabled";
+
 namespace {
 
 uint16_t UpdateWeeklyStorageWithValueAndGetMax(PrefService* prefs,
@@ -165,6 +186,12 @@ void RecordTotalCardViews(PrefService* prefs,
           << " curr session = " << cards_viewed_session_total_count;
   p3a_utils::RecordToHistogramBucket(kTotalCardViewsHistogramName, buckets,
                                      total);
+}
+
+void RecordOptInChange(PrefService* prefs) {
+  bool enabled = prefs->GetBoolean(prefs::kBraveNewsOptedIn) &&
+                 prefs->GetBoolean(prefs::kNewTabPageShowToday);
+  UMA_HISTOGRAM_BOOLEAN(kIsEnabledHistogramName, enabled);
 }
 
 void RecordAtInit(PrefService* prefs) {
