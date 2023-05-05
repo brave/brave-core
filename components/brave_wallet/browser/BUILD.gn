@@ -20,6 +20,8 @@ if (is_official_build) {
 
 static_library("browser") {
   sources = [
+    "account_discovery_manager.cc",
+    "account_discovery_manager.h",
     "asset_discovery_manager.cc",
     "asset_discovery_manager.h",
     "asset_discovery_task.cc",

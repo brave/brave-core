@@ -1337,8 +1337,9 @@ void BraveWalletService::OnGetImportInfo(
               return;
             }
             if (number_of_accounts > 1) {
-              keyring_service->AddAccountsWithDefaultName(number_of_accounts -
-                                                          1);
+              keyring_service->AddAccountsWithDefaultName(
+                  mojom::CoinType::ETH, mojom::kDefaultKeyringId,
+                  number_of_accounts - 1);
             }
             std::move(callback).Run(is_valid_mnemonic, absl::nullopt);
           },
