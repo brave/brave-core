@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<grit-part>
-  <include name="IDR_COMMANDS_HTML" file="../commands/browser/resources/commands.html" type="BINDATA" />
-</grit-part>

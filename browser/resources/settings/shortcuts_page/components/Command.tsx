@@ -54,7 +54,6 @@ function Accelerator({
   commandId: number
   accelerator: CommandsMojo.Accelerator
 }) {
-  console.log(stringToKeys(accelerator.codes))
   return (
     <Row>
       <Keys keys={stringToKeys(accelerator.keys)} />

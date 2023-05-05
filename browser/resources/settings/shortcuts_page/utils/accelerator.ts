@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 export const stringToKeys = (accelerator: string) =>
-  accelerator ? accelerator.split('+') : [] // If it's an empty string, there are no keys.
+  // If it's an empty string, there are no keys.
+  accelerator ? accelerator.split('+') : []
 
 export const keysToString = (keys: string[]) => keys.join('+')

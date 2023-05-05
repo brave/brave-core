@@ -6,7 +6,7 @@ index a76a774208f5869003ec650d8107f6983dc101e6..0cc6f6abb4bc2cc56afa682620a42f40
    <meta name="color-scheme" content="light dark">
    <title>$i18n{settings}</title>
    <base href="chrome://settings">
-+  <link rel="stylesheet" href="chrome://resources/brave/page_specific/settings/settings_loading_shim.css">
++  <link rel="stylesheet" href="chrome://resources/brave/page_specific/settings/settings_loading_shim.css"><link rel="stylesheet" href="chrome://resources/brave/leo/css/variables.css">
    <link rel="stylesheet" href="chrome://resources/css/md_colors.css">
    <style>
      html {

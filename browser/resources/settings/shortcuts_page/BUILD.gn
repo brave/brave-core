@@ -21,6 +21,6 @@ transpile_web_ui("commands_ui") {
 
 pack_web_resources("generated_resources") {
   resource_name = "commands"
-  output_dir = "$root_gen_dir/brave/components/commands/browser/resources"
+  output_dir = "$root_gen_dir/brave/browser/resources/settings/shortcuts_page"
   deps = [ ":commands_ui" ]
 }

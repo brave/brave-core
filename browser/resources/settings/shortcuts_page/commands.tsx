@@ -11,8 +11,6 @@ import Command from './components/Command'
 import { CommandsCache } from './utils/commandsCache'
 import { match } from './utils/match'
 
-import '@brave/leo/tokens/css/variables.css'
-
 import Icon, { setIconBasePath } from '@brave/leo/react/icon'
 import { color, font, radius, spacing } from '@brave/leo/tokens/css'
 import Button from '@brave/leo/react/button'
@@ -96,7 +94,9 @@ function App() {
           <Command key={c.id} command={c} />
         ))}
       </CommandsContainer>
-      <Button kind='plain-faint' onClick={() => commandsCache.resetAll()}>Reset all to defaults</Button>
+      <Button kind="plain-faint" onClick={() => commandsCache.resetAll()}>
+        Reset all to defaults
+      </Button>
     </Container>
   )
 }
@@ -110,4 +110,4 @@ export const mount = (at: HTMLElement) => {
   )
 }
 
-(window as any).mountCommands = mount
+;(window as any).mountCommands = mount

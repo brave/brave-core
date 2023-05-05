@@ -15,6 +15,7 @@
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
+#include "brave/browser/resources/settings/shortcuts_page/grit/commands_generated_map.h"
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/tabs/features.h"
@@ -28,7 +29,6 @@
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
-#include "brave/components/commands/browser/resources/grit/commands_generated_map.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
@@ -107,7 +107,7 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   }
 
   // These resource files are generated from the files in
-  // brave/components/commands/browser/resources
+  // brave/browser/resources/settings/shortcuts_page
   // They are generated separately so they can use React and our Leo
   // components, and the React DOM is mounted inside a Web Component, so it
   // doesn't interfere with the Polymer tree/styles.

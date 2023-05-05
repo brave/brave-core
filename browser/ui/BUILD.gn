@@ -911,6 +911,7 @@ source_set("ui") {
     ]
     deps += [
       "//brave/browser/brave_wallet:tab_helper",
+      "//brave/browser/resources/settings/shortcuts_page:generated_resources",
       "//brave/browser/ui/brave_wallet",
       "//brave/browser/ui/webui/brave_wallet/common_handler",
       "//brave/browser/ui/webui/brave_wallet/panel_handler",
@@ -924,7 +925,6 @@ source_set("ui") {
       "//brave/components/brave_wallet_ui/panel:brave_wallet_panel_generated",
       "//brave/components/brave_wallet_ui/trezor:trezor_bridge_generated",
       "//brave/components/commands/browser",
-      "//brave/components/commands/browser/resources:generated_resources",
       "//brave/components/resources:strings_grit",
       "//components/permissions",
       "//components/pref_registry",
