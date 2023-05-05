@@ -48,7 +48,7 @@ import {
   AddIcon,
   AddButton
 } from './nfts.styles'
-import { ScrollableColumn } from '../../../../shared/style'
+import { Column } from '../../../../shared/style'
 import { AddOrEditNftModal } from '../../../popup-modals/add-edit-nft-modal/add-edit-nft-modal'
 import { NftsEmptyState } from './nfts-empty-state/nfts-empty-state'
 
@@ -164,7 +164,10 @@ export const Nfts = (props: Props) => {
           <AddIcon />
         </AddButton>
       </FilterTokenRow>
-      <ScrollableColumn padding='10px 20px 20px 20px'>
+      <Column
+        fullWidth={true}
+        padding='10px 20px 20px 20px'
+      >
         {sortedNfts.length === 0
           ? <NftsEmptyState onImportNft={toggleShowAddNftModal} />
           : <NftGrid>
@@ -177,7 +180,7 @@ export const Nfts = (props: Props) => {
             ))}
           </NftGrid>
         }
-      </ScrollableColumn>
+      </Column>
       {showAddNftModal &&
         <AddOrEditNftModal
           onClose={toggleShowAddNftModal}

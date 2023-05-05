@@ -8,6 +8,7 @@ import * as React from 'react'
 // Options
 import {
   NavOptions,
+  PanelNavOptions,
   BuySendSwapDepositOptions
 } from '../../../options/nav-options'
 
@@ -15,7 +16,12 @@ import {
 import { WalletNavButton } from './wallet-nav-button/wallet-nav-button'
 
 // Styled Components
-import { Wrapper, Section } from './wallet-nav.style'
+import {
+  Wrapper,
+  Section,
+  PageOptionsWrapper,
+  PanelOptionsWrapper
+} from './wallet-nav.style'
 import './nav-theme.css'
 
 export interface Props {
@@ -46,16 +52,28 @@ export const WalletNav = (props: Props) => {
 
   return (
     <Wrapper>
-      <Section showBorder={true}>
-        {NavOptions.map((option) =>
-          <WalletNavButton option={option} key={option.id} />
-        )}
-      </Section>
-      <Section>
-        {BuySendSwapDepositOptions.map((option) =>
-          <WalletNavButton option={option} key={option.id} />
-        )}
-      </Section>
+
+      <PanelOptionsWrapper>
+        <Section>
+          {PanelNavOptions.map((option) =>
+            <WalletNavButton option={option} key={option.id} />
+          )}
+        </Section>
+      </PanelOptionsWrapper>
+
+      <PageOptionsWrapper>
+        <Section showBorder={true}>
+          {NavOptions.map((option) =>
+            <WalletNavButton option={option} key={option.id} />
+          )}
+        </Section>
+        <Section>
+          {BuySendSwapDepositOptions.map((option) =>
+            <WalletNavButton option={option} key={option.id} />
+          )}
+        </Section>
+      </PageOptionsWrapper>
+
     </Wrapper>
   )
 }
