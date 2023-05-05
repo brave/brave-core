@@ -144,6 +144,30 @@ APIRequestHelper::Ticket APIRequestHelper::Request(
   return iter;
 }
 
+APIRequestHelper::Ticket APIRequestHelper::Request(
+    const std::string& method,
+    const GURL& url,
+    const std::string& payload,
+    const std::string& payload_content_type,
+    network::SimpleURLLoaderStreamConsumer* consumer,
+    const base::flat_map<std::string, std::string>& headers,
+    const APIRequestOptions& request_options,
+    network::SimpleURLLoader::OnResponseStartedCallback on_response_started_cb,
+    network::SimpleURLLoader::DownloadProgressCallback download_progress_cb) {
+  auto loader = CreateLoader(method, url, payload, payload_content_type,
+                             request_options.auto_retry_on_network_change,
+                             request_options.enable_cache,
+                             true /* allow_http_error_result*/, headers);
+
+  loader->SetOnResponseStartedCallback(std::move(on_response_started_cb));
+  loader->SetOnDownloadProgressCallback(download_progress_cb);
+
+  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(loader));
+  iter->get()->DownloadAsStream(url_loader_factory_.get(), consumer);
+
+  return iter;
+}
+
 APIRequestHelper::Ticket APIRequestHelper::Download(
     const GURL& url,
     const std::string& payload,

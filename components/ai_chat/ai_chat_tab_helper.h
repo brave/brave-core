@@ -38,9 +38,10 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   const std::vector<ai_chat::mojom::ConversationTurn>& GetConversationHistory();
   void AddToConversationHistory(const ai_chat::mojom::ConversationTurn& turn);
+  void UpdateLastEntryInConversationHistory(const std::string& text);
   void MakeAPIRequestWithConversationHistoryUpdate(
       const ai_chat::mojom::ConversationTurn& turn);
-  bool IsRequestInProgress() { return is_request_in_progress_; }
+  bool IsRequestInProgress();
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
@@ -62,10 +63,10 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void DistillViaAlgorithm(const ui::AXTree& tree);
   void SetArticleSummaryString(const std::string& text);
   void CleanUp();
-  void OnAPIResponse(bool contains_summary,
-                     const std::string& assistant_input,
-                     bool success);
-  void SetRequestInProgress(bool in_progress);
+  void OnAPIStreamDataReceived(const std::string& text);
+  void OnAPIStreamDataComplete(bool is_summarize_prompt,
+                               bool success,
+                               int response_code);
 
   // content::WebContentsObserver:
   void PrimaryPageChanged(content::Page& page) override;
@@ -80,7 +81,6 @@ class AIChatTabHelper : public content::WebContentsObserver,
   std::string article_text_;
   std::string history_text_;
   std::string article_summary_;
-  bool is_request_in_progress_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

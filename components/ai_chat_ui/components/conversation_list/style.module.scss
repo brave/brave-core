@@ -32,6 +32,7 @@
 }
 
 .caret {
+  @extend .textBase;
   display: inline-block;
   margin-left: 5px;
   width: 8px;
