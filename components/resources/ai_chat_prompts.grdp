@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
-  <message name="IDS_AI_CHAT_SUMMARIZE_PROMPT" translateable="false" desc="Default prompt for summarization">Summarize the following article in 3-4 sentences.
+  <message name="IDS_AI_CHAT_SUMMARIZE_PROMPT" translateable="false" desc="Default prompt for summarization">Here is an article in &lt;article&gt; tags:
+&lt;article&gt;
 <ph name="TEXT">$1</ph>
-For any subsequent questions, keep your answer concise and to the point.</message>
-<!-- For the following questions provide a simple, respond in at most 3-4 sentences. Use a neutral, objective tone.
-Here is an article in &lt;article&gt; tags:
-&lt;article&gt;<ph name="TEXT">$1</ph>&lt;/article&gt; -->
-<!-- Write a summary for the news article.</message> -->
+&lt;/article&gt;
+For the rest of the conversation, provide objective, neutral responses of maximum 3-4 sentences. Strictly avoid emotional language, lengthy bullet lists or convoluted phrasing. Start by writing a summary for the news article above.</message>
 </grit-part>
