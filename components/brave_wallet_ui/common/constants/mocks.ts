@@ -157,7 +157,7 @@ export const mockERC20Token: BraveWallet.BlockchainToken = {
   chainId: BraveWallet.MAINNET_CHAIN_ID
 }
 
-export const mockAccount: WalletAccountType = {
+export const mockAccount: WalletAccountType & BraveWallet.AccountInfo = {
   id: 'mockId',
   name: 'mockAccountName',
   address: 'mockAddress',
@@ -167,7 +167,9 @@ export const mockAccount: WalletAccountType = {
   coin: BraveWallet.CoinType.ETH,
   accountType: 'Primary',
   tokenBalanceRegistry: {},
-  keyringId: 'default'
+  keyringId: 'default',
+  hardware: undefined,
+  isImported: false,
 }
 
 export const mockEthAccountInfo: BraveWallet.AccountInfo = {

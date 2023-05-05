@@ -96,6 +96,13 @@ export const getAddressLabel = <
   )
 }
 
+export const findAccountFromRegistry = (
+  address: string,
+  accounts: EntityState<AccountInfoEntity>
+): AccountInfoEntity | undefined => {
+  return accounts.entities[address]
+}
+
 export const getAddressLabelFromRegistry = (
   address: string,
   accounts: EntityState<AccountInfoEntity>
@@ -109,4 +116,10 @@ export const getAddressLabelFromRegistry = (
 
 export const getAccountId = (account: { address: string }) => {
   return account.address
+}
+
+export function isHardwareAccount(
+  account: Pick<BraveWallet.AccountInfo, 'hardware'>
+) {
+  return !!account.hardware?.deviceId
 }
