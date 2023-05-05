@@ -40,9 +40,15 @@ void PurchaseIntentResource::Load() {
 void PurchaseIntentResource::OnLoadAndParseResource(
     ResourceParsingErrorOr<PurchaseIntentInfo> result) {
   if (!result.has_value()) {
-    BLOG(1, result.error());
-    BLOG(1,
-         "Failed to initialize " << kResourceId << " purchase intent resource");
+    BLOG(0, "Failed to initialize " << kResourceId
+                                    << " purchase intent resource ("
+                                    << result.error() << ")");
+    is_initialized_ = false;
+    return;
+  }
+
+  if (result.value().version == 0) {
+    BLOG(7, kResourceId << " purchase intent resource does not exist");
     is_initialized_ = false;
     return;
   }

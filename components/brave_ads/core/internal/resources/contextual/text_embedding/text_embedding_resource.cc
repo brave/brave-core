@@ -44,9 +44,14 @@ void TextEmbeddingResource::Load() {
 void TextEmbeddingResource::OnLoadAndParseResource(
     ResourceParsingErrorOr<ml::pipeline::EmbeddingProcessing> result) {
   if (!result.has_value()) {
-    BLOG(1, result.error());
-    BLOG(1,
-         "Failed to initialize " << kResourceId << " text embedding resource");
+    BLOG(0, "Failed to initialize "
+                << kResourceId << " text embedding resource (" << result.error()
+                << ")");
+    return;
+  }
+
+  if (!result.value().IsInitialized()) {
+    BLOG(7, kResourceId << " text embedding resource does not exist");
     return;
   }
 

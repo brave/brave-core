@@ -37,7 +37,7 @@ namespace brave_ads {
 namespace {
 
 void FailedToInitialize(InitializeCallback callback) {
-  BLOG(1, "Failed to initialize ads");
+  BLOG(0, "Failed to initialize ads");
 
   std::move(callback).Run(/*success*/ false);
 }

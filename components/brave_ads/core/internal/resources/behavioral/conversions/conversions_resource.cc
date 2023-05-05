@@ -41,8 +41,14 @@ void ConversionsResource::Load() {
 void ConversionsResource::OnLoadAndParseResource(
     ResourceParsingErrorOr<ConversionsInfo> result) {
   if (!result.has_value()) {
-    BLOG(1, result.error());
-    BLOG(1, "Failed to initialize " << kResourceId << " conversions resource");
+    BLOG(0, "Failed to initialize " << kResourceId << " conversions resource ("
+                                    << result.error() << ")");
+    is_initialized_ = false;
+    return;
+  }
+
+  if (result.value().version == 0) {
+    BLOG(7, kResourceId << " conversions resource does not exist");
     is_initialized_ = false;
     return;
   }
