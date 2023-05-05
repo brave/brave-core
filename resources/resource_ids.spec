@@ -221,5 +221,9 @@
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-ai_chat_ui/ai_chat_ui.grd": {
     "META": {"sizes": {"includes": [50]}},
     "includes": [61500],
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-skus_internals/skus_internals.grd": {
+    "META": {"sizes": {"includes": [100]}},
+    "includes": [61550],
   }
 }
