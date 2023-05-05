@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/common/eth_sign_typed_data_helper.h"
 
@@ -49,8 +49,9 @@ void EthSignTypedDataHelper::FindAllDependencyTypes(
   DCHECK(known_types);
 
   const auto* anchor_type = types_.FindList(anchor_type_name);
-  if (!anchor_type)
+  if (!anchor_type) {
     return;
+  }
   known_types->emplace(anchor_type_name, anchor_type->Clone());
 
   for (const auto& field : *anchor_type) {
@@ -59,8 +60,9 @@ void EthSignTypedDataHelper::FindAllDependencyTypes(
       auto type_split = base::SplitString(*type, "[", base::KEEP_WHITESPACE,
                                           base::SPLIT_WANT_ALL);
       std::string lookup_type = *type;
-      if (type_split.size() == 2)
+      if (type_split.size() == 2) {
         lookup_type = type_split[0];
+      }
 
       if (!known_types->contains(lookup_type)) {
         FindAllDependencyTypes(known_types, lookup_type);
@@ -72,8 +74,9 @@ void EthSignTypedDataHelper::FindAllDependencyTypes(
 std::string EthSignTypedDataHelper::EncodeType(
     const base::Value& type,
     const std::string& type_name) const {
-  if (!type.is_list())
+  if (!type.is_list()) {
     return std::string();
+  }
   std::string result = base::StrCat({type_name, "("});
 
   for (size_t i = 0; i < type.GetList().size(); ++i) {
@@ -84,8 +87,9 @@ std::string EthSignTypedDataHelper::EncodeType(
       return std::string();
     }
     base::StrAppend(&result, {*type_str, " ", *name_str});
-    if (i != type.GetList().size() - 1)
+    if (i != type.GetList().size() - 1) {
       base::StrAppend(&result, {","});
+    }
   }
   base::StrAppend(&result, {")"});
   return result;
@@ -103,8 +107,9 @@ std::string EthSignTypedDataHelper::EncodeTypes(
     base::StrAppend(&result, {EncodeType(it->second, primary_type_name)});
   }
   for (const auto& type : types_map) {
-    if (type.first == primary_type_name)
+    if (type.first == primary_type_name) {
       continue;
+    }
     base::StrAppend(&result, {EncodeType(type.second, type.first)});
   }
   return result;
@@ -121,8 +126,9 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::HashStruct(
     const std::string primary_type_name,
     const base::Value::Dict& data) const {
   auto encoded_data = EncodeData(primary_type_name, data);
-  if (!encoded_data)
+  if (!encoded_data) {
     return absl::nullopt;
+  }
   return KeccakHash(*encoded_data);
 }
 
@@ -148,13 +154,15 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeData(
     const base::Value* value = data.Find(*name_str);
     if (value) {
       auto encoded_field = EncodeField(*type_str, *value);
-      if (!encoded_field)
+      if (!encoded_field) {
         return absl::nullopt;
+      }
       result.insert(result.end(), encoded_field->begin(), encoded_field->end());
     } else {
       if (version_ == Version::kV4) {
-        for (size_t i = 0; i < 32; ++i)
+        for (size_t i = 0; i < 32; ++i) {
           result.push_back(0);
+        }
       }
     }
   }
@@ -175,18 +183,21 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
       VLOG(0) << "version has to be v4 to support array";
       return absl::nullopt;
     }
-    if (!value.is_list())
+    if (!value.is_list()) {
       return absl::nullopt;
+    }
     auto type_split = base::SplitString(type, "[", base::KEEP_WHITESPACE,
                                         base::SPLIT_WANT_ALL);
-    if (type_split.size() != 2)
+    if (type_split.size() != 2) {
       return absl::nullopt;
+    }
     const std::string array_type = type_split[0];
     std::vector<uint8_t> array_result;
     for (const auto& item : value.GetList()) {
       auto encoded_item = EncodeField(array_type, item);
-      if (!encoded_item)
+      if (!encoded_item) {
         return absl::nullopt;
+      }
       array_result.insert(array_result.end(), encoded_item->begin(),
                           encoded_item->end());
     }
@@ -194,8 +205,9 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
     result.insert(result.end(), array_hash.begin(), array_hash.end());
   } else if (type == "string") {
     const std::string* value_str = value.GetIfString();
-    if (!value_str)
+    if (!value_str) {
       return absl::nullopt;
+    }
     const std::string encoded_value = KeccakHash(*value_str, false);
     const std::vector<uint8_t> encoded_value_bytes(encoded_value.begin(),
                                                    encoded_value.end());
@@ -203,17 +215,20 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
                   encoded_value_bytes.end());
   } else if (type == "bytes") {
     const std::string* value_str = value.GetIfString();
-    if (!value_str || (!value_str->empty() && !IsValidHexString(*value_str)))
+    if (!value_str || (!value_str->empty() && !IsValidHexString(*value_str))) {
       return absl::nullopt;
+    }
     std::vector<uint8_t> bytes;
-    if (!value_str->empty())
+    if (!value_str->empty()) {
       CHECK(PrefixedHexStringToBytes(*value_str, &bytes));
+    }
     const std::vector<uint8_t> encoded_value = KeccakHash(bytes);
     result.insert(result.end(), encoded_value.begin(), encoded_value.end());
   } else if (type == "bool") {
     absl::optional<bool> value_bool = value.GetIfBool();
-    if (!value_bool)
+    if (!value_bool) {
       return absl::nullopt;
+    }
     uint256_t encoded_value = (uint256_t)*value_bool;
     // Append the encoded value to byte array result in big endian order
     for (int i = 256 - 8; i >= 0; i -= 8) {
@@ -221,25 +236,30 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
     }
   } else if (type == "address") {
     const std::string* value_str = value.GetIfString();
-    if (!value_str || !IsValidHexString(*value_str))
+    if (!value_str || !IsValidHexString(*value_str)) {
       return absl::nullopt;
+    }
     std::vector<uint8_t> address;
     CHECK(PrefixedHexStringToBytes(*value_str, &address));
     DCHECK_EQ(address.size(), 20u);
-    for (size_t i = 0; i < 256 - 160; i += 8)
+    for (size_t i = 0; i < 256 - 160; i += 8) {
       result.push_back(0);
+    }
     result.insert(result.end(), address.begin(), address.end());
   } else if (base::StartsWith(type, "bytes", base::CompareCase::SENSITIVE)) {
     unsigned num_bits;
-    if (!base::StringToUint(type.data() + 5, &num_bits) || num_bits > 32)
+    if (!base::StringToUint(type.data() + 5, &num_bits) || num_bits > 32) {
       return absl::nullopt;
+    }
     const std::string* value_str = value.GetIfString();
-    if (!value_str || !IsValidHexString(*value_str))
+    if (!value_str || !IsValidHexString(*value_str)) {
       return absl::nullopt;
+    }
     std::vector<uint8_t> bytes;
     CHECK(PrefixedHexStringToBytes(*value_str, &bytes));
-    if (bytes.size() > 32)
+    if (bytes.size() > 32) {
       return absl::nullopt;
+    }
     result.insert(result.end(), bytes.begin(), bytes.end());
     for (size_t i = 0; i < 32u - bytes.size(); ++i) {
       result.push_back(0);
@@ -248,21 +268,24 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
     // uint8 to uint256 in steps of 8
     unsigned num_bits;
     if (!base::StringToUint(type.data() + 4, &num_bits) ||
-        !ValidSolidityBits(num_bits))
+        !ValidSolidityBits(num_bits)) {
       return absl::nullopt;
+    }
 
     absl::optional<double> value_double = value.GetIfDouble();
     const std::string* value_str = value.GetIfString();
     uint256_t encoded_value = 0;
     if (value_double) {
       encoded_value = (uint256_t)(uint64_t)*value_double;
-      if (encoded_value > (uint256_t)kMaxSafeInteger)
+      if (encoded_value > (uint256_t)kMaxSafeInteger) {
         return absl::nullopt;
+      }
     } else if (value_str) {
       if (!value_str->empty() &&
           !HexValueToUint256(*value_str, &encoded_value) &&
-          !Base10ValueToUint256(*value_str, &encoded_value))
+          !Base10ValueToUint256(*value_str, &encoded_value)) {
         return absl::nullopt;
+      }
     } else {
       return absl::nullopt;
     }
@@ -280,20 +303,23 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
     // int8 to int256 in steps of 8
     unsigned num_bits;
     if (!base::StringToUint(type.data() + 3, &num_bits) ||
-        !ValidSolidityBits(num_bits))
+        !ValidSolidityBits(num_bits)) {
       return absl::nullopt;
+    }
     absl::optional<double> value_double = value.GetIfDouble();
     const std::string* value_str = value.GetIfString();
     int256_t encoded_value = 0;
     if (value_double) {
       encoded_value = (int256_t)(int64_t)*value_double;
-      if (encoded_value > (int256_t)kMaxSafeInteger)
+      if (encoded_value > (int256_t)kMaxSafeInteger) {
         return absl::nullopt;
+      }
     } else if (value_str) {
       if (!value_str->empty() &&
           !HexValueToInt256(*value_str, &encoded_value) &&
-          !Base10ValueToInt256(*value_str, &encoded_value))
+          !Base10ValueToInt256(*value_str, &encoded_value)) {
         return absl::nullopt;
+      }
     } else {
       return absl::nullopt;
     }
@@ -312,8 +338,9 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
   } else {
     DCHECK(value.is_dict());
     auto encoded_data = EncodeData(type, value.GetDict());
-    if (!encoded_data)
+    if (!encoded_data) {
       return absl::nullopt;
+    }
     std::vector<uint8_t> encoded_value = KeccakHash(*encoded_data);
 
     result.insert(result.end(), encoded_value.begin(), encoded_value.end());
@@ -339,8 +366,9 @@ absl::optional<std::vector<uint8_t>>
 EthSignTypedDataHelper::GetTypedDataMessageToSign(
     const std::vector<uint8_t>& domain_hash,
     const std::vector<uint8_t>& primary_hash) {
-  if (domain_hash.empty() || primary_hash.empty())
+  if (domain_hash.empty() || primary_hash.empty()) {
     return absl::nullopt;
+  }
   std::vector<uint8_t> encoded_data({0x19, 0x01});
   encoded_data.insert(encoded_data.end(), domain_hash.begin(),
                       domain_hash.end());

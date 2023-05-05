@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 
@@ -50,13 +50,15 @@ base::flat_map<std::string, std::string> MakeCommonJsonRpcHeaders(
   base::flat_map<std::string, std::string> request_headers;
   std::string id, method, params;
   if (GetEthJsonRequestInfo(json_payload, nullptr, &method, &params)) {
-    if (net::HttpUtil::IsValidHeaderValue(method))
+    if (net::HttpUtil::IsValidHeaderValue(method)) {
       request_headers["X-Eth-Method"] = method;
+    }
     if (method == kEthGetBlockByNumber) {
       std::string cleaned_params;
       base::RemoveChars(params, "\" []", &cleaned_params);
-      if (net::HttpUtil::IsValidHeaderValue(cleaned_params))
+      if (net::HttpUtil::IsValidHeaderValue(cleaned_params)) {
         request_headers["X-eth-get-block"] = cleaned_params;
+      }
     } else if (method == kEthBlockNumber) {
       request_headers["X-Eth-Block"] = "true";
     }

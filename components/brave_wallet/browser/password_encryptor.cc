@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/password_encryptor.h"
 
@@ -28,8 +28,9 @@ PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
     base::span<const uint8_t> salt,
     size_t iterations,
     size_t key_size_in_bits) {
-  if (key_size_in_bits != 128 && key_size_in_bits != 256)
+  if (key_size_in_bits != 128 && key_size_in_bits != 256) {
     return nullptr;
+  }
 
   size_t key_size_in_bytes = key_size_in_bits / 8;
 

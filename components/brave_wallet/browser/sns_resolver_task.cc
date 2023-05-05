@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/sns_resolver_task.h"
 
@@ -130,8 +130,9 @@ struct SplMintData {
     const size_t kSplMintDataSize = 82;
     absl::optional<SplMintData> result;
 
-    if (data_span.size() != kSplMintDataSize)
+    if (data_span.size() != kSplMintDataSize) {
       return result;
+    }
 
     result.emplace();
     // https://github.com/solana-labs/solana-program-library/blob/f97a3dc7cf0e6b8e346d473a8c9d02de7b213cfd/token/program/src/state.rs#L41
@@ -153,16 +154,18 @@ struct SplAccountData {
     const size_t kSplAccountDataSize = 165;
     absl::optional<SplAccountData> result;
 
-    if (data_span.size() != kSplAccountDataSize)
+    if (data_span.size() != kSplAccountDataSize) {
       return result;
+    }
 
     result.emplace();
     // https://github.com/solana-labs/solana-program-library/blob/f97a3dc7cf0e6b8e346d473a8c9d02de7b213cfd/token/program/src/state.rs#L133
     const size_t owner_offset = 32;
     auto address = SolanaAddress::FromBytes(
         data_span.subspan(owner_offset, kSolanaPubkeySize));
-    if (!address)
+    if (!address) {
       return absl::nullopt;
+    }
     result->owner = *address;
     return result;
   }
@@ -210,22 +213,27 @@ std::pair<bool, absl::optional<SolanaAddress>>
 GetTokenOwnerFromGetProgramAccountsResult(const base::Value& json_value) {
   auto response =
       json_rpc_responses::RPCResponse::FromValueDeprecated(json_value);
-  if (!response || !response->result)
+  if (!response || !response->result) {
     return {false, absl::nullopt};
+  }
 
   auto* result = response->result->GetIfList();
-  if (!result)
+  if (!result) {
     return {false, absl::nullopt};
+  }
 
-  if (result->size() != 1)
+  if (result->size() != 1) {
     return {true, absl::nullopt};
+  }
 
   auto* item = result->front().GetIfDict();
-  if (!item)
+  if (!item) {
     return {false, absl::nullopt};
+  }
   auto* account = item->FindDict("account");
-  if (!account)
+  if (!account) {
     return {false, absl::nullopt};
+  }
 
   absl::optional<SolanaAccountInfo> account_info;
   if (!solana::ParseGetAccountInfoPayload(*account, &account_info)) {
@@ -235,8 +243,9 @@ GetTokenOwnerFromGetProgramAccountsResult(const base::Value& json_value) {
   DCHECK(account_info);
 
   auto account_data = FromBase64<SplAccountData>(account_info->data);
-  if (!account_data)
+  if (!account_data) {
     return {false, absl::nullopt};
+  }
 
   return {true, account_data->owner};
 }
@@ -245,8 +254,9 @@ GetTokenOwnerFromGetProgramAccountsResult(const base::Value& json_value) {
 absl::optional<SolanaAddress> GetNameAccountKey(
     const SnsNamehash& hashed_name,
     const absl::optional<SolanaAddress>& parent) {
-  if (!parent)
+  if (!parent) {
     return absl::nullopt;
+  }
 
   std::vector<std::vector<uint8_t>> seeds;
   seeds.emplace_back(hashed_name.begin(), hashed_name.end());
@@ -259,8 +269,9 @@ absl::optional<SolanaAddress> GetNameAccountKey(
 
   auto address =
       SolanaKeyring::FindProgramDerivedAddress(seeds, kNameProgramId);
-  if (!address)
+  if (!address) {
     return absl::nullopt;
+  }
 
   return SolanaAddress::FromBase58(*address);
 }
@@ -291,8 +302,9 @@ absl::optional<SolanaAddress> GetMintAddress(
 
   auto address =
       SolanaKeyring::FindProgramDerivedAddress(seeds, kNameTokenizerId);
-  if (!address)
+  if (!address) {
     return absl::nullopt;
+  }
 
   return SolanaAddress::FromBase58(*address);
 }
@@ -318,8 +330,9 @@ absl::optional<SolanaAddress> GetDomainKey(const std::string& domain,
   // Subdomains get one-bytes prefix depending on requested record type.
   // https://bonfida.github.io/solana-name-service-guide/domain-name/records.html#difference-between-records-and-subdomains
   std::string prefix = "";
-  if (base::ranges::count(domain, '.') > 1)
+  if (base::ranges::count(domain, '.') > 1) {
     prefix = (record ? '\x01' : '\x00');
+  }
 
   return GetNameAccountKey(GetHashedName(prefix + name),
                            GetDomainKey(parent, false));

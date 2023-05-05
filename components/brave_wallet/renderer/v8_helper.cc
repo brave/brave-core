@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/renderer/v8_helper.h"
 
@@ -42,8 +42,9 @@ v8::MaybeLocal<v8::Value> CallMethodOfObject(
     const base::StringPiece& object_name,
     const base::StringPiece& method_name,
     std::vector<v8::Local<v8::Value>>&& args) {
-  if (web_frame->IsProvisional())
+  if (web_frame->IsProvisional()) {
     return v8::Local<v8::Value>();
+  }
   v8::Isolate* isolate = v8::Isolate::GetCurrent();
   v8::Local<v8::Context> context = web_frame->MainWorldScriptContext();
   v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
@@ -61,8 +62,9 @@ v8::MaybeLocal<v8::Value> CallMethodOfObject(
     v8::Local<v8::Value> object,
     const base::StringPiece& method_name,
     std::vector<v8::Local<v8::Value>>&& args) {
-  if (web_frame->IsProvisional())
+  if (web_frame->IsProvisional()) {
     return v8::Local<v8::Value>();
+  }
   v8::Local<v8::Context> context = web_frame->MainWorldScriptContext();
   v8::Isolate* isolate = v8::Isolate::GetCurrent();
   v8::Context::Scope context_scope(context);
@@ -87,8 +89,9 @@ v8::MaybeLocal<v8::Value> CallMethodOfObject(
 v8::MaybeLocal<v8::Value> ExecuteScript(blink::WebLocalFrame* web_frame,
                                         const std::string& script,
                                         const std::string& name) {
-  if (web_frame->IsProvisional())
+  if (web_frame->IsProvisional()) {
     return v8::MaybeLocal<v8::Value>();
+  }
 
   return brave::LoadScriptWithSafeBuiltins(web_frame, script, name);
 }
@@ -100,8 +103,9 @@ void SetProviderNonWritable(v8::Local<v8::Context> context,
                             bool is_enumerable) {
   v8::PropertyDescriptor desc(provider_obj, false);
   desc.set_configurable(false);
-  if (!is_enumerable)
+  if (!is_enumerable) {
     desc.set_enumerable(false);
+  }
   global->DefineProperty(context, provider_name, desc).Check();
 }
 
@@ -110,8 +114,9 @@ void SetOwnPropertyWritable(v8::Local<v8::Context> context,
                             v8::Local<v8::String> property_name,
                             bool writable) {
   v8::Local<v8::Value> property;
-  if (!provider_object->Get(context, property_name).ToLocal(&property))
+  if (!provider_object->Get(context, property_name).ToLocal(&property)) {
     return;
+  }
 
   v8::PropertyDescriptor desc(property, writable);
   provider_object->DefineProperty(context, property_name, desc).Check();

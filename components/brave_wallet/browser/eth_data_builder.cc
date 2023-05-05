@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 
@@ -51,8 +51,9 @@ absl::optional<std::string> ChainIdToVersion(const std::string& symbol,
   }
 
   auto it = mapping->find(chain_id);
-  if (it != mapping->end())
+  if (it != mapping->end()) {
     return it->second;
+  }
   return absl::nullopt;
 }
 
@@ -271,8 +272,9 @@ bool Uri(uint256_t token_id, std::string* data) {
 namespace erc165 {
 
 bool SupportsInterface(const std::string& interface_id, std::string* data) {
-  if (!IsValidHexString(interface_id) || interface_id.length() != 10)
+  if (!IsValidHexString(interface_id) || interface_id.length() != 10) {
     return false;
+  }
   std::string padded_interface_id = interface_id + std::string(56, '0');
 
   const std::string function_hash =
@@ -435,8 +437,9 @@ absl::optional<std::vector<uint8_t>> DnsEncode(const std::string& dotted_name) {
   for (size_t i = 1; i < result.size(); ++i) {
     if (result[i] == '.') {
       size_t label_len = i - last_dot_pos - 1;
-      if (label_len == 0 || label_len > 63)
+      if (label_len == 0 || label_len > 63) {
         return absl::nullopt;
+      }
       result[last_dot_pos] = static_cast<uint8_t>(label_len);
       last_dot_pos = i;
     } else if (!IsValidHostLabelCharacter(result[i], i - last_dot_pos == 1)) {

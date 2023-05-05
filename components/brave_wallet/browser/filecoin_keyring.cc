@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/filecoin_keyring.h"
 
@@ -22,15 +22,17 @@ namespace brave_wallet {
 namespace {
 bool GetBLSPublicKey(const std::vector<uint8_t>& private_key,
                      std::vector<uint8_t>* public_key_out) {
-  if (private_key.size() != 32 || !public_key_out)
+  if (private_key.size() != 32 || !public_key_out) {
     return false;
+  }
 
   auto result = filecoin::bls_private_key_to_public_key(
       rust::Slice<const uint8_t>{private_key.data(), private_key.size()});
   std::vector<uint8_t> public_key(result.begin(), result.end());
   if (std::all_of(public_key.begin(), public_key.end(),
-                  [](int i) { return i == 0; }))
+                  [](int i) { return i == 0; })) {
     return false;
+  }
   *public_key_out = public_key;
   return true;
 }
@@ -85,8 +87,9 @@ bool FilecoinKeyring::DecodeImportPayload(
     const std::string& payload_hex,
     std::vector<uint8_t>* private_key_out,
     mojom::FilecoinAddressProtocol* protocol_out) {
-  if (!private_key_out || !protocol_out || payload_hex.empty())
+  if (!private_key_out || !protocol_out || payload_hex.empty()) {
     return false;
+  }
   std::string key_payload;
   if (!base::HexStringToString(payload_hex, &key_payload)) {
     return false;
@@ -142,8 +145,9 @@ std::string FilecoinKeyring::ImportFilecoinAccount(
   }
 
   std::unique_ptr<HDKey> hd_key = HDKey::GenerateFromPrivateKey(private_key);
-  if (!hd_key)
+  if (!hd_key) {
     return std::string();
+  }
   FilAddress address;
   if (protocol == mojom::FilecoinAddressProtocol::BLS) {
     std::vector<uint8_t> public_key;
@@ -171,16 +175,18 @@ void FilecoinKeyring::RestoreFilecoinAccount(
     const std::vector<uint8_t>& input_key,
     const std::string& address) {
   std::unique_ptr<HDKey> hd_key = HDKey::GenerateFromPrivateKey(input_key);
-  if (!hd_key)
+  if (!hd_key) {
     return;
+  }
   if (!AddImportedAddress(address, std::move(hd_key))) {
     return;
   }
 }
 
 std::string FilecoinKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {
-  if (!hd_key_base)
+  if (!hd_key_base) {
     return std::string();
+  }
   HDKey* hd_key = static_cast<HDKey*>(hd_key_base);
   return FilAddress::FromUncompressedPublicKey(
              hd_key->GetUncompressedPublicKey(),
@@ -190,12 +196,14 @@ std::string FilecoinKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {
 
 absl::optional<std::string> FilecoinKeyring::SignTransaction(
     const FilTransaction* tx) {
-  if (!tx)
+  if (!tx) {
     return absl::nullopt;
+  }
   auto address = tx->from().EncodeAsString();
   HDKeyBase* hd_key = GetHDKeyFromAddress(address);
-  if (!hd_key)
+  if (!hd_key) {
     return absl::nullopt;
+  }
   return tx->GetSignedTransaction(hd_key->GetPrivateKeyBytes());
 }
 

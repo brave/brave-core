@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 
@@ -64,13 +64,16 @@ absl::optional<EthTransaction> EthTransaction::FromTxData(
     }
   }
 
-  if (!HexValueToUint256(tx_data->gas_price, &tx.gas_price_) && strict)
+  if (!HexValueToUint256(tx_data->gas_price, &tx.gas_price_) && strict) {
     return absl::nullopt;
-  if (!HexValueToUint256(tx_data->gas_limit, &tx.gas_limit_) && strict)
+  }
+  if (!HexValueToUint256(tx_data->gas_limit, &tx.gas_limit_) && strict) {
     return absl::nullopt;
+  }
   tx.to_ = EthAddress::FromHex(tx_data->to);
-  if (!HexValueToUint256(tx_data->value, &tx.value_) && strict)
+  if (!HexValueToUint256(tx_data->value, &tx.value_) && strict) {
     return absl::nullopt;
+  }
   tx.data_ = tx_data->data;
   return tx;
 }
@@ -80,71 +83,88 @@ absl::optional<EthTransaction> EthTransaction::FromValue(
     const base::Value::Dict& value) {
   EthTransaction tx;
   const std::string* nonce = value.FindString("nonce");
-  if (!nonce)
+  if (!nonce) {
     return absl::nullopt;
+  }
 
   if (!nonce->empty()) {
     uint256_t nonce_uint;
-    if (!HexValueToUint256(*nonce, &nonce_uint))
+    if (!HexValueToUint256(*nonce, &nonce_uint)) {
       return absl::nullopt;
+    }
     tx.nonce_ = nonce_uint;
   }
 
   const std::string* gas_price = value.FindString("gas_price");
-  if (!gas_price)
+  if (!gas_price) {
     return absl::nullopt;
-  if (!HexValueToUint256(*gas_price, &tx.gas_price_))
+  }
+  if (!HexValueToUint256(*gas_price, &tx.gas_price_)) {
     return absl::nullopt;
+  }
 
   const std::string* gas_limit = value.FindString("gas_limit");
-  if (!gas_limit)
+  if (!gas_limit) {
     return absl::nullopt;
-  if (!HexValueToUint256(*gas_limit, &tx.gas_limit_))
+  }
+  if (!HexValueToUint256(*gas_limit, &tx.gas_limit_)) {
     return absl::nullopt;
+  }
 
   const std::string* to = value.FindString("to");
-  if (!to)
+  if (!to) {
     return absl::nullopt;
+  }
   tx.to_ = EthAddress::FromHex(*to);
 
   const std::string* tx_value = value.FindString("value");
-  if (!tx_value)
+  if (!tx_value) {
     return absl::nullopt;
-  if (!HexValueToUint256(*tx_value, &tx.value_))
+  }
+  if (!HexValueToUint256(*tx_value, &tx.value_)) {
     return absl::nullopt;
+  }
 
   const std::string* data = value.FindString("data");
-  if (!data)
+  if (!data) {
     return absl::nullopt;
+  }
   std::string data_decoded;
-  if (!base::Base64Decode(*data, &data_decoded))
+  if (!base::Base64Decode(*data, &data_decoded)) {
     return absl::nullopt;
+  }
   tx.data_ = std::vector<uint8_t>(data_decoded.begin(), data_decoded.end());
 
   absl::optional<int> v = value.FindInt("v");
-  if (!v)
+  if (!v) {
     return absl::nullopt;
+  }
   tx.v_ = (uint8_t)*v;
 
   const std::string* r = value.FindString("r");
-  if (!r)
+  if (!r) {
     return absl::nullopt;
+  }
   std::string r_decoded;
-  if (!base::Base64Decode(*r, &r_decoded))
+  if (!base::Base64Decode(*r, &r_decoded)) {
     return absl::nullopt;
+  }
   tx.r_ = std::vector<uint8_t>(r_decoded.begin(), r_decoded.end());
 
   const std::string* s = value.FindString("s");
-  if (!s)
+  if (!s) {
     return absl::nullopt;
+  }
   std::string s_decoded;
-  if (!base::Base64Decode(*s, &s_decoded))
+  if (!base::Base64Decode(*s, &s_decoded)) {
     return absl::nullopt;
+  }
   tx.s_ = std::vector<uint8_t>(s_decoded.begin(), s_decoded.end());
 
   absl::optional<int> type = value.FindInt("type");
-  if (!type)
+  if (!type) {
     return absl::nullopt;
+  }
   tx.type_ = (uint8_t)*type;
 
   return tx;
@@ -188,8 +208,9 @@ bool EthTransaction::ProcessVRS(const std::string& v,
                                 const std::string& r,
                                 const std::string& s) {
   if (!base::StartsWith(v, "0x") || !base::StartsWith(r, "0x") ||
-      !base::StartsWith(s, "0x"))
+      !base::StartsWith(s, "0x")) {
     return false;
+  }
   uint256_t v_decoded;
   if (!HexValueToUint256(v, &v_decoded)) {
     LOG(ERROR) << "Unable to decode v param";
@@ -257,8 +278,9 @@ base::Value::Dict EthTransaction::ToValue() const {
 
 uint256_t EthTransaction::GetBaseFee() const {
   uint256_t fee = GetDataFee() + kTransactionCost;
-  if (IsToCreationAddress())
+  if (IsToCreationAddress()) {
     fee += kContractCreationCost;
+  }
 
   return fee;
 }

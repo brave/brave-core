@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/common/eth_address.h"
 
@@ -53,8 +53,9 @@ EthAddress EthAddress::FromPublicKey(const std::vector<uint8_t>& public_key) {
 
 // static
 EthAddress EthAddress::FromHex(const std::string& input) {
-  if (!IsValidAddress(input))
+  if (!IsValidAddress(input)) {
     return EthAddress();
+  }
 
   std::vector<uint8_t> bytes;
   if (!PrefixedHexStringToBytes(input, &bytes)) {
@@ -67,8 +68,9 @@ EthAddress EthAddress::FromHex(const std::string& input) {
 
 // static
 EthAddress EthAddress::FromBytes(base::span<const uint8_t> bytes) {
-  if (bytes.size() != kAddressLength)
+  if (bytes.size() != kAddressLength) {
     return EthAddress();
+  }
   return EthAddress(bytes);
 }
 

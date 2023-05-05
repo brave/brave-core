@@ -1,7 +1,7 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_BROWSER_EXTENSIONS_API_BRAVE_WALLET_API_H_
 #define BRAVE_BROWSER_EXTENSIONS_API_BRAVE_WALLET_API_H_
@@ -13,8 +13,7 @@ class Profile;
 namespace extensions {
 namespace api {
 
-class BraveWalletReadyFunction :
-    public ExtensionFunction {
+class BraveWalletReadyFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveWallet.ready", UNKNOWN)
 

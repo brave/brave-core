@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <memory>
 
@@ -136,8 +136,9 @@ class BraveWalletTabHelperBrowserTest : public InProcessBrowserTest {
   std::unique_ptr<net::test_server::HttpResponse> HandleChainRequest(
       const net::test_server::HttpRequest& request) {
     GURL absolute_url = https_server_->GetURL(request.relative_url);
-    if (absolute_url.path() != "/rpc")
+    if (absolute_url.path() != "/rpc") {
       return nullptr;
+    }
     auto http_response =
         std::make_unique<net::test_server::BasicHttpResponse>();
     http_response->set_code(net::HTTP_OK);

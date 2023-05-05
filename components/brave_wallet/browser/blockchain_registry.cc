@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 
@@ -62,8 +62,9 @@ mojom::BlockchainTokenPtr BlockchainRegistry::GetTokenByAddress(
     mojom::CoinType coin,
     const std::string& address) {
   const auto key = GetTokenListKey(coin, chain_id);
-  if (!token_list_map_.contains(key))
+  if (!token_list_map_.contains(key)) {
     return nullptr;
+  }
 
   const auto& tokens = token_list_map_[key];
   auto token_it = base::ranges::find_if(

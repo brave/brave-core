@@ -263,8 +263,9 @@ void NftMetadataFetcher::CompleteGetEthTokenMetadata(
     int error,
     const std::string& error_message) {
   mojom::ProviderError mojo_err = static_cast<mojom::ProviderError>(error);
-  if (!mojom::IsKnownEnumValue(mojo_err))
+  if (!mojom::IsKnownEnumValue(mojo_err)) {
     mojo_err = mojom::ProviderError::kUnknown;
+  }
   std::move(callback).Run(uri.spec(), response, mojo_err, error_message);
 }
 
@@ -329,8 +330,9 @@ void NftMetadataFetcher::CompleteGetSolTokenMetadata(
     const std::string& error_message) {
   mojom::SolanaProviderError mojo_err =
       static_cast<mojom::SolanaProviderError>(error);
-  if (!mojom::IsKnownEnumValue(mojo_err))
+  if (!mojom::IsKnownEnumValue(mojo_err)) {
     mojo_err = mojom::SolanaProviderError::kUnknown;
+  }
   std::move(callback).Run(uri.spec(), response, mojo_err, error_message);
 }
 

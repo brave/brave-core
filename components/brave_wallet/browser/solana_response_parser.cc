@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/solana_response_parser.h"
 
@@ -29,8 +29,9 @@ bool GetUint64FromDictValue(const base::Value::Dict& dict_value,
   }
 
   const base::Value* value = dict_value.Find(key);
-  if (!value)
+  if (!value) {
     return false;
+  }
 
   if (nullable && value->is_none()) {
     *ret = 0;
@@ -38,8 +39,9 @@ bool GetUint64FromDictValue(const base::Value::Dict& dict_value,
   }
 
   auto* string_value = value->GetIfString();
-  if (!string_value || string_value->empty())
+  if (!string_value || string_value->empty()) {
     return false;
+  }
 
   return base::StringToUint64(*string_value, ret);
 }
@@ -52,8 +54,9 @@ bool ParseGetBalance(const base::Value& json_value, uint64_t* balance) {
   DCHECK(balance);
 
   auto result = ParseResultDict(json_value);
-  if (!result || !result)
+  if (!result || !result) {
     return false;
+  }
 
   return GetUint64FromDictValue(*result, "value", false, balance);
 }
@@ -65,29 +68,34 @@ bool ParseGetTokenAccountBalance(const base::Value& json_value,
   DCHECK(amount && decimals && ui_amount_string);
 
   auto result = ParseResultDict(json_value);
-  if (!result)
+  if (!result) {
     return false;
+  }
 
   auto* value = result->FindDict("value");
-  if (!value)
+  if (!value) {
     return false;
+  }
 
   auto* amount_ptr = value->FindString("amount");
-  if (!amount_ptr)
+  if (!amount_ptr) {
     return false;
+  }
   *amount = *amount_ptr;
 
   // uint8
   auto decimals_opt = value->FindInt("decimals");
   if (!decimals_opt ||
       decimals_opt.value() > std::numeric_limits<uint8_t>::max() ||
-      decimals_opt.value() < 0)
+      decimals_opt.value() < 0) {
     return false;
+  }
   *decimals = decimals_opt.value();
 
   auto* ui_amount_string_ptr = value->FindString("uiAmountString");
-  if (!ui_amount_string_ptr)
+  if (!ui_amount_string_ptr) {
     return false;
+  }
   *ui_amount_string = *ui_amount_string_ptr;
 
   return true;
@@ -95,8 +103,9 @@ bool ParseGetTokenAccountBalance(const base::Value& json_value,
 
 bool ParseSendTransaction(const base::Value& json_value, std::string* tx_id) {
   auto string_result = ParseSingleStringResult(json_value);
-  if (!string_result)
+  if (!string_result) {
     return false;
+  }
   *tx_id = std::move(*string_result);
   return true;
 }
@@ -107,16 +116,19 @@ bool ParseGetLatestBlockhash(const base::Value& json_value,
   DCHECK(hash && last_valid_block_height);
 
   auto result = ParseResultDict(json_value);
-  if (!result)
+  if (!result) {
     return false;
+  }
 
   auto* value = result->FindDict("value");
-  if (!value)
+  if (!value) {
     return false;
+  }
 
   auto* hash_ptr = value->FindString("blockhash");
-  if (!hash_ptr || hash_ptr->empty())
+  if (!hash_ptr || hash_ptr->empty()) {
     return false;
+  }
   *hash = *hash_ptr;
 
   return GetUint64FromDictValue(*value, "lastValidBlockHeight", false,
@@ -130,12 +142,14 @@ bool ParseGetSignatureStatuses(
   statuses->clear();
 
   auto result = ParseResultDict(json_value);
-  if (!result)
+  if (!result) {
     return false;
+  }
 
   const auto* value = result->FindList("value");
-  if (!value)
+  if (!value) {
     return false;
+  }
 
   for (const auto& item : *value) {
     const auto* status_value = item.GetIfDict();
@@ -190,15 +204,18 @@ bool ParseGetAccountInfo(const base::Value& json_value,
 
   auto response =
       json_rpc_responses::RPCResponse::FromValueDeprecated(json_value);
-  if (!response)
+  if (!response) {
     return false;
+  }
 
-  if (!response->result || !response->result->is_dict())
+  if (!response->result || !response->result->is_dict()) {
     return false;
+  }
 
   const base::Value* value = response->result->GetDict().Find("value");
-  if (!value)
+  if (!value) {
     return false;
+  }
 
   if (value->is_none()) {
     *account_info_out = absl::nullopt;
@@ -222,24 +239,29 @@ bool ParseGetAccountInfoPayload(
   }
 
   auto* owner = value_dict.FindString("owner");
-  if (!owner)
+  if (!owner) {
     return false;
+  }
   account_info.owner = *owner;
 
   auto* data = value_dict.FindList("data");
-  if (!data)
+  if (!data) {
     return false;
+  }
   if (data->size() != 2u || !(*data)[0].is_string() ||
-      !(*data)[1].is_string() || (*data)[1].GetString() != "base64")
+      !(*data)[1].is_string() || (*data)[1].GetString() != "base64") {
     return false;
+  }
   auto data_string = (*data)[0].GetString();
-  if (!base::Base64Decode(data_string))
+  if (!base::Base64Decode(data_string)) {
     return false;
+  }
   account_info.data = data_string;
 
   auto executable = value_dict.FindBool("executable");
-  if (!executable)
+  if (!executable) {
     return false;
+  }
   account_info.executable = *executable;
 
   if (!GetUint64FromDictValue(value_dict, "rentEpoch", false,
@@ -255,8 +277,9 @@ bool ParseGetFeeForMessage(const base::Value& json_value, uint64_t* fee) {
   DCHECK(fee);
 
   auto result = ParseResultDict(json_value);
-  if (!result)
+  if (!result) {
     return false;
+  }
 
   return GetUint64FromDictValue(*result, "value", true, fee);
 }
@@ -266,11 +289,13 @@ bool ParseGetBlockHeight(const base::Value& json_value,
   DCHECK(block_height);
 
   auto block_height_string = ParseSingleStringResult(json_value);
-  if (!block_height_string)
+  if (!block_height_string) {
     return false;
+  }
 
-  if (block_height_string->empty())
+  if (block_height_string->empty()) {
     return false;
+  }
 
   return base::StringToUint64(*block_height_string, block_height);
 }
@@ -280,27 +305,32 @@ bool ParseGetTokenAccountsByOwner(const base::Value& json_value,
   DCHECK(accounts);
 
   auto result = ParseResultDict(json_value);
-  if (!result)
+  if (!result) {
     return false;
+  }
 
   const auto* account_dicts_list = result->FindList("value");
-  if (!account_dicts_list)
+  if (!account_dicts_list) {
     return false;
+  }
 
   // For each account dict, get the "account" key and parse the value as an
   // SolanaAccountInfo
   for (const auto& account_dict : *account_dicts_list) {
     const auto* account_dict_value = account_dict.GetIfDict();
-    if (!account_dict_value)
+    if (!account_dict_value) {
       return false;
+    }
 
     const auto* account_value = account_dict_value->Find("account");
-    if (!account_value)
+    if (!account_value) {
       return false;
+    }
 
     absl::optional<SolanaAccountInfo> account_info;
-    if (!ParseGetAccountInfoPayload(account_value->GetDict(), &account_info))
+    if (!ParseGetAccountInfoPayload(account_value->GetDict(), &account_info)) {
       return false;
+    }
 
     if (account_info.has_value()) {
       accounts->push_back(std::move(*account_info));

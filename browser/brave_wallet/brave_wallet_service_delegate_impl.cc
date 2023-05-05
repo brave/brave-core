@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_impl.h"
 
@@ -107,9 +107,10 @@ void BraveWalletServiceDelegateImpl::GetImportInfoFromExternalWallet(
     mojom::ExternalWalletType type,
     const std::string& password,
     GetImportInfoCallback callback) {
-  if (!importers_[type])
+  if (!importers_[type]) {
     importers_[type] =
         std::make_unique<ExternalWalletsImporter>(type, context_);
+  }
   if (importers_[type]->IsInitialized()) {
     ContinueGetImportInfoFromExternalWallet(type, password, std::move(callback),
                                             true);
@@ -206,16 +207,18 @@ void BraveWalletServiceDelegateImpl::TabChangedAt(
     content::WebContents* contents,
     int index,
     TabChangeType change_type) {
-  if (!contents || contents != GetActiveWebContents())
+  if (!contents || contents != GetActiveWebContents()) {
     return;
+  }
 
   FireActiveOriginChanged();
 }
 
 void BraveWalletServiceDelegateImpl::FireActiveOriginChanged() {
   mojom::OriginInfoPtr origin_info = MakeOriginInfo(GetActiveOriginInternal());
-  for (auto& observer : observer_list_)
+  for (auto& observer : observer_list_) {
     observer.OnActiveOriginChanged(origin_info);
+  }
 }
 
 url::Origin BraveWalletServiceDelegateImpl::GetActiveOriginInternal() {

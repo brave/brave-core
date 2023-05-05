@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/swap_response_parser.h"
 
@@ -86,23 +86,27 @@ mojom::SwapResponsePtr ParseSwapResponse(const base::Value& json_value,
 
   auto swap_response_value =
       swap_responses::SwapResponse0x::FromValueDeprecated(json_value);
-  if (!swap_response_value)
+  if (!swap_response_value) {
     return nullptr;
+  }
 
   auto swap_response = mojom::SwapResponse::New();
   swap_response->price = swap_response_value->price;
 
   if (expect_transaction_data) {
-    if (!swap_response_value->guaranteed_price)
+    if (!swap_response_value->guaranteed_price) {
       return nullptr;
+    }
     swap_response->guaranteed_price = *swap_response_value->guaranteed_price;
 
-    if (!swap_response_value->to)
+    if (!swap_response_value->to) {
       return nullptr;
+    }
     swap_response->to = *swap_response_value->to;
 
-    if (!swap_response_value->data)
+    if (!swap_response_value->data) {
       return nullptr;
+    }
     swap_response->data = *swap_response_value->data;
   }
 
@@ -226,21 +230,26 @@ mojom::JupiterQuotePtr ParseJupiterQuote(const base::Value& json_value) {
 
   auto quote_value =
       swap_responses::JupiterQuoteResponse::FromValueDeprecated(json_value);
-  if (!quote_value)
+  if (!quote_value) {
     return nullptr;
+  }
 
   auto swap_quote = mojom::JupiterQuote::New();
   for (const auto& route_value : quote_value->data) {
     mojom::JupiterRoute route;
-    if (!base::StringToUint64(route_value.in_amount, &route.in_amount))
+    if (!base::StringToUint64(route_value.in_amount, &route.in_amount)) {
       return nullptr;
-    if (!base::StringToUint64(route_value.out_amount, &route.out_amount))
+    }
+    if (!base::StringToUint64(route_value.out_amount, &route.out_amount)) {
       return nullptr;
-    if (!base::StringToUint64(route_value.amount, &route.amount))
+    }
+    if (!base::StringToUint64(route_value.amount, &route.amount)) {
       return nullptr;
+    }
     if (!base::StringToUint64(route_value.other_amount_threshold,
-                              &route.other_amount_threshold))
+                              &route.other_amount_threshold)) {
       return nullptr;
+    }
     route.swap_mode = route_value.swap_mode;
 
     const auto& route_price_impact_pct =
@@ -260,11 +269,13 @@ mojom::JupiterQuotePtr ParseJupiterQuote(const base::Value& json_value) {
       market_info.not_enough_liquidity = market_info_value.not_enough_liquidity;
 
       if (!base::StringToUint64(market_info_value.in_amount,
-                                &market_info.in_amount))
+                                &market_info.in_amount)) {
         return nullptr;
+      }
       if (!base::StringToUint64(market_info_value.out_amount,
-                                &market_info.out_amount))
+                                &market_info.out_amount)) {
         return nullptr;
+      }
 
       const auto& market_info_price_impact_pct =
           ParsePriceImpactPct(market_info_value.price_impact_pct);
@@ -278,11 +289,13 @@ mojom::JupiterQuotePtr ParseJupiterQuote(const base::Value& json_value) {
       // is expensive due to its deep nesting.
       mojom::JupiterFee lp_fee;
       if (!base::StringToUint64(market_info_value.lp_fee.amount,
-                                &lp_fee.amount))
+                                &lp_fee.amount)) {
         return nullptr;
+      }
       lp_fee.mint = market_info_value.lp_fee.mint;
-      if (!base::StringToDouble(market_info_value.lp_fee.pct, &lp_fee.pct))
+      if (!base::StringToDouble(market_info_value.lp_fee.pct, &lp_fee.pct)) {
         return nullptr;
+      }
       market_info.lp_fee = lp_fee.Clone();
 
       // Parse platformFee->amount field as a JSON integer field, since the
@@ -290,12 +303,14 @@ mojom::JupiterQuotePtr ParseJupiterQuote(const base::Value& json_value) {
       // is expensive due to its deep nesting.
       mojom::JupiterFee platform_fee;
       if (!base::StringToUint64(market_info_value.platform_fee.amount,
-                                &platform_fee.amount))
+                                &platform_fee.amount)) {
         return nullptr;
+      }
       platform_fee.mint = market_info_value.platform_fee.mint;
       if (!base::StringToDouble(market_info_value.platform_fee.pct,
-                                &platform_fee.pct))
+                                &platform_fee.pct)) {
         return nullptr;
+      }
       market_info.platform_fee = platform_fee.Clone();
       route.market_infos.push_back(market_info.Clone());
     }
@@ -310,19 +325,22 @@ mojom::JupiterSwapTransactionsPtr ParseJupiterSwapTransactions(
     const base::Value& json_value) {
   auto value =
       swap_responses::JupiterSwapTransactions::FromValueDeprecated(json_value);
-  if (!value)
+  if (!value) {
     return nullptr;
+  }
 
   auto swap_transactions = mojom::JupiterSwapTransactions::New();
 
   swap_transactions->setup_transaction = "";
-  if (value->setup_transaction)
+  if (value->setup_transaction) {
     swap_transactions->setup_transaction = *value->setup_transaction;
+  }
   swap_transactions->swap_transaction = value->swap_transaction;
 
   swap_transactions->cleanup_transaction = "";
-  if (value->cleanup_transaction)
+  if (value->cleanup_transaction) {
     swap_transactions->cleanup_transaction = *value->cleanup_transaction;
+  }
 
   return swap_transactions;
 }
@@ -351,8 +369,9 @@ mojom::JupiterErrorResponsePtr ParseJupiterErrorResponse(
 // For sample JSON response, refer to ParseJupiterQuote.
 absl::optional<std::string> ConvertAllNumbersToString(const std::string& json) {
   auto converted_json = std::string(json::convert_all_numbers_to_string(json));
-  if (converted_json.empty())
+  if (converted_json.empty()) {
     return absl::nullopt;
+  }
 
   return converted_json;
 }

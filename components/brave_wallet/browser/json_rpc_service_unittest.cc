@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <stdint.h>
 #include <algorithm>
@@ -2610,24 +2610,24 @@ TEST_F(JsonRpcServiceUnitTest, GetFeeHistory) {
   base::RunLoop run_loop;
   json_rpc_service_->GetFeeHistory(
       mojom::kLocalhostChainId,
-      base::BindLambdaForTesting([&](const std::vector<std::string>&
-                                         base_fee_per_gas,
-                                     const std::vector<double>& gas_used_ratio,
-                                     const std::string& oldest_block,
-                                     const std::vector<
-                                         std::vector<std::string>>& reward,
-                                     mojom::ProviderError error,
-                                     const std::string& error_message) {
-        EXPECT_EQ(error, mojom::ProviderError::kSuccess);
-        EXPECT_TRUE(error_message.empty());
-        EXPECT_EQ(base_fee_per_gas,
-                  (std::vector<std::string>{"0x215d00b8c8", "0x24beaded75"}));
-        EXPECT_EQ(gas_used_ratio, (std::vector<double>{0.020687709938714324}));
-        EXPECT_EQ(oldest_block, "0xd6b1b0");
-        EXPECT_EQ(reward, (std::vector<std::vector<std::string>>{
-                              {"0x77359400", "0x77359400", "0x2816a6cfb"}}));
-        run_loop.Quit();
-      }));
+      base::BindLambdaForTesting(
+          [&](const std::vector<std::string>& base_fee_per_gas,
+              const std::vector<double>& gas_used_ratio,
+              const std::string& oldest_block,
+              const std::vector<std::vector<std::string>>& reward,
+              mojom::ProviderError error, const std::string& error_message) {
+            EXPECT_EQ(error, mojom::ProviderError::kSuccess);
+            EXPECT_TRUE(error_message.empty());
+            EXPECT_EQ(base_fee_per_gas, (std::vector<std::string>{
+                                            "0x215d00b8c8", "0x24beaded75"}));
+            EXPECT_EQ(gas_used_ratio,
+                      (std::vector<double>{0.020687709938714324}));
+            EXPECT_EQ(oldest_block, "0xd6b1b0");
+            EXPECT_EQ(reward,
+                      (std::vector<std::vector<std::string>>{
+                          {"0x77359400", "0x77359400", "0x2816a6cfb"}}));
+            run_loop.Quit();
+          }));
   run_loop.Run();
 
   SetHTTPRequestTimeoutInterceptor();

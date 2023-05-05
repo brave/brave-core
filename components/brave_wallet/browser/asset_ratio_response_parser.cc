@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/asset_ratio_response_parser.h"
 
@@ -150,13 +150,15 @@ bool ParseAssetPriceHistory(const base::Value& json_value,
     const auto& price_value = *(++it);
 
     // Check whether date_value is convertible to a double first.
-    if (!date_value.is_double() && !date_value.is_int())
+    if (!date_value.is_double() && !date_value.is_int()) {
       return false;
+    }
     double date_dbl = date_value.GetDouble();
 
     // Check whether price_value is convertible to a double first.
-    if (!price_value.is_double() && !price_value.is_int())
+    if (!price_value.is_double() && !price_value.is_int()) {
       return false;
+    }
     double price = price_value.GetDouble();
 
     base::Time date = base::Time::FromJsTime(date_dbl);

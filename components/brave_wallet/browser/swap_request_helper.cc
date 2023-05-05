@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/swap_request_helper.h"
 
@@ -28,8 +28,9 @@ absl::optional<std::string> EncodeJupiterTransactionParams(
   absl::optional<std::string> associated_token_account =
       SolanaKeyring::GetAssociatedTokenAccount(
           params->output_mint, brave_wallet::kSolanaFeeRecipient);
-  if (!associated_token_account)
+  if (!associated_token_account) {
     return absl::nullopt;
+  }
 
   // If the if-condition below is false, associated_token_account is unused,
   // but the originating call to SolanaKeyring::GetAssociatedTokenAccount()

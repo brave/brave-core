@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/common/string_utils.h"
 
@@ -13,23 +13,28 @@ namespace brave_wallet {
 
 // Determines if the passed in base-10 string is valid
 bool IsValidBase10String(const std::string& input) {
-  if (input.empty())
+  if (input.empty()) {
     return false;
+  }
   std::string check_input = input;
-  if (input.size() > 0 && input[0] == '-')
+  if (input.size() > 0 && input[0] == '-') {
     check_input = input.substr(1);
+  }
   for (const auto& c : check_input) {
-    if (!base::IsAsciiDigit(c))
+    if (!base::IsAsciiDigit(c)) {
       return false;
+    }
   }
   return true;
 }
 
 bool Base10ValueToUint256(const std::string& input, uint256_t* out) {
-  if (!out)
+  if (!out) {
     return false;
-  if (!IsValidBase10String(input))
+  }
+  if (!IsValidBase10String(input)) {
     return false;
+  }
   *out = 0;
   uint256_t last_val = 0;  // Used to check overflows
   for (char c : input) {
@@ -45,10 +50,12 @@ bool Base10ValueToUint256(const std::string& input, uint256_t* out) {
 }
 
 bool Base10ValueToInt256(const std::string& input, int256_t* out) {
-  if (!out)
+  if (!out) {
     return false;
-  if (!IsValidBase10String(input))
+  }
+  if (!IsValidBase10String(input)) {
     return false;
+  }
   *out = 0;
   int256_t last_val = 0;  // Used to check overflows
   std::string check_input = input;

@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/ethereum_provider_impl.h"
 
@@ -510,8 +510,9 @@ class EthereumProviderImplUnitTest : public testing::Test {
   void Web3ClientVersion(std::string* version,
                          mojom::ProviderError* error_out,
                          std::string* error_message_out) {
-    if (!version || !error_out || !error_message_out)
+    if (!version || !error_out || !error_message_out) {
       return;
+    }
     base::RunLoop run_loop;
     provider()->Web3ClientVersion(
         base::BindLambdaForTesting(
@@ -537,8 +538,9 @@ class EthereumProviderImplUnitTest : public testing::Test {
                            std::string* signature_out,
                            mojom::ProviderError* error_out,
                            std::string* error_message_out) {
-    if (!signature_out || !error_out || !error_message_out)
+    if (!signature_out || !error_out || !error_message_out) {
       return;
+    }
 
     base::RunLoop run_loop;
     provider()->SignMessage(
@@ -570,8 +572,9 @@ class EthereumProviderImplUnitTest : public testing::Test {
                    std::string* signature_out,
                    mojom::ProviderError* error_out,
                    std::string* error_message_out) {
-    if (!signature_out || !error_out || !error_message_out)
+    if (!signature_out || !error_out || !error_message_out) {
       return;
+    }
 
     base::RunLoop run_loop;
     provider()->SignMessage(
@@ -591,10 +594,11 @@ class EthereumProviderImplUnitTest : public testing::Test {
         base::Value());
     // Wait for EthereumProviderImpl::ContinueSignMessage
     browser_task_environment_.RunUntilIdle();
-    if (user_approved)
+    if (user_approved) {
       brave_wallet_service_->NotifySignMessageRequestProcessed(
           *user_approved, brave_wallet_service_->sign_message_id_ - 1, nullptr,
           absl::nullopt);
+    }
     run_loop.Run();
   }
 
@@ -603,8 +607,9 @@ class EthereumProviderImplUnitTest : public testing::Test {
                       std::string* address_out,
                       mojom::ProviderError* error_out,
                       std::string* error_message_out) {
-    if (!address_out || !error_out || !error_message_out)
+    if (!address_out || !error_out || !error_message_out) {
       return;
+    }
 
     base::RunLoop run_loop;
     provider()->RecoverAddress(
@@ -634,8 +639,9 @@ class EthereumProviderImplUnitTest : public testing::Test {
                         std::string* signature_out,
                         mojom::ProviderError* error_out,
                         std::string* error_message_out) {
-    if (!signature_out || !error_out || !error_message_out)
+    if (!signature_out || !error_out || !error_message_out) {
       return;
+    }
 
     base::RunLoop run_loop;
     provider()->SignTypedMessage(
@@ -655,10 +661,11 @@ class EthereumProviderImplUnitTest : public testing::Test {
         base::Value());
     // Wait for EthereumProviderImpl::ContinueSignMessage
     browser_task_environment_.RunUntilIdle();
-    if (user_approved)
+    if (user_approved) {
       brave_wallet_service_->NotifySignMessageRequestProcessed(
           *user_approved, brave_wallet_service_->sign_message_id_ - 1, nullptr,
           absl::nullopt);
+    }
     run_loop.Run();
   }
 
@@ -708,8 +715,9 @@ class EthereumProviderImplUnitTest : public testing::Test {
     brave_wallet_service_->GetPendingGetEncryptionPublicKeyRequests(
         base::BindLambdaForTesting(
             [&](std::vector<mojom::GetEncryptionPublicKeyRequestPtr> requests) {
-              for (const auto& request : requests)
+              for (const auto& request : requests) {
                 requests_out.push_back(request.Clone());
+              }
               run_loop.Quit();
             }));
     run_loop.Run();
@@ -721,8 +729,9 @@ class EthereumProviderImplUnitTest : public testing::Test {
     std::vector<mojom::DecryptRequestPtr> requests_out;
     brave_wallet_service_->GetPendingDecryptRequests(base::BindLambdaForTesting(
         [&](std::vector<mojom::DecryptRequestPtr> requests) {
-          for (const auto& request : requests)
+          for (const auto& request : requests) {
             requests_out.push_back(request.Clone());
+          }
           run_loop.Quit();
         }));
     run_loop.Run();
@@ -810,9 +819,10 @@ class EthereumProviderImplUnitTest : public testing::Test {
               run_loop.Quit();
             }),
         base::Value());
-    if (user_approved)
+    if (user_approved) {
       json_rpc_service_->NotifySwitchChainRequestProcessed(*user_approved,
                                                            GetOrigin());
+    }
     run_loop.Run();
   }
 
@@ -936,8 +946,9 @@ class EthereumProviderImplUnitTest : public testing::Test {
     brave_wallet_service_->GetPendingAddSuggestTokenRequests(
         base::BindLambdaForTesting(
             [&](std::vector<mojom::AddSuggestTokenRequestPtr> requests) {
-              for (const auto& request : requests)
+              for (const auto& request : requests) {
                 requests_out.push_back(request.Clone());
+              }
               run_loop.Quit();
             }));
     run_loop.Run();
@@ -2095,10 +2106,11 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribe) {
         EXPECT_TRUE(request.headers.GetHeader("X-Eth-Method", &header_value));
         std::string content;
         if (header_value == "eth_blockNumber" ||
-            header_value == "getBlockHeight")
+            header_value == "getBlockHeight") {
           content = R"({"id":1,"jsonrpc":"2.0","result":"0x131131"})";
-        else if (header_value == "eth_getBlockByNumber")
+        } else if (header_value == "eth_getBlockByNumber") {
           content = R"({"id":1,"jsonrpc":"2.0","result":{"difficulty":"0x1"}})";
+        }
         url_loader_factory_.AddResponse(request.url.spec(), content);
       }));
 

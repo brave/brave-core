@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <memory>
 
@@ -175,8 +175,9 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
     meta.set_from("0x3333333333333333333333333333333333333333");
     meta.set_id(base::NumberToString(i));
     if (i % 2 == 0) {
-      if (i % 4 == 0)
+      if (i % 4 == 0) {
         meta.set_from(addr1);
+      }
       if (i % 6 == 0) {
         meta.set_chain_id(mojom::kMainnetChainId);
       } else {
@@ -184,8 +185,9 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
       }
       meta.set_status(mojom::TransactionStatus::Confirmed);
     } else {
-      if (i % 5 == 0)
+      if (i % 5 == 0) {
         meta.set_from(addr2);
+      }
       if (i % 7 == 0) {
         meta.set_chain_id(mojom::kMainnetChainId);
       } else {

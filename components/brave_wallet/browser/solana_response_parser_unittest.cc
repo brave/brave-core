@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/solana_response_parser.h"
 
@@ -119,10 +119,11 @@ TEST(SolanaResponseParserUnitTest, ParseGetLatestBlockhash) {
       R"({"jsonrpc":"2.0", "id":1, "result":{"value":{"blockhash":"EkSnNWid2cvwEVnVx9aBqawnmiCNiDgp3gUdkDPTKN1N"}}})",
       R"({"jsonrpc":"2.0", "id":1, "result":{"value":{"lastValidBlockHeight": "3090"}}})",
   };
-  for (const auto& invalid_json : invalid_jsons)
+  for (const auto& invalid_json : invalid_jsons) {
     EXPECT_FALSE(ParseGetLatestBlockhash(ParseJson(invalid_json), &hash,
                                          &last_valid_block_height))
         << invalid_json;
+  }
 }
 
 TEST(SolanaResponseParserUnitTest, ParseGetSignatureStatuses) {
@@ -327,9 +328,10 @@ TEST(SolanaResponseParserUnitTest, ParseGetFeeForMessage) {
       R"({"jsonrpc":"2.0", "id":1})",
       R"({"jsonrpc":"2.0", "id":1, "result":{}})",
       R"({"jsonrpc":"2.0", "id":1, "result":{"value":{}}})"};
-  for (const auto& invalid_json : invalid_jsons)
+  for (const auto& invalid_json : invalid_jsons) {
     EXPECT_FALSE(ParseGetFeeForMessage(ParseJson(invalid_json), &fee))
         << invalid_json;
+  }
 
   EXPECT_DCHECK_DEATH(ParseGetFeeForMessage(ParseJson(json), nullptr));
 }
@@ -349,9 +351,10 @@ TEST(SolanaResponseParserUnitTest, ParseGetBlockHeight) {
       R"({"jsonrpc":"2.0", "id":1, "result":-1})",
       R"({"jsonrpc":"2.0", "id":1, "result":1.2})",
       R"({"jsonrpc":"2.0", "id":1, "result":1})"};
-  for (const auto& invalid_json : invalid_jsons)
+  for (const auto& invalid_json : invalid_jsons) {
     EXPECT_FALSE(ParseGetBlockHeight(ParseJson(invalid_json), &block_height))
         << invalid_json;
+  }
 
   EXPECT_DCHECK_DEATH(ParseGetBlockHeight(ParseJson(json), nullptr));
 }

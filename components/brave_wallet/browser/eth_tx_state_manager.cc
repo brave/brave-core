@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 
@@ -57,52 +57,61 @@ std::unique_ptr<TxMeta> EthTxStateManager::ValueToTxMeta(
     const base::Value::Dict& value) {
   std::unique_ptr<EthTxMeta> meta = std::make_unique<EthTxMeta>();
 
-  if (!TxStateManager::ValueToTxMeta(value, meta.get()))
+  if (!TxStateManager::ValueToTxMeta(value, meta.get())) {
     return nullptr;
+  }
 
   const base::Value::Dict* tx_receipt = value.FindDict("tx_receipt");
-  if (!tx_receipt)
+  if (!tx_receipt) {
     return nullptr;
+  }
   absl::optional<TransactionReceipt> tx_receipt_from_value =
       ValueToTransactionReceipt(*tx_receipt);
-  if (!tx_receipt_from_value)
+  if (!tx_receipt_from_value) {
     return nullptr;
+  }
   meta->set_tx_receipt(*tx_receipt_from_value);
 
   const base::Value::Dict* tx = value.FindDict("tx");
-  if (!tx)
+  if (!tx) {
     return nullptr;
+  }
 
   absl::optional<bool> sign_only = value.FindBool("sign_only");
-  if (sign_only)
+  if (sign_only) {
     meta->set_sign_only(*sign_only);
+  }
 
   absl::optional<int> type = tx->FindInt("type");
-  if (!type)
+  if (!type) {
     return nullptr;
+  }
 
   switch (static_cast<uint8_t>(*type)) {
     case 0: {
       absl::optional<EthTransaction> tx_from_value =
           EthTransaction::FromValue(*tx);
-      if (!tx_from_value)
+      if (!tx_from_value) {
         return nullptr;
+      }
       meta->set_tx(std::make_unique<EthTransaction>(*tx_from_value));
       break;
     }
     case 1: {
       absl::optional<Eip2930Transaction> tx_from_value =
           Eip2930Transaction::FromValue(*tx);
-      if (!tx_from_value)
+      if (!tx_from_value) {
         return nullptr;
+      }
       meta->set_tx(std::make_unique<Eip2930Transaction>(*tx_from_value));
       break;
     }
     case 2: {
       absl::optional<Eip1559Transaction> tx_from_value =
           Eip1559Transaction::FromValue(*tx);
-      if (!tx_from_value)
+      if (!tx_from_value) {
         return nullptr;
+      }
       meta->set_tx(std::make_unique<Eip1559Transaction>(*tx_from_value));
       break;
     }

@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/fil_nonce_tracker.h"
 
@@ -52,8 +52,9 @@ uint256_t FilNonceTracker::GetHighestContinuousFrom(
     auto* fil_meta = static_cast<FilTxMeta*>(meta.get());
     DCHECK(
         fil_meta->tx()->nonce());  // Not supposed to happen for a submitted tx.
-    if (fil_meta->tx()->nonce().value() == highest)
+    if (fil_meta->tx()->nonce().value() == highest) {
       highest++;
+    }
   }
   return static_cast<uint256_t>(highest);
 }
