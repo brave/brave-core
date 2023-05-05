@@ -8,7 +8,8 @@
 namespace security_interstitials {
 
 namespace {
-const char kBraveLearnMoreLink[] = "https://support.brave.com/hc/en-us/articles/9809690466061";
+const char kBraveLearnMoreLink[] =
+    "https://support.brave.com/hc/en-us/articles/9809690466061";
 }  // namespace
 
 }  // namespace security_interstitials
