@@ -117,7 +117,11 @@ void DatabaseManager::OnCreate(ResultCallback callback,
 void DatabaseManager::MaybeMigrate(const int from_version,
                                    ResultCallback callback) const {
   const int to_version = database::kVersion;
-  DCHECK(from_version < to_version);
+  if (from_version == to_version) {
+    BLOG(1, "Database is up to date on schema version " << from_version);
+    std::move(callback).Run(/*success*/ true);
+    return;
+  }
 
   BLOG(1, "Migrating database from schema version "
               << from_version << " to schema version " << to_version);
