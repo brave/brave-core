@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_SYNC_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_SYNC_HANDLER_H_
 
+#include <memory>
+
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
@@ -66,9 +68,10 @@ class BraveSyncHandler : public settings::SettingsPageUIHandler,
       base::Value callback_id,
       const qrcode_generator::mojom::GenerateQRCodeResponsePtr response);
 
-  // Remote to service instance to generate QR code images.
-  mojo::Remote<qrcode_generator::mojom::QRCodeGeneratorService>
-      qr_code_service_remote_;
+  // TODO(https://crbug.com/1431991): Remove this field once there is no
+  // internal state (e.g. no `mojo::Remote`) that needs to be maintained by the
+  // `QRImageGenerator` class.
+  std::unique_ptr<qrcode_generator::QRImageGenerator> qrcode_service_;
 
   raw_ptr<Profile> profile_ = nullptr;
 
