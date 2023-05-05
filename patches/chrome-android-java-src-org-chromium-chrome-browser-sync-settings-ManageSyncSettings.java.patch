@@ -1,16 +1,7 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index 68062260e4f1fe74f57c01f3bdd6f843ff0db456..8d600e8d09d6f8e73a33d46d6b34e63404a163ea 100644
+index f2028894e91955337200f1b22dc59374774beedf..e6ce67add93bcafdd514a70b6480f2cbf5bd49b4 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-@@ -24,7 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
- import androidx.fragment.app.DialogFragment;
- import androidx.fragment.app.FragmentManager;
- import androidx.fragment.app.FragmentTransaction;
--import androidx.preference.CheckBoxPreference;
-+import org.chromium.chrome.browser.ui.brave_tricks.checkbox_to_switch.CheckBoxPreference;
- import androidx.preference.Preference;
- import androidx.preference.PreferenceCategory;
- import androidx.preference.PreferenceFragmentCompat;
 @@ -356,7 +356,7 @@ public class ManageSyncSettings extends PreferenceFragmentCompat
                          .getIdentityManager(Profile.getLastUsedRegularProfile())
                          .getPrimaryAccountInfo(ConsentLevel.SYNC));
