@@ -6,6 +6,7 @@
 #include "brave/browser/brave_content_browser_client.h"
 
 #include "base/memory/raw_ptr.h"
+#include "base/values.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "extensions/buildflags/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -50,12 +51,11 @@ class BraveWalleBrowserClientUnitTest
   }
 
   void AddExtension() {
-    DictionaryBuilder manifest;
-    manifest.Set("name", "ext")
-        .Set("version", "0.1")
-        .Set("manifest_version", 2);
     extension_ = ExtensionBuilder()
-                     .SetManifest(manifest.Build())
+                     .SetManifest(base::Value::Dict()
+                                      .Set("name", "ext")
+                                      .Set("version", "0.1")
+                                      .Set("manifest_version", 2))
                      .SetID(ethereum_remote_client_extension_id)
                      .Build();
     ASSERT_TRUE(extension_);
