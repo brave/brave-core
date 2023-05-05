@@ -143,9 +143,8 @@ public class AssetUtils {
             case CoinType.SOL:
                 return BraveWalletConstants.SOLANA_KEYRING_ID;
             case CoinType.FIL:
-                Log.e(TAG,
+                throw new IllegalArgumentException(
                         "Keyring Id for Filecoin cannot be obtained by coin type. Returning default keyring Id. Consider using the method \"AssetUtils.getKeyring(coinType, chainId)\".");
-                return BraveWalletConstants.DEFAULT_KEYRING_ID;
             default:
                 Log.e(TAG,
                         String.format(
