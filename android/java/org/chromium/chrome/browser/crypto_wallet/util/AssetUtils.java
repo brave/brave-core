@@ -147,7 +147,7 @@ public class AssetUtils {
                         "Keyring Id for Filecoin cannot be obtained by coin type. Returning default keyring Id. Consider using the method \"AssetUtils.getKeyring(coinType, chainId)\".");
             default:
                 Log.e(TAG,
-                        String.format(
+                        String.format(Locale.ENGLISH,
                                 "Keyring Id for coin type %d cannot be found. Returning default keyring Id.",
                                 coinType));
                 return BraveWalletConstants.DEFAULT_KEYRING_ID;
