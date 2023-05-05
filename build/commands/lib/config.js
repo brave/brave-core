@@ -123,23 +123,34 @@ const Config = function () {
   this.braveServicesKey = getNPMConfig(['brave_services_key']) || ''
   this.infuraProjectId = getNPMConfig(['brave_infura_project_id']) || ''
   this.braveZeroExApiKey = getNPMConfig(['brave_zero_ex_api_key']) || ''
-  this.bitflyerClientId = getNPMConfig(['bitflyer_client_id']) || ''
-  this.bitflyerClientSecret = getNPMConfig(['bitflyer_client_secret']) || ''
-  this.bitflyerStagingClientId = getNPMConfig(['bitflyer_staging_client_id']) || ''
-  this.bitflyerStagingClientSecret = getNPMConfig(['bitflyer_staging_client_secret']) || ''
-  this.bitflyerStagingUrl = getNPMConfig(['bitflyer_staging_url']) || ''
-  this.geminiApiUrl = getNPMConfig(['gemini_api_url']) || ''
-  this.geminiApiStagingUrl = getNPMConfig(['gemini_api_staging_url']) || ''
-  this.geminiOauthUrl = getNPMConfig(['gemini_oauth_url']) || ''
-  this.geminiOauthStagingUrl = getNPMConfig(['gemini_oauth_staging_url']) || ''
-  this.geminiWalletClientId = getNPMConfig(['gemini_wallet_client_id']) || ''
-  this.geminiWalletClientSecret = getNPMConfig(['gemini_wallet_client_secret']) || ''
-  this.geminiWalletStagingClientId = getNPMConfig(['gemini_wallet_staging_client_id']) || ''
-  this.geminiWalletStagingClientSecret = getNPMConfig(['gemini_wallet_staging_client_secret']) || ''
-  this.upholdClientId = getNPMConfig(['uphold_client_id']) || ''
-  this.upholdClientSecret = getNPMConfig(['uphold_client_secret']) || ''
-  this.upholdStagingClientId = getNPMConfig(['uphold_staging_client_id']) || ''
-  this.upholdStagingClientSecret = getNPMConfig(['uphold_staging_client_secret']) || ''
+  this.bitFlyerProductionClientId = getNPMConfig(['bitflyer_production_client_id']) || ''
+  this.bitFlyerProductionClientSecret = getNPMConfig(['bitflyer_production_client_secret']) || ''
+  this.bitFlyerProductionFeeAddress = getNPMConfig(['bitflyer_production_fee_address']) || ''
+  this.bitFlyerProductionUrl = getNPMConfig(['bitflyer_production_url']) || ''
+  this.bitFlyerSandboxClientId = getNPMConfig(['bitflyer_sandbox_client_id']) || ''
+  this.bitFlyerSandboxClientSecret = getNPMConfig(['bitflyer_sandbox_client_secret']) || ''
+  this.bitFlyerSandboxFeeAddress = getNPMConfig(['bitflyer_sandbox_fee_address']) || ''
+  this.bitFlyerSandboxUrl = getNPMConfig(['bitflyer_sandbox_url']) || ''
+  this.geminiProductionApiUrl = getNPMConfig(['gemini_production_api_url']) || ''
+  this.geminiProductionClientId = getNPMConfig(['gemini_production_client_id']) || ''
+  this.geminiProductionClientSecret = getNPMConfig(['gemini_production_client_secret']) || ''
+  this.geminiProductionFeeAddress = getNPMConfig(['gemini_production_fee_address']) || ''
+  this.geminiProductionOauthUrl = getNPMConfig(['gemini_production_oauth_url']) || ''
+  this.geminiSandboxApiUrl = getNPMConfig(['gemini_sandbox_api_url']) || ''
+  this.geminiSandboxClientId = getNPMConfig(['gemini_sandbox_client_id']) || ''
+  this.geminiSandboxClientSecret = getNPMConfig(['gemini_sandbox_client_secret']) || ''
+  this.geminiSandboxFeeAddress = getNPMConfig(['gemini_sandbox_fee_address']) || ''
+  this.geminiSandboxOauthUrl = getNPMConfig(['gemini_sandbox_oauth_url']) || ''
+  this.upholdProductionApiUrl = getNPMConfig(['uphold_production_api_url']) || ''
+  this.upholdProductionClientId = getNPMConfig(['uphold_production_client_id']) || ''
+  this.upholdProductionClientSecret = getNPMConfig(['uphold_production_client_secret']) || ''
+  this.upholdProductionFeeAddress = getNPMConfig(['uphold_production_fee_address']) || ''
+  this.upholdProductionOauthUrl = getNPMConfig(['uphold_production_oauth_url']) || ''
+  this.upholdSandboxApiUrl = getNPMConfig(['uphold_sandbox_api_url']) || ''
+  this.upholdSandboxClientId = getNPMConfig(['uphold_sandbox_client_id']) || ''
+  this.upholdSandboxClientSecret = getNPMConfig(['uphold_sandbox_client_secret']) || ''
+  this.upholdSandboxFeeAddress = getNPMConfig(['uphold_sandbox_fee_address']) || ''
+  this.upholdSandboxOauthUrl = getNPMConfig(['uphold_sandbox_oauth_url']) || ''
   this.braveSyncEndpoint = getNPMConfig(['brave_sync_endpoint']) || ''
   this.safeBrowsingApiEndpoint = getNPMConfig(['safebrowsing_api_endpoint']) || ''
   this.updaterProdEndpoint = getNPMConfig(['updater_prod_endpoint']) || ''
@@ -295,23 +306,34 @@ Config.prototype.buildArgs = function () {
     google_default_client_secret: this.googleDefaultClientSecret,
     brave_infura_project_id: this.infuraProjectId,
     brave_zero_ex_api_key: this.braveZeroExApiKey,
-    bitflyer_client_id: this.bitflyerClientId,
-    bitflyer_client_secret: this.bitflyerClientSecret,
-    bitflyer_staging_client_id: this.bitflyerStagingClientId,
-    bitflyer_staging_client_secret: this.bitflyerStagingClientSecret,
-    bitflyer_staging_url: this.bitflyerStagingUrl,
-    gemini_api_url: this.geminiApiUrl,
-    gemini_api_staging_url: this.geminiApiStagingUrl,
-    gemini_oauth_url: this.geminiOauthUrl,
-    gemini_oauth_staging_url: this.geminiOauthStagingUrl,
-    gemini_wallet_client_id: this.geminiWalletClientId,
-    gemini_wallet_client_secret: this.geminiWalletClientSecret,
-    gemini_wallet_staging_client_id: this.geminiWalletStagingClientId,
-    gemini_wallet_staging_client_secret: this.geminiWalletStagingClientSecret,
-    uphold_client_id: this.upholdClientId,
-    uphold_client_secret: this.upholdClientSecret,
-    uphold_staging_client_id: this.upholdStagingClientId,
-    uphold_staging_client_secret: this.upholdStagingClientSecret,
+    bitflyer_production_client_id: this.bitFlyerProductionClientId,
+    bitflyer_production_client_secret: this.bitFlyerProductionClientSecret,
+    bitflyer_production_fee_address: this.bitFlyerProductionFeeAddress,
+    bitflyer_production_url: this.bitFlyerProductionUrl,
+    bitflyer_sandbox_client_id: this.bitFlyerSandboxClientId,
+    bitflyer_sandbox_client_secret: this.bitFlyerSandboxClientSecret,
+    bitflyer_sandbox_fee_address: this.bitFlyerSandboxFeeAddress,
+    bitflyer_sandbox_url: this.bitFlyerSandboxUrl,
+    gemini_production_api_url: this.geminiProductionApiUrl,
+    gemini_production_client_id: this.geminiProductionClientId,
+    gemini_production_client_secret: this.geminiProductionClientSecret,
+    gemini_production_fee_address: this.geminiProductionFeeAddress,
+    gemini_production_oauth_url: this.geminiProductionOauthUrl,
+    gemini_sandbox_api_url: this.geminiSandboxApiUrl,
+    gemini_sandbox_client_id: this.geminiSandboxClientId,
+    gemini_sandbox_client_secret: this.geminiSandboxClientSecret,
+    gemini_sandbox_fee_address: this.geminiSandboxFeeAddress,
+    gemini_sandbox_oauth_url: this.geminiSandboxOauthUrl,
+    uphold_production_api_url: this.upholdProductionApiUrl,
+    uphold_production_client_id: this.upholdProductionClientId,
+    uphold_production_client_secret: this.upholdProductionClientSecret,
+    uphold_production_fee_address: this.upholdProductionFeeAddress,
+    uphold_production_oauth_url: this.upholdProductionOauthUrl,
+    uphold_sandbox_api_url: this.upholdSandboxApiUrl,
+    uphold_sandbox_client_id: this.upholdSandboxClientId,
+    uphold_sandbox_client_secret: this.upholdSandboxClientSecret,
+    uphold_sandbox_fee_address: this.upholdSandboxFeeAddress,
+    uphold_sandbox_oauth_url: this.upholdSandboxOauthUrl,
     brave_version_major: version_parts[0],
     brave_version_minor: version_parts[1],
     brave_version_build: version_parts[2],
@@ -528,11 +550,6 @@ Config.prototype.buildArgs = function () {
     // TODO - recheck
     delete args.enable_nacl
     delete args.enable_hangout_services_extension
-    // Ideally we'd not pass this on Linux CI and then
-    // not have a default value for this. But we'll
-    // eventually want it on Android, so keeping CI
-    // unchanged and deleting here for now.
-    delete args.gemini_client_secret
   }
 
   if (this.targetOS === 'ios') {
@@ -594,24 +611,34 @@ Config.prototype.buildArgs = function () {
     delete args.brave_google_api_key
     delete args.brave_stats_api_key
     delete args.brave_stats_updater_url
-    delete args.bitflyer_client_id
-    delete args.bitflyer_client_secret
-    delete args.bitflyer_staging_client_id
-    delete args.bitflyer_staging_client_secret
-    delete args.bitflyer_staging_url
-    delete args.gemini_api_url
-    delete args.gemini_api_staging_url
-    delete args.gemini_oauth_url
-    delete args.gemini_oauth_staging_url
-    delete args.gemini_wallet_client_id
-    delete args.gemini_wallet_client_secret
-    delete args.gemini_wallet_staging_client_id
-    delete args.gemini_wallet_staging_client_secret
-    delete args.gemini_client_secret
-    delete args.uphold_client_id
-    delete args.uphold_client_secret
-    delete args.uphold_staging_client_id
-    delete args.uphold_staging_client_secret
+    delete args.bitflyer_production_client_id
+    delete args.bitflyer_production_client_secret
+    delete args.bitflyer_production_fee_address
+    delete args.bitflyer_production_url
+    delete args.bitflyer_sandbox_client_id
+    delete args.bitflyer_sandbox_client_secret
+    delete args.bitflyer_sandbox_fee_address
+    delete args.bitflyer_sandbox_url
+    delete args.gemini_production_api_url
+    delete args.gemini_production_client_id
+    delete args.gemini_production_client_secret
+    delete args.gemini_production_fee_address
+    delete args.gemini_production_oauth_url
+    delete args.gemini_sandbox_api_url
+    delete args.gemini_sandbox_client_id
+    delete args.gemini_sandbox_client_secret
+    delete args.gemini_sandbox_fee_address
+    delete args.gemini_sandbox_oauth_url
+    delete args.uphold_production_api_url
+    delete args.uphold_production_client_id
+    delete args.uphold_production_client_secret
+    delete args.uphold_production_fee_address
+    delete args.uphold_production_oauth_url
+    delete args.uphold_sandbox_api_url
+    delete args.uphold_sandbox_client_id
+    delete args.uphold_sandbox_client_secret
+    delete args.uphold_sandbox_fee_address
+    delete args.uphold_sandbox_oauth_url
     delete args.webcompat_report_api_endpoint
     delete args.use_blink_v8_binding_new_idl_interface
     delete args.v8_enable_verify_heap
@@ -788,68 +815,116 @@ Config.prototype.update = function (options) {
     this.braveZeroExApiKey = options.brave_zero_ex_api_key
   }
 
-  if (options.bitflyer_client_id) {
-    this.bitflyerClientId = options.bitflyer_client_id
+  if (options.bitflyer_production_client_id) {
+    this.bitFlyerProductionClientId = options.bitflyer_production_client_id
   }
 
-  if (options.bitflyer_client_secret) {
-    this.bitflyerClientSecret = options.bitflyer_client_secret
+  if (options.bitflyer_production_client_secret) {
+    this.bitFlyerProductionClientSecret = options.bitflyer_production_client_secret
   }
 
-  if (options.bitflyer_staging_client_id) {
-    this.bitflyerStagingClientId = options.bitflyer_staging_client_id
+  if (options.bitflyer_production_fee_address) {
+    this.bitFlyerProductionFeeAddress = options.bitflyer_production_fee_address
   }
 
-  if (options.bitflyer_staging_client_secret) {
-    this.bitflyerStagingClientSecret = options.bitflyer_staging_client_secret
+  if (options.bitflyer_production_url) {
+    this.bitFlyerProductionUrl = options.bitflyer_production_url
   }
 
-  if (options.bitflyer_staging_url) {
-    this.bitflyerStagingUrl = options.bitflyer_staging_url
+  if (options.bitflyer_sandbox_client_id) {
+    this.bitFlyerSandboxClientId = options.bitflyer_sandbox_client_id
   }
 
-  if (options.gemini_api_url) {
-    this.geminiApiUrl = options.gemini_api_url
+  if (options.bitflyer_sandbox_client_secret) {
+    this.bitFlyerSandboxClientSecret = options.bitflyer_sandbox_client_secret
   }
 
-  if (options.gemini_api_staging_url) {
-    this.geminiApiStagingUrl = options.gemini_api_staging_url
+  if (options.bitflyer_sandbox_fee_address) {
+    this.bitFlyerSandboxFeeAddress = options.bitflyer_sandbox_fee_address
   }
 
-  if (options.gemini_oauth_url) {
-    this.geminiOauthUrl = options.gemini_oauth_url
+  if (options.bitflyer_sandbox_url) {
+    this.bitFlyerSandboxUrl = options.bitflyer_sandbox_url
   }
 
-  if (options.gemini_oauth_staging_url) {
-    this.geminiOauthStagingUrl = options.gemini_oauth_staging_url
+  if (options.gemini_production_api_url) {
+    this.geminiProductionApiUrl = options.gemini_production_api_url
   }
 
-  if (options.gemini_wallet_client_secret) {
-    this.geminiWalletClientSecret = options.gemini_wallet_client_secret
+  if (options.gemini_production_client_id) {
+    this.geminiProductionClientId = options.gemini_production_client_id
   }
 
-  if (options.gemini_wallet_staging_client_id) {
-    this.geminiWalletStagingClientId = options.gemini_wallet_staging_client_id
+  if (options.gemini_production_client_secret) {
+    this.geminiProductionClientSecret = options.gemini_production_client_secret
   }
 
-  if (options.gemini_wallet_staging_client_secret) {
-    this.geminiWalletStagingClientSecret = options.gemini_wallet_staging_client_secret
+  if (options.gemini_production_fee_address) {
+    this.geminiProductionFeeAddress = options.gemini_production_fee_address
   }
 
-  if (options.uphold_client_id) {
-    this.upholdClientId = options.uphold_client_id
+  if (options.gemini_production_oauth_url) {
+    this.geminiProductionOauthUrl = options.gemini_production_oauth_url
   }
 
-  if (options.uphold_client_secret) {
-    this.upholdClientSecret = options.uphold_client_secret
+  if (options.gemini_sandbox_api_url) {
+    this.geminiSandboxApiUrl = options.gemini_sandbox_api_url
   }
 
-  if (options.uphold_staging_client_id) {
-    this.upholdStagingClientId = options.uphold_staging_client_id
+  if (options.gemini_sandbox_client_id) {
+    this.geminiSandboxClientId = options.gemini_sandbox_client_id
   }
 
-  if (options.uphold_staging_client_secret) {
-    this.upholdStagingClientSecret = options.uphold_staging_client_secret
+  if (options.gemini_sandbox_client_secret) {
+    this.geminiSandboxClientSecret = options.gemini_sandbox_client_secret
+  }
+
+  if (options.gemini_sandbox_fee_address) {
+    this.geminiSandboxFeeAddress = options.gemini_sandbox_fee_address
+  }
+
+  if (options.gemini_sandbox_oauth_url) {
+    this.geminiSandboxOauthUrl = options.gemini_sandbox_oauth_url
+  }
+
+  if (options.uphold_production_api_url) {
+    this.upholdProductionApiUrl = options.uphold_production_api_url
+  }
+
+  if (options.uphold_production_client_id) {
+    this.upholdProductionClientId = options.uphold_production_client_id
+  }
+
+  if (options.uphold_production_client_secret) {
+    this.upholdProductionClientSecret = options.uphold_production_client_secret
+  }
+
+  if (options.uphold_production_fee_address) {
+    this.upholdProductionFeeAddress = options.uphold_production_fee_address
+  }
+
+  if (options.uphold_production_oauth_url) {
+    this.upholdProductionOauthUrl = options.uphold_production_oauth_url
+  }
+
+  if (options.uphold_sandbox_api_url) {
+    this.upholdSandboxApiUrl = options.uphold_sandbox_api_url
+  }
+
+  if (options.uphold_sandbox_client_id) {
+    this.upholdSandboxClientId = options.uphold_sandbox_client_id
+  }
+
+  if (options.uphold_sandbox_client_secret) {
+    this.upholdSandboxClientSecret = options.uphold_sandbox_client_secret
+  }
+
+  if (options.uphold_sandbox_fee_address) {
+    this.upholdSandboxFeeAddress = options.uphold_sandbox_fee_address
+  }
+
+  if (options.uphold_sandbox_oauth_url) {
+    this.upholdSandboxOauthUrl = options.uphold_sandbox_oauth_url
   }
 
   if (options.safebrowsing_api_endpoint) {

@@ -410,11 +410,12 @@ class V10 : public RewardsStateBrowserTest,
 };
 
 #ifdef OFFICIAL_BUILD
-#define _UPHOLD_CLIENT_ID_ +std::string(BUILDFLAG(UPHOLD_CLIENT_ID)) +
-#define _UPHOLD_URL_ "https://uphold.com"
+#define _UPHOLD_CLIENT_ID_ \
+  +std::string(BUILDFLAG(UPHOLD_PRODUCTION_CLIENT_ID)) +
+#define _UPHOLD_URL_ +std::string(BUILDFLAG(UPHOLD_PRODUCTION_OAUTH_URL)) +
 #else
-#define _UPHOLD_CLIENT_ID_ +std::string(BUILDFLAG(UPHOLD_STAGING_CLIENT_ID)) +
-#define _UPHOLD_URL_ "https://wallet-sandbox.uphold.com"
+#define _UPHOLD_CLIENT_ID_ +std::string(BUILDFLAG(UPHOLD_SANDBOX_CLIENT_ID)) +
+#define _UPHOLD_URL_ +std::string(BUILDFLAG(UPHOLD_SANDBOX_OAUTH_URL)) +
 #endif
 
 // clang-format off

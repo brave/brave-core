@@ -6,35 +6,29 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_UPHOLD_UPHOLD_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_UPHOLD_UPHOLD_UTIL_H_
 
-#include <map>
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/common/mojom/ledger_types.mojom.h"
 
 namespace brave_rewards::internal::uphold {
-
-const char kUrlStaging[] = "https://wallet-sandbox.uphold.com";
-const char kUrlProduction[] = "https://uphold.com";
-const char kFeeAddressStaging[] = "1b2b466f-5c15-49bf-995e-c91777d3da93";
-const char kFeeAddressProduction[] = "b01e8c55-5004-4761-9e4b-01ec13e25c92";
 
 std::string GetClientId();
 
 std::string GetClientSecret();
 
-std::string GetUrl();
-
 std::string GetFeeAddress();
 
-std::string GetLoginUrl(const std::string& state);
-
-std::string GetAccountUrl();
-
-std::string GetActivityUrl(const std::string& address);
-
-mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr);
+mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr wallet);
 
 }  // namespace brave_rewards::internal::uphold
+
+namespace brave_rewards::internal::endpoint::uphold {
+
+std::vector<std::string> RequestAuthorization(const std::string& token = "");
+
+std::string GetServerUrl(const std::string& path);
+
+}  // namespace brave_rewards::internal::endpoint::uphold
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_UPHOLD_UPHOLD_UTIL_H_

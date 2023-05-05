@@ -11,7 +11,7 @@
 #include "base/guid.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "brave/components/brave_rewards/core/endpoint/gemini/gemini_utils.h"
+#include "brave/components/brave_rewards/core/gemini/gemini_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -54,7 +54,7 @@ mojom::Result PostRecipientId::ParseBody(const std::string& body,
 
 std::string PostRecipientId::GeneratePayload() {
   base::Value::Dict payload;
-  payload.Set("label", endpoints::kGeminiRecipientIDLabel);
+  payload.Set("label", internal::gemini::kGeminiRecipientIDLabel);
 
   std::string json;
   base::JSONWriter::Write(payload, &json);

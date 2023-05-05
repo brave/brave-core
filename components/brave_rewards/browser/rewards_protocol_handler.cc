@@ -57,22 +57,45 @@ void LoadRewardsURL(
   }
 
   // Only accept rewards scheme from allowed domains
-  const GURL bitflyer_staging_url(BUILDFLAG(BITFLYER_STAGING_URL));
-  const GURL gemini_oauth_staging_url(BUILDFLAG(GEMINI_OAUTH_STAGING_URL));
+  const GURL bitflyer_production_url(BUILDFLAG(BITFLYER_PRODUCTION_URL));
+  const GURL bitflyer_sandbox_url(BUILDFLAG(BITFLYER_SANDBOX_URL));
+  const GURL gemini_production_oauth_url(
+      BUILDFLAG(GEMINI_PRODUCTION_OAUTH_URL));
+  const GURL gemini_sandbox_oauth_url(BUILDFLAG(GEMINI_SANDBOX_OAUTH_URL));
+  const GURL uphold_production_oauth_url(
+      BUILDFLAG(UPHOLD_PRODUCTION_OAUTH_URL));
+  const GURL uphold_sandbox_oauth_url(BUILDFLAG(UPHOLD_SANDBOX_OAUTH_URL));
 
-  DCHECK(bitflyer_staging_url.is_valid() && bitflyer_staging_url.has_host());
-  DCHECK(gemini_oauth_staging_url.is_valid() &&
-         gemini_oauth_staging_url.has_host());
+  DCHECK(bitflyer_production_url.is_valid() &&
+         bitflyer_production_url.has_host());
+  DCHECK(bitflyer_sandbox_url.is_valid() && bitflyer_sandbox_url.has_host());
+  DCHECK(gemini_production_oauth_url.is_valid() &&
+         gemini_production_oauth_url.has_host());
+  DCHECK(gemini_sandbox_oauth_url.is_valid() &&
+         gemini_sandbox_oauth_url.has_host());
+  DCHECK(uphold_production_oauth_url.is_valid() &&
+         uphold_production_oauth_url.has_host());
+  DCHECK(uphold_sandbox_oauth_url.is_valid() &&
+         uphold_sandbox_oauth_url.has_host());
 
-  const auto bitflyer_staging_host = bitflyer_staging_url.host_piece();
-  const auto gemini_staging_host = gemini_oauth_staging_url.host_piece();
+  const auto bitflyer_production_host = bitflyer_production_url.host_piece();
+  const auto bitflyer_sandbox_host = bitflyer_sandbox_url.host_piece();
+  const auto gemini_production_oauth_host =
+      gemini_production_oauth_url.host_piece();
+  const auto gemini_sandbox_oauth_host = gemini_sandbox_oauth_url.host_piece();
+  const auto uphold_production_oauth_host =
+      uphold_production_oauth_url.host_piece();
+  const auto uphold_sandbox_oauth_host = uphold_sandbox_oauth_url.host_piece();
+
   const base::StringPiece kAllowedDomains[] = {
-      "bitflyer.com",         // bitFlyer production
-      bitflyer_staging_host,  // bitFlyer staging
-      "gemini.com",           // Gemini production
-      gemini_staging_host,    // Gemini staging
-      "uphold.com",           // Uphold staging/production
+      bitflyer_production_host,      // bitFlyer production
+      bitflyer_sandbox_host,         // bitFlyer sandbox
+      gemini_production_oauth_host,  // Gemini production
+      gemini_sandbox_oauth_host,     // Gemini sandbox
+      uphold_production_oauth_host,  // Uphold production
+      uphold_sandbox_oauth_host      // Uphold sandbox
   };
+
   bool allowed_domain = false;
   for (const auto domain : kAllowedDomains) {
     if (ref_url.DomainIs(domain)) {
