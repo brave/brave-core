@@ -197,7 +197,7 @@ class NetworkManagerTests: XCTestCase {
     }
 
     wait(for: [exp], timeout: 5)
-    XCTAssertNotNil(response.allHeaderFields["Etag"])
+    XCTAssertNotNil(response.value(forHTTPHeaderField: "Etag"))
     XCTAssert(true)
   }
 

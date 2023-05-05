@@ -460,11 +460,7 @@ public class NTPDownloader {
   // MARK: - Download & Unpacking
 
   private func parseETagResponseInfo(_ response: HTTPURLResponse) -> CacheResponse {
-    if let etag = response.allHeaderFields["Etag"] as? String {
-      return CacheResponse(statusCode: response.statusCode, etag: etag)
-    }
-
-    if let etag = response.allHeaderFields["ETag"] as? String {
+    if let etag = response.value(forHTTPHeaderField: "ETag") {
       return CacheResponse(statusCode: response.statusCode, etag: etag)
     }
 

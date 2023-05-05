@@ -54,7 +54,7 @@ class DownloadHelper: NSObject {
       return nil
     }
 
-    let contentDisposition = (response as? HTTPURLResponse)?.allHeaderFields["Content-Disposition"] as? String
+    let contentDisposition = (response as? HTTPURLResponse)?.value(forHTTPHeaderField: "Content-Disposition")
     let mimeType = response.mimeType ?? MIMEType.octetStream
     let isAttachment = contentDisposition?.starts(with: "attachment") ?? (mimeType == MIMEType.octetStream)
 
