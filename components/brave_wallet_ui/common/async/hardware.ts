@@ -58,7 +58,7 @@ export function dialogErrorFromTrezorErrorCode (code: TrezorErrorsCodes | string
 export async function signTrezorTransaction (
   apiProxy: WalletApiProxy,
   path: string,
-  txInfo: SerializableTransactionInfo,
+  txInfo: Pick<SerializableTransactionInfo, 'id' | 'chainId' | 'txDataUnion'>,
   deviceKeyring: TrezorBridgeKeyring = getTrezorHardwareKeyring()): Promise<SignHardwareTransactionType> {
   const nonce =
     await apiProxy.ethTxManagerProxy.getNonceForHardwareTransaction(
@@ -107,7 +107,7 @@ export async function signTrezorTransaction (
 export async function signLedgerEthereumTransaction (
   apiProxy: WalletApiProxy,
   path: string,
-  txInfo: SerializableTransactionInfo,
+  txInfo: Pick<SerializableTransactionInfo, 'id' | 'chainId'>,
   coin: BraveWallet.CoinType,
   deviceKeyring: LedgerEthereumKeyring = getLedgerEthereumHardwareKeyring()): Promise<SignHardwareOperationResult> {
   const nonce =
@@ -141,7 +141,7 @@ export async function signLedgerEthereumTransaction (
 
 export async function signLedgerFilecoinTransaction (
   apiProxy: WalletApiProxy,
-  txInfo: SerializableTransactionInfo,
+  txInfo: Pick<SerializableTransactionInfo, 'id' | 'chainId'>,
   coin: BraveWallet.CoinType,
   deviceKeyring: LedgerFilecoinKeyring = getLedgerFilecoinHardwareKeyring()): Promise<SignHardwareOperationResult> {
   const data = await apiProxy.txService.getTransactionMessageToSign(
@@ -172,7 +172,7 @@ export async function signLedgerFilecoinTransaction (
 export async function signLedgerSolanaTransaction (
   apiProxy: WalletApiProxy,
   path: string,
-  txInfo: SerializableTransactionInfo,
+  txInfo: Pick<SerializableTransactionInfo, 'id' | 'chainId'>,
   coin: BraveWallet.CoinType,
   deviceKeyring: LedgerSolanaKeyring = getLedgerSolanaHardwareKeyring()): Promise<SignHardwareOperationResult> {
     const data = await apiProxy.txService.getTransactionMessageToSign(

@@ -8,7 +8,7 @@ import { BraveWallet } from '../constants/types'
 
 let walletPageApiProxyInstance: WalletPageApiProxy
 
-class WalletPageApiProxy extends WalletApiProxy {
+export class WalletPageApiProxy extends WalletApiProxy {
   callbackRouter = new BraveWallet.PageCallbackRouter()
   pageHandler = new BraveWallet.PageHandlerRemote()
   constructor () {
