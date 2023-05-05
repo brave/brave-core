@@ -42,9 +42,9 @@ TEST_F(BraveAdsLocaleUserDataTest, BuildLocaleUserDataForReleaseBuildChannel) {
 TEST_F(BraveAdsLocaleUserDataTest,
        DoNotBuildLocaleUserDataForCountryNotInAnonymitySet) {
   // Arrange
-  MockBuildChannel(BuildChannelType::kRelease);
-
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_MC"};
+
+  MockBuildChannel(BuildChannelType::kRelease);
 
   // Act
   const base::Value::Dict user_data = BuildLocaleUserData();
@@ -56,9 +56,9 @@ TEST_F(BraveAdsLocaleUserDataTest,
 TEST_F(BraveAdsLocaleUserDataTest,
        BuildLocaleUserDataForCountryNotInAnonymitySetButShouldClassifyAsOther) {
   // Arrange
-  MockBuildChannel(BuildChannelType::kRelease);
-
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_CX"};
+
+  MockBuildChannel(BuildChannelType::kRelease);
 
   // Act
 

@@ -8,7 +8,7 @@
 #include <string>
 
 #include "base/strings/string_piece.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision/supported_subdivision_codes.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/supported_subdivision_codes.h"
 #include "brave/components/l10n/common/locale_util.h"
 
 namespace brave_ads {

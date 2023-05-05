@@ -28,9 +28,7 @@
 
 namespace brave_ads {
 
-using ::testing::_;
 using ::testing::NiceMock;
-using ::testing::Return;
 
 class BraveAdsUserReactionsTest : public AccountObserver, public UnitTestBase {
  protected:
@@ -42,8 +40,7 @@ class BraveAdsUserReactionsTest : public AccountObserver, public UnitTestBase {
 
     user_reactions_ = std::make_unique<UserReactions>(*account_);
 
-    ON_CALL(token_generator_mock_, Generate(_))
-        .WillByDefault(Return(privacy::GetTokens(/*count*/ 1)));
+    MockTokenGenerator(token_generator_mock_, /*count*/ 1);
 
     privacy::SetUnblindedTokens(/*count*/ 1);
   }
@@ -74,6 +71,7 @@ class BraveAdsUserReactionsTest : public AccountObserver, public UnitTestBase {
   }
 
   NiceMock<privacy::TokenGeneratorMock> token_generator_mock_;
+
   std::unique_ptr<Account> account_;
 
   bool did_process_deposit_ = false;

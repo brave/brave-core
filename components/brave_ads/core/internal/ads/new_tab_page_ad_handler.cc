@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
@@ -61,18 +61,21 @@ void NewTabPageAdHandler::OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) {
                mojom::NewTabPageAdEventType::kServed);
 }
 
-void NewTabPageAdHandler::OnNewTabPageAdServed(const NewTabPageAdInfo& ad) {
+void NewTabPageAdHandler::OnDidFireNewTabPageAdServedEvent(
+    const NewTabPageAdInfo& ad) {
   ClientStateManager::GetInstance().UpdateSeenAd(ad);
 }
 
-void NewTabPageAdHandler::OnNewTabPageAdViewed(const NewTabPageAdInfo& ad) {
+void NewTabPageAdHandler::OnDidFireNewTabPageAdViewedEvent(
+    const NewTabPageAdInfo& ad) {
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
   account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
                     ConfirmationType::kViewed);
 }
 
-void NewTabPageAdHandler::OnNewTabPageAdClicked(const NewTabPageAdInfo& ad) {
+void NewTabPageAdHandler::OnDidFireNewTabPageAdClickedEvent(
+    const NewTabPageAdInfo& ad) {
   transfer_->SetLastClickedAd(ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);

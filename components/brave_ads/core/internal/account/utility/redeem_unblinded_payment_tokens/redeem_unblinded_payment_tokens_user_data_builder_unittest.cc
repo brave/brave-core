@@ -24,7 +24,7 @@ TEST_F(BraveAdsRedeemUnblindedPaymentTokensUserDataBuilderTest, BuildUserData) {
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
-      privacy::GetUnblindedPaymentTokens(2);
+      privacy::GetUnblindedPaymentTokens(/*count*/ 2);
 
   const RedeemUnblindedPaymentTokensUserDataBuilder user_data_builder(
       unblinded_payment_tokens);

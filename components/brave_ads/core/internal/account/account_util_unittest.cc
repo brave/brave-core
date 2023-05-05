@@ -12,6 +12,8 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
+#include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_mock.h"
+#include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
@@ -21,7 +23,12 @@
 
 namespace brave_ads {
 
-class BraveAdsAccountUtilTest : public UnitTestBase {};
+using ::testing::NiceMock;
+
+class BraveAdsAccountUtilTest : public UnitTestBase {
+ protected:
+  NiceMock<privacy::TokenGeneratorMock> token_generator_mock_;
+};
 
 TEST_F(BraveAdsAccountUtilTest, ShouldRewardUser) {
   // Arrange
@@ -50,9 +57,12 @@ TEST_F(BraveAdsAccountUtilTest, ResetRewards) {
   transactions.push_back(transaction);
   SaveTransactions(transactions);
 
+  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
+
   privacy::SetUnblindedTokens(/*count*/ 1);
 
-  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  const absl::optional<ConfirmationInfo> confirmation =
+      BuildConfirmation(&token_generator_mock_, transaction);
   ASSERT_TRUE(confirmation);
   ConfirmationStateManager::GetInstance().AppendFailedConfirmation(
       *confirmation);

@@ -17,6 +17,7 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/common/random/random_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_database_table.h"
@@ -27,7 +28,6 @@
 #include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversions_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
-#include "brave_base/random.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
 
@@ -398,12 +398,9 @@ void Conversions::AddItemToQueue(
       verifiable_conversion.public_key;
   conversion_queue_item.ad_type = ad_event.type;
 
-  const auto rand_delay = static_cast<int64_t>(brave_base::random::Geometric(
-      ShouldDebug() ? kDebugConvertAfter.InSecondsF()
-                    : kConvertAfter.InSecondsF()));
-
   conversion_queue_item.process_at =
-      base::Time::Now() + base::Seconds(rand_delay);
+      base::Time::Now() +
+      RandTimeDelta(ShouldDebug() ? kDebugConvertAfter : kConvertAfter);
 
   database::table::ConversionQueue database_table;
   database_table.Save({conversion_queue_item},
@@ -536,17 +533,12 @@ void Conversions::OnMarkQueueItemAsProcessed(
 
 void Conversions::StartTimer(
     const ConversionQueueItemInfo& conversion_queue_item) {
+  const base::Time process_at = conversion_queue_item.process_at;
+
   const base::Time now = base::Time::Now();
 
-  base::TimeDelta delay;
-
-  if (now < conversion_queue_item.process_at) {
-    delay = conversion_queue_item.process_at - now;
-  } else {
-    const auto rand_delay = static_cast<int64_t>(
-        brave_base::random::Geometric(kConvertExpiredAfter.InSecondsF()));
-    delay = base::Seconds(rand_delay);
-  }
+  const base::TimeDelta delay =
+      now < process_at ? process_at - now : RandTimeDelta(kConvertExpiredAfter);
 
   const base::Time process_queue_at = timer_.Start(
       FROM_HERE, delay,

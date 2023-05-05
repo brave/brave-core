@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/account/user_data/totals_user_data_util.h"
+#include "brave/components/brave_ads/core/internal/account/user_data/summary_user_data_util.h"
 
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -12,7 +12,7 @@
 
 namespace brave_ads {
 
-TEST(BraveAdsTotalsUserDataUtilTest, BuildBucketsIfNoUnblindedPaymentTokens) {
+TEST(BraveAdsSummaryUserDataUtilTest, BuildBucketsIfNoUnblindedPaymentTokens) {
   // Arrange
 
   // Act
@@ -22,7 +22,7 @@ TEST(BraveAdsTotalsUserDataUtilTest, BuildBucketsIfNoUnblindedPaymentTokens) {
   EXPECT_TRUE(buckets.empty());
 }
 
-TEST(BraveAdsTotalsUserDataUtilTest, BuildBuckets) {
+TEST(BraveAdsSummaryUserDataUtilTest, BuildBuckets) {
   // Arrange
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
       privacy::GetUnblindedPaymentTokens(2);

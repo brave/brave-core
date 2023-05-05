@@ -14,7 +14,8 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_util.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -102,7 +103,7 @@ TEST_F(BraveAdsInlineContentAdServingTest, ServeAd) {
 
   const CreativeInlineContentAdInfo creative_ad =
       BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
-  SaveCreativeAds({creative_ad});
+  database::SaveCreativeInlineContentAds({creative_ad});
 
   // Act
   serving_->MaybeServeAd(
@@ -128,7 +129,7 @@ TEST_F(BraveAdsInlineContentAdServingTest,
 
   const CreativeInlineContentAdInfo creative_ad =
       BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
-  SaveCreativeAds({creative_ad});
+  database::SaveCreativeInlineContentAds({creative_ad});
 
   // Act
   serving_->MaybeServeAd(
@@ -153,7 +154,7 @@ TEST_F(BraveAdsInlineContentAdServingTest,
   // Arrange
   const CreativeInlineContentAdInfo creative_ad =
       BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
-  SaveCreativeAds({creative_ad});
+  database::SaveCreativeInlineContentAds({creative_ad});
 
   // Act
   serving_->MaybeServeAd(

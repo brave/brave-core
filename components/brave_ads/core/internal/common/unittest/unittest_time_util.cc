@@ -40,8 +40,8 @@ std::string NowAsISO8601() {
 }
 
 base::Time DistantFuture() {
-  // Tuesday, 19 January 2038 03:14:07.
-  return base::Time::FromDoubleT(2147483647);
+  return base::Time::FromDoubleT(
+      /*Tuesday, 19 January 2038 03:14:07*/ 2147483647);
 }
 
 std::string DistantFutureAsISO8601() {

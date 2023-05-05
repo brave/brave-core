@@ -28,7 +28,9 @@ TEST_F(BraveAdsNormalizationTransformationTest, NormalizationTest) {
   constexpr char kTestString[] = "quite a small test string";
   std::unique_ptr<Data> data = std::make_unique<TextData>(kTestString);
 
-  const HashedNGramsTransformation hashed_ngrams(10, std::vector<int>{3, 4});
+  const HashedNGramsTransformation hashed_ngrams(
+      /*bucket_count*/ 10,
+      /*subgrams*/ std::vector<int>{3, 4});
   const NormalizationTransformation normalization;
 
   // Act

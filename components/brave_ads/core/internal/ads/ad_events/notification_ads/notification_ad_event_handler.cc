@@ -53,27 +53,27 @@ void NotificationAdEventHandler::SuccessfullyFiredEvent(
 
   switch (event_type) {
     case mojom::NotificationAdEventType::kServed: {
-      delegate_->OnNotificationAdServed(ad);
+      delegate_->OnDidFireNotificationAdServedEvent(ad);
       break;
     }
 
     case mojom::NotificationAdEventType::kViewed: {
-      delegate_->OnNotificationAdViewed(ad);
+      delegate_->OnDidFireNotificationAdViewedEvent(ad);
       break;
     }
 
     case mojom::NotificationAdEventType::kClicked: {
-      delegate_->OnNotificationAdClicked(ad);
+      delegate_->OnDidFireNotificationAdClickedEvent(ad);
       break;
     }
 
     case mojom::NotificationAdEventType::kDismissed: {
-      delegate_->OnNotificationAdDismissed(ad);
+      delegate_->OnDidFireNotificationAdDismissedEvent(ad);
       break;
     }
 
     case mojom::NotificationAdEventType::kTimedOut: {
-      delegate_->OnNotificationAdTimedOut(ad);
+      delegate_->OnDidFireNotificationAdTimedOutEvent(ad);
       break;
     }
   }
@@ -88,7 +88,7 @@ void NotificationAdEventHandler::FailedToFireEvent(
               << event_type << " event for placement id " << placement_id);
 
   if (delegate_) {
-    delegate_->OnNotificationAdEventFailed(placement_id, event_type);
+    delegate_->OnFailedToFireNotificationAdEvent(placement_id, event_type);
   }
 }
 

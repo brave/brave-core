@@ -23,7 +23,7 @@ base::Value::Dict BuildStudiesUserData() {
   base::Value::List list;
 
   const base::FieldTrial::ActiveGroups active_field_trial_groups =
-      GetActiveFieldTrialGroupsForActiveStudies();
+      GetActiveFieldTrialStudyGroups();
   for (const auto& active_field_trial_group : active_field_trial_groups) {
     base::Value::Dict dict;
     dict.Set(kTrialNameKey, active_field_trial_group.trial_name);

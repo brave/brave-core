@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/processors/behavioral/purchase_intent/purchase_intent_processor.h"
 
-#include "base/check.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -25,7 +24,7 @@
 
 namespace brave_ads {
 
-using KeywordList = std::vector</*keyword*/ std::string>;
+using KeywordList = std::vector<std::string>;
 
 namespace {
 

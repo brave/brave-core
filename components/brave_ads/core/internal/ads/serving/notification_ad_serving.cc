@@ -22,7 +22,7 @@
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
@@ -202,16 +202,14 @@ void NotificationAdServing::ServeAd(const NotificationAdInfo& ad) {
               << "  body: " << ad.body << "\n"
               << "  targetUrl: " << ad.target_url);
 
+  is_serving_ = false;
+
   DCHECK(eligible_ads_);
   eligible_ads_->SetLastServedAd(ad);
-
-  is_serving_ = false;
 
   if (delegate_) {
     delegate_->OnDidServeNotificationAd(ad);
   }
-
-  MaybeServeAdAtNextRegularInterval();
 }
 
 void NotificationAdServing::FailedToServeAd() {

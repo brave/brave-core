@@ -10,8 +10,6 @@
 
 namespace brave_ads {
 
-void SaveCreativeAds(const CreativeNewTabPageAdList& creative_ads);
-
 CreativeNewTabPageAdList BuildCreativeNewTabPageAds(int count);
 CreativeNewTabPageAdInfo BuildCreativeNewTabPageAd(
     bool should_use_random_guids);

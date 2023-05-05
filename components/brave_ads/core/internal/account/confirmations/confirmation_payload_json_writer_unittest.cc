@@ -8,19 +8,29 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_mock.h"
+#include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsConfirmationPayloadJsonWriterTest : public UnitTestBase {};
+using ::testing::NiceMock;
+
+class BraveAdsConfirmationPayloadJsonWriterTest : public UnitTestBase {
+ protected:
+  NiceMock<privacy::TokenGeneratorMock> token_generator_mock_;
+};
 
 TEST_F(BraveAdsConfirmationPayloadJsonWriterTest, WriteJson) {
   // Arrange
+  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
+
   privacy::SetUnblindedTokens(/*count*/ 1);
 
-  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  const absl::optional<ConfirmationInfo> confirmation =
+      BuildConfirmation(&token_generator_mock_);
   ASSERT_TRUE(confirmation);
 
   // Act

@@ -15,16 +15,19 @@ struct SearchResultAdInfo;
 class SearchResultAdEventHandlerDelegate {
  public:
   // Invoked when the search result |ad| is served.
-  virtual void OnSearchResultAdServed(const SearchResultAdInfo& ad) {}
+  virtual void OnDidFireSearchResultAdServedEvent(
+      const SearchResultAdInfo& ad) {}
 
   // Invoked when the search result |ad| is viewed.
-  virtual void OnSearchResultAdViewed(const SearchResultAdInfo& ad) {}
+  virtual void OnDidFireSearchResultAdViewedEvent(
+      const SearchResultAdInfo& ad) {}
 
   // Invoked when the search result |ad| is clicked.
-  virtual void OnSearchResultAdClicked(const SearchResultAdInfo& ad) {}
+  virtual void OnDidFireSearchResultAdClickedEvent(
+      const SearchResultAdInfo& ad) {}
 
   // Invoked when the search result |ad| event fails for |event_type|.
-  virtual void OnSearchResultAdEventFailed(
+  virtual void OnFailedToFireSearchResultAdEvent(
       const SearchResultAdInfo& ad,
       const mojom::SearchResultAdEventType event_type) {}
 

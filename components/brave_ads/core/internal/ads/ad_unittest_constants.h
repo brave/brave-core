@@ -8,7 +8,9 @@
 
 namespace brave_ads {
 
-constexpr char kPlacementId[] = "8b742869-6e4a-490c-ac31-31b49130098a";
+constexpr char kTransactionId[] = "8b742869-6e4a-490c-ac31-31b49130098a";
+
+constexpr char kPlacementId[] = "9bac9ae4-693c-4569-9b3e-300e357780cf";
 constexpr char kMissingPlacementId[] = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
 constexpr char kInvalidPlacementId[] = "";
 

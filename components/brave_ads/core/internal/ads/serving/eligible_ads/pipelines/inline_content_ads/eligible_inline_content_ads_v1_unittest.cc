@@ -16,9 +16,10 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_container_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -55,7 +56,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForChildSegment) {
   creative_ad_2.segment = "technology & computing-software";
   creative_ads.push_back(creative_ad_2);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeInlineContentAds(creative_ads);
 
   // Act
   CreativeInlineContentAdList expected_creative_ads = {creative_ad_2};
@@ -83,7 +84,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForParentSegment) {
   CreativeInlineContentAdInfo creative_ad =
       BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   creative_ad.segment = "technology & computing";
-  SaveCreativeAds({creative_ad});
+  database::SaveCreativeInlineContentAds({creative_ad});
 
   // Act
   CreativeInlineContentAdList expected_creative_ads = {creative_ad};
@@ -111,7 +112,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForUntargetedSegment) {
   CreativeInlineContentAdInfo creative_ad =
       BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   creative_ad.segment = "untargeted";
-  SaveCreativeAds({creative_ad});
+  database::SaveCreativeInlineContentAds({creative_ad});
 
   // Act
   CreativeInlineContentAdList expected_creative_ads = {creative_ad};
@@ -152,7 +153,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForMultipleSegments) {
   creative_ad_3.segment = "food & drink";
   creative_ads.push_back(creative_ad_3);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeInlineContentAds(creative_ads);
 
   // Act
   CreativeInlineContentAdList expected_creative_ads = {creative_ad_1,
@@ -181,7 +182,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForNoSegments) {
   CreativeInlineContentAdInfo creative_ad =
       BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   creative_ad.segment = "untargeted";
-  SaveCreativeAds({creative_ad});
+  database::SaveCreativeInlineContentAds({creative_ad});
 
   // Act
   CreativeInlineContentAdList expected_creative_ads = {creative_ad};
@@ -205,7 +206,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test,
   CreativeInlineContentAdInfo creative_ad =
       BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   creative_ad.segment = "technology & computing";
-  SaveCreativeAds({creative_ad});
+  database::SaveCreativeInlineContentAds({creative_ad});
 
   // Act
   eligible_ads_->GetForUserModel(
@@ -228,7 +229,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test,
   CreativeInlineContentAdInfo creative_ad =
       BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   creative_ad.segment = "technology & computing";
-  SaveCreativeAds({creative_ad});
+  database::SaveCreativeInlineContentAds({creative_ad});
 
   // Act
   eligible_ads_->GetForUserModel(
@@ -259,7 +260,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, DoNotGetAdsIfAlreadySeen) {
   creative_ad_2.segment = "food & drink";
   creative_ads.push_back(creative_ad_2);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeInlineContentAds(creative_ads);
 
   const InlineContentAdInfo ad = BuildInlineContentAd(creative_ad_1);
   ClientStateManager::GetInstance().UpdateSeenAd(ad);
@@ -301,7 +302,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, DoNotGetPacedAds) {
   creative_ad_2.ptr = 0.5;
   creative_ads.push_back(creative_ad_2);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeInlineContentAds(creative_ads);
 
   // Act
   const ScopedPacingRandomNumberSetterForTesting scoped_setter(0.3);
@@ -348,7 +349,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetPrioritizedAds) {
   creative_ad_3.priority = 2;
   creative_ads.push_back(creative_ad_3);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeInlineContentAds(creative_ads);
 
   // Act
   CreativeInlineContentAdList expected_creative_ads = {creative_ad_1};

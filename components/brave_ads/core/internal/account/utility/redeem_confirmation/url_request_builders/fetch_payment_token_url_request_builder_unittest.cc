@@ -8,6 +8,8 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+#include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_mock.h"
+#include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "url/gurl.h"
 
@@ -15,18 +17,25 @@
 
 namespace brave_ads {
 
-class BraveAdsFetchPaymentTokenUrlRequestBuilderTest : public UnitTestBase {};
+using ::testing::NiceMock;
+
+class BraveAdsFetchPaymentTokenUrlRequestBuilderTest : public UnitTestBase {
+ protected:
+  NiceMock<privacy::TokenGeneratorMock> token_generator_mock_;
+};
 
 TEST_F(BraveAdsFetchPaymentTokenUrlRequestBuilderTest, BuildUrl) {
   // Arrange
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kStaging;
 
+  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
+
   privacy::SetUnblindedTokens(/*count*/ 1);
 
-  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  const absl::optional<ConfirmationInfo> confirmation =
+      BuildConfirmation(&token_generator_mock_);
   ASSERT_TRUE(confirmation);
-
   FetchPaymentTokenUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act

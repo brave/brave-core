@@ -12,7 +12,7 @@
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/locale/subdivision_code_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
 
 namespace brave_ads {
 

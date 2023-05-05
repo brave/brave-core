@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/refill_unblinded_tokens/request_signed_tokens_url_request_builder.h"
 
-#include "base/check.h"
+#include "base/check_op.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
@@ -20,6 +20,8 @@ namespace brave_ads {
 namespace {
 
 std::vector<privacy::cbr::Token> GetTokens(const int count) {
+  CHECK_GT(count, 0);
+
   const std::vector<std::string> tokens_base64 = {
       R"(B2CbFJJ1gKJy9qs8NMburYj12VAqnVfFrQ2K2u0QwcBi1YoMMHQfRQeDbOQ62Z+WrCOTYLbZrBY7+j9hz2jLFL74KSQig7/PDbqIpmNYs6PpNUK3MpVc4dm5R9lkySQF)",
       R"(MHbZ2XgFtno4g7yq/tmFCr1sFuFrkE7D6JjVAmM70ZJrwH/EqYNaWL1qANSKXX9ghyiN8KUDThEhDTqhuBQ4v7gzNY2qHav9uiAmjqvLzDp7oxmUBFohmdkVlvWhxV0F)",

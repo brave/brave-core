@@ -33,7 +33,7 @@ void PromotedContentAd::TriggerEvent(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void PromotedContentAd::OnPromotedContentAdViewed(
+void PromotedContentAd::OnDidFirePromotedContentAdViewedEvent(
     const PromotedContentAdInfo& ad) {
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
@@ -41,7 +41,7 @@ void PromotedContentAd::OnPromotedContentAdViewed(
                     ConfirmationType::kViewed);
 }
 
-void PromotedContentAd::OnPromotedContentAdClicked(
+void PromotedContentAd::OnDidFirePromotedContentAdClickedEvent(
     const PromotedContentAdInfo& ad) {
   transfer_->SetLastClickedAd(ad);
 

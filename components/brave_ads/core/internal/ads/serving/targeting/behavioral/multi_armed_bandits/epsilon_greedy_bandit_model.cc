@@ -15,6 +15,7 @@
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_arm_info.h"
 #include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_arm_util.h"
 #include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_arms_alias.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/multi_armed_bandits/epsilon_greedy_bandit_resource_util.h"
@@ -24,14 +25,13 @@ namespace brave_ads {
 namespace {
 
 using ArmBucketMap =
-    base::flat_map</*value*/ double, std::vector<EpsilonGreedyBanditArmInfo>>;
-using ArmList = std::vector<EpsilonGreedyBanditArmInfo>;
-using ArmBucketPair = std::pair</*value*/ double, ArmList>;
+    base::flat_map</*value*/ double, EpsilonGreedyBanditArmList>;
+using ArmBucketPair = std::pair</*value*/ double, EpsilonGreedyBanditArmList>;
 using ArmBucketList = std::vector<ArmBucketPair>;
 
 constexpr size_t kTopArmCount = 3;
 
-SegmentList ToSegmentList(const ArmList& arms) {
+SegmentList ToSegmentList(const EpsilonGreedyBanditArmList& arms) {
   SegmentList segments;
 
   for (const auto& arm : arms) {
@@ -41,8 +41,8 @@ SegmentList ToSegmentList(const ArmList& arms) {
   return segments;
 }
 
-ArmList ToArmList(const EpsilonGreedyBanditArmMap& arms) {
-  ArmList list;
+EpsilonGreedyBanditArmList ToArmList(const EpsilonGreedyBanditArmMap& arms) {
+  EpsilonGreedyBanditArmList list;
 
   for (const auto& [segment, arm] : arms) {
     list.push_back(arm);
@@ -51,7 +51,7 @@ ArmList ToArmList(const EpsilonGreedyBanditArmMap& arms) {
   return list;
 }
 
-ArmBucketMap BucketSortArms(const ArmList& arms) {
+ArmBucketMap BucketSortArms(const EpsilonGreedyBanditArmList& arms) {
   ArmBucketMap buckets;
 
   for (const auto& arm : arms) {
@@ -97,8 +97,9 @@ ArmBucketList GetSortedBuckets(const ArmBucketMap& arms) {
   return sorted_buckets;
 }
 
-ArmList GetTopArms(const ArmBucketList& buckets, const size_t count) {
-  ArmList top_arms;
+EpsilonGreedyBanditArmList GetTopArms(const ArmBucketList& buckets,
+                                      const size_t count) {
+  EpsilonGreedyBanditArmList top_arms;
 
   for (auto [value, arms] : buckets) {
     const size_t available_arms = count - top_arms.size();
@@ -141,7 +142,8 @@ SegmentList ExploreSegments(const EpsilonGreedyBanditArmMap& arms) {
 SegmentList ExploitSegments(const EpsilonGreedyBanditArmMap& arms) {
   const ArmBucketMap unsorted_buckets = BucketSortArms(ToArmList(arms));
   const ArmBucketList sorted_buckets = GetSortedBuckets(unsorted_buckets);
-  const ArmList top_arms = GetTopArms(sorted_buckets, kTopArmCount);
+  const EpsilonGreedyBanditArmList top_arms =
+      GetTopArms(sorted_buckets, kTopArmCount);
   SegmentList segments = ToSegmentList(top_arms);
 
   BLOG(2, "Exploiting epsilon greedy bandit segments:");

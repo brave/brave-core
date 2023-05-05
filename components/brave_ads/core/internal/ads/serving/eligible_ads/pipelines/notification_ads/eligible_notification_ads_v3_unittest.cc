@@ -15,7 +15,8 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
@@ -58,7 +59,7 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test, GetAds) {
   const TextEmbeddingHtmlEventInfo text_embedding_event =
       BuildTextEmbeddingHtmlEvent(BuildTextEmbedding());
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNotificationAds(creative_ads);
 
   // Act
   eligible_ads_->GetForUserModel(
@@ -92,7 +93,7 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test, GetAdsForNoStoredTextEmbeddings) {
   creative_ad_2.embedding = {-0.3, 0.0, -0.2, 0.6, 0.8};
   creative_ads.push_back(creative_ad_2);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNotificationAds(creative_ads);
 
   // Act
   eligible_ads_->GetForUserModel(
@@ -124,7 +125,7 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test,
 
   const CreativeNotificationAdList creative_ads =
       BuildCreativeNotificationAds(/*count*/ 2);
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNotificationAds(creative_ads);
 
   const TextEmbeddingHtmlEventInfo text_embedding_event =
       BuildTextEmbeddingHtmlEvent(BuildTextEmbedding());

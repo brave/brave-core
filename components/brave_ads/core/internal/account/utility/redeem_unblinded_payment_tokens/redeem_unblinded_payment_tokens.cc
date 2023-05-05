@@ -17,12 +17,12 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_user_data_builder.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/common/random/random_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
 #include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_util.h"
-#include "brave_base/random.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_ads {
@@ -43,25 +43,18 @@ base::TimeDelta CalculateTokenRedemptionDelay() {
 
   const base::Time now = base::Time::Now();
 
-  base::TimeDelta delay;
   if (now >= next_token_redemption_at) {
     // Browser was launched after the next token redemption date
-    delay = kExpiredNextTokenRedemptionAfter;
-  } else {
-    delay = next_token_redemption_at - now;
+    return kExpiredNextTokenRedemptionAfter;
   }
 
-  return delay;
+  return next_token_redemption_at - now;
 }
 
 base::Time CalculateNextTokenRedemptionDate() {
-  const base::TimeDelta delay = ShouldDebug() ? kDebugNextTokenRedemptionAfter
-                                              : kNextTokenRedemptionAfter;
-
-  const auto rand_delay =
-      static_cast<int64_t>(brave_base::random::Geometric(delay.InSecondsF()));
-
-  return base::Time::Now() + base::Seconds(rand_delay);
+  return base::Time::Now() + RandTimeDelta(ShouldDebug()
+                                               ? kDebugNextTokenRedemptionAfter
+                                               : kNextTokenRedemptionAfter);
 }
 
 }  // namespace

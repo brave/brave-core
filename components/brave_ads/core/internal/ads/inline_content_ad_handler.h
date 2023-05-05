@@ -54,9 +54,12 @@ class InlineContentAdHandler final : public InlineContentAdEventHandlerDelegate,
   void OnDidServeInlineContentAd(const InlineContentAdInfo& ad) override;
 
   // InlineContentAdEventHandlerDelegate:
-  void OnInlineContentAdServed(const InlineContentAdInfo& ad) override;
-  void OnInlineContentAdViewed(const InlineContentAdInfo& ad) override;
-  void OnInlineContentAdClicked(const InlineContentAdInfo& ad) override;
+  void OnDidFireInlineContentAdServedEvent(
+      const InlineContentAdInfo& ad) override;
+  void OnDidFireInlineContentAdViewedEvent(
+      const InlineContentAdInfo& ad) override;
+  void OnDidFireInlineContentAdClickedEvent(
+      const InlineContentAdInfo& ad) override;
 
   InlineContentAdEventHandler event_handler_;
 

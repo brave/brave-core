@@ -21,7 +21,7 @@
 #include "brave/components/brave_ads/core/internal/fl/predictors/predictors_manager.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/variables/notification_ad_event_predictor_variable_util.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/variables/notification_ad_served_at_predictor_variable_util.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/privacy/p2a/impressions/p2a_impression.h"
 #include "brave/components/brave_ads/core/internal/privacy/p2a/opportunities/p2a_opportunity.h"
@@ -131,14 +131,16 @@ void NotificationAdHandler::OnDidServeNotificationAd(
   ShowNotificationAd(ad);
 
   TriggerEvent(ad.placement_id, mojom::NotificationAdEventType::kServed);
+
+  serving_.MaybeServeAdAtNextRegularInterval();
 }
 
-void NotificationAdHandler::OnNotificationAdServed(
+void NotificationAdHandler::OnDidFireNotificationAdServedEvent(
     const NotificationAdInfo& ad) {
   ClientStateManager::GetInstance().UpdateSeenAd(ad);
 }
 
-void NotificationAdHandler::OnNotificationAdViewed(
+void NotificationAdHandler::OnDidFireNotificationAdViewedEvent(
     const NotificationAdInfo& ad) {
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
@@ -150,7 +152,7 @@ void NotificationAdHandler::OnNotificationAdViewed(
   privacy::p2a::RecordAdImpression(ad);
 }
 
-void NotificationAdHandler::OnNotificationAdClicked(
+void NotificationAdHandler::OnDidFireNotificationAdClickedEvent(
     const NotificationAdInfo& ad) {
   CloseNotificationAd(ad.placement_id);
 
@@ -169,7 +171,7 @@ void NotificationAdHandler::OnNotificationAdClicked(
   PredictorsManager::GetInstance().AddTrainingSample();
 }
 
-void NotificationAdHandler::OnNotificationAdDismissed(
+void NotificationAdHandler::OnDidFireNotificationAdDismissedEvent(
     const NotificationAdInfo& ad) {
   DismissNotificationAd(ad.placement_id);
 
@@ -186,10 +188,9 @@ void NotificationAdHandler::OnNotificationAdDismissed(
   PredictorsManager::GetInstance().AddTrainingSample();
 }
 
-void NotificationAdHandler::OnNotificationAdTimedOut(
+void NotificationAdHandler::OnDidFireNotificationAdTimedOutEvent(
     const NotificationAdInfo& ad) {
   NotificationAdTimedOut(ad.placement_id);
-
   EpsilonGreedyBanditProcessor::Process(
       {ad.segment, mojom::NotificationAdEventType::kTimedOut});
 

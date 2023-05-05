@@ -15,9 +15,10 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_container_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
 
@@ -55,7 +56,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForChildSegment) {
   creative_ad_2.segment = "technology & computing-software";
   creative_ads.push_back(creative_ad_2);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNewTabPageAds(creative_ads);
 
   // Act
   CreativeNewTabPageAdList expected_creative_ads = {creative_ad_2};
@@ -81,7 +82,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForParentSegment) {
   CreativeNewTabPageAdInfo creative_ad =
       BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
   creative_ad.segment = "technology & computing";
-  SaveCreativeAds({creative_ad});
+  database::SaveCreativeNewTabPageAds({creative_ad});
 
   // Act
   CreativeNewTabPageAdList expected_creative_ads = {creative_ad};
@@ -107,7 +108,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForUntargetedSegment) {
   CreativeNewTabPageAdInfo creative_ad =
       BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
   creative_ad.segment = "untargeted";
-  SaveCreativeAds({creative_ad});
+  database::SaveCreativeNewTabPageAds({creative_ad});
 
   // Act
   CreativeNewTabPageAdList expected_creative_ads = {creative_ad};
@@ -147,7 +148,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForMultipleSegments) {
   creative_ad_3.segment = "food & drink";
   creative_ads.push_back(creative_ad_3);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNewTabPageAds(creative_ads);
 
   // Act
   CreativeNewTabPageAdList expected_creative_ads = {creative_ad_1,
@@ -175,7 +176,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForNoSegments) {
   CreativeNewTabPageAdInfo creative_ad =
       BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
   creative_ad.segment = "untargeted";
-  SaveCreativeAds({creative_ad});
+  database::SaveCreativeNewTabPageAds({creative_ad});
 
   // Act
   CreativeNewTabPageAdList expected_creative_ads = {creative_ad};
@@ -198,7 +199,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsForUnmatchedSegments) {
   CreativeNewTabPageAdInfo creative_ad =
       BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
   creative_ad.segment = "technology & computing";
-  SaveCreativeAds({creative_ad});
+  database::SaveCreativeNewTabPageAds({creative_ad});
 
   // Act
   eligible_ads_->GetForUserModel(
@@ -246,7 +247,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsIfAlreadySeen) {
   creative_ad_2.segment = "food & drink";
   creative_ads.push_back(creative_ad_2);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNewTabPageAds(creative_ads);
 
   const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad_1);
   ClientStateManager::GetInstance().UpdateSeenAd(ad);
@@ -287,7 +288,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, DoNotGetPacedAds) {
   creative_ad_2.ptr = 0.5;
   creative_ads.push_back(creative_ad_2);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNewTabPageAds(creative_ads);
 
   // Act
   const ScopedPacingRandomNumberSetterForTesting scoped_setter(0.3);
@@ -333,7 +334,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetPrioritizedAds) {
   creative_ad_3.priority = 2;
   creative_ads.push_back(creative_ad_3);
 
-  SaveCreativeAds(creative_ads);
+  database::SaveCreativeNewTabPageAds(creative_ads);
 
   // Act
   CreativeNewTabPageAdList expected_creative_ads = {creative_ad_1};

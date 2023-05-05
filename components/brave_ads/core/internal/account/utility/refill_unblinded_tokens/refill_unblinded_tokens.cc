@@ -259,6 +259,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
     BLOG(0, "Response public key "
                 << *public_key_base64
                 << " does not exist in confirmations issuer public keys");
+
     return FailedToRefillUnblindedTokens(/*should_retry*/ false);
   }
 
@@ -267,6 +268,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
       dict.FindString("batchProof");
   if (!batch_dleq_proof_base64) {
     BLOG(0, "Response is missing batchProof");
+
     return FailedToRefillUnblindedTokens(/*should_retry*/ false);
   }
 
@@ -275,6 +277,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
   if (!batch_dleq_proof.has_value()) {
     BLOG(0, "Invalid batch DLEQ proof");
     NOTREACHED();
+
     return FailedToRefillUnblindedTokens(/*should_retry*/ false);
   }
 
@@ -282,6 +285,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
   const auto* const signed_tokens_list = dict.FindList("signedTokens");
   if (!signed_tokens_list) {
     BLOG(0, "Response is missing signedTokens");
+
     return FailedToRefillUnblindedTokens(/*should_retry*/ false);
   }
 

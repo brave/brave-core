@@ -37,8 +37,10 @@ class PromotedContentAd final : public PromotedContentAdEventHandlerDelegate {
 
  private:
   // PromotedContentAdEventHandlerDelegate:
-  void OnPromotedContentAdViewed(const PromotedContentAdInfo& ad) override;
-  void OnPromotedContentAdClicked(const PromotedContentAdInfo& ad) override;
+  void OnDidFirePromotedContentAdViewedEvent(
+      const PromotedContentAdInfo& ad) override;
+  void OnDidFirePromotedContentAdClickedEvent(
+      const PromotedContentAdInfo& ad) override;
 
   const raw_ref<Account> account_;
   const raw_ref<Transfer> transfer_;

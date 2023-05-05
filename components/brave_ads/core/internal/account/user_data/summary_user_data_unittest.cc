@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/account/user_data/totals_user_data.h"
+#include "brave/components/brave_ads/core/internal/account/user_data/summary_user_data.h"
 
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
@@ -13,8 +13,8 @@
 
 namespace brave_ads {
 
-TEST(BraveAdsTotalsUserDataTest,
-     BuildTotalsUserDataIfNoUnblindedPaymentTokens) {
+TEST(BraveAdsSummaryUserDataTest,
+     BuildSummaryUserDataIfNoUnblindedPaymentTokens) {
   // Arrange
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens;
 
@@ -22,10 +22,10 @@ TEST(BraveAdsTotalsUserDataTest,
 
   // Assert
   EXPECT_EQ(base::test::ParseJsonDict(R"({"totals":[]})"),
-            BuildTotalsUserData(unblinded_payment_tokens));
+            BuildSummaryUserData(unblinded_payment_tokens));
 }
 
-TEST(BraveAdsTotalsUserDataTest, BuildTotalsUserData) {
+TEST(BraveAdsSummaryUserDataTest, BuildSummaryUserData) {
   // Arrange
   privacy::UnblindedPaymentTokenList unblinded_payment_tokens;
 
@@ -55,7 +55,7 @@ TEST(BraveAdsTotalsUserDataTest, BuildTotalsUserData) {
   EXPECT_EQ(
       base::test::ParseJsonDict(
           R"({"totals":[{"ad_format":"ad_notification","click":1,"view":2},{"ad_format":"inline_content_ad","view":1}]})"),
-      BuildTotalsUserData(unblinded_payment_tokens));
+      BuildSummaryUserData(unblinded_payment_tokens));
 }
 
 }  // namespace brave_ads

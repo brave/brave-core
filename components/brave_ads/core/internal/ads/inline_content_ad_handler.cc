@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/privacy/p2a/impressions/p2a_impression.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
@@ -65,12 +65,12 @@ void InlineContentAdHandler::OnDidServeInlineContentAd(
                mojom::InlineContentAdEventType::kServed);
 }
 
-void InlineContentAdHandler::OnInlineContentAdServed(
+void InlineContentAdHandler::OnDidFireInlineContentAdServedEvent(
     const InlineContentAdInfo& ad) {
   ClientStateManager::GetInstance().UpdateSeenAd(ad);
 }
 
-void InlineContentAdHandler::OnInlineContentAdViewed(
+void InlineContentAdHandler::OnDidFireInlineContentAdViewedEvent(
     const InlineContentAdInfo& ad) {
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
@@ -80,7 +80,7 @@ void InlineContentAdHandler::OnInlineContentAdViewed(
   privacy::p2a::RecordAdImpression(ad);
 }
 
-void InlineContentAdHandler::OnInlineContentAdClicked(
+void InlineContentAdHandler::OnDidFireInlineContentAdClickedEvent(
     const InlineContentAdInfo& ad) {
   transfer_->SetLastClickedAd(ad);
 
