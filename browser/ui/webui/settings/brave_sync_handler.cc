@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/webui/settings/brave_sync_handler.h"
 
+#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -183,13 +184,7 @@ void BraveSyncHandler::HandleGetQRCode(const base::Value::List& args) {
   base::Value callback_id_disconnect(args[0].Clone());
   base::Value callback_id_arg(args[0].Clone());
 
-  qr_code_service_remote_ = qrcode_generator::LaunchQRCodeGeneratorService();
-  qr_code_service_remote_.set_disconnect_handler(
-      base::BindOnce(&BraveSyncHandler::OnCodeGeneratorResponse,
-                     weak_ptr_factory_.GetWeakPtr(),
-                     std::move(callback_id_disconnect), nullptr));
-  qrcode_generator::mojom::QRCodeGeneratorService* generator =
-      qr_code_service_remote_.get();
+  qrcode_service_ = std::make_unique<qrcode_generator::QRImageGenerator>();
 
   qrcode_generator::mojom::GenerateQRCodeRequestPtr request =
       qrcode_generator::mojom::GenerateQRCodeRequest::New();
@@ -200,7 +195,7 @@ void BraveSyncHandler::HandleGetQRCode(const base::Value::List& args) {
   request->render_locator_style =
       qrcode_generator::mojom::LocatorStyle::ROUNDED;
 
-  generator->GenerateQRCode(
+  qrcode_service_->GenerateQRCode(
       std::move(request),
       base::BindOnce(&BraveSyncHandler::OnCodeGeneratorResponse,
                      weak_ptr_factory_.GetWeakPtr(),
@@ -413,6 +408,5 @@ void BraveSyncHandler::OnCodeGeneratorResponse(
   const std::string data_url = webui::GetBitmapDataUrl(response->bitmap);
   VLOG(1) << "QR code data url: " << data_url;
 
-  qr_code_service_remote_.reset();
   ResolveJavascriptCallback(callback_id, base::Value(data_url));
 }
