@@ -215,7 +215,10 @@ export const transactionSortByDateComparer = <
   }
 }
 
-export function isSolanaTransaction (tx: TransactionInfo): tx is SolanaTransactionInfo {
+export function isSolanaTransaction (tx?: TransactionInfo): tx is SolanaTransactionInfo {
+  if (!tx) {
+    return false
+  }
   const { txType, txDataUnion: { solanaTxData } } = tx
   return SolanaTransactionTypes.includes(txType) ||
     (txType === BraveWallet.TransactionType.Other && solanaTxData !== undefined)
@@ -258,10 +261,10 @@ export function isSolanaDappTransaction (tx: TransactionInfo): tx is SolanaTrans
   )
 }
 
-export const isFilecoinTransaction = (tx: {
+export const isFilecoinTransaction = (tx?: {
   txDataUnion: TxDataPresence
 }): tx is FileCoinTransactionInfo => {
-  return tx.txDataUnion.filTxData !== undefined
+  return tx?.txDataUnion.filTxData !== undefined
 }
 
 export const isFilecoinTestnetTx = (tx: {
@@ -314,7 +317,13 @@ export const getToAddressesFromSolanaTransaction = (
   return [...new Set(addresses.filter(a => !!a))] // unique, non empty addresses
 }
 
-export function getTransactionToAddress (tx: TransactionInfo): string {
+export const getTransactionToAddress = (
+  tx?: TransactionInfo | SerializableTransactionInfo
+): string => {
+  if (!tx) {
+    return ''
+  }
+
   if (isSolanaDappTransaction(tx)) {
     return getToAddressesFromSolanaTransaction(tx)[0] ?? ''
   }
@@ -377,9 +386,13 @@ export function isSolanaSplTransaction (tx: TransactionInfo): tx is SolanaTransa
 export const findTransactionToken = <
   T extends Pick<BraveWallet.BlockchainToken, 'contractAddress'>
 >(
-  tx: TransactionInfo,
+  tx: TransactionInfo | undefined,
   tokensList: T[]
 ): T | undefined => {
+  if (!tx) {
+    return undefined
+  }
+
   // Solana SPL
   if (isSolanaSplTransaction(tx)) {
     return findTokenByContractAddress(
@@ -400,7 +413,7 @@ export const getETHSwapTransactionBuyAndSellTokens = ({
   tokensList,
   tx
 }: {
-  tx: TransactionInfo
+  tx: TransactionInfo | undefined
   nativeAsset?: BraveWallet.BlockchainToken
   tokensList: BraveWallet.BlockchainToken[]
 }): {
@@ -411,7 +424,10 @@ export const getETHSwapTransactionBuyAndSellTokens = ({
   sellAmount: Amount
   sellAmountWei: Amount
 } => {
-  if (tx.txType !== BraveWallet.TransactionType.ETHSwap) {
+  if (
+    !tx ||
+    tx.txType !== BraveWallet.TransactionType.ETHSwap
+  ) {
     return {
       buyToken: undefined,
       sellToken: undefined,

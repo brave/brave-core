@@ -28,12 +28,17 @@ import {
   mockSolanaMainnetNetwork
 } from '../../constants/mocks'
 import { mockEthMainnet, mockNetworks } from '../../../stories/mock-data/mock-networks'
-import { mockAccountAssetOptions } from '../../../stories/mock-data/mock-asset-options'
+import {
+  mockAccountAssetOptions,
+  mockBasicAttentionToken,
+  mockErc20TokensList
+} from '../../../stories/mock-data/mock-asset-options'
 import {
   mockFilSendTransaction,
   mockTransactionInfo,
   mockedErc20ApprovalTransaction
 } from '../../../stories/mock-data/mock-transaction-info'
+import { blockchainTokenEntityAdaptor } from '../../slices/entities/blockchain-token.entity'
 
 export const makeMockedStoreWithSpy = () => {
   const store = createStore(combineReducers({
@@ -55,6 +60,22 @@ export const makeMockedStoreWithSpy = () => {
   return { store }
 }
 
+type NativeAssetBalanceRegistry = Record<
+  string, // account address
+  Record<
+    string, // chainId
+    string // balance
+  >
+>
+
+type TokenBalanceRegistry = Record<
+  string, // account address
+  Record<
+    string, // asset identifier
+    string // balance
+  >
+>
+
 export interface WalletApiDataOverrides {
   selectedCoin?: BraveWallet.CoinType
   selectedAccountAddress?: string
@@ -62,6 +83,10 @@ export interface WalletApiDataOverrides {
   networks?: BraveWallet.NetworkInfo[]
   defaultBaseCurrency?: string
   transactionInfos?: BraveWallet.TransactionInfo[]
+  blockchainTokens?: BraveWallet.BlockchainToken[]
+  accountInfos?: BraveWallet.AccountInfo[]
+  nativeBalanceRegistry?: NativeAssetBalanceRegistry
+  tokenBalanceRegistry?: TokenBalanceRegistry
 }
 
 export class MockedWalletApiProxy {
@@ -89,6 +114,27 @@ export class MockedWalletApiProxy {
   }
 
   networks: BraveWallet.NetworkInfo[] = mockNetworks
+
+  blockchainTokens: BraveWallet.BlockchainToken[] = mockErc20TokensList
+
+  /**
+   * balance = [accountAddress][chainId]
+   */
+  nativeBalanceRegistry: NativeAssetBalanceRegistry = {
+    [mockAccount.address]: {
+      [BraveWallet.MAINNET_CHAIN_ID]: '0' // 0 ETH
+    }
+  }
+
+  /**
+   * balance = [accountAddress][assetEntityId]
+   */
+  tokenBalanceRegistry: TokenBalanceRegistry = {
+    [mockAccount.address]: {
+      // 0 BAT
+      [blockchainTokenEntityAdaptor.selectId(mockBasicAttentionToken)]: '0'
+    }
+  }
 
   mockQuote = {
     price: '1705.399509',
@@ -157,6 +203,12 @@ export class MockedWalletApiProxy {
     this.defaultBaseCurrency =
       overrides.defaultBaseCurrency ?? this.defaultBaseCurrency
     this.transactionInfos = overrides.transactionInfos ?? this.transactionInfos
+    this.blockchainTokens = overrides.blockchainTokens ?? this.blockchainTokens
+    this.accountInfos = overrides.accountInfos ?? this.accountInfos
+    this.nativeBalanceRegistry =
+      overrides.nativeBalanceRegistry ?? this.nativeBalanceRegistry
+    this.tokenBalanceRegistry =
+      overrides.tokenBalanceRegistry ?? this.tokenBalanceRegistry
   }
 
   blockchainRegistry: Partial<
@@ -164,7 +216,7 @@ export class MockedWalletApiProxy {
   > = {
     getAllTokens: async (chainId: string, coin: number) => {
       return {
-        tokens: mockWalletState.fullTokenList.filter(
+        tokens: this.blockchainTokens.filter(
           (t) => t.chainId === chainId && t.coin === coin
         )
       }
@@ -349,7 +401,108 @@ export class MockedWalletApiProxy {
 
       this.chainsForCoins[coin] = foundNetwork
       return { success: true }
+    },
+    // Native asset balances
+    getBalance: async (address: string, coin: number, chainId: string) => {
+      return {
+        balance: this.nativeBalanceRegistry[address][chainId],
+        error: 0,
+        errorMessage: ''
+      }
+    },
+    getSolanaBalance: async (pubkey: string, chainId: string) => {
+      return {
+        balance: BigInt(this.nativeBalanceRegistry[pubkey][chainId]),
+        error: 0,
+        errorMessage: ''
+      }
+    },
+    getERC20TokenBalance: async (contract, address, chainId) => {
+      return {
+        balance:
+          this.nativeBalanceRegistry[address][
+            blockchainTokenEntityAdaptor.selectId({
+              chainId,
+              contractAddress: contract,
+              isErc721: false,
+              tokenId: ''
+            })
+          ],
+        error: 0,
+        errorMessage: ''
+      }
+    },
+    getERC721TokenBalance: async (
+      contractAddress,
+      tokenId,
+      accountAddress,
+      chainId
+    ) => {
+      return {
+        balance:
+          this.nativeBalanceRegistry[accountAddress][
+            blockchainTokenEntityAdaptor.selectId({
+              chainId,
+              contractAddress: contractAddress,
+              isErc721: true,
+              tokenId
+            })
+          ],
+        error: 0,
+        errorMessage: ''
+      }
+    },
+    getERC1155TokenBalance: async (
+      contractAddress,
+      tokenId,
+      accountAddress,
+      chainId
+    ) => {
+      return {
+        balance:
+          this.nativeBalanceRegistry[accountAddress][
+            blockchainTokenEntityAdaptor.selectId({
+              chainId,
+              contractAddress: contractAddress,
+              isErc721: true,
+              tokenId
+            })
+          ],
+        error: 0,
+        errorMessage: ''
+      }
+    },
+    getSPLTokenAccountBalance: async (
+      walletAddress,
+      tokenMintAddress,
+      chainId
+    ) => {
+      return {
+        amount:
+          this.nativeBalanceRegistry[walletAddress][
+            blockchainTokenEntityAdaptor.selectId({
+              chainId,
+              contractAddress: tokenMintAddress,
+              isErc721: true,
+              tokenId: ''
+            })
+          ],
+        decimals: 9,
+        uiAmountString: '',
+        error: 0,
+        errorMessage: '',
+      }
     }
+  }
+
+  solanaTxManagerProxy: Partial<InstanceType<typeof BraveWallet.SolanaTxManagerProxyInterface>> = {
+    getEstimatedTxFee: async (chainId, txMetaId) => {
+      return {
+        error: 0,
+        errorMessage: '',
+        fee: BigInt(100)
+      }
+    },
   }
 
   walletHandler: Partial<
@@ -402,7 +555,6 @@ export class MockedWalletApiProxy {
       }
     }
   }
-
 
   setMockedQuote (newQuote: typeof this.mockQuote) {
     this.mockQuote = newQuote
