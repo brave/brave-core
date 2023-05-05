@@ -45,6 +45,8 @@ source_set("ui") {
     "webui/brave_web_ui_controller_factory.h",
     "webui/brave_webui_source.cc",
     "webui/brave_webui_source.h",
+    "webui/skus_internals_ui.cc",
+    "webui/skus_internals_ui.h",
   ]
 
   # It doesn't make sense to view accelerators on iOS & Android.
@@ -470,6 +472,9 @@ source_set("ui") {
     "//brave/components/p3a_utils",
     "//brave/components/playlist/common/buildflags",
     "//brave/components/resources:static_resources",
+    "//brave/components/skus/browser/resources:generated_resources",
+    "//brave/components/skus/common",
+    "//brave/components/skus/common:mojom",
     "//brave/components/text_recognition/common/buildflags",
     "//brave/components/time_period_storage",
     "//brave/components/tor/buildflags",

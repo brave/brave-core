@@ -10,6 +10,7 @@
 const char kAdblockHost[] = "adblock";
 const char kAdblockInternalsHost[] = "adblock-internals";
 const char kAdblockJS[] = "brave_adblock.js";
+const char kSkusInternalsHost[] = "skus-internals";
 #if BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
 const char kIPFSWebUIHost[] = "ipfs-internals";
 const char kIPFSWebUIURL[] = "chrome://ipfs-internals/";

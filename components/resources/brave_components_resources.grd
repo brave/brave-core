@@ -69,6 +69,7 @@
       <part file="../brave_perf_predictor/resources/brave_perf_predictor_resources.grdp" />
       <part file="../commands/browser/resources/commands_resources.grdp" />
       <part file="../playlist/browser/resources/playlist_resources.grdp" />
+      <part file="../skus/browser/resources/skus_internals_resources.grdp" />
       <part file="brave_blank_page_resources.grdp" />
       <part file="brave_translate_resources.grdp" />
       <part file="speedreader_resources.grdp" />
