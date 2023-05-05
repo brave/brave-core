@@ -108,7 +108,7 @@ void AIChatAPI::QueryPrompt(ResponseCallback callback,
 
   dict.Set("prompt", prompt);
   dict.Set("max_tokens_to_sample", 400);
-  dict.Set("temperature", 0.7);
+  dict.Set("temperature", 1);
   dict.Set("top_k", -1);  // disabled
   dict.Set("top_p", 0.999);
   dict.Set("model", model_name);
@@ -118,7 +118,7 @@ void AIChatAPI::QueryPrompt(ResponseCallback callback,
   base::flat_map<std::string, std::string> headers;
   headers.emplace("x-brave-key", BUILDFLAG(BRAVE_SERVICES_KEY));
 
-  DVLOG(1) << __func__ << " Prompt: " << prompt << "\n";
+  DVLOG(1) << __func__ << " Prompt: |" << prompt << "|\n";
   DVLOG(1) << __func__ << " Using model: " << model_name;
 
   api_request_helper_.Request("POST", api_url, CreateJSONRequestBody(dict),

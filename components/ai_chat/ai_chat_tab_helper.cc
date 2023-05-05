@@ -136,7 +136,7 @@ const std::string& AIChatTabHelper::GetConversationHistoryString() {
                            turn.text);
   }
 
-  history_text_ = base::JoinString(turn_strings, "\n");
+  history_text_ = base::JoinString(turn_strings, "");
 
   return history_text_;
 }
