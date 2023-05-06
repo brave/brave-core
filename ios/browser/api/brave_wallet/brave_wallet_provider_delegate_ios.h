@@ -29,9 +29,9 @@ OBJC_EXPORT
                   accounts:(NSArray<NSString*>*)accounts
                 completion:(RequestPermissionsCallback)completion;
 - (bool)isAccountAllowed:(BraveWalletCoinType)type account:(NSString*)account;
-- (bool)getAllowedAccounts:(BraveWalletCoinType)type
-                  accounts:(NSArray<NSString*>*)accounts
-                   results:(NSArray<NSString*>*)results;
+- (nullable NSArray<NSString*>*)getAllowedAccounts:(BraveWalletCoinType)type
+                                          accounts:
+                                              (NSArray<NSString*>*)accounts;
 - (bool)isPermissionDenied:(BraveWalletCoinType)type;
 - (void)addSolanaConnectedAccount:(NSString*)account;
 - (void)removeSolanaConnectedAccount:(NSString*)account;

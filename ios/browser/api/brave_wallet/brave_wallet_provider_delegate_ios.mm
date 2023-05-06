@@ -77,20 +77,14 @@ absl::optional<std::vector<std::string>>
 BraveWalletProviderDelegateBridge::GetAllowedAccounts(
     mojom::CoinType type,
     const std::vector<std::string>& accounts) {
-  NSArray<NSString*>* results;
-  bool success =
+  NSArray<NSString*>* results =
       [bridge_ getAllowedAccounts:static_cast<BraveWalletCoinType>(type)
-                         accounts:brave::vector_to_ns(accounts)
-                          results:results];
-  if (!success) {
+                         accounts:brave::vector_to_ns(accounts)];
+  if (!results) {
     return absl::nullopt;
   }
 
-  std::vector<std::string> v;
-  for (NSString* result in results) {
-    v.push_back(base::SysNSStringToUTF8(result));
-  }
-  return v;
+  return brave::ns_to_vector<std::string>(results);
 }
 
 bool BraveWalletProviderDelegateBridge::IsPermissionDenied(

@@ -2618,7 +2618,7 @@ TEST_F(EthereumProviderImplUnitTest, GetEncryptionPublicKey) {
   EXPECT_EQ(mojom::ProviderError::kSuccess, error);
   EXPECT_TRUE(error_message.empty());
 
-  // Locked should give unathorized error
+  // Locked should give unauthorized error
   std::string from_address = from();
   Lock();
   GetEncryptionPublicKey(from_address, true, &key, &error, &error_message);
