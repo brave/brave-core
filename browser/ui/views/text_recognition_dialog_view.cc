@@ -127,8 +127,13 @@ TextRecognitionDialogView::TextRecognitionDialogView(const SkBitmap& image)
   header_label_->SetHorizontalAlignment(gfx::ALIGN_LEFT);
   header_label_->SetProperty(views::kMarginsKey,
                              gfx::Insets::TLBR(0, 0, 10, 0));
+}
 
+TextRecognitionDialogView::~TextRecognitionDialogView() = default;
+
+void TextRecognitionDialogView::AddedToWidget() {
 #if BUILDFLAG(IS_WIN)
+  // Start text extracting after getting language list to make code simpler.
   com_task_runner_ =
       base::ThreadPool::CreateCOMSTATaskRunner({base::MayBlock()});
   com_task_runner_->PostTaskAndReplyWithResult(
@@ -137,12 +142,10 @@ TextRecognitionDialogView::TextRecognitionDialogView(const SkBitmap& image)
       base::BindOnce(
           &TextRecognitionDialogView::OnGetAvailableRecognizerLanguages,
           weak_factory_.GetWeakPtr()));
-#endif
-
+#else
   StartExtractingText();
+#endif
 }
-
-TextRecognitionDialogView::~TextRecognitionDialogView() = default;
 
 void TextRecognitionDialogView::StartExtractingText(
     const std::string& language_code) {
@@ -165,6 +168,7 @@ void TextRecognitionDialogView::StartExtractingText(
 
   header_label_->SetText(brave_l10n::GetLocalizedResourceUTF16String(
       IDS_TEXT_RECOGNITION_DIALOG_HEADER_IN_PROGRESS));
+  AdjustWidgetSize();
 
 #if BUILDFLAG(IS_MAC)
   base::ThreadPool::PostTaskAndReplyWithResult(
@@ -250,6 +254,7 @@ void TextRecognitionDialogView::UpdateContents(
 }
 
 void TextRecognitionDialogView::AdjustWidgetSize() {
+  DCHECK(GetWidget());
   GetWidget()->SetSize(GetDialogClientView()->GetPreferredSize());
 }
 
@@ -283,8 +288,12 @@ void TextRecognitionDialogView::OnGetAvailableRecognizerLanguages(
       base::BindRepeating(&TextRecognitionDialogView::OnLanguageOptionchanged,
                           base::Unretained(this)));
   combobox_->SetProperty(views::kMarginsKey, gfx::Insets::TLBR(0, 0, 10, 0));
-  combobox_->SetEnabled(result_ ? true : false);
-  AdjustWidgetSize();
+
+  // Enabled state is updated during the extracting.
+  // While extracting, it's disabled and then enabled when extracting is done.
+  combobox_->SetEnabled(false);
+
+  StartExtractingText();
 }
 
 bool TextRecognitionDialogView::OnLanguageOptionchanged(size_t index) {
