@@ -113,8 +113,9 @@ bool HasWidevinePermissionRequest(
   // When widevine permission is requested, |requests| only includes Widevine
   // permission because it is not a candidate for grouping.
   if (requests.size() == 1 &&
-      requests[0]->request_type() == permissions::RequestType::kWidevine)
+      requests[0]->request_type() == permissions::RequestType::kWidevine) {
     return true;
+  }
 
   return false;
 }
@@ -122,8 +123,9 @@ bool HasWidevinePermissionRequest(
 void AddAdditionalWidevineViewControlsIfNeeded(
     views::BubbleDialogDelegateView* dialog_delegate_view,
     const std::vector<permissions::PermissionRequest*>& requests) {
-  if (!HasWidevinePermissionRequest(requests))
+  if (!HasWidevinePermissionRequest(requests)) {
     return;
+  }
 
   auto* widevine_request = static_cast<WidevinePermissionRequest*>(requests[0]);
   views::Label* text = new views::Label(
@@ -269,22 +271,22 @@ void AddFootnoteViewIfNeeded(
 
 }  // namespace
 
-#define BRAVE_PERMISSION_PROMPT_BUBBLE_VIEW                               \
-  AddAdditionalWidevineViewControlsIfNeeded(this, delegate_->Requests()); \
-  auto* permission_lifetime_view =                                        \
-      AddPermissionLifetimeComboboxIfNeeded(this, delegate_.get());       \
-  AddFootnoteViewIfNeeded(this, delegate_->Requests(), browser_);         \
-  if (permission_lifetime_view) {                                         \
-    set_fixed_width(                                                      \
-        std::max(GetPreferredSize().width(),                              \
-                 permission_lifetime_view->GetPreferredSize().width()) +  \
-        margins().width());                                               \
-    set_should_ignore_snapping(true);                                     \
+#define BRAVE_PERMISSION_PROMPT_ONE_ORIGIN_VIEW                          \
+  AddAdditionalWidevineViewControlsIfNeeded(this, delegate->Requests()); \
+  auto* permission_lifetime_view =                                       \
+      AddPermissionLifetimeComboboxIfNeeded(this, delegate.get());       \
+  AddFootnoteViewIfNeeded(this, delegate->Requests(), browser);          \
+  if (permission_lifetime_view) {                                        \
+    set_fixed_width(                                                     \
+        std::max(GetPreferredSize().width(),                             \
+                 permission_lifetime_view->GetPreferredSize().width()) + \
+        margins().width());                                              \
+    set_should_ignore_snapping(true);                                    \
   }
 
 // undef upstream one first then define it with our one.
 #undef IDS_PERMISSIONS_BUBBLE_PROMPT
 #define IDS_PERMISSIONS_BUBBLE_PROMPT IDS_BRAVE_PERMISSIONS_BUBBLE_PROMPT
-#include "src/chrome/browser/ui/views/permissions/permission_prompt_bubble_view.cc"
-#undef BRAVE_PERMISSION_PROMPT_BUBBLE_VIEW
+#include "src/chrome/browser/ui/views/permissions/permission_prompt_bubble_one_origin_view.cc"
+#undef BRAVE_PERMISSION_PROMPT_ONE_ORIGIN_VIEW
 #undef IDS_PERMISSIONS_BUBBLE_PROMPT
