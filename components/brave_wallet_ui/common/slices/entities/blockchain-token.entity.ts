@@ -246,3 +246,25 @@ export const makeSelectAllUserAssetsForChainFromQueryResult = () => {
     (registry, chainId) => getEntitiesListFromEntityState(registry, registry.idsByChainId[chainId])
   )
 }
+
+// combined tokens list
+export const selectCombinedTokensList = createDraftSafeSelector(
+  // inputs
+  [
+    (knownTokens: BraveWallet.BlockchainToken[]) => knownTokens,
+    (_, userTokens: BraveWallet.BlockchainToken[]) => userTokens
+  ],
+  // output
+  (knownTokensList, userTokensList) => {
+    const filteredKnownTokens = knownTokensList.filter(
+      (token) =>
+        !userTokensList.some(
+          (userToken) =>
+            userToken.contractAddress === token.contractAddress &&
+            userToken.chainId === token.chainId &&
+            userToken.tokenId === token.tokenId
+        )
+    )
+    return userTokensList.concat(filteredKnownTokens)
+  }
+)
