@@ -287,7 +287,7 @@ void AIChatTabHelper::CleanUp() {
 }
 
 void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
-    const ConversationTurn &turn) {
+    const ConversationTurn& turn) {
   std::string prompt = base::ReplaceStringPlaceholders(
       l10n_util::GetStringUTF8(IDS_AI_CHAT_SUMMARIZE_PROMPT),
       {article_text_, GetConversationHistoryString(), turn.text}, nullptr);
@@ -309,10 +309,10 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
   bool is_summarize_prompt =
       turn.visibility == ConversationTurnVisibility::DONT_ADD ? true : false;
 
-  ai_chat_api_->QueryPrompt(base::BindOnce(&AIChatTabHelper::OnAPIResponse,
-                                           base::Unretained(this),
-                                           is_summarize_prompt),
-                            std::move(prompt_with_history));
+  ai_chat_api_->QueryPrompt(
+      base::BindOnce(&AIChatTabHelper::OnAPIResponse, base::Unretained(this),
+                     is_summarize_prompt),
+      std::move(prompt_with_history));
 }
 
 void AIChatTabHelper::OnAPIResponse(bool contains_summary,
