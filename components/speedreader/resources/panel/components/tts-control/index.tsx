@@ -24,6 +24,7 @@ function TtsControl(props: TtsControlProps) {
   }
 
   const [isPlaying, setPlaying] = React.useState(false)
+  dataHandler.isPlaying().then(res => setPlaying(res.isPlaying))
   eventsHandler.onReadingStateChanged.addListener((state: ReadingState) => {
     setPlaying(state === ReadingState.kPlaying)
   })

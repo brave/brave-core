@@ -6,7 +6,7 @@ import styled from 'styled-components'
 
 export const ToolbarWrapper = styled.div`
   width: 100%;
-  height: 40px;
+  height: 2.5rem;
   display: flex;
   background: var(--color-panel-background);
   color: var(--color-button-text);

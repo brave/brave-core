@@ -46,6 +46,7 @@ SpeedreaderToolbarDataHandlerImpl::SpeedreaderToolbarDataHandlerImpl(
   tts_player_observation_.Observe(speedreader::TtsPlayer::GetInstance());
   speedreader::TtsPlayer::GetInstance()->set_delegate(
       std::make_unique<TtsPlayerDelegate>());
+  SetTtsSettings(GetSpeedreaderService()->GetTtsSettings().Clone());
 }
 
 SpeedreaderToolbarDataHandlerImpl::~SpeedreaderToolbarDataHandlerImpl() =
@@ -76,6 +77,10 @@ void SpeedreaderToolbarDataHandlerImpl::SetTtsSettings(
 
 void SpeedreaderToolbarDataHandlerImpl::ViewOriginal() {
   GetSpeedreaderTabHelper()->OnShowOriginalPage();
+}
+
+void SpeedreaderToolbarDataHandlerImpl::IsPlaying(IsPlayingCallback callback) {
+  std::move(callback).Run(GetTtsController().IsPlaying());
 }
 
 void SpeedreaderToolbarDataHandlerImpl::Rewind() {

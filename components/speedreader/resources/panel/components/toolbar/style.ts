@@ -9,7 +9,7 @@ export const Box = styled.div`
   display: flex;
   background: transparent;
   width: 870px;
-  height: 40px;
+  height: 100%;
   user-select: none;
   margin: 0 auto;
 `

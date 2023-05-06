@@ -6,20 +6,21 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_SPEEDREADER_READER_MODE_PANEL_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_SPEEDREADER_READER_MODE_PANEL_VIEW_H_
 
+#include <memory>
+
 #include "content/public/browser/browser_context.h"
-#include "content/public/browser/context_menu_params.h"
-#include "content/public/browser/render_frame_host.h"
 #include "ui/views/controls/webview/webview.h"
 
-class ReaderModePanelView : public views::WebView {
+class ReaderModePanelView : public views::View {
  public:
   explicit ReaderModePanelView(content::BrowserContext* browser_context);
   ~ReaderModePanelView() override;
 
  private:
-  // WebView:
-  bool HandleContextMenu(content::RenderFrameHost& render_frame_host,
-                         const content::ContextMenuParams& params) override;
+  gfx::Size CalculatePreferredSize() const override;
+  void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
+
+  std::unique_ptr<views::WebView> toolbar_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SPEEDREADER_READER_MODE_PANEL_VIEW_H_

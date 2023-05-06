@@ -48,6 +48,7 @@ class SpeedreaderToolbarDataHandlerImpl
 
   void ViewOriginal() override;
 
+  void IsPlaying(IsPlayingCallback callback) override;
   void Rewind() override;
   void Play() override;
   void Pause() override;

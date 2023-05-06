@@ -50,7 +50,7 @@ void BraveContentsLayoutManager::Layout(views::View* contents_container) {
   sidebar_container_view_->SetBoundsRect(host_->GetMirroredRect(bounds));
 
   if (reader_mode_panel_view_ && reader_mode_panel_view_->GetVisible()) {
-    contents_height -= 40;
+    contents_height -= reader_mode_panel_view_->GetPreferredSize().height();
   }
   gfx::Size container_size(contents_width, contents_height);
   gfx::Rect new_devtools_bounds;
@@ -64,8 +64,9 @@ void BraveContentsLayoutManager::Layout(views::View* contents_container) {
   new_contents_bounds.Offset(sidebar_on_left_ ? proposed_sidebar_width : 0, 0);
 
   if (reader_mode_panel_view_ && reader_mode_panel_view_->GetVisible()) {
-    reader_mode_panel_bounds.SetRect(new_contents_bounds.x(), 0,
-                                     new_contents_bounds.width(), 40);
+    reader_mode_panel_bounds.SetRect(
+        new_contents_bounds.x(), 0, new_contents_bounds.width(),
+        reader_mode_panel_view_->GetPreferredSize().height());
     new_contents_bounds.set_y(reader_mode_panel_bounds.height());
   }
   // DevTools cares about the specific position, so we have to compensate RTL
