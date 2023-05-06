@@ -6,7 +6,7 @@
 #include "brave/ios/browser/api/web_image/web_image.h"
 #include "brave/ios/browser/api/web_image/image_downloader.h"
 #include "brave/ios/browser/svg/svg_image.h"
-#include "ios/chrome/browser/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "net/base/mac/url_conversions.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "skia/ext/skia_utils_ios.h"

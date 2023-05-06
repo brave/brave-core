@@ -20,9 +20,9 @@ source_set("web_state") {
   deps = [
     "//base",
     "//components/keyed_service/ios:ios",
-    "//ios/chrome/browser/browser_state",
     "//ios/chrome/browser/main:public",
     "//ios/chrome/browser/sessions",
+    "//ios/chrome/browser/shared/model/browser_state",
     "//ios/chrome/browser/sync",
     "//ios/chrome/browser/tabs",
     "//ios/chrome/browser/web_state_list",

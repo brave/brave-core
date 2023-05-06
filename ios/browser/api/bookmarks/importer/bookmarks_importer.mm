@@ -25,8 +25,8 @@
 #include "components/user_prefs/user_prefs.h"
 #include "ios/chrome/browser/application_context/application_context.h"
 #include "ios/chrome/browser/bookmarks/local_or_syncable_bookmark_model_factory.h"
-#include "ios/chrome/browser/browser_state/chrome_browser_state.h"
-#include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
+#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 
