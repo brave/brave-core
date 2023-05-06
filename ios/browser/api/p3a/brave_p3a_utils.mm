@@ -16,7 +16,7 @@
 #include "brave/components/p3a/pref_names.h"
 #include "brave/ios/browser/api/p3a/brave_histograms_controller+private.h"
 #include "components/prefs/pref_service.h"
-#include "ios/chrome/browser/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 
 P3AMetricLogType const P3AMetricLogTypeSlow =
     static_cast<P3AMetricLogType>(p3a::MetricLogType::kSlow);

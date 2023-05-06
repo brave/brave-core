@@ -26,7 +26,7 @@ source_set("bookmarks") {
     "//components/user_prefs",
     "//ios/chrome/browser/application_context:application_context",
     "//ios/chrome/browser/bookmarks",
-    "//ios/chrome/browser/browser_state",
+    "//ios/chrome/browser/shared/model/browser_state",
     "//ios/chrome/browser/ui/bookmarks",
     "//ios/chrome/browser/ui/bookmarks:core",
     "//ios/chrome/browser/ui/bookmarks:utils",
