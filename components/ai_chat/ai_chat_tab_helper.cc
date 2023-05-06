@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/ai_chat_tab_helper.h"
 
 #include <queue>
+#include <string>
 #include <utility>
 
 #include "base/containers/contains.h"
@@ -131,8 +132,8 @@ const std::string& AIChatTabHelper::GetConversationHistoryString() {
   std::vector<std::string> turn_strings;
   for (const ConversationTurn& turn : chat_history_) {
     turn_strings.push_back((turn.character_type == CharacterType::HUMAN
-                                ? ai_chat::kHumanPrompt
-                                : ai_chat::kAIPrompt) +
+                                ? ai_chat::kHumanPromptPlaceholder
+                                : ai_chat::kAIPromptPlaceholder) +
                            turn.text);
   }
 
@@ -265,13 +266,13 @@ void AIChatTabHelper::DistillViaAlgorithm(const ui::AXTree& tree) {
           << " Number of chars in content text = " << contents_text.length()
           << "\n";
 
-  std::string summarize_prompt = base::ReplaceStringPlaceholders(
-      l10n_util::GetStringUTF8(IDS_AI_CHAT_SUMMARIZE_PROMPT), {contents_text},
-      nullptr);
+  article_text_ = contents_text;
+
+  std::string summarize_prompt = "Summarize the above article.";
 
   // We hide the prompt with article content from the user
   MakeAPIRequestWithConversationHistoryUpdate(
-      {CharacterType::HUMAN, ConversationTurnVisibility::HIDDEN,
+      {CharacterType::HUMAN, ConversationTurnVisibility::DONT_ADD,
        summarize_prompt});
 }
 
@@ -286,26 +287,32 @@ void AIChatTabHelper::CleanUp() {
 }
 
 void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
-    const ConversationTurn& turn) {
-  AddToConversationHistory(turn);
+    const ConversationTurn &turn) {
+  std::string prompt = base::ReplaceStringPlaceholders(
+      l10n_util::GetStringUTF8(IDS_AI_CHAT_SUMMARIZE_PROMPT),
+      {article_text_, GetConversationHistoryString(), turn.text}, nullptr);
 
   std::string prompt_with_history =
-      base::StrCat({GetConversationHistoryString(), ai_chat::kAIPrompt});
+      base::StrCat({prompt, ai_chat::kAIPrompt, " <response>\n"});
+
+  if (turn.visibility != ConversationTurnVisibility::DONT_ADD) {
+    AddToConversationHistory(turn);
+  }
 
   DCHECK(ai_chat_api_);
+
+  SetRequestInProgress(true);
 
   // Assuming a hidden conversation has a summary prompt,
   // the incoming response is expected to include the AI-generated summary.
   // TODO(nullhook): Improve this heuristic, as it may or may not be true.
-  bool contains_summary =
-      turn.visibility == ConversationTurnVisibility::HIDDEN ? true : false;
+  bool is_summarize_prompt =
+      turn.visibility == ConversationTurnVisibility::DONT_ADD ? true : false;
 
-  SetRequestInProgress(true);
-
-  ai_chat_api_->QueryPrompt(
-      base::BindOnce(&AIChatTabHelper::OnAPIResponse, base::Unretained(this),
-                     contains_summary),
-      std::move(prompt_with_history));
+  ai_chat_api_->QueryPrompt(base::BindOnce(&AIChatTabHelper::OnAPIResponse,
+                                           base::Unretained(this),
+                                           is_summarize_prompt),
+                            std::move(prompt_with_history));
 }
 
 void AIChatTabHelper::OnAPIResponse(bool contains_summary,

@@ -102,6 +102,7 @@ void AIChatAPI::QueryPrompt(ResponseCallback callback,
   base::Value::Dict dict;
   base::Value::List stop_sequences;
   stop_sequences.Append("\n\nHuman:");
+  stop_sequences.Append("</response>");
 
   const auto model_name = ai_chat::features::kAIModelName.Get();
   DCHECK(!model_name.empty());
