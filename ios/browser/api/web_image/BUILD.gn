@@ -21,5 +21,6 @@ source_set("web_image") {
     "//ios/chrome/browser/shared/model/browser_state",
     "//ios/chrome/browser/shared/ui/util",
     "//net",
+    "//skia",
   ]
 }
