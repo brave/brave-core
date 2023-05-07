@@ -25,24 +25,15 @@ TransactionInfo& TransactionInfo::operator=(TransactionInfo&& other) noexcept =
 
 TransactionInfo::~TransactionInfo() = default;
 
-// TODO(https://github.com/brave/brave-browser/issues/23087):
-// |base::IsApproximatelyEqual| can be removed for timestamp comparisons once
-// timestamps are persisted using |ToDeltaSinceWindowsEpoch| and
-// |FromDeltaSinceWindowsEpoch| in microseconds.
 bool TransactionInfo::operator==(const TransactionInfo& other) const {
-  return id == other.id &&
-         base::IsApproximatelyEqual(created_at.ToDoubleT(),
-                                    other.created_at.ToDoubleT(),
-                                    std::numeric_limits<double>::epsilon()) &&
+  return id == other.id && created_at == other.created_at &&
          creative_instance_id == other.creative_instance_id &&
          segment == other.segment &&
          base::IsApproximatelyEqual(value, other.value,
                                     std::numeric_limits<double>::epsilon()) &&
          ad_type == other.ad_type &&
          confirmation_type == other.confirmation_type &&
-         base::IsApproximatelyEqual(reconciled_at.ToDoubleT(),
-                                    other.reconciled_at.ToDoubleT(),
-                                    std::numeric_limits<double>::epsilon());
+         reconciled_at == other.reconciled_at;
 }
 
 bool TransactionInfo::operator!=(const TransactionInfo& other) const {
