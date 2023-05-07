@@ -106,7 +106,8 @@ class SidebarItemsContentsView : public views::View,
 
   gfx::ImageSkia GetImageForBuiltInItems(
       sidebar::SidebarItem::BuiltInItemType type,
-      bool focus) const;
+      bool focus,
+      bool disabled) const;
   void UpdateAllBuiltInItemsViewState();
   void ShowItemAddedFeedbackBubble(views::View* anchor_view);
 

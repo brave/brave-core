@@ -265,7 +265,10 @@ void BindPlaylistRenderFrameBrowserClient(
   auto* playlist_service =
       playlist::PlaylistServiceFactory::GetForBrowserContext(
           frame_host->GetBrowserContext());
-  DCHECK(playlist_service);
+  if (!playlist_service) {
+    // We don't support playlist on OTR profile.
+    return;
+  }
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<playlist::PlaylistRenderFrameBrowserClient>(
           frame_host->GetGlobalId(), playlist_service->GetWeakPtr()),
