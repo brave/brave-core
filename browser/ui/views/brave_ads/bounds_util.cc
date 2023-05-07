@@ -19,7 +19,7 @@ enum class EdgeGravity { kTop, kBottom, kLeft, kRight };
 
 gfx::Rect GetDisplayScreenWorkArea(gfx::Rect* bounds,
                                    gfx::NativeView native_view) {
-  DCHECK(bounds);
+  CHECK(bounds);
 
   gfx::Rect work_area =
       display::Screen::GetScreen()->GetDisplayMatching(*bounds).work_area();
@@ -46,7 +46,7 @@ gfx::Rect GetNearestDisplayScreenWorkArea(gfx::NativeView native_view) {
 }
 
 void AdjustBoundsToFitWorkArea(const gfx::Rect& work_area, gfx::Rect* bounds) {
-  DCHECK(bounds);
+  CHECK(bounds);
 
   bounds->AdjustToFit(work_area);
 }
@@ -55,8 +55,8 @@ void AdjustBoundsToFitWorkArea(const gfx::Rect& work_area, gfx::Rect* bounds) {
 
 void AdjustBoundsAndSnapToFitWorkAreaForNativeView(views::Widget* widget,
                                                    gfx::Rect* bounds) {
-  DCHECK(widget);
-  DCHECK(bounds);
+  CHECK(widget);
+  CHECK(bounds);
 
   gfx::NativeView native_view = widget->GetNativeView();
   gfx::Rect work_area;
@@ -76,7 +76,7 @@ void AdjustBoundsAndSnapToFitWorkAreaForNativeView(views::Widget* widget,
 }
 
 void SnapBoundsToEdgeOfWorkArea(const gfx::Rect& work_area, gfx::Rect* bounds) {
-  DCHECK(bounds);
+  CHECK(bounds);
 
   EdgeGravity gravity = EdgeGravity::kTop;
   int min_dist = bounds->y() - work_area.y();

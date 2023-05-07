@@ -90,7 +90,7 @@ void RedeemUnblindedPaymentTokens::MaybeRedeemAfterDelay(
 ///////////////////////////////////////////////////////////////////////////////
 
 void RedeemUnblindedPaymentTokens::Redeem() {
-  DCHECK(!is_processing_);
+  CHECK(!is_processing_);
 
   BLOG(1, "RedeemUnblindedPaymentTokens");
 

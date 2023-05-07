@@ -50,12 +50,12 @@ class BatchDLEQProof {
   }
 
   challenge_bypass_ristretto::BatchDLEQProof& get() {
-    DCHECK(batch_dleq_proof_);
+    CHECK(batch_dleq_proof_);
     return *batch_dleq_proof_;
   }
 
   const challenge_bypass_ristretto::BatchDLEQProof& get() const {
-    DCHECK(batch_dleq_proof_);
+    CHECK(batch_dleq_proof_);
     return *batch_dleq_proof_;
   }
 

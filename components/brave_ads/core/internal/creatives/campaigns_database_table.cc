@@ -22,7 +22,7 @@ constexpr char kTableName[] = "campaigns";
 
 size_t BindParameters(mojom::DBCommandInfo* command,
                       const CreativeAdList& creative_ads) {
-  DCHECK(command);
+  CHECK(command);
 
   size_t count = 0;
 
@@ -43,7 +43,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
 }
 
 void MigrateToV24(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   DropTable(transaction, "campaigns");
 
@@ -70,7 +70,7 @@ void Campaigns::Delete(ResultCallback callback) const {
 
 void Campaigns::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                                const CreativeAdList& creative_ads) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   if (creative_ads.empty()) {
     return;
@@ -87,7 +87,7 @@ std::string Campaigns::GetTableName() const {
 }
 
 void Campaigns::Create(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -102,7 +102,7 @@ void Campaigns::Create(mojom::DBTransactionInfo* transaction) {
 
 void Campaigns::Migrate(mojom::DBTransactionInfo* transaction,
                         const int to_version) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   switch (to_version) {
     case 24: {
@@ -121,7 +121,7 @@ void Campaigns::Migrate(mojom::DBTransactionInfo* transaction,
 std::string Campaigns::BuildInsertOrUpdateSql(
     mojom::DBCommandInfo* command,
     const CreativeAdList& creative_ads) const {
-  DCHECK(command);
+  CHECK(command);
 
   const size_t binded_parameters_count = BindParameters(command, creative_ads);
 

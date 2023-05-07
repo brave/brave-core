@@ -22,7 +22,7 @@ namespace {
 
 std::string GetTopSegmentFromPageProbabilities(
     const TextClassificationProbabilityMap& probabilities) {
-  DCHECK(!probabilities.empty());
+  CHECK(!probabilities.empty());
 
   return base::ranges::max_element(probabilities,
                                    [](const SegmentProbabilityPair& lhs,
@@ -59,7 +59,7 @@ void TextClassificationProcessor::Process(const std::string& text) {
   }
 
   const std::string segment = GetTopSegmentFromPageProbabilities(probabilities);
-  DCHECK(!segment.empty());
+  CHECK(!segment.empty());
   BLOG(1, "Classified text with the top segment as " << segment);
 
   ClientStateManager::GetInstance()

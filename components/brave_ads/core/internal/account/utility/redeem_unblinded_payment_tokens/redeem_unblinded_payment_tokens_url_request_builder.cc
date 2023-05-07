@@ -36,41 +36,36 @@ std::vector<std::string> BuildHeaders() {
 base::Value::Dict CreateCredential(
     const privacy::UnblindedPaymentTokenInfo& unblinded_payment_token,
     const std::string& payload) {
-  DCHECK(!payload.empty());
+  CHECK(!payload.empty());
 
   absl::optional<privacy::cbr::VerificationKey> verification_key =
       unblinded_payment_token.value.DeriveVerificationKey();
   if (!verification_key) {
-    NOTREACHED();
-    return {};
+    NOTREACHED_NORETURN();
   }
 
   const absl::optional<privacy::cbr::VerificationSignature>
       verification_signature = verification_key->Sign(payload);
   if (!verification_signature) {
-    NOTREACHED();
-    return {};
+    NOTREACHED_NORETURN();
   }
 
   const absl::optional<std::string> verification_signature_base64 =
       verification_signature->EncodeBase64();
   if (!verification_signature_base64) {
-    NOTREACHED();
-    return {};
+    NOTREACHED_NORETURN();
   }
 
   const absl::optional<privacy::cbr::TokenPreimage> token_preimage =
       unblinded_payment_token.value.GetTokenPreimage();
   if (!token_preimage) {
-    NOTREACHED();
-    return {};
+    NOTREACHED_NORETURN();
   }
 
   const absl::optional<std::string> token_preimage_base64 =
       token_preimage->EncodeBase64();
   if (!token_preimage_base64) {
-    NOTREACHED();
-    return {};
+    NOTREACHED_NORETURN();
   }
 
   base::Value::Dict dict;
@@ -90,8 +85,8 @@ RedeemUnblindedPaymentTokensUrlRequestBuilder::
     : wallet_(std::move(wallet)),
       unblinded_payment_tokens_(std::move(unblinded_payment_tokens)),
       user_data_(std::move(user_data)) {
-  DCHECK(wallet_.IsValid());
-  DCHECK(!unblinded_payment_tokens_.empty());
+  CHECK(wallet_.IsValid());
+  CHECK(!unblinded_payment_tokens_.empty());
 }
 
 RedeemUnblindedPaymentTokensUrlRequestBuilder::
@@ -121,8 +116,8 @@ GURL RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildUrl() const {
 
 std::string RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildBody(
     const std::string& payload) {
-  DCHECK(!payload.empty());
-  DCHECK(!user_data_.empty());
+  CHECK(!payload.empty());
+  CHECK(!user_data_.empty());
 
   base::Value::Dict dict;
 
@@ -150,7 +145,7 @@ std::string RedeemUnblindedPaymentTokensUrlRequestBuilder::CreatePayload()
 base::Value::List
 RedeemUnblindedPaymentTokensUrlRequestBuilder::CreatePaymentRequestDTO(
     const std::string& payload) const {
-  DCHECK(!payload.empty());
+  CHECK(!payload.empty());
 
   base::Value::List list;
 
@@ -166,7 +161,7 @@ RedeemUnblindedPaymentTokensUrlRequestBuilder::CreatePaymentRequestDTO(
     const absl::optional<std::string> public_key_base64 =
         unblinded_payment_token.public_key.EncodeBase64();
     if (!public_key_base64) {
-      NOTREACHED();
+      NOTREACHED_NORETURN();
     } else {
       dict.Set("publicKey", *public_key_base64);
     }

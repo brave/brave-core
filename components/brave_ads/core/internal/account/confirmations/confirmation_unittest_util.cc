@@ -20,13 +20,13 @@ namespace brave_ads {
 absl::optional<ConfirmationInfo> BuildConfirmation(
     privacy::TokenGeneratorInterface* token_generator,
     const TransactionInfo& transaction) {
-  DCHECK(token_generator);
+  CHECK(token_generator);
   return CreateConfirmation(token_generator, transaction, /*user_data*/ {});
 }
 
 absl::optional<ConfirmationInfo> BuildConfirmation(
     privacy::TokenGeneratorInterface* token_generator) {
-  DCHECK(token_generator);
+  CHECK(token_generator);
 
   TransactionInfo transaction;
   transaction.id = kTransactionId;

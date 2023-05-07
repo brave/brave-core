@@ -39,7 +39,7 @@ bool DoesRespectCreativeCap(const CreativeAdInfo& creative_ad,
 template <typename T>
 bool ShouldInclude(const T& ad,
                    const ExclusionRuleInterface<T>* const exclusion_rule) {
-  DCHECK(exclusion_rule);
+  CHECK(exclusion_rule);
 
   const auto result = exclusion_rule->ShouldInclude(ad);
   if (!result.has_value()) {

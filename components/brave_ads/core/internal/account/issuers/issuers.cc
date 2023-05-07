@@ -54,7 +54,7 @@ void Issuers::MaybeFetch() {
 //////////////////////////////////////////////////////////////////////////////
 
 void Issuers::Fetch() {
-  DCHECK(!is_fetching_);
+  CHECK(!is_fetching_);
 
   BLOG(1, "FetchIssuers" << BuildIssuersUrlPath());
 
@@ -115,7 +115,7 @@ void Issuers::FailedToFetchIssuers(const bool should_retry) {
 }
 
 void Issuers::FetchAfterDelay() {
-  DCHECK(!retry_timer_.IsRunning());
+  CHECK(!retry_timer_.IsRunning());
 
   const base::Time fetch_at = timer_.StartWithPrivacy(
       FROM_HERE, GetFetchDelay(),
@@ -126,7 +126,7 @@ void Issuers::FetchAfterDelay() {
 }
 
 void Issuers::RetryAfterDelay() {
-  DCHECK(!timer_.IsRunning());
+  CHECK(!timer_.IsRunning());
 
   const base::Time retry_at = retry_timer_.StartWithPrivacy(
       FROM_HERE, kRetryAfter,

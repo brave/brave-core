@@ -173,7 +173,7 @@ template <typename T>
 std::vector<int> ComputeVoteRegistry(
     const std::vector<T>& creative_ads,
     const TextEmbeddingHtmlEventList& text_embedding_html_events) {
-  DCHECK(!creative_ads.empty());
+  CHECK(!creative_ads.empty());
 
   std::vector<int> vote_registry(creative_ads.size());
 
@@ -196,7 +196,7 @@ std::vector<int> ComputeVoteRegistry(
 
     while (iter != similarity_scores.end()) {
       const size_t index = std::distance(similarity_scores.cbegin(), iter);
-      DCHECK_LT(index, vote_registry.size());
+      CHECK_LT(index, vote_registry.size());
       vote_registry[index]++;
 
       iter = base::ranges::find_if(
@@ -207,7 +207,7 @@ std::vector<int> ComputeVoteRegistry(
     }
   }
 
-  DCHECK_EQ(vote_registry.size(), creative_ads.size());
+  CHECK_EQ(vote_registry.size(), creative_ads.size());
   return vote_registry;
 }
 

@@ -13,7 +13,7 @@ namespace brave_ads {
 
 std::string BuildCreateOptedOutConfirmationUrlPath(
     const std::string& transaction_id) {
-  DCHECK(!transaction_id.empty());
+  CHECK(!transaction_id.empty());
 
   return base::StringPrintf("/v%d/confirmation/%s", kConfirmationServerVersion,
                             transaction_id.c_str());

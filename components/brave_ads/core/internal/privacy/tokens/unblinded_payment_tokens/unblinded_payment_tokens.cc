@@ -16,7 +16,7 @@ UnblindedPaymentTokens::UnblindedPaymentTokens() = default;
 UnblindedPaymentTokens::~UnblindedPaymentTokens() = default;
 
 const UnblindedPaymentTokenInfo& UnblindedPaymentTokens::GetToken() const {
-  DCHECK_NE(Count(), 0U);
+  CHECK_NE(Count(), 0U);
 
   return unblinded_payment_tokens_.front();
 }

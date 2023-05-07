@@ -40,19 +40,19 @@ std::string GetResourceKey(const std::string& id, int version) {
 
 ResourceComponent::ResourceComponent(Delegate* delegate)
     : brave_component_updater::BraveComponent(delegate) {
-  DCHECK(delegate);
+  CHECK(delegate);
 }
 
 ResourceComponent::~ResourceComponent() = default;
 
 void ResourceComponent::AddObserver(ResourceComponentObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
 
   observers_.AddObserver(observer);
 }
 
 void ResourceComponent::RemoveObserver(ResourceComponentObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
 
   observers_.RemoveObserver(observer);
 }
@@ -85,7 +85,7 @@ absl::optional<base::FilePath> ResourceComponent::GetPath(const std::string& id,
 
 void ResourceComponent::RegisterComponentForCountryCode(
     const std::string& country_code) {
-  DCHECK(!country_code.empty());
+  CHECK(!country_code.empty());
 
   const absl::optional<ComponentInfo> component =
       GetComponentInfo(country_code);
@@ -104,7 +104,7 @@ void ResourceComponent::RegisterComponentForCountryCode(
 
 void ResourceComponent::RegisterComponentForLanguageCode(
     const std::string& language_code) {
-  DCHECK(!language_code.empty());
+  CHECK(!language_code.empty());
 
   const absl::optional<ComponentInfo> component =
       GetComponentInfo(language_code);

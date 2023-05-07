@@ -16,7 +16,7 @@ std::string GetCountryCode(const std::string& subdivision) {
   const std::vector<std::string> components = base::SplitString(
       subdivision, "-", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
 
-  DCHECK_EQ(2U, components.size());
+  CHECK_EQ(2U, components.size());
 
   return components.front();
 }
@@ -25,7 +25,7 @@ std::string GetSubdivisionCode(const std::string& subdivision) {
   const std::vector<std::string> components = base::SplitString(
       subdivision, "-", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
 
-  DCHECK_EQ(2U, components.size());
+  CHECK_EQ(2U, components.size());
 
   return components.back();
 }

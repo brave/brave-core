@@ -22,7 +22,7 @@ namespace {
 constexpr char kSegmentSeparator[] = "-";
 
 std::vector<std::string> SplitSegment(const std::string& segment) {
-  DCHECK(!segment.empty());
+  CHECK(!segment.empty());
 
   return base::SplitString(segment, kSegmentSeparator, base::KEEP_WHITESPACE,
                            base::SPLIT_WANT_ALL);
@@ -38,7 +38,7 @@ SegmentList GetSegments(const CatalogInfo& catalog) {
   for (const auto& campaign : catalog.campaigns) {
     for (const auto& creative_set : campaign.creative_sets) {
       for (const auto& segment : creative_set.segments) {
-        DCHECK(!segment.name.empty());
+        CHECK(!segment.name.empty());
 
         if (exists.find(segment.name) != std::cend(exists)) {
           continue;
@@ -55,10 +55,10 @@ SegmentList GetSegments(const CatalogInfo& catalog) {
 }
 
 std::string GetParentSegment(const std::string& segment) {
-  DCHECK(!segment.empty());
+  CHECK(!segment.empty());
 
   const std::vector<std::string> components = SplitSegment(segment);
-  DCHECK(!components.empty());
+  CHECK(!components.empty());
 
   return components.front();
 }
@@ -69,10 +69,10 @@ SegmentList GetParentSegments(const SegmentList& segments) {
   base::flat_set<std::string> exists;
 
   for (const auto& segment : segments) {
-    DCHECK(!segment.empty());
+    CHECK(!segment.empty());
 
     const std::string parent_segment = GetParentSegment(segment);
-    DCHECK(!parent_segment.empty());
+    CHECK(!parent_segment.empty());
 
     if (exists.find(parent_segment) != std::cend(exists)) {
       continue;
@@ -87,16 +87,16 @@ SegmentList GetParentSegments(const SegmentList& segments) {
 }
 
 bool HasChildSegment(const std::string& segment) {
-  DCHECK(!segment.empty());
+  CHECK(!segment.empty());
 
   const std::vector<std::string> components = SplitSegment(segment);
-  DCHECK(!components.empty());
+  CHECK(!components.empty());
 
   return components.size() != 1;
 }
 
 bool ShouldFilterSegment(const std::string& segment) {
-  DCHECK(!segment.empty());
+  CHECK(!segment.empty());
 
   const FilteredCategoryList& filtered_segments =
       ClientStateManager::GetInstance().GetFilteredCategories();

@@ -15,7 +15,7 @@ std::vector<cbr::Token> TokenGenerator::Generate(const size_t count) const {
 
   for (size_t i = 0; i < count; i++) {
     const cbr::Token token;
-    DCHECK(token.has_value());
+    CHECK(token.has_value());
     tokens.push_back(token);
   }
 

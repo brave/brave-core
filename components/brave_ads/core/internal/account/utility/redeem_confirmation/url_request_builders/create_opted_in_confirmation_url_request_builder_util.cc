@@ -14,8 +14,8 @@ namespace brave_ads {
 std::string BuildCreateOptedInConfirmationUrlPath(
     const std::string& transaction_id,
     const std::string& credential_base64_url) {
-  DCHECK(!transaction_id.empty());
-  DCHECK(!credential_base64_url.empty());
+  CHECK(!transaction_id.empty());
+  CHECK(!credential_base64_url.empty());
 
   return base::StringPrintf("/v%d/confirmation/%s/%s",
                             kConfirmationServerVersion, transaction_id.c_str(),

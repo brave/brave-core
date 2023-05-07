@@ -47,7 +47,7 @@ bool DidUserClickTheSameAdMultipleTimes(const HistoryItemInfo& history_item) {
 
   const size_t remind_user_if_clicking_the_same_ad_after =
       kRemindUserIfClickingTheSameAdAfter.Get();
-  DCHECK_GT(remind_user_if_clicking_the_same_ad_after, 0U);
+  CHECK_GT(remind_user_if_clicking_the_same_ad_after, 0U);
 
   return (count - 1) % remind_user_if_clicking_the_same_ad_after ==
          remind_user_if_clicking_the_same_ad_after - 1;

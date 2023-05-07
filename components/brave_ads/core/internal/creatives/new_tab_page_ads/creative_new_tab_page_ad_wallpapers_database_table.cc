@@ -23,7 +23,7 @@ constexpr char kTableName[] = "creative_new_tab_page_ad_wallpapers";
 
 size_t BindParameters(mojom::DBCommandInfo* command,
                       const CreativeNewTabPageAdList& creative_ads) {
-  DCHECK(command);
+  CHECK(command);
 
   size_t count = 0;
 
@@ -43,7 +43,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
 }
 
 void MigrateToV24(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   DropTable(transaction, "creative_new_tab_page_ad_wallpapers");
 
@@ -63,7 +63,7 @@ void MigrateToV24(mojom::DBTransactionInfo* transaction) {
 void CreativeNewTabPageAdWallpapers::InsertOrUpdate(
     mojom::DBTransactionInfo* transaction,
     const CreativeNewTabPageAdList& creative_ads) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   CreativeNewTabPageAdList filtered_creative_ads;
   base::ranges::copy_if(creative_ads, std::back_inserter(filtered_creative_ads),
@@ -95,7 +95,7 @@ std::string CreativeNewTabPageAdWallpapers::GetTableName() const {
 
 void CreativeNewTabPageAdWallpapers::Create(
     mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -112,7 +112,7 @@ void CreativeNewTabPageAdWallpapers::Create(
 void CreativeNewTabPageAdWallpapers::Migrate(
     mojom::DBTransactionInfo* transaction,
     const int to_version) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   switch (to_version) {
     case 24: {
@@ -131,7 +131,7 @@ void CreativeNewTabPageAdWallpapers::Migrate(
 std::string CreativeNewTabPageAdWallpapers::BuildInsertOrUpdateSql(
     mojom::DBCommandInfo* command,
     const CreativeNewTabPageAdList& creative_ads) const {
-  DCHECK(command);
+  CHECK(command);
 
   const size_t binded_parameters_count = BindParameters(command, creative_ads);
 

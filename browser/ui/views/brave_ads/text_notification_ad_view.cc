@@ -142,7 +142,7 @@ views::View* TextNotificationAdView::CreateBodyView(
 
   view->SetBorder(views::CreateEmptyBorder(kBodyViewBorderInsets));
 
-  DCHECK(!body_label_);
+  CHECK(!body_label_);
   body_label_ = CreateBodyLabel(notification_ad);
   view->AddChildView(body_label_.get());
 
@@ -188,7 +188,7 @@ views::Label* TextNotificationAdView::CreateBodyLabel(
 void TextNotificationAdView::UpdateBodyLabel() {
   const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
 
-  DCHECK(body_label_);
+  CHECK(body_label_);
   body_label_->SetEnabledColor(should_use_dark_colors ? kDarkModeBodyColor
                                                       : kLightModeBodyColor);
 }

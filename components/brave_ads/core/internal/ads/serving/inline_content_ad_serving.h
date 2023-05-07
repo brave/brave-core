@@ -38,7 +38,7 @@ class InlineContentAdServing final {
   ~InlineContentAdServing();
 
   void SetDelegate(InlineContentAdServingDelegate* delegate) {
-    DCHECK_EQ(delegate_, nullptr);
+    CHECK_EQ(delegate_, nullptr);
     delegate_ = delegate;
   }
 

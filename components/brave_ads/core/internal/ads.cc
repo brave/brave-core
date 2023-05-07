@@ -12,7 +12,7 @@ namespace brave_ads {
 
 // static
 Ads* Ads::CreateInstance(AdsClient* ads_client) {
-  DCHECK(ads_client);
+  CHECK(ads_client);
   return new AdsImpl(ads_client);
 }
 

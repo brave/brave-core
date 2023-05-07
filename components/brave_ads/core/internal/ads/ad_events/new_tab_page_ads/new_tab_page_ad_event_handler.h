@@ -34,7 +34,7 @@ class NewTabPageAdEventHandler final : public NewTabPageAdEventHandlerDelegate {
   ~NewTabPageAdEventHandler() override;
 
   void SetDelegate(NewTabPageAdEventHandlerDelegate* delegate) {
-    DCHECK_EQ(delegate_, nullptr);
+    CHECK_EQ(delegate_, nullptr);
     delegate_ = delegate;
   }
 

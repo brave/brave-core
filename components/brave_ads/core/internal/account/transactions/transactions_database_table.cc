@@ -30,7 +30,7 @@ namespace {
 constexpr char kTableName[] = "transactions";
 
 void BindRecords(mojom::DBCommandInfo* command) {
-  DCHECK(command);
+  CHECK(command);
 
   command->record_bindings = {
       mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // id
@@ -48,7 +48,7 @@ void BindRecords(mojom::DBCommandInfo* command) {
 
 size_t BindParameters(mojom::DBCommandInfo* command,
                       const TransactionList& transactions) {
-  DCHECK(command);
+  CHECK(command);
 
   size_t count = 0;
 
@@ -70,7 +70,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
 }
 
 TransactionInfo GetFromRecord(mojom::DBRecordInfo* record) {
-  DCHECK(record);
+  CHECK(record);
 
   TransactionInfo transaction;
 
@@ -106,7 +106,7 @@ void OnGetTransactions(GetTransactionsCallback callback,
 }
 
 void MigrateToV18(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -121,7 +121,7 @@ void MigrateToV18(mojom::DBTransactionInfo* transaction) {
 }
 
 void MigrateToV26(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   // Create a temporary table with new |segment| column.
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
@@ -248,7 +248,7 @@ std::string Transactions::GetTableName() const {
 }
 
 void Transactions::Create(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -263,7 +263,7 @@ void Transactions::Create(mojom::DBTransactionInfo* transaction) {
 
 void Transactions::Migrate(mojom::DBTransactionInfo* transaction,
                            const int to_version) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   switch (to_version) {
     case 18: {
@@ -286,7 +286,7 @@ void Transactions::Migrate(mojom::DBTransactionInfo* transaction,
 
 void Transactions::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                                   const TransactionList& transactions) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   if (transactions.empty()) {
     return;
@@ -301,7 +301,7 @@ void Transactions::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
 std::string Transactions::BuildInsertOrUpdateSql(
     mojom::DBCommandInfo* command,
     const TransactionList& transactions) const {
-  DCHECK(command);
+  CHECK(command);
 
   const size_t binded_parameters_count = BindParameters(command, transactions);
 

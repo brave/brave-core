@@ -25,7 +25,7 @@ SegmentProbabilityMap GetSegmentProbabilities(
 
   for (const auto& probabilities : text_classification_probabilities) {
     for (const auto& [segment, page_score] : probabilities) {
-      DCHECK(!segment.empty());
+      CHECK(!segment.empty());
 
       const auto iter = segment_probabilities.find(segment);
       if (iter == segment_probabilities.cend()) {
@@ -56,7 +56,7 @@ SegmentList ToSegmentList(const SegmentProbabilityList& segment_probabilities) {
   SegmentList segments;
 
   for (const auto& [segment, probability] : segment_probabilities) {
-    DCHECK(!segment.empty());
+    CHECK(!segment.empty());
 
     segments.push_back(segment);
   }

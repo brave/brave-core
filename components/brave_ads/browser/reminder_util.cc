@@ -64,8 +64,7 @@ absl::optional<base::Value::Dict> GetReminder(const mojom::ReminderType type) {
     }
   }
 
-  NOTREACHED() << "Unexpected value for mojom::ReminderType: " << type;
-  return absl::nullopt;
+  NOTREACHED_NORETURN() << "Unexpected value for mojom::ReminderType: " << type;
 }
 
 }  // namespace brave_ads

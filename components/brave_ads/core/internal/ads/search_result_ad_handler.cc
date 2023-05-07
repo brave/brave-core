@@ -37,7 +37,7 @@ SearchResultAd::~SearchResultAd() = default;
 void SearchResultAd::TriggerEvent(
     mojom::SearchResultAdInfoPtr ad_mojom,
     const mojom::SearchResultAdEventType event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   if (event_type == mojom::SearchResultAdEventType::kViewed) {
     ad_viewed_event_queue_.push_front(std::move(ad_mojom));
@@ -54,14 +54,14 @@ void SearchResultAd::TriggerEvent(
 
 // static
 void SearchResultAd::DeferTriggeringOfAdViewedEventForTesting() {
-  DCHECK(!g_defer_triggering_of_ad_viewed_event_for_testing);
+  CHECK(!g_defer_triggering_of_ad_viewed_event_for_testing);
   g_defer_triggering_of_ad_viewed_event_for_testing = true;
 }
 
 // static
 void SearchResultAd::TriggerDeferredAdViewedEventForTesting() {
-  DCHECK(g_defer_triggering_of_ad_viewed_event_for_testing);
-  DCHECK(g_deferred_search_result_ad_for_testing);
+  CHECK(g_defer_triggering_of_ad_viewed_event_for_testing);
+  CHECK(g_deferred_search_result_ad_for_testing);
   g_defer_triggering_of_ad_viewed_event_for_testing = false;
   g_deferred_search_result_ad_for_testing
       ->trigger_ad_viewed_event_in_progress_ = false;
@@ -72,8 +72,8 @@ void SearchResultAd::TriggerDeferredAdViewedEventForTesting() {
 ///////////////////////////////////////////////////////////////////////////////
 
 void SearchResultAd::MaybeTriggerAdViewedEventFromQueue() {
-  DCHECK((!ad_viewed_event_queue_.empty() ||
-          !trigger_ad_viewed_event_in_progress_));
+  CHECK((!ad_viewed_event_queue_.empty() ||
+         !trigger_ad_viewed_event_in_progress_));
 
   if (ad_viewed_event_queue_.empty() || trigger_ad_viewed_event_in_progress_) {
     return;
@@ -94,8 +94,8 @@ void SearchResultAd::OnFireAdViewedEvent(
     const bool /*success*/,
     const std::string& /*placement_id*/,
     const mojom::SearchResultAdEventType event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
-  DCHECK_EQ(event_type, mojom::SearchResultAdEventType::kViewed);
+  CHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK_EQ(event_type, mojom::SearchResultAdEventType::kViewed);
 
   if (g_defer_triggering_of_ad_viewed_event_for_testing) {
     g_deferred_search_result_ad_for_testing = this;

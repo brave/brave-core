@@ -60,8 +60,8 @@ std::string AverageClickthroughRatePredictorVariable::GetValue() const {
 
   const double clickthrough_rate =
       static_cast<double>(click_count) / static_cast<double>(view_count);
-  DCHECK_GE(clickthrough_rate, 0.0);
-  DCHECK_LE(clickthrough_rate, 1.0);
+  CHECK_GE(clickthrough_rate, 0.0);
+  CHECK_LE(clickthrough_rate, 1.0);
 
   return base::NumberToString(clickthrough_rate);
 }

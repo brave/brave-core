@@ -38,7 +38,7 @@ constexpr char kTableName[] = "creative_new_tab_page_ads";
 constexpr int kDefaultBatchSize = 50;
 
 void BindRecords(mojom::DBCommandInfo* command) {
-  DCHECK(command);
+  CHECK(command);
 
   command->record_bindings = {
       mojom::DBCommandInfo::RecordBindingType::
@@ -80,7 +80,7 @@ void BindRecords(mojom::DBCommandInfo* command) {
 
 size_t BindParameters(mojom::DBCommandInfo* command,
                       const CreativeNewTabPageAdList& creative_ads) {
-  DCHECK(command);
+  CHECK(command);
 
   size_t count = 0;
 
@@ -100,7 +100,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
 }
 
 CreativeNewTabPageAdInfo GetFromRecord(mojom::DBRecordInfo* record) {
-  DCHECK(record);
+  CHECK(record);
 
   CreativeNewTabPageAdInfo creative_ad;
 
@@ -143,7 +143,7 @@ CreativeNewTabPageAdInfo GetFromRecord(mojom::DBRecordInfo* record) {
 
 CreativeNewTabPageAdMap GroupCreativeAdsFromResponse(
     mojom::DBCommandResponseInfoPtr command_response) {
-  DCHECK(command_response);
+  CHECK(command_response);
 
   CreativeNewTabPageAdMap creative_ads;
 
@@ -183,7 +183,7 @@ CreativeNewTabPageAdMap GroupCreativeAdsFromResponse(
 
 CreativeNewTabPageAdList GetCreativeAdsFromResponse(
     mojom::DBCommandResponseInfoPtr command_response) {
-  DCHECK(command_response);
+  CHECK(command_response);
 
   const CreativeNewTabPageAdMap grouped_creative_ads =
       GroupCreativeAdsFromResponse(std::move(command_response));
@@ -258,7 +258,7 @@ void OnGetAll(GetCreativeNewTabPageAdsCallback callback,
 }
 
 void MigrateToV24(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   DropTable(transaction, "creative_new_tab_page_ads");
 
@@ -438,7 +438,7 @@ std::string CreativeNewTabPageAds::GetTableName() const {
 }
 
 void CreativeNewTabPageAds::Create(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -453,7 +453,7 @@ void CreativeNewTabPageAds::Create(mojom::DBTransactionInfo* transaction) {
 
 void CreativeNewTabPageAds::Migrate(mojom::DBTransactionInfo* transaction,
                                     const int to_version) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   switch (to_version) {
     case 24: {
@@ -472,7 +472,7 @@ void CreativeNewTabPageAds::Migrate(mojom::DBTransactionInfo* transaction,
 void CreativeNewTabPageAds::InsertOrUpdate(
     mojom::DBTransactionInfo* transaction,
     const CreativeNewTabPageAdList& creative_ads) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   if (creative_ads.empty()) {
     return;
@@ -487,7 +487,7 @@ void CreativeNewTabPageAds::InsertOrUpdate(
 std::string CreativeNewTabPageAds::BuildInsertOrUpdateSql(
     mojom::DBCommandInfo* command,
     const CreativeNewTabPageAdList& creative_ads) const {
-  DCHECK(command);
+  CHECK(command);
 
   const size_t binded_parameters_count = BindParameters(command, creative_ads);
 

@@ -26,7 +26,7 @@ namespace {
 constexpr char kTableName[] = "ad_events";
 
 void BindRecords(mojom::DBCommandInfo* command) {
-  DCHECK(command);
+  CHECK(command);
 
   command->record_bindings = {
       mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // placement_id
@@ -45,7 +45,7 @@ void BindRecords(mojom::DBCommandInfo* command) {
 
 size_t BindParameters(mojom::DBCommandInfo* command,
                       const AdEventList& ad_events) {
-  DCHECK(command);
+  CHECK(command);
 
   size_t count = 0;
 
@@ -68,7 +68,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
 }
 
 AdEventInfo GetFromRecord(mojom::DBRecordInfo* record) {
-  DCHECK(record);
+  CHECK(record);
 
   AdEventInfo ad_event;
 
@@ -106,7 +106,7 @@ void OnGetAdEvents(GetAdEventsCallback callback,
 }
 
 void MigrateToV5(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   DropTable(transaction, "ad_events");
 
@@ -121,7 +121,7 @@ void MigrateToV5(mojom::DBTransactionInfo* transaction) {
 }
 
 void MigrateToV13(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   // Create a temporary table with new |advertiser_id| column.
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
@@ -151,13 +151,13 @@ void MigrateToV13(mojom::DBTransactionInfo* transaction) {
 }
 
 void MigrateToV17(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   CreateTableIndex(transaction, "ad_events", "timestamp");
 }
 
 void MigrateToV28(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   // Create a temporary table with new |segment| column.
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
@@ -246,7 +246,7 @@ void AdEvents::GetAll(GetAdEventsCallback callback) const {
 
 void AdEvents::GetForType(const mojom::AdType ad_type,
                           GetAdEventsCallback callback) const {
-  DCHECK(mojom::IsKnownEnumValue(ad_type));
+  CHECK(mojom::IsKnownEnumValue(ad_type));
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
@@ -284,7 +284,7 @@ void AdEvents::PurgeExpired(ResultCallback callback) const {
 
 void AdEvents::PurgeOrphaned(const mojom::AdType ad_type,
                              ResultCallback callback) const {
-  DCHECK(mojom::IsKnownEnumValue(ad_type));
+  CHECK(mojom::IsKnownEnumValue(ad_type));
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
@@ -308,7 +308,7 @@ std::string AdEvents::GetTableName() const {
 }
 
 void AdEvents::Create(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -323,7 +323,7 @@ void AdEvents::Create(mojom::DBTransactionInfo* transaction) {
 
 void AdEvents::Migrate(mojom::DBTransactionInfo* transaction,
                        const int to_version) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   switch (to_version) {
     case 5: {
@@ -356,7 +356,7 @@ void AdEvents::Migrate(mojom::DBTransactionInfo* transaction,
 
 void AdEvents::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                               const AdEventList& ad_events) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   if (ad_events.empty()) {
     return;
@@ -371,7 +371,7 @@ void AdEvents::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
 std::string AdEvents::BuildInsertOrUpdateSql(
     mojom::DBCommandInfo* command,
     const AdEventList& ad_events) const {
-  DCHECK(command);
+  CHECK(command);
 
   const size_t binded_parameters_count = BindParameters(command, ad_events);
 

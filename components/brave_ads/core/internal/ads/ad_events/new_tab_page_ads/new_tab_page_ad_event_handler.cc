@@ -26,7 +26,7 @@ bool ShouldDebounceViewedAdEvent(
     const AdInfo& ad,
     const AdEventList& ad_events,
     const mojom::NewTabPageAdEventType& event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   return event_type == mojom::NewTabPageAdEventType::kViewed &&
          HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewed);
@@ -36,7 +36,7 @@ bool ShouldDebounceClickedAdEvent(
     const AdInfo& ad,
     const AdEventList& ad_events,
     const mojom::NewTabPageAdEventType& event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   return event_type == mojom::NewTabPageAdEventType::kClicked &&
          HasFiredAdEvent(ad, ad_events, ConfirmationType::kClicked);
@@ -45,7 +45,7 @@ bool ShouldDebounceClickedAdEvent(
 bool WasAdServed(const AdInfo& ad,
                  const AdEventList& ad_events,
                  const mojom::NewTabPageAdEventType& event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   return event_type == mojom::NewTabPageAdEventType::kServed ||
          HasFiredAdEvent(ad, ad_events, ConfirmationType::kServed);
@@ -54,7 +54,7 @@ bool WasAdServed(const AdInfo& ad,
 bool IsAdPlaced(const AdInfo& ad,
                 const AdEventList& ad_events,
                 const mojom::NewTabPageAdEventType& event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   return event_type == mojom::NewTabPageAdEventType::kServed ||
          event_type == mojom::NewTabPageAdEventType::kViewed ||
@@ -65,7 +65,7 @@ bool IsAdPlaced(const AdInfo& ad,
 bool ShouldDebounceAdEvent(const AdInfo& ad,
                            const AdEventList& ad_events,
                            const mojom::NewTabPageAdEventType& event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   return ShouldDebounceViewedAdEvent(ad, ad_events, event_type) ||
          ShouldDebounceClickedAdEvent(ad, ad_events, event_type) ||
@@ -84,7 +84,7 @@ void NewTabPageAdEventHandler::FireEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::NewTabPageAdEventType event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   if (placement_id.empty()) {
     BLOG(1,
@@ -138,7 +138,7 @@ void NewTabPageAdEventHandler::OnGetForCreativeInstanceId(
 void NewTabPageAdEventHandler::FireEvent(
     const NewTabPageAdInfo& ad,
     const mojom::NewTabPageAdEventType event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   const database::table::AdEvents database_table;
   database_table.GetForType(
@@ -183,7 +183,7 @@ void NewTabPageAdEventHandler::OnGetAdEvents(
 void NewTabPageAdEventHandler::SuccessfullyFiredEvent(
     const NewTabPageAdInfo& ad,
     const mojom::NewTabPageAdEventType event_type) const {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   if (!delegate_) {
     return;
@@ -211,7 +211,7 @@ void NewTabPageAdEventHandler::FailedToFireEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::NewTabPageAdEventType event_type) const {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   BLOG(1, "Failed to fire new tab page ad "
               << event_type << " event for placement id " << placement_id

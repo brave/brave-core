@@ -44,21 +44,21 @@ class PassThroughDelegate : public NotificationAdDelegate {
 
   void OnShow() override {
     AdsService* ads_service = AdsServiceFactory::GetForProfile(&*profile_);
-    DCHECK(ads_service);
+    CHECK(ads_service);
 
     ads_service->OnNotificationAdShown(notification_ad_.id());
   }
 
   void OnClose(const bool by_user) override {
     AdsService* ads_service = AdsServiceFactory::GetForProfile(&*profile_);
-    DCHECK(ads_service);
+    CHECK(ads_service);
 
     ads_service->OnNotificationAdClosed(notification_ad_.id(), by_user);
   }
 
   void OnClick() override {
     AdsService* ads_service = AdsServiceFactory::GetForProfile(&*profile_);
-    DCHECK(ads_service);
+    CHECK(ads_service);
 
     ads_service->OnNotificationAdClicked(notification_ad_.id());
   }

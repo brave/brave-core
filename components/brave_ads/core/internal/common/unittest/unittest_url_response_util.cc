@@ -102,8 +102,7 @@ absl::optional<mojom::UrlResponseInfo> GetNextUrlResponseForRequest(
     const base::FilePath file_path =
         GetTestPath().AppendASCII(ParseFilenameFromResponseBody(response_body));
     if (!base::ReadFileToString(file_path, &response_body)) {
-      NOTREACHED() << file_path << " not found";
-      return absl::nullopt;
+      NOTREACHED_NORETURN() << file_path << " not found";
     }
 
     ParseAndReplaceTags(response_body);

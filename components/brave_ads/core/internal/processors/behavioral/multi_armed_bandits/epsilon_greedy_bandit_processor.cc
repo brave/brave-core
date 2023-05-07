@@ -92,7 +92,7 @@ void UpdateArm(const double reward, const std::string& segment) {
 
   EpsilonGreedyBanditArmInfo arm = iter->second;
   arm.pulls++;
-  DCHECK_NE(0, arm.pulls);
+  CHECK_NE(0, arm.pulls);
   arm.value = arm.value + (1.0 / arm.pulls * (reward - arm.value));
   iter->second = arm;
 
@@ -111,13 +111,13 @@ EpsilonGreedyBanditProcessor::EpsilonGreedyBanditProcessor() {
 // static
 void EpsilonGreedyBanditProcessor::Process(
     const EpsilonGreedyBanditFeedbackInfo& feedback) {
-  DCHECK(!feedback.segment.empty());
+  CHECK(!feedback.segment.empty());
 
   const std::string segment = GetParentSegment(feedback.segment);
-  DCHECK(!segment.empty());
+  CHECK(!segment.empty());
 
   const mojom::NotificationAdEventType ad_event_type = feedback.ad_event_type;
-  DCHECK(mojom::IsKnownEnumValue(ad_event_type));
+  CHECK(mojom::IsKnownEnumValue(ad_event_type));
   switch (ad_event_type) {
     case mojom::NotificationAdEventType::kTimedOut:
     case mojom::NotificationAdEventType::kDismissed: {
@@ -132,8 +132,7 @@ void EpsilonGreedyBanditProcessor::Process(
 
     case mojom::NotificationAdEventType::kServed:
     case mojom::NotificationAdEventType::kViewed: {
-      NOTREACHED();
-      break;
+      NOTREACHED_NORETURN();
     }
   }
 

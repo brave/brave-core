@@ -17,7 +17,7 @@ HistoryItemInfo AddHistory(const AdInfo& ad,
                            const ConfirmationType& confirmation_type,
                            const std::string& title,
                            const std::string& description) {
-  DCHECK(ad.IsValid());
+  CHECK(ad.IsValid());
 
   HistoryItemInfo history_item =
       BuildHistoryItem(ad, confirmation_type, title, description);

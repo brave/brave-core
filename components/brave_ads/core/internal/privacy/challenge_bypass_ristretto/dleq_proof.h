@@ -45,12 +45,12 @@ class DLEQProof {
   bool has_value() const { return dleq_proof_.has_value(); }
 
   challenge_bypass_ristretto::DLEQProof& get() {
-    DCHECK(dleq_proof_);
+    CHECK(dleq_proof_);
     return *dleq_proof_;
   }
 
   const challenge_bypass_ristretto::DLEQProof& get() const {
-    DCHECK(dleq_proof_);
+    CHECK(dleq_proof_);
     return *dleq_proof_;
   }
 

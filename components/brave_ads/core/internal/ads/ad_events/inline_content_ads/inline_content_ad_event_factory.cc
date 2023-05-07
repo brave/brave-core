@@ -16,7 +16,7 @@ namespace brave_ads {
 std::unique_ptr<AdEventInterface<InlineContentAdInfo>>
 InlineContentAdEventFactory::Build(
     const mojom::InlineContentAdEventType event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   switch (event_type) {
     case mojom::InlineContentAdEventType::kServed: {

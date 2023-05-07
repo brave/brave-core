@@ -35,7 +35,7 @@ class Confirmations final : public RedeemConfirmationDelegate {
   ~Confirmations() override;
 
   void SetDelegate(ConfirmationsDelegate* delegate) {
-    DCHECK_EQ(delegate_, nullptr);
+    CHECK_EQ(delegate_, nullptr);
     delegate_ = delegate;
   }
 

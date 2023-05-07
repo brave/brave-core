@@ -29,9 +29,8 @@ std::unique_ptr<ConversionsSortInterface> ConversionsSortFactory::Build(
     }
   }
 
-  NOTREACHED() << "Unexpected value for ConversionSortType: "
-               << static_cast<int>(type);
-  return nullptr;
+  NOTREACHED_NORETURN() << "Unexpected value for ConversionSortType: "
+                        << static_cast<int>(type);
 }
 
 }  // namespace brave_ads

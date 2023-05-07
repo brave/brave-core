@@ -59,7 +59,7 @@ NotificationAdHeaderView::NotificationAdHeaderView(const int width) {
 NotificationAdHeaderView::~NotificationAdHeaderView() = default;
 
 void NotificationAdHeaderView::SetTitle(const std::u16string& text) {
-  DCHECK(title_label_);
+  CHECK(title_label_);
   title_label_->SetText(text);
 
   NotifyAccessibilityEvent(ax::mojom::Event::kTextChanged, true);
@@ -67,7 +67,7 @@ void NotificationAdHeaderView::SetTitle(const std::u16string& text) {
 
 void NotificationAdHeaderView::SetTitleElideBehavior(
     gfx::ElideBehavior elide_behavior) {
-  DCHECK(title_label_);
+  CHECK(title_label_);
   title_label_->SetElideBehavior(elide_behavior);
 }
 
@@ -75,7 +75,7 @@ void NotificationAdHeaderView::GetAccessibleNodeData(
     ui::AXNodeData* node_data) {
   node_data->role = ax::mojom::Role::kGenericContainer;
 
-  DCHECK(title_label_);
+  CHECK(title_label_);
   node_data->SetName(title_label_->GetText());
 }
 
@@ -104,7 +104,7 @@ void NotificationAdHeaderView::CreateView(const int width) {
   const gfx::Size size(width, kHeaderViewHeight);
   SetPreferredSize(size);
 
-  DCHECK(!title_label_);
+  CHECK(!title_label_);
   title_label_ = CreateTitleLabel();
   AddChildView(title_label_.get());
 
@@ -148,7 +148,7 @@ views::Label* NotificationAdHeaderView::CreateTitleLabel() {
 void NotificationAdHeaderView::UpdateTitleLabel() {
   const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
 
-  DCHECK(title_label_);
+  CHECK(title_label_);
   title_label_->SetEnabledColor(should_use_dark_colors ? kDarkModeTitleColor
                                                        : kLightModeTitleColor);
 }

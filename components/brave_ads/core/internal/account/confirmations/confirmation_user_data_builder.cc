@@ -28,7 +28,7 @@ namespace brave_ads {
 ConfirmationUserDataBuilder::ConfirmationUserDataBuilder(
     TransactionInfo transaction)
     : transaction_(std::move(transaction)) {
-  DCHECK(transaction_.IsValid());
+  CHECK(transaction_.IsValid());
 }
 
 ConfirmationUserDataBuilder::~ConfirmationUserDataBuilder() = default;

@@ -34,8 +34,8 @@ constexpr size_t kMaximumEntriesPerSegmentInPurchaseIntentSignalHistory = 100;
 FilteredAdvertiserList::iterator FindFilteredAdvertiser(
     const std::string& advertiser_id,
     FilteredAdvertiserList* filtered_advertisers) {
-  DCHECK(!advertiser_id.empty());
-  DCHECK(filtered_advertisers);
+  CHECK(!advertiser_id.empty());
+  CHECK(filtered_advertisers);
 
   return base::ranges::find(*filtered_advertisers, advertiser_id,
                             &FilteredAdvertiserInfo::id);
@@ -44,8 +44,8 @@ FilteredAdvertiserList::iterator FindFilteredAdvertiser(
 FilteredCategoryList::iterator FindFilteredCategory(
     const std::string& category,
     FilteredCategoryList* filtered_categories) {
-  DCHECK(!category.empty());
-  DCHECK(filtered_categories);
+  CHECK(!category.empty());
+  CHECK(filtered_categories);
 
   return base::ranges::find(*filtered_categories, category,
                             &FilteredCategoryInfo::name);
@@ -101,19 +101,19 @@ ClientStateManager& ClientStateManager::GetInstance() {
 
 const FilteredAdvertiserList& ClientStateManager::GetFilteredAdvertisers()
     const {
-  DCHECK(is_initialized_);
+  CHECK(is_initialized_);
 
   return client_.ad_preferences.filtered_advertisers;
 }
 
 const FilteredCategoryList& ClientStateManager::GetFilteredCategories() const {
-  DCHECK(is_initialized_);
+  CHECK(is_initialized_);
 
   return client_.ad_preferences.filtered_categories;
 }
 
 const FlaggedAdList& ClientStateManager::GetFlaggedAds() const {
-  DCHECK(is_initialized_);
+  CHECK(is_initialized_);
 
   return client_.ad_preferences.flagged_ads;
 }
@@ -124,7 +124,7 @@ void ClientStateManager::Initialize(InitializeCallback callback) {
 
 void ClientStateManager::AppendHistory(const HistoryItemInfo& history_item) {
 #if !BUILDFLAG(IS_IOS)
-  DCHECK(is_initialized_);
+  CHECK(is_initialized_);
 
   client_.history_items.push_front(history_item);
 
@@ -143,7 +143,7 @@ void ClientStateManager::AppendHistory(const HistoryItemInfo& history_item) {
 }
 
 const HistoryItemList& ClientStateManager::GetHistory() const {
-  DCHECK(is_initialized_);
+  CHECK(is_initialized_);
 
   return client_.history_items;
 }
@@ -151,7 +151,7 @@ const HistoryItemList& ClientStateManager::GetHistory() const {
 void ClientStateManager::AppendToPurchaseIntentSignalHistoryForSegment(
     const std::string& segment,
     const PurchaseIntentSignalHistoryInfo& history) {
-  DCHECK(is_initialized_);
+  CHECK(is_initialized_);
 
   if (client_.purchase_intent_signal_history.find(segment) ==
       client_.purchase_intent_signal_history.cend()) {
@@ -170,14 +170,14 @@ void ClientStateManager::AppendToPurchaseIntentSignalHistoryForSegment(
 
 const PurchaseIntentSignalHistoryMap&
 ClientStateManager::GetPurchaseIntentSignalHistory() const {
-  DCHECK(is_initialized_);
+  CHECK(is_initialized_);
 
   return client_.purchase_intent_signal_history;
 }
 
 mojom::UserReactionType ClientStateManager::ToggleLikeAd(
     const AdContentInfo& ad_content) {
-  DCHECK(is_initialized_);
+  CHECK(is_initialized_);
 
   const auto iter = FindFilteredAdvertiser(
       ad_content.advertiser_id, &client_.ad_preferences.filtered_advertisers);
@@ -201,7 +201,7 @@ mojom::UserReactionType ClientStateManager::ToggleLikeAd(
 
 mojom::UserReactionType ClientStateManager::ToggleDislikeAd(
     const AdContentInfo& ad_content) {
-  DCHECK(is_initialized_);
+  CHECK(is_initialized_);
 
   const mojom::UserReactionType user_reaction_type =
       ad_content.ToggleDislikeUserReactionType();
@@ -252,7 +252,7 @@ mojom::UserReactionType ClientStateManager::GetUserReactionTypeForAdvertiser(
 mojom::UserReactionType ClientStateManager::ToggleLikeCategory(
     const std::string& category,
     const mojom::UserReactionType user_reaction_type) {
-  DCHECK(is_initialized_);
+  CHECK(is_initialized_);
 
   const auto iter = FindFilteredCategory(
       category, &client_.ad_preferences.filtered_categories);
@@ -277,7 +277,7 @@ mojom::UserReactionType ClientStateManager::ToggleLikeCategory(
 mojom::UserReactionType ClientStateManager::ToggleDislikeCategory(
     const std::string& category,
     const mojom::UserReactionType user_reaction_type) {
-  DCHECK(is_initialized_);
+  CHECK(is_initialized_);
 
   const mojom::UserReactionType toggled_user_reaction_type =
       ToggleDislikeUserReactionType(user_reaction_type);
@@ -324,7 +324,7 @@ mojom::UserReactionType ClientStateManager::GetUserReactionTypeForSegment(
 }
 
 bool ClientStateManager::ToggleSaveAd(const AdContentInfo& ad_content) {
-  DCHECK(is_initialized_);
+  CHECK(is_initialized_);
 
   const bool is_saved = !ad_content.is_saved;
   if (is_saved) {
@@ -355,7 +355,7 @@ bool ClientStateManager::ToggleSaveAd(const AdContentInfo& ad_content) {
 
 bool ClientStateManager::ToggleMarkAdAsInappropriate(
     const AdContentInfo& ad_content) {
-  DCHECK(is_initialized_);
+  CHECK(is_initialized_);
 
   const bool is_flagged = !ad_content.is_flagged;
   if (is_flagged) {
@@ -384,7 +384,7 @@ bool ClientStateManager::ToggleMarkAdAsInappropriate(
 }
 
 void ClientStateManager::UpdateSeenAd(const AdInfo& ad) {
-  DCHECK(is_initialized_);
+  CHECK(is_initialized_);
 
   const std::string type_as_string = ad.type.ToString();
   client_.seen_ads[type_as_string][ad.creative_instance_id] = true;
@@ -394,7 +394,7 @@ void ClientStateManager::UpdateSeenAd(const AdInfo& ad) {
 
 const std::map<std::string, bool>& ClientStateManager::GetSeenAdsForType(
     const AdType& type) {
-  DCHECK(is_initialized_);
+  CHECK(is_initialized_);
 
   const std::string type_as_string = type.ToString();
   return client_.seen_ads[type_as_string];
@@ -402,7 +402,7 @@ const std::map<std::string, bool>& ClientStateManager::GetSeenAdsForType(
 
 void ClientStateManager::ResetSeenAdsForType(const CreativeAdList& creative_ads,
                                              const AdType& type) {
-  DCHECK(is_initialized_);
+  CHECK(is_initialized_);
 
   const std::string type_as_string = type.ToString();
 
@@ -420,7 +420,7 @@ void ClientStateManager::ResetSeenAdsForType(const CreativeAdList& creative_ads,
 }
 
 void ClientStateManager::ResetAllSeenAdsForType(const AdType& type) {
-  DCHECK(is_initialized_);
+  CHECK(is_initialized_);
 
   const std::string type_as_string = type.ToString();
   BLOG(1, "Resetting seen " << type_as_string << "s");
@@ -430,7 +430,7 @@ void ClientStateManager::ResetAllSeenAdsForType(const AdType& type) {
 
 const std::map<std::string, bool>&
 ClientStateManager::GetSeenAdvertisersForType(const AdType& type) {
-  DCHECK(is_initialized_);
+  CHECK(is_initialized_);
 
   return client_.seen_advertisers[type.ToString()];
 }
@@ -438,7 +438,7 @@ ClientStateManager::GetSeenAdvertisersForType(const AdType& type) {
 void ClientStateManager::ResetSeenAdvertisersForType(
     const CreativeAdList& creative_ads,
     const AdType& type) {
-  DCHECK(is_initialized_);
+  CHECK(is_initialized_);
 
   const std::string type_as_string = type.ToString();
 
@@ -456,7 +456,7 @@ void ClientStateManager::ResetSeenAdvertisersForType(
 }
 
 void ClientStateManager::ResetAllSeenAdvertisersForType(const AdType& type) {
-  DCHECK(is_initialized_);
+  CHECK(is_initialized_);
 
   const std::string type_as_string = type.ToString();
   BLOG(1, "Resetting seen " << type_as_string << " advertisers");
@@ -466,7 +466,7 @@ void ClientStateManager::ResetAllSeenAdvertisersForType(const AdType& type) {
 
 void ClientStateManager::AppendTextClassificationProbabilitiesToHistory(
     const TextClassificationProbabilityMap& probabilities) {
-  DCHECK(is_initialized_);
+  CHECK(is_initialized_);
 
   client_.text_classification_probabilities.push_front(probabilities);
 
@@ -481,13 +481,13 @@ void ClientStateManager::AppendTextClassificationProbabilitiesToHistory(
 
 const TextClassificationProbabilityList&
 ClientStateManager::GetTextClassificationProbabilitiesHistory() const {
-  DCHECK(is_initialized_);
+  CHECK(is_initialized_);
 
   return client_.text_classification_probabilities;
 }
 
 void ClientStateManager::RemoveAllHistory() {
-  DCHECK(is_initialized_);
+  CHECK(is_initialized_);
 
   BLOG(1, "Successfully reset client state");
 

@@ -64,7 +64,7 @@ class CreativePromotedContentAds final : public TableInterface {
   void GetAll(GetCreativePromotedContentAdsCallback callback) const;
 
   void SetBatchSize(const int batch_size) {
-    DCHECK_GT(batch_size, 0);
+    CHECK_GT(batch_size, 0);
 
     batch_size_ = batch_size;
   }

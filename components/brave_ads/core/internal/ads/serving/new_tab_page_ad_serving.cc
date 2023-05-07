@@ -62,7 +62,7 @@ void NewTabPageAdServing::MaybeServeAd(
 void NewTabPageAdServing::OnBuildUserModel(
     MaybeServeNewTabPageAdCallback callback,
     const UserModelInfo& user_model) {
-  DCHECK(eligible_ads_);
+  CHECK(eligible_ads_);
   eligible_ads_->GetForUserModel(
       user_model, base::BindOnce(&NewTabPageAdServing::OnGetForUserModel,
                                  weak_factory_.GetWeakPtr(),
@@ -121,7 +121,7 @@ void NewTabPageAdServing::ServeAd(const NewTabPageAdInfo& ad,
               << "      x: " << ad.wallpapers[0].focal_point.x << "\n"
               << "      y: " << ad.wallpapers[0].focal_point.y);
 
-  DCHECK(eligible_ads_);
+  CHECK(eligible_ads_);
   eligible_ads_->SetLastServedAd(ad);
 
   if (delegate_) {

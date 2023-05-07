@@ -33,7 +33,7 @@ class NotificationAdEventHandler final
   ~NotificationAdEventHandler() override;
 
   void SetDelegate(NotificationAdEventHandlerDelegate* delegate) {
-    DCHECK_EQ(delegate_, nullptr);
+    CHECK_EQ(delegate_, nullptr);
     delegate_ = delegate;
   }
 

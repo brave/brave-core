@@ -14,12 +14,12 @@ AdsClientNotifier::AdsClientNotifier() = default;
 AdsClientNotifier::~AdsClientNotifier() = default;
 
 void AdsClientNotifier::AddObserver(AdsClientNotifierObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
   observers_.AddObserver(observer);
 }
 
 void AdsClientNotifier::RemoveObserver(AdsClientNotifierObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
   observers_.RemoveObserver(observer);
 }
 

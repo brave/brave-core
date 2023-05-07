@@ -80,7 +80,7 @@ void AdsTabHelper::TabUpdated() {
 
 void AdsTabHelper::RunIsolatedJavaScript(
     content::RenderFrameHost* render_frame_host) {
-  DCHECK(render_frame_host);
+  CHECK(render_frame_host);
 
   render_frame_host->ExecuteJavaScriptInIsolatedWorld(
       kGetDocumentHTMLScript,
@@ -125,7 +125,7 @@ void AdsTabHelper::OnJavaScriptTextResult(base::Value value) {
 
 void AdsTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
-  DCHECK(navigation_handle);
+  CHECK(navigation_handle);
 
   if (!ads_service_ || !navigation_handle->IsInPrimaryMainFrame() ||
       !navigation_handle->HasCommitted() || !tab_id_.is_valid()) {
@@ -165,7 +165,7 @@ void AdsTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
 
 void AdsTabHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,
                                  const GURL& validated_url) {
-  DCHECK(render_frame_host);
+  CHECK(render_frame_host);
 
   if (render_frame_host->GetParent()) {
     return;
@@ -244,7 +244,7 @@ void AdsTabHelper::OnBrowserSetLastActive(Browser* browser) {
 }
 
 void AdsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
-  DCHECK(browser);
+  CHECK(browser);
 
   if (!ads_service_) {
     return;

@@ -15,7 +15,7 @@ base::Value::List SegmentsToValue(const SegmentList& segments) {
   base::Value::List list;
 
   for (const auto& segment : segments) {
-    DCHECK(!segment.empty());
+    CHECK(!segment.empty());
     list.Append(segment);
   }
 

@@ -25,7 +25,7 @@ namespace brave_ads {
 GlobalState::GlobalState(AdsClient* ads_client)
     : ads_client_(ads_client),
       global_state_holder_(std::make_unique<GlobalStateHolder>(this)) {
-  DCHECK(ads_client_);
+  CHECK(ads_client_);
 
   browser_manager_ = std::make_unique<BrowserManager>();
   client_state_manager_ = std::make_unique<ClientStateManager>();
@@ -46,7 +46,7 @@ GlobalState::~GlobalState() {
 
 // static
 GlobalState* GlobalState::GetInstance() {
-  DCHECK(GlobalStateHolder::GetGlobalState());
+  CHECK(GlobalStateHolder::GetGlobalState());
   return GlobalStateHolder::GetGlobalState();
 }
 
@@ -57,67 +57,67 @@ bool GlobalState::HasInstance() {
 
 AdsClient* GlobalState::GetAdsClient() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  DCHECK(ads_client_);
+  CHECK(ads_client_);
   return ads_client_;
 }
 
 BrowserManager& GlobalState::GetBrowserManager() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  DCHECK(browser_manager_);
+  CHECK(browser_manager_);
   return *browser_manager_;
 }
 
 ClientStateManager& GlobalState::GetClientStateManager() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  DCHECK(client_state_manager_);
+  CHECK(client_state_manager_);
   return *client_state_manager_;
 }
 
 ConfirmationStateManager& GlobalState::GetConfirmationStateManager() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  DCHECK(confirmation_state_manager_);
+  CHECK(confirmation_state_manager_);
   return *confirmation_state_manager_;
 }
 
 DatabaseManager& GlobalState::GetDatabaseManager() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  DCHECK(database_manager_);
+  CHECK(database_manager_);
   return *database_manager_;
 }
 
 DiagnosticManager& GlobalState::GetDiagnosticManager() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  DCHECK(diagnostic_manager_);
+  CHECK(diagnostic_manager_);
   return *diagnostic_manager_;
 }
 
 HistoryManager& GlobalState::GetHistoryManager() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  DCHECK(history_manager_);
+  CHECK(history_manager_);
   return *history_manager_;
 }
 
 NotificationAdManager& GlobalState::GetNotificationAdManager() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  DCHECK(notification_ad_manager_);
+  CHECK(notification_ad_manager_);
   return *notification_ad_manager_;
 }
 
 PredictorsManager& GlobalState::GetPredictorsManager() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  DCHECK(predictors_manager_);
+  CHECK(predictors_manager_);
   return *predictors_manager_;
 }
 
 TabManager& GlobalState::GetTabManager() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  DCHECK(tab_manager_);
+  CHECK(tab_manager_);
   return *tab_manager_;
 }
 
 UserActivityManager& GlobalState::GetUserActivityManager() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  DCHECK(user_activity_manager_);
+  CHECK(user_activity_manager_);
   return *user_activity_manager_;
 }
 

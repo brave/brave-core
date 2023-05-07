@@ -24,9 +24,9 @@ TransactionInfo AddTransaction(const std::string& creative_instance_id,
                                const AdType& ad_type,
                                const ConfirmationType& confirmation_type,
                                AddTransactionCallback callback) {
-  DCHECK(!creative_instance_id.empty());
-  DCHECK_NE(AdType::kUndefined, ad_type);
-  DCHECK_NE(ConfirmationType::kUndefined, confirmation_type);
+  CHECK(!creative_instance_id.empty());
+  CHECK_NE(AdType::kUndefined, ad_type);
+  CHECK_NE(ConfirmationType::kUndefined, confirmation_type);
 
   TransactionInfo transaction;
   transaction.id = base::GUID::GenerateRandomV4().AsLowercaseString();

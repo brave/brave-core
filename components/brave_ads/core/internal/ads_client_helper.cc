@@ -14,7 +14,7 @@ namespace brave_ads {
 // static
 AdsClient* AdsClientHelper::GetInstance() {
   AdsClient* ads_client = GlobalState::GetInstance()->GetAdsClient();
-  DCHECK(ads_client);
+  CHECK(ads_client);
   return ads_client;
 }
 
@@ -25,14 +25,14 @@ bool AdsClientHelper::HasInstance() {
 
 // static
 void AdsClientHelper::AddObserver(AdsClientNotifierObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
 
   GetInstance()->AddObserver(observer);
 }
 
 // static
 void AdsClientHelper::RemoveObserver(AdsClientNotifierObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
 
   GetInstance()->RemoveObserver(observer);
 }

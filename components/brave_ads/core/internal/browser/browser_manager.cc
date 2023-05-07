@@ -35,12 +35,12 @@ BrowserManager& BrowserManager::GetInstance() {
 }
 
 void BrowserManager::AddObserver(BrowserManagerObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
   observers_.AddObserver(observer);
 }
 
 void BrowserManager::RemoveObserver(BrowserManagerObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
   observers_.RemoveObserver(observer);
 }
 

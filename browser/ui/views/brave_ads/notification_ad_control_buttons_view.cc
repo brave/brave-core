@@ -78,7 +78,7 @@ void NotificationAdControlButtonsView::CreateView() {
 }
 
 void NotificationAdControlButtonsView::CreateInfoButton() {
-  DCHECK(!info_button_);
+  CHECK(!info_button_);
   info_button_ = AddChildView(std::make_unique<PaddedImageView>());
 }
 
@@ -93,7 +93,7 @@ void NotificationAdControlButtonsView::UpdateInfoButton() {
 }
 
 void NotificationAdControlButtonsView::CreateCloseButton() {
-  DCHECK(!close_button_);
+  CHECK(!close_button_);
   close_button_ = AddChildView(std::make_unique<PaddedImageButton>(
       base::BindRepeating(&NotificationAdView::OnCloseButtonPressed,
                           base::Unretained(&*notification_ad_view_))));
@@ -103,7 +103,7 @@ void NotificationAdControlButtonsView::CreateCloseButton() {
 }
 
 void NotificationAdControlButtonsView::UpdateCloseButton() {
-  DCHECK(close_button_);
+  CHECK(close_button_);
 
   const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
 

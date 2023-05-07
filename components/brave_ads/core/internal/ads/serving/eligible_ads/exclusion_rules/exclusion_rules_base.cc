@@ -106,7 +106,7 @@ bool ExclusionRulesBase::AddToCacheIfNeeded(
     const CreativeAdInfo& creative_ad,
     const std::unique_ptr<ExclusionRuleInterface<CreativeAdInfo>>&
         exclusion_rule) {
-  DCHECK(exclusion_rule);
+  CHECK(exclusion_rule);
 
   if (IsCached(creative_ad)) {
     return true;

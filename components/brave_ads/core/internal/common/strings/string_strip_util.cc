@@ -15,7 +15,7 @@ namespace brave_ads {
 namespace {
 
 std::string Strip(const std::string& value, const std::string& pattern) {
-  DCHECK(!pattern.empty());
+  CHECK(!pattern.empty());
 
   if (value.empty()) {
     return {};

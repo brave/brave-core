@@ -25,28 +25,28 @@ NotificationAdPopupCollection::~NotificationAdPopupCollection() = default;
 // static
 void NotificationAdPopupCollection::Add(NotificationAdPopup* popup,
                                         const std::string& notification_id) {
-  DCHECK(!notification_id.empty());
-  DCHECK_EQ(g_notification_ad_popups.count(notification_id), 0u);
+  CHECK(!notification_id.empty());
+  CHECK_EQ(g_notification_ad_popups.count(notification_id), 0u);
   g_notification_ad_popups[notification_id] = popup;
 }
 
 // static
 NotificationAdPopup* NotificationAdPopupCollection::Get(
     const std::string& notification_id) {
-  DCHECK(!notification_id.empty());
+  CHECK(!notification_id.empty());
   if (g_notification_ad_popups.count(notification_id) == 0) {
     return nullptr;
   }
 
   NotificationAdPopup* popup = g_notification_ad_popups[notification_id];
-  DCHECK(popup);
+  CHECK(popup);
 
   return popup;
 }
 
 // static
 void NotificationAdPopupCollection::Remove(const std::string& notification_id) {
-  DCHECK(!notification_id.empty());
+  CHECK(!notification_id.empty());
   if (g_notification_ad_popups.count(notification_id) == 0) {
     return;
   }

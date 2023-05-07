@@ -28,7 +28,7 @@ namespace {
 constexpr char kTableName[] = "creative_ad_conversions";
 
 void BindRecords(mojom::DBCommandInfo* command) {
-  DCHECK(command);
+  CHECK(command);
 
   command->record_bindings = {
       mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // creative_set_id
@@ -43,7 +43,7 @@ void BindRecords(mojom::DBCommandInfo* command) {
 
 size_t BindParameters(mojom::DBCommandInfo* command,
                       const ConversionList& conversions) {
-  DCHECK(command);
+  CHECK(command);
 
   size_t count = 0;
 
@@ -63,7 +63,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
 }
 
 ConversionInfo GetFromRecord(mojom::DBRecordInfo* record) {
-  DCHECK(record);
+  CHECK(record);
 
   ConversionInfo conversion;
 
@@ -98,7 +98,7 @@ void OnGetConversions(GetConversionsCallback callback,
 }
 
 void MigrateToV23(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   DropTable(transaction, "ad_conversions");
 
@@ -114,7 +114,7 @@ void MigrateToV23(mojom::DBTransactionInfo* transaction) {
 }
 
 void MigrateToV28(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   // Create a temporary table with renamed |expire_at| column.
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
@@ -197,7 +197,7 @@ std::string Conversions::GetTableName() const {
 }
 
 void Conversions::Create(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
@@ -211,7 +211,7 @@ void Conversions::Create(mojom::DBTransactionInfo* transaction) {
 
 void Conversions::Migrate(mojom::DBTransactionInfo* transaction,
                           const int to_version) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   switch (to_version) {
     case 23: {
@@ -234,7 +234,7 @@ void Conversions::Migrate(mojom::DBTransactionInfo* transaction,
 
 void Conversions::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                                  const ConversionList& conversions) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   if (conversions.empty()) {
     return;
@@ -249,7 +249,7 @@ void Conversions::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
 std::string Conversions::BuildInsertOrUpdateSql(
     mojom::DBCommandInfo* command,
     const ConversionList& conversions) const {
-  DCHECK(command);
+  CHECK(command);
 
   const size_t binded_parameters_count = BindParameters(command, conversions);
 

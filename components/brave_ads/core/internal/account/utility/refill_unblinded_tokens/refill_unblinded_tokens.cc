@@ -59,7 +59,7 @@ size_t CalculateAmountOfTokensToRefill() {
 RefillUnblindedTokens::RefillUnblindedTokens(
     privacy::TokenGeneratorInterface* token_generator)
     : token_generator_(token_generator) {
-  DCHECK(token_generator_);
+  CHECK(token_generator_);
 }
 
 RefillUnblindedTokens::~RefillUnblindedTokens() {
@@ -108,7 +108,7 @@ void RefillUnblindedTokens::MaybeRefill(const WalletInfo& wallet) {
 ///////////////////////////////////////////////////////////////////////////////
 
 void RefillUnblindedTokens::Refill() {
-  DCHECK(!is_processing_);
+  CHECK(!is_processing_);
 
   BLOG(1, "Refill unblinded tokens");
 
@@ -249,8 +249,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
       privacy::cbr::PublicKey(*public_key_base64);
   if (!public_key.has_value()) {
     BLOG(0, "Invalid public key");
-    NOTREACHED();
-    return FailedToRefillUnblindedTokens(/*should_retry*/ false);
+    NOTREACHED_NORETURN();
   }
 
   // Validate public key
@@ -276,9 +275,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
       privacy::cbr::BatchDLEQProof(*batch_dleq_proof_base64);
   if (!batch_dleq_proof.has_value()) {
     BLOG(0, "Invalid batch DLEQ proof");
-    NOTREACHED();
-
-    return FailedToRefillUnblindedTokens(/*should_retry*/ false);
+    NOTREACHED_NORETURN();
   }
 
   // Get signed tokens
@@ -291,13 +288,12 @@ void RefillUnblindedTokens::OnGetSignedTokens(
 
   std::vector<privacy::cbr::SignedToken> signed_tokens;
   for (const auto& item : *signed_tokens_list) {
-    DCHECK(item.is_string());
+    CHECK(item.is_string());
     const std::string& signed_token_base64 = item.GetString();
     const privacy::cbr::SignedToken signed_token =
         privacy::cbr::SignedToken(signed_token_base64);
     if (!signed_token.has_value()) {
-      NOTREACHED();
-      continue;
+      NOTREACHED_NORETURN();
     }
 
     signed_tokens.push_back(signed_token);
@@ -328,19 +324,17 @@ void RefillUnblindedTokens::OnGetSignedTokens(
     const absl::optional<std::string> unblinded_token_base64 =
         unblinded_token.value.EncodeBase64();
     if (!unblinded_token_base64) {
-      NOTREACHED();
-      continue;
+      NOTREACHED_NORETURN();
     }
 
     const absl::optional<std::string> signature =
         crypto::Sign(*unblinded_token_base64, wallet_.secret_key);
     if (!signature) {
-      NOTREACHED();
-      continue;
+      NOTREACHED_NORETURN();
     }
     unblinded_token.signature = *signature;
 
-    DCHECK(IsValid(unblinded_token));
+    CHECK(IsValid(unblinded_token));
 
     unblinded_tokens.push_back(unblinded_token);
   }

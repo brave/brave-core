@@ -56,7 +56,7 @@ base::Value::Dict GetFailedConfirmationsAsDictionary(
   base::Value::List list;
 
   for (const auto& confirmation : confirmations) {
-    DCHECK(IsValid(confirmation));
+    CHECK(IsValid(confirmation));
 
     base::Value::Dict dict;
 
@@ -256,7 +256,7 @@ absl::optional<OptedInInfo> ConfirmationStateManager::GetOptedIn(
         return absl::nullopt;
       }
 
-      DCHECK(wallet_.IsValid());
+      CHECK(wallet_.IsValid());
       const absl::optional<std::string> signature =
           crypto::Sign(*unblinded_token_base64, wallet_.secret_key);
       if (!signature) {
@@ -287,7 +287,7 @@ absl::optional<OptedInInfo> ConfirmationStateManager::GetOptedIn(
 bool ConfirmationStateManager::GetFailedConfirmationsFromDictionary(
     const base::Value::Dict& dict,
     ConfirmationList* confirmations) const {
-  DCHECK(confirmations);
+  CHECK(confirmations);
 
   // Confirmations
   const auto* const list = dict.FindList("failed_confirmations");
@@ -375,23 +375,23 @@ bool ConfirmationStateManager::GetFailedConfirmationsFromDictionary(
 
 const ConfirmationList& ConfirmationStateManager::GetFailedConfirmations()
     const {
-  DCHECK(is_initialized_);
+  CHECK(is_initialized_);
   return failed_confirmations_;
 }
 
 void ConfirmationStateManager::AppendFailedConfirmation(
     const ConfirmationInfo& confirmation) {
-  DCHECK(IsValid(confirmation));
+  CHECK(IsValid(confirmation));
 
-  DCHECK(is_initialized_);
+  CHECK(is_initialized_);
   failed_confirmations_.push_back(confirmation);
 }
 
 bool ConfirmationStateManager::RemoveFailedConfirmation(
     const ConfirmationInfo& confirmation) {
-  DCHECK(IsValid(confirmation));
+  CHECK(IsValid(confirmation));
 
-  DCHECK(is_initialized_);
+  CHECK(is_initialized_);
 
   const auto iter =
       base::ranges::find(failed_confirmations_, confirmation.transaction_id,
@@ -474,7 +474,7 @@ bool ConfirmationStateManager::ParseUnblindedTokensFromDictionary(
       privacy::UnblindedTokensFromValue(*list);
 
   if (!filtered_unblinded_tokens.empty()) {
-    DCHECK(wallet_.IsValid());
+    CHECK(wallet_.IsValid());
     const std::string public_key = wallet_.public_key;
 
     filtered_unblinded_tokens.erase(

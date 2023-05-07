@@ -29,12 +29,12 @@ DatabaseManager& DatabaseManager::GetInstance() {
 }
 
 void DatabaseManager::AddObserver(DatabaseManagerObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
   observers_.AddObserver(observer);
 }
 
 void DatabaseManager::RemoveObserver(DatabaseManagerObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
   observers_.RemoveObserver(observer);
 }
 
@@ -59,7 +59,7 @@ void DatabaseManager::CreateOrOpen(ResultCallback callback) {
 void DatabaseManager::OnCreateOrOpen(
     ResultCallback callback,
     mojom::DBCommandResponseInfoPtr command_response) {
-  DCHECK(command_response);
+  CHECK(command_response);
 
   if (command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK ||
@@ -70,8 +70,8 @@ void DatabaseManager::OnCreateOrOpen(
     return;
   }
 
-  DCHECK(command_response->result->get_value()->which() ==
-         mojom::DBValue::Tag::kIntValue);
+  CHECK(command_response->result->get_value()->which() ==
+        mojom::DBValue::Tag::kIntValue);
   const int from_version =
       command_response->result->get_value()->get_int_value();
 
@@ -183,7 +183,7 @@ void DatabaseManager::NotifyWillMigrateDatabase(const int from_version,
 
 void DatabaseManager::NotifyDidMigrateDatabase(const int from_version,
                                                const int to_version) const {
-  DCHECK_NE(from_version, to_version);
+  CHECK_NE(from_version, to_version);
 
   for (DatabaseManagerObserver& observer : observers_) {
     observer.OnDidMigrateDatabase(from_version, to_version);

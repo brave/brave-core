@@ -29,9 +29,8 @@ std::unique_ptr<HistorySortInterface> HistorySortFactory::Build(
     }
   }
 
-  NOTREACHED() << "Unexpected value for HistorySortType: "
-               << static_cast<int>(type);
-  return nullptr;
+  NOTREACHED_NORETURN() << "Unexpected value for HistorySortType: "
+                        << static_cast<int>(type);
 }
 
 }  // namespace brave_ads

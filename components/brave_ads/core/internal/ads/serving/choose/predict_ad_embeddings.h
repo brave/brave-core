@@ -26,7 +26,7 @@ template <typename T>
 absl::optional<T> MaybePredictAdUsingEmbeddings(
     const UserModelInfo& user_model,
     const std::vector<T>& creative_ads) {
-  DCHECK(!creative_ads.empty());
+  CHECK(!creative_ads.empty());
 
   const std::vector<T> paced_creative_ads = PaceCreativeAds(creative_ads);
 
@@ -40,7 +40,7 @@ absl::optional<T> MaybePredictAdUsingEmbeddings(
   const std::vector<double> probabilities =
       ComputeProbabilities(votes_registry);
 
-  DCHECK_EQ(paced_creative_ads.size(), probabilities.size());
+  CHECK_EQ(paced_creative_ads.size(), probabilities.size());
   const double rand = base::RandDouble();
   double sum = 0.0;
 

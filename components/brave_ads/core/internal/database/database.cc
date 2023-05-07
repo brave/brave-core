@@ -32,8 +32,8 @@ void Database::RunTransaction(mojom::DBTransactionInfoPtr transaction,
                               mojom::DBCommandResponseInfo* command_response) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  DCHECK(transaction);
-  DCHECK(command_response);
+  CHECK(transaction);
+  CHECK(command_response);
 
   if (!db_.is_open() && !db_.Open(db_path_)) {
     command_response->status =
@@ -49,7 +49,7 @@ void Database::RunTransaction(mojom::DBTransactionInfoPtr transaction,
   }
 
   for (const auto& command : transaction->commands) {
-    DCHECK(mojom::IsKnownEnumValue(command->type));
+    CHECK(mojom::IsKnownEnumValue(command->type));
 
     mojom::DBCommandResponseInfo::StatusType status;
 
@@ -100,7 +100,7 @@ mojom::DBCommandResponseInfo::StatusType Database::Initialize(
     mojom::DBCommandResponseInfo* command_response) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  DCHECK(command_response);
+  CHECK(command_response);
 
   int table_version = 0;
 
@@ -134,7 +134,7 @@ mojom::DBCommandResponseInfo::StatusType Database::Initialize(
 
 mojom::DBCommandResponseInfo::StatusType Database::Execute(
     mojom::DBCommandInfo* command) {
-  DCHECK(command);
+  CHECK(command);
 
   if (!is_initialized_) {
     return mojom::DBCommandResponseInfo::StatusType::INITIALIZATION_ERROR;
@@ -150,7 +150,7 @@ mojom::DBCommandResponseInfo::StatusType Database::Execute(
 
 mojom::DBCommandResponseInfo::StatusType Database::Run(
     mojom::DBCommandInfo* command) {
-  DCHECK(command);
+  CHECK(command);
 
   if (!is_initialized_) {
     return mojom::DBCommandResponseInfo::StatusType::INITIALIZATION_ERROR;
@@ -177,8 +177,8 @@ mojom::DBCommandResponseInfo::StatusType Database::Run(
 mojom::DBCommandResponseInfo::StatusType Database::Read(
     mojom::DBCommandInfo* command,
     mojom::DBCommandResponseInfo* command_response) {
-  DCHECK(command);
-  DCHECK(command_response);
+  CHECK(command);
+  CHECK(command_response);
 
   if (!is_initialized_) {
     return mojom::DBCommandResponseInfo::StatusType::INITIALIZATION_ERROR;

@@ -65,7 +65,7 @@ void InlineContentAdServing::OnBuildUserModel(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback,
     const UserModelInfo& user_model) {
-  DCHECK(eligible_ads_);
+  CHECK(eligible_ads_);
   eligible_ads_->GetForUserModel(
       user_model, dimensions,
       base::BindOnce(&InlineContentAdServing::OnGetForUserModel,
@@ -124,7 +124,7 @@ void InlineContentAdServing::ServeAd(
               << "  ctaText: " << ad.cta_text << "\n"
               << "  targetUrl: " << ad.target_url);
 
-  DCHECK(eligible_ads_);
+  CHECK(eligible_ads_);
   eligible_ads_->SetLastServedAd(ad);
 
   if (delegate_) {

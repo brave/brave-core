@@ -15,7 +15,7 @@ namespace brave_ads {
 
 std::unique_ptr<AdEventInterface<NewTabPageAdInfo>>
 NewTabPageAdEventFactory::Build(const mojom::NewTabPageAdEventType event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   switch (event_type) {
     case mojom::NewTabPageAdEventType::kServed: {

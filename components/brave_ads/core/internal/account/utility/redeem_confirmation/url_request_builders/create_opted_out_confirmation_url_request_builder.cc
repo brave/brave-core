@@ -35,7 +35,7 @@ std::vector<std::string> BuildHeaders() {
 CreateOptedOutConfirmationUrlRequestBuilder::
     CreateOptedOutConfirmationUrlRequestBuilder(ConfirmationInfo confirmation)
     : confirmation_(std::move(confirmation)) {
-  DCHECK(IsValid(confirmation_));
+  CHECK(IsValid(confirmation_));
 }
 
 mojom::UrlRequestInfoPtr CreateOptedOutConfirmationUrlRequestBuilder::Build() {

@@ -68,7 +68,7 @@ PurchaseIntentInfo::CreateFromValue(const base::Value::Dict dict) {
     purchase_intent_segment_keyword.keywords = keywords;
 
     for (const auto& index : indexes.GetList()) {
-      DCHECK(index.is_int());
+      CHECK(index.is_int());
 
       if (index.GetInt() >= static_cast<int>(segments.size())) {
         return base::unexpected(
@@ -122,7 +122,7 @@ PurchaseIntentInfo::CreateFromValue(const base::Value::Dict dict) {
 
     std::vector<std::string> purchase_intent_segments;
     for (const auto& segment : *funnel_site_segments_list) {
-      DCHECK(segment.is_int());
+      CHECK(segment.is_int());
       purchase_intent_segments.push_back(segments.at(segment.GetInt()));
     }
 
@@ -134,7 +134,7 @@ PurchaseIntentInfo::CreateFromValue(const base::Value::Dict dict) {
     }
 
     for (const auto& site : *sites_list) {
-      DCHECK(site.is_string());
+      CHECK(site.is_string());
 
       PurchaseIntentSiteInfo purchase_intent_site;
       purchase_intent_site.segments = purchase_intent_segments;

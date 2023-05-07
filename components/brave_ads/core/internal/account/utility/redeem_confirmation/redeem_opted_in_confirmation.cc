@@ -58,7 +58,7 @@ void RedeemOptedInConfirmation::CreateAndRedeem(
 
 RedeemOptedInConfirmation::RedeemOptedInConfirmation(
     base::WeakPtr<RedeemConfirmationDelegate> delegate) {
-  DCHECK(delegate);
+  CHECK(delegate);
   delegate_ = std::move(delegate);
 }
 
@@ -66,9 +66,9 @@ RedeemOptedInConfirmation::RedeemOptedInConfirmation(
 void RedeemOptedInConfirmation::Redeem(
     RedeemOptedInConfirmation redeem_confirmation,
     const ConfirmationInfo& confirmation) {
-  DCHECK(IsValid(confirmation));
-  DCHECK(ShouldRewardUser());
-  DCHECK(confirmation.opted_in);
+  CHECK(IsValid(confirmation));
+  CHECK(ShouldRewardUser());
+  CHECK(confirmation.opted_in);
 
   BLOG(1, "Redeem opted-in confirmation");
 

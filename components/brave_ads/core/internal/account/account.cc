@@ -46,6 +46,8 @@ bool ShouldResetIssuersAndConfirmations() {
 
 Account::Account(privacy::TokenGeneratorInterface* token_generator)
     : token_generator_(token_generator) {
+  CHECK(token_generator_);
+
   AdsClientHelper::AddObserver(this);
 
   Initialize();
@@ -56,12 +58,12 @@ Account::~Account() {
 }
 
 void Account::AddObserver(AccountObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
   observers_.AddObserver(observer);
 }
 
 void Account::RemoveObserver(AccountObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
   observers_.RemoveObserver(observer);
 }
 
@@ -120,9 +122,9 @@ void Account::Deposit(const std::string& creative_instance_id,
                       const AdType& ad_type,
                       const std::string& segment,
                       const ConfirmationType& confirmation_type) const {
-  DCHECK(!creative_instance_id.empty());
-  DCHECK_NE(AdType::kUndefined, ad_type);
-  DCHECK_NE(ConfirmationType::kUndefined, confirmation_type);
+  CHECK(!creative_instance_id.empty());
+  CHECK_NE(AdType::kUndefined, ad_type);
+  CHECK_NE(ConfirmationType::kUndefined, confirmation_type);
 
   const std::unique_ptr<DepositInterface> deposit =
       DepositsFactory::Build(ad_type, confirmation_type);
@@ -368,13 +370,13 @@ void Account::OnNotifyPrefDidChange(const std::string& path) {
 }
 
 void Account::OnDidConfirm(const ConfirmationInfo& confirmation) {
-  DCHECK(IsValid(confirmation));
+  CHECK(IsValid(confirmation));
 
   TopUpUnblindedTokens();
 }
 
 void Account::OnFailedToConfirm(const ConfirmationInfo& confirmation) {
-  DCHECK(IsValid(confirmation));
+  CHECK(IsValid(confirmation));
 
   TopUpUnblindedTokens();
 }

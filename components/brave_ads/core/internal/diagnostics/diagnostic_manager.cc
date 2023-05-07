@@ -37,7 +37,7 @@ DiagnosticManager& DiagnosticManager::GetInstance() {
 
 void DiagnosticManager::SetEntry(
     std::unique_ptr<DiagnosticEntryInterface> entry) {
-  DCHECK(entry);
+  CHECK(entry);
 
   const DiagnosticEntryType type = entry->GetType();
   diagnostics_[type] = std::move(entry);

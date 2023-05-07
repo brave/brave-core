@@ -42,7 +42,6 @@ class ClientStateManager final {
   static ClientStateManager& GetInstance();
 
   void Initialize(InitializeCallback callback);
-
   const FilteredAdvertiserList& GetFilteredAdvertisers() const;
   const FilteredCategoryList& GetFilteredCategories() const;
   const FlaggedAdList& GetFlaggedAds() const;

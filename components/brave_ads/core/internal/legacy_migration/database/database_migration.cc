@@ -35,7 +35,7 @@ namespace {
 
 void MigrateToVersion(mojom::DBTransactionInfo* transaction,
                       const int to_version) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   table::Conversions conversions_database_table;
   conversions_database_table.Migrate(transaction, to_version);
@@ -96,7 +96,7 @@ void MigrateToVersion(mojom::DBTransactionInfo* transaction,
 
 void MigrateFromVersion(const int from_version, ResultCallback callback) {
   const int to_version = database::kVersion;
-  DCHECK(from_version < to_version);
+  CHECK(from_version < to_version);
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 

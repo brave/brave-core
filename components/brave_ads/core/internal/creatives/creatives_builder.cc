@@ -110,7 +110,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         // Segments
         for (const auto& segment : creative_set.segments) {
           const std::string segment_name = base::ToLowerASCII(segment.name);
-          DCHECK(!segment_name.empty());
+          CHECK(!segment_name.empty());
 
           std::vector<std::string> segment_name_hierarchy =
               base::SplitString(segment_name, "-", base::KEEP_WHITESPACE,
@@ -129,7 +129,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
 
           const std::string top_level_segment_name =
               segment_name_hierarchy.front();
-          DCHECK(!top_level_segment_name.empty());
+          CHECK(!top_level_segment_name.empty());
 
           if (top_level_segment_name != segment_name) {
             creative_ad.segment = top_level_segment_name;
@@ -177,7 +177,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         // Segments
         for (const auto& segment : creative_set.segments) {
           const std::string segment_name = base::ToLowerASCII(segment.name);
-          DCHECK(!segment_name.empty());
+          CHECK(!segment_name.empty());
 
           std::vector<std::string> segment_name_hierarchy =
               base::SplitString(segment_name, "-", base::KEEP_WHITESPACE,
@@ -196,7 +196,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
 
           const std::string top_level_segment_name =
               segment_name_hierarchy.front();
-          DCHECK(!top_level_segment_name.empty());
+          CHECK(!top_level_segment_name.empty());
 
           if (top_level_segment_name != segment_name) {
             creative_ad.segment = top_level_segment_name;
@@ -238,7 +238,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         info.image_url = creative.payload.image_url;
         info.alt = creative.payload.alt;
 
-        DCHECK(!creative.payload.wallpapers.empty());
+        CHECK(!creative.payload.wallpapers.empty());
         for (const auto& catalog_new_tab_page_ad_wallpaper :
              creative.payload.wallpapers) {
           CreativeNewTabPageAdWallpaperInfo wallpaper;
@@ -256,7 +256,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         // Segments
         for (const auto& segment : creative_set.segments) {
           const std::string segment_name = base::ToLowerASCII(segment.name);
-          DCHECK(!segment_name.empty());
+          CHECK(!segment_name.empty());
 
           std::vector<std::string> segment_name_hierarchy =
               base::SplitString(segment_name, "-", base::KEEP_WHITESPACE,
@@ -275,7 +275,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
 
           const std::string top_level_segment_name =
               segment_name_hierarchy.front();
-          DCHECK(!top_level_segment_name.empty());
+          CHECK(!top_level_segment_name.empty());
 
           if (top_level_segment_name != segment_name) {
             info.segment = top_level_segment_name;
@@ -319,7 +319,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         // Segments
         for (const auto& segment : creative_set.segments) {
           const std::string segment_name = base::ToLowerASCII(segment.name);
-          DCHECK(!segment_name.empty());
+          CHECK(!segment_name.empty());
 
           std::vector<std::string> segment_name_hierarchy =
               base::SplitString(segment_name, "-", base::KEEP_WHITESPACE,
@@ -338,7 +338,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
 
           const std::string top_level_segment_name =
               segment_name_hierarchy.front();
-          DCHECK(!top_level_segment_name.empty());
+          CHECK(!top_level_segment_name.empty());
 
           if (top_level_segment_name != segment_name) {
             info.segment = top_level_segment_name;

@@ -52,22 +52,22 @@ class ConfirmationStateManager final {
   void reset_failed_confirmations() { failed_confirmations_.clear(); }
 
   const privacy::UnblindedTokens& GetUnblindedTokens() const {
-    DCHECK(is_initialized_);
+    CHECK(is_initialized_);
     return unblinded_tokens_;
   }
 
   privacy::UnblindedTokens& GetUnblindedTokens() {
-    DCHECK(is_initialized_);
+    CHECK(is_initialized_);
     return unblinded_tokens_;
   }
 
   const privacy::UnblindedPaymentTokens& GetUnblindedPaymentTokens() const {
-    DCHECK(is_initialized_);
+    CHECK(is_initialized_);
     return unblinded_payment_tokens_;
   }
 
   privacy::UnblindedPaymentTokens& GetUnblindedPaymentTokens() {
-    DCHECK(is_initialized_);
+    CHECK(is_initialized_);
     return unblinded_payment_tokens_;
   }
 

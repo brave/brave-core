@@ -29,7 +29,7 @@ gfx::Size NotificationAdBackgroundPainter::GetMinimumSize() const {
 
 void NotificationAdBackgroundPainter::Paint(gfx::Canvas* canvas,
                                             const gfx::Size& size) {
-  DCHECK(canvas);
+  CHECK(canvas);
 
   const gfx::Rect rect(size);
 

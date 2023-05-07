@@ -19,12 +19,12 @@ std::string BuildInsertSql(const std::string& from,
                            const std::string& to,
                            const std::vector<std::string>& from_columns,
                            const std::vector<std::string>& to_columns) {
-  DCHECK(!from.empty());
-  DCHECK(!to.empty());
-  DCHECK_NE(from, to);
-  DCHECK(!from_columns.empty());
-  DCHECK(!to_columns.empty());
-  DCHECK_EQ(from_columns.size(), to_columns.size());
+  CHECK(!from.empty());
+  CHECK(!to.empty());
+  CHECK_NE(from, to);
+  CHECK(!from_columns.empty());
+  CHECK(!to_columns.empty());
+  CHECK_EQ(from_columns.size(), to_columns.size());
 
   return base::ReplaceStringPlaceholders(
       "INSERT INTO $1 ($2) SELECT $3 FROM $4;",
@@ -38,9 +38,9 @@ std::string BuildInsertSql(const std::string& from,
 void CreateTableIndex(mojom::DBTransactionInfo* transaction,
                       const std::string& table_name,
                       const std::string& key) {
-  DCHECK(transaction);
-  DCHECK(!table_name.empty());
-  DCHECK(!key.empty());
+  CHECK(transaction);
+  CHECK(!table_name.empty());
+  CHECK(!key.empty());
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -52,8 +52,8 @@ void CreateTableIndex(mojom::DBTransactionInfo* transaction,
 
 void DropTable(mojom::DBTransactionInfo* transaction,
                const std::string& table_name) {
-  DCHECK(transaction);
-  DCHECK(!table_name.empty());
+  CHECK(transaction);
+  CHECK(!table_name.empty());
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -64,8 +64,8 @@ void DropTable(mojom::DBTransactionInfo* transaction,
 
 void DeleteTable(mojom::DBTransactionInfo* transaction,
                  const std::string& table_name) {
-  DCHECK(transaction);
-  DCHECK(!table_name.empty());
+  CHECK(transaction);
+  CHECK(!table_name.empty());
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -80,13 +80,13 @@ void CopyTableColumns(mojom::DBTransactionInfo* transaction,
                       const std::vector<std::string>& from_columns,
                       const std::vector<std::string>& to_columns,
                       const bool should_drop) {
-  DCHECK(transaction);
-  DCHECK(!from.empty());
-  DCHECK(!to.empty());
-  DCHECK_NE(from, to);
-  DCHECK(!from_columns.empty());
-  DCHECK(!to_columns.empty());
-  DCHECK_EQ(from_columns.size(), to_columns.size());
+  CHECK(transaction);
+  CHECK(!from.empty());
+  CHECK(!to.empty());
+  CHECK_NE(from, to);
+  CHECK(!from_columns.empty());
+  CHECK(!to_columns.empty());
+  CHECK_EQ(from_columns.size(), to_columns.size());
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -109,10 +109,10 @@ void CopyTableColumns(mojom::DBTransactionInfo* transaction,
 void RenameTable(mojom::DBTransactionInfo* transaction,
                  const std::string& from,
                  const std::string& to) {
-  DCHECK(transaction);
-  DCHECK(!from.empty());
-  DCHECK(!to.empty());
-  DCHECK_NE(from, to);
+  CHECK(transaction);
+  CHECK(!from.empty());
+  CHECK(!to.empty());
+  CHECK_NE(from, to);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;

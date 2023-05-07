@@ -77,7 +77,7 @@ base::Value::Dict ClientInfo::ToValue() const {
     base::Value::List probabilities_list;
 
     for (const auto& [segmemt, page_score] : item) {
-      DCHECK(!segmemt.empty());
+      CHECK(!segmemt.empty());
 
       base::Value::Dict probability_dict;
       probability_dict.Set("segment", segmemt);
@@ -140,7 +140,7 @@ bool ClientInfo::FromValue(const base::Value::Dict& dict) {
       }
 
       for (const auto [creative_instance_id, seen_ad] : ads.GetDict()) {
-        DCHECK(seen_ad.is_bool());
+        CHECK(seen_ad.is_bool());
         seen_ads[ad_type][creative_instance_id] = seen_ad.GetBool();
       }
     }
@@ -154,7 +154,7 @@ bool ClientInfo::FromValue(const base::Value::Dict& dict) {
 
       for (const auto [advertiser_id, seen_advertiser] :
            advertisers.GetDict()) {
-        DCHECK(seen_advertiser.is_bool());
+        CHECK(seen_advertiser.is_bool());
         seen_advertisers[ad_type][advertiser_id] = seen_advertiser.GetBool();
       }
     }
@@ -194,7 +194,7 @@ bool ClientInfo::FromValue(const base::Value::Dict& dict) {
                        dict.FindString("pageScore")) {
           const bool success =
               base::StringToDouble(*legacy_page_score_value, &page_score);
-          DCHECK(success);
+          CHECK(success);
         }
 
         probabilities.insert({*segment, page_score});

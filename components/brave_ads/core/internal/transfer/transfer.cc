@@ -33,12 +33,12 @@ Transfer::~Transfer() {
 }
 
 void Transfer::AddObserver(TransferObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
   observers_.AddObserver(observer);
 }
 
 void Transfer::RemoveObserver(TransferObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
   observers_.RemoveObserver(observer);
 }
 

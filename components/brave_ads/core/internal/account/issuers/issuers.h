@@ -31,7 +31,7 @@ class Issuers {
   ~Issuers();
 
   void SetDelegate(IssuersDelegate* delegate) {
-    DCHECK_EQ(delegate_, nullptr);
+    CHECK_EQ(delegate_, nullptr);
     delegate_ = delegate;
   }
 

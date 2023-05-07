@@ -14,7 +14,7 @@ namespace brave_ads {
 NotificationAdEventPredictorVariable::NotificationAdEventPredictorVariable(
     const mojom::NotificationAdEventType event_type)
     : event_type_(event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type_));
+  CHECK(mojom::IsKnownEnumValue(event_type_));
 }
 
 brave_federated::mojom::DataType

@@ -46,12 +46,12 @@ Catalog::~Catalog() {
 }
 
 void Catalog::AddObserver(CatalogObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
   observers_.AddObserver(observer);
 }
 
 void Catalog::RemoveObserver(CatalogObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
   observers_.RemoveObserver(observer);
 }
 
@@ -66,7 +66,7 @@ void Catalog::MaybeFetch() {
 ///////////////////////////////////////////////////////////////////////////////
 
 void Catalog::Fetch() {
-  DCHECK(!is_fetching_);
+  CHECK(!is_fetching_);
 
   BLOG(1, "FetchCatalog " << BuildCatalogUrlPath());
 

@@ -37,7 +37,7 @@ class NewTabPageAdServing final {
   ~NewTabPageAdServing();
 
   void SetDelegate(NewTabPageAdServingDelegate* delegate) {
-    DCHECK_EQ(delegate_, nullptr);
+    CHECK_EQ(delegate_, nullptr);
     delegate_ = delegate;
   }
 

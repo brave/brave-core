@@ -20,8 +20,8 @@ GetSignedTokensUrlRequestBuilder::GetSignedTokensUrlRequestBuilder(
     WalletInfo wallet,
     std::string nonce)
     : wallet_(std::move(wallet)), nonce_(std::move(nonce)) {
-  DCHECK(wallet_.IsValid());
-  DCHECK(!nonce_.empty());
+  CHECK(wallet_.IsValid());
+  CHECK(!nonce_.empty());
 }
 
 mojom::UrlRequestInfoPtr GetSignedTokensUrlRequestBuilder::Build() {

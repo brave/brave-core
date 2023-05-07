@@ -26,7 +26,7 @@ namespace brave_ads {
 namespace {
 
 std::string BuildDigestHeaderValue(const std::string& body) {
-  DCHECK(!body.empty());
+  CHECK(!body.empty());
 
   const std::vector<uint8_t> body_sha256 = crypto::Sha256(body);
   const std::string body_sha256_base64 = base::Base64Encode(body_sha256);
@@ -40,8 +40,8 @@ RequestSignedTokensUrlRequestBuilder::RequestSignedTokensUrlRequestBuilder(
     WalletInfo wallet,
     std::vector<privacy::cbr::BlindedToken> blinded_tokens)
     : wallet_(std::move(wallet)), blinded_tokens_(std::move(blinded_tokens)) {
-  DCHECK(wallet_.IsValid());
-  DCHECK(!blinded_tokens_.empty());
+  CHECK(wallet_.IsValid());
+  CHECK(!blinded_tokens_.empty());
 }
 
 RequestSignedTokensUrlRequestBuilder::~RequestSignedTokensUrlRequestBuilder() =
@@ -93,7 +93,7 @@ std::vector<std::string> RequestSignedTokensUrlRequestBuilder::BuildHeaders(
 
 std::string RequestSignedTokensUrlRequestBuilder::BuildSignatureHeaderValue(
     const std::string& body) const {
-  DCHECK(!body.empty());
+  CHECK(!body.empty());
 
   const base::flat_map<std::string, std::string> headers = {
       {"digest", BuildDigestHeaderValue(body)}};

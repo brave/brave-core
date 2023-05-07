@@ -33,7 +33,7 @@ HashedNGramsTransformation::~HashedNGramsTransformation() = default;
 
 std::unique_ptr<Data> HashedNGramsTransformation::Apply(
     const std::unique_ptr<Data>& input_data) const {
-  DCHECK(input_data->GetType() == DataType::kText);
+  CHECK(input_data->GetType() == DataType::kText);
 
   auto* text_data = static_cast<TextData*>(input_data.get());
 

@@ -25,7 +25,7 @@ template <typename T>
 T ApplyExclusionRules(const T& creative_ads,
                       const AdInfo& last_served_ad,
                       ExclusionRulesBase* exclusion_rules) {
-  DCHECK(exclusion_rules);
+  CHECK(exclusion_rules);
 
   const bool should_cap_last_served_creative_ad =
       ShouldCapLastServedCreativeAd(creative_ads);

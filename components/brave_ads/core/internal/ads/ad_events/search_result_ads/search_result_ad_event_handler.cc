@@ -34,7 +34,7 @@ bool ShouldDebounceViewedAdEvent(
     const AdInfo& ad,
     const AdEventList& ad_events,
     const mojom::SearchResultAdEventType& event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   return event_type == mojom::SearchResultAdEventType::kViewed &&
          HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewed);
@@ -44,7 +44,7 @@ bool ShouldDebounceClickedAdEvent(
     const AdInfo& ad,
     const AdEventList& ad_events,
     const mojom::SearchResultAdEventType& event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   return event_type == mojom::SearchResultAdEventType::kClicked &&
          HasFiredAdEvent(ad, ad_events, ConfirmationType::kClicked);
@@ -53,7 +53,7 @@ bool ShouldDebounceClickedAdEvent(
 bool WasAdServed(const AdInfo& ad,
                  const AdEventList& ad_events,
                  const mojom::SearchResultAdEventType& event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   return event_type == mojom::SearchResultAdEventType::kServed ||
          HasFiredAdEvent(ad, ad_events, ConfirmationType::kServed);
@@ -62,7 +62,7 @@ bool WasAdServed(const AdInfo& ad,
 bool IsAdPlaced(const AdInfo& ad,
                 const AdEventList& ad_events,
                 const mojom::SearchResultAdEventType& event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   return event_type == mojom::SearchResultAdEventType::kServed ||
          event_type == mojom::SearchResultAdEventType::kViewed ||
@@ -73,7 +73,7 @@ bool IsAdPlaced(const AdInfo& ad,
 bool ShouldDebounceAdEvent(const AdInfo& ad,
                            const AdEventList& ad_events,
                            const mojom::SearchResultAdEventType& event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   return ShouldDebounceViewedAdEvent(ad, ad_events, event_type) ||
          ShouldDebounceClickedAdEvent(ad, ad_events, event_type) ||
@@ -92,8 +92,8 @@ void SearchResultAdEventHandler::FireEvent(
     mojom::SearchResultAdInfoPtr ad_mojom,
     const mojom::SearchResultAdEventType event_type,
     FireAdEventHandlerCallback callback) const {
-  DCHECK(ad_mojom);
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(ad_mojom);
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
 
@@ -132,7 +132,7 @@ void SearchResultAdEventHandler::FireEvent(
     const SearchResultAdInfo& ad,
     const mojom::SearchResultAdEventType event_type,
     FireAdEventHandlerCallback callback) const {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   const auto ad_event = SearchResultAdEventFactory::Build(event_type);
   ad_event->FireEvent(ad);
@@ -143,7 +143,7 @@ void SearchResultAdEventHandler::FireEvent(
 void SearchResultAdEventHandler::FireViewedEvent(
     mojom::SearchResultAdInfoPtr ad_mojom,
     FireAdEventHandlerCallback callback) const {
-  DCHECK(ad_mojom);
+  CHECK(ad_mojom);
 
   const DepositInfo deposit = BuildDeposit(ad_mojom);
 
@@ -158,7 +158,7 @@ void SearchResultAdEventHandler::OnSaveDeposits(
     mojom::SearchResultAdInfoPtr ad_mojom,
     FireAdEventHandlerCallback callback,
     const bool success) const {
-  DCHECK(ad_mojom);
+  CHECK(ad_mojom);
 
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
 
@@ -278,7 +278,7 @@ void SearchResultAdEventHandler::SuccessfullyFiredEvent(
     const SearchResultAdInfo& ad,
     const mojom::SearchResultAdEventType event_type,
     FireAdEventHandlerCallback callback) const {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   if (delegate_) {
     switch (event_type) {
@@ -306,7 +306,7 @@ void SearchResultAdEventHandler::FailedToFireEvent(
     const SearchResultAdInfo& ad,
     const mojom::SearchResultAdEventType event_type,
     FireAdEventHandlerCallback callback) const {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(event_type));
 
   BLOG(1, "Failed to fire search result ad "
               << event_type << " event for placement_id " << ad.placement_id

@@ -59,7 +59,7 @@ absl::optional<EmbeddingPipelineInfo> EmbeddingPipelineFromValue(
     std::vector<float> embedding;
     embedding.reserve(list->size());
     for (const base::Value& item : *list) {
-      DCHECK(item.is_double());
+      CHECK(item.is_double());
 
       embedding.push_back(static_cast<float>(item.GetDouble()));
     }

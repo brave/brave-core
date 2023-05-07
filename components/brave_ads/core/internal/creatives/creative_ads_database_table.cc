@@ -32,7 +32,7 @@ namespace {
 constexpr char kTableName[] = "creative_ads";
 
 void BindRecords(mojom::DBCommandInfo* command) {
-  DCHECK(command);
+  CHECK(command);
 
   command->record_bindings = {
       mojom::DBCommandInfo::RecordBindingType::
@@ -50,7 +50,7 @@ void BindRecords(mojom::DBCommandInfo* command) {
 
 size_t BindParameters(mojom::DBCommandInfo* command,
                       const CreativeAdList& creative_ads) {
-  DCHECK(command);
+  CHECK(command);
 
   size_t count = 0;
 
@@ -73,7 +73,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
 }
 
 CreativeAdInfo GetFromRecord(mojom::DBRecordInfo* record) {
-  DCHECK(record);
+  CHECK(record);
 
   CreativeAdInfo creative_ad;
 
@@ -91,7 +91,7 @@ CreativeAdInfo GetFromRecord(mojom::DBRecordInfo* record) {
 
 CreativeAdMap GroupCreativeAdsFromResponse(
     mojom::DBCommandResponseInfoPtr command_response) {
-  DCHECK(command_response);
+  CHECK(command_response);
 
   CreativeAdMap creative_ads;
 
@@ -125,7 +125,7 @@ CreativeAdMap GroupCreativeAdsFromResponse(
 
 CreativeAdList GetCreativeAdsFromResponse(
     mojom::DBCommandResponseInfoPtr command_response) {
-  DCHECK(command_response);
+  CHECK(command_response);
 
   const CreativeAdMap grouped_creative_ads =
       GroupCreativeAdsFromResponse(std::move(command_response));
@@ -165,7 +165,7 @@ void OnGetForCreativeInstanceId(
 }
 
 void MigrateToV24(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   DropTable(transaction, "creative_ads");
 
@@ -185,7 +185,7 @@ void MigrateToV24(mojom::DBTransactionInfo* transaction) {
 
 void CreativeAds::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                                  const CreativeAdList& creative_ads) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   if (creative_ads.empty()) {
     return;
@@ -238,7 +238,7 @@ std::string CreativeAds::GetTableName() const {
 }
 
 void CreativeAds::Create(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
@@ -254,7 +254,7 @@ void CreativeAds::Create(mojom::DBTransactionInfo* transaction) {
 
 void CreativeAds::Migrate(mojom::DBTransactionInfo* transaction,
                           const int to_version) {
-  DCHECK(transaction);
+  CHECK(transaction);
 
   switch (to_version) {
     case 24: {
@@ -273,7 +273,7 @@ void CreativeAds::Migrate(mojom::DBTransactionInfo* transaction,
 std::string CreativeAds::BuildInsertOrUpdateSql(
     mojom::DBCommandInfo* command,
     const CreativeAdList& creative_ads) const {
-  DCHECK(command);
+  CHECK(command);
 
   const size_t binded_parameters_count = BindParameters(command, creative_ads);
 

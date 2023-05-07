@@ -35,7 +35,7 @@ std::vector<std::string> BuildHeaders() {
 CreateOptedInConfirmationUrlRequestBuilder::
     CreateOptedInConfirmationUrlRequestBuilder(ConfirmationInfo confirmation)
     : confirmation_(std::move(confirmation)) {
-  DCHECK(IsValid(confirmation_));
+  CHECK(IsValid(confirmation_));
 }
 
 mojom::UrlRequestInfoPtr CreateOptedInConfirmationUrlRequestBuilder::Build() {
@@ -52,8 +52,8 @@ mojom::UrlRequestInfoPtr CreateOptedInConfirmationUrlRequestBuilder::Build() {
 ///////////////////////////////////////////////////////////////////////////////
 
 GURL CreateOptedInConfirmationUrlRequestBuilder::BuildUrl() const {
-  DCHECK(confirmation_.opted_in);
-  DCHECK(confirmation_.opted_in->credential_base64url);
+  CHECK(confirmation_.opted_in);
+  CHECK(confirmation_.opted_in->credential_base64url);
 
   const std::string url_host = confirmation_.ad_type == AdType::kSearchResultAd
                                    ? GetAnonymousSearchUrlHost()

@@ -47,8 +47,8 @@ void MockBuildChannel(const BuildChannelType type) {
     }
   }
 
-  NOTREACHED() << "Unexpected value for BuildChannelType: "
-               << static_cast<int>(type);
+  NOTREACHED_NORETURN() << "Unexpected value for BuildChannelType: "
+                        << static_cast<int>(type);
 }
 
 void MockPlatformHelper(const PlatformHelperMock& mock,

@@ -88,9 +88,8 @@ bool DoesConfirmationTypeMatchConversionType(
     }
   }
 
-  NOTREACHED() << "Unexpected value for ConfirmationType: "
-               << static_cast<int>(confirmation_type.value());
-  return false;
+  NOTREACHED_NORETURN() << "Unexpected value for ConfirmationType: "
+                        << static_cast<int>(confirmation_type.value());
 }
 
 std::string ExtractConversionIdFromText(
@@ -199,7 +198,7 @@ ConversionList FilterConversions(const std::vector<GURL>& redirect_chain,
 ConversionList SortConversions(const ConversionList& conversions) {
   const auto sort =
       ConversionsSortFactory::Build(ConversionSortType::kDescendingOrder);
-  DCHECK(sort);
+  CHECK(sort);
 
   return sort->Apply(conversions);
 }
@@ -215,12 +214,12 @@ Conversions::~Conversions() {
 }
 
 void Conversions::AddObserver(ConversionsObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
   observers_.AddObserver(observer);
 }
 
 void Conversions::RemoveObserver(ConversionsObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
   observers_.RemoveObserver(observer);
 }
 
@@ -503,8 +502,7 @@ void Conversions::OnRemoveInvalidQueueItem(
     const bool success) {
   if (!success) {
     BLOG(0, "Failed to remove invalid conversion");
-    NOTREACHED();
-    return;
+    NOTREACHED_NORETURN();
   }
 
   FailedToConvertQueueItem(conversion_queue_item);
@@ -524,8 +522,7 @@ void Conversions::OnMarkQueueItemAsProcessed(
     const bool success) {
   if (!success) {
     BLOG(0, "Failed to mark conversion as processed");
-    NOTREACHED();
-    return;
+    NOTREACHED_NORETURN();
   }
 
   ConvertedQueueItem(conversion_queue_item);

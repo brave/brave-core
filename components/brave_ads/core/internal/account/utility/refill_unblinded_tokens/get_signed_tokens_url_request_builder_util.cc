@@ -13,8 +13,8 @@ namespace brave_ads {
 
 std::string BuildGetSignedTokensUrlPath(const std::string& payment_id,
                                         const std::string& nonce) {
-  DCHECK(!payment_id.empty());
-  DCHECK(!nonce.empty());
+  CHECK(!payment_id.empty());
+  CHECK(!nonce.empty());
 
   return base::StringPrintf("/v%d/confirmation/token/%s?nonce=%s",
                             kConfirmationServerVersion, payment_id.c_str(),

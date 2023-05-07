@@ -26,7 +26,7 @@ void NotificationAdPopupWidget::InitWidget(
     const gfx::Rect& bounds,
     gfx::NativeWindow browser_native_window,
     gfx::NativeView browser_native_view) {
-  DCHECK(delegate);
+  CHECK(delegate);
 
   views::Widget::InitParams params;
   params.delegate = delegate;
@@ -62,7 +62,7 @@ void NotificationAdPopupWidget::InitWidget(
   // not the Ash desktop (since there is already another toast contents view
   // there
   if (!params.parent) {
-    DCHECK(!params.native_widget);
+    CHECK(!params.native_widget);
     params.native_widget = new views::DesktopNativeWidgetAura(this);
   }
 #endif  // BUILDFLAG(IS_WIN)

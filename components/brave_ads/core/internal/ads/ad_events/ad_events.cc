@@ -62,7 +62,7 @@ void PurgeExpiredAdEvents(AdEventCallback callback) {
 
 void PurgeOrphanedAdEvents(const mojom::AdType ad_type,
                            AdEventCallback callback) {
-  DCHECK(mojom::IsKnownEnumValue(ad_type));
+  CHECK(mojom::IsKnownEnumValue(ad_type));
 
   const database::table::AdEvents database_table;
   database_table.PurgeOrphaned(

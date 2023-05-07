@@ -21,7 +21,7 @@ std::vector<std::string> CreateAdImpressionQuestions(
   std::vector<std::string> questions;
 
   const std::string parent_segment = GetParentSegment(segment);
-  DCHECK(!parent_segment.empty());
+  CHECK(!parent_segment.empty());
 
   std::string stripped_parent_segment =
       StripNonAlphaNumericCharacters(parent_segment);

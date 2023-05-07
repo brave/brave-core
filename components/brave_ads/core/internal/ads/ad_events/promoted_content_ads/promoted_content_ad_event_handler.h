@@ -37,7 +37,7 @@ class PromotedContentAdEventHandler final
   ~PromotedContentAdEventHandler() override;
 
   void SetDelegate(PromotedContentAdEventHandlerDelegate* delegate) {
-    DCHECK_EQ(delegate_, nullptr);
+    CHECK_EQ(delegate_, nullptr);
     delegate_ = delegate;
   }
 

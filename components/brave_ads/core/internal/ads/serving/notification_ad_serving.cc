@@ -103,7 +103,7 @@ void NotificationAdServing::MaybeServeAd() {
 ///////////////////////////////////////////////////////////////////////////////
 
 void NotificationAdServing::OnBuildUserModel(const UserModelInfo& user_model) {
-  DCHECK(eligible_ads_);
+  CHECK(eligible_ads_);
   eligible_ads_->GetForUserModel(
       user_model, base::BindOnce(&NotificationAdServing::OnGetForUserModel,
                                  weak_factory_.GetWeakPtr(), user_model));
@@ -204,7 +204,7 @@ void NotificationAdServing::ServeAd(const NotificationAdInfo& ad) {
 
   is_serving_ = false;
 
-  DCHECK(eligible_ads_);
+  CHECK(eligible_ads_);
   eligible_ads_->SetLastServedAd(ad);
 
   if (delegate_) {
