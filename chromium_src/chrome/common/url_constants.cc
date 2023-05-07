@@ -247,10 +247,6 @@ const char kMacOsObsoleteURL[] =
 #endif
 
 #if BUILDFLAG(IS_WIN)
-const char kChromeCleanerLearnMoreURL[] =
-    "https://support.brave.com/hc/en-us/articles/"
-    "360017884152-How-do-I-remove-unwanted-ads-pop-ups-malware-";
-
 const char kWindowsXPVistaDeprecationURL[] =
     "https://support.brave.com/";
 
