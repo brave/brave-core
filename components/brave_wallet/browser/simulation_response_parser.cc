@@ -35,6 +35,10 @@ mojom::BlowfishPricePtr ParsePrice(const base::Value& value) {
   if (value.is_dict()) {
     const auto& price_value =
         simulation_responses::Price::FromValue(value.GetDict());
+    if (!price_value) {
+      return nullptr;
+    }
+
     return mojom::BlowfishPrice::New(price_value->source,
                                      price_value->updated_at,
                                      price_value->dollar_value_per_token);
@@ -272,7 +276,6 @@ mojom::EVMSimulationResponsePtr ParseSimulationResponse(
   if (simulation_response_value->simulation_results.error.is_dict()) {
     const auto& error_value = simulation_responses::EVMError::FromValue(
         simulation_response_value->simulation_results.error.GetDict());
-
     if (!error_value) {
       return nullptr;
     }
@@ -311,6 +314,10 @@ mojom::BlowfishPricePtr ParsePrice(const base::Value& value) {
   if (value.is_dict()) {
     const auto& price_value =
         simulation_responses::SolanaPrice::FromValue(value.GetDict());
+    if (!price_value) {
+      return nullptr;
+    }
+
     return mojom::BlowfishPrice::New(price_value->source,
                                      price_value->last_updated_at,
                                      price_value->dollar_value_per_token);
@@ -474,7 +481,6 @@ mojom::SolanaSimulationResponsePtr ParseSimulationResponse(
   if (simulation_response_value->simulation_results.error.is_dict()) {
     const auto& error_value = simulation_responses::SolanaError::FromValue(
         simulation_response_value->simulation_results.error.GetDict());
-
     if (!error_value) {
       return nullptr;
     }

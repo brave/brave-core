@@ -1091,6 +1091,19 @@ TEST(SimulationResponseParserUnitTest, ParseEVMNullableFields) {
 
     ASSERT_FALSE(state_change_raw_info->asset_price);
   }
+
+  {
+    auto json = base::StringPrintf(json_fmt.c_str(), "{\"foo\": 1}");
+    // OK: invalid dict for nullable field assetPrice is treated as null.
+    auto simulation_response = evm::ParseSimulationResponse(ParseJson(json));
+    ASSERT_TRUE(simulation_response);
+    const auto& state_change =
+        simulation_response->simulation_results->expected_state_changes.at(0);
+    const auto& state_change_raw_info =
+        state_change->raw_info->data->get_erc721_transfer_data();
+
+    ASSERT_FALSE(state_change_raw_info->asset_price);
+  }
 }
 
 TEST(SimulationResponseParserUnitTest, ParseEVMInvalidRawInfoData) {
@@ -1527,6 +1540,21 @@ TEST(SimulationResponseParserUnitTest, ParseSolanaNullableFields) {
 
     // OK: invalid values for nullable field assetPrice are treated as
     // null.
+    ASSERT_TRUE(simulation_response);
+
+    const auto& state_change =
+        simulation_response->simulation_results->expected_state_changes.at(0);
+    const auto& state_change_raw_info =
+        state_change->raw_info->data->get_spl_transfer_data();
+
+    ASSERT_FALSE(state_change_raw_info->asset_price);
+  }
+
+  {
+    auto json = base::StringPrintf(json_fmt.c_str(), "{\"foo\": 1}");
+    auto simulation_response = solana::ParseSimulationResponse(ParseJson(json));
+
+    // OK: invalid dict for nullable field assetPrice is treated as null.
     ASSERT_TRUE(simulation_response);
 
     const auto& state_change =
