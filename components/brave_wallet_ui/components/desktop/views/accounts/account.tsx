@@ -6,6 +6,7 @@
 import * as React from 'react'
 import { Redirect, useParams, useLocation } from 'react-router'
 import { useDispatch } from 'react-redux'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 import { create } from 'ethereum-blockies'
 
 // Selectors
@@ -65,7 +66,8 @@ import { AccountButtonOptions } from '../../../../options/account-list-button-op
 import { useScrollIntoView } from '../../../../common/hooks/use-scroll-into-view'
 import {
   useGetVisibleNetworksQuery,
-  useGetUserTokensRegistryQuery
+  useGetUserTokensRegistryQuery,
+  useGetTransactionsQuery
 } from '../../../../common/slices/api.slice'
 import { useMultiChainSellAssets } from '../../../../common/hooks/use-multi-chain-sell-assets'
 
@@ -88,7 +90,11 @@ export const Account = ({
 
   // unsafe selectors
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
-  const transactions = useUnsafeWalletSelector(WalletSelectors.transactions)
+  const selectedAccount = React.useMemo(() => {
+    return accounts.find(({ address }) =>
+      address.toLowerCase() === accountId?.toLowerCase()
+    )
+  }, [accounts, accountId])
 
   // queries
   const { data: networkList = [] } = useGetVisibleNetworksQuery()
@@ -97,6 +103,16 @@ export const Account = ({
       userVisibleTokensInfo: selectAllUserAssetsFromQueryResult(result)
     })
   })
+  const { data: unsortedTransactionList = [] } = useGetTransactionsQuery(
+    selectedAccount
+      ? {
+          address: selectedAccount.address,
+          chainId: null,
+          coinType: selectedAccount.coin
+        }
+      : skipToken,
+    { skip: !selectedAccount }
+  )
 
   // safe selectors
   const assetAutoDiscoveryCompleted = useSafeWalletSelector(WalletSelectors.assetAutoDiscoveryCompleted)
@@ -120,12 +136,6 @@ export const Account = ({
   } = useMultiChainSellAssets()
 
   // memos
-  const selectedAccount = React.useMemo(() => {
-    return accounts.find(({ address }) =>
-      address.toLowerCase() === accountId?.toLowerCase()
-    )
-  }, [accounts, accountId])
-
   const orb = React.useMemo(() => {
     if (selectedAccount) {
       return create({ seed: selectedAccount.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
@@ -133,18 +143,8 @@ export const Account = ({
   }, [selectedAccount])
 
   const transactionList = React.useMemo(() => {
-    if (selectedAccount?.address && transactions[selectedAccount.address]) {
-      return sortTransactionByDate(
-        transactions[selectedAccount.address],
-        'descending'
-      )
-    } else {
-      return []
-    }
-  }, [
-    selectedAccount?.address,
-    selectedAccount && transactions[selectedAccount.address],
-  ])
+    return sortTransactionByDate(unsortedTransactionList, 'descending')
+  }, [unsortedTransactionList])
 
   const accountsTokensList = React.useMemo(() => {
     if (!selectedAccount) {
