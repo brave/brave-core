@@ -25,8 +25,7 @@ base::FieldTrial::ActiveGroups GetActiveFieldTrialStudyGroups() {
                         std::back_inserter(filtered_active_field_trial_groups),
                         [](const base::FieldTrial::ActiveGroup& active_group) {
                           return base::StartsWith(active_group.trial_name,
-                                                  kStudyPrefixTag,
-                                                  base::CompareCase::SENSITIVE);
+                                                  kStudyPrefixTag);
                         });
 
   return filtered_active_field_trial_groups;

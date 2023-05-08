@@ -77,8 +77,7 @@ absl::optional<URLResponsePair> GetNextUrlResponseForUrl(
 }
 
 bool ShouldReadResponseBodyFromFile(const std::string& response_body) {
-  return base::StartsWith(response_body, "/",
-                          base::CompareCase::INSENSITIVE_ASCII);
+  return base::StartsWith(response_body, "/");
 }
 
 std::string ParseFilenameFromResponseBody(const std::string& response_body) {
