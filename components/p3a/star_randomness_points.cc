@@ -14,6 +14,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
+#include "base/strings/strcat.h"
 #include "base/values.h"
 #include "brave/components/p3a/network_annotations.h"
 #include "brave/components/p3a/p3a_config.h"
@@ -71,7 +72,8 @@ void StarRandomnessPoints::SendRandomnessRequest(
         randomness_request_state,
     const rust::Vec<constellation::VecU8>& rand_req_points) {
   auto resource_request = std::make_unique<network::ResourceRequest>();
-  resource_request->url = GURL(config_->star_randomness_host + "/randomness");
+  resource_request->url =
+      GURL(base::StrCat({config_->star_randomness_host, "/randomness"}));
   resource_request->method = "POST";
 
   url_loader_ = network::SimpleURLLoader::Create(

@@ -28,6 +28,11 @@ constexpr char kP3AExpressRotationIntervalSeconds[] =
 constexpr char kP3ASlowRotationIntervalSeconds[] =
     "p3a-slow-rotation-interval-seconds";
 
+// For specifying a fake STAR epoch, for the purpose of
+// triggering the transmission of encrypted measurements before they are
+// due to be sent, for testing purposes.
+constexpr char kP3AFakeStarEpoch[] = "p3a-fake-star-epoch";
+
 // P3A cloud backend URL.
 constexpr char kP3AJsonUploadUrl[] = "p3a-json-upload-url";
 constexpr char kP3ACreativeUploadUrl[] = "p3a-creative-upload-url";

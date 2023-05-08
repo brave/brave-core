@@ -12,12 +12,13 @@
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
-#include "base/memory/ref_counted.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/p3a/constellation/rs/cxx/src/lib.rs.h"
 #include "brave/components/p3a/p3a_config.h"
+#include "net/base/hash_value.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
 class PrefRegistrySimple;
@@ -37,11 +38,13 @@ struct RandomnessServerInfo {
   RandomnessServerInfo(
       uint8_t current_epoch,
       base::Time next_epoch_time,
+      bool epoch_change_detected,
       ::rust::Box<constellation::PPOPRFPublicKeyWrapper> public_key);
   ~RandomnessServerInfo();
 
   uint8_t current_epoch;
   base::Time next_epoch_time;
+  bool epoch_change_detected;
   ::rust::Box<constellation::PPOPRFPublicKeyWrapper> public_key;
 };
 
@@ -87,7 +90,8 @@ class StarRandomnessMeta {
 
   std::unique_ptr<RandomnessServerInfo> rnd_server_info_;
 
-  bool has_used_cached_info = false;
+  bool has_used_cached_info_ = false;
+  absl::optional<uint8_t> last_cached_epoch_ = absl::nullopt;
 
   const raw_ptr<PrefService> local_state_;
 
@@ -97,7 +101,7 @@ class StarRandomnessMeta {
 
   const raw_ptr<const P3AConfig> config_;
 
-  scoped_refptr<net::X509Certificate> approved_cert_;
+  absl::optional<net::HashValue> approved_cert_fp_;
   bool attestation_pending_ = false;
 
   base::WeakPtrFactory<StarRandomnessMeta> weak_ptr_factory_{this};
