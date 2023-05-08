@@ -210,17 +210,17 @@ extension Date {
   var formattedSyncSessionPeriodDate: String {
     let hourFormatter = DateFormatter().then {
       $0.locale = .current
-      $0.dateFormat = "HH:mm a"
+      $0.dateFormat = "h:mm a"
     }
     
     let hourDayFormatter = DateFormatter().then {
       $0.locale = .current
-      $0.dateFormat = "EEEE HH:mm a"
+      $0.dateFormat = "EEEE h:mm a"
     }
     
     let fullDateFormatter = DateFormatter().then {
       $0.locale = .current
-      $0.dateFormat = "HH:mm a MM-dd-yyyy"
+      $0.dateFormat = "h:mm a MM-dd-yyyy"
     }
         
     if compare(getCurrentDateWith(dayOffset: TimePeriodOffset.today.period)) ==
