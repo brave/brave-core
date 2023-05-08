@@ -10,6 +10,7 @@
 #include "base/check.h"
 #include "base/command_line.h"
 #include "base/logging.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/switches.h"
 
@@ -118,6 +119,15 @@ P3AConfig P3AConfig::LoadFromCommandLine() {
       MaybeOverrideTimeDeltaFromCommandLine(
           cmdline, switches::kP3AExpressRotationIntervalSeconds,
           std::move(config.json_rotation_intervals[MetricLogType::kExpress]));
+
+  if (cmdline->HasSwitch(switches::kP3AFakeStarEpoch)) {
+    unsigned fake_star_epoch;
+    if (base::StringToUint(
+            cmdline->GetSwitchValueASCII(switches::kP3AFakeStarEpoch),
+            &fake_star_epoch)) {
+      config.fake_star_epoch = fake_star_epoch;
+    }
+  }
 
   config.p3a_json_upload_url =
       MaybeOverrideURLFromCommandLine(cmdline, switches::kP3AJsonUploadUrl,

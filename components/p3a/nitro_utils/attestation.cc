@@ -34,6 +34,10 @@ namespace nitro_utils {
 
 namespace {
 
+constexpr char kHashPrefix[] = "sha256:";
+constexpr size_t kHashPrefixLength = 7;
+constexpr size_t kSHA256HashLength = 32;
+constexpr size_t kUserDataMinLength = kSHA256HashLength + kHashPrefixLength;
 constexpr size_t kAttestationBodyMaxSize = 16384;
 constexpr net::SHA256HashValue kAWSRootCertFP{
     .data = {0x64, 0x1A, 0x03, 0x21, 0xA3, 0xE2, 0x44, 0xEF, 0xE4, 0x56, 0x46,
@@ -81,19 +85,25 @@ bool VerifyNonce(const cbor::Value::MapValue& cose_map,
 
 bool VerifyUserDataKey(scoped_refptr<net::X509Certificate> server_cert,
                        const cbor::Value::MapValue& cose_map) {
-  DCHECK(server_cert);
+  CHECK(server_cert);
 
   const auto user_data_it = cose_map.find(cbor::Value("user_data"));
   if (user_data_it == cose_map.end() || !user_data_it->second.is_bytestring() ||
-      user_data_it->second.GetBytestring().size() != 32) {
+      user_data_it->second.GetBytestring().size() < kUserDataMinLength) {
     LOG(ERROR) << "Nitro verification: user data is missing or is not bstr "
-               << "or is not 32 bytes";
+               << "or is not at least " << kUserDataMinLength << " bytes";
+    return false;
+  }
+  if (memcmp(user_data_it->second.GetBytestring().data(), kHashPrefix,
+             kHashPrefixLength) != 0) {
+    LOG(ERROR) << "Nitro verification: user data is missing sha256 hash prefix";
     return false;
   }
   const net::SHA256HashValue server_cert_fp =
       net::X509Certificate::CalculateFingerprint256(server_cert->cert_buffer());
-  if (memcmp(server_cert_fp.data, user_data_it->second.GetBytestring().data(),
-             32) != 0) {
+  if (memcmp(server_cert_fp.data,
+             user_data_it->second.GetBytestring().data() + kHashPrefixLength,
+             kSHA256HashLength) != 0) {
     LOG(ERROR)
         << "Nitro verification: server cert fp does not match user data fp, "
         << "user data = "
@@ -170,9 +180,10 @@ void ParseAndVerifyDocument(
     return;
   }
 
-  base::TrimString(*response_body, " ", response_body.get());
+  base::StringPiece trimmed_body =
+      base::TrimWhitespaceASCII(*response_body, base::TrimPositions::TRIM_ALL);
   absl::optional<std::vector<uint8_t>> cose_encoded =
-      base::Base64Decode(*response_body);
+      base::Base64Decode(trimmed_body);
   if (!cose_encoded.has_value()) {
     LOG(ERROR) << "Nitro verification: Failed to decode base64 document";
     std::move(result_callback).Run(scoped_refptr<net::X509Certificate>());
@@ -197,8 +208,7 @@ void ParseAndVerifyDocument(
 
   const network::mojom::URLResponseHead* response_info =
       url_loader->ResponseInfo();
-  DCHECK(response_info);
-  if (!response_info->ssl_info.has_value() ||
+  if (!response_info || !response_info->ssl_info.has_value() ||
       response_info->ssl_info->cert == nullptr) {
     LOG(ERROR) << "Nitro verification: ssl info is missing from response info";
     std::move(result_callback).Run(scoped_refptr<net::X509Certificate>());

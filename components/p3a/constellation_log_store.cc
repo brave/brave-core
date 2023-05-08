@@ -29,7 +29,7 @@ constexpr char kPrefName[] = "p3a.constellation_logs";
 ConstellationLogStore::ConstellationLogStore(PrefService& local_state,
                                              size_t keep_epoch_count)
     : local_state_(local_state), keep_epoch_count_(keep_epoch_count) {
-  DCHECK_GT(keep_epoch_count, 0U);
+  CHECK_GT(keep_epoch_count, 0U);
 }
 
 ConstellationLogStore::~ConstellationLogStore() = default;
