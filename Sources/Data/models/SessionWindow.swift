@@ -13,8 +13,9 @@ public final class SessionWindow: NSManagedObject, CRUD {
   @NSManaged private(set) public var isPrivate: Bool
   @NSManaged public var isSelected: Bool
   @NSManaged private(set) public var windowId: UUID
-  @NSManaged private(set) public var sessionTabs: Set<SessionTab>
-  @NSManaged private(set) public var sessionTabGroups: Set<SessionTabGroup>
+  
+  @NSManaged private(set) public var sessionTabs: Set<SessionTab>?
+  @NSManaged private(set) public var sessionTabGroups: Set<SessionTabGroup>?
   
   @available(*, unavailable)
   public init() {

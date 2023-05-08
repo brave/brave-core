@@ -13,8 +13,8 @@ public final class SessionTabGroup: NSManagedObject, CRUD {
   @NSManaged public var index: Int32
   @NSManaged private(set) public var groupId: UUID
   
-  @NSManaged private(set) public var sessionWindow: SessionWindow
-  @NSManaged private(set) public var sessionTabs: Set<SessionTab>
+  @NSManaged private(set) public var sessionWindow: SessionWindow?
+  @NSManaged private(set) public var sessionTabs: Set<SessionTab>?
   
   @available(*, unavailable)
   public init() {
