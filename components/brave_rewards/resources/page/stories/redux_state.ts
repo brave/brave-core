@@ -21,6 +21,10 @@ export const reduxState: Rewards.ApplicationState = {
       modalConnect: false,
       modalRedirect: 'hide',
       modalReset: false,
+      modalAdsHistory: false,
+      adsSettings: false,
+      autoContributeSettings: false,
+      contributionsSettings: false,
       promosDismissed: {}
     },
     autoContributeList: [

@@ -44,17 +44,16 @@ export function AdsPanel () {
     externalWallet: state.externalWallet,
     externalWalletProviderList: state.externalWalletProviderList,
     parameters: state.parameters,
-    userType: state.userType
+    userType: state.userType,
+    modalAdsHistory: state.ui.modalAdsHistory,
+    showAdsSettings: state.ui.adsSettings,
   }))
 
-  const [showModal, setShowModal] = React.useState(false)
-  const [showConfig, setShowConfig] = React.useState(false)
-
   React.useEffect(() => {
-    if (showModal) {
+    if (data.modalAdsHistory) {
       actions.getAdsHistory()
     }
-  }, [showModal])
+  }, [data.modalAdsHistory])
 
   const { adsData } = data
 
@@ -67,11 +66,23 @@ export function AdsPanel () {
   })
 
   const toggleModal = () => {
-    setShowModal(!showModal)
+    if (data.modalAdsHistory) {
+      actions.onModalAdsHistoryClose()
+    } else {
+      actions.onModalAdsHistoryOpen()
+    }
   }
 
   const onEnabledChange = (enabled: boolean) => {
     actions.onAdsSettingSave('adsEnabled', enabled)
+  }
+
+  const onShowConfigChange = (showConfig: boolean) => {
+    if (showConfig) {
+      actions.onAdsSettingsOpen()
+    } else {
+      actions.onAdsSettingsClose()
+    }
   }
 
   const settingSelectHandler = (key: string) => {
@@ -378,8 +389,8 @@ export function AdsPanel () {
     )
   }
 
-  function renderModal () {
-    if (!showModal) {
+  function renderModal() {
+    if (!data.modalAdsHistory) {
       return null
     }
 
@@ -464,18 +475,18 @@ export function AdsPanel () {
   }
 
   return (
-    <SettingsPanel>
+    <SettingsPanel deeplinkId='ads'>
       <style.root>
         {renderModal()}
         {renderNeedsUpdateNotice()}
         <PanelHeader
           title={getString('adsTitle')}
           enabled={canEnable && adsData.adsEnabled}
-          showConfig={showConfig}
-          onShowConfigChange={setShowConfig}
+          showConfig={data.showAdsSettings}
+          onShowConfigChange={onShowConfigChange}
           onEnabledChange={canEnable ? onEnabledChange : undefined}
         />
-        {showConfig ? renderConfig() : renderContent()}
+        {data.showAdsSettings ? renderConfig() : renderContent()}
         {renderNotSupportedNotice()}
       </style.root>
     </SettingsPanel>

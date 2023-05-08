@@ -73,6 +73,10 @@ declare namespace Rewards {
         | 'hide'
         | 'show'
       modalReset: boolean
+      modalAdsHistory: boolean
+      adsSettings: boolean
+      autoContributeSettings: boolean
+      contributionsSettings: boolean
       promosDismissed: {
         [key: string]: boolean
       }

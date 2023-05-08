@@ -63,6 +63,22 @@ export const onModalConnectClose = () => action(types.ON_MODAL_CONNECT_CLOSE)
 
 export const onModalConnectOpen = () => action(types.ON_MODAL_CONNECT_OPEN)
 
+export const onModalAdsHistoryClose = () => action(types.ON_MODAL_ADS_HISTORY_CLOSE)
+
+export const onModalAdsHistoryOpen = () => action(types.ON_MODAL_ADS_HISTORY_OPEN)
+
+export const onAdsSettingsClose = () => action(types.ON_ADS_SETTINGS_CLOSE)
+
+export const onAdsSettingsOpen = () => action(types.ON_ADS_SETTINGS_OPEN)
+
+export const onAutoContributeSettingsClose = () => action(types.ON_AUTO_CONTRIBUTE_SETTINGS_CLOSE)
+
+export const onAutoContributeSettingsOpen = () => action(types.ON_AUTO_CONTRIBUTE_SETTINGS_OPEN)
+
+export const onContributionsSettingsClose = () => action(types.ON_CONTRIBUTIONS_SETTINGS_CLOSE)
+
+export const onContributionsSettingsOpen = () => action(types.ON_CONTRIBUTIONS_SETTINGS_OPEN)
+
 export const onClearAlert = (property: string) => action(types.ON_CLEAR_ALERT, {
   property
 })

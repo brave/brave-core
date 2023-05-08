@@ -39,17 +39,25 @@ export function TipsPanel () {
     parameters: state.parameters,
     tipsList: state.tipsList,
     inlineTip: state.inlineTip,
-    inlineTipsEnabled: state.inlineTipsEnabled
+    inlineTipsEnabled: state.inlineTipsEnabled,
+    showSettings: state.ui.contributionsSettings
   }))
 
   const [showAllModal, setShowAllModal] = React.useState(false)
-  const [showConfig, setShowConfig] = React.useState(false)
   const [needsRestart, setNeedsRestart] = React.useState(false)
 
   const totalTips = data.tipsList.reduce(
     (total, item) => total + item.percentage, 0)
 
   const toggleShowAll = () => { setShowAllModal(!showAllModal) }
+
+  const onShowConfigChange = (showConfig: boolean) => {
+    if (showConfig) {
+      actions.onContributionsSettingsOpen()
+    } else {
+      actions.onContributionsSettingsClose()
+    }
+  }
 
   function renderTable (maxRows?: number) {
     let rows = data.tipsList
@@ -198,7 +206,7 @@ export function TipsPanel () {
   }
 
   return (
-    <SettingsPanel>
+    <SettingsPanel deeplinkId='contributions'>
       <style.root>
         {
           showAllModal &&
@@ -212,10 +220,10 @@ export function TipsPanel () {
         <PanelHeader
           title={getString('donationTitle')}
           enabled={true}
-          showConfig={showConfig}
-          onShowConfigChange={isAndroid ? undefined : setShowConfig}
+          showConfig={data.showSettings}
+          onShowConfigChange={isAndroid ? undefined : onShowConfigChange}
         />
-        {showConfig ? renderConfig() : renderContent()}
+        {data.showSettings ? renderConfig() : renderContent()}
       </style.root>
     </SettingsPanel>
   )
