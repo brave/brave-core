@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_PUBLIC_WEB_WEB_DOCUMENT_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_PUBLIC_WEB_WEB_DOCUMENT_H_
 
-#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+#include "third_party/blink/renderer/platform/wtf/forward.h"
 
 #define IsPluginDocument                                    \
   IsDOMFeaturePolicyEnabled(v8::Local<v8::Context> context, \

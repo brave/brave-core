@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/platform/wtf/BUILD.gn b/third_party/blink/renderer/platform/wtf/BUILD.gn
+index dfa6fb63a31c776881680db492eca5bca45fd478..c1d73f5841f4fc1d9d75932e01669b2a07d4c74a 100644
+--- a/third_party/blink/renderer/platform/wtf/BUILD.gn
++++ b/third_party/blink/renderer/platform/wtf/BUILD.gn
+@@ -18,6 +18,7 @@ visibility = [
+   "//mojo/public/cpp/bindings/*",
+   "//third_party/blink/*",
+ ]
++visibility += brave_blink_renderer_platform_wtf_visibility
+ 
+ config("wtf_config") {
+   if (is_win) {

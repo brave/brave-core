@@ -17,6 +17,7 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_local_frame.h"
+#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace brave_wallet {
 
