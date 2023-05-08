@@ -16,6 +16,13 @@ const minimumAmount = 0
 const maximumAmount = 100
 const amountStep = 0.25
 
+function quantizeAmount (amount: number) {
+  const value = amountStep > 0
+    ? Math.floor(amount / amountStep) * amountStep
+    : amount
+  return Math.min(Math.max(value, minimumAmount), maximumAmount)
+}
+
 const exchangeAmountFormatter = new Intl.NumberFormat(undefined, {
   minimumFractionDigits: 2,
   maximumFractionDigits: 2
@@ -59,7 +66,7 @@ export function AmountInput (props: Props) {
     if (selectedOption.hasValue()) {
       props.onAmountUpdated(selectedOption.value())
     } else {
-      props.onAmountUpdated(customAmount)
+      props.onAmountUpdated(quantizeAmount(customAmount))
     }
   }, [selectedOption.valueOr(undefined), customAmount])
 
@@ -93,7 +100,6 @@ export function AmountInput (props: Props) {
     if (exchangePrimary) {
       updatedAmount /= props.exchangeRate
     }
-    updatedAmount = Math.min(maximumAmount, updatedAmount)
     setCustomAmount(updatedAmount)
     return updatedAmount
   }
@@ -104,14 +110,7 @@ export function AmountInput (props: Props) {
 
   function onCustomAmountBlur (event: React.FormEvent<HTMLInputElement>) {
     const amount = updateCustomAmount(event.currentTarget.value)
-
-    let value = amountStep > 0
-      ? Math.round(amount / amountStep) * amountStep
-      : amount
-
-    if (value < minimumAmount) {
-      value = minimumAmount
-    }
+    let value = quantizeAmount(amount)
 
     setCustomAmount(value)
 
