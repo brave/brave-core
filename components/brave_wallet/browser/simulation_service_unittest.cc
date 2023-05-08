@@ -358,7 +358,9 @@ TEST_F(SimulationServiceUnitTest, ScanEVMTransactionUnsupportedNetwork) {
   simulation_service_->ScanEVMTransaction(
       GetCannedScanEVMTransactionParams(false, mojom::kOptimismMainnetChainId),
       "en-US", callback.Get());
+
   base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
 TEST_F(SimulationServiceUnitTest, ScanEVMTransactionEmptyNetwork) {
@@ -371,7 +373,9 @@ TEST_F(SimulationServiceUnitTest, ScanEVMTransactionEmptyNetwork) {
 
   simulation_service_->ScanEVMTransaction(
       GetCannedScanEVMTransactionParams(false, ""), "en-US", callback.Get());
+
   base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
 TEST_F(SimulationServiceUnitTest, ScanEVMTransactionValidErrorResponse) {
@@ -390,7 +394,9 @@ TEST_F(SimulationServiceUnitTest, ScanEVMTransactionValidErrorResponse) {
   simulation_service_->ScanEVMTransaction(
       GetCannedScanEVMTransactionParams(false, mojom::kPolygonMainnetChainId),
       "en-US", callback.Get());
+
   base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
 TEST_F(SimulationServiceUnitTest, ScanEVMTransactionUnexpectedErrorResponse) {
@@ -406,7 +412,9 @@ TEST_F(SimulationServiceUnitTest, ScanEVMTransactionUnexpectedErrorResponse) {
   simulation_service_->ScanEVMTransaction(
       GetCannedScanEVMTransactionParams(false, mojom::kPolygonMainnetChainId),
       "en-US", callback.Get());
+
   base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
 TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionValid) {
@@ -508,24 +516,11 @@ TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionValid) {
 }
 
 TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionUnsupportedNetwork) {
-  base::MockCallback<mojom::SimulationService::ScanSolanaTransactionCallback>
-      callback;
-  EXPECT_CALL(
-      callback,
-      Run(EqualsMojo(mojom::SolanaSimulationResponsePtr()), "",
-          l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK)));
-
   auto tx_info = GetCannedScanSolanaTransactionParams(absl::nullopt,
                                                       mojom::kLocalhostChainId);
   auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
       std::move(tx_info));
 
-  simulation_service_->ScanSolanaTransaction(std::move(request), "en-US",
-                                             callback.Get());
-  base::RunLoop().RunUntilIdle();
-}
-
-TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionEmptyNetwork) {
   base::MockCallback<mojom::SimulationService::ScanSolanaTransactionCallback>
       callback;
   EXPECT_CALL(
@@ -533,13 +528,30 @@ TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionEmptyNetwork) {
       Run(EqualsMojo(mojom::SolanaSimulationResponsePtr()), "",
           l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK)));
 
+  simulation_service_->ScanSolanaTransaction(std::move(request), "en-US",
+                                             callback.Get());
+
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+}
+
+TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionEmptyNetwork) {
   auto tx_info = GetCannedScanSolanaTransactionParams(absl::nullopt, "");
   auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
       std::move(tx_info));
 
+  base::MockCallback<mojom::SimulationService::ScanSolanaTransactionCallback>
+      callback;
+  EXPECT_CALL(
+      callback,
+      Run(EqualsMojo(mojom::SolanaSimulationResponsePtr()), "",
+          l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK)));
+
   simulation_service_->ScanSolanaTransaction(std::move(request), "en-US",
                                              callback.Get());
+
   base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
 TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionValidErrorResponse) {
@@ -550,19 +562,21 @@ TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionValidErrorResponse) {
   )";
   SetErrorInterceptor(error);
 
-  base::MockCallback<mojom::SimulationService::ScanSolanaTransactionCallback>
-      callback;
-  EXPECT_CALL(callback, Run(EqualsMojo(mojom::SolanaSimulationResponsePtr()),
-                            "No transactions to simulate", ""));
-
   auto tx_info = GetCannedScanSolanaTransactionParams(absl::nullopt,
                                                       mojom::kSolanaMainnet);
   auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
       std::move(tx_info));
 
+  base::MockCallback<mojom::SimulationService::ScanSolanaTransactionCallback>
+      callback;
+  EXPECT_CALL(callback, Run(EqualsMojo(mojom::SolanaSimulationResponsePtr()),
+                            "No transactions to simulate", ""));
+
   simulation_service_->ScanSolanaTransaction(std::move(request), "en-US",
                                              callback.Get());
+
   base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
 TEST_F(SimulationServiceUnitTest,
@@ -570,20 +584,22 @@ TEST_F(SimulationServiceUnitTest,
   std::string error = "Woot";
   SetErrorInterceptor(error);
 
+  auto tx_info = GetCannedScanSolanaTransactionParams(absl::nullopt,
+                                                      mojom::kSolanaMainnet);
+  auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
+      std::move(tx_info));
+
   base::MockCallback<mojom::SimulationService::ScanSolanaTransactionCallback>
       callback;
   EXPECT_CALL(callback,
               Run(EqualsMojo(mojom::SolanaSimulationResponsePtr()), "",
                   l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)));
 
-  auto tx_info = GetCannedScanSolanaTransactionParams(absl::nullopt,
-                                                      mojom::kSolanaMainnet);
-  auto request = mojom::SolanaTransactionRequestUnion::NewTransactionInfo(
-      std::move(tx_info));
-
   simulation_service_->ScanSolanaTransaction(std::move(request), "en-US",
                                              callback.Get());
+
   base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
 }  // namespace brave_wallet
