@@ -3347,6 +3347,20 @@ extension Strings {
       value: "Data",
       comment: "The label displayed beside the Data for an instruction type we don't support decoding. Ex. \"Data: [1, 20, 3, 5, 50]]\""
     )
+    public static let solanaInstructionAddressLookupAcc = NSLocalizedString(
+      "wallet.solanaInstructionAddressLookupAcc",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Address Lookup Table Account",
+      comment: "The label displayed beside the address for the Address Lookup Table Account. Ex. \"Address Lookup Table Account: B1A2...\""
+    )
+    public static let solanaInstructionAddressLookupIndex = NSLocalizedString(
+      "wallet.solanaInstructionAddressLookupIndex",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Address Lookup Table Index",
+      comment: "The label displayed beside the address for the Address Lookup Table Account. Ex. \"Address Lookup Table Index: 1\""
+    )
     public static let solanaSignTransactionWarning = NSLocalizedString(
       "wallet.solanaSignTransactionWarning",
       tableName: "BraveWallet",
