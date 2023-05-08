@@ -63,6 +63,22 @@ extension SessionWindow {
     return Self.from(windowId: windowId, in: DataController.viewContext)
   }
   
+  public static func createIfNeeded(index: Int32, isPrivate: Bool, isSelected: Bool) {
+    DataController.performOnMainContext { context in
+      if SessionWindow.getActiveWindow(context: context) != nil {
+        return
+      }
+      
+      _ = SessionWindow(context: context, index: index, isPrivate: isPrivate, isSelected: isSelected)
+      
+      do {
+        try context.save()
+      } catch {
+        Logger.module.error("performTask save error: \(error.localizedDescription, privacy: .public)")
+      }
+    }
+  }
+  
   /// Marks the specified window as selected
   /// Since only one window can be active at a time, all other windows are marked as deselected
   public static func setSelected(windowId: UUID) {

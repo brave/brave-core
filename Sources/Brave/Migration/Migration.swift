@@ -73,13 +73,15 @@ public class Migration {
   
   // Migrate from TabMO to SessionTab and SessionWindow
   public static func migrateTabStateToWebkitState(diskImageStore: DiskImageStore?) {
+    let isPrivate = PrivateBrowsingManager.shared.isPrivateBrowsing
+
     if Preferences.Migration.tabMigrationToInteractionStateCompleted.value {
+      SessionWindow.createIfNeeded(index: 0, isPrivate: isPrivate, isSelected: true)
       return
     }
     
     // Get all the old Tabs from TabMO
     let oldTabIDs = TabMO.getAll().map({ $0.objectID })
-    let isPrivate = PrivateBrowsingManager.shared.isPrivateBrowsing
 
     // Nothing to migrate
     if oldTabIDs.isEmpty {
