@@ -21,6 +21,7 @@
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
 #include "brave/components/brave_wallet/browser/solana_tx_meta.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/test_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
@@ -31,19 +32,6 @@
 #include "ui/base/l10n/l10n_util.h"
 
 using base::test::ParseJson;
-
-namespace {
-
-// Matcher to check equality of two mojo structs. Matcher needs copyable value
-// which is not possible for some mojo types, so wrapping it with RefCounted.
-template <typename T>
-auto EqualsMojo(const T& value) {
-  return testing::Truly(
-      [value = base::MakeRefCounted<base::RefCountedData<T>>(value.Clone())](
-          const T& candidate) { return mojo::Equals(candidate, value->data); });
-}
-
-}  // namespace
 
 namespace brave_wallet {
 
