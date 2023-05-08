@@ -55,3 +55,20 @@ mojom("mojom") {
   sources = [ "ai_chat.mojom" ]
   public_deps = [ "//mojo/public/mojom/base" ]
 }
+
+source_set("ai_chat_api_unit_tests") {
+  testonly = true
+  sources = [ "//brave/components/ai_chat/ai_chat_api_unittest.cc" ]
+  deps = [
+    ":ai_chat",
+    "//base/test:test_support",
+    "//brave/components/api_request_helper",
+    "//net/traffic_annotation:test_support",
+    "//net/traffic_annotation:traffic_annotation",
+    "//services/data_decoder/public/cpp",
+    "//services/data_decoder/public/cpp:test_support",
+    "//services/network:test_support",
+    "//services/network/public/cpp",
+    "//testing/gtest:gtest",
+  ]
+}
