@@ -303,11 +303,11 @@ TEST_F(SimulationServiceUnitTest, ScanEVMTransactionValidResponse) {
       base::BindLambdaForTesting([&](mojom::EVMSimulationResponsePtr response,
                                      const std::string& error_response,
                                      const std::string& error_string) {
-        EXPECT_TRUE(response);
+        ASSERT_TRUE(response);
         EXPECT_EQ(response->action, "NONE");
         EXPECT_EQ(response->warnings.size(), 0u);
         EXPECT_FALSE(response->simulation_results->error);
-        EXPECT_EQ(response->simulation_results->expected_state_changes.size(),
+        ASSERT_EQ(response->simulation_results->expected_state_changes.size(),
                   1u);
 
         const auto& state_change =
@@ -467,13 +467,13 @@ TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionValid) {
                                          response,
                                      const std::string& error_response,
                                      const std::string& error_string) {
-        EXPECT_TRUE(response);
+        ASSERT_TRUE(response);
 
         EXPECT_EQ(response->action, "NONE");
         EXPECT_EQ(response->warnings.size(), 0u);
         EXPECT_FALSE(response->simulation_results->error);
         EXPECT_FALSE(response->simulation_results->is_recent_blockhash_expired);
-        EXPECT_EQ(response->simulation_results->expected_state_changes.size(),
+        ASSERT_EQ(response->simulation_results->expected_state_changes.size(),
                   1u);
 
         const auto& state_change =
@@ -481,7 +481,7 @@ TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionValid) {
         EXPECT_EQ(state_change->human_readable_diff, "Send 2 USDT");
         EXPECT_EQ(state_change->suggested_color, "DEBIT");
         EXPECT_EQ(state_change->raw_info->kind, "SPL_TRANSFER");
-        EXPECT_TRUE(state_change->raw_info->data->is_spl_transfer_data());
+        ASSERT_TRUE(state_change->raw_info->data->is_spl_transfer_data());
 
         const auto& state_change_raw_info =
             state_change->raw_info->data->get_spl_transfer_data();

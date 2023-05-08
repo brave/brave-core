@@ -157,7 +157,7 @@ TEST(SimulationRequestHelperUnitTest,
 
   // OK: Params for legacy (type-0) EVM transaction is encoded correctly.
   ASSERT_TRUE(encoded_params);
-  ASSERT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
 }
 
 TEST(SimulationRequestHelperUnitTest,
@@ -181,7 +181,7 @@ TEST(SimulationRequestHelperUnitTest,
 
   // OK: Params for EIP-1559 (type-2) EVM transaction is encoded correctly.
   ASSERT_TRUE(encoded_params);
-  ASSERT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
 }
 
 TEST(SimulationRequestHelperUnitTest,
@@ -206,7 +206,7 @@ TEST(SimulationRequestHelperUnitTest,
 
   // OK: Custom origin is encoded in params metadata correctly.
   ASSERT_TRUE(encoded_params);
-  ASSERT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
 }
 
 TEST(SimulationRequestHelperUnitTest,
@@ -230,7 +230,7 @@ TEST(SimulationRequestHelperUnitTest,
 
   // OK: Custom origin is encoded in params metadata correctly.
   ASSERT_TRUE(encoded_params);
-  ASSERT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
 }
 
 TEST(SimulationRequestHelperUnitTest,
@@ -239,7 +239,7 @@ TEST(SimulationRequestHelperUnitTest,
   auto encoded_params = evm::EncodeScanTransactionParams(std::move(tx_info));
 
   // KO: Invalid tx data is not encoded.
-  ASSERT_FALSE(encoded_params);
+  EXPECT_FALSE(encoded_params);
 }
 
 TEST(SimulationRequestHelperUnitTest,
@@ -263,7 +263,7 @@ TEST(SimulationRequestHelperUnitTest,
 
   // OK: Params for Solana TransactionInfo is encoded correctly.
   ASSERT_TRUE(encoded_params);
-  ASSERT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
 }
 
 TEST(SimulationRequestHelperUnitTest,
@@ -287,7 +287,7 @@ TEST(SimulationRequestHelperUnitTest,
 
   // OK: Params for Solana TransactionInfo is encoded correctly.
   ASSERT_TRUE(encoded_params);
-  ASSERT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
 }
 
 TEST(SimulationRequestHelperUnitTest,
@@ -314,7 +314,7 @@ TEST(SimulationRequestHelperUnitTest,
 
   // OK: Params for Solana TransactionInfo is encoded correctly.
   ASSERT_TRUE(encoded_params);
-  ASSERT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
 }
 
 TEST(SimulationRequestHelperUnitTest,
@@ -341,7 +341,7 @@ TEST(SimulationRequestHelperUnitTest,
 
   // OK: Params for Solana TransactionInfo is encoded correctly.
   ASSERT_TRUE(encoded_params);
-  ASSERT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
 }
 
 TEST(SimulationRequestHelperUnitTest,
@@ -368,7 +368,7 @@ TEST(SimulationRequestHelperUnitTest,
 
   // OK: Params for Solana TransactionInfo is encoded correctly.
   ASSERT_TRUE(encoded_params);
-  ASSERT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
 }
 
 TEST(SimulationRequestHelperUnitTest,
@@ -395,7 +395,7 @@ TEST(SimulationRequestHelperUnitTest,
 
   // OK: Params for Solana TransactionInfo is encoded correctly.
   ASSERT_TRUE(encoded_params);
-  ASSERT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(*encoded_params, GetJSON(ParseJson(expected_params)));
 }
 
 TEST(SimulationRequestHelperUnitTest,
@@ -406,7 +406,7 @@ TEST(SimulationRequestHelperUnitTest,
   auto encoded_params = solana::EncodeScanTransactionParams(std::move(request));
 
   // KO: Invalid tx data is not encoded.
-  ASSERT_FALSE(encoded_params);
+  EXPECT_FALSE(encoded_params);
 }
 
 }  // namespace brave_wallet
