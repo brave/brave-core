@@ -8,11 +8,39 @@ import("//brave/build/config.gni")
 import("//build/config/android/rules.gni")
 import("//tools/grit/grit_rule.gni")
 
+_apksigner = "$android_sdk_build_tools/apksigner"
+_jarsigner = "//third_party/jdk/current/bin/jarsigner"
+_zipalign = "$android_sdk_build_tools/zipalign"
+
+action("sign_app_convert_aab_to_apk") {
+  script = "//brave/build/android/aab_to_apk.py"
+
+  deps = [ ":sign_app" ]
+
+  target_aab_path = "$root_out_dir/apks/MonochromePublic6432.aab"
+  output_apk_path = "$root_out_dir/apks/Bravearm64Universal.apk"
+  output_path = "$root_out_dir/apks/"
+  bundletool = "//third_party/android_build_tools/bundletool/bundletool.jar"
+
+  outputs = [ output_apk_path ]
+
+  args = [
+    rebase_path(bundletool, root_out_dir),
+    rebase_path(target_aab_path, root_out_dir),
+    rebase_path(output_apk_path, root_out_dir),
+    rebase_path(output_path, root_out_dir),
+    rebase_path("$brave_android_keystore_path", root_out_dir),
+    "$brave_android_keystore_password",
+    "$brave_android_key_password",
+    "$brave_android_keystore_name",
+    rebase_path(_zipalign, root_out_dir),
+    rebase_path(_apksigner, root_out_dir),
+    rebase_path(_jarsigner, root_out_dir),
+  ]
+}
+
 action("sign_app") {
   script = "//brave/build/android/sign_apk.py"
-  _apksigner = "$android_sdk_build_tools/apksigner"
-  _jarsigner = "//third_party/jdk/current/bin/jarsigner"
-  _zipalign = "$android_sdk_build_tools/zipalign"
 
   deps = [ "//brave:create_symbols_dist" ]
 

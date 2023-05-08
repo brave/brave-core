@@ -214,7 +214,11 @@ copy("theme_files") {
 group("create_dist") {
   deps = []
   if (is_android) {
-    deps += [ "build/android:sign_app" ]
+    if (android_aab_to_apk && target_cpu == "arm64") {
+      deps += [ "build/android:sign_app_convert_aab_to_apk" ]
+    } else {
+      deps += [ "build/android:sign_app" ]
+    }
   } else {
     deps += [ ":create_symbols_dist" ]
   }
