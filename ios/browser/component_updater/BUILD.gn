@@ -11,6 +11,6 @@ source_set("component_updater") {
   deps = [
     "//base",
     "//components/component_updater",
-    "//ios/chrome/browser/application_context:application_context",
+    "//ios/chrome/browser/shared/model/application_context",
   ]
 }
