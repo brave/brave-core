@@ -20,3 +20,20 @@ extension Data {
     return Data(bytes: UnsafePointer<UInt8>(digest), count: len)
   }
 }
+
+public extension String {
+  var fnv1a: Int {
+    let basis: UInt64 = 14695981039346656037
+    let prime: UInt64 = 1099511628211
+    
+    var hash: UInt64 = basis
+    
+    for c in self.utf8 {
+      hash ^= UInt64(c)
+      hash &*= prime
+    }
+    
+    // Prevent overflow crash
+    return Int(hash & UInt64(Int.max))
+  }
+}
