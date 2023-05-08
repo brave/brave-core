@@ -70,8 +70,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class NftGridFragment extends Fragment implements OnWalletListItemClick {
+    public static final String SHOW_NFT_DISCOVERY_DIALOG = "nft_discovery_dialog";
     private static final String TAG = "NftGridFragment";
-    private static final String SHOW_NFT_DISCOVERY_DIALOG = "nft_discovery_dialog";
     private static final float NFT_ITEM_WIDTH_DP = 180;
 
     private WalletModel mWalletModel;
