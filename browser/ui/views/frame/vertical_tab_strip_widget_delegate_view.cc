@@ -10,6 +10,7 @@
 #include "base/check.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/theme_copying_widget.h"
@@ -134,9 +135,13 @@ VerticalTabStripWidgetDelegateView::VerticalTabStripWidgetDelegateView(
   SetLayoutManager(std::make_unique<views::FillLayout>());
 
   host_view_observation_.Observe(host_);
-  widget_observation_.Observe(host_->GetWidget());
+  widget_observation_.AddObservation(host_->GetWidget());
 
   ChildPreferredSizeChanged(region_view_);
+}
+
+void VerticalTabStripWidgetDelegateView::AddedToWidget() {
+  widget_observation_.AddObservation(GetWidget());
 }
 
 void VerticalTabStripWidgetDelegateView::ChildPreferredSizeChanged(
@@ -180,9 +185,27 @@ void VerticalTabStripWidgetDelegateView::OnViewIsDeleting(
   host_ = nullptr;
 }
 
+void VerticalTabStripWidgetDelegateView::OnWidgetVisibilityChanged(
+    views::Widget* widget,
+    bool visible) {
+  if (widget == GetWidget()) {
+    if (!tabs::utils::ShouldShowVerticalTabs(browser_view_->browser()) &&
+        visible) {
+      // This happens when restoring browser window. The upstream implementation
+      // make child widgets visible regardless of their previous visibility.
+      // https://github.com/brave/brave-browser/issues/29917
+      widget->Hide();
+    }
+  }
+}
+
 void VerticalTabStripWidgetDelegateView::OnWidgetBoundsChanged(
     views::Widget* widget,
     const gfx::Rect& new_bounds) {
+  if (widget == GetWidget()) {
+    return;
+  }
+
   // The parent widget could be resized because fullscreen status changed.
   // Try resetting preferred size.
   ChildPreferredSizeChanged(region_view_);
@@ -203,6 +226,8 @@ void VerticalTabStripWidgetDelegateView::UpdateWidgetBounds() {
     widget->Hide();
     return;
   }
+
+  DCHECK(tabs::utils::ShouldShowVerticalTabs(browser_view_->browser()));
 
   auto insets = host_->GetInsets();
   widget_bounds.set_width(widget_bounds.width() + insets.width());
@@ -228,7 +253,7 @@ void VerticalTabStripWidgetDelegateView::UpdateWidgetBounds() {
 
 void VerticalTabStripWidgetDelegateView::OnWidgetDestroying(
     views::Widget* widget) {
-  widget_observation_.Reset();
+  widget_observation_.RemoveObservation(widget);
 }
 
 #if BUILDFLAG(IS_MAC)
