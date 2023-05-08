@@ -130,16 +130,13 @@ std::string URLMethodToRequestType(mojom::UrlRequestMethodType method) {
   }
 }
 
-std::string LoadOnFileTaskRunner(const base::FilePath& path) {
-  std::string data;
-  const bool success = base::ReadFileToString(path, &data);
-
-  // Make sure the file isn't empty.
-  if (!success || data.empty()) {
-    return "";
+absl::optional<std::string> LoadOnFileTaskRunner(const base::FilePath& path) {
+  std::string value;
+  if (!base::ReadFileToString(path, &value)) {
+    return absl::nullopt;
   }
 
-  return data;
+  return value;
 }
 
 bool EnsureBaseDirectoryExistsOnFileTaskRunner(const base::FilePath& path) {
@@ -1829,9 +1826,8 @@ void AdsServiceImpl::Load(const std::string& name, LoadCallback callback) {
       FROM_HERE,
       base::BindOnce(&LoadOnFileTaskRunner, base_path_.AppendASCII(name)),
       base::BindOnce(
-          [](LoadCallback callback, const std::string& value) {
-            const bool success = !value.empty();
-            std::move(callback).Run(success, value);
+          [](LoadCallback callback, const absl::optional<std::string>& value) {
+            std::move(callback).Run(value);
           },
           std::move(callback)));
 }

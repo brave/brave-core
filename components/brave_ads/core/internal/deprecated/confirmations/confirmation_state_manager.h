@@ -75,8 +75,7 @@ class ConfirmationStateManager final {
 
  private:
   void LoadedCallback(InitializeCallback callback,
-                      bool success,
-                      const std::string& json);
+                      const absl::optional<std::string>& json);
 
   bool ParseFailedConfirmationsFromDictionary(const base::Value::Dict& dict);
 

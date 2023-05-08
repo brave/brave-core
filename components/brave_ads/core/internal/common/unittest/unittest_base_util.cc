@@ -152,10 +152,10 @@ void MockLoad(AdsClientMock& mock, const base::ScopedTempDir& temp_dir) {
 
             std::string value;
             if (!base::ReadFileToString(path, &value)) {
-              return std::move(callback).Run(/*success*/ false, value);
+              return std::move(callback).Run(absl::nullopt);
             }
 
-            std::move(callback).Run(/*success*/ true, value);
+            std::move(callback).Run(value);
           }));
 }
 

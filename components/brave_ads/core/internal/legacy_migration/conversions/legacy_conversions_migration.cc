@@ -117,15 +117,14 @@ absl::optional<ConversionQueueItemList> FromJson(const std::string& json) {
 }
 
 void OnMigrate(InitializeCallback callback,
-               const bool success,
-               const std::string& json) {
-  if (!success) {
+               const absl::optional<std::string>& json) {
+  if (!json) {
     // Conversion state does not exist
     return SuccessfullyMigrated(std::move(callback));
   }
 
   const absl::optional<ConversionQueueItemList> conversion_queue_items =
-      FromJson(json);
+      FromJson(*json);
   if (!conversion_queue_items) {
     BLOG(0, "Failed to parse conversion state");
     return FailedToMigrate(std::move(callback));

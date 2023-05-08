@@ -92,7 +92,7 @@ interface BatAdsClient {
       (brave_ads.mojom.UrlResponseInfo response);
 
   Save(string name, string value) => (bool success);
-  Load(string name) => (bool success, string value);
+  Load(string name) => (string? value);
   LoadFileResource(string id, int32 version) => (mojo_base.mojom.File? file);
   [Sync]
   LoadDataResource(string name) => (mojo_base.mojom.BigString value);

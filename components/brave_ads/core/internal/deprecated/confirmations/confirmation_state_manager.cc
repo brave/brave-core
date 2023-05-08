@@ -31,7 +31,6 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_value_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_token_value_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -154,20 +153,19 @@ void ConfirmationStateManager::Initialize(const WalletInfo& wallet,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void ConfirmationStateManager::LoadedCallback(InitializeCallback callback,
-                                              const bool success,
-                                              const std::string& json) {
-  if (!success) {
+void ConfirmationStateManager::LoadedCallback(
+    InitializeCallback callback,
+    const absl::optional<std::string>& json) {
+  if (!json) {
     BLOG(3, "Confirmations state does not exist, creating default state");
 
     is_initialized_ = true;
 
     Save();
   } else {
-    if (!FromJson(json)) {
+    if (!FromJson(*json)) {
       BLOG(0, "Failed to load confirmations state");
-
-      BLOG(3, "Failed to parse confirmations state: " << json);
+      BLOG(3, "Failed to parse confirmations state: " << *json);
 
       return std::move(callback).Run(/*success*/ false);
     }

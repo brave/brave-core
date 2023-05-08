@@ -524,21 +524,20 @@ void ClientStateManager::Load(InitializeCallback callback) {
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void ClientStateManager::LoadedCallback(InitializeCallback callback,
-                                        const bool success,
-                                        const std::string& json) {
-  if (!success) {
+void ClientStateManager::LoadedCallback(
+    InitializeCallback callback,
+    const absl::optional<std::string>& json) {
+  if (!json) {
     BLOG(3, "Client state does not exist, creating default state");
 
     is_initialized_ = true;
-
     client_ = {};
+
     Save();
   } else {
-    if (!FromJson(json)) {
+    if (!FromJson(*json)) {
       BLOG(0, "Failed to load client state");
-
-      BLOG(3, "Failed to parse client state: " << json);
+      BLOG(3, "Failed to parse client state: " << *json);
 
       return std::move(callback).Run(/*success*/ false);
     }
@@ -549,6 +548,7 @@ void ClientStateManager::LoadedCallback(InitializeCallback callback,
   }
 
   is_mutated_ = IsMutated(client_.ToJson());
+
   if (is_mutated_) {
     BLOG(9, "Client state is mutated");
   }

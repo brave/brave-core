@@ -5,7 +5,6 @@
 
 #import <Network/Network.h>
 #import <UIKit/UIKit.h>
-#include "absl/types/optional.h"
 #include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/ad_content_value_util.h"
 
