@@ -116,7 +116,7 @@ bool HasMessageScanSupportInternal(const std::string& chain_id,
           chain_id == mojom::kArbitrumMainnetChainId);
 }
 
-base::flat_map<std::string, std::string> GetHeaders() {
+const base::flat_map<std::string, std::string> GetHeaders() {
   return {{kBlowfishAPIVersionHeader, kBlowfishAPIVersion},
           {net::HttpRequestHeaders::kContentType, "application/json"},
           {kBraveServicesKeyHeader, BUILDFLAG(BRAVE_SERVICES_KEY)}};
