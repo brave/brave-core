@@ -13,11 +13,12 @@ const runPerfTests = (passthroughArgs, perf_config, targets) => {
   args = [
     path.join(
       config.braveCoreDir, 'tools', 'perf', 'run_dashboard_perftests.py'),
-    '--config=' + perf_config,
-    '--targets=' + targets,
+    '--config="' + perf_config + '"',
+    '--targets="' + targets + '"',
     '--verbose',
   ]
-  args.push(...passthroughArgs)
+  for (const arg of passthroughArgs)
+    args.push('"' + arg + '"')
   console.log(args)
   util.run(
     'vpython3',
