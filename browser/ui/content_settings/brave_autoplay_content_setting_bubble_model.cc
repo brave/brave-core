@@ -103,7 +103,7 @@ void BraveAutoplayContentSettingBubbleModel::SetRadioGroup() {
 
   // Prevent creation of content settings for illegal urls like about:blank
   bool is_valid = map->CanSetNarrowestContentSetting(url, url, content_type());
-  radio_group.user_managed = is_valid && setting_source == SETTING_SOURCE_USER;
+  set_is_user_modifiable(is_valid && setting_source == SETTING_SOURCE_USER);
   set_radio_group(radio_group);
 }
 
