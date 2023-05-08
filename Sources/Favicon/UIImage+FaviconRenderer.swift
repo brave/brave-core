@@ -155,7 +155,7 @@ extension UIImage {
     let imageSize = CGSize(width: 64.0, height: 64.0)
 
     let createBackgroundColor = { (url: URL) -> UIColor in
-      guard let hash = url.baseDomain?.hashValue else {
+      guard let hash = url.baseDomain?.fnv1a else {
         return .gray
       }
       let index = abs(hash) % (UIConstants.defaultColorStrings.count - 1)
