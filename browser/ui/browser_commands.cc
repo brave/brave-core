@@ -241,17 +241,10 @@ void ToggleWindowTitleVisibilityForVerticalTabs(Browser* browser) {
 void ToggleVerticalTabStrip(Browser* browser) {
   auto* profile = browser->profile()->GetOriginalProfile();
   auto* prefs = profile->GetPrefs();
-  auto* sidebar_service =
-      sidebar::SidebarServiceFactory::GetForProfile(profile);
   const bool was_using_vertical_tab_strip =
       prefs->GetBoolean(brave_tabs::kVerticalTabsEnabled);
   prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled,
                     !was_using_vertical_tab_strip);
-  if (was_using_vertical_tab_strip) {
-    sidebar_service->RestoreSidebarAlignmentIfNeeded();
-  } else {
-    sidebar_service->MoveSidebarToRightTemporarily();
-  }
 }
 
 void ToggleVerticalTabStripFloatingMode(Browser* browser) {
