@@ -65,22 +65,6 @@ constexpr char kIsUnlocked[] = "isUnlocked";
 
 namespace brave_wallet {
 
-void JSEthereumProvider::OnIsUnlocked(
-    v8::Global<v8::Context> global_context,
-    v8::Global<v8::Promise::Resolver> promise_resolver,
-    v8::Isolate* isolate,
-    bool locked) {
-  v8::HandleScope handle_scope(isolate);
-  v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
-  v8::Local<v8::Context> context = global_context.Get(isolate);
-  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
-  base::Value result = base::Value(!locked);
-  v8::Local<v8::Value> local_result =
-      content::V8ValueConverter::Create()->ToV8Value(result, context);
-  std::ignore = resolver->Resolve(context, local_result);
-}
-
 void JSEthereumProvider::SendResponse(
     base::Value id,
     v8::Global<v8::Context> global_context,
@@ -235,26 +219,6 @@ void JSEthereumProvider::Install(bool allow_overwrite_window_ethereum_provider,
   SetOwnPropertyWritable(context, provider_object,
                          gin::StringToV8(isolate, kIsMetaMask), true);
 
-  // Set non-writable _metamask obj with non-writable isUnlocked method.
-  v8::Local<v8::Value> metamask_value;
-  v8::Local<v8::Object> metamask_obj = v8::Object::New(isolate);
-  provider_object
-      ->Set(context, gin::StringToSymbol(isolate, kMetaMask), metamask_obj)
-      .Check();
-  SetOwnPropertyWritable(context, provider_object,
-                         gin::StringToV8(isolate, kMetaMask), false);
-
-  metamask_obj
-      ->Set(context, gin::StringToSymbol(isolate, kIsUnlocked),
-            gin::CreateFunctionTemplate(
-                isolate, base::BindRepeating(&JSEthereumProvider::IsUnlocked,
-                                             base::Unretained(provider.get())))
-                ->GetFunction(context)
-                .ToLocalChecked())
-      .Check();
-  SetOwnPropertyWritable(context, metamask_obj,
-                         gin::StringToV8(isolate, kIsUnlocked), false);
-
   ExecuteScript(web_frame,
                 LoadDataResource(
                     IDR_BRAVE_WALLET_SCRIPT_ETHEREUM_PROVIDER_SCRIPT_BUNDLE_JS),
@@ -267,6 +231,78 @@ bool JSEthereumProvider::GetIsBraveWallet() {
 
 bool JSEthereumProvider::GetIsMetaMask() {
   return true;
+}
+
+gin::WrapperInfo JSEthereumProvider::MetaMask::kWrapperInfo = {
+    gin::kEmbedderNativeGin};
+
+JSEthereumProvider::MetaMask::MetaMask(content::RenderFrame* render_frame)
+    : render_frame_(render_frame) {}
+JSEthereumProvider::MetaMask::~MetaMask() = default;
+
+gin::ObjectTemplateBuilder
+JSEthereumProvider::MetaMask::GetObjectTemplateBuilder(v8::Isolate* isolate) {
+  return gin::Wrappable<MetaMask>::GetObjectTemplateBuilder(isolate).SetMethod(
+      kIsUnlocked, &JSEthereumProvider::MetaMask::IsUnlocked);
+}
+
+const char* JSEthereumProvider::MetaMask::GetTypeName() {
+  return kMetaMask;
+}
+
+v8::Local<v8::Promise> JSEthereumProvider::MetaMask::IsUnlocked(
+    v8::Isolate* isolate) {
+  if (!ethereum_provider_.is_bound()) {
+    render_frame_->GetBrowserInterfaceBroker()->GetInterface(
+        ethereum_provider_.BindNewPipeAndPassReceiver());
+  }
+
+  v8::MaybeLocal<v8::Promise::Resolver> resolver =
+      v8::Promise::Resolver::New(isolate->GetCurrentContext());
+  if (resolver.IsEmpty()) {
+    return v8::Local<v8::Promise>();
+  }
+
+  auto global_context(
+      v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
+  auto promise_resolver(
+      v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
+  auto context(v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
+  ethereum_provider_->IsLocked(base::BindOnce(
+      &JSEthereumProvider::MetaMask::OnIsUnlocked, base::Unretained(this),
+      std::move(global_context), std::move(promise_resolver), isolate));
+
+  return resolver.ToLocalChecked()->GetPromise();
+}
+
+void JSEthereumProvider::MetaMask::OnIsUnlocked(
+    v8::Global<v8::Context> global_context,
+    v8::Global<v8::Promise::Resolver> promise_resolver,
+    v8::Isolate* isolate,
+    bool locked) {
+  v8::HandleScope handle_scope(isolate);
+  v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
+  v8::Local<v8::Context> context = global_context.Get(isolate);
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
+  base::Value result = base::Value(!locked);
+  v8::Local<v8::Value> local_result =
+      content::V8ValueConverter::Create()->ToV8Value(result, context);
+  std::ignore = resolver->Resolve(context, local_result);
+}
+
+v8::Local<v8::Value> JSEthereumProvider::GetMetaMask(v8::Isolate* isolate) {
+  // Set non-writable _metamask obj with non-writable isUnlocked method.
+  gin::Handle<MetaMask> metamask =
+      gin::CreateHandle(isolate, new MetaMask(render_frame()));
+  if (metamask.IsEmpty()) {
+    return v8::Undefined(isolate);
+  }
+  v8::Local<v8::Value> metamask_value = metamask.ToV8();
+  SetOwnPropertyWritable(isolate->GetCurrentContext(),
+                         metamask_value.As<v8::Object>(),
+                         gin::StringToV8(isolate, kIsUnlocked), false);
+  return metamask_value;
 }
 
 std::string JSEthereumProvider::GetChainId() {
@@ -305,6 +341,7 @@ gin::ObjectTemplateBuilder JSEthereumProvider::GetObjectTemplateBuilder(
   return gin::Wrappable<JSEthereumProvider>::GetObjectTemplateBuilder(isolate)
       .SetProperty(kIsBraveWallet, &JSEthereumProvider::GetIsBraveWallet)
       .SetProperty(kIsMetaMask, &JSEthereumProvider::GetIsMetaMask)
+      .SetProperty(kMetaMask, &JSEthereumProvider::GetMetaMask)
       .SetProperty("chainId", &JSEthereumProvider::GetChainId)
       .SetProperty("networkVersion", &JSEthereumProvider::GetNetworkVersion)
       .SetProperty("selectedAddress", &JSEthereumProvider::GetSelectedAddress)
@@ -526,29 +563,6 @@ v8::Local<v8::Promise> JSEthereumProvider::Enable(v8::Isolate* isolate) {
       base::BindOnce(&JSEthereumProvider::OnRequestOrSendAsync,
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
                      nullptr, std::move(promise_resolver), isolate));
-
-  return resolver.ToLocalChecked()->GetPromise();
-}
-
-v8::Local<v8::Promise> JSEthereumProvider::IsUnlocked(v8::Isolate* isolate) {
-  if (!EnsureConnected()) {
-    return v8::Local<v8::Promise>();
-  }
-
-  v8::MaybeLocal<v8::Promise::Resolver> resolver =
-      v8::Promise::Resolver::New(isolate->GetCurrentContext());
-  if (resolver.IsEmpty()) {
-    return v8::Local<v8::Promise>();
-  }
-
-  auto global_context(
-      v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
-  auto promise_resolver(
-      v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
-  auto context(v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
-  ethereum_provider_->IsLocked(base::BindOnce(
-      &JSEthereumProvider::OnIsUnlocked, weak_ptr_factory_.GetWeakPtr(),
-      std::move(global_context), std::move(promise_resolver), isolate));
 
   return resolver.ToLocalChecked()->GetPromise();
 }
