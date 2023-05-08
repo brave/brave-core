@@ -120,6 +120,7 @@ void AIChatAPI::QueryPrompt(ResponseCallback response_callback,
     return;
   }
 
+  // TODO(@nullhook): Add a response started callback
   response_callback_ = response_callback;
   completion_callback_ = std::move(completion_callback);
 
@@ -212,6 +213,8 @@ void AIChatAPI::OnParseJsonIsolated(
   if (!result.has_value()) {
     return;
   }
+
+  DCHECK(response_callback_);
 
   if (const std::string* completion = result->FindStringKey("completion")) {
     response_callback_.Run(*completion);

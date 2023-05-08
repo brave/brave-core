@@ -37,6 +37,14 @@ class AIChatAPI : public network::SimpleURLLoaderStreamConsumer {
                    CompletionCallback completion_callback,
                    const std::string& prompt);
 
+  void SetResponseCallbackForTesting(ResponseCallback response_callback) {
+    response_callback_ = response_callback;
+  }
+
+  void SendDataForTesting(const std::string& text) {
+    OnDataReceived(text, base::BindOnce([]() {}));
+  }
+
  private:
   base::Value::Dict CreateApiParametersDict(const std::string& prompt);
 
