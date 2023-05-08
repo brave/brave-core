@@ -47,39 +47,6 @@ describe('BaseQueryCache', () => {
     getWalletInfoSpy.mockRestore();
   })
 
-  it('should cache accounts after fetching', async () => {
-    const getWalletInfoSpy = jest.spyOn(
-      getMockedAPIProxy().walletHandler,
-      'getWalletInfo'
-    )
-    expect(getWalletInfoSpy).toHaveBeenCalledTimes(0)
-
-    const cache = new BaseQueryCache()
-
-    // access the uncached registry
-    const accounts = await cache.getAccountsRegistry()
-    expect(accounts).toBeDefined()
-    expect(getWalletInfoSpy).toHaveBeenCalledTimes(1)
-
-    // re-access the registry, this time from cache
-    const cachedAccounts = await cache.getAccountsRegistry()
-    expect(cachedAccounts).toBeDefined()
-    // no additional calls made
-    expect(getWalletInfoSpy).toHaveBeenCalledTimes(1)
-
-    // clear the cache manually
-    cache.clearWalletInfo()
-
-    // access again, repopulating cache with fresh value
-    const reCachedAccounts = await cache.getAccountsRegistry()
-    expect(reCachedAccounts).toBeDefined()
-    expect(getWalletInfoSpy).toHaveBeenCalledTimes(2)
-
-    // reset spy
-    getWalletInfoSpy.mockReset();
-    getWalletInfoSpy.mockRestore();
-  })
-
   it('should cache selected account address after fetching', async () => {
     const getSelectedCoinSpy = jest.spyOn(
       getMockedAPIProxy().braveWalletService,
