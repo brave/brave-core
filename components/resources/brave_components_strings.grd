@@ -827,9 +827,9 @@
         <part file="speedreader_strings.grdp" />
         <part file="brave_shields_strings.grdp" />
         <part file="brave_welcome_strings.grdp" />
+        <part file="ai_chat_prompts.grdp" />
+        <part file="ai_chat_ui_strings.grdp" />
       </if>
-      <part file="ai_chat_prompts.grdp" />
-      <part file="ai_chat_ui_strings.grdp" />
       <if expr="enable_brave_vpn">
         <part file="brave_vpn_strings.grdp" />
       </if>

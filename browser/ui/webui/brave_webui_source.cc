@@ -68,9 +68,9 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
 
   // clang-format off
   static std::map<std::string, std::vector<WebUISimpleItem> > resources = {
+#if !BUILDFLAG(IS_ANDROID)
     {
       std::string("newtab"), {
-#if !BUILDFLAG(IS_ANDROID)
         { "img/toolbar/menu_btn.svg", IDR_BRAVE_COMMON_TOOLBAR_IMG },
         // Hash path is the MD5 of the file contents,
         // webpack image loader does this
@@ -91,8 +91,9 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
       std::string("welcome"), {
         { "favicon.ico", IDR_BRAVE_WELCOME_PAGE_FAVICON }
       }
+    },
 #endif
-    }, {
+    {
       std::string("adblock"), {}
     }
   };
