@@ -149,8 +149,8 @@ GURL SimulationService::GetScanTransactionURL(const std::string& chain_id,
       "%s/%s/%s", kBlowfishBaseAPIURL,
       GetRelativeScanPath(chain_id, coin).c_str(),
       coin == mojom::CoinType::SOL ? "transactions" : "transaction");
-  GURL url(spec);
-  return url;
+
+  return GURL(spec);
 }
 
 // static
@@ -159,8 +159,7 @@ GURL SimulationService::GetScanMessageURL(const std::string& chain_id,
   std::string spec =
       base::StringPrintf("%s/%s/message", kBlowfishBaseAPIURL,
                          GetRelativeScanPath(chain_id, coin).c_str());
-  GURL url(spec);
-  return url;
+  return GURL(spec);
 }
 
 void SimulationService::HasTransactionScanSupport(
