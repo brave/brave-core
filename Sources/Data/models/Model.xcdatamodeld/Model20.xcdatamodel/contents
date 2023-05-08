@@ -176,22 +176,22 @@
         <attribute name="title" attributeType="String"/>
         <attribute name="url" attributeType="URI"/>
         <relationship name="sessionTabGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SessionTabGroup" inverseName="sessionTabs" inverseEntity="SessionTabGroup"/>
-        <relationship name="sessionWindow" maxCount="1" deletionRule="Nullify" destinationEntity="SessionWindow" inverseName="sessionTabs" inverseEntity="SessionWindow"/>
+        <relationship name="sessionWindow" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SessionWindow" inverseName="sessionTabs" inverseEntity="SessionWindow"/>
     </entity>
     <entity name="SessionTabGroup" representedClassName="Data.SessionTabGroup" syncable="YES">
         <attribute name="groupId" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="index" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="title" attributeType="String"/>
-        <relationship name="sessionTabs" toMany="YES" deletionRule="Nullify" destinationEntity="SessionTab" inverseName="sessionTabGroup" inverseEntity="SessionTab"/>
-        <relationship name="sessionWindow" maxCount="1" deletionRule="Nullify" destinationEntity="SessionWindow" inverseName="sessionTabGroups" inverseEntity="SessionWindow"/>
+        <relationship name="sessionTabs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SessionTab" inverseName="sessionTabGroup" inverseEntity="SessionTab"/>
+        <relationship name="sessionWindow" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SessionWindow" inverseName="sessionTabGroups" inverseEntity="SessionWindow"/>
     </entity>
     <entity name="SessionWindow" representedClassName="Data.SessionWindow" syncable="YES">
         <attribute name="index" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="isPrivate" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="isSelected" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="windowId" attributeType="UUID" usesScalarValueType="NO"/>
-        <relationship name="sessionTabGroups" toMany="YES" deletionRule="Cascade" destinationEntity="SessionTabGroup" inverseName="sessionWindow" inverseEntity="SessionTabGroup"/>
-        <relationship name="sessionTabs" toMany="YES" deletionRule="Cascade" destinationEntity="SessionTab" inverseName="sessionWindow" inverseEntity="SessionTab"/>
+        <relationship name="sessionTabGroups" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SessionTabGroup" inverseName="sessionWindow" inverseEntity="SessionTabGroup"/>
+        <relationship name="sessionTabs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SessionTab" inverseName="sessionWindow" inverseEntity="SessionTab"/>
     </entity>
     <entity name="TabMO" representedClassName="Data.TabMO" syncable="YES">
         <attribute name="color" optional="YES" attributeType="String"/>

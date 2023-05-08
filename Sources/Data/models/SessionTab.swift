@@ -20,7 +20,7 @@ public final class SessionTab: NSManagedObject, CRUD {
   @NSManaged private(set) public var tabId: UUID
   
   @NSManaged private(set) public var sessionTabGroup: SessionTabGroup?
-  @NSManaged private(set) public var sessionWindow: SessionWindow
+  @NSManaged private(set) public var sessionWindow: SessionWindow?
   
   @available(*, unavailable)
   public init() {
@@ -53,7 +53,7 @@ public final class SessionTab: NSManagedObject, CRUD {
       fatalError("No such Entity: SessionTab")
     }
     
-    if let sessionTabGroup = sessionTabGroup, sessionTabGroup.sessionWindow.windowId != sessionWindow.windowId {
+    if let sessionTabGroup = sessionTabGroup, sessionTabGroup.sessionWindow?.windowId != sessionWindow.windowId {
       fatalError("Cannot add a tab to a different window and group. The group must belong to the same window as the tab")
     }
     
@@ -204,7 +204,7 @@ extension SessionTab {
         _ = SessionTab(context: context,
                        sessionWindow: window,
                        sessionTabGroup: nil,
-                       index: Int32(window.sessionTabs.count),
+                       index: Int32(window.sessionTabs?.count ?? 0),
                        interactionState: Data(),
                        isPrivate: false,
                        isSelected: false,
