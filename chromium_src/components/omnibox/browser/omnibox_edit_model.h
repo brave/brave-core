@@ -8,7 +8,9 @@
 
 #include "components/omnibox/browser/omnibox_view.h"
 
-#define CanPasteAndGo virtual CanPasteAndGo
+#define CanPasteAndGo                                       \
+  CanPasteAndGo_Chromium(const std::u16string& text) const; \
+  bool CanPasteAndGo
 #include "src/components/omnibox/browser/omnibox_edit_model.h"  // IWYU pragma: export
 #undef CanPasteAndGo
 
