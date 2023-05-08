@@ -2159,9 +2159,35 @@ interface SimulationService {
 
   HasMessageScanSupport(string chain_id, CoinType coin) => (bool result);
 
+  // Scans an EVM transaction to obtain simulation results.
+  //
+  // language indicates the language to use in the returned human-readable
+  // warnings and simulation results. Use navigator.language or equivalent
+  // on the client-side.
+  //
+  // error_response contains errors parsed from the Blowfish API response
+  // in case of a non-ok HTTP status.
+  //
+  // error_string contains internal errors generated in brave-core.
   ScanEVMTransaction(TransactionInfo tx_info, string language)
     => (EVMSimulationResponse? response, string error_response, string error_string);
 
+  // Scans a Solana transaction to obtain simulation results.
+  //
+  // request contains the transaction to scan, and must be one of three types:
+  //   1. TransactionInfo: mostly transactions originating from the wallet.
+  //   2. SignTransactionRequest: dapp request to sign a single transaction.
+  //   3. SignAllTransactionsRequest: dapp request to sign multiple
+  //      transactions.
+  //
+  // language indicates the language to use in the returned human-readable
+  // warnings and simulation results. Use navigator.language or equivalent
+  // on the client-side.
+  //
+  // error_response contains errors parsed from the Blowfish API response
+  // in case of a non-ok HTTP status.
+  //
+  // error_string contains internal errors generated in brave-core.
   ScanSolanaTransaction(SolanaTransactionRequestUnion request,
                         string language)
     => (SolanaSimulationResponse? response, string error_response, string error_string);
