@@ -8,9 +8,9 @@
 #include "ios/chrome/browser/main/browser.h"
 #include "ios/chrome/browser/sessions/ios_chrome_session_tab_helper.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/shared/model/web_state_list/web_state_list.h"
+#include "ios/chrome/browser/shared/model/web_state_list/web_state_opener.h"
 #include "ios/chrome/browser/tabs/synced_window_delegate_browser_agent.h"
-#include "ios/chrome/browser/web_state_list/web_state_list.h"
-#include "ios/chrome/browser/web_state_list/web_state_opener.h"
 
 #include "ios/web/public/session/crw_navigation_item_storage.h"
 #include "ios/web/public/session/crw_session_storage.h"
