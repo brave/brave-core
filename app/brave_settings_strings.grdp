@@ -509,6 +509,75 @@
     Remove All
   </message>
 
+  <!-- Settings / Privacy and security / Cookies and other site data / See all site data and permissions -->
+  <!-- These settings were reinstated after being deleted upstream -->
+  <message name="IDS_SETTINGS_COOKIES_COOKIE_CONTENT_LABEL" desc="The Cookie Content label">
+    Content
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_COOKIE_DOMAIN_LABEL" desc="The Cookie Domain label">
+    Domain
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_COOKIE_PATH_LABEL" desc="The Cookie Path label">
+    Path
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_COOKIE_SENDFOR_LABEL" desc="The Cookie Send For label">
+    Send for
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_COOKIE_ACCESSIBLE_TO_SCRIPT_LABEL" desc="The Cookie Accessible to Script label">
+    Accessible to script
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_COOKIE_CREATED_LABEL" desc="The Cookie Created label">
+    Created
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_COOKIE_EXPIRES_LABEL" desc="The Cookie Expires label">
+    Expires
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_COOKIE_NAME_LABEL" desc="The Cookie Name label" meaning="Name of an inanimate object">
+    Name
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_FLASH_LSO" desc="The text shown when Flash has Local Shared Objects (informally known as 'Flash cookies') stored">
+    Flash data
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_LOCAL_STORAGE_ORIGIN_LABEL" desc="The Local Storage Origin label">
+    Origin
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_LOCAL_STORAGE_SIZE_ON_DISK_LABEL" desc="The Local Storage Size on disk label">
+    Size on disk
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_LOCAL_STORAGE_LAST_MODIFIED_LABEL" desc="The Local Storage Last modified label">
+    Last modified
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_DATABASE_STORAGE" desc="The text shown when there is either Web Database or Indexed Database Storage (names of HTML standards) in the Cookies table">
+    Database storage
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_LOCAL_STORAGE" desc="Label for local storage (name of an HTML standard)">
+    Local storage
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_FILE_SYSTEM" desc="The text shown when there is a file system (name of an HTML standard) in the Cookies table">
+    File system
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_FILE_SYSTEM_TEMPORARY_USAGE_LABEL" desc="Label for a temporary file system's disk usage.">
+    Temporary storage
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_FILE_SYSTEM_PERSISTENT_USAGE_LABEL" desc="Label for a persistent file system's disk usage.">
+    Persistent storage
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_SERVICE_WORKER" desc="The text shown when there is data for Service Workers within an origin (name of a Web standard) in the Cookies table">
+    Service Workers
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_SHARED_WORKER" desc="The text shown when there is data for Shared Workers within an origin (name of a Web standard) in the Cookies table">
+    Shared Workers
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_SHARED_WORKER_WORKER_LABEL" desc="Label for the URL of a Shared Worker's (name of an HTML standard) main script">
+    URL
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_CACHE_STORAGE" desc="The text shown when there is Cache Storage (name of a Web standard) in the Cookies table">
+    Cache Storage
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_QUOTA_STORAGE" desc="The text shown when there is Quota Managed Storage in the Cookies table">
+    Quota-managed storage
+  </message>
+
   <!-- Settings / Privacy and security / Security -->
   <!-- Safe browsing -->
   <message name="IDS_SETTINGS_BRAVE_SAFEBROWSING_STANDARD_BULLET_TWO" desc="Second bullet point under the safe browsing standard protection mode">
