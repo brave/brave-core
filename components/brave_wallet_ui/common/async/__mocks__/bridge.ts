@@ -84,6 +84,7 @@ export interface WalletApiDataOverrides {
   defaultBaseCurrency?: string
   transactionInfos?: BraveWallet.TransactionInfo[]
   blockchainTokens?: BraveWallet.BlockchainToken[]
+  userAssets?: BraveWallet.BlockchainToken[]
   accountInfos?: BraveWallet.AccountInfo[]
   nativeBalanceRegistry?: NativeAssetBalanceRegistry
   tokenBalanceRegistry?: TokenBalanceRegistry
@@ -116,6 +117,7 @@ export class MockedWalletApiProxy {
   networks: BraveWallet.NetworkInfo[] = mockNetworks
 
   blockchainTokens: BraveWallet.BlockchainToken[] = mockErc20TokensList
+  userAssets: BraveWallet.BlockchainToken[] = mockAccountAssetOptions
 
   /**
    * balance = [accountAddress][chainId]
@@ -204,6 +206,7 @@ export class MockedWalletApiProxy {
       overrides.defaultBaseCurrency ?? this.defaultBaseCurrency
     this.transactionInfos = overrides.transactionInfos ?? this.transactionInfos
     this.blockchainTokens = overrides.blockchainTokens ?? this.blockchainTokens
+    this.userAssets = overrides.userAssets ?? this.userAssets
     this.accountInfos = overrides.accountInfos ?? this.accountInfos
     this.nativeBalanceRegistry =
       overrides.nativeBalanceRegistry ?? this.nativeBalanceRegistry
@@ -228,7 +231,7 @@ export class MockedWalletApiProxy {
   > = {
     getUserAssets: async (chainId: string, coin: BraveWallet.CoinType) => {
       return {
-        tokens: mockAccountAssetOptions.filter(
+        tokens: this.userAssets.filter(
           (t) => t.chainId === chainId && t.coin === coin
         )
       }

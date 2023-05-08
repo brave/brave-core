@@ -1,9 +1,11 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import * as React from 'react'
 import { configureStore } from '@reduxjs/toolkit'
+import { Provider } from 'react-redux'
 
 // types
 import { WalletActions } from '../common/actions'
@@ -21,8 +23,13 @@ import {
 } from '../common/async/__mocks__/bridge'
 import { mockPageState } from '../stories/mock-data/mock-page-state'
 import { mockWalletState } from '../stories/mock-data/mock-wallet-state'
-import { AccountsTabState, createAccountsTabReducer } from '../page/reducers/accounts-tab-reducer'
-import { mockAccountsTabState } from '../stories/mock-data/mock-accounts-tab-state'
+import {
+  AccountsTabState,
+  createAccountsTabReducer
+} from '../page/reducers/accounts-tab-reducer'
+import {
+  mockAccountsTabState //
+} from '../stories/mock-data/mock-accounts-tab-state'
 
 export interface RootStateOverrides {
   accountTabStateOverride?: Partial<AccountsTabState>
@@ -61,7 +68,8 @@ export const createMockStore = (
       [api.reducerPath]: api.reducer
     },
     devTools: true,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware)
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(api.middleware)
   })
 
   const proxy = getMockedAPIProxy()
@@ -72,4 +80,14 @@ export const createMockStore = (
   store.dispatch(WalletActions.initialize())
 
   return store
+}
+
+export function renderHookOptionsWithMockStore(
+  store: ReturnType<typeof createMockStore>
+) {
+  return {
+    wrapper: ({ children }: { children?: React.ReactChildren }) => (
+      <Provider store={store}>{children}</Provider>
+    )
+  }
 }
