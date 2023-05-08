@@ -8,7 +8,7 @@
 namespace commander {
 
 CommanderAction::CommanderAction(uint32_t command_index, uint32_t result_set_id)
-    : OmniboxAction({}, GURL(), true),
+    : OmniboxAction({}, GURL()),
       command_index_(command_index),
       result_set_id_(result_set_id) {}
 CommanderAction::~CommanderAction() = default;
