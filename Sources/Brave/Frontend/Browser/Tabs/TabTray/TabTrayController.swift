@@ -153,10 +153,13 @@ class TabTrayController: LoadingViewController {
   }
 
   let privateModeButton = SelectedInsetButton().then {
+    $0.setTitle(Strings.private, for: .normal)
     $0.titleLabel?.font = .preferredFont(forTextStyle: .body)
     $0.titleLabel?.adjustsFontForContentSizeCategory = true
     $0.contentHorizontalAlignment = .left
-    $0.setTitle(Strings.private, for: .normal)
+    $0.titleLabel?.adjustsFontSizeToFitWidth = true
+    $0.accessibilityLabel = Strings.done
+    $0.accessibilityIdentifier = "TabTrayController.privateButton"
     $0.tintColor = .braveLabel
 
     if Preferences.Privacy.privateBrowsingOnly.value {
