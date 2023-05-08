@@ -853,6 +853,7 @@ brave_java_resources = [
   "java/res/layout/dialog_alert_template.xml",
   "java/res/layout/dialog_aurora_bridge.xml",
   "java/res/layout/edit_visible_assets_bottom_sheet.xml",
+  "java/res/layout/fragment_transactions.xml",
   "java/res/layout/fragment_accounts.xml",
   "java/res/layout/fragment_ad_free_callout_dialog.xml",
   "java/res/layout/fragment_add_switch_ethereum_chain.xml",
