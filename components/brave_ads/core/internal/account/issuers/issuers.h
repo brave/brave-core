@@ -39,7 +39,7 @@ class Issuers {
 
  private:
   void Fetch();
-  void OnFetch(const mojom::UrlResponseInfo& url_response);
+  void FetchCallback(const mojom::UrlResponseInfo& url_response);
 
   void SuccessfullyFetchedIssuers(const IssuersInfo& issuers);
   void FailedToFetchIssuers(bool should_retry);
@@ -47,7 +47,7 @@ class Issuers {
   void FetchAfterDelay();
 
   void RetryAfterDelay();
-  void OnRetry();
+  void RetryCallback();
   void StopRetrying();
 
   raw_ptr<IssuersDelegate> delegate_ = nullptr;

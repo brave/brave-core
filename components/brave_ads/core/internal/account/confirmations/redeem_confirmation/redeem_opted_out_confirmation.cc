@@ -75,12 +75,12 @@ void RedeemOptedOutConfirmation::CreateConfirmation(
 
   AdsClientHelper::GetInstance()->UrlRequest(
       std::move(url_request),
-      base::BindOnce(&RedeemOptedOutConfirmation::OnCreateConfirmation,
+      base::BindOnce(&RedeemOptedOutConfirmation::CreateConfirmationCallback,
                      std::move(redeem_confirmation), confirmation));
 }
 
 // static
-void RedeemOptedOutConfirmation::OnCreateConfirmation(
+void RedeemOptedOutConfirmation::CreateConfirmationCallback(
     RedeemOptedOutConfirmation redeem_confirmation,
     const ConfirmationInfo& confirmation,
     const mojom::UrlResponseInfo& url_response) {

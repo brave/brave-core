@@ -79,10 +79,10 @@ void Catalog::Fetch() {
 
   AdsClientHelper::GetInstance()->UrlRequest(
       std::move(url_request),
-      base::BindOnce(&Catalog::OnFetch, weak_factory_.GetWeakPtr()));
+      base::BindOnce(&Catalog::FetchCallback, weak_factory_.GetWeakPtr()));
 }
 
-void Catalog::OnFetch(const mojom::UrlResponseInfo& url_response) {
+void Catalog::FetchCallback(const mojom::UrlResponseInfo& url_response) {
   BLOG(1, "OnFetchCatalog");
 
   BLOG(7, UrlResponseToString(url_response));
@@ -147,13 +147,13 @@ void Catalog::FetchAfterDelay() {
 void Catalog::Retry() {
   const base::Time retry_at = retry_timer_.StartWithPrivacy(
       FROM_HERE, kRetryAfter,
-      base::BindOnce(&Catalog::OnRetry, weak_factory_.GetWeakPtr()));
+      base::BindOnce(&Catalog::RetryCallback, weak_factory_.GetWeakPtr()));
 
   BLOG(1, "Retry fetching catalog "
               << FriendlyDateAndTime(retry_at, /*use_sentence_style*/ true));
 }
 
-void Catalog::OnRetry() {
+void Catalog::RetryCallback() {
   BLOG(1, "Retry fetching catalog");
 
   Fetch();

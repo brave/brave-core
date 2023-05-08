@@ -136,11 +136,11 @@ void RefillUnblindedTokens::RequestSignedTokens() {
 
   AdsClientHelper::GetInstance()->UrlRequest(
       std::move(url_request),
-      base::BindOnce(&RefillUnblindedTokens::OnRequestSignedTokens,
+      base::BindOnce(&RefillUnblindedTokens::RequestSignedTokensCallback,
                      weak_factory_.GetWeakPtr()));
 }
 
-void RefillUnblindedTokens::OnRequestSignedTokens(
+void RefillUnblindedTokens::RequestSignedTokensCallback(
     const mojom::UrlResponseInfo& url_response) {
   BLOG(1, "OnRequestSignedTokens");
 
@@ -188,13 +188,13 @@ void RefillUnblindedTokens::GetSignedTokens() {
 
   AdsClientHelper::GetInstance()->UrlRequest(
       std::move(url_request),
-      base::BindOnce(&RefillUnblindedTokens::OnGetSignedTokens,
+      base::BindOnce(&RefillUnblindedTokens::GetSignedTokensCallback,
                      weak_factory_.GetWeakPtr()));
 }
 
 // TODO(https://github.com/brave/brave-browser/issues/29824): Reduce cognitive
 // complexity.
-void RefillUnblindedTokens::OnGetSignedTokens(
+void RefillUnblindedTokens::GetSignedTokensCallback(
     const mojom::UrlResponseInfo& url_response) {
   BLOG(1, "OnGetSignedTokens");
 
@@ -381,7 +381,7 @@ void RefillUnblindedTokens::FailedToRefillUnblindedTokens(
 void RefillUnblindedTokens::Retry() {
   const base::Time retry_at = retry_timer_.StartWithPrivacy(
       FROM_HERE, kRetryAfter,
-      base::BindOnce(&RefillUnblindedTokens::OnRetry,
+      base::BindOnce(&RefillUnblindedTokens::RetryCallback,
                      weak_factory_.GetWeakPtr()));
 
   BLOG(1, "Retry refilling unblinded tokens " << FriendlyDateAndTime(retry_at));
@@ -391,7 +391,7 @@ void RefillUnblindedTokens::Retry() {
   }
 }
 
-void RefillUnblindedTokens::OnRetry() {
+void RefillUnblindedTokens::RetryCallback() {
   BLOG(1, "Retry refilling unblinded tokens");
 
   if (delegate_) {

@@ -54,7 +54,7 @@ class SubdivisionTargeting final : public AdsClientNotifierObserver {
 
   void MaybeFetchForLocale(const std::string& locale);
   void Fetch();
-  void OnFetch(const mojom::UrlResponseInfo& url_response);
+  void FetchCallback(const mojom::UrlResponseInfo& url_response);
   bool ParseJson(const std::string& json);
   void Retry();
   void FetchAfterDelay();

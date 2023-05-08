@@ -50,46 +50,47 @@ class Conversions final : public TabManagerObserver {
   void Process();
 
  private:
-  void OnGetUnprocessedConversions(
+  void GetUnprocessedConversionsCallback(
       bool success,
       const ConversionQueueItemList& conversion_queue_items);
 
   void CheckRedirectChain(const std::vector<GURL>& redirect_chain,
                           const std::string& html,
                           const ConversionIdPatternMap& conversion_id_patterns);
-  void OnGetAllAdEvents(std::vector<GURL> redirect_chain,
-                        std::string html,
-                        ConversionIdPatternMap conversion_id_patterns,
-                        bool success,
-                        const AdEventList& ad_events);
-  void OnGetAllConversions(const std::vector<GURL>& redirect_chain,
-                           const std::string& html,
-                           const ConversionIdPatternMap& conversion_id_patterns,
-                           const AdEventList& ad_events,
-                           bool success,
-                           const ConversionList& conversions);
+  void GetAllAdEventsCallback(std::vector<GURL> redirect_chain,
+                              std::string html,
+                              ConversionIdPatternMap conversion_id_patterns,
+                              bool success,
+                              const AdEventList& ad_events);
+  void GetAllConversionsCallback(
+      const std::vector<GURL>& redirect_chain,
+      const std::string& html,
+      const ConversionIdPatternMap& conversion_id_patterns,
+      const AdEventList& ad_events,
+      bool success,
+      const ConversionList& conversions);
 
   void Convert(const AdEventInfo& ad_event,
                const VerifiableConversionInfo& verifiable_conversion);
 
   void AddItemToQueue(const AdEventInfo& ad_event,
                       const VerifiableConversionInfo& verifiable_conversion);
-  void OnSaveConversionQueue(bool success);
+  void SaveConversionQueueCallback(bool success);
 
   void ProcessQueueItem(const ConversionQueueItemInfo& queue_item);
-  void OnGetConversionQueue(
+  void GetConversionQueueCallback(
       bool success,
       const ConversionQueueItemList& conversion_queue_items);
   void ProcessQueue();
 
   void RemoveInvalidQueueItem(
       const ConversionQueueItemInfo& conversion_queue_item);
-  void OnRemoveInvalidQueueItem(
+  void RemoveInvalidQueueItemCallback(
       const ConversionQueueItemInfo& conversion_queue_item,
       bool success);
   void MarkQueueItemAsProcessed(
       const ConversionQueueItemInfo& conversion_queue_item);
-  void OnMarkQueueItemAsProcessed(
+  void MarkQueueItemAsProcessedCallback(
       const ConversionQueueItemInfo& conversion_queue_item,
       bool success);
   void FailedToConvertQueueItem(

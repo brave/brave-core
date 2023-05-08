@@ -134,9 +134,9 @@ void Account::Deposit(const std::string& creative_instance_id,
 
   deposit->GetValue(
       creative_instance_id,
-      base::BindOnce(&Account::OnGetDepositValue, weak_factory_.GetWeakPtr(),
-                     creative_instance_id, ad_type, segment,
-                     confirmation_type));
+      base::BindOnce(&Account::GetDepositValueCallback,
+                     weak_factory_.GetWeakPtr(), creative_instance_id, ad_type,
+                     segment, confirmation_type));
 }
 
 // static
@@ -174,12 +174,12 @@ void Account::MaybeGetIssuers() const {
   issuers_->MaybeFetch();
 }
 
-void Account::OnGetDepositValue(const std::string& creative_instance_id,
-                                const AdType& ad_type,
-                                const std::string& segment,
-                                const ConfirmationType& confirmation_type,
-                                const bool success,
-                                const double value) const {
+void Account::GetDepositValueCallback(const std::string& creative_instance_id,
+                                      const AdType& ad_type,
+                                      const std::string& segment,
+                                      const ConfirmationType& confirmation_type,
+                                      const bool success,
+                                      const double value) const {
   if (!success) {
     return FailedToProcessDeposit(creative_instance_id, ad_type,
                                   confirmation_type);
@@ -196,15 +196,16 @@ void Account::ProcessDeposit(const std::string& creative_instance_id,
                              const double value) const {
   AddTransaction(
       creative_instance_id, segment, value, ad_type, confirmation_type,
-      base::BindOnce(&Account::OnDepositProcessed, weak_factory_.GetWeakPtr(),
-                     creative_instance_id, ad_type, confirmation_type));
+      base::BindOnce(&Account::ProcessDepositCallback,
+                     weak_factory_.GetWeakPtr(), creative_instance_id, ad_type,
+                     confirmation_type));
 }
 
-void Account::OnDepositProcessed(const std::string& creative_instance_id,
-                                 const AdType& ad_type,
-                                 const ConfirmationType& confirmation_type,
-                                 const bool success,
-                                 const TransactionInfo& transaction) const {
+void Account::ProcessDepositCallback(const std::string& creative_instance_id,
+                                     const AdType& ad_type,
+                                     const ConfirmationType& confirmation_type,
+                                     const bool success,
+                                     const TransactionInfo& transaction) const {
   if (!success) {
     return FailedToProcessDeposit(creative_instance_id, ad_type,
                                   confirmation_type);
@@ -267,11 +268,11 @@ void Account::WalletDidChange(const WalletInfo& wallet) const {
 
   NotifyWalletDidChange(wallet);
 
-  ResetRewards(
-      base::BindOnce(&Account::OnRewardsReset, weak_factory_.GetWeakPtr()));
+  ResetRewards(base::BindOnce(&Account::RewardsResetCallback,
+                              weak_factory_.GetWeakPtr()));
 }
 
-void Account::OnRewardsReset(const bool success) const {
+void Account::RewardsResetCallback(const bool success) const {
   if (!success) {
     BLOG(0, "Failed to reset rewards state");
     return;

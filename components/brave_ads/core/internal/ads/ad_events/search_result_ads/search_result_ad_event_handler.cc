@@ -149,12 +149,12 @@ void SearchResultAdEventHandler::FireViewedEvent(
 
   database::table::Deposits deposits_database_table;
   deposits_database_table.Save(
-      deposit, base::BindOnce(&SearchResultAdEventHandler::OnSaveDeposits,
+      deposit, base::BindOnce(&SearchResultAdEventHandler::SaveDepositsCallback,
                               weak_factory_.GetWeakPtr(), std::move(ad_mojom),
                               std::move(callback)));
 }
 
-void SearchResultAdEventHandler::OnSaveDeposits(
+void SearchResultAdEventHandler::SaveDepositsCallback(
     mojom::SearchResultAdInfoPtr ad_mojom,
     FireAdEventHandlerCallback callback,
     const bool success) const {
@@ -179,11 +179,11 @@ void SearchResultAdEventHandler::OnSaveDeposits(
   database::table::Conversions conversion_database_table;
   conversion_database_table.Save(
       conversions,
-      base::BindOnce(&SearchResultAdEventHandler::OnSaveConversions,
+      base::BindOnce(&SearchResultAdEventHandler::SaveConversionsCallback,
                      weak_factory_.GetWeakPtr(), ad, std::move(callback)));
 }
 
-void SearchResultAdEventHandler::OnSaveConversions(
+void SearchResultAdEventHandler::SaveConversionsCallback(
     const SearchResultAdInfo& ad,
     FireAdEventHandlerCallback callback,
     const bool success) const {
@@ -198,12 +198,12 @@ void SearchResultAdEventHandler::OnSaveConversions(
   const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kSearchResultAd,
-      base::BindOnce(
-          &SearchResultAdEventHandler::OnGetAdEventsForViewedSearchResultAd,
-          weak_factory_.GetWeakPtr(), ad, std::move(callback)));
+      base::BindOnce(&SearchResultAdEventHandler::
+                         GetAdEventsForViewedSearchResultAdCallback,
+                     weak_factory_.GetWeakPtr(), ad, std::move(callback)));
 }
 
-void SearchResultAdEventHandler::OnGetAdEventsForViewedSearchResultAd(
+void SearchResultAdEventHandler::GetAdEventsForViewedSearchResultAdCallback(
     const SearchResultAdInfo& ad,
     FireAdEventHandlerCallback callback,
     const bool success,
@@ -239,12 +239,12 @@ void SearchResultAdEventHandler::FireClickedEvent(
   const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kSearchResultAd,
-      base::BindOnce(
-          &SearchResultAdEventHandler::OnGetAdEventsForClickedSearchResultAd,
-          weak_factory_.GetWeakPtr(), ad, std::move(callback)));
+      base::BindOnce(&SearchResultAdEventHandler::
+                         GetAdEventsForClickedSearchResultAdCallback,
+                     weak_factory_.GetWeakPtr(), ad, std::move(callback)));
 }
 
-void SearchResultAdEventHandler::OnGetAdEventsForClickedSearchResultAd(
+void SearchResultAdEventHandler::GetAdEventsForClickedSearchResultAdCallback(
     const SearchResultAdInfo& ad,
     FireAdEventHandlerCallback callback,
     const bool success,

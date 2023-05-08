@@ -29,36 +29,35 @@ class EligibleNotificationAdsV1 final : public EligibleNotificationAdsBase {
 
   void GetForUserModel(
       UserModelInfo user_model,
-      GetEligibleAdsCallback<CreativeNotificationAdList> callback) override;
+      EligibleAdsCallback<CreativeNotificationAdList> callback) override;
 
  private:
-  void OnGetForUserModel(
+  void GetForUserModelCallback(
       UserModelInfo user_model,
-      GetEligibleAdsCallback<CreativeNotificationAdList> callback,
+      EligibleAdsCallback<CreativeNotificationAdList> callback,
       bool success,
       const AdEventList& ad_events);
 
   void GetBrowsingHistory(
       UserModelInfo user_model,
       const AdEventList& ad_events,
-      GetEligibleAdsCallback<CreativeNotificationAdList> callback);
+      EligibleAdsCallback<CreativeNotificationAdList> callback);
 
-  void GetEligibleAds(
-      UserModelInfo user_model,
-      const AdEventList& ad_events,
-      GetEligibleAdsCallback<CreativeNotificationAdList> callback,
-      const BrowsingHistoryList& browsing_history);
+  void GetEligibleAds(UserModelInfo user_model,
+                      const AdEventList& ad_events,
+                      EligibleAdsCallback<CreativeNotificationAdList> callback,
+                      const BrowsingHistoryList& browsing_history);
 
   void GetForChildSegments(
       UserModelInfo user_model,
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      GetEligibleAdsCallback<CreativeNotificationAdList> callback);
-  void OnGetForChildSegments(
+      EligibleAdsCallback<CreativeNotificationAdList> callback);
+  void GetForChildSegmentsCallback(
       const UserModelInfo& user_model,
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      GetEligibleAdsCallback<CreativeNotificationAdList> callback,
+      EligibleAdsCallback<CreativeNotificationAdList> callback,
       bool success,
       const SegmentList& segments,
       const CreativeNotificationAdList& creative_ads);
@@ -67,11 +66,11 @@ class EligibleNotificationAdsV1 final : public EligibleNotificationAdsBase {
       const UserModelInfo& user_model,
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      GetEligibleAdsCallback<CreativeNotificationAdList> callback);
-  void OnGetForParentSegments(
+      EligibleAdsCallback<CreativeNotificationAdList> callback);
+  void GetForParentSegmentsCallback(
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      GetEligibleAdsCallback<CreativeNotificationAdList> callback,
+      EligibleAdsCallback<CreativeNotificationAdList> callback,
       bool success,
       const SegmentList& segments,
       const CreativeNotificationAdList& creative_ads);
@@ -79,11 +78,11 @@ class EligibleNotificationAdsV1 final : public EligibleNotificationAdsBase {
   void GetForUntargeted(
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      GetEligibleAdsCallback<CreativeNotificationAdList> callback);
-  void OnGetForUntargeted(
+      EligibleAdsCallback<CreativeNotificationAdList> callback);
+  void GetForUntargetedCallback(
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      GetEligibleAdsCallback<CreativeNotificationAdList> callback,
+      EligibleAdsCallback<CreativeNotificationAdList> callback,
       bool success,
       const SegmentList& segments,
       const CreativeNotificationAdList& creative_ads);

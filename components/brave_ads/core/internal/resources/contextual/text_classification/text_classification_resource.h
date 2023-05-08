@@ -38,7 +38,7 @@ class TextClassificationResource final : public AdsClientNotifierObserver {
   }
 
  private:
-  void OnLoadAndParseResource(
+  void LoadAndParseResourceCallback(
       ResourceParsingErrorOr<ml::pipeline::TextProcessing> result);
 
   // AdsClientNotifierObserver:

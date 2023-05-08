@@ -34,7 +34,8 @@ class ConversionsResource final : public AdsClientNotifierObserver {
   const ConversionsInfo& get() const { return conversions_; }
 
  private:
-  void OnLoadAndParseResource(ResourceParsingErrorOr<ConversionsInfo> result);
+  void LoadAndParseResourceCallback(
+      ResourceParsingErrorOr<ConversionsInfo> result);
 
   // AdsClientNotifierObserver:
   void OnNotifyLocaleDidChange(const std::string& locale) override;

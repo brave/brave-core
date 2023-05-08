@@ -45,7 +45,7 @@ class InlineContentAdEventHandler final
                  mojom::InlineContentAdEventType event_type);
 
  private:
-  void OnGetForCreativeInstanceId(
+  void GetForCreativeInstanceIdCallback(
       const std::string& placement_id,
       mojom::InlineContentAdEventType event_type,
       bool success,
@@ -54,10 +54,10 @@ class InlineContentAdEventHandler final
 
   void FireEvent(const InlineContentAdInfo& ad,
                  mojom::InlineContentAdEventType event_type);
-  void OnGetAdEvents(const InlineContentAdInfo& ad,
-                     mojom::InlineContentAdEventType event_type,
-                     bool success,
-                     const AdEventList& ad_events);
+  void GetAdEventsCallback(const InlineContentAdInfo& ad,
+                           mojom::InlineContentAdEventType event_type,
+                           bool success,
+                           const AdEventList& ad_events);
 
   void SuccessfullyFiredEvent(const InlineContentAdInfo& ad,
                               mojom::InlineContentAdEventType event_type) const;

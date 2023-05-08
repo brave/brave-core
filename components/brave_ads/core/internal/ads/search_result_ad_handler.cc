@@ -84,13 +84,13 @@ void SearchResultAd::MaybeTriggerAdViewedEventFromQueue() {
       std::move(ad_viewed_event_queue_.back());
   ad_viewed_event_queue_.pop_back();
 
-  event_handler_.FireEvent(std::move(ad_mojom),
-                           mojom::SearchResultAdEventType::kViewed,
-                           base::BindOnce(&SearchResultAd::OnFireAdViewedEvent,
-                                          weak_factory_.GetWeakPtr()));
+  event_handler_.FireEvent(
+      std::move(ad_mojom), mojom::SearchResultAdEventType::kViewed,
+      base::BindOnce(&SearchResultAd::FireAdViewedEventCallback,
+                     weak_factory_.GetWeakPtr()));
 }
 
-void SearchResultAd::OnFireAdViewedEvent(
+void SearchResultAd::FireAdViewedEventCallback(
     const bool /*success*/,
     const std::string& /*placement_id*/,
     const mojom::SearchResultAdEventType event_type) {

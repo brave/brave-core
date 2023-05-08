@@ -109,11 +109,12 @@ void PromotedContentAdEventHandler::FireEvent(
   const database::table::CreativePromotedContentAds database_table;
   database_table.GetForCreativeInstanceId(
       creative_instance_id,
-      base::BindOnce(&PromotedContentAdEventHandler::OnGetForCreativeInstanceId,
-                     weak_factory_.GetWeakPtr(), placement_id, event_type));
+      base::BindOnce(
+          &PromotedContentAdEventHandler::GetForCreativeInstanceIdCallback,
+          weak_factory_.GetWeakPtr(), placement_id, event_type));
 }
 
-void PromotedContentAdEventHandler::OnGetForCreativeInstanceId(
+void PromotedContentAdEventHandler::GetForCreativeInstanceIdCallback(
     const std::string& placement_id,
     const mojom::PromotedContentAdEventType event_type,
     const bool success,
@@ -142,11 +143,11 @@ void PromotedContentAdEventHandler::FireEvent(
   const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kPromotedContentAd,
-      base::BindOnce(&PromotedContentAdEventHandler::OnGetAdEvents,
+      base::BindOnce(&PromotedContentAdEventHandler::GetAdEventsCallback,
                      weak_factory_.GetWeakPtr(), ad, event_type));
 }
 
-void PromotedContentAdEventHandler::OnGetAdEvents(
+void PromotedContentAdEventHandler::GetAdEventsCallback(
     const PromotedContentAdInfo& ad,
     const mojom::PromotedContentAdEventType event_type,
     const bool success,

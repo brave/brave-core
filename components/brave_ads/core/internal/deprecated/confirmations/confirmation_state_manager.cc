@@ -150,13 +150,13 @@ void ConfirmationStateManager::Initialize(const WalletInfo& wallet,
 
   AdsClientHelper::GetInstance()->Load(
       kConfirmationStateFilename,
-      base::BindOnce(&ConfirmationStateManager::OnLoaded,
+      base::BindOnce(&ConfirmationStateManager::LoadedCallback,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void ConfirmationStateManager::OnLoaded(InitializeCallback callback,
-                                        const bool success,
-                                        const std::string& json) {
+void ConfirmationStateManager::LoadedCallback(InitializeCallback callback,
+                                              const bool success,
+                                              const std::string& json) {
   if (!success) {
     BLOG(3, "Confirmations state does not exist, creating default state");
 

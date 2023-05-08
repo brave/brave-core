@@ -43,18 +43,19 @@ class NewTabPageAdEventHandler final : public NewTabPageAdEventHandlerDelegate {
                  mojom::NewTabPageAdEventType event_type);
 
  private:
-  void OnGetForCreativeInstanceId(const std::string& placement_id,
-                                  mojom::NewTabPageAdEventType event_type,
-                                  bool success,
-                                  const std::string& creative_instance_id,
-                                  const CreativeNewTabPageAdInfo& creative_ad);
+  void GetForCreativeInstanceIdCallback(
+      const std::string& placement_id,
+      mojom::NewTabPageAdEventType event_type,
+      bool success,
+      const std::string& creative_instance_id,
+      const CreativeNewTabPageAdInfo& creative_ad);
 
   void FireEvent(const NewTabPageAdInfo& ad,
                  mojom::NewTabPageAdEventType event_type);
-  void OnGetAdEvents(const NewTabPageAdInfo& ad,
-                     mojom::NewTabPageAdEventType event_type,
-                     bool success,
-                     const AdEventList& ad_events);
+  void GetAdEventsCallback(const NewTabPageAdInfo& ad,
+                           mojom::NewTabPageAdEventType event_type,
+                           bool success,
+                           const AdEventList& ad_events);
 
   void SuccessfullyFiredEvent(const NewTabPageAdInfo& ad,
                               mojom::NewTabPageAdEventType event_type) const;

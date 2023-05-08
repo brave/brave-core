@@ -107,13 +107,14 @@ void Confirmations::Retry() {
   CHECK(!retry_timer_.IsRunning());
   const base::Time retry_at = retry_timer_.StartWithPrivacy(
       FROM_HERE, kRetryAfter,
-      base::BindOnce(&Confirmations::OnRetry, weak_factory_.GetWeakPtr()));
+      base::BindOnce(&Confirmations::RetryCallback,
+                     weak_factory_.GetWeakPtr()));
 
   BLOG(1, "Retry sending failed confirmations "
               << FriendlyDateAndTime(retry_at, /*use_sentence_style*/ true));
 }
 
-void Confirmations::OnRetry() {
+void Confirmations::RetryCallback() {
   const ConfirmationList& failed_confirmations =
       ConfirmationStateManager::GetInstance().GetFailedConfirmations();
   CHECK(!failed_confirmations.empty());
@@ -180,12 +181,12 @@ void Confirmations::CreateAndRedeem(
 void Confirmations::RecreateOptedInDynamicUserDataAndRedeem(
     const ConfirmationInfo& confirmation) {
   const ConfirmationDynamicUserDataBuilder user_data_builder;
-  user_data_builder.Build(
-      base::BindOnce(&Confirmations::OnRecreateOptedInDynamicUserDataAndRedeem,
-                     weak_factory_.GetWeakPtr(), confirmation));
+  user_data_builder.Build(base::BindOnce(
+      &Confirmations::RecreateOptedInDynamicUserDataAndRedeemCallback,
+      weak_factory_.GetWeakPtr(), confirmation));
 }
 
-void Confirmations::OnRecreateOptedInDynamicUserDataAndRedeem(
+void Confirmations::RecreateOptedInDynamicUserDataAndRedeemCallback(
     const ConfirmationInfo& confirmation,
     base::Value::Dict dynamic_opted_in_user_data) {
   if (!confirmation.opted_in) {

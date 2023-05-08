@@ -242,13 +242,14 @@ void Conversions::MaybeConvert(
 
 void Conversions::Process() {
   const database::table::ConversionQueue database_table;
-  database_table.GetUnprocessed(base::BindOnce(
-      &Conversions::OnGetUnprocessedConversions, weak_factory_.GetWeakPtr()));
+  database_table.GetUnprocessed(
+      base::BindOnce(&Conversions::GetUnprocessedConversionsCallback,
+                     weak_factory_.GetWeakPtr()));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void Conversions::OnGetUnprocessedConversions(
+void Conversions::GetUnprocessedConversionsCallback(
     const bool success,
     const ConversionQueueItemList& conversion_queue_items) {
   if (!success) {
@@ -274,12 +275,12 @@ void Conversions::CheckRedirectChain(
   BLOG(1, "Checking URL for conversions");
 
   const database::table::AdEvents ad_events_database_table;
-  ad_events_database_table.GetAll(
-      base::BindOnce(&Conversions::OnGetAllAdEvents, weak_factory_.GetWeakPtr(),
-                     redirect_chain, html, conversion_id_patterns));
+  ad_events_database_table.GetAll(base::BindOnce(
+      &Conversions::GetAllAdEventsCallback, weak_factory_.GetWeakPtr(),
+      redirect_chain, html, conversion_id_patterns));
 }
 
-void Conversions::OnGetAllAdEvents(
+void Conversions::GetAllAdEventsCallback(
     std::vector<GURL> redirect_chain,
     std::string html,
     ConversionIdPatternMap conversion_id_patterns,
@@ -292,12 +293,12 @@ void Conversions::OnGetAllAdEvents(
 
   const database::table::Conversions conversions_database_table;
   conversions_database_table.GetAll(base::BindOnce(
-      &Conversions::OnGetAllConversions, weak_factory_.GetWeakPtr(),
+      &Conversions::GetAllConversionsCallback, weak_factory_.GetWeakPtr(),
       std::move(redirect_chain), std::move(html),
       std::move(conversion_id_patterns), ad_events));
 }
 
-void Conversions::OnGetAllConversions(
+void Conversions::GetAllConversionsCallback(
     const std::vector<GURL>& redirect_chain,
     const std::string& html,
     const ConversionIdPatternMap& conversion_id_patterns,
@@ -403,11 +404,11 @@ void Conversions::AddItemToQueue(
 
   database::table::ConversionQueue database_table;
   database_table.Save({conversion_queue_item},
-                      base::BindOnce(&Conversions::OnSaveConversionQueue,
+                      base::BindOnce(&Conversions::SaveConversionQueueCallback,
                                      weak_factory_.GetWeakPtr()));
 }
 
-void Conversions::OnSaveConversionQueue(const bool success) {
+void Conversions::SaveConversionQueueCallback(const bool success) {
   if (!success) {
     BLOG(1, "Failed to append conversion to queue");
     return;
@@ -466,10 +467,10 @@ void Conversions::ConvertedQueueItem(
 void Conversions::ProcessQueue() {
   const database::table::ConversionQueue database_table;
   database_table.GetUnprocessed(base::BindOnce(
-      &Conversions::OnGetConversionQueue, weak_factory_.GetWeakPtr()));
+      &Conversions::GetConversionQueueCallback, weak_factory_.GetWeakPtr()));
 }
 
-void Conversions::OnGetConversionQueue(
+void Conversions::GetConversionQueueCallback(
     const bool success,
     const ConversionQueueItemList& conversion_queue_items) {
   if (!success) {
@@ -493,11 +494,11 @@ void Conversions::RemoveInvalidQueueItem(
   const database::table::ConversionQueue database_table;
   database_table.Delete(
       conversion_queue_item,
-      base::BindOnce(&Conversions::OnRemoveInvalidQueueItem,
+      base::BindOnce(&Conversions::RemoveInvalidQueueItemCallback,
                      weak_factory_.GetWeakPtr(), conversion_queue_item));
 }
 
-void Conversions::OnRemoveInvalidQueueItem(
+void Conversions::RemoveInvalidQueueItemCallback(
     const ConversionQueueItemInfo& conversion_queue_item,
     const bool success) {
   if (!success) {
@@ -513,11 +514,11 @@ void Conversions::MarkQueueItemAsProcessed(
   const database::table::ConversionQueue database_table;
   database_table.Update(
       conversion_queue_item,
-      base::BindOnce(&Conversions::OnMarkQueueItemAsProcessed,
+      base::BindOnce(&Conversions::MarkQueueItemAsProcessedCallback,
                      weak_factory_.GetWeakPtr(), conversion_queue_item));
 }
 
-void Conversions::OnMarkQueueItemAsProcessed(
+void Conversions::MarkQueueItemAsProcessedCallback(
     const ConversionQueueItemInfo& conversion_queue_item,
     const bool success) {
   if (!success) {

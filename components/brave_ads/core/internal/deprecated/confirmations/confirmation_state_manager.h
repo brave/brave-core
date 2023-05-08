@@ -74,9 +74,9 @@ class ConfirmationStateManager final {
   bool is_mutated() const { return is_mutated_; }
 
  private:
-  void OnLoaded(InitializeCallback callback,
-                bool success,
-                const std::string& json);
+  void LoadedCallback(InitializeCallback callback,
+                      bool success,
+                      const std::string& json);
 
   bool ParseFailedConfirmationsFromDictionary(const base::Value::Dict& dict);
 

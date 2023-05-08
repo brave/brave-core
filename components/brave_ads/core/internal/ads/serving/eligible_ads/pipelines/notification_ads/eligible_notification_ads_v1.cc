@@ -37,22 +37,22 @@ EligibleNotificationAdsV1::~EligibleNotificationAdsV1() = default;
 
 void EligibleNotificationAdsV1::GetForUserModel(
     UserModelInfo user_model,
-    GetEligibleAdsCallback<CreativeNotificationAdList> callback) {
+    EligibleAdsCallback<CreativeNotificationAdList> callback) {
   BLOG(1, "Get eligible notification ads:");
 
   const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kNotificationAd,
-      base::BindOnce(&EligibleNotificationAdsV1::OnGetForUserModel,
+      base::BindOnce(&EligibleNotificationAdsV1::GetForUserModelCallback,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
                      std::move(callback)));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void EligibleNotificationAdsV1::OnGetForUserModel(
+void EligibleNotificationAdsV1::GetForUserModelCallback(
     UserModelInfo user_model,
-    GetEligibleAdsCallback<CreativeNotificationAdList> callback,
+    EligibleAdsCallback<CreativeNotificationAdList> callback,
     const bool success,
     const AdEventList& ad_events) {
   if (!success) {
@@ -67,7 +67,7 @@ void EligibleNotificationAdsV1::OnGetForUserModel(
 void EligibleNotificationAdsV1::GetBrowsingHistory(
     UserModelInfo user_model,
     const AdEventList& ad_events,
-    GetEligibleAdsCallback<CreativeNotificationAdList> callback) {
+    EligibleAdsCallback<CreativeNotificationAdList> callback) {
   AdsClientHelper::GetInstance()->GetBrowsingHistory(
       kBrowsingHistoryMaxCount.Get(), kBrowsingHistoryDaysAgo.Get(),
       base::BindOnce(&EligibleNotificationAdsV1::GetEligibleAds,
@@ -78,7 +78,7 @@ void EligibleNotificationAdsV1::GetBrowsingHistory(
 void EligibleNotificationAdsV1::GetEligibleAds(
     UserModelInfo user_model,
     const AdEventList& ad_events,
-    GetEligibleAdsCallback<CreativeNotificationAdList> callback,
+    EligibleAdsCallback<CreativeNotificationAdList> callback,
     const BrowsingHistoryList& browsing_history) {
   GetForChildSegments(std::move(user_model), ad_events, browsing_history,
                       std::move(callback));
@@ -88,7 +88,7 @@ void EligibleNotificationAdsV1::GetForChildSegments(
     UserModelInfo user_model,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsCallback<CreativeNotificationAdList> callback) {
+    EligibleAdsCallback<CreativeNotificationAdList> callback) {
   const SegmentList segments = GetTopChildSegments(user_model);
   if (segments.empty()) {
     return GetForParentSegments(user_model, ad_events, browsing_history,
@@ -103,16 +103,16 @@ void EligibleNotificationAdsV1::GetForChildSegments(
   const database::table::CreativeNotificationAds database_table;
   database_table.GetForSegments(
       segments,
-      base::BindOnce(&EligibleNotificationAdsV1::OnGetForChildSegments,
+      base::BindOnce(&EligibleNotificationAdsV1::GetForChildSegmentsCallback,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
                      ad_events, browsing_history, std::move(callback)));
 }
 
-void EligibleNotificationAdsV1::OnGetForChildSegments(
+void EligibleNotificationAdsV1::GetForChildSegmentsCallback(
     const UserModelInfo& user_model,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsCallback<CreativeNotificationAdList> callback,
+    EligibleAdsCallback<CreativeNotificationAdList> callback,
     const bool success,
     const SegmentList& /*segments*/,
     const CreativeNotificationAdList& creative_ads) {
@@ -142,7 +142,7 @@ void EligibleNotificationAdsV1::GetForParentSegments(
     const UserModelInfo& user_model,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsCallback<CreativeNotificationAdList> callback) {
+    EligibleAdsCallback<CreativeNotificationAdList> callback) {
   const SegmentList segments = GetTopParentSegments(user_model);
   if (segments.empty()) {
     return GetForUntargeted(ad_events, browsing_history, std::move(callback));
@@ -156,15 +156,15 @@ void EligibleNotificationAdsV1::GetForParentSegments(
   const database::table::CreativeNotificationAds database_table;
   database_table.GetForSegments(
       segments,
-      base::BindOnce(&EligibleNotificationAdsV1::OnGetForParentSegments,
+      base::BindOnce(&EligibleNotificationAdsV1::GetForParentSegmentsCallback,
                      weak_factory_.GetWeakPtr(), ad_events, browsing_history,
                      std::move(callback)));
 }
 
-void EligibleNotificationAdsV1::OnGetForParentSegments(
+void EligibleNotificationAdsV1::GetForParentSegmentsCallback(
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsCallback<CreativeNotificationAdList> callback,
+    EligibleAdsCallback<CreativeNotificationAdList> callback,
     const bool success,
     const SegmentList& /*segments*/,
     const CreativeNotificationAdList& creative_ads) {
@@ -192,21 +192,21 @@ void EligibleNotificationAdsV1::OnGetForParentSegments(
 void EligibleNotificationAdsV1::GetForUntargeted(
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsCallback<CreativeNotificationAdList> callback) {
+    EligibleAdsCallback<CreativeNotificationAdList> callback) {
   BLOG(1, "Get eligible ads for untargeted segment");
 
   const database::table::CreativeNotificationAds database_table;
   database_table.GetForSegments(
       {kUntargeted},
-      base::BindOnce(&EligibleNotificationAdsV1::OnGetForUntargeted,
+      base::BindOnce(&EligibleNotificationAdsV1::GetForUntargetedCallback,
                      weak_factory_.GetWeakPtr(), ad_events, browsing_history,
                      std::move(callback)));
 }
 
-void EligibleNotificationAdsV1::OnGetForUntargeted(
+void EligibleNotificationAdsV1::GetForUntargetedCallback(
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsCallback<CreativeNotificationAdList> callback,
+    EligibleAdsCallback<CreativeNotificationAdList> callback,
     const bool success,
     const SegmentList& /*segments*/,
     const CreativeNotificationAdList& creative_ads) {

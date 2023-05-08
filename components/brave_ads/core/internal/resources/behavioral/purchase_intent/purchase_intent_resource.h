@@ -34,7 +34,7 @@ class PurchaseIntentResource final : public AdsClientNotifierObserver {
   const PurchaseIntentInfo& get() const { return purchase_intent_; }
 
  private:
-  void OnLoadAndParseResource(
+  void LoadAndParseResourceCallback(
       ResourceParsingErrorOr<PurchaseIntentInfo> result);
 
   // AdsClientNotifierObserver:

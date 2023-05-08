@@ -215,11 +215,13 @@ void SubdivisionTargeting::Fetch() {
   BLOG(7, UrlRequestHeadersToString(url_request));
 
   AdsClientHelper::GetInstance()->UrlRequest(
-      std::move(url_request), base::BindOnce(&SubdivisionTargeting::OnFetch,
-                                             weak_factory_.GetWeakPtr()));
+      std::move(url_request),
+      base::BindOnce(&SubdivisionTargeting::FetchCallback,
+                     weak_factory_.GetWeakPtr()));
 }
 
-void SubdivisionTargeting::OnFetch(const mojom::UrlResponseInfo& url_response) {
+void SubdivisionTargeting::FetchCallback(
+    const mojom::UrlResponseInfo& url_response) {
   BLOG(1, "OnFetchSubdivisionTargeting");
 
   BLOG(6, UrlResponseToString(url_response));

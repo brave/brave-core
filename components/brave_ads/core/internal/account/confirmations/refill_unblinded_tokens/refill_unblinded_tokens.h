@@ -49,17 +49,17 @@ class RefillUnblindedTokens final {
   void Refill();
 
   void RequestSignedTokens();
-  void OnRequestSignedTokens(const mojom::UrlResponseInfo& url_response);
+  void RequestSignedTokensCallback(const mojom::UrlResponseInfo& url_response);
 
   void GetSignedTokens();
-  void OnGetSignedTokens(const mojom::UrlResponseInfo& url_response);
+  void GetSignedTokensCallback(const mojom::UrlResponseInfo& url_response);
 
   void SuccessfullyRefilledUnblindedTokens();
 
   void FailedToRefillUnblindedTokens(bool should_retry);
 
   void Retry();
-  void OnRetry();
+  void RetryCallback();
 
   const raw_ptr<privacy::TokenGeneratorInterface> token_generator_ =
       nullptr;  // NOT OWNED

@@ -110,12 +110,13 @@ void RedeemUnblindedPaymentTokens::Redeem() {
       unblinded_payment_tokens);
   user_data_builder.Build(
       base::BindOnce(&RedeemUnblindedPaymentTokens::
-                         OnRedeemUnblindedPaymentTokensUserDataBuilt,
+                         RedeemUnblindedPaymentTokensUserDataBuiltCallback,
                      weak_factory_.GetWeakPtr()));
 }
 
-void RedeemUnblindedPaymentTokens::OnRedeemUnblindedPaymentTokensUserDataBuilt(
-    base::Value::Dict user_data) {
+void RedeemUnblindedPaymentTokens::
+    RedeemUnblindedPaymentTokensUserDataBuiltCallback(
+        base::Value::Dict user_data) {
   const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
       privacy::GetAllUnblindedPaymentTokens();
 
@@ -127,11 +128,11 @@ void RedeemUnblindedPaymentTokens::OnRedeemUnblindedPaymentTokensUserDataBuilt(
 
   AdsClientHelper::GetInstance()->UrlRequest(
       std::move(url_request),
-      base::BindOnce(&RedeemUnblindedPaymentTokens::OnRedeem,
+      base::BindOnce(&RedeemUnblindedPaymentTokens::RedeemCallback,
                      weak_factory_.GetWeakPtr(), unblinded_payment_tokens));
 }
 
-void RedeemUnblindedPaymentTokens::OnRedeem(
+void RedeemUnblindedPaymentTokens::RedeemCallback(
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens,
     const mojom::UrlResponseInfo& url_response) {
   BLOG(1, "OnRedeemUnblindedPaymentTokens");
@@ -192,7 +193,7 @@ void RedeemUnblindedPaymentTokens::ScheduleNextTokenRedemption() {
 void RedeemUnblindedPaymentTokens::Retry() {
   const base::Time retry_at = retry_timer_.StartWithPrivacy(
       FROM_HERE, kRetryAfter,
-      base::BindOnce(&RedeemUnblindedPaymentTokens::OnRetry,
+      base::BindOnce(&RedeemUnblindedPaymentTokens::RetryCallback,
                      weak_factory_.GetWeakPtr()));
 
   BLOG(1, "Retry redeeming unblinded payment tokens "
@@ -203,7 +204,7 @@ void RedeemUnblindedPaymentTokens::Retry() {
   }
 }
 
-void RedeemUnblindedPaymentTokens::OnRetry() {
+void RedeemUnblindedPaymentTokens::RetryCallback() {
   BLOG(1, "Retry redeeming unblinded payment tokens");
 
   if (delegate_) {

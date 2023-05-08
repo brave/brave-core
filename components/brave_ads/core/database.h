@@ -52,9 +52,9 @@ class ADS_EXPORT Database final {
   mojom::DBCommandResponseInfo::StatusType Migrate(int version,
                                                    int compatible_version);
 
-  void OnErrorCallback(int error, sql::Statement* statement);
+  void ErrorCallback(int error, sql::Statement* statement);
 
-  void OnMemoryPressure(
+  void MemoryPressureCallback(
       base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level);
 
   base::FilePath db_path_;

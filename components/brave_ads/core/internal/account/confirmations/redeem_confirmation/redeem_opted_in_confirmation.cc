@@ -102,12 +102,12 @@ void RedeemOptedInConfirmation::CreateConfirmation(
 
   AdsClientHelper::GetInstance()->UrlRequest(
       std::move(url_request),
-      base::BindOnce(&RedeemOptedInConfirmation::OnCreateConfirmation,
+      base::BindOnce(&RedeemOptedInConfirmation::CreateConfirmationCallback,
                      std::move(redeem_confirmation), confirmation));
 }
 
 // static
-void RedeemOptedInConfirmation::OnCreateConfirmation(
+void RedeemOptedInConfirmation::CreateConfirmationCallback(
     RedeemOptedInConfirmation redeem_confirmation,
     const ConfirmationInfo& confirmation,
     const mojom::UrlResponseInfo& url_response) {
@@ -135,12 +135,12 @@ void RedeemOptedInConfirmation::FetchPaymentToken(
 
   AdsClientHelper::GetInstance()->UrlRequest(
       std::move(url_request),
-      base::BindOnce(&RedeemOptedInConfirmation::OnFetchPaymentToken,
+      base::BindOnce(&RedeemOptedInConfirmation::FetchPaymentTokenCallback,
                      std::move(redeem_confirmation), confirmation));
 }
 
 // static
-void RedeemOptedInConfirmation::OnFetchPaymentToken(
+void RedeemOptedInConfirmation::FetchPaymentTokenCallback(
     RedeemOptedInConfirmation redeem_confirmation,
     const ConfirmationInfo& confirmation,
     const mojom::UrlResponseInfo& url_response) {

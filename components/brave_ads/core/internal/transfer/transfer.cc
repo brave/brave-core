@@ -71,8 +71,8 @@ void Transfer::TransferAd(const int32_t tab_id,
 
   const base::Time transfer_ad_at = timer_.Start(
       FROM_HERE, kTransferAdAfter,
-      base::BindOnce(&Transfer::OnTransferAd, base::Unretained(this), tab_id,
-                     redirect_chain));
+      base::BindOnce(&Transfer::TransferAdCallback, base::Unretained(this),
+                     tab_id, redirect_chain));
 
   BLOG(1, "Transfer ad for "
               << last_clicked_ad_.target_url << " "
@@ -82,8 +82,8 @@ void Transfer::TransferAd(const int32_t tab_id,
   NotifyWillTransferAd(last_clicked_ad_, transfer_ad_at);
 }
 
-void Transfer::OnTransferAd(const int32_t tab_id,
-                            const std::vector<GURL>& redirect_chain) {
+void Transfer::TransferAdCallback(const int32_t tab_id,
+                                  const std::vector<GURL>& redirect_chain) {
   const AdInfo ad = last_clicked_ad_;
 
   last_clicked_ad_ = {};
@@ -114,12 +114,12 @@ void Transfer::OnTransferAd(const int32_t tab_id,
     return FailedToTransferAd(ad);
   }
 
-  LogAdEvent(
-      ad, ConfirmationType::kTransferred,
-      base::BindOnce(&Transfer::OnLogAdEvent, weak_factory_.GetWeakPtr(), ad));
+  LogAdEvent(ad, ConfirmationType::kTransferred,
+             base::BindOnce(&Transfer::LogAdEventCallback,
+                            weak_factory_.GetWeakPtr(), ad));
 }
 
-void Transfer::OnLogAdEvent(const AdInfo& ad, const bool success) {
+void Transfer::LogAdEventCallback(const AdInfo& ad, const bool success) {
   if (!success) {
     BLOG(1, "Failed to log transferred ad event");
     return FailedToTransferAd(ad);

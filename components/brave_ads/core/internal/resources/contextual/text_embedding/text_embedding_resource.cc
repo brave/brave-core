@@ -35,13 +35,13 @@ bool TextEmbeddingResource::IsInitialized() const {
 void TextEmbeddingResource::Load() {
   LoadAndParseResource(
       kResourceId, kTextEmbeddingResourceVersion.Get(),
-      base::BindOnce(&TextEmbeddingResource::OnLoadAndParseResource,
+      base::BindOnce(&TextEmbeddingResource::LoadAndParseResourceCallback,
                      weak_factory_.GetWeakPtr()));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void TextEmbeddingResource::OnLoadAndParseResource(
+void TextEmbeddingResource::LoadAndParseResourceCallback(
     ResourceParsingErrorOr<ml::pipeline::EmbeddingProcessing> result) {
   if (!result.has_value()) {
     BLOG(0, "Failed to initialize "

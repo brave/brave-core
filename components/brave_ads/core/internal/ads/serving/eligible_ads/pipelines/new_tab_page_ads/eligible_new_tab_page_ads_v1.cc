@@ -37,22 +37,22 @@ EligibleNewTabPageAdsV1::~EligibleNewTabPageAdsV1() = default;
 
 void EligibleNewTabPageAdsV1::GetForUserModel(
     UserModelInfo user_model,
-    GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) {
+    EligibleAdsCallback<CreativeNewTabPageAdList> callback) {
   BLOG(1, "Get eligible new tab page ads:");
 
   const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kNewTabPageAd,
-      base::BindOnce(&EligibleNewTabPageAdsV1::OnGetForUserModel,
+      base::BindOnce(&EligibleNewTabPageAdsV1::GetForUserModelCallback,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
                      std::move(callback)));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void EligibleNewTabPageAdsV1::OnGetForUserModel(
+void EligibleNewTabPageAdsV1::GetForUserModelCallback(
     UserModelInfo user_model,
-    GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
+    EligibleAdsCallback<CreativeNewTabPageAdList> callback,
     const bool success,
     const AdEventList& ad_events) {
   if (!success) {
@@ -67,7 +67,7 @@ void EligibleNewTabPageAdsV1::OnGetForUserModel(
 void EligibleNewTabPageAdsV1::GetBrowsingHistory(
     UserModelInfo user_model,
     const AdEventList& ad_events,
-    GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) {
+    EligibleAdsCallback<CreativeNewTabPageAdList> callback) {
   AdsClientHelper::GetInstance()->GetBrowsingHistory(
       kBrowsingHistoryMaxCount.Get(), kBrowsingHistoryDaysAgo.Get(),
       base::BindOnce(&EligibleNewTabPageAdsV1::GetEligibleAds,
@@ -78,7 +78,7 @@ void EligibleNewTabPageAdsV1::GetBrowsingHistory(
 void EligibleNewTabPageAdsV1::GetEligibleAds(
     UserModelInfo user_model,
     const AdEventList& ad_events,
-    GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
+    EligibleAdsCallback<CreativeNewTabPageAdList> callback,
     const BrowsingHistoryList& browsing_history) {
   GetForChildSegments(std::move(user_model), ad_events, browsing_history,
                       std::move(callback));
@@ -88,7 +88,7 @@ void EligibleNewTabPageAdsV1::GetForChildSegments(
     UserModelInfo user_model,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) {
+    EligibleAdsCallback<CreativeNewTabPageAdList> callback) {
   const SegmentList segments = GetTopChildSegments(user_model);
   if (segments.empty()) {
     return GetForParentSegments(user_model, ad_events, browsing_history,
@@ -103,16 +103,16 @@ void EligibleNewTabPageAdsV1::GetForChildSegments(
   const database::table::CreativeNewTabPageAds database_table;
   database_table.GetForSegments(
       segments,
-      base::BindOnce(&EligibleNewTabPageAdsV1::OnGetForChildSegments,
+      base::BindOnce(&EligibleNewTabPageAdsV1::GetForChildSegmentsCallback,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
                      ad_events, browsing_history, std::move(callback)));
 }
 
-void EligibleNewTabPageAdsV1::OnGetForChildSegments(
+void EligibleNewTabPageAdsV1::GetForChildSegmentsCallback(
     const UserModelInfo& user_model,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
+    EligibleAdsCallback<CreativeNewTabPageAdList> callback,
     const bool success,
     const SegmentList& /*segments*/,
     const CreativeNewTabPageAdList& creative_ads) {
@@ -142,7 +142,7 @@ void EligibleNewTabPageAdsV1::GetForParentSegments(
     const UserModelInfo& user_model,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) {
+    EligibleAdsCallback<CreativeNewTabPageAdList> callback) {
   const SegmentList segments = GetTopParentSegments(user_model);
   if (segments.empty()) {
     return GetForUntargeted(ad_events, browsing_history, std::move(callback));
@@ -155,15 +155,16 @@ void EligibleNewTabPageAdsV1::GetForParentSegments(
 
   const database::table::CreativeNewTabPageAds database_table;
   database_table.GetForSegments(
-      segments, base::BindOnce(&EligibleNewTabPageAdsV1::OnGetForParentSegments,
-                               weak_factory_.GetWeakPtr(), ad_events,
-                               browsing_history, std::move(callback)));
+      segments,
+      base::BindOnce(&EligibleNewTabPageAdsV1::GetForParentSegmentsCallback,
+                     weak_factory_.GetWeakPtr(), ad_events, browsing_history,
+                     std::move(callback)));
 }
 
-void EligibleNewTabPageAdsV1::OnGetForParentSegments(
+void EligibleNewTabPageAdsV1::GetForParentSegmentsCallback(
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
+    EligibleAdsCallback<CreativeNewTabPageAdList> callback,
     const bool success,
     const SegmentList& /*segments*/,
     const CreativeNewTabPageAdList& creative_ads) {
@@ -191,21 +192,21 @@ void EligibleNewTabPageAdsV1::OnGetForParentSegments(
 void EligibleNewTabPageAdsV1::GetForUntargeted(
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) {
+    EligibleAdsCallback<CreativeNewTabPageAdList> callback) {
   BLOG(1, "Get eligible ads for untargeted segment");
 
   const database::table::CreativeNewTabPageAds database_table;
   database_table.GetForSegments(
       {kUntargeted},
-      base::BindOnce(&EligibleNewTabPageAdsV1::OnGetForUntargeted,
+      base::BindOnce(&EligibleNewTabPageAdsV1::GetForUntargetedCallback,
                      weak_factory_.GetWeakPtr(), ad_events, browsing_history,
                      std::move(callback)));
 }
 
-void EligibleNewTabPageAdsV1::OnGetForUntargeted(
+void EligibleNewTabPageAdsV1::GetForUntargetedCallback(
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
+    EligibleAdsCallback<CreativeNewTabPageAdList> callback,
     const bool success,
     const SegmentList& /*segments*/,
     const CreativeNewTabPageAdList& creative_ads) {

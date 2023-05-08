@@ -36,7 +36,7 @@ class TextEmbeddingResource final : public AdsClientNotifierObserver {
   }
 
  private:
-  void OnLoadAndParseResource(
+  void LoadAndParseResourceCallback(
       ResourceParsingErrorOr<ml::pipeline::EmbeddingProcessing> result);
 
   // AdsClientNotifierObserver:

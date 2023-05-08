@@ -32,13 +32,13 @@ ConversionsResource::~ConversionsResource() {
 void ConversionsResource::Load() {
   LoadAndParseResource(
       kResourceId, kConversionsResourceVersion.Get(),
-      base::BindOnce(&ConversionsResource::OnLoadAndParseResource,
+      base::BindOnce(&ConversionsResource::LoadAndParseResourceCallback,
                      weak_factory_.GetWeakPtr()));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void ConversionsResource::OnLoadAndParseResource(
+void ConversionsResource::LoadAndParseResourceCallback(
     ResourceParsingErrorOr<ConversionsInfo> result) {
   if (!result.has_value()) {
     BLOG(0, "Failed to initialize " << kResourceId << " conversions resource ("

@@ -111,13 +111,14 @@ void NewTabPageAdEventHandler::FireEvent(
   const database::table::CreativeNewTabPageAds database_table;
   database_table.GetForCreativeInstanceId(
       creative_instance_id,
-      base::BindOnce(&NewTabPageAdEventHandler::OnGetForCreativeInstanceId,
-                     weak_factory_.GetWeakPtr(), placement_id, event_type));
+      base::BindOnce(
+          &NewTabPageAdEventHandler::GetForCreativeInstanceIdCallback,
+          weak_factory_.GetWeakPtr(), placement_id, event_type));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void NewTabPageAdEventHandler::OnGetForCreativeInstanceId(
+void NewTabPageAdEventHandler::GetForCreativeInstanceIdCallback(
     const std::string& placement_id,
     const mojom::NewTabPageAdEventType event_type,
     const bool success,
@@ -143,11 +144,11 @@ void NewTabPageAdEventHandler::FireEvent(
   const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kNewTabPageAd,
-      base::BindOnce(&NewTabPageAdEventHandler::OnGetAdEvents,
+      base::BindOnce(&NewTabPageAdEventHandler::GetAdEventsCallback,
                      weak_factory_.GetWeakPtr(), ad, event_type));
 }
 
-void NewTabPageAdEventHandler::OnGetAdEvents(
+void NewTabPageAdEventHandler::GetAdEventsCallback(
     const NewTabPageAdInfo& ad,
     const mojom::NewTabPageAdEventType event_type,
     const bool success,

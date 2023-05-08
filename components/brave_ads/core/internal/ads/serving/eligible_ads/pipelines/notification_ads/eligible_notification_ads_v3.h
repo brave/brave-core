@@ -28,30 +28,29 @@ class EligibleNotificationAdsV3 final : public EligibleNotificationAdsBase {
 
   void GetForUserModel(
       UserModelInfo user_model,
-      GetEligibleAdsCallback<CreativeNotificationAdList> callback) override;
+      EligibleAdsCallback<CreativeNotificationAdList> callback) override;
 
  private:
-  void OnGetForUserModel(
+  void GetForUserModelCallback(
       UserModelInfo user_model,
-      GetEligibleAdsCallback<CreativeNotificationAdList> callback,
+      EligibleAdsCallback<CreativeNotificationAdList> callback,
       bool success,
       const AdEventList& ad_events);
 
   void GetBrowsingHistory(
       UserModelInfo user_model,
       const AdEventList& ad_events,
-      GetEligibleAdsCallback<CreativeNotificationAdList> callback);
+      EligibleAdsCallback<CreativeNotificationAdList> callback);
 
-  void GetEligibleAds(
-      UserModelInfo user_model,
-      const AdEventList& ad_events,
-      GetEligibleAdsCallback<CreativeNotificationAdList> callback,
-      const BrowsingHistoryList& browsing_history);
-  void OnGetEligibleAds(
+  void GetEligibleAds(UserModelInfo user_model,
+                      const AdEventList& ad_events,
+                      EligibleAdsCallback<CreativeNotificationAdList> callback,
+                      const BrowsingHistoryList& browsing_history);
+  void GetEligibleAdsCallback(
       const UserModelInfo& user_model,
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      GetEligibleAdsCallback<CreativeNotificationAdList> callback,
+      EligibleAdsCallback<CreativeNotificationAdList> callback,
       bool success,
       const SegmentList& segments,
       const CreativeNotificationAdList& creative_ads);

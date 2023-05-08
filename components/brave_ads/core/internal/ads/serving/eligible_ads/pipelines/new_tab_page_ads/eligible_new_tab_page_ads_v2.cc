@@ -33,22 +33,22 @@ EligibleNewTabPageAdsV2::~EligibleNewTabPageAdsV2() = default;
 
 void EligibleNewTabPageAdsV2::GetForUserModel(
     UserModelInfo user_model,
-    GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) {
+    EligibleAdsCallback<CreativeNewTabPageAdList> callback) {
   BLOG(1, "Get eligible new tab page ads");
 
   const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kNewTabPageAd,
-      base::BindOnce(&EligibleNewTabPageAdsV2::OnGetForUserModel,
+      base::BindOnce(&EligibleNewTabPageAdsV2::GetForUserModelCallback,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
                      std::move(callback)));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void EligibleNewTabPageAdsV2::OnGetForUserModel(
+void EligibleNewTabPageAdsV2::GetForUserModelCallback(
     UserModelInfo user_model,
-    GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
+    EligibleAdsCallback<CreativeNewTabPageAdList> callback,
     const bool success,
     const AdEventList& ad_events) {
   if (!success) {
@@ -63,7 +63,7 @@ void EligibleNewTabPageAdsV2::OnGetForUserModel(
 void EligibleNewTabPageAdsV2::GetBrowsingHistory(
     UserModelInfo user_model,
     const AdEventList& ad_events,
-    GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) {
+    EligibleAdsCallback<CreativeNewTabPageAdList> callback) {
   AdsClientHelper::GetInstance()->GetBrowsingHistory(
       kBrowsingHistoryMaxCount.Get(), kBrowsingHistoryDaysAgo.Get(),
       base::BindOnce(&EligibleNewTabPageAdsV2::GetEligibleAds,
@@ -74,20 +74,21 @@ void EligibleNewTabPageAdsV2::GetBrowsingHistory(
 void EligibleNewTabPageAdsV2::GetEligibleAds(
     UserModelInfo user_model,
     const AdEventList& ad_events,
-    GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
+    EligibleAdsCallback<CreativeNewTabPageAdList> callback,
     const BrowsingHistoryList& browsing_history) {
   const database::table::CreativeNewTabPageAds database_table;
 
-  database_table.GetAll(base::BindOnce(
-      &EligibleNewTabPageAdsV2::OnGetEligibleAds, weak_factory_.GetWeakPtr(),
-      std::move(user_model), ad_events, browsing_history, std::move(callback)));
+  database_table.GetAll(
+      base::BindOnce(&EligibleNewTabPageAdsV2::GetEligibleAdsCallback,
+                     weak_factory_.GetWeakPtr(), std::move(user_model),
+                     ad_events, browsing_history, std::move(callback)));
 }
 
-void EligibleNewTabPageAdsV2::OnGetEligibleAds(
+void EligibleNewTabPageAdsV2::GetEligibleAdsCallback(
     const UserModelInfo& user_model,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
+    EligibleAdsCallback<CreativeNewTabPageAdList> callback,
     const bool success,
     const SegmentList& /*segments*/,
     const CreativeNewTabPageAdList& creative_ads) {

@@ -46,12 +46,12 @@ class NewTabPageAdServing final {
  private:
   bool IsSupported() const { return bool{eligible_ads_}; }
 
-  void OnBuildUserModel(MaybeServeNewTabPageAdCallback callback,
-                        const UserModelInfo& user_model);
-  void OnGetForUserModel(MaybeServeNewTabPageAdCallback callback,
-                         const UserModelInfo& user_model,
-                         bool had_opportunity,
-                         const CreativeNewTabPageAdList& creative_ads);
+  void BuildUserModelCallback(MaybeServeNewTabPageAdCallback callback,
+                              const UserModelInfo& user_model);
+  void GetForUserModelCallback(MaybeServeNewTabPageAdCallback callback,
+                               const UserModelInfo& user_model,
+                               bool had_opportunity,
+                               const CreativeNewTabPageAdList& creative_ads);
 
   void ServeAd(const NewTabPageAdInfo& ad,
                MaybeServeNewTabPageAdCallback callback);

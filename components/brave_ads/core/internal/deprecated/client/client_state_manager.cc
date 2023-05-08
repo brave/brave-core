@@ -520,13 +520,13 @@ void ClientStateManager::Load(InitializeCallback callback) {
 
   AdsClientHelper::GetInstance()->Load(
       kClientStateFilename,
-      base::BindOnce(&ClientStateManager::OnLoaded, weak_factory_.GetWeakPtr(),
-                     std::move(callback)));
+      base::BindOnce(&ClientStateManager::LoadedCallback,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void ClientStateManager::OnLoaded(InitializeCallback callback,
-                                  const bool success,
-                                  const std::string& json) {
+void ClientStateManager::LoadedCallback(InitializeCallback callback,
+                                        const bool success,
+                                        const std::string& json) {
   if (!success) {
     BLOG(3, "Client state does not exist, creating default state");
 

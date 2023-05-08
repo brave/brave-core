@@ -96,20 +96,22 @@ void NotificationAdServing::MaybeServeAd() {
     return FailedToServeAd();
   }
 
-  BuildUserModel(base::BindOnce(&NotificationAdServing::OnBuildUserModel,
+  BuildUserModel(base::BindOnce(&NotificationAdServing::BuildUserModelCallback,
                                 weak_factory_.GetWeakPtr()));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void NotificationAdServing::OnBuildUserModel(const UserModelInfo& user_model) {
+void NotificationAdServing::BuildUserModelCallback(
+    const UserModelInfo& user_model) {
   CHECK(eligible_ads_);
   eligible_ads_->GetForUserModel(
-      user_model, base::BindOnce(&NotificationAdServing::OnGetForUserModel,
-                                 weak_factory_.GetWeakPtr(), user_model));
+      user_model,
+      base::BindOnce(&NotificationAdServing::GetForUserModelCallback,
+                     weak_factory_.GetWeakPtr(), user_model));
 }
 
-void NotificationAdServing::OnGetForUserModel(
+void NotificationAdServing::GetForUserModelCallback(
     const UserModelInfo& user_model,
     const bool had_opportunity,
     const CreativeNotificationAdList& creative_ads) {

@@ -96,9 +96,9 @@ class ClientStateManager final {
   void Save();
 
   void Load(InitializeCallback callback);
-  void OnLoaded(InitializeCallback callback,
-                bool success,
-                const std::string& json);
+  void LoadedCallback(InitializeCallback callback,
+                      bool success,
+                      const std::string& json);
 
   bool FromJson(const std::string& json);
 

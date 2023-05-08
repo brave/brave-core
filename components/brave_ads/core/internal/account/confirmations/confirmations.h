@@ -45,7 +45,7 @@ class Confirmations final : public RedeemConfirmationDelegate {
 
  private:
   void Retry();
-  void OnRetry();
+  void RetryCallback();
   void StopRetrying();
 
   void ConfirmTransaction(const TransactionInfo& transaction);
@@ -58,7 +58,7 @@ class Confirmations final : public RedeemConfirmationDelegate {
 
   void RecreateOptedInDynamicUserDataAndRedeem(
       const ConfirmationInfo& confirmation);
-  void OnRecreateOptedInDynamicUserDataAndRedeem(
+  void RecreateOptedInDynamicUserDataAndRedeemCallback(
       const ConfirmationInfo& confirmation,
       base::Value::Dict dynamic_opted_in_user_data);
 

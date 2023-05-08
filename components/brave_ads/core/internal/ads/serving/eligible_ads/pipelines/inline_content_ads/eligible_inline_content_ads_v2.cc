@@ -35,23 +35,23 @@ EligibleInlineContentAdsV2::~EligibleInlineContentAdsV2() = default;
 void EligibleInlineContentAdsV2::GetForUserModel(
     UserModelInfo user_model,
     const std::string& dimensions,
-    GetEligibleAdsCallback<CreativeInlineContentAdList> callback) {
+    EligibleAdsCallback<CreativeInlineContentAdList> callback) {
   BLOG(1, "Get eligible inline content ads");
 
   const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kInlineContentAd,
-      base::BindOnce(&EligibleInlineContentAdsV2::OnGetForUserModel,
+      base::BindOnce(&EligibleInlineContentAdsV2::GetForUserModelCallback,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
                      dimensions, std::move(callback)));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void EligibleInlineContentAdsV2::OnGetForUserModel(
+void EligibleInlineContentAdsV2::GetForUserModelCallback(
     UserModelInfo user_model,
     const std::string& dimensions,
-    GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
+    EligibleAdsCallback<CreativeInlineContentAdList> callback,
     const bool success,
     const AdEventList& ad_events) {
   if (!success) {
@@ -68,7 +68,7 @@ void EligibleInlineContentAdsV2::GetBrowsingHistory(
     UserModelInfo user_model,
     const AdEventList& ad_events,
     const std::string& dimensions,
-    GetEligibleAdsCallback<CreativeInlineContentAdList> callback) {
+    EligibleAdsCallback<CreativeInlineContentAdList> callback) {
   AdsClientHelper::GetInstance()->GetBrowsingHistory(
       kBrowsingHistoryMaxCount.Get(), kBrowsingHistoryDaysAgo.Get(),
       base::BindOnce(&EligibleInlineContentAdsV2::GetEligibleAds,
@@ -80,21 +80,21 @@ void EligibleInlineContentAdsV2::GetEligibleAds(
     UserModelInfo user_model,
     const AdEventList& ad_events,
     const std::string& dimensions,
-    GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
+    EligibleAdsCallback<CreativeInlineContentAdList> callback,
     const BrowsingHistoryList& browsing_history) {
   const database::table::CreativeInlineContentAds database_table;
   database_table.GetForDimensions(
       dimensions,
-      base::BindOnce(&EligibleInlineContentAdsV2::OnGetEligibleAds,
+      base::BindOnce(&EligibleInlineContentAdsV2::GetEligibleAdsCallback,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
                      ad_events, browsing_history, std::move(callback)));
 }
 
-void EligibleInlineContentAdsV2::OnGetEligibleAds(
+void EligibleInlineContentAdsV2::GetEligibleAdsCallback(
     const UserModelInfo& user_model,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
+    EligibleAdsCallback<CreativeInlineContentAdList> callback,
     const bool success,
     const CreativeInlineContentAdList& creative_ads) {
   if (!success) {

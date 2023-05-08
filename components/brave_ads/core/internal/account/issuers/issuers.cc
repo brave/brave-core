@@ -67,10 +67,10 @@ void Issuers::Fetch() {
 
   AdsClientHelper::GetInstance()->UrlRequest(
       std::move(url_request),
-      base::BindOnce(&Issuers::OnFetch, weak_factory_.GetWeakPtr()));
+      base::BindOnce(&Issuers::FetchCallback, weak_factory_.GetWeakPtr()));
 }
 
-void Issuers::OnFetch(const mojom::UrlResponseInfo& url_response) {
+void Issuers::FetchCallback(const mojom::UrlResponseInfo& url_response) {
   BLOG(1, "OnFetchIssuers");
 
   BLOG(6, UrlResponseToString(url_response));
@@ -130,7 +130,7 @@ void Issuers::RetryAfterDelay() {
 
   const base::Time retry_at = retry_timer_.StartWithPrivacy(
       FROM_HERE, kRetryAfter,
-      base::BindOnce(&Issuers::OnRetry, weak_factory_.GetWeakPtr()));
+      base::BindOnce(&Issuers::RetryCallback, weak_factory_.GetWeakPtr()));
 
   BLOG(1, "Retry fetching issuers "
               << FriendlyDateAndTime(retry_at, /*use_sentence_style*/ true));
@@ -140,7 +140,7 @@ void Issuers::RetryAfterDelay() {
   }
 }
 
-void Issuers::OnRetry() {
+void Issuers::RetryCallback() {
   BLOG(1, "Retry fetching issuers");
 
   if (delegate_) {

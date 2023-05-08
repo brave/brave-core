@@ -42,16 +42,17 @@ class RedeemOptedInConfirmation final {
 
   static void CreateConfirmation(RedeemOptedInConfirmation redeem_confirmation,
                                  const ConfirmationInfo& confirmation);
-  static void OnCreateConfirmation(
+  static void CreateConfirmationCallback(
       RedeemOptedInConfirmation redeem_confirmation,
       const ConfirmationInfo& confirmation,
       const mojom::UrlResponseInfo& url_response);
 
   static void FetchPaymentToken(RedeemOptedInConfirmation redeem_confirmation,
                                 const ConfirmationInfo& confirmation);
-  static void OnFetchPaymentToken(RedeemOptedInConfirmation redeem_confirmation,
-                                  const ConfirmationInfo& confirmation,
-                                  const mojom::UrlResponseInfo& url_response);
+  static void FetchPaymentTokenCallback(
+      RedeemOptedInConfirmation redeem_confirmation,
+      const ConfirmationInfo& confirmation,
+      const mojom::UrlResponseInfo& url_response);
 
   void SuccessfullyRedeemedConfirmation(
       const ConfirmationInfo& confirmation,

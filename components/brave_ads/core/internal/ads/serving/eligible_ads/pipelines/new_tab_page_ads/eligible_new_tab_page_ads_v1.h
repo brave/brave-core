@@ -28,35 +28,35 @@ class EligibleNewTabPageAdsV1 final : public EligibleNewTabPageAdsBase {
 
   void GetForUserModel(
       UserModelInfo user_model,
-      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) override;
+      EligibleAdsCallback<CreativeNewTabPageAdList> callback) override;
 
  private:
-  void OnGetForUserModel(
+  void GetForUserModelCallback(
       UserModelInfo user_model,
-      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
+      EligibleAdsCallback<CreativeNewTabPageAdList> callback,
       bool success,
       const AdEventList& ad_events);
 
   void GetBrowsingHistory(
       UserModelInfo user_model,
       const AdEventList& ad_events,
-      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback);
+      EligibleAdsCallback<CreativeNewTabPageAdList> callback);
 
   void GetEligibleAds(UserModelInfo user_model,
                       const AdEventList& ad_events,
-                      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
+                      EligibleAdsCallback<CreativeNewTabPageAdList> callback,
                       const BrowsingHistoryList& browsing_history);
 
   void GetForChildSegments(
       UserModelInfo user_model,
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback);
-  void OnGetForChildSegments(
+      EligibleAdsCallback<CreativeNewTabPageAdList> callback);
+  void GetForChildSegmentsCallback(
       const UserModelInfo& user_model,
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
+      EligibleAdsCallback<CreativeNewTabPageAdList> callback,
       bool success,
       const SegmentList& segments,
       const CreativeNewTabPageAdList& creative_ads);
@@ -65,23 +65,22 @@ class EligibleNewTabPageAdsV1 final : public EligibleNewTabPageAdsBase {
       const UserModelInfo& user_model,
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback);
-  void OnGetForParentSegments(
+      EligibleAdsCallback<CreativeNewTabPageAdList> callback);
+  void GetForParentSegmentsCallback(
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
+      EligibleAdsCallback<CreativeNewTabPageAdList> callback,
       bool success,
       const SegmentList& segments,
       const CreativeNewTabPageAdList& creative_ads);
 
-  void GetForUntargeted(
+  void GetForUntargeted(const AdEventList& ad_events,
+                        const BrowsingHistoryList& browsing_history,
+                        EligibleAdsCallback<CreativeNewTabPageAdList> callback);
+  void GetForUntargetedCallback(
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history,
-      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback);
-  void OnGetForUntargeted(
-      const AdEventList& ad_events,
-      const BrowsingHistoryList& browsing_history,
-      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
+      EligibleAdsCallback<CreativeNewTabPageAdList> callback,
       bool success,
       const SegmentList& segments,
       const CreativeNewTabPageAdList& creative_ads);

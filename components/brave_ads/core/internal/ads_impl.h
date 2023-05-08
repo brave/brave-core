@@ -136,16 +136,18 @@ class AdsImpl final : public Ads,
 
  private:
   void CreateOrOpenDatabase(InitializeCallback callback);
-  void OnCreateOrOpenDatabase(InitializeCallback callback, bool success);
-  void OnPurgeExpiredAdEvents(InitializeCallback callback, bool success);
-  void OnPurgeOrphanedAdEvents(InitializeCallback callback, bool success);
-  void OnMigrateConversions(InitializeCallback callback, bool success);
-  void OnMigrateRewards(InitializeCallback callback, bool success);
-  void OnMigrateClientState(InitializeCallback callback, bool success);
-  void OnLoadClientState(InitializeCallback callback, bool success);
-  void OnMigrateConfirmationState(InitializeCallback callback, bool success);
-  void OnLoadConfirmationState(InitializeCallback callback, bool success);
-  void OnMigrateNotificationState(InitializeCallback callback, bool success);
+  void CreateOrOpenDatabaseCallback(InitializeCallback callback, bool success);
+  void PurgeExpiredAdEventsCallback(InitializeCallback callback, bool success);
+  void PurgeOrphanedAdEventsCallback(InitializeCallback callback, bool success);
+  void MigrateConversionsCallback(InitializeCallback callback, bool success);
+  void MigrateRewardsCallback(InitializeCallback callback, bool success);
+  void MigrateClientStateCallback(InitializeCallback callback, bool success);
+  void LoadClientStateCallback(InitializeCallback callback, bool success);
+  void MigrateConfirmationStateCallback(InitializeCallback callback,
+                                        bool success);
+  void LoadConfirmationStateCallback(InitializeCallback callback, bool success);
+  void MigrateNotificationStateCallback(InitializeCallback callback,
+                                        bool success);
 
   bool IsInitialized() const { return is_initialized_; }
 

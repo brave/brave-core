@@ -31,13 +31,13 @@ AntiTargetingResource::~AntiTargetingResource() {
 void AntiTargetingResource::Load() {
   LoadAndParseResource(
       kResourceId, kAntiTargetingResourceVersion.Get(),
-      base::BindOnce(&AntiTargetingResource::OnLoadAndParseResource,
+      base::BindOnce(&AntiTargetingResource::LoadAndParseResourceCallback,
                      weak_factory_.GetWeakPtr()));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void AntiTargetingResource::OnLoadAndParseResource(
+void AntiTargetingResource::LoadAndParseResourceCallback(
     ResourceParsingErrorOr<AntiTargetingInfo> result) {
   if (!result.has_value()) {
     BLOG(0, "Failed to initialize "

@@ -286,116 +286,116 @@ bool AdsImpl::ToggleMarkAdAsInappropriate(const base::Value::Dict& value) {
 
 void AdsImpl::CreateOrOpenDatabase(InitializeCallback callback) {
   DatabaseManager::GetInstance().CreateOrOpen(
-      base::BindOnce(&AdsImpl::OnCreateOrOpenDatabase,
+      base::BindOnce(&AdsImpl::CreateOrOpenDatabaseCallback,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void AdsImpl::OnCreateOrOpenDatabase(InitializeCallback callback,
-                                     const bool success) {
+void AdsImpl::CreateOrOpenDatabaseCallback(InitializeCallback callback,
+                                           const bool success) {
   if (!success) {
     BLOG(0, "Failed to create or open database");
     return FailedToInitialize(std::move(callback));
   }
 
-  PurgeExpiredAdEvents(base::BindOnce(&AdsImpl::OnPurgeExpiredAdEvents,
+  PurgeExpiredAdEvents(base::BindOnce(&AdsImpl::PurgeExpiredAdEventsCallback,
                                       weak_factory_.GetWeakPtr(),
                                       std::move(callback)));
 }
 
-void AdsImpl::OnPurgeExpiredAdEvents(InitializeCallback callback,
-                                     const bool success) {
+void AdsImpl::PurgeExpiredAdEventsCallback(InitializeCallback callback,
+                                           const bool success) {
   if (!success) {
     return FailedToInitialize(std::move(callback));
   }
 
   PurgeOrphanedAdEvents(
       mojom::AdType::kNewTabPageAd,
-      base::BindOnce(&AdsImpl::OnPurgeOrphanedAdEvents,
+      base::BindOnce(&AdsImpl::PurgeOrphanedAdEventsCallback,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void AdsImpl::OnPurgeOrphanedAdEvents(InitializeCallback callback,
-                                      const bool success) {
+void AdsImpl::PurgeOrphanedAdEventsCallback(InitializeCallback callback,
+                                            const bool success) {
   if (!success) {
     return FailedToInitialize(std::move(callback));
   }
 
   RebuildAdEventHistoryFromDatabase();
 
-  conversions::Migrate(base::BindOnce(&AdsImpl::OnMigrateConversions,
+  conversions::Migrate(base::BindOnce(&AdsImpl::MigrateConversionsCallback,
                                       weak_factory_.GetWeakPtr(),
                                       std::move(callback)));
 }
 
-void AdsImpl::OnMigrateConversions(InitializeCallback callback,
-                                   const bool success) {
+void AdsImpl::MigrateConversionsCallback(InitializeCallback callback,
+                                         const bool success) {
   if (!success) {
     return FailedToInitialize(std::move(callback));
   }
 
-  rewards::Migrate(base::BindOnce(&AdsImpl::OnMigrateRewards,
+  rewards::Migrate(base::BindOnce(&AdsImpl::MigrateRewardsCallback,
                                   weak_factory_.GetWeakPtr(),
                                   std::move(callback)));
 }
 
-void AdsImpl::OnMigrateRewards(InitializeCallback callback,
-                               const bool success) {
+void AdsImpl::MigrateRewardsCallback(InitializeCallback callback,
+                                     const bool success) {
   if (!success) {
     return FailedToInitialize(std::move(callback));
   }
 
-  client::Migrate(base::BindOnce(&AdsImpl::OnMigrateClientState,
+  client::Migrate(base::BindOnce(&AdsImpl::MigrateClientStateCallback,
                                  weak_factory_.GetWeakPtr(),
                                  std::move(callback)));
 }
 
-void AdsImpl::OnMigrateClientState(InitializeCallback callback,
-                                   const bool success) {
+void AdsImpl::MigrateClientStateCallback(InitializeCallback callback,
+                                         const bool success) {
   if (!success) {
     return FailedToInitialize(std::move(callback));
   }
 
   ClientStateManager::GetInstance().Initialize(
-      base::BindOnce(&AdsImpl::OnLoadClientState, weak_factory_.GetWeakPtr(),
-                     std::move(callback)));
+      base::BindOnce(&AdsImpl::LoadClientStateCallback,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void AdsImpl::OnLoadClientState(InitializeCallback callback,
-                                const bool success) {
+void AdsImpl::LoadClientStateCallback(InitializeCallback callback,
+                                      const bool success) {
   if (!success) {
     return FailedToInitialize(std::move(callback));
   }
 
-  confirmations::Migrate(base::BindOnce(&AdsImpl::OnMigrateConfirmationState,
-                                        weak_factory_.GetWeakPtr(),
-                                        std::move(callback)));
+  confirmations::Migrate(
+      base::BindOnce(&AdsImpl::MigrateConfirmationStateCallback,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void AdsImpl::OnMigrateConfirmationState(InitializeCallback callback,
-                                         const bool success) {
+void AdsImpl::MigrateConfirmationStateCallback(InitializeCallback callback,
+                                               const bool success) {
   if (!success) {
     return FailedToInitialize(std::move(callback));
   }
 
   ConfirmationStateManager::GetInstance().Initialize(
       account_.GetWallet(),
-      base::BindOnce(&AdsImpl::OnLoadConfirmationState,
+      base::BindOnce(&AdsImpl::LoadConfirmationStateCallback,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void AdsImpl::OnLoadConfirmationState(InitializeCallback callback,
-                                      const bool success) {
+void AdsImpl::LoadConfirmationStateCallback(InitializeCallback callback,
+                                            const bool success) {
   if (!success) {
     return FailedToInitialize(std::move(callback));
   }
 
-  notifications::Migrate(base::BindOnce(&AdsImpl::OnMigrateNotificationState,
-                                        weak_factory_.GetWeakPtr(),
-                                        std::move(callback)));
+  notifications::Migrate(
+      base::BindOnce(&AdsImpl::MigrateNotificationStateCallback,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void AdsImpl::OnMigrateNotificationState(InitializeCallback callback,
-                                         const bool success) {
+void AdsImpl::MigrateNotificationStateCallback(InitializeCallback callback,
+                                               const bool success) {
   if (!success) {
     return FailedToInitialize(std::move(callback));
   }

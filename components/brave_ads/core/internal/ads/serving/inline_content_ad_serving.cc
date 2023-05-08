@@ -56,26 +56,26 @@ void InlineContentAdServing::MaybeServeAd(
     return FailedToServeAd(dimensions, std::move(callback));
   }
 
-  BuildUserModel(base::BindOnce(&InlineContentAdServing::OnBuildUserModel,
+  BuildUserModel(base::BindOnce(&InlineContentAdServing::BuildUserModelCallback,
                                 weak_factory_.GetWeakPtr(), dimensions,
                                 std::move(callback)));
 }
 
-void InlineContentAdServing::OnBuildUserModel(
+void InlineContentAdServing::BuildUserModelCallback(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback,
     const UserModelInfo& user_model) {
   CHECK(eligible_ads_);
   eligible_ads_->GetForUserModel(
       user_model, dimensions,
-      base::BindOnce(&InlineContentAdServing::OnGetForUserModel,
+      base::BindOnce(&InlineContentAdServing::GetForUserModelCallback,
                      weak_factory_.GetWeakPtr(), user_model, dimensions,
                      std::move(callback)));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void InlineContentAdServing::OnGetForUserModel(
+void InlineContentAdServing::GetForUserModelCallback(
     const UserModelInfo& user_model,
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback,

@@ -38,7 +38,7 @@ class RedeemOptedOutConfirmation final {
 
   static void CreateConfirmation(RedeemOptedOutConfirmation redeem_confirmation,
                                  const ConfirmationInfo& confirmation);
-  static void OnCreateConfirmation(
+  static void CreateConfirmationCallback(
       RedeemOptedOutConfirmation redeem_confirmation,
       const ConfirmationInfo& confirmation,
       const mojom::UrlResponseInfo& url_response);

@@ -57,20 +57,21 @@ class SearchResultAdEventHandler final
 
   void FireViewedEvent(mojom::SearchResultAdInfoPtr ad_mojom,
                        FireAdEventHandlerCallback callback) const;
-  void OnSaveDeposits(mojom::SearchResultAdInfoPtr ad_mojom,
-                      FireAdEventHandlerCallback callback,
-                      bool success) const;
-  void OnSaveConversions(const SearchResultAdInfo& ad,
-                         FireAdEventHandlerCallback callback,
-                         bool success) const;
-  void OnGetAdEventsForViewedSearchResultAd(const SearchResultAdInfo& ad,
-                                            FireAdEventHandlerCallback callback,
-                                            bool success,
-                                            const AdEventList& ad_events) const;
+  void SaveDepositsCallback(mojom::SearchResultAdInfoPtr ad_mojom,
+                            FireAdEventHandlerCallback callback,
+                            bool success) const;
+  void SaveConversionsCallback(const SearchResultAdInfo& ad,
+                               FireAdEventHandlerCallback callback,
+                               bool success) const;
+  void GetAdEventsForViewedSearchResultAdCallback(
+      const SearchResultAdInfo& ad,
+      FireAdEventHandlerCallback callback,
+      bool success,
+      const AdEventList& ad_events) const;
 
   void FireClickedEvent(const SearchResultAdInfo& ad,
                         FireAdEventHandlerCallback callback) const;
-  void OnGetAdEventsForClickedSearchResultAd(
+  void GetAdEventsForClickedSearchResultAdCallback(
       const SearchResultAdInfo& ad,
       FireAdEventHandlerCallback callback,
       bool success,
