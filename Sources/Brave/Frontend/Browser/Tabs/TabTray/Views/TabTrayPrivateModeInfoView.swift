@@ -37,6 +37,8 @@ extension TabTrayController {
       $0.font = UX.titleFont
       $0.textAlignment = .center
       $0.text = Strings.privateBrowsing
+      $0.adjustsFontSizeToFitWidth = true
+      $0.minimumScaleFactor = 0.75
     }
 
     let descriptionLabel = UILabel().then {
