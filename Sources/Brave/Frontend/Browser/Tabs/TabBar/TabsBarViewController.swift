@@ -80,6 +80,7 @@ class TabsBarViewController: UIViewController {
 
     let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongGesture(gesture:)))
     longPressGesture.minimumPressDuration = 0.2
+    longPressGesture.delaysTouchesBegan = true
     collectionView.addGestureRecognizer(longPressGesture)
 
     NotificationCenter.default.addObserver(self, selector: #selector(orientationChanged), name: UIDevice.orientationDidChangeNotification, object: nil)
@@ -253,10 +254,13 @@ class TabsBarViewController: UIViewController {
   @objc func handleLongGesture(gesture: UILongPressGestureRecognizer) {
     switch gesture.state {
     case .began:
-      guard let selectedIndexPath = self.collectionView.indexPathForItem(at: gesture.location(in: self.collectionView)) else {
+      guard let selectedIndexPath = collectionView.indexPathForItem(at: gesture.location(in: self.collectionView)) else {
         break
       }
-      collectionView.beginInteractiveMovementForItem(at: selectedIndexPath)
+      
+      Task.delayed(bySeconds: 0.1) { @MainActor in
+        self.collectionView.beginInteractiveMovementForItem(at: selectedIndexPath)
+      }
     case .changed:
       if let gestureView = gesture.view {
         var location = gesture.location(in: gestureView)
