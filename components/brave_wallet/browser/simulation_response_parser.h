@@ -13,17 +13,22 @@
 namespace brave_wallet {
 
 namespace evm {
+
 mojom::EVMSimulationResponsePtr ParseSimulationResponse(
     const base::Value& json_value);
+
 }  // namespace evm
 
 namespace solana {
+
 mojom::SolanaSimulationResponsePtr ParseSimulationResponse(
     const base::Value& json_value);
+
 }  // namespace solana
 
 absl::optional<std::string> ParseSimulationErrorResponse(
     const base::Value& json_value);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SIMULATION_RESPONSE_PARSER_H_

@@ -12,6 +12,9 @@
 #include "brave/components/brave_wallet/browser/simulation_responses.h"
 
 namespace brave_wallet {
+
+namespace {
+
 std::vector<mojom::BlowfishWarningPtr> ParseWarnings(
     const std::vector<simulation_responses::Warning>& values) {
   std::vector<mojom::BlowfishWarningPtr> warnings;
@@ -30,7 +33,12 @@ absl::optional<std::string> ParseNullableString(const base::Value& value) {
   return absl::nullopt;
 }
 
+}  // namespace
+
 namespace evm {
+
+namespace {
+
 mojom::BlowfishPricePtr ParsePrice(const base::Value& value) {
   if (value.is_dict()) {
     const auto& price_value =
@@ -252,6 +260,8 @@ mojom::BlowfishEVMStateChangeRawInfoPtr ParseStateChangeRawInfo(
   return raw_info;
 }
 
+}  // namespace
+
 mojom::EVMSimulationResponsePtr ParseSimulationResponse(
     const base::Value& json_value) {
   if (!json_value.is_dict()) {
@@ -307,9 +317,13 @@ mojom::EVMSimulationResponsePtr ParseSimulationResponse(
 
   return simulation_response;
 }
+
 }  // namespace evm
 
 namespace solana {
+
+namespace {
+
 mojom::BlowfishPricePtr ParsePrice(const base::Value& value) {
   if (value.is_dict()) {
     const auto& price_value =
@@ -456,6 +470,8 @@ mojom::BlowfishSolanaStateChangeRawInfoPtr ParseStateChangeRawInfo(
 
   return raw_info;
 }
+
+}  // namespace
 
 mojom::SolanaSimulationResponsePtr ParseSimulationResponse(
     const base::Value& json_value) {

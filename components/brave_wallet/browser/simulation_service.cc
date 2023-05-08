@@ -57,6 +57,7 @@ absl::optional<std::string> ConvertAllNumbersToString(const std::string& json) {
 }  // namespace
 
 namespace brave_wallet {
+
 namespace {
 
 std::string GetRelativeScanPath(const std::string& chain_id,
@@ -120,6 +121,7 @@ base::flat_map<std::string, std::string> GetHeaders() {
           {net::HttpRequestHeaders::kContentType, "application/json"},
           {kBraveServicesKeyHeader, BUILDFLAG(BRAVE_SERVICES_KEY)}};
 }
+
 }  // namespace
 
 SimulationService::SimulationService(

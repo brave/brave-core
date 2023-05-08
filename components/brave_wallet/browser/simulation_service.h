@@ -22,7 +22,9 @@
 #include "url/gurl.h"
 
 namespace network {
+
 class SharedURLLoaderFactory;
+
 }  // namespace network
 
 namespace brave_wallet {

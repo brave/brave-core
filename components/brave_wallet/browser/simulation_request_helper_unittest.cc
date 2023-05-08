@@ -25,6 +25,8 @@ using base::test::ParseJson;
 
 namespace brave_wallet {
 
+namespace {
+
 mojom::TransactionInfoPtr GetCannedScanEVMTransactionParams(
     bool eip1559,
     absl::optional<std::string> origin) {
@@ -134,6 +136,8 @@ mojom::SignAllTransactionsRequestPtr MakeSolanaSignAllTransactionsRequest(
   request->raw_messages.push_back(mojom::ByteArrayStringUnion::NewStr(tx_b64));
   return request;
 }
+
+}  // namespace
 
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsEVMType0DefaultOrigin) {

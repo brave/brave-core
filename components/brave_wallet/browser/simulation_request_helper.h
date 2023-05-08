@@ -12,13 +12,17 @@
 namespace brave_wallet {
 
 namespace evm {
+
 absl::optional<std::string> EncodeScanTransactionParams(
     mojom::TransactionInfoPtr tx_info);
+
 }  // namespace evm
 
 namespace solana {
+
 absl::optional<std::string> EncodeScanTransactionParams(
     mojom::SolanaTransactionRequestUnionPtr request);
+
 }  // namespace solana
 
 }  // namespace brave_wallet

@@ -19,6 +19,8 @@
 
 namespace brave_wallet {
 
+namespace {
+
 base::Value::Dict GetMetadata(mojom::OriginInfoPtr origin_info) {
   base::Value::Dict metadata_object;
 
@@ -36,7 +38,10 @@ base::Value::Dict GetMetadata(mojom::OriginInfoPtr origin_info) {
   return metadata_object;
 }
 
+}  // namespace
+
 namespace evm {
+
 absl::optional<std::string> EncodeScanTransactionParams(
     mojom::TransactionInfoPtr tx_info) {
   base::Value::Dict tx_object;
@@ -90,9 +95,13 @@ absl::optional<std::string> EncodeScanTransactionParams(
 
   return GetJSON(base::Value(std::move(params)));
 }
+
 }  // namespace evm
 
 namespace solana {
+
+namespace {
+
 absl::optional<std::string> GetBase64TransactionFromTxDataUnion(
     mojom::TxDataUnionPtr tx_data_union) {
   if (!tx_data_union->is_solana_tx_data()) {
@@ -129,6 +138,8 @@ absl::optional<std::string> GetBase64TransactionFromTxDataUnion(
 
   return base::Base64Encode(transaction_bytes);
 }
+
+}  // namespace
 
 absl::optional<std::string> EncodeScanTransactionParams(
     mojom::SolanaTransactionRequestUnionPtr request) {
@@ -190,6 +201,7 @@ absl::optional<std::string> EncodeScanTransactionParams(
 
   return GetJSON(base::Value(std::move(params)));
 }
+
 }  // namespace solana
 
 }  // namespace brave_wallet
