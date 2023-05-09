@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { EntityId, Store } from '@reduxjs/toolkit'
-import { createApi } from '@reduxjs/toolkit/query/react'
+import { createApi, skipToken } from '@reduxjs/toolkit/query/react'
 
 // types
 import {
@@ -254,7 +254,7 @@ let selectedPendingTransactionId: string = ''
     clearAccountsRegistry = () => {
       this.clearWalletInfo()
     }
-    
+
     clearSelectedAccount = () => {
       this._selectedAccountAddress = undefined
     }
@@ -445,7 +445,6 @@ let selectedPendingTransactionId: string = ''
             userTokenListsForNetworks.flat(1)
           )
 
-        
         this._userTokensRegistry = userTokensByChainIdRegistry
       }
       return this._userTokensRegistry
@@ -456,13 +455,18 @@ let selectedPendingTransactionId: string = ''
     }
   }
 
+/**
+ * jest tests fail if this is defined within `createWalletApi`
+ */
+let baseQueryCache = new BaseQueryCache();
+
 export function createWalletApi (
   getProxy: () => WalletApiProxy = () => getAPIProxy()
 ) {
   // update the proxy whenever a new api is created
   setApiProxyFetcher(getProxy)
 
-  const baseQueryCache = new BaseQueryCache();
+  baseQueryCache = new BaseQueryCache();
 
   const walletApi = createApi({
     reducerPath: 'walletApi',
@@ -3148,20 +3152,24 @@ export const useGetNetworkQuery = (
         chainId: string
         coin: BraveWallet.CoinType
       }
-    | undefined,
+    | undefined
+    | typeof skipToken,
   opts?: { skip?: boolean }
 ) => {
-  return useGetNetworksRegistryQuery(undefined, {
-    selectFromResult: (res) => ({
-      isLoading: res.isLoading,
-      error: res.error,
-      data:
-        res.data && args !== undefined
-          ? res.data.entities[networkEntityAdapter.selectId(args)]
-          : undefined
-    }),
-    skip: opts?.skip
-  })
+  return useGetNetworksRegistryQuery(
+    args === skipToken ? skipToken : undefined,
+    {
+      selectFromResult: (res) => ({
+        isLoading: res.isLoading,
+        error: res.error,
+        data:
+          res.data && args !== undefined && args !== skipToken
+            ? res.data.entities[networkEntityAdapter.selectId(args)]
+            : undefined
+      }),
+      skip: opts?.skip
+    }
+  )
 }
 
 export const useSelectedCoinQuery = (
