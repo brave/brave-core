@@ -280,7 +280,10 @@ export const Container = () => {
 
             {!isWalletLocked &&
               <Route path={WalletRoutes.Swap} exact={true}>
-                <WalletPageWrapper hideBackground={true}>
+                <WalletPageWrapper
+                  hideHeader={true}
+                  hideBackground={true}
+                >
                   <Swap />
                 </WalletPageWrapper>
               </Route>
@@ -302,26 +305,14 @@ export const Container = () => {
 
             {!isWalletLocked &&
               <Route path={WalletRoutes.CryptoPage}>
-                <WalletPageWrapper
-                  noPadding={
-                    walletLocation === WalletRoutes.LocalIpfsNode ||
-                    walletLocation === WalletRoutes.InspectNfts
-                  }
-                  wrapContentInBox={
-                    walletLocation !== WalletRoutes.LocalIpfsNode &&
-                    walletLocation !== WalletRoutes.InspectNfts
-                  }
-                >
-                  <CryptoView
-                    needsBackup={!isWalletBackedUp}
-                    defaultEthereumWallet={defaultEthereumWallet}
-                    defaultSolanaWallet={defaultSolanaWallet}
-                    onOpenWalletSettings={onOpenWalletSettings}
-                    isMetaMaskInstalled={isMetaMaskInstalled}
-                    sessionRoute={sessionRoute}
-                  />
-
-                </WalletPageWrapper>
+                <CryptoView
+                  needsBackup={!isWalletBackedUp}
+                  defaultEthereumWallet={defaultEthereumWallet}
+                  defaultSolanaWallet={defaultSolanaWallet}
+                  onOpenWalletSettings={onOpenWalletSettings}
+                  isMetaMaskInstalled={isMetaMaskInstalled}
+                  sessionRoute={sessionRoute}
+                />
               </Route>
             }
 

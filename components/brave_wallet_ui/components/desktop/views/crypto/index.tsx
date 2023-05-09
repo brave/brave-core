@@ -53,6 +53,12 @@ import {
 import { NftIpfsBanner } from '../../nft-ipfs-banner/nft-ipfs-banner'
 import { useSafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../../common/selectors'
+import {
+  WalletPageWrapper
+} from '../../wallet-page-wrapper/wallet-page-wrapper'
+import {
+  PortfolioOverviewHeader
+} from '../../card-headers/portfolio-overview-header'
 
 export interface Props {
   onOpenWalletSettings: () => void
@@ -198,73 +204,135 @@ const CryptoView = (props: Props) => {
 
   // render
   return (
-    <StyledWrapper>
+    <>
       <Switch>
         {/* Portfolio */}
         <Route path={WalletRoutes.AddAssetModal} exact>{/* Show portfolio overview in background */}
-          <Column
-            fullWidth={true}
-            padding='20px 20px 0px 20px'
+          <WalletPageWrapper
+            wrapContentInBox={true}
+            noCardPadding={true}
+            cardHeader={
+              <PortfolioOverviewHeader />
+            }
           >
-            {banners}
-            {ipfsBanner}
-          </Column>
-          <PortfolioOverview
-            onToggleShowIpfsBanner={onToggleShowIpfsBanner}
-          />
+            <StyledWrapper>
+              <Column
+                fullWidth={true}
+                padding='20px 20px 0px 20px'
+              >
+                {banners}
+                {ipfsBanner}
+              </Column>
+              <PortfolioOverview
+                onToggleShowIpfsBanner={onToggleShowIpfsBanner}
+              />
+            </StyledWrapper>
+          </WalletPageWrapper>
         </Route>
 
         <Route path={WalletRoutes.PortfolioAsset} exact>
-          <PortfolioAsset />
+          <WalletPageWrapper
+            wrapContentInBox={true}
+          >
+            <StyledWrapper>
+              <PortfolioAsset />
+            </StyledWrapper>
+          </WalletPageWrapper>
         </Route>
 
         <Route path={WalletRoutes.Portfolio}>
-          <Column
-            fullWidth={true}
-            padding='20px 20px 0px 20px'
+          <WalletPageWrapper
+            wrapContentInBox={true}
+            noCardPadding={true}
+            cardHeader={
+              <PortfolioOverviewHeader />
+            }
           >
-            {banners}
-            {ipfsBanner}
-          </Column>
-          <PortfolioOverview
-            onToggleShowIpfsBanner={onToggleShowIpfsBanner}
-          />
+            <StyledWrapper>
+              <Column
+                fullWidth={true}
+                padding='20px 20px 0px 20px'
+              >
+                {banners}
+                {ipfsBanner}
+              </Column>
+              <PortfolioOverview
+                onToggleShowIpfsBanner={onToggleShowIpfsBanner}
+              />
+            </StyledWrapper>
+          </WalletPageWrapper>
         </Route>
 
         {/* Accounts */}
         <Route path={WalletRoutes.AddAccountModal}>{/* Show accounts overview in background */}
-          {banners}
-          <Accounts />
+          <WalletPageWrapper
+            wrapContentInBox={true}
+          >
+            <StyledWrapper>
+              {banners}
+              <Accounts />
+            </StyledWrapper>
+          </WalletPageWrapper>
         </Route>
 
         <Route path={WalletRoutes.Account}>
-          <Account
-            goBack={goBack}
-          />
+          <WalletPageWrapper
+            wrapContentInBox={true}
+          >
+            <StyledWrapper>
+              <Account
+                goBack={goBack}
+              />
+            </StyledWrapper>
+          </WalletPageWrapper>
         </Route>
 
         <Route path={WalletRoutes.Accounts}>
-          {banners}
-          <Accounts />
+          <WalletPageWrapper
+            wrapContentInBox={true}
+          >
+            <StyledWrapper>
+              {banners}
+              <Accounts />
+            </StyledWrapper>
+          </WalletPageWrapper>
         </Route>
 
         {/* Market */}
         <Route path={WalletRoutes.Market} exact={true}>
-          {banners}
-          <MarketView />
+          <WalletPageWrapper
+            wrapContentInBox={true}
+          >
+            <StyledWrapper>
+              {banners}
+              <MarketView />
+            </StyledWrapper>
+          </WalletPageWrapper>
         </Route>
 
         <Route path={WalletRoutes.MarketSub} exact={true}>
-          {banners}
-          <PortfolioAsset
-            isShowingMarketData={true}
-          />
+          <WalletPageWrapper
+            wrapContentInBox={true}
+          >
+            <StyledWrapper>
+              {banners}
+              <PortfolioAsset
+                isShowingMarketData={true}
+              />
+            </StyledWrapper>
+          </WalletPageWrapper>
         </Route>
 
         {/* Transactions */}
         <Route path={WalletRoutes.Activity} exact={true}>
-          {banners}
-          <TransactionsScreen />
+          <WalletPageWrapper
+            wrapContentInBox={true}
+          >
+            <StyledWrapper>
+              {banners}
+              <TransactionsScreen />
+            </StyledWrapper>
+          </WalletPageWrapper>
         </Route>
 
         {/* NFT Pinning onboarding page */}
@@ -272,7 +340,15 @@ const CryptoView = (props: Props) => {
           path={WalletRoutes.LocalIpfsNode}
           exact={true}
           render={(props) => isNftPinningFeatureEnabled
-            ? <LocalIpfsNodeScreen onClose={onClose} {...props} />
+            ? <WalletPageWrapper
+              noPadding={true}
+              hideNav={true}
+              hideHeader={true}
+            >
+              <StyledWrapper>
+                <LocalIpfsNodeScreen onClose={onClose} {...props} />
+              </StyledWrapper>
+            </WalletPageWrapper>
             : <Redirect to={WalletRoutes.PortfolioAssets} />
           }
         />
@@ -282,7 +358,20 @@ const CryptoView = (props: Props) => {
           path={WalletRoutes.InspectNfts}
           exact={true}
           render={(props) => isNftPinningFeatureEnabled
-            ? <InspectNftsScreen onClose={onClose} onBack={onBack} {...props} />
+            ? <WalletPageWrapper
+              noPadding={true}
+              hideNav={true}
+              hideHeader={true}
+            >
+              <StyledWrapper>
+                <InspectNftsScreen
+                  onClose={onClose}
+                  onBack={onBack}
+                  {...props}
+                />
+              </StyledWrapper>
+            </WalletPageWrapper>
+
             : <Redirect to={WalletRoutes.PortfolioAssets} />
           }
         />
@@ -311,7 +400,7 @@ const CryptoView = (props: Props) => {
       {showAccountModal && selectedAccount &&
         <AccountSettingsModal />
       }
-    </StyledWrapper>
+    </>
   )
 }
 
