@@ -259,7 +259,6 @@ provideStrings({
   braveWalletWalletPopupConnectedSites: 'Connected sites',
   braveWalletWalletPopupHideBalances: 'Hide balances',
   braveWalletWalletPopupShowGraph: 'Show graph',
-  braveWalletWalletPopupPortfolioCustomizations: 'Portfolio customizations',
 
   // Backup Warning
   braveWalletBackupWarningText: 'Back up your wallet now to protect your assets and ensure you never lose access.',

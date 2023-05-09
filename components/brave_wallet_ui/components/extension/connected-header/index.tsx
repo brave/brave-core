@@ -45,7 +45,6 @@ export const ConnectedHeader = (props: Props) => {
       {showMore &&
         <WalletSettingsMenu
           onClickViewOnBlockExplorer={onClickViewOnBlockExplorer}
-          isPanel={true}
         />
       }
     </HeaderWrapper>
