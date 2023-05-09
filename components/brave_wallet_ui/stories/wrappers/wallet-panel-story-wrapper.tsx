@@ -14,7 +14,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { WalletActions } from '../../common/actions'
 
 // types
-import { PanelState, WalletState } from '../../constants/types'
+import { PanelState, UIState, WalletState } from '../../constants/types'
 
 // components
 import { LibContext } from '../../common/context/lib.context'
@@ -33,6 +33,7 @@ const mockedProxy = getMockedAPIProxy()
 export interface WalletPanelStoryProps {
   walletStateOverride?: Partial<WalletState>
   panelStateOverride?: Partial<PanelState>
+  uiStateOverride?: Partial<UIState>
   walletApiDataOverrides?: WalletApiDataOverrides
 }
 
@@ -40,15 +41,25 @@ export const WalletPanelStory: React.FC<React.PropsWithChildren<WalletPanelStory
   children,
   panelStateOverride,
   walletStateOverride,
+  uiStateOverride,
   walletApiDataOverrides
 }) => {
   // redux
   const store = React.useMemo(() => {
-    return createMockStore({
-      walletStateOverride,
-      panelStateOverride
-    }, walletApiDataOverrides)
-  }, [walletStateOverride, panelStateOverride, walletApiDataOverrides])
+    return createMockStore(
+      {
+        walletStateOverride,
+        panelStateOverride,
+        uiStateOverride: uiStateOverride
+      },
+      walletApiDataOverrides
+    )
+  }, [
+    walletStateOverride,
+    panelStateOverride,
+    walletApiDataOverrides,
+    uiStateOverride
+  ])
 
   React.useEffect(() => {
     store && store.dispatch(WalletActions.initialize())
