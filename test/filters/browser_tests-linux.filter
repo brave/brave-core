@@ -12,12 +12,6 @@
 -PersistentBackground/ExtensionWebRequestApiTestWithContextType.WebRequestTestOSDD/0
 -ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestTestOSDD/0
 
-# These tests fail because we change the Learn More link in the HTTPS First interstitial.
--HttpsOnlyModeBrowserTest.InterstitialLearnMoreLink
--HttpsUpgradesBrowserTest.InterstitialLearnMoreLink
--HttpsUpgradesBrowserTest.InterstitialLearnMoreLink/BothHttpsFirstModeAndHttpsUpgrades
--HttpsUpgradesBrowserTest.InterstitialLearnMoreLink/HttpsFirstModeOnly
-
 -AccessCodeCastHandlerBrowserTest.*
 -AdsPageLoadMetricsObserverBrowserTest.*
 -BluetoothLowEnergyApiTest.*
