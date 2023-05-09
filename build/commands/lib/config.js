@@ -365,6 +365,7 @@ Config.prototype.buildArgs = function () {
     use_libfuzzer: this.use_libfuzzer,
     enable_updater: this.isOfficialBuild(),
     enable_update_notifications: this.isOfficialBuild(),
+    brave_ai_chat_endpoint: this.brave_ai_chat_endpoint,
     ...this.extraGnArgs,
   }
 
@@ -479,7 +480,6 @@ Config.prototype.buildArgs = function () {
   // handle gn args in upstream build scripts without introducing git conflict.
   if (this.targetOS !== 'android' && this.targetOS !== 'ios') {
     args.enable_brave_page_graph = true
-    args.brave_ai_chat_endpoint = this.brave_ai_chat_endpoint
   } else {
     args.enable_brave_page_graph = false
   }
@@ -550,6 +550,7 @@ Config.prototype.buildArgs = function () {
     // TODO - recheck
     delete args.enable_nacl
     delete args.enable_hangout_services_extension
+    delete args.brave_ai_chat_endpoint
   }
 
   if (this.targetOS === 'ios') {
@@ -643,6 +644,7 @@ Config.prototype.buildArgs = function () {
     delete args.use_blink_v8_binding_new_idl_interface
     delete args.v8_enable_verify_heap
     delete args.brave_variations_server_url
+    delete args.brave_ai_chat_endpoint
   }
 
   return args
