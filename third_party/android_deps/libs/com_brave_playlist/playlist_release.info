@@ -41,6 +41,7 @@ resources = [
   "res/drawable/ic_picture_in_picture.xml",
   "res/drawable/ic_play_filled.xml",
   "res/drawable/ic_playing_sound.xml",
+  "res/drawable/ic_playlist_button.xml",
   "res/drawable/ic_playlist_buttononboard_img2.xml",
   "res/drawable/ic_playlist_buttononboard_img2_bg.xml",
   "res/drawable/ic_playlist_buttononboard_img3.xml",
