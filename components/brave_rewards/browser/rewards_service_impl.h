@@ -547,11 +547,12 @@ class RewardsServiceImpl : public RewardsService,
   bool Connected() const;
   void ConnectionClosed();
 
-  void RecordBackendP3AStats();
-  void RecordBackendP3AStatsWithDelay();
+  void RecordBackendP3AStats(bool delay_report = false);
   void OnP3ADailyTimer();
 
-  void OnRecordBackendP3AExternalWallet(GetExternalWalletResult result);
+  void OnRecordBackendP3AExternalWallet(bool delay_report,
+                                        GetExternalWalletResult result);
+  void GetAllContributionsForP3A();
   void OnRecordBackendP3AStatsContributions(
       std::vector<mojom::ContributionInfoPtr> list);
 

@@ -833,7 +833,7 @@ void RewardsServiceImpl::OnLedgerInitialized(mojom::Result result) {
     ready_->Signal();
   }
 
-  RecordBackendP3AStatsWithDelay();
+  RecordBackendP3AStats(/*delay_report*/ true);
   p3a_daily_timer_.Start(
       FROM_HERE, base::Time::Now() + kP3ADailyReportInterval,
       base::BindOnce(&RewardsServiceImpl::OnP3ADailyTimer, AsWeakPtr()));
@@ -1803,7 +1803,7 @@ void RewardsServiceImpl::OnContributionSent(
     }
   }
 
-  RecordBackendP3AStatsWithDelay();
+  RecordBackendP3AStats(/*delay_report*/ true);
 
   std::move(callback).Run(success);
 }
@@ -2094,7 +2094,7 @@ void RewardsServiceImpl::OnTip(const std::string& publisher_key,
                          mojom::Result::LEDGER_ERROR);
   }
 
-  RecordBackendP3AStatsWithDelay();
+  RecordBackendP3AStats(/*delay_report*/ true);
 
   if (recurring) {
     return SaveRecurringTip(publisher_key, amount, std::move(callback));
@@ -2435,21 +2435,14 @@ void RewardsServiceImpl::ShowNotification(const std::string& type,
   std::move(callback).Run(mojom::Result::LEDGER_OK);
 }
 
-void RewardsServiceImpl::RecordBackendP3AStats() {
+void RewardsServiceImpl::RecordBackendP3AStats(bool delay_report) {
   if (!Connected()) {
     return;
   }
 
-  GetExternalWallet(base::BindOnce(
-      &RewardsServiceImpl::OnRecordBackendP3AExternalWallet, AsWeakPtr()));
-}
-
-void RewardsServiceImpl::RecordBackendP3AStatsWithDelay() {
-  // Update "tips sent" metric.
-  // Use delay to ensure tip is confirmed when counting.
-  p3a_tip_report_timer_.Start(
-      FROM_HERE, kP3ATipReportDelay,
-      base::BindOnce(&RewardsServiceImpl::RecordBackendP3AStats, AsWeakPtr()));
+  GetExternalWallet(
+      base::BindOnce(&RewardsServiceImpl::OnRecordBackendP3AExternalWallet,
+                     AsWeakPtr(), delay_report));
 }
 
 void RewardsServiceImpl::OnP3ADailyTimer() {
@@ -2460,6 +2453,7 @@ void RewardsServiceImpl::OnP3ADailyTimer() {
 }
 
 void RewardsServiceImpl::OnRecordBackendP3AExternalWallet(
+    bool delay_report,
     GetExternalWalletResult result) {
   if (!Connected()) {
     return;
@@ -2473,6 +2467,18 @@ void RewardsServiceImpl::OnRecordBackendP3AExternalWallet(
     return;
   }
 
+  if (delay_report) {
+    // Use delay to ensure tips are confirmed when counting.
+    p3a_tip_report_timer_.Start(
+        FROM_HERE, kP3ATipReportDelay,
+        base::BindOnce(&RewardsServiceImpl::GetAllContributionsForP3A,
+                       AsWeakPtr()));
+  } else {
+    GetAllContributionsForP3A();
+  }
+}
+
+void RewardsServiceImpl::GetAllContributionsForP3A() {
   ledger_->GetAllContributions(base::BindOnce(
       &RewardsServiceImpl::OnRecordBackendP3AStatsContributions, AsWeakPtr()));
 }
