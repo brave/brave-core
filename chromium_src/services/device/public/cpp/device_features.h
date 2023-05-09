@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_SERVICES_DEVICE_PUBLIC_CPP_DEVICE_FEATURES_H_
 #define BRAVE_CHROMIUM_SRC_SERVICES_DEVICE_PUBLIC_CPP_DEVICE_FEATURES_H_
 
-#include "src/services/device/public/cpp/device_features.h"
+#include "src/services/device/public/cpp/device_features.h"  // IWYU pragma: export
 
 namespace features {
 

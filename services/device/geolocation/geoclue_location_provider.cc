@@ -49,6 +49,46 @@ mojom::Geoposition GetErrorPosition() {
   return response;
 }
 
+// Note: This method blocks because the call to NewSystemProvider is not
+// asynchronous. Fortunately it happens in the background, so this is safe. As
+// it's pretty unlikely that the presence of the GeoClue2 service changes in a
+// browser session, we cache the result here, so we only calculate this once.
+//
+// The easiest way to determine if a DBus service exists is to try and call a
+// method on it, and see if it fails. For this, I chose
+// |GeoClue2.Manager.GetClient| (this is cached on the GeoClue2 side, so it will
+// be the same client we get when we start our service).
+bool GeoClueAvailable() {
+  static bool checked = false;
+  static bool available = false;
+
+  if (checked) {
+    return available;
+  }
+
+  dbus::Bus::Options options;
+  options.bus_type = dbus::Bus::SYSTEM;
+  options.connection_type = dbus::Bus::PRIVATE;
+  auto bus = base::MakeRefCounted<dbus::Bus>(options);
+
+  dbus::ObjectProxy* proxy =
+      bus->GetObjectProxy(kServiceName, dbus::ObjectPath(kManagerObjectPath));
+
+  dbus::MethodCall call(kManagerInterfaceName, "GetClient");
+  auto response =
+      proxy->CallMethodAndBlock(&call, dbus::ObjectProxy::TIMEOUT_USE_DEFAULT);
+
+  // If the response is |nullptr| then the GeoClue2.Manager does not exist.
+  available = response.get();
+  checked = true;
+
+  // Shutdown this bus - we'll use one on the DBus thread for our actual
+  // provider.
+  bus->ShutdownAndBlock();
+
+  return available;
+}
+
 }  // namespace
 
 struct GeoClueProperties : public dbus::PropertySet {
@@ -114,6 +154,7 @@ GeoClueLocationProvider::GeoClueLocationProvider() {
 
   bus_ = base::MakeRefCounted<dbus::Bus>(options);
 }
+
 GeoClueLocationProvider::~GeoClueLocationProvider() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -357,8 +398,13 @@ void GeoClueLocationProvider::OnReadGeoClueLocation(
 std::unique_ptr<LocationProvider> NewSystemLocationProvider(
     scoped_refptr<base::SingleThreadTaskRunner> main_task_runner,
     GeolocationManager* geolocation_manager) {
-  // TODO(fallaciousreasoning): Check whether GeoClue exists.
   if (!base::FeatureList::IsEnabled(features::kLinuxGeoClueLocationBackend)) {
+    return nullptr;
+  }
+
+  // If GeoClue2 is not available return |nullptr| so we fall back to the
+  // network location provider.
+  if (!GeoClueAvailable()) {
     return nullptr;
   }
 
