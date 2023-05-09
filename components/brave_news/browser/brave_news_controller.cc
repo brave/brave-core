@@ -622,7 +622,7 @@ void BraveNewsController::Prefetch() {
 }
 
 void BraveNewsController::OnOptInChange() {
-  p3a::RecordOptInChange(prefs_);
+  p3a::RecordFeatureEnabledChange(prefs_);
   ConditionallyStartOrStopTimer();
 }
 
