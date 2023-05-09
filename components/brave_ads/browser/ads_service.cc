@@ -25,9 +25,6 @@ void AdsService::RemoveObserver(AdsServiceObserver* observer) {
 
 void AdsService::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterBooleanPref(prefs::kAdsWereDisabled, false);
-  registry->RegisterBooleanPref(prefs::kHasAdsP3AState, false);
-
   registry->RegisterBooleanPref(prefs::kShouldShowOnboardingNotification, true);
 
   registry->RegisterIntegerPref(prefs::kSupportedCountryCodesLastSchemaVersion,
