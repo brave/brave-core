@@ -12,6 +12,7 @@
 -PersistentBackground/ExtensionWebRequestApiTestWithContextType.WebRequestTestOSDD/0
 -ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestTestOSDD/0
 
+# Tests below this point have not been diagnosed or had issues created yet.
 -AccessCodeCastHandlerBrowserTest.*
 -AdsPageLoadMetricsObserverBrowserTest.*
 -BluetoothLowEnergyApiTest.*
@@ -23,7 +24,11 @@
 -ExtensionDialogTest.*
 -ExtensionStartupTest.*
 -ExternalProtocolHandlerSandboxBrowserTest.*
+-HeadlessModeDumpDomCommandBrowserTest.HeadlessDumpDom
+-HeadlessModeLazyLoadingPrintToPdfCommandBrowserTest.HeadlessLazyLoadingPrintToPdf
+-HeadlessModePrintToPdfCommandBrowserTest.HeadlessPrintToPdf
 -HeadlessModeProtocolBrowserTest.ScreencastBasics
+-HeadlessModeScreenshotCommandBrowserTest.HeadlessScreenshot
 -IndividualNetworkContextsPrefetchProxyBrowserTest.*
 -LayoutInstabilityTest.*
 -LocalNetworkAccessWithFeatureEnabledBrowserTest.SpecialSchemeChromeDistiller
