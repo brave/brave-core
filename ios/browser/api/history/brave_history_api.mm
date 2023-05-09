@@ -140,7 +140,6 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
 
 - (void)addHistory:(IOSHistoryNode*)history isURLTyped:(BOOL)isURLTyped {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  DCHECK(history_service_->backend_loaded());
 
   // Important! Only Typed URL is being synced in core side
   history::HistoryAddPageArgs args = history::HistoryAddPageArgs(
@@ -162,7 +161,6 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
 
 - (void)removeHistory:(IOSHistoryNode*)history {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  DCHECK(history_service_->backend_loaded());
 
   // Deletes a specific URL using history service and web history service
   history_service_->DeleteLocalAndRemoteUrl(web_history_service_,
@@ -180,7 +178,6 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
     }
 
     DCHECK_CURRENTLY_ON(web::WebThread::UI);
-    DCHECK(historyAPI->history_service_->backend_loaded());
 
     historyAPI->history_service_->DeleteLocalAndRemoteHistoryBetween(
         historyAPI->web_history_service_, base::Time::Min(), base::Time::Max(),
@@ -205,7 +202,6 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
     }
 
     DCHECK_CURRENTLY_ON(web::WebThread::UI);
-    DCHECK(historyAPI->history_service_->backend_loaded());
 
     // Check Query is empty for Fetching all history
     // The entered query can be nil or empty String
