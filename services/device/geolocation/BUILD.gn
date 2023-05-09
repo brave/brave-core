@@ -12,6 +12,7 @@ source_set("unit_tests") {
     "//content/test:test_support",
     "//dbus",
     "//services/device/geolocation",
+    "//services/device/public/cpp:device_features",
     "//testing/gtest",
   ]
 }

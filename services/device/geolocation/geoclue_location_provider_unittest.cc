@@ -8,13 +8,16 @@
 #include <cmath>
 #include <memory>
 
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/run_loop.h"
+#include "base/test/scoped_feature_list.h"
 #include "content/public/test/browser_task_environment.h"
 #include "gtest/gtest.h"
+#include "services/device/geolocation/location_arbitrator.h"
+#include "services/device/public/cpp/device_features.h"
 #include "services/device/public/mojom/geoposition.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
-
 namespace device {
 
 class TestGeoClueLocationProvider : public GeoClueLocationProvider {
@@ -207,6 +210,23 @@ TEST_F(GeoClueLocationProviderTest, GetsLocation) {
   EXPECT_GE(provider_->GetPosition().longitude, -180);
   EXPECT_GE(provider_->GetPosition().accuracy, 0);
   EXPECT_FALSE(provider_->GetPosition().timestamp.is_null());
+}
+
+TEST_F(GeoClueLocationProviderTest, DoesNotInitializeWithoutFeature) {
+  base::test::ScopedFeatureList features;
+  features.InitAndDisableFeature(features::kLinuxGeoClueLocationBackend);
+
+  auto provider = NewSystemLocationProvider(nullptr, nullptr);
+  EXPECT_FALSE(provider);
+}
+
+TEST_F(GeoClueLocationProviderTest,
+       InitializesWithFeatureAndIsEnabledByDefault) {
+  EXPECT_TRUE(
+      base::FeatureList::IsEnabled(features::kLinuxGeoClueLocationBackend));
+
+  auto provider = NewSystemLocationProvider(nullptr, nullptr);
+  EXPECT_TRUE(provider);
 }
 
 }  // namespace device
