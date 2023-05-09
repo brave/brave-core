@@ -608,6 +608,16 @@ extension BrowserViewController: WKNavigationDelegate {
     // Set the committed url which will also set tab.url
     tab.committedURL = webView.url
     
+    DispatchQueue.main.async {
+      // Server Trust and URL is also updated in didCommit
+      // However, WebKit does NOT trigger the `serverTrust` observer when the URL changes, but the trust has not.
+      // So manually trigger it with the current trust.
+      self.observeValue(forKeyPath: KVOConstants.serverTrust.rawValue,
+                        of: webView,
+                        change: [.newKey: webView.serverTrust, .kindKey: 1],
+                        context: nil)
+    }
+    
     // Need to evaluate Night mode script injection after url is set inside the Tab
     tab.nightMode = Preferences.General.nightModeEnabled.value
     tab.clearSolanaConnectedAccounts()
