@@ -5,7 +5,7 @@
 
 # This variable comes from the upstream file, so disable the pylint warning
 # about undefined variables.
-# pylint: disable=E0602
+# pylint: disable=undefined-variable
 _BASE_EXCLUDES.extend([
     "chrome://resources/brave/leo/bundle.js", "//resources/brave/leo/bundle.js"
 ])
