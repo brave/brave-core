@@ -229,10 +229,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UnknownAddress) {
     EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()",
                      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                   .ExtractString(),
-              l10n_util::GetStringFUTF8(
-                  IDS_WALLET_ETH_SIGN_NOT_AUTHED,
-                  base::ASCIIToUTF16(std::string(
-                      "0x6b1Bd828cF8CE051B6282dCFEf6863746E2E1909"))));
+              l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
   }
 }
 
@@ -282,10 +279,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, NoEthPermission) {
     EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()",
                      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                   .ExtractString(),
-              l10n_util::GetStringFUTF8(
-                  IDS_WALLET_ETH_SIGN_NOT_AUTHED,
-                  base::ASCIIToUTF16(std::string(
-                      "0x084DCb94038af1715963F149079cE011C4B22961"))));
+              l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
   }
 }
 

@@ -36,8 +36,6 @@ class BraveWalletServiceDelegate {
       mojom::BraveWalletService::ResetPermissionCallback;
   using IsPermissionDeniedCallback =
       mojom::BraveWalletService::IsPermissionDeniedCallback;
-  using GetActiveOriginCallback =
-      mojom::BraveWalletService::GetActiveOriginCallback;
   using GetWebSitesWithPermissionCallback =
       mojom::BraveWalletService::GetWebSitesWithPermissionCallback;
   using ResetWebSitePermissionCallback =
@@ -86,7 +84,7 @@ class BraveWalletServiceDelegate {
                                       const std::string& formed_website,
                                       ResetWebSitePermissionCallback callback);
 
-  virtual void GetActiveOrigin(GetActiveOriginCallback callback);
+  virtual mojom::OriginInfoPtr GetActiveOrigin();
 
   virtual void ClearWalletUIStoragePartition();
 

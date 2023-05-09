@@ -710,27 +710,16 @@ void BraveWalletService::SetSelectedCoin(mojom::CoinType coin) {
 void BraveWalletService::GetChainIdForActiveOrigin(
     mojom::CoinType coin,
     GetChainIdForActiveOriginCallback callback) {
-  GetActiveOrigin(base::BindOnce(
-      [](mojom::CoinType coin, GetChainIdForActiveOriginCallback callback,
-         JsonRpcService* json_rpc_service, mojom::OriginInfoPtr origin_info) {
-        std::move(callback).Run(
-            json_rpc_service->GetChainIdSync(coin, origin_info->origin));
-      },
-      coin, std::move(callback), json_rpc_service_));
+  std::move(callback).Run(
+      json_rpc_service_->GetChainIdSync(coin, GetActiveOriginSync()->origin));
 }
 
 void BraveWalletService::SetChainIdForActiveOrigin(
     mojom::CoinType coin,
     const std::string& chain_id,
     SetChainIdForActiveOriginCallback callback) {
-  GetActiveOrigin(base::BindOnce(
-      [](const std::string& chain_id_in, mojom::CoinType coin,
-         SetChainIdForActiveOriginCallback callback,
-         JsonRpcService* json_rpc_service, mojom::OriginInfoPtr origin_info) {
-        std::move(callback).Run(json_rpc_service->SetNetwork(
-            chain_id_in, coin, origin_info->origin));
-      },
-      chain_id, coin, std::move(callback), json_rpc_service_));
+  std::move(callback).Run(json_rpc_service_->SetNetwork(
+      chain_id, coin, GetActiveOriginSync()->origin));
 }
 
 void BraveWalletService::OnDefaultEthereumWalletChanged() {
@@ -1149,16 +1138,20 @@ BraveWalletP3A* BraveWalletService::GetBraveWalletP3A() {
 }
 
 void BraveWalletService::GetActiveOrigin(GetActiveOriginCallback callback) {
+  std::move(callback).Run(GetActiveOriginSync());
+}
+
+mojom::OriginInfoPtr BraveWalletService::GetActiveOriginSync() {
   if (delegate_) {
-    delegate_->GetActiveOrigin(std::move(callback));
+    return delegate_->GetActiveOrigin();
   } else {
-    std::move(callback).Run(MakeOriginInfo(url::Origin()));
+    return MakeOriginInfo(url::Origin());
   }
 }
 
 void BraveWalletService::GeteTLDPlusOneFromOrigin(
     const url::Origin& origin,
-    GetActiveOriginCallback callback) {
+    GeteTLDPlusOneFromOriginCallback callback) {
   std::move(callback).Run(MakeOriginInfo(origin));
 }
 

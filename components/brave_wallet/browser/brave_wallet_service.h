@@ -177,6 +177,7 @@ class BraveWalletService : public KeyedService,
                               const std::string& formed_website,
                               ResetWebSitePermissionCallback callback) override;
   void GetActiveOrigin(GetActiveOriginCallback callback) override;
+  mojom::OriginInfoPtr GetActiveOriginSync();
   void GeteTLDPlusOneFromOrigin(const url::Origin& origin,
                                 GetActiveOriginCallback callback) override;
   void GetPendingSignMessageRequests(

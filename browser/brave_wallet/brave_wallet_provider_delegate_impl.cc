@@ -25,8 +25,8 @@ namespace brave_wallet {
 
 namespace {
 
-bool IsAccountAllowed(const std::vector<std::string>& allowed_accounts,
-                      const std::string& account) {
+bool IsAccountInAllowedList(const std::vector<std::string>& allowed_accounts,
+                            const std::string& account) {
   for (const auto& allowed_account : allowed_accounts) {
     if (base::CompareCaseInsensitiveASCII(account, allowed_account) == 0) {
       return true;
@@ -55,16 +55,6 @@ void OnRequestPermissions(
     std::move(callback).Run(mojom::RequestPermissionsError::kNone,
                             granted_accounts);
   }
-}
-
-void OnIsAccountAllowed(
-    const std::string& account,
-    BraveWalletProviderDelegate::IsAccountAllowedCallback callback,
-    bool success,
-    const std::vector<std::string>& allowed_accounts) {
-  bool allowed = IsAccountAllowed(allowed_accounts, account);
-
-  std::move(callback).Run(allowed);
 }
 
 absl::optional<permissions::RequestType> CoinTypeToPermissionRequestType(
@@ -122,22 +112,21 @@ void BraveWalletProviderDelegateImpl::ShowAccountCreation(
   }
 }
 
-void BraveWalletProviderDelegateImpl::GetAllowedAccounts(
+absl::optional<std::vector<std::string>>
+BraveWalletProviderDelegateImpl::GetAllowedAccounts(
     mojom::CoinType type,
-    const std::vector<std::string>& accounts,
-    GetAllowedAccountsCallback callback) {
+    const std::vector<std::string>& accounts) {
   if (IsPermissionDenied(type)) {
-    std::move(callback).Run(true, std::vector<std::string>());
-    return;
+    return std::vector<std::string>();
   }
+
   auto permission = CoinTypeToPermissionType(type);
   if (!permission) {
-    std::move(callback).Run(false, std::vector<std::string>());
-    return;
+    return absl::nullopt;
   }
-  permissions::BraveWalletPermissionContext::GetAllowedAccounts(
-      *permission, content::RenderFrameHost::FromID(host_id_), accounts,
-      std::move(callback));
+
+  return permissions::BraveWalletPermissionContext::GetAllowedAccounts(
+      *permission, content::RenderFrameHost::FromID(host_id_), accounts);
 }
 
 void BraveWalletProviderDelegateImpl::RequestPermissions(
@@ -170,19 +159,19 @@ void BraveWalletProviderDelegateImpl::RequestPermissions(
       base::BindOnce(&OnRequestPermissions, accounts, std::move(callback)));
 }
 
-void BraveWalletProviderDelegateImpl::IsAccountAllowed(
+bool BraveWalletProviderDelegateImpl::IsAccountAllowed(
     mojom::CoinType type,
-    const std::string& account,
-    IsAccountAllowedCallback callback) {
+    const std::string& account) {
   auto permission = CoinTypeToPermissionType(type);
   if (!permission) {
-    std::move(callback).Run(false);
-    return;
+    return false;
   }
 
-  permissions::BraveWalletPermissionContext::GetAllowedAccounts(
-      *permission, content::RenderFrameHost::FromID(host_id_), {account},
-      base::BindOnce(&OnIsAccountAllowed, account, std::move(callback)));
+  const auto allowed_accounts =
+      permissions::BraveWalletPermissionContext::GetAllowedAccounts(
+          *permission, content::RenderFrameHost::FromID(host_id_), {account});
+
+  return allowed_accounts && IsAccountInAllowedList(*allowed_accounts, account);
 }
 
 bool BraveWalletProviderDelegateImpl::IsPermissionDenied(mojom::CoinType type) {

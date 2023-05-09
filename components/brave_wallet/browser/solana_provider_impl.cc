@@ -112,11 +112,24 @@ void SolanaProviderImpl::Connect(absl::optional<base::Value::Dict> arg,
     return;
   }
 
-  delegate_->IsAccountAllowed(
-      mojom::CoinType::SOL, *account,
-      base::BindOnce(&SolanaProviderImpl::ContinueConnect,
-                     weak_factory_.GetWeakPtr(), is_eagerly_connect, *account,
-                     std::move(callback)));
+  const bool allowed =
+      delegate_->IsAccountAllowed(mojom::CoinType::SOL, *account);
+
+  if (allowed) {
+    std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "", *account);
+    delegate_->AddSolanaConnectedAccount(*account);
+  } else if (!allowed && is_eagerly_connect) {
+    std::move(callback).Run(
+        mojom::SolanaProviderError::kUserRejectedRequest,
+        l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), "");
+  } else {
+    delegate_->RequestPermissions(
+        mojom::CoinType::SOL, {*account},
+        base::BindOnce(&SolanaProviderImpl::OnConnect,
+                       weak_factory_.GetWeakPtr(), *account,
+                       std::move(callback)));
+  }
+
   // To show wallet icon on android if wallet is unlocked
   delegate_->WalletInteractionDetected();
 }
@@ -712,27 +725,6 @@ void SolanaProviderImpl::Request(base::Value::Dict arg,
 
 bool SolanaProviderImpl::IsAccountConnected(const std::string& account) {
   return delegate_->IsSolanaAccountConnected(account);
-}
-
-void SolanaProviderImpl::ContinueConnect(bool is_eagerly_connect,
-                                         const std::string& selected_account,
-                                         ConnectCallback callback,
-                                         bool is_selected_account_allowed) {
-  if (is_selected_account_allowed) {
-    std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "",
-                            selected_account);
-    delegate_->AddSolanaConnectedAccount(selected_account);
-  } else if (!is_selected_account_allowed && is_eagerly_connect) {
-    std::move(callback).Run(
-        mojom::SolanaProviderError::kUserRejectedRequest,
-        l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), "");
-  } else {
-    delegate_->RequestPermissions(
-        mojom::CoinType::SOL, {selected_account},
-        base::BindOnce(&SolanaProviderImpl::OnConnect,
-                       weak_factory_.GetWeakPtr(), selected_account,
-                       std::move(callback)));
-  }
 }
 
 void SolanaProviderImpl::OnConnect(
