@@ -30,8 +30,10 @@
 #
 # The binder is not instantiated because BraveContentBrowserClient is also not
 # available.
+-All/IntentPickerIconBrowserTest.*
 -All/PromotionalTabsEnabledPolicyWelcomeNoFreTest.RunTest/1
 -InteractiveBrowserTestBrowsertest.InstrumentTabsAsTestSteps
+-IntentPickerIconBrowserTest.*
 -LensDesktopNTPSearchEnabledPolicyTest.LensSearchButtonHidden
 -PrivacySandboxPromptHelperTestWithParamInstance/PrivacySandboxPromptHelperTestWithParam.NoPromptNonDefaultNtp/*
 -PermissionRequestChipGestureSensitiveBrowserTest.ShouldUpdateActiverPRMAndObservations
@@ -106,6 +108,7 @@
 -AccuracyTipBubbleViewPrerenderBrowserTest.*
 -AdsPageLoadMetricsObserverPrerenderingBrowserTest.*
 -All/IntentPickerBubbleViewPrerenderingBrowserTest.*
+-All/IntentPickerIconPrerenderingBrowserTest.PrerenderingShouldNotShowIntentPicker/*
 -All/LoginPromptPrerenderBrowserTest.*
 -All/LookalikeUrlNavigationThrottleBrowserTest.*/*
 -All/LookalikeUrlNavigationThrottlePrerenderBrowserTest.ShowInterstitialAfterActivation/*
@@ -436,6 +439,7 @@
 # blink::features::kFencedFrames
 -AccessContextAuditFencedFrameBrowserTest.*
 -All/IntentPickerBubbleViewFencedFrameBrowserTest.*
+-All/IntentPickerIconFencedFrameBrowserTest.ShouldShowIntentPickerInFencedFrame/*
 -All/SafeBrowsingFencedFrameBrowserTest.*
 -BackgroundFetchFencedFrameBrowserTest.*
 -ContentSettingsWithFencedFrameBrowserTest.RendererContentSettings
@@ -502,8 +506,10 @@
 -SyncConfirmationUIDialogPixelTest.InvokeUi_default/*
 -SyncConfirmationUIWindowPixelTest.InvokeUi_default/*
 
-# These tests time out because IdentityManager never loads refresh tokens
+# These tests fail or time out because IdentityManager never loads refresh
+# tokens
 -DisallowManagedProfileSignoutFeature/UserPolicySigninServiceTest.*
+-SupervisedUserExtensionTest.RemovingSupervisionCustodianApprovalRequired
 
 # These tests fail with the following error:
 #  Terminating render process for bad Mojo message: Received bad user message:
@@ -537,7 +543,6 @@
 -InstallPreloadedVerifiedAppCommandTest.SuccessWithManifestId
 -MetricIntegrationTest.FirstInputDelay
 -MetricIntegrationTest.LargestContentfulPaint
--WebAppTabStripBrowserTest.TabbedModeMediaCSS
 
 # Brave disables Session Cookies restore when ContinueWhereILeftOff is enabled.
 -ContinueWhereILeftOffTest.SessionCookies
@@ -811,6 +816,7 @@
 -BrowserViewTest.*
 -BrowsingDataCounterUtilsBrowserTest.*
 -BrowsingDataRemoverBrowserTest.*
+-BrowsingTopicsAnnotationGoldenDataBrowserTest.GoldenData
 -BrowsingTopicsBrowserTest.*
 -CaptivePortalBlockingPageTest.*
 -CaptivePortalBrowserTest.*
@@ -1101,6 +1107,7 @@
 -PageInfoBubbleViewAboutThisSiteDialogBrowserTest.*
 -PageInfoBubbleViewAboutThisSiteDisabledBrowserTest.*
 -PageInfoBubbleViewAboutThisSiteWithoutSidePanelBrowserTest.*
+-PageInfoBubbleViewIsolatedWebAppBrowserTest.InvokeUi_AppNameIsDisplayedInsteadOfOriginForIsolatedWebApps_REV2
 -PageInfoBubbleViewSyncBrowserTest.*
 -PageLoadMetricsBrowserTest.*
 -PageLoadMetricsBrowserTestWithBackForwardCache.*
@@ -1400,6 +1407,7 @@
 -WebAppLaunchHandlerDisabledBrowserTest.*
 -WebAppMoverBadPatternBrowsertest.*
 -WebAppOfflineDarkModeTest.*
+-WebAppTabStripBrowserTest.HomeTabScopeWildcardString
 -WebAppTabStripBrowserTest.NavigationThrottle
 -WebAppTabStripBrowserTest.ReparentingPinsHomeTab
 -WebAppTabStripBrowserTest.TabbedModeMediaCSS
