@@ -14,11 +14,6 @@ interface ConversationListProps {
   isLoading: boolean
 }
 
-const elementScrollBehavior: ScrollIntoViewOptions = {
-  behavior: 'smooth',
-  block: 'start'
-}
-
 function ConversationList (props: ConversationListProps) {
   // Scroll the last conversation item in to view when entries are added.
   const lastConversationEntryElementRef = React.useRef<HTMLDivElement>(null)
@@ -31,9 +26,9 @@ function ConversationList (props: ConversationListProps) {
     if (!lastConversationEntryElementRef.current) {
       console.error('Conversation entry element did not exist when expected')
     } else {
-      lastConversationEntryElementRef.current.scrollIntoView(elementScrollBehavior)
+      lastConversationEntryElementRef.current.scrollIntoView(false)
     }
-  }, [props.list.length, props.isLoading])
+  }, [props.list.length, props.isLoading, lastConversationEntryElementRef.current?.clientHeight])
 
   return (
     <div className={styles.list}>
