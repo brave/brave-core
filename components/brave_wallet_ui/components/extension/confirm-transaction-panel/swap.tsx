@@ -31,12 +31,6 @@ import {
   NetworkDescriptionText,
   Spacer,
   SwapAssetAmountSymbol,
-  NetworkFeeAndSettingsContainer,
-  NetworkFeeTitle,
-  NetworkFeeContainer,
-  NetworkFeeValue,
-  Settings,
-  SettingsIcon
 } from './swap.style'
 import { EditButton, NetworkText, StyledWrapper, TopRow } from './style'
 import { CreateNetworkIcon, LoadingSkeleton, withPlaceholderIcon } from '../../shared'
@@ -49,6 +43,9 @@ import { EditPendingTransactionGas } from './common/gas'
 import { TransactionQueueStep } from './common/queue'
 import { Footer } from './common/footer'
 import AdvancedTransactionSettings from '../advanced-transaction-settings'
+import {
+  PendingTransactionNetworkFeeAndSettings //
+} from '../pending-transaction-network-fee/pending-transaction-network-fee'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
@@ -58,8 +55,7 @@ import { UNKNOWN_TOKEN_COINGECKO_ID } from '../../../common/constants/magics'
 import { usePendingTransactions } from '../../../common/hooks/use-pending-transaction'
 import { useGetNetworkQuery } from '../../../common/slices/api.slice'
 import {
-  useSafeWalletSelector,
-  useUnsafeWalletSelector
+  useUnsafeWalletSelector //
 } from '../../../common/hooks/use-safe-selector'
 
 interface Props {
@@ -71,9 +67,6 @@ export function ConfirmSwapTransaction (props: Props) {
   const { onConfirm, onReject } = props
 
   // redux
-  const defaultFiatCurrency = useSafeWalletSelector(
-    WalletSelectors.defaultFiatCurrency
-  )
   const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
   const transactionInfo = useUnsafeWalletSelector(
     WalletSelectors.selectedPendingTransaction
@@ -87,7 +80,6 @@ export function ConfirmSwapTransaction (props: Props) {
   // hooks
   const {
     transactionDetails,
-    transactionsNetwork,
     fromOrb,
     toOrb,
     updateUnapprovedTransactionNonce
@@ -188,28 +180,12 @@ export function ConfirmSwapTransaction (props: Props) {
         />
       </SwapDetails>
 
-      <NetworkFeeAndSettingsContainer>
-        <NetworkFeeContainer>
-          <NetworkFeeTitle>Network fee</NetworkFeeTitle>
-          <NetworkFeeValue>
-            <CreateNetworkIcon network={transactionsNetwork} marginRight={0} />
-            {transactionDetails?.gasFeeFiat ? (
-              new Amount(transactionDetails.gasFeeFiat).formatAsFiat(
-                defaultFiatCurrency
-              )
-            ) : (
-              <LoadingSkeleton width={38} />
-            )}
-            <EditButton onClick={onToggleEditGas}>
-              {getLocale('braveWalletAllowSpendEditButton')}
-            </EditButton>
-          </NetworkFeeValue>
-        </NetworkFeeContainer>
-
-        <Settings onClick={onToggleAdvancedTransactionSettings}>
-          <SettingsIcon />
-        </Settings>
-      </NetworkFeeAndSettingsContainer>
+      <PendingTransactionNetworkFeeAndSettings
+        onToggleAdvancedTransactionSettings={
+          onToggleAdvancedTransactionSettings
+        }
+        onToggleEditGas={onToggleEditGas}
+      />
 
       <Footer
         onConfirm={onConfirm}
