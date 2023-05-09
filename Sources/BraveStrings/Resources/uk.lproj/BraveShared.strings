@@ -43,12 +43,6 @@
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Реклама і трекери";
 
-/* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Трекери й рекламу заблоковано";
-
-/* Shields Ads Stat */
-"AdsrBlocked" = "Реклами\nзаблоковано";
-
 /* Setting to always request the desktop version of a website. */
 "AlwaysRequestDesktopSite" = "Завжди запитувати версію для настільного комп’ютера";
 
@@ -631,9 +625,6 @@
 /* The success message that appears after a user sucessfully adds a new search engine */
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "Пошукову систему додано.";
 
-/* Data Saved Shield Stat */
-"DataSavedStat" = "Заощаджено\nданих (приблизно)";
-
 /* Button text to close the default browser popup. */
 "defaultBrowserCallout.introCancelButtonText" = "Не зараз";
 
@@ -804,9 +795,6 @@
 
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "Перейти на %@ (небезпечно)";
-
-/* Shields Time Saved Stat */
-"EstTimerSaved" = "Заощаджено\nчасу (приблизно)";
 
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ запустить зовнішню програму";
@@ -1729,9 +1717,6 @@
 /* Description of the settings option to sync folders with the server automatically, every 4 hours. */
 "playList.sharedFolderSyncAutomaticallyDescription" = "Автоматично синхронізує всі ваші папки списків відтворення";
 
-/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
-"playList.sharedFolderSyncAutomaticallyTitle" = "Автоматично синхронізувати папки списків відтворення";
-
 /* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistActionDetailsTitle" = "Ви можете відкрити поточний елемент у новій вкладці або надіслати його через меню спільного доступу";
 
@@ -1875,9 +1860,6 @@
 
 /* Playlist menu item */
 "PlaylistMenuItem" = "Список відтворення";
-
-/* Description for closing a popover menu that is displayed. */
-"PopoverDefaultClose" = "Закрити контекстне меню";
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Закрити меню Shields";
@@ -2254,71 +2236,8 @@
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Дякуємо, що підтримуєте авторів умісту, переглядаючи сторінки в Інтернеті!";
 
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonCompletedTitle" = "Перерахування коштів на ваш старий гаманець завершено!";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonDelayedTitle" = "Перерахування коштів на ваш гаманець відкладено…";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonInProgressTitle" = "Перерахування коштів на ваш гаманець в процесі обробки";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonInvalidTitle" = "Перерахування коштів на ваш старий гаманець неможливе";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonPendingTitle" = "Статус перерахування коштів на ваш гаманець «На розгляді»";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusCompletedBody" = "Перерахування коштів на ваш гаманець завершено! Ваш оновлений баланс з’явиться в гаманці Brave Rewards протягом декількох хвилин.";
-
-/* Title shown above body of text explaining that their transfer is completed */
-"rewards.legacyWalletTransferStatusCompletedTitle" = "Перерахування коштів завершено!";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusDelayedBody" = "Перерахування коштів на ваш гаманець було відкладено, і відновлення процесу може зайняти кілька хвилин.";
-
-/* Title shown above body of text explaining that their transfer is delayed */
-"rewards.legacyWalletTransferStatusDelayedTitle" = "Перерахування коштів відкладено";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusInProgressBody" = "Перерахування коштів на ваш гаманець у процесі, і завершення транзакції може зайняти кілька хвилин.";
-
-/* Title shown above body of text explaining that their transfer is in progress */
-"rewards.legacyWalletTransferStatusInProgressTitle" = "Перерахування коштів у процесі";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusInvalidBody" = "Перерахування коштів на ваш гаманець неможливе і не може бути завершене";
-
-/* Title shown above body of text explaining that their transfer is invalid */
-"rewards.legacyWalletTransferStatusInvalidTitle" = "Перерахування коштів неможливе";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusPendingBody" = "Статус перерахування коштів на ваш гаманець «На розгляді», і операція має скоро завершитися.";
-
-/* Title shown above body of text explaining that their transfer is pending */
-"rewards.legacyWalletTransferStatusPendingTitle" = "Перерахування коштів на розгляді";
-
-/* Completed as in: stating that the status of the users transfer is in completed */
-"rewards.legacyWalletTransferStatusShortformCompleted" = "Завершено!";
-
-/* Delayed as in: stating that the status of the users transfer is in delayed */
-"rewards.legacyWalletTransferStatusShortformDelayed" = "Відкладено";
-
-/* In Progress as in: stating that the status of the users transfer is in progress */
-"rewards.legacyWalletTransferStatusShortformInProgress" = "У процесі";
-
-/* Invalid as in: stating that the status of the users transfer is invalid */
-"rewards.legacyWalletTransferStatusShortformInvalid" = "Неможливе";
-
-/* Pending as in: stating that the status of the users transfer is pending */
-"rewards.legacyWalletTransferStatusShortformPending" = "На розгляді";
-
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Продовжуючи, ви приймаєте умови документів %1$@ і %2$@. Вимкнути опцію можна будь-коли в меню «Налаштування».";
-
-/* No comment provided by engineer. */
-"rewards.settingsFooterMessage" = "Виплати у Brave Rewards тимчасово недоступні на цьому пристрої. Перекажіть кошти з наявного гаманця на гаманець на настільному комп’ютері, щоб зберегти свої токени.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Увімкніть Brave Private Ads, щоб автоматично підтримувати авторів умісту та видавців. Brave Private Ads — це конфіденційний засіб перегляду реклами з можливістю підтримки авторів умісту.";
@@ -2331,9 +2250,6 @@
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Кількість авторів умісту, яких ви підтримали цього місяця.";
-
-/* No comment provided by engineer. */
-"rewards.transferNoLongerAvailableWarningMessage" = "Виконайте перенесення гаманця до 13 березня 2021 року. Після цієї дати функція перенесення стане недоступною.";
 
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "Цей автор не підтвердив особу і його не буде додано до програми підтримки авторів";
@@ -2435,9 +2351,6 @@
 "RewardsInternalsLegacyPromotion" = "Застаріла промоакція";
 
 /* No comment provided by engineer. */
-"RewardsInternalsLegacyWalletHasTransferrableBalance" = "Має доступні для переказу кошти";
-
-/* No comment provided by engineer. */
 "RewardsInternalsLegacyWalletInfoHeader" = "Інформація про застарілий гаманець";
 
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
@@ -2492,9 +2405,6 @@
 "RewardsInternalsRewardsTypeRecurringTip" = "Повторюваний платіж";
 
 /* No comment provided by engineer. */
-"RewardsInternalsSharableBasicDescription" = "Інформація про гаманець, пристрій і баланс (надсилається завжди)";
-
-/* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "Основна інформація";
 
 /* No comment provided by engineer. */
@@ -2517,9 +2427,6 @@
 
 /* 'Rewards' as in 'Brave Rewards' */
 "RewardsInternalsShareInternalsTitle" = "Надіслати внутрішні дані Rewards";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharingWarningMessage" = "Дані на цій сторінці можуть бути конфіденційними. Використовуйте їх так, ніби це закриті ключі від вашого гаманця. Стежте за тим, кому ви надсилаєте їх.";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharingWarningTitle" = "Попередження";
@@ -2550,15 +2457,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsVersion" = "Версія";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletCreationDate" = "Дата створення гаманця";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletInfoHeader" = "Інформація про гаманець";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletPaymentID" = "Платіжний ідентифікатор гаманця";
 
 /* Button to show the rewards panel */
 "RewardsPanel" = "Панель винагород";
@@ -2775,18 +2673,6 @@
 
 /* shields overview footer message */
 "ShieldsOverviewFooter" = "Примітка. Деякі сайти потребують скриптів для нормальної роботи. Цей екран вимкнено за замовчуванням.";
-
-/* Time Saved Days */
-"ShieldsTimeStatsDays" = "дн.";
-
-/* Time Saved Hours */
-"ShieldsTimeStatsHour" = "год.";
-
-/* Time Saved Minutes */
-"ShieldsTimeStatsMinutes" = "хв.";
-
-/* Time Saved Seconds */
-"ShieldsTimeStatsSeconds" = "с";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Нова приватна вкладка";
@@ -3433,9 +3319,6 @@
 /* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
 "today.userSourcesHeaderTitle" = "Джерела користувача";
 
-/* Shields Trackers Stat */
-"TrackersrBlocked" = "Трекерів\nзаблоковано";
-
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Увімкнути пошукові підказки?";
 
@@ -3622,6 +3505,9 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "За підтримки";
 
+/* Title for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorTitle" = "Помилка сервера";
+
 /* Description of what automatic server selection does. */
 "vpn.regionPickerAutomaticDescription" = "На основі часового поясу вашої системи буде автоматично обрано сервер у найближчому до вас регіоні. Це забезпечить високу швидкість підключення до Інтернету.";
 
@@ -3664,9 +3550,6 @@
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "Перейдіть на режим VPN, щоб захистити ваше з’єднання й блокувати небезпечні засоби відстеження вашої активності.";
 
-/* Button to change VPN server location */
-"vpn.settingsChangeLocation" = "Змінити розташування";
-
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Звернутися до служби технічної підтримки";
 
@@ -3691,7 +3574,7 @@
 /* Table cell title for vpn's server host */
 "vpn.settingsServerHost" = "Хост-сервер";
 
-/* Table cell title for vpn's server location */
+/* Table cell title for vpn's server location and which open opens location select */
 "vpn.settingsServerLocation" = "Розташування";
 
 /* Header title for vpn settings server section. */

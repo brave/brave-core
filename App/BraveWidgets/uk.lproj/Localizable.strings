@@ -1,3 +1,21 @@
+/* Title for bookmarks menu item */
+"widgets.BookmarksMenuItem" = "Закладки";
+
+/* The name of the feature */
+"widgets.braveNews" = "Brave News";
+
+/* Title for downloads menu item */
+"widgets.DownloadsMenuItem" = "Завантаження";
+
+/* Description for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetDescription" = "Швидкий доступ до улюблених вебсайтів.";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "Вибране";
+
+/* Title for history menu item */
+"widgets.HistortMenuItem" = "Історія";
+
 /* Displayed on a news widget that has failed to load */
 "widgets.newsClusteringErrorLabel" = "Повторіть спробу пізніше";
 
@@ -12,6 +30,9 @@
 
 /* This shows when you add a widget but have no favorites added in your app */
 "widgets.noFavoritesFound" = "Відкрийте Brave, щоб переглянути свій перелік вибраного";
+
+/* QR Code section title */
+"widgets.QRCode" = "QR код";
 
 /* Description for the search option on the 'shortcuts' widget. */
 "widgets.searchShortcutTitle" = "Пошук";
@@ -51,3 +72,4 @@
 
 /* Description for the Brave Wallet option on the 'shortcuts' widget. */
 "widgets.walletShortcutTitle" = "Гаманець Brave";
+

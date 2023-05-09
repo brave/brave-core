@@ -1,5 +1,5 @@
 /* About settings section title */
-"About" = "Brave について";
+"About" = "企業情報";
 
 /* The title of the screen explaining Brave Shields */
 "AboutBraveShields" = "Brave Shieldについて";
@@ -42,12 +42,6 @@
 
 /* individual blocking statistic title */
 "AdsAndTrackers" = "広告とトラッカー";
-
-/* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "ブロック済みのトラッカー&広告数";
-
-/* Shields Ads Stat */
-"AdsrBlocked" = "ブロック済の\n広告";
 
 /* Setting to always request the desktop version of a website. */
 "AlwaysRequestDesktopSite" = "常にPCサイトを表示";
@@ -482,7 +476,7 @@
 "ClearPrivateDataAlertMessage" = "本当によろしいですか？";
 
 /* The button that clears private data. */
-"ClearPrivateDataAlertOkButtonTitle" = "OK";
+"ClearPrivateDataAlertOkButtonTitle" = "はい";
 
 /* No comment provided by engineer. */
 "ClearPrivateDataAlertTitle" = "データを削除する";
@@ -500,7 +494,7 @@
 "ClearSyncedHistoryAlertMessage" = "すべてのプライベートデータが消去されます。これには同期済みデバイスの履歴も含まれます。";
 
 /* The confirmation button that clears history even when Sync is connected. */
-"ClearSyncedHistoryAlertOkButtoTitle" = "OK";
+"ClearSyncedHistoryAlertOkButtoTitle" = "はい";
 
 /* Client is in an invalid state which caused the error */
 "clientErrorMessage" = "クライアントエラー";
@@ -630,9 +624,6 @@
 
 /* The success message that appears after a user sucessfully adds a new search engine */
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "検索エンジンが追加されました！";
-
-/* Data Saved Shield Stat */
-"DataSavedStat" = "節約できた\nデータ量(推定)";
 
 /* Button text to close the default browser popup. */
 "defaultBrowserCallout.introCancelButtonText" = "今はしない";
@@ -804,9 +795,6 @@
 
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "%@ （安全ではありません）に進む";
-
-/* Shields Time Saved Stat */
-"EstTimerSaved" = "節約できた\n時間(推定)";
 
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ は他のアプリケーションを起動します";
@@ -1127,7 +1115,7 @@
 "NotEnoughWordsTitle" = "ワードが足りません";
 
 /* An action (button title) that does not block cookie consent notices and dismisses the popup */
-"NoThanks" = "利用しない";
+"NoThanks" = "いいえ";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "NPRのリンクをテキストベースのバージョン (text.npr.org) に自動でリダイレクトします。";
@@ -1729,9 +1717,6 @@
 /* Description of the settings option to sync folders with the server automatically, every 4 hours. */
 "playList.sharedFolderSyncAutomaticallyDescription" = "すべてのPlaylistフォルダを自動で同期する";
 
-/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
-"playList.sharedFolderSyncAutomaticallyTitle" = "Playlistフォルダを自動で同期する";
-
 /* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistActionDetailsTitle" = "システムの共有メニューから、現在のアイテムを新タブで開いたり、シェアすることができます。";
 
@@ -1847,7 +1832,7 @@
 "playlistFolderSharing.deletePlaylistMenuTitle" = "Playlistを削除";
 
 /* Menu Title for editing a folder */
-"playlistFolderSharing.editMenuTitle" = "Edit";
+"playlistFolderSharing.editMenuTitle" = "動画の管理";
 
 /* Accessibility Title for the playlist menu. */
 "playlistFolderSharing.menuButtonAccessibilityTitle" = "Playlistメニューを表示します";
@@ -1865,7 +1850,7 @@
 "playlistFolderSharing.offlineManagementViewTitle" = "Playlistのデータを管理する";
 
 /* Menu Title for renaming a folder */
-"playlistFolderSharing.renameMenuTitle" = "名前を変更";
+"playlistFolderSharing.renameMenuTitle" = "名前を変える";
 
 /* Menu Title for saving offline data/cache */
 "playlistFolderSharing.saveOfflineDataMenuTitle" = "オフライン再生を可能にする";
@@ -1875,9 +1860,6 @@
 
 /* Playlist menu item */
 "PlaylistMenuItem" = "Playlist";
-
-/* Description for closing a popover menu that is displayed. */
-"PopoverDefaultClose" = "コンテキストメニューを閉じる";
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Shieldメニューを閉じる";
@@ -2254,71 +2236,8 @@
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "ブラウジングによるクリエイターの支援をありがとうございます！";
 
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonCompletedTitle" = "旧ウォレットからの移行が完了しました！";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonDelayedTitle" = "旧ウォレットからの移行に遅れが生じています...";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonInProgressTitle" = "旧ウォレットからの移行は進行中です";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonInvalidTitle" = "旧ウォレットからの移行が無効となりました";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonPendingTitle" = "旧ウォレットからの移行ステータスはペンディング中です";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusCompletedBody" = "旧ウォレットからの移行が完了しました！もともとあった残高がデスクトップのBrave Rewardsウォレットに表示されるまでは数分かかることがあります。";
-
-/* Title shown above body of text explaining that their transfer is completed */
-"rewards.legacyWalletTransferStatusCompletedTitle" = "移行が完了しました！";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusDelayedBody" = "旧ウォレットの移行に遅れが生じており、再開まで数分かかることがございます。";
-
-/* Title shown above body of text explaining that their transfer is delayed */
-"rewards.legacyWalletTransferStatusDelayedTitle" = "移行に遅れが生じています。";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusInProgressBody" = "旧ウォレットの移行は進行中です。完了まで数分かかる場合があります。";
-
-/* Title shown above body of text explaining that their transfer is in progress */
-"rewards.legacyWalletTransferStatusInProgressTitle" = "移行中";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusInvalidBody" = "旧ウォレットの移行が無効となり完了できませんでした";
-
-/* Title shown above body of text explaining that their transfer is invalid */
-"rewards.legacyWalletTransferStatusInvalidTitle" = "移行は無効となりました";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusPendingBody" = "旧ウォレットの移行ステータスはペンディング中です。まもなく処理が開始する見込みです。";
-
-/* Title shown above body of text explaining that their transfer is pending */
-"rewards.legacyWalletTransferStatusPendingTitle" = "移行はペンディング中です";
-
-/* Completed as in: stating that the status of the users transfer is in completed */
-"rewards.legacyWalletTransferStatusShortformCompleted" = "完了しました！";
-
-/* Delayed as in: stating that the status of the users transfer is in delayed */
-"rewards.legacyWalletTransferStatusShortformDelayed" = "遅れが生じています";
-
-/* In Progress as in: stating that the status of the users transfer is in progress */
-"rewards.legacyWalletTransferStatusShortformInProgress" = "進行中";
-
-/* Invalid as in: stating that the status of the users transfer is invalid */
-"rewards.legacyWalletTransferStatusShortformInvalid" = "無効";
-
-/* Pending as in: stating that the status of the users transfer is pending */
-"rewards.legacyWalletTransferStatusShortformPending" = "ペンディング";
-
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "クリックすることで %1$@ と %2$@ に同意したことになります。設定からいつでも無効にすることができます。";
-
-/* No comment provided by engineer. */
-"rewards.settingsFooterMessage" = "Brave Rewardsの支払いは現在ご利用いただけません。既存のウォレットの資金はデスクトップ版Braveウォレットに移行することで、トークンを保持することができます。";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Braveのプライバシー重視型の広告を有効にすることで、コンテンツクリエイターやパブリッシャーを自動的にサポートすることができます。Brave Ads広告はプライバシーを尊重しつつコンテンツクリエイターに還元することを目指した新しい広告の仕組みです。";
@@ -2331,9 +2250,6 @@
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "今月支援中のコンテンツクリエイター数";
-
-/* No comment provided by engineer. */
-"rewards.transferNoLongerAvailableWarningMessage" = "2021年3月13日までにウォレット移行をお済ませください。ウォレット移行機能は3月13日以降に停止されます。";
 
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "このクリエイターは認証が完了していないため、支援対象になりません";
@@ -2435,9 +2351,6 @@
 "RewardsInternalsLegacyPromotion" = "過去のプロモーション";
 
 /* No comment provided by engineer. */
-"RewardsInternalsLegacyWalletHasTransferrableBalance" = "移行可能な残高があります";
-
-/* No comment provided by engineer. */
 "RewardsInternalsLegacyWalletInfoHeader" = "旧ウォレットの情報";
 
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
@@ -2492,9 +2405,6 @@
 "RewardsInternalsRewardsTypeRecurringTip" = "定期支払いチップ";
 
 /* No comment provided by engineer. */
-"RewardsInternalsSharableBasicDescription" = "ウォレット・デバイス情報と残高情報 (常に共有)";
-
-/* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "基本情報";
 
 /* No comment provided by engineer. */
@@ -2519,13 +2429,10 @@
 "RewardsInternalsShareInternalsTitle" = "Rewards内部情報を共有";
 
 /* No comment provided by engineer. */
-"RewardsInternalsSharingWarningMessage" = "このページのデータは機密性が高い場合があります。ウォレットの秘密鍵と同じように扱ってください。共有する際は慎重に行ってください。";
-
-/* No comment provided by engineer. */
 "RewardsInternalsSharingWarningTitle" = "警告";
 
 /* No comment provided by engineer. */
-"RewardsInternalsStatus" = "ステータス";
+"RewardsInternalsStatus" = "稼働状況";
 
 /* i.e. 'Step: Started' */
 "RewardsInternalsStep" = "ステップ";
@@ -2550,15 +2457,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsVersion" = "バージョン";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletCreationDate" = "ウォレット作成日";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletInfoHeader" = "ウォレット情報";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletPaymentID" = "ウォレットペイメントID";
 
 /* Button to show the rewards panel */
 "RewardsPanel" = "Rewardsパネル";
@@ -2775,18 +2673,6 @@
 
 /* shields overview footer message */
 "ShieldsOverviewFooter" = "注意: 一部のサイトでは適切な動作にスクリプトが必要なため、この保護機能はデフォルトでオフになっています。";
-
-/* Time Saved Days */
-"ShieldsTimeStatsDays" = "日";
-
-/* Time Saved Hours */
-"ShieldsTimeStatsHour" = "時間";
-
-/* Time Saved Minutes */
-"ShieldsTimeStatsMinutes" = "分";
-
-/* Time Saved Seconds */
-"ShieldsTimeStatsSeconds" = "秒";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "新しいプライベートタブ";
@@ -3433,9 +3319,6 @@
 /* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
 "today.userSourcesHeaderTitle" = "ユーザーソース";
 
-/* Shields Trackers Stat */
-"TrackersrBlocked" = "ブロック済の\nトラッカー";
-
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "検索候補をオンにしますか？";
 
@@ -3622,6 +3505,9 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "Powered by";
 
+/* Title for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorTitle" = "サーバーエラー";
+
 /* Description of what automatic server selection does. */
 "vpn.regionPickerAutomaticDescription" = "あなたのシステムのタイムゾーンに基づいて、あなたに最も近接したサーバーリージョンが自動で選択されます。インターネットの速さを損なわないために推奨されています。";
 
@@ -3664,9 +3550,6 @@
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "VPN接続にアップグレードして接続を保護し、デバイス全体で広告やトラッカーをブロックします。";
 
-/* Button to change VPN server location */
-"vpn.settingsChangeLocation" = "ロケーションを変更する";
-
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "テクニカルサポートへのお問い合わせ";
 
@@ -3691,7 +3574,7 @@
 /* Table cell title for vpn's server host */
 "vpn.settingsServerHost" = "ホスト";
 
-/* Table cell title for vpn's server location */
+/* Table cell title for vpn's server location and which open opens location select */
 "vpn.settingsServerLocation" = "ロケーション";
 
 /* Header title for vpn settings server section. */
@@ -3704,7 +3587,7 @@
 "vpn.settingsSubscriptionSection" = "購読";
 
 /* Table cell title for status of current VPN subscription. */
-"vpn.settingsSubscriptionStatus" = "ステータス";
+"vpn.settingsSubscriptionStatus" = "稼働状況";
 
 /* Whether the VPN is enabled or not */
 "vpn.settingsVPNDisabled" = "無効";

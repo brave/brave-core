@@ -1,3 +1,21 @@
+/* Title for bookmarks menu item */
+"widgets.BookmarksMenuItem" = "Penanda Halaman";
+
+/* The name of the feature */
+"widgets.braveNews" = "Brave News";
+
+/* Title for downloads menu item */
+"widgets.DownloadsMenuItem" = "Muat Turun";
+
+/* Description for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetDescription" = "Capai laman web kegemaran anda dengan cepat.";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "Kegemaran";
+
+/* Title for history menu item */
+"widgets.HistortMenuItem" = "Sejarah";
+
 /* Displayed on a news widget that has failed to load */
 "widgets.newsClusteringErrorLabel" = "Cuba lagi kemudian";
 
@@ -12,6 +30,9 @@
 
 /* This shows when you add a widget but have no favorites added in your app */
 "widgets.noFavoritesFound" = "Sila buka Brave untuk melihat kegemaran anda di sini";
+
+/* QR Code section title */
+"widgets.QRCode" = "Kod QR";
 
 /* Description for the search option on the 'shortcuts' widget. */
 "widgets.searchShortcutTitle" = "Carian";
@@ -51,3 +72,4 @@
 
 /* Description for the Brave Wallet option on the 'shortcuts' widget. */
 "widgets.walletShortcutTitle" = "Brave Wallet";
+

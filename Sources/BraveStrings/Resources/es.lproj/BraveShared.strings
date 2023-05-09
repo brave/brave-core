@@ -1,5 +1,5 @@
 /* About settings section title */
-"About" = "Información";
+"About" = "Acerca de";
 
 /* The title of the screen explaining Brave Shields */
 "AboutBraveShields" = "Acerca de los escudos de Brave";
@@ -42,12 +42,6 @@
 
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Anuncios y rastreadores";
-
-/* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Rastreadores y anuncios bloqueados";
-
-/* Shields Ads Stat */
-"AdsrBlocked" = "Anuncios \nbloqueados";
 
 /* Setting to always request the desktop version of a website. */
 "AlwaysRequestDesktopSite" = "Solicitar siempre la versión de escritorio";
@@ -631,9 +625,6 @@
 /* The success message that appears after a user sucessfully adds a new search engine */
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "¡Buscador añadido!";
 
-/* Data Saved Shield Stat */
-"DataSavedStat" = "Datos estimados \nahorrados";
-
 /* Button text to close the default browser popup. */
 "defaultBrowserCallout.introCancelButtonText" = "Ahora no";
 
@@ -804,9 +795,6 @@
 
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "Continuar a %@ (no seguro)";
-
-/* Shields Time Saved Stat */
-"EstTimerSaved" = "Tiempo estimado \nahorrado";
 
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ lanzará una aplicación externa";
@@ -1729,9 +1717,6 @@
 /* Description of the settings option to sync folders with the server automatically, every 4 hours. */
 "playList.sharedFolderSyncAutomaticallyDescription" = "Sincroniza todas las carpetas de tu lista de reproducción automáticamente";
 
-/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
-"playList.sharedFolderSyncAutomaticallyTitle" = "Sincronizar las carpetas de la lista de reproducción automáticamente";
-
 /* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistActionDetailsTitle" = "Puedes abrir el elemento actual en una pestaña nueva o bien compartirlo a través del menú de recursos compartidos del sistema";
 
@@ -1859,7 +1844,7 @@
 "playlistFolderSharing.offlineManagementViewDescription" = "El guardado automático para el uso sin conexión está activado. Por tanto, todo lo que se añada a las listas de reproducción, incluidas las compartidas, se guardará en tu dispositivo para que puedas verlo sin conexión y podrá usar tus datos móviles.\n\nEl guardado automático para el uso sin conexión se puede gestionar en la configuración de Lista de reproducción.";
 
 /* Button that takes the user to the settings menu */
-"playlistFolderSharing.offlineManagementViewSettingsButtonTitle" = "Configuración";
+"playlistFolderSharing.offlineManagementViewSettingsButtonTitle" = "Ajustes";
 
 /* Title of the playlist offline data management view */
 "playlistFolderSharing.offlineManagementViewTitle" = "Gestionar tus datos en Lista de producción";
@@ -1875,9 +1860,6 @@
 
 /* Playlist menu item */
 "PlaylistMenuItem" = "Lista de reproducción";
-
-/* Description for closing a popover menu that is displayed. */
-"PopoverDefaultClose" = "Cerrar el menú de contexto";
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Cerrar el menú de escudos";
@@ -1997,7 +1979,7 @@
 "privacyHub.settingsSlearDataTitle" = "Borrar los datos de Protecciones";
 
 /* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
-"privacyHub.shieldsLabel" = "Shields";
+"privacyHub.shieldsLabel" = "Escudos";
 
 /* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
 "privacyHub.vpnAlertEmailTrackerTypePlural" = "Rastreadores de correo electrónico";
@@ -2254,71 +2236,8 @@
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "¡Gracias por ayudar a apoyar a los creadores de contenido mientras navegas!";
 
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonCompletedTitle" = "¡La transferencia de tu cartera heredada se ha completado!";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonDelayedTitle" = "La transferencia de tu cartera heredada se ha demorado...";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonInProgressTitle" = "La transferencia de tu cartera heredada está en proceso";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonInvalidTitle" = "La transferencia de tu cartera heredada no es válida";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonPendingTitle" = "La transferencia de tu cartera heredada está en estado pendiente";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusCompletedBody" = "¡La transferencia de tu cartera heredada se ha realizado correctamente! No obstante, es posible que tu saldo actual tarde unos minutos en aparecer reflejado en tu cartera de escritorio de Brave Rewards.";
-
-/* Title shown above body of text explaining that their transfer is completed */
-"rewards.legacyWalletTransferStatusCompletedTitle" = "¡Transferencia completada!";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusDelayedBody" = "La transferencia de tu cartera heredada se ha demorado y podría tardar varios minutos en reanudarse.";
-
-/* Title shown above body of text explaining that their transfer is delayed */
-"rewards.legacyWalletTransferStatusDelayedTitle" = "Transferencia demorada";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusInProgressBody" = "La transferencia de tu cartera heredada está en proceso y podría tardar varios minutos en completarse.";
-
-/* Title shown above body of text explaining that their transfer is in progress */
-"rewards.legacyWalletTransferStatusInProgressTitle" = "Transferencia en proceso";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusInvalidBody" = "La transferencia de tu cartera heredada no es válida y no se puede completar";
-
-/* Title shown above body of text explaining that their transfer is invalid */
-"rewards.legacyWalletTransferStatusInvalidTitle" = "Transferencia no válida";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusPendingBody" = "La transferencia de tu cartera heredada está en estado pendiente y debería iniciarse en breve.";
-
-/* Title shown above body of text explaining that their transfer is pending */
-"rewards.legacyWalletTransferStatusPendingTitle" = "Transferencia pendiente";
-
-/* Completed as in: stating that the status of the users transfer is in completed */
-"rewards.legacyWalletTransferStatusShortformCompleted" = "¡Completada!";
-
-/* Delayed as in: stating that the status of the users transfer is in delayed */
-"rewards.legacyWalletTransferStatusShortformDelayed" = "Demorada";
-
-/* In Progress as in: stating that the status of the users transfer is in progress */
-"rewards.legacyWalletTransferStatusShortformInProgress" = "En proceso";
-
-/* Invalid as in: stating that the status of the users transfer is invalid */
-"rewards.legacyWalletTransferStatusShortformInvalid" = "No válida";
-
-/* Pending as in: stating that the status of the users transfer is pending */
-"rewards.legacyWalletTransferStatusShortformPending" = "Pendiente";
-
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Al hacer clic, aceptas las %1$@ y la %2$@. Puedes deshabilitar esta opción en cualquier momento en Ajustes.";
-
-/* No comment provided by engineer. */
-"rewards.settingsFooterMessage" = "Los pagos de Brave Rewards no están disponibles temporalmente en este dispositivo. Transfiere los fondos de tu cartera existente a una cartera de escritorio para conservar tus tokens.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Apoya a los creadores y editores de contenido de forma automática al activar Brave Private Ads. Brave Private Ads son anuncios que respetan la privacidad y que retribuyen a los creadores de contenido.";
@@ -2331,9 +2250,6 @@
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Número de creadores de contenido a los que ayudas a apoyar este mes.";
-
-/* No comment provided by engineer. */
-"rewards.transferNoLongerAvailableWarningMessage" = "Usa la transferencia de cartera antes del 13 de marzo de 2021. Esta función dejará de estar disponible después de esa fecha.";
 
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "Este creador no ha realizado la verificación y no se incluirá en el apoyo para creadores.";
@@ -2435,9 +2351,6 @@
 "RewardsInternalsLegacyPromotion" = "Promoción antigua";
 
 /* No comment provided by engineer. */
-"RewardsInternalsLegacyWalletHasTransferrableBalance" = "Tiene saldo transferible";
-
-/* No comment provided by engineer. */
 "RewardsInternalsLegacyWalletInfoHeader" = "Información sobre la cartera heredada";
 
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
@@ -2492,9 +2405,6 @@
 "RewardsInternalsRewardsTypeRecurringTip" = "Propina periódica";
 
 /* No comment provided by engineer. */
-"RewardsInternalsSharableBasicDescription" = "Información sobre la cartera, el dispositivo y el saldo (siempre compartida)";
-
-/* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "Información básica";
 
 /* No comment provided by engineer. */
@@ -2517,9 +2427,6 @@
 
 /* 'Rewards' as in 'Brave Rewards' */
 "RewardsInternalsShareInternalsTitle" = "Compartir datos internos de Rewards";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharingWarningMessage" = "Es posible que los datos que aparecen en esta página sean confidenciales. Trátalos como si fuesen las claves privadas de tu cartera y mira bien con quién los compartes.";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharingWarningTitle" = "Advertencia";
@@ -2550,15 +2457,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsVersion" = "Versión";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletCreationDate" = "Fecha de creación de la cartera";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletInfoHeader" = "Información sobre la cartera";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletPaymentID" = "ID de pago de la cartera";
 
 /* Button to show the rewards panel */
 "RewardsPanel" = "Panel de recompensas";
@@ -2615,13 +2513,13 @@
 "SearchInputViewTextFieldAccessibilityLabel" = "Campo de entrada de búsqueda";
 
 /* Title for the search field at the top of the Logins list screen */
-"SearchInputViewTitle" = "Buscar";
+"SearchInputViewTitle" = "Búsqueda";
 
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "Añadir buscador personalizado";
 
 /* Navigation title for search settings. */
-"SearchSettingNavTitle" = "Buscar";
+"SearchSettingNavTitle" = "Búsqueda";
 
 /* Label for showing recent search setting. */
 "SearchSettingRecentSearchesCellTitle" = "Mostrar búsquedas recientes";
@@ -2642,7 +2540,7 @@
 "SearchSuggestionSectionTitleFormat" = "Búsqueda de %@";
 
 /* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
-"SearchSuggestionSectionTitleNoSearchFormat" = "Buscar";
+"SearchSuggestionSectionTitleNoSearchFormat" = "Búsqueda";
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "Sugerencias de búsqueda";
@@ -2775,18 +2673,6 @@
 
 /* shields overview footer message */
 "ShieldsOverviewFooter" = "Nota: Es posible que algunos sitios necesiten scripts para funcionar correctamente, por lo que este Shield está desactivado por defecto. ";
-
-/* Time Saved Days */
-"ShieldsTimeStatsDays" = "d";
-
-/* Time Saved Hours */
-"ShieldsTimeStatsHour" = "h";
-
-/* Time Saved Minutes */
-"ShieldsTimeStatsMinutes" = "min";
-
-/* Time Saved Seconds */
-"ShieldsTimeStatsSeconds" = "s";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Nueva pestaña privada";
@@ -2939,7 +2825,7 @@
 "SiteReportedTitle" = "Gracias";
 
 /* Brave panel topmost title */
-"SiteShieldSettings" = "Shields";
+"SiteShieldSettings" = "Escudos";
 
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "Todos los días ahorro datos al navegar con Brave.";
@@ -2951,7 +2837,7 @@
 "StandardTabSearch" = "Pestaña estándar";
 
 /* Support section title */
-"Support" = "Asistencia";
+"Support" = "Ayuda";
 
 /* Message body of alert that seeks permission from user to suppress future JS alerts */
 "SuppressAlertsActionMessage" = "Impedir que esta página cree alertas adicionales";
@@ -3433,9 +3319,6 @@
 /* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
 "today.userSourcesHeaderTitle" = "Fuentes de usuario";
 
-/* Shields Trackers Stat */
-"TrackersrBlocked" = "Rastreadores \nbloqueados";
-
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "¿Activar las sugerencias de búsqueda?";
 
@@ -3622,6 +3505,9 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "Con la tecnología de";
 
+/* Title for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorTitle" = "Error de servidor";
+
 /* Description of what automatic server selection does. */
 "vpn.regionPickerAutomaticDescription" = "Se escogerá la región de servidores más próxima a tu ubicación de acuerdo a tu huso horario. Se trata de algo recomendado para garantizar una alta velocidad de navegación.";
 
@@ -3664,9 +3550,6 @@
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "Pásate a una VPN para proteger tu conexión y bloquear los rastreadores invasivos en cualquier lugar.";
 
-/* Button to change VPN server location */
-"vpn.settingsChangeLocation" = "Cambiar ubicación";
-
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Contactar con el soporte técnico";
 
@@ -3691,7 +3574,7 @@
 /* Table cell title for vpn's server host */
 "vpn.settingsServerHost" = "Host";
 
-/* Table cell title for vpn's server location */
+/* Table cell title for vpn's server location and which open opens location select */
 "vpn.settingsServerLocation" = "Ubicación";
 
 /* Header title for vpn settings server section. */

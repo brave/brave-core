@@ -1,3 +1,21 @@
+/* Title for bookmarks menu item */
+"widgets.BookmarksMenuItem" = "書籤";
+
+/* The name of the feature */
+"widgets.braveNews" = "Brave News";
+
+/* Title for downloads menu item */
+"widgets.DownloadsMenuItem" = "下載";
+
+/* Description for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetDescription" = "快速存取您喜愛的網站。";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "我的最愛";
+
+/* Title for history menu item */
+"widgets.HistortMenuItem" = "歷史記錄";
+
 /* Displayed on a news widget that has failed to load */
 "widgets.newsClusteringErrorLabel" = "請稍後再試";
 
@@ -12,6 +30,9 @@
 
 /* This shows when you add a widget but have no favorites added in your app */
 "widgets.noFavoritesFound" = "請開啟 Brave，以在此瀏覽您的最愛";
+
+/* QR Code section title */
+"widgets.QRCode" = "QR 碼";
 
 /* Description for the search option on the 'shortcuts' widget. */
 "widgets.searchShortcutTitle" = "搜尋";
@@ -51,3 +72,4 @@
 
 /* Description for the Brave Wallet option on the 'shortcuts' widget. */
 "widgets.walletShortcutTitle" = "Brave 錢包";
+

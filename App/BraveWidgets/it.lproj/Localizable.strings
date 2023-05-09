@@ -1,3 +1,21 @@
+/* Title for bookmarks menu item */
+"widgets.BookmarksMenuItem" = "Segnalibri";
+
+/* The name of the feature */
+"widgets.braveNews" = "News di Brave";
+
+/* Title for downloads menu item */
+"widgets.DownloadsMenuItem" = "Download";
+
+/* Description for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetDescription" = "Accedi rapidamente ai tuoi siti web preferiti.";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "Preferiti";
+
+/* Title for history menu item */
+"widgets.HistortMenuItem" = "Cronologia";
+
 /* Displayed on a news widget that has failed to load */
 "widgets.newsClusteringErrorLabel" = "Riprova più tardi";
 
@@ -12,6 +30,9 @@
 
 /* This shows when you add a widget but have no favorites added in your app */
 "widgets.noFavoritesFound" = "Apri Brave per visualizzare qui i tuoi preferiti";
+
+/* QR Code section title */
+"widgets.QRCode" = "Codice QR";
 
 /* Description for the search option on the 'shortcuts' widget. */
 "widgets.searchShortcutTitle" = "Ricerca";
@@ -51,3 +72,4 @@
 
 /* Description for the Brave Wallet option on the 'shortcuts' widget. */
 "widgets.walletShortcutTitle" = "Portafoglio Brave";
+

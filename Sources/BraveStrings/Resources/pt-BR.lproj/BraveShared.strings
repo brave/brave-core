@@ -43,12 +43,6 @@
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Anúncios e rastreadores";
 
-/* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Rastreadores e anúncios bloqueados";
-
-/* Shields Ads Stat */
-"AdsrBlocked" = "Anúncios \nbloqueados";
-
 /* Setting to always request the desktop version of a website. */
 "AlwaysRequestDesktopSite" = "Sempre solicitar site para computador";
 
@@ -101,7 +95,7 @@
 "AutoRedirectTrackingURLs" = "Redirecionamento automático de URLs de monitorização";
 
 /* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
-"AutoRedirectTrackingURLsDescription" = "Ative o suporte para ignorar o redirecionamento principal de URLs de monitorização.";
+"AutoRedirectTrackingURLsDescription" = "Ative o suporte para ignorar o redirecionamento principal de URLs de monitorização";
 
 /* cookie settings option */
 "Block3rdPartyCookies" = "Bloquear cookies de terceiros";
@@ -242,7 +236,7 @@
 "BraveShieldsSiteBroken" = "Se este site não estiver funcionando, tente desativar as Proteções";
 
 /* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Proteções do Brave";
+"BraveShieldsStatusTitle" = "Proteções Brave";
 
 /* Context: The 'Down' in 'Brave Shields Down' */
 "BraveShieldsStatusValueDown" = "Desativadas";
@@ -317,7 +311,7 @@
 "callout.defaultBrowserTitle" = "Privacidade simplificada.";
 
 /* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "Isso nos ajuda a saber quais recursos do Brave são usados com mais frequência. Altere a qualquer momento nas configurações do Brave em 'Brave Shields e outras configurações de privacidade.";
+"callout.p3aCalloutDescription" = "Isto ajuda-nos a saber quais as funcionalidades do Brave mais utilizadas. Pode alterá-las quando quiser nas Definições do Brave em \"Brave Shields e privacidade\".";
 
 /* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
 "callout.p3aCalloutLinkTitle" = "Saiba mais sobre nossa análise de produtos com preservação da privacidade (P3A)";
@@ -326,7 +320,7 @@
 "callout.p3aCalloutTitle" = "Ajude a melhorar o Brave.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "Compartilhe percepções sobre produtos completamente privadas e anônimas.";
+"callout.p3aCalloutToggleTitle" = "Partilhe informações detalhadas de produtos completamte privadas e anónimas";
 
 /* Button title for Playlist Onboarding View */
 "callout.playlistOnboardingViewButtonTitle" = "Assistir ao vídeo";
@@ -551,7 +545,7 @@
 "CopyAppInfoToClipboard" = "Copie informações do app para a área de transferência.";
 
 /* Copy app info to clipboard action sheet action. */
-"copyAppSizeInfoToClipboard" = "Copie as informações sobre tamanho do aplicativo para a área de transferência.";
+"copyAppSizeInfoToClipboard" = "Copiar informação de tamanho da app para a área de transferência.";
 
 /* Context menu item for copying an image to the clipboard */
 "CopyImageActionTitle" = "Copiar imagem";
@@ -630,9 +624,6 @@
 
 /* The success message that appears after a user sucessfully adds a new search engine */
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "Mecanismo de pesquisa adicionado!";
-
-/* Data Saved Shield Stat */
-"DataSavedStat" = "Economia de dados \nestimada";
 
 /* Button text to close the default browser popup. */
 "defaultBrowserCallout.introCancelButtonText" = "Agora não";
@@ -764,7 +755,7 @@
 "ErrorPageReloadButtonTitle" = "Recarregar";
 
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
-"ErrorPagesAdvancedErrorPinningDetails" = "O %1$@ normalmente usa criptografia para proteger suas informações. Desta vez, quando o Brave tentou se conectar a %2$@, o site retornou com credenciais incomuns e incorretas. Isso pode acontecer quando um invasor tenta fingir ser %3$@ ou uma tela de início de sessão de Wi-Fi interrompe a conexão. Suas informações ainda estão seguras porque o Brave interrompeu a conexão antes que qualquer dado fosse trocado. <br />Você não pode visitar %4$@ agora porque o site usa fixação de certificado. Erros e ataques de rede geralmente são temporários, então esta página provavelmente funcionará mais tarde.";
+"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ costuma encriptar a sua informação para a proteger. Quando o Brave tentou ligar-se a %2$@ desta vez, o website devolveu credenciais invulgares e incorretas. Isto pode ocorrar quando um atacante tenta fingir ser %3$@, ou um ecrã de início de sessão na rede Wi-Fi interrompeu a ligação. A sua informação continua segura porque o Brave interrompeu a ligação antes de qualquer comunicação de dados.<br />Não é possível aceder a %4$@ de momento, porque o website usa a aficação de certificados. Os erros e ataques de rede costumam ser temporário, por isso deverá conseguir aceder a esta página mais tarde.";
 
 /* Additional warning text when clicking the Advanced button on error pages */
 "ErrorPagesAdvancedWarningDetails" = "Este servidor não conseguiu comprovar que é %@; o certificado de segurança dele não é considerado confiável pelo sistema operacional do seu dispositivo. Isso pode ser causado por uma configuração incorreta ou um invasor tentando interceptar sua conexão.";
@@ -804,9 +795,6 @@
 
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "Ir para %@ (não seguro)";
-
-/* Shields Time Saved Stat */
-"EstTimerSaved" = "Economia de tempo \nestimada";
 
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ abrirá um aplicativo externo";
@@ -1268,7 +1256,7 @@
 "OBShieldsDetail" = "Bloqueie rastreadores que invadem sua privacidade para poder navegar sem ser seguido na web";
 
 /* Title for shields onboarding screen */
-"OBShieldsTitle" = "Proteções do Brave";
+"OBShieldsTitle" = "Proteções Brave";
 
 /* Button to show the Brave Rewards Ads. */
 "OBShowMeButton" = "Mostrar";
@@ -1337,7 +1325,7 @@
 "openExternalAppURLHost" = "%@ diz:";
 
 /* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
-"openExternalAppURLTitle" = "Permitir que o %@ troque de aplicativo?";
+"openExternalAppURLTitle" = "Permitir que %@ troque de apps?";
 
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "Abrir imagem em uma nova aba";
@@ -1729,9 +1717,6 @@
 /* Description of the settings option to sync folders with the server automatically, every 4 hours. */
 "playList.sharedFolderSyncAutomaticallyDescription" = "Sincroniza automaticamente todas as pastas da playlist";
 
-/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
-"playList.sharedFolderSyncAutomaticallyTitle" = "Sincronizar automaticamente pastas da playlist";
-
 /* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistActionDetailsTitle" = "Você pode abrir o item atual em uma nova aba ou compartilhá-lo por meio do menu de compartilhamento do sistema";
 
@@ -1875,9 +1860,6 @@
 
 /* Playlist menu item */
 "PlaylistMenuItem" = "Playlist";
-
-/* Description for closing a popover menu that is displayed. */
-"PopoverDefaultClose" = "Fechar menu de contexto";
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Fechar menu de proteções";
@@ -2114,22 +2096,22 @@
 "recently.closed.action.clear" = "Limpar";
 
 /* Confirmation message for Clear Button action inside Recently Closed Tabs */
-"recently.closed.confirmation.clear.title" = "Limpar todas as guias recentemente fechadas?";
+"recently.closed.confirmation.clear.title" = "Limpar todos os separadores fechados recentemente?";
 
 /* Title for empty screen Recently Closed Tabs */
-"recently.closed.empty.list.title" = "Nenhuma guia recentemente fechada.";
+"recently.closed.empty.list.title" = "Nenhum separador fechado recentemente.";
 
 /* Open Tab action title */
 "recently.closed.open" = "Abrir";
 
 /* Description for alert to ask user for opening last closed tab in list */
-"recently.closed.shake.description" = "Quer abrir a última guia fechada?";
+"recently.closed.shake.description" = "Pretende abrir o último separador fechado?";
 
 /* Action item title of long press for Opening recently closed tab view */
-"recently.closed.title" = "Guias fechadas recentemente";
+"recently.closed.title" = "Separadores fechados recentemente";
 
 /* Action item title of long press for Opening recently closed tab view */
-"recently.closed.view.tab" = "Exibir guias recentemente fechadas";
+"recently.closed.view.tab" = "Ver separadores fechados recentemente";
 
 /* Recent Search Clear Button */
 "RecentSearchClear" = "Limpar";
@@ -2254,71 +2236,8 @@
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Obrigado por apoiar os criadores do conteúdo que você acessa!";
 
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonCompletedTitle" = "A transferência da sua carteira legada foi concluída.";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonDelayedTitle" = "A transferência da sua carteira legada foi adiada…";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonInProgressTitle" = "A transferência da sua carteira legada está em andamento.";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonInvalidTitle" = "A transferência da sua carteira legada é inválida.";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonPendingTitle" = "O status da transferência da sua carteira legada está pendente.";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusCompletedBody" = "A transferência da sua carteira legada foi concluída. Seu saldo atual poderá levar alguns minutos para ser exibido na sua carteira do Brave Rewards para computador.";
-
-/* Title shown above body of text explaining that their transfer is completed */
-"rewards.legacyWalletTransferStatusCompletedTitle" = "Transferência concluída!";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusDelayedBody" = "A transferência da sua carteira legada foi adiada e poderá levar alguns minutos para ser retomada.";
-
-/* Title shown above body of text explaining that their transfer is delayed */
-"rewards.legacyWalletTransferStatusDelayedTitle" = "Transferência adiada";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusInProgressBody" = "A transferência da sua carteira legada está em andamento, e sua conclusão poderá levar alguns minutos.";
-
-/* Title shown above body of text explaining that their transfer is in progress */
-"rewards.legacyWalletTransferStatusInProgressTitle" = "Transferência em andamento";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusInvalidBody" = "A transferência da sua carteira legada é inválida e não poderá ser concluída.";
-
-/* Title shown above body of text explaining that their transfer is invalid */
-"rewards.legacyWalletTransferStatusInvalidTitle" = "Transferência inválida";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusPendingBody" = "O status da transferência da sua carteira legada está pendente, e o processamento deverá ser iniciado em breve.";
-
-/* Title shown above body of text explaining that their transfer is pending */
-"rewards.legacyWalletTransferStatusPendingTitle" = "Transferência pendente";
-
-/* Completed as in: stating that the status of the users transfer is in completed */
-"rewards.legacyWalletTransferStatusShortformCompleted" = "Concluída!";
-
-/* Delayed as in: stating that the status of the users transfer is in delayed */
-"rewards.legacyWalletTransferStatusShortformDelayed" = "Adiada";
-
-/* In Progress as in: stating that the status of the users transfer is in progress */
-"rewards.legacyWalletTransferStatusShortformInProgress" = "Em andamento";
-
-/* Invalid as in: stating that the status of the users transfer is invalid */
-"rewards.legacyWalletTransferStatusShortformInvalid" = "Inválida";
-
-/* Pending as in: stating that the status of the users transfer is pending */
-"rewards.legacyWalletTransferStatusShortformPending" = "Pendente";
-
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Ao clicar, você concorda com os %1$@ e a %2$@. Desative quando quiser nas Configurações.";
-
-/* No comment provided by engineer. */
-"rewards.settingsFooterMessage" = "Os pagamentos do Brave Rewards estão temporariamente indisponíveis neste dispositivo. Para manter seus tokens, transfira os fundos da sua carteira atual para uma carteira para computador.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Ative o Brave Private Ads para apoiar criadores de conteúdo e editores com a exibição de anúncios que respeitam sua privacidade.";
@@ -2331,9 +2250,6 @@
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Número de criadores de conteúdo que você está apoiando neste mês.";
-
-/* No comment provided by engineer. */
-"rewards.transferNoLongerAvailableWarningMessage" = "Use a transferência de carteira até 13 de março de 2021. Esse recurso não estará disponível depois dessa data.";
 
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "Este criador de conteúdo não foi verificado e não será incluído no apoio a criadores";
@@ -2435,9 +2351,6 @@
 "RewardsInternalsLegacyPromotion" = "Promoção legada";
 
 /* No comment provided by engineer. */
-"RewardsInternalsLegacyWalletHasTransferrableBalance" = "Tem saldo transferível";
-
-/* No comment provided by engineer. */
 "RewardsInternalsLegacyWalletInfoHeader" = "Informações de carteira legada";
 
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
@@ -2492,9 +2405,6 @@
 "RewardsInternalsRewardsTypeRecurringTip" = "Contribuição recorrente";
 
 /* No comment provided by engineer. */
-"RewardsInternalsSharableBasicDescription" = "Informações de carteira, dispositivo e saldo (sempre compartilhadas)";
-
-/* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "Informações básicas";
 
 /* No comment provided by engineer. */
@@ -2517,9 +2427,6 @@
 
 /* 'Rewards' as in 'Brave Rewards' */
 "RewardsInternalsShareInternalsTitle" = "Compartilhar dados internos do Rewards";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharingWarningMessage" = "É possível que os dados desta página sejam confidenciais. Trate-os como se fossem as chaves privadas da sua carteira. Tenha cautela ao compartilhá-los com outras pessoas.";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharingWarningTitle" = "Aviso";
@@ -2550,15 +2457,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsVersion" = "Versão";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletCreationDate" = "Data de criação da carteira";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletInfoHeader" = "Informações da carteira";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletPaymentID" = "ID de pagamento da carteira";
 
 /* Button to show the rewards panel */
 "RewardsPanel" = "Painel do Rewards";
@@ -2776,18 +2674,6 @@
 /* shields overview footer message */
 "ShieldsOverviewFooter" = "Observação: como é possível que alguns sites exijam scripts para funcionar corretamente, esta proteção está desativada por padrão.";
 
-/* Time Saved Days */
-"ShieldsTimeStatsDays" = "d";
-
-/* Time Saved Hours */
-"ShieldsTimeStatsHour" = "h";
-
-/* Time Saved Minutes */
-"ShieldsTimeStatsMinutes" = "min";
-
-/* Time Saved Seconds */
-"ShieldsTimeStatsSeconds" = "s";
-
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Nova guia privada";
 
@@ -2987,7 +2873,7 @@
 "sync.syncConfigurationInformationText" = "Gerencie quais informações você quer sincronizar entre dispositivos. Essas configurações só afetarão este dispositivo.";
 
 /* Title for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccount" = "Eliminar a conta da Sincronização";
+"sync.syncDeleteAccount" = "Eliminar a conta da sincronização";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart1" = "Eliminar a conta irá remover os seus dados encriptados dos servidores do Brave e desativará a Sincronização em todos os seus dispositivos ligados. No entanto, não serão eliminados os dados armazenados localmente nesses dispositivos.";
@@ -3419,7 +3305,7 @@
 "today.suggestedSourcesButtonSubtitle" = "Algumas fontes das quais você pode gostar";
 
 /* A button title that when tapped shows users a list of news sources that are suggested based on the ones they currently follow */
-"today.suggestedSourcesButtonTitle" = "Sugeridas";
+"today.suggestedSourcesButtonTitle" = "Sugerido";
 
 /* A title at the top of the screen that shows a list of the news content the user is being suggested */
 "today.suggestedTitle" = "Sugerido";
@@ -3432,9 +3318,6 @@
 
 /* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
 "today.userSourcesHeaderTitle" = "Fontes do usuário";
-
-/* Shields Trackers Stat */
-"TrackersrBlocked" = "Rastreadores \nbloqueados";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Ativar as sugestões de pesquisa?";
@@ -3622,6 +3505,9 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "Tecnologia de";
 
+/* Title for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorTitle" = "Erro de servidor";
+
 /* Description of what automatic server selection does. */
 "vpn.regionPickerAutomaticDescription" = "A região de servidor mais próxima de você será selecionada automaticamente com base no fuso horário do seu sistema. Isso é recomendado para garantir uma velocidade de internet mais rápida.";
 
@@ -3650,7 +3536,7 @@
 "vpn.restorePurchases" = "Restaurar";
 
 /* Alert description to show when the VPN session has expired */
-"vpn.sessionExpiredDescription" = "Inicie sessão na sua conta Brave para atualizar sua sessão de VPN.";
+"vpn.sessionExpiredDescription" = "Inicie sessão na sua conta Brave para atualizar a sessão da VPN.";
 
 /* Dismiss button to close the alert showing that the vpn session has expired */
 "vpn.sessionExpiredDismissButton" = "Dispensar";
@@ -3663,9 +3549,6 @@
 
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "Faça o upgrade para uma VPN para proteger sua conexão e bloquear rastreadores invasivos em qualquer lugar.";
-
-/* Button to change VPN server location */
-"vpn.settingsChangeLocation" = "Alterar local";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Entrar em contato com o suporte técnico";
@@ -3691,7 +3574,7 @@
 /* Table cell title for vpn's server host */
 "vpn.settingsServerHost" = "Host";
 
-/* Table cell title for vpn's server location */
+/* Table cell title for vpn's server location and which open opens location select */
 "vpn.settingsServerLocation" = "Local";
 
 /* Header title for vpn settings server section. */

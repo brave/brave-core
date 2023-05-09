@@ -43,12 +43,6 @@
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Annonser och spårare";
 
-/* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Spårare och annonser blockerade";
-
-/* Shields Ads Stat */
-"AdsrBlocked" = "Blockerade \nannonser";
-
 /* Setting to always request the desktop version of a website. */
 "AlwaysRequestDesktopSite" = "Begär alltid skrivbordsplats";
 
@@ -631,9 +625,6 @@
 /* The success message that appears after a user sucessfully adds a new search engine */
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "Lagt till sökmotor!";
 
-/* Data Saved Shield Stat */
-"DataSavedStat" = "Uppskattade data\nsparade";
-
 /* Button text to close the default browser popup. */
 "defaultBrowserCallout.introCancelButtonText" = "Inte nu";
 
@@ -804,9 +795,6 @@
 
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "Fortsätt till %@ (inte säkert)";
-
-/* Shields Time Saved Stat */
-"EstTimerSaved" = "Uppskattad tid \nsparad";
 
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ startar ett externt program";
@@ -1729,9 +1717,6 @@
 /* Description of the settings option to sync folders with the server automatically, every 4 hours. */
 "playList.sharedFolderSyncAutomaticallyDescription" = "Synkronisera alla dina mappar med spellistor automatiskt";
 
-/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
-"playList.sharedFolderSyncAutomaticallyTitle" = "Synkronisera mappar med spellistor automatiskt";
-
 /* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistActionDetailsTitle" = "Du kan öppna det aktuella objektet på en ny flik eller dela det via systemdelningsmenyn";
 
@@ -1865,7 +1850,7 @@
 "playlistFolderSharing.offlineManagementViewTitle" = "Hantering av data för spellistor";
 
 /* Menu Title for renaming a folder */
-"playlistFolderSharing.renameMenuTitle" = "Ändra namn";
+"playlistFolderSharing.renameMenuTitle" = "Byt namn";
 
 /* Menu Title for saving offline data/cache */
 "playlistFolderSharing.saveOfflineDataMenuTitle" = "Spara offlinedata";
@@ -1875,9 +1860,6 @@
 
 /* Playlist menu item */
 "PlaylistMenuItem" = "Spellista";
-
-/* Description for closing a popover menu that is displayed. */
-"PopoverDefaultClose" = "Stäng kontextmenyn";
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Stäng sköldmenyn";
@@ -2254,71 +2236,8 @@
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Tack för att du stödjer innehållsskapare när du surfar!";
 
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonCompletedTitle" = "Din äldre plånboksöverföring har slutförts!";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonDelayedTitle" = "Din äldre plånboksöverföring har försenats ...";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonInProgressTitle" = "Din äldre plånboksöverföring pågår";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonInvalidTitle" = "Din äldre plånboksöverföring är ogiltig";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonPendingTitle" = "Statusen för din äldre plånboksöverföring är väntande";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusCompletedBody" = "Din äldre plånboksöverföring är slutförd! Ditt befintliga saldo kan fortfarande dröja flera minuter innan det visas i din Brave Rewards-plånbok på dator.";
-
-/* Title shown above body of text explaining that their transfer is completed */
-"rewards.legacyWalletTransferStatusCompletedTitle" = "Överföring slutförd!";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusDelayedBody" = "Din äldre plånboksöverföring har försenats och det kan ta flera minuter innan den återupptas.";
-
-/* Title shown above body of text explaining that their transfer is delayed */
-"rewards.legacyWalletTransferStatusDelayedTitle" = "Överföring försenad";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusInProgressBody" = "Din äldre plånboksöverföring pågår och kan ta flera minuter att slutföra.";
-
-/* Title shown above body of text explaining that their transfer is in progress */
-"rewards.legacyWalletTransferStatusInProgressTitle" = "Överföring pågår";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusInvalidBody" = "Din äldre plånboksöverföring kan inte slutföras";
-
-/* Title shown above body of text explaining that their transfer is invalid */
-"rewards.legacyWalletTransferStatusInvalidTitle" = "Överföring ogiltig";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusPendingBody" = "Statusen för din äldre plånboksöverföring är väntande och bör börja behandlas inom kort.";
-
-/* Title shown above body of text explaining that their transfer is pending */
-"rewards.legacyWalletTransferStatusPendingTitle" = "Överföring väntande";
-
-/* Completed as in: stating that the status of the users transfer is in completed */
-"rewards.legacyWalletTransferStatusShortformCompleted" = "Slutförd!";
-
-/* Delayed as in: stating that the status of the users transfer is in delayed */
-"rewards.legacyWalletTransferStatusShortformDelayed" = "Försenad";
-
-/* In Progress as in: stating that the status of the users transfer is in progress */
-"rewards.legacyWalletTransferStatusShortformInProgress" = "Pågående";
-
-/* Invalid as in: stating that the status of the users transfer is invalid */
-"rewards.legacyWalletTransferStatusShortformInvalid" = "Ogiltig";
-
-/* Pending as in: stating that the status of the users transfer is pending */
-"rewards.legacyWalletTransferStatusShortformPending" = "Väntande";
-
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Genom att klicka godkänner du %1$@ och %2$@. Inaktivera när som helst i Inställningar.";
-
-/* No comment provided by engineer. */
-"rewards.settingsFooterMessage" = "Brave Rewards-utbetalningar är tillfälligt otillgängliga på den här enheten. Överför dina befintliga plånboksmedel till en skrivbordsplånbok för att behålla dina tokens.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Stöd innehållsskapare och utgivare automatiskt genom att aktivera Brave Private Ads. Brave Private Ads är annonser som respekterar din sekretess och ger tillbaka till innehållsskapare.";
@@ -2331,9 +2250,6 @@
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Antal innehållsskapare som du hjälper till med att stödja den här månaden.";
-
-/* No comment provided by engineer. */
-"rewards.transferNoLongerAvailableWarningMessage" = "Använd plånboksöverföringen senast den 13 mars 2021. Plånboksöverföring är inte längre tillgänglig efter den 13 mars.";
 
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "Den här kreatören har inte verifierat och kommer inte att ingå i kreatörsstödet";
@@ -2435,9 +2351,6 @@
 "RewardsInternalsLegacyPromotion" = "Äldre marknadsföring";
 
 /* No comment provided by engineer. */
-"RewardsInternalsLegacyWalletHasTransferrableBalance" = "Har överförbar balans";
-
-/* No comment provided by engineer. */
 "RewardsInternalsLegacyWalletInfoHeader" = "Legacy Wallet Info";
 
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
@@ -2492,9 +2405,6 @@
 "RewardsInternalsRewardsTypeRecurringTip" = "Återkommande dricks";
 
 /* No comment provided by engineer. */
-"RewardsInternalsSharableBasicDescription" = "Plånbok, enhets- och saldoinformation (delas alltid)";
-
-/* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "Grundläggande information";
 
 /* No comment provided by engineer. */
@@ -2517,9 +2427,6 @@
 
 /* 'Rewards' as in 'Brave Rewards' */
 "RewardsInternalsShareInternalsTitle" = "Dela belöningar internt";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharingWarningMessage" = "Data på denna sida kan vara känsliga. Behandla dem på samma sätt som du skulle göra med din plånboks privata nycklar. Var försiktig med vem du delar dem med.";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharingWarningTitle" = "Varning";
@@ -2550,15 +2457,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsVersion" = "Version";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletCreationDate" = "Plånboken skapades";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletInfoHeader" = "Plånboksinformation";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletPaymentID" = "Plånboksbetalning-ID";
 
 /* Button to show the rewards panel */
 "RewardsPanel" = "Belöningspanel";
@@ -2775,18 +2673,6 @@
 
 /* shields overview footer message */
 "ShieldsOverviewFooter" = "Obs: Några webbplatser kan behöva skript för att fungera korrekt, därför är den här skölden avstängd som standard.";
-
-/* Time Saved Days */
-"ShieldsTimeStatsDays" = "d";
-
-/* Time Saved Hours */
-"ShieldsTimeStatsHour" = "h";
-
-/* Time Saved Minutes */
-"ShieldsTimeStatsMinutes" = "min";
-
-/* Time Saved Seconds */
-"ShieldsTimeStatsSeconds" = "s";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Ny privat flik";
@@ -3422,7 +3308,7 @@
 "today.suggestedSourcesButtonTitle" = "Förslag";
 
 /* A title at the top of the screen that shows a list of the news content the user is being suggested */
-"today.suggestedTitle" = "Föslag";
+"today.suggestedTitle" = "Förslag";
 
 /* No comment provided by engineer. */
 "today.turnOnBraveToday" = "Aktivera Brave News";
@@ -3432,9 +3318,6 @@
 
 /* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
 "today.userSourcesHeaderTitle" = "Användarkällor";
-
-/* Shields Trackers Stat */
-"TrackersrBlocked" = "Blockerade \nspårare";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Sätt på sökförslag?";
@@ -3622,6 +3505,9 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "Drivs av";
 
+/* Title for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorTitle" = "Serverfel";
+
 /* Description of what automatic server selection does. */
 "vpn.regionPickerAutomaticDescription" = "En serverregion som ligger närmast dig väljs automatiskt baserat på systemets tidszon. Detta rekommenderas för att säkerställa snabba internethastigheter.";
 
@@ -3664,9 +3550,6 @@
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "Uppgradera till VPN för att skydda din anslutning och blockera invasiva spårare överallt.";
 
-/* Button to change VPN server location */
-"vpn.settingsChangeLocation" = "Byt plats";
-
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Kontakta teknisk support";
 
@@ -3691,7 +3574,7 @@
 /* Table cell title for vpn's server host */
 "vpn.settingsServerHost" = "Värd";
 
-/* Table cell title for vpn's server location */
+/* Table cell title for vpn's server location and which open opens location select */
 "vpn.settingsServerLocation" = "Plats";
 
 /* Header title for vpn settings server section. */

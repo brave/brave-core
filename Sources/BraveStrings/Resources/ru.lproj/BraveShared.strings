@@ -1,5 +1,5 @@
 /* About settings section title */
-"About" = "О приложении";
+"About" = "О";
 
 /* The title of the screen explaining Brave Shields */
 "AboutBraveShields" = "О щитах Brave";
@@ -42,12 +42,6 @@
 
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Реклама и трекеры";
-
-/* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Трекеров и объявлений заблокировано";
-
-/* Shields Ads Stat */
-"AdsrBlocked" = "Реклам\nзаблокировано";
 
 /* Setting to always request the desktop version of a website. */
 "AlwaysRequestDesktopSite" = "Всегда открывать полную версию";
@@ -631,9 +625,6 @@
 /* The success message that appears after a user sucessfully adds a new search engine */
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "Поисковая система добавлена.";
 
-/* Data Saved Shield Stat */
-"DataSavedStat" = "Прим. данных\nСохранено";
-
 /* Button text to close the default browser popup. */
 "defaultBrowserCallout.introCancelButtonText" = "Не сейчас";
 
@@ -710,7 +701,7 @@
 "DownloadedFiles" = "Скачанные файлы";
 
 /* Title for downloads menu item */
-"DownloadsMenuItem" = "Скачанные файлы";
+"DownloadsMenuItem" = "Файлы для скачивания";
 
 /* Title for when a user has nothing downloaded onto their device, and the list is empty. */
 "DownloadsPanelEmptyStateTitle" = "Здесь будут показаны скачанные вами файлы";
@@ -804,9 +795,6 @@
 
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "Перейти на сайт %@ (небезопасно)";
-
-/* Shields Time Saved Stat */
-"EstTimerSaved" = "Времени\nсэкономлено";
 
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ запустит внешнее приложение.";
@@ -911,9 +899,6 @@
 "genericErrorTitle" = "Ошибка";
 
 /* No comment provided by engineer. */
-"GoogleSafeBrowsing" = "Блокировка опасных сайтов";
-
-/* No comment provided by engineer. */
 "GoogleSafeBrowsingUsingWebKitDescription" = "Отправляет обфусцированные URL-адреса некоторых страниц, которые вы посещали, в сервис \"Google Безопасный просмотр\", если есть угроза вашей безопасности.";
 
 /* Grand camera access */
@@ -953,7 +938,7 @@
 "HistoryScreenTitle" = "История";
 
 /* No comment provided by engineer. */
-"Home" = "Домашняя страница";
+"Home" = "Главная страница";
 
 /* No comment provided by engineer. */
 "HTTPSEverywhere" = "Переведите подключения на HTTPS";
@@ -1729,9 +1714,6 @@
 /* Description of the settings option to sync folders with the server automatically, every 4 hours. */
 "playList.sharedFolderSyncAutomaticallyDescription" = "Автоматически синхронизирует все папки плейлиста.";
 
-/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
-"playList.sharedFolderSyncAutomaticallyTitle" = "Автоматически синхронизировать папки плейлиста";
-
 /* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistActionDetailsTitle" = "Вы можете открыть текущий контент в новой вкладке или отправить его через меню «Поделиться»";
 
@@ -1847,7 +1829,7 @@
 "playlistFolderSharing.deletePlaylistMenuTitle" = "Удалить плейлист";
 
 /* Menu Title for editing a folder */
-"playlistFolderSharing.editMenuTitle" = "Редактировать";
+"playlistFolderSharing.editMenuTitle" = "Изменить";
 
 /* Accessibility Title for the playlist menu. */
 "playlistFolderSharing.menuButtonAccessibilityTitle" = "Кнопка «Меню плейлиста»";
@@ -1875,9 +1857,6 @@
 
 /* Playlist menu item */
 "PlaylistMenuItem" = "Плейлист";
-
-/* Description for closing a popover menu that is displayed. */
-"PopoverDefaultClose" = "Закрыть контекстное меню";
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Закрыть меню «Щиты»";
@@ -1997,7 +1976,7 @@
 "privacyHub.settingsSlearDataTitle" = "Удалить данные Щита";
 
 /* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
-"privacyHub.shieldsLabel" = "Shields";
+"privacyHub.shieldsLabel" = "Защита";
 
 /* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
 "privacyHub.vpnAlertEmailTrackerTypePlural" = "Трекеры электронной почты";
@@ -2051,7 +2030,7 @@
 "PrivateTabLink" = "Подробнее о вкладках инкогнито…";
 
 /* Default engine for private search. */
-"PrivateTabSearch" = "Вкладка инкогнито";
+"PrivateTabSearch" = "Приватная вкладка";
 
 /* QR Code section title */
 "QRCode" = "QR-код";
@@ -2254,71 +2233,8 @@
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Просматривая сайты, вы помогаете поддерживать создателей контента. Спасибо!";
 
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonCompletedTitle" = "Перенос устаревшего кошелька завершен";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonDelayedTitle" = "Перенос устаревшего кошелька был отложен";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonInProgressTitle" = "Выполняется перенос устаревшего кошелька";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonInvalidTitle" = "Перенести устаревший кошелек нельзя";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonPendingTitle" = "Обрабатывается статус переноса устаревшего кошелька";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusCompletedBody" = "Перенос устаревшего кошелька завершен. Средства появятся в веб-версии кошелька Brave Rewards в течение нескольких минут.";
-
-/* Title shown above body of text explaining that their transfer is completed */
-"rewards.legacyWalletTransferStatusCompletedTitle" = "Перенос завершен";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusDelayedBody" = "Перенос устаревшего кошелька продолжится через несколько минут.";
-
-/* Title shown above body of text explaining that their transfer is delayed */
-"rewards.legacyWalletTransferStatusDelayedTitle" = "Перенос отложен";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusInProgressBody" = "Перенос устаревшего кошелька завершится через несколько минут.";
-
-/* Title shown above body of text explaining that their transfer is in progress */
-"rewards.legacyWalletTransferStatusInProgressTitle" = "Перенос выполняется";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusInvalidBody" = "Перенести устаревший кошелек нельзя.";
-
-/* Title shown above body of text explaining that their transfer is invalid */
-"rewards.legacyWalletTransferStatusInvalidTitle" = "Перенос невозможен";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusPendingBody" = "Запрос на перенос устаревшего кошелька скоро начнет обрабатываться.";
-
-/* Title shown above body of text explaining that their transfer is pending */
-"rewards.legacyWalletTransferStatusPendingTitle" = "Выполняется перенос";
-
-/* Completed as in: stating that the status of the users transfer is in completed */
-"rewards.legacyWalletTransferStatusShortformCompleted" = "Завершено";
-
-/* Delayed as in: stating that the status of the users transfer is in delayed */
-"rewards.legacyWalletTransferStatusShortformDelayed" = "Отложено";
-
-/* In Progress as in: stating that the status of the users transfer is in progress */
-"rewards.legacyWalletTransferStatusShortformInProgress" = "Выполняется";
-
-/* Invalid as in: stating that the status of the users transfer is invalid */
-"rewards.legacyWalletTransferStatusShortformInvalid" = "Недоступно";
-
-/* Pending as in: stating that the status of the users transfer is pending */
-"rewards.legacyWalletTransferStatusShortformPending" = "Ожидание";
-
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Нажимая кнопку, вы принимаете следующие соглашения: %1$@ и %2$@. Вы можете в любое время изменить настройки.";
-
-/* No comment provided by engineer. */
-"rewards.settingsFooterMessage" = "Баллы Brave Rewards временно недоступны на этом устройстве. Чтобы не потерять их, перенесите средства из мобильного кошелька в кошелек на компьютере.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Включив Brave Private Ads, вы будете автоматически поддерживать издателей и создателей контента. Brave Private Ads — это реклама, которая не нарушает конфиденциальность ваших данных.";
@@ -2331,9 +2247,6 @@
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Количество создателей контента, которых вы поддерживаете в этом месяце.";
-
-/* No comment provided by engineer. */
-"rewards.transferNoLongerAvailableWarningMessage" = "Пожалуйста, перенесите кошелек до 13 марта 2021 года. Это невозможно будет сделать после указанного срока.";
 
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "Этот создатель контента не прошел проверку, поэтому поддержка для него недоступна.";
@@ -2435,9 +2348,6 @@
 "RewardsInternalsLegacyPromotion" = "Устаревшие бонусы";
 
 /* No comment provided by engineer. */
-"RewardsInternalsLegacyWalletHasTransferrableBalance" = "Есть средства, доступные для переноса.";
-
-/* No comment provided by engineer. */
 "RewardsInternalsLegacyWalletInfoHeader" = "Сведения об устаревшем кошельке";
 
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
@@ -2492,9 +2402,6 @@
 "RewardsInternalsRewardsTypeRecurringTip" = "Регулярное вознаграждение";
 
 /* No comment provided by engineer. */
-"RewardsInternalsSharableBasicDescription" = "Сведения о кошельке, устройстве и балансе (доступны всем)";
-
-/* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "Основная информация";
 
 /* No comment provided by engineer. */
@@ -2517,9 +2424,6 @@
 
 /* 'Rewards' as in 'Brave Rewards' */
 "RewardsInternalsShareInternalsTitle" = "Распространение внутренних данных о вознаграждениях Brave Rewards";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharingWarningMessage" = "На этой странице находится конфиденциальная информация. Защищайте ее так же, как закрытые ключи вашего электронного кошелька. Доверяйте эти данные только надежным людям.";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharingWarningTitle" = "Внимание!";
@@ -2550,15 +2454,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsVersion" = "Версия";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletCreationDate" = "Дата создания кошелька";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletInfoHeader" = "Сведения о кошельке";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletPaymentID" = "Платежный идентификатор кошелька";
 
 /* Button to show the rewards panel */
 "RewardsPanel" = "Панель Rewards";
@@ -2776,20 +2671,8 @@
 /* shields overview footer message */
 "ShieldsOverviewFooter" = "Примечание. Поскольку некоторым сайтам для работы необходимы скрипты, эта функция по умолчанию отключена.";
 
-/* Time Saved Days */
-"ShieldsTimeStatsDays" = "дн.";
-
-/* Time Saved Hours */
-"ShieldsTimeStatsHour" = "ч.";
-
-/* Time Saved Minutes */
-"ShieldsTimeStatsMinutes" = "мин.";
-
-/* Time Saved Seconds */
-"ShieldsTimeStatsSeconds" = "сек.";
-
 /* Quick Action for 3D-Touch on the Application Icon */
-"ShortcutItemTitleNewPrivateTab" = "Новая вкладка инкогнито";
+"ShortcutItemTitleNewPrivateTab" = "Новая Приватная вкладка";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewTab" = "Новая вкладка";
@@ -2939,7 +2822,7 @@
 "SiteReportedTitle" = "Спасибо!";
 
 /* Brave panel topmost title */
-"SiteShieldSettings" = "Shields";
+"SiteShieldSettings" = "Защита";
 
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "Пользуясь браузером Brave каждый день, я защищаю свои данные.";
@@ -2981,7 +2864,7 @@
 "sync.syncChainAlreadyDeletedAlertDescription" = "Не удалось присоединиться к цепи синхронизации, потому что аккаунт удален.";
 
 /* Alert title for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertTitle" = " Синхронизировать устройство";
+"sync.syncChainAlreadyDeletedAlertTitle" = "Синхронизировать устройство";
 
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.syncConfigurationInformationText" = "Выбирайте, какие данные вы хотите синхронизировать. Настройки действуют только на этом устройстве.";
@@ -3433,9 +3316,6 @@
 /* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
 "today.userSourcesHeaderTitle" = "Пользовательские источники";
 
-/* Shields Trackers Stat */
-"TrackersrBlocked" = "Трекеров\nзаблокировано";
-
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Включить подсказки при поиске?";
 
@@ -3622,6 +3502,9 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "При поддержке";
 
+/* Title for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorTitle" = "Ошибка сервера";
+
 /* Description of what automatic server selection does. */
 "vpn.regionPickerAutomaticDescription" = "Ближайшие к вам серверы будут выбраны автоматически. Они определятся по часовому поясу вашей системы, и это поможет установить высокую скорость интернет-соединения.";
 
@@ -3664,9 +3547,6 @@
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "Чтобы защищать соединение и блокировать трекеры на всех сайтах, вы можете приобрести VPN.";
 
-/* Button to change VPN server location */
-"vpn.settingsChangeLocation" = "Изменить";
-
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Обратиться в службу технической поддержки";
 
@@ -3691,7 +3571,7 @@
 /* Table cell title for vpn's server host */
 "vpn.settingsServerHost" = "Хост-сервер";
 
-/* Table cell title for vpn's server location */
+/* Table cell title for vpn's server location and which open opens location select */
 "vpn.settingsServerLocation" = "Местоположение";
 
 /* Header title for vpn settings server section. */
@@ -3818,7 +3698,7 @@
 "Yes" = "Да";
 
 /* An action (button title) that enables cookie consent blocking and dismisses the popup */
-"YesBlockCookieConsentNotices" = "Блокировать эти уведомления";
+"YesBlockCookieConsentNotices" = "Да, блокировать уведомления о согласии на использование файлов cookie";
 
 /* Button title to confirm the deletion of a bookmarks folder */
 "YesDeleteButtonTitle" = "Удалить";

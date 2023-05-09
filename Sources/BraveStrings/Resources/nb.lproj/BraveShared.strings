@@ -43,12 +43,6 @@
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Annonser og sporingsprogrammer";
 
-/* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Blokkerte sporere og annonser";
-
-/* Shields Ads Stat */
-"AdsrBlocked" = "Annonser \nblokkert";
-
 /* Setting to always request the desktop version of a website. */
 "AlwaysRequestDesktopSite" = "Be alltid om skrivebordsside";
 
@@ -631,9 +625,6 @@
 /* The success message that appears after a user sucessfully adds a new search engine */
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "La til søkemotor!";
 
-/* Data Saved Shield Stat */
-"DataSavedStat" = "Est. data \nlagret";
-
 /* Button text to close the default browser popup. */
 "defaultBrowserCallout.introCancelButtonText" = "Ikke nå";
 
@@ -804,9 +795,6 @@
 
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "Gå videre til %@ (kan være farlig)";
-
-/* Shields Time Saved Stat */
-"EstTimerSaved" = "Est. tid \nSpart";
 
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ vil starte en ekstern app";
@@ -1729,9 +1717,6 @@
 /* Description of the settings option to sync folders with the server automatically, every 4 hours. */
 "playList.sharedFolderSyncAutomaticallyDescription" = "Synkroniserer alle spillelistemappene dine automatisk";
 
-/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
-"playList.sharedFolderSyncAutomaticallyTitle" = "Synkroniser spillelistemapper automatisk";
-
 /* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistActionDetailsTitle" = "Du kan åpne det gjeldende elementet i en ny fane, eller dele det via systemdelingsmenyen";
 
@@ -1875,9 +1860,6 @@
 
 /* Playlist menu item */
 "PlaylistMenuItem" = "Spilleliste";
-
-/* Description for closing a popover menu that is displayed. */
-"PopoverDefaultClose" = "Lukk kontekstmenyen";
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Lukk Skjold-menyen";
@@ -2254,71 +2236,8 @@
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Takk for at du støtter innholdsskapere mens du er på nettet!";
 
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonCompletedTitle" = "Din overføring fra den gamle lommeboken er nå fullført!";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonDelayedTitle" = "Din overføring til Legacy-lommeboken har blitt forsinket ...";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonInProgressTitle" = "Din overføring til Legacy-lommeboken pågår";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonInvalidTitle" = "Din overføring fra den gamle lommeboken er ugyldig";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonPendingTitle" = "Din overføring til Legacy-lommeboken venter";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusCompletedBody" = "Din overføring til Legacy-lommeboken er ferdig! Det kan fortsatt ta flere minutter før den eksisterende saldoen din vises i Brave Rewards-lommeboken på skrivebordet.";
-
-/* Title shown above body of text explaining that their transfer is completed */
-"rewards.legacyWalletTransferStatusCompletedTitle" = "Overføring fullført!";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusDelayedBody" = "Overføringen fra Legacy-lommeboken din har blitt forsinket, og det kan ta flere minutter før den gjenopptas.";
-
-/* Title shown above body of text explaining that their transfer is delayed */
-"rewards.legacyWalletTransferStatusDelayedTitle" = "Overføring forsinket";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusInProgressBody" = "Overføringen fra Legacy-lommeboken din pågår, og det kan ta flere minutter før denne er fullført.";
-
-/* Title shown above body of text explaining that their transfer is in progress */
-"rewards.legacyWalletTransferStatusInProgressTitle" = "Overføring pågår";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusInvalidBody" = "Overføringen fra Legacy-lommeboken din er ugyldig og kan ikke fullføres";
-
-/* Title shown above body of text explaining that their transfer is invalid */
-"rewards.legacyWalletTransferStatusInvalidTitle" = "Overføring ugyldig";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusPendingBody" = "Overføringen fra Legacy-lommeboken din venter, og skal snart behandles.";
-
-/* Title shown above body of text explaining that their transfer is pending */
-"rewards.legacyWalletTransferStatusPendingTitle" = "Overføring venter";
-
-/* Completed as in: stating that the status of the users transfer is in completed */
-"rewards.legacyWalletTransferStatusShortformCompleted" = "Fullført!";
-
-/* Delayed as in: stating that the status of the users transfer is in delayed */
-"rewards.legacyWalletTransferStatusShortformDelayed" = "Forsinket";
-
-/* In Progress as in: stating that the status of the users transfer is in progress */
-"rewards.legacyWalletTransferStatusShortformInProgress" = "Pågår";
-
-/* Invalid as in: stating that the status of the users transfer is invalid */
-"rewards.legacyWalletTransferStatusShortformInvalid" = "Ugyldig";
-
-/* Pending as in: stating that the status of the users transfer is pending */
-"rewards.legacyWalletTransferStatusShortformPending" = "Venter";
-
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Ved å klikke, samtykker du til %1$@ og %2$@. Deaktiver dette når som helst i innstillingene.";
-
-/* No comment provided by engineer. */
-"rewards.settingsFooterMessage" = "Brave Rewards-utbetalinger er midlertidig utilgjengelige på denne enheten. Overfør midler fra din eksisterende lommebok til en stasjonær lommebok for å beholde tokener.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Støtt innholdsskapere og utgivere automatisk ved å aktivere Brave Private Ads. Brave Private Ads er annonser som respekterer personvern og som gir tilbake til innholdsskapere.";
@@ -2331,9 +2250,6 @@
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Antall innholdsskapere du støtter denne måneden.";
-
-/* No comment provided by engineer. */
-"rewards.transferNoLongerAvailableWarningMessage" = "Bruk lommebokoverføringen innen 13. mars 2021. Lommebokoverføringer vil ikke lenger være tilgjengelige etter 13. mars.";
 
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "Denne skaperen har ikke blitt verifisert og vil ikke bli inkludert i skaperstøtten";
@@ -2435,9 +2351,6 @@
 "RewardsInternalsLegacyPromotion" = "Legacy-kampanje";
 
 /* No comment provided by engineer. */
-"RewardsInternalsLegacyWalletHasTransferrableBalance" = "Har overførbar saldo";
-
-/* No comment provided by engineer. */
 "RewardsInternalsLegacyWalletInfoHeader" = "Informasjon om Legacy-lommebok";
 
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
@@ -2492,9 +2405,6 @@
 "RewardsInternalsRewardsTypeRecurringTip" = "Tilbakevendende tips";
 
 /* No comment provided by engineer. */
-"RewardsInternalsSharableBasicDescription" = "Lommebok, enhets- og saldoinformasjon (alltid delt)";
-
-/* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "Grunnleggende informasjon";
 
 /* No comment provided by engineer. */
@@ -2517,9 +2427,6 @@
 
 /* 'Rewards' as in 'Brave Rewards' */
 "RewardsInternalsShareInternalsTitle" = "Del Rewards Internals";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharingWarningMessage" = "Data på denne siden kan være sensitive. Behandle dem som du ville gjort med de private nøklene i lommeboken din. Vær forsiktig med hvem du deler dem med.";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharingWarningTitle" = "Advarsel";
@@ -2550,15 +2457,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsVersion" = "Versjon";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletCreationDate" = "Opprettelsesdato for lommebok";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletInfoHeader" = "Informasjon om lommebok";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletPaymentID" = "Lommebokens betalings-ID";
 
 /* Button to show the rewards panel */
 "RewardsPanel" = "Belønningspanel";
@@ -2775,18 +2673,6 @@
 
 /* shields overview footer message */
 "ShieldsOverviewFooter" = "Merknad: Det kan være at enkelte sider krever skripter for å fungere ordentlig, så dette skjoldet er slått av som standard.";
-
-/* Time Saved Days */
-"ShieldsTimeStatsDays" = "d";
-
-/* Time Saved Hours */
-"ShieldsTimeStatsHour" = "t";
-
-/* Time Saved Minutes */
-"ShieldsTimeStatsMinutes" = "min";
-
-/* Time Saved Seconds */
-"ShieldsTimeStatsSeconds" = "s";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Ny privat fane";
@@ -3433,9 +3319,6 @@
 /* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
 "today.userSourcesHeaderTitle" = "Brukerkilder";
 
-/* Shields Trackers Stat */
-"TrackersrBlocked" = "Sporingsprogrammer \nBlokkert";
-
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Slå på søkeforslag?";
 
@@ -3622,6 +3505,9 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "Drevet av";
 
+/* Title for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorTitle" = "Serverfeil";
+
 /* Description of what automatic server selection does. */
 "vpn.regionPickerAutomaticDescription" = "Serverregionen som er nærmest deg blir automatisk valgt, basert på tidssonen til systemet ditt. Dette anbefales for å sikre rask Internett-hastighet.";
 
@@ -3664,9 +3550,6 @@
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "Oppgrader til en VPN for å beskytte forbindelsen din og blokkere invasive sporere overalt.";
 
-/* Button to change VPN server location */
-"vpn.settingsChangeLocation" = "Endre plassering";
-
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Kontakt teknisk kundestøtte";
 
@@ -3691,7 +3574,7 @@
 /* Table cell title for vpn's server host */
 "vpn.settingsServerHost" = "Vert";
 
-/* Table cell title for vpn's server location */
+/* Table cell title for vpn's server location and which open opens location select */
 "vpn.settingsServerLocation" = "Sted";
 
 /* Header title for vpn settings server section. */
