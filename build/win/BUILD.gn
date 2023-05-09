@@ -1,4 +1,9 @@
-import("//brave/build/config.gni")
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("sign.gni")
 
 group("brave") {
   public_deps = [
@@ -23,22 +28,8 @@ copy("copy_pdb") {
   deps = [ "//chrome:reorder_imports" ]
 }
 
-action("create_signed_installer") {
-  script = "//brave/script/create-signed-installer.py"
-  inputs = [ "$root_out_dir/mini_installer.exe" ]
-  outputs = [
-    "$root_out_dir/brave_installer.exe",
-    "$root_out_dir/$brave_installer_exe",
-  ]
-  out_dir = rebase_path(root_out_dir, "//")
-  args = [
-    "--root_out_dir=$out_dir",
-    "--brave_installer_exe=$brave_installer_exe",
-  ]
-
-  if (skip_signing) {
-    args += [ "--skip_signing" ]
-  }
-
+sign("create_signed_installer") {
+  sources = [ "$root_out_dir/mini_installer.exe" ]
+  outputs = [ "$root_out_dir/$brave_installer_exe" ]
   deps = [ "//chrome/installer/mini_installer" ]
 }

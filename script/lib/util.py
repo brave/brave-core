@@ -214,15 +214,19 @@ def safe_mkdir(path):
 def execute(argv, env=os.environ):  # pylint: disable=dangerous-default-value
     if is_verbose_mode():
         print(' '.join(argv))
+    argv_string = argv if isinstance(argv, str) else ' '.join(argv)
     try:
         if sys.version_info.major == 2:
             process = subprocess.Popen(
                 argv, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                 universal_newlines=True)
         else:
-            process = subprocess.Popen(  # pylint: disable=unexpected-keyword-arg
-                argv, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                encoding='utf-8', universal_newlines=True)
+            process = subprocess.Popen(argv,
+                                       env=env,
+                                       stdout=subprocess.PIPE,
+                                       stderr=subprocess.PIPE,
+                                       encoding='utf-8',
+                                       universal_newlines=True)
         stdout, stderr = process.communicate()
         if is_verbose_mode() or process.returncode != 0:
             if sys.version_info.major == 2:
@@ -237,18 +241,19 @@ def execute(argv, env=os.environ):  # pylint: disable=dangerous-default-value
             # stdout and not stderr.
             print(printable_stdout)
             if process.returncode != 0:
-                raise RuntimeError('Command \'%s\' failed' % (' '.join(argv)),
+                raise RuntimeError('Command \'%s\' failed' % (argv_string),
                                    stderr)
         return stdout
     except subprocess.CalledProcessError as e:
         print('Error in subprocess:')
-        print(' '.join(argv))
+        print(argv_string)
         if sys.version_info.major > 2:
             print(e.stderr)  # pylint: disable=no-member
         raise e
 
 
-def execute_stdout(argv, env=os.environ):  # pylint: disable=dangerous-default-value
+# pylint: disable=dangerous-default-value
+def execute_stdout(argv, env=os.environ):
     if is_verbose_mode():
         print(' '.join(argv))
         try:

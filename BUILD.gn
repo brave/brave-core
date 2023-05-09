@@ -11,6 +11,7 @@ import("//build/config/zip.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//media/media_options.gni")
 import("//third_party/icu/config.gni")
+import("//third_party/widevine/cdm/widevine.gni")
 import("//tools/grit/repack.gni")
 import("//tools/v8_context_snapshot/v8_context_snapshot.gni")
 import("//ui/base/ui_features.gni")
@@ -26,6 +27,10 @@ if (!is_ios) {
 if (is_mac) {
   import("//brave/build/mac/tweak_info_plist.gni")
   import("//build/config/mac/rules.gni")
+}
+
+if (is_win) {
+  import("//brave/build/win/sign.gni")
 }
 
 if (is_linux) {
@@ -68,27 +73,80 @@ if (!is_ios) {
 }
 
 if (is_win) {
-  # create_installer_archive.py assumes that last_chrome_installer folder has
-  # courgette.exe. The original courgette.exe runs out of memory on Brave's
-  # binaries. As of January 2022, this seems to be a known issue and was
-  # confirmed by Chromium developers. The recommended workaround is to use
-  # another tool, Zucchini, as a drop-in replacement.
-  if (build_delta_installer) {
-    copy("copy_zucchini_binary_as_courgette") {
-      # 32 bit Zucchini runs into memory allocation errors when virtual memory
-      # utilization is high. Using the 64 bit version fixes this.
-      visibility = [ ":mini_installer_dependencies" ]
-      deps = [ "//components/zucchini:zucchini64" ]
-      sources = [ "$root_out_dir/zucchini64.exe" ]
-      outputs = [ "$root_out_dir/$last_chrome_installer/courgette64.exe" ]
+  packed_files_rc_file =
+      "$root_out_dir/gen/chrome/installer/mini_installer/packed_delta_files.rc"
+  action("delta_installer_archive") {
+    script = "//brave/tools/win/create_delta_archive.py"
+    inputs = [
+      # The original tool for delta archive generation was called "courgette".
+      # But it runs out of memory on recent Chromium / Brave revisions. Its
+      # drop-in replacement is Zucchini. We need to use its 64-bit version to
+      # again prevent out of memory errors.
+      "$root_out_dir/zucchini64.exe",
+      "$root_out_dir/chrome.7z",
+      "$root_out_dir/setup.exe",
+    ]
+    outputs = [
+      "$root_out_dir/chrome_patch.diff",
+      "$root_out_dir/chrome_patch.packed.7z",
+      "$root_out_dir/setup_patch.diff",
+      "$root_out_dir/setup_patch.packed.7z",
+      packed_files_rc_file,
+    ]
+    deps = [
+      "//chrome/installer/mini_installer:mini_installer_archive",
+      "//chrome/installer/setup:setup",
+      "//components/zucchini:zucchini64",
+    ]
+    args = [
+      "zucchini64.exe",
+      "$last_chrome_installer/chrome.7z",
+      "chrome.7z",
+      "$last_chrome_installer/setup.exe",
+      "setup.exe",
+      "chrome_patch.diff",
+      "chrome_patch.packed.7z",
+      "setup_patch.diff",
+      "setup_patch.packed.7z",
+      rebase_path(packed_files_rc_file, root_build_dir),
+    ]
+    if (is_component_build) {
+      args += [ "--is_component_build" ]
+    }
+  }
+
+  if (!skip_signing) {
+    sign("signed_setup_exe") {
+      sources = [ "$root_out_dir/setup.exe" ]
+      outputs = [ "$root_out_dir/presigned_binaries/setup.exe" ]
+      deps = [ "//chrome/installer/setup:setup" ]
+    }
+    sign("signed_brave_exe") {
+      sources = [ "$root_out_dir/brave.exe" ]
+      outputs = [ "$root_out_dir/presigned_binaries/brave.exe" ]
+      deps = [ "//brave/build/win:copy_exe" ]
+    }
+    sign("signed_chrome_dll") {
+      sources = [ "$root_out_dir/chrome.dll" ]
+      outputs = [ "$root_out_dir/presigned_binaries/chrome.dll" ]
+      deps = [ "//chrome:chrome_dll" ]
     }
   }
 
   group("mini_installer_dependencies") {
     deps = [ ":brave" ]
-
-    if (build_delta_installer) {
-      deps += [ ":copy_zucchini_binary_as_courgette" ]
+    if (!skip_signing) {
+      deps += [
+        ":signed_brave_exe",
+        ":signed_chrome_dll",
+        ":signed_setup_exe",
+      ]
+      if (enable_widevine && enable_cdm_host_verification) {
+        deps += [
+          "//brave/browser/widevine:brave_exe_sig",
+          "//brave/browser/widevine:chrome_dll_sig",
+        ]
+      }
     }
   }
 }
@@ -236,6 +294,10 @@ group("create_dist") {
 
     if (build_omaha) {
       deps += [ "//brave/vendor/omaha" ]
+    }
+
+    if (build_delta_installer) {
+      deps += [ "//chrome/installer/mini_installer:delta_installer" ]
     }
   }
   if (is_mac) {

@@ -1,22 +1,31 @@
 diff --git a/chrome/installer/mini_installer/BUILD.gn b/chrome/installer/mini_installer/BUILD.gn
-index 4e6af9a522de53d458664afe714961f3f246d9b7..ec52e00e7d08ded7368e9f5a92a88eca4d786922 100644
+index 4e6af9a522de53d458664afe714961f3f246d9b7..4ccfc5423297d5e56ae41f7d229181ae59465742 100644
 --- a/chrome/installer/mini_installer/BUILD.gn
 +++ b/chrome/installer/mini_installer/BUILD.gn
-@@ -13,6 +13,7 @@ import("//third_party/icu/config.gni")
- import("//tools/v8_context_snapshot/v8_context_snapshot.gni")
- import("//ui/base/ui_features.gni")
- import("//v8/gni/v8.gni")
-+import("//brave/build/config.gni")
+@@ -113,7 +113,7 @@ group("setup_runtime_deps") {
  
- declare_args() {
-   # The Chrome archive is maximally compressed in official builds to reduce the
-@@ -171,6 +172,9 @@ action("mini_installer_archive") {
-     "//mojo/core:shared_library",
-     "//third_party/icu:icudata",
+ packed_files_rc_file = "$target_gen_dir/mini_installer/packed_files.rc"
+ 
+-action("mini_installer_archive") {
++import("//brave/chromium_src/chrome/installer/mini_installer/build.gni") brave_mini_installer_archive_action("mini_installer_archive") {
+   script = "//chrome/tools/build/win/create_installer_archive.py"
+ 
+   release_file = "chrome.release"
+@@ -223,7 +223,7 @@ action("mini_installer_archive") {
    ]
-+  if (skip_signing) { args += [ "--skip_signing" ] }
-+  if (build_delta_installer) { args += [ "--setup_exe_format=DIFF", "--diff_algorithm=COURGETTE", "--last_chrome_installer",rebase_path("$root_out_dir/$last_chrome_installer", root_build_dir) ] }
-+  deps += [ "//brave:mini_installer_dependencies" ]
+ }
  
-   if (enable_hidpi) {
-     args += [ "--enable_hidpi=1" ]
+-executable("mini_installer") {
++template("mini_installer") { executable(target_name) {
+   sources = [
+     "mini_installer_exe_main.cc",
+     packed_files_rc_file,
+@@ -280,7 +280,7 @@ executable("mini_installer") {
+     no_default_deps = true
+     ldflags += [ "/ENTRY:MainEntryPoint" ]
+   }
+-}
++sources -= [packed_files_rc_file] sources += [invoker.packed_files_rc_file] if (defined(invoker.extra_deps)) { deps += invoker.extra_deps } }} mini_installer("mini_installer") { packed_files_rc_file = packed_files_rc_file } mini_installer("delta_installer") { packed_files_rc_file = "$target_gen_dir/packed_delta_files.rc" extra_deps = [ "//brave:delta_installer_archive" ] }
+ 
+ # previous_version_mini_installer.exe can't be generated in an x86 Debug
+ # component build because it requires too much memory.
