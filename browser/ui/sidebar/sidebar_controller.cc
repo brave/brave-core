@@ -31,7 +31,7 @@ namespace sidebar {
 
 namespace {
 
-static constexpr SidebarItem::BuiltInItemType kTabSpecificPanelTypes[] = {
+constexpr SidebarItem::BuiltInItemType kTabSpecificPanelTypes[] = {
     SidebarItem::BuiltInItemType::kChatUI};
 
 SidebarService* GetSidebarService(Browser* browser) {
@@ -94,12 +94,27 @@ void SidebarController::ActivateItemAt(absl::optional<size_t> index,
 
   // disengaged means there is no active item.
   if (!index) {
-    sidebar_model_->SetActiveIndex(index);
-    browser_active_panel_type_ = absl::nullopt;
-    if (helper) {
-      // This tab doesn't have a tab-specific panel now
-      helper->RegisterPanelInactive();
+    // If we are closing a tab-specific item, don't clear the global choice
+    bool is_tab_specific = false;
+    auto last_index =
+        sidebar_model_->active_index();
+    if (last_index.has_value()) {
+      DCHECK_LT(last_index.value(),
+          sidebar_model_->GetAllSidebarItems().size());
+      const auto& item = sidebar_model_->GetAllSidebarItems()[*last_index];
+      is_tab_specific =
+          base::Contains(kTabSpecificPanelTypes, item.built_in_item_type);
     }
+    if (is_tab_specific) {
+      // This tab doesn't have a tab-specific panel now
+      if (helper) {
+        helper->RegisterPanelInactive();
+      }
+    } else {
+      // Closing a global tab, don't remember to open it later
+      browser_active_panel_type_ = absl::nullopt;
+    }
+    sidebar_model_->SetActiveIndex(index);
     UpdateSidebarVisibility();
     return;
   }

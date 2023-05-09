@@ -439,6 +439,46 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat, TabSpecificPanel) {
   EXPECT_EQ(model()->active_index(), global_item_index);
 }
 
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat, TabSpecificPanelClosing) {
+  // Collect item indexes for test
+  constexpr auto kGlobalItemType = SidebarItem::BuiltInItemType::kBookmarks;
+  constexpr auto kTabSpecificItemType = SidebarItem::BuiltInItemType::kChatUI;
+  auto global_item_index = model()->GetIndexOf(kGlobalItemType);
+  ASSERT_TRUE(global_item_index.has_value());
+  auto tab_specific_item_index = model()->GetIndexOf(kTabSpecificItemType);
+  ASSERT_TRUE(tab_specific_item_index.has_value());
+  // Open 2 more tabs
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL("brave://newtab/"),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL("brave://newtab/"),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  ASSERT_EQ(tab_model()->GetTabCount(), 3);
+  // Open a "global" panel from Tab 0
+  tab_model()->ActivateTabAt(0);
+  SimulateSidebarItemClickAt(global_item_index.value());
+  // Open a "tab specific" panel from Tab 1
+  tab_model()->ActivateTabAt(1);
+  SimulateSidebarItemClickAt(tab_specific_item_index.value());
+  // Tab Specific panel should be open when Tab 1 is active
+  EXPECT_EQ(model()->active_index(), tab_specific_item_index);
+  // Close tab-specific panel
+  SimulateSidebarItemClickAt(tab_specific_item_index.value());
+  EXPECT_FALSE(model()->active_index().has_value());
+  // Global panel should be re-opened when Tab 0 is active
+  tab_model()->ActivateTabAt(0);
+  EXPECT_EQ(model()->active_index(), global_item_index);
+  // Close global panel
+  SimulateSidebarItemClickAt(global_item_index.value());
+  EXPECT_FALSE(model()->active_index().has_value());
+  // Global panel should be still be closed when Tab 2 is active
+  tab_model()->ActivateTabAt(2);
+  EXPECT_FALSE(model()->active_index().has_value());
+}
+
 class SidebarBrowserTestWithVerticalTabs : public SidebarBrowserTest {
  public:
   SidebarBrowserTestWithVerticalTabs() {
