@@ -71,8 +71,6 @@ public class BalanceHelper {
                         accountInfo.address, null);
                 jsonRpcService.getSolanaBalance(
                         accountInfo.address, selectedNetwork.chainId, context);
-            } else if (accountInfo.coin == CoinType.FIL) {
-                // TODO: FIL placeholder
             } else {
                 GetBalanceResponseContext context = addBalanceResponseContext(contexts,
                         new GetBalanceResponseContext(balancesMultiResponse.singleResponseComplete),
