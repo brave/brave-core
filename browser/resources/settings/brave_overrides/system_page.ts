@@ -27,8 +27,10 @@ RegisterPolymerComponentBehaviors({
 RegisterPolymerTemplateModifications({
   'settings-system-page': (templateContent) => {
     if (loadTimeData.getBoolean('areShortcutsSupported')) {
+      // Chromium's system section only has a root section but we want to add a
+      // subpage for shortcuts.
       // Get all of the non-style children - we want to move these into the
-      // default route, rather than always showing, otherwise, when we navigate,
+      // default route, rather than always showing, otherwise when we navigate,
       // we'll get all the toggles showing up.
       const nonStyleChildren = (
         Array.from(templateContent.children) as HTMLElement[]
