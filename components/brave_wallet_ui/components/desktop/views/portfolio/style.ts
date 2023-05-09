@@ -7,8 +7,18 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
 import { ArrowUpIcon } from 'brave-ui/components/icons'
-import { AssetIconProps, AssetIconFactory, WalletButton, Row } from '../../../shared/style'
+import {
+  AssetIconProps,
+  AssetIconFactory,
+  WalletButton,
+  Row,
+  Column
+} from '../../../shared/style'
 import More from '../../../extension/assets/actions.svg'
+import {
+  layoutSmallWidth,
+  layoutPanelWidth
+} from '../../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -317,8 +327,17 @@ export const MoreButton = styled(WalletButton)`
   mask-size: cover;
 `
 
-export const SelectTimelineWrapper = styled.div`
+export const SelectTimelineClickArea = styled.div`
   position: relative;
+`
+
+export const SelectTimelineWrapper = styled(Row)`
+  @media screen and (max-width: ${layoutSmallWidth}px) {
+    justify-content: flex-start;
+  }
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    justify-content: center;
+  }
 `
 
 export const SelectTimelinButton = styled(WalletButton)`
@@ -361,4 +380,30 @@ export const SelectTimelinButtonIcon = styled(Icon) <
 export const ControlsRow = styled(Row)`
   box-shadow: 0px -1px 1px rgba(0, 0, 0, 0.02);
   border-radius: 16px;
+`
+
+export const BalanceAndButtonsWrapper = styled(Column)`
+  @media screen and (max-width: ${layoutSmallWidth}px) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 24px 0px;
+  }
+`
+
+export const BalanceAndChangeWrapper = styled(Column)`
+  @media screen and (max-width: ${layoutSmallWidth}px) {
+    align-items: flex-start;
+  }
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 24px;
+  }
 `

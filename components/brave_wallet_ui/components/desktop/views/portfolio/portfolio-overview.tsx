@@ -72,6 +72,9 @@ import {
 } from '../../wallet-menus/line-chart-controls-menu'
 import ColumnReveal from '../../../shared/animated-reveals/column-reveal'
 import { NftView } from '../nfts/nft-view'
+import {
+  BuySendSwapDepositNav
+} from './components/buy-send-swap-deposit-nav/buy-send-swap-deposit-nav'
 
 // Styled Components
 import {
@@ -81,7 +84,10 @@ import {
   SelectTimelinButton,
   SelectTimelinButtonIcon,
   SelectTimelineWrapper,
-  ControlsRow
+  SelectTimelineClickArea,
+  ControlsRow,
+  BalanceAndButtonsWrapper,
+  BalanceAndChangeWrapper
 } from './style'
 import {
   Column,
@@ -336,80 +342,89 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
         fullWidth={true}
         justifyContent='flex-start'
       >
-        <Column
+        <BalanceAndButtonsWrapper
           fullWidth={true}
           alignItems='center'
-          padding='40px 0px'
+          padding='40px 32px'
         >
-          {formattedFullPortfolioFiatBalance !== '' ? (
-            <BalanceText>
-              {hidePortfolioBalances
-                ? '******'
-                : formattedFullPortfolioFiatBalance
-              }
-            </BalanceText>
-          ) : (
-            <Column padding='9px 0px'>
-              <LoadingSkeleton width={150} height={36} />
-            </Column>
-          )}
-          <Row
-            alignItems='center'
-            justifyContent='center'
-          >
+          <BalanceAndChangeWrapper>
             {formattedFullPortfolioFiatBalance !== '' ? (
-              <>
-                <FiatChange
-                  isDown={isPortfolioDown}
-                >
-                  {hidePortfolioBalances
-                    ? '*****'
-                    : `${isPortfolioDown
-                      ? ''
-                      : '+'}${fiatValueChange}`
-                  }
-                </FiatChange>
-                <PercentBubble
-                  isDown={isPortfolioDown}
-                >
-                  {hidePortfolioBalances
-                    ? '*****'
-                    : `${isPortfolioDown
-                      ? ''
-                      : '+'}${percentageChange}%`
-                  }
-                </PercentBubble>
-              </>
+              <BalanceText>
+                {hidePortfolioBalances
+                  ? '******'
+                  : formattedFullPortfolioFiatBalance
+                }
+              </BalanceText>
             ) : (
-              <>
-                <LoadingSkeleton width={55} height={24} />
-                <HorizontalSpace space='8px' />
-                <LoadingSkeleton width={55} height={24} />
-              </>
+              <Column padding='9px 0px'>
+                <LoadingSkeleton width={150} height={36} />
+              </Column>
             )}
-          </Row>
-        </Column>
-
+            <Row
+              alignItems='center'
+              justifyContent='center'
+              width='unset'
+            >
+              {formattedFullPortfolioFiatBalance !== '' ? (
+                <>
+                  <FiatChange
+                    isDown={isPortfolioDown}
+                  >
+                    {hidePortfolioBalances
+                      ? '*****'
+                      : `${isPortfolioDown
+                        ? ''
+                        : '+'}${fiatValueChange}`
+                    }
+                  </FiatChange>
+                  <PercentBubble
+                    isDown={isPortfolioDown}
+                  >
+                    {hidePortfolioBalances
+                      ? '*****'
+                      : `${isPortfolioDown
+                        ? ''
+                        : '+'}${percentageChange}%`
+                    }
+                  </PercentBubble>
+                </>
+              ) : (
+                <>
+                  <LoadingSkeleton width={55} height={24} />
+                  <HorizontalSpace space='8px' />
+                  <LoadingSkeleton width={55} height={24} />
+                </>
+              )}
+            </Row>
+          </BalanceAndChangeWrapper>
+          <BuySendSwapDepositNav />
+        </BalanceAndButtonsWrapper>
         <ColumnReveal hideContent={hidePortfolioGraph}>
           <SelectTimelineWrapper
-            ref={lineChartControlMenuRef}
+            padding='0px 32px'
           >
-            <SelectTimelinButton
-              onClick={() => setShowLineChartControlMenu(prev => !prev)}
+            <SelectTimelineClickArea
+              ref={lineChartControlMenuRef}
             >
-              {getLocale(
-                ChartTimelineOptions[selectedPortfolioTimeline].name
-              )}
-              <SelectTimelinButtonIcon
-                isOpen={showLineChartControlMenu}
-                name='carat-down'
-              />
-            </SelectTimelinButton>
-            {showLineChartControlMenu &&
-              <LineChartControlsMenu
-                onClick={onChangeTimeline}
-              />
-            }
+              <SelectTimelinButton
+                onClick={
+                  () => setShowLineChartControlMenu(prev => !prev)
+                }
+              >
+                {getLocale(
+                  ChartTimelineOptions[selectedPortfolioTimeline].name
+                )}
+                <SelectTimelinButtonIcon
+                  isOpen={showLineChartControlMenu}
+                  name='carat-down'
+                />
+              </SelectTimelinButton>
+              {showLineChartControlMenu &&
+                <LineChartControlsMenu
+                  onClick={onChangeTimeline}
+                />
+              }
+            </SelectTimelineClickArea>
           </SelectTimelineWrapper>
           <PortfolioOverviewChart
             hasZeroBalance={isZeroBalance}

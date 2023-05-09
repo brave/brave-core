@@ -7,6 +7,10 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
 import { WalletButton } from '../../shared/style'
+import {
+  layoutPanelWidth,
+  layoutSmallWidth
+} from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const StyledWrapper = styled.div<
   {
@@ -79,4 +83,15 @@ export const CheckBoxRow = styled.label`
   padding: 12px 8px;
   margin: 0px 0px 8px 0px;
   background-color: transparent;
+`
+
+export const LineChartWrapper = styled(StyledWrapper)`
+  @media screen and (max-width: ${layoutSmallWidth}px) {
+    left: 0px;
+    right: unset;
+  }
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    left: unset;
+    right: 0px;
+  }
 `
