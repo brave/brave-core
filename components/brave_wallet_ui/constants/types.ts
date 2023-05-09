@@ -227,6 +227,11 @@ export interface AssetPriceWithContractAndChainId extends BraveWallet.AssetPrice
   chainId: string
 }
 
+export interface UIState {
+  selectedPendingTransactionId?: string | undefined
+  transactionProviderErrorRegistry: TransactionProviderErrorRegistry
+}
+
 export interface WalletState {
   hasInitialized: boolean
   isFilecoinEnabled: boolean
@@ -331,11 +336,13 @@ export interface PageState {
 export interface WalletPageState {
   wallet: WalletState
   page: PageState
+  ui: UIState
 }
 
 export interface WalletPanelState {
   wallet: WalletState
   panel: PanelState
+  ui: UIState
 }
 
 export interface WalletInfoBase {
