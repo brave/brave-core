@@ -11,8 +11,9 @@
 class ShortcutsPage extends HTMLElement {
   connectedCallback() {
     this.attachShadow({ mode: 'open' })
-    import("/commands.bundle.js" as any)
-      .then(() => (window as any).mountCommands(this.shadowRoot))
+    import("/commands.bundle.js" as any).then(() => {
+      (window as any).mountCommands(this.shadowRoot)
+    })
   }
 }
 
