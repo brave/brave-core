@@ -219,10 +219,8 @@ class TestBraveWalletServiceObserver
 
   void OnNetworkListChanged() override { network_list_changed_fired_ = true; }
 
-  void OnDiscoverAssetsCompleted(
-      std::vector<mojom::BlockchainTokenPtr> discovered_assets) override {
-    on_discover_assets_completed_fired_ = true;
-  }
+  MOCK_METHOD1(OnDiscoverAssetsCompleted,
+               void(std::vector<mojom::BlockchainTokenPtr>));
 
   mojom::DefaultWallet GetDefaultEthereumWallet() {
     return default_ethereum_wallet_;
@@ -245,9 +243,6 @@ class TestBraveWalletServiceObserver
     return default_base_cryptocurrency_changed_fired_;
   }
   bool OnNetworkListChangedFired() { return network_list_changed_fired_; }
-  bool OnDiscoverAssetsCompletedFired() {
-    return on_discover_assets_completed_fired_;
-  }
 
   mojo::PendingRemote<brave_wallet::mojom::BraveWalletServiceObserver>
   GetReceiver() {
@@ -260,7 +255,6 @@ class TestBraveWalletServiceObserver
     default_base_currency_changed_fired_ = false;
     default_base_cryptocurrency_changed_fired_ = false;
     network_list_changed_fired_ = false;
-    on_discover_assets_completed_fired_ = false;
   }
 
  private:
@@ -273,7 +267,6 @@ class TestBraveWalletServiceObserver
   bool default_base_currency_changed_fired_ = false;
   bool default_base_cryptocurrency_changed_fired_ = false;
   bool network_list_changed_fired_ = false;
-  bool on_discover_assets_completed_fired_ = false;
   std::string currency_;
   std::string cryptocurrency_;
   mojo::Receiver<brave_wallet::mojom::BraveWalletServiceObserver>
@@ -2587,17 +2580,17 @@ TEST_F(BraveWalletServiceUnitTest, SetNftDiscoveryEnabled) {
 
   // Setting NFT discovery enabled should update the pref and trigger asset
   // discovery
+  EXPECT_CALL(*observer_, OnDiscoverAssetsCompleted(testing::_)).Times(1);
   service_->SetNftDiscoveryEnabled(true);
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(GetPrefs()->GetBoolean(kBraveWalletNftDiscoveryEnabled));
-  EXPECT_TRUE(observer_->OnDiscoverAssetsCompletedFired());
-  observer_->Reset();
 
   // Unsetting NFT discovery enabled should update the pref and not trigger
   // asset discovery
+  EXPECT_CALL(*observer_, OnDiscoverAssetsCompleted(testing::_)).Times(0);
   service_->SetNftDiscoveryEnabled(false);
+  base::RunLoop().RunUntilIdle();
   EXPECT_FALSE(GetPrefs()->GetBoolean(kBraveWalletNftDiscoveryEnabled));
-  EXPECT_FALSE(observer_->OnDiscoverAssetsCompletedFired());
 }
 
 TEST_F(BraveWalletServiceUnitTest, RecordGeneralUsageMetrics) {
