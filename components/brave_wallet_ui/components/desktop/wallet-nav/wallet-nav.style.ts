@@ -22,8 +22,6 @@ export const Wrapper = styled.div`
   overflow: visible;
   z-index: 10;
   padding: 0px 8px;
-  transition-duration: 0.1s;
-  transition-timing-function: ease;
   &:hover {
     --display-text: flex;
     --icon-margin-right: 16px;
@@ -38,7 +36,6 @@ export const Wrapper = styled.div`
     padding: 8px 0px;
     border-radius: 0px;
     box-shadow: 0px -8px 16px rgba(0, 0, 0, 0.04);
-    transition-duration: 0.5s;
     --display-text: flex;
     &:hover {
       --display-text: flex;
@@ -54,8 +51,6 @@ export const Section = styled.div<{ showBorder?: boolean }>`
   flex-direction: column;
   width: 100%;
   padding: 8px 0px;
-  transition-duration: inherit;
-  transition-timing-function: inherit;
   border-bottom: ${(p) => p.showBorder
     ? `1px solid var(--nav-border)`
     : 'none'};
@@ -72,8 +67,6 @@ export const Section = styled.div<{ showBorder?: boolean }>`
 export const PageOptionsWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  transition-duration: inherit;
-  transition-timing-function: inherit;
   @media screen and (max-width: ${layoutSmallWidth}px) {
     display: none;
   }
@@ -82,7 +75,6 @@ export const PageOptionsWrapper = styled.div`
 export const PanelOptionsWrapper = styled.div`
   display: none;
   width: 100%;
-  transition-duration: inherit;
   @media screen and (max-width: ${layoutSmallWidth}px) {
     display: flex;
   }
