@@ -145,16 +145,6 @@ public class CryptoModel {
             if (mKeyringService == null || mPendingTxHelper == null) {
                 return;
             }
-            // TODO(pav): uncomment the below and move to refreshTransactions.
-            // To process pending tx from all networks and full network name
-
-            //            mKeyringService.getKeyringsInfo(mSharedData.getEnabledKeyrings(),
-            //            keyringInfos -> {
-            //                List<AccountInfo> accountInfos =
-            //                        WalletUtils.getAccountInfosFromKeyrings(keyringInfos);
-            //                mPendingTxHelper.setAccountInfos(accountInfos);
-            //            });
-
             refreshTransactions();
 
             // Filter out a separate list of unapproved transactions
