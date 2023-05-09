@@ -14,6 +14,7 @@
 -All/DiceWebSigninInterceptorWithManagedDisclaimerForSyncPromoTest.*
 -All/ExtensionContextMenuModelWithUserHostControlsAndPermittedSitesTest.PageAccessItemsVisibilityBasedOnSiteSettings/*
 -All/PriceTrackingViewFeatureFlagTest.PriceTrackingViewCreation/*
+-All/PrintContentAnalysisUtilsTest.*/*
 -ApcScrimManagerImplTest.DisabledScrimCannotBeShown
 -ApcScrimManagerImplTest.HideDoesNotImmediatelySetOriginalAxMode
 -ApcScrimManagerImplTest.HideFocusOnTheWebContent
@@ -29,6 +30,8 @@
 -CustomizeChromeFeaturePromoHelperTest.MaybeShowCustomizeChromeFeaturePromoHelper
 -CustomizeChromeFeaturePromoHelperTest.RecordCustomizeChromeFeatureUsage
 -DownloadBubbleRowViewTest.CopyAcceleratorCopiesFile
+-DownloadBubbleRowViewTest.MainButtonPressed
+-DownloadBubbleRowViewTest.UpdateTimeFromCompletedDownload
 -ExtensionActionViewControllerFeatureUnitTest.*
 -ExtensionActionViewControllerFeatureWithPermittedSitesUnitTest.GetHoverCardStatus
 -ExtensionActionViewControllerGrayscaleTest.*
@@ -42,9 +45,10 @@
 -HighEfficiencyChipViewDiscardedTabTreatmentDisabledTest.ShouldNotExpandWhenFeatureIsDisabled
 -HighEfficiencyChipViewMemorySavingsImprovementsTest.*
 -HighEfficiencyChipViewTest.*
--HistoryClustersPageHandlerTest.OpenUrlsInTabGroup
--HistoryClustersPageHandlerCartTest.CheckClusterHasCart
 -IbanBubbleControllerImplTest.*
+-MandatoryReauthBubbleControllerImplTest.SuccessfullyInvokesAcceptCallback
+-MandatoryReauthBubbleControllerImplTest.SuccessfullyInvokesCancelCallback
+-MandatoryReauthBubbleControllerImplTest.SuccessfullyInvokesCloseCallback
 -PageLiveStateDecoratorHelperTabsTest.IsActiveTab
 -PageLiveStateDecoratorHelperTabsTest.IsPinnedTab
 -PeopleHandlerSignoutTest.RevokeSyncNotAllowed
@@ -52,6 +56,7 @@
 -PeopleHandlerSignoutTest.SignoutNotAllowedSyncOn
 -PeopleHandlerSignoutTest.SignoutWithSyncOff
 -PeopleHandlerSignoutTest.SignoutWithSyncOn
+-ProfileManagementNavigationThrottleTest.*
 -ProfileTokenNavigationThrottleTest.*
 -ProfileTokenWebSigninInterceptorTest.*
 -SavedTabGroupModelListenerTest.CreatesRemovesBrowserListener
@@ -190,6 +195,9 @@
 -CustomizeChromePageHandlerTest.*
 -CustomizeChromePageHandlerWithModulesTest.*
 -CWSInfoServiceTest.*
+-LocalTabHandlerTest.*
+-PermissionPromptBubbleTwoOriginsViewTest.DiesIfPermissionNotAllowed
+-PermissionPromptBubbleTwoOriginsViewTest.TitleMentionsTwoOriginsAndPermission
 -SavedTabGroupKeyedServiceUnitTest.*
 -TabLifecycleUnitTest.CannotDiscardPictureInPictureWindow
 
@@ -197,6 +205,8 @@
 # of CONTENT_SETTING_DEFAULT which is not allowed as an integer value by
 # content_settings::ParseContentSettingValue
 # https://github.com/brave/brave-browser/issues/25733
+-SafetyHubHandlerTest.HandleAcknowledgeRevokedUnusedSitePermissionsList
+-SafetyHubHandlerTest.HandleAllowPermissionsAgainForUnusedSite
 -SiteSettingsPermissionsHandlerTest.HandleAcknowledgeRevokedUnusedSitePermissionsList
 -SiteSettingsPermissionsHandlerTest.HandleAllowPermissionsAgainForUnusedSite
 
@@ -274,6 +284,8 @@
 -ChromePingManagerFactoryTest.ShouldFetchAccessTokenForReport_Yes
 
 # These fail because we have journeys/history clusters disabled.
+-HistoryClustersHandlerTest.OpenVisitUrlsInTabGroup
+-HistoryClustersPageHandlerCartTest.CheckClusterHasCart
 -HistoryClustersPageHandlerTest.*
 
 # These fail because we override IdentityManager::GetAccountsInCookieJar
@@ -303,6 +315,10 @@
 # This test fails because we disable page_info::kPageInfoCookiesSubpage
 -PageInfoBubbleViewCookiesSubpageTest.TextsOnButtonsAreCorrect
 
+# This test fails because we insert our own bookmarks submenu into the app menu
+# model
+-TestAppMenuModelCR2023.ModelHasIcons
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.*
@@ -318,6 +334,7 @@
 -ActivityLogTestWithoutSwitch.*
 -All/ActionTrackerTest.*
 -All/ChromeLabs*Test.*
+-All/ContentAnalysisPrintPreviewHandlerTest.LocalScanBeforePrinting/*
 -All/EnterpriseProfileWelcomeHandleProceedTest.HandleProceed/*
 -All/ExtensionActionAPIUnitTest.*
 -All/ExtensionContextMenuModelWithUserHostControlsTest.PageAccessItemsVisibilityBasedOnSiteSettings/*
