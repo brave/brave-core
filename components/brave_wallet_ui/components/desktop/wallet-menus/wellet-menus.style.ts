@@ -6,7 +6,7 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
-import { WalletButton, Text } from '../../shared/style'
+import { WalletButton } from '../../shared/style'
 
 export const StyledWrapper = styled.div<
   {
@@ -79,8 +79,4 @@ export const CheckBoxRow = styled.label`
   padding: 12px 8px;
   margin: 0px 0px 8px 0px;
   background-color: transparent;
-`
-
-export const SectionTitle = styled(Text)`
-  text-transform: uppercase;
 `

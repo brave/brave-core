@@ -5,21 +5,9 @@
 
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
-import Checkbox from '@brave/leo/react/checkbox'
-
-// Selectors
-import {
-  useSafeWalletSelector
-} from '../../../common/hooks/use-safe-selector'
-import {
-  WalletSelectors
-} from '../../../common/selectors'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
-import {
-  LOCAL_STORAGE_KEYS
-} from '../../../common/constants/local-storage-keys'
 
 // actions
 import { WalletActions } from '../../../common/actions'
@@ -34,13 +22,10 @@ import {
   PopupButton,
   PopupButtonText,
   ButtonIcon,
-  CheckBoxRow,
-  SectionTitle
 } from './wellet-menus.style'
 import {
   VerticalDivider,
   VerticalSpace,
-  Row
 } from '../../shared/style'
 
 export interface Props {
@@ -48,7 +33,6 @@ export interface Props {
   onClickBackup?: () => void
   onClosePopup?: () => void
   yPosition?: number
-  isPanel?: boolean
 }
 
 export const WalletSettingsMenu = (props: Props) => {
@@ -56,8 +40,7 @@ export const WalletSettingsMenu = (props: Props) => {
     onClickViewOnBlockExplorer,
     onClickBackup,
     onClosePopup,
-    yPosition,
-    isPanel
+    yPosition
   } = props
 
   // redux
@@ -66,41 +49,7 @@ export const WalletSettingsMenu = (props: Props) => {
   // queries
   const { data: selectedNetwork } = useGetSelectedChainQuery()
 
-  // redux
-  const hidePortfolioGraph =
-    useSafeWalletSelector(WalletSelectors.hidePortfolioGraph)
-  const hidePortfolioBalances =
-    useSafeWalletSelector(WalletSelectors.hidePortfolioBalances)
-
   // methods
-  const onToggleHideGraph = React.useCallback(() => {
-    window.localStorage.setItem(
-      LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN,
-      hidePortfolioGraph
-        ? 'false'
-        : 'true'
-    )
-    dispatch(
-      WalletActions
-        .setHidePortfolioGraph(
-          !hidePortfolioGraph
-        ))
-  }, [hidePortfolioGraph])
-
-  const onToggleHideBalances = React.useCallback(() => {
-    window.localStorage.setItem(
-      LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES,
-      hidePortfolioBalances
-        ? 'false'
-        : 'true'
-    )
-    dispatch(
-      WalletActions
-        .setHidePortfolioBalances(
-          !hidePortfolioBalances
-        ))
-  }, [hidePortfolioBalances])
-
   const lockWallet = React.useCallback(() => {
     dispatch(WalletActions.lockWallet())
   }, [])
@@ -206,65 +155,15 @@ export const WalletSettingsMenu = (props: Props) => {
         </PopupButton>
       }
 
+      <VerticalDivider />
+      <VerticalSpace space='8px' />
+
       <PopupButton onClick={onClickHelpCenter}>
         <ButtonIcon name='help-outline' />
         <PopupButtonText>
           {getLocale('braveWalletHelpCenter')}
         </PopupButtonText>
       </PopupButton>
-
-      {/* We can remove this prop once PanelV2 is ready. */}
-      {!isPanel &&
-        <>
-          <VerticalDivider />
-          <VerticalSpace space='14px' />
-
-          <Row
-            justifyContent='flex-start'
-            padding='0px 0px 0px 8px'
-            marginBottom={8}
-          >
-            <SectionTitle
-              textSize='12px'
-              textColor='text02'
-              textAlign='left'
-              isBold={true}
-            >
-              {getLocale(
-                'braveWalletWalletPopupPortfolioCustomizations'
-              )}
-            </SectionTitle>
-          </Row>
-
-          <CheckBoxRow onClick={onToggleHideBalances}>
-            <ButtonIcon name='eye-off' />
-            <PopupButtonText>
-              {getLocale('braveWalletWalletPopupHideBalances')}
-            </PopupButtonText>
-            <Checkbox
-              checked={hidePortfolioBalances}
-              onChanged={onToggleHideBalances}
-              size='normal'
-            />
-          </CheckBoxRow>
-
-          <CheckBoxRow onClick={onToggleHideGraph}>
-            <Row>
-              {/* This graph icon needs to be updated to the
-              one in figma once it is added to leo. */}
-              <ButtonIcon name='graph' />
-              <PopupButtonText>
-                {getLocale('braveWalletWalletPopupShowGraph')}
-              </PopupButtonText>
-            </Row>
-            <Checkbox
-              checked={!hidePortfolioGraph}
-              onChanged={onToggleHideGraph}
-              size='normal'
-            />
-          </CheckBoxRow>
-        </>
-      }
 
     </StyledWrapper>
   )
