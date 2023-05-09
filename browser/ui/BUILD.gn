@@ -487,6 +487,7 @@ source_set("ui") {
     "//brave/components/p3a_utils",
     "//brave/components/playlist/common/buildflags",
     "//brave/components/resources:static_resources",
+    "//brave/components/skus/browser",
     "//brave/components/skus/browser/resources:generated_resources",
     "//brave/components/skus/common",
     "//brave/components/skus/common:mojom",
@@ -541,6 +542,13 @@ source_set("ui") {
     "//ui/webui",
     "//url",
   ]
+
+  if (enable_brave_vpn) {
+    deps += [
+      "//brave/components/brave_vpn/browser",
+      "//brave/components/brave_vpn/common",
+    ]
+  }
 
   if (is_linux) {
     sources += [
@@ -834,8 +842,6 @@ source_set("ui") {
       "webui/brave_vpn/vpn_panel_ui.h",
     ]
     deps += [
-      "//brave/components/brave_vpn/browser",
-      "//brave/components/brave_vpn/common",
       "//brave/components/brave_vpn/common/mojom",
       "//brave/components/brave_vpn/resources:panel_resources",
       "//mojo/public/cpp/bindings",

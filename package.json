@@ -375,6 +375,7 @@
     "jszip": "^3.8.0",
     "prettier-bytes": "^1.0.4",
     "qr-image": "^3.2.0",
+    "react-json-view-lite": "^0.9.5",
     "react-router": "^5.2.1",
     "react-router-dom": "^5.3.0",
     "react-window": "^1.8.5",
