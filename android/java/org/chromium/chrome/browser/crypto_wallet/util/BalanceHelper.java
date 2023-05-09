@@ -260,9 +260,9 @@ public class BalanceHelper {
         for (NetworkInfo network : networks) {
             keyringService.getKeyringInfo(
                     AssetUtils.getKeyring(network.coin, network.chainId), keyringInfo -> {
-                        TokenUtils.getUserOrAllTokensFiltered(braveWalletService,
-                                blockchainRegistry, network, coinType, TokenUtils.TokenType.ALL,
-                                true, tokens -> {
+                        if (JavaUtils.anyNull(braveWalletService, blockchainRegistry)) return;
+                        TokenUtils.getUserAssetsFiltered(braveWalletService, network, coinType,
+                                TokenUtils.TokenType.ALL, tokens -> {
                                     AccountInfo[] accountInfoArray = keyringInfo.accountInfos;
 
                                     // Assets balances.
