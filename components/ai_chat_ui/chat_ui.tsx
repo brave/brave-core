@@ -54,9 +54,14 @@ function App () {
     )
   }
 
+  const shouldHideSummarizationButton = !!conversationHistory.length || isGenerating || hasSummarizationFailed
+  const shouldShowInput = !!conversationHistory.length
+
   const inputBox = (
     <InputBox
       value={value}
+      showSummarizeButton={!shouldHideSummarizationButton}
+      showInput={shouldShowInput}
       onInputChange={handleInputChange}
       onSubmit={handleSubmit}
       onKeyDown={handleSubmit}

@@ -15,7 +15,34 @@ interface ConversationListProps {
   isLoading: boolean
 }
 
+const elementScrollBehavior: ScrollIntoViewOptions = {
+  behavior: 'smooth',
+  block: 'start'
+}
+
 function ConversationList (props: ConversationListProps) {
+  // Scroll the last conversation item in to view when entries are added.
+  const lastConversationEntryElementRef = React.useRef<HTMLDivElement>(null)
+  const loadingElementRef = React.useRef<HTMLDivElement>(null)
+  React.useEffect(() => {
+    if (!props.list.length && !props.isLoading) {
+      return
+    }
+    if (props.isLoading) {
+      if (!loadingElementRef.current) {
+        console.error('Conversation loading element did not exist when expected')
+      } else {
+        loadingElementRef.current.scrollIntoView(elementScrollBehavior)
+      }
+      return
+    }
+    if (!lastConversationEntryElementRef.current) {
+      console.error('Conversation entry element did not exist when expected')
+    } else {
+      lastConversationEntryElementRef.current.scrollIntoView(elementScrollBehavior)
+    }
+  }, [props.list.length, props.isLoading])
+
   return (
     <div className={styles.list}>
       {props.list.map((turn, id) => {
@@ -24,8 +51,13 @@ function ConversationList (props: ConversationListProps) {
           [styles.turnHuman]: turn.characterType === CharacterType.HUMAN,
         })
 
+        const isLastEntry = (id === (props.list.length - 1))
+        const elementRef = isLastEntry
+          ? lastConversationEntryElementRef
+          : null
+
         return (
-          <div key={id} className={turnClass}>
+          <div key={id} ref={elementRef} className={turnClass}>
             <p>
               {turn.text}
             </p>
@@ -33,7 +65,7 @@ function ConversationList (props: ConversationListProps) {
         )
       })}
       {props.isLoading && (
-        <div className={styles.turnAI}>
+        <div className={styles.turnAI} ref={loadingElementRef}>
           <p>
             {getLocale('loadingLabel')}
             <span className={styles.caret}/>
