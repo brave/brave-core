@@ -103,7 +103,8 @@ OBJC_EXPORT
 
 /// Converts ABP rules/filter sets into Content Blocker rules that can be used
 /// with ``WKWebView``
-+ (NSString*)contentBlockerRulesFromFilterSet:(NSString*)filterSet;
++ (NSString*)contentBlockerRulesFromFilterSet:(NSString*)filterSet
+                                    truncated:(bool*)truncated;
 
 @end
 
