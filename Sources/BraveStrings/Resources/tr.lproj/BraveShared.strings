@@ -43,12 +43,6 @@
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Reklamlar ve İzleyiciler";
 
-/* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "İzleyiciler ve reklamlar engellendi";
-
-/* Shields Ads Stat */
-"AdsrBlocked" = "Reklam \nEngellendi";
-
 /* Setting to always request the desktop version of a website. */
 "AlwaysRequestDesktopSite" = "Masaüstü Sitesini Her Zaman İste";
 
@@ -631,9 +625,6 @@
 /* The success message that appears after a user sucessfully adds a new search engine */
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "Arama motoru eklendi!";
 
-/* Data Saved Shield Stat */
-"DataSavedStat" = "Tah. Veri \nMiktarı";
-
 /* Button text to close the default browser popup. */
 "defaultBrowserCallout.introCancelButtonText" = "Şimdi değil";
 
@@ -804,9 +795,6 @@
 
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "%@ sitesine devam et (güvenli değil)";
-
-/* Shields Time Saved Stat */
-"EstTimerSaved" = "Tah. Zaman \nMiktarı";
 
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ harici bir uygulama başlatacak";
@@ -1729,9 +1717,6 @@
 /* Description of the settings option to sync folders with the server automatically, every 4 hours. */
 "playList.sharedFolderSyncAutomaticallyDescription" = "Tüm oynatma listesi dosyalarını otomatik olarak senkronize eder";
 
-/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
-"playList.sharedFolderSyncAutomaticallyTitle" = "Oynatma listesi dosyalarını otomatik olarak senkronize et";
-
 /* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistActionDetailsTitle" = "Mevcut öğeyi Yeni Sekmede açabilir ya da Sistem Paylaşımı Menüsü aracılığıyla paylaşabilirsiniz";
 
@@ -1875,9 +1860,6 @@
 
 /* Playlist menu item */
 "PlaylistMenuItem" = "Oynatma listesi";
-
-/* Description for closing a popover menu that is displayed. */
-"PopoverDefaultClose" = "Bağlam Menüsünü Kapat";
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Kalkanlar Menüsünü Kapat";
@@ -2113,9 +2095,6 @@
 /* Title for Clear Button inside Recently Closed Tabs */
 "recently.closed.action.clear" = "Temizle";
 
-/* Confirmation message for Clear Button action inside Recently Closed Tabs */
-"recently.closed.confirmation.clear.title" = "Son Kapatılan Tüm Sekmeler Temizlensin mi?";
-
 /* Title for empty screen Recently Closed Tabs */
 "recently.closed.empty.list.title" = "Son Kapatılan Sekme Yok.";
 
@@ -2254,71 +2233,8 @@
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Gezinirken içerik oluşturucuları desteklemeye yardımcı olduğunuz için teşekkür ederiz!";
 
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonCompletedTitle" = "Eski cüzdan aktarımınız tamamlandı!";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonDelayedTitle" = "Eski cüzdan aktarımınz ertelendi...";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonInProgressTitle" = "Eski cüzdan aktarımınız devam ediyor";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonInvalidTitle" = "Eski cüzdan aktarımınız geçersiz";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonPendingTitle" = "Eski cüzdan aktarım durumunuz beklemede";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusCompletedBody" = "Eski cüzdan aktarımınız bitti! Mevcut bakiyenizin masaüstü Brave Ödülleri cüzdanınızda görünmesi birkaç dakika sürebilir.";
-
-/* Title shown above body of text explaining that their transfer is completed */
-"rewards.legacyWalletTransferStatusCompletedTitle" = "Aktarım Tamamlandı!";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusDelayedBody" = "Eski cüzdan aktarımınız ertelendi ve devam etmesi birkaç dakika sürebilir.";
-
-/* Title shown above body of text explaining that their transfer is delayed */
-"rewards.legacyWalletTransferStatusDelayedTitle" = "Aktarım Gecikti";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusInProgressBody" = "Eski cüzdan aktarımınız devam ediyor ve tamamlanması birkaç dakika sürebilir.";
-
-/* Title shown above body of text explaining that their transfer is in progress */
-"rewards.legacyWalletTransferStatusInProgressTitle" = "Aktarım Devam Ediyor";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusInvalidBody" = "Eski cüzdan aktarımınız geçersiz ve tamamlanamıyor";
-
-/* Title shown above body of text explaining that their transfer is invalid */
-"rewards.legacyWalletTransferStatusInvalidTitle" = "Aktarım Geçersiz";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusPendingBody" = "Eski cüzdan aktarım durumunuz beklemededir ve kısa süre içinde işlemin başlaması gerekir.";
-
-/* Title shown above body of text explaining that their transfer is pending */
-"rewards.legacyWalletTransferStatusPendingTitle" = "Aktarım Beklemede";
-
-/* Completed as in: stating that the status of the users transfer is in completed */
-"rewards.legacyWalletTransferStatusShortformCompleted" = "Tamamlandı!";
-
-/* Delayed as in: stating that the status of the users transfer is in delayed */
-"rewards.legacyWalletTransferStatusShortformDelayed" = "Gecikti";
-
-/* In Progress as in: stating that the status of the users transfer is in progress */
-"rewards.legacyWalletTransferStatusShortformInProgress" = "Devam Ediyor";
-
-/* Invalid as in: stating that the status of the users transfer is invalid */
-"rewards.legacyWalletTransferStatusShortformInvalid" = "Geçersiz";
-
-/* Pending as in: stating that the status of the users transfer is pending */
-"rewards.legacyWalletTransferStatusShortformPending" = "Beklemede";
-
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Tıkladığınızda %1$@ ve %2$@ içeriğini kabul etmiş olursunuz. Dilediğiniz zaman Ayarlar bölümünden devre dışı bırakın.";
-
-/* No comment provided by engineer. */
-"rewards.settingsFooterMessage" = "Brave Ödülleri ödemeleri bu cihazda geçici olarak kullanılamaz. Jetonlarınızı korumak için mevcut cüzdan paralarınızı bir masaüstü cüzdanına aktarın.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Brave Özel Reklamları'ni etkinleştirerek içerik oluşturucuları ve yayıncıları otomatik olarak destekleyin. Brave Özel Reklamları, içerik oluşturuculara geri veren gizliliğe saygılı reklamlardır.";
@@ -2331,9 +2247,6 @@
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Bu ay desteklemeye yardımcı olduğunuz içerik oluşturucuların sayısı.";
-
-/* No comment provided by engineer. */
-"rewards.transferNoLongerAvailableWarningMessage" = "Lütfen 13 Mart 2021'e kadar cüzdan aktarımını kullanın. Cüzdan aktarımı 13 Mart'tan sonra artık yapılmayacak.";
 
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "Bu içerik üretici, içerik üretici desteğini doğrulamadı ve desteğe dahil edilmeyecek";
@@ -2435,9 +2348,6 @@
 "RewardsInternalsLegacyPromotion" = "Eski Promosyon";
 
 /* No comment provided by engineer. */
-"RewardsInternalsLegacyWalletHasTransferrableBalance" = "Aktarılabilir Bakiyesi Var";
-
-/* No comment provided by engineer. */
 "RewardsInternalsLegacyWalletInfoHeader" = "Eski Cüzdan Bilgisi";
 
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
@@ -2492,9 +2402,6 @@
 "RewardsInternalsRewardsTypeRecurringTip" = "Yinelenen ipucu";
 
 /* No comment provided by engineer. */
-"RewardsInternalsSharableBasicDescription" = "Cüzdan, cihaz ve bakiye bilgileri (her zaman paylaşılan)";
-
-/* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "Temel Bilgi";
 
 /* No comment provided by engineer. */
@@ -2517,9 +2424,6 @@
 
 /* 'Rewards' as in 'Brave Rewards' */
 "RewardsInternalsShareInternalsTitle" = "Dahili Ödülleri Paylaş";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharingWarningMessage" = "Bu sayfadaki veriler hassas olabilir. Onlara cüzdanınızın özel anahtarları gibi davranın. Onları kiminle paylaştığınıza dikkat edin.";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharingWarningTitle" = "Uyarı";
@@ -2550,15 +2454,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsVersion" = "Sürüm";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletCreationDate" = "Cüzdan Oluşturma Tarihi";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletInfoHeader" = "Cüzdan Bilgisi";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletPaymentID" = "Cüzdan Ödeme Kimliği";
 
 /* Button to show the rewards panel */
 "RewardsPanel" = "Ödül Paneli";
@@ -2775,18 +2670,6 @@
 
 /* shields overview footer message */
 "ShieldsOverviewFooter" = "Not: Bazı siteler komut dosyalarının düzgün çalışmasını gerektirebilir, bu nedenle bu kalkan varsayılan olarak kapatılabilir.";
-
-/* Time Saved Days */
-"ShieldsTimeStatsDays" = "G";
-
-/* Time Saved Hours */
-"ShieldsTimeStatsHour" = "s";
-
-/* Time Saved Minutes */
-"ShieldsTimeStatsMinutes" = "dk";
-
-/* Time Saved Seconds */
-"ShieldsTimeStatsSeconds" = "sn";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Yeni Gizli Sekme";
@@ -3433,9 +3316,6 @@
 /* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
 "today.userSourcesHeaderTitle" = "Kullanıcı Kaynakları";
 
-/* Shields Trackers Stat */
-"TrackersrBlocked" = "İzleyiciler \nEngellenmiş";
-
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Arama önerileri açılsın mı?";
 
@@ -3622,6 +3502,9 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "Destekleyen";
 
+/* Title for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorTitle" = "Sunucu Hatası";
+
 /* Description of what automatic server selection does. */
 "vpn.regionPickerAutomaticDescription" = "Sistem saat diliminize bağlı olarak, size en yakın sunucu bölgesi otomatik olarak seçilir. Bu, yüksek internet hızları sağlamak için önerilir.";
 
@@ -3664,9 +3547,6 @@
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "Bağlantınızı korumak ve her yerde istilacı izleyicileri engellemek için bir VPN'e yükseltin.";
 
-/* Button to change VPN server location */
-"vpn.settingsChangeLocation" = "Konumu Değiştir";
-
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Teknik Desteğe Başvurun";
 
@@ -3691,7 +3571,7 @@
 /* Table cell title for vpn's server host */
 "vpn.settingsServerHost" = "Host";
 
-/* Table cell title for vpn's server location */
+/* Table cell title for vpn's server location and which open opens location select */
 "vpn.settingsServerLocation" = "Yer";
 
 /* Header title for vpn settings server section. */

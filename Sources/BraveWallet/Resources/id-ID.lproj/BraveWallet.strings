@@ -214,6 +214,18 @@
 /* A disclaimer that appears at the bottom of an asset detail screen which shows prices and price history. CoinGecko is a third-party product. */
 "wallet.coinGeckoDisclaimer" = "Data harga disediakan oleh CoinGecko";
 
+/* The title of the 24h volume of this coin from market. */
+"wallet.coinMarket24HVolume" = "Volume 24 jam";
+
+/* The header title of the section that display coin market information. */
+"wallet.coinMarketInformation" = "Informasi";
+
+/* The title of the market cap of this coin from market. */
+"wallet.coinMarketMarketCap" = "Kapitalisasi Pasar";
+
+/* The title of the rank of this coin from market. */
+"wallet.coinMarketRank" = "Peringkat";
+
 /* One of the coin types for users to create an account in Ethereum mainnet or any EVM networks. */
 "wallet.coinTypeEthereum" = "Ethereum";
 
@@ -793,6 +805,9 @@
 /* The title of the button on the screen to manage web3 sites account connections that will show an alert to remove all connected website permissions. */
 "wallet.manageSiteConnectionsRemoveAll" = "Hapus Semua";
 
+/* The page title that will display the top 250 tokens from the market via CoinGecko */
+"wallet.marketPageTitle" = "Pasar";
+
 /* The highest the user will pay in a gas fee based on the entered gas fee details or predefined option. It is displayed above the amount */
 "wallet.maximumGasFee" = "Biaya Maksimal";
 
@@ -876,6 +891,12 @@
 
 /* Description of the NFT Gateway setting */
 "wallet.nftGatewayLongDescription" = "Gateway IPFS sah harus disediakan. Gateway tersebut akan diperiksa kemampuannya untuk memuat sumber IPFS.";
+
+/* The title of the empty state inside NFT tab. */
+"wallet.nftPageEmptyTitle" = "Belum ada NFT di sini.";
+
+/* The title of the tab that will display user's visible NFT assets. */
+"wallet.nftPageTitle" = "NFT";
 
 /* The title which is displayed above a list of NFTs. 'NFT' is an acronym for Non-Fungible Token. */
 "wallet.nftsTitle" = "NFT";
@@ -1107,9 +1128,6 @@
 
 /* The title of a button that will go the list of networks. */
 "wallet.settingsNetworkButtonTitle" = "Jaringan";
-
-/* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
-"wallet.settingsResetButtonTitle" = "Atur Ulang Brave Wallet";
 
 /* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
 "wallet.settingsResetTransactionAlertButtonTitle" = "Atur ulang";

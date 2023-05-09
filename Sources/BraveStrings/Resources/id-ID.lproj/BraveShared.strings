@@ -43,12 +43,6 @@
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Iklan dan Pelacak";
 
-/* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Pelacak & iklan diblokir";
-
-/* Shields Ads Stat */
-"AdsrBlocked" = "Iklan \nDiblokir";
-
 /* Setting to always request the desktop version of a website. */
 "AlwaysRequestDesktopSite" = "Selalu Minta Situs Desktop";
 
@@ -631,9 +625,6 @@
 /* The success message that appears after a user sucessfully adds a new search engine */
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "Mesin Pencari sudah ditambahkan!";
 
-/* Data Saved Shield Stat */
-"DataSavedStat" = "Perkiraan Data \nTersimpan";
-
 /* Button text to close the default browser popup. */
 "defaultBrowserCallout.introCancelButtonText" = "Tidak sekarang";
 
@@ -804,9 +795,6 @@
 
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "Melanjutkan ke %@ (tidak aman)";
-
-/* Shields Time Saved Stat */
-"EstTimerSaved" = "Perkiraan Waktu \nDisimpan";
 
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ akan meluncurkan aplikasi eksternal";
@@ -1729,9 +1717,6 @@
 /* Description of the settings option to sync folders with the server automatically, every 4 hours. */
 "playList.sharedFolderSyncAutomaticallyDescription" = "Sinkronisasikan semua folder daftar putar Anda secara otomatis";
 
-/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
-"playList.sharedFolderSyncAutomaticallyTitle" = "Sinkronisasikan folder daftar putar secara otomatis";
-
 /* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistActionDetailsTitle" = "Anda dapat membuka media saat ini di Tab Baru, atau membagikannya melalui Menu Pembagian Sistem";
 
@@ -1875,9 +1860,6 @@
 
 /* Playlist menu item */
 "PlaylistMenuItem" = "Daftar Putar";
-
-/* Description for closing a popover menu that is displayed. */
-"PopoverDefaultClose" = "Tutup Menu Konteks";
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Tutup Menu Perisai";
@@ -2254,71 +2236,8 @@
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Terima kasih karena telah membantu mendukung kreator konten sembari Anda meramban!";
 
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonCompletedTitle" = "Transfer dompet lama Anda telah selesai!";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonDelayedTitle" = "Transfer dompet lama Anda telah tertunda...";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonInProgressTitle" = "Transfer dompet lama Anda sedang berlangsung";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonInvalidTitle" = "Transfer dompet lama Anda tidak valid";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonPendingTitle" = "Status transfer dompet lama Anda ditangguhkan";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusCompletedBody" = "Transfer dompet lama Anda telah selesai! Mungkin perlu beberapa waktu untuk menampilkan saldo Anda saat ini  di desktop dompet Brave Rewards Anda.";
-
-/* Title shown above body of text explaining that their transfer is completed */
-"rewards.legacyWalletTransferStatusCompletedTitle" = "Transfer Selesai!";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusDelayedBody" = "Transfer dompet lama Anda telah tertunda dan mungkin diperlukan beberapa menit untuk melanjutkannya.";
-
-/* Title shown above body of text explaining that their transfer is delayed */
-"rewards.legacyWalletTransferStatusDelayedTitle" = "Transfer Tertunda";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusInProgressBody" = "Transfer dompet lama Anda sedang berlangsung dan mungkin diperlukan beberapa menit untuk menyelesaikannya.";
-
-/* Title shown above body of text explaining that their transfer is in progress */
-"rewards.legacyWalletTransferStatusInProgressTitle" = "Transfer Sedang Berlangsung";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusInvalidBody" = "Transfer dompet lama Anda tidak valid dan tidak dapat diselesaikan";
-
-/* Title shown above body of text explaining that their transfer is invalid */
-"rewards.legacyWalletTransferStatusInvalidTitle" = "Transfer Tidak Valid";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusPendingBody" = "Status transfer dompet lama Anda ditangguhkan dan akan segera akan dimulai secepatnya.";
-
-/* Title shown above body of text explaining that their transfer is pending */
-"rewards.legacyWalletTransferStatusPendingTitle" = "Transfer Ditangguhkan";
-
-/* Completed as in: stating that the status of the users transfer is in completed */
-"rewards.legacyWalletTransferStatusShortformCompleted" = "Selesai!";
-
-/* Delayed as in: stating that the status of the users transfer is in delayed */
-"rewards.legacyWalletTransferStatusShortformDelayed" = "Tertunda";
-
-/* In Progress as in: stating that the status of the users transfer is in progress */
-"rewards.legacyWalletTransferStatusShortformInProgress" = "Sedang Berlangsung";
-
-/* Invalid as in: stating that the status of the users transfer is invalid */
-"rewards.legacyWalletTransferStatusShortformInvalid" = "Tidak Valid";
-
-/* Pending as in: stating that the status of the users transfer is pending */
-"rewards.legacyWalletTransferStatusShortformPending" = "Ditangguhkan";
-
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Dengan mengklik, Anda menyetujui %1$@ dan %2$@. Nonaktifkan kapan saja di Pengaturan.";
-
-/* No comment provided by engineer. */
-"rewards.settingsFooterMessage" = "Pembayaran Brave Rewards sedang tidak tersedia di perangkat ini. Transfer dana dompet Anda yang ada ke dompet desktop untuk tetap menyimpan token Anda.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Dukung para kreator dan penerbit konten secara otomatis dengan mengaktifkan Brave Private Ads. Brave Private Ads adalah iklan yang menjaga privasi dan yang memberi imbalan kepada kreator konten. ";
@@ -2331,9 +2250,6 @@
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Jumlah kreator konten yang Anda bantu dukung bulan ini.";
-
-/* No comment provided by engineer. */
-"rewards.transferNoLongerAvailableWarningMessage" = "Harap gunakan transfer dompet sebelum 13 Maret 2021. Transfer dompet tidak lagi tersedia setelah 13 Maret.";
 
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "Kreator ini belum diverifikasi dan tidak akan disertakan dalam dukungan kreator.";
@@ -2435,9 +2351,6 @@
 "RewardsInternalsLegacyPromotion" = "Promosi Dasar";
 
 /* No comment provided by engineer. */
-"RewardsInternalsLegacyWalletHasTransferrableBalance" = "Memiliki Saldo Yang Dapat Dipindahtangankan";
-
-/* No comment provided by engineer. */
 "RewardsInternalsLegacyWalletInfoHeader" = "Info Dompet Legacy";
 
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
@@ -2492,9 +2405,6 @@
 "RewardsInternalsRewardsTypeRecurringTip" = "Tip rutin";
 
 /* No comment provided by engineer. */
-"RewardsInternalsSharableBasicDescription" = "Info dompet, perangkat & saldo (selalu dibagikan)";
-
-/* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "Info Dasar";
 
 /* No comment provided by engineer. */
@@ -2517,9 +2427,6 @@
 
 /* 'Rewards' as in 'Brave Rewards' */
 "RewardsInternalsShareInternalsTitle" = "Bagikan Info Internal Reward";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharingWarningMessage" = "Data di halaman ini mungkin bersifat sensitif. Perlakukan ini sebagaimana Anda memperlakukan kunci privat dompet Anda. Hati-hati saat membagikannya kepada seseorang.";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharingWarningTitle" = "Peringatan";
@@ -2550,15 +2457,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsVersion" = "Versi";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletCreationDate" = "Tanggal Pembuatan Dompet";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletInfoHeader" = "Info Dompet";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletPaymentID" = "ID Pembayaran Dompet";
 
 /* Button to show the rewards panel */
 "RewardsPanel" = "Panel Reward";
@@ -2775,18 +2673,6 @@
 
 /* shields overview footer message */
 "ShieldsOverviewFooter" = "Catatan: Beberapa situs mungkin memerlukan skrip agar dapat berfungsi dengan baik, jadi perisai ini akan dinonaktifkan secara baku.";
-
-/* Time Saved Days */
-"ShieldsTimeStatsDays" = "h";
-
-/* Time Saved Hours */
-"ShieldsTimeStatsHour" = "j";
-
-/* Time Saved Minutes */
-"ShieldsTimeStatsMinutes" = "menit";
-
-/* Time Saved Seconds */
-"ShieldsTimeStatsSeconds" = "d";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Tab Privat Baru";
@@ -3433,9 +3319,6 @@
 /* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
 "today.userSourcesHeaderTitle" = "Sumber Pengguna";
 
-/* Shields Trackers Stat */
-"TrackersrBlocked" = "Pelacak \nDiblokir";
-
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Aktifkan saran pencarian?";
 
@@ -3622,6 +3505,9 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "Didukung oleh";
 
+/* Title for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorTitle" = "Server mengalami error";
+
 /* Description of what automatic server selection does. */
 "vpn.regionPickerAutomaticDescription" = "Kawasan server yang terdekat dengan lokasi Anda akan dipilih secara otomatis berdasar zona waktu sistem Anda. Ini direkomendasikan demi menjamin kecepatan internet yang tinggi. ";
 
@@ -3664,9 +3550,6 @@
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "Tingkatkan dengan VPN untuk mejaga koneksi Anda dan memblokir serangan pelacak di mana pun.";
 
-/* Button to change VPN server location */
-"vpn.settingsChangeLocation" = "Ubah Lokasi";
-
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Hubungi Dukungan Teknis";
 
@@ -3691,7 +3574,7 @@
 /* Table cell title for vpn's server host */
 "vpn.settingsServerHost" = "Host";
 
-/* Table cell title for vpn's server location */
+/* Table cell title for vpn's server location and which open opens location select */
 "vpn.settingsServerLocation" = "Lokasi";
 
 /* Header title for vpn settings server section. */

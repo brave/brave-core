@@ -43,12 +43,6 @@
 /* individual blocking statistic title */
 "AdsAndTrackers" = "廣告和追蹤器";
 
-/* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "已封鎖追蹤器和廣告";
-
-/* Shields Ads Stat */
-"AdsrBlocked" = "已封鎖\n廣告";
-
 /* Setting to always request the desktop version of a website. */
 "AlwaysRequestDesktopSite" = "一律請求桌面網站";
 
@@ -631,9 +625,6 @@
 /* The success message that appears after a user sucessfully adds a new search engine */
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "已新增搜尋引擎！";
 
-/* Data Saved Shield Stat */
-"DataSavedStat" = "預計節省\n數據量";
-
 /* Button text to close the default browser popup. */
 "defaultBrowserCallout.introCancelButtonText" = "稍後再說";
 
@@ -804,9 +795,6 @@
 
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "繼續前往 %@ (不安全)";
-
-/* Shields Time Saved Stat */
-"EstTimerSaved" = "預計節省\n時間";
 
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ 將會打開外部應用程序";
@@ -1729,9 +1717,6 @@
 /* Description of the settings option to sync folders with the server automatically, every 4 hours. */
 "playList.sharedFolderSyncAutomaticallyDescription" = "自動同步您的所有播放清單資料夾";
 
-/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
-"playList.sharedFolderSyncAutomaticallyTitle" = "自動同步播放清單資料夾";
-
 /* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistActionDetailsTitle" = "您可以在新分頁中開啟目前的項目，或透過系統分享選單來分享";
 
@@ -1875,9 +1860,6 @@
 
 /* Playlist menu item */
 "PlaylistMenuItem" = "播放清單";
-
-/* Description for closing a popover menu that is displayed. */
-"PopoverDefaultClose" = "關閉內容選單";
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "關閉 Shields 選單";
@@ -2254,71 +2236,8 @@
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "感謝您在瀏覽期間不忘支持內容創作者！";
 
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonCompletedTitle" = "舊錢包轉帳已完成！";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonDelayedTitle" = "地址格式錢包轉帳已延遲...";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonInProgressTitle" = "地址格式錢包轉帳進行中";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonInvalidTitle" = "舊錢包轉帳失效";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonPendingTitle" = "地址格式錢包轉帳狀態為等待中";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusCompletedBody" = "地址格式錢包轉帳完成！ 你的現有餘額可能需要幾分鐘後才會顯示在桌面 Brave 獎勵錢包中。";
-
-/* Title shown above body of text explaining that their transfer is completed */
-"rewards.legacyWalletTransferStatusCompletedTitle" = "轉帳已完成！";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusDelayedBody" = "地址格式錢包轉帳已延遲，可能需要幾分鐘後才能恢復。";
-
-/* Title shown above body of text explaining that their transfer is delayed */
-"rewards.legacyWalletTransferStatusDelayedTitle" = "轉帳已延遲";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusInProgressBody" = "地址格式錢包轉帳進行中，可能需要幾分鐘才能完成。";
-
-/* Title shown above body of text explaining that their transfer is in progress */
-"rewards.legacyWalletTransferStatusInProgressTitle" = "轉帳進行中";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusInvalidBody" = "地址格式錢包轉帳失效，無法完成";
-
-/* Title shown above body of text explaining that their transfer is invalid */
-"rewards.legacyWalletTransferStatusInvalidTitle" = "轉帳失效";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusPendingBody" = "地址格式錢包轉帳狀態為等待中，將盡快開始處理。";
-
-/* Title shown above body of text explaining that their transfer is pending */
-"rewards.legacyWalletTransferStatusPendingTitle" = "轉帳等待中";
-
-/* Completed as in: stating that the status of the users transfer is in completed */
-"rewards.legacyWalletTransferStatusShortformCompleted" = "已完成！";
-
-/* Delayed as in: stating that the status of the users transfer is in delayed */
-"rewards.legacyWalletTransferStatusShortformDelayed" = "已延遲";
-
-/* In Progress as in: stating that the status of the users transfer is in progress */
-"rewards.legacyWalletTransferStatusShortformInProgress" = "進行中";
-
-/* Invalid as in: stating that the status of the users transfer is invalid */
-"rewards.legacyWalletTransferStatusShortformInvalid" = "失效";
-
-/* Pending as in: stating that the status of the users transfer is pending */
-"rewards.legacyWalletTransferStatusShortformPending" = "等待中";
-
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "按下即表示您同意 %1$@ 和 %2$@。可在設定中隨時取消。";
-
-/* No comment provided by engineer. */
-"rewards.settingsFooterMessage" = "這部裝置暫時無法轉出 Brave Rewards，請將現有錢包金額轉至桌面版錢包，以便保存。";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "啟用 Brave Private Ads，即可自動支持內容創作者和發佈者。Brave Private Ads 是回饋內容創作者並兼顧隱私的廣告。";
@@ -2331,9 +2250,6 @@
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "本月您支持的內容創作者人數。";
-
-/* No comment provided by engineer. */
-"rewards.transferNoLongerAvailableWarningMessage" = "請在 2021 年 3 月 13 日前使用錢包轉帳。3 月 13 日後將無法再使用錢包轉帳。";
 
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "這位創作者尚未通過驗證，不會納入您支持的創作者名單";
@@ -2435,9 +2351,6 @@
 "RewardsInternalsLegacyPromotion" = "舊行銷活動";
 
 /* No comment provided by engineer. */
-"RewardsInternalsLegacyWalletHasTransferrableBalance" = "有餘額可供轉帳";
-
-/* No comment provided by engineer. */
 "RewardsInternalsLegacyWalletInfoHeader" = "舊版錢包資訊";
 
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
@@ -2492,9 +2405,6 @@
 "RewardsInternalsRewardsTypeRecurringTip" = "定期小費";
 
 /* No comment provided by engineer. */
-"RewardsInternalsSharableBasicDescription" = "錢包、裝置和餘額資訊 (一律分享)";
-
-/* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "基本資訊";
 
 /* No comment provided by engineer. */
@@ -2517,9 +2427,6 @@
 
 /* 'Rewards' as in 'Brave Rewards' */
 "RewardsInternalsShareInternalsTitle" = "分享 Rewards Internals";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharingWarningMessage" = "此頁面可能含有敏感資料。請視同您錢包的私密金鑰謹慎保管，切勿任意與他人共享。";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharingWarningTitle" = "警告";
@@ -2550,15 +2457,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsVersion" = "版本";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletCreationDate" = "錢包建立日期";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletInfoHeader" = "錢包資訊";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletPaymentID" = "錢包付款 ID";
 
 /* Button to show the rewards panel */
 "RewardsPanel" = "獎勵對象";
@@ -2775,18 +2673,6 @@
 
 /* shields overview footer message */
 "ShieldsOverviewFooter" = "請注意：部分網站可能需要指令碼才能順利運作，所以此防護機制預設為關閉。";
-
-/* Time Saved Days */
-"ShieldsTimeStatsDays" = "日";
-
-/* Time Saved Hours */
-"ShieldsTimeStatsHour" = "時";
-
-/* Time Saved Minutes */
-"ShieldsTimeStatsMinutes" = "分";
-
-/* Time Saved Seconds */
-"ShieldsTimeStatsSeconds" = "秒";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "新隱私分頁";
@@ -3433,9 +3319,6 @@
 /* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
 "today.userSourcesHeaderTitle" = "使用者來源";
 
-/* Shields Trackers Stat */
-"TrackersrBlocked" = "已封鎖\n追蹤器";
-
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "開啟搜尋建議？";
 
@@ -3622,6 +3505,9 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "技術提供：";
 
+/* Title for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorTitle" = "發生伺服器錯誤";
+
 /* Description of what automatic server selection does. */
 "vpn.regionPickerAutomaticDescription" = "系統會根據您所設定的時區，自動為您選取最靠近的伺服器區域。這項建議功能旨在確保網際網路的速度不受影響。";
 
@@ -3664,9 +3550,6 @@
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "升級為 VPN 以保護您的連線，並封鎖無所不在的追蹤程式，捍衛個人隱私。";
 
-/* Button to change VPN server location */
-"vpn.settingsChangeLocation" = "變更位置";
-
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "與技術支援人員聯絡";
 
@@ -3691,7 +3574,7 @@
 /* Table cell title for vpn's server host */
 "vpn.settingsServerHost" = "主機";
 
-/* Table cell title for vpn's server location */
+/* Table cell title for vpn's server location and which open opens location select */
 "vpn.settingsServerLocation" = "位置";
 
 /* Header title for vpn settings server section. */

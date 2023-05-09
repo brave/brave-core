@@ -23,7 +23,7 @@
 "AddCustomFilterList" = "新增自定义筛选器列表";
 
 /* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
-"AddCustomFilterListDescription" = "新增由您信任的社群所建立维护的额外清单。";
+"AddCustomFilterListDescription" = "新增由您信任的社群所建立及維護的額外清單。";
 
 /* Warning text found in the footer of the add custom filter list url screen. */
 "AddCustomFilterListWarning" = "**仅订阅来自您信任的实体的列表**。您的浏览器将定期检查您输入的网址的列表更新。";
@@ -42,12 +42,6 @@
 
 /* individual blocking statistic title */
 "AdsAndTrackers" = "广告和跟踪器";
-
-/* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "跟踪器和被屏蔽的广告";
-
-/* Shields Ads Stat */
-"AdsrBlocked" = "广告被拦截";
 
 /* Setting to always request the desktop version of a website. */
 "AlwaysRequestDesktopSite" = "总是请求桌面站点";
@@ -631,9 +625,6 @@
 /* The success message that appears after a user sucessfully adds a new search engine */
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "搜索引擎已添加！";
 
-/* Data Saved Shield Stat */
-"DataSavedStat" = "估算数据 \n已保存";
-
 /* Button text to close the default browser popup. */
 "defaultBrowserCallout.introCancelButtonText" = "回头再说";
 
@@ -805,9 +796,6 @@
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "继续前往 %@（不安全）";
 
-/* Shields Time Saved Stat */
-"EstTimerSaved" = "预计时间 \n已保存";
-
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ 随即会启动一个外部应用。";
 
@@ -854,7 +842,7 @@
 "FilterListsEdit" = "编辑";
 
 /* This is a placeholder for an input field that takes a custom filter list URL. */
-"FilterListsEnterFilterListURL" = "输入过滤器清单 URL";
+"FilterListsEnterFilterListURL" = "輸入過濾器清單 URL";
 
 /* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
 "FilterListsLastUpdatedLabel" = "上次更新时间 %@";
@@ -1388,7 +1376,7 @@
 "opentabs.noSyncSessionPlaceHolderViewTitle" = "此空间显示在其他设备中打开的 Brave 选项卡";
 
 /* The title for the action to hide open session with all tabs */
-"opentabs.openSessionHideAllActionTitle" = "暂时隐藏";
+"opentabs.openSessionHideAllActionTitle" = "暫時隱藏";
 
 /* The title for the action to open all the tabs in a synced open session */
 "opentabs.openSessionOpenAllActionTitle" = "全部开启";
@@ -1729,9 +1717,6 @@
 /* Description of the settings option to sync folders with the server automatically, every 4 hours. */
 "playList.sharedFolderSyncAutomaticallyDescription" = "自动同步所有播放列表文件夹";
 
-/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
-"playList.sharedFolderSyncAutomaticallyTitle" = "自动同步播放列表文件夹";
-
 /* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistActionDetailsTitle" = "您可以在新选项卡中打开当前项目，或通过系统共享菜单进行共享";
 
@@ -1875,9 +1860,6 @@
 
 /* Playlist menu item */
 "PlaylistMenuItem" = "播放列表";
-
-/* Description for closing a popover menu that is displayed. */
-"PopoverDefaultClose" = "关闭 Context 菜单";
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "关闭 Shields 菜单";
@@ -2254,71 +2236,8 @@
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "感谢您在浏览过程中帮助支持内容创建者！";
 
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonCompletedTitle" = "您的旧钱包转账已完成！";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonDelayedTitle" = "您的旧钱包转账已延迟...";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonInProgressTitle" = "您的旧钱包转账正在进行中";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonInvalidTitle" = "您的旧钱包转账无效";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonPendingTitle" = "您的旧钱包转账状态为暂停";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusCompletedBody" = "您的旧钱包转账已完成！当前余额可能需要几分钟才会出现在桌面版 Brave Rewards 钱包中。";
-
-/* Title shown above body of text explaining that their transfer is completed */
-"rewards.legacyWalletTransferStatusCompletedTitle" = "转账完成！";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusDelayedBody" = "您的旧钱包转账已延迟，可能需要几分钟才会恢复。";
-
-/* Title shown above body of text explaining that their transfer is delayed */
-"rewards.legacyWalletTransferStatusDelayedTitle" = "转账已延迟";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusInProgressBody" = "您的旧钱包转账正在进行中，可能需要几分钟才会完成。";
-
-/* Title shown above body of text explaining that their transfer is in progress */
-"rewards.legacyWalletTransferStatusInProgressTitle" = "转账进行中";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusInvalidBody" = "您的旧钱包转账无效，无法完成";
-
-/* Title shown above body of text explaining that their transfer is invalid */
-"rewards.legacyWalletTransferStatusInvalidTitle" = "转账无效";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusPendingBody" = "您的旧钱包转账待处理，将尽快处理。";
-
-/* Title shown above body of text explaining that their transfer is pending */
-"rewards.legacyWalletTransferStatusPendingTitle" = "转账待处理";
-
-/* Completed as in: stating that the status of the users transfer is in completed */
-"rewards.legacyWalletTransferStatusShortformCompleted" = "已完成！";
-
-/* Delayed as in: stating that the status of the users transfer is in delayed */
-"rewards.legacyWalletTransferStatusShortformDelayed" = "已延迟";
-
-/* In Progress as in: stating that the status of the users transfer is in progress */
-"rewards.legacyWalletTransferStatusShortformInProgress" = "进行中";
-
-/* Invalid as in: stating that the status of the users transfer is invalid */
-"rewards.legacyWalletTransferStatusShortformInvalid" = "无效";
-
-/* Pending as in: stating that the status of the users transfer is pending */
-"rewards.legacyWalletTransferStatusShortformPending" = "待处理";
-
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "点击即表示您同意 %1$@ 和 %2$@。随时可在“设置”中禁用。";
-
-/* No comment provided by engineer. */
-"rewards.settingsFooterMessage" = "暂时无法在此设备上使用 Brave Rewards。将您钱包里现有的资金转账到台式机钱包中可保留代币。";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "通过启用 Brave Private Ads 自动支持内容创建者和发布者。Brave Private Ads 是尊重隐私的、回馈内容创作者的广告。";
@@ -2331,9 +2250,6 @@
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "您本月要帮助支持的内容创建者的数量。";
-
-/* No comment provided by engineer. */
-"rewards.transferNoLongerAvailableWarningMessage" = "请在 2021 年 3 月 13 日之前使用钱包转账。钱包转账在 3 月 13 日之后将不再可用。";
 
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "该创建者尚未验证，因此不会受创建者支持";
@@ -2435,9 +2351,6 @@
 "RewardsInternalsLegacyPromotion" = "旧的促销活动";
 
 /* No comment provided by engineer. */
-"RewardsInternalsLegacyWalletHasTransferrableBalance" = "有可转让余额";
-
-/* No comment provided by engineer. */
 "RewardsInternalsLegacyWalletInfoHeader" = "旧版钱包信息";
 
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
@@ -2492,9 +2405,6 @@
 "RewardsInternalsRewardsTypeRecurringTip" = "循环提示";
 
 /* No comment provided by engineer. */
-"RewardsInternalsSharableBasicDescription" = "钱包、设备和余额信息（始终共享）";
-
-/* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "基本信息";
 
 /* No comment provided by engineer. */
@@ -2517,9 +2427,6 @@
 
 /* 'Rewards' as in 'Brave Rewards' */
 "RewardsInternalsShareInternalsTitle" = "分享奖励（内部）";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharingWarningMessage" = "此页面上的数据可能是敏感信息。请象对待钱包私钥一样对待它们。与谁共享时要小心。";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharingWarningTitle" = "警告";
@@ -2550,15 +2457,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsVersion" = "版本";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletCreationDate" = "钱包创建日期";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletInfoHeader" = "钱包信息";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletPaymentID" = "钱包付款 ID";
 
 /* Button to show the rewards panel */
 "RewardsPanel" = "奖励面板";
@@ -2775,18 +2673,6 @@
 
 /* shields overview footer message */
 "ShieldsOverviewFooter" = "注意：某些网站可能要求脚本正确工作，所以默认情况下会关闭此拦截。";
-
-/* Time Saved Days */
-"ShieldsTimeStatsDays" = "天";
-
-/* Time Saved Hours */
-"ShieldsTimeStatsHour" = "小时";
-
-/* Time Saved Minutes */
-"ShieldsTimeStatsMinutes" = "分钟";
-
-/* Time Saved Seconds */
-"ShieldsTimeStatsSeconds" = "秒";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "新隐私标签页";
@@ -3305,10 +3191,10 @@
 "today.channelsButtonSubtitle" = "关注您感兴趣的主题";
 
 /* A button title that when tapped shows users a list of channels/topics that they can follow */
-"today.channelsButtonTitle" = "频道";
+"today.channelsButtonTitle" = "頻道";
 
 /* A header title shown over a list of channels (i.e. Cars, Business, Fashion, etc.) */
-"today.channelsHeaderTitle" = "频道";
+"today.channelsHeaderTitle" = "頻道";
 
 /* A title at the top of the screen that shows a list of topics the user can follow */
 "today.channelsTitle" = "頻道";
@@ -3347,10 +3233,10 @@
 "today.followingButtonSubtitle" = "管理您的摘要来源";
 
 /* A button title that when tapped shows users a list of sources & channels they are currently following */
-"today.followingButtonTitle" = "关注中";
+"today.followingButtonTitle" = "關注中";
 
 /* A title at the top of the screen that shows a list of the news content the user is following */
-"today.followingTitle" = "关注中";
+"today.followingTitle" = "關注中";
 
 /* A toggle title shown next to a source or channel that the user can follow. When tapped switches to 'Unfollow' */
 "today.followToggleTitle" = "跟隨";
@@ -3368,7 +3254,7 @@
 "today.introCardBody" = "通过单一摘要关注您喜爱的来源。只要在 Brave 中开启分页、向下滑动，一切搞定！\nBrave 新闻支援匿名投放私人广告。";
 
 /* Shown above a button that turns on the \"Brave News\" product in the app. */
-"today.introCardTitle" = "开启 Brave 新闻，绝不错过每一条消息";
+"today.introCardTitle" = "開啟 Brave 新聞，絕不錯過每一條消息";
 
 /* No comment provided by engineer. */
 "today.isEnabledToggleLabel" = "显示 Show Brave News";
@@ -3432,9 +3318,6 @@
 
 /* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
 "today.userSourcesHeaderTitle" = "用户来源";
-
-/* Shields Trackers Stat */
-"TrackersrBlocked" = "拦截器 \n被拦截";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "开启搜索建议功能？";
@@ -3622,6 +3505,9 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "支持提供方：";
 
+/* Title for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorTitle" = "服务器错误";
+
 /* Description of what automatic server selection does. */
 "vpn.regionPickerAutomaticDescription" = "系统会根据您的系统时区自动选择最接近您的服务器的区域。我们建议这样做是为了确保快速的互联网速度。";
 
@@ -3664,9 +3550,6 @@
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "升级到 VPN，以保护您的连接并在各处阻止侵入式跟踪器。";
 
-/* Button to change VPN server location */
-"vpn.settingsChangeLocation" = "更改地点";
-
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "联系技术支持部门";
 
@@ -3691,7 +3574,7 @@
 /* Table cell title for vpn's server host */
 "vpn.settingsServerHost" = "主机";
 
-/* Table cell title for vpn's server location */
+/* Table cell title for vpn's server location and which open opens location select */
 "vpn.settingsServerLocation" = "位置";
 
 /* Header title for vpn settings server section. */

@@ -43,12 +43,6 @@
 /* individual blocking statistic title */
 "AdsAndTrackers" = "광고 및 개인정보 트래커";
 
-/* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "차단된 트래커 및 광고";
-
-/* Shields Ads Stat */
-"AdsrBlocked" = "차단된 \n광고";
-
 /* Setting to always request the desktop version of a website. */
 "AlwaysRequestDesktopSite" = "항상 데스크톱 사이트 요청";
 
@@ -288,18 +282,6 @@
 
 /* Settings item for clearing the cache */
 "Cache" = "캐시";
-
-/* Button title for Bottom Bar Callout View */
-"callout.bottomBarCalloutButtonTitle" = "탭 바 이동";
-
-/* Description for Bottom Bar Callout View */
-"callout.bottomBarCalloutDescription" = "주소창, 탭, 북마크 및 기타 도구를 브라우저의 맨 밑으로 이동합니다.";
-
-/* Title for Bottom Bar Callout View */
-"callout.bottomBarCalloutTitle" = "Brave 탭 바 맞춤 설정";
-
-/* Description - Description used for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutButtonDescription" = "Brave를 기본 브라우저로 설정할까요?";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutDescription" = "Brave를 기본으로 설정하면 탭한 모든 링크가 Brave의 프라이버시 보호가 적용되어 열립니다.";
@@ -631,9 +613,6 @@
 /* The success message that appears after a user sucessfully adds a new search engine */
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "검색 엔진이 추가되었습니다!";
 
-/* Data Saved Shield Stat */
-"DataSavedStat" = "절약된 \n예상 데이터";
-
 /* Button text to close the default browser popup. */
 "defaultBrowserCallout.introCancelButtonText" = "나중에";
 
@@ -804,9 +783,6 @@
 
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "%@ 계속(안전하지 않음)";
-
-/* Shields Time Saved Stat */
-"EstTimerSaved" = "절감한 \n시간";
 
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@에서 외부 프로그램을 실행합니다.";
@@ -1333,9 +1309,6 @@
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "파일 앱에서 다운로드 폴더를 여는 중 알 수 없는 오류가 발생했습니다.";
 
-/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
-"openExternalAppURLHost" = "%@ 요청:";
-
 /* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
 "openExternalAppURLTitle" = "%@에 앱 전환을 허용하시겠습니까?";
 
@@ -1729,9 +1702,6 @@
 /* Description of the settings option to sync folders with the server automatically, every 4 hours. */
 "playList.sharedFolderSyncAutomaticallyDescription" = "모든 재생목록 폴더 자동 동기화";
 
-/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
-"playList.sharedFolderSyncAutomaticallyTitle" = "재생목록 폴더 자동 동기화";
-
 /* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistActionDetailsTitle" = "새 탭에서 현재 항목을 열거나 시스템 공유 메뉴를 통해 공유할 수 있습니다.";
 
@@ -1875,9 +1845,6 @@
 
 /* Playlist menu item */
 "PlaylistMenuItem" = "재생목록";
-
-/* Description for closing a popover menu that is displayed. */
-"PopoverDefaultClose" = "맥락 메뉴 닫기";
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Shields 메뉴 닫기";
@@ -2254,71 +2221,8 @@
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "브라우징하면서 콘텐츠 제작자를 지원해 주셔서 감사합니다!";
 
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonCompletedTitle" = "레거시 월렛 이전이 완료되었습니다!";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonDelayedTitle" = "레거시 월렛 이전이 지연되었습니다...";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonInProgressTitle" = "레거시 월렛 이전이 진행 중입니다.";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonInvalidTitle" = "레거시 월렛 이전이 유효하지 않습니다.";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonPendingTitle" = "레거시 월렛 이전이 보류 중 상태입니다.";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusCompletedBody" = "레거시 월렛 이전이 완료되었습니다! 기존 잔액은 몇 분 후 데스크톱 Brave Rewards 월렛에 나타납니다.";
-
-/* Title shown above body of text explaining that their transfer is completed */
-"rewards.legacyWalletTransferStatusCompletedTitle" = "이전 완료!";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusDelayedBody" = "레거시 월렛 이전이 지연되어 몇 분 후 재개합니다.";
-
-/* Title shown above body of text explaining that their transfer is delayed */
-"rewards.legacyWalletTransferStatusDelayedTitle" = "이전 지연됨";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusInProgressBody" = "레거시 월렛 이전이 진행 중이며 몇 분 후 완료됩니다.";
-
-/* Title shown above body of text explaining that their transfer is in progress */
-"rewards.legacyWalletTransferStatusInProgressTitle" = "이전 진행 중";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusInvalidBody" = "레거시 월렛 이전이 유효하지 않아 완료할 수 없습니다.";
-
-/* Title shown above body of text explaining that their transfer is invalid */
-"rewards.legacyWalletTransferStatusInvalidTitle" = "이전 유효하지 않음";
-
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusPendingBody" = "레거시 월렛 이전이 보류 중 상태이며 곧 처리가 시작됩니다.";
-
-/* Title shown above body of text explaining that their transfer is pending */
-"rewards.legacyWalletTransferStatusPendingTitle" = "이전 보류 중";
-
-/* Completed as in: stating that the status of the users transfer is in completed */
-"rewards.legacyWalletTransferStatusShortformCompleted" = "완료!";
-
-/* Delayed as in: stating that the status of the users transfer is in delayed */
-"rewards.legacyWalletTransferStatusShortformDelayed" = "지연됨";
-
-/* In Progress as in: stating that the status of the users transfer is in progress */
-"rewards.legacyWalletTransferStatusShortformInProgress" = "진행 중";
-
-/* Invalid as in: stating that the status of the users transfer is invalid */
-"rewards.legacyWalletTransferStatusShortformInvalid" = "유효하지 않음";
-
-/* Pending as in: stating that the status of the users transfer is pending */
-"rewards.legacyWalletTransferStatusShortformPending" = "보류 중";
-
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "클릭하면 %1$@ 및 %2$@에 동의하게 됩니다. 설정에서 언제든지 비활성화할 수 있습니다.";
-
-/* No comment provided by engineer. */
-"rewards.settingsFooterMessage" = "Brave Rewards 결제를 일시적으로 이 기기에서 이용할 수 없습니다. 기존 월렛 잔액을 데스크톱 월렛으로 이전하여 토큰을 안전하게 보호하세요.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Brave Private Ads를 활성화하면 자동으로 콘텐츠 제작자와 게시자를 지원하게 됩니다. Brave Private Ads는 개인정보를 존중하는 광고로 콘텐츠 제작자에게 보상을 줍니다.";
@@ -2331,9 +2235,6 @@
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "이번 달 여러 콘텐츠 제작자를 지원하고 계십니다.";
-
-/* No comment provided by engineer. */
-"rewards.transferNoLongerAvailableWarningMessage" = "2021년 3월 13일까지 월렛 이전을 이용하세요. 3월 13일 이후에는 월렛 이전이 더 이상 지원되지 않습니다.";
 
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "확인되지 않은 제작자이기 때문에 제작자 지원에 포함되지 않습니다.";
@@ -2435,9 +2336,6 @@
 "RewardsInternalsLegacyPromotion" = "레거시 프로모션";
 
 /* No comment provided by engineer. */
-"RewardsInternalsLegacyWalletHasTransferrableBalance" = "이전 가능한 잔액 있음";
-
-/* No comment provided by engineer. */
 "RewardsInternalsLegacyWalletInfoHeader" = "레거시 월렛 정보";
 
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
@@ -2492,9 +2390,6 @@
 "RewardsInternalsRewardsTypeRecurringTip" = "정기 팁";
 
 /* No comment provided by engineer. */
-"RewardsInternalsSharableBasicDescription" = "월렛, 기기, 잔액 정보(항상 공유됨)";
-
-/* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "기본 정보";
 
 /* No comment provided by engineer. */
@@ -2517,9 +2412,6 @@
 
 /* 'Rewards' as in 'Brave Rewards' */
 "RewardsInternalsShareInternalsTitle" = "Rewards 내부 공유";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharingWarningMessage" = "이 페이지의 데이터는 민감할 수 있습니다. 월렛의 비공개 키와 같이 취급하세요. 다른 사람과 공유할 때는 특히 주의하시기 바랍니다.";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharingWarningTitle" = "경고";
@@ -2550,15 +2442,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsVersion" = "버전";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletCreationDate" = "월렛 생성 날짜";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletInfoHeader" = "월렛 정보";
-
-/* No comment provided by engineer. */
-"RewardsInternalsWalletPaymentID" = "월렛 결제 ID";
 
 /* Button to show the rewards panel */
 "RewardsPanel" = "리워드 패널";
@@ -2775,18 +2658,6 @@
 
 /* shields overview footer message */
 "ShieldsOverviewFooter" = "참고: 일부 사이트에서는 스크립트가 정상 작동하도록 하여 이 차단을 기본적으로 비활성화할 수 있습니다.";
-
-/* Time Saved Days */
-"ShieldsTimeStatsDays" = "일";
-
-/* Time Saved Hours */
-"ShieldsTimeStatsHour" = "시간";
-
-/* Time Saved Minutes */
-"ShieldsTimeStatsMinutes" = "분";
-
-/* Time Saved Seconds */
-"ShieldsTimeStatsSeconds" = "초";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "새 비공개 탭";
@@ -3433,9 +3304,6 @@
 /* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
 "today.userSourcesHeaderTitle" = "사용자 소스";
 
-/* Shields Trackers Stat */
-"TrackersrBlocked" = "차단된 \n트래커";
-
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "추천 검색어를 사용하시겠습니까?";
 
@@ -3622,6 +3490,9 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "제공:";
 
+/* Title for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorTitle" = "서버 오류";
+
 /* Description of what automatic server selection does. */
 "vpn.regionPickerAutomaticDescription" = "가장 근접한 서버 지역이 시스템 시간대를 기반으로 자동 선택됩니다. 인터넷 속도를 빠르게 하려면 이 설정을 유지하는 것이 좋습니다.";
 
@@ -3664,9 +3535,6 @@
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "VPN으로 업그레이드하면 연결을 보호하고 침입성 트래커를 차단합니다.";
 
-/* Button to change VPN server location */
-"vpn.settingsChangeLocation" = "위치 변경";
-
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "기술 지원에 문의";
 
@@ -3691,7 +3559,7 @@
 /* Table cell title for vpn's server host */
 "vpn.settingsServerHost" = "호스트";
 
-/* Table cell title for vpn's server location */
+/* Table cell title for vpn's server location and which open opens location select */
 "vpn.settingsServerLocation" = "위치";
 
 /* Header title for vpn settings server section. */

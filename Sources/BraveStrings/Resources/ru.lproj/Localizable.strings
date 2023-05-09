@@ -14,7 +14,7 @@
 "ForwardTitle" = "Вперед";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"NewPrivateTabTitle" = "Новая вкладка инкогнито";
+"NewPrivateTabTitle" = "Новая Приватная вкладка";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "Новая вкладка";

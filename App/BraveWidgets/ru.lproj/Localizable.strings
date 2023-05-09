@@ -1,3 +1,21 @@
+/* Title for bookmarks menu item */
+"widgets.BookmarksMenuItem" = "Закладки";
+
+/* The name of the feature */
+"widgets.braveNews" = "Brave News";
+
+/* Title for downloads menu item */
+"widgets.DownloadsMenuItem" = "Файлы для скачивания";
+
+/* Description for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetDescription" = "Быстрый доступ к любимым сайтам.";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "Избранное";
+
+/* Title for history menu item */
+"widgets.HistortMenuItem" = "История";
+
 /* Displayed on a news widget that has failed to load */
 "widgets.newsClusteringErrorLabel" = "Повторите попытку позже";
 
@@ -12,6 +30,9 @@
 
 /* This shows when you add a widget but have no favorites added in your app */
 "widgets.noFavoritesFound" = "Откройте Brave, чтобы добавить сюда избранные сайты.";
+
+/* QR Code section title */
+"widgets.QRCode" = "QR-код";
 
 /* Description for the search option on the 'shortcuts' widget. */
 "widgets.searchShortcutTitle" = "Поиск";
@@ -35,7 +56,7 @@
 "widgets.shortcutsPlaylistButton" = "Плейлист";
 
 /* Button to open new private browser tab. */
-"widgets.shortcutsPrivateTabButton" = "Вкладка инкогнито";
+"widgets.shortcutsPrivateTabButton" = "Приватная вкладка";
 
 /* Description for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetDescription" = "Быстрый доступ к поиску и веб-страницам в Brave.";
@@ -51,3 +72,4 @@
 
 /* Description for the Brave Wallet option on the 'shortcuts' widget. */
 "widgets.walletShortcutTitle" = "Brave Кошелек";
+

@@ -1,3 +1,21 @@
+/* Title for bookmarks menu item */
+"widgets.BookmarksMenuItem" = "ブックマーク";
+
+/* The name of the feature */
+"widgets.braveNews" = "Braveニュース";
+
+/* Title for downloads menu item */
+"widgets.DownloadsMenuItem" = "ダウンロード";
+
+/* Description for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetDescription" = "お気にいりのウェブサイトに素早くアクセス";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "お気に入り";
+
+/* Title for history menu item */
+"widgets.HistortMenuItem" = "履歴";
+
 /* Displayed on a news widget that has failed to load */
 "widgets.newsClusteringErrorLabel" = "後でもう一度お試しください";
 
@@ -12,6 +30,9 @@
 
 /* This shows when you add a widget but have no favorites added in your app */
 "widgets.noFavoritesFound" = "Braveを開いてお気に入りのサイトを追加してください";
+
+/* QR Code section title */
+"widgets.QRCode" = "QRコード";
 
 /* Description for the search option on the 'shortcuts' widget. */
 "widgets.searchShortcutTitle" = "検索";
@@ -51,3 +72,4 @@
 
 /* Description for the Brave Wallet option on the 'shortcuts' widget. */
 "widgets.walletShortcutTitle" = "Braveウォレット";
+
