@@ -365,7 +365,6 @@ Config.prototype.buildArgs = function () {
     use_libfuzzer: this.use_libfuzzer,
     enable_updater: this.isOfficialBuild(),
     enable_update_notifications: this.isOfficialBuild(),
-    brave_ai_chat_endpoint: this.brave_ai_chat_endpoint,
     ...this.extraGnArgs,
   }
 
@@ -480,6 +479,7 @@ Config.prototype.buildArgs = function () {
   // handle gn args in upstream build scripts without introducing git conflict.
   if (this.targetOS !== 'android' && this.targetOS !== 'ios') {
     args.enable_brave_page_graph = true
+    args.brave_ai_chat_endpoint = this.brave_ai_chat_endpoint
   } else {
     args.enable_brave_page_graph = false
   }
