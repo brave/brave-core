@@ -146,7 +146,8 @@ public class SolanaInstructionPresenter {
                                     R.string.brave_wallet_solana_address_lookup_table_account));
                     twoLineItemText.setTitle(prependedTableIndexSubTitle);
                 }
-                if (!accountPresenter.mSolanaAccountMeta.isSigner) {
+                if (!accountPresenter.mSolanaAccountMeta.isSigner
+                        && accountPresenter.mSolanaAccountMeta.addrTableLookupIndex != null) {
                     twoLineItemDataSources.add(new TwoLineItemText(
                             resources.getString(
                                     R.string.brave_wallet_solana_address_lookup_table_index),
