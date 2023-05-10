@@ -39,6 +39,7 @@ import {
 } from '../stories/mock-data/mock-accounts-tab-state'
 import { mockUiState } from '../stories/mock-data/mock-ui-state'
 import { mockPanelState } from '../stories/mock-data/mock-panel-state'
+import { setApiProxyFetcher } from '../common/async/base-query-cache'
 
 export interface RootStateOverrides {
   accountTabStateOverride?: Partial<AccountsTabState>
@@ -61,7 +62,9 @@ export const createMockStore = (
   // api
   const mockedApiProxy = getMockedAPIProxy()
   mockedApiProxy.applyOverrides(apiOverrides)
-  const api = createWalletApi(() => mockedApiProxy)
+  getMockedAPIProxy().applyOverrides(apiOverrides)
+  setApiProxyFetcher(getMockedAPIProxy)
+  const api = createWalletApi()
   // redux
   const store = configureStore({
     reducer: {

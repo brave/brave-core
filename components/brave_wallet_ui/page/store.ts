@@ -19,6 +19,9 @@ import accountsTabReducer from './reducers/accounts-tab-reducer'
 import pageReducer from './reducers/page_reducer'
 import uiReducer from '../common/slices/ui.slice'
 
+// utils
+import { setApiProxyFetcher } from '../common/async/base-query-cache'
+
 export const store = configureStore({
   reducer: {
     page: pageReducer,
@@ -46,6 +49,8 @@ proxy.addTxServiceObserver(store)
 proxy.addBraveWalletServiceObserver(store)
 proxy.addBraveWalletPinServiceObserver(store)
 proxy.addBraveWalletAutoPinServiceObserver(store)
+
+setApiProxyFetcher(getWalletPageApiProxy)
 
 export const walletPageApiProxy = proxy
 
