@@ -261,6 +261,8 @@ void AIChatTabHelper::DistillViaAlgorithm(const ui::AXTree& tree) {
   base::ReplaceSubstringsAfterOffset(&contents_text, 0, ai_chat::kHumanPrompt,
                                      "");
   base::ReplaceSubstringsAfterOffset(&contents_text, 0, ai_chat::kAIPrompt, "");
+  base::ReplaceSubstringsAfterOffset(&contents_text, 0, "<article>", "");
+  base::ReplaceSubstringsAfterOffset(&contents_text, 0, "</article>", "");
 
   VLOG(1) << __func__
           << " Number of chars in content text = " << contents_text.length()
