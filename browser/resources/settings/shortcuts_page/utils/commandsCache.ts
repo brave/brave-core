@@ -2,7 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import { CachingWrapper } from '../../../../brave_new_tab_ui/api/brave_news/magicCache'
+import { CachingWrapper } from '$web-common/mojomCache'
 import {
   Command,
   CommandsServiceRemote,
@@ -61,5 +61,9 @@ export class CommandsCache
 
   reset(commandId: number) {
     this.controller.resetAcceleratorsForCommand(commandId)
+  }
+
+  resetAll() {
+    this.controller.resetAccelerators();
   }
 }

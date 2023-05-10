@@ -41,7 +41,6 @@
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
-#include "brave/browser/ui/webui/commands_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/browser/ui/webui/speedreader/speedreader_panel_ui.h"
@@ -108,9 +107,6 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     return new IPFSUI(web_ui, url.host());
 #endif
 #if !BUILDFLAG(IS_ANDROID)
-  } else if (host == kCommandsHost &&
-             base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
-    return new commands::CommandsUI(web_ui, url.host());
   } else if (host == kWalletPageHost &&
              brave_wallet::IsAllowedForContext(profile)) {
     if (brave_wallet::IsNativeWalletEnabled()) {

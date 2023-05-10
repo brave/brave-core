@@ -197,11 +197,11 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/tip_panel_ui.h"
+#include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_shields/cookie_list_opt_in_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
-#include "brave/browser/ui/webui/commands_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/components/ai_chat/ai_chat.mojom.h"
@@ -542,10 +542,6 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
 #endif
 
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
-  if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
-    registry.ForWebUI<commands::CommandsUI>()
-        .Add<commands::mojom::CommandsService>();
-  }
   if (ai_chat::features::IsAIChatEnabled()) {
     registry.ForWebUI<AIChatUI>().Add<ai_chat::mojom::PageHandler>();
   }
@@ -702,6 +698,11 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
       !render_frame_host->GetBrowserContext()->IsTor()) {
     content::RegisterWebUIControllerInterfaceBinder<ai_chat::mojom::PageHandler,
                                                     AIChatUI>(map);
+  }
+
+  if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
+    content::RegisterWebUIControllerInterfaceBinder<
+        commands::mojom::CommandsService, BraveSettingsUI>(map);
   }
 #endif
 

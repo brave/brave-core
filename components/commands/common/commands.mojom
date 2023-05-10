@@ -9,6 +9,9 @@ struct Command {
   string name;
   int32 id;
 
+  // Indicates if the accelerators for the command have been changed.
+  bool modified;
+
   array<Accelerator> accelerators;
 };
 
@@ -27,6 +30,8 @@ interface CommandsService {
   AssignAcceleratorToCommand(int32 command_id, string accelerator);
   UnassignAcceleratorFromCommand(int32 command_id, string accelerator);
   ResetAcceleratorsForCommand(int32 command_id);
+
+  ResetAccelerators();
 
   AddCommandsListener(pending_remote<CommandsListener> listener);
 };

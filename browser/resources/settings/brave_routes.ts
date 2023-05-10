@@ -30,6 +30,9 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   if (loadTimeData.getBoolean('isBraveRewardsSupported')) {
     r.REWARDS = r.BASIC.createSection('/rewards', 'rewards')
   }
+  if (loadTimeData.getBoolean('areShortcutsSupported')) {
+    r.SHORTCUTS = r.SYSTEM.createChild('/system/shortcuts')
+  }
   r.SOCIAL_BLOCKING = r.BASIC.createSection('/socialBlocking', 'socialBlocking')
   r.EXTENSIONS = r.BASIC.createSection('/extensions', 'extensions')
   r.EXTENSIONS_V2 = r.EXTENSIONS.createChild('/extensions/v2')
