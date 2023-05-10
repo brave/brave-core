@@ -26,6 +26,7 @@ import { mockNetwork } from '../common/constants/mocks'
 import { NftPinningStatus } from '../components/desktop/nft-pinning-status/nft-pinning-status'
 import { NftsEmptyState } from '../components/desktop/views/nfts/components/nfts-empty-state/nfts-empty-state'
 import { EnableNftDiscoveryModal } from '../components/desktop/popup-modals/enable-nft-discovery-modal/enable-nft-discovery-modal'
+import { AutoDiscoveryEmptyState } from '../components/desktop/views/nfts/components/auto-discovery-empty-state/auto-discovery-empty-state'
 
 export default {
   title: 'Wallet/Desktop/Components',
@@ -255,4 +256,17 @@ export const _EnableNftDiscoveryModal = () => {
 
 _EnableNftDiscoveryModal.story = {
   title: 'Enable NFT Discovery Modal'
+}
+
+export const _AutoDiscoveryEmptyState = () => {
+  return (
+    <AutoDiscoveryEmptyState
+      onImportNft={() => console.log('Import NFT')}
+      onRefresh={() => console.log('Import NFT')}
+    />
+  )
+}
+
+_AutoDiscoveryEmptyState.story = {
+  title: 'NFT Auto Discovery Empty State'
 }
