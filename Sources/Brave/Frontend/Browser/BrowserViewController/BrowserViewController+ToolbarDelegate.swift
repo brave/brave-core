@@ -203,14 +203,49 @@ extension BrowserViewController: TopToolbarDelegate {
   }
 
   func topToolbarDidPressPlaylistButton(_ urlBar: TopToolbarView) {
+    guard let tab = tabManager.selectedTab, let playlistItem = tab.playlistItem else { return }
     let state = urlBar.locationView.playlistButton.buttonState
     switch state {
     case .addToPlaylist:
-      showPlaylistPopover(tab: tabManager.selectedTab, state: .addToPlaylist)
+      addToPlaylist(item: playlistItem) { [weak self] didAddItem in
+        guard let self else { return }
+        
+        if didAddItem {
+          self.updatePlaylistURLBar(tab: tab, state: .existingItem, item: playlistItem)
+          
+          DispatchQueue.main.async { [self] in
+            let popover = self.createPlaylistPopover(item: playlistItem, tab: tab)
+            popover.present(from: self.topToolbar.locationView.playlistButton, on: self)
+          }
+        }
+      }
     case .addedToPlaylist:
-      showPlaylistPopover(tab: tabManager.selectedTab, state: .addedToPlaylist)
+      // Shows its own menu
+      break
     case .none:
       break
+    }
+  }
+  
+  func topToolbarDidPressPlaylistMenuAction(_ urlBar: TopToolbarView, action: PlaylistURLBarButton.MenuAction) {
+    guard let tab = tabManager.selectedTab, let info = tab.playlistItem else { return }
+    switch action {
+    case .changeFolders:
+      guard let item = PlaylistItem.getItem(uuid: info.tagId) else { return }
+      let controller = PlaylistChangeFoldersViewController(item: item)
+      self.present(controller, animated: true)
+    case .openInPlaylist:
+      DispatchQueue.main.async {
+        self.openPlaylist(tab: tab, item: info)
+      }
+    case .remove:
+      DispatchQueue.main.async {
+        if PlaylistManager.shared.delete(item: info) {
+          self.updatePlaylistURLBar(tab: tab, state: .newItem, item: info)
+        }
+      }
+    case .undoRemove(let originalFolderUUID):
+      addToPlaylist(item: info, folderUUID: originalFolderUUID)
     }
   }
 

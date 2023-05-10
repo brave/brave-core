@@ -5,6 +5,7 @@
 import Foundation
 import UIKit
 import SnapKit
+import SwiftUI
 
 extension UILayoutPriority {
   /// The priority used for the container view's width & height when using ContentSizeBehavior.preferredContentSize
@@ -611,5 +612,47 @@ extension PopoverController: UINavigationControllerDelegate {
       size.height = min(size.height, UIScreen.main.bounds.height - containerView.frame.origin.y - view.safeAreaInsets.bottom - arrowDistance)
       navigationController.preferredContentSize = size
     }
+  }
+}
+
+extension PopoverController {
+  private class PopoverHostingController<Content>: UIHostingController<Content>, PopoverContentComponent where Content: View & PopoverContentComponent {
+    override func viewDidLayoutSubviews() {
+      super.viewDidLayoutSubviews()
+      if #unavailable(iOS 16) {
+        // For some reason these 2 calls are required in order for the `UIHostingController` to layout
+        // correctly. Without this it for some reason becomes taller than what it needs to be despite its
+        // `sizeThatFits(_:)` calls returning the correct value once the parent does layout.
+        view.setNeedsUpdateConstraints()
+        view.updateConstraintsIfNeeded()
+      }
+    }
+    
+    var extendEdgeIntoArrow: Bool {
+      rootView.extendEdgeIntoArrow
+    }
+    
+    var isPanToDismissEnabled: Bool {
+      rootView.isPanToDismissEnabled
+    }
+    
+    func popoverShouldDismiss(_ popoverController: PopoverController) -> Bool {
+      rootView.popoverShouldDismiss(popoverController)
+    }
+    
+    var closeActionAccessibilityLabel: String {
+      rootView.closeActionAccessibilityLabel
+    }
+  }
+  
+  /// Create a popover displaying a SwiftUI view hierarchy as its content
+  public convenience init<Content: View & PopoverContentComponent>(
+    content: Content,
+    contentSizeBehavior: ContentSizeBehavior = .autoLayout()
+  ) {
+    self.init(
+      contentController: PopoverHostingController(rootView: content),
+      contentSizeBehavior: contentSizeBehavior
+    )
   }
 }

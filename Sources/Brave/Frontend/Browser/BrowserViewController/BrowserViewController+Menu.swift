@@ -250,15 +250,7 @@ extension BrowserViewController {
                 }
               } else {
                 browserViewController.dismiss(animated: true) {
-                  let tab = browserViewController.tabManager.selectedTab
-
-                  if let webView = tab?.webView {
-                    PlaylistScriptHandler.getCurrentTime(webView: webView, nodeTag: item.tagId) { [weak browserViewController] currentTime in
-                      browserViewController?.openPlaylist(tab: tab, item: item, playbackOffset: currentTime)
-                    }
-                  } else {
-                    browserViewController.openPlaylist(tab: nil, item: item, playbackOffset: 0.0)
-                  }
+                  browserViewController.openPlaylist(tab: browserViewController.tabManager.selectedTab, item: item)
                 }
               }
             }
