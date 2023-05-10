@@ -11,7 +11,6 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
-#include "brave/components/brave_rewards/core/endpoint/gemini/gemini_utils.h"
 #include "brave/components/brave_rewards/core/gemini/gemini_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -29,7 +28,7 @@ std::string PostOauth::GetUrl() {
 std::string PostOauth::GeneratePayload(const std::string& external_account_id,
                                        const std::string& code) {
   const std::string client_id = internal::gemini::GetClientId();
-  const std::string client_secret = GetClientSecret();
+  const std::string client_secret = internal::gemini::GetClientSecret();
   const std::string request_id = base::GenerateGUID();
 
   base::Value::Dict dict;

@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
-#include "brave/components/brave_rewards/core/endpoint/gemini/gemini_utils.h"
+#include "brave/components/brave_rewards/core/gemini/gemini_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
@@ -40,7 +40,7 @@ Result ParseBody(const std::string& body) {
       return base::unexpected(Error::kFailedToParseBody);
     }
 
-    if (*label == kGeminiRecipientIDLabel) {
+    if (*label == gemini::kGeminiRecipientIDLabel) {
       return std::move(*recipient_id);
     }
   }

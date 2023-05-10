@@ -7,30 +7,34 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_GEMINI_GEMINI_UTIL_H_
 
 #include <string>
+#include <vector>
 
-#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/common/mojom/ledger.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/ledger_types.mojom.h"
 
 namespace brave_rewards::internal::gemini {
 
-const char kFeeAddressStaging[] = "622b9018-f26a-44bf-9a45-3bf3bf3c95e9";
-const char kFeeAddressProduction[] = "6116ad51-b50d-4e54-bb59-9de559beffdd";
+inline constexpr char kGeminiRecipientIDLabel[] = "Brave Browser";
 
 std::string GetClientId();
 
 std::string GetClientSecret();
 
-std::string GetUrl();
-
 std::string GetFeeAddress();
 
-std::string GetLoginUrl(const std::string& state);
-
-std::string GetAccountUrl();
-
-std::string GetActivityUrl();
-
-mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr);
+mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr wallet);
 
 }  // namespace brave_rewards::internal::gemini
+
+namespace brave_rewards::internal::endpoint::gemini {
+
+std::vector<std::string> RequestAuthorization(const std::string& token = "");
+
+std::string GetApiServerUrl(const std::string& path);
+std::string GetOauthServerUrl(const std::string& path);
+
+mojom::Result CheckStatusCode(int status_code);
+
+}  // namespace brave_rewards::internal::endpoint::gemini
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_GEMINI_GEMINI_UTIL_H_

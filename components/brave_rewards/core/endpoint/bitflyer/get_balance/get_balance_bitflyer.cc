@@ -10,7 +10,7 @@
 #include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
-#include "brave/components/brave_rewards/core/endpoint/bitflyer/bitflyer_utils.h"
+#include "brave/components/brave_rewards/core/bitflyer/bitflyer_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "net/http/http_status_code.h"
 

@@ -4,36 +4,55 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 declare_args() {
-  bitflyer_client_id = ""
-  bitflyer_client_secret = ""
-  bitflyer_staging_client_id = ""
-  bitflyer_staging_client_secret = ""
-  bitflyer_staging_url = ""
-  gemini_api_url = ""
-  gemini_api_staging_url = ""
-  gemini_oauth_url = ""
-  gemini_oauth_staging_url = ""
-  gemini_wallet_client_id = ""
-  gemini_wallet_client_secret = ""
-  gemini_wallet_staging_client_id = ""
-  gemini_wallet_staging_client_secret = ""
-  uphold_client_id = ""
-  uphold_client_secret = ""
-  uphold_staging_client_id = ""
-  uphold_staging_client_secret = ""
+  bitflyer_production_client_id = ""
+  bitflyer_production_client_secret = ""
+  bitflyer_production_fee_address = ""
+  bitflyer_production_url = ""
+  bitflyer_sandbox_client_id = ""
+  bitflyer_sandbox_client_secret = ""
+  bitflyer_sandbox_fee_address = ""
+  bitflyer_sandbox_url = ""
+  gemini_production_api_url = ""
+  gemini_production_client_id = ""
+  gemini_production_client_secret = ""
+  gemini_production_fee_address = ""
+  gemini_production_oauth_url = ""
+  gemini_sandbox_api_url = ""
+  gemini_sandbox_client_id = ""
+  gemini_sandbox_client_secret = ""
+  gemini_sandbox_fee_address = ""
+  gemini_sandbox_oauth_url = ""
   rewards_grant_dev_endpoint = ""
   rewards_grant_staging_endpoint = ""
   rewards_grant_prod_endpoint = ""
+  uphold_production_api_url = ""
+  uphold_production_client_id = ""
+  uphold_production_client_secret = ""
+  uphold_production_fee_address = ""
+  uphold_production_oauth_url = ""
+  uphold_sandbox_api_url = ""
+  uphold_sandbox_client_id = ""
+  uphold_sandbox_client_secret = ""
+  uphold_sandbox_fee_address = ""
+  uphold_sandbox_oauth_url = ""
 }
 
 if (is_official_build) {
   if (!is_ios) {
-    assert(uphold_client_id != "")
-    assert(uphold_client_secret != "")
-    assert(gemini_api_url != "")
-    assert(gemini_oauth_url != "")
-    assert(gemini_wallet_client_id != "")
-    assert(gemini_wallet_client_secret != "")
+    assert(bitflyer_production_client_id != "")
+    assert(bitflyer_production_client_secret != "")
+    assert(bitflyer_production_fee_address != "")
+    assert(bitflyer_production_url != "")
+    assert(gemini_production_api_url != "")
+    assert(gemini_production_client_id != "")
+    assert(gemini_production_client_secret != "")
+    assert(gemini_production_fee_address != "")
+    assert(gemini_production_oauth_url != "")
+    assert(uphold_production_api_url != "")
+    assert(uphold_production_client_id != "")
+    assert(uphold_production_client_secret != "")
+    assert(uphold_production_fee_address != "")
+    assert(uphold_production_oauth_url != "")
   }
 
   assert(rewards_grant_dev_endpoint != "")
