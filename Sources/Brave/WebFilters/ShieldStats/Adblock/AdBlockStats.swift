@@ -69,7 +69,7 @@ public class AdBlockStats {
   }
   
   /// Returns all the models for this frame URL
-  func cosmeticFilterModels(forFrameURL frameURL: URL, domain: Domain) async -> [CosmeticFilterModel] {
+  func cosmeticFilterModels(forFrameURL frameURL: URL, domain: Domain) async -> [CachedAdBlockEngine.CosmeticFilterModelTuple] {
     return await cachedEngines(for: domain).asyncConcurrentCompactMap { cachedEngine in
       do {
         return try await cachedEngine.cosmeticFilterModel(forFrameURL: frameURL)

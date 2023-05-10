@@ -31,6 +31,33 @@ public actor AdBlockEngineManager: Sendable {
       case .filterListURL: return 200
       }
     }
+    
+    /// Standard selectors allows us to unhide 1p content if standard mode is on.
+    /// Agressive selectors never unhide even on standard mode
+    ///
+    /// The only allowed standard mode filter lists (i.e. ones that allow 1p unhiding) are the following:
+    /// 1. Default filter lists (i.e. `adBlock`)
+    /// 2. Regional filter lists (i.e. filter lists that have a language associated with them)
+    ///
+    /// All other filter lists are agressive (i.e. are always hidden regardless of 1p status)
+    @MainActor func isAlwaysAgressive(given filterLists: [FilterList]) -> Bool {
+      switch self {
+      case .adBlock, .cosmeticFilters:
+        // Our default filter lists are not agressive
+        return false
+      case .filterListURL:
+        // Custom filter lists are always agressive
+        return true
+      case .filterList(let uuid):
+        // We can only unhide filter lists that are region specific.
+        // Non-regional lists such as cookie consent notices are not unhidable due to 1p checks
+        guard let filterList = filterLists.first(where: { $0.uuid == uuid }) else {
+          return false
+        }
+        
+        return filterList.entry.languages.isEmpty
+      }
+    }
   }
   
   /// The type of resource so we know how to compile it and add it into the engine

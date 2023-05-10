@@ -20,23 +20,24 @@ enum UserScriptType: Hashable {
     /// We need this to control which script gets executed on which frame
     /// on the JS side since we cannot control this on the iOS side
     let frameURL: URL
-    /// Determines if we hide first party content or not
-    ///
-    /// - Note: For now this is always true as to be more aggressive. Later we may make this more configurable
-    let hideFirstPartyContent = true
+    /// Determines if we hide first party content or not. This is controlled via agressive or standard mode
+    /// Standard mode may unhide 1p content for certain filter lists.
+    let hideFirstPartyContent: Bool
     /// This value come from the engine. In most cases this is false.
     let genericHide: Bool
     /// The delay on which to start polling on.
-    ///
-    /// For the most part, this is 0 (or undefined) on main frames but fixed on sub-frames.
-    let firstSelectorsPollingDelayMs: Int? = nil
-
-    /// Some setting the script requires. Not used for now so hard-coed to nil
-    let switchToSelectorsPollingThreshold: Int? = nil
-    /// Some setting the script requires. Not used for now so hard-coed to nil
-    let fetchNewClassIdRulesThrottlingMs: Int? = nil
-    /// These are hide selectors that will get automatically processed when the script loads.
-    let hideSelectors: Set<String>
+    let firstSelectorsPollingDelayMs: Int?
+    /// After a while of using the mutation observer we switch to selectors polling.
+    /// This is purely an optimizaiton
+    let switchToSelectorsPollingThreshold: Int?
+    /// We can add a delay when sending new classes and ids
+    let fetchNewClassIdRulesThrottlingMs: Int?
+    /// These are agressive hide selectors that will get automatically processed when the script loads.
+    /// Agressive selectors may never be unhidden even on standard mode
+    let agressiveSelectors: Set<String>
+    /// These are standard hide selectors that will get automatically processed when the script loads.
+    /// Standard selectors may be unhidden on standard mode if they contain 1p content
+    let standardSelectors: Set<String>
     /// These are hide selectors that will get automatically processed when the script loads.
     let styleSelectors: Set<StyleSelectorEntry>
   }

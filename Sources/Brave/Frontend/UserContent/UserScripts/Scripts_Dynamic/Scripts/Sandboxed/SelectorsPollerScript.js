@@ -6,8 +6,15 @@
 window.__firefox__.execute(function($) {
   const args = $<args>
   const messageHandler = '$<message_handler>';
+  const partinessMessageHandler = '$<partiness_message_handler>';
   
-  const sendMessage = $((ids, classes) => {
+  /**
+   * Send ids and classes to iOS and await new hide selectors
+   * @param {Array} ids The ids found on this page
+   * @param {Array} classes The classes found on this page
+   * @returns A Promise that resolves new hide selectors
+   */
+  const sendSelectors = $((ids, classes) => {
     return $.postNativeMessage(messageHandler, {
       "securityToken": SECURITY_TOKEN,
       "data": {
@@ -15,9 +22,24 @@ window.__firefox__.execute(function($) {
         ids: ids,
         classes: classes
       }
-    });
-  });
+    })
+  })
   
+  /**
+   * Send new urls found on the page and return their partiness
+   * @param {Array} urls The urls found on this page
+   * @returns A Promise resolving to a dictionary base urls and their first party status
+   */
+  const getPartiness = $((urls) => {
+    return $.postNativeMessage(partinessMessageHandler, {
+      "securityToken": SECURITY_TOKEN,
+      "data": {
+        sourceURL: window.location.href,
+        urls: urls,
+      }
+    })
+  })
+
   // Start looking for things to unhide before at most this long after
   // the backend script is up and connected (eg backgroundReady = true),
   // or sooner if the thread is idle.
@@ -37,54 +59,188 @@ window.__firefox__.execute(function($) {
   const scoreCalcIntervalMs = 1000
   // The begin of the time frame to calc |currentMutationScore|.
   let currentMutationStartTime = performance.now()
-  // The next allowed time to call FetchNewClassIdRules() if it's throttled.
-  let nextFetchNewClassIdRulesCall = 0
-  let fetchNewClassIdRulesTimeoutId
-  const queriedIds = new Set()
-  const queriedClasses = new Set()
-  // Each of these get setup once the mutation observer starts running.
-  let notYetQueriedClasses = []
-  let notYetQueriedIds = []
-  
-  const CC = {}
-  CC.allHideSelectorsToRules = new Map()
-  CC.allRules = []
-  CC.observingHasStarted = false
-  // All new selectors go in `firstRunQueue`
-  CC.firstRunQueue = new Set()
-  // Third party matches go in the second and third queues.
-  CC.secondRunQueue = new Set()
-  // Once a selector gets in to this queue, it's only evaluated for 1p content one
-  // more time.
-  CC.finalRunQueue = new Set()
-  CC.allQueues = [
-    CC.firstRunQueue, CC.secondRunQueue, CC.finalRunQueue
-  ]
-  CC.numQueues = CC.allQueues.length
-  CC.alreadyUnhiddenSelectors = new Set()
-  CC.alreadyKnownFirstPartySubtrees = new WeakSet()
-  CC._hasDelayOcurred = false
-  CC._startCheckingId = undefined
-  CC.firstSelectorsPollingDelayMs = undefined
-  CC.switchToSelectorsPollingThreshold = undefined
-  CC.fetchNewClassIdRulesThrottlingMs = undefined
-  
-  // The passed configuration to this script
-  CC.hide1pContent = args.hideFirstPartyContent
-  CC.generichide = args.genericHide
-  
-  if (args.firstSelectorsPollingDelayMs) {
-    CC.firstSelectorsPollingDelayMs = args.firstSelectorsPollingDelayMs
+
+  const CC = {
+    allSelectors: new Set(),
+    pendingSelectors: { ids: new Set(), classes: new Set() },
+    alwaysHiddenSelectors: new Set(),
+    hiddenSelectors: new Set(),
+    unhiddenSelectors: new Set(),
+    allStyleRules: [],
+    runQueues: [
+      // All new selectors go in this first run queue
+      new Set(),
+      // Third party matches go in the second and third queues.
+      new Set(),
+      // This is the final run queue.
+      // It's only evaluated for 1p content one more time.
+      new Set()
+    ],
+    // URLS
+    pendingOrigins: new Set(),
+    // A map of origin strings and their isFirstParty results
+    urlFirstParty: new Map(),
+    alreadyKnownFirstPartySubtrees: new WeakSet()
   }
-  
-  if (args.switchToSelectorsPollingThreshold) {
-    CC.switchToSelectorsPollingThreshold = args.switchToSelectorsPollingThreshold
+
+  /**
+   * Send any new urls to the iOS subrutine so we can determine its partyness (1st or 3rd party)
+   * @returns A Promise that returns if new party information was returned or no
+   */
+  const sendPendingOriginsIfNeeded = async () => {
+    if (CC.pendingOrigins.size === 0) {
+      return false
+    }
+
+    const origins = Array.from(CC.pendingOrigins)
+    CC.pendingOrigins = new Set()
+    const results = await getPartiness(origins)
+
+    for (const origin of origins) {
+      const isFirstParty = results[origin]
+      if (isFirstParty !== undefined) {
+        CC.urlFirstParty[origin] = isFirstParty
+      } else {
+        console.error(`Missing partiness for ${origin}`)
+      }
+    }
+
+    return true
   }
-  
-  if (args.fetchNewClassIdRulesThrottlingMs) {
-    CC.fetchNewClassIdRulesThrottlingMs = args.fetchNewClassIdRulesThrottlingMs
+
+  /**
+   * Send any pending id and class selectors to iOS so we can determine hide selectors.
+   * @returns A promise containing new selectors that need to be hidden
+   */
+  const sendPendingSelectorsIfNeeded = async () => {
+    if (CC.pendingSelectors.ids.size === 0 && CC.pendingSelectors.classes.size === 0) {
+      return false
+    }
+
+    const ids = Array.from(CC.pendingSelectors.ids)
+    const classes = Array.from(CC.pendingSelectors.classes)
+    CC.pendingSelectors.ids = new Set()
+    CC.pendingSelectors.classes = new Set()
+
+    let hasChanges = false
+
+    const results = await sendSelectors(ids, classes)
+    if (results.standardSelectors && results.standardSelectors.length > 0) {
+      if (processHideSelectors(results.standardSelectors, !args.hideFirstPartyContent)) {
+        hasChanges = true
+      }
+    }
+
+    if (results.agressiveSelectors && results.agressiveSelectors.length > 0) {
+      if (processHideSelectors(results.agressiveSelectors, false)) {
+        hasChanges = true
+      }
+    }
+
+    return hasChanges
   }
-  
+
+  let sendPendingSelectorsPromise
+
+  const sendPendingSelectorsThrottled = () => {
+    if (!args.fetchNewClassIdRulesThrottlingMs) {
+      return sendPendingSelectorsIfNeeded()
+    }
+
+    if (sendPendingSelectorsPromise === undefined) {
+      sendPendingSelectorsPromise = new Promise((resolve, reject) => {
+        window.setTimeout(() => {
+          sendPendingSelectorsPromise = undefined
+
+          sendPendingSelectorsIfNeeded().then((changes) => {
+            resolve(changes)
+          })
+        }, args.fetchNewClassIdRulesThrottlingMs)
+      })
+    }
+
+    return sendPendingSelectorsPromise
+  }
+
+  /**
+   * Extract any new id selector from the element
+   * @param {object} element The element to extract from
+   * @returns True or false indicating if anything was extracted
+   */
+  const extractIDSelectorIfNeeded = (element) => {
+    const id = element.id
+    if (!id) { return false }
+    const selector = `#${id}`
+    if (!CC.allSelectors.has(selector)) {
+      CC.allSelectors.add(selector)
+      CC.pendingSelectors.ids.add(id)
+      return true
+    } else {
+      return false
+    }
+  }
+
+  /**
+   * Extract any new class selectors from the element
+   * @param {object} element The element to extract from
+   * @returns True or false indicating if anything was extracted
+   */
+  const extractClassSelectorsIfNeeded = (element) => {
+    let hasNewSelectors = false
+
+    for (const className of element.classList) {
+      if (!className) { continue }
+      const selector = `.${className}`
+      if (!CC.allSelectors.has(selector)) {
+        CC.pendingSelectors.classes.add(className)
+        CC.allSelectors.add(selector)
+        hasNewSelectors = true
+      }
+    }
+
+    return hasNewSelectors
+  }
+
+  /**
+   * Extract any selectors that are new (not yet seen) on the given element
+   * @param {object} element The element to extract from
+   * @returns True or false depending on if selectors were extracted
+   */
+  const extractNewSelectors = (element) => {
+    if (element.hasAttribute === undefined) {
+      return false
+    }
+
+    let hasNewSelectors = false
+    if (element.hasAttribute('id')) {
+      hasNewSelectors = extractIDSelectorIfNeeded(element)
+    }
+
+    if (extractClassSelectorsIfNeeded(element)) {
+      hasNewSelectors = true
+    }
+
+    return hasNewSelectors
+  }
+
+  /**
+   * Extract new urls form the given element
+   * and returns a boolean indicating if the elemenent had a url
+   * @param {object} element The element to extract from
+   * @returns True or false indicating if the element had a url even if nothing was extracted.
+   */
+  const extractOriginIfNeeded = (element) => {
+    // If we hide first party content we don't care to check urls for partiness.
+    // Otherwise we need to have a src attribute.
+    if (args.hideFirstPartyContent || element.hasAttribute === undefined || !element.hasAttribute('src')) {
+      return false
+    }
+
+    const src = element.getAttribute('src')
+    isFirstPartyURL(src)
+    return true
+  }
+
   /**
    * Provides a new function which can only be scheduled once at a time.
    *
@@ -114,191 +270,24 @@ window.__firefox__.execute(function($) {
     return (node.nodeType === 1)
   }
 
-  const asElement = (node) => {
-    return isElement(node) ? node : null
-  }
-
   const isHTMLElement = (node) => {
     return ('innerText' in node)
   }
 
-  // The fetchNewClassIdRules() can be called of each MutationObserver event.
-  // Under the hood it makes a lot of work: call to C++ => IPC to the browser
-  // process => request to the rust CS engine and back.
-  // So limit the number of calls to one per fetchNewClassIdRulesThrottlingMs.
-  const ShouldThrottleFetchNewClassIdsRules = () => {
-    if (CC.fetchNewClassIdRulesThrottlingMs === undefined) {
-      return false // the feature is disabled.
-    }
-    if (fetchNewClassIdRulesTimeoutId) {
-      return true // The function has already scheduled and called later.
-    }
-    const now = performance.now()
-    const msToWait = nextFetchNewClassIdRulesCall - now
-    if (msToWait > 0) {
-      // Schedule the call in |msToWait| ms and return.
-      fetchNewClassIdRulesTimeoutId =
-        window.setTimeout(function () {
-          fetchNewClassIdRulesTimeoutId = undefined
-          fetchNewClassIdRules()
-        }, msToWait)
-      return true
-    }
-    nextFetchNewClassIdRulesCall =
-      now + CC.fetchNewClassIdRulesThrottlingMs
-    return false
-  }
-  
-  /// Takes selectors and adds them to the style sheet
-  const processHideSelectors = (selectors) => {
-    selectors.forEach(selector => {
-      if ((typeof selector === 'string') && (CC.hide1pContent || !CC.allHideSelectorsToRules.has(selector))) {
-        const rule = selector + '{display:none !important;}'
-        CC.allRules.push(rule)
-        
-        if (!CC.hide1pContent) {
-          CC.allHideSelectorsToRules.set(selector, CC.allRules.length - 1)
-          CC.firstRunQueue.add(selector)
-        }
-      }
-    })
-  }
-  
-  /// Takes selectors and adds them to the style sheet
-  const processStyleSelectors = (styleSelectors) => {
-    styleSelectors.forEach(entry => {
-      let rule = entry.selector + '{' + entry.rules.join(';') + ';}'
-      CC.allRules.push(rule)
-    })
-  }
-  
-  /// Moves the stylesheet to the bottom of the page
-  const moveStyle = () => {
-    const styleElm = CC.cosmeticStyleSheet
-    const targetElm = document.body
-    styleElm.parentElement.removeChild(styleElm)
-    targetElm.appendChild(styleElm)
-  }
-  
-  const setRulesOnStylesheet = () => {
-    const ruleText = CC.allRules.filter(rule => {
-      return rule !== undefined && !rule.startsWith(':')
-    }).join('')
-    CC.cosmeticStyleSheet.innerText = ruleText
-  }
+  const onMutations = async (mutations, observer) => {
+    const mutationScore = queueSelectorsFromMutations(mutations)
 
-  const fetchNewClassIdRules = () => {
-    if ((!notYetQueriedClasses || notYetQueriedClasses.length === 0) &&
-      (!notYetQueriedIds || notYetQueriedIds.length === 0)) {
-      return
-    }
-    
-    sendMessage(notYetQueriedIds, notYetQueriedClasses).then(selectors => {
-      if (!selectors) { return }
-      processHideSelectors(selectors)
-      setRulesOnStylesheet()
-    })
-    
-    notYetQueriedClasses = []
-    notYetQueriedIds = []
-  }
-
-  const useMutationObserver = () => {
-    if (selectorsPollingIntervalId) {
-      clearInterval(selectorsPollingIntervalId)
-      selectorsPollingIntervalId = undefined
-    }
-    
-    const observer = new MutationObserver(onMutations)
-    
-    const observerConfig = {
-      subtree: true,
-      childList: true,
-      attributeFilter: ['id', 'class']
-    }
-    
-    observer.observe(document.documentElement, observerConfig)
-  }
-
-  const usePolling = (observer) => {
-    if (observer) {
-      const mutations = observer.takeRecords()
-      observer.disconnect()
-      
-      if (mutations) {
-        queueAttrsFromMutations(mutations)
+    if (mutationScore > 0) {
+      const changes = await sendPendingSelectorsThrottled()
+      if (changes) {
+        setRulesOnStylesheet()
+        pumpCosmeticFilterQueuesOnIdle()
       }
     }
-    
-    const futureTimeMs = window.Date.now() + returnToMutationObserverIntervalMs
-    const queryAttrsFromDocumentBound = queryAttrsFromDocument.bind(undefined, futureTimeMs)
-    selectorsPollingIntervalId = window.setInterval(queryAttrsFromDocumentBound,
-                                                       selectorsPollingIntervalMs)
-  }
 
-  const queueAttrsFromMutations = (mutations) => {
-    let mutationScore = 0
-    for (let _i = 0, mutations1 = mutations; _i < mutations1.length; _i++) {
-      const aMutation = mutations1[_i]
-      if (aMutation.type === 'attributes') {
-        // Since we're filtering for attribute modifications, we can be certain
-        // that the targets are always HTMLElements, and never TextNode.
-        const changedElm = aMutation.target
-        switch (aMutation.attributeName) {
-          case 'class':
-            mutationScore += changedElm.classList.length
-            for (let _b = 0, _c = changedElm.classList; _b < _c.length; _b++) {
-              const aClassName = _c[_b]
-              if (!queriedClasses.has(aClassName)) {
-                notYetQueriedClasses.push(aClassName)
-                queriedClasses.add(aClassName)
-              }
-            }
-            break
-          case 'id':
-            mutationScore++
-            if (!queriedIds.has(changedElm.id)) {
-              notYetQueriedIds.push(changedElm.id)
-              queriedIds.add(changedElm.id)
-            }
-            break
-        }
-      } else if (aMutation.addedNodes.length > 0) {
-        for (let _d = 0, _e = aMutation.addedNodes; _d < _e.length; _d++) {
-          const node = _e[_d]
-          const element = asElement(node)
-          if (!element) {
-            continue
-          }
-          mutationScore++
-          const id = element.id
-          if (id && !queriedIds.has(id)) {
-            notYetQueriedIds.push(id)
-            queriedIds.add(id)
-          }
-          const classList = element.classList
-          if (classList) {
-            mutationScore += classList.length
-            for (let _f = 0, _g = classList; _f < _g.length; _f++) {
-              const className = _g[_f]
-              if (className && !queriedClasses.has(className)) {
-                notYetQueriedClasses.push(className)
-                queriedClasses.add(className)
-              }
-            }
-          }
-        }
-      }
-    }
-    
-    return mutationScore
-  }
-  
-  const onMutations = (mutations, observer) => {
-    const mutationScore = queueAttrsFromMutations(mutations)
     // Check the conditions to switch to the alternative strategy
     // to get selectors.
-    if (CC.switchToSelectorsPollingThreshold !== undefined) {
+    if (args.switchToSelectorsPollingThreshold !== undefined) {
       const now = performance.now()
       if (now > currentMutationStartTime + scoreCalcIntervalMs) {
         // Start the next time frame.
@@ -306,25 +295,119 @@ window.__firefox__.execute(function($) {
         currentMutationScore = 0
       }
       currentMutationScore += mutationScore
-      if (currentMutationScore > CC.switchToSelectorsPollingThreshold) {
+      if (currentMutationScore > args.switchToSelectorsPollingThreshold) {
         usePolling(observer)
       }
     }
-    if (!ShouldThrottleFetchNewClassIdsRules()) {
-      fetchNewClassIdRules()
+  }
+
+  const useMutationObserver = () => {
+    if (selectorsPollingIntervalId) {
+      clearInterval(selectorsPollingIntervalId)
+      selectorsPollingIntervalId = undefined
+    }
+
+    const observer = new MutationObserver(onMutations)
+
+    const observerConfig = {
+      subtree: true,
+      childList: true,
+      attributeFilter: ['id', 'class']
+    }
+
+    observer.observe(document.documentElement, observerConfig)
+  }
+
+  const usePolling = (observer) => {
+    if (observer) {
+      const mutations = observer.takeRecords()
+      observer.disconnect()
+
+      if (mutations) {
+        queueSelectorsFromMutations(mutations)
+      }
+    }
+
+    const futureTimeMs = window.Date.now() + returnToMutationObserverIntervalMs
+    const queryAttrsFromDocumentBound = querySelectorsFromElement.bind(document, undefined, futureTimeMs)
+    selectorsPollingIntervalId = window.setInterval(queryAttrsFromDocumentBound, selectorsPollingIntervalMs)
+  }
+
+  const queueSelectorsFromMutations = (mutations) => {
+    let mutationScore = 0
+    for (const mutation of mutations) {
+      const changedElm = mutation.target
+
+      switch (mutation.type) {
+        case 'attributes':
+          // Since we're filtering for attribute modifications, we can be certain
+          // that the targets are always HTMLElements, and never TextNode.
+          switch (mutation.attributeName) {
+            case 'class':
+              mutationScore += changedElm.classList.length
+              extractClassSelectorsIfNeeded(changedElm)
+              break
+            case 'id':
+              mutationScore++
+              extractIDSelectorIfNeeded(changedElm)
+              break
+          }
+          break
+        case 'childList':
+          if (mutation.addedNodes.length > 0) {
+            mutationScore += mutation.addedNodes.length
+
+            for (const node of mutation.addedNodes) {
+              if (!isElement(node)) { continue }
+              querySelectorsFromElement(node)
+            }
+          }
+      }
+    }
+
+    return mutationScore
+  }
+
+  /**
+   * Tries to extract origin from the given URL string
+   * @param {string} urlString The string to extract the origin from
+   * @returns Origin string if found otherwise undefined
+   */
+  const extractOriginFromURLString = (urlString) => {
+    try {
+      const url = new URL(urlString, window.location.toString())
+      return url.origin
+    } catch (error) {
+      console.error(error)
+      return undefined
     }
   }
 
-  const isFirstPartyUrl = (url) => {
-    if (isRelativeUrl(url)) {
+  /**
+   * Determine the partiness (1st or 3rd party) of a given string.
+   * The string should be an absolute or relative url.
+   * @param {string} urlString The string to determine the partiness of
+   * @returns True if the url is first party
+   */
+  const isFirstPartyURL = (urlString) => {
+    if (isRelativeUrl(urlString)) {
       return true
     }
-    
-    // TODO: @JS Handle first party for more control over cosmetic filtering agressivness
-    // For now we return false. The original source code was getting this from C++ but we cannot
-    // Do this easily in iOS so we will have to get creative here if we ever implement this.
-    // Perhaps we can do a close enough js implementation.
-    return false
+
+    const origin = extractOriginFromURLString(urlString)
+
+    if (origin !== undefined) {
+      const isFirstParty = CC.urlFirstParty[origin]
+
+      if (isFirstParty === undefined) {
+        CC.pendingOrigins.add(origin)
+      }
+
+      return isFirstParty
+    } else {
+      console.error(`Could not get origin from ${urlString}`)
+      return false
+    }
   }
 
   const stripChildTagsFromText = (elm, tagName, text) => {
@@ -391,20 +474,14 @@ window.__firefox__.execute(function($) {
    *
    * Finally, special case some ids we know are used only for third party ads.
    */
-  const isSubTreeFirstParty = (elm, possibleQueryResult) => {
-    let queryResult
-    let isTopLevel
-    if (possibleQueryResult) {
-      queryResult = possibleQueryResult
-      isTopLevel = false
-    } else {
-      queryResult = {
-        foundFirstPartyResource: false,
-        foundThirdPartyResource: false,
-        foundKnownThirdPartyAd: false
-      }
-      isTopLevel = true
+  const subTreePartyInfo = (elm, queryResult) => {
+    queryResult = queryResult || {
+      foundFirstPartyResource: false,
+      foundThirdPartyResource: false,
+      foundKnownThirdPartyAd: false,
+      pendingSrcAttributes: []
     }
+
     if (elm.getAttribute) {
       if (elm.hasAttribute('id')) {
         const elmId = elm.getAttribute('id')
@@ -412,17 +489,22 @@ window.__firefox__.execute(function($) {
           elmId.startsWith('div-gpt-ad') ||
           elmId.startsWith('adfox_')) {
           queryResult.foundKnownThirdPartyAd = true
-          return false
+          // Stop searching if we found a known 3rd party ad
+          return queryResult
         }
       }
       if (elm.hasAttribute('src')) {
         const elmSrc = elm.getAttribute('src')
-        const elmSrcIsFirstParty = isFirstPartyUrl(elmSrc)
-        if (elmSrcIsFirstParty) {
+        const elmSrcIsFirstParty = isFirstPartyURL(elmSrc)
+        if (elmSrcIsFirstParty === undefined) {
+          queryResult.pendingSrcAttributes.push(elmSrc)
+        } else if (elmSrcIsFirstParty) {
           queryResult.foundFirstPartyResource = true
-          return true
+          // Stop searching if we found a 1st party resource
+          return queryResult
+        } else {
+          queryResult.foundThirdPartyResource = true
         }
-        queryResult.foundThirdPartyResource = true
       }
       if (elm.hasAttribute('style')) {
         const elmStyle = elm.getAttribute('style')
@@ -438,50 +520,99 @@ window.__firefox__.execute(function($) {
         }
       }
     }
+
+    const subElms = []
     if (elm.firstChild) {
-      isSubTreeFirstParty(elm.firstChild, queryResult)
-      if (queryResult.foundKnownThirdPartyAd) {
-        return false
-      }
-      if (queryResult.foundFirstPartyResource) {
-        return true
-      }
+      subElms.push(elm.firstChild)
     }
     if (elm.nextSibling) {
-      isSubTreeFirstParty(elm.nextSibling, queryResult)
+      subElms.push(elm.nextSibling)
+    }
+
+    for (const subElm of subElms) {
+      subTreePartyInfo(subElm, queryResult)
+
       if (queryResult.foundKnownThirdPartyAd) {
-        return false
+        // We stop if we found a known 3rd party ad.
+        return queryResult
+      } else if (queryResult.foundFirstPartyResource) {
+        // We stop if we found a first party resource.
+        return queryResult
       }
-      if (queryResult.foundFirstPartyResource) {
-        return true
-      }
     }
-    if (!isTopLevel) {
-      return (!queryResult.foundThirdPartyResource)
-    }
-    if (queryResult.foundThirdPartyResource) {
-      return false
-    }
-    return true
+
+    return queryResult
   }
 
-  const unhideSelectors = (selectors) => {
-    if (selectors.size === 0) {
-      return
+  const shouldUnhideElement = (element, pendingSrcAttributes) => {
+    const queryResults = subTreePartyInfo(element)
+
+    if (queryResults.foundKnownThirdPartyAd) {
+      return false
+    } else if (queryResults.foundFirstPartyResource) {
+      return true
+    } else if (queryResults.foundThirdPartyResource || queryResults.pendingSrcAttributes.size > 0) {
+      if (pendingSrcAttributes !== undefined) {
+        queryResults.pendingSrcAttributes.forEach((src) => {
+          pendingSrcAttributes.push(src)
+        })
+      }
+
+      return false
+    } else {
+      // If the subtree doesn't have a significant amount of text (e.g., it
+      // just says "Advertisement"), then no need to change anything; it should
+      // stay hidden.
+      return showsSignificantText(element)
     }
-    
+  }
+
+  const shouldUnhideElementAsync = async (element) => {
+    const pendingSrcAttributes = []
+    const shouldUnhide = shouldUnhideElement(element, pendingSrcAttributes)
+
+    if (shouldUnhide) {
+      return true
+    } else if (pendingSrcAttributes.length > 0) {
+      // If we are missing some url party information
+      // Fetch it and check the urls again
+      await sendPendingOriginsIfNeeded()
+
+      // Find the first 1p src.
+      // This is enough to be a 1st party element
+      for (const src of pendingSrcAttributes) {
+        if (isFirstPartyURL(src)) {
+          return true
+        }
+      }
+    } else {
+      return false
+    }
+  }
+
+  /**
+   * Unhide the given selectors.
+   * (i.e. Remove them from CC.hiddenSelectors and move them to CC.unhiddenSelectors)
+   * This will not recreate the stylesheet
+   * @param {Set} selectors The selectors to unhide
+   */
+  const unhideSelectors = (selectors) => {
+    if (selectors.size === 0) { return }
+
     Array.from(selectors).forEach((selector) => {
-      const index = CC.allHideSelectorsToRules[selector]
-      
-      if (index !== undefined) {
-        CC.allHideSelectorsToRules.delete(selector)
-        delete CC.allRules[index]
+      if (CC.unhiddenSelectors.has(selector)) { return }
+      CC.hiddenSelectors.delete(selector)
+      CC.unhiddenSelectors.add(selector)
+
+      // Remove these selectors from the run queues
+      for (let index = 0; index < CC.runQueues; index++) {
+        CC.runQueues[index].delete(selector)
       }
     })
   }
 
   const pumpIntervalMinMs = 40
-  const pumpIntervalMaxMs = 1000
+  const pumpIntervalMaxMs = 100
   const maxWorkSize = 60
   let queueIsSleeping = false
 
@@ -493,204 +624,439 @@ window.__firefox__.execute(function($) {
    *   - If any are 1st party, remove 'hide' rule and never check selector again.
    * 3. If we're looking at the 3rd queue, don't requeue any selectors.
    */
-  const pumpCosmeticFilterQueues = () => {
+  const pumpCosmeticFilterQueuesOnIdle = idleize(async () => {
     if (queueIsSleeping) { return }
     let didPumpAnything = false
     // For each "pump", walk through each queue until we find selectors
     // to evaluate. This means that nothing in queue N+1 will be evaluated
     // until queue N is completely empty.
-    for (let queueIndex = 0; queueIndex < CC.numQueues; queueIndex += 1) {
-      const currentQueue = CC.allQueues[queueIndex]
-      const nextQueue = CC.allQueues[queueIndex + 1]
-      if (currentQueue.size === 0) {
-        continue
-      }
+    for (let queueIndex = 0; queueIndex < CC.runQueues.length; queueIndex += 1) {
+      const currentQueue = CC.runQueues[queueIndex]
+      const nextQueue = CC.runQueues[queueIndex + 1]
+      if (currentQueue.size === 0) { continue }
+
       const currentWorkLoad = Array.from(currentQueue.values()).slice(0, maxWorkSize)
       const comboSelector = currentWorkLoad.join(',')
       const matchingElms = document.querySelectorAll(comboSelector)
-      // Will hold selectors identified by _this_ queue pumping, that were
-      // newly identified to be matching 1p content.  Will be sent to
-      // the background script to do the un-hiding.
-      const newlyIdentifiedFirstPartySelectors = new Set()
-      for (let _i = 0, matchingElms1 = matchingElms; _i < matchingElms1.length; _i++) {
-        const aMatchingElm = matchingElms1[_i]
+
+      for (const aMatchingElm of matchingElms) {
         // Don't recheck elements / subtrees we already know are first party.
         // Once we know something is third party, we never need to evaluate it
         // again.
         if (CC.alreadyKnownFirstPartySubtrees.has(aMatchingElm)) {
           continue
         }
-        const elmSubtreeIsFirstParty = isSubTreeFirstParty(aMatchingElm)
-        // If we find that a subtree is third party, then no need to change
-        // anything, leave the selector as "hiding" and move on.
-        // This element will likely be checked again on the next 'pump'
-        // as long as another element from the selector does not match 1st party.
-        if (!elmSubtreeIsFirstParty) {
+
+        const shouldUnhide = await shouldUnhideElementAsync(aMatchingElm)
+
+        if (!shouldUnhide) {
+          // If we don't unhide this element, we skip it
           continue
         }
-        // If the subtree doesn't have a significant amount of text (e.g., it
-        // just says "Advertisement"), then no need to change anything; it should
-        // stay hidden.
-        if (!showsSignificantText(aMatchingElm)) {
-          continue
-        }
-        // Otherwise, we know that the given subtree was evaluated to be
-        // first party, so we need to figure out which selector from the combo
-        // selector did the matching.
-        for (let _a = 0, currentWorkLoad1 = currentWorkLoad; _a < currentWorkLoad1.length; _a++) {
-          const selector = currentWorkLoad1[_a]
+
+        // Otherwise, we know that the given subtree should be unhidden.
+        // So we need to figure out which selector from the combo selector did the matching.
+        for (const selector of currentWorkLoad) {
           if (!aMatchingElm.matches(selector)) {
             continue
           }
-          // Similarly, if we already know a selector matches 1p content,
-          // there is no need to notify the background script again, so
-          // we don't need to consider further.
-          if (CC.alreadyUnhiddenSelectors.has(selector)) {
-            continue
+
+          // Unhide this selector if we need to
+          if (CC.hiddenSelectors.has(selector) || !CC.unhiddenSelectors.has(selector)) {
+            CC.unhiddenSelectors.add(selector)
+            CC.hiddenSelectors.delete(selector)
           }
-          newlyIdentifiedFirstPartySelectors.add(selector)
-          CC.alreadyUnhiddenSelectors.add(selector)
         }
+
         CC.alreadyKnownFirstPartySubtrees.add(aMatchingElm)
       }
-      unhideSelectors(newlyIdentifiedFirstPartySelectors)
-      for (let _b = 0, currentWorkLoad2 = currentWorkLoad; _b < currentWorkLoad2.length; _b++) {
-        const aUsedSelector = currentWorkLoad2[_b]
-        currentQueue.delete(aUsedSelector)
+
+      for (const selector of currentWorkLoad) {
+        currentQueue.delete(selector)
+
         // Don't requeue selectors we know identify first party content.
-        const selectorMatchedFirstParty = newlyIdentifiedFirstPartySelectors.has(aUsedSelector)
-        if (nextQueue && !selectorMatchedFirstParty) {
-          nextQueue.add(aUsedSelector)
+        if (nextQueue && !CC.unhiddenSelectors.has(selector)) {
+          nextQueue.add(selector)
         }
       }
+
       didPumpAnything = true
-      // If we did something,  process the next queue, save it for next time.
+      // If we did something, process the next queue, save it for next time.
       break
     }
-    if (didPumpAnything) {
-      queueIsSleeping = true
-      window.setTimeout(() => {
-        // Set this to false now even though there's a gap in time between now and
-        // idle since all other calls to `pumpCosmeticFilterQueuesOnIdle` that occur during this time
-        // will be ignored (and nothing else should be calling `pumpCosmeticFilterQueues` straight).
-        queueIsSleeping = false
-        pumpCosmeticFilterQueuesOnIdle()
-      }, pumpIntervalMinMs)
+
+    if (!didPumpAnything) { return }
+    queueIsSleeping = true
+
+    await sendPendingOriginsIfNeeded()
+    setRulesOnStylesheet()
+
+    window.setTimeout(() => {
+      // Set this to false now even though there's a gap in time between now and
+      // idle since all other calls to `pumpCosmeticFilterQueuesOnIdle` that occur during this time
+      // will be ignored (and nothing else should be calling `pumpCosmeticFilterQueues` straight).
+      queueIsSleeping = false
+      pumpCosmeticFilterQueuesOnIdle()
+    }, pumpIntervalMinMs)
+  }, pumpIntervalMaxMs)
+
+  /**
+   * Extract any selectors from the document
+   * @param {*} switchToMutationObserverAtTime A timestamp that identifies when we should switch to the mutation observer
+   */
+  const querySelectorsFromElement = async (element, switchToMutationObserverAtTime) => {
+    const elmWithClassOrId = element.querySelectorAll('[class],[id]')
+
+    elmWithClassOrId.forEach((node) => {
+      extractNewSelectors(node)
+    })
+
+    if (switchToMutationObserverAtTime !== undefined &&
+      window.Date.now() >= switchToMutationObserverAtTime) {
+      useMutationObserver()
+    }
+
+    const changes = await sendPendingSelectorsIfNeeded()
+    if (!changes) { return }
+    setRulesOnStylesheet()
+
+    if (!args.hideFirstPartyContent) {
+      pumpCosmeticFilterQueuesOnIdle()
     }
   }
 
-  const pumpCosmeticFilterQueuesOnIdle = idleize(pumpCosmeticFilterQueues, pumpIntervalMaxMs)
-
-  const queryAttrsFromDocument = (switchToMutationObserverAtTime) => {
-    const elmWithClassOrId = document.querySelectorAll('[class],[id]')
-
-    for (let _i = 0, elmWithClassOrId1 = elmWithClassOrId; _i < elmWithClassOrId1.length; _i++) {
-      const elm = elmWithClassOrId1[_i]
-      for (let _b = 0, _c = elm.classList; _b < _c.length; _b++) {
-        const aClassName = _c[_b]
-
-        if (aClassName && !queriedClasses.has(aClassName)) {
-          notYetQueriedClasses.push(aClassName)
-          queriedClasses.add(aClassName)
-        }
-      }
-      const elmId = elm.getAttribute('id')
-      if (elmId && !queriedIds.has(elmId)) {
-        notYetQueriedIds.push(elmId)
-        queriedIds.add(elmId)
-      }
-    }
-    fetchNewClassIdRules()
-    
-    if (switchToMutationObserverAtTime !== undefined
-        && window.Date.now() >= switchToMutationObserverAtTime) {
-     useMutationObserver()
-    }
-  }
-
-  const startObserving = () => {
+  /**
+   * First it will query the document for selectors (ids and classes)
+   * Then it will begin the selectors mutation observer
+   */
+  const startPollingSelectors = async () => {
     // First queue up any classes and ids that exist before the mutation observer
     // starts running.
-    queryAttrsFromDocument()
+    await querySelectorsFromElement(document)
+
     // Second, set up a mutation observer to handle any new ids or classes
     // that are added to the document.
     useMutationObserver()
   }
 
+  /**
+   * Will start the selector polling and pumping depending on the provided booleans
+   * @param {boolean} hide1pContent If this is false, it will start the pump mechanism
+   * @param {boolean} genericHide If this is false, it will start the polling mechanism
+   */
   const scheduleQueuePump = (hide1pContent, genericHide) => {
-    // Three states possible here.  First, the delay has already occurred.  If so,
-    // pass through to pumpCosmeticFilterQueues immediately.
-    if (CC._hasDelayOcurred) {
-      pumpCosmeticFilterQueuesOnIdle()
-      return
+    if (!genericHide) {
+      if (args.firstSelectorsPollingDelayMs === undefined) {
+        startPollingSelectors()
+      } else {
+        window.setTimeout(startPollingSelectors, args.firstSelectorsPollingDelayMs)
+      }
     }
 
-    // Second possibility is that we're already waiting for the delay to pass /
-    // occur.  In this case, do nothing.
-    if (CC._startCheckingId !== undefined) {
-      return
+    if (!hide1pContent) {
+      pumpCosmeticFilterQueuesOnIdle()
     }
-    // Third / final possibility, this is this the first time this has been
-    // called, in which case set up a timer and quit
-    CC._startCheckingId = setTimeout(_ => {
-      CC._hasDelayOcurred = true
-      if (!genericHide) {
-        if (CC.firstSelectorsPollingDelayMs === undefined) {
-          startObserving()
-        } else {
-          window.setTimeout(startObserving, CC.firstSelectorsPollingDelayMs)
+  }
+
+  /**
+   * Return all the selectors that are hidden for this element.
+   * @param {object} element The element to search for hidden selectors on
+   * @returns A Set containing all the hidden selectors this element uses
+   */
+  const hiddenSelectorsForElement = (element) => {
+    if (element.hasAttribute === undefined) {
+      return []
+    }
+
+    return Array.from(CC.hiddenSelectors).filter((selector) => {
+      return element.matches(selector)
+    })
+  }
+
+  /**
+   * Unhide any selectors matching this  if it is a 1st party element
+   * @param {object} element The node to attempt to unhide
+   * @returns An array of unhid selectors if element is 1st party otherwise undefined.
+   */
+  const unhideSelectorsMatchingElementIf1P = (element) => {
+    const selectors = hiddenSelectorsForElement(element)
+    if (selectors.length === 0) { return }
+    const shouldUnhide = shouldUnhideElement(element)
+
+    if (!shouldUnhide) { return }
+    unhideSelectors(selectors)
+    return selectors
+  }
+
+  /**
+   * This method will attempt to unhide the node or any of its parent nodes recursively
+   * and return any unhidden selectors.
+   * The recursion stops when it hits the document.body
+   * @param {object} node The node to attempt to undhide recursively
+   */
+  const unhideSelectorsMatchingElementAndItsParents = (node) => {
+    const unhiddenSelectors = unhideSelectorsMatchingElementIf1P(node) || []
+
+    if (node.parentElement && node.parentElement !== document.body) {
+      const newSelectors = unhideSelectorsMatchingElementAndItsParents(node.parentElement)
+
+      for (const selector of newSelectors) {
+        unhiddenSelectors.push(selector)
+      }
+    }
+
+    return unhiddenSelectors
+  }
+
+  /**
+   * This method will unhide the node an all parent nodes if they are needed.
+   * This will move up each parent for the each node until it reaches the document body
+   * @param {Array} nodes Array of WeakRef nodes
+   * @returns A list of unhidden selectors
+   */
+  const unhideSelectorsMatchingElementsAndTheirParents = (nodes) => {
+    const selectorsUnHidden = new Set()
+
+    for (const nodeRef of nodes) {
+      const node = nodeRef.deref()
+      if (node === undefined) { return }
+      const newSelectors = unhideSelectorsMatchingElementAndItsParents(node)
+
+      for (const selector in newSelectors) {
+        selectorsUnHidden.add(selector)
+      }
+    }
+
+    return selectorsUnHidden.size > 0
+  }
+
+  /**
+   * Handle the results of the urls mutation observer
+   * It will:
+   * 1. Extract any urls from the mutations and add them to pendingURLs
+   * 2. Send them to iOS for 1st party analysis
+   * 3. Unhide any elements (or their parents) that are 1st party
+   * @param {*} mutations
+   * @param {MutationObserver} observer
+   */
+  const onURLMutations = async (mutations, observer) => {
+    const elementsWithURLs = []
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'attributes') {
+        // Since we're filtering for attribute modifications, we can be certain
+        // that the targets are always HTMLElements, and never TextNode.
+        const changedElm = mutation.target
+        switch (mutation.attributeName) {
+          case 'src':
+            if (extractOriginIfNeeded(changedElm)) {
+              elementsWithURLs.push(new WeakRef(changedElm))
+            }
+            break
+        }
+      } else if (mutation.addedNodes.length > 0) {
+        for (const node of mutation.addedNodes) {
+          if (!isElement(node)) { continue }
+          if (extractOriginIfNeeded(node)) {
+            elementsWithURLs.push(new WeakRef(node))
+          }
         }
       }
-      if (!hide1pContent) {
-        pumpCosmeticFilterQueuesOnIdle()
-      }
-    }, maxTimeMSBeforeStart)
+    })
+
+    // Send any new urls to iOS and await the results
+    const changes = await sendPendingOriginsIfNeeded()
+    if (!changes) { return }
+
+    // If we have some new values, we want to unhide any new selectors
+    unhideSelectorsMatchingElementIf1P(elementsWithURLs)
+    setRulesOnStylesheet()
   }
 
-  const tryScheduleQueuePump = () => {
-    if (!CC.observingHasStarted) {
-      CC.observingHasStarted = true
-      scheduleQueuePump(CC.hide1pContent, CC.generichide)
-    } else {
-      scheduleQueuePump(false, false)
+  /**
+   * Start a mutation observer that finds new urls.
+   * This should only be used if 1st party ads are not hidden
+   */
+  const startURLMutationObserver = () => {
+    if (selectorsPollingIntervalId) {
+      clearInterval(selectorsPollingIntervalId)
+      selectorsPollingIntervalId = undefined
     }
-  }
-  
-  // Load some static hide rules if they are defined
-  if (args.hideSelectors) {
-    processHideSelectors(args.hideSelectors)
-  }
-  
-  // Load some static style selectors if they are defined
-  if (args.styleSelectors) {
-    processStyleSelectors(args.styleSelectors)
-  }
-  
-  // Wait until document body is ready
-  const timerId = window.setInterval(() => {
-    if (!document.body) {
-      // we need to wait longer.
-      return
+
+    const observer = new MutationObserver(onURLMutations)
+
+    const observerConfig = {
+      subtree: true,
+      childList: true,
+      attributeFilter: ['src']
     }
-    
-    // Body is ready, kill this interval and create the stylesheet
-    window.clearInterval(timerId)
+
+    observer.observe(document.body, observerConfig)
+  }
+
+  /**
+   * Query the given element for urls and add them to the pending Set
+   * @param {object} element The element to query on
+   * @returns an array of elements that have urls
+   */
+  const queryURLOriginsInElement = (element) => {
+    const possibleAdChildNodes = []
+    const elmWithClassOrId = element.querySelectorAll('[src]')
+
+    elmWithClassOrId.forEach((node) => {
+      if (extractOriginIfNeeded(node)) {
+        possibleAdChildNodes.push(new WeakRef(node))
+      }
+    })
+
+    return possibleAdChildNodes
+  }
+
+  /**
+   * Adds given selectors to hiddenSelectors unless they are in the unhiddenSelectors set
+   * @param {*} selectors The selectors to add
+   */
+  const processHideSelectors = (selectors, canUnhide1PElements) => {
+    let hasChanges = false
+
+    selectors.forEach(selector => {
+      if ((typeof selector === 'string') && !CC.unhiddenSelectors.has(selector)) {
+        if (canUnhide1PElements) {
+          if (CC.hiddenSelectors.has(selector)) { return }
+          CC.hiddenSelectors.add(selector)
+          CC.runQueues[0].add(selector)
+          hasChanges = true
+        } else {
+          if (CC.alwaysHiddenSelectors.has(selector)) { return }
+          CC.alwaysHiddenSelectors.add(selector)
+          hasChanges = true
+        }
+      }
+    })
+
+    return hasChanges
+  }
+
+  /**
+   * Adds given style selectors to allStyleRules
+   * @param {*} styleSelectors The style selectors to add
+   */
+  const processStyleSelectors = (styleSelectors) => {
+    styleSelectors.forEach(entry => {
+      const rule = entry.selector + '{' + entry.rules.join(';') + ';}'
+      CC.allStyleRules.push(rule)
+    })
+  }
+
+  /// Moves the stylesheet to the bottom of the page
+  const moveStyle = () => {
+    const styleElm = CC.cosmeticStyleSheet
+    const targetElm = document.body
+    styleElm.parentElement.removeChild(styleElm)
+    targetElm.appendChild(styleElm)
+  }
+
+  /**
+   * Create a stylesheet and append it to the bottom of the body element.
+   * The stylesheet is stored on `cosmeticStyleSheet` for future reference.
+   */
+  const createStylesheet = () => {
     const targetElm = document.body
     const styleElm = document.createElement('style')
     styleElm.setAttribute('type', 'text/css')
     targetElm.appendChild(styleElm)
     CC.cosmeticStyleSheet = styleElm
-    setRulesOnStylesheet()
-    
-    // Start listening to new selectors
-    tryScheduleQueuePump()
-    
+
     // Start a timer that moves the stylesheet down
-    setInterval(() => {
-      if (styleElm.nextElementSibling === null && styleElm.parentElement === targetElm) {
+    window.setInterval(() => {
+      if (styleElm.nextElementSibling === null || styleElm.parentElement === targetElm) {
         return
       }
       moveStyle()
     }, 1000)
-  }, 500)
+  }
+
+  /**
+   * Rewrite the stylesheet body with the hidden rules and style rules
+   */
+  const setRulesOnStylesheet = () => {
+    const hideRules = Array.from(CC.hiddenSelectors).map(selector => {
+      return selector + '{display:none !important;}'
+    })
+
+    const alwaysHideRules = Array.from(CC.alwaysHiddenSelectors).map(selector => {
+      return selector + '{display:none !important;}'
+    })
+
+    const allRules = alwaysHideRules.concat(hideRules.concat(CC.allStyleRules))
+    const ruleText = allRules.filter(rule => {
+      return rule !== undefined && !rule.startsWith(':')
+    }).join('')
+
+    CC.cosmeticStyleSheet.innerText = ruleText
+  }
+
+  /**
+   * Start polling the page for content and start the queue pump (if needed)
+   * If no polling is needed, simply create the stylesheet.
+   */
+  const startPolling = async () => {
+    // 1. First create the stylesheet
+    createStylesheet()
+
+    if (!args.hideFirstPartyContent) {
+      // 2. Collect any origins from the document body and fetch their 1p statuses
+      const nodesWithExtractedURLs = queryURLOriginsInElement(document.body)
+      await sendPendingOriginsIfNeeded()
+      // 3. Unhide any elements (or their parents) we know have urls
+      unhideSelectorsMatchingElementsAndTheirParents(nodesWithExtractedURLs)
+    }
+
+    // 4. Set the rules on the stylesheet. So far we don't have any rules set
+    // We could do this earlier but it causes elements to hide and unhide
+    // It's best to wait to this period so we have
+    setRulesOnStylesheet()
+    // 5. Start our queue pump if we need to
+    scheduleQueuePump(args.hideFirstPartyContent, args.genericHide)
+
+    if (!args.hideFirstPartyContent) {
+      // 6. Start listening to new urls
+      startURLMutationObserver()
+    }
+  }
+
+  const waitForBody = () => {
+    if (document.body) {
+      // we can start right away
+      startPolling()
+      return
+    }
+
+    // Wait until document body is ready
+    const timerId = window.setInterval(() => {
+      if (!document.body) {
+        // we need to wait longer.
+        return
+      }
+
+      // Body is ready, kill this interval and create the stylesheet
+      window.clearInterval(timerId)
+      startPolling()
+    }, 500)
+  }
+
+  // Load some static hide rules if they are defined
+  if (args.standardSelectors) {
+    processHideSelectors(args.standardSelectors, !args.hideFirstPartyContent)
+  }
+
+  if (args.agressiveSelectors) {
+    processHideSelectors(args.agressiveSelectors, false)
+  }
+
+  // Load some static style selectors if they are defined
+  if (args.styleSelectors) {
+    processStyleSelectors(args.styleSelectors)
+  }
+
+  window.setTimeout(waitForBody, maxTimeMSBeforeStart)
 });
