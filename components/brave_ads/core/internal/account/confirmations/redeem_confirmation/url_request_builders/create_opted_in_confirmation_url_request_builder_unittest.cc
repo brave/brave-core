@@ -228,9 +228,6 @@ TEST_F(BraveAdsCreateOptedInConfirmationUrlRequestBuilderTest,
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethodType::kPost;
 
-  std::cout << "FOOBAR.url: " << url_request->url << std::endl;
-  std::cout << "FOOBAR.content: " << url_request->content << std::endl;
-
   EXPECT_EQ(url_request, expected_url_request);
 }
 
