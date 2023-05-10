@@ -12,40 +12,39 @@ import GuardianConnect
 
 public class BraveVPNPickerViewController: UIViewController {
 
-  private var overlayView: UIView?
   let tableView: UITableView = .init(frame: .zero, style: .insetGrouped)
 
-  deinit {
-    NotificationCenter.default.removeObserver(self)
+  private lazy var overlayView = UIView().then {
+    $0.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+
+    let activityIndicator = UIActivityIndicatorView().then {
+      $0.style = .large
+      $0.color = .white
+      $0.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+      $0.startAnimating()
+    }
+
+    $0.addSubview(activityIndicator)
   }
 
   var isLoading: Bool = false {
     didSet {
-      overlayView?.removeFromSuperview()
 
       navigationItem.hidesBackButton = isLoading
 
       // Prevent dismissing the modal by swipe when the VPN is being configured
       navigationController?.isModalInPresentation = isLoading
 
-      if !isLoading { return }
-
-      let overlay = UIView().then {
-        $0.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        let activityIndicator = UIActivityIndicatorView().then { indicator in
-          indicator.startAnimating()
-          indicator.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+      if isLoading {
+        view.addSubview(overlayView)
+        overlayView.snp.makeConstraints {
+          $0.edges.equalToSuperview()
         }
-
-        $0.addSubview(activityIndicator)
+      } else {
+        if overlayView.isDescendant(of: view) {
+          overlayView.removeFromSuperview()
+        }
       }
-
-      view.addSubview(overlay)
-      overlay.snp.makeConstraints {
-        $0.edges.equalToSuperview()
-      }
-
-      overlayView = overlay
     }
   }
 
@@ -71,6 +70,10 @@ public class BraveVPNPickerViewController: UIViewController {
   public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     tableView.reloadData()
+  }
+  
+  deinit {
+    NotificationCenter.default.removeObserver(self)
   }
   
   @objc func vpnConfigChanged(notification: NSNotification) { }

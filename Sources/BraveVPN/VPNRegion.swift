@@ -36,6 +36,10 @@ extension GRDRegion {
       }
     }
     
+    if unicodeScalarView.isEmpty {
+      return nil
+    }
+    
     return Image(uiImage: unicodeScalarView.image())
   }
 }

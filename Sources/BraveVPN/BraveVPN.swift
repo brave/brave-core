@@ -379,7 +379,11 @@ public class BraveVPN {
   /// Return the region last activated with the details
   /// It will give region details for automatic
   public static var activatedRegion: GRDRegion? {
-    helper.selectedRegion ?? lastKnownRegion
+    guard let isoCode = helper.selectedRegion?.countryISOCode, isoCode.isEmpty else {
+      return helper.selectedRegion
+    }
+    
+    return lastKnownRegion
   }
   
   /// Switched to use an automatic region, region closest to user location.
