@@ -6,6 +6,10 @@
 import("//brave/components/common/typescript.gni")
 
 transpile_web_ui("leo") {
+  output_dir = "$root_gen_dir/brave/ui/webui/resources/leo/js"
+  output_grdp = true
+  resource_path_prefix = "brave"
+
   entry_points = [ [
         "leo",
         rebase_path("components.js"),

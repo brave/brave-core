@@ -21,6 +21,7 @@ def main():
     output_path_absolute = os.path.abspath(args.output_path[0])
     root_gen_dir = args.root_gen_dir[0]
     grd_path = os.path.join(args.output_path[0], args.grd_name[0])
+    resource_path_prefix = args.resource_path_prefix
 
     clean_target_dir(output_path_absolute)
 
@@ -41,7 +42,8 @@ def main():
         public_asset_path=args.public_asset_path
     )
     transpile_web_uis(transpile_options)
-    generate_grd(output_path_absolute, args.grd_name[0], args.resource_name[0])
+    generate_grd(output_path_absolute, args.grd_name[0], args.resource_name[0],
+                 resource_path_prefix)
 
 
 def parse_args():
@@ -65,6 +67,10 @@ def parse_args():
                         help='Webpack alias',
                         required=False,
                         default=[])
+    parser.add_argument(
+        "--resource_path_prefix",
+        nargs='?',
+        help="The resource path prefix. Used in grit part files.")
     parser.add_argument('--extra_modules',
                         action='append',
                         help='Extra paths to find modules',
@@ -86,6 +92,7 @@ def clean_target_dir(target_dir):
             shutil.rmtree(target_dir)
     except Exception as e:
         raise Exception("Error removing previous webpack target dir", e)
+
 
 def transpile_web_uis(options):
     env = os.environ.copy()
@@ -121,9 +128,9 @@ def transpile_web_uis(options):
         execute_stdout(args, env)
 
 
-def generate_grd(target_include_dir, grd_name, resource_name, env=None):
-    if env is None:
-        env = os.environ.copy()
+def generate_grd(target_include_dir, grd_name, resource_name,
+                 resource_path_prefix):
+    env = os.environ.copy()
 
     args = [NPM, 'run', 'web-ui-gen-grd']
 
@@ -131,6 +138,9 @@ def generate_grd(target_include_dir, grd_name, resource_name, env=None):
     env["GRD_NAME"] = grd_name
     env["ID_PREFIX"] = "IDR_" + resource_name.upper() + '_'
     env["TARGET_DIR"] = target_include_dir
+
+    if resource_path_prefix is not None:
+        env["RESOURCE_PATH_PREFIX"] = resource_path_prefix
 
     dirname = os.path.abspath(os.path.join(__file__, '..', '..'))
     with scoped_cwd(dirname):

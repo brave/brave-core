@@ -11,7 +11,7 @@ import {RegisterPolymerTemplateModifications, RegisterStyleOverride} from 'chrom
 import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 import {loadTimeData} from '../i18n_setup.js'
-import 'chrome://resources/brave/leo/bundle.js'
+import 'chrome://resources/brave/leo.bundle.js'
 
 // This maps a Chromium icon name to the leo-icon to replace it with.
 const iconConversions = {

@@ -125,12 +125,14 @@ template("transpile_web_ui") {
     }
 
     # Output is a GRD that includes all the resources, and a bundle for each
-    # entry point.
+    # entry point or a GRDP file that includes all the resources.
     grd_name = "$resource_name.grd"
-    outputs = [ "$gen_output_dir/$grd_name" ]
-    foreach(entry_point, invoker.entry_points) {
-      outputs += [ "$gen_output_dir/" + entry_point[0] + ".bundle.js" ]
+    if (defined(invoker.output_grdp) && invoker.output_grdp) {
+      assert(defined(invoker.resource_path_prefix))
+      grd_name = "$resource_name.grdp"
     }
+
+    outputs = [ "$gen_output_dir/$grd_name" ]
 
     # Base script arguments:
     #  - resource (compiled) output destination
@@ -177,6 +179,10 @@ template("transpile_web_ui") {
 
     if (defined(invoker.public_asset_path)) {
       args += [ "--public_asset_path=" + invoker.public_asset_path ]
+    }
+
+    if (defined(invoker.resource_path_prefix)) {
+      args += [ "--resource_path_prefix=" + invoker.resource_path_prefix ]
     }
 
     if (is_official_build) {

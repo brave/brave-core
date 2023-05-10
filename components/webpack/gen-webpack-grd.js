@@ -33,6 +33,24 @@ function getGrdString (name = 'brave_rewards_resources', idPrefix = 'IDR_BRAVE_R
 `
 }
 
+/**
+ * Generates a GRDP file for a list of files.
+ * @param {string[]} fileList The list of files to include
+ * @returns The contents of a GRDP file containing |fileList|
+ */
+function getGrdpString(fileList) {
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  ${fileList.map(filePath => {
+    const relativePath = filePath.replace(targetDir, '')
+    const fileId = idPrefix + relativePath.replace(/[^a-z0-9]/gi, '_').toUpperCase()
+    const resourcePath = resourcePathPrefix ? `resource_path="${path.join(resourcePathPrefix, relativePath)}" ` : ''
+    return `<include name="${fileId}" file="${filePath}" ${resourcePath}use_base_dir="false" type="BINDATA" />`
+  }).join('\n')}
+</grit-part>
+`
+}
+
 // Returns Promise<string[]>
 async function getFileListDeep (dirPath) {
   const dirItems = await fs.readdir(dirPath)
@@ -57,10 +75,6 @@ async function getFileListDeep (dirPath) {
 }
 
 async function createDynamicGDR (name, grdName, idPrefix, targetDir) {
-  // normalize path so relative path ignores leading path.sep
-  if (!targetDir.endsWith(path.sep)) {
-    targetDir += path.sep
-  }
   const gdrPath = path.join(targetDir, grdName)
   // remove previously generated file
   try {
@@ -69,21 +83,27 @@ async function createDynamicGDR (name, grdName, idPrefix, targetDir) {
   // build file list from target dir
   const filePaths = await getFileListDeep(targetDir)
   const relativeFilePaths = filePaths.map(filePath => filePath.replace(targetDir, ''))
-  // get gdr string
-  const gdrFileContents = getGrdString(name, idPrefix, relativeFilePaths)
-  // write to file
-  await fs.writeFile(gdrPath, gdrFileContents, { encoding: 'utf8' })
+
+  const contents = gdrPath.endsWith('.grdp')
+    ? getGrdpString(filePaths)
+    : getGrdString(name, idPrefix, relativeFilePaths)
+  await fs.writeFile(gdrPath, contents, { encoding: 'utf8' })
 }
 
 // collect args
 const resourceName = process.env.RESOURCE_NAME
 const idPrefix = process.env.ID_PREFIX
-const targetDir = process.env.TARGET_DIR
+let targetDir = process.env.TARGET_DIR
 const grdName = process.env.GRD_NAME
+const resourcePathPrefix = process.env.RESOURCE_PATH_PREFIX
 
 if (!targetDir) {
   throw new Error("TARGET_DIR env variable is required!")
+} else if (!targetDir.endsWith(path.sep)) {
+  // normalize path so relative path ignores leading path.sep
+  targetDir += path.sep
 }
+
 if (!idPrefix) {
   throw new Error("ID_PREFIX env variable is required!")
 }

@@ -7,5 +7,5 @@
 # about undefined variables.
 # pylint: disable=undefined-variable
 _BASE_EXCLUDES.extend([
-    "chrome://resources/brave/leo/bundle.js", "//resources/brave/leo/bundle.js"
+    "chrome://resources/brave/leo.bundle.js", "//resources/brave/leo.bundle.js"
 ])
