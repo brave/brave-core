@@ -562,8 +562,6 @@ extension PlaylistWebLoader: WKNavigationDelegate {
         let scriptTypes = await tab.currentPageData?.makeUserScriptTypes(domain: domainForMainFrame) ?? []
         tab.setCustomUserScript(scripts: scriptTypes)
       }
-      
-      webView.configuration.preferences.isFraudulentWebsiteWarningEnabled = domainForMainFrame.isShieldExpected(.SafeBrowsing, considerAllShieldsOption: true)
     }
 
     if ["http", "https", "data", "blob", "file"].contains(url.scheme) {

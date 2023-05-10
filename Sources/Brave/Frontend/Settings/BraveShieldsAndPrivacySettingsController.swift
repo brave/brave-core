@@ -134,7 +134,6 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
       rows: [
         .boolRow(title: Strings.blockAdsAndTracking, detailText: Strings.blockAdsAndTrackingDescription, option: Preferences.Shields.blockAdsAndTracking),
         .boolRow(title: Strings.HTTPSEverywhere, detailText: Strings.HTTPSEverywhereDescription, option: Preferences.Shields.httpsEverywhere),
-        .boolRow(title: Strings.blockPhishingAndMalware, option: Preferences.Shields.blockPhishingAndMalware),
         .boolRow(title: Strings.autoRedirectAMPPages, detailText: Strings.autoRedirectAMPPagesDescription, option: Preferences.Shields.autoRedirectAMPPages),
         .boolRow(title: Strings.autoRedirectTrackingURLs, detailText: Strings.autoRedirectTrackingURLsDescription, option: Preferences.Shields.autoRedirectTrackingURLs),
         .boolRow(title: Strings.blockScripts, detailText: Strings.blockScriptsDescription, option: Preferences.Shields.blockScripts),

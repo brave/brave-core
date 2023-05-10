@@ -42,7 +42,7 @@ extension BrowserViewController {
       // Q54 On how many domains has the user set the FP setting to be higher (block more) than the default?
       let fingerprintingAboveGlobalCount = Domain.totalDomainsWithFingerprintingProtectionIncreasedFromGlobal()
       UmaHistogramRecordValueToBucket("Brave.Shields.DomainFingerprintSettingsAboveGlobal", buckets: buckets, value: fingerprintingAboveGlobalCount)
-    case .AllOff, .NoScript, .SafeBrowsing:
+    case .AllOff, .NoScript:
       break
     }
   }
