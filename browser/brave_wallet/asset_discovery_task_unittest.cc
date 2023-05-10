@@ -87,10 +87,10 @@ constexpr char kEthErrorFetchingBalanceResult[] =
 
 }  // namespace
 
-class TestBraveWalletServiceObserverForAssetDiscovery
+class TestBraveWalletServiceObserverForAssetDiscoveryTask
     : public brave_wallet::BraveWalletServiceObserverBase {
  public:
-  TestBraveWalletServiceObserverForAssetDiscovery() = default;
+  TestBraveWalletServiceObserverForAssetDiscoveryTask() = default;
 
   void OnDiscoverAssetsStarted() override {
     on_discover_assets_started_fired_ = true;
@@ -104,7 +104,9 @@ class TestBraveWalletServiceObserverForAssetDiscovery
                 discovered_assets[i]->contract_address);
     }
     on_discover_assets_completed_fired_ = true;
-    run_loop_asset_discovery_->Quit();
+    if (run_loop_asset_discovery_) {
+      run_loop_asset_discovery_->Quit();
+    }
   }
 
   void WaitForOnDiscoverAssetsCompleted(
@@ -183,7 +185,7 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
         api_request_helper_.get(), wallet_service_.get(), json_rpc_service_,
         GetPrefs());
     wallet_service_observer_ =
-        std::make_unique<TestBraveWalletServiceObserverForAssetDiscovery>();
+        std::make_unique<TestBraveWalletServiceObserverForAssetDiscoveryTask>();
     wallet_service_->AddObserver(wallet_service_observer_->GetReceiver());
   }
 
@@ -410,7 +412,7 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
 
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  std::unique_ptr<TestBraveWalletServiceObserverForAssetDiscovery>
+  std::unique_ptr<TestBraveWalletServiceObserverForAssetDiscoveryTask>
       wallet_service_observer_;
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<ScopedTestingLocalState> local_state_;
@@ -1615,8 +1617,7 @@ TEST_F(AssetDiscoveryTaskUnitTest, DiscoverNFTs) {
   GURL url;
 
   // Empty addresses yields empty expected_contract_addresses
-  GetPrefs()->SetBoolean(kBraveWalletNftDiscoveryEnabled, true);
-
+  wallet_service_->SetNftDiscoveryEnabled(true);
   TestDiscoverNFTsOnAllSupportedChains(chain_ids, addresses,
                                        expected_contract_addresses);
 
@@ -1650,11 +1651,11 @@ TEST_F(AssetDiscoveryTaskUnitTest, DiscoverNFTs) {
   expected_contract_addresses.push_back(
       "0x1111111111111111111111111111111111111111");
   // First test nothing is discovered when NFT discovery is not enabled.
-  GetPrefs()->SetBoolean(kBraveWalletNftDiscoveryEnabled, false);
+  wallet_service_->SetNftDiscoveryEnabled(false);
   TestDiscoverNFTsOnAllSupportedChains(chain_ids, addresses, {});
 
   // Enable and verify 1 ETH address yields 1 discovered NFT
-  GetPrefs()->SetBoolean(kBraveWalletNftDiscoveryEnabled, true);
+  wallet_service_->SetNftDiscoveryEnabled(true);
   TestDiscoverNFTsOnAllSupportedChains(chain_ids, addresses,
                                        expected_contract_addresses);
 

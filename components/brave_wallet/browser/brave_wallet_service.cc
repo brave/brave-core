@@ -216,6 +216,10 @@ BraveWalletService::BraveWalletService(
       base::BindRepeating(&BraveWalletService::OnNetworkListChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
+      kBraveWalletNftDiscoveryEnabled,
+      base::BindRepeating(&BraveWalletService::OnBraveWalletNftDiscoveryEnabled,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
       kBraveWalletSelectedNetworks,
       base::BindRepeating(&BraveWalletService::OnNetworkChanged,
                           weak_ptr_factory_.GetWeakPtr()));
@@ -754,6 +758,12 @@ void BraveWalletService::OnDefaultBaseCryptocurrencyChanged() {
 void BraveWalletService::OnNetworkListChanged() {
   for (const auto& observer : observers_) {
     observer->OnNetworkListChanged();
+  }
+}
+
+void BraveWalletService::OnBraveWalletNftDiscoveryEnabled() {
+  if (profile_prefs_->GetBoolean(kBraveWalletNftDiscoveryEnabled)) {
+    DiscoverAssetsOnAllSupportedChains(true);
   }
 }
 
@@ -1660,11 +1670,6 @@ void BraveWalletService::GetNftDiscoveryEnabled(
 
 void BraveWalletService::SetNftDiscoveryEnabled(bool enabled) {
   profile_prefs_->SetBoolean(kBraveWalletNftDiscoveryEnabled, enabled);
-
-  // Asset discovery is immediately run when NFT discovery is enabled
-  if (enabled) {
-    DiscoverAssetsOnAllSupportedChains(true);
-  }
 }
 
 void BraveWalletService::GetBalanceScannerSupportedChains(

@@ -295,6 +295,7 @@ class BraveWalletService : public KeyedService,
   void OnDefaultBaseCurrencyChanged();
   void OnDefaultBaseCryptocurrencyChanged();
   void OnNetworkListChanged();
+  void OnBraveWalletNftDiscoveryEnabled();
 
   static absl::optional<std::string> GetChecksumAddress(
       const std::string& contract_address,
