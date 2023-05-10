@@ -281,8 +281,8 @@ TEST(ParseDappListsUnitTest, ParseDappLists) {
         {
           "dappId": 7000,
           "name": "Uniswap V3",
-          "description": "A protocol for trading and automated liquidity provision on Ethereum.",
-          "fullDescription": "<p>Uniswap v3 introduces:</p>\n<ul>\n  <li><strong>Concentrated liquidity,</strong> giving individual LPs granular control over what price ranges their capital is allocated to. Individual positions are aggregated together into a single pool, forming one combined curve for users to trade against</li>\n  <li><strong>Multiple fee tiers</strong> , allowing LPs to be appropriately compensated for taking on varying degrees of risk</li>\n</ul>\n<p>These features make Uniswap v3 <strong>the most flexible and efficient AMM ever designed</strong>:</p>\n<ul>\n  <li>LPs can provide liquidity with <strong>up to 4000x capital efficiency</strong> relative to Uniswap v2, earning <strong>higher returns on their capital</strong></li>\n  <li>Capital efficiency paves the way for low-slippage <strong>trade execution that can surpass both centralized exchanges and stablecoin-focused AMMs</strong></li>\n  <li>LPs can significantly <strong>increase their exposure to preferred assets</strong> and <strong>reduce their downside risk</strong></li>\n  <li>LPs can sell one asset for another by adding liquidity to a price range entirely above or below the market price, approximating <strong>a fee-earning limit order that executes along a smooth curve</strong></li>\n</ul>",
+          "description": "A protocol for trading and automated liquidity.",
+          "fullDescription": "",
           "logo": "https://dashboard-assets.dappradar.com/document/7000/uniswapv3-dapp-defi-ethereum-logo_7f71f0c5a1cd26a3e3ffb9e8fb21b26b.png",
           "link": "https://dappradar.com/ethereum/exchanges/uniswap-v3",
           "website": "https://app.uniswap.org/#/swap",
@@ -344,7 +344,7 @@ TEST(ParseDappListsUnitTest, ParseDappLists) {
           "dappId": 20419,
           "name": "GameTrade Market",
           "description": "Discover, buy, sell and trade in-game NFTs",
-          "fullDescription": "<p><strong>GameTrade Market is an easy-to-use Web3 gaming marketplace and social network for gamers.</strong></p>\n<p>- <strong>Social media tools</strong></p>\n<p>Messaging, news feed, referral programs. Great networking capabilities for finding friends and clients.</p>\n<p>- <strong>Game database</strong> For each game, there is a detailed description along with screenshots, gameplay videos, community reviews.</p>\n<p>- <strong>Multiple blockchain support</strong></p>\n<p>Games and tokens based on dozens of different blockchains.</p>\n<p>- <strong>Custom game coins</strong></p>\n<p>Exchange in-game currencies and native blockchain coins on the built-in crypto exchange.</p>\n<p>- <strong>Swap and Rent</strong></p>\n<p>New possibilities for the in-game NFT economies: swap and rent.</p>\n<p>- <strong>Community</strong></p>\n<p>User reputation, game reviews, item comments, user-generated game guides .</p>",
+          "fullDescription": "",
           "logo": "https://dashboard-assets.dappradar.com/document/20419/gametrademarket-dapp-marketplaces-matic-logo_e3e698e60ebd9bfe8ed1421bb41b890d.png",
           "link": "https://dappradar.com/solana/marketplaces/gametrade-market-2",
           "website": "https://gametrade.market/",
@@ -404,9 +404,8 @@ TEST(ParseDappListsUnitTest, ParseDappLists) {
   EXPECT_EQ(eth_dapp_list.size(), 1u);
   const auto& eth_dapp = eth_dapp_list[0];
   EXPECT_EQ(eth_dapp->name, "Uniswap V3");
-  EXPECT_EQ(
-      eth_dapp->description,
-      "A protocol for trading and automated liquidity provision on Ethereum.");
+  EXPECT_EQ(eth_dapp->description,
+            "A protocol for trading and automated liquidity.");
   EXPECT_EQ(
       eth_dapp->logo,
       "https://dashboard-assets.dappradar.com/document/7000/"
