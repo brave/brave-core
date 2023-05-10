@@ -23,11 +23,6 @@ import {
 import { WalletSelectors } from '../../../../common/selectors'
 import { PageSelectors } from '../../../../page/selectors'
 
-// Hooks
-import {
-  useOnClickOutside
-} from '../../../../common/hooks/useOnClickOutside'
-
 // Constants
 import {
   BraveWallet,
@@ -44,7 +39,6 @@ import { WalletActions } from '../../../../common/actions'
 import { WalletPageActions } from '../../../../page/actions'
 
 // Utils
-import { getLocale } from '../../../../../common/locale'
 import Amount from '../../../../utils/amount'
 import { getBalance } from '../../../../utils/balance-utils'
 import { computeFiatAmount } from '../../../../utils/pricing-utils'
@@ -52,7 +46,6 @@ import { getAssetIdKey } from '../../../../utils/asset-utils'
 import { formatAsDouble } from '../../../../utils/string-utils'
 
 // Options
-import { ChartTimelineOptions } from '../../../../options/chart-timeline-options'
 import { AllNetworksOption } from '../../../../options/network-filter-options'
 import { AllAccountsOption } from '../../../../options/account-filter-options'
 import { PortfolioNavOptions } from '../../../../options/nav-options'
@@ -67,24 +60,21 @@ import { TokenLists } from './components/token-lists/token-list'
 import {
   PortfolioOverviewChart //
 } from './components/portfolio-overview-chart/portfolio-overview-chart'
-import {
-  LineChartControlsMenu
-} from '../../wallet-menus/line-chart-controls-menu'
 import ColumnReveal from '../../../shared/animated-reveals/column-reveal'
 import { NftView } from '../nfts/nft-view'
 import {
   BuySendSwapDepositNav
 } from './components/buy-send-swap-deposit-nav/buy-send-swap-deposit-nav'
+import {
+  LineChartControls
+} from '../../line-chart/line-chart-controls/line-chart-controls'
 
 // Styled Components
 import {
   BalanceText,
   PercentBubble,
   FiatChange,
-  SelectTimelinButton,
-  SelectTimelinButtonIcon,
   SelectTimelineWrapper,
-  SelectTimelineClickArea,
   ControlsRow,
   BalanceAndButtonsWrapper,
   BalanceAndChangeWrapper
@@ -135,20 +125,6 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
 
   // queries
   const { data: networks } = useGetVisibleNetworksQuery()
-
-  // state
-  const [showLineChartControlMenu, setShowLineChartControlMenu] =
-    React.useState<boolean>(false)
-
-  // refs
-  const lineChartControlMenuRef = React.useRef<HTMLDivElement>(null)
-
-  // hooks
-  useOnClickOutside(
-    lineChartControlMenuRef,
-    () => setShowLineChartControlMenu(false),
-    showLineChartControlMenu
-  )
 
   // This will scrape all the user's accounts and combine the asset balances for a single asset
   const fullAssetBalance = React.useCallback((asset: BraveWallet.BlockchainToken) => {
@@ -297,7 +273,6 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
         id.toString()
       )
       dispatch(WalletActions.selectPortfolioTimeline(id))
-      setShowLineChartControlMenu(false)
     }, [])
 
   const onSelectAsset = React.useCallback((asset: BraveWallet.BlockchainToken) => {
@@ -402,29 +377,12 @@ export const PortfolioOverview = ({ onToggleShowIpfsBanner }: Props) => {
         <ColumnReveal hideContent={hidePortfolioGraph}>
           <SelectTimelineWrapper
             padding='0px 32px'
+            marginBottom={8}
           >
-            <SelectTimelineClickArea
-              ref={lineChartControlMenuRef}
-            >
-              <SelectTimelinButton
-                onClick={
-                  () => setShowLineChartControlMenu(prev => !prev)
-                }
-              >
-                {getLocale(
-                  ChartTimelineOptions[selectedPortfolioTimeline].name
-                )}
-                <SelectTimelinButtonIcon
-                  isOpen={showLineChartControlMenu}
-                  name='carat-down'
-                />
-              </SelectTimelinButton>
-              {showLineChartControlMenu &&
-                <LineChartControlsMenu
-                  onClick={onChangeTimeline}
-                />
-              }
-            </SelectTimelineClickArea>
+            <LineChartControls
+              onSelectTimeline={onChangeTimeline}
+              selectedTimeline={selectedPortfolioTimeline}
+            />
           </SelectTimelineWrapper>
           <PortfolioOverviewChart
             hasZeroBalance={isZeroBalance}
