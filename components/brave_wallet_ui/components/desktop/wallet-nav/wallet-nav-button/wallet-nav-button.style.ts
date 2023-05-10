@@ -33,8 +33,6 @@ export const StyledButton = styled(WalletButton) <{ isSelected?: boolean }>`
   &:last-child {
     margin-bottom: 0px;
   }
-  transition-duration: 0.1s;
-  transition-timing-function: ease;
   @media screen and (max-width: ${layoutSmallWidth}px) {
     padding: 6px 0px 3px 0px;
     width: 100%;
@@ -51,15 +49,11 @@ export const ButtonIcon = styled(Icon)`
   --leo-icon-size: 24px;
   color: var(--nav-button-color);
   margin-right: var(--icon-margin-right);
-  transition-duration: inherit;
-  transition-timing-function: inherit;
 `
 
 export const ButtonText = styled(Text)`
   color: var(--nav-button-color);
   display: var(--display-text);
-  transition-duration: inherit;
-  transition-timing-function: inherit;
   @media screen and (max-width: ${layoutSmallWidth}px) {
     font-size: 12px;
     font-weight: 400;

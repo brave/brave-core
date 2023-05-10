@@ -51,8 +51,6 @@ export const LayoutCardWrapper = styled.div<{
   bottom: 0px;
   position: absolute;
   width: 100%;
-  transition-duration: 0.5s;
-  transition-timing-function: ease;
   overflow-x: hidden;
   overflow-y: auto;
   padding-bottom: 32px;
@@ -91,8 +89,6 @@ export const ContainerCard = styled.div<
   min-height: ${minCardHeight}px;
   max-width: ${(p) => p.maxWidth ? p.maxWidth : maxCardWidth}px;
   position: relative;
-  transition-duration: inherit;
-  transition-timing-function: inherit;
   @media screen and (max-width: ${layoutSmallWidth}px) {
     width: 100%;
   }
@@ -113,8 +109,6 @@ export const CardHeaderWrapper = styled.div`
   top: ${layoutTopPosition}px;
   position: fixed;
   width: 100%;
-  transition-duration: 0.5s;
-  transition-timing-function: ease;
   @media screen and (max-width: ${layoutSmallWidth}px) {
     padding: 0px 32px;
   }
@@ -138,8 +132,6 @@ export const CardHeader = styled.div<{
   padding: 0px 32px;
   position: relative;
   max-width: ${maxCardWidth}px;
-  transition-duration: inherit;
-  transition-timing-function: inherit;
   box-shadow: 0px 4px 13px -2px rgba(0, 0, 0, var(--shadow-opacity));
 `
 
