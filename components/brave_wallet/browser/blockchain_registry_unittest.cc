@@ -650,6 +650,7 @@ TEST(BlockchainRegistryUnitTest, GetTopDapps) {
         mojom::kMainnetChainId, mojom::CoinType::ETH,
         base::BindLambdaForTesting([&](std::vector<mojom::DappPtr> dapp_list) {
           ASSERT_EQ(dapp_list.size(), 1UL);
+          EXPECT_EQ(dapp_list[0]->id, 7000UL);
           EXPECT_EQ(dapp_list[0]->name, "Uniswap V3");
           EXPECT_EQ(dapp_list[0]->description,
                     "A protocol for trading and automated liquidity.");
@@ -683,6 +684,7 @@ TEST(BlockchainRegistryUnitTest, GetTopDapps) {
         mojom::kSolanaMainnet, mojom::CoinType::SOL,
         base::BindLambdaForTesting([&](std::vector<mojom::DappPtr> dapp_list) {
           ASSERT_EQ(dapp_list.size(), 1UL);
+          EXPECT_EQ(dapp_list[0]->id, 20419UL);
           EXPECT_EQ(dapp_list[0]->name, "GameTrade Market");
           EXPECT_EQ(dapp_list[0]->description,
                     "Discover, buy, sell and trade in-game NFTs");

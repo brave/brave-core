@@ -516,7 +516,8 @@ bool ParseDappLists(const std::string& json, DappListMap* dapp_list) {
       for (auto& item : *results_list) {
         auto dapp = mojom::Dapp::New();
         if (auto* dappDict = item.GetIfDict()) {
-          if (!ParseResultFromDict(dappDict, "name", &dapp->name) ||
+          if (!ParseIntResultFromDict(dappDict, "dappId", &dapp->id) ||
+              !ParseResultFromDict(dappDict, "name", &dapp->name) ||
               !ParseResultFromDict(dappDict, "description",
                                    &dapp->description) ||
               !ParseResultFromDict(dappDict, "logo", &dapp->logo) ||

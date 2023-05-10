@@ -439,6 +439,7 @@ struct CoinMarket {
 };
 
 struct Dapp {
+  uint32 id; // Assigned by DappRadar
   string name;
   string description;
   string logo;
