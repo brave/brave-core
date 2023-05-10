@@ -121,6 +121,8 @@ public class TransactionConfirmationStore: ObservableObject {
       }
     }
   }
+  /// A cache of networks for the supported coin types.
+  private var allNetworks: [BraveWallet.NetworkInfo] = []
   
   private let assetRatioService: BraveWalletAssetRatioService
   private let rpcService: BraveWalletJsonRpcService
@@ -189,14 +191,15 @@ public class TransactionConfirmationStore: ObservableObject {
   }
   
   @MainActor func prepare() async {
+    allNetworks = await rpcService.allNetworksForSupportedCoins()
     allTxs = await fetchAllTransactions()
     if !unapprovedTxs.contains(where: { $0.id == activeTransactionId }) {
       self.activeTransactionId = unapprovedTxs.first?.id ?? ""
     }
-    let coinsForTransactions: Set<BraveWallet.CoinType> = .init(unapprovedTxs.map(\.coin))
-    for coin in coinsForTransactions {
-      let network = await rpcService.network(coin, origin: nil)
-      let userVisibleTokens = await walletService.userAssets(network.chainId, coin: coin)
+    let transactionNetworks: [BraveWallet.NetworkInfo] = Set(allTxs.map(\.chainId))
+      .compactMap { chainId in allNetworks.first(where: { $0.chainId == chainId }) }
+    for network in transactionNetworks {
+      let userVisibleTokens = await walletService.userAssets(network.chainId, coin: network.coin)
       await fetchAssetRatios(for: userVisibleTokens)
     }
     await fetchUnknownTokens(for: unapprovedTxs)
@@ -213,7 +216,15 @@ public class TransactionConfirmationStore: ObservableObject {
       
       let coin = transaction.coin
       let keyring = await keyringService.keyringInfo(coin.keyringId)
-      let network = await rpcService.network(coin, origin: nil)
+      if !allNetworks.contains(where: { $0.chainId == transaction.chainId }) {
+        allNetworks = await rpcService.allNetworksForSupportedCoins()
+      }
+      guard let network = allNetworks.first(where: { $0.chainId == transaction.chainId }) else {
+        // Transactions should be removed if their network is removed
+        // https://github.com/brave/brave-browser/issues/30234
+        assertionFailure("The NetworkInfo for the transaction's chainId (\(transaction.chainId)) is unavailable")
+        return
+      }
       let allTokens = await blockchainRegistry.allTokens(network.chainId, coin: coin) + tokenInfoCache.map(\.value)
       let userVisibleTokens = await walletService.userAssets(network.chainId, coin: coin)
       let solEstimatedTxFee: UInt64? = solEstimatedTxFeeCache[transaction.id]
@@ -326,11 +337,17 @@ public class TransactionConfirmationStore: ObservableObject {
   @MainActor private func fetchUnknownTokens(
     for transactions: [BraveWallet.TransactionInfo]
   ) async {
-    let coin = await walletService.selectedCoin()
-    let network = await rpcService.network(coin, origin: nil)
+    // `AssetRatioService` can only fetch tokens from Ethereum Mainnet
+    let mainnetTransactions = transactions.filter { $0.chainId == BraveWallet.MainnetChainId }
+    guard !mainnetTransactions.isEmpty else { return }
+    let coin: BraveWallet.CoinType = .eth
+    let allNetworks = await rpcService.allNetworks(coin)
+    guard let network = allNetworks.first(where: { $0.chainId == BraveWallet.MainnetChainId }) else {
+      return
+    }
     let userVisibleTokens = await walletService.userAssets(network.chainId, coin: network.coin)
     let allTokens = await blockchainRegistry.allTokens(network.chainId, coin: network.coin)
-    let unknownTokenContractAddresses = transactions.flatMap(\.tokenContractAddresses)
+    let unknownTokenContractAddresses = mainnetTransactions.flatMap(\.tokenContractAddresses)
       .filter { contractAddress in
         !userVisibleTokens.contains(where: { $0.contractAddress(in: network).caseInsensitiveCompare(contractAddress) == .orderedSame })
         && !allTokens.contains(where: { $0.contractAddress(in: network).caseInsensitiveCompare(contractAddress) == .orderedSame })
@@ -533,12 +550,13 @@ public class TransactionConfirmationStore: ObservableObject {
   
   @MainActor private func fetchAllTransactions() async -> [BraveWallet.TransactionInfo] {
     let allKeyrings = await keyringService.keyrings(for: WalletConstants.supportedCoinTypes)
-    var selectedChainIdForCoinTypes: [BraveWallet.CoinType: [String]] = [:]
+    var allChainIdsForCoin: [BraveWallet.CoinType: [String]] = [:]
     for coin in WalletConstants.supportedCoinTypes {
-      let selectedNetwork = await rpcService.network(coin, origin: nil)
-      selectedChainIdForCoinTypes[coin] = [selectedNetwork.chainId]
+      let allNetworks = await rpcService.allNetworks(coin)
+      allChainIdsForCoin[coin] = allNetworks.map(\.chainId)
     }
-    return await txService.pendingTransactions(chainIdsForCoin: selectedChainIdForCoinTypes, for: allKeyrings)
+    return await txService.pendingTransactions(chainIdsForCoin: allChainIdsForCoin, for: allKeyrings)
+      .sorted(by: { $0.createdTime < $1.createdTime })
   }
 
   func confirm(transaction: BraveWallet.TransactionInfo, completion: @escaping (_ error: String?) -> Void) {

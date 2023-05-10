@@ -17,6 +17,10 @@ import BraveCore
       .eth : BraveWallet.NetworkInfo.mockMainnet,
       .sol : BraveWallet.NetworkInfo.mockSolana
     ],
+    allNetworksForCoinType: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [
+      .eth: [.mockMainnet, .mockGoerli],
+      .sol: [.mockSolana, .mockSolanaTestnet]
+    ],
     accountInfos: [BraveWallet.AccountInfo] = [.mockEthAccount, .mockSolAccount],
     allTokens: [BraveWallet.BlockchainToken] = [],
     transactions: [BraveWallet.TransactionInfo] = [],
@@ -40,6 +44,9 @@ import BraveCore
     rpcService._network = { coin, origin, completion in
       completion(selectedNetworkForCoinType[coin] ?? .mockMainnet)
     }
+    rpcService._allNetworks = { coin, completion in
+      completion(allNetworksForCoinType[coin] ?? [])
+    }
     rpcService._balance = { _, _, _, completion in
       completion(mockBalanceWei, .success, "")
     }
@@ -48,8 +55,15 @@ import BraveCore
     }
     let txService = BraveWallet.TestTxService()
     txService._addObserver = { _ in }
-    txService._allTransactionInfo = { _, _, _, completion in
-      completion(transactions)
+    txService._allTransactionInfo = { coin, chainId, address, completion in
+      let filteredTransactions = transactions.filter {
+        if let chainId = chainId {
+          return $0.coin == coin && $0.chainId == chainId
+        } else {
+          return $0.coin == coin
+        }
+      }
+      completion(filteredTransactions)
     }
     let blockchainRegistry = BraveWallet.TestBlockchainRegistry()
     blockchainRegistry._allTokens = { _, _, completion in
@@ -79,7 +93,12 @@ import BraveCore
         isKeyringCreated: true,
         isLocked: false,
         isBackedUp: true,
-        accountInfos: accountInfos)
+        accountInfos: [])
+      if id == BraveWallet.DefaultKeyringId {
+        keyring.accountInfos = accountInfos.filter { $0.coin == .eth }
+      } else {
+        keyring.accountInfos = accountInfos.filter { $0.coin == .sol }
+      }
       completion(keyring)
     }
     
@@ -275,6 +294,66 @@ import BraveCore
       .store(in: &cancellables)
     
     await fulfillment(of: [prepareExpectation], timeout: 1)
+  }
+  
+  /// Test `network` property is updated for the `activeTransaction`, regardess of the current selected network for that coin type.
+  func testPrepareTransactionNotOnSelectedNetwork() async {
+    let firstTransactionDate = Date(timeIntervalSince1970: 1636399671) // Monday, November 8, 2021 7:27:51 PM
+    let sendCopy = BraveWallet.TransactionInfo.previewConfirmedSend.copy() as! BraveWallet.TransactionInfo
+    sendCopy.chainId = BraveWallet.GoerliChainId
+    sendCopy.txStatus = .unapproved
+    let swapCopy = BraveWallet.TransactionInfo.previewConfirmedSwap.copy() as! BraveWallet.TransactionInfo
+    swapCopy.chainId = BraveWallet.MainnetChainId
+    swapCopy.txStatus = .unapproved
+    let solanaSendCopy = BraveWallet.TransactionInfo.previewConfirmedSolSystemTransfer.copy() as! BraveWallet.TransactionInfo
+    solanaSendCopy.chainId = BraveWallet.SolanaMainnet
+    let solanaSPLSendCopy = BraveWallet.TransactionInfo.previewConfirmedSolTokenTransfer.copy() as! BraveWallet.TransactionInfo
+    solanaSPLSendCopy.chainId = BraveWallet.SolanaTestnet
+    let pendingTransactions: [BraveWallet.TransactionInfo] = [
+      sendCopy, swapCopy, solanaSendCopy, solanaSPLSendCopy
+    ].enumerated().map { (index, tx) in
+      tx.txStatus = .unapproved
+      // transactions sorted by created time, make sure they are in-order
+      tx.createdTime = firstTransactionDate.addingTimeInterval(TimeInterval(index))
+      return tx
+    }
+    let allTokens: [BraveWallet.BlockchainToken] = [.previewToken, .daiToken]
+    let store = setupStore(
+      allTokens: allTokens,
+      transactions: pendingTransactions
+    )
+    let networkExpectation = expectation(description: "network-expectation")
+    store.$network
+      .dropFirst(6) // `network` is assigned multiple times during setup
+      .collect(4) // collect all transactions
+      .sink { networks in
+        defer { networkExpectation.fulfill() }
+        XCTAssertEqual(networks.count, 4)
+        XCTAssertEqual(networks[safe: 0], BraveWallet.NetworkInfo.mockGoerli)
+        XCTAssertEqual(networks[safe: 1], BraveWallet.NetworkInfo.mockMainnet)
+        XCTAssertEqual(networks[safe: 2], BraveWallet.NetworkInfo.mockSolana)
+        XCTAssertEqual(networks[safe: 3], BraveWallet.NetworkInfo.mockSolanaTestnet)
+      }
+      .store(in: &cancellables)
+    let activeTransactionIdExpectation = expectation(description: "activeTransactionId-expectation")
+    store.$activeTransactionId
+      .dropFirst()
+      .collect(4) // collect all transactions
+      .sink { activeTransactionIds in
+        defer { activeTransactionIdExpectation.fulfill() }
+        XCTAssertEqual(activeTransactionIds.count, 4)
+        XCTAssertEqual(activeTransactionIds[safe: 0], pendingTransactions[safe: 0]?.id)
+        XCTAssertEqual(activeTransactionIds[safe: 1], pendingTransactions[safe: 1]?.id)
+        XCTAssertEqual(activeTransactionIds[safe: 2], pendingTransactions[safe: 2]?.id)
+        XCTAssertEqual(activeTransactionIds[safe: 3], pendingTransactions[safe: 3]?.id)
+      }
+      .store(in: &cancellables)
+    
+    await store.prepare() // `sendCopy` on Goerli Testnet
+    store.nextTransaction() // `swapCopy` on Ethereum Mainnet
+    store.nextTransaction() // `solanaSendCopy` on Solana Mainnet
+    store.nextTransaction() // `solanaSPLSendCopy` on Solana Testnet
+    await fulfillment(of: [networkExpectation, activeTransactionIdExpectation], timeout: 1)
   }
   
   /// Test `editAllowance(txMetaId:spenderAddress:amount:completion)` will return false if we fail to make ERC20 approve data with `BraveWalletEthTxManagerProxy`

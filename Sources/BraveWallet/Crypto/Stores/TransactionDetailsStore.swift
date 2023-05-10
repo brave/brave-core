@@ -64,7 +64,13 @@ class TransactionDetailsStore: ObservableObject {
   func update() {
     Task { @MainActor in
       let coin = transaction.coin
-      let network = await rpcService.network(coin, origin: nil)
+      let networksForCoin = await rpcService.allNetworks(coin)
+      guard let network = networksForCoin.first(where: { $0.chainId == transaction.chainId }) else {
+        // Transactions should be removed if their network is removed
+        // https://github.com/brave/brave-browser/issues/30234
+        assertionFailure("The NetworkInfo for the transaction's chainId (\(transaction.chainId)) is unavailable")
+        return
+      }
       self.network = network
       let keyring = await keyringService.keyringInfo(coin.keyringId)
       var allTokens: [BraveWallet.BlockchainToken] = await blockchainRegistry.allTokens(network.chainId, coin: network.coin) + tokenInfoCache.map(\.value)
