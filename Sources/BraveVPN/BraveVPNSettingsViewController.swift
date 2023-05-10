@@ -54,9 +54,11 @@ public class BraveVPNSettingsViewController: TableViewController {
 
       let overlay = UIView().then {
         $0.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        let activityIndicator = UIActivityIndicatorView().then { indicator in
-          indicator.startAnimating()
-          indicator.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        let activityIndicator = UIActivityIndicatorView().then {
+          $0.style = .large
+          $0.color = .white
+          $0.startAnimating()
+          $0.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         }
 
         $0.addSubview(activityIndicator)
