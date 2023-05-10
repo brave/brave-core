@@ -37,10 +37,13 @@ class BraveIconWithBadgeImageSource : public IconWithBadgeImageSource {
 
   static gfx::Size GetMaxBadgeSize();
 
+ protected:
+  virtual void PaintBadgeWithoutText(const gfx::Rect& badge_rect,
+                                     gfx::Canvas* canvas);
+
  private:
   void PaintBadge(gfx::Canvas* canvas) override;
   void PaintBadgeWithText(gfx::Canvas* canvas);
-  void PaintBadgeWithoutText(const gfx::Rect& badge_rect, gfx::Canvas* canvas);
 
   gfx::Rect GetIconAreaRect() const override;
   gfx::Rect GetBadgeRect(size_t badge_width) const;

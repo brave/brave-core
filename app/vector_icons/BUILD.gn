@@ -37,6 +37,7 @@ aggregate_vector_icons("brave_vector_icons") {
     "leo_heart_filled.icon",
     "leo_heart_outline.icon",
     "leo_rss.icon",
+    "leo_verification_filled.icon",
   ]
 
   if (toolkit_views) {

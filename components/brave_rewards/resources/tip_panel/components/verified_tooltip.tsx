@@ -5,10 +5,11 @@
 
 import * as React from 'react'
 
+import Icon from '@brave/leo/react/icon'
+
 import { useLocaleContext } from '../lib/locale_strings'
 import { NewTabLink } from '../../shared/components/new_tab_link'
 import { Tooltip } from './tooltip'
-import { VerifiedIcon } from './icons/verified_icon'
 
 import * as urls from '../../shared/lib/rewards_urls'
 
@@ -19,7 +20,9 @@ export function VerifiedTooltip () {
   return (
     <Tooltip>
       <style.title>
-        <style.checkmark><VerifiedIcon /></style.checkmark>
+        <style.checkmark>
+          <Icon name='verification-filled-color' />
+        </style.checkmark>
         <div>{getString('verifiedTooltipTitle')}</div>
       </style.title>
       <style.text>

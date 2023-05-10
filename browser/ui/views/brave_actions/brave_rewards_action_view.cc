@@ -30,6 +30,7 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/models/simple_menu_model.h"
+#include "ui/gfx/canvas.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/image/image_skia.h"
@@ -51,8 +52,7 @@ using brave_rewards::RewardsTabHelper;
 
 constexpr int kCornerRadius = 16;
 constexpr SkColor kIconColor = SK_ColorBLACK;
-const char kVerifiedCheck[] = "\u2713";
-constexpr SkColor kBadgeVerifiedBG = SkColorSetRGB(0x4c, 0x54, 0xd2);
+constexpr SkColor kBadgeVerifiedBG = SkColorSetRGB(0x42, 0x3E, 0xEE);
 
 class ButtonHighlightPathGenerator : public views::HighlightPathGenerator {
  public:
@@ -83,6 +83,59 @@ const ui::ColorProvider* GetColorProviderForWebContents(
   return ui::ColorProviderManager::Get().GetColorProviderFor(
       ui::NativeTheme::GetInstanceForNativeUi()->GetColorProviderKey(nullptr));
 }
+
+// Draws a custom badge for the "verified" checkmark.
+class RewardsBadgeImageSource : public brave::BraveIconWithBadgeImageSource {
+ public:
+  RewardsBadgeImageSource(const gfx::Size& size,
+                          GetColorProviderCallback get_color_provider_callback)
+      : BraveIconWithBadgeImageSource(size,
+                                      std::move(get_color_provider_callback),
+                                      kBraveActionGraphicSize,
+                                      kBraveActionLeftMarginExtra) {}
+
+  void UseVerifiedIcon(bool verified_icon) {
+    verified_icon_ = verified_icon;
+    SetAllowEmptyText(verified_icon);
+  }
+
+ private:
+  // brave::BraveIconWithBadgeImageSource:
+  void PaintBadgeWithoutText(const gfx::Rect& badge_rect,
+                             gfx::Canvas* canvas) override {
+    if (!verified_icon_) {
+      BraveIconWithBadgeImageSource::PaintBadgeWithoutText(badge_rect, canvas);
+      return;
+    }
+
+    // The verified icon must be drawn slightly larger than the default badge
+    // area. Expand the badge rectangle accordingly.
+    gfx::Rect image_rect(badge_rect);
+    gfx::Outsets outsets;
+    outsets.set_top(3);
+    outsets.set_left(2);
+    outsets.set_right(1);
+    image_rect.Outset(outsets);
+
+    gfx::RectF check_rect(image_rect);
+    check_rect.Inset(4);
+    cc::PaintFlags check_flags;
+    check_flags.setStyle(cc::PaintFlags::kFill_Style);
+    check_flags.setColor(SK_ColorWHITE);
+    check_flags.setAntiAlias(true);
+    canvas->DrawRoundRect(check_rect, 2, check_flags);
+
+    auto image = gfx::CreateVectorIcon(kLeoVerificationFilledIcon,
+                                       image_rect.width(), kBadgeVerifiedBG);
+
+    cc::PaintFlags image_flags;
+    image_flags.setStyle(cc::PaintFlags::kFill_Style);
+    image_flags.setAntiAlias(true);
+    canvas->DrawImageInt(image, image_rect.x(), image_rect.y(), image_flags);
+  }
+
+  bool verified_icon_ = false;
+};
 
 // Provides the context menu for the Rewards button.
 class RewardsActionMenuModel : public ui::SimpleMenuModel,
@@ -228,17 +281,15 @@ void BraveRewardsActionView::Update() {
   auto weak_contents = web_contents ? web_contents->GetWeakPtr()
                                     : base::WeakPtr<content::WebContents>();
 
-  auto image_source = std::make_unique<brave::BraveIconWithBadgeImageSource>(
-
+  auto image_source = std::make_unique<RewardsBadgeImageSource>(
       preferred_size,
-      base::BindRepeating(GetColorProviderForWebContents, weak_contents),
-      kBraveActionGraphicSize, kBraveActionLeftMarginExtra);
-
+      base::BindRepeating(GetColorProviderForWebContents, weak_contents));
   image_source->SetIcon(gfx::Image(GetRewardsIcon()));
 
   auto [text, background_color] = GetBadgeTextAndBackground();
   image_source->SetBadge(std::make_unique<IconWithBadgeImageSource::Badge>(
       text, brave::kBadgeTextColor, background_color));
+  image_source->UseVerifiedIcon(background_color == kBadgeVerifiedBG);
 
   SetImage(views::Button::STATE_NORMAL,
            gfx::ImageSkia(std::move(image_source), preferred_size));
@@ -407,7 +458,7 @@ BraveRewardsActionView::GetBadgeTextAndBackground() {
 
   // 3. Display a verified checkmark for verified publishers.
   if (std::get<bool>(publisher_registered_)) {
-    return {kVerifiedCheck, kBadgeVerifiedBG};
+    return {"", kBadgeVerifiedBG};
   }
 
   return {"", brave::kBadgeNotificationBG};
