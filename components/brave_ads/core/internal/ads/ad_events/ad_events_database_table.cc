@@ -39,7 +39,7 @@ void BindRecords(mojom::DBCommandInfo* command) {
           STRING_TYPE,  // creative_instance_id
       mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // advertiser_id
       mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // segment
-      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE   // created_at
+      mojom::DBCommandInfo::RecordBindingType::INT64_TYPE    // created_at
   };
 }
 
@@ -59,7 +59,8 @@ size_t BindParameters(mojom::DBCommandInfo* command,
     BindString(command, index++, ad_event.creative_instance_id);
     BindString(command, index++, ad_event.advertiser_id);
     BindString(command, index++, ad_event.segment);
-    BindDouble(command, index++, ad_event.created_at.ToDoubleT());
+    BindInt64(command, index++,
+              ad_event.created_at.ToDeltaSinceWindowsEpoch().InMicroseconds());
 
     count++;
   }
@@ -80,7 +81,8 @@ AdEventInfo GetFromRecord(mojom::DBRecordInfo* record) {
   ad_event.creative_instance_id = ColumnString(record, 5);
   ad_event.advertiser_id = ColumnString(record, 6);
   ad_event.segment = ColumnString(record, 7);
-  ad_event.created_at = base::Time::FromDoubleT(ColumnDouble(record, 8));
+  ad_event.created_at = base::Time::FromDeltaSinceWindowsEpoch(
+      base::Microseconds(ColumnInt64(record, 8)));
 
   return ad_event;
 }
@@ -194,6 +196,17 @@ void MigrateToV28(mojom::DBTransactionInfo* transaction) {
   RenameTable(transaction, "ad_events_temp", "ad_events");
 
   CreateTableIndex(transaction, "ad_events", "created_at");
+}
+
+void MigrateToV29(mojom::DBTransactionInfo* transaction) {
+  CHECK(transaction);
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      "UPDATE ad_events SET created_at = (CAST(created_at AS INT64) + "
+      "11644473600) * 1000000;";
+  transaction->commands.push_back(std::move(command));
 }
 
 }  // namespace
@@ -346,7 +359,8 @@ void AdEvents::Migrate(mojom::DBTransactionInfo* transaction,
       break;
     }
 
-    default: {
+    case 29: {
+      MigrateToV29(transaction);
       break;
     }
   }

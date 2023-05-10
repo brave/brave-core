@@ -102,10 +102,6 @@ void Embeddings::Migrate(mojom::DBTransactionInfo* transaction,
       MigrateToV27(transaction);
       break;
     }
-
-    default: {
-      break;
-    }
   }
 }
 

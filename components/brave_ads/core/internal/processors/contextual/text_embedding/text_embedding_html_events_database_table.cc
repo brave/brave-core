@@ -114,6 +114,17 @@ void MigrateToV25(mojom::DBTransactionInfo* transaction) {
   transaction->commands.push_back(std::move(command));
 }
 
+void MigrateToV29(mojom::DBTransactionInfo* transaction) {
+  CHECK(transaction);
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      "UPDATE text_embedding_html_events SET created_at = (CAST(created_at AS "
+      "INT64) + 11644473600) * 1000000;";
+  transaction->commands.push_back(std::move(command));
+}
+
 }  // namespace
 
 void TextEmbeddingHtmlEvents::LogEvent(
@@ -169,10 +180,10 @@ void TextEmbeddingHtmlEvents::Create(mojom::DBTransactionInfo* transaction) {
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "CREATE TABLE text_embedding_html_events (id "
-      "INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, created_at "
-      "TIMESTAMP NOT NULL, locale TEXT NOT NULL, hashed_text_base64 "
-      "TEXT NOT NULL UNIQUE, embedding TEXT NOT NULL);";
+      "CREATE TABLE text_embedding_html_events (id INTEGER PRIMARY KEY "
+      "AUTOINCREMENT NOT NULL, created_at TIMESTAMP NOT NULL, locale TEXT NOT "
+      "NULL, hashed_text_base64 TEXT NOT NULL UNIQUE, embedding TEXT NOT "
+      "NULL);";
   transaction->commands.push_back(std::move(command));
 }
 
@@ -186,7 +197,8 @@ void TextEmbeddingHtmlEvents::Migrate(mojom::DBTransactionInfo* transaction,
       break;
     }
 
-    default: {
+    case 29: {
+      MigrateToV29(transaction);
       break;
     }
   }
