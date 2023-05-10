@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 
+#include <tuple>
 #include <utility>
 
 #include "base/json/json_reader.h"

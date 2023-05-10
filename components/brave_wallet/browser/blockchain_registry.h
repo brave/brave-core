@@ -67,6 +67,10 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
   void GetPrepopulatedNetworks(
       GetPrepopulatedNetworksCallback callback) override;
 
+  void GetTopDapps(const std::string& chain_id,
+                   mojom::CoinType coin,
+                   GetTopDappsCallback callback) override;
+
  protected:
   std::vector<mojom::BlockchainTokenPtr>* GetTokenListFromChainId(
       const std::string& chain_id);

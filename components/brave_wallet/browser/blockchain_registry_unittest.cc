@@ -185,6 +185,100 @@ const char chain_list_json[] = R"(
     }
   ])";
 
+const char dapp_lists_json[] = R"({
+    "ethereum": {
+      "success": true,
+      "chain": "ethereum",
+      "category": null,
+      "range": "30d",
+      "top": 10,
+      "results": [
+        {
+          "dappId": 7000,
+          "name": "Uniswap V3",
+          "description": "A protocol for trading and automated liquidity provision on Ethereum.",
+          "fullDescription": "",
+          "logo": "https://dashboard-assets.dappradar.com/document/7000/uniswapv3-dapp-defi-ethereum-logo_7f71f0c5a1cd26a3e3ffb9e8fb21b26b.png",
+          "link": "https://dappradar.com/ethereum/exchanges/uniswap-v3",
+          "website": "https://app.uniswap.org/#/swap",
+          "chains": [
+            "ethereum",
+            "polygon",
+            "optimism",
+            "celo",
+            "arbitrum",
+            "binance-smart-chain"
+          ],
+          "categories": [
+            "exchanges"
+          ],
+          "socialLinks": [
+            {
+              "title": "reddit",
+              "url": "https://www.reddit.com/r/UniSwap/",
+              "type": "reddit"
+            },
+            {
+              "title": "twitter",
+              "url": "https://twitter.com/Uniswap",
+              "type": "twitter"
+            }
+          ],
+          "metrics": {
+            "transactions": 2348167,
+            "uaw": 387445,
+            "volume": 65982226285.39,
+            "balance": 1904817795.53
+          }
+        }
+      ]
+    },
+    "solana": {
+      "success": true,
+      "chain": "solana",
+      "category": null,
+      "range": "30d",
+      "top": 10,
+      "results": [
+        {
+          "dappId": 20419,
+          "name": "GameTrade Market",
+          "description": "Discover, buy, sell and trade in-game NFTs",
+          "fullDescription": "",
+          "logo": "https://dashboard-assets.dappradar.com/document/20419/gametrademarket-dapp-marketplaces-matic-logo_e3e698e60ebd9bfe8ed1421bb41b890d.png",
+          "link": "https://dappradar.com/solana/marketplaces/gametrade-market-2",
+          "website": "https://gametrade.market/",
+          "chains": [
+            "polygon",
+            "solana",
+            "binance-smart-chain"
+          ],
+          "categories": [
+            "marketplaces"
+          ],
+          "socialLinks": [
+            {
+              "title": "twitter",
+              "url": "https://twitter.com/GameTradeMarket",
+              "type": "twitter"
+            },
+            {
+              "title": "youtube",
+              "url": "https://www.youtube.com/channel/UCAoMHO4zQaiT-vxWOVk8IjA/videos",
+              "type": "youtube"
+            }
+          ],
+          "metrics": {
+            "transactions": 401926,
+            "uaw": 354495,
+            "volume": 8949.83,
+            "balance": 3.81
+          }
+        }
+      ]
+    }
+  })";
+
 std::vector<std::string> GetChainIds(
     const std::vector<mojom::NetworkInfoPtr>& networks) {
   std::vector<std::string> result;
@@ -540,6 +634,79 @@ TEST(BlockchainRegistryUnitTest, GetPrepopulatedNetworksKnownOnesArePreferred) {
   auto found_networks = registry->GetPrepopulatedNetworks();
   EXPECT_EQ(2u, found_networks.size());
   EXPECT_EQ(found_networks[0]->chain_name, "Ethereum Mainnet");
+}
+
+TEST(BlockchainRegistryUnitTest, GetTopDapps) {
+  base::test::TaskEnvironment task_environment;
+  auto* registry = BlockchainRegistry::GetInstance();
+  DappListMap dapp_lists_map;
+  ASSERT_TRUE(ParseDappLists(dapp_lists_json, &dapp_lists_map));
+  registry->UpdateDappList(std::move(dapp_lists_map));
+
+  // Top Ethereum dapps
+  for (size_t i = 0; i < 2; ++i) {
+    base::RunLoop run_loop;
+    registry->GetTopDapps(
+        mojom::kMainnetChainId, mojom::CoinType::ETH,
+        base::BindLambdaForTesting([&](std::vector<mojom::DappPtr> dapp_list) {
+          ASSERT_EQ(dapp_list.size(), 1UL);
+          EXPECT_EQ(dapp_list[0]->name, "Uniswap V3");
+          EXPECT_EQ(dapp_list[0]->description,
+                    "A protocol for trading and automated liquidity provision "
+                    "on Ethereum.");
+          EXPECT_EQ(dapp_list[0]->logo,
+                    "https://dashboard-assets.dappradar.com/document/7000/"
+                    "uniswapv3-dapp-defi-ethereum-logo_"
+                    "7f71f0c5a1cd26a3e3ffb9e8fb21b26b.png");
+          EXPECT_EQ(dapp_list[0]->website, "https://app.uniswap.org/#/swap");
+          ASSERT_EQ(dapp_list[0]->chains.size(), 6UL);
+          EXPECT_EQ(dapp_list[0]->chains[0], "ethereum");
+          EXPECT_EQ(dapp_list[0]->chains[1], "polygon");
+          EXPECT_EQ(dapp_list[0]->chains[2], "optimism");
+          EXPECT_EQ(dapp_list[0]->chains[3], "celo");
+          EXPECT_EQ(dapp_list[0]->chains[4], "arbitrum");
+          EXPECT_EQ(dapp_list[0]->chains[5], "binance-smart-chain");
+          ASSERT_EQ(dapp_list[0]->categories.size(), 1UL);
+          EXPECT_EQ(dapp_list[0]->categories[0], "exchanges");
+          EXPECT_EQ(dapp_list[0]->transactions, 2348167U);
+          EXPECT_EQ(dapp_list[0]->uaw, 387445U);
+          EXPECT_DOUBLE_EQ(dapp_list[0]->volume, 65982226285.39);
+          EXPECT_DOUBLE_EQ(dapp_list[0]->balance, 1904817795.53);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
+  // Top Solana dapps
+  for (size_t i = 0; i < 2; ++i) {
+    base::RunLoop run_loop;
+    registry->GetTopDapps(
+        mojom::kSolanaMainnet, mojom::CoinType::SOL,
+        base::BindLambdaForTesting([&](std::vector<mojom::DappPtr> dapp_list) {
+          ASSERT_EQ(dapp_list.size(), 1UL);
+          EXPECT_EQ(dapp_list[0]->name, "GameTrade Market");
+          EXPECT_EQ(dapp_list[0]->description,
+                    "Discover, buy, sell and trade in-game NFTs");
+          EXPECT_EQ(dapp_list[0]->logo,
+                    "https://dashboard-assets.dappradar.com/document/20419/"
+                    "gametrademarket-dapp-marketplaces-matic-logo_"
+                    "e3e698e60ebd9bfe8ed1421bb41b890d.png");
+          EXPECT_EQ(dapp_list[0]->website, "https://gametrade.market/");
+          ASSERT_EQ(dapp_list[0]->chains.size(), 3UL);
+          EXPECT_EQ(dapp_list[0]->chains[0], "polygon");
+          EXPECT_EQ(dapp_list[0]->chains[1], "solana");
+          EXPECT_EQ(dapp_list[0]->chains[2], "binance-smart-chain");
+          ASSERT_EQ(dapp_list[0]->categories.size(), 1UL);
+          EXPECT_EQ(dapp_list[0]->categories[0], "marketplaces");
+          EXPECT_EQ(dapp_list[0]->transactions, 401926U);
+          EXPECT_EQ(dapp_list[0]->uaw, 354495U);
+          EXPECT_DOUBLE_EQ(dapp_list[0]->volume, 8949.83);
+          EXPECT_DOUBLE_EQ(dapp_list[0]->balance, 3.81);
+
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
 }
 
 TEST(BlockchainRegistryUnitTest, GetEthTokenListMap) {
