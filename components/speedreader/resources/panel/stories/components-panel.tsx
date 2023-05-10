@@ -7,12 +7,12 @@ import * as S from './style'
 import { withKnobs } from '@storybook/addon-knobs'
 
 import './locale'
-import MainPanel from '../components/main-panel'
+import Toolbar from '../components/toolbar'
 import ThemeProvider from '$web-common/BraveCoreThemeProvider'
 import { FontFamily, FontSize, PlaybackSpeed, SiteSettings, Theme, TtsSettings } from '../api/browser'
 
 export default {
-  title: 'Speedreader/Panels',
+  title: 'Speedreader/Toolbar',
   parameters: {
     layout: 'centered'
   },
@@ -47,7 +47,7 @@ export const _Main = () => {
 
   return (
     <S.PanelFrame>
-      <MainPanel
+      <Toolbar
         siteSettings={siteSettings}
         ttsSettings={ttsSettings}
         onThemeChange={() => {}}

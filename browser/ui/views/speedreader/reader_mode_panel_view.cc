@@ -10,6 +10,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/views/background.h"
+#include "ui/views/border.h"
 #include "url/gurl.h"
 
 namespace content {
@@ -26,6 +27,7 @@ class Toolbar : public views::WebView {
     EnableSizingFromWebContents(gfx::Size(10, 10), gfx::Size(10000, 500));
   }
 
+ private:
   // WebView:
   bool HandleContextMenu(content::RenderFrameHost& render_frame_host,
                          const content::ContextMenuParams& params) override {
@@ -39,6 +41,8 @@ class Toolbar : public views::WebView {
 ReaderModePanelView::ReaderModePanelView(
     content::BrowserContext* browser_context) {
   SetBackground(views::CreateThemedSolidBackground(kColorToolbar));
+  SetBorder(views::CreateThemedSolidSidedBorder(gfx::Insets::TLBR(0, 0, 1, 0),
+                                                ui::kColorFrameActive));
 
   toolbar_ = std::make_unique<Toolbar>(browser_context);
   AddChildView(toolbar_.get());
@@ -52,10 +56,20 @@ gfx::Size ReaderModePanelView::CalculatePreferredSize() const {
 
 void ReaderModePanelView::OnBoundsChanged(const gfx::Rect& previous_bounds) {
   views::View::OnBoundsChanged(previous_bounds);
+  UpdateToolbarBounds();
+}
 
-  const auto toolbar_size = toolbar_->GetPreferredSize();
+void ReaderModePanelView::ChildPreferredSizeChanged(views::View* view) {
+  if (view == toolbar_.get()) {
+    UpdateToolbarBounds();
+  }
+}
+
+void ReaderModePanelView::UpdateToolbarBounds() {
+  auto toolbar_size = toolbar_->GetPreferredSize();
 
   auto toolbar_bounds = bounds();
+  toolbar_size.SetToMin(bounds().size());
   toolbar_bounds.ClampToCenteredSize(toolbar_size);
   toolbar_bounds.Offset(-10, 0);
   toolbar_->SetBoundsRect(toolbar_bounds);

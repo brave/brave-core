@@ -46,6 +46,8 @@ class SpeedreaderToolbarDataHandlerImpl
   void GetTtsSettings(GetTtsSettingsCallback callback) override;
   void SetTtsSettings(speedreader::mojom::TtsSettingsPtr settings) override;
 
+  void HideToolbar() override;
+
   void ViewOriginal() override;
 
   void IsPlaying(IsPlayingCallback callback) override;

@@ -96,7 +96,6 @@ class SpeedreaderTabHelper
   // Displays reader mode information
   void ShowReaderModeBubble();
 
-  void ShowReaderModeToolbar();
   void HideReaderModeToolbar();
 
   // Hides speedreader information
@@ -192,6 +191,7 @@ class SpeedreaderTabHelper
   bool show_original_page_ = false;   // next request should not be distilled
   bool original_page_shown_ = false;  // true if reload was performed using the
                                       // 'show original page' link
+  bool toolbar_hidden_ = false;
 
   DistillState distill_state_ = DistillState::kNone;
   raw_ptr<SpeedreaderBubbleView> speedreader_bubble_ = nullptr;

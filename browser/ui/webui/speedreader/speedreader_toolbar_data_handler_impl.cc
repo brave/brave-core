@@ -75,6 +75,10 @@ void SpeedreaderToolbarDataHandlerImpl::SetTtsSettings(
       static_cast<double>(settings->speed) / 100.0);
 }
 
+void SpeedreaderToolbarDataHandlerImpl::HideToolbar() {
+  GetSpeedreaderTabHelper()->HideReaderModeToolbar();
+}
+
 void SpeedreaderToolbarDataHandlerImpl::ViewOriginal() {
   GetSpeedreaderTabHelper()->OnShowOriginalPage();
 }

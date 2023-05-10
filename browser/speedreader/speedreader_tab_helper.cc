@@ -297,15 +297,9 @@ void SpeedreaderTabHelper::ShowReaderModeBubble() {
   ShowBubble(false);
 }
 
-void SpeedreaderTabHelper::ShowReaderModeToolbar() {
-  Browser* browser = chrome::FindBrowserWithWebContents(web_contents());
-  static_cast<BraveBrowserWindow*>(browser->window())
-      ->ShowReaderModeToolbar(browser);
-}
-
 void SpeedreaderTabHelper::HideReaderModeToolbar() {
-  Browser* browser = chrome::FindBrowserWithWebContents(web_contents());
-  static_cast<BraveBrowserWindow*>(browser->window())->HideReaderModeToolbar();
+  toolbar_hidden_ = true;
+  UpdateUI();
 }
 
 Profile* SpeedreaderTabHelper::GetProfile() const {
@@ -386,6 +380,7 @@ void SpeedreaderTabHelper::ProcessNavigation(
     return;
   }
 
+  toolbar_hidden_ = false;
   original_page_shown_ = show_original_page_;
 
   UpdateActiveState(navigation_handle->GetURL());
@@ -465,14 +460,16 @@ void SpeedreaderTabHelper::UpdateUI() {
     return;
   }
 #if !BUILDFLAG(IS_ANDROID)
-  if (PageStateIsDistilled(PageDistillState())) {
-    ShowReaderModeToolbar();
-  } else {
-    HideReaderModeToolbar();
-  }
-
   if (const auto* browser =
           chrome::FindBrowserWithWebContents(web_contents())) {
+    if (toolbar_hidden_ || !PageStateIsDistilled(PageDistillState())) {
+      static_cast<BraveBrowserWindow*>(browser->window())
+          ->HideReaderModeToolbar();
+    } else {
+      static_cast<BraveBrowserWindow*>(browser->window())
+          ->ShowReaderModeToolbar();
+    }
+
     browser->window()->UpdatePageActionIcon(PageActionIconType::kReaderMode);
   }
 #endif

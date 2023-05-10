@@ -376,7 +376,7 @@ void BraveBrowserView::SetStarredState(bool is_starred) {
   }
 }
 
-void BraveBrowserView::ShowReaderModeToolbar(Browser* browser) {
+void BraveBrowserView::ShowReaderModeToolbar() {
   if (!reader_mode_panel_view_) {
     reader_mode_panel_view_ =
         std::make_unique<ReaderModePanelView>(GetProfile());

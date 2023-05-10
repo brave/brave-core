@@ -9,6 +9,7 @@ import * as S from './style'
 import ReaderModeSVG from '../../svg/reader_mode'
 import CloseSVG from '../../svg/close'
 import { getLocale } from '$web-common/locale'
+import { dataHandler } from '../../api/browser'
 
 interface ReaderModeControlProps {
   onClick?: Function
@@ -22,7 +23,7 @@ function ReaderModeControl (props: ReaderModeControlProps) {
         <ReaderModeSVG />
         {getLocale('braveReaderModeCaption')}
       </S.Caption>
-      <S.Button>
+      <S.Button onClick={() => { dataHandler.hideToolbar() }}>
         <CloseSVG />
       </S.Button>
     </S.Box>

@@ -19,6 +19,8 @@ interface ToolbarDataHandler {
 
   ViewOriginal();
 
+  HideToolbar();
+
   IsPlaying() => (bool is_playing);
 
   Rewind();

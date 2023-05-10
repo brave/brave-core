@@ -73,7 +73,7 @@ class BraveBrowserView : public BrowserView,
   void StartTabCycling() override;
   views::View* GetAnchorViewForBraveVPNPanel();
   gfx::Rect GetShieldsBubbleRect() override;
-  void ShowReaderModeToolbar(Browser* browser) override;
+  void ShowReaderModeToolbar() override;
   void HideReaderModeToolbar() override;
   bool GetTabStripVisible() const override;
 #if BUILDFLAG(IS_WIN)
